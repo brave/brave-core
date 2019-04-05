@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/metrics/chrome_metrics_services_manager_client.cc b/chrome/browser/metrics/chrome_metrics_services_manager_client.cc
-index 3399a7c2830081d0f4d4e60f80cca69db66cda2d..b6174c7512e18c65bc6c6204d3bf0e7d568e1422 100644
+index e960bdb53cf25dfa53da5e3771d2fbba4354159d..f3b3d2a012254c5ecb6261ca573395dac74596f0 100644
 --- a/chrome/browser/metrics/chrome_metrics_services_manager_client.cc
 +++ b/chrome/browser/metrics/chrome_metrics_services_manager_client.cc
-@@ -128,7 +128,7 @@ class ChromeMetricsServicesManagerClient::ChromeEnabledStateProvider
+@@ -144,7 +144,7 @@ class ChromeMetricsServicesManagerClient::ChromeEnabledStateProvider
    }
  
    bool IsReportingEnabled() const override {
--    return IsConsentGiven() &&
-+    return false && IsConsentGiven() &&
-            ChromeMetricsServicesManagerClient::IsClientInSample();
+-    return metrics::EnabledStateProvider::IsReportingEnabled() &&
++    return false && metrics::EnabledStateProvider::IsReportingEnabled() &&
+            IsClientInSampleImpl(local_state_);
    }
  

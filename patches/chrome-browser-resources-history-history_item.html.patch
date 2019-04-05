@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/md_history/history_item.html b/chrome/browser/resources/md_history/history_item.html
-index dd7096354e0b87df4a864185629eb3afb4835d67..4305b44c4709a816fac0e5b6cd20e4a20ba4febf 100644
---- a/chrome/browser/resources/md_history/history_item.html
-+++ b/chrome/browser/resources/md_history/history_item.html
+diff --git a/chrome/browser/resources/history/history_item.html b/chrome/browser/resources/history/history_item.html
+index a57f41d288336a62d40d91b3580331f3261d5c08..b11a1b0707afbc8bce6df6d3a0c5e930f4dd2d2b 100644
+--- a/chrome/browser/resources/history/history_item.html
++++ b/chrome/browser/resources/history/history_item.html
 @@ -13,11 +13,12 @@
  <link rel="import" href="chrome://resources/html/util.html">
  <link rel="import" href="chrome://resources/polymer/v1_0/iron-icon/iron-icon.html">

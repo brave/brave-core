@@ -99,6 +99,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8848045066928358658">‏כדי לשפר את האבטחה של Brave, השבתנו את התוסף הבא שאינו רשום ב-<ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> וייתכן שנוסף ללא ידיעתך.</translation>
 <translation id="8148611988012584308">‏התאם אישית ושלוט ב-Brave</translation>
 <translation id="5849446944780602366">‏כדי להתאים אישית את Brave Software Brave ולשלוט בו טוב יותר, כדאי להוריד את העדכון החדש.</translation>
+<translation id="6315734375101223238">‏התאמה אישית וניהול של Brave נחוצה פעולה שלך - יש ללחוץ לקבלת פרטים נוספים.</translation>
 <translation id="9071554113102421877">‏&amp;פתיחה ב-Brave</translation>
 <translation id="2176825726964012531">‏מידע על &amp;Brave‏</translation>
 <translation id="5450493308072741203">‏עדכן &amp;את Brave‏</translation>
@@ -123,6 +124,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="1853997773668795891">‏האם לקשר את הנתונים שלך ב-Brave לחשבון זה?</translation>
 <translation id="1326766910007115955">‏אתה נכנס עם חשבון מנוהל ונותן למנהל המערכת שלו שליטה על הפרופיל שלך ב-Brave. הנתונים שלך ב-Brave, כגון יישומים, סימניות, היסטוריה, סיסמאות והגדרות אחרות ייקשרו באופן קבוע ל-<ph name="USER_NAME"/>. תוכל למחוק את הנתונים האלה באמצעות לוח הבקרה של חשבונות Brave Software, אבל לא תוכל לשייך את הנתונים האלה לחשבון אחר. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">‏אתה נכנס עם חשבון מנוהל ונותן למנהל המערכת שלו שליטה על הפרופיל שלך ב-Brave. הנתונים שלך ב-Brave, כגון יישומים, סימניות, היסטוריה, סיסמאות והגדרות אחרות ייקשרו באופן קבוע ל-<ph name="USER_NAME"/>. תוכל למחוק את הנתונים האלה באמצעות לוח הבקרה של חשבונות Brave Software, אבל לא תוכל לשייך את הנתונים האלה לחשבון אחר. לחלופין, תוכל ליצור פרופיל חדש כדי לשמור את הנתונים הקיימים שלך ב-Brave בנפרד.<ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">‏לפי הגדרת מנהל המערכת, Brave יפתח דפדפן חלופי כדי לגשת אל <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656">‏בכתובת <ph name="USER_EMAIL_ADDRESS"/> השתמשו בעבר ב-Brave</translation>
 <translation id="1384923383737428730">‏יש במחשב שלך תוכנה מזיקה. Brave יכול להסיר אותה, לשחזר את ההגדרות שלך ולהשבית תוספים כדי שהדפדפן יחזור שוב לפעולה רגילה.</translation>
 <translation id="8919921662052966648">‏Brave לא הצליח לסנכרן את הנתונים שלך. עדכן את משפט הסיסמה לסנכרון.</translation>
@@ -171,7 +173,8 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="2871190378186459992">‏גלה יישומים, משחקים, תוספים ועיצובים מעולים בשביל Brave.</translation>
 <translation id="3350544518197210895">‏Brave ‏(mDNS-In)</translation>
 <translation id="1912973375560256099">‏כלל נכנס עבור Brave על מנת לאפשר תנועת mDNS.</translation>
-<translation id="3795403186582265456">‏Brave יכול לזהות תמונות וטקסט בתמונה על-ידי שליחת התמונות בדף אל שרתי Brave Software, וכך מאפשר לך להבין טוב יותר את התוכן בדף.</translation>
+<translation id="8207657266087451193">‏אם אין לתמונה תיאור מועיל, Brave ינסה לספק לך תיאור. כדי ליצור תיאורים, התמונות נשלחות אל Brave Software. אפשר להשבית את האפשרות הזו בכל זמן דרך ההגדרות.</translation>
+<translation id="5499063270485366718">‏אם אין לתמונה תיאור מועיל, Brave ינסה לספק לך תיאור. כדי ליצור תיאורים, התמונות נשלחות אל Brave Software.</translation>
 <translation id="7276297358157391541">‏Brave יכול לספק בדיקת איות חכמה יותר על ידי שליחת הטקסט שאתה מקליד בדפדפן אל שרתי Brave Software. כך אתה יכול להשתמש באותה טכנולוגיה של בדיקת איות שבה נעשה שימוש בחיפוש Brave Software.</translation>
 <translation id="1807774211756215222">‏פתח את הקישור ב&amp;כרטיסיית Brave חדשה</translation>
 <translation id="4624945300945265642">‏פתח את הקישור בחלון &amp;גלישה בסתר של Brave</translation>
@@ -188,7 +191,6 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="5173820533850252773">‏Brave אינו מעודכן</translation>
 <translation id="6389268239133412586">‏לא ניתן לעדכן את Brave</translation>
 <translation id="7963515534397191222">‏עדכון Brave לגירסה האחרונה לא הצליח, ולכן אין לך גישה אל תכונות חדשות ותיקוני אבטחה.</translation>
-<translation id="3472158705945346956">‏המנהל שלך צריך להסיר אותך מ-Brave ולאחר מכן להוסיף אותך חזרה.</translation>
 <translation id="1705567146636171298">‏עדכן את Brave‏</translation>
 <translation id="3598551856834560515">‏עדכן את Brave כדי להתחיל את הסנכרון</translation>
 <translation id="4050175100176540509">הגרסה החדשה כוללת שיפורי בטיחות חשובים ותכונות חדשות.</translation>
@@ -267,9 +269,9 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="8372880274820509128">‏לשיפור האבטחה, Brave יצפין את הנתונים.</translation>
 <translation id="7445061995866044926">‏האם לצאת מ-Brave?</translation>
 <translation id="7453070689008684791">‏Brave ייגש ל-Drive שלך כדי להציג הצעות בסרגל הכתובות</translation>
-<translation id="7713466009760073734">‏Brave OS מוצג בשפה זו</translation>
+<translation id="9221712274065451529">‏זו השפה שבה מוצג ממשק המשתמש של Brave OS</translation>
 <translation id="3518788198614984730">‏הצג את Brave OS בשפה זו</translation>
-<translation id="8258976055610040706">‏Brave מוצג בשפה זו</translation>
+<translation id="5757460455745382269">‏זו השפה שבה מוצג ממשק המשתמש של Brave</translation>
 <translation id="2335583906071111058">‏הצג את Brave בשפה זו</translation>
 <translation id="8926637909431618259">‏המשך הפעלת יישומים ברקע כאשר Brave סגור</translation>
 <translation id="6056473803837713617">‏דיווח על <ph name="BEGIN_LINK"/>ההגדרות הנוכחיות<ph name="END_LINK"/> יעזור לשפר את Brave</translation>

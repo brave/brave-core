@@ -79,6 +79,7 @@
 <translation id="2232753742630178222">3 publicités par heure</translation>
 <translation id="905529390827000221">4 publicités par heure</translation>
 <translation id="7694167481321619202">5 publicités par heure</translation>
+<translation id="8845154268466251503">BAT</translation>
 <translation id="4684554059837592728">Paiement Mensuel</translation>
 <translation id="2846354907189538">Prochaine contribution le</translation>
 <translation id="8759716059844800317">Sites soutenus</translation>
@@ -126,11 +127,15 @@
 <translation id="570208820610947248">Nous avons détecté que quelque chose ne va pas avec votre portefeuiile. Vous devez récupérer votre portefeuille de sauvegarde avant que toute transaction puisse être traitée.</translation>
 <translation id="7797604753681168055">Récupérer maintenant!</translation>
 <translation id="1184075897575325927">Désolé, il semble que cette allocation ait déjà été réclamée.</translation>
+<translation id="7180611975245234373">Actualiser</translation>
+<translation id="839736845446313156">S'inscrire</translation>
+<translation id="583281660410589416">Langue source inconnue</translation>
 <translation id="5094577350232361255">à propos de</translation>
 <translation id="4918086044614829423">Accepter</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave est une marque déposée de Brave Software.  Les noms des sites peuvent être des marques ou des marques déposées du propriétaire du site.</translation>
 <translation id="9026369588205476247">Afin de protéger votre vie privée, ce relevé de Récompenses Brave n'est pas sauvegardé, ni archivé ou enregistré ailleurs que sur votre appareil (cet ordinateur). Brave ne peut pas le récupérer en cas de perte de données sur votre appareil.</translation>
 <translation id="1036277985068412734">ajouter des fonds</translation>
+<translation id="5441565662498481293">Vous envoyez automatiquement des dons à :</translation>
 <translation id="4496990471549986619">la FAQ</translation>
 <translation id="1688876543043079268">Rappel : le portefeuille Brave est unidirectionnel et les BAT vont aux sites des éditeurs. Pour en savoir plus sur les Récompenses Brave, veuillez consulter</translation>
 <translation id="2790014973538267577">Afficher le QR Code</translation>
@@ -174,6 +179,7 @@
 <translation id="245015745140252435">Montant du don</translation>
 <translation id="3520817231440482449">Donner à ce site tous les mois</translation>
 <translation id="1827184134638345603">Envoyer un don…</translation>
+<translation id="1628742278973105368">Votre premier don mensuel sera envoyé le :</translation>
 <translation id="7277134233385925078">Définir le don mensuel</translation>
 <translation id="8003573781961874199">Télécharger au format PDF</translation>
 <translation id="298067735430872465">Gains issus des Annonces</translation>
@@ -272,6 +278,7 @@
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">sites</translation>
 <translation id="8826007068782654809">Merci</translation>
+<translation id="6665366815203065060">Vous venez d'envoyer un don à :</translation>
 <translation id="6432779622695508363">Donner de l'argent quand vous aimez</translation>
 <translation id="8424370624815730676">Jeton d'attention de base (BAT)</translation>
 <translation id="4588241643143931775">Bitcoin (BTC)</translation>
@@ -314,7 +321,7 @@
 <translation id="1555452132857939218">de cette chaîne de synchronisation</translation>
 <translation id="610118613261910287">Afficher les mots de code</translation>
 <translation id="8588535459744752615">Recherche d'appareil</translation>
-<translation id="391177677159359824">Synchronisation (bêta)</translation>
+<translation id="6406506848690869874">Synchroniser</translation>
 <translation id="28332161031213248">La liste des appareils ci-dessous comprend tous les appareils de votre chaîne de synchronisation. Chaque appareil peut être géré à partir de n'importe quel autre appareil.</translation>
 <translation id="8153617760825732120">nom de l'appareil</translation>
 <translation id="4241512165288542484">(Cet appareil)</translation>
@@ -327,7 +334,7 @@
 <translation id="5591129654353352557">Paramètres du site enregistrés</translation>
 <translation id="7859704718976024901">Historique de navigation</translation>
 <translation id="2339730291919608488">Quitter la chaîne de synchronisation</translation>
-<translation id="4797449295451979552">Configuration de la synchronisation (bêta)</translation>
+<translation id="4332558599726753990">Synchroniser la configuration</translation>
 <translation id="298546024891487702">Pour commencer, vous aurez besoin de Brave installé sur tous les appareils que vous prévoyez de synchroniser. Pour les enchaîner, démarrez une chaîne de synchronisation que vous utiliserez pour relier tous vos appareils en toute sécurité.</translation>
 <translation id="6200528822592747640">Démarrer une nouvelle chaîne de synchronisation</translation>
 <translation id="5184726904895809379">J'ai un code de synchronisation</translation>
@@ -359,8 +366,6 @@
 <translation id="1736420071277903564">Ordinateur</translation>
 <translation id="1258250624898033822">Code de synchronisation non valide.</translation>
 <translation id="3259723213051400722">Veuillez réessayer.</translation>
-<translation id="3779810277399252432">Aucune connexion Internet.</translation>
-<translation id="4380604249778320975">Veuillez réessayer lorsque votre connexion sera disponible.</translation>
 <translation id="5257281382608458806">Le nom de l'appareil est requis.</translation>
 <translation id="8349682220522608879">Veuillez ajouter un code de synchronisation.</translation>
 <translation id="1468095392829989299">Échec du contact avec les serveurs de synchronisation</translation>

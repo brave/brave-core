@@ -48,8 +48,11 @@ const std::string TransactionsInfo::ToJson() const {
 
 bool TransactionsInfo::FromJson(
     const std::string& json) {
-  std::unique_ptr<base::DictionaryValue> dictionary =
-      base::DictionaryValue::From(base::JSONReader::Read(json));
+  base::Optional<base::Value> dictionary =
+    base::JSONReader::Read(json);
+  if (!dictionary || !dictionary->is_dict()) {
+    return false;
+  }
 
   auto* transactions_value = dictionary->FindKey("transactions");
   if (!transactions_value) {

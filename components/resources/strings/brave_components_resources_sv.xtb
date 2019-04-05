@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Vi upptäckte ett fel med din plånbok. Du måste återställa din säkerhetskopia innan transaktioner kan genomföras.</translation>
 <translation id="7797604753681168055">Återställ nu!</translation>
 <translation id="1184075897575325927">Tyvärr verkar det som att detta medgivande redan har hämtats.</translation>
+<translation id="7180611975245234373">Uppdatera</translation>
+<translation id="839736845446313156">Registrera</translation>
+<translation id="583281660410589416">okänt</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Acceptera</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave är ett registrerat varumärke som tillhör Brave Software. Webbplatser kan vara varumärken eller registrerade varumärken som tillhör webbplatsägaren.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">från den här Sync-kedjan</translation>
 <translation id="610118613261910287">Visa kodord</translation>
 <translation id="8588535459744752615">Letar efter enhet</translation>
-<translation id="391177677159359824">Sync (beta)</translation>
+<translation id="6406506848690869874">Synka</translation>
 <translation id="28332161031213248">Listan över enheter nedan inkluderar alla enheter i din synkkedja. Varje enhet kan hanteras från alla andra enheter.</translation>
 <translation id="8153617760825732120">enhetsnamn</translation>
 <translation id="4241512165288542484">(Den här enheten)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Sparade webbplatsinställningar</translation>
 <translation id="7859704718976024901">Webbhistorik</translation>
 <translation id="2339730291919608488">Lämna Sync-kedja</translation>
-<translation id="4797449295451979552">Installation av Sync (beta)</translation>
+<translation id="4332558599726753990">Synkinställning</translation>
 <translation id="298546024891487702">För att starta måste du ha Brave installerat på alla de enheter du avser att synka. För att länka ihop dem, starta en synkkedja som du använder för att på ett säkert sätt länka samman alla dina enheter.</translation>
 <translation id="6200528822592747640">Starta en ny synkkedja</translation>
 <translation id="5184726904895809379">Jag har en synkkod</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Dator</translation>
 <translation id="1258250624898033822">Ogiltig Sync-kod.</translation>
 <translation id="3259723213051400722">Försök igen.</translation>
-<translation id="3779810277399252432">Ingen internetanslutning.</translation>
-<translation id="4380604249778320975">Försök igen när du har anslutning.</translation>
 <translation id="5257281382608458806">Enhetsnamn krävs.</translation>
 <translation id="8349682220522608879">Lägg till en Sync-kod.</translation>
 <translation id="1468095392829989299">Kunde inte kontakta Sync-servrarna</translation>

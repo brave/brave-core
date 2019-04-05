@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -149,7 +150,7 @@ void ChromeImporter::ImportBookmarks() {
     source_path_.Append(
       base::FilePath::StringType(FILE_PATH_LITERAL("Bookmarks")));
   base::ReadFileToString(bookmarks_path, &bookmarks_content);
-  std::unique_ptr<base::Value> bookmarks_json =
+  base::Optional<base::Value> bookmarks_json =
     base::JSONReader::Read(bookmarks_content);
   const base::DictionaryValue* bookmark_dict;
   if (!bookmarks_json || !bookmarks_json->GetAsDictionary(&bookmark_dict))
@@ -376,7 +377,8 @@ void ChromeImporter::ImportPasswords(const base::FilePath& prefs_filename) {
   #if defined(USE_LIBSECRET)
       if (!backend &&
           (selected_backend == os_crypt::SelectedLinuxBackend::GNOME_ANY ||
-          selected_backend == os_crypt::SelectedLinuxBackend::GNOME_LIBSECRET)) {
+           selected_backend ==
+               os_crypt::SelectedLinuxBackend::GNOME_LIBSECRET)) {
         backend.reset(new NativeBackendLibsecret(local_profile_id));
       }
   #endif

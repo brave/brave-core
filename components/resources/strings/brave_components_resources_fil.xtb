@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Natukoy naming may problema sa iyong wallet. Dapat mong i-recover ang iyong backup na wallet bago maproseso ang anumang transaksyon.</translation>
 <translation id="7797604753681168055">I-recover ngayon!</translation>
 <translation id="1184075897575325927">Paumanhin, mukhang na-claim na ang grant na ito.</translation>
+<translation id="7180611975245234373">I-refresh</translation>
+<translation id="839736845446313156">Magparehistro</translation>
+<translation id="583281660410589416">Hindi Alam</translation>
 <translation id="5094577350232361255">tungkol sa</translation>
 <translation id="4918086044614829423">Tanggapin</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Ang Brave ay isang rehistradong trademark ng Brave Software. Ang mga pangalan ng site ay maaaring mga trademark o mga rehistradong trademark ng may-ari ng site.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">mula sa chain ng pag-sync na ito</translation>
 <translation id="610118613261910287">Tingnan ang Mga Code Word</translation>
 <translation id="8588535459744752615">Naghahanap ng device</translation>
-<translation id="391177677159359824">Sync (beta)</translation>
+<translation id="6406506848690869874">Mag-sync</translation>
 <translation id="28332161031213248">Kasama sa listahan ng device sa ibaba ang lahat ng device sa iyong chain ng pag-sync. Maaaring pamahalaan ang bawat device mula sa anupamang device.</translation>
 <translation id="8153617760825732120">pangalan ng device</translation>
 <translation id="4241512165288542484">(ANG DEVICE NA ITO)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Mga Naka-save na Setting ng Site</translation>
 <translation id="7859704718976024901">History ng Pag-browse</translation>
 <translation id="2339730291919608488">Umalis sa Chain ng Pag-sync</translation>
-<translation id="4797449295451979552">Sync (beta) Setup</translation>
+<translation id="4332558599726753990">Pag-set Up ng Pag-sync</translation>
 <translation id="298546024891487702">Upang makapagsimula, kakailanganin mong i-install ang Brave sa lahat ng device na pinaplano mong i-sync. Para maipagkabit ang mga ito, magsimula ng chain ng pag-sync na gagamitin mo upang secure na magkasamang ma-link ang lahat ng iyong device.</translation>
 <translation id="6200528822592747640">Magsimula ng bagong Chain ng Pag-sync</translation>
 <translation id="5184726904895809379">Mayroon akong Code ng Pag-sync</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Computer</translation>
 <translation id="1258250624898033822">Di-wastong code ng pag-sync.</translation>
 <translation id="3259723213051400722">Pakisubukang muli.</translation>
-<translation id="3779810277399252432">Walang koneksyon sa internet.</translation>
-<translation id="4380604249778320975">Pakisubukang muli kapag available ang iyong koneksyon.</translation>
 <translation id="5257281382608458806">Kinakailangan ang pangalan ng device.</translation>
 <translation id="8349682220522608879">Magdagdag ng code ng pag-sync.</translation>
 <translation id="1468095392829989299">Hindi makakonekta sa mga server ng Pag-sync</translation>

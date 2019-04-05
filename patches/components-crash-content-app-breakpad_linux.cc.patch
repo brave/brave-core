@@ -1,5 +1,5 @@
 diff --git a/components/crash/content/app/breakpad_linux.cc b/components/crash/content/app/breakpad_linux.cc
-index a7378204ffaa5586be9789a552de0f2a951ad208..9044ab8c9bb148edba86cad6b9781c726ad6dfed 100644
+index ecc7d66acb033b9d9407a6ca61deabf290d63d57..13068edf29580c0b079e758f3b9ced3e818514c8 100644
 --- a/components/crash/content/app/breakpad_linux.cc
 +++ b/components/crash/content/app/breakpad_linux.cc
 @@ -88,8 +88,12 @@ namespace breakpad {

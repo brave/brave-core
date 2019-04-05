@@ -1,8 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_sync/client/brave_sync_client_impl.h"
+
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "base/logging.h"
 #include "brave/browser/extensions/api/brave_sync_event_router.h"
@@ -74,7 +79,8 @@ void BraveSyncClientImpl::SendFetchSyncRecords(
     const base::Time &startAt,
     const int max_records) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  brave_sync_event_router_->FetchSyncRecords(category_names, startAt, max_records);
+  brave_sync_event_router_->FetchSyncRecords(category_names, startAt,
+                                             max_records);
 }
 
 void BraveSyncClientImpl::SendFetchSyncDevices() {
@@ -86,9 +92,11 @@ void BraveSyncClientImpl::SendResolveSyncRecords(
     const std::string &category_name,
     std::unique_ptr<SyncRecordAndExistingList> records_and_existing_objects) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  std::vector<extensions::api::brave_sync::RecordAndExistingObject> records_and_existing_objects_ext;
+  std::vector<extensions::api::brave_sync::RecordAndExistingObject>
+      records_and_existing_objects_ext;
 
-  ConvertResolvedPairs(*records_and_existing_objects, records_and_existing_objects_ext);
+  ConvertResolvedPairs(*records_and_existing_objects,
+                       records_and_existing_objects_ext);
 
   brave_sync_event_router_->ResolveSyncRecords(category_name,
     records_and_existing_objects_ext);
@@ -107,11 +115,14 @@ void BraveSyncClientImpl::SendDeleteSyncUser()  {
   NOTIMPLEMENTED();
 }
 
-void BraveSyncClientImpl::SendDeleteSyncCategory(const std::string &category_name) {
+void BraveSyncClientImpl::SendDeleteSyncCategory(
+    const std::string& category_name) {
   NOTIMPLEMENTED();
 }
 
-void BraveSyncClientImpl::SendGetBookmarksBaseOrder(const std::string &device_id, const std::string &platform) {
+void BraveSyncClientImpl::SendGetBookmarksBaseOrder(
+    const std::string& device_id,
+    const std::string& platform) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   brave_sync_event_router_->SendGetBookmarksBaseOrder(device_id, platform);
 }
@@ -189,11 +200,11 @@ void BraveSyncClientImpl::OnExtensionSystemReady() {
   if (sync_prefs_->GetSyncEnabled()) {
     LoadOrUnloadExtension(true);
   }
-};
+}
 
 void BraveSyncClientImpl::ClearOrderMap() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   brave_sync_event_router_->ClearOrderMap();
 }
 
-} // namespace brave_sync
+}  // namespace brave_sync

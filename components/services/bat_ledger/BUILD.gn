@@ -1,5 +1,3 @@
-import("//services/service_manager/public/service_manifest.gni")
-
 static_library("lib") {
   visibility = [ "//brave/utility" ]
 
@@ -24,9 +22,4 @@ static_library("lib") {
     "//brave/vendor/bat-native-ledger",
     "//services/service_manager/public/cpp",
   ]
-}
-
-service_manifest("manifest") {
-  name = "bat_ledger"
-  source = "manifest.json"
 }

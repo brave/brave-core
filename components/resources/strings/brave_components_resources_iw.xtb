@@ -126,6 +126,9 @@
 <translation id="570208820610947248">גילינו שיש בעיה עם הארנק שלך. עליך לשחזר את ארנק  הגיבוי שלך לפני עיבוד עסקה כלשהי.</translation>
 <translation id="7797604753681168055">שחזר כעת!</translation>
 <translation id="1184075897575325927">מצטערים, נראה שמענק זה כבר נתבע.</translation>
+<translation id="7180611975245234373">רענן</translation>
+<translation id="839736845446313156">הירשם</translation>
+<translation id="583281660410589416">לא ידוע</translation>
 <translation id="5094577350232361255">אודות</translation>
 <translation id="4918086044614829423">אשר</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software.
@@ -315,7 +318,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="1555452132857939218">משרשרת הסנכרון הזו</translation>
 <translation id="610118613261910287">הצג מילות קוד</translation>
 <translation id="8588535459744752615">מחפש מכשיר</translation>
-<translation id="391177677159359824">סנכרון (בטא)</translation>
+<translation id="6406506848690869874">סנכרון</translation>
 <translation id="28332161031213248">רשימת ההתקנים שלהלן כוללת את כל ההתקנים בשרשרת הסנכרון שלכם. כל מכשיר יכול להיות מנוהל מכל מכשיר אחר.</translation>
 <translation id="8153617760825732120">שם המכשיר</translation>
 <translation id="4241512165288542484">(מכשיר זה)</translation>
@@ -328,7 +331,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="5591129654353352557">הגדרות אתר שנשמרו</translation>
 <translation id="7859704718976024901">היסטוריית גלישה</translation>
 <translation id="2339730291919608488">השאר שרשרת סנכרון</translation>
-<translation id="4797449295451979552">הגדרות סנכרון (בטא)</translation>
+<translation id="4332558599726753990">הגדרות סנכרון</translation>
 <translation id="298546024891487702">כדי להתחיל, תצטרכו להתקין את Brave בכל המכשירים שאתם מתכננים לסנכרן. כדי לחבר את המכשירים, הפעילו שרשרת סנכרון שבה תשתמשו כדי לקשר את כל המכשירים שלכם בצורה מאובטחת.</translation>
 <translation id="6200528822592747640">התחילו שרשרת סנכרון חדשה</translation>
 <translation id="5184726904895809379">יש לי קוד סנכרון</translation>
@@ -360,8 +363,6 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="1736420071277903564">מחשב</translation>
 <translation id="1258250624898033822">קוד סנכרון לא חוקי.</translation>
 <translation id="3259723213051400722">יש לנסות שוב.</translation>
-<translation id="3779810277399252432">אין חיבור לאינטרנט.</translation>
-<translation id="4380604249778320975">נסו שוב כשהחיבור לרשת יהיה זמין.</translation>
 <translation id="5257281382608458806">יש להזין את שם המכשיר.</translation>
 <translation id="8349682220522608879">יש להוסיף קוד סנכרון.</translation>
 <translation id="1468095392829989299">לא ניתן היה ליצור קשר עם שרתי Sync</translation>

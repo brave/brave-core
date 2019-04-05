@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index e24bba8dee71d14311bf579d7f0fdac0ba05ed81..3594d6c46cef7735c6f4262cb5afd32f40ec4695 100644
+index 7550088b46f3cb5a731c10f680fd47c42fc12746..90de2ac7d98d2a3f2500556c4f487be3c9d281c7 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
-@@ -113,6 +113,7 @@ class LocationBarView : public LocationBar,
+@@ -114,6 +114,7 @@ class LocationBarView : public LocationBar,
    int GetBorderRadius() const;
  
    // Initializes the LocationBarView.
@@ -10,7 +10,7 @@ index e24bba8dee71d14311bf579d7f0fdac0ba05ed81..3594d6c46cef7735c6f4262cb5afd32f
    void Init();
  
    // True if this instance has been initialized by calling Init, which can only
-@@ -190,6 +191,7 @@ class LocationBarView : public LocationBar,
+@@ -191,6 +192,7 @@ class LocationBarView : public LocationBar,
  
    // Updates the controller, and, if |contents| is non-null, restores saved
    // state that the tab holds.
@@ -18,15 +18,15 @@ index e24bba8dee71d14311bf579d7f0fdac0ba05ed81..3594d6c46cef7735c6f4262cb5afd32f
    void Update(const content::WebContents* contents);
  
    // Clears the location bar's state for |contents|.
-@@ -208,6 +210,7 @@ class LocationBarView : public LocationBar,
-   bool HasFocus() const override;
+@@ -210,6 +212,7 @@ class LocationBarView : public LocationBar,
    void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
+   gfx::Size GetMinimumSize() const override;
    gfx::Size CalculatePreferredSize() const override;
 +  void Layout(views::View* trailing_view);
    void Layout() override;
    void OnThemeChanged() override;
    void OnNativeThemeChanged(const ui::NativeTheme* theme) override;
-@@ -256,6 +259,7 @@ class LocationBarView : public LocationBar,
+@@ -258,6 +261,7 @@ class LocationBarView : public LocationBar,
    SkColor GetLocationIconInkDropColor() const override;
  
   private:
@@ -34,7 +34,7 @@ index e24bba8dee71d14311bf579d7f0fdac0ba05ed81..3594d6c46cef7735c6f4262cb5afd32f
    FRIEND_TEST_ALL_PREFIXES(SecurityIndicatorTest, CheckIndicatorText);
    FRIEND_TEST_ALL_PREFIXES(TouchLocationBarViewBrowserTest,
                             OmniboxViewViewsSize);
-@@ -300,6 +304,7 @@ class LocationBarView : public LocationBar,
+@@ -304,6 +308,7 @@ class LocationBarView : public LocationBar,
    OmniboxPopupView* GetOmniboxPopupView();
  
    // Gets the theme color tint for the location bar and results.

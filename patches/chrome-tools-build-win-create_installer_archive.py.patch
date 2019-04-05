@@ -1,5 +1,5 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index 5162a926c55f6057f106f2151669c6a1b8678b68..1866ad644eed80eedba7a999fdb9f679a91daae1 100755
+index b16b16bdc439014bf647f80ca9b7ce8215cfbb6c..cf36aac8b0d18fb0a1dd6f9018dcd53e9042a331 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
 @@ -112,6 +112,60 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
@@ -63,7 +63,7 @@ index 5162a926c55f6057f106f2151669c6a1b8678b68..1866ad644eed80eedba7a999fdb9f679
  
  def CopySectionFilesToStagingDir(config, section, staging_dir, src_dir):
    """Copies installer archive files specified in section from src_dir to
-@@ -560,6 +614,10 @@ def main(options):
+@@ -531,6 +585,10 @@ def main(options):
      version_numbers = prev_version.split('.')
      prev_build_number = version_numbers[2] + '.' + version_numbers[3]
  
@@ -74,7 +74,7 @@ index 5162a926c55f6057f106f2151669c6a1b8678b68..1866ad644eed80eedba7a999fdb9f679
    # Name of the archive file built (for example - chrome.7z or
    # patch-<old_version>-<new_version>.7z or patch-<new_version>.7z
    archive_file = CreateArchiveFile(options, staging_dir,
-@@ -628,6 +686,8 @@ def _ParseOptions():
+@@ -599,6 +657,8 @@ def _ParseOptions():
             'with the installer archive {x86|x64}.')
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)

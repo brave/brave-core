@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings_ui/settings_ui.html b/chrome/browser/resources/settings/settings_ui/settings_ui.html
-index cf4382d32cc0170c8fd72565e31026eed014abe0..c6973d9c77d29b3f95bbc99705f2518c6df19f72 100644
+index 372b651bd2607f37e5936f7259ba984d984920ab..d5f385106e10de3b88f9bbcd539a69982b864fcf 100644
 --- a/chrome/browser/resources/settings/settings_ui/settings_ui.html
 +++ b/chrome/browser/resources/settings/settings_ui/settings_ui.html
 @@ -2,7 +2,7 @@

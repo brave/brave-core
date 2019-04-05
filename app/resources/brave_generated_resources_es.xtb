@@ -13,9 +13,9 @@
 <translation id="4983925687993168579">Estadísticas</translation>
 <translation id="6165477144235978006">Pagos de Brave</translation>
 <translation id="3489524616427966890">Abrir ventanas y pestañas</translation>
-<translation id="9173846700806833701">Widevine no está instalado</translation>
-<translation id="2433569048491784801">Widevine no está instalado.</translation>
 <translation id="3699882589215410581">Instalar y ejecutar Widevine</translation>
+<translation id="8053096063396012732">Instalar Widevine</translation>
+<translation id="4840334696217618631">Reiniciar el navegador para habilitar Widevine</translation>
 <translation id="8410111618231938546">Google Widevine es un código de administración de derechos digitales (DRM)  que no es propiedad de Brave Software y por tanto no podemos inspeccionarlo. El código de Google Widevine se carga desde los servidores de Google, no desde nuestros servidores. Se carga solo cuando habilitas esta opción. Desaconsejamos el uso de DRM, pero respetamos la elección del usuario y entendemos que a algunos usuarios de Brave les gustaría usar algunos servicios que lo requieran.
 
 Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Aceptas que Brave no es responsable por daños o pérdidas en relación con tu uso de Google Widevine.</translation>
@@ -31,6 +31,8 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="7543906827780734027">Brave aún no ha revisado esta extensión, podría ser maliciosa. ¿Añadir "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" de todas maneras?</translation>
 <translation id="2044383478723007273">Modo Brave</translation>
 <translation id="5341901626640816374">Usar barra de direcciones amplia</translation>
+<translation id="6123134130710658846">Ocultar botón de Brave Rewards</translation>
+<translation id="7635711399568194460">Oculta el botón de Brave Rewards en la barra de direcciones cuando Brave Rewards está deshabilitado</translation>
 <translation id="7965178729203412357">Nueva identidad Tor</translation>
 <translation id="8784924142044142231">Cerrar Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -45,11 +47,16 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="2515126961943087659">Servicio de anuncios Bat</translation>
 <translation id="7924918279836988121">Servicio de contabilidad de BAT</translation>
 <translation id="7372129767729198111">Escudos Brave por defecto</translation>
+<translation id="6752287096897220686">Botones Sociales y Logins</translation>
 <translation id="8029018702721078742">Control de anuncios</translation>
 <translation id="3544462288910360084">Control de cookies</translation>
 <translation id="8919235146866304148">Protección huella digital</translation>
 <translation id="520895744850022668">HTTPS en cualquier sitio</translation>
 <translation id="5259716416204774556">Bloqueo de scripts</translation>
+<translation id="7498695072878479744">Permitir los botones de acceso de Google en sitios web de terceros</translation>
+<translation id="863171915776379000">Permitir los inicios de sesión de Facebook y los mensajes incrustados</translation>
+<translation id="5165042248369837294">Permitir tweets incrustados de Twitter</translation>
+<translation id="1160990956439588593">Permitir incrustaciones de Linkedin</translation>
 <translation id="6067014455220527258">Bloquear anuncios</translation>
 <translation id="6985711843506827936">Permitir anuncios y seguimiento</translation>
 <translation id="6132506775968708399">Bloquear cookies de terceros</translation>
@@ -65,10 +72,16 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="5825943197137337319">Solo interfaz pública por defecto</translation>
 <translation id="1689062823386843231">Desactivar el UDP sin proxy</translation>
 <translation id="6645631466045614531">Acceder a la sincronización a través de</translation>
+<translation id="1807246157184219062">Claro</translation>
+<translation id="2414886740292270097">Oscuro</translation>
+<translation id="1360441190790440400">Mismo que en Linux</translation>
+<translation id="1336940801687497203">Mismo que en Windows</translation>
+<translation id="5515614985852176310">Mismo que en MacOS</translation>
 <translation id="6786747875388722282">Extensiones</translation>
 <translation id="2896916411183256228">Usa WebTorrent para mostrar directamente los torrents en el navegador. Es compatible con archivos torrent y enlaces magnet.</translation>
 <translation id="6554397389149987360">Usa el componente de Hangouts para habilitar la compartición de la pantalla y otras funciones en el navegador.</translation>
 <translation id="6916590542764765824">Gestión de extensiones</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Ver en la Web Extensions Store</translation>
+<translation id="4846154056248462491">Al salir</translation>
 </translationbundle>

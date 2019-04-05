@@ -101,6 +101,7 @@
 <translation id="8848045066928358658">‏لجعل Brave أكثر أمنًا، أوقفنا الإضافة التالية التي لم تُدرج في <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> وربما تكون قد أضيفت دون علمك.</translation>
 <translation id="8148611988012584308">‏تخصيص Brave والتحكم فيه</translation>
 <translation id="5849446944780602366">‏تخصيص Brave والتحكُّم فيه. هناك تحديث متوفر.</translation>
+<translation id="6315734375101223238">‏تخصيص Brave والتحكُّم فيه معلومات مهمة - انقر للحصول على التفاصيل.</translation>
 <translation id="9071554113102421877">‏&amp;فتح في Brave</translation>
 <translation id="2176825726964012531">‏حو&amp;ل Brave</translation>
 <translation id="5450493308072741203">‏تح&amp;ديث Brave</translation>
@@ -125,6 +126,7 @@
 <translation id="1853997773668795891">‏هل ترغب في ربط بياناتك في Brave بهذا الحساب؟</translation>
 <translation id="1326766910007115955">‏أنت تسجل الدخول باستخدام حساب يخضع للإدارة وتتيح للمشرف إمكانية التحكم في ملفك الشخصي على Brave. وستكون بياناتك في Brave مثل تطبيقاتك وإشاراتك المرجعية وسجلك وكلمات المرور التابعة لك والإعدادات الأخرى مرتبطة دائمًا بالمستخدم <ph name="USER_NAME"/>. ستتمكن من حذف هذه البيانات عبر لوحة تحكم حسابات Brave Software، ولكنك لن تتمكن من إقران هذه البيانات بحساب آخر. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">‏أنت تسجل الدخول باستخدام حساب يخضع للإدارة وتتيح للمشرف إمكانية التحكم في ملفك الشخصي على Brave. وستكون بياناتك في Brave مثل تطبيقاتك وإشاراتك المرجعية وسجلك وكلمات المرور التابعة لك والإعدادات الأخرى مرتبطة دائمًا بالمستخدم <ph name="USER_NAME"/>. ستتمكن من حذف هذه البيانات عبر لوحة تحكم حسابات Brave Software، ولكنك لن تتمكن من إقران هذه البيانات بحساب آخر. ويُمكنك اختيار إنشاء ملف شخصي جديد للإبقاء على بياناتك الحالية في Brave بشكل مستقل. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">‏ضبط مشرف النظام Brave لفتح متصفِّح بديل للوصول إلى <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656">‏كان <ph name="USER_EMAIL_ADDRESS"/> يستخدم Brave مسبقًا</translation>
 <translation id="1384923383737428730">‏هناك برنامج ضار على جهاز الكمبيوتر. ويمكن لمتصفِّح Brave إزالته واستعادة إعداداتك وإيقاف الإضافات لكي يعمل متصفِّحك بشكلٍ طبيعي من جديد.</translation>
 <translation id="8919921662052966648">‏تعذر على Brave مزامنة البيانات. يُرجى تحديث عبارة مرور المزامنة.</translation>
@@ -173,7 +175,8 @@
 <translation id="2871190378186459992">‏اكتشف تطبيقات، وألعاب، وإضافات، ومظاهر رائعة لمتصفح Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">‏قاعدة الوارد إلى Brave للسماح بحركة مرور mDNS.</translation>
-<translation id="3795403186582265456">‏يمكن لمتصفِّح Brave التعرف على الصور والنص في صورة من خلال إرسال صور الصفحات إلى خوادم Brave Software، ما يسمح لك بفهم محتوى الصفحة بشكلٍ أفضل.</translation>
+<translation id="8207657266087451193">‏في حال لم تتضمن صورة وصفًا مفيدًا، سيحاول Brave توفير وصف لك. لإنشاء أوصاف، سيتم إرسال الصور إلى Brave Software. ويمكنك إيقاف هذه الميزة في الإعدادات في أي وقت.</translation>
+<translation id="5499063270485366718">‏في حال لم تتضمن صورة وصفًا مفيدًا، سيحاول Brave توفير وصف لك. لإنشاء أوصاف، سيتم إرسال الصور إلى Brave Software.</translation>
 <translation id="7276297358157391541">‏يمكن أن يقدم Brave تدقيقًا إملائيًا أكثر دقة من خلال إرسال ما تكتبه في المتصفح إلى خوادم Brave Software، مما يتيح لك استخدام تقنية التدقيق الإملائي ذاتها المستخدمة في بحث Brave Software.</translation>
 <translation id="1807774211756215222">‏فتح الرابط في علامة تبويب جديدة في Brave</translation>
 <translation id="4624945300945265642">‏فتح الرابط في نافذة تصفح متخفٍ في Brave</translation>
@@ -190,7 +193,6 @@
 <translation id="5173820533850252773">‏إصدار Brave قديم</translation>
 <translation id="6389268239133412586">‏تعذّر تحديث Brave</translation>
 <translation id="7963515534397191222">‏تعذّر تحديث Brave إلى آخر إصدار، لذلك قد تفوتك الميزات الجديدة وعمليات إصلاح الأمان.</translation>
-<translation id="3472158705945346956">‏يجب على مديرك إزالتك وإضافتك مرة أخرى إلى Brave.</translation>
 <translation id="1705567146636171298">‏تحديث Brave</translation>
 <translation id="3598551856834560515">‏تحديث Brave لبدء المزامنة</translation>
 <translation id="4050175100176540509">تحسينات الأمان المهمة والميزات الجديدة متاحة في أحدث إصدار.</translation>
@@ -269,9 +271,9 @@
 <translation id="8372880274820509128">‏لمزيد من الأمان، سيشفر Brave بياناتك</translation>
 <translation id="7445061995866044926">‏هل تريد الخروج من Brave؟</translation>
 <translation id="7453070689008684791">‏سيصل Brave إلى Drive لإنشاء الاقتراحات في شريط العناوين.</translation>
-<translation id="7713466009760073734">‏يتم عرض نظام تشغيل Brave بهذه اللغة</translation>
+<translation id="9221712274065451529">‏يتم استخدام هذه اللغة لعرض واجهة مستخدم نظام التشغيل Brave</translation>
 <translation id="3518788198614984730">‏عرض نظام التشغيل Brave بهذه اللغة</translation>
-<translation id="8258976055610040706">‏يتم عرض Brave بهذه اللغة</translation>
+<translation id="5757460455745382269">‏يتم استخدام هذه اللغة لعرض واجهة مستخدم Brave</translation>
 <translation id="2335583906071111058">‏عرض Brave بهذه اللغة</translation>
 <translation id="8926637909431618259">‏استمرار تشغيل تطبيقات الخلفية عند إغلاق Brave</translation>
 <translation id="6056473803837713617">‏ساعد في تحسين Brave بالإبلاغ عن <ph name="BEGIN_LINK"/>الإعدادات الحالية<ph name="END_LINK"/></translation>

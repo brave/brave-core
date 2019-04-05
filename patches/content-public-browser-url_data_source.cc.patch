@@ -1,8 +1,8 @@
 diff --git a/content/public/browser/url_data_source.cc b/content/public/browser/url_data_source.cc
-index 4056311ccceaba59d092102ddd0414ee45733ba1..235c305d38f8ab074856ab089234f6139370214d 100644
+index 31edfa0ea7db5fe19eb8fe945f217adbcaf6eedb..5749096062c82905156afc90e56d520aa9a376f7 100644
 --- a/content/public/browser/url_data_source.cc
 +++ b/content/public/browser/url_data_source.cc
-@@ -42,7 +42,7 @@ bool URLDataSource::ShouldAddContentSecurityPolicy() const {
+@@ -72,7 +72,7 @@ bool URLDataSource::ShouldAddContentSecurityPolicy() const {
  std::string URLDataSource::GetContentSecurityPolicyScriptSrc() const {
    // Note: Do not add 'unsafe-eval' here. Instead override CSP for the
    // specific pages that need it, see context http://crbug.com/525224.

@@ -126,6 +126,9 @@
 <translation id="570208820610947248">We detected that something is wrong with your wallet. You must recover your backup wallet before any transactions can be processed.</translation>
 <translation id="7797604753681168055">Recover now!</translation>
 <translation id="1184075897575325927">Sorry, it appears that this grant has already been claimed.</translation>
+<translation id="7180611975245234373">Refresh</translation>
+<translation id="839736845446313156">Register</translation>
+<translation id="583281660410589416">Unknown</translation>
 <translation id="5094577350232361255">about</translation>
 <translation id="4918086044614829423">Accept</translation>
 <translation id="6832986780040139899">© 2016 © 2018 Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">from this sync chain</translation>
 <translation id="610118613261910287">View Code Words</translation>
 <translation id="8588535459744752615">Looking for device</translation>
-<translation id="391177677159359824">Sync (beta)</translation>
+<translation id="6406506848690869874">Sync</translation>
 <translation id="28332161031213248">The device list below includes all devices in your sync chain. Each device can be managed from any other device.</translation>
 <translation id="8153617760825732120">device name</translation>
 <translation id="4241512165288542484">(This Device)</translation>
@@ -327,7 +330,6 @@
 <translation id="5591129654353352557">Saved Site Settings</translation>
 <translation id="7859704718976024901">Browsing History</translation>
 <translation id="2339730291919608488">Leave Sync Chain</translation>
-<translation id="4797449295451979552">Sync (beta) Setup</translation>
 <translation id="298546024891487702">To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.</translation>
 <translation id="6200528822592747640">Start a new Sync Chain</translation>
 <translation id="5184726904895809379">I have a Sync Code</translation>
@@ -359,8 +361,6 @@
 <translation id="1736420071277903564">Computer</translation>
 <translation id="1258250624898033822">Invalid sync code.</translation>
 <translation id="3259723213051400722">Please try again.</translation>
-<translation id="3779810277399252432">No Internet connection.</translation>
-<translation id="4380604249778320975">Please try again when your connection is available.</translation>
 <translation id="5257281382608458806">Device name is required.</translation>
 <translation id="8349682220522608879">Please add a sync code.</translation>
 <translation id="1468095392829989299">Couldn't contact Sync servers</translation>

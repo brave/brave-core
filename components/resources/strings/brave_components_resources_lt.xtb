@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Nustatėme, kad kažkas yra negerai su jūsų pinigine. Operacijų vykdymas bus įmanomas tik tada, kai atkursite savo piniginės atsarginę kopiją.</translation>
 <translation id="7797604753681168055">Atkurti dabar!</translation>
 <translation id="1184075897575325927">Deja, atrodo, kad ši išmoka jau atsiimta.</translation>
+<translation id="7180611975245234373">Atnaujinti</translation>
+<translation id="839736845446313156">Registruotis</translation>
+<translation id="583281660410589416">Nežinoma</translation>
 <translation id="5094577350232361255">apie</translation>
 <translation id="4918086044614829423">Priimti</translation>
 <translation id="6832986780040139899">© „Brave Software“, 2016–2018 m. „Brave“ yra registruotasis „Brave Software“ prekių ženklas. Svetainių pavadinimai gali būti jų savininkų prekių ženklai arba registruotieji prekių ženklai.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">iš šios sinchronizavimo grandinės</translation>
 <translation id="610118613261910287">Žiūrėti žodinį kodą</translation>
 <translation id="8588535459744752615">Ieškoma įrenginio</translation>
-<translation id="391177677159359824">Sync (beta)</translation>
+<translation id="6406506848690869874">Sinchronizavimas</translation>
 <translation id="28332161031213248">Prietaisų sąraše išvardinti visi prietaisai tavo sinchronizavimo grandinėje. Kiekvieną prietaisą galima valdyti iš kito prietaiso.</translation>
 <translation id="8153617760825732120">įrenginio pavadinimas</translation>
 <translation id="4241512165288542484">(šis įrenginys)</translation>
@@ -327,7 +330,6 @@
 <translation id="5591129654353352557">Įrašyti svetainės nustatymai</translation>
 <translation id="7859704718976024901">Naršymo istorija</translation>
 <translation id="2339730291919608488">Išeiti iš sinchronizavimo grandinės</translation>
-<translation id="4797449295451979552">Sync (beta) sąranka</translation>
 <translation id="298546024891487702">Pradžiai turėsi įdiegti Brave į visus prietaisus, kuriuos norėsi sinchronizuoti. Norėdamas juos susieti, pradėk sinchronizavimo grandinę, kuria saugiai susiesi visus prietaisus.</translation>
 <translation id="6200528822592747640">Pradėk naują sinchronizavimo grandinę</translation>
 <translation id="5184726904895809379">Turiu sinchronizavimo kodą</translation>
@@ -359,8 +361,6 @@
 <translation id="1736420071277903564">Kompiuteris</translation>
 <translation id="1258250624898033822">Negaliojantis sinchronizavimo kodas.</translation>
 <translation id="3259723213051400722">Bandykite dar kartą.</translation>
-<translation id="3779810277399252432">Nėra interneto ryšio.</translation>
-<translation id="4380604249778320975">Ryšiui atsiradus pabandykite dar kartą.</translation>
 <translation id="5257281382608458806">Reikia įrenginio pavadinimo.</translation>
 <translation id="8349682220522608879">Pridėkite sinchronizavimo kodą.</translation>
 <translation id="1468095392829989299">Nepavyko susisiekti su „Sync“ serveriais</translation>

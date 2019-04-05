@@ -28,7 +28,6 @@
 <translation id="7253276740368043692">Влезте в Brave, за да получите разделите си от другите си устройства.</translation>
 <translation id="6351063337294363751">Можете да изчистите данните за сърфирането си от това меню</translation>
 <translation id="6040143037577758943">Затваряне</translation>
-<translation id="5379268888377976432">Отмяна на изтриването</translation>
 <translation id="6463795194797719782">&amp;Редактиране</translation>
 <translation id="8131740175452115882">Потвърждаване</translation>
 <translation id="4394049700291259645">Деактивиране</translation>
@@ -42,6 +41,7 @@
 <translation id="3943582379552582368">&amp;Назад</translation>
 <translation id="6691936601825168937">&amp;Препращане</translation>
 <translation id="3280237271814976245">&amp;Запазване като...</translation>
+<translation id="2941880727166628951">Изпращане до устройствата ми</translation>
 <translation id="1175364870820465910">&amp;Печат...</translation>
 <translation id="8664389313780386848">&amp;Преглед на изходния код на страницата</translation>
 <translation id="2889064240420137087">Отваряне на връзката със...</translation>
@@ -89,12 +89,14 @@
 <translation id="7814458197256864873">&amp;Копиране</translation>
 <translation id="5233736638227740678">&amp;Поставяне</translation>
 <translation id="2218515861914035131">Поставяне като неформатиран текст</translation>
-<translation id="5329858601952122676">&amp;Изтриване</translation>
 <translation id="1017280919048282932">&amp;Добавяне в речника</translation>
-<translation id="7658239707568436148">Отказ</translation>
+<translation id="1732768497619250086">Изтегляне от Brave Software на описания за изображенията</translation>
+<translation id="7561196759112975576">Винаги</translation>
+<translation id="2241634353105152135">Само веднъж</translation>
+<translation id="741204030948306876">Да, ще участвам</translation>
+<translation id="780301667611848630">Не, благодаря</translation>
 <translation id="4572259796527554261">Искане на предложения от Brave Software</translation>
 <translation id="3435896845095436175">Активиране</translation>
-<translation id="780301667611848630">Не, благодаря</translation>
 <translation id="8915370057835397490">Предложението се зарежда</translation>
 <translation id="6191804255817539692">Няма повече предложения от Brave Software</translation>
 <translation id="1901303067676059328">&amp;Избиране на всички</translation>
@@ -105,6 +107,7 @@
 <translation id="6042308850641462728">Още</translation>
 <translation id="6268252012308737255">Отваряне чрез <ph name="APP"/></translation>
 <translation id="5509693895992845810">Запазване &amp;като...</translation>
+<translation id="3480119035619598820">Изпращане до устройствата ми</translation>
 <translation id="7421925624202799674">&amp;Преглед на изходния код на страницата</translation>
 <translation id="1588870296199743671">Отваряне на връзката със...</translation>
 <translation id="3760460896538743390">Инспектиране на &amp;фоновата страница</translation>
@@ -144,8 +147,11 @@
 <translation id="9033857511263905942">&amp;Поставяне</translation>
 <translation id="1815083418640426271">Поставяне като неформатиран текст</translation>
 <translation id="4022426551683927403">&amp;Добавяне в речника</translation>
-<translation id="2867003629889664976">Искане на предложения от Brave Software</translation>
+<translation id="6849870115130610913">Изтегляне от Brave Software на описания за изображенията</translation>
+<translation id="372722114124766626">Само веднъж</translation>
+<translation id="8917490105272468696">Да, ще участвам</translation>
 <translation id="7473891865547856676">Не, благодаря</translation>
+<translation id="2867003629889664976">Искане на предложения от Brave Software</translation>
 <translation id="6264365405983206840">Избиране на &amp;всички</translation>
 <translation id="3948116654032448504">&amp;Търсене на изображението чрез <ph name="SEARCH_ENGINE"/></translation>
 <translation id="2932085390869194046">Предложение за парола...</translation>
@@ -165,6 +171,7 @@
 <translation id="6516243500644829484">Нов &amp;прозорец при използване на функцията „инкогнито“</translation>
 <translation id="6120205520491252677">Фиксиране на тази страница в стартовия екран...</translation>
 <translation id="9065203028668620118">Редактиране</translation>
+<translation id="5329858601952122676">&amp;Изтриване</translation>
 <translation id="4608500690299898628">&amp;Търсене...</translation>
 <translation id="3712897371525859903">&amp;Запазване на страницата като...</translation>
 <translation id="6089481419520884864">Създаване на сбит вариант на страницата</translation>
@@ -298,6 +305,7 @@
 <translation id="6740234557573873150">„<ph name="FILE_NAME"/>“ е на пауза</translation>
 <translation id="7551059576287086432">„<ph name="FILE_NAME"/>“ се изтегли успешно</translation>
 <translation id="3967822245660637423">Изтеглянето завърши</translation>
+<translation id="6811034713472274749">Страницата е готова за преглед</translation>
 <translation id="7764256770584298012"><ph name="DOWNLOAD_RECEIVED"/> от <ph name="DOWNLOAD_DOMAIN"/></translation>
 <translation id="3879748587602334249">Мениджър на изтеглянията</translation>
 <translation id="340282674066624"><ph name="DOWNLOAD_RECEIVED"/>, <ph name="TIME_LEFT"/></translation>
@@ -335,6 +343,7 @@
 <translation id="8200772114523450471">Възобновяване</translation>
 <translation id="2770465223704140727">Премахване от списъка</translation>
 <translation id="7702574632857388784">Премахване на „<ph name="FILE_NAME"/>“ от списъка</translation>
+<translation id="7658239707568436148">Отказ</translation>
 <translation id="7144878232160441200">Нов опит</translation>
 <translation id="5170568018924773124">Показване в папката</translation>
 <translation id="1581962803218266616">Показване във Finder</translation>
@@ -346,6 +355,7 @@
 <translation id="119944043368869598">Изчистване на всички</translation>
 <translation id="750509436279396091">Отваряне на папката за изтегляния</translation>
 <translation id="2902312830803030883">Още действия</translation>
+<translation id="495170559598752135">Действия</translation>
 <translation id="3612673635130633812">Изтеглено от &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">Изтеглено в режим „инкогнито“</translation>
 <translation id="8028803902702117856">Изтеглят се <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
@@ -398,11 +408,13 @@
 <translation id="4923279099980110923">Да, искам да помогна</translation>
 <translation id="2316129865977710310">Не, благодаря</translation>
 <translation id="9169931577761441333">Добавяне на <ph name="APP_NAME"/> към началния екран</translation>
+<translation id="6349101878882523185">Инсталиране на <ph name="APP_NAME"/></translation>
+<translation id="4918221908152712722">Инсталирайте <ph name="APP_NAME"/> (не се изисква изтегляне)</translation>
+<translation id="3789841737615482174">Инсталиране</translation>
 <translation id="5280426389926346830">Да се създаде ли пряк път?</translation>
 <translation id="7525067979554623046">Създаване</translation>
 <translation id="3217843140356091325">Да се създаде ли пряк път?</translation>
 <translation id="6026047032548434446">Да се инсталира ли приложението?</translation>
-<translation id="3789841737615482174">Инсталиране</translation>
 <translation id="3067198179881736288">Да се инсталира ли приложението?</translation>
 <translation id="7072010813301522126">Име на прекия път</translation>
 <translation id="3275778913554317645">Отваряне като прозорец</translation>
@@ -447,6 +459,7 @@
 <translation id="6527303717912515753">Споделяне</translation>
 <translation id="3249950116250264636"><ph name="APP_NAME"/> (<ph name="APP_URL"/>)</translation>
 <translation id="3810973564298564668">Управление</translation>
+<translation id="4574741712540401491">•  <ph name="LIST_ITEM_TEXT"/></translation>
 <translation id="2344028582131185878">Автоматични изтегляния</translation>
 <translation id="8217399928341212914">Автоматичното изтегляне на няколко файла да остане блокирано</translation>
 <translation id="2580889980133367162">Винаги да е разрешено на <ph name="HOST"/> да изтегля няколко файла</translation>
@@ -751,7 +764,6 @@
 <translation id="7663719505383602579">Приемник: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="6247802389331535091">Система: <ph name="ARC_PROCESS_NAME"/></translation>
 <translation id="5799508265798272974">Виртуална машина с Linux: <ph name="LINUX_VM_NAME"/></translation>
-<translation id="8559694214572302298">Декодиране на изображения</translation>
 <translation id="8191453843330043793">Основано на V8 преобразуване на прокси сървъри</translation>
 <translation id="5552059560155071882">Инструмент за синтактичен анализ на IPP заявки за CUPS</translation>
 <translation id="3077708072777965506">Метод на въвеждане в Brave OS</translation>
@@ -760,6 +772,7 @@
 <translation id="2190069059097339078">Получаване на идентификационни данни за Wi-Fi</translation>
 <translation id="7685901961038216503">Запис на системни образи на Brave OS</translation>
 <translation id="4873312501243535625">Проверка на медийни файлове</translation>
+<translation id="5972666587303800813">Услуга без функции</translation>
 <translation id="3061707000357573562">Услуга за корекции</translation>
 <translation id="3580923162759633716">Услуга за профилиране</translation>
 <translation id="1914326953223720820">Услуга за разкомпресиране</translation>
@@ -887,7 +900,7 @@
 <translation id="8749863574775030885">Достъп до USB устройства от неизвестен доставчик</translation>
 <translation id="2048182445208425546">Достъп до трафика ви в мрежата</translation>
 <translation id="8804398419035066391">Комуникация със съдействащи уебсайтове</translation>
-<translation id="498294082491145744">Промяна на настройките, които контролират достъпа на уебсайтовете до функции като „бисквитки“, JavaScript, приставки, геолокация, микрофон, камера и др.</translation>
+<translation id="2571655996835834626">Промяна на настройките, които контролират достъпа на уебсайтовете до функции като „бисквитки“, JavaScript, приставки, геолокация, микрофон, камера и др.</translation>
 <translation id="6450876761651513209">Промяна на свързаните с поверителността ви настройки</translation>
 <translation id="711902386174337313">Четене на списъка с устройства, на които сте влезли в профила си</translation>
 <translation id="8118860139461251237">Управление на изтеглянията ви</translation>
@@ -953,10 +966,13 @@
 <translation id="316854673539778496">Влезте в профила си и включете синхронизирането, за да получите разширенията си на всичките си устройства.</translation>
 <translation id="8079938625609335826">Включете синхронизирането, за да получите разширенията си на всичките си устройства.</translation>
 <translation id="4977942889532008999">Потвърждаване на достъпа</translation>
+<translation id="5780011244986845107">Избраната от вас папка съдържа поверителни файлове. Наистина ли искате да предоставите на <ph name="APP_NAME"/> постоянен достъп за четене от тази папка?</translation>
+<translation id="5365881113273618889">Избраната от вас папка съдържа поверителни файлове. Наистина ли искате да предоставите на <ph name="APP_NAME"/> постоянен достъп за записване в тази папка?</translation>
 <translation id="6220413761270491930">Грешка при зареждането на разширението</translation>
 <translation id="5707185214361380026">Неуспешно зареждане на разширение от:</translation>
 <translation id="7341834142292923918">Иска достъп до този сайт</translation>
 <translation id="4882312758060467256">Има достъп до този сайт</translation>
+<translation id="7784796923038949829">Данните на сайта не могат да бъдат прочетени или променени</translation>
 <translation id="354068948465830244">Може да чете и променя данните за сайта</translation>
 <translation id="5057110919553308744">При кликване върху разширението</translation>
 <translation id="897939795688207351">В/ъв <ph name="ORIGIN"/></translation>
@@ -969,6 +985,7 @@
 <translation id="6082651258230788217">Показване в лентата с инструменти</translation>
 <translation id="8137559199583651773">Управление на разширенията</translation>
 <translation id="3727187387656390258">Инспектиране на изскачащ прозорец</translation>
+<translation id="3526034519184079374">Данните на сайта не могат да бъдат прочетени или променени</translation>
 <translation id="7070484045139057854">Може да чете и променя данните за сайта</translation>
 <translation id="2881076733170862447">При кликване върху разширението</translation>
 <translation id="5256861893479663409">На всички сайтове</translation>
@@ -1110,6 +1127,7 @@
 <translation id="224940702122312781">Тази страница ще използва много данни.</translation>
 <translation id="3861241522664181545">Страницата е поставена на пауза.</translation>
 <translation id="6921709132208495314">Спиране на използването на данни на тази страница</translation>
+<translation id="2262332168014443534">С олекотения режим вече можете да сърфирате по-бързо във всички страници, включително с HTTPS.</translation>
 <translation id="8428213095426709021">Настройки</translation>
 <translation id="2724841811573117416">Регистрационни файлове за WebRTC</translation>
 <translation id="1969654639948595766">Регистрационни файлове за предаване на текст с WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
@@ -1167,16 +1185,23 @@
 <translation id="444134486829715816">Разгъване...</translation>
 <translation id="2737363922397526254">Свиване...</translation>
 <translation id="6690659332373509948">Файлът „<ph name="FILE_NAME"/>“ не може да се анализира синтактично</translation>
+<translation id="2773288106548584039">Поддръжка на наследени браузъри</translation>
+<translation id="8141584439523427891">Страницата се отваря в алтернативен браузър</translation>
+<translation id="2804043232879091219">Алтернативният браузър не можа да се отвори</translation>
+<translation id="1070705170564860382">Страницата ще се отвори в алтернативен браузър след <ph name="COUNTDOWN_SECONDS"/> секунди</translation>
+<translation id="4586275095964870617"><ph name="URL"/> не можа да се отвори в алтернативен браузър. Моля, свържете се със системния си администратор.</translation>
+<translation id="465878909996028221">Само протоколите http, https и file се поддържат за пренасочвания на браузъра.</translation>
 <translation id="1962233722219655970">Тази страница използва приложение за клиент с директно изпълнение, което не работи на компютъра ви.</translation>
 <translation id="7540972813190816353">При проверката за актуализации възникна грешка: <ph name="ERROR"/></translation>
 <translation id="7088434364990739311">Стартирането на проверката за актуализации не бе успешно (код на грешката <ph name="ERROR"/>).</translation>
 <translation id="8014154204619229810">Актуализиращата програма понастоящем се изпълнява. Опреснете след минута, за да проверите отново.</translation>
 <translation id="7595547011743502844"><ph name="ERROR"/> (код на грешка: <ph name="ERROR_CODE"/>).</translation>
 <translation id="4453946976636652378">Търсете с(ъс) <ph name="SEARCH_ENGINE_NAME"/> или въведете URL адрес</translation>
-<translation id="2766006623206032690">&amp;Поставяне и старт</translation>
-<translation id="7042418530779813870">Поставяне и търсе&amp;не</translation>
-<translation id="5731247495086897348">&amp;Поставяне и старт</translation>
-<translation id="8425755597197517046">Поставяне и търсе&amp;не</translation>
+<translation id="5747809636523347288">Пост&amp;авяне и отваряне на <ph name="URL"/></translation>
+<translation id="5466374726908360271">Пост&amp;авяне и търсене на „<ph name="SEARCH_TERMS"/>“</translation>
+<translation id="3711931198657368127">Пост&amp;авяне и отваряне на <ph name="URL"/></translation>
+<translation id="968037381421390582">Пост&amp;авяне и търсене на „<ph name="SEARCH_TERMS"/>“</translation>
+<translation id="4321442524549817090">П&amp;оказване на URL адреса</translation>
 <translation id="6151323131516309312">Натиснете <ph name="SEARCH_KEY"/>, за да търсите с <ph name="SITE_NAME"/></translation>
 <translation id="3449839693241009168">Натиснете <ph name="SEARCH_KEY"/> за да изпратите командите до <ph name="EXTENSION_NAME"/></translation>
 <translation id="6659594942844771486">Раздел</translation>
@@ -1203,11 +1228,9 @@
 <translation id="1174073918202301297">Прекият път бе добавен</translation>
 <translation id="2926085873880284723">Възстановяване на стандартните преки пътища</translation>
 <translation id="2942581856830209953">Персонализиране на тази страница</translation>
-<translation id="2187700606737131818">Brave Software Снимки</translation>
 <translation id="5801450813341024983">Фонове за Brave</translation>
 <translation id="2800760947029405028">Качване на изображение</translation>
 <translation id="8342861492835240085">Избиране на колекция</translation>
-<translation id="1734885380062278369">Избиране на албум от Brave Software Снимки</translation>
 <translation id="3132996321662585180">Ежедневно опресняване</translation>
 <translation id="9062065967472365419">Изненадайте ме</translation>
 <translation id="7287411021188441799">Възстановяване на стандартния фон</translation>
@@ -1218,9 +1241,12 @@
 <translation id="8391712576156218334">Изображението не е налице. Опитайте отново по-късно.</translation>
 <translation id="1564414980088536597">Това изображение не може да се използва. Изберете друго.</translation>
 <translation id="385051799172605136">Назад</translation>
-<translation id="4628948037717959914">Снимка</translation>
-<translation id="8033827949643255796">откроени</translation>
+<translation id="3497560059572256875">Споделяне на драскулката</translation>
+<translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Twitter</translation>
+<translation id="2200094388063410062">Имейл</translation>
+<translation id="8717864919010420084">Копиране на връзката</translation>
+<translation id="6781284683813954823">Връзка към драскулката</translation>
 <translation id="5376169624176189338">Кликнете, за да се върнете назад. Задръжте, за да видите историята.</translation>
 <translation id="9103868373786083162">Натиснете, за да се върнете назад. Използвайте контекстното меню, за да видите историята</translation>
 <translation id="2961695502793809356">Кликнете, за да преминете напред. Задръжте, за да видите историята.</translation>
@@ -1277,6 +1303,7 @@
 <translation id="3071624960923923138">Можете да кликнете тук, за да отворите нов раздел</translation>
 <translation id="4908811072292128752">Отворете нов раздел, за да сърфирате в два сайта едновременно</translation>
 <translation id="8966870118594285808">Повторно отваряне на раздел, ако случайно сте го затворили</translation>
+<translation id="8806680466228877631"><ph name="SHORTCUT"/> служи за повторно отваряне на случайно затворени раздели</translation>
 <translation id="2963151496262057773">Следната приставка е блокирала: <ph name="PLUGIN_NAME"/>. Искате ли да я спрете?</translation>
 <translation id="1010833424573920260">{NUM_PAGES,plural, =1{Блокирала страница}other{Блокирали страници}}</translation>
 <translation id="5772265531560382923">{NUM_PAGES,plural, =1{Можете да изчакате, докато страницата започне да реагира, или да излезете от нея.}other{Можете да изчакате, докато страниците започнат да реагират, или да излезете от тях.}}</translation>
@@ -1309,7 +1336,7 @@
 <translation id="4722735765955348426">Парола за <ph name="USERNAME"/></translation>
 <translation id="3870931306085184145">Няма запазени пароли за <ph name="DOMAIN"/></translation>
 <translation id="5489435190927933437">Запазени пароли за <ph name="DOMAIN"/></translation>
-<translation id="4761016275844545177">Управление на паролите...</translation>
+<translation id="6393156038355142111">Предложение за надеждна парола</translation>
 <translation id="1076818208934827215">Microsoft Internet Explorer</translation>
 <translation id="2721334646575696520">Microsoft Edge</translation>
 <translation id="5119173345047096771">Mozilla Firefox</translation>
@@ -1318,7 +1345,6 @@
 <translation id="1303101771013849280">HTML файл с отметки</translation>
 <translation id="8575286410928791436">Натиснете и задръжте <ph name="KEY_EQUIVALENT"/> за изход</translation>
 <translation id="2078019350989722914">Предупреждение преди излизане (<ph name="KEY_EQUIVALENT"/>)</translation>
-<translation id="449938344715680828">Натиснете |<ph name="ACCELERATOR1"/>| + |<ph name="ACCELERATOR2"/>| и след това |<ph name="ACCELERATOR3"/>|, за да излезете</translation>
 <translation id="561698261642843490">Затваряне на Firefox</translation>
 <translation id="6798578729981748444">За да завършите импортирането, затворете всички прозорци на Firefox.</translation>
 <translation id="6374469231428023295">Нов опит</translation>
@@ -1332,10 +1358,13 @@
 <translation id="6076448957780543068">Включване на тази екранна снимка</translation>
 <translation id="7052237160939977163">Да се изпратят данните от проследяването на ефективността</translation>
 <translation id="5526928694260255286">Прикачване на <ph name="BEGIN_LINK"/>регистрационните файлове за Bluetooth<ph name="END_LINK"/> (вътрешно за Brave Software)</translation>
+<translation id="3047644958362961983">Тази информация ни помага да разберем по-добре проблема, който срещате с Асистент. Тя се съхранява до 90 дни и достъпът до нея е ограничен до съответните инженерни екипи и екипи по отзивите.</translation>
 <translation id="1705635099498185261">За по-добра диагностика на проблемите с Bluetooth служителите на Brave Software могат да включват в сигналите си с отзиви допълнителни регистрационни файлове за Bluetooth. Когато за тази опция е поставена отметка, сигналът ви ще съдържа регистрационните файлове за btsnoop и HCI от текущата ви сесия, като от тях ще бъде премахната възможно най-много информация, позволяваща лично идентифициране (PII). Достъпът до тези файлове ще бъде ограничен до мениджърите на групата за продукта Brave OS в Listnr. Файловете ще бъдат изтрити безвъзвратно след 90 дни.</translation>
 <translation id="4206323443866416204">Сигнал с отзив</translation>
 <translation id="3681311097828166361">Благодарим ви за отзива. В момента сте офлайн, така че сигналът ви ще бъде изпратен по-късно.</translation>
 <translation id="8713570323158206935">Изпращане на <ph name="BEGIN_LINK1"/>системна информация<ph name="END_LINK1"/></translation>
+<translation id="6395423953133416962">Изпращане на <ph name="BEGIN_LINK1"/>системна информация<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>показатели<ph name="END_LINK2"/></translation>
+<translation id="6270770586500173387">Изпращане на <ph name="BEGIN_LINK1"/>информация за системата и приложенията<ph name="END_LINK1"/>, както и за <ph name="BEGIN_LINK2"/>показателите<ph name="END_LINK2"/></translation>
 <translation id="8329196515830093443">Файлът ще бъде изпратен до Brave Software за отстраняване на грешки</translation>
 <translation id="8227119283605456246">Прикачване на файл</translation>
 <translation id="5367091008316207019">Файлът се чете...</translation>
@@ -1386,8 +1415,15 @@
 <translation id="5442550868130618860">Включване на автоматичното актуализиране</translation>
 <translation id="6790428901817661496">Пускане</translation>
 <translation id="3143754809889689516">Възпроизвеждане от началото</translation>
+<translation id="1495677929897281669">Назад към раздела</translation>
+<translation id="57838592816432529">Заглушаване</translation>
+<translation id="4992066212339426712">Включване на звука</translation>
+<translation id="8703346390800944767">Пропускане на рекламата</translation>
 <translation id="2121825465123208577">Преоразмеряване</translation>
 <translation id="4514610446763173167">Превключвател за възпроизвеждане или поставяне на пауза на видеоклипа</translation>
+<translation id="3040310857793999281">Превключване на спирането на звука</translation>
+<translation id="4046123991198612571">Следващ запис</translation>
+<translation id="2874939134665556319">Предишен запис</translation>
 <translation id="2631120081682787498">Наистина ли искате да затворите този раздел?</translation>
 <translation id="111844081046043029">Наистина ли искате да излезете от тази страница?</translation>
 <translation id="245661998428026871">Видеоклипът в режим „Картина в картината“ ще спре да се възпроизвежда.</translation>
@@ -1408,12 +1444,34 @@
 <translation id="9009369504041480176">Качва се... (<ph name="PROGRESS_PERCENT"/>%)</translation>
 <translation id="7925285046818567682">Изчаква се отговор от <ph name="HOST_NAME"/>...</translation>
 <translation id="7887334752153342268">Дублиране</translation>
+<translation id="1364702626840264065">{NUM_TABS,plural, =1{Затваряне на раздела}other{Затваряне на разделите}}</translation>
 <translation id="68541483639528434">Затваряне на другите раздели</translation>
 <translation id="6686490380836145850">Затваряне на разделите отдясно</translation>
+<translation id="6242852299490624841">Фокус върху този раздел</translation>
+<translation id="7415353017141825619">{NUM_TABS,plural, =1{Фиксиране на раздела}other{Фиксиране на разделите}}</translation>
+<translation id="4072793381000095">{NUM_TABS,plural, =1{Освобождаване на раздела}other{Освобождаване на разделите}}</translation>
+<translation id="1904394285866191268">{NUM_TABS,plural, =1{Спиране на звука на раздела}other{Спиране на звука на разделите}}</translation>
+<translation id="5179127818058486126">{NUM_TABS,plural, =1{Включване отново на звука на раздела}other{Включване отново на звука на разделите}}</translation>
+<translation id="4973325300212422370">{NUM_TABS,plural, =1{Спиране на звука на сайта}other{Спиране на звука на сайтовете}}</translation>
+<translation id="4744981231093950366">{NUM_TABS,plural, =1{Включване отново на звука на сайта}other{Включване отново на звука на сайтовете}}</translation>
 <translation id="4474155171896946103">Запазване на отметки към всички раздели…</translation>
+<translation id="351952459507671940">Добавяне към нова група</translation>
+<translation id="255747371423522804">Добавяне към съществуваща група</translation>
+<translation id="2977480621796371840">Премахване от групата</translation>
+<translation id="8000467600002607205">{NUM_TABS,plural, =1{Затваряне на раздела}other{Затваряне на разделите}}</translation>
 <translation id="4322394346347055525">Затваряне на другите раздели</translation>
 <translation id="1166212789817575481">Затваряне на разделите отдясно</translation>
+<translation id="2343747224442182863">Фокус върху този раздел</translation>
+<translation id="7363260028279024205">{NUM_TABS,plural, =1{Фиксиране на раздела}other{Фиксиране на разделите}}</translation>
+<translation id="3996366967769547206">{NUM_TABS,plural, =1{Освобождаване на раздела}other{Освобождаване на разделите}}</translation>
+<translation id="3785071023202624850">{NUM_TABS,plural, =1{Спиране на звука на раздела}other{Спиране на звука на разделите}}</translation>
+<translation id="2120478168904746065">{NUM_TABS,plural, =1{Включване отново на звука на раздела}other{Включване отново на звука на разделите}}</translation>
+<translation id="8371925839118813971">{NUM_TABS,plural, =1{Спиране на звука на сайта}other{Спиране на звука на сайтовете}}</translation>
+<translation id="7933314993013528982">{NUM_TABS,plural, =1{Включване отново на звука на сайта}other{Включване отново на звука на сайтовете}}</translation>
 <translation id="2336228925368920074">Запазване на отметки към всички раздели...</translation>
+<translation id="1541396123399225659">Добавяне към нова група</translation>
+<translation id="7353887511974462734">Добавяне към съществуваща група</translation>
+<translation id="6964760285928603117">Премахване от групата</translation>
 <translation id="2278562042389100163">Отваряне на прозореца на браузъра</translation>
 <translation id="756445078718366910">Отваряне на прозореца на браузъра</translation>
 <translation id="3683524264665795342">Заявка за споделяне на екрана от <ph name="APP_NAME"/></translation>
@@ -1429,6 +1487,7 @@
 <translation id="5727851901710884484"><ph name="APP_NAME"/> споделя раздел в Brave с/ъс „<ph name="TAB_NAME"/>“.</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> споделя раздел в Brave и звук.</translation>
 <translation id="859454237594354073"><ph name="APP_NAME"/> споделя раздел в Brave и звук с/ъс „<ph name="TAB_NAME"/>“.</translation>
+<translation id="890616557918890486">Промяна на източника</translation>
 <translation id="7792388396321542707">Спиране на споделянето</translation>
 <translation id="6630752851777525409"><ph name="EXTENSION_NAME"/> иска постоянен достъп до сертификат, за да се удостоверява от ваше име.</translation>
 <translation id="146000042969587795">Тази рамка бе блокирана, защото съдържанието й е несигурно.</translation>
@@ -1522,6 +1581,8 @@
 <translation id="473546211690256853">Този профил се управлява от <ph name="DOMAIN"/></translation>
 <translation id="622537739776246443">Потребителският профил ще бъде изтрит</translation>
 <translation id="5632566673632479864">Профилът ви <ph name="EMAIL"/> вече не може да се използва като основен. Тъй като този профил се управлява от <ph name="DOMAIN"/>, вашите отметки, история, пароли и други настройки ще бъдат изчистени от устройството.</translation>
+<translation id="3797739167230984533">Устройството ви <ph name="BEGIN_LINK"/><ph name="DEVICE_TYPE"/> се управлява<ph name="END_LINK"/> от организацията ви</translation>
+<translation id="8118488170956489476"><ph name="BEGIN_LINK"/>Браузърът се управлява<ph name="END_LINK"/> от организацията ви</translation>
 <translation id="8168435359814927499">Съдържание</translation>
 <translation id="7702907602086592255">Домейн</translation>
 <translation id="3202131003361292969">Път</translation>
@@ -1535,8 +1596,6 @@
 <translation id="3012804260437125868">Само сигурни връзки в същия сайт</translation>
 <translation id="8539727552378197395">Не (HttpOnly)</translation>
 <translation id="4615586811063744755">няма избрана „бисквитка“</translation>
-<translation id="5765780083710877561">Описание:</translation>
-<translation id="2422426094670600218">&lt;без име&gt;</translation>
 <translation id="8064671687106936412">Ключ:</translation>
 <translation id="3232318083971127729">Стойност:</translation>
 <translation id="6708242697268981054">Източник:</translation>
@@ -1547,10 +1606,8 @@
 <translation id="968174221497644223">Кеш на приложение</translation>
 <translation id="5774515636230743468">Манифест:</translation>
 <translation id="7003339318920871147">Уеб бази от данни</translation>
-<translation id="7027125358315426638">Име на базата от данни:</translation>
 <translation id="5338503421962489998">Локално хранилище</translation>
 <translation id="7773726648746946405">Хранилище за сесията</translation>
-<translation id="5390284375844109566">Индексирана база от данни</translation>
 <translation id="3009779501245596802">Индексирани бази от данни</translation>
 <translation id="6509207748479174212">Лиценз за мултимедия</translation>
 <translation id="1420834118113404499">Медийни лицензи</translation>
@@ -1602,17 +1659,15 @@
 <translation id="6860427144121307915">Отваряне в раздел</translation>
 <translation id="3074037959626057712">Влязохте в профила си и включихте синхронизирането</translation>
 <translation id="1231733316453485619">Да се включи ли синхронизирането?</translation>
-<translation id="9125982323641182972">Brave с интелекта на Brave Software</translation>
 <translation id="4736292055110123391">Синхронизиране на вашите отметки, пароли, история и др. на всичките ви устройства</translation>
-<translation id="363863692969456324">Поправка на правописните грешки посредством подобрената функция за проверка на правописа</translation>
-<translation id="561013949633009906">Помогнете за подобряването на Brave и сигурността му</translation>
+<translation id="5736731321935944068">Възможно е да използваме историята ви, за да персонализираме търсенето, рекламите и други услуги на Brave Software</translation>
+<translation id="4201546031411513170">Винаги можете да изберете какво да се синхронизира от настройките.</translation>
 <translation id="3149880132460839085">Синхронизиране на Brave</translation>
 <translation id="3796902758602917951">Вашите отметки, история, пароли и други настройки ще се синхронизират с профила ви в Brave Software, за да можете да ги използвате на всичките си устройства</translation>
 <translation id="3111958038206230539">Персонализиране на услугите на Brave Software</translation>
 <translation id="295992419959320001">Възможно е да използваме историята ви на сърфиране, за да персонализираме търсенето, рекламите и други услуги на Brave Software</translation>
 <translation id="3070156078150543526">Възможно е да използваме историята ви на сърфиране, за да персонализираме търсенето и други услуги на Brave Software</translation>
 <translation id="2709453993673701466">Искате да управлявате функциите за синхронизиране и персонализиране, преди да са включени? Отворете <ph name="BEGIN_LINK"/>Настройки<ph name="END_LINK"/>.</translation>
-<translation id="741204030948306876">Да, ще участвам</translation>
 <translation id="2497852260688568942">Синхронизирането е деактивирано от администратора ви</translation>
 <translation id="562935524653278697">Администраторът ви е деактивирал синхронизирането на вашите отметки, история, пароли и други настройки.</translation>
 <translation id="2169062631698640254">Влизане въпреки това</translation>
@@ -1626,6 +1681,7 @@
 <translation id="1331977651797684645">Това бях аз.</translation>
 <translation id="1809734401532861917">Добавяне на моите отметки, история, пароли и други настройки към <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="5166596762332123936">Приставката <ph name="PLUGIN_NAME"/> бе блокирана, защото не е актуална</translation>
+<translation id="1249643471736608405">Приставката <ph name="PLUGIN_NAME"/> бе блокирана, тъй като е оттеглена</translation>
 <translation id="5464632865477611176">Стартиране този път</translation>
 <translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> претърпя срив</translation>
 <translation id="4610162781778310380">Възникна грешка в приставката <ph name="PLUGIN_NAME"/></translation>
@@ -1664,7 +1720,6 @@
 <translation id="9218430445555521422">Задаване по подразбиране</translation>
 <translation id="504561833207953641">Отваря се в съществуваща сесия на браузъра.</translation>
 <translation id="1524563461097350801">Не, благодаря</translation>
-<translation id="4070594088530463824">От <ph name="TIME"/> данните ви бяха шифровани с паролата ви за Brave Software. Въведете я, за да стартира синхронизирането.</translation>
 <translation id="276969039800130567">Влезли сте като <ph name="USER_EMAIL_ADDRESS"/>.</translation>
 <translation id="8978154919215542464">Включено (всичко се синхронизира)</translation>
 <translation id="1487335504823219454">Включено – персонализирани настройки</translation>
@@ -1688,8 +1743,6 @@
 <translation id="2126167708562367080">Синхронизирането е деактивирано от администратора ви.</translation>
 <translation id="5462539695964427820">Синхронизирането е спряно чрез Brave Software Табло за управление.</translation>
 <translation id="8805140816472474147">За да стартирате синхронизирането, потвърдете съответните настройки.</translation>
-<translation id="5965042938779818296">Управлявайте синхронизираните си данни от <ph name="BEGIN_LINK"/>Brave Software Табло за управление<ph name="END_LINK"/>.</translation>
-<translation id="3127919023693423797">Удостоверява се...</translation>
 <translation id="4835836146030131423">Грешка при влизането.</translation>
 <translation id="4365673000813822030">Ами сега! Синхронизирането спря да работи.</translation>
 <translation id="3492788708641132712">Синхронизирането не работи. Опитайте отново да влезете в профила си.</translation>
@@ -1879,6 +1932,7 @@
 <translation id="5074318175948309511">Може да се наложи тази страница да бъде презаредена, преди да влязат в сила новите настройки.</translation>
 <translation id="8282947398454257691">Достъп до уникалния идентификатор на устройството ви</translation>
 <translation id="8329449853370113380"><ph name="URL"/> иска да възпроизвежда защитено съдържание. Идентичността на устройството ви ще бъде удостоверена от Brave Software.</translation>
+<translation id="2650609753175229582"><ph name="URL"/> иска разрешение за възпроизвеждане на защитено съдържание. Идентичността на устройството ви ще бъде потвърдена от Brave Software и този сайт може да осъществи достъп до нея.</translation>
 <translation id="1322046419516468189">Преглеждайте и управлявайте запазените пароли в <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Паролата е запазена. Преглеждайте и управлявайте запазените пароли в <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Профил в Brave Software</translation>
@@ -1981,6 +2035,8 @@
 <translation id="1145532888383813076">Търсете в устройството си, приложенията и мрежата.</translation>
 <translation id="7611008212562900400">Търсете в устройството, приложенията, мрежата...</translation>
 <translation id="4366956553771076218"><ph name="ACTION_NAME"/> чрез <ph name="APP_NAME"/>.</translation>
+<translation id="5671658447180261823">Премахване на предложението <ph name="SUGGESTION_NAME"/></translation>
+<translation id="798145602633458219">Добавяне на предложението <ph name="SUGGESTION_NAME"/> към полето за търсене</translation>
 <translation id="7339898014177206373">Нов прозорец</translation>
 <translation id="7551643184018910560">Фиксиране в лавицата</translation>
 <translation id="8335587457941836791">Освобождаване от лавицата</translation>
@@ -2054,6 +2110,7 @@
 <translation id="5884474295213649357">Този раздел е свързан с USB устройство.</translation>
 <translation id="8466417995783206254">В този раздел се възпроизвежда видеоклип в режим „Картина в картината“.</translation>
 <translation id="2585724835339714757">Чрез този раздел се споделя екранът ви.</translation>
+<translation id="1542514202066550870">Този раздел предава съдържание във VR към очила.</translation>
 <translation id="5835486486592033703"><ph name="WINDOW_TITLE"/> – записва се чрез камерата или микрофона</translation>
 <translation id="4252996741873942488"><ph name="WINDOW_TITLE"/> – съдържанието на раздела се споделя</translation>
 <translation id="3334632933872291866"><ph name="WINDOW_TITLE"/> – видеоклипът се възпроизвежда в режим „Картина в картината“</translation>
@@ -2064,6 +2121,7 @@
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> – грешка в мрежата</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> – възникна срив</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> – съдържанието на работния плот е споделено</translation>
+<translation id="8588868914509452556"><ph name="WINDOW_TITLE"/> – предава съдържание във VR към очила</translation>
 <translation id="3590194807845837023">Отключване на потребителския профил и повторно стартиране</translation>
 <translation id="7624337243375417909">caps lock е изключен</translation>
 <translation id="6798780071646309401">caps lock е включен</translation>
@@ -2099,6 +2157,10 @@
 <translation id="2593289874938379417">Brave няма достъп до заявения ресурс.</translation>
 <translation id="760197030861754408">Отворете <ph name="LANDING_PAGE"/>, за да се свържете.</translation>
 <translation id="3648348069317717750">Открито е устройство <ph name="USB_DEVICE_NAME"/></translation>
+<translation id="2382095919147960379">Свързване на това устройство с Linux</translation>
+<translation id="5308380583665731573">Свързване</translation>
+<translation id="59324397759951282">USB устройство от <ph name="MANUFACTURER_NAME"/></translation>
+<translation id="8763927697961133303">USB устройство</translation>
 <translation id="8798099450830957504">По подразбиране</translation>
 <translation id="5734362860645681824">Комуникации</translation>
 <translation id="2340263603246777781"><ph name="ORIGIN"/> иска да се сдвои</translation>
@@ -2119,9 +2181,16 @@
 <translation id="3271648667212143903"><ph name="ORIGIN"/> иска да се свърже</translation>
 <translation id="7945031593909029181"><ph name="CHROME_EXTENSION_NAME"/> иска да се свърже</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
-<translation id="5308380583665731573">Свързване</translation>
 <translation id="8480869669560681089">Неизвестно устройство от <ph name="VENDOR_NAME"/></translation>
 <translation id="1500297251995790841">Неизвестно устройство [<ph name="VENDOR_ID"/>: <ph name="PRODUCT_ID"/>]</translation>
+<translation id="7003844668372540529">Неизвестен продукт <ph name="PRODUCT_ID"/> от <ph name="VENDOR_NAME"/></translation>
+<translation id="3163201441334626963">Неизвестен продукт <ph name="PRODUCT_ID"/> от доставчик <ph name="VENDOR_ID"/></translation>
+<translation id="3938128855950761626">Устройства от <ph name="VENDOR_ID"/></translation>
+<translation id="2588636910004461974">Устройства от <ph name="VENDOR_NAME"/></translation>
+<translation id="3670113805793654926">Устройства от който и да е доставчик</translation>
+<translation id="8750155211039279868"><ph name="ORIGIN"/> иска да се свърже със сериен порт</translation>
+<translation id="4943691134276646401">„<ph name="CHROME_EXTENSION_NAME"/>“ иска да се свърже със сериен порт</translation>
+<translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
 <translation id="7493386493263658176"><ph name="EXTENSION_NAME"/> може да събира целия въведен от вас текст, включително лични данни, като пароли и номера на кредитни карти. Искате ли да използвате това разширение?</translation>
 <translation id="7067725467529581407">Без повторно показване.</translation>
 <translation id="8922013791253848639">Рекламите на този сайт да са разрешени винаги</translation>
@@ -2178,12 +2247,13 @@
 <translation id="6886476658664859389">Ключ за сигурност с КБП</translation>
 <translation id="6009781704028455063">Вграден сензор</translation>
 <translation id="3630132874740063857">Вашият телефон</translation>
+<translation id="6930036377490597025">Външен ключ за сигурност или вграден сензор</translation>
 <translation id="5567950944308676169">Включете ключа си за сигурност и го активирайте</translation>
 <translation id="6648051959475508072">Ключът за сигурност е активиран...</translation>
 <translation id="7352651011704765696">Нещо се обърка</translation>
-<translation id="123186018454553812">Опитайте с друг ключ</translation>
-<translation id="4615618657481886098">Вече сте регистрирали този ключ. Няма нужда да го правите отново.</translation>
-<translation id="6313320178014547270">Използвате ключ, който не е регистриран в този уебсайт</translation>
+<translation id="8514746246728959655">Опитайте с друг ключ за сигурност</translation>
+<translation id="8337047789441383384">Вече сте регистрирали този ключ за сигурност. Няма нужда да го правите отново.</translation>
+<translation id="4785719467058219317">Използвате ключ за сигурност, който не е регистриран в този уебсайт</translation>
 <translation id="7102832101143475489">Времето за изчакване на заявката изтече</translation>
 <translation id="1116639326869298217">Самоличността ви не можа да бъде потвърдена</translation>
 <translation id="8379878387931047019">Устройството не поддържа типа ключ за сигурност, заявен от този уебсайт</translation>
@@ -2193,19 +2263,18 @@
 <translation id="4252899949534773101">Функцията за Bluetooth е деактивирана</translation>
 <translation id="8188389033983459049">Проверете настройките на устройството си и я включете, за да продължите</translation>
 <translation id="6022705094403139349">Готови ли сте да сдвоите ключа си за сигурност?</translation>
-<translation id="90737709606140813">Сдвоете ключа си с това устройство, за да можете да използвате ключа за вход в профила си</translation>
+<translation id="7704628569466676326">Сдвоете ключа си за сигурност с това устройство, за да можете да използвате ключа за вход в профила си</translation>
 <translation id="1875312262568496299">Начало</translation>
 <translation id="3350117557200012647">Преминете в режим на сдвояване</translation>
 <translation id="721467499098558573">Натиснете бутона на ключа си за сигурност и го задръжте поне 5 секунди</translation>
 <translation id="3731997362820527097">Изберете ключ за сигурност</translation>
-<translation id="4883274597792587930">Намерете името, отпечатано на гърба на ключа</translation>
+<translation id="2825848369316359348">Намерете името, отпечатано на гърба на ключа за сигурност</translation>
 <translation id="1316136264406804862">Търси се...</translation>
-<translation id="2755628026949580719">Ако не виждате ключа си за сигурност, натиснете бутона му и го задръжте поне 5 секунди.</translation>
+<translation id="7241443820034350811">Ако не виждате ключа си за сигурност, натиснете бутона му и го задръжте поне 5 секунди.</translation>
 <translation id="5660204307954428567">Сдвояване с(ъс) <ph name="DEVICE_NAME"/></translation>
-<translation id="8362993567435070757">Намерете шестцифрения ПИН код на гърба на ключа си</translation>
-<translation id="6405510437656969977">Продължете, когато сте готови да въведете ПИН кода</translation>
+<translation id="1167199480815330007">Намерете 6-цифрения ПИН код на гърба на ключа за сигурност</translation>
 <translation id="8921366488406707015">Ключът ви за сигурност се потвърждава...</translation>
-<translation id="977640333593638907">За да използвате повечето ключове, трябва само да натиснете бутона</translation>
+<translation id="1805472176602625930">Натиснете бутона на ключа за сигурност</translation>
 <translation id="1489664337021920575">Изберете друга опция</translation>
 <translation id="6826872289184051766">Потвърждаване чрез USB</translation>
 <translation id="4058647953897694817">Потвърждаване чрез Bluetooth</translation>
@@ -2214,9 +2283,19 @@
 <translation id="3862693525629180217">Потвърждаване чрез вградения сензор</translation>
 <translation id="8818958672113348984">Потвърждаване чрез телефона ви</translation>
 <translation id="6112931163620622315">Проверете телефона си</translation>
-<translation id="4079799245038595838">На телефона ви бе изпратено известие. Следвайте подканите, за да потвърдите, че това сте вие.</translation>
+<translation id="5605758115928394442">На телефона ви бе изпратено известие, за да потвърдите, че това сте вие.</translation>
+<translation id="7685087414635069102">Изисква се ПИН код</translation>
+<translation id="4572779512957829735">Въведете ПИН кода за ключа си за сигурност</translation>
+<translation id="5601503069213153581">ПИН код</translation>
+<translation id="4303079906735388947">Настройте нов ПИН код за ключа си за сигурност</translation>
+<translation id="1805967612549112634">Потвърждаване на ПИН кода</translation>
+<translation id="4871322859485617074">ПИН кодът съдържа невалидни знаци</translation>
+<translation id="2344214284954353199">ПИН кодът е твърде кратък.</translation>
+<translation id="2203484353475059657">Потвърждението не съвпада.</translation>
 <translation id="88870264962436283">Използване на Touch ID за <ph name="APP_NAME"/></translation>
 <translation id="5186185447130319458">„Инкогнито“</translation>
+<translation id="7643842463591647490">{0,plural, =1{# отворен прозорец}other{# отворени прозореца}}</translation>
+<translation id="2579188629646253712">Изход от режим „инкогнито“</translation>
 <translation id="394984172568887996">Импортирани от Internet Explorer</translation>
 <translation id="1543284117603151572">Импортирани от Edge</translation>
 <translation id="5502500733115278303">Импортирани от Firefox</translation>
@@ -2229,8 +2308,6 @@
 <translation id="3613134908380545408">Показване на „<ph name="FOLDER_NAME"/>“</translation>
 <translation id="2367972762794486313">Показване на приложенията</translation>
 <translation id="8368859634510605990">&amp;Отваряне на всички отметки</translation>
-<translation id="7484964289312150019">Отваряне на всички отметки в &amp;нов прозорец</translation>
-<translation id="414978636887935885">Отваряне на всички отметки в прозорец в режим „&amp;инкогнито“</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{&amp;Отваряне на всички}=1{&amp;Отваряне на отметката}other{&amp;Отваряне на всички (#)}}</translation>
 <translation id="1016437870506746108">{COUNT,plural, =0{Отваряне на всички в &amp;нов прозорец}=1{Отваряне в &amp;нов прозорец}other{Отваряне на всички (#) в &amp;нов прозорец}}</translation>
 <translation id="6744651634043798597">{COUNT,plural, =0{Отваряне на всички в прозорец в режим „&amp;инкогнито“}=1{Отваряне в прозорец в режим „&amp;инкогнито“}other{Отваряне на всички (#) в прозорец в режим „&amp;инкогнито“}}</translation>
@@ -2243,8 +2320,6 @@
 <translation id="7690853182226561458">Добавяне на &amp;папка...</translation>
 <translation id="3406605057700382950">&amp;Показване на лентата на отметките</translation>
 <translation id="6466988389784393586">&amp;Отваряне на всички отметки</translation>
-<translation id="6804671422566312077">Отваряне на всички отметки в &amp;нов прозорец</translation>
-<translation id="2692771564633877898">Отваряне на всички отметки в прозорец в режим „&amp;инкогнито“</translation>
 <translation id="3799201711591988491">{COUNT,plural, =0{&amp;Отваряне на всички}=1{&amp;Отваряне на отметката}other{&amp;Отваряне на всички (#)}}</translation>
 <translation id="7433692219247014412">{COUNT,plural, =0{Отваряне на всички в &amp;нов прозорец}=1{Отваряне в &amp;нов прозорец}other{Отваряне на всички (#) в &amp;нов прозорец}}</translation>
 <translation id="2633634757060186848">{COUNT,plural, =0{Отваряне на всички в прозорец в режим „&amp;инкогнито“}=1{Отваряне в прозорец в режим „&amp;инкогнито“}other{Отваряне на всички (#) в прозорец в режим „&amp;инкогнито“}}</translation>
@@ -2282,19 +2357,9 @@
 <translation id="5449588825071916739">Запазване на отметки към всички раздели</translation>
 <translation id="3828029223314399057">Търсене в отметките</translation>
 <translation id="8116972784401310538">&amp;Диспечер на отметките</translation>
-<translation id="6973630695168034713">Папки</translation>
 <translation id="5496587651328244253">Организиране</translation>
-<translation id="806812017500012252">Подреждане по азбучен ред</translation>
-<translation id="1146204723345436916">Импортиране на отметки от HTML файл...</translation>
-<translation id="4883178195103750615">Експортиране на отметки в HTML файл...</translation>
 <translation id="8775144690796719618">Невалиден URL адрес</translation>
-<translation id="6549689063733911810">Скорошни</translation>
-<translation id="1383876407941801731">Търсене</translation>
 <translation id="5111692334209731439">&amp;Диспечер на отметките</translation>
-<translation id="1936157145127842922">Показване в папката</translation>
-<translation id="580571955903695899">Преподреждане по азбучен ред</translation>
-<translation id="6268747994388690914">Импортиране на отметки от HTML файл...</translation>
-<translation id="1611704746353331382">Експортиране на отметки в HTML файл...</translation>
 <translation id="5125751979347152379">Невалиден URL адрес.</translation>
 <translation id="7550830279652415241">bookmarks_<ph name="DATESTAMP"/>.html</translation>
 <translation id="4871370605780490696">Добавяне на отметка</translation>
@@ -2335,14 +2400,26 @@
 <translation id="1774833706453699074">Запазване на отметки за отворените страници...</translation>
 <translation id="6949306908218145636">Запазване на отметки за отворените страници...</translation>
 <translation id="4422347585044846479">Редактиране на отметката за тази страница</translation>
+<translation id="4776146737004271126">Отваряне на настройките за Android</translation>
+<translation id="6559023360691182159">{COUNT,plural, =0{Няма}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> и <ph name="APP_2"/>}=3{<ph name="APP_1"/>, <ph name="APP_2"/> и <ph name="APP_3"/>}=4{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> и още 1 приложение}other{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> и още <ph name="EXTRA_APPS"/> приложения}}</translation>
+<translation id="7742008146327708230">Наскоро отворени приложения</translation>
 <translation id="1620510694547887537">Камера</translation>
+<translation id="8831664945713891930">Отваряне на настройките за разширенията</translation>
+<translation id="5138227688689900538">Показване на по-малко</translation>
 <translation id="5646376287012673985">Местоположение</translation>
 <translation id="3227137524299004712">Микрофон</translation>
+<translation id="5270167208902136840">Показване на още <ph name="NUMBER_OF_MORE_APPS"/> приложения</translation>
 <translation id="2482878487686419369">Известия</translation>
+<translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> приложения</translation>
+<translation id="7207631048330366454">Търсене в приложенията</translation>
+<translation id="9011424611726486705">Отваряне на настройките за сайтове</translation>
+<translation id="4739098340603978916">Размер: <ph name="APP_SIZE"/></translation>
+<translation id="4291934469232591280">Версия: <ph name="VERSION"/></translation>
 <translation id="6005695835120147974">Медиен маршрутизатор</translation>
 <translation id="7787308148023287649">Показване на друг екран</translation>
 <translation id="7710568461918838723">&amp;Предаване...</translation>
 <translation id="5537725057119320332">Предаване</translation>
+<translation id="1383876407941801731">Търсене</translation>
 <translation id="8970203673128054105">Преглед на списъка с режими за предаване</translation>
 <translation id="1277908057200820621">Преглед на списъка с устройства</translation>
 <translation id="6685083257944113180">Спиране, <ph name="SINK_NAME"/>, <ph name="SINK_STATUS"/></translation>
@@ -2372,8 +2449,6 @@
 <translation id="4081242589061676262">Предаването на файла не е възможно.</translation>
 <translation id="4075639477629295004">Предаването на „<ph name="FILE_NAME"/>“ не е възможно.</translation>
 <translation id="7255220508626648026">Предава се: <ph name="ROUTETITLE"/></translation>
-<translation id="57838592816432529">Заглушаване</translation>
-<translation id="4992066212339426712">Включване на звука</translation>
 <translation id="7889966925761734854">Търсене</translation>
 <translation id="4430019312045809116">Звук</translation>
 <translation id="1156488781945104845">Текущ час</translation>
@@ -2388,7 +2463,7 @@
 <translation id="5209320130288484488">Няма намерени устройства</translation>
 <translation id="4415245286584082850">Няма намерени устройства. Отваряне на статия в Помощния център в нов раздел.</translation>
 <translation id="4363771538994847871">Няма намерени местоназначения за Cast. Нуждаете ли се от помощ?</translation>
-<translation id="8688672835843460752">Свободно място</translation>
+<translation id="1596286373007273895">Свободно място</translation>
 <translation id="1536754031901697553">Връзката се прекратява...</translation>
 <translation id="1854180393107901205">Спиране на предаването</translation>
 <translation id="5307030433605830021">Източникът не се поддържа</translation>
@@ -2406,6 +2481,7 @@
 <translation id="4159681666905192102">Това е профил за деца, управляван от <ph name="CUSTODIAN_EMAIL"/> и <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Контролиран потребител</translation>
 <translation id="5720705177508910913">Текущият потребител</translation>
+<translation id="37784332082579802">{0,plural, =1{„Инкогнито“}other{„Инкогнито“ (#)}}</translation>
 <translation id="5070556616376997776">Сърфирате в режим „инкогнито“</translation>
 <translation id="2199298570273670671">Грешка</translation>
 <translation id="6211495400987308581"><ph name="PROFILE_NAME"/>: синхронизирането не работи</translation>
@@ -2417,10 +2493,10 @@
     Не смятам, че този сайт трябва да бъде блокиран!</translation>
 <translation id="8662795692588422978">Хора</translation>
 <translation id="6790820461102226165">Добавяне на човек...</translation>
+<translation id="1781771911845953849">Профили и синхронизиране</translation>
 <translation id="4974733135013075877">Изход и заключване за деца</translation>
 <translation id="3965965397408324205">Изход от <ph name="PROFILE_NAME"/></translation>
 <translation id="9220525904950070496">Премахване на профила</translation>
-<translation id="3340978935015468852">настройки</translation>
 <translation id="5704875434923668958">Синхронизира се със:</translation>
 <translation id="6257602895346497974">Включване на синхронизирането...</translation>
 <translation id="5127805178023152808">Синхронизирането е изключено</translation>
@@ -2435,7 +2511,6 @@
 <translation id="8473863474539038330">Адреси и др.</translation>
 <translation id="454547174531670764">Синхронизиране с друг профил</translation>
 <translation id="1692115862433274081">Използване на друг профил</translation>
-<translation id="8261387128019234107">Добавяне на профил за <ph name="PROFILE_NAME"/></translation>
 <translation id="5287425679749926365">Вашите профили</translation>
 <translation id="4801448226354548035">Скриване на профилите</translation>
 <translation id="8400146488506985033">Управление на хората</translation>
@@ -2443,7 +2518,6 @@
 <translation id="127668050356036882">Затваряне на всички прозорци</translation>
 <translation id="8883847527783433352">Синхронизиране с друг профил</translation>
 <translation id="2761898608071930085">Използване на друг профил</translation>
-<translation id="4235813040357936597">Добавяне на профил за <ph name="PROFILE_NAME"/></translation>
 <translation id="1464258312790801189">Вашите профили</translation>
 <translation id="6655458902729017087">Скриване на профилите</translation>
 <translation id="8770507190024617908">Управление на хората</translation>
@@ -2502,6 +2576,16 @@
 <translation id="2272570998639520080">Чаша за мартини</translation>
 <translation id="120368089816228251">Нота</translation>
 <translation id="1393283411312835250">Слънце и облаци</translation>
+<translation id="4725511304875193254">Корги</translation>
+<translation id="6358884629796491903">Дракон</translation>
+<translation id="8561206103590473338">Слон</translation>
+<translation id="6808193438228982088">Лисица</translation>
+<translation id="4694604912444486114">Маймуна</translation>
+<translation id="6795884519221689054">Панда</translation>
+<translation id="1829129547161959350">Пингвин</translation>
+<translation id="3021066826692793094">Пеперуда</translation>
+<translation id="3809272675881623365">Заек</translation>
+<translation id="4124935795427217608">Еднорог</translation>
 <translation id="1830550083491357902">Не сте в профила си</translation>
 <translation id="5941153596444580863">Добавяне на човек...</translation>
 <translation id="9149866541089851383">Редактиране...</translation>
@@ -2536,7 +2620,6 @@
 <translation id="5457599981699367932">Сърфиране като гост</translation>
 <translation id="5957613098218939406">Още опции</translation>
 <translation id="6154697846084421647">Сега сте в профила си</translation>
-<translation id="5601503069213153581">ПИН код</translation>
 <translation id="2220572644011485463">ПИН код или парола</translation>
 <translation id="8068253693380742035">Докоснете за вход в профила си</translation>
 <translation id="4864369630010738180">Извършва се влизане...</translation>
@@ -2550,6 +2633,7 @@
 <translation id="2653659639078652383">Изпращане</translation>
 <translation id="8392451568018454956">Меню с опции за <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="6164005077879661055">Всички файлове и локални данни, свързани с контролирания потребител, ще бъдат изтрити за постоянно, щом той бъде премахнат. Посетените уебсайтове и настройките за него може все още да се виждат от мениджъра на адрес <ph name="MANAGEMENT_URL"/>.</translation>
+<translation id="3410832398355316179">След като този потребител бъде премахнат, всички свързани с него файлове и локални данни ще се изтрият за постоянно. <ph name="USER_EMAIL"/> пак може да влезе в профила си по-късно.</translation>
 <translation id="672213144943476270">Моля, отключете потребителския си профил, преди да сърфирате като гост.</translation>
 <translation id="3478685642445675458">Моля, отключете потребителския си профил, преди да премахнете човек.</translation>
 <translation id="4648499713050786492">Моля, отключете потребителския си профил, преди да добавите човек.</translation>
@@ -2578,13 +2662,19 @@
 <translation id="1786636458339910689">Екипни дискове</translation>
 <translation id="5010406651457630570">Компютри</translation>
 <translation id="8106045200081704138">Споделени с мен</translation>
+<translation id="6549689063733911810">Скорошни</translation>
 <translation id="981121421437150478">Офлайн</translation>
 <translation id="9034924485347205037">Файлове за Linux</translation>
-<translation id="3188257591659621405">Моите файлове</translation>
 <translation id="9219103736887031265">Изображения</translation>
 <translation id="6146563240635539929">Видеоклипове</translation>
 <translation id="3616113530831147358">Аудио</translation>
 <translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Внимание:<ph name="END_BOLD"/> Тези файлове са временни и може да бъдат изтрити автоматично, за да се освободи място на диска. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
+<translation id="4873265419374180291"><ph name="NUMBER_OF_BYTES"/> байта</translation>
+<translation id="4788401404269709922"><ph name="NUMBER_OF_KB"/> КБ</translation>
+<translation id="996903396648773764"><ph name="NUMBER_OF_MB"/> МБ</translation>
+<translation id="7189874332498648577"><ph name="NUMBER_OF_GB"/> ГБ</translation>
+<translation id="7827012282502221009"><ph name="NUMBER_OF_TB"/> ТБ</translation>
+<translation id="1589128298353575783"><ph name="NUMBER_OF_PB"/> ПБ</translation>
 <translation id="3126026824346185272">Ctrl</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="169515659049020177">Shift</translation>
@@ -2601,6 +2691,7 @@
 <translation id="5145331109270917438">Дата на промяна</translation>
 <translation id="8487700953926739672">Налице офлайн</translation>
 <translation id="2230062665678605299">Не можем да създадем папката „<ph name="FOLDER_NAME"/>“. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="2163152940313951844">Невалиден знак: <ph name="CHARACTER_NAME"/></translation>
 <translation id="642282551015776456">Това име не може да се използва като име на файл или на папка</translation>
 <translation id="2070909990982335904">Имената, започващи с точка, са запазени за системата. Моля, изберете друго име.</translation>
 <translation id="8456681095658380701">Невалидно име</translation>
@@ -2611,6 +2702,8 @@
 <translation id="3749289110408117711">Име на файла</translation>
 <translation id="3280431534455935878">Подготвя се</translation>
 <translation id="6607272825297743757">Информация за файла</translation>
+<translation id="6395575651121294044"><ph name="NUMBER_OF_FILES"/> елемента</translation>
+<translation id="2138867954865495510">„<ph name="PATH"/>“ не може да се отвори: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Не премахвайте устройството си все още!<ph name="END_BOLD"/>
 <ph name="LINE_BREAKS"/>
    Премахването на устройството, докато се използва, може да доведе до загуба на данни. Моля, изчакайте завършването на операцията, след което го извадете посредством приложението Файлове.</translation>
@@ -2664,6 +2757,9 @@
 <translation id="5158593464696388225">Запазването на изображението не бе успешно.</translation>
 <translation id="2787047795752739979">Презаписване на оригинала</translation>
 <translation id="8775404590947523323">Редакциите ви се запазват автоматично.<ph name="BREAKS"/>За да съхраните копие на оригиналното изображение, премахнете отметката от „Презаписване на оригинала“</translation>
+<translation id="7873831373602885875">Запазването в(ъв) „<ph name="FOLDER_NAME"/>“ не е възможно. Всички редакции ще се съхранят в(ъв) „<ph name="DOWNLOADS_FOLDER"/>“ в папката „Изтегляния“.</translation>
+<translation id="691516599546977041">Запазването в(ъв) „<ph name="FOLDER_NAME"/>“ не е възможно. Редактираните изображения ще бъдат запазени в папката „Изтегляния“.</translation>
+<translation id="8066773524873206594">Всички редакции ще бъдат запазени в(ъв) „<ph name="DOWNLOADS_FOLDER"/>“.</translation>
 <translation id="8153607920959057464">Този файл не можа да бъде показан.</translation>
 <translation id="6227235786875481728">Този файл не можа да бъде възпроизведен.</translation>
 <translation id="9154418932169119429">Това изображение не е налице офлайн.</translation>
@@ -2673,6 +2769,9 @@
 <translation id="4801956050125744859">Запазванe на двете версии</translation>
 <translation id="1062407476771304334">Замяна</translation>
 <translation id="1556189134700913550">Прилагане за всички</translation>
+<translation id="988685240266037636">Вече съществува файл с име „<ph name="FILE_NAME"/>“. Искате ли да го замените?</translation>
+<translation id="9038620279323455325">Файлът „<ph name="FILE_NAME"/>“ вече съществува. Моля, изберете друго име.</translation>
+<translation id="4212740939091998969">Папката „<ph name="FOLDER_NAME"/>“ вече съществува. Моля, изберете друго име.</translation>
 <translation id="1497522201463361063">„<ph name="FILE_NAME"/>“ не може да се преименува. <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5330512191124428349">Получаване на информация</translation>
 <translation id="8312871300878166382">Поставяне в папка</translation>
@@ -2731,13 +2830,20 @@
 <translation id="4724850507808590449">На <ph name="FILE_COUNT"/> снимки бяха създадени резервни копия</translation>
 <translation id="1351692861129622852">Импортират се <ph name="FILE_COUNT"/> файла...</translation>
 <translation id="117624967391683467">„<ph name="FILE_NAME"/>“ се копира...</translation>
+<translation id="7359359531237882347"><ph name="NUMBER_OF_ITEMS"/> елемента се копират...</translation>
 <translation id="7627790789328695202">Ами сега! Файлът „<ph name="FILE_NAME"/>“ вече съществува. Преименувайте го и опитайте отново.</translation>
 <translation id="5691596662111998220">Ами сега! Файлът „<ph name="FILE_NAME"/>“ вече не съществува.</translation>
 <translation id="4336032328163998280">Копирането не бе успешно. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="5913638992615760742">Копирането не бе успешно. Възникна неочаквана грешка: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="6133173853026656527">„<ph name="FILE_NAME"/>“ се премества...</translation>
+<translation id="7654209398114106148"><ph name="NUMBER_OF_ITEMS"/> елемента се преместват...</translation>
 <translation id="6007237601604674381">Преместването не бе успешно. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="1933345018156373194">Преместването не бе успешно. Възникна неочаквана грешка: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="3326821416087822643">„<ph name="FILE_NAME"/>“ се компресира...</translation>
+<translation id="1722487484194605434"><ph name="NUMBER_OF_ITEMS"/> елемента се компресират...</translation>
+<translation id="8810671769985673465">Компресирането не бе успешно. Съществува елемент: „<ph name="FILE_NAME"/>“</translation>
 <translation id="9133055936679483811">Компресирането не бе успешно. <ph name="ERROR_MESSAGE"/></translation>
+<translation id="4973970068702235170">Компресирането не бе успешно. Възникна неочаквана грешка: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="653019979737152879">„<ph name="FILE_NAME"/>“ се синхронизира...</translation>
 <translation id="8579285237314169903"><ph name="NUMBER_OF_FILES"/> елемента се синхронизират...</translation>
 <translation id="8137331602592933310">Файлът „<ph name="FILENAME"/>“ е споделен с вас. Не можете да го изтриете, защото не го притежавате.</translation>
@@ -2757,6 +2863,8 @@
 <translation id="1464724975715666883">1 грешка.</translation>
 <translation id="3495304270784461826"><ph name="COUNT"/> грешки.</translation>
 <translation id="6643016212128521049">Изчистване</translation>
+<translation id="4988205478593450158">Наистина ли искате да изтриете „<ph name="FILE_NAME"/>“?</translation>
+<translation id="2225536596944493418">Наистина ли искате да изтриете <ph name="NUMBER_OF_ITEMS"/> елемента?</translation>
 <translation id="7953739707111622108">Това устройство не може да бъде отворено, защото файловата му система не бе разпозната.</translation>
 <translation id="3726463242007121105">Това устройство не може да бъде отворено, защото файловата му система не се поддържа.</translation>
 <translation id="3414856743105198592">При форматирането на изваждащия се носител ще се изтрият всички данни. Искате ли да продължите?</translation>
@@ -2839,12 +2947,21 @@
 по файлове с други хора – всичко от едно място.<ph name="MARKUP_9"/></translation>
 <translation id="4878716980734452132">Този файлов тип не се поддържа. Моля, посетете <ph name="BEGIN_LINK"/>уеб магазина на Brave<ph name="END_LINK"/>, за да намерите приложение, което може да го отвори.
    <ph name="BEGIN_LINK_HELP"/>Научете повече<ph name="END_LINK_HELP"/></translation>
+<translation id="6230272341631206186">Този файл е предназначен за компютри с Windows. Не е съвместим с устройството ви, което работи с Brave OS. <ph name="BEGIN_LINK_HELP"/>Научете повече<ph name="END_LINK_HELP"/></translation>
 <translation id="3072401511615920367">Този файл е предназначен за компютри със софтуер Macintosh и не е съвместим с устройството ви с Brave OS. Моля, потърсете в <ph name="BEGIN_LINK"/>уеб магазина на Brave<ph name="END_LINK"/> подходящо приложение със същата функционалност. <ph name="BEGIN_LINK_HELP"/>Научете повече<ph name="END_LINK_HELP"/></translation>
 <translation id="7589661784326793847">Изчакайте само секунда</translation>
 <translation id="3096967955765855393">Непрекъснато търсим начини да правим сърфирането ви по-безопасно. По-рано всеки уебсайт можеше да ви подкани да добавите разширение в браузъра си. В най-новите версии на Brave Software Brave трябва изрично да укажете на браузъра, че искате да инсталирате съответния софтуер, като го добавите чрез страницата „Разширения“. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
+<translation id="4892969127351273348">Отварянето чрез <ph name="APP_NAME"/> не е възможно</translation>
+<translation id="52446585071384036">За да отваряте файлове чрез <ph name="APP_NAME"/>, първо копирайте в папката с файлове на Linux.</translation>
 <translation id="5368191757080475556">Споделяне на папката с Linux</translation>
+<translation id="5857774240076772505">Разрешете на приложенията под Linux да променят файловете в папката „<ph name="FOLDER_NAME"/>“</translation>
+<translation id="2280597422213958082">Разрешете на приложенията под Linux да променят файловете в профила ви в Brave Software Диск. Промените ще се синхронизират с другите ви устройства.</translation>
 <translation id="4290535918735525311">1 папка е споделена с Linux</translation>
+<translation id="2377590462528165447"><ph name="NUMBER_OF_ITEMS"/> папки са споделени с Linux</translation>
 <translation id="4572815280350369984">Файл от тип <ph name="FILE_TYPE"/></translation>
+<translation id="5533102081734025921">Изображение във формат <ph name="IMAGE_TYPE"/></translation>
+<translation id="2614589611416690597">Видеоклип във формат <ph name="VIDEO_TYPE"/></translation>
+<translation id="8042602468072383151">Аудиофайл във формат <ph name="AUDIO_TYPE"/></translation>
 <translation id="7799329977874311193">HTML документ</translation>
 <translation id="2208158072373999562">Компресиран архивен файл</translation>
 <translation id="2028997212275086731">RAR архив</translation>
@@ -2893,6 +3010,9 @@
 <translation id="6199801702437275229">Информацията за мястото се изчаква...</translation>
 <translation id="6485131920355264772">Извличането на информацията за мястото не бе успешно</translation>
 <translation id="7748626145866214022">В лентата за действия има още опции. Натиснете Alt + A, за да поставите фокуса върху нея.</translation>
+<translation id="2303301624314357662">Файлът „<ph name="FILE_NAME"/>“ се отваря.</translation>
+<translation id="2291538123825441971">Отварят се <ph name="NUMBER_OF_FILES"/> файла.</translation>
+<translation id="2305020378527873881">Изваждането на „<ph name="VOLUME_NAME"/>“ завърши.</translation>
 <translation id="6710213216561001401">Предишна</translation>
 <translation id="1395262318152388157">Плъзгач за търсене</translation>
 <translation id="4880214202172289027">Плъзгач за силата на звука</translation>
@@ -2950,6 +3070,7 @@
 <translation id="5840822070878669614">Отваряне на уеб магазина на Brave</translation>
 <translation id="6073903501322152803">Добавяне на функции за достъпност</translation>
 <translation id="7988355189918024273">Активиране на функциите за достъпност</translation>
+<translation id="3274899353071794175">Ако няма полезно описание за дадено изображение, Brave ще предостави такова. Изображенията се сканират от Brave Software.</translation>
 <translation id="2558896001721082624">Опциите за достъпност винаги да се показват в системното меню</translation>
 <translation id="7280649757394340890">Настройки за гласовете за синтезиран говор</translation>
 <translation id="6635956300022133031">Избиране и персонализиране на гласовете за синтезиран говор</translation>
@@ -3035,6 +3156,7 @@
 <translation id="6352773953037195952">Най-висока</translation>
 <translation id="3677657024345889897">Най-тихо</translation>
 <translation id="167160931442925455">Най-силно</translation>
+<translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (по подразбиране)</translation>
 <translation id="3602290021589620013">Визуализация</translation>
 <translation id="7037509989619051237">Текст за прослушване</translation>
 <translation id="5471768120198416576">Здравейте! Аз съм гласът за синтезиран говор.</translation>
@@ -3042,9 +3164,21 @@
 <translation id="304747341537320566">Машини за синтезиран говор</translation>
 <translation id="1067291318998134776">Linux (бета)</translation>
 <translation id="7911118814695487383">Linux</translation>
-<translation id="1834538809763482401">Изпълнявайте инструменти, редактори и интегрирани среди за програмиране за Linux на своя Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Научете повече&lt;/a&gt;</translation>
-<translation id="6869910261738842136">Премахване на приложенията за Linux за Bravebook</translation>
+<translation id="1366177842110999534">Изпълнявайте инструменти, редактори и интегрирани среди за програмиране за Linux на устройството си <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Научете повече&lt;/a&gt;</translation>
+<translation id="6564072216966459757">Премахване на приложенията за Linux за <ph name="DEVICE_TYPE"/></translation>
 <translation id="1529899284660134226">Управление на споделените файлове и папки</translation>
+<translation id="2214018885812055163">Споделени папки</translation>
+<translation id="6697690052557311665">За да споделите папка, кликнете с десен бутон върху нея в приложението файлове и изберете „Споделяне с Linux“.</translation>
+<translation id="7932969338829957666">Споделените папки са достъпни в директорията <ph name="BASE_DIR"/> на Linux.</translation>
+<translation id="3726137731714254362">При премахване на папки оттук споделянето ще спре, но файловете няма да бъдат изтрити.</translation>
+<translation id="2213140827792212876">Премахване на споделянето</translation>
+<translation id="2936851848721175671">Резервни копия и възстановяване</translation>
+<translation id="3819257035322786455">Резервно копие</translation>
+<translation id="3233271424239923319">Създаване на резервно копие за приложенията и файловете на Linux</translation>
+<translation id="184273675144259287">Замяна на приложенията и файловете ви за Linux с предишно резервно копие</translation>
+<translation id="2200603218210188859">Предпочитания за USB устройства</translation>
+<translation id="2706892089432507937">USB устройства</translation>
+<translation id="5187892128515678283">Споделете USB устройство с Linux чрез включване на превключвателя. Споделянето ще продължи само докато устройството е свързано.</translation>
 <translation id="2295473777859797944">Brave Software Play Магазин</translation>
 <translation id="572155275267014074">Настройки на Android</translation>
 <translation id="4767209642168463274">Инсталирайте приложения и игри от Brave Software Play на своя Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Научете повече&lt;/a&gt;</translation>
@@ -3097,6 +3231,8 @@
 <translation id="451515744433878153">Премахване</translation>
 <translation id="5029568752722684782">Изчистване на копието</translation>
 <translation id="2154484045852737596">Редактиране на картата</translation>
+<translation id="3032188998195902534">За да добавите или управлявате начини на плащане в Brave Software Pay, посетете <ph name="BEGIN_LINK"/>профила си в Brave Software<ph name="END_LINK"/></translation>
+<translation id="8853586775156634952">Картата ще бъде запазена само на това устройство</translation>
 <translation id="5087580092889165836">Добавяне на карта</translation>
 <translation id="4835914736509775287">Запазване на картите в профила ви в Brave Software</translation>
 <translation id="7255002516883565667">В момента имате една карта, която може да се използва само на това устройство</translation>
@@ -3436,6 +3572,7 @@
 <translation id="6921033294337262045">Докоснете „Известия за прилож.“ &gt; Услуги за Brave Software Play.</translation>
 <translation id="5624710179837914896">Включете услугите за Brave Software Play.</translation>
 <translation id="2705736684557713153">Превъртете надолу до края на екрана и включете опцията за незабавен тетъринг, ако се показва. В случай че не я виждате, тя вече е активна.</translation>
+<translation id="8720200012906404956">Търси се мобилна мрежа. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
 <translation id="7240339475467890413">Да се установи ли връзка с новата точка за достъп?</translation>
 <translation id="6514010653036109809">Налично устройство:</translation>
 <translation id="2075474481720804517"><ph name="BATTERY_PERCENTAGE"/>% батерия</translation>
@@ -3553,6 +3690,7 @@
 <translation id="8528074251912154910">Добавяне на езици</translation>
 <translation id="8439506636278576865">Предлагане страниците на този език да се превеждат</translation>
 <translation id="8249672078237421304">Извеждане на предложение за превод на страниците, които не са на четим от вас език</translation>
+<translation id="6150961653851236686">Този език служи за превод на страници</translation>
 <translation id="1756681705074952506">Метод за въвеждане</translation>
 <translation id="59174027418879706">Активирано</translation>
 <translation id="1650371550981945235">Показване на опциите за въвеждане</translation>
@@ -3598,6 +3736,7 @@
 <translation id="9079153198295609735">Автоматично изпращане до Brave Software на статистически данни за използването на Brave и сигнали за сривове</translation>
 <translation id="5941220456342415404">Автоматично изпращане до Brave Software на данни за диагностиката и употребата</translation>
 <translation id="918192811481327695">Помощ за подобряването на функциите и ефективността на Brave</translation>
+<translation id="9063160602596686558">Автоматично изпраща до Brave Software статистически данни за използването на Brave и сигнали за сривове</translation>
 <translation id="8438566539970814960">Подобряване на търсенията и сърфирането</translation>
 <translation id="284843628681142937">Изпраща до Brave Software URL адресите на страниците, които посещавате</translation>
 <translation id="8791534160414513928">Изпращане на заявка „Do Not Track“ с трафика ви на сърфиране</translation>
@@ -3613,6 +3752,7 @@
 <translation id="5487521232677179737">Изчиств. на данните</translation>
 <translation id="3151562827395986343">Изчистване на историята, „бисквитките“, кеша и др.</translation>
 <translation id="8356197132883132838">„<ph name="TITLE"/>“ – <ph name="COUNT"/></translation>
+<translation id="8732844209475700754">Още настройки за поверителността, сигурността и събирането на данни</translation>
 <translation id="8632933437936028548">Нулиране на настройките</translation>
 <translation id="5293170712604732402">Възстановяване на настройките към първоначалните им стандартни стойности</translation>
 <translation id="892706138619340876">Някои настройки бяха нулирани</translation>
@@ -3637,9 +3777,17 @@
 <translation id="7098447629416471489">Тук ще се покажат другите запазени търсещи машини</translation>
 <translation id="1459967076783105826">Търсещи машини, добавени от разширения</translation>
 <translation id="6678717876183468697">URL адрес на заявката</translation>
+<translation id="7063311912041006059">URL адрес с <ph name="SPECIAL_SYMBOL"/> вместо заявка</translation>
 <translation id="6953878494808481632">Сродна информация</translation>
 <translation id="4145922204387553806">Разрешаване на Асистент да ви показва информация въз основа на съдържанието на екрана ви</translation>
 <translation id="472896694312062378">Ok Brave Software</translation>
+<translation id="873163986259711670">Осъществявайте достъп до Асистент всеки път, когато кажете „Ok Brave Software“</translation>
+<translation id="7972554217702001243">Активиране на Асистент, когато някой каже „Ok Brave Software“. С цел икономия на батерия „Ok Brave Software“ е активно само когато устройството е свързано със захранващ източник.</translation>
+<translation id="5825412242012995131">Включено (препоръчително)</translation>
+<translation id="5067399438976153555">Винаги включено</translation>
+<translation id="5419405654816502573">Voice Match</translation>
+<translation id="3640613767643722554">Обучете Асистент да разпознава гласа ви</translation>
+<translation id="1803545009660609783">Повторно обучение</translation>
 <translation id="5355099869024327351">Разрешаване на Асистент да ви показва известия</translation>
 <translation id="133535873114485416">Предпочитано въвеждане</translation>
 <translation id="6233154960150021497">Стандартно използване на глас вместо клавиатура</translation>
@@ -3746,9 +3894,10 @@
 <translation id="8339059274628563283">Локално съхранявани данни от <ph name="SITE"/></translation>
 <translation id="4090947011087001172">Да се нулират ли разрешенията за сайта <ph name="SITE"/>?</translation>
 <translation id="1688867105868176567">Да се изчистят ли данните за сайта?</translation>
-<translation id="2369536625682139252">Ще бъдат изтрити всички съхранявани от <ph name="SITE"/> данни освен „бисквитките“.</translation>
+<translation id="4665446389743427678">Всички данни, съхранявани от <ph name="SITE"/>, ще бъдат изтрити.</translation>
 <translation id="5300287940468717207">Да се нулират ли разрешенията за сайтовете?</translation>
 <translation id="2734760316755174687">Разрешенията за сайтовете от „<ph name="SITE_GROUP_NAME"/>“ също ще бъдат нулирани.</translation>
+<translation id="3255355328033513170">Всички данни, съхранявани от домейна <ph name="SITE_GROUP_NAME"/>, и сайтовете в него ще бъдат изтрити. Това включва „бисквитките“. Ще излезете от профила си в тези сайтове, включително в отворените раздели.</translation>
 <translation id="3127156390846601284">Това ще изтрие всички данни, съхранени на устройството ви, за всички показани сайтове. Искате ли да продължите?</translation>
 <translation id="150411034776756821">Премахване на <ph name="SITE"/></translation>
 <translation id="577624874850706961">Търсене</translation>
@@ -3762,6 +3911,8 @@
 <translation id="383891835335927981">Няма сайтове с увеличен или намален мащаб</translation>
 <translation id="3566721612727112615">Няма добавени сайтове</translation>
 <translation id="8098574385249290065">Нека Brave избира кога сайтовете да могат да възпроизвеждат звук (препоръчително)</translation>
+<translation id="4354344420232759511">Посетените от вас сайтове ще се показват тук</translation>
+<translation id="3757733214359997190">Няма намерени сайтове</translation>
 <translation id="5763751966069581670">Няма намерени USB устройства</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Добавяне на сайт</translation>
@@ -3792,8 +3943,9 @@
 <translation id="6064217302520318294">Заключване на екрана</translation>
 <translation id="7228523857728654909">Заключване на екрана и влизане в профила</translation>
 <translation id="9201220332032049474">Опции за заключване на екрана</translation>
-<translation id="7317680720589234980">Опции за заключване на екрана и влизане в профила</translation>
+<translation id="7728570244950051353">Заключване на екрана при спящ режим</translation>
 <translation id="93393615658292258">Само парола</translation>
+<translation id="6216696360484424239">Автоматично влизане</translation>
 <translation id="4829768588131278040">Настройване на ПИН</translation>
 <translation id="2775104091073479743">Редактиране на отпечатъците</translation>
 <translation id="7003723821785740825">Настройте по-бърз начин да отключвате устройството си</translation>
@@ -3805,9 +3957,12 @@
 <translation id="6029292188939175871">изтриване на [<ph name="FINGERPRINT_NAME"/>], бутон</translation>
 <translation id="1927632033341042996">Пръст <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Добавяне на профил</translation>
+<translation id="6776811409814583709">Оттук можете да управлявате всички профили в Brave Software, в които сте влезли от приложения и уебсайтове. Приложенията и сайтовете, на които сте дали разрешение, имат достъп до информацията за профила, която им е необходима, за да работят правилно.</translation>
 <translation id="1987317783729300807">Профили</translation>
 <translation id="8418661265246754237">Профили в Brave Software</translation>
 <translation id="3297951628821704004">Премахване на профила от това устройство</translation>
+<translation id="3158033540161634471">Настройте отпечатъка си</translation>
+<translation id="1587907146729660231">Докоснете бутона за захранване с пръста си</translation>
 <translation id="176193854664720708">Сензорът за отпечатъци е в бутона за включване/изключване. Докоснете го леко с който и да е пръст.</translation>
 <translation id="7189965711416741966">Отпечатъкът е добавен.</translation>
 <translation id="9220820413868316583">Вдигнете пръст и след това опитайте отново.</translation>
@@ -3834,6 +3989,7 @@
 <translation id="2114896190328250491">Снимка от <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Съществуваща снимка от камерата или от файл</translation>
 <translation id="8995603266996330174">Управлявано от <ph name="DOMAIN"/></translation>
+<translation id="9125982323641182972">Brave с интелекта на Brave Software</translation>
 <translation id="5244474230056479698">Синхронизира се със: <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Тъй като този профил се управлява от <ph name="DOMAIN"/>, вашите отметки, история, пароли и други настройки ще бъдат изчистени от устройството. Данните ви обаче ще продължат да се съхраняват в профила ви в Brave Software. Можете да ги управлявате от <ph name="BEGIN_LINK"/>Brave Software Табло за управление<ph name="END_LINK"/>.</translation>
 <translation id="4037889604535939429">Редактиране на подстраницата за човека</translation>
@@ -3858,6 +4014,8 @@
 <translation id="659934686219830168">Синхронизирането ще започне, след като напуснете тази страница</translation>
 <translation id="2162155940152307086">Синхронизирането ще започне, след като излезете от страницата с настройките му</translation>
 <translation id="3143515551205905069">Анулиране на синхронизирането</translation>
+<translation id="4824958205181053313">Да се анулира ли синхронизирането?</translation>
+<translation id="3058498974290601450">Можете по всяко време да включите синхронизирането в настройките</translation>
 <translation id="7529411698175791732">Проверете връзката си с интернет. Ако проблемът продължи, опитайте да излезете от профила си и отново да влезете в него.</translation>
 <translation id="1125261911132334651">Управление на профила ви в Brave Software</translation>
 <translation id="4570387585180509432">Адреси, телефонни номера и др.</translation>
@@ -3936,6 +4094,7 @@
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">Ромб</translation>
 <translation id="89720367119469899">Escape</translation>
+<translation id="1951012854035635156">Асистент</translation>
 <translation id="1938351510777341717">Външен клавиш Command</translation>
 <translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Външен клавиш Meta</translation>
@@ -3985,8 +4144,10 @@
 <translation id="1709106626015023981"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (стандартно)</translation>
 <translation id="5420438158931847627">Определя отчетливостта на текста и изображенията</translation>
 <translation id="3954469006674843813"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> херца)</translation>
+<translation id="3400390787768057815"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> херца) – презредова развивка</translation>
 <translation id="7889565820482017512">Екранен размер</translation>
 <translation id="8448729345478502352">Смаляване или уголемяване на елементите на екрана</translation>
+<translation id="3385092118218578224"><ph name="DISPLAY_ZOOM"/>%</translation>
 <translation id="2155772377859296191">Разделителната способност е <ph name="WIDTH"/> x <ph name="HEIGHT"/></translation>
 <translation id="4863769717153320198">Разделителната способност е <ph name="WIDTH"/> x <ph name="HEIGHT"/> (по подразбиране)</translation>
 <translation id="1125550662859510761">Разделителната способност е <ph name="WIDTH"/> x <ph name="HEIGHT"/> (стандартна)</translation>
@@ -4000,6 +4161,7 @@
 <translation id="6856623341093082836">Настройване и коригиране на точността на сензорния екран</translation>
 <translation id="4598556348158889687">Управление на хранилището</translation>
 <translation id="8868626022555786497">Използвано място</translation>
+<translation id="8688672835843460752">Свободно място</translation>
 <translation id="1082725763867769612">Офлайн файлове</translation>
 <translation id="7366909168761621528">Данни за сърфирането</translation>
 <translation id="5568144734023334204">Хранилище за Android</translation>
@@ -4048,19 +4210,24 @@
 <translation id="7878562273885520351">Възможно е паролата ви да е компрометирана</translation>
 <translation id="1089439967362294234">Промяна на паролата</translation>
 <translation id="6187156085111579405">При необходимост ще бъдат премахнати и елементи, които не са посочени тук. Научете повече за &lt;a href="<ph name="URL"/>"&gt;защитата от нежелан софтуер&lt;/a&gt; в информационния бюлетин за поверителността на Brave.</translation>
+<translation id="5280174558369304332">Разширения, които ще бъдат премахнати:</translation>
 <translation id="7712836429117959503">Неизвестно разширение с идент. № <ph name="EXTENSION_ID"/></translation>
+<translation id="3281892622610078515">Файлове и програми, които да бъдат поставени под карантина:</translation>
+<translation id="8549457076611407730">{NUM_ITEMS,plural, =1{1 елемент}other{# елемента}}</translation>
 <translation id="7187428571767585875">Записи в системния регистър, които ще бъдат премахнати или променени:</translation>
 <translation id="4840150926623932060">{NUM_DOWNLOAD,plural, =1{още 1}other{още #}}</translation>
 <translation id="2749608811030566578">Възникна грешка, докато Brave премахваше опасния софтуер</translation>
 <translation id="8189483132214844139">Brave може да намери опасния софтуер на компютъра ви и да го премахне</translation>
 <translation id="2910318910161511225">Свържете се с мрежа и опитайте отново</translation>
 <translation id="1426870617281699524">Кликнете върху „Нов опит“ и приемете подканата на компютъра си</translation>
+<translation id="7886744396008377537">На компютъра ви има опасен софтуер. Brave го премахва, възстановява настройките ви и деактивира разширенията. След това браузърът ви отново ще заработи нормално.</translation>
 <translation id="1484912962860902625">Възникна грешка, докато Brave търсеше опасен софтуер</translation>
 <translation id="451407183922382411">Предоставено от <ph name="COMPANY_NAME"/></translation>
 <translation id="5254368820972107711">Вижте файловете за премахване</translation>
 <translation id="296026337010986570">Готово! Опасният софтуер е премахнат. За да включите отново разширенията, посетете &lt;a href="chrome://extensions"&gt;Разширения&lt;/a&gt;.</translation>
 <translation id="284975061945174219">Почистването бе неуспешно</translation>
 <translation id="9014750448058570312">Brave се нуждае от разрешение, за да продължи</translation>
+<translation id="1852141627593563189">Намерете опасния софтуер</translation>
 <translation id="4320177379694898372">Няма връзка с интернет</translation>
 <translation id="850875081535031620">Няма намерен опасен софтуер</translation>
 <translation id="1186771945450942097">Премахнете опасния софтуер</translation>
@@ -4069,6 +4236,7 @@
 <translation id="8639047128869322042">Извършва се проверка за опасен софтуер...</translation>
 <translation id="2653033005692233957">Търсенето бе неуспешно</translation>
 <translation id="655483977608336153">Нов опит</translation>
+<translation id="8282772389915299166">Изпращане до Brave Software на подробности за опасния софтуер, системните настройки и процесите, открити на компютъра ви по време на това почистване</translation>
 <translation id="6555810572223193255">Почистването понастоящем не е налице.</translation>
 <translation id="7117228822971127758">Моля, опитайте отново по-късно</translation>
 <translation id="443475966875174318">Актуализиране или премахване на несъвместими приложения</translation>
@@ -4084,6 +4252,7 @@
 <translation id="7642778300616172920">Скриване на поверителното съдържание</translation>
 <translation id="3341703758641437857">Да се разреши достъп до URL адресите на файловете</translation>
 <translation id="9003647077635673607">Разрешаване за всички уебсайтове</translation>
+<translation id="698524779381350301">Автоматично разрешаване на достъпа до следните сайтове</translation>
 <translation id="2915102088417824677">Преглед на регистрационния файл за активността</translation>
 <translation id="1744108098763830590">фонова страница</translation>
 <translation id="3378572629723696641">Това разширение може да е повредено.</translation>
@@ -4105,13 +4274,24 @@
 <translation id="3264582393905923483">Контекст</translation>
 <translation id="1607139524282324606">Изчистване на записа</translation>
 <translation id="6025215716629925253">Проследяване на стека</translation>
+<translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;1 ред не е показан&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> реда не са показани&gt;}}</translation>
+<translation id="1006873397406093306">Това разширение може да чете и променя данните ви на сайтовете. Можете да контролирате кои сайтове да са достъпни за него.</translation>
 <translation id="8389492867173948260">Разрешаване на това разширение да чете и променя всичките ви данни в посещаваните от вас уебсайтове:</translation>
 <translation id="407173827865827707">При кликване</translation>
 <translation id="6455264371803474013">На конкретни сайтове</translation>
 <translation id="3729506734996624908">Разрешени сайтове</translation>
 <translation id="3732078975418297900">Грешка в ред <ph name="ERROR_LINE"/></translation>
 <translation id="9063208415146866933">Грешка от ред <ph name="ERROR_LINE_START"/> до ред <ph name="ERROR_LINE_END"/></translation>
-<translation id="3104763887980088552">Регистрационен файл за активността</translation>
+<translation id="6997642619627518301"><ph name="NAME_PH"/> – регистрационен файл за активността</translation>
+<translation id="8287902281644548111">Търсене по извикване на API/по URL адрес</translation>
+<translation id="5008936837313706385">Име на активността</translation>
+<translation id="7583948862126372804">Брой</translation>
+<translation id="2841013758207633010">Време</translation>
+<translation id="2002109485265116295">В реално време</translation>
+<translation id="2549985041256363841">Старт на записа</translation>
+<translation id="6073451960410192870">Спиране на записа</translation>
+<translation id="8719472795285728850">В очакване на активности от разширения...</translation>
+<translation id="2540449034743108469">Натиснете „Старт“, за да стартирате приемател за активности на разширения</translation>
 <translation id="1890674179660343635">&lt;span&gt;Идент. №:&lt;/span&gt; <ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Инспектиране на изгледите</translation>
 <translation id="181577467034453336">Още <ph name="NUMBER_OF_VIEWS"/>...</translation>
@@ -4128,6 +4308,8 @@
 <translation id="5018207570537526145">Отваряне на уебсайта на разширението</translation>
 <translation id="4617270414136722281">Опции за разширението</translation>
 <translation id="7152478047064750137">Това разширение не изисква специални разрешения</translation>
+<translation id="1004218526896219317">Достъп до сайтове</translation>
+<translation id="7385896526023870365">Това разширение няма достъп до допълнителни сайтове.</translation>
 <translation id="8523849605371521713">Добавено от правило</translation>
 <translation id="5087249366037322692">Добавено от трета страна</translation>
 <translation id="6788210894632713004">Разпакетирано разширение</translation>
@@ -4177,7 +4359,17 @@
 <translation id="2785008241190445880">Отметката бе заменена</translation>
 <translation id="4320948194796820126">Добавете отметка към електронната си поща</translation>
 <translation id="2950533317914339731">Добавяйте отметки към любимите си приложения в Brave Software</translation>
+<translation id="3409785640040772790">Карти</translation>
+<translation id="6709133671862442373">Новини</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="8902081783136172774">Изберете тапет за началната си страница</translation>
+<translation id="1697150536837697295">Изкуство</translation>
+<translation id="98515147261107953">Хоризонтално</translation>
+<translation id="4359717112757026264">Градски пейзажи</translation>
+<translation id="6691541770654083180">Земя</translation>
+<translation id="5033266061063942743">Геометрични фигури</translation>
+<translation id="7789963078219276159">Фонът на началната страница бе променен на „<ph name="CATEGORY"/>“.</translation>
+<translation id="8771300903067484968">Възстановен е стандартният фон на началната страница.</translation>
 <translation id="239760341987199724">Задаване на Brave като браузър по подразбиране</translation>
 <translation id="96037229054033864">Възползвайте се от интелигентните функции на Търсене и Brave Software всеки път, когато сърфирате</translation>
 <translation id="296137235951584143">Персонализирайте Brave според вкуса си</translation>
@@ -4200,7 +4392,6 @@
 <translation id="4131410914670010031">Черно-бяло</translation>
 <translation id="7576690715254076113">Комплектуване</translation>
 <translation id="5431318178759467895">Цветно</translation>
-<translation id="98515147261107953">Хоризонтално</translation>
 <translation id="2050339315714019657">Вертикално</translation>
 <translation id="3317459757438853210">Двустранно</translation>
 <translation id="4988526792673242964">Страници</translation>
@@ -4210,6 +4401,7 @@
 <translation id="3706463572498736864">Страници на лист</translation>
 <translation id="2249605167705922988">напр. 1-5, 8, 11-13</translation>
 <translation id="5746169159649715125">Запазване като PDF файл</translation>
+<translation id="1955272076204612657">Запазване в Brave Software Диск</translation>
 <translation id="2580924999637585241">Общо: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">листа</translation>
 <translation id="8813811964357448561">лист хартия</translation>
@@ -4243,6 +4435,8 @@
 <translation id="8569682776816196752">Няма намерени местоназначения</translation>
 <translation id="7885253890047913815">Скорошни местоназначения</translation>
 <translation id="4929386379796360314">Местоназначения за отпечатване</translation>
+<translation id="8850251000316748990">Вижте още...</translation>
+<translation id="597235323114979258">Преглед на още дестинации</translation>
 <translation id="3899879303189199559">Офлайн за повече от една година</translation>
 <translation id="3154429428035006212">Офлайн за повече от един месец</translation>
 <translation id="5265562206369321422">Офлайн за повече от една седмица</translation>
@@ -4260,6 +4454,7 @@
 <translation id="7210499381659830293">Принтери, свързани чрез разширение</translation>
 <translation id="7453008956351770337">С избирането на този принтер давате разрешение за достъп до него на следното разширение:</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> не можа да установи връзка с този принтер. Уверете се, че той е включен, и опитайте отново.</translation>
+<translation id="6530186581263215931">Тези настройки са наложени от администратора ви</translation>
 <translation id="4994754230098574403">Настройва се</translation>
 <translation id="1396139853388185343">При настройването на принтера възникна грешка</translation>
 <translation id="2379281330731083556">Печат чрез системния диалогов прозорец... <ph name="SHORTCUT_KEY"/></translation>
@@ -4288,7 +4483,9 @@
 <translation id="7681095912841365527">Сайтът може да използва Bluetooth</translation>
 <translation id="3085412380278336437">Сайтът може да използва камерата ви</translation>
 <translation id="9180380851667544951">Сайтът може да споделя екрана ви</translation>
-<translation id="4992630054488400221">За да използвате Brave във VR, инсталирайте или актуализирайте клавиатурата за Daydream</translation>
+<translation id="400314203296796334">Свалете очилата, за да блокирате или разрешите.</translation>
+<translation id="4922897038695506037"><ph name="URL_HOST"/> поиска допълнителни разрешения.</translation>
+<translation id="7574650250151586813">За да въвеждате текст, актуализирайте приложението Daydream Keyboard</translation>
 <translation id="983511809958454316">Тази функция не се поддържа във VR</translation>
 <translation id="4008291085758151621">Информацията за сайта не е налична във VR</translation>
 <translation id="1439926347196400598">Ще разрешите ли на Brave да записва аудио?</translation>

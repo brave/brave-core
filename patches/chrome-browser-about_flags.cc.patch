@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 7074857d8beceb958f6368ccbcce0d97488b27af..ca0a58ea857176230d6fed6869afb238eb112bae 100644
+index 58400e87d875ea675310cd94c2269cf82f4af351..531c24c8b7324e746c5ac09457aa78d658028e03 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -262,14 +262,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
+@@ -261,14 +261,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
  const FeatureEntry::Choice kTraceUploadURL[] = {
      {flags_ui::kGenericExperimentChoiceDisabled, "", ""},
      {flag_descriptions::kTraceUploadUrlChoiceOther, switches::kTraceUploadURL,
@@ -19,5 +19,5 @@ index 7074857d8beceb958f6368ccbcce0d97488b27af..ca0a58ea857176230d6fed6869afb238
 -     "https://performance-insights.appspot.com/upload?tags=flags,TestingTeam"}};
 +     "https://no-thanks.invalid"}};
  
- #if BUILDFLAG(ENABLE_NACL)
- const FeatureEntry::Choice kNaClDebugMaskChoices[] = {
+ const FeatureEntry::Choice kPassiveListenersChoices[] = {
+     {flags_ui::kGenericExperimentChoiceDefault, "", ""},
