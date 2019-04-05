@@ -511,4 +511,32 @@ void BatLedgerImpl::GetActivityInfoList(
   }
 }
 
+// static
+void BatLedgerImpl::OnLoadPublisherInfo(
+    CallbackHolder<LoadPublisherInfoCallback>* holder,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info) {
+  std::string publisher;
+  if (info) {
+    publisher = info->ToJson();
+  }
+
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, publisher);
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::LoadPublisherInfo(
+    const std::string& publisher_key,
+    LoadPublisherInfoCallback callback) {
+  auto* holder = new CallbackHolder<LoadPublisherInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetPublisherInfo(
+      publisher_key,
+      std::bind(BatLedgerImpl::OnLoadPublisherInfo, holder, _1, _2));
+}
+
 }  // namespace bat_ledger

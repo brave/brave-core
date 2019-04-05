@@ -146,6 +146,10 @@ class BatLedgerImpl : public mojom::BatLedger,
     const std::string& json_filter,
     GetActivityInfoListCallback callback) override;
 
+  void LoadPublisherInfo(
+    const std::string& publisher_key,
+    LoadPublisherInfoCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
@@ -202,6 +206,11 @@ class BatLedgerImpl : public mojom::BatLedger,
     CallbackHolder<GetActivityInfoListCallback>* holder,
     const ledger::PublisherInfoList& list,
     uint32_t num);
+
+  static void OnLoadPublisherInfo(
+    CallbackHolder<LoadPublisherInfoCallback>* holder,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

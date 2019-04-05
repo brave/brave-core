@@ -1111,6 +1111,19 @@ void RewardsServiceImpl::LoadActivityInfo(
                      filter.id));
 }
 
+void RewardsServiceImpl::OnPublisherActivityInfoLoaded(
+    ledger::PublisherInfoCallback callback,
+    uint32_t result,
+    const std::string& info_json) {
+  auto publisher = std::make_unique<ledger::PublisherInfo>();
+
+  if (!info_json.empty()) {
+    publisher->loadFromJson(info_json);
+  }
+
+  callback(static_cast<ledger::Result>(result), std::move(publisher));
+}
+
 void RewardsServiceImpl::OnActivityInfoLoaded(
     ledger::PublisherInfoCallback callback,
     const std::string& publisher_key,
@@ -1123,8 +1136,11 @@ void RewardsServiceImpl::OnActivityInfoLoaded(
   if (list.size() == 0) {
     // we need to try to get at least publisher info in this case
     // this way we preserve publisher info
-    // TODO needs to go through ledger code
-    LoadPublisherInfo(publisher_key, callback);
+    bat_ledger_->LoadPublisherInfo(
+        publisher_key,
+        base::BindOnce(&RewardsServiceImpl::OnPublisherActivityInfoLoaded,
+                       AsWeakPtr(),
+                       callback));
     return;
   } else if (list.size() > 1) {
     callback(ledger::Result::TOO_MANY_RESULTS,

@@ -297,6 +297,10 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetOneTimeTipsUI(GetRecurringTipsCallback callback,
                           const std::vector<std::string>& json_list);
 
+  void OnPublisherActivityInfoLoaded(ledger::PublisherInfoCallback callback,
+                                     uint32_t result,
+                                     const std::string& info_json);
+
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
   void OnWalletInitialized(ledger::Result result) override;

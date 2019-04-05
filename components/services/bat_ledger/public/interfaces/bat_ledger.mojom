@@ -109,6 +109,8 @@ interface BatLedger {
 
   GetActivityInfoList(uint32 start, uint32 limit, string json_filter) =>
       (array<string> list, uint32 number);
+
+  LoadPublisherInfo(string publisher_key) => (uint32 result, string info);
 };
 
 interface BatLedgerClient {
