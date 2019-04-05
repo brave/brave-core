@@ -66,12 +66,6 @@
   <message name="IDS_FILE_BROWSER_LINUX_FILES_ROOT_LABEL" desc="A label for the 'Linux files' root which shows crostini files. Use sentence case.">
     Linux files
   </message>
-  <message name="IDS_FILE_BROWSER_MY_FILES_ROOT_LABEL" desc="A label for the 'My files' root which is parent of Downloads, Linux and Android files. Use sentence case.">
-    My files
-  </message>
-  <message name="IDS_FILE_BROWSER_EXTERNAL_STORAGE_ROOT_LABEL" desc="A label for external USB storage. Use sentence case.">
-    External storage
-  </message>
   <message name="IDS_FILE_BROWSER_MEDIA_VIEW_IMAGES_ROOT_LABEL" desc="A label for the 'Images' root of media views.">
     Images
   </message>
@@ -245,6 +239,9 @@
   </message>
   <message name="IDS_FILE_BROWSER_CLOSE_VOLUME_BUTTON_LABEL" desc="Title of the action for closing either an archive volume or a volume provided by an extension.">
     Close
+  </message>
+  <message name="IDS_FILE_BROWSER_SEND_FEEDBACK_BUTTON_LABEL" desc="Title for the action of sending user feedback.">
+    Send feedback
   </message>
   <message name="IDS_FILE_BROWSER_ADD_NEW_SERVICES_BUTTON_LABEL" desc="Title of the button in the left nav to add new services (file systems) to the Files app.">
     Add new service

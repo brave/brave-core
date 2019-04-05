@@ -168,7 +168,7 @@ GetBravePrepopulatedEnginesForCountryID(
   return t_urls;
 }
 
-};  // namespace
+}  // namespace
 
 // Redefines function with the same name in Chromium. We need to account for
 // the version of Brave engines as well: kCurrentDataVersion is defined in

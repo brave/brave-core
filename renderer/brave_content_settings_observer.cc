@@ -1,9 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/renderer/brave_content_settings_observer.h"
 
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "base/bind_helpers.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/render_messages.h"
 #include "brave/content/common/frame_messages.h"
@@ -27,7 +33,8 @@ BraveContentSettingsObserver::BraveContentSettingsObserver(
 BraveContentSettingsObserver::~BraveContentSettingsObserver() {
 }
 
-bool BraveContentSettingsObserver::OnMessageReceived(const IPC::Message& message) {
+bool BraveContentSettingsObserver::OnMessageReceived(
+    const IPC::Message& message) {
   bool handled = true;
   IPC_BEGIN_MESSAGE_MAP(BraveContentSettingsObserver, message)
     IPC_MESSAGE_HANDLER(BraveFrameMsg_AllowScriptsOnce, OnAllowScriptsOnce)
@@ -124,7 +131,8 @@ void BraveContentSettingsObserver::DidBlockFingerprinting(
   Send(new BraveViewHostMsg_FingerprintingBlocked(routing_id(), details));
 }
 
-GURL BraveContentSettingsObserver::GetOriginOrURL(const blink::WebFrame* frame) {
+GURL BraveContentSettingsObserver::GetOriginOrURL(
+    const blink::WebFrame* frame) {
   url::Origin top_origin = url::Origin(frame->Top()->GetSecurityOrigin());
   // The |top_origin| is unique ("null") e.g., for file:// URLs. Use the
   // document URL as the primary URL in those cases.
@@ -199,14 +207,15 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
   if (content_setting_rules_) {
       rules = content_setting_rules_->fingerprinting_rules;
   }
-  ContentSettingPatternSource default_rule =
-      ContentSettingPatternSource(ContentSettingsPattern::Wildcard(),
-                                  ContentSettingsPattern::FromString("https://firstParty/*"),
-                                  base::Value::FromUniquePtrValue(content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
-                                  std::string(),
-                                  false);
+  ContentSettingPatternSource default_rule = ContentSettingPatternSource(
+      ContentSettingsPattern::Wildcard(),
+      ContentSettingsPattern::FromString("https://firstParty/*"),
+      base::Value::FromUniquePtrValue(
+          content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
+      std::string(), false);
   rules.push_back(default_rule);
-  ContentSetting setting = GetFPContentSettingFromRules(rules, frame, secondary_url);
+  ContentSetting setting =
+      GetFPContentSettingFromRules(rules, frame, secondary_url);
   rules.pop_back();
   bool allow = setting != CONTENT_SETTING_BLOCK;
   allow = allow || IsWhitelistedForContentSettings();
@@ -231,7 +240,8 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
 
   // respect user's site blocklist, if any
   const GURL& primary_url = GetOriginOrURL(frame);
-  const GURL& secondary_url = url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL();
+  const GURL& secondary_url =
+      url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL();
   for (const auto& rule : content_setting_rules_->autoplay_rules) {
     if (rule.primary_pattern == ContentSettingsPattern::Wildcard())
         continue;

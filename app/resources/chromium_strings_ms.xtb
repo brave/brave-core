@@ -101,6 +101,7 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="8848045066928358658">Untuk menjadikan Brave lebih selamat, kami melumpuhkan sambungan berikut yang tidak disenaraikan dalam  <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> dan mungkin telah ditambahkan tanpa pengetahuan anda.</translation>
 <translation id="8148611988012584308">Sesuaikan dan kawal Brave</translation>
 <translation id="5849446944780602366">Sesuaikan dan kawal Brave. Kemas kini tersedia.</translation>
+<translation id="6315734375101223238">Sesuaikan dan kawal Brave. Perhatian anda diperlukan - klik untuk mendapatkan butiran.</translation>
 <translation id="9071554113102421877">&amp;Buka dalam Brave</translation>
 <translation id="2176825726964012531">Mengenai &amp;Brave</translation>
 <translation id="5450493308072741203">Kemas kini &amp;Brave</translation>
@@ -125,6 +126,7 @@ Meneruskan juga log masuk akan menggabungkan maklumat Brave seperti penanda hala
 <translation id="1853997773668795891">Paut data Brave anda ke akaun ini?</translation>
 <translation id="1326766910007115955">Anda log masuk menggunakan akaun yang terurus dan memberikan pentadbirnya kawalan ke atas profil Brave anda. Data Brave anda, seperti apl, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan terikat kepada <ph name="USER_NAME"/> secara kekal. Anda akan dapat memadamkan data ini melalui Papan Pemuka Akaun Brave Software, tetapi anda tidak akan dapat mengaitkan data ini dengan akaun lain. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Anda log masuk menggunakan akaun yang terurus dan memberikan pentadbirnya kawalan ke atas profil Brave anda. Data Brave anda, seperti apl, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan terikat kepada <ph name="USER_NAME"/> secara kekal. Anda akan dapat memadamkan data ini melalui Papan Pemuka Akaun Brave Software, tetapi anda tidak akan dapat mengaitkan data ini dengan akaun lain. Anda boleh memilih untuk membuat profil baharu untuk mengasingkan data Brave anda yang sedia ada. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">Pentadbir sistem anda telah mengkonfigurasikan Brave agar membuka penyemak imbas alternatif untuk mengakses <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> menggunakan Brave sebelum ini</translation>
 <translation id="1384923383737428730">Terdapat perisian yang berbahaya pada komputer anda. Brave boleh mengalih keluar perisian tersebut, memulihkan tetapan anda dan melumpuhkan sambungan supaya penyemak imbas anda dapat berfungsi seperti biasa semula.</translation>
 <translation id="8919921662052966648">Brave tidak dapat menyegerakkan data anda. Sila kemas kini frasa laluan Segerak anda.</translation>
@@ -173,7 +175,8 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="2871190378186459992">Temui apl, permainan, sambungan dan tema yang hebat untuk Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Peraturan masuk bagi Brave untuk membolehkan trafik mDNS.</translation>
-<translation id="3795403186582265456">Brave boleh mengecam imej dan teks dalam imej dengan menghantar imej halaman ke pelayan Brave Software. Perkara ini membolehkan anda lebih memahami kandungan halaman.</translation>
+<translation id="8207657266087451193">Jika imej tiada perihalan yang berguna, Brave akan cuba memberikan perihalan untuk anda. Untuk membuat perihalan, imej dihantar kepada Brave Software. Anda boleh mematikan pilihan ini dalam tetapan pada bila-bila masa.</translation>
+<translation id="5499063270485366718">Jika imej tiada perihalan yang berguna, Brave akan cuba memberikan perihalan untuk anda. Untuk membuat perihalan, imej dihantar kepada Brave Software.</translation>
 <translation id="7276297358157391541">Brave dapat menyediakan semakan ejaan yang lebih pintar dengan menghantar apa yang anda taip dalam penyemak imbas kepada pelayan Brave Software, membolehkan anda menggunakan teknologi semakan ejaan yang sama seperti yang digunakan oleh carian Brave Software.</translation>
 <translation id="1807774211756215222">Buka pautan dalam &amp;tab Brave baharu</translation>
 <translation id="4624945300945265642">Buka pautan dalam tetingkap inko&amp;gnito Brave</translation>
@@ -190,7 +193,6 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="5173820533850252773">Brave sudah usang</translation>
 <translation id="6389268239133412586">Tidak dapat mengemas kini Brave</translation>
 <translation id="7963515534397191222">Brave tidak dapat mengemas kini kepada versi terkini, maka anda terlepas ciri baharu dan penyelesaian keselamatan.</translation>
-<translation id="3472158705945346956">Pengurus anda mesti mengalih keluar dan menambahkan anda kembali pada Brave.</translation>
 <translation id="1705567146636171298">Kemas kini Brave</translation>
 <translation id="3598551856834560515">Kemas kini Brave untuk memulakan penyegerakan</translation>
 <translation id="4050175100176540509">Peningkatan keselamatan penting dan ciri baharu tersedia dalam versi terkini.</translation>
@@ -269,9 +271,9 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="8372880274820509128">Untuk keselamatan tambahan, Brave akan menyulitkan data anda.</translation>
 <translation id="7445061995866044926">Log keluar daripada Brave?</translation>
 <translation id="7453070689008684791">Brave akan mengakses Drive anda untuk membuat cadangan dalam bar alamat</translation>
-<translation id="7713466009760073734">OS Brave dipaparkan dalam bahasa ini</translation>
+<translation id="9221712274065451529">Bahasa ini digunakan untuk memaparkan UI OS Brave</translation>
 <translation id="3518788198614984730">Paparkan OS Brave dalam bahasa ini</translation>
-<translation id="8258976055610040706">Brave dipaparkan dalam bahasa ini</translation>
+<translation id="5757460455745382269">Bahasa ini digunakan untuk memaparkan UI Brave</translation>
 <translation id="2335583906071111058">Paparkan Brave dalam bahasa ini</translation>
 <translation id="8926637909431618259">Terus menjalankan apl latar belakang apabila Brave ditutup</translation>
 <translation id="6056473803837713617">Bantu jadikan Brave lebih baik dengan melaporkan <ph name="BEGIN_LINK"/>tetapan semasa<ph name="END_LINK"/></translation>

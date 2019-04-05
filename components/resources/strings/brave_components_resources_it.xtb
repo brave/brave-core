@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Abbiamo rilevato un problema con il tuo portafoglio. Devi ripristinare il portafoglio di backup prima che sia possibile elaborare una transazione.</translation>
 <translation id="7797604753681168055">Ripristina ora!</translation>
 <translation id="1184075897575325927">Ci dispiace, sembra che questo contributo sia già stato riscosso.</translation>
+<translation id="7180611975245234373">Aggiorna</translation>
+<translation id="839736845446313156">Registrati</translation>
+<translation id="583281660410589416">Sconosciuta</translation>
 <translation id="5094577350232361255">su</translation>
 <translation id="4918086044614829423">Accetto</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave è un marchio registrato di Brave Software. I nomi dei siti possono essere marchi o marchi registrati del proprietario del sito.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">da questa catena di sincronizzazione</translation>
 <translation id="610118613261910287">Visualizza Parole d'Ordine</translation>
 <translation id="8588535459744752615">In cerca del dispositivo</translation>
-<translation id="391177677159359824">Sincronizzazione (beta)</translation>
+<translation id="6406506848690869874">Sincronizzazione</translation>
 <translation id="28332161031213248">La lista dispositivi sottostante include tutti i dispositivi nella tua catena di sincronizzazione. Ogni dispositivo può essere gestito da qualsiasi altro dispositivo.</translation>
 <translation id="8153617760825732120">nome dispositivo</translation>
 <translation id="4241512165288542484">(Questo dispositivo)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Impostazioni del sito salvate</translation>
 <translation id="7859704718976024901">Cronologia di navigazione</translation>
 <translation id="2339730291919608488">Esci dalla catena di sincronizzazione</translation>
-<translation id="4797449295451979552">Impostazione sincronizzazione (beta)</translation>
+<translation id="4332558599726753990">Impostazioni di Sincronizzazione</translation>
 <translation id="298546024891487702">Per cominciare, dovrai aver installato Brave su tutti i dispositivi che vuoi sincronizzare. Per collegarli, avvia una catena di sincronizzazione che userai per connettere in sicurezza tutti i tuoi dispositivi tra di loro.</translation>
 <translation id="6200528822592747640">Avvia una nuova Catena di Sincronizzazione</translation>
 <translation id="5184726904895809379">Ho un Codice di Sincronizzazione</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Computer</translation>
 <translation id="1258250624898033822">Codice di sincronizzazione non valido.</translation>
 <translation id="3259723213051400722">Riprova.</translation>
-<translation id="3779810277399252432">Nessuna connessione Internet.</translation>
-<translation id="4380604249778320975">Riprova quando sarà disponibile una connessione.</translation>
 <translation id="5257281382608458806">Nome dispositivo obbligatorio.</translation>
 <translation id="8349682220522608879">Aggiungi un codice di sincronizzazione.</translation>
 <translation id="1468095392829989299">Impossibile contattare i server Sync</translation>

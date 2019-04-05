@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/net/brave_referrals_network_delegate_helper.h"
+
+#include <memory>
+#include <string>
 
 #include "base/json/json_reader.h"
 #include "brave/browser/net/url_context.h"
@@ -64,25 +68,26 @@ class BraveReferralsNetworkDelegateHelperTest : public testing::Test {
   std::unique_ptr<net::TestURLRequestContext> context_;
 };
 
-TEST_F(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain) {
+TEST_F(BraveReferralsNetworkDelegateHelperTest,
+       ReplaceHeadersForMatchingDomain) {
   GURL url("https://www.marketwatch.com");
   net::TestDelegate test_delegate;
   std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
       url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
 
-  std::unique_ptr<base::Value> referral_headers =
+  base::Optional<base::Value> referral_headers =
       base::JSONReader().ReadToValue(kTestReferralHeaders);
   ASSERT_TRUE(referral_headers);
   ASSERT_TRUE(referral_headers->is_list());
 
-  base::ListValue referral_headers_list =
-      base::ListValue(referral_headers->GetList());
+  base::ListValue* referral_headers_list = nullptr;
+  referral_headers->GetAsList(&referral_headers_list);
 
   net::HttpRequestHeaders headers;
   brave::ResponseCallback callback;
   std::shared_ptr<brave::BraveRequestInfo> brave_request_info(
       new brave::BraveRequestInfo());
-  brave_request_info->referral_headers_list = &referral_headers_list;
+  brave_request_info->referral_headers_list = referral_headers_list;
   int ret = brave::OnBeforeStartTransaction_ReferralsWork(
       request.get(), &headers, callback, brave_request_info);
 
@@ -97,25 +102,26 @@ TEST_F(BraveReferralsNetworkDelegateHelperTest, ReplaceHeadersForMatchingDomain)
   EXPECT_EQ(ret, net::OK);
 }
 
-TEST_F(BraveReferralsNetworkDelegateHelperTest, NoReplaceHeadersForNonMatchingDomain) {
+TEST_F(BraveReferralsNetworkDelegateHelperTest,
+       NoReplaceHeadersForNonMatchingDomain) {
   GURL url("https://www.google.com");
   net::TestDelegate test_delegate;
   std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
       url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
 
-  std::unique_ptr<base::Value> referral_headers =
+  base::Optional<base::Value> referral_headers =
       base::JSONReader().ReadToValue(kTestReferralHeaders);
   ASSERT_TRUE(referral_headers);
   ASSERT_TRUE(referral_headers->is_list());
 
-  base::ListValue referral_headers_list =
-      base::ListValue(referral_headers->GetList());
+  base::ListValue* referral_headers_list = nullptr;
+  referral_headers->GetAsList(&referral_headers_list);
 
   net::HttpRequestHeaders headers;
   brave::ResponseCallback callback;
   std::shared_ptr<brave::BraveRequestInfo> brave_request_info(
       new brave::BraveRequestInfo());
-  brave_request_info->referral_headers_list = &referral_headers_list;
+  brave_request_info->referral_headers_list = referral_headers_list;
   int ret = brave::OnBeforeStartTransaction_ReferralsWork(
       request.get(), &headers, callback, brave_request_info);
 

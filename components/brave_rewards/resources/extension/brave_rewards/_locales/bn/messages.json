@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "আমরা Brave পেমেন্টকে একটি বড় আপগ্রেড প্রদান করেছি|",
+    "message": "We’ve given Brave Rewards a big upgrade.",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
@@ -185,6 +185,10 @@
     "message": "একটি অনুদান আপনার জন্য অপেক্ষা করছে।",
     "description": "Description for new grant notification"
   },
+  "backupNow": {
+    "message": "Backup Now",
+    "description": "Notification button text when we ask user to backup wallet"
+  },
   "backupWalletTitle": {
     "message": "ওয়ালেটের ব্যাকআপ নিন",
     "description": "Notification title when we ask user to backup wallet"
@@ -194,7 +198,7 @@
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "আপনার Brave পেমেন্ট অ্যাকাউন্টটি জমা দেওয়ার জন্য অপেক্ষারত।",
+    "message": "Your Brave Rewards account is waiting for a deposit.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -214,7 +218,7 @@
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "আপনার টিপ প্রক্রিয়া করার সময় একটি সমস্যা হয়েছে, অনুগ্রহ করে আবার চেষ্টা করুন।",
+    "message": "Unable to send your tip. Please try again later.",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -328,5 +332,49 @@
   "walletFailedButton": {
     "message": "আবার করুন",
     "description": "Button for re-try after wallet creation failed"
+  },
+  "addFunds": {
+    "message": "Add funds",
+    "description": "Button for adding funds"
+  },
+  "rewardsSettings": {
+    "message": "Rewards Settings",
+    "description": "Button for opening settings page"
+  },
+  "earningsClaimDefault": {
+    "message": "Your Ads earnings are available.",
+    "description": "Panel notification text for Ads grant"
+  },
+  "and": {
+    "message": "and",
+    "description": "The word 'and'"
+  },
+  "braveRewardsSubTitle": {
+    "message": "ব্রাউজ করার জন্য পুরস্কৃত হন!",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "disabledPanelTextTwo": {
+    "message": "Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.",
+    "description": "Text block for wallet disabled panel"
+  },
+  "enableRewards": {
+    "message": "Brave রিওয়ার্ডস সক্ষম করুন",
+    "description": "Subtitle for wallet disabled panel"
+  },
+  "privacyPolicy": {
+    "message": "Privacy Policy",
+    "description": "Privacy Policy"
+  },
+  "serviceText": {
+    "message": "By clicking 'Enable Brave Rewards', you indicate that you have read and agree to the",
+    "description": "Terms of service main text"
+  },
+  "termsOfService": {
+    "message": "Terms of Service",
+    "description": "Terms of Service"
+  },
+  "welcomeBack": {
+    "message": "Welcome Back!",
+    "description": "Title message for wallet disabled panel"
   }
 }

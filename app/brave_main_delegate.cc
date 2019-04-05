@@ -30,6 +30,7 @@
 #include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
 #include "gpu/config/gpu_finch_features.h"
+#include "services/network/public/cpp/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/ui_base_features.h"
 
@@ -145,7 +146,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       autofill::features::kAutofillServerCommunication.name,
       features::kAudioServiceOutOfProcess.name,
       features::kDefaultEnableOopRasterization.name,
-      features::kSharedArrayBuffer.name,
+      network::features::kNetworkService.name,
       unified_consent::kUnifiedConsent.name,
   };
 

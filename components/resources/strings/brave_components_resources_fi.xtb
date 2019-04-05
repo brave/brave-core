@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Havaitsimme, että lompakkosi kanssa ilmeni ongelmia. Sinun täytyy palauttaa varalompakkosi ennen kuin liiketapahtumia voidaan käsitellä.</translation>
 <translation id="7797604753681168055">Palauta nyt!</translation>
 <translation id="1184075897575325927">Valitettavasti tämä lahjoitus on nähtävästi jo lunastettu.</translation>
+<translation id="7180611975245234373">Päivitä</translation>
+<translation id="839736845446313156">Rekisteröidy</translation>
+<translation id="583281660410589416">Tuntematon</translation>
 <translation id="5094577350232361255">tietoa</translation>
 <translation id="4918086044614829423">Hyväksy</translation>
 <translation id="6832986780040139899">©2016–2018 Brave-ohjelmisto. Brave on Brave Softwaren rekisteröity tuotemerkki. Sivustojen nimet saattavat olla sivustojen omistajien tuotemerkkejä tai rekisteröityjä tuotemerkkejä.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">tästä synkronisointiketjusta</translation>
 <translation id="610118613261910287">Näytä koodisanat</translation>
 <translation id="8588535459744752615">Laitetta haetaan</translation>
-<translation id="391177677159359824">Sync (betaversio)</translation>
+<translation id="6406506848690869874">Synkronointi</translation>
 <translation id="28332161031213248">Alla oleva laiteluettelo kattaa kaikki synkronointiketjusi laitteet. Jokaista laitetta voidaan hallinnoida minkä tahansa muun laitteen kautta.</translation>
 <translation id="8153617760825732120">laitteen nimi</translation>
 <translation id="4241512165288542484">(tämä laite)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Tallennettujen sivustojen asetukset</translation>
 <translation id="7859704718976024901">Selaushistoria</translation>
 <translation id="2339730291919608488">Jätä synkronointiketju</translation>
-<translation id="4797449295451979552">Syncin (betaversio) asennus</translation>
+<translation id="4332558599726753990">Synkronoinnin asennus</translation>
 <translation id="298546024891487702">Ensi alkuun sinun on asennettava Brave synkronoitaville laitteille. Voit ketjuttaa ne käynnistämällä synkronointiketjun, jonka avulla voit yhdistää kaikki laitteesi toisiinsa turvallisesti.</translation>
 <translation id="6200528822592747640">Käynnistä uusi synkronointiketju</translation>
 <translation id="5184726904895809379">Minulla on synkronointikoodi</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Tietokone</translation>
 <translation id="1258250624898033822">Virheellinen synkronointiavain.</translation>
 <translation id="3259723213051400722">Yritä uudelleen.</translation>
-<translation id="3779810277399252432">Ei Internet-yhteyttä.</translation>
-<translation id="4380604249778320975">Yritä uudelleen, kun yhteys on saatavilla.</translation>
 <translation id="5257281382608458806">Laitteen nimi vaaditaan.</translation>
 <translation id="8349682220522608879">Lisää synkronointikoodi.</translation>
 <translation id="1468095392829989299">Yhteyttä synkronointipalvelimiin ei voitu muodostaa.</translation>

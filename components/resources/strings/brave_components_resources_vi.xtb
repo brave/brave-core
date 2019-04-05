@@ -126,6 +126,9 @@
 <translation id="570208820610947248">Chúng tôi phát hiện có vấn đề đối với ví tiền của bạn. Bạn phải khôi phục ví sao lưu trước khi có thể xử lý bất kỳ giao dịch nào.</translation>
 <translation id="7797604753681168055">Khôi phục ngay!</translation>
 <translation id="1184075897575325927">Rất tiếc, có vẻ như khoản thưởng này đã được nhận.</translation>
+<translation id="7180611975245234373">Làm mới</translation>
+<translation id="839736845446313156">Đăng ký</translation>
+<translation id="583281660410589416">Không xác định</translation>
 <translation id="5094577350232361255">về</translation>
 <translation id="4918086044614829423">Chấp nhận</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave là thương hiệu đã đăng ký của Brave Software. Tên trang web có thể là thương hiệu hoặc thương hiệu đã đăng ký của chủ sở hữu trang web.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">khỏi chuỗi đồng bộ này</translation>
 <translation id="610118613261910287">Xem Từ Mã</translation>
 <translation id="8588535459744752615">Đang tìm thiết bị</translation>
-<translation id="391177677159359824">Đồng bộ (beta)</translation>
+<translation id="6406506848690869874">Đồng bộ</translation>
 <translation id="28332161031213248">Danh sách thiết bị bên dưới bao gồm tất cả các thiết bị trong chuỗi đồng bộ của bạn. Mỗi thiết bị có thể được quản lý từ bất kỳ thiết bị nào khác.</translation>
 <translation id="8153617760825732120">tên thiết bị</translation>
 <translation id="4241512165288542484">(Thiết bị này)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">Thiết lập trang đã lưu</translation>
 <translation id="7859704718976024901">Lịch sử duyệt web</translation>
 <translation id="2339730291919608488">Rời chuỗi đồng bộ</translation>
-<translation id="4797449295451979552">Cài đặt Đồng bộ (beta)</translation>
+<translation id="4332558599726753990">Cài đặt Đồng bộ</translation>
 <translation id="298546024891487702">Để bắt đầu, bạn sẽ cần cài đặt Brave trên tất cả các thiết bị bạn dự định đồng bộ. Để liên kết các thiết bị này lại với nhau, hãy bắt đầu chuỗi đồng bộ mà bạn sẽ sử dụng để liên kết bảo mật tất cả các thiết bị của bạn lại với nhau.</translation>
 <translation id="6200528822592747640">Bắt đầu Chuỗi Đồng bộ mới</translation>
 <translation id="5184726904895809379">Tôi có Mã Đồng bộ</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">Máy tính</translation>
 <translation id="1258250624898033822">Mã đồng bộ không hợp lệ.</translation>
 <translation id="3259723213051400722">Vui lòng thử lại.</translation>
-<translation id="3779810277399252432">Không có kết nối internet.</translation>
-<translation id="4380604249778320975">Vui lòng thử lại khi kết nối của bạn khả dụng.</translation>
 <translation id="5257281382608458806">Tên thiết bị là bắt buộc.</translation>
 <translation id="8349682220522608879">Vui lòng thêm mã đồng bộ.</translation>
 <translation id="1468095392829989299">Không thể liên hệ máy chủ Đồng bộ</translation>

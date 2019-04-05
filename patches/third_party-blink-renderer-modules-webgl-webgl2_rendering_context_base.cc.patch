@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
-index 66d8748afc4aac407b1bb88098139ab64c720b26..34445419c16ccda5154553fa363834c24c1c5075 100644
+index f95cbea71c0efa127002b95c2392ef11b3e66542..961d0c5976b0c0f010678977e2d437ed53148367 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
 @@ -9,6 +9,7 @@
@@ -10,7 +10,7 @@ index 66d8748afc4aac407b1bb88098139ab64c720b26..34445419c16ccda5154553fa363834c2
  #include "gpu/command_buffer/client/gles2_interface.h"
  #include "third_party/blink/public/platform/web_graphics_context_3d_provider.h"
  #include "third_party/blink/renderer/bindings/modules/v8/webgl_any.h"
-@@ -5066,6 +5067,8 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
+@@ -5069,6 +5070,8 @@ ScriptValue WebGL2RenderingContextBase::getParameter(ScriptState* script_state,
                                                       GLenum pname) {
    if (isContextLost())
      return ScriptValue::CreateNull(script_state);
@@ -19,7 +19,7 @@ index 66d8748afc4aac407b1bb88098139ab64c720b26..34445419c16ccda5154553fa363834c2
    switch (pname) {
      case GL_SHADING_LANGUAGE_VERSION: {
        return WebGLAny(
-@@ -5644,6 +5647,8 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
+@@ -5647,6 +5650,8 @@ ScriptValue WebGL2RenderingContextBase::getFramebufferAttachmentParameter(
    if (isContextLost() || !ValidateGetFramebufferAttachmentParameterFunc(
                               kFunctionName, target, attachment))
      return ScriptValue::CreateNull(script_state);
@@ -28,7 +28,7 @@ index 66d8748afc4aac407b1bb88098139ab64c720b26..34445419c16ccda5154553fa363834c2
  
    WebGLFramebuffer* framebuffer_binding = GetFramebufferBinding(target);
    DCHECK(!framebuffer_binding || framebuffer_binding->Object());
-@@ -5863,6 +5868,8 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
+@@ -5866,6 +5871,8 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
      GLenum pname) {
    if (isContextLost() || !ValidateTextureBinding("getTexParameter", target))
      return ScriptValue::CreateNull(script_state);

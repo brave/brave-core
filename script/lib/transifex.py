@@ -23,6 +23,8 @@ def transifex_name_from_filename(source_file_path, filename):
         return 'brave_components_resources'
     elif ext == '.grd':
         return filename
+    elif 'brave_extension' in source_file_path:
+        return 'brave_extension'
     elif 'brave_rewards' in source_file_path:
         return 'rewards_extension'
     assert False, ('JSON files should be mapped explicitly, this '

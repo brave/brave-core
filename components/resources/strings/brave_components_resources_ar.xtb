@@ -126,6 +126,9 @@
 <translation id="570208820610947248">اكتشفنا وجود خطأ في محفظتك، ولذلك يجب استرداد النسخة الاحتياطية منها قبل معالجة أي معاملات.</translation>
 <translation id="7797604753681168055">الاسترداد الآن</translation>
 <translation id="1184075897575325927">عذرًا، يبدو أن هذه الجائزة قد أخذت مسبقًا.</translation>
+<translation id="7180611975245234373">تحديث</translation>
+<translation id="839736845446313156">تسجيل</translation>
+<translation id="583281660410589416">غير معروف</translation>
 <translation id="5094577350232361255">معلومات</translation>
 <translation id="4918086044614829423">قبول</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave هي علامة تجارية مسجلة لشركة Brave Software. قد تكون أسماء المواقع علامات تجارية أو علامات تجارية مسجلة لمالك الموقع.</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">من سلسلة المزامنة هذه</translation>
 <translation id="610118613261910287">عرض كلمات الرمز</translation>
 <translation id="8588535459744752615">جاري البحث عن جهاز</translation>
-<translation id="391177677159359824">Sync (بيتا)</translation>
+<translation id="6406506848690869874">مزامنة</translation>
 <translation id="28332161031213248">قائمة الأجهزة أدناه تحتوي على جميع الأجهزة في سلسلة المزامنة لديك. يمكن إدارة كل جهاز من الأجهزة الأخرى.</translation>
 <translation id="8153617760825732120">اسم الجهاز</translation>
 <translation id="4241512165288542484">(هذا الجهاز)</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">إعدادات الموقع المحفوظة</translation>
 <translation id="7859704718976024901">سجلّ التصفّح</translation>
 <translation id="2339730291919608488">مغادرة سلسلة المزامنة</translation>
-<translation id="4797449295451979552">إعداد Sync (بيتا)</translation>
+<translation id="4332558599726753990">تهيئة المزامنة</translation>
 <translation id="298546024891487702">للبدء، تحتاج لأن تثبت Brave على جميع الأجهزة التي تنوي مزامنتها. ولكي تربط هذه الأجهزة معًا، ابدأ سلسلة المزامنة التي ستستخدمها لربط جميع أجهزتك معًا بشكل آمن.</translation>
 <translation id="6200528822592747640">بدء سلسلة مزامنة جديدة</translation>
 <translation id="5184726904895809379">لدي رمز مزامنة</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">الكمبيوتر</translation>
 <translation id="1258250624898033822">رمز المزامنة غير صالح.</translation>
 <translation id="3259723213051400722">يُرجى إعادة المحاولة.</translation>
-<translation id="3779810277399252432">لا يتوفّر اتصال بالإنترنت.</translation>
-<translation id="4380604249778320975">يُرجى إعادة المحاولة عند توفّر اتصال.</translation>
 <translation id="5257281382608458806">يلزم إدخال اسم الجهاز.</translation>
 <translation id="8349682220522608879">يُرجى إضافة رمز مزامنة.</translation>
 <translation id="1468095392829989299">تعذّر الاتصال بخوادم المزامنة</translation>

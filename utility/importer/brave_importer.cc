@@ -131,7 +131,7 @@ void BraveImporter::ImportRequiredItems() {
 }
 
 void BraveImporter::ImportHistory() {
-  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
       "session-store-1");
   if (!session_store_json)
     return;
@@ -183,7 +183,7 @@ void BraveImporter::ImportHistory() {
 
 void BraveImporter::ParseBookmarks(
     std::vector<ImportedBookmarkEntry>* bookmarks) {
-  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
       "session-store-1");
   if (!session_store_json)
     return;
@@ -331,16 +331,16 @@ void BraveImporter::ImportBookmarks() {
   }
 }
 
-std::unique_ptr<base::Value> BraveImporter::ParseBraveStateFile(
+base::Optional<base::Value> BraveImporter::ParseBraveStateFile(
     const std::string& filename) {
   base::FilePath session_store_path = source_path_.AppendASCII(filename);
   std::string session_store_content;
   if (!ReadFileToString(session_store_path, &session_store_content)) {
     LOG(ERROR) << "Could not read file: " << session_store_path;
-    return nullptr;
+    return base::nullopt;
   }
 
-  std::unique_ptr<base::Value> session_store_json =
+  base::Optional<base::Value> session_store_json =
     base::JSONReader::Read(session_store_content);
   if (!session_store_json) {
     LOG(ERROR) << "Could not parse JSON from file: " << session_store_path;
@@ -350,7 +350,7 @@ std::unique_ptr<base::Value> BraveImporter::ParseBraveStateFile(
 }
 
 void BraveImporter::ImportStats() {
-  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
       "session-store-1");
   if (!session_store_json)
     return;
@@ -625,9 +625,9 @@ bool ParsePinnedSites(BraveLedger* ledger,
 }
 
 bool BraveImporter::ImportLedger() {
-  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
       "session-store-1");
-  std::unique_ptr<base::Value> ledger_state_json = ParseBraveStateFile(
+  base::Optional<base::Value> ledger_state_json = ParseBraveStateFile(
       "ledger-state.json");
   if (!(session_store_json && ledger_state_json)) {
     return false;
@@ -669,7 +669,7 @@ bool BraveImporter::ImportLedger() {
 }
 
 void BraveImporter::ImportReferral() {
-  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
       "session-store-1");
   if (!session_store_json) {
     return;
@@ -852,7 +852,7 @@ std::vector<ImportedBrowserTab> ParsePinnedTabs(
 }
 
 void BraveImporter::ImportWindows() {
-  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
       "session-store-1");
   if (!session_store_json)
     return;
@@ -884,7 +884,7 @@ void BraveImporter::ImportWindows() {
 }
 
 void BraveImporter::ImportSettings() {
-  std::unique_ptr<base::Value> session_store_json = ParseBraveStateFile(
+  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
       "session-store-1");
   if (!session_store_json) {
     return;

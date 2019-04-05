@@ -126,6 +126,9 @@
 <translation id="570208820610947248">我们检测到您的钱包出错了。您必须还原备份钱包，然后方可处理任何交易。</translation>
 <translation id="7797604753681168055">立即还原！</translation>
 <translation id="1184075897575325927">抱歉，此补助似乎已被领取。</translation>
+<translation id="7180611975245234373">刷新</translation>
+<translation id="839736845446313156">注册</translation>
+<translation id="583281660410589416">未知</translation>
 <translation id="5094577350232361255">关于</translation>
 <translation id="4918086044614829423">接受</translation>
 <translation id="6832986780040139899">©2016 –2018 Brave Software。Brave 是 Brave Software 的注册商标。网站名称可能是网站所有者的商标或注册商标。</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">从此同步链</translation>
 <translation id="610118613261910287">查看密码词</translation>
 <translation id="8588535459744752615">正在查找设备</translation>
-<translation id="391177677159359824">同步（测试版）</translation>
+<translation id="6406506848690869874">同步</translation>
 <translation id="28332161031213248">下方的设备列表包括了您的同步链中的全部设备。每一台设备均可通过任意一台其他设备管理。</translation>
 <translation id="8153617760825732120">设备名称</translation>
 <translation id="4241512165288542484">（此设备）</translation>
@@ -327,7 +330,7 @@
 <translation id="5591129654353352557">保存的网站设置</translation>
 <translation id="7859704718976024901">浏览记录</translation>
 <translation id="2339730291919608488">离开同步链</translation>
-<translation id="4797449295451979552">同步（测试版）设置</translation>
+<translation id="4332558599726753990">同步设置</translation>
 <translation id="298546024891487702">首先，请在所有需要同步的设备上安装Brave。要链接所有设备，请创建一个同步链，即可把所有设备安全连接到一起。</translation>
 <translation id="6200528822592747640">创建新的同步链</translation>
 <translation id="5184726904895809379">我有同步密码</translation>
@@ -359,8 +362,6 @@
 <translation id="1736420071277903564">计算机</translation>
 <translation id="1258250624898033822">同步代码无效。</translation>
 <translation id="3259723213051400722">请重试。</translation>
-<translation id="3779810277399252432">未连接到互联网。</translation>
-<translation id="4380604249778320975">请在连接可用时重试。</translation>
 <translation id="5257281382608458806">设备名称为必填项。</translation>
 <translation id="8349682220522608879">请添加同步代码。</translation>
 <translation id="1468095392829989299">无法连接同步服务器</translation>

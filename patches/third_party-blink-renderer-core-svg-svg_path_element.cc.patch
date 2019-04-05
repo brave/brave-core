@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/svg/svg_path_element.cc b/third_party/blink/renderer/core/svg/svg_path_element.cc
-index 6b8cffd0da8e91fe26b3dcc4add90a88fea2e9f4..2785755dd4d3ffba190ddf157b0d4b4cd3261778 100644
+index 0b03e77f677831e8e3f426164a199c5dbbd85f25..6d6b7e1623bf64b06f1018e08202ba9c4446055a 100644
 --- a/third_party/blink/renderer/core/svg/svg_path_element.cc
 +++ b/third_party/blink/renderer/core/svg/svg_path_element.cc
 @@ -20,6 +20,7 @@
@@ -17,6 +17,6 @@ index 6b8cffd0da8e91fe26b3dcc4add90a88fea2e9f4..2785755dd4d3ffba190ddf157b0d4b4c
 +  if (!AllowFingerprinting(GetDocument().GetFrame())) {
 +    return 0.0f;
 +  }
-   GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheets();
+   GetDocument().UpdateStyleAndLayoutIgnorePendingStylesheetsForNode(this);
    return SVGPathQuery(PathByteStream()).GetTotalLength();
  }

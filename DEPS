@@ -29,13 +29,6 @@ hooks = [
     'action': ['python', 'src/brave/script/bootstrap.py'],
   },
   {
-    # Apply patches to chromium src
-    'name': 'apply_patches',
-    'pattern': '.',
-    'condition': 'not checkout_android',
-    'action': ['python', 'src/brave/script/apply-patches.py'],
-  },
-  {
     # Download rust deps if necessary
     'name': 'download_rust_deps',
     'pattern': '.',

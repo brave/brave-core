@@ -15,10 +15,6 @@
     "message": "למטה",
     "description": "Message for when shields is disabled"
   },
-  "totalBlocked": {
-    "message": "סך הכל חסומים",
-    "description": "Message showing the amount of all blocked resources"
-  },
   "forThisSite": {
     "message": "באתר זה",
     "description": "Partial string for the phrase `shields is up *for this site*`"
@@ -31,69 +27,65 @@
     "message": "אתם גולשים באתר זה ללא שום הגנות אבטחה ופרטיות.",
     "description": "Message telling the user that shields are disabled"
   },
-  "blockAds": {
-    "message": "פרסומות ותוכנות מעקב חסומות",
-    "description": "Message indicating the number of ads and trackers blocked"
+  "itemsBlocked": {
+    "message": "Items blocked",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
-  "blockPopups": {
-    "message": "חלונות קופצים חסומים",
-    "description": "Message indicating the number of pop-ups blocked"
+  "itemBlocked": {
+    "message": "Item blocked",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
-  "blockImages": {
-    "message": "תמונות חסומות",
-    "description": "Message indicating the number of images blocked"
+  "and": {
+    "message": "and",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
-  "block3partyCookies": {
-    "message": "קבצי עוגיות של צד שלישי חסומים",
-    "description": "Message for the select option about cookies blocked, blocking 3rd party cookies"
+  "connectionsUpgraded": {
+    "message": "connections upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
-  "allowAllCookies": {
-    "message": "אפשר את כל קבצי העוגיות",
-    "description": "Message for the select option about cookies blocked, allowing all cookies"
+  "connectionUpgraded": {
+    "message": "connection upgraded",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
-  "blockAllCookies": {
-    "message": "קבצי עוגיות חסומים",
-    "description": "Message for the select option about cookies blocked, blocking all cookies"
+  "thirdPartyTrackersBlocked": {
+    "message": "3rd-party trackers blocked",
+    "description": "Message for the scripts blocked row label"
   },
-  "blockSomeScripts": {
-    "message": "כמה סקריפטים חסומים",
-    "description": "Message for the select option about scripts blocked, blocking 3rd party scripts"
+  "connectionsUpgradedHTTPS": {
+    "message": "Connections upgraded to HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
-  "allowAllScripts": {
-    "message": "כל הפקודות מותרות",
-    "description": "Message for the select option about scripts blocked, allowing all scripts"
+  "connectionUpgradedHTTPS": {
+    "message": "Connection upgraded to HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
-  "blockAllScriptsOrigins": {
+  "scriptsBlocked": {
     "message": "סרקיפטים נחסמו.",
-    "description": "Message for the select option about scripts blocked, blocking all scripts"
+    "description": "Message for the scripts blocked row label"
   },
-  "block3partyFingerprinting": {
+  "thirdPartyCookiesBlocked": {
+    "message": "קבצי עוגיות של צד שלישי חסומים",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "קבצי עוגיות חסומים",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "אפשר את כל קבצי העוגיות",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "thirdPartyFingerprintingBlocked": {
     "message": "חסימת אימות של מכשיר של צד שלישי",
-    "description": "Message for the select option about fingerprinting blocked, blocking 3rd party fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
-  "allowAllFingerprinting": {
-    "message": "זיהוי כל ההתקנים פעיל",
-    "description": "Message for the select option about fingerprinting blocked, allowing all fingerprinting"
-  },
-  "blockAllFingerprinting": {
+  "allFingerprintingBlocked": {
     "message": "זיהוי התקן חסום",
-    "description": "Message for the select option about fingerprinting blocked, blocking all fingerprinting"
+    "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
-  "blockPishing": {
-    "message": "נסיונות פישינג ותוכנות זדוניות שנחסמו",
-    "description": "Message indicating the number of phishing/malware blocked"
-  },
-  "connectionsEncrypted": {
-    "message": "חיבור מוצפן",
-    "description": "Message indicating the number of connections encrypted"
-  },
-  "editDefaults": {
-    "message": "ברירות מחדל של הגנות גלובליות",
-    "description": "Message linking shields to the global shield settings"
-  },
-  "cookiesOnThisSite": {
-    "message": "קבצי עוגיות באתר זה",
-    "description": "Message for the cookie resources blocked panel"
+  "allFingerprintingAllowed": {
+    "message": "זיהוי כל ההתקנים פעיל",
+    "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
     "message": "נסיונות זיהוי התקן",
@@ -111,49 +103,21 @@
     "message": "פקודות מותרות",
     "description": "Message for the script resources allowed"
   },
-  "allowAll": {
-    "message": "מתן הרשאה לכול",
-    "description": "Message for the resources blocked *allow all* option"
-  },
-  "allow": {
-    "message": "אפשר",
-    "description": "Message for the resources blocked *allow* option"
-  },
-  "allowed": {
-    "message": "מותר",
-    "description": "Message for the resources blocked *allowed* option"
-  },
   "blockAll": {
     "message": "חסום הכל",
     "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "מתן הרשאה לכול",
+    "description": "Message for the resources blocked *allow all* option"
   },
   "block": {
     "message": "חסום",
     "description": "Message for the resources blocked *block* option"
   },
-  "blocked": {
-    "message": "חסום",
-    "description": "Message for the resources blocked *blocked* option"
-  },
-  "apply": {
-    "message": "יישם",
-    "description": "Message for the button inside dynamic list of resources blocked"
-  },
-  "applyOnce": {
-    "message": "יישם פעם אחת",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply once*"
-  },
-  "applyUntilRestart": {
-    "message": "יישם עד לאתחול",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *apply until restart*"
-  },
-  "alwaysApply": {
-    "message": "יישם תמיד",
-    "description": "Message for the dropdown option inside dynamic list of resources blocked to *always apply*"
-  },
-  "undo": {
-    "message": "בטל",
-    "description": "Message for the resources blocked *undo* option"
+  "allow": {
+    "message": "אפשר",
+    "description": "Message for the resources blocked *allow* option"
   },
   "cancel": {
     "message": "ביטול",
@@ -162,5 +126,13 @@
   "goBack": {
     "message": "חזור",
     "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "יישם פעם אחת",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Change global shield defaults",
+    "description": "Message for the button action linking to the settings page"
   }
 }

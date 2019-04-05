@@ -1,17 +1,28 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.cc b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-index bf28289c6edd427baf753673aa0a411ff7ef0cde..2e9eb7c50e77f47128eea99a429bf9403df501bc 100644
+index 591fb243215f40c243d0ff61255daed7c55bbfa3..8ade4a04e2b5666e6e6c2504b43a9f06615a498a 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-@@ -316,7 +316,7 @@ void ProfileChooserView::ShowBubble(
+@@ -162,7 +162,7 @@ void ProfileChooserView::ShowBubble(
+   if (IsShowing())
      return;
  
-   profile_bubble_ =
--      new ProfileChooserView(anchor_button, browser, view_mode,
-+      new BraveProfileChooserView(anchor_button, browser, view_mode,
-                              manage_accounts_params.service_type, access_point);
-   if (anchor_button) {
-     anchor_button->AnimateInkDrop(views::InkDropState::ACTIVATED, nullptr);
-@@ -1322,9 +1322,12 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
+-  profile_bubble_ = new ProfileChooserView(
++  profile_bubble_ = new BraveProfileChooserView(
+       anchor_button, anchor_rect, parent_window, browser, view_mode,
+       manage_accounts_params.service_type, access_point, is_source_keyboard);
+   base::RecordAction(base::UserMetricsAction("ProfileChooser_Show"));
+@@ -793,7 +793,9 @@ views::View* ProfileChooserView::CreateCurrentProfileView(
+   Profile* profile = browser()->profile();
+   const bool sync_disabled = !profile->IsSyncAllowed();
+   if (!is_guest && sync_disabled)
+-    return CreateDiceSyncErrorView(avatar_item, sync_ui_util::NO_SYNC_ERROR, 0);
++    return static_cast<BraveProfileChooserView*>(this)
++        ->BraveCreateDiceSyncErrorView(avatar_item, sync_ui_util::NO_SYNC_ERROR,
++                                       0);
+ 
+   if (!avatar_item.signed_in && dice_enabled_ &&
+       SyncPromoUI::ShouldShowSyncPromo(profile)) {
+@@ -1049,9 +1051,12 @@ views::View* ProfileChooserView::CreateOptionsView(bool display_lock,
        layout->AddView(guest_profile_button_);
      }
    }
@@ -19,7 +30,7 @@ index bf28289c6edd427baf753673aa0a411ff7ef0cde..2e9eb7c50e77f47128eea99a429bf940
  
    base::string16 text = l10n_util::GetStringUTF16(
        is_guest ? IDS_PROFILES_EXIT_GUEST : IDS_PROFILES_MANAGE_USERS_BUTTON);
-+  if (browser_->profile()->IsTorProfile())
++  if (browser()->profile()->IsTorProfile())
 +    text = l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_TOR);
    const gfx::VectorIcon& settings_icon =
        is_guest ? kCloseAllIcon : kSettingsIcon;

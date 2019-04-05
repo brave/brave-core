@@ -1,28 +1,19 @@
 diff --git a/chrome/browser/resources/md_extensions/extensions.html b/chrome/browser/resources/md_extensions/extensions.html
-index 7b1d0396d0f697ce00597a3c890b7860010d0338..6dbfb1d57049ecdcf9460d440466c18ffa83344d 100644
+index 088cee5cf802262eaaf5806d4b68ebc52a24f002..0945c0ff35a00d025e76bf6e967904b106ca0f26 100644
 --- a/chrome/browser/resources/md_extensions/extensions.html
 +++ b/chrome/browser/resources/md_extensions/extensions.html
-@@ -12,7 +12,7 @@
-       /* All colors are inlined as the equivalent variables live in stylesheets,
-        * which can slow down the shell by being pasted or loaded externally. */
-       --dev-mode-toolbar-height: 52px;
--      --toolbar-light-color: rgb(51, 103, 214); /* --google-blue-700 */
-+      --toolbar-light-color: var(--md-toolbar-color); /* --google-blue-700 */
-       --toolbar-height: 56px;
- 
-       /* --md-background-color in disguise. */
-@@ -25,7 +25,7 @@
-     html[dark] {
-       background-color: rgb(32, 33, 36);  /* --google-grey-900 */
+@@ -21,7 +21,7 @@
+       content: '';
+       display: block;
      }
 -
 +<if expr="_google_chrome">
-     html:not([dark]).loading {
-       /* Replaced when manager.html loads. */
-       border-top: var(--toolbar-height) solid var(--toolbar-light-color);
-@@ -53,7 +53,11 @@
-       border-top: calc(var(--toolbar-height) + var(--dev-mode-toolbar-height))
-           solid;
+     html.loading::before {
+       background: var(--md-toolbar-color);
+       height: var(--md-toolbar-height);
+@@ -43,7 +43,11 @@
+     html[dark].loading.in-dev-mode body::before {
+       border-bottom: var(--md-toolbar-border);
      }
 -
 +</if>

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/md_extensions/BUILD.gn b/chrome/browser/resources/md_extensions/BUILD.gn
-index 7dacff281fc4029e7c3527b1e041b505aae51c7a..f50c8fe387d179fba372e225b3051da0ed88ce33 100644
+index 10308a08fa641097683bc5c11b898bbd80614174..06b7b3d78175140d6ec73ad73f09b3171cdf8964 100644
 --- a/chrome/browser/resources/md_extensions/BUILD.gn
 +++ b/chrome/browser/resources/md_extensions/BUILD.gn
 @@ -21,6 +21,7 @@ optimize_webui("build") {

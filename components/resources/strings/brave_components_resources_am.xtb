@@ -126,6 +126,9 @@
 <translation id="570208820610947248">ከዋሌትዎ ጋር በተያያዘ የሆነ ችግር እንዳለ ደርሰንበታል፤ ማንኛቸውም ግብይቶች ሊከናወኑ ከመቻላቸው በፊት የመጠባበቂያ ዋሌቶን ወደ ቀድሞ ይዞታው መመለስ ይኖርቦታል፡፡</translation>
 <translation id="7797604753681168055">አሁን እንደገና ያግኙ!</translation>
 <translation id="1184075897575325927">ይቅርታ፣ ይህ ግራንት በሌለ ሰው ቀድሞ የተያዘ ይመስላል</translation>
+<translation id="7180611975245234373">አድስ</translation>
+<translation id="839736845446313156">ይመዝገቡ</translation>
+<translation id="583281660410589416">ያልታወቀ</translation>
 <translation id="5094577350232361255">ስለ</translation>
 <translation id="4918086044614829423">ይቀበሉ</translation>
 <translation id="6832986780040139899">©2016–2018 ብሬቭ ሶፍትዌር፤ Brave ለብሬቭ ሶፍትዌር የተመዘገበ የንግድ ምልክት ነው፡፡ የገፅ ስሞች ምናልባት የንግድ ምልክት ወይም የተመዘገቡ የገፁ ባለቤቶች የንግድ ምልክቶች ናቸው፡፡</translation>
@@ -314,7 +317,7 @@
 <translation id="1555452132857939218">ከዚህ የማመሳሰል ሰንሰለት</translation>
 <translation id="610118613261910287">የኮድ ቃላትን አሳይ</translation>
 <translation id="8588535459744752615">መሣሪያን በመፈለግ ላይ</translation>
-<translation id="391177677159359824">ሲንክ (ቤታ)</translation>
+<translation id="6406506848690869874">አመሳስል</translation>
 <translation id="28332161031213248">ከዚህ በታች ያለው የመሳሪያዎች ዝርዝር ሁሉንም በሲንክ ሰንሰለት ውስጥ ያሉ መሳሪያዎችን ያካትታል። እያንዳንዱ መሳሪያ ሌላኛውን በመጠቀም ሊተዳደር ይችላል።</translation>
 <translation id="8153617760825732120">የመሣሪያ ስም</translation>
 <translation id="4241512165288542484">(ይህ መሳሪያ)</translation>
@@ -327,7 +330,6 @@
 <translation id="5591129654353352557">የተቀመጡ የጣቢያ ቅንብሮች</translation>
 <translation id="7859704718976024901">የአሰሳ ታሪክ</translation>
 <translation id="2339730291919608488">ከማመሳሰል ሰንሰለት ይውጡ</translation>
-<translation id="4797449295451979552">ሲንክ (ቤታ) ማስተካከያ</translation>
 <translation id="298546024891487702">ለመጀመር፣ በሁሉም ሲንክ ለማድረግ የሚያቅዱት መሳሪያዎች ላይ Brave ሊጫን ያስፈልጋል። አንድ ላይ ለማስተሳሰር፣ ደህንነቱ አስማማኝ የሆነ ሁሉንም መሳሪያዎች ለማስተሳሰር የሚጠቀሙበትን ሰንሰለት ያስጀምሩ።</translation>
 <translation id="6200528822592747640">አዲስ የሲንክ ሰንሰለት ይጀምሩ</translation>
 <translation id="5184726904895809379">አሁን ያለው የማመሳሰል ኮድ አለኝ</translation>
@@ -359,8 +361,6 @@
 <translation id="1736420071277903564">ኮምፒውተር</translation>
 <translation id="1258250624898033822">ልክ ያልሆነ የማመሳሰል ኮድ</translation>
 <translation id="3259723213051400722">እባክዎ ከእንደገና ይሞክሩ</translation>
-<translation id="3779810277399252432">ምንም የመረብ ግንኙነት የለም፡፡</translation>
-<translation id="4380604249778320975">ግንኙነትዎ በሚኖርበት ጊዜ እባክዎ እንደገና ይሞክሩ፡፡</translation>
 <translation id="5257281382608458806">የመሳሪያ ስም ያስፈልጋል</translation>
 <translation id="8349682220522608879">እባክዎን የማመሳሰያ ኮዱን ይጨምሩ፡፡</translation>
 <translation id="1468095392829989299">የማመሳሰል አገልጋዮችን ማግኘት አልተቻለም</translation>

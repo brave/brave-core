@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/downloads/toolbar.html b/chrome/browser/resources/downloads/toolbar.html
-index 9f256663801b63ba4e2cc2613c184888ca87eb96..b95ac6b99cf0f9f1fd1e859a606fe0a63ea71312 100644
+index 80fc546b5f2c9d33bef680172701d2feecc78252..7025217e758ce61ce4296cf24fb3671220f0d316 100644
 --- a/chrome/browser/resources/downloads/toolbar.html
 +++ b/chrome/browser/resources/downloads/toolbar.html
 @@ -3,7 +3,7 @@

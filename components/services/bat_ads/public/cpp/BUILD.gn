@@ -9,3 +9,16 @@ source_set("cpp") {
     "//brave/vendor/bat-native-ads",
   ]
 }
+
+source_set("manifest") {
+  sources = [
+    "manifest.cc",
+    "manifest.h",
+  ]
+
+  deps = [
+    "//base",
+    "//services/service_manager/public/cpp",
+    "//brave/components/services/bat_ads/public/interfaces",
+  ]
+}

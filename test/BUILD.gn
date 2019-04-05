@@ -86,7 +86,6 @@ test("brave_unit_tests") {
     "//brave/components/invalidation/push_client_channel_unittest.cc",
     "//brave/components/omnibox/browser/topsites_provider_unittest.cc",
     "//brave/components/rappor/log_uploader_unittest.cc",
-    "//brave/components/spellcheck/spellcheck_unittest.cc",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
     "//chrome/common/importer/mock_importer_bridge.cc",
     "//chrome/common/importer/mock_importer_bridge.h",
@@ -174,6 +173,7 @@ test("brave_unit_tests") {
     "//components/signin/core/browser",
     "//components/sync_preferences",
     "//content/public/common",
+    "//third_party/cacheinvalidation",
   ]
 
   if (brave_rewards_enabled) {
@@ -277,7 +277,6 @@ static_library("browser_tests_runner") {
 test("brave_browser_tests") {
   sources = [
     "//brave/app/brave_main_delegate_browsertest.cc",
-    "//brave/app/sharedarraybuffer_disabledtest.cc",
     "//brave/browser/autocomplete/brave_autocomplete_provider_client_browsertest.cc",
     "//brave/browser/brave_scheme_load_browsertest.cc",
     "//brave/chromium_src/chrome/browser/google/chrome_google_url_tracker_client_browsertest.cc",

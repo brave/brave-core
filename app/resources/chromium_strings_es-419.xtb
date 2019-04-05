@@ -95,6 +95,7 @@
 <translation id="8848045066928358658">Para que Brave sea más seguro, inhabilitamos algunas extensiones que no aparecen en <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> y que posiblemente se hayan agregado sin tu conocimiento.</translation>
 <translation id="8148611988012584308">Personaliza y controla Brave</translation>
 <translation id="5849446944780602366">Personaliza y controla Brave. Hay una actualización disponible.</translation>
+<translation id="6315734375101223238">Personaliza y controla Brave. Una alerta necesita tu atención. Haz clic para ver los detalles.</translation>
 <translation id="9071554113102421877">&amp;Abrir en Brave</translation>
 <translation id="2176825726964012531">Acerca de &amp;Brave</translation>
 <translation id="5450493308072741203">Actualizar &amp;Brave</translation>
@@ -119,6 +120,7 @@ Si accedes de todos modos, se fusionará la información de Brave, como los favo
 <translation id="1853997773668795891">¿Quieres vincular los datos de Brave a esta cuenta?</translation>
 <translation id="1326766910007115955">Estás por acceder con una cuenta administrada, lo que significa que proporcionarás al administrador el control sobre tu perfil de Brave. Tus datos de Brave, como las aplicaciones, los favoritos, el historial, las contraseñas y otros parámetros de configuración quedarán vinculados a <ph name="USER_NAME"/> de forma permanente. Podrás eliminar estos datos a través del Panel de control de Cuentas de Brave Software, pero no podrás asociarlos a otra cuenta. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Estás por acceder con una cuenta administrada, lo que significa que proporcionarás al administrador el control sobre tu perfil de Brave. Tus datos de Brave, como las aplicaciones, los favoritos, el historial, las contraseñas y otros parámetros de configuración quedarán vinculados a <ph name="USER_NAME"/> de forma permanente. Podrás eliminar estos datos a través del Panel de control de Cuentas de Brave Software, pero no podrás asociarlos a otra cuenta. También puedes crear un perfil para mantener separados tus datos de Brave. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">El administrador del sistema configuró Brave de manera que abriera un navegador alternativo para acceder a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> usaba Brave anteriormente</translation>
 <translation id="1384923383737428730">Tu computadora tiene software dañino. Brave puede quitarlo, inhabilitar las extensiones y restablecer la configuración para que el navegador vuelva a funcionar correctamente.</translation>
 <translation id="8919921662052966648">Brave no pudo sincronizar los datos. Actualiza la frase de contraseña de sincronización.</translation>
@@ -167,7 +169,6 @@ Para obtener más instrucciones, revisa tu correo electrónico en <ph name="ACCO
 <translation id="2871190378186459992">Descubre aplicaciones, juegos, extensiones y temas increíbles para Brave.</translation>
 <translation id="3350544518197210895">Brave (tráfico mDNS entrante)</translation>
 <translation id="1912973375560256099">Regla de entrada para que Brave permita el tráfico mDNS.</translation>
-<translation id="3795403186582265456">Para que puedas comprender mejor el contenido de la página, Brave envía imágenes de páginas a los servidores de Brave Software, lo que le permite reconocer las imágenes y el texto de una imagen.</translation>
 <translation id="7276297358157391541">Brave puede proporcionar una corrección ortográfica más inteligente al enviar lo que escribes en el navegador a los servidores de Brave Software. Esto te permite usar la misma tecnología de corrección ortográfica que usa la Búsqueda de Brave Software.</translation>
 <translation id="1807774211756215222">Abrir vínculo en una pes&amp;taña nueva de Brave</translation>
 <translation id="4624945300945265642">Abrir vínculo en una ventana de navegación de incó&amp;gnito de Brave</translation>
@@ -184,7 +185,6 @@ Para obtener más instrucciones, revisa tu correo electrónico en <ph name="ACCO
 <translation id="5173820533850252773">Brave no actualizado</translation>
 <translation id="6389268239133412586">No se puede actualizar Brave</translation>
 <translation id="7963515534397191222">Brave no se pudo actualizar a la última versión, por lo que te estás perdiendo las nuevas funciones y correcciones de seguridad.</translation>
-<translation id="3472158705945346956">Tu administrador debe quitarte y volver a agregarte en Brave.</translation>
 <translation id="1705567146636171298">Actualizar Brave</translation>
 <translation id="3598551856834560515">Actualiza Brave para iniciar la sincronización</translation>
 <translation id="4050175100176540509">La última versión proporciona importantes mejoras de seguridad y nuevas funciones.</translation>
@@ -263,9 +263,9 @@ Para obtener más instrucciones, revisa tu correo electrónico en <ph name="ACCO
 <translation id="8372880274820509128">Para mayor seguridad, Brave encriptará los datos.</translation>
 <translation id="7445061995866044926">¿Salir de Brave?</translation>
 <translation id="7453070689008684791">Brave accederá a tus datos de Drive para hacer sugerencias en la barra de direcciones</translation>
-<translation id="7713466009760073734">El SO Brave se muestra en este idioma</translation>
+<translation id="9221712274065451529">Este idioma se usa para mostrar la IU del Sistema operativo Brave</translation>
 <translation id="3518788198614984730">Mostrar el SO Brave en este idioma</translation>
-<translation id="8258976055610040706">Brave se muestra en este idioma</translation>
+<translation id="5757460455745382269">Este idioma se usa para mostrar la IU de Brave</translation>
 <translation id="2335583906071111058">Mostrar Brave en este idioma</translation>
 <translation id="8926637909431618259">Continuar ejecutando aplicaciones en segundo plano cuando Brave esté cerrado.</translation>
 <translation id="6056473803837713617">Informa tu <ph name="BEGIN_LINK"/>configuración actual<ph name="END_LINK"/> para ayudarnos a mejorar Brave</translation>

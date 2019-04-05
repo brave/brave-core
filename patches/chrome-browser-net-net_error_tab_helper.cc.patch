@@ -1,18 +1,8 @@
 diff --git a/chrome/browser/net/net_error_tab_helper.cc b/chrome/browser/net/net_error_tab_helper.cc
-index 8c74486c548f3244c5809b98c44dce509561fe1f..a3e4d095b41464a4773b8c829d40358cd4f581e6 100644
+index d39876436dd64faa0bae445c3e0ad1c666dbae17..88eb4e98bdb5a040e26c72f7c5eed9de8ef8bcc8 100644
 --- a/chrome/browser/net/net_error_tab_helper.cc
 +++ b/chrome/browser/net/net_error_tab_helper.cc
-@@ -89,7 +89,8 @@ void NetErrorTabHelper::RenderFrameCreated(
- 
-   chrome::mojom::NetworkDiagnosticsClientAssociatedPtr client;
-   render_frame_host->GetRemoteAssociatedInterfaces()->GetInterface(&client);
--  client->SetCanShowNetworkDiagnosticsDialog(CanShowNetworkDiagnosticsDialog());
-+  client->SetCanShowNetworkDiagnosticsDialog(
-+      CanShowNetworkDiagnosticsDialog(web_contents()));
- }
- 
- void NetErrorTabHelper::DidStartNavigation(
-@@ -259,6 +260,9 @@ void NetErrorTabHelper::InitializePref(WebContents* contents) {
+@@ -234,6 +234,9 @@ void NetErrorTabHelper::InitializePref(WebContents* contents) {
  }
  
  bool NetErrorTabHelper::ProbesAllowed() const {
@@ -22,15 +12,3 @@ index 8c74486c548f3244c5809b98c44dce509561fe1f..a3e4d095b41464a4773b8c829d40358c
    if (testing_state_ != TESTING_DEFAULT)
      return testing_state_ == TESTING_FORCE_ENABLED;
  
-@@ -293,6 +297,11 @@ void NetErrorTabHelper::RunNetworkDiagnostics(const GURL& url) {
- 
- void NetErrorTabHelper::RunNetworkDiagnosticsHelper(
-     const std::string& sanitized_url) {
-+  // The button shouldn't even be shown in this case, but still best to be safe,
-+  // since the renderer isn't trusted.
-+  if (!CanShowNetworkDiagnosticsDialog(web_contents()))
-+    return;
-+
-   if (network_diagnostics_bindings_.GetCurrentTargetFrame()
-           != web_contents()->GetMainFrame()) {
-     return;

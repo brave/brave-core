@@ -1,8 +1,8 @@
 diff --git a/components/translate/core/browser/language_state.h b/components/translate/core/browser/language_state.h
-index a4cc8cb221ca9be8d352a3bd7c21a962ffad10c8..2a52c9d56d09b70ca68c89c0cd95f8074078249e 100644
+index 96260d1b3fa6ed2e168891fdfe2df5323b3d2ea8..af6850b19ca66a8e698ceb69d7496ad7f4385fbc 100644
 --- a/components/translate/core/browser/language_state.h
 +++ b/components/translate/core/browser/language_state.h
-@@ -71,7 +71,7 @@ class LanguageState {
+@@ -72,7 +72,7 @@ class LanguageState {
    void set_translation_declined(bool value) { translation_declined_ = value; }
  
    // Whether the translate is enabled.

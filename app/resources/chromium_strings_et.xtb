@@ -106,6 +106,7 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="8848045066928358658">Bravei turvalisemaks muutmiseks keelasime järgmise laienduse, mida ei leidu veebipoes <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> ja mis võidi lisada teie teadmata.</translation>
 <translation id="8148611988012584308">Brave'i kohandamine ja juhtimine</translation>
 <translation id="5849446944780602366">Kohandage ja juhtige Brave'i. Saadaval on värskendus.</translation>
+<translation id="6315734375101223238">Bravei kohandamine ja haldamine. Miski vajab teie tähelepanu – klõpsake üksikasjade nägemiseks.</translation>
 <translation id="9071554113102421877">&amp;ampAva Brave'is</translation>
 <translation id="2176825726964012531">Teave &amp;Bravei kohta</translation>
 <translation id="5450493308072741203">Värskenda &amp;Bravei</translation>
@@ -130,6 +131,7 @@ Kui logite siiski sisse, liidetakse Bravei teave, nagu järjehoidjad, ajalugu ja
 <translation id="1853997773668795891">Kas soovite linkida Bravei andmed selle kontoga?</translation>
 <translation id="1326766910007115955">Logite sisse hallatud kontoga ja annate selle administraatorile üle Bravei profiili juhtimise. Teie Bravei andmed, näiteks rakendused, järjehoidjad, ajalugu, paroolid ja muud seaded seotakse jäädavalt kasutajaga <ph name="USER_NAME"/>. Saate need andmed kustutada Brave Software'i kontode juhtpaneeli kaudu, kuid te ei saa neid seostada teise kontoga. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Logite sisse hallatud kontoga ja annate selle administraatorile üle Bravei profiili juhtimise. Teie Bravei andmed, näiteks rakendused, järjehoidjad, ajalugu, paroolid ja muud seaded seotakse jäädavalt kasutajaga <ph name="USER_NAME"/>. Saate need andmed kustutada Brave Software'i kontode juhtpaneeli kaudu, kuid te ei saa neid seostada teise kontoga. Võite olemasolevate Brave'i andmete eraldi hoidmiseks luua aga uue profiili. <ph name="LEARN_MORE"/></translation>
+<translation id="2444257125841652328">Teie süsteemiadministraator on konfigureerinud Bravei avama alternatiivset brauserit, et saada juurdepääs lehele <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656">Kasutaja <ph name="USER_EMAIL_ADDRESS"/> kasutas varem Bravei</translation>
 <translation id="1384923383737428730">Teie arvutis on kahjulik tarkvara. Brave saab selle eemaldada, taastada teie seaded ja keelata laiendused, et brauser töötaks jälle normaalselt.</translation>
 <translation id="8919921662052966648">Brave ei saanud teie andmeid sünkroonida. Värskendage oma sünkroonimisparooli.</translation>
@@ -184,7 +186,6 @@ Täiendavad juhised leiate aadressilt <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="7272074097076644710">Sissetuleku reegel Brave Beetas mDNS-liikluse lubamiseks.</translation>
 <translation id="4991512282053949769">Sissetuleku reegel Brave Nightly's mDNS-liikluse lubamiseks.</translation>
 <translation id="3856641371299712128">Sissetuleku reegel Brave Dev'is mDNS-liikluse lubamiseks.</translation>
-<translation id="3795403186582265456">Brave suudab piltidel tuvastada kujutisi ja teksti, saates lehe pildid Brave Software'i serveritesse. See võimaldab teil lehe sisu paremini mõista.</translation>
 <translation id="7276297358157391541">Brave võib õigekirjakontrolli täiustada, saates brauserisse sisestatud teksti Brave Software'i serveritesse ja võimaldades kasutada sama õigekirjakontrolli tehnoloogiat, mida kasutatakse Brave Software'i otsingus.</translation>
 <translation id="1807774211756215222">Ava link Bravei uuel &amp;vahekaardil</translation>
 <translation id="4624945300945265642">Ava link Bravei inko&amp;gnito aknas</translation>
@@ -201,7 +202,6 @@ Täiendavad juhised leiate aadressilt <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="5173820533850252773">Brave on aegunud</translation>
 <translation id="6389268239133412586">Brave'i ei saa uuendada</translation>
 <translation id="7963515534397191222">Brave'i ei saanud uusimale versioonile uuendada, mistõttu jääte ilma uutest funktsioonidest ja turvaparandustest.</translation>
-<translation id="3472158705945346956">Haldur peab teid Braveist eemaldama ja uuesti lisama.</translation>
 <translation id="1705567146636171298">Värskenda Brave'i</translation>
 <translation id="3598551856834560515">Sünkroonimise alustamiseks värskendage Bravei</translation>
 <translation id="4050175100176540509">Uusimas versioonis on saadaval olulised turvatäiendused ja uued funktsioonid.</translation>
@@ -280,9 +280,9 @@ Täiendavad juhised leiate aadressilt <ph name="ACCOUNT_EMAIL"/>.</translation>
 <translation id="8372880274820509128">Turvalisuse suurendamiseks krüptib Brave teie andmed.</translation>
 <translation id="7445061995866044926">Kas logida Brave'ist välja?</translation>
 <translation id="7453070689008684791">Brave pääseb teie Drive'ile juurde, et aadressiribal soovitusi anda</translation>
-<translation id="7713466009760073734">Brave OS kuvatakse selles keeles</translation>
+<translation id="9221712274065451529">Seda keelt kasutatakse Brave OS-i UI kuvamiseks</translation>
 <translation id="3518788198614984730">Kuva Brave OS selles keeles</translation>
-<translation id="8258976055610040706">Brave kuvatakse selles keeles</translation>
+<translation id="5757460455745382269">Seda keelt kasutatakse Brave UI kuvamiseks</translation>
 <translation id="2335583906071111058">Kuva Brave selles keeles</translation>
 <translation id="8926637909431618259">Jätka taustarakenduste käitamist pärast Bravei sulgemist</translation>
 <translation id="6056473803837713617">Aidake Brave'i paremaks muuta, teavitades meid <ph name="BEGIN_LINK"/>praegustest seadetest<ph name="END_LINK"/></translation>
