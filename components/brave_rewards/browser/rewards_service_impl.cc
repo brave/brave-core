@@ -2421,6 +2421,7 @@ void RewardsServiceImpl::OnNotificationTimerFired() {
   GetReconcileStamp(
       base::Bind(&RewardsServiceImpl::MaybeShowAddFundsNotification,
         AsWeakPtr()));
+  FetchGrants(std::string(), std::string());
 }
 
 void RewardsServiceImpl::MaybeShowNotificationAddFunds() {
