@@ -65,7 +65,6 @@ void BatClient::registerPersonaSafetyNetCallback(
   bool hasResponseError = braveledger_bat_helper::getJSONResponse(
     response, statusCode, error);
   if (hasResponseError && statusCode == 404) {
-    ledger_->SetLastGrantLoadTimestamp(time(0));
     // TODO(samartnik): as per discussion with @evq we decided to use this
     // quick hack, because we are going to move on new API soon,
     // where SafetyNet check failure will be explicit
@@ -73,8 +72,8 @@ void BatClient::registerPersonaSafetyNetCallback(
     if (braveledger_bat_helper::getJSONMessage(response, message) &&
       message == SAFETYNET_ERROR_MESSAGE) {
       ledger_->OnWalletInitialized(ledger::Result::SAFETYNET_ATTESTATION_FAILED);
+      return;
     }
-    return;
   }
   // We passed safetynet check, so just make regular call
   registerPersona("");
