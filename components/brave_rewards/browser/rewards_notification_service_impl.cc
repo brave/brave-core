@@ -98,6 +98,7 @@ void RewardsNotificationServiceImpl::DeleteNotification(
 
 void RewardsNotificationServiceImpl::DeleteAllNotifications() {
   rewards_notifications_.clear();
+  rewards_notifications_displayed_.clear();
   StoreRewardsNotifications();
   OnAllNotificationsDeleted();
 }
