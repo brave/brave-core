@@ -8,6 +8,8 @@ source_set("ui") {
     "brave_browser_command_controller.h",
     "brave_browser_content_setting_bubble_model_delegate.cc",
     "brave_browser_content_setting_bubble_model_delegate.h",
+    "brave_dark_mode_observer.cc",
+    "brave_dark_mode_observer.h",
     "brave_pages.cc",
     "brave_pages.h",
     "brave_layout_constants.cc",
