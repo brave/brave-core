@@ -295,15 +295,12 @@ void BraveContentBrowserClient::MaybeHideReferrer(
           GURL(),
           CONTENT_SETTINGS_TYPE_PLUGINS,
           brave_shields::kBraveShields);
-
-  // Navigations get empty referrers (brave/brave-browser#3422).
-  const GURL empty_referrer_url;
   brave_shields::ShouldSetReferrer(allow_referrers,
                                    shields_up,
                                    referrer->url,
                                    document_url,
                                    request_url,
-                                   empty_referrer_url,
+                                   request_url.GetOrigin(),
                                    referrer->policy,
                                    referrer);
 }
