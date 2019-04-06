@@ -488,20 +488,25 @@ void RewardsServiceImpl::GetContentSiteList(
   filter.non_verified = allow_non_verified;
   filter.min_visits = min_visits;
 
-  GetActivityInfoList(start, limit,
-      filter,
-      std::bind(&RewardsServiceImpl::OnGetContentSiteList,
-                this, callback, _1, _2));
+  bat_ledger_->GetActivityInfoList(
+      start,
+      limit,
+      filter.ToJson(),
+      base::BindOnce(&RewardsServiceImpl::OnGetContentSiteList,
+                     AsWeakPtr(),
+                     callback));
 }
 
 void RewardsServiceImpl::OnGetContentSiteList(
     const GetContentSiteListCallback& callback,
-    const ledger::PublisherInfoList& list,
+    const std::vector<std::string>& json_list,
     uint32_t next_record) {
   std::unique_ptr<ContentSiteList> site_list(new ContentSiteList);
-  for (ledger::PublisherInfoList::const_iterator it =
-      list.begin(); it != list.end(); ++it) {
-    site_list->push_back(PublisherInfoToContentSite(*it));
+
+  for (auto &json_publisher : json_list) {
+    ledger::PublisherInfo publisher;
+    publisher.loadFromJson(json_publisher);
+    site_list->push_back(PublisherInfoToContentSite(publisher));
   }
 
   callback.Run(std::move(site_list), next_record);
@@ -1106,6 +1111,19 @@ void RewardsServiceImpl::LoadActivityInfo(
                      filter.id));
 }
 
+void RewardsServiceImpl::OnPublisherActivityInfoLoaded(
+    ledger::PublisherInfoCallback callback,
+    uint32_t result,
+    const std::string& info_json) {
+  auto publisher = std::make_unique<ledger::PublisherInfo>();
+
+  if (!info_json.empty()) {
+    publisher->loadFromJson(info_json);
+  }
+
+  callback(static_cast<ledger::Result>(result), std::move(publisher));
+}
+
 void RewardsServiceImpl::OnActivityInfoLoaded(
     ledger::PublisherInfoCallback callback,
     const std::string& publisher_key,
@@ -1118,7 +1136,11 @@ void RewardsServiceImpl::OnActivityInfoLoaded(
   if (list.size() == 0) {
     // we need to try to get at least publisher info in this case
     // this way we preserve publisher info
-    LoadPublisherInfo(publisher_key, callback);
+    bat_ledger_->LoadPublisherInfo(
+        publisher_key,
+        base::BindOnce(&RewardsServiceImpl::OnPublisherActivityInfoLoaded,
+                       AsWeakPtr(),
+                       callback));
     return;
   } else if (list.size() > 1) {
     callback(ledger::Result::TOO_MANY_RESULTS,
