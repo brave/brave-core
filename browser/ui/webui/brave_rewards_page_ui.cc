@@ -673,6 +673,7 @@ void RewardsDOMHandler::OnGrantFinish(
     brave_rewards::RewardsService* rewards_service,
     unsigned int result,
     brave_rewards::Grant grant) {
+  LOG(ERROR) << "!!!OnGrantFinish";
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue finish;
     finish.SetInteger("status", result);
@@ -763,7 +764,17 @@ void RewardsDOMHandler::OnNotificationAdded(
 void RewardsDOMHandler::OnNotificationDeleted(
     brave_rewards::RewardsNotificationService* rewards_notification_service,
     const brave_rewards::RewardsNotificationService::RewardsNotification&
-        notification) {}
+        notification) {
+  if (notification.type_ == brave_rewards::RewardsNotificationService::RewardsNotificationType::REWARDS_NOTIFICATION_GRANT &&
+    web_ui()->CanCallJavascript()) {
+    base::DictionaryValue finish;
+    finish.SetInteger("status", false);
+    finish.SetInteger("expiryTime", 0);
+    finish.SetString("probi", "0");
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantFinish", finish);
+  }
+}
 
 void RewardsDOMHandler::OnAllNotificationsDeleted(
     brave_rewards::RewardsNotificationService* rewards_notification_service) {}
