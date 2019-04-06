@@ -478,24 +478,15 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
   content::Referrer kReferrer(kDocumentUrl,
                               network::mojom::ReferrerPolicy::kDefault);
 
-  // Cross-origin navigations don't get a referrer.
+  // Should be hidden by default.
   content::Referrer referrer = kReferrer;
   client()->MaybeHideReferrer(browser()->profile(),
                               kRequestUrl, kDocumentUrl,
                               &referrer);
-  EXPECT_EQ(referrer.url, GURL());
-
-  // Same-origin navigations get full referrers.
-  const GURL kSameOriginRequest("http://document.com/different/path");
-  referrer = kReferrer;
-  client()->MaybeHideReferrer(browser()->profile(),
-                              kSameOriginRequest, kDocumentUrl,
-                              &referrer);
-  EXPECT_EQ(referrer.url, kDocumentUrl);
+  EXPECT_EQ(referrer.url, kRequestUrl.GetOrigin());
 
   // Special rule for extensions.
   const GURL kExtensionUrl("chrome-extension://abc/path?query");
-  referrer = kReferrer;
   referrer.url = kExtensionUrl;
   client()->MaybeHideReferrer(browser()->profile(),
                               kRequestUrl, kExtensionUrl,
