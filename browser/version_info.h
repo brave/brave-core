@@ -12,6 +12,8 @@
 #define TRIM_PUBLISHERS_DB_MEMORY db_.TrimMemory();
 #define URL_DECODE_URL_MODE url::DecodeURLMode::kUTF8OrIsomorphic,
 
+#define CHROMIUM_CR73 strcmp(BRAVE_BROWSER_VERSION, "73.0.3683.90")
+
 namespace version_info {
 std::string GetBraveVersionWithoutChromiumMajorVersion();
 std::string GetBraveVersionNumberForDisplay();

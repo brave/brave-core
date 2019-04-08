@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#if !defined(OS_ANDROID)
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 
 #include "base/no_destructor.h"
-#include "brave/common/tor/tor_launcher.mojom.h"
+// Commented to make able to build Android, we will need to uncomment it on cr74
+//#include "brave/common/tor/tor_launcher.mojom.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #include "services/service_manager/public/cpp/manifest_builder.h"
@@ -22,3 +24,4 @@ const service_manager::Manifest& GetBraveContentBrowserOverlayManifest() {
           .Build()};
   return *manifest;
 }
+#endif
