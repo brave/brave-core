@@ -1115,9 +1115,10 @@ void RewardsServiceImpl::OnPublisherActivityInfoLoaded(
     ledger::PublisherInfoCallback callback,
     uint32_t result,
     const std::string& info_json) {
-  auto publisher = std::make_unique<ledger::PublisherInfo>();
+  std::unique_ptr<ledger::PublisherInfo> publisher;
 
   if (!info_json.empty()) {
+    publisher = std::make_unique<ledger::PublisherInfo>();
     publisher->loadFromJson(info_json);
   }
 
