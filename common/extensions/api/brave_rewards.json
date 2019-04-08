@@ -289,26 +289,24 @@
         ]
       },
       {
-        "name": "onRecurringDonations",
+        "name": "onRecurringTipSaved",
         "type": "function",
-        "description": "Fired when publisher recurring donations modified",
+        "description": "Fired when publisher recurring tip is saved",
         "parameters": [
           {
-            "name": "donations",
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "publisherKey": {
-                  "type": "string",
-                  "description": "publisher key, unique identifier"
-                },
-                "amount": {
-                  "type": "integer",
-                  "description": "publisher donation amount"
-                }
-              }
-            }
+            "name": "success",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
+        "name": "onRecurringTipRemoved",
+        "type": "function",
+        "description": "Fired when publisher recurring tip is removed",
+        "parameters": [
+          {
+            "name": "success",
+            "type": "boolean"
           }
         ]
       }
@@ -503,9 +501,9 @@
         ]
       },
       {
-        "name": "saveRecurringDonation",
+        "name": "saveRecurringTip",
         "type": "function",
-        "description": "Updates recurring donation amount for rewards panel",
+        "description": "Updates recurring tip amount for rewards panel",
         "parameters": [
           {
             "name": "publisher_key",
@@ -518,9 +516,9 @@
         ]
       },
       {
-        "name": "removeRecurringDonation",
+        "name": "removeRecurringTip",
         "type": "function",
-        "description": "Removes recurring donation for rewards panel",
+        "description": "Removes recurring tip for rewards panel",
         "parameters": [
           {
             "name": "publisher_key",
@@ -529,16 +527,16 @@
         ]
       },
       {
-        "name": "getRecurringDonations",
+        "name": "getRecurringTips",
         "type": "function",
-        "description": "Gets list of sites with recurring donation data",
+        "description": "Gets list of sites with recurring tip data",
         "parameters": [
           {
             "type": "function",
             "name": "callback",
             "parameters": [
               {
-                "name": "donations",
+                "name": "tips",
                 "type": "any"
               }
             ]

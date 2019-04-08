@@ -202,7 +202,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) override;
 
-  void SaveRecurringDonation(const std::string& publisher_key,
+  void SaveRecurringTip(const std::string& publisher_key,
                              const int amount) override;
 
   // Testing methods
@@ -269,8 +269,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnContributionInfoSaved(const ledger::REWARDS_CATEGORY category,
                                bool success);
   void OnRecurringTipSaved(bool success);
-  void SaveRecurringTip(const std::string& publisher_key,
-                             const int amount);
   void OnGetRecurringTips(
       const ledger::PublisherInfoListCallback callback,
       const ledger::PublisherInfoList list);
@@ -390,8 +388,6 @@ class RewardsServiceImpl : public RewardsService,
                             const ledger::REWARDS_CATEGORY category) override;
   void GetRecurringTips(
       ledger::PublisherInfoListCallback callback) override;
-  void GetRecurringDonationsList(
-      GetRecurringDonationsListCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(
                      const char* file,
                      int line,

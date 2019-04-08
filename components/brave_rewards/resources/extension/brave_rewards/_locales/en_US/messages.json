@@ -391,6 +391,6 @@
   },
   "bat": {
     "message": "BAT",
-    "description": "BAT text for displaying converted donation amount."
+    "description": "BAT text for displaying converted tip amount."
   }
 }

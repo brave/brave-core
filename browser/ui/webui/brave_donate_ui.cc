@@ -67,6 +67,9 @@ class RewardsDonateDOMHandler : public WebUIMessageHandler,
       std::unique_ptr<brave_rewards::WalletProperties> wallet_properties)
       override;
 
+  void OnRecurringTipSaved(brave_rewards::RewardsService* rewards_service,
+                           bool success) override;
+
   void OnRecurringTipRemoved(brave_rewards::RewardsService* rewards_service,
                              bool success) override;
 
@@ -314,6 +317,17 @@ void RewardsDonateDOMHandler::OnRecurringTipRemoved(
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_donate.recurringTipRemoved", base::Value(success));
+}
+
+void RewardsDonateDOMHandler::OnRecurringTipSaved(
+    brave_rewards::RewardsService* rewards_service,
+    bool success) {
+  if (!web_ui()->CanCallJavascript()) {
+     return;
+  }
+
+  web_ui()->CallJavascriptFunctionUnsafe(
+      "brave_rewards_donate.recurringTipSaved", base::Value(success));
 }
 
 BraveDonateUI::~BraveDonateUI() {

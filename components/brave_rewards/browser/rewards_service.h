@@ -195,10 +195,8 @@ class RewardsService : public KeyedService {
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-  virtual void SaveRecurringDonation(
-      const std::string& publisher_key, const int amount) = 0;
-  virtual void GetRecurringDonationsList(
-      GetRecurringDonationsListCallback callback) = 0;
+  virtual void SaveRecurringTip(const std::string& publisher_key,
+                                const int amount) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

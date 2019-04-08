@@ -41,3 +41,7 @@ export const onReconcileStamp = (stamp: number) => action(types.ON_RECONCILE_STA
 export const onRecurringTipRemoved = (success: boolean) => action(types.ON_RECURRING_TIP_REMOVED, {
   success
 })
+
+export const onRecurringTipSaved = (success: boolean) => action(types.ON_RECURRING_TIP_SAVED, {
+  success
+})

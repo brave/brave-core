@@ -115,16 +115,16 @@ export const onSettingSave = (key: string, value: any) => action(types.ON_SETTIN
   value
 })
 
-export const saveRecurringDonation = (publisherKey: string, newAmount: number) => action(types.SAVE_RECURRING_DONATION, {
+export const saveRecurringTip = (publisherKey: string, newAmount: number) => action(types.SAVE_RECURRING_TIP, {
   publisherKey,
   newAmount
 })
 
-export const removeRecurringContribution = (publisherKey: string) => action(types.REMOVE_RECURRING_DONATION, {
+export const removeRecurringTip = (publisherKey: string) => action(types.REMOVE_RECURRING_TIP, {
   publisherKey
 })
 
-export const onRecurringDonations = (result: RewardsExtension.RecurringDonation) => action(types.ON_RECURRING_DONATIONS, {
+export const onRecurringTips = (result: RewardsExtension.RecurringTips) => action(types.ON_RECURRING_TIPS, {
   result
 })
 

@@ -305,15 +305,15 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
       break
     }
-    case types.REMOVE_RECURRING_DONATION: {
+    case types.REMOVE_RECURRING_TIP: {
       let publisherKey = payload.publisherKey
       if (publisherKey == null) {
         break
       }
-      chrome.braveRewards.removeRecurringDonation(publisherKey)
+      chrome.braveRewards.removeRecurringTip(publisherKey)
       break
     }
-    case types.SAVE_RECURRING_DONATION: {
+    case types.SAVE_RECURRING_TIP: {
       let newAmount = payload.newAmount
       let publisherKey = payload.publisherKey
 
@@ -323,12 +323,12 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         break
       }
 
-      chrome.braveRewards.saveRecurringDonation(publisherKey, newAmount)
+      chrome.braveRewards.saveRecurringTip(publisherKey, newAmount)
       break
     }
-    case types.ON_RECURRING_DONATIONS: {
+    case types.ON_RECURRING_TIPS: {
       state = { ...state }
-      state.recurringDonations = payload.result.recurringDonations
+      state.recurringTips = payload.result.recurringTips
       break
     }
     case types.ON_PUBLISHER_BANNER: {
@@ -337,10 +337,10 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
 
       state = { ...state }
-      if (!state.donationAmounts) {
-        state.donationAmounts = {}
+      if (!state.tipAmounts) {
+        state.tipAmounts = {}
       }
-      state.donationAmounts[payload.banner.publisherKey] = payload.banner.amounts
+      state.tipAmounts[payload.banner.publisherKey] = payload.banner.amounts
       break
     }
   }

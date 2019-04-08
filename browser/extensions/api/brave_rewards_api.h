@@ -169,40 +169,40 @@ class BraveRewardsSaveSettingFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsSaveRecurringDonationFunction :
+class BraveRewardsSaveRecurringTipFunction :
   public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.saveRecurringDonation", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.saveRecurringTip", UNKNOWN)
 
  protected:
-  ~BraveRewardsSaveRecurringDonationFunction() override;
+  ~BraveRewardsSaveRecurringTipFunction() override;
 
   ResponseAction Run() override;
 };
 
-class BraveRewardsRemoveRecurringDonationFunction :
+class BraveRewardsRemoveRecurringTipFunction :
   public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.removeRecurringDonation", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.removeRecurringTip", UNKNOWN)
 
  protected:
-  ~BraveRewardsRemoveRecurringDonationFunction() override;
+  ~BraveRewardsRemoveRecurringTipFunction() override;
 
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetRecurringDonationsFunction :
+class BraveRewardsGetRecurringTipsFunction :
   public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.getRecurringDonations", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getRecurringTips", UNKNOWN)
 
  protected:
-  ~BraveRewardsGetRecurringDonationsFunction() override;
+  ~BraveRewardsGetRecurringTipsFunction() override;
 
   ResponseAction Run() override;
 
   private:
-    void OnGetRecurringDonations(
+    void OnGetRecurringTips(
         std::unique_ptr<brave_rewards::ContentSiteList> list);
 };
 

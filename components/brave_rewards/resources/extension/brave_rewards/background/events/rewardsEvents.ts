@@ -71,8 +71,18 @@ chrome.braveRewards.onExcludedSitesChanged.addListener((properties: RewardsExten
   rewardsPanelActions.onExcludedSitesChanged(properties)
 })
 
-chrome.braveRewards.onRecurringDonations.addListener((donations: Record<string, number>[]) => {
-  rewardsPanelActions.onRecurringDonations({
-    recurringDonations: donations
-  })
+chrome.braveRewards.onRecurringTipSaved.addListener((success: boolean) => {
+  if (success) {
+    chrome.braveRewards.getRecurringTips((tips: RewardsExtension.RecurringTips) => {
+      rewardsPanelActions.onRecurringTips(tips)
+    })
+  }
+})
+
+chrome.braveRewards.onRecurringTipRemoved.addListener((success: boolean) => {
+  if (success) {
+    chrome.braveRewards.getRecurringTips((tips: RewardsExtension.RecurringTips) => {
+      rewardsPanelActions.onRecurringTips(tips)
+    })
+  }
 })

@@ -40,6 +40,12 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
                               std::string publisher_key,
                               bool excluded) override;
 
+  void OnRecurringTipSaved(RewardsService* rewards_service,
+                           bool success) override;
+
+  void OnRecurringTipRemoved(RewardsService* rewards_service,
+                             bool success) override;
+
   // RewardsServicePrivateObserver implementation
   void OnGetCurrentBalanceReport(RewardsService* rewards_service,
                                  const BalanceReport& balance_report) override;
@@ -62,10 +68,6 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
 
   void OnPendingContributionSaved(RewardsService* rewards_service,
                                   int result) override;
-
-  void OnRecurringDonationUpdated(
-      RewardsService* rewards_service,
-      brave_rewards::ContentSiteList list) override;
 
  private:
   Profile* profile_;

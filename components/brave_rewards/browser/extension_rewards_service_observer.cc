@@ -325,35 +325,38 @@ void ExtensionRewardsServiceObserver::OnExcludedSitesChanged(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnRecurringDonationUpdated(
+void ExtensionRewardsServiceObserver::OnRecurringTipSaved(
     RewardsService* rewards_service,
-    brave_rewards::ContentSiteList list) {
+    bool success) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
   }
 
-  std::vector<extensions::api::brave_rewards::OnRecurringDonations::
-        DonationsType> donations;
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnRecurringTipSaved::Create(
+          success).release());
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnRecurringTipSaved::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
 
-  for (size_t i = 0; i < list.size(); i++) {
-    donations.push_back(
-        extensions::api::brave_rewards::OnRecurringDonations::
-        DonationsType());
-
-    auto& donation = donations[donations.size() - 1];
-    donation.publisher_key = list[i].id;
-    donation.amount = list[i].percentage;
+void ExtensionRewardsServiceObserver::OnRecurringTipRemoved(
+    RewardsService* rewards_service,
+    bool success) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
   }
 
   std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::
-      OnRecurringDonations::Create(donations)
-          .release());
-
+      extensions::api::brave_rewards::OnRecurringTipRemoved::Create(
+          success).release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnRecurringDonations::kEventName,
+      extensions::api::brave_rewards::OnRecurringTipRemoved::kEventName,
       std::move(args)));
   event_router->BroadcastEvent(std::move(event));
 }
