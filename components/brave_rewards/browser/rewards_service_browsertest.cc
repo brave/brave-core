@@ -253,6 +253,13 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     wait_for_captcha_loop_->Run();
   }
 
+  void WaitForPublisherListNormalized() {
+    if (publisher_list_normalized_)
+      return;
+    wait_for_publisher_list_normalized_loop_.reset(new base::RunLoop);
+    wait_for_publisher_list_normalized_loop_->Run();
+  }
+
   void WaitForReconcileCompleted() {
     if (reconcile_completed_)
       return;
@@ -509,6 +516,9 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
         0,
         TabStripModel::UserGestureDetails(TabStripModel::GestureType::kOther));
 
+    // Wait for publisher list normalization
+    WaitForPublisherListNormalized();
+
     // Make sure site appears in auto-contribute table
     content::EvalJsResult js_result = EvalJs(
         contents(),
@@ -641,18 +651,19 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
       }
     }
 
-    // Trigger auto contribution now, for monthly
-    if (monthly) {
-      rewards_service()->StartAutoContributeForTest();
-    }
-
     // Activate the Rewards settings page tab
     browser()->tab_strip_model()->ActivateTabAt(
         0,
         TabStripModel::UserGestureDetails(TabStripModel::GestureType::kOther));
 
-    // Wait for reconciliation to complete
+    // Wait for publisher list normalization
+    WaitForPublisherListNormalized();
+
     if (monthly) {
+      // Trigger auto contribution now, for monthly
+      rewards_service()->StartAutoContributeForTest();
+
+      // Wait for reconciliation to complete
       WaitForReconcileCompleted();
       ASSERT_EQ(reconcile_status_, verified ? ledger::Result::LEDGER_OK
                                             : ledger::Result::AC_TABLE_EMPTY);
@@ -785,6 +796,15 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
       wait_for_grant_finished_loop_->Quit();
   }
 
+  void OnPublisherListNormalized(brave_rewards::RewardsService* rewards_service,
+                                 brave_rewards::ContentSiteList list) {
+    if (list.size() == 0)
+      return;
+    publisher_list_normalized_ = true;
+    if (wait_for_publisher_list_normalized_loop_)
+      wait_for_publisher_list_normalized_loop_->Quit();
+  }
+
   void OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
                            unsigned int result,
                            const std::string& viewing_id,
@@ -818,6 +838,9 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
 
   std::unique_ptr<base::RunLoop> wait_for_captcha_loop_;
   bool captcha_received_ = false;
+
+  std::unique_ptr<base::RunLoop> wait_for_publisher_list_normalized_loop_;
+  bool publisher_list_normalized_ = false;
 
   std::unique_ptr<base::RunLoop> wait_for_reconcile_completed_loop_;
   bool reconcile_completed_ = false;
