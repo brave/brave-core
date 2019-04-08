@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/resources/history/history.html b/chrome/browser/resources/history/history.html
+index 18214b510f5ee80dc272eca6677c087f4a67b227..38b9e7eac0db5e7447b3ed255d6c3a2c4f7f1008 100644
+--- a/chrome/browser/resources/history/history.html
++++ b/chrome/browser/resources/history/history.html
+@@ -75,6 +75,7 @@
+       justify-content: center;
+     }
+   </style>
++  <link rel="stylesheet" href="chrome://brave-resources/page_specific/history/history_loading_shim.css">
+ </head>
+ 
+ <body class="loading">
