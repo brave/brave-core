@@ -52,7 +52,7 @@ class BraveThemeService : public ThemeService {
  private:
   friend class BraveThemeServiceTestWithoutSystemTheme;
   FRIEND_TEST_ALL_PREFIXES(BraveThemeEventRouterBrowserTest,
-                           BraveThemeEventRouterTest);
+                           ThemeChangeTest);
   FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, GetBraveThemeListTest);
   FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, SystemThemeChangeTest);
 
@@ -72,6 +72,11 @@ class BraveThemeService : public ThemeService {
 
   IntegerPrefMember brave_theme_type_pref_;
 
+  // Make BraveThemeService own BraveThemeEventRouter.
+  // BraveThemeEventRouter does its job independently with BraveThemeService.
+  // However, both are related with brave theme and have similar life cycle.
+  // So, Owning BraveThemeEventRouter by BraveThemeService seems fine.
+  // Use smart ptr for testing by SetBraveThemeEventRouterForTesting.
   std::unique_ptr<extensions::BraveThemeEventRouter> brave_theme_event_router_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveThemeService);
