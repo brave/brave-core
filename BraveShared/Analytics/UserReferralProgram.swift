@@ -29,7 +29,7 @@ public class UserReferralProgram {
             return Bundle.main.infoDictionary?[key] as? String
         }
         
-        let host = AppConstants.BuildChannel == .release ? HostUrl.prod : HostUrl.staging
+        let host = AppConstants.BuildChannel == .developer ? HostUrl.staging : HostUrl.prod
         
         guard let apiKey = getPlistString(for: UserReferralProgram.apiKeyPlistKey) else {
                 log.error("Urp init error, failed to get values from Brave.plist.")
@@ -81,16 +81,14 @@ public class UserReferralProgram {
     }
     
     private func initRetryPingConnection(numberOfTimes: Int32) {
-        let _10minutes: TimeInterval = 10 * 60
-        if AppConstants.BuildChannel == .developer {
-            Preferences.URP.nextCheckDate.value = Date().timeIntervalSince1970 + _10minutes
-        } else {
-            let _30daysInSeconds = Double(30 * 24 * 60 * 60)
+        if AppConstants.BuildChannel.isRelease {
             // Adding some time offset to be extra safe.
-            let offset = Double(1 * 60 * 60)
-            let _30daysFromToday = Date().timeIntervalSince1970 + _30daysInSeconds + offset
-            
+            let offset = 1.hours
+            let _30daysFromToday = Date().timeIntervalSince1970 + 30.days + offset
             Preferences.URP.nextCheckDate.value = _30daysFromToday
+        } else {
+            // For local and beta builds use a short timer
+            Preferences.URP.nextCheckDate.value = Date().timeIntervalSince1970 + 10.minutes
         }
         
         Preferences.URP.retryCountdown.value = Int(numberOfTimes)
@@ -173,8 +171,7 @@ public class UserReferralProgram {
             // Appending ref code to dau ping if user used installed the app via user referral program.
             if Preferences.URP.referralCodeDeleteDate.value == nil {
                 UrpLog.log("Setting new date for deleting referral code.")
-                let timeToDelete = AppConstants.BuildChannel == .developer ? TimeInterval(20 * 60) : TimeInterval(90 * 24 * 60 * 60)
-                
+                let timeToDelete = AppConstants.BuildChannel.isRelease ? 90.days : 20.minutes
                 Preferences.URP.referralCodeDeleteDate.value = Date().timeIntervalSince1970 + timeToDelete
             }
             
