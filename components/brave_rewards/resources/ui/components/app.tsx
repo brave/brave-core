@@ -53,6 +53,14 @@ export class App extends React.Component<Props, State> {
     })
   }
 
+  openTOS () {
+    window.open('https://brave.com/terms-of-use', '_blank')
+  }
+
+  openPrivacyPolicy () {
+    window.open('https://brave.com/privacy#rewards', '_blank')
+  }
+
   get actions () {
     return this.props.actions
   }
@@ -73,6 +81,8 @@ export class App extends React.Component<Props, State> {
         {
           !walletCreated
           ? <WelcomePage
+            onTOSClick={this.openTOS}
+            onPrivacyClick={this.openPrivacyPolicy}
             optInAction={this.onCreateWalletClicked}
             creating={this.state.creating}
             {...props}

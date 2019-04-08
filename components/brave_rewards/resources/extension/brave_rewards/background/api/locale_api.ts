@@ -84,6 +84,7 @@ export const getUIMessages = (): Record<string, string> => {
     'rewardsContributeAttentionScore',
     'rewardsSummary',
     'serviceText',
+    'serviceTextPanelWelcome',
     'termsOfService',
     'tipsProcessedNotification',
     'tokenGrant',
