@@ -139,12 +139,14 @@ void RewardsNotificationServiceImpl::ReadRewardsNotificationsJSON() {
       profile_->GetPrefs()->GetString(prefs::kRewardsNotifications);
   if (json.empty())
     return;
-  base::Optional<base::Value> dictionary = base::JSONReader::Read(json);
+  std::unique_ptr<base::DictionaryValue> dictionary =
+      base::DictionaryValue::From(base::JSONReader::Read(json));
 
   // legacy read
   if (!dictionary || !dictionary->is_dict()) {
-    base::Optional<base::Value> list = base::JSONReader::Read(json);
-    if (!list || !list->is_list()) {
+    std::unique_ptr<base::ListValue> list =
+      base::ListValue::From(base::JSONReader::Read(json));
+    if (!list) {
       LOG(ERROR) << "Failed to deserialize rewards notifications on startup";
       return;
     }

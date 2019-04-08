@@ -64,7 +64,7 @@ void BatClient::registerPersonaSafetyNetCallback(
   unsigned int statusCode;
   std::string error;
   bool hasResponseError = braveledger_bat_helper::getJSONResponse(
-    response, statusCode, error);
+    response, &statusCode, &error);
   if (hasResponseError && statusCode == 404) {
     // TODO(samartnik): as per discussion with @evq we decided to use this
     // quick hack, because we are going to move on new API soon,
@@ -585,7 +585,7 @@ void BatClient::getGrantsCallback(
   bool ok = braveledger_bat_helper::loadFromJson(&grants_properties, response);
 
   if (!ok && !safetynet_token.empty()) {
-    ok = braveledger_bat_helper::loadFromJson(properties, response);
+    ok = braveledger_bat_helper::loadFromJson(&properties, response);
     if (ok) {
       braveledger_bat_helper::GRANT_RESPONSE grantResponse;
       grantResponse.promotionId = properties.promotionId;
@@ -794,7 +794,7 @@ void BatClient::CreateWalletIfNecessary() {
      "We need to clear persona Id and start again";
   ledger_->SetPersonaId("");
 
-  registerPersona();
+  registerPersona("");
 }
 
 void BatClient::getGrantViaSafetynetCheck() {
@@ -823,7 +823,7 @@ void BatClient::getGrantViaSafetynetCheckCallback(int response_status_code,
     return;
   }
   std::string nonce;
-  braveledger_bat_helper::getJSONValue("nonce", response, nonce);
+  braveledger_bat_helper::getJSONValue("nonce", response, &nonce);
   ledger_->OnGrantViaSafetynetCheck(nonce);
 }
 }  // namespace braveledger_bat_client
