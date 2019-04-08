@@ -40,9 +40,14 @@ export class RewardsPanel extends React.Component<Props, State> {
     chrome.braveRewards.getRewardsMainEnabled(((enabled: boolean) => {
       this.props.actions.onEnabledMain(enabled)
     }))
+
     chrome.braveRewards.getACEnabled(((enabled: boolean) => {
       this.props.actions.onEnabledAC(enabled)
     }))
+
+    chrome.braveRewards.getRecurringTips((tips: RewardsExtension.RecurringTips) => {
+      this.props.actions.onRecurringTips(tips)
+    })
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {

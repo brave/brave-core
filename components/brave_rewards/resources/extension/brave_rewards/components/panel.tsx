@@ -28,12 +28,15 @@ interface State {
 }
 
 export class Panel extends React.Component<Props, State> {
+  private defaultTipAmounts: number[]
+
   constructor (props: Props) {
     super(props)
     this.state = {
       showSummary: true,
       publisherKey: null
     }
+    this.defaultTipAmounts = [1, 5, 10]
   }
 
   get actions () {
@@ -335,6 +338,64 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
+  onContributionAmountChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const newValue = parseInt(event.target.value, 10)
+    const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
+
+    if (!publisher || !publisher.publisher_key) {
+      return
+    }
+
+    const publisherKey = publisher.publisher_key
+
+    if (newValue === 0) {
+      this.actions.removeRecurringTip(publisherKey)
+    } else {
+      this.actions.saveRecurringTip(publisherKey, newValue)
+    }
+  }
+
+  generateAmounts = (publisher?: RewardsExtension.Publisher) => {
+    const { tipAmounts } = this.props.rewardsPanelData
+    const { rates } = this.props.rewardsPanelData.walletProperties
+
+    const publisherKey = publisher && publisher.publisher_key
+    const initialAmounts = (
+      !publisherKey ||
+      !tipAmounts ||
+      !tipAmounts[publisherKey] ||
+      tipAmounts[publisherKey].length === 0
+    ) ? this.defaultTipAmounts : tipAmounts[publisherKey]
+
+    const amounts = [0, ...initialAmounts]
+
+    return amounts.map((value: number) => {
+      return {
+        tokens: value.toFixed(1),
+        converted: utils.convertBalance(value.toString(), rates),
+        selected: false
+      }
+    })
+  }
+
+  getContribution = (publisher?: RewardsExtension.Publisher) => {
+    let defaultContribution = '0.0'
+    const { recurringTips } = this.props.rewardsPanelData
+
+    if (!recurringTips ||
+       (!publisher || !publisher.publisher_key)) {
+      return defaultContribution
+    }
+
+    recurringTips.map((tip: any) => {
+      if (tip.publisherKey === publisher.publisher_key) {
+        defaultContribution = tip.amount.toFixed(1)
+      }
+    })
+
+    return defaultContribution
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
@@ -345,6 +406,10 @@ export class Panel extends React.Component<Props, State> {
     const notificationType = this.getNotificationProp('type', notification)
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
     const { currentGrant } = this.props.rewardsPanelData
+    const defaultContribution = this.getContribution(publisher)
+    const tipAmounts = defaultContribution !== '0.0'
+      ? this.generateAmounts(publisher)
+      : undefined
 
     const pendingTotal = parseFloat(
       (pendingContributionTotal || 0).toFixed(1))
@@ -398,17 +463,18 @@ export class Panel extends React.Component<Props, State> {
               platform={publisher.provider as Provider}
               publisherName={publisher.name}
               publisherImg={faviconUrl}
-              monthlyAmount={'10.0'}
+              monthlyAmount={defaultContribution}
               isVerified={publisher.verified}
               tipsEnabled={true}
               includeInAuto={!publisher.excluded}
               attentionScore={(publisher.percentage || 0).toString()}
               onToggleTips={this.doNothing}
               donationAction={this.showDonateToSiteDetail}
-              onAmountChange={this.doNothing}
+              onAmountChange={this.onContributionAmountChange}
               onIncludeInAuto={this.switchAutoContribute}
               showUnVerified={!publisher.verified}
               acEnabled={enabledAC}
+              donationAmounts={tipAmounts}
               moreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
             />
             : null

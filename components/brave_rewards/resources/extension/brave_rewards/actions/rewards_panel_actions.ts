@@ -114,3 +114,21 @@ export const onSettingSave = (key: string, value: any) => action(types.ON_SETTIN
   key,
   value
 })
+
+export const saveRecurringTip = (publisherKey: string, newAmount: number) => action(types.SAVE_RECURRING_TIP, {
+  publisherKey,
+  newAmount
+})
+
+export const removeRecurringTip = (publisherKey: string) => action(types.REMOVE_RECURRING_TIP, {
+  publisherKey
+})
+
+export const onRecurringTips = (result: RewardsExtension.RecurringTips) => action(types.ON_RECURRING_TIPS, {
+  result
+})
+
+export const onPublisherBanner = (banner: RewardsExtension.PublisherBanner) =>
+  action(types.ON_PUBLISHER_BANNER, {
+    banner
+  })

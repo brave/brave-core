@@ -305,6 +305,44 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
       break
     }
+    case types.REMOVE_RECURRING_TIP: {
+      let publisherKey = payload.publisherKey
+      if (publisherKey == null) {
+        break
+      }
+      chrome.braveRewards.removeRecurringTip(publisherKey)
+      break
+    }
+    case types.SAVE_RECURRING_TIP: {
+      let newAmount = payload.newAmount
+      let publisherKey = payload.publisherKey
+
+      if (newAmount < 0 ||
+          isNaN(newAmount) ||
+          publisherKey == null) {
+        break
+      }
+
+      chrome.braveRewards.saveRecurringTip(publisherKey, newAmount)
+      break
+    }
+    case types.ON_RECURRING_TIPS: {
+      state = { ...state }
+      state.recurringTips = payload.result.recurringTips
+      break
+    }
+    case types.ON_PUBLISHER_BANNER: {
+      if (!payload.banner || !payload.banner.publisherKey) {
+        break
+      }
+
+      state = { ...state }
+      if (!state.tipAmounts) {
+        state.tipAmounts = {}
+      }
+      state.tipAmounts[payload.banner.publisherKey] = payload.banner.amounts
+      break
+    }
   }
   return state
 }

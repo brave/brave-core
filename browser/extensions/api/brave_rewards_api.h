@@ -6,7 +6,11 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 
+#include <memory>
+
 #include "extensions/browser/extension_function.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
 
 namespace extensions {
 namespace api {
@@ -163,6 +167,59 @@ class BraveRewardsSaveSettingFunction : public UIThreadExtensionFunction {
   ~BraveRewardsSaveSettingFunction() override;
 
   ResponseAction Run() override;
+};
+
+class BraveRewardsSaveRecurringTipFunction :
+  public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.saveRecurringTip", UNKNOWN)
+
+ protected:
+  ~BraveRewardsSaveRecurringTipFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsRemoveRecurringTipFunction :
+  public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.removeRecurringTip", UNKNOWN)
+
+ protected:
+  ~BraveRewardsRemoveRecurringTipFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsGetRecurringTipsFunction :
+  public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getRecurringTips", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetRecurringTipsFunction() override;
+
+  ResponseAction Run() override;
+
+  private:
+    void OnGetRecurringTips(
+        std::unique_ptr<brave_rewards::ContentSiteList> list);
+};
+
+class BraveRewardsGetPublisherBannerFunction :
+public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION(
+      "braveRewards.getPublisherBanner", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetPublisherBannerFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnPublisherBanner(
+      std::unique_ptr<::brave_rewards::PublisherBanner> banner);
 };
 
 }  // namespace api

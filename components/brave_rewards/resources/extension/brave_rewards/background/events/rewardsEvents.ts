@@ -10,6 +10,13 @@ chrome.braveRewards.onWalletCreated.addListener(() => {
 
 chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: RewardsExtension.Publisher) => {
   rewardsPanelActions.onPublisherData(windowId, publisher)
+
+  // Get publisher amounts
+  if (publisher && publisher.publisher_key) {
+    chrome.braveRewards.getPublisherBanner(publisher.publisher_key, ((banner: RewardsExtension.PublisherBanner) => {
+      rewardsPanelActions.onPublisherBanner(banner)
+    }))
+  }
 })
 
 chrome.braveRewards.onWalletProperties.addListener((properties: RewardsExtension.WalletProperties) => {
@@ -62,4 +69,20 @@ chrome.braveRewards.onPublisherListNormalized.addListener((properties: RewardsEx
 
 chrome.braveRewards.onExcludedSitesChanged.addListener((properties: RewardsExtension.ExcludedSitesChanged) => {
   rewardsPanelActions.onExcludedSitesChanged(properties)
+})
+
+chrome.braveRewards.onRecurringTipSaved.addListener((success: boolean) => {
+  if (success) {
+    chrome.braveRewards.getRecurringTips((tips: RewardsExtension.RecurringTips) => {
+      rewardsPanelActions.onRecurringTips(tips)
+    })
+  }
+})
+
+chrome.braveRewards.onRecurringTipRemoved.addListener((success: boolean) => {
+  if (success) {
+    chrome.braveRewards.getRecurringTips((tips: RewardsExtension.RecurringTips) => {
+      rewardsPanelActions.onRecurringTips(tips)
+    })
+  }
 })

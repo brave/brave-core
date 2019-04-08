@@ -40,6 +40,12 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
                               std::string publisher_key,
                               bool excluded) override;
 
+  void OnRecurringTipSaved(RewardsService* rewards_service,
+                           bool success) override;
+
+  void OnRecurringTipRemoved(RewardsService* rewards_service,
+                             bool success) override;
+
   // RewardsServicePrivateObserver implementation
   void OnGetCurrentBalanceReport(RewardsService* rewards_service,
                                  const BalanceReport& balance_report) override;

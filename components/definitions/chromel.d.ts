@@ -64,6 +64,16 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (properties: RewardsExtension.ExcludedSitesChanged) => void) => void
   }
   const saveSetting: (key: string, value: string) => {}
+  const getRecurringTips: (callback: (tips: RewardsExtension.RecurringTips) => void) => {}
+  const saveRecurringTip: (publisherKey: string, newAmount: string) => {}
+  const removeRecurringTip: (publisherKey: string) => {}
+  const getPublisherBanner: (publisherKey: string, callback: (banner: RewardsExtension.PublisherBanner) => void) => {}
+  const onRecurringTipSaved: {
+    addListener: (callback: (success: boolean) => void) => void
+  }
+  const onRecurringTipRemoved: {
+    addListener: (callback: (success: boolean) => void) => void
+  }
 }
 
 declare namespace chrome.rewardsNotifications {

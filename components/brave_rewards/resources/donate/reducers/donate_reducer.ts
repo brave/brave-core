@@ -37,7 +37,9 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
         state.publishers = {}
       }
       const publisher: RewardsDonate.Publisher = payload.data
-      state.publishers[publisher.publisherKey] = publisher
+      if (publisher && publisher.publisherKey) {
+        state.publishers[publisher.publisherKey] = publisher
+      }
       break
     }
     case types.GET_WALLET_PROPERTIES:
@@ -69,6 +71,7 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
     }
     case types.GET_RECURRING_TIPS:
     case types.ON_RECURRING_TIP_REMOVED:
+    case types.ON_RECURRING_TIP_SAVED:
       chrome.send('brave_rewards_donate.getRecurringTips')
       break
     case types.ON_RECURRING_TIPS:

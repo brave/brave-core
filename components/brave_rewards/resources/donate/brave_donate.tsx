@@ -79,13 +79,18 @@ window.cr.define('brave_rewards_donate', function () {
     getActions().onRecurringTipRemoved(success)
   }
 
+  function recurringTipSaved (success: boolean) {
+    getActions().onRecurringTipSaved(success)
+  }
+
   return {
     initialize,
     publisherBanner,
     walletProperties,
     recurringTips,
     reconcileStamp,
-    recurringTipRemoved
+    recurringTipRemoved,
+    recurringTipSaved
   }
 })
 

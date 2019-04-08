@@ -287,6 +287,28 @@
             }
           }
         ]
+      },
+      {
+        "name": "onRecurringTipSaved",
+        "type": "function",
+        "description": "Fired when publisher recurring tip is saved",
+        "parameters": [
+          {
+            "name": "success",
+            "type": "boolean"
+          }
+        ]
+      },
+      {
+        "name": "onRecurringTipRemoved",
+        "type": "function",
+        "description": "Fired when publisher recurring tip is removed",
+        "parameters": [
+          {
+            "name": "success",
+            "type": "boolean"
+          }
+        ]
       }
     ],
     "functions": [
@@ -475,6 +497,70 @@
           {
             "name": "value",
             "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "saveRecurringTip",
+        "type": "function",
+        "description": "Updates recurring tip amount for rewards panel",
+        "parameters": [
+          {
+            "name": "publisher_key",
+            "type": "string"
+          },
+          {
+            "name": "new_amount",
+            "type": "integer"
+          }
+        ]
+      },
+      {
+        "name": "removeRecurringTip",
+        "type": "function",
+        "description": "Removes recurring tip for rewards panel",
+        "parameters": [
+          {
+            "name": "publisher_key",
+            "type": "string"
+          }
+        ]
+      },
+      {
+        "name": "getRecurringTips",
+        "type": "function",
+        "description": "Gets list of sites with recurring tip data",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "tips",
+                "type": "any"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getPublisherBanner",
+        "type": "function",
+        "description": "Retrieves data for publisher banner",
+        "parameters": [
+          {
+            "name": "publisher_key",
+            "type": "string"
+          },
+          {
+            "name": "callback",
+            "type": "function",
+            "parameters": [
+              {
+                "name": "banner",
+                "type": "any"
+              }
+            ]
           }
         ]
       }

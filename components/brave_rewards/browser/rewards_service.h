@@ -75,6 +75,8 @@ using GetRecurringTipsCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::ContentSiteList>)>;
 using GetOneTimeTipsCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::ContentSiteList>)>;
+using GetPublisherBannerCallback =
+    base::OnceCallback<void(std::unique_ptr<brave_rewards::PublisherBanner>)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -156,7 +158,8 @@ class RewardsService : public KeyedService {
       const std::string& publisher_blob) = 0;
   virtual void GetContributionAmount(
       const GetContributionAmountCallback& callback) = 0;
-  virtual void GetPublisherBanner(const std::string& publisher_id) = 0;
+  virtual void GetPublisherBanner(const std::string& publisher_id,
+                                  GetPublisherBannerCallback callback) = 0;
   virtual void OnDonate(const std::string& publisher_key, int amount,
       bool recurring, const ledger::PublisherInfo* publisher_info = NULL) = 0;
   virtual void OnDonate(const std::string& publisher_key, int amount,
@@ -191,6 +194,9 @@ class RewardsService : public KeyedService {
   void RemoveObserver(RewardsServiceObserver* observer);
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+  virtual void SaveRecurringTip(const std::string& publisher_key,
+                                const int amount) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

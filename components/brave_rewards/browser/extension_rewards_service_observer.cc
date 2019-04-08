@@ -325,4 +325,40 @@ void ExtensionRewardsServiceObserver::OnExcludedSitesChanged(
   event_router->BroadcastEvent(std::move(event));
 }
 
+void ExtensionRewardsServiceObserver::OnRecurringTipSaved(
+    RewardsService* rewards_service,
+    bool success) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnRecurringTipSaved::Create(
+          success).release());
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnRecurringTipSaved::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
+void ExtensionRewardsServiceObserver::OnRecurringTipRemoved(
+    RewardsService* rewards_service,
+    bool success) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnRecurringTipRemoved::Create(
+          success).release());
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnRecurringTipRemoved::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
 }  // namespace brave_rewards
