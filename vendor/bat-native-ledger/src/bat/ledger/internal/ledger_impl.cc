@@ -95,7 +95,7 @@ void LedgerImpl::Initialize() {
 }
 
 bool LedgerImpl::CreateWallet(const std::string& safetynet_token) {
-  if (initializing_)
+  if (initializing_) {
     return false;
   }
 

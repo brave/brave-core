@@ -13,12 +13,21 @@
 #include "content/public/common/bindings_policy.h"
 #include "ui/resources/grit/webui_resources_map.h"
 
+#if $CHROMIUM_CR73 != 0
 content::WebUIDataSource* CreateBasicUIHTMLSource(
     Profile* profile,
     const std::string& name,
     const GritResourceMap* resource_map,
     size_t resource_map_size,
-    int html_resource_id) {
+    int html_resource_id)
+#else
+content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
+                                                  const std::string& name,
+                                                  const GritResourceMap* resource_map,
+                                                  size_t resource_map_size,
+                                                  int html_resource_id)
+#endif 
+{
   content::WebUIDataSource* source =
       content::WebUIDataSource::Create(name);
   source->SetJsonPath("strings.js");
@@ -55,11 +64,19 @@ class BasicUI::BasicUIWebContentsObserver
   DISALLOW_COPY_AND_ASSIGN(BasicUIWebContentsObserver);
 };
 
+#if $CHROMIUM_CR73 != 0
 BasicUI::BasicUI(content::WebUI* web_ui,
                  const std::string& name,
                  const GritResourceMap* resource_map,
                  size_t resource_map_size,
                  int html_resource_id)
+#else
+BasicUI::BasicUI(content::WebUI* web_ui,
+    const std::string& name,
+    const GritResourceMap* resource_map,
+    size_t resource_map_size,
+    int html_resource_id)
+#endif
     : WebUIController(web_ui) {
   observer_.reset(
       new BasicUIWebContentsObserver(this, web_ui->GetWebContents()));

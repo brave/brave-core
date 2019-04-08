@@ -13,6 +13,7 @@
 #include "base/compiler_specific.h"
 #include "base/macros.h"
 #include "content/public/browser/web_ui_controller.h"
+#include "brave/browser/version_info.h"
 
 namespace content {
 class RenderViewHost;
@@ -22,22 +23,40 @@ class WebUI;
 
 class Profile;
 
+#if $CHROMIUM_CR73 != 0
+struct GzippedGritResourceMap;
+#else
 struct GritResourceMap;
+#endif
 
+#if $CHROMIUM_CR73 != 0
 content::WebUIDataSource* CreateBasicUIHTMLSource(
     Profile* profile,
     const std::string& name,
     const GritResourceMap* resource_map,
     size_t resouece_map_size,
     int html_resource_id);
+#else
+content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
+                                                  const std::string& name,
+                                                  const GritResourceMap* resource_map,
+                                                  size_t resouece_map_size,
+                                                  int html_resource_id);
+#endif
 
 class BasicUI : public content::WebUIController {
  public:
+#if $CHROMIUM_CR73 != 0
   BasicUI(content::WebUI* web_ui,
           const std::string& host,
           const GritResourceMap* resource_map,
           size_t resouece_map_size,
           int html_resource_id);
+#else
+  BasicUI(content::WebUI* web_ui, const std::string& host,
+      const GritResourceMap* resource_map, size_t resouece_map_size,
+      int html_resource_id);
+#endif
   ~BasicUI() override;
 
   // Called when subclass can set its webui properties.
