@@ -305,6 +305,11 @@
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC" desc="">Support your favorite sites just by browsing – or tip a site any time you like.</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Auto-Contribute</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS" desc="">Brave Rewards</message>
+      <message name="IDS_BRAVE_UI_AND" desc="">and</message>
+      <message name="IDS_BRAVE_UI_PRIVACY_POLICY" desc="">Privacy Policy</message>
+      <message name="IDS_BRAVE_UI_TERMS_OF_SERVICE" desc="">Terms of Service</message>
+      <message name="IDS_BRAVE_UI_SERVICE_TEXT_TOGGLE" desc="">By turning on Brave Rewards, you indicate that you have read and agree to the</message>
+      <message name="IDS_BRAVE_UI_SERVICE_TEXT_WELCOME" desc="">By clicking ‘Yes, I'm in!’, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_CREATING_TEXT" desc="">Creating wallet</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_DESC" desc="">Your attention is valuable. Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_OPT_IN_TEXT" desc="">Yes, I'm In!</message>
@@ -418,10 +423,10 @@
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION" desc="">Attention</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_ATTENTION_SCORE" desc="">Attention</message>
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE_TEXT1" desc="">You’re currently supporting</message>
-      <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT1" desc="">With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmitted your valuable private data to advertisers —</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT2" desc="">without your consent.</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT3" desc="">Today, Brave welcomes you to the new internet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT4" desc="">One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</message>
+      <message name="IDS_BRAVE_UI_REWARDS_OFF_TEXT5" desc="">With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmitted your valuable private data to advertisers — without your consent.</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT1" desc="">Sadly, no tokens yet.</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT2" desc="">3 ways to fill your wallet:</message>
       <message name="IDS_BRAVE_UI_REWARDS_PANEL_EMPTY_TEXT3" desc="">You can add funds.</message>
