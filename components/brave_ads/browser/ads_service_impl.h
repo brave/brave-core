@@ -168,6 +168,13 @@ class AdsServiceImpl : public AdsService,
   void OnSaved(const ads::OnSaveCallback& callback, bool success);
   void OnReset(const ads::OnResetCallback& callback, bool success);
   void OnTimer(uint32_t timer_id);
+  void MigratePrefs() const;
+  bool MigratePrefs(
+      const int source_version,
+      const int dest_version,
+      const bool is_dry_run = false) const;
+  void MigratePrefsVersion1To2() const;
+  int GetPrefsVersion() const;
   void OnPrefsChanged(const std::string& pref);
   void OnCreate();
   void OnInitialize();

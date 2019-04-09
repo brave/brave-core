@@ -286,6 +286,8 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       base::Bind(&AdsServiceImpl::OnPrefsChanged,
                  base::Unretained(this)));
 
+  MigratePrefs();
+
   auto* display_service_impl =
       static_cast<NotificationDisplayServiceImpl*>(display_service_);
 
@@ -439,6 +441,102 @@ void AdsServiceImpl::Shutdown() {
                             notification_id);
   }
   notification_ids_.clear();
+}
+
+void AdsServiceImpl::MigratePrefs() const {
+  auto source_version = GetPrefsVersion();
+  auto dest_version = prefs::kBraveAdsPrefsCurrentVersion;
+
+  if (!MigratePrefs(source_version, dest_version, true)) {
+    // Migration dry-run failed, so do not migrate preferences
+    LOG(ERROR) << "Failed to migrate Ads preferences from version "
+        << source_version << " to " << dest_version;
+
+    return;
+  }
+
+  MigratePrefs(source_version, dest_version);
+}
+
+bool AdsServiceImpl::MigratePrefs(
+    const int source_version,
+    const int dest_version,
+    const bool is_dry_run) const {
+  DCHECK(source_version <= dest_version) << "Invalid migration path";
+
+  if (source_version == dest_version) {
+    if (!is_dry_run) {
+      LOG(INFO) << "Ads preferences are up to date on version " << dest_version;
+    }
+
+    return true;
+  }
+
+  // Migration paths should be added to the below map, i.e.
+  //
+  //   {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2},
+  //   {{2, 3}, &AdsServiceImpl::MigratePrefsVersion2To3},
+  //   {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4}
+
+  static std::map<std::pair<int, int>, void (AdsServiceImpl::*)() const>
+      mappings {
+    // {{from version, to version}, function}
+    {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2}
+  };
+
+  // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
+  // should migrate version 2 to 3, then 3 to 4 and finally version 4 to 5
+
+  int from_version = source_version;
+  int to_version = from_version + 1;
+
+  do {
+    auto mapping = mappings.find({from_version, to_version});
+    if (mapping == mappings.end()) {
+      // Migration path does not exist. It is highly recommended to perform a
+      // dry-run before migrating preferences
+      return false;
+    }
+
+    if (!is_dry_run) {
+      LOG(INFO) << "Migrating Ads preferences from mapping version "
+          << from_version << " to " << to_version;
+
+      (this->*(mapping->second))();
+
+      profile_->GetPrefs()->SetInteger(prefs::kBraveAdsPrefsVersion,
+          to_version);
+    }
+
+    from_version++;
+    if (to_version < dest_version) {
+      to_version++;
+    }
+  } while (from_version != to_version);
+
+  if (!is_dry_run) {
+    LOG(INFO) << "Successfully migrated Ads preferences from version "
+        << source_version << " to " << dest_version;
+  }
+
+  return true;
+}
+
+void AdsServiceImpl::MigratePrefsVersion1To2() const {
+  DCHECK_EQ(1, GetPrefsVersion()) << "Invalid migration path";
+
+  // Unlike Muon, Ads per day are not configurable in the UI so we can safely
+  // migrate to the new value
+
+  #if defined(OS_ANDROID)
+    profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerDay, 12);
+  #else
+    profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerDay, 20);
+  #endif
+}
+
+int AdsServiceImpl::GetPrefsVersion() const {
+  return profile_->GetPrefs()->GetInteger(prefs::kBraveAdsPrefsVersion);
 }
 
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {

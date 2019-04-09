@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -13,8 +14,7 @@ class Profile;
 namespace brave_ads {
 class AdsService;
 
-// Singleton that owns all AdsService and associates them with
-// Profiles.
+// Singleton that owns all AdsService and associates them with Profiles.
 class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
   static brave_ads::AdsService* GetForProfile(Profile* profile);
@@ -35,10 +35,11 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   bool ServiceIsNULLWhileTesting() const override;
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
+  bool ShouldMigratePrefs(user_prefs::PrefRegistrySyncable* registry) const;
 
   DISALLOW_COPY_AND_ASSIGN(AdsServiceFactory);
 };
 
-}  // namepsace brave_ads
+}  // namespace brave_ads
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ADS_ADS_SERVICE_FACTORY_H_
