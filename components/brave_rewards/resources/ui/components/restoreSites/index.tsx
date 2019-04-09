@@ -13,6 +13,7 @@ import {
 export interface Props {
   numExcludedSites: number
   onRestore?: () => void
+  showText?: boolean
 }
 
 export default class RestoreSites extends React.PureComponent<Props, {}> {
@@ -25,11 +26,15 @@ export default class RestoreSites extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { numExcludedSites, onRestore } = this.props
+    const { numExcludedSites, onRestore, showText } = this.props
 
     return (
       <StyledExcludedText>
-        {this.getExclusionText(numExcludedSites)}
+        {
+          showText
+          ? this.getExclusionText(numExcludedSites)
+          : null
+        }
         <StyledRestore onClick={onRestore}>
           {this.getRestoreText()}
         </StyledRestore>

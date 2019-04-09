@@ -193,7 +193,7 @@ class ContributeBox extends React.Component<{}, State> {
           this.state.modalContribute
             ? <ModalContribute
               onRestore={doNothing}
-              numExcludedSites={100}
+              excludedRows={this.contributeRows}
               rows={this.contributeRows}
               onClose={this.onContributeModalClose.bind(self)}
             />
@@ -224,7 +224,6 @@ class ContributeBox extends React.Component<{}, State> {
           allSites={false}
           numSites={55}
           showRemove={true}
-          onRestore={doNothing}
           numExcludedSites={100}
           onShowAll={this.onContributeModalOpen.bind(self)}
           headerColor={true}

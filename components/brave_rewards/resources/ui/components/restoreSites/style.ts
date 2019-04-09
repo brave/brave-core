@@ -12,7 +12,7 @@ export const StyledExcludedText = styled<{}, 'div'>('div')`
   text-align: left;
   letter-spacing: 0;
   margin-top: -20px;
-  margin-bottom: 33px;
+  margin-bottom: 32px;
 `
 
 export const StyledRestore = styled<{}, 'a'>('a')`

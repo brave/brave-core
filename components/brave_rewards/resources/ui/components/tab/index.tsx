@@ -12,9 +12,12 @@ import {
   StyledSwitch
 } from './style'
 
+export type Type = 'contribute' | 'restore'
+
 export interface Props {
   tabTitles?: string[]
   testId?: string
+  type?: Type
   tabIndexSelected?: number
   onChange?: (event: React.MouseEvent<HTMLDivElement>) => void
 }
@@ -25,6 +28,8 @@ export default class Tab extends React.PureComponent<Props, {}> {
   }
 
   getTabs = (tabTitles: string[]) => {
+    const { type } = this.props
+
     const tabs: React.ReactNode[] = tabTitles.map((title: string, i: number) => {
       return (
         <StyledTab
@@ -32,7 +37,10 @@ export default class Tab extends React.PureComponent<Props, {}> {
           key={`tab-${i}`}
           onClick={this.onSwitchChange.bind(this, i)}
         >
-          <StyledText selected={i === this.props.tabIndexSelected}>
+          <StyledText
+            type={type}
+            selected={i === this.props.tabIndexSelected}
+          >
             {title}
           </StyledText>
         </StyledTab>

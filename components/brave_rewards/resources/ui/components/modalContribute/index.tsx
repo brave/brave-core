@@ -7,19 +7,25 @@ import {
   StyledWrapper,
   StyledTitle,
   StyledContent,
-  StyledNum
+  StyledNum,
+  StyledTabWrapper,
+  StyledControlWrapper,
+  RestoreWrapper
 } from './style'
 import RestoreSites from '../restoreSites'
+import { Tab } from '../'
 import Modal from '../../../components/popupModals/modal/index'
 import TableContribute, { DetailRow } from '../tableContribute/index'
 import { getLocale } from '../../../helpers'
 
 export interface Props {
   rows: DetailRow[]
+  excludedRows?: DetailRow[]
   onClose: () => void
   onRestore: () => void
   id?: string
-  numExcludedSites?: number
+  activeTabId?: number
+  onTabChange?: () => void
 }
 
 export default class ModalContribute extends React.PureComponent<Props, {}> {
@@ -31,33 +37,103 @@ export default class ModalContribute extends React.PureComponent<Props, {}> {
     ]
   }
 
-  render () {
-    const { id, onClose, onRestore, rows, numExcludedSites } = this.props
+  getTabTitle = (key: string, numSites?: number) => {
+    if (numSites === undefined) {
+      return `${getLocale(key)}`
+    }
+
+    return `${getLocale(key)} (${numSites})`
+  }
+
+  getACTable = () => {
+    const { rows } = this.props
     const numSites = rows && rows.length || 0
 
     return (
-      <Modal id={id} onClose={onClose}>
-        <StyledWrapper>
-          <StyledTitle>{getLocale('rewardsContribute')}</StyledTitle>
-          <StyledContent>
-            {getLocale('rewardsContributeText1')} <StyledNum>{numSites}</StyledNum> {getLocale('sites')}.
-          </StyledContent>
-          {
-            numExcludedSites && numExcludedSites > 0
-            ? <RestoreSites
+      <>
+        <StyledContent>
+          {getLocale('rewardsContributeText1')} <StyledNum>{numSites}</StyledNum> {getLocale('sites')}.
+        </StyledContent>
+        <TableContribute
+          header={this.headers}
+          rows={rows}
+          numSites={numSites}
+          allSites={true}
+          showRowAmount={true}
+          showRemove={true}
+        />
+      </>
+    )
+  }
+
+  getExcludedTable = () => {
+    const { excludedRows, onRestore } = this.props
+    const numExcludedSites = excludedRows && excludedRows.length || 0
+
+    return (
+      <>
+        <StyledContent>
+          {getLocale('rewardsExcludedText1')} <StyledNum>{numExcludedSites}</StyledNum> {getLocale('rewardsExcludedText2')}
+        </StyledContent>
+        {
+          numExcludedSites > 0
+          ? <RestoreWrapper>
+              <RestoreSites
+                showText={false}
                 onRestore={onRestore}
                 numExcludedSites={numExcludedSites}
-            />
-            : null
+              />
+            </RestoreWrapper>
+          : null
+        }
+        <TableContribute
+          rows={excludedRows}
+          isExcluded={true}
+          header={[getLocale('site')]}
+          numSites={numExcludedSites}
+          allSites={true}
+          showRemove={true}
+        />
+      </>
+    )
+  }
+
+  render () {
+    const {
+      id,
+      onClose,
+      rows,
+      excludedRows,
+      activeTabId,
+      onTabChange
+    } = this.props
+    const numSites = rows && rows.length || 0
+    const numExcluded = excludedRows && excludedRows.length || 0
+
+    return (
+      <Modal id={id} onClose={onClose} size={'small'}>
+        <StyledWrapper>
+          <StyledControlWrapper>
+            <StyledTitle>
+              {getLocale('rewardsContribute')}
+            </StyledTitle>
+            <StyledTabWrapper>
+              <Tab
+                type={'contribute'}
+                onChange={onTabChange}
+                tabIndexSelected={activeTabId}
+                tabTitles={[
+                  this.getTabTitle('supportedSites', numSites),
+                  this.getTabTitle('excludedSites', numExcluded)
+                ]}
+              />
+            </StyledTabWrapper>
+          </StyledControlWrapper>
+          {
+            activeTabId === 0
+            ? this.getACTable()
+            : this.getExcludedTable()
           }
-          <TableContribute
-            header={this.headers}
-            rows={rows}
-            numSites={numSites}
-            allSites={true}
-            showRowAmount={true}
-            showRemove={true}
-          />
         </StyledWrapper>
       </Modal>
     )

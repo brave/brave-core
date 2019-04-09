@@ -10,14 +10,13 @@ import {
   StyledTHOther,
   StyledTHLast,
   StyledToggleWrap,
-  StyledLink,
-  StyledRestoreSites
+  StyledLink
 } from './style'
 import Table, { Row } from '../../../components/dataTables/table'
 import Profile, { Provider } from '../profile'
 import { getLocale } from '../../../helpers'
-import { RestoreSites, Tokens, Tooltip } from '../'
-import { TrashOIcon } from '../../../components/icons'
+import { Tokens, Tooltip } from '../'
+import { CloseStrokeIcon, TrashOIcon } from '../../../components/icons'
 
 interface ProfileCell {
   verified: boolean
@@ -46,9 +45,9 @@ export interface Props {
   numSites?: number
   allSites?: boolean
   onShowAll?: () => void
-  onRestore?: () => void
   numExcludedSites?: number
   isMobile?: boolean
+  isExcluded?: boolean
 }
 
 export default class TableContribute extends React.PureComponent<Props, {}> {
@@ -90,6 +89,8 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
       return
     }
 
+    const { isExcluded } = this.props
+
     return rows.map((row: DetailRow): Row => {
       const cell: Row = {
         content: [
@@ -105,15 +106,18 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
                 />
               </StyledLink>
             )
-          },
-          {
-            content: (
-              <StyledText>
-                {row.attention}%
-              </StyledText>
-            )
           }
         ]
+      }
+
+      if (!isExcluded) {
+        cell.content.push({
+          content: (
+            <StyledText>
+              {row.attention}%
+            </StyledText>
+          )
+        })
       }
 
       if (row.token) {
@@ -133,11 +137,19 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
       }
 
       if (this.props.showRemove) {
+        const actionTooltip = isExcluded
+          ? getLocale('restoreSite')
+          : getLocale('excludeSite')
+
         cell.content.push({
           content: (
-            <Tooltip content={getLocale('excludeSite')}>
+            <Tooltip content={actionTooltip}>
               <StyledRemove onClick={row.onRemove}>
-                <TrashOIcon />
+                {
+                  isExcluded
+                  ? <CloseStrokeIcon />
+                  : <TrashOIcon />
+                }
               </StyledRemove>
             </Tooltip>
           ),
@@ -174,8 +186,9 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { id, testId, header, children, rows, allSites, onShowAll, onRestore, numExcludedSites } = this.props
+    const { id, testId, header, children, rows, allSites, onShowAll } = this.props
     const numSites = this.props.numSites || 0
+    const numExcludedSites = this.props.numExcludedSites || 0
 
     return (
       <div id={id} data-test-id={testId}>
@@ -185,20 +198,10 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
           rows={this.getRows(rows)}
         />
         {
-          !allSites && numSites > 0
+          !allSites && (numSites > 0 || numExcludedSites > 0)
             ? <StyledToggleWrap>
-              <StyledToggle onClick={onShowAll}>{getLocale('seeAllSites', { numSites })}</StyledToggle>
+              <StyledToggle onClick={onShowAll}>{getLocale('showAll')}</StyledToggle>
             </StyledToggleWrap>
-            : null
-        }
-        {
-          allSites && numExcludedSites && numExcludedSites > 0
-            ? <StyledRestoreSites>
-              <RestoreSites
-                onRestore={onRestore}
-                numExcludedSites={numExcludedSites}
-              />
-            </StyledRestoreSites>
             : null
         }
       </div>

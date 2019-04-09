@@ -11,7 +11,7 @@ exports[`RestoreSites tests basic tests matches the snapshot 1`] = `
   -ms-letter-spacing: 0;
   letter-spacing: 0;
   margin-top: -20px;
-  margin-bottom: 33px;
+  margin-bottom: 32px;
 }
 
 .c1 {
@@ -30,7 +30,6 @@ exports[`RestoreSites tests basic tests matches the snapshot 1`] = `
 <div
   className="c0"
 >
-  MISSING: excludedSitesText undefined
   <a
     className="c1"
   >

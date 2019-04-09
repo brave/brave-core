@@ -3,11 +3,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import { Props } from './index'
+import { Type, Props } from './index'
+import palette from '../../../theme/colors'
 
 interface StyleProps {
   left?: boolean
   selected?: boolean
+  type?: Type
 }
 
 export const RewardsTabWrapper = styled<{}, 'div'>('div')`
@@ -60,6 +62,9 @@ export const StyledText = styled<StyleProps, 'div'>('div')`
   overflow: hidden;
   text-align: center;
   user-select: none;
-  color: ${p => p.selected ? p.theme.color.brandBrave : p.theme.color.subtleActive};
+  color: ${p => p.selected
+    ? p.type === 'contribute' ? palette.blurple500 : p.theme.color.brandBrave
+    : p.theme.color.subtleActive
+  };
   font-weight: ${p => p.selected ? '500' : 'normal'};
 `

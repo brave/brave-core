@@ -57,7 +57,12 @@ storiesOf('Feature Components/Rewards/Modal', module)
       </div>
     )
   }))
-  .add('Contribute', () => {
+  .add('Contribute', withState({ activeTabId: 0 }, (store) => {
+    const onTabChange = () => {
+      const newId = store.state.activeTabId === 0 ? 1 : 0
+      store.set({ activeTabId: newId })
+    }
+
     const rows: ContributeRow[] = [
       {
         profile: {
@@ -115,12 +120,14 @@ storiesOf('Feature Components/Rewards/Modal', module)
     return (
       <ModalContribute
         rows={rows}
+        excludedRows={rows}
+        onTabChange={onTabChange}
         onClose={doNothing}
-        numExcludedSites={25}
         onRestore={doNothing}
+        activeTabId={store.state.activeTabId}
       />
     )
-  })
+  }))
   .add('Activity', () => {
     const contributions: ContributeRow[] = [
       {

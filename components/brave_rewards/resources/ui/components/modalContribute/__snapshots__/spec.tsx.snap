@@ -5,22 +5,38 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
   font-family: Poppins,sans-serif;
 }
 
-.c6 {
+.c7 {
   font-size: 16px;
   font-weight: 600;
   line-height: 2;
   color: #4b4c5c;
+  margin-bottom: 20px;
 }
 
-.c7 {
-  font-size: 28px;
-  color: #696fdc;
-  margin-bottom: 33px;
+.c17 {
+  font-size: 16px;
+  color: #4b4c5c;
+  margin: 30px 0px 20px;
+}
+
+.c18 {
+  font-weight: 500;
+  color: #0c0d21;
 }
 
 .c8 {
-  font-weight: 500;
-  color: #0c0d21;
+  margin: 0 auto 30px;
+}
+
+.c6 {
+  width: 100%;
+  margin-bottom: 30px;
+}
+
+.c3 {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 .c0 {
@@ -36,7 +52,7 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
 }
 
 .c1 {
-  max-width: 920px;
+  max-width: 666px;
   margin: 52px auto;
   background: #fff;
   border-radius: 6px;
@@ -60,33 +76,19 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
   max-height: calc(100vh - 100px);
 }
 
-.c3 {
-  width: 100%;
-  height: 100%;
-  fill: currentColor;
-}
-
-.c11 {
-  text-align: right;
-}
-
-.c12 {
-  padding-right: 10px;
-}
-
-.c13 {
+.c23 {
   text-align: center;
   padding: 30px 0;
   color: #999ea2;
   font-size: 14px;
 }
 
-.c9 {
+.c19 {
   min-width: 100%;
   margin: 24px 0;
 }
 
-.c10 {
+.c20 {
   text-transform: uppercase;
   text-align: left;
   font-family: Muli,sans-serif;
@@ -98,6 +100,102 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
   padding: 12px 0;
 }
 
+.c22 {
+  text-align: right;
+}
+
+.c21 {
+  padding-right: 10px;
+}
+
+.c9 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-family: Poppins,sans-serif;
+}
+
+.c10 {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 43px;
+  cursor: pointer;
+}
+
+.c11 {
+  width: 100%;
+  height: 100%;
+  background: #DFDFE8;
+  border-radius: 21.5px 21.5px 21.5px 21.5px;
+}
+
+.c16 {
+  top: -17px;
+  width: 50%;
+  height: 37px;
+  background: #FFFFFF;
+  border-radius: 21.5px 21.5px 21.5px 21.5px;
+  position: relative;
+  -webkit-transition: all .4s ease;
+  transition: all .4s ease;
+  -webkit-transform: translate(calc(2%),calc(-50% - 4px));
+  -ms-transform: translate(calc(2%),calc(-50% - 4px));
+  transform: translate(calc(2%),calc(-50% - 4px));
+  box-shadow: 0 3px 3px rgba(0,0,0,0.05);
+}
+
+.c12 {
+  width: 50%;
+  display: block;
+  height: 100%;
+  float: left;
+}
+
+.c14 {
+  width: 50%;
+  display: block;
+  height: 100%;
+  float: right;
+}
+
+.c13 {
+  z-index: 9;
+  position: relative;
+  font-size: 14px;
+  width: 70%;
+  margin: 13px auto 0 auto;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+  text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #4C54D2;
+  font-weight: 500;
+}
+
+.c15 {
+  z-index: 9;
+  position: relative;
+  font-size: 14px;
+  width: 70%;
+  margin: 13px auto 0 auto;
+  text-overflow: ellipsis;
+  display: block;
+  overflow: hidden;
+  text-align: center;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  color: #84889c;
+  font-weight: normal;
+}
+
 <div
   className="c0"
   id="modal"
@@ -105,7 +203,7 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
 >
   <div
     className="c1"
-    size="normal"
+    size="small"
   >
     <div
       className="c2"
@@ -133,50 +231,87 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
         <div
           className="c6"
         >
-          MISSING: rewardsContribute
+          <div
+            className="c7"
+          >
+            MISSING: rewardsContribute
+          </div>
+          <div
+            className="c8"
+          >
+            <div
+              className="c9"
+            >
+              <div
+                className="c10"
+              >
+                <div
+                  className="c11"
+                >
+                  <div
+                    className="c12"
+                    onClick={[Function]}
+                  >
+                    <div
+                      className="c13"
+                      selected={true}
+                      type="contribute"
+                    >
+                      MISSING: supportedSites (0)
+                    </div>
+                  </div>
+                  <div
+                    className="c14"
+                    onClick={[Function]}
+                  >
+                    <div
+                      className="c15"
+                      selected={false}
+                      type="contribute"
+                    >
+                      MISSING: excludedSites (0)
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className="c16"
+                />
+              </div>
+            </div>
+          </div>
         </div>
         <div
-          className="c7"
+          className="c17"
         >
-          MISSING: rewardsContributeText1
+          MISSING: rewardsExcludedText1
            
           <span
-            className="c8"
+            className="c18"
           >
             0
           </span>
            
-          MISSING: sites
-          .
+          MISSING: rewardsExcludedText2
         </div>
         <div>
           <div>
             <table
-              className="c9"
+              className="c19"
             >
               <thead>
                 <tr>
                   <th
-                    className="c10"
+                    className="c20"
                   >
                     <div>
                       MISSING: site
                     </div>
                   </th>
                   <th
-                    className="c10"
+                    className="c20"
                   >
                     <div
-                      className="c11"
-                    >
-                      MISSING: rewardsContributeAttention
-                    </div>
-                  </th>
-                  <th
-                    className="c10"
-                  >
-                    <div
-                      className="c12 c11"
+                      className="c21 c22"
                     >
                       
                     </div>
@@ -185,7 +320,7 @@ exports[`ModalContribute tests basic tests matches the snapshot 1`] = `
               </thead>
             </table>
             <div
-              className="c13"
+              className="c23"
             />
           </div>
         </div>
