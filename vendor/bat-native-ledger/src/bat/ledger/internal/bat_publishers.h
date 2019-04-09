@@ -218,6 +218,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   friend class BatPublishersTest;
   FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, calcScoreConsts);
   FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, concaveScore);
+  FRIEND_TEST_ALL_PREFIXES(BatPublishersTest, synopsisNormalizerInternal);
 };
 
 }  // namespace braveledger_bat_publishers

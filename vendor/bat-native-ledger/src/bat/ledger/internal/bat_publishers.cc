@@ -461,11 +461,15 @@ void BatPublishers::synopsisNormalizerInternal(
     }
     if (percents.size() != 0) {
       if (totalPercents > 100) {
-        percents[valueToChange] -= 1;
-        totalPercents -= 1;
+        if (percents[valueToChange] != 0) {
+          percents[valueToChange] -= 1;
+          totalPercents -= 1;
+        }
       } else {
-        percents[valueToChange] += 1;
-        totalPercents += 1;
+        if (percents[valueToChange] != 100) {
+          percents[valueToChange] += 1;
+          totalPercents += 1;
+        }
       }
       roundoffs[valueToChange] = 0;
     }
