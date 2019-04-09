@@ -32,11 +32,17 @@ export default class GrantComplete extends React.PureComponent<Props, {}> {
         <StyledBox>
           <StyledTitle>{getLocale('newTokenGrant')}</StyledTitle>
           <StyledValue>{amount} BAT</StyledValue>
-          <StyledTitle>{getLocale('grantExpire')}</StyledTitle>
-          <StyledValue>{date}</StyledValue>
+          {
+            date && date.length > 0
+            ? <>
+              <StyledTitle>{getLocale('grantExpire')}</StyledTitle>
+              <StyledValue>{date}</StyledValue>
+            </>
+            : null
+          }
         </StyledBox>
         {
-          !isMobile
+          !isMobile && date && date.length > 0
           ? <StyledText>
               {getLocale('grantDisclaimer')}
             </StyledText>

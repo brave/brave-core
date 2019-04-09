@@ -415,6 +415,11 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       tokens = convertProbiToFixed(grant.probi, 1)
     }
 
+    let date = ''
+    if (grant && grant.expiryTime !== 0) {
+      date = new Date(grant.expiryTime).toLocaleDateString()
+    }
+
     return (
       <>
         <StyledWrapper
@@ -424,19 +429,19 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           notification={notification}
         >
           {
-            grant && !grant.expiryTime
+            grant && !grant.probi
               ? this.grantCaptcha()
               : null
           }
           {
-            grant && grant.expiryTime
+            grant && grant.probi
               ? <GrantWrapper
                 isPanel={true}
                 onClose={this.onFinish}
                 title={getLocale('captchaLuckyDay')}
                 text={getLocale('captchaOnTheWay')}
               >
-                <GrantComplete isMobile={true} onClose={this.onFinish} amount={tokens} date={new Date(grant.expiryTime).toLocaleDateString()} />
+                <GrantComplete isMobile={true} onClose={this.onFinish} amount={tokens} date={date} />
               </GrantWrapper>
               : null
           }
@@ -498,7 +503,12 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                         {
                           grants && grants.map((grant: Grant, i: number) => {
                             return <StyledGrant key={`${id}-grant-${i}`}>
-                              <b>{grant.tokens} BAT</b> <span>{getLocale('expiresOn')} {grant.expireDate}</span>
+                              <b>{grant.tokens} BAT</b>
+                              {
+                                grant.expireDate.length > 0
+                                ? <span>{getLocale('expiresOn')} {grant.expireDate}</span>
+                                : null
+                              }
                             </StyledGrant>
                           })
                         }

@@ -164,6 +164,7 @@ export const StyledGrant = styled<{}, 'div'>('div')`
     min-width: 81px;
     text-align: right;
     display: inline-block;
+    padding-right: 5px;
   }
 
   span {

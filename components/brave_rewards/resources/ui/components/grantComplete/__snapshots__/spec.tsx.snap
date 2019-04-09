@@ -30,18 +30,10 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
 }
 
 .c4 {
-  font-family: Muli,sans-serif;
-  font-size: 14px;
-  line-height: 1.29;
-  color: #838391;
-  margin: 44px 0 32px;
+  margin-top: 32px;
 }
 
-.c5 {
-  margin-top: 0px;
-}
-
-.c7 {
+.c6 {
   --button-main-color: #FB542B;
   --button-main-color-hover: #FB542B;
   --button-main-color-active: #ffb8a6;
@@ -81,21 +73,21 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   padding: 19px 15px;
 }
 
-.c7:hover:enabled {
+.c6:hover:enabled {
   --button-state-color: var(--button-main-color-hover);
 }
 
-.c7:active:enabled {
+.c6:active:enabled {
   --button-state-color: var(--button-main-color-active);
 }
 
-.c6 {
+.c5 {
   color: #fff;
   background: var(--button-state-color);
   border: 1px solid var(--button-state-color);
 }
 
-.c8 {
+.c7 {
   min-height: var(--icon-size);
   display: -webkit-box;
   display: -webkit-flex;
@@ -132,30 +124,17 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
     >
        BAT
     </div>
-    <div
-      className="c2"
-    >
-      MISSING: grantExpire
-    </div>
-    <div
-      className="c3"
-    />
   </div>
   <div
     className="c4"
   >
-    MISSING: grantDisclaimer
-  </div>
-  <div
-    className="c5"
-  >
     <button
-      className="c6 c7"
+      className="c5 c6"
       size="call-to-action"
       type="accent"
     >
       <div
-        className="c8"
+        className="c7"
         size="call-to-action"
         type="accent"
       >

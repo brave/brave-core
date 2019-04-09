@@ -41,9 +41,9 @@ export const StyledText = styled<{}, 'div'>('div')`
   font-size: 14px;
   line-height: 1.29;
   color: #838391;
-  margin: 44px 0 32px;
+  margin: 44px 0 0;
 `
 
 export const StyledButtonWrapper = styled<StyleProps, 'div'>('div')`
-  margin-top: ${p => p.isMobile ? 40 : 0}px;
+  margin-top: ${p => p.isMobile ? 40 : 32}px;
 `
