@@ -852,17 +852,10 @@ bool AdsImpl::IsAllowedToShowAds() {
   auto respects_hour_limit = HistoryRespectsRollingTimeConstraint(
       ads_shown_history, hour_window, hour_allowed);
 
-#if 0
-/*
-  TBD: [MTR] LEAVE UNTIL DESIGN/PRODUCT RESOLVES THE USE OF THIS FEATURE
- */
   auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
   auto day_allowed = ads_client_->GetAdsPerDay();
   auto respects_day_limit = HistoryRespectsRollingTimeConstraint(
       ads_shown_history, day_window, day_allowed);
-#else
-  auto respects_day_limit = true;
-#endif
 
   auto minimum_wait_time = hour_window / hour_allowed;
   bool respects_minimum_wait_time = HistoryRespectsRollingTimeConstraint(
@@ -1549,14 +1542,9 @@ void AdsImpl::GenerateAdReportingSettingsEvent() {
   auto locale = client_->GetLocale();
   writer.String(locale.c_str());
 
-#if     0
-/*
-  TBD: [MTR] LEAVE UNTIL DESIGN/PRODUCT RESOLVES THE USE OF THIS FEATURE
- */
   writer.String("adsPerDay");
   auto ads_per_day = ads_client_->GetAdsPerDay();
   writer.Uint64(ads_per_day);
-#endif
 
   writer.String("adsPerHour");
   auto ads_per_hour = ads_client_->GetAdsPerHour();
