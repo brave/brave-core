@@ -79,9 +79,29 @@ chrome.runtime.onConnect.addListener(function () {
   })
 })
 
+const donateNow = (publisher: string, tweetText: string) => {
+  chrome.tabs.query({
+    active: true,
+    windowId: chrome.windows.WINDOW_ID_CURRENT
+  }, (tabs) => {
+    if (!tabs || tabs.length === 0) {
+      return
+    }
+    const tabId = tabs[0].id
+    if (tabId === undefined) {
+      return
+    }
+    chrome.braveRewards.donateToSite(tabId, publisher)
+  })
+}
+
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
+    case 'donateNow': {
+      donateNow(msg.publisher, msg.tweetText)
+      return false
+    }
     case 'rewardsEnabled': {
       // Check if rewards is enabled
       chrome.braveRewards.getRewardsMainEnabled(function (enabled) {

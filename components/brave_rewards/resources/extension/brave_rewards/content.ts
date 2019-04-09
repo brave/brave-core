@@ -5,7 +5,30 @@
 // Utils
 import { getMessage } from './background/api/locale_api'
 
-const createBraveTipAction = () => {
+interface TweetMetaData {
+  name: string,
+  screenName: string,
+  userId: string,
+  tweetText: string
+}
+
+const getTweetMetaData = (tweet: Element): TweetMetaData | null => {
+  if (!tweet) {
+    return null
+  }
+  const tweetTextElements = tweet.getElementsByClassName('tweet-text')
+  if (!tweetTextElements || tweetTextElements.length === 0) {
+    return null
+  }
+  return {
+    name: tweet.getAttribute('data-name') || '',
+    screenName: tweet.getAttribute('data-screen-name') || '',
+    userId: tweet.getAttribute('data-user-id') || '',
+    tweetText: tweetTextElements[0].textContent || ''
+  }
+}
+
+const createBraveTipAction = (tweet: Element) => {
   // Create the tip action
   const braveTipAction = document.createElement('div')
   braveTipAction.className = 'ProfileTweet-action action-brave-tip'
@@ -15,7 +38,16 @@ const createBraveTipAction = () => {
   braveTipButton.className = 'ProfileTweet-actionButton u-textUserColorHover js-actionButton'
   braveTipButton.type = 'button'
   braveTipButton.onclick = function (event) {
-    alert('Sending a tip!')
+    const tweetMetaData = getTweetMetaData(tweet)
+    if (tweetMetaData) {
+      chrome.runtime.sendMessage({
+        type: 'donateNow',
+        publisher: 'duckduckgo.com',
+        name: tweetMetaData.name,
+        screenName: tweetMetaData.screenName,
+        tweetText: tweetMetaData.tweetText
+      })
+    }
   }
   braveTipAction.appendChild(braveTipButton)
 
