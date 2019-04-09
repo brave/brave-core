@@ -1,11 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BOOKMARKS_BOOKMARK_CHANGE_PROCESSOR_H_
-#define BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BOOKMARKS_BOOKMARK_CHANGE_PROCESSOR_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BOOKMARK_CHANGE_PROCESSOR_H_
+#define BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BOOKMARK_CHANGE_PROCESSOR_H_
 
+#include <memory>
 #include <set>
+#include <string>
+#include <vector>
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
@@ -116,7 +120,7 @@ class BookmarkChangeProcessor : public ChangeProcessor,
 
   BraveSyncClient* sync_client_;  // not owned
   prefs::Prefs* sync_prefs_;  // not owned
-  Profile* profile_; // not owned
+  Profile* profile_;  // not owned
   bookmarks::BookmarkModel* bookmark_model_;  // not owned
 
   bookmarks::BookmarkNode* deleted_node_root_;
