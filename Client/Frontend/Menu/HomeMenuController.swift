@@ -39,8 +39,8 @@ protocol LinkNavigationDelegate: class {
     func linkNavigatorDidSelectURLString(url: String, visitType: VisitType)
 }
 
-class HomeMenuController: UIViewController, PopoverContentComponent {
-  
+class HomeMenuController: UIViewController {
+
   weak var delegate: HomeMenuControllerDelegate?
   
   let bookmarksController: BookmarksViewController
@@ -59,14 +59,6 @@ class HomeMenuController: UIViewController, PopoverContentComponent {
   let divider = UIView()
   
   weak var visibleController: UIViewController?
-  
-  var isPanToDismissEnabled: Bool {
-    if visibleController === bookmarksNavController {
-      // Don't break reordering bookmarks
-      return !bookmarksController.tableView.isEditing
-    }
-    return true
-  }
   
   // Buttons swap out the full page, meaning only one can be active at a time
   var pageButtons: [UIButton: UIViewController] {
@@ -304,4 +296,8 @@ extension HomeMenuController: LinkNavigationDelegate {
     
     return self.linkNavigatorDidSelectURL(url: url, visitType: visitType)
   }
+}
+
+extension HomeMenuController: PopoverContentComponent {
+    var isPanToDismissEnabled: Bool { return false }
 }
