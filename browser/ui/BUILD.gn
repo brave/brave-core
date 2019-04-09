@@ -42,8 +42,6 @@ source_set("ui") {
     "views/brave_actions/brave_action_view.h",
     "views/brave_actions/brave_actions_container.cc",
     "views/brave_actions/brave_actions_container.h",
-    "views/brave_status_bubble_views.cc",
-    "views/brave_status_bubble_views.h",
     "views/download/brave_download_item_view.cc",
     "views/download/brave_download_item_view.h",
     "views/frame/brave_browser_view.cc",
