@@ -216,13 +216,14 @@ void ExtensionRewardsServiceObserver::OnGrantFinish(
     return;
   }
 
-  base::DictionaryValue finish;
-  finish.SetInteger("status", result);
-  finish.SetInteger("expiryTime", grant.expiryTime);
-  finish.SetString("probi", grant.probi);
+  extensions::api::brave_rewards::OnGrantFinish::Properties properties;
+  properties.status = result;
+  properties.expiry_time = grant.expiryTime;
+  properties.probi = grant.probi;
+  properties.type = grant.type;
 
   std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnGrantFinish::Create(finish)
+      extensions::api::brave_rewards::OnGrantFinish::Create(properties)
           .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,

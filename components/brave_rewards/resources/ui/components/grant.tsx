@@ -145,6 +145,7 @@ class Grant extends React.Component<Props, State> {
     let type
     let promoId
     let tokens = '0.0'
+    let date = ''
 
     if (grant.type) {
       type = grant.type
@@ -154,6 +155,10 @@ class Grant extends React.Component<Props, State> {
     }
     if (grant.probi) {
       tokens = convertProbiToFixed(grant.probi)
+    }
+
+    if (grant.type !== 'ads') {
+      date = new Date(grant.expiryTime).toLocaleDateString()
     }
 
     return (
@@ -175,7 +180,7 @@ class Grant extends React.Component<Props, State> {
               title={'It’s your lucky day!'}
               text={'Your token grant is on its way.'}
             >
-              <GrantComplete onClose={this.onFinish} amount={tokens} date={new Date(grant.expiryTime).toLocaleDateString()} />
+              <GrantComplete onClose={this.onFinish} amount={tokens} date={date} />
             </GrantWrapper>
             : null
         }

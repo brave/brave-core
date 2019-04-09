@@ -575,6 +575,7 @@ void RewardsDOMHandler::OnGrantFinish(
     finish.SetInteger("status", result);
     finish.SetInteger("expiryTime", grant.expiryTime);
     finish.SetString("probi", grant.probi);
+    finish.SetString("type", grant.type);
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grantFinish", finish);
     GetAllBalanceReports();
