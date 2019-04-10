@@ -88,6 +88,8 @@ source_set("browser") {
       "publisher_info_database.h",
       "rewards_fetcher_service_observer.cc",
       "rewards_fetcher_service_observer.h",
+      "sqlite_datastore_driver.cc",
+      "sqlite_datastore_driver.h",
     ]
 
     if (!is_android) {

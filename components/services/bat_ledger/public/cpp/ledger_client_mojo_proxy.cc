@@ -672,6 +672,26 @@ void LedgerClientMojoProxy::ResetState(
       std::bind(LedgerClientMojoProxy::OnResetState, holder, _1));
 }
 
+// static
+void LedgerClientMojoProxy::OnRunDataStoreCommand(
+    CallbackHolder<RunDataStoreCommandCallback>* holder,
+    mojom::DataStoreCommandResponse* response) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(response->Clone());
+  delete holder;
+}
+
+void LedgerClientMojoProxy::RunDataStoreCommand(
+    mojom::DataStoreCommandPtr command,
+    RunDataStoreCommandCallback callback) {
+  // deleted in OnRunDataStoreCommand
+  auto* holder = new CallbackHolder<RunDataStoreCommandCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_client_->RunDataStoreCommand(std::move(command),
+      std::bind(LedgerClientMojoProxy::OnRunDataStoreCommand, holder, _1));
+}
+
 void LedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
   ledger_client_->SetConfirmationsIsReady(is_ready);
 }

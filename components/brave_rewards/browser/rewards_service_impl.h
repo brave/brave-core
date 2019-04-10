@@ -64,6 +64,7 @@ namespace brave_rewards {
 
 class PublisherInfoDatabase;
 class RewardsNotificationServiceImpl;
+class SqliteDatastoreDriver;
 
 using GetProductionCallback = base::Callback<void(bool)>;
 using GetDebugCallback = base::Callback<void(bool)>;
@@ -263,6 +264,10 @@ class RewardsServiceImpl : public RewardsService,
                                   const std::string& value);
   void OnResetState(ledger::OnResetCallback callback,
                                  bool success);
+  void OnDataStoreCommand(
+      ledger::RunDataStoreCommandCallback callback,
+      bat_ledger::mojom::DataStoreCommandResponsePtr response);
+
   void OnDonate_PublisherInfoSaved(ledger::Result result,
                                    std::unique_ptr<ledger::PublisherInfo> info);
   void OnDonate(const std::string& publisher_key,
@@ -407,6 +412,10 @@ class RewardsServiceImpl : public RewardsService,
                  ledger::OnLoadCallback callback) override;
   void ResetState(const std::string& name,
                   ledger::OnResetCallback callback) override;
+  void RunDataStoreCommand(
+      bat_ledger::mojom::DataStoreCommandPtr command,
+      ledger::RunDataStoreCommandCallback callback) override;
+
   void KillTimer(uint32_t timer_id) override;
 
   void OnRestorePublishers(ledger::OnRestoreCallback callback) override;
@@ -490,6 +499,7 @@ class RewardsServiceImpl : public RewardsService,
   const base::FilePath publisher_list_path_;
   const base::FilePath rewards_base_path_;
   std::unique_ptr<PublisherInfoDatabase> publisher_info_backend_;
+  std::unique_ptr<SqliteDatastoreDriver> sqlite_datastore_driver_;
   std::unique_ptr<RewardsNotificationServiceImpl> notification_service_;
   base::ObserverList<RewardsServicePrivateObserver> private_observers_;
 #if BUILDFLAG(ENABLE_EXTENSIONS)

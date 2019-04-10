@@ -3,6 +3,8 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 module bat_ledger.mojom;
 
+import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom";
+
 const string kServiceName = "bat_ledger";
 
 interface BatLedgerService {
@@ -186,6 +188,8 @@ interface BatLedgerClient {
   SaveState(string name, string value) => (int32 result);
   LoadState(string name) => (int32 result, string value);
   ResetState(string name) => (int32 result);
+  RunDataStoreCommand(DataStoreCommand command) =>
+      (DataStoreCommandResponse response);
   SetConfirmationsIsReady(bool is_ready);
   ConfirmationsTransactionHistoryDidChange();
 

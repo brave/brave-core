@@ -119,6 +119,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void ResetState(
       const std::string& name,
       ResetStateCallback callback) override;
+
+  void RunDataStoreCommand(mojom::DataStoreCommandPtr command,
+                           RunDataStoreCommandCallback callback) override;
+
   void SetConfirmationsIsReady(const bool is_ready) override;
 
   void ConfirmationsTransactionHistoryDidChange() override;
@@ -229,6 +233,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnResetState(
       CallbackHolder<ResetStateCallback>* holder,
       ledger::Result result);
+
+  static void OnRunDataStoreCommand(
+      CallbackHolder<RunDataStoreCommandCallback>* holder,
+      mojom::DataStoreCommandResponse* response);
 
   static void OnGetExcludedPublishersNumberDB(
       CallbackHolder<GetExcludedPublishersNumberDBCallback>* holder,

@@ -132,6 +132,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                  ledger::OnLoadCallback callback) override;
   void ResetState(const std::string& name,
                   ledger::OnResetCallback callback) override;
+  void RunDataStoreCommand(
+      mojom::DataStoreCommandPtr command,
+      ledger::RunDataStoreCommandCallback callback) override;
 
   void SetConfirmationsIsReady(const bool is_ready) override;
 

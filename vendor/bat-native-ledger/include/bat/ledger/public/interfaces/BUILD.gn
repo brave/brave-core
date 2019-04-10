@@ -4,11 +4,10 @@ mojom("interfaces") {
   support_lazy_serialization = true
 
   sources = [
-    "bat_ledger.mojom",
+    "ledger.mojom",
   ]
 
   public_deps = [
-    "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces",
     "//mojo/public/mojom/base",
   ]
 }

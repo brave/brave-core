@@ -48,6 +48,7 @@
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/sqlite_datastore_driver.h"
 #include "brave/components/brave_rewards/browser/switches.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/services/bat_ledger/public/cpp/ledger_client_mojo_proxy.h"
@@ -252,6 +253,18 @@ ledger::PublisherInfoList GetActivityListOnFileTaskRunner(
   return list;
 }
 
+bat_ledger::mojom::DataStoreCommandResponsePtr RunDataStoreCommandOnFileTaskRunner(
+    bat_ledger::mojom::DataStoreCommandPtr command,
+    SqliteDatastoreDriver* backend) {
+    auto response = bat_ledger::mojom::DataStoreCommandResponse::New();
+  if (!backend) {
+    response->status = ledger::Result::LEDGER_ERROR;
+  } else {
+    backend->RunDataStoreCommand(command.get(), response.get());
+  }
+  return response;
+}
+
 std::unique_ptr<ledger::PublisherInfo> GetPanelPublisherInfoOnFileTaskRunner(
     ledger::ActivityInfoFilter filter,
     PublisherInfoDatabase* backend) {
@@ -343,6 +356,8 @@ RewardsServiceImpl::RewardsServiceImpl(Profile* profile)
       rewards_base_path_(profile_->GetPath().Append(kRewardsStatePath)),
       publisher_info_backend_(
           new PublisherInfoDatabase(publisher_info_db_path_)),
+      sqlite_datastore_driver_(
+          new SqliteDatastoreDriver(publisher_info_db_path_)),
       notification_service_(new RewardsNotificationServiceImpl(profile)),
 #if BUILDFLAG(ENABLE_EXTENSIONS)
       private_observer_(
@@ -1670,6 +1685,23 @@ void RewardsServiceImpl::OnLoadedState(
     callback(ledger::Result::LEDGER_ERROR, value);
   else
     callback(ledger::Result::LEDGER_OK, value);
+}
+
+void RewardsServiceImpl::RunDataStoreCommand(
+    bat_ledger::mojom::DataStoreCommandPtr command,
+    ledger::RunDataStoreCommandCallback callback) {
+  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&RunDataStoreCommandOnFileTaskRunner,
+          base::Passed(std::move(command)), sqlite_datastore_driver_.get()),
+      base::BindOnce(&RewardsServiceImpl::OnDataStoreCommand,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void RewardsServiceImpl::OnDataStoreCommand(
+    ledger::RunDataStoreCommandCallback callback,
+    bat_ledger::mojom::DataStoreCommandResponsePtr response) {
+  callback(response.get());
 }
 
 void RewardsServiceImpl::KillTimer(uint32_t timer_id) {

@@ -90,9 +90,14 @@ void OnResetState(const ledger::OnSaveCallback& callback,
   callback(ToLedgerResult(result));
 }
 
-void OnExcludedNumberDB(
-    const ledger::GetExcludedPublishersNumberDBCallback& callback,
-    uint32_t result) {
+void OnRunDataStoreCommand(
+    const ledger::RunDataStoreCommandCallback& callback,
+    bat_ledger::mojom::DataStoreCommandResponsePtr response) {
+  callback(response.get());
+}
+
+void OnExcludedNumberDB(const ledger::GetExcludedPublishersNumberDBCallback& callback,
+                        uint32_t result) {
   callback(result);
 }
 
@@ -750,6 +755,14 @@ void BatLedgerClientMojoProxy::ResetState(
 
   bat_ledger_client_->ResetState(
       name, base::BindOnce(&OnResetState, std::move(callback)));
+}
+
+void BatLedgerClientMojoProxy::RunDataStoreCommand(
+    mojom::DataStoreCommandPtr command,
+    ledger::RunDataStoreCommandCallback callback) {
+  bat_ledger_client_->RunDataStoreCommand(
+      std::move(command),
+      base::BindOnce(&OnRunDataStoreCommand, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {

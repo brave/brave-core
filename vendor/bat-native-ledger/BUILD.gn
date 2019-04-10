@@ -4,6 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
 
 if (is_android) {
   import("//build/config/android/rules.gni")
@@ -13,7 +14,10 @@ dep_base = rebase_path("../..", "//")
 
 config("external_config") {
   visibility = [ ":*" ]
-  include_dirs = [ "include" ]
+  include_dirs = [
+    "include",
+    "$root_gen_dir/brave/vendor/bat-native-ledger/include",
+  ]
 }
 
 config("internal_config") {
@@ -76,6 +80,10 @@ source_set("headers") {
     "include/bat/ledger/wallet_info.h",
     "include/bat/ledger/transaction_info.h",
     "include/bat/ledger/transactions_info.h",
+  ]
+
+  public_deps = [
+    "include/bat/ledger/public/interfaces"
   ]
 }
 

@@ -1,0 +1,38 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+module bat_ledger.mojom;
+
+union DataStoreValue {
+  string string_value;
+  int32 int_value;
+  int64 int64_value;
+  double double_value;
+};
+
+struct DataStoreBinding {
+  int32 index;
+  DataStoreValue value;
+};
+
+struct DataStoreCommand {
+  enum Type {
+    INITIALIZE,
+    CREATE,
+    READ,
+    UPDATE,
+    DELETE
+  };
+  Type type;
+  string payload;
+  array<DataStoreBinding> bindings;
+};
+
+struct DataStoreRecord {
+  map<int32, DataStoreValue> fields;
+};
+
+struct DataStoreCommandResponse {
+  array<DataStoreRecord> results;
+  int32 status;
+};

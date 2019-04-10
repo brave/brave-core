@@ -20,6 +20,7 @@
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/media_publisher_info.h"
 #include "bat/ledger/pending_contribution.h"
+#include "bat/ledger/public/interfaces/ledger.mojom.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/reconcile_info.h"
 #include "bat/ledger/wallet_info.h"
@@ -68,6 +69,8 @@ using OnSaveCallback = std::function<void(const ledger::Result)>;
 using OnLoadCallback = std::function<void(const ledger::Result,
                                           const std::string&)>;
 using OnResetCallback = std::function<void(const ledger::Result)>;
+using RunDataStoreCommandCallback =
+    std::function<void(bat_ledger::mojom::DataStoreCommandResponse*)>;
 using GetExcludedPublishersNumberDBCallback = std::function<void(uint32_t)>;
 
 class LEDGER_EXPORT LedgerClient {
@@ -217,6 +220,10 @@ class LEDGER_EXPORT LedgerClient {
                          ledger::OnLoadCallback callback) = 0;
   virtual void ResetState(const std::string& name,
                           ledger::OnResetCallback callback) = 0;
+  virtual void RunDataStoreCommand(
+      bat_ledger::mojom::DataStoreCommandPtr command,
+      RunDataStoreCommandCallback callback) = 0;
+
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
   virtual void ConfirmationsTransactionHistoryDidChange() = 0;
