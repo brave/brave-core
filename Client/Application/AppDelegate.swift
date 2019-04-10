@@ -61,7 +61,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         self.window!.backgroundColor = UIColor.Photon.White100
 
         AdBlockStats.shared.startLoading()
-        AdblockResourceDownloader.shared.regionalAdblockResourcesSetup()
         
         HttpsEverywhereStats.shared.startLoading()
         
@@ -245,6 +244,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             log.error("Failed to initialize user referral program")
             UrpLog.log("Failed to initialize user referral program")
         }
+        
+        AdblockResourceDownloader.shared.regionalAdblockResourcesSetup()
 
         UINavigationBar.appearance().tintColor = BraveUX.BraveOrange
       
