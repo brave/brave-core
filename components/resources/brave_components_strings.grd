@@ -560,7 +560,7 @@
       <message name="IDS_BRAVE_SYNC_ERROR_INIT_FAILED_TITLE" desc="Error message in dialog for when a Sync error happens in the back-end">Couldn't contact Sync servers</message>
       <message name="IDS_BRAVE_SYNC_ERROR_INIT_FAILED_DESCRIPTION" desc="Error message in dialog for when a Sync error happens in the back-end">You might be having network trouble, or there could be a problem with the Sync servers.</message>
       <message name="IDS_BRAVE_SYNC_REQUIRES_CORRECT_TIME_TITLE" desc="Error message in dialog for when a Sync could not couldn't connect to Sync servers, because of wrong system time (title)">Couldn't connect to Sync servers</message>
-      <message name="IDS_BRAVE_SYNC_REQUIRES_CORRECT_TIME_DESCRIPTION" desc="Error message in dialog for when a Sync could not couldn't connect to Sync servers, because of wrong system time (description)">You might be having wrong system time or timezone setup on your device. Please setup the correct time and timezone</message>
+      <message name="IDS_BRAVE_SYNC_REQUIRES_CORRECT_TIME_DESCRIPTION" desc="Error message in dialog for when a Sync could not couldn't connect to Sync servers, because of wrong system time (description)">Your computer's clock may be set to the wrong time, or to the wrong time-zone. Check your clock settings</message>
     </messages>
   </release>
 </grit>
