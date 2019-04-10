@@ -22,6 +22,7 @@
 #include "bat/ledger/internal/bat_publishers.h"
 #include "bat/ledger/internal/bat_state.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
 
@@ -203,7 +204,7 @@ void LedgerImpl::OnPostData(
 
   std::vector<std::map<std::string, std::string>> twitchParts;
   if (TWITCH_MEDIA_TYPE == type) {
-    braveledger_bat_helper::getTwitchParts(post_data, &twitchParts);
+    braveledger_media::GetTwitchParts(post_data, &twitchParts);
     for (size_t i = 0; i < twitchParts.size(); i++) {
       bat_get_media_->processMedia(twitchParts[i], type, visit_data);
     }

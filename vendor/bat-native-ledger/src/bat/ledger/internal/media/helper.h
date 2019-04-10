@@ -6,9 +6,25 @@
 #ifndef BRAVELEDGER_MEDIA_HELPER_H_
 #define BRAVELEDGER_MEDIA_HELPER_H_
 
+#include <map>
+#include <string>
+#include <vector>
+
 namespace braveledger_media {
 
+using FetchDataFromUrlCallback = std::function<void(
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers)>;
 
+std::string GetMediaKey(const std::string& mediaId, const std::string& type);
+
+void GetTwitchParts(const std::string& query,
+                    std::vector<std::map<std::string, std::string>>* parts);
+
+std::string ExtractData(const std::string& data,
+                        const std::string& match_after,
+                        const std::string& match_until);
 
 }  // namespace braveledger_media
 
