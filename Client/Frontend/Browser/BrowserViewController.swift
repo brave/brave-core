@@ -2891,6 +2891,7 @@ extension BrowserViewController: HomeMenuControllerDelegate {
     }
     
     func menuDidBatchOpenURLs(_ menu: HomeMenuController, urls: [URL]) {
+        menu.dismiss(animated: true)
         let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
         self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
     }
