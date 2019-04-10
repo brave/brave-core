@@ -985,6 +985,7 @@ fileprivate class EmptyPrivateTabsView: UIView {
         $0.setTitle(Strings.Private_Tab_Link, for: [])
         $0.setTitleColor(UIConstants.PrivateModeTextHighlightColor, for: [])
         $0.titleLabel?.font = EmptyPrivateTabsViewUX.LearnMoreFont
+        $0.titleLabel?.numberOfLines = 0
     }
 
     let iconImageView = UIImageView(image: #imageLiteral(resourceName: "private_glasses")).then {
