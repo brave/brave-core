@@ -32,3 +32,29 @@ export const convertProbiToFixed = (probi: string, places: number = 1) => {
 
   return result
 }
+
+export const getGrants = (grants?: RewardsExtension.Grant[]) => {
+  if (!grants) {
+    return []
+  }
+
+  return grants.map((grant: RewardsExtension.Grant) => {
+    let expireDate = ''
+    if (grant.type !== 'ads') {
+      expireDate = new Date(grant.expiryTime * 1000).toLocaleDateString()
+    }
+
+    return {
+      tokens: convertProbiToFixed(grant.probi),
+      expireDate
+    }
+  })
+}
+
+export const getGrant = (grant?: RewardsExtension.GrantInfo) => {
+  if (grant && grant.type === 'ads') {
+    grant.expiryTime = 0
+  }
+
+  return grant
+}

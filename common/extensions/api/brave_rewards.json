@@ -45,7 +45,25 @@
         "parameters": [
           {
             "name": "properties",
-            "type": "any"
+            "type": "object",
+            "properties": {
+              "status": {
+                "type": "integer",
+                "description": "publisher attention score"
+              },
+              "expiryTime": {
+                "type": "integer",
+                "description": "grant expiry time"
+              },
+              "probi": {
+                "type": "string",
+                "description": "value of the grant"
+              },
+              "type": {
+                "type": "string",
+                "description": "type of the grant (ugp or ads)"
+              }
+            }
           }
         ]
       },

@@ -148,19 +148,6 @@ export class Panel extends React.Component<Props, State> {
     this.actions.solveGrantCaptcha(x, y)
   }
 
-  getGrants = (grants?: RewardsExtension.Grant[]) => {
-    if (!grants) {
-      return []
-    }
-
-    return grants.map((grant: RewardsExtension.Grant) => {
-      return {
-        tokens: utils.convertProbiToFixed(grant.probi),
-        expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString()
-      }
-    })
-  }
-
   getWalletSummary = () => {
     const { walletProperties, report } = this.props.rewardsPanelData
     const { rates } = walletProperties
@@ -353,7 +340,7 @@ export class Panel extends React.Component<Props, State> {
     const notificationId = this.getNotificationProp('id', notification)
     const notificationType = this.getNotificationProp('type', notification)
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
-    const { currentGrant } = this.props.rewardsPanelData
+    let { currentGrant } = this.props.rewardsPanelData
 
     const pendingTotal = parseFloat(
       (pendingContributionTotal || 0).toFixed(1))
@@ -365,6 +352,9 @@ export class Panel extends React.Component<Props, State> {
         faviconUrl = `chrome://favicon/size/48@2x/${publisher.favicon_url}`
       }
     }
+
+    currentGrant = utils.getGrant(currentGrant)
+
     return (
       <WalletWrapper
         compact={true}
@@ -393,7 +383,7 @@ export class Panel extends React.Component<Props, State> {
         onSolution={this.onSolution}
         onFinish={this.onFinish}
         convertProbiToFixed={utils.convertProbiToFixed}
-        grants={this.getGrants(grants)}
+        grants={utils.getGrants(grants)}
         {...notification}
       >
         <WalletSummarySlider
