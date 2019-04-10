@@ -1,4 +1,7 @@
-// Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
@@ -10,9 +13,9 @@
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/net/url_request_mock_util.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -73,7 +76,8 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
 
   void SetUpOnMainThread() override {
     ExtensionBrowserTest::SetUpOnMainThread();
-    base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::IO},
+    base::PostTaskWithTraits(
+        FROM_HERE, {content::BrowserThread::IO},
         base::BindOnce(&chrome_browser_net::SetUrlRequestMocksEnabled, true));
     host_resolver()->AddRule("*", "127.0.0.1");
   }
@@ -81,8 +85,8 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
   void PreRunTestOnMainThread() override {
     ExtensionBrowserTest::PreRunTestOnMainThread();
     WaitForTrackingProtectionServiceThread();
-    ASSERT_TRUE(g_brave_browser_process->local_data_files_service()->
-      IsInitialized());
+    ASSERT_TRUE(
+        g_brave_browser_process->local_data_files_service()->IsInitialized());
   }
 
   void InitEmbeddedTestServer() {
@@ -111,7 +115,7 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
     GetTestDataDir(&test_data_dir);
     const extensions::Extension* tracking_protection_extension =
         InstallExtension(test_data_dir.AppendASCII("tracking-protection-data"),
-          1);
+                         1);
     if (!tracking_protection_extension)
       return false;
 
@@ -124,10 +128,9 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
   }
 
   void WaitForTrackingProtectionServiceThread() {
-    scoped_refptr<base::ThreadTestHelper> io_helper(
-        new base::ThreadTestHelper(
-            g_brave_browser_process->tracking_protection_service()->
-            GetTaskRunner()));
+    scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
+        g_brave_browser_process->tracking_protection_service()
+            ->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 };
@@ -135,16 +138,16 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
 // Load a page that references a tracker from a trusted domain, and
 // make sure it is not blocked.
 IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest,
-  TrackerReferencedFromTrustedDomainNotBlocked) {
+                       TrackerReferencedFromTrustedDomainNotBlocked) {
   ASSERT_TRUE(InstallTrackingProtectionExtension());
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-    0ULL);
+            0ULL);
 
   GURL url = embedded_test_server()->GetURL("365media.com", kTrackingPage);
   ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents = browser()->tab_strip_model()->
-      GetActiveWebContents();
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
@@ -152,27 +155,26 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest,
 
   bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      base::StringPrintf(kTrackingScript, test_url.spec().c_str()),
+      contents, base::StringPrintf(kTrackingScript, test_url.spec().c_str()),
       &img_loaded));
   EXPECT_TRUE(img_loaded);
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-    0ULL);
+            0ULL);
 }
 
 // Load a page that references a tracker from an untrusted domain, and
 // make sure it is blocked.
 IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest,
-  TrackerReferencedFromUntrustedDomainGetsBlocked) {
+                       TrackerReferencedFromUntrustedDomainGetsBlocked) {
   ASSERT_TRUE(InstallTrackingProtectionExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-    0ULL);
+            0ULL);
 
   GURL url = embedded_test_server()->GetURL("google.com", kTrackingPage);
   ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents = browser()->tab_strip_model()->
-      GetActiveWebContents();
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 
@@ -180,13 +182,12 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest,
 
   bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      base::StringPrintf(kTrackingScript, test_url.spec().c_str()),
+      contents, base::StringPrintf(kTrackingScript, test_url.spec().c_str()),
       &img_loaded));
   EXPECT_FALSE(img_loaded);
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
-    1ULL);
+            1ULL);
 }
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)
@@ -198,21 +199,21 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingBlocked) {
   content::DOMMessageQueue message_queue;
 
   // tracker.com is in the StorageTrackingProtection list
-  const GURL tracking_url = embedded_test_server()->GetURL("tracker.com",
-      kStoragePage);
+  const GURL tracking_url =
+      embedded_test_server()->GetURL("tracker.com", kStoragePage);
 
-  const GURL url = embedded_test_server()->GetURL("social.com", std::string(kRedirectPage) +
-                                                  tracking_url.spec());
+  const GURL url = embedded_test_server()->GetURL(
+      "social.com", std::string(kRedirectPage) + tracking_url.spec());
 
   ui_test_utils::NavigateToURLBlockUntilNavigationsComplete(browser(), url, 2);
+
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ("tracker.com", contents->GetURL().host());
 
   bool cookie_blocked;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "window.domAutomationController.send(!IsCookieAvailable())",
+      contents, "window.domAutomationController.send(!IsCookieAvailable())",
       &cookie_blocked));
   EXPECT_TRUE(cookie_blocked);
 
@@ -234,15 +235,13 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingBlocked) {
 
   bool db_blocked;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "window.domAutomationController.send(!IsDBAvailable())",
+      contents, "window.domAutomationController.send(!IsDBAvailable())",
       &db_blocked));
   EXPECT_TRUE(db_blocked);
 
   bool indexeddb_blocked;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "window.domAutomationController.send(!IsIndexedDBAvailable())",
+      contents, "window.domAutomationController.send(!IsIndexedDBAvailable())",
       &indexeddb_blocked));
   EXPECT_TRUE(indexeddb_blocked);
 }
@@ -255,11 +254,11 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingAllowed) {
   content::DOMMessageQueue message_queue;
 
   // example.com is not in the StorageTrackingProtection list
-  const GURL redirect_url = embedded_test_server()->GetURL("example.com",
-      kStoragePage);
+  const GURL redirect_url =
+      embedded_test_server()->GetURL("example.com", kStoragePage);
 
-  const GURL url =
-      embedded_test_server()->GetURL("social.com", kRedirectPage + redirect_url.spec());
+  const GURL url = embedded_test_server()->GetURL(
+      "social.com", kRedirectPage + redirect_url.spec());
 
   ui_test_utils::NavigateToURLBlockUntilNavigationsComplete(browser(), url, 2);
   content::WebContents* contents =
@@ -268,8 +267,7 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingAllowed) {
 
   bool cookie_allowed;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "window.domAutomationController.send(IsCookieAvailable())",
+      contents, "window.domAutomationController.send(IsCookieAvailable())",
       &cookie_allowed));
   EXPECT_TRUE(cookie_allowed);
 
@@ -291,15 +289,13 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingAllowed) {
 
   bool db_allowed;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "window.domAutomationController.send(IsDBAvailable())",
+      contents, "window.domAutomationController.send(IsDBAvailable())",
       &db_allowed));
   EXPECT_TRUE(db_allowed);
 
   bool indexeddb_allowed;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents,
-      "window.domAutomationController.send(IsIndexedDBAvailable())",
+      contents, "window.domAutomationController.send(IsIndexedDBAvailable())",
       &indexeddb_allowed));
 }
 

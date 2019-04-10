@@ -59,11 +59,9 @@ bool TrackingProtectionHelper::IsSmartTrackingProtectionEnabled() {
 }
 
 TrackingProtectionHelper::TrackingProtectionHelper(WebContents* web_contents)
-    : WebContentsObserver(web_contents) {
-}
+    : WebContentsObserver(web_contents) {}
 
-TrackingProtectionHelper::~TrackingProtectionHelper() {
-}
+TrackingProtectionHelper::~TrackingProtectionHelper() {}
 
 void TrackingProtectionHelper::ReadyToCommitNavigation(
     NavigationHandle* handle) {
@@ -91,7 +89,8 @@ void TrackingProtectionHelper::RenderFrameDeleted(
 }
 
 void TrackingProtectionHelper::RenderFrameHostChanged(
-    RenderFrameHost* old_host, RenderFrameHost* new_host) {
+    RenderFrameHost* old_host,
+    RenderFrameHost* new_host) {
   if (!old_host || old_host->GetParent() || new_host->GetParent()) {
     return;
   }

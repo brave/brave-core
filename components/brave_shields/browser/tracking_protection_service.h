@@ -20,6 +20,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/sequenced_task_runner.h"
+#include "base/synchronization/lock.h"
 #include "brave/components/brave_shields/browser/base_local_data_files_observer.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_shields/browser/dat_file_util.h"
@@ -31,7 +32,7 @@ class HostContentSettingsMap;
 class TrackingProtectionServiceTest;
 
 namespace content_settings {
-  class BraveCookieSettings;
+class BraveCookieSettings;
 }
 
 namespace brave_shields {
@@ -73,10 +74,12 @@ class TrackingProtectionService : public BaseLocalDataFilesObserver {
                         const GURL& top_origin_url,
                         const GURL& origin_url) const;
 
-  void SetStartingSiteForRenderFrame(GURL starting_site, int render_process_id,
-    int render_frame_id);
+  void SetStartingSiteForRenderFrame(GURL starting_site,
+                                     int render_process_id,
+                                     int render_frame_id);
   GURL GetStartingSiteForRenderFrame(int render_process_id,
                                      int render_frame_id) const;
+
   void DeleteRenderFrameKey(int render_process_id, int render_frame_id);
   void ModifyRenderFrameKey(int old_render_process_id,
                             int old_render_frame_id,
@@ -120,7 +123,7 @@ class TrackingProtectionService : public BaseLocalDataFilesObserver {
   std::unique_ptr<CTPParser> tracking_protection_client_;
   std::vector<std::string> third_party_base_hosts_;
   std::map<std::string, std::vector<std::string>> third_party_hosts_cache_;
-  std::mutex third_party_hosts_mutex_;
+  base::Lock third_party_hosts_lock_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<TrackingProtectionService> weak_factory_;

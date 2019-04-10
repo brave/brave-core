@@ -12,5 +12,5 @@
 scoped_refptr<content_settings::BraveCookieSettings>
 BraveCookieSettingsFactory::GetForProfile(Profile* profile) {
   return static_cast<content_settings::BraveCookieSettings*>(
-  	CookieSettingsFactory::GetForProfile(profile).get());
+      CookieSettingsFactory::GetForProfile(profile).get());
 }

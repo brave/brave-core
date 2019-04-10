@@ -1,4 +1,7 @@
-// Copyright (c) 2019 The Brave Authors. All rights reserved.
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/renderer_host/brave_render_message_filter.h"
 
@@ -16,11 +19,10 @@ using brave_shields::BraveShieldsWebContentsObserver;
 using content_settings::CookieSettings;
 
 BraveRenderMessageFilter::BraveRenderMessageFilter(int render_process_id,
-  Profile* profile)
-  : ChromeRenderMessageFilter(render_process_id, profile),
-    host_content_settings_map_(HostContentSettingsMapFactory::GetForProfile(
-      profile)) {
-}
+                                                   Profile* profile)
+    : ChromeRenderMessageFilter(render_process_id, profile),
+      host_content_settings_map_(
+          HostContentSettingsMapFactory::GetForProfile(profile)) {}
 
 BraveRenderMessageFilter::~BraveRenderMessageFilter() {}
 
@@ -44,9 +46,11 @@ void BraveRenderMessageFilter::ShouldStoreState(int render_frame_id,
       BraveShieldsWebContentsObserver::GetTabURLFromRenderFrameInfo(
           render_process_id_, render_frame_id, -1)
           .GetOrigin();
-  *allowed = g_brave_browser_process->tracking_protection_service()->ShouldStoreState(
-      cookie_settings_.get(), host_content_settings_map_, render_process_id_, render_frame_id,
-      origin_url, top_origin_url, tab_origin);
+  *allowed =
+      g_brave_browser_process->tracking_protection_service()->ShouldStoreState(
+          cookie_settings_.get(), host_content_settings_map_,
+          render_process_id_, render_frame_id, origin_url, top_origin_url,
+          tab_origin);
 }
 
 void BraveRenderMessageFilter::OnAllowDatabase(int render_frame_id,
@@ -55,10 +59,8 @@ void BraveRenderMessageFilter::OnAllowDatabase(int render_frame_id,
                                                bool* allowed) {
   ShouldStoreState(render_frame_id, origin_url, top_origin_url, allowed);
   if (*allowed) {
-    ChromeRenderMessageFilter::OnAllowDatabase(render_frame_id,
-                                               origin_url,
-                                               top_origin_url,
-                                               allowed);
+    ChromeRenderMessageFilter::OnAllowDatabase(render_frame_id, origin_url,
+                                               top_origin_url, allowed);
   }
 }
 
@@ -69,11 +71,8 @@ void BraveRenderMessageFilter::OnAllowDOMStorage(int render_frame_id,
                                                  bool* allowed) {
   ShouldStoreState(render_frame_id, origin_url, top_origin_url, allowed);
   if (*allowed) {
-    ChromeRenderMessageFilter::OnAllowDOMStorage(render_frame_id,
-                                                 origin_url,
-                                                 top_origin_url,
-                                                 local,
-                                                 allowed);
+    ChromeRenderMessageFilter::OnAllowDOMStorage(
+        render_frame_id, origin_url, top_origin_url, local, allowed);
   }
 }
 
@@ -83,9 +82,7 @@ void BraveRenderMessageFilter::OnAllowIndexedDB(int render_frame_id,
                                                 bool* allowed) {
   ShouldStoreState(render_frame_id, origin_url, top_origin_url, allowed);
   if (*allowed) {
-    ChromeRenderMessageFilter::OnAllowIndexedDB(render_frame_id,
-                                                origin_url,
-                                                top_origin_url,
-                                                allowed);
+    ChromeRenderMessageFilter::OnAllowIndexedDB(render_frame_id, origin_url,
+                                                top_origin_url, allowed);
   }
 }

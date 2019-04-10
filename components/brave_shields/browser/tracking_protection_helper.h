@@ -7,20 +7,21 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_TRACKING_PROTECTION_HELPER_H_
 
 #include "base/macros.h"
-#include "base/synchronization/lock.h"
 #include "base/strings/string16.h"
+#include "base/synchronization/lock.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
 namespace content {
 class WebContents;
 class NavigationHandle;
-}
+}  // namespace content
 
 namespace brave_shields {
 
-class TrackingProtectionHelper : public content::WebContentsObserver,
-  public content::WebContentsUserData<TrackingProtectionHelper> {
+class TrackingProtectionHelper
+    : public content::WebContentsObserver,
+      public content::WebContentsUserData<TrackingProtectionHelper> {
  public:
   explicit TrackingProtectionHelper(content::WebContents*);
   ~TrackingProtectionHelper() override;
@@ -32,9 +33,10 @@ class TrackingProtectionHelper : public content::WebContentsObserver,
   static bool IsSmartTrackingProtectionEnabled();
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
-  DISALLOW_COPY_AND_ASSIGN(TrackingProtectionHelper);
  private:
   friend class content::WebContentsUserData<TrackingProtectionHelper>;
+
+  DISALLOW_COPY_AND_ASSIGN(TrackingProtectionHelper);
 };
 
 }  // namespace brave_shields

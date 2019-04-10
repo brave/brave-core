@@ -7,6 +7,5 @@
 #include "brave/browser/content_settings/brave_cookie_settings_factory.h"
 
 #define CookieSettingsFactory BraveCookieSettingsFactory
-#include "../../../../../../chrome/browser/renderer_host/chrome_render_message_filter.cc"
+#include "../../../../../../chrome/browser/renderer_host/chrome_render_message_filter.cc"  // NOLINT
 #undef CookieSettingsFactory
-
