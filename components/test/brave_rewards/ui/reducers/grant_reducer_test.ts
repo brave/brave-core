@@ -420,7 +420,8 @@ describe('Grant Reducer', () => {
           properties: {
             status: 0,
             expiryTime: 11,
-            probi: '30.000000'
+            probi: '30.000000',
+            type: 'ads'
           }
         }
       })

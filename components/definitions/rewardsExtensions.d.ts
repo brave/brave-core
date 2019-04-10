@@ -42,6 +42,7 @@ declare namespace RewardsExtension {
     altcurrency: string
     probi: string
     expiryTime: number
+    type: string
   }
 
   export type GrantStatus = 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null

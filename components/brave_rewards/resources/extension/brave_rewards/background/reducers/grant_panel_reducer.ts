@@ -183,6 +183,7 @@ export const grantPanelReducer = (state: RewardsExtension.State | undefined, act
         case 0:
           currentGrant.expiryTime = properties.expiryTime * 1000
           currentGrant.probi = properties.probi
+          currentGrant.type = properties.type
           currentGrant.status = null
           chrome.braveRewards.getWalletProperties()
           break
