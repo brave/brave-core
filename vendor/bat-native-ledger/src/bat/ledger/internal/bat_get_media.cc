@@ -71,10 +71,10 @@ void BatGetMedia::processMedia(const std::map<std::string, std::string>& parts,
     return;
   }
 
-//  if (type == TWITCH_MEDIA_TYPE) {
-//    media_twitch_->ProcessMedia(parts, visit_data);
-//    return;
-//  }
+  if (type == TWITCH_MEDIA_TYPE) {
+    media_twitch_->ProcessMedia(parts, visit_data);
+    return;
+  }
 }
 
 void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId,
