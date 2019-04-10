@@ -15,6 +15,7 @@
 #include <map>
 
 #include "bat/ledger/balance_report_info.h"
+#include "bat/ledger/data_store_adapter.h"
 #include "bat/ledger/export.h"
 #include "bat/ledger/grant.h"
 #include "bat/ledger/ledger_callback_handler.h"
@@ -223,6 +224,8 @@ class LEDGER_EXPORT LedgerClient {
   virtual void RunDataStoreCommand(
       bat_ledger::mojom::DataStoreCommandPtr command,
       RunDataStoreCommandCallback callback) = 0;
+
+  // virtual DataStoreAdapter::Type GetDataStoreAdapterType() = 0;
 
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
