@@ -177,6 +177,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
           let ui = state.ui
           newGrant.expiryTime = properties.expiryTime * 1000
           newGrant.probi = properties.probi
+          newGrant.type = properties.type
           newGrant.status = null
           ui.emptyWallet = false
 
