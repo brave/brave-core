@@ -27,6 +27,8 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
   void ProcessMedia(const std::map<std::string, std::string>& parts,
                     const ledger::VisitData& visit_data);
 
+  static std::string GetLinkType(const std::string& url);
+
  private:
 
   static std::string GetMediaIdFromParts(

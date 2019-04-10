@@ -164,6 +164,27 @@ uint64_t MediaTwitch::GetTwitchDuration(
   return static_cast<uint64_t>(std::round(time));
 }
 
+// static
+std::string MediaTwitch::GetLinkType(const std::string& url,
+                                     const std::string& first_party_url,
+                                     const std::string& referrer) {
+  std::string type;
+  bool is_valid_twitch_path =
+      braveledger_bat_helper::HasSameDomainAndPath(
+                                  url, "ttvnw.net", "/v1/segment/");
+  if (
+    (
+      (first_party_url.find("https://www.twitch.tv/") == 0 ||
+        first_party_url.find("https://m.twitch.tv/") == 0) ||
+      (referrer.find("https://player.twitch.tv/") == 0)) &&
+    is_valid_twitch_path
+  ) {
+    type = TWITCH_MEDIA_TYPE;
+  }
+
+  return type;
+}
+
 void MediaTwitch::ProcessMedia(const std::map<std::string, std::string>& parts,
                                const ledger::VisitData& visit_data) {
   std::string media_id = GetMediaIdFromParts(parts);

@@ -144,6 +144,21 @@ std::string MediaYouTube::GetPublisherName(const std::string& data) {
   return publisher_name;
 }
 
+// static
+std::string MediaYouTube::GetLinkType(const std::string& url) {
+  const std::string mobile_api = "https://m.youtube.com/api/stats/watchtime?";
+  const std::string desktop_api =
+      "https://www.youtube.com/api/stats/watchtime?";
+  std::string type;
+
+  if (url.find(mobile_api) != std::string::npos ||
+      url.find(desktop_api) != std::string::npos) {
+    type = YOUTUBE_MEDIA_TYPE;
+  }
+
+  return type;
+}
+
 void MediaYouTube::OnMediaActivityError(const ledger::VisitData& visit_data,
                                         uint64_t window_id) {
   std::string url = YOUTUBE_TLD;

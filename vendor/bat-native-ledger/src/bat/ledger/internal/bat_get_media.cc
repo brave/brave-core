@@ -35,25 +35,12 @@ std::string BatGetMedia::GetLinkType(const std::string& url,
                                      const std::string& referrer) {
   std::string type;
 
-  const std::string mobile_api = "https://m.youtube.com/api/stats/watchtime?";
-  const std::string desktop_api =
-      "https://www.youtube.com/api/stats/watchtime?";
+  type = braveledger_media::MediaYouTube::GetLinkType(url);
 
-  bool is_valid_twitch_path =
-      braveledger_bat_helper::HasSameDomainAndPath(
-                                  url, "ttvnw.net", "/v1/segment/");
-
-  if (url.find(mobile_api) != std::string::npos ||
-      url.find(desktop_api) != std::string::npos) {
-    type = YOUTUBE_MEDIA_TYPE;
-  }  else if (
-    (
-      (first_party_url.find("https://www.twitch.tv/") == 0 ||
-        first_party_url.find("https://m.twitch.tv/") == 0) ||
-      (referrer.find("https://player.twitch.tv/") == 0)) &&
-      is_valid_twitch_path
-  ) {
-    type = TWITCH_MEDIA_TYPE;
+  if (type.empty()) {
+    type = braveledger_media::MediaTwitch::GetLinkType(url,
+                                                       first_party_url,
+                                                       referrer);
   }
 
   return type;

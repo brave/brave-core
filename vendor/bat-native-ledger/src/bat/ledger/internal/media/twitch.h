@@ -27,6 +27,10 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
   void ProcessMedia(const std::map<std::string, std::string>& parts,
                     const ledger::VisitData& visit_data);
 
+  static std::string GetLinkType(const std::string& url,
+                                 const std::string& first_party_url,
+                                 const std::string& referrer);
+
  private:
   static std::string GetMediaIdFromParts(
       const std::map<std::string, std::string>& parts);
