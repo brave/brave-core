@@ -371,10 +371,6 @@ void LedgerImpl::OnPublisherInfoSavedInternal(
 }
 
 void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info) {
-  if (info) {
-    info->verified = bat_publishers_->isVerified(info->id);
-  }
-
   ledger_client_->SavePublisherInfo(
       std::move(info),
       std::bind(&LedgerImpl::OnPublisherInfoSavedInternal,
@@ -384,10 +380,6 @@ void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info) {
 }
 
 void LedgerImpl::SetActivityInfo(std::unique_ptr<ledger::PublisherInfo> info) {
-  if (info) {
-    info->verified = bat_publishers_->isVerified(info->id);
-  }
-
   ledger_client_->SaveActivityInfo(
       std::move(info),
       std::bind(&LedgerImpl::OnPublisherInfoSavedInternal,
@@ -438,76 +430,26 @@ LedgerImpl::GetRecurringDonationPublisherInfo() {
   return bat_publishers_->GetRecurringDonationList();
 }
 
-void LedgerImpl::ModifyPublisherVerified(
-    ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher,
-    ledger::PublisherInfoCallback callback) {
-  if (publisher) {
-    publisher->verified = bat_publishers_->isVerified(publisher->id);
-  }
-
-  callback(result, std::move(publisher));
-}
-
-void LedgerImpl::ModifyPublisherListVerified(
-    const ledger::PublisherInfoList& list,
-    uint32_t record,
-    ledger::PublisherInfoListCallback callback) {
-  ledger::PublisherInfoList new_list;
-
-  for (const auto& publisher : list) {
-    ledger::PublisherInfo info(publisher);
-    info.verified = bat_publishers_->isVerified(info.id);
-    new_list.push_back(info);
-  }
-
-  callback(new_list, record);
-}
-
 void LedgerImpl::GetPublisherInfo(const std::string& publisher_key,
                                   ledger::PublisherInfoCallback callback) {
-  ledger_client_->LoadPublisherInfo(
-      publisher_key,
-      std::bind(&LedgerImpl::ModifyPublisherVerified,
-                this,
-                _1,
-                _2,
-                callback));
+  ledger_client_->LoadPublisherInfo(publisher_key, callback);
 }
 
 void LedgerImpl::GetActivityInfo(const ledger::ActivityInfoFilter& filter,
                                  ledger::PublisherInfoCallback callback) {
-  ledger_client_->LoadActivityInfo(
-      filter,
-      std::bind(&LedgerImpl::ModifyPublisherVerified,
-                this,
-                _1,
-                _2,
-                callback));
+  ledger_client_->LoadActivityInfo(filter, callback);
 }
 
 void LedgerImpl::GetPanelPublisherInfo(
     const ledger::ActivityInfoFilter& filter,
     ledger::PublisherInfoCallback callback) {
-  ledger_client_->LoadPanelPublisherInfo(
-      filter,
-      std::bind(&LedgerImpl::ModifyPublisherVerified,
-                this,
-                _1,
-                _2,
-                callback));
+  ledger_client_->LoadPanelPublisherInfo(filter, callback);
 }
 
 void LedgerImpl::GetMediaPublisherInfo(
     const std::string& media_key,
     ledger::PublisherInfoCallback callback) {
-  ledger_client_->LoadMediaPublisherInfo(
-      media_key,
-      std::bind(&LedgerImpl::ModifyPublisherVerified,
-                this,
-                _1,
-                _2,
-                callback));
+  ledger_client_->LoadMediaPublisherInfo(media_key, callback);
 }
 
 void LedgerImpl::GetActivityInfoList(
@@ -515,15 +457,7 @@ void LedgerImpl::GetActivityInfoList(
     uint32_t limit,
     const ledger::ActivityInfoFilter& filter,
     ledger::PublisherInfoListCallback callback) {
-  ledger_client_->GetActivityInfoList(
-      start,
-      limit,
-      filter,
-      std::bind(&LedgerImpl::ModifyPublisherListVerified,
-                this,
-                _1,
-                _2,
-                callback));
+  ledger_client_->GetActivityInfoList(start, limit, filter, callback);
 }
 
 void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
@@ -843,22 +777,12 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
 void LedgerImpl::GetRecurringTips(
     ledger::PublisherInfoListCallback callback) {
-  ledger_client_->GetRecurringTips(
-      std::bind(&LedgerImpl::ModifyPublisherListVerified,
-                this,
-                _1,
-                _2,
-                callback));
+  ledger_client_->GetRecurringTips(callback);
 }
 
 void LedgerImpl::GetOneTimeTips(
     ledger::PublisherInfoListCallback callback) {
-  ledger_client_->GetOneTimeTips(
-      std::bind(&LedgerImpl::ModifyPublisherListVerified,
-                this,
-                _1,
-                _2,
-                callback));
+  ledger_client_->GetOneTimeTips(callback);
 }
 
 void LedgerImpl::LoadPublishersListCallback(
