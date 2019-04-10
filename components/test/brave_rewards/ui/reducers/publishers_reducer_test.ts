@@ -8,33 +8,70 @@ import { types } from '../../../../brave_rewards/resources/ui/constants/rewards_
 import { defaultState } from '../../../../brave_rewards/resources/ui/storage'
 
 describe('publishers reducer', () => {
-  describe('ON_EXCLUDED_PUBLISHERS_NUMBER', () => {
-    it('number is undefined', () => {
+  describe('ON_EXCLUDED_LIST', () => {
+    it('updates list', () => {
       const assertion = reducers(undefined, {
-        type: types.ON_EXCLUDED_PUBLISHERS_NUMBER,
+        type: types.ON_EXCLUDED_LIST,
         payload: {
-          num: undefined
+          list: [
+            {
+              id: 'foo.com',
+              verified: false,
+              url: 'https://foo.com',
+              name: 'Foo Bar',
+              provider: '',
+              favicon: ''
+            }
+          ]
         }
       })
 
       const expectedState: Rewards.State = { ...defaultState }
-      expectedState.excludedPublishersNumber = 0
+      expectedState.excludedList = [
+        {
+          id: 'foo.com',
+          verified: false,
+          url: 'https://foo.com',
+          name: 'Foo Bar',
+          provider: '',
+          favicon: ''
+        }
+      ]
 
       expect(assertion).toEqual({
         rewardsData: expectedState
       })
     })
 
-    it('number is saved', () => {
-      const assertion = reducers(undefined, {
-        type: types.ON_EXCLUDED_PUBLISHERS_NUMBER,
-        payload: {
-          num: 1
+    it('does not update on bad payload', () => {
+      const initialState = { ...defaultState }
+      initialState.excludedList = [
+        {
+          id: 'foo.com',
+          verified: false,
+          url: 'https://foo.com',
+          name: 'Foo Bar',
+          provider: '',
+          favicon: ''
         }
+      ]
+
+      const assertion = reducers({ rewardsData: initialState }, {
+        type: types.ON_EXCLUDED_LIST,
+        payload: {}
       })
 
       const expectedState: Rewards.State = { ...defaultState }
-      expectedState.excludedPublishersNumber = 1
+      expectedState.excludedList = [
+        {
+          id: 'foo.com',
+          verified: false,
+          url: 'https://foo.com',
+          name: 'Foo Bar',
+          provider: '',
+          favicon: ''
+        }
+      ]
 
       expect(assertion).toEqual({
         rewardsData: expectedState

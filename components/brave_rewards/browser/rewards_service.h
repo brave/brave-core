@@ -54,7 +54,6 @@ using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetContributionAmountCallback = base::Callback<void(double)>;
 using GetAddressesCallback = base::Callback<void(
     const std::map<std::string, std::string>&)>;
-using GetExcludedPublishersNumberCallback = base::Callback<void(uint32_t)>;
 using GetAutoContributePropsCallback = base::Callback<void(
     std::unique_ptr<brave_rewards::AutoContributeProps>)>;
 using GetPublisherMinVisitTimeCallback = base::Callback<void(uint64_t)>;
@@ -100,6 +99,7 @@ class RewardsService : public KeyedService {
       uint64_t reconcile_stamp,
       bool allow_non_verified,
       uint32_t min_visits,
+      bool fetch_excluded,
       const GetContentSiteListCallback& callback) = 0;
   virtual void FetchGrants(const std::string& lang,
                            const std::string& paymentId) = 0;
@@ -110,11 +110,10 @@ class RewardsService : public KeyedService {
                                  const std::string& promotionId) const = 0;
   virtual void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) = 0;
-  virtual void GetExcludedPublishersNumber(
-      const GetExcludedPublishersNumberCallback& callback) = 0;
   virtual void RecoverWallet(const std::string passPhrase) const = 0;
   virtual void ExcludePublisher(const std::string publisherKey) const = 0;
   virtual void RestorePublishers() = 0;
+  virtual void RestorePublisher(const std::string publisherKey) const = 0;
   virtual void OnLoad(SessionID tab_id, const GURL& gurl) = 0;
   virtual void OnUnload(SessionID tab_id) = 0;
   virtual void OnShow(SessionID tab_id) = 0;

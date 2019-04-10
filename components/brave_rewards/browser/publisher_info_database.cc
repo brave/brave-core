@@ -387,29 +387,6 @@ bool PublisherInfoDatabase::RestorePublishers() {
   return restore_q.Run();
 }
 
-int PublisherInfoDatabase::GetExcludedPublishersCount() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
-    return 0;
-  }
-
-  sql::Statement query(db_.GetUniqueStatement(
-      "SELECT COUNT(*) FROM publisher_info WHERE excluded=?"));
-
-  query.BindInt(0, static_cast<int>(
-      ledger::PUBLISHER_EXCLUDE::EXCLUDED));
-
-  if (query.Step()) {
-    return query.ColumnInt(0);
-  }
-
-  return 0;
-}
-
 /**
  *
  * ACTIVITY INFO
@@ -751,6 +728,41 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
   }
 
   return nullptr;
+}
+
+bool PublisherInfoDatabase::GetExcludedList(
+    ledger::PublisherInfoList* list) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  CHECK(list);
+
+  bool initialized = Init();
+  DCHECK(initialized);
+
+  if (!initialized) {
+    return false;
+  }
+
+  // We will use every attribute from publisher_info
+  std::string query = "SELECT * FROM publisher_info WHERE excluded = 1";
+
+  sql::Statement info_sql(db_.GetUniqueStatement(query.c_str()));
+
+  while (info_sql.Step()) {
+    std::string id(info_sql.ColumnString(0));
+
+    auto info = ledger::PublisherInfo::New();
+    info->id = info_sql.ColumnString(0);
+    info->verified = info_sql.ColumnBool(1);
+    info->name = info_sql.ColumnString(3);
+    info->favicon_url = info_sql.ColumnString(4);
+    info->url = info_sql.ColumnString(5);
+    info->provider = info_sql.ColumnString(9);
+
+    list->push_back(std::move(info));
+  }
+
+  return true;
 }
 
 /**

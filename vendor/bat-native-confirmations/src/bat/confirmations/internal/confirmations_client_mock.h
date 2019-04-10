@@ -245,9 +245,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD0(ConfirmationsTransactionHistoryDidChange, void());
 
-  MOCK_METHOD1(GetExcludedPublishersNumberDB, void(
-      ledger::GetExcludedPublishersNumberDBCallback callback));
-
   MOCK_METHOD1(GetPendingContributions, void(
       const ledger::PendingContributionInfoListCallback& callback));
 

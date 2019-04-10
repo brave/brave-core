@@ -920,45 +920,6 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv4tov6) {
   EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 6);
 }
 
-TEST_F(PublisherInfoDatabaseTest, GetExcludedPublishersCount) {
-  base::ScopedTempDir temp_dir;
-  base::FilePath db_file;
-  CreateTempDatabase(&temp_dir, &db_file);
-
-  // empty table
-  EXPECT_EQ(publisher_info_database_->GetExcludedPublishersCount(), 0);
-
-  // with data
-  ledger::PublisherInfo info;
-  info.id = "publisher_1";
-  info.verified = false;
-  info.excluded = ledger::PUBLISHER_EXCLUDE::DEFAULT;
-  info.name = "name";
-  info.url = "https://brave.com";
-  info.provider = "";
-  info.favicon_url = "0";
-
-  EXPECT_TRUE(publisher_info_database_->InsertOrUpdatePublisherInfo(info));
-
-  info.id = "publisher_2";
-  EXPECT_TRUE(publisher_info_database_->InsertOrUpdatePublisherInfo(info));
-
-  info.id = "publisher_3";
-  info.excluded = ledger::PUBLISHER_EXCLUDE::INCLUDED;
-  EXPECT_TRUE(publisher_info_database_->InsertOrUpdatePublisherInfo(info));
-
-  info.id = "publisher_4";
-  info.excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
-  EXPECT_TRUE(publisher_info_database_->InsertOrUpdatePublisherInfo(info));
-
-  info.id = "publisher_5";
-  info.excluded = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
-  EXPECT_TRUE(publisher_info_database_->InsertOrUpdatePublisherInfo(info));
-  EXPECT_EQ(CountTableRows("publisher_info"), 5);
-
-  EXPECT_EQ(publisher_info_database_->GetExcludedPublishersCount(), 2);
-}
-
 TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;

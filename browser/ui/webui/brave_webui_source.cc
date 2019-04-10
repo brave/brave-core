@@ -470,11 +470,17 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "yourWallet", IDS_BRAVE_UI_YOUR_WALLET },
 
         { "and", IDS_BRAVE_UI_AND },
+        { "excludedSites", IDS_BRAVE_UI_EXCLUDED_SITES_TEXT },
         { "privacyPolicy", IDS_BRAVE_UI_PRIVACY_POLICY },
+        { "restoreSite", IDS_BRAVE_UI_RESTORE_SITE },
+        { "rewardsExcludedText1", IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_1 },
+        { "rewardsExcludedText2", IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_2 },
         { "rewardsOffText5", IDS_BRAVE_UI_REWARDS_OFF_TEXT5 },
         { "serviceTextToggle", IDS_BRAVE_UI_SERVICE_TEXT_TOGGLE },
         { "serviceTextWelcome", IDS_BRAVE_UI_SERVICE_TEXT_WELCOME },
         { "serviceTextReady", IDS_BRAVE_UI_SERVICE_TEXT_READY },
+        { "showAll", IDS_BRAVE_UI_SHOW_ALL },
+        { "supportedSites", IDS_BRAVE_UI_SUPPORTED_SITES },
         { "termsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE }
       }
     }, {

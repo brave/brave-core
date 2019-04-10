@@ -123,9 +123,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void ConfirmationsTransactionHistoryDidChange() override;
 
-  void GetExcludedPublishersNumberDB(
-      GetExcludedPublishersNumberDBCallback callback) override;
-
   void GetPendingContributions(
       GetPendingContributionsCallback callback) override;
 
@@ -248,10 +245,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnResetState(
       CallbackHolder<ResetStateCallback>* holder,
       ledger::Result result);
-
-  static void OnGetExcludedPublishersNumberDB(
-      CallbackHolder<GetExcludedPublishersNumberDBCallback>* holder,
-      uint32_t number);
 
   static void OnGetOneTimeTips(
       CallbackHolder<GetOneTimeTipsCallback>* holder,
