@@ -998,8 +998,10 @@ void LedgerImpl::GetMediaActivityFromUrl(
     const ledger::VisitData& visit_data,
     const std::string& providerType,
     const std::string& publisher_blob) {
-  bat_get_media_->getMediaActivityFromUrl(
-      windowId, visit_data, providerType, publisher_blob);
+  bat_get_media_->GetMediaActivityFromUrl(windowId,
+                                          visit_data,
+                                          providerType,
+                                          publisher_blob);
 }
 
 void LedgerImpl::OnPanelPublisherInfo(

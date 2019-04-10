@@ -51,7 +51,7 @@ class BatGetMedia {
                     const std::string& type,
                     const ledger::VisitData& visit_data);
 
-  void getMediaActivityFromUrl(uint64_t windowId,
+  void GetMediaActivityFromUrl(uint64_t windowId,
                                const ledger::VisitData& visit_data,
                                const std::string& providerType,
                                const std::string& publisher_blob);

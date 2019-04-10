@@ -29,6 +29,9 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
 
   static std::string GetLinkType(const std::string& url);
 
+  void ProcessActivityFromUrl(uint64_t window_id,
+                              const ledger::VisitData& visit_data);
+
  private:
 
   static std::string GetMediaIdFromParts(
@@ -47,6 +50,22 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
   static std::string GetChannelId(const std::string& data);
 
   static std::string GetPublisherName(const std::string& data);
+
+  static std::string GetMediaIdFromUrl(const ledger::VisitData& visit_data);
+
+  static std::string GetNameFromChannel(const std::string& data);
+
+  std::string GetPublisherKeyFromUrl(const std::string& path);
+
+  static std::string GetChannelIdFromCustomPathPage(const std::string& data);
+
+  static std::string GetBasicPath(const std::string& path);
+
+  static bool IsPredefinedPath(const std::string& path);
+
+  static std::string GetPublisherKey(const std::string& key);
+
+  static std::string GetUserFromUrl(const std::string& path);
 
   void OnMediaActivityError(const ledger::VisitData& visit_data,
                             uint64_t window_id);
@@ -92,6 +111,56 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
 
   void FetchDataFromUrl(const std::string& url,
                         braveledger_media::FetchDataFromUrlCallback callback);
+
+  void WatchPath(uint64_t window_id,
+                 const ledger::VisitData& visit_data);
+
+  void OnMediaPublisherActivity(ledger::Result result,
+                                std::unique_ptr<ledger::PublisherInfo> info,
+                                uint64_t window_id,
+                                const ledger::VisitData& visit_data,
+                                const std::string& media_key,
+                                const std::string& media_id);
+
+  void GetPublisherPanleInfo(uint64_t window_id,
+                             const ledger::VisitData& visit_data,
+                             const std::string& publisher_key,
+                             bool is_custom_path);
+
+  void OnPublisherPanleInfo(uint64_t window_id,
+                            const ledger::VisitData& visit_data,
+                            const std::string& publisher_key,
+                            bool is_custom_path,
+                            ledger::Result result,
+                            std::unique_ptr<ledger::PublisherInfo> info);
+
+  void GetChannelHeadlineVideo(
+    uint64_t window_id,
+    const ledger::VisitData& visit_data,
+    bool is_custom_path,
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers);
+
+  void ChannelPath(uint64_t window_id,
+                   const ledger::VisitData& visit_data);
+
+  void UserPath(uint64_t windowId,
+                const ledger::VisitData& visit_data);
+
+  void OnUserActivity(uint64_t window_id,
+                      const ledger::VisitData& visit_data,
+                      const std::string& media_key,
+                      ledger::Result result,
+                      std::unique_ptr<ledger::PublisherInfo> info);
+
+  void OnChannelIdForUser(
+    uint64_t window_id,
+    const ledger::VisitData& visit_data,
+    const std::string& media_key,
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };

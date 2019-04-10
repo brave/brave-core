@@ -64,6 +64,21 @@ void BatGetMedia::processMedia(const std::map<std::string, std::string>& parts,
   }
 }
 
+void BatGetMedia::GetMediaActivityFromUrl(
+    uint64_t windowId,
+    const ledger::VisitData& visit_data,
+    const std::string& providerType,
+    const std::string& publisher_blob) {
+  if (providerType == YOUTUBE_MEDIA_TYPE) {
+    media_youtube_->ProcessActivityFromUrl(windowId, visit_data);
+  } else if (providerType == TWITCH_MEDIA_TYPE) {
+    // TODO one left
+    processTwitchMediaPanel(windowId, visit_data, providerType, publisher_blob);
+  } else {
+    onMediaActivityError(visit_data, providerType, windowId);
+  }
+}
+
 void BatGetMedia::getPublisherInfoDataCallback(const std::string& mediaId,
     const std::string& media_key,
     const std::string& providerName,
@@ -517,19 +532,7 @@ void BatGetMedia::onMediaActivityError(const ledger::VisitData& visit_data,
   }
 }
 
-void BatGetMedia::getMediaActivityFromUrl(
-    uint64_t windowId,
-    const ledger::VisitData& visit_data,
-    const std::string& providerType,
-    const std::string& publisher_blob) {
-  if (providerType == YOUTUBE_MEDIA_TYPE) {
-    processYoutubeMediaPanel(windowId, visit_data, providerType);
-  } else if (providerType == TWITCH_MEDIA_TYPE) {
-    processTwitchMediaPanel(windowId, visit_data, providerType, publisher_blob);
-  } else {
-    onMediaActivityError(visit_data, providerType, windowId);
-  }
-}
+
 
 void BatGetMedia::processYoutubeMediaPanel(uint64_t windowId,
                                            const ledger::VisitData& visit_data,
@@ -803,7 +806,7 @@ void BatGetMedia::onGetChannelIdFromUserPage(
     new_data.name = "";
     new_data.favicon_url = "";
 
-    getMediaActivityFromUrl(windowId, new_data, providerType, std::string());
+    GetMediaActivityFromUrl(windowId, new_data, providerType, std::string());
   } else {
     onMediaActivityError(visit_data, providerType, windowId);
   }
