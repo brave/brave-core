@@ -39,7 +39,7 @@ void BatClient::registerPersona(const std::string& safetynet_token) {
     headers.push_back("safetynet-token:" + safetynet_token);
     auto callback = std::bind(&BatClient::registerPersonaSafetyNetCallback, this, _1, _2, _3);
     ledger_->LoadURL(braveledger_bat_helper::buildURL(
-          (std::string)GET_SET_PROMOTION, PREFIX_V3),
+          (std::string)GET_SET_PROMOTION, PREFIX_V5),
         headers, "", "", ledger::URL_METHOD::GET, callback);
     return;
   }
@@ -551,7 +551,7 @@ void BatClient::getGrants(const std::string& lang,
   }
   auto callback = std::bind(&BatClient::getGrantsCallback, this, safetynet_token, _1, _2, _3);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
-        (std::string)GET_SET_PROMOTION + arguments, safetynet_token.empty() ? PREFIX_V4 : PREFIX_V3),
+        (std::string)GET_SET_PROMOTION + arguments, safetynet_token.empty() ? PREFIX_V4 : PREFIX_V5),
       headers, "", "", ledger::URL_METHOD::GET, callback);
 }
 
