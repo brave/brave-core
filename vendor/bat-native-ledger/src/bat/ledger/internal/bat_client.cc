@@ -34,11 +34,15 @@ BatClient::~BatClient() {
 
 void BatClient::registerPersona(const std::string& safetynet_token) {
   if (!safetynet_token.empty()) {
+    std::string safetynet_prefix = PREFIX_V5;
+#if defined (OS_ANDROID) && defined(ARCH_CPU_X86_FAMILY) && defined(OFFICIAL_BUILD)
+    safetynet_prefix = PREFIX_V3;
+#endif
     std::vector<std::string> headers;
     headers.push_back("safetynet-token:" + safetynet_token);
     auto callback = std::bind(&BatClient::registerPersonaSafetyNetCallback, this, _1, _2, _3);
     ledger_->LoadURL(braveledger_bat_helper::buildURL(
-          (std::string)GET_SET_PROMOTION, PREFIX_V5),
+          (std::string)GET_SET_PROMOTION, safetynet_prefix),
         headers, "", "", ledger::URL_METHOD::GET, callback);
     return;
   }
@@ -548,9 +552,13 @@ void BatClient::getGrants(const std::string& lang,
   if (!safetynet_token.empty()) {
     headers.push_back("safetynet-token:" + safetynet_token);
   }
+  std::string safetynet_prefix = PREFIX_V5;
+#if defined (OS_ANDROID) && defined(ARCH_CPU_X86_FAMILY) && defined(OFFICIAL_BUILD)
+    safetynet_prefix = PREFIX_V3;
+#endif
   auto callback = std::bind(&BatClient::getGrantsCallback, this, safetynet_token, _1, _2, _3);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
-        (std::string)GET_SET_PROMOTION + arguments, safetynet_token.empty() ? PREFIX_V4 : PREFIX_V5),
+        (std::string)GET_SET_PROMOTION + arguments, safetynet_token.empty() ? PREFIX_V4 : safetynet_prefix),
       headers, "", "", ledger::URL_METHOD::GET, callback);
 }
 
