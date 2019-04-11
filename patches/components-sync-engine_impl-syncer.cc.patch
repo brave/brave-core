@@ -1,16 +1,8 @@
 diff --git a/components/sync/engine_impl/syncer.cc b/components/sync/engine_impl/syncer.cc
-index d4d745fcd5a2d254dfcbdc44ed370e4479b28698..7c56e61aa54e2a054a840750c0ee3c62ac4c15e3 100644
+index 185e6463d605f8d13c2fa0a125d988e1f92e2aa3..d53834f95eca1f36d3bd2cccd5be4e2ddf919877 100644
 --- a/components/sync/engine_impl/syncer.cc
 +++ b/components/sync/engine_impl/syncer.cc
-@@ -34,6 +34,7 @@ void HandleCycleBegin(SyncCycle* cycle) {
- 
- Syncer::Syncer(CancelationSignal* cancelation_signal)
-     : cancelation_signal_(cancelation_signal), is_syncing_(false) {}
-+    // weak_ptr_factory_(this) {}
- 
- Syncer::~Syncer() {}
- 
-@@ -111,6 +112,7 @@ bool Syncer::DownloadAndApplyUpdates(ModelTypeSet* request_types,
+@@ -104,6 +104,7 @@ bool Syncer::DownloadAndApplyUpdates(ModelTypeSet* request_types,
        Difference(*request_types, requested_commit_only_types);
    GetUpdatesProcessor get_updates_processor(
        cycle->context()->model_type_registry()->update_handler_map(), delegate);
@@ -18,11 +10,3 @@ index d4d745fcd5a2d254dfcbdc44ed370e4479b28698..7c56e61aa54e2a054a840750c0ee3c62
    SyncerError download_result;
    do {
      download_result =
-@@ -170,6 +172,7 @@ SyncerError Syncer::BuildAndPostCommits(const ModelTypeSet& request_types,
-     SyncerError error = commit->PostAndProcessResponse(
-         nudge_tracker, cycle, cycle->mutable_status_controller(),
-         cycle->context()->extensions_activity());
-+
-     commit->CleanUp();
-     if (error.value() != SyncerError::SYNCER_OK) {
-       return error;

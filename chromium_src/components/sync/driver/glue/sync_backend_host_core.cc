@@ -7,14 +7,14 @@ namespace syncer {
 void SyncBackendHostCore::OnNudgeSyncCycle(
     brave_sync::RecordsListPtr records_list) {
   host_.Call(FROM_HERE,
-             &SyncBackendHostImpl::HandleNudgeSyncCycle,
+             &SyncEngineImpl::HandleNudgeSyncCycle,
              base::Passed(&records_list));
 }
 
 void SyncBackendHostCore::OnPollSyncCycle(GetRecordsCallback cb,
                                           base::WaitableEvent* wevent) {
   host_.Call(FROM_HERE,
-             &SyncBackendHostImpl::HandlePollSyncCycle, cb, wevent);
+             &SyncEngineImpl::HandlePollSyncCycle, cb, wevent);
 }
 
 void SyncBackendHostCore::DoDispatchGetRecordsCallback(

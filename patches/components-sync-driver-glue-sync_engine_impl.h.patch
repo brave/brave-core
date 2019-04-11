@@ -1,0 +1,27 @@
+diff --git a/components/sync/driver/glue/sync_engine_impl.h b/components/sync/driver/glue/sync_engine_impl.h
+index db4f0ef865957a38dc1b510f31ebd49b83cb57b9..4daca79263fec199188e54667d1a9b7312ba7aac 100644
+--- a/components/sync/driver/glue/sync_engine_impl.h
++++ b/components/sync/driver/glue/sync_engine_impl.h
+@@ -158,6 +158,12 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
+ 
+   SyncEngineHost* host() { return host_; }
+ 
++  void HandleNudgeSyncCycle(brave_sync::RecordsListPtr records_list);
++  void HandlePollSyncCycle(GetRecordsCallback cb,
++                           base::WaitableEvent* wevent);
++  void DispatchGetRecordsCallback(
++      GetRecordsCallback cb, std::unique_ptr<RecordsList> records) override;
++
+  private:
+   friend class SyncBackendHostCore;
+ 
+@@ -221,6 +227,9 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
+   ModelTypeSet last_enabled_types_;
+   bool sessions_invalidation_enabled_ = false;
+ 
++  brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function_;
++  brave_sync::PollSyncCycleDelegate poll_sync_cycle_delegate_function_;
++
+   // Checks that we're on the same thread this was constructed on (UI thread).
+   SEQUENCE_CHECKER(sequence_checker_);
+ 

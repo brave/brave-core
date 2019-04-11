@@ -1,23 +1,24 @@
 diff --git a/components/sync/engine/sync_engine.h b/components/sync/engine/sync_engine.h
-index 826cc5072e20b1760a64e8edca2933e83f797730..0a3187d2ae99e3f8b5e60ac289891a1d8b8112bd 100644
+index 2ed8818bde7b036e3bcbc704d77aebcaa78881dc..4aee53695e927ef582a610ac49067bf32d92cede 100644
 --- a/components/sync/engine/sync_engine.h
 +++ b/components/sync/engine/sync_engine.h
-@@ -82,6 +82,8 @@ class SyncEngine : public ModelTypeConfigurer {
-     // Define the polling intervals. Must not be zero.
+@@ -88,6 +88,9 @@ class SyncEngine : public ModelTypeConfigurer {
      base::TimeDelta short_poll_interval;
      base::TimeDelta long_poll_interval;
+ 
 +    brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function;
 +    brave_sync::PollSyncCycleDelegate poll_sync_cycle_delegate_function;
- 
++
     private:
      DISALLOW_COPY_AND_ASSIGN(InitParams);
-@@ -191,6 +193,10 @@ class SyncEngine : public ModelTypeConfigurer {
+   };
+@@ -193,6 +196,10 @@ class SyncEngine : public ModelTypeConfigurer {
    // Enables/Disables invalidations for session sync related datatypes.
    virtual void SetInvalidationsForSessionsEnabled(bool enabled) = 0;
  
 +  virtual void DispatchGetRecordsCallback(
 +      brave_sync::GetRecordsCallback cb,
-+      std::unique_ptr<brave_sync::RecordsList> records) {};
++      std::unique_ptr<brave_sync::RecordsList> records) {}
 +
   private:
    DISALLOW_COPY_AND_ASSIGN(SyncEngine);

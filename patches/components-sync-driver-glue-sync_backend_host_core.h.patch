@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/glue/sync_backend_host_core.h b/components/sync/driver/glue/sync_backend_host_core.h
-index dced9de5a2081185acb22c900e69e90080e54cdf..0f4b0822bb819c0b505eab58d7ea503e39490d4d 100644
+index d545f996333a652dfb4b87b24da6cd7dde428ed7..42df877d3e6fc1f0c1232c76327c2ac9a5cf598c 100644
 --- a/components/sync/driver/glue/sync_backend_host_core.h
 +++ b/components/sync/driver/glue/sync_backend_host_core.h
-@@ -176,11 +176,19 @@ class SyncBackendHostCore
+@@ -174,11 +174,19 @@ class SyncBackendHostCore
  
    bool HasUnsyncedItemsForTest() const;
  

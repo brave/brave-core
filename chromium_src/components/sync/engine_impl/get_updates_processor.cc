@@ -22,10 +22,12 @@ namespace {
 using brave_sync::jslib::Bookmark;
 using brave_sync::jslib::SyncRecord;
 using syncable::Id;
-static const char kBookmarkBarTag[] = "bookmark_bar";
-static const char kOtherBookmarksTag[] = "other_bookmarks";
+static const char kBookmarkBarFolderServerTag[] = "bookmark_bar";
 static const char kBookmarkBarFolderName[] = "Bookmark Bar";
+static const char kOtherBookmarksFolderServerTag[] = "other_bookmarks";
 static const char kOtherBookmarksFolderName[] = "Other Bookmarks";
+static const char kSyncedBookmarksFolderServerTag[] = "synced_bookmarks";
+static const char kSyncedBookmarksFolderName[] = "Synced Bookmarks";
 // The parent tag for children of the root entity. Entities with this parent are
 // referred to as top level enities.
 static const char kRootParentTag[] = "0";
@@ -146,9 +148,9 @@ void AddBookmarkNode(sync_pb::SyncEntity* entity, const SyncRecord* record) {
   if (!bookmark_record.parentFolderObjectId.empty())
     entity->set_parent_id_string(bookmark_record.parentFolderObjectId);
   else if (!bookmark_record.hideInToolbar)
-    entity->set_parent_id_string(std::string(kBookmarkBarTag));
+    entity->set_parent_id_string(std::string(kBookmarkBarFolderServerTag));
   else
-    entity->set_parent_id_string(std::string(kOtherBookmarksTag));
+    entity->set_parent_id_string(std::string(kOtherBookmarksFolderServerTag));
   entity->set_non_unique_name(bookmark_record.site.title);
   entity->set_folder(bookmark_record.isFolder);
 
@@ -182,9 +184,13 @@ void ConstructUpdateResponse(sync_pb::GetUpdatesResponse* gu_response,
     if (type == BOOKMARKS) {
       google::protobuf::RepeatedPtrField<sync_pb::SyncEntity> entities;
       AddRootForType(entities.Add(), BOOKMARKS);
-      AddPermanentNode(entities.Add(), kBookmarkBarFolderName, kBookmarkBarTag);
+      AddPermanentNode(entities.Add(), kBookmarkBarFolderName,
+                       kBookmarkBarFolderServerTag);
       AddPermanentNode(entities.Add(), kOtherBookmarksFolderName,
-                       kOtherBookmarksTag);
+                       kOtherBookmarksFolderServerTag);
+      // required since 84f01c4c006cf89941138f3591db129a5b3cde54
+      AddPermanentNode(entities.Add(), kSyncedBookmarksFolderName,
+                       kSyncedBookmarksFolderServerTag);
       if (records) {
         for (const auto& record : *records.get()) {
           AddBookmarkNode(entities.Add(), record.get());

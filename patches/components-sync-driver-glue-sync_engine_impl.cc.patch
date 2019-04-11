@@ -1,0 +1,15 @@
+diff --git a/components/sync/driver/glue/sync_engine_impl.cc b/components/sync/driver/glue/sync_engine_impl.cc
+index 0eec6d65d61988411827349e601d936ca66adf4c..17d6d1dcde9e20894fed756cc620171e04e8e6c1 100644
+--- a/components/sync/driver/glue/sync_engine_impl.cc
++++ b/components/sync/driver/glue/sync_engine_impl.cc
+@@ -59,6 +59,10 @@ void SyncEngineImpl::Initialize(InitParams params) {
+   sync_task_runner_ = params.sync_task_runner;
+   host_ = params.host;
+   registrar_ = params.registrar.get();
++  nudge_sync_cycle_delegate_function_ =
++    params.nudge_sync_cycle_delegate_function;
++  poll_sync_cycle_delegate_function_ =
++    params.poll_sync_cycle_delegate_function;
+ 
+   sync_task_runner_->PostTask(
+       FROM_HERE, base::BindOnce(&SyncBackendHostCore::DoInitialize, core_,

@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine_impl/syncer.h b/components/sync/engine_impl/syncer.h
-index fd1203f8963834e69ce80be254527deecf57fdfd..efbb10a68436bd342a34560555b5a654597fe79a 100644
+index 23b389eada81c850c3a8856678d046e599a060da..add8bd72373425029cef6cec03d1e5787afbc2c6 100644
 --- a/components/sync/engine_impl/syncer.h
 +++ b/components/sync/engine_impl/syncer.h
 @@ -32,7 +32,7 @@ class SyncCycle;
@@ -11,26 +11,23 @@ index fd1203f8963834e69ce80be254527deecf57fdfd..efbb10a68436bd342a34560555b5a654
   public:
    explicit Syncer(CancelationSignal* cancelation_signal);
    virtual ~Syncer();
-@@ -74,10 +74,13 @@ class Syncer {
+@@ -69,6 +69,8 @@ class Syncer {
    // otherwise.
-   virtual bool PostClearServerData(SyncCycle* cycle);
+   virtual bool PollSyncShare(ModelTypeSet request_types, SyncCycle* cycle);
  
 +  void DownloadBraveRecords(SyncCycle* cycle);
 +
   private:
    bool DownloadAndApplyUpdates(ModelTypeSet* request_types,
                                 SyncCycle* cycle,
-                                const GetUpdatesDelegate& delegate);
+@@ -89,6 +91,10 @@ class Syncer {
+   bool HandleCycleEnd(SyncCycle* cycle,
+                       sync_pb::SyncEnums::GetUpdatesOrigin origin);
+ 
 +  void OnGetRecords(std::unique_ptr<brave_sync::RecordsList> records);
- 
-   // This function will commit batches of unsynced items to the server until the
-   // number of unsynced and ready to commit items reaches zero or an error is
-@@ -99,6 +102,8 @@ class Syncer {
-   // Whether the syncer is in the middle of a sync attempt.
-   bool is_syncing_;
- 
++
 +  std::unique_ptr<brave_sync::RecordsList> brave_records_;
 +
-   DISALLOW_COPY_AND_ASSIGN(Syncer);
- };
+   CancelationSignal* const cancelation_signal_;
  
+   // Whether the syncer is in the middle of a sync attempt.

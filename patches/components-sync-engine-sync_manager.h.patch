@@ -1,11 +1,11 @@
 diff --git a/components/sync/engine/sync_manager.h b/components/sync/engine/sync_manager.h
-index 514b05be4efe57ec9ae24c99186455456e56793b..0f2f3456c249aea0738c4d8da45b4ecce52f96d5 100644
+index 2a678f0a8d284de73dc0ef020b7869e7a570783d..1964971defdbb437b97ac44a7e8497fe566db907 100644
 --- a/components/sync/engine/sync_manager.h
 +++ b/components/sync/engine/sync_manager.h
-@@ -250,6 +250,9 @@ class SyncManager {
-     // Define the polling intervals. Must not be zero.
-     base::TimeDelta short_poll_interval;
-     base::TimeDelta long_poll_interval;
+@@ -257,6 +257,9 @@ class SyncManager {
+     std::string cache_guid;
+     std::string birthday;
+     std::string bag_of_chips;
 +
 +    brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function;
 +    brave_sync::PollSyncCycleDelegate poll_sync_cycle_delegate_function;

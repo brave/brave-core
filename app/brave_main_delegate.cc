@@ -28,6 +28,7 @@
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
+#include "components/sync/driver/sync_driver_switches.h"
 #include "components/unified_consent/feature.h"
 #include "extensions/common/extension_features.h"
 #include "services/network/public/cpp/features.h"
@@ -159,6 +160,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
       autofill::features::kAutofillServerCommunication.name,
+      // TODO(darkdh): remove this when USS bookmarks is mature
+      // 84919fdb99b162030a1113d5990667885b774064
+      switches::kSyncUSSBookmarks.name,
       network::features::kNetworkService.name,
       unified_consent::kUnifiedConsent.name,
   };
