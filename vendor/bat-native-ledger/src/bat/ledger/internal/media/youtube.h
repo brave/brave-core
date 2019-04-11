@@ -9,6 +9,7 @@
 #include <map>
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/media/helper.h"
 
@@ -33,7 +34,6 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
                               const ledger::VisitData& visit_data);
 
  private:
-
   static std::string GetMediaIdFromParts(
       const std::map<std::string, std::string>& parts);
 
@@ -55,7 +55,7 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
 
   static std::string GetNameFromChannel(const std::string& data);
 
-  std::string GetPublisherKeyFromUrl(const std::string& path);
+  static std::string GetPublisherKeyFromUrl(const std::string& path);
 
   static std::string GetChannelIdFromCustomPathPage(const std::string& data);
 
@@ -163,6 +163,15 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
     const std::map<std::string, std::string>& headers);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+
+  // For testing purposes
+  friend class MediaYouTubeTest;
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetMediaIdFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetPublisherKeyFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetUserFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetBasicPath);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetNameFromChannel);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetPublisherName);
 };
 
 }  // namespace braveledger_media
