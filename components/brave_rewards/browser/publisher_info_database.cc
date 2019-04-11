@@ -1021,48 +1021,139 @@ bool PublisherInfoDatabase::MigrateV1toV2() {
     return false;
   }
 
-  if (!CreateContributionInfoTable()) {
+  const char* name = "contribution_info";
+  sql = "CREATE TABLE ";
+  sql.append(name);
+  sql.append(
+      "("
+      "publisher_id LONGVARCHAR,"
+      "probi TEXT \"0\"  NOT NULL,"
+      "date INTEGER NOT NULL,"
+      "category INTEGER NOT NULL,"
+      "month INTEGER NOT NULL,"
+      "year INTEGER NOT NULL,"
+      "CONSTRAINT fk_contribution_info_publisher_id"
+      "    FOREIGN KEY (publisher_id)"
+      "    REFERENCES publisher_info (publisher_id)"
+      "    ON DELETE CASCADE)");
+  if (!GetDB().Execute(sql.c_str())) {
     return false;
   }
 
-  if (!CreateContributionInfoIndex()) {
+  if (!GetDB().Execute(
+      "CREATE INDEX IF NOT EXISTS contribution_info_publisher_id_index "
+      "ON contribution_info (publisher_id)")) {
     return false;
   }
 
-  if (!CreateRecurringDonationTable()) {
+  // Recurring_donation
+  name = "recurring_donation";
+  if (GetDB().DoesTableExist(name)) {
+    sql = " DROP TABLE ";
+    sql.append(name);
+    sql.append(" ; ");
+  }
+
+  if (!GetDB().Execute(sql.c_str())) {
     return false;
   }
 
-  return CreateRecurringDonationIndex();
+  sql = "CREATE TABLE ";
+  sql.append(name);
+  sql.append(
+      "("
+      "publisher_id LONGVARCHAR NOT NULL PRIMARY KEY UNIQUE,"
+      "amount DOUBLE DEFAULT 0 NOT NULL,"
+      "added_date INTEGER DEFAULT 0 NOT NULL,"
+      "CONSTRAINT fk_recurring_donation_publisher_id"
+      "    FOREIGN KEY (publisher_id)"
+      "    REFERENCES publisher_info (publisher_id)"
+      "    ON DELETE CASCADE)");
+  if (!GetDB().Execute(sql.c_str())) {
+    return false;
+  }
+
+  return GetDB().Execute(
+      "CREATE INDEX IF NOT EXISTS recurring_donation_publisher_id_index "
+      "ON recurring_donation (publisher_id)");
 }
 
 bool PublisherInfoDatabase::MigrateV2toV3() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (!CreatePendingContributionsTable()) {
+  std::string sql;
+  const char* name = "pending_contribution";
+  // pending_contribution
+  const char* pending_contribution = "pending_contribution";
+  if (GetDB().DoesTableExist(pending_contribution)) {
+    sql.append(" DROP TABLE ");
+    sql.append(pending_contribution);
+    sql.append(" ; ");
+  }
+  if (!GetDB().Execute(sql.c_str())) {
     return false;
   }
 
-  return CreatePendingContributionsIndex();
+  sql = "CREATE TABLE ";
+  sql.append(name);
+  sql.append(
+      "("
+      "publisher_id LONGVARCHAR NOT NULL,"
+      "amount DOUBLE DEFAULT 0 NOT NULL,"
+      "added_date INTEGER DEFAULT 0 NOT NULL,"
+      "viewing_id LONGVARCHAR NOT NULL,"
+      "category INTEGER NOT NULL,"
+      "CONSTRAINT fk_pending_contribution_publisher_id"
+      "    FOREIGN KEY (publisher_id)"
+      "    REFERENCES publisher_info (publisher_id)"
+      "    ON DELETE CASCADE)");
+  if (!GetDB().Execute(sql.c_str())) {
+    return false;
+  }
+
+  return GetDB().Execute(
+      "CREATE INDEX IF NOT EXISTS pending_contribution_publisher_id_index "
+      "ON pending_contribution (publisher_id)");
 }
 
 bool PublisherInfoDatabase::MigrateV3toV4() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // Activity info
-  const char* activity = "activity_info";
-  if (GetDB().DoesTableExist(activity)) {
+  const char* name = "activity_info";
+  if (GetDB().DoesTableExist(name)) {
     std::string sql = "ALTER TABLE activity_info RENAME TO activity_info_old;";
 
     if (!GetDB().Execute(sql.c_str())) {
       return false;
     }
 
-    if (!CreateActivityInfoTable()) {
+    sql = "CREATE TABLE ";
+    sql.append(name);
+    sql.append(
+        "("
+        "publisher_id LONGVARCHAR NOT NULL,"
+        "duration INTEGER DEFAULT 0 NOT NULL,"
+        "visits INTEGER DEFAULT 0 NOT NULL,"
+        "score DOUBLE DEFAULT 0 NOT NULL,"
+        "percent INTEGER DEFAULT 0 NOT NULL,"
+        "weight DOUBLE DEFAULT 0 NOT NULL,"
+        "month INTEGER NOT NULL,"
+        "year INTEGER NOT NULL,"
+        "reconcile_stamp INTEGER DEFAULT 0 NOT NULL,"
+        "CONSTRAINT activity_unique "
+        "UNIQUE (publisher_id, month, year, reconcile_stamp) "
+        "CONSTRAINT fk_activity_info_publisher_id"
+        "    FOREIGN KEY (publisher_id)"
+        "    REFERENCES publisher_info (publisher_id)"
+        "    ON DELETE CASCADE)");
+    if (!GetDB().Execute(sql.c_str())) {
       return false;
     }
 
-    if (!CreateActivityInfoIndex()) {
+    if (!GetDB().Execute(
+      "CREATE INDEX IF NOT EXISTS activity_info_publisher_id_index "
+      "ON activity_info (publisher_id)")) {
       return false;
     }
 
@@ -1122,19 +1213,39 @@ bool PublisherInfoDatabase::MigrateV5toV6() {
     return false;
   }
 
-  const char* activity = "activity_info";
-  if (GetDB().DoesTableExist(activity)) {
+  const char* name = "activity_info";
+  if (GetDB().DoesTableExist(name)) {
     std::string sql = "ALTER TABLE activity_info RENAME TO activity_info_old;";
 
     if (!GetDB().Execute(sql.c_str())) {
       return false;
     }
 
-    if (!CreateActivityInfoTable()) {
+    sql = "CREATE TABLE ";
+    sql.append(name);
+    sql.append(
+        "("
+        "publisher_id LONGVARCHAR NOT NULL,"
+        "duration INTEGER DEFAULT 0 NOT NULL,"
+        "visits INTEGER DEFAULT 0 NOT NULL,"
+        "score DOUBLE DEFAULT 0 NOT NULL,"
+        "percent INTEGER DEFAULT 0 NOT NULL,"
+        "weight DOUBLE DEFAULT 0 NOT NULL,"
+        "reconcile_stamp INTEGER DEFAULT 0 NOT NULL,"
+        "CONSTRAINT activity_unique "
+        "UNIQUE (publisher_id, reconcile_stamp) "
+        "CONSTRAINT fk_activity_info_publisher_id"
+        "    FOREIGN KEY (publisher_id)"
+        "    REFERENCES publisher_info (publisher_id)"
+        "    ON DELETE CASCADE)");
+
+    if (!GetDB().Execute(sql.c_str())) {
       return false;
     }
 
-    if (!CreateActivityInfoIndex()) {
+    if (!GetDB().Execute(
+      "CREATE INDEX IF NOT EXISTS activity_info_publisher_id_index "
+      "ON activity_info (publisher_id)")) {
       return false;
     }
 
