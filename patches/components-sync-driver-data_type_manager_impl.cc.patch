@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/data_type_manager_impl.cc b/components/sync/driver/data_type_manager_impl.cc
-index ea180493bb90741e1601391bb5b1a0a5e11b9303..eda3e4328549761dfe286f9e72f49071e72698d3 100644
+index 9dc9226269704e8a2412634b231a6d54c8bc93f6..b40ac1bbef7ccb7b29022176d11e725a86ac7835 100644
 --- a/components/sync/driver/data_type_manager_impl.cc
 +++ b/components/sync/driver/data_type_manager_impl.cc
-@@ -611,7 +611,8 @@ ModelTypeSet DataTypeManagerImpl::PrepareConfigureParams(
+@@ -596,7 +596,8 @@ ModelTypeSet DataTypeManagerImpl::PrepareConfigureParams(
    DCHECK(Intersection(downloaded_types_, types_to_journal).Empty());
    DCHECK(Intersection(downloaded_types_, crypto_types).Empty());
    // |downloaded_types_| was already updated to include all enabled types.

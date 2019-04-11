@@ -1,16 +1,8 @@
 diff --git a/components/sync/engine_impl/get_updates_processor.cc b/components/sync/engine_impl/get_updates_processor.cc
-index df71de3ef237e61b5cda7d96fe3a24a8f8f1bf6f..e0d3d7d6b04a68e58585494eb59799f3db52eb60 100644
+index e98ba9aa0801461d6698ba3ca6f39cf8f7153220..d007dd0260a97dc68d2113b6a2de3a94ab707f52 100644
 --- a/components/sync/engine_impl/get_updates_processor.cc
 +++ b/components/sync/engine_impl/get_updates_processor.cc
-@@ -28,6 +28,7 @@ using TypeSyncEntityMap = std::map<ModelType, SyncEntityList>;
- using TypeToIndexMap = std::map<ModelType, size_t>;
- 
- bool ShouldRequestEncryptionKey(SyncCycleContext* context) {
-+  return false;
-   syncable::Directory* dir = context->directory();
-   syncable::ReadTransaction trans(FROM_HERE, dir);
-   syncable::NigoriHandler* nigori_handler = dir->GetNigoriHandler();
-@@ -37,6 +38,7 @@ bool ShouldRequestEncryptionKey(SyncCycleContext* context) {
+@@ -37,6 +37,7 @@ bool ShouldRequestEncryptionKey(SyncCycleContext* context) {
  SyncerError HandleGetEncryptionKeyResponse(
      const sync_pb::ClientToServerResponse& update_response,
      syncable::Directory* dir) {
@@ -18,14 +10,12 @@ index df71de3ef237e61b5cda7d96fe3a24a8f8f1bf6f..e0d3d7d6b04a68e58585494eb59799f3
    bool success = false;
    if (update_response.get_updates().encryption_keys_size() == 0) {
      LOG(ERROR) << "Failed to receive encryption key from server.";
-@@ -220,8 +222,10 @@ SyncerError GetUpdatesProcessor::ExecuteDownloadUpdates(
+@@ -222,8 +223,8 @@ SyncerError GetUpdatesProcessor::ExecuteDownloadUpdates(
  
    ModelTypeSet partial_failure_data_types;
  
 -  SyncerError result = SyncerProtoUtil::PostClientToServerMessage(
--      msg, &update_response, cycle, &partial_failure_data_types);
-+  // SyncerError result = SyncerProtoUtil::PostClientToServerMessage(
-+  //     msg, &update_response, cycle, &partial_failure_data_types);
+-      *msg, &update_response, cycle, &partial_failure_data_types);
 +  SyncerError result = ApplyBraveRecords(&update_response, request_types,
 +                                         std::move(brave_records_));
  

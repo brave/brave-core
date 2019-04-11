@@ -25,7 +25,7 @@ void SyncSchedulerImpl::SetNudgeAndPollDelegate(
 
 void SyncSchedulerImpl::TryBraveSyncCycleJob() {
   SyncCycle cycle(cycle_context_, this);
-  if (mode_ != CONFIGURATION_MODE && mode_ != CLEAR_SERVER_DATA_MODE) {
+  if (mode_ != CONFIGURATION_MODE) {
       syncer_->DownloadBraveRecords(&cycle);
   }
 }

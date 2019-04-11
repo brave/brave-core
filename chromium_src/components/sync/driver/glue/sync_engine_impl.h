@@ -3,4 +3,4 @@ namespace syncer {
 using brave_sync::GetRecordsCallback;
 using brave_sync::RecordsList;
 }  // namespace syncer
-#include "../../../../../../components/sync/driver/glue/sync_backend_host_impl.h"
+#include "../../../../../../components/sync/driver/glue/sync_engine_impl.h"
