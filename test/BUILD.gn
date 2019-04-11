@@ -327,6 +327,7 @@ test("brave_browser_tests") {
     "//brave/browser/ui/webui/brave_new_tab_ui_browsertest.cc",
     "//brave/browser/ui/webui/brave_welcome_ui_browsertest.cc",
     "//brave/browser/ui/toolbar/brave_app_menu_model_browsertest.cc",
+    "//brave/chromium_src/third_party/blink/public/platform/disable_client_hints_browsertest.cc",
     "//brave/common/brave_channel_info_browsertest.cc",
     "//brave/components/brave_shields/browser/ad_block_service_browsertest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_service_browsertest.cc",
