@@ -1,8 +1,8 @@
 diff --git a/components/sync_bookmarks/bookmark_change_processor.cc b/components/sync_bookmarks/bookmark_change_processor.cc
-index 32cbf98c9aef52a321a2ca67e403c570090ffa5c..ac3e9d0a4975deb6c531f2c990763dde9b00c81a 100644
+index acb064faac3ee975ec07be4977fc0970309dfb15..2b41a540a8e172cda43bce61dcfcfdcb133a34fd 100644
 --- a/components/sync_bookmarks/bookmark_change_processor.cc
 +++ b/components/sync_bookmarks/bookmark_change_processor.cc
-@@ -89,6 +89,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(
+@@ -85,6 +85,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(
      bookmark_specifics.set_url(src->url().spec());
    }
    bookmark_specifics.set_creation_time_us(src->date_added().ToInternalValue());
@@ -10,7 +10,7 @@ index 32cbf98c9aef52a321a2ca67e403c570090ffa5c..ac3e9d0a4975deb6c531f2c990763dde
    dst->SetBookmarkSpecifics(bookmark_specifics);
    SetSyncNodeFavicon(src, model, dst);
    SetSyncNodeMetaInfo(src, dst);
-@@ -248,6 +249,7 @@ void BookmarkChangeProcessor::CreateOrUpdateSyncNode(const BookmarkNode* node) {
+@@ -244,6 +245,7 @@ void BookmarkChangeProcessor::CreateOrUpdateSyncNode(const BookmarkNode* node) {
      // Acquire a scoped write lock via a transaction.
      syncer::WriteTransaction trans(FROM_HERE, share_handle(), &new_version);
      sync_id = model_associator_->GetSyncIdFromChromeId(node->id());
@@ -18,7 +18,7 @@ index 32cbf98c9aef52a321a2ca67e403c570090ffa5c..ac3e9d0a4975deb6c531f2c990763dde
      if (sync_id != syncer::kInvalidId) {
        UpdateSyncNode(
            node, bookmark_model_, &trans, model_associator_, error_handler());
-@@ -261,6 +263,7 @@ void BookmarkChangeProcessor::CreateOrUpdateSyncNode(const BookmarkNode* node) {
+@@ -257,6 +259,7 @@ void BookmarkChangeProcessor::CreateOrUpdateSyncNode(const BookmarkNode* node) {
                                 model_associator_,
                                 error_handler());
      }
@@ -26,7 +26,7 @@ index 32cbf98c9aef52a321a2ca67e403c570090ffa5c..ac3e9d0a4975deb6c531f2c990763dde
    }
  
    if (syncer::kInvalidId != sync_id) {
-@@ -420,6 +423,11 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
+@@ -416,6 +419,11 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
        return;
      }
  

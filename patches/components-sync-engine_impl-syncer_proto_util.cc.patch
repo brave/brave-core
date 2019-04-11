@@ -1,0 +1,14 @@
+diff --git a/components/sync/engine_impl/syncer_proto_util.cc b/components/sync/engine_impl/syncer_proto_util.cc
+index 5c695de7675bb390c99eea546ccc015c066cd44c..00458c17cc22a5d32ba3f8a74c14f191301a17f5 100644
+--- a/components/sync/engine_impl/syncer_proto_util.cc
++++ b/components/sync/engine_impl/syncer_proto_util.cc
+@@ -436,7 +436,8 @@ void SyncerProtoUtil::AddRequiredFieldsToClientToServerMessage(
+   DCHECK(msg);
+   SetProtocolVersion(msg);
+   AddRequestBirthday(cycle->context()->directory(), msg);
+-  DCHECK(msg->has_store_birthday() || !IsBirthdayRequired(*msg));
++  // TODO(darkdh): deal with a6aca7bcee196866fc53d487f0025c502df7611a
++  // DCHECK(msg->has_store_birthday() || !IsBirthdayRequired(*msg));
+   AddBagOfChips(cycle->context()->directory(), msg);
+   msg->set_api_key(google_apis::GetAPIKey());
+   msg->mutable_client_status()->CopyFrom(cycle->context()->client_status());
