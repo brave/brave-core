@@ -24,8 +24,15 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
 
   ~MediaTwitch() override;
 
+  void OnMediaActivityError(const ledger::VisitData& visit_data,
+                            uint64_t window_id);
+
   void ProcessMedia(const std::map<std::string, std::string>& parts,
                     const ledger::VisitData& visit_data);
+
+  void ProcessActivityFromUrl(uint64_t window_id,
+                              const ledger::VisitData& visit_data,
+                              const std::string& publisher_blob);
 
   static std::string GetLinkType(const std::string& url,
                                  const std::string& first_party_url,
@@ -44,6 +51,23 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
   static uint64_t GetTwitchDuration(
     const ledger::TwitchEventInfo& old_event,
     const ledger::TwitchEventInfo& new_event);
+
+  static std::string GetMediaIdFromUrl(const std::string& url,
+                                       const std::string& publisher_blob);
+
+  static std::string GetMediaKeyFromUrl(const std::string& id,
+                                        const std::string& url);
+
+  static std::string GetPublisherKey(const std::string& key);
+
+  static void UpdatePublisherData(std::string* publisher_name,
+                                  std::string* publisher_favicon_url,
+                                  const std::string& publisher_blob);
+
+  static std::string GetPublisherName(const std::string& publisher_blob);
+
+  static std::string GetFaviconUrl(const std::string& publisher_blob,
+                                   const std::string& twitchHandle);
 
   void OnMediaPublisherInfo(
     const std::string& media_id,
@@ -67,6 +91,33 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);
+
+  void OnMediaPublisherActivity(
+    uint64_t window_id,
+    const ledger::VisitData& visit_data,
+    const std::string& media_key,
+    const std::string& media_id,
+    const std::string& publisher_blob,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info);
+
+  void OnPublisherInfo(
+    uint64_t window_id,
+    const ledger::VisitData visit_data,
+    const std::string& media_key,
+    const std::string& media_id,
+    const std::string& publisher_blob,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info);
+
+  void SavePublisherInfo(const uint64_t duration,
+                         const std::string& media_key,
+                         const std::string& publisher_url,
+                         const std::string& publisher_name,
+                         const ledger::VisitData& visit_data,
+                         const uint64_t window_id,
+                         const std::string& fav_icon,
+                         const std::string& channel_id);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, ledger::TwitchEventInfo> twitch_events;

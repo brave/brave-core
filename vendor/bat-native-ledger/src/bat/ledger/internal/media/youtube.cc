@@ -520,7 +520,6 @@ void MediaYouTube::SavePublisherInfo(const uint64_t duration,
                                      const uint64_t window_id,
                                      const std::string& fav_icon,
                                      const std::string& channel_id) {
-
   std::string url;
   if (channel_id.empty()) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
