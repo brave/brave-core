@@ -22,11 +22,11 @@ class TabScrollingController: NSObject {
     weak var tab: Tab? {
         willSet {
             self.scrollView?.delegate = nil
-            self.scrollView?.removeGestureRecognizer(panGesture)
+            self.scrollView?.panGestureRecognizer.removeTarget(self, action: nil)
         }
 
         didSet {
-            self.scrollView?.addGestureRecognizer(panGesture)
+            self.scrollView?.panGestureRecognizer.addTarget(self, action: #selector(handlePan))
             scrollView?.delegate = self
         }
     }
@@ -52,7 +52,7 @@ class TabScrollingController: NSObject {
 
     fileprivate var headerTopOffset: CGFloat = 0 {
         didSet {
-            headerTopConstraint?.update(offset: headerTopOffset - tabsBarOffset)
+            headerTopConstraint?.update(offset: headerTopOffset)
             header?.superview?.setNeedsLayout()
         }
     }
@@ -69,13 +69,6 @@ class TabScrollingController: NSObject {
             footer?.superview?.setNeedsLayout()
         }
     }
-
-    fileprivate lazy var panGesture: UIPanGestureRecognizer = {
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
-        panGesture.maximumNumberOfTouches = 1
-        panGesture.delegate = self
-        return panGesture
-    }()
 
     fileprivate var scrollView: UIScrollView? { return tab?.webView?.scrollView }
     fileprivate var contentOffset: CGPoint { return scrollView?.contentOffset ?? .zero }
@@ -251,20 +244,9 @@ private extension TabScrollingController {
     }
 
     func animateToolbarsWithOffsets(_ animated: Bool, duration: TimeInterval, headerOffset: CGFloat, footerOffset: CGFloat, alpha: CGFloat, completion: ((_ finished: Bool) -> Void)?) {
-        guard let scrollView = scrollView else { return }
-        let initialContentOffset = scrollView.contentOffset
-
-        // If this function is used to fully animate the toolbar from hidden to shown, keep the page from scrolling by adjusting contentOffset,
-        // Otherwise when the toolbar is hidden and a link navigated, showing the toolbar will scroll the page and
-        // produce a ~50px page jumping effect in response to tap navigations.
-        let isShownFromHidden = headerTopOffset == -topScrollHeight && headerOffset == 0
-
+        self.headerTopOffset = headerOffset
+        self.footerBottomOffset = footerOffset
         let animation: () -> Void = {
-            if isShownFromHidden {
-                scrollView.contentOffset = CGPoint(x: initialContentOffset.x, y: initialContentOffset.y + self.topScrollHeight)
-            }
-            self.headerTopOffset = headerOffset + self.tabsBarOffset
-            self.footerBottomOffset = footerOffset
             self.urlBar?.updateAlphaForSubviews(alpha)
             self.tabsBar?.view.alpha = alpha
             self.header?.superview?.layoutIfNeeded()
