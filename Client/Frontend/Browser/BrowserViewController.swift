@@ -665,11 +665,7 @@ class BrowserViewController: UIViewController {
             webViewContainerTopOffset = make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
 
             let findInPageHeight = (findInPageBar == nil) ? 0 : UIConstants.ToolbarHeight
-            if let toolbar = self.toolbar {
-                make.bottom.equalTo(toolbar.snp.top).offset(-findInPageHeight)
-            } else {
-                make.bottom.equalTo(self.view).offset(-findInPageHeight)
-            }
+            make.bottom.equalTo(self.footer.snp.top).offset(-findInPageHeight)
         }
 
         // Setup the bottom toolbar
@@ -681,6 +677,9 @@ class BrowserViewController: UIViewController {
         footer.snp.remakeConstraints { make in
             scrollController.footerBottomConstraint = make.bottom.equalTo(self.view.snp.bottom).constraint
             make.leading.trailing.equalTo(self.view)
+            if self.toolbar == nil {
+                make.height.equalTo(0.0)
+            }
         }
 
         urlBar.setNeedsUpdateConstraints()
@@ -691,11 +690,7 @@ class BrowserViewController: UIViewController {
             webViewContainerTopOffset = make.top.equalTo(readerModeBar?.snp.bottom ?? self.header.snp.bottom).constraint
             
             make.left.right.equalTo(self.view)
-            if self.homePanelIsInline {
-                make.bottom.equalTo(self.toolbar?.snp.top ?? self.view.snp.bottom)
-            } else {
-                make.bottom.equalTo(self.view.snp.bottom)
-            }
+            make.bottom.equalTo(self.footer.snp.top)
         }
 
         alertStackView.snp.remakeConstraints { make in
@@ -703,10 +698,8 @@ class BrowserViewController: UIViewController {
             make.width.equalTo(self.view.snp.width)
             if let keyboardHeight = keyboardState?.intersectionHeightForView(self.view), keyboardHeight > 0 {
                 make.bottom.equalTo(self.view).offset(-keyboardHeight)
-            } else if let toolbar = self.toolbar {
-                make.bottom.equalTo(toolbar.snp.top)
             } else {
-                make.bottom.equalTo(self.view)
+                make.bottom.equalTo(self.footer.snp.top)
             }
         }
     }

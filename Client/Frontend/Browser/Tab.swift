@@ -189,6 +189,7 @@ class Tab: NSObject {
             configuration!.preferences = WKPreferences()
             configuration!.preferences.javaScriptCanOpenWindowsAutomatically = false
             configuration!.allowsInlineMediaPlayback = true
+            // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
             configuration!.ignoresViewportScaleLimits = true
             let webView = TabWebView(frame: .zero, configuration: configuration!)
             webView.delegate = self
