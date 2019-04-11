@@ -185,7 +185,7 @@ void LedgerImpl::OnXHRLoad(
     // It is not a media supported type
     return;
   }
-  bat_get_media_->processMedia(parts, type, visit_data);
+  bat_get_media_->ProcessMedia(parts, type, visit_data);
 }
 
 void LedgerImpl::OnPostData(
@@ -206,7 +206,7 @@ void LedgerImpl::OnPostData(
   if (TWITCH_MEDIA_TYPE == type) {
     braveledger_media::GetTwitchParts(post_data, &twitchParts);
     for (size_t i = 0; i < twitchParts.size(); i++) {
-      bat_get_media_->processMedia(twitchParts[i], type, visit_data);
+      bat_get_media_->ProcessMedia(twitchParts[i], type, visit_data);
     }
   }
 }
