@@ -278,6 +278,10 @@ class BatLedgerImpl : public mojom::BatLedger,
     CallbackHolder<GetAddressesCallback>* holder,
     std::map<std::string, std::string> addresses);
 
+  static void OnHasSufficientBalanceToReconcile(
+    CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
+    bool sufficient);
+
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;
 

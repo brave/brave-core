@@ -380,9 +380,21 @@ void BatLedgerImpl::GetRewardsMainEnabled(
   std::move(callback).Run(ledger_->GetRewardsMainEnabled());
 }
 
+void BatLedgerImpl::OnHasSufficientBalanceToReconcile(
+    CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,
+    bool sufficient) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(sufficient);
+  }
+  delete holder;
+}
+
 void BatLedgerImpl::HasSufficientBalanceToReconcile(
     HasSufficientBalanceToReconcileCallback callback) {
-  std::move(callback).Run(ledger_->HasSufficientBalanceToReconcile());
+  auto* holder = new CallbackHolder<HasSufficientBalanceToReconcileCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->HasSufficientBalanceToReconcile(
+      std::bind(BatLedgerImpl::OnHasSufficientBalanceToReconcile, holder, _1));
 }
 
 // static
