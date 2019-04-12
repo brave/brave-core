@@ -14,6 +14,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
 #include "base/strings/string_util.h"
+#include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_paths.h"
 #include "sql/database.h"
@@ -89,6 +90,35 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
     }
 
     return static_cast<int>(s.ColumnInt64(0));
+  }
+
+  std::string GetSchemaString(int version) {
+    const std::string file_name =
+        "publisher_info_schema_v" +
+        std::to_string(version) +
+        ".txt";
+
+    // Get expected schema for this version
+    base::FilePath path;
+    base::PathService::Get(brave::DIR_TEST_DATA, &path);
+    path = path.AppendASCII("rewards-data");
+    path = path.AppendASCII("migration");
+    path = path.AppendASCII(file_name);
+
+    std::string data;
+    base::ReadFileToString(path, &data);
+
+    #if defined(OS_WIN)
+      auto split = base::SplitStringUsingSubstr(
+          data,
+          "\r\n",
+          base::KEEP_WHITESPACE,
+          base::SPLIT_WANT_NONEMPTY);
+
+      data = base::JoinString(split, "\n") + "\n";
+    #endif
+
+    return data;
   }
 
   std::unique_ptr<PublisherInfoDatabase> publisher_info_database_;
@@ -776,6 +806,9 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv3tov4) {
   EXPECT_EQ(list.at(1).id, "brave.com");
   EXPECT_EQ(list.at(1).visits, 5u);
   EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 4);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(4));
 }
 
 TEST_F(PublisherInfoDatabaseTest, Migrationv4tov5) {
@@ -796,6 +829,9 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv4tov5) {
   EXPECT_EQ(list.at(2).id, "basicattentiontoken.org");
   EXPECT_EQ(list.at(2).visits, 3u);
   EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 5);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(5));
 }
 
 TEST_F(PublisherInfoDatabaseTest, Migrationv5tov6) {
@@ -816,18 +852,27 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv5tov6) {
   EXPECT_EQ(list.at(0).percent, 26u);
   EXPECT_NEAR(list.at(0).weight, 25.919327084376, 0.001f);
   EXPECT_EQ(list.at(0).reconcile_stamp, 1553423066u);
+
   EXPECT_EQ(list.at(1).id, "brave.com");
   EXPECT_EQ(list.at(1).duration, 20u);
   EXPECT_EQ(list.at(1).visits, 2u);
+  EXPECT_NEAR(list.at(1).score, 1.07471534438942, 0.001f);
+  EXPECT_EQ(list.at(1).percent, 25u);
+  EXPECT_NEAR(list.at(1).weight, 24.5240629127033, 0.001f);
+  EXPECT_EQ(list.at(1).reconcile_stamp, 1553423066u);
+
   EXPECT_EQ(list.at(2).id, "slo-tech.com");
   EXPECT_EQ(list.at(2).duration, 44u);
   EXPECT_EQ(list.at(2).visits, 2u);
   EXPECT_NEAR(list.at(2).score, 2.1717139356, 0.001f);
-  EXPECT_EQ(list.at(2).percent, 24u);
-  EXPECT_NEAR(list.at(2).weight, 24.254880708636, 0.001f);
+  EXPECT_EQ(list.at(2).percent, 49u);
+  EXPECT_NEAR(list.at(2).weight, 49.556610002920678, 0.001f);
   EXPECT_EQ(list.at(2).reconcile_stamp, 1553423066u);
 
   EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 6);
+
+  const std::string schema = publisher_info_database_->GetSchema();
+  EXPECT_EQ(schema, GetSchemaString(6));
 }
 
 TEST_F(PublisherInfoDatabaseTest, Migrationv4tov6) {
