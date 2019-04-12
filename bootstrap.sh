@@ -35,7 +35,7 @@ if [ ! -z "$XCS_BOT_ID"  ]; then
   CARTHAGE_VERBOSE="--verbose"
 fi
 
-SWIFT_VERSION=4.0 carthage bootstrap $CARTHAGE_VERBOSE --platform ios --color auto --cache-builds --no-use-binaries
+SWIFT_VERSION=4.2 carthage bootstrap $CARTHAGE_VERBOSE --platform ios --color auto --cache-builds --no-use-binaries
 
 # Install Node.js dependencies and build user scripts
 
