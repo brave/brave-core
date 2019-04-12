@@ -221,8 +221,14 @@ void BraveP3AService::InitPyxisMeta() {
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
 
   const std::string woi = local_state_->GetString(kWeekOfInstallation);
-  pyxis_meta_.woi = GetIsoWeekNumber(GetYMDAsDate(woi));
-  pyxis_meta_.wos = GetIsoWeekNumber(base::Time::Now());
+  if (!woi.empty()) {
+    pyxis_meta_.date_of_install = GetYMDAsDate(woi);
+  } else {
+    pyxis_meta_.date_of_install = base::Time::Now();
+  }
+  pyxis_meta_.woi = GetIsoWeekNumber(pyxis_meta_.date_of_install);
+  pyxis_meta_.date_of_survey = base::Time::Now();
+  pyxis_meta_.wos = GetIsoWeekNumber(pyxis_meta_.date_of_survey);
   pyxis_meta_.country_code =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
   pyxis_meta_.refcode = local_state_->GetString(kReferralPromoCode);

@@ -108,7 +108,7 @@ void GenerateProchloMessage(uint64_t metric_hash,
   uint8_t data[kProchlomationDataLength] = {0};
   uint8_t crowd_id[kCrowdIdLength] = {0};
 
-  // first byte contains the 4 booleans
+  // First byte contains the 4 booleans.
   const char daily = 1;
   const char weekly = 0;
   const char monthly = 2;
@@ -117,9 +117,18 @@ void GenerateProchloMessage(uint64_t metric_hash,
   uint8_t* ptr = data;
   ptr++;
 
+  // Find out years of install and survey.
+  base::Time::Exploded exploded;
+  meta.date_of_survey.LocalExplode(&exploded);
+  DCHECK_GE(exploded.year, 999);
+  const std::string yos = base::NumberToString(exploded.year).substr(2, 4);
+  meta.date_of_install.LocalExplode(&exploded);
+  DCHECK_GE(exploded.year, 999);
+  const std::string yoi = base::NumberToString(exploded.year).substr(2, 4);
+
   const std::string metastring =
       "," + meta.country_code + "," + meta.platform + "," + meta.version + "," +
-      meta.channel + "," + base::NumberToString(meta.woi) + "," +
+      meta.channel + "," + yoi + base::NumberToString(meta.woi) + "," + yos +
       base::NumberToString(meta.wos) + "," + meta.refcode + ",";
 
   const std::string metric_value_str = base::NumberToString(metric_value);

@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <string>
+#include "base/time/time.h"
 
 namespace brave_pyxis {
 class PyxisMessage;
@@ -23,7 +24,9 @@ struct MessageMetainfo {
   std::string platform;
   std::string version;
   std::string channel;
-  int woi;  // Week of install.
+  base::Time  date_of_install;
+  base::Time  date_of_survey;
+  int woi;  // Week of install. Remove this occasionally and extract from above.
   int wos;  // Week of survey.
   std::string country_code;
   std::string refcode;
