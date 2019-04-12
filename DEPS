@@ -1,7 +1,7 @@
 use_relative_paths = True
 
 deps = {
-  "vendor/ad-block": "https://github.com/brave/ad-block.git@d5c7128599889e4e2a797b402a517c664d53fad2",
+  "vendor/ad-block": "https://github.com/brave/ad-block.git@bbb97906f49789a39df2e88371ff398448a387ad",
   "vendor/autoplay-whitelist": "https://github.com/brave/autoplay-whitelist.git@458053a3c95b403cbe0872f289a2aafa106ee9d8",
   "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@463e5e4e06e0ca84927176e8c72f6076ae9b6829",
   "vendor/tracking-protection": "https://github.com/brave/tracking-protection.git@29b1f86b11a8c7438fd7d57b446a77a84946712a",
