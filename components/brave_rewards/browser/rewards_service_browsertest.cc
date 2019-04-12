@@ -629,6 +629,13 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END));
 
+    // Signal that direct donation was made and update wallet with new
+    // balance
+    if (!monthly) {
+      donation_made_ = true;
+      UpdateTestData();
+    }
+
     // Wait for thank you banner to load
     ASSERT_TRUE(WaitForLoadStop(site_banner_contents));
 
@@ -669,14 +676,12 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
                                             : ledger::Result::AC_TABLE_EMPTY);
     }
 
-    // Signal that contribution/donation was made and update wallet with new
-    // balance
+    // Signal that monthly contribution was made and update wallet
+    // with new balance
     if (monthly) {
       contribution_made_ = true;
-    } else {
-      donation_made_ = true;
+      UpdateTestData();
     }
-    UpdateTestData();
 
     if (verified) {
       // Make sure that balance is updated correctly
