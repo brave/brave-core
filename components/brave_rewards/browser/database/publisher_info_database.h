@@ -100,6 +100,8 @@ class PublisherInfoDatabase {
   ledger::ServerPublisherInfoPtr GetServerPublisherInfo(
       const std::string& publisher_key);
 
+  void RecordP3AStats(bool auto_contributions_on);
+
   // Returns the current version of the publisher info database
   int GetCurrentVersion();
 

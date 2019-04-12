@@ -18,6 +18,8 @@ source_set("browser") {
     "rewards_notification_service_observer.h",
     "content_site.cc",
     "content_site.h",
+    "rewards_p3a.cc",
+    "rewards_p3a.h",
     "rewards_service.cc",
     "rewards_service.h",
     "rewards_service_factory.cc",

@@ -56,6 +56,10 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Core.BookmarksCountOnProfileLoad",
     "Brave.Core.TabCount",
     "Brave.Core.WindowCount",
+    "Brave.Rewards.WalletBalance",
+    "Brave.Rewards.AutoContributionsState",
+    "Brave.Rewards.TipsState",
+    "Brave.Rewards.AdsState",
 };
 
 base::TimeDelta GetRandomizedUploadInterval(base::TimeDelta upload_interval,
@@ -234,6 +238,7 @@ void BraveP3AService::InitPyxisMeta() {
   pyxis_meta_.woi = GetIsoWeekNumber(pyxis_meta_.date_of_install);
   pyxis_meta_.date_of_survey = base::Time::Now();
   pyxis_meta_.wos = GetIsoWeekNumber(pyxis_meta_.date_of_survey);
+
   pyxis_meta_.country_code =
       base::ToUpperASCII(base::CountryCodeForCurrentTimezone());
   pyxis_meta_.refcode = local_state_->GetString(kReferralPromoCode);
@@ -270,6 +275,7 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
   std::unique_ptr<base::HistogramSamples> samples =
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
   DCHECK(!samples->Iterator()->Done());
+
   // Note that we store only buckets, not actual values.
   size_t bucket = 0u;
   const bool ok = samples->Iterator()->GetBucketIndex(&bucket);

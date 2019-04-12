@@ -31,6 +31,7 @@
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/components/brave_rewards/browser/rewards_p3a.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -1695,6 +1696,32 @@ void AdsServiceImpl::OnPrefsChanged(
       MaybeStart(false);
     } else {
       Stop();
+    }
+
+    // Record P3A.
+    using brave_rewards::AdsP3AState;
+    const bool rewards_enabled =
+        profile_->GetPrefs()->GetBoolean(
+            brave_rewards::prefs::kBraveRewardsEnabled);
+    if (pref == prefs::kBraveAdsEnabled) {
+      if (profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled)) {
+        brave_rewards::RecordAdsState(AdsP3AState::kAdsEnabled);
+        profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsWereDisabled, false);
+      } else {
+        // Apparently, the pref was disabled.
+        brave_rewards::RecordAdsState(
+            rewards_enabled ? AdsP3AState::kAdsEnabledThenDisabledRewardsOn :
+                              AdsP3AState::kAdsEnabledThenDisabledRewardsOn);
+        profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsWereDisabled, true);
+      }
+    } else {
+      // Rewards pref was changed
+      if (profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsWereDisabled)) {
+        brave_rewards::RecordAdsState(
+            rewards_enabled ? AdsP3AState::kAdsEnabledThenDisabledRewardsOn :
+                              AdsP3AState::kAdsEnabledThenDisabledRewardsOff);
+      }
+      // Otherwise do nothing, the needed value should be already recorded.
     }
   } else if (pref == prefs::kIdleThreshold) {
     StartCheckIdleStateTimer();
