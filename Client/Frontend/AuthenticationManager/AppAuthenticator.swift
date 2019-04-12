@@ -26,6 +26,7 @@ class AppAuthenticator {
                 let w = UIWindow()
                 w.backgroundColor = .clear
                 w.rootViewController = self.blurController
+                w.windowLevel = UIWindow.Level(UIWindowLevelStatusBar - 1)
                 _window = w
             }
             return _window
