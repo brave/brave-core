@@ -759,6 +759,25 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
   EXPECT_EQ(list_4.at(1).id, "publisher_6");
 }
 
+
+TEST_F(PublisherInfoDatabaseTest, Migrationv3tov4) {
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateMigrationDatabase(&temp_dir, &db_file, 3, 4);
+
+  ledger::PublisherInfoList list;
+  ledger::ActivityInfoFilter filter;
+  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter, &list));
+  EXPECT_EQ(static_cast<int>(list.size()), 2);
+
+  EXPECT_EQ(list.at(0).id, "slo-tech.com");
+  EXPECT_EQ(list.at(0).visits, 5u);
+  EXPECT_EQ(list.at(1).id, "brave.com");
+  EXPECT_EQ(list.at(1).visits, 5u);
+  EXPECT_EQ(publisher_info_database_->GetTableVersionNumber(), 4);
+}
+
 TEST_F(PublisherInfoDatabaseTest, Migrationv4tov5) {
   base::ScopedTempDir temp_dir;
   base::FilePath db_file;
