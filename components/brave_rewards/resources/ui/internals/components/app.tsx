@@ -30,13 +30,13 @@ export class RewardsInternalsPage extends React.Component<Props, {}> {
   }
 
   render () {
-    const { rewardsInternalsData } = this.props
-    if (rewardsInternalsData.isRewardsEnabled) {
+    const { isRewardsEnabled, info } = this.props.rewardsInternalsData
+    if (isRewardsEnabled) {
       return (
         <div id='rewardsInternalsPage'>
-          <KeyInfoSeed isKeyInfoSeedValid={rewardsInternalsData.info.isKeyInfoSeedValid || false} />
-          <WalletPaymentId walletPaymentId={rewardsInternalsData.info.walletPaymentId || ''} />
-          {rewardsInternalsData.info.currentReconciles.map((item, index) => (
+          <KeyInfoSeed isKeyInfoSeedValid={info.isKeyInfoSeedValid || false} />
+          <WalletPaymentId walletPaymentId={info.walletPaymentId || ''} />
+          {info.currentReconciles.map((item, index) => (
             <span>
               <hr/>
               <div>
@@ -45,6 +45,15 @@ export class RewardsInternalsPage extends React.Component<Props, {}> {
               </div>
             </span>
           ))}
+          <div>
+            <span i18n-content='personaId'/>: {info.personaId}
+          </div>
+          <div>
+            <span i18n-content='userId'/>: {info.userId}
+          </div>
+          <div>
+            <span i18n-content='bootStamp'/>: {new Date(info.bootStamp * 1000).toLocaleDateString()}
+          </div>
           <button type='button' style={{ marginTop: '10px' }} onClick={this.onRefresh}>{getLocale('refreshButton')}</button>
         </div>)
     } else {

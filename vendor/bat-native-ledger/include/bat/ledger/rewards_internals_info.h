@@ -23,6 +23,9 @@ LEDGER_EXPORT struct RewardsInternalsInfo {
 
   std::string payment_id;
   bool is_key_info_seed_valid;
+  std::string persona_id;
+  std::string user_id;
+  uint64_t boot_stamp;
 
   std::map<std::string, ReconcileInfo> current_reconciles;
 };

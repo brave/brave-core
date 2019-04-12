@@ -1206,6 +1206,15 @@ void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) {
   // Retrieve the payment id.
   info->payment_id = bat_state_->GetPaymentId();
 
+  // Retrieve the persona id.
+  info->persona_id = bat_state_->GetPersonaId();
+
+  // Retrieve the user id.
+  info->user_id = bat_state_->GetUserId();
+
+  // Retrieve the boot stamp.
+  info->boot_stamp = bat_state_->GetBootStamp();
+
   // Retrieve the key info seed and validate it.
   const braveledger_bat_helper::WALLET_INFO_ST wallet_info =
       bat_state_->GetWalletInfo();

@@ -843,6 +843,10 @@ void RewardsServiceImpl::OnGetRewardsInternalsInfo(
       std::make_unique<brave_rewards::RewardsInternalsInfo>();
   rewards_internals_info->payment_id = info.payment_id;
   rewards_internals_info->is_key_info_seed_valid = info.is_key_info_seed_valid;
+  rewards_internals_info->persona_id = info.persona_id;
+  rewards_internals_info->user_id = info.user_id;
+  rewards_internals_info->boot_stamp = info.boot_stamp;
+
   for (const auto& item : info.current_reconciles) {
     ReconcileInfo reconcile_info;
     reconcile_info.viewing_id_ = item.second.viewingId_;
