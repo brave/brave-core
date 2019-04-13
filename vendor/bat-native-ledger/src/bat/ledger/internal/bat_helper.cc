@@ -912,11 +912,11 @@ void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
   writer->String("altcurrency");
   writer->String(data.altcurrency_.c_str());
 
-  writer->String("probi_");
+  writer->String("probi");
   writer->String(data.probi_.c_str());
 
   writer->String("balance");
-  writer->Double(data.balance_);
+  writer->String(std::to_string(data.balance_).c_str());
 
   writer->String("fee_amount");
   writer->Double(data.fee_amount_);
@@ -929,22 +929,48 @@ void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
   }
   writer->EndObject();
 
-  writer->String("parameters_choices");
+  writer->String("parameters");
+  writer->StartObject();
+  writer->String("adFree");
+  writer->StartObject();
+
+  writer->String("currency");
+  writer->String("");
+
+  writer->String("fee");
+  writer->StartObject();
+  writer->String("BAT");
+  writer->Double(data.fee_amount_);
+  writer->EndObject();
+
+
+  writer->String("choices");
+  writer->StartObject();
+  writer->String("BAT");
+
   writer->StartArray();
   for (auto & choice : data.parameters_choices_) {
     writer->Double(choice);
   }
   writer->EndArray();
+  writer->EndObject();
 
-  writer->String("parameters_range");
+
+  writer->String("range");
+  writer->StartObject();
+  writer->String("BAT");
+
   writer->StartArray();
-  for (auto & choice : data.parameters_range_) {
-    writer->Double(choice);
+  for (auto & range : data.parameters_range_) {
+    writer->Double(range);
   }
   writer->EndArray();
+  writer->EndObject();
 
-  writer->String("parameters_days");
+  writer->String("days");
   writer->Int(data.parameters_days_);
+  writer->EndObject();
+  writer->EndObject();
 
   writer->String("grants");
   writer->StartArray();
@@ -1454,6 +1480,7 @@ CLIENT_STATE_ST::CLIENT_STATE_ST():
   rewards_enabled_(false) {}
 
 CLIENT_STATE_ST::CLIENT_STATE_ST(const CLIENT_STATE_ST& other) {
+  walletProperties_ = other.walletProperties_;
   walletInfo_ = other.walletInfo_;
   bootStamp_ = other.bootStamp_;
   reconcileStamp_ = other.reconcileStamp_;
