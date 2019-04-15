@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
 #include "base/bind.h"
 #include "brave/browser/brave_rewards/donations_dialog.h"
@@ -423,6 +424,35 @@ void BraveRewardsGetPublisherBannerFunction::OnPublisherBanner(
   }
 
   Respond(OneArgument(std::move(result)));
+}
+
+BraveRewardsRefreshPublisherFunction::~BraveRewardsRefreshPublisherFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveRewardsRefreshPublisherFunction::Run() {
+  std::unique_ptr<brave_rewards::RefreshPublisher::Params> params(
+      brave_rewards::RefreshPublisher::Params::Create(*args_));
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(TwoArguments(
+        std::make_unique<base::Value>(false),
+        std::make_unique<base::Value>(std::string())));
+  }
+  rewards_service->RefreshPublisher(
+      params->publisher_key,
+      base::BindOnce(
+        &BraveRewardsRefreshPublisherFunction::OnRefreshPublisher,
+        this));
+  return RespondLater();
+}
+
+void BraveRewardsRefreshPublisherFunction::OnRefreshPublisher(
+    bool verified, const std::string& publisher_key) {
+  Respond(TwoArguments(std::make_unique<base::Value>(verified),
+                       std::make_unique<base::Value>(publisher_key)));
 }
 
 }  // namespace api

@@ -77,6 +77,8 @@ using GetOneTimeTipsCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::ContentSiteList>)>;
 using GetPublisherBannerCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::PublisherBanner>)>;
+using RefreshPublisherCallback =
+    base::OnceCallback<void(bool, const std::string&)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -189,6 +191,10 @@ class RewardsService : public KeyedService {
       const GetAddressesCallback& callback) = 0;
   virtual void GetConfirmationsHistory(
       brave_rewards::ConfirmationsHistoryCallback callback) = 0;
+
+  virtual void RefreshPublisher(
+      const std::string& publisher_key,
+      RefreshPublisherCallback callback) = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
   void RemoveObserver(RewardsServiceObserver* observer);

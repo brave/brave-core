@@ -201,6 +201,9 @@ class RewardsServiceImpl : public RewardsService,
   std::pair<uint64_t, uint64_t> GetEarningsRange();
 
   void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) override;
+  void RefreshPublisher(
+      const std::string& publisher_key,
+      RefreshPublisherCallback callback) override;
 
   void SaveRecurringTip(const std::string& publisher_key,
                              const int amount) override;
@@ -462,6 +465,10 @@ class RewardsServiceImpl : public RewardsService,
                                  const std::string& json_props);
   void SetRewardsMainEnabledPref(bool enabled);
   void SetRewardsMainEnabledMigratedPref(bool enabled);
+  void OnRefreshPublisher(
+      RefreshPublisherCallback callback,
+      const std::string& publisher_key,
+      bool verified);
 
   bool Connected() const;
   void ConnectionClosed();

@@ -2926,4 +2926,24 @@ void RewardsServiceImpl::OnDeleteActivityInfo(
   }
 }
 
+void RewardsServiceImpl::RefreshPublisher(
+    const std::string& publisher_key,
+    RefreshPublisherCallback callback) {
+  if (!Connected()) {
+    std::move(callback).Run(false, std::string());
+    return;
+  }
+  bat_ledger_->RefreshPublisher(
+      publisher_key,
+      base::BindOnce(&RewardsServiceImpl::OnRefreshPublisher,
+        AsWeakPtr(), std::move(callback), publisher_key));
+}
+
+void RewardsServiceImpl::OnRefreshPublisher(
+    RefreshPublisherCallback callback,
+    const std::string& publisher_key,
+    bool verified) {
+  std::move(callback).Run(verified, publisher_key);
+}
+
 }  // namespace brave_rewards

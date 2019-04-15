@@ -90,6 +90,7 @@ export const getUIMessages = (): Record<string, string> => {
     'tipsProcessedNotification',
     'tokenGrant',
     'tokenGrantClaimed',
+    'unVerifiedCheck',
     'unVerifiedPublisher',
     'unVerifiedText',
     'unVerifiedTextMore',

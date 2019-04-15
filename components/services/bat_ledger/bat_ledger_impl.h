@@ -135,6 +135,9 @@ class BatLedgerImpl : public mojom::BatLedger,
       GetConfirmationsHistoryCallback callback) override;
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
+  void RefreshPublisher(
+      const std::string& publisher_key,
+      RefreshPublisherCallback callback) override;
 
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
 
@@ -201,6 +204,9 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<GetRecurringTipsCallback>* holder,
       const ledger::PublisherInfoList& list,
       uint32_t num);
+  static void OnRefreshPublisher(
+      CallbackHolder<RefreshPublisherCallback>* holder,
+      bool verified);
 
   static void OnGetActivityInfoList(
     CallbackHolder<GetActivityInfoListCallback>* holder,

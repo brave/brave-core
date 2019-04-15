@@ -587,6 +587,31 @@
             ]
           }
         ]
+      },
+      {
+        "name": "refreshPublisher",
+        "type": "function",
+        "description": "Refreshes verified status for individual publisher",
+        "parameters": [
+          {
+            "name": "publisherKey",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "verified",
+                "type": "boolean"
+              },
+              {
+                "name": "publisherKey",
+                "value": "string"
+              }
+            ]
+          }
+        ]
       }
     ]
   }

@@ -872,4 +872,10 @@ void BatPublishers::onPublisherBanner(
   callback(std::move(new_banner));
 }
 
+void BatPublishers::RefreshPublisherVerifiedStatus(
+    const std::string& publisher_key,
+    ledger::OnRefreshPublisherCallback callback) {
+  callback(isVerified(publisher_key));
+}
+
 }  // namespace braveledger_bat_publishers
