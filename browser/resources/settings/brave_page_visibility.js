@@ -19,12 +19,6 @@ cr.define('settings', function() {
     }
   };
 
-  const braveShieldsDefaultsHandler = {
-    get: function(obj, prop) {
-      return true;
-    }
-  };
-
   const socialBlockingHandler = {
     get: function(obj, prop) {
       return true;
@@ -37,18 +31,36 @@ cr.define('settings', function() {
     }
   }
 
+  const defaultHandler = {
+    get: function(obj, prop) {
+      return true
+    }
+  }
+
+  const defaultSections = [
+    'extensions',
+    'getStarted',
+    'shields',
+  ]
+
+  const hiddenSections = [
+    'a11y',
+    'people',
+    'defaultBrowser'
+  ]
+
   const handler = {
     get: function(obj, prop) {
       if (prop === 'appearance') return new Proxy({}, appearanceHandler);
-      if (prop === 'braveShieldsDefaults') return new Proxy({}, braveShieldsDefaultsHandler);
       if (prop === 'socialBlocking') return new Proxy({}, socialBlockingHandler);
       if (prop === 'braveSync') {
         if (loadTimeData.getBoolean('isSyncDisabled'))
           return false;
         return true;
       }
-      if (prop === 'privacy') return new Proxy({}, privacyHandler);
-      return prop === 'a11y' ? false : true;
+      if (prop === 'privacy') return new Proxy({}, privacyHandler)
+      if (defaultSections.includes(prop)) return new Proxy({}, defaultHandler)
+      return hiddenSections.includes(prop) ? false : true;
     }
   };
 

@@ -1,2 +1,15 @@
 <link rel="import" href="chrome://resources/html/polymer.html">
 <script src="polymer_overriding.js"></script>
+
+<!-- global specific overrides -->
+<dom-module id="brave-override-style-cr-toggle">
+  <template>
+    <style>
+      :host {
+        --cr-toggle-checked-bar-color: var(--cr-link-color) !important;
+        --cr-toggle-checked-button-color: var(--cr-link-color) !important;
+        --cr-toggle-checked-ink-color: var(--cr-link-color) !important;
+      }
+    </style>
+  </template>
+</dom-module>

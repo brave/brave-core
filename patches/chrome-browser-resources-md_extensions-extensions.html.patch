@@ -1,26 +1,12 @@
 diff --git a/chrome/browser/resources/md_extensions/extensions.html b/chrome/browser/resources/md_extensions/extensions.html
-index 088cee5cf802262eaaf5806d4b68ebc52a24f002..0945c0ff35a00d025e76bf6e967904b106ca0f26 100644
+index 088cee5cf802262eaaf5806d4b68ebc52a24f002..b9db5844f50abfd5e7c3373b03ed68e1b242eed7 100644
 --- a/chrome/browser/resources/md_extensions/extensions.html
 +++ b/chrome/browser/resources/md_extensions/extensions.html
-@@ -21,7 +21,7 @@
-       content: '';
-       display: block;
+@@ -53,6 +53,7 @@
+       width: 100%;
      }
--
-+<if expr="_google_chrome">
-     html.loading::before {
-       background: var(--md-toolbar-color);
-       height: var(--md-toolbar-height);
-@@ -43,7 +43,11 @@
-     html[dark].loading.in-dev-mode body::before {
-       border-bottom: var(--md-toolbar-border);
-     }
--
-+</if>
-+    html.loading {
-+      border-top: var(--toolbar-height) solid;
-+      border-image: var(--md-toolbar-color);
-+    }
-     html,
-     body {
-       height: 100%;
+   </style>
++  <link rel="stylesheet" href="chrome://brave-resources/page_specific/extensions/extensions_loading_shim.css">
+ </head>
+ <body>
+   <extensions-manager></extensions-manager>
