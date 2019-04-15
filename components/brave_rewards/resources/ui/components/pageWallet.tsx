@@ -156,9 +156,14 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     return grants.map((grant: Rewards.Grant) => {
+      let expireDate = ''
+      if (grant.type !== 'ads') {
+        expireDate = new Date(grant.expiryTime * 1000).toLocaleDateString()
+      }
+
       return {
         tokens: utils.convertProbiToFixed(grant.probi),
-        expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString()
+        expireDate
       }
     })
   }

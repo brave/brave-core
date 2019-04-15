@@ -344,7 +344,7 @@ export class Panel extends React.Component<Props, State> {
     const notificationId = this.getNotificationProp('id', notification)
     const notificationType = this.getNotificationProp('type', notification)
     const notificationClick = this.getNotificationClickEvent(notificationType, notificationId)
-    const { currentGrant } = this.props.rewardsPanelData
+    let { currentGrant } = this.props.rewardsPanelData
 
     const pendingTotal = parseFloat(
       (pendingContributionTotal || 0).toFixed(1))
@@ -356,6 +356,9 @@ export class Panel extends React.Component<Props, State> {
         faviconUrl = `chrome://favicon/size/48@2x/${publisher.favicon_url}`
       }
     }
+
+    currentGrant = utils.getGrant(currentGrant)
+
     return (
       <WalletWrapper
         compact={true}
