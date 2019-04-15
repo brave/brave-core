@@ -6,10 +6,13 @@
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/bat_helper.h"
 
-
 namespace braveledger_media {
 
 std::string GetMediaKey(const std::string& mediaId, const std::string& type) {
+  if (mediaId.empty() || type.empty()) {
+    return std::string();
+  }
+
   return type + "_" + mediaId;
 }
 
@@ -17,16 +20,19 @@ void GetTwitchParts(
     const std::string& query,
     std::vector<std::map<std::string, std::string>>* parts) {
   size_t pos = query.find("data=");
-  if (std::string::npos != pos && query.length() > 5) {
-    std::string varValue = query.substr(5);
-    std::vector<uint8_t> decoded;
-    bool succeded = braveledger_bat_helper::getFromBase64(varValue, &decoded);
-    if (succeded) {
-      decoded.push_back((uint8_t)'\0');
-      braveledger_bat_helper::getJSONTwitchProperties(
-          reinterpret_cast<char*>(&decoded.front()),
-          parts);
-    }
+
+  if (std::string::npos == pos || query.length() <= 5) {
+    return;
+  }
+
+  std::string varValue = query.substr(5);
+  std::vector<uint8_t> decoded;
+  bool succeded = braveledger_bat_helper::getFromBase64(varValue, &decoded);
+  if (succeded) {
+    decoded.push_back((uint8_t)'\0');
+    braveledger_bat_helper::getJSONTwitchProperties(
+        reinterpret_cast<char*>(&decoded.front()),
+        parts);
   }
 }
 
@@ -54,6 +60,8 @@ std::string ExtractData(const std::string& data,
       } else {
         match = data.substr(start_pos, std::string::npos);
       }
+    } else if (match_until.empty()) {
+      match = data.substr(start_pos, std::string::npos);
     }
   }
 

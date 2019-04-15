@@ -6,6 +6,7 @@
 #ifndef BRAVELEDGER_MEDIA_HELPER_H_
 #define BRAVELEDGER_MEDIA_HELPER_H_
 
+#include <functional>
 #include <map>
 #include <string>
 #include <vector>
