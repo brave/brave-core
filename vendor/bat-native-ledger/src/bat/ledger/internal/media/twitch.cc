@@ -7,6 +7,7 @@
 #include <cmath>
 #include <utility>
 #include <vector>
+#include <iostream>
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -69,7 +70,10 @@ std::string MediaTwitch::GetMediaIdFromParts(
 std::string MediaTwitch::GetMediaURL(const std::string& media_id) {
   std::string res;
 
-  DCHECK(!media_id.empty());
+  if (media_id.empty()) {
+    return std::string();
+  }
+
   return "https://www.twitch.tv/" + media_id;
 }
 
@@ -174,6 +178,8 @@ std::string MediaTwitch::GetLinkType(const std::string& url,
   bool is_valid_twitch_path =
       braveledger_bat_helper::HasSameDomainAndPath(
                                   url, "ttvnw.net", "/v1/segment/");
+
+  std::cout << is_valid_twitch_path << first_party_url;
   if (
     (
       (first_party_url.find("https://www.twitch.tv/") == 0 ||
@@ -192,6 +198,7 @@ std::string MediaTwitch::GetMediaIdFromUrl(
   const std::string& url,
   const std::string& publisher_blob) {
   std::string mediaId = braveledger_media::ExtractData(url, "twitch.tv/", "/");
+
   if (url.find("twitch.tv/videos/") != std::string::npos) {
     mediaId = braveledger_media::ExtractData(publisher_blob,
       "<a class=\"tw-interactive channel-header__user tw-align-items-center "
@@ -207,7 +214,7 @@ std::string MediaTwitch::GetMediaIdFromUrl(
 std::string MediaTwitch::GetMediaKeyFromUrl(
   const std::string& id,
   const std::string& url) {
-  if (id == "twitch") {
+  if (id == "twitch" || id.empty()) {
     return std::string();
   }
 
@@ -242,6 +249,10 @@ std::string MediaTwitch::GetPublisherName(
 std::string MediaTwitch::GetFaviconUrl(
     const std::string& publisher_blob,
     const std::string& handle) {
+  if (handle.empty()) {
+    return std::string();
+  }
+
   return braveledger_media::ExtractData(publisher_blob,
     "<figure class=\"tw-avatar tw-avatar--size-36\">"
     "<div class=\"tw-border-radius-medium tw-overflow-hidden\">"
@@ -252,6 +263,10 @@ std::string MediaTwitch::GetFaviconUrl(
 
 // static
 std::string MediaTwitch::GetPublisherKey(const std::string& key) {
+  if (key.empty()) {
+    return std::string();
+  }
+
   return (std::string)TWITCH_MEDIA_TYPE + "#author:" + key;
 }
 

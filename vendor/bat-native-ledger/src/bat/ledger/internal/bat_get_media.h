@@ -8,6 +8,7 @@
 
 #include <string>
 #include <map>
+#include <memory>
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/media/twitch.h"

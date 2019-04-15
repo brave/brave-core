@@ -10,6 +10,7 @@
 #include <memory>
 #include <string>
 
+#include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/media/helper.h"
 
@@ -122,6 +123,19 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::map<std::string, ledger::TwitchEventInfo> twitch_events;
+
+  // For testing purposes
+  friend class MediaTwitchTest;
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitchTest, GetMediaIdFromParts);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitchTest, GetMediaURL);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitchTest, GetTwitchStatus);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitchTest, GetTwitchDuration);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitchTest, GetMediaIdFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitchTest, GetMediaKeyFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitchTest, GetPublisherKey);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitchTest, UpdatePublisherData);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitchTest, GetPublisherName);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitchTest, GetFaviconUrl);
 };
 
 }  // namespace braveledger_media
