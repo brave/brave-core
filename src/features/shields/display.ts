@@ -85,7 +85,7 @@ export const BlockedInfoRowStats = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   color: ${p => p.theme.color.text};
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1;
 `
 
@@ -110,16 +110,16 @@ export const BlockedListSummaryText = styled<{}, 'span'>('span')`
 
 export const BlockedListItemHeaderText = styled<{}, 'span'>('span')`
   box-sizing: border-box;
-  font-weight: 500;
+  font-weight: 600;
   color: ${p => p.theme.color.text};
-  font-size: 12px;
+  font-size: 14px;
 `
 
 export const BlockedListItemHeaderStats = styled<{}, 'span'>('span')`
   text-align: center;
   font-size: 14px;
   color: ${p => p.theme.color.text};
-  font-weight: 500;
+  font-weight: 600;
 `
 
 /**
