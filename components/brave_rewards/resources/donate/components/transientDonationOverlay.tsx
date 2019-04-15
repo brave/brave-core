@@ -7,22 +7,16 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import DonateToSite from './donateToSite'
-import DonateToTwitterUser from './donateToTwitterUser'
+import DonationOverlay from 'brave-ui/features/rewards/donationOverlay'
 
 // Utils
-import * as rewardsActions from '../actions/tip_actions'
-
-interface TipDialogArgs {
-  publisherKey: string
-  tweetMetaData?: RewardsDonate.TweetMetaData
-}
+import * as rewardsActions from '../actions/donate_actions'
 
 interface Props extends RewardsDonate.ComponentProps {
-  dialogArgs: TipDialogArgs
+  publisher: RewardsDonate.Publisher
 }
 
-export class App extends React.Component<Props, {}> {
+class TransientDonationOverlay extends React.Component<Props, {}> {
 
   get actions () {
     return this.props.actions
@@ -32,7 +26,7 @@ export class App extends React.Component<Props, {}> {
     this.actions.onCloseDialog()
   }
 
-  generateTipOverlay = (publisher: RewardsTip.Publisher) => {
+  render () {
     let domain = ''
     let monthlyDate
     const {
@@ -41,6 +35,7 @@ export class App extends React.Component<Props, {}> {
       reconcileStamp
     } = this.props.rewardsDonateData
 
+    const publisher = this.props.publisher
     const publisherKey = publisher && publisher.publisherKey
 
     if (!publisherKey) {
@@ -83,53 +78,10 @@ export class App extends React.Component<Props, {}> {
         logo={logo}
       />
     )
-
-  isTwitterAccount = (publisherKey: string) => {
-    return /^twitter#channel:[0-9]+$/.test(publisherKey)
-  }
-
-  render () {
-    const { publishers } = this.props.rewardsDonateData
-
-    if (!publishers) {
-      return null
-    }
-
-    const publisherKey = this.props.dialogArgs.publisherKey
-    const publisher = publishers[publisherKey]
-
-    if (!publisher) {
-      return null
-    }
-
-    let donation
-    if (this.isTwitterAccount(publisherKey)) {
-      const tweetMetaData = this.props.dialogArgs.tweetMetaData
-      if (tweetMetaData) {
-        donation = (
-          <DonateToTwitterUser
-            publisher={publisher}
-            tweetMetaData={tweetMetaData}
-          />
-        )
-      }
-    } else {
-      donation = (
-        <DonateToSite
-          publisher={publisher}
-        />
-      )
-    }
-
-    return (
-      <div>
-        {donation}
-      </div>
-    )
   }
 }
 
-export const mapStateToProps = (state: RewardsTip.ApplicationState) => ({
+export const mapStateToProps = (state: RewardsDonate.ApplicationState) => ({
   rewardsDonateData: state.rewardsDonateData
 })
 
@@ -140,4 +92,4 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(App)
+)(TransientDonationOverlay)

@@ -32,11 +32,10 @@ window.cr.define('brave_rewards_tip', function () {
     }
 
     const dialogArgsRaw = chrome.getVariableValue('dialogArguments')
-    let publisherKey
+    let dialogArgs
     try {
-      const args = JSON.parse(dialogArgsRaw)
-      chrome.send('brave_rewards_tip.getPublisherBanner', [args.publisherKey])
-      publisherKey = args.publisherKey
+      dialogArgs = JSON.parse(dialogArgsRaw)
+      chrome.send('brave_rewards_tip.getPublisherBanner', [dialogArgs.publisherKey])
     } catch (e) {
       console.error('Error parsing incoming dialog args', dialogArgsRaw, e)
     }
@@ -44,7 +43,7 @@ window.cr.define('brave_rewards_tip', function () {
     render(
       <Provider store={store}>
         <ThemeProvider theme={Theme}>
-          <App publisherKey={publisherKey} />
+          <App dialogArgs={dialogArgs} />
         </ThemeProvider>
       </Provider>,
       document.getElementById('root'))

@@ -355,6 +355,33 @@
         ]
       },
       {
+        "name": "donateToTwitterUser",
+        "type": "function",
+        "description": "Allow the user to perform a donation to a Twitter user",
+        "parameters": [
+          {
+            "name": "tabID",
+            "type": "integer"
+          },
+          {
+            "name": "publisherKey",
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "type": "string"
+          },
+          {
+            "name": "screenName",
+            "type": "string"
+          },
+          {
+            "name": "tweetText",
+            "type": "string"
+          }
+        ]
+      },
+      {
         "name": "getPublisherData",
         "type": "function",
         "description": "Get publisher data",

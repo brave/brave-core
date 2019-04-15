@@ -5,14 +5,7 @@
 // Utils
 import { getMessage } from './background/api/locale_api'
 
-interface TweetMetaData {
-  name: string,
-  screenName: string,
-  userId: string,
-  tweetText: string
-}
-
-const getTweetMetaData = (tweet: Element): TweetMetaData | null => {
+const getTweetMetaData = (tweet: Element): RewardsDonate.TweetMetaData | null => {
   if (!tweet) {
     return null
   }
@@ -40,13 +33,8 @@ const createBraveTipAction = (tweet: Element) => {
   braveTipButton.onclick = function (event) {
     const tweetMetaData = getTweetMetaData(tweet)
     if (tweetMetaData) {
-      chrome.runtime.sendMessage({
-        type: 'donateNow',
-        publisher: 'duckduckgo.com',
-        name: tweetMetaData.name,
-        screenName: tweetMetaData.screenName,
-        tweetText: tweetMetaData.tweetText
-      })
+      const msg = { type: 'donateToTwitterUser', ...tweetMetaData }
+      chrome.runtime.sendMessage(msg)
     }
   }
   braveTipAction.appendChild(braveTipButton)

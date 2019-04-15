@@ -32,6 +32,13 @@ declare namespace RewardsTip {
     verified: boolean
   }
 
+  interface TweetMetaData {
+    name: string
+    screenName: string
+    userId: string
+    tweetText: string
+  }
+
   export interface WalletProperties {
     balance: number
     choices: number[]

@@ -36,6 +36,17 @@ class BraveRewardsTipSiteFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsDonateToTwitterUserFunction
+    : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.donateToTwitterUser", UNKNOWN)
+
+ protected:
+  ~BraveRewardsDonateToTwitterUserFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherData", UNKNOWN)

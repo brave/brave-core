@@ -75,6 +75,47 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
   params_dict->SetString("publisherKey", params->publisher_key);
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
 
+BraveRewardsDonateToTwitterUserFunction::
+    ~BraveRewardsDonateToTwitterUserFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsDonateToTwitterUserFunction::Run() {
+  std::unique_ptr<brave_rewards::DonateToTwitterUser::Params> params(
+      brave_rewards::DonateToTwitterUser::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  // Sanity check: don't allow donations in private / tor contexts,
+  // although the command should not have been enabled in the first place.
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (profile->IsOffTheRecord()) {
+    return RespondNow(
+        Error("Cannot donate to Twitter user in a private context"));
+  }
+
+  // Get web contents for this tab
+  content::WebContents* contents = nullptr;
+  if (!ExtensionTabUtil::GetTabById(
+        params->tab_id,
+        profile,
+        include_incognito_information(),
+        nullptr,
+        nullptr,
+        &contents,
+        nullptr)) {
+    return RespondNow(Error(tabs_constants::kTabNotFoundError,
+                            base::IntToString(params->tab_id)));
+  }
+
+  auto params_dict = std::make_unique<base::DictionaryValue>();
+  params_dict->SetString("publisherKey", params->publisher_key);
+  auto tweet_metadata_dict = std::make_unique<base::DictionaryValue>();
+  tweet_metadata_dict->SetString("name", params->name);
+  tweet_metadata_dict->SetString("screenName", params->screen_name);
+  tweet_metadata_dict->SetString("tweetText", params->tweet_text);
+  params_dict->SetDictionary("tweetMetaData", std::move(tweet_metadata_dict));
+  ::brave_rewards::OpenDonationDialog(contents, std::move(params_dict));
+
   return RespondNow(NoArguments());
 }
 
