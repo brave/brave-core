@@ -173,6 +173,9 @@ class TabManager: NSObject {
         allTabs.filter({$0.webView != nil}).forEach({
             $0.resetWebView(config: configuration)
         })
+    }
+    
+    func reloadSelectedTab() {
         let tab = selectedTab
         _selectedIndex = -1
         selectTab(tab)

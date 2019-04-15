@@ -224,26 +224,30 @@ class SettingsViewController: TableViewController {
             ),
             BoolRow(title: Strings.Block_all_cookies, option: Preferences.Privacy.blockAllCookies, onValueChange: { [unowned self] in
                 func toggleCookieSetting(with status: Bool) {
-                    //Lock/Unlock Cookie Folder
-                    let success = FileManager.default.setFolderAccess([
-                        (.cookie, status),
-                        (.webSiteData, status)
-                        ])
-                    if success {
-                        Preferences.Privacy.blockAllCookies.value = status
-                    } else {
-                        //Revert the changes. Not handling success here to avoid a loop.
-                        _ = FileManager.default.setFolderAccess([
-                            (.cookie, false),
-                            (.webSiteData, false)
+                    // Lock/Unlock Cookie Folder
+                    let completionBlock: (Bool) -> Void = { _ in
+                        let success = FileManager.default.setFolderAccess([
+                            (.cookie, status),
+                            (.webSiteData, status)
                             ])
-                        self.toggleSwitch(on: false, section: self.privacySection, rowUUID: Preferences.Privacy.blockAllCookies.key)
-                        
-                        // TODO: Throw Alert to user to try again?
-                        let alert = UIAlertController(title: nil, message: Strings.Block_all_cookies_failed_alert_msg, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
-                        self.present(alert, animated: true)
+                        if success {
+                            Preferences.Privacy.blockAllCookies.value = status
+                        } else {
+                            //Revert the changes. Not handling success here to avoid a loop.
+                            FileManager.default.setFolderAccess([
+                                (.cookie, false),
+                                (.webSiteData, false)
+                                ])
+                            self.toggleSwitch(on: false, section: self.privacySection, rowUUID: Preferences.Privacy.blockAllCookies.key)
+                            
+                            // TODO: Throw Alert to user to try again?
+                            let alert = UIAlertController(title: nil, message: Strings.Block_all_cookies_failed_alert_msg, preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
+                            self.present(alert, animated: true)
+                        }
                     }
+                    // Save cookie to disk before purge for unblock load.
+                    status ? HTTPCookie.saveToDisk(completion: completionBlock) : completionBlock(true)
                 }
                 if $0 {
                     let status = $0
