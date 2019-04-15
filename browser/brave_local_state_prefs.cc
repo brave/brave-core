@@ -52,6 +52,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave::BraveP3AService::RegisterPrefs(registry);
   brave_shields::RegisterShieldsP3APrefs(registry);
   BraveWindowsTracker::RegisterPrefs(registry);
+  BraveUptimeTracker::RegisterPrefs(registry);
 }
 
 }  // namespace brave

@@ -52,4 +52,5 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
                                        g_browser_process->local_state());
 
   brave::BraveWindowsTracker::CreateInstance(g_browser_process->local_state());
+  brave::BraveUptimeTracker::CreateInstance(g_browser_process->local_state());
 }

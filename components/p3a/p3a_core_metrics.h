@@ -15,12 +15,44 @@ class PrefRegistrySimple;
 
 namespace brave {
 
+class UsagePermanentState {
+ public:
+  explicit UsagePermanentState(PrefService* local_state);
+  ~UsagePermanentState();
+
+  void AddInterval(base::TimeDelta delta);
+  base::TimeDelta GetTotalUsage() const;
+
+ private:
+  struct DailyUptime {
+    base::Time day;
+    base::TimeDelta uptime;
+  };
+  void LoadUptimes();
+  void SaveUptimes();
+  void RecordP3A();
+
+  std::list<DailyUptime> daily_uptimes_;
+  PrefService* local_state_ = nullptr;
+};
+
 class BraveUptimeTracker {
  public:
   explicit BraveUptimeTracker(PrefService* local_state);
+  ~BraveUptimeTracker();
+
+  static void CreateInstance(PrefService* local_state);
+
+  static void RegisterPrefs(PrefRegistrySimple* registry);
 
  private:
+  void RecordUsage();
+
   resource_coordinator::UsageClock usage_clock_;
+  base::RepeatingTimer timer_;
+  base::TimeDelta current_total_usage_;
+  UsagePermanentState state_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveUptimeTracker);
 };
 
