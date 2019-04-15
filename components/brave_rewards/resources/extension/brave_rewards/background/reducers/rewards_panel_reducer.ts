@@ -305,6 +305,23 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
       break
     }
+    case types.ON_PUBLISHER_STATUS_REFRESHED: {
+      const publisherKey = payload.publisherKey
+      if (publisherKey) {
+        let publishers: Record<string, RewardsExtension.Publisher> = state.publishers
+        for (const key in publishers) {
+          let publisher = publishers[key]
+          if (publisher.publisher_key === publisherKey) {
+            publisher.verified = payload.verified
+          }
+        }
+        state = {
+          ...state,
+          publishers
+        }
+      }
+      break
+    }
   }
   return state
 }

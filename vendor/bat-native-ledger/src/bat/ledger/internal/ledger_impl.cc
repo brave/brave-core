@@ -746,6 +746,24 @@ void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
                          direction_list);
 }
 
+void LedgerImpl::DownloadPublisherList(
+    ledger::LoadURLCallback callback) {
+  std::vector<std::string> headers;
+  headers.push_back("Accept-Encoding: gzip");
+
+  // download the list
+  std::string url = braveledger_bat_helper::buildURL(
+      GET_PUBLISHERS_LIST_V1,
+      std::string(), braveledger_bat_helper::SERVER_TYPES::PUBLISHER_DISTRO);
+  LoadURL(
+      url,
+      headers,
+      std::string(),
+      std::string(),
+      ledger::URL_METHOD::GET,
+      callback);
+}
+
 void LedgerImpl::OnTimer(uint32_t timer_id) {
   if (bat_confirmations_->OnTimer(timer_id))
     return;
@@ -753,20 +771,10 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
   if (timer_id == last_pub_load_timer_id_) {
     last_pub_load_timer_id_ = 0;
 
-    std::vector<std::string> headers;
-    headers.push_back("Accept-Encoding: gzip");
+    DownloadPublisherList(
+        std::bind(&LedgerImpl::LoadPublishersListCallback,
+          this, _1, _2, _3));
 
-    // download the list
-    std::string url = braveledger_bat_helper::buildURL(
-        GET_PUBLISHERS_LIST_V1,
-        "",
-        braveledger_bat_helper::SERVER_TYPES::PUBLISHER_DISTRO);
-    auto callback = std::bind(&LedgerImpl::LoadPublishersListCallback,
-                              this,
-                              _1,
-                              _2,
-                              _3);
-    LoadURL(url, headers, "", "", ledger::URL_METHOD::GET, callback);
   } else if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
     FetchGrants(std::string(), std::string());
@@ -1362,6 +1370,31 @@ void LedgerImpl::GetConfirmationsHistory(
     ledger::ConfirmationsHistoryCallback callback) {
   bat_confirmations_->GetTransactionHistory(from_timestamp_seconds,
       to_timestamp_seconds, callback);
+}
+
+void LedgerImpl::RefreshPublisher(
+    const std::string& publisher_key,
+    ledger::OnRefreshPublisherCallback callback) {
+  DownloadPublisherList(
+      std::bind(&LedgerImpl::OnRefreshPublisher,
+                this,
+                _1,
+                _2,
+                _3,
+                publisher_key,
+                callback));
+}
+
+void LedgerImpl::OnRefreshPublisher(
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    const std::string& publisher_key,
+    ledger::OnRefreshPublisherCallback callback) {
+  LoadPublishersListCallback(response_status_code, response, headers);
+  bat_publishers_->RefreshPublisherVerifiedStatus(
+      publisher_key,
+      callback);
 }
 
 scoped_refptr<base::SequencedTaskRunner> LedgerImpl::GetTaskRunner() {

@@ -194,6 +194,10 @@ class RewardsServiceImpl : public RewardsService,
   void GetAddressesForPaymentId(const GetAddressesCallback& callback) override;
   std::pair<uint64_t, uint64_t> GetEarningsRange();
 
+  void RefreshPublisher(
+      const std::string& publisher_key,
+      RefreshPublisherCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
 
@@ -448,6 +452,10 @@ class RewardsServiceImpl : public RewardsService,
                                  const std::string& json_props);
   void SetRewardsMainEnabledPref(bool enabled);
   void SetRewardsMainEnabledMigratedPref(bool enabled);
+  void OnRefreshPublisher(
+      RefreshPublisherCallback callback,
+      const std::string& publisher_key,
+      bool verified);
 
   bool Connected() const;
   void ConnectionClosed();

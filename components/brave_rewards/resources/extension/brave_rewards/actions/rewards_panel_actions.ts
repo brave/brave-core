@@ -114,3 +114,8 @@ export const onSettingSave = (key: string, value: any) => action(types.ON_SETTIN
   key,
   value
 })
+
+export const refreshPublisher = (verified: boolean, publisherKey: string) => action(types.ON_PUBLISHER_STATUS_REFRESHED, {
+  verified,
+  publisherKey
+})
