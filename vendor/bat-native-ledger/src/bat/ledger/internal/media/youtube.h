@@ -173,6 +173,15 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
   FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetBasicPath);
   FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetNameFromChannel);
   FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetPublisherName);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetMediaIdFromParts);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetMediaDurationFromParts);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetVideoUrl);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetChannelUrl);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetFavIconUrl);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetChannelId);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetChannelIdFromCustomPathPage);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, IsPredefinedPath);
+  FRIEND_TEST_ALL_PREFIXES(MediaYouTubeTest, GetPublisherKey);
 };
 
 }  // namespace braveledger_media
