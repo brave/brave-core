@@ -15,6 +15,7 @@ transpile_web_ui("brave_rewards_panel") {
     "background/api/tabs_api.ts",
     "background/events/rewardsEvents.ts",
     "background/events/tabEvents.ts",
+    "background/reducers/grant_panel_reducer.ts",
     "background/reducers/index.ts",
     "background/reducers/rewards_panel_reducer.ts",
     "background/storage.ts",
