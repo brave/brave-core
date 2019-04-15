@@ -167,6 +167,10 @@ export const BlockedInfoRowData = styled<BlockedInfoRowDataProps, 'div'>('div')`
       color: ${p => p.theme.color.brandBrave};
     }
   }
+
+  &:hover svg {
+    color: ${p => p.theme.color.brandBrave};
+  }
 `
 
 export const BlockedInfoRowDataForSelect = styled(BlockedInfoRowData)`

@@ -4,7 +4,7 @@
 
 import styled from '../../../theme'
 import { StyledComponentClass } from 'styled-components'
-import { CaratDownIcon, ShieldAlertIcon } from '../../../components/icons'
+import { CaratStrongDownIcon, ShieldAlertIcon } from '../../../components/icons'
 
 import { ComponentType } from 'react'
 import palette from '../../../theme/colors'
@@ -27,7 +27,7 @@ export const ShieldIcon = styled(ShieldAlertIcon as ComponentType)`
   color: ${palette.grey500};
 `
 
-export const ArrowDownIcon = styled(CaratDownIcon as ComponentType)`
+export const ArrowDownIcon = styled(CaratStrongDownIcon as ComponentType)`
   width: 24px;
   height: 24px;
   padding: 4px;
