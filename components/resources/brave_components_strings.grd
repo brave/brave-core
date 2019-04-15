@@ -283,6 +283,9 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_VALID" desc="Valid indicator">Valid</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_VIEWING_ID" desc="Viewing ID">Viewing ID:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_WALLET_PAYMENT_ID" desc="Wallet payment ID">Wallet Payment ID:</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_PERSONA_ID" desc="Wallet persona ID">Persona ID</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_USER_ID" desc="Wallet user ID">User ID</message>
+      <message name="IDS_BRAVE_REWARDS_INTERNALS_BOOT_STAMP" desc="Wallet start time">Wallet created</message>
 
       <!-- WebUI brave ui resources -->
       <message name="IDS_BRAVE_UI_ABOUT" desc="">about</message>

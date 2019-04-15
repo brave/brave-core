@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <random>
 #include <algorithm>
+#include <utility>
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/logging.h"
@@ -2666,7 +2667,7 @@ std::string toLowerCase(std::string word) {
 uint8_t niceware_mnemonic_to_bytes(
     const std::string& w,
     std::vector<uint8_t>* bytes_out,
-    size_t *written,
+    size_t* written,
     std::vector<std::string> wordDictionary) {
   std::vector<std::string> wordList = braveledger_bat_helper::split(
       toLowerCase(w),
@@ -3092,6 +3093,15 @@ void saveToJson(JsonWriter* writer, const ledger::RewardsInternalsInfo& info) {
   for (const auto& reconcile : info.current_reconciles)
     saveToJson(writer, reconcile.second);
   writer->EndArray();
+
+  writer->String("persona_id");
+  writer->String(info.persona_id.c_str());
+
+  writer->String("user_id");
+  writer->String(info.user_id.c_str());
+
+  writer->String("boot_stamp");
+  writer->Uint64(info.boot_stamp);
 
   writer->EndObject();
 }

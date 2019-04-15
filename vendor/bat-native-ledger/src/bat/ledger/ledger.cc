@@ -705,6 +705,10 @@ bool RewardsInternalsInfo::loadFromJson(const std::string& json) {
       current_reconciles.insert(
           std::make_pair(reconcile_info.viewingId_, reconcile_info));
     }
+
+    persona_id = d["persona_id"].GetString();
+    user_id = d["user_id"].GetString();
+    boot_stamp = d["boot_stamp"].GetUint64();
   }
 
   return !error;
