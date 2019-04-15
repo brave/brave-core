@@ -11,6 +11,6 @@
 
 namespace braveledger_media {
 
-// TODO add tests
+// TODO(nejczdovc): add tests
 
 }  // namespace braveledger_media

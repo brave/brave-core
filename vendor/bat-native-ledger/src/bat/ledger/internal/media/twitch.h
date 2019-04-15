@@ -7,6 +7,7 @@
 #define BRAVELEDGER_MEDIA_TWITCH_H_
 
 #include <map>
+#include <memory>
 #include <string>
 
 #include "bat/ledger/ledger.h"

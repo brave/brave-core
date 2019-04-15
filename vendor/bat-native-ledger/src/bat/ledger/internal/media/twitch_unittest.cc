@@ -14,6 +14,6 @@ namespace braveledger_media {
 class MediaTwitchTest : public testing::Test {
 };
 
-// TODO add tests
+// TODO(nejczdovc): add tests
 
 }  // namespace braveledger_media

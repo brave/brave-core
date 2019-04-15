@@ -7,6 +7,7 @@
 #define BRAVELEDGER_MEDIA_YOUTUBE_H_
 
 #include <map>
+#include <memory>
 #include <string>
 
 #include "base/gtest_prod_util.h"

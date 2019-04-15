@@ -4,8 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <cmath>
+#include <utility>
 #include <vector>
-#include <bat/ledger/ledger_callback_handler.h>
 
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
@@ -203,7 +203,6 @@ std::string MediaYouTube::GetNameFromChannel(const std::string& data) {
 }
 
 // static
-// before getYoutubePublisherKeyFromUrl
 std::string MediaYouTube::GetPublisherKeyFromUrl(
     const std::string& path) {
   if (path.empty()) {
@@ -376,7 +375,6 @@ void MediaYouTube::ProcessActivityFromUrl(uint64_t window_id,
   OnMediaActivityError(visit_data, window_id);
 }
 
-// before getPublisherInfoDataCallback
 void MediaYouTube::OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,
@@ -617,7 +615,6 @@ void MediaYouTube::OnMediaPublisherActivity(
   }
 }
 
-// before fetchPublisherDataFromDB
 void MediaYouTube::GetPublisherPanleInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
@@ -641,8 +638,6 @@ void MediaYouTube::GetPublisherPanleInfo(
               _2));
 }
 
-// before onFetchPublisherFromDBResponse
-// TODO(nejczdovc): better name as we use it for custom page as well
 void MediaYouTube::OnPublisherPanleInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
@@ -665,7 +660,7 @@ void MediaYouTube::OnPublisherPanleInfo(
   }
 }
 
-// TODO(nejczdovc): better to understand if name can be better
+// TODO(nejczdovc): name can be better
 void MediaYouTube::GetChannelHeadlineVideo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
