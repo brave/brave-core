@@ -12,6 +12,24 @@
 namespace braveledger_bat_publishers {
 
 class BatPublishersTest : public testing::Test {
+ protected:
+  void CreatePublisherInfoList(
+      ledger::PublisherInfoList* list) {
+    double prev_score;
+    for (int ix = 0; ix < 50; ix++) {
+      ledger::PublisherInfo info("example" + std::to_string(ix) + ".com");
+      info.duration = 50;
+      if (ix == 0) {
+        info.score = 24;
+      } else {
+        info.score = prev_score / 2;
+      }
+      prev_score = info.score;
+      info.reconcile_stamp = 0;
+      info.visits = 5;
+      list->push_back(info);
+    }
+  }
 };
 
 TEST_F(BatPublishersTest, calcScoreConsts) {
@@ -94,6 +112,39 @@ TEST_F(BatPublishersTest, concaveScore) {
   EXPECT_NEAR(publishers->concaveScore(10000), 10.7089, 0.001f);
   EXPECT_NEAR(publishers->concaveScore(150000), 40.9918, 0.001f);
   EXPECT_NEAR(publishers->concaveScore(500000), 74.7025, 0.001f);
+}
+
+TEST_F(BatPublishersTest, synopsisNormalizerInternal) {
+  std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers =
+      std::make_unique<braveledger_bat_publishers::BatPublishers>(nullptr);
+  // create test PublisherInfo list
+  ledger::PublisherInfoList new_list;
+  ledger::PublisherInfoList list;
+  CreatePublisherInfoList(&list);
+  bat_publishers->synopsisNormalizerInternal(
+      &new_list, list, 0);
+
+  // simulate exclude and re-normalize
+  new_list.erase(new_list.begin() + 3);
+  ledger::PublisherInfoList new_list2;
+  bat_publishers->synopsisNormalizerInternal(
+      &new_list2, new_list, 0);
+  new_list2.erase(new_list2.begin() + 4);
+  ledger::PublisherInfoList new_list3;
+  bat_publishers->synopsisNormalizerInternal(
+      &new_list3, new_list2, 0);
+  new_list3.erase(new_list3.begin() + 5);
+  ledger::PublisherInfoList new_list4;
+  bat_publishers->synopsisNormalizerInternal(
+      &new_list4, new_list3, 0);
+  new_list4.erase(new_list4.begin() + 6);
+  ledger::PublisherInfoList new_list5;
+  bat_publishers->synopsisNormalizerInternal(
+      &new_list5, new_list4, 0);
+  for (auto element : new_list5) {
+    ASSERT_GE((int32_t)element.percent, 0);
+    ASSERT_LE((int32_t)element.percent, 100);
+  }
 }
 
 }  // namespace braveledger_bat_publishers
