@@ -149,7 +149,7 @@ class FavoritesViewController: UIViewController, Themeable {
     }
     
     private func updateDuckDuckGoButtonLayout() {
-        let size = ddgButton.systemLayoutSizeFitting(UILayoutFittingExpandedSize)
+        let size = ddgButton.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize)
         ddgButton.frame = CGRect(
             x: ceil((collection.bounds.width - size.width) / 2.0),
             y: collection.contentSize.height + UI.searchEngineCalloutPadding,
@@ -225,7 +225,7 @@ class FavoritesViewController: UIViewController, Themeable {
     
     func updateDuckDuckGoVisibility() {
         let isVisible = shouldShowDuckDuckGoCallout()
-        let heightOfCallout = ddgButton.systemLayoutSizeFitting(UILayoutFittingExpandedSize).height + (UI.searchEngineCalloutPadding * 2.0)
+        let heightOfCallout = ddgButton.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize).height + (UI.searchEngineCalloutPadding * 2.0)
         collection.contentInset.bottom = isVisible ? heightOfCallout : 0
         ddgButton.isHidden = !isVisible
     }

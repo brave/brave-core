@@ -142,7 +142,7 @@ class HomeMenuController: UIViewController {
     
     bookmarksNavController.view.isHidden = false
     
-    view.bringSubview(toFront: topButtonsView)
+    view.bringSubviewToFront(topButtonsView)
     
     setupConstraints()
     updateBookmarkStatus()
