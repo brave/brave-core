@@ -45,7 +45,7 @@ class ShareExtensionHelper: NSObject {
         // We would also hide View Later, if possible, but the exclusion list doesn't currently support
         // third-party activity types (rdar://19430419).
         activityViewController.excludedActivityTypes = [
-            UIActivityType.addToReadingList,
+            UIActivity.ActivityType.addToReadingList,
         ]
 
         activityViewController.completionWithItemsHandler = { activityType, completed, returnedItems, activityError in
@@ -70,13 +70,13 @@ extension ShareExtensionHelper: UIActivityItemSource {
         return selectedURL
     }
     
-    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivityType?) -> Any? {
+    func activityViewController(_ activityViewController: UIActivityViewController, itemForActivityType activityType: UIActivity.ActivityType?) -> Any? {
         // Return the URL for the selected tab. If we are in reader view then decode
         // it so that we copy the original and not the internal localhost one.
         return selectedURL.isReaderModeURL ? selectedURL.decodeReaderModeURL : selectedURL
     }
 
-    func activityViewController(_ activityViewController: UIActivityViewController, dataTypeIdentifierForActivityType activityType: UIActivityType?) -> String {
+    func activityViewController(_ activityViewController: UIActivityViewController, dataTypeIdentifierForActivityType activityType: UIActivity.ActivityType?) -> String {
         return kUTTypeURL as String
     }
 }

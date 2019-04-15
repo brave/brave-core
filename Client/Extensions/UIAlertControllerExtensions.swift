@@ -245,7 +245,7 @@ class UserTextInputAlert {
         }
         okAction = okAlertAction
         
-        let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: UIAlertActionStyle.cancel) { (alertA: UIAlertAction!) in
+        let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel) { (alertA: UIAlertAction!) in
             actionSelected(input: nil, input2: nil)
         }
         

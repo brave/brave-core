@@ -333,8 +333,8 @@ class TabTrayController: UIViewController, Themeable {
 
         emptyPrivateTabsView.isHidden = !privateTabsAreEmpty()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActiveNotification), name: .UIApplicationWillResignActive, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveNotification), name: .UIApplicationDidBecomeActive, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appWillResignActiveNotification), name: UIApplication.willResignActiveNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActiveNotification), name: UIApplication.didBecomeActiveNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .DynamicFontChanged, object: nil)
         
         applyTheme(privateMode ? .private : .regular)
@@ -716,7 +716,7 @@ extension TabTrayController: SwipeAnimatorDelegate {
 
         let tab = tabManager.tabsForCurrentMode[indexPath.item]
         tabManager.removeTab(tab)
-        UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, Strings.TabTrayClosingTabAccessibilityNotificationText)
+        UIAccessibility.post(notification: .announcement, argument: Strings.TabTrayClosingTabAccessibilityNotificationText)
     }
 }
 

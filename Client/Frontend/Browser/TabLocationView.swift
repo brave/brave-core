@@ -76,7 +76,7 @@ class TabLocationView: UIView {
         lockImageView.isHidden = !contentIsSecure
 
         if wasHidden != lockImageView.isHidden {
-            UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil)
+            UIAccessibility.post(notification: .layoutChanged, argument: nil)
         }
     }
 
@@ -95,11 +95,11 @@ class TabLocationView: UIView {
                 readerModeButton.isHidden = (newReaderModeState == ReaderModeState.unavailable)
                 separatorLine.isHidden = readerModeButton.isHidden
                 if wasHidden != readerModeButton.isHidden {
-                    UIAccessibilityPostNotification(UIAccessibilityLayoutChangedNotification, nil)
+                    UIAccessibility.post(notification: .layoutChanged, argument: nil)
                     if !readerModeButton.isHidden {
                         // Delay the Reader Mode accessibility announcement briefly to prevent interruptions.
                         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(2)) {
-                            UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, Strings.ReaderModeAvailableVoiceOverAnnouncement)
+                            UIAccessibility.post(notification: .announcement, argument: Strings.ReaderModeAvailableVoiceOverAnnouncement)
                         }
                     }
                 }
@@ -111,7 +111,7 @@ class TabLocationView: UIView {
     }
 
     lazy var placeholder: NSAttributedString = {
-        return NSAttributedString(string: Strings.TabToolbarSearchAddressPlaceholderText, attributes: [NSAttributedStringKey.foregroundColor: UIColor.Photon.Grey40])
+        return NSAttributedString(string: Strings.TabToolbarSearchAddressPlaceholderText, attributes: [NSAttributedString.Key.foregroundColor: UIColor.Photon.Grey40])
     }()
 
     lazy var urlTextField: UITextField = {

@@ -8,12 +8,12 @@ import Deferred
 
 private let log = Logger.browserLogger
 
-public extension FileManager {
+extension FileManager {
     public enum Folder: String {
         case cookie = "/Cookies"
         case webSiteData = "/WebKit/WebsiteData"
     }
-    typealias FolderLockObj = (folder: Folder, lock: Bool)
+    public typealias FolderLockObj = (folder: Folder, lock: Bool)
     
     static var documentDirectoryURL: URL? {
         return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
