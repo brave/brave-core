@@ -5,13 +5,10 @@
 import Foundation
 import BraveShared
 
-enum TabBarVisibility: Int {
+enum TabBarVisibility: Int, CaseIterable {
     case never
     case always
     case landscapeOnly
-    
-    // TODO: Remove when we can use Swift 4.2/`CaseIterable`
-    static let allCases: [TabBarVisibility] = [.never, .always, .landscapeOnly]
 }
 
 // MARK: - Other Preferences

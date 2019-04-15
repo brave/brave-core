@@ -85,7 +85,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
     }
 
     @objc func openSettings() {
-        UIApplication.shared.open(URL(string: UIApplicationOpenSettingsURLString)!)
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
     }
     
     func startCapture() {
@@ -123,7 +123,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
         layer.addSublayer(videoPreviewLayer!)
         
         captureSession.startRunning()
-        bringSubview(toFront: cameraOverlayView)
+        bringSubviewToFront(cameraOverlayView)
 
         AVCaptureDevice.requestAccess(for: AVMediaType.video, completionHandler: { (granted: Bool) -> Void in
             DispatchQueue.main.async {
@@ -132,7 +132,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
                     self.openSettingsButton.isHidden = true
                 } else {
                     self.openSettingsButton.isHidden = false
-                    self.bringSubview(toFront: self.openSettingsButton)
+                    self.bringSubviewToFront(self.openSettingsButton)
                 }
             }
         })

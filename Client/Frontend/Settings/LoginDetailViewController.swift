@@ -65,7 +65,7 @@ class LoginDetailViewController: UIViewController {
         self.profile = profile
         super.init(nibName: nil, bundle: nil)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(dismissAlertController), name: .UIApplicationDidEnterBackground, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(dismissAlertController), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -191,7 +191,7 @@ extension LoginDetailViewController: UITableViewDataSource {
             deleteCell.textLabel?.text = Strings.DeleteLoginButtonTitle
             deleteCell.textLabel?.textAlignment = .center
             deleteCell.textLabel?.textColor = UIConstants.DestructiveRed
-            deleteCell.accessibilityTraits = UIAccessibilityTraitButton
+            deleteCell.accessibilityTraits = UIAccessibilityTraits.button
             return deleteCell
         }
     }

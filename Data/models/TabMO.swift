@@ -94,7 +94,7 @@ public final class TabMO: NSManagedObject, CRUD {
             guard let tabToUpdate = getInternal(fromId: tabData.id, context: context) else { return }
             
             if let screenshot = tabData.screenshot {
-                tabToUpdate.screenshot = UIImageJPEGRepresentation(screenshot, 1)
+                tabToUpdate.screenshot = screenshot.jpegData(compressionQuality: 1)
             }
             tabToUpdate.url = tabData.url
             tabToUpdate.order = tabData.order

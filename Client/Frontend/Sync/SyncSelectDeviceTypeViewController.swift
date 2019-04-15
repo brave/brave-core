@@ -121,7 +121,7 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
                                                                    chooseDeviceLabel,
                                                                    UIView.spacer(.horizontal, amount: 24)])
         
-        chooseDeviceStackView.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
+        chooseDeviceStackView.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
         
         let devicesStackView = UIStackView()
         devicesStackView.axis = .vertical
@@ -148,7 +148,7 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
 
         // This should be general, and abstracted
     
-        let spinner = UIActivityIndicatorView(activityIndicatorStyle: .whiteLarge)
+        let spinner = UIActivityIndicatorView(style: .whiteLarge)
         spinner.startAnimating()
         loadingView.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
         loadingView.isHidden = true
