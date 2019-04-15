@@ -5,14 +5,14 @@
 
 #include "brave/browser/brave_rewards/tip_dialog.h"
 
-#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
-#include "base/values.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/values.h"
 #include "brave/common/webui_url_constants.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -37,7 +37,7 @@ constexpr int kDialogMaxHeight = 700;
 class TipDialogDelegate : public ui::WebDialogDelegate {
  public:
   explicit TipDialogDelegate(WebContents* initiator,
-                                          std::string publisher_key);
+      std::unique_ptr<base::DictionaryValue> params);
   ~TipDialogDelegate() override;
 
   ui::ModalType GetDialogModalType() const override;
@@ -53,15 +53,14 @@ class TipDialogDelegate : public ui::WebDialogDelegate {
 
  private:
   WebContents* initiator_;
-  const std::string publisher_key_;
+  std::unique_ptr<base::DictionaryValue> params_;
 
   DISALLOW_COPY_AND_ASSIGN(TipDialogDelegate);
 };
 
 TipDialogDelegate::TipDialogDelegate(WebContents* initiator,
-                                                    std::string publisher_key)
-    : initiator_(initiator),
-      publisher_key_(publisher_key) {
+    std::unique_ptr<base::DictionaryValue> params)
+  : initiator_(initiator), params_(std::move(params)) {
 }
 
 TipDialogDelegate::~TipDialogDelegate() {
@@ -111,11 +110,9 @@ void TipDialogDelegate::GetDialogSize(gfx::Size* size) const {
 }
 
 std::string TipDialogDelegate::GetDialogArgs() const {
-  std::string data;
-  base::DictionaryValue dialog_args;
-  dialog_args.SetString("publisherKey", publisher_key_);
-  base::JSONWriter::Write(dialog_args, &data);
-  return data;
+  std::string json;
+  base::JSONWriter::Write(*params_, &json);
+  return json;
 }
 
 void TipDialogDelegate::OnDialogClosed(
@@ -136,7 +133,7 @@ bool TipDialogDelegate::ShouldShowDialogTitle() const {
 namespace brave_rewards {
 
 void OpenTipDialog(WebContents* initiator,
-                   const std::string& publisher_key) {
+                   std::unique_ptr<base::DictionaryValue> params) {
   content::WebContents* outermost_web_contents =
     guest_view::GuestViewBase::GetTopLevelWebContents(initiator);
   gfx::Size host_size = outermost_web_contents->GetContainerBounds().size();
@@ -147,7 +144,7 @@ void OpenTipDialog(WebContents* initiator,
   // resize)
   ShowConstrainedWebDialogWithAutoResize(
       initiator->GetBrowserContext(),
-      std::make_unique<TipDialogDelegate>(initiator, publisher_key),
+      std::make_unique<TipDialogDelegate>(initiator, std::move(params)),
       initiator, min_size, max_size);
 }
 

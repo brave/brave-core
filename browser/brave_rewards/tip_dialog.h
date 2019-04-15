@@ -15,7 +15,7 @@ class WebContents;
 namespace brave_rewards {
 
 void OpenTipDialog(content::WebContents* initiator,
-                   const std::string& publisher_key);
+                   std::unique_ptr<base::DictionaryValue> params);
 
 }
 
