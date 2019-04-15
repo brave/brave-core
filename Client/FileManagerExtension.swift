@@ -15,9 +15,13 @@ public extension FileManager {
     }
     typealias FolderLockObj = (folder: Folder, lock: Bool)
     
+    static var documentDirectoryURL: URL? {
+        return FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first
+    }
+    
     //Lock a folder using FolderLockObj provided.
     @discardableResult public func setFolderAccess(_ lockObjects: [FolderLockObj]) -> Bool {
-        let baseDir = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0]
+        guard let baseDir = baseDirectory() else { return false }
         for lockObj in lockObjects {
             do {
                 try self.setAttributes([.posixPermissions: (lockObj.lock ? 0 : 0o755)], ofItemAtPath: baseDir + lockObj.folder.rawValue)
@@ -31,7 +35,7 @@ public extension FileManager {
     
     // Check the locked status of a folder. Returns true for locked.
     public func checkLockedStatus(folder: Folder) -> Bool {
-        let baseDir = NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true)[0]
+        guard let baseDir = baseDirectory() else { return false }
         do {
             if let lockValue = try self.attributesOfItem(atPath: baseDir + folder.rawValue)[.posixPermissions] as? NSNumber {
                 return lockValue == 0o755
@@ -60,7 +64,7 @@ public extension FileManager {
     /// Creates a folder at documents directory and returns its URL.
     /// If folder already exists, returns its URL as well.
     func getOrCreateFolder(name: String, excludeFromBackups: Bool = true) -> URL? {
-        guard let documentsDir = urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+        guard let documentsDir = FileManager.documentDirectoryURL else { return nil }
         
         var folderDir = documentsDir.appendingPathComponent(name)
         
@@ -80,5 +84,9 @@ public extension FileManager {
             log.error("Failed to create folder, error: \(error)")
             return nil
         }
+    }
+    
+    private func baseDirectory() -> String? {
+         return NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first
     }
 }
