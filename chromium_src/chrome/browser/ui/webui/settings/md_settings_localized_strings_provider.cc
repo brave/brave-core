@@ -12,6 +12,7 @@ void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 #include "../../../../../../chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc"  // NOLINT
 
 #include "brave/browser/ui/webui/brave_md_settings_ui.h"
+#include "brave/grit/brave_generated_resources.h"
 
 namespace settings {
 
@@ -41,6 +42,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK},
     {"siteSettingsAutoplayAskRecommended",
       IDS_SETTINGS_SITE_SETTINGS_AUTOPLAY_ASK_RECOMMENDED},
+    {"braveGetStartedTitle",
+      IDS_SETTINGS_BRAVE_GET_STARTED_TITLE},
+    {"braveAdditionalSettingsTitle",
+      IDS_SETTINGS_BRAVE_ADDITIONAL_SETTINGS},
     {"appearanceSettingsBraveTheme",
       IDS_SETTINGS_APPEARANCE_SETTINGS_BRAVE_THEMES},
     {"appearanceSettingsLocationBarIsWide",
@@ -49,8 +54,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_LABEL},
     {"appearanceSettingsHideBraveRewardsButtonDesc",
        IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_DESC},
-    {"braveShieldsDefaults",
+    {"braveShieldsTitle",
+      IDS_SETTINGS_BRAVE_SHIELDS_TITLE},
+    {"braveShieldsDefaultsSectionTitle",
       IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_TITLE},
+    {"braveShieldsDefaultsSectionDescription",
+      IDS_SETTINGS_BRAVE_SHIELDS_DEFAULTS_DESCRIPTION},
     {"socialBlocking",
       IDS_SETTINGS_SOCIAL_BLOCKING_DEFAULTS_TITLE},
     {"adControlLabel",
