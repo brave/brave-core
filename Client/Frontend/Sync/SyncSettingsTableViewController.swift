@@ -223,8 +223,8 @@ class SyncSettingsTableViewController: UITableViewController {
     private func configureButtonCell(_ cell: UITableViewCell, buttonIndex: Int) {
         func attributedString(for text: String, color: UIColor) -> NSAttributedString {
             return NSAttributedString(string: text, attributes:
-                [NSAttributedStringKey.foregroundColor: color,
-                 NSAttributedStringKey.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)])
+                [NSAttributedString.Key.foregroundColor: color,
+                 NSAttributedString.Key.font: UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)])
         }
         
         let decoratedText = attributedString(for: Strings.SyncAddAnotherDevice, color: BraveUX.BraveOrange)

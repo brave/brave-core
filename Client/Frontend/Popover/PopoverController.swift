@@ -113,8 +113,8 @@ class PopoverController: UIViewController {
             make.edges.equalTo(self.view)
         }
         
-        addChildViewController(contentController)
-        contentController.didMove(toParentViewController: self)
+        addChild(contentController)
+        contentController.didMove(toParent: self)
         containerView.contentView.addSubview(contentController.view)
         
         contentController.view.snp.makeConstraints { make in

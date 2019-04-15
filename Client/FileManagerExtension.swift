@@ -8,12 +8,12 @@ import Deferred
 
 private let log = Logger.browserLogger
 
-public extension FileManager {
+extension FileManager {
     public enum Folder: String {
         case cookie = "/Cookies"
         case webSiteData = "/WebKit/WebsiteData"
     }
-    typealias FolderLockObj = (folder: Folder, lock: Bool)
+    public typealias FolderLockObj = (folder: Folder, lock: Bool)
     
     //Lock a folder using FolderLockObj provided.
     @discardableResult public func setFolderAccess(_ lockObjects: [FolderLockObj]) -> Bool {

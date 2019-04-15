@@ -43,7 +43,7 @@ class TabsBarViewController: UIViewController {
         view.delegate = self
         view.dataSource = self
         view.allowsSelection = true
-        view.decelerationRate = UIScrollViewDecelerationRateNormal
+        view.decelerationRate = UIScrollView.DecelerationRate.normal
         view.register(TabBarCell.self, forCellWithReuseIdentifier: "TabCell")
         return view
     }()
@@ -76,7 +76,7 @@ class TabsBarViewController: UIViewController {
         longPressGesture.minimumPressDuration = 0.2
         collectionView.addGestureRecognizer(longPressGesture)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(orientationChanged), name: UIDevice.orientationDidChangeNotification, object: nil)
         
         if UIDevice.current.userInterfaceIdiom == .pad {
             view.addSubview(plusButton)

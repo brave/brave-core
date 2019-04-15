@@ -146,11 +146,11 @@ class ErrorPageHelper {
             self.redirecting.remove(at: index)
 
             guard let query = request?.query, 
-                  let code = query["code"] as? String,
+                  let code = query["code"],
                   let errCode = Int(code),
-                  let errDescription = query["description"] as? String,
-                  let errURLString = query["url"] as? String,
-                  var errDomain = query["domain"] as? String else {
+                  let errDescription = query["description"],
+                  let errURLString = query["url"],
+                  var errDomain = query["domain"] else {
                 return GCDWebServerResponse(statusCode: 404)
             }
 
@@ -174,7 +174,7 @@ class ErrorPageHelper {
                 }
                 errDomain = ""
             } else if CertErrors.contains(errCode) {
-                guard let query = request?.query, let certError = query["certerror"] as? String,
+                guard let query = request?.query, let certError = query["certerror"],
                     let errURLDomain = URL(string: errURLString)?.host else {
                     return GCDWebServerResponse(statusCode: 404)
                 }

@@ -233,7 +233,7 @@ open class BrowserProfile: Profile {
     }
 
     deinit {
-        log.debug("Deiniting profile \(self.localName).")
+        log.debug("Deiniting profile \(self.localName()).")
     }
 
     func localName() -> String {

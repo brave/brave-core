@@ -11,8 +11,8 @@ struct TwoLineCellUX {
     static let BadgeSize: CGFloat = 16
     static let BadgeMargin: CGFloat = 16
     static let BorderFrameSize: CGFloat = 32
-    static let TextColor = UIAccessibilityDarkerSystemColorsEnabled() ? UIColor.black : UIColor.Photon.Grey80
-    static let DetailTextColor = UIAccessibilityDarkerSystemColorsEnabled() ? UIColor.Photon.Grey60 : UIColor.Photon.Grey50
+    static let TextColor = UIAccessibility.isDarkerSystemColorsEnabled ? UIColor.black : UIColor.Photon.Grey80
+    static let DetailTextColor = UIAccessibility.isDarkerSystemColorsEnabled ? UIColor.Photon.Grey60 : UIColor.Photon.Grey50
     static let DetailTextTopMargin: CGFloat = 0
 }
 
@@ -31,7 +31,7 @@ class TwoLineTableViewCell: UITableViewCell {
         return _detailTextLabel
     }
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
 
         contentView.addSubview(_textLabel)
@@ -98,7 +98,7 @@ class TwoLineTableViewCell: UITableViewCell {
 class SiteTableViewCell: TwoLineTableViewCell {
     let borderView = UIView()
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         twoLineHelper.setUpViews(contentView, textLabel: textLabel!, detailTextLabel: detailTextLabel!, imageView: imageView!)
     }

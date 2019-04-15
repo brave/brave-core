@@ -5,7 +5,7 @@
 import Foundation
 import JavaScriptCore
 
-public extension JSValue {
+extension JSValue {
     /// Calls javascript function and listens for errors.
     /// Errors caught in context are returned with its message,
     /// rest of errors are returned as `unknown` type of error.

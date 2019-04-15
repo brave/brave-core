@@ -418,7 +418,7 @@ class SettingsViewController: TableViewController {
 
 fileprivate class MultilineButtonCell: ButtonCell {
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         textLabel?.numberOfLines = 0
     }
@@ -430,7 +430,7 @@ fileprivate class MultilineButtonCell: ButtonCell {
 
 fileprivate class MultilineValue1Cell: Value1Cell {
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         textLabel?.numberOfLines = 0
     }
@@ -442,7 +442,7 @@ fileprivate class MultilineValue1Cell: Value1Cell {
 
 fileprivate class MultilineSubtitleCell: SubtitleCell {
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         textLabel?.numberOfLines = 0
     }
