@@ -44,6 +44,12 @@ void ExtensionRewardsServiceObserver::OnWalletInitialized(
         extensions::api::brave_rewards::OnWalletCreated::kEventName,
         std::move(args)));
       event_router->BroadcastEvent(std::move(event));
+    } else if (result == ledger::Result::CORRUPTED_WALLET) {
+      std::unique_ptr<extensions::Event> event(new extensions::Event(
+        extensions::events::BRAVE_START,
+        extensions::api::brave_rewards::OnWalletCorrupted::kEventName,
+        std::move(args)));
+      event_router->BroadcastEvent(std::move(event));
     } else if (result != ledger::Result::LEDGER_OK) {
       std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_WALLET_FAILED,
@@ -60,6 +66,14 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
   auto* event_router =
       extensions::EventRouter::Get(profile_);
+  if (error_code == 17) {  // ledger::Result::CORRUPT_WALLET
+    std::unique_ptr<base::ListValue> args(new base::ListValue());
+    std::unique_ptr<extensions::Event> event(new extensions::Event(
+        extensions::events::BRAVE_START,
+        extensions::api::brave_rewards::OnWalletCorrupted::kEventName,
+        std::move(args)));
+    event_router->BroadcastEvent(std::move(event));
+  }
   if (event_router && wallet_properties) {
     extensions::api::brave_rewards::OnWalletProperties::Properties properties;
 

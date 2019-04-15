@@ -56,6 +56,9 @@ declare namespace chrome.braveRewards {
   const onWalletFailed: {
     addListener: (callback: () => void) => void
   }
+  const onWalletCorrupted: {
+    addListener: (callback: () => void) => void
+  }
   const getACEnabled: (callback: (enabled: boolean) => void) => {}
   const onPublisherListNormalized: {
     addListener: (callback: (properties: RewardsExtension.PublisherNormalized[]) => void) => void

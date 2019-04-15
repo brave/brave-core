@@ -9,6 +9,7 @@ declare namespace RewardsExtension {
     report: Report
     grants?: GrantInfo[]
     pendingContributionTotal: number
+    walletCorrupted: boolean
     walletCreated: boolean
     walletCreating: boolean
     walletCreateFailed: boolean

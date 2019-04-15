@@ -193,13 +193,14 @@ export class RewardsPanel extends React.Component<Props, State> {
       walletCreateFailed,
       walletCreated,
       walletCreating,
-      walletProperties
+      walletProperties,
+      walletCorrupted
     } = this.props.rewardsPanelData
 
     const { balance, grants, rates } = walletProperties
     const converted = utils.convertBalance(balance.toString(), rates)
 
-    if (!walletCreated) {
+    if (!walletCreated || walletCorrupted) {
       return (
         <PanelWelcome
           error={walletCreateFailed}
