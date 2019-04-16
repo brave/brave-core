@@ -934,9 +934,6 @@ void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
   writer->String("adFree");
   writer->StartObject();
 
-  writer->String("currency");
-  writer->String("");
-
   writer->String("fee");
   writer->StartObject();
   writer->String("BAT");
@@ -961,7 +958,7 @@ void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
   writer->String("BAT");
 
   writer->StartArray();
-  for (auto & range : data.parameters_range_) {
+  for (const auto & range : data.parameters_range_) {
     writer->Double(range);
   }
   writer->EndArray();
