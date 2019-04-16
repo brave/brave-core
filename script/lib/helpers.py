@@ -92,6 +92,33 @@ def get_release(repo, tag, allow_published_release_updates=False):
 
     return release
 
+    GITHUB_URL = 'https://api.github.com'
+
+    next_request = ""
+    headers = {'Accept': 'application/vnd.github+json'}
+    release_url = GITHUB_URL + "/repos/" + BRAVE_REPO + "/releases" + '?access_token=' + \
+        get_env_var('GITHUB_TOKEN') + '&page=1&per_page=100'
+    r = call_github_api(release_url, headers=headers)
+    next_request = ""
+    # The GitHub API returns paginated results of 100 items maximum per
+    # response. We will loop until there is no next link header returned
+    # in the response header. This is documented here:
+    # https://developer.github.com/v3/#pagination
+    while next_request is not None:
+        for item in r.json():
+            # print("DEBUG: release: {}".format(item['name']))
+            if include_drafts:
+                if item['tag_name'] == tag_name:
+                    return [item]
+            else:
+                if item['tag_name'] == tag_name and not item['draft']:
+                    return [item]
+        if r.links.get("next"):
+            next_request = r.links["next"]["url"]
+            r = call_github_api(next_request, headers=headers)
+        else:
+            next_request = None
+    return []
 
 def release_channel():
     channel = os.environ['CHANNEL']
