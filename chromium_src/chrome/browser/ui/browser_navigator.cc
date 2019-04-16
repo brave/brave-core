@@ -5,15 +5,20 @@
 
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/common/webui_url_constants.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/common/webui_url_constants.h"
 #include "url/gurl.h"
 
 namespace {
-bool IsHostAllowedInIncognitoBraveImpl(std::string* scheme,
-                                       const base::StringPiece& host) {
-  if (*scheme == "brave")
-    *scheme = content::kChromeUIScheme;
+void AdjustNavigateParamsForURLBraveImpl(NavigateParams* params) {
+  if (params->url.SchemeIs(content::kBraveUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(content::kChromeUIScheme);
+    params->url = params->url.ReplaceComponents(replacements);
+  }
+}
 
+bool IsHostAllowedInIncognitoBraveImpl(const base::StringPiece& host) {
   if (host == kRewardsHost ||
       host == kBraveUISyncHost ||
       host == chrome::kChromeUISyncInternalsHost) {
@@ -22,8 +27,8 @@ bool IsHostAllowedInIncognitoBraveImpl(std::string* scheme,
 
   return true;
 }
-}
+}  // namespace
 
 #define ChromeNavigationUIData BraveNavigationUIData
-#include "../../../../chrome/browser/ui/browser_navigator.cc"
+#include "../../../../chrome/browser/ui/browser_navigator.cc"  // NOLINT
 #undef ChromeNavigationUIData
