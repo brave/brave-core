@@ -788,10 +788,61 @@ void ConfirmationsImpl::RemoveConfirmationFromQueue(
   SaveState();
 }
 
-void ConfirmationsImpl::GetTransactionHistory(
+uint64_t ConfirmationsImpl::GetEstimatedEarningsStartTimestampInSeconds() {
+  auto now = base::Time::Now();
+  base::Time::Exploded exploded;
+  now.LocalExplode(&exploded);
+
+  if (exploded.day_of_month < 5) {
+    exploded.month--;
+    if (exploded.month < 1) {
+      exploded.month = 12;
+
+      exploded.year--;
+    }
+  }
+
+  exploded.day_of_month = 1;
+
+  exploded.hour = 0;
+  exploded.minute = 0;
+  exploded.second = 0;
+  exploded.millisecond = 0;
+
+  base::Time from_timestamp;
+  auto success = base::Time::FromLocalExploded(exploded, &from_timestamp);
+  DCHECK(success);
+
+  return (from_timestamp - base::Time()).InSeconds();
+}
+
+void ConfirmationsImpl::GetTransactionHistoryForThisCycle(
+    OnGetTransactionHistoryForThisCycle callback) {
+  auto transactions_info = std::make_unique<TransactionsInfo>();
+
+  auto from_timestamp_in_seconds =
+      GetEstimatedEarningsStartTimestampInSeconds();
+
+  auto to_timestamp_in_seconds = Time::NowInSeconds();
+
+  auto transactions = GetTransactionHistory(from_timestamp_in_seconds,
+      to_timestamp_in_seconds);
+
+  auto unredeemed_transactions_for_previous_cycles =
+      GetUnredeemedTransactionsForPreviousCycles(from_timestamp_in_seconds);
+
+  transactions.insert(transactions.end(),
+      unredeemed_transactions_for_previous_cycles.begin(),
+      unredeemed_transactions_for_previous_cycles.end());
+
+  transactions_info->transactions = transactions;
+
+  callback(std::move(transactions_info));
+}
+
+std::vector<TransactionInfo> ConfirmationsImpl::GetTransactionHistory(
     const uint64_t from_timestamp_in_seconds,
-    const uint64_t to_timestamp_in_seconds,
-    OnGetTransactionHistoryCallback callback) {
+    const uint64_t to_timestamp_in_seconds) {
   std::vector<TransactionInfo> transactions(transaction_history_.size());
 
   auto it = std::copy_if(transaction_history_.begin(),
@@ -803,10 +854,34 @@ void ConfirmationsImpl::GetTransactionHistory(
 
   transactions.resize(std::distance(transactions.begin(), it));
 
-  auto transactions_info = std::make_unique<TransactionsInfo>();
-  transactions_info->transactions = transactions;
+  return transactions;
+}
 
-  callback(std::move(transactions_info));
+std::vector<TransactionInfo>
+ConfirmationsImpl::GetUnredeemedTransactionsForPreviousCycles(
+    const uint64_t before_timestamp_in_seconds) {
+  auto unredeemed_transactions_count = unblinded_payment_tokens_->Count();
+  if (unredeemed_transactions_count == 0) {
+    // There are no outstanding unblinded payment tokens to redeem
+    return {};
+  }
+
+  // Unredeemed transactions are always at the end of the history
+  std::vector<TransactionInfo> transactions(transaction_history_.end()
+      - unredeemed_transactions_count, transaction_history_.end());
+
+  // Filter transactions which occurred for previous cycles
+  std::vector<TransactionInfo> transactions_for_previous_cycles;
+
+  for (const auto& transaction : transactions) {
+    if (transaction.timestamp_in_seconds >= before_timestamp_in_seconds) {
+      continue;
+    }
+
+    transactions_for_previous_cycles.push_back(transaction);
+  }
+
+  return transactions_for_previous_cycles;
 }
 
 double ConfirmationsImpl::GetEstimatedRedemptionValue(
