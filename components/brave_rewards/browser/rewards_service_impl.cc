@@ -85,6 +85,9 @@
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
 #endif
 
+using bat_ledger::mojom::DataStoreCommandResponse;
+using bat_ledger::mojom::DataStoreCommandResponsePtr;
+using bat_ledger::mojom::DataStoreTransactionPtr;
 using net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES;
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -253,14 +256,14 @@ ledger::PublisherInfoList GetActivityListOnFileTaskRunner(
   return list;
 }
 
-bat_ledger::mojom::DataStoreCommandResponsePtr RunDataStoreCommandOnFileTaskRunner(
-    bat_ledger::mojom::DataStoreCommandPtr command,
+DataStoreCommandResponsePtr RunDataStoreTransactionOnFileTaskRunner(
+    DataStoreTransactionPtr transaction,
     SqliteDatastoreDriver* backend) {
-    auto response = bat_ledger::mojom::DataStoreCommandResponse::New();
+    auto response = DataStoreCommandResponse::New();
   if (!backend) {
-    response->status = ledger::Result::LEDGER_ERROR;
+    response->status = DataStoreCommandResponse::Status::ERROR;
   } else {
-    backend->RunDataStoreCommand(command.get(), response.get());
+    backend->RunDataStoreTransaction(transaction.get(), response.get());
   }
   return response;
 }
@@ -1687,20 +1690,20 @@ void RewardsServiceImpl::OnLoadedState(
     callback(ledger::Result::LEDGER_OK, value);
 }
 
-void RewardsServiceImpl::RunDataStoreCommand(
-    bat_ledger::mojom::DataStoreCommandPtr command,
-    ledger::RunDataStoreCommandCallback callback) {
+void RewardsServiceImpl::RunDataStoreTransaction(
+    DataStoreTransactionPtr transaction,
+    ledger::RunDataStoreTransactionCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::BindOnce(&RunDataStoreCommandOnFileTaskRunner,
-          base::Passed(std::move(command)), sqlite_datastore_driver_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnDataStoreCommand,
+      base::BindOnce(&RunDataStoreTransactionOnFileTaskRunner,
+          base::Passed(std::move(transaction)), sqlite_datastore_driver_.get()),
+      base::BindOnce(&RewardsServiceImpl::OnDataStoreTransaction,
                      AsWeakPtr(),
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnDataStoreCommand(
-    ledger::RunDataStoreCommandCallback callback,
-    bat_ledger::mojom::DataStoreCommandResponsePtr response) {
+void RewardsServiceImpl::OnDataStoreTransaction(
+    ledger::RunDataStoreTransactionCallback callback,
+    DataStoreCommandResponsePtr response) {
   callback(response.get());
 }
 
@@ -2214,44 +2217,18 @@ void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount,
   bat_ledger_->DoDirectDonation(publisher.ToJson(), amount, "BAT");
 }
 
-bool SaveContributionInfoOnFileTaskRunner(
-    const brave_rewards::ContributionInfo info,
-  PublisherInfoDatabase* backend) {
-  if (backend && backend->InsertContributionInfo(info))
-    return true;
-
-  return false;
-}
-
 void RewardsServiceImpl::OnContributionInfoSaved(
-    const ledger::REWARDS_CATEGORY category,
-    bool success) {
+    ledger::Result result,
+    const std::string& probi,
+    const int month,
+    const int year,
+    const uint32_t date,
+    const std::string& publisher_key,
+    const ledger::REWARDS_CATEGORY category) {
   for (auto& observer : observers_) {
-    observer.OnContributionSaved(this, success, category);
+    observer.OnContributionSaved(
+        this, result == ledger::Result::LEDGER_OK, category);
   }
-}
-
-void RewardsServiceImpl::SaveContributionInfo(const std::string& probi,
-  const int month,
-  const int year,
-  const uint32_t date,
-  const std::string& publisher_key,
-  const ledger::REWARDS_CATEGORY category) {
-  brave_rewards::ContributionInfo info;
-  info.probi = probi;
-  info.month = month;
-  info.year = year;
-  info.date = date;
-  info.publisher_key = publisher_key;
-  info.category = category;
-
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&SaveContributionInfoOnFileTaskRunner,
-                    info,
-                    publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnContributionInfoSaved,
-                     AsWeakPtr(),
-                     category));
 }
 
 bool SaveRecurringTipOnFileTaskRunner(
@@ -2284,18 +2261,6 @@ void RewardsServiceImpl::SaveRecurringTip(
                      AsWeakPtr()));
 }
 
-ledger::PublisherInfoList GetRecurringTipsOnFileTaskRunner(
-    PublisherInfoDatabase* backend) {
-  ledger::PublisherInfoList list;
-  if (!backend) {
-    return list;
-  }
-
-  backend->GetRecurringTips(&list);
-
-  return list;
-}
-
 void RewardsServiceImpl::OnGetRecurringTipsUI(
     GetRecurringTipsCallback callback,
     const std::vector<std::string>& json_list) {
@@ -2321,26 +2286,6 @@ void RewardsServiceImpl::GetRecurringTipsUI(
                      std::move(callback)));
 }
 
-void RewardsServiceImpl::OnGetRecurringTips(
-    const ledger::PublisherInfoListCallback callback,
-    const ledger::PublisherInfoList list) {
-  if (!Connected()) {
-    return;
-  }
-
-  callback(list, 0);
-}
-
-void RewardsServiceImpl::GetRecurringTips(
-    ledger::PublisherInfoListCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&GetRecurringTipsOnFileTaskRunner,
-                 publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnGetRecurringTips,
-                 AsWeakPtr(),
-                 callback));
-}
-
 void RewardsServiceImpl::OnGetOneTimeTipsUI(
     GetRecurringTipsCallback callback,
     const std::vector<std::string>& json_list) {
@@ -2359,43 +2304,13 @@ void RewardsServiceImpl::OnGetOneTimeTipsUI(
 }
 
 void RewardsServiceImpl::GetOneTimeTipsUI(GetOneTimeTipsCallback callback) {
+  auto now = base::Time::Now();
   bat_ledger_->GetOneTimeTips(
+      GetPublisherMonth(now),
+      GetPublisherYear(now),
       base::BindOnce(&RewardsServiceImpl::OnGetOneTimeTipsUI,
                      AsWeakPtr(),
                      std::move(callback)));
-}
-
-ledger::PublisherInfoList GetOneTimeTipsOnFileTaskRunner(
-    PublisherInfoDatabase* backend) {
-  ledger::PublisherInfoList list;
-  if (!backend) {
-    return list;
-  }
-
-  auto now = base::Time::Now();
-  backend->GetOneTimeTips(&list, GetPublisherMonth(now), GetPublisherYear(now));
-
-  return list;
-}
-
-void RewardsServiceImpl::GetOneTimeTips(
-    ledger::PublisherInfoListCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&GetOneTimeTipsOnFileTaskRunner,
-                 publisher_info_backend_.get()),
-      base::Bind(&RewardsServiceImpl::OnGetOneTimeTips,
-                 AsWeakPtr(),
-                 callback));
-}
-
-void RewardsServiceImpl::OnGetOneTimeTips(
-    ledger::PublisherInfoListCallback callback,
-    const ledger::PublisherInfoList list) {
-  if (!Connected()) {
-    return;
-  }
-
-  callback(list, 0);
 }
 
 void RewardsServiceImpl::RemoveRecurringTip(const std::string& publisher_key) {

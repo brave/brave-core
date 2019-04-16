@@ -90,8 +90,8 @@ void OnResetState(const ledger::OnSaveCallback& callback,
   callback(ToLedgerResult(result));
 }
 
-void OnRunDataStoreCommand(
-    const ledger::RunDataStoreCommandCallback& callback,
+void OnRunDataStoreTransaction(
+    const ledger::RunDataStoreTransactionCallback& callback,
     bat_ledger::mojom::DataStoreCommandResponsePtr response) {
   callback(response.get());
 }
@@ -479,56 +479,6 @@ void BatLedgerClientMojoProxy::FetchFavIcon(const std::string& url,
       base::BindOnce(&OnFetchFavIcon, std::move(callback)));
 }
 
-void OnGetRecurringTips(const ledger::PublisherInfoListCallback& callback,
-                        const std::vector<std::string>& publisher_info_list,
-                        uint32_t next_record) {
-  ledger::PublisherInfoList list;
-
-  for (const auto& publisher_info : publisher_info_list) {
-    ledger::PublisherInfo info;
-    info.loadFromJson(publisher_info);
-    list.push_back(info);
-  }
-
-  callback(list, next_record);
-}
-
-void BatLedgerClientMojoProxy::GetRecurringTips(
-    ledger::PublisherInfoListCallback callback) {
-  if (!Connected()) {
-    callback(std::vector<ledger::PublisherInfo>(), 0);
-    return;
-  }
-
-  bat_ledger_client_->GetRecurringTips(
-      base::BindOnce(&OnGetRecurringTips, std::move(callback)));
-}
-
-void OnGetOneTimeTips(const ledger::PublisherInfoListCallback& callback,
-                      const std::vector<std::string>& publisher_info_list,
-                      uint32_t next_record) {
-  ledger::PublisherInfoList list;
-
-  for (const auto& publisher_info : publisher_info_list) {
-    ledger::PublisherInfo info;
-    info.loadFromJson(publisher_info);
-    list.push_back(info);
-  }
-
-  callback(list, next_record);
-}
-
-void BatLedgerClientMojoProxy::GetOneTimeTips(
-    ledger::PublisherInfoListCallback callback) {
-  if (!Connected()) {
-    callback(std::vector<ledger::PublisherInfo>(), 0);
-    return;
-  }
-
-  bat_ledger_client_->GetOneTimeTips(
-      base::BindOnce(&OnGetOneTimeTips, std::move(callback)));
-}
-
 void OnLoadNicewareList(const ledger::GetNicewareListCallback& callback,
     int32_t result, const std::string& data) {
   callback(ToLedgerResult(result), data);
@@ -562,7 +512,9 @@ void BatLedgerClientMojoProxy::OnRemoveRecurring(
       base::BindOnce(&OnRecurringRemoved, std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,
+void BatLedgerClientMojoProxy::OnContributionInfoSaved(
+    ledger::Result result,
+    const std::string& probi,
     const int month,
     const int year,
     const uint32_t date,
@@ -571,8 +523,14 @@ void BatLedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,
   if (!Connected())
     return;
 
-  bat_ledger_client_->SaveContributionInfo(probi, month, year, date,
-      publisher_key, ToMojomPublisherCategory(category));
+  bat_ledger_client_->OnContributionInfoSaved(
+      ToMojomResult(result),
+      probi,
+      month,
+      year,
+      date,
+      publisher_key,
+      ToMojomPublisherCategory(category));
 }
 
 void BatLedgerClientMojoProxy::SaveMediaPublisherInfo(
@@ -757,12 +715,12 @@ void BatLedgerClientMojoProxy::ResetState(
       name, base::BindOnce(&OnResetState, std::move(callback)));
 }
 
-void BatLedgerClientMojoProxy::RunDataStoreCommand(
-    mojom::DataStoreCommandPtr command,
-    ledger::RunDataStoreCommandCallback callback) {
-  bat_ledger_client_->RunDataStoreCommand(
-      std::move(command),
-      base::BindOnce(&OnRunDataStoreCommand, std::move(callback)));
+void BatLedgerClientMojoProxy::RunDataStoreTransaction(
+    mojom::DataStoreTransactionPtr transaction,
+    ledger::RunDataStoreTransactionCallback callback) {
+  bat_ledger_client_->RunDataStoreTransaction(
+      std::move(transaction),
+      base::BindOnce(&OnRunDataStoreTransaction, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {

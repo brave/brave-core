@@ -58,9 +58,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   void FetchFavIcon(const std::string& url, const std::string& favicon_key,
       FetchFavIconCallback callback) override;
-  void GetRecurringTips(GetRecurringTipsCallback callback) override;
-
-  void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
 
   void LoadNicewareList(LoadNicewareListCallback callback) override;
   void OnRemoveRecurring(const std::string& publisher_key,
@@ -72,9 +69,13 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       uint64_t window_id) override;
   void OnExcludedSitesChanged(const std::string& publisher_id,
                               int exclude) override;
-  void SaveContributionInfo(const std::string& probi, int32_t month,
-      int32_t year, uint32_t date, const std::string& publisher_key,
-      int32_t category) override;
+  void OnContributionInfoSaved(int32_t result,
+                               const std::string& probi,
+                               int32_t month,
+                               int32_t year,
+                               uint32_t date,
+                               const std::string& publisher_key,
+                               int32_t category) override;
   void SaveMediaPublisherInfo(const std::string& media_key,
       const std::string& publisher_id) override;
   void FetchGrants(const std::string& lang,
@@ -120,8 +121,9 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::string& name,
       ResetStateCallback callback) override;
 
-  void RunDataStoreCommand(mojom::DataStoreCommandPtr command,
-                           RunDataStoreCommandCallback callback) override;
+  void RunDataStoreTransaction(
+      mojom::DataStoreTransactionPtr transaction,
+      RunDataStoreTransactionCallback callback) override;
 
   void SetConfirmationsIsReady(const bool is_ready) override;
 
@@ -184,11 +186,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       bool success,
       const std::string& favicon_url);
 
-  static void OnGetRecurringTips(
-      CallbackHolder<GetRecurringTipsCallback>* holder,
-      const ledger::PublisherInfoList& publisher_info_list,
-      uint32_t next_record);
-
   static void OnLoadNicewareList(
       CallbackHolder<LoadNicewareListCallback>* holder,
       int32_t result, const std::string& data);
@@ -234,18 +231,13 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       CallbackHolder<ResetStateCallback>* holder,
       ledger::Result result);
 
-  static void OnRunDataStoreCommand(
-      CallbackHolder<RunDataStoreCommandCallback>* holder,
+  static void OnRunDataStoreTransaction(
+      CallbackHolder<RunDataStoreTransactionCallback>* holder,
       mojom::DataStoreCommandResponse* response);
 
   static void OnGetExcludedPublishersNumberDB(
       CallbackHolder<GetExcludedPublishersNumberDBCallback>* holder,
       uint32_t number);
-
-  static void OnGetOneTimeTips(
-      CallbackHolder<GetOneTimeTipsCallback>* holder,
-      const ledger::PublisherInfoList& publisher_info_list,
-      uint32_t next_record);
 
   ledger::LedgerClient* ledger_client_;
 

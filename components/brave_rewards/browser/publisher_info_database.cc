@@ -133,74 +133,6 @@ bool PublisherInfoDatabase::CreateContributionInfoIndex() {
       "ON contribution_info (publisher_id)");
 }
 
-bool PublisherInfoDatabase::InsertContributionInfo(
-    const brave_rewards::ContributionInfo& info) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
-    return false;
-  }
-
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT INTO contribution_info "
-      "(publisher_id, probi, date, "
-      "category, month, year) "
-      "VALUES (?, ?, ?, ?, ?, ?)"));
-
-  statement.BindString(0, info.publisher_key);
-  statement.BindString(1, info.probi);
-  statement.BindInt64(2, info.date);
-  statement.BindInt(3, info.category);
-  statement.BindInt(4, info.month);
-  statement.BindInt(5, info.year);
-
-  return statement.Run();
-}
-
-void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
-                                           ledger::ACTIVITY_MONTH month,
-                                           int year) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
-    return;
-  }
-
-  sql::Statement info_sql(db_.GetUniqueStatement(
-      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "ci.probi, ci.date, pi.verified, pi.provider "
-      "FROM contribution_info as ci "
-      "INNER JOIN publisher_info AS pi ON ci.publisher_id = pi.publisher_id "
-      "AND ci.month = ? AND ci.year = ? "
-      "AND ci.category = ?"));
-
-  info_sql.BindInt(0, month);
-  info_sql.BindInt(1, year);
-  info_sql.BindInt(2, ledger::REWARDS_CATEGORY::ONE_TIME_TIP);
-
-  while (info_sql.Step()) {
-    std::string id(info_sql.ColumnString(0));
-
-    ledger::PublisherInfo publisher(id);
-
-    publisher.name = info_sql.ColumnString(1);
-    publisher.url = info_sql.ColumnString(2);
-    publisher.favicon_url = info_sql.ColumnString(3);
-    publisher.weight = info_sql.ColumnDouble(4);
-    publisher.reconcile_stamp = info_sql.ColumnInt64(5);
-    publisher.verified = info_sql.ColumnBool(6);
-    publisher.provider = info_sql.ColumnString(7);
-
-    list->push_back(publisher);
-  }
-}
-
 /**
  *
  * PUBLISHER INFO
@@ -815,39 +747,6 @@ bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
   statement.BindInt64(2, info.added_date);
 
   return statement.Run();
-}
-
-void PublisherInfoDatabase::GetRecurringTips(
-    ledger::PublisherInfoList* list) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  bool initialized = Init();
-  DCHECK(initialized);
-
-  if (!initialized) {
-    return;
-  }
-
-  sql::Statement info_sql(db_.GetUniqueStatement(
-      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-      "rd.amount, rd.added_date, pi.verified, pi.provider "
-      "FROM recurring_donation as rd "
-      "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "));
-
-  while (info_sql.Step()) {
-    std::string id(info_sql.ColumnString(0));
-
-    ledger::PublisherInfo publisher(id);
-    publisher.name = info_sql.ColumnString(1);
-    publisher.url = info_sql.ColumnString(2);
-    publisher.favicon_url = info_sql.ColumnString(3);
-    publisher.weight = info_sql.ColumnDouble(4);
-    publisher.reconcile_stamp = info_sql.ColumnInt64(5);
-    publisher.verified = info_sql.ColumnBool(6);
-    publisher.provider = info_sql.ColumnString(7);
-
-    list->push_back(publisher);
-  }
 }
 
 bool PublisherInfoDatabase::RemoveRecurringTip(

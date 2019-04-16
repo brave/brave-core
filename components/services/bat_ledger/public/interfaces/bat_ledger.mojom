@@ -107,7 +107,7 @@ interface BatLedger {
   GetRewardsInternalsInfo() => (string info);
 
   GetRecurringTips() => (array<string> list);
-  GetOneTimeTips() => (array<string> list);
+  GetOneTimeTips(int32 month, int32 year) => (array<string> list);
 
   GetActivityInfoList(uint32 start, uint32 limit, string json_filter) =>
       (array<string> list, uint32 number);
@@ -146,10 +146,6 @@ interface BatLedgerClient {
   OnPanelPublisherInfo(int32 result, string info, uint64 window_id);
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
-  GetRecurringTips() => (array<string> publisher_info_list,
-      uint32 next_record);
-  GetOneTimeTips() => (array<string> publisher_info_list,
-      uint32 next_record);
 
   LoadNicewareList() => (int32 result, string data);
   OnRemoveRecurring(string publisher_key) => (int32 result);
@@ -162,8 +158,13 @@ interface BatLedgerClient {
   SetTimer(uint64 time_offset) => (uint32 timer_id);
   KillTimer(uint32 timer_id);
   OnExcludedSitesChanged(string publisher_id, int32 exclude);
-  SaveContributionInfo(string probi, int32 month, int32 year, uint32 date,
-      string publisher_key, int32 category);
+  OnContributionInfoSaved(int32 result,
+                          string probi,
+                          int32 month,
+                          int32 year,
+                          uint32 date,
+                          string publisher_key,
+                          int32 category);
   SaveMediaPublisherInfo(string media_key, string publisher_id);
   FetchGrants(string lang, string payment_id);
   GetGrantCaptcha(string promotion_id, string promotion_type);
@@ -188,7 +189,7 @@ interface BatLedgerClient {
   SaveState(string name, string value) => (int32 result);
   LoadState(string name) => (int32 result, string value);
   ResetState(string name) => (int32 result);
-  RunDataStoreCommand(DataStoreCommand command) =>
+  RunDataStoreTransaction(DataStoreTransaction transaction) =>
       (DataStoreCommandResponse response);
   SetConfirmationsIsReady(bool is_ready);
   ConfirmationsTransactionHistoryDidChange();

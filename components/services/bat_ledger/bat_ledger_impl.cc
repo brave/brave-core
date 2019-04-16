@@ -468,12 +468,16 @@ void BatLedgerImpl::OnGetOneTimeTips(
   delete holder;
 }
 
-void BatLedgerImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
+void BatLedgerImpl::GetOneTimeTips(int32_t month,
+                                   int32_t year,
+                                   GetOneTimeTipsCallback callback) {
   auto* holder = new CallbackHolder<GetOneTimeTipsCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_->GetOneTimeTips(std::bind(
-      BatLedgerImpl::OnGetOneTimeTips, holder, _1, _2));
+  ledger_->GetOneTimeTips(
+      static_cast<ledger::ACTIVITY_MONTH>(month),
+      year,
+      std::bind(BatLedgerImpl::OnGetOneTimeTips, holder, _1, _2));
 }
 
 // static

@@ -13,35 +13,76 @@
 #include "sql/statement.h"
 #include "sql/transaction.h"
 
+using bat_ledger::mojom::DataStoreCommand;
+using bat_ledger::mojom::DataStoreCommandBinding;
+using bat_ledger::mojom::DataStoreCommandResponse;
+using bat_ledger::mojom::DataStoreRecord;
+using bat_ledger::mojom::DataStoreRecordBinding;
+using bat_ledger::mojom::DataStoreRecordBindingPtr;
+using bat_ledger::mojom::DataStoreRecordPtr;
+using bat_ledger::mojom::DataStoreTransaction;
+using bat_ledger::mojom::DataStoreValue;
+
 namespace brave_rewards {
 
 namespace {
 
 void HandleBinding(sql::Statement* statement,
-                   const bat_ledger::mojom::DataStoreBinding& binding) {
+                   const DataStoreCommandBinding& binding) {
   switch (binding.value->which()) {
-    case bat_ledger::mojom::DataStoreValue::Tag::STRING_VALUE:
+    case DataStoreValue::Tag::STRING_VALUE:
       statement->BindString(binding.index, binding.value->get_string_value());
       return;
-    case bat_ledger::mojom::DataStoreValue::Tag::INT_VALUE:
+    case DataStoreValue::Tag::INT_VALUE:
       statement->BindInt(binding.index, binding.value->get_int_value());
       return;
-    case bat_ledger::mojom::DataStoreValue::Tag::INT64_VALUE:
+    case DataStoreValue::Tag::INT64_VALUE:
       statement->BindInt64(binding.index, binding.value->get_int64_value());
       return;
-    case bat_ledger::mojom::DataStoreValue::Tag::DOUBLE_VALUE:
+    case DataStoreValue::Tag::DOUBLE_VALUE:
       statement->BindDouble(binding.index, binding.value->get_double_value());
+      return;
+    case DataStoreValue::Tag::BOOL_VALUE:
+      statement->BindBool(binding.index, binding.value->get_bool_value());
       return;
     default:
       NOTREACHED();
   }
 }
 
-bat_ledger::mojom::DataStoreRecordPtr HandleResult(sql::Statement* statement) {
-  auto result = bat_ledger::mojom::DataStoreRecord::New();
-  // TODO(bridiver) - iterate through the bindings to populate the result
-  // result.SetString(1, statement.ColumnString(1)), etc..
-  return result;
+DataStoreRecordPtr CreateRecord(
+    sql::Statement* statement,
+    const std::vector<DataStoreRecordBindingPtr>& bindings) {
+  auto record = DataStoreRecord::New();
+
+  int column = 0;
+
+  for (auto const& binding : bindings) {
+    auto value = DataStoreValue::New();
+    switch (binding->type) {
+      case DataStoreRecordBinding::Type::STRING_TYPE:
+        value->set_string_value(statement->ColumnString(column));
+        break;
+      case DataStoreRecordBinding::Type::INT_TYPE:
+        value->set_int_value(statement->ColumnInt(column));
+        break;
+      case DataStoreRecordBinding::Type::INT64_TYPE:
+        value->set_int64_value(statement->ColumnInt64(column));
+        break;
+      case DataStoreRecordBinding::Type::DOUBLE_TYPE:
+        value->set_double_value(statement->ColumnDouble(column));
+        break;
+      case DataStoreRecordBinding::Type::BOOL_TYPE:
+        value->set_bool_value(statement->ColumnBool(column));
+        break;
+      default:
+        NOTREACHED();
+    }
+    record->fields.push_back(std::move(value));
+    column++;
+  }
+
+  return record;
 }
 
 }  // namespace
@@ -54,91 +95,129 @@ SqliteDatastoreDriver::SqliteDatastoreDriver(const base::FilePath& db_path) :
 
 SqliteDatastoreDriver::~SqliteDatastoreDriver() {}
 
-bool SqliteDatastoreDriver::Inititalize() {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  if (initialized_)
-    return true;
-
-  if (!db_.Open(db_path_))
-    return false;
-
-  initialized_ = true;
-  memory_pressure_listener_.reset(new base::MemoryPressureListener(
-      base::Bind(&SqliteDatastoreDriver::OnMemoryPressure,
-      base::Unretained(this))));
-
-  return initialized_;
-}
-
-void SqliteDatastoreDriver::RunDataStoreCommand(
-    bat_ledger::mojom::DataStoreCommand* command,
-    bat_ledger::mojom::DataStoreCommandResponse* response) {
-
-  switch (command->type) {
-    case bat_ledger::mojom::DataStoreCommand::Type::INITIALIZE:
-      if (Inititalize())
-        response->status = ledger::Result::LEDGER_OK;
-      else
-        response->status = ledger::Result::LEDGER_ERROR;
-      return;
-    case bat_ledger::mojom::DataStoreCommand::Type::CREATE:
-      Execute(command, response);
-      return;
-    case bat_ledger::mojom::DataStoreCommand::Type::READ:
-      Query(command, response);
-      return;
-    case bat_ledger::mojom::DataStoreCommand::Type::UPDATE:
-      Execute(command, response);
-      return;
-    case bat_ledger::mojom::DataStoreCommand::Type::DELETE:
-      Execute(command, response);
-      return;
-    default:
-      NOTREACHED();
-  }
-}
-
-void SqliteDatastoreDriver::Execute(
-    bat_ledger::mojom::DataStoreCommand* command,
-    bat_ledger::mojom::DataStoreCommandResponse* response) {
+void SqliteDatastoreDriver::RunDataStoreTransaction(
+    DataStoreTransaction* transaction,
+    DataStoreCommandResponse* response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!initialized_) {
-    response->status = ledger::Result::LEDGER_ERROR;
+    response->status = DataStoreCommandResponse::Status::INITIALIZATION_ERROR;
     return;
   }
 
+  sql::Transaction committer(&db_);
+  if (!committer.Begin()) {
+    response->status = DataStoreCommandResponse::Status::TRANSACTION_ERROR;
+    return;
+  }
+
+  for (auto const& command : transaction->commands) {
+    DataStoreCommandResponse::Status status;
+
+    switch (command->type) {
+      case DataStoreCommand::Type::INITIALIZE:
+        status = Inititalize(command.get(), response);
+        break;
+      case DataStoreCommand::Type::CREATE:
+        status = Execute(command.get());
+        break;
+      case DataStoreCommand::Type::READ:
+        status = Query(command.get(), response);
+        break;
+      case DataStoreCommand::Type::UPDATE:
+        status = Execute(command.get());
+        break;
+      case DataStoreCommand::Type::DELETE:
+        status = Execute(command.get());
+        break;
+      case DataStoreCommand::Type::MIGRATE:
+        status = Migrate(command.get());
+        break;
+      default:
+        NOTREACHED();
+    }
+
+    if (status != DataStoreCommandResponse::Status::OK) {
+      committer.Rollback();
+      response->status = status;
+      return;
+    }
+  }
+
+  if (!committer.Commit()) {
+    response->status = DataStoreCommandResponse::Status::TRANSACTION_ERROR;
+  }
+}
+
+DataStoreCommandResponse::Status SqliteDatastoreDriver::Inititalize(
+    DataStoreCommand* command,
+    DataStoreCommandResponse* response) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!initialized_) {
+    if (!db_.Open(db_path_))
+      return DataStoreCommandResponse::Status::INITIALIZATION_ERROR;
+
+    if (!meta_table_.Init(
+        &db_,
+        command->version,
+        command->compatible_version))
+      return DataStoreCommandResponse::Status::INITIALIZATION_ERROR;
+
+    initialized_ = true;
+    memory_pressure_listener_.reset(new base::MemoryPressureListener(
+        base::Bind(&SqliteDatastoreDriver::OnMemoryPressure,
+        base::Unretained(this))));
+  }
+
+  auto value = DataStoreValue::New();
+  value->set_int_value(meta_table_.GetVersionNumber());
+  response->result->set_value(std::move(value));
+
+  return DataStoreCommandResponse::Status::OK;
+}
+
+DataStoreCommandResponse::Status SqliteDatastoreDriver::Execute(
+    DataStoreCommand* command) {
   sql::Statement statement(db_.GetCachedStatement(SQL_FROM_HERE,
-      command->payload.c_str()));
+      command->command.c_str()));
 
   for (auto const& binding : command->bindings)
     HandleBinding(&statement, *binding.get());
 
   if (statement.Run())
-    response->status = ledger::Result::LEDGER_OK;
+    return DataStoreCommandResponse::Status::COMMAND_ERROR;
+
+  return DataStoreCommandResponse::Status::OK;
 }
 
-void SqliteDatastoreDriver::Query(
-    bat_ledger::mojom::DataStoreCommand* command,
-    bat_ledger::mojom::DataStoreCommandResponse* response) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  if (!initialized_) {
-    response->status = ledger::Result::LEDGER_ERROR;
-    return;
-  }
-
-  sql::Statement statement(db_.GetUniqueStatement(command->payload.c_str()));
+DataStoreCommandResponse::Status SqliteDatastoreDriver::Query(
+    DataStoreCommand* command,
+    DataStoreCommandResponse* response) {
+  sql::Statement statement(
+      db_.GetCachedStatement(SQL_FROM_HERE, command->command.c_str()));
 
   for (auto const& binding : command->bindings)
     HandleBinding(&statement, *binding.get());
 
-  while (statement.Step()) {
-    response->results.push_back(HandleResult(&statement));
+  response->result->set_records(std::vector<DataStoreRecordPtr>());
+  while (statement.Step())
+    response->result->get_records().push_back(
+        CreateRecord(&statement, command->record_bindings));
+
+  return DataStoreCommandResponse::Status::OK;
+}
+
+DataStoreCommandResponse::Status SqliteDatastoreDriver::Migrate(
+    DataStoreCommand* command) {
+  auto status = Execute(command);
+
+  if (status == DataStoreCommandResponse::Status::OK) {
+    meta_table_.SetVersionNumber(command->version);
+    meta_table_.SetCompatibleVersionNumber(command->compatible_version);
   }
 
-  response->status = ledger::Result::LEDGER_OK;
+  return status;
 }
 
 void SqliteDatastoreDriver::OnMemoryPressure(

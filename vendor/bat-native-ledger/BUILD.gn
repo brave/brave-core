@@ -68,6 +68,7 @@ source_set("headers") {
   sources = [
     "include/bat/ledger/auto_contribute_props.h",
     "include/bat/ledger/balance_report_info.h",
+    "include/bat/ledger/data_store_adapter.h",
     "include/bat/ledger/export.h",
     "include/bat/ledger/grant.h",
     "include/bat/ledger/ledger.h",
@@ -109,6 +110,9 @@ source_set("ledger") {
     "src/bat/ledger/internal/bignum.h",
     "src/bat/ledger/internal/ledger_impl.cc",
     "src/bat/ledger/internal/ledger_impl.h",
+    "src/bat/ledger/internal/sql_data_store_adapter.cc",
+    "src/bat/ledger/internal/sql_data_store_adapter.h",
+    "src/bat/ledger/data_store_adapter.cc",
     "src/bat/ledger/ledger.cc",
     "src/bat/ledger/transaction_info.cc",
     "src/bat/ledger/transactions_info.cc",

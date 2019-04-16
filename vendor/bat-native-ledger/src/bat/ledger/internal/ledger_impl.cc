@@ -31,10 +31,9 @@ using namespace braveledger_bat_get_media; //  NOLINT
 using namespace braveledger_bat_get_media; //  NOLINT
 using namespace braveledger_bat_state; //  NOLINT
 using namespace braveledger_bat_contribution; //  NOLINT
-using std::placeholders::_1;
-using std::placeholders::_2;
-using std::placeholders::_3;
-using std::placeholders::_4;
+using namespace std::placeholders;  // NOLINT
+using ledger::DataStoreAdapter;
+
 
 namespace bat_ledger {
 
@@ -51,7 +50,10 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     last_tab_active_time_(0),
     last_shown_tab_id_(-1),
     last_pub_load_timer_id_(0u),
-    last_grant_check_timer_id_(0u) {
+    last_grant_check_timer_id_(0u),
+    // TODO(bridiver) - make this configurable
+    data_store_adapter_(
+        DataStoreAdapter::CreateInstance(DataStoreAdapter::SQL)) {
   // Ensure TaskScheduler is initialized before creating the task runner for
   // ios.
   if (!base::TaskScheduler::GetInstance()) {
@@ -76,6 +78,7 @@ LedgerImpl::~LedgerImpl() {
 void LedgerImpl::Initialize() {
   DCHECK(!initializing_);
   initializing_ = true;
+  data_store_adapter_->Initialize(ledger_client_);
   LoadLedgerState(this);
 }
 
@@ -854,7 +857,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
 
 void LedgerImpl::GetRecurringTips(
     ledger::PublisherInfoListCallback callback) {
-  ledger_client_->GetRecurringTips(
+  data_store_adapter_->GetRecurringTips(
       std::bind(&LedgerImpl::ModifyPublisherListVerified,
                 this,
                 _1,
@@ -863,8 +866,10 @@ void LedgerImpl::GetRecurringTips(
 }
 
 void LedgerImpl::GetOneTimeTips(
+    ledger::ACTIVITY_MONTH month,
+    int year,
     ledger::PublisherInfoListCallback callback) {
-  ledger_client_->GetOneTimeTips(
+  data_store_adapter_->GetOneTimeTips(month, year,
       std::bind(&LedgerImpl::ModifyPublisherListVerified,
                 this,
                 _1,
@@ -1337,12 +1342,27 @@ void LedgerImpl::SaveContributionInfo(
     const uint32_t date,
     const std::string& publisher_key,
     const ledger::REWARDS_CATEGORY category) {
-  ledger_client_->SaveContributionInfo(probi,
-                                       month,
-                                       year,
-                                       date,
-                                       publisher_key,
-                                       category);
+  data_store_adapter_->SaveContributionInfo(
+      probi,
+      month,
+      year,
+      date,
+      publisher_key,
+      category,
+      std::bind(&LedgerImpl::OnSaveContributionInfo,
+          this, _1, probi, month, year, date, publisher_key, category));
+}
+
+void LedgerImpl::OnSaveContributionInfo(
+    ledger::Result result,
+    const std::string& probi,
+    const int month,
+    const int year,
+    const uint32_t date,
+    const std::string& publisher_key,
+    const ledger::REWARDS_CATEGORY category) {
+  ledger_client_->OnContributionInfoSaved(
+      result, probi, month, year, date, publisher_key, category);
 }
 
 void LedgerImpl::NormalizeContributeWinners(

@@ -78,14 +78,14 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void FetchFavIcon(const std::string& url,
                     const std::string& favicon_key,
                     ledger::FetchIconCallback callback) override;
-  void SaveContributionInfo(const std::string& probi,
-                            const int month,
-                            const int year,
-                            const uint32_t date,
-                            const std::string& publisher_key,
-                            const ledger::REWARDS_CATEGORY category) override;
-  void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
-  void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
+  void OnContributionInfoSaved(
+      ledger::Result result,
+      const std::string& probi,
+      const int month,
+      const int year,
+      const uint32_t date,
+      const std::string& publisher_key,
+      const ledger::REWARDS_CATEGORY category) override;
   std::unique_ptr<ledger::LogStream> Log(const char* file,
                                          int line,
                                          ledger::LogLevel level) const override;
@@ -132,9 +132,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
                  ledger::OnLoadCallback callback) override;
   void ResetState(const std::string& name,
                   ledger::OnResetCallback callback) override;
-  void RunDataStoreCommand(
-      mojom::DataStoreCommandPtr command,
-      ledger::RunDataStoreCommandCallback callback) override;
+  void RunDataStoreTransaction(
+      mojom::DataStoreTransactionPtr transaction,
+      ledger::RunDataStoreTransactionCallback callback) override;
 
   void SetConfirmationsIsReady(const bool is_ready) override;
 

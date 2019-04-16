@@ -140,8 +140,9 @@ class BatLedgerImpl : public mojom::BatLedger,
       RefreshPublisherCallback callback) override;
 
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
-
-  void GetOneTimeTips(GetOneTimeTipsCallback callback) override;
+  void GetOneTimeTips(int32_t month,
+                      int32_t year,
+                      GetOneTimeTipsCallback callback) override;
 
   void GetActivityInfoList(
     uint32_t start,

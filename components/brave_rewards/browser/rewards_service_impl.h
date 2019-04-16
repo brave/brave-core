@@ -170,8 +170,6 @@ class RewardsServiceImpl : public RewardsService,
       GetRecurringTipsCallback callback,
       const std::vector<std::string>& json_list);
   void GetRecurringTipsUI(GetRecurringTipsCallback callback) override;
-  void GetOneTimeTips(
-      ledger::PublisherInfoListCallback callback) override;
   void SetContributionAutoInclude(
       const std::string& publisher_key,
       bool excluded) override;
@@ -264,8 +262,8 @@ class RewardsServiceImpl : public RewardsService,
                                   const std::string& value);
   void OnResetState(ledger::OnResetCallback callback,
                                  bool success);
-  void OnDataStoreCommand(
-      ledger::RunDataStoreCommandCallback callback,
+  void OnDataStoreTransaction(
+      ledger::RunDataStoreTransactionCallback callback,
       bat_ledger::mojom::DataStoreCommandResponsePtr response);
 
   void OnDonate_PublisherInfoSaved(ledger::Result result,
@@ -274,14 +272,7 @@ class RewardsServiceImpl : public RewardsService,
                 int amount,
                 bool recurring,
                 const ledger::PublisherInfo* publisher_info = NULL) override;
-  void OnContributionInfoSaved(const ledger::REWARDS_CATEGORY category,
-                               bool success);
   void OnRecurringTipSaved(bool success);
-  void OnGetRecurringTips(
-      const ledger::PublisherInfoListCallback callback,
-      const ledger::PublisherInfoList list);
-  void OnGetOneTimeTips(ledger::PublisherInfoListCallback callback,
-                        const ledger::PublisherInfoList list);
   void OnRemovedRecurringTip(ledger::RecurringRemoveCallback callback,
                           bool success);
   void OnRemoveRecurring(const std::string& publisher_key,
@@ -388,14 +379,14 @@ class RewardsServiceImpl : public RewardsService,
   void OnSetOnDemandFaviconComplete(const std::string& favicon_url,
                                     ledger::FetchIconCallback callback,
                                     bool success);
-  void SaveContributionInfo(const std::string& probi,
-                            const int month,
-                            const int year,
-                            const uint32_t date,
-                            const std::string& publisher_key,
-                            const ledger::REWARDS_CATEGORY category) override;
-  void GetRecurringTips(
-      ledger::PublisherInfoListCallback callback) override;
+  void OnContributionInfoSaved(
+      ledger::Result result,
+      const std::string& probi,
+      const int month,
+      const int year,
+      const uint32_t date,
+      const std::string& publisher_key,
+      const ledger::REWARDS_CATEGORY category) override;
   std::unique_ptr<ledger::LogStream> Log(
                      const char* file,
                      int line,
@@ -412,9 +403,9 @@ class RewardsServiceImpl : public RewardsService,
                  ledger::OnLoadCallback callback) override;
   void ResetState(const std::string& name,
                   ledger::OnResetCallback callback) override;
-  void RunDataStoreCommand(
-      bat_ledger::mojom::DataStoreCommandPtr command,
-      ledger::RunDataStoreCommandCallback callback) override;
+  void RunDataStoreTransaction(
+      bat_ledger::mojom::DataStoreTransactionPtr transaction,
+      ledger::RunDataStoreTransactionCallback callback) override;
 
   void KillTimer(uint32_t timer_id) override;
 

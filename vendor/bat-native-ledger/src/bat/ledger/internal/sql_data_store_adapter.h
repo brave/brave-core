@@ -2,53 +2,48 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_DATA_STORE_ADAPTER_H_
-#define BAT_LEDGER_DATA_STORE_ADAPTER_H_
+#ifndef BAT_LEDGER_INTERNAL_SQL_DATA_STORE_ADAPTER_H_
+#define BAT_LEDGER_INTERNAL_SQL_DATA_STORE_ADAPTER_H_
 
 #include <string>
 
-#include "bat/ledger/ledger_callback_handler.h"
-#include "bat/ledger/publisher_info.h"
+#include "bat/ledger/data_store_adapter.h"
+
+namespace bat_ledger {
+namespace mojom {
+class DataStoreCommandResponse;
+}  // namespace mojom
+}  // namespace bat_ledger
 
 namespace ledger {
 
-class LedgerClient;
-
-// TODO(nejczdovc) we should be providing result back as well
-using PublisherInfoListCallback =
-    std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
-using SaveContributionInfoCallback = std::function<void(Result)>;
-
-class DataStoreAdapter {
+class SqlDataStoreAdapter : public DataStoreAdapter {
  public:
-  enum Type {
-    SQL,
-  };
+  SqlDataStoreAdapter();
 
-  virtual ~DataStoreAdapter() = default;
+  // Not copyable, not assignable
+  SqlDataStoreAdapter(const SqlDataStoreAdapter&) = delete;
+  SqlDataStoreAdapter& operator=(const SqlDataStoreAdapter&) = delete;
 
-  static DataStoreAdapter* CreateInstance(Type type);
+  int GetCurrentVersion();
+  void SetCurrentVersionForTesting(int value);
 
-  virtual void Initialize(LedgerClient* client) = 0;
+  // DataStoreAdapter implementation
+  void Initialize(LedgerClient* ledger_client) override;
 
-  virtual void SaveContributionInfo(
+  void SaveContributionInfo(
       const std::string& probi,
       const int month,
       const int year,
       const uint32_t date,
       const std::string& publisher_key,
       const ledger::REWARDS_CATEGORY category,
-      SaveContributionInfoCallback callback) = 0;
+      SaveContributionInfoCallback callback) override;
 
-  virtual void GetRecurringTips(PublisherInfoListCallback callback) = 0;
-  virtual void GetOneTimeTips(ledger::ACTIVITY_MONTH month,
-                              int32_t year,
-                              ledger::PublisherInfoListCallback callback) = 0;
-
-  // // TODO(bridiver) - add callback
-  // virtual bool GetTips(ledger::PublisherInfoList* list,
-  //                      ledger::ACTIVITY_MONTH month,
-  //                      int year) = 0;
+  void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
+  void GetOneTimeTips(ledger::ACTIVITY_MONTH month,
+                      int32_t year,
+                      ledger::PublisherInfoListCallback callback) override;
 
   // virtual void SavePublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
   //                               PublisherInfoCallback callback) = 0;
@@ -104,8 +99,18 @@ class DataStoreAdapter {
   // // TODO(bridiver) - add callback
   // virtual bool DeleteActivityInfo(const std::string& publisher_key,
   //                                 uint64_t reconcile_stamp) = 0;
+ private:
+  void OnSaveContributionInfo(
+      SaveContributionInfoCallback callback,
+      bat_ledger::mojom::DataStoreCommandResponse* response);
+  void OnGetPublisherInfo(
+      PublisherInfoListCallback callback,
+      bat_ledger::mojom::DataStoreCommandResponse* response);
+
+  LedgerClient* ledger_client_;
+  int testing_current_version_;
 };
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_DATA_STORE_ADAPTER_H_
+#endif  // BAT_LEDGER_INTERNAL_SQL_DATA_STORE_ADAPTER_H_

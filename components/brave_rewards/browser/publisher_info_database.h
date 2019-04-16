@@ -38,12 +38,6 @@ class PublisherInfoDatabase {
     db_.set_error_callback(error_callback);
   }
 
-  bool InsertContributionInfo(const brave_rewards::ContributionInfo& info);
-
-  void GetOneTimeTips(ledger::PublisherInfoList* list,
-                      ledger::ACTIVITY_MONTH month,
-                      int year);
-
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
 
   std::unique_ptr<ledger::PublisherInfo> GetPublisherInfo(
@@ -73,8 +67,6 @@ class PublisherInfoDatabase {
 
   bool InsertOrUpdateRecurringTip(
       const brave_rewards::RecurringDonation& info);
-
-  void GetRecurringTips(ledger::PublisherInfoList* list);
 
   bool RemoveRecurringTip(const std::string& publisher_key);
 

@@ -372,33 +372,6 @@ void LedgerClientMojoProxy::FetchFavIcon(const std::string& url,
 }
 
 // static
-void LedgerClientMojoProxy::OnGetRecurringTips(
-    CallbackHolder<GetRecurringTipsCallback>* holder,
-    const ledger::PublisherInfoList& publisher_info_list,
-    uint32_t next_record) {
-  std::vector<std::string> list;
-  for (const auto& publisher_info : publisher_info_list) {
-    list.push_back(publisher_info.ToJson());
-  }
-
-  if (holder->is_valid())
-    std::move(holder->get()).Run(list, next_record);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetRecurringTips(
-    GetRecurringTipsCallback callback) {
-  // deleted in OnGetRecurringTips
-  auto* holder = new CallbackHolder<GetRecurringTipsCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetRecurringTips(
-      std::bind(LedgerClientMojoProxy::OnGetRecurringTips,
-                holder,
-                _1,
-                _2));
-}
-
-// static
 void LedgerClientMojoProxy::OnLoadNicewareList(
     CallbackHolder<LoadNicewareListCallback>* holder,
     int32_t result, const std::string& data) {
@@ -434,10 +407,17 @@ void LedgerClientMojoProxy::OnRemoveRecurring(const std::string& publisher_key,
       std::bind(LedgerClientMojoProxy::OnRecurringRemoved, holder, _1));
 }
 
-void LedgerClientMojoProxy::SaveContributionInfo(const std::string& probi,
-    int32_t month, int32_t year, uint32_t date,
-    const std::string& publisher_key, int32_t category) {
-  ledger_client_->SaveContributionInfo(probi, month, year, date, publisher_key,
+void LedgerClientMojoProxy::OnContributionInfoSaved(
+    int32_t result,
+    const std::string& probi,
+    int32_t month,
+    int32_t year,
+    uint32_t date,
+    const std::string& publisher_key,
+    int32_t category) {
+  ledger_client_->OnContributionInfoSaved(
+      ToLedgerResult(result),
+      probi, month, year, date, publisher_key,
       ToLedgerPublisherCategory(category));
 }
 
@@ -673,23 +653,23 @@ void LedgerClientMojoProxy::ResetState(
 }
 
 // static
-void LedgerClientMojoProxy::OnRunDataStoreCommand(
-    CallbackHolder<RunDataStoreCommandCallback>* holder,
+void LedgerClientMojoProxy::OnRunDataStoreTransaction(
+    CallbackHolder<RunDataStoreTransactionCallback>* holder,
     mojom::DataStoreCommandResponse* response) {
   if (holder->is_valid())
     std::move(holder->get()).Run(response->Clone());
   delete holder;
 }
 
-void LedgerClientMojoProxy::RunDataStoreCommand(
-    mojom::DataStoreCommandPtr command,
-    RunDataStoreCommandCallback callback) {
-  // deleted in OnRunDataStoreCommand
-  auto* holder = new CallbackHolder<RunDataStoreCommandCallback>(
+void LedgerClientMojoProxy::RunDataStoreTransaction(
+    mojom::DataStoreTransactionPtr transaction,
+    RunDataStoreTransactionCallback callback) {
+  // deleted in OnRunDataStoreTransaction
+  auto* holder = new CallbackHolder<RunDataStoreTransactionCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_client_->RunDataStoreCommand(std::move(command),
-      std::bind(LedgerClientMojoProxy::OnRunDataStoreCommand, holder, _1));
+  ledger_client_->RunDataStoreTransaction(std::move(transaction),
+      std::bind(LedgerClientMojoProxy::OnRunDataStoreTransaction, holder, _1));
 }
 
 void LedgerClientMojoProxy::SetConfirmationsIsReady(const bool is_ready) {
@@ -717,33 +697,6 @@ void LedgerClientMojoProxy::GetExcludedPublishersNumberDB(
   ledger_client_->GetExcludedPublishersNumberDB(
       std::bind(LedgerClientMojoProxy::OnGetExcludedPublishersNumberDB,
         holder, _1));
-}
-
-// static
-void LedgerClientMojoProxy::OnGetOneTimeTips(
-    CallbackHolder<GetOneTimeTipsCallback>* holder,
-    const ledger::PublisherInfoList& publisher_info_list,
-    uint32_t next_record) {
-  std::vector<std::string> list;
-  for (const auto& publisher_info : publisher_info_list) {
-    list.push_back(publisher_info.ToJson());
-  }
-
-  if (holder->is_valid())
-    std::move(holder->get()).Run(list, next_record);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetOneTimeTips(
-    GetOneTimeTipsCallback callback) {
-  // deleted in OnGetOneTimeTips
-  auto* holder = new CallbackHolder<GetOneTimeTipsCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetOneTimeTips(
-      std::bind(LedgerClientMojoProxy::OnGetOneTimeTips,
-                holder,
-                _1,
-                _2));
 }
 
 }  // namespace bat_ledger

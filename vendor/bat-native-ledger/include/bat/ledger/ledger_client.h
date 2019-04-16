@@ -55,9 +55,6 @@ class LEDGER_EXPORT LogStream {
 
 using PublisherInfoCallback =
     std::function<void(Result, std::unique_ptr<PublisherInfo>)>;
-// TODO(nejczdovc) we should be providing result back as well
-using PublisherInfoListCallback =
-    std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
 using GetNicewareListCallback =
     std::function<void(Result, const std::string&)>;
 using RecurringDonationCallback = std::function<void(const PublisherInfoList&)>;
@@ -70,7 +67,7 @@ using OnSaveCallback = std::function<void(const ledger::Result)>;
 using OnLoadCallback = std::function<void(const ledger::Result,
                                           const std::string&)>;
 using OnResetCallback = std::function<void(const ledger::Result)>;
-using RunDataStoreCommandCallback =
+using RunDataStoreTransactionCallback =
     std::function<void(bat_ledger::mojom::DataStoreCommandResponse*)>;
 using GetExcludedPublishersNumberDBCallback = std::function<void(uint32_t)>;
 
@@ -163,20 +160,6 @@ class LEDGER_EXPORT LedgerClient {
                             const std::string& favicon_key,
                             FetchIconCallback callback) = 0;
 
-  virtual void SaveContributionInfo(
-      const std::string& probi,
-      const int month,
-      const int year,
-      const uint32_t date,
-      const std::string& publisher_key,
-      const ledger::REWARDS_CATEGORY category) = 0;
-
-  virtual void GetRecurringTips(
-      ledger::PublisherInfoListCallback callback) = 0;
-
-  virtual void GetOneTimeTips(
-      ledger::PublisherInfoListCallback callback) = 0;
-
   virtual void OnRemoveRecurring(const std::string& publisher_key,
                                  ledger::RecurringRemoveCallback callback) = 0;
 
@@ -221,9 +204,17 @@ class LEDGER_EXPORT LedgerClient {
                          ledger::OnLoadCallback callback) = 0;
   virtual void ResetState(const std::string& name,
                           ledger::OnResetCallback callback) = 0;
-  virtual void RunDataStoreCommand(
-      bat_ledger::mojom::DataStoreCommandPtr command,
-      RunDataStoreCommandCallback callback) = 0;
+  virtual void RunDataStoreTransaction(
+      bat_ledger::mojom::DataStoreTransactionPtr transaction,
+      RunDataStoreTransactionCallback callback) = 0;
+  virtual void OnContributionInfoSaved(
+      ledger::Result result,
+      const std::string& probi,
+      const int month,
+      const int year,
+      const uint32_t date,
+      const std::string& publisher_key,
+      const ledger::REWARDS_CATEGORY category) = 0;
 
   // virtual DataStoreAdapter::Type GetDataStoreAdapterType() = 0;
 

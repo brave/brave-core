@@ -8,11 +8,16 @@ union DataStoreValue {
   int32 int_value;
   int64 int64_value;
   double double_value;
+  bool bool_value;
 };
 
-struct DataStoreBinding {
+struct DataStoreCommandBinding {
   int32 index;
   DataStoreValue value;
+};
+
+struct DataStoreTransaction {
+  array<DataStoreCommand> commands;
 };
 
 struct DataStoreCommand {
@@ -21,18 +26,45 @@ struct DataStoreCommand {
     CREATE,
     READ,
     UPDATE,
-    DELETE
+    DELETE,
+    MIGRATE
   };
   Type type;
-  string payload;
-  array<DataStoreBinding> bindings;
+  string command;
+  int32 compatible_version;
+  int32 version;
+  array<DataStoreCommandBinding> bindings;
+  array<DataStoreRecordBinding> record_bindings;
+};
+
+struct DataStoreRecordBinding {
+  enum Type {
+    STRING_TYPE,
+    INT_TYPE,
+    INT64_TYPE,
+    DOUBLE_TYPE,
+    BOOL_TYPE
+  };
+  Type type;
 };
 
 struct DataStoreRecord {
-  map<int32, DataStoreValue> fields;
+  array<DataStoreValue> fields;
+};
+
+union DataStoreCommandResult {
+  array<DataStoreRecord> records;
+  DataStoreValue value;
 };
 
 struct DataStoreCommandResponse {
-  array<DataStoreRecord> results;
-  int32 status;
+  enum Status {
+    OK,
+    INITIALIZATION_ERROR,
+    TRANSACTION_ERROR,
+    COMMAND_ERROR,
+    ERROR
+  };
+  DataStoreCommandResult result;
+  Status status;
 };

@@ -295,7 +295,9 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
 
-  void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
+  void GetOneTimeTips(ledger::ACTIVITY_MONTH month,
+                      int year,
+                      ledger::PublisherInfoListCallback callback) override;
 
   void RemoveRecurringTip(const std::string& publisher_key) override;
 
@@ -527,6 +529,15 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback);
 
+  void OnSaveContributionInfo(
+      ledger::Result result,
+      const std::string& probi,
+      const int month,
+      const int year,
+      const uint32_t date,
+      const std::string& publisher_key,
+      const ledger::REWARDS_CATEGORY category);
+
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
@@ -546,6 +557,8 @@ class LedgerImpl : public ledger::Ledger,
   uint32_t last_shown_tab_id_;
   uint32_t last_pub_load_timer_id_;
   uint32_t last_grant_check_timer_id_;
+
+  std::unique_ptr<ledger::DataStoreAdapter> data_store_adapter_;
 };
 
 }  // namespace bat_ledger

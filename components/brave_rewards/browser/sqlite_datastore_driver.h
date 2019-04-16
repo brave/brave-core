@@ -19,6 +19,10 @@
 #include "sql/init_status.h"
 #include "sql/meta_table.h"
 
+using bat_ledger::mojom::DataStoreCommand;
+using bat_ledger::mojom::DataStoreCommandResponse;
+using bat_ledger::mojom::DataStoreTransaction;
+
 namespace brave_rewards {
 
 class SqliteDatastoreDriver {
@@ -27,21 +31,24 @@ class SqliteDatastoreDriver {
 
   ~SqliteDatastoreDriver();
 
-  void RunDataStoreCommand(
-      bat_ledger::mojom::DataStoreCommand* command,
-      bat_ledger::mojom::DataStoreCommandResponse* response);
+  void RunDataStoreTransaction(DataStoreTransaction* transaction,
+                               DataStoreCommandResponse* response);
  private:
-  bool Inititalize();
-  void Execute(bat_ledger::mojom::DataStoreCommand* command,
-               bat_ledger::mojom::DataStoreCommandResponse* response);
-  void Query(bat_ledger::mojom::DataStoreCommand* command,
-             bat_ledger::mojom::DataStoreCommandResponse* response);
+  DataStoreCommandResponse::Status Inititalize(
+      DataStoreCommand* command,
+      DataStoreCommandResponse* response);
+  DataStoreCommandResponse::Status Execute(DataStoreCommand* command);
+  DataStoreCommandResponse::Status Query(
+      DataStoreCommand* command,
+      DataStoreCommandResponse* response);
+  DataStoreCommandResponse::Status Migrate(DataStoreCommand* command);
 
   void OnMemoryPressure(
       base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
-  sql::Database db_;
   const base::FilePath db_path_;
+  sql::Database db_;
+  sql::MetaTable meta_table_;
   bool initialized_;
 
   std::unique_ptr<base::MemoryPressureListener> memory_pressure_listener_;

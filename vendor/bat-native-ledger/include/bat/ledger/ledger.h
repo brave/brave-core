@@ -286,8 +286,9 @@ class LEDGER_EXPORT Ledger {
   virtual void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) = 0;
 
   virtual void GetRecurringTips(ledger::PublisherInfoListCallback callback) = 0;
-
-  virtual void GetOneTimeTips(ledger::PublisherInfoListCallback callback) = 0;
+  virtual void GetOneTimeTips(ledger::ACTIVITY_MONTH month,
+                              int32_t year,
+                              ledger::PublisherInfoListCallback callback) = 0;
   virtual void RefreshPublisher(
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback) = 0;
