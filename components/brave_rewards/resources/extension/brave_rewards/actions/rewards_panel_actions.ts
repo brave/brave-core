@@ -9,11 +9,9 @@ import { types } from '../constants/rewards_panel_types'
 
 export const createWallet = () => action(types.CREATE_WALLET, {})
 
-export const onWalletCreated = () => action(types.ON_WALLET_CREATED, {})
-
-export const onWalletCreateFailed = () => action(types.ON_WALLET_CREATE_FAILED, {})
-
-export const onWalletCorrupted = () => action(types.ON_WALLET_CORRUPTED)
+export const onWalletInitialized = (result: RewardsExtension.Result) => action(types.ON_WALLET_INITIALIZED, {
+  result
+})
 
 export const onTabId = (tabId: number | undefined) => action(types.ON_TAB_ID, {
   tabId

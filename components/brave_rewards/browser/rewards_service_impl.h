@@ -225,7 +225,7 @@ class RewardsServiceImpl : public RewardsService,
                              bool success);
   void OnPublisherStateLoaded(ledger::LedgerCallbackHandler* handler,
                               const std::string& data);
-  void TriggerOnWalletInitialized(int result);
+  void TriggerOnWalletInitialized(ledger::Result result);
   void OnFetchWalletProperties(int result,
                                const std::string& json_wallet);
   void TriggerOnGrant(ledger::Result result, const ledger::Grant& grant);
