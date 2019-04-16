@@ -26,6 +26,7 @@ window.__firefox__.includeOnce("ContextMenu", function() {
 
     if (targetImage) {
       data.image = targetImage.src;
+      data.title = targetImage.title;
     }
 
     if (data.link || data.image) {

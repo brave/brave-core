@@ -31,8 +31,6 @@ private let KVOs: [KVOConstants] = [
     .serverTrust
 ]
 
-private let ActionSheetTitleMaxLength = 120
-
 private struct BrowserViewControllerUX {
     fileprivate static let BackgroundColor = UIConstants.AppBackgroundColor
     fileprivate static let ShowHeaderTapAreaHeight: CGFloat = 32
@@ -2482,9 +2480,11 @@ extension BrowserViewController: ContextMenuHelperDelegate {
         }
 
         if let url = elements.image {
-            if dialogTitle == nil {
-                dialogTitle = url.absoluteString
-            }
+            let imageTitle = (elements.title ?? "").isEmpty ? nil : elements.title
+            let imageText = imageTitle.map { "\n\n\($0)" } ?? ""
+            // If the image is a link, show the link's URL. Otherwise, show the image's source URL.
+            let urlText = elements.link?.absoluteString ?? url.absoluteString
+            dialogTitle = "\(urlText)\(imageText)"
             
             let openInNewTabAction = UIAlertAction(title: Strings.OpenImageInNewTabActionTitle, style: .default) { _ in
                 let isPrivate = PrivateBrowsingManager.shared.isPrivateBrowsing
@@ -2552,7 +2552,7 @@ extension BrowserViewController: ContextMenuHelperDelegate {
             displayedPopoverController = actionSheetController
         }
 
-        actionSheetController.title = dialogTitle?.ellipsize(maxLength: ActionSheetTitleMaxLength)
+        actionSheetController.title = dialogTitle
         let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil)
         actionSheetController.addAction(cancelAction)
         self.present(actionSheetController, animated: true, completion: nil)
