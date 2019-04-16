@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -11,6 +12,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_store.h"
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
@@ -18,6 +20,8 @@
 #include "chrome/browser/notifications/notification_display_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #endif
+
+class PrefStore;
 
 namespace brave_ads {
 
@@ -76,10 +80,41 @@ bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
 
 void AdsServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
+  if (ShouldMigratePrefs(registry)) {
+    // prefs::kBraveAdsPrefsVersion should default to 1 for legacy installations
+    // so that preferences are migrated from version 1 to the current version
+    registry->RegisterIntegerPref(prefs::kBraveAdsPrefsVersion,
+        prefs::kBraveAdsPrefsDefaultVersion);
+  } else {
+    registry->RegisterIntegerPref(prefs::kBraveAdsPrefsVersion,
+        prefs::kBraveAdsPrefsCurrentVersion);
+  }
+
   registry->RegisterBooleanPref(prefs::kBraveAdsEnabled, false);
+
   registry->RegisterUint64Pref(prefs::kBraveAdsPerHour, 2);
-  registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 6);
+
+  #if defined(OS_ANDROID)
+    registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 12);
+  #else
+    registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 20);
+  #endif
+
   registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 15);
+}
+
+bool AdsServiceFactory::ShouldMigratePrefs(
+    user_prefs::PrefRegistrySyncable* registry) const {
+  // If prefs::kBraveAdsEnabled does not exist then this must be a fresh
+  // installion so we do not need to migrate
+  auto pref_store = registry->defaults();
+
+  const base::Value* value = nullptr;
+  if (!pref_store->GetValue(prefs::kBraveAdsEnabled, &value)) {
+    return false;
+  }
+
+  return true;
 }
 
 }  // namespace brave_ads
