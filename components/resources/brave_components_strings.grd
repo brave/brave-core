@@ -499,7 +499,7 @@
       <message name="IDS_BRAVE_SYNC_SHARED_VIEW_CODE_BUTTON" desc="The Sync button to enter code words instead of scanning the current code">View Code Words</message>
       <message name="IDS_BRAVE_SYNC_SCAN_CODE_LOOKING_FOR_DEVICE_BUTTON" desc="The Sync temporary button that holds while a device is not found yet">Looking for device</message>
       <!-- WebUI brave sync resources: Enabled Content -->
-      <message name="IDS_BRAVE_SYNC_ENABLED_BRAVE_TITLE" desc="The Brave Sync title">Sync (beta)</message>
+      <message name="IDS_BRAVE_SYNC_ENABLED_BRAVE_TITLE" desc="The Brave Sync title">Sync</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_DEVICES_CHAIN_TITLE" desc="The Sync title for the table of devices synced">The device list below includes all devices in your sync chain. Each device can be managed from any other device.</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_DEVICE_NAME_TITLE" desc="The Sync table title for the device column">device name</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_TABLE_THIS_DEVICE_TEXT" desc="The Sync table title for the device column">(This Device)</message>
@@ -514,7 +514,7 @@
       <message name="IDS_BRAVE_SYNC_ENABLED_HISTORY_LABEL" desc="The Sync label for the `browsing history` toggle">Browsing History</message>
       <message name="IDS_BRAVE_SYNC_ENABLED_LEAVE_CHAIN_BUTTON" desc="The Sync button that opens a modal to leave the current sync chain">Leave Sync Chain</message>
       <!-- WebUI brave sync resources: Disabled Content -->
-      <message name="IDS_BRAVE_SYNC_DISABLED_DESCRIPTION" desc="The Brave Sync title.">Sync (beta) Setup</message>
+      <message name="IDS_BRAVE_SYNC_DISABLED_DESCRIPTION" desc="The Brave Sync title.">Sync Setup</message>
       <message name="IDS_BRAVE_SYNC_DISABLED_NEW_CHAIN_DESCRIPTION" desc="The Sync phrase explaining what happens when you start a new sync chain. Appears when sync is disabled.">To start, you will need Brave installed on all the devices you plan to sync. To chain them together, start a sync chain that you will use to securely link all of your devices together.</message>
       <message name="IDS_BRAVE_SYNC_DISABLED_START_NEW_CHAIN_BUTTON" desc="The Sync button that triggers a modal to start a new sync chian">Start a new Sync Chain</message>
       <message name="IDS_BRAVE_SYNC_DISABLED_ENTER_CODE_BUTTON" desc="The Sync button that triggers a modal asking for the sync chain code passphrase">I have a Sync Code</message>
