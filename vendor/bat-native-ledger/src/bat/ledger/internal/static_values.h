@@ -65,6 +65,7 @@
 #define TWITCH_MEDIA_TYPE               "twitch"
 #define TWITTER_MEDIA_TYPE              "twitter"
 #define REDDIT_MEDIA_TYPE               "reddit"
+#define VIMEO_MEDIA_TYPE                "vimeo"
 #define YOUTUBE_PROVIDER_URL            "https://www.youtube.com/oembed"
 #define TWITCH_PROVIDER_URL             "https://api.twitch.tv/v5/oembed"
 #define YOUTUBE_TLD                     "youtube.com"

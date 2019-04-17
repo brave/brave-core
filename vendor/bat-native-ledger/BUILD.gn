@@ -123,6 +123,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/media/twitch.cc",
     "src/bat/ledger/internal/media/twitter.h",
     "src/bat/ledger/internal/media/twitter.cc",
+    "src/bat/ledger/internal/media/vimeo.h",
+    "src/bat/ledger/internal/media/vimeo.cc",
     "src/bat/ledger/internal/media/youtube.h",
     "src/bat/ledger/internal/media/youtube.cc",
     "src/bat/ledger/internal/wallet/balance.h",
