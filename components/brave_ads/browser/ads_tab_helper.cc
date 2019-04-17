@@ -75,7 +75,7 @@ void AdsTabHelper::DidFinishNavigation(
 
 void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
   // don't start distilling is the ad service isn't enabled
-  if (!ads_service_ || !ads_service_->is_enabled() || !run_distiller_)
+  if (!ads_service_ || !ads_service_->IsAdsEnabled() || !run_distiller_)
     return;
 
   auto* dom_distiller_service =
@@ -87,7 +87,7 @@ void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
 
   auto source_page_handle =
       std::make_unique<dom_distiller::SourcePageHandleWebContents>(
-            web_contents(), false);
+          web_contents(), false);
 
   auto distiller_page =
       dom_distiller_service->CreateDefaultDistillerPageWithHandle(
