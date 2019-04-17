@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -30,25 +31,35 @@ void BatAdsServiceImpl::Create(
   std::move(callback).Run();
 }
 
-void BatAdsServiceImpl::SetProduction(bool is_production,
-                                      SetProductionCallback callback) {
+void BatAdsServiceImpl::SetProduction(
+    const bool is_production,
+    SetProductionCallback callback) {
   DCHECK(!has_initialized_ || ads::_is_production == is_production);
   ads::_is_production = is_production;
   std::move(callback).Run();
 }
 
-void BatAdsServiceImpl::SetTesting(bool is_testing,
-                                   SetTestingCallback callback) {
+void BatAdsServiceImpl::SetTesting(
+    const bool is_testing,
+    SetTestingCallback callback) {
   DCHECK(!has_initialized_ || ads::_is_testing == is_testing);
   ads::_is_testing = is_testing;
   std::move(callback).Run();
 }
 
-void BatAdsServiceImpl::SetDebug(bool is_debug,
-                                 SetDebugCallback callback) {
+void BatAdsServiceImpl::SetDebug(
+    const bool is_debug,
+    SetDebugCallback callback) {
   DCHECK(!has_initialized_ || ads::_is_debug == is_debug);
   ads::_is_debug = is_debug;
   std::move(callback).Run();
+}
+
+void BatAdsServiceImpl::IsSupportedRegion(
+    const std::string& locale,
+    IsSupportedRegionCallback callback) {
+  DCHECK(!has_initialized_);
+  std::move(callback).Run(ads::Ads::IsSupportedRegion(locale));
 }
 
 }  // namespace bat_ads
