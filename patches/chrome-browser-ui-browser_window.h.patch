@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/browser_window.h b/chrome/browser/ui/browser_window.h
+index 3f42805e9b42a5bf104b8b37c4fe6e20dbb777e6..f5c499c8c37645888764c79dedbfcfc62c02f408 100644
+--- a/chrome/browser/ui/browser_window.h
++++ b/chrome/browser/ui/browser_window.h
+@@ -241,7 +241,7 @@ class BrowserWindow : public ui::BaseWindow {
+ 
+   // Tries to focus the location bar.  Clears the window focus (to avoid
+   // inconsistent state) if this fails.
+-  virtual void SetFocusToLocationBar() = 0;
++  virtual void SetFocusToLocationBar(bool select_all) = 0;
+ 
+   // Informs the view whether or not a load is in progress for the current tab.
+   // The view can use this notification to update the reload/stop button.
