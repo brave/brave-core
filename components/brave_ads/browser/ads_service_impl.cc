@@ -23,6 +23,7 @@
 #include "bat/ads/notification_result_type.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
+#include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_ads/browser/bundle_state_database.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -206,8 +207,7 @@ void PostWriteCallback(
     bool success) {
   // We can't run |callback| on the current thread. Bounce back to
   // the |reply_task_runner| which is the correct sequenced thread.
-  reply_task_runner->PostTask(FROM_HERE,
-                              base::Bind(callback, success));
+  reply_task_runner->PostTask(FROM_HERE, base::Bind(callback, success));
 }
 
 std::string LoadOnFileTaskRunner(
@@ -258,6 +258,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       base_path_(profile_->GetPath().AppendASCII("ads_service")),
       next_timer_id_(0),
+      is_supported_region_(false),
       bundle_state_backend_(
           new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
@@ -313,12 +314,32 @@ void AdsServiceImpl::OnCreate() {
   }
 }
 
-void AdsServiceImpl::MaybeStart(bool restart) {
-  if (restart)
+void AdsServiceImpl::MaybeStart(bool should_restart) {
+  if (should_restart)
     Shutdown();
 
-  if (is_enabled()) {
-    if (restart) {
+  if (!StartService()) {
+    LOG(ERROR) << "Failed to start Ads service";
+    return;
+  }
+
+  bat_ads_service_->IsSupportedRegion(GetAdsLocale(),
+      base::BindOnce(&AdsServiceImpl::OnMaybeStartForRegion,
+          AsWeakPtr(), should_restart));
+}
+
+void AdsServiceImpl::OnMaybeStartForRegion(
+    bool should_restart,
+    bool is_supported_region) {
+  is_supported_region_ = is_supported_region;
+
+  if (!is_supported_region_) {
+    Shutdown();
+    return;
+  }
+
+  if (IsAdsEnabled()) {
+    if (should_restart) {
       base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(FROM_HERE,
           base::BindOnce(&AdsServiceImpl::Start, AsWeakPtr()),
           base::TimeDelta::FromSeconds(1));
@@ -330,19 +351,15 @@ void AdsServiceImpl::MaybeStart(bool restart) {
   }
 }
 
-void AdsServiceImpl::Start() {
+bool AdsServiceImpl::StartService() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(is_enabled());
-  DCHECK(!bat_ads_.is_bound());
-
-  bat_ads::mojom::BatAdsClientAssociatedPtrInfo client_ptr_info;
-  bat_ads_client_binding_.Bind(mojo::MakeRequest(&client_ptr_info));
+  DCHECK(!connected());
 
   content::ServiceManagerConnection* connection =
       content::ServiceManagerConnection::GetForProcess();
 
   if (!connection)
-    return;
+    return false;
 
   connection->GetConnector()->BindInterface(
       bat_ads::mojom::kServiceName, &bat_ads_service_);
@@ -380,10 +397,17 @@ void AdsServiceImpl::Start() {
   bat_ads_service_->SetDebug(is_debug, base::NullCallback());
   bat_ads_service_->SetTesting(is_testing, base::NullCallback());
 
+  return true;
+}
+
+void AdsServiceImpl::Start() {
+  BackgroundHelper::GetInstance()->AddObserver(this);
+
+  bat_ads::mojom::BatAdsClientAssociatedPtrInfo client_ptr_info;
+  bat_ads_client_binding_.Bind(mojo::MakeRequest(&client_ptr_info));
+
   bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
-
-  BackgroundHelper::GetInstance()->AddObserver(this);
 }
 
 void AdsServiceImpl::Stop() {
@@ -542,9 +566,9 @@ int AdsServiceImpl::GetPrefsVersion() const {
 void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   if (pref == prefs::kBraveAdsEnabled ||
       pref == brave_rewards::prefs::kBraveRewardsEnabled) {
-    if (is_enabled()) {
-      Start();
-    } else if (!is_enabled()) {
+    if (IsAdsEnabled()) {
+      MaybeStart(false);
+    } else {
       Stop();
     }
   } else if (pref == prefs::kBraveAdsIdleThreshold) {
@@ -552,24 +576,48 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
   }
 }
 
-bool AdsServiceImpl::is_enabled() const {
-  bool ads_enabled = profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveAdsEnabled);
-  bool rewards_enabled = profile_->GetPrefs()->GetBoolean(
-      brave_rewards::prefs::kBraveRewardsEnabled);
-  return (ads_enabled && rewards_enabled);
+bool AdsServiceImpl::IsSupportedRegion() const {
+  return is_supported_region_;
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
-  return is_enabled();
+  auto ads_enabled = profile_->GetPrefs()->GetBoolean(
+      prefs::kBraveAdsEnabled);
+
+  auto prefs_migrated_from_62 = profile_->GetPrefs()->GetBoolean(
+      prefs::kBraveAdsPrefsMigratedFrom62);
+
+  if (ads_enabled && prefs_migrated_from_62) {
+    // Disable Ads by default when upgrading from 0.62.x to 0.63.x
+    ads_enabled = false;
+
+    profile_->GetPrefs()->SetBoolean(
+        prefs::kBraveAdsEnabled, ads_enabled);
+
+    profile_->GetPrefs()->SetBoolean(
+        prefs::kBraveAdsPrefsMigratedFrom62, false);
+  }
+
+  auto rewards_enabled = profile_->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kBraveRewardsEnabled);
+
+  return IsSupportedRegion() && ads_enabled && rewards_enabled;
 }
 
-void AdsServiceImpl::set_ads_enabled(bool enabled) {
-  profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, enabled);
+void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
+  profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, is_enabled);
 }
 
-void AdsServiceImpl::set_ads_per_hour(int ads_per_hour) {
+uint64_t AdsServiceImpl::GetAdsPerHour() const {
+  return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerHour);
+}
+
+void AdsServiceImpl::SetAdsPerHour(const uint64_t ads_per_hour) {
   profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerHour, ads_per_hour);
+}
+
+uint64_t AdsServiceImpl::GetAdsPerDay() const {
+  return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerDay);
 }
 
 bool AdsServiceImpl::IsForeground() const {
@@ -658,18 +706,6 @@ void AdsServiceImpl::OnMediaStop(SessionID tab_id) {
     return;
 
   bat_ads_->OnMediaStopped(tab_id.id());
-}
-
-uint64_t AdsServiceImpl::GetAdsPerHour() const {
-  return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerHour);
-}
-
-uint64_t AdsServiceImpl::ads_per_hour() const {
-  return GetAdsPerHour();
-}
-
-uint64_t AdsServiceImpl::GetAdsPerDay() const {
-  return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerDay);
 }
 
 void AdsServiceImpl::ShowNotification(
@@ -954,7 +990,7 @@ const std::vector<std::string> AdsServiceImpl::GetLocales() const {
 }
 
 const std::string AdsServiceImpl::GetAdsLocale() const {
-  return g_browser_process->GetApplicationLocale();
+  return LocaleHelper::GetInstance()->GetLocale();
 }
 
 void AdsServiceImpl::URLRequest(
@@ -1047,8 +1083,7 @@ uint32_t AdsServiceImpl::SetTimer(const uint64_t time_offset) {
   timers_[timer_id] = std::make_unique<base::OneShotTimer>();
   timers_[timer_id]->Start(FROM_HERE,
       base::TimeDelta::FromSeconds(time_offset),
-      base::BindOnce(
-          &AdsServiceImpl::OnTimer, AsWeakPtr(), timer_id));
+      base::BindOnce(&AdsServiceImpl::OnTimer, AsWeakPtr(), timer_id));
 
   return timer_id;
 }
@@ -1078,14 +1113,6 @@ std::unique_ptr<ads::LogStream> AdsServiceImpl::Log(
 
 bool AdsServiceImpl::connected() {
   return bat_ads_.is_bound();
-}
-
-void AdsServiceImpl::IsSupportedRegion(
-    IsSupportedRegionCallback callback) {
-  if (!connected())
-    return;
-
-  bat_ads_->IsSupportedRegion(std::move(callback));
 }
 
 }  // namespace brave_ads

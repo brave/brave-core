@@ -10,12 +10,16 @@ namespace brave_ads {
 namespace prefs {
 
 const char kBraveAdsEnabled[] = "brave.brave_ads.enabled";
+
 const char kBraveAdsPerHour[] = "brave.brave_ads.ads_per_hour";
 const char kBraveAdsPerDay[] = "brave.brave_ads.ads_per_day";
 const char kBraveAdsIdleThreshold[] = "brave.brave_ads.idle_threshold";
+
 const int kBraveAdsPrefsDefaultVersion = 1;
 const int kBraveAdsPrefsCurrentVersion = 2;
 const char kBraveAdsPrefsVersion[] = "brave.brave_ads.prefs.version";
+const char kBraveAdsPrefsMigratedFrom62[] =
+    "brave.brave_ads.prefs.migrated.from_0_62.x";
 
 }  // namespace prefs
 

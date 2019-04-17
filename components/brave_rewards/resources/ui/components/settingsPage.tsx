@@ -63,7 +63,6 @@ class SettingsPage extends React.Component<Props, {}> {
     }
     this.actions.checkImported()
     this.actions.getGrants()
-    this.actions.getAdsIsSupportedRegion()
     this.actions.getRewardsMainEnabled()
 
     // one time check (legacy fix)

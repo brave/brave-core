@@ -49,8 +49,6 @@ class BatAdsImpl : public mojom::BatAds {
   void GenerateAdReportingNotificationResultEvent(
       const std::string& notification_info,
       int32_t event_type) override;
-  void IsSupportedRegion(
-      IsSupportedRegionCallback callback) override;
 
  private:
   std::unique_ptr<BatAdsClientMojoBridge> bat_ads_client_mojo_proxy_;
