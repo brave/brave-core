@@ -1,15 +1,27 @@
 pipeline {
     options {
         disableConcurrentBuilds()
-        timeout(time: 1, unit: "DAYS")
+        timeout(time: 8, unit: "HOURS")
         timestamps()
     }
     agent {
         node { label "master" }
     }
+    parameters {
+        choice(name: "CHANNEL", choices: ["dev", "beta", "release", "nightly"])
+        booleanParam(name: "WIPE_WORKSPACE", defaultValue: false)
+        booleanParam(name: "RUN_INIT", defaultValue: false)
+        booleanParam(name: "DISABLE_SCCACHE", defaultValue: false)
+    }
     environment {
-        GITHUB_CREDENTIALS = credentials("brave-builds-github-token-for-pr-builder")
-        BB_REPO = "https://${GITHUB_CREDENTIALS}@github.com/brave/brave-browser"
+        CHANNEL = "${params.CHANNEL}"
+        WIPE_WORKSPACE = "${params.WIPE_WORKSPACE}"
+        RUN_INIT = "${params.RUN_INIT}"
+        DISABLE_SCCACHE = "${params.DISABLE_SCCACHE}"
+        GITHUB_CREDENTIAL_ID = "brave-builds-github-token-for-pr-builder"
+        GITHUB_AUTH = credentials("${GITHUB_CREDENTIAL_ID}")
+        GITHUB_API = "https://api.github.com/repos/brave"
+        BB_REPO = "https://${GITHUB_AUTH}@github.com/brave/brave-browser"
     }
     stages {
         stage("env") {
@@ -17,10 +29,29 @@ pipeline {
                 script {
                     env.BRANCH_TO_BUILD = (env.CHANGE_BRANCH == null ? env.BRANCH_NAME : env.CHANGE_BRANCH)
                     env.TARGET_BRANCH = (env.CHANGE_TARGET == null ? env.BRANCH_TO_BUILD : env.CHANGE_TARGET)
+                    env.BRANCH_EXISTS_IN_BB = httpRequest(url: env.GITHUB_API + "/brave-browser/branches/" + env.BRANCH_TO_BUILD, validResponseCodes: "100:499", authentication: env.GITHUB_CREDENTIAL_ID).status == 200
+                    response = httpRequest(url: env.GITHUB_API + "/brave-core/pulls?head=brave:" + env.BRANCH_TO_BUILD, authentication: env.GITHUB_CREDENTIAL_ID)
+                    prDetails = readJSON(text: response.content)[0]
+                    response = httpRequest(url: env.GITHUB_API + "/brave-core/pulls/" + prDetails.number, authentication: env.GITHUB_CREDENTIAL_ID)
+                    env.PR_IS_DRAFT = readJSON(text: response.content).mergeable_state == "draft"
+                }
+            }
+        }
+        stage("check") {
+            when {
+                expression { env.PR_IS_DRAFT == "true" }
+            }
+            steps {
+                script {
+                    print "Aborting build as commit is in draft!"
+                    currentBuild.result = "ABORTED"
                 }
             }
         }
         stage("config") {
+            when {
+                expression { env.PR_IS_DRAFT == "false" }
+            }
             steps {
                 sh """
                     #!/bin/bash
@@ -39,7 +70,7 @@ pipeline {
                     git config user.email devops@brave.com
                     git config push.default simple
 
-                    if [ "`curl -s -w %{http_code} -o /dev/null ${BB_REPO}/tree/${BRANCH_TO_BUILD}`" = "404" ]; then
+                    if [ "${BRANCH_EXISTS_IN_BB}" = "false" ]; then
                         git checkout -b ${BRANCH_TO_BUILD}
 
                         echo "Pinning brave-core to branch ${BRANCH_TO_BUILD}..."
@@ -82,19 +113,28 @@ pipeline {
                         fi
                     fi
 
-                    echo "Sleeping 5m so new branch is discovered or associated PR created in brave-browser..."
-                    sleep 300
+                    echo "Sleeping 6m so new branch is discovered or associated PR created in brave-browser..."
+                    sleep 360
                 """
             }
         }
         stage("build") {
+            when {
+                expression { env.PR_IS_DRAFT == "false" }
+            }
             steps {
                 script {
-                    response = httpRequest(url: "https://api.github.com/repos/brave/brave-browser/pulls?head=brave:${BRANCH_TO_BUILD}", quiet: true)
+                    response = httpRequest(url: env.GITHUB_API + "/brave-browser/pulls?head=brave:" + env.BRANCH_TO_BUILD, authentication: env.GITHUB_CREDENTIAL_ID)
                     prDetails = readJSON(text: response.content)[0]
                     prNumber = prDetails ? prDetails.number : ""
-                    refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode("${BRANCH_TO_BUILD}", "UTF-8")
-                    currentBuild.result = build(job: "brave-browser-build-pr/" + refToBuild, propagate: false).result
+                    refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode(env.BRANCH_TO_BUILD, "UTF-8")
+                    params = [
+                        string(name: "CHANNEL", value: env.CHANNEL),
+                        booleanParam(name: "WIPE_WORKSPACE", value: env.WIPE_WORKSPACE),
+                        booleanParam(name: "RUN_INIT", value: env.RUN_INIT),
+                        booleanParam(name: "DISABLE_SCCACHE", value: env.DISABLE_SCCACHE)
+                    ]
+                    currentBuild.result = build(job: "brave-browser-build-pr/" + refToBuild, parameters: params, propagate: false).result
                 }
             }
         }
