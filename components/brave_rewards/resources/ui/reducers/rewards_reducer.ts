@@ -121,6 +121,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.adsData.adsEnabled = action.payload.adsData.adsEnabled
       state.adsData.adsPerHour = action.payload.adsData.adsPerHour
       state.adsData.adsUIEnabled = action.payload.adsData.adsUIEnabled
+      state.adsData.adsIsSupported = action.payload.adsData.adsIsSupported
       break
     }
     case types.ON_ADS_SETTING_SAVE: {
@@ -152,14 +153,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       const data = action.payload.data
       state.adsData.adsNotificationsReceived = data.adsTotalPages
       state.adsData.adsEstimatedEarnings = data.adsEstimatedEarnings
-      break
-    }
-    case types.GET_ADS_IS_SUPPORTED_REGION: {
-      chrome.send('brave_rewards.getAdsIsSupportedRegion', [])
-      break
-    }
-    case types.ON_ADS_IS_SUPPORTED_REGION: {
-      state.adsData.adsIsSupported = action.payload.supported
       break
     }
     case types.GET_REWARDS_MAIN_ENABLED: {

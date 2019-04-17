@@ -80,8 +80,6 @@ class AdsImpl : public Ads {
 
   void ConfirmAdUUIDIfAdEnabled();
 
-  bool IsSupportedRegion() override;
-
   void SetConfirmationsIsReady(const bool is_ready) override;
 
   void ChangeLocale(const std::string& locale) override;
