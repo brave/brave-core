@@ -155,10 +155,6 @@ window.cr.define('brave_rewards', function () {
     getActions().onConfirmationsHistoryChanged()
   }
 
-  function adsIsSupportedRegion (supported: boolean) {
-    getActions().onAdsIsSupportedRegion(supported)
-  }
-
   function recurringTipSaved (success: boolean) {
     getActions().onRecurringTipSaved(success)
   }
@@ -199,7 +195,6 @@ window.cr.define('brave_rewards', function () {
     addressesForPaymentId,
     confirmationsHistory,
     confirmationsHistoryChanged,
-    adsIsSupportedRegion,
     recurringTipSaved,
     recurringTipRemoved,
     onContributionSaved

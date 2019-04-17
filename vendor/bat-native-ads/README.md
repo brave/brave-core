@@ -30,6 +30,12 @@ Initialize Ads by calling `Initialize` when Ads are enabled or disabled on the C
 void Initialize()
 ```
 
+`IsSupportedRegion` should be called to determine if Ads are supported for the specified region
+```
+static bool IsSupportedRegion(
+    const std::string& locale)
+```
+
 `OnForeground` should be called when the browser enters the foreground
 ```
 void OnForeground()
@@ -80,11 +86,6 @@ void TabClosed(
 `RemoveAllHistory` should be called to remove all cached history when the user clears browsing data
 ```
 void RemoveAllHistory()
-```
-
-`IsSupportedRegion` should be called to determine if Ads are supported for this operating system's region
-```
-bool IsSupportedRegion()
 ```
 
 `SetConfirmationsIsReady` should be called to inform Ads if Confirmations is ready
