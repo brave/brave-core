@@ -155,10 +155,6 @@ window.cr.define('brave_rewards', function () {
     getActions().onConfirmationsHistoryChanged()
   }
 
-  function adsIsSupportedRegion (supported: boolean) {
-    getActions().onAdsIsSupportedRegion(supported)
-  }
-
   return {
     initialize,
     walletCreated,
@@ -186,8 +182,7 @@ window.cr.define('brave_rewards', function () {
     rewardsEnabled,
     addressesForPaymentId,
     confirmationsHistory,
-    confirmationsHistoryChanged,
-    adsIsSupportedRegion
+    confirmationsHistoryChanged
   }
 })
 

@@ -186,10 +186,4 @@ export const onConfirmationsHistoryChanged = () => action(types.ON_CONFIRMATIONS
 
 export const getExcludedPublishersNumber = () => action(types.GET_EXCLUDED_PUBLISHERS_NUMBER)
 
-export const getAdsIsSupportedRegion = () => action(types.GET_ADS_IS_SUPPORTED_REGION)
-
-export const onAdsIsSupportedRegion = (supported: boolean) => action(types.ON_ADS_IS_SUPPORTED_REGION, {
-  supported
-})
-
 export const getRewardsMainEnabled = () => action(types.GET_REWARDS_MAIN_ENABLED)

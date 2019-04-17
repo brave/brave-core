@@ -12,6 +12,7 @@ interface BatAdsService {
   SetProduction(bool is_production) => ();
   SetTesting(bool is_testing) => ();
   SetDebug(bool is_debug) => ();
+  IsSupportedRegion(string locale) => (bool is_supported);
 };
 
 interface BatAdsClient {
@@ -77,5 +78,4 @@ interface BatAds {
   GenerateAdReportingNotificationShownEvent(string notification_info);
   GenerateAdReportingNotificationResultEvent(
       string notification_info, int32 result_type);
-  IsSupportedRegion() => (bool is_supported);
 };
