@@ -36,6 +36,8 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   void RegisterProfilePrefs(
       user_prefs::PrefRegistrySyncable* registry) override;
   bool ShouldMigratePrefs(user_prefs::PrefRegistrySyncable* registry) const;
+  bool ShouldMigratePrefsFrom62(
+      user_prefs::PrefRegistrySyncable* registry) const;
 
   DISALLOW_COPY_AND_ASSIGN(AdsServiceFactory);
 };
