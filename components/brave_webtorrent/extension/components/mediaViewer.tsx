@@ -60,4 +60,20 @@ export default class MediaViewer extends React.PureComponent<Props, {}> {
 
     return <div className='mediaViewer'>{content}</div>
   }
+
+  componentDidMount () {
+    // Make our video "full screen" so it looks nice.
+    // This and CSS give it a letterbox effect.
+    if (document.getElementById('video') !== null) {
+      let style = document.body.style
+      style.paddingTop = '0px'
+      style.paddingLeft = '0px'
+      style.paddingBottom = '0px'
+      style.paddingRight = '0px'
+      style.marginTop = '0px'
+      style.marginLeft = '0px'
+      style.marginBottom = '0px'
+      style.marginRight = '0px'
+    }
+  }
 }
