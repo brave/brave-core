@@ -70,6 +70,7 @@ test("brave_unit_tests") {
     "//brave/chromium_src/components/metrics/enabled_state_provider_unittest.cc",
     "//brave/chromium_src/components/search_engines/brave_template_url_prepopulate_data_unittest.cc",
     "//brave/chromium_src/components/search_engines/brave_template_url_service_util_unittest.cc",
+    "//brave/chromium_src/components/translate/core/browser/translate_manager_unittest.cc",
     "//brave/chromium_src/components/version_info/brave_version_info_unittest.cc",
     "//brave/chromium_src/net/cookies/brave_canonical_cookie_unittest.cc",
     "//brave/common/brave_content_client_unittest.cc",
@@ -176,6 +177,7 @@ test("brave_unit_tests") {
     "//content/test:test_support",
     "//components/signin/core/browser",
     "//components/sync_preferences",
+    "//components/translate/core/browser:test_support",
     "//content/public/common",
     "//third_party/cacheinvalidation",
   ]
