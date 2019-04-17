@@ -1,0 +1,17 @@
+diff --git a/chrome/browser/resources/settings/autofill_page/payments_section.html b/chrome/browser/resources/settings/autofill_page/payments_section.html
+index 2cb349b7cac108dc3b90c62cbe77a46258397ca6..cc5121a7873222df9fe00a63c920b0e77cec304a 100644
+--- a/chrome/browser/resources/settings/autofill_page/payments_section.html
++++ b/chrome/browser/resources/settings/autofill_page/payments_section.html
+@@ -54,10 +54,12 @@
+       </div>
+     </template>
+ 
++    <if expr="_google_chrome">
+     <div id="manageLink" class="settings-box first">
+       <!-- This span lays out the URL correctly, relative to the label. -->
+       <span>$i18nRaw{manageCreditCardsLabel}</span>
+     </div>
++    </if>
+ 
+     <div class="settings-box continuation">
+       <h2 class="start">$i18n{creditCards}</h2>
