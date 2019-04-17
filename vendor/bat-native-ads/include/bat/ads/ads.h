@@ -38,6 +38,9 @@ class ADS_EXPORT Ads {
 
   static Ads* CreateInstance(AdsClient* ads_client);
 
+  // Should be called to determine if Ads are supported for the specified locale
+  static bool IsSupportedRegion(const std::string& locale);
+
   // Should be called when Ads are enabled or disabled on the Client
   virtual void Initialize() = 0;
 
@@ -75,10 +78,6 @@ class ADS_EXPORT Ads {
 
   // Should be called to remove all cached history
   virtual void RemoveAllHistory() = 0;
-
-  // Shhould be called to determine if Ads are supported for this operating
-  // system's region
-  virtual bool IsSupportedRegion() = 0;
 
   // Should be called to inform Ads if Confirmations is ready
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
