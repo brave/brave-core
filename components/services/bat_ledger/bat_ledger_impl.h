@@ -12,6 +12,7 @@
 #include <memory>
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger.h"
@@ -75,9 +76,7 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void FetchGrants(
       const std::string& lang, const std::string& payment_id) override;
-  void GetGrantCaptcha(
-    const std::string& promotion_id,
-    const std::string& promotion_type) override;
+  void GetGrantCaptcha(const std::vector<std::string>& headers) override;
   void GetWalletPassphrase(GetWalletPassphraseCallback callback) override;
   void RecoverWallet(const std::string& passPhrase) override;
   void SolveGrantCaptcha(

@@ -100,9 +100,6 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void FetchGrants(const std::string& lang,
                    const std::string& payment_id) override;
-  void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) override;
 
   std::string URIEncode(const std::string& value) override;
 

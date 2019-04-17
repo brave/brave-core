@@ -1433,8 +1433,11 @@ void RewardsServiceImpl::GetGrantCaptcha(
   if (!Connected()) {
     return;
   }
-
-  bat_ledger_->GetGrantCaptcha(promotion_id, promotion_type);
+  std::vector<std::string> headers;
+  headers.push_back("brave-product:brave-core");
+  headers.push_back("promotion-id:" + promotion_id);
+  headers.push_back("promotion-type:" + promotion_type);
+  bat_ledger_->GetGrantCaptcha(headers);
 }
 
 void RewardsServiceImpl::TriggerOnGrantCaptcha(const std::string& image,

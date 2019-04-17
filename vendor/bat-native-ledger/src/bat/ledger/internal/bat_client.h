@@ -54,8 +54,7 @@ class BatClient {
                 const std::string& promotionId);
 
   void getGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type);
+      const std::vector<std::string>& headers);
 
   void GetWalletProperties(ledger::OnWalletPropertiesCallback callback);
 

@@ -212,8 +212,7 @@ class LEDGER_EXPORT Ledger {
                                  const std::string& promotionId) const = 0;
 
   virtual void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) const = 0;
+      const std::vector<std::string>& headers) const = 0;
 
   virtual std::string GetWalletPassphrase() const = 0;
 
