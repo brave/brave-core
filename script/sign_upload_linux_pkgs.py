@@ -10,8 +10,10 @@ import logging
 import os
 import re
 import requests
+import shutil
 import subprocess
 import sys
+import time
 
 from argparse import RawTextHelpFormatter
 from lib.config import get_raw_version
@@ -108,6 +110,15 @@ def main():
             'Error: could not change directory to {}: {}'.format(repo_dir, ose))
         exit(message)
 
+    # remove files older than 120 days from dist_dir
+    delete_age = 120 * 86400
+
+    logging.info("Performing removal of files older than 120 days in directory: {}".format(dist_dir))
+
+    # act=False is used for testing, instead of actually removing the files
+    # we just report what files would be removed
+    remove_files_older_x_days(dist_dir, delete_age, act=False)
+
     # Now upload to aptly and rpm repos
 
     for item in ['upload_to_aptly', 'upload_to_rpm_repo']:
@@ -143,6 +154,38 @@ def main():
         message = (
             'Error: could not change directory to {}: {}'.format(saved_path, ose))
         exit(message)
+
+
+def remove_files_older_x_days(dir, age, act=False):
+    items = get_files_older_x_days(dir, age)
+    for i in items:
+        logging.debug("Removing file: {}".format(i))
+        if os.path.isfile(os.path.join(dir, i)):
+            if act:
+                logging.debug("Removing file: {}; "
+                              " mtime: {}".format(i,
+                                                  datetime.datetime.fromtimestamp(os.path.getmtime(
+                                                                                            os.path.join(dir, i)))))
+                try:
+                    os.remove(os.path.join(dir, i))
+                except Error as e:
+                    logging.error("Cannot remove file: {}; Error: {}".format(os.path.join(dir, i), e))
+            else:
+                logging.debug("Would remove file(act=False): {}; "
+                              " mtime: {}".format(i,
+                                                  datetime.datetime.fromtimestamp(os.path.getmtime(
+                                                                                            os.path.join(dir, i)))))
+
+
+def get_files_older_x_days(dir, age):
+    items = []
+    now = time.time()
+    for f in os.listdir(dir):
+        path = os.path.join(dir, f)
+        if os.path.isfile(path):
+            if os.stat(path).st_mtime < now - age:
+                items.append(f)
+    return items
 
 
 def download_linux_pkgs_from_github(args, logging):
