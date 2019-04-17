@@ -17,6 +17,13 @@
 - [ ] Tagged reviewers and labelled the pull request as needed.
 - [ ] Request a security/privacy review as needed.
 - [ ] Add appropriate QA labels (QA/Yes or QA/No) to include the closed issue in milestone
+- [ ] Public documentation has been updated as necessary. For instance:
+  - [ ] https://github.com/brave/brave-browser/wiki/Deviations-from-Chromium-(features-we-disable-or-remove)
+  - [ ] https://github.com/brave/brave-browser/wiki/Proxy-redirected-URLs
+  - [ ] https://github.com/brave/brave-browser/wiki/Fingerprinting-Protection-Mode
+  - [ ] https://github.com/brave/brave-browser/wiki/Brave%E2%80%99s-Use-of-Referral-Codes
+  - [ ] https://github.com/brave/brave-browser/wiki/Custom-Headers
+  - [ ] https://github.com/brave/brave-browser/wiki/Web-compatibility-issues-with-tracking-protection
 
 ## Test Plan:
 
@@ -27,3 +34,9 @@
 - [ ] Request a security/privacy review as needed.
 - [ ] Adequate test coverage exists to prevent regressions 
 - [ ] Verify test plan is specified in PR before merging to source
+
+## After-merge Checklist:
+
+- [ ] The associated issue milestone is set to the smallest version that the
+  changes has landed on.
+- [ ] All relevant documentation has been updated.
