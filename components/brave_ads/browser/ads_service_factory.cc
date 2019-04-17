@@ -80,6 +80,8 @@ bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
 
 void AdsServiceFactory::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
+  auto should_migrate_prefs_from_62 = ShouldMigratePrefsFrom62(registry);
+
   if (ShouldMigratePrefs(registry)) {
     // prefs::kBraveAdsPrefsVersion should default to 1 for legacy installations
     // so that preferences are migrated from version 1 to the current version
@@ -101,6 +103,10 @@ void AdsServiceFactory::RegisterProfilePrefs(
   #endif
 
   registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 15);
+
+  if (should_migrate_prefs_from_62) {
+    registry->RegisterBooleanPref(prefs::kBraveAdsPrefsMigratedFrom62, true);
+  }
 }
 
 bool AdsServiceFactory::ShouldMigratePrefs(
@@ -111,6 +117,20 @@ bool AdsServiceFactory::ShouldMigratePrefs(
 
   const base::Value* value = nullptr;
   if (!pref_store->GetValue(prefs::kBraveAdsEnabled, &value)) {
+    return false;
+  }
+
+  return true;
+}
+
+bool AdsServiceFactory::ShouldMigratePrefsFrom62(
+    user_prefs::PrefRegistrySyncable* registry) const {
+  // prefs::kBraveAdsPrefsVersion has existed since 0.63.45 so if this key does
+  // not exist then this must be an upgrade from 0.62.x so we should migrate
+  auto pref_store = registry->defaults();
+
+  const base::Value* value = nullptr;
+  if (pref_store->GetValue(prefs::kBraveAdsPrefsVersion, &value)) {
     return false;
   }
 

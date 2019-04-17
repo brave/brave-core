@@ -108,10 +108,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetConfirmationsHistory(const base::ListValue* args);
   void GetRewardsMainEnabled(const base::ListValue* args);
   void OnGetRewardsMainEnabled(bool enabled);
-  void OnAdsIsSupportedRegion(bool is_supported);
 
   void GetExcludedPublishersNumber(const base::ListValue* args);
-  void AdsIsSupportedRegion(const base::ListValue* args);
 
   void OnConfirmationsHistory(int total_viewed, double estimated_earnings);
 
@@ -284,9 +282,6 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getExcludedPublishersNumber",
       base::BindRepeating(&RewardsDOMHandler::GetExcludedPublishersNumber,
-      base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getAdsIsSupportedRegion",
-      base::BindRepeating(&RewardsDOMHandler::AdsIsSupportedRegion,
       base::Unretained(this)));
 }
 
@@ -873,45 +868,50 @@ void RewardsDOMHandler::CheckImported(const base::ListValue *args) {
 }
 
 void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
-  if (ads_service_ && web_ui()->CanCallJavascript()) {
-    base::DictionaryValue adsData;
-
-    bool ads_ui_enabled;
-    bool ads_enabled = ads_service_->is_enabled();
-    int ads_per_hour = ads_service_->ads_per_hour();
-
-    #if BUILDFLAG(BRAVE_ADS_ENABLED)
-      ads_ui_enabled = true;
-    #else
-      ads_ui_enabled = false;
-    #endif
-
-    adsData.SetBoolean("adsEnabled", ads_enabled);
-    adsData.SetInteger("adsPerHour", ads_per_hour);
-    adsData.SetBoolean("adsUIEnabled", ads_ui_enabled);
-
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsData", adsData);
+  if (!ads_service_ || !web_ui()->CanCallJavascript()) {
+    return;
   }
+
+  base::DictionaryValue ads_data;
+
+  auto is_supported_region = ads_service_->IsSupportedRegion();
+  ads_data.SetBoolean("adsIsSupported", is_supported_region);
+
+  auto is_ads_enabled = ads_service_->IsAdsEnabled();
+  ads_data.SetBoolean("adsEnabled", is_ads_enabled);
+
+  auto ads_per_hour = ads_service_->GetAdsPerHour();
+  ads_data.SetInteger("adsPerHour", ads_per_hour);
+
+  #if BUILDFLAG(BRAVE_ADS_ENABLED)
+    auto ads_ui_enabled = true;
+  #else
+    auto ads_ui_enabled = false;
+  #endif
+  ads_data.SetBoolean("adsUIEnabled", ads_ui_enabled);
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsData", ads_data);
 }
 
 void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
-  if (ads_service_) {
-    std::string key;
-    std::string value;
-    args->GetString(0, &key);
-    args->GetString(1, &value);
-
-    if (key == "adsEnabled") {
-      ads_service_->set_ads_enabled(value == "true");
-    }
-
-    if (key == "adsPerHour") {
-      ads_service_->set_ads_per_hour(std::stoi(value));
-    }
-
-    base::ListValue* emptyArgs;
-    GetAdsData(emptyArgs);
+  if (!ads_service_) {
+    return;
   }
+
+  std::string key;
+  args->GetString(0, &key);
+
+  std::string value;
+  args->GetString(1, &value);
+
+  if (key == "adsEnabled") {
+    ads_service_->SetAdsEnabled(value == "true");
+  } else if (key == "adsPerHour") {
+    ads_service_->SetAdsPerHour(std::stoull(value));
+  }
+
+  base::ListValue* emptyArgs = nullptr;
+  GetAdsData(emptyArgs);
 }
 
 void RewardsDOMHandler::SetBackupCompleted(const base::ListValue *args) {
@@ -1027,21 +1027,6 @@ void RewardsDOMHandler::GetExcludedPublishersNumber(
     rewards_service_->GetExcludedPublishersNumber(
         base::Bind(&RewardsDOMHandler::OnGetExcludedPublishersNumber,
                    weak_factory_.GetWeakPtr()));
-  }
-}
-
-void RewardsDOMHandler::AdsIsSupportedRegion(
-    const base::ListValue* args) {
-  ads_service_->IsSupportedRegion(base::BindOnce(
-          &RewardsDOMHandler::OnAdsIsSupportedRegion,
-          weak_factory_.GetWeakPtr()));
-}
-
-void RewardsDOMHandler::OnAdsIsSupportedRegion(
-    bool is_supported) {
-  if (web_ui()->CanCallJavascript()) {
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsIsSupportedRegion",
-        base::Value(is_supported));
   }
 }
 

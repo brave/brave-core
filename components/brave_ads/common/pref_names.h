@@ -11,12 +11,15 @@ namespace brave_ads {
 namespace prefs {
 
 extern const char kBraveAdsEnabled[];
+
 extern const char kBraveAdsPerHour[];
 extern const char kBraveAdsPerDay[];
 extern const char kBraveAdsIdleThreshold[];
+
 extern const int kBraveAdsPrefsDefaultVersion;
 extern const int kBraveAdsPrefsCurrentVersion;
 extern const char kBraveAdsPrefsVersion[];
+extern const char kBraveAdsPrefsMigratedFrom62[];
 
 }  // namespace prefs
 
