@@ -6,6 +6,7 @@
 #include "bat/ads/ads.h"
 
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/locale_helper.h"
 
 namespace ads {
 
@@ -21,6 +22,18 @@ const char _client_name[] = "client.json";
 // static
 Ads* Ads::CreateInstance(AdsClient* ads_client) {
   return new AdsImpl(ads_client);
+}
+
+bool Ads::IsSupportedRegion(const std::string& locale) {
+  auto region = helper::Locale::GetCountryCode(locale);
+
+  auto supported_regions = {"US", "CA", "DE", "FR", "GB"};
+  if (std::find(supported_regions.begin(), supported_regions.end(), region)
+      == supported_regions.end()) {
+    return false;
+  }
+
+  return true;
 }
 
 }  // namespace ads
