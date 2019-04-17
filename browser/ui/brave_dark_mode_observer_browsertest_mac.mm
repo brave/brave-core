@@ -27,23 +27,25 @@ void SetBraveThemeType(Profile* profile, BraveThemeType type) {
 // Test whether DarkModeObserver observes proper NativeTheme.
 IN_PROC_BROWSER_TEST_F(BraveDarkModeObserverTest,
                        ObserveProperNativeThemeTest) {
-  base::test::ScopedFeatureList features;
-  features.InitAndEnableFeature(features::kWebUIDarkMode);
+  if (@available(macOS 10.14, *)) {
+    base::test::ScopedFeatureList features;
+    features.InitAndEnableFeature(features::kWebUIDarkMode);
 
-  Profile* profile = browser()->profile();
+    Profile* profile = browser()->profile();
 
-  // Load webui to instantiate BraveDarkModeObserver.
-  AddTabAtIndexToBrowser(
-      browser(), 0, GURL("brave://history"), ui::PAGE_TRANSITION_TYPED, true);
+    // Load webui to instantiate BraveDarkModeObserver.
+    AddTabAtIndexToBrowser(
+        browser(), 0, GURL("brave://history"), ui::PAGE_TRANSITION_TYPED, true);
 
-  // Initially set to light.
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
-  EXPECT_EQ(
-      ui::NativeTheme::GetInstanceForNativeUi(),
-      BraveDarkModeObserver::current_native_theme_for_testing_);
+    // Initially set to light.
+    SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
+    EXPECT_EQ(
+        ui::NativeTheme::GetInstanceForNativeUi(),
+        BraveDarkModeObserver::current_native_theme_for_testing_);
 
-  SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
-  EXPECT_EQ(
-      ui::NativeThemeDarkAura::instance(),
-      BraveDarkModeObserver::current_native_theme_for_testing_);
+    SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
+    EXPECT_EQ(
+        ui::NativeThemeDarkAura::instance(),
+        BraveDarkModeObserver::current_native_theme_for_testing_);
+  }
 }
