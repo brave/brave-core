@@ -2,7 +2,7 @@ diff --git a/components/os_crypt/os_crypt_mac.mm b/components/os_crypt/os_crypt_
 index 88304b2c3865ea3b126789f6a976d8bae4aa50ba..43dc62d9b829dbfbb605e7bfbf30cc0180daafc5 100644
 --- a/components/os_crypt/os_crypt_mac.mm
 +++ b/components/os_crypt/os_crypt_mac.mm
-@@ -100,6 +100,10 @@ crypto::SymmetricKey* GetEncryptionKey() {
+@@ -100,6 +100,10 @@
      DCHECK(!g_key_creation_util);
      g_key_creation_util = new os_crypt::EncryptionKeyCreationUtilIOS();
  #endif
