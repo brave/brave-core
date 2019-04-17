@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
+index 662ff6224d64249902fac4099b4326df83149997..c2cdd1def36a20747b9b9d056bbf26432926178e 100644
+--- a/chrome/browser/ui/browser_commands.cc
++++ b/chrome/browser/ui/browser_commands.cc
+@@ -1105,7 +1105,7 @@ void FocusToolbar(Browser* browser) {
+ 
+ void FocusLocationBar(Browser* browser) {
+   base::RecordAction(UserMetricsAction("FocusLocation"));
+-  browser->window()->SetFocusToLocationBar();
++  browser->window()->SetFocusToLocationBar(true);
+ }
+ 
+ void FocusSearch(Browser* browser) {
