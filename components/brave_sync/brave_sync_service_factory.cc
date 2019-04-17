@@ -69,6 +69,7 @@ void BraveSyncServiceFactory::RegisterProfilePrefs(
 
   registry->RegisterStringPref(prefs::kSyncDeviceList, std::string());
   registry->RegisterStringPref(prefs::kSyncApiVersion, std::string("0"));
+  registry->RegisterIntegerPref(prefs::kSyncMigrateBookmarksVersion, 0);
 }
 
 content::BrowserContext* BraveSyncServiceFactory::GetBrowserContextToUse(

@@ -1,11 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2018 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BOOKMARKS_BOOKMARK_CHANGE_PROCESSOR_H_
-#define BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BOOKMARKS_BOOKMARK_CHANGE_PROCESSOR_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BOOKMARK_CHANGE_PROCESSOR_H_
+#define BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BOOKMARK_CHANGE_PROCESSOR_H_
 
+#include <memory>
 #include <set>
+#include <string>
+#include <vector>
 
 #include "base/compiler_specific.h"
 #include "base/macros.h"
@@ -18,6 +22,8 @@
 #include "components/bookmarks/browser/bookmark_node_data.h"
 
 FORWARD_DECLARE_TEST(BraveBookmarkChangeProcessorTest, IgnoreRapidCreateDelete);
+FORWARD_DECLARE_TEST(BraveBookmarkChangeProcessorTest,
+    MigrateOrdersForPermanentNodes);
 
 class BraveBookmarkChangeProcessorTest;
 
@@ -47,6 +53,8 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   friend class ::BraveBookmarkChangeProcessorTest;
   FRIEND_TEST_ALL_PREFIXES(::BraveBookmarkChangeProcessorTest,
                                                        IgnoreRapidCreateDelete);
+  FRIEND_TEST_ALL_PREFIXES(::BraveBookmarkChangeProcessorTest,
+                                                MigrateOrdersForPermanentNodes);
 
   BookmarkChangeProcessor(Profile* profile,
                           BraveSyncClient* sync_client,
@@ -105,9 +113,14 @@ class BookmarkChangeProcessor : public ChangeProcessor,
       const bookmarks::BookmarkNode* created_folder_node,
       const std::string& created_folder_object_id);
 
+  void MigrateOrders();
+  void MigrateOrdersForPermanentNode(bookmarks::BookmarkNode* perm_node);
+  int GetPermanentNodeIndex(const bookmarks::BookmarkNode* node) const;
+  static int FindMigrateSubOrderLength(const std::string& order);
+
   BraveSyncClient* sync_client_;  // not owned
   prefs::Prefs* sync_prefs_;  // not owned
-  Profile* profile_; // not owned
+  Profile* profile_;  // not owned
   bookmarks::BookmarkModel* bookmark_model_;  // not owned
 
   bookmarks::BookmarkNode* deleted_node_root_;

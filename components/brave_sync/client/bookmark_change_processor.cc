@@ -652,6 +652,27 @@ void BookmarkChangeProcessor::CompletePendingNodesMove(
   }
 }
 
+int BookmarkChangeProcessor::GetPermanentNodeIndex(
+    const bookmarks::BookmarkNode* node) const {
+  DCHECK(node->is_permanent_node());
+  if (node == bookmark_model_->bookmark_bar_node()) {
+    return 1;
+  } else if (node == bookmark_model_->other_node()) {
+    return 2;
+  } else if (node == bookmark_model_->mobile_node()) {
+    LOG(WARNING) << "[BraveSync] " << __func__ << " unexpected mobile_node";
+    return 3;
+  } else if (node ==
+        const_cast<BookmarkChangeProcessor*>(this)->GetDeletedNodeRoot()) {
+    // Brave defined pseudo node for storing deleted bookmark until get
+    // acknowledge about record present in sync cloud
+    return 4;
+  } else {
+    NOTREACHED();
+    return -1;
+  }
+}
+
 std::unique_ptr<jslib::SyncRecord>
 BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
     const bookmarks::BookmarkNode* node) {
@@ -694,9 +715,12 @@ BookmarkChangeProcessor::BookmarkNodeToSyncBookmark(
 
   std::string prev_order, next_order, parent_order;
   GetOrder(node->parent(), index, &prev_order, &next_order, &parent_order);
-  if (parent_order.empty() && node->parent()->is_permanent_node())
+  if (parent_order.empty() && node->parent()->is_permanent_node()) {
+    int permanent_parent_index = GetPermanentNodeIndex(node->parent());
     parent_order =
-        sync_prefs_->GetBookmarksBaseOrder() + std::to_string(index);
+        sync_prefs_->GetBookmarksBaseOrder() +
+        std::to_string(permanent_parent_index);
+  }
   bookmark->prevOrder = prev_order;
   bookmark->nextOrder = next_order;
   bookmark->parentOrder = parent_order;
@@ -800,8 +824,96 @@ bookmarks::BookmarkNode* BookmarkChangeProcessor::GetPendingNodeRoot() {
   return pending_node_root_;
 }
 
+int BookmarkChangeProcessor::FindMigrateSubOrderLength(
+    const std::string& order) {
+  // Old order subject to be migrated is <segment>.<segment>.<segment>.
+  // Return value is the substring length before the 3rd point
+
+  if (order.length() < 6) {
+    DCHECK(false) << "The minimal length of order required is 6, like '1.0.1.'";
+    return -1;
+  }
+
+  // 1st segment is guaranteed to be "1" or "2"
+  size_t pos2 = order.find('.', 2);
+  if (std::string::npos == pos2) {
+    DCHECK(false) << "Should find 2nd '.' in order";
+    return -1;
+  }
+
+  size_t pos3 = order.find('.', pos2 + 1);
+  if (std::string::npos == pos3) {
+    DCHECK(false) << "Should find 3rd '.' in order";
+    return -1;
+  }
+
+  std::string third_segment(order.begin() + pos2 + 1, order.begin() + pos3);
+  if (third_segment != "0") {
+    // No need to migrate
+    return -1;
+  }
+
+  if (pos3 == order.length() - 1) {
+    DLOG(WARNING) << "Should have at least one digit after 3rd '.'";
+    return -1;
+  }
+
+  return pos3;
+}
+
+void BookmarkChangeProcessor::MigrateOrdersForPermanentNode(
+    bookmarks::BookmarkNode* permanent_node) {
+
+  //                         Before              After
+  // bookmarks_bar child     "order":"1.0.0.1"   "order":"1.0.1.1"
+  // other_bookmarks child   "order":"1.0.0.1"   "order":"1.0.2.1"
+
+  // The old order part to be migrated is <segment>.<segment>.<segment>.
+  // The substring before the 3rd point
+  // Third segment should be "0" only for migration
+
+  int permanent_node_index = GetPermanentNodeIndex(permanent_node);
+  std::string perm_new_order = sync_prefs_->GetBookmarksBaseOrder() +
+      std::to_string(permanent_node_index);
+
+  ui::TreeNodeIterator<bookmarks::BookmarkNode>
+      iterator(permanent_node);
+  while (iterator.has_next()) {
+    bookmarks::BookmarkNode* node = iterator.Next();
+
+    std::string old_node_order;
+    if (node->GetMetaInfo("order", &old_node_order)
+                                                   && !old_node_order.empty()) {
+      int old_suborder_length = FindMigrateSubOrderLength(old_node_order);
+      if (old_suborder_length == -1) {
+        continue;
+      }
+
+      std::string new_node_order = perm_new_order +
+          old_node_order.substr(old_suborder_length);
+
+      node->SetMetaInfo("order", new_node_order);
+      BookmarkNodeChanged(bookmark_model_, node);
+    }
+  }
+}
+
+void BookmarkChangeProcessor::MigrateOrders() {
+  if (sync_prefs_->GetMigratedBookmarksVersion() >= 1) {
+    return;
+  }
+  for (const auto* node : { bookmark_model_->bookmark_bar_node(),
+                            bookmark_model_->other_node() }) {
+    MigrateOrdersForPermanentNode(const_cast<bookmarks::BookmarkNode*>(node));
+  }
+
+  sync_prefs_->SetMigratedBookmarksVersion(1);
+}
+
 void BookmarkChangeProcessor::SendUnsynced(
     base::TimeDelta unsynced_send_interval) {
+  MigrateOrders();
+
   std::vector<std::unique_ptr<jslib::SyncRecord>> records;
 
   auto* deleted_node = GetDeletedNodeRoot();

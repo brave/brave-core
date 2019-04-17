@@ -146,6 +146,7 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
   MockBraveSyncClient* sync_client() { return sync_client_.get(); }
   BookmarkClient* bookmark_client() { return model_->client(); }
   BookmarkModel* model() { return model_; }
+  brave_sync::prefs::Prefs* sync_prefs() { return sync_prefs_.get(); }
   brave_sync::BookmarkChangeProcessor* change_processor() {
     return change_processor_.get();
   }
@@ -1339,4 +1340,49 @@ TEST_F(BraveBookmarkChangeProcessorTest, IgnoreMetadataSet) {
   // Not interested in metadata changes, expecting no calls
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(0);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, MigrateOrdersForPermanentNodes) {
+  EXPECT_EQ(change_processor()->GetPermanentNodeIndex(
+      model()->bookmark_bar_node()), 1);
+  EXPECT_EQ(change_processor()->GetPermanentNodeIndex(
+      model()->other_node()), 2);
+
+  using brave_sync::BookmarkChangeProcessor;
+  EXPECT_EQ(BookmarkChangeProcessor::FindMigrateSubOrderLength("1.0.0.1"), 5);
+  EXPECT_EQ(BookmarkChangeProcessor::FindMigrateSubOrderLength("1.12.0.1"), 6);
+  EXPECT_EQ(BookmarkChangeProcessor::FindMigrateSubOrderLength("1.12.1.1"), -1);
+  EXPECT_EQ(BookmarkChangeProcessor::FindMigrateSubOrderLength("1.0.10."), -1);
+  EXPECT_EQ(BookmarkChangeProcessor::FindMigrateSubOrderLength("1.0.1."), -1);
+
+  sync_prefs()->SetBookmarksBaseOrder("1.0.");
+
+  change_processor()->Start();
+
+  EXPECT_EQ(sync_prefs()->GetMigratedBookmarksVersion(), 0);
+
+  const auto* node_OB = model()->AddURL(model()->other_node(), 0,
+      base::ASCIIToUTF16("OB item - title"),
+      GURL("https://ob_item.com/"));
+  const_cast<bookmarks::BookmarkNode*>(node_OB)->SetMetaInfo(
+      "order", "1.0.0.1");
+
+  const auto* node_BB = model()->AddURL(model()->bookmark_bar_node(), 0,
+      base::ASCIIToUTF16("BB item - title"),
+      GURL("https://bb_item.com/"));
+  const_cast<bookmarks::BookmarkNode*>(node_BB)->SetMetaInfo(
+      "order", "1.0.0.1");
+
+  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
+  EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
+  change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
+
+  std::string OB_order, BB_order;
+  node_OB->GetMetaInfo("order", &OB_order);
+  node_BB->GetMetaInfo("order", &BB_order);
+
+  EXPECT_EQ(BB_order, "1.0.1.1");
+  EXPECT_EQ(OB_order, "1.0.2.1");
+
+  EXPECT_EQ(sync_prefs()->GetMigratedBookmarksVersion(), 1);
 }
