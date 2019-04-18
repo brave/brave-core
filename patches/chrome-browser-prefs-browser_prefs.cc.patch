@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 2dbb15bfbcabefc07b629573e517f9968508365b..a00cc7869f853c4c80a35f845b7fd55cb4f733ae 100644
+index 6028c14a4c8469d6b2b1a22508636ec6c28bbb6f..c7a0787630f3f2d6bfed885027d484be3031207f 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -585,6 +585,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -614,6 +614,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
  #if defined(TOOLKIT_VIEWS)
    RegisterBrowserViewLocalPrefs(registry);
  #endif

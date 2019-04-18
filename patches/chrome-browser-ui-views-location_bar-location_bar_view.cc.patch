@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 737564115cf7bef246a40ed08f249bd5de721db5..f3b56352c461b93a86e1474cd730bad389f18b61 100644
+index c5909031e62360b74de940c3e1fdc4d2ed51ad96..30aa96ebaa3a0b94b8e30a70d2e86cb8592441cf 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -428,7 +428,7 @@ gfx::Size LocationBarView::CalculatePreferredSize() const {
-   return gfx::Size(width, height);
+@@ -437,7 +437,7 @@ void LocationBarView::OnKeywordFaviconFetched(const gfx::Image& icon) {
+   selected_keyword_view_->SetImage(icon.AsImageSkia());
  }
  
 -void LocationBarView::Layout() {
@@ -11,7 +11,7 @@ index 737564115cf7bef246a40ed08f249bd5de721db5..f3b56352c461b93a86e1474cd730bad3
    if (!IsInitialized())
      return;
  
-@@ -521,6 +521,11 @@ void LocationBarView::Layout() {
+@@ -544,6 +544,11 @@ void LocationBarView::Layout() {
      }
    };
  
@@ -22,4 +22,4 @@ index 737564115cf7bef246a40ed08f249bd5de721db5..f3b56352c461b93a86e1474cd730bad3
 +
    if (star_view_)
      add_trailing_decoration(star_view_);
-   add_trailing_decoration(page_action_icon_container_view_);
+   add_trailing_decoration(omnibox_page_action_icon_container_view_);

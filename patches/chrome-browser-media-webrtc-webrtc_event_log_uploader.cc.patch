@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/media/webrtc/webrtc_event_log_uploader.cc b/chrome/browser/media/webrtc/webrtc_event_log_uploader.cc
-index 571da26670dba958e1832a7a6eec425bc22bc378..f0cc7c00e198a21790270ab9153646b9713e44be 100644
+index 2a491a835ac4c2438964cb8e3f6175c8ed7e5e8f..c2737213ebeaa51269e425e4b84849d92b6c03a4 100644
 --- a/chrome/browser/media/webrtc/webrtc_event_log_uploader.cc
 +++ b/chrome/browser/media/webrtc/webrtc_event_log_uploader.cc
-@@ -255,6 +255,7 @@ bool WebRtcEventLogUploaderImpl::PrepareUploadData(std::string* upload_data) {
+@@ -268,6 +268,7 @@ bool WebRtcEventLogUploaderImpl::PrepareUploadData(std::string* upload_data) {
  }
  
  void WebRtcEventLogUploaderImpl::StartUpload(const std::string& upload_data) {

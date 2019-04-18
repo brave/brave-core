@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/extensions/icon_with_badge_image_source.cc b/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
-index 28fb4eb6e4ace08a60319ece51245b50824b776e..290c0fb92a535b3b8d7eedad3ce685ddab15157d 100644
+index 6fbd107461b93ef3dc99812e3a588f2d0382b36b..ebf9db80e40243bf12de0cf53c6a46d4d8e23237 100644
 --- a/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
 +++ b/chrome/browser/ui/extensions/icon_with_badge_image_source.cc
-@@ -79,14 +79,18 @@ void IconWithBadgeImageSource::Draw(gfx::Canvas* canvas) {
+@@ -146,14 +146,18 @@ void IconWithBadgeImageSource::Draw(gfx::Canvas* canvas) {
    gfx::ImageSkiaRep rep = skia.GetRepresentation(canvas->image_scale());
    if (rep.scale() != canvas->image_scale()) {
      skia.AddRepresentation(ScaleImageSkiaRep(

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/history/side_bar.html b/chrome/browser/resources/history/side_bar.html
-index 0c3b053b0df719cb81227597c7ffb8fd0673330d..64aecf43274e67c68849764f3b65d1512e80d3b8 100644
+index 73fa9dec87d708187f12c3d39a757f24a59b5c04..baccb2ac4c46eae75065fedea0cf8da8fccb167f 100644
 --- a/chrome/browser/resources/history/side_bar.html
 +++ b/chrome/browser/resources/history/side_bar.html
 @@ -119,11 +119,13 @@

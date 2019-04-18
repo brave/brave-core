@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/md_extensions/extensions.html b/chrome/browser/resources/md_extensions/extensions.html
+diff --git a/chrome/browser/resources/extensions/extensions.html b/chrome/browser/resources/extensions/extensions.html
 index 088cee5cf802262eaaf5806d4b68ebc52a24f002..b9db5844f50abfd5e7c3373b03ed68e1b242eed7 100644
---- a/chrome/browser/resources/md_extensions/extensions.html
-+++ b/chrome/browser/resources/md_extensions/extensions.html
+--- a/chrome/browser/resources/extensions/extensions.html
++++ b/chrome/browser/resources/extensions/extensions.html
 @@ -53,6 +53,7 @@
        width: 100%;
      }

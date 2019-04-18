@@ -1,8 +1,8 @@
 diff --git a/base/win/embedded_i18n/create_string_rc.py b/base/win/embedded_i18n/create_string_rc.py
-index d404cfd37d327e149771557cb37f56ed3a30b788..ff2e16bd94d1ed6729f8e15adcd4ce763855b516 100755
+index e046b6fe39c36e7323c8169355316c4a9583fd09..6606f40ff96bc3513699e5e3b9af8b34af3aa1b6 100755
 --- a/base/win/embedded_i18n/create_string_rc.py
 +++ b/base/win/embedded_i18n/create_string_rc.py
-@@ -342,7 +342,13 @@ Extra input files:
+@@ -344,7 +344,13 @@ Extra input files:
      # Read the source (en-US) string from the .grd file.
      grd_handler = GrdHandler(self.string_id_set)
      sax_parser.setContentHandler(grd_handler)
@@ -17,7 +17,7 @@ index d404cfd37d327e149771557cb37f56ed3a30b788..ff2e16bd94d1ed6729f8e15adcd4ce76
      source_strings = grd_handler.messages
  
      grd_file_path = os.path.dirname(grd_file)
-@@ -574,7 +580,7 @@ def main():
+@@ -576,7 +582,7 @@ def main():
          'specific strings were given.')
      valid_brands = [b for b in
        mode_specific_strings.itervalues().next().iterkeys()]

@@ -1,9 +1,9 @@
 diff --git a/content/public/browser/browser_context.h b/content/public/browser/browser_context.h
-index 0a6913f2ca560e318f4aebe40189144bcef1bf4f..b4bbbeb04506e17402e3447d11f3879d575029cf 100644
+index d2570b2329086933e5b0b74f3dbdbc5ac8854e29..36a05252e5e80cb1861b70b001240dc03251a000 100644
 --- a/content/public/browser/browser_context.h
 +++ b/content/public/browser/browser_context.h
-@@ -249,6 +249,9 @@ class CONTENT_EXPORT BrowserContext : public base::SupportsUserData {
-   // Return whether this context is incognito. Default is false.
+@@ -251,6 +251,9 @@ class CONTENT_EXPORT BrowserContext : public base::SupportsUserData {
+   // also off the record.
    virtual bool IsOffTheRecord() const = 0;
  
 +  // Return whether this context uses Tor. Default is false.

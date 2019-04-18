@@ -1,8 +1,8 @@
 diff --git a/components/search_engines/prepopulated_engines.json b/components/search_engines/prepopulated_engines.json
-index 9d7af2b2cf2c6b57f84bc2b29093a1eccaa7d386..52e449a8560411baa0c1c561f73f6ab08bd49ef2 100644
+index 877048a732259b50124a6518e9395ae6336352a4..3ce390dc7e422f2ffd17530d8e7a65f45c228850 100644
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
-@@ -95,16 +95,6 @@
+@@ -95,17 +95,6 @@
        "id": 68
      },
  
@@ -12,6 +12,7 @@ index 9d7af2b2cf2c6b57f84bc2b29093a1eccaa7d386..52e449a8560411baa0c1c561f73f6ab0
 -      "favicon_url": "https://duckduckgo.com/favicon.ico",
 -      "search_url": "https://duckduckgo.com/?q={searchTerms}",
 -      "suggest_url": "https://duckduckgo.com/ac/?q={searchTerms}&type=list",
+-      "new_tab_url": "https://duckduckgo.com/chrome_newtab",
 -      "type": "SEARCH_ENGINE_DUCKDUCKGO",
 -      "id": 92
 -    },
@@ -19,7 +20,7 @@ index 9d7af2b2cf2c6b57f84bc2b29093a1eccaa7d386..52e449a8560411baa0c1c561f73f6ab0
      "google": {
        "name": "Google",
        "keyword": "google.com",
-@@ -159,16 +149,6 @@
+@@ -160,16 +149,6 @@
        "id": 93
      },
  

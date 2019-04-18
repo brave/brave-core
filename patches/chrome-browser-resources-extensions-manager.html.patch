@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/md_extensions/manager.html b/chrome/browser/resources/md_extensions/manager.html
+diff --git a/chrome/browser/resources/extensions/manager.html b/chrome/browser/resources/extensions/manager.html
 index 0acd9673c751cdfa84eaec7b2ce624ded7ab46ec..9d9eac482a0a7352d3741924f4d6bcd3f0401455 100644
---- a/chrome/browser/resources/md_extensions/manager.html
-+++ b/chrome/browser/resources/md_extensions/manager.html
+--- a/chrome/browser/resources/extensions/manager.html
++++ b/chrome/browser/resources/extensions/manager.html
 @@ -2,7 +2,6 @@
  
  <link rel="import" href="chrome://resources/cr_elements/cr_drawer/cr_drawer.html">
