@@ -271,7 +271,6 @@ void BatLedgerImpl::GetGrantViaSafetynetCheck() {
 }
 
 void BatLedgerImpl::ApplySafetynetToken(const std::string& result_string) {
-  LOG(ERROR) << "!!!ApplySafetynetToken result_string == "  << result_string;
   ledger_->ApplySafetynetToken(result_string);
 }
 
