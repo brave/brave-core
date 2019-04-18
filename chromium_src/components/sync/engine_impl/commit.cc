@@ -16,6 +16,7 @@ SyncerError PostBraveCommit(sync_pb::ClientToServerMessage* message,
 }   // namespace syncer
 
 #include "../../../../../components/sync/engine_impl/commit.cc"
+#include "base/base64.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
 #include "brave/components/brave_sync/jslib_messages.h"
@@ -141,6 +142,13 @@ ConvertCommitsToBraveRecords(sync_pb::ClientToServerMessage* message,
       metaInfo.value = std::to_string(entity.ctime());
       bookmark->metaInfo.push_back(metaInfo);
 
+      if (bm_specifics.has_favicon()) {
+        std::string icon_base64;
+        base::Base64Encode(bm_specifics.favicon(), &icon_base64);
+        metaInfo.key = "icon_data";
+        metaInfo.value = icon_base64;
+        bookmark->metaInfo.push_back(metaInfo);
+      }
       record->SetBookmark(std::move(bookmark));
       record_list->push_back(std::move(record));
     }
