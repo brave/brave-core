@@ -778,7 +778,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
   }
 
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
-                           int result) {
+                           uint32_t result) {
     ASSERT_TRUE(result == ledger::Result::WALLET_CREATED ||
                 result == ledger::Result::NO_LEDGER_STATE);
     wallet_initialized_ = true;
