@@ -2,7 +2,7 @@ diff --git a/ui/native_theme/native_theme_mac.mm b/ui/native_theme/native_theme_
 index de3389fac98a708420374851dbf7c0970cb68102..32ca3fede8784b0f519174f314c302761dd0be75 100644
 --- a/ui/native_theme/native_theme_mac.mm
 +++ b/ui/native_theme/native_theme_mac.mm
-@@ -55,7 +55,11 @@ - (void)observeValueForKeyPath:(NSString*)forKeyPath
+@@ -55,7 +55,11 @@
                        ofObject:(id)object
                          change:(NSDictionary*)change
                         context:(void*)context {
