@@ -7,8 +7,16 @@ source_set("brave_content_browser_overlay_manifest") {
 
   deps = [
     "//base",
+    "//brave/components/services/bat_ads/public/cpp:manifest",
+    "//brave/components/services/bat_ledger/public/cpp:manifest",
     "//services/service_manager/public/cpp",
   ]
+
+  if (!is_android) {
+    deps += [
+      "//brave/utility/tor/public/cpp:manifest",
+    ]
+  }
 }
 
 source_set("brave_content_packaged_service_overlay_manifest") {
