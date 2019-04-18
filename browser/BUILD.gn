@@ -44,6 +44,8 @@ source_set("browser_process") {
     "component_updater/brave_component_updater_configurator.h",
     "component_updater/brave_crx_update_service.cc",
     "component_updater/brave_crx_update_service.h",
+    "content_settings/brave_cookie_settings_factory.cc",
+    "content_settings/brave_cookie_settings_factory.h",
     "geolocation/brave_geolocation_permission_context.cc",
     "geolocation/brave_geolocation_permission_context.h",
     "mac/sparkle_glue.mm",
