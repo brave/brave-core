@@ -327,6 +327,7 @@ void AdsImpl::SetConfirmationsIsReady(const bool is_ready) {
 
 void AdsImpl::ChangeLocale(const std::string& locale) {
   if (!IsInitialized()) {
+    BLOG(WARNING) << "Failed to change locale as not initialized";
     return;
   }
 
@@ -466,6 +467,7 @@ void AdsImpl::CachePageScore(
 
 void AdsImpl::TestShoppingData(const std::string& url) {
   if (!IsInitialized()) {
+    BLOG(WARNING) << "Failed to test shopping data as not initialized";
     return;
   }
 
@@ -478,6 +480,7 @@ void AdsImpl::TestShoppingData(const std::string& url) {
 
 bool AdsImpl::TestSearchState(const std::string& url) {
   if (!IsInitialized()) {
+    BLOG(WARNING) << "Failed to test search state as not initialized";
     return false;
   }
 
@@ -493,6 +496,7 @@ bool AdsImpl::TestSearchState(const std::string& url) {
 
 void AdsImpl::ServeSampleAd() {
   if (!IsInitialized()) {
+    BLOG(WARNING) << "Failed to serve sample Ad as not initialized";
     return;
   }
 
@@ -867,6 +871,7 @@ void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
 
 void AdsImpl::CollectActivity() {
   if (!IsInitialized()) {
+    BLOG(WARNING) << "Failed to collect activity as not initialized";
     return;
   }
 

@@ -302,7 +302,7 @@ Use staging Ads Serve as defined by `STAGING_SERVER` in `static_values.h`. Defau
 --brave-ads-staging
 ```
 
-Collect initial activity after 25 seconds instead of 1 hour as defined by `kDebugOneHourInSeconds` in `static_values.h`
+Collect initial activity after 25 seconds instead of 1 hour as defined by `kDebugOneHourInSeconds` in `static_values.h` and download the catalog after 15 minutes instead of 2 hours as defined by `kDebugCatalogPing` in `static_values.h`
 
 ```
 --brave-ads-debug

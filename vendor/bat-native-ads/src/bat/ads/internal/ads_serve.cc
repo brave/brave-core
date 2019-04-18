@@ -118,7 +118,12 @@ void AdsServe::Reset() {
 void AdsServe::UpdateNextCatalogCheck() {
   next_retry_start_timer_in_ = 0;
 
-  auto ping = bundle_->GetCatalogPing();
+  uint64_t ping;
+  if (_is_debug) {
+    ping = kDebugCatalogPing;
+  } else {
+    ping = bundle_->GetCatalogPing();
+  }
 
   // Add randomized delay so that the Ad server can't correlate users by timing
   auto rand_delay = base::RandInt(0, ping / 10);

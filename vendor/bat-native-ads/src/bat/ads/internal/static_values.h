@@ -35,6 +35,7 @@ static const uint64_t kDeliverNotificationsAfterSeconds =
     5 * base::Time::kSecondsPerMinute;
 
 static const uint64_t kDefaultCatalogPing = 2 * base::Time::kSecondsPerHour;
+static const uint64_t kDebugCatalogPing = 15 * base::Time::kSecondsPerMinute;
 
 static char kDefaultLanguageCode[] = "en";
 static char kDefaultCountryCode[] = "US";
