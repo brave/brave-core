@@ -107,6 +107,18 @@ void ExtractBookmarkMeta(sync_pb::SyncEntity* entity,
   }
 }
 
+void MigrateFromLegacySync(sync_pb::SyncEntity* entity) {
+  if (!entity->has_originator_cache_guid()) {
+    entity->set_originator_cache_guid("legacy_originator_cache_guid");
+  }
+  if (!entity->has_originator_client_item_id()) {
+    entity->set_originator_client_item_id("legacy_originator_client_item_id");
+  }
+  if (!entity->has_version()) {
+    entity->set_version(1);
+  }
+}
+
 void AddRootForType(sync_pb::SyncEntity* entity, ModelType type) {
   DCHECK(entity);
   sync_pb::EntitySpecifics specifics;
@@ -160,6 +172,8 @@ void AddBookmarkNode(sync_pb::SyncEntity* entity, const SyncRecord* record) {
   entity->set_folder(bookmark_record.isFolder);
 
   ExtractBookmarkMeta(entity, &specifics, bookmark_record);
+
+  MigrateFromLegacySync(entity);
 
   // TODO(darkdh): migrate to UniquePosition
   entity->set_position_in_parent(GetIndexByOrder(bookmark_record.order));

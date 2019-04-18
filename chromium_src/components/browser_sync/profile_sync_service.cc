@@ -207,11 +207,10 @@ std::unique_ptr<SyncRecord> BookmarkNodeToSyncBookmark(
   if (parent_order.empty() && node->parent()->is_permanent_node()) {
     if (node->parent() == model->bookmark_bar_node())
       parent_order =
-        brave_sync_prefs->GetBookmarksBaseOrder() + '0';
+        brave_sync_prefs->GetBookmarksBaseOrder() + '1';
     else
-      // TODO(darkdh): put this to 1 when old code fix the order
       parent_order =
-        brave_sync_prefs->GetBookmarksBaseOrder() + '0';
+        brave_sync_prefs->GetBookmarksBaseOrder() + '2';
   }
   bookmark->prevOrder = prev_order;
   bookmark->nextOrder = next_order;
@@ -783,7 +782,6 @@ void ProfileSyncService::BraveEngineParamsInit(
 
 void ProfileSyncService::OnNudgeSyncCycle(
     brave_sync::RecordsListPtr records) {
-  LOG(ERROR) << __func__;
   for (auto& record : *records) {
     record->deviceId = brave_sync_prefs_->GetThisDeviceId();
     if (record->has_bookmark()) {
@@ -793,12 +791,11 @@ void ProfileSyncService::OnNudgeSyncCycle(
         // bookmark toolbar
         if (!bookmark->hideInToolbar)
           bookmark->parentOrder =
-            brave_sync_prefs_->GetBookmarksBaseOrder() + '0';
+            brave_sync_prefs_->GetBookmarksBaseOrder() + '1';
         // other bookmarks
         else
-          // TODO(darkdh): put this to 1 when old code fix the order
           bookmark->parentOrder =
-            brave_sync_prefs_->GetBookmarksBaseOrder() + '0';
+            brave_sync_prefs_->GetBookmarksBaseOrder() + '2';
       }
     }
   }
@@ -810,8 +807,6 @@ void ProfileSyncService::OnNudgeSyncCycle(
 
 void ProfileSyncService::OnPollSyncCycle(GetRecordsCallback cb,
                                          base::WaitableEvent* wevent) {
-  LOG(ERROR) << __func__;
-
   if (IsTimeEmpty(brave_sync_prefs_->GetLastFetchTime()))
     SendCreateDevice();
   GetBraveSyncClient()->SendFetchSyncDevices();

@@ -74,6 +74,7 @@ ConvertCommitsToBraveRecords(sync_pb::ClientToServerMessage* message,
 
       std::string originator_cache_guid;
       std::string originator_client_item_id;
+       bool skip_record = false;
       for (int i = 0; i < bm_specifics.meta_info_size(); ++i) {
         if (bm_specifics.meta_info(i).key() == "order") {
           bookmark->order = bm_specifics.meta_info(i).value();
@@ -98,6 +99,11 @@ ConvertCommitsToBraveRecords(sync_pb::ClientToServerMessage* message,
         } else if (bm_specifics.meta_info(i).key() ==
                    "originator_client_item_id") {
           originator_client_item_id = bm_specifics.meta_info(i).value();
+        } else if (bm_specifics.meta_info(i).key() == "last_send_time" &&
+                   entity.version() == 0) {
+          // Upgrade from legacy code, we need to prevent sending duplicate
+          // records which are already on sync chain
+          skip_record = true;
         }
       }
 
@@ -150,7 +156,8 @@ ConvertCommitsToBraveRecords(sync_pb::ClientToServerMessage* message,
         bookmark->metaInfo.push_back(metaInfo);
       }
       record->SetBookmark(std::move(bookmark));
-      record_list->push_back(std::move(record));
+      if (!skip_record)
+        record_list->push_back(std::move(record));
     }
     sync_pb::CommitResponse_EntryResponse* entry_response =
       response->mutable_commit()->add_entryresponse();
