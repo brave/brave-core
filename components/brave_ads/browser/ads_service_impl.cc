@@ -605,6 +605,10 @@ bool AdsServiceImpl::IsAdsEnabled() const {
 }
 
 void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
+  if (is_enabled) {
+    profile_->GetPrefs()->SetBoolean(
+        prefs::kBraveAdsPrefsMigratedFrom62, false);
+  }
   profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, is_enabled);
 }
 
