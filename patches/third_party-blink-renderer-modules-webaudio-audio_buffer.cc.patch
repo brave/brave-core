@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
-index dedd3a0d2dd3c422ec3abff45839caf43e7432a7..8d663fb19b6fac18156b43a189dffd8faea1164c 100644
+index fd85f8425ff542d5c466c4b8168bca5da45eaebe..8e69639d01e367e7494250fca5600d319a16a438 100644
 --- a/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 +++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.cc
 @@ -29,6 +29,7 @@
@@ -10,7 +10,7 @@ index dedd3a0d2dd3c422ec3abff45839caf43e7432a7..8d663fb19b6fac18156b43a189dffd8f
  #include "third_party/blink/renderer/modules/webaudio/audio_buffer_options.h"
  #include "third_party/blink/renderer/modules/webaudio/base_audio_context.h"
  #include "third_party/blink/renderer/platform/audio/audio_bus.h"
-@@ -222,8 +223,13 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
+@@ -207,8 +208,13 @@ AudioBuffer::AudioBuffer(AudioBus* bus)
  }
  
  NotShared<DOMFloat32Array> AudioBuffer::getChannelData(
@@ -24,7 +24,7 @@ index dedd3a0d2dd3c422ec3abff45839caf43e7432a7..8d663fb19b6fac18156b43a189dffd8f
    if (channel_index >= channels_.size()) {
      exception_state.ThrowDOMException(
          DOMExceptionCode::kIndexSizeError,
-@@ -243,16 +249,22 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
+@@ -228,16 +234,22 @@ NotShared<DOMFloat32Array> AudioBuffer::getChannelData(unsigned channel_index) {
    return NotShared<DOMFloat32Array>(channels_[channel_index].Get());
  }
  

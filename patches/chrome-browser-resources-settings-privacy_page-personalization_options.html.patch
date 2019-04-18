@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.html b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-index 13d16bb8ac09a58b32242eeb166086c3fdc3a930..07a6d8d4e8dcb1a57ca07d41847f60cc164ea18f 100644
+index 7efe994e23907baac05b6d79485d51694678cff4..bd9e30aed5d3bb8c0ae35002796a61381c1c5b8d 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.html
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.html
-@@ -9,6 +9,9 @@
+@@ -10,6 +10,9 @@
  <link rel="import" href="../route.html">
  <link rel="import" href="../settings_shared_css.html">
  <link rel="import" href="privacy_page_browser_proxy.html">
@@ -12,7 +12,7 @@ index 13d16bb8ac09a58b32242eeb166086c3fdc3a930..07a6d8d4e8dcb1a57ca07d41847f60cc
  
  <!--
   * Note: If a synced pref is added/removed from this file, the method
-@@ -34,19 +37,26 @@
+@@ -35,19 +38,26 @@
          label="$i18n{searchSuggestPref}"
          sub-label="$i18n{searchSuggestPrefDesc}">
      </settings-toggle-button>
@@ -39,7 +39,7 @@ index 13d16bb8ac09a58b32242eeb166086c3fdc3a930..07a6d8d4e8dcb1a57ca07d41847f60cc
  <if expr="_google_chrome">
  <if expr="chromeos">
      <settings-toggle-button pref="{{prefs.cros.metrics.reportingEnabled}}"
-@@ -54,6 +64,8 @@
+@@ -55,6 +65,8 @@
          sub-label="$i18n{enableLoggingDesc}">
      </settings-toggle-button>
  </if><!-- chromeos -->
@@ -48,7 +48,7 @@ index 13d16bb8ac09a58b32242eeb166086c3fdc3a930..07a6d8d4e8dcb1a57ca07d41847f60cc
  <if expr="not chromeos">
      <settings-toggle-button id="metricsReportingControl"
          pref="[[metricsReportingPref_]]" label="$i18n{enableLogging}"
-@@ -67,7 +79,7 @@
+@@ -68,7 +80,7 @@
        </template>
      </settings-toggle-button>
  </if><!-- not chromeos -->

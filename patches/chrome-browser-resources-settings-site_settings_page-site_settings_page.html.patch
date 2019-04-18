@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-index 3109d0976d3cf2631d77798e07c139a10a710e41..884741fa4e3f1c066b2cb28520b5dfb1b0a0f1f9 100644
+index 858b13b7be4c2e676a015553f0bcca52837c33b2..b4146ed24a0b25810148191ed8fd088045555cf0 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.html
-@@ -86,7 +86,18 @@
+@@ -85,7 +85,18 @@
              default_.notifications,
              '$i18nPolymer{siteSettingsAskBeforeSending}',
              '$i18nPolymer{siteSettingsBlocked}')]]"></cr-link-row>
@@ -22,7 +22,7 @@ index 3109d0976d3cf2631d77798e07c139a10a710e41..884741fa4e3f1c066b2cb28520b5dfb1
      <cr-link-row class="hr two-line" data-route="SITE_SETTINGS_JAVASCRIPT"
          id="javascript" label="$i18n{siteSettingsJavascript}"
          on-click="onTapNavigate_" start-icon="settings:code"
-@@ -118,7 +129,7 @@
+@@ -117,7 +128,7 @@
              default_.popups,
              '$i18nPolymer{siteSettingsAllowed}',
              '$i18nPolymer{siteSettingsBlocked}')]]"></cr-link-row>
@@ -31,7 +31,7 @@ index 3109d0976d3cf2631d77798e07c139a10a710e41..884741fa4e3f1c066b2cb28520b5dfb1
      <template is="dom-if" if="[[enableSafeBrowsingSubresourceFilter_]]">
        <cr-link-row class="hr two-line" data-route="SITE_SETTINGS_ADS" id="ads"
            label="$i18n{siteSettingsAds}" on-click="onTapNavigate_"
-@@ -136,7 +147,7 @@
+@@ -135,7 +146,7 @@
              default_.backgroundSync,
              '$i18nPolymer{siteSettingsAllowRecentlyClosedSites}',
              '$i18nPolymer{siteSettingsBackgroundSyncBlocked}')]]"></cr-link-row>

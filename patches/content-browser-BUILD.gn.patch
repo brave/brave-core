@@ -1,8 +1,8 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index a17fee9e275e817f97e943a48e36fa9e67340c9d..7de443b32075e0c98a2f081d2b5de12492a689c5 100644
+index 7a1d4333934acfa9c04d2e098e3798d286b27350..681dce6aaf93cd4d36f3461274d69bcfbed85ab9 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -2192,6 +2192,12 @@ jumbo_source_set("browser") {
+@@ -2210,6 +2210,12 @@ jumbo_source_set("browser") {
        "//ppapi/proxy:ipc",
        "//ppapi/shared_impl",
      ]
@@ -12,6 +12,6 @@ index a17fee9e275e817f97e943a48e36fa9e67340c9d..7de443b32075e0c98a2f081d2b5de124
 +        "//brave/content/browser/renderer_host/brave_plugin_registry_impl.h",
 +      ]
 +    }
-     if (use_ozone) {
-       sources += [ "renderer_host/pepper/pepper_truetype_font_list_ozone.cc" ]
+     if (is_linux) {
+       deps += [ "//components/services/font:ppapi_fontconfig_matching" ]
      }

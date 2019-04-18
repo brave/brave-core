@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/extensions/install_verifier.cc b/chrome/browser/extensions/install_verifier.cc
-index 1f4e4f27248764e9b375a5c46af8c9a2179bb964..5839db767901a1953d3571bbb2e22b4d84c3d418 100644
+index 23b122e8627a262388927734317a1582b73542ff..d8ed84fe97b9000b38db1cd1dffa9c410ccb2df4 100644
 --- a/chrome/browser/extensions/install_verifier.cc
 +++ b/chrome/browser/extensions/install_verifier.cc
-@@ -15,6 +15,7 @@
- #include "base/metrics/histogram_macros.h"
+@@ -16,6 +16,7 @@
+ #include "base/one_shot_event.h"
  #include "base/stl_util.h"
  #include "base/trace_event/trace_event.h"
 +#include "brave/common/extensions/extension_constants.h"

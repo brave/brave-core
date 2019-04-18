@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/plugins/plugin_utils.cc b/chrome/browser/plugins/plugin_utils.cc
-index 8b04209fa967cf36c6f90a8c47dc22cc4fd25172..9ba805fdb55ebfec32bf05a4f4c53bf32a991fbb 100644
+index 01ea0ba7f0cb8a1ce2ee56a1a918d200159b4994..d77a8289ec8b07179b1ba2e89701d1132cd5920f 100644
 --- a/chrome/browser/plugins/plugin_utils.cc
 +++ b/chrome/browser/plugins/plugin_utils.cc
-@@ -158,7 +158,8 @@ std::string PluginUtils::GetExtensionIdForMimeType(
+@@ -184,7 +184,8 @@ PluginUtils::GetMimeTypeToExtensionIdMap(
    bool profile_is_off_the_record = io_data->IsOffTheRecord();
    const scoped_refptr<const extensions::InfoMap> extension_info_map(
        io_data->GetExtensionInfoMap());
