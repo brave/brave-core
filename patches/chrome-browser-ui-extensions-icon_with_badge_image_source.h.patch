@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/extensions/icon_with_badge_image_source.h b/chrome/browser/ui/extensions/icon_with_badge_image_source.h
-index addf0c4d1cd795eab24e538fbb136dcccd92f957..db769d55edbba9b7b3fdc579f91986f99cc161b7 100644
+index e82f79440e4bc4c3d19daae41688beab01be6831..a417fb79d0707a689ec8f0e9cb0a379100d32bd2 100644
 --- a/chrome/browser/ui/extensions/icon_with_badge_image_source.h
 +++ b/chrome/browser/ui/extensions/icon_with_badge_image_source.h
 @@ -13,6 +13,7 @@
@@ -8,9 +8,9 @@ index addf0c4d1cd795eab24e538fbb136dcccd92f957..db769d55edbba9b7b3fdc579f91986f9
  
 +class BraveActionIconWithBadgeImageSource;
  namespace gfx {
+ class RenderText;
  class Size;
- }
-@@ -20,6 +21,7 @@ class Size;
+@@ -21,6 +22,7 @@ class Size;
  // CanvasImageSource for creating extension icon with a badge.
  class IconWithBadgeImageSource : public gfx::CanvasImageSource {
   public:
@@ -18,7 +18,7 @@ index addf0c4d1cd795eab24e538fbb136dcccd92f957..db769d55edbba9b7b3fdc579f91986f9
    // The data representing a badge to be painted over the base image.
    struct Badge {
      Badge(const std::string& text,
-@@ -56,11 +58,16 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
+@@ -57,11 +59,16 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
    }
  
   private:
@@ -36,7 +36,7 @@ index addf0c4d1cd795eab24e538fbb136dcccd92f957..db769d55edbba9b7b3fdc579f91986f9
  
    // Paints a decoration over the base icon to indicate that the action wants to
    // run.
-@@ -75,7 +82,7 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
+@@ -76,7 +83,7 @@ class IconWithBadgeImageSource : public gfx::CanvasImageSource {
    // all cases, our badges and decorations should be positions at the corners of
    // the area where the icon exists (ignoring all the paddings).
    // https://crbug.com/831946.

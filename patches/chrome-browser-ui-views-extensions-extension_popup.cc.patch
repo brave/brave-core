@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/extensions/extension_popup.cc b/chrome/browser/ui/views/extensions/extension_popup.cc
-index 57d16aba9e9fef4a7862d052e55f50d7d19e4627..a77193cf9d224745897bf3235ec1071e3885a443 100644
+index db05a2b9b79e16562096916eea2f1a5362c09f34..7b35a6ea6abafa2bfeb538e292f858455d7a0631 100644
 --- a/chrome/browser/ui/views/extensions/extension_popup.cc
 +++ b/chrome/browser/ui/views/extensions/extension_popup.cc
 @@ -4,6 +4,7 @@
@@ -10,13 +10,12 @@ index 57d16aba9e9fef4a7862d052e55f50d7d19e4627..a77193cf9d224745897bf3235ec1071e
  #include "chrome/browser/chrome_notification_types.h"
  #include "chrome/browser/devtools/devtools_window.h"
  #include "chrome/browser/extensions/extension_view_host.h"
-@@ -146,8 +147,23 @@ gfx::Size ExtensionPopup::CalculatePreferredSize() const {
- }
- 
+@@ -67,8 +68,22 @@ gfx::Size ExtensionPopup::CalculatePreferredSize() const {
  void ExtensionPopup::AddedToWidget() {
+   BubbleDialogDelegateView::AddedToWidget();
+ 
 -  const int radius =
 -      GetBubbleFrameView()->bubble_border()->GetBorderCornerRadius();
-+
 +  // HACK: removes border radius for brave extensions
 +  //        as webview does not support radius clipping which results
 +  //        in white strips at top and bottom of popup.

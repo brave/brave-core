@@ -1,8 +1,8 @@
 diff --git a/chrome/app/BUILD.gn b/chrome/app/BUILD.gn
-index 8670f53f406ec4fbc41f7e35667fa0f73f6037cb..1d6563721a05e6c43cb280abffd8ae6830e80223 100644
+index 37e326beff94f8010e3d896e462d3356c1d1d407..8cf55455870fe40fa1ab4041902a794f4a185f0a 100644
 --- a/chrome/app/BUILD.gn
 +++ b/chrome/app/BUILD.gn
-@@ -182,6 +182,8 @@ grit("generated_resources") {
+@@ -186,6 +186,8 @@ grit("generated_resources") {
    if (is_android) {
      outputs += android_generated_java_resources
    }
@@ -11,7 +11,7 @@ index 8670f53f406ec4fbc41f7e35667fa0f73f6037cb..1d6563721a05e6c43cb280abffd8ae68
  }
  
  if (is_android) {
-@@ -259,7 +261,7 @@ grit("google_chrome_strings") {
+@@ -263,7 +265,7 @@ grit("google_chrome_strings") {
  }
  
  grit("chromium_strings") {
@@ -20,7 +20,7 @@ index 8670f53f406ec4fbc41f7e35667fa0f73f6037cb..1d6563721a05e6c43cb280abffd8ae68
    defines = chrome_grit_defines
    output_dir = "$root_gen_dir/chrome"
    outputs = [
-@@ -344,6 +346,7 @@ static_library("test_support") {
+@@ -348,6 +350,7 @@ static_library("test_support") {
      "//components/nacl/common:buildflags",
      "//components/startup_metric_utils/browser:lib",
      "//components/tracing",

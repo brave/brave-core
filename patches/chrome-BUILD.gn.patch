@@ -1,8 +1,8 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc487f8962 100644
+index 64c7fbccee69e037e6c2360f4025f87530fe14ed..c4f07eccab87abb1267aacf7459746eee985c404 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
-@@ -191,6 +191,10 @@ if (!is_android && !is_mac) {
+@@ -190,6 +190,10 @@ if (!is_android && !is_mac) {
            "common/crash_keys.cc",
            "common/crash_keys.h",
          ]
@@ -13,7 +13,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
  
          deps += [
            ":chrome_dll",
-@@ -275,6 +279,7 @@ if (!is_android && !is_mac) {
+@@ -274,6 +278,7 @@ if (!is_android && !is_mac) {
            "//headless:headless_shell_lib",
            "//services/service_manager/embedder",
          ]
@@ -21,7 +21,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
  
          public_deps = [
            ":xdg_mime",  # Needs to be public for installer to consume files.
-@@ -423,6 +428,7 @@ if (is_win) {
+@@ -420,6 +425,7 @@ if (is_win) {
        "//third_party/wtl",
        "//ui/views",
      ]
@@ -29,7 +29,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
  
      ldflags = [
        "/DELAYLOAD:comdlg32.dll",
-@@ -522,6 +528,7 @@ if (is_win) {
+@@ -519,6 +525,7 @@ if (is_win) {
          "//headless:headless_shell_child_lib",
          "//services/service_manager/embedder",
        ]
@@ -37,7 +37,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
  
        ldflags = [
          "/DELAYLOAD:d3d11.dll",
-@@ -620,6 +627,11 @@ if (is_win) {
+@@ -617,6 +624,11 @@ if (is_win) {
      ]
    }
  
@@ -49,7 +49,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
    mac_app_bundle("chrome_app") {
      output_name = chrome_product_full_name
  
-@@ -652,6 +664,7 @@ if (is_win) {
+@@ -649,6 +661,7 @@ if (is_win) {
                    rebase_path("app/app.exports", root_build_dir) ]
      }
    }
@@ -57,7 +57,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
  
    compiled_action("chrome_app_strings") {
      tool = "//chrome/tools/build/mac:infoplist_strings_tool"
-@@ -681,7 +694,7 @@ if (is_win) {
+@@ -678,7 +691,7 @@ if (is_win) {
      args =
          [
            "-b",
@@ -66,7 +66,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
            "-v",
            rebase_path(chrome_version_file, root_build_dir),
            "-g",
-@@ -1199,6 +1212,7 @@ if (is_win) {
+@@ -1196,6 +1209,7 @@ if (is_win) {
        "//services/service_manager/embedder",
        "//third_party/cld_3/src/src:cld_3",
      ]
@@ -74,7 +74,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
  
      if (is_component_build) {
        libs = [ "Carbon.framework" ]
-@@ -1263,6 +1277,10 @@ if (is_win) {
+@@ -1259,6 +1273,10 @@ if (is_win) {
      if (is_chrome_branded) {
        deps += [ ":default_apps" ]
      }
@@ -85,7 +85,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
  
      ldflags = [
        "-Wl,-install_name,@executable_path/../Versions/$chrome_version_full/$chrome_framework_name.framework/$chrome_framework_name",
-@@ -1422,6 +1440,7 @@ if (is_win) {
+@@ -1418,6 +1436,7 @@ if (is_win) {
  
  group("browser_dependencies") {
    public_deps = [
@@ -93,7 +93,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
      "//chrome/browser",
      "//chrome/common",
      "//components/gwp_asan/buildflags",
-@@ -1464,6 +1483,7 @@ group("browser_dependencies") {
+@@ -1460,6 +1479,7 @@ group("browser_dependencies") {
  
  group("child_dependencies") {
    public_deps = [
@@ -101,7 +101,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
      "//chrome/browser/devtools",
      "//chrome/child",
      "//chrome/common",
-@@ -1491,7 +1511,7 @@ group("child_dependencies") {
+@@ -1487,7 +1507,7 @@ group("child_dependencies") {
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
      sources = [
@@ -110,7 +110,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1564,6 +1584,7 @@ group("resources") {
+@@ -1560,6 +1580,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -118,7 +118,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
    ]
  }
  
-@@ -1813,6 +1834,7 @@ if (is_android) {
+@@ -1810,6 +1831,7 @@ if (is_android) {
        "//content/public/common:service_names",
        "//services/service_manager/embedder",
      ]
