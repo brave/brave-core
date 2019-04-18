@@ -61,6 +61,7 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Rewards.TipsState",
     "Brave.Rewards.AdsState",
     "Brave.Uptime.BrowserOpenMinutes",
+    "Brave.Welcome.InteractionStatus",
 };
 
 base::TimeDelta GetRandomizedUploadInterval(base::TimeDelta upload_interval,

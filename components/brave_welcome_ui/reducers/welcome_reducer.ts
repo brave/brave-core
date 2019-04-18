@@ -44,6 +44,14 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
     case types.IMPORT_BROWSER_PROFILES_SUCCESS:
       state = { ...state, browserProfiles: payload }
       break
+    case types.RECORD_P3A:
+      let details = payload.details || {}
+      chrome.send('recordP3A', [
+        details.currentScreen,
+        details.finished,
+        details.skipped
+      ])
+      break
   }
 
   if (state !== startingState) {

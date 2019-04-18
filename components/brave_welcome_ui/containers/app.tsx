@@ -35,7 +35,9 @@ interface Props {
 }
 
 export interface State {
-  currentScreen: number
+  currentScreen: number,
+  finished: boolean,
+  skipped: boolean
 }
 
 const totalScreensSize = 6
@@ -44,8 +46,14 @@ export class WelcomePage extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      currentScreen: 1
+      currentScreen: 1,
+      finished: false,
+      skipped: false
     }
+  }
+
+  componentDidUpdate (prevProps: Props) {
+    this.props.actions.recordP3A(this.state)
   }
 
   get currentScreen () {
@@ -53,12 +61,16 @@ export class WelcomePage extends React.Component<Props, State> {
   }
 
   onClickLetsGo = () => {
-    this.setState({ currentScreen: this.state.currentScreen + 1 })
+    this.setState({
+      currentScreen: this.state.currentScreen + 1,
+    })
   }
 
   onClickImport = (sourceBrowserProfileIndex: number) => {
     this.props.actions.importBrowserProfileRequested(sourceBrowserProfileIndex)
-    this.setState({ currentScreen: this.state.currentScreen + 1 })
+    this.setState({
+      currentScreen: this.state.currentScreen + 1
+    })
   }
 
   onClickRewardsGetStarted = () => {
@@ -66,18 +78,28 @@ export class WelcomePage extends React.Component<Props, State> {
   }
 
   onClickSlideBullet = (nextScreen: number) => {
-    this.setState({ currentScreen: nextScreen })
+    this.setState({
+      currentScreen: nextScreen,
+    })
   }
 
   onClickNext = () => {
-    this.setState({ currentScreen: this.state.currentScreen + 1 })
+    this.setState({
+      currentScreen: this.state.currentScreen + 1,
+    })
   }
 
   onClickDone = () => {
+    this.setState({
+      finished: true
+    })
     this.props.actions.goToTabRequested('chrome://newtab', '_self')
   }
 
   onClickSkip = () => {
+    this.setState({
+      skipped: true
+    })
     this.props.actions.goToTabRequested('chrome://newtab', '_self')
   }
 

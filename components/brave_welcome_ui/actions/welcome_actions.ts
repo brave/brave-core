@@ -34,3 +34,7 @@ export const getBrowserProfiles = () => welcomeUtils.getBrowserProfiles()
 export const getBrowserThemes = () => welcomeUtils.getBrowserThemes()
 
 export const setTheme = (browserTheme: Welcome.BrowserTheme) => action(types.SET_BROWSER_THEME, browserTheme)
+
+export const recordP3A = (details: any) => action(types.RECORD_P3A, {
+  details
+})
