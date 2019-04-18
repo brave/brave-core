@@ -1,17 +1,8 @@
 diff --git a/chrome/browser/ui/location_bar/location_bar.h b/chrome/browser/ui/location_bar/location_bar.h
-index 239d3bac4ecff88a3a12b5cc6cf1c2fa8ff0c500..070bacb8c9cf9e832bb2358deb62f678f41c33c3 100644
+index c4a0819a49d4e2e8ef6fd4ca580679517116cf61..23c35dcdf6b57f089349ea5f0253df5ca1eeeda4 100644
 --- a/chrome/browser/ui/location_bar/location_bar.h
 +++ b/chrome/browser/ui/location_bar/location_bar.h
-@@ -45,7 +45,7 @@ class LocationBar {
-   virtual void AcceptInput(base::TimeTicks match_selection_timestamp) = 0;
- 
-   // Focuses the location bar and selects its contents.
--  virtual void FocusLocation() = 0;
-+  virtual void FocusLocation(bool select_all) = 0;
- 
-   // Puts the user into keyword mode with their default search provider.
-   virtual void FocusSearch() = 0;
-@@ -81,7 +81,7 @@ class LocationBar {
+@@ -89,7 +89,7 @@ class LocationBar {
    virtual ~LocationBar();
  
    // Checks if any extension has requested that the bookmark star be hidden.

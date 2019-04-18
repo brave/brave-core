@@ -1,26 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index 10bea76273f59c769553722bc2070850ed872d6b..eee3a12ac8dbc2f7c4cf868b27a86271aa6b5522 100644
+index 737564115cf7bef246a40ed08f249bd5de721db5..f3b56352c461b93a86e1474cd730bad389f18b61 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -337,13 +337,16 @@ void LocationBarView::SelectAll() {
- ////////////////////////////////////////////////////////////////////////////////
- // LocationBarView, public LocationBar implementation:
- 
--void LocationBarView::FocusLocation() {
-+void LocationBarView::FocusLocation(bool select_all) {
-   const bool omnibox_already_focused = omnibox_view_->HasFocus();
- 
-   omnibox_view_->SetFocus();
-   if (omnibox_already_focused)
-     omnibox_view()->model()->ClearKeyword();
- 
-+  if (!select_all)
-+    return;
-+
-   omnibox_view_->SelectAll(true);
- 
-   // Only exit Query in Omnibox mode on focus command if the location bar was
-@@ -424,7 +427,7 @@ gfx::Size LocationBarView::CalculatePreferredSize() const {
+@@ -428,7 +428,7 @@ gfx::Size LocationBarView::CalculatePreferredSize() const {
    return gfx::Size(width, height);
  }
  
@@ -29,7 +11,7 @@ index 10bea76273f59c769553722bc2070850ed872d6b..eee3a12ac8dbc2f7c4cf868b27a86271
    if (!IsInitialized())
      return;
  
-@@ -517,6 +520,11 @@ void LocationBarView::Layout() {
+@@ -521,6 +521,11 @@ void LocationBarView::Layout() {
      }
    };
  
@@ -41,12 +23,3 @@ index 10bea76273f59c769553722bc2070850ed872d6b..eee3a12ac8dbc2f7c4cf868b27a86271
    if (star_view_)
      add_trailing_decoration(star_view_);
    add_trailing_decoration(page_action_icon_container_view_);
-@@ -1186,7 +1194,7 @@ void LocationBarView::OnOmniboxHovered(bool is_hovering) {
- // LocationBarView, private DropdownBarHostDelegate implementation:
- 
- void LocationBarView::FocusAndSelectAll() {
--  FocusLocation();
-+  FocusLocation(true);
- }
- 
- ////////////////////////////////////////////////////////////////////////////////

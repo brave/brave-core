@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.h b/chrome/browser/ui/views/location_bar/location_bar_view.h
-index 7550088b46f3cb5a731c10f680fd47c42fc12746..3e5b98d09c7477a09fd0a31d38ab8f3a76f8b31e 100644
+index dc4a46b001d5c92209a6072b763c97f9fde82cf6..3e5b98d09c7477a09fd0a31d38ab8f3a76f8b31e 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.h
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.h
 @@ -114,6 +114,7 @@ class LocationBarView : public LocationBar,
@@ -18,15 +18,6 @@ index 7550088b46f3cb5a731c10f680fd47c42fc12746..3e5b98d09c7477a09fd0a31d38ab8f3a
    void Update(const content::WebContents* contents);
  
    // Clears the location bar's state for |contents|.
-@@ -201,7 +203,7 @@ class LocationBarView : public LocationBar,
-   bool ActivateFirstInactiveBubbleForAccessibility();
- 
-   // LocationBar:
--  void FocusLocation() override;
-+  void FocusLocation(bool select_all) override;
-   void Revert() override;
-   OmniboxView* GetOmniboxView() override;
- 
 @@ -210,6 +212,7 @@ class LocationBarView : public LocationBar,
    void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
    gfx::Size GetMinimumSize() const override;
