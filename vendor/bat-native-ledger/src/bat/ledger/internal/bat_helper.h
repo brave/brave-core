@@ -526,19 +526,6 @@ std::string sign(std::string* keys,
 
 uint64_t currentTime();
 
-void getTwitchParts(
-    const std::string& query,
-    std::vector<std::map<std::string, std::string>>* parts);
-
-std::string getMediaId(const std::map<std::string, std::string>& data,
-                       const std::string& type);
-
-std::string getMediaKey(const std::string& mediaId, const std::string& type);
-
-uint64_t getMediaDuration(const std::map<std::string, std::string>& data,
-                          const std::string& media_key,
-                          const std::string& type);
-
 std::string buildURL(const std::string& path,
                      const std::string& prefix = "",
                      const SERVER_TYPES& server = SERVER_TYPES::LEDGER);
@@ -552,7 +539,7 @@ void set_ignore_for_testing(bool ignore);
 uint8_t niceware_mnemonic_to_bytes(
     const std::string& w,
     std::vector<uint8_t>* bytes_out,
-    size_t *written,
+    size_t* written,
     std::vector<std::string> wordDictionary);
 
 uint64_t getRandomValue(uint8_t min, uint8_t max);

@@ -22,6 +22,7 @@
 #include "bat/ledger/internal/bat_publishers.h"
 #include "bat/ledger/internal/bat_state.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
 
@@ -184,7 +185,7 @@ void LedgerImpl::OnXHRLoad(
     // It is not a media supported type
     return;
   }
-  bat_get_media_->processMedia(parts, type, visit_data);
+  bat_get_media_->ProcessMedia(parts, type, visit_data);
 }
 
 void LedgerImpl::OnPostData(
@@ -203,9 +204,9 @@ void LedgerImpl::OnPostData(
 
   std::vector<std::map<std::string, std::string>> twitchParts;
   if (TWITCH_MEDIA_TYPE == type) {
-    braveledger_bat_helper::getTwitchParts(post_data, &twitchParts);
+    braveledger_media::GetTwitchParts(post_data, &twitchParts);
     for (size_t i = 0; i < twitchParts.size(); i++) {
-      bat_get_media_->processMedia(twitchParts[i], type, visit_data);
+      bat_get_media_->ProcessMedia(twitchParts[i], type, visit_data);
     }
   }
 }
@@ -997,8 +998,10 @@ void LedgerImpl::GetMediaActivityFromUrl(
     const ledger::VisitData& visit_data,
     const std::string& providerType,
     const std::string& publisher_blob) {
-  bat_get_media_->getMediaActivityFromUrl(
-      windowId, visit_data, providerType, publisher_blob);
+  bat_get_media_->GetMediaActivityFromUrl(windowId,
+                                          visit_data,
+                                          providerType,
+                                          publisher_blob);
 }
 
 void LedgerImpl::OnPanelPublisherInfo(

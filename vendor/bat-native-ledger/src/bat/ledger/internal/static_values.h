@@ -104,16 +104,6 @@ static const uint64_t _milliseconds_minute = 60 * 1000;
 
 static const uint64_t _milliseconds_second = 1000;
 
-static const std::vector<std::string> _twitch_events = {
-    "buffer-empty",
-    "buffer-refill",
-    "video_end",
-    "minute-watched",
-    "video_pause",
-    "player_click_vod_seek",
-    "video-play",
-    "video_error"};
-
 // 24 hours in seconds
 static const uint64_t _publishers_list_load_interval = 24 * 60 * 60;
 
