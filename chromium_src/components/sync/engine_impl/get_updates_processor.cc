@@ -7,6 +7,7 @@ SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse*, ModelTypeSet*,
 }   // namespace
 }   // namespace syncer
 #include "../../../../../components/sync/engine_impl/get_updates_processor.cc"
+#include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -98,6 +99,10 @@ void ExtractBookmarkMeta(sync_pb::SyncEntity* entity,
       bool result = base::StringToInt64(metaInfo.value, &ctime);
       DCHECK(result);
       entity->set_ctime(ctime);
+    } else if (metaInfo.key == "icon_data") {
+      std::string icon_data_decoded;
+      base::Base64Decode(metaInfo.value, &icon_data_decoded);
+      bm_specifics->set_favicon(icon_data_decoded);
     }
   }
 }
