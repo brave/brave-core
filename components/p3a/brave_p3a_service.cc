@@ -261,27 +261,28 @@ void BraveP3AService::StartScheduledUpload() {
 
 void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
                                          base::HistogramBase::Sample sample) {
-  if (!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) {
-    base::PostTaskWithTraits(
-        FROM_HERE, {content::BrowserThread::UI},
-        base::BindOnce(&BraveP3AService::OnHistogramChanged, this,
-                       histogram_name, sample));
-    return;
-  }
 
   std::unique_ptr<base::HistogramSamples> samples =
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
-
+  DCHECK(!samples->Iterator()->Done());
   // Note that we store only buckets, not actual values.
   size_t bucket = 0u;
   const bool ok = samples->Iterator()->GetBucketIndex(&bucket);
-
   if (!ok) {
     LOG(ERROR) << "Only linear histograms are supported at the moment!";
     NOTREACHED();
     return;
   }
 
+  base::PostTaskWithTraits(
+      FROM_HERE, {content::BrowserThread::UI},
+      base::BindOnce(&BraveP3AService::OnHistogramChangedOnUI, this,
+                     histogram_name, sample, bucket));
+}
+
+void BraveP3AService::OnHistogramChangedOnUI(base::StringPiece histogram_name,
+                                             base::HistogramBase::Sample sample,
+                                              size_t bucket) {
   VLOG(2) << "BraveP3AService::OnHistogramChanged: histogram_name = "
           << histogram_name << " Sample = " << sample << " bucket = " << bucket;
   if (!initialized_) {
@@ -290,6 +291,7 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
     log_store_->UpdateValue(histogram_name.as_string(), bucket);
   }
 }
+
 
 void BraveP3AService::OnLogUploadComplete(int response_code,
                                           int error_code,

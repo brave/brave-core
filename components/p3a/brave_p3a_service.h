@@ -58,6 +58,10 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   void OnHistogramChanged(base::StringPiece histogram_name,
                           base::HistogramBase::Sample sample);
 
+  void OnHistogramChangedOnUI(base::StringPiece histogram_name,
+                              base::HistogramBase::Sample sample,
+                              size_t bucket);
+
   void OnLogUploadComplete(int response_code, int error_code, bool was_https);
 
   // Restart the uploading process (i.e. mark all values as unsent).
