@@ -1711,7 +1711,7 @@ void AdsServiceImpl::OnPrefsChanged(
         // Apparently, the pref was disabled.
         brave_rewards::RecordAdsState(
             rewards_enabled ? AdsP3AState::kAdsEnabledThenDisabledRewardsOn :
-                              AdsP3AState::kAdsEnabledThenDisabledRewardsOn);
+                              AdsP3AState::kAdsEnabledThenDisabledRewardsOff);
         profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsWereDisabled, true);
       }
     } else {

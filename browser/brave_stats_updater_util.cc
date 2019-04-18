@@ -91,9 +91,6 @@ base::Time GetYMDAsDate(base::StringPiece ymd) {
   ok = base::StringToInt(pieces[2], &time.day_of_month);
   DCHECK(ok);
 
-  LOG(ERROR) << ymd;
-  LOG(ERROR) << time.year << " " << time.month << " " << time.day_of_month;
-
   DCHECK(time.HasValidValues());
 
   base::Time result;
