@@ -320,10 +320,10 @@ std::vector<std::string> TrackingProtectionService::GetThirdPartyHosts(
     }
   }
 
-  std::string thirdPartyHosts =
+  char* thirdPartyHosts =
       tracking_protection_client_->findFirstPartyHosts(base_host.c_str());
   std::vector<std::string> hosts;
-  if (!thirdPartyHosts.empty()) {
+  if (nullptr != thirdPartyHosts) {
     std::string strThirdPartyHosts = thirdPartyHosts;
     size_t iPos = strThirdPartyHosts.find(",");
     while (iPos != std::string::npos) {
@@ -335,6 +335,7 @@ std::vector<std::string> TrackingProtectionService::GetThirdPartyHosts(
     if (0 != strThirdPartyHosts.length()) {
       hosts.push_back(strThirdPartyHosts);
     }
+    delete []thirdPartyHosts;
   }
 
   {
