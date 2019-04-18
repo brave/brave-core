@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -40,9 +41,11 @@ class MockRewardsService : public RewardsService {
                                         const GetContentSiteListCallback&));
   MOCK_METHOD2(FetchGrants, void(const std::string&, const std::string&));
   MOCK_METHOD2(GetGrantCaptcha, void(const std::string&, const std::string&));
-  MOCK_CONST_METHOD2(SolveGrantCaptcha, void(const std::string&, const std::string&));
+  MOCK_CONST_METHOD2(SolveGrantCaptcha, void(const std::string&,
+                                             const std::string&));
   MOCK_METHOD1(GetWalletPassphrase, void(const GetWalletPassphraseCallback&));
-  MOCK_METHOD1(GetExcludedPublishersNumber, void(const GetExcludedPublishersNumberCallback&));
+  MOCK_METHOD1(GetExcludedPublishersNumber,
+      void(const GetExcludedPublishersNumberCallback&));
   MOCK_CONST_METHOD1(RecoverWallet, void(const std::string));
   MOCK_CONST_METHOD1(ExcludePublisher, void(const std::string));
   MOCK_METHOD0(RestorePublishers, void());
@@ -66,28 +69,35 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(GetReconcileStamp, void(const GetReconcileStampCallback&));
   MOCK_METHOD1(GetAddresses, void(const GetAddressesCallback&));
   MOCK_METHOD1(SetRewardsMainEnabled, void(bool));
-  MOCK_METHOD1(GetPublisherMinVisitTime, void(const GetPublisherMinVisitTimeCallback&));
+  MOCK_METHOD1(GetPublisherMinVisitTime,
+      void(const GetPublisherMinVisitTimeCallback&));
   MOCK_CONST_METHOD1(SetPublisherMinVisitTime, void(uint64_t));
-  MOCK_METHOD1(GetPublisherMinVisits, void(const GetPublisherMinVisitsCallback&));
+  MOCK_METHOD1(GetPublisherMinVisits,
+      void(const GetPublisherMinVisitsCallback&));
   MOCK_CONST_METHOD1(SetPublisherMinVisits, void(unsigned int));
-  MOCK_METHOD1(GetPublisherAllowNonVerified, void(const GetPublisherAllowNonVerifiedCallback&));
+  MOCK_METHOD1(GetPublisherAllowNonVerified,
+      void(const GetPublisherAllowNonVerifiedCallback&));
   MOCK_CONST_METHOD1(SetPublisherAllowNonVerified, void(bool));
-  MOCK_METHOD1(GetPublisherAllowVideos, void(const GetPublisherAllowVideosCallback&));
+  MOCK_METHOD1(GetPublisherAllowVideos,
+      void(const GetPublisherAllowVideosCallback&));
   MOCK_CONST_METHOD1(SetPublisherAllowVideos, void(bool));
   MOCK_CONST_METHOD1(SetContributionAmount, void(double));
   MOCK_CONST_METHOD0(SetUserChangedContribution, void());
   MOCK_METHOD1(GetAutoContribute, void(GetAutoContributeCallback));
   MOCK_CONST_METHOD1(SetAutoContribute, void(bool));
   MOCK_METHOD2(SetTimer, void(uint64_t, uint32_t*));
-  MOCK_METHOD1(GetAllBalanceReports, void(const GetAllBalanceReportsCallback&));
+  MOCK_METHOD1(GetAllBalanceReports,
+      void(const GetAllBalanceReportsCallback&));
   MOCK_METHOD0(GetCurrentBalanceReport, void());
   MOCK_METHOD1(IsWalletCreated, void(const IsWalletCreatedCallback&));
   MOCK_METHOD4(GetPublisherActivityFromUrl, void(uint64_t,
                                                  const std::string&,
                                                  const std::string&,
                                                  const std::string&));
-  MOCK_METHOD1(GetContributionAmount, void(const GetContributionAmountCallback&));
-  MOCK_METHOD2(GetPublisherBanner, void(const std::string&, GetPublisherBannerCallback));
+  MOCK_METHOD1(GetContributionAmount,
+      void(const GetContributionAmountCallback&));
+  MOCK_METHOD2(GetPublisherBanner, void(const std::string&,
+                                        GetPublisherBannerCallback));
   MOCK_METHOD4(OnDonate, void(const std::string&,
                               int,
                               bool,
@@ -103,16 +113,21 @@ class MockRewardsService : public RewardsService {
   MOCK_CONST_METHOD0(GetNotificationService, RewardsNotificationService*());
   MOCK_METHOD0(CheckImported, bool());
   MOCK_METHOD0(SetBackupCompleted, void());
-  MOCK_METHOD1(GetAutoContributeProps, void(const GetAutoContributePropsCallback&));
-  MOCK_METHOD1(GetPendingContributionsTotal, void(const GetPendingContributionsTotalCallback&));
-  MOCK_CONST_METHOD1(GetRewardsMainEnabled, void(const GetRewardsMainEnabledCallback&));
+  MOCK_METHOD1(GetAutoContributeProps,
+      void(const GetAutoContributePropsCallback&));
+  MOCK_METHOD1(GetPendingContributionsTotal,
+      void(const GetPendingContributionsTotalCallback&));
+  MOCK_CONST_METHOD1(GetRewardsMainEnabled,
+      void(const GetRewardsMainEnabledCallback&));
   MOCK_METHOD1(SetCatalogIssuers, void(const std::string&));
   MOCK_METHOD1(ConfirmAd, void(const std::string&));
   MOCK_METHOD1(GetRewardsInternalsInfo, void(GetRewardsInternalsInfoCallback));
   MOCK_METHOD1(GetAddressesForPaymentId, void(const GetAddressesCallback&));
-  MOCK_METHOD1(GetConfirmationsHistory, void(ConfirmationsHistoryCallback));
+  MOCK_METHOD1(GetTransactionHistoryForThisCycle,
+      void(GetTransactionHistoryForThisCycleCallback));
   MOCK_METHOD2(SaveRecurringTip, void(const std::string&, const int));
-  MOCK_METHOD2(RefreshPublisher, void(const std::string&, RefreshPublisherCallback));
+  MOCK_METHOD2(RefreshPublisher, void(const std::string&,
+                                      RefreshPublisherCallback));
 };
 
 class AdsServiceTest : public testing::Test {
@@ -132,7 +147,7 @@ class AdsServiceTest : public testing::Test {
         RewardsServiceFactory::GetForProfile(profile()));
     ads_service_ = AdsServiceFactory::GetForProfile(profile());
     ASSERT_TRUE(AdsServiceFactory::GetInstance() != NULL);
-    ASSERT_TRUE(ads_service() != NULL); 
+    ASSERT_TRUE(ads_service() != NULL);
   }
 
   void TearDown() override {
@@ -150,12 +165,3 @@ class AdsServiceTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
   MockRewardsService* rewards_service_;
 };
-
-
-TEST_F(AdsServiceTest, MaybeShowFirstLaunchNotification) {
-  EXPECT_CALL(*rewards_service(), GetNotificationService())
-      .Times(0);
-  profile()->GetPrefs()->SetBoolean(
-      brave_rewards::prefs::kBraveRewardsEnabled, false);
-  ads_service_->MaybeShowFirstLaunchNotification();
-}

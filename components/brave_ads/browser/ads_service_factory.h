@@ -45,4 +45,4 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_ADS_SERVICE_FACTORY_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_FACTORY_H_

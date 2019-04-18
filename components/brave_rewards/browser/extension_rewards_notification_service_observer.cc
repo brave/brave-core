@@ -31,7 +31,7 @@ ExtensionRewardsNotificationServiceObserver::
 void ExtensionRewardsNotificationServiceObserver::OnListenerAdded(
     const extensions::EventListenerInfo& details) {
   auto notifications = notification_service_->GetAllNotifications();
-  for (auto& notification : notifications) {
+  for (const auto& notification : notifications) {
     OnNotificationAdded(notification_service_, notification.second);
   }
 }

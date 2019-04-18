@@ -104,9 +104,12 @@ void AdsServiceFactory::RegisterProfilePrefs(
   #endif
 
   registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 15);
-  registry->RegisterBooleanPref(prefs::kBraveAdsShowAdsNotification, true);
-  registry->RegisterTimePref(
-      prefs::kBraveAdsLaunchNotificationTimestamp, base::Time());
+  registry->RegisterBooleanPref(prefs::kBraveAdShouldShowFirstLaunchNotification, true);
+
+  auto now = static_cast<uint64_t>(
+      (base::Time::Now() - base::Time()).InSeconds());
+  registry->RegisterUint64Pref(
+      prefs::kBraveAdsLaunchNotificationTimestamp, now);
 
   if (should_migrate_prefs_from_62) {
     registry->RegisterBooleanPref(prefs::kBraveAdsPrefsMigratedFrom62, true);

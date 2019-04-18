@@ -74,10 +74,8 @@ class AdsServiceImpl : public AdsService,
   void OnMediaStop(SessionID tab_id) override;
   void ClassifyPage(const std::string& url, const std::string& page) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
-  bool IsTestingEnv() override;
 
   void Shutdown() override;
-  void MaybeShowFirstLaunchNotification() override;
 
   // AdsClient implementation
   bool IsAdsEnabled() const override;
@@ -176,10 +174,6 @@ class AdsServiceImpl : public AdsService,
       const ads::OnGetAdsCallback& callback,
       const std::string& category,
       const std::vector<ads::AdInfo>& ads);
-  // RewardsNotificationServerObserver impl
-  void OnNotificationDeleted(
-      RewardsNotificationService* rewards_notification_service,
-      const RewardsNotificationService::RewardsNotification& notification);
 
   void OnSaveBundleState(const ads::OnSaveCallback& callback, bool success);
   void OnLoaded(
@@ -205,9 +199,15 @@ class AdsServiceImpl : public AdsService,
   void NotificationTimedOut(
       uint32_t timer_id,
       const std::string& notification_id);
-  bool ShouldShowAdsNotification();
-  void FirstLaunchNotificationTimedOut(uint32_t timer_id,
-                                       const std::string& notification_id);
+  void MaybeShowFirstLaunchNotification();
+  bool ShouldShowFirstLaunchNotification();
+  void RemoveFirstLaunchNotification();
+  void ShowFirstLaunchNotification();
+  void StartFirstLaunchNotificationTimer();
+  uint64_t GetFirstLaunchNotificationTimeout();
+  uint64_t GetFirstLaunchNotificationTimerOffset();
+  bool HasFirstLaunchNotificationExpired();
+  void OnFirstLaunchNotificationTimedOut(uint32_t timer_id);
 
   uint32_t next_timer_id();
 
@@ -219,8 +219,8 @@ class AdsServiceImpl : public AdsService,
   const base::FilePath base_path_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   uint32_t next_timer_id_;
-  bool is_supported_region_;
   uint32_t ads_launch_id_;
+  bool is_supported_region_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
