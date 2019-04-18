@@ -1518,40 +1518,6 @@ void RewardsServiceImpl::SetCatalogIssuers(const std::string& json) {
   bat_ledger_->SetCatalogIssuers(json);
 }
 
-std::pair<uint64_t, uint64_t> RewardsServiceImpl::GetEarningsRange() {
-  auto now = base::Time::Now();
-  base::Time::Exploded exploded;
-  now.LocalExplode(&exploded);
-
-  if (exploded.day_of_month < 5) {
-    exploded.month--;
-    if (exploded.month < 1) {
-      exploded.month = 12;
-
-      exploded.year--;
-    }
-  }
-
-  exploded.day_of_month = 1;
-
-  exploded.hour = 0;
-  exploded.minute = 0;
-  exploded.second = 0;
-  exploded.millisecond = 0;
-
-  base::Time from_timestamp;
-  auto success = base::Time::FromLocalExploded(exploded, &from_timestamp);
-  DCHECK(success);
-
-  uint64_t from_timestamp_in_seconds =
-      (from_timestamp - base::Time()).InSeconds();
-
-  uint64_t to_timestamp_in_seconds =
-      (now - base::Time()).InSeconds();
-
-  return std::make_pair(from_timestamp_in_seconds, to_timestamp_in_seconds);
-}
-
 void RewardsServiceImpl::ConfirmAd(const std::string& json) {
   if (!Connected()) {
     return;
@@ -1568,51 +1534,44 @@ void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
 
 void RewardsServiceImpl::ConfirmationsTransactionHistoryDidChange() {
     for (auto& observer : observers_)
-    observer.OnConfirmationsHistoryChanged(this);
+    observer.OnTransactionHistoryForThisCycleChanged(this);
 }
 
-void RewardsServiceImpl::GetConfirmationsHistory(
-    brave_rewards::ConfirmationsHistoryCallback callback) {
+void RewardsServiceImpl::GetTransactionHistoryForThisCycle(
+    GetTransactionHistoryForThisCycleCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  auto earnings_range = GetEarningsRange();
-
-  bat_ledger_->GetConfirmationsHistory(
-      earnings_range.first,
-      earnings_range.second,
-      base::BindOnce(&RewardsServiceImpl::OnGetConfirmationsHistory,
-                     AsWeakPtr(),
-                     std::move(callback)));
+  bat_ledger_->GetTransactionHistoryForThisCycle(
+      base::BindOnce(&RewardsServiceImpl::OnGetTransactionHistoryForThisCycle,
+          AsWeakPtr(), std::move(callback)));
 }
 
-void RewardsServiceImpl::OnGetConfirmationsHistory(
-    brave_rewards::ConfirmationsHistoryCallback callback,
+void RewardsServiceImpl::OnGetTransactionHistoryForThisCycle(
+    GetTransactionHistoryForThisCycleCallback callback,
     const std::string& transactions) {
-  std::unique_ptr<ledger::TransactionsInfo> info;
-  if (!transactions.empty()) {
-    info.reset(new ledger::TransactionsInfo());
-    info->FromJson(transactions);
-  }
-
-  if (!info) {
+  if (transactions.empty()) {
     callback.Run(0, 0.0);
+    return;
   }
 
-  double estimated_earnings = 0.0;
-  int total_viewed = 0;
+  ledger::TransactionsInfo info;
+  info.FromJson(transactions);
 
-  for (const auto& transaction : info->transactions) {
+  int ads_notifications_received = 0;
+  double estimated_earnings = 0.0;
+
+  for (const auto& transaction : info.transactions) {
     if (transaction.estimated_redemption_value == 0.0) {
       continue;
     }
 
+    ads_notifications_received++;
     estimated_earnings += transaction.estimated_redemption_value;
-    total_viewed++;
   }
 
-  callback.Run(total_viewed, estimated_earnings);
+  callback.Run(ads_notifications_received, estimated_earnings);
 }
 
 void RewardsServiceImpl::SaveState(const std::string& name,

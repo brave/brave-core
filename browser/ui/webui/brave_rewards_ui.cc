@@ -105,13 +105,15 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnContentSiteUpdated(
       brave_rewards::RewardsService* rewards_service) override;
   void GetAddressesForPaymentId(const base::ListValue* args);
-  void GetConfirmationsHistory(const base::ListValue* args);
+  void GetTransactionHistoryForThisCycle(const base::ListValue* args);
   void GetRewardsMainEnabled(const base::ListValue* args);
   void OnGetRewardsMainEnabled(bool enabled);
 
   void GetExcludedPublishersNumber(const base::ListValue* args);
 
-  void OnConfirmationsHistory(int total_viewed, double estimated_earnings);
+  void OnTransactionHistoryForThisCycle(
+      int ads_notifications_received,
+      double estimated_earnings);
 
   void OnGetRecurringTips(
     std::unique_ptr<brave_rewards::ContentSiteList> list);
@@ -160,7 +162,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       brave_rewards::RewardsService* rewards_service,
       brave_rewards::ContentSiteList list) override;
 
-  void OnConfirmationsHistoryChanged(
+  void OnTransactionHistoryForThisCycleChanged(
       brave_rewards::RewardsService* rewards_service) override;
 
   void OnRecurringTipSaved(brave_rewards::RewardsService* rewards_service,
@@ -286,8 +288,9 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.getAddressesForPaymentId",
       base::BindRepeating(&RewardsDOMHandler::GetAddressesForPaymentId,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getConfirmationsHistory",
-      base::BindRepeating(&RewardsDOMHandler::GetConfirmationsHistory,
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.getTransactionHistoryForThisCycle",
+      base::BindRepeating(&RewardsDOMHandler::GetTransactionHistoryForThisCycle,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getRewardsMainEnabled",
       base::BindRepeating(&RewardsDOMHandler::GetRewardsMainEnabled,
@@ -997,32 +1000,32 @@ void RewardsDOMHandler::GetAddressesForPaymentId(
   }
 }
 
-void RewardsDOMHandler::GetConfirmationsHistory(
+void RewardsDOMHandler::GetTransactionHistoryForThisCycle(
     const base::ListValue* args) {
-  rewards_service_->GetConfirmationsHistory(base::Bind(
-          &RewardsDOMHandler::OnConfirmationsHistory,
-          weak_factory_.GetWeakPtr()));
+  rewards_service_->GetTransactionHistoryForThisCycle(base::Bind(
+      &RewardsDOMHandler::OnTransactionHistoryForThisCycle,
+      weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnConfirmationsHistory(
-    int total_viewed,
+void RewardsDOMHandler::OnTransactionHistoryForThisCycle(
+    int ads_notifications_received,
     double estimated_earnings) {
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue history;
 
-    history.SetInteger("adsTotalPages", total_viewed);
+    history.SetInteger("adsNotificationsReceived", ads_notifications_received);
     history.SetDouble("adsEstimatedEarnings", estimated_earnings);
 
     web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards.confirmationsHistory", history);
+        "brave_rewards.transactionHistoryForThisCycle", history);
   }
 }
 
-void RewardsDOMHandler::OnConfirmationsHistoryChanged(
+void RewardsDOMHandler::OnTransactionHistoryForThisCycleChanged(
     brave_rewards::RewardsService* rewards_service) {
   if (web_ui()->CanCallJavascript()) {
     web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards.confirmationsHistoryChanged");
+        "brave_rewards.transactionHistoryForThisCycleChanged");
   }
 }
 

@@ -1474,12 +1474,9 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
   bat_confirmations_->ConfirmAd(std::move(notification_info));
 }
 
-void LedgerImpl::GetConfirmationsHistory(
-    const uint64_t from_timestamp_seconds,
-    const uint64_t to_timestamp_seconds,
-    ledger::ConfirmationsHistoryCallback callback) {
-  bat_confirmations_->GetTransactionHistory(from_timestamp_seconds,
-      to_timestamp_seconds, callback);
+void LedgerImpl::GetTransactionHistoryForThisCycle(
+    ledger::GetTransactionHistoryForThisCycleCallback callback) {
+  bat_confirmations_->GetTransactionHistoryForThisCycle(callback);
 }
 
 void LedgerImpl::RefreshPublisher(
