@@ -64,6 +64,7 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (properties: RewardsExtension.ExcludedSitesChanged) => void) => void
   }
   const saveSetting: (key: string, value: string) => {}
+  const refreshPublisher: (publisherKey: string, callback: (enabled: boolean, publisherKey: string) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

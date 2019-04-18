@@ -424,4 +424,23 @@ void BatLedgerImpl::GetRewardsInternalsInfo(
   std::move(callback).Run(info.ToJson());
 }
 
+void BatLedgerImpl::OnRefreshPublisher(
+    CallbackHolder<RefreshPublisherCallback>* holder,
+    bool verified) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(verified);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::RefreshPublisher(
+    const std::string& publisher_key,
+    RefreshPublisherCallback callback) {
+  auto* holder = new CallbackHolder<RefreshPublisherCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->RefreshPublisher(
+      publisher_key,
+      std::bind(BatLedgerImpl::OnRefreshPublisher, holder, _1));
+}
+
 }  // namespace bat_ledger

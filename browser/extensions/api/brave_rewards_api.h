@@ -6,6 +6,9 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_REWARDS_API_H_
 
+#include <memory>
+#include <string>
+
 #include "extensions/browser/extension_function.h"
 
 namespace extensions {
@@ -163,6 +166,19 @@ class BraveRewardsSaveSettingFunction : public UIThreadExtensionFunction {
   ~BraveRewardsSaveSettingFunction() override;
 
   ResponseAction Run() override;
+};
+
+class BraveRewardsRefreshPublisherFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.refreshPublisher", UNKNOWN)
+
+ protected:
+  ~BraveRewardsRefreshPublisherFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnRefreshPublisher(bool verified, const std::string& publisher_key);
 };
 
 }  // namespace api

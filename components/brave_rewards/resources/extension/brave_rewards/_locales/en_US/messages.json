@@ -289,6 +289,10 @@
     "message": "This grant is no longer available.",
     "description": "Error title when user missed a grant."
   },
+  "unVerifiedCheck": {
+    "message": "Check Again...",
+    "description": "Text of link that allows to check verified status of unverified publisher"
+  },
   "unVerifiedPublisher": {
     "message": "Not yet verified",
     "description": "Status of the publisher shown in the panel"

@@ -25,6 +25,8 @@ interface Props extends RewardsExtension.ComponentProps {
 interface State {
   showSummary: boolean
   publisherKey: string | null
+  refreshingPublisher: boolean
+  publisherRefreshed: boolean
 }
 
 export class Panel extends React.Component<Props, State> {
@@ -32,7 +34,9 @@ export class Panel extends React.Component<Props, State> {
     super(props)
     this.state = {
       showSummary: true,
-      publisherKey: null
+      publisherKey: null,
+      refreshingPublisher: false,
+      publisherRefreshed: false
     }
   }
 
@@ -47,7 +51,9 @@ export class Panel extends React.Component<Props, State> {
     if (newKey) {
       this.setState({
         showSummary: false,
-        publisherKey: newKey
+        publisherKey: newKey,
+        refreshingPublisher: false,
+        publisherRefreshed: false
       })
     }
 
@@ -335,6 +341,25 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
+  refreshPublisher = () => {
+    this.setState({
+      refreshingPublisher: true
+    })
+    const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
+    const publisherKey = publisher && publisher.publisher_key
+    if (publisherKey) {
+      chrome.braveRewards.refreshPublisher(publisherKey, (verified: boolean, publisherKey: string) => {
+        if (publisherKey) {
+          this.actions.refreshPublisher(verified, publisherKey)
+        }
+        this.setState({
+          refreshingPublisher: false,
+          publisherRefreshed: true
+        })
+      })
+    }
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
     const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
@@ -413,6 +438,9 @@ export class Panel extends React.Component<Props, State> {
               showUnVerified={!publisher.verified}
               acEnabled={enabledAC}
               moreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
+              onRefreshPublisher={this.refreshPublisher}
+              refreshingPublisher={this.state.refreshingPublisher}
+              publisherRefreshed={this.state.publisherRefreshed}
             />
             : null
           }
