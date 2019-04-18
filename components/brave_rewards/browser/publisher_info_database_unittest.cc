@@ -94,39 +94,39 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
   std::unique_ptr<PublisherInfoDatabase> publisher_info_database_;
 };
 
-TEST_F(PublisherInfoDatabaseTest, InsertContributionInfo) {
-  /**
-   * Good path
-   */
-  base::ScopedTempDir temp_dir;
-  base::FilePath db_file;
-  CreateTempDatabase(&temp_dir, &db_file);
+// TEST_F(PublisherInfoDatabaseTest, InsertContributionInfo) {
+//   /**
+//    * Good path
+//    */
+//   base::ScopedTempDir temp_dir;
+//   base::FilePath db_file;
+//   CreateTempDatabase(&temp_dir, &db_file);
 
-  ContributionInfo info;
-  info.probi = "12345678901234567890123456789012345678901234";
-  info.month = ledger::ACTIVITY_MONTH::JANUARY;
-  info.year = 1970;
-  info.category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
-  info.date = base::Time::Now().ToJsTime();
-  info.publisher_key = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+//   ContributionInfo info;
+//   info.probi = "12345678901234567890123456789012345678901234";
+//   info.month = ledger::ACTIVITY_MONTH::JANUARY;
+//   info.year = 1970;
+//   info.category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
+//   info.date = base::Time::Now().ToJsTime();
+//   info.publisher_key = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-  bool success = publisher_info_database_->InsertContributionInfo(info);
-  EXPECT_TRUE(success);
+//   bool success = publisher_info_database_->InsertContributionInfo(info);
+//   EXPECT_TRUE(success);
 
-  std::string query = "SELECT * FROM contribution_info WHERE publisher_id=?";
-  sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
+//   std::string query = "SELECT * FROM contribution_info WHERE publisher_id=?";
+//   sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
 
-  info_sql.BindString(0, info.publisher_key);
+//   info_sql.BindString(0, info.publisher_key);
 
-  EXPECT_TRUE(info_sql.Step());
-  EXPECT_EQ(CountTableRows("contribution_info"), 1);
-  EXPECT_EQ(info_sql.ColumnString(0), info.publisher_key);
-  EXPECT_EQ(info_sql.ColumnString(1), info.probi);
-  EXPECT_EQ(info_sql.ColumnInt64(2), info.date);
-  EXPECT_EQ(info_sql.ColumnInt(3), info.category);
-  EXPECT_EQ(info_sql.ColumnInt(4), info.month);
-  EXPECT_EQ(info_sql.ColumnInt(5), info.year);
-}
+//   EXPECT_TRUE(info_sql.Step());
+//   EXPECT_EQ(CountTableRows("contribution_info"), 1);
+//   EXPECT_EQ(info_sql.ColumnString(0), info.publisher_key);
+//   EXPECT_EQ(info_sql.ColumnString(1), info.probi);
+//   EXPECT_EQ(info_sql.ColumnInt64(2), info.date);
+//   EXPECT_EQ(info_sql.ColumnInt(3), info.category);
+//   EXPECT_EQ(info_sql.ColumnInt(4), info.month);
+//   EXPECT_EQ(info_sql.ColumnInt(5), info.year);
+// }
 
 TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   /**

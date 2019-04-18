@@ -37,12 +37,13 @@ DataStoreCommandPtr CreateDataStoreCommand(int version) {
   return command;
 }
 
-using RecordFields = base::flat_map<std::string, DataStoreRecordBinding::Type>;
+using RecordFields = std::vector<
+    std::pair<std::string, DataStoreRecordBinding::Type>>;
 
 static const base::NoDestructor<RecordFields> publisher_info_fields({
-    {"publisher_id", DataStoreRecordBinding::Type::INT_TYPE},
+    {"publisher_id", DataStoreRecordBinding::Type::STRING_TYPE},
     {"verified", DataStoreRecordBinding::Type::BOOL_TYPE},
-    {"excluded", DataStoreRecordBinding::Type::BOOL_TYPE},
+    {"excluded", DataStoreRecordBinding::Type::INT_TYPE},
     {"name", DataStoreRecordBinding::Type::STRING_TYPE},
     {"favIcon", DataStoreRecordBinding::Type::STRING_TYPE},
     {"url", DataStoreRecordBinding::Type::STRING_TYPE},
@@ -50,12 +51,18 @@ static const base::NoDestructor<RecordFields> publisher_info_fields({
 });
 
 static const base::NoDestructor<RecordFields> contribution_info_fields({
-    {"publisher_id", DataStoreRecordBinding::Type::INT_TYPE},
+    {"publisher_id", DataStoreRecordBinding::Type::STRING_TYPE},
     {"probi", DataStoreRecordBinding::Type::STRING_TYPE},
     {"date", DataStoreRecordBinding::Type::INT_TYPE},
     {"category", DataStoreRecordBinding::Type::INT_TYPE},
     {"month", DataStoreRecordBinding::Type::INT_TYPE},
     {"year", DataStoreRecordBinding::Type::INT_TYPE},
+});
+
+static const base::NoDestructor<RecordFields> recurring_donation_fields({
+    {"publisher_id", DataStoreRecordBinding::Type::STRING_TYPE},
+    {"amount", DataStoreRecordBinding::Type::DOUBLE_TYPE},
+    {"added_date", DataStoreRecordBinding::Type::INT_TYPE},
 });
 
 std::string GetSqlFields(
@@ -211,8 +218,8 @@ void SqlDataStoreAdapter::OnSaveContributionInfo(
 
 void SqlDataStoreAdapter::GetRecurringTips(PublisherInfoListCallback callback) {
   std::string sql =
-      "SELECT pi.publisher_id, pi.verified, pi.name, pi.url, pi.favIcon, "
-      "rd.amount, rd.added_date, , pi.provider "
+      "SELECT " + GetSqlFields(*publisher_info_fields, "pi.") + "," +
+      GetSqlFields(*recurring_donation_fields, "rd.") + " " +
       "FROM recurring_donation as rd "
       "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id";
   auto command = CreateDataStoreCommand(GetCurrentVersion());
@@ -221,29 +228,12 @@ void SqlDataStoreAdapter::GetRecurringTips(PublisherInfoListCallback callback) {
   auto transaction = DataStoreTransaction::New();
   transaction->commands.push_back(std::move(command));
 
+  // TODO(bridiver) - handle recurring vs one time tip result
   ledger_client_->RunDataStoreTransaction(std::move(transaction),
       std::bind(&SqlDataStoreAdapter::OnGetPublisherInfo,
                 this,
                 callback,
                 _1));
-
-//   sql::Statement info_sql(db_.GetUniqueStatement(
-// -      "SELECT pi.publisher_id, pi.name, pi.url, pi.favIcon, "
-// -      "rd.amount, rd.added_date, pi.verified, pi.provider "
-// -      "FROM recurring_donation as rd "
-// -      "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "));
-// -
-// -  while (info_sql.Step()) {
-// -    std::string id(info_sql.ColumnString(0));
-// -
-// -    ledger::PublisherInfo publisher(id);
-// -    publisher.name = info_sql.ColumnString(1);
-// -    publisher.url = info_sql.ColumnString(2);
-// -    publisher.favicon_url = info_sql.ColumnString(3);
-// -    publisher.weight = info_sql.ColumnDouble(4);
-// -    publisher.reconcile_stamp = info_sql.ColumnInt64(5);
-// -    publisher.verified = info_sql.ColumnBool(6);
-// -    publisher.provider = info_sql.ColumnString(7);
 }
 
 void SqlDataStoreAdapter::OnGetPublisherInfo(
@@ -255,28 +245,47 @@ void SqlDataStoreAdapter::OnGetPublisherInfo(
     return;
   }
 
-  // for (auto const& record : response->result->get_records()) {
+  for (auto const& record : response->result->get_records()) {
+    ledger::PublisherInfo publisher("");
 
-    // ledger::PublisherInfo publisher()
-  // }
-  //   while (info_sql.Step()) {
-//     std::string id(info_sql.ColumnString(0));
+    for (auto it =
+           record->fields.begin();
+        it != record->fields.end(); ++it) {
+      int index = it - record->fields.begin();
+      std::string field = publisher_info_fields->at(index).first;
 
-//     ledger::PublisherInfo publisher(id);
+      if (field == "publisher_id") {
+        publisher.id = (*it)->get_string_value();
+      } else if (field == "verified") {
+        publisher.verified = (*it)->get_bool_value();
+        break;
+      } else if (field == "excluded") {
+        publisher.excluded =
+            static_cast<ledger::PUBLISHER_EXCLUDE>((*it)->get_int_value());
+        break;
+      } else if (field == "name") {
+        publisher.name = (*it)->get_string_value();
+        break;
+      } else if (field == "favIcon") {
+        publisher.favicon_url = (*it)->get_string_value();
+        break;
+      } else if (field == "url") {
+        publisher.url = (*it)->get_string_value();
+        break;
+      } else if (field == "provider") {
+        publisher.provider = (*it)->get_string_value();
+        break;
+      } else {
+        NOTREACHED();
+      }
+      // TODO(bridiver) - handle donation fields
+    }
+    DCHECK(publisher.id != "");
+    list.push_back(publisher);
+  }
 
-//     publisher.name = info_sql.ColumnString(1);
-//     publisher.url = info_sql.ColumnString(2);
-//     publisher.favicon_url = info_sql.ColumnString(3);
-//     publisher.weight = info_sql.ColumnDouble(4);
-//     publisher.reconcile_stamp = info_sql.ColumnInt64(5);
-//     publisher.verified = info_sql.ColumnBool(6);
-//     publisher.provider = info_sql.ColumnString(7);
-
-//     list->push_back(publisher);
-//   }
-// }
-  // TODO - convert to PublisherInfoList
-  // callback(result);
+  // TODO(bridiver) - fix next value
+  callback(list, 0);
 }
 
 void SqlDataStoreAdapter::GetOneTimeTips(

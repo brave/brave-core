@@ -247,6 +247,18 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD1(GetExcludedPublishersNumberDB, void(
       ledger::GetExcludedPublishersNumberDBCallback callback));
+
+  MOCK_METHOD2(RunDataStoreTransaction, void(
+      bat_ledger::mojom::DataStoreTransactionPtr,
+      ledger::RunDataStoreTransactionCallback));
+  MOCK_METHOD7(OnContributionInfoSaved, void(
+      ledger::Result,
+      const std::string&,
+      const int,
+      const int,
+      const uint32_t,
+      const std::string&,
+      const ledger::REWARDS_CATEGORY));
 };
 
 }  // namespace confirmations
