@@ -1,8 +1,8 @@
 diff --git a/net/cookies/canonical_cookie.cc b/net/cookies/canonical_cookie.cc
-index aec043d33920f689f59eb1f25003c878bbb28599..43c06924609569f435416c24ce6fbd64bbaa468b 100644
+index f75dc14431490c34343b0a8e097133d18e2dc68e..cf25f576d65fe7f5cc37a3832afe18553558e01a 100644
 --- a/net/cookies/canonical_cookie.cc
 +++ b/net/cookies/canonical_cookie.cc
-@@ -242,9 +242,10 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
+@@ -245,9 +245,10 @@ std::unique_ptr<CanonicalCookie> CanonicalCookie::Create(
      server_time = options.server_time();
  
    DCHECK(!creation_time.is_null());

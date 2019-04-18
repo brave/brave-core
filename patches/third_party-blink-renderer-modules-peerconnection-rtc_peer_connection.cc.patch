@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
-index 077acb1470a695b5d5dd33919b5785a422939e95..27cb51db86e4efe291b19b21b3363dfcbcf83959 100644
+index dc6ecdc327c2d582b2219bfb24021a60972df00f..c60df515e9d6d044f76a5c8f3819f2bafb25466e 100644
 --- a/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
 +++ b/third_party/blink/renderer/modules/peerconnection/rtc_peer_connection.cc
 @@ -39,6 +39,7 @@
@@ -10,7 +10,7 @@ index 077acb1470a695b5d5dd33919b5785a422939e95..27cb51db86e4efe291b19b21b3363dfc
  #include "services/metrics/public/cpp/ukm_builders.h"
  #include "third_party/blink/public/common/features.h"
  #include "third_party/blink/public/platform/platform.h"
-@@ -828,6 +829,8 @@ void RTCPeerConnection::Dispose() {
+@@ -811,6 +812,8 @@ void RTCPeerConnection::Dispose() {
  
  ScriptPromise RTCPeerConnection::createOffer(ScriptState* script_state,
                                               const RTCOfferOptions* options) {
@@ -19,7 +19,7 @@ index 077acb1470a695b5d5dd33919b5785a422939e95..27cb51db86e4efe291b19b21b3363dfc
    if (signaling_state_ ==
        webrtc::PeerConnectionInterface::SignalingState::kClosed) {
      return ScriptPromise::RejectWithDOMException(
-@@ -866,6 +869,8 @@ ScriptPromise RTCPeerConnection::createOffer(
+@@ -849,6 +852,8 @@ ScriptPromise RTCPeerConnection::createOffer(
    ExecutionContext* context = ExecutionContext::From(script_state);
    UseCounter::Count(
        context, WebFeature::kRTCPeerConnectionCreateOfferLegacyFailureCallback);
@@ -28,7 +28,7 @@ index 077acb1470a695b5d5dd33919b5785a422939e95..27cb51db86e4efe291b19b21b3363dfc
    if (CallErrorCallbackIfSignalingStateClosed(signaling_state_, error_callback))
      return ScriptPromise::CastUndefined(script_state);
  
-@@ -927,6 +932,8 @@ ScriptPromise RTCPeerConnection::createOffer(
+@@ -910,6 +915,8 @@ ScriptPromise RTCPeerConnection::createOffer(
  
  ScriptPromise RTCPeerConnection::createAnswer(ScriptState* script_state,
                                                const RTCAnswerOptions* options) {
@@ -37,7 +37,7 @@ index 077acb1470a695b5d5dd33919b5785a422939e95..27cb51db86e4efe291b19b21b3363dfc
    if (signaling_state_ ==
        webrtc::PeerConnectionInterface::SignalingState::kClosed) {
      return ScriptPromise::RejectWithDOMException(
-@@ -963,7 +970,8 @@ ScriptPromise RTCPeerConnection::createAnswer(
+@@ -946,7 +953,8 @@ ScriptPromise RTCPeerConnection::createAnswer(
      UseCounter::Count(
          context, WebFeature::kRTCPeerConnectionCreateAnswerLegacyCompliant);
    }

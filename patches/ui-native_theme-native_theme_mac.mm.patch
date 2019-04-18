@@ -1,15 +1,15 @@
 diff --git a/ui/native_theme/native_theme_mac.mm b/ui/native_theme/native_theme_mac.mm
-index de3389fac98a708420374851dbf7c0970cb68102..32ca3fede8784b0f519174f314c302761dd0be75 100644
+index 6246830e9316d0af911762a06709076cc7688fb9..db9f37c33d970000f35d13ad4a6c39e790ff3bf6 100644
 --- a/ui/native_theme/native_theme_mac.mm
 +++ b/ui/native_theme/native_theme_mac.mm
-@@ -55,7 +55,11 @@
+@@ -73,7 +73,11 @@ bool IsDarkMode() {
                        ofObject:(id)object
                          change:(NSDictionary*)change
                         context:(void*)context {
 +#if defined(BRAVE_CHROMIUM_BUILD)
 +  NotifyProperThemeObserver();
 +#else
-   ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();
+   owner_->UpdateDarkModeStatus();
 +#endif
  }
  

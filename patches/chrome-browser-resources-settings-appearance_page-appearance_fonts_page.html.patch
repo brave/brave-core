@@ -1,18 +1,16 @@
 diff --git a/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html b/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html
-index 28fa3ad2d28192915cbe3b64f01de5ecdd29422a..55dee090b7f661516757c0ce1af678ad2402526e 100644
+index e531e1a0d226095312f4cfada0d527a4900e097e..913ea597650f5907c30f6c830e1cd1ad5835d286 100644
 --- a/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html
 +++ b/chrome/browser/resources/settings/appearance_page/appearance_fonts_page.html
-@@ -130,6 +130,7 @@
+@@ -130,11 +130,13 @@
          $i18n{quickBrownFox}
        </div>
      </div>
 +<!--
      <template is="dom-if" if="[[!isGuest_]]">
-       <div class="settings-box two-line" id="advancedButton"
-           on-click="openAdvancedExtension_" actionable>
-@@ -145,6 +146,7 @@
-         </paper-icon-button-light>
-       </div>
+       <cr-link-row id="advancedButton" class="hr"
+           on-click="openAdvancedExtension_" label="$i18n{advancedFontSettings}"
+           sub-label="[[advancedExtensionSublabel_]]" external></cr-link-row>
      </template>
 +-->
    </template>
