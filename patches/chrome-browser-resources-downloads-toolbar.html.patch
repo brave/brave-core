@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/resources/downloads/toolbar.html b/chrome/browser/resources/downloads/toolbar.html
-index 80fc546b5f2c9d33bef680172701d2feecc78252..7025217e758ce61ce4296cf24fb3671220f0d316 100644
+index d07eb8121680ff809fc7901bf6a1405bac20ecc1..dd8ec49294c917aa6893b80e65fbb7774485e125 100644
 --- a/chrome/browser/resources/downloads/toolbar.html
 +++ b/chrome/browser/resources/downloads/toolbar.html
-@@ -3,7 +3,7 @@
- <link rel="import" href="chrome://downloads/search_service.html">
+@@ -4,7 +4,7 @@
  <link rel="import" href="chrome://downloads/browser_proxy.html">
  <link rel="import" href="chrome://resources/cr_elements/cr_action_menu/cr_action_menu.html">
+ <link rel="import" href="chrome://resources/cr_elements/cr_icon_button/cr_icon_button.html">
 -<link rel="import" href="chrome://resources/cr_elements/cr_toolbar/cr_toolbar.html">
 +<link rel="import" href="chrome://brave-resources/br_elements/br_toolbar/br_toolbar.html">
  <link rel="import" href="chrome://resources/cr_elements/hidden_style_css.html">

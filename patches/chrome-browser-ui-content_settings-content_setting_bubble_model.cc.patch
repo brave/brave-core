@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/content_settings/content_setting_bubble_model.cc b/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
-index 345cb725802aa21dd384d9e7abf5e12b759d16a1..41fed6f0fa93f383a38f7ce25871272de5890198 100644
+index f6e95a30995f881001a7fad2653252c985cbbeec..41feb839e9bd899a60927dfedd0c0dffc38a6001 100644
 --- a/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
 +++ b/chrome/browser/ui/content_settings/content_setting_bubble_model.cc
 @@ -15,6 +15,7 @@

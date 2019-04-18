@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.h b/chrome/browser/ui/extensions/extension_action_view_controller.h
-index 6c57212ac7c75e22a520c00635716460c37ba259..0c44de364c5f04b539a485c292d2a9d68c908314 100644
+index fe3fe031f2ebaeb1d172c5cc1fc588f24b4eb649..6779b4eeb2bfaa621ba6dc3ff2b57e02130c1a66 100644
 --- a/chrome/browser/ui/extensions/extension_action_view_controller.h
 +++ b/chrome/browser/ui/extensions/extension_action_view_controller.h
 @@ -14,6 +14,7 @@
@@ -18,12 +18,3 @@ index 6c57212ac7c75e22a520c00635716460c37ba259..0c44de364c5f04b539a485c292d2a9d6
    // The different options for showing a popup.
    enum PopupShowAction { SHOW_POPUP, SHOW_POPUP_AND_INSPECT };
  
-@@ -74,7 +76,7 @@ class ExtensionActionViewController
-   void InspectPopup() override;
- 
-   // Closes the active popup (whether it was this action's popup or not).
--  void HideActivePopup();
-+  virtual void HideActivePopup();
- 
-   // Populates |command| with the command associated with |extension|, if one
-   // exists. Returns true if |command| was populated.

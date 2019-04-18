@@ -1,5 +1,5 @@
 diff --git a/services/service_manager/sandbox/win/sandbox_win.cc b/services/service_manager/sandbox/win/sandbox_win.cc
-index f4c3eeda228573ce92b71d3e4e4090e8e26d8bfd..93d59373d63dc72aa4f23c1174bc9d8d0839bd6f 100644
+index 2d994b725cf71622e2b191290ed13d7e8dad387a..036af23f0f6e10e11646735c194fdcb88967b7f6 100644
 --- a/services/service_manager/sandbox/win/sandbox_win.cc
 +++ b/services/service_manager/sandbox/win/sandbox_win.cc
 @@ -860,6 +860,7 @@ sandbox::ResultCode SandboxWin::StartSandboxedProcess(
