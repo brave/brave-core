@@ -578,13 +578,26 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
         content::NotificationService::AllSources());
 
     // Click button to initiate sending a tip
-    ASSERT_TRUE(ExecJs(
-        popup_contents,
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        "  document.querySelector(\"[type='tip']\").click());",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END));
+     content::EvalJsResult js_result = EvalJs(
+      popup_contents,
+      "new Promise((resolve) => {"
+      "let count = 10;"
+      "var interval = setInterval(function() {"
+      "  if (count === 0) {"
+      "    clearInterval(interval);"
+      "    resolve('');"
+      "  } else {"
+      "    count -= 1;"
+      "  }"
+      "  const tipButton = document.querySelector(\"[type='tip']\");"
+      "  if (tipButton) {"
+      "    clearInterval(interval);"
+      "    tipButton.click();"
+      "    resolve(true);"
+      "  }"
+      "}, 500);});",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END);
 
     // Wait for the site banner to load
     site_banner_observer.Wait();
@@ -1207,12 +1220,24 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // looks as expected
   {
     content::EvalJsResult js_result = EvalJs(
-        popup_contents,
-        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
-        "delay(0).then(() => "
-        "  document.querySelector(\"[id='wallet-panel']\").innerText);",
-        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-        content::ISOLATED_WORLD_ID_CONTENT_END);
+      popup_contents,
+      "new Promise((resolve) => {"
+      "let count = 10;"
+      "var interval = setInterval(function() {"
+      "  if (count === 0) {"
+      "    clearInterval(interval);"
+      "    resolve('');"
+      "  } else {"
+      "    count -= 1;"
+      "  }"
+      "  const walletPanel = document.querySelector(\"[id='wallet-panel']\");"
+      "  if (walletPanel) {"
+      "    clearInterval(interval);"
+      "    resolve(walletPanel.innerText);"
+      "  }"
+      "}, 500);});",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END);
     EXPECT_NE(js_result.ExtractString().find("Brave Verified Publisher"),
               std::string::npos);
     EXPECT_NE(js_result.ExtractString().find(publisher), std::string::npos);
