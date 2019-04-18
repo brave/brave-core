@@ -1318,7 +1318,7 @@ void RewardsServiceImpl::OnURLFetchComplete(
   callback(response_code, body, headers);
 }
 
-void RewardsServiceImpl::TriggerOnWalletInitialized(int result) {
+void RewardsServiceImpl::TriggerOnWalletInitialized(ledger::Result result) {
   for (auto& observer : observers_)
     observer.OnWalletInitialized(this, result);
 }

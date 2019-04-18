@@ -121,7 +121,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
-                       int result) override;
+                       uint32_t result) override;
   void OnWalletProperties(
       brave_rewards::RewardsService* rewards_service,
       int error_code,
@@ -358,7 +358,7 @@ void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {
 
 void RewardsDOMHandler::OnWalletInitialized(
     brave_rewards::RewardsService* rewards_service,
-    int result) {
+    uint32_t result) {
   if (!web_ui()->CanCallJavascript())
     return;
 

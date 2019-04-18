@@ -71,7 +71,7 @@ declare namespace RewardsExtension {
     expiryTime: number
   }
 
-  export enum Result {
+  export const enum Result {
     LEDGER_OK = 0,
     LEDGER_ERROR = 1,
     NO_PUBLISHER_STATE = 2,
@@ -85,7 +85,8 @@ declare namespace RewardsExtension {
     REGISTRATION_VERIFICATION_FAILED = 10,
     BAD_REGISTRATION_RESPONSE = 11,
     WALLET_CREATED = 12,
-    GRANT_NOT_FOUND = 13
+    GRANT_NOT_FOUND = 13,
+    WALLET_CORRUPT = 17
   }
 
   export interface Captcha {

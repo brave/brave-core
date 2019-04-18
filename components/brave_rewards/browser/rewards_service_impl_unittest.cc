@@ -25,7 +25,7 @@ using ::testing::_;
 class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:
   MockRewardsServiceObserver() {}
-  MOCK_METHOD2(OnWalletInitialized, void(RewardsService*, int));
+  MOCK_METHOD2(OnWalletInitialized, void(RewardsService*, uint32_t));
   MOCK_METHOD3(OnWalletProperties, void(RewardsService*,
       int,
       std::unique_ptr<brave_rewards::WalletProperties>));

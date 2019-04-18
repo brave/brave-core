@@ -18,8 +18,8 @@ declare namespace chrome.braveRewards {
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
   const getWalletProperties: () => {}
   const getCurrentReport: () => {}
-  const onWalletCreated: {
-    addListener: (callback: () => void) => void
+  const onWalletInitialized: {
+    addListener: (callback: (result: RewardsExtension.Result) => void) => void
   }
   const onPublisherData: {
     addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
@@ -52,12 +52,6 @@ declare namespace chrome.braveRewards {
   const saveAdsSetting: (key: string, value: string) => {}
   const onPendingContributionSaved: {
     addListener: (callback: (result: number) => void) => void
-  }
-  const onWalletFailed: {
-    addListener: (callback: () => void) => void
-  }
-  const onWalletCorrupted: {
-    addListener: (callback: () => void) => void
   }
   const getACEnabled: (callback: (enabled: boolean) => void) => {}
   const onPublisherListNormalized: {

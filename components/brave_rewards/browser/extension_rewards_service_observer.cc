@@ -28,35 +28,20 @@ ExtensionRewardsServiceObserver::~ExtensionRewardsServiceObserver() {
 
 void ExtensionRewardsServiceObserver::OnWalletInitialized(
     RewardsService* rewards_service,
-    int result) {
+    uint32_t result) {
   auto* event_router = extensions::EventRouter::Get(profile_);
 
-  ledger::Result new_result = static_cast<ledger::Result>(result);
-
   // Don't report back if there is no ledger file
-  if (event_router && new_result != ledger::Result::NO_LEDGER_STATE) {
-    std::unique_ptr<base::ListValue> args(new base::ListValue());
+  if (event_router && result != ledger::Result::NO_LEDGER_STATE) {
+    std::unique_ptr<base::ListValue> args(
+        extensions::api::brave_rewards::OnWalletInitialized::Create(
+          result).release());
 
-    // wallet successfully created
-    if (result == ledger::Result::WALLET_CREATED) {
-      std::unique_ptr<extensions::Event> event(new extensions::Event(
-        extensions::events::BRAVE_WALLET_CREATED,
-        extensions::api::brave_rewards::OnWalletCreated::kEventName,
-        std::move(args)));
-      event_router->BroadcastEvent(std::move(event));
-    } else if (result == ledger::Result::CORRUPTED_WALLET) {
-      std::unique_ptr<extensions::Event> event(new extensions::Event(
+    std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_START,
-        extensions::api::brave_rewards::OnWalletCorrupted::kEventName,
+        extensions::api::brave_rewards::OnWalletInitialized::kEventName,
         std::move(args)));
-      event_router->BroadcastEvent(std::move(event));
-    } else if (result != ledger::Result::LEDGER_OK) {
-      std::unique_ptr<extensions::Event> event(new extensions::Event(
-        extensions::events::BRAVE_WALLET_FAILED,
-        extensions::api::brave_rewards::OnWalletFailed::kEventName,
-        std::move(args)));
-      event_router->BroadcastEvent(std::move(event));
-    }
+    event_router->BroadcastEvent(std::move(event));
   }
 }
 
@@ -67,10 +52,12 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
   auto* event_router =
       extensions::EventRouter::Get(profile_);
   if (error_code == 17) {  // ledger::Result::CORRUPT_WALLET
-    std::unique_ptr<base::ListValue> args(new base::ListValue());
+    std::unique_ptr<base::ListValue> args(
+        extensions::api::brave_rewards::OnWalletInitialized::Create(
+          error_code).release());
     std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_START,
-        extensions::api::brave_rewards::OnWalletCorrupted::kEventName,
+        extensions::api::brave_rewards::OnWalletInitialized::kEventName,
         std::move(args)));
     event_router->BroadcastEvent(std::move(event));
   }

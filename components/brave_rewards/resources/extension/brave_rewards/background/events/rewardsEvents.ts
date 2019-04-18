@@ -4,8 +4,8 @@
 
 import rewardsPanelActions from '../actions/rewardsPanelActions'
 
-chrome.braveRewards.onWalletCreated.addListener(() => {
-  rewardsPanelActions.onWalletCreated()
+chrome.braveRewards.onWalletInitialized.addListener((result: RewardsExtension.Result) => {
+  rewardsPanelActions.onWalletInitialized(result)
 })
 
 chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: RewardsExtension.Publisher) => {
@@ -57,14 +57,6 @@ chrome.braveRewards.onPendingContributionSaved.addListener((result: number) => {
       rewardsPanelActions.OnPendingContributionsTotal(amount)
     }))
   }
-})
-
-chrome.braveRewards.onWalletFailed.addListener(() => {
-  rewardsPanelActions.onWalletCreateFailed()
-})
-
-chrome.braveRewards.onWalletCorrupted.addListener(() => {
-  rewardsPanelActions.onWalletCorrupted()
 })
 
 chrome.braveRewards.onPublisherListNormalized.addListener((properties: RewardsExtension.PublisherNormalized[]) => {

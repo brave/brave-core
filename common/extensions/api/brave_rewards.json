@@ -11,10 +11,15 @@
     },
     "events": [
       {
-        "name": "onWalletCreated",
+        "name": "onWalletInitialized",
         "type": "function",
-        "description": "Fired when wallet is created",
-        "parameters": []
+        "description": "Fired when wallet is initialized",
+        "parameters": [
+          {
+            "name": "result",
+            "type": "integer"
+          }
+        ]
       },
       {
         "name": "onGrant",
@@ -250,18 +255,6 @@
             "type": "integer"
           }
         ]
-      },
-      {
-        "name": "onWalletFailed",
-        "type": "function",
-        "description": "Fired when wallet creation failed",
-        "parameters": []
-      },
-      {
-        "name": "onWalletCorrupted",
-        "type": "function",
-        "description": "Fired when wallet is corrupt",
-        "parameters": []
       },
       {
         "name": "onPublisherListNormalized",
