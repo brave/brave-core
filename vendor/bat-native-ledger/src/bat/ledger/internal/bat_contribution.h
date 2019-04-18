@@ -7,6 +7,7 @@
 #define BRAVELEDGER_BAT_CONTRIBUTION_H_
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -146,6 +147,9 @@ class BatContribution {
                                   int year,
                                   uint32_t date);
 
+  // Triggers contribution process for auto contribute table
+  void StartAutoContribute();
+
  private:
   std::string GetAnonizeProof(const std::string& registrar_VK,
                               const std::string& id,
@@ -178,9 +182,6 @@ class BatContribution {
   void OnTimerReconcile();
 
   bool ShouldStartAutoContribute();
-
-  // Triggers contribution process for auto contribute table
-  void StartAutoContribute();
 
   void OnWalletPropertiesForReconcile(
       const std::string& viewing_id,

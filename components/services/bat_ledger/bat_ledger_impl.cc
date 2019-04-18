@@ -558,4 +558,8 @@ void BatLedgerImpl::RefreshPublisher(
       std::bind(BatLedgerImpl::OnRefreshPublisher, holder, _1));
 }
 
+void BatLedgerImpl::StartAutoContribute() {
+  ledger_->StartAutoContribute();
+}
+
 }  // namespace bat_ledger

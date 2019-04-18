@@ -112,6 +112,8 @@ interface BatLedger {
 
   LoadPublisherInfo(string publisher_key) => (uint32 result, string info);
   RefreshPublisher(string publisher_key) => (bool verified);
+
+  StartAutoContribute();
 };
 
 interface BatLedgerClient {

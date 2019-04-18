@@ -291,6 +291,8 @@ class LEDGER_EXPORT Ledger {
   virtual void RefreshPublisher(
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback) = 0;
+
+  virtual void StartAutoContribute() = 0;
 };
 
 }  // namespace ledger

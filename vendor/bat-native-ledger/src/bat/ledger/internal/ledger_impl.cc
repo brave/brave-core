@@ -37,6 +37,15 @@ using std::placeholders::_2;
 using std::placeholders::_3;
 using std::placeholders::_4;
 
+namespace {
+
+bool IsPNG(const std::string& data) {
+  return ((data.length() >= 8) &&
+          (data.compare(0, 8, "\x89PNG\x0D\x0A\x1A\x0A") == 0));
+}
+
+}
+
 namespace bat_ledger {
 
 LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
@@ -1112,11 +1121,12 @@ void LedgerImpl::LogResponse(
     }
   }
 
+  std::string response_data = IsPNG(response) ? "<PNG>" : response;
   BLOG(this, ledger::LogLevel::LOG_RESPONSE) << std::endl
     << "[ RESPONSE - " << func_name << " ]" << std::endl
     << "> time: " << std::time(nullptr) << std::endl
     << "> result: " << stat << std::endl
-    << "> response: " << response
+    << "> response: " << response_data << std::endl
     << formatted_headers
     << "[ END RESPONSE ]";
 }
@@ -1257,6 +1267,10 @@ void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) {
   }
 }
 
+void LedgerImpl::StartAutoContribute() {
+  bat_contribution_->StartAutoContribute();
+}
+
 const braveledger_bat_helper::WALLET_PROPERTIES_ST&
 LedgerImpl::GetWalletProperties() const {
   return bat_state_->GetWalletProperties();
@@ -1364,9 +1378,9 @@ bool LedgerImpl::AddReconcileStep(
     ledger::ContributionRetry step,
     int level) {
   BLOG(this, ledger::LogLevel::LOG_DEBUG)
-    << "Contribution step"
+    << "Contribution step "
     << std::to_string(step)
-    << "for"
+    << " for "
     << viewing_id;
   return bat_state_->AddReconcileStep(viewing_id, step, level);
 }

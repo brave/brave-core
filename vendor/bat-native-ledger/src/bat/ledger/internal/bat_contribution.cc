@@ -384,7 +384,7 @@ void BatContribution::StartReconcile(
         return;
       }
 
-      if (direction.currency_ != CURRENCY || direction.amount_ == 0) {
+      if (direction.currency_ != LEDGER_CURRENCY || direction.amount_ == 0) {
         BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
           "Reconcile direction currency invalid for " <<
           direction.publisher_key_;
