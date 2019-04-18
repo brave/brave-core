@@ -60,7 +60,10 @@ class SettingsPage extends React.Component<Props, {}> {
 
     if (this.props.rewardsData.firstLoad === false) {
       this.refreshActions()
+    } else {
+      this.actions.getAdsData()
     }
+
     this.actions.checkImported()
     this.actions.getGrants()
     this.actions.getRewardsMainEnabled()
