@@ -32,12 +32,9 @@ const char* BookmarkButton::GetClassName() const {
   return "BookmarkButton";
 }
 
-bool BookmarkButton::GetTooltipText(const gfx::Point& p,
-                                  base::string16* tooltip) const {
-  int textId = active_ ? IDS_TOOLTIP_STARRED
-                                      : IDS_TOOLTIP_STAR;
-  tooltip->assign(l10n_util::GetStringUTF16(textId));
-  return true;
+base::string16 BookmarkButton::GetTooltipText(const gfx::Point& p) const {
+  int textId = active_ ? IDS_TOOLTIP_STARRED : IDS_TOOLTIP_STAR;
+  return l10n_util::GetStringUTF16(textId);
 }
 
 void BookmarkButton::GetAccessibleNodeData(ui::AXNodeData* node_data) {
