@@ -30,70 +30,44 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-  -ms-flex-pack: justify;
-  justify-content: space-between;
   -webkit-align-items: center;
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
-  -webkit-align-content: flex-start;
-  -ms-flex-line-pack: start;
-  align-content: flex-start;
-  -webkit-flex-wrap: nowrap;
-  -ms-flex-wrap: nowrap;
-  flex-wrap: nowrap;
-  font-family: Poppins,sans-serif;
+  font-family: Muli,sans-serif;
 }
 
 .c4 {
-  -webkit-flex-basis: 30px;
-  -ms-flex-preferred-size: 30px;
-  flex-basis: 30px;
   position: relative;
-  height: 48px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  height: 32px;
+  width: 32px;
 }
 
 .c5 {
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
+  max-width: 100%;
+  max-height: 100%;
 }
 
 .c6 {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
-  flex-grow: 1;
-  -webkit-flex-shrink: 1;
-  -ms-flex-negative: 1;
-  flex-shrink: 1;
-  -webkit-flex-basis: 50%;
-  -ms-flex-preferred-size: 50%;
-  flex-basis: 50%;
-  margin-top: -5px;
-  padding-left: 11px;
+  padding: 0 0 0 12px;
 }
 
 .c7 {
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  max-width: 260px;
-  margin-top: 2px;
-  margin-left: 0px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  font-size: 14px;
+  font-weight: 700;
+  color: #3b3e4f;
 }
 
 .c8 {
   font-size: 18px;
-  font-weight: 500;
-  line-height: 1.22;
-  -webkit-letter-spacing: -0.2px;
-  -moz-letter-spacing: -0.2px;
-  -ms-letter-spacing: -0.2px;
-  letter-spacing: -0.2px;
-  color: #4B4C5C;
 }
 
 .c10 {
@@ -150,16 +124,13 @@ exports[`WalletPanel tests basic tests matches the snapshot 1`] = `
           <img
             className="c5"
             src=""
-            type="big"
           />
         </div>
         <div
           className="c6"
-          type="big"
         >
           <div
             className="c7"
-            type="big"
           >
             <span
               className="c8"
