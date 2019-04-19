@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/bind.h"
+#include "base/strings/string_number_conversions.h"
 #include "brave/browser/brave_rewards/donations_dialog.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
@@ -67,7 +68,7 @@ ExtensionFunction::ResponseAction BraveRewardsDonateToSiteFunction::Run() {
         &contents,
         nullptr)) {
     return RespondNow(Error(tabs_constants::kTabNotFoundError,
-                            base::IntToString(params->tab_id)));
+                            base::NumberToString(params->tab_id)));
   }
   ::brave_rewards::OpenDonationDialog(contents, params->publisher_key);
 

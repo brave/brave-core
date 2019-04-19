@@ -32,7 +32,7 @@ std::string HostPortPair::ToString() const {
   }
   ret += HostForURL();
   ret += ':';
-  ret += base::UintToString(port_);
+  ret += base::NumberToString(port_);
   return ret;
 }
 
