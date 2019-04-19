@@ -137,6 +137,11 @@ export const refreshPublisher = (verified: boolean, publisherKey: string) => act
   verified,
   publisherKey
 })
+
 export const onAllNotifications = (list: RewardsExtension.Notification[]) => action(types.ON_ALL_NOTIFICATIONS, {
   list
+})
+
+export const init = (tabs: chrome.tabs.Tab[]) => action(types.ON_INIT, {
+  tabs
 })
