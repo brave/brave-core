@@ -4,6 +4,7 @@
 
 #include "brave/browser/extensions/api/brave_shields_api.h"
 
+#include "base/strings/string_number_conversions.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -68,7 +69,7 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
         &contents,
         nullptr)) {
     return RespondNow(Error(tabs_constants::kTabNotFoundError,
-                            base::IntToString(params->tab_id)));
+                            base::NumberToString(params->tab_id)));
   }
 
   BraveShieldsWebContentsObserver::FromWebContents(
