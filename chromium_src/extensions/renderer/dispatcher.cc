@@ -3,7 +3,4 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/extensions/renderer/brave_native_extension_bindings_system.h"
-
-#define NativeExtensionBindingsSystem BraveNativeExtensionBindingsSystem
-#include "../../../../extensions/renderer/dispatcher.cc"
-#undef NativeExtensionBindingsSystem
+#include "../../../../extensions/renderer/dispatcher.cc"  // NOLINT
