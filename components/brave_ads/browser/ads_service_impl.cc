@@ -334,6 +334,8 @@ void AdsServiceImpl::OnMaybeStartForRegion(
   is_supported_region_ = is_supported_region;
 
   if (!is_supported_region_) {
+    LOG(WARNING) << GetAdsLocale() << " locale does not support Ads";
+
     Shutdown();
     return;
   }
