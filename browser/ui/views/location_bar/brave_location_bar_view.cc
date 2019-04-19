@@ -49,8 +49,8 @@ void BraveLocationBarView::UpdateBookmarkStarVisibility() {
 void BraveLocationBarView::OnChanged() {
   if (brave_actions_) {
     // Do not show actions whilst omnibar is open or url is being edited
-    const bool should_hide = GetLocationBarModel()->input_in_progress() &&
-                      !omnibox_view_->text().empty();
+    const bool should_hide =
+        IsLocationBarUserInputInProgress() && !omnibox_view_->text().empty();
     brave_actions_->SetShouldHide(should_hide);
   }
 
