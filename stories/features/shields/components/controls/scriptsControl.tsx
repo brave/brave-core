@@ -15,7 +15,7 @@ import {
 } from '../../../../../src/features/shields'
 
 // Group Components
-import DynamicList from '../list/dynamic'
+import NoScriptDetails from '../list/noScriptDetails'
 
 // Fake data
 import { getLocale } from '../../fakeLocale'
@@ -98,7 +98,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
         </BlockedInfoRow>
         {
           scriptsBlockedOpen &&
-            <DynamicList
+            <NoScriptDetails
               favicon={favicon}
               hostname={hostname}
               name={getLocale('scriptsOnThisSite')}

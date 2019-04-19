@@ -27,6 +27,8 @@ export {
   BlockedListItemHeader,
   BlockedListItem,
   BlockedListItemWithOptions,
+  BlockedListItemDetails,
+  BlockedListItemSummary,
   BlockedListFooter,
   BlockedListFooterWithOptions,
   DisabledContentView

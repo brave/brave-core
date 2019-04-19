@@ -263,6 +263,7 @@ export const BlockedListItemHeader = styled<{}, 'li'>('li')`
   box-sizing: border-box;
   position: sticky;
   top: 0;
+  z-index: 1;
   display: grid;
   grid-template-columns: 36px 1fr auto;
   align-items: center;
@@ -305,6 +306,29 @@ export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
     margin: 0px 10px 0px 30px;
     font-size: 12px;
     color: ${p => p.theme.color.text};
+  }
+`
+
+export const BlockedListItemDetails = styled<{}, 'details'>('details')`
+  &[open] summary:after {
+    content: "-";
+  }
+  position: relative;
+`
+
+export const BlockedListItemSummary = styled(BlockedListItemWithOptions.withComponent('summary'))`
+  position: relative;
+  &::-webkit-details-marker {
+    display: none;
+  }
+  &:after {
+    position: absolute;
+    content: "+";
+    top: 0;
+    left: 0;
+    color: black;
+    font-size: 20px;
+    padding: 6px 26px;
   }
 `
 
