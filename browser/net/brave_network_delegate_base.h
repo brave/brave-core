@@ -16,7 +16,7 @@
 #include "brave/browser/net/url_context.h"
 #include "chrome/browser/net/chrome_network_delegate.h"
 #include "content/public/browser/browser_thread.h"
-#include "net/base/completion_callback.h"
+#include "net/base/completion_once_callback.h"
 
 class PrefChangeRegistrar;
 
