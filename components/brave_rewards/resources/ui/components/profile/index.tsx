@@ -17,10 +17,11 @@ import {
   StyledVerifiedText,
   StyledInlineUnVerified,
   StyledVerifiedCheckLink,
-  StyledRefresh
+  StyledRefresh,
+  StyledVerifiedDivider
 } from './style'
 import { getLocale } from '../../../helpers'
-import { VerifiedIcon, UnVerifiedIcon, LoaderIcon } from '../../../components/icons'
+import { VerifiedSIcon, UnVerifiedSIcon, LoaderIcon } from '../../../components/icons'
 
 export type Provider = 'twitter' | 'youtube' | 'twitch'
 
@@ -70,7 +71,6 @@ export default class Profile extends React.PureComponent<Props, {}> {
       src,
       title,
       verified,
-      tableCell,
       showUnVerifiedHelpIcon,
       onRefreshPublisher,
       refreshingPublisher,
@@ -80,19 +80,15 @@ export default class Profile extends React.PureComponent<Props, {}> {
     return (
       <StyledWrapper id={id}>
         <StyledImageWrapper type={type}>
-          <StyledImage src={this.getSrc(src)} type={type} />
+          <StyledImage src={this.getSrc(src)} />
           {verified && type === 'small' ? (
             <StyledVerified>
-              <VerifiedIcon />
+              <VerifiedSIcon />
             </StyledVerified>
           ) : null}
         </StyledImageWrapper>
-        <StyledContent type={type}>
-          <StyledTitleWrap
-            type={type}
-            tableCell={tableCell}
-            provider={provider}
-          >
+        <StyledContent>
+          <StyledTitleWrap>
             <StyledTitle type={type}>{title}</StyledTitle>
             {provider ? (
               <StyledProvider type={type}>
@@ -103,7 +99,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
           {verified && type === 'big' ? (
             <StyledProviderWrap>
               <StyledInlineVerified>
-                <VerifiedIcon />
+                <VerifiedSIcon />
               </StyledInlineVerified>{' '}
               <StyledVerifiedText>
                 {getLocale('verifiedPublisher')}
@@ -112,22 +108,23 @@ export default class Profile extends React.PureComponent<Props, {}> {
           ) : showUnVerifiedHelpIcon ? (
             <StyledProviderWrap>
               <StyledInlineUnVerified>
-                <UnVerifiedIcon />
+                <UnVerifiedSIcon />
               </StyledInlineUnVerified>{' '}
               <StyledVerifiedText>
                 {getLocale('unVerifiedPublisher')}
               </StyledVerifiedText>
+              <StyledVerifiedDivider />
               {
                 !publisherRefreshed ?
                   refreshingPublisher ?
-                  <StyledRefresh>
-                    <LoaderIcon />
-                  </StyledRefresh>
-                  : <StyledVerifiedCheckLink onClick={onRefreshPublisher}>
-                    {getLocale('unVerifiedCheck')}
-                  </StyledVerifiedCheckLink>
-                :
-                null
+                    <StyledRefresh>
+                      <LoaderIcon />
+                    </StyledRefresh>
+                    : <StyledVerifiedCheckLink onClick={onRefreshPublisher}>
+                      {getLocale('unVerifiedCheck')}
+                    </StyledVerifiedCheckLink>
+                  :
+                  null
               }
             </StyledProviderWrap>
           ) : null}
