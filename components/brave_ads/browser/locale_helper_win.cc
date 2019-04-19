@@ -34,7 +34,7 @@ std::string LocaleHelperWin::GetLocale() const {
 
   wcstombs(locale.get(), locale_name.get(), size);
 
-  return std::string(locale.get(), size);
+  return std::string(locale.get());
 }
 
 LocaleHelperWin* LocaleHelperWin::GetInstance() {
