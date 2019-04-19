@@ -87,14 +87,14 @@ void RewardsHelper::DidAttachInterstitialPage() {
 }
 
 void RewardsHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
-                         const MediaPlayerId& id) {
+                                        const content::MediaPlayerId& id) {
   if (rewards_service_)
     rewards_service_->OnMediaStart(tab_id_);
 }
 
 void RewardsHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& video_type,
-    const MediaPlayerId& id,
+    const content::MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason reason) {
   if (rewards_service_)
     rewards_service_->OnMediaStop(tab_id_);
