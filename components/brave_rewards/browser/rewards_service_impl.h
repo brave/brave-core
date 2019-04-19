@@ -17,6 +17,7 @@
 #include "bat/ledger/wallet_info.h"
 #include "base/files/file_path.h"
 #include "base/observer_list.h"
+#include "base/one_shot_event.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/ledger_client.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
@@ -24,7 +25,6 @@
 #include "chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "extensions/buildflags/buildflags.h"
-#include "extensions/common/one_shot_event.h"
 #include "mojo/public/cpp/bindings/associated_binding.h"
 #include "net/url_request/url_fetcher_delegate.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
@@ -218,7 +218,7 @@ class RewardsServiceImpl : public RewardsService,
   friend class RewardsServiceTest;
   FRIEND_TEST_ALL_PREFIXES(RewardsServiceTest, OnWalletProperties);
 
-  const extensions::OneShotEvent& ready() const { return ready_; }
+  const base::OneShotEvent& ready() const { return ready_; }
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,
                           bool success);
   void OnLedgerStateLoaded(ledger::LedgerCallbackHandler* handler,
@@ -499,7 +499,7 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<ExtensionRewardsServiceObserver> private_observer_;
 #endif
 
-  extensions::OneShotEvent ready_;
+  base::OneShotEvent ready_;
   std::map<const net::URLFetcher*, ledger::LoadURLCallback> fetchers_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   std::vector<std::string> current_media_fetchers_;
