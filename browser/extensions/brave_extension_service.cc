@@ -3,6 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/brave_extension_service.h"
+
+#include "base/one_shot_event.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_service.h"
 #include "chrome/browser/extensions/extension_action.h"
@@ -18,7 +20,7 @@ BraveExtensionService::BraveExtensionService(Profile* profile,
     Blacklist* blacklist,
     bool autoupdate_enabled,
     bool extensions_enabled,
-    OneShotEvent* ready) :
+    base::OneShotEvent* ready) :
     ExtensionService(profile, command_line, install_directory, extension_prefs,
         blacklist, autoupdate_enabled, extensions_enabled, ready) {
 }
