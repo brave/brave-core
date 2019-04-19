@@ -1015,6 +1015,10 @@ int PublisherInfoDatabase::GetTableVersionNumber() {
   return meta_table_.GetVersionNumber();
 }
 
+std::string PublisherInfoDatabase::GetSchema() {
+  return db_.GetSchema();
+}
+
 // Migration -------------------------------------------------------------------
 
 bool PublisherInfoDatabase::MigrateV1toV2() {
@@ -1147,7 +1151,11 @@ bool PublisherInfoDatabase::MigrateV3toV4() {
   const char* name = "activity_info";
   if (GetDB().DoesTableExist(name)) {
     std::string sql = "ALTER TABLE activity_info RENAME TO activity_info_old;";
+    if (!GetDB().Execute(sql.c_str())) {
+      return false;
+    }
 
+    sql = "DROP INDEX activity_info_publisher_id_index;";
     if (!GetDB().Execute(sql.c_str())) {
       return false;
     }
@@ -1240,7 +1248,11 @@ bool PublisherInfoDatabase::MigrateV5toV6() {
   const char* name = "activity_info";
   if (GetDB().DoesTableExist(name)) {
     std::string sql = "ALTER TABLE activity_info RENAME TO activity_info_old;";
+    if (!GetDB().Execute(sql.c_str())) {
+      return false;
+    }
 
+    sql = "DROP INDEX activity_info_publisher_id_index;";
     if (!GetDB().Execute(sql.c_str())) {
       return false;
     }
@@ -1283,10 +1295,10 @@ bool PublisherInfoDatabase::MigrateV5toV6() {
 
     const std::string columns_select = "publisher_id, "
                                        "sum(duration) as duration, "
-                                       "sum(visits) as duration, "
+                                       "sum(visits) as visits, "
                                        "sum(score) as score, "
-                                       "percent, "
-                                       "weight, "
+                                       "sum(percent) as percent, "
+                                       "sum(weight) as weight, "
                                        "reconcile_stamp";
 
     sql = "PRAGMA foreign_keys=off;";

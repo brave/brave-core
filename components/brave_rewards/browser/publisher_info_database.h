@@ -102,6 +102,8 @@ class PublisherInfoDatabase {
 
   int GetTableVersionNumber();
 
+  std::string GetSchema();
+
  private:
   bool CreateContributionInfoTable();
 
