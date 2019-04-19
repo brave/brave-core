@@ -117,7 +117,7 @@ class SettingsPage extends React.Component<Props, {}> {
     }
 
     return (
-      <>
+      <div style={{ width: '100%' }}>
         {grants.map((grant?: Rewards.Grant, index?: number) => {
           if (!grant || !grant.promotionId) {
             return null
@@ -129,7 +129,7 @@ class SettingsPage extends React.Component<Props, {}> {
             </div>
           )
         })}
-      </>
+      </div>
     )
   }
 
