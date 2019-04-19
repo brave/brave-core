@@ -287,6 +287,13 @@ class LEDGER_EXPORT Ledger {
       ledger::OnRefreshPublisherCallback callback) = 0;
 
   virtual void StartAutoContribute() = 0;
+
+  virtual void SaveTwitterPublisherInfo(
+      const std::string& publisher_key,
+      const std::string& screen_name,
+      const std::string& url,
+      const std::string& favicon_url,
+      PublisherInfoCallback callback) = 0;
 };
 
 }  // namespace ledger

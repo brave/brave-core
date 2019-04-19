@@ -143,6 +143,12 @@ class MockRewardsService : public RewardsService {
                                       brave_rewards::RefreshPublisherCallback));
   MOCK_METHOD0(GetAllNotifications,
   const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&());
+  MOCK_METHOD5(SaveTwitterPublisherInfo,
+               void(const std::string&,
+                    const std::string&,
+                    const std::string&,
+                    const std::string&,
+                    brave_rewards::SaveTwitterPublisherInfoCallback));
 };
 
 class AdsServiceTest : public testing::Test {

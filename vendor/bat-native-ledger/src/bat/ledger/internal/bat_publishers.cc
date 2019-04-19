@@ -68,6 +68,8 @@ std::string getProviderName(const std::string& publisher_id) {
     return YOUTUBE_MEDIA_TYPE;
   } else if (publisher_id.find(TWITCH_MEDIA_TYPE) != std::string::npos) {
     return TWITCH_MEDIA_TYPE;
+  } else if (publisher_id.find(TWITTER_MEDIA_TYPE) != std::string::npos) {
+    return TWITTER_MEDIA_TYPE;
   }
   return "";
 }

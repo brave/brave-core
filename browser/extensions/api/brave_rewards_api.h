@@ -9,9 +9,10 @@
 #include <memory>
 #include <string>
 
-#include "extensions/browser/extension_function.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
+#include "extensions/browser/extension_function.h"
 
 namespace extensions {
 namespace api {
@@ -39,12 +40,17 @@ class BraveRewardsTipSiteFunction : public UIThreadExtensionFunction {
 class BraveRewardsDonateToTwitterUserFunction
     : public UIThreadExtensionFunction {
  public:
+  BraveRewardsDonateToTwitterUserFunction();
   DECLARE_EXTENSION_FUNCTION("braveRewards.donateToTwitterUser", UNKNOWN)
 
  protected:
   ~BraveRewardsDonateToTwitterUserFunction() override;
 
   ResponseAction Run() override;
+
+ private:
+  base::WeakPtrFactory<BraveRewardsDonateToTwitterUserFunction> weak_factory_;
+  void OnTwitterPublisherInfoSaved();
 };
 
 class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {

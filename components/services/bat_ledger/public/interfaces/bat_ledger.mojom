@@ -118,6 +118,10 @@ interface BatLedger {
   RefreshPublisher(string publisher_key) => (bool verified);
 
   StartAutoContribute();
+
+  SaveTwitterPublisherInfo(string publisher_key, string screen_name,
+      string url, string favicon_url) => (int32 result,
+        string publisher_info);
 };
 
 interface BatLedgerClient {

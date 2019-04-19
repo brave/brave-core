@@ -27,6 +27,20 @@ using brave_ads::AdsServiceFactory;
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
 
+namespace {
+
+std::string GetTwitterProfileURL(const std::string& screen_name) {
+  return base::StringPrintf("https://twitter.com/%s/", screen_name.c_str());
+}
+
+std::string GetTwitterProfileImageURL(const std::string& screen_name) {
+  return base::StringPrintf(
+      "https://twitter.com/%s/profile_image?size=original",
+      screen_name.c_str());
+}
+
+}  // namespace
+
 namespace extensions {
 namespace api {
 
@@ -76,6 +90,11 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
 
 BraveRewardsDonateToTwitterUserFunction::
+    BraveRewardsDonateToTwitterUserFunction()
+      : weak_factory_(this) {
+}
+
+BraveRewardsDonateToTwitterUserFunction::
     ~BraveRewardsDonateToTwitterUserFunction() {
 }
 
@@ -93,30 +112,51 @@ BraveRewardsDonateToTwitterUserFunction::Run() {
         Error("Cannot donate to Twitter user in a private context"));
   }
 
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service) {
+    AddRef();
+    rewards_service->SaveTwitterPublisherInfo(
+        params->publisher_key,
+        params->screen_name,
+        GetTwitterProfileURL(params->screen_name),
+        GetTwitterProfileImageURL(params->screen_name),
+        base::Bind(&BraveRewardsDonateToTwitterUserFunction::
+                       OnTwitterPublisherInfoSaved,
+                   weak_factory_.GetWeakPtr()));
+  }
+
+  return RespondNow(NoArguments());
+}
+
+void BraveRewardsDonateToTwitterUserFunction::OnTwitterPublisherInfoSaved() {
+  std::unique_ptr<brave_rewards::DonateToTwitterUser::Params> params(
+      brave_rewards::DonateToTwitterUser::Params::Create(*args_));
+
   // Get web contents for this tab
   content::WebContents* contents = nullptr;
   if (!ExtensionTabUtil::GetTabById(
         params->tab_id,
-        profile,
+        Profile::FromBrowserContext(browser_context()),
         include_incognito_information(),
         nullptr,
         nullptr,
         &contents,
         nullptr)) {
-    return RespondNow(Error(tabs_constants::kTabNotFoundError,
-                            base::IntToString(params->tab_id)));
+    return;
   }
 
   auto params_dict = std::make_unique<base::DictionaryValue>();
   params_dict->SetString("publisherKey", params->publisher_key);
+
   auto tweet_metadata_dict = std::make_unique<base::DictionaryValue>();
   tweet_metadata_dict->SetString("name", params->name);
   tweet_metadata_dict->SetString("screenName", params->screen_name);
   tweet_metadata_dict->SetString("tweetText", params->tweet_text);
   params_dict->SetDictionary("tweetMetaData", std::move(tweet_metadata_dict));
+
   ::brave_rewards::OpenDonationDialog(contents, std::move(params_dict));
 
-  return RespondNow(NoArguments());
+  Release();
 }
 
 BraveRewardsGetPublisherDataFunction::~BraveRewardsGetPublisherDataFunction() {

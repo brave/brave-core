@@ -511,6 +511,37 @@ void BatLedgerImpl::LoadPublisherInfo(
       std::bind(BatLedgerImpl::OnLoadPublisherInfo, holder, _1, _2));
 }
 
+// static
+void BatLedgerImpl::OnSaveTwitterPublisherInfo(
+    CallbackHolder<SaveTwitterPublisherInfoCallback>* holder,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info) {
+  std::string publisher;
+  if (info) {
+    publisher = info->ToJson();
+  }
+
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, publisher);
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::SaveTwitterPublisherInfo(
+    const std::string& publisher_key,
+    const std::string& screen_name,
+    const std::string& url,
+    const std::string& favicon_url,
+    SaveTwitterPublisherInfoCallback callback) {
+  auto* holder = new CallbackHolder<SaveTwitterPublisherInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->SaveTwitterPublisherInfo(
+      publisher_key, screen_name, url, favicon_url,
+      std::bind(BatLedgerImpl::OnSaveTwitterPublisherInfo, holder, _1, _2));
+}
+
 void BatLedgerImpl::OnRefreshPublisher(
     CallbackHolder<RefreshPublisherCallback>* holder,
     bool verified) {
