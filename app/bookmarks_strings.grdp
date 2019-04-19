@@ -416,12 +416,6 @@
   <message name="IDS_BOOKMARK_MANAGER_SIDEBAR_AX_LABEL" desc="Message announced by screenreaders for the bookmark manager sidebar.">
     Bookmark folder tree
   </message>
-  <message name="IDS_BOOKMARK_MANAGER_SIDEBAR_NODE_COLLAPSE_AX_LABEL" desc="Message announced by screenreaders for button to collapse a folder in the bookmark manager sidebar.">
-    Collapse <ph name="FOLDER_NAME">$1<ex>Recipes</ex></ph>
-  </message>
-  <message name="IDS_BOOKMARK_MANAGER_SIDEBAR_NODE_EXPAND_AX_LABEL" desc="Message announced by screenreaders for button to expand a folder in the bookmark manager sidebar.">
-    Expand <ph name="FOLDER_NAME">$1<ex>Recipes</ex></ph>
-  </message>
   <message name="IDS_BOOKMARK_MANAGER_TOAST_FOLDER_SORTED" desc="Label displayed in toast popup message when a folder's children are sorted.">
     Folder sorted
   </message>

@@ -179,7 +179,7 @@
     Get image descriptions from Brave
   </message>
   <message name="IDS_SETTINGS_ACCESSIBLE_IMAGE_LABELS_SUBTITLE" desc="Subtitle for screen reader image labels feature.">
-    If an image doesn’t have a useful description, Brave will provide one for you. Images are scanned by Brave.
+    If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.
   </message>
   <if expr="chromeos">
     <message name="IDS_SETTINGS_OPTIONS_IN_MENU_LABEL" desc="Label for checkbox which enables showing accessibility options in the system menu.">
@@ -281,26 +281,11 @@
     <message name="IDS_SETTINGS_DELAY_BEFORE_CLICK_VERY_LONG" desc="Description of a very long delay before mouse action.">
       very long (4s)
     </message>
-    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_LABEL" desc="Label for dropdown menu which contains various mouse actions for autoclick to take when the mouse cursor stops">
-      Dwell action
-    </message>
-    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_LEFT_CLICK" desc="Description of a left click mouse action.">
-      Left click
-    </message>
-    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_RIGHT_CLICK" desc="Description of a right click mouse action.">
-      Right click
-    </message>
-    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_DRAG_AND_DROP" desc="Description of a drag and drop mouse action.">
-      Drag and drop
-    </message>
-    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_DOUBLE_CLICK" desc="Description of a double click mouse action.">
-      Double click
-    </message>
-    <message name="IDS_SETTINGS_AUTOCLICK_EVENT_TYPE_NO_ACTION" desc="Description of an option to take no action (pause mouse actions).">
-      No action (pause)
-    </message>
     <message name="IDS_SETTINGS_AUTOCLICK_REVERT_TO_LEFT_CLICK" desc="Description of a checkbox that gives the option to return to the default left click action after taking another action.">
       Revert to left click after action
+    </message>
+    <message name="IDS_SETTINGS_AUTOCLICK_STABILIZE_CURSOR_POSITION" desc="Description of a checkbox that gives the option to turn on cursor movmeent stablization.">
+      Click position stabilization
     </message>
     <message name="IDS_SETTINGS_AUTOCLICK_MOVEMENT_THRESHOLD_LABEL" desc="Label for a dropdown menu which that has options for how much mouse movement can occur before a new autoclick is initiated.">
       Movement threshold
@@ -522,6 +507,9 @@
     <message name="IDS_SETTINGS_CROSTINI_REMOVE" desc="Label for the row to open a dialog confirming removal of Crostini.">
       Remove Linux Apps for <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
     </message>
+    <message name="IDS_SETTINGS_CROSTINI_REMOVE_BUTTON" desc="Label for the button to open a dialog confirming removal of Crostini.">
+      Remove
+    </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_PATHS" desc="Label for managing shared folders in Crostini.">
       Manage shared files &amp; folders
     </message>
@@ -556,13 +544,31 @@
       Replace your Linux apps and files with a previous backup
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LABEL" desc="Label for managing shared USB devices.">
-      USB Device preferences
+      USB preferences
     </message>
-    <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LIST_HEADING" desc="Label for list of options to share USB devices.">
-      USB Devices
+    <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_LIST_EMPTY_MESSAGE" desc="Message shown when there are no avaiable USB devices.">
+      Available USB devices will appear here.
     </message>
     <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_DESCRIPTION" desc="Description for managing shared USB devices.">
-      Share a USB device with Linux by turning the toggle on. Sharing will only last until the device is detached.
+      Give Linux permission to access USB devices. Linux won't remember a usb device after it's removed.
+    </message>
+    <message name="IDS_SETTINGS_CROSTINI_SHARED_USB_DEVICES_EXTRA_DESCRIPTION" desc="Extra description for managing shared USB devices.">
+       Only Android devices are currently supported.
+    </message>
+
+    <!-- Plugin VM Page -->
+    <!-- TODO(timloh): Remove transleatable flag after strings are finalized. -->
+    <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_TITLE" desc="The title of Plugin VM section." translateable="false">
+      Plugin VM
+    </message>
+    <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_LABEL" desc="The text associated with the primary section setting for Plugin VM." translateable="false">
+      Plugin VM
+    </message>
+    <message name="IDS_SETTINGS_PLUGIN_VM_PAGE_SUBTEXT" desc="Description for the section for enabling and managing Crostini." translateable="false">
+      Run Plugin VM apps on your <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_PLUGIN_VM_PRINTER_ACCESS" desc="The text associated with the primary section setting for Plugin VM." translateable="false">
+      Give access to printers
     </message>
 
     <!-- Android Apps Page -->
@@ -1434,6 +1440,9 @@
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_ADDED_PRINTER_DONE_MESSAGE" desc="The message shown when a new printer is set up successfully.">
       Added <ph name="PRINTER_NAME">$1<ex>printer</ex></ph>
     </message>
+    <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_EDITED_PRINTER_DONE_MESSAGE" desc="The message shown when a printer is updated successfully.">
+      Updated <ph name="PRINTER_NAME">$1<ex>printer</ex></ph>
+    </message>
     <message name="IDS_SETTINGS_PRINTING_CUPS_PRINTER_NO_PRINTER_NEARBY" desc="The no-printer-found message shown in the auto discovery dialog.">
       No printers nearby
     </message>
@@ -1929,6 +1938,9 @@
     </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining whether to automatically connect to the network.">
       Automatically connect to this network
+    </message>
+    <message name="IDS_SETTINGS_INTERNET_NETWORK_AUTO_CONNECT_CELLULAR" desc="Settings &gt; Internet &gt; Mobile Data details: Label for the checkbox determining whether to automatically connect to the cellular network.">
+      Automatically connect to cellular network
     </message>
     <message name="IDS_SETTINGS_INTERNET_NETWORK_ALWAYS_ON_VPN" desc="Settings &gt; Internet &gt; Network details: Label for the checkbox determining that all internet traffic has to go through this VPN (virtual private network), and all other network connections are blocked.">
       Always connect through this VPN
@@ -2468,24 +2480,24 @@
   <message name="IDS_SETTINGS_LANGUAGES_ENABLED_LANGUAGES" desc="Header for the list of enabled languages, which the user can use to disable languages, on the Manage Languages page.">
     Enabled languages
   </message>
+  <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_TITLE" desc="Title for the section containing all the options for spell check settings. The options include picking between using the system's spell check or using Brave's web service and a list of the enabled languages which support spell checking.">
+    Spell check
+  </message>
+  <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_BASIC_LABEL" desc="Label for a type of spell check that only relies on the local built-in spell check and does not rely on sending data to Brave for suggestions.">
+    Basic spell check
+  </message>
+  <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_LABEL" desc="Label for a type of spell check that sends the text the user types to Brave for spelling suggestions.">
+    Enhanced spell check
+  </message>
+  <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_ENHANCED_DESCRIPTION" desc="Description for the type of spell check that sends the text the user types to Brave for spelling suggestions. It is important that it is communicated that the text the user types in the browser will be sent to Brave.">
+    Uses the same spell checker that’s used in Brave search. Text you type in the browser is sent to Brave.
+  </message>
   <if expr="not is_macosx">
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_LIST_TITLE" desc="Title for the section containing the dropdown used to select the language to use for spell checking. The dropdown contains the enabled languages which support spell checking.">
-      Spell check
-    </message>
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_EXPAND_ACCESSIBILITY_LABEL" desc="Label for the button that toggles showing the spell check options. Only visible by screen reader software.">
-      Show spell check options
-    </message>
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_SUMMARY_TWO_LANGUAGES" desc="Subtitle for the spell check section when spell check is enabled for two languages, listing those languages.">
-      <ph name="LANGUAGE_1">$1<ex>English (United States)</ex></ph>, <ph name="LANGUAGE_2">$2<ex>Italian</ex></ph>
-    </message>
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_SUMMARY_THREE_LANGUAGES" desc="Subtitle for the spell check section when spell check is enabled for three languages, listing only the first two.">
-      <ph name="LANGUAGE_1">$1<ex>English (United States)</ex></ph>, <ph name="LANGUAGE_2">$2<ex>Italian</ex></ph>, and 1 other
-    </message>
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_SUMMARY_MULTIPLE_LANGUAGES" desc="Subtitle for the spell check section when spell check is enabled for more than three languages, listing only the first two.">
-      <ph name="LANGUAGE_1">$1<ex>English (United States)</ex></ph>, <ph name="LANGUAGE_2">$2<ex>Italian</ex></ph>, and <ph name="NUM_ADDITIONAL_LANGUAGES">$3<ex>2</ex></ph> others
+    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_LANGUAGES_LIST_TITLE" desc="Title for the list of languages that support spell check, from which users can enable or disable spell check for.">
+      Use spell check for
     </message>
     <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_MANAGE" desc="Button under the dropdown of spell check languages which opens a sub-page that lets the user add or remove words to the custom list of words whitelisted for spell checking.">
-      Custom spelling
+      Customize spell check
     </message>
     <message name="IDS_SETTINGS_LANGUAGES_EDIT_DICTIONARY_TITLE" desc="Name of the settings sub-page which allows adding and remove custom words from the custom spell check dictionary.">
       Manage spell check
@@ -2507,9 +2519,6 @@
     </message>
     <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_WORDS_NONE" desc="Placeholder that is shown when there are no custom words in the list of saved custom words dictionary.">
       Saved custom words will appear here
-    </message>
-    <message name="IDS_SETTINGS_LANGUAGES_SPELL_CHECK_DISABLED" desc="Text that is shown when spell checking is disabled by policy.">
-      Disabled
     </message>
     <message name="IDS_SETTINGS_LANGUAGES_DICTIONARY_DOWNLOAD_FAILED" desc="Error message when spell dictionary download fails.">
       Spell check dictionary download failed.
@@ -2558,22 +2567,22 @@
     Uses cookies to remember your preferences, even if you don’t visit those pages
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION" desc="The section title of 'Protects you and your device from dangerous sites'">
-    Safe Browsing
+    Safe Browsing (protects you and your device from dangerous sites)
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLEPROTECTION_DESC" desc="Checkbox label: should Brave protect user and user's device from dangerous sites">
-    Protects you and your device from dangerous sites
+    Sends URLs of some pages you visit to Brave, when your security is at risk
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_REPORTING" desc="The section title of the extended safe browsing checkbox to help improve safe browsing">
-    Help improve Safe Browsing
+    Help improve Brave security
   </message>
   <message name="IDS_SETTINGS_SAFEBROWSING_ENABLE_REPORTING_DESC" desc="Description for extended safe browsing">
-    Sends some system information and page content to Brave
+    To detect dangerous apps and sites, Brave sends URLs of some pages you visit, limited system information, and some page content to Brave
   </message>
-  <message name="IDS_SETTINGS_SPELLING_PREF" desc="The documentation string of the 'Use Spelling' preference">
-    Use a web service to help resolve spelling errors
+  <message name="IDS_SETTINGS_SPELLING_PREF" desc="Label for a setting that enhances spell check by sending the text that users type to Brave for spelling suggestions.">
+    Use enhanced spell check
   </message>
   <message name="IDS_SETTINGS_SPELLING_DESCRIPTION" desc="Description of using a web serviced to help resolve spelling errors. It is important to convey that what the user types will be sent to Brave.">
-    Smarter spell-checking by sending what you type in the browser to Brave
+    Brave sends the text you type in the browser to Brave
   </message>
   <message name="IDS_SETTINGS_SPELLING_PREF_UNIFIED_CONSENT" desc="The documentation string of the 'Use Spelling' preference">
     Enhanced spell check
@@ -2964,6 +2973,9 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SENSORS" desc="Label for the sensors permission in Site Settings. Sensors are motion and light sensors, specifically accelerometers, gyroscope, magnetometers, and ambient-light sensors">
     Motion or light sensors
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS" desc="Label for the motion sensors permission in Site Settings. Motion sensors are accelerometers, gyroscopes and magnetometers.">
+    Motion sensors
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DEVICES" desc="Label for USB devices in site settings.">
     USB devices
   </message>
@@ -2975,6 +2987,18 @@
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_USB_DEVICES_BLOCK" desc="The block label for USB devices in site settings.">
     Do not allow any sites to access USB devices
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS" desc="Label for serial ports in site settings.">
+    Serial ports
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_ASK" desc="The ask label for serial ports in site settings.">
+    Ask when a site wants to access serial ports
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_ASK_RECOMMENDED" desc="The ask label for serial ports in site settings (with the 'recommended' suffix).">
+    Ask when a site wants to access serial ports (recommended)
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_SERIAL_PORTS_BLOCK" desc="The block label for serial ports in site settings.">
+    Do not allow any sites to access serial ports
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_REMOVE_ZOOM_LEVEL" desc="Title tooltip and accessibility text for the button to remove zoom levels in site settings">
     Remove zoom level
@@ -3024,12 +3048,6 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_PERMISSIONS_ARE_EPHEMERAL" desc="The notice that Flash permissions are ephemeral, at the top of the Flash settings page.">
     Your Flash settings will be kept until you quit Brave.
   </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_DETECT_IMPORTANT_RECOMMENDED" desc="The 'detect and run important content' label in site settings (with the 'recommended' suffix).">
-    Run only important content (recommended)
-  </message>
-  <message name="IDS_SETTINGS_SITE_SETTINGS_FLASH_DETECT_IMPORTANT" desc="The 'detect and run important content' label in site settings.">
-    Run only important content
-  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_ALLOW_RECENTLY_CLOSED_SITES" desc="The allow label for background sync in site settings.">
     Allow recently closed sites to finish sending and receiving data
   </message>
@@ -3066,8 +3084,14 @@
   <message name="IDS_SETTINGS_SITE_SETTINGS_SENSORS_ALLOW" desc="The allow label for sensors feature in site settings.">
     Allow sites to use motion and light sensors
   </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_ALLOW" desc="The allow label for motion sensors (accelerometer, gyroscope, magnetometer) feature in site settings.">
+    Allow sites to use motion sensors
+  </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_SENSORS_BLOCK" desc="The block label for sensors feature in site settings.">
     Block sites from using motion and light sensors
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_MOTION_SENSORS_BLOCK" desc="The block label for motion sensors (accelerometer, gyroscope, magnetometer) feature in site settings.">
+    Block sites from using motion sensors
   </message>
   <message name="IDS_SETTINGS_SITE_SETTINGS_AUTOMATIC_DOWNLOAD_ASK" desc="The allow label for automatic download in site settings.">
     Ask when a site tries to download files automatically after the first file
@@ -3293,6 +3317,9 @@
   <message name="IDS_SETTINGS_NO_USB_DEVICES_FOUND" desc="Explanation for not showing USB devices in site settings.">
     No USB devices found
   </message>
+  <message name="IDS_SETTINGS_NO_SERIAL_PORTS_FOUND" desc="Explanation for not showing serial ports in site settings.">
+    No serial ports found
+  </message>
   <message name="IDS_SETTINGS_ADD_SITE_EXCEPTION_PLACEHOLDER" desc="Placeholder text shown before the user starts typing a new content settings exception for a site.">
     [*.]example.com
   </message>
@@ -3377,9 +3404,6 @@
   </message>
   <message name="IDS_SETTINGS_COOKIES_FILE_SYSTEM_PERSISTENT_USAGE_LABEL" desc="Label for a persistent file system's disk usage.">
     Persistent storage
-  </message>
-  <message name="IDS_SETTINGS_COOKIES_LAST_ACCESSED_LABEL" desc="The last access date label">
-    Last accessed
   </message>
   <message name="IDS_SETTINGS_COOKIES_CHANNEL_ID" desc="The text shown when there is a channel id in the Cookies table">
     Channel ID
@@ -3528,6 +3552,12 @@
     </message>
     <message name="IDS_SETTINGS_ACCOUNT_MANAGER_REMOVE_ACCOUNT_LABEL" desc="Label of the Remove account button in Account Manager.">
       Remove account from this device
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_MANAGED_ACCOUNT" desc="Management status label for managed accounts. This will be e.g. 'Managed by google.com' for Enterprise accounts and 'Managed by Family Link' for child accounts.">
+      Managed by <ph name="DOMAIN">$1<ex>google.com</ex></ph>
+    </message>
+    <message name="IDS_SETTINGS_ACCOUNT_MANAGER_MANAGEMENT_STATUS_UNMANAGED_ACCOUNT" desc="Management status label for unmanaged accounts.">
+      Primary account
     </message>
     <message name="IDS_SETTINGS_ADD_FINGERPRINT_DIALOG_TITLE" desc="Title of the add fingerprint dialog popup.">
       Set up your fingerprint
@@ -3894,6 +3924,9 @@
     </message>
     <message name="IDS_SETTINGS_USERS_DEVICE_OWNER_LABEL" desc="Label for a user who is the device owner.">
       <ph name="USER_NAME">$1<ex>John Smith</ex></ph> (owner)
+    </message>
+    <message name="IDS_SETTINGS_USERS_REMOVE_USER_TOOLTIP" desc="Tooltip for the button that removes a user from the list of restricted sign in users.">
+      Remove
     </message>
     <message name="IDS_SETTINGS_USERS_ADD_USERS" desc="Label the dialog for adding users.">
       Add person
@@ -4436,7 +4469,7 @@
     <message name="IDS_SETTINGS_MULTIDEVICE_SETUP_BUTTON" desc="Label of the button that opens a menu to the user that allows them to set up a connection between the user's phone and their Bravebook to give them access to special features.">
       Set up
     </message>
-    <message name="IDS_SETTINGS_MULTIDEVICE_VERIFY_BUTTON" desc="Label for the button to get the Bravebook to verify that it can connect with their phone." translateable="false">
+    <message name="IDS_SETTINGS_MULTIDEVICE_VERIFY_BUTTON" desc="Label for the button to get the Bravebook to verify that it can connect with their phone.">
       Verify
     </message>
     <message name="IDS_SETTINGS_MULTIDEVICE_ENABLED" desc="Text to tell user multidevice features are turned on">
@@ -4644,4 +4677,114 @@
       Hide sensitive content
     </message>
   </if>
+
+  <!-- Security Keys -->
+  <message name="IDS_SETTINGS_SECURITY_KEYS_TITLE" desc="Headline in the Settings UI for the subpage handling security keys. Security keys are external physcial devices for user authentication and the translation should match that used in, for example, IDS_WEBAUTHN_USB_ACTIVATE_DESCRIPTION.">
+    Manage security keys
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_DESC" desc="Description in the Settings UI for the subpage handling security keys. Security keys are external physcial devices for user authentication.">
+    Reset security keys and create PINs
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_SET_PIN" desc="A header that appears in the Settings subpage for security keys (which are external devices for user authentication). PINs are often four-digit codes, commonly used to authorise the use of ATM cards. A similar mechanism can be used with security keys and this is the heading for the section about settings them.">
+    Create a PIN
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_SET_PIN_DESC" desc="A description that appears in the Settings subpage for security keys (which are external devices for user authentication). PINs are often four-digit codes, commonly used to authorise the use of ATM cards. A similar mechanism can be used with security keys and this is the description for the section about settings them.">
+    Protect your security key with a PIN (Personal Identification Number)
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_SET_PIN_INITIAL_TITLE" desc="The title of a dialog for setting the PIN of a security key (which are external devices for user authentication). PINs are often four-digit codes, commonly used to authorise the use of ATM cards. A similar mechanism can be used with security keys and this is the heading for the section about settings them.">
+    Create a PIN
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_SET_PIN_CREATE_TITLE" desc="The title of a dialog for creating a PIN on a security key (which are external devices for user authentication). PINs are often four-digit codes, commonly used to authorise the use of ATM cards. A similar mechanism can be used with security keys and this is the heading for the section about settings them.">
+    Create a PIN
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_SET_PIN_CHANGE_TITLE" desc="The title of a dialog for changing the PIN of a security key (which are external devices for user authentication). PINs are often four-digit codes, commonly used to authorise the use of ATM cards. A similar mechanism can be used with security keys and this is the heading for the section about settings them.">
+    Change a PIN
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_RESET" desc="A header that appears in the Settings subpage for security keys (which are external devices for user authentication). This is the heading for the section about resetting them to factory settings.">
+    Reset your security key
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_DESC" desc="A header that appears in the Settings subpage for security keys (which are external devices for user authentication). This is the description for the section about resetting them to factory settings.">
+    This will erase all data on the security key, including its PIN
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_TITLE" desc="The title of a dialog for factory-resetting security keys (which are external devices for user authentication). Resetting in this context means erasing a security key and returning it to an initial, blank state.">
+    Reset your security key
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_CONFIRM_TITLE" desc="The title of a dialog for factory-resetting security keys (which are external devices for user authentication). Resetting in this context means erasing a security key and returning it to an initial, blank state.">
+    Confirm reset
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_STEP1" desc="An instruction to a user to physically unplug a security key from their computer, reinsert it, and then touch the activation button that's on the device.">
+    Remove your security key from your device, then reinsert and touch it.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_STEP2" desc="An instruction to a user to press the activation button on their security key a second time to confirm that they wish to reset (i.e. erase) their security key (which is an external device for user authentication).">
+    To confirm you want to reset your security key, touch it again. All credentials stored on the security key and its PIN will be erased.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_NO_RESET" desc="A failure message reporting to the user that it is not possible to reset the security key that they selected because the device does not support that operation.">
+    Can’t reset this security key
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_ERROR" desc="A failure message reporting to the user that the attempt to reset their security key (which is an external device for user authentication) failed. This is message is shown in uncommon cases when we don't have a more specific message to show the user and have fallen back to displaying a numerical error code reported by the device.">
+    Can’t reset this security key. Error <ph name="ERROR_CODE">$1<ex>22</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_SUCCESS" desc="A mesasge to the user that they have successfully reset (i.e. erased) their security key (which is an external device for user authentication).">
+    Your security key has been reset
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_RESET_NOTALLOWED" desc="A mesasge to the user that an attempt to reset (i.e. erase) their security key (an external device for user authentication) failed because the security key refused to be reset. This is usually caused because a reset is only allowed within the first few seconds after being plugged in, so the user has to perform the operation quickly.">
+    Can’t reset this security key. Try resetting the key immediately after inserting it.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_TOUCH" desc="An instruction to a user to physically the activation button on their security key (which is an external device for user authentication).">
+    Insert and touch your security key to create or change a PIN.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_NO_PIN" desc="A failure message shown to a user when they attempt to set a PIN on a security key that does not support PINs. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    This security key doesn’t support PINs
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CURRENT_PIN_INTRO" desc="A message shown when a user is trying to change the PIN on a security key to prompt the user to enter the current PIN for the device. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    Enter your current PIN to change it. If you don’t know your PIN, you’ll need to reset the security key, then create a new PIN.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_INCORRECT" desc="A message shown to the user when they enter an incorrect PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    Incorrect PIN
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_INCORRECT_RETRIES_SIN" desc="A message shown to the user when they enter an incorrect PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    Incorrect PIN. You have one attempt remaining.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_INCORRECT_RETRIES_PL" desc="A message shown to the user when they enter an incorrect PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    Incorrect PIN. You have <ph name="RETRIES">$1<ex>8</ex></ph> attempts remaining.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_NEW_PIN" desc="A message shown when a user is trying to set a PIN on a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    Enter your new PIN. A PIN must be at least four characters long and can contain letters, numbers, and other characters.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_SET_PIN_CONFIRM" desc="The label of the button shown when a user is trying to set a PIN on a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    Save
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CURRENT_PIN" desc="A label shown above a text box where the user is expected to enter the current PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    Current PIN
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN" desc="A label shown above a text box where the user is expected to enter a new PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    PIN
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_ERROR_TOO_SHORT" desc="A validation error shown beneath a text box where the user is expected to enter a PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    PIN must be at least 4 characters
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_ERROR_TOO_LONG" desc="A validation error shown beneath a text box where the user is expected to enter a PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    PIN must be at most 63 characters
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_ERROR_INVALID" desc="A validation error shown beneath a text box where the user is expected to enter a PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    PIN contains invalid characters
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_ERROR_MISMATCH" desc="A validation error shown beneath a text box where the user is expected to enter a PIN for a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    The PINs you entered don’t match
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_CONFIRM_PIN" desc="A label shown above a text box where the user is expected to reenter a new PIN for a security key. The text box is a duplicate of an immediately preceeding text box where the user has already entered this value. The user is asked to enter the same value twice in order to ensure that they entered it correctly. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    Confirm PIN
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_SUCCESS" desc="A message shown when the user has successfully set a PIN on a security key. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    Your PIN was created
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_ERROR" desc="A message shown when setting a PIN on a security key failed with an unhandled error code. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    PIN operation failed with code <ph name="RETRIES">$1<ex>18</ex></ph>.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_HARD_LOCK" desc="A message shown when the user attempts to change the PIN on a security key that has been locked due to too many incorrect PIN attempts. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    The security key is locked because the wrong PIN was entered too many times. You’ll need to reset the security key.
+  </message>
+  <message name="IDS_SETTINGS_SECURITY_KEYS_PIN_SOFT_LOCK" desc="A message shown when the user attempts to change the PIN on a security key that has been locked due to too many incorrect PIN attempts. PINs, in this context, are short, often numeric codes that are often used with, for example, ATM cards. Security keys are external devices used to authenticate people.">
+    The security key is locked because the wrong PIN was entered too many times. To unlock it, remove and reinsert it.
+  </message>
 </grit-part>
