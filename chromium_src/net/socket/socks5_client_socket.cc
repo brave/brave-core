@@ -27,7 +27,7 @@ uint8_t SOCKS5ClientSocket::auth_method() {
 
 int SOCKS5ClientSocket::Authenticate(int rv,
                                      NetLogWithSource& net_log,
-                                     CompletionCallback& callback) {
+                                     CompletionRepeatingCallback& callback) {
   DCHECK_EQ(OK, rv);
   return OK;
 }
@@ -65,9 +65,10 @@ uint8_t SOCKS5ClientSocketAuth::auth_method() {
 
 static const size_t kSOCKSAuthUsernamePasswordResponseLen = 2;
 
-int SOCKS5ClientSocketAuth::Authenticate(int rv,
-                                         NetLogWithSource& net_log,
-                                         CompletionCallback& callback) {
+int SOCKS5ClientSocketAuth::Authenticate(
+    int rv,
+    NetLogWithSource& net_log,
+    CompletionRepeatingCallback& callback) {
   if (!do_auth()) {
     DCHECK_EQ(OK, rv);
     return OK;
