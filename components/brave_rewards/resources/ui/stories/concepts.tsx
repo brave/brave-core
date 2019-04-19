@@ -26,11 +26,10 @@ import { BatColorIcon, WalletAddIcon } from '../../../src/components/icons'
 import WelcomePage from '../../../src/features/rewards/welcomePage'
 import { Notification } from '../../../src/features/rewards/walletWrapper'
 
-const bartBaker = require('../../assets/img/bartBaker.jpeg')
+const favicon = require('../../assets/img/brave-favicon.png')
 const siteBgImage = require('../../assets/img/bg_siteBanner.jpg')
 const siteBgLogo = require('../../assets/img/ddgo_siteBanner.svg')
 const siteScreen = require('../../assets/img/ddgo_site.png')
-const tipScreen = require('../../assets/img/tip_site.jpg')
 
 const captchaDrop = require('../../assets/img/captchaDrop.png')
 
@@ -173,11 +172,11 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
     }
 
     return (
-      <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
-        <div style={{ position: 'absolute', bottom: '185px', left: '330px' }}>
+      <div>
+        <div>
           <Tip
             donationAmounts={object('Donations', store.state.donationAmounts)}
-            title={text('Title', 'Bart Baker')}
+            title={text('Title', 'Jonathon Doe')}
             allow={boolean('Allow tips', store.state.allow)}
             provider={text('Provider', 'YouTube')}
             balance={text('Balance', '5')}
@@ -201,7 +200,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
     }
 
     return (
-      <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
+      <div>
         <div style={{ position: 'absolute', top: '40px', left: '120px', width: '373px', minHeight: '446px', borderRadius: '8px', overflow: 'hidden' }}>
           <PanelWelcome
             variant={'one'}
@@ -236,53 +235,51 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
     }
 
     return (
-      <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '912px', margin: '0 auto', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '40px', left: '40px', borderRadius: '8px', overflow: 'hidden' }}>
-          <WalletWrapper
-            compact={true}
-            contentPadding={false}
-            gradientTop={'249,251,252'}
-            balance={text('Tokens', '30.0')}
-            converted={text('Converted', '15.50 USD')}
-            actions={[
-              {
-                name: 'Add funds',
-                action: doNothing,
-                icon: <WalletAddIcon />
-              },
-              {
-                name: 'Settings',
-                action: doNothing,
-                icon: <BatColorIcon />
-              }
-            ]}
-            showSecActions={false}
-            connectedWallet={boolean('Connected wallet', true)}
-            grants={object('Grants', [
-              {
-                tokens: '8.0',
-                expireDate: '7/15/2018',
-                type: 'ugp'
-              },
-              {
-                tokens: '10.0',
-                expireDate: '9/10/2018',
-                type: 'ugp'
-              },
-              {
-                tokens: '10.0',
-                expireDate: '10/10/2018',
-                type: 'ads'
-              }
-            ])}
-          >
-            <WalletPanelDisabled
-              onTOSClick={doNothing}
-              onPrivacyClick={doNothing}
-              onEnable={doNothing}
-            />
-          </WalletWrapper>
-        </div>
+      <div style={{ position: 'absolute', top: '40px', left: '40px', borderRadius: '8px', overflow: 'hidden' }}>
+        <WalletWrapper
+          compact={true}
+          contentPadding={false}
+          gradientTop={'249,251,252'}
+          balance={text('Tokens', '30.0')}
+          converted={text('Converted', '15.50 USD')}
+          actions={[
+            {
+              name: 'Add funds',
+              action: doNothing,
+              icon: <WalletAddIcon />
+            },
+            {
+              name: 'Settings',
+              action: doNothing,
+              icon: <BatColorIcon />
+            }
+          ]}
+          showSecActions={false}
+          connectedWallet={boolean('Connected wallet', true)}
+          grants={object('Grants', [
+            {
+              tokens: '8.0',
+              expireDate: '7/15/2018',
+              type: 'ugp'
+            },
+            {
+              tokens: '10.0',
+              expireDate: '9/10/2018',
+              type: 'ugp'
+            },
+            {
+              tokens: '10.0',
+              expireDate: '10/10/2018',
+              type: 'ads'
+            }
+          ])}
+        >
+          <WalletPanelDisabled
+            onTOSClick={doNothing}
+            onPrivacyClick={doNothing}
+            onEnable={doNothing}
+          />
+        </WalletWrapper>
         <div style={{ position: 'absolute', top: '40px', left: '500px', width: '330px', borderRadius: '8px', overflow: 'hidden' }}>
           <DisabledPanel isPrivate={true} onLinkOpen={onPrivateLink} />
         </div>
@@ -366,91 +363,90 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
     }
 
     return (
-      <div style={{ background: `url(${tipScreen}) no-repeat top center`, width: '986px', height: '100vh', margin: '0 auto', position: 'relative' }}>
-        <div style={{ position: 'absolute', top: '50px', left: '560px', borderRadius: '8px', overflow: 'hidden' }}>
-          <WalletWrapper
-            compact={true}
-            contentPadding={false}
-            notification={store.state.notification as Notification}
-            gradientTop={getGradientColor()}
-            balance={text('Tokens', '30.0')}
-            converted={text('Converted', '15.50 USD')}
-            actions={[
-              {
-                name: 'Add funds',
-                action: doNothing,
-                icon: <WalletAddIcon />
-              },
-              {
-                name: 'Settings',
-                action: doNothing,
-                icon: <BatColorIcon />
-              }
-            ]}
-            showCopy={boolean('Show Uphold', false)}
-            showSecActions={false}
-            connectedWallet={boolean('Connected wallet', false)}
-            grants={object('Grants', [
-              {
-                tokens: '8.0',
-                expireDate: '7/15/2018',
-                type: 'ugp'
-              },
-              {
-                tokens: '10.0',
-                expireDate: '9/10/2018',
-                type: 'ugp'
-              },
-              {
-                tokens: '10.0',
-                expireDate: '10/10/2018',
-                type: 'ads'
-              }
-            ])}
-            grant={store.state.grant}
-            onGrantHide={onGrantHide}
-            onNotificationClick={onFetchCaptcha}
-            onSolution={onSolution}
-            onFinish={onFinish}
-            convertProbiToFixed={convertProbiToFixed}
+      <div style={{ position: 'relative' }}>
+
+        <WalletWrapper
+          compact={true}
+          contentPadding={false}
+          notification={store.state.notification as Notification}
+          gradientTop={getGradientColor()}
+          balance={text('Tokens', '30.0')}
+          converted={text('Converted', '15.50 USD')}
+          actions={[
+            {
+              name: 'Add funds',
+              action: doNothing,
+              icon: <WalletAddIcon />
+            },
+            {
+              name: 'Settings',
+              action: doNothing,
+              icon: <BatColorIcon />
+            }
+          ]}
+          showCopy={boolean('Show Uphold', false)}
+          showSecActions={false}
+          connectedWallet={boolean('Connected wallet', false)}
+          grants={object('Grants', [
+            {
+              tokens: '8.0',
+              expireDate: '7/15/2018',
+              type: 'ugp'
+            },
+            {
+              tokens: '10.0',
+              expireDate: '9/10/2018',
+              type: 'ugp'
+            },
+            {
+              tokens: '10.0',
+              expireDate: '10/10/2018',
+              type: 'ads'
+            }
+          ])}
+          grant={store.state.grant}
+          onGrantHide={onGrantHide}
+          onNotificationClick={onFetchCaptcha}
+          onSolution={onSolution}
+          onFinish={onFinish}
+          convertProbiToFixed={convertProbiToFixed}
+        >
+          <WalletSummarySlider
+            id={'panel-slider'}
+            onToggle={onSummaryToggle}
           >
-            <WalletSummarySlider
-              id={'panel-slider'}
-              onToggle={onSummaryToggle}
-            >
-              <WalletPanel
-                id={'wallet-panel'}
-                platform={'youtube'}
-                publisherImg={bartBaker}
-                publisherName={'Bart Baker'}
-                monthlyAmount={'5.0'}
-                acEnabled={true}
-                isVerified={boolean('Verified', true)}
-                showUnVerified={boolean('Show Unverified', true)}
-                tipsEnabled={boolean('Tips enabled', store.state.tipsEnabled)}
-                includeInAuto={boolean('Tips enabled', store.state.includeInAuto)}
-                attentionScore={'17'}
-                onToggleTips={onToggleTips}
-                donationAction={doNothing}
-                onAmountChange={onAmountChange}
-                donationAmounts={donationAmounts}
-                onIncludeInAuto={onIncludeInAuto}
-                refreshingPublisher={store.state.refreshingPublisher}
-                onRefreshPublisher={onRefreshPublisher}
-              />
-              <WalletSummary
-                compact={true}
-                report={{
-                  grant: object('Grant', { tokens: '10.0', converted: '0.25' }),
-                  ads: object('Ads', { tokens: '10.0', converted: '0.25' }),
-                  contribute: object('Contribute', { tokens: '10.0', converted: '0.25' }),
-                  donation: object('Donation', { tokens: '2.0', converted: '0.25' }),
-                  tips: object('Tips', { tokens: '19.0', converted: '5.25' })
-                }}
-              />
-            </WalletSummarySlider>
-          </WalletWrapper>
-        </div>
+            <WalletPanel
+              id={'wallet-panel'}
+              platform={'youtube'}
+              publisherImg={favicon}
+              publisherName={'Jonathon Doe'}
+              monthlyAmount={'5.0'}
+              acEnabled={true}
+              isVerified={boolean('Verified', false)}
+              showUnVerified={boolean('Show Unverified', true)}
+              tipsEnabled={boolean('Tips enabled', store.state.tipsEnabled)}
+              includeInAuto={boolean('Tips enabled', store.state.includeInAuto)}
+              attentionScore={'17'}
+              onToggleTips={onToggleTips}
+              donationAction={doNothing}
+              onAmountChange={onAmountChange}
+              donationAmounts={donationAmounts}
+              onIncludeInAuto={onIncludeInAuto}
+              refreshingPublisher={store.state.refreshingPublisher}
+              onRefreshPublisher={onRefreshPublisher}
+            />
+            <WalletSummary
+              compact={true}
+              report={{
+                grant: object('Grant', { tokens: '10.0', converted: '0.25' }),
+                ads: object('Ads', { tokens: '10.0', converted: '0.25' }),
+                contribute: object('Contribute', { tokens: '10.0', converted: '0.25' }),
+                donation: object('Donation', { tokens: '2.0', converted: '0.25' }),
+                tips: object('Tips', { tokens: '19.0', converted: '5.25' })
+              }}
+            />
+          </WalletSummarySlider>
+        </WalletWrapper>
       </div>
     )
   }))
