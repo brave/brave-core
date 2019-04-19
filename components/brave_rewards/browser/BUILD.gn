@@ -66,8 +66,8 @@ source_set("browser") {
 
   if (is_android) {
     sources += [
-      "//extensions/common/one_shot_event.h",
-      "//extensions/common/one_shot_event.cc",
+      "//base/one_shot_event.h",
+      "//base/one_shot_event.cc",
     ]
   } else {
     deps += [

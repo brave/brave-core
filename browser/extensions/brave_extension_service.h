@@ -20,7 +20,7 @@ class BraveExtensionService : public ExtensionService {
                         Blacklist* blacklist,
                         bool autoupdate_enabled,
                         bool extensions_enabled,
-                        OneShotEvent* ready);
+                        base::OneShotEvent* ready);
   ~BraveExtensionService() override;
 
   void AddComponentExtension(const Extension* extension) override;
