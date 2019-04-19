@@ -63,7 +63,6 @@ class SettingsPage extends React.Component<Props, {}> {
     }
     this.actions.checkImported()
     this.actions.getGrants()
-    this.actions.getAdsIsSupportedRegion()
 
     // one time check (legacy fix)
     // more info here https://github.com/brave/brave-browser/issues/2172
