@@ -34,7 +34,7 @@ import {
 import TableContribute, { DetailRow as ContributeRow } from '../tableContribute'
 import TableTransactions, { DetailRow as TransactionRow } from '../tableTransactions'
 import { Select, ControlWrapper, Modal } from '../../../components'
-import { AlertCircleIcon, DownloadIcon, PrintIcon, VerifiedIcon } from '../../../components/icons'
+import { AlertCircleIcon, DownloadIcon, PrintIcon, VerifiedSIcon } from '../../../components/icons'
 import ListToken from '../listToken'
 import { Type as TokenType } from '../tokens'
 
@@ -259,7 +259,7 @@ export default class ModalActivity extends React.PureComponent<Props, {}> {
             />
             <StyledVerified>
               <StyledVerifiedIcon>
-                <VerifiedIcon />
+                <VerifiedSIcon />
               </StyledVerifiedIcon>
               <StyledVerifiedText>{getLocale('braveVerified')}</StyledVerifiedText>
             </StyledVerified>

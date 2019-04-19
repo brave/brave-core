@@ -161,5 +161,6 @@ export const StyledWarningWrapper = styled<{}, 'div'>('div')`
 export const StyledVerifiedIcon = styled<{}, 'div'>('div')`
   display: flex;
   color: #392DD1;
-  width: 19px;
+  width: 24px;
+  height: 24px;
 `
