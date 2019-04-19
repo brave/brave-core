@@ -1,0 +1,13 @@
+diff --git a/extensions/renderer/native_extension_bindings_system.h b/extensions/renderer/native_extension_bindings_system.h
+index beb55c30350f72749eb565e08dd6bab798261157..067277ee57d2a2c7f5eec21c69171fe1cd8a9cc9 100644
+--- a/extensions/renderer/native_extension_bindings_system.h
++++ b/extensions/renderer/native_extension_bindings_system.h
+@@ -34,7 +34,7 @@ class NativeExtensionBindingsSystem {
+  public:
+   explicit NativeExtensionBindingsSystem(
+       std::unique_ptr<IPCMessageSender> ipc_message_sender);
+-  ~NativeExtensionBindingsSystem();
++  virtual ~NativeExtensionBindingsSystem();
+ 
+   // Called when a new ScriptContext is created.
+   void DidCreateScriptContext(ScriptContext* context);
