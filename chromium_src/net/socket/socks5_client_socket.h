@@ -28,7 +28,7 @@ class NET_EXPORT_PRIVATE SOCKS5ClientSocketAuth : public SOCKS5ClientSocket {
   uint8_t auth_method() override;
   int Authenticate(int rv,
                    NetLogWithSource& net_log,
-                   CompletionCallback& callback) override;
+                   CompletionRepeatingCallback& callback) override;
   const HostPortPair proxy_host_port_;
   enum {
     STATE_INIT_WRITE = 0,
