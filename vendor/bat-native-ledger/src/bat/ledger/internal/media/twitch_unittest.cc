@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "bat/ledger/internal/media/twitch.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -45,29 +47,44 @@ const char profile_html[] =
     "id=\"ffe665f4fd8fe08606c1140d995d1548\">Verified User</div></div></div>";
 
 TEST(MediaTwitchTest, GetMediaIdFromParts) {
+  std::string media_id;
+  std::string user_id;
   // empty
-  std::string result = MediaTwitch::GetMediaIdFromParts({});
-  ASSERT_EQ(result, "");
+  std::pair<std::string, std::string> result =
+      MediaTwitch::GetMediaIdFromParts({});
+  media_id = result.first;
+  user_id = result.second;
+  EXPECT_TRUE(user_id.empty());
+  ASSERT_TRUE(media_id.empty());
 
   // event is not on the list
   result = MediaTwitch::GetMediaIdFromParts({
     {"event", "test"},
     {"properties", ""}
   });
-  ASSERT_EQ(result, "");
+  media_id = result.first;
+  user_id = result.second;
+  EXPECT_TRUE(user_id.empty());
+  ASSERT_TRUE(media_id.empty());
 
   // properties are missing
   result = MediaTwitch::GetMediaIdFromParts({
     {"event", "minute-watched"}
   });
-  ASSERT_EQ(result, "");
+  media_id = result.first;
+  user_id = result.second;
+  EXPECT_TRUE(user_id.empty());
+  ASSERT_TRUE(media_id.empty());
 
   // channel is missing
   result = MediaTwitch::GetMediaIdFromParts({
     {"event", "minute-watched"},
     {"properties", ""}
   });
-  ASSERT_EQ(result, "");
+  media_id = result.first;
+  user_id = result.second;
+  EXPECT_TRUE(user_id.empty());
+  ASSERT_TRUE(media_id.empty());
 
   // channel is provided
   result = MediaTwitch::GetMediaIdFromParts({
@@ -75,7 +92,10 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
     {"properties", ""},
     {"channel", "dakotaz"}
   });
-  ASSERT_EQ(result, "dakotaz");
+  media_id = result.first;
+  user_id = result.second;
+  EXPECT_EQ(user_id, "dakotaz");
+  ASSERT_EQ(media_id, "dakotaz");
 
   // vod is missing leading v
   result = MediaTwitch::GetMediaIdFromParts({
@@ -84,7 +104,10 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
     {"channel", "dakotaz"},
     {"vod", "123312312"}
   });
-  ASSERT_EQ(result, "dakotaz");
+  media_id = result.first;
+  user_id = result.second;
+  EXPECT_EQ(user_id, "dakotaz");
+  ASSERT_EQ(media_id, "dakotaz");
 
   // vod is provided
   result = MediaTwitch::GetMediaIdFromParts({
@@ -93,7 +116,33 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
     {"channel", "dakotaz"},
     {"vod", "v123312312"}
   });
-  ASSERT_EQ(result, "dakotaz_vod_123312312");
+  media_id = result.first;
+  user_id = result.second;
+  EXPECT_EQ(user_id, "dakotaz");
+  ASSERT_EQ(media_id, "dakotaz_vod_123312312");
+
+  // live stream username has '_'
+  result = MediaTwitch::GetMediaIdFromParts({
+    {"event", "minute-watched"},
+    {"properties", ""},
+    {"channel", "anatomyz_2"}
+  });
+  media_id = result.first;
+  user_id = result.second;
+  EXPECT_EQ(user_id, "anatomyz_2");
+  ASSERT_EQ(media_id, "anatomyz_2");
+
+  // vod has '_'
+  result = MediaTwitch::GetMediaIdFromParts({
+    {"event", "minute-watched"},
+    {"properties", ""},
+    {"channel", "anatomyz_2"},
+    {"vod", "v123312312"}
+  });
+  media_id = result.first;
+  user_id = result.second;
+  EXPECT_EQ(user_id, "anatomyz_2");
+  ASSERT_EQ(media_id, "anatomyz_2_vod_123312312");
 }
 
 TEST(MediaTwitchTest, GetMediaURL) {
