@@ -22,8 +22,7 @@ class BookmarkButton : public ToolbarButton {
     void OnBubbleWidgetCreated(views::Widget* bubble_widget);
 
     // ToolbarButton:
-    bool GetTooltipText(const gfx::Point& p,
-                      base::string16* tooltip) const override;
+    base::string16 GetTooltipText(const gfx::Point& p) const override;
     const char* GetClassName() const override;
     void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
 
