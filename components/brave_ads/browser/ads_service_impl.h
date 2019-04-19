@@ -56,11 +56,11 @@ class AdsServiceImpl : public AdsService,
   ~AdsServiceImpl() override;
 
   // AdsService implementation
-  bool is_enabled() const override;
-  uint64_t ads_per_hour() const override;
+  bool IsSupportedRegion() const override;
 
-  void set_ads_enabled(bool enabled) override;
-  void set_ads_per_hour(int ads_per_hour) override;
+  void SetAdsEnabled(const bool is_enabled) override;
+
+  void SetAdsPerHour(const uint64_t ads_per_hour) override;
 
   void TabUpdated(
       SessionID tab_id,
@@ -71,10 +71,14 @@ class AdsServiceImpl : public AdsService,
   void OnMediaStop(SessionID tab_id) override;
   void ClassifyPage(const std::string& url, const std::string& page) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
-  void IsSupportedRegion(
-      IsSupportedRegionCallback callback) override;
 
   void Shutdown() override;
+
+  // AdsClient implementation
+  bool IsAdsEnabled() const override;
+
+  uint64_t GetAdsPerHour() const override;
+  uint64_t GetAdsPerDay() const override;
 
  private:
   friend class AdsNotificationHandler;
@@ -83,6 +87,7 @@ class AdsServiceImpl : public AdsService,
       NotificationInfoMap;
 
   void Start();
+  bool StartService();
   void Stop();
   void ResetTimer();
   void CheckIdleState();
@@ -91,22 +96,20 @@ class AdsServiceImpl : public AdsService,
 #endif
   int GetIdleThreshold();
   void OnShow(Profile* profile, const std::string& notification_id);
-  void OnClose(Profile* profile,
-               const GURL& origin,
-               const std::string& notification_id,
-               bool by_user,
-               base::OnceClosure completed_closure);
-  void OpenSettings(Profile* profile,
-                    const GURL& origin,
-                    bool should_close);
-
+  void OnClose(
+      Profile* profile,
+      const GURL& origin,
+      const std::string& notification_id,
+      bool by_user,
+      base::OnceClosure completed_closure);
+  void OpenSettings(
+      Profile* profile,
+      const GURL& origin,
+      bool should_close);
 
   // AdsClient implementation
-  bool IsAdsEnabled() const override;
   bool IsForeground() const override;
   const std::string GetAdsLocale() const override;
-  uint64_t GetAdsPerHour() const override;
-  uint64_t GetAdsPerDay() const override;
   void GetClientInfo(ads::ClientInfo* info) const override;
   const std::vector<std::string> GetLocales() const override;
   const std::string GenerateUUID() const override;
@@ -115,23 +118,27 @@ class AdsServiceImpl : public AdsService,
   void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(uint32_t timer_id) override;
-  void URLRequest(const std::string& url,
-                  const std::vector<std::string>& headers,
-                  const std::string& content,
-                  const std::string& content_type,
-                  ads::URLRequestMethod method,
-                  ads::URLRequestCallback callback) override;
-  void Save(const std::string& name,
-            const std::string& value,
-            ads::OnSaveCallback callback) override;
-  void Load(const std::string& name,
-            ads::OnLoadCallback callback) override;
+  void URLRequest(
+      const std::string& url,
+      const std::vector<std::string>& headers,
+      const std::string& content,
+      const std::string& content_type,
+      ads::URLRequestMethod method,
+      ads::URLRequestCallback callback) override;
+  void Save(
+      const std::string& name,
+      const std::string& value,
+      ads::OnSaveCallback callback) override;
+  void Load(
+      const std::string& name,
+      ads::OnLoadCallback callback) override;
   void SaveBundleState(
       std::unique_ptr<ads::BundleState> bundle_state,
       ads::OnSaveCallback callback) override;
   const std::string LoadJsonSchema(const std::string& name) override;
-  void Reset(const std::string& name,
-             ads::OnResetCallback callback) override;
+  void Reset(
+      const std::string& name,
+      ads::OnResetCallback callback) override;
   void GetAds(
       const std::string& category,
       ads::OnGetAdsCallback callback) override;
@@ -149,8 +156,9 @@ class AdsServiceImpl : public AdsService,
   bool IsNetworkConnectionAvailable() override;
 
   // history::HistoryServiceObserver
-  void OnURLsDeleted(history::HistoryService* history_service,
-                     const history::DeletionInfo& deletion_info) override;
+  void OnURLsDeleted(
+      history::HistoryService* history_service,
+      const history::DeletionInfo& deletion_info) override;
 
   // URLFetcherDelegate impl
   void OnURLFetchComplete(const net::URLFetcher* source) override;
@@ -159,12 +167,14 @@ class AdsServiceImpl : public AdsService,
   void OnBackground() override;
   void OnForeground() override;
 
-  void OnGetAdsForCategory(const ads::OnGetAdsCallback& callback,
-                           const std::string& category,
-                           const std::vector<ads::AdInfo>& ads);
+  void OnGetAdsForCategory(
+      const ads::OnGetAdsCallback& callback,
+      const std::string& category,
+      const std::vector<ads::AdInfo>& ads);
   void OnSaveBundleState(const ads::OnSaveCallback& callback, bool success);
-  void OnLoaded(const ads::OnLoadCallback& callback,
-                const std::string& value);
+  void OnLoaded(
+      const ads::OnLoadCallback& callback,
+      const std::string& value);
   void OnSaved(const ads::OnSaveCallback& callback, bool success);
   void OnReset(const ads::OnResetCallback& callback, bool success);
   void OnTimer(uint32_t timer_id);
@@ -178,9 +188,13 @@ class AdsServiceImpl : public AdsService,
   void OnPrefsChanged(const std::string& pref);
   void OnCreate();
   void OnInitialize();
-  void MaybeStart(bool restart);
-  void NotificationTimedOut(uint32_t timer_id,
-                            const std::string& notification_id);
+  void MaybeStart(bool should_restart);
+  void OnMaybeStartForRegion(
+      bool should_restart,
+      bool is_supported_region);
+  void NotificationTimedOut(
+      uint32_t timer_id,
+      const std::string& notification_id);
 
   uint32_t next_timer_id();
 
@@ -192,9 +206,11 @@ class AdsServiceImpl : public AdsService,
   const base::FilePath base_path_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   uint32_t next_timer_id_;
+  bool is_supported_region_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
+
 #if !defined(OS_ANDROID)
   ui::IdleState last_idle_state_;
   bool is_foreground_;

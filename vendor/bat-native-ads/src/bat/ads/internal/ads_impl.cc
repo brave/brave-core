@@ -321,20 +321,6 @@ void AdsImpl::ConfirmAdUUIDIfAdEnabled() {
   }
 }
 
-bool AdsImpl::IsSupportedRegion() {
-  auto supported_regions = {"US", "CA", "DE", "FR", "GB"};
-
-  auto locale = ads_client_->GetAdsLocale();
-  auto region = helper::Locale::GetCountryCode(locale);
-
-  if (std::find(supported_regions.begin(), supported_regions.end(), region)
-      == supported_regions.end()) {
-    return false;
-  }
-
-  return true;
-}
-
 void AdsImpl::SetConfirmationsIsReady(const bool is_ready) {
   is_confirmations_ready_ = is_ready;
 }

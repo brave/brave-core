@@ -10,8 +10,6 @@
 #include "bat/ads/ads.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
-using namespace std::placeholders;
-
 namespace bat_ads {
 
 namespace {
@@ -31,7 +29,7 @@ BatAdsImpl::BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info)
 BatAdsImpl::~BatAdsImpl() {}
 
 void BatAdsImpl::Initialize(InitializeCallback callback) {
-  // TODO - Initialize needs a real callback
+  // TODO(Terry Mancey): Initialize needs a real callback
   ads_->Initialize();
   std::move(callback).Run();
 }
@@ -81,7 +79,7 @@ void BatAdsImpl::TabUpdated(int32_t tab_id,
 }
 
 void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
-  // TODO - RemoveAllHistory needs a real callback
+  // TODO(Terry Mancey): RemoveAllHistory needs a real callback
   ads_->RemoveAllHistory();
   std::move(callback).Run();
 }
@@ -111,11 +109,6 @@ void BatAdsImpl::GenerateAdReportingNotificationResultEvent(
         *info,
         ToNotificationResultInfoResultType(result_type));
   }
-}
-
-void BatAdsImpl::IsSupportedRegion(
-      IsSupportedRegionCallback callback) {
-  std::move(callback).Run(ads_->IsSupportedRegion());
 }
 
 }  // namespace bat_ads

@@ -22,11 +22,13 @@ class AdsService : public KeyedService {
  public:
   AdsService() = default;
 
-  virtual bool is_enabled() const = 0;
-  virtual uint64_t ads_per_hour() const = 0;
+  virtual bool IsSupportedRegion() const = 0;
 
-  virtual void set_ads_enabled(bool enabled) = 0;
-  virtual void set_ads_per_hour(int ads_per_hour) = 0;
+  virtual bool IsAdsEnabled() const = 0;
+  virtual void SetAdsEnabled(const bool is_enabled) = 0;
+
+  virtual uint64_t GetAdsPerHour() const = 0;
+  virtual void SetAdsPerHour(const uint64_t ads_per_hour) = 0;
 
   // ads::Ads proxy
   virtual void TabUpdated(
@@ -36,11 +38,10 @@ class AdsService : public KeyedService {
   virtual void TabClosed(SessionID tab_id) = 0;
   virtual void OnMediaStart(SessionID tab_id) = 0;
   virtual void OnMediaStop(SessionID tab_id) = 0;
-  virtual void ClassifyPage(const std::string& url,
-                            const std::string& page) = 0;
+  virtual void ClassifyPage(
+      const std::string& url,
+      const std::string& page) = 0;
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
-  virtual void IsSupportedRegion(
-      IsSupportedRegionCallback callback) = 0;
 
  private:
   DISALLOW_COPY_AND_ASSIGN(AdsService);
