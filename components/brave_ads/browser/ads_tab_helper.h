@@ -14,6 +14,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "components/sessions/core/session_id.h"
+#include "content/public/browser/media_player_id.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -55,10 +56,10 @@ class AdsTabHelper : public content::WebContentsObserver,
                      const GURL& validated_url) override;
   void DidAttachInterstitialPage() override;
   void MediaStartedPlaying(const MediaPlayerInfo& video_type,
-                           const MediaPlayerId& id) override;
+                           const content::MediaPlayerId& id) override;
   void MediaStoppedPlaying(
       const MediaPlayerInfo& video_type,
-      const MediaPlayerId& id,
+      const content::MediaPlayerId& id,
       WebContentsObserver::MediaStoppedReason reason) override;
   void OnVisibilityChanged(content::Visibility visibility) override;
   void WebContentsDestroyed() override;
