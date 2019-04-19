@@ -12,7 +12,7 @@ import TableContribute, { DetailRow as ContributeDetailRow } from '../../../src/
 import TableDonation, { DetailRow as DonationDetailRow } from '../../../src/features/rewards/tableDonation'
 import TableTransactions, { DetailRow as TransactionsRow } from '../../../src/features/rewards/tableTransactions'
 
-const bart = require('../../assets/img/bartBaker.jpeg')
+const favicon = require('../../assets/img/brave-favicon.png')
 const ddgo = require('../../assets/img/ddgo.jpg')
 const wiki = require('../../assets/img/wiki.jpg')
 const buzz = require('../../assets/img/buzz.jpg')
@@ -26,7 +26,7 @@ const doNothing = () => {
 storiesOf('Feature Components/Rewards/Table', module)
   .addDecorator(withKnobs)
   .addDecorator(centered)
-  .add('Contribution',() => {
+  .add('Contribution', () => {
     const header: string[] = [
       'Site',
       'Attention'
@@ -35,10 +35,10 @@ storiesOf('Feature Components/Rewards/Table', module)
     const rows: ContributeDetailRow[] = [
       {
         profile: {
-          name: 'Bart Baker',
+          name: 'Jonathon Doe',
           verified: true,
           provider: 'youtube',
-          src: bart
+          src: favicon
         },
         url: 'https://brave.com',
         attention: 40,
@@ -101,14 +101,14 @@ storiesOf('Feature Components/Rewards/Table', module)
       </div>
     )
   })
-  .add('Donation',() => {
+  .add('Donation', () => {
     const rows: DonationDetailRow[] = [
       {
         profile: {
-          name: 'Bart Baker',
+          name: 'Jonathon Doe',
           verified: true,
           provider: 'youtube',
-          src: bart
+          src: favicon
         },
         url: 'https://brave.com',
         type: 'recurring',
@@ -161,7 +161,7 @@ storiesOf('Feature Components/Rewards/Table', module)
       </div>
     )
   })
-  .add('Transactions',() => {
+  .add('Transactions', () => {
     const rows: TransactionsRow[] = [
       {
         date: '6/1',
@@ -176,7 +176,7 @@ storiesOf('Feature Components/Rewards/Table', module)
         date: '6/9',
         type: 'tipOnLike',
         description: {
-          publisher: 'Bart Baker',
+          publisher: 'Jonathon Doe',
           platform: 'YouTube'
         },
         amount: {

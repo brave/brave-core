@@ -13,7 +13,7 @@ import { Column, Grid, Checkbox, ControlWrapper } from '../../../../src/componen
 import locale from './fakeLocale'
 
 // Assets
-const bartBaker = require('../../../assets/img/bartBaker.jpeg')
+const favicon = require('../../../assets/img/brave-favicon.png')
 const eich = require('../../../assets/img/eich.jpg')
 const guardian = require('../../../assets/img/guardian.jpg')
 
@@ -45,10 +45,10 @@ class DonationsBox extends React.Component<{}, State> {
     return [
       {
         profile: {
-          name: 'Bart Baker',
+          name: 'Jonathon Doe',
           verified: true,
           provider: 'youtube',
-          src: bartBaker
+          src: favicon
         },
         url: 'https://brave.com',
         type: 'recurring',

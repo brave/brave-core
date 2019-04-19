@@ -26,7 +26,7 @@ import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewar
 import locale from './fakeLocale'
 
 // Assets
-const bartBaker = require('../../../assets/img/bartBaker.jpeg')
+const favicon = require('../../../assets/img/brave-favicon.png')
 const buzz = require('../../../assets/img/buzz.jpg')
 const ddgo = require('../../../assets/img/ddgo.jpg')
 const guardian = require('../../../assets/img/guardian.jpg')
@@ -163,10 +163,10 @@ class ContributeBoxMobile extends React.Component<Props, State> {
     return [
       {
         profile: {
-          name: 'Bart Baker',
+          name: 'Jonathon Doe',
           verified: true,
           provider: 'youtube',
-          src: bartBaker
+          src: favicon
         },
         url: 'https://brave.com',
         attention: 40,

@@ -14,7 +14,7 @@ import { DetailRow as TransactionsRow } from '../../../src/features/rewards/tabl
 import { ModalContribute, ModalBackupRestore, ModalActivity, ModalDonation } from '../../../src/features/rewards'
 import ModalAddFunds, { Address } from '../../../src/features/rewards/modalAddFunds'
 
-const bart = require('../../assets/img/bartBaker.jpeg')
+const favicon = require('../../assets/img/brave-favicon.png')
 const ddgo = require('../../assets/img/ddgo.jpg')
 const wiki = require('../../assets/img/wiki.jpg')
 const buzz = require('../../assets/img/buzz.jpg')
@@ -54,10 +54,10 @@ storiesOf('Feature Components/Rewards/Modal', module)
     const rows: ContributeRow[] = [
       {
         profile: {
-          name: 'Bart Baker',
+          name: 'Jonathon Doe',
           verified: true,
           provider: 'youtube',
-          src: bart
+          src: favicon
         },
         url: 'https://brave.com',
         attention: 40,
@@ -118,10 +118,10 @@ storiesOf('Feature Components/Rewards/Modal', module)
     const contributions: ContributeRow[] = [
       {
         profile: {
-          name: 'Bart Baker',
+          name: 'Jonathon Doe',
           verified: true,
           provider: 'youtube',
-          src: bart
+          src: favicon
         },
         url: 'https://brave.com',
         attention: 40,
@@ -203,7 +203,7 @@ storiesOf('Feature Components/Rewards/Modal', module)
         date: '6/9',
         type: 'tipOnLike',
         description: {
-          publisher: 'Bart Baker',
+          publisher: 'Jonathon Doe',
           platform: 'YouTube'
         },
         amount: {
@@ -387,14 +387,14 @@ storiesOf('Feature Components/Rewards/Modal', module)
       />
     )
   })
-  .add('Donation',() => {
+  .add('Donation', () => {
     const rows: DonationDetailRow[] = [
       {
         profile: {
-          name: 'Bart Baker',
+          name: 'Jonathon Doe',
           verified: true,
           provider: 'youtube',
-          src: bart
+          src: favicon
         },
         url: 'https://brave.com',
         type: 'recurring',

@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-import { withKnobs, object, select, text, boolean, number } from '@storybook/addon-knobs'
+import { withKnobs, object, text, select, boolean, number } from '@storybook/addon-knobs'
 import centered from '@storybook/addon-centered'
 
 // Components
@@ -13,7 +13,7 @@ import { AlertWallet, Notification } from '../../../src/features/rewards/walletW
 import { WalletAddIcon, WalletImportIcon } from '../../../src/components/icons'
 import { WalletInfoHeader } from '../../../src/features/rewards/mobile'
 
-const bartBaker = require('../../assets/img/bartBaker.jpeg')
+const favicon = require('../../assets/img/brave-favicon.png')
 
 const doNothing = () => {
   console.log('nothing')
@@ -114,12 +114,12 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
   })
   .add('Panel', () => {
     return (
-      <div style={{ width: '373px', background: '#f9fbfc' }}>
+      <div style={{ width: '373px', background: '#fff' }}>
         <WalletPanel
           id={'wallet-panel'}
           platform={select<any>('Provider', { youtube: 'YouTube', twitter: 'Twitter', twitch: 'Twitch' }, 'youtube')}
-          publisherImg={bartBaker}
-          publisherName={'Bart Baker'}
+          publisherImg={favicon}
+          publisherName={'Jonathan Doe'}
           monthlyAmount={'10.0'}
           isVerified={boolean('Verified', true)}
           tipsEnabled={boolean('Tips Enabled', true)}

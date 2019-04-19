@@ -20,7 +20,7 @@ import {
 import { WalletAddIcon, WalletWithdrawIcon } from '../../../../src/components/icons'
 
 // Assets
-const bartBaker = require('../../../assets/img/bartBaker.jpeg')
+const favicon = require('../../../assets/img/brave-favicon.png')
 const buzz = require('../../../assets/img/buzz.jpg')
 const ddgo = require('../../../assets/img/ddgo.jpg')
 const guardian = require('../../../assets/img/guardian.jpg')
@@ -50,10 +50,10 @@ class PageWallet extends React.Component<{}, State> {
     return [
       {
         profile: {
-          name: 'Bart Baker',
+          name: 'Jonathon Doe',
           verified: true,
           provider: 'youtube',
-          src: bartBaker
+          src: favicon
         },
         url: 'https://brave.com',
         attention: 40,
@@ -137,7 +137,7 @@ class PageWallet extends React.Component<{}, State> {
         date: '6/9',
         type: 'tipOnLike',
         description: {
-          publisher: 'Bart Baker',
+          publisher: 'Jonathon Doe',
           platform: 'YouTube'
         },
         amount: {
@@ -286,7 +286,7 @@ class PageWallet extends React.Component<{}, State> {
           connectedWallet={boolean('Connected wallet', false)}
         >
           {
-            content === 'empty' ? <WalletEmpty/> : null
+            content === 'empty' ? <WalletEmpty /> : null
           }
           {
             content === 'summary'
@@ -304,100 +304,100 @@ class PageWallet extends React.Component<{}, State> {
               : null
           }
           {
-            content === 'off' ? <WalletOff/> : null
+            content === 'off' ? <WalletOff /> : null
           }
         </WalletWrapper>
         {
           this.state.modalBackup
-          ? <ModalBackupRestore
-            activeTabId={this.state.activeTabId}
-            backupKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
-            onTabChange={this.onBackupTabChange.bind(self)}
-            onClose={this.onBackupModalClose.bind(self)}
-            onCopy={doNothing}
-            onPrint={doNothing}
-            onSaveFile={doNothing}
-            onRestore={doNothing}
-          />
-          : null
+            ? <ModalBackupRestore
+              activeTabId={this.state.activeTabId}
+              backupKey={'crouch  hint  glow  recall  round  angry  weasel  luggage save  hood  census  near  still   power  vague  balcony camp  law  now  certain  wagon  affair  butter  choice '}
+              onTabChange={this.onBackupTabChange.bind(self)}
+              onClose={this.onBackupModalClose.bind(self)}
+              onCopy={doNothing}
+              onPrint={doNothing}
+              onSaveFile={doNothing}
+              onRestore={doNothing}
+            />
+            : null
         }
         {
           this.state.modalActivity
-          ? <ModalActivity
-            contributeRows={this.activityContributions}
-            transactionRows={this.activityTransactions}
-            onClose={this.onActivityClose}
-            onPrint={doNothing}
-            onDownloadPDF={doNothing}
-            onMonthChange={doNothing}
-            months={{
-              'jun-2018': 'June 2018',
-              'may-2018': 'May 2018',
-              'apr-2018': 'April 2018'
-            }}
-            currentMonth={'jun-2018'}
-            summary={[
-              {
-                text: 'Token Grant available',
-                type: 'grant',
-                token: {
-                  value: '10.0',
-                  converted: '5.20'
+            ? <ModalActivity
+              contributeRows={this.activityContributions}
+              transactionRows={this.activityTransactions}
+              onClose={this.onActivityClose}
+              onPrint={doNothing}
+              onDownloadPDF={doNothing}
+              onMonthChange={doNothing}
+              months={{
+                'jun-2018': 'June 2018',
+                'may-2018': 'May 2018',
+                'apr-2018': 'April 2018'
+              }}
+              currentMonth={'jun-2018'}
+              summary={[
+                {
+                  text: 'Token Grant available',
+                  type: 'grant',
+                  token: {
+                    value: '10.0',
+                    converted: '5.20'
+                  }
+                },
+                {
+                  text: 'Earnings from Brave Ads',
+                  type: 'ads',
+                  token: {
+                    value: '10.0',
+                    converted: '5.20'
+                  }
+                },
+                {
+                  text: 'Brave Contribute',
+                  type: 'contribute',
+                  notPaid: true,
+                  token: {
+                    value: '10.0',
+                    converted: '5.20',
+                    isNegative: true
+                  }
+                },
+                {
+                  text: 'Recurring Donations',
+                  type: 'recurring',
+                  notPaid: true,
+                  token: {
+                    value: '2.0',
+                    converted: '1.1',
+                    isNegative: true
+                  }
+                },
+                {
+                  text: 'One-time Donations/Tips',
+                  type: 'donations',
+                  token: {
+                    value: '19.0',
+                    converted: '10.10',
+                    isNegative: true
+                  }
                 }
-              },
-              {
-                text: 'Earnings from Brave Ads',
-                type: 'ads',
-                token: {
-                  value: '10.0',
-                  converted: '5.20'
-                }
-              },
-              {
-                text: 'Brave Contribute',
-                type: 'contribute',
-                notPaid: true,
-                token: {
-                  value: '10.0',
-                  converted: '5.20',
-                  isNegative: true
-                }
-              },
-              {
-                text: 'Recurring Donations',
-                type: 'recurring',
-                notPaid: true,
-                token: {
-                  value: '2.0',
-                  converted: '1.1',
-                  isNegative: true
-                }
-              },
-              {
-                text: 'One-time Donations/Tips',
-                type: 'donations',
-                token: {
-                  value: '19.0',
-                  converted: '10.10',
-                  isNegative: true
-                }
-              }
-            ]}
-            total={{
-              value: '1.0',
-              converted: '0.5'
-            }}
-            paymentDay={12}
-            openBalance={{
-              value: '10.0',
-              converted: '5.20'
-            }}
-            closingBalance={{
-              value: '11.0',
-              converted: '5.30'
-            }}
-          />
-          : null
+              ]}
+              total={{
+                value: '1.0',
+                converted: '0.5'
+              }}
+              paymentDay={12}
+              openBalance={{
+                value: '10.0',
+                converted: '5.20'
+              }}
+              closingBalance={{
+                value: '11.0',
+                converted: '5.30'
+              }}
+            />
+            : null
         }
       </>
     )

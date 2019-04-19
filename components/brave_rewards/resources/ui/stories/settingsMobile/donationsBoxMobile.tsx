@@ -15,11 +15,11 @@ import { Column, Grid, Checkbox, ControlWrapper } from '../../../../src/componen
 import locale from './fakeLocale'
 
 // Assets
-const bartBaker = require('../../../assets/img/bartBaker.jpeg')
+const favicon = require('../../../assets/img/brave-favicon.png')
 const eich = require('../../../assets/img/eich.jpg')
 const guardian = require('../../../assets/img/guardian.jpg')
 
-type Check = {yt: boolean, tw: boolean, inst: boolean}
+type Check = { yt: boolean, tw: boolean, inst: boolean }
 
 interface Props {
   rewardsEnabled: boolean
@@ -49,10 +49,10 @@ class DonationsBoxMobile extends React.Component<Props, State> {
     return [
       {
         profile: {
-          name: 'Bart Baker',
+          name: 'Jonathon Doe',
           verified: true,
           provider: 'youtube',
-          src: bartBaker
+          src: favicon
         },
         url: 'https://brave.com',
         type: 'recurring',
@@ -94,7 +94,7 @@ class DonationsBoxMobile extends React.Component<Props, State> {
     ]
   }
 
-  onChange = (key: string, selected: boolean, child: React.ReactNode, all: {[key: string]: boolean}) => {
+  onChange = (key: string, selected: boolean, child: React.ReactNode, all: { [key: string]: boolean }) => {
     this.setState({
       check: all as Check
     })
@@ -104,20 +104,20 @@ class DonationsBoxMobile extends React.Component<Props, State> {
     return (
       <>
         <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
-            <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-              <ControlWrapper text={'Enable ability to give tips on ‘Like’ posts'}>
-                <Checkbox
-                  value={this.state.check}
-                  multiple={true}
-                  onChange={this.onChange}
-                >
-                  <div data-key='yt'>YouTube</div>
-                  <div data-key='tw'>Twitter</div>
-                  <div data-key='inst'>Instagram</div>
-                </Checkbox>
-              </ControlWrapper>
-            </Column>
-          </Grid>
+          <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+            <ControlWrapper text={'Enable ability to give tips on ‘Like’ posts'}>
+              <Checkbox
+                value={this.state.check}
+                multiple={true}
+                onChange={this.onChange}
+              >
+                <div data-key='yt'>YouTube</div>
+                <div data-key='tw'>Twitter</div>
+                <div data-key='inst'>Instagram</div>
+              </Checkbox>
+            </ControlWrapper>
+          </Column>
+        </Grid>
       </>
     )
   }
