@@ -7,7 +7,6 @@
 
 #include "base/macros.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
-#include "extensions/browser/event_router.h"
 
 class Profile;
 
@@ -16,12 +15,9 @@ namespace brave_rewards {
 class RewardsNotificationService;
 
 class ExtensionRewardsNotificationServiceObserver
-    : public RewardsNotificationServiceObserver,
-      public extensions::EventRouter::Observer {
+    : public RewardsNotificationServiceObserver {
  public:
-  ExtensionRewardsNotificationServiceObserver(
-      RewardsNotificationService* notification_service,
-      Profile* profile);
+  ExtensionRewardsNotificationServiceObserver(Profile* profile);
   ~ExtensionRewardsNotificationServiceObserver() override;
 
   // RewardsNotificationServiceObserver implementation
@@ -44,11 +40,7 @@ class ExtensionRewardsNotificationServiceObserver
       const RewardsNotificationService::RewardsNotificationsList&
           rewards_notifications_list) override;
 
-  // extensions::EventRouter::Observer implementation
-  void OnListenerAdded(const extensions::EventListenerInfo& details) override;
-
  private:
-  RewardsNotificationService* notification_service_;
   Profile* profile_;
 
   DISALLOW_COPY_AND_ASSIGN(ExtensionRewardsNotificationServiceObserver);
