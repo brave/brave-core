@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "brave/components/brave_ads/browser/test_util.h"
 
 #include "base/files/file_util.h"

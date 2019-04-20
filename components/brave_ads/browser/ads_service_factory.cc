@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 
 #include "base/time/time.h"
@@ -104,7 +106,9 @@ void AdsServiceFactory::RegisterProfilePrefs(
   #endif
 
   registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 15);
-  registry->RegisterBooleanPref(prefs::kBraveAdShouldShowFirstLaunchNotification, true);
+  registry->RegisterBooleanPref(
+      prefs::kBraveAdShouldShowFirstLaunchNotification,
+      true);
 
   auto now = static_cast<uint64_t>(
       (base::Time::Now() - base::Time()).InSeconds());

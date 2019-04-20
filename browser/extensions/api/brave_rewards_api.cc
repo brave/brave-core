@@ -473,19 +473,19 @@ BraveRewardsGetAllNotificationsFunction::Run() {
 
   auto notifications = rewards_service->GetAllNotifications();
 
-  for (auto const& item : notifications) {
-    auto notification = std::make_unique<base::DictionaryValue>();
-    notification->SetString("id", item.second.id_);
-    notification->SetInteger("type", item.second.type_);
-    notification->SetInteger("timestamp", item.second.timestamp_);
+  for (auto const& notification : notifications) {
+    auto item = std::make_unique<base::DictionaryValue>();
+    item->SetString("id", notification.second.id_);
+    item->SetInteger("type", notification.second.type_);
+    item->SetInteger("timestamp", notification.second.timestamp_);
 
     auto args = std::make_unique<base::ListValue>();
-    for (auto const& arg : item.second.args_) {
+    for (auto const& arg : notification.second.args_) {
       args->AppendString(arg);
     }
 
-    notification->SetList("args", std::move(args));
-    list->Append(std::move(notification));
+    item->SetList("args", std::move(args));
+    list->Append(std::move(item));
   }
 
   return RespondNow(OneArgument(std::move(list)));
