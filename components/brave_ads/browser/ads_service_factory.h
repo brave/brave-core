@@ -21,9 +21,6 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
 
   static AdsServiceFactory* GetInstance();
 
-  void RegisterProfilePrefs(
-      user_prefs::PrefRegistrySyncable* registry) override;
-
  private:
   friend struct base::DefaultSingletonTraits<AdsServiceFactory>;
 
@@ -36,6 +33,8 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
+  void RegisterProfilePrefs(
+      user_prefs::PrefRegistrySyncable* registry) override;
   bool ShouldMigratePrefs(user_prefs::PrefRegistrySyncable* registry) const;
   bool ShouldMigratePrefsFrom62(
       user_prefs::PrefRegistrySyncable* registry) const;
@@ -45,4 +44,4 @@ class AdsServiceFactory : public BrowserContextKeyedServiceFactory {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_FACTORY_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_ADS_SERVICE_FACTORY_H_

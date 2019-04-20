@@ -1,6 +1,4 @@
-import("//brave/build/config.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
-import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 
 source_set("browser") {
   public_deps = [
@@ -81,41 +79,4 @@ source_set("browser") {
       ]
     }
   }
-}
-
-source_set("testutil") {
-  testonly = true
-
-  deps = [
-    ":browser",
-    "//base",
-    "//content/public/browser",
-    "//chrome/test:test_support",
-    "//testing/gtest",
-  ]
-
-  if (brave_rewards_enabled) {
-    deps += [
-      "//brave/vendor/bat-native-ledger",
-    ]
-
-    configs += [
-      "//brave/vendor/bat-native-ledger:internal_config"
-    ]
-  }
-
-  if (brave_ads_enabled) {
-    deps += [
-      "//brave/vendor/bat-native-ads",
-    ]
-
-    configs += [
-      "//brave/vendor/bat-native-ads:internal_config"
-    ]
-  }
-
-  sources = [
-    "test_util.cc",
-    "test_util.h",
-  ]
 }

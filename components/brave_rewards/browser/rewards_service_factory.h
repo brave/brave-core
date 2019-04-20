@@ -7,7 +7,6 @@
 
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
 
 class Profile;
 
@@ -21,8 +20,6 @@ class RewardsServiceFactory : public BrowserContextKeyedServiceFactory {
   static brave_rewards::RewardsService* GetForProfile(Profile* profile);
 
   static RewardsServiceFactory* GetInstance();
-
-  static void SetServiceForTesting(RewardsService* service);
 
  private:
   friend struct base::DefaultSingletonTraits<RewardsServiceFactory>;

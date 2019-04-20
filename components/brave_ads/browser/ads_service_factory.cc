@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 
-#include "base/time/time.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/common/pref_names.h"
@@ -76,7 +75,7 @@ content::BrowserContext* AdsServiceFactory::GetBrowserContextToUse(
 }
 
 bool AdsServiceFactory::ServiceIsNULLWhileTesting() const {
-  return false;
+  return true;
 }
 
 void AdsServiceFactory::RegisterProfilePrefs(
@@ -104,12 +103,6 @@ void AdsServiceFactory::RegisterProfilePrefs(
   #endif
 
   registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 15);
-  registry->RegisterBooleanPref(prefs::kBraveAdShouldShowFirstLaunchNotification, true);
-
-  auto now = static_cast<uint64_t>(
-      (base::Time::Now() - base::Time()).InSeconds());
-  registry->RegisterUint64Pref(
-      prefs::kBraveAdsLaunchNotificationTimestamp, now);
 
   if (should_migrate_prefs_from_62) {
     registry->RegisterBooleanPref(prefs::kBraveAdsPrefsMigratedFrom62, true);
