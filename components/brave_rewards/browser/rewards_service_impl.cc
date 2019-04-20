@@ -1507,7 +1507,7 @@ void RewardsServiceImpl::SetRewardsMainEnabledPref(bool enabled) {
 
 void RewardsServiceImpl::SetRewardsMainEnabledMigratedPref(bool enabled) {
   profile_->GetPrefs()->SetBoolean(
-      prefs::kBraveRewardsEnabledMigrated, enabled);
+      prefs::kBraveRewardsEnabledMigrated, true);
 }
 
 void RewardsServiceImpl::SetCatalogIssuers(const std::string& json) {
