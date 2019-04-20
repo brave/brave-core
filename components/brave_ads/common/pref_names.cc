@@ -15,11 +15,6 @@ const char kBraveAdsPerHour[] = "brave.brave_ads.ads_per_hour";
 const char kBraveAdsPerDay[] = "brave.brave_ads.ads_per_day";
 const char kBraveAdsIdleThreshold[] = "brave.brave_ads.idle_threshold";
 
-const char kBraveAdShouldShowFirstLaunchNotification[] =
-    "brave.brave_ads.should_show_first_launch_notification";
-const char kBraveAdsLaunchNotificationTimestamp[] =
-    "brave.brave_ads.launch_notification_timestamp";
-
 const int kBraveAdsPrefsDefaultVersion = 1;
 const int kBraveAdsPrefsCurrentVersion = 2;
 const char kBraveAdsPrefsVersion[] = "brave.brave_ads.prefs.version";
