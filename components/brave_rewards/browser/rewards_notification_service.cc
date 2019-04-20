@@ -16,14 +16,18 @@ RewardsNotificationService::~RewardsNotificationService() {
 
 RewardsNotificationService::RewardsNotification::RewardsNotification() {}
 
-RewardsNotificationService::RewardsNotification::RewardsNotification(const RewardsNotificationService::RewardsNotification& prop) = default;
+RewardsNotificationService::RewardsNotification::RewardsNotification(
+    const RewardsNotificationService::RewardsNotification& prop) = default;
 
 RewardsNotificationService::RewardsNotification::RewardsNotification(
     RewardsNotificationService::RewardsNotificationID id,
     RewardsNotificationService::RewardsNotificationType type,
     RewardsNotificationService::RewardsNotificationTimestamp timestamp,
     RewardsNotificationService::RewardsNotificationArgs args)
-    : id_(id), type_(type), timestamp_(timestamp), args_(args) {}
+    : id_(id),
+      type_(type),
+      timestamp_(timestamp),
+      args_(args) {}
 
 RewardsNotificationService::RewardsNotification::~RewardsNotification() {}
 
