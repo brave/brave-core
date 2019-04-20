@@ -128,6 +128,8 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD2(SaveRecurringTip, void(const std::string&, const int));
   MOCK_METHOD2(RefreshPublisher, void(const std::string&,
                                       RefreshPublisherCallback));
+  MOCK_METHOD0(GetAllNotifications,
+      const RewardsNotificationService::RewardsNotificationsMap&());
 };
 
 class AdsServiceTest : public testing::Test {

@@ -2909,4 +2909,9 @@ void RewardsServiceImpl::OnRefreshPublisher(
   std::move(callback).Run(verified, publisher_key);
 }
 
+const RewardsNotificationService::RewardsNotificationsMap&
+RewardsServiceImpl::GetAllNotifications() {
+  return notification_service_->GetAllNotifications();
+}
+
 }  // namespace brave_rewards

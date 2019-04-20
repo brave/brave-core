@@ -207,6 +207,9 @@ class RewardsServiceImpl : public RewardsService,
   void SaveRecurringTip(const std::string& publisher_key,
                              const int amount) override;
 
+  const RewardsNotificationService::RewardsNotificationsMap&
+  GetAllNotifications() override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartAutoContributeForTest();
