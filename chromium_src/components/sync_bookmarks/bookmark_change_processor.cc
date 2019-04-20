@@ -9,6 +9,8 @@ namespace {
 void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
                       bookmarks::BookmarkModel* bookmark_model);
 
+bool IsFirstLoadedFavicon(const bookmarks::BookmarkNode* node);
+
 }   // namespace
 }   // namespace sync_bookmarks
 
@@ -102,6 +104,25 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
   DCHECK(!sync_timestamp.empty());
   AddMetaInfo(bookmark_model, node,
               "sync_timestamp", sync_timestamp);
+}
+
+bool IsFirstLoadedFavicon(const BookmarkNode* node) {
+  // Avoid sending duplicate records right after applying CREATE records,
+  // BookmarkChangeProcessor::SetBookmarkFavicon, put favicon data into database
+  // BookmarkNode::favicon() and BookmarkNode::icon_url() are available only
+  // after first successfuly BookmarkModel::GetFavicon() which means
+  // BookmarkModel::OnFaviconDataAvailable has image result available.
+  // So we set metainfo to know if it is first time favicon load after create
+  // node from remote record
+  std::string FirstLoadedFavicon;
+  if (node->GetMetaInfo("FirstLoadedFavicon", &FirstLoadedFavicon)) {
+    if (!node->icon_url())
+      return true;
+    BookmarkNode* mutable_node = const_cast<BookmarkNode*>(node);
+    mutable_node->DeleteMetaInfo("FirstLoadedFavicon");
+    return true;
+  }
+  return false;
 }
 
 }   // namespace
