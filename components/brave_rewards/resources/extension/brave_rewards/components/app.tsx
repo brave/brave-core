@@ -48,6 +48,10 @@ export class RewardsPanel extends React.Component<Props, State> {
     chrome.braveRewards.getRecurringTips((tips: RewardsExtension.RecurringTips) => {
       this.props.actions.onRecurringTips(tips)
     })
+
+    chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
+      this.props.actions.onAllNotifications(list)
+    })
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {

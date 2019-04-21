@@ -1,6 +1,9 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include <memory>
 
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 
@@ -9,6 +12,11 @@
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "extensions/browser/event_router_factory.h"
+#endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
@@ -16,11 +24,17 @@
 
 namespace brave_rewards {
 
+RewardsService* testing_service_;
+
 // static
 RewardsService* RewardsServiceFactory::GetForProfile(
     Profile* profile) {
   if (profile->IsOffTheRecord())
     return NULL;
+
+  if (testing_service_) {
+    return testing_service_;
+  }
 
   return static_cast<RewardsService*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
@@ -35,6 +49,9 @@ RewardsServiceFactory::RewardsServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "RewardsService",
           BrowserContextDependencyManager::GetInstance()) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  DependsOn(extensions::EventRouterFactory::GetInstance());
+#endif
 }
 
 RewardsServiceFactory::~RewardsServiceFactory() {
@@ -50,6 +67,11 @@ KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
 #else
   return NULL;
 #endif
+}
+
+// static
+void RewardsServiceFactory::SetServiceForTesting(RewardsService* service) {
+  testing_service_ = service;
 }
 
 content::BrowserContext* RewardsServiceFactory::GetBrowserContextToUse(

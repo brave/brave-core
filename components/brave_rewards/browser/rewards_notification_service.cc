@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -16,14 +17,18 @@ RewardsNotificationService::~RewardsNotificationService() {
 
 RewardsNotificationService::RewardsNotification::RewardsNotification() {}
 
-RewardsNotificationService::RewardsNotification::RewardsNotification(const RewardsNotificationService::RewardsNotification& prop) = default;
+RewardsNotificationService::RewardsNotification::RewardsNotification(
+    const RewardsNotificationService::RewardsNotification& prop) = default;
 
 RewardsNotificationService::RewardsNotification::RewardsNotification(
     RewardsNotificationService::RewardsNotificationID id,
     RewardsNotificationService::RewardsNotificationType type,
     RewardsNotificationService::RewardsNotificationTimestamp timestamp,
     RewardsNotificationService::RewardsNotificationArgs args)
-    : id_(id), type_(type), timestamp_(timestamp), args_(args) {}
+    : id_(id),
+      type_(type),
+      timestamp_(timestamp),
+      args_(args) {}
 
 RewardsNotificationService::RewardsNotification::~RewardsNotification() {}
 
