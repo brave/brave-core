@@ -304,6 +304,8 @@
       <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
       <message name="IDS_BRAVE_UI_BACKUP" desc="">Backup</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_DESC" desc="">Get paid to view relevant ads that respect your privacy.</message>
+      <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_MSG" desc="">Now you can earn by viewing ads.</message>
+      <message name="IDS_BRAVE_UI_BRAVE_ADS_LAUNCH_TITLE" desc="">Brave Ads has arrived!</message>
       <message name="IDS_BRAVE_UI_BRAVE_ADS_TITLE" desc="">Ads</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_DESC" desc="">Support your favorite sites just by browsing – or tip a site any time you like.</message>
       <message name="IDS_BRAVE_UI_BRAVE_CONTRIBUTE_TITLE" desc="">Auto-Contribute</message>
@@ -466,6 +468,7 @@
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>
       <message name="IDS_BRAVE_UI_TRANSACTIONS" desc="">Transactions</message>
+      <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Turn on Ads</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both ads and automatic contributions. You can turn them on or off separately at any time.</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Activate Rewards</message>
       <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>

@@ -1507,7 +1507,7 @@ void RewardsServiceImpl::SetRewardsMainEnabledPref(bool enabled) {
 
 void RewardsServiceImpl::SetRewardsMainEnabledMigratedPref(bool enabled) {
   profile_->GetPrefs()->SetBoolean(
-      prefs::kBraveRewardsEnabledMigrated, enabled);
+      prefs::kBraveRewardsEnabledMigrated, true);
 }
 
 void RewardsServiceImpl::SetCatalogIssuers(const std::string& json) {
@@ -2948,6 +2948,11 @@ void RewardsServiceImpl::OnRefreshPublisher(
     const std::string& publisher_key,
     bool verified) {
   std::move(callback).Run(verified, publisher_key);
+}
+
+const RewardsNotificationService::RewardsNotificationsMap&
+RewardsServiceImpl::GetAllNotifications() {
+  return notification_service_->GetAllNotifications();
 }
 
 }  // namespace brave_rewards

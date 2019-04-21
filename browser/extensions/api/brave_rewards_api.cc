@@ -455,5 +455,41 @@ void BraveRewardsRefreshPublisherFunction::OnRefreshPublisher(
                        std::make_unique<base::Value>(publisher_key)));
 }
 
+BraveRewardsGetAllNotificationsFunction::
+~BraveRewardsGetAllNotificationsFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetAllNotificationsFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+
+  auto list = std::make_unique<base::ListValue>();
+
+  if (!rewards_service) {
+    return RespondNow(OneArgument(std::move(list)));
+  }
+
+  auto notifications = rewards_service->GetAllNotifications();
+
+  for (auto const& notification : notifications) {
+    auto item = std::make_unique<base::DictionaryValue>();
+    item->SetString("id", notification.second.id_);
+    item->SetInteger("type", notification.second.type_);
+    item->SetInteger("timestamp", notification.second.timestamp_);
+
+    auto args = std::make_unique<base::ListValue>();
+    for (auto const& arg : notification.second.args_) {
+      args->AppendString(arg);
+    }
+
+    item->SetList("args", std::move(args));
+    list->Append(std::move(item));
+  }
+
+  return RespondNow(OneArgument(std::move(list)));
+}
+
 }  // namespace api
 }  // namespace extensions
