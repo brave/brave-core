@@ -198,6 +198,9 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& publisher_key,
       RefreshPublisherCallback callback) override;
 
+  const RewardsNotificationService::RewardsNotificationsMap&
+  GetAllNotifications() override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
 
