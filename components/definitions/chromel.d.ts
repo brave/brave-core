@@ -63,6 +63,7 @@ declare namespace chrome.braveRewards {
   const onExcludedSitesChanged: {
     addListener: (callback: (properties: RewardsExtension.ExcludedSitesChanged) => void) => void
   }
+  const getAllNotifications: (callback: (list: RewardsExtension.Notification[]) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

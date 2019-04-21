@@ -36,6 +36,10 @@ export class RewardsPanel extends React.Component<Props, State> {
     chrome.braveRewards.getACEnabled(((enabled: boolean) => {
       this.props.actions.onEnabledAC(enabled)
     }))
+
+    chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
+      this.props.actions.onAllNotifications(list)
+    })
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {

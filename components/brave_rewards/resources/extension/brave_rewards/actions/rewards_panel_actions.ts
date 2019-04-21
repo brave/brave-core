@@ -109,3 +109,7 @@ export const onExcludedSitesChanged = (properties: RewardsExtension.ExcludedSite
   action(types.ON_EXCLUDED_SITES_CHANGED, {
     properties
   })
+
+export const onAllNotifications = (list: RewardsExtension.Notification[]) => action(types.ON_ALL_NOTIFICATIONS, {
+  list
+})
