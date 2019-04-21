@@ -88,8 +88,9 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       const id = getWindowId(tab.windowId)
       const publishers: Record<string, RewardsExtension.Publisher> = state.publishers
       const publisher = publishers[id]
+      const validKey = publisher && publisher.publisher_key && publisher.publisher_key.length > 0
 
-      if (!publisher || (publisher && publisher.tabUrl !== tab.url)) {
+      if (!publisher || (publisher && (publisher.tabUrl !== tab.url || !validKey))) {
         chrome.braveRewards.getPublisherData(
           tab.windowId,
           tab.url,
