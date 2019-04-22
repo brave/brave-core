@@ -234,7 +234,7 @@ std::string BraveConfigurator::GetAppGuid() const {
 
 std::unique_ptr<update_client::ProtocolHandlerFactory>
 BraveConfigurator::GetProtocolHandlerFactory() const {
-  return std::make_unique<update_client::ProtocolHandlerFactoryXml>();
+  return configurator_impl_.GetProtocolHandlerFactory();
 }
 
 update_client::RecoveryCRXElevator BraveConfigurator::GetRecoveryCRXElevator()
