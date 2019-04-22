@@ -49,7 +49,7 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
                                          const std::string&,
                                          const std::string&));
   MOCK_METHOD2(OnGetRecurringTips,
-      void(RewardsService*, brave_rewards::ContentSiteList));
+      void(RewardsService*, const brave_rewards::ContentSiteList&));
   MOCK_METHOD2(OnPublisherBanner,
       void(RewardsService*, const brave_rewards::PublisherBanner));
   MOCK_METHOD4(OnPanelPublisherInfo,

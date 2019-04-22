@@ -246,7 +246,7 @@ class RewardsServiceImpl : public RewardsService,
                             bool success);
   void OnActivityInfoLoaded(ledger::PublisherInfoCallback callback,
                             const std::string& publisher_key,
-                            const ledger::PublisherInfoList list);
+                            const ledger::PublisherInfoList& list);
   void OnMediaPublisherInfoSaved(bool success);
   void OnPublisherInfoLoaded(ledger::PublisherInfoCallback callback,
                              std::unique_ptr<ledger::PublisherInfo> info);
@@ -277,9 +277,9 @@ class RewardsServiceImpl : public RewardsService,
   void OnRecurringTipSaved(bool success);
   void OnGetRecurringTips(
       const ledger::PublisherInfoListCallback callback,
-      const ledger::PublisherInfoList list);
+      const ledger::PublisherInfoList& list);
   void OnGetOneTimeTips(ledger::PublisherInfoListCallback callback,
-                        const ledger::PublisherInfoList list);
+                        const ledger::PublisherInfoList& list);
   void OnRemovedRecurringTip(ledger::RecurringRemoveCallback callback,
                           bool success);
   void OnRemoveRecurring(const std::string& publisher_key,

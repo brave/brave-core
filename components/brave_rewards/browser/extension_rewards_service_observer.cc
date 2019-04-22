@@ -271,7 +271,7 @@ void ExtensionRewardsServiceObserver::OnPendingContributionSaved(
 
 void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
     RewardsService* rewards_service,
-    brave_rewards::ContentSiteList list) {
+    const brave_rewards::ContentSiteList& list) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;

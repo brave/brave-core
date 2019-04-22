@@ -160,7 +160,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void OnPublisherListNormalized(
       brave_rewards::RewardsService* rewards_service,
-      brave_rewards::ContentSiteList list) override;
+      const brave_rewards::ContentSiteList& list) override;
 
   void OnTransactionHistoryForThisCycleChanged(
       brave_rewards::RewardsService* rewards_service) override;
@@ -980,14 +980,8 @@ void RewardsDOMHandler::OnRewardsMainEnabled(
 
 void RewardsDOMHandler::OnPublisherListNormalized(
     brave_rewards::RewardsService* rewards_service,
-    brave_rewards::ContentSiteList list) {
-  std::unique_ptr<brave_rewards::ContentSiteList> site_list(
-      new brave_rewards::ContentSiteList);
-  for (auto& publisher : list) {
-    site_list->push_back(publisher);
-  }
-
-  OnContentSiteList(std::move(site_list), 0);
+    const brave_rewards::ContentSiteList& list) {
+  OnContentSiteList(std::make_unique<brave_rewards::ContentSiteList>(list), 0);
 }
 
 void RewardsDOMHandler::GetAddressesForPaymentId(

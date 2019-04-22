@@ -815,7 +815,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
   }
 
   void OnPublisherListNormalized(brave_rewards::RewardsService* rewards_service,
-                                 brave_rewards::ContentSiteList list) {
+                                 const brave_rewards::ContentSiteList& list) {
     if (list.size() == 0)
       return;
     publisher_list_normalized_ = true;

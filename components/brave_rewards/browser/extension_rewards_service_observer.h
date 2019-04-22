@@ -35,7 +35,7 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
                               wallet_properties) override;
   void OnPublisherListNormalized(
       RewardsService* rewards_service,
-      brave_rewards::ContentSiteList list) override;
+      const brave_rewards::ContentSiteList& list) override;
   void OnExcludedSitesChanged(RewardsService* rewards_service,
                               std::string publisher_key,
                               bool excluded) override;
