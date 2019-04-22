@@ -208,7 +208,7 @@ export const BlockedListContent = styled<{}, 'div'>('div')`
   width: 100%;
   height: 100%;
   z-index: 2;
-  user-select: none;
+  cursor: default;
 `
 
 export const BlockedListHeader = styled<{}, 'div'>('div')`

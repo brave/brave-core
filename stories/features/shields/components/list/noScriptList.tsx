@@ -89,7 +89,8 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
               <span>{urlWithNestedScriptInfo}</span>
               <LinkAction
                 disabled={everyItemIsBlockedOrAllowed}
-                onClick={this.setBlockStateGroup.bind(this, urlWithNestedScriptInfo, shouldBlock)}>
+                onClick={this.setBlockStateGroup.bind(this, urlWithNestedScriptInfo, shouldBlock)}
+              >
                 {this.getBlockScriptText(everyItemIsBlockedOrAllowed, shouldBlock)}
               </LinkAction>
             </BlockedListItemSummary>
