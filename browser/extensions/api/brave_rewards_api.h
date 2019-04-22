@@ -181,6 +181,17 @@ class BraveRewardsRefreshPublisherFunction : public UIThreadExtensionFunction {
   void OnRefreshPublisher(bool verified, const std::string& publisher_key);
 };
 
+class BraveRewardsGetAllNotificationsFunction :
+    public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getAllNotifications", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetAllNotificationsFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

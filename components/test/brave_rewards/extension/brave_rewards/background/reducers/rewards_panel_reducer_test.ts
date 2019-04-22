@@ -395,4 +395,76 @@ describe('rewards panel reducer', () => {
       expect(state.rewardsPanelData).toEqual(expectedState)
     })
   })
+
+  describe('ON_ALL_NOTIFICATIONS', () => {
+    it('list is undefined', () => {
+      let state = reducers({ rewardsPanelData: defaultState }, {
+        type: types.ON_ALL_NOTIFICATIONS,
+        payload: {
+          list: undefined
+        }
+      })
+
+      expect(state.rewardsPanelData).toEqual(defaultState)
+    })
+
+    it('list is empty and it was not defined before', () => {
+      let state = reducers({ rewardsPanelData: defaultState }, {
+        type: types.ON_ALL_NOTIFICATIONS,
+        payload: {
+          list: []
+        }
+      })
+
+      const expectedState: Rewards.State = {
+        ...defaultState,
+        notifications: {}
+      }
+
+      expect(state.rewardsPanelData).toEqual(expectedState)
+    })
+
+    it('list is ok', () => {
+      let state = reducers({ rewardsPanelData: defaultState }, {
+        type: types.ON_ALL_NOTIFICATIONS,
+        payload: {
+          list: [
+            {
+              id: 'notification_1',
+              type: 1,
+              timestamp: 0,
+              args: ['working']
+            },
+            {
+              id: 'notification_2',
+              type: 1,
+              timestamp: 1,
+              args: []
+            }
+          ]
+        }
+      })
+
+      const expectedState: Rewards.State = {
+        ...defaultState,
+        currentNotification: 'notification_2',
+        notifications: {
+          'notification_1': {
+            id: 'notification_1',
+            type: 1,
+            timestamp: 0,
+            args: ['working']
+          },
+          'notification_2': {
+            id: 'notification_2',
+            type: 1,
+            timestamp: 1,
+            args: []
+          }
+        }
+      }
+
+      expect(state.rewardsPanelData).toEqual(expectedState)
+    })
+  })
 })

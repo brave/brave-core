@@ -323,6 +323,42 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       }
       break
     }
+    case types.ON_ALL_NOTIFICATIONS: {
+      const list = payload.list
+
+      if (!list) {
+        break
+      }
+
+      let notifications: Record<number, RewardsExtension.Notification> = state.notifications
+      let id = ''
+
+      if (!notifications) {
+        notifications = []
+      }
+
+      list.forEach((notification: RewardsExtension.Notification) => {
+        id = notification.id
+        notifications[notification.id] = {
+          id: notification.id,
+          type: notification.type,
+          timestamp: notification.timestamp,
+          args: notification.args
+        }
+      })
+
+      state = {
+        ...state,
+        notifications
+      }
+
+      if (state.currentNotification === undefined && id) {
+        state.currentNotification = id
+      }
+
+      setBadgeText(state)
+      break
+    }
   }
   return state
 }

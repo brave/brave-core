@@ -8,6 +8,10 @@ chrome.braveRewards.onWalletCreated.addListener(() => {
   rewardsPanelActions.onWalletCreated()
 })
 
+chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
+  rewardsPanelActions.onAllNotifications(list)
+})
+
 chrome.braveRewards.onPublisherData.addListener((windowId: number, publisher: RewardsExtension.Publisher) => {
   rewardsPanelActions.onPublisherData(windowId, publisher)
 })

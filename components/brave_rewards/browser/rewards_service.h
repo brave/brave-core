@@ -17,6 +17,7 @@
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "build/build_config.h"
 #include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -193,6 +194,9 @@ class RewardsService : public KeyedService {
   void RemoveObserver(RewardsServiceObserver* observer);
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
+
+  virtual const RewardsNotificationService::RewardsNotificationsMap&
+  GetAllNotifications() = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
