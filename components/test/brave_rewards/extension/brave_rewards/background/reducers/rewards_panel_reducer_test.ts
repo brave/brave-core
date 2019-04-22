@@ -59,7 +59,8 @@ describe('rewards panel reducer', () => {
         state.rewardsPanelData.publishers = {
           id_1: {
             tabUrl: 'https://clifton.io',
-            name: 'Clifton'
+            name: 'Clifton',
+            publisher_key: 'clifton.io'
           }
         }
 
@@ -71,7 +72,8 @@ describe('rewards panel reducer', () => {
           publishers: {
             id_1: {
               tabUrl: 'https://clifton.io',
-              name: 'Clifton'
+              name: 'Clifton',
+              publisher_key: 'clifton.io'
             }
           }
         }
@@ -120,8 +122,9 @@ describe('rewards panel reducer', () => {
         // imitates ON_PUBLISHER_DATA
         state.rewardsPanelData.publishers = {
           id_1: {
-            tabUrl: 'clifton.io',
-            name: 'Clifton'
+            tabUrl: 'https://clifton.io',
+            name: 'Clifton',
+            publisher_key: 'clifton.io'
           }
         }
 
@@ -163,6 +166,45 @@ describe('rewards panel reducer', () => {
           ...defaultState,
           walletCreated: true,
           enabledMain: false
+        }
+
+        let state = reducers({ rewardsPanelData: initState }, {
+          type: types.ON_TAB_RETRIEVED,
+          payload: {
+            tab: {
+              url: 'https://clifton.io',
+              incognito: false,
+              active: true,
+              windowId: 1
+            }
+          }
+        })
+
+        expect(state.rewardsPanelData).toEqual(expectedState)
+      })
+
+      it('publisher is empty', () => {
+        const initState: Rewards.State = {
+          ...defaultState,
+          walletCreated: true,
+          enabledMain: true,
+          publishers: {
+            id_1: {
+              tabUrl: 'clifton.io',
+              random: 'I need to vanish'
+            }
+          }
+        }
+
+        const expectedState: Rewards.State = {
+          ...defaultState,
+          walletCreated: true,
+          enabledMain: true,
+          publishers: {
+            id_1: {
+              tabUrl: 'https://clifton.io'
+            }
+          }
         }
 
         let state = reducers({ rewardsPanelData: initState }, {
