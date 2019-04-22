@@ -22,7 +22,8 @@ class BraveNavigationUIData : public ChromeNavigationUIData {
 
   static std::unique_ptr<ChromeNavigationUIData> CreateForMainFrameNavigation(
       content::WebContents* web_contents,
-      WindowOpenDisposition disposition);
+      WindowOpenDisposition disposition,
+      int64_t data_reduction_proxy_page_id);
 
   std::unique_ptr<content::NavigationUIData> Clone() const override;
 
