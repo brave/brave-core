@@ -129,7 +129,6 @@ void PayoutTokens::OnPayout(const Result result) {
 
 void PayoutTokens::ScheduleNextPayout() const {
   confirmations_->UpdateNextTokenRedemptionDate();
-  confirmations_->SaveState();
 
   auto start_timer_in = confirmations_->CalculateTokenRedemptionTimeInSeconds();
   confirmations_->StartPayingOutRedeemedTokens(start_timer_in);
