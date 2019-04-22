@@ -7,15 +7,9 @@ import("//tools/grit/repack.gni")
 if (enable_brave_sync) {
   source_set("js_sync_lib_impl") {
     sources = [
-      "brave_sync_service_impl.cc",
-      "brave_sync_service_impl.h",
       "client/brave_sync_client.h",
       "client/brave_sync_client_impl.cc",
       "client/brave_sync_client_impl.h",
-      "client/bookmark_change_processor.cc",
-      "client/bookmark_change_processor.h",
-      "client/bookmark_node.cc",
-      "client/bookmark_node.h",
       "client/client_ext_impl_data.cc",
       "client/client_ext_impl_data.h",
       "client/client_data.cc",
@@ -60,7 +54,6 @@ source_set("core") {
     "bookmark_order_util.h",
     "brave_sync_prefs.cc",
     "brave_sync_prefs.h",
-    "model/change_processor.h",
     "settings.cc",
     "settings.h",
     "sync_devices.cc",
