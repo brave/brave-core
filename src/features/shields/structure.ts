@@ -246,7 +246,7 @@ export const BlockedListSummary = styled<BlockedListSummaryProps, 'summary'>('su
 export const BlockedListStatic = styled<{}, 'ul'>('ul')`
   box-sizing: border-box;
   list-style-type: none;
-  height: 320px;
+  height: 330px;
   overflow: auto;
   padding: 0 0 0 24px;
   margin: 0;
@@ -290,6 +290,7 @@ export const BlockedListItem = styled<{}, 'li'>('li')`
 
 export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
   box-sizing: border-box;
+  position: relative;
   display: grid;
   grid-template-columns: 1fr auto;
   padding: 8px 24px 8px 20px;
@@ -310,25 +311,52 @@ export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
 `
 
 export const BlockedListItemDetails = styled<{}, 'details'>('details')`
+  position: relative;
+
   &[open] summary:after {
     content: "-";
   }
-  position: relative;
+
+  /* grouped scripts block (vertical dots) */
+  &[open]:before {
+    content: ". . .";
+    position: absolute;
+    z-index: 2;
+    top: 7px;
+    left: 26px;
+  }
+
+  /* grouped scripts row (horizontal dots) */
+  &[open] ${BlockedListItemWithOptions}:before {
+    content: ". . .";
+    position: absolute;
+    z-index: 2;
+    top: 7px;
+    left: 26px;
+  }
 `
 
 export const BlockedListItemSummary = styled(BlockedListItemWithOptions.withComponent('summary'))`
   position: relative;
+
   &::-webkit-details-marker {
     display: none;
   }
+
   &:after {
     position: absolute;
     content: "+";
-    top: 0;
-    left: 0;
+    top: 7px;
+    left: 26px;
     color: black;
     font-size: 20px;
-    padding: 6px 26px;
+    padding: 0;
+  }
+
+  &:focus {
+    outline-width: 2px;
+    outline-offset: -3px;
+    outline-color: ${p => p.theme.color.brandBrave};
   }
 `
 
