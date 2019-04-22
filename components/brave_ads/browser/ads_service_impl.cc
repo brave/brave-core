@@ -30,6 +30,7 @@
 #include "brave/components/brave_ads/common/switches.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/browser_process.h"
@@ -60,7 +61,16 @@
 #include "net/android/network_library.h"
 #endif
 
+using brave_rewards::RewardsNotificationService;
+
 namespace brave_ads {
+
+namespace {
+
+const char kRewardsNotificationAdsLaunch[] =
+    "rewards_notification_ads_launch";
+
+}
 
 class LogStreamImpl : public ads::LogStream {
  public:
@@ -258,6 +268,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       base_path_(profile_->GetPath().AppendASCII("ads_service")),
       next_timer_id_(0),
+      ads_launch_id_(0),
       is_supported_region_(false),
       bundle_state_backend_(
           new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
@@ -273,6 +284,7 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
 
   file_task_runner_->PostTask(FROM_HERE,
       base::BindOnce(&EnsureBaseDirectoryExists, base_path_));
+
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
   profile_pref_change_registrar_.Add(
       prefs::kBraveAdsEnabled,
@@ -339,6 +351,8 @@ void AdsServiceImpl::OnMaybeStartForRegion(
     Shutdown();
     return;
   }
+
+  MaybeShowFirstLaunchNotification();
 
   if (IsAdsEnabled()) {
     if (should_restart) {
@@ -410,6 +424,131 @@ void AdsServiceImpl::Start() {
 
   bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
+}
+
+void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
+  auto ads_enabled = profile_->GetPrefs()->GetBoolean(
+      prefs::kBraveAdsEnabled);
+  auto prefs_migrated_from_62 = profile_->GetPrefs()->GetBoolean(
+      prefs::kBraveAdsPrefsMigratedFrom62);
+
+  if (!ads_enabled ||
+      !prefs_migrated_from_62 ||
+      !ShouldShowFirstLaunchNotification() ||
+      !profile_->GetPrefs()->GetBoolean(
+          brave_rewards::prefs::kBraveRewardsEnabled)) {
+    StartFirstLaunchNotificationTimer();
+    return;
+  }
+
+  auto now = static_cast<uint64_t>(
+      (base::Time::Now() - base::Time()).InSeconds());
+  profile_->GetPrefs()->SetUint64(
+      prefs::kBraveAdsLaunchNotificationTimestamp, now);
+
+  ShowFirstLaunchNotification();
+
+  StartFirstLaunchNotificationTimer();
+}
+
+bool AdsServiceImpl::ShouldShowFirstLaunchNotification() {
+  return profile_->GetPrefs()->GetBoolean(
+      prefs::kBraveAdShouldShowFirstLaunchNotification);
+}
+
+void AdsServiceImpl::RemoveFirstLaunchNotification() {
+  KillTimer(ads_launch_id_);
+
+  auto* rewards_service =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
+  auto* rewards_notification_service =
+      rewards_service->GetNotificationService();
+  rewards_notification_service->DeleteNotification(
+      kRewardsNotificationAdsLaunch);
+}
+
+void AdsServiceImpl::ShowFirstLaunchNotification() {
+  auto* rewards_service =
+      brave_rewards::RewardsServiceFactory::GetForProfile(profile_);
+
+  auto* rewards_notification_service =
+      rewards_service->GetNotificationService();
+
+  RewardsNotificationService::RewardsNotificationArgs args;
+  rewards_notification_service->AddNotification(
+      RewardsNotificationService::REWARDS_NOTIFICATION_ADS_LAUNCH,
+      args, kRewardsNotificationAdsLaunch);
+
+  profile_->GetPrefs()->SetBoolean(
+    prefs::kBraveAdShouldShowFirstLaunchNotification, false);
+}
+
+void AdsServiceImpl::StartFirstLaunchNotificationTimer() {
+  uint64_t timer_offset_in_seconds;
+
+  if (HasFirstLaunchNotificationExpired()) {
+    timer_offset_in_seconds = base::Time::kSecondsPerMinute;
+  } else {
+    timer_offset_in_seconds = GetFirstLaunchNotificationTimerOffset();
+  }
+
+  auto timer_offset = base::TimeDelta::FromSeconds(timer_offset_in_seconds);
+
+  uint32_t timer_id = next_timer_id();
+  ads_launch_id_ = timer_id;
+  timers_[timer_id] = std::make_unique<base::OneShotTimer>();
+  timers_[timer_id]->Start(FROM_HERE,
+      timer_offset,
+      base::BindOnce(&AdsServiceImpl::OnFirstLaunchNotificationTimedOut,
+          AsWeakPtr(),
+          timer_id));
+}
+
+uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimeout() {
+  const base::CommandLine& command_line =
+      *base::CommandLine::ForCurrentProcess();
+  auto timeout_in_seconds =
+      command_line.HasSwitch(switches::kDebug)
+      ? (5 * base::Time::kSecondsPerMinute)
+      : (base::Time::kMicrosecondsPerWeek /
+         base::Time::kMicrosecondsPerSecond);
+  return timeout_in_seconds;
+}
+
+uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimerOffset() {
+  auto timeout_in_seconds = GetFirstLaunchNotificationTimeout();
+
+  auto timestamp_in_seconds = profile_->GetPrefs()->GetUint64(
+      prefs::kBraveAdsLaunchNotificationTimestamp);
+
+  auto now_in_seconds = static_cast<uint64_t>(
+      (base::Time::Now() - base::Time()).InSeconds());
+
+  auto timer_offset = (timestamp_in_seconds +
+      timeout_in_seconds) - now_in_seconds;
+
+  return timer_offset;
+}
+
+bool AdsServiceImpl::HasFirstLaunchNotificationExpired() {
+  auto timeout_in_seconds = GetFirstLaunchNotificationTimeout();
+
+  auto timestamp_in_seconds = profile_->GetPrefs()->GetUint64(
+      prefs::kBraveAdsLaunchNotificationTimestamp);
+
+  auto now_in_seconds = static_cast<uint64_t>(
+      (base::Time::Now() - base::Time()).InSeconds());
+
+  if (now_in_seconds < (timestamp_in_seconds + timeout_in_seconds)) {
+    return false;
+  }
+
+  return true;
+}
+
+void AdsServiceImpl::OnFirstLaunchNotificationTimedOut(uint32_t timer_id) {
+  timers_.erase(timer_id);
+  RemoveFirstLaunchNotification();
 }
 
 void AdsServiceImpl::Stop() {
@@ -610,7 +749,10 @@ void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
   if (is_enabled) {
     profile_->GetPrefs()->SetBoolean(
         prefs::kBraveAdsPrefsMigratedFrom62, false);
+
+    RemoveFirstLaunchNotification();
   }
+
   profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, is_enabled);
 }
 

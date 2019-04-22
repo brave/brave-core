@@ -19,6 +19,7 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/background_helper.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 #include "chrome/browser/notifications/notification_handler.h"
 #include "components/history/core/browser/history_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -28,6 +29,8 @@
 #if !defined(OS_ANDROID)
 #include "ui/base/idle/idle.h"
 #endif
+
+using brave_rewards::RewardsNotificationService;
 
 class NotificationDisplayService;
 class Profile;
@@ -171,6 +174,7 @@ class AdsServiceImpl : public AdsService,
       const ads::OnGetAdsCallback& callback,
       const std::string& category,
       const std::vector<ads::AdInfo>& ads);
+
   void OnSaveBundleState(const ads::OnSaveCallback& callback, bool success);
   void OnLoaded(
       const ads::OnLoadCallback& callback,
@@ -195,6 +199,15 @@ class AdsServiceImpl : public AdsService,
   void NotificationTimedOut(
       uint32_t timer_id,
       const std::string& notification_id);
+  void MaybeShowFirstLaunchNotification();
+  bool ShouldShowFirstLaunchNotification();
+  void RemoveFirstLaunchNotification();
+  void ShowFirstLaunchNotification();
+  void StartFirstLaunchNotificationTimer();
+  uint64_t GetFirstLaunchNotificationTimeout();
+  uint64_t GetFirstLaunchNotificationTimerOffset();
+  bool HasFirstLaunchNotificationExpired();
+  void OnFirstLaunchNotificationTimedOut(uint32_t timer_id);
 
   uint32_t next_timer_id();
 
@@ -206,6 +219,7 @@ class AdsServiceImpl : public AdsService,
   const base::FilePath base_path_;
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   uint32_t next_timer_id_;
+  uint32_t ads_launch_id_;
   bool is_supported_region_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED

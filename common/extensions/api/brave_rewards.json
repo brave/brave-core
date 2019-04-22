@@ -480,6 +480,47 @@
             "type": "string"
           }
         ]
+      },
+      {
+        "name": "getAllNotifications",
+        "type": "function",
+        "description": "Gets all notifications",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "list",
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "description": "notification id"
+                    },
+                    "type": {
+                      "type": "integer",
+                      "description": "notification type"
+                    },
+                    "timestamp": {
+                      "type": "integer",
+                      "description": "timestamp when notification was created"
+                    },
+                    "args": {
+                      "type": "array",
+                      "description": "notification arguments, additional data",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        ]
       }
     ]
   }
