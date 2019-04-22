@@ -55,6 +55,8 @@ source_set("extensions") {
     "//brave/components/brave_webtorrent:static_resources",
     "//chrome/browser",
     "//components/prefs",
+    "//components/update_client:patch_impl",
+    "//components/update_client:unzip_impl",
     "//content/public/browser",
     "//extensions/browser",
     "//extensions/common",

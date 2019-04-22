@@ -16,12 +16,16 @@
 #include "components/prefs/pref_service.h"
 #include "components/update_client/activity_data_service.h"
 #include "components/update_client/net/network_chromium.h"
+#include "components/update_client/patch/patch_impl.h"
+#include "components/update_client/patcher.h"
 #include "components/update_client/protocol_handler.h"
+#include "components/update_client/unzip/unzip_impl.h"
+#include "components/update_client/unzipper.h"
 #include "components/update_client/update_query_params.h"
+#include "content/public/common/service_manager_connection.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/storage_partition.h"
-#include "content/public/common/service_manager_connection.h"
 #include "extensions/browser/extension_prefs.h"
 #include "services/service_manager/public/cpp/connector.h"
 
@@ -175,12 +179,27 @@ BraveUpdateClientConfig::GetNetworkFetcherFactory() {
   return network_fetcher_factory_;
 }
 
-std::unique_ptr<service_manager::Connector>
-BraveUpdateClientConfig::CreateServiceManagerConnector() const {
+scoped_refptr<update_client::UnzipperFactory>
+BraveUpdateClientConfig::GetUnzipperFactory() {
+  if (!unzip_factory_) {
+    unzip_factory_ = base::MakeRefCounted<update_client::UnzipChromiumFactory>(
+        content::ServiceManagerConnection::GetForProcess()
+            ->GetConnector()
+            ->Clone());
+  }
+  return unzip_factory_;
+}
+
+scoped_refptr<update_client::PatcherFactory>
+BraveUpdateClientConfig::GetPatcherFactory() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  return content::ServiceManagerConnection::GetForProcess()
-      ->GetConnector()
-      ->Clone();
+  if (!patch_factory_) {
+    patch_factory_ = base::MakeRefCounted<update_client::PatchChromiumFactory>(
+        content::ServiceManagerConnection::GetForProcess()
+            ->GetConnector()
+            ->Clone());
+  }
+  return patch_factory_;
 }
 
 bool BraveUpdateClientConfig::EnabledDeltas() const {
