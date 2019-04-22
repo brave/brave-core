@@ -88,6 +88,8 @@ source_set("browser_process") {
     "//components/safe_browsing/common:safe_browsing_prefs",
     "//components/search_engines",
     "//components/spellcheck/browser",
+    "//components/update_client:patch_impl",
+    "//components/update_client:unzip_impl",
     "//content/public/browser",
     "//brave/chromium_src:browser",
     "themes",
