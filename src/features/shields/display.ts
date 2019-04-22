@@ -5,7 +5,6 @@
 import styled from '../../theme'
 import Button, { Props as ButtonProps } from '../../components/buttonsIndicators/button'
 import { ComponentType } from 'react'
-import palette from '../../theme/colors'
 
 /**
  * Header
@@ -164,7 +163,7 @@ export const LinkAction = styled<LinkActionProps, any>(Link)`
   font-weight: 500;
 
   &:disabled {
-    color: ${palette.neutral600};
+    color: ${p => p.theme.color.disabledResourceBlocked};
     font-style: italic;
     ponter-events: none;
     cursor: default;
