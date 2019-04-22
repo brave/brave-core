@@ -162,23 +162,23 @@ export const LinkAction = styled<LinkActionProps, any>(Link)`
   line-height: ${p => p.size === 'small' && '1'};
   font-weight: 500;
 
-  &:disabled {
-    color: ${p => p.theme.color.disabledResourceBlocked};
-    font-style: italic;
-    ponter-events: none;
-    cursor: default;
-
-    &:hover {
-      text-decoration: none;
-    }
-  }
-
   &:focus {
     outline-offset: initial;
   }
 
   &:active {
     outline: none;
+  }
+
+  &:disabled {
+    color: ${p => p.theme.color.disabledResourceBlocked};
+    font-style: italic;
+    pointer-events: none;
+    cursor: default;
+
+    &:hover {
+      text-decoration: none;
+    }
   }
 `
 
