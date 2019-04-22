@@ -1,0 +1,16 @@
+diff --git a/ui/shell_dialogs/execute_select_file_win.cc b/ui/shell_dialogs/execute_select_file_win.cc
+index 22f5eed21a05d36fa37c10664b63a334d30968b2..cc4e75e382f2fb90abfca5c2da3252c55fd71757 100644
+--- a/ui/shell_dialogs/execute_select_file_win.cc
++++ b/ui/shell_dialogs/execute_select_file_win.cc
+@@ -200,7 +200,10 @@ bool RunOpenFileDialog(HWND owner,
+   // "File name" box, it will be downloaded locally and its new file path will
+   // be returned by the dialog. This was a default option in the deprecated
+   // GetOpenFileName API.
+-  dialog_options |= FOS_FORCEFILESYSTEM;
++  LOG(ERROR) << "dialog_options was " << dialog_options;
++  dialog_options &= ~FOS_FORCEFILESYSTEM;
++  dialog_options |= FOS_SUPPORTSTREAMABLEITEMS;
++  LOG(ERROR) << "dialog_options is now " << dialog_options;
+ 
+   if (!ConfigureDialog(file_open_dialog.Get(), title, ok_button_label,
+                        default_path, filter, *filter_index, dialog_options)) {
