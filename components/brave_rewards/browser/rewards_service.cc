@@ -48,6 +48,8 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
                                   base::TimeDelta::FromDays(7));
   registry->RegisterTimeDeltaPref(prefs::kRewardsBackupNotificationInterval,
                                   base::TimeDelta::FromDays(7));
+  registry->RegisterTimeDeltaPref(prefs::kRewardsNotificationStartupDelay,
+                                  base::TimeDelta::FromSeconds(30));
   registry->RegisterBooleanPref(prefs::kRewardsBackupSucceeded, false);
   registry->RegisterBooleanPref(prefs::kRewardsUserHasFunded, false);
   registry->RegisterTimePref(prefs::kRewardsAddFundsNotification, base::Time());
