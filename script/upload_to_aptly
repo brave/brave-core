@@ -30,7 +30,7 @@ else
 fi
 KEY_FILE=/tmp/${KEY_NAME}
 SNAP_TAG=`date +'%s'`
-DIST='artful zesty yakkety xenial jessie trusty serena stretch bionic buster cosmic'
+DIST='artful zesty yakkety xenial jessie trusty serena stretch bionic buster cosmic disco'
 
 cat <<EOF > $HOME/.aptly.conf
 {
