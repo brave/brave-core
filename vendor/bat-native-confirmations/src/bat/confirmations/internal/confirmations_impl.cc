@@ -958,26 +958,16 @@ void ConfirmationsImpl::RefillTokensIfNecessary() const {
 }
 
 uint64_t ConfirmationsImpl::CalculateTokenRedemptionTimeInSeconds() {
+  if (next_token_redemption_date_in_seconds_ == 0) {
+    UpdateNextTokenRedemptionDate();
+  }
+
   auto now_in_seconds = Time::NowInSeconds();
 
   uint64_t start_timer_in;
-
-  if (_is_debug) {
-    if (next_token_redemption_date_in_seconds_ - now_in_seconds >=
-        kDebugNextTokenRedemptionAfterSeconds) {
-      UpdateNextTokenRedemptionDate();
-      SaveState();
-    }
-  }
-
-  if (next_token_redemption_date_in_seconds_ == 0) {
-    UpdateNextTokenRedemptionDate();
-    SaveState();
-  }
-
   if (now_in_seconds >= next_token_redemption_date_in_seconds_) {
     // Browser was launched after the token redemption date
-    start_timer_in = base::RandInt(0, 5 * base::Time::kSecondsPerMinute);
+    start_timer_in = base::RandInt(0, 1 * base::Time::kSecondsPerMinute);
   } else {
     start_timer_in = next_token_redemption_date_in_seconds_ - now_in_seconds;
   }
@@ -998,6 +988,8 @@ void ConfirmationsImpl::UpdateNextTokenRedemptionDate() {
     next_token_redemption_date_in_seconds_ +=
         kDebugNextTokenRedemptionAfterSeconds;
   }
+
+  SaveState();
 }
 
 void ConfirmationsImpl::StartRetryingFailedConfirmations(
