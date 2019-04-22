@@ -55,7 +55,7 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
     return (
       <BlockedListItemWithOptions key={key}>
         <span>{stripProtocolFromUrl(url)}</span>
-        <LinkAction onClick={this.setBlockState.bind(this, url, shouldBlock)}>
+        <LinkAction disabled={scriptData.userInteracted} onClick={this.setBlockState.bind(this, url, shouldBlock)}>
           {this.getBlockScriptText(scriptData.userInteracted, shouldBlock)}
         </LinkAction>
       </BlockedListItemWithOptions>
@@ -87,7 +87,9 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
           <BlockedListItemDetails>
             <BlockedListItemSummary>
               <span>{urlWithNestedScriptInfo}</span>
-              <LinkAction onClick={this.setBlockStateGroup.bind(this, urlWithNestedScriptInfo, shouldBlock)}>
+              <LinkAction
+                disabled={everyItemIsBlockedOrAllowed}
+                onClick={this.setBlockStateGroup.bind(this, urlWithNestedScriptInfo, shouldBlock)}>
                 {this.getBlockScriptText(everyItemIsBlockedOrAllowed, shouldBlock)}
               </LinkAction>
             </BlockedListItemSummary>

@@ -5,6 +5,7 @@
 import styled from '../../theme'
 import Button, { Props as ButtonProps } from '../../components/buttonsIndicators/button'
 import { ComponentType } from 'react'
+import palette from '../../theme/colors'
 
 /**
  * Header
@@ -161,6 +162,17 @@ export const LinkAction = styled<LinkActionProps, any>(Link)`
   font-size: ${p => p.size === 'small' && '12px' || 'inherit'};
   line-height: ${p => p.size === 'small' && '1'};
   font-weight: 500;
+
+  &:disabled {
+    color: ${palette.neutral600};
+    font-style: italic;
+    ponter-events: none;
+    cursor: default;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 
   &:focus {
     outline-offset: initial;
