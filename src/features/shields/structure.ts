@@ -92,10 +92,16 @@ export const SiteInfo = styled<{}, 'div'>('div')`
 /**
  * Interface/privacy Rows
  */
-export const BlockedInfoRow = styled<{}, 'div'>('div')`
+
+interface BlockedInfoRowProps {
+  extraColumn?: boolean
+}
+
+export const BlockedInfoRow = styled<BlockedInfoRowProps, 'div'>('div')`
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: ${p => p.extraColumn ? '1fr auto auto' : '1fr auto'};
+  grid-gap: ${p => p.extraColumn ? '4px' : '0'};
   align-items: center;
   border-bottom: 1px solid ${p => p.theme.color.separatorLine};
   color: ${p => p.theme.color.text};

@@ -151,11 +151,15 @@ export const Link = styled<{}, 'button'>('button')`
     outline: none;
   }
 `
+interface LinkActionProps {
+  size?: 'small'
+}
 
-export const LinkAction = styled(Link)`
+export const LinkAction = styled<LinkActionProps, any>(Link)`
   box-sizing: border-box;
   color: ${p => p.theme.color.brandBrave};
-  font-size: inherit;
+  font-size: ${p => p.size === 'small' && '12px' || 'inherit'};
+  line-height: ${p => p.size === 'small' && '1'};
   font-weight: 500;
 
   &:focus {

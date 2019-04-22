@@ -21,6 +21,7 @@ const locale: { [key: string]: string } = {
   connectionsUpgradedHTTPSCapital: 'Connections upgraded to HTTPS',
   connectionUpgradedHTTPSCapital: 'Connection upgraded to HTTPS',
   scriptsBlocked: 'Scripts blocked',
+  allowScriptsOnce: 'Allow scripts once',
   thirdPartyCookiesBlocked: '3rd-party cookies blocked',
   allCookiesBlocked: 'Cookies blocked',
   allCookiesAllowed: 'All cookies allowed',
