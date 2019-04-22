@@ -71,6 +71,7 @@ const char kRewardsNotificationAdsLaunch[] =
     "rewards_notification_ads_launch";
 
 }
+const static unsigned int _retries_count_on_network_change = 1;
 
 class LogStreamImpl : public ads::LogStream {
  public:
@@ -1153,6 +1154,7 @@ void AdsServiceImpl::URLRequest(
   net::URLFetcher* fetcher = net::URLFetcher::Create(
       GURL(url), request_type, this).release();
   fetcher->SetRequestContext(g_browser_process->system_request_context());
+  fetcher->SetAutomaticallyRetryOnNetworkChanges(_retries_count_on_network_change);
 
   for (size_t i = 0; i < headers.size(); i++)
     fetcher->AddExtraRequestHeader(headers[i]);
