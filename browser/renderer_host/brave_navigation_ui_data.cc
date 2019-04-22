@@ -26,10 +26,11 @@ BraveNavigationUIData::~BraveNavigationUIData() {}
 std::unique_ptr<ChromeNavigationUIData>
 BraveNavigationUIData::CreateForMainFrameNavigation(
     content::WebContents* web_contents,
-    WindowOpenDisposition disposition) {
+    WindowOpenDisposition disposition,
+    int64_t data_reduction_proxy_page_id) {
   auto navigation_ui_data =
-    ChromeNavigationUIData::CreateForMainFrameNavigation(
-        web_contents, disposition);
+      ChromeNavigationUIData::CreateForMainFrameNavigation(
+          web_contents, disposition, data_reduction_proxy_page_id);
   BraveNavigationUIData* ui_data =
     static_cast<BraveNavigationUIData*>(navigation_ui_data.get());
 
