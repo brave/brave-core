@@ -315,12 +315,10 @@ export const BlockedListItemDetails = styled<{}, 'details'>('details')`
 
   &[open] summary:after {
     content: "-";
+    color: ${p => p.theme.color.text};
   }
 
-  /* grouped scripts block (vertical dots) */
-
-
-  /* grouped scripts row (horizontal dots) */
+  /* grouped scripts row (nested dash) */
   &[open] ${BlockedListItemWithOptions}:before {
     content: " ";
     background: url(${dash});
@@ -344,9 +342,9 @@ export const BlockedListItemSummary = styled(BlockedListItemWithOptions.withComp
   &:after {
     position: absolute;
     content: "+";
+    color: ${p => p.theme.color.text};
     top: 7px;
     left: 26px;
-    color: black;
     font-size: 20px;
     padding: 0;
   }
