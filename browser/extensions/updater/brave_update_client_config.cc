@@ -240,10 +240,9 @@ std::string BraveUpdateClientConfig::GetAppGuid() const {
   return impl_.GetAppGuid();
 }
 
-// Always use XML ProtocolHandler
 std::unique_ptr<update_client::ProtocolHandlerFactory>
 BraveUpdateClientConfig::GetProtocolHandlerFactory() const {
-  return std::make_unique<update_client::ProtocolHandlerFactoryXml>();
+  return impl_.GetProtocolHandlerFactory();
 }
 
 update_client::RecoveryCRXElevator
