@@ -90,7 +90,7 @@ using std::placeholders::_2;
 
 namespace brave_rewards {
 
-const static unsigned int kRetriesCountOnNetworkChange = 1;
+static const unsigned int kRetriesCountOnNetworkChange = 1;
 
 class LogStreamImpl : public ledger::LogStream {
  public:

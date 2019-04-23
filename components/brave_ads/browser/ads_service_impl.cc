@@ -71,7 +71,7 @@ const char kRewardsNotificationAdsLaunch[] =
     "rewards_notification_ads_launch";
 
 }
-const static unsigned int kRetriesCountOnNetworkChange = 1;
+static const unsigned int kRetriesCountOnNetworkChange = 1;
 
 class LogStreamImpl : public ads::LogStream {
  public:
