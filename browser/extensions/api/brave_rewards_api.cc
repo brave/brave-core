@@ -5,6 +5,7 @@
 
 #include "brave/browser/extensions/api/brave_rewards_api.h"
 
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -26,20 +27,6 @@ using brave_ads::AdsService;
 using brave_ads::AdsServiceFactory;
 using brave_rewards::RewardsService;
 using brave_rewards::RewardsServiceFactory;
-
-namespace {
-
-std::string GetTwitterProfileURL(const std::string& screen_name) {
-  return base::StringPrintf("https://twitter.com/%s/", screen_name.c_str());
-}
-
-std::string GetTwitterProfileImageURL(const std::string& screen_name) {
-  return base::StringPrintf(
-      "https://twitter.com/%s/profile_image?size=original",
-      screen_name.c_str());
-}
-
-}  // namespace
 
 namespace extensions {
 namespace api {
@@ -115,22 +102,30 @@ BraveRewardsDonateToTwitterUserFunction::Run() {
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
   if (rewards_service) {
     AddRef();
+    std::map<std::string, std::string> args;
+    args["user_id"] = params->user_id;
+    args["name"] = params->name;
+    args["screen_name"] = params->screen_name;
     rewards_service->SaveTwitterPublisherInfo(
-        params->publisher_key,
-        params->screen_name,
-        GetTwitterProfileURL(params->screen_name),
-        GetTwitterProfileImageURL(params->screen_name),
+        args,
         base::Bind(&BraveRewardsDonateToTwitterUserFunction::
-                       OnTwitterPublisherInfoSaved,
+                   OnTwitterPublisherInfoSaved,
                    weak_factory_.GetWeakPtr()));
   }
 
   return RespondNow(NoArguments());
 }
 
-void BraveRewardsDonateToTwitterUserFunction::OnTwitterPublisherInfoSaved() {
+void BraveRewardsDonateToTwitterUserFunction::OnTwitterPublisherInfoSaved(
+    std::unique_ptr<::brave_rewards::ContentSite> publisher_info) {
   std::unique_ptr<brave_rewards::DonateToTwitterUser::Params> params(
       brave_rewards::DonateToTwitterUser::Params::Create(*args_));
+
+  if (!publisher_info) {
+    // TODO(nejczdovc): what should we do in this case?
+    Release();
+    return;
+  }
 
   // Get web contents for this tab
   content::WebContents* contents = nullptr;
@@ -146,10 +141,10 @@ void BraveRewardsDonateToTwitterUserFunction::OnTwitterPublisherInfoSaved() {
   }
 
   auto params_dict = std::make_unique<base::DictionaryValue>();
-  params_dict->SetString("publisherKey", params->publisher_key);
+  params_dict->SetString("publisherKey", publisher_info->id);
 
   auto tweet_metadata_dict = std::make_unique<base::DictionaryValue>();
-  tweet_metadata_dict->SetString("name", params->name);
+  tweet_metadata_dict->SetString("name", publisher_info->name);
   tweet_metadata_dict->SetString("screenName", params->screen_name);
   tweet_metadata_dict->SetString("tweetText", params->tweet_text);
   params_dict->SetDictionary("tweetMetaData", std::move(tweet_metadata_dict));

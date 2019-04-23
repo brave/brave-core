@@ -440,12 +440,9 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback) override;
 
-  void SaveTwitterPublisherInfo(
-      const std::string& publisher_key,
-      const std::string& screen_name,
-      const std::string& url,
-      const std::string& favicon_url,
-      ledger::PublisherInfoCallback callback) override;
+  void SaveMediaInfo(const std::string& type,
+                     const std::map<std::string, std::string>& data,
+                     ledger::SaveMediaInfoCallback callback) override;
 
  private:
   void AddRecurringPayment(const std::string& publisher_id,
@@ -519,11 +516,6 @@ class LedgerImpl : public ledger::Ledger,
   void OnPublisherInfoSavedInternal(
       ledger::Result result,
       ledger::PublisherInfoPtr info);
-
-  void OnTwitterPublisherInfoSavedInternal(
-      ledger::Result result,
-      std::unique_ptr<ledger::PublisherInfo> publisher_info,
-      ledger::PublisherInfoCallback callback);
 
   void DownloadPublisherList(
       ledger::LoadURLCallback callback);

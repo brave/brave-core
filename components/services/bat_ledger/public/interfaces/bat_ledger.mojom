@@ -119,8 +119,7 @@ interface BatLedger {
 
   StartAutoContribute();
 
-  SaveTwitterPublisherInfo(string publisher_key, string screen_name,
-      string url, string favicon_url) => (int32 result,
+  SaveMediaInfo(string type, map<string, string> args) => (int32 result,
         string publisher_info);
 };
 

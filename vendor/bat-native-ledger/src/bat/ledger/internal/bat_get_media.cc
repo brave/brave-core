@@ -17,7 +17,8 @@ namespace braveledger_bat_get_media {
 BatGetMedia::BatGetMedia(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
   media_youtube_(new braveledger_media::MediaYouTube(ledger)),
-  media_twitch_(new braveledger_media::MediaTwitch(ledger)) {
+  media_twitch_(new braveledger_media::MediaTwitch(ledger)),
+  media_twitter_(new braveledger_media::MediaTwitter(ledger)) {
 }
 
 BatGetMedia::~BatGetMedia() {}
@@ -98,6 +99,15 @@ void BatGetMedia::OnMediaActivityError(const ledger::VisitData& visit_data,
         << type << " (name: "
         << name << ", url: "
         << visit_data.url << ")";
+  }
+}
+
+void BatGetMedia::SaveMediaInfo(const std::string& type,
+                                const std::map<std::string, std::string>& data,
+                                ledger::SaveMediaInfoCallback callback) {
+  if (type == TWITTER_MEDIA_TYPE) {
+    media_twitter_->SaveMediaInfo(data, callback);
+    return;
   }
 }
 

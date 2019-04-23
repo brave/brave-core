@@ -512,8 +512,8 @@ void BatLedgerImpl::LoadPublisherInfo(
 }
 
 // static
-void BatLedgerImpl::OnSaveTwitterPublisherInfo(
-    CallbackHolder<SaveTwitterPublisherInfoCallback>* holder,
+void BatLedgerImpl::OnSaveMediaInfoCallback(
+    CallbackHolder<SaveMediaInfoCallback>* holder,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info) {
   std::string publisher;
@@ -528,18 +528,17 @@ void BatLedgerImpl::OnSaveTwitterPublisherInfo(
   delete holder;
 }
 
-void BatLedgerImpl::SaveTwitterPublisherInfo(
-    const std::string& publisher_key,
-    const std::string& screen_name,
-    const std::string& url,
-    const std::string& favicon_url,
-    SaveTwitterPublisherInfoCallback callback) {
-  auto* holder = new CallbackHolder<SaveTwitterPublisherInfoCallback>(
+void BatLedgerImpl::SaveMediaInfo(
+    const std::string& type,
+    const base::flat_map<std::string, std::string>& args,
+    SaveMediaInfoCallback callback) {
+  auto* holder = new CallbackHolder<SaveMediaInfoCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_->SaveTwitterPublisherInfo(
-      publisher_key, screen_name, url, favicon_url,
-      std::bind(BatLedgerImpl::OnSaveTwitterPublisherInfo, holder, _1, _2));
+  ledger_->SaveMediaInfo(
+      type,
+      mojo::FlatMapToMap(args),
+      std::bind(BatLedgerImpl::OnSaveMediaInfoCallback, holder, _1, _2));
 }
 
 void BatLedgerImpl::OnRefreshPublisher(

@@ -1132,15 +1132,6 @@ void RewardsServiceImpl::OnPublisherInfoSaved(
   }
 }
 
-void RewardsServiceImpl::OnTwitterPublisherInfoSaved(
-    SaveTwitterPublisherInfoCallback callback,
-    int result,
-    const std::string& json_publisher_info) {
-  if (Connected()) {
-    callback.Run();
-  }
-}
-
 void RewardsServiceImpl::SaveActivityInfo(
     ledger::PublisherInfoPtr publisher_info,
     ledger::PublisherInfoCallback callback) {
@@ -2250,19 +2241,34 @@ void RewardsServiceImpl::SaveRecurringTip(
                      AsWeakPtr()));
 }
 
+void RewardsServiceImpl::OnTwitterPublisherInfoSaved(
+    SaveMediaInfoCallback callback,
+    int result,
+    const std::string& json_publisher) {
+  if (Connected()) {
+    ledger::Result result_converted = static_cast<ledger::Result>(result);
+    std::unique_ptr<brave_rewards::ContentSite> site;
+
+    if (result_converted == ledger::Result::LEDGER_OK) {
+      ledger::PublisherInfo publisher;
+    publisher.loadFromJson(json_publisher);
+    site = std::make_unique<brave_rewards::ContentSite>
+        (PublisherInfoToContentSite(publisher));
+    }
+
+    std::move(callback).Run(std::move(site));
+  }
+}
+
 void RewardsServiceImpl::SaveTwitterPublisherInfo(
-    const std::string& publisher_key,
-    const std::string& screen_name,
-    const std::string& url,
-    const std::string& favicon_url,
-    SaveTwitterPublisherInfoCallback callback) {
-  bat_ledger_->SaveTwitterPublisherInfo(
-      publisher_key,
-      screen_name,
-      url,
-      favicon_url,
+      const std::map<std::string, std::string>& args,
+    SaveMediaInfoCallback callback) {
+  bat_ledger_->SaveMediaInfo(
+      "twitter",
+      mojo::MapToFlatMap(args),
       base::BindOnce(&RewardsServiceImpl::OnTwitterPublisherInfoSaved,
-                     AsWeakPtr(), callback));
+                     AsWeakPtr(),
+                     std::move(callback)));
 }
 
 ledger::PublisherInfoList GetRecurringTipsOnFileTaskRunner(

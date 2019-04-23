@@ -12,6 +12,7 @@
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/media/twitch.h"
+#include "bat/ledger/internal/media/twitter.h"
 #include "bat/ledger/internal/media/youtube.h"
 #include "bat/ledger/ledger.h"
 
@@ -40,6 +41,10 @@ class BatGetMedia {
                                const std::string& type,
                                const std::string& publisher_blob);
 
+  void SaveMediaInfo(const std::string& type,
+                     const std::map<std::string, std::string>& data,
+                     ledger::SaveMediaInfoCallback callback);
+
  private:
   void OnMediaActivityError(const ledger::VisitData& visit_data,
                           const std::string& type,
@@ -48,6 +53,7 @@ class BatGetMedia {
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_media::MediaYouTube> media_youtube_;
   std::unique_ptr<braveledger_media::MediaTwitch> media_twitch_;
+  std::unique_ptr<braveledger_media::MediaTwitter> media_twitter_;
 };
 
 }  // namespace braveledger_bat_get_media

@@ -153,12 +153,10 @@ class BatLedgerImpl : public mojom::BatLedger,
     const std::string& publisher_key,
     LoadPublisherInfoCallback callback) override;
 
-  void SaveTwitterPublisherInfo(
-      const std::string& publisher_key,
-      const std::string& screen_name,
-      const std::string& url,
-      const std::string& favicon_url,
-      SaveTwitterPublisherInfoCallback callback) override;
+  void SaveMediaInfo(
+      const std::string& type,
+      const base::flat_map<std::string, std::string>& args,
+      SaveMediaInfoCallback callback) override;
 
  private:
   void SetCatalogIssuers(const std::string& info) override;
@@ -225,8 +223,8 @@ class BatLedgerImpl : public mojom::BatLedger,
     ledger::Result result,
     ledger::PublisherInfoPtr info);
 
-  static void OnSaveTwitterPublisherInfo(
-    CallbackHolder<SaveTwitterPublisherInfoCallback>* holder,
+  static void OnSaveMediaInfoCallback(
+    CallbackHolder<SaveMediaInfoCallback>* holder,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info);
 

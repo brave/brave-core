@@ -219,11 +219,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetContributionAmount(const double amount) const override;
 
   void SaveTwitterPublisherInfo(
-      const std::string& publisher_key,
-      const std::string& screen_name,
-      const std::string& url,
-      const std::string& favicon_url,
-      SaveTwitterPublisherInfoCallback callback) override;
+      const std::map<std::string, std::string>& args,
+      SaveMediaInfoCallback callback) override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -490,9 +487,9 @@ class RewardsServiceImpl : public RewardsService,
       RefreshPublisherCallback callback,
       const std::string& publisher_key,
       bool verified);
-  void OnTwitterPublisherInfoSaved(SaveTwitterPublisherInfoCallback callback,
+  void OnTwitterPublisherInfoSaved(SaveMediaInfoCallback callback,
                                    int result,
-                                   const std::string& json_publisher_info);
+                                   const std::string& json_publisher);
 
   bool Connected() const;
   void ConnectionClosed();

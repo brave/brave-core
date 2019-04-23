@@ -62,6 +62,8 @@ using GetTransactionHistoryForThisCycleCallback =
 using GetExcludedPublishersNumberDBCallback = std::function<void(uint32_t)>;
 using OnWalletPropertiesCallback = std::function<void(const ledger::Result,
                                   std::unique_ptr<ledger::WalletInfo>)>;
+using SaveMediaInfoCallback = std::function<void(const ledger::Result,
+                                             std::unique_ptr<PublisherInfo>)>;
 using OnRefreshPublisherCallback =
     std::function<void(bool)>;
 
@@ -288,12 +290,9 @@ class LEDGER_EXPORT Ledger {
 
   virtual void StartAutoContribute() = 0;
 
-  virtual void SaveTwitterPublisherInfo(
-      const std::string& publisher_key,
-      const std::string& screen_name,
-      const std::string& url,
-      const std::string& favicon_url,
-      PublisherInfoCallback callback) = 0;
+  virtual void SaveMediaInfo(const std::string& type,
+                             const std::map<std::string, std::string>& data,
+                             ledger::SaveMediaInfoCallback callback) = 0;
 };
 
 }  // namespace ledger

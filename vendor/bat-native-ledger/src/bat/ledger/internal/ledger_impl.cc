@@ -1500,40 +1500,14 @@ void LedgerImpl::OnRefreshPublisher(
       callback);
 }
 
-void LedgerImpl::SaveTwitterPublisherInfo(
-    const std::string& publisher_key,
-    const std::string& screen_name,
-    const std::string& url,
-    const std::string& favicon_url,
-    ledger::PublisherInfoCallback callback) {
-  auto publisher_info = std::make_unique<ledger::PublisherInfo>();
-
-  publisher_info->id = publisher_key;
-  publisher_info->duration = 0;
-  publisher_info->name = screen_name;
-  publisher_info->url = url;
-  publisher_info->favicon_url = favicon_url;
-  publisher_info->provider = TWITTER_MEDIA_TYPE;
-  publisher_info->verified = bat_publishers_->isVerified(publisher_key);
-
-  ledger_client_->SavePublisherInfo(
-      std::move(publisher_info),
-      std::bind(&LedgerImpl::OnTwitterPublisherInfoSavedInternal,
-                this,
-                _1,
-                _2,
-                callback));
-}
-
-void LedgerImpl::OnTwitterPublisherInfoSavedInternal(
-    ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info,
-    ledger::PublisherInfoCallback callback) {
-  callback(result, std::move(publisher_info));
-}
-
 scoped_refptr<base::SequencedTaskRunner> LedgerImpl::GetTaskRunner() {
   return task_runner_;
+}
+
+void LedgerImpl::SaveMediaInfo(const std::string& type,
+                               const std::map<std::string, std::string>& data,
+                               ledger::SaveMediaInfoCallback callback) {
+  bat_get_media_->SaveMediaInfo(type, data, callback);
 }
 
 }  // namespace bat_ledger

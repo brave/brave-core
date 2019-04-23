@@ -50,7 +50,8 @@ class BraveRewardsDonateToTwitterUserFunction
 
  private:
   base::WeakPtrFactory<BraveRewardsDonateToTwitterUserFunction> weak_factory_;
-  void OnTwitterPublisherInfoSaved();
+  void OnTwitterPublisherInfoSaved(
+      std::unique_ptr<brave_rewards::ContentSite> publisher_info);
 };
 
 class BraveRewardsGetPublisherDataFunction : public UIThreadExtensionFunction {

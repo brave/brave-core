@@ -79,7 +79,7 @@ chrome.runtime.onConnect.addListener(function () {
   })
 })
 
-const donateToTwitterUser = (publisherKey: string, name: string, screenName: string, tweetText: string) => {
+const donateToTwitterUser = (userId: string, name: string, screenName: string, tweetText: string) => {
   chrome.tabs.query({
     active: true,
     windowId: chrome.windows.WINDOW_ID_CURRENT
@@ -91,7 +91,7 @@ const donateToTwitterUser = (publisherKey: string, name: string, screenName: str
     if (tabId === undefined) {
       return
     }
-    chrome.braveRewards.donateToTwitterUser(tabId, publisherKey, name, screenName, tweetText)
+    chrome.braveRewards.donateToTwitterUser(tabId, userId, name, screenName, tweetText)
   })
 }
 
@@ -99,13 +99,12 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
     case 'donateToTwitterUser': {
-      const publisherKey = `twitter#channel:${msg.userId}`
-      donateToTwitterUser(publisherKey, msg.name, msg.screenName, msg.tweetText)
+      donateToTwitterUser(msg.userId, msg.name, msg.screenName, msg.tweetText)
       return false
     }
     case 'rewardsEnabled': {
       // Check if rewards is enabled
-      chrome.braveRewards.getRewardsMainEnabled(function (enabled) {
+      chrome.braveRewards.getRewardsMainEnabled(function (enabled: boolean) {
         sendResponse({ enabled: enabled })
       })
       // Must return true for asynchronous calls to sendResponse

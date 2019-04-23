@@ -77,7 +77,8 @@ using GetPublisherBannerCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::PublisherBanner>)>;
 using RefreshPublisherCallback =
     base::OnceCallback<void(bool, const std::string&)>;
-using SaveTwitterPublisherInfoCallback = base::Callback<void()>;
+using SaveMediaInfoCallback =
+    base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSite>)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -208,11 +209,8 @@ class RewardsService : public KeyedService {
   GetAllNotifications() = 0;
 
   virtual void SaveTwitterPublisherInfo(
-      const std::string& publisher_key,
-      const std::string& screen_name,
-      const std::string& url,
-      const std::string& favicon_url,
-      SaveTwitterPublisherInfoCallback callback) = 0;
+      const std::map<std::string, std::string>& args,
+      SaveMediaInfoCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
