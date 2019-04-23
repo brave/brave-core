@@ -30,7 +30,7 @@ void ExtensionRewardsNotificationServiceObserver::OnNotificationAdded(
         rewards_notification) {
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
-  if (event_router) {
+  if (!event_router) {
     return;
   }
 
@@ -94,7 +94,7 @@ void ExtensionRewardsNotificationServiceObserver::OnGetNotification(
         rewards_notification) {
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
-  if (event_router) {
+  if (!event_router) {
     return;
   }
 
@@ -116,7 +116,7 @@ void ExtensionRewardsNotificationServiceObserver::OnGetAllNotifications(
         rewards_notifications_list) {
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
-  if (event_router) {
+  if (!event_router) {
     return;
   }
 
