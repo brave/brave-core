@@ -77,8 +77,8 @@ class ContributeBox extends React.Component<Props, State> {
       <DisabledContent
         type={'contribute'}
       >
-        • {getLocale('contributionDisabledText1')} <br />
-        • {getLocale('contributionDisabledText2')}
+        {getLocale('contributionDisabledText1')} <br />
+        {getLocale('contributionDisabledText2')}
       </DisabledContent>
     )
   }
@@ -120,7 +120,7 @@ class ContributeBox extends React.Component<Props, State> {
     }
 
     return (
-      <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
+      <Grid columns={1} customStyle={{ margin: '0 auto' }}>
         <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
           <ControlWrapper text={getLocale('contributionMonthly')}>
             <Select

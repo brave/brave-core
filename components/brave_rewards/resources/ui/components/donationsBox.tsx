@@ -51,8 +51,8 @@ class DonationBox extends React.Component<Props, State> {
       <DisabledContent
         type={'donation'}
       >
-        • {getLocale('donationDisabledText1')}<br/>
-        • {getLocale('donationDisabledText2')}
+        {getLocale('donationDisabledText1')}<br/>
+        {getLocale('donationDisabledText2')}
       </DisabledContent>
     )
   }

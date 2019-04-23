@@ -51,8 +51,8 @@ class AdsBox extends React.Component<Props, State> {
       <DisabledContent
         type={'ads'}
       >
-        • {getLocale('adsDisabledTextOne')} <br />
-        • {getLocale('adsDisabledTextTwo')}
+        {getLocale('adsDisabledTextOne')} <br />
+        {getLocale('adsDisabledTextTwo')}
       </DisabledContent>
     )
   }
@@ -86,7 +86,7 @@ class AdsBox extends React.Component<Props, State> {
     const { adsPerHour } = this.props.rewardsData.adsData
 
     return (
-      <Grid columns={1} customStyle={{ maxWidth: '270px', margin: '0 auto' }}>
+      <Grid columns={1} customStyle={{ margin: '0 auto' }}>
         <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
           <ControlWrapper text={getLocale('adsPerHour')}>
             <Select
