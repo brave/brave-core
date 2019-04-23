@@ -107,6 +107,9 @@ BravePatching.RegisterPolymerComponentBehaviors({
   'settings-clear-browsing-data-dialog': [
     BraveClearBrowsingDataOnExitBehavior
   ],
+  'settings-reset-profile-dialog': [
+    BraveResetProfileDialogBehavior
+  ],
   'settings-ui': [
     BraveClearSettingsMenuHighlightBehavior
   ]
