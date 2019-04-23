@@ -107,25 +107,8 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
 
     std::string data;
     base::ReadFileToString(path, &data);
-
-    #if defined(OS_WIN)
-      auto split = base::SplitStringUsingSubstr(
-          data,
-          "\r\n",
-          base::KEEP_WHITESPACE,
-          base::SPLIT_WANT_NONEMPTY);
-
-      if (split.size() > 1) {
-        data = base::JoinString(split, "\n") + "\n";
-      } else if (split.size() == 1) {
-        bool ends_with_newline = (data.at(data.size() - 1) == '\n');
-        data = split[0];
-        if (ends_with_newline && data.at(data.size() - 1) != '\n') {
-          data += "\n";
-        }
-      }
-    #endif
-
+    DCHECK(data.find("\r\n", 0) == std::string::npos)
+        << "Do not add test data files with Windows line endings.";
     return data;
   }
 
