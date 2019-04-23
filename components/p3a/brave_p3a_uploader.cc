@@ -5,6 +5,7 @@
 
 #include "brave/components/p3a/brave_p3a_uploader.h"
 
+#include "base/base64.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -59,9 +60,9 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
 
   url_loader_ = network::SimpleURLLoader::Create(std::move(resource_request),
                                                  GetNetworkTrafficAnnotation());
-
-  url_loader_->AttachStringForUpload(compressed_log_data,
-                                     "application/protobuf");
+  std::string base64;
+  base::Base64Encode(compressed_log_data, &base64);
+  url_loader_->AttachStringForUpload(base64, "application/base64");
 
   url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       url_loader_factory_.get(),
