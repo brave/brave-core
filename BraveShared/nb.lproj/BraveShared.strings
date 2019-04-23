@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "Annonser og sporingsprogrammer";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Annonser og sporingsprogrammer 
-blokkert";
+"AdsAndTrackersrBlocked" = "Annonser og sporingsprogrammer \nblokkert";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Annonser 
-blokkert";
+"AdsrBlocked" = "Annonser \nblokkert";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Send alltid";
@@ -228,9 +226,6 @@ blokkert";
 /* Cookie settings option title */
 "CookieControl" = "Informasjonskapsel-kontroll";
 
-/* Settings item for clearing cookies */
-"Cookies" = "Informasjonskapsler";
-
 /* Copied action complete title */
 "Copied" = "Kopiert!";
 
@@ -349,8 +344,7 @@ blokkert";
 "ErrorPagesVisitOnceButton" = "Besøk siden allikevel";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Est. tid
-spart";
+"EstTimerSaved" = "Est. tid\nspart";
 
 /* Share action title */
 "FindInPage" = "Finn på side";
@@ -368,8 +362,7 @@ spart";
 "FingerprintingMethods" = "Fingeravtrykkmetoder";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "Fingeravtrykk-
-beskyttelse";
+"FingerprintingnProtection" = "Fingeravtrykk-\nbeskyttelse";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Fingeravtrykkbeskyttelse";
@@ -384,8 +377,7 @@ beskyttelse";
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS-
-oppgraderinger";
+"HTTPSrUpgrades" = "HTTPS-\noppgraderinger";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS-oppgraderinger";
@@ -400,8 +392,7 @@ oppgraderinger";
 "LastWeek" = "Siste uke";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Finn ut mer om private søk 
-med DuckDuckGo";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Finn ut mer om private søk \nmed DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Sist modifisert %@";
@@ -515,13 +506,7 @@ med DuckDuckGo";
 "PrivateBrowsingOnly" = "Kun privat surfing";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Det å bruke private faner påvirker kun det Brave gjør på enheten din, det forandrer ikke andres adferd.
-
-Nettsteder får alltid vite IP-adressen din når du besøker dem. Ut ifra dette kan de ofte gjette omtrent hvor du befinner deg, men vanligvis er ikke dette mer nøyaktig enn hvilken by du er i. Noen ganger kan imidlertid posisjonen de anslår, være mer spesifikk. Nettsteder får også vite alt du spesifikt oppgir til dem, som søkeord. Hvis du logger på et nettsted, vet nettstedet at du eier den gjeldende kontoen. Du blir likevel logget ut når du lukker de private fanene, for Brave kaster informasjonskapselen som holder deg pålogget.
-
-Den som kobler deg til internett (vanligvis internettleverandøren din) kan se all aktiviteten på nettverket ditt. Ofte er internettleverandøren mobilleverandøren din. Hvis du er koblet til et WiFi-nettverk, er internettleverandøren eieren av nettverket, og hvis du bruker en VPN, er det den som drifter VPN-en. Internettleverandøren din kan se hvilke nettsteder du besøker, samtidig som du besøker dem. Hvis disse nettstedene bruker HTTPS, kan internettleverandøren gjøre mer enn en kvalifisert gjetning angående hva du foretar deg på slike nettsteder. Hvis et nettsted kun bruker HTTP, kan imidlertid internettleverandøren din se alt: søkeordene dine, hvilke sider du leser, og hvilke lenker du følger.
-
-Hvis arbeidsgiveren din administrerer enheten din, kan arbeidsgiveren også se hva du gjør med den. Det å bruke private faner vil sannsynligvis ikke hindre at de finner ut hvilke nettsteder du har besøkt. Andre som har tilgang til enheten din, kan også ha installert programvare som overvåker aktiviteten din, og private faner beskytter deg heller ikke mot dette.";
+"PrivateTabDetails" = "Det å bruke private faner påvirker kun det Brave gjør på enheten din, det forandrer ikke andres adferd.\n\nNettsteder får alltid vite IP-adressen din når du besøker dem. Ut ifra dette kan de ofte gjette omtrent hvor du befinner deg, men vanligvis er ikke dette mer nøyaktig enn hvilken by du er i. Noen ganger kan imidlertid posisjonen de anslår, være mer spesifikk. Nettsteder får også vite alt du spesifikt oppgir til dem, som søkeord. Hvis du logger på et nettsted, vet nettstedet at du eier den gjeldende kontoen. Du blir likevel logget ut når du lukker de private fanene, for Brave kaster informasjonskapselen som holder deg pålogget.\n\nDen som kobler deg til internett (vanligvis internettleverandøren din) kan se all aktiviteten på nettverket ditt. Ofte er internettleverandøren mobilleverandøren din. Hvis du er koblet til et WiFi-nettverk, er internettleverandøren eieren av nettverket, og hvis du bruker en VPN, er det den som drifter VPN-en. Internettleverandøren din kan se hvilke nettsteder du besøker, samtidig som du besøker dem. Hvis disse nettstedene bruker HTTPS, kan internettleverandøren gjøre mer enn en kvalifisert gjetning angående hva du foretar deg på slike nettsteder. Hvis et nettsted kun bruker HTTP, kan imidlertid internettleverandøren din se alt: søkeordene dine, hvilke sider du leser, og hvilke lenker du følger.\n\nHvis arbeidsgiveren din administrerer enheten din, kan arbeidsgiveren også se hva du gjør med den. Det å bruke private faner vil sannsynligvis ikke hindre at de finner ut hvilke nettsteder du har besøkt. Andre som har tilgang til enheten din, kan også ha installert programvare som overvåker aktiviteten din, og private faner beskytter deg heller ikke mot dette.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Finn ut mer om private faner.";
@@ -917,8 +902,7 @@ Hvis arbeidsgiveren din administrerer enheten din, kan arbeidsgiveren også se h
 "Today" = "I dag";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Sporingsprogrammer 
-blokkert";
+"TrackersrBlocked" = "Sporingsprogrammer \nblokkert";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Kan ikke bli med i synkgruppen. Sjekk ordene du skrev inn, og prøv igjen.";

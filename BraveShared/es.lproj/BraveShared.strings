@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "Anuncios y rastreadores";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Anuncios y rastreadores 
-bloqueados";
+"AdsAndTrackersrBlocked" = "Anuncios y rastreadores \nbloqueados";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Anuncios 
-bloqueados";
+"AdsrBlocked" = "Anuncios \nbloqueados";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Enviar siempre";
@@ -228,9 +226,6 @@ bloqueados";
 /* Cookie settings option title */
 "CookieControl" = "Control de cookies";
 
-/* Settings item for clearing cookies */
-"Cookies" = "Cookies";
-
 /* Copied action complete title */
 "Copied" = "¡Copiado!";
 
@@ -349,8 +344,7 @@ bloqueados";
 "ErrorPagesVisitOnceButton" = "Visitar sitio igualmente";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Tiempo estimado
-ahorrado";
+"EstTimerSaved" = "Tiempo estimado\nahorrado";
 
 /* Share action title */
 "FindInPage" = "Encontrar en la página";
@@ -368,8 +362,7 @@ ahorrado";
 "FingerprintingMethods" = "Métodos dactiloscópicos";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "Protección
-dactiloscópica";
+"FingerprintingnProtection" = "Protección\ndactiloscópica";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Protección dactiloscópica";
@@ -384,8 +377,7 @@ dactiloscópica";
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "Mejoras
-de HTTPS";
+"HTTPSrUpgrades" = "Mejoras\nde HTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Mejoras de HTTPS";
@@ -514,13 +506,7 @@ de HTTPS";
 "PrivateBrowsingOnly" = "Solo navegación privada";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Lo único que cambia el uso de pestañas privadas es lo que hace Brave en tu dispositivo, no lo que hacen los demás.
-
-Los sitios web retienen tu dirección IP cada vez que los visitas, lo que significa que suelen tener una idea aproximada sobre tu ubicación (como la ciudad en la que te encuentras). A veces, la localización puede ser mucho más precisa. Los sitios web también retienen todo lo que compartes con ellos, como los términos de búsqueda que utilizas. Si inicias sesión en un sitio web, este sabrá que eres el propietario de esa cuenta. Aun así, tu sesión finalizará en cuanto cierres las pestañas privadas, ya que Brave desechará la cookie que mantiene tu sesión iniciada.
-
-Tu proveedor de acceso a Internet, sea quien sea, puede ver toda tu actividad en la red. A menudo, se trata de tu compañía telefónica. Si estás conectado a una red wifi, el proveedor será el propietario de dicha red, mientras que, si usas una VPN, el proveedor será el encargado de gestionar esa VPN. Tu proveedor de acceso a Internet puede ver qué sitios visitas en tiempo real. Si esos sitios utilizan HTTPS, solo podrán obtener una idea aproximada de lo que haces en esos sitios web; sin embargo, si un sitio no utiliza más que HTTP, tu proveedor de acceso a Internet podrá verlo todo: tus términos de búsqueda, las páginas que consultas y los enlaces en los que clicas.
-
-Si el dispositivo lo gestiona tu empresa, puede que esta también supervise lo que haces con él. Es muy probable que el uso de pestañas privadas no logre impedir que la empresa sepa qué sitios visitas. Además, existe la posibilidad de que otra persona con acceso a tu dispositivo haya instalado en él un software para controlar tu actividad, ante lo que las pestañas privadas tampoco pueden protegerte.";
+"PrivateTabDetails" = "Lo único que cambia el uso de pestañas privadas es lo que hace Brave en tu dispositivo, no lo que hacen los demás.\n\nLos sitios web retienen tu dirección IP cada vez que los visitas, lo que significa que suelen tener una idea aproximada sobre tu ubicación (como la ciudad en la que te encuentras). A veces, la localización puede ser mucho más precisa. Los sitios web también retienen todo lo que compartes con ellos, como los términos de búsqueda que utilizas. Si inicias sesión en un sitio web, este sabrá que eres el propietario de esa cuenta. Aun así, tu sesión finalizará en cuanto cierres las pestañas privadas, ya que Brave desechará la cookie que mantiene tu sesión iniciada.\n\nTu proveedor de acceso a Internet, sea quien sea, puede ver toda tu actividad en la red. A menudo, se trata de tu compañía telefónica. Si estás conectado a una red wifi, el proveedor será el propietario de dicha red, mientras que, si usas una VPN, el proveedor será el encargado de gestionar esa VPN. Tu proveedor de acceso a Internet puede ver qué sitios visitas en tiempo real. Si esos sitios utilizan HTTPS, solo podrán obtener una idea aproximada de lo que haces en esos sitios web; sin embargo, si un sitio no utiliza más que HTTP, tu proveedor de acceso a Internet podrá verlo todo: tus términos de búsqueda, las páginas que consultas y los enlaces en los que clicas.\n\nSi el dispositivo lo gestiona tu empresa, puede que esta también supervise lo que haces con él. Es muy probable que el uso de pestañas privadas no logre impedir que la empresa sepa qué sitios visitas. Además, existe la posibilidad de que otra persona con acceso a tu dispositivo haya instalado en él un software para controlar tu actividad, ante lo que las pestañas privadas tampoco pueden protegerte.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Más información acerca de las pestañas privadas.";
@@ -916,8 +902,7 @@ Si el dispositivo lo gestiona tu empresa, puede que esta también supervise lo q
 "Today" = "Hoy";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Rastreadores 
-bloqueados";
+"TrackersrBlocked" = "Rastreadores \nbloqueados";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "No es posible unirse al grupo de sincronización. Comprueba las palabras introducidas e inténtalo de nuevo.";

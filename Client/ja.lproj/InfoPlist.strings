@@ -5,7 +5,7 @@
 "NSCameraUsageDescription" = "写真を撮影してアップロードすることができます。";
 
 /* Privacy - Face ID Usage Description */
-"NSFaceIDUsageDescription" = "Brave が保存済みのログイン情報にアクセスするために Face ID を求めています。";
+"NSFaceIDUsageDescription" = "Brave が保存済みのログイン情報にアクセスするために Face ID を要求しています。";
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
