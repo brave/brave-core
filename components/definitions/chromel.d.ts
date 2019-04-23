@@ -72,6 +72,7 @@ declare namespace chrome.braveRewards {
     addListener: (callback: (success: boolean) => void) => void
   }
   const refreshPublisher: (publisherKey: string, callback: (enabled: boolean, publisherKey: string) => void) => {}
+  const getAllNotifications: (callback: (list: RewardsExtension.Notification[]) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

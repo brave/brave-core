@@ -4,6 +4,10 @@
 
 import rewardsPanelActions from '../actions/rewardsPanelActions'
 
+chrome.braveRewards.getAllNotifications((list: RewardsExtension.Notification[]) => {
+  rewardsPanelActions.onAllNotifications(list)
+})
+
 chrome.braveRewards.onWalletInitialized.addListener((result: RewardsExtension.Result) => {
   rewardsPanelActions.onWalletInitialized(result)
 })
