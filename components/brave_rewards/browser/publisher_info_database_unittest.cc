@@ -109,13 +109,25 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
     base::ReadFileToString(path, &data);
 
     #if defined(OS_WIN)
+      // Test data files may or may not have line endings converted to CRLF by
+      // git checkout on Windows (depending on git autocrlf setting). Remove
+      // CRLFs if they are there and replace with just LF, otherwise leave the
+      // input data as is.
       auto split = base::SplitStringUsingSubstr(
           data,
           "\r\n",
           base::KEEP_WHITESPACE,
           base::SPLIT_WANT_NONEMPTY);
 
-      data = base::JoinString(split, "\n") + "\n";
+      if (split.size() > 1) {
+        data = base::JoinString(split, "\n") + "\n";
+      } else if (split.size() == 1) {
+        bool ends_with_newline = (data.at(data.size() - 1) == '\n');
+        data = split[0];
+        if (ends_with_newline && data.at(data.size() - 1) != '\n') {
+          data += "\n";
+        }
+      }
     #endif
 
     return data;
