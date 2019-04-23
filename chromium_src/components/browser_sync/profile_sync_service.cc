@@ -355,7 +355,7 @@ std::string ProfileSyncService::GetSeed() {
 
 void ProfileSyncService::OnSetSyncEnabled(const bool sync_this_device) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  brave_sync_prefs_->SetSyncEnabled(true);
+  brave_sync_prefs_->SetSyncEnabled(sync_this_device);
 }
 
 void ProfileSyncService::OnSetSyncBookmarks(const bool sync_bookmarks) {
@@ -546,10 +546,7 @@ void ProfileSyncService::OnResolvedSyncRecords(
     // Send records to syncer
     if (get_record_cb_)
       engine_->DispatchGetRecordsCallback(get_record_cb_, std::move(records));
-    if (wevent_) {
-      wevent_->Signal();
-      wevent_ = nullptr;
-    }
+    SignalWaitableEvent();
   } else if (category_name == kHistorySites) {
     NOTIMPLEMENTED();
   }
@@ -711,8 +708,10 @@ void ProfileSyncService::OnResolvedPreferences(const RecordsList& records) {
 void ProfileSyncService::OnBraveSyncPrefsChanged(const std::string& pref) {
   if (pref == brave_sync::prefs::kSyncEnabled) {
     GetBraveSyncClient()->OnSyncEnabledChanged();
-    if (!brave_sync_prefs_->GetSyncEnabled())
+    if (!brave_sync_prefs_->GetSyncEnabled()) {
       brave_sync_initialized_ = false;
+      user_settings_->SetSyncRequested(false);
+    }
   }
   NotifySyncStateChanged();
 }
@@ -823,6 +822,13 @@ void ProfileSyncService::OnPollSyncCycle(GetRecordsCallback cb,
   const bool history = brave_sync_prefs_->GetSyncHistoryEnabled();
   const bool preferences = brave_sync_prefs_->GetSyncSiteSettingsEnabled();
   FetchSyncRecords(bookmarks, history, preferences, 1000);
+}
+
+void ProfileSyncService::SignalWaitableEvent() {
+  if (wevent_) {
+    wevent_->Signal();
+    wevent_ = nullptr;
+  }
 }
 
 }   // namespace browser_sync
