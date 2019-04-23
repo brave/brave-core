@@ -115,7 +115,15 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
           base::KEEP_WHITESPACE,
           base::SPLIT_WANT_NONEMPTY);
 
-      data = base::JoinString(split, "\n") + "\n";
+      if (split.size() > 1) {
+        data = base::JoinString(split, "\n") + "\n";
+      } else if (split.size() == 1) {
+        bool ends_with_newline = (data.at(data.size() - 1) == '\n');
+        data = split[0];
+        if (ends_with_newline && data.at(data.size() - 1) != '\n') {
+          data += "\n";
+        }
+      }
     #endif
 
     return data;
