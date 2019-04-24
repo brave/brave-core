@@ -36,7 +36,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
-#include "bat/ledger/ledger_callback_handler.h"
 #if defined(OS_ANDROID)
 #include "content/public/browser/url_data_source.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
@@ -132,9 +131,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       double estimated_pending_rewards,
       uint64_t next_payment_date_in_seconds,
       uint64_t ad_notifications_received_this_month);
-  void AdsIsSupportedRegion(const base::ListValue* args);
-  void NotifyGrantReceived (const brave_rewards::RewardsNotificationService::RewardsNotification&
-                                      notification);
 
   void OnGetRecurringTips(
     std::unique_ptr<brave_rewards::ContentSiteList> list);
@@ -254,7 +250,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
           notifications_list) override;
 
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
-  brave_rewards::RewardsNotificationService* notification_service_; // NOT OWNED
   brave_ads::AdsService* ads_service_;
   base::WeakPtrFactory<RewardsDOMHandler> weak_factory_;
 
@@ -266,10 +261,6 @@ RewardsDOMHandler::RewardsDOMHandler() : weak_factory_(this) {}
 RewardsDOMHandler::~RewardsDOMHandler() {
   if (rewards_service_)
     rewards_service_->RemoveObserver(this);
-
-  if (notification_service_) {
-    notification_service_->RemoveObserver(this);
-  }
 }
 
 void RewardsDOMHandler::RegisterMessages() {
@@ -428,11 +419,6 @@ void RewardsDOMHandler::Init() {
 
   if (rewards_service_)
     rewards_service_->AddObserver(this);
-
-  notification_service_ = rewards_service_->GetNotificationService();
-  if (notification_service_) {
-      notification_service_->AddObserver(this);
-  }
 }
 
 void RewardsDOMHandler::OnGetAllBalanceReports(
@@ -566,12 +552,24 @@ void RewardsDOMHandler::OnGrant(
     brave_rewards::RewardsService* rewards_service,
     unsigned int result,
     brave_rewards::Grant grant) {
+  if (web_ui()->CanCallJavascript()) {
+    base::DictionaryValue newGrant;
+    newGrant.SetInteger("status", result);
+    newGrant.SetString("type", grant.type);
+    newGrant.SetString("promotionId", grant.promotionId);
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grant", newGrant);
+  }
 }
 
 void RewardsDOMHandler::GetGrants(const base::ListValue* args) {
   CHECK_EQ(2U, args->GetSize());
   if (rewards_service_) {
-    notification_service_->GetNotifications();
+    std::string lang;
+    std::string paymentId;
+    args->GetString(0, &lang);
+    args->GetString(1, &paymentId);
+    rewards_service_->FetchGrants(lang, paymentId);
   }
 }
 
@@ -756,10 +754,7 @@ void RewardsDOMHandler::OnExcludedSitesChanged(
 void RewardsDOMHandler::OnNotificationAdded(
     brave_rewards::RewardsNotificationService* rewards_notification_service,
     const brave_rewards::RewardsNotificationService::RewardsNotification&
-        notification) {
-        //NotifyGrantReceived will check if it is grant notification
-        NotifyGrantReceived(notification);
-    }
+        notification) {}
 
 void RewardsDOMHandler::OnNotificationDeleted(
     brave_rewards::RewardsNotificationService* rewards_notification_service,
@@ -787,37 +782,7 @@ void RewardsDOMHandler::OnGetNotification(
 void RewardsDOMHandler::OnGetAllNotifications(
     brave_rewards::RewardsNotificationService* rewards_notification_service,
     const brave_rewards::RewardsNotificationService::RewardsNotificationsList&
-        notifications_list) {
-
-    //sort by least date
-    brave_rewards::RewardsNotificationService::RewardsNotificationsList vec_notif(notifications_list);
-    std::sort(vec_notif.begin(), vec_notif.end(), [](const auto &r1, const auto &r2) {
-     return r1.timestamp_ < r2.timestamp_;
-    });
-
-    //find first grant
-    const auto item = std::find_if(vec_notif.begin(), vec_notif.end(), [](const auto &r1) {
-      return r1.type_ == brave_rewards::RewardsNotificationService::RewardsNotificationType::REWARDS_NOTIFICATION_GRANT;
-    });
-
-    if (item != vec_notif.end()){
-        NotifyGrantReceived(*item);
-    }
-}
-
-
-void RewardsDOMHandler::NotifyGrantReceived (const brave_rewards::RewardsNotificationService::RewardsNotification&
-  notification){
-  if (notification.type_ == brave_rewards::RewardsNotificationService::RewardsNotificationType::REWARDS_NOTIFICATION_GRANT &&
-      web_ui()->CanCallJavascript()) {
-      base::DictionaryValue newGrant;
-      newGrant.SetInteger("status", ledger::Result::LEDGER_OK);
-      newGrant.SetString("type", "ugp");
-      newGrant.SetString("promotionId", notification.id_);
-
-      web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.grant", newGrant);
-  }
-}
+        notifications_list) {}
 
 void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
   CHECK_EQ(2U, args->GetSize());
