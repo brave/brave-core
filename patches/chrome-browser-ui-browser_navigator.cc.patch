@@ -1,14 +1,20 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index cd2ade8119331caa626270056a1863165afd3fb4..33d15bbf371940d35b73f2b8bca81bb6ebfef3ec 100644
+index cd2ade8119331caa626270056a1863165afd3fb4..f3691ded29969615dd7225246467da8a62d0b8fe 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
-@@ -723,6 +723,9 @@ void Navigate(NavigateParams* params) {
+@@ -106,6 +106,7 @@ Browser* GetOrCreateBrowser(Profile* profile, bool user_gesture) {
+ // Returns true on success. Otherwise, if changing params leads the browser into
+ // an erroneous state, returns false.
+ bool AdjustNavigateParamsForURL(NavigateParams* params) {
++  AdjustNavigateParamsForURLBraveImpl(params);
+   if (params->contents_to_insert || params->switch_to_singleton_tab ||
+       IsURLAllowedInIncognito(params->url, params->initiating_profile) ||
+       params->initiating_profile->IsGuestSession()) {
+@@ -723,6 +724,7 @@ void Navigate(NavigateParams* params) {
  bool IsHostAllowedInIncognito(const GURL& url) {
    std::string scheme = url.scheme();
    base::StringPiece host = url.host_piece();
-+#if defined(BRAVE_CHROMIUM_BUILD)
-+  if (!IsHostAllowedInIncognitoBraveImpl(&scheme, host)) return false;
-+#endif
++  if (!IsHostAllowedInIncognitoBraveImpl(host)) return false;
    if (scheme == chrome::kChromeSearchScheme) {
      return host != chrome::kChromeUIThumbnailHost &&
             host != chrome::kChromeUIThumbnailHost2 &&
