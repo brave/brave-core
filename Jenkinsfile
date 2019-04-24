@@ -12,6 +12,10 @@ pipeline {
         booleanParam(name: "WIPE_WORKSPACE", defaultValue: false, description: "")
         booleanParam(name: "RUN_INIT", defaultValue: false, description: "")
         booleanParam(name: "DISABLE_SCCACHE", defaultValue: false, description: "")
+        booleanParam(name: "BUILD_LINUX", defaultValue: true, description: "")
+        booleanParam(name: "BUILD_MAC", defaultValue: true, description: "")
+        booleanParam(name: "BUILD_WINDOWS_X64", defaultValue: true, description: "")
+        booleanParam(name: "BUILD_WINDOWS_IA32", defaultValue: false, description: "")
         booleanParam(name: "DEBUG", defaultValue: false, description: "")
     }
     environment {
@@ -28,9 +32,13 @@ pipeline {
                     WIPE_WORKSPACE = params.WIPE_WORKSPACE
                     RUN_INIT = params.RUN_INIT
                     DISABLE_SCCACHE = params.DISABLE_SCCACHE
+                    BUILD_LINUX = params.BUILD_LINUX
+                    BUILD_MAC = params.BUILD_MAC
+                    BUILD_WINDOWS_X64 = params.BUILD_WINDOWS_X64
+                    BUILD_WINDOWS_IA32 = params.BUILD_WINDOWS_IA32
                     DEBUG = params.DEBUG
-                    BRANCH_TO_BUILD = (CHANGE_BRANCH == null ? BRANCH_NAME : CHANGE_BRANCH)
-                    TARGET_BRANCH = (CHANGE_TARGET == null ? BRANCH_TO_BUILD : CHANGE_TARGET)
+                    BRANCH_TO_BUILD = (env.CHANGE_BRANCH == null ? env.BRANCH_NAME : env.CHANGE_BRANCH)
+                    TARGET_BRANCH = (env.CHANGE_TARGET == null ? BRANCH_TO_BUILD : env.CHANGE_TARGET)
                     BRANCH_EXISTS_IN_BB = httpRequest(url: GITHUB_API + "/brave-browser/branches/" + BRANCH_TO_BUILD, validResponseCodes: "100:499", authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).status.equals(200)
                     prNumber = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH_TO_BUILD, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0].number
                     prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls/" + prNumber, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)
