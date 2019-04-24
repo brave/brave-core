@@ -203,6 +203,7 @@ class AdsServiceImpl : public AdsService,
   bool ShouldShowFirstLaunchNotification();
   void RemoveFirstLaunchNotification();
   void ShowFirstLaunchNotification();
+  void MaybeStartFirstLaunchNotificationTimer();
   void StartFirstLaunchNotificationTimer();
   uint64_t GetFirstLaunchNotificationTimeout();
   uint64_t GetFirstLaunchNotificationTimerOffset();
