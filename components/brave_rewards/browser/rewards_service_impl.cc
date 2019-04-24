@@ -1135,7 +1135,7 @@ void RewardsServiceImpl::OnPublisherActivityInfoLoaded(
 void RewardsServiceImpl::OnActivityInfoLoaded(
     ledger::PublisherInfoCallback callback,
     const std::string& publisher_key,
-    const ledger::PublisherInfoList list) {
+    const ledger::PublisherInfoList& list) {
   if (!Connected()) {
     return;
   }
@@ -2253,7 +2253,7 @@ void RewardsServiceImpl::GetRecurringTipsUI(
 
 void RewardsServiceImpl::OnGetRecurringTips(
     const ledger::PublisherInfoListCallback callback,
-    const ledger::PublisherInfoList list) {
+    const ledger::PublisherInfoList& list) {
   if (!Connected()) {
     return;
   }
@@ -2320,7 +2320,7 @@ void RewardsServiceImpl::GetOneTimeTips(
 
 void RewardsServiceImpl::OnGetOneTimeTips(
     ledger::PublisherInfoListCallback callback,
-    const ledger::PublisherInfoList list) {
+    const ledger::PublisherInfoList& list) {
   if (!Connected()) {
     return;
   }
