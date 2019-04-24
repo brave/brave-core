@@ -134,6 +134,7 @@ source_set("ui") {
     "//chrome/app:command_ids",
     "//chrome/browser/extensions",
     "//chrome/common",
+    "//components/prefs",
     "//content/public/browser",
     "//content/public/common",
     "//extensions/browser",
