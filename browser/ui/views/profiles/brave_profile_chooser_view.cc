@@ -61,34 +61,26 @@ void BraveProfileChooserView::Reset() {
   tor_profile_button_ = nullptr;
 }
 
-views::View* BraveProfileChooserView::BraveCreateDiceSyncErrorView(
+void BraveProfileChooserView::AddDiceSyncErrorView(
     const AvatarMenu::Item& avatar_item,
     sync_ui_util::AvatarSyncErrorType error,
     int button_string_id) {
-  ChromeLayoutProvider* provider = ChromeLayoutProvider::Get();
+  ProfileMenuViewBase::MenuItems menu_items;
 
-  views::View* view = new views::View();
-  int content_list_vert_spacing =
-      provider->GetDistanceMetric(DISTANCE_CONTENT_LIST_VERTICAL_SINGLE);
-  view->SetLayoutManager(std::make_unique<views::BoxLayout>(
-      views::BoxLayout::kVertical, gfx::Insets(content_list_vert_spacing, 0),
-      0));
-
-  Profile* profile = browser()->profile();
   auto current_profile_photo = std::make_unique<BadgedProfilePhoto>(
       BadgedProfilePhoto::BADGE_TYPE_NONE, avatar_item.icon);
   base::string16 profile_name = avatar_item.name;
-  if (profile_name.empty())
+  if (profile_name.empty()) {
+    Profile* profile = browser()->profile();
     profile_name = profiles::GetAvatarNameForProfile(profile->GetPath());
+  }
 
-  HoverButton* profile_card = new HoverButton(
+  std::unique_ptr<HoverButton> current_profile = std::make_unique<HoverButton>(
       this, std::move(current_profile_photo), profile_name, base::string16());
-  current_profile_card_ = profile_card;
-  view->AddChildView(current_profile_card_);
-
-  current_profile_card_->SetAccessibleName(
-    l10n_util::GetStringFUTF16(
+  current_profile->SetAccessibleName(l10n_util::GetStringFUTF16(
       IDS_PROFILES_EDIT_PROFILE_ACCESSIBLE_NAME, profile_name));
 
-  return view;
+  current_profile_card_ = current_profile.get();
+  menu_items.push_back(std::move(current_profile));
+  AddMenuItems(menu_items, true);
 }
