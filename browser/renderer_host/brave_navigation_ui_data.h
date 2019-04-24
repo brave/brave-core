@@ -1,13 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_RENDERER_HOST_BRAVE_NAVIGATION_UI_DATA_H_
 #define BRAVE_BROWSER_RENDERER_HOST_BRAVE_NAVIGATION_UI_DATA_H_
 
-#include "chrome/browser/renderer_host/chrome_navigation_ui_data.h"
+#include <memory>
 
 #include "brave/browser/tor/tor_profile_service.h"
+#include "chrome/browser/renderer_host/chrome_navigation_ui_data.h"
 
 using content::NavigationHandle;
 using tor::TorProfileService;
@@ -22,7 +24,8 @@ class BraveNavigationUIData : public ChromeNavigationUIData {
 
   static std::unique_ptr<ChromeNavigationUIData> CreateForMainFrameNavigation(
       content::WebContents* web_contents,
-      WindowOpenDisposition disposition);
+      WindowOpenDisposition disposition,
+      int64_t data_reduction_proxy_page_id);
 
   std::unique_ptr<content::NavigationUIData> Clone() const override;
 
