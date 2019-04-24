@@ -48,7 +48,11 @@ const createBraveTipAction = (tweet: Element) => {
 
   // Create the tip icon
   const braveTipIcon = document.createElement('span')
-  braveTipIcon.className = 'Icon Icon--medium brave-tip-icon'
+  braveTipIcon.className = 'Icon Icon--medium'
+  braveTipIcon.style.content = 'url(\'data:image/svg+xml;utf8,<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 105 100" style="enable-background:new 0 0 105 100;" xml:space="preserve"><style type="text/css">.st1{fill:%23662D91;}.st2{fill:%239E1F63;}.st3{fill:%23FF5000;}.st4{fill:%23FFFFFF;stroke:%23FF5000;stroke-width:0.83;stroke-miterlimit:10;}</style><title>BAT_icon</title><g id="Layer_2_1_"><g id="Layer_1-2"><polygon class="st1" points="94.8,82.6 47.4,55.4 0,82.9 "/><polygon class="st2" points="47.4,0 47.1,55.4 94.8,82.6 "/><polygon class="st3" points="0,82.9 47.2,55.9 47.4,0 "/><polygon class="st4" points="47.1,33.7 28,66.5 66.7,66.5 "/></g></g></svg>\')'
+  braveTipIcon.style.marginTop = '5px'
+  braveTipIcon.style.width = '16px'
+  braveTipIcon.style.height = '16px'
   braveTipIconContainer.appendChild(braveTipIcon)
 
   // Create the tip action count (typically used to present a counter

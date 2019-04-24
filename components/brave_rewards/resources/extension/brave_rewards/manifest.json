@@ -30,16 +30,10 @@
       "matches": [
         "https://*.twitter.com/*"
       ],
-      "css": [
-        "content.css"
-      ],
       "js": [
         "out/brave_rewards_panel_content.bundle.js"
       ]
     }
-  ],
-  "web_accessible_resources": [
-    "img/bat-16.png"
   ],
   "icons": {
     "16": "img/bat-16.png",
