@@ -12,6 +12,7 @@ import DonateToTwitterUser from './donateToTwitterUser'
 
 // Utils
 import * as rewardsActions from '../actions/tip_actions'
+import { isTwitterAccount } from '../utils'
 
 interface TipDialogArgs {
   publisherKey: string
@@ -103,7 +104,7 @@ export class App extends React.Component<Props, {}> {
     }
 
     let donation
-    if (this.isTwitterAccount(publisherKey)) {
+    if (isTwitterAccount(publisherKey)) {
       const tweetMetaData = this.props.dialogArgs.tweetMetaData
       if (tweetMetaData) {
         donation = (

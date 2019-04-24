@@ -160,7 +160,13 @@ class Banner extends React.Component<Props, State> {
         learnMoreNotice={'https://brave.com/faq-rewards/#unclaimed-funds'}
         addFundsLink={this.addFundsLink}
       >
-        {publisher.description}
+      {
+        utils.isTwitterAccount(publisher.publisherKey)
+        ? <div style={{ border: '1px solid #d3d3d3', borderRadius: '5px', margin: '20px 0 0 0', padding: '20px' }}>
+          {publisher.description}
+        </div>
+        : publisher.description
+      }
       </SiteBanner>
     )
   }

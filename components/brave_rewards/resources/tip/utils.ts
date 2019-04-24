@@ -32,3 +32,7 @@ export const convertProbiToFixed = (probi: string, places: number = 1) => {
 
   return result
 }
+
+export const isTwitterAccount = (publisherKey: string) => {
+  return /^twitter#channel:[0-9]+$/.test(publisherKey)
+}
