@@ -259,6 +259,9 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED_NOW" desc="">Recover now!</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_GRANT_ALREADY_CLAIMED_TEXT" desc="">Sorry, it appears that this grant has already been claimed.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE" desc="Description of the date in the donation box">Next monthly tip date</message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="">
+        I just tipped @<ph name="SCREEN_NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
+      </message>
 
       <!-- WebUI rewards internals resources -->
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AMOUNT" desc="Amount">Amount:</message>
@@ -457,6 +460,7 @@
       <message name="IDS_BRAVE_UI_SETTINGS" desc="">Settings</message>
       <message name="IDS_BRAVE_UI_SITE" desc="">site</message>
       <message name="IDS_BRAVE_UI_SITES" desc="">sites</message>
+      <message name="IDS_BRAVE_UI_TELL_OTHERS" desc="">Tell others about your tip.</message>
       <message name="IDS_BRAVE_UI_THANK_YOU" desc="">Thank you</message>
       <message name="IDS_BRAVE_UI_TIP_TEXT" desc="">You've just sent a tip to:</message>
       <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
@@ -471,6 +475,8 @@
       <message name="IDS_BRAVE_UI_TURN_ON_ADS" desc="">Turn on Ads</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_DESC" desc="">This enables both ads and automatic contributions. You can turn them on or off separately at any time.</message>
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Activate Rewards</message>
+      <message name="IDS_BRAVE_UI_TWEET_NOW" desc="">Tweet Now</message>
+      <message name="IDS_BRAVE_UI_TWEET_TIP_TITLE" desc="">Tip @{{ user }} for their tweet:</message>
       <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="">Brave Verified Publisher</message>
       <message name="IDS_BRAVE_UI_VIEW_MONTHLY" desc="">View Monthly Statement for Details</message>

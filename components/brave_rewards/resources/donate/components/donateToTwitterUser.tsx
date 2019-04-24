@@ -12,6 +12,7 @@ import TransientDonationOverlay from './transientDonationOverlay'
 
 // Utils
 import * as rewardsActions from '../actions/donate_actions'
+import { getLocale } from '../../../../common/locale'
 
 interface Props extends RewardsDonate.ComponentProps {
   publisher: RewardsDonate.Publisher
@@ -24,19 +25,30 @@ class DonateToTwitterUser extends React.Component<Props, {}> {
     return this.props.actions
   }
 
+  onTweet = () => {
+    this.actions.onTweet(this.props.tweetMetaData)
+    this.actions.onCloseDialog()
+  }
+
   render () {
     const { finished, error } = this.props.rewardsDonateData
+
+    const publisher = this.props.publisher
 
     return (
       <>
         {
           !finished && !error
-          ? <Banner publisher={this.props.publisher} />
+          ? <Banner publisher={publisher} />
           : null
         }
         {
           finished
-          ? <TransientDonationOverlay publisher={this.props.publisher} />
+          ? <TransientDonationOverlay
+              publisher={publisher}
+              timeout={0}
+              onTweet={this.onTweet}
+          />
           : null
         }
       </>

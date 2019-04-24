@@ -10,26 +10,30 @@
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ui/webui/basic_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/brave_tip_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/browser/publisher_banner.h"
+#include "ui/base/l10n/l10n_util.h"
 
 using content::WebUIMessageHandler;
 
@@ -56,6 +60,7 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
   void OnReconcileStamp(uint64_t reconcile_stamp);
   void OnGetRecurringTips(
       std::unique_ptr<brave_rewards::ContentSiteList> list);
+  void TweetTip(const base::ListValue *args);
 
   void OnPublisherBanner(
       std::unique_ptr<brave_rewards::PublisherBanner> banner);
@@ -114,6 +119,10 @@ void RewardsTipDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards_tip.getReconcileStamp",
       base::BindRepeating(&RewardsTipDOMHandler::GetReconcileStamp,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_donate.tweetTip",
+      base::BindRepeating(&RewardsDonateDOMHandler::TweetTip,
                           base::Unretained(this)));
 }
 
@@ -331,5 +340,39 @@ void RewardsTipDOMHandler::OnRecurringTipSaved(
       "brave_rewards_tip.recurringTipSaved", base::Value(success));
 }
 
-BraveTipUI::~BraveTipUI() {
+BraveDonateUI::~BraveTipUI() {
+}
+
+void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
+  DCHECK_EQ(args->GetSize(), 1U);
+  const base::DictionaryValue* tweet_metadata_dict = nullptr;
+  if (!args->GetDictionary(0, &tweet_metadata_dict))
+    return;
+
+  // Retrieve the relevant tweet metadata from arguments.
+  std::string screen_name;
+  if (!tweet_metadata_dict->GetString("screenName", &screen_name))
+    return;
+  std::string tweet_id;
+  if (!tweet_metadata_dict->GetString("tweetId", &tweet_id))
+    return;
+
+  // Construct the Twitter intent URL for the tip compliment.
+  std::string comment = l10n_util::GetStringFUTF8(
+      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET, base::UTF8ToUTF16(screen_name));
+  std::string quoted_tweet_url =
+      base::StringPrintf("https://twitter.com/%s/status/%s",
+                         screen_name.c_str(), tweet_id.c_str());
+  std::string intent_url =
+      base::StringPrintf("https://twitter.com/intent/tweet?url=%s&text=%s",
+                         quoted_tweet_url.c_str(), comment.c_str());
+
+  // Open a new tab with the prepopulated tweet ready to post.
+  GURL gurl(intent_url);
+  chrome::ScopedTabbedBrowserDisplayer browser_displayer(
+      Profile::FromWebUI(web_ui()));
+  content::OpenURLParams open_url_params(
+      gurl, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
+  browser_displayer.browser()->OpenURL(open_url_params);
 }

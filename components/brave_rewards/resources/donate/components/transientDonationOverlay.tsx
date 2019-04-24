@@ -14,6 +14,8 @@ import * as rewardsActions from '../actions/donate_actions'
 
 interface Props extends RewardsDonate.ComponentProps {
   publisher: RewardsDonate.Publisher
+  timeout: number
+  onTweet?: () => void
 }
 
 class TransientDonationOverlay extends React.Component<Props, {}> {
@@ -64,13 +66,16 @@ class TransientDonationOverlay extends React.Component<Props, {}> {
       logo = ''
     }
 
-    setTimeout(() => {
-      this.onClose()
-    }, 3000)
+    if (this.props.timeout) {
+      setTimeout(() => {
+        this.onClose()
+      }, this.props.timeout)
+    }
 
     return (
       <DonationOverlay
         onClose={this.onClose}
+        onTweet={this.props.onTweet}
         success={true}
         domain={domain}
         amount={currentTipAmount}

@@ -35,7 +35,7 @@ class DonateToSite extends React.Component<Props, {}> {
         }
         {
           finished
-          ? <TransientDonationOverlay publisher={this.props.publisher} />
+          ? <TransientDonationOverlay publisher={this.props.publisher} timeout={3000} />
           : null
         }
       </>
