@@ -47,6 +47,7 @@ export const MainToggle = styled<MainToggleProps, 'section'>('section')`
   grid-template-columns: 3fr 1fr;
   padding: 16px 24px 16px;
   align-items: ${p => p.status === 'enabled' ? null : 'center'};
+  border-bottom: 1px solid ${p => p.theme.color.separatorLine};
 
   > ${Toggle} {
     display: flex;
