@@ -52,6 +52,8 @@ source_set("ui") {
     "views/location_bar/brave_location_bar_view.h",
     "views/profiles/brave_avatar_toolbar_button.cc",
     "views/profiles/brave_avatar_toolbar_button.h",
+    "views/profiles/brave_incognito_menu_view.cc",
+    "views/profiles/brave_incognito_menu_view.h",
     "views/profiles/brave_profile_chooser_view.cc",
     "views/profiles/brave_profile_chooser_view.h",
     "views/rounded_separator.cc",

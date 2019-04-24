@@ -1,18 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.cc b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-index 135ba56416678df8a4d687f8609477497868bfb0..126b91a04af9fccecdfddf38edfbc7dca00dc987 100644
+index 135ba56416678df8a4d687f8609477497868bfb0..87582374dca475029a3f9c6760b2406553b48e57 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-@@ -591,7 +591,8 @@ void ProfileChooserView::AddCurrentProfileView(
-   Profile* profile = browser()->profile();
-   const bool sync_disabled = !profile->IsSyncAllowed();
-   if (!is_guest && sync_disabled) {
--    AddDiceSyncErrorView(avatar_item, sync_ui_util::NO_SYNC_ERROR, 0);
-+    static_cast<BraveProfileChooserView*>(this)->BraveAddDiceSyncErrorView(
-+        avatar_item, sync_ui_util::NO_SYNC_ERROR, 0);
-     return;
-   }
- 
-@@ -838,9 +839,12 @@ void ProfileChooserView::AddOptionsView(bool display_lock,
+@@ -838,9 +838,12 @@ void ProfileChooserView::AddOptionsView(bool display_lock,
        menu_items.push_back(std::move(guest_button));
      }
    }
