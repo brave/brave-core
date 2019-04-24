@@ -14,8 +14,10 @@
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
+#include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 
 void BraveDefaultExtensionsHandler::RegisterMessages() {
@@ -83,6 +85,15 @@ void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
   }
 }
 
+bool BraveDefaultExtensionsHandler::IsExtensionInstalled(
+    const std::string extension_id) {
+  extensions::ExtensionRegistry* registry =
+    extensions::ExtensionRegistry::Get(
+        static_cast<content::BrowserContext*>(profile_));
+  return registry && registry->GetInstalledExtension(extension_id);
+}
+
+
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
     const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
@@ -91,19 +102,17 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
   args->GetBoolean(0, &enabled);
 
   extensions::ExtensionService* service =
-    extensions::ExtensionSystem::Get(profile_)->extension_service();
-
+  extensions::ExtensionSystem::Get(profile_)->extension_service();
   if (enabled) {
-    extensions::ComponentLoader* loader = service->component_loader();
-    if (!loader->Exists(ipfs_companion_extension_id)) {
-      static_cast<extensions::BraveComponentLoader*>(loader)->
-          AddExtension(ipfs_companion_extension_id,
-                       ipfs_companion_extension_name,
-                       ipfs_companion_extension_public_key);
+    if (!IsExtensionInstalled(ipfs_companion_extension_id)) {
+      scoped_refptr<extensions::WebstoreInstallWithPrompt> installer =
+        new extensions::WebstoreInstallWithPrompt(
+            ipfs_companion_extension_id, profile_, base::DoNothing());
+      installer->BeginInstall();
     }
     service->EnableExtension(ipfs_companion_extension_id);
   } else {
     service->DisableExtension(ipfs_companion_extension_id,
-        extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
+        extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
   }
 }
