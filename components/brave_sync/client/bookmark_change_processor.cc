@@ -967,4 +967,13 @@ void BookmarkChangeProcessor::SendUnsynced(
 
 void BookmarkChangeProcessor::InitialSync() {}
 
+void BookmarkChangeProcessor::ApplyOrder(const std::string& object_id,
+                                         const std::string& order) {
+  ScopedPauseObserver pause(this);
+  auto* node = FindByObjectId(bookmark_model_, object_id);
+  if (node) {
+    bookmark_model_->SetNodeMetaInfo(node, "order", order);
+  }
+}
+
 }  // namespace brave_sync

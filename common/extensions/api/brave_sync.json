@@ -419,6 +419,21 @@
         ]
       },
       {
+        "name": "saveBookmarkOrder",
+        "type": "function",
+        "description": "Browser update order of certain object",
+        "parameters": [
+          {
+            "type": "string",
+            "name": "object_id"
+          },
+          {
+            "type": "string",
+            "name": "order"
+          }
+        ]
+      },
+      {
         "name": "syncWordsPrepared",
         "type": "function",
         "description": "Browser gets notified the sync words are ready",

@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_H
-#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_H
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_H_
+#define BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_H_
 
 #include <string>
 #include <vector>
@@ -26,31 +27,33 @@ class SyncMessageHandler {
   virtual void BackgroundSyncStarted(bool startup) = 0;
   virtual void BackgroundSyncStopped(bool shutdown) = 0;
 
-  //SYNC_DEBUG
+  // SYNC_DEBUG
   virtual void OnSyncDebug(const std::string &message) = 0;
-  //SYNC_SETUP_ERROR
+  // SYNC_SETUP_ERROR
   virtual void OnSyncSetupError(const std::string &error) = 0;
-  //GET_INIT_DATA
+  // GET_INIT_DATA
   virtual void OnGetInitData(const std::string &sync_version) = 0;
-  //SAVE_INIT_DATA
+  // SAVE_INIT_DATA
   virtual void OnSaveInitData(const Uint8Array& seed,
                               const Uint8Array& device_id) = 0;
-  //SYNC_READY
+  // SYNC_READY
   virtual void OnSyncReady() = 0;
-  //GET_EXISTING_OBJECTS
+  // GET_EXISTING_OBJECTS
   virtual void OnGetExistingObjects(const std::string &category_name,
       std::unique_ptr<RecordsList> records,
       const base::Time &last_record_time_stamp, const bool is_truncated) = 0;
-  //RESOLVED_SYNC_RECORDS
+  // RESOLVED_SYNC_RECORDS
   virtual void OnResolvedSyncRecords(const std::string &category_name,
     std::unique_ptr<RecordsList> records) = 0;
-  //DELETED_SYNC_USER
+  // DELETED_SYNC_USER
   virtual void OnDeletedSyncUser() = 0;
-  //DELETE_SYNC_SITE_SETTINGS
+  // DELETE_SYNC_SITE_SETTINGS
   virtual void OnDeleteSyncSiteSettings() = 0;
-  //SAVE_BOOKMARKS_BASE_ORDER
-  virtual void OnSaveBookmarksBaseOrder(const std::string &order) = 0;
-  virtual void OnSyncWordsPrepared(const std::string &words) = 0;
+  // SAVE_BOOKMARKS_BASE_ORDER
+  virtual void OnSaveBookmarksBaseOrder(const std::string& order) = 0;
+  virtual void OnSaveBookmarkOrder(const std::string& object_id,
+                                   const std::string& order) = 0;
+  virtual void OnSyncWordsPrepared(const std::string& words) = 0;
 };
 
 class BraveSyncClient {
@@ -89,6 +92,6 @@ class BraveSyncClient {
   virtual void ClearOrderMap() = 0;
 };
 
-} // namespace brave_sync
+}   // namespace brave_sync
 
-#endif // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_H
+#endif    // BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_H_

@@ -128,6 +128,8 @@ class BraveSyncServiceImpl
   void OnDeletedSyncUser() override;
   void OnDeleteSyncSiteSettings() override;
   void OnSaveBookmarksBaseOrder(const std::string& order) override;
+  void OnSaveBookmarkOrder(const std::string& object_id,
+                                const std::string& order) override;
   void OnSyncWordsPrepared(const std::string& words) override;
 
   void OnResolvedHistorySites(const RecordsList &records);

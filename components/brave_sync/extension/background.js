@@ -51,16 +51,13 @@ chrome.braveSync.onResolveSyncRecords.addListener(function(category_name, record
 chrome.braveSync.onSendSyncRecords.addListener(function(category_name, records) {
   // Fixup ids
   for (var i = 0; i < records.length; ++i) {
-    fixupSyncRecordBrowserToExt(records[i]);
+    // getOrder requires objectIdStr to send back order
     getOrder(records[i]);
+    fixupSyncRecordBrowserToExt(records[i]);
     removeLocalMeta(records[i]);
   }
   console.log(`"send-sync-records" category_name=${JSON.stringify(category_name)} records=${JSON.stringify(records)}`);
   callbackList["send-sync-records"](null, category_name, records);
-  if (category_name == 'BOOKMARKS') {
-    fixupSyncRecordsArrayExtensionToBrowser(records);
-    chrome.braveSync.resolvedSyncRecords(category_name, records);
-  }
 });
 
 chrome.braveSync.onSendGetBookmarksBaseOrder.addListener(function(deviceId, platform) {
@@ -97,6 +94,8 @@ function getOrder(record) {
         record.bookmark.order = order;
         if (record.objectId)
           orderMap[record.objectId] = order;
+        if (record.objectIdStr)
+          chrome.braveSync.saveBookmarkOrder(record.objectIdStr, order);
         getBookmarkOrderCallback = null;
       }
 

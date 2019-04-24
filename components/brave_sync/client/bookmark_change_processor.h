@@ -49,6 +49,8 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   void SendUnsynced(base::TimeDelta unsynced_send_interval) override;
   void InitialSync() override;
 
+  void ApplyOrder(const std::string& object_id, const std::string& order);
+
  private:
   friend class ::BraveBookmarkChangeProcessorTest;
   FRIEND_TEST_ALL_PREFIXES(::BraveBookmarkChangeProcessorTest,
