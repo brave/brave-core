@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/profiles/profile_menu_view_base.cc b/chrome/browser/ui/views/profiles/profile_menu_view_base.cc
+index b386585165d2d09d5c75028214365911ca4c3676..f4a9485b8852419e9f25e7caf8b21a59f3fc2aa2 100644
+--- a/chrome/browser/ui/views/profiles/profile_menu_view_base.cc
++++ b/chrome/browser/ui/views/profiles/profile_menu_view_base.cc
+@@ -66,7 +66,7 @@ void ProfileMenuViewBase::ShowBubble(
+                                    browser);
+   } else {
+ #if !defined(OS_CHROMEOS)
+-    bubble = new ProfileChooserView(
++    bubble = new BraveProfileChooserView(
+         anchor_button, anchor_rect, parent_window, browser, view_mode,
+         manage_accounts_params.service_type, access_point);
+ #else

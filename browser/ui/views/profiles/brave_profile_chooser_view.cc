@@ -29,27 +29,6 @@ namespace {
 constexpr int kIconSize = 16;
 }  // namespace
 
-BraveProfileChooserView::BraveProfileChooserView(
-    views::Button* anchor_button,
-    const gfx::Rect& anchor_rect,
-    gfx::NativeView parent_window,
-    Browser* browser,
-    profiles::BubbleViewMode view_mode,
-    signin::GAIAServiceType service_type,
-    signin_metrics::AccessPoint access_point,
-    bool is_source_keyboard)
-    : ProfileChooserView(anchor_button,
-                         anchor_rect,
-                         parent_window,
-                         browser,
-                         view_mode,
-                         service_type,
-                         access_point,
-                         is_source_keyboard) {}
-
-BraveProfileChooserView::~BraveProfileChooserView() {}
-
-
 void BraveProfileChooserView::ButtonPressed(views::Button* sender,
                                             const ui::Event& event) {
   if (sender == tor_profile_button_) {
@@ -65,21 +44,20 @@ void BraveProfileChooserView::ButtonPressed(views::Button* sender,
   }
 }
 
-void BraveProfileChooserView::AddTorButton(views::GridLayout* layout) {
+void BraveProfileChooserView::AddTorButton(ProfileMenuViewBase::MenuItems* menu_items) {
   if (!browser()->profile()->IsTorProfile() &&
       !g_brave_browser_process->tor_client_updater()
         ->GetExecutablePath().empty()) {
-    tor_profile_button_ = new HoverButton(this,
-      gfx::CreateVectorIcon(kLaunchIcon, kIconSize,
-        gfx::kChromeIconGrey),
+    std::unique_ptr<HoverButton> tor_profile_button = std::make_unique<HoverButton>(
+      this, gfx::CreateVectorIcon(kLaunchIcon, kIconSize, gfx::kChromeIconGrey),
       l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON));
-    layout->StartRow(1.0, 0);
-    layout->AddView(tor_profile_button_);
+    tor_profile_button_ = tor_profile_button.get();
+    menu_items->push_back(std::move(tor_profile_button));
   }
 }
 
-void BraveProfileChooserView::ResetView() {
-  ProfileChooserView::ResetView();
+void BraveProfileChooserView::Reset() {
+  ProfileChooserView::Reset();
   tor_profile_button_ = nullptr;
 }
 
