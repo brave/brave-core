@@ -42,6 +42,7 @@ source_set("extensions") {
 
   deps = [
     "//base",
+    "//brave/common:pref_names",
     "//brave/common/extensions/api",
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_extension:generated_resources",
@@ -53,7 +54,9 @@ source_set("extensions") {
     "//brave/components/brave_webtorrent:generated_resources",
     "//brave/components/brave_webtorrent:static_resources",
     "//chrome/browser",
+    "//components/prefs",
     "//content/public/browser",
     "//extensions/browser",
+    "//extensions/common",
   ]
 }

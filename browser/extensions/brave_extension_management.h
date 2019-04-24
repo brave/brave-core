@@ -5,17 +5,35 @@
 #ifndef BRAVE_BROWSER_EXTENSIONS_EXTENSION_MANAGEMENT_H_
 #define BRAVE_BROWSER_EXTENSIONS_EXTENSION_MANAGEMENT_H_
 
+#include "base/scoped_observer.h"
 #include "chrome/browser/extensions/extension_management.h"
+#include "extensions/browser/extension_registry_observer.h"
 
 namespace extensions {
 
-class BraveExtensionManagement : public ExtensionManagement {
+class ExtensionRegistry;
+
+class BraveExtensionManagement : public ExtensionManagement,
+                                 public ExtensionRegistryObserver {
  public:
   BraveExtensionManagement(Profile* profile);
   ~BraveExtensionManagement() override;
 
  private:
   void RegisterBraveExtensions();
+
+  // ExtensionRegistryObserver implementation.
+  void OnExtensionLoaded(
+      content::BrowserContext* browser_context,
+      const Extension* extension) override;
+  void OnExtensionUnloaded(
+      content::BrowserContext* browser_context,
+      const Extension* extension,
+      UnloadedExtensionReason reason) override;
+
+  ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
+    extension_registry_observer_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveExtensionManagement);
 };
 
