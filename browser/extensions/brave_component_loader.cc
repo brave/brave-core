@@ -53,9 +53,6 @@ void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
   // to patch for friend access.
   demand_updater.OnDemandUpdate(g_browser_process->component_updater(),
       extension_id);
-  if (testing_callbacks_) {
-    testing_callbacks_->OnComponentRegistered(extension_id);
-  }
 }
 
 void BraveComponentLoader::OnComponentReady(std::string extension_id,
