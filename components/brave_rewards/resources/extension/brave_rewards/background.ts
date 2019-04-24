@@ -79,7 +79,7 @@ chrome.runtime.onConnect.addListener(function () {
   })
 })
 
-const donateToTwitterUser = (userId: string, name: string, screenName: string, tweetText: string) => {
+const donateToTwitterUser = (userId: string, name: string, screenName: string, tweetId: string, tweetText: string) => {
   chrome.tabs.query({
     active: true,
     windowId: chrome.windows.WINDOW_ID_CURRENT
@@ -91,7 +91,7 @@ const donateToTwitterUser = (userId: string, name: string, screenName: string, t
     if (tabId === undefined) {
       return
     }
-    chrome.braveRewards.donateToTwitterUser(tabId, userId, name, screenName, tweetText)
+    chrome.braveRewards.donateToTwitterUser(tabId, userId, name, screenName, tweetId, tweetText)
   })
 }
 
@@ -99,7 +99,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
     case 'donateToTwitterUser': {
-      donateToTwitterUser(msg.userId, msg.name, msg.screenName, msg.tweetText)
+      donateToTwitterUser(msg.userId, msg.name, msg.screenName, msg.tweetId, msg.tweetText)
       return false
     }
     case 'rewardsEnabled': {

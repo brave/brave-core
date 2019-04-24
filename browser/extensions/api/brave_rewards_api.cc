@@ -146,6 +146,7 @@ void BraveRewardsDonateToTwitterUserFunction::OnTwitterPublisherInfoSaved(
   auto tweet_metadata_dict = std::make_unique<base::DictionaryValue>();
   tweet_metadata_dict->SetString("name", publisher_info->name);
   tweet_metadata_dict->SetString("screenName", params->screen_name);
+  tweet_metadata_dict->SetString("tweetId", params->tweet_id);
   tweet_metadata_dict->SetString("tweetText", params->tweet_text);
   params_dict->SetDictionary("tweetMetaData", std::move(tweet_metadata_dict));
 

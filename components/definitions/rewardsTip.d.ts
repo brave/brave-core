@@ -36,6 +36,7 @@ declare namespace RewardsTip {
     name: string
     screenName: string
     userId: string
+    tweetId: string
     tweetText: string
   }
 

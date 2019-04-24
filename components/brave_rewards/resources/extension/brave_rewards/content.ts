@@ -17,6 +17,7 @@ const getTweetMetaData = (tweet: Element): RewardsDonate.TweetMetaData | null =>
     name: tweet.getAttribute('data-name') || '',
     screenName: tweet.getAttribute('data-screen-name') || '',
     userId: tweet.getAttribute('data-user-id') || '',
+    tweetId: tweet.getAttribute('data-tweet-id') || '',
     tweetText: tweetTextElements[0].textContent || ''
   }
 }
