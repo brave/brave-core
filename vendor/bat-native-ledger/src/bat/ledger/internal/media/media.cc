@@ -20,7 +20,8 @@ Media::Media(bat_ledger::LedgerImpl* ledger):
   media_youtube_(new braveledger_media::YouTube(ledger)),
   media_twitch_(new braveledger_media::Twitch(ledger)),
   media_twitter_(new braveledger_media::Twitter(ledger)),
-  media_reddit_(new braveledger_media::Reddit(ledger)) {
+  media_reddit_(new braveledger_media::Reddit(ledger)),
+  media_vimeo_(new braveledger_media::Vimeo(ledger)) {
 }
 
 Media::~Media() {}
@@ -37,7 +38,7 @@ std::string Media::GetLinkType(const std::string& url,
                                                        referrer);
   }
   if (type.empty()) {
-    type = braveledger_media::MediaVimeo::GetLinkType(url);
+    type = braveledger_media::Vimeo::GetLinkType(url);
   }
 
   return type;
@@ -57,6 +58,11 @@ void Media::ProcessMedia(const std::map<std::string, std::string>& parts,
 
   if (type == TWITCH_MEDIA_TYPE) {
     media_twitch_->ProcessMedia(parts, *visit_data);
+    return;
+  }
+
+  if (type == VIMEO_MEDIA_TYPE) {
+    media_vimeo_->ProcessMedia(parts);
     return;
   }
 }

@@ -74,6 +74,7 @@ void RewardsTabHelper::ResourceLoadComplete(
   if (!rewards_service_ || !render_frame_host)
     return;
 
+  // TODO(nejczdovc): do we need to get anyother type then XHR??
   if (resource_load_info.resource_type == content::ResourceType::kMedia ||
       resource_load_info.resource_type == content::ResourceType::kXhr ||
       resource_load_info.resource_type == content::ResourceType::kImage ||

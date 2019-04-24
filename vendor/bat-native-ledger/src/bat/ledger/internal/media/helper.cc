@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "base/json/json_reader.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/bat_helper.h"
 
@@ -66,6 +67,42 @@ std::string ExtractData(const std::string& data,
   }
 
   return match;
+}
+
+void GetVimeoParts(
+    const std::string& query,
+    std::vector<std::map<std::string, std::string>>* parts) {
+  base::Optional<base::Value> data = base::JSONReader::Read(query);
+  if (!data || !data->is_list()) {
+    return;
+  }
+
+  for (auto& item : data->GetList()) {
+    if (item.is_dict()) {
+      std::map<std::string, std::string> part;
+      auto* name = item.FindKey("name");
+      if (name) {
+        part.emplace("event", name->GetString());
+      }
+
+      auto* clip_id = item.FindKey("clip_id");
+      if (clip_id) {
+        part.emplace("video_id", std::to_string(clip_id->GetInt()));
+      }
+
+      auto* product = item.FindKey("product");
+      if (product) {
+        part.emplace("type", product->GetString());
+      }
+
+      auto* video_time = item.FindKey("video_time");
+      if (video_time) {
+        part.emplace("time", std::to_string(video_time->GetDouble()));
+      }
+
+      parts->push_back(part);
+    }
+  }
 }
 
 }  // namespace braveledger_media
