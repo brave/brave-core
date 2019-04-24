@@ -944,7 +944,6 @@ void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
   writer->Double(data.fee_amount_);
   writer->EndObject();
 
-
   writer->String("choices");
   writer->StartObject();
   writer->String("BAT");
@@ -1520,6 +1519,7 @@ CLIENT_STATE_ST::CLIENT_STATE_ST(const CLIENT_STATE_ST& other) {
   auto_contribute_ = other.auto_contribute_;
   rewards_enabled_ = other.rewards_enabled_;
   current_reconciles_ = other.current_reconciles_;
+  grants_ = other.grants_;
 }
 
 CLIENT_STATE_ST::~CLIENT_STATE_ST() {}
