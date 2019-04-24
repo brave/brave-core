@@ -3,5 +3,5 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/profiles/brave_profile_chooser_view.h"
-#include "../../../../../../../chrome/browser/ui/views/profiles/profile_chooser_view.cc"  // NOLINT
+#include "brave/browser/ui/views/profiles/brave_incognito_menu_view.h"
+#include "../../../../../../../chrome/browser/ui/views/profiles/incognito_menu_view.cc"  // NOLINT

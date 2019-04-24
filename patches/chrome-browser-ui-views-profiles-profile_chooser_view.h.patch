@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.h b/chrome/browser/ui/views/profiles/profile_chooser_view.h
-index b1675263d9f659f3c5f6003fd39cc87a4987d396..861ea348791363c8ed99681c131e47b82dd83c9f 100644
+index b1675263d9f659f3c5f6003fd39cc87a4987d396..b900277a7ad297449f49a80ea02efbc2062c36d7 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.h
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.h
 @@ -51,6 +51,8 @@ class ProfileChooserView : public ProfileMenuViewBase,
@@ -20,3 +20,11 @@ index b1675263d9f659f3c5f6003fd39cc87a4987d396..861ea348791363c8ed99681c131e47b8
  
    // Shows the bubble with the |view_to_display|.
    void ShowView(profiles::BubbleViewMode view_to_display,
+@@ -114,6 +116,7 @@ class ProfileChooserView : public ProfileMenuViewBase,
+ 
+   // Adds a view showing the profile associated with |avatar_item| and an error
+   // button below.
++  virtual
+   void AddDiceSyncErrorView(const AvatarMenu::Item& avatar_item,
+                             sync_ui_util::AvatarSyncErrorType error,
+                             int button_string_id);
