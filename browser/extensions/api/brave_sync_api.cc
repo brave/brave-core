@@ -1,8 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/api/brave_sync_api.h"
+
+#include <memory>
+#include <utility>
+#include <vector>
 
 #include "brave/common/extensions/api/brave_sync.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
@@ -76,8 +81,7 @@ ExtensionFunction::ResponseAction BraveSyncSaveInitDataFunction::Run() {
   DCHECK(sync_service);
   sync_service->GetSyncClient()->sync_message_handler()->OnSaveInitData(
       params->seed ? *params->seed : std::vector<uint8_t>(),
-      params->device_id ? *params->device_id : std::vector<uint8_t>()
-  );
+      params->device_id ? *params->device_id : std::vector<uint8_t>());
 
   return RespondNow(NoArguments());
 }
@@ -126,15 +130,16 @@ ExtensionFunction::ResponseAction BraveSyncResolvedSyncRecordsFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction BraveSyncSaveBookmarksBaseOrderFunction::Run() {
+ExtensionFunction::ResponseAction
+BraveSyncSaveBookmarksBaseOrderFunction::Run() {
   std::unique_ptr<brave_sync::SaveBookmarksBaseOrder::Params> params(
       brave_sync::SaveBookmarksBaseOrder::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   BraveSyncService* sync_service = GetBraveSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->GetSyncClient()->sync_message_handler()->OnSaveBookmarksBaseOrder(
-      params->order);
+  sync_service->GetSyncClient()->sync_message_handler()
+    ->OnSaveBookmarksBaseOrder(params->order);
 
   return RespondNow(NoArguments());
 }
@@ -159,7 +164,8 @@ ExtensionFunction::ResponseAction BraveSyncSyncWordsPreparedFunction::Run() {
 
   BraveSyncService* sync_service = GetBraveSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->GetSyncClient()->sync_message_handler()->OnSyncWordsPrepared(params->words);
+  sync_service->GetSyncClient()->sync_message_handler()
+    ->OnSyncWordsPrepared(params->words);
 
   return RespondNow(NoArguments());
 }

@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -52,7 +53,8 @@ class BraveSyncResolvedSyncRecordsFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveSyncSaveBookmarksBaseOrderFunction : public UIThreadExtensionFunction {
+class BraveSyncSaveBookmarksBaseOrderFunction
+    : public UIThreadExtensionFunction {
   ~BraveSyncSaveBookmarksBaseOrderFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.saveBookmarksBaseOrder", UNKNOWN)
   ResponseAction Run() override;
@@ -70,13 +72,14 @@ class BraveSyncSyncWordsPreparedFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveSyncExtensionInitializedFunction : public UIThreadExtensionFunction {
+class BraveSyncExtensionInitializedFunction
+    : public UIThreadExtensionFunction {
   ~BraveSyncExtensionInitializedFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.extensionInitialized", UNKNOWN)
   ResponseAction Run() override;
 };
 
-} // namespace api
-} // namespace extensions
+}   // namespace api
+}   // namespace extensions
 
-#endif // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_API_H_
+#endif    // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_API_H_
