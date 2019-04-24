@@ -897,6 +897,10 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
           grant.expiryTime = obj["expiryTime"].GetUint64();
         }
 
+        if (obj.HasMember("type")) {
+          grant.type = obj["type"].GetString();
+        }
+
         grants_.push_back(grant);
       }
     } else {
@@ -1163,6 +1167,9 @@ void saveToJson(JsonWriter* writer, const GRANT& data) {
 
   writer->String("promotionId");
   writer->String(data.promotionId.c_str());
+
+  writer->String("type");
+  writer->String(data.type.c_str());
 
   writer->EndObject();
 }
@@ -2073,6 +2080,10 @@ bool getJSONRecoverWallet(const std::string& json,
 
         if (obj.HasMember("expiryTime")) {
           grant.expiryTime = obj["expiryTime"].GetUint64();
+        }
+
+        if (obj.HasMember("type")) {
+          grant.type = obj["type"].GetString();
         }
 
         grants->push_back(grant);
