@@ -6,14 +6,17 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_HANDLER_H_
 
+#include <string>
+#include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
+#include "chrome/common/extensions/webstore_install_result.h"
 
 class Profile;
 
 class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
  public:
-  BraveDefaultExtensionsHandler() = default;
-  ~BraveDefaultExtensionsHandler() override = default;
+  BraveDefaultExtensionsHandler();
+  ~BraveDefaultExtensionsHandler() override;
 
  private:
   // SettingsPageUIHandler overrides:
@@ -25,7 +28,13 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void SetHangoutsEnabled(const base::ListValue* args);
   void SetIPFSCompanionEnabled(const base::ListValue* args);
 
+  bool IsExtensionInstalled(const std::string& extension_id) const;
+  void OnInstallResult(const std::string& pref_name,
+      bool success, const std::string& error,
+      extensions::webstore_install::Result result);
+
   Profile* profile_ = nullptr;
+  base::WeakPtrFactory<BraveDefaultExtensionsHandler> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveDefaultExtensionsHandler);
 };

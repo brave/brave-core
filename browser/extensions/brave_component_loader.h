@@ -57,7 +57,6 @@ class BraveComponentLoader : public ComponentLoader {
       WILL_REMOVE,
     };
     virtual void OnPdfExtensionAction(PdfExtensionAction action) = 0;
-    virtual void OnComponentRegistered(std::string extension_id) = 0;
   };
 
   void set_testing_callbacks(TestingCallbacks* testing_callbacks);
