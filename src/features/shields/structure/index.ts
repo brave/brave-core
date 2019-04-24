@@ -331,6 +331,9 @@ export const BlockedListItemDetails = styled<{}, 'details'>('details')`
     width: 100%;
     height: 100%;
   }
+  ${BlockedListItemWithOptions} {
+    padding: 4px 24px 4px 20px;
+  }
 `
 
 export const BlockedListItemSummary = styled(BlockedListItemWithOptions.withComponent('summary'))`
