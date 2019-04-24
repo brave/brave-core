@@ -43,6 +43,7 @@
 // GetAllSyncData              | +
 // SendUnsynced                | +
 // InitialSync                 | N/A
+// ApplyOrder                  | +
 
 // bookmarks::BookmarkModelObserver overrides:
 // Name                        | Covered
@@ -1385,4 +1386,20 @@ TEST_F(BraveBookmarkChangeProcessorTest, MigrateOrdersForPermanentNodes) {
   EXPECT_EQ(OB_order, "1.0.2.1");
 
   EXPECT_EQ(sync_prefs()->GetMigratedBookmarksVersion(), 1);
+}
+
+TEST_F(BraveBookmarkChangeProcessorTest, ApplyOrder) {
+  BookmarkCreatedFromSyncImpl();
+  const char* record_a_object_id =
+      "121, 194, 37, 61, 199, 11, 166, 234, "
+      "214, 197, 45, 215, 241, 206, 219, 130";
+  const char* new_order = "1.1.1.3";
+  change_processor()->ApplyOrder(record_a_object_id, new_order);
+  std::vector<const BookmarkNode*> nodes_a;
+  model()->GetNodesByURL(GURL("https://a.com/"), &nodes_a);
+  ASSERT_EQ(nodes_a.size(), 1u);
+  const auto* node_a = nodes_a.at(0);
+  std::string order;
+  node_a->GetMetaInfo("order", &order);
+  EXPECT_EQ(order, new_order);
 }

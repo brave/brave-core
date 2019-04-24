@@ -518,6 +518,13 @@ void BraveSyncServiceImpl::OnSaveBookmarksBaseOrder(const std::string& order)  {
   OnSyncReady();
 }
 
+void BraveSyncServiceImpl::OnSaveBookmarkOrder(const std::string& object_id,
+                                               const std::string& order)  {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(!order.empty());
+  bookmark_change_processor_->ApplyOrder(object_id, order);
+}
+
 void BraveSyncServiceImpl::OnSyncWordsPrepared(const std::string& words) {
   NotifyHaveSyncWords(words);
 }
