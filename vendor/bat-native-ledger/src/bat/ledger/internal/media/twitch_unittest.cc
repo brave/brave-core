@@ -153,8 +153,8 @@ TEST(MediaTwitchTest, GetMediaURL) {
 
 TEST(MediaTwitchTest, GetTwitchStatus) {
   // empty
-  ledger::TwitchEventInfo old_event;
-  ledger::TwitchEventInfo new_event;
+  ledger::MediaEventInfo old_event;
+  ledger::MediaEventInfo new_event;
   std::string result = Twitch::GetTwitchStatus(old_event, new_event);
   ASSERT_EQ(result, "playing");
 

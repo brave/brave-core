@@ -48,12 +48,12 @@ class Twitch : public ledger::LedgerCallbackHandler {
   static std::string GetMediaURL(const std::string& mediaId);
 
   static std::string GetTwitchStatus(
-      const ledger::TwitchEventInfo& old_event,
-      const ledger::TwitchEventInfo& new_event);
+      const ledger::MediaEventInfo& old_event,
+      const ledger::MediaEventInfo& new_event);
 
   static uint64_t GetTwitchDuration(
-      const ledger::TwitchEventInfo& old_event,
-      const ledger::TwitchEventInfo& new_event);
+      const ledger::MediaEventInfo& old_event,
+      const ledger::MediaEventInfo& new_event);
 
   static std::string GetMediaIdFromUrl(const std::string& url,
                                        const std::string& publisher_blob);
@@ -78,7 +78,7 @@ class Twitch : public ledger::LedgerCallbackHandler {
   void OnMediaPublisherInfo(
       const std::string& media_id,
       const std::string& media_key,
-      const ledger::TwitchEventInfo& twitch_info,
+      const ledger::MediaEventInfo& twitch_info,
       const ledger::VisitData& visit_data,
       const uint64_t window_id,
       const std::string& user_id,
@@ -128,7 +128,7 @@ class Twitch : public ledger::LedgerCallbackHandler {
                          const std::string& publisher_key = "");
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::map<std::string, ledger::TwitchEventInfo> twitch_events;
+  std::map<std::string, ledger::MediaEventInfo> twitch_events;
 
   // For testing purposes
   friend class MediaTwitchTest;

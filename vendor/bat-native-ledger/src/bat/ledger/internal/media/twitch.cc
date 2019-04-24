@@ -79,8 +79,8 @@ std::string Twitch::GetMediaURL(const std::string& media_id) {
 
 // static
 std::string Twitch::GetTwitchStatus(
-    const ledger::TwitchEventInfo& old_event,
-    const ledger::TwitchEventInfo& new_event) {
+    const ledger::MediaEventInfo& old_event,
+    const ledger::MediaEventInfo& new_event) {
   std::string status = "playing";
 
   if (
@@ -113,8 +113,8 @@ std::string Twitch::GetTwitchStatus(
 
 // static
 uint64_t Twitch::GetTwitchDuration(
-    const ledger::TwitchEventInfo& old_event,
-    const ledger::TwitchEventInfo& new_event) {
+    const ledger::MediaEventInfo& old_event,
+    const ledger::MediaEventInfo& new_event) {
   // Remove duplicated events
   if (old_event.event_ == new_event.event_ &&
       old_event.time_ == new_event.time_) {
@@ -299,7 +299,7 @@ void Twitch::ProcessMedia(const std::map<std::string, std::string>& parts,
                                                          TWITCH_MEDIA_TYPE);
   BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media key: " << media_key;
 
-  ledger::TwitchEventInfo twitch_info;
+  ledger::MediaEventInfo twitch_info;
   std::map<std::string, std::string>::const_iterator iter = parts.find("event");
   if (iter != parts.end()) {
     twitch_info.event_ = iter->second;
@@ -365,7 +365,7 @@ void Twitch::OnSaveMediaVisit(
 void Twitch::OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,
-    const ledger::TwitchEventInfo& twitch_info,
+    const ledger::MediaEventInfo& twitch_info,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     const std::string& user_id,
@@ -379,14 +379,14 @@ void Twitch::OnMediaPublisherInfo(
   }
 
   if (publisher_info) {
-    ledger::TwitchEventInfo old_event;
-    std::map<std::string, ledger::TwitchEventInfo>::const_iterator iter =
+    ledger::MediaEventInfo old_event;
+    std::map<std::string, ledger::MediaEventInfo>::const_iterator iter =
         twitch_events.find(media_key);
     if (iter != twitch_events.end()) {
       old_event = iter->second;
     }
 
-    ledger::TwitchEventInfo new_event(twitch_info);
+    ledger::MediaEventInfo new_event(twitch_info);
     new_event.status_ = GetTwitchStatus(old_event, new_event);
 
     const uint64_t real_duration = GetTwitchDuration(old_event, new_event);
@@ -408,13 +408,13 @@ void Twitch::OnMediaPublisherInfo(
     return;
   }
 
-  ledger::TwitchEventInfo old_event;
+  ledger::MediaEventInfo old_event;
   auto iter = twitch_events.find(media_key);
   if (iter != twitch_events.end()) {
     old_event = iter->second;
   }
 
-  ledger::TwitchEventInfo new_event(twitch_info);
+  ledger::MediaEventInfo new_event(twitch_info);
   new_event.status_ = GetTwitchStatus(old_event, new_event);
 
   const uint64_t real_duration = GetTwitchDuration(old_event, new_event);
