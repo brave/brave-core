@@ -304,7 +304,7 @@ export const BlockedListItemWithOptions = styled<{}, 'li'>('li')`
     display: inline-block;
     vertical-align: middle;
     line-height: 1.5;
-    font-weight: 600;
+    font-weight: 500;
     margin: 0px 10px 0px 30px;
     font-size: 12px;
     color: ${p => p.theme.color.text};

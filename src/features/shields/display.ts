@@ -103,14 +103,14 @@ export const BlockedInfoRowText = styled<{}, 'span'>('span')`
 export const BlockedListSummaryText = styled<{}, 'span'>('span')`
   box-sizing: border-box;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1;
   color: ${p => p.theme.color.text};
 `
 
 export const BlockedListItemHeaderText = styled<{}, 'span'>('span')`
   box-sizing: border-box;
-  font-weight: 600;
+  font-weight: 500;
   color: ${p => p.theme.color.text};
   font-size: 14px;
 `
@@ -173,6 +173,7 @@ export const LinkAction = styled<LinkActionProps, any>(Link)`
   &:disabled {
     color: ${p => p.theme.color.disabledResourceBlocked};
     font-style: italic;
+    font-weight: 500;
     pointer-events: none;
     cursor: default;
 
