@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_EXTENSIONS_EXTENSION_MANAGEMENT_H_
-#define BRAVE_BROWSER_EXTENSIONS_EXTENSION_MANAGEMENT_H_
+#ifndef BRAVE_BROWSER_EXTENSIONS_BRAVE_EXTENSION_MANAGEMENT_H_
+#define BRAVE_BROWSER_EXTENSIONS_BRAVE_EXTENSION_MANAGEMENT_H_
 
 #include "base/scoped_observer.h"
 #include "chrome/browser/extensions/extension_management.h"
@@ -16,7 +17,7 @@ class ExtensionRegistry;
 class BraveExtensionManagement : public ExtensionManagement,
                                  public ExtensionRegistryObserver {
  public:
-  BraveExtensionManagement(Profile* profile);
+  explicit BraveExtensionManagement(Profile* profile);
   ~BraveExtensionManagement() override;
 
  private:
@@ -39,4 +40,4 @@ class BraveExtensionManagement : public ExtensionManagement,
 
 }  // namespace extensions
 
-#endif  // BRAVE_BROWSER_EXTENSIONS_EXTENSION_MANAGEMENT_H_
+#endif  // BRAVE_BROWSER_EXTENSIONS_BRAVE_EXTENSION_MANAGEMENT_H_

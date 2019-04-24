@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_HANDLER_H_
 #define BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_DEFAULT_EXTENSIONS_HANDLER_H_
 
+#include <string>
 #include "chrome/browser/ui/webui/settings/settings_page_ui_handler.h"
 
 class Profile;
