@@ -90,6 +90,8 @@ using std::placeholders::_2;
 
 namespace brave_rewards {
 
+static const unsigned int kRetriesCountOnNetworkChange = 1;
+
 class LogStreamImpl : public ledger::LogStream {
  public:
   LogStreamImpl(const char* file,
@@ -1238,6 +1240,7 @@ void RewardsServiceImpl::LoadURL(
   net::URLFetcher* fetcher = net::URLFetcher::Create(
       parsed_url, request_type, this).release();
   fetcher->SetRequestContext(g_browser_process->system_request_context());
+  fetcher->SetAutomaticallyRetryOnNetworkChanges(kRetriesCountOnNetworkChange);
 
   for (size_t i = 0; i < headers.size(); i++)
     fetcher->AddExtraRequestHeader(headers[i]);
