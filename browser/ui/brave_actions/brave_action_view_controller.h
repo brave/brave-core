@@ -22,11 +22,15 @@ class BraveActionViewController : public ExtensionActionViewController {
   public:
     using ExtensionActionViewController::ExtensionActionViewController;
     bool IsEnabled(content::WebContents* web_contents) const override;
-    void HideActivePopup() override;
     gfx::Image GetIcon(content::WebContents* web_contents, const gfx::Size& size) override;
     bool DisabledClickOpensMenu() const override;
     ui::MenuModel* GetContextMenu() override;
   private:
+    ExtensionActionViewController* GetPreferredPopupViewController() override;
+    bool TriggerPopupWithUrl(PopupShowAction show_action,
+                           const GURL& popup_url,
+                           bool grant_tab_permissions) override;
+    void OnPopupClosed() override;
     // Returns the image source for the icon.
     std::unique_ptr<BraveActionIconWithBadgeImageSource> GetIconImageSource(
         content::WebContents* web_contents,
