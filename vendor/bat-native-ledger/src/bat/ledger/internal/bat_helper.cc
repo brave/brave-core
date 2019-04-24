@@ -1366,6 +1366,7 @@ CLIENT_STATE_ST::CLIENT_STATE_ST(const CLIENT_STATE_ST& other) {
   rewards_enabled_ = other.rewards_enabled_;
   current_reconciles_ = other.current_reconciles_;
   inline_tip_ = other.inline_tip_;
+  grants_ = other.grants_;
 }
 
 CLIENT_STATE_ST::~CLIENT_STATE_ST() {}
