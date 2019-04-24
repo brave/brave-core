@@ -28,13 +28,6 @@ bool BraveActionViewController::IsEnabled(
   return is_enabled;
 }
 
-void BraveActionViewController::HideActivePopup() {
-  // Usually, for an extension this should call the main extensions
-  // toolbar_actions_bar_->HideActivePopup(), but we don't have a reference
-  // to that, and it doesn't seem neccessary, whether the extension is opened
-  // via mouse or keyboard (if a `commands` extension property is present)
-}
-
 bool BraveActionViewController::DisabledClickOpensMenu() const {
   // disabled is a per-tab state
   return false;

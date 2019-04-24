@@ -22,7 +22,6 @@ class BraveActionViewController : public ExtensionActionViewController {
   public:
     using ExtensionActionViewController::ExtensionActionViewController;
     bool IsEnabled(content::WebContents* web_contents) const override;
-    void HideActivePopup() override;
     gfx::Image GetIcon(content::WebContents* web_contents, const gfx::Size& size) override;
     bool DisabledClickOpensMenu() const override;
     ui::MenuModel* GetContextMenu() override;
