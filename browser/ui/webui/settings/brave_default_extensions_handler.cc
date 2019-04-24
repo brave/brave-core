@@ -95,7 +95,7 @@ void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
 }
 
 bool BraveDefaultExtensionsHandler::IsExtensionInstalled(
-    const std::string extension_id) {
+    const std::string& extension_id) const {
   extensions::ExtensionRegistry* registry =
     extensions::ExtensionRegistry::Get(
         static_cast<content::BrowserContext*>(profile_));
