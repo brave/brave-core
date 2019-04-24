@@ -88,4 +88,79 @@ describe('rewards reducer', () => {
       })
     })
   })
+
+  describe('ON_ADS_DATA', () => {
+    describe('updates ads data', () => {
+      it('updates existing properties', () => {
+        const initState: Rewards.State = { ...defaultState }
+        initState.adsData = {
+          adsEnabled: false,
+          adsPerHour: 2,
+          adsUIEnabled: false,
+          adsNotificationsReceived: 0,
+          adsEstimatedEarnings: 0,
+          adsIsSupported: false
+        }
+
+        const expectedState: Rewards.State = { ...defaultState }
+        expectedState.adsData = {
+          adsEnabled: true,
+          adsPerHour: 5,
+          adsUIEnabled: true,
+          adsNotificationsReceived: 0,
+          adsEstimatedEarnings: 0,
+          adsIsSupported: true
+        }
+
+        const assertion = reducers({
+          rewardsData: initState
+        }, {
+          type: types.ON_ADS_DATA,
+          payload: {
+            adsData: {
+              adsEnabled: true,
+              adsPerHour: 5,
+              adsUIEnabled: true,
+              adsIsSupported: true
+            }
+          }
+        })
+        expect(assertion).toEqual({
+          rewardsData: expectedState
+        })
+      })
+
+      it('updates properties when state member doesn\'t exist', () => {
+        const initState: Rewards.State = { ...defaultState }
+        delete initState.adsData
+
+        const expectedState: Rewards.State = { ...defaultState }
+        expectedState.adsData = {
+          adsEnabled: false,
+          adsPerHour: 2,
+          adsUIEnabled: true,
+          adsNotificationsReceived: 0,
+          adsEstimatedEarnings: 0,
+          adsIsSupported: true
+        }
+
+        const assertion = reducers({
+          rewardsData: initState
+        }, {
+          type: types.ON_ADS_DATA,
+          payload: {
+            adsData: {
+              adsEnabled: false,
+              adsPerHour: 2,
+              adsUIEnabled: true,
+              adsIsSupported: true
+            }
+          }
+        })
+        expect(assertion).toEqual({
+          rewardsData: expectedState
+        })
+      })
+    })
+  })
 })
