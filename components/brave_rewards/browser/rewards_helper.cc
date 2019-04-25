@@ -69,10 +69,10 @@ void RewardsHelper::ResourceLoadComplete(
   if (!rewards_service_ || !render_frame_host)
     return;
 
-  if (resource_load_info.resource_type == content::RESOURCE_TYPE_MEDIA ||
-      resource_load_info.resource_type == content::RESOURCE_TYPE_XHR ||
-      resource_load_info.resource_type == content::RESOURCE_TYPE_IMAGE ||
-      resource_load_info.resource_type == content::RESOURCE_TYPE_SCRIPT) {
+  if (resource_load_info.resource_type == content::ResourceType::kMedia ||
+      resource_load_info.resource_type == content::ResourceType::kXhr ||
+      resource_load_info.resource_type == content::ResourceType::kImage ||
+      resource_load_info.resource_type == content::ResourceType::kScript) {
     rewards_service_->OnXHRLoad(
         tab_id_,
         GURL(resource_load_info.url),
