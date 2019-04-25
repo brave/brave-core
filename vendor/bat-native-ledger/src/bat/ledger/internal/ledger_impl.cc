@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "base/task/post_task.h"
-#include "base/task/task_scheduler/task_scheduler.h"
+#include "base/task/thread_pool/thread_pool.h"
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/notification_info.h"
 #include "bat/confirmations/confirmations.h"
@@ -62,12 +62,12 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     last_shown_tab_id_(-1),
     last_pub_load_timer_id_(0u),
     last_grant_check_timer_id_(0u) {
-  // Ensure TaskScheduler is initialized before creating the task runner for
+  // Ensure ThreadPool is initialized before creating the task runner for
   // ios.
-  if (!base::TaskScheduler::GetInstance()) {
-    base::TaskScheduler::CreateAndStartWithDefaultParams("bat_ledger");
+  if (!base::ThreadPool::GetInstance()) {
+    base::ThreadPool::CreateAndStartWithDefaultParams("bat_ledger");
 
-    DCHECK(base::TaskScheduler::GetInstance());
+    DCHECK(base::ThreadPool::GetInstance());
     initialized_task_scheduler_ = true;
   }
 
@@ -78,8 +78,8 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
 
 LedgerImpl::~LedgerImpl() {
   if (initialized_task_scheduler_) {
-    DCHECK(base::TaskScheduler::GetInstance());
-    base::TaskScheduler::GetInstance()->Shutdown();
+    DCHECK(base::ThreadPool::GetInstance());
+    base::ThreadPool::GetInstance()->Shutdown();
   }
 }
 
