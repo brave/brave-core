@@ -14,11 +14,8 @@
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test_utils.h"
-#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-using ::testing::_;
-using ::testing::AnyNumber;
 using extensions::BraveComponentLoader;
 
 class BraveComponentLoaderTest : public extensions::ExtensionFunctionalTest,
@@ -35,8 +32,6 @@ class BraveComponentLoaderTest : public extensions::ExtensionFunctionalTest,
     BraveComponentLoader* loader =
       static_cast<BraveComponentLoader*>(service->component_loader());
     loader->set_testing_callbacks(this);
-    // Do this again so OnComponentRegistered callback will be called.
-    loader->AddDefaultComponentExtensions(false);
   }
 
   // BraveComponentLoader::TestingCallbacks
@@ -45,8 +40,6 @@ class BraveComponentLoaderTest : public extensions::ExtensionFunctionalTest,
     pdf_extension_action_ = action;
   }
 
-  MOCK_METHOD1(OnComponentRegistered, void(std::string));
-
   TestingCallbacks::PdfExtensionAction pdf_extension_action() {
     return pdf_extension_action_;
   }
@@ -54,33 +47,6 @@ class BraveComponentLoaderTest : public extensions::ExtensionFunctionalTest,
  private:
   TestingCallbacks::PdfExtensionAction pdf_extension_action_;
 };
-
-class BraveIPFSExtensionTest: public BraveComponentLoaderTest {
- public:
-  BraveIPFSExtensionTest() {}
-  ~BraveIPFSExtensionTest() override = default;
-};
-
-IN_PROC_BROWSER_TEST_F(BraveIPFSExtensionTest, DisabledByDefault) {
-  ASSERT_FALSE(
-      profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
-  EXPECT_CALL(*this, OnComponentRegistered(_)).Times(AnyNumber());
-  EXPECT_CALL(*this,
-      OnComponentRegistered(ipfs_companion_extension_id)).Times(0);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveIPFSExtensionTest,
-                       PRE_IPFSCompanionEnabledDoesRegisterComponent) {
-  profile()->GetPrefs()->SetBoolean(kIPFSCompanionEnabled, true);
-}
-
-IN_PROC_BROWSER_TEST_F(BraveIPFSExtensionTest,
-                       IPFSCompanionEnabledDoesRegisterComponent) {
-  ASSERT_TRUE(
-      profile()->GetPrefs()->GetBoolean(kIPFSCompanionEnabled));
-  EXPECT_CALL(*this, OnComponentRegistered(_)).Times(AnyNumber());
-  EXPECT_CALL(*this, OnComponentRegistered(ipfs_companion_extension_id));
-}
 
 class BravePDFExtensionTest : public BraveComponentLoaderTest {
  public:
