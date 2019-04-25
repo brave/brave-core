@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
+index aef519913b5722a9a34d529977108ddc4a81e524..95e1c19b9b702561a80e91158cc4442c17339512 100644
+--- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
++++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
+@@ -250,7 +250,7 @@ void ToolbarView::Init() {
+ #endif
+   }
+   if (show_avatar_toolbar_button)
+-    avatar_ = new AvatarToolbarButton(browser_);
++    avatar_ = new BraveAvatarToolbarButton(browser_);
+ 
+   app_menu_button_ = new BrowserAppMenuButton(this);
+   app_menu_button_->EnableCanvasFlippingForRTLUI(true);
