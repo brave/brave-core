@@ -30,10 +30,12 @@ import {
   StyledDomainText,
   StyledDateText,
   StyledDate,
-  StyledMonthlyInfo
+  StyledMonthlyInfo,
+  StyledButtonWrapper
 } from './style'
 import { getLocale } from '../../../helpers'
 import { CloseCircleOIcon, PaperAirplaneIcon } from '../../../components/icons'
+import { Button } from '../../../components'
 
 export interface Props {
   id?: string
@@ -45,6 +47,7 @@ export interface Props {
   logo?: string
   amount?: string
   monthlyDate?: string
+  onTweet?: () => void
   onClose: () => void
 }
 
@@ -75,7 +78,8 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
       domain,
       logoBgColor,
       amount,
-      monthlyDate
+      monthlyDate,
+      onTweet
     } = this.props
     return (
       <StyledOverlayContent>
@@ -154,6 +158,23 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
                               : null
                           }
                         </StyledMonthlyInfo>
+                        {
+                          onTweet
+                          ? <>
+                            <StyleSubHeaderText>
+                              {getLocale('tellOthers')}
+                            </StyleSubHeaderText>
+                            <StyledButtonWrapper>
+                              <Button
+                                text={getLocale('tweetNow')}
+                                size={'medium'}
+                                type={'default'}
+                                onClick={onTweet}
+                              />
+                            </StyledButtonWrapper>
+                          </>
+                          : null
+                        }
                       </>
                       : null
                   }

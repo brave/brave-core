@@ -224,3 +224,9 @@ export const StyledDate = styled<{}, 'span'>('span')`
   line-height: 28px;
   color: ${p => p.theme.color.brandBrave};
 `
+
+export const StyledButtonWrapper = styled<{}, 'div'>('div')`
+  display: flex;
+  margin-top: 20px;
+  justify-content: center;
+`
