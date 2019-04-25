@@ -56,7 +56,8 @@ import megaphoneIconUrl from './assets/megaphone.svg'
 
 type Grant = {
   tokens: string,
-  expireDate: string
+  expireDate: string,
+  type: string
 }
 
 type GrantClaim = {
@@ -505,9 +506,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                             return <StyledGrant key={`${id}-grant-${i}`}>
                               <b>{grant.tokens} BAT</b>
                               {
-                                grant.expireDate.length > 0
-                                ? <span>{getLocale('expiresOn')} {grant.expireDate}</span>
-                                : null
+                                grant.type === 'ads'
+                                ? <span>{getLocale('adsEarnings')}</span>
+                                : <span>{getLocale('expiresOn')} {grant.expireDate}</span>
                               }
                             </StyledGrant>
                           })
