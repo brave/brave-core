@@ -31,7 +31,7 @@ import {
 import { getLocale } from '../../../helpers'
 import { VerifiedSIcon, UnVerifiedSIcon, LoaderIcon, CheckmarkCircleS } from '../../../components/icons'
 
-export type Provider = 'twitter' | 'youtube' | 'twitch' | 'reddit'
+export type Provider = 'twitter' | 'youtube' | 'twitch' | 'reddit' | 'vimeo'
 
 export interface Props {
   id?: string
@@ -66,6 +66,8 @@ export default class Profile extends React.PureComponent<Props, {}> {
         return `${getLocale('on')} Twitch`
       case 'reddit':
         return `${getLocale('on')} Reddit`
+      case 'vimeo':
+        return `${getLocale('on')} Vimeo`
     }
   }
 
