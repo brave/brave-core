@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">Brave Payments</translation>
 <translation id="3489524616427966890">Отваряне на прозорци и раздели</translation>
 <translation id="3699882589215410581">Инсталирайте и стартирайте Widevine</translation>
+<translation id="8053096063396012732">Инсталирай Widevine</translation>
+<translation id="4840334696217618631">Рестартирайте браузъра, за да разрешите Widevine</translation>
 <translation id="8410111618231938546">Google Widevine е част от кода за управление на цифровите права (DRM), който ние в Brave Software не притежаваме и не можем да проверим. Кодът на Google Widevine се зарежда от сървърите на Google, а не от нашите сървъри. Той се зарежда само когато активирате тази опция. Ние не подкрепяме употребата на DRM, но уважаваме избора на потребителя и признаваме, че някои потребители на Brave биха искали да използват услуги, които го изискват.
 
 Чрез инсталирането на това разширение приемате Общите условия на Google Widevine. Вие се съгласявате, че Brave не носи отговорност за щети или загуби във връзка с използването на Google Widevine.</translation>
@@ -29,6 +31,8 @@
 <translation id="7543906827780734027">Brave все още не е прегледал това разширение - то може да бъде опасно. Да се добави ли все пак"<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Цветове на Brave</translation>
 <translation id="5341901626640816374">Използвай широката лента за местоположение</translation>
+<translation id="6123134130710658846">Скрий бутона на Brave награди</translation>
+<translation id="7635711399568194460">Скрий бутона за Brave наградите в лентата, ако Brave наградите не са активирани</translation>
 <translation id="7965178729203412357">Нова идентичност на Tor</translation>
 <translation id="8784924142044142231">Изход от Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -42,12 +46,17 @@
 <translation id="3155170474926428993">Програма за стартиране на Tor</translation>
 <translation id="2515126961943087659">Услуга за BAT реклами</translation>
 <translation id="7924918279836988121">Услуга "Bat Ledger"</translation>
-<translation id="7372129767729198111">Brave щитове по подразбиране</translation>
-<translation id="8029018702721078742">Управление на рекламите</translation>
-<translation id="3544462288910360084">Управление на бисквитки</translation>
+<translation id="768979911142179781">Brave щитове по подразбиране</translation>
+<translation id="9185018653595759199">Социални бутони и вход</translation>
+<translation id="6894114137169961038">Управление на рекламите</translation>
+<translation id="1096802265930928584">Управление на бисквитки</translation>
 <translation id="8919235146866304148">Защита с пръстов отпечатък</translation>
 <translation id="520895744850022668">HTTPS навсякъде</translation>
 <translation id="5259716416204774556">Блокиране на скриптове</translation>
+<translation id="7498695072878479744">Разрешете бутони на Google вход на страници на трети страни</translation>
+<translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
+<translation id="5165042248369837294">Разреши вградени туитове на Twitter</translation>
+<translation id="958971637207126733">Разреши вграждане на LinkedIn</translation>
 <translation id="6067014455220527258">Блокиране на реклами</translation>
 <translation id="6985711843506827936">Разреши реклами и проследяване</translation>
 <translation id="6132506775968708399">Блокиране на „бисквитките“ на трети страни</translation>
@@ -63,10 +72,16 @@
 <translation id="5825943197137337319">Само публичен интерфейс пп подразбиране</translation>
 <translation id="1689062823386843231">Деактивиране на UDP без прокси</translation>
 <translation id="6645631466045614531">Достъп до синхронизиране чрез</translation>
+<translation id="1807246157184219062">Светъл</translation>
+<translation id="2414886740292270097">Тъмен</translation>
+<translation id="1360441190790440400">Също като Linux</translation>
+<translation id="1336940801687497203">Също като Windows</translation>
+<translation id="8721331068159819483">Също като MacOS</translation>
 <translation id="6786747875388722282">Разширения</translation>
 <translation id="2896916411183256228">Използва WebTorrent за да показва торенти директно в браузъра. Поддържа торент файлове и магнет линкове.</translation>
 <translation id="6554397389149987360">Използвайте "Hangouts" компоненти, за да разрешите споделяне на екрана и други функции в браузъра.</translation>
-<translation id="6916590542764765824">Управляване на разширения</translation>
+<translation id="8137559199583651773">Управляване на разширения</translation>
 <translation id="4928988318462976765">Магазин за уеб разширения</translation>
 <translation id="9181207987584064303">Вижте в Магазина за уеб разширения</translation>
+<translation id="4846154056248462491">При излизане</translation>
 </translationbundle>

@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">Brave Payments</translation>
 <translation id="3489524616427966890">창과 탭 열기</translation>
 <translation id="3699882589215410581">Widevine 설치 및 실행</translation>
+<translation id="8053096063396012732">Widevine 설치</translation>
+<translation id="4840334696217618631">Widevine을 활성화라혀면 브라우저를 재시작하세요</translation>
 <translation id="8410111618231938546">Google Widevine는 Brave Software가 소유하거나 관리 할 수 없는 디지털 권한 관리(DRM) 코드입니다. Google Widevine 코드는 우리의 서버가 아닌 Google 서버에서 로드합니다. 이 기능을 활성화 한 경우에만 로드 되며, 우리는 DRM 사용을 권장하지 않지만 사용자의 선택을 존중하며, 일부 Brave 사용자는 이 서비스가 필요함을 인정합니다.
 
  이 확장 프로그램을 설치하면 Google Widevine의 이용 약관에 동의하게 됩니다. 당신은 Brave가 Google Widevine 사용과 관련하여 발생한 어떠한 손해 및 손실에 대해 책임지지 않음을 동의하게 됩니다.</translation>
@@ -29,6 +31,8 @@
 <translation id="7543906827780734027">Brave는 이 연장을 아직 검토하지 않았습니다 - 유언비어일 수도 있습니다. 그래도 "<ph name="EXTENSION_NAME"/>"을/를 추가할까요?</translation>
 <translation id="2044383478723007273">Brave 색상</translation>
 <translation id="5341901626640816374">넓은 위치 표시줄 사용</translation>
+<translation id="6123134130710658846">Brave Rewards 버튼 감추기</translation>
+<translation id="7635711399568194460">Brave Rewards가 비활성화되었을 시 로케이션 바에서 Brave Rewards를 감춥니다</translation>
 <translation id="7965178729203412357">새로운 Tor 계정</translation>
 <translation id="8784924142044142231">Tor 나가기</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -42,12 +46,17 @@
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
-<translation id="7372129767729198111">Brave 쉴드 기본값</translation>
-<translation id="8029018702721078742">광고 설정</translation>
-<translation id="3544462288910360084">쿠키 제어</translation>
+<translation id="768979911142179781">Brave 쉴드 기본값</translation>
+<translation id="9185018653595759199">소셜 버튼 및 로그인</translation>
+<translation id="6894114137169961038">광고 설정</translation>
+<translation id="1096802265930928584">쿠키 제어</translation>
 <translation id="8919235146866304148">지문 정보 보호</translation>
 <translation id="520895744850022668">모든 사이트에서 HTTPS 사용</translation>
 <translation id="5259716416204774556">스크립트 차단</translation>
+<translation id="7498695072878479744">써드파티 사이트에서 Google 로그인 버튼 활성화합니다</translation>
+<translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
+<translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
+<translation id="958971637207126733">LinkdeIn embed 허용</translation>
 <translation id="6067014455220527258">광고 차단</translation>
 <translation id="6985711843506827936">광고 및 추적 허용</translation>
 <translation id="6132506775968708399">제 3자 쿠키 차단하기</translation>
@@ -63,10 +72,16 @@
 <translation id="5825943197137337319">기본 공개 인터페이스 전용</translation>
 <translation id="1689062823386843231">프록시가 아닌 UDP 비활성화히기</translation>
 <translation id="6645631466045614531">다음을 통해 동기화 접속</translation>
+<translation id="1807246157184219062">라이트</translation>
+<translation id="2414886740292270097">어두움</translation>
+<translation id="1360441190790440400">Linux와 동일</translation>
+<translation id="1336940801687497203">Windows와 동일</translation>
+<translation id="8721331068159819483">MacOS와 동일함</translation>
 <translation id="6786747875388722282">익스텐션들</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
 <translation id="6554397389149987360">화면 공유와 다른 기능들을 브라우저에서 사용하시려면 행아웃 요소들을 사용하세요.</translation>
-<translation id="6916590542764765824">익스텐션들 관리</translation>
+<translation id="8137559199583651773">익스텐션들 관리</translation>
 <translation id="4928988318462976765">웹 익스텐션 스토어</translation>
 <translation id="9181207987584064303">웹 익스텐션 스토어에서 보기</translation>
+<translation id="4846154056248462491">나갈 때</translation>
 </translationbundle>

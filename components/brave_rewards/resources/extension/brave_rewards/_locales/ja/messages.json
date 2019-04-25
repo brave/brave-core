@@ -186,7 +186,7 @@
     "description": "Description for new grant notification"
   },
   "backupNow": {
-    "message": "Backup Now",
+    "message": "今すぐバックアップ",
     "description": "Notification button text when we ask user to backup wallet"
   },
   "backupWalletTitle": {
@@ -198,7 +198,7 @@
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Your Brave Rewards account is waiting for a deposit.",
+    "message": "あなたの[Brave Rewards]アカウントは入金を待っています。",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -218,7 +218,7 @@
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "Unable to send your tip. Please try again later.",
+    "message": "あなたのチップを送ることができません。後で再試行してください。",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -334,19 +334,19 @@
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
-    "message": "Add funds",
+    "message": "資金を追加する",
     "description": "Button for adding funds"
   },
   "rewardsSettings": {
-    "message": "Rewards Settings",
+    "message": "[Rewards]設定",
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your Ads earnings are available.",
+    "message": "あなたの広告収入は入手可能です。",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
-    "message": "and",
+    "message": "および",
     "description": "The word 'and'"
   },
   "braveRewardsSubTitle": {
@@ -354,7 +354,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {
-    "message": "Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.",
+    "message": "プライバシーを尊重する広告を表示することによって稼ぎ、あなたのお気に入りのコンテンツ制作者を支援するためにそれを次へ渡そう。",
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
@@ -362,19 +362,19 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "Privacy Policy",
+    "message": "プライバシーポリシー",
     "description": "Privacy Policy"
   },
   "serviceText": {
-    "message": "By clicking 'Enable Brave Rewards', you indicate that you have read and agree to the",
+    "message": "[Brave Rewardsを有効にする]をクリックすることによって、あなたは[…]を読んで同意したことを表明します",
     "description": "Terms of service main text"
   },
   "termsOfService": {
-    "message": "Terms of Service",
+    "message": "利用規約",
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "Welcome Back!",
+    "message": "お帰りなさい！",
     "description": "Title message for wallet disabled panel"
   }
 }
