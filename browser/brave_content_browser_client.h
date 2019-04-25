@@ -21,8 +21,7 @@ class BrowserContext;
 
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
-  BraveContentBrowserClient(
-      ChromeFeatureListCreator* chrome_feature_list_creator = nullptr);
+  explicit BraveContentBrowserClient(StartupData* startup_data = nullptr);
   ~BraveContentBrowserClient() override;
 
   // Overridden from ChromeContentBrowserClient:

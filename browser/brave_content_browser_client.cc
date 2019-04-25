@@ -108,9 +108,8 @@ bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
 
 }  // namespace
 
-BraveContentBrowserClient::BraveContentBrowserClient(
-    ChromeFeatureListCreator* chrome_feature_list_creator)
-    : ChromeContentBrowserClient(chrome_feature_list_creator) {}
+BraveContentBrowserClient::BraveContentBrowserClient(StartupData* startup_data)
+    : ChromeContentBrowserClient(startup_data) {}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
