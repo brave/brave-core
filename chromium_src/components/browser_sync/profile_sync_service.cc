@@ -567,6 +567,20 @@ void ProfileSyncService::OnSaveBookmarksBaseOrder(const std::string& order)  {
   OnSyncReady();
 }
 
+void ProfileSyncService::OnSaveBookmarkOrder(const std::string& object_id,
+                                             const std::string& order) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(!order.empty());
+  bookmarks::BookmarkModel* model =
+    // TODO(darkdh): find another way to obtain bookmark model
+    // change introduced in 83b9663e3814ef7e53af5009d10033b89955db44
+    static_cast<ChromeSyncClient*>(sync_client_.get())->GetBookmarkModel();
+  auto* node = FindByObjectId(model, object_id);
+  if (node) {
+    model->SetNodeMetaInfo(node, "order", order);
+  }
+}
+
 void ProfileSyncService::OnSyncWordsPrepared(const std::string& words) {
   NotifyHaveSyncWords(words);
 }
