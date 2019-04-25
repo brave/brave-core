@@ -18,7 +18,7 @@
 #include "url/gurl.h"
 
 #if !defined(OS_ANDROID)
-#include "brave/browser/ui/webui/brave_md_settings_ui.h"
+#include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #endif
 
@@ -67,7 +67,7 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new BraveNewTabUI(web_ui, url.host());
 #if !defined(OS_ANDROID)
   } else if (host == chrome::kChromeUISettingsHost) {
-    return new BraveMdSettingsUI(web_ui, url.host());
+    return new BraveSettingsUI(web_ui, url.host());
 #endif
   }
   return nullptr;
