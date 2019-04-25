@@ -21,6 +21,7 @@ import {
   ThumbsUpIcon,
   TwitchColorIcon,
   TwitterColorIcon,
+  VimeoColorIcon,
   YoutubeColorIcon
 } from '../../../components/icons'
 import { Toggle } from '../../../components'
@@ -46,7 +47,7 @@ export default class ToggleTips extends React.PureComponent<Props, {}> {
       case 'reddit':
         return <RedditColorIcon />
       case 'vimeo':
-        return <TwitchColorIcon /> // TODO replace with vimeo icon
+        return <VimeoColorIcon />
     }
   }
 
