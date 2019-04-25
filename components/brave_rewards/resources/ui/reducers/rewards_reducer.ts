@@ -6,6 +6,7 @@ import { Reducer } from 'redux'
 
 // Constant
 import { types } from '../constants/rewards_types'
+import { defaultState } from '../storage'
 
 const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
@@ -118,6 +119,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
 
       state = { ...state }
+
+      if (!state.adsData) {
+        state.adsData = defaultState.adsData
+      }
+
       state.adsData.adsEnabled = action.payload.adsData.adsEnabled
       state.adsData.adsPerHour = action.payload.adsData.adsPerHour
       state.adsData.adsUIEnabled = action.payload.adsData.adsUIEnabled
@@ -150,6 +156,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
 
       state = { ...state }
+
+      if (!state.adsData) {
+        state.adsData = defaultState.adsData
+      }
+
       const data = action.payload.data
       state.adsData.adsNotificationsReceived = data.adsNotificationsReceived
       state.adsData.adsEstimatedEarnings = data.adsEstimatedEarnings
