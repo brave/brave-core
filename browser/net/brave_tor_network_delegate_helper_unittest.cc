@@ -93,7 +93,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, NotTorProfile) {
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
     std::make_unique<BraveNavigationUIData>();
   content::ResourceRequestInfo::AllocateForTesting(
-      request.get(), content::RESOURCE_TYPE_MAIN_FRAME, resource_context(),
+      request.get(), content::ResourceType::kMainFrame, resource_context(),
       kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
       /*is_main_frame=*/true, content::ResourceInterceptPolicy::kAllowNone,
       /*is_async=*/true, content::PREVIEWS_OFF, std::move(navigation_ui_data));
@@ -142,7 +142,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfile) {
       std::make_unique<BraveNavigationUIData>();
     BraveNavigationUIData* navigation_ui_data_ptr = navigation_ui_data.get();
     content::ResourceRequestInfo::AllocateForTesting(
-        request.get(), content::RESOURCE_TYPE_MAIN_FRAME, resource_context(),
+        request.get(), content::ResourceType::kMainFrame, resource_context(),
         kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
         /*is_main_frame=*/true, content::ResourceInterceptPolicy::kAllowNone,
         /*is_async=*/true, content::PREVIEWS_OFF,
@@ -191,7 +191,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockFile) {
     std::make_unique<BraveNavigationUIData>();
   BraveNavigationUIData* navigation_ui_data_ptr = navigation_ui_data.get();
   content::ResourceRequestInfo::AllocateForTesting(
-      request.get(), content::RESOURCE_TYPE_MAIN_FRAME, resource_context(),
+      request.get(), content::ResourceType::kMainFrame, resource_context(),
       kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
       /*is_main_frame=*/true, content::ResourceInterceptPolicy::kAllowNone,
       /*is_async=*/true, content::PREVIEWS_OFF, std::move(navigation_ui_data));
@@ -227,7 +227,7 @@ TEST_F(BraveTorNetworkDelegateHelperTest, TorProfileBlockIfHosed) {
     std::make_unique<BraveNavigationUIData>();
   BraveNavigationUIData* navigation_ui_data_ptr = navigation_ui_data.get();
   content::ResourceRequestInfo::AllocateForTesting(
-      request.get(), content::RESOURCE_TYPE_MAIN_FRAME, resource_context(),
+      request.get(), content::ResourceType::kMainFrame, resource_context(),
       kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
       /*is_main_frame=*/true, content::ResourceInterceptPolicy::kAllowNone,
       /*is_async=*/true, content::PREVIEWS_OFF, std::move(navigation_ui_data));
