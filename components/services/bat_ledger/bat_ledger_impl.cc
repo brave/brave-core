@@ -398,8 +398,8 @@ void BatLedgerImpl::ConfirmAd(const std::string& info) {
 }
 
 // static
-void BatLedgerImpl::OnGetConfirmationsHistory(
-    CallbackHolder<GetConfirmationsHistoryCallback>* holder,
+void BatLedgerImpl::OnGetTransactionHistoryForThisCycle(
+    CallbackHolder<GetTransactionHistoryForThisCycleCallback>* holder,
     std::unique_ptr<ledger::TransactionsInfo> history) {
   std::string json_transactions = history.get() ? history->ToJson() : "";
   if (holder->is_valid())
@@ -407,16 +407,14 @@ void BatLedgerImpl::OnGetConfirmationsHistory(
   delete holder;
 }
 
-void BatLedgerImpl::GetConfirmationsHistory(
-    const uint64_t from_timestamp_seconds,
-    const uint64_t to_timestamp_seconds,
-    GetConfirmationsHistoryCallback callback) {
-  auto* holder = new CallbackHolder<GetConfirmationsHistoryCallback>(
+void BatLedgerImpl::GetTransactionHistoryForThisCycle(
+    GetTransactionHistoryForThisCycleCallback callback) {
+  auto* holder = new CallbackHolder<GetTransactionHistoryForThisCycleCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_->GetConfirmationsHistory(from_timestamp_seconds,
-      to_timestamp_seconds, std::bind(
-      BatLedgerImpl::OnGetConfirmationsHistory, holder, _1));
+  ledger_->GetTransactionHistoryForThisCycle(
+      std::bind(BatLedgerImpl::OnGetTransactionHistoryForThisCycle,
+          holder, _1));
 }
 
 void BatLedgerImpl::GetRewardsInternalsInfo(

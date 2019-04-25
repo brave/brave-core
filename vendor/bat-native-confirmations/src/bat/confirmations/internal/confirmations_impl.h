@@ -48,11 +48,18 @@ class ConfirmationsImpl : public Confirmations {
   void RemoveConfirmationFromQueue(const ConfirmationInfo& confirmation_info);
   void StartRetryingFailedConfirmations(const uint64_t start_timer_in);
 
+  // Estimated earnings
+  uint64_t GetEstimatedEarningsStartTimestampInSeconds();
+
+  void GetTransactionHistoryForThisCycle(
+      OnGetTransactionHistoryForThisCycle callback) override;
+
   // Transaction history
-  void GetTransactionHistory(
+  std::vector<TransactionInfo> GetTransactionHistory(
       const uint64_t from_timestamp_in_seconds,
-      const uint64_t to_timestamp_in_seconds,
-      OnGetTransactionHistoryCallback callback) override;
+      const uint64_t to_timestamp_in_seconds);
+  std::vector<TransactionInfo> GetUnredeemedTransactionsForPreviousCycles(
+      const uint64_t before_timestamp_in_seconds);
   void AppendTransactionToHistory(
       const double estimated_redemption_value,
       const ConfirmationType confirmation_type);
