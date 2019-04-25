@@ -175,14 +175,14 @@ export const onAddressesForPaymentId = (addresses: Record<Rewards.AddressesType,
     addresses
   })
 
-export const onConfirmationsHistory = (data: {adsTotalPages: number, adsEstimatedEarnings: number}) =>
-  action(types.ON_CONFIRMATIONS_HISTORY, {
+export const onTransactionHistoryForThisCycle = (data: {adsNotificationsReceived: number, adsEstimatedEarnings: number}) =>
+  action(types.ON_TRANSACTION_HISTORY_FOR_THIS_CYCLE, {
     data
   })
 
-export const getConfirmationsHistory = () => action(types.GET_CONFIRMATIONS_HISTORY)
+export const getTransactionHistoryForThisCycle = () => action(types.GET_TRANSACTION_HISTORY_FOR_THIS_CYCLE)
 
-export const onConfirmationsHistoryChanged = () => action(types.ON_CONFIRMATIONS_HISTORY_CHANGED)
+export const onTransactionHistoryForThisCycleChanged = () => action(types.ON_TRANSACTION_HISTORY_FOR_THIS_CYCLE_CHANGED)
 
 export const getExcludedPublishersNumber = () => action(types.GET_EXCLUDED_PUBLISHERS_NUMBER)
 

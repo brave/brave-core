@@ -128,10 +128,8 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void GetAddressesForPaymentId(
       GetAddressesForPaymentIdCallback callback) override;
-  void GetConfirmationsHistory(
-      const uint64_t from_timestamp_seconds,
-      const uint64_t to_timestamp_seconds,
-      GetConfirmationsHistoryCallback callback) override;
+  void GetTransactionHistoryForThisCycle(
+      GetTransactionHistoryForThisCycleCallback callback) override;
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
   void RefreshPublisher(
@@ -172,8 +170,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<GetAddressesForPaymentIdCallback>* holder,
       std::map<std::string, std::string> addresses);
 
-  static void OnGetConfirmationsHistory(
-      CallbackHolder<GetConfirmationsHistoryCallback>* holder,
+  static void OnGetTransactionHistoryForThisCycle(
+      CallbackHolder<GetTransactionHistoryForThisCycleCallback>* holder,
       std::unique_ptr<ledger::TransactionsInfo> history);
 
   static void OnGetExcludedPublishersNumber(
