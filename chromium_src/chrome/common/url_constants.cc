@@ -7,6 +7,9 @@
 
 namespace chrome {
 
+const char kAccessibilityLabelsLearnMoreURL[] = 
+    "https://support.brave.com/";
+
 const char kAutomaticSettingsResetLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017903152-How-do-I-reset-Brave-settings-to-default-";
@@ -158,6 +161,8 @@ const char kGoogleAccountActivityControlsURL[] =
     "https://support.brave.com/";
 
 const char kGoogleAccountURL[] = "https://support.brave.com/";
+
+const char kGoogleAccountChooserURL[] = "https://support.brave.com";
 
 const char kGooglePasswordManagerURL[] = "https://support.brave.com/";
 
