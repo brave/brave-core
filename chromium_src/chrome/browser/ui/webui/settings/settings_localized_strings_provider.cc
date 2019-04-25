@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.h"
+#include "chrome/browser/ui/webui/settings/settings_localized_strings_provider.h"
 #include "base/stl_util.h"
 
 namespace settings {
 void BraveAddLocalizedStrings(content::WebUIDataSource*, Profile*);
 }  // namespace settings
-#include "../../../../../../chrome/browser/ui/webui/settings/md_settings_localized_strings_provider.cc"  // NOLINT
+#include "../../../../../../chrome/browser/ui/webui/settings/settings_localized_strings_provider.cc"  // NOLINT
 
-#include "brave/browser/ui/webui/brave_md_settings_ui.h"
+#include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/grit/brave_generated_resources.h"
 
 namespace settings {
@@ -133,7 +133,7 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
 void BraveAddResources(content::WebUIDataSource* html_source,
                        Profile* profile) {
-  BraveMdSettingsUI::AddResources(html_source, profile);
+  BraveSettingsUI::AddResources(html_source, profile);
 }
 
 void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
