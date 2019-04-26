@@ -1,0 +1,13 @@
+diff --git a/components/content_settings/core/browser/content_settings_pref.cc b/components/content_settings/core/browser/content_settings_pref.cc
+index 4f46fabd1e1ea5e34a5b3b4b05c5b30f5427431b..525a08702c2ded5941b01e64afa4422a8af88f4f 100644
+--- a/components/content_settings/core/browser/content_settings_pref.cc
++++ b/components/content_settings/core/browser/content_settings_pref.cc
+@@ -87,7 +87,7 @@ ContentSettingsPref::ContentSettingsPref(
+       is_incognito_(incognito),
+       updating_preferences_(false),
+       notify_callback_(notify_callback),
+-      allow_resource_identifiers_(false) {
++      allow_resource_identifiers_(true) {
+   DCHECK(prefs_);
+ 
+   ReadContentSettingsFromPref();
