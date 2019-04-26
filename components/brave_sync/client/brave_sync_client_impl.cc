@@ -208,9 +208,4 @@ void BraveSyncClientImpl::OnExtensionSystemReady() {
   }
 }
 
-void BraveSyncClientImpl::ClearOrderMap() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  brave_sync_event_router_->ClearOrderMap();
-}
-
 }  // namespace brave_sync

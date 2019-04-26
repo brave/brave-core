@@ -58,6 +58,8 @@ source_set("core") {
     "settings.h",
     "sync_devices.cc",
     "sync_devices.h",
+    "syncer_helper.cc",
+    "syncer_helper.h",
     "tools.cc",
     "tools.h",
     "values_conv.cc",

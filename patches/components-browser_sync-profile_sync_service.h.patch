@@ -1,5 +1,5 @@
 diff --git a/components/browser_sync/profile_sync_service.h b/components/browser_sync/profile_sync_service.h
-index 6c01395b954ac146084865b0268992f277b4914c..e6c7eb64cf1167f58159cdfd4c9f58f62b620451 100644
+index 6c01395b954ac146084865b0268992f277b4914c..c23fc377beaebcef2a894e8c4e2f9f76e77d58d6 100644
 --- a/components/browser_sync/profile_sync_service.h
 +++ b/components/browser_sync/profile_sync_service.h
 @@ -137,7 +137,9 @@ class ProfileSyncService : public syncer::SyncService,
@@ -13,7 +13,7 @@ index 6c01395b954ac146084865b0268992f277b4914c..e6c7eb64cf1167f58159cdfd4c9f58f6
   public:
    // If AUTO_START, sync will set IsFirstSetupComplete() automatically and sync
    // will begin syncing without the user needing to confirm sync settings.
-@@ -346,6 +348,44 @@ class ProfileSyncService : public syncer::SyncService,
+@@ -346,6 +348,42 @@ class ProfileSyncService : public syncer::SyncService,
  
    syncer::SyncClient* GetSyncClientForTest();
  
@@ -51,14 +51,12 @@ index 6c01395b954ac146084865b0268992f277b4914c..e6c7eb64cf1167f58159cdfd4c9f58f6
 +  void OnDeletedSyncUser() override;
 +  void OnDeleteSyncSiteSettings() override;
 +  void OnSaveBookmarksBaseOrder(const std::string& order) override;
-+  void OnSaveBookmarkOrder(const std::string& object_id,
-+                           const std::string& order) override;
 +  void OnSyncWordsPrepared(const std::string& words) override;
 +
   private:
    // Passed as an argument to StopImpl to control whether or not the sync
    // engine should clear its data directory when it shuts down. See StopImpl
-@@ -465,6 +505,47 @@ class ProfileSyncService : public syncer::SyncService,
+@@ -465,6 +503,47 @@ class ProfileSyncService : public syncer::SyncService,
    // Called by SyncServiceCrypto when a passphrase is required or accepted.
    void ReconfigureDueToPassphrase(syncer::ConfigureReason reason);
  

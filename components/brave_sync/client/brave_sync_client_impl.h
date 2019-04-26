@@ -79,8 +79,6 @@ class BraveSyncClientImpl : public BraveSyncClient,
   void LoadOrUnloadExtension(bool load);
   void OnExtensionSystemReady();
 
-  void ClearOrderMap() override;
-
   SyncMessageHandler* handler_;  // not owned
   Profile* profile_;  // not owned
   std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
