@@ -78,14 +78,6 @@ ConvertCommitsToBraveRecords(sync_pb::ClientToServerMessage* message,
       for (int i = 0; i < bm_specifics.meta_info_size(); ++i) {
         if (bm_specifics.meta_info(i).key() == "order") {
           bookmark->order = bm_specifics.meta_info(i).value();
-        } else if (bm_specifics.meta_info(i).key() == "prev_object_id") {
-          bookmark->prevObjectId = bm_specifics.meta_info(i).value();
-        } else if (bm_specifics.meta_info(i).key() == "prev_order") {
-          bookmark->prevOrder = bm_specifics.meta_info(i).value();
-        } else if (bm_specifics.meta_info(i).key() == "next_order") {
-          bookmark->nextOrder = bm_specifics.meta_info(i).value();
-        } else if (bm_specifics.meta_info(i).key() == "parent_order") {
-          bookmark->parentOrder = bm_specifics.meta_info(i).value();
         } else if (bm_specifics.meta_info(i).key() == "object_id") {
           new_object_id = bm_specifics.meta_info(i).value();
         } else if (bm_specifics.meta_info(i).key() == "parent_object_id") {

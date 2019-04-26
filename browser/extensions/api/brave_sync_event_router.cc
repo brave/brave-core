@@ -142,13 +142,4 @@ void BraveSyncEventRouter::LoadClient() {
   event_router_->BroadcastEvent(std::move(event));
 }
 
-void BraveSyncEventRouter::ClearOrderMap() {
-  auto args = std::make_unique<base::ListValue>();
-  std::unique_ptr<Event> event(
-     new Event(extensions::events::FOR_TEST,
-       extensions::api::brave_sync::OnClearOrderMap::kEventName,
-       std::move(args)));
-  event_router_->BroadcastEvent(std::move(event));
-}
-
 } // namespace extensions

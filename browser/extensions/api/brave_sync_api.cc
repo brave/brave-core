@@ -142,18 +142,6 @@ BraveSyncSaveBookmarksBaseOrderFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction BraveSyncSaveBookmarkOrderFunction::Run() {
-  std::unique_ptr<brave_sync::SaveBookmarkOrder::Params> params(
-      brave_sync::SaveBookmarkOrder::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-  ProfileSyncService* sync_service = GetProfileSyncService(browser_context());
-  DCHECK(sync_service);
-  sync_service->OnSaveBookmarkOrder(params->object_id, params->order);
-
-  return RespondNow(NoArguments());
-}
-
 ExtensionFunction::ResponseAction BraveSyncSyncWordsPreparedFunction::Run() {
   std::unique_ptr<brave_sync::SyncWordsPrepared::Params> params(
       brave_sync::SyncWordsPrepared::Params::Create(*args_));

@@ -58,13 +58,9 @@ public:
   Site site;
   bool isFolder;
   std::string parentFolderObjectId; // bytes
-  std::string prevObjectId; // bytes
   std::vector<std::string> fields;
   bool hideInToolbar;
   std::string order;
-  std::string prevOrder;
-  std::string nextOrder;
-  std::string parentOrder;
   std::vector<MetaInfo> metaInfo;
 };
 

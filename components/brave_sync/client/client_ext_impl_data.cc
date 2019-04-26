@@ -150,14 +150,6 @@ std::unique_ptr<extensions::api::brave_sync::Bookmark> FromLibBookmark(
         new std::string(lib_bookmark.parentFolderObjectId));
   }
 
-  if (!lib_bookmark.prevObjectId.empty()) {
-    ext_bookmark->prev_object_id.reset(
-        new std::vector<unsigned char>(
-            UCharVecFromString(lib_bookmark.prevObjectId)));
-    ext_bookmark->prev_object_id_str.reset(
-        new std::string(lib_bookmark.prevObjectId));
-  }
-
   if (!lib_bookmark.fields.empty()) {
     ext_bookmark->fields.reset(
         new std::vector<std::string>(lib_bookmark.fields));
@@ -166,12 +158,6 @@ std::unique_ptr<extensions::api::brave_sync::Bookmark> FromLibBookmark(
   ext_bookmark->hide_in_toolbar.reset(new bool(lib_bookmark.hideInToolbar));
 
   ext_bookmark->order.reset(new std::string(lib_bookmark.order));
-
-  ext_bookmark->prev_order.reset(new std::string(lib_bookmark.prevOrder));
-
-  ext_bookmark->next_order.reset(new std::string(lib_bookmark.nextOrder));
-
-  ext_bookmark->parent_order.reset(new std::string(lib_bookmark.parentOrder));
 
   if (!lib_bookmark.metaInfo.empty()) {
     ext_bookmark->meta_info = FromLibMetaInfo(lib_bookmark.metaInfo);

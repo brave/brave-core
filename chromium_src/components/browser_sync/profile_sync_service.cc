@@ -126,40 +126,6 @@ const bookmarks::BookmarkNode* FindByObjectId(bookmarks::BookmarkModel* model,
   return nullptr;
 }
 
-void GetPrevObjectId(const bookmarks::BookmarkNode* parent,
-                     int index,
-                     std::string* prev_object_id) {
-  DCHECK_GE(index, 0);
-  auto* prev_node = index == 0 ?
-    nullptr :
-    parent->GetChild(index - 1);
-
-  if (prev_node)
-    prev_node->GetMetaInfo("object_id", prev_object_id);
-}
-
-void GetOrder(const bookmarks::BookmarkNode* parent,
-              int index,
-              std::string* prev_order,
-              std::string* next_order,
-              std::string* parent_order) {
-  DCHECK_GE(index, 0);
-  auto* prev_node = index == 0 ?
-    nullptr :
-    parent->GetChild(index - 1);
-  auto* next_node = index == parent->child_count() - 1 ?
-    nullptr :
-    parent->GetChild(index + 1);
-
-  if (prev_node)
-    prev_node->GetMetaInfo("order", prev_order);
-
-  if (next_node)
-    next_node->GetMetaInfo("order", next_order);
-
-  parent->GetMetaInfo("order", parent_order);
-}
-
 std::unique_ptr<SyncRecord> BookmarkNodeToSyncBookmark(
     bookmarks::BookmarkModel* model,
     brave_sync::prefs::Prefs* brave_sync_prefs,
@@ -195,26 +161,8 @@ std::unique_ptr<SyncRecord> BookmarkNodeToSyncBookmark(
 
   std::string order;
   node->GetMetaInfo("order", &order);
+  DCHECK(!order.empty());
   bookmark->order = order;
-
-  int index = node->parent()->GetIndexOf(node);
-  std::string prev_object_id;
-  GetPrevObjectId(node->parent(), index, &prev_object_id);
-  bookmark->prevObjectId = prev_object_id;
-
-  std::string prev_order, next_order, parent_order;
-  GetOrder(node->parent(), index, &prev_order, &next_order, &parent_order);
-  if (parent_order.empty() && node->parent()->is_permanent_node()) {
-    if (node->parent() == model->bookmark_bar_node())
-      parent_order =
-        brave_sync_prefs->GetBookmarksBaseOrder() + '1';
-    else
-      parent_order =
-        brave_sync_prefs->GetBookmarksBaseOrder() + '2';
-  }
-  bookmark->prevOrder = prev_order;
-  bookmark->nextOrder = next_order;
-  bookmark->parentOrder = parent_order;
 
   std::string sync_timestamp;
   node->GetMetaInfo("sync_timestamp", &sync_timestamp);
@@ -564,21 +512,17 @@ void ProfileSyncService::OnSaveBookmarksBaseOrder(const std::string& order)  {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!order.empty());
   brave_sync_prefs_->SetBookmarksBaseOrder(order);
-  OnSyncReady();
-}
-
-void ProfileSyncService::OnSaveBookmarkOrder(const std::string& object_id,
-                                             const std::string& order) {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(!order.empty());
   bookmarks::BookmarkModel* model =
     // TODO(darkdh): find another way to obtain bookmark model
     // change introduced in 83b9663e3814ef7e53af5009d10033b89955db44
     static_cast<ChromeSyncClient*>(sync_client_.get())->GetBookmarkModel();
-  auto* node = FindByObjectId(model, object_id);
-  if (node) {
-    model->SetNodeMetaInfo(node, "order", order);
-  }
+  bookmarks::BookmarkNode* mutable_bookmark_bar_node =
+    const_cast<bookmarks::BookmarkNode*>(model->bookmark_bar_node());
+  model->SetNodeMetaInfo(mutable_bookmark_bar_node, "order", order + "1");
+  bookmarks::BookmarkNode* mutable_other_node =
+    const_cast<bookmarks::BookmarkNode*>(model->other_node());
+  model->SetNodeMetaInfo(mutable_other_node, "order", order + "2");
+  OnSyncReady();
 }
 
 void ProfileSyncService::OnSyncWordsPrepared(const std::string& words) {
@@ -797,25 +741,10 @@ void ProfileSyncService::OnNudgeSyncCycle(
     brave_sync::RecordsListPtr records) {
   for (auto& record : *records) {
     record->deviceId = brave_sync_prefs_->GetThisDeviceId();
-    if (record->has_bookmark()) {
-      auto* bookmark = record->mutable_bookmark();
-      if (bookmark->parentOrder.empty() &&
-          bookmark->parentFolderObjectId.empty()) {
-        // bookmark toolbar
-        if (!bookmark->hideInToolbar)
-          bookmark->parentOrder =
-            brave_sync_prefs_->GetBookmarksBaseOrder() + '1';
-        // other bookmarks
-        else
-          bookmark->parentOrder =
-            brave_sync_prefs_->GetBookmarksBaseOrder() + '2';
-      }
-    }
   }
   if (!records->empty())
     GetBraveSyncClient()->SendSyncRecords(
       brave_sync::jslib_const::SyncRecordType_BOOKMARKS, *records);
-  GetBraveSyncClient()->ClearOrderMap();
 }
 
 void ProfileSyncService::OnPollSyncCycle(GetRecordsCallback cb,

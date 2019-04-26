@@ -64,14 +64,9 @@
           "isFolder" : {"type": "boolean"},
           "parentFolderObjectId" : {"type" : "binary", "optional": true},
           "parentFolderObjectIdStr" : {"type" : "string", "optional": true},
-          "prevObjectId" : {"type" : "binary", "optional": true},
-          "prevObjectIdStr" : {"type" : "string", "optional": true},
           "fields" : { "type": "array", "items": {"type": "string" }, "optional": true },
           "hideInToolbar" : {"type": "boolean", "optional": true},
           "order" : {"type": "string", "optional": true},
-          "prevOrder" : {"type": "string", "optional": true},
-          "nextOrder" : {"type": "string", "optional": true},
-          "parentOrder" : {"type": "string", "optional": true},
           "metaInfo" : { "type": "array", "items": {"$ref" : "MetaInfo" }, "optional": true }
         }
       },
@@ -298,11 +293,6 @@
         "type": "function",
         "description": "Browser informs extension page to load js sync library.",
         "parameters": []
-      },
-      {
-        "name": "onClearOrderMap",
-        "type": "function",
-        "description": "Browser informs extension page all portions of bookmarks are sent, so it is time to clear the order map"
       }
     ],
     "functions": [
@@ -422,21 +412,6 @@
         "type": "function",
         "description": "Browser must save bookmarks base order",
         "parameters": [
-          {
-            "type": "string",
-            "name": "order"
-          }
-        ]
-      },
-      {
-        "name": "saveBookmarkOrder",
-        "type": "function",
-        "description": "Browser update order of certain object",
-        "parameters": [
-          {
-            "type": "string",
-            "name": "object_id"
-          },
           {
             "type": "string",
             "name": "order"
