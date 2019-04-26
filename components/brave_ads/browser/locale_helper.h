@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BROWSER_BRAVE_ADS_LOCALE_HELPER_H_
-#define BRAVE_COMPONENTS_BROWSER_BRAVE_ADS_LOCALE_HELPER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_LOCALE_HELPER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_LOCALE_HELPER_H_
 
 #include <string>
 
@@ -14,7 +14,7 @@
 
 namespace brave_ads {
 
-const char kDefaultLocale[] = "en-cUS";
+const char kDefaultLocale[] = "en-US";
 
 class LocaleHelper {
  public:
@@ -35,4 +35,4 @@ class LocaleHelper {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BROWSER_BRAVE_ADS_LOCALE_HELPER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_LOCALE_HELPER_H_
