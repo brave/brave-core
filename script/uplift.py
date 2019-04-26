@@ -134,6 +134,8 @@ def validate_channel(channel):
 
 def parse_args():
     parser = argparse.ArgumentParser(description='create PRs for all branches given branch against master')
+    parser.add_argument('-g', '--gpgsign',
+                        help='GPG sign GitHub commit', action='store_true')
     parser.add_argument('--owners',
                         help='comma seperated list of GitHub logins to mark as assignee',
                         default=None)
@@ -273,7 +275,7 @@ def main():
     branch = ''
     try:
         for channel in config.channels_to_process:
-            branch = create_branch(channel, top_level_base, remote_branches[channel], local_branch)
+            branch = create_branch(channel, top_level_base, remote_branches[channel], local_branch, args)
             local_branches[channel] = branch
             if channel == args.uplift_to:
                 break
@@ -322,7 +324,7 @@ def is_sha(ref):
         return False
 
 
-def create_branch(channel, top_level_base, remote_base, local_branch):
+def create_branch(channel, top_level_base, remote_base, local_branch, args):
     global config
 
     if is_nightly(channel):
@@ -372,7 +374,11 @@ def create_branch(channel, top_level_base, remote_base, local_branch):
             squash_message = 'Squash of commits from branch "' + str(local_branch) + '" to ' + channel
             if int(config.master_pr_number) > 0:
                 squash_message = 'Uplift of #' + str(config.master_pr_number) + ' (squashed) to ' + channel
-            execute(['git', 'commit', '-m', squash_message])
+            if args.gpgsign:
+                cmdline = ['git', 'commit', '-S', '-m', squash_message]
+            else:
+                cmdline = ['git', 'commit', '-m', squash_message]
+            execute(cmdline)
             squash_hash = execute(['git', 'log', '--pretty="%h"', '-n1'])
             print('- squashed all commits into ' + squash_hash + ' with message: "' + squash_message + '"')
 
