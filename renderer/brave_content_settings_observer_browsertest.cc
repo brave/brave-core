@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -46,7 +47,7 @@ const char kReferrerScript[] =
     "domAutomationController.send(document.referrer);";
 
 class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
-  public:
+ public:
     void SetUpOnMainThread() override {
       InProcessBrowserTest::SetUpOnMainThread();
 
@@ -317,7 +318,7 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
       return WaitForLoadStop(contents());
     }
 
-  private:
+ private:
     GURL url_;
     GURL iframe_url_;
     GURL image_url_;
@@ -425,7 +426,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   EXPECT_FALSE(isPointInPath);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPShieldsDown) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockFPShieldsDown) {
   BlockFingerprinting();
   ShieldsDown();
 
@@ -449,7 +451,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPShieldsDo
   EXPECT_TRUE(isPointInPath);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, Block3PFPGetImageData) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       Block3PFPGetImageData) {
   Block3PFingerprinting();
 
   ContentSettingsForOneType fp_settings;
@@ -472,7 +475,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, Block3PFPGetImag
   EXPECT_EQ(0, bufLen);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPGetImageData) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockFPGetImageData) {
   BlockFingerprinting();
 
   ContentSettingsForOneType fp_settings;
@@ -495,7 +499,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPGetImageD
   EXPECT_EQ(0, bufLen);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowFPGetImageData) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       AllowFPGetImageData) {
   AllowFingerprinting();
 
   ContentSettingsForOneType fp_settings;
@@ -545,7 +550,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   EXPECT_EQ(GetLastReferrer(iframe_url()), iframe_url().GetOrigin().spec());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockReferrer) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockReferrer) {
   BlockReferrers();
 
   // The initial navigation doesn't have a referrer.
@@ -567,7 +573,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockReferrer) {
   EXPECT_EQ(GetLastReferrer(iframe_url()), iframe_url().GetOrigin().spec());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowReferrer) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       AllowReferrer) {
   AllowReferrers();
 
   // The initial navigation doesn't have a referrer.
@@ -590,7 +597,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowReferrer) {
       url().spec().c_str());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockReferrerShieldsDown) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockReferrerShieldsDown) {
   BlockReferrers();
   ShieldsDown();
 
@@ -649,11 +657,12 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockCookies) {
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowCookies) {
   AllowCookies();
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), COOKIE_STR);
+  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(),
+               COOKIE_STR);
   ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
   ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
   EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(),
-      COOKIE_STR);
+               COOKIE_STR);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -670,7 +679,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), "");
   ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
   ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(), COOKIE_STR);
+  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(),
+               COOKIE_STR);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -699,7 +709,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), COOKIE_STR);
   ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
   ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(), COOKIE_STR);
+  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(),
+               COOKIE_STR);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -729,7 +740,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowScripts) {
   EXPECT_EQ(contents()->GetAllFrames().size(), 3u);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockScriptsShieldsDown) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockScriptsShieldsDown) {
   BlockScripts();
   ShieldsDown();
 
@@ -738,7 +750,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockScriptsShie
   EXPECT_EQ(contents()->GetAllFrames().size(), 3u);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockScriptsShieldsDownInOtherTab) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockScriptsShieldsDownInOtherTab) {
   // Turn off shields in a.com.
   ShieldsDown();
   // Block scripts in b.com.
