@@ -1,0 +1,13 @@
+diff --git a/components/sync_bookmarks/bookmark_change_processor.h b/components/sync_bookmarks/bookmark_change_processor.h
+index e11a2ddf641edc7098c06433fd22d86467e2aabf..9017b2b0ca991299af08e1341a35efd9a4f61253 100644
+--- a/components/sync_bookmarks/bookmark_change_processor.h
++++ b/components/sync_bookmarks/bookmark_change_processor.h
+@@ -238,6 +238,8 @@ class BookmarkChangeProcessor : public bookmarks::BookmarkModelObserver,
+   // Returns false if |node| should not be synced.
+   bool CanSyncNode(const bookmarks::BookmarkNode* node);
+ 
++  bool IsFirstLoadedFavicon(const bookmarks::BookmarkNode* node);
++
+   SEQUENCE_CHECKER(sequence_checker_);
+ 
+   // The bookmark model we are processing changes from.  Non-null when
