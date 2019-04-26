@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/io_thread.cc b/chrome/browser/io_thread.cc
+index 2f07dd20b5fba101cefebc5e8c6404277bc24591..28bcd595baaa9fa49f288f628b8ca5f5052428ed 100644
+--- a/chrome/browser/io_thread.cc
++++ b/chrome/browser/io_thread.cc
+@@ -236,6 +236,7 @@ net::URLRequestContextGetter* IOThread::system_url_request_context_getter() {
+     system_url_request_context_getter_ =
+         base::MakeRefCounted<SystemURLRequestContextGetter>(this);
+   } else {
++    if (base::FeatureList::IsEnabled(network::features::kNetworkService))
+     NOTREACHED();
+   }
+   return system_url_request_context_getter_.get();
