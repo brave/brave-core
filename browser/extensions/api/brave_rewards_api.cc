@@ -103,9 +103,9 @@ BraveRewardsDonateToTwitterUserFunction::Run() {
   if (rewards_service) {
     AddRef();
     std::map<std::string, std::string> args;
-    args["user_id"] = params->user_id;
-    args["name"] = params->name;
-    args["screen_name"] = params->screen_name;
+    args["user_id"] = params->tweet_meta_data.user_id;
+    args["name"] = params->tweet_meta_data.name;
+    args["screen_name"] = params->tweet_meta_data.screen_name;
     rewards_service->SaveTwitterPublisherInfo(
         args,
         base::Bind(&BraveRewardsDonateToTwitterUserFunction::
@@ -143,12 +143,17 @@ void BraveRewardsDonateToTwitterUserFunction::OnTwitterPublisherInfoSaved(
   auto params_dict = std::make_unique<base::DictionaryValue>();
   params_dict->SetString("publisherKey", publisher_info->id);
 
-  auto tweet_metadata_dict = std::make_unique<base::DictionaryValue>();
-  tweet_metadata_dict->SetString("name", publisher_info->name);
-  tweet_metadata_dict->SetString("screenName", params->screen_name);
-  tweet_metadata_dict->SetString("tweetId", params->tweet_id);
-  tweet_metadata_dict->SetString("tweetText", params->tweet_text);
-  params_dict->SetDictionary("tweetMetaData", std::move(tweet_metadata_dict));
+  auto tweet_meta_data_dict = std::make_unique<base::DictionaryValue>();
+  tweet_meta_data_dict->SetString("name", publisher_info->name);
+  tweet_meta_data_dict->SetString("screenName",
+                                  params->tweet_meta_data.screen_name);
+  tweet_meta_data_dict->SetString("userId", params->tweet_meta_data.user_id);
+  tweet_meta_data_dict->SetString("tweetId", params->tweet_meta_data.tweet_id);
+  tweet_meta_data_dict->SetInteger("tweetTimestamp",
+                                   params->tweet_meta_data.tweet_timestamp);
+  tweet_meta_data_dict->SetString("tweetText",
+                                  params->tweet_meta_data.tweet_text);
+  params_dict->SetDictionary("tweetMetaData", std::move(tweet_meta_data_dict));
 
   ::brave_rewards::OpenDonationDialog(contents, std::move(params_dict));
 

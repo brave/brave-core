@@ -364,24 +364,34 @@
             "type": "integer"
           },
           {
-            "name": "userId",
-            "type": "string"
-          },
-          {
-            "name": "name",
-            "type": "string"
-          },
-          {
-            "name": "screenName",
-            "type": "string"
-          },
-          {
-            "name": "tweetId",
-            "type": "string"
-          },
-          {
-            "name": "tweetText",
-            "type": "string"
+            "name": "tweetMetaData",
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "description": "User ID of tweet author"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of tweet author"
+              },
+              "screenName": {
+                "type": "string",
+                "description": "Twitter handle of tweet author"
+              },
+              "tweetId": {
+                "type": "string",
+                "description": "Unique tweet ID"
+              },
+              "tweetTimestamp": {
+                "type": "number",
+                "description": "Timestamp (in milliseconds) of tweet"
+              },
+              "tweetText": {
+                "type": "string",
+                "description": "Textual contents of tweet"
+              }
+            }
           }
         ]
       },

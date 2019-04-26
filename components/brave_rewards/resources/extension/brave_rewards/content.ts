@@ -13,11 +13,17 @@ const getTweetMetaData = (tweet: Element): RewardsDonate.TweetMetaData | null =>
   if (!tweetTextElements || tweetTextElements.length === 0) {
     return null
   }
+  const tweetTimestampElements = tweet.getElementsByClassName('js-short-timestamp')
+  if (!tweetTimestampElements || tweetTimestampElements.length === 0) {
+    return null
+  }
+  const tweetTimestamp = tweetTimestampElements[0].getAttribute('data-time-ms') || ''
   return {
     name: tweet.getAttribute('data-name') || '',
     screenName: tweet.getAttribute('data-screen-name') || '',
     userId: tweet.getAttribute('data-user-id') || '',
     tweetId: tweet.getAttribute('data-tweet-id') || '',
+    tweetTimestamp: parseInt(tweetTimestamp, 10) || 0,
     tweetText: tweetTextElements[0].textContent || ''
   }
 }
@@ -34,7 +40,7 @@ const createBraveTipAction = (tweet: Element) => {
   braveTipButton.onclick = function (event) {
     const tweetMetaData = getTweetMetaData(tweet)
     if (tweetMetaData) {
-      const msg = { type: 'donateToTwitterUser', ...tweetMetaData }
+      const msg = { type: 'donateToTwitterUser', tweetMetaData: tweetMetaData }
       chrome.runtime.sendMessage(msg)
     }
   }
