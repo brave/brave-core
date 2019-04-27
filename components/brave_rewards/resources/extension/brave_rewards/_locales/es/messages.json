@@ -32,7 +32,7 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Prepárate para la experiencia del nuevo Internet.",
+    "message": "Prepárate para experimentar el próximo Internet.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -194,7 +194,7 @@
     "description": "Notification title when we ask user to backup wallet"
   },
   "backupWalletNotification": {
-    "message": "Haga una copia de seguridad del monedero de Brave.",
+    "message": "Haz una copia de seguridad de tu Brave Wallet.",
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
@@ -354,7 +354,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {
-    "message": "Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.",
+    "message": "Gana al ver anuncios que respetan la privacidad y entrégalo para ayudar a los creadores de contenido que te gustan.",
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
@@ -366,15 +366,15 @@
     "description": "Privacy Policy"
   },
   "serviceText": {
-    "message": "By clicking 'Enable Brave Rewards', you indicate that you have read and agree to the",
+    "message": "Al hacer clic en \"Activar premios a la valentía\", indicas que has leído y aceptas los",
     "description": "Terms of service main text"
   },
   "termsOfService": {
-    "message": "Terms of Service",
+    "message": "Condiciones de uso",
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "Welcome Back!",
+    "message": "¡Bienvenido/a!",
     "description": "Title message for wallet disabled panel"
   }
 }

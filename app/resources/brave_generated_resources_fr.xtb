@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">Paiements Brave</translation>
 <translation id="3489524616427966890">Ouvrir les fenêtres et les onglets</translation>
 <translation id="3699882589215410581">Installer et exécuter Widevine</translation>
+<translation id="8053096063396012732">Installer Widevine</translation>
+<translation id="4840334696217618631">Redémarrez le navigateur pour activer Widevine</translation>
 <translation id="8410111618231938546">Google Widevine fait partie du code de Gestion des droits numériques (GDN) que nous, Brave Software, ne pouvons pas inspecter et dont nous ne sommes pas propriétaires. Le code de Google Widevine est téléchargé à partir des serveurs de Google, et non de nos serveurs. Il n'est téléchargé que lorsque vous activez cette option. Nous n'encourageons pas l'utilisation de GDN, mais respectons le choix de l'utilisateur et reconnaissons que certains utilisateurs de Brave souhaiteraient utiliser des services pour lesquels cela est nécessaire.
 
 En installant cette extension, vous acceptez les conditions d'utilisation de Google Widevine. Vous acceptez le fait que Brave ne peut être tenu responsable pour aucun dommage ou aucune perte en rapport avec votre utilisation de Google Widevine.</translation>
@@ -29,6 +31,8 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="7543906827780734027">Brave n'a pas encore analysé cette extension - elle pourrait être malveillante. Ajouter quand même "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ?</translation>
 <translation id="2044383478723007273">Les couleurs de Brave</translation>
 <translation id="5341901626640816374">Utiliser la barre d'emplacement large</translation>
+<translation id="6123134130710658846">Masquer le bouton Brave Rewards</translation>
+<translation id="7635711399568194460">Masque le bouton Brave Rewards dans la barre d’emplacement lorsque Brave Rewards n’est pas activé.</translation>
 <translation id="7965178729203412357">Nouvelle identité Tor</translation>
 <translation id="8784924142044142231">Quitter Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -42,12 +46,17 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="3155170474926428993">Lanceur Tor</translation>
 <translation id="2515126961943087659">Service de publicités BAT</translation>
 <translation id="7924918279836988121">Service Bat Ledger</translation>
-<translation id="7372129767729198111">Boucliers Brave par défaut</translation>
-<translation id="8029018702721078742">Contrôle des publicités</translation>
-<translation id="3544462288910360084">Contrôle des cookies</translation>
+<translation id="768979911142179781">Boucliers Brave par défaut</translation>
+<translation id="9185018653595759199">Boutons et connexions des réseaux sociaux</translation>
+<translation id="6894114137169961038">Contrôle des publicités</translation>
+<translation id="1096802265930928584">Contrôle des cookies</translation>
 <translation id="8919235146866304148">Protection contre la prise d'empreintes</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Blocage de script</translation>
+<translation id="7498695072878479744">Autoriser les boutons de connexion Google sur les sites tiers</translation>
+<translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
+<translation id="5165042248369837294">Autoriser les tweets intégrés de Twitter</translation>
+<translation id="958971637207126733">Autoriser les intégrations LinkedIn</translation>
 <translation id="6067014455220527258">Bloquer les publicités</translation>
 <translation id="6985711843506827936">Autoriser les publicités et le suivi</translation>
 <translation id="6132506775968708399">Bloquer les cookies tiers</translation>
@@ -63,10 +72,16 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="5825943197137337319">Interface publique par défaut uniquement</translation>
 <translation id="1689062823386843231">Désactiver l'UDP pas en proxy</translation>
 <translation id="6645631466045614531">Accédez à la synchronisation via</translation>
+<translation id="1807246157184219062">Léger</translation>
+<translation id="2414886740292270097">Sombre</translation>
+<translation id="1360441190790440400">Identique à Linux</translation>
+<translation id="1336940801687497203">Identique à Windows</translation>
+<translation id="8721331068159819483">Identique à MacOS</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Utilise WebTorrent pour afficher les torrents directement dans le navigateur. Compatible avec les fichiers torrent et les liens magnétiques.</translation>
 <translation id="6554397389149987360">Utilise le composant Hangouts pour activer le partage d'écran et d'autres fonctionnalités dans le navigateur.</translation>
-<translation id="6916590542764765824">Gérer les extensions</translation>
+<translation id="8137559199583651773">Gérer les extensions</translation>
 <translation id="4928988318462976765">Magasin d'extensions Web</translation>
 <translation id="9181207987584064303">Afficher dans le magasin d'extensions Web</translation>
+<translation id="4846154056248462491">À la sortie</translation>
 </translationbundle>

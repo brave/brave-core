@@ -28,35 +28,35 @@
     "description": "Message telling the user that shields are disabled"
   },
   "itemsBlocked": {
-    "message": "Items blocked",
+    "message": "العناصر المحجوبة",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Item blocked",
+    "message": "العنصر المحجوب",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
-    "message": "and",
+    "message": "و",
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "connections upgraded",
+    "message": "تم تحديث الاتصالات",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "connection upgraded",
+    "message": "تم تحديث الاتصال",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "3rd-party trackers blocked",
+    "message": "المتعقبات من الأطراف الثالثة المحجوبة",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
+    "message": "تم تحديث الاتصالات إلى بروتوكول HTTPS المحمي",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
+    "message": "تم تحديث الاتصال إلى بروتوكول HTTPS المحمي",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
@@ -132,7 +132,7 @@
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Change global shield defaults",
+    "message": "تغيير الإعدادات الافتراضية الشاملة للحماية",
     "description": "Message for the button action linking to the settings page"
   }
 }

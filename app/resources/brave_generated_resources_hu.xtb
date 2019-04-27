@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">Brave kifizetések</translation>
 <translation id="3489524616427966890">Ablakok és lapok megnyitása</translation>
 <translation id="3699882589215410581">Widevine telepítése és futtatása</translation>
+<translation id="8053096063396012732">Widevine telepítése</translation>
+<translation id="4840334696217618631">Widevine engedélyezéséhez indítsa újra a böngészőt</translation>
 <translation id="8410111618231938546">A Google Widevine egy digitális jogkezelő (DRM - Digital Rights Management) kód, amelyet mi a Brave Software vállalatnál nem birtokolunk és nem vizsgálunk meg. A Google Widevine kódot Google szerverektől töltjük be, nem pedig saját szervereinkről. Csak akkor töltődik be, ha engedélyezi ezt az opciót. Javasoljuk a DRM használatát, de tiszteletben tartjuk a felhasználók döntését és elismerjük, hogy néhány Brave felhasználó olyan szolgáltatásokat szeretne használni, amelyekhez ez szükséges.
 
 Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhasználási feltételeit. Beleegyezik abba, hogy a Brave nem felelős semmilyen kárért vagy veszteségért, amely a Google Widevine használatával kapcsolatban keletkezik.</translation>
@@ -29,6 +31,8 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="7543906827780734027">A Brave még nem vizsgálta meg ezt a kiterjesztést - lehetséges, hogy rosszindulatú. Mindenképp hozzáadod ezt: "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Brave színek</translation>
 <translation id="5341901626640816374">Széles helyszínsáv használata</translation>
+<translation id="6123134130710658846">Brave jutalmak gomb elrejtése</translation>
+<translation id="7635711399568194460">Elrejti a Brave Jutalmak gombot a helysávban, amikor a Brave Jutalmak nincs engedélyezve.</translation>
 <translation id="7965178729203412357">Új Tor azonosító</translation>
 <translation id="8784924142044142231">Kilépés a Tor böngészőből</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -42,12 +46,17 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="3155170474926428993">Tor indítóprogram</translation>
 <translation id="2515126961943087659">BAT hirdetési szolgáltatás</translation>
 <translation id="7924918279836988121">Bat főkönyvi szolgáltatás</translation>
-<translation id="7372129767729198111">Brave védelem beállítások</translation>
-<translation id="8029018702721078742">Hirdetések beállítása</translation>
-<translation id="3544462288910360084">Sütik szabályzása</translation>
+<translation id="768979911142179781">Brave védelem beállítások</translation>
+<translation id="9185018653595759199">Közösségi gombok és belépők</translation>
+<translation id="6894114137169961038">Hirdetések beállítása</translation>
+<translation id="1096802265930928584">Sütik szabályzása</translation>
 <translation id="8919235146866304148">Ujjlenyomat-leolvasási védelem</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Script blokkolása</translation>
+<translation id="7498695072878479744">Google bejelentkezési gombok engedélyezése külső felek oldalain</translation>
+<translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
+<translation id="5165042248369837294">Twitteren beágyazott tweetek engedélyezése</translation>
+<translation id="958971637207126733">LinkedIn beágyazások engedélyezése</translation>
 <translation id="6067014455220527258">Hirdetések blokkolása</translation>
 <translation id="6985711843506827936">Hirdetések és nyomkövetés engedélyezése</translation>
 <translation id="6132506775968708399">Harmadik fél sütijeinek blokkolása</translation>
@@ -63,10 +72,16 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="5825943197137337319">Kizárólag alapértelmezett publikus interfész</translation>
 <translation id="1689062823386843231">Proxy nélküli UDP letiltása</translation>
 <translation id="6645631466045614531">Szinkronizálás elérési útja</translation>
+<translation id="1807246157184219062">Világos</translation>
+<translation id="2414886740292270097">Sötét</translation>
+<translation id="1360441190790440400">Olyan, mint a Linux</translation>
+<translation id="1336940801687497203">Olyan, mint a Windows</translation>
+<translation id="8721331068159819483">Olyan, mint a MacOS</translation>
 <translation id="6786747875388722282">Kiterjesztések</translation>
 <translation id="2896916411183256228">WebTorrentet használ torrentek megjelenítésére közvetlenül a böngészőben. Támogatja a torrentfájlokat és mágneslinkeket.</translation>
 <translation id="6554397389149987360">Hangouts komponenseket használ, hogy lehetővé tegye a képernyőmegosztást és más funkciókat a böngészőben.</translation>
-<translation id="6916590542764765824">Kiterjesztések rendezése</translation>
+<translation id="8137559199583651773">Kiterjesztések rendezése</translation>
 <translation id="4928988318462976765">Webes Kiterjesztések Áruháza</translation>
 <translation id="9181207987584064303">Megtekintés a Webes Kiterjesztések Áruházában</translation>
+<translation id="4846154056248462491">Kilépéskor</translation>
 </translationbundle>

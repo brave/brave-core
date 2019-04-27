@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">Brave-betalningar</translation>
 <translation id="3489524616427966890">Öppna fönster och flikar</translation>
 <translation id="3699882589215410581">Installera och kör Wildwine</translation>
+<translation id="8053096063396012732">Installera Widevine</translation>
+<translation id="4840334696217618631">Starta om webbläsaren för att aktivera Widevine</translation>
 <translation id="8410111618231938546">Google Widevine är ett stycke kod för Digital Rights Management (DRM) som vi på Brave Software varken äger eller kan inspektera. Koden för Google Wideline laddas från Googles servrar, inte från våra servrar. Den laddas endast när du aktiverar det här valet. Vi avråder från användning av DRM, men vi respekterar användarens val och tillstår att vissa Brave-användare vill använda tjänster som kräver detta.
 
 Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för Google Widevine. Du accepterar att Brave inte kan hållas ansvarig för skada eller förlust till följd av din användning av Google Widevine.</translation>
@@ -29,6 +31,8 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="7543906827780734027">Brave har inte granskat det här tillägget ännu - det kan vara skadigt. Lägg till "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ändå?</translation>
 <translation id="2044383478723007273">Bravefärger</translation>
 <translation id="5341901626640816374">Använd brett adressfält</translation>
+<translation id="6123134130710658846">Dölj Brave Rewards-knappen</translation>
+<translation id="7635711399568194460">Döljer Brave Rewards-knappen i adressfältet när Brave Rewards inte är aktivt</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8784924142044142231">Lämna Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -42,12 +46,17 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="2515126961943087659">BAT-annonstjänst</translation>
 <translation id="7924918279836988121">Bat huvudbokstjänst</translation>
-<translation id="7372129767729198111">Standardinställningar för Bravesköldar</translation>
-<translation id="8029018702721078742">Annonskontroll</translation>
-<translation id="3544462288910360084">Kontroll av cookies</translation>
+<translation id="768979911142179781">Standardinställningar för Bravesköldar</translation>
+<translation id="9185018653595759199">Sociala knappar och inloggningar</translation>
+<translation id="6894114137169961038">Annonskontroll</translation>
+<translation id="1096802265930928584">Kontroll av cookies</translation>
 <translation id="8919235146866304148">Skydd mot signaturinsamling</translation>
 <translation id="520895744850022668">HTTPS överallt</translation>
 <translation id="5259716416204774556">Scriptblockering</translation>
+<translation id="7498695072878479744">Tillåt Googles inloggningsknappar på sajter från tredje part</translation>
+<translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
+<translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
+<translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
 <translation id="6067014455220527258">Blockera annonser</translation>
 <translation id="6985711843506827936">Tillåt annonser och spårning</translation>
 <translation id="6132506775968708399">Blockera tredjepartscookies</translation>
@@ -63,10 +72,16 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="5825943197137337319">Endast offentligt standardgränssnitt</translation>
 <translation id="1689062823386843231">Inaktivera icke-proxad UDP</translation>
 <translation id="6645631466045614531">Öppna synkning via</translation>
+<translation id="1807246157184219062">Ljus</translation>
+<translation id="2414886740292270097">Mörk</translation>
+<translation id="1360441190790440400">Samma som Linux</translation>
+<translation id="1336940801687497203">Samma som Windows</translation>
+<translation id="8721331068159819483">Samma som MacOS</translation>
 <translation id="6786747875388722282">Tillägg</translation>
 <translation id="2896916411183256228">Använder WebTorrent för att visa torrenter direkt i webbläsaren. Stödjer torrentfiler och magnetlänkar.</translation>
 <translation id="6554397389149987360">Använder komponenten Hangouts för att aktivera skärmdelning och andra funktioner i webbläsaren.</translation>
-<translation id="6916590542764765824">Hantera tillägg</translation>
+<translation id="8137559199583651773">Hantera tillägg</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Visa i Web Extensions Store</translation>
+<translation id="4846154056248462491">Vid avslut</translation>
 </translationbundle>

@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">Pagos de Brave</translation>
 <translation id="3489524616427966890">Abrir ventanas y pestañas</translation>
 <translation id="3699882589215410581">Instalar y ejecutar Widevine</translation>
+<translation id="8053096063396012732">Instalar Widevine</translation>
+<translation id="4840334696217618631">Reiniciar el navegador para habilitar Widevine</translation>
 <translation id="8410111618231938546">El código de Google Wide Vine se carga desde los servidores de Google, no desde nuestros servidores. Se carga solo cuando habilita esta opción. Desaconsejamos el uso de DRM, pero respetamos la elección del usuario y reconocemos que algunos usuarios de Brave desean utilizar los servicios cuando son requeridos.
 
 Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al instalar esta extensión aceptas que Brave no es responsable de los daños o pérdidas relacionadas con el uso de Google Widevine.</translation>
@@ -29,6 +31,8 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="7543906827780734027">Brave aún no ha revisado esta extensión; podría ser maliciosa. ¿Desea instalar "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" de todos modos?</translation>
 <translation id="2044383478723007273">Colores de Brave</translation>
 <translation id="5341901626640816374">Usar la barra de ubicación amplia</translation>
+<translation id="6123134130710658846">Ocultar botón de Recompensas Brave</translation>
+<translation id="7635711399568194460">Oculta el botón de Recompensas Brave en la barra de ubicación cuando las Recompensas Brave no están habilitadas</translation>
 <translation id="7965178729203412357">Nueva identidad de Tor</translation>
 <translation id="8784924142044142231">Salir de Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -42,12 +46,17 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="3155170474926428993">Selector de Tor</translation>
 <translation id="2515126961943087659">Servicio publicitario BAT</translation>
 <translation id="7924918279836988121">Servicio de contabilidad de BAT</translation>
-<translation id="7372129767729198111">Valores predeterminados de los escudos de Brave</translation>
-<translation id="8029018702721078742">Control de publicidad</translation>
-<translation id="3544462288910360084">Control de cookies</translation>
+<translation id="768979911142179781">Valores predeterminados de los escudos de Brave</translation>
+<translation id="9185018653595759199">Botones de redes sociales e inicios de sesión</translation>
+<translation id="6894114137169961038">Control de publicidad</translation>
+<translation id="1096802265930928584">Control de cookies</translation>
 <translation id="8919235146866304148">Protección de huellas digitales</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Bloqueo de scripts</translation>
+<translation id="7498695072878479744">Permitir botones de inicio de sesión de Google en sitios externos</translation>
+<translation id="863171915776379000">Permitir publicaciones integradas e inicios de sesión de Facebook</translation>
+<translation id="5165042248369837294">Permitir tuits integrados de Twitter</translation>
+<translation id="958971637207126733">Permitir publicaciones integradas de LinkedIn</translation>
 <translation id="6067014455220527258">Bloquear publicidades</translation>
 <translation id="6985711843506827936">Permitir publicidades y rastro</translation>
 <translation id="6132506775968708399">Bloquear cookies de terceros</translation>
@@ -63,10 +72,16 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="5825943197137337319">Solo la interfaz pública predeterminada</translation>
 <translation id="1689062823386843231">Desactivar UDP sin proxy</translation>
 <translation id="6645631466045614531">Acceda a Sync a través de</translation>
+<translation id="1807246157184219062">Claro</translation>
+<translation id="2414886740292270097">Oscuro</translation>
+<translation id="1360441190790440400">Igual a Linux</translation>
+<translation id="1336940801687497203">Igual a Windows</translation>
+<translation id="8721331068159819483">Igual a MacOS</translation>
 <translation id="6786747875388722282">Extensiones</translation>
 <translation id="2896916411183256228">Usa WebTorrnet para mostrar torrents directamente en el navegador. Admite archivos torrent y enlaces magnéticos.</translation>
 <translation id="6554397389149987360">Usa el componente Hangouts para compartir la pantalla y habilitar otras funciones en el navegador.</translation>
-<translation id="6916590542764765824">Administrar extensiones</translation>
+<translation id="8137559199583651773">Administrar extensiones</translation>
 <translation id="4928988318462976765">Tienda virtual de extensiones</translation>
 <translation id="9181207987584064303">Ver en la Tienda virtual de extensiones</translation>
+<translation id="4846154056248462491">Al salir</translation>
 </translationbundle>
