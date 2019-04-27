@@ -276,6 +276,7 @@ ledger::WalletInfo BatClient::WalletPropertiesToWalletInfo(
     grant.altcurrency = properties.grants_[i].altcurrency;
     grant.probi = properties.grants_[i].probi;
     grant.expiryTime = properties.grants_[i].expiryTime;
+    grant.type = properties.grants_[i].type;
 
     info.grants_.push_back(grant);
   }
