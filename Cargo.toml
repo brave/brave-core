@@ -19,3 +19,9 @@ adblock = { path = "../adblock-rust" }
 
 [features]
 cbindgen = []
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
