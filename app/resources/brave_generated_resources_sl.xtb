@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">Plačila Brave Payments</translation>
 <translation id="3489524616427966890">Odpri okna in zavihke</translation>
 <translation id="3699882589215410581">Namesti in zaženi Widevine</translation>
+<translation id="8053096063396012732">Namesti Widevine</translation>
+<translation id="4840334696217618631">Znova zaženite brskalnik, da omogočite Widevine</translation>
 <translation id="8410111618231938546">Google Widevine je del kode za upravljanje digitalnih pravic (DRM), ki ni v lasti družbe Brave Software in ga ne moremo pregledati. Koda Google Widevine je naložena iz strežnikov Google, ne iz naših strežnikov. Naloži se le, če omogočite to možnost. Uporabo DRM-ja odsvetujemo, a kljub temu spoštujemo izbiro uporabnika in se zavedamo, da nekateri uporabniki Brave želijo uporabljati storitve, za katere je potrebna uporaba DRM-ja.
 
 Če namestite to razširitev, se strinjate s pogoji uporabe Google Widevine. S tem soglašate, da družba Brave ni odgovorna za morebitno škodo ali izgube v zvezi z vašo uporabo orodja Google Widevine.</translation>
@@ -29,6 +31,8 @@
 <translation id="7543906827780734027">Brave še ni pregledal te razširitve – morda je zlonamerna. Želite vseeno dodati "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Barve brskalnika Brave</translation>
 <translation id="5341901626640816374">Uporabi široko vrstico z lokacijo</translation>
+<translation id="6123134130710658846">Skrij gumb Brave Rewards</translation>
+<translation id="7635711399568194460">Skrije gumb Brave Rewards v vrstici z lokacijo, kadar storitev Brave Rewards ni omogočena</translation>
 <translation id="7965178729203412357">Nova identiteta Tor</translation>
 <translation id="8784924142044142231">Izhod iz brskalnika Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -42,12 +46,17 @@
 <translation id="3155170474926428993">Zaganjalnik brskalnika Tor</translation>
 <translation id="2515126961943087659">Storitev oglasov BAT</translation>
 <translation id="7924918279836988121">Storitev poslovne knjige Bat</translation>
-<translation id="7372129767729198111">Privzete nastavitve ščita brskalnika Brave</translation>
-<translation id="8029018702721078742">Upravljanje oglasov</translation>
-<translation id="3544462288910360084">Upravljanje piškotkov</translation>
+<translation id="768979911142179781">Privzete nastavitve ščita brskalnika Brave</translation>
+<translation id="9185018653595759199">Gumbi družbenih omrežij in prijava vanje</translation>
+<translation id="6894114137169961038">Upravljanje oglasov</translation>
+<translation id="1096802265930928584">Upravljanje piškotkov</translation>
 <translation id="8919235146866304148">Zaščita proti ustvarjanju prstnih odtisov</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Blokiranje skripta</translation>
+<translation id="7498695072878479744">Dovoli gumbe za prijavo Google na spletnih mestih drugih ponudnikov</translation>
+<translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
+<translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
+<translation id="958971637207126733">Dovoli vdelane vsebine z LinkedIna</translation>
 <translation id="6067014455220527258">Blokiraj oglase</translation>
 <translation id="6985711843506827936">Dovoli oglase in sledenje</translation>
 <translation id="6132506775968708399">Blokiraj piškotke tretjih oseb</translation>
@@ -63,10 +72,16 @@
 <translation id="5825943197137337319">Samo privzeti javni vmesnik</translation>
 <translation id="1689062823386843231">Onemogoči UDP, ki ne poteka prek strežnika proxy</translation>
 <translation id="6645631466045614531">Dostop do sinhronizacije prek</translation>
+<translation id="1807246157184219062">Svetlo</translation>
+<translation id="2414886740292270097">Temno</translation>
+<translation id="1360441190790440400">Enako kot Linux</translation>
+<translation id="1336940801687497203">Enako kot Windows</translation>
+<translation id="8721331068159819483">Enako kot MacOs</translation>
 <translation id="6786747875388722282">Razširitve</translation>
 <translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
 <translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>
-<translation id="6916590542764765824">Upravljanje razširitev</translation>
+<translation id="8137559199583651773">Upravljanje razširitev</translation>
 <translation id="4928988318462976765">Trgovina s spletnimi razširitvami</translation>
 <translation id="9181207987584064303">Ogled v trgovini s spletnimi razširitvami</translation>
+<translation id="4846154056248462491">Ob izhodu</translation>
 </translationbundle>

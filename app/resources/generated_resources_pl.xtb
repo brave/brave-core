@@ -1382,6 +1382,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8713570323158206935">Wyślij <ph name="BEGIN_LINK1"/>informacje o systemie<ph name="END_LINK1"/></translation>
 <translation id="6395423953133416962">Przesyłaj <ph name="BEGIN_LINK1"/>informacje o systemie<ph name="END_LINK1"/> i <ph name="BEGIN_LINK2"/>dane<ph name="END_LINK2"/></translation>
 <translation id="6270770586500173387">Wysyłaj <ph name="BEGIN_LINK1"/>informacje o systemie i aplikacjach<ph name="END_LINK1"/> oraz <ph name="BEGIN_LINK2"/>dane<ph name="END_LINK2"/></translation>
+<translation id="3894123633473837029">Dołącz najnowszą historię Asystenta przez Sherlog. Może to obejmować Twoją tożsamość, lokalizację i informacje o debugowaniu. <ph name="BEGIN_LINK">&lt;a href="#" id="assistant-logs-info-link"&gt;</ph>Dowiedz się więcej<ph name="END_LINK">&lt;/a&gt;</ph></translation>
 <translation id="8329196515830093443">Plik zostanie wysłany do Brave Software w celu debugowania</translation>
 <translation id="8227119283605456246">Załącz plik</translation>
 <translation id="5367091008316207019">Odczytuję plik..</translation>

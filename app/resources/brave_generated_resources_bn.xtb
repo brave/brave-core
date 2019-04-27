@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">Brave পেমেন্ট</translation>
 <translation id="3489524616427966890">উইন্ডো এবং ট্যাবগুলি খুলুন</translation>
 <translation id="3699882589215410581">Widevine ইনস্টল করুন এবং চালান</translation>
+<translation id="8053096063396012732">Widevine ইনস্টল করুন</translation>
+<translation id="4840334696217618631">Widevine সক্রিয় করতে ব্রাউজার রিস্টার্ট করুন</translation>
 <translation id="8410111618231938546">Google Widevine একটি ডিজিটাল রাইটস ম্যানেজমেন্ট (DRM) কোড যা Brave সফ্টওয়ের মালিকানাধীন নয় এবং আমরা তা পরীক্ষাও করতে পারি না| Google Widevine Google সার্ভার থেকে লোড করা হয়, আমাদের সার্ভার থেকে নয়| এটি শুধু তখনি লোড করা হয় যখন আপনি এই বিকল্পটি সক্ষম করেন| আমরা DRM ব্যবহার করতে বারণ করি, কিন্তু আমরা ব্যবহারকারীদের পছন্দের সম্মান করি এবং স্বীকার করি যে কিছু Brave ব্যবহারকারী কিছু পরিষেবা ব্যবহার করতে চাইবেন যার জন্য এর প্রয়োজন হবে|
 
 এই এক্সটেনশনটি ইনস্টল করে আপনি Google Widevine এর ব্যবহারের শর্তাবলীর সাথে সম্মত হচ্ছেন| আপনি সম্মত হচ্ছেন আপনার Google Widevine এর ব্যবহারের সাথে সম্পর্কিত কোনো ক্ষতি বা লোকসানের জন্য Brave দায়ী নয়|</translation>
@@ -29,6 +31,8 @@
 <translation id="7543906827780734027">Brave এখনও পর্যন্ত এটি পর্যালোচনা করেনি - এটি ক্ষতিকারক হতে পারে। যে কোনোভাবে "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" যোগ করবেন?</translation>
 <translation id="2044383478723007273">Brave রঙ</translation>
 <translation id="5341901626640816374">ওয়াইড লোকেশন বার ব্যবহার করুন</translation>
+<translation id="6123134130710658846">Brave পুরস্কারের বোতাম লুকান</translation>
+<translation id="7635711399568194460">Brave পুরস্কারগুলি সক্রিয় করা না থাকলে লোকেশন বারে Brave পুরস্কারের বোতামটি লুকায়</translation>
 <translation id="7965178729203412357">নতুন টর পরিচিতি</translation>
 <translation id="8784924142044142231">টর থেকে প্রস্থান করুন</translation>
 <translation id="5410152065859052603">টর</translation>
@@ -42,12 +46,17 @@
 <translation id="3155170474926428993">টর লঞ্চার</translation>
 <translation id="2515126961943087659">Bat বিজ্ঞাপন পরিষেবা</translation>
 <translation id="7924918279836988121">Bat Ledger পরিষেবা</translation>
-<translation id="7372129767729198111">Brave শিল্ডস ডিফল্ট</translation>
-<translation id="8029018702721078742">বিজ্ঞাপন নিয়ন্ত্রণ</translation>
-<translation id="3544462288910360084">কুকি নিয়ন্ত্রণ</translation>
+<translation id="768979911142179781">Brave শিল্ডস ডিফল্ট</translation>
+<translation id="9185018653595759199">সোশ্যাল বোতাম এবং লগইনসমূহ</translation>
+<translation id="6894114137169961038">বিজ্ঞাপন নিয়ন্ত্রণ</translation>
+<translation id="1096802265930928584">কুকি নিয়ন্ত্রণ</translation>
 <translation id="8919235146866304148">আঙ্গুলের ছাপের নিরাপত্তা</translation>
 <translation id="520895744850022668">HTTPS সর্বত্র</translation>
 <translation id="5259716416204774556">স্ক্রিপ্ট অবরুদ্ধ করা</translation>
+<translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে Google লগইন বোতামগুলির অনুমতি দিন</translation>
+<translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
+<translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
+<translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
 <translation id="6067014455220527258">বিজ্ঞাপন অবরুদ্ধ করুন</translation>
 <translation id="6985711843506827936">বিজ্ঞাপন এবং ট্র্যাকিং এর অনুমতি দিন</translation>
 <translation id="6132506775968708399">3য় পক্ষের কুকিগুলি অবরুদ্ধ করুন</translation>
@@ -63,10 +72,16 @@
 <translation id="5825943197137337319">শুধু ডিফল্ট সর্বজনীন ইন্টারফেস</translation>
 <translation id="1689062823386843231">নন-প্রক্সি UDP অক্ষম করুন</translation>
 <translation id="6645631466045614531">এর মাধ্যমে সিঙ্ক অ্যাক্সেস করুন</translation>
+<translation id="1807246157184219062">আলো</translation>
+<translation id="2414886740292270097">অন্ধকার</translation>
+<translation id="1360441190790440400">Linux এর মতো</translation>
+<translation id="1336940801687497203">Windows এর মতো</translation>
+<translation id="8721331068159819483">MacOS এর মতো</translation>
 <translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
 <translation id="6554397389149987360">ব্রাউজারে স্ক্রিন শেয়ারিং এবং অন্যান্য বৈশিষ্ট্য সক্ষম করতে Hangouts উপাদানগুলি ব্যবহার করে।</translation>
-<translation id="6916590542764765824">এক্সটেনশনগুলি পরিচালনা করুন</translation>
+<translation id="8137559199583651773">এক্সটেনশনগুলি পরিচালনা করুন</translation>
 <translation id="4928988318462976765">ওয়েব এক্সটেনশন স্টোর</translation>
 <translation id="9181207987584064303">ওয়েব এক্সটেনশন স্টোরে দেখুন</translation>
+<translation id="4846154056248462491">প্রস্থানের সময়</translation>
 </translationbundle>

@@ -3160,6 +3160,7 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="6352773953037195952">Kõige kõrgem</translation>
 <translation id="3677657024345889897">Kõige vaiksem</translation>
 <translation id="167160931442925455">Kõige valjem</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (vaikeseade)</translation>
 <translation id="3602290021589620013">Eelvaade</translation>
 <translation id="7037509989619051237">Kõnesünteesi eelvaade</translation>
@@ -4191,9 +4192,8 @@ Inimesed, kelle ühendus on aeglane, ei pruugi teie sisu näha.</translation>
 <translation id="1114525161406758033">Unerežiim, kui kaas on suletud</translation>
 <translation id="1848219224579402567">Logi välja, kui kaas on suletud</translation>
 <translation id="8781980678064919987">Lülita välja, kui kaas on suletud</translation>
-<translation id="3636766455281737684"><ph name="PERCENTAGE"/>% – <ph name="TIME"/> on jäänud</translation>
-<translation id="727441411541283857"><ph name="PERCENTAGE"/>% – <ph name="TIME"/> täitumiseni</translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
+<translation id="3636766455281737684"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> on jäänud</translation>
+<translation id="727441411541283857"><ph name="PERCENTAGE"/>% - <ph name="TIME"/> täitumiseni</translation>
 <translation id="2620436844016719705">Süsteem</translation>
 <translation id="2077129598763517140">Kasuta võimaluse korral riistvarakiirendust</translation>
 <translation id="1889984860246851556">Ava puhverserveri seaded</translation>

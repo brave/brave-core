@@ -28,7 +28,7 @@
     "description": "Link in the footer (takes you to rewards settings page) for welcome screen in the panel, new user"
   },
   "welcomeHeaderOne": {
-    "message": "We’ve given Brave Rewards a big upgrade.",
+    "message": "Ми дали Brave Rewards велике оновлення.",
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
@@ -186,7 +186,7 @@
     "description": "Description for new grant notification"
   },
   "backupNow": {
-    "message": "Backup Now",
+    "message": "Створити резевну копію",
     "description": "Notification button text when we ask user to backup wallet"
   },
   "backupWalletTitle": {
@@ -198,7 +198,7 @@
     "description": "Description for backup wallet notification"
   },
   "insufficientFundsNotification": {
-    "message": "Your Brave Rewards account is waiting for a deposit.",
+    "message": "Ваш Brave Rewards аккаунт чекає на депозит.",
     "description": "Description for new insufficient funds notification"
   },
   "insufficientFunds": {
@@ -218,7 +218,7 @@
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "Unable to send your tip. Please try again later.",
+    "message": "Неможливо надіслати чайові. Будь ласка, спробуйте пізніше.",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -334,19 +334,19 @@
     "description": "Button for re-try after wallet creation failed"
   },
   "addFunds": {
-    "message": "Add funds",
+    "message": "Додати кошти",
     "description": "Button for adding funds"
   },
   "rewardsSettings": {
-    "message": "Rewards Settings",
+    "message": "Налаштування Rewards",
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your Ads earnings are available.",
+    "message": "Ваш заробіток на оголошеннях доступний.",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
-    "message": "and",
+    "message": "та",
     "description": "The word 'and'"
   },
   "braveRewardsSubTitle": {
@@ -354,7 +354,7 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {
-    "message": "Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.",
+    "message": "Заробляйте, переглядаючи оголошення, що поважають конфіденційність, та сплачуйте наперед, щоб підтримати улюблених творців контенту.",
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
@@ -362,19 +362,19 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
-    "message": "Privacy Policy",
+    "message": "Політика конфіденційності",
     "description": "Privacy Policy"
   },
   "serviceText": {
-    "message": "By clicking 'Enable Brave Rewards', you indicate that you have read and agree to the",
+    "message": "Натиснувши \"Ввімкнути Brave Rewards\", ви вказуєте, що прочитали та згодні з",
     "description": "Terms of service main text"
   },
   "termsOfService": {
-    "message": "Terms of Service",
+    "message": "Умови надання послуг",
     "description": "Terms of Service"
   },
   "welcomeBack": {
-    "message": "Welcome Back!",
+    "message": "З поверненням!",
     "description": "Title message for wallet disabled panel"
   }
 }
