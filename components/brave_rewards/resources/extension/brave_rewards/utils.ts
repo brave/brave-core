@@ -39,14 +39,10 @@ export const getGrants = (grants?: RewardsExtension.Grant[]) => {
   }
 
   return grants.map((grant: RewardsExtension.Grant) => {
-    let expireDate = ''
-    if (grant.type !== 'ads') {
-      expireDate = new Date(grant.expiryTime * 1000).toLocaleDateString()
-    }
-
     return {
       tokens: convertProbiToFixed(grant.probi),
-      expireDate
+      expireDate: new Date(grant.expiryTime * 1000).toLocaleDateString(),
+      type: grant.type || 'ugp'
     }
   })
 }

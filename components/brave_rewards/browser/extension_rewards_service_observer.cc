@@ -80,6 +80,7 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
       grant.altcurrency = wallet_properties->grants[i].altcurrency;
       grant.probi = wallet_properties->grants[i].probi;
       grant.expiry_time = wallet_properties->grants[i].expiryTime;
+      grant.type = wallet_properties->grants[i].type;
     }
 
     std::unique_ptr<base::ListValue> args(
