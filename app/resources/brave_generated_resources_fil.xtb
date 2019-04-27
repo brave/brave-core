@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">Mga Pagbabayad sa Brave</translation>
 <translation id="3489524616427966890">Mga nakabukas na window at tab</translation>
 <translation id="3699882589215410581">I-install at patakbuhin ang Widevine</translation>
+<translation id="8053096063396012732">I-install ang Widevine</translation>
+<translation id="4840334696217618631">I-restart ang browser para i-enable ang Widevine</translation>
 <translation id="8410111618231938546">Ang Google Widevine ay isang bahagi ng code ng Digital Rights Management (DRM) na hindi namin pag-aari sa Brave Software at hindi namin maaaring suriin. Naka-load ang Google Widevine sa mga server ng Google, hindi sa mga server namin. Malo-load lang ito kapag na-enable mo ang opsyong ito. Hindi namin hinihikayat ang paggamit ng DRM, ngunit iginagalang namin ang pasya ng user at kinikilala namin na ang ilang user ng Brave ay gustong gumamit ng mga serbisyong humihingi nito.
 
 Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntunin ng Paggamit ng Google Widevine. Sumasang-ayon kang walang pananagutan ang Brave para sa anumang pinsala o pagkalugi na nauugnay sa paggamit mo ng Google Widevine.</translation>
@@ -29,6 +31,8 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="7543906827780734027">Hindi pa nasusuri ng Brave ang extension na ito - maaaring mapaminsala ito. Idagdag pa rin ang "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Mga kulay ng brave</translation>
 <translation id="5341901626640816374">Gumamit ng malawak na bar ng lokasyon</translation>
+<translation id="6123134130710658846">Itago ang Brave Rewards button</translation>
+<translation id="7635711399568194460">Itinatago ang Brave Rewards button sa location bar kapag hindi naka-enable ang Brave Rewards</translation>
 <translation id="7965178729203412357">Bagong Pagkakakilanlan ng Tor</translation>
 <translation id="8784924142044142231">Lumabas sa Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -42,12 +46,17 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="3155170474926428993">Launcher ng Tor</translation>
 <translation id="2515126961943087659">Serbisyo ng Mga Ad ng Bat</translation>
 <translation id="7924918279836988121">Serbisyong Ledger ng Bat</translation>
-<translation id="7372129767729198111">Mga default ng mga shield ng Brave</translation>
-<translation id="8029018702721078742">Kontrol ng Ad</translation>
-<translation id="3544462288910360084">Kontrol sa Cookie</translation>
+<translation id="768979911142179781">Mga default ng mga shield ng Brave</translation>
+<translation id="9185018653595759199">Mga Social Button at Login</translation>
+<translation id="6894114137169961038">Kontrol ng Ad</translation>
+<translation id="1096802265930928584">Kontrol sa Cookie</translation>
 <translation id="8919235146866304148">Proteksyon gamit ang fingerprint</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Pag-block ng script</translation>
+<translation id="7498695072878479744">Payagan ang mga Google login button sa mga third party na site</translation>
+<translation id="863171915776379000">Payagan ang mga Facebook login at naka-embed na post</translation>
+<translation id="5165042248369837294">Payagan ang mga Twitter embedded tweet</translation>
+<translation id="958971637207126733">Payagan ang mga LinkedIn embed</translation>
 <translation id="6067014455220527258">Mag-block ng mga ad</translation>
 <translation id="6985711843506827936">Payagan ang mga ad at pagsubaybay</translation>
 <translation id="6132506775968708399">Mag-block ng ng mga 3rd party na cookie</translation>
@@ -63,10 +72,16 @@ Sa pamamagitan ng pag-install sa extension na ito, sumasang-ayon ka sa Mga Tuntu
 <translation id="5825943197137337319">Default na pampublikong interface lang</translation>
 <translation id="1689062823386843231">I-disable ang UDP na walang proxy</translation>
 <translation id="6645631466045614531">I-access ang Pag-sync sa pamamagitan ng</translation>
+<translation id="1807246157184219062">Light</translation>
+<translation id="2414886740292270097">Dark</translation>
+<translation id="1360441190790440400">Pareho sa Linux</translation>
+<translation id="1336940801687497203">Pareho sa Windows</translation>
+<translation id="8721331068159819483">Pareho sa MacOS</translation>
 <translation id="6786747875388722282">Mga Extension</translation>
 <translation id="2896916411183256228">Ginagamit ang WebTorrent upang direktang ipakita sa browser ang mga torrent. Sinusuportahan ang mga torrent file at magnet link.</translation>
 <translation id="6554397389149987360">Ginagamit ang component ng Hangouts upang ma-enable ang pagbabahagi ng screen at iba pang feature sa browser.</translation>
-<translation id="6916590542764765824">Pamahalaan ang Mga Extension</translation>
+<translation id="8137559199583651773">Pamahalaan ang Mga Extension</translation>
 <translation id="4928988318462976765">Store ng Mga Web Extension</translation>
 <translation id="9181207987584064303">Tingnan sa Store ng Mga Web Extension</translation>
+<translation id="4846154056248462491">Sa pag-exit</translation>
 </translationbundle>

@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">دفعات Brave</translation>
 <translation id="3489524616427966890">فتح النوافذ وعلامات التبويب</translation>
 <translation id="3699882589215410581">تثبيت وتشغيل Widevine</translation>
+<translation id="8053096063396012732">تثبيت Widevine</translation>
+<translation id="4840334696217618631">أعد تشغيل المتصفح لتمكين Widevine</translation>
 <translation id="8410111618231938546">إن Google Widevine هو جزء من رمز إدارة الحقوق الرقمية (DRM) التي لا نمتلكها ولا يمكننا فحصها في Brave Software. يتم تحميل رمز Google Widevine من خوادم Google، وليس من خوادمنا. يتم تحميله فقط عند تمكين هذا الخيار. نحن لا نشجع استخدام DRM، لكننا نحترم اختيار المستخدم ونقر بأن بعض مستخدمي Brave يرغبون في استخدام الخدمات التي تتطلب ذلك.
 
 عن طريق تثبيت هذا الملحق، إنك توافق على شروط استخدام Google Widevine. وتوافق على أن Brave ليست مسؤولة عن أية أضرار أو خسائر متعلقة باستخدامك لـ Google Widevine.</translation>
@@ -29,6 +31,8 @@
 <translation id="7543906827780734027">لم تراجع Brave هذا الامتداد بعد - قد يكون ضاراً. إضافة "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" على أي حال؟</translation>
 <translation id="2044383478723007273">ألوان Brave</translation>
 <translation id="5341901626640816374">استخدم شريط الموقع الواسع</translation>
+<translation id="6123134130710658846">إخفاء زر Brave Rewards</translation>
+<translation id="7635711399568194460">يخفي زر Brave Rewards في شريط الموقع عند عدم تمكين Brave Rewards</translation>
 <translation id="7965178729203412357">هوية تور الجديدة</translation>
 <translation id="8784924142044142231">الخروج من برنامج تور (Tor)</translation>
 <translation id="5410152065859052603">برنامج تور (Tor)</translation>
@@ -42,12 +46,17 @@
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
-<translation id="7372129767729198111">الإعدادات الافتراضية لدروع Brave</translation>
-<translation id="8029018702721078742">التحكم في الإعلان</translation>
-<translation id="3544462288910360084">التحكم في ملفات تعريف الارتباط</translation>
+<translation id="768979911142179781">الإعدادات الافتراضية لدروع Brave</translation>
+<translation id="9185018653595759199">أزرار الوسائط الاجتماعية وتسجيل الدخول</translation>
+<translation id="6894114137169961038">التحكم في الإعلان</translation>
+<translation id="1096802265930928584">التحكم في ملفات تعريف الارتباط</translation>
 <translation id="8919235146866304148">حماية البصمة</translation>
 <translation id="520895744850022668">HTTPS في كل مكان</translation>
 <translation id="5259716416204774556">حظر البرنامج النصية</translation>
+<translation id="7498695072878479744">السماح بإضافة أزرار تسجيل الدخول إلى جوجل على صفحات أطراف ثالثة</translation>
+<translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
+<translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
+<translation id="958971637207126733">السماح بدمج عناصر من LinkedIn</translation>
 <translation id="6067014455220527258">حظر الإعلانات</translation>
 <translation id="6985711843506827936">السماح بالإعلانات والتتبع</translation>
 <translation id="6132506775968708399">حظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية</translation>
@@ -63,10 +72,16 @@
 <translation id="5825943197137337319">الواجهة العامة الافتراضية فقط</translation>
 <translation id="1689062823386843231">تعطيل UDP التي ليس لها وكيل</translation>
 <translation id="6645631466045614531">الوصول إلى المزامنة عبر</translation>
+<translation id="1807246157184219062">فاتح</translation>
+<translation id="2414886740292270097">داكن</translation>
+<translation id="1360441190790440400">كنظام تشغيل Linux</translation>
+<translation id="1336940801687497203">كنظام تشغيل Windows</translation>
+<translation id="8721331068159819483">كنظام تشغيل MacOS</translation>
 <translation id="6786747875388722282">الإضافات</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
 <translation id="6554397389149987360">يستخدم عنصر تطبيق Hangouts لتمكين مشاركة الشاشة وغيرها من الميزات في المتصفح.</translation>
-<translation id="6916590542764765824">إدارة الإضافات</translation>
+<translation id="8137559199583651773">إدارة الإضافات</translation>
 <translation id="4928988318462976765">متجر إضافات الويب</translation>
 <translation id="9181207987584064303">عرض في متجر إضافات الويب</translation>
+<translation id="4846154056248462491">عند الخروج</translation>
 </translationbundle>

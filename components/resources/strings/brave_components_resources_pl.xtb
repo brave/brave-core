@@ -44,9 +44,6 @@
 <translation id="1869685517625607604">Liczba zablokowanych reklam ogółem:</translation>
 <translation id="4673764878177947707">Niestandardowe filtry</translation>
 <translation id="8803682034537762884">Jeden filtr na linię, zgodny ze składnią filtru Adblock Plus</translation>
-<translation id="6200814343085745765">Blokada reklam regionalnych:</translation>
-<translation id="59174027418879706">Włączone</translation>
-<translation id="4176463684765177261">Wyłączone</translation>
 <translation id="2974339193389078578">Przeglądaj internet z Brave</translation>
 <translation id="7735138632831241257">Przygotuj się na szybsze i bezpieczniejsze przeglądanie stron, dzięki przeglądarce stworzonej w celu ochrony prywatności.</translation>
 <translation id="6001839398155993679">Zaczynamy</translation>
@@ -71,9 +68,10 @@
 <translation id="5946611334574299206">Zarabiaj tokeny, oglądając reklamy w przeglądarce Brave. Reklamy są prezentowane w oparciu o zainteresowania wywnioskowane z zachowania użytkownika przeglądarki. Żadne dane osobowe czy też historia przeglądania nie opuszczają nigdy przeglądarki.</translation>
 <translation id="6112368337882254910">Wspieraj automatycznie</translation>
 <translation id="1527222983464337010">Automatyczny sposób na wspieranie wydawców i twórców treści. Ustaw comiesięczną płatność i przeglądaj strony tak jak zwykle. Strony, które odwiedzasz otrzymują dotacje automatycznie, w zależności od ilości odsłon i spędzonego na nich czasu, które są mierzone przez Brave.</translation>
-<translation id="6509523738781937572">Bieżące zyski w tym miesiącu (szacunkowe)</translation>
+<translation id="7178655681744815321">Bieżące zyski w tym miesiącu (szacunkowe)</translation>
 <translation id="8157096848242649588">Termin płatności</translation>
 <translation id="5208388044986603165">Otrzymane zgłoszenia reklamowe</translation>
+<translation id="4229016885653790965">Przepraszamy! Reklamy nie są jeszcze dostępne w Twoim regionie.</translation>
 <translation id="654711254769318398">Dodaj obejrzane strony</translation>
 <translation id="2532127066761785857">Maksymalna liczba wyświetlanych reklam</translation>
 <translation id="5171071066587880677">1 reklama na godzinę</translation>
@@ -276,9 +274,8 @@
 <translation id="1704859330137112950">Jeśli chcesz, możesz zaplanować miesięczne napiwki, aby regularnie wspierać tę stronę.</translation>
 <translation id="3074127054582480056">Uwaga</translation>
 <translation id="822513417008209372">Aktualnie wspierasz</translation>
-<translation id="797446268269282651">Korzystając ze starej przeglądarki, płaciłeś za przeglądanie stron internetowych poprzez oglądanie reklam. Traciłeś cenny czas na pobieranie inwazyjnych technologii reklamowych, które przesyłały Twoje prywatne dane do reklamodawców —</translation>
 <translation id="5010112177773747965">bez Twojej zgody.</translation>
-<translation id="7147673045905733351">Dziś, Brave wita Cię w nowym Internecie.</translation>
+<translation id="7147673045905733351">Brave wita Cię w nowym Internecie.</translation>
 <translation id="1350763070659630336">Jest to tryb, w którym Twój czas ma znaczenie, Twoje dane pozostają poufne, a Ty otrzymujesz pieniądze za poświęcony czas.</translation>
 <translation id="5830306739231399614">Niestety, nie ma jeszcze żadnych tokenów.</translation>
 <translation id="7359258898775969374">3 sposoby na wypełnienie portfela:</translation>
@@ -354,7 +351,7 @@
 <translation id="1061533051865606843">Dodaj nowe urządzenie</translation>
 <translation id="8780295742023331191">Zobacz nowy kod synchronizacji</translation>
 <translation id="1755198127524719638">Ustawienia synchronizacji</translation>
-<translation id="157217459429812600">Zarządzaj informacjami, jakie chcesz zsynchronizować pomiędzy urządzeniami. Te ustawienia mają wpływ wyłącznie na to urządzenie.</translation>
+<translation id="7558480201297099157">Zarządzaj informacjami, jakie chcesz zsynchronizować pomiędzy urządzeniami. Te ustawienia mają wpływ wyłącznie na to urządzenie.</translation>
 <translation id="8820817407110198400">Zakładki</translation>
 <translation id="5591129654353352557">Zapisane ustawienia strony</translation>
 <translation id="7859704718976024901">Historia przeglądania</translation>
@@ -382,7 +379,7 @@
 <translation id="5086223971958279691">Kod łańcucha synchronizacji</translation>
 <translation id="2899261497479389619">Na komputerze docelowym przejdź do synchronizacji Brave w ustawieniach i kliknij przycisk</translation>
 <translation id="4827439149833241990">“Mam kod synchronizacji”.</translation>
-<translation id="8299617838343103908">Wpisz pokazane poniżej słowa kodu łańcucha synchronizacji.</translation>
+<translation id="24067401253841795">Wpisz pokazane poniżej słowa kodu łańcucha synchronizacji.</translation>
 <translation id="8914601399214979966">Zamiast tego użyj mojej kamery.</translation>
 <translation id="3034163433136515805">Zobacz kod QR</translation>
 <translation id="5093410893656857925">Wybierz rodzaj urządzenia</translation>

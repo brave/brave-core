@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">Brave-maksut</translation>
 <translation id="3489524616427966890">Avaa ikkunat ja välilehdet</translation>
 <translation id="3699882589215410581">Asenna ja suorita Widevine</translation>
+<translation id="8053096063396012732">Asenna Widevine</translation>
+<translation id="4840334696217618631">Käynnistä selain uudelleen salliaksesi Widevinen</translation>
 <translation id="8410111618231938546">Google Widevine on osa digitaalisen käyttöoikeuksien hallinnan (DRM) koodia, jota me Brave Softwarella emme omista tai voi tarkkailla. Google Widevine -koodi ladataan Googlen palvelimilta, ei meidän palvelimiltamme. Se ladataan vain, kun sallit tämän vaihtoehdon. Emme suosittele DRM:n käyttöä, mutta kunnioitamme käyttäjiemme valintaa ja tiedostamme, että jotkut Braven käyttäjät saattavat haluta käyttää palveluita, jotka vaativat sitä.
 
 Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyväksyt, että Brave ei ole vastuussa mistään vahingoista tai menetyksistä, jotka liittyvät Google Widevinen käyttöön.</translation>
@@ -29,6 +31,8 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="7543906827780734027">Brave ei ole tarkastanut tätä laajennusta vielä – se saattaa olla haitallinen. Lisää "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" silti?</translation>
 <translation id="2044383478723007273">Brave -värit</translation>
 <translation id="5341901626640816374">Käytä laajennettua sijaintipalkkia</translation>
+<translation id="6123134130710658846">Piilota Brave Rewards -painike</translation>
+<translation id="7635711399568194460">Piilottaa Brave Rewards -painikkeen sijaintipalkissa, kun Brave Rewards ei ole sallittu</translation>
 <translation id="7965178729203412357">Uusi Tor-identiteetti</translation>
 <translation id="8784924142044142231">Poistu Torista</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -42,12 +46,17 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="3155170474926428993">Tor -laukaisin</translation>
 <translation id="2515126961943087659">Bat-mainospalvelu</translation>
 <translation id="7924918279836988121">BAT-tilikirjapalvelu</translation>
-<translation id="7372129767729198111">Braven oletussuojaus</translation>
-<translation id="8029018702721078742">Mainostenhallinta</translation>
-<translation id="3544462288910360084">Evästeiden hallinta</translation>
+<translation id="768979911142179781">Braven oletussuojaus</translation>
+<translation id="9185018653595759199">Sosiaaliset painikkeet ja kirjautumiset</translation>
+<translation id="6894114137169961038">Mainostenhallinta</translation>
+<translation id="1096802265930928584">Evästeiden hallinta</translation>
 <translation id="8919235146866304148">Tunnistesuojaus</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Komentosarjojen esto</translation>
+<translation id="7498695072878479744">Salli Googlen sisäänkirjautumispainikkeet kolmannen osapuolen sivuilla</translation>
+<translation id="863171915776379000">Salli Facebookin sisäänkirjautumiset ja upotetut julkaisut</translation>
+<translation id="5165042248369837294">Salli Twitterin upotetut tviitit</translation>
+<translation id="958971637207126733">Salli Linkedin-upotukset</translation>
 <translation id="6067014455220527258">Estä mainokset</translation>
 <translation id="6985711843506827936">Salli mainokset ja seuranta</translation>
 <translation id="6132506775968708399">Estä kolmannen osapuolen evästeet</translation>
@@ -63,10 +72,16 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="5825943197137337319">Vain julkinen oletuskäyttöliittymä</translation>
 <translation id="1689062823386843231">Estä yhteydetön UDP</translation>
 <translation id="6645631466045614531">Avaa synkronointi seuraavaa kautta:</translation>
+<translation id="1807246157184219062">Kevyt</translation>
+<translation id="2414886740292270097">Pimeä</translation>
+<translation id="1360441190790440400">Sama kuin Linux</translation>
+<translation id="1336940801687497203">Sama kuin Windows</translation>
+<translation id="8721331068159819483">Sama kuin MacOS</translation>
 <translation id="6786747875388722282">Laajennukset</translation>
 <translation id="2896916411183256228">Käyttää WebTorrentia torrent-tiedostojen näyttämiseen suoraan selaimessa. Tukee torrent-tiedostoja sekä magneettilinkkejä.</translation>
 <translation id="6554397389149987360">Käytä Hangouts-komponenttia ruudunjaon sekä muiden ominaisuuksien käytön mahdollistamiseen selaimessa.</translation>
-<translation id="6916590542764765824">Hallinnoi laajennuksia</translation>
+<translation id="8137559199583651773">Hallinnoi laajennuksia</translation>
 <translation id="4928988318462976765">Verkkolaajennusten myymälä</translation>
 <translation id="9181207987584064303">Näytä verkkolaajennusmyymälässä</translation>
+<translation id="4846154056248462491">Poistuessa</translation>
 </translationbundle>
