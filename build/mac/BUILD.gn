@@ -43,7 +43,7 @@ action("sign_app") {
     provisioning_profile,
     "$_packaging_dir/sign_app.sh",
     "$_packaging_dir/sign_versioned_dir.sh",
-    "$_packaging_dir/entitlements.plist",
+    "$_packaging_dir/app-entitlements.plist",
   ]
   outputs = [ _target_app_path ]
   args = [
@@ -56,7 +56,7 @@ action("sign_app") {
     keychain_db,
     mac_signing_identifier,
     rebase_path(provisioning_profile, root_out_dir),
-    rebase_path("$_packaging_dir/entitlements.plist"),
+    rebase_path("$_packaging_dir/app-entitlements.plist"),
   ]
 
   if (!is_official_build) {
