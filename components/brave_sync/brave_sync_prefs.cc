@@ -50,6 +50,7 @@ void Prefs::RegisterProfilePrefs(
 
   registry->RegisterStringPref(prefs::kSyncDeviceList, std::string());
   registry->RegisterStringPref(prefs::kSyncApiVersion, std::string("0"));
+  registry->RegisterIntegerPref(prefs::kSyncMigrateBookmarksVersion, 0);
 }
 
 std::string Prefs::GetSeed() const {
