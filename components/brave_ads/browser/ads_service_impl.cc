@@ -47,9 +47,11 @@
 #include "components/wifi/wifi_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/network_service_instance.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/common/service_manager_connection.h"
-#include "net/url_request/url_fetcher.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "services/service_manager/public/cpp/connector.h"
 #include "third_party/dom_distiller_js/dom_distiller.pb.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -192,18 +194,18 @@ int GetUserModelResourceId(const std::string& locale) {
   return 0;
 }
 
-net::URLFetcher::RequestType URLMethodToRequestType(
+std::string URLMethodToRequestType(
     ads::URLRequestMethod method) {
   switch (method) {
     case ads::URLRequestMethod::GET:
-      return net::URLFetcher::RequestType::GET;
+      return "GET";
     case ads::URLRequestMethod::POST:
-      return net::URLFetcher::RequestType::POST;
+      return "POST";
     case ads::URLRequestMethod::PUT:
-      return net::URLFetcher::RequestType::PUT;
+      return "PUT";
     default:
       NOTREACHED();
-      return net::URLFetcher::RequestType::GET;
+      return "GET";
   }
 }
 
@@ -258,6 +260,29 @@ bool SaveBundleStateOnFileTaskRunner(
     return true;
 
   return false;
+}
+
+net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
+  return net::DefineNetworkTrafficAnnotation("ads_service_impl", R"(
+      semantics {
+        sender: "Brave Ads Service"
+        description:
+          "This service is used to communicate with Brave servers "
+          "to send and retrieve information for Ads."
+        trigger:
+          "Triggered by user viewing Ads or at various intervals."
+        data:
+          "Ads catalog and Confirmations."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        setting:
+          "You can enable or disable this feature by visiting brave://rewards."
+        policy_exception_justification:
+          "Not implemented."
+      }
+    )");
 }
 
 }  // namespace
@@ -611,10 +636,10 @@ void AdsServiceImpl::ProcessIdleState(ui::IdleState idle_state) {
 void AdsServiceImpl::Shutdown() {
   BackgroundHelper::GetInstance()->RemoveObserver(this);
 
-  for (const auto fetcher : fetchers_) {
-    delete fetcher.first;
+  for (auto* const loader : url_loaders_) {
+    delete loader;
   }
-  fetchers_.clear();
+  url_loaders_.clear();
   idle_poll_timer_.Stop();
 
   bat_ads_.reset();
@@ -1169,58 +1194,65 @@ void AdsServiceImpl::URLRequest(
       const std::string& content_type,
       ads::URLRequestMethod method,
       ads::URLRequestCallback callback) {
-  net::URLFetcher::RequestType request_type = URLMethodToRequestType(method);
-
-  net::URLFetcher* fetcher = net::URLFetcher::Create(
-      GURL(url), request_type, this).release();
-  fetcher->SetRequestContext(g_browser_process->system_request_context());
-  fetcher->SetAutomaticallyRetryOnNetworkChanges(kRetriesCountOnNetworkChange);
-
+  auto request = std::make_unique<network::ResourceRequest>();
+  request->url = GURL(url);
+  request->method = URLMethodToRequestType(method);
+  request->allow_credentials = false;
   for (size_t i = 0; i < headers.size(); i++)
-    fetcher->AddExtraRequestHeader(headers[i]);
+    request->headers.AddHeaderFromString(headers[i]);
 
+  network::SimpleURLLoader* loader =
+      network::SimpleURLLoader::Create(
+          std::move(request),
+          GetNetworkTrafficAnnotationTag()).release();
+  url_loaders_.insert(loader);
+  loader->SetRetryOptions(kRetriesCountOnNetworkChange,
+      network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
   if (!content.empty())
-    fetcher->SetUploadData(content_type, content);
+    loader->AttachStringForUpload(content, content_type);
 
-  fetchers_[fetcher] = callback;
-
-  fetcher->Start();
+  loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      content::BrowserContext::GetDefaultStoragePartition(profile_)
+          ->GetURLLoaderFactoryForBrowserProcess().get(),
+      base::BindOnce(&AdsServiceImpl::OnURLLoaderComplete,
+                     base::Unretained(this),
+                     loader,
+                     callback));
 }
 
-void AdsServiceImpl::OnURLFetchComplete(
-    const net::URLFetcher* source) {
-  if (fetchers_.find(source) == fetchers_.end()) {
-    delete source;
-    return;
-  }
+void AdsServiceImpl::OnURLLoaderComplete(
+    network::SimpleURLLoader* loader,
+    ads::URLRequestCallback callback,
+    std::unique_ptr<std::string> response_body) {
+  DCHECK(url_loaders_.find(loader) != url_loaders_.end());
+  url_loaders_.erase(loader);
+  std::unique_ptr<network::SimpleURLLoader> scoped_loader(loader);
 
-  auto callback = fetchers_[source];
-  fetchers_.erase(source);
-  int response_code = source->GetResponseCode();
-  std::string body;
+  int response_code = -1;
+  if (loader->ResponseInfo() && loader->ResponseInfo()->headers)
+    response_code = loader->ResponseInfo()->headers->response_code();
+
   std::map<std::string, std::string> headers;
-  scoped_refptr<net::HttpResponseHeaders> headersList =
-      source->GetResponseHeaders();
+  if (loader->ResponseInfo()) {
+    scoped_refptr<net::HttpResponseHeaders> headersList =
+        loader->ResponseInfo()->headers;
 
-  if (headersList) {
-    size_t iter = 0;
-    std::string key;
-    std::string value;
-    while (headersList->EnumerateHeaderLines(&iter, &key, &value)) {
-      key = base::ToLowerASCII(key);
-      headers[key] = value;
+    if (headersList) {
+      size_t iter = 0;
+      std::string key;
+      std::string value;
+      while (headersList->EnumerateHeaderLines(&iter, &key, &value)) {
+        key = base::ToLowerASCII(key);
+        headers[key] = value;
+      }
     }
   }
 
-  if (response_code != net::URLFetcher::ResponseCode::RESPONSE_CODE_INVALID &&
-      source->GetStatus().is_success()) {
-    source->GetResponseAsString(&body);
+  if (connected()) {
+    callback(response_code,
+             response_body ? *response_body : std::string(),
+             headers);
   }
-
-  delete source;
-
-  if (connected())
-    callback(response_code, body, headers);
 }
 
 void AdsServiceImpl::OnBackground() {
