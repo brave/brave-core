@@ -1,5 +1,5 @@
 diff --git a/components/search_engines/prepopulated_engines.json b/components/search_engines/prepopulated_engines.json
-index 9d7af2b2cf2c6b57f84bc2b29093a1eccaa7d386..52e449a8560411baa0c1c561f73f6ab08bd49ef2 100644
+index cabb7597170b39b26ae5743807cb92a26262c96a..be6dd6a07594b0fe8e5e1a8d1fc7fa03688ad656 100644
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
 @@ -95,16 +95,6 @@
@@ -19,20 +19,27 @@ index 9d7af2b2cf2c6b57f84bc2b29093a1eccaa7d386..52e449a8560411baa0c1c561f73f6ab0
      "google": {
        "name": "Google",
        "keyword": "google.com",
-@@ -159,16 +149,6 @@
-       "id": 93
+@@ -150,6 +140,7 @@
+       "id": 67
      },
  
--    "qwant": {
--      "name": "Qwant",
--      "keyword": "qwant.com",
--      "favicon_url": "https://www.qwant.com/favicon.ico",
--      "search_url": "https://www.qwant.com/?q={searchTerms}&client=opensearch",
--      "suggest_url": "https://api.qwant.com/api/suggest/?q={searchTerms}&client=opensearch",
--      "type": "SEARCH_ENGINE_QWANT",
--      "id": 94
--    },
--
++<<<<<<< ours
+     "qwant": {
+       "name": "Qwant",
+       "keyword": "qwant.com",
+@@ -158,6 +149,15 @@
+       "suggest_url": "https://api.qwant.com/api/suggest/?q={searchTerms}&client=opensearch",
+       "type": "SEARCH_ENGINE_QWANT",
+       "id": 94
++=======
++    "parsijoo": {
++      "name": "پارسی جو",
++      "keyword": "parsijoo.ir",
++      "favicon_url": "https://cdn.parsijoo.ir/content3/images/1.0/favicon.ico",
++      "search_url": "https://parsijoo.ir/web?q={searchTerms}",
++      "type": "SEARCH_ENGINE_PARSIJOO",
++      "id": 93
++>>>>>>> theirs
+     },
+ 
      "seznam": {
-       "name": "Seznam",
-       "keyword": "seznam.cz",
