@@ -1174,6 +1174,9 @@ void AdsServiceImpl::OpenSettings(Profile* profile,
     return;
   }
 
+// open ads clicks in private windows
+if (profile->HasOffTheRecordProfile())
+    profile = profile->GetOffTheRecordProfile();
 #if defined(OS_ANDROID)
   NavigateParams nav_params(profile, url, ui::PAGE_TRANSITION_LINK);
 #else
