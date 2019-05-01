@@ -1,5 +1,5 @@
 diff --git a/components/search_engines/prepopulated_engines.json b/components/search_engines/prepopulated_engines.json
-index cabb7597170b39b26ae5743807cb92a26262c96a..be6dd6a07594b0fe8e5e1a8d1fc7fa03688ad656 100644
+index cabb7597170b39b26ae5743807cb92a26262c96a..796d7510a55ecdc4e9d7a79d93d311328b083c3a 100644
 --- a/components/search_engines/prepopulated_engines.json
 +++ b/components/search_engines/prepopulated_engines.json
 @@ -95,16 +95,6 @@
@@ -19,27 +19,20 @@ index cabb7597170b39b26ae5743807cb92a26262c96a..be6dd6a07594b0fe8e5e1a8d1fc7fa03
      "google": {
        "name": "Google",
        "keyword": "google.com",
-@@ -150,6 +140,7 @@
+@@ -150,16 +140,6 @@
        "id": 67
      },
  
-+<<<<<<< ours
-     "qwant": {
-       "name": "Qwant",
-       "keyword": "qwant.com",
-@@ -158,6 +149,15 @@
-       "suggest_url": "https://api.qwant.com/api/suggest/?q={searchTerms}&client=opensearch",
-       "type": "SEARCH_ENGINE_QWANT",
-       "id": 94
-+=======
-+    "parsijoo": {
-+      "name": "پارسی جو",
-+      "keyword": "parsijoo.ir",
-+      "favicon_url": "https://cdn.parsijoo.ir/content3/images/1.0/favicon.ico",
-+      "search_url": "https://parsijoo.ir/web?q={searchTerms}",
-+      "type": "SEARCH_ENGINE_PARSIJOO",
-+      "id": 93
-+>>>>>>> theirs
-     },
- 
+-    "qwant": {
+-      "name": "Qwant",
+-      "keyword": "qwant.com",
+-      "favicon_url": "https://www.qwant.com/favicon.ico",
+-      "search_url": "https://www.qwant.com/?q={searchTerms}&client=opensearch",
+-      "suggest_url": "https://api.qwant.com/api/suggest/?q={searchTerms}&client=opensearch",
+-      "type": "SEARCH_ENGINE_QWANT",
+-      "id": 94
+-    },
+-
      "seznam": {
+       "name": "Seznam",
+       "keyword": "seznam.cz",
