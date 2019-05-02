@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">Brave-betalinger</translation>
 <translation id="3489524616427966890">Åbn vinduer og faner</translation>
 <translation id="3699882589215410581">Installer og kør Widevine</translation>
+<translation id="8053096063396012732">Installér Widevine</translation>
+<translation id="4840334696217618631">Genstart browser for at slå Widevine til</translation>
 <translation id="8410111618231938546">Google Widevine er en del af Digital Rights Management (DRM)-koden, som vi på Brave Software ikke ejer og ikke kan inspicere. Google Widevine-koden indlæses fra Google-servere, ikke fra vores servere. Den indlæses kun, når du aktiverer denne mulighed. Vi fraråder brugen af DRM, men vi respekterer brugernes valg og anerkender at nogle Brave-brugere ønsker at bruge tjenester der kræver det.
 
 Ved at installere denne udvidelse accepterer du Google Widevines betingelser for brug. Du accepterer at Brave ikke er ansvarlige for nogen skader eller tab i forbindelse med din brug af Google Widevine.</translation>
@@ -29,6 +31,8 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="7543906827780734027">Brave har ikke gennemset denne udvidelse endnu - den kan være ondsindet. Tilføj "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" alligevel?</translation>
 <translation id="2044383478723007273">Brave farver</translation>
 <translation id="5341901626640816374">Brug bred lokationsbjælke</translation>
+<translation id="6123134130710658846">Skjul Brave Rewards-knappen</translation>
+<translation id="7635711399568194460">Skjul Brave Rewards-knappen i placeringsbjælken, når Brave Rewards ikke er slået til</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8784924142044142231">Afslut Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -43,12 +47,17 @@ vindue med Tor</translation>
 <translation id="3155170474926428993">Tor Startprogram</translation>
 <translation id="2515126961943087659">Bat-annonceservice</translation>
 <translation id="7924918279836988121">Bat Regnskabsservice</translation>
-<translation id="7372129767729198111">Brave standard beskyttelsesindstillinger</translation>
-<translation id="8029018702721078742">Reklamekontrol</translation>
-<translation id="3544462288910360084">Cookie-kontrol</translation>
+<translation id="768979911142179781">Brave standard beskyttelsesindstillinger</translation>
+<translation id="9185018653595759199">Sociale knapper og logins</translation>
+<translation id="6894114137169961038">Reklamekontrol</translation>
+<translation id="1096802265930928584">Cookie-kontrol</translation>
 <translation id="8919235146866304148">Fingerafryksbeskyttelse</translation>
 <translation id="520895744850022668">HTTPS Overalt</translation>
 <translation id="5259716416204774556">Sript-blokering</translation>
+<translation id="7498695072878479744">Tillad Google-loginknapper på tredjepartshjemmesider</translation>
+<translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
+<translation id="5165042248369837294">Tillad indlejrede tweets fra Twitter</translation>
+<translation id="958971637207126733">Tillad LinkedIn-indlejringer</translation>
 <translation id="6067014455220527258">Bloker annoncer</translation>
 <translation id="6985711843506827936">Tillad annoncer og sporing</translation>
 <translation id="6132506775968708399">Bloker cookies fra tredjeparter</translation>
@@ -64,10 +73,16 @@ vindue med Tor</translation>
 <translation id="5825943197137337319">Kun standard offentlig grænseflade</translation>
 <translation id="1689062823386843231">Deaktiver UDP uden proxy</translation>
 <translation id="6645631466045614531">Få Adgang til Synkronisering via</translation>
+<translation id="1807246157184219062">Lys</translation>
+<translation id="2414886740292270097">Mørk</translation>
+<translation id="1360441190790440400">Samme som Linux</translation>
+<translation id="1336940801687497203">Samme som Windows</translation>
+<translation id="8721331068159819483">Samme som MacOS</translation>
 <translation id="6786747875388722282">Internetadresser</translation>
 <translation id="2896916411183256228">Bruger WebTorrent til at vise torrents direkte i browseren. Understøtter torrent-filer og magnetlinks.</translation>
 <translation id="6554397389149987360">Bruger Hangouts-komponent til at aktivere skærmdeling samt andre browserfunktioner.</translation>
-<translation id="6916590542764765824">Administrer Internetadresser</translation>
+<translation id="8137559199583651773">Administrer Internetadresser</translation>
 <translation id="4928988318462976765">Internetadresse-Butik</translation>
 <translation id="9181207987584064303">Se i Internetadresse-Butik</translation>
+<translation id="4846154056248462491">Ved udgang</translation>
 </translationbundle>

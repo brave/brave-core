@@ -44,9 +44,6 @@
 <translation id="1869685517625607604">Total de anúncios bloqueados</translation>
 <translation id="4673764878177947707">Filtros personalizados</translation>
 <translation id="8803682034537762884">Um por linha, cada filtro deve ser aplicado escrito usando a sintaxe do Adblock Plus</translation>
-<translation id="6200814343085745765">Bloqueio de Anúncio Regional:</translation>
-<translation id="59174027418879706">Ativada</translation>
-<translation id="4176463684765177261">Desativado</translation>
 <translation id="2974339193389078578">Brave: a nova Internet</translation>
 <translation id="7735138632831241257">Prepare-se para desfrutar de uma experiência de navegação mais rápida e segura com um navegador que foi criado para proteger a sua privacidade.</translation>
 <translation id="6001839398155993679">Vamos</translation>
@@ -71,9 +68,10 @@
 <translation id="5946611334574299206">Ganhe tokens por ver anúncios em Brave Os anúncios apresentados são baseados nos seus interesses, inferido dos seus hábitos de navegação. Nenhuma informação pessoal ou histórico de navegação sairá do seu navegador</translation>
 <translation id="6112368337882254910">Contribuição Automática</translation>
 <translation id="1527222983464337010">Uma forma automática de apoiar editores e criadores de conteúdo. Defina um pagamento mensal e navegue normalmente. Os sites que visita recebem as suas contribuições automaticamente, baseadas na sua atenção, medida pelo Brave.</translation>
-<translation id="6509523738781937572">Lucros registados este mês (estimativa)</translation>
+<translation id="7178655681744815321">Lucros registados este mês (estimativa)</translation>
 <translation id="8157096848242649588">Data de pagamento</translation>
 <translation id="5208388044986603165">Notificações de anúncios recebidas</translation>
+<translation id="4229016885653790965">Desculpe! Ainda não estão disponíveis anúncios na sua região.</translation>
 <translation id="654711254769318398">Páginas de anúncios visualizadas</translation>
 <translation id="2532127066761785857">Número máximo de anúncios apresentados</translation>
 <translation id="5171071066587880677">1 anúncio por hora</translation>
@@ -276,7 +274,6 @@
 <translation id="1704859330137112950">Se desejar, pode agendar gratificações mensais para apoiar este site de forma regular.</translation>
 <translation id="3074127054582480056">Atenção</translation>
 <translation id="822513417008209372">Você está a suportar currentemente</translation>
-<translation id="797446268269282651">Ao utilizar o seu navegador antigo, pagou para navegar na internet e visualizar anúncios desnecessários que desperdiçaram a sua atenção. Perdeu tempo valioso a transferir anúncios de tecnologia invasiva que transmitiram os seus dados dados pessoais e privados aos anunciantes.</translation>
 <translation id="5010112177773747965">sem o seu consentimento.</translation>
 <translation id="7147673045905733351">Hoje, a Brave dá-lhe as boas vindas à nova internet.</translation>
 <translation id="1350763070659630336">Aquela em que o seu tempo é valorizado, os seus dados pessoais são mantidos em sigilo e é realmente pago pela sua atenção.</translation>
@@ -354,11 +351,12 @@
 <translation id="1061533051865606843">Adicionar Novo Dispositivo</translation>
 <translation id="8780295742023331191">Ver Código de Sincronização</translation>
 <translation id="1755198127524719638">Definições Sync</translation>
-<translation id="157217459429812600">Gira qual a informação que gostaria de sincronizar entre dispositivos. Estas definições afetam apenas este dispositivo.</translation>
+<translation id="7558480201297099157">Gira qual a informação que gostaria de sincronizar entre dispositivos. Estas definições afetam apenas este dispositivo.</translation>
 <translation id="8820817407110198400">Marcadores</translation>
 <translation id="5591129654353352557">Definições do site guardadas</translation>
 <translation id="7859704718976024901">Histórico de navegação</translation>
 <translation id="2339730291919608488">Sair da cadeia de sincronização</translation>
+<translation id="4332558599726753990">Configuração da Sincronização</translation>
 <translation id="298546024891487702">Antes de mais, necessita de instalar Brave em todos os dispositivos que planeia sincronizar. Para os associar todos em cadeia, inicie uma cadeia de sincronização que utilizará para ligar seguramente todos os seus dispositivos.</translation>
 <translation id="6200528822592747640">Inicie uma nova Cadeia de Sincronização</translation>
 <translation id="5184726904895809379">Possuo um Código Sync</translation>
@@ -381,7 +379,7 @@
 <translation id="5086223971958279691">Código de Cadeia de Sincronização</translation>
 <translation id="2899261497479389619">No seu computador alvo, navegue para Brave Sync em definições e clique no botão</translation>
 <translation id="4827439149833241990">“Possuo um Código Sync”.</translation>
-<translation id="8299617838343103908">Introduza abaixo as palavras-código da cadeia de sincronização.</translation>
+<translation id="24067401253841795">Introduza abaixo as palavras-código da cadeia de sincronização.</translation>
 <translation id="8914601399214979966">Utilizar a minha câmara ao invés</translation>
 <translation id="3034163433136515805">Ver Código QR</translation>
 <translation id="5093410893656857925">Escolher Tipo de Dispositivo</translation>

@@ -572,6 +572,24 @@
   <ph name="EXPONENT_HEX_DUMP"/></translation>
 <translation id="3313622045786997898">Sertifikāta paraksta vērtība</translation>
 <translation id="4104163789986725820">E&amp;ksportēt...</translation>
+<translation id="2029156652561216312">CN</translation>
+<translation id="7822286184239325970">ST</translation>
+<translation id="8180262569555229595">O</translation>
+<translation id="7252376466538759696">OU</translation>
+<translation id="5734574586460918465">dnQualifier</translation>
+<translation id="964324710553558337">C</translation>
+<translation id="511291565806773566">serialNumber</translation>
+<translation id="5912292566401425135">L</translation>
+<translation id="5725734596824080201">DC</translation>
+<translation id="2948789661744572780">MAIL</translation>
+<translation id="7481079953250545971">UID</translation>
+<translation id="4196967880387277612">E</translation>
+<translation id="5887772116581657016">businessCategory</translation>
+<translation id="6561757256477115975">jurisdictionLocalityName</translation>
+<translation id="7150038968052501583">jurisdictionStateOrProvinceName</translation>
+<translation id="8904360804686555987">jurisdictionCountryName</translation>
+<translation id="8718098216622210506">IELA</translation>
+<translation id="6969275223369931223">postalCode</translation>
 <translation id="5434065355175441495">PKCS #1 RSA šifrējums</translation>
 <translation id="1221024147024329929">PKCS #1 MD2 ar RSA šifrējumu</translation>
 <translation id="1640283014264083726">PKCS #1 MD4 ar RSA šifrējumu</translation>
@@ -1363,6 +1381,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="8713570323158206935">Sūtīt <ph name="BEGIN_LINK1"/>sistēmas informāciju<ph name="END_LINK1"/></translation>
 <translation id="6395423953133416962">Sūtīt <ph name="BEGIN_LINK1"/>sistēmas informāciju<ph name="END_LINK1"/> un <ph name="BEGIN_LINK2"/>datus<ph name="END_LINK2"/></translation>
 <translation id="6270770586500173387">Sūtīt <ph name="BEGIN_LINK1"/>sistēmas un lietotņu informāciju<ph name="END_LINK1"/> un <ph name="BEGIN_LINK2"/>metriku<ph name="END_LINK2"/></translation>
+<translation id="3894123633473837029">Iekļaujiet neseno Asistenta vēsturi, izmantojot Sherlog. Šie dati var ietvert Jūsu identitātes, atrašanās vietas un atkļūdošanas informāciju. <ph name="BEGIN_LINK"/> Learn more <ph name="END_LINK"/></translation>
 <translation id="8329196515830093443">Fails tiks nosūtīts Brave Software serveriem atkļūdošanai</translation>
 <translation id="8227119283605456246">Pievienot failu</translation>
 <translation id="5367091008316207019">Notiek faila lasīšana...</translation>
@@ -1618,6 +1637,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="1234808891666923653">Service Workers</translation>
 <translation id="3432762828853624962">Shared Workers</translation>
 <translation id="2927017729816812676">Kešatmiņas krātuve</translation>
+<translation id="3169132535805984622">ecdsa_sign</translation>
 <translation id="2805756323405976993">Lietotnes</translation>
 <translation id="542872847390508405">Jūs veicat pārlūkošanu viesa režīmā</translation>
 <translation id="537813040452600081">Lapas, ko skatāt šajā logā, nebūs redzamas pārlūka vēsturē, un, kad izrakstīsieties, datorā nepaliks nekādi vienumi, piemēram, sīkfaili. Tomēr visi lejupielādētie faili un izveidotās grāmatzīmes tiks saglabātas.</translation>
@@ -1932,6 +1952,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="8329449853370113380">Vietne <ph name="URL"/> vēlas atskaņot aizsargātu saturu. Brave Software verificēs jūsu ierīces identitāti.</translation>
 <translation id="2650609753175229582">Vietne <ph name="URL"/> vēlas atskaņot aizsargātu saturu. Jūsu ierīces identitāti pārbaudīs Brave Software, un tai var piekļūt šī vietne.</translation>
 <translation id="1322046419516468189">Saglabātās paroles varat skatīt un pārvaldīt šeit: <ph name="SAVED_PASSWORDS_STORE"/></translation>
+<translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Parole ir saglabāta. Skatiet un pārvaldiet saglabātās paroles šeit: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software konts</translation>
 <translation id="3785727820640310185">Saglabātās paroles šai vietnei</translation>
@@ -2189,6 +2210,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="8750155211039279868"><ph name="ORIGIN"/> vēlas izveidot savienojumu ar seriālo portu</translation>
 <translation id="4943691134276646401">Paplašinājums “<ph name="CHROME_EXTENSION_NAME"/>” vēlas izveidot savienojumu ar seriālo pieslēgvietu</translation>
 <translation id="7686938547853266130"><ph name="FRIENDLY_NAME"/> (<ph name="DEVICE_PATH"/>)</translation>
+<translation id="1587562069597918292"><ph name="DEVICE_PATH"/></translation>
 <translation id="7493386493263658176"><ph name="EXTENSION_NAME"/> var apkopot visu ievadīto tekstu, tostarp privātus datus, piemēram, paroles un kredītkaršu numurus. Vai vēlaties izmantot šo paplašinājumu?</translation>
 <translation id="7067725467529581407">Nekad vairs nerādīt šo informāciju.</translation>
 <translation id="8922013791253848639">Vienmēr atļaut reklāmu rādīšanu šajā vietnē</translation>
@@ -2301,9 +2323,9 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="399179161741278232">Importēts</translation>
 <translation id="5225324770654022472">Rādīt lietotņu saīsnes</translation>
 <translation id="5072836811783999860">Rādīt pārvaldītās grāmatzīmes</translation>
+<translation id="3613134908380545408">Rādīt <ph name="FOLDER_NAME"/></translation>
 <translation id="3785308913036335955">Rādīt lietotņu saīsnes</translation>
 <translation id="711840821796638741">Pārvaldīto grāmatzīmju rādīšana</translation>
-<translation id="3613134908380545408">Mapes “<ph name="FOLDER_NAME"/>” rādīšana</translation>
 <translation id="2367972762794486313">Rādīt lietotnes</translation>
 <translation id="8368859634510605990">&amp;Atvērt visas grāmatzīmes</translation>
 <translation id="7489355918927585587">{COUNT,plural, =0{Atvērt visas}=1{Atvērt grāmatzīmi}zero{Atvērt visas (#)}one{Atvērt visas (#)}other{Atvērt visas (#)}}</translation>
@@ -3155,12 +3177,21 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="6352773953037195952">Visaugstākais</translation>
 <translation id="3677657024345889897">Visklusāk</translation>
 <translation id="167160931442925455">Visskaļāk</translation>
+<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="4683947955326903992"><ph name="PERCENTAGE"/>% (noklusējums)</translation>
 <translation id="3602290021589620013">Priekšskatīt</translation>
 <translation id="7037509989619051237">Teksta priekšskatījums</translation>
 <translation id="5471768120198416576">Sveiki! Šī ir balss jūsu teksta pārvēršanai runā.</translation>
 <translation id="6902066522699286937">Balss priekšskatīšanai</translation>
 <translation id="304747341537320566">Runas programmas</translation>
+<translation id="5270041685309222649">Kiosk Next Shell (Dev)</translation>
+<translation id="6409191325648119263">Kiosk Next Shell</translation>
+<translation id="5940519603482193359">Iespējo Kiosk Next Shell nākamajai pieteikšanās reizei.</translation>
+<translation id="407536568752283520">Atspējojiet Kiosk Next Shell un atgriezieties parastajā Brave OS vidē.</translation>
+<translation id="6588712220520211269">Izslēdziet Kiosk Next Shell</translation>
+<translation id="2446993819525566591">Ieslēdziet Kiosk Next Shell</translation>
+<translation id="1960737068939025292">Šādi tiks ieslēgta iespēja Kiosk Next Shell, Jūs tiksiet izrakstīts(-ta) un atgriezīsieties parastajā Brave OS vidē.</translation>
+<translation id="7316400597244914467">Šādi Jūs tiksiet izrakstīts(-ta), un tiks ieslēgta iespēja Kiosk Next Shell.</translation>
 <translation id="1067291318998134776">Linux (Beta versija)</translation>
 <translation id="7911118814695487383">Linux</translation>
 <translation id="1366177842110999534">Palaidiet Linux rīkus, redaktorus un IDE savā <ph name="DEVICE_TYPE"/>. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Uzziniet vairāk&lt;/a&gt;</translation>
@@ -4188,7 +4219,6 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="8781980678064919987">Izslēgt, kad vāks tiek aizvērts</translation>
 <translation id="3636766455281737684"><ph name="PERCENTAGE"/>% — atlicis: <ph name="TIME"/></translation>
 <translation id="727441411541283857"><ph name="PERCENTAGE"/>% — līdz pilnam akumulatoram: <ph name="TIME"/></translation>
-<translation id="6247708409970142803"><ph name="PERCENTAGE"/>%</translation>
 <translation id="2620436844016719705">Sistēma</translation>
 <translation id="2077129598763517140">Izmantot aparatūras paātrināšanas režīmu, kad tas ir pieejams</translation>
 <translation id="1889984860246851556">Atvērt starpniekservera iestatījumus</translation>
@@ -4197,6 +4227,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="2789927670850159391">Savienojiet Bravebook datoru ar tālruni. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
 <translation id="1397500194120344683">Nav piemērotu ierīču. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
 <translation id="5739235828260127894">Tiek gaidīta verifikācija. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
+<translation id="6518133107902771759">Pārbaudīt</translation>
 <translation id="7179187931092694802">Atbloķējiet savu Bravebook datoru, izmantojot tālruni. <ph name="LINK_BEGIN"/>Uzziniet vairāk<ph name="LINK_END"/>.</translation>
 <translation id="5430931332414098647">Tūlītēja piesaiste</translation>
 <translation id="6415900369006735853">Piekļūstiet internetam, izmantojot tālruni</translation>

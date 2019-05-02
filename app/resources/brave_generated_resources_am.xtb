@@ -14,6 +14,8 @@
 <translation id="6165477144235978006">የብሬቭ ክፍያዎች</translation>
 <translation id="3489524616427966890">መስኮቶችን እና ትሮችን ክፈት</translation>
 <translation id="3699882589215410581">ዊንድቬን ገጥመው ይክፈቱ</translation>
+<translation id="8053096063396012732">Widevineን ይጫኑ</translation>
+<translation id="4840334696217618631">Widevine ን ለማንቃት አሳሹን እንደገና ያስጀምሩ</translation>
 <translation id="8410111618231938546">Google Widevine የዲጂታል መብት አስተዳደር (DRM) አካል የሆነ ኮድ ሲሆን እኛ ብሬቭ ሶፍትዌር ባለቤትነት የሌለንና ምርመራ ማካሄድ አንችልም፡፡ Google Widevine ኮድ ከኛ ሰርቨር ሳይሆን ከ Google ሰርቨር ማግኘት ይችላሉ፡፡ የሚጀምረው ይህን አማራጭ ካበራቹህ ብቻ ነው፡፡ DRM እንዲጠቀሙ አናበረታታም፣ ቢሆንም የተጠቃሚዎቻችንን ምርጫ እናከብራለን እንዲሁም አንድ አንድ የብሬቭ ተጠቃሚዎች ይህን የሚጠይቅ አገልግሎት መጠቀም እንደሚፈልጉ እውቅና እነሰታለን፡፡
  
  ይህን ቅጥያ ሲገጥሙ፣ በGoogle Widevine የአጠቃቀም ሕግ እየተስማሙ ነው፡፡ ከGoogle Widevine ሲጠቀሙ ለሚገጥሞት አደጋ ወይ የግንኙነት መቋረጥ ብሬቭ ሀላፊነት እንደማይወስድ ይስማማሉ፡፡</translation>
@@ -29,6 +31,8 @@
 <translation id="7543906827780734027">ብሬቭ ይህንን ቅጥያ ገና አልገመገመውም - ተንኮል ያዘለ ሊሆን ይችላል፡፡እንደሆነ እንዲሆን "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ልቀጥለው?</translation>
 <translation id="2044383478723007273">የብሬቭ ቀለም</translation>
 <translation id="5341901626640816374">ሰፊ የአካባቢ ባር ይጠቀሙ</translation>
+<translation id="6123134130710658846">የ Brave Rewards መምረጫ ቁልፍ ደብቅ</translation>
+<translation id="7635711399568194460">Brave Rewards  ካልበራ በአድራሻው አሞሌ ላይ ያለው የ Brave Rewards መጫኛ ይደበቃል።</translation>
 <translation id="7965178729203412357">አዲስ ቶር ተለይቷል</translation>
 <translation id="8784924142044142231">ከቶር ይውጡ</translation>
 <translation id="5410152065859052603">ቶር</translation>
@@ -42,12 +46,17 @@
 <translation id="3155170474926428993">ቶር ማስጀመርያ</translation>
 <translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="7924918279836988121">የBat Ledger አገልግሎት</translation>
-<translation id="7372129767729198111">የብሬቭ ጥበቃ ዲፎልት</translation>
-<translation id="8029018702721078742">ማስተዋቅያን መቆጣጠር</translation>
-<translation id="3544462288910360084">ኮኬ መቆጣጠር</translation>
+<translation id="768979911142179781">የብሬቭ ጥበቃ ዲፎልት</translation>
+<translation id="9185018653595759199">ማህበራዊ መጫኛ ቁልፎች እና መግቢያዎች</translation>
+<translation id="6894114137169961038">ማስተዋቅያን መቆጣጠር</translation>
+<translation id="1096802265930928584">ኮኬ መቆጣጠር</translation>
 <translation id="8919235146866304148">የጣት አሻራ ጥበቃ</translation>
 <translation id="520895744850022668">HTTPS በሁሉም ቦተታ</translation>
 <translation id="5259716416204774556">ስክሪፕት መከላከል</translation>
+<translation id="7498695072878479744">የ Google መግቢያ መጫኛ ቁልፎችን በሶስተኛ ወገን ጣቢያዎች ላይ ይፍቀዱ።</translation>
+<translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
+<translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
+<translation id="958971637207126733">የ LinkedIn አካቶዎችን ይፍቀዱ</translation>
 <translation id="6067014455220527258">ማስታወቅያ ይከላከሉ</translation>
 <translation id="6985711843506827936">ማስታወቅያና መከታተል ይፍቀዱ</translation>
 <translation id="6132506775968708399">የ3ኛ ወገን ኩኪ ይከላከሉ</translation>
@@ -63,10 +72,16 @@
 <translation id="5825943197137337319">የጋራ ዲፎልት አጠቃቀም መጋራት ብቻ</translation>
 <translation id="1689062823386843231">ሮክሲ የሌለው UDP ያጥፉ</translation>
 <translation id="6645631466045614531">ሲንክን ያግኙ በ</translation>
+<translation id="1807246157184219062">ብርሀን</translation>
+<translation id="2414886740292270097">ጨለማ</translation>
+<translation id="1360441190790440400">ከ Linux ጋር ተመሳሳይ</translation>
+<translation id="1336940801687497203">ልክ እንደ Windows</translation>
+<translation id="8721331068159819483">ከማክ ኦፕሬቲንግ ሲስተም ጋር ተመሳሳይ የሆነ</translation>
 <translation id="6786747875388722282">ቅጥያዎች</translation>
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
 <translation id="6554397389149987360">በማሰሻው ላይ የማያ መጋራትን እና ሌሎች ባህሪያትን ለመጠቀም የ Hangouts ክፍሎችን ይጠቀሙ።</translation>
-<translation id="6916590542764765824">ቅጥያዎችን አስተዳድር</translation>
+<translation id="8137559199583651773">ቅጥያዎችን አስተዳድር</translation>
 <translation id="4928988318462976765">የድረገጽ ተቀጥላ ማከማቻ</translation>
 <translation id="9181207987584064303">የድር ቅጥያዎችን መደብር ውስጥ ይመልከቱ።</translation>
+<translation id="4846154056248462491">ሲወጣ</translation>
 </translationbundle>

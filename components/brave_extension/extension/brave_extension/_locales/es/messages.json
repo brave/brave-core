@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "3rd-party trackers blocked",
+    "message": "Rastreadores de terceros bloqueados",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
