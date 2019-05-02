@@ -28,11 +28,11 @@
     "description": "Message telling the user that shields are disabled"
   },
   "itemsBlocked": {
-    "message": "Elementy zablokowane",
+    "message": "zablokowanych elementów",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Element zablokowany",
+    "message": "zablokowany element",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {

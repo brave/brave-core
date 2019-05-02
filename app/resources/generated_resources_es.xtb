@@ -1270,7 +1270,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (actualización disponible)</translation>
 <translation id="8525306231823319788">Pantalla completa</translation>
-<translation id="8820817407110198400">Favoritos</translation>
+<translation id="8820817407110198400">Marcadores</translation>
 <translation id="5463856536939868464">Menú con marcadores ocultos</translation>
 <translation id="7360183604634508679">Menú de marcadores</translation>
 <translation id="338583716107319301">Separador</translation>
@@ -1660,7 +1660,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="4736292055110123391">Sincroniza tus marcadores, tus contraseñas, tu historial y mucho más en todos tus dispositivos</translation>
 <translation id="5736731321935944068">Es posible que Brave Software utilice tu historial para personalizar la Búsqueda, los anuncios y otros servicios de Brave Software</translation>
 <translation id="4201546031411513170">Siempre puedes seleccionar qué contenido quieres sincronizar desde Ajustes.</translation>
-<translation id="3149880132460839085">Sincronización de Brave</translation>
+<translation id="3149880132460839085">Brave Sync</translation>
 <translation id="3796902758602917951">Tus marcadores, historial, contraseñas y otros ajustes se sincronizarán con tu cuenta de Brave Software para que puedas utilizarlos en todos tus dispositivos</translation>
 <translation id="3111958038206230539">Personalizar los servicios de Brave Software</translation>
 <translation id="295992419959320001">Brave Software puede utilizar tu historial de navegación para personalizar la Búsqueda, los anuncios y otros servicios de Brave Software</translation>
@@ -4005,7 +4005,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="7243632151880336635">Borrar y cerrar sesión</translation>
 <translation id="6406506848690869874">Sincronizar</translation>
 <translation id="5428209950370661546">Otros servicios de Brave Software</translation>
-<translation id="7956662517480676674">Servicios de Brave Software y sincronización</translation>
+<translation id="7956662517480676674">Brave Sync y Servicios de Brave</translation>
 <translation id="2453021845418314664">Configuración avanzada de sincronización</translation>
 <translation id="4314815835985389558">Gestionar la sincronización</translation>
 <translation id="659934686219830168">La sincronización comenzará cuando salgas de esta página</translation>

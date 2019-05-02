@@ -44,9 +44,6 @@
 <translation id="1869685517625607604">阻擋廣告總計：</translation>
 <translation id="4673764878177947707">自訂過濾器</translation>
 <translation id="8803682034537762884">一行一個，以 Adblock Plus 過濾器的語法描述</translation>
-<translation id="6200814343085745765">阻擋區域性的廣告：</translation>
-<translation id="59174027418879706">已啟用</translation>
-<translation id="4176463684765177261">已停用</translation>
 <translation id="2974339193389078578">Brave 帶來全新網際網路體驗</translation>
 <translation id="7735138632831241257">準備好使用專為保護您隱私的瀏覽器，享受更快速且更安全的瀏覽體驗。</translation>
 <translation id="6001839398155993679">開始吧</translation>
@@ -71,7 +68,7 @@
 <translation id="5946611334574299206">透過在 Brave 中觀看廣告來獲得代幣。所顯示的廣告是您的興趣為基礎，其推測自您的瀏覽行為。您的個人資料或瀏覽歷史記錄從未離開您的瀏覽器。</translation>
 <translation id="6112368337882254910">自動捐獻</translation>
 <translation id="1527222983464337010">支援出版者與內容創作者的自動化方式。設定每月支付額度並照常瀏覽。根據 Brave 測量到您的注意力，您造訪的網站將會自動收到您的捐款。</translation>
-<translation id="6509523738781937572">本月份目前收入 (預估)</translation>
+<translation id="7178655681744815321">本月份目前收入 (預估)</translation>
 <translation id="8157096848242649588">付款日期</translation>
 <translation id="5208388044986603165">收到的廣告通知</translation>
 <translation id="4229016885653790965">抱歉！廣告在您的所在區域不可用。</translation>
@@ -277,7 +274,6 @@
 <translation id="1704859330137112950">如果您喜歡的話，您也可以安排每月的小費來持續支援此網站。</translation>
 <translation id="3074127054582480056">注意</translation>
 <translation id="822513417008209372">您目前正在支援</translation>
-<translation id="797446268269282651">使用舊版瀏覽器，您就是以消耗寶貴的注意力觀看廣告為代價來瀏覽網頁。您花了大把時間下載侵入式廣告技術，並將您寶貴的個人資料傳輸給廣告商</translation>
 <translation id="5010112177773747965">未經您的同意。</translation>
 <translation id="7147673045905733351">現在，Brave 歡迎您來到全新的網際網路。</translation>
 <translation id="1350763070659630336">一個知道您的時間很寶貴，您的個人資料會保持隱祕，而您實際上也因您的注意力而獲得報酬。</translation>
@@ -355,7 +351,7 @@
 <translation id="1061533051865606843">增加新裝置</translation>
 <translation id="8780295742023331191">檢視「同步代碼」</translation>
 <translation id="1755198127524719638">同步設定</translation>
-<translation id="157217459429812600">管理想在裝置之間同步的資料。這些設定只會影響到這項裝置。</translation>
+<translation id="7558480201297099157">管理想在裝置之間同步的資料。這些設定只會影響到這項裝置。</translation>
 <translation id="8820817407110198400">書籤</translation>
 <translation id="5591129654353352557">已儲存網站設定</translation>
 <translation id="7859704718976024901">瀏覽記錄</translation>
@@ -383,7 +379,7 @@
 <translation id="5086223971958279691">同步鏈代碼</translation>
 <translation id="2899261497479389619">在您的目標電腦上，前往設定中的「Brave 同步」，按一下按鈕</translation>
 <translation id="4827439149833241990">“我有組「同步代碼」”。</translation>
-<translation id="8299617838343103908">請輸入下方所示的同步鏈碼字。</translation>
+<translation id="24067401253841795">請輸入下方所示的同步鏈碼字。</translation>
 <translation id="8914601399214979966">改用我的相機</translation>
 <translation id="3034163433136515805">檢視 QR 碼</translation>
 <translation id="5093410893656857925">選擇裝置類型</translation>

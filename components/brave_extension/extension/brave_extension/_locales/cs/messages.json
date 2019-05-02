@@ -28,35 +28,35 @@
     "description": "Message telling the user that shields are disabled"
   },
   "itemsBlocked": {
-    "message": "Items blocked",
+    "message": "Blokované položky",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Item blocked",
+    "message": "Položka blokována",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
-    "message": "and",
+    "message": "a",
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "connections upgraded",
+    "message": "připojení aktualizována",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "connection upgraded",
+    "message": "připojení aktualizováno",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "3rd-party trackers blocked",
+    "message": "Blokovány trackery třetí strany",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "Connections upgraded to HTTPS",
+    "message": "připojení aktualizována pro HTTPS",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "Connection upgraded to HTTPS",
+    "message": "Připojení aktualizováno pro HTTPS",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {
@@ -132,7 +132,7 @@
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Change global shield defaults",
+    "message": "Změnit obecná nastavení štítu",
     "description": "Message for the button action linking to the settings page"
   }
 }
