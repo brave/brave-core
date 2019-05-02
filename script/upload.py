@@ -6,6 +6,7 @@
 import argparse
 import errno
 import hashlib
+import logging
 import os
 import requests
 import re
@@ -30,10 +31,23 @@ SYMBOLS_NAME = get_zip_name(project_name(), get_brave_version(), 'symbols')
 DSYM_NAME = get_zip_name(project_name(), get_brave_version(), 'dsym')
 PDB_NAME = get_zip_name(project_name(), get_brave_version(), 'pdb')
 
+if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
+    try:
+        from http.client import HTTPConnection  # python3
+    except ImportError:
+        from httplib import HTTPConnection  # python2
+
 
 def main():
     args = parse_args()
     print('[INFO] Running upload...')
+
+    # Enable urllib3 debugging output
+    if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
+        logging.basicConfig(level=logging.DEBUG)
+        logging.getLogger("urllib3").setLevel(logging.DEBUG)
+        logging.debug("DEBUG_HTTP_HEADERS env var is enabled, logging HTTP headers")
+        debug_requests_on()
 
     # BRAVE_REPO is defined in lib/helpers.py for now
     repo = GitHub(get_env_var('GITHUB_TOKEN')).repos(BRAVE_REPO)
@@ -104,7 +118,31 @@ def main():
     #     # Upload PDBs to Windows symbol server.
     #     run_python_script('upload-windows-pdb.py')
 
+    if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
+        debug_requests_off()
     print('[INFO] Finished upload')
+
+
+def debug_requests_on():
+    '''Switches on logging of the requests module.'''
+    HTTPConnection.debuglevel = 1
+
+    logging.basicConfig()
+    logging.getLogger().setLevel(logging.DEBUG)
+    requests_log = logging.getLogger("requests.packages.urllib3")
+    requests_log.setLevel(logging.DEBUG)
+    requests_log.propagate = True
+
+
+def debug_requests_off():
+    '''Switches off logging of the requests module, might be some side-effects'''
+    HTTPConnection.debuglevel = 0
+
+    root_logger = logging.getLogger()
+    root_logger.setLevel(logging.WARNING)
+    root_logger.handlers = []
+    requests_log = logging.getLogger("requests.packages.urllib3")
+    requests_log.setLevel(logging.WARNING)
 
 
 def get_brave_packages(dir, channel, version):
