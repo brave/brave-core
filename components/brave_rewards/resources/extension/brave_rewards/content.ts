@@ -9,22 +9,28 @@ const getTweetMetaData = (tweet: Element): RewardsDonate.TweetMetaData | null =>
   if (!tweet) {
     return null
   }
+
   const tweetTextElements = tweet.getElementsByClassName('tweet-text')
   if (!tweetTextElements || tweetTextElements.length === 0) {
     return null
   }
+
+  const tweetText = tweetTextElements[0] as HTMLElement
+
   const tweetTimestampElements = tweet.getElementsByClassName('js-short-timestamp')
   if (!tweetTimestampElements || tweetTimestampElements.length === 0) {
     return null
   }
-  const tweetTimestamp = tweetTimestampElements[0].getAttribute('data-time-ms') || ''
+
+  const tweetTimestamp = tweetTimestampElements[0].getAttribute('data-time') || ''
+
   return {
     name: tweet.getAttribute('data-name') || '',
     screenName: tweet.getAttribute('data-screen-name') || '',
     userId: tweet.getAttribute('data-user-id') || '',
     tweetId: tweet.getAttribute('data-tweet-id') || '',
     tweetTimestamp: parseInt(tweetTimestamp, 10) || 0,
-    tweetText: tweetTextElements[0].textContent || ''
+    tweetText: tweetText.innerText || ''
   }
 }
 
