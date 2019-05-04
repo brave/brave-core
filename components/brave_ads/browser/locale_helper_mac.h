@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BROWSER_BRAVE_ADS_LOCALE_HELPER_MAC_H_
-#define BRAVE_COMPONENTS_BROWSER_BRAVE_ADS_LOCALE_HELPER_MAC_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_LOCALE_HELPER_MAC_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_LOCALE_HELPER_MAC_H_
 
 #include <string>
 
@@ -22,7 +22,7 @@ class LocaleHelperMac : public LocaleHelper {
  private:
   friend struct base::DefaultSingletonTraits<LocaleHelperMac>;
 
-  // LocaleHelperMac impl
+  // LocaleHelper impl
   std::string GetLocale() const override;
 
   DISALLOW_COPY_AND_ASSIGN(LocaleHelperMac);
@@ -30,4 +30,4 @@ class LocaleHelperMac : public LocaleHelper {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_COMPONENTS_BROWSER_BRAVE_ADS_LOCALE_HELPER_MAC_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_LOCALE_HELPER_MAC_H_
