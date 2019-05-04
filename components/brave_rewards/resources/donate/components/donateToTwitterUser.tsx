@@ -36,13 +36,12 @@ class DonateToTwitterUser extends React.Component<Props, {}> {
     const publisher = this.props.publisher
     const tweetMetaData = this.props.tweetMetaData
     publisher.title = getLocale('tweetTipTitle', { user: tweetMetaData.screenName })
-    publisher.description = tweetMetaData.tweetText
 
     return (
       <>
         {
           !finished && !error
-          ? <Banner publisher={publisher} />
+          ? <Banner publisher={publisher} tweetMetaData={tweetMetaData} />
           : null
         }
         {

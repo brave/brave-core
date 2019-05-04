@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 // Components
 import { SiteBanner } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
+import TweetBox from './tweetBox'
 
 // Utils
 import * as tipActions from '../actions/tip_actions'
@@ -16,6 +17,7 @@ import * as utils from '../utils'
 
 interface Props extends RewardsTip.ComponentProps {
   publisher: RewardsTip.Publisher
+  tweetMetaData?: RewardsTip.TweetMetaData
 }
 
 interface State {
@@ -161,10 +163,8 @@ class Banner extends React.Component<Props, State> {
         addFundsLink={this.addFundsLink}
       >
       {
-        utils.isTwitterAccount(publisher.publisherKey)
-        ? <div style={{ border: '1px solid #d3d3d3', borderRadius: '5px', margin: '20px 0 0 0', padding: '20px' }}>
-          {publisher.description}
-        </div>
+        this.props.tweetMetaData
+        ? <TweetBox tweetMetaData={this.props.tweetMetaData} />
         : publisher.description
       }
       </SiteBanner>
