@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/renderer_host/chrome_navigation_ui_data.cc b/chrome/browser/renderer_host/chrome_navigation_ui_data.cc
-index 299a44a55eede0e318241c8885f00546e3f99ae1..ff079c76c3d76d53e16cdc28e81420ec2f35e56a 100644
+index cc451467f27f2f5054697281ff01d56b2937c5e5..c5cdc0fc623fb6bbe498430ffa8399534ccb1032 100644
 --- a/chrome/browser/renderer_host/chrome_navigation_ui_data.cc
 +++ b/chrome/browser/renderer_host/chrome_navigation_ui_data.cc
-@@ -52,7 +52,7 @@ ChromeNavigationUIData::CreateForMainFrameNavigation(
+@@ -49,7 +49,7 @@ ChromeNavigationUIData::CreateForMainFrameNavigation(
      content::WebContents* web_contents,
      WindowOpenDisposition disposition,
      int64_t data_reduction_proxy_page_id) {
@@ -11,7 +11,7 @@ index 299a44a55eede0e318241c8885f00546e3f99ae1..ff079c76c3d76d53e16cdc28e81420ec
    navigation_ui_data->disposition_ = disposition;
    navigation_ui_data->data_reduction_proxy_page_id_ =
        data_reduction_proxy_page_id;
-@@ -73,7 +73,7 @@ ChromeNavigationUIData::CreateForMainFrameNavigation(
+@@ -70,7 +70,7 @@ ChromeNavigationUIData::CreateForMainFrameNavigation(
  
  std::unique_ptr<content::NavigationUIData> ChromeNavigationUIData::Clone()
      const {
