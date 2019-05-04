@@ -104,16 +104,14 @@ export class App extends React.Component<Props, {}> {
     }
 
     let donation
-    if (isTwitterAccount(publisherKey)) {
-      const tweetMetaData = this.props.dialogArgs.tweetMetaData
-      if (tweetMetaData) {
-        donation = (
-          <DonateToTwitterUser
-            publisher={publisher}
-            tweetMetaData={tweetMetaData}
-          />
-        )
-      }
+    const tweetMetaData = this.props.dialogArgs.tweetMetaData
+    if (tweetMetaData) {
+      donation = (
+        <DonateToTwitterUser
+          publisher={publisher}
+          tweetMetaData={tweetMetaData}
+        />
+      )
     } else {
       donation = (
         <DonateToSite
