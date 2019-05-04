@@ -356,5 +356,9 @@
   "turnOnAds": {
     "message": "Turn on Ads",
     "description": "Prompt to turn on Ads via notification"
+  },
+  "adsEarnings": {
+    "message": "earned from ads",
+    "description": "Description text for ad grants in grant details"
   }
 }

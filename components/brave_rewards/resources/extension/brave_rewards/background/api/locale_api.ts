@@ -86,6 +86,7 @@ export const getUIMessages = (): Record<string, string> => {
     'unVerifiedText',
     'unVerifiedTextMore',
     'verifiedPublisher',
+    'adsEarnings',
     'welcomeButtonTextOne',
     'welcomeButtonTextTwo',
     'welcomeDescOne',
