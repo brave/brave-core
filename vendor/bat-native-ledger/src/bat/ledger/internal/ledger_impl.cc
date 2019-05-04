@@ -729,6 +729,7 @@ void LedgerImpl::OnRecoverWallet(
     tempGrant.altcurrency = grants[i].altcurrency;
     tempGrant.probi = grants[i].probi;
     tempGrant.expiryTime = grants[i].expiryTime;
+    tempGrant.type = grants[i].type;
 
     ledgerGrants.push_back(tempGrant);
   }

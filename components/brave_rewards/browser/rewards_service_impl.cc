@@ -802,6 +802,7 @@ void RewardsServiceImpl::OnWalletProperties(
         grant.altcurrency = wallet_info->grants_[i].altcurrency;
         grant.probi = wallet_info->grants_[i].probi;
         grant.expiryTime = wallet_info->grants_[i].expiryTime;
+        grant.type = wallet_info->grants_[i].type;
 
         wallet_properties->grants.push_back(grant);
       }
@@ -1428,6 +1429,7 @@ void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result,
     grant.altcurrency = grants[i].altcurrency;
     grant.probi = grants[i].probi;
     grant.expiryTime = grants[i].expiryTime;
+    grant.type = grants[i].type;
 
     newGrants.push_back(grant);
   }

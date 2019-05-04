@@ -177,6 +177,10 @@
                     "expiryTime": {
                       "type": "integer",
                       "description": "when grant expires, timestamp in seconds"
+                    },
+                    "type": {
+                      "type": "string",
+                      "description": "grant type, ugp or ads"
                     }
                   }
                 }
