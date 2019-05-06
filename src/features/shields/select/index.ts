@@ -41,7 +41,8 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   cursor: pointer;
 
   > option {
-    color: ${palette.white};
+    /* DO NOT MODIFY: this is for the dropdown only and has effect only on Windows */
+    color: ${palette.black};
   }
 
   ${(p: SelectBoxProps) => p.disabled
