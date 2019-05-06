@@ -11,7 +11,7 @@ use std::string::String;
 #[no_mangle]
 pub unsafe extern "C" fn blocker_create(rules: *const c_char) -> *mut Blocker {
     let split = CStr::from_ptr(rules).to_str().unwrap().lines();
-    let rules: Vec<String> = split.map(|s| String::from(s)).collect();
+    let rules: Vec<String> = split.map(String::from).collect();
     let (network_filters, _) = parse_filters(&rules, true, false, false);
     let blocker_options = BlockerOptions {
         debug: false,

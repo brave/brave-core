@@ -14,9 +14,6 @@ crate-type = [
 ]
 name = "adblock"
 
-[patch.crates-io]
-adblock = { path = "../adblock-rust" }
-
 [features]
 cbindgen = []
 
