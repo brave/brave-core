@@ -18,6 +18,8 @@ class Blocker {
   ~Blocker();
 
  private:
+  Blocker(const Blocker&) = delete;
+  void operator=(const Blocker&) = delete;
   C_Blocker *raw;
 };
 
