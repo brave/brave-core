@@ -1,0 +1,24 @@
+[package]
+name = "adblock-ffi"
+version = "0.1.0"
+authors = ["Brian R. Bondy <netzen@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+adblock="0.1.0"
+
+[lib]
+crate-type = [
+    "cdylib",
+    "staticlib",
+]
+name = "adblock"
+
+[features]
+cbindgen = []
+
+[profile.dev]
+panic = "abort"
+
+[profile.release]
+panic = "abort"
