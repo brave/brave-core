@@ -235,4 +235,40 @@ declare namespace Rewards {
     action: string
     args: Record<string, string>
   }
+
+  export interface AdsHistoryData {
+    [key: string]: any
+    id: number
+    date: string
+    adDetailRows: AdHistoryDetail[]
+  }
+
+  export interface AdHistoryDetail {
+    id: number
+    adContent: AdContent
+    categoryContent: CategoryContent
+  }
+
+  export interface AdContent {
+    brand: string
+    brandInfo: string
+    brandLogo: string
+    brandDisplayUrl: string
+    brandUrl: string
+    likeAction: number
+    adAction: 'Viewed' | 'Clicked' | 'Closed' | 'Landed'
+    savedAd: boolean
+    flaggedAd: boolean
+    onThumbUpPress?: () => void
+    onThumbDownPress?: () => void
+    onMenuSave?: () => void
+    onMenuFlag?: () => void
+  }
+
+  export interface CategoryContent {
+    category: string
+    optAction: number
+    onOptInAction?: () => void
+    onOptOutAction?: () => void
+  }
 }
