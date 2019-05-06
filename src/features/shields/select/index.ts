@@ -41,7 +41,7 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   cursor: pointer;
 
   > option {
-    /* DO NOT MODIFY: this is for the dropdown only and has effect only on Windows */
+    /* see https://github.com/brave/brave-browser/issues/4213 for info */
     color: ${palette.black};
   }
 
