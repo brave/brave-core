@@ -52,6 +52,7 @@ class TorProfileServiceImpl : public TorProfileService,
  private:
   void SetNewTorCircuitOnIOThread(
       const scoped_refptr<net::URLRequestContextGetter>&, std::string);
+  std::string CircuitIsolationKey(const GURL& request_url);
 
   Profile* profile_;  // NOT OWNED
   TorLauncherFactory* tor_launcher_factory_;  // Singleton

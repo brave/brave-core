@@ -15,6 +15,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 #include "net/url_request/url_request_context.h"
 #include "net/url_request/url_request_context_getter.h"
@@ -47,6 +48,26 @@ void TorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
   tor_launcher_factory_->ReLaunchTorProcess(config);
 }
 
+std::string TorProfileServiceImpl::CircuitIsolationKey(const GURL& url) {
+  // https://2019.www.torproject.org/projects/torbrowser/design/#privacy
+  //
+  //    For the purposes of the unlinkability requirements of this
+  //    section as well as the descriptions in the implementation
+  //    section, a URL bar origin means at least the second-level DNS
+  //    name.  For example, for mail.google.com, the origin would be
+  //    google.com.  Implementations MAY, at their option, restrict
+  //    the URL bar origin to be the entire fully qualified domain
+  //    name.
+  //
+  // In particular, we need not isolate by the scheme,
+  // username/password, port, path, or query part of the URL.
+  url::Origin origin = url::Origin::Create(url);
+  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      origin.host(),
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  return domain;
+}
+
 void TorProfileServiceImpl::SetNewTorCircuitOnIOThread(
     const scoped_refptr<net::URLRequestContextGetter>& getter,
     std::string host) {
@@ -64,14 +85,13 @@ void TorProfileServiceImpl::SetNewTorCircuitOnIOThread(
                                      true);
 }
 
-
 void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
                                              const base::Closure& callback) {
-  GURL url = SiteInstance::GetSiteForURL(profile_, request_url);
-  if (url.host().empty())
+  std::string isolation_key = CircuitIsolationKey(request_url);
+  if (isolation_key.empty())
     return;
   auto* storage_partition =
-    BrowserContext::GetStoragePartitionForSite(profile_, url , false);
+    BrowserContext::GetStoragePartitionForSite(profile_, request_url, false);
 
   net::URLRequestContextGetter* url_request_context_getter =
     storage_partition->GetURLRequestContext();
@@ -82,7 +102,7 @@ void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
       base::Bind(&TorProfileServiceImpl::SetNewTorCircuitOnIOThread,
                  base::Unretained(this),
                  base::WrapRefCounted(url_request_context_getter),
-                 url.host()),
+                 isolation_key),
     callback);
 }
 
@@ -98,8 +118,9 @@ int TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
                                     const GURL& request_url,
                                     bool new_circuit) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  DCHECK(request_url.SchemeIsHTTPOrHTTPS());
   const TorConfig tor_config = tor_launcher_factory_->GetTorConfig();
-  GURL url = SiteInstance::GetSiteForURL(profile_, request_url);
+  std::string isolation_key = CircuitIsolationKey(request_url);
   if (tor_config.empty()) {
     // No tor config => we absolutely cannot talk to the network.
     // This might mean that there was a problem trying to initialize
@@ -110,7 +131,7 @@ int TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
   base::PostTaskWithTraits(FROM_HERE, {BrowserThread::IO},
       base::Bind(&TorProxyConfigService::TorSetProxy,
       service, tor_config.proxy_string(),
-      url.host(), &tor_proxy_map_, new_circuit));
+      isolation_key, &tor_proxy_map_, new_circuit));
   return net::OK;
 }
 
