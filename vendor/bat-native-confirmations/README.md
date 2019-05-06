@@ -22,12 +22,10 @@ void SetCatalogIssuers(
     std::unique_ptr<IssuersInfo> info)
 ```
 
-`GetTransactionHistory` should be called to get transaction history
+`GetTransactionHistoryForThisCycle` should be called to get transaction history for this cycle
 ```
 void GetTransactionHistory(
-    const uint64_t from_timestamp_in_seconds,
-    const uint64_t to_timestamp_in_seconds,
-    OnGetTransactionHistoryCallback callback)
+    OnGetTransactionHistoryForThisCycle callback)
 ```
 
 `ConfirmAd` should be called by Ads when clicking, viewing, dismissing or landing an Ad
