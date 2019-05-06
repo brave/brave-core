@@ -16,6 +16,7 @@ export interface Props {
   id?: string
   content: React.ReactNode
   children?: React.ReactNode
+  rightEdge?: boolean
 }
 
 interface State {
@@ -40,12 +41,15 @@ export default class Tooltip extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { id, content, children } = this.props
+    const { id, content, children, rightEdge } = this.props
 
     return (
       <StyledWrapper id={id}>
-        <StyledTooltip displayed={this.state.displayed}>
-          <StyledPointer/>
+        <StyledTooltip
+          displayed={this.state.displayed}
+          rightEdge={rightEdge || false}
+        >
+          <StyledPointer rightEdge={rightEdge || false}/>
           <StyledTooltipText>
             {content}
           </StyledTooltipText>
