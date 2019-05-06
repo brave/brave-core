@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "brave/common/extensions/api/brave_sync.h"
+#include "brave/components/brave_sync/brave_profile_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
 #include "brave/components/brave_sync/values_conv.h"
@@ -18,7 +19,7 @@
 #include "components/browser_sync/profile_sync_service.h"
 #include "chrome/browser/sync/profile_sync_service_factory.h"
 
-using browser_sync::ProfileSyncService;
+using brave_sync::BraveProfileSyncService;
 using content::BrowserContext;
 
 namespace extensions {
@@ -26,8 +27,9 @@ namespace api {
 
 namespace {
 
-ProfileSyncService* GetProfileSyncService(BrowserContext* browser_context) {
-  return ProfileSyncServiceFactory::GetAsProfileSyncServiceForProfile(
+BraveProfileSyncService* GetProfileSyncService(
+    BrowserContext* browser_context) {
+  return ProfileSyncServiceFactory::GetAsBraveProfileSyncServiceForProfile(
       Profile::FromBrowserContext(browser_context));
 }
 
@@ -37,7 +39,8 @@ ExtensionFunction::ResponseAction BraveSyncGetInitDataFunction::Run() {
       brave_sync::GetInitData::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  ProfileSyncService* sync_service = GetProfileSyncService(browser_context());
+  BraveProfileSyncService* sync_service =
+    GetProfileSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->OnGetInitData(params->sync_version);
 
@@ -49,7 +52,8 @@ ExtensionFunction::ResponseAction BraveSyncSyncSetupErrorFunction::Run() {
       brave_sync::SyncSetupError::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  ProfileSyncService* sync_service = GetProfileSyncService(browser_context());
+  BraveProfileSyncService* sync_service =
+    GetProfileSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->OnSyncSetupError(
       params->error);
@@ -62,7 +66,8 @@ ExtensionFunction::ResponseAction BraveSyncSyncDebugFunction::Run() {
       brave_sync::SyncDebug::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  ProfileSyncService* sync_service = GetProfileSyncService(browser_context());
+  BraveProfileSyncService* sync_service =
+    GetProfileSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->OnSyncDebug(
       params->message);
@@ -75,7 +80,8 @@ ExtensionFunction::ResponseAction BraveSyncSaveInitDataFunction::Run() {
       brave_sync::SaveInitData::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  ProfileSyncService* sync_service = GetProfileSyncService(browser_context());
+  BraveProfileSyncService* sync_service =
+    GetProfileSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->OnSaveInitData(
       params->seed ? *params->seed : std::vector<uint8_t>(),
@@ -85,7 +91,8 @@ ExtensionFunction::ResponseAction BraveSyncSaveInitDataFunction::Run() {
 }
 
 ExtensionFunction::ResponseAction BraveSyncSyncReadyFunction::Run() {
-  ProfileSyncService* sync_service = GetProfileSyncService(browser_context());
+  BraveProfileSyncService* sync_service =
+    GetProfileSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->OnSyncReady();
 
@@ -100,7 +107,8 @@ ExtensionFunction::ResponseAction BraveSyncGetExistingObjectsFunction::Run() {
   auto records = std::make_unique<std::vector<::brave_sync::SyncRecordPtr>>();
   ::brave_sync::ConvertSyncRecords(params->records, *records.get());
 
-  ProfileSyncService* sync_service = GetProfileSyncService(browser_context());
+  BraveProfileSyncService* sync_service =
+    GetProfileSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->OnGetExistingObjects(
     params->category_name,
@@ -119,7 +127,8 @@ ExtensionFunction::ResponseAction BraveSyncResolvedSyncRecordsFunction::Run() {
   auto records = std::make_unique<std::vector<::brave_sync::SyncRecordPtr>>();
   ::brave_sync::ConvertSyncRecords(params->records, *records.get());
 
-  ProfileSyncService* sync_service = GetProfileSyncService(browser_context());
+  BraveProfileSyncService* sync_service =
+    GetProfileSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->OnResolvedSyncRecords(
     params->category_name,
@@ -134,7 +143,8 @@ BraveSyncSaveBookmarksBaseOrderFunction::Run() {
       brave_sync::SaveBookmarksBaseOrder::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  ProfileSyncService* sync_service = GetProfileSyncService(browser_context());
+  BraveProfileSyncService* sync_service =
+    GetProfileSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->OnSaveBookmarksBaseOrder(
       params->order);
@@ -147,7 +157,8 @@ ExtensionFunction::ResponseAction BraveSyncSyncWordsPreparedFunction::Run() {
       brave_sync::SyncWordsPrepared::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  ProfileSyncService* sync_service = GetProfileSyncService(browser_context());
+  BraveProfileSyncService* sync_service =
+    GetProfileSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->OnSyncWordsPrepared(params->words);
 
@@ -156,7 +167,8 @@ ExtensionFunction::ResponseAction BraveSyncSyncWordsPreparedFunction::Run() {
 
 ExtensionFunction::ResponseAction BraveSyncExtensionInitializedFunction::Run() {
   // Also inform sync client extension started
-  ProfileSyncService* sync_service = GetProfileSyncService(browser_context());
+  BraveProfileSyncService* sync_service =
+    GetProfileSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->GetBraveSyncClient()->OnExtensionInitialized();
 
