@@ -6,7 +6,7 @@ index 8e92d58854d55a27e53d4a2b93bb299149ff4c95..aa6d8ca5cd9ec78bdbd9d93e7cbc6da6
  
    deps = [
      ":unpak",
-+    "//brave/browser/resources/md_extensions:unpak",
++    "//brave/browser/resources/extensions:unpak",
    ]
  }
  
