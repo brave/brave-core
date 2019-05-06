@@ -8,14 +8,13 @@
 #include <map>
 #include <vector>
 
+#include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/grit/components_resources.h"
 #include "content/public/browser/web_ui_data_source.h"
 
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
-#include "components/grit/brave_components_resources.h"
-#else
-#include "components/grit/components_resources.h"
 #endif
 
 namespace {
@@ -76,6 +75,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "c168145d6bf1abf2c0322636366f7dbe.svg", IDR_BRAVE_PRIVATE_TAB_TOR_IMG },               // NOLINT
         { "dbdc336ccc651b8a7c925b3482d6e65a.svg", IDR_BRAVE_PRIVATE_TAB_IMG }
       }
+#if !defined(OS_ANDROID)
     }, {
       std::string("rewards"), {
         { "favicon.ico", IDR_BRAVE_REWARDS_FAVICON },
@@ -89,17 +89,17 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "2c6f798a519beabb327149c349912f5f.svg", IDR_BRAVE_REWARDS_IMG_LTC },
       }
     }, {
-      std::string("welcome"), {
-        { "favicon.ico", IDR_BRAVE_WELCOME_PAGE_FAVICON }
-      }
-    }, {
-      std::string("adblock"), {
-      }
-    }, {
       std::string("tip"), {
         { "2e7994eaf768ee4a99272ea96cb39849.svg", IDR_BRAVE_TIP_BG_1 },
         { "4364e454dba7ea966b117f643832e871.svg", IDR_BRAVE_TIP_BG_2 },
       }
+#endif
+    }, {
+      std::string("welcome"), {
+        { "favicon.ico", IDR_BRAVE_WELCOME_PAGE_FAVICON }
+      }
+    }, {
+      std::string("adblock"), {}
     }
   };
   AddResourcePaths(source, resources[name]);

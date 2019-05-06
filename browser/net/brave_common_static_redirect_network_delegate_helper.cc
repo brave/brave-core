@@ -11,11 +11,16 @@
 
 #include "brave/common/network_constants.h"
 #include "components/component_updater/component_updater_url_constants.h"
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "extensions/common/extension_urls.h"
 #include "extensions/common/url_pattern.h"
+#endif
 
 namespace brave {
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 // Update server checks happen from the profile context for admin policy
 // installed extensions. Update server checks happen from the system context for
 // normal update operations.
@@ -32,10 +37,12 @@ bool IsUpdaterURL(const GURL& gurl) {
       updater_patterns.begin(), updater_patterns.end(),
       [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
+#endif
 
 int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   GURL::Replacements replacements;
   if (IsUpdaterURL(ctx->request_url)) {
     replacements.SetQueryStr(ctx->request_url.query_piece());
@@ -44,6 +51,7 @@ int OnBeforeURLRequest_CommonStaticRedirectWork(
                             .spec();
     return net::OK;
   }
+#endif
   return net::OK;
 }
 

@@ -9,6 +9,6 @@ source_set("permissions") {
   ]
 
   deps = [
-    "//chrome/browser",
+    "//content/public/browser",
   ]
 }

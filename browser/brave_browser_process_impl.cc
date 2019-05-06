@@ -15,7 +15,6 @@
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
@@ -35,6 +34,15 @@
 #include "brave/browser/widevine/brave_widevine_bundle_manager.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#endif
+
+#if defined(OS_ANDROID)
+#include "chrome/browser/android/chrome_feature_list.h"
+#include "chrome/browser/android/component_updater/background_task_update_scheduler.h"
+#endif
+
 BraveBrowserProcessImpl* g_brave_browser_process = nullptr;
 
 using content::BrowserThread;
@@ -48,6 +56,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(
   g_browser_process = this;
   g_brave_browser_process = this;
 
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   brave_referrals_service_ = brave::BraveReferralsServiceFactory(local_state());
   base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
       FROM_HERE,
@@ -57,6 +66,7 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(
           },
           base::Unretained(brave_referrals_service_.get())),
       base::TimeDelta::FromSeconds(3));
+#endif
 
   brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
   base::SequencedTaskRunnerHandle::Get()->PostTask(
@@ -137,6 +147,7 @@ BraveBrowserProcessImpl::autoplay_whitelist_service() {
   return autoplay_whitelist_service_.get();
 }
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 brave_shields::ExtensionWhitelistService*
 BraveBrowserProcessImpl::extension_whitelist_service() {
   if (!extension_whitelist_service_) {
@@ -145,6 +156,7 @@ BraveBrowserProcessImpl::extension_whitelist_service() {
   }
   return extension_whitelist_service_.get();
 }
+#endif
 
 brave_shields::ReferrerWhitelistService*
 BraveBrowserProcessImpl::referrer_whitelist_service() {
@@ -180,6 +192,7 @@ BraveBrowserProcessImpl::local_data_files_service() {
   return local_data_files_service_.get();
 }
 
+#if BUILDFLAG(ENABLE_TOR)
 extensions::BraveTorClientUpdater*
 BraveBrowserProcessImpl::tor_client_updater() {
   if (tor_client_updater_)
@@ -188,6 +201,7 @@ BraveBrowserProcessImpl::tor_client_updater() {
   tor_client_updater_ = extensions::BraveTorClientUpdaterFactory();
   return tor_client_updater_.get();
 }
+#endif
 
 void BraveBrowserProcessImpl::CreateProfileManager() {
   DCHECK(!created_profile_manager_ && !profile_manager_);

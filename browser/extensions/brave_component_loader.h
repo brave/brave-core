@@ -44,7 +44,9 @@ class BraveComponentLoader : public ComponentLoader {
   static bool IsPdfjsDisabled();
 
  private:
+#if BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
   void AddHangoutServicesExtension() override;
+#endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
   friend class ::BraveComponentLoaderTest;
   void ObserveOpenPdfExternallySetting();
   // Callback for changes to the AlwaysOpenPdfExternally setting.

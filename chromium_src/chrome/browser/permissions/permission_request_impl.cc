@@ -6,12 +6,14 @@
 #undef GetIconId
 
 PermissionRequest::IconId PermissionRequestImpl::GetIconId() const {
+#if !defined(OS_ANDROID)
   switch (content_settings_type_) {
     case CONTENT_SETTINGS_TYPE_AUTOPLAY:
       return vector_icons::kPlayArrowIcon;
     default:
       break;
   }
+#endif
   return GetIconId_ChromiumImpl();
 }
 

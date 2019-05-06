@@ -1,0 +1,12 @@
+diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
+index 854e99acdf1cc6a682ff13feb387d198efc06273..1595edd711b7d57dac537a2714e2b943304027a0 100644
+--- a/chrome/utility/BUILD.gn
++++ b/chrome/utility/BUILD.gn
+@@ -25,6 +25,7 @@ static_library("utility") {
+ 
+   public_deps = []
+   deps = [
++    "//brave/utility",
+     "//base",
+     "//chrome:resources",
+     "//chrome:strings",

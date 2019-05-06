@@ -1,55 +1,62 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
+import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
-if (!is_android) {
-  grit("static_resources") {
-    source = "brave_components_resources.grd"
+grit("static_resources") {
+  source = "brave_components_resources.grd"
 
-    output_name = "brave_components_resources_new"
+  output_name = "brave_components_resources_new"
 
-    outputs = [
-      "grit/brave_components_resources.h",
-      "brave_components_static.pak",
-    ]
-    deps = [
-      ":strings",
+  outputs = [
+    "grit/brave_components_resources.h",
+    "brave_components_static.pak",
+  ]
+  deps = [
+    ":strings",
+  ]
+
+  if (enable_extensions) {
+    deps += [
       "//brave/components/brave_extension/extension/brave_extension",
     ]
-
-    if (brave_rewards_enabled) {
+  }
+  if (brave_rewards_enabled) {
+    deps += [
+      "//brave/components/brave_rewards/resources",
+    ]
+    if (enable_extensions) {
       deps += [
-        "//brave/components/brave_rewards/resources",
         "//brave/components/brave_rewards/resources/extension:resources",
       ]
     }
-
-    grit_flags = [
-      "-E",
-      "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
-    ]
-    output_dir = "$root_gen_dir/components"
-    resource_ids = "//brave/browser/resources/resource_ids"
   }
 
-  repack("resources") {
-    deps = [
-      ":static_resources",
-      "//brave/components/brave_adblock_ui:generated_resources",
-      "//brave/components/brave_new_tab_ui:generated_resources",
-      "//brave/components/brave_welcome_ui:generated_resources",
-    ]
+  grit_flags = [
+    "-E",
+    "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+  ]
+  output_dir = "$root_gen_dir/components"
+  resource_ids = "//brave/browser/resources/resource_ids"
+}
 
-    sources = [
-      "$root_gen_dir/components/brave_components_static.pak",
-      "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
-      "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
-      "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
-    ]
+repack("resources") {
+  deps = [
+    ":static_resources",
+    "//brave/components/brave_adblock_ui:generated_resources",
+    "//brave/components/brave_new_tab_ui:generated_resources",
+    "//brave/components/brave_welcome_ui:generated_resources",
+  ]
 
-    output = "$root_gen_dir/components/brave_components_resources.pak"
-  }
+  sources = [
+    "$root_gen_dir/components/brave_components_static.pak",
+    "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
+    "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
+    "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
+  ]
+
+  output = "$root_gen_dir/components/brave_components_resources.pak"
 }
 
 grit("strings") {

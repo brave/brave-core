@@ -11,13 +11,6 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
-// TODO(petemill): The following is being included purely to get the generated
-// GritResourceMap definition. Replace with a better solution.
-#if !defined(OS_ANDROID)
-#include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
-#else
-#include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
-#endif
 #include "ui/resources/grit/webui_resources_map.h"
 
 content::WebUIDataSource* CreateBasicUIHTMLSource(

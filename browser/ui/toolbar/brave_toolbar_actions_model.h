@@ -7,7 +7,9 @@
 
 #include "chrome/browser/ui/toolbar/toolbar_actions_model.h"
 
-#include "extensions/common/extension.h"
+namespace extensions {
+class Extension;
+}
 
 // The purposes of this subclass are to:
 // - Hide the Brave 'extension' item from the |ToolbarActionsBar|, since it is

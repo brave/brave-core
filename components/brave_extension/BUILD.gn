@@ -4,6 +4,8 @@ import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
+assert(enable_extensions)
+
 pack_web_resources("generated_resources") {
   resource_name = "brave_extension"
   output_dir = "$root_gen_dir/brave/components/brave_extension"

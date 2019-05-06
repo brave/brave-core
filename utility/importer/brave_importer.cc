@@ -39,8 +39,6 @@
 #include "sql/statement.h"
 #include "url/gurl.h"
 
-#include "bat/ledger/internal/static_values.h"
-
 #if defined(OS_LINUX)
 #include "components/os_crypt/key_storage_config_linux.h"
 #endif
@@ -524,8 +522,9 @@ bool ParsePaymentsPreferences(BraveLedger* ledger,
       break;
 
     default:
-      payments->min_visit_time =
-        braveledger_ledger::_default_min_publisher_duration;
+      payments->min_visit_time = 8;
+      // this is a violation of header include rules
+      //   braveledger_ledger::_default_min_publisher_duration;
   }
 
   return true;

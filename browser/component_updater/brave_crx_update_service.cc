@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/browser/component_updater/brave_crx_update_service.h"
+
 #include <string>
 #include <utility>
 #include <vector>
@@ -10,14 +12,17 @@
 #include "base/bind.h"
 #include "base/bind_helpers.h"
 #include "base/threading/thread_task_runner_handle.h"
-#include "brave/browser/component_updater/brave_crx_update_service.h"
-#include "brave/browser/extensions/brave_extension_provider.h"
 #include "components/component_updater/update_scheduler.h"
 #include "components/update_client/configurator.h"
 #include "components/update_client/task_update.h"
 #include "components/update_client/update_client_internal.h"
 #include "components/update_client/update_engine.h"
 #include "components/update_client/utils.h"
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/extensions/brave_extension_provider.h"
+#endif
 
 namespace component_updater {
 
@@ -83,10 +88,11 @@ bool BraveCrxUpdateService::CheckForUpdates(
   std::vector<std::string> unsecure_ids;  // Can fallback to HTTP.
   for (const auto id : components_order_) {
     DCHECK(components_.find(id) != components_.end());
+#if BUILDFLAG(ENABLE_EXTENSIONS)
     if (!extensions::BraveExtensionProvider::IsVetted(id)) {
-          continue;
+      continue;
     }
-
+#endif
     const auto component = GetComponent(id);
     if (!component || component->requires_network_encryption)
       secure_ids.push_back(id);

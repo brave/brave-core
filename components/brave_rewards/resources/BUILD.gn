@@ -44,7 +44,7 @@ grit("static_resources") {
 }
 
 repack("resources") {
-  deps = [
+  public_deps = [
     ":ui_generated_resources",
     ":tip_generated_resources",
     ":static_resources",

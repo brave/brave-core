@@ -35,7 +35,10 @@ static_library("brave_test_support_unit") {
   }
 }
 
+# TODO(bridiver) - fix tests on android
+if (!is_android) {
 test("brave_unit_tests") {
+  testonly = true
   sources = [
     "//brave/app/brave_command_line_helper_unittest.cc",
     "//brave/browser/autocomplete/brave_autocomplete_provider_client_unittest.cc",
@@ -253,8 +256,10 @@ test("brave_unit_tests") {
     ]
   }
 }
+}
 
 group("brave_browser_tests_deps") {
+  testonly = true
   if (brave_chromium_build) {
     # force these to build for tests
     deps = [
@@ -289,7 +294,9 @@ static_library("browser_tests_runner") {
   ]
 }
 
+if (!is_android) {
 test("brave_browser_tests") {
+  testonly = true
   sources = [
     "//brave/app/brave_main_delegate_browsertest.cc",
     "//brave/browser/autocomplete/brave_autocomplete_provider_client_browsertest.cc",
@@ -404,8 +411,12 @@ test("brave_browser_tests") {
     ":browser_tests_runner",
     "//testing/gmock",
   ]
+  # enable_plugins should be used here
+  if (!is_android) {
   data_deps = [
     "//ppapi:ppapi_tests",
     "//ppapi:power_saver_test_plugin",
   ]
+  }
 }
+} # if (!is_android) {

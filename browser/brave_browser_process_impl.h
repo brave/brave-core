@@ -8,7 +8,10 @@
 
 #include <memory>
 
+#include "brave/browser/tor/buildflags.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "chrome/browser/browser_process_impl.h"
+#include "extensions/buildflags/buildflags.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 namespace brave {
@@ -52,12 +55,16 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_shields::AdBlockRegionalServiceManager*
   ad_block_regional_service_manager();
   brave_shields::AutoplayWhitelistService* autoplay_whitelist_service();
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   brave_shields::ExtensionWhitelistService* extension_whitelist_service();
+#endif
   brave_shields::ReferrerWhitelistService* referrer_whitelist_service();
   brave_shields::TrackingProtectionService* tracking_protection_service();
   brave_shields::HTTPSEverywhereService* https_everywhere_service();
   brave_shields::LocalDataFilesService* local_data_files_service();
+#if BUILDFLAG(ENABLE_TOR)
   extensions::BraveTorClientUpdater* tor_client_updater();
+#endif
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   BraveWidevineBundleManager* brave_widevine_bundle_manager();
 #endif
@@ -83,8 +90,12 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   std::unique_ptr<brave_shields::LocalDataFilesService>
       local_data_files_service_;
   std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
+#endif
+#if BUILDFLAG(ENABLE_TOR)
   std::unique_ptr<extensions::BraveTorClientUpdater> tor_client_updater_;
+#endif
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   std::unique_ptr<BraveWidevineBundleManager> brave_widevine_bundle_manager_;
 #endif

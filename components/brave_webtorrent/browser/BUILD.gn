@@ -13,4 +13,8 @@ source_set("browser") {
     "//extensions/common",
     "//net",
   ]
+
+  public_deps = [
+    "buildflags",
+  ]
 }

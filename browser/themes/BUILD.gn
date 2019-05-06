@@ -1,24 +1,26 @@
 source_set("themes") {
-  sources = [
-    "brave_theme_service.cc",
-    "brave_theme_service.h",
-    "brave_theme_service_win.cc",
-    "brave_theme_service_win.h",
-    "brave_theme_utils.h",
-    "brave_theme_utils_linux.cc",
-    "brave_theme_utils_mac.mm",
-    "brave_theme_utils_win.cc",
-    "theme_properties.cc",
-    "theme_properties.h",
-  ]
+  if (!is_android) {
+    sources = [
+      "brave_theme_service.cc",
+      "brave_theme_service.h",
+      "brave_theme_service_win.cc",
+      "brave_theme_service_win.h",
+      "brave_theme_utils.h",
+      "brave_theme_utils_linux.cc",
+      "brave_theme_utils_mac.mm",
+      "brave_theme_utils_win.cc",
+      "theme_properties.cc",
+      "theme_properties.h",
+    ]
 
-  deps = [
-    "//base",
-    "//brave/common",
-    "//chrome/common",
-    "//components/prefs",
-    "//components/pref_registry",
-    "//components/version_info",
-    "//skia",
-  ]
+    deps = [
+      "//base",
+      "//brave/common",
+      "//chrome/common",
+      "//components/prefs",
+      "//components/pref_registry",
+      "//components/version_info",
+      "//skia",
+    ]
+  }
 }

@@ -7,7 +7,6 @@ source_set("net") {
   deps = [
     "//base",
     "//brave/common",
-    "//chrome/browser",
     "//extensions/browser",
     "//net",
   ]

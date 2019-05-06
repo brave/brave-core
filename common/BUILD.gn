@@ -1,4 +1,5 @@
 import("//build/util/branding.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 source_set("channel_info") {
   if (is_linux) {
@@ -24,28 +25,30 @@ source_set("common") {
   sources = [
     "brave_content_client.cc",
     "brave_content_client.h",
+    "brave_paths.cc",
+    "brave_paths.h",
     "brave_switches.cc",
     "brave_switches.h",
+    "common_message_generator.cc",
+    "common_message_generator.h",
     "importer/brave_referral.cc",
     "importer/brave_referral.h",
     "importer/imported_browser_window.cc",
     "importer/imported_browser_window.h",
+    "network_constants.cc",
+    "network_constants.h",
+    "resource_bundle_helper.cc",
+    "resource_bundle_helper.h",
+    "translate_network_constants.cc",
+    "translate_network_constants.h",
+    "url_constants.cc",
+    "url_constants.h",
     "webui_url_constants.cc",
     "webui_url_constants.h",
   ]
 
   if (!is_android) {
     sources += [
-      "brave_paths.cc",
-      "brave_paths.h",
-      "common_message_generator.cc",
-      "common_message_generator.h",
-      "extensions/brave_extensions_api_provider.cc",
-      "extensions/brave_extensions_api_provider.h",
-      "extensions/extension_constants.cc",
-      "extensions/extension_constants.h",
-      "extensions/manifest_handlers/pdfjs_manifest_override.cc",
-      "extensions/manifest_handlers/pdfjs_manifest_override.h",
       "importer/brave_importer_utils.cc",
       "importer/brave_importer_utils.h",
       "importer/brave_ledger.cc",
@@ -53,14 +56,17 @@ source_set("common") {
       "importer/brave_stats.h",
       "importer/chrome_importer_utils.cc",
       "importer/chrome_importer_utils.h",
-      "network_constants.cc",
-      "network_constants.h",
-      "resource_bundle_helper.cc",
-      "resource_bundle_helper.h",
-      "translate_network_constants.cc",
-      "translate_network_constants.h",
-      "url_constants.cc",
-      "url_constants.h",
+    ]
+  }
+
+  if (enable_extensions) {
+    sources += [
+      "extensions/brave_extensions_api_provider.cc",
+      "extensions/brave_extensions_api_provider.h",
+      "extensions/extension_constants.cc",
+      "extensions/extension_constants.h",
+      "extensions/manifest_handlers/pdfjs_manifest_override.cc",
+      "extensions/manifest_handlers/pdfjs_manifest_override.h",
     ]
 
     public_deps = [
@@ -111,6 +117,24 @@ source_set("shield_exceptions") {
     "shield_exceptions.cc",
     "shield_exceptions.h",
   ]
+
+  deps = [
+    "//url",
+  ]
+  # TODO(bridiver) - convert URLPattern to ContentSettingsPattern
+  if (is_android) {
+    sources += [
+      "//extensions/common/url_pattern.cc",
+      "//extensions/common/url_pattern.h",
+    ]
+
+    deps += [
+      "//base",
+      "//components/url_pattern_index",
+    ]
+  } else {
+    deps += [ "//extensions/common" ]
+  }
 }
 
 config("constants_configs") {

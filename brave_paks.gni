@@ -2,6 +2,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//chrome/common/features.gni")
 import("//extensions/buildflags/buildflags.gni")
@@ -56,16 +58,12 @@ template("brave_extra_paks") {
     sources = [
       "$root_gen_dir/brave/brave_generated_resources.pak",
       "$root_gen_dir/brave/brave_unscaled_resources.pak",
-      "$root_gen_dir/brave/browser/resources/md_extensions/brave_extensions_resources.pak",
       "$root_gen_dir/brave/browser/resources/settings/brave_settings_resources.pak",
       "$root_gen_dir/components/brave_components_resources.pak",
       "$root_gen_dir/brave/components/brave_ads/resources/brave_ads_resources.pak",
       "$root_gen_dir/brave/components/brave_rewards/resources/brave_rewards_resources.pak",
-      "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak",
-      "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_resources.pak",
       "$root_gen_dir/brave/components/brave_sync/brave_sync_resources.pak",
       "$root_gen_dir/brave/ui/webui/resources/brave_webui_resources.pak",
-      "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak",
     ]
 
     deps = [
@@ -73,17 +71,47 @@ template("brave_extra_paks") {
       "//brave/app/theme:brave_unscaled_resources",
       "//brave/components/brave_ads/resources",
       "//brave/components/brave_rewards/resources",
-      "//brave/components/brave_rewards/resources/extension:resources",
-      "//brave/components/brave_webtorrent:resources",
       "//brave/components/resources",
       "//brave/components/resources:strings",
-      "//brave/browser/resources/md_extensions:resources",
       "//brave/browser/resources/settings:resources",
-      "//brave/common/extensions/api",
       "//brave/components/brave_sync:resources",
-      "//brave/components/brave_extension:resources",
       "//brave/ui/webui/resources",
     ]
+
+    if (enable_brave_webtorrent) {
+      sources += [
+        "$root_gen_dir/brave/components/brave_webtorrent/brave_webtorrent_resources.pak",
+      ]
+
+      deps += [
+        "//brave/components/brave_webtorrent:resources",
+      ]
+    }
+
+    if (enable_extensions) {
+      sources += [
+        "$root_gen_dir/brave/browser/resources/md_extensions/brave_extensions_resources.pak",
+        "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak",
+      ]
+
+      deps += [
+        "//brave/browser/resources/md_extensions:resources",
+        "//brave/common/extensions/api",
+        "//brave/components/brave_extension:resources",
+      ]
+    }
+
+    if (brave_rewards_enabled) {
+      if (enable_extensions) {
+        sources += [
+          "$root_gen_dir/brave/components/brave_rewards/resources/extension/brave_rewards_extension_resources.pak",
+        ]
+
+        deps += [
+          "//brave/components/brave_rewards/resources/extension:resources",
+        ]
+      }
+    }
 
     if (defined(invoker.deps)) {
       deps += invoker.deps

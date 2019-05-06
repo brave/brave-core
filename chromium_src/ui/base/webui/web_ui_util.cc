@@ -22,10 +22,12 @@ void SetLoadTimeDataDefaults(const std::string& app_locale,
                              base::DictionaryValue* localized_strings) {
 
   SetLoadTimeDataDefaults_ChromiumImpl(app_locale, localized_strings);
+#if !defined(OS_ANDROID)
   localized_strings->SetString(
     "brToolbarSettingsTitle",
     l10n_util::GetStringUTF16(IDS_SETTINGS_SETTINGS)
   );
+#endif
   localized_strings->SetString(
     "brToolbarBookmarksTitle",
     l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_TITLE)

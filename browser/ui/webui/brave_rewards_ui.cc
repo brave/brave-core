@@ -30,14 +30,8 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/bindings_policy.h"
-#if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
-#else
-#include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
-#include "components/grit/components_resources.h"
-#include "components/grit/components_scaled_resources.h"
-#endif
 
 
 using content::WebUIMessageHandler;
@@ -908,11 +902,11 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
   auto ads_per_hour = ads_service_->GetAdsPerHour();
   ads_data.SetInteger("adsPerHour", ads_per_hour);
 
-  #if BUILDFLAG(BRAVE_ADS_ENABLED)
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
     auto ads_ui_enabled = true;
-  #else
+#else
     auto ads_ui_enabled = false;
-  #endif
+#endif
   ads_data.SetBoolean("adsUIEnabled", ads_ui_enabled);
 
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsData", ads_data);

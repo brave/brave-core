@@ -8,6 +8,7 @@
 
 #include "brave/browser/tor/tor_profile_service_impl.h"
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/common/tor/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -49,11 +50,15 @@ TorProfileServiceFactory::~TorProfileServiceFactory() {}
 
 KeyedService* TorProfileServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+#if BUILDFLAG(ENABLE_TOR)
   Profile* profile = Profile::FromBrowserContext(context);
   std::unique_ptr<tor::TorProfileService> tor_profile_service(
       new tor::TorProfileServiceImpl(profile));
   g_profile_set.emplace(profile);
   return tor_profile_service.release();
+#else
+  return nullptr;
+#endif
 }
 
 content::BrowserContext* TorProfileServiceFactory::GetBrowserContextToUse(
@@ -71,12 +76,14 @@ bool TorProfileServiceFactory::ServiceIsNULLWhileTesting() const {
 
 void TorProfileServiceFactory::BrowserContextShutdown(
     content::BrowserContext* context) {
+#if BUILDFLAG(ENABLE_TOR)
   if (g_profile_set.size() == 1) {
     auto* service = static_cast<tor::TorProfileServiceImpl*>(
       TorProfileServiceFactory::GetForProfile(
         Profile::FromBrowserContext(context)));
     service->KillTor();
   }
+#endif
   BrowserContextKeyedServiceFactory::BrowserContextShutdown(context);
 }
 
