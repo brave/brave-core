@@ -1,17 +1,8 @@
 diff --git a/components/browser_sync/profile_sync_service.cc b/components/browser_sync/profile_sync_service.cc
-index 787e2d24941cbaa469373ed5baad14d1ac9f3722..30f2983ad798474de49046914dc060faaa3faf1d 100644
+index 787e2d24941cbaa469373ed5baad14d1ac9f3722..f8d2fa4e53602d61fb777d113489af5413a11d0a 100644
 --- a/components/browser_sync/profile_sync_service.cc
 +++ b/components/browser_sync/profile_sync_service.cc
-@@ -184,6 +184,8 @@ ProfileSyncService::ProfileSyncService(InitParams init_params)
-   DCHECK(sync_client_);
-   DCHECK(IsLocalSyncEnabled() || identity_manager_ != nullptr);
- 
-+  BraveSyncSetup();
-+
-   // If Sync is disabled via command line flag, then ProfileSyncService
-   // shouldn't be instantiated.
-   DCHECK(switches::IsSyncAllowedByFlag());
-@@ -480,6 +482,8 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
+@@ -480,6 +480,8 @@ void ProfileSyncService::StartUpSlowEngineComponents() {
                                 ->GetSyncUserAgent();
    params.http_factory_getter = MakeHttpPostProviderFactoryGetter();
    params.credentials = auth_manager_->GetCredentials();
@@ -20,35 +11,3 @@ index 787e2d24941cbaa469373ed5baad14d1ac9f3722..30f2983ad798474de49046914dc060fa
    DCHECK(!params.credentials.account_id.empty() || IsLocalSyncEnabled());
    if (!base::FeatureList::IsEnabled(switches::kSyncE2ELatencyMeasurement)) {
      invalidation::InvalidationService* invalidator =
-@@ -550,6 +554,8 @@ void ProfileSyncService::Shutdown() {
-   DCHECK(!observers_.might_have_observers());
- 
-   auth_manager_.reset();
-+  
-+  SignalWaitableEvent();
- 
-   if (sync_thread_)
-     sync_thread_->Stop();
-@@ -663,6 +669,7 @@ int ProfileSyncService::GetDisableReasons() const {
-   DCHECK(switches::IsSyncAllowedByFlag());
- 
-   int result = DISABLE_REASON_NONE;
-+  if (IsBraveSyncEnabled()) return result;
-   if (!user_settings_->IsSyncAllowedByPlatform()) {
-     result = result | DISABLE_REASON_PLATFORM_OVERRIDE;
-   }
-@@ -1753,12 +1760,12 @@ void ProfileSyncService::GetAllNodes(
- 
- CoreAccountInfo ProfileSyncService::GetAuthenticatedAccountInfo() const {
-   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
--  return auth_manager_->GetActiveAccountInfo().account_info;
-+  return GetDummyAccountInfo();
- }
- 
- bool ProfileSyncService::IsAuthenticatedAccountPrimary() const {
-   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
--  return auth_manager_->GetActiveAccountInfo().is_primary;
-+  return true;
- }
- 
- void ProfileSyncService::SetInvalidationsForSessionsEnabled(bool enabled) {
