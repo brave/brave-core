@@ -118,7 +118,7 @@ source_set("ui") {
     "//brave/app/vector_icons:vector_icons",
     "//brave/browser/devtools",
     "//brave/browser/tor",
-    "//brave/browser/resources/md_extensions:resources",
+    "//brave/browser/resources/extensions:resources",
     "//brave/browser/resources/settings:resources",
     "//brave/common",
     "//brave/components/brave_adblock_ui:generated_resources",
