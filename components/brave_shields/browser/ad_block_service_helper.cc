@@ -9,6 +9,8 @@
 
 #include "base/strings/string_util.h"
 
+using adblock::FilterList;
+
 namespace brave_shields {
 
 std::vector<FilterList>::const_iterator FindAdBlockFilterListByUUID(

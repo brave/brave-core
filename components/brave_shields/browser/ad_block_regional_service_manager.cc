@@ -17,11 +17,13 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
-#include "brave/vendor/ad-block/lists/regions.h"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+
+using adblock::FilterList;
 
 namespace brave_shields {
 
@@ -56,6 +58,7 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
   // user can override this setting in the future
   bool checked_default_region =
       local_state->GetBoolean(kAdBlockCheckedDefaultRegion);
+  std::vector<FilterList>&  region_lists = FilterList::GetRegionalLists();
   if (!checked_default_region) {
     local_state->SetBoolean(kAdBlockCheckedDefaultRegion, true);
     auto it = brave_shields::FindAdBlockFilterListByLocale(
@@ -182,6 +185,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
 // static
 bool AdBlockRegionalServiceManager::IsSupportedLocale(
     const std::string& locale) {
+  std::vector<FilterList>&  region_lists = FilterList::GetRegionalLists();
   return (brave_shields::FindAdBlockFilterListByLocale(region_lists, locale) !=
           region_lists.end());
 }
@@ -197,6 +201,7 @@ AdBlockRegionalServiceManager::GetRegionalLists() {
       local_state->GetDictionary(kAdBlockRegionalFilters);
 
   auto list_value = std::make_unique<base::ListValue>();
+  std::vector<FilterList>&  region_lists = FilterList::GetRegionalLists();
   for (const auto& region_list : region_lists) {
     // Most settings come directly from the region_lists vector, maintained in
     // the AdBlock module

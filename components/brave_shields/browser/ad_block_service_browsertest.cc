@@ -16,7 +16,7 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/vendor/ad-block/ad_block_client.h"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -141,10 +141,6 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
     brave_shields::AdBlockRegionalService::
         SetComponentIdAndBase64PublicKeyForTest(component_id,
                                                 component_base64_public_key);
-  }
-
-  void SetDATFileVersionForTest(const std::string& dat_file_version) {
-    brave_shields::AdBlockService::SetDATFileVersionForTest(dat_file_version);
   }
 
   bool InstallDefaultAdBlockExtension(
@@ -385,12 +381,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   // Install AdBlock extension with a version 3 format data file and
   // expect a new install
-  SetDATFileVersionForTest("3");
   ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v3", 1));
 
   // Install AdBlock extension with a version 4 format data file and
   // expect an upgrade install
-  SetDATFileVersionForTest("4");
   ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v4", 0));
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);

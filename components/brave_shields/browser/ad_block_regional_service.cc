@@ -21,9 +21,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
-#include "brave/vendor/ad-block/ad_block_client.h"
-#include "brave/vendor/ad-block/data_file_version.h"
-#include "brave/vendor/ad-block/lists/regions.h"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 #include "components/prefs/pref_service.h"
 
 namespace brave_shields {
@@ -31,8 +29,6 @@ namespace brave_shields {
 std::string AdBlockRegionalService::g_ad_block_regional_component_id_;  // NOLINT
 std::string
     AdBlockRegionalService::g_ad_block_regional_component_base64_public_key_;  // NOLINT
-std::string AdBlockRegionalService::g_ad_block_regional_dat_file_version_(
-    base::NumberToString(DATA_FILE_VERSION));
 
 AdBlockRegionalService::AdBlockRegionalService(
     const std::string& uuid,
@@ -46,6 +42,8 @@ AdBlockRegionalService::~AdBlockRegionalService() {
 
 bool AdBlockRegionalService::Init() {
   AdBlockBaseService::Init();
+  std::vector<adblock::FilterList>&  region_lists =
+    adblock::FilterList::GetRegionalLists();
   auto it = brave_shields::FindAdBlockFilterListByUUID(region_lists, uuid_);
   if (it == region_lists.end())
     return false;
@@ -68,8 +66,7 @@ void AdBlockRegionalService::OnComponentReady(
     const base::FilePath& install_dir,
     const std::string& manifest) {
   base::FilePath dat_file_path =
-      install_dir.AppendASCII(g_ad_block_regional_dat_file_version_)
-          .AppendASCII(uuid_)
+      install_dir.AppendASCII(std::string("rs-") + uuid_)
           .AddExtension(FILE_PATH_LITERAL(".dat"));
   GetDATFileData(dat_file_path);
 }
@@ -81,12 +78,6 @@ void AdBlockRegionalService::SetComponentIdAndBase64PublicKeyForTest(
   g_ad_block_regional_component_id_ = component_id;
   g_ad_block_regional_component_base64_public_key_ =
       component_base64_public_key;
-}
-
-// static
-void AdBlockRegionalService::SetDATFileVersionForTest(
-  const std::string& dat_file_version) {
-  g_ad_block_regional_dat_file_version_ = dat_file_version;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

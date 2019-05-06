@@ -1,12 +1,12 @@
 use_relative_paths = True
 
 deps = {
-  "vendor/ad-block": "https://github.com/brave/ad-block.git@3aba8df268ed735b8b6a94961dbe0e4c1cb55767",
-  "vendor/autoplay-whitelist": "https://github.com/brave/autoplay-whitelist.git@a85d71af4e416cf8188dc297320b0d777aafa315",
-  "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@a3a9a768900909739db99d79541fc56c2984407d",
-  "vendor/tracking-protection": "https://github.com/brave/tracking-protection.git@29b1f86b11a8c7438fd7d57b446a77a84946712a",
-  "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@2536f1b242fc0388b39be5cd45bfbcd563db1154",
-  "vendor/bloom-filter-cpp": "https://github.com/brave/bloom-filter-cpp.git@000613c53a83bf0f20c8d19f0d47ea1e192e7854",
+  "vendor/adblock_rust_ffi": "https://github.com/brave/adblock-rust-ffi.git@ac05966a65dd3e61067d9ff4d73376058b77b5fc",
+  "vendor/autoplay-whitelist": "https://github.com/brave/autoplay-whitelist.git@f39d83788cd12b883bfe6561cc7166b176ab9d9d",
+  "vendor/extension-whitelist": "https://github.com/brave/extension-whitelist.git@aa74a1bc29ced176e50db9f54946f28d82dfc795",
+  "vendor/tracking-protection": "https://github.com/brave/tracking-protection.git@3de744d4698b2f8fac1f52579d39f9ad154d1ec2",
+  "vendor/hashset-cpp": "https://github.com/brave/hashset-cpp.git@4b55fe39bb25bb0d8b11a43d547d75f00c6c46fb",
+  "vendor/bloom-filter-cpp": "https://github.com/brave/bloom-filter-cpp.git@9be5c63b14e094156e00c8b28f205e7794f0b92c",
   "vendor/requests": "https://github.com/kennethreitz/requests@e4d59bedfd3c7f4f254f4f5d036587bcd8152458",
   "vendor/boto": "https://github.com/boto/boto@f7574aa6cc2c819430c1f05e9a1a1a666ef8169b",
   "vendor/python-patch": "https://github.com/techtonik/python-patch@2148d5408fafd5c05ac6854dd7deb4e8a4ca4a49",
