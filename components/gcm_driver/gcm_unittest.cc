@@ -38,8 +38,6 @@
 #include "google_apis/gcm/protocol/mcs.pb.h"
 #include "net/test/gtest_util.h"
 #include "net/test/scoped_disable_exit_on_dfatal.h"
-#include "net/url_request/test_url_fetcher_factory.h"
-#include "net/url_request/url_fetcher_delegate.h"
 #include "net/url_request/url_request_test_util.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_network_connection_tracker.h"
@@ -325,9 +323,6 @@ class GCMClientImplTest : public testing::Test,
   AutoAdvancingTestClock* clock() const {
     return static_cast<AutoAdvancingTestClock*>(gcm_client_->clock_);
   }
-  net::TestURLFetcherFactory* url_fetcher_factory() {
-    return &url_fetcher_factory_;
-  }
   network::TestURLLoaderFactory* url_loader_factory() {
     return &test_url_loader_factory_;
   }
@@ -352,8 +347,6 @@ class GCMClientImplTest : public testing::Test,
   std::vector<AccountMapping> last_account_mappings_;
 
   std::unique_ptr<GCMClientImpl> gcm_client_;
-
-  net::TestURLFetcherFactory url_fetcher_factory_;
 
   scoped_refptr<base::TestMockTimeTaskRunner> task_runner_;
 
