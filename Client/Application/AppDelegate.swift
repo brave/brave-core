@@ -228,14 +228,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             FavoritesHelper.addDefaultFavorites()
             profile?.searchEngines.setupDefaultRegionalSearchEngines()
         }
-        
         if let urp = UserReferralProgram.shared {
             if isFirstLaunch {
                 urp.referralLookup { url in
-                    guard let url = url else { return }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                        try? self.browserViewController.openURLInNewTab(url.asURL(), isPrivileged: false)
-                    })
+                    guard let url = url?.asURL else { return }
+                    self.browserViewController.openReferralLink(url: url)
                 }
             } else {
                 urp.pingIfEnoughTimePassed()
@@ -261,10 +258,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
         guard let routerpath = NavigationPath(url: url) else {
             return false
         }
-
-        DispatchQueue.main.async {
-            NavigationPath.handle(nav: routerpath, with: self.browserViewController)
-        }
+        self.browserViewController.handleNavigationPath(path: routerpath)
         return true
     }
 
