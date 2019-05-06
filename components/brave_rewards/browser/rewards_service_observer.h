@@ -79,7 +79,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnPublisherListNormalized(
       RewardsService* rewards_service,
       brave_rewards::ContentSiteList list) {}
-  virtual void OnConfirmationsHistoryChanged(
+  virtual void OnTransactionHistoryForThisCycleChanged(
       brave_rewards::RewardsService* rewards_service) {}
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
   // RewardsServiceObserver should not be used to return responses to the

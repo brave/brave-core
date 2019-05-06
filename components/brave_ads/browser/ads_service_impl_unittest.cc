@@ -134,8 +134,8 @@ class MockRewardsService : public RewardsService {
       void(brave_rewards::GetRewardsInternalsInfoCallback));
   MOCK_METHOD1(GetAddressesForPaymentId,
       void(const brave_rewards::GetAddressesCallback&));
-  MOCK_METHOD1(GetConfirmationsHistory,
-      void(brave_rewards::ConfirmationsHistoryCallback));
+  MOCK_METHOD1(GetTransactionHistoryForThisCycle,
+      void(brave_rewards::GetTransactionHistoryForThisCycleCallback));
   MOCK_METHOD2(SaveRecurringTip, void(const std::string&, const int));
   MOCK_METHOD0(GetAllNotifications,
   const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&());
