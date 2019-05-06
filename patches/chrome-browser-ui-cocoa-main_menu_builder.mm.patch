@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/cocoa/main_menu_builder.mm b/chrome/browser/ui/cocoa/main_menu_builder.mm
+index 37e3ea73660cc18b3f67105a1634b0bd69d0432d..c48e5bcb916fe8218ab672825c7c963c291474b0 100644
+--- a/chrome/browser/ui/cocoa/main_menu_builder.mm
++++ b/chrome/browser/ui/cocoa/main_menu_builder.mm
+@@ -97,6 +97,8 @@ base::scoped_nsobject<NSMenuItem> BuildFileMenu(
+                 Item(IDS_NEW_INCOGNITO_WINDOW_MAC)
+                     .command_id(IDC_NEW_INCOGNITO_WINDOW)
+                     .remove_if(is_pwa),
++                Item(IDS_NEW_OFFTHERECORD_WINDOW_TOR)
++                    .command_id(IDC_NEW_OFFTHERECORD_WINDOW_TOR),
+                 Item(IDS_REOPEN_CLOSED_TABS_MAC)
+                     .command_id(IDC_RESTORE_TAB)
+                     .remove_if(is_pwa),
