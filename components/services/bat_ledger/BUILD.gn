@@ -1,5 +1,5 @@
 static_library("lib") {
-  visibility = [ "//brave/utility" ]
+  visibility = [ "//brave/utility", "//chrome/utility" ]
 
   sources = [
     "bat_ledger_app.cc",
