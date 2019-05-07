@@ -23,8 +23,9 @@ bool IsUpdaterURL(const GURL& gurl) {
   static std::vector<URLPattern> updater_patterns(
       {URLPattern(URLPattern::SCHEME_HTTPS,
                   std::string(component_updater::kUpdaterJSONDefaultUrl) + "*"),
-       URLPattern(URLPattern::SCHEME_HTTP,
-                  std::string(component_updater::kUpdaterJSONFallbackUrl) + "*"),
+       URLPattern(
+           URLPattern::SCHEME_HTTP,
+           std::string(component_updater::kUpdaterJSONFallbackUrl) + "*"),
        URLPattern(
            URLPattern::SCHEME_HTTPS,
            std::string(extension_urls::kChromeWebstoreUpdateURL) + "*")});

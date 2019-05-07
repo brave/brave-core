@@ -215,7 +215,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     const std::string& method,
     const net::HttpRequestHeaders& headers,
     network::mojom::URLLoaderFactoryRequest* factory_request,
-    network::mojom::URLLoaderFactory*& out_factory) {
+    network::mojom::URLLoaderFactory*& out_factory) {  // NOLINT
   if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
                                        page_transition, has_user_gesture)) {
     return true;

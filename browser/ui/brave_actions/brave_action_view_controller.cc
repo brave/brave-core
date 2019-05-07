@@ -1,8 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
+
+#include <memory>
+#include <string>
+#include <utility>
 
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
 #include "brave/common/extensions/extension_constants.h"
@@ -71,10 +76,12 @@ void BraveActionViewController::OnPopupClosed() {
 gfx::Image BraveActionViewController::GetIcon(
     content::WebContents* web_contents,
     const gfx::Size& size) {
-  return gfx::Image(gfx::ImageSkia(GetIconImageSource(web_contents, size), size));
+  return gfx::Image(
+      gfx::ImageSkia(GetIconImageSource(web_contents, size), size));
 }
 
-std::unique_ptr<BraveActionIconWithBadgeImageSource> BraveActionViewController::GetIconImageSource(
+std::unique_ptr<BraveActionIconWithBadgeImageSource>
+BraveActionViewController::GetIconImageSource(
   content::WebContents* web_contents, const gfx::Size& size) {
   int tab_id = SessionTabHelper::IdForTab(web_contents).id();
   // generate icon
