@@ -1,5 +1,5 @@
 diff --git a/components/sync_bookmarks/bookmark_change_processor.cc b/components/sync_bookmarks/bookmark_change_processor.cc
-index acb064faac3ee975ec07be4977fc0970309dfb15..edb2a70362e72bac1bc3edae59a3e8b43a4367f8 100644
+index acb064faac3ee975ec07be4977fc0970309dfb15..cce316290140855ea9cccd3eb152850a61435407 100644
 --- a/components/sync_bookmarks/bookmark_change_processor.cc
 +++ b/components/sync_bookmarks/bookmark_change_processor.cc
 @@ -87,6 +87,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(
@@ -81,7 +81,7 @@ index acb064faac3ee975ec07be4977fc0970309dfb15..edb2a70362e72bac1bc3edae59a3e8b4
        if (!PlaceSyncNode(MOVE, node, i, &trans, &sync_child,
                           model_associator_)) {
          syncer::SyncError error(FROM_HERE,
-@@ -718,6 +739,8 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
+@@ -718,10 +739,13 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
                     << src.GetBookmarkSpecifics().url();
          continue;
        }
@@ -89,4 +89,10 @@ index acb064faac3ee975ec07be4977fc0970309dfb15..edb2a70362e72bac1bc3edae59a3e8b4
 +      mutable_node->SetMetaInfo("FirstLoadedFavicon", "true");
        model_associator_->Associate(dst, src);
      }
+ 
+-    to_reposition.insert(std::make_pair(src.GetPositionIndex(), dst));
++    uint64_t index = brave_sync::GetIndexByOrder(dst->parent(), dst);
++    to_reposition.insert(std::make_pair(index, dst));
+     bookmark_model_->SetNodeSyncTransactionVersion(dst, model_version);
+   }
  
