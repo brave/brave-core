@@ -41,6 +41,8 @@
 <translation id="8958799246752641148">Sieć Tor ukrywa Twój adres IP przed stronami, które odwiedzasz, przekierowując Cię przez kilka serwerów w sieci Tor, zanim ostatecznie dotrze do celu. Połączenia te są szyfrowane, więc Twój dostawca usług internetowych lub pracodawca nie zobaczy, jakie strony odwiedzasz. Sieć Tor może spowolnić przeglądanie stron, a niektóre z nich mogą w ogóle nie działać.</translation>
 <translation id="520608572871993342">Korzystanie z trybu prywatnego zmienia tylko to, jak Brave zachowuje się na Twoim urządzeniu; nie zmienia zachowań innych użytkowników.  Sieć Tor ukrywa Twój adres IP przed odwiedzanymi stronami i ukrywa odwiedzane strony przed Twoim dostawcą Internetu lub pracodawcą. Otwórz tryb prywatny z obsługą sieci Tor z menu lub klawiszem {{key}}.</translation>
 <translation id="6975708438781948564">Dowiedz się więcej na temat sieci Tor w Brave</translation>
+<translation id="4272382368346338917">Dodatkowe filtry</translation>
+<translation id="8949292968394988358">Ostrzeżenie: Włączenie zbyt wielu filtrów obniży wydajność</translation>
 <translation id="1869685517625607604">Liczba zablokowanych reklam ogółem:</translation>
 <translation id="4673764878177947707">Niestandardowe filtry</translation>
 <translation id="8803682034537762884">Jeden filtr na linię, zgodny ze składnią filtru Adblock Plus</translation>
@@ -68,7 +70,7 @@
 <translation id="5946611334574299206">Zarabiaj tokeny, oglądając reklamy w przeglądarce Brave. Reklamy są prezentowane w oparciu o zainteresowania wywnioskowane z zachowania użytkownika przeglądarki. Żadne dane osobowe czy też historia przeglądania nie opuszczają nigdy przeglądarki.</translation>
 <translation id="6112368337882254910">Wspieraj automatycznie</translation>
 <translation id="1527222983464337010">Automatyczny sposób na wspieranie wydawców i twórców treści. Ustaw comiesięczną płatność i przeglądaj strony tak jak zwykle. Strony, które odwiedzasz otrzymują dotacje automatycznie, w zależności od ilości odsłon i spędzonego na nich czasu, które są mierzone przez Brave.</translation>
-<translation id="7178655681744815321">Bieżące zyski w tym miesiącu (szacunkowe)</translation>
+<translation id="7178655681744815321">Szacowane zarobki w tym cyklu</translation>
 <translation id="8157096848242649588">Termin płatności</translation>
 <translation id="5208388044986603165">Otrzymane zgłoszenia reklamowe</translation>
 <translation id="4229016885653790965">Przepraszamy! Reklamy nie są jeszcze dostępne w Twoim regionie.</translation>
@@ -151,6 +153,9 @@
 <translation id="4235360514405112390">Ważność</translation>
 <translation id="2700943637868737038">Identyfikator wyświetlania:</translation>
 <translation id="3576689061489548788">Identyfikator płatności portfela</translation>
+<translation id="758790787422117549">Identyfikator osoby</translation>
+<translation id="2223892939866251845">Identyfikator użytkownika</translation>
+<translation id="1642443162274867084">Portfel utworzony</translation>
 <translation id="5094577350232361255">informacje</translation>
 <translation id="4918086044614829423">Akceptuj</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave jest zastrzeżonym znakiem handlowym Brave Software. Nazwy stron mogą być znakami towarowymi lub zastrzeżonymi znakami towarowymi właściciela strony.</translation>
@@ -166,8 +171,15 @@
 <translation id="3671566813999349838">Kwota</translation>
 <translation id="3819257035322786455">Kopia zapasowa</translation>
 <translation id="1312977698678162065">Otrzymuj zapłatę za oglądanie odpowiednich reklam, z poszanowaniem Twojej prywatności</translation>
+<translation id="7655723274266132226">Możesz zarabiać oglądając reklamy.</translation>
+<translation id="2975780980638932742">Reklamy Brave są już dostępne!</translation>
 <translation id="3361548743396744457">Wspieraj swoje ulubione strony serfując po nich – lub przekaż napiwek w dowolnym momencie, kiedy tylko chcesz.</translation>
 <translation id="3333887201479867589">Nagrody Brave</translation>
+<translation id="4493850495402472953">i</translation>
+<translation id="8804164990146287819">Polityka prywatności</translation>
+<translation id="4281844954008187215">Warunki świadczenia usługi</translation>
+<translation id="4405997465645469914">Włączając Nagrody Brave zaznaczasz, że przeczytałeś i zgadzasz się na</translation>
+<translation id="8819542691525488940">Klikając zaznaczasz, że przeczytałeś i zgadzasz się na</translation>
 <translation id="7530570094705720669">Tworzenie portfela</translation>
 <translation id="2105596359439030979">Twoja uwaga jest cenna. Zarabiaj, oglądając szanujące prywatność reklamy i przekazuj, to co zarobisz twórcom treści, które lubisz.</translation>
 <translation id="516395624550019162">Tak, wchodzę w to!</translation>
@@ -277,6 +289,7 @@
 <translation id="5010112177773747965">bez Twojej zgody.</translation>
 <translation id="7147673045905733351">Brave wita Cię w nowym Internecie.</translation>
 <translation id="1350763070659630336">Jest to tryb, w którym Twój czas ma znaczenie, Twoje dane pozostają poufne, a Ty otrzymujesz pieniądze za poświęcony czas.</translation>
+<translation id="880341991877949255">Korzystając ze starej przeglądarki, płaciłeś za przeglądanie stron internetowych poprzez oglądanie reklam. Traciłeś cenny czas na pobieranie inwazyjnych technologii reklamowych, które przesyłały Twoje prywatne dane do reklamodawców — bez Twojej zgody.</translation>
 <translation id="5830306739231399614">Niestety, nie ma jeszcze żadnych tokenów.</translation>
 <translation id="7359258898775969374">3 sposoby na wypełnienie portfela:</translation>
 <translation id="8087614920008846901">Możesz dodać środki.</translation>
@@ -309,6 +322,7 @@
 <translation id="4914597931214386232">Tokeny odebrane</translation>
 <translation id="1634828734222219955">Razem</translation>
 <translation id="3535654229833214438">Transakcje</translation>
+<translation id="3124090095880236567">Włącz reklamy</translation>
 <translation id="8987812599455325915">Włącza to zarówno reklamy jak i wspieranie automatyczne. Możesz je w każdej chwili niezależnie włączyć lub wyłączyć.</translation>
 <translation id="1485484147452131556">Aktywuj Nagrody Brave</translation>
 <translation id="2448312741937722512">Rodzaj</translation>
@@ -328,7 +342,6 @@
 <translation id="318487899513214296">Sprawdź, co ulepszono</translation>
 <translation id="4083384190339959182">Płatności Brave doczekały się dużej aktualizacji.</translation>
 <translation id="5395851053710553429">Przygotuj się na nowe oblicze internetu.</translation>
-<translation id="880341991877949255">Korzystając ze starej przeglądarki, płaciłeś za przeglądanie stron internetowych poprzez oglądanie reklam. Traciłeś cenny czas na pobieranie inwazyjnych technologii reklamowych, które przesyłały Twoje prywatne dane do reklamodawców — bez Twojej zgody.</translation>
 <translation id="2549982302631665116">Już dziś odkryj Internet na nowo dzięki Brave. Jest to tryb, w którym Twój czas ma znaczenie, Twoje dane pozostają poufne, a Ty otrzymujesz pieniądze za poświęcony czas.</translation>
 <translation id="3780605330121608425">Twój portfel</translation>
 <translation id="6727483290601442544">Zobacz Szczegóły</translation>
@@ -379,7 +392,7 @@
 <translation id="5086223971958279691">Kod łańcucha synchronizacji</translation>
 <translation id="2899261497479389619">Na komputerze docelowym przejdź do synchronizacji Brave w ustawieniach i kliknij przycisk</translation>
 <translation id="4827439149833241990">“Mam kod synchronizacji”.</translation>
-<translation id="24067401253841795">Wpisz pokazane poniżej słowa kodu łańcucha synchronizacji.</translation>
+<translation id="24067401253841795">Wprowadź słowa kodu łańcucha synchronizacji pokazane poniżej. Traktuj ten kod jak hasło. Jeśli ktoś go zdobędzie, może odczytać i zmodyfikować zsynchronizowane dane.</translation>
 <translation id="8914601399214979966">Zamiast tego użyj mojej kamery.</translation>
 <translation id="3034163433136515805">Zobacz kod QR</translation>
 <translation id="5093410893656857925">Wybierz rodzaj urządzenia</translation>
@@ -392,4 +405,6 @@
 <translation id="8349682220522608879">Dodaj kod synchronizacji.</translation>
 <translation id="1468095392829989299">Nie można było skontaktować się z serwerami Sync</translation>
 <translation id="1399673826422570698">Mogą wystąpić problemy z siecią lub problemy z serwerami Sync.</translation>
+<translation id="5286379413446391050">Nie można połączyć się z serwerami synchronizacji</translation>
+<translation id="2410472020237369473">Godzina lub strefa czasowa na Twoim urządzeniu może być nieprawidłowo ustawiona. Sprawdź ustawienia godziny.</translation>
 </translationbundle>

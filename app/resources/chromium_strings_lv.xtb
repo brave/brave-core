@@ -77,9 +77,13 @@ Dažas funkcijas var nebūt pieejamas. Norādiet citu profila direktoriju vai iz
 <translation id="5874882355102994015">Brave nevar parādīt drukas priekšskatījumu, ja nav pieejams iebūvētais PDF skatītājs.</translation>
 <translation id="8880183781256147665">Notiek pievienošana pārlūkam Brave...</translation>
 <translation id="3561569806301739367">Fails <ph name="FILE_NAME"/> var būt bīstams, tādēļ Brave to bloķēja.</translation>
+<translation id="6205431412329939367">Fails <ph name="FILE_NAME"/> var būt bīstams, tādēļ Brave to bloķēja. Jūsu konts ir aizsargāts ar papildu aizsardzības funkcijām.</translation>
 <translation id="9067428552314418522">Šis fails ir bīstams, tāpēc Brave to bloķēja.</translation>
+<translation id="2938460345748897177">Šis fails ir bīstams, tādēļ Brave to bloķēja. Jūsu konts ir aizsargāts ar papildu aizsardzības funkcijām.</translation>
 <translation id="4168372721886011198">Fails <ph name="FILE_NAME"/> ir bīstams, tādēļ Brave to bloķēja.</translation>
+<translation id="8858456697111532356">Fails <ph name="FILE_NAME"/> ir bīstams, tādēļ Brave to bloķēja. Jūsu konts ir aizsargāts ar papildu aizsardzības funkcijām.</translation>
 <translation id="89367911614620585">Šis fails var būt bīstams, tāpēc Brave to bloķēja.</translation>
+<translation id="8943391224520748272">Šis fails var būt bīstams, tādēļ Brave to bloķēja. Jūsu konts ir aizsargāts ar papildu aizsardzības funkcijām.</translation>
 <translation id="9183662282810237335">Vai tik un tā aizvērt pārlūku Brave?</translation>
 <translation id="3834935463915107022">Vai tik un tā aizvērt pārlūku Brave?</translation>
 <translation id="8797356639448065696">Brave darbojas fona režīmā.</translation>
@@ -130,6 +134,7 @@ Ja pierakstīsieties tik un tā, Brave informācija, piemēram, grāmatzīmes, v
 <translation id="1326766910007115955">Jūs pierakstāties ar pārvaldītu kontu, kura administrators var kontrolēt jūsu profilu. Jūsu Brave dati, piemēram, lietotnes, grāmatzīmes, vēsture, paroles un citi iestatījumi, tiks neatgriezeniski saistīti ar lietotāju <ph name="USER_NAME"/>. Varēsiet dzēst šos datus, izmantojot Brave Software kontu informācijas paneli, taču nevarēsiet šos datus saistīt ar citu kontu. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Jūs pierakstāties ar pārvaldītu kontu, kura administrators var kontrolēt jūsu profilu. Jūsu Brave dati, piemēram, lietotnes, grāmatzīmes, vēsture, paroles un citi iestatījumi, tiks neatgriezeniski saistīti ar lietotāju <ph name="USER_NAME"/>. Varēsiet dzēst šos datus, izmantojot Brave Software kontu informācijas paneli, taču nevarēsiet šos datus saistīt ar citu kontu. Ja vēlaties, varat izveidot jaunu profilu, lai atsevišķi glabātu Brave datus. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Sistēmas administrators ir konfigurējis Brave, lai vietne <ph name="TARGET_URL_HOSTNAME"/> tiktu atvērta papildu pārlūkā.</translation>
+<translation id="5380963249588143069">Jūsu sistēmas administrators ir konfigurējis Brave atvērt <ph name="ALTERNATIVE_BROWSER_NAME"/>, lai piekļūtu <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> iepriekš izmantoja Brave</translation>
 <translation id="1384923383737428730">Jūsu datorā ir kaitīga programmatūra. Pārlūkprogramma Brave var to noņemt, atjaunot jūsu iestatījumus un atspējot paplašinājumus, lai atkal pareizi darbotos.</translation>
 <translation id="8919921662052966648">Brave nevarēja sinhronizēt jūsu datus. Lūdzu, atjauniniet savu sinhronizācijas ieejas frāzi.</translation>
@@ -186,7 +191,7 @@ Papildu norādījumus skatiet e-pasta ziņojumā šeit: <ph name="ACCOUNT_EMAIL"
 <translation id="3856641371299712128">Brave Dev mDNS trafika ienākošā kārtula</translation>
 <translation id="8207657266087451193">Ja attēlam nav derīga apraksta, Brave mēģinās Jums to nodrošināt. Lai izveidotu aprakstus, Brave tiek nosūtīti attēli. Jūs varat izslēgt šo iespēju iestatījumos jebkurā laikā.</translation>
 <translation id="5499063270485366718">Ja attēlam nav derīga apraksta, Brave mēģinās Jums to nodrošināt. Lai izveidotu aprakstus, Brave tiek nosūtīti attēli.</translation>
-<translation id="7276297358157391541">Brave var efektīvāk labot pareizrakstības kļūdas, nosūtot pārlūkā rakstīto uz Brave Software serveriem un tādējādi ļaujot izmantot to pašu pareizrakstības pārbaudes tehnoloģiju, kas tiek izmantota pakalpojumā Brave Software meklēšana.</translation>
+<translation id="3870835867536344658">Šeit tiek izmantota tā pati pareizrakstības pārbaude, kāda tiek izmantota Brave Software meklēšanā. Pārlūkprogrammā ievadītais teksts tiek nosūtīts Brave Software serveriem. Jebkurā brīdī varat mainīt šo darbību iestatījumos.</translation>
 <translation id="1807774211756215222">Atvērt saiti jaunā Brave &amp;cilnē</translation>
 <translation id="4624945300945265642">Atvērt saiti inko&amp;gnito režīma logā</translation>
 <translation id="7863882214613921971">Atvērt saiti jaunā Brave &amp;cilnē</translation>

@@ -38,10 +38,11 @@
 <translation id="3303855915957856445">Netika atrasts neviens meklēšanas rezultāts.</translation>
 <translation id="8967866634928501045">Lai skatītu saturu, nospiediet Alt+Shift+A.</translation>
 <translation id="998747458861718449">Pārbaudīt</translation>
+<translation id="741204030948306876">Jā, piekrītu</translation>
+<translation id="780301667611848630">Nē, paldies</translation>
 <translation id="3943582379552582368">Atpakaļ</translation>
 <translation id="6691936601825168937">Pārsūtīt</translation>
 <translation id="3280237271814976245">Saglabāt kā...</translation>
-<translation id="2941880727166628951">Sūtīt uz manām ierīcēm</translation>
 <translation id="1175364870820465910">Drukāt...</translation>
 <translation id="8664389313780386848">Skatīt lapas avotu</translation>
 <translation id="2889064240420137087">Atvērt saiti ar...</translation>
@@ -93,10 +94,10 @@
 <translation id="1732768497619250086">Iegūt attēlu aprakstus no Brave Software</translation>
 <translation id="7561196759112975576">Vienmēr</translation>
 <translation id="2241634353105152135">Tikai vienreiz</translation>
-<translation id="741204030948306876">Jā, piekrītu</translation>
-<translation id="780301667611848630">Nē, paldies</translation>
-<translation id="4572259796527554261">Vaicāt ieteikumus no Brave Software</translation>
-<translation id="3435896845095436175">Iespējot</translation>
+<translation id="3387614642886316601">Izmantot uzlaboto pareizrakstības pārbaudi</translation>
+<translation id="6992554835374084304">Uzlabotās pareizrakstības pārbaudes ieslēgšana</translation>
+<translation id="5860491529813859533">Ieslēgt</translation>
+<translation id="7658239707568436148">Atcelt</translation>
 <translation id="8915370057835397490">Notiek ieteikumu ielāde...</translation>
 <translation id="6191804255817539692">Vairāk ieteikumu no Brave Software nav pieejams</translation>
 <translation id="1901303067676059328">Izvēlēties visus</translation>
@@ -107,7 +108,6 @@
 <translation id="6042308850641462728">Vairāk</translation>
 <translation id="6268252012308737255">Atvērt lietotnē <ph name="APP"/></translation>
 <translation id="5509693895992845810">S&amp;aglabāt kā...</translation>
-<translation id="3480119035619598820">Nosūtīt uz manām ierīcēm</translation>
 <translation id="7421925624202799674">Skatīt lapas a&amp;votu</translation>
 <translation id="1588870296199743671">Atvērt saiti ar...</translation>
 <translation id="3760460896538743390">Pārbaudīt &amp;fona lapu</translation>
@@ -149,9 +149,10 @@
 <translation id="4022426551683927403">Pievienot vārdnīc&amp;ai</translation>
 <translation id="6849870115130610913">Iegūt attēlu aprakstus no Brave Software</translation>
 <translation id="372722114124766626">Tikai vienreiz</translation>
-<translation id="8917490105272468696">Jā, piekrītu</translation>
+<translation id="4079140982534148664">Izmantot uzlaboto pareizrakstības pārbaudi</translation>
+<translation id="7487141338393529395">Uzlabotās pareizrakstības pārbaudes ieslēgšana</translation>
+<translation id="3435896845095436175">Iespējot</translation>
 <translation id="7473891865547856676">Nē, paldies!</translation>
-<translation id="2867003629889664976">Vaicāt ieteikumus no Brave Software</translation>
 <translation id="6264365405983206840">&amp;Atlasīt visu</translation>
 <translation id="3948116654032448504">Meklēt attēlu <ph name="SEARCH_ENGINE"/> tīklā</translation>
 <translation id="2932085390869194046">Ieteikt paroli...</translation>
@@ -164,7 +165,7 @@
 <translation id="4423482519432579560">&amp;Pareizrakstības pārbaudītājs</translation>
 <translation id="1049795001945932310">&amp;Valodas iestatījumi</translation>
 <translation id="6498249116389603658">&amp;Visas valodas</translation>
-<translation id="8188120771410500975">&amp;Pārbaudīt pareizrakstību teksta laukos</translation>
+<translation id="5978277834170881274">&amp;Izmantot vienkāršu pareizrakstības pārbaudi</translation>
 <translation id="4200983522494130825">Jauna cilne</translation>
 <translation id="8418445294933751433">Rādīt kā cilni</translation>
 <translation id="1723824996674794290">Jauns logs</translation>
@@ -323,7 +324,9 @@
 <translation id="3916445069167113093">Šāds faila tips var kaitēt jūsu datoram. Vai tiešām vēlaties saglabāt <ph name="FILE_NAME"/>?</translation>
 <translation id="5727728807527375859">Paplašinājumi, lietojumprogrammas un motīvi var kaitēt datoram. Vai tiešām vēlaties turpināt?</translation>
 <translation id="6285120108426285413">Fails <ph name="FILE_NAME"/> parasti netiek lejupielādēts, un tas var būt bīstams.</translation>
+<translation id="6573998787994398565">Fails <ph name="FILE_NAME"/> parasti netiek lejupielādēts, un tas var būt bīstams. Jūsu konts ir aizsargāts ar papildu aizsardzības funkcijām.</translation>
 <translation id="4907161631261076876">Šis fails parasti netiek lejupielādēts un var būt bīstams.</translation>
+<translation id="9041909613332246191">Šis fails parasti netiek lejupielādēts un var būt bīstams. Jūsu konts ir aizsargāts ar papildu aizsardzības funkcijām.</translation>
 <translation id="2773802008104670137">Šāda veida faili var kaitēt datoram.</translation>
 <translation id="7815680994978050279">Tika bloķēta bīstama lejupielāde</translation>
 <translation id="6141988275892716286">Lejupielādes apstiprināšana</translation>
@@ -343,7 +346,6 @@
 <translation id="8200772114523450471">Kopsavilkums</translation>
 <translation id="2770465223704140727">Noņemt no saraksta</translation>
 <translation id="7702574632857388784">Noņemt failu “<ph name="FILE_NAME"/>” no saraksta</translation>
-<translation id="7658239707568436148">Atcelt</translation>
 <translation id="7144878232160441200">Mēģināt vēlreiz</translation>
 <translation id="5170568018924773124">Rādīt mapē</translation>
 <translation id="1581962803218266616">Rādīt lietojumprogrammā Finder</translation>
@@ -358,6 +360,10 @@
 <translation id="495170559598752135">Darbības</translation>
 <translation id="3612673635130633812">Lejupielādēja paplašinājums &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">Lejupielādēts inkognito režīmā</translation>
+<translation id="4551763574344810652">Lai atsauktu, nospiediet <ph name="MODIFIER_KEY_DESCRIPTION"/></translation>
+<translation id="2079545284768500474">Atsaukt</translation>
+<translation id="2490481887078769936">“<ph name="FILE_NAME"/>” tika noņemts no saraksta</translation>
+<translation id="1429300045468813835">Viss tika notīrīts</translation>
 <translation id="8028803902702117856">Notiek lejupielāde: <ph name="FILE_NAME"/>, <ph name="SIZE"/></translation>
 <translation id="5632592977009207922">Notiek lejupielāde, atlikuši <ph name="PERCENT_REMAINING"/>%</translation>
 <translation id="313963229645891001">Notiek lejupielāde: <ph name="STATUS"/></translation>
@@ -418,6 +424,10 @@
 <translation id="3067198179881736288">Vai instalēt lietotni?</translation>
 <translation id="7072010813301522126">Saīsnes nosaukums</translation>
 <translation id="3275778913554317645">Atvērt kā logu</translation>
+<translation id="7193051357671784796">Šo lietotni pievienoja jūsu organizācija. Lai pabeigtu instalēšanu, restartējiet lietotni.</translation>
+<translation id="5895138241574237353">Restartēt</translation>
+<translation id="3479552764303398839">Vēlāk</translation>
+<translation id="1008557486741366299">Vēlāk</translation>
 <translation id="8201192017531062522">Pārlūks Brave turpinās darboties, kamēr būs atvērtas Brave lietotnes.</translation>
 <translation id="7397305826909094212">Aizvērt visas Brave lietotnes</translation>
 <translation id="5026874946691314267">Vairs nerādīt šo paziņojumu</translation>
@@ -768,6 +778,7 @@
 <translation id="5715711091495208045">Spraudņa starpnieks: <ph name="PLUGIN_NAME"/></translation>
 <translation id="3222066309010235055">Iepriekšēja atveide: <ph name="PRERENDER_CONTENTS_NAME"/></translation>
 <translation id="6748217015615267851">Renderētājs: <ph name="RENDERER_URL"/></translation>
+<translation id="2156294658807918600">Apkalpošanas darbinieks: <ph name="SCRIPT_URL"/></translation>
 <translation id="241082044617551207">Nezināms spraudnis</translation>
 <translation id="7903925330883316394">Utilīta: <ph name="UTILITY_TYPE"/></translation>
 <translation id="219008588003277019">Native Client modulis: <ph name="NEXE_NAME"/></translation>
@@ -791,10 +802,8 @@
 <translation id="4873312501243535625">Multivides failu pārbaudītājs</translation>
 <translation id="5972666587303800813">Pakalpojums, kas nedarbojas</translation>
 <translation id="3061707000357573562">Ielāpu pakalpojums</translation>
-<translation id="3580923162759633716">Profilēšanas pakalpojums</translation>
 <translation id="1914326953223720820">Pakalpojums failu izgūšanai no arhīva</translation>
 <translation id="1545775234664667895">Instalēts motīvs “<ph name="THEME_NAME"/>”</translation>
-<translation id="2079545284768500474">Atsaukt</translation>
 <translation id="2256115617011615191">Restartēt tūlīt</translation>
 <translation id="4545028762441890696">Lai to atkārtoti iespējotu, piekrītiet jaunajām atļaujām:</translation>
 <translation id="3009487527589249344">Brave Software atzīmēja paplašinājumu <ph name="EXTENSION_NAME"/> kā ļaunprātīgu un nepieļāva instalēšanu.</translation>
@@ -979,8 +988,8 @@
 <translation id="2643698698624765890">Pārvaldiet savus paplašinājumus, izvēlnē Logs noklikšķinot uz Paplašinājumi.</translation>
 <translation id="7953955868932471628">Pārvaldīt saīsnes</translation>
 <translation id="1470811252759861213">Lai paplašinājumi būtu pieejami visos datoros, <ph name="SIGN_IN_LINK"/>.</translation>
-<translation id="316854673539778496">Lai paplašinājumi būtu pieejami visās jūsu ierīcēs, pierakstieties un ieslēdziet sinhronizāciju.</translation>
-<translation id="8079938625609335826">Lai visi paplašinājumi būtu pieejami visās jūsu ierīcēs, ieslēdziet sinhronizāciju.</translation>
+<translation id="2490782392574942205">Lai paplašinājumi būtu pieejami visos jūsu datoros, pierakstieties un ieslēdziet sinhronizēšanu.</translation>
+<translation id="3919145445993746351">Lai paplašinājumi būtu pieejami visos jūsu datoros, ieslēdziet sinhronizēšanu.</translation>
 <translation id="4977942889532008999">Piekļuves apstiprināšana</translation>
 <translation id="5780011244986845107">Atlasītajā mapē ir iekļauti sensitīvi faili. Vai tiešām vēlaties piešķirt lietotnei <ph name="APP_NAME"/> pastāvīgu lasīšanas piekļuvi šai mapei?</translation>
 <translation id="5365881113273618889">Atlasītajā mapē ir iekļauti sensitīvi faili. Vai tiešām vēlaties piešķirt lietotnei <ph name="APP_NAME"/> pastāvīgu rakstīšanas piekļuvi šai mapei?</translation>
@@ -999,6 +1008,8 @@
 <translation id="220138918934036434">Paslēpt pogu</translation>
 <translation id="7898627924844766532">Saglabāt rīkjoslā</translation>
 <translation id="6082651258230788217">Rādīt rīkjoslā</translation>
+<translation id="7461924472993315131">Piespraust</translation>
+<translation id="4285498937028063278">Atspraust</translation>
 <translation id="8137559199583651773">Pārvaldīt paplašinājumus</translation>
 <translation id="3727187387656390258">Pārbaudīt uznirstošo elementu</translation>
 <translation id="3526034519184079374">Nevar lasīt vai mainīt vietnes datus</translation>
@@ -1203,9 +1214,13 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="6690659332373509948">Nevar parsēt failu: <ph name="FILE_NAME"/></translation>
 <translation id="2773288106548584039">Mantoto pārlūku atbalsts</translation>
 <translation id="8141584439523427891">Notiek atvēršana citā pārlūkprogrammā</translation>
+<translation id="7450761244949417357">Notiek atvēršana <ph name="ALTERNATIVE_BROWSER_NAME"/></translation>
 <translation id="2804043232879091219">Nevarēja atvērt citu pārlūkprogrammu</translation>
+<translation id="692114467174262153"><ph name="ALTERNATIVE_BROWSER_NAME"/> neizdevās atvērt</translation>
 <translation id="1070705170564860382">Pēc <ph name="COUNTDOWN_SECONDS"/> sekundēm notiks atvēršana citā pārlūkprogrammā</translation>
+<translation id="3481268647794498892">Atver pārlūkā <ph name="ALTERNATIVE_BROWSER_NAME"/> <ph name="COUNTDOWN_SECONDS"/> sekunžu laikā</translation>
 <translation id="4586275095964870617">Nevarēja atvērt vietni <ph name="URL"/> citā pārlūkprogrammā. Lūdzu, sazinieties ar sistēmas administratoru.</translation>
+<translation id="736877393389250337">Nevarēja atvērti vietni <ph name="URL"/> pārlūkprogrammā <ph name="ALTERNATIVE_BROWSER_NAME"/>. Lūdzu, sazinieties ar sistēmas administratoru.</translation>
 <translation id="465878909996028221">Pārlūkprogrammas novirzīšanai tiek atbalstīti tikai http, https un failu protokoli.</translation>
 <translation id="1962233722219655970">Šajā lapā tiek izmantota Native Client lietotne, kas nedarbojas jūsu datorā.</translation>
 <translation id="7540972813190816353">Pārbaudot atjauninājumus, radās kļūda: <ph name="ERROR"/></translation>
@@ -1257,6 +1272,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="8391712576156218334">Attēls nav pieejams. Vēlāk mēģiniet vēlreiz.</translation>
 <translation id="1564414980088536597">Šo attēlu nevar izmantot. Izvēlieties citu attēlu.</translation>
 <translation id="385051799172605136">Atpakaļ</translation>
+<translation id="8033827949643255796">atlasīti</translation>
 <translation id="3497560059572256875">Kopīgot svētku logotipu</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Twitter</translation>
@@ -1283,6 +1299,10 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="5939518447894949180">Atiestatīt</translation>
 <translation id="5546865291508181392">Atrast</translation>
 <translation id="833986336429795709">Lai atvērtu šo saiti, izvēlieties lietotni.</translation>
+<translation id="192494336144674234">Atvērt ar</translation>
+<translation id="9053893665344928494">Atcerēties manu izvēli</translation>
+<translation id="5541687815721799001">Izmantot lietotni</translation>
+<translation id="5340857474604400806">Turpināt pārlūkā Brave</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Inkognito režīms)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> — <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (ir pieejams atjauninājums)</translation>
@@ -1330,7 +1350,6 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="720715819012336933">{NUM_PAGES,plural, =1{Izejas lapa}zero{Izejas lapas}one{Izejas lapas}other{Izejas lapas}}</translation>
 <translation id="8093359998839330381"><ph name="PLUGIN_NAME"/> nereaģē.</translation>
 <translation id="8393511274964623038">Apturēt spraudņa darbību</translation>
-<translation id="82871696630048499">Tīmekļa lapa tika ielādēta atkārtoti, jo atmiņā nepietika vietas.</translation>
 <translation id="5578059481725149024">Automātiska pierakstīšanās</translation>
 <translation id="6810613314571580006">Automātiski pierakstīties vietnēs, izmantojot saglabātos akreditācijas datus. Ja funkcija ir atspējota, apstiprināšana būs jāveic ikreiz, kad pierakstīsieties vietnē.</translation>
 <translation id="5454166040603940656">izmantojot <ph name="PROVIDER"/></translation>
@@ -1392,9 +1411,6 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="1483493594462132177">Sūtīt</translation>
 <translation id="6885771755599377173">Sistēmas informācijas priekšskatījums</translation>
 <translation id="1016566241875885511">Papildu informācija (neobligāti)</translation>
-<translation id="6083886770200509573">Vai pārlūkprogrammā Brave notiek avārijas, tiek rādītas neparastas sākumlapas, rīkjoslas, neparedzētas reklāmas, kuras nevarat noņemt, vai kā citādi tiek ietekmēta pārlūkošana? Iespējams, varat novērst problēmu, izmantojot Brave tīrīšanas rīku.</translation>
-<translation id="7719662019953070946">Lejupielādēt Brave tīrīšanas rīku</translation>
-<translation id="8281886186245836920">Izlaist</translation>
 <translation id="8026334261755873520">Notīrīt pārlūkošanas datus</translation>
 <translation id="7409836189476010449">Aktivizēt Flash atskaņotāju</translation>
 <translation id="4718442817388594217">Atlasītie dati ir noņemti no pārlūka Brave un sinhronizētajām ierīcēm. Jūsu Brave Software kontam vietnē <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> var būt cita veida pārlūkošanas vēstures dati, piemēram, meklēšanas vaicājumi un darbības citos Brave Software pakalpojumos.</translation>
@@ -1532,7 +1548,6 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 
 Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="2799223571221894425">Restartēt</translation>
-<translation id="5895138241574237353">Restartēt</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Platforma</translation>
 <translation id="7022562585984256452">Jūsu sākumlapa ir iestatīta.</translation>
@@ -1572,6 +1587,10 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="6015796118275082299">Gads</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
 <translation id="7671130400130574146">Izmantot sistēmas virsrakstjoslu un apmales</translation>
+<translation id="3775705724665058594">Sūtīšana uz jūsu ierīcēm</translation>
+<translation id="6061882183774845124">Sūtīt saiti uz jūsu ierīcēm</translation>
+<translation id="8249615410597138718">Sūtīt uz jūsu ierīcēm</translation>
+<translation id="5310281978693206542">Sūtīt saiti uz jūsu ierīcēm</translation>
 <translation id="4520385623207007473">Izmantojamie sīkfaili</translation>
 <translation id="4763408175235639573">Kamēr aplūkojāt šo lapu, tika iestatīti tālāk norādītie sīkfaili.</translation>
 <translation id="2719936478972253983">Tika bloķēti tālāk norādītie sīkfaili.</translation>
@@ -1662,12 +1681,14 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="8371695176452482769">Runājiet tūlīt</translation>
 <translation id="2942560570858569904">Notiek gaidīšana...</translation>
 <translation id="6436164536244065364">Skatiet interneta veikalā</translation>
+<translation id="5258992782919386492">Instalēt šajā ierīcē</translation>
 <translation id="3331974543021145906">Informācija par lietotni</translation>
 <translation id="9121814364785106365">Atvērt kā piespraustu cilni</translation>
 <translation id="6920989436227028121">Atvērt kā parastu cilni</translation>
 <translation id="189210018541388520">Atvērt pilnekrāna režīmu</translation>
 <translation id="6096047740730590436">Atvērt maksimizētā logā</translation>
 <translation id="7256710573727326513">Atvērt cilnē</translation>
+<translation id="7636919061354591437">Instalēt šajā ierīcē</translation>
 <translation id="2993517869960930405">Informācija par lietotni</translation>
 <translation id="2867768963760577682">Atvērt kā piespraustu cilni</translation>
 <translation id="1390548061267426325">Atvērt kā parastu cilni</translation>
@@ -1704,6 +1725,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="4500114933761911433">Spraudnis <ph name="PLUGIN_NAME"/> avarēja.</translation>
 <translation id="4610162781778310380">Spraudnī <ph name="PLUGIN_NAME"/> radās kļūda.</translation>
 <translation id="778330624322499012">Nevarēja ielādēt <ph name="PLUGIN_NAME"/></translation>
+<translation id="7438976808740265764">Flash Player vairs netiks atbalstīts no 2020. gada decembra.</translation>
 <translation id="3739254215541673094">Vai atvērt lietojumprogrammu <ph name="APPLICATION"/>?</translation>
 <translation id="2188881192257509750">Atvērt lietojumprogrammu <ph name="APPLICATION"/></translation>
 <translation id="620722923698527029">Vienmēr atvērt šo veidu saites saistītajā lietotnē</translation>
@@ -1948,6 +1970,15 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="8363142353806532503">Mikrofona lietošana ir bloķēta</translation>
 <translation id="2762441749940182211">Kameras lietošana ir bloķēta</translation>
 <translation id="5074318175948309511">Lai jaunie iestatījumi tiktu piemēroti, iespējams, šī lapa būs jāielādē atkārtoti.</translation>
+<translation id="3325910708063135066">Kamera un mikrofons ir izslēgti Mac sistēmas preferencēs</translation>
+<translation id="5383377866517186886">Kamera ir izslēgta Mac sistēmas preferencēs</translation>
+<translation id="6545867563032584178">Mikrofons ir izslēgts Mac sistēmas preferencēs</translation>
+<translation id="2332192922827071008">Atvērt preferences</translation>
+<translation id="1620510694547887537">Kamera</translation>
+<translation id="3227137524299004712">Mikrofons</translation>
+<translation id="4209251085232852247">Izslēgts</translation>
+<translation id="2804680522274557040">Kamera ir izslēgta</translation>
+<translation id="6309510305002439352">Mikrofons ir izslēgts</translation>
 <translation id="8282947398454257691">uzzināt jūsu unikālo ierīces identifikatoru</translation>
 <translation id="8329449853370113380">Vietne <ph name="URL"/> vēlas atskaņot aizsargātu saturu. Brave Software verificēs jūsu ierīces identitāti.</translation>
 <translation id="2650609753175229582">Vietne <ph name="URL"/> vēlas atskaņot aizsargātu saturu. Jūsu ierīces identitāti pārbaudīs Brave Software, un tai var piekļūt šī vietne.</translation>
@@ -1972,7 +2003,6 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="8105368624971345109">Izslēgt</translation>
 <translation id="1036348656032585052">Izslēgt</translation>
 <translation id="3423858849633684918">Restartējiet <ph name="PRODUCT_NAME"/></translation>
-<translation id="8876215549894133151">Formāts:</translation>
 <translation id="2294358108254308676">Vai vēlaties instalēt <ph name="PRODUCT_NAME"/>?</translation>
 <translation id="586567932979200359">Jūs izpildāt <ph name="PRODUCT_NAME"/> no diska attēla. Instalējot datorā, varēsiet to izpildīt bez diska attēla, un tiks nodrošināta tā atjaunināšana.</translation>
 <translation id="4849517651082200438">Neinstalēt</translation>
@@ -2027,8 +2057,6 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="1712552549805331520">Vietnē <ph name="URL"/> tika pieprasīta atļauja pastāvīgi glabāt datus lokālajā datorā.</translation>
 <translation id="1997484222658892567">Vietnē <ph name="URL"/> tiek pieprasīta atļauja pastāvīgi uzglabāt lielu datu apjomu jūsu lokālajā datorā.</translation>
 <translation id="7648992873808071793">saglabāt failus šajā ierīcē</translation>
-<translation id="7461924472993315131">Piespraust</translation>
-<translation id="4285498937028063278">Atspraust</translation>
 <translation id="8871551568777368300">Piesprauda administrators</translation>
 <translation id="4110895898888439383">Pārlūkojiet tīmekli augsta kontrasta režīmā</translation>
 <translation id="614940544461990577">Veiciet tālāk norādītās darbības.</translation>
@@ -2127,6 +2155,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="3202173864863109533">Šīs cilnes skaņa ir izslēgta.</translation>
 <translation id="5562781907504170924">Šī cilne ir piesaistīta Bluetooth ierīcei.</translation>
 <translation id="5884474295213649357">Šī cilne ir piesaistīta USB ierīcei.</translation>
+<translation id="1010498023906173788">Šī cilne ir pievienota seriālajam portam.</translation>
 <translation id="8466417995783206254">Šajā cilnē videoklips tiek atskaņots režīmā “Attēls attēlā”.</translation>
 <translation id="2585724835339714757">Šī cilne kopīgo jūsu ekrānu.</translation>
 <translation id="1542514202066550870">Šajā cilnē skatītājam tiek nodrošināts VR saturs.</translation>
@@ -2137,6 +2166,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> — izslēgta skaņa</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> — pievienota Bluetooth ierīce</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> — pievienota USB ierīce</translation>
+<translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> — Seriālais ports pievienots</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> — tīkla kļūda</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> — avārija</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> — tiek kopīgots darbvirsmas saturs</translation>
@@ -2149,6 +2179,8 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="6459799433792303855">Aktīvais logs ir pārvietots uz citu attēlojumu.</translation>
 <translation id="6551508934388063976">Komanda nav pieejama. Nospiediet taustiņu kombināciju Control-N, lai atvērtu jaunu logu.</translation>
 <translation id="3831486154586836914">Tika atvērts logu kopsavilkuma režīms.</translation>
+<translation id="4380648069038809855">Tika atvērts pilnekrāna režīms</translation>
+<translation id="1766575458646819543">Tika aizvērts pilnekrāna režīms</translation>
 <translation id="8736288397686080465">Šī vietne tika atjaunināta fonā.</translation>
 <translation id="6945221475159498467">Atlasīt</translation>
 <translation id="4130199216115862831">Ierīces žurnāls</translation>
@@ -2165,6 +2197,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="8847988622838149491">USB</translation>
 <translation id="5086082738160935172">HID</translation>
 <translation id="4034824040120875894">Printeris</translation>
+<translation id="2633764681656412085">FIDO</translation>
 <translation id="2242687258748107519">Faila informācija</translation>
 <translation id="930268624053534560">Detalizēti laikspiedoli</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
@@ -2176,8 +2209,9 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="2593289874938379417">Brave nevar piekļūt pieprasītajam resursam.</translation>
 <translation id="760197030861754408">Lai izveidotu savienojumu, pārejiet uz šo lapu: <ph name="LANDING_PAGE"/>.</translation>
 <translation id="3648348069317717750">Konstatēta ierīce <ph name="USB_DEVICE_NAME"/></translation>
-<translation id="2382095919147960379">Pievienot ierīci operētājsistēmai Linux</translation>
-<translation id="5308380583665731573">Pievienošana</translation>
+<translation id="5042282098504489593">Atvērt iestatījumus, lai savienotu <ph name="USB_DEVICE_NAME"/> ar Linux</translation>
+<translation id="1072700771426194907">Atrasta USB ierīce</translation>
+<translation id="7830594666202422257">Izveidot savienojumu ar Linux</translation>
 <translation id="59324397759951282">USB ierīce no <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="8763927697961133303">USB ierīce</translation>
 <translation id="8798099450830957504">Noklusējums</translation>
@@ -2200,6 +2234,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="3271648667212143903"><ph name="ORIGIN"/> vēlas izveidot savienojumu</translation>
 <translation id="7945031593909029181"><ph name="CHROME_EXTENSION_NAME"/> vēlas izveidot savienojumu</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
+<translation id="5308380583665731573">Pievienošana</translation>
 <translation id="8480869669560681089">Nezināma ierīce no: <ph name="VENDOR_NAME"/></translation>
 <translation id="1500297251995790841">Nezināma ierīce [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="7003844668372540529">Nezināms produkts (ID: <ph name="PRODUCT_ID"/>), ko piedāvā <ph name="VENDOR_NAME"/></translation>
@@ -2268,8 +2303,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="6009781704028455063">Iebūvēts sensors</translation>
 <translation id="3630132874740063857">Jūsu tālrunis</translation>
 <translation id="6930036377490597025">Ārējā drošības atslēga vai iebūvēts sensors</translation>
-<translation id="5567950944308676169">Pievienojiet drošības atslēgu un aktivizējiet to.</translation>
-<translation id="6648051959475508072">Drošības atslēga ir aktivizēta...</translation>
+<translation id="51143538739122961">Ievietojiet drošības atslēgu un pieskarieties tai</translation>
 <translation id="7352651011704765696">Radās problēma</translation>
 <translation id="8514746246728959655">Pamēģiniet citu drošības atslēgu</translation>
 <translation id="8337047789441383384">Jūs jau reģistrējāt šo drošības atslēgu. Jums tā nav jāreģistrē vēlreiz.</translation>
@@ -2279,7 +2313,6 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="8379878387931047019">Šī ierīce neatbalsta vietnes pieprasītās drošības atslēgas veidu.</translation>
 <translation id="7135729336746831607">Vai ieslēgt Bluetooth?</translation>
 <translation id="6176043333338857209">Lai nodrošinātu saziņu ar drošības atslēgu, īslaicīgi tiks ieslēgts Bluetooth savienojums.</translation>
-<translation id="5860491529813859533">Ieslēgt</translation>
 <translation id="4252899949534773101">Bluetooth savienojums ir atspējots</translation>
 <translation id="8188389033983459049">Lai turpinātu, pārbaudiet ierīces iestatījumus un ieslēdziet to.</translation>
 <translation id="6022705094403139349">Vai esat gatavs drošības atslēgas savienošanai pārī?</translation>
@@ -2310,9 +2343,26 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="4303079906735388947">Iestatiet drošības atslēgai jaunu PIN</translation>
 <translation id="1805967612549112634">Apstipriniet PIN</translation>
 <translation id="4871322859485617074">PIN satur nederīgas rakstzīmes</translation>
-<translation id="2344214284954353199">PIN ir pārāk īss.</translation>
-<translation id="2203484353475059657">Apstiprinājuma vērtība neatbilst ievadītajai vērtībai.</translation>
-<translation id="88870264962436283">Funkcijas Touch ID lietošana ierīcē <ph name="APP_NAME"/></translation>
+<translation id="8896022254727357590">PIN ir jābūt vismaz 4 rakstzīmēm</translation>
+<translation id="7669825497510425694">{NUM_ATTEMPTS,plural, =1{Nepareizs PIN. Ir atlicis viens mēģinājums.}zero{Nepareizs PIN. Ir atlikuši # mēģinājumi.}one{Nepareizs PIN. Ir atlicis # mēģinājums.}other{Nepareizs PIN. Ir atlikuši # mēģinājumi.}}</translation>
+<translation id="5078796286268621944">Nepareizs PIN</translation>
+<translation id="1233497634904001272">Lai pabeigtu pieprasījumu, vēlreiz pieskarieties drošības atslēgai.</translation>
+<translation id="8136269678443988272">Ievadītie PIN kodi neatbilst</translation>
+<translation id="1136712381129578788">Šī drošības atslēga ir bloķēta, jo pārāk daudz reižu ievadīts nepareizs PIN. Lai atbloķētu atslēgu, noņemiet to un ievietojiet atkārtoti.</translation>
+<translation id="3778208826288864398">Šī drošības atslēga ir bloķēta, jo pārāk daudz reižu ievadīts nepareizs PIN. Jums būs jāatiestata drošības atslēga.</translation>
+<translation id="7246230585855757313">Atkārtoti ievietojiet drošības atslēgu un mēģiniet vēlreiz</translation>
+<translation id="629730747756840877">Konts</translation>
+<translation id="3792938779249970121">Konta atlasīšana</translation>
+<translation id="4718490098585891067">Atlasiet kontu, kurā pierakstīties:</translation>
+<translation id="8734671092194994316">Tādējādi drošības atslēgā tiks reģistrēts jūsu apmeklējums vietnē <ph name="WEBSITE"/>.</translation>
+<translation id="8428628598981198790">Jūsu drošības atslēgu nevar izmantot ar šo vietni</translation>
+<translation id="4358169392473932247">Šī drošības atslēga neatbalsta akreditācijas datu iekšējo uzglabāšanu, taču šī funkcija tika pieprasīta.</translation>
+<translation id="7069811530847688087">Vietnei <ph name="WEBSITE"/> var būt nepieciešama jaunāka vai cita veida drošības atslēga</translation>
+<translation id="3984431586879874039">Vai atļaut šai vietnei skatīt jūsu drošības atslēgu?</translation>
+<translation id="8948939328578167195">Vietne <ph name="WEBSITE"/> vēlas skatīt jūsu drošības atslēgas ražotāju un modeli.</translation>
+<translation id="7618452966706304788">Vai vēlaties izmantot Touch ID ar lietotni <ph name="APP_NAME"/> inkognito režīmā?</translation>
+<translation id="3098826269712097986">Pierakstīšanās dati tiks glabāti pārlūkprogrammā Brave pēc tam, kad iziesiet no inkognito režīma. Tādējādi varēsiet vēlāk atkārtoti izmantot Touch ID ar šo vietni.</translation>
+<translation id="2172784515318616985">Turpināt</translation>
 <translation id="5186185447130319458">Inkognito</translation>
 <translation id="7643842463591647490">{0,plural, =1{# atvērts logs}zero{# atvērti logi}one{# atvērts logs}other{# atvērti logi}}</translation>
 <translation id="2579188629646253712">Iziet no inkognito režīma</translation>
@@ -2406,8 +2456,6 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="3440663250074896476">Citas darbības ar grāmatzīmi <ph name="BOOKMARK_NAME"/></translation>
 <translation id="2903457445916429186">Atlasīto vienumu atvēršana</translation>
 <translation id="962802172452141067">Grāmatzīmju mapju koks</translation>
-<translation id="1338776410427958681">Sakļaut mapi <ph name="FOLDER_NAME"/></translation>
-<translation id="4467101674048705704">Izvērst mapi <ph name="FOLDER_NAME"/></translation>
 <translation id="2683638487103917598">Mape ir sakārtota</translation>
 <translation id="7201118060536064622">Vienums “<ph name="DELETED_ITEM_NAME"/>” ir izdzēsts.</translation>
 <translation id="8271246892936492311">{COUNT,plural, =1{Izdzēsta 1 grāmatzīme}zero{Izdzēstas # grāmatzīmes}one{Izdzēsta # grāmatzīme}other{Izdzēstas # grāmatzīmes}}</translation>
@@ -2422,12 +2470,10 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="4422347585044846479">Rediģēt šīs lapas grāmatzīmes</translation>
 <translation id="4776146737004271126">Atvērt Android iestatījumus</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{Neviena}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> un <ph name="APP_2"/>}=3{<ph name="APP_1"/>, <ph name="APP_2"/> un <ph name="APP_3"/>}=4{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> un vēl 1 lietotne}zero{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> un vēl <ph name="EXTRA_APPS"/> lietotņu}one{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> un vēl <ph name="EXTRA_APPS"/> lietotne}other{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> un vēl <ph name="EXTRA_APPS"/> lietotnes}}</translation>
-<translation id="7742008146327708230">Nesen atvērtās lietotnes</translation>
-<translation id="1620510694547887537">Kamera</translation>
+<translation id="702252130983202758">Jūsu lietotnes</translation>
 <translation id="8831664945713891930">Atvērt paplašinājumu iestatījumus</translation>
 <translation id="5138227688689900538">Rādīt mazāk</translation>
 <translation id="5646376287012673985">Atrašanās vieta</translation>
-<translation id="3227137524299004712">Mikrofons</translation>
 <translation id="5270167208902136840">Rādīt citas lietotnes (vēl <ph name="NUMBER_OF_MORE_APPS"/>)</translation>
 <translation id="2482878487686419369">Paziņojumi</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> lietotnes</translation>
@@ -2502,6 +2548,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="4159681666905192102">Šis ir bērniem paredzēts konts, ko pārvalda <ph name="CUSTODIAN_EMAIL"/> un <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Uzraudzīts lietotājs</translation>
 <translation id="5720705177508910913">Pašreizējais lietotājs</translation>
+<translation id="1850357845349976573">{0,plural, =1{Inkognito režīms}zero{# atvērti inkognito režīma logi}one{# atvērts inkognito režīma logs}other{# atvērti inkognito režīma logi}}</translation>
 <translation id="37784332082579802">{0,plural, =1{Inkognito režīms}zero{Inkognito režīmi (#)}one{Inkognito režīmi (#)}other{Inkognito režīmi (#)}}</translation>
 <translation id="5070556616376997776">Iespējots inkognito režīms</translation>
 <translation id="2199298570273670671">Kļūda</translation>
@@ -2607,6 +2654,24 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="3021066826692793094">Tauriņš</translation>
 <translation id="3809272675881623365">Trusis</translation>
 <translation id="4124935795427217608">Vienradzis</translation>
+<translation id="5123433949759960244">Basketbols</translation>
+<translation id="6876155724392614295">Velosipēds</translation>
+<translation id="7774365994322694683">Putns</translation>
+<translation id="2771816809568414714">Siers</translation>
+<translation id="4943368462779413526">Futbols</translation>
+<translation id="2046702855113914483">Nūdeļu zupa</translation>
+<translation id="1150565364351027703">Saulesbrilles</translation>
+<translation id="4693155481716051732">Suši</translation>
+<translation id="2468402215065996499">Tamagoči</translation>
+<translation id="8391218455464584335">Vinils</translation>
+<translation id="4804827417948292437">Avokado</translation>
+<translation id="3619115746895587757">Kapučīno</translation>
+<translation id="377050016711188788">Saldējums</translation>
+<translation id="4330191372652740264">Ūdens ar ledu</translation>
+<translation id="4364327530094270451">Melone</translation>
+<translation id="4779136857077979611">Onigiri</translation>
+<translation id="5068919226082848014">Pica</translation>
+<translation id="6170470584681422115">Sviestmaize</translation>
 <translation id="1830550083491357902">Nav pierakstījies</translation>
 <translation id="5941153596444580863">Pievienot lietotāju...</translation>
 <translation id="9149866541089851383">Rediģēt ...</translation>
@@ -2667,387 +2732,6 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="6365411474437319296">Ģimenes un draugu pievienošana</translation>
 <translation id="7388044238629873883">Jūs esat gandrīz pabeidzis!</translation>
 <translation id="8688579245973331962">Vai neredzat savu vārdu?</translation>
-<translation id="5788127256798019331">Play faili</translation>
-<translation id="174173592514158117">Rādīt visas Play mapes</translation>
-<translation id="5024856940085636730">Darbība aizņem vairāk laika, nekā paredzēts. Vai vēlaties to priekšlaikus pārtraukt?</translation>
-<translation id="6205710420833115353">Dažas darbības aizņem vairāk laika, nekā paredzēts. Vai vēlaties tās priekšlaikus pārtraukt?</translation>
-<translation id="4669606053856530811">“<ph name="SOURCE_NAME"/>” dalībnieki zaudēs piekļuvi šiem vienumiem, ja tie netiks kopīgoti ar viņiem.</translation>
-<translation id="9035012421917565900">Vienumus nevar pārvietot atpakaļ uz “<ph name="DESTINATION_NAME"/>”, tādēļ nevarēsiet atsaukt šo darbību.</translation>
-<translation id="9130775360844693113">“<ph name="DESTINATION_NAME"/>” dalībnieki iegūs piekļuvi šiem vienumiem.</translation>
-<translation id="8834164572807951958">“<ph name="DESTINATION_NAME"/>” dalībnieki iegūs piekļuvi šo vienumu kopijām.</translation>
-<translation id="3236289833370040187">Īpašumtiesības tiks nodotas domēnam <ph name="DESTINATION_DOMAIN"/>.</translation>
-<translation id="7765158879357617694">Pārvietot</translation>
-<translation id="8249296373107784235">Priekšlaikus pārtraukt</translation>
-<translation id="6268185425799226387">Brave Software disks</translation>
-<translation id="4425149324548788773">Mans disks</translation>
-<translation id="1786636458339910689">Komandas diski</translation>
-<translation id="5010406651457630570">Datori</translation>
-<translation id="8106045200081704138">Kopīgots ar mani</translation>
-<translation id="6549689063733911810">Pēdējie</translation>
-<translation id="981121421437150478">Bezsaistē</translation>
-<translation id="9034924485347205037">Linux faili</translation>
-<translation id="9219103736887031265">Attēli</translation>
-<translation id="6146563240635539929">Videoklipi</translation>
-<translation id="3616113530831147358">Audio</translation>
-<translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Uzmanību!<ph name="END_BOLD"/> Šie ir pagaidu faili un var tikt automātiski izdzēsti, lai atbrīvotu vietu diskā. <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/></translation>
-<translation id="4873265419374180291"><ph name="NUMBER_OF_BYTES"/> baiti</translation>
-<translation id="4788401404269709922"><ph name="NUMBER_OF_KB"/> KB</translation>
-<translation id="996903396648773764"><ph name="NUMBER_OF_MB"/> MB</translation>
-<translation id="7189874332498648577"><ph name="NUMBER_OF_GB"/> GB</translation>
-<translation id="7827012282502221009"><ph name="NUMBER_OF_TB"/> TB</translation>
-<translation id="1589128298353575783"><ph name="NUMBER_OF_PB"/> PB</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
-<translation id="169515659049020177">Shift</translation>
-<translation id="3924145049010392604">Meta</translation>
-<translation id="6129953537138746214">Atstarpe</translation>
-<translation id="8179976553408161302">Ievadīt</translation>
-<translation id="5583640892426849032">Atkāpšanās taustiņš</translation>
-<translation id="174937106936716857">Failu kopskaits</translation>
-<translation id="2425665904502185219">Failu kopējais lielums</translation>
-<translation id="1942765061641586207">Attēla izšķirtspēja</translation>
-<translation id="4002066346123236978">Nosaukums</translation>
-<translation id="4631887759990505102">Izpildītājs</translation>
-<translation id="2448312741937722512">Tips</translation>
-<translation id="5145331109270917438">Modificēšanas datums</translation>
-<translation id="8487700953926739672">Pieejams bezsaistē</translation>
-<translation id="2230062665678605299">Mapi “<ph name="FOLDER_NAME"/>” nevar izveidot. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="2163152940313951844">Nederīga rakstzīme: <ph name="CHARACTER_NAME"/></translation>
-<translation id="642282551015776456">Šo nosaukumu nedrīkst izmantot kā mapes nosaukuma failu</translation>
-<translation id="2070909990982335904">Nosaukumi, kas sākas ar punktu, tiek rezervēti sistēmai. Izvēlieties citu nosaukumu.</translation>
-<translation id="8456681095658380701">Nederīgs nosaukums</translation>
-<translation id="2943503720238418293">Izmantojiet īsāku nosaukumu.</translation>
-<translation id="4973523518332075481">Izmantojiet nosaukumu, kas nepārsniedz <ph name="MAX_LENGTH"/> rakstzīmes.</translation>
-<translation id="1307931752636661898">Nevar skatīt Linux failus</translation>
-<translation id="5851063901794976166">Šeit nekā nav...</translation>
-<translation id="3749289110408117711">Faila nosaukums</translation>
-<translation id="3280431534455935878">Notiek sagatavošana</translation>
-<translation id="6607272825297743757">Faila informācija</translation>
-<translation id="6395575651121294044"><ph name="NUMBER_OF_FILES"/> vienumi</translation>
-<translation id="2138867954865495510">Nevar atvērt “<ph name="PATH"/>”: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Vēl neatvienojiet ierīci!<ph name="END_BOLD"/>
-   <ph name="LINE_BREAKS"/>
-   Atvienojot ierīci lietošanas laikā, var tikt zaudēti dati. Lūdzu, uzgaidiet, līdz tiks pabeigta darbība, un pēc tam atvienojiet ierīci, izmantojot lietotni Faili.</translation>
-<translation id="5686799162999241776"><ph name="BEGIN_BOLD"/>Nevar pārtraukt savienojumu ar arhīvu vai virtuālo disku<ph name="END_BOLD"/>
-   <ph name="LINE_BREAKS"/>
-   Aizveriet visus arhīvā vai virtuālajā diskā atvērtos failus un mēģiniet vēlreiz.</translation>
-<translation id="7794058097940213561">Formatēt ierīci</translation>
-<translation id="8151638057146502721">Konfigurēt</translation>
-<translation id="7928710562641958568">Ierīces atvienošana</translation>
-<translation id="7864662577698025113">Pievienot jaunu pakalpojumu</translation>
-<translation id="1943097386230153518">Jauna pakalpojuma instalēšana</translation>
-<translation id="2562685439590298522">Dokumenti</translation>
-<translation id="2925966894897775835">Izklājlapas</translation>
-<translation id="2943400156390503548">Prezentācijas</translation>
-<translation id="5649768706273821470">Klausīties</translation>
-<translation id="4582497162516204941">Instalēt operētājsistēmā Linux (Beta)</translation>
-<translation id="4195249722193633765">Lietotnes instalēšana operētājsistēmā Linux (Beta)</translation>
-<translation id="7248671827512403053">Lietojumprogramma</translation>
-<translation id="3866249974567520381">Apraksts</translation>
-<translation id="183183971458492120">Notiek informācijas ielāde...</translation>
-<translation id="8157684860301034423">Neizdevās izgūt informāciju par lietotni.</translation>
-<translation id="5678784840044122290">Linux lietojumprogramma būs pieejama jūsu terminālī, un programmā Palaidējs var būt redzama arī tās ikona.</translation>
-<translation id="9213073329713032541">Instalēšana sekmīgi sākta.</translation>
-<translation id="2782104745158847185">Instalējot Linux lietojumprogrammu, radās kļūda</translation>
-<translation id="5911887972742538906">Linux lietojumprogrammas instalēšanas laikā radās kļūda.</translation>
-<translation id="942954117721265519">Šajā katalogā nav neviena attēla.</translation>
-<translation id="7100897339030255923">Atlasīti <ph name="COUNT"/> vienumi</translation>
-<translation id="5177526793333269655">Sīktēlu skatījums</translation>
-<translation id="1035094536595558507">Prezentāciju skatījums</translation>
-<translation id="7508545000531937079">Slaidrāde</translation>
-<translation id="1430915738399379752">Drukāt</translation>
-<translation id="38275787300541712">Kad pabeigts, nospiediet Enter</translation>
-<translation id="4880520557730313061">Automātiski labot</translation>
-<translation id="4924638091161556692">Fiksēts</translation>
-<translation id="6019169947004469866">Apgriezt</translation>
-<translation id="4372884569765913867">1 x 1</translation>
-<translation id="7576032389798113292">6 x 4</translation>
-<translation id="8157939133946352716">7 x 5</translation>
-<translation id="2661146741306740526">16 x 9</translation>
-<translation id="3007214526293698309">Fiksēt malu attiecību</translation>
-<translation id="7982283708762922719">Augstums</translation>
-<translation id="4734518477988699048">Ievades vērtība nav derīga.</translation>
-<translation id="3644896802912593514">Platums</translation>
-<translation id="3626281679859535460">Spilgtums</translation>
-<translation id="5061708541166515394">Kontrasts</translation>
-<translation id="1467432559032391204">Pa kreisi</translation>
-<translation id="1346748346194534595">Pa labi</translation>
-<translation id="3144126448740580210">GATAVS</translation>
-<translation id="2453576648990281505">Fails jau eksistē</translation>
-<translation id="1847880352285315359">Saglabāts</translation>
-<translation id="5158593464696388225">Neizdevās saglabāt attēlu.</translation>
-<translation id="2787047795752739979">Pārrakstīt sākotnējo</translation>
-<translation id="8775404590947523323">Izmaiņas tiek saglabātas automātiski.<ph name="BREAKS"/>Lai saglabātu sākotnējā attēla kopiju, noņemiet atzīmi no izvēles rūtiņas “Pārrakstīt sākotnējo”.</translation>
-<translation id="7873831373602885875">Nevar veikt saglabāšanu mapē <ph name="FOLDER_NAME"/>. Visi labojumi tiks saglabāti lejupielāžu mapē šeit: <ph name="DOWNLOADS_FOLDER"/>.</translation>
-<translation id="691516599546977041">Nevar veikt saglabāšanu mapē <ph name="FOLDER_NAME"/>. Rediģētie attēli tiks saglabāti lejupielāžu mapē.</translation>
-<translation id="8066773524873206594">Visi labojumi tiks saglabāti šeit: <ph name="DOWNLOADS_FOLDER"/>.</translation>
-<translation id="8153607920959057464">Šo failu nevarēja parādīt.</translation>
-<translation id="6227235786875481728">Šo failu nevarēja demonstrēt.</translation>
-<translation id="9154418932169119429">Šis attēls nav pieejams bezsaistē.</translation>
-<translation id="1844692022597038441">Šis fails nav pieejams bezsaistē.</translation>
-<translation id="2929414043040740704">No Brave Software diska atkoptie faili</translation>
-<translation id="2085470240340828803">Fails ar nosaukumu “<ph name="FILENAME"/>” jau pastāv. Kā vēlaties rīkoties?</translation>
-<translation id="4801956050125744859">Saglabāt abus</translation>
-<translation id="1062407476771304334">Aizstāt</translation>
-<translation id="1556189134700913550">Lietot visiem</translation>
-<translation id="988685240266037636">Fails ar nosaukumu “<ph name="FILE_NAME"/>” jau pastāv. Vai vēlaties to aizstāt?</translation>
-<translation id="9038620279323455325">Fails ar nosaukumu “<ph name="FILE_NAME"/>” jau pastāv. Lūdzu, izvēlieties citu nosaukumu.</translation>
-<translation id="4212740939091998969">Mape ar nosaukumu “<ph name="FOLDER_NAME"/>” jau pastāv. Lūdzu, izvēlieties citu nosaukumu.</translation>
-<translation id="1497522201463361063">Failu <ph name="FILE_NAME"/> nevar pārdēvēt. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5330512191124428349">Iegūt informāciju</translation>
-<translation id="8312871300878166382">Ielīmēt mapē</translation>
-<translation id="7040138676081995583">Atvērt ar...</translation>
-<translation id="6189412234224385711">Atvērt ar paplašinājumu <ph name="EXTENSION_NAME"/></translation>
-<translation id="2547921442987553570">Pievienot paplašinājumam <ph name="EXTENSION_NAME"/></translation>
-<translation id="386548886866354912">Sapakot kā: <ph name="EXTENSION_NAME"/></translation>
-<translation id="3078461028045006476">Kopīgot ar paplašinājumu <ph name="EXTENSION_NAME"/></translation>
-<translation id="4197674956721858839">Tilpsaspiest atlasītos failus</translation>
-<translation id="1572585716423026576">Iestatīt kā fona tapeti</translation>
-<translation id="204914487372604757">Izveidot saīsni</translation>
-<translation id="799547531016638432">Noņemt saīsni</translation>
-<translation id="5494920125229734069">Atlasīt visu</translation>
-<translation id="7295662345261934369">Kopīgot ar citiem</translation>
-<translation id="2001796770603320721">Pārvaldīt Diskā</translation>
-<translation id="5318819489018851358">Kopīgot pakalpojumā Linux</translation>
-<translation id="6806699711453372963">Pārvaldīt kopīgošanu ar Linux</translation>
-<translation id="7505167922889582512">Rādīt paslēptos failus</translation>
-<translation id="7846076177841592234">Atcelt atlasi</translation>
-<translation id="2377319039870049694">Pāriet uz saraksta skatījumu</translation>
-<translation id="3003633581067744647">Pārslēgties uz sīktēlu skatījumu</translation>
-<translation id="604001903249547235">Dublēšana mākonī</translation>
-<translation id="505639225383557233">Brave OS dublēšana mākonī</translation>
-<translation id="8656896237683963068">Dublējiet savas multivides ierīces fotoattēlus un videoklipus Brave Software diskā.</translation>
-<translation id="3057861065630527966">Dublēt fotoattēlus un videoklipus</translation>
-<translation id="7730494089396812859">Rādīt detalizētu informāciju par dublēšanu mākonī</translation>
-<translation id="2850124913210091882">Dublēt</translation>
-<translation id="5731409020711461763">1 jauns fotoattēls</translation>
-<translation id="5004584466530475658"><ph name="FILE_COUNT"/> jauni fotoattēli</translation>
-<translation id="6934241953272494177">Notiek multivides ierīces skenēšana...
-    <ph name="LINE_BREAK1"/>
-    Atrasts: <ph name="FILE_COUNT"/></translation>
-<translation id="3466147780910026086">Notiek multivides ierīces skenēšana...</translation>
-<translation id="2611866923243604397">Visi faili ir dublēti <ph name="BEGIN_LINK"/>Brave Software diskā<ph name="END_LINK"/>.</translation>
-<translation id="3620292326130836921">Visi faili ir dublēti.</translation>
-<translation id="1536674585581593431">Atrasts: <ph name="FILE_COUNT"/>.
-    <ph name="LINE_BREAK1"/>
-    Jūsu Brave Software diska kvota nav pietiekami liela. Nepieciešama papildu vieta: <ph name="FILE_SIZE"/>.
-    <ph name="LINE_BREAK2"/>
-    Atlasiet mazāk fotoattēlu.</translation>
-<translation id="2473109739642988997">Jūsu Brave Software diska kvota nav pietiekami liela.</translation>
-<translation id="1148097584170732637">Atrasts: <ph name="FILE_COUNT"/>.
-    <ph name="LINE_BREAK1"/>
-    Vietējā krātuvē nav pietiekami daudz vietas. Nepieciešama papildu vieta: <ph name="FILE_SIZE"/>.
-    <ph name="LINE_BREAK2"/>
-    Atlasiet mazāk fotoattēlu.</translation>
-<translation id="2352947182261340447">Lokālajā krātuvē nav pietiekami daudz vietas.</translation>
-<translation id="1127657192797926968">Atrasts: <ph name="FILE_COUNT"/>
-    <ph name="LINE_BREAK1"/>
-    Gatavs dublēšanai <ph name="BEGIN_LINK"/>Brave Software diskā<ph name="END_LINK"/></translation>
-<translation id="4905417359854579806">Gatavs dublēšanai: <ph name="FILE_COUNT"/></translation>
-<translation id="5029447434471675822">Dublēšana <ph name="BEGIN_LINK"/>Brave Software diskā<ph name="END_LINK"/>: <ph name="FILE_COUNT"/></translation>
-<translation id="4215448920900139318">Dublēšana: <ph name="FILE_COUNT"/></translation>
-<translation id="2419376816263920133"><ph name="FILE_COUNT"/> fotoattēli dublēti <ph name="BEGIN_LINK"/>Brave Software diskā<ph name="END_LINK"/></translation>
-<translation id="2994669386200004489">Nevarēja dublēt failu <ph name="FILE_NAME"/>.</translation>
-<translation id="4724850507808590449">Dublēti <ph name="FILE_COUNT"/> fotoattēli</translation>
-<translation id="1351692861129622852">Notiek <ph name="FILE_COUNT"/> failu importēšana...</translation>
-<translation id="117624967391683467">Notiek faila “<ph name="FILE_NAME"/>” kopēšana...</translation>
-<translation id="7359359531237882347">Notiek <ph name="NUMBER_OF_ITEMS"/> vienumu kopēšana...</translation>
-<translation id="7627790789328695202">Diemžēl fails <ph name="FILE_NAME"/> jau pastāv. Pārdēvējiet to un mēģiniet vēlreiz.</translation>
-<translation id="5691596662111998220">Diemžēl fails <ph name="FILE_NAME"/> vairs nepastāv.</translation>
-<translation id="4336032328163998280">Kopēšana neizdevās. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5913638992615760742">Kopēšana neizdevās; radās neparedzēta kļūda: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="6133173853026656527">Notiek faila “<ph name="FILE_NAME"/>” pārvietošana...</translation>
-<translation id="7654209398114106148">Notiek <ph name="NUMBER_OF_ITEMS"/> vienumu pārvietošana...</translation>
-<translation id="6007237601604674381">Pārvietošana neizdevās. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1933345018156373194">Pārvietošana neizdevās; radās neparedzēta kļūda: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="3326821416087822643">Notiek faila “<ph name="FILE_NAME"/>” tilpsaspiešana...</translation>
-<translation id="1722487484194605434">Notiek <ph name="NUMBER_OF_ITEMS"/> vienumu tilpsaspiešana...</translation>
-<translation id="8810671769985673465">Tilpsaspiešana neizdevās, vienums pastāv: <ph name="FILE_NAME"/>.</translation>
-<translation id="9133055936679483811">Tilpsaspiešana neizdevās. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4973970068702235170">Pārvietošana neizdevās; radās neparedzēta kļūda: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="653019979737152879">Notiek faila <ph name="FILE_NAME"/> sinhronizēšana...</translation>
-<translation id="8579285237314169903">Notiek <ph name="NUMBER_OF_FILES"/> vienumu sinhronizēšana...</translation>
-<translation id="8137331602592933310">Fails “<ph name="FILENAME"/>” tika kopīgots ar jums. Jūs nevarat to dzēst, jo tas nepieder jums.</translation>
-<translation id="6277279884155292049">Brave Software disks pašlaik nav pieejams. Augšupielāde tiks automātiski atsākta, tiklīdz Brave Software disks atkal būs pieejams.</translation>
-<translation id="1114160088213746286">Brave Software diskā pašlaik nevar sinhronizēt failu “<ph name="FILENAME"/>”. Brave Software diskā vēlāk tiks veikts atkārtots mēģinājums.</translation>
-<translation id="4893296294301184587">Fails “<ph name="FILENAME"/>” netika augšupielādēts. Jūsu Brave Software diskā nepietiek vietas.</translation>
-<translation id="5163869187418756376">Kopīgošana neizdevās. Pārbaudiet savienojumu un vēlāk mēģiniet vēlreiz.</translation>
-<translation id="656398493051028875">Notiek faila “<ph name="FILENAME"/>” dzēšana...</translation>
-<translation id="1047956942837015229">Notiek <ph name="COUNT"/> vienumu dzēšana...</translation>
-<translation id="6558280019477628686">Radās kļūda. Iespējams, netika izdzēsti daži vienumi.</translation>
-<translation id="3470502288861289375">Notiek kopēšana...</translation>
-<translation id="8669949407341943408">Notiek pārvietošana...</translation>
-<translation id="6718273304615422081">Notiek tilpsaspiešana...</translation>
-<translation id="1338950911836659113">Notiek dzēšana...</translation>
-<translation id="9064939804718829769">Notiek pārsūtīšana...</translation>
-<translation id="3609785682760573515">Notiek sinhronizēšana...</translation>
-<translation id="1464724975715666883">1 kļūda.</translation>
-<translation id="3495304270784461826"><ph name="COUNT"/> kļūdas.</translation>
-<translation id="6643016212128521049">Notīrīt</translation>
-<translation id="4988205478593450158">Vai tiesām vēlaties dzēst failu <ph name="FILE_NAME"/>?</translation>
-<translation id="2225536596944493418">Vai tiešām vēlaties dzēst <ph name="NUMBER_OF_ITEMS"/> vienumus?</translation>
-<translation id="7953739707111622108">Šo ierīci nevar atvērt, jo tās failu sistēma netika atpazīta.</translation>
-<translation id="3726463242007121105">Šo ierīci nevar atvērt, jo tās failu sistēma netiek atbalstīta.</translation>
-<translation id="3414856743105198592">Formatējot noņemamu datu nesēju, tiks dzēsti visi dati. Vai vēlaties turpināt?</translation>
-<translation id="6287852322318138013">Lietotnes atlasīšana šī faila atvēršanai</translation>
-<translation id="7268659760406822741">Pieejamie pakalpojumi</translation>
-<translation id="5038625366300922036">Skatīt vairāk...</translation>
-<translation id="4823651846660089135">Ierīce ir tikai lasāma.</translation>
-<translation id="6346310558342052870">Piekļuve ierobežota</translation>
-<translation id="3780536599611287598">Jums nav atļaujas pārvietot failus uz mapi “<ph name="FOLDER_NAME"/>”.</translation>
-<translation id="1538729222189715449">Notiek Linux failu atvēršana…</translation>
-<translation id="1000498691615767391">Atlasīt atveramo mapi</translation>
-<translation id="3353984535370177728">Atlasīt augšupielādējamo mapi</translation>
-<translation id="8569764466147087991">Atlasīt atveramo failu</translation>
-<translation id="9131598836763251128">Lūdzu, atlasiet vienu vai vairākus failus</translation>
-<translation id="7191454237977785534">Saglabāt failu kā</translation>
-<translation id="3811494700605067549">Atlasīts 1 fails</translation>
-<translation id="6751256176799620176">Atlasīta 1 mape</translation>
-<translation id="2378075407703503998">Atlasīti <ph name="SELCTED_FILE_COUNT"/> faili.</translation>
-<translation id="6998711733709403587"><ph name="SELCTED_FOLDERS_COUNT"/> mapes atlasītas</translation>
-<translation id="4839847978919684242">Atlasīti <ph name="SELCTED_FILES_COUNT"/> vienumi.</translation>
-<translation id="4969785127455456148">Albums</translation>
-<translation id="5700087501958648444">Audio informācija</translation>
-<translation id="912419004897138677">Kodeks</translation>
-<translation id="5253070652067921974">Autors:</translation>
-<translation id="3437801641691368414">Izveides laiks</translation>
-<translation id="8395901698320285466">Izmēri</translation>
-<translation id="8193175696669055101">Ierīces modelis</translation>
-<translation id="2084108471225856927">Ierīces iestatījumi</translation>
-<translation id="303198083543495566">Ģeogrāfiskie dati</translation>
-<translation id="5358764674931277">Kadri sekundē</translation>
-<translation id="4309915981827077375">Vispārīga informācija</translation>
-<translation id="1249250836236328755">Žanrs</translation>
-<translation id="7711920809702896782">Attēla informācija</translation>
-<translation id="4568854179928172494">Izmaiņu veikšanas laiks</translation>
-<translation id="943972244133411984">Pārveidoja</translation>
-<translation id="9099674669267916096">Lappušu skaits</translation>
-<translation id="8294431847097064396">Avots</translation>
-<translation id="1363028406613469049">Izsekošana</translation>
-<translation id="1775381402323441512">Video informācija</translation>
-<translation id="3335337277364016868">Ieraksta izveides gads</translation>
-<translation id="5534520101572674276">Notiek lieluma aprēķināšana.</translation>
-<translation id="3786301125658655746">Esat bezsaistē</translation>
-<translation id="6150853954427645995">Lai saglabātu šo failu izmantošanai bezsaistē, aktivizējiet tiešsaistes režīmu, ar peles labo pogu noklikšķiniet uz faila un atlasiet opciju <ph name="OFFLINE_CHECKBOX_NAME"/>.</translation>
-<translation id="8223479393428528563">Lai saglabātu šos failus izmantošanai bezsaistē, aktivizējiet tiešsaistes režīmu, ar peles labo pogu noklikšķiniet uz failiem un atlasiet opciju <ph name="OFFLINE_CHECKBOX_NAME"/>.</translation>
-<translation id="3830674330436234648">Atskaņošana nav pieejama</translation>
-<translation id="1810764548349082891">Priekšskatījums nav pieejams</translation>
-<translation id="421017592316736757">Lai piekļūtu šim failam, jums ir jābūt tiešsaistē.</translation>
-<translation id="180035236176489073">Lai piekļūtu šiem failiem, jums ir jābūt tiešsaistē.</translation>
-<translation id="1190144681599273207">Izgūstot šo failu, tiks izmantoti aptuveni <ph name="FILE_SIZE"/> mobilo datu.</translation>
-<translation id="7839804798877833423">Izgūstot šos failus, tiks izmantoti aptuveni <ph name="FILE_SIZE"/> mobilo datu.</translation>
-<translation id="6813005947820333339">Izmantojot mobilos datus, Brave Software diska sinhronizācija pēc noklusējuma ir atspējota.</translation>
-<translation id="696203921837389374">Iespējot mobilo datu sinhronizāciju</translation>
-<translation id="637062427944097960">Šis fails tika atvērts citā darbvirsmā. Lai skatītu šo darbvirsmu, izmantojiet profilu <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>).</translation>
-<translation id="5330145655348521461">Šie faili tika atvērti citā darbvirsmā. Lai skatītu šo darbvirsmu, izmantojiet profilu <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>).</translation>
-<translation id="8686213429977032554">Šis Diska fails vēl nav kopīgots</translation>
-<translation id="7850851215703745691">Šie Diska faili vēl nav kopīgoti</translation>
-<translation id="1839704667838141620">Mainīt, kā tiek kopīgots šis fails</translation>
-<translation id="1864676585353837027">Mainīt, kā tiek kopīgoti šie faili</translation>
-<translation id="197560921582345123">Var rediģēt</translation>
-<translation id="8671210955687109937">Var komentēt</translation>
-<translation id="799923393800005025">Var skatīt</translation>
-<translation id="7925686952655276919">Nelietot mobilos datus sinhronizācijai</translation>
-<translation id="7106346894903675391">Iegādāties papildu vietu krātuvē...</translation>
-<translation id="3549797760399244642">Doties uz drive.google.com...</translation>
-<translation id="3451154303153932176">Pakalpojumā Brave Software disks atlikušās brīvās vietas apjoms: <ph name="SPACE_AVAILABLE"/>.</translation>
-<translation id="4552678318981539154">Iegādāties papildu vietu krātuvē</translation>
-<translation id="6990081529015358884">Jums trūkst vietas</translation>
-<translation id="5521447721624713749">Šobrīd Brave Software disku nevar sasniegt.</translation>
-<translation id="7788080748068240085">Lai failu “<ph name="FILE_NAME"/>” saglabātu bezsaistē, jums ir jāatbrīvo <ph name="TOTAL_FILE_SIZE"/> vietas.<ph name="MARKUP_1"/>
-    <ph name="MARKUP_2"/>Atspraudiet failus, kuriem vairs nav jāpiekļūst bezsaistē.<ph name="MARKUP_3"/>
-    <ph name="MARKUP_4"/>Dzēsiet failus no mapes Lejupielādes.<ph name="MARKUP_5"/></translation>
-<translation id="7606199793785990727">Nevarēja piekļūt Brave Software diskam. Lūdzu, <ph name="BEGIN_LINK"/>atsakieties<ph name="END_LINK"/> un atkārtoti piesakieties.</translation>
-<translation id="585883343689351092">Laipni lūdzam pakalpojumā Brave Software disks!</translation>
-<translation id="6862635236584086457">Visi faili, kas saglabāti šajā mapē, tiek automātiski dublēti tiešsaistē.</translation>
-<translation id="7220787572447472056"><ph name="MARKUP_1"/>Piekļūstiet saviem failiem, atrodoties jebkurā vietā, pat bezsaistē.<ph name="MARKUP_2"/>
-    Brave Software diskā esošie faili ir atjaunināti, un tie ir pieejami no jebkuras ierīces.<ph name="MARKUP_3"/>
-    <ph name="MARKUP_4"/>Glabājiet savus failus drošā vietā.<ph name="MARKUP_5"/>
-    Neatkarīgi no tā, kas notiek ar jūsu ierīci, jūsu faili tiek droši glabāti Brave Software diskā.<ph name="MARKUP_6"/>
-    <ph name="MARKUP_7"/>Koplietojiet un veidojiet failus vienuviet, kā arī sadarbojieties,<ph name="MARKUP_8"/>
-    izmantojot failus kopā ar citiem lietotājiem.<ph name="MARKUP_9"/></translation>
-<translation id="4878716980734452132">Šis faila tips netiek atbalstīts. Lūdzu, apmeklējiet <ph name="BEGIN_LINK"/>Brave interneta veikalu<ph name="END_LINK"/>, lai atrastu lietotni, ar kuru var atvērt šo failu.
-    <ph name="BEGIN_LINK_HELP"/>Uzziniet vairāk<ph name="END_LINK_HELP"/></translation>
-<translation id="6230272341631206186">Šis fails ir paredzēts datoram ar Windows programmatūru. Tas nav saderīgs ar jūsu ierīci, kurā darbojas operētājsistēma Brave OS. <ph name="BEGIN_LINK_HELP"/>Uzziniet vairāk<ph name="END_LINK_HELP"/>.</translation>
-<translation id="3072401511615920367">Šis fails ir paredzēts datoram, kurā tiek izmantota Macintosh programmatūra. Tas nav saderīgs ar jūsu ierīci, kurā darbojas Brave OS. Atbilstošu lietotni meklējiet <ph name="BEGIN_LINK"/>Brave interneta veikalā<ph name="END_LINK"/>. <ph name="BEGIN_LINK_HELP"/>Uzziniet vairāk<ph name="END_LINK_HELP"/>.</translation>
-<translation id="7589661784326793847">Mirkli uzgaidiet!</translation>
-<translation id="3096967955765855393">Mēs arvien meklējam veidus, kā papildus aizsargāt pārlūkošanu. Iepriekš jebkura vietne varēja aicināt pievienot paplašinājumu pārlūkā. Jaunākajās Brave Software Brave versijās lapā “Paplašinājumi” ir precīzi jānorāda, ka vēlaties instalēt šos paplašinājumus. <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
-<translation id="4892969127351273348">Nevar atvērt, izmantojot lietotni <ph name="APP_NAME"/></translation>
-<translation id="52446585071384036">Lai atvērtu failus, izmantojot lietotni <ph name="APP_NAME"/>, vispirms kopējiet tos uz Linux failu mapi.</translation>
-<translation id="5368191757080475556">Mapes kopīgošana ar Linux</translation>
-<translation id="5857774240076772505">Piešķiriet Linux lietotnēm atļauju pārveidot failus mapē <ph name="FOLDER_NAME"/>.</translation>
-<translation id="2280597422213958082">Piešķiriet Linux lietotnēm atļauju pārveidot failus jūsu Brave Software diskā. Izmaiņas tiks sinhronizētas ar citām jūsu ierīcēm.</translation>
-<translation id="4290535918735525311">1 mape kopīgota ar Linux</translation>
-<translation id="2377590462528165447"><ph name="NUMBER_OF_ITEMS"/> mapes kopīgotas ar sistēmu Linux</translation>
-<translation id="4572815280350369984"><ph name="FILE_TYPE"/> fails</translation>
-<translation id="5533102081734025921"><ph name="IMAGE_TYPE"/> attēls</translation>
-<translation id="2614589611416690597"><ph name="VIDEO_TYPE"/> video</translation>
-<translation id="8042602468072383151"><ph name="AUDIO_TYPE"/> audio</translation>
-<translation id="7799329977874311193">HTML dokuments</translation>
-<translation id="2208158072373999562">Zip arhīvs</translation>
-<translation id="2028997212275086731">RAR arhīvs</translation>
-<translation id="8466234950814670489">Tar arhīvs</translation>
-<translation id="1119069657431255176">Bzip2 saspiests Tar arhīvs</translation>
-<translation id="6820687829547641339">Gzip saspiests Tar arhīvs</translation>
-<translation id="8329978297633540474">Vienkāršs teksts</translation>
-<translation id="2887525882758501333">PDF dokuments</translation>
-<translation id="1049926623896334335">Word dokuments</translation>
-<translation id="4784330909746505604">PowerPoint prezentācija</translation>
-<translation id="8860454412039442620">Excel izklājlapa</translation>
-<translation id="5383943761832211733">Brave Software dokuments</translation>
-<translation id="5924916971643100883">Brave Software izklājlapa</translation>
-<translation id="3667369474859528036">Brave Software prezentācija</translation>
-<translation id="3411013849623404696">Brave Software zīmējums</translation>
-<translation id="7481041283483972362">Brave Software tabula</translation>
-<translation id="784862457750027723">Brave Software veidlapa</translation>
-<translation id="3320425620177764157">Brave Software karte</translation>
-<translation id="7452737073539387970">Brave Software vietne</translation>
-<translation id="4445959220475380548">Brave Software diska saite</translation>
-<translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="1131292764548273687">Šī tipa fails netiek atbalstīts. Lūdzu, apmeklējiet Brave interneta veikalu, lai atrastu lietotni, kas var atvērt šī tipa failus.</translation>
-<translation id="9010211493509471179">Šis fails ir paredzēts datoram, kurā tiek izmantota Macintosh programmatūra. Tas nav saderīgs ar jūsu ierīci, kurā darbojas operētājsistēma Brave OS. Lūdzu, meklējiet Brave interneta veikalā atbilstošu aizstājošo lietotni.</translation>
-<translation id="5059989099965370411">Šis fails ir paredzēts datoram, kurā tiek izmantota Windows programmatūra. Tas nav saderīgs ar jūsu ierīci, kurā darbojas operētājsistēma Brave OS. Lūdzu, meklējiet Brave interneta veikalā atbilstošu aizstājošo lietotni.</translation>
-<translation id="5833610766403489739">Šo failu nevar atrast. Lūdzu, pārbaudiet lejupielādes vietas iestatījumu un mēģiniet vēlreiz.</translation>
-<translation id="3966388904776714213">Audio atskaņotājs</translation>
-<translation id="3245321423178950146">Nezināms izpildītājs</translation>
-<translation id="509429900233858213">Radās kļūda.</translation>
-<translation id="1864756863218646478">Failu nevarēja atrast.</translation>
-<translation id="1673103856845176271">Failam nevar piekļūt drošības apsvērumu dēļ.</translation>
-<translation id="5524517123096967210">Failu nevarēja nolasīt.</translation>
-<translation id="1665611772925418501">Failu nevarēja pārveidot.</translation>
-<translation id="1358735829858566124">Fails vai katalogs nav izmantojams.</translation>
-<translation id="8342318071240498787">Fails vai direktorijs ar šādu nosaukumu jau pastāv.</translation>
-<translation id="8965697826696209160">Nepietiek vietas.</translation>
-<translation id="7126604456862387217">'&lt;b&gt;<ph name="SEARCH_STRING"/>&lt;/b&gt;' — &lt;em&gt;meklēt Diskā&lt;/em&gt;</translation>
-<translation id="2888807692577297075">Neviens vienums neatbilst vaicājumam &lt;b&gt;<ph name="SEARCH_STRING"/>&lt;/b&gt;.</translation>
-<translation id="2843806747483486897">Mainīt noklusējumu...</translation>
-<translation id="3254434849914415189">Izvēlieties noklusējuma lietotni <ph name="FILE_TYPE"/> failu atvēršanai:</translation>
-<translation id="8038111231936746805">(noklusējums)</translation>
-<translation id="5982621672636444458">Kārtošanas iespējas</translation>
-<translation id="2984337792991268709">Šodien plkst. <ph name="TODAY_DAYTIME"/></translation>
-<translation id="8336153091935557858">Vakar plkst. <ph name="YESTERDAY_DAYTIME"/></translation>
-<translation id="1807938677607439181">Visi faili</translation>
-<translation id="240770291734945588">Pieejams: <ph name="SPACE_AVAILABLE"/></translation>
-<translation id="6199801702437275229">Gaida informāciju par brīvo vietu...</translation>
-<translation id="6485131920355264772">Neizdevās izgūt informāciju par brīvo vietu</translation>
-<translation id="7748626145866214022">Vairāk pieejamu opciju darbību joslā. Lai izceltu darbību joslu, nospiediet taustiņu kombināciju Alt+A.</translation>
-<translation id="2303301624314357662">Tiek atvērts fails <ph name="FILE_NAME"/>.</translation>
-<translation id="2291538123825441971">Notiek <ph name="NUMBER_OF_FILES"/> failu atvēršana.</translation>
-<translation id="2305020378527873881">Sējums <ph name="VOLUME_NAME"/> ir noņemts.</translation>
-<translation id="6710213216561001401">Iepriekšējais</translation>
-<translation id="1395262318152388157">Meklēšanas slīdnis</translation>
-<translation id="4880214202172289027">Skaļuma slīdnis</translation>
-<translation id="7544853251252956727">Sajaukt</translation>
-<translation id="8079530767338315840">Atkārtot</translation>
-<translation id="4158739975813877944">Atvērt atskaņošanas sarakstu</translation>
-<translation id="4656293982926141856">Šajā datorā</translation>
-<translation id="2676946222714718093">Tiek atskaņots šeit:</translation>
-<translation id="3930521966936686665">Atskaņošanas ierīces</translation>
-<translation id="4732760563705710320">Diemžēl jūsu apraides ierīce neatbalsta šo videoklipu.</translation>
-<translation id="2672394958563893062">Radās kļūda. Noklikšķiniet, lai sāktu vēlreiz no sākuma.</translation>
-<translation id="6827236167376090743">Šis videoklips tiks atkārtoti atskaņots.</translation>
-<translation id="6248400709929739064">Iespējot subtitrus</translation>
-<translation id="7881969471599061635">Atspējot subtitrus</translation>
 <translation id="4168015872538332605">Daži iestatījumi, ko veica <ph name="PRIMARY_EMAIL"/>, ir kopīgoti ar jums. Šie iestatījumi ietekmē jūsu kontu tikai tad, kad izmantojat vairākkārtēju pierakstīšanos.</translation>
 <translation id="1485141095922496924">Versija <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>), <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
 <translation id="3764314093345384080">Detalizēta informācija par versiju</translation>
@@ -3091,7 +2775,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="5840822070878669614">Atveriet Brave interneta veikalu</translation>
 <translation id="6073903501322152803">Pievienot pieejamības funkcijas</translation>
 <translation id="7988355189918024273">Iespējot pieejamības funkcijas</translation>
-<translation id="3274899353071794175">Ja attēlam nav vērtīga apraksta, pārlūks Brave jums tādu nodrošinās. Attēlus pārmeklē Brave Software.</translation>
+<translation id="5499063270485366718">Ja attēlam nav vērtīga apraksta, pārlūks Brave mēģinās jums tādu nodrošināt. Lai izveidotu aprakstus, attēli tiek nosūtīti uzņēmumam Brave Software.</translation>
 <translation id="2558896001721082624">Vienmēr rādīt piekļūstamības opcijas sistēmas izvēlnē</translation>
 <translation id="7280649757394340890">Balss iestatījumi teksta pārvēršanai runā</translation>
 <translation id="6635956300022133031">Atlasiet un pielāgojiet balsis teksta pārvēršanai runā</translation>
@@ -3124,12 +2808,6 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="8710187907779883426">īsa (1 s)</translation>
 <translation id="4305227814872083840">ilga (2 s)</translation>
 <translation id="2860150991415616761">ļoti ilga (4 s)</translation>
-<translation id="5573248369095789351">Pārdomu darbība</translation>
-<translation id="2427507373259914951">Noklikšķināt ar peles kreiso pogu</translation>
-<translation id="8203795194971602413">Noklikšķināt ar peles labo pogu</translation>
-<translation id="1999763610967697511">Vilkšana un nomešana</translation>
-<translation id="8142441511840089262">Veikt dubultklikšķi</translation>
-<translation id="485592688953820832">Neveikt darbību (pārtraukt)</translation>
 <translation id="1217668622537098248">Pēc darbības atjaunot peles kreisās pogas klikšķa funkciju</translation>
 <translation id="3682824389861648626">Kustības slieksnis</translation>
 <translation id="5511379779384092781">Ļoti zems</translation>
@@ -3144,6 +2822,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="48704129375571883">Pievienot papildu funkcijas</translation>
 <translation id="7230787553283372882">Pielāgojiet teksta lielumu.</translation>
 <translation id="214169863967063661">Atvērt izskata iestatījumus</translation>
+<translation id="3616113530831147358">Audio</translation>
 <translation id="6793604637258913070">Izcelt teksta ievietošanas punktu, kad tas ir redzams vai tiek kustināts</translation>
 <translation id="7376553024552204454">Izcelt peles kursoru, kad tas tiek kustināts</translation>
 <translation id="4150201353443180367">Displejs</translation>
@@ -3206,9 +2885,10 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="3819257035322786455">Dublējiet</translation>
 <translation id="3233271424239923319">Dublēt Linux lietotnes un failus</translation>
 <translation id="184273675144259287">Aizstāt jūsu Linux lietotnes un failus ar iepriekšējo dublējumu</translation>
-<translation id="2200603218210188859">USB ierīču preferences</translation>
-<translation id="2706892089432507937">USB ierīces</translation>
-<translation id="5187892128515678283">Ieslēdzot slēdzi, varat kopīgot USB ierīci ar Linux. Kopīgošana turpināsies tikai līdz ierīces atvienošanas brīdim.</translation>
+<translation id="7105390788077117391">USB preferences</translation>
+<translation id="3201422919974259695">Šeit tiks rādītas pieejamās USB ierīces.</translation>
+<translation id="907264006778172906">Piešķiriet operētājsistēmai Linux atļauju piekļūt USB ierīcēm. Pēc USB ierīces noņemšanas operētājsistēmā Linux netiks saglabāti šīs ierīces dati.</translation>
+<translation id="3661172646479098821">Pašlaik tiek atbalstītas tikai Android ierīces.</translation>
 <translation id="2295473777859797944">Brave Software Play veikals</translation>
 <translation id="572155275267014074">Android iestatījumi</translation>
 <translation id="4767209642168463274">Instalējiet lietotnes un spēles no pakalpojuma Brave Software Play savā Bravebook datorā. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Uzziniet vairāk&lt;/a&gt;.</translation>
@@ -3248,6 +2928,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="5860033963881614850">Izsl.</translation>
 <translation id="5916664084637901428">Iesl.</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> kontrolē šo iestatījumu</translation>
+<translation id="6643016212128521049">Notīrīt</translation>
 <translation id="8465252176946159372">Nav derīgs</translation>
 <translation id="8647834505253004544">Nederīga tīmekļa adrese</translation>
 <translation id="7946586320617670168">Sākotnējam saturam ir jābūt drošam</translation>
@@ -3256,6 +2937,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="5595485650161345191">Rediģēt adresi</translation>
 <translation id="6207937957461833379">Valsts/reģions</translation>
 <translation id="4378154925671717803">Tālrunis</translation>
+<translation id="2448312741937722512">Tips</translation>
 <translation id="9064275926664971810">Iespējot automātisko aizpildi, lai varētu aizpildīt veidlapas ar vienu klikšķi</translation>
 <translation id="9095253524804455615">Noņemt</translation>
 <translation id="451515744433878153">Noņemt</translation>
@@ -3440,6 +3122,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1989112275319619282">Pārlūkot</translation>
 <translation id="3625481642044239431">Atlasīts nederīgs fails. Mēģiniet vēlreiz.</translation>
 <translation id="2462752602710430187"><ph name="PRINTER_NAME"/> pievienots</translation>
+<translation id="7380768571499464492">Atjaunināts <ph name="PRINTER_NAME"/></translation>
 <translation id="9057119625587205566">Tuvumā nav printeru</translation>
 <translation id="3213187967168344806">Nevar pievienot printeri. Restartējiet datoru un mēģiniet vēlreiz.</translation>
 <translation id="4052689580269971502">Nevar izveidot savienojumu ar printeri. Pārbaudiet, vai printeris ir ieslēgts un vai printerim ir izveidots savienojums ar Bravebook datoru Wi-Fi tīklā vai izmantojot USB savienojumu.</translation>
@@ -3568,6 +3251,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="8452135315243592079">Nav SIM kartes.</translation>
 <translation id="2617342710774726426">SIM karte ir bloķēta.</translation>
 <translation id="4848518990323155912">Iespējot SIM kartes bloķēšanu (pieprasīt PIN, lai izmantotu mobilos datus)</translation>
+<translation id="8179976553408161302">Ievadīt</translation>
 <translation id="5075131525758602494">SIM kartes PIN ievadīšana</translation>
 <translation id="8431909052837336408">SIM kartes PIN mainīšana</translation>
 <translation id="289644616180464099">SIM karte ir bloķēta.</translation>
@@ -3579,11 +3263,13 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1164899421101904659">Ievadiet PIN atbloķēšanas atslēgu</translation>
 <translation id="7582582252461552277">Dot priekšroku šim tīklam</translation>
 <translation id="7469894403370665791">Automātiski pievienoties šim tīklam</translation>
+<translation id="4267953847983678297">Automātiski pievienoties mobilajam tīklam</translation>
 <translation id="7987814697832569482">Savienojuma izveidei vienmēr izmantot šo VPN</translation>
 <translation id="8821045908425223359">Konfigurējiet IP adresi automātiski</translation>
 <translation id="8986362086234534611">Aizmirst</translation>
 <translation id="7881483672146086348">Skatīt kontu</translation>
 <translation id="2392369802118427583">Aktivizēt</translation>
+<translation id="8151638057146502721">Konfigurēt</translation>
 <translation id="5920543303088087579">Jūsu administrators atspējoja savienojuma izveidi ar šo tīklu.</translation>
 <translation id="1235458158152011030">Zināmie tīkli</translation>
 <translation id="3003144360685731741">Vēlamie tīkli</translation>
@@ -3611,7 +3297,6 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="7707922173985738739">Izmantot mobilos datus</translation>
 <translation id="8944099748578356325">tiks ātrāk iztērēta akumulatora jauda (pašlaik: <ph name="BATTERY_PERCENTAGE"/>%);</translation>
 <translation id="3651488188562686558">tiks atvienots Wi-Fi.</translation>
-<translation id="3479552764303398839">Vēlāk</translation>
 <translation id="7378812711085314936">Izmantot datu savienojumu</translation>
 <translation id="3483333858382889684">Ļaut šai ierīcei atrast citas ierīces, kurām ir mobilo datu savienojums un kurās esat pierakstījies savā Brave Software kontā.</translation>
 <translation id="5637476008227280525">Iespējot mobilos datus</translation>
@@ -3730,11 +3415,11 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="3161522574479303604">Visas valodas</translation>
 <translation id="3312424061798279731">Iespējotās valodas</translation>
 <translation id="3182749001423093222">Pareizrakstības pārbaude</translation>
-<translation id="4441548209689510310">Rādīt pareizrakstības pārbaudes iespējas</translation>
-<translation id="4358353773267946514"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/></translation>
-<translation id="3909690856344416952"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/> un vēl 1</translation>
-<translation id="5740331643563157105"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/> un vēl <ph name="NUM_ADDITIONAL_LANGUAGES"/></translation>
-<translation id="3436038974659740746">Pielāgot pareizrakstību</translation>
+<translation id="5423829801105537712">Vienkāršs pareizrakstības pārbaudītājs</translation>
+<translation id="2564653188463346023">Uzlabota pareizrakstības pārbaude</translation>
+<translation id="8944680893327873975">Tiek izmantots tas pats pareizrakstības pārbaudītājs, kas tiek izmantots Brave Software meklēšanā. Pārlūkā ievadītais teksts tiek nosūtīts Brave Software serveriem.</translation>
+<translation id="7335974957018254119">Izmantot pareizrakstības pārbaudītāju šīm valodām:</translation>
+<translation id="2469375675106140201">Pielāgot pareizrakstības pārbaudītāju</translation>
 <translation id="2667463864537187133">Pareizrakstības pārbaudes pārvaldība</translation>
 <translation id="2665394472441560184">Pievienot jaunu vārdu</translation>
 <translation id="4567772783389002344">Pievienot vārdu</translation>
@@ -3755,13 +3440,8 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="9038649477754266430">Ieteikumu pakalpojuma izmantošana ātrākai lapu ielādei</translation>
 <translation id="7981313251711023384">Veikt lapu pirmsielādi, lai paātrinātu pārlūkošanu un meklēšanu</translation>
 <translation id="2468205691404969808">Izmanto sīkfailus, lai iegaumētu jūsu preferences, pat ja neapmeklējāt šīs lapas</translation>
-<translation id="1641113438599504367">Droša pārlūkošana</translation>
-<translation id="773905249182896430">Aizsargā jūs un ierīci pret bīstamām vietnēm</translation>
-<translation id="8983677657449185470">Palīdzēt uzlabot drošo pārlūkošanu</translation>
-<translation id="199861668945335092">Pārsūta noteiktu sistēmas informāciju un lapas saturu Brave Software serveriem</translation>
-<translation id="490074449735753175">Izmantot tīmekļa pakalpojumu, lai palīdzētu atrisināt pareizrakstības kļūdas</translation>
-<translation id="3523078749603005179">Efektīvāka pareizrakstības kļūdu labošana, nosūtot pārlūkā rakstīto uz Brave Software</translation>
-<translation id="2564653188463346023">Uzlabota pareizrakstības pārbaude</translation>
+<translation id="4991384657077828949">Palīdzēt uzlabot Brave drošību</translation>
+<translation id="2875273286298348523">Teksts, ko rakstāt pārlūkprogrammā Brave, tiek sūtīts Brave Software serveriem</translation>
 <translation id="9079153198295609735">Automātiski sūtīt lietošanas statistiku un avāriju pārskatus uzņēmumam Brave Software</translation>
 <translation id="5941220456342415404">Automātiski sūtīt diagnostikas un lietojuma datus Brave Software serveriem</translation>
 <translation id="918192811481327695">Palīdzēt uzlabot Brave funkcijas un veiktspēju</translation>
@@ -3838,6 +3518,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="16815041330799488">Neļaut vietnēm skatīt starpliktuvē kopēto tekstu un attēlus</translation>
 <translation id="3668823961463113931">Apdarinātāji</translation>
 <translation id="5689516760719285838">Atrašanās vieta</translation>
+<translation id="9219103736887031265">Attēli</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Maksājumu apdarinātāji</translation>
@@ -3863,6 +3544,10 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="8666584013686199826">Vaicāt, ja vietne vēlas piekļūt USB ierīcēm</translation>
 <translation id="6291949900244949761">Vaicāt, ja vietne vēlas piekļūt USB ierīcēm (ieteicams)</translation>
 <translation id="5336126339807372270">Neatļaut nevienai vietnei piekļūt USB ierīcēm</translation>
+<translation id="7638605456503525968">Seriālie porti</translation>
+<translation id="4085270836953633510">Vaicāt, ja vietne vēlas piekļūt seriālajiem portiem</translation>
+<translation id="2322318151094136999">Vaicāt, ja vietne vēlas piekļūt seriālajiem portiem (ieteicams)</translation>
+<translation id="1906828677882361942">Neatļaut nevienai vietnei piekļūt seriālajiem portiem</translation>
 <translation id="8973557916016709913">Noņemt tālummaiņas līmeni</translation>
 <translation id="1706625117072057435">Tālummaiņas līmeņi</translation>
 <translation id="6385543213911723544">Vietnes var saglabāt un lasīt sīkfailu datus</translation>
@@ -3878,8 +3563,6 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="2913331724188855103">Atļaut vietnēm saglabāt un lasīt sīkfailu datus (ieteicams)</translation>
 <translation id="5908769186679515905">Bloķēt Flash aktivizēšanu vietnēs</translation>
 <translation id="6096007141921397775">Flash iestatījumi tiks saglabāti, līdz aizvērsiet Brave.</translation>
-<translation id="2972642118232180842">Palaist tikai svarīgu saturu (ieteicams)</translation>
-<translation id="7084192839369222683">Palaist tikai svarīgu saturu</translation>
 <translation id="8074127646604999664">Atļaut nesen aizvērtajām vietnēm pabeigt datu sūtīšanu un saņemšanu</translation>
 <translation id="7062222374113411376">Atļaut nesen aizvērtajām vietnēm pabeigt datu sūtīšanu un saņemšanu</translation>
 <translation id="5068918910148307423">Neļaut nesen aizvērtajām vietnēm pabeigt datu sūtīšanu un saņemšanu</translation>
@@ -3943,6 +3626,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="4354344420232759511">Šeit tiks rādītas jūsu apmeklētās vietnes.</translation>
 <translation id="3757733214359997190">Neviena vietne netika atrasta</translation>
 <translation id="5763751966069581670">Nav atrasta neviena USB ierīce</translation>
+<translation id="1863182668524159459">Netika atrasti seriālie porti</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Vietnes pievienošana</translation>
 <translation id="5052499409147950210">Vietnes rediģēšana</translation>
@@ -3958,7 +3642,6 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="4590324241397107707">Datu bāzes krātuve</translation>
 <translation id="8016266267177410919">Pagaidu krātuve</translation>
 <translation id="4175737294868205930">Pastāvīga krātuve</translation>
-<translation id="6105877918873366097">Pēdējoreiz piekļūts</translation>
 <translation id="1296497012903089238">Sertifikāta veids</translation>
 <translation id="8553342806078037065">Pārvaldīt citas personas</translation>
 <translation id="8907706281008466056">Brave Software profila fotoattēls</translation>
@@ -3990,6 +3673,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1987317783729300807">Konti</translation>
 <translation id="8418661265246754237">Brave Software konti</translation>
 <translation id="3297951628821704004">Noņemt kontu no šīs ierīces</translation>
+<translation id="4659077111144409915">Primārais konts</translation>
 <translation id="3158033540161634471">Iestatiet pirksta nospiedumu</translation>
 <translation id="1587907146729660231">Ar pirkstu pieskarieties barošanas pogai.</translation>
 <translation id="176193854664720708">Pirksta nospieduma sensors atrodas barošanas pogā. Viegli pieskarieties tai ar jebkuru pirkstu.</translation>
@@ -4120,13 +3804,17 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="6586451623538375658">Apmainīt galveno peles pogu</translation>
 <translation id="221872881068107022">Ritināšana atpakaļgaitā</translation>
 <translation id="1510238584712386396">Lietojumprogrammu palaidējs</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">Dimants</translation>
 <translation id="89720367119469899">Escape</translation>
+<translation id="5583640892426849032">Atkāpšanās taustiņš</translation>
 <translation id="1951012854035635156">Asistents</translation>
 <translation id="1938351510777341717">Ārējais komandtaustiņš</translation>
 <translation id="7969046989155602842">Komandtaustiņš</translation>
 <translation id="585979798156957858">Ārējais Meta taustiņš</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4991420928586866460">Uzskatīt augšējās rindas taustiņus par funkciju taustiņiem</translation>
 <translation id="85486688517848470">Turiet meklēšanas taustiņu, lai pārslēgtu augšējās rindas taustiņu funkcijas.</translation>
 <translation id="4400632832271803360">Turiet palaišanas programmas taustiņu, lai pārslēgtu augšējās rindas taustiņu funkcijas.</translation>
@@ -4186,6 +3874,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="7758450972308449809">Pielāgojiet displeja robežas</translation>
 <translation id="5608580678041221894">Pieskarieties tālāk norādītajiem taustiņiem, lai pielāgotu vai pārvietotu apgriešanas apgabalu.</translation>
 <translation id="2822634587701817431">Samazināt/izvērst</translation>
+<translation id="7765158879357617694">Pārvietot</translation>
 <translation id="6801435275744557998">Kalibrēt skārienekrānu</translation>
 <translation id="6856623341093082836">Iestatīt un pielāgot skārienekrāna precizitāti</translation>
 <translation id="4598556348158889687">Krātuves pārvaldība</translation>
@@ -4279,6 +3968,30 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="2992931425024192067">Rādīt visu paziņojumu saturu</translation>
 <translation id="8592141010104017453">Nerādīt paziņojumus vispār</translation>
 <translation id="7642778300616172920">Paslēpt sensitīvu saturu</translation>
+<translation id="5640133431808313291">Drošības atslēgu pārvaldīšana</translation>
+<translation id="8509177919508253835">Atiestatiet drošības atslēgas un izveidojiet PIN kodus</translation>
+<translation id="7652954539215530680">PIN koda izveide</translation>
+<translation id="8246776524656196770">Aizsargājiet drošības atslēgu ar PIN (personas identifikācijas numuru)</translation>
+<translation id="5973605538625120605">Mainīt PIN</translation>
+<translation id="6242589501614145408">Atiestatiet savu drošības atslēgu</translation>
+<translation id="1470967055429794975">Tas izdzēsīs visus drošības atslēgas datus, ieskaitot tās PIN</translation>
+<translation id="4670688170798478686">Apstipriniet atiestatīšanu</translation>
+<translation id="1981544341227357861">Noņemiet drošības atslēgu no ierīces, pēc tam ievadiet to vēlreiz un pieskarieties tai.</translation>
+<translation id="714285394257538643">Lai apstiprinātu, ka vēlaties atiestatīt savu drošības atslēgu, pieskarieties tai vēlreiz. Drošības atslēgas PIN un visi tajā glabātie akreditācijas dati tiks dzēsti.</translation>
+<translation id="4120388883569225797">Nevar atiestatīt šo drošības atslēgu</translation>
+<translation id="7691077781194517083">Nevar atiestatīt šo drošības atslēgu. Kļūda: <ph name="ERROR_CODE"/>.</translation>
+<translation id="4124823734405044952">Drošības atslēga ir atiestatīta</translation>
+<translation id="8644655801811752511">Nevar atiestatīt šo drošības atslēgu. Mēģiniet atiestatīt atslēgu uzreiz pēc tās ievietošanas.</translation>
+<translation id="8845164297565101021">Ievadiet un pieskarieties savai drošības atslēgai, lai izveidotu vai mainītu PIN.</translation>
+<translation id="6957044667612803194">Šī drošības atslēga neatbalsta PIN</translation>
+<translation id="7212097698621322584">Ievadiet pašreizējo PIN, lai to mainītu. Ja nezināt savu PIN, būs jāatiestata drošības atslēga un pēc tam jāizveido jauns PIN.</translation>
+<translation id="2637400434494156704">Nepareizs PIN. Ir atlicis viens mēģinājums.</translation>
+<translation id="3341699307020049241">Nepareizs PIN. Atlikušo mēģinājumu skaits: <ph name="RETRIES"/>.</translation>
+<translation id="2439545803278355377">Ievadiet jauno PIN kodu. PIN kodā ir jābūt ietvertām vismaz četrām rakstzīmēm (tie var būt burti, cipari un citas rakstzīmes).</translation>
+<translation id="1781291988450150470">Pašreizējais PIN</translation>
+<translation id="3732530910372558017">PIN ir jābūt ne vairāk kā 63 rakstzīmēm</translation>
+<translation id="1307165550267142340">PIN ir izveidots</translation>
+<translation id="2699911226086014512">PIN darbība neizdevās, kods: <ph name="RETRIES"/>.</translation>
 <translation id="3341703758641437857">Atļaut piekļuvi faila vietrāžiem URL</translation>
 <translation id="9003647077635673607">Atļaut visās vietnēs</translation>
 <translation id="698524779381350301">Automātiski atļaut piekļuvi tālāk norādītajās vietnēs</translation>
@@ -4301,6 +4014,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="6841186874966388268">Kļūdas</translation>
 <translation id="3487007233252413104">anonīma funkcija</translation>
 <translation id="3264582393905923483">Konteksts</translation>
+<translation id="6921104647315081813">Notīrīt darbības</translation>
 <translation id="1607139524282324606">Notīrīt ierakstu</translation>
 <translation id="6025215716629925253">Steka izsekošana</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;1 rinda netiek rādīta&gt;}zero{&lt;<ph name="NUMBER_OF_LINES"/> rindas netiek rādītas&gt;}one{&lt;<ph name="NUMBER_OF_LINES"/> rinda netiek rādīta&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> rindas netiek rādītas&gt;}}</translation>
@@ -4321,6 +4035,10 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="6073451960410192870">Pārtraukt ierakstīšanu</translation>
 <translation id="8719472795285728850">Notiek paplašinājuma darbību uztveršana...</translation>
 <translation id="2540449034743108469">Nospiediet “Sākt”, lai uztvertu paplašinājuma darbības</translation>
+<translation id="885246833287407341">API funkcijas argumenti</translation>
+<translation id="3600051066689725006">Tīmekļa pieprasījuma informācija</translation>
+<translation id="5812674658566766066">Izvērst visu</translation>
+<translation id="3115580024857770654">Sakļaut visu</translation>
 <translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Pārbaudīt skatījumus</translation>
 <translation id="181577467034453336">Vēl <ph name="NUMBER_OF_VIEWS"/>...</translation>
@@ -4328,6 +4046,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="4854477725773269949">Atļaut inkognito režīmā</translation>
 <translation id="6124650939968185064">Tālāk norādītie paplašinājumi ir atkarīgi no šī paplašinājuma:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
+<translation id="3866249974567520381">Apraksts</translation>
 <translation id="6508248480704296122">Saistīts(-a) ar <ph name="NAME_PH"/></translation>
 <translation id="1410197035576869800">Lietotnes ikona</translation>
 <translation id="3664511988987167893">Paplašinājuma ikona</translation>
@@ -4339,6 +4058,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="7152478047064750137">Šim paplašinājumam nav nepieciešamas īpašas atļaujas.</translation>
 <translation id="1004218526896219317">Piekļuve vietnēm</translation>
 <translation id="7385896526023870365">Šim paplašinājumam nav papildu piekļuves vietnēm.</translation>
+<translation id="8294431847097064396">Avots</translation>
 <translation id="8523849605371521713">Pievienots, jo iestatīts politikā</translation>
 <translation id="5087249366037322692">Pievienoja trešā puse</translation>
 <translation id="6788210894632713004">Atpakotais paplašinājums</translation>
@@ -4382,12 +4102,14 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1909880997794698664">Vai tiešām vēlaties pastāvīgi turēt šo ierīci kioska režīmā?</translation>
 <translation id="1512210426710821809">Šo darbību var atsaukt, tikai atkārtoti instalējot <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="4472575034687746823">Sākt darbu</translation>
+<translation id="8281886186245836920">Izlaist</translation>
 <translation id="2342740338116612727">Grāmatzīmes pievienotas</translation>
 <translation id="7835178595033117206">Grāmatzīme ir noņemta</translation>
 <translation id="742130257665691897">Grāmatzīmes tika noņemtas</translation>
 <translation id="2785008241190445880">Grāmatzīme ir aizstāta</translation>
-<translation id="4320948194796820126">Pievienojiet grāmatzīmi savam e-pastam</translation>
+<translation id="5468853758063275923">Brave ir jūsu noklusējuma pārlūks</translation>
 <translation id="2950533317914339731">Pievienojiet grāmatzīmes savām iecienītajām Brave Software lietotnēm</translation>
+<translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Ziņas</translation>
 <translation id="995782501881226248">YouTube</translation>
@@ -4407,10 +4129,10 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="3707821975049107110">Vai esat Brave lietotājs? Pierakstieties!</translation>
 <translation id="1573150740912592860">Paveiktā saglabāšana</translation>
 <translation id="567643736130151854">Pierakstieties un ieslēdziet sinhronizāciju, lai iegūtu savas grāmatzīmes, paroles un citus iestatījumus visās ierīcēs</translation>
-<translation id="8282356762694872144">Vai pāriet uz e-pastu?</translation>
 <translation id="5939847200023027600">PDF burtliča pakalpojums</translation>
 <translation id="725758059478686223">Drukāšanas pakalpojums</translation>
 <translation id="5877584842898320529">Atlasītais printeris nav pieejams vai nav instalēts pareizi. <ph name="BR"/> Pārbaudiet savu printeri vai pamēģiniet atlasīt citu printeri.</translation>
+<translation id="1430915738399379752">Drukāt</translation>
 <translation id="1031362278801463162">Notiek priekšskatījuma ielāde</translation>
 <translation id="6147020289383635445">Drukas priekšskatījumu neizdevās izveidot.</translation>
 <translation id="7413400642818115607">Atlasītā Brave Software mākoņdrukas ierīce vairs netiek atbalstīta. <ph name="BR"/> Mēģiniet iestatīt printeri sava datora sistēmas iestatījumos.</translation>
@@ -4423,6 +4145,9 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="5431318178759467895">Krāsās</translation>
 <translation id="2050339315714019657">Portrets</translation>
 <translation id="3317459757438853210">Divpusēja</translation>
+<translation id="9053563360605707198">Drukāt abās pusēs</translation>
+<translation id="2996722619877761919">Apvērst ap garo malu</translation>
+<translation id="1172750555846831341">Apvērst ap īso malu</translation>
 <translation id="4988526792673242964">Lapas</translation>
 <translation id="7771452384635174008">Izkārtojums</translation>
 <translation id="3303818374450886607">Kopijas</translation>
@@ -4432,6 +4157,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="5746169159649715125">Saglabāt kā PDF failu</translation>
 <translation id="1955272076204612657">Saglabāt Brave Software diskā</translation>
 <translation id="2580924999637585241">Kopā: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
+<translation id="73174032666024687"><ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">papīra lapas</translation>
 <translation id="8813811964357448561">papīra loksne</translation>
 <translation id="8180239481735238521">Lapa</translation>
@@ -4484,6 +4210,9 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="7453008956351770337">Atlasot šo printeri, jūs piešķirat tālāk norādītajam paplašinājumam atļauju piekļūt jūsu printerim.</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> nevarēja sazināties ar šo printeri. Pārbaudiet, vai printeris ir pievienots, un mēģiniet vēlreiz.</translation>
 <translation id="6530186581263215931">Šos iestatījumus ir noteicis administrators</translation>
+<translation id="3053273573829329829">Iespējot lietotāja PIN</translation>
+<translation id="6922745772873733498">Ievadiet PIN, lai drukātu</translation>
+<translation id="2396783860772170191">Ievadiet 4 ciparu PIN (0000–9999)</translation>
 <translation id="4994754230098574403">Notiek iestatīšana</translation>
 <translation id="1396139853388185343">Kļūda, iestatot printeri</translation>
 <translation id="2379281330731083556">Drukāt, izmantojot sistēmas dialoglodziņu... <ph name="SHORTCUT_KEY"/></translation>
@@ -4500,20 +4229,25 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="79766959863778284">XR izolētas ierīces pakalpojums</translation>
 <translation id="8909833622202089127">Vietne izseko jūsu atrašanās vietu.</translation>
 <translation id="375636864092143889">Vietne izmanto jūsu mikrofonu.</translation>
-<translation id="310671807099593501">Vietne izmanto Bluetooth savienojumu.</translation>
 <translation id="7256069762010468647">Vietne izmanto jūsu kameru.</translation>
 <translation id="7340650977506865820">Vietne kopīgo jūsu ekrānu.</translation>
 <translation id="1805738995123446102">Fona cilne izmanto jūsu ierīces mikrofonu.</translation>
-<translation id="1112420131909513020">Fona cilne izmanto Bluetooth savienojumu.</translation>
 <translation id="8715480913140015283">Fona cilne izmanto ierīces kameru.</translation>
 <translation id="6155141482566063812">Fona cilne kopīgo jūsu ekrānu.</translation>
 <translation id="661907246513853610">Vietne var izsekot jūsu atrašanās vietu.</translation>
 <translation id="8991520179165052608">Vietne var izmantot jūsu mikrofonu.</translation>
-<translation id="7681095912841365527">Vietne var izmantot Bluetooth savienojumu.</translation>
 <translation id="3085412380278336437">Vietne var izmantot jūsu kameru.</translation>
 <translation id="9180380851667544951">Vietne var kopīgot jūsu ekrānu.</translation>
-<translation id="400314203296796334">Noņemiet skatītāju, lai atļautu vai aizliegtu.</translation>
-<translation id="4922897038695506037"><ph name="URL_HOST"/> pieprasīja papildu atļaujas.</translation>
+<translation id="310671807099593501">Vietne izmanto Bluetooth savienojumu.</translation>
+<translation id="1112420131909513020">Fona cilne izmanto Bluetooth savienojumu.</translation>
+<translation id="7681095912841365527">Vietne var izmantot Bluetooth savienojumu.</translation>
+<translation id="1484979925941077974">Vietne izmanto Bluetooth savienojumu</translation>
+<translation id="4892229439761351791">Vietne var izmantot Bluetooth savienojumu</translation>
+<translation id="6416743254476733475">Atļaujiet vai bloķējiet savā datorā.</translation>
+<translation id="6124698108608891449">Šai vietnei ir nepieciešamas citas atļaujas.</translation>
+<translation id="6551612971599078809">Vietnē tiek izmantota USB ierīce</translation>
+<translation id="3088052000289932193">Vietnē tiek izmantota MIDI ierīce</translation>
+<translation id="7004402701596653846">Vietnē var izmantot MIDI ierīci</translation>
 <translation id="7574650250151586813">Lai ievadītu tekstu, atjauniniet Daydream tastatūras lietotni</translation>
 <translation id="983511809958454316">Šī funkcija virtuālajā realitātē netiek atbalstīta</translation>
 <translation id="4008291085758151621">Virtuālajā realitātē vietnes informācija nav pieejama</translation>
@@ -4521,6 +4255,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="6313641880021325787">IZIET NO VR</translation>
 <translation id="2670429602441959756">Šajā lapā ir funkcijas, kas vēl netiek atbalstītas virtuālajā realitātē. Notiek aizvēršana...</translation>
 <translation id="1802687198411089702">Lapa nereaģē. Varat uzgaidīt vai iziet no lapas.</translation>
+<translation id="1041175011127912238">Šī lapa nereaģē</translation>
 <translation id="3987938432087324095">Diemžēl nav saprotams.</translation>
 <translation id="6923132443355966645">Ritināt/klikšķināt</translation>
 <translation id="6041155700700864984">Aizvērt pilnekrāna režīmu</translation>

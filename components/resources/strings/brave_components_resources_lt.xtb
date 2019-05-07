@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Pelnykite žetonų už reklamos peržiūrą „Brave“. Pateikiamos reklamos paremtos jūsų interesais ir susijusios su jūsų naršymo elgesiu. Iš jūsų naršyklės neperduodami jokie asmens duomenys ar naršymo istorija.</translation>
 <translation id="6112368337882254910">Automatinis indėlis</translation>
 <translation id="1527222983464337010">Automatinis būdas, kaip galite paremti leidėjus ir turinio kūrėjus. Nustatykite mėnesinį mokėjimą ir naršykite įprastai. Jūsų lankomoms svetainėms jūsų indėlis bus išmokamas automatiškai pagal „Brave“ išmatuotą jūsų dėmesį.</translation>
-<translation id="7178655681744815321">Šio mėnesio uždarbis (numatomas)</translation>
 <translation id="8157096848242649588">Mokėjimo data</translation>
 <translation id="5208388044986603165">Gauti pranešimai apie reklamas</translation>
 <translation id="4229016885653790965">Apgailestaujame, tačiau jūsų regione reklamų kol kas nėra.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Gaukite užmokestį už privatumo nepažeidžiančių susijusių reklamų peržiūrą.</translation>
 <translation id="3361548743396744457">Paremkite mėgstamas svetaines tiesiog naršydami arba duokite svetainei arbatpinigių bet kuriuo metu.</translation>
 <translation id="3333887201479867589">„Brave Rewards“</translation>
+<translation id="4493850495402472953">ir</translation>
+<translation id="8804164990146287819">Privatumo politika</translation>
+<translation id="4281844954008187215">Paslaugų teikimo sąlygos</translation>
 <translation id="7530570094705720669">Kuriama piniginė</translation>
 <translation id="2105596359439030979">Jūsų dėmesys yra vertingas. Gaukite užmokestį už peržiūrėtas privatumo nepažeidžiančias reklamas ir perveskite šiuos pinigus, kad paremtumėte mėgstamus turinio kūrėjus.</translation>
 <translation id="516395624550019162">Taip, sutinku!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">be jūsų sutikimo.</translation>
 <translation id="7147673045905733351">Šiandien „Brave“ jus sveikina naujajame internete.</translation>
 <translation id="1350763070659630336">Čia vertinamas jūsų laikas, išlaikomas jūsų asmeninių duomenų privatumas, o jums iš tiesų mokama už jūsų dėmesį.</translation>
+<translation id="880341991877949255">Naudodamiesi senąja naršykle, už naršymą žiniatinklyje mokėjote peržiūrėdami reklamas ir skirdami savo vertingą dėmesį. Vertingą savo laiką leidote atsisiųsdami invazinę reklamos technologiją, kuri perduodavo jūsų vertingus privačius duomenis reklamuotojams — be jūsų sutikimo.</translation>
 <translation id="5830306739231399614">Deja, dar nėra žetonų.</translation>
 <translation id="7359258898775969374">3 būdai, kaip pripildyti savo piniginę:</translation>
 <translation id="8087614920008846901">Galite pridėti lėšų.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Pažiūrėkite, kas buvo patobulinta</translation>
 <translation id="4083384190339959182">„Brave Payments“ gerokai patobulinome.</translation>
 <translation id="5395851053710553429">Pasirenkite išbandyti naująjį internetą.</translation>
-<translation id="880341991877949255">Naudodamiesi senąja naršykle, už naršymą žiniatinklyje mokėjote peržiūrėdami reklamas ir skirdami savo vertingą dėmesį. Vertingą savo laiką leidote atsisiųsdami invazinę reklamos technologiją, kuri perduodavo jūsų vertingus privačius duomenis reklamuotojams — be jūsų sutikimo.</translation>
 <translation id="2549982302631665116">Šiandien „Brave“ pristato jums naująjį internetą – tokį, kuriame vertinamas jūsų laikas, išlaikomas jūsų asmeninių duomenų privatumas, o jums iš tiesų mokama už jūsų dėmesį.</translation>
 <translation id="3780605330121608425">Jūsų piniginė</translation>
 <translation id="6727483290601442544">Peržiūrėti išsamią informaciją</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Pridėti naują prietaisą</translation>
 <translation id="8780295742023331191">Žr. QR kodą</translation>
 <translation id="1755198127524719638">Sinchronizavimo nustatymai</translation>
-<translation id="7558480201297099157">Parink, kurią informaciją norėtum sinchronizuoti tarp prietaisų. Šie nustatymai taikomi tik šiam prietaisui.</translation>
 <translation id="8820817407110198400">Žymės</translation>
 <translation id="5591129654353352557">Įrašyti svetainės nustatymai</translation>
 <translation id="7859704718976024901">Naršymo istorija</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Sinchronizavimo grandinės kodas</translation>
 <translation id="2899261497479389619">Paskirties kompiuterio nustatymuose eik į Brave Sync ir spausk</translation>
 <translation id="4827439149833241990">„Turiu sinchronizavimo kodą“.</translation>
-<translation id="24067401253841795">Įvesk šį sinchronizavimo grandinės žodinį kodą.</translation>
 <translation id="8914601399214979966">Naudoti mano kamerą</translation>
 <translation id="3034163433136515805">Žr. QR kodą</translation>
 <translation id="5093410893656857925">Pasirink prietaiso tipą</translation>

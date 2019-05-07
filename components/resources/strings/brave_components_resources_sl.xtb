@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Pridobite žetone z ogledom oglasov v brskalniku Brave. Oglasi so izbrani glede na vaša zanimanja oziroma vaše izbire med brskanjem. Nobeni osebni podatki ali zgodovina brskanja nikoli ne zapustijo vašega brskalnika.</translation>
 <translation id="6112368337882254910">Samodejni prispevek</translation>
 <translation id="1527222983464337010">Samodejni način, s katerim lahko podpirate osebe, ki objavljajo vsebino, in ustvarjalce vsebine. Izberite mesečno plačilo in brskajte kot običajno. Strani, ki jih obiščete, bodo samodejno prejele vaše prispevke na podlagi vaše pozornosti, ki jo izmeri Brave.</translation>
-<translation id="7178655681744815321">Trenutni zaslužek v tem mesecu (približen)</translation>
 <translation id="8157096848242649588">Datum plačila</translation>
 <translation id="5208388044986603165">Prejeta oglasna obvestila</translation>
 <translation id="4229016885653790965">Oprostite! Oglasi v vaši regiji še niso na voljo.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Zaslužite z ogledom relevantnih oglasov, ki spoštujejo vašo zasebnost.</translation>
 <translation id="3361548743396744457">Podprite svoje priljubljene spletne strani samo z brskanjem – ali pa jim kadar koli namenite donacijo.</translation>
 <translation id="3333887201479867589">Storitev Brave Rewards</translation>
+<translation id="4493850495402472953">in</translation>
+<translation id="8804164990146287819">pravilnikom o zasebnosti</translation>
+<translation id="4281844954008187215">Pogoji poslovanja</translation>
 <translation id="7530570094705720669">Ustvari denarnico</translation>
 <translation id="2105596359439030979">Vaša pozornost je dragocena. Zaslužite z ogledom oglasov, ki spoštujejo zasebnost, in podprite ustvarjalce vsebine, ki so vam všeč.</translation>
 <translation id="516395624550019162">Da, želim sodelovati!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">brez vaše vsebine.</translation>
 <translation id="7147673045905733351">Brskalnik Brave vas lepo pozdravlja v novi dobi interneta.</translation>
 <translation id="1350763070659630336">Tukaj je vaš čas cenjen, vaši osebni podatki varni, za oglede oglasov pa boste prejeli celo plačilo.</translation>
+<translation id="880341991877949255">Pri svojem starem brskalniku ste plačali za brskanje po spletu tako, da ste si ogledali oglase in jim namenili svojo dragoceno pozornost. Pri tem ste svoj čas porabili za prenos invazivne tehnologije oglasov, ki je vaše dragocene zasebne podatke posredovala oglaševalcem, in to brez vašega soglasja.</translation>
 <translation id="5830306739231399614">Žal nimate še nobenih žetonov.</translation>
 <translation id="7359258898775969374">3 načini, kako lahko napolnite denarnico:</translation>
 <translation id="8087614920008846901">Sami lahko dodate sredstva.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Oglejte si izboljšave</translation>
 <translation id="4083384190339959182">Storitev za plačevanje Brave Payments je bila deležna pomembne posodobitve.</translation>
 <translation id="5395851053710553429">Pripravite se na dobo novega interneta.</translation>
-<translation id="880341991877949255">Pri svojem starem brskalniku ste plačali za brskanje po spletu tako, da ste si ogledali oglase in jim namenili svojo dragoceno pozornost. Pri tem ste svoj čas porabili za prenos invazivne tehnologije oglasov, ki je vaše dragocene zasebne podatke posredovala oglaševalcem, in to brez vašega soglasja.</translation>
 <translation id="2549982302631665116">Brskalnik Brave vam izreka dobrodošlico v dobi novega interneta – takšnega, v katerem je vaš čas cenjen, vaši osebni podatki ostanejo zasebni, vi pa za pozornost, ki jo namenite oglasom, prejmete plačilo.</translation>
 <translation id="3780605330121608425">Vaša denarnica</translation>
 <translation id="6727483290601442544">Ogled podrobnosti</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Dodaj novo napravo</translation>
 <translation id="8780295742023331191">Ogled kode za sinhronizacijo</translation>
 <translation id="1755198127524719638">Nastavitve sinhronizacije</translation>
-<translation id="7558480201297099157">Upravljajte informacije, ki jih želite sinhronizirati med napravami. Te nastavitve vplivajo samo na to napravo.</translation>
 <translation id="8820817407110198400">Zaznamki</translation>
 <translation id="5591129654353352557">Shranjene nastavitve spletne strani</translation>
 <translation id="7859704718976024901">Zgodovina iskanja</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Koda za verigo sinhronizacije</translation>
 <translation id="2899261497479389619">V ciljnem računalniku v nastavitvah odprite možnost Brave Sync in kliknite gumb</translation>
 <translation id="4827439149833241990">“Imam kodo za sinhronizacijo”.</translation>
-<translation id="24067401253841795">Vnesite spodaj prikazane kodne besede za sinhronizacijo verige.</translation>
 <translation id="8914601399214979966">Namesto tega uporabi mojo kamero</translation>
 <translation id="3034163433136515805">Ogled kode QR</translation>
 <translation id="5093410893656857925">Izberite vrsto naprave</translation>
