@@ -33,16 +33,6 @@ static const char kSyncedBookmarksFolderName[] = "Synced Bookmarks";
 // referred to as top level enities.
 static const char kRootParentTag[] = "0";
 
-uint64_t GetIndexByOrder(const std::string& record_order) {
-  uint64_t index = 0;
-  char last_ch = record_order.back();
-  bool result = base::StringToUint64(std::string(&last_ch), &index);
-  --index;
-  DCHECK(index >= 0);
-  DCHECK(result);
-  return index;
-}
-
 void AddBookmarkSpecifics(sync_pb::EntitySpecifics* specifics,
                           const SyncRecord* record) {
   DCHECK(specifics);
@@ -175,14 +165,9 @@ void AddBookmarkNode(sync_pb::SyncEntity* entity, const SyncRecord* record) {
 
   MigrateFromLegacySync(entity);
 
-  // TODO(darkdh): migrate to UniquePosition
-  entity->set_position_in_parent(GetIndexByOrder(bookmark_record.order));
-  std::string suffix = GenerateSyncableBookmarkHash(entity->originator_cache_guid(),
-                                                    entity->originator_client_item_id());
-  UniquePosition uniquePosition = UniquePosition::FromInt64(GetIndexByOrder(bookmark_record.order),
-                                                            suffix);
-  auto* unique_position_pb = entity->mutable_unique_position();
-  *unique_position_pb = uniquePosition.ToProto();
+  // Position will be calculated later by order comparison
+  // TODO(darkdh): dealing with USS remote changes handler
+  entity->set_position_in_parent(0);
   if (record->action == SyncRecord::Action::A_DELETE)
     entity->set_deleted(true);
   else
