@@ -6,6 +6,7 @@
 #include "brave/components/brave_sync/syncer_helper.h"
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/components/brave_sync/bookmark_order_util.h"
 #include "brave/components/brave_sync/tools.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 
@@ -76,6 +77,26 @@ void AddBraveMetaInfo(
   }
   DCHECK(!sync_timestamp.empty());
   model->SetNodeMetaInfo(node, "sync_timestamp", sync_timestamp);
+}
+
+uint64_t GetIndexByOrder(const bookmarks::BookmarkNode* parent,
+                         const bookmarks::BookmarkNode* src) {
+  int index = 0;
+  std::string src_order;
+  src->GetMetaInfo("order", &src_order);
+  DCHECK(!src_order.empty());
+  while (index < parent->child_count()) {
+    const bookmarks::BookmarkNode* node = parent->GetChild(index);
+    std::string node_order;
+    node->GetMetaInfo("order", &node_order);
+
+    if (!node_order.empty() &&
+        CompareOrder(src_order, node_order))
+      return index;
+
+    ++index;
+  }
+  return index;
 }
 
 }   // namespace brave_sync

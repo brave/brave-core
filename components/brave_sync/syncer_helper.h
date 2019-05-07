@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_SYNCER_HELPER_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_SYNCER_HELPER_H_
 
+#include <string>
+
 namespace bookmarks {
 class BookmarkModel;
 class BookmarkNode;
@@ -16,6 +18,9 @@ namespace brave_sync {
 void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
                       bookmarks::BookmarkModel* bookmark_model,
                       bool has_new_parent);
+
+uint64_t GetIndexByOrder(const bookmarks::BookmarkNode* parent,
+                         const bookmarks::BookmarkNode* src);
 
 }   // namespace brave_sync
 
