@@ -23,6 +23,7 @@ import {
   ToggleTips,
   Tooltip,
   DonationOverlay,
+  TweetBox,
   Tab
 } from '../../../src/features/rewards'
 import {
@@ -299,12 +300,21 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
               amount={'5.0'}
               monthlyDate={select<any>('Recurring', { yes: 'October 31st, 2018', no: '' }, 'October 31st, 2018')}
               logo={boolean('Show logo', false) ? siteBgLogo : null}
+              onTweet={boolean('Show Tweet Now button', false) ? dummyClick : undefined}
             />
             : null
         }
       </div>
     )
   }))
+  .add('Tweet Box', () => {
+    return (
+      <TweetBox
+        tweetTimestamp={number('Timestamp in seconds', 46420000)}
+        tweetText={text('Tweet text', 'This is my tweet.')}
+      />
+    )
+  })
   .add('Tab', withState({ tabIndexSelected: 0 }, (store) => {
     const onSwitch = () => {
       const newIndex = store.state.tabIndexSelected === 0 ? 1 : 0
