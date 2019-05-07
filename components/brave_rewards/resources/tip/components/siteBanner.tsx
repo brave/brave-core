@@ -137,6 +137,11 @@ class Banner extends React.Component<Props, State> {
       logo = `chrome://favicon/size/160@2x/${publisher.logo}`
     }
 
+    let screenName
+    if (this.props.tweetMetaData) {
+      screenName = `@${this.props.tweetMetaData.screenName}`
+    }
+
     if (!verified) {
       logo = ''
     }
@@ -146,6 +151,7 @@ class Banner extends React.Component<Props, State> {
         domain={publisher.publisherKey}
         title={publisher.title}
         name={publisher.name}
+        screenName={screenName}
         provider={publisher.provider as Provider}
         recurringDonation={this.hasRecurringTip(publisher.publisherKey)}
         balance={balance.toString() || '0'}
