@@ -20,6 +20,8 @@ import {
   StyledWallet,
   StyledTokens,
   StyledCenter,
+  StyledUserName,
+  StyledScreenName,
   StyledSocialItem,
   StyledSocialIcon,
   StyledOption,
@@ -57,6 +59,7 @@ export interface Props {
   id?: string
   title?: string
   name?: string
+  screenName?: string
   domain: string
   bgImage?: string
   logo?: string
@@ -159,6 +162,27 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
     }
   }
 
+  getBannerImageContent (name?: string, screenName?: string, domain?: string, provider?: SocialType) {
+    if (screenName) {
+      return (
+        <>
+          <StyledUserName>
+            {this.getBannerTitle(name, domain, provider)}
+          </StyledUserName>
+          <StyledScreenName>
+            {screenName}
+          </StyledScreenName>
+        </>
+      )
+    } else {
+      return (
+        <StyledCenter>
+          {this.getBannerTitle(name, domain, provider)}
+        </StyledCenter>
+      )
+    }
+  }
+
   getText (children?: React.ReactNode) {
     if (!children) {
       return (
@@ -210,6 +234,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       logoBgColor,
       currentAmount,
       name,
+      screenName,
       isMobile,
       showUnVerifiedNotice,
       learnMoreNotice,
@@ -230,9 +255,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
           <StyledBannerImage bgImage={bgImage}>
             {
               !isMobile
-                ? <StyledCenter>
-                  {this.getBannerTitle(name, domain, provider)}
-                </StyledCenter>
+                ? this.getBannerImageContent(name, screenName, domain, provider)
                 : null
             }
           </StyledBannerImage>
@@ -264,7 +287,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                     </StyledNoticeWrapper>
                     : null
                 }
-                <StyledTitle isMobile={isMobile}>
+                <StyledTitle isMobile={isMobile} isTwitterTip={(screenName && screenName !== '') ? true : false}>
                   {this.getTitle(title)}
                 </StyledTitle>
                 <StyledText isMobile={isMobile}>

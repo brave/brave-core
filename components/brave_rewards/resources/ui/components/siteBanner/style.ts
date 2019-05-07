@@ -11,6 +11,7 @@ interface StyleProps {
   padding?: boolean
   bg?: string
   isMobile?: boolean
+  isTwitterTip?: boolean
 }
 
 const getTextStyle = (isMobile?: boolean) => {
@@ -148,7 +149,7 @@ export const StyledTextWrapper = styled<StyleProps, 'div'>('div')`
 `
 
 export const StyledTitle = styled<StyleProps, 'div'>('div')`
-  font-size: 28px;
+  font-size: ${p => p.isTwitterTip ? 18 : 28}px;
   font-weight: 600;
   line-height: 1;
   color: #4b4c5c;
@@ -185,6 +186,25 @@ export const StyledCenter = styled<{}, 'div'>('div')`
   max-width: 1024px;
   padding: 126px 0 0 238px;
   margin: 0 auto;
+  user-select: none;
+`
+
+export const StyledUserName = styled<{}, 'div'>('div')`
+  font-size: 38px;
+  color: #fff;
+  max-width: 1024px;
+  padding: 70px 0 0 238px;
+  margin: 0 auto;
+  user-select: none;
+`
+
+export const StyledScreenName = styled<{}, 'div'>('div')`
+  font-size: 24px;
+  font-weight: 400;
+  color: #000;
+  max-width: 1024px;
+  padding: 10px 0 0 238px;
+  margin: 10px auto;
   user-select: none;
 `
 
