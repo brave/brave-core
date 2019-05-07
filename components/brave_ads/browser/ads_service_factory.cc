@@ -109,6 +109,9 @@ void AdsServiceFactory::RegisterProfilePrefs(
   registry->RegisterBooleanPref(
       prefs::kBraveAdShouldShowFirstLaunchNotification,
       true);
+  registry->RegisterBooleanPref(
+      prefs::kBraveAdsHasRemovedFirstLaunchNotification,
+      false);
 
   auto now = static_cast<uint64_t>(
       (base::Time::Now() - base::Time()).InSeconds());
