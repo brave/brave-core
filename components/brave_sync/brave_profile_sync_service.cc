@@ -13,6 +13,7 @@
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/settings.h"
+#include "brave/components/brave_sync/syncer_helper.h"
 #include "brave/components/brave_sync/sync_devices.h"
 #include "brave/components/brave_sync/tools.h"
 #include "chrome/browser/sync/chrome_sync_client.h"
@@ -208,11 +209,16 @@ BraveProfileSyncService::BraveProfileSyncService(InitParams init_params)
       prefs::kSyncHistoryEnabled,
       base::Bind(&BraveProfileSyncService::OnBraveSyncPrefsChanged,
                  base::Unretained(this)));
+  // TODO(darkdh): find another way to obtain bookmark model
+  // change introduced in 83b9663e3814ef7e53af5009d10033b89955db44
+  model_ = static_cast<ChromeSyncClient*>(
+              ProfileSyncService::GetSyncClient())->GetBookmarkModel();
 
   if (!brave_sync_prefs_->GetSeed().empty() &&
       !brave_sync_prefs_->GetThisDeviceName().empty()) {
     brave_sync_configured_ = true;
   }
+
 }
 
 void BraveProfileSyncService::OnNudgeSyncCycle(
@@ -467,12 +473,7 @@ void BraveProfileSyncService::OnSyncReady() {
     return;
   }
 
-  bookmarks::BookmarkModel* model =
-    // TODO(darkdh): find another way to obtain bookmark model
-    // change introduced in 83b9663e3814ef7e53af5009d10033b89955db44
-    static_cast<ChromeSyncClient*>(
-      ProfileSyncService::GetSyncClient())->GetBookmarkModel();
-  SetPermanentNodesOrder(model, brave_sync_prefs_->GetBookmarksBaseOrder());
+  SetPermanentNodesOrder(brave_sync_prefs_->GetBookmarksBaseOrder());
 
   DCHECK(false == brave_sync_initialized_);
   brave_sync_initialized_ = true;
@@ -500,10 +501,7 @@ void BraveProfileSyncService::OnGetExistingObjects(
         std::make_unique<SyncRecordAndExistingList>();
     CreateResolveList(
         *records.get(), records_and_existing_objects.get(),
-        // TODO(darkdh): find another way to obtain bookmark model
-        // change introduced in 83b9663e3814ef7e53af5009d10033b89955db44
-        static_cast<ChromeSyncClient*>(
-          ProfileSyncService::GetSyncClient())->GetBookmarkModel(),
+        model_,
         brave_sync_prefs_.get());
     GetBraveSyncClient()->SendResolveSyncRecords(
         category_name, std::move(records_and_existing_objects));
@@ -599,24 +597,26 @@ void BraveProfileSyncService::ResetSyncInternal() {
 }
 
 void BraveProfileSyncService::SetPermanentNodesOrder(
-    bookmarks::BookmarkModel* model,
     const std::string& base_order) {
+  DCHECK(model_);
+  DCHECK(!base_order.empty());
   std::string order;
-  model->bookmark_bar_node()->GetMetaInfo("order", &order);
+  model_->bookmark_bar_node()->GetMetaInfo("order", &order);
   if (order.empty()) {
     bookmarks::BookmarkNode* mutable_bookmark_bar_node =
-      const_cast<bookmarks::BookmarkNode*>(model->bookmark_bar_node());
-    model->SetNodeMetaInfo(mutable_bookmark_bar_node, "order",
-                           base_order + "1");
+      const_cast<bookmarks::BookmarkNode*>(model_->bookmark_bar_node());
+    model_->SetNodeMetaInfo(mutable_bookmark_bar_node, "order",
+                            base_order + "1");
   }
   order.clear();
-  model->other_node()->GetMetaInfo("order", &order);
+  model_->other_node()->GetMetaInfo("order", &order);
   if (order.empty()) {
     bookmarks::BookmarkNode* mutable_other_node =
-      const_cast<bookmarks::BookmarkNode*>(model->other_node());
-    model->SetNodeMetaInfo(mutable_other_node, "order", base_order + "2");
+      const_cast<bookmarks::BookmarkNode*>(model_->other_node());
+    model_->SetNodeMetaInfo(mutable_other_node, "order", base_order + "2");
   }
 }
+
 
 void BraveProfileSyncService::FetchSyncRecords(const bool bookmarks,
                                           const bool history,
@@ -732,6 +732,24 @@ void BraveProfileSyncService::OnBraveSyncPrefsChanged(const std::string& pref) {
 BraveSyncClient* BraveProfileSyncService::GetBraveSyncClient() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return ProfileSyncService::GetSyncClient()->GetBraveSyncClient();
+}
+
+void BraveProfileSyncService::OnEngineInitialized(
+    syncer::ModelTypeSet initial_types,
+    const syncer::WeakHandle<syncer::JsBackend>& js_backend,
+    const syncer::WeakHandle<syncer::DataTypeDebugInfoListener>&
+        debug_info_listener,
+    const std::string& cache_guid,
+    const std::string& session_name,
+    const std::string& birthday,
+    const std::string& bag_of_chips,
+    bool success) {
+  // For launching from legacy sync profile
+  SetPermanentNodesOrder(brave_sync_prefs_->GetBookmarksBaseOrder());
+  ProfileSyncService::OnEngineInitialized(initial_types, js_backend,
+                                          debug_info_listener, cache_guid,
+                                          session_name, birthday, bag_of_chips,
+                                          success);
 }
 
 bool BraveProfileSyncService::IsBraveSyncEnabled() const{

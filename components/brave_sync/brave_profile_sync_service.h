@@ -72,6 +72,17 @@ class BraveProfileSyncService : public browser_sync::ProfileSyncService,
   brave_sync::BraveSyncClient* GetBraveSyncClient() override;
 
  private:
+  // SyncEngineHost implementation.
+  void OnEngineInitialized(
+      syncer::ModelTypeSet initial_types,
+      const syncer::WeakHandle<syncer::JsBackend>& js_backend,
+      const syncer::WeakHandle<syncer::DataTypeDebugInfoListener>&
+          debug_info_listener,
+      const std::string& cache_guid,
+      const std::string& session_name,
+      const std::string& birthday,
+      const std::string& bag_of_chips,
+      bool success) override;
 
   bool IsBraveSyncEnabled() const override;
   void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override;
@@ -93,8 +104,7 @@ class BraveProfileSyncService : public browser_sync::ProfileSyncService,
 
   void ResetSyncInternal();
 
-  void SetPermanentNodesOrder(bookmarks::BookmarkModel* model,
-                              const std::string& base_order);
+  void SetPermanentNodesOrder(const std::string& base_order);
 
   std::unique_ptr<brave_sync::prefs::Prefs> brave_sync_prefs_;
   // True when is in active sync chain
@@ -114,6 +124,8 @@ class BraveProfileSyncService : public browser_sync::ProfileSyncService,
 
   // Registrar used to monitor the brave_profile prefs.
   PrefChangeRegistrar brave_pref_change_registrar_;
+
+  bookmarks::BookmarkModel* model_ = nullptr;
 
   // Used to ensure that certain operations are performed on the sequence that
   // this object was created on.
