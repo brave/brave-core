@@ -77,9 +77,13 @@ Brave tidak dapat memulihkan setelan Anda.</translation>
 <translation id="5874882355102994015">Brave tidak dapat menampilkan pratinjau cetak jika penampil PDF bawaan tidak ada.</translation>
 <translation id="8880183781256147665">Menambahkan Brave...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> mungkin berbahaya, sehingga Brave memblokirnya.</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> mungkin berbahaya, sehingga Brave memblokirnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="9067428552314418522">Berkas ini berbahaya, jadi Brave telah memblokirnya.</translation>
+<translation id="2938460345748897177">File ini berbahaya, sehingga Brave memblokirnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> berbahaya, sehingga Brave memblokirnya.</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> berbahaya, sehingga Brave memblokirnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="89367911614620585">Berkas ini mungkin berbahaya, jadi Brave telah memblokirnya.</translation>
+<translation id="8943391224520748272">File ini mungkin berbahaya, sehingga Brave memblokirnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="9183662282810237335">Tetap keluar dari Brave?</translation>
 <translation id="3834935463915107022">Tetap tutup Brave?</translation>
 <translation id="8797356639448065696">Brave berjalan di mode latar belakang.</translation>
@@ -130,6 +134,7 @@ Tetap masuk akan menggabungkan informasi Brave seperti bookmark, histori, dan se
 <translation id="1326766910007115955">Anda masuk dengan akun yang dikelola dan memberikan administratornya kontrol atas profil Brave Anda. Data Brave Anda, seperti aplikasi, bookmark, histori, sandi, dan setelan lain selamanya akan dikaitkan ke <ph name="USER_NAME"/>. Anda dapat menghapus data ini melalui Dasbor Akun Brave Software, namun Anda tidak akan dapat mengaitkan data ini dengan akun yang lain. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Anda masuk dengan akun yang dikelola dan memberikan administratornya kontrol atas profil Brave Anda. Data Brave Anda, seperti aplikasi, bookmark, histori, sandi, dan setelan lain selamanya akan dikaitkan ke <ph name="USER_NAME"/>. Anda dapat menghapus data ini melalui Dasbor Akun Brave Software, namun Anda tidak akan dapat mengaitkan data ini dengan akun yang lain. Secara opsional, Anda dapat membuat profil untuk menjaga data Brave Anda yang sudah ada tetap terpisah. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Administrator sistem Anda telah mengonfigurasi Brave untuk membuka browser alternatif guna mengakses <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">Administrator sistem Anda telah mengonfigurasi Brave untuk membuka <ph name="ALTERNATIVE_BROWSER_NAME"/> guna mengakses <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> sebelumnya menggunakan Brave</translation>
 <translation id="1384923383737428730">Ada software berbahaya di komputer Anda. Brave dapat menghapusnya, memulihkan setelan Anda, dan menonaktifkan ekstensi agar browser berfungsi kembali secara normal.</translation>
 <translation id="8919921662052966648">Brave tidak dapat menyinkronkan data Anda. Perbarui frasa sandi Sinkronisasi Anda.</translation>
@@ -183,7 +188,7 @@ Lihat email Anda di <ph name="ACCOUNT_EMAIL"/> untuk petunjuk lebih lanjut.</tra
 <translation id="1912973375560256099">Inbound rule untuk Brave guna mengizinkan lalu lintas mDNS.</translation>
 <translation id="8207657266087451193">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave Software. Anda dapat menonaktifkannya kapan saja di setelan.</translation>
 <translation id="5499063270485366718">Jika gambar tidak memiliki deskripsi yang berguna, Brave akan mencoba memberikan deskripsi untuk Anda. Untuk membuat deskripsi, gambar akan dikirim ke Brave Software.</translation>
-<translation id="7276297358157391541">Brave dapat memberikan pemeriksa ejaan yang lebih pintar dengan mengirimkan apa yang Anda ketik di browser ke server Brave Software, sehingga memungkinkan Anda menggunakan teknologi pemeriksa ejaan yang sama seperti yang digunakan oleh penelusuran Brave Software.</translation>
+<translation id="3870835867536344658">Tindakan ini akan menggunakan pemeriksa ejaan yang sama dengan yang digunakan di penelusuran Brave Software. Teks yang Anda ketikkan di browser dikirim ke Brave Software. Anda dapat mengubah perilaku ini di setelan.</translation>
 <translation id="1807774211756215222">Buka link di &amp;tab Brave baru</translation>
 <translation id="4624945300945265642">Buka link di jendela sa&amp;maran Brave</translation>
 <translation id="7863882214613921971">Buka Link di &amp;tab Brave Baru</translation>

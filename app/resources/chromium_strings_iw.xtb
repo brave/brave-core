@@ -72,9 +72,13 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="5874882355102994015">‏Brave לא יכול להראות את התצוגה המקדימה של ההדפסה כשמציג ה-PDF המובנה חסר.</translation>
 <translation id="8880183781256147665">‏הוספה ל-Brave</translation>
 <translation id="3561569806301739367">‏<ph name="FILE_NAME"/> עלול להיות מסוכן, ולכן Brave חסם אותו.</translation>
+<translation id="6205431412329939367">‏Brave‏ חסם את הקובץ <ph name="FILE_NAME"/> כי הוא עלול להיות מסוכן. ההגנה המתקדמת שומרת עליך.</translation>
 <translation id="9067428552314418522">‏Brave‏ חסם את הקובץ הזה כי הוא מסוכן.</translation>
+<translation id="2938460345748897177">‏Brave‏ חסם את הקובץ הזה כי הוא מסוכן. ההגנה המתקדמת שומרת עליך.</translation>
 <translation id="4168372721886011198">‏<ph name="FILE_NAME"/> מסוכן, ולכן Brave חסם אותו.</translation>
+<translation id="8858456697111532356">‏<ph name="FILE_NAME"/> מסוכן, ולכן Brave חסם אותו. ההגנה המתקדמת שומרת עליך.</translation>
 <translation id="89367911614620585">‏Brave‏ חסם את הקובץ הזה כי הוא עלול להיות מסוכן.</translation>
+<translation id="8943391224520748272">‏Brave‏ חסם את הקובץ הזה כי הוא עלול להיות מסוכן. ההגנה המתקדמת שומרת עליך.</translation>
 <translation id="9183662282810237335">‏לסגור את Brave בכל זאת?</translation>
 <translation id="3834935463915107022">‏לסגור את Brave בכל זאת?</translation>
 <translation id="8797356639448065696">‏Brave נמצא במצב רקע.</translation>
@@ -125,6 +129,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="1326766910007115955">‏אתה נכנס עם חשבון מנוהל ונותן למנהל המערכת שלו שליטה על הפרופיל שלך ב-Brave. הנתונים שלך ב-Brave, כגון יישומים, סימניות, היסטוריה, סיסמאות והגדרות אחרות ייקשרו באופן קבוע ל-<ph name="USER_NAME"/>. תוכל למחוק את הנתונים האלה באמצעות לוח הבקרה של חשבונות Brave Software, אבל לא תוכל לשייך את הנתונים האלה לחשבון אחר. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">‏אתה נכנס עם חשבון מנוהל ונותן למנהל המערכת שלו שליטה על הפרופיל שלך ב-Brave. הנתונים שלך ב-Brave, כגון יישומים, סימניות, היסטוריה, סיסמאות והגדרות אחרות ייקשרו באופן קבוע ל-<ph name="USER_NAME"/>. תוכל למחוק את הנתונים האלה באמצעות לוח הבקרה של חשבונות Brave Software, אבל לא תוכל לשייך את הנתונים האלה לחשבון אחר. לחלופין, תוכל ליצור פרופיל חדש כדי לשמור את הנתונים הקיימים שלך ב-Brave בנפרד.<ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">‏לפי הגדרת מנהל המערכת, Brave יפתח דפדפן חלופי כדי לגשת אל <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">‏לפי הגדרת מנהל המערכת, Brave יפתח את<ph name="ALTERNATIVE_BROWSER_NAME"/> כדי לגשת אל <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656">‏בכתובת <ph name="USER_EMAIL_ADDRESS"/> השתמשו בעבר ב-Brave</translation>
 <translation id="1384923383737428730">‏יש במחשב שלך תוכנה מזיקה. Brave יכול להסיר אותה, לשחזר את ההגדרות שלך ולהשבית תוספים כדי שהדפדפן יחזור שוב לפעולה רגילה.</translation>
 <translation id="8919921662052966648">‏Brave לא הצליח לסנכרן את הנתונים שלך. עדכן את משפט הסיסמה לסנכרון.</translation>
@@ -175,7 +180,7 @@ Brave לא יכול לשחזר את ההגדרות שלך.</translation>
 <translation id="1912973375560256099">‏כלל נכנס עבור Brave על מנת לאפשר תנועת mDNS.</translation>
 <translation id="8207657266087451193">‏אם אין לתמונה תיאור מועיל, Brave ינסה לספק לך תיאור. כדי ליצור תיאורים, התמונות נשלחות אל Brave Software. אפשר להשבית את האפשרות הזו בכל זמן דרך ההגדרות.</translation>
 <translation id="5499063270485366718">‏אם אין לתמונה תיאור מועיל, Brave ינסה לספק לך תיאור. כדי ליצור תיאורים, התמונות נשלחות אל Brave Software.</translation>
-<translation id="7276297358157391541">‏Brave יכול לספק בדיקת איות חכמה יותר על ידי שליחת הטקסט שאתה מקליד בדפדפן אל שרתי Brave Software. כך אתה יכול להשתמש באותה טכנולוגיה של בדיקת איות שבה נעשה שימוש בחיפוש Brave Software.</translation>
+<translation id="3870835867536344658">‏התכונה משתמשת בבדיקת האיות שבה נעשה שימוש בחיפוש Brave Software. הטקסט המוקלד בדפדפן נשלח אל Brave Software. אפשר לשנות תמיד את ההתנהגות הזאת בהגדרות.</translation>
 <translation id="1807774211756215222">‏פתח את הקישור ב&amp;כרטיסיית Brave חדשה</translation>
 <translation id="4624945300945265642">‏פתח את הקישור בחלון &amp;גלישה בסתר של Brave</translation>
 <translation id="7863882214613921971">‏פתח את הקישור &amp;בכרטיסיית Brave חדשה</translation>

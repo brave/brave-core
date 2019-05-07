@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Tjen tokener ved å se annonser i Brave. Annonser som presenteres er basert på dine interesser, som hentet fra dine nettleservaner. Ingen personlige data eller nettleserhistorikk forlater noensinne nettleseren din.</translation>
 <translation id="6112368337882254910">Auto-bidra</translation>
 <translation id="1527222983464337010">En automatisk måte å støtte utgivere og tekstforfattere på. Bestem deg for en månedlig betaling og surf som normalt. Brave måler den interessen du viser, og sidene du besøker mottar automatisk bidrag fra deg.</translation>
-<translation id="7178655681744815321">Nåværende inntekt denne måneden (overslag)</translation>
 <translation id="8157096848242649588">Betalingsdato</translation>
 <translation id="5208388044986603165">Annonsevarsler mottatt</translation>
 <translation id="4229016885653790965">Beklager! Annonser er ikke tilgjengelig i regionen din ennå.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Få betalt for å se relevante annonser som respekterer ditt privatliv.</translation>
 <translation id="3361548743396744457">Støtt favorittsidene dine kun ved å surfe på nett – eller gi tips til en side når du måtte ønske.</translation>
 <translation id="3333887201479867589">Brave-belønninger</translation>
+<translation id="4493850495402472953">og</translation>
+<translation id="8804164990146287819">Personvernerklæring</translation>
+<translation id="4281844954008187215">Brukervilkår</translation>
 <translation id="7530570094705720669">Opprett lommebok</translation>
 <translation id="2105596359439030979">Din oppmerksomhet er verdifull. Tjen ved å se annonser som støtter personvern, og send den videre for å støtte skaperene du elsker.</translation>
 <translation id="516395624550019162">Ja, jeg er med!</translation>
@@ -278,6 +280,7 @@ dag i hver måned.</translation>
 <translation id="5010112177773747965">uten ditt samtykke.</translation>
 <translation id="7147673045905733351">I dag ønsker Brave deg velkommen til det nye internettet.</translation>
 <translation id="1350763070659630336">Et hvor din tid er verdifull, dine personlige opplysninger holdes privat og du faktisk blir betalt for oppmerksomheten din.</translation>
+<translation id="880341991877949255">Med den gamle nettleseren din betalte du for å surfe på nett, med din verdifulle oppmerksomhet, hver gang du måtte se på reklame. Du brukte verdifull tid på å laste ned  annonseteknologi som overførte dine verdifulle private data til annonsører — uten ditt samtykke.</translation>
 <translation id="5830306739231399614">Desverre, ingen tokens enda.</translation>
 <translation id="7359258898775969374">3 måter å fylle lommeboken din på:</translation>
 <translation id="8087614920008846901">Du kan legge til penger.</translation>
@@ -329,7 +332,6 @@ dag i hver måned.</translation>
 <translation id="318487899513214296">Sjekk ut hva som er forbedret</translation>
 <translation id="4083384190339959182">Vi har gitt Brave Payments en stor oppgradering.</translation>
 <translation id="5395851053710553429">Gjør deg klar til å oppleve et nytt internett.</translation>
-<translation id="880341991877949255">Med den gamle nettleseren din betalte du for å surfe på nett, med din verdifulle oppmerksomhet, hver gang du måtte se på reklame. Du brukte verdifull tid på å laste ned  annonseteknologi som overførte dine verdifulle private data til annonsører — uten ditt samtykke.</translation>
 <translation id="2549982302631665116">I dag ønsker Brave deg velkommen til det nye internettet. Et hvor din tid er verdifull, dine personlige opplysninger holdes privat og du faktisk blir betalt for oppmerksomheten din.</translation>
 <translation id="3780605330121608425">Lommeboken din</translation>
 <translation id="6727483290601442544">Se detaljer</translation>
@@ -352,7 +354,6 @@ dag i hver måned.</translation>
 <translation id="1061533051865606843">Legg til ny enhet</translation>
 <translation id="8780295742023331191">Vis synkroniseringskode</translation>
 <translation id="1755198127524719638">Innstillinger for synkronisering</translation>
-<translation id="7558480201297099157">Administrer hvilken informasjon du vil synkronisere mellom enheter. Disse innstillingene påvirker kun denne enheten.</translation>
 <translation id="8820817407110198400">Bokmerker</translation>
 <translation id="5591129654353352557">Lagret nettsideinnstillinger</translation>
 <translation id="7859704718976024901">Nettleserlogg</translation>
@@ -380,7 +381,6 @@ dag i hver måned.</translation>
 <translation id="5086223971958279691">Kode for synkroniseringskjede</translation>
 <translation id="2899261497479389619">På måldatamaskinen går du til Brave Sync i innstillingene og klikker på knappen</translation>
 <translation id="4827439149833241990">“Jeg har en synkroniseringskode”.</translation>
-<translation id="24067401253841795">Skriv inn synkroniseringskjede-kodeordene som vises under.</translation>
 <translation id="8914601399214979966">Bruk kameraet mitt i stedet</translation>
 <translation id="3034163433136515805">Vis QR-kode</translation>
 <translation id="5093410893656857925">Velg enhetstype</translation>

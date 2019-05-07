@@ -163,6 +163,14 @@
     "message": "ok",
     "description": "Used in notification to dismiss notification"
   },
+  "braveAdsLaunchMsg": {
+    "message": "Możesz zarabiać oglądając reklamy.",
+    "description": "Message for ads launch notification"
+  },
+  "braveAdsLaunchTitle": {
+    "message": "Reklamy Brave są już dostępne!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Reklamy Brave",
     "description": "Notification title when we display info about ads"
@@ -289,6 +297,10 @@
     "message": "Te środki nie są jest już dostępne.",
     "description": "Error title when user missed a grant."
   },
+  "unVerifiedCheck": {
+    "message": "Sprawdź ponownie...",
+    "description": "Text of link that allows to check verified status of unverified publisher"
+  },
   "unVerifiedPublisher": {
     "message": "Jeszcze nie zweryfikowano",
     "description": "Status of the publisher shown in the panel"
@@ -376,5 +388,29 @@
   "welcomeBack": {
     "message": "Witaj ponownie!",
     "description": "Title message for wallet disabled panel"
+  },
+  "tipsProcessedNotification": {
+    "message": "Twoje miesięczne napiwki zostały przetworzone!",
+    "description": "Message for monthly tips processed notification"
+  },
+  "contributionTips": {
+    "message": "Wspieranie i napiwki",
+    "description": "Title for monthly tips processed notification"
+  },
+  "serviceTextPanelWelcome": {
+    "message": "Klikając \"Dołącz do nagród\", zaznaczasz, że przeczytałeś i zgadzasz się na",
+    "description": "Terms of service panel opt-in text"
+  },
+  "bat": {
+    "message": "BAT",
+    "description": "BAT text for displaying converted tip amount."
+  },
+  "turnOnAds": {
+    "message": "Włącz reklamy",
+    "description": "Prompt to turn on Ads via notification"
+  },
+  "adsEarnings": {
+    "message": "earned from ads",
+    "description": "Description text for ad grants in grant details"
   }
 }

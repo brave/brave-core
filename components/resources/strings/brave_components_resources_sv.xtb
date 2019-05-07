@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Tjäna polletter genom att se annonser i Brave. Annonser som visas baseras på dina intressen, taget från ditt surfbeteende. Ingen personlig information eller sökhistorik lämnar någonsin din webbläsare.</translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
 <translation id="1527222983464337010">Ett sätt att automatiskt stödja de som skapar och publicerar innehåll. Ställ in ett månatligt bidrag och surfa som vanligt. Dina favoritsajter får automatiskt dina bidrag, baserat på din uppmärksamhet uppmätt av Brave.</translation>
-<translation id="7178655681744815321">Månadens förtjänster (uppskattat)</translation>
 <translation id="8157096848242649588">Betalningsdatum</translation>
 <translation id="5208388044986603165">Annonsaviseringar mottagna</translation>
 <translation id="4229016885653790965">Beklagar! Annonser kan ännu inte väljas i din region.</translation>
@@ -166,8 +165,12 @@
 <translation id="3671566813999349838">Belopp</translation>
 <translation id="3819257035322786455">Säkerhetskopia</translation>
 <translation id="1312977698678162065">Få betalt för att se relevanta annonser som respekterar din integritet.</translation>
+<translation id="2975780980638932742">Nu är Brave-annonser här!</translation>
 <translation id="3361548743396744457">Stöd din favoritsidor bara genom att surfa eller donera en sida när du vill.</translation>
 <translation id="3333887201479867589">Bravebelöningar</translation>
+<translation id="4493850495402472953">och</translation>
+<translation id="8804164990146287819">Integritetspolicy</translation>
+<translation id="4281844954008187215">Användarvillkor</translation>
 <translation id="7530570094705720669">Skapar plånbok.</translation>
 <translation id="2105596359439030979">Din uppmärksamhet är värdefull. Tjäna genom att titta på annonser som respekterar integritet, och betala vidare för att stödja innehållskreatörerna du älskar.</translation>
 <translation id="516395624550019162">Ja, jag är med!</translation>
@@ -277,6 +280,7 @@
 <translation id="5010112177773747965">utan ditt medgivande.</translation>
 <translation id="7147673045905733351">Idag välkomnar Brave dig till ett nytt internet.</translation>
 <translation id="1350763070659630336">En där din tid värderas, dina personuppgifter hålls privata och där du faktiskt får betalt för din uppmärksamhet.</translation>
+<translation id="880341991877949255">Med din gamla webbläsare betalade du för att surfa på nätet genom att titta på annonser med din värdefulla uppmärksamhet. Du spenderade din värdefulla tid med att lada ned invasiv annonsteknologi som skickade dina värdefulla privata data till annonsörer — utan ditt medgivande.</translation>
 <translation id="5830306739231399614">Tyvärr, inga polletter ännu.</translation>
 <translation id="7359258898775969374">3 sätt att fylla din plånbok:</translation>
 <translation id="8087614920008846901">Du kan sätta in pengar.</translation>
@@ -309,6 +313,7 @@
 <translation id="4914597931214386232">Medgivandebevis hämtat</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transaktioner</translation>
+<translation id="3124090095880236567">Aktivera annonser</translation>
 <translation id="8987812599455325915">Detta sätter på både Brave-annonser och Auto-bidrag. Du kan stänga av eller sätta på dem separat när som helst.</translation>
 <translation id="1485484147452131556">Aktivera belöningar</translation>
 <translation id="2448312741937722512">Typ</translation>
@@ -328,7 +333,6 @@
 <translation id="318487899513214296">Kolla in vad som har förbättrats</translation>
 <translation id="4083384190339959182">Vi har gett Brave-betalningar en stor uppgradering.</translation>
 <translation id="5395851053710553429">Förbered dig på att uppleva det nya internetet.</translation>
-<translation id="880341991877949255">Med din gamla webbläsare betalade du för att surfa på nätet genom att titta på annonser med din värdefulla uppmärksamhet. Du spenderade din värdefulla tid med att lada ned invasiv annonsteknologi som skickade dina värdefulla privata data till annonsörer — utan ditt medgivande.</translation>
 <translation id="2549982302631665116">Brave välkomnar dig till ett nytt internet. Ett där tid värdesätts, din personliga data hålls privat och du faktiskt får betalt för din uppmärksamhet.</translation>
 <translation id="3780605330121608425">Din plånbok</translation>
 <translation id="6727483290601442544">Se uppgifter</translation>
@@ -351,7 +355,6 @@
 <translation id="1061533051865606843">Lägg till ny enhet</translation>
 <translation id="8780295742023331191">Visa synkkod</translation>
 <translation id="1755198127524719638">Synkroniseringsinställningar</translation>
-<translation id="7558480201297099157">Hantera den information du vill synka mellan enheterna. Dessa inställningar påverkar endast denna enhet.</translation>
 <translation id="8820817407110198400">Bokmärken</translation>
 <translation id="5591129654353352557">Sparade webbplatsinställningar</translation>
 <translation id="7859704718976024901">Webbhistorik</translation>
@@ -379,7 +382,6 @@
 <translation id="5086223971958279691">Synkkedjekod</translation>
 <translation id="2899261497479389619">Navigera till Brave Sync i inställningarna på din måldator och klicka på knappen</translation>
 <translation id="4827439149833241990">“Jag har en synkkod”.</translation>
-<translation id="24067401253841795">Ange synkkedjans kodord som visas nedan.</translation>
 <translation id="8914601399214979966">Använd min kamera istället</translation>
 <translation id="3034163433136515805">Visa QR-kod</translation>
 <translation id="5093410893656857925">Välj enhetstyp</translation>
