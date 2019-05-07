@@ -1,8 +1,8 @@
-// Copyright 2018 The Brave Authors. All rights reserved.
+// Copyright 2019 The Brave Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-#include "../../../../net/base/host_port_pair.cc"
+#include "../../../../net/base/host_port_pair.cc"  // NOLINT
 
 #include "net/base/host_port_pair.h"
 

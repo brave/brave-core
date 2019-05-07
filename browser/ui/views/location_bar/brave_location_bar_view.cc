@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -60,7 +61,7 @@ void BraveLocationBarView::OnChanged() {
 
 gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
   gfx::Size min_size = LocationBarView::CalculatePreferredSize();
-  if (brave_actions_ && brave_actions_->visible()){
+  if (brave_actions_ && brave_actions_->visible()) {
     const int brave_actions_min = brave_actions_->GetMinimumSize().width();
     const int extra_width = brave_actions_min +
                               GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
@@ -75,9 +76,10 @@ OmniboxTint BraveLocationBarView::GetTint() {
   // a theme extension.
   if (profile()->GetProfileType() == Profile::INCOGNITO_PROFILE ||
       profile()->IsTorProfile()) {
-    return OmniboxTint::PRIVATE; // special extra enum value
+    return OmniboxTint::PRIVATE;  // special extra enum value
   }
-  // TODO: BraveThemeService can have a simpler get dark / light function
+  // TODO(petemill): BraveThemeService can have a simpler get dark / light
+  // function
   switch (BraveThemeService::GetActiveBraveThemeType(profile())) {
     case BraveThemeType::BRAVE_THEME_TYPE_LIGHT:
       return OmniboxTint::LIGHT;

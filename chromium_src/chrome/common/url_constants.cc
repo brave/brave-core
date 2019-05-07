@@ -7,7 +7,7 @@
 
 namespace chrome {
 
-const char kAccessibilityLabelsLearnMoreURL[] = 
+const char kAccessibilityLabelsLearnMoreURL[] =
     "https://support.brave.com/";
 
 const char kAutomaticSettingsResetLearnMoreURL[] =

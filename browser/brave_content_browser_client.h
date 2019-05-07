@@ -52,7 +52,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const std::string& method,
       const net::HttpRequestHeaders& headers,
       network::mojom::URLLoaderFactoryRequest* factory_request,
-      network::mojom::URLLoaderFactory*& out_factory) override;
+      network::mojom::URLLoaderFactory*& out_factory) override;  // NOLINT
 
   content::ContentBrowserClient::AllowWebBluetoothResult AllowWebBluetooth(
       content::BrowserContext* browser_context,
