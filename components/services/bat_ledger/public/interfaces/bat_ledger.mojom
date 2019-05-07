@@ -100,8 +100,7 @@ interface BatLedger {
 
   SetCatalogIssuers(string info);
   ConfirmAd(string info);
-  GetConfirmationsHistory(uint64 from_timestamp_seconds,
-      uint64 to_timestamp_seconds) => (string transactions);
+  GetTransactionHistoryForThisCycle() => (string transactions);
   GetRewardsInternalsInfo() => (string info);
 
   GetRecurringTips() => (array<string> list);
