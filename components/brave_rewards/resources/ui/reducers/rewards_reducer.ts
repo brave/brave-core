@@ -178,6 +178,27 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       }
       break
     }
+    case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
+      if (!state.inlineTip) {
+        state.inlineTip = {
+          twitter: true
+        }
+      }
+
+      const key = action.payload.key
+      const value = action.payload.value
+      let inlineTip = state.inlineTip
+
+      inlineTip[key] = value
+      chrome.send('brave_rewards.setInlineTipSetting', [key, value.toString()])
+
+      state = {
+        ...state,
+        inlineTip
+      }
+
+      break
+    }
   }
 
   return state

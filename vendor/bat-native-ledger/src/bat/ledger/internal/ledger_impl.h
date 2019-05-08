@@ -444,6 +444,10 @@ class LedgerImpl : public ledger::Ledger,
                      const std::map<std::string, std::string>& data,
                      ledger::SaveMediaInfoCallback callback) override;
 
+  void SetInlineTipSetting(const std::string& key, bool enabled) override;
+
+  bool GetInlineTipSetting(const std::string& key) override;
+
  private:
   void AddRecurringPayment(const std::string& publisher_id,
                            const double& value) override;

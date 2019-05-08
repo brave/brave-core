@@ -74,6 +74,7 @@ declare namespace chrome.braveRewards {
   }
   const refreshPublisher: (publisherKey: string, callback: (enabled: boolean, publisherKey: string) => void) => {}
   const getAllNotifications: (callback: (list: RewardsExtension.Notification[]) => void) => {}
+  const getInlineTipSetting: (key: string, callback: (enabled: boolean) => void) => {}
 }
 
 declare namespace chrome.rewardsNotifications {

@@ -2962,4 +2962,25 @@ RewardsServiceImpl::GetAllNotifications() {
   return notification_service_->GetAllNotifications();
 }
 
+void RewardsServiceImpl::SetInlineTipSetting(const std::string& key,
+                                             bool enabled) {
+  bat_ledger_->SetInlineTipSetting(key, enabled);
+}
+
+void RewardsServiceImpl::GetInlineTipSetting(
+      const std::string& key,
+      GetInlineTipSettingCallback callback) {
+  bat_ledger_->GetInlineTipSetting(
+      key,
+      base::BindOnce(&RewardsServiceImpl::OnInlineTipSetting,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnInlineTipSetting(
+    GetInlineTipSettingCallback callback,
+    bool enabled) {
+  std::move(callback).Run(enabled);
+}
+
 }  // namespace brave_rewards

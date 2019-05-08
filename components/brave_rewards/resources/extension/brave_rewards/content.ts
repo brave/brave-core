@@ -83,23 +83,29 @@ const createBraveTipAction = (tweet: Element) => {
 }
 
 const configureBraveTipAction = () => {
-  chrome.runtime.sendMessage('rewardsEnabled', function (response) {
-    const tweets = document.getElementsByClassName('tweet')
-    for (let i = 0; i < tweets.length; ++i) {
-      const actions = tweets[i].getElementsByClassName('js-actions')[0]
-      if (actions) {
-        const braveTipActions = actions.getElementsByClassName('action-brave-tip')
-        if (response.enabled) {
-          if (braveTipActions.length === 0) {
-            actions.appendChild(createBraveTipAction(tweets[i]))
-          }
-        } else {
-          if (braveTipActions.length === 1) {
-            actions.removeChild(braveTipActions[0])
+  chrome.runtime.sendMessage('rewardsEnabled', function (rewards) {
+    const msg = {
+      type: 'inlineTipSetting',
+      key: 'twitter'
+    }
+    chrome.runtime.sendMessage(msg, function (inlineTip) {
+      const tweets = document.getElementsByClassName('tweet')
+      for (let i = 0; i < tweets.length; ++i) {
+        const actions = tweets[i].getElementsByClassName('js-actions')[0]
+        if (actions) {
+          const braveTipActions = actions.getElementsByClassName('action-brave-tip')
+          if (rewards.enabled && inlineTip.enabled) {
+            if (braveTipActions.length === 0) {
+              actions.appendChild(createBraveTipAction(tweets[i]))
+            }
+          } else {
+            if (braveTipActions.length === 1) {
+              actions.removeChild(braveTipActions[0])
+            }
           }
         }
       }
-    }
+    })
   })
   setTimeout(configureBraveTipAction, 3000)
 }

@@ -564,4 +564,14 @@ void BatLedgerImpl::StartAutoContribute() {
   ledger_->StartAutoContribute();
 }
 
+void BatLedgerImpl::SetInlineTipSetting(const std::string& key, bool enabled) {
+  ledger_->SetInlineTipSetting(key, enabled);
+}
+
+void BatLedgerImpl::GetInlineTipSetting(
+    const std::string& key,
+    GetInlineTipSettingCallback callback) {
+  std::move(callback).Run(ledger_->GetInlineTipSetting(key));
+}
+
 }  // namespace bat_ledger

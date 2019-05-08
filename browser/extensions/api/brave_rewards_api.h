@@ -265,6 +265,20 @@ class BraveRewardsGetAllNotificationsFunction :
   ResponseAction Run() override;
 };
 
+class BraveRewardsGetInlineTipSettingFunction :
+    public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getInlineTipSetting", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetInlineTipSettingFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnInlineTipSetting(bool value);
+};
+
 }  // namespace api
 }  // namespace extensions
 

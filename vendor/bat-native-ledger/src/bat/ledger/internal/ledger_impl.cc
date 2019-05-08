@@ -1510,4 +1510,12 @@ void LedgerImpl::SaveMediaInfo(const std::string& type,
   bat_get_media_->SaveMediaInfo(type, data, callback);
 }
 
+void LedgerImpl::SetInlineTipSetting(const std::string& key, bool enabled) {
+  bat_state_->SetInlineTipSetting(key, enabled);
+}
+
+bool LedgerImpl::GetInlineTipSetting(const std::string& key) {
+  return bat_state_->GetInlineTipSetting(key);
+}
+
 }  // namespace bat_ledger

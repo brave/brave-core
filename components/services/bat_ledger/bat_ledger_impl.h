@@ -158,6 +158,12 @@ class BatLedgerImpl : public mojom::BatLedger,
       const base::flat_map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) override;
 
+  void SetInlineTipSetting(const std::string& key, bool enabled) override;
+
+  void GetInlineTipSetting(
+    const std::string& key,
+    GetInlineTipSettingCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;

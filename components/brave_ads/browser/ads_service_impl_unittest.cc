@@ -146,6 +146,11 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD2(SaveTwitterPublisherInfo,
              void(const std::map<std::string, std::string>&,
                   brave_rewards::SaveMediaInfoCallback));
+  MOCK_METHOD2(SetInlineTipSetting,
+             void(const std::string& key, bool enabled));
+  MOCK_METHOD2(GetInlineTipSetting,
+             void(const std::string& key,
+                  brave_rewards::GetInlineTipSettingCallback callback));
 };
 
 class AdsServiceTest : public testing::Test {

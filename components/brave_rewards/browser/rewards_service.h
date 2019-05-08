@@ -79,6 +79,7 @@ using RefreshPublisherCallback =
     base::OnceCallback<void(bool, const std::string&)>;
 using SaveMediaInfoCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSite>)>;
+using GetInlineTipSettingCallback = base::OnceCallback<void(bool)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -211,6 +212,12 @@ class RewardsService : public KeyedService {
   virtual void SaveTwitterPublisherInfo(
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) = 0;
+
+  virtual void SetInlineTipSetting(const std::string& key, bool enabled) = 0;
+
+  virtual void GetInlineTipSetting(
+      const std::string& key,
+      GetInlineTipSettingCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

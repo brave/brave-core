@@ -1507,6 +1507,7 @@ CLIENT_STATE_ST::CLIENT_STATE_ST(const CLIENT_STATE_ST& other) {
   auto_contribute_ = other.auto_contribute_;
   rewards_enabled_ = other.rewards_enabled_;
   current_reconciles_ = other.current_reconciles_;
+  inline_tip_ = other.inline_tip_;
 }
 
 CLIENT_STATE_ST::~CLIENT_STATE_ST() {}
@@ -1625,6 +1626,13 @@ bool CLIENT_STATE_ST::loadFromJson(const std::string & json) {
       i.Accept(writer);
       walletProperties_.loadFromJson(sb.GetString());
     }
+
+    if (d.HasMember("inlineTip") && d["inlineTip"].IsObject()) {
+      for (auto & k : d["inlineTip"].GetObject()) {
+        inline_tip_.insert(
+            std::make_pair(k.name.GetString(), k.value.GetBool()));
+      }
+    }
   }
 
   return !error;
@@ -1718,6 +1726,14 @@ void saveToJson(JsonWriter* writer, const CLIENT_STATE_ST& data) {
 
   writer->String("walletProperties");
   saveToJson(writer, data.walletProperties_);
+
+  writer->String("inlineTip");
+  writer->StartObject();
+  for (auto & p : data.inline_tip_) {
+    writer->String(p.first.c_str());
+    writer->Bool(p.second);
+  }
+  writer->EndObject();
 
   writer->EndObject();
 }

@@ -293,6 +293,10 @@ class LEDGER_EXPORT Ledger {
   virtual void SaveMediaInfo(const std::string& type,
                              const std::map<std::string, std::string>& data,
                              ledger::SaveMediaInfoCallback callback) = 0;
+
+  virtual void SetInlineTipSetting(const std::string& key, bool enabled) = 0;
+
+  virtual bool GetInlineTipSetting(const std::string& key) = 0;
 };
 
 }  // namespace ledger

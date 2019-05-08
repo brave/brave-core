@@ -7,6 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
+import { Checkbox, Grid, Column, ControlWrapper } from 'brave-ui/components'
 import {
   DisabledContent,
   Box,
@@ -156,6 +157,38 @@ class TipBox extends React.Component<Props, State> {
     this.setState({ settings: !this.state.settings })
   }
 
+  onInlineTipSettingChange = (key: string, selected: boolean) => {
+    this.actions.onInlineTipSettingChange(key, selected)
+  }
+
+  donationSettingsChild = () => {
+    let value = this.props.rewardsData.inlineTip
+
+    if (!value) {
+      value = {
+        twitter: true
+      }
+    }
+
+    return (
+      <>
+        <Grid columns={1}>
+          <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+            <ControlWrapper text={getLocale('donationTipOnLike')}>
+              <Checkbox
+                value={value}
+                multiple={true}
+                onChange={this.onInlineTipSettingChange}
+              >
+                <div data-key='twitter'>{getLocale('donationAbilityTwitter')}</div>
+              </Checkbox>
+            </ControlWrapper>
+          </Column>
+        </Grid>
+      </>
+    )
+  }
+
   render () {
     const {
       walletInfo,
@@ -181,6 +214,7 @@ class TipBox extends React.Component<Props, State> {
         description={getLocale('donationDesc')}
         disabledContent={showDisabled ? this.disabledContent() : null}
         attachedAlert={this.importAlert(walletImported)}
+        settingsChild={this.donationSettingsChild()}
         settingsOpened={this.state.settings}
         onSettingsClick={this.onSettingsToggle}
       >

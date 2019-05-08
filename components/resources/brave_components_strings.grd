@@ -262,6 +262,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="">
         I just tipped @<ph name="SCREEN_NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
       </message>
+      <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TIP_ON_LIKE" desc="Label for tip on like settings checkboxes">Enable ability to give tips on ‘Like’ posts</message>
 
       <!-- WebUI rewards internals resources -->
       <message name="IDS_BRAVE_REWARDS_INTERNALS_AMOUNT" desc="Amount">Amount:</message>

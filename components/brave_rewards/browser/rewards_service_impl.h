@@ -222,6 +222,12 @@ class RewardsServiceImpl : public RewardsService,
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) override;
 
+  void SetInlineTipSetting(const std::string& key, bool enabled) override;
+
+  void GetInlineTipSetting(
+      const std::string& key,
+      GetInlineTipSettingCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartAutoContributeForTest();
@@ -324,6 +330,8 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherActivityInfoLoaded(ledger::PublisherInfoCallback callback,
                                      uint32_t result,
                                      ledger::PublisherInfoPtr info);
+
+  void OnInlineTipSetting(GetInlineTipSettingCallback callback, bool enabled);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

@@ -691,6 +691,27 @@
             ]
           }
         ]
+      },
+      {
+        "name": "getInlineTipSetting",
+        "type": "function",
+        "description": "Gets setting for inline tip for provided key",
+        "parameters": [
+          {
+            "name": "key",
+            "value": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "enabled",
+                "type": "boolean"
+              }
+            ]
+          }
+        ]
       }
     ]
   }

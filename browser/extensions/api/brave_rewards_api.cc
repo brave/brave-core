@@ -577,5 +577,33 @@ BraveRewardsGetAllNotificationsFunction::Run() {
   return RespondNow(OneArgument(std::move(list)));
 }
 
+BraveRewardsGetInlineTipSettingFunction::
+~BraveRewardsGetInlineTipSettingFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetInlineTipSettingFunction::Run() {
+  std::unique_ptr<brave_rewards::GetInlineTipSetting::Params> params(
+      brave_rewards::GetInlineTipSetting::Params::Create(*args_));
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(OneArgument(std::make_unique<base::Value>(false)));
+  }
+
+  rewards_service->GetInlineTipSetting(
+      params->key,
+      base::BindOnce(
+          &BraveRewardsGetInlineTipSettingFunction::OnInlineTipSetting,
+          this));
+  return RespondLater();
+}
+
+void BraveRewardsGetInlineTipSettingFunction::OnInlineTipSetting(bool value) {
+  Respond(OneArgument(std::make_unique<base::Value>(value)));
+}
+
 }  // namespace api
 }  // namespace extensions

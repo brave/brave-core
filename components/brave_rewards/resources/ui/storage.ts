@@ -58,7 +58,10 @@ export const defaultState: Rewards.State = {
   },
   pendingContributionTotal: 0,
   grants: [],
-  currentGrant: undefined
+  currentGrant: undefined,
+  inlineTip: {
+    twitter: true
+  }
 }
 
 const cleanData = (state: Rewards.State) => state
