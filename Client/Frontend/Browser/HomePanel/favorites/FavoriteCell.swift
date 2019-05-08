@@ -19,7 +19,7 @@ class FavoriteCell: UICollectionViewCell {
         /// Ratio of width:height of the thumbnail image.
         static let cornerRadius: CGFloat = 8
         
-        static let labelColor = UIAccessibilityDarkerSystemColorsEnabled() ? UX.GreyJ : UX.GreyH
+        static let labelColor = UIAccessibility.isDarkerSystemColorsEnabled ? UX.GreyJ : UX.GreyH
         static let labelAlignment: NSTextAlignment = .center
         static let labelInsets = UIEdgeInsets(top: 0, left: 3, bottom: 2, right: 3)
         
@@ -33,7 +33,7 @@ class FavoriteCell: UICollectionViewCell {
     var cellInsets: UIEdgeInsets = UIEdgeInsets.zero
     
     let textLabel = UILabel().then {
-        $0.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
+        $0.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
         $0.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
         $0.textColor = UI.labelColor
         $0.textAlignment = UI.labelAlignment
@@ -47,8 +47,8 @@ class FavoriteCell: UICollectionViewCell {
         $0.layer.cornerRadius = UI.cornerRadius
         $0.layer.borderColor = BraveUX.faviconBorderColor.cgColor
         $0.layer.borderWidth = BraveUX.faviconBorderWidth
-        $0.layer.minificationFilter = kCAFilterTrilinear
-        $0.layer.magnificationFilter = kCAFilterNearest
+        $0.layer.minificationFilter = CALayerContentsFilter.trilinear
+        $0.layer.magnificationFilter = CALayerContentsFilter.nearest
     }
     
     let editButton = UIButton().then {
@@ -101,7 +101,7 @@ class FavoriteCell: UICollectionViewCell {
         }
         
         // Prevents the textLabel from getting squished in relation to other view priorities.
-        textLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: UILayoutConstraintAxis.vertical)
+        textLabel.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
         
         editButton.addTarget(self, action: #selector(editButtonTapped), for: .touchUpInside)
         
@@ -165,7 +165,7 @@ class FavoriteCell: UICollectionViewCell {
                        delay: 0,
                        usingSpringWithDamping: UI.editButtonAnimationDamping,
                        initialSpringVelocity: 0,
-                       options: UIViewAnimationOptions.allowUserInteraction,
+                       options: UIView.AnimationOptions.allowUserInteraction,
                        animations: {
                         self.editButton.transform = show ? CGAffineTransform.identity : scaleTransform
         }, completion: { _ in

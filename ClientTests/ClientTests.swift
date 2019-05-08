@@ -15,8 +15,6 @@ class ClientTests: XCTestCase {
 
     // Simple test to make sure the WKWebView UA matches the expected FxiOS pattern.
     func testUserAgent() {
-        let appVersion = Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as! String
-
         let compare: (String) -> Bool = { ua in
             let range = ua.range(of: "^Mozilla/5\\.0 \\(.+\\) AppleWebKit/[0-9\\.]+ \\(KHTML, like Gecko\\) FxiOS/[0-9\\.]+b[0-9\\.]* Mobile/[A-Za-z0-9]+ Safari/[0-9\\.]+$", options: .regularExpression)
             return range != nil

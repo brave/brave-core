@@ -120,7 +120,7 @@ class LoginTableViewCell: UITableViewCell {
                 return "\(highlightedLabel.text ?? ""), \(descriptionLabel.text ?? "")"
             }
         }
-        set {
+        set { // swiftlint:disable:this unused_setter_value
             // Ignore sets
         }
     }
@@ -139,7 +139,7 @@ class LoginTableViewCell: UITableViewCell {
         }
 
         let attributes = [
-            NSAttributedStringKey.font: LoginTableViewCellUX.descriptionLabelFont
+            NSAttributedString.Key.font: LoginTableViewCellUX.descriptionLabelFont
         ]
 
         return descriptionText.size(withAttributes: attributes)
@@ -174,7 +174,7 @@ class LoginTableViewCell: UITableViewCell {
         }
     }
 
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         indentationWidth = 0

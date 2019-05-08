@@ -3,7 +3,6 @@
 import Foundation
 import Shared
 import SwiftyJSON
-import Shared
 
 final class SyncBookmark: SyncRecord {
     

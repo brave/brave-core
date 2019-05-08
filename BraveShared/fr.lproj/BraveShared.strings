@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "Publicités et traceurs";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Publicités et trackers 
-Bloqués";
+"AdsAndTrackersrBlocked" = "Publicités et trackers \nBloqués";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Publicités 
-bloquées";
+"AdsrBlocked" = "Publicités \nbloquées";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Toujours envoyer";
@@ -228,9 +226,6 @@ bloquées";
 /* Cookie settings option title */
 "CookieControl" = "Contrôle des cookies";
 
-/* Settings item for clearing cookies */
-"Cookies" = "Cookies";
-
 /* Copied action complete title */
 "Copied" = "Copié";
 
@@ -349,8 +344,7 @@ bloquées";
 "ErrorPagesVisitOnceButton" = "Consulter le site quand même";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Temps gagné 
-est.";
+"EstTimerSaved" = "Temps gagné \nest.";
 
 /* Share action title */
 "FindInPage" = "Rechercher dans la page";
@@ -368,8 +362,7 @@ est.";
 "FingerprintingMethods" = "Méthodes avec création d’empreinte digitale";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "Protection contre les
-empreintes digitales";
+"FingerprintingnProtection" = "Protection contre les\nempreintes digitales";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Protection contre les empreintes digitales";
@@ -384,8 +377,7 @@ empreintes digitales";
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "Mises à niveau 
-HTTPS";
+"HTTPSrUpgrades" = "Mises à niveau \nHTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Mises à jour HTTPS";
@@ -400,8 +392,7 @@ HTTPS";
 "LastWeek" = "La semaine dernière";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "En savoir plus sur la recherche privée 
-avec DuckDuckGo";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "En savoir plus sur la recherche privée \navec DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Dernière modification le %@";
@@ -515,13 +506,7 @@ avec DuckDuckGo";
 "PrivateBrowsingOnly" = "Navigation privée uniquement";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "L'utilisation des onglets privés change seulement les opérations que Brave peut effectuer sur votre appareil, mais pas le comportement des autres.
-
-Les sites obtiennent toujours votre adresse IP lorsque vous les consultez. Grâce à elle, ils peuvent souvent deviner votre position approximative (généralement votre ville). Parfois, cette localisation peut être déterminée de manière beaucoup plus précise. Les sites reçoivent toutes les informations que vous leur communiquez, comme les termes de recherche. Si vous vous connectez à un site, il saura que vous êtes le propriétaire de ce compte. Cependant, vous serez toujours déconnecté lorsque vous fermerez les onglets privés, car Brave supprime le cookie qui permet de vous garder connecté.
-
-Quel que soit votre fournisseur d'accès Internet, il peut voir toutes vos activités sur le réseau. Il s'agit souvent de votre opérateur mobile. Si vous êtes connecté à un réseau Wi-Fi, il s'agit du propriétaire du réseau, et si vous utilisez un VPN, il s'agit du fournisseur de ce VPN. Votre fournisseur d'accès Internet peut voir les sites que vous consultez lorsque vous les consultez. Si ces sites utilisent le protocole HTTPS, votre fournisseur n'aura aucune information concrète concernant vos activités sur ce site. Cependant, si un site utilise seulement le protocole HTTP, alors votre fournisseur d'accès Internet peut tout voir : vos termes de recherche, les pages que vous avez lues et les liens sur lesquels vous avez cliqué.
-
-Si un employeur gère votre appareil, il peut également suivre l'utilisation que vous en faites. L'utilisation des onglets privés ne l'empêchera certainement pas de savoir quels sites vous consultez. De plus, une personne ayant accès à votre appareil a pu installer un logiciel qui surveille votre activité, et les onglets privés ne vous protégeront pas contre cela non plus.";
+"PrivateTabDetails" = "L'utilisation des onglets privés change seulement les opérations que Brave peut effectuer sur votre appareil, mais pas le comportement des autres.\n\nLes sites obtiennent toujours votre adresse IP lorsque vous les consultez. Grâce à elle, ils peuvent souvent deviner votre position approximative (généralement votre ville). Parfois, cette localisation peut être déterminée de manière beaucoup plus précise. Les sites reçoivent toutes les informations que vous leur communiquez, comme les termes de recherche. Si vous vous connectez à un site, il saura que vous êtes le propriétaire de ce compte. Cependant, vous serez toujours déconnecté lorsque vous fermerez les onglets privés, car Brave supprime le cookie qui permet de vous garder connecté.\n\nQuel que soit votre fournisseur d'accès Internet, il peut voir toutes vos activités sur le réseau. Il s'agit souvent de votre opérateur mobile. Si vous êtes connecté à un réseau Wi-Fi, il s'agit du propriétaire du réseau, et si vous utilisez un VPN, il s'agit du fournisseur de ce VPN. Votre fournisseur d'accès Internet peut voir les sites que vous consultez lorsque vous les consultez. Si ces sites utilisent le protocole HTTPS, votre fournisseur n'aura aucune information concrète concernant vos activités sur ce site. Cependant, si un site utilise seulement le protocole HTTP, alors votre fournisseur d'accès Internet peut tout voir : vos termes de recherche, les pages que vous avez lues et les liens sur lesquels vous avez cliqué.\n\nSi un employeur gère votre appareil, il peut également suivre l'utilisation que vous en faites. L'utilisation des onglets privés ne l'empêchera certainement pas de savoir quels sites vous consultez. De plus, une personne ayant accès à votre appareil a pu installer un logiciel qui surveille votre activité, et les onglets privés ne vous protégeront pas contre cela non plus.";
 
 /* Private tab information link */
 "PrivateTabLink" = "En savoir plus sur les onglets privés.";
@@ -917,8 +902,7 @@ Si un employeur gère votre appareil, il peut également suivre l'utilisation qu
 "Today" = "Aujourd'hui";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Traceurs 
-bloqués";
+"TrackersrBlocked" = "Traceurs \nbloqués";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Impossible de rejoindre le groupe de synchronisation. Vérifiez les mots saisis et réessayez.";

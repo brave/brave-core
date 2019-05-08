@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "Anzeigen und Tracker";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Anzeigen und 
-Tracker blockiert";
+"AdsAndTrackersrBlocked" = "Anzeigen und \nTracker blockiert";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Blockierte 
-Anzeigen";
+"AdsrBlocked" = "Blockierte \nAnzeigen";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Immer senden";
@@ -228,9 +226,6 @@ Anzeigen";
 /* Cookie settings option title */
 "CookieControl" = "Cookie-Verwaltung";
 
-/* Settings item for clearing cookies */
-"Cookies" = "Cookies";
-
 /* Copied action complete title */
 "Copied" = "Kopiert!";
 
@@ -349,8 +344,7 @@ Anzeigen";
 "ErrorPagesVisitOnceButton" = "Website dennoch besuchen";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Geschätzte 
-Zeitersparnis";
+"EstTimerSaved" = "Geschätzte \nZeitersparnis";
 
 /* Share action title */
 "FindInPage" = "Auf Seite suchen";
@@ -368,8 +362,7 @@ Zeitersparnis";
 "FingerprintingMethods" = "Fingerabdruck-Methoden";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "Fingerabdruck-
-Schutz";
+"FingerprintingnProtection" = "Fingerabdruck-\nSchutz";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Fingerabdruck-Schutz";
@@ -384,8 +377,7 @@ Schutz";
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS-
-Upgrades";
+"HTTPSrUpgrades" = "HTTPS-\nUpgrades";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS-Upgrades";
@@ -400,8 +392,7 @@ Upgrades";
 "LastWeek" = "Letzte Woche";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Mehr erfahren zur privaten Suche 
-mit DuckDuckGo";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Mehr erfahren zur privaten Suche \nmit DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Zuletzt geändert: %@";
@@ -515,13 +506,7 @@ mit DuckDuckGo";
 "PrivateBrowsingOnly" = "Nur privates Browsen";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Die Nutzung privater Tabs ändert lediglich das Verhalten von Brave auf Ihrem Gerät, nicht das Verhalten anderer.
-              
-              Wenn Sie eine Website besuchen, senden Sie stets Ihre IP-Adresse mit, wodurch Ihr Standort – in der Regel Ihre Stadt – grob ermittelt werden kann. Manchmal ist Ihr Standort auch konkreter feststellbar. Darüber hinaus erhalten die Websites alle von Ihnen mitgeteilten Informationen, z. B. Suchbegriffe. Wenn Sie sich bei einer Website anmelden, teilen Sie mit, dass Sie der Eigentümer dieses Kontos sind. Dennoch werden Sie abgemeldet, sobald Sie den entsprechenden privaten Tab schließen, da Brave den Cookie entfernt, mit dem Sie angemeldet bleiben.
-              
-              Für den, der Ihre Internetverbindung herstellt (Ihr ISP), ist Ihre gesamte Netzwerkaktivität sichtbar. Häufig handelt es sich hierbei um Ihren Mobilfunkanbieter. Wenn Sie mit einem WLAN-Netzwerk verbunden sind, ist dies der Eigentümer des Netzwerks. Falls Sie wiederum ein VPN nutzen, dann gehört es dem Betreiber des VPNs. Für Ihren ISP sind die von Ihnen besuchten Websites in dem Moment sichtbar, wenn Sie sie besuchen. Verwenden diese Websites HTTPS, erhalten sie keine konkreten Einblicke in Ihre Aktivitäten auf diesen Websites. Wenn eine Website jedoch nur HTTP nutzt, kann Ihr ISP alles sehen: Ihre Suchbegriffe, die von Ihnen gelesenen Seiten und die von Ihnen angeklickten Links.
-              
-              Wenn Ihr Arbeitgeber Ihr Gerät verwaltet, könnte auch dieser dessen Nutzung durch Sie verfolgen. Auch die Verwendung privater Tabs kann wahrscheinlich nicht verhindern, dass er die von Ihnen besuchten Websites einsehen kann. Jemand anderes, der Zugriff auf Ihr Gerät hat, könnte eine Software zur Überwachung Ihrer Aktivitäten installiert haben. Auch davor schützen Sie private Tabs nicht.";
+"PrivateTabDetails" = "Die Nutzung privater Tabs ändert lediglich das Verhalten von Brave auf Ihrem Gerät, nicht das Verhalten anderer.\n              \n              Wenn Sie eine Website besuchen, senden Sie stets Ihre IP-Adresse mit, wodurch Ihr Standort – in der Regel Ihre Stadt – grob ermittelt werden kann. Manchmal ist Ihr Standort auch konkreter feststellbar. Darüber hinaus erhalten die Websites alle von Ihnen mitgeteilten Informationen, z. B. Suchbegriffe. Wenn Sie sich bei einer Website anmelden, teilen Sie mit, dass Sie der Eigentümer dieses Kontos sind. Dennoch werden Sie abgemeldet, sobald Sie den entsprechenden privaten Tab schließen, da Brave den Cookie entfernt, mit dem Sie angemeldet bleiben.\n              \n              Für den, der Ihre Internetverbindung herstellt (Ihr ISP), ist Ihre gesamte Netzwerkaktivität sichtbar. Häufig handelt es sich hierbei um Ihren Mobilfunkanbieter. Wenn Sie mit einem WLAN-Netzwerk verbunden sind, ist dies der Eigentümer des Netzwerks. Falls Sie wiederum ein VPN nutzen, dann gehört es dem Betreiber des VPNs. Für Ihren ISP sind die von Ihnen besuchten Websites in dem Moment sichtbar, wenn Sie sie besuchen. Verwenden diese Websites HTTPS, erhalten sie keine konkreten Einblicke in Ihre Aktivitäten auf diesen Websites. Wenn eine Website jedoch nur HTTP nutzt, kann Ihr ISP alles sehen: Ihre Suchbegriffe, die von Ihnen gelesenen Seiten und die von Ihnen angeklickten Links.\n              \n              Wenn Ihr Arbeitgeber Ihr Gerät verwaltet, könnte auch dieser dessen Nutzung durch Sie verfolgen. Auch die Verwendung privater Tabs kann wahrscheinlich nicht verhindern, dass er die von Ihnen besuchten Websites einsehen kann. Jemand anderes, der Zugriff auf Ihr Gerät hat, könnte eine Software zur Überwachung Ihrer Aktivitäten installiert haben. Auch davor schützen Sie private Tabs nicht.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Erfahren Sie mehr über private Tabs.";
@@ -917,8 +902,7 @@ mit DuckDuckGo";
 "Today" = "Heute";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Blockierte 
-Tracker";
+"TrackersrBlocked" = "Blockierte \nTracker";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Anschluss zur Synchronisierungsgruppe nicht möglich. Bitte überprüfen Sie die eingegebenen Wörter und versuchen Sie es erneut.";

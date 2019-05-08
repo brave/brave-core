@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "광고 및 개인정보 트래커";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "차단된 광고 및  
-트래커 수";
+"AdsAndTrackersrBlocked" = "차단된 광고 및  \n트래커 수";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "차단된 
-광고 수";
+"AdsrBlocked" = "차단된 \n광고 수";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "항상 보내기";
@@ -228,9 +226,6 @@
 /* Cookie settings option title */
 "CookieControl" = "쿠키 제어";
 
-/* Settings item for clearing cookies */
-"Cookies" = "쿠키";
-
 /* Copied action complete title */
 "Copied" = "복사되었습니다.";
 
@@ -349,8 +344,7 @@
 "ErrorPagesVisitOnceButton" = "사이트 방문";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "절감한 
-시간";
+"EstTimerSaved" = "절감한 \n시간";
 
 /* Share action title */
 "FindInPage" = "페이지에서 찾기";
@@ -368,8 +362,7 @@
 "FingerprintingMethods" = "디지털 지문 방식";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "디지털 지문
-보호";
+"FingerprintingnProtection" = "디지털 지문\n보호";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "디지털 지문 보호";
@@ -384,8 +377,7 @@
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS 
-업그레이드";
+"HTTPSrUpgrades" = "HTTPS \n업그레이드";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS 업그레이드";
@@ -400,8 +392,7 @@
 "LastWeek" = "지난주";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "DuckDuckGo의 
-비공개 검색에 대해 알아보기";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "DuckDuckGo의 \n비공개 검색에 대해 알아보기";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "최종 수정 %@";
@@ -515,13 +506,7 @@
 "PrivateBrowsingOnly" = "비공개 브라우징으로만 열기";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "비공개 탭을 사용할 경우 귀하의 기기에서 수행된 Brave 작업만이 변경되며, 다른 사용자의 동작은 변경되지 않습니다.
-
-사이트를 방문하면 사이트에서 항상 귀하의 IP 주소를 학습합니다. 즉, 사이트에서 귀하의 위치(주로 도시)를 대략적으로 추측할 수 있습니다. 경우에 따라서는 위치가 훨씬 구체적으로 추측되기도 합니다. 또한 귀하가 사이트에서 수행한 모든 작업(검색어 등)이 해당 사이트에 기록됩니다. 귀하가 사이트에 로그인하면 해당 사이트에서 귀하가 해당 계정의 소유자임을 인식합니다. 비공개 탭을 닫으면 Brave에서 로그인 상태를 유지하는 쿠키를 지우기 때문에 로그아웃 상태가 됩니다.
-
-인터넷 연결을 위해 귀하가 이용하는 ISP에서는 귀하의 네트워크 활동을 모두 확인할 수 있습니다. 대부분의 경우 이러한 ISP는 이동통신 사업자입니다. WiFi 네트워크에 연결한 경우 ISP는 해당 네트워크의 소유자이며, VPN을 사용하는 경우에는 해당 VPN의 운영자입니다. 귀하가 이용하는 ISP에서는 귀하가 사이트를 방문하면 귀하가 방문한 사이트를 알 수 있습니다. 해당 사이트에서 HTTPS를 사용하는 경우 ISP에서는 귀하가 해당 사이트에서 수행하는 작업을 기록에 따라 추측만 할 수 있습니다. 그러나 사이트에서 HTTP만을 사용한다면 ISP에서 귀하가 사용한 검색어, 귀하가 읽은 페이지와 따라 간 링크 등 모든 것을 알 수 있습니다.
-
-고용주가 귀하의 기기를 관리하는 경우 고용주는 귀하가 해당 기기로 무엇을 하는지 추적할 수도 있습니다. 비공개 탭을 사용한다고 해도 귀하가 방문한 사이트를 고용주가 알지 못하도록 차단하지는 못할 것입니다. 귀하의 기기에 액세스할 수 있는 권한을 가진 다른 사람도 귀하의 활동을 모니터링하는 소프트웨어를 설치할 수 있으며, 이것 또한 비공개 탭으로는 차단하지 못합니다.";
+"PrivateTabDetails" = "비공개 탭을 사용할 경우 귀하의 기기에서 수행된 Brave 작업만이 변경되며, 다른 사용자의 동작은 변경되지 않습니다.\n\n사이트를 방문하면 사이트에서 항상 귀하의 IP 주소를 학습합니다. 즉, 사이트에서 귀하의 위치(주로 도시)를 대략적으로 추측할 수 있습니다. 경우에 따라서는 위치가 훨씬 구체적으로 추측되기도 합니다. 또한 귀하가 사이트에서 수행한 모든 작업(검색어 등)이 해당 사이트에 기록됩니다. 귀하가 사이트에 로그인하면 해당 사이트에서 귀하가 해당 계정의 소유자임을 인식합니다. 비공개 탭을 닫으면 Brave에서 로그인 상태를 유지하는 쿠키를 지우기 때문에 로그아웃 상태가 됩니다.\n\n인터넷 연결을 위해 귀하가 이용하는 ISP에서는 귀하의 네트워크 활동을 모두 확인할 수 있습니다. 대부분의 경우 이러한 ISP는 이동통신 사업자입니다. WiFi 네트워크에 연결한 경우 ISP는 해당 네트워크의 소유자이며, VPN을 사용하는 경우에는 해당 VPN의 운영자입니다. 귀하가 이용하는 ISP에서는 귀하가 사이트를 방문하면 귀하가 방문한 사이트를 알 수 있습니다. 해당 사이트에서 HTTPS를 사용하는 경우 ISP에서는 귀하가 해당 사이트에서 수행하는 작업을 기록에 따라 추측만 할 수 있습니다. 그러나 사이트에서 HTTP만을 사용한다면 ISP에서 귀하가 사용한 검색어, 귀하가 읽은 페이지와 따라 간 링크 등 모든 것을 알 수 있습니다.\n\n고용주가 귀하의 기기를 관리하는 경우 고용주는 귀하가 해당 기기로 무엇을 하는지 추적할 수도 있습니다. 비공개 탭을 사용한다고 해도 귀하가 방문한 사이트를 고용주가 알지 못하도록 차단하지는 못할 것입니다. 귀하의 기기에 액세스할 수 있는 권한을 가진 다른 사람도 귀하의 활동을 모니터링하는 소프트웨어를 설치할 수 있으며, 이것 또한 비공개 탭으로는 차단하지 못합니다.";
 
 /* Private tab information link */
 "PrivateTabLink" = "비공개 탭에 대해 자세히 알아보십시오.";
@@ -917,8 +902,7 @@
 "Today" = "오늘";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "차단된 
-트래커 수";
+"TrackersrBlocked" = "차단된 \n트래커 수";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "동기화 그룹에 연결할 수 없습니다. 입력한 단어를 확인한 후 다시 시도하십시오.";

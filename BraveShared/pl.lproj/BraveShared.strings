@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "Reklamy i trackery";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Reklamy i śledzenie
-zablokowane";
+"AdsAndTrackersrBlocked" = "Reklamy i śledzenie\nzablokowane";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Reklamy
-zablokowane";
+"AdsrBlocked" = "Reklamy\nzablokowane";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Zawsze wysyłaj";
@@ -228,9 +226,6 @@ zablokowane";
 /* Cookie settings option title */
 "CookieControl" = "Kontrola plików cookie";
 
-/* Settings item for clearing cookies */
-"Cookies" = "Pliki cookie";
-
 /* Copied action complete title */
 "Copied" = "Skopiowano!";
 
@@ -349,8 +344,7 @@ zablokowane";
 "ErrorPagesVisitOnceButton" = "Wejdź na stronę mimo to";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Szacowany czas
-zapisany";
+"EstTimerSaved" = "Szacowany czas\nzapisany";
 
 /* Share action title */
 "FindInPage" = "Znajdź na stronie";
@@ -368,8 +362,7 @@ zapisany";
 "FingerprintingMethods" = "Metody pobierania odcisków palców";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "Ochrona pobierania
-odcisków palców";
+"FingerprintingnProtection" = "Ochrona pobierania\nodcisków palców";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Ochrona pobierania odcisków palców";
@@ -384,8 +377,7 @@ odcisków palców";
 "HTTPSEverywhere" = "HTTPS w każdym miejscu";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "Uaktualnienia
- HTTPS";
+"HTTPSrUpgrades" = "Uaktualnienia\n HTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Aktualizacje HTTPS";
@@ -400,8 +392,7 @@ odcisków palców";
 "LastWeek" = "W zeszłym tygodniu";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Dowiedz się więcej o wyszukiwaniu w trybie prywatnym
-z wykorzystaniem DuckDuckGo";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Dowiedz się więcej o wyszukiwaniu w trybie prywatnym\nz wykorzystaniem DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Ostatnio zmodyfikowano %@";
@@ -515,13 +506,7 @@ z wykorzystaniem DuckDuckGo";
 "PrivateBrowsingOnly" = "Przeglądanie wyłącznie w trybie prywatnym";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Używanie kart prywatnych zmienia tylko działanie Brave na Twoim urządzeniu, nie zmieniając zachowań innych.
-
-Strony zawsze poznają Twój adres IP, gdy je odwiedzasz. Na tej podstawie są często w stanie z grubsza odgadnąć Twoją lokalizację – zazwyczaj miasto. Czasem określenie lokalizacji może być znacznie bardziej precyzyjne. Strony mają też informację o wszystkim, co przekaże im użytkownik np. o wyszukiwanych hasłach. W przypadku zalogowania się na stronie, wiadomo, kto jest właścicielem konta. Po zamknięciu kart prywatnych nastąpi wylogowanie, ponieważ Brave usuwa pliki cookie odpowiedzialne za zalogowanie.
-
-Każdy, kto podłącza Cię do Internetu (czyli Twój dostawca) widzi całą Twoją aktywność sieciową. Często jest to Twój dostawca usług telefonii komórkowej. W przypadku podłączenia do sieci Wi-Fi jest to właściciel tej sieci, a jeśli korzystasz z VPN, jest to jego operator. Twój dostawca widzi, jakie strony odwiedzasz. W przypadku korzystania z protokołu HTTPS można tyko zgadywać, co robisz na stronie, ale jeśli używany jest zwykły protokół HTTP to dostawca widzi wszystko: wyszukiwane hasła, czytane strony i klikane łącza.
-
-Jeśli Twój pracodawca zarządza Twoim urządzeniem to może też monitorować Twoje korzystanie z niego. Korzystanie z kart prywatnych prawdopodobnie nie ukryje odwiedzanych stron. Ktoś, kto ma dostęp do Twojego urządzenia mógł zainstalować oprogramowanie, które monitoruje Twoją aktywność, a karty prywatne nie chronią przed tym.";
+"PrivateTabDetails" = "Używanie kart prywatnych zmienia tylko działanie Brave na Twoim urządzeniu, nie zmieniając zachowań innych.\n\nStrony zawsze poznają Twój adres IP, gdy je odwiedzasz. Na tej podstawie są często w stanie z grubsza odgadnąć Twoją lokalizację – zazwyczaj miasto. Czasem określenie lokalizacji może być znacznie bardziej precyzyjne. Strony mają też informację o wszystkim, co przekaże im użytkownik np. o wyszukiwanych hasłach. W przypadku zalogowania się na stronie, wiadomo, kto jest właścicielem konta. Po zamknięciu kart prywatnych nastąpi wylogowanie, ponieważ Brave usuwa pliki cookie odpowiedzialne za zalogowanie.\n\nKażdy, kto podłącza Cię do Internetu (czyli Twój dostawca) widzi całą Twoją aktywność sieciową. Często jest to Twój dostawca usług telefonii komórkowej. W przypadku podłączenia do sieci Wi-Fi jest to właściciel tej sieci, a jeśli korzystasz z VPN, jest to jego operator. Twój dostawca widzi, jakie strony odwiedzasz. W przypadku korzystania z protokołu HTTPS można tyko zgadywać, co robisz na stronie, ale jeśli używany jest zwykły protokół HTTP to dostawca widzi wszystko: wyszukiwane hasła, czytane strony i klikane łącza.\n\nJeśli Twój pracodawca zarządza Twoim urządzeniem to może też monitorować Twoje korzystanie z niego. Korzystanie z kart prywatnych prawdopodobnie nie ukryje odwiedzanych stron. Ktoś, kto ma dostęp do Twojego urządzenia mógł zainstalować oprogramowanie, które monitoruje Twoją aktywność, a karty prywatne nie chronią przed tym.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Dowiedz się więcej o kartach w trybie prywatnym.";
@@ -917,8 +902,7 @@ Jeśli Twój pracodawca zarządza Twoim urządzeniem to może też monitorować 
 "Today" = "Dzisiaj";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Śledzeń
-zablokowano";
+"TrackersrBlocked" = "Śledzeń\nzablokowano";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Nie można dołączyć do grupy synchronizacji. Sprawdź wprowadzone słowa i spróbuj ponownie.";

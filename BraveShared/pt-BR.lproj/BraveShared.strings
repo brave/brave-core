@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "Anúncios e rastreadores";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Anúncios e rastreadores
-Bloqueados";
+"AdsAndTrackersrBlocked" = "Anúncios e rastreadores\nBloqueados";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Anúncios 
-bloqueados";
+"AdsrBlocked" = "Anúncios \nbloqueados";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Enviar sempre";
@@ -228,9 +226,6 @@ bloqueados";
 /* Cookie settings option title */
 "CookieControl" = "Controle de cookies";
 
-/* Settings item for clearing cookies */
-"Cookies" = "Cookies";
-
 /* Copied action complete title */
 "Copied" = "Copiado!";
 
@@ -349,8 +344,7 @@ bloqueados";
 "ErrorPagesVisitOnceButton" = "Acessar o site mesmo assim";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Economia de tempo 
-estimada";
+"EstTimerSaved" = "Economia de tempo \nestimada";
 
 /* Share action title */
 "FindInPage" = "Encontrar na página";
@@ -368,8 +362,7 @@ estimada";
 "FingerprintingMethods" = "Métodos de impressão digital";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "Proteção por
-impressão digital";
+"FingerprintingnProtection" = "Proteção por\nimpressão digital";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Proteção por impressão digital";
@@ -384,8 +377,7 @@ impressão digital";
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "Upgrades 
-de HTTPS";
+"HTTPSrUpgrades" = "Upgrades \nde HTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Upgrades de HTTPS";
@@ -400,8 +392,7 @@ de HTTPS";
 "LastWeek" = "Última semana";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Saiba mais sobre a pesquisa privada 
-com o DuckDuckGo";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Saiba mais sobre a pesquisa privada \ncom o DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Última modificação: %@";
@@ -515,13 +506,7 @@ com o DuckDuckGo";
 "PrivateBrowsingOnly" = "Somente navegação privada";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "O uso das Abas privadas só muda o que o Brave faz no seu dispositivo. O comportamento das outras partes envolvidas não é alterado.
-
-Os sites sempre detectam seu endereço IP quando você os acessa. Com base nisso, normalmente é possível ter uma ideia geral de onde você está, como sua cidade. Às vezes, essa estimativa de localização pode ser bem mais específica. Os sites também têm acesso a todas as informações que você fornece a eles (por exemplo, termos de pesquisa). Se você fizer login em um site, ele saberá que você é o proprietário dessa conta. Sua sessão será encerrada quando você fechar as Abas privadas, pois o Brave excluirá o cookie que mantém você conectado à conta.
-
-O responsável pela sua conexão com a internet (seu provedor de serviços de internet), que em muitos casos é sua operadora, pode ver toda a sua atividade na rede. Se você está conectado a uma rede Wi-Fi, o provedor é o proprietário dessa rede. Se você está usando uma VPN, o proprietário é quem a mantém em funcionamento. Seu provedor pode ver os sites que você acessa no momento em que isso acontece. Se esses sites usam HTTPS, ele não tem como saber exatamente o que você faz neles. No entanto, se um site só utiliza HTTP, seu provedor pode ver tudo: seus termos de pesquisa, quais páginas você acessa e em quais links você clica.
-
-Se a empresa na qual você trabalha gerencia seu dispositivo, é possível que ela monitore o que você faz com ele. O uso das Abas privadas provavelmente não a impedirá de saber os sites que você acessou. É possível que outra pessoa que tenha acesso ao seu dispositivo tenha instalado um software para monitorar sua atividade; nesse caso, as Abas privadas não poderão proteger você.";
+"PrivateTabDetails" = "O uso das Abas privadas só muda o que o Brave faz no seu dispositivo. O comportamento das outras partes envolvidas não é alterado.\n\nOs sites sempre detectam seu endereço IP quando você os acessa. Com base nisso, normalmente é possível ter uma ideia geral de onde você está, como sua cidade. Às vezes, essa estimativa de localização pode ser bem mais específica. Os sites também têm acesso a todas as informações que você fornece a eles (por exemplo, termos de pesquisa). Se você fizer login em um site, ele saberá que você é o proprietário dessa conta. Sua sessão será encerrada quando você fechar as Abas privadas, pois o Brave excluirá o cookie que mantém você conectado à conta.\n\nO responsável pela sua conexão com a internet (seu provedor de serviços de internet), que em muitos casos é sua operadora, pode ver toda a sua atividade na rede. Se você está conectado a uma rede Wi-Fi, o provedor é o proprietário dessa rede. Se você está usando uma VPN, o proprietário é quem a mantém em funcionamento. Seu provedor pode ver os sites que você acessa no momento em que isso acontece. Se esses sites usam HTTPS, ele não tem como saber exatamente o que você faz neles. No entanto, se um site só utiliza HTTP, seu provedor pode ver tudo: seus termos de pesquisa, quais páginas você acessa e em quais links você clica.\n\nSe a empresa na qual você trabalha gerencia seu dispositivo, é possível que ela monitore o que você faz com ele. O uso das Abas privadas provavelmente não a impedirá de saber os sites que você acessou. É possível que outra pessoa que tenha acesso ao seu dispositivo tenha instalado um software para monitorar sua atividade; nesse caso, as Abas privadas não poderão proteger você.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Saiba mais sobre abas privadas.";
@@ -917,8 +902,7 @@ Se a empresa na qual você trabalha gerencia seu dispositivo, é possível que e
 "Today" = "Hoje";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Rastreadores 
-bloqueados";
+"TrackersrBlocked" = "Rastreadores \nbloqueados";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Não foi possível ingressar no grupo de sincronização. Verifique as palavras inseridas e tente novamente.";
