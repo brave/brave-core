@@ -355,7 +355,7 @@
         ]
       },
       {
-        "name": "donateToTwitterUser",
+        "name": "tipTwitterUser",
         "type": "function",
         "description": "Allow the user to perform a donation to a Twitter user",
         "parameters": [

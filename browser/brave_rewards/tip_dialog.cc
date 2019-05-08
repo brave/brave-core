@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_rewards/tip_dialog.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>

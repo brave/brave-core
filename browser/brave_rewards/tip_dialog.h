@@ -6,7 +6,12 @@
 #ifndef BRAVE_BROWSER_BRAVE_REWARDS_TIP_DIALOG_H_
 #define BRAVE_BROWSER_BRAVE_REWARDS_TIP_DIALOG_H_
 
+#include <memory>
 #include <string>
+
+namespace base {
+class DictionaryValue;
+}
 
 namespace content {
 class WebContents;

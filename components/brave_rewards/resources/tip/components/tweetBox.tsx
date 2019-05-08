@@ -7,13 +7,13 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Utils
-import * as donateActions from '../actions/donate_actions'
+import * as tipActions from '../actions/tip_actions'
 
 // Assets
 const twitterImg = require('../../img/twitter.svg')
 
-interface Props extends RewardsDonate.ComponentProps {
-  tweetMetaData: RewardsDonate.TweetMetaData
+interface Props extends RewardsTip.ComponentProps {
+  tweetMetaData: RewardsTip.TweetMetaData
 }
 
 class TweetBox extends React.Component<Props, {}> {
@@ -47,12 +47,12 @@ class TweetBox extends React.Component<Props, {}> {
   }
 }
 
-const mapStateToProps = (state: RewardsDonate.ApplicationState) => ({
+const mapStateToProps = (state: RewardsTip.ApplicationState) => ({
   rewardsDonateData: state.rewardsDonateData
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(donateActions, dispatch)
+  actions: bindActionCreators(tipActions, dispatch)
 })
 
 export default connect(

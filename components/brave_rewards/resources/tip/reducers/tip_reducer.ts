@@ -32,7 +32,7 @@ const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = 
       chrome.send('dialogClose')
       break
     case types.ON_TWEET:
-      chrome.send('brave_rewards_donate.tweetTip', [
+      chrome.send('brave_rewards_tip.tweetTip', [
         payload.tweetMetaData
       ])
       break

@@ -8,18 +8,18 @@ import { connect } from 'react-redux'
 
 // Components
 import Banner from './siteBanner'
-import TransientDonationOverlay from './transientDonationOverlay'
+import TransientTipOverlay from './transientTipOverlay'
 
 // Utils
-import * as rewardsActions from '../actions/donate_actions'
+import * as rewardsActions from '../actions/tip_actions'
 import { getLocale } from '../../../../common/locale'
 
-interface Props extends RewardsDonate.ComponentProps {
-  publisher: RewardsDonate.Publisher
-  tweetMetaData: RewardsDonate.TweetMetaData
+interface Props extends RewardsTip.ComponentProps {
+  publisher: RewardsTip.Publisher
+  tweetMetaData: RewardsTip.TweetMetaData
 }
 
-class DonateToTwitterUser extends React.Component<Props, {}> {
+class TipTwitterUser extends React.Component<Props, {}> {
 
   get actions () {
     return this.props.actions
@@ -46,7 +46,7 @@ class DonateToTwitterUser extends React.Component<Props, {}> {
         }
         {
           finished
-          ? <TransientDonationOverlay
+          ? <TransientTipOverlay
               publisher={publisher}
               timeout={0}
               onTweet={this.onTweet}
@@ -58,7 +58,7 @@ class DonateToTwitterUser extends React.Component<Props, {}> {
   }
 }
 
-export const mapStateToProps = (state: RewardsDonate.ApplicationState) => ({
+export const mapStateToProps = (state: RewardsTip.ApplicationState) => ({
   rewardsDonateData: state.rewardsDonateData
 })
 
@@ -69,4 +69,4 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DonateToTwitterUser)
+)(TipTwitterUser)

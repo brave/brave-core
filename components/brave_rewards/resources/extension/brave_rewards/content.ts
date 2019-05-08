@@ -5,7 +5,7 @@
 // Utils
 import { getMessage } from './background/api/locale_api'
 
-const getTweetMetaData = (tweet: Element): RewardsDonate.TweetMetaData | null => {
+const getTweetMetaData = (tweet: Element): RewardsTip.TweetMetaData | null => {
   if (!tweet) {
     return null
   }
@@ -46,7 +46,7 @@ const createBraveTipAction = (tweet: Element) => {
   braveTipButton.onclick = function (event) {
     const tweetMetaData = getTweetMetaData(tweet)
     if (tweetMetaData) {
-      const msg = { type: 'donateToTwitterUser', tweetMetaData: tweetMetaData }
+      const msg = { type: 'tipTwitterUser', tweetMetaData: tweetMetaData }
       chrome.runtime.sendMessage(msg)
     }
   }

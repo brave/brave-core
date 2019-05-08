@@ -37,19 +37,19 @@ class BraveRewardsTipSiteFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsDonateToTwitterUserFunction
+class BraveRewardsTipTwitterUserFunction
     : public UIThreadExtensionFunction {
  public:
-  BraveRewardsDonateToTwitterUserFunction();
-  DECLARE_EXTENSION_FUNCTION("braveRewards.donateToTwitterUser", UNKNOWN)
+  BraveRewardsTipTwitterUserFunction();
+  DECLARE_EXTENSION_FUNCTION("braveRewards.tipTwitterUser", UNKNOWN)
 
  protected:
-  ~BraveRewardsDonateToTwitterUserFunction() override;
+  ~BraveRewardsTipTwitterUserFunction() override;
 
   ResponseAction Run() override;
 
  private:
-  base::WeakPtrFactory<BraveRewardsDonateToTwitterUserFunction> weak_factory_;
+  base::WeakPtrFactory<BraveRewardsTipTwitterUserFunction> weak_factory_;
   void OnTwitterPublisherInfoSaved(
       std::unique_ptr<brave_rewards::ContentSite> publisher_info);
 };

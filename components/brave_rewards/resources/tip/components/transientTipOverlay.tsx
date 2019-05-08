@@ -10,15 +10,15 @@ import { connect } from 'react-redux'
 import DonationOverlay from 'brave-ui/features/rewards/donationOverlay'
 
 // Utils
-import * as rewardsActions from '../actions/donate_actions'
+import * as rewardsActions from '../actions/tip_actions'
 
-interface Props extends RewardsDonate.ComponentProps {
-  publisher: RewardsDonate.Publisher
+interface Props extends RewardsTip.ComponentProps {
+  publisher: RewardsTip.Publisher
   timeout: number
   onTweet?: () => void
 }
 
-class TransientDonationOverlay extends React.Component<Props, {}> {
+class TransientTipOverlay extends React.Component<Props, {}> {
 
   get actions () {
     return this.props.actions
@@ -86,7 +86,7 @@ class TransientDonationOverlay extends React.Component<Props, {}> {
   }
 }
 
-export const mapStateToProps = (state: RewardsDonate.ApplicationState) => ({
+export const mapStateToProps = (state: RewardsTip.ApplicationState) => ({
   rewardsDonateData: state.rewardsDonateData
 })
 
@@ -97,4 +97,4 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(TransientDonationOverlay)
+)(TransientTipOverlay)

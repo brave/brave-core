@@ -8,16 +8,16 @@ import { connect } from 'react-redux'
 
 // Components
 import Banner from './siteBanner'
-import TransientDonationOverlay from './transientDonationOverlay'
+import TransientTipOverlay from './transientTipOverlay'
 
 // Utils
-import * as rewardsActions from '../actions/donate_actions'
+import * as rewardsActions from '../actions/tip_actions'
 
-interface Props extends RewardsDonate.ComponentProps {
-  publisher: RewardsDonate.Publisher
+interface Props extends RewardsTip.ComponentProps {
+  publisher: RewardsTip.Publisher
 }
 
-class DonateToSite extends React.Component<Props, {}> {
+class TipSite extends React.Component<Props, {}> {
 
   get actions () {
     return this.props.actions
@@ -35,7 +35,7 @@ class DonateToSite extends React.Component<Props, {}> {
         }
         {
           finished
-          ? <TransientDonationOverlay publisher={this.props.publisher} timeout={3000} />
+          ? <TransientTipOverlay publisher={this.props.publisher} timeout={3000} />
           : null
         }
       </>
@@ -43,7 +43,7 @@ class DonateToSite extends React.Component<Props, {}> {
   }
 }
 
-export const mapStateToProps = (state: RewardsDonate.ApplicationState) => ({
+export const mapStateToProps = (state: RewardsTip.ApplicationState) => ({
   rewardsDonateData: state.rewardsDonateData
 })
 
@@ -54,4 +54,4 @@ export const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DonateToSite)
+)(TipSite)

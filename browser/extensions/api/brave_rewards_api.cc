@@ -76,27 +76,28 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
   params_dict->SetString("publisherKey", params->publisher_key);
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
 
-BraveRewardsDonateToTwitterUserFunction::
-    BraveRewardsDonateToTwitterUserFunction()
-      : weak_factory_(this) {
+  return RespondNow(NoArguments());
 }
 
-BraveRewardsDonateToTwitterUserFunction::
-    ~BraveRewardsDonateToTwitterUserFunction() {
+BraveRewardsTipTwitterUserFunction::BraveRewardsTipTwitterUserFunction()
+    : weak_factory_(this) {
+}
+
+BraveRewardsTipTwitterUserFunction::~BraveRewardsTipTwitterUserFunction() {
 }
 
 ExtensionFunction::ResponseAction
-BraveRewardsDonateToTwitterUserFunction::Run() {
-  std::unique_ptr<brave_rewards::DonateToTwitterUser::Params> params(
-      brave_rewards::DonateToTwitterUser::Params::Create(*args_));
+BraveRewardsTipTwitterUserFunction::Run() {
+  std::unique_ptr<brave_rewards::TipTwitterUser::Params> params(
+      brave_rewards::TipTwitterUser::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  // Sanity check: don't allow donations in private / tor contexts,
+  // Sanity check: don't allow tips in private / tor contexts,
   // although the command should not have been enabled in the first place.
   Profile* profile = Profile::FromBrowserContext(browser_context());
   if (profile->IsOffTheRecord()) {
     return RespondNow(
-        Error("Cannot donate to Twitter user in a private context"));
+        Error("Cannot tip Twitter user in a private context"));
   }
 
   auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
@@ -108,7 +109,7 @@ BraveRewardsDonateToTwitterUserFunction::Run() {
     args["screen_name"] = params->tweet_meta_data.screen_name;
     rewards_service->SaveTwitterPublisherInfo(
         args,
-        base::Bind(&BraveRewardsDonateToTwitterUserFunction::
+        base::Bind(&BraveRewardsTipTwitterUserFunction::
                    OnTwitterPublisherInfoSaved,
                    weak_factory_.GetWeakPtr()));
   }
@@ -116,10 +117,10 @@ BraveRewardsDonateToTwitterUserFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-void BraveRewardsDonateToTwitterUserFunction::OnTwitterPublisherInfoSaved(
+void BraveRewardsTipTwitterUserFunction::OnTwitterPublisherInfoSaved(
     std::unique_ptr<::brave_rewards::ContentSite> publisher_info) {
-  std::unique_ptr<brave_rewards::DonateToTwitterUser::Params> params(
-      brave_rewards::DonateToTwitterUser::Params::Create(*args_));
+  std::unique_ptr<brave_rewards::TipTwitterUser::Params> params(
+      brave_rewards::TipTwitterUser::Params::Create(*args_));
 
   if (!publisher_info) {
     // TODO(nejczdovc): what should we do in this case?
@@ -155,7 +156,7 @@ void BraveRewardsDonateToTwitterUserFunction::OnTwitterPublisherInfoSaved(
                                   params->tweet_meta_data.tweet_text);
   params_dict->SetDictionary("tweetMetaData", std::move(tweet_meta_data_dict));
 
-  ::brave_rewards::OpenDonationDialog(contents, std::move(params_dict));
+  ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
 
   Release();
 }

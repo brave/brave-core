@@ -121,8 +121,8 @@ void RewardsTipDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsTipDOMHandler::GetReconcileStamp,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards_donate.tweetTip",
-      base::BindRepeating(&RewardsDonateDOMHandler::TweetTip,
+      "brave_rewards_tip.tweetTip",
+      base::BindRepeating(&RewardsTipDOMHandler::TweetTip,
                           base::Unretained(this)));
 }
 
@@ -300,6 +300,9 @@ BraveTipUI::BraveTipUI(content::WebUI* web_ui, const std::string& name)
   handler->Init();
 }
 
+BraveTipUI::~BraveTipUI() {
+}
+
 void RewardsTipDOMHandler::GetReconcileStamp(const base::ListValue *args) {
   if (rewards_service_) {
     rewards_service_->GetReconcileStamp(base::Bind(
@@ -338,9 +341,6 @@ void RewardsTipDOMHandler::OnRecurringTipSaved(
 
   web_ui()->CallJavascriptFunctionUnsafe(
       "brave_rewards_tip.recurringTipSaved", base::Value(success));
-}
-
-BraveDonateUI::~BraveTipUI() {
 }
 
 void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {

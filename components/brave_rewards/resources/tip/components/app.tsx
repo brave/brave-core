@@ -7,19 +7,18 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import DonateToSite from './donateToSite'
-import DonateToTwitterUser from './donateToTwitterUser'
+import TipSite from './tipSite'
+import TipTwitterUser from './tipTwitterUser'
 
 // Utils
 import * as rewardsActions from '../actions/tip_actions'
-import { isTwitterAccount } from '../utils'
 
 interface TipDialogArgs {
   publisherKey: string
-  tweetMetaData?: RewardsDonate.TweetMetaData
+  tweetMetaData?: RewardsTip.TweetMetaData
 }
 
-interface Props extends RewardsDonate.ComponentProps {
+interface Props extends RewardsTip.ComponentProps {
   dialogArgs: TipDialogArgs
 }
 
@@ -27,66 +26,6 @@ export class App extends React.Component<Props, {}> {
 
   get actions () {
     return this.props.actions
-  }
-
-  onClose = () => {
-    this.actions.onCloseDialog()
-  }
-
-  generateTipOverlay = (publisher: RewardsTip.Publisher) => {
-    let domain = ''
-    let monthlyDate
-    const {
-      currentTipAmount,
-      currentTipRecurring,
-      reconcileStamp
-    } = this.props.rewardsDonateData
-
-    const publisherKey = publisher && publisher.publisherKey
-
-    if (!publisherKey) {
-      return null
-    }
-
-    if (currentTipRecurring && reconcileStamp) {
-      monthlyDate = new Date(reconcileStamp * 1000).toLocaleDateString()
-    }
-
-    if (publisher.provider && publisher.name) {
-      domain = publisher.name
-    } else {
-      domain = publisherKey
-    }
-
-    const verified = publisher.verified
-    let logo = publisher.logo
-
-    const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
-    if (internalFavicon.test(publisher.logo)) {
-      logo = `chrome://favicon/size/160@2x/${publisher.logo}`
-    }
-
-    if (!verified) {
-      logo = ''
-    }
-
-    setTimeout(() => {
-      this.onClose()
-    }, 3000)
-
-    return (
-      <DonationOverlay
-        onClose={this.onClose}
-        success={true}
-        domain={domain}
-        amount={currentTipAmount}
-        monthlyDate={monthlyDate}
-        logo={logo}
-      />
-    )
-
-  isTwitterAccount = (publisherKey: string) => {
-    return /^twitter#channel:[0-9]+$/.test(publisherKey)
   }
 
   render () {
@@ -103,18 +42,18 @@ export class App extends React.Component<Props, {}> {
       return null
     }
 
-    let donation
+    let tip
     const tweetMetaData = this.props.dialogArgs.tweetMetaData
     if (tweetMetaData) {
-      donation = (
-        <DonateToTwitterUser
+      tip = (
+        <TipTwitterUser
           publisher={publisher}
           tweetMetaData={tweetMetaData}
         />
       )
     } else {
-      donation = (
-        <DonateToSite
+      tip = (
+        <TipSite
           publisher={publisher}
         />
       )
@@ -122,7 +61,7 @@ export class App extends React.Component<Props, {}> {
 
     return (
       <div>
-        {donation}
+        {tip}
       </div>
     )
   }
