@@ -39,7 +39,7 @@ constexpr char kDefaultUploadServerUrl[] =
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60 * 60;  // 1 hour.
 
-constexpr int kDefaultMaxRandomDelaySeconds = 5 * 60;  // 5 minutes.
+constexpr int kDefaultRandomizationDivisor = 2;
 
 // TODO(iefremov): Provide moar histograms!
 // Whitelist for histograms that we collect. Will be replaced with something
@@ -64,13 +64,19 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Welcome.InteractionStatus",
 };
 
-base::TimeDelta GetRandomizedUploadInterval(base::TimeDelta upload_interval,
-                                            uint32_t randomization_delay) {
-  if (randomization_delay == 0) {
-    return upload_interval;
+base::TimeDelta GetRandomizedUploadInterval(base::TimeDelta max_upload_interval,
+                                            uint32_t randomization_divisor) {
+  if (randomization_divisor == 0 || randomization_divisor == 1) {
+    return max_upload_interval;
   }
-  return upload_interval + base::TimeDelta::FromSeconds(static_cast<int64_t>(
-                               base::RandGenerator(randomization_delay)));
+  const double interval_start =
+      max_upload_interval.InSecondsF() / randomization_divisor;
+  const uint32_t interval =
+      static_cast<uint32_t>(max_upload_interval.InSecondsF() - interval_start);
+  const double randomized_delay =
+      base::RandGenerator(interval) + interval_start;
+
+  return base::TimeDelta::FromSeconds(static_cast<int64_t>(randomized_delay));
 }
 
 base::TimeDelta TimeDeltaTillMonday(base::Time time) {
@@ -116,9 +122,9 @@ void BraveP3AService::Init() {
   // Init basic prefs.
   initialized_ = true;
 
-  upload_interval_ =
+  max_upload_interval_ =
       base::TimeDelta::FromSeconds(kDefaultUploadIntervalSeconds);
-  max_random_delay_seconds_ = kDefaultMaxRandomDelaySeconds;
+  interval_randomization_divisor_ = kDefaultRandomizationDivisor;
 
   upload_server_url_ = GURL(kDefaultUploadServerUrl);
   MaybeOverrideSettingsFromCommandLine();
@@ -126,8 +132,9 @@ void BraveP3AService::Init() {
   VLOG(2) << "BraveP3AService::Init() Done!";
   VLOG(2) << "BraveP3AService parameters are:"
           << " upload_enabled_ = " << upload_enabled_
-          << ", upload_interval_ = " << upload_interval_
-          << ", max_random_delay_seconds_ = " << max_random_delay_seconds_
+          << ", max_upload_interval_ = " << max_upload_interval_
+          << ", interval_randomization_divisor_ = "
+          << interval_randomization_divisor_
           << ", upload_server_url_ = " << upload_server_url_.spec()
           << ", rotation_interval_ = " << rotation_interval_;
 
@@ -159,8 +166,8 @@ void BraveP3AService::Init() {
 
   upload_scheduler_.reset(new BraveP3AScheduler(
       base::Bind(&BraveP3AService::StartScheduledUpload, this),
-      base::BindRepeating(GetRandomizedUploadInterval, upload_interval_,
-                          max_random_delay_seconds_)));
+      base::BindRepeating(GetRandomizedUploadInterval, max_upload_interval_,
+                          interval_randomization_divisor_)));
 
   // Start the engine if we are enabled.
   if (upload_enabled_) {
@@ -194,23 +201,27 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
   if (cmdline->HasSwitch(switches::kP3AUploadIntervalSeconds)) {
     std::string seconds_str =
         cmdline->GetSwitchValueASCII(switches::kP3AUploadIntervalSeconds);
-    uint64_t seconds;
-    if (base::StringToUint64(seconds_str, &seconds)) {
-      upload_interval_ = base::TimeDelta::FromSeconds(seconds);
+    int64_t seconds;
+    if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
+      max_upload_interval_ = base::TimeDelta::FromSeconds(seconds);
     }
   }
 
-  if (cmdline->HasSwitch(switches::kP3AUploadMaxRandomDelaySeconds)) {
-    std::string seconds_str =
-        cmdline->GetSwitchValueASCII(switches::kP3AUploadMaxRandomDelaySeconds);
-    base::StringToUint(seconds_str, &max_random_delay_seconds_);
+  if (cmdline->HasSwitch(switches::kP3AUploadIntervalRandomizationDivisor)) {
+    std::string divisor_str =
+        cmdline->GetSwitchValueASCII(
+            switches::kP3AUploadIntervalRandomizationDivisor);
+    uint32_t divisor;
+    if (base::StringToUint(divisor_str, &divisor) && divisor > 0) {
+      interval_randomization_divisor_ = divisor;
+    }
   }
 
   if (cmdline->HasSwitch(switches::kP3ARotationIntervalSeconds)) {
     std::string seconds_str =
         cmdline->GetSwitchValueASCII(switches::kP3ARotationIntervalSeconds);
-    uint64_t seconds;
-    if (base::StringToUint64(seconds_str, &seconds)) {
+    int64_t seconds;
+    if (base::StringToInt64(seconds_str, &seconds) && seconds > 0) {
       rotation_interval_ = base::TimeDelta::FromSeconds(seconds);
     }
   }
