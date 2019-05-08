@@ -8,13 +8,12 @@
 
 #include "brave/browser/tor/tor_profile_service.h"
 
-class Profile;
 
 namespace tor {
 
 class MockTorProfileServiceImpl : public TorProfileService {
  public:
-  explicit MockTorProfileServiceImpl(Profile* profile);
+  MockTorProfileServiceImpl();
   ~MockTorProfileServiceImpl() override;
 
   // TorProfileService:
@@ -29,7 +28,6 @@ class MockTorProfileServiceImpl : public TorProfileService {
                bool new_circuit) override;
 
  private:
-  Profile* profile_;  // NOT OWNED
   TorConfig config_;
   DISALLOW_COPY_AND_ASSIGN(MockTorProfileServiceImpl);
 };

@@ -15,14 +15,12 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 #include "net/url_request/url_request_context.h"
 #include "net/url_request/url_request_context_getter.h"
 
 using content::BrowserContext;
 using content::BrowserThread;
-using content::SiteInstance;
 
 namespace tor {
 
@@ -46,26 +44,6 @@ void TorProfileServiceImpl::LaunchTor(const TorConfig& config) {
 
 void TorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
   tor_launcher_factory_->ReLaunchTorProcess(config);
-}
-
-std::string TorProfileServiceImpl::CircuitIsolationKey(const GURL& url) {
-  // https://2019.www.torproject.org/projects/torbrowser/design/#privacy
-  //
-  //    For the purposes of the unlinkability requirements of this
-  //    section as well as the descriptions in the implementation
-  //    section, a URL bar origin means at least the second-level DNS
-  //    name.  For example, for mail.google.com, the origin would be
-  //    google.com.  Implementations MAY, at their option, restrict
-  //    the URL bar origin to be the entire fully qualified domain
-  //    name.
-  //
-  // In particular, we need not isolate by the scheme,
-  // username/password, port, path, or query part of the URL.
-  url::Origin origin = url::Origin::Create(url);
-  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      origin.host(),
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  return domain;
 }
 
 void TorProfileServiceImpl::SetNewTorCircuitOnIOThread(
