@@ -249,7 +249,7 @@ export const BlockedListSummary = styled<BlockedListSummaryProps, 'summary'>('su
 export const BlockedListStatic = styled<{}, 'ul'>('ul')`
   box-sizing: border-box;
   list-style-type: none;
-  height: 330px;
+  height: 328px;
   overflow: auto;
   padding: 0 0 0 24px;
   margin: 0;
@@ -266,7 +266,7 @@ export const BlockedListItemHeader = styled<{}, 'li'>('li')`
   box-sizing: border-box;
   position: sticky;
   top: 0;
-  z-index: 1;
+  z-index: 3;
   display: grid;
   grid-template-columns: 36px 1fr auto;
   align-items: center;
@@ -329,8 +329,8 @@ export const BlockedListItemDetails = styled<{}, 'details'>('details')`
     z-index: 0;
     top: -2px;
     left: 26px;
-    width: 100%;
-    height: 100%;
+    width: 18px;
+    height: 21px;
   }
   ${BlockedListItemWithOptions} {
     padding: 4px 24px 4px 20px;
