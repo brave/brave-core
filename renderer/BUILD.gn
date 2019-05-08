@@ -9,10 +9,13 @@ source_set("renderer") {
   ]
 
   deps = [
-    "//chrome/renderer",
-    "//skia",
+    "//base",
+    "//brave/common",
+    "//components/content_settings/core/common",
+    "//content/public/renderer",
+    "//services/service_manager/public/cpp",
     "//third_party/blink/public:blink",
-    "//brave/chromium_src:renderer",
     "//brave/content:common",
+    "//url",
   ]
 }

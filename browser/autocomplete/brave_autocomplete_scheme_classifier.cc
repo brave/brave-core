@@ -6,8 +6,12 @@
 
 #include "base/strings/string_util.h"
 #include "brave/common/url_constants.h"
-#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#endif
 
 // See the BraveAutocompleteProviderClient why GetOriginalProfile() is fetched.
 // All services except TemplateURLService exposed from AutocompleteClassifier
@@ -30,11 +34,17 @@ BraveAutocompleteSchemeClassifier::GetInputTypeForScheme(
     return metrics::OmniboxInputType::INVALID;
   }
   if (base::IsStringASCII(scheme) &&
-      (base::LowerCaseEqualsASCII(scheme, kBraveUIScheme) ||
-       (webtorrent::IsWebtorrentEnabled(profile_) &&
-        base::LowerCaseEqualsASCII(scheme, kMagnetScheme)))) {
+      base::LowerCaseEqualsASCII(scheme, kBraveUIScheme)) {
     return metrics::OmniboxInputType::URL;
   }
+
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+  if (base::IsStringASCII(scheme) &&
+      webtorrent::IsWebtorrentEnabled(profile_) &&
+      base::LowerCaseEqualsASCII(scheme, kMagnetScheme)) {
+    return metrics::OmniboxInputType::URL;
+  }
+#endif
 
   return ChromeAutocompleteSchemeClassifier::GetInputTypeForScheme(scheme);
 }

@@ -1,3 +1,4 @@
+import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
@@ -7,34 +8,43 @@ source_set("utility") {
   sources = [
     "brave_content_utility_client.cc",
     "brave_content_utility_client.h",
-    "importer/brave_external_process_importer_bridge.cc",
-    "importer/brave_external_process_importer_bridge.h",
-    "importer/brave_importer.cc",
-    "importer/brave_importer.h",
-    "importer/chrome_importer.cc",
-    "importer/chrome_importer.h",
-    "importer/firefox_importer.cc",
-    "importer/firefox_importer.h",
   ]
 
-  defines = []
   deps = [
-    "tor",
-    "//brave/components/services/bat_ledger:lib",
     "//chrome/common",
-    "//chrome/utility",
     "//content/public/common",
-    "//components/password_manager/core/browser",
   ]
+
+  if (!is_android) {
+    sources += [
+      "importer/brave_external_process_importer_bridge.cc",
+      "importer/brave_external_process_importer_bridge.h",
+      "importer/brave_importer.cc",
+      "importer/brave_importer.h",
+      "importer/chrome_importer.cc",
+      "importer/chrome_importer.h",
+      "importer/firefox_importer.cc",
+      "importer/firefox_importer.h",
+    ]
+
+    deps += [
+      "//components/password_manager/core/browser",
+    ]
+  }
+
+  if (enable_tor) {
+    deps += [ "tor" ]
+  }
 
   if (brave_ads_enabled) {
     deps += [ "//brave/components/services/bat_ads:lib" ]
   }
 
   if (brave_rewards_enabled) {
-    configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
+    deps += [ "//brave/components/services/bat_ledger:lib" ]
   }
 
+  defines = []
   if (use_glib) {
     defines += [ "USE_LIBSECRET" ]
     deps += [ "//third_party/libsecret" ]

@@ -210,7 +210,7 @@ std::vector<std::unique_ptr<TemplateURLData>> GetPrepopulatedEngines(
 std::vector<std::unique_ptr<TemplateURLData>> GetLocalPrepopulatedEngines(
     const std::string& locale) {
   int country_id = country_codes::CountryStringToCountryID(locale);
-  if (country_id == kCountryIDUnknown) {
+  if (country_id == country_codes::kCountryIDUnknown) {
     LOG(ERROR) << "Unknown country code specified: " << locale;
     return std::vector<std::unique_ptr<TemplateURLData>>();
   }

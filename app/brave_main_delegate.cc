@@ -97,7 +97,7 @@ BraveMainDelegate::CreateContentUtilityClient() {
 
 void BraveMainDelegate::PreSandboxStartup() {
   ChromeMainDelegate::PreSandboxStartup();
-#if defined(OS_POSIX)
+#if defined(OS_LINUX) || defined(OS_MACOSX)
   // Setup NativeMessagingHosts to point to the default Chrome locations
   // because that's where native apps will create them
   base::FilePath chrome_user_data_dir;
@@ -118,7 +118,7 @@ void BraveMainDelegate::PreSandboxStartup() {
       false, true);
   base::PathService::OverrideAndCreateIfNeeded(chrome::DIR_NATIVE_MESSAGING,
       native_messaging_dir, false, true);
-#endif  // OS_POSIX
+#endif  // defined(OS_LINUX) || defined(OS_MACOSX)
   if (brave::SubprocessNeedsResourceBundle()) {
     brave::InitializeResourceBundle();
   }
@@ -135,7 +135,9 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 
   // Enabled features.
   const std::unordered_set<const char*> enabled_features = {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
       extensions_features::kNewExtensionUpdaterService.name,
+#endif
       features::kDesktopPWAWindowing.name,
   };
 

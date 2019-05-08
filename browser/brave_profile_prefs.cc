@@ -33,7 +33,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
       registry);
 
   // appearance
+#if !defined(OS_ANDROID)
   BraveThemeService::RegisterProfilePrefs(registry);
+#endif
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
   registry->RegisterBooleanPref(kHideBraveRewardsButton, false);
 

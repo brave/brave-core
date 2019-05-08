@@ -15,7 +15,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/common/brave_cookie_blocking.h"
 #include "brave/common/tor/switches.h"
 #include "brave/common/tor/tor_launcher.mojom.h"
@@ -27,13 +27,12 @@
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 #include "brave/components/services/brave_content_packaged_service_overlay_manifest.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
-#include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "chrome/common/url_constants.h"
@@ -65,7 +64,16 @@ using content::WebContents;
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
 using extensions::ChromeContentBrowserClientExtensionsPart;
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+#include "brave/components/brave_webtorrent/browser/content_browser_client_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
 namespace {
@@ -124,10 +132,12 @@ content::BrowserMainParts* BraveContentBrowserClient::CreateBrowserMainParts(
 
 void BraveContentBrowserClient::BrowserURLHandlerCreated(
     content::BrowserURLHandler* handler) {
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   handler->AddHandlerPair(&webtorrent::HandleMagnetURLRewrite,
                           content::BrowserURLHandler::null_handler());
   handler->AddHandlerPair(&webtorrent::HandleTorrentURLRewrite,
                           &webtorrent::HandleTorrentURLReverseRewrite);
+#endif
   handler->AddHandlerPair(&HandleURLRewrite, &HandleURLReverseOverrideRewrite);
   ChromeContentBrowserClient::BrowserURLHandlerCreated(handler);
 }
@@ -147,7 +157,11 @@ bool BraveContentBrowserClient::AllowAccessCookie(
       brave_shields::IsAllowContentSettingWithIOData(
           io_data, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
           brave_shields::kBraveShields) &&
+#if BUILDFLAG(ENABLE_EXTENSIONS)
       !first_party.SchemeIs(kChromeExtensionScheme);
+#else
+      true;
+#endif
   bool allow_1p_cookies = brave_shields::IsAllowContentSettingWithIOData(
       io_data, tab_origin, GURL("https://firstParty/"),
       CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
@@ -215,10 +229,12 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     bool has_user_gesture,
     const std::string& method,
     const net::HttpRequestHeaders& headers) {
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
                                        page_transition, has_user_gesture)) {
     return true;
   }
+#endif
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, child_id, navigation_data, is_main_frame,
@@ -228,8 +244,10 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 void BraveContentBrowserClient::RegisterOutOfProcessServices(
     OutOfProcessServiceMap* services) {
   ChromeContentBrowserClient::RegisterOutOfProcessServices(services);
+#if BUILDFLAG(ENABLE_TOR)
   (*services)[tor::mojom::kTorLauncherServiceName] = base::BindRepeating(
       l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME);
+#endif
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
   (*services)[bat_ads::mojom::kServiceName] =
       base::BindRepeating(l10n_util::GetStringUTF16, IDS_SERVICE_BAT_ADS);
@@ -245,10 +263,12 @@ BraveContentBrowserClient::GetNavigationUIData(
     content::NavigationHandle* navigation_handle) {
   std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
       std::make_unique<BraveNavigationUIData>(navigation_handle);
+#if BUILDFLAG(ENABLE_TOR)
   Profile* profile = Profile::FromBrowserContext(
       navigation_handle->GetWebContents()->GetBrowserContext());
   TorProfileServiceFactory::SetTorNavigationUIData(profile,
                                                    navigation_ui_data.get());
+#endif
   return std::move(navigation_ui_data);
 }
 
@@ -269,6 +289,7 @@ void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
   ChromeContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
       identity, command_line);
 
+#if BUILDFLAG(ENABLE_TOR)
   if (identity.name() == tor::mojom::kTorLauncherServiceName) {
     base::FilePath path =
         g_brave_browser_process->tor_client_updater()->GetExecutablePath();
@@ -276,6 +297,7 @@ void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
     command_line->AppendSwitchPath(tor::switches::kTorExecutablePath,
                                    path.BaseName());
   }
+#endif
 }
 
 void BraveContentBrowserClient::MaybeHideReferrer(
@@ -284,9 +306,11 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     const GURL& document_url,
     content::Referrer* referrer) {
   DCHECK(referrer);
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   if (document_url.SchemeIs(kChromeExtensionScheme)) {
     return;
   }
+#endif
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   const bool allow_referrers = brave_shields::IsAllowContentSettingsForProfile(

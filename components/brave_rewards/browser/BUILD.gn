@@ -15,8 +15,6 @@ source_set("browser") {
     "balance_report.h",
     "rewards_notification_service.cc",
     "rewards_notification_service.h",
-    "rewards_notification_service_impl.cc",
-    "rewards_notification_service_impl.h",
     "rewards_notification_service_observer.h",
     "content_site.cc",
     "content_site.h",
@@ -88,6 +86,8 @@ source_set("browser") {
       "publisher_info_database.h",
       "rewards_fetcher_service_observer.cc",
       "rewards_fetcher_service_observer.h",
+      "rewards_notification_service_impl.cc",
+      "rewards_notification_service_impl.h",
     ]
 
     if (!is_android) {
@@ -108,6 +108,8 @@ source_set("browser") {
   }
 }
 
+# TODO(bridiver) - fix tests on android
+if (!is_android) {
 source_set("testutil") {
   testonly = true
 
@@ -124,4 +126,5 @@ source_set("testutil") {
     "test_util.cc",
     "test_util.h",
   ]
+}
 }

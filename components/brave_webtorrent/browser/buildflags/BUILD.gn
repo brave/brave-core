@@ -1,0 +1,10 @@
+import("//build/buildflag_header.gni")
+import("buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_BRAVE_WEBTORRENT=$enable_brave_webtorrent",
+  ]
+}
+

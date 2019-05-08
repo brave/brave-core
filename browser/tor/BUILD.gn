@@ -1,16 +1,20 @@
+import("//build/buildflag_header.gni")
+import("buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_TOR=$enable_tor",
+  ]
+}
+
 source_set("tor") {
   sources = [
-    "tor_launcher_factory.cc",
-    "tor_launcher_factory.h",
     "tor_launcher_service_observer.h",
     "tor_profile_service.cc",
     "tor_profile_service.h",
     "tor_profile_service_factory.cc",
     "tor_profile_service_factory.h",
-    "tor_profile_service_impl.cc",
-    "tor_profile_service_impl.h",
-    "tor_proxy_config_service.cc",
-    "tor_proxy_config_service.h",
   ]
 
   deps = [
@@ -25,4 +29,19 @@ source_set("tor") {
     "//services/service_manager",
     "//net",
   ]
+
+  public_deps = [
+    ":buildflags",
+  ]
+
+  if (enable_tor) {
+    sources += [
+      "tor_launcher_factory.cc",
+      "tor_launcher_factory.h",
+      "tor_profile_service_impl.cc",
+      "tor_profile_service_impl.h",
+      "tor_proxy_config_service.cc",
+      "tor_proxy_config_service.h",
+    ]
+  }
 }

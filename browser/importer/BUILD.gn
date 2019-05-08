@@ -19,6 +19,8 @@ source_set("importer") {
   ]
 
   deps = [
-    "//chrome/browser",
+    "//base",
+    "//content/public/browser",
+    "//net",
   ]
 }

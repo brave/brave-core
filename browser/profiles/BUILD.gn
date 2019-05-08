@@ -5,10 +5,8 @@ source_set("profiles") {
   ]
   deps = [
     "//base",
-    "//chrome/browser",
     "//chrome/common",
     "//content/public/common",
-    "//brave/browser/extensions",
     "//brave/browser/tor",
     "//brave/content:browser",
     "//brave/common/tor",

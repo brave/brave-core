@@ -1,3 +1,6 @@
+import("//brave/browser/tor/buildflags/buildflags.gni")
+import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("net") {
@@ -15,28 +18,48 @@ source_set("net") {
     "brave_network_delegate_base.h",
     "brave_profile_network_delegate.cc",
     "brave_profile_network_delegate.h",
-    "brave_referrals_network_delegate_helper.cc",
-    "brave_referrals_network_delegate_helper.h",
     "brave_site_hacks_network_delegate_helper.cc",
     "brave_site_hacks_network_delegate_helper.h",
     "brave_static_redirect_network_delegate_helper.cc",
     "brave_static_redirect_network_delegate_helper.h",
     "brave_system_network_delegate.cc",
     "brave_system_network_delegate.h",
-    "brave_tor_network_delegate_helper.cc",
-    "brave_tor_network_delegate_helper.h",
     "brave_translate_redirect_network_delegate_helper.cc",
     "brave_translate_redirect_network_delegate_helper.h",
     "url_context.cc",
     "url_context.h",
   ]
+
   deps = [
+    "//base",
     "//brave/browser/safebrowsing",
-    "//brave/components/brave_webtorrent/browser/net",
-    "//chrome/browser",
     "//content/public/browser",
     "//content/public/common",
     "//extensions/common:common_constants",
     "//net",
   ]
+
+  if (enable_brave_referrals) {
+    sources += [
+      "brave_referrals_network_delegate_helper.cc",
+      "brave_referrals_network_delegate_helper.h",
+    ]
+
+    deps += [
+      "//brave/components/brave_referrals/browser",
+    ]
+  }
+
+  if (enable_tor) {
+    sources += [
+      "brave_tor_network_delegate_helper.cc",
+      "brave_tor_network_delegate_helper.h",
+    ]
+  }
+
+  if (enable_brave_webtorrent) {
+    deps += [
+      "//brave/components/brave_webtorrent/browser/net",
+    ]
+  }
 }

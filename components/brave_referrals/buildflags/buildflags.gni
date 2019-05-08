@@ -1,0 +1,5 @@
+import("//build/config/features.gni")
+
+declare_args() {
+  enable_brave_referrals = is_mac || is_linux || is_win
+}

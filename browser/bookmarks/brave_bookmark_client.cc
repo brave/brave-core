@@ -4,11 +4,15 @@
 
 #include "brave/browser/bookmarks/brave_bookmark_client.h"
 
-#include "brave/components/brave_sync/brave_sync_service.h"
+#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/bookmarks/managed/managed_bookmark_service.h"
 #include "components/sync_bookmarks/bookmark_sync_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
+#include "brave/components/brave_sync/brave_sync_service.h"
+#endif
 
 BraveBookmarkClient::BraveBookmarkClient(
     Profile* profile,
@@ -19,13 +23,18 @@ BraveBookmarkClient::BraveBookmarkClient(
                            bookmark_sync_service) {}
 
 bookmarks::LoadExtraCallback BraveBookmarkClient::GetLoadExtraNodesCallback() {
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
   return base::BindOnce(&brave_sync::LoadExtraNodes,
       ChromeBookmarkClient::GetLoadExtraNodesCallback());
+#endif
+  return ChromeBookmarkClient::GetLoadExtraNodesCallback();
 }
 
 bool BraveBookmarkClient::IsPermanentNodeVisible(
     const bookmarks::BookmarkPermanentNode* node) {
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
   if (brave_sync::IsSyncManagedNode(node))
     return false;  // don't display sync managed nodes
+#endif
   return ChromeBookmarkClient::IsPermanentNodeVisible(node);
 }

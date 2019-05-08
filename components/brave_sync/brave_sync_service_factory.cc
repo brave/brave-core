@@ -11,13 +11,18 @@
 #include "base/memory/singleton.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
-#include "brave/components/brave_sync/brave_sync_service_impl.h"
+#include "brave/components/brave_sync/buildflags/buildflags.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/content/browser_context_dependency_manager.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/components/brave_sync/brave_sync_service_impl.h"
+#endif
 
 namespace brave_sync {
 
@@ -46,9 +51,13 @@ BraveSyncServiceFactory::~BraveSyncServiceFactory() = default;
 
 KeyedService* BraveSyncServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
   std::unique_ptr<BraveSyncServiceImpl> brave_sync_service(
       new BraveSyncServiceImpl(Profile::FromBrowserContext(context)));
   return brave_sync_service.release();
+#else
+  return nullptr;
+#endif
 }
 
 void BraveSyncServiceFactory::RegisterProfilePrefs(

@@ -1,5 +1,9 @@
 import("//brave/build/config.gni")
+import("//brave/browser/tor/buildflags/buildflags.gni")
+import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
+import("//extensions/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 source_set("browser_process") {
@@ -18,6 +22,8 @@ source_set("browser_process") {
     "brave_browser_main_parts_mac.h",
     "brave_browser_process_impl.cc",
     "brave_browser_process_impl.h",
+    "brave_content_browser_client.cc",
+    "brave_content_browser_client.h",
     "brave_drm_tab_helper.cc",
     "brave_drm_tab_helper.h",
     "brave_local_state_prefs.cc",
@@ -32,8 +38,6 @@ source_set("browser_process") {
     "brave_stats_updater_util.h",
     "brave_tab_helpers.cc",
     "brave_tab_helpers.h",
-    "brave_rewards/tip_dialog.cc",
-    "brave_rewards/tip_dialog.h",
     "browser_context_keyed_service_factories.cc",
     "browser_context_keyed_service_factories.h",
     "browsing_data/brave_clear_browsing_data.cc",
@@ -46,6 +50,10 @@ source_set("browser_process") {
     "component_updater/brave_crx_update_service.h",
     "content_settings/brave_cookie_settings_factory.cc",
     "content_settings/brave_cookie_settings_factory.h",
+    # TODO(bridiver) - move this from extensions -> component_updater
+    # and rename to BraveComponent
+    "extensions/brave_component_extension.cc",
+    "extensions/brave_component_extension.h",
     "geolocation/brave_geolocation_permission_context.cc",
     "geolocation/brave_geolocation_permission_context.h",
     "mac/sparkle_glue.mm",
@@ -71,30 +79,83 @@ source_set("browser_process") {
 
   deps = [
     ":version_info",
+    "autoplay",
+    "download",
+    "net",
+    "permissions",
+    "profiles",
+    "renderer_context_menu",
+    "renderer_host",
+    "ui",
     "//base",
     "//brave/browser/tor",
     "//brave/common",
     "//brave/components/brave_ads/browser",
+    "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_shields/browser:brave_shields",
     "//brave/components/brave_sync",
-    "//brave/components/brave_webtorrent/browser",
+    "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
+    "//brave/components/resources",
     "//brave/components/services:brave_content_manifest_overlays",
     "//chrome/common",
+    "//components/autofill/core/common",
     "//components/browsing_data/core",
     "//components/component_updater",
+    "//components/password_manager/core/common",
     "//components/prefs",
     "//components/safe_browsing/common:safe_browsing_prefs",
     "//components/search_engines",
     "//components/spellcheck/browser",
+    "//components/unified_consent",
     "//content/public/browser",
+    "//content/public/common",
+    "//extensions/buildflags",
     "//brave/chromium_src:browser",
     "themes",
-    "//third_party/widevine/cdm:buildflags",
+    "//services/network/public/cpp",
+    "//services/service_manager/embedder",
+    "//ui/base",
   ]
 
-  if (bundle_widevine_cdm || enable_widevine_cdm_component) { deps += [ "//brave/browser/widevine" ] }
+  if (!is_android) {
+    sources += [
+      "brave_rewards/tip_dialog.cc",
+      "brave_rewards/tip_dialog.h",
+    ]
+
+    deps += [
+      "importer",
+    ]
+  }
+
+  if (enable_tor) {
+    deps += [ "tor" ]
+  }
+
+  if (enable_extensions) {
+    deps += [ "extensions" ]
+  }
+
+  if (brave_ads_enabled) {
+    deps += [
+      "//components/dom_distiller/core",
+    ]
+  }
+
+  if (enable_brave_webtorrent) {
+    deps += [
+      "//brave/components/brave_webtorrent/browser",
+    ]
+  }
+
+  if (bundle_widevine_cdm || enable_widevine_cdm_component) {
+    deps += [
+      "//brave/browser/widevine",
+      "//third_party/widevine/cdm:buildflags",
+    ]
+  }
 
   if (is_win && is_official_build) {
     sources += [
@@ -122,37 +183,9 @@ source_set("version_info") {
 }
 
 source_set("browser") {
-  sources = [
-    "brave_content_browser_client.cc",
-    "brave_content_browser_client.h",
-  ]
-
   deps = [
-    "autoplay",
-    "//base",
-    "//brave/components/brave_ads/browser",
-    "//brave/components/brave_referrals/browser",
-    "//brave/components/brave_rewards/browser",
-    "//brave/components/brave_shields/browser:brave_shields",
-    "//brave/components/brave_webtorrent/browser",
-    "//brave/components/resources",
     "//chrome/browser",
-    "//content/public/browser",
-    "//content/public/common",
-    "//services/service_manager/embedder",
-    "download",
-    "extensions",
-    "importer",
-    "net",
-    "permissions",
-    "profiles",
-    "renderer_context_menu",
-    "renderer_host",
-    "tor",
-    "ui",
-    "//ui/base",
   ]
-
   if (is_mac) {
     deps += [
       "//brave/vendor/sparkle:sparkle_framework_bundle_data"

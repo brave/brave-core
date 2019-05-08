@@ -18,7 +18,9 @@ source_set("renderer_host") {
   }
 
   deps = [
+    "//base",
     "//brave/browser/tor",
-    "//chrome/browser",
+    "//chrome/common",
+    "//content/public/browser",
   ]
 }

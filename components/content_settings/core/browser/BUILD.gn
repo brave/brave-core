@@ -16,7 +16,6 @@ source_set("browser") {
     "//brave/common/tor:pref_names",
     "//components/content_settings/core/common",
     "//components/prefs",
-    "//extensions/common",
     "//net",
     "//url",
   ]

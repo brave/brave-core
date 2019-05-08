@@ -1,3 +1,5 @@
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("extensions") {
@@ -16,8 +18,6 @@ source_set("extensions") {
     "api/brave_theme_api.h",
     "api/settings_private/brave_prefs_util.cc",
     "api/settings_private/brave_prefs_util.h",
-    "brave_component_extension.cc",
-    "brave_component_extension.h",
     "brave_component_extension_resource_manager.cc",
     "brave_component_extension_resource_manager.h",
     "brave_component_loader.cc",
@@ -46,17 +46,26 @@ source_set("extensions") {
     "//brave/common/extensions/api",
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_extension:generated_resources",
-    "//brave/components/brave_rewards/resources/extension:extension_generated_resources",
-    "//brave/components/brave_rewards/resources/extension:static_resources",
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:generated_resources",
     "//brave/components/brave_sync:static_resources",
-    "//brave/components/brave_webtorrent:generated_resources",
-    "//brave/components/brave_webtorrent:static_resources",
-    "//chrome/browser",
     "//components/prefs",
     "//content/public/browser",
     "//extensions/browser",
     "//extensions/common",
+    "//third_party/re2",
   ]
+
+  if (brave_rewards_enabled) {
+    deps += [
+      "//brave/components/brave_rewards/resources/extension:extension_generated_resources",
+      "//brave/components/brave_rewards/resources/extension:static_resources",
+    ]
+  }
+  if (enable_brave_webtorrent) {
+    deps += [
+      "//brave/components/brave_webtorrent:generated_resources",
+      "//brave/components/brave_webtorrent:static_resources",
+    ]
+  }
 }

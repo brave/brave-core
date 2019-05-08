@@ -7,16 +7,22 @@
 #include "../../../../../chrome/browser/component_updater/crl_set_component_installer.cc"  // NOLINT
 #undef RegisterCRLSetComponent
 
+#include "chrome/browser/browser_process.h"
+
+#if !defined(OS_ANDROID)
 #include "brave/browser/extensions/brave_component_extension.h"
 #include "brave/common/extensions/extension_constants.h"
-#include "chrome/browser/browser_process.h"
+#endif
 
 namespace component_updater {
 
 void OnCRLSetRegistered() {
+// https://github.com/brave/browser-android-tabs/issues/857
+#if !defined(OS_ANDROID)
   ComponentsUI demand_updater;
   demand_updater.OnDemandUpdate(g_browser_process->component_updater(),
                                 crl_set_extension_id);
+#endif
 }
 
 void RegisterCRLSetComponent(ComponentUpdateService* cus,

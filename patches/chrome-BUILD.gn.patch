@@ -1,5 +1,5 @@
 diff --git a/chrome/BUILD.gn b/chrome/BUILD.gn
-index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc487f8962 100644
+index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..02d319e1bcb3d5abeb95fa921885d73e29c2dbbb 100644
 --- a/chrome/BUILD.gn
 +++ b/chrome/BUILD.gn
 @@ -191,6 +191,10 @@ if (!is_android && !is_mac) {
@@ -93,15 +93,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
      "//chrome/browser",
      "//chrome/common",
      "//components/gwp_asan/buildflags",
-@@ -1464,6 +1483,7 @@ group("browser_dependencies") {
- 
- group("child_dependencies") {
-   public_deps = [
-+    "//brave:child_dependencies",
-     "//chrome/browser/devtools",
-     "//chrome/child",
-     "//chrome/common",
-@@ -1491,7 +1511,7 @@ group("child_dependencies") {
+@@ -1491,7 +1510,7 @@ group("child_dependencies") {
  if (is_win) {
    process_version_rc_template("chrome_exe_version") {
      sources = [
@@ -110,7 +102,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
      ]
      output = "$target_gen_dir/chrome_exe_version.rc"
    }
-@@ -1564,6 +1584,7 @@ group("resources") {
+@@ -1564,6 +1583,7 @@ group("resources") {
      "//chrome/browser:resources",
      "//chrome/common:resources",
      "//chrome/renderer:resources",
@@ -118,7 +110,7 @@ index 3bd3fb2b18fb6309b22d2ffff5b3372afd6e486d..f00997794e6104ac3bfbc2546f333cbc
    ]
  }
  
-@@ -1813,6 +1834,7 @@ if (is_android) {
+@@ -1813,6 +1833,7 @@ if (is_android) {
        "//content/public/common:service_names",
        "//services/service_manager/embedder",
      ]

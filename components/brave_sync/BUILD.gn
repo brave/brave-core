@@ -1,41 +1,43 @@
+import("buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
 import("//build/config/features.gni")
-import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
 import("//tools/grit/repack.gni")
 
-source_set("js_sync_lib_impl") {
-  sources = [
-    "brave_sync_service_impl.cc",
-    "brave_sync_service_impl.h",
-    "client/brave_sync_client.h",
-    "client/brave_sync_client_impl.cc",
-    "client/brave_sync_client_impl.h",
-    "client/bookmark_change_processor.cc",
-    "client/bookmark_change_processor.h",
-    "client/bookmark_node.cc",
-    "client/bookmark_node.h",
-    "client/client_ext_impl_data.cc",
-    "client/client_ext_impl_data.h",
-    "client/client_data.cc",
-    "client/client_data.h",
-  ]
+if (enable_brave_sync) {
+  source_set("js_sync_lib_impl") {
+    sources = [
+      "brave_sync_service_impl.cc",
+      "brave_sync_service_impl.h",
+      "client/brave_sync_client.h",
+      "client/brave_sync_client_impl.cc",
+      "client/brave_sync_client_impl.h",
+      "client/bookmark_change_processor.cc",
+      "client/bookmark_change_processor.h",
+      "client/bookmark_node.cc",
+      "client/bookmark_node.h",
+      "client/client_ext_impl_data.cc",
+      "client/client_ext_impl_data.h",
+      "client/client_data.cc",
+      "client/client_data.h",
+    ]
 
-  deps = [
-    "//base",
-    "//components/prefs",
-    "//components/bookmarks/browser",
-    "//components/bookmarks/common",
-    "//components/keyed_service/content",
-    "//components/keyed_service/core",
-    "//components/prefs",
-    "//components/pref_registry",
-    "//content/public/browser",
-    "//extensions/browser",
-    "//services/network/public/cpp",
-    "//net",
-    "//ui/base",
-  ]
+    deps = [
+      "//base",
+      "//components/prefs",
+      "//components/bookmarks/browser",
+      "//components/bookmarks/common",
+      "//components/keyed_service/content",
+      "//components/keyed_service/core",
+      "//components/prefs",
+      "//components/pref_registry",
+      "//content/public/browser",
+      "//extensions/browser",
+      "//services/network/public/cpp",
+      "//net",
+      "//ui/base",
+    ]
+  }
 }
 
 source_set("core") {
@@ -44,6 +46,8 @@ source_set("core") {
     "bookmark_order_util.h",
     "brave_sync_prefs.cc",
     "brave_sync_prefs.h",
+    "brave_sync_service.cc",
+    "brave_sync_service.h",
     "jslib_const.cc",
     "jslib_const.h",
     "jslib_messages.cc",
@@ -64,9 +68,10 @@ source_set("core") {
     "//base",
     "//components/prefs",
     "//crypto",
+    "//extensions/buildflags",
   ]
 
-  if (enable_extensions) {
+  if (enable_brave_sync) {
     deps += [
       ":js_sync_lib_impl",
     ]
@@ -75,8 +80,6 @@ source_set("core") {
 
 source_set("brave_sync") {
   sources = [
-    "brave_sync_service.cc",
-    "brave_sync_service.h",
     "brave_sync_service_factory.h",
     "brave_sync_service_factory.cc",
     "brave_sync_service_observer.h",
@@ -84,6 +87,7 @@ source_set("brave_sync") {
 
   deps = [
     ":core",
+    "buildflags",
     "//base",
     "//components/bookmarks/browser",
     "//components/keyed_service/content",
@@ -137,6 +141,7 @@ repack("resources") {
   output = "$root_gen_dir/brave/components/brave_sync/brave_sync_resources.pak"
 }
 
+if (!is_android) {
 source_set("testutil") {
   testonly = true
 
@@ -152,4 +157,5 @@ source_set("testutil") {
     "test_util.cc",
     "test_util.h",
   ]
+}
 }

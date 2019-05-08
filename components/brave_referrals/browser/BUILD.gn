@@ -1,21 +1,30 @@
+import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+
 declare_args() {
   brave_referrals_api_key = ""
 }
 
 source_set("browser") {
-  sources = [
-    "brave_referrals_service.cc",
-    "brave_referrals_service.h",
-  ]
-
-  defines = [ "BRAVE_REFERRALS_API_KEY=\"$brave_referrals_api_key\"" ]
-
   deps = [
-    "//base",
-    "//chrome/common",
-    "//components/prefs",
-    "//net",
-    "//services/network/public/cpp",
-    "//skia",
+    "//brave/components/brave_referrals/buildflags",
   ]
+
+  if (enable_brave_referrals) {
+    sources = [
+      "brave_referrals_service.cc",
+      "brave_referrals_service.h",
+    ]
+
+    defines = [ "BRAVE_REFERRALS_API_KEY=\"$brave_referrals_api_key\"" ]
+
+    deps += [
+      "//base",
+      "//brave/common",
+      "//chrome/common",
+      "//components/prefs",
+      "//content/public/browser",
+      "//net",
+      "//services/network/public/cpp",
+    ]
+  }
 }
