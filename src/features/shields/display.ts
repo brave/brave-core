@@ -161,6 +161,7 @@ export const LinkAction = styled<LinkActionProps, any>(Link)`
   font-size: ${p => p.size === 'small' && '12px' || 'inherit'};
   line-height: ${p => p.size === 'small' && '1'};
   font-weight: 500;
+  z-index: 2;
 
   &:focus {
     outline-offset: initial;
