@@ -8,14 +8,11 @@ pipeline {
         timestamps()
     }
     parameters {
-        choice(name: "CHANNEL", choices: ["dev", "beta", "release", "nightly"], description: "")
+        choice(name: "CHANNEL", choices: ["nightly", "dev", "beta", "release"], description: "")
         booleanParam(name: "WIPE_WORKSPACE", defaultValue: false, description: "")
         booleanParam(name: "RUN_INIT", defaultValue: false, description: "")
         booleanParam(name: "DISABLE_SCCACHE", defaultValue: false, description: "")
-        booleanParam(name: "BUILD_LINUX", defaultValue: true, description: "")
-        booleanParam(name: "BUILD_MAC", defaultValue: true, description: "")
-        booleanParam(name: "BUILD_WINDOWS_X64", defaultValue: true, description: "")
-        booleanParam(name: "BUILD_WINDOWS_IA32", defaultValue: false, description: "")
+        // TODO: add SKIP_SIGNING
         booleanParam(name: "DEBUG", defaultValue: false, description: "")
     }
     environment {
@@ -32,17 +29,16 @@ pipeline {
                     WIPE_WORKSPACE = params.WIPE_WORKSPACE
                     RUN_INIT = params.RUN_INIT
                     DISABLE_SCCACHE = params.DISABLE_SCCACHE
-                    BUILD_LINUX = params.BUILD_LINUX
-                    BUILD_MAC = params.BUILD_MAC
-                    BUILD_WINDOWS_X64 = params.BUILD_WINDOWS_X64
-                    BUILD_WINDOWS_IA32 = params.BUILD_WINDOWS_IA32
                     DEBUG = params.DEBUG
-                    BRANCH_TO_BUILD = (env.CHANGE_BRANCH == null ? env.BRANCH_NAME : env.CHANGE_BRANCH)
-                    TARGET_BRANCH = (env.CHANGE_TARGET == null ? BRANCH_TO_BUILD : env.CHANGE_TARGET)
+                    BRANCH_TO_BUILD = (env.CHANGE_BRANCH.equals(null) ? env.BRANCH_NAME : env.CHANGE_BRANCH)
+                    TARGET_BRANCH = (env.CHANGE_TARGET.equals(null) ? BRANCH_TO_BUILD : env.CHANGE_TARGET)
                     BRANCH_EXISTS_IN_BB = httpRequest(url: GITHUB_API + "/brave-browser/branches/" + BRANCH_TO_BUILD, validResponseCodes: "100:499", authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).status.equals(200)
-                    prNumber = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH_TO_BUILD, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0].number
-                    prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls/" + prNumber, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)
-                    SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equals("CI/Skip") }.equals(1)
+                    SKIP = false
+                    if (env.CHANGE_BRANCH) {
+                        prNumber = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH_TO_BUILD, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0].number
+                        prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls/" + prNumber, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)
+                        SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equals("CI/Skip") }.equals(1)
+                    }
                 }
             }
         }
@@ -95,13 +91,6 @@ pipeline {
 
                     cd brave-browser
                     git checkout -b ${BRANCH_TO_BUILD}
-
-                    echo "Pinning brave-core to branch ${BRANCH_TO_BUILD}..."
-                    jq "del(.config.projects[\\"brave-core\\"].branch) | .config.projects[\\"brave-core\\"].branch=\\"${BRANCH_TO_BUILD}\\"" package.json > package.json.new
-                    mv package.json.new package.json
-
-                    echo "Committing..."
-                    git commit --all --message "pin brave-core to branch ${BRANCH_TO_BUILD}"
 
                     echo "Pushing branch ..."
                     git push ${BB_REPO}
@@ -168,8 +157,7 @@ pipeline {
             }
             steps {
                 script {
-                    response = httpRequest(url: GITHUB_API + "/brave-browser/pulls?head=brave:" + BRANCH_TO_BUILD, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG)
-                    prDetails = readJSON(text: response.content)[0]
+                    prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-browser/pulls?head=brave:" + BRANCH_TO_BUILD, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0]
                     prNumber = prDetails ? prDetails.number : ""
                     refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode(BRANCH_TO_BUILD, "UTF-8")
                     params = [
@@ -177,6 +165,7 @@ pipeline {
                         booleanParam(name: "WIPE_WORKSPACE", value: WIPE_WORKSPACE),
                         booleanParam(name: "RUN_INIT", value: RUN_INIT),
                         booleanParam(name: "DISABLE_SCCACHE", value: DISABLE_SCCACHE),
+                        // TODO: add SKIP_SIGNING
                         booleanParam(name: "DEBUG", value: DEBUG)
                     ]
                     currentBuild.result = build(job: "brave-browser-build-pr/" + refToBuild, parameters: params, propagate: false).result
