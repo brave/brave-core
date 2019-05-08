@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_rewards/donations_dialog.h"
+#include "brave/browser/brave_rewards/tip_dialog.h"
 
 #include <memory>
 #include <string>
@@ -33,12 +33,12 @@ constexpr int kDialogMargin = 25;
 constexpr int kDialogMinHeight = 400;
 constexpr int kDialogMaxHeight = 700;
 
-// A ui::WebDialogDelegate that specifies the donation dialog appearance.
-class DonationDialogDelegate : public ui::WebDialogDelegate {
+// A ui::WebDialogDelegate that specifies the tip dialog appearance.
+class TipDialogDelegate : public ui::WebDialogDelegate {
  public:
-  explicit DonationDialogDelegate(WebContents* initiator,
+  explicit TipDialogDelegate(WebContents* initiator,
                                           std::string publisher_key);
-  ~DonationDialogDelegate() override;
+  ~TipDialogDelegate() override;
 
   ui::ModalType GetDialogModalType() const override;
   base::string16 GetDialogTitle() const override;
@@ -55,39 +55,39 @@ class DonationDialogDelegate : public ui::WebDialogDelegate {
   WebContents* initiator_;
   const std::string publisher_key_;
 
-  DISALLOW_COPY_AND_ASSIGN(DonationDialogDelegate);
+  DISALLOW_COPY_AND_ASSIGN(TipDialogDelegate);
 };
 
-DonationDialogDelegate::DonationDialogDelegate(WebContents* initiator,
+TipDialogDelegate::TipDialogDelegate(WebContents* initiator,
                                                     std::string publisher_key)
     : initiator_(initiator),
       publisher_key_(publisher_key) {
 }
 
-DonationDialogDelegate::~DonationDialogDelegate() {
+TipDialogDelegate::~TipDialogDelegate() {
 }
 
-ui::ModalType DonationDialogDelegate::GetDialogModalType() const {
+ui::ModalType TipDialogDelegate::GetDialogModalType() const {
   // Not used, returning dummy value.
   NOTREACHED();
   return ui::MODAL_TYPE_WINDOW;
 }
 
-base::string16 DonationDialogDelegate::GetDialogTitle() const {
+base::string16 TipDialogDelegate::GetDialogTitle() const {
   // Only used on Windows?
   return base::string16();
 }
 
-GURL DonationDialogDelegate::GetDialogContentURL() const {
-  return GURL(kBraveUIDonateURL);
+GURL TipDialogDelegate::GetDialogContentURL() const {
+  return GURL(kBraveUITipURL);
 }
 
-void DonationDialogDelegate::GetWebUIMessageHandlers(
+void TipDialogDelegate::GetWebUIMessageHandlers(
     std::vector<WebUIMessageHandler*>* /* handlers */) const {
-  // DonationsWebUI should add its own message handlers.
+  // TipWebUI should add its own message handlers.
 }
 
-void DonationDialogDelegate::GetDialogSize(gfx::Size* size) const {
+void TipDialogDelegate::GetDialogSize(gfx::Size* size) const {
   DCHECK(size);
 
   gfx::Size target_size;
@@ -110,7 +110,7 @@ void DonationDialogDelegate::GetDialogSize(gfx::Size* size) const {
   size->SetSize(target_size.width() - kDialogMargin, max_height);
 }
 
-std::string DonationDialogDelegate::GetDialogArgs() const {
+std::string TipDialogDelegate::GetDialogArgs() const {
   std::string data;
   base::DictionaryValue dialog_args;
   dialog_args.SetString("publisherKey", publisher_key_);
@@ -118,16 +118,16 @@ std::string DonationDialogDelegate::GetDialogArgs() const {
   return data;
 }
 
-void DonationDialogDelegate::OnDialogClosed(
+void TipDialogDelegate::OnDialogClosed(
     const std::string& /* json_retval */) {
 }
 
-void DonationDialogDelegate::OnCloseContents(WebContents* /* source */,
+void TipDialogDelegate::OnCloseContents(WebContents* /* source */,
                                                  bool* out_close_dialog) {
   *out_close_dialog = true;
 }
 
-bool DonationDialogDelegate::ShouldShowDialogTitle() const {
+bool TipDialogDelegate::ShouldShowDialogTitle() const {
   return false;
 }
 
@@ -135,8 +135,8 @@ bool DonationDialogDelegate::ShouldShowDialogTitle() const {
 
 namespace brave_rewards {
 
-void OpenDonationDialog(WebContents* initiator,
-                        const std::string& publisher_key) {
+void OpenTipDialog(WebContents* initiator,
+                   const std::string& publisher_key) {
   content::WebContents* outermost_web_contents =
     guest_view::GuestViewBase::GetTopLevelWebContents(initiator);
   gfx::Size host_size = outermost_web_contents->GetContainerBounds().size();
@@ -147,7 +147,7 @@ void OpenDonationDialog(WebContents* initiator,
   // resize)
   ShowConstrainedWebDialogWithAutoResize(
       initiator->GetBrowserContext(),
-      std::make_unique<DonationDialogDelegate>(initiator, publisher_key),
+      std::make_unique<TipDialogDelegate>(initiator, publisher_key),
       initiator, min_size, max_size);
 }
 

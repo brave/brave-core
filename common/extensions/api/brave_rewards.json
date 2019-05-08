@@ -340,9 +340,9 @@
         "parameters": []
       },
       {
-        "name": "donateToSite",
+        "name": "tipSite",
         "type": "function",
-        "description": "Allow the user to perform a donation to a tab's site",
+        "description": "Allow the user to perform a tip to a tab's site",
         "parameters": [
           {
             "name": "tabID",

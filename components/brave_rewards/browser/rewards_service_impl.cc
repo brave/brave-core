@@ -2117,11 +2117,11 @@ void RewardsServiceImpl::OnPublisherBanner(
   std::move(callback).Run(std::move(new_banner));
 }
 
-void RewardsServiceImpl::OnDonate_PublisherInfoSaved(ledger::Result result,
+void RewardsServiceImpl::OnTipPublisherInfoSaved(ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info) {
 }
 
-void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount,
+void RewardsServiceImpl::OnTip(const std::string& publisher_key, int amount,
   bool recurring, const ledger::PublisherInfo* publisher_info) {
   if (recurring) {
     // TODO(nejczdovc): this needs to be wired through ledger code
@@ -2130,7 +2130,7 @@ void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount,
       auto publisher_copy = std::make_unique<ledger::PublisherInfo>(
         *publisher_info);
       SavePublisherInfo(std::move(publisher_copy),
-        std::bind(&RewardsServiceImpl::OnDonate_PublisherInfoSaved,
+        std::bind(&RewardsServiceImpl::OnTipPublisherInfoSaved,
             this, _1, _2));
     }
 
@@ -2143,7 +2143,7 @@ void RewardsServiceImpl::OnDonate(const std::string& publisher_key, int amount,
 
   ledger::PublisherInfo publisher(publisher_key);
 
-  bat_ledger_->DoDirectDonation(publisher.ToJson(), amount, "BAT");
+  bat_ledger_->DoDirectTip(publisher.ToJson(), amount, "BAT");
 }
 
 bool SaveContributionInfoOnFileTaskRunner(
@@ -2596,7 +2596,7 @@ void RewardsServiceImpl::GetRewardsInternalsInfo(
                      AsWeakPtr(), std::move(callback)));
 }
 
-void RewardsServiceImpl::OnDonate(
+void RewardsServiceImpl::OnTip(
     const std::string& publisher_key,
     int amount,
     bool recurring,
@@ -2615,7 +2615,7 @@ void RewardsServiceImpl::OnDonate(
   info.provider = site->provider;
   info.favicon_url = site->favicon_url;
 
-  OnDonate(publisher_key, amount, recurring, &info);
+  OnTip(publisher_key, amount, recurring, &info);
 }
 
 bool RewardsServiceImpl::Connected() const {

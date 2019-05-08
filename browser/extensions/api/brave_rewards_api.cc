@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/bind.h"
-#include "brave/browser/brave_rewards/donations_dialog.h"
+#include "brave/browser/brave_rewards/tip_dialog.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
@@ -41,19 +41,19 @@ ExtensionFunction::ResponseAction BraveRewardsCreateWalletFunction::Run() {
   return RespondNow(NoArguments());
 }
 
-BraveRewardsDonateToSiteFunction::~BraveRewardsDonateToSiteFunction() {
+BraveRewardsTipSiteFunction::~BraveRewardsTipSiteFunction() {
 }
 
-ExtensionFunction::ResponseAction BraveRewardsDonateToSiteFunction::Run() {
-  std::unique_ptr<brave_rewards::DonateToSite::Params> params(
-      brave_rewards::DonateToSite::Params::Create(*args_));
+ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
+  std::unique_ptr<brave_rewards::TipSite::Params> params(
+      brave_rewards::TipSite::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  // Sanity check: don't allow donations in private / tor contexts,
+  // Sanity check: don't allow tips in private / tor contexts,
   // although the command should not have been enabled in the first place.
   Profile* profile = Profile::FromBrowserContext(browser_context());
   if (profile->IsOffTheRecord()) {
-    return RespondNow(Error("Cannot donate to site in a private context"));
+    return RespondNow(Error("Cannot tip to site in a private context"));
   }
 
   // Get web contents for this tab
@@ -69,7 +69,7 @@ ExtensionFunction::ResponseAction BraveRewardsDonateToSiteFunction::Run() {
     return RespondNow(Error(tabs_constants::kTabNotFoundError,
                             base::IntToString(params->tab_id)));
   }
-  ::brave_rewards::OpenDonationDialog(contents, params->publisher_key);
+  ::brave_rewards::OpenTipDialog(contents, params->publisher_key);
 
   return RespondNow(NoArguments());
 }

@@ -266,9 +266,9 @@ class RewardsServiceImpl : public RewardsService,
                                   const std::string& value);
   void OnResetState(ledger::OnResetCallback callback,
                                  bool success);
-  void OnDonate_PublisherInfoSaved(ledger::Result result,
+  void OnTipPublisherInfoSaved(ledger::Result result,
                                    std::unique_ptr<ledger::PublisherInfo> info);
-  void OnDonate(const std::string& publisher_key,
+  void OnTip(const std::string& publisher_key,
                 int amount,
                 bool recurring,
                 const ledger::PublisherInfo* publisher_info = NULL) override;
@@ -292,7 +292,7 @@ class RewardsServiceImpl : public RewardsService,
       std::unique_ptr<ledger::PublisherInfoList> list);
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
-  void OnDonate(const std::string& publisher_key, int amount, bool recurring,
+  void OnTip(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
 
   void DeleteActivityInfo(const std::string& publisher_key);

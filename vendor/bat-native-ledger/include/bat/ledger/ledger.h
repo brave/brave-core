@@ -88,7 +88,7 @@ class LEDGER_EXPORT Ledger {
   virtual void AddRecurringPayment(const std::string& publisher_id,
                                    const double& value) = 0;
 
-  virtual void DoDirectDonation(const PublisherInfo& publisher,
+  virtual void DoDirectTip(const PublisherInfo& publisher,
                                 int amount,
                                 const std::string& currency) = 0;
 
@@ -146,8 +146,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetMediaPublisherInfo(const std::string& media_key,
                                 PublisherInfoCallback callback) = 0;
-
-  virtual std::vector<ContributionInfo> GetRecurringDonationPublisherInfo() = 0;
 
   virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
                                     const ledger::ActivityInfoFilter& filter,

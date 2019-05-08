@@ -108,11 +108,11 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD2(GetPublisherBanner,
       void(const std::string&,
            brave_rewards::GetPublisherBannerCallback));
-  MOCK_METHOD4(OnDonate, void(const std::string&,
+  MOCK_METHOD4(OnTip, void(const std::string&,
                               int,
                               bool,
                               const ledger::PublisherInfo*));
-  MOCK_METHOD4(OnDonate, void(const std::string&,
+  MOCK_METHOD4(OnTip, void(const std::string&,
                               int,
                               bool,
                               std::unique_ptr<brave_rewards::ContentSite>));

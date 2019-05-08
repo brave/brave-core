@@ -17,8 +17,8 @@ LEDGER_EXPORT enum ReportType {
   AUTO_CONTRIBUTION = 1,
   DEPOSIT = 2,
   ADS = 3,
-  DONATION_RECURRING = 4,
-  DONATION = 5
+  TIP_RECURRING = 4,
+  TIP = 5
 };
 
 LEDGER_EXPORT struct BalanceReportInfo {

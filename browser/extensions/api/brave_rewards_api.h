@@ -26,12 +26,12 @@ class BraveRewardsCreateWalletFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsDonateToSiteFunction : public UIThreadExtensionFunction {
+class BraveRewardsTipSiteFunction : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.donateToSite", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.tipSite", UNKNOWN)
 
  protected:
-  ~BraveRewardsDonateToSiteFunction() override;
+  ~BraveRewardsTipSiteFunction() override;
 
   ResponseAction Run() override;
 };

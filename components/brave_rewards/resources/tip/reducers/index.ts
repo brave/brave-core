@@ -5,8 +5,8 @@
 import { combineReducers } from 'redux'
 
 // Utils
-import donateReducer from './donate_reducer'
+import tipReducer from './tip_reducer'
 
-export default combineReducers<RewardsDonate.ApplicationState>({
-  rewardsDonateData: donateReducer
+export default combineReducers<RewardsTip.ApplicationState>({
+  rewardsDonateData: tipReducer
 })

@@ -82,7 +82,7 @@ LEDGER_EXPORT struct ContributionInfo {
   const std::string ToJson() const;
   bool loadFromJson(const std::string& json);
 
-  std::string publisher;  // Filled only for recurrent donations
+  std::string publisher;  // Filled only for recurrent tips
   double value;
   uint64_t date;
 };

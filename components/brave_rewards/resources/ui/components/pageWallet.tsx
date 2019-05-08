@@ -433,7 +433,7 @@ class PageWallet extends React.Component<Props, State> {
                   }
                 },
                 {
-                  text: 'Recurring Donations',
+                  text: 'Recurring Tips',
                   type: 'recurring',
                   notPaid: true,
                   token: {
@@ -443,7 +443,7 @@ class PageWallet extends React.Component<Props, State> {
                   }
                 },
                 {
-                  text: 'One-time Donations/Tips',
+                  text: 'One-timen Tips',
                   type: 'donations',
                   token: {
                     value: '19.0',

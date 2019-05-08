@@ -837,12 +837,12 @@ void BatContribution::OnReconcileComplete(ledger::Result result,
                                           const std::string& viewing_id,
                                           int category,
                                           const std::string& probi) {
-  // Start the timer again if it wasn't a direct donation
+  // Start the timer again if it wasn't a direct tip
   if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
     ResetReconcileStamp();
   }
 
-  // Trigger auto contribute after recurring donation
+  // Trigger auto contribute after recurring tip
   if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
     StartAutoContribute();
   }
@@ -884,7 +884,7 @@ void BatContribution::GetReconcileWinners(const std::string& viewing_id) {
     }
 
     case ledger::REWARDS_CATEGORY::RECURRING_TIP: {
-      GetDonationWinners(ballots_count, viewing_id, reconcile.list_);
+      GetTipsWinners(ballots_count, viewing_id, reconcile.list_);
       break;
     }
 
@@ -951,7 +951,7 @@ void BatContribution::GetContributeWinners(
   VotePublishers(res, viewing_id);
 }
 
-void BatContribution::GetDonationWinners(
+void BatContribution::GetTipsWinners(
     const unsigned int ballots,
     const std::string& viewing_id,
     const braveledger_bat_helper::PublisherList& list) {
@@ -1528,7 +1528,7 @@ void BatContribution::OnReconcileCompleteSuccess(
   if (category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP) {
     ledger_->SetBalanceReportItem(month,
                                   year,
-                                  ledger::ReportType::DONATION,
+                                  ledger::ReportType::TIP,
                                   probi);
     auto reconcile = ledger_->GetReconcileById(viewing_id);
     auto donations = reconcile.directions_;
@@ -1548,7 +1548,7 @@ void BatContribution::OnReconcileCompleteSuccess(
     auto reconcile = ledger_->GetReconcileById(viewing_id);
     ledger_->SetBalanceReportItem(month,
                                   year,
-                                  ledger::ReportType::DONATION_RECURRING,
+                                  ledger::ReportType::TIP_RECURRING,
                                   probi);
     for (auto &publisher : reconcile.list_) {
       // TODO(nejczdovc) remove when we completely switch to probi

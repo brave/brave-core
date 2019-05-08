@@ -117,7 +117,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void GetPublisherBanner(const std::string& publisher_id,
       GetPublisherBannerCallback callback) override;
 
-  void DoDirectDonation(const std::string& publisher_info, int32_t amount,
+  void DoDirectTip(const std::string& publisher_info, int32_t amount,
       const std::string& currency) override;
 
   void RemoveRecurringTip(const std::string& publisher_key) override;

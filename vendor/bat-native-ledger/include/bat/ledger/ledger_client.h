@@ -58,7 +58,6 @@ using PublisherInfoListCallback =
     std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
 using GetNicewareListCallback =
     std::function<void(Result, const std::string&)>;
-using RecurringDonationCallback = std::function<void(const PublisherInfoList&)>;
 using RecurringRemoveCallback = std::function<void(Result)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
 using LoadURLCallback = std::function<void(const int, const std::string&,

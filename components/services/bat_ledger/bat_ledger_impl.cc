@@ -344,12 +344,12 @@ void BatLedgerImpl::GetContributionAmount(
   std::move(callback).Run(ledger_->GetContributionAmount());
 }
 
-void BatLedgerImpl::DoDirectDonation(const std::string& publisher_info,
+void BatLedgerImpl::DoDirectTip(const std::string& publisher_info,
                                      int32_t amount,
                                      const std::string& currency) {
   ledger::PublisherInfo info;
   if (info.loadFromJson(publisher_info))
-    ledger_->DoDirectDonation(info, amount, currency);
+    ledger_->DoDirectTip(info, amount, currency);
 }
 
 void BatLedgerImpl::RemoveRecurringTip(const std::string& publisher_key) {

@@ -13,15 +13,15 @@ extern const char kRewardsInternalsHost[];
 extern const char kRewardsJS[];
 extern const char kWelcomeHost[];
 extern const char kWelcomeJS[];
-extern const char kDonateHost[];
-extern const char kDonateJS[];
+extern const char kTipHost[];
+extern const char kTipJS[];
 extern const char kBraveNewTabJS[];
 extern const char kBraveUISyncHost[];
 extern const char kBraveSyncJS[];
 extern const char kBraveUIRewardsURL[];
 extern const char kBraveUIAdblockURL[];
-extern const char kBraveUIDonateHost[];
-extern const char kBraveUIDonateURL[];
+extern const char kBraveUITipHost[];
+extern const char kBraveUITipURL[];
 extern const char kBraveUISyncURL[];
 
 #endif  // BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_

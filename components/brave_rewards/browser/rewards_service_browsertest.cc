@@ -378,9 +378,9 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
         ASSERT_TRUE(base::ReadFileToString(
             path.AppendASCII("wallet_balance_contributed_resp.json"),
             &brave_test_resp::wallet_));
-      } else if (donation_made_) {
+      } else if (tip_made) {
         ASSERT_TRUE(base::ReadFileToString(
-            path.AppendASCII("wallet_balance_donated_resp.json"),
+            path.AppendASCII("wallet_balance_tipped_resp.json"),
             &brave_test_resp::wallet_));
       } else {
         ASSERT_TRUE(base::ReadFileToString(
@@ -642,10 +642,10 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END));
 
-    // Signal that direct donation was made and update wallet with new
+    // Signal that direct tip was made and update wallet with new
     // balance
     if (!monthly) {
-      donation_made_ = true;
+      tip_made = true;
       UpdateTestData();
     }
 
@@ -865,7 +865,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
   unsigned int reconcile_status_ = ledger::LEDGER_ERROR;
 
   bool contribution_made_ = false;
-  bool donation_made_ = false;
+  bool tip_made = false;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
