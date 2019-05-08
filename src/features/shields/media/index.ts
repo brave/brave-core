@@ -7,7 +7,6 @@ import { StyledComponentClass } from 'styled-components'
 import { CaratStrongDownIcon, ShieldAlertIcon } from '../../../components/icons'
 
 import { ComponentType } from 'react'
-import palette from '../../../theme/colors'
 
 // rotated variants
 function RotatedIconComponent (
@@ -24,7 +23,7 @@ export const ShieldIcon = styled(ShieldAlertIcon as ComponentType)`
   display: block;
   width: 36px;
   margin: auto;
-  color: ${palette.grey500};
+  color: ${p => p.theme.color.lionLogo};
 `
 
 export const ArrowDownIcon = styled(CaratStrongDownIcon as ComponentType)`
@@ -44,4 +43,4 @@ export const ArrowDownIcon = styled(CaratStrongDownIcon as ComponentType)`
   }
 `
 
-export const ArrowUpIcon = RotatedIconComponent(ArrowDownIcon, 90)
+export const ArrowUpIcon = RotatedIconComponent(ArrowDownIcon, 180)

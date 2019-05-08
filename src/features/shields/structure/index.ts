@@ -286,6 +286,7 @@ export const BlockedListItem = styled<{}, 'li'>('li')`
   margin: auto 0;
   white-space: nowrap;
   user-select: all;
+  font-weight: 500;
   color: ${p => p.theme.color.text}
 `
 

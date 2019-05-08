@@ -19,6 +19,9 @@ import {
   ShieldsButton
 } from '../../../../../src/features/shields'
 
+// Helpers
+import { stripProtocolFromUrl } from '../../helpers'
+
 // Fake data
 import { getLocale } from '../../fakeLocale'
 
@@ -47,7 +50,7 @@ export default class StaticList extends React.PureComponent<Props, {}> {
           <BlockedListSummaryText>{name}</BlockedListSummaryText>
           </BlockedListSummary>
           <BlockedListStatic>
-            {list.map((item, index) => <BlockedListItem key={index}>{item}</BlockedListItem>)}
+            {list.map((item, index) => <BlockedListItem key={index}>{stripProtocolFromUrl(item)}</BlockedListItem>)}
           </BlockedListStatic>
         </details>
         <BlockedListFooter>

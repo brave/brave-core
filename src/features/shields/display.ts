@@ -33,7 +33,7 @@ interface ToggleStateTextProps {
 
 export const ToggleStateText = styled<ToggleStateTextProps, 'span'>('span')`
   box-sizing: border-box;
-  color: ${p => p.status === 'enabled' ? p => p.theme.color.brandBrave : p.theme.color.text};
+  color: ${p => p.status === 'enabled' ? p => p.theme.color.brandBrave : p.theme.color.disabledResourceBlocked};
   font-size: inherit;
   text-transform: uppercase;
   font-style: normal;
