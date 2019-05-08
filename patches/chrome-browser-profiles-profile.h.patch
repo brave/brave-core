@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile.h b/chrome/browser/profiles/profile.h
-index e77d8abd660192a6d7b5a444542ad17f20fe8674..3e60e2a64507552edadbddaa2ef27d282b37f204 100644
+index 737f5f8b8193b0d51b4e78c6b60604d0c0119246..b38eeccb38407e77e9330f2122d42769b41aa7d1 100644
 --- a/chrome/browser/profiles/profile.h
 +++ b/chrome/browser/profiles/profile.h
 @@ -292,6 +292,8 @@ class Profile : public content::BrowserContext {
