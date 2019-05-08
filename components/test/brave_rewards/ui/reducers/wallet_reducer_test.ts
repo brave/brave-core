@@ -7,6 +7,7 @@ import reducers from '../../../../brave_rewards/resources/ui/reducers/index'
 import * as actions from '../../../../brave_rewards/resources/ui/actions/rewards_actions'
 import { types } from '../../../../brave_rewards/resources/ui/constants/rewards_types'
 import { defaultState } from '../../../../brave_rewards/resources/ui/storage'
+import { getMockChrome } from '../../../testData'
 
 describe('wallet reducer', () => {
   const constantDate = new Date('2018-01-01T12:00:00')
@@ -66,6 +67,77 @@ describe('wallet reducer', () => {
 
       const expectedState: Rewards.State = { ...defaultState }
       expectedState.walletCreateFailed = true
+
+      expect(assertion).toEqual({
+        rewardsData: expectedState
+      })
+    })
+  })
+
+  describe('ON_RECOVER_WALLET_DATA', () => {
+    let chromeSpy: jest.SpyInstance
+
+    (global as any).chrome = getMockChrome()
+
+    beforeEach(() => {
+      chromeSpy = jest.spyOn(chrome, 'send')
+    })
+
+    afterEach(() => {
+      chromeSpy.mockRestore()
+    })
+
+    it('failed to recover', () => {
+      const assertion = reducers({ ...defaultState }, {
+        type: types.ON_RECOVER_WALLET_DATA,
+        payload: {
+          properties: {
+            result: 2 // non-zero result
+          }
+        }
+      })
+
+      const expectedState: Rewards.State = { ...defaultState }
+      expectedState.ui.walletCorrupted = true
+
+      // No chrome.send calls should be made in the event of a failure
+      expect(chromeSpy).toHaveBeenCalledTimes(0)
+      expect(assertion).toEqual({
+        rewardsData: expectedState
+      })
+    })
+
+    it('recovered successfully', () => {
+      const assertion = reducers({ ...defaultState }, {
+        type: types.ON_RECOVER_WALLET_DATA,
+        payload: {
+          properties: {
+            result: 0,
+            balance: 5,
+            grants: []
+          }
+        }
+      })
+
+      const expectedState = {
+        ...defaultState,
+        grants: [],
+        walletInfo: {
+          ...defaultState.walletInfo,
+          balance: 5
+        },
+        ui: {
+          ...defaultState.ui,
+          emptyWallet: false,
+          modalBackup: false,
+          walletCorrupted: false
+        }
+      }
+
+      expect(chromeSpy).toHaveBeenCalledTimes(3)
+      expect(chromeSpy.mock.calls[0][0]).toEqual('brave_rewards.getWalletPassphrase')
+      expect(chromeSpy.mock.calls[1][0]).toEqual('brave_rewards.getAddresses')
+      expect(chromeSpy.mock.calls[2][0]).toEqual('brave_rewards.getGrants')
 
       expect(assertion).toEqual({
         rewardsData: expectedState
