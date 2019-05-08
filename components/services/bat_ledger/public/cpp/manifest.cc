@@ -23,7 +23,9 @@ const service_manager::Manifest& GetManifest() {
                           kSharedAcrossGroups)
                   .WithExecutionMode(service_manager::Manifest::ExecutionMode::
                                          kOutOfProcessBuiltin)
+#if !defined(OS_ANDROID)
                   .WithSandboxType("none")
+#endif
                   .Build())
           .ExposeCapability(
               "bat_ledger",
