@@ -164,9 +164,9 @@ class RewardsService : public KeyedService {
       const GetContributionAmountCallback& callback) = 0;
   virtual void GetPublisherBanner(const std::string& publisher_id,
                                   GetPublisherBannerCallback callback) = 0;
-  virtual void OnDonate(const std::string& publisher_key, int amount,
+  virtual void OnTip(const std::string& publisher_key, int amount,
       bool recurring, const ledger::PublisherInfo* publisher_info = NULL) = 0;
-  virtual void OnDonate(const std::string& publisher_key, int amount,
+  virtual void OnTip(const std::string& publisher_key, int amount,
       bool recurring, std::unique_ptr<brave_rewards::ContentSite> site) = 0;
   virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
   virtual void GetRecurringTipsUI(GetRecurringTipsCallback callback) = 0;

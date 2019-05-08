@@ -269,7 +269,7 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
       site->provider = publisher.provider;
 
       // Add `recurring_donation` entry
-      rewards_service->OnDonate(publisher.key,
+      rewards_service->OnTip(publisher.key,
                                 amount_in_bat,
                                 true,
                                 std::move(site));

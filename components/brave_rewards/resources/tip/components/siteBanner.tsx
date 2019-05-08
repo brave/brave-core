@@ -11,11 +11,11 @@ import { SiteBanner } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
 
 // Utils
-import * as donateActions from '../actions/donate_actions'
+import * as tipActions from '../actions/tip_actions'
 import * as utils from '../utils'
 
-interface Props extends RewardsDonate.ComponentProps {
-  publisher: RewardsDonate.Publisher
+interface Props extends RewardsTip.ComponentProps {
+  publisher: RewardsTip.Publisher
 }
 
 interface State {
@@ -68,13 +68,13 @@ class Banner extends React.Component<Props, State> {
     })
   }
 
-  onDonate = (amount: string, recurring: boolean) => {
+  onTip = (amount: string, recurring: boolean) => {
     const { walletInfo } = this.props.rewardsDonateData
     const { balance } = walletInfo
     const publisher = this.props.publisher
 
     if (publisher.publisherKey && balance >= parseInt(amount, 10)) {
-      this.actions.onDonate(publisher.publisherKey, amount, recurring)
+      this.actions.onTip(publisher.publisherKey, amount, recurring)
     } else {
       // TODO return error
     }
@@ -104,14 +104,14 @@ class Banner extends React.Component<Props, State> {
     return result
   }
 
-  hasRecurringDonation = (publisherKey?: string) => {
+  hasRecurringTip = (publisherKey?: string) => {
     const { recurringDonations } = this.props.rewardsDonateData
 
     if (!publisherKey || !recurringDonations) {
       return false
     }
 
-    const recurringDonation = recurringDonations.find((donation: RewardsDonate.RecurringTips) => {
+    const recurringDonation = recurringDonations.find((donation: RewardsTip.RecurringTips) => {
       return donation.publisherKey === publisherKey
     })
 
@@ -145,13 +145,13 @@ class Banner extends React.Component<Props, State> {
         title={publisher.title}
         name={publisher.name}
         provider={publisher.provider as Provider}
-        recurringDonation={this.hasRecurringDonation(publisher.publisherKey)}
+        recurringDonation={this.hasRecurringTip(publisher.publisherKey)}
         balance={balance.toString() || '0'}
         bgImage={publisher.background}
         logo={logo}
         donationAmounts={this.generateAmounts()}
         logoBgColor={''}
-        onDonate={this.onDonate}
+        onDonate={this.onTip}
         onAmountSelection={this.onAmountSelection}
         currentAmount={this.state.currentAmount || '0'}
         onClose={this.onClose}
@@ -166,12 +166,12 @@ class Banner extends React.Component<Props, State> {
   }
 }
 
-const mapStateToProps = (state: RewardsDonate.ApplicationState) => ({
+const mapStateToProps = (state: RewardsTip.ApplicationState) => ({
   rewardsDonateData: state.rewardsDonateData
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  actions: bindActionCreators(donateActions, dispatch)
+  actions: bindActionCreators(tipActions, dispatch)
 })
 
 export default connect(

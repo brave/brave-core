@@ -129,7 +129,7 @@ export const onCurrentTips = (list: Rewards.Publisher[]) => action(types.ON_CURR
   list
 })
 
-export const getDonationTable = () => action(types.GET_DONATION_TABLE)
+export const getTipTable = () => action(types.GET_TIP_TABLE)
 
 export const getContributeList = () => action(types.GET_CONTRIBUTE_LIST)
 

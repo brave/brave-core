@@ -5,22 +5,22 @@
 import { action } from 'typesafe-actions'
 
 // Constant
-import { types } from '../constants/donate_types'
+import { types } from '../constants/tip_types'
 
 export const onCloseDialog = () => action(types.ON_CLOSE_DIALOG)
 
-export const onPublisherBanner = (data: RewardsDonate.Publisher) => action(types.ON_PUBLISHER_BANNER, {
+export const onPublisherBanner = (data: RewardsTip.Publisher) => action(types.ON_PUBLISHER_BANNER, {
   data
 })
 
 export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
 
-export const onWalletProperties = (properties: {status: number, wallet: RewardsDonate.WalletProperties}) =>
+export const onWalletProperties = (properties: {status: number, wallet: RewardsTip.WalletProperties}) =>
   action(types.ON_WALLET_PROPERTIES, {
     properties
   })
 
-export const onDonate = (publisherKey: string, amount: number, recurring: boolean) => action(types.ON_DONATE, {
+export const onTip = (publisherKey: string, amount: number, recurring: boolean) => action(types.ON_TIP, {
   publisherKey,
   amount,
   recurring
@@ -28,7 +28,7 @@ export const onDonate = (publisherKey: string, amount: number, recurring: boolea
 
 export const getRecurringTips = () => action(types.GET_RECURRING_TIPS)
 
-export const onRecurringTips = (list: RewardsDonate.RecurringTips[]) => action(types.ON_RECURRING_TIPS, {
+export const onRecurringTips = (list: RewardsTip.RecurringTips[]) => action(types.ON_RECURRING_TIPS, {
   list
 })
 

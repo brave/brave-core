@@ -19,7 +19,7 @@
 #include "url/gurl.h"
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/browser/ui/webui/brave_donate_ui.h"
+#include "brave/browser/ui/webui/brave_tip_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
 #endif
@@ -52,8 +52,8 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new BraveRewardsUI(web_ui, url.host());
   } else if (host == kRewardsInternalsHost) {
     return new BraveRewardsInternalsUI(web_ui, url.host());
-  } else if (host == kDonateHost) {
-    return new BraveDonateUI(web_ui, url.host());
+  } else if (host == kTipHost) {
+    return new BraveTipUI(web_ui, url.host());
 #endif
   } else if (host == kWelcomeHost) {
     return new BraveWelcomeUI(web_ui, url.host());
@@ -74,7 +74,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
       url.host_piece() == kRewardsHost ||
       url.host_piece() == kRewardsInternalsHost ||
-      url.host_piece() == kDonateHost ||
+      url.host_piece() == kTipHost ||
 #endif
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == chrome::kChromeUIWelcomeURL ||

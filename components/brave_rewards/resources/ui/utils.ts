@@ -117,7 +117,7 @@ export const convertProbiToFixed = (probi: string, places: number = 1) => {
   return result
 }
 
-export const donationTotal = (report: Rewards.Report) => {
+export const tipsTotal = (report: Rewards.Report) => {
   if (!report) {
     return '0.0'
   }

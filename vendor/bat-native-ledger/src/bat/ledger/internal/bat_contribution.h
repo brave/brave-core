@@ -177,7 +177,7 @@ class BatContribution {
   // Resets reconcile stamps
   void ResetReconcileStamp();
 
-  // Fetches recurring donations that will be then used for the contribution.
+  // Fetches recurring tips that will be then used for the contribution.
   // This is called from global timer in impl.
   void OnTimerReconcile();
 
@@ -244,7 +244,7 @@ class BatContribution {
                             const std::string& viewing_id,
                             const braveledger_bat_helper::PublisherList& list);
 
-  void GetDonationWinners(const unsigned int ballots,
+  void GetTipsWinners(const unsigned int ballots,
                           const std::string& viewing_id,
                           const braveledger_bat_helper::PublisherList& list);
 

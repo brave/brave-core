@@ -12,7 +12,7 @@ import { DisabledBox, MainToggle, SettingsPage as Page } from 'brave-ui/features
 import PageWallet from './pageWallet'
 import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
-import DonationBox from './donationsBox'
+import TipBox from './tipsBox'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
@@ -34,7 +34,7 @@ class SettingsPage extends React.Component<Props, {}> {
 
   refreshActions () {
     this.actions.getCurrentReport()
-    this.actions.getDonationTable()
+    this.actions.getTipTable()
     this.actions.getContributeList()
     this.actions.getPendingContributionsTotal()
     this.actions.getReconcileStamp()
@@ -158,7 +158,7 @@ class SettingsPage extends React.Component<Props, {}> {
             }
             <AdsBox />
             <ContributeBox />
-            <DonationBox />
+            <TipBox />
           </Column>
           <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             {

@@ -661,20 +661,6 @@ void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
   }
 }
 
-std::vector<ledger::ContributionInfo>
-BatPublishers::GetRecurringDonationList() {
-  std::vector<ledger::ContributionInfo> res;
-
-  for (const auto & e : state_->recurring_donation_) {
-    ledger::ContributionInfo info;
-    info.publisher = e.first;
-    info.value = e.second;
-    res.push_back(info);
-  }
-
-  return res;
-}
-
 void BatPublishers::RefreshPublishersList(const std::string& json) {
   ledger_->SavePublishersList(json);
   loadPublisherList(json);
@@ -793,11 +779,11 @@ void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
       report_info.auto_contribute_ =
           braveledger_bat_bignum::sum(report_info.auto_contribute_, probi);
       break;
-    case ledger::ReportType::DONATION:
+    case ledger::ReportType::TIP:
       report_info.one_time_donation_ =
           braveledger_bat_bignum::sum(report_info.one_time_donation_, probi);
       break;
-    case ledger::ReportType::DONATION_RECURRING:
+    case ledger::ReportType::TIP_RECURRING:
       report_info.recurring_donation_ =
           braveledger_bat_bignum::sum(report_info.recurring_donation_, probi);
       break;

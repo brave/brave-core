@@ -446,11 +446,6 @@ void LedgerImpl::LoadNicewareList(ledger::GetNicewareListCallback callback) {
   ledger_client_->LoadNicewareList(callback);
 }
 
-std::vector<ledger::ContributionInfo>
-LedgerImpl::GetRecurringDonationPublisherInfo() {
-  return bat_publishers_->GetRecurringDonationList();
-}
-
 void LedgerImpl::ModifyPublisherVerified(
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> publisher,
@@ -786,7 +781,7 @@ void LedgerImpl::SaveUnverifiedContribution(
   ledger_client_->SavePendingContribution(list);
 }
 
-void LedgerImpl::DoDirectDonation(const ledger::PublisherInfo& publisher,
+void LedgerImpl::DoDirectTip(const ledger::PublisherInfo& publisher,
                                   int amount,
                                   const std::string& currency) {
   if (publisher.id.empty()) {

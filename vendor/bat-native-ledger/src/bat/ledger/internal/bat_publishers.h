@@ -88,8 +88,6 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   std::string GetBalanceReportName(ledger::ACTIVITY_MONTH month, int year);
 
-  std::vector<ledger::ContributionInfo> GetRecurringDonationList();
-
   void RefreshPublishersList(const std::string & pubs_list);
 
   void OnPublishersListSaved(ledger::Result result) override;

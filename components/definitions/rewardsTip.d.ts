@@ -1,4 +1,4 @@
-declare namespace RewardsDonate {
+declare namespace RewardsTip {
   interface State {
     publishers: Record<string, Publisher>
     walletInfo: WalletProperties
@@ -11,12 +11,12 @@ declare namespace RewardsDonate {
   }
 
   interface ApplicationState {
-    rewardsDonateData: State | undefined
+    rewardsDonateData: State | undefined  // TODO(nejczdovc): migrate to tips
   }
 
   interface ComponentProps {
     actions: any
-    rewardsDonateData: State
+    rewardsDonateData: State  // TODO(nejczdovc): migrate to tips
   }
 
   interface Publisher {

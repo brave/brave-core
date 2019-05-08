@@ -96,9 +96,9 @@ void CustomizeWebUIHTMLSource(const std::string &name,
       std::string("adblock"), {
       }
     }, {
-      std::string("donate"), {
-        { "2e7994eaf768ee4a99272ea96cb39849.svg", IDR_BRAVE_DONATE_BG_1 },
-        { "4364e454dba7ea966b117f643832e871.svg", IDR_BRAVE_DONATE_BG_2 },
+      std::string("tip"), {
+        { "2e7994eaf768ee4a99272ea96cb39849.svg", IDR_BRAVE_TIP_BG_1 },
+        { "4364e454dba7ea966b117f643832e871.svg", IDR_BRAVE_TIP_BG_2 },
       }
     }
   };
@@ -546,7 +546,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "customFiltersInstructions", IDS_ADBLOCK_CUSTOM_FILTERS_INSTRUCTIONS },                // NOLINT
       }
     }, {
-      std::string("donate"), {
+      std::string("tip"), {
         { "about", IDS_BRAVE_UI_ABOUT },
         { "addFunds", IDS_BRAVE_UI_ADD_FUNDS },
         { "autoTipText", IDS_BRAVE_UI_AUTO_TIP_TEXT },

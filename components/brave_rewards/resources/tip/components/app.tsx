@@ -11,9 +11,9 @@ import Banner from './siteBanner'
 import DonationOverlay from 'brave-ui/features/rewards/donationOverlay'
 
 // Utils
-import * as rewardsActions from '../actions/donate_actions'
+import * as rewardsActions from '../actions/tip_actions'
 
-interface Props extends RewardsDonate.ComponentProps {
+interface Props extends RewardsTip.ComponentProps {
   publisherKey: string
 }
 
@@ -27,7 +27,7 @@ export class App extends React.Component<Props, {}> {
     this.actions.onCloseDialog()
   }
 
-  generateDonationOverlay = (publisher: RewardsDonate.Publisher) => {
+  generateTipOverlay = (publisher: RewardsTip.Publisher) => {
     let domain = ''
     let monthlyDate
     const {
@@ -102,7 +102,7 @@ export class App extends React.Component<Props, {}> {
         }
         {
           finished
-          ? this.generateDonationOverlay(publisher)
+          ? this.generateTipOverlay(publisher)
           : null
         }
       </>
@@ -110,7 +110,7 @@ export class App extends React.Component<Props, {}> {
   }
 }
 
-export const mapStateToProps = (state: RewardsDonate.ApplicationState) => ({
+export const mapStateToProps = (state: RewardsTip.ApplicationState) => ({
   rewardsDonateData: state.rewardsDonateData
 })
 

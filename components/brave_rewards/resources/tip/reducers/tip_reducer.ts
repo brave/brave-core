@@ -5,9 +5,9 @@
 import { Reducer } from 'redux'
 
 // Constant
-import { types } from '../constants/donate_types'
+import { types } from '../constants/tip_types'
 
-export const defaultState: RewardsDonate.State = {
+export const defaultState: RewardsTip.State = {
   finished: false,
   error: false,
   publishers: {},
@@ -22,7 +22,7 @@ export const defaultState: RewardsDonate.State = {
   reconcileStamp: 0
 }
 
-const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.State = defaultState, action) => {
+const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = defaultState, action) => {
   const payload = action.payload
 
   switch (action.type) {
@@ -36,14 +36,14 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
       if (!state.publishers) {
         state.publishers = {}
       }
-      const publisher: RewardsDonate.Publisher = payload.data
+      const publisher: RewardsTip.Publisher = payload.data
       if (publisher && publisher.publisherKey) {
         state.publishers[publisher.publisherKey] = publisher
       }
       break
     }
     case types.GET_WALLET_PROPERTIES:
-      chrome.send('brave_rewards_donate.getWalletProperties')
+      chrome.send('brave_rewards_tip.getWalletProperties')
       break
     case types.ON_WALLET_PROPERTIES: {
       state = { ...state }
@@ -52,10 +52,10 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
       }
       break
     }
-    case types.ON_DONATE: {
+    case types.ON_TIP: {
       if (payload.publisherKey && payload.amount > 0) {
         let amount = parseInt(payload.amount, 10)
-        chrome.send('brave_rewards_donate.onDonate', [
+        chrome.send('brave_rewards_tip.onTip', [
           payload.publisherKey,
           amount,
           payload.recurring
@@ -72,7 +72,7 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
     case types.GET_RECURRING_TIPS:
     case types.ON_RECURRING_TIP_REMOVED:
     case types.ON_RECURRING_TIP_SAVED:
-      chrome.send('brave_rewards_donate.getRecurringTips')
+      chrome.send('brave_rewards_tip.getRecurringTips')
       break
     case types.ON_RECURRING_TIPS:
       state = { ...state }
@@ -83,7 +83,7 @@ const publishersReducer: Reducer<RewardsDonate.State> = (state: RewardsDonate.St
       }
       break
     case types.GET_RECONCILE_STAMP: {
-      chrome.send('brave_rewards_donate.getReconcileStamp')
+      chrome.send('brave_rewards_tip.getReconcileStamp')
       break
     }
     case types.ON_RECONCILE_STAMP: {

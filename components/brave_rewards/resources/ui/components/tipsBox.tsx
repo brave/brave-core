@@ -33,7 +33,7 @@ interface State {
   settings: boolean
 }
 
-class DonationBox extends React.Component<Props, State> {
+class TipBox extends React.Component<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
@@ -65,13 +65,13 @@ class DonationBox extends React.Component<Props, State> {
     const report: Rewards.Report = reports[reportKey]
 
     if (report) {
-      return utils.donationTotal(report)
+      return utils.tipsTotal(report)
     }
 
     return '0.0'
   }
 
-  getDonationRows = () => {
+  getTipsRows = () => {
     const { walletInfo, recurringList, tipsList } = this.props.rewardsData
 
     // Recurring
@@ -167,9 +167,9 @@ class DonationBox extends React.Component<Props, State> {
     } = this.props.rewardsData
     const { walletImported } = ui
     const showDisabled = firstLoad !== false || !enabledMain
-    const donationRows = this.getDonationRows()
-    const topRows = donationRows.slice(0, 5)
-    const numRows = donationRows && donationRows.length
+    const tipRows = this.getTipsRows()
+    const topRows = tipRows.slice(0, 5)
+    const numRows = tipRows && tipRows.length
     const allSites = !(numRows > 5)
     const total = this.getTotal()
     const converted = utils.convertBalance(total, walletInfo.rates)
@@ -187,7 +187,7 @@ class DonationBox extends React.Component<Props, State> {
         {
           this.state.modalShowAll
           ? <ModalDonation
-            rows={donationRows}
+            rows={tipRows}
             onClose={this.onModalToggle}
           />
           : null
@@ -230,4 +230,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DonationBox)
+)(TipBox)

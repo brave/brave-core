@@ -87,7 +87,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.reconcileStamp = parseInt(action.payload.stamp, 10)
       break
     }
-    case types.GET_DONATION_TABLE: {
+    case types.GET_TIP_TABLE: {
       chrome.send('brave_rewards.getRecurringTips')
       chrome.send('brave_rewards.getOneTimeTips')
       break

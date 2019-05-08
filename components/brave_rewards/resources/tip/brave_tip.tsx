@@ -18,11 +18,11 @@ require('../../../fonts/poppins.css')
 import store from './store'
 import { ThemeProvider } from 'brave-ui/theme'
 import Theme from 'brave-ui/theme/brave-default'
-import * as rewardsActions from './actions/donate_actions'
+import * as rewardsActions from './actions/tip_actions'
 
 let actions: any
 
-window.cr.define('brave_rewards_donate', function () {
+window.cr.define('brave_rewards_tip', function () {
   'use strict'
 
   function initialize () {
@@ -35,7 +35,7 @@ window.cr.define('brave_rewards_donate', function () {
     let publisherKey
     try {
       const args = JSON.parse(dialogArgsRaw)
-      chrome.send('brave_rewards_donate.getPublisherBanner', [args.publisherKey])
+      chrome.send('brave_rewards_tip.getPublisherBanner', [args.publisherKey])
       publisherKey = args.publisherKey
     } catch (e) {
       console.error('Error parsing incoming dialog args', dialogArgsRaw, e)
@@ -59,11 +59,11 @@ window.cr.define('brave_rewards_donate', function () {
     return actions
   }
 
-  function publisherBanner (data: RewardsDonate.Publisher) {
+  function publisherBanner (data: RewardsTip.Publisher) {
     getActions().onPublisherBanner(data)
   }
 
-  function walletProperties (properties: {status: number, wallet: RewardsDonate.WalletProperties}) {
+  function walletProperties (properties: {status: number, wallet: RewardsTip.WalletProperties}) {
     getActions().onWalletProperties(properties)
   }
 
@@ -94,4 +94,4 @@ window.cr.define('brave_rewards_donate', function () {
   }
 })
 
-document.addEventListener('DOMContentLoaded', window.brave_rewards_donate.initialize)
+document.addEventListener('DOMContentLoaded', window.brave_rewards_tip.initialize)
