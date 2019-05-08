@@ -20,6 +20,8 @@ int OnBeforeURLRequest_StaticRedirectWork(
   static URLPattern geo_pattern(URLPattern::SCHEME_HTTPS, kGeoLocationsPattern);
   static URLPattern safeBrowsing_pattern(URLPattern::SCHEME_HTTPS,
                                          kSafeBrowsingPrefix);
+  static URLPattern safebrowsingfilecheck_pattern(URLPattern::SCHEME_HTTPS,
+                                         kSafeBrowsingFileCheckPrefix);
   static URLPattern crlSet_pattern1(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix1);
   static URLPattern crlSet_pattern2(
@@ -36,6 +38,12 @@ int OnBeforeURLRequest_StaticRedirectWork(
 
   if (safeBrowsing_pattern.MatchesHost(ctx->request_url)) {
     replacements.SetHostStr(SAFEBROWSING_ENDPOINT);
+    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    return net::OK;
+  }
+
+  if (safebrowsingfilecheck_pattern.MatchesHost(ctx->request_url)) {
+    replacements.SetHostStr(kBraveSafeBrowsingFileCheckProxy);
     ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
     return net::OK;
   }
