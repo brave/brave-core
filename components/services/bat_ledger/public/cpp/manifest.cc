@@ -20,7 +20,9 @@ const service_manager::Manifest& GetManifest() {
                            .WithInstanceSharingPolicy(
                                service_manager::Manifest::
                                    InstanceSharingPolicy::kSharedAcrossGroups)
+#if !defined(OS_ANDROID)
                            .WithSandboxType("none")
+#endif
                            .Build())
           .ExposeCapability(
               "bat_ledger",
