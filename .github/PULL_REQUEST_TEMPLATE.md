@@ -32,7 +32,13 @@
 
 - [ ] New files have MPL-2.0 license header.
 - [ ] Request a security/privacy review as needed.
-- [ ] Adequate test coverage exists to prevent regressions 
+- [ ] Adequate test coverage exists to prevent regressions
+- [ ] Build-flag guards are used for code that touches:
+    - Ads
+    - Rewards
+    - Extensions
+    - Tor
+    - WebTorrent
 - [ ] Verify test plan is specified in PR before merging to source
 
 ## After-merge Checklist:
