@@ -35,7 +35,7 @@ namespace {
 constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
 
 constexpr char kDefaultUploadServerUrl[] =
-    "http://telemetry-poc.bravesoftware.com:8080/";
+    "https://p3a.brave.com/";
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60 * 60;  // 1 hour.
 
