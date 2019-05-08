@@ -325,7 +325,7 @@ class PopupView: UIView, UIGestureRecognizerDelegate {
             animation.repeatCount = 2
             animation.autoreverses = true
             animation.isRemovedOnCompletion = true
-            animation.timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+            animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
             animation.values = [NSValue(caTransform3D: CATransform3DMakeRotation(kPopupDialogShakeAngle, 0.0, 0.0, 1.0)), NSValue(caTransform3D: CATransform3DMakeRotation(-kPopupDialogShakeAngle, 0.0, 0.0, 1.0))]
             dialogView.layer.add(animation, forKey: "dialog.shake")
         case .noAnimation:

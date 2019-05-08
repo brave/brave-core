@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "Annonser och spårare";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Blockerad reklam
-och spårare";
+"AdsAndTrackersrBlocked" = "Blockerad reklam\noch spårare";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Blockerade
-annonser";
+"AdsrBlocked" = "Blockerade\nannonser";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Skicka alltid";
@@ -228,9 +226,6 @@ annonser";
 /* Cookie settings option title */
 "CookieControl" = "Cookie-kontroll";
 
-/* Settings item for clearing cookies */
-"Cookies" = "Cookies";
-
 /* Copied action complete title */
 "Copied" = "Kopierat!";
 
@@ -349,8 +344,7 @@ annonser";
 "ErrorPagesVisitOnceButton" = "Besök webbplatsen ändå";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Uppskattad tid
-sparad";
+"EstTimerSaved" = "Uppskattad tid\nsparad";
 
 /* Share action title */
 "FindInPage" = "Sök på sidan";
@@ -383,8 +377,7 @@ sparad";
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS-
-uppgraderingar";
+"HTTPSrUpgrades" = "HTTPS-\nuppgraderingar";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS-uppgraderingar";
@@ -399,8 +392,7 @@ uppgraderingar";
 "LastWeek" = "Förra veckan";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Läs om privat sökning
-med DuckDuckGo";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Läs om privat sökning\nmed DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Senast ändrad %@";
@@ -514,13 +506,7 @@ med DuckDuckGo";
 "PrivateBrowsingOnly" = "Endast privat surfning";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "När du använder privata flikar ändras Brave bara på din enhet, ingen annans.
-
-Webbplatser får alltid veta din IP-adress när du besöker dem. Utifrån detta kan de oftast räkna ut ungefär var du befinner dig, till exempel din ort. Ibland kan de gissa mer specifikt. Webbplatser vet också allt som du explicit anger, till exempel sökningar. Om du loggar in på en webbplats vet de att du äger kontot. Du loggas ut när du stänger den privata fliken eftersom Brave raderar den cookie som håller dig inloggad.
-
-Din internetleverantör, alltså den som tillhandahåller din internetanslutning, kan se all din nätverksaktivitet. Beroende på anslutningstyp är leverantören din mobilleverantör (för mobildata), wifi-nätets ägare (för wifi) eller den som tillhandahåller din VPN-anslutning (för VPN). Leverantören kan se vilka webbplatser du besöker. Om webbplatserna har HTTPS kan leverantören inte se mer än vilken platsen är, men om webbplatsen bara har HTTP kan leverantören se allt: vad du söker på, vilka sidor du läser och vilka länkar du följer.
-
-Om ditt företag ansvarar för din enhet kan de också se vad du gör med den. Att använda privata flikar kommer förmodligen inte hindra dem från att ta reda på vilka webbplatser du besökt. Någon annan med tillgång till din enhet kan ha installerat ett program som övervakar din aktivitet, och privata flikar skyddar inte mot det heller.";
+"PrivateTabDetails" = "När du använder privata flikar ändras Brave bara på din enhet, ingen annans.\n\nWebbplatser får alltid veta din IP-adress när du besöker dem. Utifrån detta kan de oftast räkna ut ungefär var du befinner dig, till exempel din ort. Ibland kan de gissa mer specifikt. Webbplatser vet också allt som du explicit anger, till exempel sökningar. Om du loggar in på en webbplats vet de att du äger kontot. Du loggas ut när du stänger den privata fliken eftersom Brave raderar den cookie som håller dig inloggad.\n\nDin internetleverantör, alltså den som tillhandahåller din internetanslutning, kan se all din nätverksaktivitet. Beroende på anslutningstyp är leverantören din mobilleverantör (för mobildata), wifi-nätets ägare (för wifi) eller den som tillhandahåller din VPN-anslutning (för VPN). Leverantören kan se vilka webbplatser du besöker. Om webbplatserna har HTTPS kan leverantören inte se mer än vilken platsen är, men om webbplatsen bara har HTTP kan leverantören se allt: vad du söker på, vilka sidor du läser och vilka länkar du följer.\n\nOm ditt företag ansvarar för din enhet kan de också se vad du gör med den. Att använda privata flikar kommer förmodligen inte hindra dem från att ta reda på vilka webbplatser du besökt. Någon annan med tillgång till din enhet kan ha installerat ett program som övervakar din aktivitet, och privata flikar skyddar inte mot det heller.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Läs mer om privata flikar.";
@@ -916,8 +902,7 @@ Om ditt företag ansvarar för din enhet kan de också se vad du gör med den. A
 "Today" = "Idag";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Blockerade
-spårare";
+"TrackersrBlocked" = "Blockerade\nspårare";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Det gick inte att gå med i synkroniseringsgruppen. Kontrollera de ord du angivit och försök igen.";

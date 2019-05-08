@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "Iklan dan Penjejak";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Iklan dan Penjejak
-Disekat";
+"AdsAndTrackersrBlocked" = "Iklan dan Penjejak\nDisekat";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Iklan 
-Disekat";
+"AdsrBlocked" = "Iklan \nDisekat";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Sentiasa Hantar";
@@ -228,9 +226,6 @@ Disekat";
 /* Cookie settings option title */
 "CookieControl" = "Kawalan Kuki";
 
-/* Settings item for clearing cookies */
-"Cookies" = "Kuki";
-
 /* Copied action complete title */
 "Copied" = "Disalin!";
 
@@ -349,8 +344,7 @@ Disekat";
 "ErrorPagesVisitOnceButton" = "Kunjungi tapak juga";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Masa Jangkaan
-Disimpan";
+"EstTimerSaved" = "Masa Jangkaan\nDisimpan";
 
 /* Share action title */
 "FindInPage" = "Cari dalam Halaman";
@@ -368,8 +362,7 @@ Disimpan";
 "FingerprintingMethods" = "Kaedah Pencapjarian";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "Perlindungan
-Pencapjarian";
+"FingerprintingnProtection" = "Perlindungan\nPencapjarian";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Perlindungan Pencapjarian";
@@ -384,8 +377,7 @@ Pencapjarian";
 "HTTPSEverywhere" = "HTTPS Di Mana Sahaja";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS 
-Naik Taraf";
+"HTTPSrUpgrades" = "HTTPS \nNaik Taraf";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Naik Taraf HTTPS";
@@ -400,8 +392,7 @@ Naik Taraf";
 "LastWeek" = "Minggu lepas";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Ketahui carian peribadi
-dengan DuckDuckGo";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Ketahui carian peribadi\ndengan DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Terakhir diubah suai %@";
@@ -515,13 +506,7 @@ dengan DuckDuckGo";
 "PrivateBrowsingOnly" = "Semakan Lalu Peribadi Sahaja";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "Penggunaan Tab Peribadi hanya dapat mengubah apa yang dibuat dengan Brave pada peranti anda, ia tidak mengubah tingkah laku orang lain.
-
-Laman sentiasa belajar alamat IP anda apabila anda melawat laman tersebut. Dengan ini, laman sering boleh meneka lokasi kasar anda - biasanya bandar anda. Kadang-kadang tekaan lokasi boleh menjadi lebih spesifik. Laman juga tahu semua perkara yang anda katakan kepada mereka secara khusus, seperti istilah carian. Jika anda log masuk ke laman, mereka akan mengetahui bahawa anda pemilik akaun itu. Anda masih akan dilog keluar apabila anda menutup Tab Peribadi kerana Brave akan membuang kuki yang mengekalkan log masuk anda.
-
-Sesiapa pun yang menghubungkan anda kepada Internet (ISP anda) dapat melihat semua aktiviti rangkaian anda. Biasanya, ini merupakan pembawa mudah alih anda. Jika anda disambungkan ke rangkaian WiFi, ini merupakan pemilik rangkaian itu, dan jika anda menggunakan VPN, maka sesiapa pun yang menguruskan VPN itu. ISP anda boleh melihat laman web yang anda kunjungi semasa anda melawatnya. Sekiranya laman web tersebut menggunakan HTTPS, mereka hanya dapat meneka apa yang anda lakukan di laman web tersebut. Sekiranya laman hanya menggunakan HTTP maka ISP anda dapat melihat segala-galanya: istilah carian anda, laman yang anda baca, dan pautan yang anda ikuti.
-
-Sekiranya majikan menguruskan peranti anda, mereka mungkin juga menjejaki apa yang anda lakukan dengannya. Penggunaan Tab Peribadi mungkin tidak dapat menghalang mereka daripada mengetahui laman yang telah anda lawati. Seseorang yang mempunyai akses ke peranti anda juga boleh memasangkan perisian yang memantau aktiviti anda, dan Tab Pribadi tidak akan melindungi anda daripada perbuatan tersebut.";
+"PrivateTabDetails" = "Penggunaan Tab Peribadi hanya dapat mengubah apa yang dibuat dengan Brave pada peranti anda, ia tidak mengubah tingkah laku orang lain.\n\nLaman sentiasa belajar alamat IP anda apabila anda melawat laman tersebut. Dengan ini, laman sering boleh meneka lokasi kasar anda - biasanya bandar anda. Kadang-kadang tekaan lokasi boleh menjadi lebih spesifik. Laman juga tahu semua perkara yang anda katakan kepada mereka secara khusus, seperti istilah carian. Jika anda log masuk ke laman, mereka akan mengetahui bahawa anda pemilik akaun itu. Anda masih akan dilog keluar apabila anda menutup Tab Peribadi kerana Brave akan membuang kuki yang mengekalkan log masuk anda.\n\nSesiapa pun yang menghubungkan anda kepada Internet (ISP anda) dapat melihat semua aktiviti rangkaian anda. Biasanya, ini merupakan pembawa mudah alih anda. Jika anda disambungkan ke rangkaian WiFi, ini merupakan pemilik rangkaian itu, dan jika anda menggunakan VPN, maka sesiapa pun yang menguruskan VPN itu. ISP anda boleh melihat laman web yang anda kunjungi semasa anda melawatnya. Sekiranya laman web tersebut menggunakan HTTPS, mereka hanya dapat meneka apa yang anda lakukan di laman web tersebut. Sekiranya laman hanya menggunakan HTTP maka ISP anda dapat melihat segala-galanya: istilah carian anda, laman yang anda baca, dan pautan yang anda ikuti.\n\nSekiranya majikan menguruskan peranti anda, mereka mungkin juga menjejaki apa yang anda lakukan dengannya. Penggunaan Tab Peribadi mungkin tidak dapat menghalang mereka daripada mengetahui laman yang telah anda lawati. Seseorang yang mempunyai akses ke peranti anda juga boleh memasangkan perisian yang memantau aktiviti anda, dan Tab Pribadi tidak akan melindungi anda daripada perbuatan tersebut.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Ketahui tentang tab peribadi.";
@@ -917,8 +902,7 @@ Sekiranya majikan menguruskan peranti anda, mereka mungkin juga menjejaki apa ya
 "Today" = "Hari Ini";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Penjejak
-Disekat";
+"TrackersrBlocked" = "Penjejak\nDisekat";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Tidak dapat menyertai kumpulan penyegerakan. Sila semak perkataan yang dimasukkan dan cuba lagi.";

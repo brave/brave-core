@@ -119,8 +119,8 @@ class SearchSettingsTableViewController: UITableViewController {
             text = Strings.PrivateTabSearch
         }
         
-        let cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: nil)
-        cell.editingAccessoryType = UITableViewCellAccessoryType.disclosureIndicator
+        let cell = UITableViewCell(style: UITableViewCell.CellStyle.value1, reuseIdentifier: nil)
+        cell.editingAccessoryType = UITableViewCell.AccessoryType.disclosureIndicator
         cell.accessibilityLabel = text
         cell.textLabel?.text = text
         cell.accessibilityValue = engineName
@@ -165,9 +165,9 @@ class SearchSettingsTableViewController: UITableViewController {
     }
 
     // Don't show delete button on the left.
-    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+    override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
         if indexPath.section == SectionDefault || indexPath.item + 1 == model.orderedEngines.count {
-            return UITableViewCellEditingStyle.none
+            return UITableViewCell.EditingStyle.none
         }
 
         let index = indexPath.item + 1
@@ -243,7 +243,7 @@ class SearchSettingsTableViewController: UITableViewController {
         return proposedDestinationIndexPath
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
             let index = indexPath.item + 1
             let engine = model.orderedEngines[index]

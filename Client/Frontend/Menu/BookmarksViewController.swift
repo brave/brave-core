@@ -295,7 +295,7 @@ class BookmarksViewController: SiteTableViewController {
   
   func notificationReceived(_ notification: Notification) {
     switch notification.name {
-    case NSNotification.Name.UITextFieldTextDidChange:
+    case UITextField.textDidChangeNotification:
       if let okAction = addBookmarksFolderOkAction, let textField = notification.object as? UITextField {
         okAction.isEnabled = (textField.text?.count ?? 0) > 0
       }
@@ -436,18 +436,18 @@ class BookmarksViewController: SiteTableViewController {
     }
   }
   
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
     // Intentionally blank. Required to use UITableViewRowActions
   }
   
-  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle {
+  func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     return .delete
   }
   
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     guard let item = bookmarksFRC?.object(at: indexPath) else { return nil }
     
-    let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: Strings.Delete,
+    let deleteAction = UITableViewRowAction(style: UITableViewRowAction.Style.destructive, title: Strings.Delete,
                                             handler: { action, indexPath in
       
       if let children = item.children, !children.isEmpty {
@@ -463,7 +463,7 @@ class BookmarksViewController: SiteTableViewController {
       }
     })
     
-    let editAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: Strings.Edit, handler: { (action, indexPath) in
+    let editAction = UITableViewRowAction(style: UITableViewRowAction.Style.normal, title: Strings.Edit, handler: { (action, indexPath) in
       self.showEditBookmarkController(tableView, indexPath: indexPath)
     })
     

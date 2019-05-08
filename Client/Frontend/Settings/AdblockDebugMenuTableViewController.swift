@@ -118,7 +118,7 @@ class AdblockDebugMenuTableViewController: TableViewController {
 
 fileprivate class ShrinkingSubtitleCell: SubtitleCell {
     
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         textLabel?.adjustsFontSizeToFitWidth = true
         detailTextLabel?.adjustsFontSizeToFitWidth = true
