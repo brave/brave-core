@@ -427,8 +427,13 @@ void AdsServiceImpl::Start() {
 }
 
 void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
-  auto ads_enabled = profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveAdsEnabled);
+  #if defined(OS_LINUX)
+    auto ads_enabled = true;
+  #else
+    auto ads_enabled =
+        profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
+  #endif
+
   auto prefs_migrated_from_62 = profile_->GetPrefs()->GetBoolean(
       prefs::kBraveAdsPrefsMigratedFrom62);
 
