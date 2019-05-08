@@ -22,14 +22,14 @@ namespace {
 // TODO(iefremov): Key versioning?
 constexpr char kShufflerKey[] = R"(
 -----BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEeQ8KZnYLy5Rw7hZbVjIq4SS8RNgE
-/IByF9wOYVRdKTE8ONOZG/ewmgyNbt1GckZEygeKIPxlOWMdasUxCb3D9w==
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEB+tJ1w8nSnusfxfXV1pq+teKmsb+
+kH5op6DjhJABBiLWDhTXyLB38noi7BMwNC3fAcrlVAYPj4ejQ8ohHuSSRA==
 -----END PUBLIC KEY-----)";
 
 constexpr char kAnalyzerKey[] = R"(
 -----BEGIN PUBLIC KEY-----
-MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAE0hqO10irC/NDiwBr6ZmKkVbfVYDc
-D7YOM2+8Ta6sc325MzwXaQLNzz+NjQcO3lUgA/lKqJ4EdjRXqM576IVmAQ==
+MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEQCeVJbcADloHb8bwftIi1UO0smiz
+8ObdAFQ8j3U9cMehGqI3zXgS8APvBW/9XxMkb4XWQe+t9h6qHq82P6zcBg==
 -----END PUBLIC KEY-----)";
 
 bool MakeProchlomation(uint64_t metric,
