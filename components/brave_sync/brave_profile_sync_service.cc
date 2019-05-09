@@ -478,10 +478,16 @@ void BraveProfileSyncService::OnSyncReady() {
   DCHECK(false == brave_sync_initialized_);
   brave_sync_initialized_ = true;
 
-  ProfileSyncService::GetSyncUserSettings()
-    ->SetChosenDataTypes(false, syncer::ModelTypeSet());
-  OnSetSyncBookmarks(true);
-  ProfileSyncService::GetSyncUserSettings()->SetSyncRequested(true);
+  syncer::SyncPrefs sync_prefs(ProfileSyncService::GetSyncClient()
+                                ->GetPrefService());
+  // first time setup sync or migrated from legacy sync
+  if (sync_prefs.GetLastSyncedTime().is_null()) {
+    ProfileSyncService::GetSyncUserSettings()
+      ->SetChosenDataTypes(false, syncer::ModelTypeSet());
+    // default enable bookmark
+    OnSetSyncBookmarks(true);
+    ProfileSyncService::GetSyncUserSettings()->SetSyncRequested(true);
+  }
 }
 
 void BraveProfileSyncService::OnGetExistingObjects(
