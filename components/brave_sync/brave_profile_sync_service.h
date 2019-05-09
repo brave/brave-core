@@ -72,17 +72,6 @@ class BraveProfileSyncService : public browser_sync::ProfileSyncService,
   brave_sync::BraveSyncClient* GetBraveSyncClient() override;
 
  private:
-  // SyncEngineHost implementation.
-  void OnEngineInitialized(
-      syncer::ModelTypeSet initial_types,
-      const syncer::WeakHandle<syncer::JsBackend>& js_backend,
-      const syncer::WeakHandle<syncer::DataTypeDebugInfoListener>&
-          debug_info_listener,
-      const std::string& cache_guid,
-      const std::string& session_name,
-      const std::string& birthday,
-      const std::string& bag_of_chips,
-      bool success) override;
 
   bool IsBraveSyncEnabled() const override;
   void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override;
