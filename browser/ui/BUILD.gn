@@ -46,6 +46,8 @@ source_set("ui") {
       "toolbar/brave_app_menu_model.h",
       "webui/brave_md_settings_ui.cc",
       "webui/brave_md_settings_ui.h",
+      "webui/navigation_bar_data_provider.cc",
+      "webui/navigation_bar_data_provider.h",
       "webui/settings/brave_privacy_handler.cc",
       "webui/settings/brave_privacy_handler.h",
       "webui/settings/brave_relaunch_handler_mac.mm",
