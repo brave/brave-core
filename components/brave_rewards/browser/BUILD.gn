@@ -102,6 +102,7 @@ source_set("browser") {
       "//brave/components/services/bat_ledger/public/cpp",
       "//mojo/public/cpp/bindings",
       "//net",
+      "//services/network/public/cpp",
       "//services/service_manager/public/cpp",
       "//url",
     ]
