@@ -21,7 +21,6 @@
 
 using content::BrowserContext;
 using content::BrowserThread;
-using content::SiteInstance;
 
 namespace tor {
 
@@ -64,14 +63,13 @@ void TorProfileServiceImpl::SetNewTorCircuitOnIOThread(
                                      true);
 }
 
-
 void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
                                              const base::Closure& callback) {
-  GURL url = SiteInstance::GetSiteForURL(profile_, request_url);
-  if (url.host().empty())
+  std::string isolation_key = CircuitIsolationKey(request_url);
+  if (isolation_key.empty())
     return;
   auto* storage_partition =
-    BrowserContext::GetStoragePartitionForSite(profile_, url , false);
+    BrowserContext::GetStoragePartitionForSite(profile_, request_url, false);
 
   net::URLRequestContextGetter* url_request_context_getter =
     storage_partition->GetURLRequestContext();
@@ -82,7 +80,7 @@ void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
       base::Bind(&TorProfileServiceImpl::SetNewTorCircuitOnIOThread,
                  base::Unretained(this),
                  base::WrapRefCounted(url_request_context_getter),
-                 url.host()),
+                 isolation_key),
     callback);
 }
 
@@ -98,8 +96,9 @@ int TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
                                     const GURL& request_url,
                                     bool new_circuit) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  DCHECK(request_url.SchemeIsHTTPOrHTTPS());
   const TorConfig tor_config = tor_launcher_factory_->GetTorConfig();
-  GURL url = SiteInstance::GetSiteForURL(profile_, request_url);
+  std::string isolation_key = CircuitIsolationKey(request_url);
   if (tor_config.empty()) {
     // No tor config => we absolutely cannot talk to the network.
     // This might mean that there was a problem trying to initialize
@@ -110,7 +109,7 @@ int TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
   base::PostTaskWithTraits(FROM_HERE, {BrowserThread::IO},
       base::Bind(&TorProxyConfigService::TorSetProxy,
       service, tor_config.proxy_string(),
-      url.host(), &tor_proxy_map_, new_circuit));
+      isolation_key, &tor_proxy_map_, new_circuit));
   return net::OK;
 }
 

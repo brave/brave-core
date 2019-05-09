@@ -44,9 +44,8 @@ MockTorProfileServiceFactory::~MockTorProfileServiceFactory() {}
 
 KeyedService* MockTorProfileServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
-  Profile* profile = Profile::FromBrowserContext(context);
   std::unique_ptr<tor::TorProfileService> tor_profile_service(
-      new tor::MockTorProfileServiceImpl(profile));
+      new tor::MockTorProfileServiceImpl());
   return tor_profile_service.release();
 }
 

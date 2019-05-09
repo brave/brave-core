@@ -51,6 +51,8 @@ class TorProfileService : public KeyedService {
  protected:
   base::ObserverList<TorLauncherServiceObserver> observers_;
 
+  static std::string CircuitIsolationKey(const GURL& request_url);
+
  private:
   DISALLOW_COPY_AND_ASSIGN(TorProfileService);
 };

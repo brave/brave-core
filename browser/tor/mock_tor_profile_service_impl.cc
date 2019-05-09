@@ -11,16 +11,13 @@
 #include "brave/common/tor/tor_test_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/site_instance.h"
 
 using content::BrowserThread;
-using content::SiteInstance;
 using tor::TorProxyConfigService;
 
 namespace tor {
 
-MockTorProfileServiceImpl::MockTorProfileServiceImpl(Profile* profile) :
-    profile_(profile) {
+MockTorProfileServiceImpl::MockTorProfileServiceImpl() {
   base::FilePath path(kTestTorPath);
   std::string proxy(kTestTorProxy);
   config_ = TorConfig(path, proxy);
@@ -48,7 +45,8 @@ int MockTorProfileServiceImpl::SetProxy(
     net::ProxyResolutionService* service, const GURL& request_url,
     bool new_circuit) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  GURL url = SiteInstance::GetSiteForURL(profile_, request_url);
+  DCHECK(request_url.SchemeIsHTTPOrHTTPS());
+  std::string isolation_key = CircuitIsolationKey(request_url);
   if (config_.empty()) {
     // No tor config => we absolutely cannot talk to the network.
     // This might mean that there was a problem trying to initialize
@@ -57,7 +55,7 @@ int MockTorProfileServiceImpl::SetProxy(
     return net::ERR_SOCKS_CONNECTION_FAILED;
   }
   TorProxyConfigService::TorSetProxy(service, config_.proxy_string(),
-                                     url.host(), nullptr, new_circuit);
+                                     isolation_key, nullptr, new_circuit);
   return net::OK;
 }
 
