@@ -1,14 +1,13 @@
 diff --git a/components/browser_sync/profile_sync_service.h b/components/browser_sync/profile_sync_service.h
-index 6c01395b954ac146084865b0268992f277b4914c..680c8dc34f82925f51a9d0c0ecc8137f91baa10f 100644
+index 6c01395b954ac146084865b0268992f277b4914c..734f5623f889f9e576a7e4d5fb39dae0a278290a 100644
 --- a/components/browser_sync/profile_sync_service.h
 +++ b/components/browser_sync/profile_sync_service.h
-@@ -346,6 +346,15 @@ class ProfileSyncService : public syncer::SyncService,
+@@ -346,6 +346,14 @@ class ProfileSyncService : public syncer::SyncService,
  
    syncer::SyncClient* GetSyncClientForTest();
  
 + protected:
 +  syncer::SyncClient* GetSyncClient();
-+  syncer::SyncUserSettings* GetSyncUserSettings();
 +  syncer::SyncEngine* GetSyncEngine();
 +  virtual void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list);
 +  virtual void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
@@ -18,7 +17,7 @@ index 6c01395b954ac146084865b0268992f277b4914c..680c8dc34f82925f51a9d0c0ecc8137f
   private:
    // Passed as an argument to StopImpl to control whether or not the sync
    // engine should clear its data directory when it shuts down. See StopImpl
-@@ -355,6 +364,8 @@ class ProfileSyncService : public syncer::SyncService,
+@@ -355,6 +363,8 @@ class ProfileSyncService : public syncer::SyncService,
      CLEAR_DATA,
    };
  
