@@ -474,22 +474,45 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
                        DefaultBehaviour) {
   const GURL kRequestUrl("http://request.com/path?query");
   const GURL kDocumentUrl("http://document.com/path?query");
+  const GURL kSameOriginRequestUrl("http://document.com/different/path");
 
   content::Referrer kReferrer(kDocumentUrl,
                               network::mojom::ReferrerPolicy::kDefault);
 
-  // Should be hidden by default.
+  // Cross-origin navigations don't get a referrer.
   content::Referrer referrer = kReferrer;
   client()->MaybeHideReferrer(browser()->profile(),
-                              kRequestUrl, kDocumentUrl,
+                              kRequestUrl, kDocumentUrl, true,
+                              &referrer);
+  EXPECT_EQ(referrer.url, GURL());
+
+  // Same-origin navigations get full referrers.
+  referrer = kReferrer;
+  client()->MaybeHideReferrer(browser()->profile(),
+                              kSameOriginRequestUrl, kDocumentUrl, true,
+                              &referrer);
+  EXPECT_EQ(referrer.url, kDocumentUrl);
+
+  // Cross-origin iframe navigations get a spoofed referrer.
+  referrer = kReferrer;
+  client()->MaybeHideReferrer(browser()->profile(),
+                              kRequestUrl, kDocumentUrl, false,
                               &referrer);
   EXPECT_EQ(referrer.url, kRequestUrl.GetOrigin());
 
+  // Same-origin iframe navigations get full referrers.
+  referrer = kReferrer;
+  client()->MaybeHideReferrer(browser()->profile(),
+                              kSameOriginRequestUrl, kDocumentUrl, false,
+                              &referrer);
+  EXPECT_EQ(referrer.url, kDocumentUrl);
+
   // Special rule for extensions.
   const GURL kExtensionUrl("chrome-extension://abc/path?query");
+  referrer = kReferrer;
   referrer.url = kExtensionUrl;
   client()->MaybeHideReferrer(browser()->profile(),
-                              kRequestUrl, kExtensionUrl,
+                              kRequestUrl, kExtensionUrl, true,
                               &referrer);
   EXPECT_EQ(referrer.url, kExtensionUrl);
 
@@ -501,7 +524,7 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
       brave_shields::kReferrers, CONTENT_SETTING_ALLOW);
   referrer = kReferrer;
   client()->MaybeHideReferrer(browser()->profile(),
-                              kRequestUrl, kDocumentUrl,
+                              kRequestUrl, kDocumentUrl, true,
                               &referrer);
   EXPECT_EQ(referrer.url, kDocumentUrl);
 }

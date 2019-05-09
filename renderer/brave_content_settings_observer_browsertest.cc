@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -17,6 +18,8 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/http/http_request_headers.h"
+#include "net/test/embedded_test_server/http_request.h"
 
 const char kIframeID[] = "test";
 
@@ -44,7 +47,7 @@ const char kReferrerScript[] =
     "domAutomationController.send(document.referrer);";
 
 class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
-  public:
+ public:
     void SetUpOnMainThread() override {
       InProcessBrowserTest::SetUpOnMainThread();
 
@@ -61,15 +64,52 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
       base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
       embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
+      embedded_test_server()->RegisterRequestMonitor(
+          base::BindRepeating(
+              &BraveContentSettingsObserverBrowserTest::SaveReferrer,
+              base::Unretained(this)));
+
       ASSERT_TRUE(embedded_test_server()->Start());
 
       url_ = embedded_test_server()->GetURL("a.com", "/iframe.html");
       iframe_url_ = embedded_test_server()->GetURL("b.com", "/simple.html");
+      image_url_ = embedded_test_server()->GetURL("b.com", "/logo.png");
       top_level_page_pattern_ =
           ContentSettingsPattern::FromString("http://a.com/*");
       iframe_pattern_ = ContentSettingsPattern::FromString("http://b.com/*");
       first_party_pattern_ =
           ContentSettingsPattern::FromString("https://firstParty/*");
+    }
+
+    void SaveReferrer(const net::test_server::HttpRequest& request) {
+      base::AutoLock auto_lock(last_referrers_lock_);
+
+      // Replace "127.0.0.1:<port>" with the hostnames used in this test.
+      net::test_server::HttpRequest::HeaderMap::const_iterator pos =
+          request.headers.find(net::HttpRequestHeaders::kHost);
+      GURL::Replacements replace_host;
+      if (pos != request.headers.end()) {
+        replace_host.SetHostStr(pos->second);
+        replace_host.SetPortStr("");  // Host header includes the port already.
+      }
+      GURL request_url = request.GetURL();
+      request_url = request_url.ReplaceComponents(replace_host);
+
+      pos = request.headers.find(net::HttpRequestHeaders::kReferer);
+      if (pos == request.headers.end()) {
+        last_referrers_[request_url] = "";  // no referrer
+      } else {
+        last_referrers_[request_url] = pos->second;
+      }
+    }
+
+    std::string GetLastReferrer(const GURL& url) const {
+      base::AutoLock auto_lock(last_referrers_lock_);
+      auto pos = last_referrers_.find(url);
+      if (pos == last_referrers_.end()) {
+        return "(missing)";  // Fail test if we haven't seen this URL before.
+      }
+      return pos->second;
     }
 
     void TearDown() override {
@@ -79,6 +119,18 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
 
     const GURL& url() { return url_; }
     const GURL& iframe_url() { return iframe_url_; }
+    const GURL& image_url() { return image_url_; }
+
+    std::string create_image_script() {
+      std::string s;
+      s = " var img = document.createElement('img');"
+          " img.onload = function () {"
+          "   domAutomationController.send(img.src);"
+          " };"
+          " img.src = '" + image_url().spec() + "';"
+          " document.body.appendChild(img);";
+      return s;
+    }
 
     const ContentSettingsPattern& top_level_page_pattern() {
       return top_level_page_pattern_;
@@ -266,14 +318,17 @@ class BraveContentSettingsObserverBrowserTest : public InProcessBrowserTest {
       return WaitForLoadStop(contents());
     }
 
-  private:
+ private:
     GURL url_;
     GURL iframe_url_;
+    GURL image_url_;
     ContentSettingsPattern top_level_page_pattern_;
     ContentSettingsPattern first_party_pattern_;
     ContentSettingsPattern iframe_pattern_;
     std::unique_ptr<ChromeContentClient> content_client_;
     std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
+    mutable base::Lock last_referrers_lock_;
+    std::map<GURL, std::string> last_referrers_;
 
     base::ScopedTempDir temp_user_data_dir_;
 };
@@ -371,7 +426,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   EXPECT_FALSE(isPointInPath);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPShieldsDown) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockFPShieldsDown) {
   BlockFingerprinting();
   ShieldsDown();
 
@@ -395,7 +451,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPShieldsDo
   EXPECT_TRUE(isPointInPath);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, Block3PFPGetImageData) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       Block3PFPGetImageData) {
   Block3PFingerprinting();
 
   ContentSettingsForOneType fp_settings;
@@ -418,7 +475,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, Block3PFPGetImag
   EXPECT_EQ(0, bufLen);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPGetImageData) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockFPGetImageData) {
   BlockFingerprinting();
 
   ContentSettingsForOneType fp_settings;
@@ -441,7 +499,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockFPGetImageD
   EXPECT_EQ(0, bufLen);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowFPGetImageData) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       AllowFPGetImageData) {
   AllowFingerprinting();
 
   ContentSettingsForOneType fp_settings;
@@ -472,47 +531,93 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   EXPECT_EQ(settings.size(), 0u) <<
       "There should not be any visible referrer rules.";
 
+  // The initial navigation doesn't have a referrer.
   NavigateToPageWithIframe();
-
   EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
       contents()).c_str(), "");
+  EXPECT_TRUE(GetLastReferrer(url()).empty());
+
+  // Sub-resources loaded within the page get their referrer spoofed.
+  EXPECT_EQ(ExecScriptGetStr(create_image_script(), contents()),
+            image_url().spec());
+  EXPECT_EQ(GetLastReferrer(image_url()), iframe_url().GetOrigin().spec());
+
+  // Cross-origin iframe navigations get their referrer spoofed.
   ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
   ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
   EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
       child_frame()).c_str(), iframe_url().GetOrigin().spec().c_str());
+  EXPECT_EQ(GetLastReferrer(iframe_url()), iframe_url().GetOrigin().spec());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockReferrer) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockReferrer) {
   BlockReferrers();
+
+  // The initial navigation doesn't have a referrer.
   NavigateToPageWithIframe();
   EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
       contents()).c_str(), "");
+  EXPECT_TRUE(GetLastReferrer(url()).empty());
+
+  // Sub-resources loaded within the page get their referrer spoofed.
+  EXPECT_EQ(ExecScriptGetStr(create_image_script(), contents()),
+            image_url().spec());
+  EXPECT_EQ(GetLastReferrer(image_url()), image_url().GetOrigin().spec());
+
+  // Cross-origin iframe navigations get their referrer spoofed.
   ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
   ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
   EXPECT_STREQ(ExecScriptGetStr(kReferrerScript, child_frame()).c_str(),
       iframe_url().GetOrigin().spec().c_str());
+  EXPECT_EQ(GetLastReferrer(iframe_url()), iframe_url().GetOrigin().spec());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowReferrer) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       AllowReferrer) {
   AllowReferrers();
-  NavigateToPageWithIframe();
 
+  // The initial navigation doesn't have a referrer.
+  NavigateToPageWithIframe();
   EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
       contents()).c_str(), "");
+  EXPECT_TRUE(GetLastReferrer(url()).empty());
+
+  // Sub-resources loaded within the page get the page URL as referrer.
+  EXPECT_EQ(ExecScriptGetStr(create_image_script(), contents()),
+            image_url().spec());
+  EXPECT_EQ(GetLastReferrer(image_url()), url().spec());
+
+  // A cross-origin iframe navigation gets the URL of the first one as
+  // referrer.
   ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
   ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  EXPECT_EQ(GetLastReferrer(iframe_url()), url());
   EXPECT_STREQ(ExecScriptGetStr(kReferrerScript, child_frame()).c_str(),
       url().spec().c_str());
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockReferrerShieldsDown) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockReferrerShieldsDown) {
   BlockReferrers();
   ShieldsDown();
+
+  // The initial navigation doesn't have a referrer.
   NavigateToPageWithIframe();
   EXPECT_STREQ(ExecScriptGetStr(kReferrerScript,
       contents()).c_str(), "");
+  EXPECT_TRUE(GetLastReferrer(url()).empty());
+
+  // Sub-resources loaded within the page get the page URL as referrer.
+  EXPECT_EQ(ExecScriptGetStr(create_image_script(), contents()),
+            image_url().spec());
+  EXPECT_EQ(GetLastReferrer(image_url()), url().spec());
+
+  // A cross-origin iframe navigation gets the URL of the first one as
+  // referrer.
   ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
   ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
+  EXPECT_EQ(GetLastReferrer(iframe_url()), url());
   EXPECT_STREQ(ExecScriptGetStr(kReferrerScript, child_frame()).c_str(),
       url().spec().c_str());
 }
@@ -552,11 +657,12 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockCookies) {
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowCookies) {
   AllowCookies();
   NavigateToPageWithIframe();
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), COOKIE_STR);
+  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(),
+               COOKIE_STR);
   ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
   ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
   EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(),
-      COOKIE_STR);
+               COOKIE_STR);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -573,7 +679,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), "");
   ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
   ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(), COOKIE_STR);
+  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(),
+               COOKIE_STR);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -602,7 +709,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
   EXPECT_STREQ(ExecScriptGetStr(kCookieScript, contents()).c_str(), COOKIE_STR);
   ASSERT_TRUE(NavigateIframeToURL(contents(), kIframeID, iframe_url()));
   ASSERT_EQ(child_frame()->GetLastCommittedURL(), iframe_url());
-  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(), COOKIE_STR);
+  EXPECT_STREQ(ExecScriptGetStr(kCookieScript, child_frame()).c_str(),
+               COOKIE_STR);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
@@ -632,7 +740,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, AllowScripts) {
   EXPECT_EQ(contents()->GetAllFrames().size(), 3u);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockScriptsShieldsDown) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockScriptsShieldsDown) {
   BlockScripts();
   ShieldsDown();
 
@@ -641,7 +750,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockScriptsShie
   EXPECT_EQ(contents()->GetAllFrames().size(), 3u);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest, BlockScriptsShieldsDownInOtherTab) {
+IN_PROC_BROWSER_TEST_F(BraveContentSettingsObserverBrowserTest,
+                       BlockScriptsShieldsDownInOtherTab) {
   // Turn off shields in a.com.
   ShieldsDown();
   // Block scripts in b.com.

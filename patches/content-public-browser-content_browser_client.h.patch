@@ -1,16 +1,17 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index 009991aa57e8f543d2fdb7095b2fe2c863373d71..00ab100aa8c17e4614f808ac2c0e2eea709c8243 100644
+index 009991aa57e8f543d2fdb7095b2fe2c863373d71..fddf6126c84e95c057301d69d7d297180c618050 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -1516,6 +1516,13 @@ class CONTENT_EXPORT ContentBrowserClient {
+@@ -1516,6 +1516,14 @@ class CONTENT_EXPORT ContentBrowserClient {
    virtual ui::AXMode GetAXModeForBrowserContext(
        BrowserContext* browser_context);
  
-+  // Brave-speicific: allows the embedder to modify the referrer string
++  // Brave-specific: allows the embedder to modify the referrer string
 +  // according to user preferences.
 +  virtual void MaybeHideReferrer(BrowserContext* browser_context,
 +                                 const GURL& request_url,
 +                                 const GURL& document_url,
++                                 bool is_main_frame,
 +                                 Referrer* referrer) {}
 +
  #if defined(OS_ANDROID)
