@@ -28,13 +28,13 @@ const service_manager::Manifest& GetBraveContentBrowserOverlayManifest() {
           .WithServiceName("content_browser")
           .WithDisplayName("Brave")
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-          .PackageService(bat_ledger::GetManifest())
+          .RequireCapability("bat_ledger", "bat_ledger")
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-          .PackageService(bat_ads::GetManifest())
+          .RequireCapability("bat_ads", "bat_ads")
 #endif
 #endif
 #if BUILDFLAG(ENABLE_TOR)
-          .PackageService(tor::GetTorLauncherManifest())
+          .RequireCapability("tor_launcher", "tor_launcher")
 #endif
           .Build()};
   return *manifest;
