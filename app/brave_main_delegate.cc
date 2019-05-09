@@ -147,6 +147,7 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       features::kDefaultEnableOopRasterization.name,
       network::features::kNetworkService.name,
       unified_consent::kUnifiedConsent.name,
+      features::kLookalikeUrlNavigationSuggestionsUI.name,
   };
 
   command_line.AppendFeatures(enabled_features, disabled_features);
