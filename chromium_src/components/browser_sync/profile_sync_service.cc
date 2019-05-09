@@ -32,11 +32,6 @@ syncer::SyncClient* ProfileSyncService::GetSyncClient() {
   return sync_client_.get();
 }
 
-syncer::SyncUserSettings* ProfileSyncService::GetSyncUserSettings() {
-  DCHECK(user_settings_);
-  return user_settings_.get();
-}
-
 syncer::SyncEngine* ProfileSyncService::GetSyncEngine() {
   DCHECK(engine_);
   return engine_.get();

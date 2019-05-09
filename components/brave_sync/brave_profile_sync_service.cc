@@ -345,12 +345,12 @@ void BraveProfileSyncService::OnSetSyncEnabled(const bool sync_this_device) {
 void BraveProfileSyncService::OnSetSyncBookmarks(const bool sync_bookmarks) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   syncer::ModelTypeSet type_set =
-    ProfileSyncService::GetSyncUserSettings()->GetChosenDataTypes();
+    ProfileSyncService::GetUserSettings()->GetChosenDataTypes();
   if (sync_bookmarks)
     type_set.Put(syncer::BOOKMARKS);
   else
     type_set.Remove(syncer::BOOKMARKS);
-  ProfileSyncService::GetSyncUserSettings()->SetChosenDataTypes(false,
+  ProfileSyncService::GetUserSettings()->SetChosenDataTypes(false,
                                                                 type_set);
   brave_sync_prefs_->SetSyncBookmarksEnabled(sync_bookmarks);
 }
@@ -473,20 +473,22 @@ void BraveProfileSyncService::OnSyncReady() {
     return;
   }
 
-  SetPermanentNodesOrder(brave_sync_prefs_->GetBookmarksBaseOrder());
-
   DCHECK(false == brave_sync_initialized_);
   brave_sync_initialized_ = true;
+
+  // For launching from legacy sync profile and also brand new profile
+  if (brave_sync_prefs_->GetMigratedBookmarksVersion() < 2)
+    SetPermanentNodesOrder(brave_sync_prefs_->GetBookmarksBaseOrder());
 
   syncer::SyncPrefs sync_prefs(ProfileSyncService::GetSyncClient()
                                 ->GetPrefService());
   // first time setup sync or migrated from legacy sync
   if (sync_prefs.GetLastSyncedTime().is_null()) {
-    ProfileSyncService::GetSyncUserSettings()
+    ProfileSyncService::GetUserSettings()
       ->SetChosenDataTypes(false, syncer::ModelTypeSet());
     // default enable bookmark
     OnSetSyncBookmarks(true);
-    ProfileSyncService::GetSyncUserSettings()->SetSyncRequested(true);
+    ProfileSyncService::GetUserSettings()->SetSyncRequested(true);
   }
 }
 
@@ -554,8 +556,12 @@ void BraveProfileSyncService::OnSyncWordsPrepared(const std::string& words) {
 int BraveProfileSyncService::GetDisableReasons() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  if (IsBraveSyncEnabled())
+  // legacy sync only support bookmark sync so we have to wait for migration
+  // complete before enable sync engine
+  if (IsBraveSyncEnabled() &&
+      brave_sync_prefs_->GetMigratedBookmarksVersion() >= 2)
     return syncer::SyncService::DISABLE_REASON_NONE;
+  // kSyncManaged is disabled by us
   return ProfileSyncService::GetDisableReasons();
 }
 
@@ -621,6 +627,7 @@ void BraveProfileSyncService::SetPermanentNodesOrder(
       const_cast<bookmarks::BookmarkNode*>(model_->other_node());
     model_->SetNodeMetaInfo(mutable_other_node, "order", base_order + "2");
   }
+  brave_sync_prefs_->SetMigratedBookmarksVersion(2);
 }
 
 
@@ -729,7 +736,7 @@ void BraveProfileSyncService::OnBraveSyncPrefsChanged(const std::string& pref) {
     GetBraveSyncClient()->OnSyncEnabledChanged();
     if (!brave_sync_prefs_->GetSyncEnabled()) {
       brave_sync_initialized_ = false;
-      ProfileSyncService::GetSyncUserSettings()->SetSyncRequested(false);
+      ProfileSyncService::GetUserSettings()->SetSyncRequested(false);
     }
   }
   NotifySyncStateChanged();
@@ -738,24 +745,6 @@ void BraveProfileSyncService::OnBraveSyncPrefsChanged(const std::string& pref) {
 BraveSyncClient* BraveProfileSyncService::GetBraveSyncClient() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return ProfileSyncService::GetSyncClient()->GetBraveSyncClient();
-}
-
-void BraveProfileSyncService::OnEngineInitialized(
-    syncer::ModelTypeSet initial_types,
-    const syncer::WeakHandle<syncer::JsBackend>& js_backend,
-    const syncer::WeakHandle<syncer::DataTypeDebugInfoListener>&
-        debug_info_listener,
-    const std::string& cache_guid,
-    const std::string& session_name,
-    const std::string& birthday,
-    const std::string& bag_of_chips,
-    bool success) {
-  // For launching from legacy sync profile
-  SetPermanentNodesOrder(brave_sync_prefs_->GetBookmarksBaseOrder());
-  ProfileSyncService::OnEngineInitialized(initial_types, js_backend,
-                                          debug_info_listener, cache_guid,
-                                          session_name, birthday, bag_of_chips,
-                                          success);
 }
 
 bool BraveProfileSyncService::IsBraveSyncEnabled() const{
