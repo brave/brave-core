@@ -7,9 +7,8 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { SiteBanner } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
-import TweetBox from './tweetBox'
+import { SiteBanner, TweetBox } from 'brave-ui/features/rewards'
 
 // Utils
 import * as tipActions from '../actions/tip_actions'
@@ -170,7 +169,7 @@ class Banner extends React.Component<Props, State> {
       >
       {
         this.props.tweetMetaData
-        ? <TweetBox tweetMetaData={this.props.tweetMetaData} />
+        ? <TweetBox tweetText={this.props.tweetMetaData.tweetText} tweetTimestamp={this.props.tweetMetaData.tweetTimestamp} />
         : publisher.description
       }
       </SiteBanner>
