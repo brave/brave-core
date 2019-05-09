@@ -6,7 +6,9 @@
 #include "brave/common/network_constants.h"
 
 const char kBraveUpdatesExtensionsEndpoint[] =
-    "https://go-updater.brave.com/extensions";
+    // "https://go-updater.brave.com/extensions";
+    // TODO(bsclifton): remove me
+    "http://18.188.45.225/extensions";
 // For debgugging:
 // const char kBraveUpdatesExtensionsEndpoint[] =
 // "http://localhost:8192/extensions";
