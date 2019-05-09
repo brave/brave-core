@@ -19,7 +19,7 @@ sys.path.append(os.path.join(dirname, '..'))
 class TestConfig(unittest.TestCase):
 
     def test_get_chromedriver_version(self):
-        pattern = "v[0-9]\.[0-9]+"
+        pattern = "v[0-9][.][0-9]+"
         m = re.match(pattern, get_chromedriver_version())
         self.assertTrue(m)
 

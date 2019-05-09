@@ -110,7 +110,7 @@ def get_target_arch():
 
 
 def get_chromedriver_version():
-    pattern = "^\s*chromedriver_version = \"([0-9]\\.[0-9]+)\""
+    pattern = "^[ ]*chromedriver_version = \"([0-9][.][0-9]+)\""
     build_gn_path = os.path.join(BRAVE_CORE_ROOT, 'BUILD.gn')
     with open(build_gn_path, 'r') as build_gn_file:
         for line in build_gn_file:
