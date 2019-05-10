@@ -13,9 +13,7 @@
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
-#if !defined(OS_ANDROID)
 #include "bat/confirmations/confirmations_client.h"
-#endif
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/logging.h"
 
@@ -47,11 +45,9 @@ namespace braveledger_bat_contribution {
 class BatContribution;
 }
 
-#if !defined(OS_ANDROID)
 namespace confirmations {
 class Confirmations;
 }
-#endif
 
 namespace bat_ledger {
 
@@ -175,10 +171,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
-#if !defined(OS_ANDROID)
   void SetConfirmationsWalletInfo(
       const braveledger_bat_helper::WALLET_INFO_ST& wallet_info);
-#endif
 
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler);
 
@@ -362,10 +356,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetWalletInfo(const braveledger_bat_helper::WALLET_INFO_ST& info);
 
-#if !defined(OS_ANDROID)
   const confirmations::WalletInfo GetConfirmationsWalletInfo(
       const braveledger_bat_helper::WALLET_INFO_ST& info) const;
-#endif
 
   const braveledger_bat_helper::WALLET_PROPERTIES_ST&
   GetWalletProperties() const;
@@ -548,9 +540,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
   std::unique_ptr<braveledger_bat_contribution::BatContribution>
   bat_contribution_;
-#if !defined(OS_ANDROID)
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
-#endif
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 
