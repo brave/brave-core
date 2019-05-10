@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/profiles/brave_profile_manager.h"
 
 #include <string>
+#include <memory>
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
@@ -23,6 +25,7 @@
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/safe_browsing/common/safe_browsing_prefs.h"
 #include "content/public/common/webrtc_ip_handling_policy.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "content/public/test/test_utils.h"
@@ -57,7 +60,6 @@ class BraveProfileManagerTest : public testing::Test {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     TestingBrowserProcess::GetGlobal()->SetProfileManager(
         new TorUnittestProfileManager(temp_dir_.GetPath()));
-
   }
 
   void TearDown() override {
@@ -140,6 +142,9 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
   EXPECT_EQ(
     profile->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy),
     content::kWebRTCIPHandlingDisableNonProxiedUdp);
+
+  // Check SafeBrowsing status
+  EXPECT_FALSE(profile->GetPrefs()->GetBoolean(prefs::kSafeBrowsingEnabled));
 }
 
 // This is for tor guest window, remove it when we have persistent tor profiles
@@ -187,3 +192,4 @@ TEST_F(BraveProfileManagerTest, CreateProfilesAsync) {
 
   content::RunAllTasksUntilIdle();
 }
+

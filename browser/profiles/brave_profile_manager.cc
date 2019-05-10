@@ -27,6 +27,7 @@
 #include "chrome/grit/generated_resources.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "components/safe_browsing/common/safe_browsing_prefs.h"
 #include "components/signin/core/browser/signin_pref_names.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/url_data_source.h"
@@ -59,6 +60,7 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   pref_service->SetBoolean(tor::prefs::kProfileUsingTor, true);
   pref_service->SetString(prefs::kWebRTCIPHandlingPolicy,
                           content::kWebRTCIPHandlingDisableNonProxiedUdp);
+  pref_service->SetBoolean(prefs::kSafeBrowsingEnabled, false);
 }
 
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
