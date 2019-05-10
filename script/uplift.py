@@ -422,7 +422,15 @@ def submit_pr(channel, top_level_base, remote_base, local_branch):
             pr_body = 'TODO: fill me in\n(created using `npm run pr`)'
         else:
             pr_title += ' (uplift to ' + remote_base + ')'
-            pr_body = 'Uplift of #' + str(config.master_pr_number)
+            pr_body = 'Uplift of #' + str(config.master_pr_number) + '\n\n'
+            pr_body += 'Approved, please ensure that before merging: \n'
+            pr_body += '- [ ] You have checked CI and the builds, lint, and tests all ' \
+                       'pass or are not related to your PR. \n'
+            pr_body += '- [ ] You have tested your change on Nightly. \n'
+            pr_body += '- [ ] The PR milestones match the branch they are landing to. \n\n'
+            pr_body += 'After you merge: \n'
+            pr_body += '- [ ] The associated issue milestone is set to the smallest version ' \
+                       'that the changes is landed on.'
 
         number = create_pull_request(config.github_token, BRAVE_CORE_REPO, pr_title, pr_body,
                                      branch_src=local_branch, branch_dst=pr_dst,
