@@ -1,8 +1,16 @@
 diff --git a/ui/native_theme/native_theme_win.cc b/ui/native_theme/native_theme_win.cc
-index 040374661374b565372fd62822ffccd7c963fd19..2d3cef44d7423223adccb32ac306309fdc5a19d6 100644
+index 040374661374b565372fd62822ffccd7c963fd19..7acd014697cd7f05bd11b2e8b5365076a177df57 100644
 --- a/ui/native_theme/native_theme_win.cc
 +++ b/ui/native_theme/native_theme_win.cc
-@@ -1933,7 +1933,11 @@ void NativeThemeWin::RegisterThemeRegkeyObserver() {
+@@ -591,6 +591,7 @@ bool NativeThemeWin::SystemDarkModeEnabled() const {
+   // ...unless --force-dark-mode was specified in which case caveat emptor.
+   if (UsesHighContrastColors() && !NativeTheme::SystemDarkModeEnabled())
+     return false;
++  if (OverrideSystemDarkMode()) return GetSystemDarkModeEnabledOverrides();
+   bool fDarkModeEnabled = false;
+   if (hkcu_themes_regkey_.Valid()) {
+     DWORD apps_use_light_theme = 1;
+@@ -1933,7 +1934,11 @@ void NativeThemeWin::RegisterThemeRegkeyObserver() {
    DCHECK(hkcu_themes_regkey_.Valid());
    hkcu_themes_regkey_.StartWatching(base::BindOnce(
        [](NativeThemeWin* native_theme) {

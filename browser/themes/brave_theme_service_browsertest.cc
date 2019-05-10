@@ -121,10 +121,8 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NativeThemeObserverTest) {
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
 }
 
-#if defined(OS_MACOSX)
+#if defined(OS_MACOSX) || defined(OS_WIN)
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, SystemThemeChangeTest) {
-  // TODO(simonhong): Delete this when we gets dark mode enabled branch on
-  // MacOS.
   if (!BraveThemeService::SystemThemeModeEnabled())
     return;
 
