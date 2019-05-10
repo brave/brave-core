@@ -1,0 +1,17 @@
+diff --git a/content/common/origin_util.cc b/content/common/origin_util.cc
+index 878cb24ad05208daed3caf101337e59dc271afc0..fa90fd95da4d6352e3c12fee9502cc3b21ab0033 100644
+--- a/content/common/origin_util.cc
++++ b/content/common/origin_util.cc
+@@ -40,6 +40,12 @@ bool IsOriginSecure(const GURL& url) {
+   if (net::IsLocalhost(url))
+     return true;
+ 
++  // As a special case, we treat HTTP URLs as secure if the transport
++  // is Tor onion services.  We could do this for more schemes, but
++  // only if the transport actually goes through Tor.
++  if (url.SchemeIs("http") && url.DomainIs("onion"))
++    return true;
++
+   if (base::ContainsValue(url::GetSecureSchemes(), url.scheme()))
+     return true;
+ 

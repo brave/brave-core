@@ -1,0 +1,17 @@
+diff --git a/third_party/blink/renderer/platform/weborigin/security_origin.cc b/third_party/blink/renderer/platform/weborigin/security_origin.cc
+index d629c18cab9d466fa8560e7fac2a233b62d7aa2b..130d6175925cc03cc6faf3dcc1b0e6842911dfc8 100644
+--- a/third_party/blink/renderer/platform/weborigin/security_origin.cc
++++ b/third_party/blink/renderer/platform/weborigin/security_origin.cc
+@@ -268,6 +268,12 @@ bool SecurityOrigin::IsSecure(const KURL& url) {
+   if (SchemeRegistry::ShouldTreatURLSchemeAsSecure(url.Protocol()))
+     return true;
+ 
++  // As a special case, we treat HTTP URLs as secure if the transport
++  // is Tor onion services.  We could do this for more schemes, but
++  // only if the transport actually goes through Tor.
++  if (url.ProtocolIs("http") && url.Host().EndsWithIgnoringASCIICase(".onion"))
++    return true;
++
+   // URLs that wrap inner URLs are secure if those inner URLs are secure.
+   if (ShouldUseInnerURL(url) && SchemeRegistry::ShouldTreatURLSchemeAsSecure(
+                                     ExtractInnerURL(url).Protocol()))
