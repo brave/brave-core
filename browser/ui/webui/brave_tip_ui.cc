@@ -367,8 +367,11 @@ void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
       base::StringPrintf("https://twitter.com/intent/tweet?url=%s&text=%s",
                          quoted_tweet_url.c_str(), comment.c_str());
 
-  // Open a new tab with the prepopulated tweet ready to post.
   GURL gurl(intent_url);
+  if (!gurl.is_valid())
+    return;
+
+  // Open a new tab with the prepopulated tweet ready to post.
   chrome::ScopedTabbedBrowserDisplayer browser_displayer(
       Profile::FromWebUI(web_ui()));
   content::OpenURLParams open_url_params(
