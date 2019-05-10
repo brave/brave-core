@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
@@ -24,7 +25,6 @@
 #include "components/history/core/browser/history_service_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/associated_binding.h"
-#include "net/url_request/url_fetcher_delegate.h"
 
 #if !defined(OS_ANDROID)
 #include "ui/base/idle/idle.h"
@@ -43,6 +43,10 @@ namespace brave_rewards {
 class RewardsService;
 }  // namespace brave_rewards
 
+namespace network {
+class SimpleURLLoader;
+}  // namespace network
+
 namespace brave_ads {
 
 class AdsNotificationHandler;
@@ -50,7 +54,6 @@ class BundleStateDatabase;
 
 class AdsServiceImpl : public AdsService,
                        public ads::AdsClient,
-                       public net::URLFetcherDelegate,
                        public history::HistoryServiceObserver,
                        BackgroundHelper::Observer,
                        public base::SupportsWeakPtr<AdsServiceImpl> {
@@ -163,12 +166,13 @@ class AdsServiceImpl : public AdsService,
       history::HistoryService* history_service,
       const history::DeletionInfo& deletion_info) override;
 
-  // URLFetcherDelegate impl
-  void OnURLFetchComplete(const net::URLFetcher* source) override;
-
   // BackgroundHelper::Observer impl
   void OnBackground() override;
   void OnForeground() override;
+
+  void OnURLLoaderComplete(network::SimpleURLLoader* loader,
+                           ads::URLRequestCallback callback,
+                           std::unique_ptr<std::string> response_body);
 
   void OnGetAdsForCategory(
       const ads::OnGetAdsCallback& callback,
@@ -240,7 +244,7 @@ class AdsServiceImpl : public AdsService,
   bat_ads::mojom::BatAdsServicePtr bat_ads_service_;
 
   NotificationInfoMap notification_ids_;
-  std::map<const net::URLFetcher*, ads::URLRequestCallback> fetchers_;
+  base::flat_set<network::SimpleURLLoader*> url_loaders_;
 
   DISALLOW_COPY_AND_ASSIGN(AdsServiceImpl);
 };
