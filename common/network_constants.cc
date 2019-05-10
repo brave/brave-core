@@ -16,6 +16,8 @@ const char kBraveReferralsHeadersPath[] = "/promo/custom-headers";
 const char kBraveReferralsInitPath[] = "/promo/initialize/nonua";
 const char kBraveReferralsActivityPath[] = "/promo/activity";
 
+const char kBraveSafeBrowsingFileCheckProxy[] = "sb-ssl.brave.com";
+
 const char kCRXDownloadPrefix[] =
     "*://clients2.googleusercontent.com/crx/blobs/*crx*";
 const char kEmptyDataURI[] = "data:text/plain,";
@@ -26,6 +28,7 @@ const char kJSDataURLPrefix[] = "data:application/javascript;base64,";
 const char kGeoLocationsPattern[] =
     "https://www.googleapis.com/geolocation/v1/geolocate?key=*";
 const char kSafeBrowsingPrefix[] = "https://safebrowsing.googleapis.com/";
+const char kSafeBrowsingFileCheckPrefix[] = "https://sb-ssl.google.com/";
 const char kCRLSetPrefix1[] =
     "*://dl.google.com/release2/chrome_component/*crl-set*";
 const char kCRLSetPrefix2[] =

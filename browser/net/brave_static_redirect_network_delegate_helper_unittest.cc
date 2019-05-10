@@ -281,4 +281,25 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, ModifySafeBrowsingURLV5) {
   EXPECT_EQ(ret, net::OK);
 }
 
+TEST_F(BraveStaticRedirectNetworkDelegateHelperTest,
+       ModifySafeBrowsingFileCheckURL) {
+  net::TestDelegate test_delegate;
+  GURL url(
+      "https://sb-ssl.google.com/safebrowsing/clientreport/download?"
+      "key=DUMMY_KEY");
+  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
+      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo> before_url_context(
+      new brave::BraveRequestInfo());
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              before_url_context);
+  brave::ResponseCallback callback;
+  GURL expected_url(
+      "https://sb-ssl.brave.com/safebrowsing/clientreport/download?"
+      "key=DUMMY_KEY");
+  int ret = OnBeforeURLRequest_StaticRedirectWork(callback, before_url_context);
+  EXPECT_EQ(before_url_context->new_url_spec, expected_url);
+  EXPECT_EQ(ret, net::OK);
+}
+
 }  // namespace
