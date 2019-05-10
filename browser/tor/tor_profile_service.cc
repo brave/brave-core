@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/tor/tor_profile_service.h"
+
+#include <string>
 
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "brave/common/tor/pref_names.h"
@@ -24,7 +27,7 @@ TorProfileService::~TorProfileService() {
 // static
 void TorProfileService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterBooleanPref(tor::prefs::kProfileUsingTor, false);
+  registry->RegisterBooleanPref(tor::prefs::kProfileUsingTor, false);
 }
 // static
 void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -70,6 +73,8 @@ std::string TorProfileService::CircuitIsolationKey(const GURL& url) {
   std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
       origin.host(),
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  if (domain.size() == 0)
+    domain = origin.host();
   return domain;
 }
 

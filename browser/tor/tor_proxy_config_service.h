@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_TOR_TOR_PROXY_CONFIG_SERVICE_
-#define BRAVE_BROWSER_TOR_TOR_PROXY_CONFIG_SERVICE_
+#ifndef BRAVE_BROWSER_TOR_TOR_PROXY_CONFIG_SERVICE_H_
+#define BRAVE_BROWSER_TOR_TOR_PROXY_CONFIG_SERVICE_H_
 
 #include <string>
 #include <map>
@@ -26,8 +27,6 @@ class ProxyResolutionService;
 }
 
 namespace tor {
-
-const char kSocksProxy[] = "socks5";
 
 // Implementation of ProxyConfigService that returns a tor specific result.
 class TorProxyConfigService : public net::ProxyConfigService {
@@ -78,4 +77,4 @@ class TorProxyConfigService : public net::ProxyConfigService {
 
 }  // namespace tor
 
-#endif  // BRAVE_BROWSER_TOR_TOR_PROXY_CONFIG_SERVICE_
+#endif  // BRAVE_BROWSER_TOR_TOR_PROXY_CONFIG_SERVICE_H_
