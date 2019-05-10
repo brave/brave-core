@@ -1,5 +1,5 @@
 diff --git a/components/sync/driver/glue/sync_backend_host_core.cc b/components/sync/driver/glue/sync_backend_host_core.cc
-index 9f962da6b18298365c01e8b9154d39a5c43afc38..3b6e42c0ac23fac125e7e4b57f15d30cdd408a75 100644
+index 9f962da6b18298365c01e8b9154d39a5c43afc38..f020379378dce7a5b27dcf3f807fd191cd2ee0f7 100644
 --- a/components/sync/driver/glue/sync_backend_host_core.cc
 +++ b/components/sync/driver/glue/sync_backend_host_core.cc
 @@ -353,6 +353,7 @@ void SyncBackendHostCore::DoInitialize(SyncEngine::InitParams params) {
@@ -10,23 +10,3 @@ index 9f962da6b18298365c01e8b9154d39a5c43afc38..3b6e42c0ac23fac125e7e4b57f15d30c
    sync_manager_->Init(&args);
    base::trace_event::MemoryDumpManager::GetInstance()->RegisterDumpProvider(
        this, "SyncDirectory", base::ThreadTaskRunnerHandle::Get());
-@@ -412,12 +413,13 @@ void SyncBackendHostCore::DoInitialProcessControlTypes() {
-     return;
-   }
- 
--  if (!sync_manager_->InitialSyncEndedTypes().HasAll(ControlTypes())) {
--    LOG(ERROR) << "Failed to download control types";
--    host_.Call(FROM_HERE,
--               &SyncEngineImpl::HandleInitializationFailureOnFrontendLoop);
--    return;
--  }
-+  // TODO(darkdh): move device record into control type
-+  // if (!sync_manager_->InitialSyncEndedTypes().HasAll(ControlTypes())) {
-+  //   LOG(ERROR) << "Failed to download control types";
-+  //   host_.Call(FROM_HERE,
-+  //              &SyncEngineImpl::HandleInitializationFailureOnFrontendLoop);
-+  //   return;
-+  // }
- 
-   DCHECK_EQ(user_share->directory->cache_guid(), sync_manager_->cache_guid());
-   host_.Call(
