@@ -59,6 +59,7 @@
 #include "components/favicon_base/favicon_types.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/url_data_source.h"
 #include "content/public/common/service_manager_connection.h"
 #include "extensions/buildflags/buildflags.h"
@@ -66,7 +67,8 @@
 #include "net/base/escape.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
-#include "net/url_request/url_fetcher.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 #include "services/service_manager/public/cpp/connector.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/gfx/image/image.h"
@@ -164,17 +166,17 @@ ContentSite PublisherInfoToContentSite(
   return content_site;
 }
 
-net::URLFetcher::RequestType URLMethodToRequestType(ledger::URL_METHOD method) {
+std::string URLMethodToRequestType(ledger::URL_METHOD method) {
   switch (method) {
     case ledger::URL_METHOD::GET:
-      return net::URLFetcher::RequestType::GET;
+      return "GET";
     case ledger::URL_METHOD::POST:
-      return net::URLFetcher::RequestType::POST;
+      return "POST";
     case ledger::URL_METHOD::PUT:
-      return net::URLFetcher::RequestType::PUT;
+      return "PUT";
     default:
       NOTREACHED();
-      return net::URLFetcher::RequestType::GET;
+      return "GET";
   }
 }
 
@@ -300,6 +302,54 @@ bool ResetOnFileTaskRunner(const base::FilePath& path) {
 void EnsureRewardsBaseDirectoryExists(const base::FilePath& path) {
   if (!DirectoryExists(path))
     base::CreateDirectory(path);
+}
+
+net::NetworkTrafficAnnotationTag
+GetNetworkTrafficAnnotationTagForFaviconFetch() {
+  return net::DefineNetworkTrafficAnnotation(
+      "brave_rewards_favicon_fetcher", R"(
+      semantics {
+        sender:
+          "Brave Rewards Media Fetcher"
+        description:
+          "Fetches favicon for media publishers in Rewards."
+        trigger:
+          "User visits a media publisher content."
+        data: "Favicon for media publisher."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        setting:
+          "This feature cannot be disabled by settings."
+        policy_exception_justification:
+          "Not implemented."
+      })");
+}
+
+net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTagForURLLoad() {
+  return net::DefineNetworkTrafficAnnotation("rewards_service_impl", R"(
+      semantics {
+        sender: "Brave Rewards service"
+        description:
+          "This service lets users anonymously support the sites they visit by "
+          "tallying the attention spent on visited sites and dividing up a "
+          "monthly BAT contribution."
+        trigger:
+          "User-initiated for direct tipping or on a set interval while Brave "
+          "is running for monthly contributions."
+        data:
+          "Publisher and contribution data."
+        destination: WEBSITE
+      }
+      policy {
+        cookies_allowed: NO
+        setting:
+          "You can enable or disable this feature via the BAT icon in the URL "
+          "bar or by visiting brave://rewards/."
+        policy_exception_justification:
+          "Not implemented."
+      })");
 }
 
 }  // namespace
@@ -757,10 +807,10 @@ void RewardsServiceImpl::Shutdown() {
     }
   }
 
-  for (const auto fetcher : fetchers_) {
-    delete fetcher.first;
+  for (auto* const loader : url_loaders_) {
+    delete loader;
   }
-  fetchers_.clear();
+  url_loaders_.clear();
 
   bat_ledger_.reset();
   RewardsService::Shutdown();
@@ -1236,33 +1286,33 @@ void RewardsServiceImpl::LoadURL(
     return;
   }
 
-  net::URLFetcher::RequestType request_type = URLMethodToRequestType(method);
+  if (test_response_callback_) {
+    std::string test_response;
+    std::map<std::string, std::string> test_headers;
+    test_response_callback_.Run(url, &test_response, &test_headers),
+    callback(200, test_response, test_headers);
+    return;
+  }
 
-  net::URLFetcher* fetcher = net::URLFetcher::Create(
-      parsed_url, request_type, this).release();
-  fetcher->SetRequestContext(g_browser_process->system_request_context());
-  fetcher->SetAutomaticallyRetryOnNetworkChanges(kRetriesCountOnNetworkChange);
-
+  const std::string request_method = URLMethodToRequestType(method);
+  auto request = std::make_unique<network::ResourceRequest>();
+  request->url = GURL(url);
+  request->method = request_method;
+  request->allow_credentials = false;
   for (size_t i = 0; i < headers.size(); i++)
-    fetcher->AddExtraRequestHeader(headers[i]);
+    request->headers.AddHeaderFromString(headers[i]);
+  network::SimpleURLLoader* loader = network::SimpleURLLoader::Create(
+      std::move(request),
+      GetNetworkTrafficAnnotationTagForURLLoad()).release();
+  loader->SetAllowHttpErrorResults(true);
+  url_loaders_.insert(loader);
+  loader->SetRetryOptions(kRetriesCountOnNetworkChange,
+      network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
 
   if (!content.empty())
-    fetcher->SetUploadData(contentType, content);
+    loader->AttachStringForUpload(content, contentType);
 
   if (VLOG_IS_ON(ledger::LogLevel::LOG_REQUEST)) {
-    std::string printMethod;
-    switch (method) {
-      case ledger::URL_METHOD::POST:
-        printMethod = "POST";
-        break;
-      case ledger::URL_METHOD::PUT:
-        printMethod = "PUT";
-        break;
-      default:
-        printMethod = "GET";
-        break;
-    }
-
     std::string headers_log = "";
     for (auto const& header : headers) {
       headers_log += "> headers: " + header + "\n";
@@ -1271,55 +1321,55 @@ void RewardsServiceImpl::LoadURL(
     VLOG(ledger::LogLevel::LOG_REQUEST) << std::endl
       << "[ REQUEST ]" << std::endl
       << "> url: " << url << std::endl
-      << "> method: " << printMethod << std::endl
+      << "> method: " << request_method << std::endl
       << "> content: " << content << std::endl
       << "> contentType: " << contentType << std::endl
       << headers_log
       << "[ END REQUEST ]";
   }
 
-  fetchers_[fetcher] = callback;
-  fetcher->Start();
+  loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
+      content::BrowserContext::GetDefaultStoragePartition(profile_)
+          ->GetURLLoaderFactoryForBrowserProcess().get(),
+      base::BindOnce(&RewardsServiceImpl::OnURLLoaderComplete,
+                     base::Unretained(this),
+                     loader,
+                     callback));
 }
 
-void RewardsServiceImpl::OnURLFetchComplete(
-    const net::URLFetcher* source) {
-  if (fetchers_.find(source) == fetchers_.end()) {
-    delete source;
-    return;
-  }
+void RewardsServiceImpl::OnURLLoaderComplete(
+    network::SimpleURLLoader* loader,
+    ledger::LoadURLCallback callback,
+    std::unique_ptr<std::string> response_body) {
+  DCHECK(url_loaders_.find(loader) != url_loaders_.end());
+  url_loaders_.erase(loader);
+  std::unique_ptr<network::SimpleURLLoader> scoped_loader(loader);
 
-  auto callback = fetchers_[source];
-  fetchers_.erase(source);
+  int response_code = -1;
+  if (loader->ResponseInfo() && loader->ResponseInfo()->headers)
+    response_code = loader->ResponseInfo()->headers->response_code();
 
-  int response_code = source->GetResponseCode();
-  std::string body;
   std::map<std::string, std::string> headers;
-  scoped_refptr<net::HttpResponseHeaders> headersList =
-      source->GetResponseHeaders();
+  if (loader->ResponseInfo()) {
+    scoped_refptr<net::HttpResponseHeaders> headersList =
+        loader->ResponseInfo()->headers;
 
-  if (headersList) {
-    size_t iter = 0;
-    std::string key;
-    std::string value;
-    while (headersList->EnumerateHeaderLines(&iter, &key, &value)) {
-      key = base::ToLowerASCII(key);
-      headers[key] = value;
+    if (headersList) {
+      size_t iter = 0;
+      std::string key;
+      std::string value;
+      while (headersList->EnumerateHeaderLines(&iter, &key, &value)) {
+        key = base::ToLowerASCII(key);
+        headers[key] = value;
+      }
     }
   }
 
-  if (response_code != net::URLFetcher::ResponseCode::RESPONSE_CODE_INVALID &&
-      source->GetStatus().is_success()) {
-    source->GetResponseAsString(&body);
+  if (Connected()) {
+    callback(response_code,
+             response_body ? *response_body : std::string(),
+             headers);
   }
-
-  delete source;
-
-  if (!Connected()) {
-    return;
-  }
-
-  callback(response_code, body, headers);
 }
 
 void RewardsServiceImpl::TriggerOnWalletInitialized(ledger::Result result) {
@@ -2000,25 +2050,6 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
   BitmapFetcherService* image_service =
       BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
   if (image_service) {
-    net::NetworkTrafficAnnotationTag traffic_annotation =
-      net::DefineNetworkTrafficAnnotation("brave_rewards_favicon_fetcher", R"(
-        semantics {
-          sender:
-            "Brave Rewards Media Fetcher"
-          description:
-            "Fetches favicon for media publishers in Rewards."
-          trigger:
-            "User visits a media publisher content."
-          data: "Favicon for media publisher."
-          destination: WEBSITE
-        }
-        policy {
-          cookies_allowed: NO
-          setting:
-            "This feature cannot be disabled by settings."
-          policy_exception_justification:
-            "Not implemented."
-        })");
     current_media_fetchers_.emplace_back(url);
     request_ids_.push_back(image_service->RequestImage(
           parsedUrl,
@@ -2028,7 +2059,7 @@ void RewardsServiceImpl::FetchFavIcon(const std::string& url,
               parsedUrl,
               base::Bind(&RewardsServiceImpl::OnFetchFavIconCompleted,
                   base::Unretained(this), callback)),
-          traffic_annotation));
+          GetNetworkTrafficAnnotationTagForFaviconFetch()));
   }
 }
 

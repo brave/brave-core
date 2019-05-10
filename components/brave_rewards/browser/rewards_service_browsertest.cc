@@ -5,6 +5,7 @@
 
 #include "base/path_service.h"
 #include "base/run_loop.h"
+#include "base/strings/string_split.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
@@ -23,10 +24,8 @@
 #include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/test/browser_test_utils.h"
-#include "google_apis/gaia/mock_url_fetcher_factory.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/http_response.h"
-#include "net/url_request/url_fetcher_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -43,6 +42,15 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
   http_response->set_content(
       "<html><head></head><body><div>Hello, world!</div></body></html>");
   return std::move(http_response);
+}
+
+bool URLMatches(const std::string& url,
+                const std::string& path,
+                const std::string& prefix,
+                const SERVER_TYPES& server) {
+  const std::string target_url =
+      braveledger_bat_helper::buildURL(path, prefix, server);
+  return (url.find(target_url) == 0);
 }
 
 }  // namespace
@@ -64,137 +72,6 @@ namespace brave_test_resp {
   std::string surveyor_voting_credential_;
 }  // namespace brave_test_resp
 
-namespace brave_net {
-class BraveURLFetcher : public net::TestURLFetcher {
- public:
-  BraveURLFetcher(bool success,
-                  const GURL& url,
-                  const std::string& results,
-                  net::URLFetcher::RequestType request_type,
-                  net::URLFetcherDelegate* d);
-  ~BraveURLFetcher() override;
-
-  void Start() override;
-  void DetermineURLResponsePath(const std::string& url);
-
- private:
-  void RunDelegate();
-
-  base::WeakPtrFactory<BraveURLFetcher> weak_factory_{this};
-  DISALLOW_COPY_AND_ASSIGN(BraveURLFetcher);
-};
-
-void split(std::vector<std::string>* tmp,
-           const std::string& query,
-           char delimiter) {
-  DCHECK(tmp);
-  std::stringstream ss(query);
-  std::string item;
-  while (std::getline(ss, item, delimiter)) {
-    if (query[0] != '\n') {
-      tmp->push_back(item);
-    }
-  }
-}
-
-bool URLMatches(const std::string& url,
-                const std::string& path,
-                const std::string& prefix,
-                const SERVER_TYPES& server) {
-  const std::string target_url =
-      braveledger_bat_helper::buildURL(path, prefix, server);
-  return (url.find(target_url) == 0);
-}
-
-void BraveURLFetcher::DetermineURLResponsePath(const std::string& url) {
-  std::vector<std::string> tmp;
-  brave_net::split(&tmp, url, '/');
-  if (url.find(braveledger_bat_helper::buildURL(REGISTER_PERSONA, PREFIX_V2,
-    braveledger_bat_helper::SERVER_TYPES::LEDGER)) == 0
-    && tmp.size() == 6) {
-    SetResponseString(brave_test_resp::registrarVK_);
-  } else if (URLMatches(url, REGISTER_PERSONA, PREFIX_V2,
-                        SERVER_TYPES::LEDGER) &&
-             tmp.size() == 7) {
-    SetResponseString(brave_test_resp::verification_);
-  } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
-                        SERVER_TYPES::BALANCE)) {
-    SetResponseString(brave_test_resp::wallet_);
-  } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
-                        SERVER_TYPES::LEDGER)) {
-    GURL gurl(url);
-    if (gurl.has_query())
-      SetResponseString(brave_test_resp::reconcile_);
-    else
-      SetResponseString(brave_test_resp::current_reconcile_);
-  } else if (URLMatches(url, GET_SET_PROMOTION, PREFIX_V2,
-                        SERVER_TYPES::LEDGER)) {
-    GURL gurl(url);
-    if (gurl.has_query())
-      SetResponseString(brave_test_resp::grant_);
-    else
-      SetResponseString(brave_test_resp::captcha_solution_);
-  } else if (URLMatches(url, GET_SET_PROMOTION, PREFIX_V4,
-                        SERVER_TYPES::LEDGER)) {
-    SetResponseString(brave_test_resp::grant_v4_);
-  } else if (URLMatches(url, GET_PROMOTION_CAPTCHA, PREFIX_V4,
-                        SERVER_TYPES::LEDGER)) {
-    // The hint we use doesn't matter since we mock the server's
-    // responses anyway, but ledger verifies that the response headers contain
-    // a hint so we must add one
-    scoped_refptr<net::HttpResponseHeaders> http_response_headers(
-        new net::HttpResponseHeaders(""));
-    http_response_headers->AddHeader("Captcha-Hint: Triangle");
-    set_response_headers(http_response_headers);
-    SetResponseString(brave_test_resp::captcha_);
-  } else if (URLMatches(url, RECONCILE_CONTRIBUTION, PREFIX_V2,
-                        SERVER_TYPES::LEDGER)) {
-    SetResponseString(brave_test_resp::contribution_);
-  } else if (URLMatches(url, REGISTER_VIEWING, PREFIX_V2,
-                        SERVER_TYPES::LEDGER)) {
-    if (url.find(REGISTER_VIEWING "/") != std::string::npos)
-      SetResponseString(brave_test_resp::register_credential_);
-    else
-      SetResponseString(brave_test_resp::register_);
-  } else if (URLMatches(url, SURVEYOR_BATCH_VOTING, PREFIX_V2,
-                        SERVER_TYPES::LEDGER)) {
-    if (url.find(SURVEYOR_BATCH_VOTING "/") != std::string::npos)
-      SetResponseString(brave_test_resp::surveyor_voting_credential_);
-    else
-      SetResponseString(brave_test_resp::surveyor_voting_);
-  } else if (URLMatches(url, GET_PUBLISHERS_LIST_V1, "",
-                        SERVER_TYPES::PUBLISHER_DISTRO)) {
-    SetResponseString("[[\"duckduckgo.com\",true,false]]");
-  }
-}
-
-BraveURLFetcher::BraveURLFetcher(bool success,
-  const GURL& url,
-  const std::string& results,
-  net::URLFetcher::RequestType request_type,
-  net::URLFetcherDelegate* d)
-  : net::TestURLFetcher(0, url, d) {
-  set_url(url);
-  set_status(net::URLRequestStatus(net::URLRequestStatus::SUCCESS, 0));
-  set_response_code(net::HTTP_OK);
-  DetermineURLResponsePath(url.spec());
-}
-
-BraveURLFetcher::~BraveURLFetcher() = default;
-
-void BraveURLFetcher::Start() {
-  base::ThreadTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&BraveURLFetcher::RunDelegate,
-      weak_factory_.GetWeakPtr()));
-}
-
-void BraveURLFetcher::RunDelegate() {
-  delegate()->OnURLFetchComplete(this);
-}
-
-}  // namespace brave_net
-
 class BraveRewardsBrowserTest : public InProcessBrowserTest,
                                 public brave_rewards::RewardsServiceObserver {
  public:
@@ -208,6 +85,9 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
         brave_rewards::RewardsServiceFactory::GetForProfile(
             browser()->profile()));
+    rewards_service_->test_response_callback_ =
+        base::BindRepeating(&BraveRewardsBrowserTest::GetTestResponse,
+                            base::Unretained(this));
     rewards_service_->SetLedgerEnvForTesting();
   }
 
@@ -223,6 +103,69 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
   void RunUntilIdle() {
     base::RunLoop loop;
     loop.RunUntilIdle();
+  }
+
+  void GetTestResponse(const std::string& url,
+                       std::string* response,
+                       std::map<std::string, std::string>* headers) {
+    std::vector<std::string> tmp = base::SplitString(url,
+                                                     "/",
+                                                     base::TRIM_WHITESPACE,
+                                                     base::SPLIT_WANT_ALL);
+    if (url.find(braveledger_bat_helper::buildURL(REGISTER_PERSONA, PREFIX_V2,
+      braveledger_bat_helper::SERVER_TYPES::LEDGER)) == 0
+      && tmp.size() == 6) {
+      *response = brave_test_resp::registrarVK_;
+    } else if (URLMatches(url, REGISTER_PERSONA, PREFIX_V2,
+                          SERVER_TYPES::LEDGER) &&
+               tmp.size() == 7) {
+      *response = brave_test_resp::verification_;
+    } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
+                          SERVER_TYPES::BALANCE)) {
+      *response = brave_test_resp::wallet_;
+    } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
+                          SERVER_TYPES::LEDGER)) {
+      GURL gurl(url);
+      if (gurl.has_query())
+        *response = brave_test_resp::reconcile_;
+      else
+        *response = brave_test_resp::current_reconcile_;
+    } else if (URLMatches(url, GET_SET_PROMOTION, PREFIX_V2,
+                          SERVER_TYPES::LEDGER)) {
+      GURL gurl(url);
+      if (gurl.has_query())
+        *response = brave_test_resp::grant_;
+      else
+        *response = brave_test_resp::captcha_solution_;
+    } else if (URLMatches(url, GET_SET_PROMOTION, PREFIX_V4,
+                          SERVER_TYPES::LEDGER)) {
+      *response = brave_test_resp::grant_v4_;
+    } else if (URLMatches(url, GET_PROMOTION_CAPTCHA, PREFIX_V4,
+                          SERVER_TYPES::LEDGER)) {
+      // The hint we use doesn't matter since we mock the server's
+      // responses anyway, but ledger verifies that the response headers contain
+      // a hint so we must add one
+      (*headers)["captcha-hint"] = "Triangle";
+      *response = brave_test_resp::captcha_;
+    } else if (URLMatches(url, RECONCILE_CONTRIBUTION, PREFIX_V2,
+                          SERVER_TYPES::LEDGER)) {
+      *response = brave_test_resp::contribution_;
+    } else if (URLMatches(url, REGISTER_VIEWING, PREFIX_V2,
+                          SERVER_TYPES::LEDGER)) {
+      if (url.find(REGISTER_VIEWING "/") != std::string::npos)
+        *response = brave_test_resp::register_credential_;
+      else
+        *response = brave_test_resp::register_;
+    } else if (URLMatches(url, SURVEYOR_BATCH_VOTING, PREFIX_V2,
+                          SERVER_TYPES::LEDGER)) {
+      if (url.find(SURVEYOR_BATCH_VOTING "/") != std::string::npos)
+        *response = brave_test_resp::surveyor_voting_credential_;
+      else
+        *response = brave_test_resp::surveyor_voting_;
+    } else if (URLMatches(url, GET_PUBLISHERS_LIST_V1, "",
+                          SERVER_TYPES::PUBLISHER_DISTRO)) {
+      *response = "[[\"duckduckgo.com\",true,false]]";
+    }
   }
 
   void WaitForWalletInitialization() {
@@ -842,8 +785,6 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
   brave_rewards::RewardsServiceImpl* rewards_service_;
 
   brave_rewards::Grant grant_;
-
-  MockURLFetcherFactory<brave_net::BraveURLFetcher> factory;
 
   std::unique_ptr<base::RunLoop> wait_for_wallet_initialization_loop_;
   bool wallet_initialized_ = false;
