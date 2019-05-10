@@ -27,6 +27,10 @@
 #include "ui/native_theme/native_theme.h"
 #include "ui/native_theme/native_theme_dark_aura.h"
 
+#if defined(OS_WIN)
+#include "ui/native_theme/native_theme_win.h"
+#endif
+
 namespace {
 BraveThemeType GetThemeTypeBasedOnChannel() {
   switch (chrome::GetChannel()) {
@@ -151,6 +155,9 @@ void BraveThemeService::Init(Profile* profile) {
   if (profile->GetPrefs()->FindPreference(kBraveThemeType)) {
     RecoverPrefStates(profile);
     OverrideDefaultThemeIfNeeded(profile);
+#if defined(OS_WIN)
+    OverrideSystemDarkModeIfNeeded(profile);
+#endif
     if (SystemThemeModeEnabled()) {
       // Start with proper system theme to make brave theme and
       // base ui components theme use same theme.
@@ -203,7 +210,10 @@ void BraveThemeService::OnPreferenceChanged(const std::string& pref_name) {
     SetSystemTheme(static_cast<BraveThemeType>(
         profile()->GetPrefs()->GetInteger(kBraveThemeType)));
   }
+#elif defined(OS_WIN)
+  OverrideSystemDarkModeIfNeeded(profile());
 #endif
+
   if (notify_theme_observer_here) {
     // Notify dark (cross-platform) and light (platform-specific) variants
     // When theme is changed from light to dark, we notify to light theme
@@ -233,6 +243,21 @@ void BraveThemeService::OverrideDefaultThemeIfNeeded(Profile* profile) {
                                     GetThemeTypeBasedOnChannel());
   }
 }
+
+#if defined(OS_WIN)
+void BraveThemeService::OverrideSystemDarkModeIfNeeded(Profile* profile) {
+  if (SystemThemeModeEnabled()) {
+    BraveThemeType type = static_cast<BraveThemeType>(
+        profile->GetPrefs()->GetInteger(kBraveThemeType));
+    // Overrides system dark mode only when brave theme type is not
+    // "Same as Windows". In this case, follow os theme.
+    // Otherwise, use brave theme as a native theme regardless of os theme.
+    ui::SetOverrideSystemDarkMode(
+        type != BraveThemeType::BRAVE_THEME_TYPE_DEFAULT,
+        type == BraveThemeType::BRAVE_THEME_TYPE_DARK);
+  }
+}
+#endif
 
 void BraveThemeService::SetBraveThemeEventRouterForTesting(
     extensions::BraveThemeEventRouter* mock_router) {
