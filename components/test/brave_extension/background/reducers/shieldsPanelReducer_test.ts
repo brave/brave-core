@@ -2,20 +2,32 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Types
 import * as types from '../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import * as windowTypes from '../../../../brave_extension/extension/brave_extension/constants/windowTypes'
 import * as tabTypes from '../../../../brave_extension/extension/brave_extension/constants/tabTypes'
 import * as webNavigationTypes from '../../../../brave_extension/extension/brave_extension/constants/webNavigationTypes'
-import shieldsPanelReducer from '../../../../brave_extension/extension/brave_extension/background/reducers/shieldsPanelReducer'
+import { State } from '../../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
+import { ShieldDetails } from '../../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
+
+// APIs
 import * as shieldsAPI from '../../../../brave_extension/extension/brave_extension/background/api/shieldsAPI'
 import * as tabsAPI from '../../../../brave_extension/extension/brave_extension/background/api/tabsAPI'
 import * as browserActionAPI from '../../../../brave_extension/extension/brave_extension/background/api/browserActionAPI'
+
+// Reducers
+import shieldsPanelReducer from '../../../../brave_extension/extension/brave_extension/background/reducers/shieldsPanelReducer'
+
+// State helpers
 import * as shieldsPanelState from '../../../../brave_extension/extension/brave_extension/state/shieldsPanelState'
+import * as noScriptState from '../../../../brave_extension/extension/brave_extension/state/noScriptState'
+
+// Utils
 import { initialState } from '../../../testData'
 import * as deepFreeze from 'deep-freeze-node'
-import { ShieldDetails } from '../../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 import * as actions from '../../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
-import { State } from '../../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
+import { getHostname } from '../../../../brave_extension/extension/brave_extension/helpers/urlUtils'
+
 
 describe('braveShieldsPanelReducer', () => {
   it('should handle initial state', () => {
@@ -30,7 +42,7 @@ describe('braveShieldsPanelReducer', () => {
     const tabId = 1
     beforeEach(() => {
       spy = jest.spyOn(shieldsPanelState, 'resetBlockingStats')
-      resetNoScriptInfoSpy = jest.spyOn(shieldsPanelState, 'resetNoScriptInfo')
+      resetNoScriptInfoSpy = jest.spyOn(noScriptState, 'resetNoScriptInfo')
       resetBlockingResourcesSpy = jest.spyOn(shieldsPanelState, 'resetBlockingResources')
     })
     afterEach(() => {

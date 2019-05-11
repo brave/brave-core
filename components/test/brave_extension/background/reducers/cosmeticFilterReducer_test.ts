@@ -2,22 +2,32 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this file,
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Types
 import * as shieldPanelTypes from '../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import * as cosmeticFilterTypes from '../../../../brave_extension/extension/brave_extension/constants/cosmeticFilterTypes'
 import * as windowTypes from '../../../../brave_extension/extension/brave_extension/constants/windowTypes'
 import * as tabTypes from '../../../../brave_extension/extension/brave_extension/constants/tabTypes'
 import * as webNavigationTypes from '../../../../brave_extension/extension/brave_extension/constants/webNavigationTypes'
-import shieldsPanelReducer from '../../../../brave_extension/extension/brave_extension/background/reducers/shieldsPanelReducer'
+import { State } from '../../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
+import { ShieldDetails } from '../../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
+
+// APIs
 import * as shieldsAPI from '../../../../brave_extension/extension/brave_extension/background/api/shieldsAPI'
-import cosmeticFilterReducer from '../../../../brave_extension/extension/brave_extension/background/reducers/cosmeticFilterReducer'
 import * as cosmeticFilterAPI from '../../../../brave_extension/extension/brave_extension/background/api/cosmeticFilterAPI'
 import * as tabsAPI from '../../../../brave_extension/extension/brave_extension/background/api/tabsAPI'
+
+// Reducers
+import shieldsPanelReducer from '../../../../brave_extension/extension/brave_extension/background/reducers/shieldsPanelReducer'
+import cosmeticFilterReducer from '../../../../brave_extension/extension/brave_extension/background/reducers/cosmeticFilterReducer'
+
+// State helpers
 import * as shieldsPanelState from '../../../../brave_extension/extension/brave_extension/state/shieldsPanelState'
+import * as noScriptState from '../../../../brave_extension/extension/brave_extension/state/noScriptState'
+
+// Helpers
 import { initialState } from '../../../testData'
 import * as deepFreeze from 'deep-freeze-node'
-import { ShieldDetails } from '../../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 import * as actions from '../../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
-import { State } from '../../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
 
 describe('cosmeticFilterReducer', () => {
   it('should handle initial state', () => {
@@ -31,7 +41,7 @@ describe('cosmeticFilterReducer', () => {
     let resetBlockingResourcesSpy: jest.SpyInstance
     beforeEach(() => {
       spy = jest.spyOn(shieldsPanelState, 'resetBlockingStats')
-      resetNoScriptInfoSpy = jest.spyOn(shieldsPanelState, 'resetNoScriptInfo')
+      resetNoScriptInfoSpy = jest.spyOn(noScriptState, 'resetNoScriptInfo')
       resetBlockingResourcesSpy = jest.spyOn(shieldsPanelState, 'resetBlockingResources')
     })
     afterEach(() => {
@@ -173,7 +183,9 @@ describe('cosmeticFilterReducer', () => {
           pinned: false,
           highlighted: false,
           incognito: false,
-          selected: false
+          selected: false,
+          discarded: false,
+          autoDiscardable: false
         },
         changeInfo: {}
       })
@@ -193,7 +205,9 @@ describe('cosmeticFilterReducer', () => {
           pinned: false,
           highlighted: false,
           incognito: false,
-          selected: false
+          selected: false,
+          discarded: false,
+          autoDiscardable: false
         },
         changeInfo: {}
       })
@@ -228,7 +242,9 @@ describe('cosmeticFilterReducer', () => {
           pinned: false,
           highlighted: false,
           incognito: false,
-          selected: false
+          selected: false,
+          discarded: false,
+          autoDiscardable: false
         }
       })
       expect(updateActiveTabSpy).toBeCalledTimes(1)
@@ -246,7 +262,9 @@ describe('cosmeticFilterReducer', () => {
           pinned: false,
           highlighted: false,
           incognito: false,
-          selected: false
+          selected: false,
+          discarded: false,
+          autoDiscardable: false
         }
       })
       expect(updateActiveTabSpy).not.toBeCalled()
