@@ -131,6 +131,42 @@ export interface ChangeAllNoScriptSettings {
   (shouldBlock: boolean): ChangeAllNoScriptSettingsReturn
 }
 
+interface SetScriptBlockedCurrentStateReturn {
+  type: types.SET_SCRIPT_BLOCKED_ONCE_CURRENT_STATE,
+  url: string
+}
+
+export interface SetScriptBlockedCurrentState {
+  (url: string): SetScriptBlockedCurrentStateReturn
+}
+
+interface SetGroupedScriptsBlockedCurrentStateReturn {
+  type: types.SET_GROUPED_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE,
+  hostname: string,
+  maybeBlock: boolean
+}
+
+export interface SetGroupedScriptsBlockedCurrentState {
+  (hostname: string, maybeBlock: boolean): SetGroupedScriptsBlockedCurrentStateReturn
+}
+
+interface SetAllScriptsBlockedCurrentStateReturn {
+  type: types.SET_ALL_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE,
+  maybeBlock: boolean
+}
+
+export interface SetAllScriptsBlockedCurrentState {
+  (maybeBlock: boolean): SetAllScriptsBlockedCurrentStateReturn
+}
+
+interface SetFinalScriptsBlockedStateReturn {
+  type: types.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE
+}
+
+export interface SetFinalScriptsBlockedState {
+  (): SetFinalScriptsBlockedStateReturn
+}
+
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
@@ -143,4 +179,8 @@ export type shieldPanelActions =
   BlockCookiesReturn |
   AllowScriptOriginsOnceReturn |
   ChangeNoScriptSettingsReturn |
-  ChangeAllNoScriptSettingsReturn
+  ChangeAllNoScriptSettingsReturn |
+  SetScriptBlockedCurrentStateReturn |
+  SetGroupedScriptsBlockedCurrentStateReturn |
+  SetAllScriptsBlockedCurrentStateReturn |
+  SetFinalScriptsBlockedStateReturn
