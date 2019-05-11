@@ -66,6 +66,7 @@ transpile_web_ui("brave_extension") {
     "helpers/shieldsUtils.ts",
     "helpers/noScriptUtils.ts",
     "state/shieldsPanelState.ts",
+    "state/noScriptState.ts",
     "types/actions/cosmeticFilterActions.ts",
     "types/actions/index.ts",
     "types/actions/runtimeActions.ts",
