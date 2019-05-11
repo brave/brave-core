@@ -9,7 +9,7 @@ import {
   BlockOptions,
   BlockFPOptions,
   BlockCookiesOptions
-} from '../../types/other/blockTypes'
+} from '../../../brave_extension/extension/brave_extension/types/other/blockTypes'
 
 describe('shieldsPanelActions', () => {
   it('shieldsPanelDataUpdated', () => {
@@ -111,6 +111,36 @@ describe('shieldsPanelActions', () => {
     expect(actions.changeNoScriptSettings(origin)).toEqual({
       type: types.CHANGE_NO_SCRIPT_SETTINGS,
       origin
+    })
+  })
+  it('setScriptBlockedCurrentState', () => {
+    const url = 'https://awesome-anthony-tseng.website'
+    expect(actions.setScriptBlockedCurrentState(url)).toEqual({
+      type: types.SET_SCRIPT_BLOCKED_ONCE_CURRENT_STATE,
+      url
+    })
+  })
+  it('setGroupedScriptsBlockedCurrentState', () => {
+    const hostname = 'https://clifton.io'
+    const maybeBlock = false
+    expect(actions.setGroupedScriptsBlockedCurrentState(hostname, maybeBlock)).toEqual({
+      type: types.SET_GROUPED_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE,
+      hostname,
+      maybeBlock
+    })
+  })
+
+  it('setAllScriptsBlockedCurrentState', () => {
+    const maybeBlock = true
+    expect(actions.setAllScriptsBlockedCurrentState(maybeBlock)).toEqual({
+      type: types.SET_ALL_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE,
+      maybeBlock
+    })
+  })
+
+  it('setFinalScriptsBlockedState', () => {
+    expect(actions.setFinalScriptsBlockedState()).toEqual({
+      type: types.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE
     })
   })
 })
