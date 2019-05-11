@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -27,9 +28,12 @@ const int kTorPasswordLength = 16;
 // Default tor circuit life time is 10 minutes
 constexpr base::TimeDelta kTenMins = base::TimeDelta::FromMinutes(10);
 
+const char kSocksProxy[] = "socks5";
+
 TorProxyConfigService::TorProxyConfigService(
   const std::string& tor_proxy, const std::string& username,
   TorProxyMap* tor_proxy_map) {
+    config_.proxy_rules().bypass_rules.AddRulesToSubtractImplicit();
     if (tor_proxy.length()) {
       url::Parsed url;
       url::ParseStandardURL(
