@@ -4,7 +4,7 @@ declare namespace RewardsExtension {
     currentNotification?: string
     enabledAC: boolean
     enabledMain: boolean
-    notifications: Record<number, Notification>
+    notifications: Record<string, Notification>
     publishers: Record<string, Publisher>
     report: Report
     grants?: GrantInfo[]
