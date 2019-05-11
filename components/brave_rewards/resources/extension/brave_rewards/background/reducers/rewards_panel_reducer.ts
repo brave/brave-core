@@ -143,11 +143,13 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         return
       }
 
-      const id = payload.id
-      let notifications: Record<number, RewardsExtension.Notification> = state.notifications
+      const id: string = payload.id
+      let notifications: Record<string, RewardsExtension.Notification> = state.notifications
 
-      if (!notifications) {
-        notifications = []
+      // Array check for previous version of state types
+      // (https://github.com/brave/brave-browser/issues/4344)
+      if (!notifications || Array.isArray(notifications)) {
+        notifications = {}
       }
 
       notifications[id] = {
@@ -324,7 +326,7 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       break
     }
     case types.ON_ALL_NOTIFICATIONS: {
-      const list = payload.list
+      const list: RewardsExtension.Notification[] = payload.list
 
       if (!list) {
         break
@@ -333,8 +335,10 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       let notifications: Record<number, RewardsExtension.Notification> = state.notifications
       let id = ''
 
-      if (!notifications) {
-        notifications = []
+      // Array check for previous version of state types
+      // (https://github.com/brave/brave-browser/issues/4344)
+      if (!notifications || Array.isArray(notifications)) {
+        notifications = {}
       }
 
       list.forEach((notification: RewardsExtension.Notification) => {
