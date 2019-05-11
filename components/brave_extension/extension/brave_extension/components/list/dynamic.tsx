@@ -30,7 +30,10 @@ import { NoScriptInfo } from '../../types/other/noScriptInfo'
 import {
   AllowScriptOriginsOnce,
   ChangeNoScriptSettings,
-  ChangeAllNoScriptSettings
+  ChangeAllNoScriptSettings,
+  SetScriptBlockedCurrentState,
+  SetAllScriptsBlockedCurrentState,
+  SetFinalScriptsBlockedState
 } from '../../types/actions/shieldsPanelActions'
 
 interface Props {
@@ -41,6 +44,10 @@ interface Props {
   list: NoScriptInfo
   onClose?: (event?: React.MouseEvent<any>) => void
   allowScriptOriginsOnce: AllowScriptOriginsOnce
+  setScriptBlockedCurrentState: SetScriptBlockedCurrentState
+  setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
+  setFinalScriptsBlockedState: SetFinalScriptsBlockedState
+  // TODO: remove
   changeNoScriptSettings: ChangeNoScriptSettings
   changeAllNoScriptSettings: ChangeAllNoScriptSettings
 }
@@ -53,11 +60,11 @@ export default class DynamicList extends React.PureComponent<Props, {}> {
   }
 
   onClickBlockOrAllowScript = (event: React.MouseEvent<HTMLButtonElement>) => {
-    this.props.changeNoScriptSettings(event.currentTarget.id)
+    this.props.setScriptBlockedCurrentState(event.currentTarget.id)
   }
 
   onClickAllowOrBlockAll (shouldBlock: boolean) {
-    this.props.changeAllNoScriptSettings(shouldBlock)
+    this.props.setAllScriptsBlockedCurrentState(shouldBlock)
   }
 
   onClickApplyScriptsOnce = () => {

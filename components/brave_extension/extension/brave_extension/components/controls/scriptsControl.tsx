@@ -33,10 +33,14 @@ import {
 import { BlockJSOptions } from '../../types/other/blockTypes'
 import { NoScriptInfo } from '../../types/other/noScriptInfo'
 import {
-  ChangeNoScriptSettings,
   BlockJavaScript,
+  AllowScriptOriginsOnce,
+  SetScriptBlockedCurrentState,
+  SetAllScriptsBlockedCurrentState,
+  SetFinalScriptsBlockedState,
+  // TODO: remove
+  ChangeNoScriptSettings,
   ChangeAllNoScriptSettings,
-  AllowScriptOriginsOnce
 } from '../../types/actions/shieldsPanelActions'
 
 interface CommonProps {
@@ -51,10 +55,14 @@ interface JavaScriptProps {
   javascript: BlockJSOptions
   javascriptBlocked: number
   noScriptInfo: NoScriptInfo
-  changeNoScriptSettings: ChangeNoScriptSettings
   blockJavaScript: BlockJavaScript
-  changeAllNoScriptSettings: ChangeAllNoScriptSettings
   allowScriptOriginsOnce: AllowScriptOriginsOnce
+  setScriptBlockedCurrentState: SetScriptBlockedCurrentState
+  setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
+  setFinalScriptsBlockedState: SetFinalScriptsBlockedState
+  // TODO: remove
+  changeNoScriptSettings: ChangeNoScriptSettings
+  changeAllNoScriptSettings: ChangeAllNoScriptSettings
 }
 
 export type Props = CommonProps & JavaScriptProps
@@ -120,9 +128,13 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
       hostname,
       isBlockedListOpen,
       allowScriptOriginsOnce,
+      noScriptInfo,
+      setScriptBlockedCurrentState,
+      setAllScriptsBlockedCurrentState,
+      setFinalScriptsBlockedState,
+      // TODO: remove
       changeNoScriptSettings,
       changeAllNoScriptSettings,
-      noScriptInfo
     } = this.props
     const { scriptsBlockedOpen } = this.state
     return (
@@ -156,6 +168,10 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
               list={noScriptInfo}
               onClose={this.onOpenScriptsBlocked}
               allowScriptOriginsOnce={allowScriptOriginsOnce}
+              setScriptBlockedCurrentState={setScriptBlockedCurrentState}
+              setAllScriptsBlockedCurrentState={setAllScriptsBlockedCurrentState}
+              setFinalScriptsBlockedState={setFinalScriptsBlockedState}
+              // TODO: remove
               changeNoScriptSettings={changeNoScriptSettings}
               changeAllNoScriptSettings={changeAllNoScriptSettings}
             />
