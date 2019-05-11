@@ -2,10 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Types
 import * as shieldsPanelTypes from '../../constants/shieldsPanelTypes'
 import * as windowTypes from '../../constants/windowTypes'
 import * as tabTypes from '../../constants/tabTypes'
 import * as webNavigationTypes from '../../constants/webNavigationTypes'
+import { State, Tab } from '../../types/state/shieldsPannelState'
+import { Actions } from '../../types/actions/index'
+
+// APIs
 import {
   setAllowBraveShields,
   setAllowAds,
@@ -20,10 +25,12 @@ import {
 } from '../api/shieldsAPI'
 import { setBadgeText, setIcon } from '../api/browserActionAPI'
 import { reloadTab } from '../api/tabsAPI'
+
+// Helpers
 import * as shieldsPanelState from '../../state/shieldsPanelState'
-import { State, Tab } from '../../types/state/shieldsPannelState'
-import { Actions } from '../../types/actions/index'
+import * as noScriptState from '../../state/noScriptState'
 import { getTotalResourcesBlocked } from '../../helpers/shieldsUtils'
+import { getOrigin } from '../../helpers/urlUtils'
 
 const updateShieldsIconBadgeText = (state: State) => {
   const tabId: number = shieldsPanelState.getActiveTabId(state)
@@ -74,7 +81,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       if (action.isMainFrame) {
         state = shieldsPanelState.resetBlockingStats(state, action.tabId)
         state = shieldsPanelState.resetBlockingResources(state, action.tabId)
-        state = shieldsPanelState.resetNoScriptInfo(state, action.tabId, new window.URL(action.url).origin)
+        state = noScriptState.resetNoScriptInfo(state, action.tabId, getOrigin(action.url))
       }
       break
     }
@@ -307,6 +314,42 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       const tabId: number = shieldsPanelState.getActiveTabId(state)
       state = shieldsPanelState.changeAllNoScriptSettings(state, tabId, action.shouldBlock)
       break
+    }
+    // NoScriptInfo is the name we call for the list of scripts that are either
+    // blocked or allowed by the user. Each script have three properties:
+    // ....................................................................................
+    // `actuallyBlocked`:
+    // ....................................................................................
+    // When set to `true` it blocks the script immediatelly. This is the initial state
+    // when the user toggle scripts blocked in the main panel screen and also the initial state
+    // for when users toggle `block/allow` or `block all/allow all`
+    // ....................................................................................
+    // `willBlock`:
+    // ....................................................................................
+    // When set to `true` it moves the script to its respective list. This is the final state
+    // when the user choose to close Shields either by clicking `cancel`, moving back to the
+    // main screen, or closing Shields browser action. This state is triggered only after those actions
+    // and its state inherit the state of `actuallyBlocked`.
+    // ....................................................................................
+    // `userInteracted`:
+    // ....................................................................................
+    // This property is for display only. With this we can tell whether or not the user have
+    // interacted with the script which can change the button state to allow/block (no user interaction)
+    // or blocked once/allowed once (user has interacted).
+    case shieldsPanelTypes.SET_SCRIPT_BLOCKED_ONCE_CURRENT_STATE: {
+      state = noScriptState.setScriptBlockedCurrentState(state, action.url)
+      break
+    }
+    case shieldsPanelTypes.SET_GROUPED_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE: {
+      state = noScriptState.setGroupedScriptsBlockedCurrentState(state, action.hostname, action.maybeBlock)
+      break
+    }
+    case shieldsPanelTypes.SET_ALL_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE: {
+      state = noScriptState.setAllScriptsBlockedCurrentState(state, action.maybeBlock)
+      break
+    }
+    case shieldsPanelTypes.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE: {
+      state = noScriptState.setFinalScriptsBlockedState(state)
     }
   }
   return state
