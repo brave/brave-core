@@ -15,7 +15,7 @@ import {
 } from 'brave-ui/features/shields'
 
 // Group Components
-import DynamicList from '../list/dynamic'
+import NoScript from '../list/noScript'
 
 // Locale
 import { getLocale } from '../../background/api/localeAPI'
@@ -32,15 +32,14 @@ import {
 // Types
 import { BlockJSOptions } from '../../types/other/blockTypes'
 import { NoScriptInfo } from '../../types/other/noScriptInfo'
+
 import {
   BlockJavaScript,
   AllowScriptOriginsOnce,
   SetScriptBlockedCurrentState,
+  SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
-  SetFinalScriptsBlockedState,
-  // TODO: remove
-  ChangeNoScriptSettings,
-  ChangeAllNoScriptSettings,
+  SetFinalScriptsBlockedState
 } from '../../types/actions/shieldsPanelActions'
 
 interface CommonProps {
@@ -58,11 +57,9 @@ interface JavaScriptProps {
   blockJavaScript: BlockJavaScript
   allowScriptOriginsOnce: AllowScriptOriginsOnce
   setScriptBlockedCurrentState: SetScriptBlockedCurrentState
+  setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
   setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
   setFinalScriptsBlockedState: SetFinalScriptsBlockedState
-  // TODO: remove
-  changeNoScriptSettings: ChangeNoScriptSettings
-  changeAllNoScriptSettings: ChangeAllNoScriptSettings
 }
 
 export type Props = CommonProps & JavaScriptProps
@@ -130,11 +127,9 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
       allowScriptOriginsOnce,
       noScriptInfo,
       setScriptBlockedCurrentState,
+      setGroupedScriptsBlockedCurrentState,
       setAllScriptsBlockedCurrentState,
-      setFinalScriptsBlockedState,
-      // TODO: remove
-      changeNoScriptSettings,
-      changeAllNoScriptSettings,
+      setFinalScriptsBlockedState
     } = this.props
     const { scriptsBlockedOpen } = this.state
     return (
@@ -160,20 +155,16 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
         </BlockedInfoRow>
         {
           scriptsBlockedOpen &&
-            <DynamicList
+            <NoScript
               favicon={favicon}
               hostname={hostname}
-              origin={origin}
-              name={getLocale('scriptsOnThisSite')}
-              list={noScriptInfo}
+              noScriptInfo={noScriptInfo}
               onClose={this.onOpenScriptsBlocked}
               allowScriptOriginsOnce={allowScriptOriginsOnce}
               setScriptBlockedCurrentState={setScriptBlockedCurrentState}
+              setGroupedScriptsBlockedCurrentState={setGroupedScriptsBlockedCurrentState}
               setAllScriptsBlockedCurrentState={setAllScriptsBlockedCurrentState}
               setFinalScriptsBlockedState={setFinalScriptsBlockedState}
-              // TODO: remove
-              changeNoScriptSettings={changeNoScriptSettings}
-              changeAllNoScriptSettings={changeAllNoScriptSettings}
             />
         }
       </>

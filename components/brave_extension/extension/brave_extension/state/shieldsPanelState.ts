@@ -83,9 +83,8 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
     tabs[tabId].httpsRedirectedResources = unique([ ...tabs[tabId].httpsRedirectedResources, subresource ])
     tabs[tabId].httpsRedirected = tabs[tabId].httpsRedirectedResources.length
   } else if (blockType === 'javascript') {
-    const origin = new window.URL(subresource).origin + '/'
     tabs[tabId].noScriptInfo = { ...tabs[tabId].noScriptInfo }
-    tabs[tabId].noScriptInfo[origin] = { ...{ actuallyBlocked: true, willBlock: true } }
+    tabs[tabId].noScriptInfo[subresource] = { ...{ actuallyBlocked: true, willBlock: true, userInteracted: false } }
     tabs[tabId].javascriptBlockedResources = unique([ ...tabs[tabId].javascriptBlockedResources, subresource ])
     tabs[tabId].javascriptBlocked = tabs[tabId].javascriptBlockedResources.length
   } else if (blockType === 'fingerprinting') {

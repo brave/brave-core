@@ -5,7 +5,7 @@
 export interface NoScriptEntry {
   actuallyBlocked: boolean
   willBlock: boolean
-  userInteracted?: boolean
+  userInteracted: boolean
 }
 
 export interface NoScriptInfo {

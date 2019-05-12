@@ -35,6 +35,7 @@ import {
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState
 } from '../../types/actions/shieldsPanelActions'
+import { getOrigin } from '../../helpers/urlUtils';
 
 interface Props {
   favicon: string
@@ -61,30 +62,32 @@ export default class DynamicList extends React.PureComponent<Props, {}> {
 
   onClickBlockOrAllowScript = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.setScriptBlockedCurrentState(event.currentTarget.id)
+    this.props.allowScriptOriginsOnce([getOrigin(event.currentTarget.id)])
   }
 
   onClickAllowOrBlockAll (shouldBlock: boolean) {
     this.props.setAllScriptsBlockedCurrentState(shouldBlock)
-  }
-
-  onClickApplyScriptsOnce = () => {
     const { list } = this.props
     const allOrigins = Object.keys(list)
     const allNonBlockedOrigins = allOrigins.filter(key => list[key].willBlock === false)
     this.props.allowScriptOriginsOnce(allNonBlockedOrigins)
   }
 
+  onClickApplyScriptsOnce = () => {
+    this.props.setFinalScriptsBlockedState()
+  }
+
   getList = (isBlocked: boolean) => {
     const { list } = this.props
     return Object.keys(list).map((origin, index) => {
-      if (list[origin].willBlock === isBlocked) {
+      if (list[origin].actuallyBlocked === isBlocked) {
         return null
       }
       return (
         <BlockedListItemWithOptions key={index}>
           <span title={origin}>{origin}</span>
           <LinkAction id={origin} onClick={this.onClickBlockOrAllowScript}>
-            {list[origin].willBlock ? getLocale('allow') : getLocale('block')}
+            {list[origin].actuallyBlocked ? getLocale('allow') : getLocale('block')}
           </LinkAction>
         </BlockedListItemWithOptions>
       )

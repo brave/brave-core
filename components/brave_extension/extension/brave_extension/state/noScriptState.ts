@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { getActiveTabId, getActiveTabData } from './shieldsPanelState'
+import { getActiveTabId } from './shieldsPanelState'
 import { filterNoScriptInfoByWillBlockState } from '../helpers/noScriptUtils'
 import { State, Tabs } from '../types/state/shieldsPannelState'
-import { getHostname } from '../helpers/urlUtils'
+import { getOrigin } from '../helpers/urlUtils'
 import { NoScriptInfo } from '../types/other/noScriptInfo'
 
 /**
@@ -67,44 +67,26 @@ export const resetNoScriptInfo = (state: State, tabId: number, newOrigin: string
     if (tabs[tabId].noScriptInfo[url].willBlock) {
       delete tabs[tabId].noScriptInfo[url]
     }
-    const groupedScriptsBlockedState = {
-      userInteracted: false,
-      actuallyBlocked: noScriptInfo[url].actuallyBlocked,
-      willBlock: noScriptInfo[url].willBlock
-    }
+    const groupedScriptsBlockedState = { userInteracted: false, actuallyBlocked: false }
     state = modifyNoScriptInfo(state, tabId, url, groupedScriptsBlockedState)
   }
+  console.log(state)
   return state
 }
 
-export const setAllowNoScriptOriginsOnce = (state: State, origins?: Array<string>) => {
-  const tabData = getActiveTabData(state)
-  if (!tabData) {
-    console.error('Active tab not found')
-    return
-  }
-  const noScriptInfo = getNoScriptInfo(state, getActiveTabId(state))
-
-   // if no group of origins is defined, allow all origins
-  if (origins === undefined) {
-    const allOrigins = Object.keys(noScriptInfo)
-    origins = allOrigins.filter(key => noScriptInfo[key].willBlock === false)
-  }
-}
-
- /**
-  * Reset NoScriptInfo to its initial state
-  * @param {State} state - The Application state
-  * @param {string} url - The current script URL
-  * @returns {State} The modified application state
-  */
+/**
+ * Reset NoScriptInfo to its initial state
+ * @param {State} state - The Application state
+ * @param {string} url - The current script URL
+ * @returns {State} The modified application state
+ */
 export const setScriptBlockedCurrentState = (state: State, url: string): State => {
   const tabId: number = getActiveTabId(state)
   const noScriptInfo = getNoScriptInfo(state, tabId)
 
   const scriptBlockedState = {
     userInteracted: true,
-    willBlock: !noScriptInfo[url].willBlock
+    actuallyBlocked: !noScriptInfo[url].actuallyBlocked
   }
   state = modifyNoScriptInfo(state, tabId, url, scriptBlockedState)
   return state
@@ -113,10 +95,10 @@ export const setScriptBlockedCurrentState = (state: State, url: string): State =
 /**
  * Set all scripts in a group to be either blocked or allowed
  * @param {State} state - The Application state
- * @param {string} hostname - The current script URL hostname
+ * @param {string} origin - The current script URL origin
  * @returns {State} The modified application state
  */
-export const setGroupedScriptsBlockedCurrentState = (state: State, hostname: string, maybeBlock: boolean): State => {
+export const setGroupedScriptsBlockedCurrentState = (state: State, origin: string, maybeBlock: boolean): State => {
   const tabId: number = getActiveTabId(state)
   const noScriptInfo = getNoScriptInfo(state, tabId)
   const groupedScripts = Object.entries(noScriptInfo)
@@ -124,10 +106,10 @@ export const setGroupedScriptsBlockedCurrentState = (state: State, hostname: str
   for (const [url] of filterNoScriptInfoByWillBlockState(groupedScripts, maybeBlock)) {
     const groupedScriptsBlockedState = {
       userInteracted: true,
-      willBlock: !noScriptInfo[url].willBlock
+      actuallyBlocked: !noScriptInfo[url].actuallyBlocked
     }
 
-    if (hostname === getHostname(url)) {
+    if (origin === getOrigin(url)) {
       state = modifyNoScriptInfo(state, tabId, url, groupedScriptsBlockedState)
     }
   }
@@ -147,7 +129,7 @@ export const setAllScriptsBlockedCurrentState = (state: State, maybeBlock: boole
   for (const [url] of filterNoScriptInfoByWillBlockState(allBlockedScripts, !maybeBlock)) {
     const groupedScriptsBlockedState = {
       userInteracted: true,
-      willBlock: maybeBlock
+      actuallyBlocked: maybeBlock
     }
     state = modifyNoScriptInfo(state, tabId, url, groupedScriptsBlockedState)
   }

@@ -50,6 +50,8 @@ transpile_web_ui("brave_extension") {
     "components/controls/deviceRecognitionControl.tsx",
     "components/controls/httpsUpgradesControl.tsx",
     "components/controls/scriptsControl.tsx",
+    "components/list/noScript.tsx",
+    "components/list/noScriptContent.tsx",
     "components/list/dynamic.tsx",
     "components/list/static.tsx",
     "constants/cosmeticFilterTypes.ts",

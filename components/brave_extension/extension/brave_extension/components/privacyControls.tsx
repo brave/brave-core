@@ -11,13 +11,12 @@ import DeviceRecognitionControl from './controls/deviceRecognitionControl'
 
 // Types
 import {
-  ChangeNoScriptSettings,
   BlockJavaScript,
-  ChangeAllNoScriptSettings,
   AllowScriptOriginsOnce,
   BlockCookies,
   BlockFingerprinting,
   SetScriptBlockedCurrentState,
+  SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState
 } from '../types/actions/shieldsPanelActions'
@@ -38,11 +37,9 @@ interface JavaScriptProps {
   blockJavaScript: BlockJavaScript
   allowScriptOriginsOnce: AllowScriptOriginsOnce
   setScriptBlockedCurrentState: SetScriptBlockedCurrentState
+  setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
   setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
   setFinalScriptsBlockedState: SetFinalScriptsBlockedState
-  // TODO: remove
-  changeNoScriptSettings: ChangeNoScriptSettings
-  changeAllNoScriptSettings: ChangeAllNoScriptSettings
 }
 
 interface CookiesProps {
@@ -76,11 +73,9 @@ export default class PrivacyControls extends React.PureComponent<Props, {}> {
           blockJavaScript={this.props.blockJavaScript}
           allowScriptOriginsOnce={this.props.allowScriptOriginsOnce}
           setScriptBlockedCurrentState={this.props.setScriptBlockedCurrentState}
+          setGroupedScriptsBlockedCurrentState={this.props.setGroupedScriptsBlockedCurrentState}
           setAllScriptsBlockedCurrentState={this.props.setAllScriptsBlockedCurrentState}
           setFinalScriptsBlockedState={this.props.setFinalScriptsBlockedState}
-          // TODO: remove
-          changeNoScriptSettings={this.props.changeNoScriptSettings}
-          changeAllNoScriptSettings={this.props.changeAllNoScriptSettings}
         />
         <CookiesControl
           isBlockedListOpen={this.props.isBlockedListOpen}
