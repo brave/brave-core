@@ -93,7 +93,6 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
 
   getGroupedScriptsRow = (script: NoScriptEntry, key: number, shouldBlock: boolean) => {
     const urlWithNestedScriptInfo = script[0]
-    const hostnameWithNestedScriptInfo = getHostname(urlWithNestedScriptInfo)
     const nestedScriptInfo = script[1]
     const hasNestedScriptInfo = filterNoScriptInfoByWillBlockState(nestedScriptInfo, shouldBlock).length >= 2
     const everyItemIsBlockedOrAllowed = checkEveryItemIsBlockedOrAllowedByUser(nestedScriptInfo, shouldBlock)
@@ -103,7 +102,7 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
         <li key={key}>
           <BlockedListItemDetails>
             <BlockedListItemSummary>
-              <span>{hostnameWithNestedScriptInfo}</span>
+              <span>{getHostname(urlWithNestedScriptInfo)}</span>
               <LinkAction
                 disabled={everyItemIsBlockedOrAllowed}
                 onClick={this.setBlockStateGroup.bind(this, urlWithNestedScriptInfo, shouldBlock)}

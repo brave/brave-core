@@ -6,7 +6,7 @@ import * as deepFreeze from 'deep-freeze-node'
 import { NoScriptInfo } from '../../../brave_extension/extension/brave_extension/types/other/noScriptInfo'
 import * as noScriptState from '../../../brave_extension/extension/brave_extension/state/noScriptState'
 import { State } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
-import { getHostname } from '../../../brave_extension/extension/brave_extension/helpers/urlUtils'
+import { getHostname, getOrigin } from '../../../brave_extension/extension/brave_extension/helpers/urlUtils'
 
 const url1: string = 'http://aaaa.com/script1.js'
 const url2: string = 'http://aaaa.com/script2.js'
@@ -30,7 +30,7 @@ const state: State = deepFreeze({
   currentWindowId: 1
 })
 
-describe.skip('noScriptState', () => {
+describe('noScriptState', () => {
   describe('getNoScriptInfo', () => {
     it('gets noScriptInfo data defined in state', () => {
       const assertion = noScriptState.getNoScriptInfo(state, tabId)
@@ -83,7 +83,7 @@ describe.skip('noScriptState', () => {
 
   describe('setGroupedScriptsBlockedCurrentState', () => {
     it('toggle userInteracted if hostname match and willBlock is the same as maybeBlock', () => {
-      const hostname = getHostname(url3)
+      const hostname = getOrigin(url3)
       const modifiedState = noScriptState.setGroupedScriptsBlockedCurrentState(state, hostname, true)
       const assertion = modifiedState.tabs[tabId].noScriptInfo[url3].userInteracted
       expect(assertion).toBe(true)
@@ -97,28 +97,28 @@ describe.skip('noScriptState', () => {
     })
 
     it('toggle actuallyBlocked when willBlock is the same as maybeBlock', () => {
-      const hostname = getHostname(url5)
+      const hostname = getOrigin(url5)
       const modifiedState = noScriptState.setGroupedScriptsBlockedCurrentState(state, hostname, true)
       const assertion = modifiedState.tabs[tabId].noScriptInfo[url5].actuallyBlocked
       expect(assertion).toBe(false)
     })
 
     it('does not toggle actuallyBlocked when willBlock is not the same as maybeBlock', () => {
-      const hostname = getHostname(url5)
+      const hostname = getOrigin(url5)
       const modifiedState = noScriptState.setGroupedScriptsBlockedCurrentState(state, hostname, false)
       const assertion = modifiedState.tabs[tabId].noScriptInfo[url5].actuallyBlocked
       expect(assertion).toBe(true)
     })
 
     it('toggle actuallyBlocked when willBlock is the same as maybeBlock', () => {
-      const hostname = getHostname(url4)
+      const hostname = getOrigin(url4)
       const modifiedState = noScriptState.setGroupedScriptsBlockedCurrentState(state, hostname, true)
       const assertion = modifiedState.tabs[tabId].noScriptInfo[url4].actuallyBlocked
       expect(assertion).toBe(true)
     })
 
     it('does not toggle actuallyBlocked when willBlock is not the same as maybeBlock', () => {
-      const hostname = getHostname(url4)
+      const hostname = getOrigin(url4)
       const modifiedState = noScriptState.setGroupedScriptsBlockedCurrentState(state, hostname, false)
       const assertion = modifiedState.tabs[tabId].noScriptInfo[url4].actuallyBlocked
       expect(assertion).toBe(false)
@@ -126,15 +126,17 @@ describe.skip('noScriptState', () => {
 
     it('does not modify state if hostname does not match', () => {
       const url = 'https://malicious-scripts-strike-back.com'
-      const hostname = getHostname(url)
+      const hostname = getOrigin(url)
       const modifiedState = noScriptState.setGroupedScriptsBlockedCurrentState(state, hostname, true)
       const assertion = modifiedState
       expect(assertion).toEqual(state)
     })
   })
 
-  describe.skip('setAllScriptsBlockedCurrentState', () => {
-    it('set all userInteracted to true when willBlock is the same as maybeBlock', () => {
+  describe('setAllScriptsBlockedCurrentState', () => {
+    it('set all userInteracted to true when willBlock is different from maybeBlock', () => {
+      const willBlock = false
+      const maybeBlock = true
       const newStateWithNoScriptInfo = Object.create({
         windows: { 1: 2 },
         currentWindowId: 1,
@@ -143,19 +145,21 @@ describe.skip('noScriptState', () => {
           [tabId]: {
             ...state.tabs[tabId],
             noScriptInfo: {
-              [url1]: { userInteracted: false, willBlock: false, actuallyBlocked: true },
-              [url2]: { userInteracted: false, willBlock: false, actuallyBlocked: true }
+              [url1]: { willBlock, userInteracted: false, actuallyBlocked: true },
+              [url2]: { willBlock, userInteracted: false, actuallyBlocked: true }
             }
           }
         }
       })
-      const modifiedState = noScriptState.setAllScriptsBlockedCurrentState(newStateWithNoScriptInfo, true)
+      const modifiedState = noScriptState.setAllScriptsBlockedCurrentState(newStateWithNoScriptInfo, maybeBlock)
       const assertion = Object.entries(modifiedState.tabs[tabId].noScriptInfo)
         .every(script => script[1].userInteracted)
       expect(assertion).toBe(true)
     })
 
-    it('set all actuallyBlocked to false if they are true and willBlock is the same as maybeBlock', () => {
+    it('set all actuallyBlocked to be the same as maybeBlock when willBlock is different', () => {
+      const willBlock = false
+      const maybeBlock = true
       const newStateWithNoScriptInfo = Object.create({
         windows: { 1: 2 },
         currentWindowId: 1,
@@ -164,19 +168,21 @@ describe.skip('noScriptState', () => {
           [tabId]: {
             ...state.tabs[tabId],
             noScriptInfo: {
-              [url1]: { userInteracted: false, willBlock: false, actuallyBlocked: true },
-              [url2]: { userInteracted: false, willBlock: false, actuallyBlocked: true }
+              [url1]: { willBlock, userInteracted: false, actuallyBlocked: true },
+              [url2]: { willBlock, userInteracted: false, actuallyBlocked: true }
             }
           }
         }
       })
-      const modifiedState = noScriptState.setAllScriptsBlockedCurrentState(newStateWithNoScriptInfo, true)
+      const modifiedState = noScriptState.setAllScriptsBlockedCurrentState(newStateWithNoScriptInfo, maybeBlock)
       const assertion = Object.entries(modifiedState.tabs[tabId].noScriptInfo)
         .every(script => script[1].actuallyBlocked)
-      expect(assertion).toBe(false)
+      expect(assertion).toBe(maybeBlock)
     })
 
-    it('set all actuallyBlocked to true if they are false', () => {
+    it('does not modify actuallyBlocked when maybeBlock is the same as willBlock', () => {
+      const willBlock = false
+      const maybeBlock = false
       const newStateWithNoScriptInfo = Object.create({
         windows: { 1: 2 },
         currentWindowId: 1,
@@ -185,16 +191,16 @@ describe.skip('noScriptState', () => {
           [tabId]: {
             ...state.tabs[tabId],
             noScriptInfo: {
-              [url2]: { userInteracted: false, willBlock: false, actuallyBlocked: false },
-              [url2]: { userInteracted: false, willBlock: false, actuallyBlocked: false }
+              [url2]: { willBlock, userInteracted: false, actuallyBlocked: false },
+              [url2]: { willBlock, userInteracted: false, actuallyBlocked: false }
             }
           }
         }
       })
-      const modifiedState = noScriptState.setAllScriptsBlockedCurrentState(newStateWithNoScriptInfo, false)
+      const modifiedState = noScriptState.setAllScriptsBlockedCurrentState(newStateWithNoScriptInfo, maybeBlock)
       const assertion = Object.entries(modifiedState.tabs[tabId].noScriptInfo)
         .every(script => script[1].actuallyBlocked)
-      expect(assertion).toBe(true)
+      expect(assertion).toBe(maybeBlock)
     })
   })
 
