@@ -46,10 +46,10 @@ class PublisherInfoDatabase {
 
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
 
-  std::unique_ptr<ledger::PublisherInfo> GetPublisherInfo(
+  ledger::PublisherInfoPtr GetPublisherInfo(
      const std::string& media_key);
 
-  std::unique_ptr<ledger::PublisherInfo> GetPanelPublisher(
+  ledger::PublisherInfoPtr GetPanelPublisher(
      const ledger::ActivityInfoFilter& filter);
 
   bool RestorePublishers();
@@ -68,7 +68,7 @@ class PublisherInfoDatabase {
   bool InsertOrUpdateMediaPublisherInfo(const std::string& media_key,
                                         const std::string& publisher_id);
 
-  std::unique_ptr<ledger::PublisherInfo> GetMediaPublisherInfo(
+  ledger::PublisherInfoPtr GetMediaPublisherInfo(
       const std::string& media_key);
 
   bool InsertOrUpdateRecurringTip(

@@ -344,12 +344,10 @@ void BatLedgerImpl::GetContributionAmount(
   std::move(callback).Run(ledger_->GetContributionAmount());
 }
 
-void BatLedgerImpl::DoDirectTip(const std::string& publisher_info,
-                                     int32_t amount,
-                                     const std::string& currency) {
-  ledger::PublisherInfo info;
-  if (info.loadFromJson(publisher_info))
-    ledger_->DoDirectTip(info, amount, currency);
+void BatLedgerImpl::DoDirectTip(const std::string& publisher_id,
+                                int32_t amount,
+                                const std::string& currency) {
+  ledger_->DoDirectTip(publisher_id, amount, currency);
 }
 
 void BatLedgerImpl::RemoveRecurringTip(const std::string& publisher_key) {
@@ -427,17 +425,11 @@ void BatLedgerImpl::GetRewardsInternalsInfo(
 // static
 void BatLedgerImpl::OnGetRecurringTips(
     CallbackHolder<GetRecurringTipsCallback>* holder,
-    const ledger::PublisherInfoList& list,
+    ledger::PublisherInfoList list,
     uint32_t num) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(std::move(list));
 
-  std::vector<std::string> json_list;
-  for (auto const& item : list) {
-    json_list.push_back(item.ToJson());
-  }
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(json_list);
-  }
   delete holder;
 }
 
@@ -452,17 +444,11 @@ void BatLedgerImpl::GetRecurringTips(GetRecurringTipsCallback callback) {
 // static
 void BatLedgerImpl::OnGetOneTimeTips(
     CallbackHolder<GetRecurringTipsCallback>* holder,
-    const ledger::PublisherInfoList& list,
+    ledger::PublisherInfoList list,
     uint32_t num) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(std::move(list));
 
-  std::vector<std::string> json_list;
-  for (auto const& item : list) {
-    json_list.push_back(item.ToJson());
-  }
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(json_list);
-  }
   delete holder;
 }
 
@@ -477,16 +463,10 @@ void BatLedgerImpl::GetOneTimeTips(GetOneTimeTipsCallback callback) {
 // static
 void BatLedgerImpl::OnGetActivityInfoList(
     CallbackHolder<GetActivityInfoListCallback>* holder,
-    const ledger::PublisherInfoList& list,
+    ledger::PublisherInfoList list,
     uint32_t num) {
-  std::vector<std::string> json_list;
-  for (auto const& item : list) {
-    json_list.push_back(item.ToJson());
-  }
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(json_list, num);
-  }
+  if (holder->is_valid())
+    std::move(holder->get()).Run(std::move(list), num);
 
   delete holder;
 }
@@ -513,15 +493,9 @@ void BatLedgerImpl::GetActivityInfoList(
 void BatLedgerImpl::OnLoadPublisherInfo(
     CallbackHolder<LoadPublisherInfoCallback>* holder,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info) {
-  std::string publisher;
-  if (info) {
-    publisher = info->ToJson();
-  }
-
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(result, publisher);
-  }
+    ledger::PublisherInfoPtr publisher_info) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, std::move(publisher_info));
 
   delete holder;
 }
@@ -540,9 +514,9 @@ void BatLedgerImpl::LoadPublisherInfo(
 void BatLedgerImpl::OnRefreshPublisher(
     CallbackHolder<RefreshPublisherCallback>* holder,
     bool verified) {
-  if (holder->is_valid()) {
+  if (holder->is_valid())
     std::move(holder->get()).Run(verified);
-  }
+
   delete holder;
 }
 

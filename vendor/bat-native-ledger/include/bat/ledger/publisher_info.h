@@ -12,8 +12,15 @@
 #include <utility>
 
 #include "bat/ledger/export.h"
+#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace ledger {
+
+using PublisherInfo = mojom::PublisherInfo;
+using PublisherInfoPtr = mojom::PublisherInfoPtr;
+using PublisherInfoList = std::vector<PublisherInfoPtr>;
+// TODO - remove this
+using PublisherInfoListStruct = PublisherInfoList;
 
 const char _clear_favicon[] = "clear";
 
@@ -106,49 +113,6 @@ LEDGER_EXPORT struct PublisherBanner {
   std::map<std::string, std::string> social;
   bool verified;
 };
-
-LEDGER_EXPORT struct PublisherInfo {
-  PublisherInfo();
-  PublisherInfo(const std::string& publisher_id);
-  PublisherInfo(const PublisherInfo& info);
-  ~PublisherInfo();
-
-  bool operator<(const PublisherInfo& rhs) const;
-  bool is_valid() const;
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string id;
-  uint64_t duration;
-  double score;
-  uint32_t visits;
-  uint32_t percent;
-  double weight;
-  PUBLISHER_EXCLUDE excluded;
-  REWARDS_CATEGORY category;
-  uint64_t reconcile_stamp;
-  bool verified;
-  std::string name;
-  std::string url;
-  std::string provider;
-  std::string favicon_url;
-
-  std::vector<ContributionInfo> contributions;
-};
-
-LEDGER_EXPORT struct PublisherInfoListStruct {
-  PublisherInfoListStruct();
-  ~PublisherInfoListStruct();
-  PublisherInfoListStruct(const PublisherInfoListStruct& data);
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::vector<PublisherInfo> list;
-};
-
-using PublisherInfoList = std::vector<PublisherInfo>;
 
 }  // namespace ledger
 

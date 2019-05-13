@@ -3,6 +3,8 @@
 // You can obtain one at http://mozilla.org/MPL/2.0/.
 module bat_ledger.mojom;
 
+import "brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom";
+
 const string kServiceName = "bat_ledger";
 
 interface BatLedgerService {
@@ -88,7 +90,9 @@ interface BatLedger {
   GetContributionAmount() => (double contribution_amount);
   GetPublisherBanner(string publisher_id) => (string banner);
 
-  DoDirectTip(string publisher_info, int32 amount, string currency);
+  DoDirectTip(string publisher_id,
+              int32 amount,
+              string currency);
 
   RemoveRecurringTip(string publisher_key);
   GetBootStamp() => (uint64 boot_stamp);
@@ -103,13 +107,14 @@ interface BatLedger {
   GetTransactionHistoryForThisCycle() => (string transactions);
   GetRewardsInternalsInfo() => (string info);
 
-  GetRecurringTips() => (array<string> list);
-  GetOneTimeTips() => (array<string> list);
+  GetRecurringTips() => (array<ledger.mojom.PublisherInfo> list);
+  GetOneTimeTips() => (array<ledger.mojom.PublisherInfo> list);
 
   GetActivityInfoList(uint32 start, uint32 limit, string json_filter) =>
-      (array<string> list, uint32 number);
+      (array<ledger.mojom.PublisherInfo> list, uint32 number);
 
-  LoadPublisherInfo(string publisher_key) => (uint32 result, string info);
+  LoadPublisherInfo(string publisher_key) =>
+      (uint32 result, ledger.mojom.PublisherInfo? info);
   RefreshPublisher(string publisher_key) => (bool verified);
 
   StartAutoContribute();
@@ -134,20 +139,25 @@ interface BatLedgerClient {
       string probi);
   OnGrantFinish(int32 result, string grant);
 
-  SavePublisherInfo(string publisher_info) => (int32 result,
-      string publisher_info);
-  LoadPublisherInfo(string publisher_key) => (int32 result, string publisher_info);
-  LoadPanelPublisherInfo(string filter) => (int32 result,
-      string publisher_info);
-  LoadMediaPublisherInfo(string media_key) => (int32 result,
-      string publisher_info);
+  SavePublisherInfo(ledger.mojom.PublisherInfo publisher_info) =>
+      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
+  LoadPublisherInfo(string publisher_key) =>
+      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
+  LoadPanelPublisherInfo(string filter) =>
+      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
+  LoadMediaPublisherInfo(string media_key) =>
+      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
 
-  OnPanelPublisherInfo(int32 result, string info, uint64 window_id);
+  OnPanelPublisherInfo(int32 result,
+                       ledger.mojom.PublisherInfo publisher_info,
+                       uint64 window_id);
   FetchFavIcon(string url, string favicon_key) => (bool success,
       string favicon_url);
-  GetRecurringTips() => (array<string> publisher_info_list,
+  GetRecurringTips() => (
+      array<ledger.mojom.PublisherInfo> publisher_info_list,
       uint32 next_record);
-  GetOneTimeTips() => (array<string> publisher_info_list,
+  GetOneTimeTips() => (
+      array<ledger.mojom.PublisherInfo> publisher_info_list,
       uint32 next_record);
 
   LoadNicewareList() => (int32 result, string data);
@@ -172,17 +182,18 @@ interface BatLedgerClient {
 
   SavePendingContribution(string list);
 
-  LoadActivityInfo(string filter) => (int32 result, string publisher_info);
+  LoadActivityInfo(string filter) =>
+      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
 
-  SaveActivityInfo(string publisher_info) => (int32 result,
-      string publisher_info);
+  SaveActivityInfo(ledger.mojom.PublisherInfo publisher_info) =>
+      (int32 result, ledger.mojom.PublisherInfo? publisher_info);
 
   OnRestorePublishers() => (bool result);
 
-  GetActivityInfoList(uint32 start, uint32 limit, string filter) => (
-      array<string> publisher_info_list, uint32 next_record);
+  GetActivityInfoList(uint32 start, uint32 limit, string filter) =>
+      (array<ledger.mojom.PublisherInfo> publisher_info_list, uint32 next_record);
 
-  SaveNormalizedPublisherList(string list);
+  SaveNormalizedPublisherList(array<ledger.mojom.PublisherInfo> list);
 
   SaveState(string name, string value) => (int32 result);
   LoadState(string name) => (int32 result, string value);

@@ -95,11 +95,11 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::GetNicewareListCallback callback));
 
   MOCK_METHOD2(SavePublisherInfo, void(
-      std::unique_ptr<ledger::PublisherInfo> publisher_info,
+      ledger::PublisherInfoPtr publisher_info,
       ledger::PublisherInfoCallback callback));
 
   MOCK_METHOD2(SaveActivityInfo, void(
-      std::unique_ptr<ledger::PublisherInfo> publisher_info,
+      ledger::PublisherInfoPtr publisher_info,
       ledger::PublisherInfoCallback callback));
 
   MOCK_METHOD2(LoadPublisherInfo, void(
@@ -155,7 +155,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD3(OnPanelPublisherInfo, void(
       ledger::Result result,
-      std::unique_ptr<ledger::PublisherInfo>,
+      ledger::PublisherInfoPtr,
       uint64_t windowId));
 
   MOCK_METHOD2(OnExcludedSitesChanged, void(
@@ -238,7 +238,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::OnRestoreCallback callback));
 
   MOCK_METHOD1(SaveNormalizedPublisherList, void(
-      const ledger::PublisherInfoListStruct& normalized_list));
+      ledger::PublisherInfoListStruct normalized_list));
 
   MOCK_METHOD1(SetConfirmationsIsReady, void(
       const bool is_ready));

@@ -13,7 +13,10 @@ dep_base = rebase_path("../..", "//")
 
 config("external_config") {
   visibility = [ ":*" ]
-  include_dirs = [ "include" ]
+  include_dirs = [
+    "include",
+    "$target_gen_dir/include",
+  ]
 }
 
 config("internal_config") {
@@ -76,6 +79,10 @@ source_set("headers") {
     "include/bat/ledger/wallet_info.h",
     "include/bat/ledger/transaction_info.h",
     "include/bat/ledger/transactions_info.h",
+  ]
+
+  public_deps = [
+    "include/bat/ledger/public/interfaces"
   ]
 }
 

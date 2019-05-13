@@ -2719,76 +2719,6 @@ void saveToJson(JsonWriter* writer, const ledger::Grant& grant) {
   writer->EndObject();
 }
 
-void saveToJson(JsonWriter* writer, const ledger::PublisherInfo& info) {
-  writer->StartObject();
-
-  writer->String("id");
-  writer->String(info.id.c_str());
-
-  writer->String("duration");
-  writer->Uint64(info.duration);
-
-  writer->String("score");
-  writer->Double(info.score);
-
-  writer->String("visits");
-  writer->Uint(info.visits);
-
-  writer->String("percent");
-  writer->Uint(info.percent);
-
-  writer->String("weight");
-  writer->Double(info.weight);
-
-  writer->String("excluded");
-  writer->Int(info.excluded);
-
-  writer->String("category");
-  writer->Int(info.category);
-
-  writer->String("reconcile_stamp");
-  writer->Uint64(info.reconcile_stamp);
-
-  writer->String("verified");
-  writer->Bool(info.verified);
-
-  writer->String("name");
-  writer->String(info.name.c_str());
-
-  writer->String("url");
-  writer->String(info.url.c_str());
-
-  writer->String("provider");
-  writer->String(info.provider.c_str());
-
-  writer->String("favicon_url");
-  writer->String(info.favicon_url.c_str());
-
-  writer->String("contributions");
-  writer->StartArray();
-  for (auto & contribution : info.contributions) {
-    saveToJson(writer, contribution);
-  }
-  writer->EndArray();
-
-  writer->EndObject();
-}
-
-void saveToJson(JsonWriter* writer, const ledger::ContributionInfo& info) {
-  writer->StartObject();
-
-  writer->String("publisher");
-  writer->String(info.publisher.c_str());
-
-  writer->String("value");
-  writer->Double(info.value);
-
-  writer->String("date");
-  writer->Uint64(info.date);
-
-  writer->EndObject();
-}
-
 void saveToJson(JsonWriter* writer,
     const ledger::PublisherBanner& banner) {
   writer->StartObject();
@@ -2976,20 +2906,6 @@ void saveToJson(JsonWriter* writer,
   writer->StartArray();
   for (const auto& contribution : contributions.list_) {
     saveToJson(writer, contribution);
-  }
-  writer->EndArray();
-
-  writer->EndObject();
-}
-
-void saveToJson(JsonWriter* writer,
-                const ledger::PublisherInfoListStruct& publishers) {
-  writer->StartObject();
-
-  writer->String("list");
-  writer->StartArray();
-  for (const auto& publisher : publishers.list) {
-    saveToJson(writer, publisher);
   }
   writer->EndArray();
 

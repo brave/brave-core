@@ -1,0 +1,29 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+module ledger.mojom;
+
+struct ContributionInfo {
+  string publisher;  // Filled only for recurrent tips
+  double value;
+  uint64 date;
+};
+
+struct PublisherInfo {
+  string id;
+  uint64 duration;
+  double score;
+  uint32 visits;
+  uint32 percent;
+  double weight;
+  int32 excluded;
+  int32 category;
+  uint64 reconcile_stamp;
+  bool verified;
+  string name;
+  string url;
+  string provider;
+  string favicon_url;
+
+  array<ContributionInfo> contributions;
+};

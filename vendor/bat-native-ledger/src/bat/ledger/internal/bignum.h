@@ -8,20 +8,11 @@
 
 #include <string>
 
-extern "C" {
-#include "relic.h"  // NOLINT
-}
-
 namespace braveledger_bat_bignum {
-  void prepareBigNum(bn_t& big_num, const std::string& probi);  // NOLINT
 
-  std::string bigNumToString(bn_t& number);  // NOLINT
-
-  std::string sum(const std::string& a_string, const std::string& b_string);
-
-  std::string sub(const std::string& a_string, const std::string& b_string);
-
-  std::string mul(const std::string& a_string, const std::string& b_string);
+std::string sum(const std::string& a_string, const std::string& b_string);
+std::string sub(const std::string& a_string, const std::string& b_string);
+std::string mul(const std::string& a_string, const std::string& b_string);
 
 }  // namespace braveledger_bat_bignum
 

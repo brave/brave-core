@@ -370,7 +370,7 @@ void MediaTwitch::OnMediaPublisherInfo(
     const uint64_t window_id,
     const std::string& user_id,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+    ledger::PublisherInfoPtr publisher_info) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
@@ -378,7 +378,7 @@ void MediaTwitch::OnMediaPublisherInfo(
     return;
   }
 
-  if (!publisher_info && !publisher_info.get()) {
+  if (!publisher_info) {
     if (media_id.empty()) {
       return;
     }
@@ -531,7 +531,7 @@ void MediaTwitch::OnMediaPublisherActivity(
     const std::string& media_id,
     const std::string& publisher_blob,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info) {
+    ledger::PublisherInfoPtr info) {
   if (result != ledger::Result::LEDGER_OK &&
     result != ledger::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
@@ -583,7 +583,7 @@ void MediaTwitch::OnPublisherInfo(
     const std::string& media_id,
     const std::string& publisher_blob,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+    ledger::PublisherInfoPtr publisher_info) {
   if (result != ledger::Result::LEDGER_OK  &&
     result != ledger::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);

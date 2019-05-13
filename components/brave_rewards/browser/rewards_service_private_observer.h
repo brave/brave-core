@@ -22,7 +22,7 @@ class RewardsServicePrivateObserver : public base::CheckedObserver {
   virtual void OnPanelPublisherInfo(
       RewardsService* rewards_service,
       int error_code,
-      std::unique_ptr<ledger::PublisherInfo> info,
+      const ledger::PublisherInfo* info,
       uint64_t windowId) {}
   virtual void OnRewardsMainEnabled(
       RewardsService* rewards_service,

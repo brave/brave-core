@@ -10,4 +10,8 @@ mojom("interfaces") {
   public_deps = [
     "//mojo/public/mojom/base",
   ]
+
+  deps = [
+    "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces"
+  ]
 }

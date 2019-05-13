@@ -126,19 +126,14 @@ void ExtensionRewardsServiceObserver::OnGetCurrentBalanceReport(
 void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
     RewardsService* rewards_service,
     int error_code,
-    std::unique_ptr<ledger::PublisherInfo> info,
+    const ledger::PublisherInfo* info,
     uint64_t windowId) {
   auto* event_router = extensions::EventRouter::Get(profile_);
-  if (!event_router) {
+  if (!event_router || !info) {
     return;
   }
 
   extensions::api::brave_rewards::OnPublisherData::Publisher publisher;
-
-  if (!info.get()) {
-    info.reset(new ledger::PublisherInfo());
-    info->id = "";
-  }
 
   publisher.percentage = info->percent;
   publisher.verified = info->verified;

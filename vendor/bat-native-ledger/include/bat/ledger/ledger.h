@@ -88,9 +88,9 @@ class LEDGER_EXPORT Ledger {
   virtual void AddRecurringPayment(const std::string& publisher_id,
                                    const double& value) = 0;
 
-  virtual void DoDirectTip(const PublisherInfo& publisher,
-                                int amount,
-                                const std::string& currency) = 0;
+  virtual void DoDirectTip(const std::string& publisher_id,
+                           int amount,
+                           const std::string& currency) = 0;
 
   virtual void OnLoad(const VisitData& visit_data,
                       const uint64_t& current_time) = 0;
@@ -129,11 +129,9 @@ class LEDGER_EXPORT Ledger {
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
-  virtual void SetPublisherInfo(
-      std::unique_ptr<PublisherInfo> publisher_info) = 0;
+  virtual void SetPublisherInfo(PublisherInfoPtr publisher_info) = 0;
 
-  virtual void SetActivityInfo(
-      std::unique_ptr<PublisherInfo> publisher_info) = 0;
+  virtual void SetActivityInfo(PublisherInfoPtr publisher_info) = 0;
 
   virtual void GetPublisherInfo(const std::string& publisher_key,
                                 PublisherInfoCallback callback) = 0;

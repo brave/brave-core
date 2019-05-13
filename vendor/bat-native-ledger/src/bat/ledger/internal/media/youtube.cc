@@ -382,7 +382,7 @@ void MediaYouTube::OnMediaPublisherInfo(
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+    ledger::PublisherInfoPtr publisher_info) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
@@ -390,7 +390,7 @@ void MediaYouTube::OnMediaPublisherInfo(
     return;
   }
 
-  if (!publisher_info && !publisher_info.get()) {
+  if (!publisher_info) {
     std::string media_url = GetVideoUrl(media_id);
     auto callback = std::bind(
         &MediaYouTube::OnEmbedResponse,
@@ -588,7 +588,7 @@ void MediaYouTube::WatchPath(uint64_t window_id,
 
 void MediaYouTube::OnMediaPublisherActivity(
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info,
+    ledger::PublisherInfoPtr info,
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& media_key,
@@ -644,7 +644,7 @@ void MediaYouTube::OnPublisherPanleInfo(
     const std::string& publisher_key,
     bool is_custom_path,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info) {
+    ledger::PublisherInfoPtr info) {
   if (!info || result == ledger::Result::NOT_FOUND) {
     FetchDataFromUrl(visit_data.url,
                      std::bind(&MediaYouTube::GetChannelHeadlineVideo,
@@ -741,7 +741,7 @@ void MediaYouTube::OnUserActivity(
     const ledger::VisitData& visit_data,
     const std::string& media_key,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info) {
+    ledger::PublisherInfoPtr info) {
   if (result != ledger::Result::LEDGER_OK  &&
       result != ledger::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
