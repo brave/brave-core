@@ -5,7 +5,8 @@
 import rewardsPanelActions from '../actions/rewardsPanelActions'
 
 chrome.tabs.onUpdated.addListener((tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
-  rewardsPanelActions.onTabRetrieved(tab, '')
+  const activeTabIsLoadingTriggered = Boolean(tab.active && changeInfo.status === 'loading')
+  rewardsPanelActions.onTabRetrieved(tab, '', activeTabIsLoadingTriggered)
 })
 
 chrome.tabs.onActivated.addListener((activeInfo: chrome.tabs.TabActiveInfo) => {

@@ -76,7 +76,8 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       const publisher = publishers[id]
       const validKey = publisher && publisher.publisher_key && publisher.publisher_key.length > 0
 
-      if (!publisher || (publisher && (publisher.tabUrl !== tab.url || !validKey))) {
+      if (!publisher || (publisher.tabUrl !== tab.url || !validKey)) {
+        // Invalid publisher for tab, re-fetch publisher.
         chrome.braveRewards.getPublisherData(
           tab.windowId,
           tab.url,
@@ -93,9 +94,11 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
         }
       } else if (publisher &&
                  publisher.tabUrl === tab.url &&
-                 publisher.tabId !== tab.id &&
+                 (publisher.tabId !== tab.id || payload.activeTabIsLoadingTriggered) &&
                  validKey) {
-        // if we switch between tabs that have the same url, we need to update as well
+        // Valid match and either is a different tab with the same url,
+        // or the same tab but it has been unloaded and re-loaded.
+        // Set state.
         setBadgeText(state, publisher.verified, tab.id)
         publishers[id].tabId = tab.id
       }
