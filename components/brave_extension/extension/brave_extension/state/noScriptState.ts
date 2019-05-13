@@ -75,13 +75,12 @@ export const resetNoScriptInfo: ResetNoScriptInfo = (state, tabId, newOrigin) =>
 
   for (const [url] of allScripts) {
     // only keep entries which users want to allow
-    if (tabs[tabId].noScriptInfo[url].willBlock) {
-      delete tabs[tabId].noScriptInfo[url]
-    }
+    // if (tabs[tabId].noScriptInfo[url].willBlock) {
+    //   delete tabs[tabId].noScriptInfo[url]
+    // }
     const groupedScriptsBlockedState = { userInteracted: false, actuallyBlocked: false }
     state = modifyNoScriptInfo(state, tabId, url, groupedScriptsBlockedState)
   }
-  console.log(state)
   return state
 }
 

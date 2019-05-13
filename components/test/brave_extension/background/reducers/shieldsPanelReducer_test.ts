@@ -537,7 +537,7 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://test.brave.com/': { actuallyBlocked: true, willBlock: true }
+              'https://test.brave.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false }
             },
             trackersBlockedResources: [],
             adsBlockedResources: [],
@@ -582,7 +582,7 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://a.com/': { actuallyBlocked: true, willBlock: true }
+              'https://a.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false }
             },
             trackersBlockedResources: [],
             adsBlockedResources: [],
@@ -625,8 +625,8 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://a.com/': { actuallyBlocked: true, willBlock: true },
-              'https://b.com/': { actuallyBlocked: true, willBlock: true }
+              'https://a.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false },
+              'https://b.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false }
             },
             trackersBlockedResources: [],
             adsBlockedResources: [],
@@ -672,8 +672,8 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://a.com/': { actuallyBlocked: true, willBlock: true },
-              'https://b.com/': { actuallyBlocked: true, willBlock: true }
+              'https://a.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false },
+              'https://b.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false }
             },
             trackersBlockedResources: [],
             adsBlockedResources: [],
@@ -1162,7 +1162,7 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://test.brave.com/': { actuallyBlocked: true, willBlock: true }
+              'https://test.brave.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false }
             },
             trackersBlockedResources: [ 'https://test.brave.com' ],
             adsBlockedResources: [ 'https://test.brave.com' ],
@@ -1204,7 +1204,7 @@ describe('braveShieldsPanelReducer', () => {
             fingerprinting: 'block',
             cookies: 'block',
             noScriptInfo: {
-              'https://test.brave.com/': { actuallyBlocked: true, willBlock: true }
+              'https://test.brave.com/index.js': { actuallyBlocked: true, willBlock: true, userInteracted: false }
             },
             trackersBlockedResources: [ 'https://test.brave.com' ],
             adsBlockedResources: [ 'https://test.brave.com' ],
