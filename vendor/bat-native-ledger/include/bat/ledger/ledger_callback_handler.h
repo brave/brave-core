@@ -35,9 +35,8 @@ LEDGER_EXPORT enum Result {
   TIP_ERROR = 16,
   CORRUPTED_WALLET = 17,
   GRANT_ALREADY_CLAIMED = 18,
-  // some more useful result codes should go here
 
-  LEDGER_RESULT_END = 19,
+  CONTRIBUTION_AMOUNT_TOO_LOW = 19,
 };
 
 // LedgerCallbackHandler must not be destroyed if they have pending callbacks

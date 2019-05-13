@@ -29,6 +29,8 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+// npm run test -- brave_browser_tests --filter=BraveRewardsBrowserTest.*
+
 using braveledger_bat_helper::SERVER_TYPES;
 
 namespace {
@@ -106,6 +108,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
   }
 
   void GetTestResponse(const std::string& url,
+                       int* response_status_code,
                        std::string* response,
                        std::map<std::string, std::string>* headers) {
     std::vector<std::string> tmp = base::SplitString(url,
@@ -126,10 +129,17 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
                           SERVER_TYPES::LEDGER)) {
       GURL gurl(url);
-      if (gurl.has_query())
+      if (gurl.has_query()) {
         *response = brave_test_resp::reconcile_;
-      else
-        *response = brave_test_resp::current_reconcile_;
+      } else {
+        if (ac_low_amount_) {
+          *response = "";
+          *response_status_code = net::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE;
+        } else {
+          *response = brave_test_resp::current_reconcile_;
+        }
+      }
+
     } else if (URLMatches(url, GET_SET_PROMOTION, PREFIX_V2,
                           SERVER_TYPES::LEDGER)) {
       GURL gurl(url);
@@ -777,6 +787,10 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
       wait_for_reconcile_completed_loop_->Quit();
   }
 
+  void ACLowAmount() {
+    ac_low_amount_ = true;
+  }
+
   MOCK_METHOD1(OnGetProduction, void(bool));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
@@ -807,6 +821,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
 
   bool contribution_made_ = false;
   bool tip_made = false;
+  bool ac_low_amount_ = false;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
@@ -1357,6 +1372,39 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   const bool verified = false;
   const bool monthly = true;
   TipPublisher("google.com", verified, monthly);
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
+}
+
+// Tip is below server threshold
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       ContributionWithLowAmount) {
+  // Observe the Rewards service
+  rewards_service_->AddObserver(this);
+
+  // Enable Rewards
+  EnableRewards();
+
+  // Claim grant using panel
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  // Set monthly to 0.2 BAT
+  rewards_service()->SetContributionAmount(0.2);
+
+  // Visit verified publisher
+  const bool verified = true;
+  VisitPublisher("duckduckgo.com", verified);
+
+  ACLowAmount();
+
+  // Trigger auto contribution now
+  rewards_service()->StartAutoContributeForTest();
+
+  // Wait for reconciliation to complete successfully
+  WaitForReconcileCompleted();
+  ASSERT_EQ(reconcile_status_, ledger::Result::CONTRIBUTION_AMOUNT_TOO_LOW);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);

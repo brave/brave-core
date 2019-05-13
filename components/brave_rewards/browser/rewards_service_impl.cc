@@ -67,6 +67,7 @@
 #include "net/base/escape.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/base/url_util.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "services/service_manager/public/cpp/connector.h"
@@ -1276,21 +1277,25 @@ void RewardsServiceImpl::LoadURL(
     ledger::LoadURLCallback callback) {
 
   if (url.empty()) {
-    callback(400, "", {});
+    callback(net::HTTP_BAD_REQUEST, "", {});
     return;
   }
 
   GURL parsed_url(url);
   if (!parsed_url.is_valid()) {
-    callback(400, "", {});
+    callback(net::HTTP_BAD_REQUEST, "", {});
     return;
   }
 
   if (test_response_callback_) {
     std::string test_response;
     std::map<std::string, std::string> test_headers;
-    test_response_callback_.Run(url, &test_response, &test_headers),
-    callback(200, test_response, test_headers);
+    int response_status_code = net::HTTP_OK;
+    test_response_callback_.Run(url,
+                                &response_status_code,
+                                &test_response,
+                                &test_headers);
+    callback(response_status_code, test_response, test_headers);
     return;
   }
 
@@ -1770,7 +1775,7 @@ void RewardsServiceImpl::SetPublisherAllowVideos(bool allow) const {
   bat_ledger_->SetPublisherAllowVideos(allow);
 }
 
-void RewardsServiceImpl::SetContributionAmount(double amount) const {
+void RewardsServiceImpl::SetContributionAmount(const double amount) const {
   if (!Connected()) {
     return;
   }

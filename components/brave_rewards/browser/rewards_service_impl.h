@@ -72,9 +72,10 @@ using GetDebugCallback = base::Callback<void(bool)>;
 using GetReconcileTimeCallback = base::Callback<void(int32_t)>;
 using GetShortRetriesCallback = base::Callback<void(bool)>;
 using GetTestResponseCallback =
-    base::Callback<void(const std::string&,
-                        std::string*,
-                        std::map<std::string, std::string>*)>;
+    base::Callback<void(const std::string& url,
+                        int* response_status_code,
+                        std::string* response,
+                        std::map<std::string, std::string>* headers)>;
 
 class RewardsServiceImpl : public RewardsService,
                            public ledger::LedgerClient,
@@ -214,6 +215,8 @@ class RewardsServiceImpl : public RewardsService,
 
   const RewardsNotificationService::RewardsNotificationsMap&
   GetAllNotifications() override;
+
+  void SetContributionAmount(const double amount) const override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -365,7 +368,6 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherMinVisits(unsigned int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
   void SetPublisherAllowVideos(bool allow) const override;
-  void SetContributionAmount(double amount) const override;
   void SetUserChangedContribution() const override;
   void SetAutoContribute(bool enabled) const override;
   void SetCatalogIssuers(const std::string& json) override;

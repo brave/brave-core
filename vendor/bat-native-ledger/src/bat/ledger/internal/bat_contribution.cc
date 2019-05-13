@@ -630,13 +630,19 @@ void BatContribution::ReconcilePayloadCallback(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
+  const auto reconcile = ledger_->GetReconcileById(viewing_id);
+
   if (response_status_code != 200) {
-    AddRetry(ledger::ContributionRetry::STEP_PAYLOAD,
-             viewing_id);
+    if (response_status_code == 416) {
+      OnReconcileComplete(ledger::Result::CONTRIBUTION_AMOUNT_TOO_LOW,
+                          viewing_id,
+                          reconcile.category_);
+    } else {
+      AddRetry(ledger::ContributionRetry::STEP_PAYLOAD,
+               viewing_id);
+    }
     return;
   }
-
-  const auto reconcile = ledger_->GetReconcileById(viewing_id);
 
   braveledger_bat_helper::TRANSACTION_ST transaction;
   bool success = braveledger_bat_helper::getJSONTransaction(response,
