@@ -348,3 +348,35 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
   return url;
 #endif
 }
+
+std::string BraveContentBrowserClient::GetStoragePartitionIdForSite(
+    content::BrowserContext* browser_context,
+    const GURL& site) {
+  std::string partition_id =
+    ChromeContentBrowserClient::GetStoragePartitionIdForSite(
+        browser_context, site);
+  if (browser_context->IsTorProfile()) {
+    partition_id = site.spec();
+  }
+  DCHECK(IsValidStoragePartitionId(browser_context, partition_id));
+  return partition_id;
+}
+
+void BraveContentBrowserClient::GetStoragePartitionConfigForSite(
+    content::BrowserContext* browser_context,
+    const GURL& site,
+    bool can_be_default,
+    std::string* partition_domain,
+    std::string* partition_name,
+    bool* in_memory) {
+  ChromeContentBrowserClient::GetStoragePartitionConfigForSite(
+      browser_context, site, can_be_default, partition_domain, partition_name,
+      in_memory);
+  if (browser_context->IsTorProfile()) {
+    if (!site.is_empty()) {
+      *partition_domain = site.host();
+      *partition_name = "tor";
+    }
+    *in_memory = true;
+  }
+}
