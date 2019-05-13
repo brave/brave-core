@@ -63,7 +63,7 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
   if (!ExtensionTabUtil::GetTabById(
         params->tab_id,
         profile,
-        include_incognito_information(),
+        false,
         nullptr,
         nullptr,
         &contents,
@@ -133,7 +133,7 @@ void BraveRewardsTipTwitterUserFunction::OnTwitterPublisherInfoSaved(
   if (!ExtensionTabUtil::GetTabById(
         params->tab_id,
         Profile::FromBrowserContext(browser_context()),
-        include_incognito_information(),
+        false,
         nullptr,
         nullptr,
         &contents,
