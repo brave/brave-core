@@ -96,7 +96,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
               <span>{getLocale('scriptsBlocked')}</span>
             </BlockedInfoRowText>
           </BlockedInfoRowData>
-          <LinkAction size='small' onClick={this.onAllowScriptsOnceViaShortcut}>
+          <LinkAction size='small' style={{ zIndex: 1 }} onClick={this.onAllowScriptsOnceViaShortcut}>
             {getLocale('allowScriptsOnce')}
           </LinkAction>
           <Toggle
