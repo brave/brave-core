@@ -80,6 +80,17 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
                        const GURL& url) override;
 
+  std::string GetStoragePartitionIdForSite(
+      content::BrowserContext* browser_context,
+      const GURL& site) override;
+  void GetStoragePartitionConfigForSite(
+      content::BrowserContext* browser_context,
+      const GURL& site,
+      bool can_be_default,
+      std::string* partition_domain,
+      std::string* partition_name,
+      bool* in_memory) override;
+
  private:
   bool AllowAccessCookie(const GURL& url, const GURL& first_party,
       content::ResourceContext* context, int render_process_id,
