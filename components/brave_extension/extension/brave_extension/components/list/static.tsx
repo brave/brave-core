@@ -21,6 +21,7 @@ import {
 
 // Helpers
 import { blockedResourcesSize } from '../../helpers/shieldsUtils'
+import { stripProtocolFromUrl } from '../../helpers/urlUtils'
 
 // Locale
 import { getLocale } from '../../background/api/localeAPI'
@@ -55,7 +56,7 @@ export default class StaticList extends React.PureComponent<Props, {}> {
           <BlockedListSummaryText>{name}</BlockedListSummaryText>
           </BlockedListSummary>
           <BlockedListStatic>
-            {list.map((item, index) => <BlockedListItem key={index}>{item}</BlockedListItem>)}
+            {list.map((item, index) => <BlockedListItem key={index}>{stripProtocolFromUrl(item)}</BlockedListItem>)}
           </BlockedListStatic>
         </details>
         <BlockedListFooter>
