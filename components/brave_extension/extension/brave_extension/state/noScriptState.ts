@@ -2,18 +2,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Types
+import { Tabs } from '../types/state/shieldsPannelState'
+import {
+  GetNoScriptInfo,
+  ModifyNoScriptInfo,
+  ResetNoScriptInfo,
+  SetScriptBlockedCurrentState,
+  SetGroupedScriptsBlockedCurrentState,
+  SetAllScriptsBlockedCurrentState,
+  SetFinalScriptsBlockedState
+} from '../types/state/noScriptState'
+
+// Helpers
 import { getActiveTabId } from './shieldsPanelState'
 import { filterNoScriptInfoByWillBlockState } from '../helpers/noScriptUtils'
-import { State, Tabs } from '../types/state/shieldsPannelState'
 import { getOrigin } from '../helpers/urlUtils'
-import { NoScriptInfo } from '../types/other/noScriptInfo'
 
 /**
  * Get NoScriptInfo initial state
  * @param {State} state - The initial NoScriptState
  * @returns {NoScriptInfo} The current NoScript data
  */
-export const getNoScriptInfo = (state: State, tabId: number): NoScriptInfo | State => {
+export const getNoScriptInfo: GetNoScriptInfo = (state, tabId) => {
   if ('noScriptInfo' in state.tabs[tabId] === false) {
     state.tabs[tabId].noScriptInfo = {}
   }
@@ -28,7 +39,7 @@ export const getNoScriptInfo = (state: State, tabId: number): NoScriptInfo | Sta
   * @param {object} modifiedInfo - The current script URL object data to be modified
   * @returns {State} state - The modified application state
   */
-export const modifyNoScriptInfo = (state: State, tabId: number, url: string, modifiedInfo: {}): State => {
+export const modifyNoScriptInfo: ModifyNoScriptInfo = (state, tabId, url, modifiedInfo) => {
   const tabs: Tabs = {
     ...state.tabs,
     [tabId]: {
@@ -52,7 +63,7 @@ export const modifyNoScriptInfo = (state: State, tabId: number, url: string, mod
  * @param {number} tabId - The current tab ID
  * @returns {State} The modified application state
  */
-export const resetNoScriptInfo = (state: State, tabId: number, newOrigin: string): State => {
+export const resetNoScriptInfo: ResetNoScriptInfo = (state, tabId, newOrigin) => {
   const tabs: Tabs = state.tabs
 
   if (newOrigin !== tabs[tabId].origin) { // navigate away
@@ -80,7 +91,7 @@ export const resetNoScriptInfo = (state: State, tabId: number, newOrigin: string
  * @param {string} url - The current script URL
  * @returns {State} The modified application state
  */
-export const setScriptBlockedCurrentState = (state: State, url: string): State => {
+export const setScriptBlockedCurrentState: SetScriptBlockedCurrentState = (state, url) => {
   const tabId: number = getActiveTabId(state)
   const noScriptInfo = getNoScriptInfo(state, tabId)
 
@@ -98,8 +109,12 @@ export const setScriptBlockedCurrentState = (state: State, url: string): State =
  * @param {string} origin - The current script URL origin
  * @returns {State} The modified application state
  */
-export const setGroupedScriptsBlockedCurrentState = (state: State, origin: string, maybeBlock: boolean): State => {
-  const tabId: number = getActiveTabId(state)
+export const setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState = (
+  state,
+  origin,
+  maybeBlock
+) => {
+  const tabId = getActiveTabId(state)
   const noScriptInfo = getNoScriptInfo(state, tabId)
   const groupedScripts = Object.entries(noScriptInfo)
 
@@ -121,8 +136,11 @@ export const setGroupedScriptsBlockedCurrentState = (state: State, origin: strin
  * @param {State} state - The Application state
  * @returns {State} The modified application state
  */
-export const setAllScriptsBlockedCurrentState = (state: State, maybeBlock: boolean): State => {
-  const tabId: number = getActiveTabId(state)
+export const setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState = (
+  state,
+  maybeBlock
+) => {
+  const tabId = getActiveTabId(state)
   const noScriptInfo = getNoScriptInfo(state, tabId)
   const allBlockedScripts = Object.entries(noScriptInfo)
 
@@ -141,8 +159,8 @@ export const setAllScriptsBlockedCurrentState = (state: State, maybeBlock: boole
  * @param {State} state - The Application state
  * @returns {State} The modified application state
  */
-export const setFinalScriptsBlockedState = (state: State): State => {
-  const tabId: number = getActiveTabId(state)
+export const setFinalScriptsBlockedState: SetFinalScriptsBlockedState = (state) => {
+  const tabId = getActiveTabId(state)
   const noScriptInfo = getNoScriptInfo(state, tabId)
   const allScripts = Object.entries(noScriptInfo)
 
