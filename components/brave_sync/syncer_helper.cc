@@ -43,6 +43,18 @@ void ReCalculateOrder(bookmarks::BookmarkModel* model,
   }
 }
 
+uint64_t GetIndexByOrder(const std::string& record_order) {
+  uint64_t index = 0;
+  size_t last_dot_index = record_order.rfind(".");
+  DCHECK(last_dot_index != std::string::npos);
+  std::string last_digit = record_order.substr(last_dot_index + 1);
+  bool result = base::StringToUint64(last_digit, &index);
+  --index;
+  DCHECK(index >= 0);
+  DCHECK(result);
+  return index;
+}
+
 }   // namespace
 
 void AddBraveMetaInfo(
@@ -79,22 +91,21 @@ void AddBraveMetaInfo(
   model->SetNodeMetaInfo(node, "sync_timestamp", sync_timestamp);
 }
 
-uint64_t GetIndexByOrder(const bookmarks::BookmarkNode* parent,
-                         const bookmarks::BookmarkNode* src) {
+uint64_t GetIndex(const bookmarks::BookmarkNode* parent,
+                  const bookmarks::BookmarkNode* src) {
   int index = 0;
   std::string src_order;
   src->GetMetaInfo("order", &src_order);
   DCHECK(!src_order.empty());
-  while (index < parent->child_count()) {
-    const bookmarks::BookmarkNode* node = parent->GetChild(index);
+  index = GetIndexByOrder(src_order);
+  const bookmarks::BookmarkNode* node = parent->GetChild(index);
+  if (node) {
     std::string node_order;
     node->GetMetaInfo("order", &node_order);
 
     if (!node_order.empty() &&
-        CompareOrder(src_order, node_order))
-      return index;
-
-    ++index;
+        CompareOrder(node_order, src_order))
+      return index + 1;
   }
   return index;
 }
