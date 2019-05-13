@@ -26,8 +26,6 @@ import * as noScriptState from '../../../../brave_extension/extension/brave_exte
 import { initialState } from '../../../testData'
 import * as deepFreeze from 'deep-freeze-node'
 import * as actions from '../../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
-import { getHostname } from '../../../../brave_extension/extension/brave_extension/helpers/urlUtils'
-
 
 describe('braveShieldsPanelReducer', () => {
   it('should handle initial state', () => {
@@ -1267,100 +1265,6 @@ describe('braveShieldsPanelReducer', () => {
           origins
         })).toEqual(state)
       expect(setAllowScriptOriginsOnceSpy).toBeCalledWith(origins, tabId)
-    })
-  })
-
-  describe('CHANGE_NO_SCRIPT_SETTINGS', () => {
-    let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(shieldsPanelState, 'changeNoScriptSettings')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
-    it('should call changeNoScriptSettings', () => {
-      const tabId = 2
-      const stateWithNoScriptInfo: State = {
-        tabs: {
-          2: {
-            origin,
-            hostname: 'brave.com',
-            adsBlocked: 0,
-            controlsOpen: true,
-            braveShields: 'allow',
-            trackersBlocked: 0,
-            httpsRedirected: 0,
-            javascriptBlocked: 0,
-            fingerprintingBlocked: 0,
-            id: 2,
-            httpUpgradableResources: 'block',
-            javascript: 'block',
-            trackers: 'block',
-            ads: 'block',
-            fingerprinting: 'block',
-            cookies: 'block',
-            url: 'https://brave.com',
-            noScriptInfo: {
-              'https://brave.com': {
-                actuallyBlocked: true,
-                willBlock: true
-              }
-            },
-            adsBlockedResources: [],
-            trackersBlockedResources: [],
-            httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
-            fingerprintingBlockedResources: []
-          }
-        },
-        windows: {
-          1: 2
-        },
-        currentWindowId: 1
-      }
-      let nextState = shieldsPanelReducer(stateWithNoScriptInfo, {
-        type: types.CHANGE_NO_SCRIPT_SETTINGS,
-        origin
-      })
-      expect(nextState).toEqual({
-        tabs: {
-          2: {
-            origin,
-            hostname: 'brave.com',
-            adsBlocked: 0,
-            controlsOpen: true,
-            braveShields: 'allow',
-            trackersBlocked: 0,
-            httpsRedirected: 0,
-            javascriptBlocked: 0,
-            fingerprintingBlocked: 0,
-            id: 2,
-            httpUpgradableResources: 'block',
-            javascript: 'block',
-            trackers: 'block',
-            ads: 'block',
-            fingerprinting: 'block',
-            cookies: 'block',
-            url: 'https://brave.com',
-            noScriptInfo: {
-              'https://brave.com': {
-                actuallyBlocked: true,
-                willBlock: false
-              }
-            },
-            adsBlockedResources: [],
-            trackersBlockedResources: [],
-            httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
-            fingerprintingBlockedResources: []
-          }
-        },
-        windows: {
-          1: 2
-        },
-        currentWindowId: 1
-      })
-      expect(spy).toBeCalledWith(stateWithNoScriptInfo, tabId, origin)
     })
   })
 })

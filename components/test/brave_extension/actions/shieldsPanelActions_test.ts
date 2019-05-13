@@ -106,13 +106,6 @@ describe('shieldsPanelActions', () => {
     })
   })
 
-  it('changeNoScriptSettings action', () => {
-    const origin = 'https://a.com'
-    expect(actions.changeNoScriptSettings(origin)).toEqual({
-      type: types.CHANGE_NO_SCRIPT_SETTINGS,
-      origin
-    })
-  })
   it('setScriptBlockedCurrentState', () => {
     const url = 'https://awesome-anthony-tseng.website'
     expect(actions.setScriptBlockedCurrentState(url)).toEqual({
@@ -120,6 +113,7 @@ describe('shieldsPanelActions', () => {
       url
     })
   })
+
   it('setGroupedScriptsBlockedCurrentState', () => {
     const hostname = 'https://clifton.io'
     const maybeBlock = false

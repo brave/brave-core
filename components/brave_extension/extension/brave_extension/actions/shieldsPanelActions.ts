@@ -75,20 +75,6 @@ export const allowScriptOriginsOnce: actions.AllowScriptOriginsOnce = (origins) 
   }
 }
 
-export const changeNoScriptSettings: actions.ChangeNoScriptSettings = (origin) => {
-  return {
-    type: types.CHANGE_NO_SCRIPT_SETTINGS,
-    origin
-  }
-}
-
-export const changeAllNoScriptSettings: actions.ChangeAllNoScriptSettings = (shouldBlock) => {
-  return {
-    type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS,
-    shouldBlock
-  }
-}
-
 /**
  * Set a given script resource state to be in the allowed/blocked list
  * @param {string} url - The resource URL

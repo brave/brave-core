@@ -113,24 +113,6 @@ export interface AllowScriptOriginsOnce {
   (origins: string[]): AllowScriptOriginsOnceReturn
 }
 
-interface ChangeNoScriptSettingsReturn {
-  type: types.CHANGE_NO_SCRIPT_SETTINGS,
-  origin: string
-}
-
-export interface ChangeNoScriptSettings {
-  (origin: string): ChangeNoScriptSettingsReturn
-}
-
-interface ChangeAllNoScriptSettingsReturn {
-  type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS,
-  shouldBlock: boolean
-}
-
-export interface ChangeAllNoScriptSettings {
-  (shouldBlock: boolean): ChangeAllNoScriptSettingsReturn
-}
-
 interface SetScriptBlockedCurrentStateReturn {
   type: types.SET_SCRIPT_BLOCKED_ONCE_CURRENT_STATE,
   url: string
@@ -178,8 +160,6 @@ export type shieldPanelActions =
   BlockFingerprintingReturn |
   BlockCookiesReturn |
   AllowScriptOriginsOnceReturn |
-  ChangeNoScriptSettingsReturn |
-  ChangeAllNoScriptSettingsReturn |
   SetScriptBlockedCurrentStateReturn |
   SetGroupedScriptsBlockedCurrentStateReturn |
   SetAllScriptsBlockedCurrentStateReturn |

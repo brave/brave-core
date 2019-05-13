@@ -305,16 +305,6 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         })
       break
     }
-    case shieldsPanelTypes.CHANGE_NO_SCRIPT_SETTINGS: {
-      const tabId: number = shieldsPanelState.getActiveTabId(state)
-      state = shieldsPanelState.changeNoScriptSettings(state, tabId, action.origin)
-      break
-    }
-    case shieldsPanelTypes.CHANGE_ALL_NO_SCRIPT_SETTINGS: {
-      const tabId: number = shieldsPanelState.getActiveTabId(state)
-      state = shieldsPanelState.changeAllNoScriptSettings(state, tabId, action.shouldBlock)
-      break
-    }
     // NoScriptInfo is the name we call for the list of scripts that are either
     // blocked or allowed by the user. Each script have three properties:
     // ....................................................................................

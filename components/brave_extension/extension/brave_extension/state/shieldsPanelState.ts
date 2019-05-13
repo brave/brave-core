@@ -95,36 +95,6 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
   return { ...state, tabs }
 }
 
-export const changeNoScriptSettings: shieldState.ChangeNoScriptSettings = (state, tabId, origin) => {
-  const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0, noScriptInfo: {} }, ...tabs[tabId] }
-  tabs[tabId].noScriptInfo[origin].willBlock = !tabs[tabId].noScriptInfo[origin].willBlock
-  return { ...state, tabs }
-}
-
-export const resetNoScriptInfo: shieldState.ResetNoScriptInfo = (state, tabId, newOrigin) => {
-  const tabs: shieldState.Tabs = { ...state.tabs }
-  if (newOrigin !== tabs[tabId].origin) { // navigate away
-    tabs[tabId].noScriptInfo = {}
-  }
-  Object.keys(tabs[tabId].noScriptInfo).map(key => {
-    tabs[tabId].noScriptInfo[key].actuallyBlocked = false
-    // only keep entries which users want to allow
-    if (tabs[tabId].noScriptInfo[key].willBlock) {
-      delete tabs[tabId].noScriptInfo[key]
-    }
-  })
-  return { ...state, tabs }
-}
-
-export const changeAllNoScriptSettings: shieldState.ChangeAllNoScriptSettings = (state, tabId, shouldBlock) => {
-  const tabs: shieldState.Tabs = { ...state.tabs }
-  Object.keys(tabs[tabId].noScriptInfo).map(key => {
-    tabs[tabId].noScriptInfo[key].willBlock = shouldBlock
-  })
-  return { ...state, tabs }
-}
-
 export const resetBlockingStats: shieldState.ResetBlockingStats = (state, tabId) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
   tabs[tabId] = { ...tabs[tabId], ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0 } }
