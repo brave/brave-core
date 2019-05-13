@@ -1,9 +1,13 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this file,
-* You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Types
 import * as shieldState from '../types/state/shieldsPannelState'
+
+// Helpers
 import { unique } from '../helpers/arrayUtils'
+import { filterNoScriptInfoByWillBlockState } from '../helpers/noScriptUtils'
 
 export const getActiveTabId: shieldState.GetActiveTabId = (state) => state.windows[state.currentWindowId]
 
@@ -44,7 +48,6 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
     adsBlockedResources: [],
     trackersBlockedResources: [],
     httpsRedirectedResources: [],
-    javascriptBlockedResources: [],
     fingerprintingBlockedResources: []
   },
     ...tabs[tabId],
@@ -67,7 +70,6 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
       adsBlockedResources: [],
       trackersBlockedResources: [],
       httpsRedirectedResources: [],
-      javascriptBlockedResources: [],
       fingerprintingBlockedResources: []
     },
     ...tabs[tabId]
@@ -85,8 +87,7 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
   } else if (blockType === 'javascript') {
     tabs[tabId].noScriptInfo = { ...tabs[tabId].noScriptInfo }
     tabs[tabId].noScriptInfo[subresource] = { ...{ actuallyBlocked: true, willBlock: true, userInteracted: false } }
-    tabs[tabId].javascriptBlockedResources = unique([ ...tabs[tabId].javascriptBlockedResources, subresource ])
-    tabs[tabId].javascriptBlocked = tabs[tabId].javascriptBlockedResources.length
+    tabs[tabId].javascriptBlocked = filterNoScriptInfoByWillBlockState(Object.entries(tabs[tabId].noScriptInfo), true).length
   } else if (blockType === 'fingerprinting') {
     tabs[tabId].fingerprintingBlockedResources = unique([ ...tabs[tabId].fingerprintingBlockedResources, subresource ])
     tabs[tabId].fingerprintingBlocked = tabs[tabId].fingerprintingBlockedResources.length
@@ -103,6 +104,6 @@ export const resetBlockingStats: shieldState.ResetBlockingStats = (state, tabId)
 
 export const resetBlockingResources: shieldState.ResetBlockingResources = (state, tabId) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...tabs[tabId], ...{ adsBlockedResources: [], trackersBlockedResources: [], httpsRedirectedResources: [], javascriptBlockedResources: [], fingerprintingBlockedResources: [] } }
+  tabs[tabId] = { ...tabs[tabId], ...{ adsBlockedResources: [], trackersBlockedResources: [], httpsRedirectedResources: [], fingerprintingBlockedResources: [] } }
   return { ...state, tabs }
 }

@@ -27,7 +27,6 @@ export interface Tab {
   adsBlockedResources: Array<string>
   trackersBlockedResources: Array<string>
   httpsRedirectedResources: Array<string>
-  javascriptBlockedResources: Array<string>
   fingerprintingBlockedResources: Array<string>
 }
 
