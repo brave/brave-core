@@ -2829,7 +2829,9 @@ void RewardsServiceImpl::OnPublisherListNormalizedSaved(
 
   ContentSiteList site_list;
   for (auto& publisher : *list) {
-    site_list.push_back(PublisherInfoToContentSite(publisher));
+    if (publisher.percent >= 1) {
+      site_list.push_back(PublisherInfoToContentSite(publisher));
+    }
   }
 
   sort(site_list.begin(), site_list.end());
