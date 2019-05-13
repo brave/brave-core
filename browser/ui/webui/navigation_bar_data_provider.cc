@@ -20,3 +20,4 @@ void NavigationBarDataProvider::Initialize(content::WebUIDataSource* source) {
   source->AddLocalizedString(
     "brToolbarHistoryTitle", IDS_HISTORY_TITLE);
 }
+

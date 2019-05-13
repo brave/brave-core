@@ -14,3 +14,4 @@ void BraveCustomizeBookmarksDataSource(content::WebUIDataSource* source) {
 }  // namespace
 
 #include "../../../../../../chrome/browser/ui/webui/bookmarks/bookmarks_ui.cc"
+
