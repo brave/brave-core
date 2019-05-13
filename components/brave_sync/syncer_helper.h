@@ -19,8 +19,8 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
                       bookmarks::BookmarkModel* bookmark_model,
                       bool has_new_parent);
 
-uint64_t GetIndexByOrder(const bookmarks::BookmarkNode* parent,
-                         const bookmarks::BookmarkNode* src);
+uint64_t GetIndex(const bookmarks::BookmarkNode* parent,
+                  const bookmarks::BookmarkNode* src);
 
 }   // namespace brave_sync
 
