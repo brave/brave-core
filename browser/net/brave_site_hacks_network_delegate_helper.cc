@@ -98,13 +98,6 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
   if (IsBlockTwitterSiteHack(request, headers)) {
     return net::ERR_ABORTED;
   }
-  if (IsUAWhitelisted(request->url())) {
-    std::string user_agent;
-    if (headers->GetHeader(kUserAgentHeader, &user_agent)) {
-      base::ReplaceFirstSubstringAfterOffset(&user_agent, 0, "Chrome", "Brave Chrome");
-      headers->SetHeader(kUserAgentHeader, user_agent);
-    }
-  }
   return net::OK;
 }
 
