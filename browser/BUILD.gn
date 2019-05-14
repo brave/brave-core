@@ -127,6 +127,7 @@ source_set("browser_process") {
 
     deps += [
       "importer",
+      "//brave/app:brave_generated_resources_grit",
     ]
   }
 

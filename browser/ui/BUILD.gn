@@ -131,6 +131,12 @@ source_set("ui") {
     "//ui/gfx",
   ]
 
+  if (!is_android) {
+    deps += [
+      "//brave/app:brave_generated_resources_grit",
+    ]
+  }
+
   if (enable_extensions) {
     sources += [
       "brave_actions/brave_action_icon_with_badge_image_source.cc",
