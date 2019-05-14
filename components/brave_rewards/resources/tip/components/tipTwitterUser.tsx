@@ -26,7 +26,9 @@ class TipTwitterUser extends React.Component<Props, {}> {
   }
 
   onTweet = () => {
-    this.actions.onTweet(this.props.tweetMetaData)
+    this.actions.onTweet(
+      `@${this.props.tweetMetaData.screenName}`,
+      this.props.tweetMetaData.tweetId)
     this.actions.onCloseDialog()
   }
 

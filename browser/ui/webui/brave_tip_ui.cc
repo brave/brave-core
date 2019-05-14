@@ -278,6 +278,28 @@ void RewardsTipDOMHandler::OnPublisherBanner(
       "brave_rewards_tip.publisherBanner", result);
 }
 
+std::string ConstructTweetIntentURL(const std::string& name,
+                                    const std::string& tweet_id) {
+  // If a tweet ID was specified, then compliment the Twitter user and
+  // quote the original tweet; otherwise, just tweet a generic comment
+  // about this tip.
+  std::string intent_url;
+  std::string comment = l10n_util::GetStringFUTF8(
+      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET, base::UTF8ToUTF16(name));
+  if (!tweet_id.empty()) {
+    std::string quoted_tweet_url = base::StringPrintf(
+        "https://twitter.com/%s/status/%s", name.c_str(), tweet_id.c_str());
+    intent_url =
+        base::StringPrintf("https://twitter.com/intent/tweet?url=%s&text=%s",
+                           quoted_tweet_url.c_str(), comment.c_str());
+  } else {
+    intent_url = base::StringPrintf("https://twitter.com/intent/tweet?text=%s",
+                                    comment.c_str());
+  }
+
+  return intent_url;
+}
+
 }  // namespace
 
 BraveTipUI::BraveTipUI(content::WebUI* web_ui, const std::string& name)
@@ -344,30 +366,18 @@ void RewardsTipDOMHandler::OnRecurringTipSaved(
 }
 
 void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
-  DCHECK_EQ(args->GetSize(), 1U);
-  const base::DictionaryValue* tweet_metadata_dict = nullptr;
-  if (!args->GetDictionary(0, &tweet_metadata_dict))
-    return;
+  DCHECK_EQ(args->GetSize(), 2U);
 
-  // Retrieve the relevant tweet metadata from arguments.
-  std::string screen_name;
-  if (!tweet_metadata_dict->GetString("screenName", &screen_name))
+  // Retrieve the relevant metadata from arguments.
+  std::string name;
+  if (!args->GetString(0, &name))
     return;
   std::string tweet_id;
-  if (!tweet_metadata_dict->GetString("tweetId", &tweet_id))
+  if (!args->GetString(1, &tweet_id))
     return;
 
-  // Construct the Twitter intent URL for the tip compliment.
-  std::string comment = l10n_util::GetStringFUTF8(
-      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET, base::UTF8ToUTF16(screen_name));
-  std::string quoted_tweet_url =
-      base::StringPrintf("https://twitter.com/%s/status/%s",
-                         screen_name.c_str(), tweet_id.c_str());
-  std::string intent_url =
-      base::StringPrintf("https://twitter.com/intent/tweet?url=%s&text=%s",
-                         quoted_tweet_url.c_str(), comment.c_str());
-
-  GURL gurl(intent_url);
+  // Construct the Twitter intent URL for the tip comment/compliment.
+  GURL gurl(ConstructTweetIntentURL(name, tweet_id));
   if (!gurl.is_valid())
     return;
 

@@ -22,6 +22,11 @@ class TipSite extends React.Component<Props, {}> {
     return this.props.actions
   }
 
+  onTweet = () => {
+    this.actions.onTweet(this.props.publisher.name, '')
+    this.actions.onCloseDialog()
+  }
+
   render () {
     const { finished, error } = this.props.rewardsDonateData
 
@@ -34,7 +39,11 @@ class TipSite extends React.Component<Props, {}> {
         }
         {
           finished
-          ? <TransientTipOverlay publisher={this.props.publisher} timeout={3000} />
+          ? <TransientTipOverlay
+              publisher={this.props.publisher}
+              timeout={0}
+              onTweet={this.onTweet}
+          />
           : null
         }
       </>

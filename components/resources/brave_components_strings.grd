@@ -260,7 +260,7 @@
       <message name="IDS_BRAVE_REWARDS_LOCAL_GRANT_ALREADY_CLAIMED_TEXT" desc="">Sorry, it appears that this grant has already been claimed.</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_NEXT_DATE" desc="Description of the date in the donation box">Next monthly tip date</message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET" desc="">
-        I just tipped @<ph name="SCREEN_NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
+        I just tipped <ph name="NAME">$1<ex>user</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.
       </message>
       <message name="IDS_BRAVE_REWARDS_LOCAL_DONAT_TIP_ON_LIKE" desc="Label for tip on like settings checkboxes">Enable ability to give tips on ‘Like’ posts</message>
 

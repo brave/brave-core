@@ -33,7 +33,8 @@ const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = 
       break
     case types.ON_TWEET:
       chrome.send('brave_rewards_tip.tweetTip', [
-        payload.tweetMetaData
+        payload.name,
+        payload.tweetId
       ])
       break
     case types.ON_PUBLISHER_BANNER: {
