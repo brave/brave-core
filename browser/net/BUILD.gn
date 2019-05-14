@@ -39,6 +39,12 @@ source_set("net") {
     "//net",
   ]
 
+  if (!is_android) {
+    deps += [
+      "//brave/app:brave_generated_resources_grit",
+    ]
+  }
+
   if (enable_brave_referrals) {
     sources += [
       "brave_referrals_network_delegate_helper.cc",

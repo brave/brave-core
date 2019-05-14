@@ -42,6 +42,7 @@ source_set("extensions") {
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
     "//brave/common:pref_names",
     "//brave/common/extensions/api",
     "//brave/components/brave_extension:static_resources",
