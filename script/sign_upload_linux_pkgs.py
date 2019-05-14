@@ -114,9 +114,7 @@ def main():
 
     logging.info("Performing removal of files older than 120 days in directory: {}".format(dist_dir))
 
-    # act=False is used for testing, instead of actually removing the files
-    # we just report what files would be removed
-    remove_files_older_x_days(dist_dir, delete_age, act=False)
+    remove_files_older_x_days(dist_dir, delete_age, act=True)
 
     # Now upload to aptly and rpm repos
 
