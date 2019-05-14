@@ -7,7 +7,6 @@
 #include <cmath>
 #include <utility>
 #include <vector>
-#include <iostream>
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -178,7 +177,6 @@ std::string MediaTwitch::GetLinkType(const std::string& url,
       braveledger_bat_helper::HasSameDomainAndPath(
                                   url, "ttvnw.net", "/v1/segment/");
 
-  std::cout << is_valid_twitch_path << first_party_url;
   if (
     (
       (first_party_url.find("https://www.twitch.tv/") == 0 ||
