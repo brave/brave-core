@@ -41,7 +41,7 @@ void RecordImporterP3A(importer::ImporterType type) {
     metric = ImporterSource::kFirefox;
     break;
 #if defined(OS_MACOSX)
-  case TYPE_SAFARI:
+  case importer::TYPE_SAFARI:
     metric = ImporterSource::kSafari;
     break;
 #endif
