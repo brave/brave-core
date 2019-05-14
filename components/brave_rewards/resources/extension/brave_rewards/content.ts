@@ -38,10 +38,22 @@ const createBraveTipAction = (tweet: Element) => {
   // Create the tip action
   const braveTipAction = document.createElement('div')
   braveTipAction.className = 'ProfileTweet-action action-brave-tip'
+  braveTipAction.style.display = 'inline-block'
+  braveTipAction.style.minWidth = '80px'
 
   // Create the tip button
   const braveTipButton = document.createElement('button')
   braveTipButton.className = 'ProfileTweet-actionButton u-textUserColorHover js-actionButton'
+  braveTipButton.style.background = 'transparent'
+  braveTipButton.style.border = '0'
+  braveTipButton.style.color = '#657786'
+  braveTipButton.style.cursor = 'pointer'
+  braveTipButton.style.display = 'inline-block'
+  braveTipButton.style.fontSize = '16px'
+  braveTipButton.style.lineHeight = '1'
+  braveTipButton.style.outline = '0'
+  braveTipButton.style.padding = '0 2px'
+  braveTipButton.style.position = 'relative'
   braveTipButton.type = 'button'
   braveTipButton.onclick = function (event) {
     const tweetMetaData = getTweetMetaData(tweet)
@@ -49,22 +61,32 @@ const createBraveTipAction = (tweet: Element) => {
       const msg = { type: 'tipTwitterUser', tweetMetaData: tweetMetaData }
       chrome.runtime.sendMessage(msg)
     }
+    event.stopPropagation()
   }
-  braveTipAction.appendChild(braveTipButton)
 
   // Create the tip icon container
   const braveTipIconContainer = document.createElement('div')
   braveTipIconContainer.className = 'IconContainer js-tooltip'
+  braveTipIconContainer.style.display = 'inline-block'
+  braveTipIconContainer.style.lineHeight = '0'
+  braveTipIconContainer.style.position = 'relative'
+  braveTipIconContainer.style.verticalAlign = 'middle'
   braveTipIconContainer.setAttribute('data-original-title', getMessage('twitterTipsHoverText'))
   braveTipButton.appendChild(braveTipIconContainer)
 
   // Create the tip icon
   const braveTipIcon = document.createElement('span')
   braveTipIcon.className = 'Icon Icon--medium'
+  braveTipIcon.style.background = 'transparent'
   braveTipIcon.style.content = 'url(\'data:image/svg+xml;utf8,<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 105 100" style="enable-background:new 0 0 105 100;" xml:space="preserve"><style type="text/css">.st1{fill:%23662D91;}.st2{fill:%239E1F63;}.st3{fill:%23FF5000;}.st4{fill:%23FFFFFF;stroke:%23FF5000;stroke-width:0.83;stroke-miterlimit:10;}</style><title>BAT_icon</title><g id="Layer_2_1_"><g id="Layer_1-2"><polygon class="st1" points="94.8,82.6 47.4,55.4 0,82.9 "/><polygon class="st2" points="47.4,0 47.1,55.4 94.8,82.6 "/><polygon class="st3" points="0,82.9 47.2,55.9 47.4,0 "/><polygon class="st4" points="47.1,33.7 28,66.5 66.7,66.5 "/></g></g></svg>\')'
-  braveTipIcon.style.marginTop = '5px'
-  braveTipIcon.style.width = '16px'
+  braveTipIcon.style.display = 'inline-block'
+  braveTipIcon.style.fontSize = '18px'
+  braveTipIcon.style.fontStyle = 'normal'
   braveTipIcon.style.height = '16px'
+  braveTipIcon.style.marginTop = '5px'
+  braveTipIcon.style.position = 'relative'
+  braveTipIcon.style.verticalAlign = 'baseline'
+  braveTipIcon.style.width = '16px'
   braveTipIconContainer.appendChild(braveTipIcon)
 
   // Create the tip action count (typically used to present a counter
@@ -72,12 +94,25 @@ const createBraveTipAction = (tweet: Element) => {
   // action label)
   const braveTipActionCount = document.createElement('span')
   braveTipActionCount.className = 'ProfileTweet-actionCount'
+  braveTipActionCount.style.color = '#657786'
+  braveTipActionCount.style.display = 'inline-block'
+  braveTipActionCount.style.fontSize = '12px'
+  braveTipActionCount.style.fontWeight = 'bold'
+  braveTipActionCount.style.lineHeight = '1'
+  braveTipActionCount.style.marginLeft = '6px'
+  braveTipActionCount.style.position = 'relative'
+  braveTipActionCount.style.verticalAlign = 'text-bottom'
   braveTipButton.appendChild(braveTipActionCount)
 
+  // Create the tip action count presentation
   const braveTipActionCountPresentation = document.createElement('span')
   braveTipActionCountPresentation.className = 'ProfileTweet-actionCountForPresentation'
   braveTipActionCountPresentation.textContent = getMessage('twitterTipsIconLabel')
   braveTipActionCount.appendChild(braveTipActionCountPresentation)
+
+  // Create the shadow DOM root that hosts our injected DOM elements
+  const shadowRoot = braveTipAction.attachShadow({ mode: 'open' })
+  shadowRoot.appendChild(braveTipButton)
 
   return braveTipAction
 }
