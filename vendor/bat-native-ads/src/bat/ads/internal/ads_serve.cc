@@ -10,8 +10,8 @@
 #include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/logging.h"
 
-#include "base/rand_util.h"
 #include "base/time/time.h"
+#include "brave_base/random.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -125,9 +125,13 @@ void AdsServe::UpdateNextCatalogCheck() {
     ping = bundle_->GetCatalogPing();
   }
 
-  // Add randomized delay so that the Ad server can't correlate users by timing
-  auto rand_delay = base::RandInt(0, ping / 10);
-  next_catalog_check_timestamp_in_seconds = ping + rand_delay;
+  // Choose a geometrically distributed number of seconds so that from
+  // the server's perspective, at any given time, every client has the
+  // same distribution on when its next check will be, so knowing
+  // which client made the last one when reveals nothing about which
+  // client will make the next one.
+  auto rand_delay = brave_base::random::Geometric(ping);
+  next_catalog_check_timestamp_in_seconds = rand_delay;
 
   ads_->StartCollectingActivity(next_catalog_check_timestamp_in_seconds);
 }
@@ -204,8 +208,8 @@ void AdsServe::RetryDownloadingCatalog() {
     next_retry_start_timer_in_ *= 2;
   }
 
-  auto rand_delay = base::RandInt(0, next_retry_start_timer_in_ / 10);
-  next_retry_start_timer_in_ += rand_delay;
+  auto rand_delay = brave_base::random::Geometric(next_retry_start_timer_in_);
+  next_retry_start_timer_in_ = rand_delay;
 
   ads_->StartCollectingActivity(next_retry_start_timer_in_);
 }
