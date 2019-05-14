@@ -8,10 +8,12 @@
 
 #include <map>
 #include <memory>
+#include <stdint.h>
 #include <string>
 
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
+#include "bat/ledger/internal/media/helper.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -30,6 +32,9 @@ class MediaTwitter : public ledger::LedgerCallbackHandler {
 
   std::string GetShareURL(const std::map<std::string, std::string>& args);
 
+  void ProcessActivityFromUrl(uint64_t window_id,
+                              const ledger::VisitData& visit_data);
+
  private:
   static std::string GetProfileURL(const std::string& screen_name);
 
@@ -38,6 +43,15 @@ class MediaTwitter : public ledger::LedgerCallbackHandler {
   static std::string GetPublisherKey(const std::string& key);
 
   static std::string GetMediaKey(const std::string& screen_name);
+
+  static std::string GetUserNameFromUrl(const std::string& url);
+
+  static bool IsExcludedPath(const std::string& path);
+
+  static std::string GetUserId(const std::string& response);
+
+  static std::string GetPublisherName(const std::string& response,
+                                      const std::string& user_name);
 
   void OnMediaPublisherInfo(
     uint64_t window_id,
@@ -56,7 +70,54 @@ class MediaTwitter : public ledger::LedgerCallbackHandler {
     const uint64_t window_id,
     ledger::PublisherInfoCallback callback);
 
+  void OnSaveMediaVisit(ledger::Result result,
+                        ledger::PublisherInfoPtr info);
+
+  void OnMediaActivityError(const ledger::VisitData& visit_data,
+                            uint64_t window_id);
+
+  void FetchDataFromUrl(
+    const std::string& url,
+    braveledger_media::FetchDataFromUrlCallback callback);
+
+  void OnMediaPublisherActivity(
+    ledger::Result result,
+    ledger::PublisherInfoPtr info,
+    uint64_t window_id,
+    const ledger::VisitData& visit_data,
+    const std::string& media_key);
+
+  void GetPublisherPanelInfo(
+    uint64_t window_id,
+    const ledger::VisitData& visit_data,
+    const std::string& publisher_key);
+
+  void OnPublisherPanelInfo(
+    uint64_t window_id,
+    const ledger::VisitData& visit_data,
+    const std::string& publisher_key,
+    ledger::Result result,
+    ledger::PublisherInfoPtr info);
+
+  void OnUserPage(
+    uint64_t window_id,
+    const ledger::VisitData& visit_data,
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+
+  // For testing purposes
+  friend class MediaTwitterTest;
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitterTest, GetProfileURL);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitterTest, GetProfileImageURL);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitterTest, GetPublisherKey);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitterTest, GetMediaKey);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitterTest, GetUserNameFromUrl);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitterTest, IsExcludedPath);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitterTest, GetUserId);
+  FRIEND_TEST_ALL_PREFIXES(MediaTwitterTest, GetPublisherName);
 };
 
 }  // namespace braveledger_media

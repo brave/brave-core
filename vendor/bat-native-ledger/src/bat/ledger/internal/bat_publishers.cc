@@ -702,11 +702,17 @@ void BatPublishers::getPublisherActivityFromUrl(
     return;
   }
 
-  if ((visit_data.domain == YOUTUBE_TLD || visit_data.domain == TWITCH_TLD) &&
+  const bool is_media = visit_data.domain == YOUTUBE_TLD ||
+                        visit_data.domain == TWITCH_TLD ||
+                        visit_data.domain == TWITTER_TLD;
+
+  if (is_media &&
       visit_data.path != "" && visit_data.path != "/") {
     std::string type = YOUTUBE_MEDIA_TYPE;
     if (visit_data.domain == TWITCH_TLD) {
       type = TWITCH_MEDIA_TYPE;
+    } else if (visit_data.domain == TWITTER_TLD) {
+      type = TWITTER_MEDIA_TYPE;
     }
 
     ledger::VisitData new_visit_data(visit_data);
@@ -717,8 +723,10 @@ void BatPublishers::getPublisherActivityFromUrl(
 
     new_visit_data.url = new_visit_data.url + new_visit_data.path;
 
-    ledger_->GetMediaActivityFromUrl(
-        windowId, new_visit_data, type, publisher_blob);
+    ledger_->GetMediaActivityFromUrl(windowId,
+                                     new_visit_data,
+                                     type,
+                                     publisher_blob);
     return;
   }
 
