@@ -39,4 +39,10 @@ source_set("net") {
     "//extensions/common:common_constants",
     "//net",
   ]
+
+  if (!is_android) {
+    deps += [
+      "//brave/app:brave_generated_resources_grit",
+    ]
+  }
 }

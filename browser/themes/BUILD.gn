@@ -14,6 +14,7 @@ source_set("themes") {
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
     "//brave/common",
     "//chrome/common",
     "//components/prefs",

@@ -94,6 +94,12 @@ source_set("browser_process") {
     "//third_party/widevine/cdm:buildflags",
   ]
 
+  if (!is_android) {
+    deps += [
+      "//brave/app:brave_generated_resources_grit",
+    ]
+  }
+
   if (bundle_widevine_cdm || enable_widevine_cdm_component) { deps += [ "//brave/browser/widevine" ] }
 
   if (is_win && is_official_build) {
