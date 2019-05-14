@@ -97,6 +97,7 @@ source_set("bat-native-confirmations") {
     rebase_path("bat-native-ledger:headers", dep_base),
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
     rebase_path("challenge_bypass_ristretto_ffi", dep_base),
+    rebase_path("brave_base", dep_base),
   ]
 }
 

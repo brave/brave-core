@@ -16,7 +16,6 @@
 #include "bat/confirmations/internal/get_signed_tokens_request.h"
 
 #include "base/logging.h"
-#include "base/rand_util.h"
 #include "base/json/json_reader.h"
 
 using std::placeholders::_1;
