@@ -132,6 +132,7 @@ source_set("ledger") {
     rebase_path("bip39wally-core-native:bip39wally-core", dep_base),
     rebase_path("bat-native-tweetnacl:tweetnacl", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),
+    rebase_path("brave_base", dep_base),
   ]
 
   public_deps = [

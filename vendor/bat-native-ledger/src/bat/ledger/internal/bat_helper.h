@@ -543,8 +543,6 @@ uint8_t niceware_mnemonic_to_bytes(
     size_t* written,
     std::vector<std::string> wordDictionary);
 
-uint64_t getRandomValue(uint8_t min, uint8_t max);
-
 bool HasSameDomainAndPath(
     const std::string& url,
     const std::string& to_match,
