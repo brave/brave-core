@@ -14,6 +14,7 @@
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
+#include "net/http/http_status_code.h"
 
 #include "wally_bip39.h"  // NOLINT
 #include "anon/anon.h"
@@ -50,7 +51,7 @@ void BatClient::requestCredentialsCallback(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
@@ -176,7 +177,7 @@ void BatClient::registerPersonaCallback(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     ledger_->OnWalletInitialized(ledger::Result::BAD_REGISTRATION_RESPONSE);
     return;
   }
@@ -292,7 +293,7 @@ void BatClient::WalletPropertiesCallback(
     ledger::OnWalletPropertiesCallback callback) {
   braveledger_bat_helper::WALLET_PROPERTIES_ST properties;
   ledger_->LogResponse(__func__, response_status_code, response, headers);
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     ledger_->OnWalletProperties(ledger::Result::LEDGER_ERROR, properties);
     return;
   }
@@ -420,7 +421,7 @@ void BatClient::recoverWalletPublicKeyCallback(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(ledger::Result::LEDGER_ERROR, 0, empty);
     return;
@@ -445,7 +446,7 @@ void BatClient::recoverWalletCallback(
     const std::map<std::string, std::string>& headers,
     const std::string& recoveryId) {
 ledger_->LogResponse(__func__, response_status_code, response, headers);
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(ledger::Result::LEDGER_ERROR, 0, empty);
     return;
@@ -529,13 +530,13 @@ void BatClient::getGrantsCallback(
   bool hasResponseError = braveledger_bat_helper::getJSONResponse(response,
                                                                   &statusCode,
                                                                   &error);
-  if (hasResponseError && statusCode == 404) {
+  if (hasResponseError && statusCode == net::HTTP_NOT_FOUND) {
     ledger_->SetLastGrantLoadTimestamp(time(0));
     ledger_->OnGrant(ledger::Result::GRANT_NOT_FOUND, properties);
     return;
   }
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     ledger_->OnGrant(ledger::Result::LEDGER_ERROR, properties);
     return;
   }
@@ -594,11 +595,12 @@ void BatClient::setGrantCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (!error.empty()) {
-    if (statusCode == 403) {
+    if (statusCode == net::HTTP_FORBIDDEN) {
       ledger_->OnGrantFinish(ledger::Result::CAPTCHA_FAILED, grant);
-    } else if (statusCode == 404 || statusCode == 410) {
+    } else if (statusCode == net::HTTP_NOT_FOUND ||
+               statusCode == net::HTTP_GONE) {
       ledger_->OnGrantFinish(ledger::Result::GRANT_NOT_FOUND, grant);
-    } else if (statusCode == 409) {
+    } else if (statusCode == net::HTTP_CONFLICT) {
       ledger_->OnGrantFinish(ledger::Result::GRANT_ALREADY_CLAIMED, grant);
     } else {
       ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, grant);
@@ -653,7 +655,7 @@ void BatClient::getGrantCaptchaCallback(
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   auto it = headers.find("captcha-hint");
-  if (response_status_code != 200 || it == headers.end()) {
+  if (response_status_code != net::HTTP_OK || it == headers.end()) {
     // TODO(nejczdovc): Add error handler
     return;
   }

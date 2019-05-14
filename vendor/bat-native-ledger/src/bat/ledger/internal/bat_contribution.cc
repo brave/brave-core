@@ -17,6 +17,7 @@
 #include "bat/ledger/internal/bat_contribution.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -445,7 +446,7 @@ void BatContribution::ReconcileCallback(
 
   auto reconcile = ledger_->GetReconcileById(viewing_id);
 
-  if (response_status_code != 200 || reconcile.viewingId_.empty()) {
+  if (response_status_code != net::HTTP_OK || reconcile.viewingId_.empty()) {
     AddRetry(ledger::ContributionRetry::STEP_RECONCILE,
              viewing_id);
     return;
@@ -510,7 +511,7 @@ void BatContribution::CurrentReconcileCallback(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     AddRetry(ledger::ContributionRetry::STEP_CURRENT,
              viewing_id);
     return;
@@ -632,8 +633,8 @@ void BatContribution::ReconcilePayloadCallback(
 
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
 
-  if (response_status_code != 200) {
-    if (response_status_code == 416) {
+  if (response_status_code != net::HTTP_OK) {
+    if (response_status_code == net::HTTP_REQUESTED_RANGE_NOT_SATISFIABLE) {
       OnReconcileComplete(ledger::Result::CONTRIBUTION_AMOUNT_TOO_LOW,
                           viewing_id,
                           reconcile.category_);
@@ -691,7 +692,7 @@ void BatContribution::RegisterViewingCallback(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     AddRetry(ledger::ContributionRetry::STEP_REGISTER,
              viewing_id);
     return;
@@ -768,7 +769,7 @@ void BatContribution::ViewingCredentialsCallback(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     AddRetry(ledger::ContributionRetry::STEP_VIEWING,
              viewing_id);
     return;
@@ -1124,7 +1125,7 @@ void BatContribution::PrepareBatchCallback(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     AddRetry(ledger::ContributionRetry::STEP_PREPARE, "");
     return;
   }
@@ -1406,7 +1407,7 @@ void BatContribution::VoteBatchCallback(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     AddRetry(ledger::ContributionRetry::STEP_VOTE, "");
     return;
   }
