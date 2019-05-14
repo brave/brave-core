@@ -376,6 +376,12 @@ void MediaYouTube::ProcessActivityFromUrl(uint64_t window_id,
   OnMediaActivityError(visit_data, window_id);
 }
 
+void MediaYouTube::OnSaveMediaVisit(
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info) {
+  // TODO(nejczdovc): handle if needed
+}
+
 void MediaYouTube::OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,
@@ -417,7 +423,17 @@ void MediaYouTube::OnMediaPublisherInfo(
     updated_visit_data.provider = YOUTUBE_MEDIA_TYPE;
     updated_visit_data.favicon_url = publisher_info->favicon_url;
     std::string id = publisher_info->id;
-    ledger_->SaveMediaVisit(id, updated_visit_data, duration, window_id);
+
+    auto callback = std::bind(&MediaYouTube::OnSaveMediaVisit,
+                              this,
+                              _1,
+                              _2);
+
+    ledger_->SaveMediaVisit(id,
+                            updated_visit_data,
+                            duration,
+                            window_id,
+                            callback);
   }
 }
 
@@ -545,10 +561,16 @@ void MediaYouTube::SavePublisherInfo(const uint64_t duration,
   updated_visit_data.name = publisher_name;
   updated_visit_data.url = url;
 
+  auto callback = std::bind(&MediaYouTube::OnSaveMediaVisit,
+                            this,
+                            _1,
+                            _2);
+
   ledger_->SaveMediaVisit(publisher_id,
                           updated_visit_data,
                           duration,
-                          window_id);
+                          window_id,
+                          callback);
   if (!media_key.empty()) {
     ledger_->SetMediaPublisherInfo(media_key, publisher_id);
   }

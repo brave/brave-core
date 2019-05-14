@@ -71,6 +71,9 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
   void OnMediaActivityError(const ledger::VisitData& visit_data,
                             uint64_t window_id);
 
+  void OnSaveMediaVisit(ledger::Result result,
+                        std::unique_ptr<ledger::PublisherInfo> info);
+
   void OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,

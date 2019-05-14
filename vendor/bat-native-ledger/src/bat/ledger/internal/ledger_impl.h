@@ -234,7 +234,8 @@ class LedgerImpl : public ledger::Ledger,
   void SaveMediaVisit(const std::string& publisher_id,
                       const ledger::VisitData& visit_data,
                       const uint64_t& duration,
-                      const uint64_t window_id) override;
+                      const uint64_t window_id,
+                      const ledger::PublisherInfoCallback callback);
 
   void SetPublisherExclude(
       const std::string& publisher_id,
@@ -458,6 +459,9 @@ class LedgerImpl : public ledger::Ledger,
   void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
 
   void OnShow(uint32_t tab_id, const uint64_t& current_time) override;
+
+  void OnSaveVisit(ledger::Result result,
+                   std::unique_ptr<ledger::PublisherInfo> info);
 
   void OnHide(uint32_t tab_id, const uint64_t& current_time) override;
 

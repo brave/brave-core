@@ -226,11 +226,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
 
-  virtual void SaveMediaVisit(const std::string& publisher_id,
-                              const ledger::VisitData& visit_data,
-                              const uint64_t& duration,
-                              const uint64_t window_id) = 0;
-
   virtual void SetPublisherExclude(
       const std::string& publisher_id,
       const ledger::PUBLISHER_EXCLUDE& exclude) = 0;

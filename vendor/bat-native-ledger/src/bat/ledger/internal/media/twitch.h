@@ -72,6 +72,9 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
   static std::string GetFaviconUrl(const std::string& publisher_blob,
                                    const std::string& twitchHandle);
 
+  void OnSaveMediaVisit(ledger::Result result,
+                        std::unique_ptr<ledger::PublisherInfo> info);
+
   void OnMediaPublisherInfo(
     const std::string& media_id,
     const std::string& media_key,

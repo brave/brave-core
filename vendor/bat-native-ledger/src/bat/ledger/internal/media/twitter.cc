@@ -68,19 +68,11 @@ void MediaTwitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
   visit_data.name = publisher_name;
   visit_data.url = url;
 
-  // TODO(nejczdovc): SaveMediaVisit needs to have callback
   ledger_->SaveMediaVisit(publisher_key,
                           visit_data,
                           0,
-                          0);
-
-  // Only temp until we create callback
-  auto publisher_info = std::make_unique<ledger::PublisherInfo>();
-  publisher_info->id = publisher_key;
-  publisher_info->name = publisher_name;
-  publisher_info->favicon_url = favicon_url;
-  publisher_info->provider = TWITTER_MEDIA_TYPE;
-  callback(ledger::Result::LEDGER_OK, std::move(publisher_info));
+                          0,
+                          callback);
 }
 
 }  // namespace braveledger_media

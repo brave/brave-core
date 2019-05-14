@@ -38,7 +38,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void saveVisit(const std::string& publisher_id,
                  const ledger::VisitData& visit_data,
                  const uint64_t& duration,
-                 uint64_t window_id);
+                 uint64_t window_id,
+                 const ledger::PublisherInfoCallback callback);
 
   void AddRecurringPayment(const std::string& publisher_id,
                            const double& value);
@@ -144,6 +145,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       ledger::VisitData visit_data,
       uint64_t duration,
       uint64_t window_id,
+      const ledger::PublisherInfoCallback callback,
       ledger::Result result,
       ledger::PublisherInfoPtr publisher_info);
 
@@ -185,6 +187,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bool isPublisherVisible(
       const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
+
+  void OnSaveVisitInternal(
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info);
 
   void OnPanelPublisherInfo(
       ledger::Result result,

@@ -146,17 +146,35 @@ void LedgerImpl::OnShow(uint32_t tab_id, const uint64_t& current_time) {
   last_shown_tab_id_ = tab_id;
 }
 
+void LedgerImpl::OnSaveVisit(
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> info) {
+  // TODO(nejczdovc): handle if needed
+}
+
 void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
   if (tab_id != last_shown_tab_id_) {
     return;
   }
+
   visit_data_iter iter = current_pages_.find(tab_id);
   if (iter == current_pages_.end() || last_tab_active_time_ == 0) {
     return;
   }
+
   DCHECK(last_tab_active_time_);
+
+  auto callback = std::bind(&LedgerImpl::OnSaveVisit,
+                            this,
+                            _1,
+                            _2);
+
   bat_publishers_->saveVisit(
-    iter->second.tld, iter->second, current_time - last_tab_active_time_, 0);
+    iter->second.tld,
+    iter->second,
+    current_time - last_tab_active_time_,
+    0,
+    callback);
   last_tab_active_time_ = 0;
 }
 
@@ -420,13 +438,18 @@ void LedgerImpl::SetMediaPublisherInfo(const std::string& media_key,
 void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
                                 const ledger::VisitData& visit_data,
                                 const uint64_t& duration,
-                                const uint64_t window_id) {
+                                const uint64_t window_id,
+                                const ledger::PublisherInfoCallback callback) {
   uint64_t new_duration = duration;
   if (!bat_publishers_->getPublisherAllowVideos()) {
     new_duration = 0;
   }
 
-  bat_publishers_->saveVisit(publisher_id, visit_data, new_duration, window_id);
+  bat_publishers_->saveVisit(publisher_id,
+                             visit_data,
+                             new_duration,
+                             window_id,
+                             callback);
 }
 
 void LedgerImpl::SetPublisherExclude(
