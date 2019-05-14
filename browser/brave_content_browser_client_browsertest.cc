@@ -9,6 +9,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/common/brave_paths.h"
+#include "brave/common/brave_switches.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -26,6 +27,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/prefs/pref_service.h"
+#include "components/version_info/version_info.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
@@ -527,4 +529,30 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
                               kRequestUrl, kDocumentUrl, true,
                               &referrer);
   EXPECT_EQ(referrer.url, kDocumentUrl);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, OverrideUATest) {
+  const std::string appended_ua =
+      GetUserAgent() + " Brave/" + version_info::GetMajorVersionNumber();
+  content::EvalJsResult js_result =
+      EvalJs(browser()->tab_strip_model()->GetActiveWebContents(),
+             "navigator.userAgent");
+  EXPECT_EQ(js_result.ExtractString(), appended_ua);
+}
+
+class BraveContentBrowserClientWithoutUAOverride
+    : public BraveContentBrowserClientTest {
+ public:
+  void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
+    BraveContentBrowserClientTest::SetUpDefaultCommandLine(command_line);
+    command_line->AppendSwitch(switches::kDisableOverrideUA);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientWithoutUAOverride,
+                       DisableOverrideUATest) {
+  content::EvalJsResult js_result =
+      EvalJs(browser()->tab_strip_model()->GetActiveWebContents(),
+             "navigator.userAgent");
+  EXPECT_EQ(js_result.ExtractString(), GetUserAgent());
 }
