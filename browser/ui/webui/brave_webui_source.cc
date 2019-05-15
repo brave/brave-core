@@ -12,6 +12,7 @@
 #include "content/public/browser/web_ui_data_source.h"
 
 #if !defined(OS_ANDROID)
+#include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "components/grit/brave_components_resources.h"
 #else
@@ -45,6 +46,11 @@ void AddResourcePaths(content::WebUIDataSource* html_source,
 
 void CustomizeWebUIHTMLSource(const std::string &name,
     content::WebUIDataSource* source) {
+#if !defined(OS_ANDROID)
+  if (name == "rewards") {
+    NavigationBarDataProvider::Initialize(source);
+  }
+#endif
   static std::map<std::string, std::vector<WebUISimpleItem> > resources = {
     {
       std::string("newtab"), {

@@ -72,6 +72,8 @@ source_set("ui") {
     "webui/brave_donate_ui.h",
     "webui/brave_md_settings_ui.cc",
     "webui/brave_md_settings_ui.h",
+    "webui/navigation_bar_data_provider.cc",
+    "webui/navigation_bar_data_provider.h",
     "webui/brave_new_tab_ui.cc",
     "webui/brave_new_tab_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
@@ -143,6 +145,12 @@ source_set("ui") {
     "//ui/base",
     "//ui/gfx",
   ]
+
+  if (!is_android) {
+    deps += [
+      "//brave/app:brave_generated_resources_grit",
+    ]
+  }
 
   if (is_win && is_official_build) {
     sources += [
