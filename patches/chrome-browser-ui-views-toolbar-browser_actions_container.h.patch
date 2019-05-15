@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/browser_actions_container.h b/chrome/browser/ui/views/toolbar/browser_actions_container.h
-index e98ac1f87b7af25d175b8d95ffd8b494bb21aca2..5b2557e8aa6a120fca4111c863933e6c5b12b74b 100644
+index ab8740f8a0c39ebac83301c152ae82c4bd3dbe51..856c408effbbbf510fd694e61a1b9eab72381610 100644
 --- a/chrome/browser/ui/views/toolbar/browser_actions_container.h
 +++ b/chrome/browser/ui/views/toolbar/browser_actions_container.h
 @@ -253,6 +253,7 @@ class BrowserActionsContainer : public views::View,
@@ -9,4 +9,4 @@ index e98ac1f87b7af25d175b8d95ffd8b494bb21aca2..5b2557e8aa6a120fca4111c863933e6c
 +  friend class BraveToolbarView;
    // Overridden from views::View:
    void ViewHierarchyChanged(
-       const ViewHierarchyChangedDetails& details) override;
+       const views::ViewHierarchyChangedDetails& details) override;

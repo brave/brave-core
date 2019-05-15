@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">在 Brave 中通过浏览广告赚取代币。根据您的喜好显示广告，这是根据您的浏览情况判断的。您的浏览器中不会留下私人数据或浏览历史。</translation>
 <translation id="6112368337882254910">自动贡献</translation>
 <translation id="1527222983464337010">这是一种支持发布者和内容创建者的自动方式。设置每月付款并正常浏览。您访问的网站会根据Brave测量的您的注意力自动收到您的贡献。</translation>
-<translation id="7178655681744815321">本月当前收益（预估）</translation>
 <translation id="8157096848242649588">支付日期</translation>
 <translation id="5208388044986603165">广告通知已收到</translation>
 <translation id="4229016885653790965">抱歉! 您所在的地区尚未提供广告。</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">付费浏览尊重您隐私的相关广告。</translation>
 <translation id="3361548743396744457">浏览 – 或随时给您喜欢的网站打赏以支持您的站点。</translation>
 <translation id="3333887201479867589">Brave 奖励</translation>
+<translation id="4493850495402472953">和</translation>
+<translation id="8804164990146287819">隐私政策</translation>
+<translation id="4281844954008187215">服务条款</translation>
 <translation id="7530570094705720669">正在创建钱包</translation>
 <translation id="2105596359439030979">您的注意力很有价值。通过观看尊重隐私的广告来赚取收入，并支付给您喜爱的内容创作者。</translation>
 <translation id="516395624550019162">确认！</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">未经您同意。</translation>
 <translation id="7147673045905733351">现在，Brave欢迎您进入新的互联网。</translation>
 <translation id="1350763070659630336">在这里，您的时间极具价值，您的个人资料获得保密，您的付出的精力获得收益。</translation>
+<translation id="880341991877949255">使用旧版浏览器，您需要用宝贵的精力看广告，付费浏览网页。您用宝贵的时间下载侵入式广告技术，该技术在未经您同意的情况下将您有价值的私人数据传输给广告商—。</translation>
 <translation id="5830306739231399614">抱歉，暂无代币。</translation>
 <translation id="7359258898775969374">装满钱包的3种方法：</translation>
 <translation id="8087614920008846901">您可以添加资金。</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">查看改进的方面</translation>
 <translation id="4083384190339959182">我们升级了 Brave 付款。</translation>
 <translation id="5395851053710553429">做好准备体验新一代网络。</translation>
-<translation id="880341991877949255">使用旧版浏览器，您需要用宝贵的精力看广告，付费浏览网页。您用宝贵的时间下载侵入式广告技术，该技术在未经您同意的情况下将您有价值的私人数据传输给广告商—。</translation>
 <translation id="2549982302631665116">欢迎您今天使用新网络。在这里，您的时间十分宝贵，个人资料将保密，您的注意力获得收益。</translation>
 <translation id="3780605330121608425">您的钱包</translation>
 <translation id="6727483290601442544">查看详情</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">添加新设备</translation>
 <translation id="8780295742023331191">查看同步密码</translation>
 <translation id="1755198127524719638">同步设置</translation>
-<translation id="7558480201297099157">管理您要在设备间同步的信息。这些设置只应用于此设备。</translation>
 <translation id="8820817407110198400">书签</translation>
 <translation id="5591129654353352557">保存的网站设置</translation>
 <translation id="7859704718976024901">浏览记录</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">同步链密码</translation>
 <translation id="2899261497479389619">在您的目标电脑上，在“设置”菜单中打开Brave同步，然后点击按钮</translation>
 <translation id="4827439149833241990">“我有同步密码”。</translation>
-<translation id="24067401253841795">输入下方显示的同步链密码词。</translation>
 <translation id="8914601399214979966">改用我的摄像头</translation>
 <translation id="3034163433136515805">查看二维码</translation>
 <translation id="5093410893656857925">选择设备类型</translation>

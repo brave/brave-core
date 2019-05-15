@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mini_installer/BUILD.gn b/chrome/installer/mini_installer/BUILD.gn
-index ec629333b0062239ff2dec63c1a5bf79738de301..20e341e5b3ed8dd968abcb1ef29dedbfe88adda5 100644
+index 397c151b160b6c302a644bfbd67a96679c3505be..6fc6838e41c80b60b7d62dda6c53c75136ecb25c 100644
 --- a/chrome/installer/mini_installer/BUILD.gn
 +++ b/chrome/installer/mini_installer/BUILD.gn
 @@ -12,6 +12,10 @@ import("//tools/v8_context_snapshot/v8_context_snapshot.gni")

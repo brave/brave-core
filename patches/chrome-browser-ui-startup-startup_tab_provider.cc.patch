@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/startup/startup_tab_provider.cc b/chrome/browser/ui/startup/startup_tab_provider.cc
-index 51003104f0900d25944ed17e1c3f3f92f1f504dc..dd07e9aaffde1e48cd8640c7bed414b389212bfb 100644
+index 0d6d370808e86e763df79b386d8b674718a38cb5..573782b73236ee9a1bcb5ea883230de936400a05 100644
 --- a/chrome/browser/ui/startup/startup_tab_provider.cc
 +++ b/chrome/browser/ui/startup/startup_tab_provider.cc
-@@ -194,7 +194,11 @@ StartupTabs StartupTabProviderImpl::GetPostCrashTabs(
+@@ -192,7 +192,11 @@ StartupTabs StartupTabProviderImpl::GetPostCrashTabs(
  bool StartupTabProviderImpl::CanShowWelcome(bool is_signin_allowed,
                                              bool is_supervised_user,
                                              bool is_force_signin_enabled) {

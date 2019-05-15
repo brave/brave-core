@@ -68,9 +68,13 @@
 <translation id="5874882355102994015">O Brave não pode mostrar a visualização de impressão sem o visualizador de PDF integrado.</translation>
 <translation id="8880183781256147665">Adicionando ao Brave...</translation>
 <translation id="3561569806301739367">O arquivo <ph name="FILE_NAME"/> pode ser perigoso. Por isso ele foi bloqueado pelo Brave.</translation>
+<translation id="6205431412329939367">O arquivo <ph name="FILE_NAME"/> pode ser perigoso. Por isso, ele foi bloqueado pelo Brave. Você pode contar com o Proteção Avançada.</translation>
 <translation id="9067428552314418522">Esse arquivo é perigoso, por isso ele foi bloqueado pelo Brave.</translation>
+<translation id="2938460345748897177">Esse arquivo é perigoso, por isso ele foi bloqueado pelo Brave. Você pode contar com o Proteção Avançada.</translation>
 <translation id="4168372721886011198">O arquivo <ph name="FILE_NAME"/> é perigoso. Por isso ele foi bloqueado pelo Brave.</translation>
+<translation id="8858456697111532356">O arquivo <ph name="FILE_NAME"/> é perigoso. Por isso ele foi bloqueado pelo Brave. Você pode contar com o Proteção Avançada.</translation>
 <translation id="89367911614620585">Esse arquivo pode ser perigoso, por isso ele foi bloqueado pelo Brave.</translation>
+<translation id="8943391224520748272">Esse arquivo pode ser perigoso, por isso ele foi bloqueado pelo Brave. Você pode contar com o Proteção Avançada.</translation>
 <translation id="9183662282810237335">Sair do Brave mesmo assim?</translation>
 <translation id="3834935463915107022">Sair do Brave mesmo assim?</translation>
 <translation id="8797356639448065696">O Brave está em modo de segundo plano.</translation>
@@ -121,6 +125,7 @@ Se você decidir fazer login assim mesmo, as informações do Brave, como favori
 <translation id="1326766910007115955">Você está fazendo login com uma conta gerenciada e concedendo ao administrador da conta o controle sobre seu perfil do Brave. Seus dados do Brave, como aplicativos, favoritos, histórico, senhas e outras configurações serão permanentemente vinculados a <ph name="USER_NAME"/>. Você pode excluir esses dados pelo painel das Contas do Brave Software, mas não pode associá-los a outra conta. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Você está fazendo login com uma conta gerenciada e concedendo ao administrador da conta o controle sobre seu perfil do Brave. Seus dados do Brave, como aplicativos, favoritos, histórico, senhas e outras configurações serão permanentemente vinculados a <ph name="USER_NAME"/>. Você pode excluir esses dados pelo painel das Contas do Brave Software, mas não pode associá-los a outra conta. Você tem a opção de criar um novo perfil para manter seus dados existentes do Brave separados. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">O administrador do seu sistema configurou o Brave para abrir um navegador alternativo para acessar <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">O administrador do seu sistema configurou o Brave para abrir o <ph name="ALTERNATIVE_BROWSER_NAME"/> ao acessar <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> estava usando o Brave anteriormente</translation>
 <translation id="1384923383737428730">Há um software nocivo no seu computador. O Brave pode removê-lo, restaurar as configurações e desativar as extensões para que o navegador volte a funcionar normalmente.</translation>
 <translation id="8919921662052966648">O Brave não pôde sincronizar seus dados. Atualize sua senha de sincronização.</translation>
@@ -172,7 +177,7 @@ Verifique seu e-mail em <ph name="ACCOUNT_EMAIL"/> para ver mais instruções.</
 <translation id="1912973375560256099">Regra interna para que o Brave permita tráfego mDNS.</translation>
 <translation id="8207657266087451193">Se uma imagem não tiver uma descrição útil, o Brave tentará fornecer uma para você. As imagens serão enviadas ao Brave Software para a criação de descrições. É possível desativar essa opção nas configurações a qualquer momento.</translation>
 <translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tentará fornecer uma para você. As imagens serão enviadas ao Brave Software para a criação de descrições.</translation>
-<translation id="7276297358157391541">O Brave pode oferecer uma verificação ortográfica mais inteligente, enviando as informações que você digita no navegador para os servidores do Brave Software. Isso permite que você utilize a mesma tecnologia de verificação ortográfica utilizada pela Pesquisa Brave Software.</translation>
+<translation id="3870835867536344658">Esta opção usa o mesmo recurso de verificação ortográfica da Pesquisa Brave Software. O texto digitado no navegador é enviado para o Brave Software. É possível alterar esse comportamento nas configurações a qualquer momento.</translation>
 <translation id="1807774211756215222">Abrir link em nova &amp;guia do Brave</translation>
 <translation id="4624945300945265642">Abrir link na janela &amp;sem rastros do Brave</translation>
 <translation id="7863882214613921971">Abrir link em nova &amp;guia do Brave</translation>

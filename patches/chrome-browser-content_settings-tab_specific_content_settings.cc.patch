@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/content_settings/tab_specific_content_settings.cc b/chrome/browser/content_settings/tab_specific_content_settings.cc
-index a72b1f82fec5dcfed92dcffcc50c520f4809a423..2e4a0a40580e48dc19dd56333ec07a2dc2549aa5 100644
+index f521d5f7842bcd128772a9c8b57b464ffee312f5..1a9a1b0ebb01a0db607dd88e426166e176146c75 100644
 --- a/chrome/browser/content_settings/tab_specific_content_settings.cc
 +++ b/chrome/browser/content_settings/tab_specific_content_settings.cc
-@@ -271,6 +271,7 @@ bool TabSpecificContentSettings::IsContentBlocked(
+@@ -283,6 +283,7 @@ bool TabSpecificContentSettings::IsContentBlocked(
        content_type == CONTENT_SETTINGS_TYPE_ADS ||
        content_type == CONTENT_SETTINGS_TYPE_SOUND ||
        content_type == CONTENT_SETTINGS_TYPE_CLIPBOARD_READ ||
@@ -10,7 +10,7 @@ index a72b1f82fec5dcfed92dcffcc50c520f4809a423..2e4a0a40580e48dc19dd56333ec07a2d
        content_type == CONTENT_SETTINGS_TYPE_SENSORS) {
      const auto& it = content_settings_status_.find(content_type);
      if (it != content_settings_status_.end())
-@@ -294,6 +295,7 @@ bool TabSpecificContentSettings::IsContentAllowed(
+@@ -306,6 +307,7 @@ bool TabSpecificContentSettings::IsContentAllowed(
        content_type != CONTENT_SETTINGS_TYPE_PPAPI_BROKER &&
        content_type != CONTENT_SETTINGS_TYPE_MIDI_SYSEX &&
        content_type != CONTENT_SETTINGS_TYPE_CLIPBOARD_READ &&

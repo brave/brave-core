@@ -74,9 +74,13 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="5874882355102994015">Brave no pot mostrar la previsualització d'impressió perquè falta el lector de PDF integrat.</translation>
 <translation id="8880183781256147665">S'està afegint a Brave...</translation>
 <translation id="3561569806301739367">Brave ha bloquejat <ph name="FILE_NAME"/> perquè pot ser perillós.</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> pot ser perillós i, per tant, Brave l'ha bloquejat. La Protecció avançada et protegeix.</translation>
 <translation id="9067428552314418522">Brave ha bloquejat aquest fitxer perquè és perillós.</translation>
+<translation id="2938460345748897177">Brave ha bloquejat aquest fitxer perquè és perillós. La Protecció avançada et protegeix.</translation>
 <translation id="4168372721886011198">Brave ha bloquejat <ph name="FILE_NAME"/> perquè és perillós.</translation>
+<translation id="8858456697111532356">Brave ha bloquejat <ph name="FILE_NAME"/> perquè és perillós. La Protecció avançada et protegeix.</translation>
 <translation id="89367911614620585">Brave ha bloquejat aquest fitxer perquè pot ser perillós.</translation>
+<translation id="8943391224520748272">Brave ha bloquejat aquest fitxer perquè pot ser perillós. La Protecció avançada et protegeix.</translation>
 <translation id="9183662282810237335">Vols sortir de Brave igualment?</translation>
 <translation id="3834935463915107022">Vols sortir de Brave igualment?</translation>
 <translation id="8797356639448065696">Brave està en mode de segon pla.</translation>
@@ -127,6 +131,7 @@ En iniciar la sessió, sigui amb l'usuari que sigui, es combinarà amb <ph name=
 <translation id="1326766910007115955">Esteu a punt d'iniciar la sessió amb un compte gestionat i d'atorgar el control del vostre perfil de Brave a l'administrador corresponent. Les dades de Brave, com ara aplicacions, adreces d'interès, historial, contrasenyes i altres configuracions, s'enllaçaran permanentment amb <ph name="USER_NAME"/>. Podreu suprimir aquestes dades mitjançant el Tauler de Comptes de Brave Software, però no les podreu associar amb un altre compte. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Esteu a punt d'iniciar la sessió amb un compte gestionat i d'atorgar el control del vostre perfil de Brave a l'administrador corresponent. Les dades de Brave, com ara aplicacions, adreces d'interès, historial, contrasenyes i altres configuracions, s'enllaçaran permanentment amb <ph name="USER_NAME"/>. Podreu suprimir aquestes dades mitjançant el Tauler de Comptes de Brave Software, però no les podreu associar amb un altre compte. De manera opcional, podeu crear un perfil nou per mantenir les vostres dades de Brave a part. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">L'administrador del sistema ha configurat Brave perquè obri un navegador alternatiu per accedir a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">L'administrador del sistema ha configurat Brave perquè obri <ph name="ALTERNATIVE_BROWSER_NAME"/> per accedir a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> abans utilitzava Brave</translation>
 <translation id="1384923383737428730">Hi ha programari nociu a l'ordinador. Brave el pot suprimir, restaurar la configuració i desactivar les extensions perquè el navegador torni a funcionar amb normalitat.</translation>
 <translation id="8919921662052966648">Brave no ha pogut sincronitzar les dades. Actualitzeu la frase de contrasenya de sincronització.</translation>
@@ -175,7 +180,9 @@ Per obtenir més instruccions, consulteu el correu electrònic a <ph name="ACCOU
 <translation id="2871190378186459992">Descobriu aplicacions, jocs, extensions i temes genials per a Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Regla d'entrada de Brave per permetre el trànsit de mDNS.</translation>
-<translation id="7276297358157391541">Perquè el corrector ortogràfic sigui més útil, Brave envia als servidors de Brave Software el text que escriviu al navegador i, així, podeu fer servir la mateixa tecnologia de correcció ortogràfica de la Cerca de Brave Software.</translation>
+<translation id="8207657266087451193">Si una imatge no té una descripció útil, Brave provarà d'oferir-te'n una. Per crear les descripcions, les imatges s'envien a Brave Software. Pots desactivar aquesta funció en qualsevol moment a la configuració.</translation>
+<translation id="5499063270485366718">Si una imatge no té una descripció útil, Brave provarà d'oferir-te'n una. Per crear les descripcions, les imatges s'envien a Brave Software.</translation>
+<translation id="3870835867536344658">Fa servir el mateix corrector ortogràfic que s'utilitza a la Cerca de Brave Software. El text que escrius al navegador s'envia a Brave Software. Pots canviar aquest comportament sempre que vulguis a la configuració.</translation>
 <translation id="1807774211756215222">Obre l'enllaç en una pes&amp;tanya nova a Brave</translation>
 <translation id="4624945300945265642">Obre l'enllaç en una finestra d'incò&amp;gnit a Brave</translation>
 <translation id="7863882214613921971">Obre l'enllaç en una pes&amp;tanya nova a Brave</translation>

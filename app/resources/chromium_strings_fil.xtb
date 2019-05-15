@@ -76,9 +76,13 @@ Hindi mabawi ng Brave ang iyong mga setting.</translation>
 <translation id="5874882355102994015">Hindi maipapakita ng Brave ang preview ng pag-print kapag nawawala ang built-in na PDF viewer.</translation>
 <translation id="8880183781256147665">Idinaragdag sa Brave...</translation>
 <translation id="3561569806301739367">Maaaring mapanganib ang <ph name="FILE_NAME"/>, kaya na-block ito ng Brave.</translation>
+<translation id="6205431412329939367">Puwedeng mapanganib ang <ph name="FILE_NAME"/> kaya na-block ito ng Brave. Pinoprotektahan ka ng Advanced na Proteksyon.</translation>
 <translation id="9067428552314418522">Mapanganib ang file na ito, kaya na-block ito ng Brave.</translation>
+<translation id="2938460345748897177">Maaaring mapanganib ang file na ito kaya na-block ito ng Brave. Pinoprotektahan ka ng Advanced na Proteksyon.</translation>
 <translation id="4168372721886011198">Mapanganib ang <ph name="FILE_NAME"/>, kaya na-block ito ng Brave.</translation>
+<translation id="8858456697111532356">Mapanganib ang <ph name="FILE_NAME"/> kaya na-block ito ng Brave. Pinoprotektahan ka ng Advanced na Proteksyon.</translation>
 <translation id="89367911614620585">Maaaring mapanganib ang file na ito, kaya na-block ito ng Brave.</translation>
+<translation id="8943391224520748272">Puwedeng mapanganib ang file na ito kaya na-block ito ng Brave. Pinoprotektahan ka ng Advanced na Proteksyon.</translation>
 <translation id="9183662282810237335">Lumabas pa rin sa Brave?</translation>
 <translation id="3834935463915107022">Umalis pa rin sa Brave?</translation>
 <translation id="8797356639448065696">Nasa background mode ang Brave.</translation>
@@ -129,6 +133,7 @@ Kapag nag-sign in ka pa rin, isasama sa <ph name="ACCOUNT_EMAIL_NEW"/> ang impor
 <translation id="1326766910007115955">Nagsa-sign in ka gamit ang isang pinamamahalaang account at nagbibigay sa administrator nito ng kontrol sa iyong profile sa Brave. Permanenteng mauugnay ang iyong data sa Brave, gaya ng iyong apps, mga bookmark, kasaysayan, password, at iba pang mga setting sa <ph name="USER_NAME"/>. Matatanggal mo ang data na ito sa Brave Software Accounts Dashboard, ngunit hindi mo maiuugnay ang data na ito sa isa pang account. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Nagsa-sign in ka gamit ang isang pinamamahalaang account at nagbibigay sa administrator nito ng kontrol sa iyong profile sa Brave. Permanenteng mauugnay ang iyong data sa Brave, gaya ng iyong apps, mga bookmark, kasaysayan, password, at iba pang mga setting sa <ph name="USER_NAME"/>. Matatanggal mo ang data na ito sa Brave Software Accounts Dashboard, ngunit hindi mo maiuugnay ang data na ito sa isa pang account. Maaari ka ring gumawa ng bagong profile upang ihiwalay ang iyong umiiral na data sa Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Na-configure ng iyong system administrator ang Brave na magbukas ng alternatibong browser para i-access ang <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">Na-configure ng iyong system administrator ang Brave para buksan ang <ph name="ALTERNATIVE_BROWSER_NAME"/> para ma-access ang <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656">Brave ang dating ginagamit ng <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="1384923383737428730">May mapaminsalang software sa iyong computer. Magagawa ng Brave na alisin ito, i-restore ang iyong mga setting, at i-disable ang mga extension para muling mapagana nang normal ang browser mo.</translation>
 <translation id="8919921662052966648">Hindi mai-sync ng Brave ang iyong data. Paki-update ang iyong passphrase sa Pag-sync.</translation>
@@ -177,7 +182,9 @@ Pakitingnan ang iyong email sa <ph name="ACCOUNT_EMAIL"/> para sa mga karagdagan
 <translation id="2871190378186459992">Tumuklas ng mahuhusay na app, laro, extension at tema para sa Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Inbound na panuntunan para sa Brave upang payagan ang trapiko ng mDNS.</translation>
-<translation id="7276297358157391541">Maaaring magbigay ang Brave ng mas pinahusay na pag-i-spell check sa pamamagitan ng pagpapadala sa mga server ng Brave Software ng tina-type mo sa browser, na nagbibigay-daan sa iyo na gamitin ang parehong teknolohiya ng pag-i-spell check na ginamit ng paghahanap sa Brave Software.</translation>
+<translation id="8207657266087451193">Kung hindi sapat ang deskripsyon ng isang larawan, susubukan ng Brave na ayusin ito para sa iyo. Para gumawa ng mga deskripsyon, ipinapadala ang mga larawan sa Brave Software. Puwede mo itong i-off sa mga setting anumang oras.</translation>
+<translation id="5499063270485366718">Kung hindi sapat ang deskripsyon ng isang larawan, susubukan ng Brave na ayusin ito para sa iyo. Para gumawa ng mga deskripsyon, ipinapadala ang mga larawan sa Brave Software.</translation>
+<translation id="3870835867536344658">Ginagamit nito ang parehong spellchecker na ginagamit sa paghahanap sa Brave Software. Ipinapadala sa Brave Software ang text na tina-type mo sa browser. Puwede mong baguhin palagi ang gawi na ito sa mga setting.</translation>
 <translation id="1807774211756215222">Buksan ang link sa bagong &amp;tab ng Brave</translation>
 <translation id="4624945300945265642">Buksan ang link sa inco&amp;gnito window ng Brave</translation>
 <translation id="7863882214613921971">Buksan ang Link sa bagong &amp;tab ng Brave</translation>

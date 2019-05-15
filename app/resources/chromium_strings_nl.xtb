@@ -79,9 +79,13 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="5874882355102994015">Brave kan het afdrukvoorbeeld niet weergeven wanneer de ingebouwde pdf-viewer ontbreekt.</translation>
 <translation id="8880183781256147665">Toevoegen aan Brave...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> kan gevaarlijk zijn en is daarom door Brave geblokkeerd.</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> kan gevaarlijk zijn en is daarom door Brave geblokkeerd. Je bent beschermd met Geavanceerde beveiliging.</translation>
 <translation id="9067428552314418522">Dit bestand is gevaarlijk en is daarom door Brave geblokkeerd.</translation>
+<translation id="2938460345748897177">Dit bestand is gevaarlijk en is daarom door Brave geblokkeerd. Je bent beschermd met Geavanceerde beveiliging.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> is gevaarlijk en is daarom door Brave geblokkeerd.</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> is gevaarlijk en is daarom door Brave geblokkeerd. Je bent beschermd met Geavanceerde beveiliging.</translation>
 <translation id="89367911614620585">Dit bestand kan gevaarlijk zijn en is daarom door Brave geblokkeerd.</translation>
+<translation id="8943391224520748272">Dit bestand kan gevaarlijk zijn en is daarom door Brave geblokkeerd. Je bent beschermd met Geavanceerde beveiliging.</translation>
 <translation id="9183662282810237335">Brave toch sluiten?</translation>
 <translation id="3834935463915107022">Brave toch sluiten?</translation>
 <translation id="8797356639448065696">Brave bevindt zich in de achtergrondmodus.</translation>
@@ -132,6 +136,7 @@ Als je toch inlogt, worden Brave-gegevens zoals bladwijzers, geschiedenis en and
 <translation id="1326766910007115955">Je logt in op een beheerd account waarmee de eigenaar van dat account beheer krijgt over je Brave-profiel. Je Brave-gegevens zoals je apps, bladwijzers, geschiedenis, wachtwoorden en andere instellingen worden permanent gekoppeld aan <ph name="USER_NAME"/>. Je kunt deze gegevens verwijderen via het Brave Software Accounts Dashboard, maar je kunt deze gegevens niet koppelen aan een ander account.<ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Je logt in op een beheerd account waarmee de eigenaar van dat account beheer krijgt over je Brave-profiel. Je Brave-gegevens zoals je apps, bladwijzers, geschiedenis, wachtwoorden en andere instellingen worden permanent gekoppeld aan <ph name="USER_NAME"/>. Je kunt deze gegevens verwijderen via het Brave Software Accounts Dashboard, maar je kunt deze gegevens niet koppelen aan een ander account. Je kunt een nieuw profiel maken om je bestaande Brave-gegevens apart te houden. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Je systeembeheerder heeft geconfigureerd dat Brave een alternatieve browser opent voor toegang tot <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">Je systeembeheerder heeft Brave geconfigureerd om <ph name="ALTERNATIVE_BROWSER_NAME"/> te openen voor toegang tot <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> maakte eerder gebruik van Brave</translation>
 <translation id="1384923383737428730">Er staat schadelijke software op je computer. Brave kan deze verwijderen, je instellingen herstellen en extensies uitschakelen, zodat je browser weer normaal werkt.</translation>
 <translation id="8919921662052966648">Brave kan je gegevens niet synchroniseren. Update je synchronisatiewachtwoord.</translation>
@@ -185,7 +190,7 @@ Controleer je e-mail op <ph name="ACCOUNT_EMAIL"/> voor verdere instructies.</tr
 <translation id="1912973375560256099">Inkomende regel zodat Brave mDNS-verkeer toestaat.</translation>
 <translation id="8207657266087451193">Als een afbeelding geen nuttige beschrijving bevat, probeert Brave je er een te geven. Afbeeldingen worden naar Brave Software verzonden om beschrijvingen te maken. Je kunt dit op elk gewenst moment uitschakelen in Instellingen.</translation>
 <translation id="5499063270485366718">Als een afbeelding geen nuttige beschrijving bevat, probeert Brave je er een te geven. Afbeeldingen worden naar Brave Software verzonden om beschrijvingen te maken.</translation>
-<translation id="7276297358157391541">Brave kan een betere spellingcontrole leveren door wat je in de browser typt naar Brave Software-servers te verzenden. Hierdoor kun je profiteren van dezelfde technologie voor spellingcontrole die ook voor Brave Software Zoeken wordt gebruikt.</translation>
+<translation id="3870835867536344658">Hiervoor wordt dezelfde spellingcontrole gebruikt als voor Brave Software Zoeken. Tekst die je in de browser typt wordt naar Brave Software gestuurd. Je kunt dit altijd wijzigen in de instellingen.</translation>
 <translation id="1807774211756215222">Link openen op een nieuw Brave-&amp;tabblad</translation>
 <translation id="4624945300945265642">Link openen in een Brave-inco&amp;gnitovenster</translation>
 <translation id="7863882214613921971">Link openen op een nieuw Brave-&amp;tabblad</translation>

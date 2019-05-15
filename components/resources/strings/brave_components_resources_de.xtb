@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Verdienen Sie Tokens, indem Sie Werbung auf Brave anschauen. Werbung wird Ihnen auf Grundlage Ihrer Interessen, die sich aus Ihrem Browsing-Verhalten ergeben, vorgeschlagen. Persönliche Daten oder Browserverläufe verlassen niemals Ihren Browser.</translation>
 <translation id="6112368337882254910">Auto-Beitrag</translation>
 <translation id="1527222983464337010">Eine automatische Möglichkeit, um Herausgeber und Content Creators zu unterstützen. Legen Sie eine monatliche Zahlung fest und surfen Sie wie gewohnt. Die von Ihnen besuchten Seiten erhalten Ihre Beiträge automatisch, basierend darauf, wie viel Aufmerksamkeit Sie ihnen Brave zufolge geschenkt haben.</translation>
-<translation id="7178655681744815321">Aktuelle Verdienste diesen Monat (geschätzt)</translation>
 <translation id="8157096848242649588">Zahlungsdatum</translation>
 <translation id="5208388044986603165">Werbebenachrichtigungen erhalten</translation>
 <translation id="4229016885653790965">Sorry! Werbung ist in Ihrer Region noch nicht verfügbar.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Werden Sie bezahlt, relevante Werbung zu sehen, die Ihre Privatsphäre respektieren.</translation>
 <translation id="3361548743396744457">Unterstützen Sie Ihre Lieblingsseiten einfach durchs Surfen – oder spendieren Sie Seiten ein Trinkgeld, wann immer Sie möchten.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="4493850495402472953">und</translation>
+<translation id="8804164990146287819">Datenschutzerklärung</translation>
+<translation id="4281844954008187215">Nutzungsbedingungen</translation>
 <translation id="7530570094705720669">Wallet wird erstellt</translation>
 <translation id="2105596359439030979">Ihre Aufmerksamkeit ist wertvoll. Verdienen Sie durch das Anschauen von Werbung, die Ihre Privatsphäre respektieren, und zahlen Sie diese weiter, um die von Ihnen geliebten Inhaltsersteller zu unterstützen.</translation>
 <translation id="516395624550019162">Ja, ich bin dabei!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">ohne Ihre Zustimmung.</translation>
 <translation id="7147673045905733351">Heute heißt Sie Brave im neuen Internet willkommen.</translation>
 <translation id="1350763070659630336">Einem Internet, in dem Ihre Zeit gewürdigt wird, Ihre persönlichen Daten privat bleiben und Sie für Ihre Aufmerksamkeit sogar bezahlt werden.</translation>
+<translation id="880341991877949255">Mit Ihrem alten Browser haben Sie für das Surfen im Netz bezahlt, indem Sie Ihre wertvolle Aufmerksamkeit dem Ansehen von Werbung gewidmet haben. Sie haben Ihre wertvolle Zeit investiert, um invasive Werbetechnologie auf Ihr Gerät herunterzuladen, die Ihre wertvollen privaten Daten ohne Ihr Einverständnis an Werbeunternehmen weitergeleitet hat.</translation>
 <translation id="5830306739231399614">Leider noch keine Tokens.</translation>
 <translation id="7359258898775969374">3 Möglichkeiten, um Ihr Wallet zu füllen:</translation>
 <translation id="8087614920008846901">Sie können Geld hinzufügen.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Schauen Sie sich an, was’ verbessert wurde</translation>
 <translation id="4083384190339959182">Wir haben Prave Payments ein großes Upgrade spendiert.</translation>
 <translation id="5395851053710553429">Machen Sie sich darauf gefasst, das nächste Internet zu erleben.</translation>
-<translation id="880341991877949255">Mit Ihrem alten Browser haben Sie für das Surfen im Netz bezahlt, indem Sie Ihre wertvolle Aufmerksamkeit dem Ansehen von Werbung gewidmet haben. Sie haben Ihre wertvolle Zeit investiert, um invasive Werbetechnologie auf Ihr Gerät herunterzuladen, die Ihre wertvollen privaten Daten ohne Ihr Einverständnis an Werbeunternehmen weitergeleitet hat.</translation>
 <translation id="2549982302631665116">Heute heißt Sie Brave im neuen Internet willkommen. Einem Internet, in dem Ihre Zeit gewürdigt wird, Ihre persönlichen Daten privat bleiben und Sie für Ihre Aufmerksamkeit sogar bezahlt werden.</translation>
 <translation id="3780605330121608425">Ihr Wallet</translation>
 <translation id="6727483290601442544">Detaillierte Informationen anzeigen</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Neues Gerät hinzufügen</translation>
 <translation id="8780295742023331191">Synchronisierungscode anzeigen</translation>
 <translation id="1755198127524719638">Sync-Einstellungen</translation>
-<translation id="7558480201297099157">Verwalten Sie, welche Informationen Sie zwischen Geräten synchronisieren möchten. Diese Einstellungen betreffen nur dieses Gerät.</translation>
 <translation id="8820817407110198400">Lesezeichen</translation>
 <translation id="5591129654353352557">Seiteneinstellungen gespeichert</translation>
 <translation id="7859704718976024901">Browserverlauf</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Synchronisierungsketten-Code</translation>
 <translation id="2899261497479389619">Begeben Sie sich auf dem Zielcomputer in den Einstellungen zu 'Brave Sync' und klicken Sie auf die Schaltfläche</translation>
 <translation id="4827439149833241990">“Ich habe einen Synchronisierungscode”.</translation>
-<translation id="24067401253841795">Geben Sie die nachfolgend angezeigten Synchronisierungsketten-Codewörter ein.</translation>
 <translation id="8914601399214979966">Stattdessen meine Kamera verwenden</translation>
 <translation id="3034163433136515805">QR-Code anzeigen</translation>
 <translation id="5093410893656857925">Geräteart wählen</translation>

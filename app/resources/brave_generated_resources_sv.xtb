@@ -46,17 +46,14 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="2515126961943087659">BAT-annonstjänst</translation>
 <translation id="7924918279836988121">Bat huvudbokstjänst</translation>
-<translation id="768979911142179781">Standardinställningar för Bravesköldar</translation>
-<translation id="9185018653595759199">Sociala knappar och inloggningar</translation>
-<translation id="6894114137169961038">Annonskontroll</translation>
-<translation id="1096802265930928584">Kontroll av cookies</translation>
+<translation id="4472575034687746823">Kom igång</translation>
+<translation id="6303294677342628402">Sköldar</translation>
 <translation id="8919235146866304148">Skydd mot signaturinsamling</translation>
 <translation id="520895744850022668">HTTPS överallt</translation>
 <translation id="5259716416204774556">Scriptblockering</translation>
 <translation id="7498695072878479744">Tillåt Googles inloggningsknappar på sajter från tredje part</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
-<translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
 <translation id="6067014455220527258">Blockera annonser</translation>
 <translation id="6985711843506827936">Tillåt annonser och spårning</translation>
 <translation id="6132506775968708399">Blockera tredjepartscookies</translation>
@@ -76,7 +73,6 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="2414886740292270097">Mörk</translation>
 <translation id="1360441190790440400">Samma som Linux</translation>
 <translation id="1336940801687497203">Samma som Windows</translation>
-<translation id="8721331068159819483">Samma som MacOS</translation>
 <translation id="6786747875388722282">Tillägg</translation>
 <translation id="2896916411183256228">Använder WebTorrent för att visa torrenter direkt i webbläsaren. Stödjer torrentfiler och magnetlänkar.</translation>
 <translation id="6554397389149987360">Använder komponenten Hangouts för att aktivera skärmdelning och andra funktioner i webbläsaren.</translation>

@@ -77,9 +77,13 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="5874882355102994015">Impossibile visualizzare l'anteprima di stampa in Brave senza il visualizzatore PDF integrato.</translation>
 <translation id="8880183781256147665">Aggiunta a Brave in corso...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> potrebbe essere pericoloso, pertanto è stato bloccato da Brave.</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> potrebbe essere pericoloso, pertanto è stato bloccato da Brave. La sicurezza è garantita dalla protezione avanzata.</translation>
 <translation id="9067428552314418522">Questo file è pericoloso, pertanto è stato bloccato da Brave.</translation>
+<translation id="2938460345748897177">Questo file è pericoloso, pertanto è stato bloccato da Brave. La sicurezza è garantita dalla protezione avanzata.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> è pericoloso, pertanto è stato bloccato da Brave.</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> è pericoloso, pertanto è stato bloccato da Brave. La sicurezza è garantita dalla protezione avanzata.</translation>
 <translation id="89367911614620585">Questo file potrebbe essere pericoloso, pertanto è stato bloccato da Brave.</translation>
+<translation id="8943391224520748272">Questo file potrebbe essere pericoloso, pertanto è stato bloccato da Brave. La sicurezza è garantita dalla protezione avanzata.</translation>
 <translation id="9183662282810237335">Vuoi uscire comunque da Brave?</translation>
 <translation id="3834935463915107022">Vuoi chiudere comunque Brave?</translation>
 <translation id="8797356639448065696">Brave è in modalità background.</translation>
@@ -130,6 +134,7 @@ Se esegui comunque l'accesso, le informazioni di Brave come Preferiti, cronologi
 <translation id="1326766910007115955">Stai per accedere con un account gestito e per dare al relativo amministratore il controllo del tuo profilo Brave. I tuoi dati di Brave, come app, Preferiti, cronologia, password e altre impostazioni, verranno collegati definitivamente a <ph name="USER_NAME"/>. Potrai eliminare questi dati tramite la Dashboard di Brave Software Account, ma non potrai associare questi dati a un altro account. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Stai per accedere con un account gestito e per dare al relativo amministratore il controllo del tuo profilo Brave. I tuoi dati di Brave, come app, Preferiti, cronologia, password e altre impostazioni, verranno collegati definitivamente a <ph name="USER_NAME"/>. Potrai eliminare questi dati tramite la Dashboard di Brave Software Account, ma non potrai associare questi dati a un altro account. Se preferisci puoi creare un nuovo profilo per mantenere separati i dati di Brave esistenti. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">L'amministratore di sistema ha configurato Brave per l'apertura di un browser alternativo per accedere a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">L'amministratore di sistema ha configurato Brave per l'apertura di <ph name="ALTERNATIVE_BROWSER_NAME"/> per accedere a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656">L'indirizzo <ph name="USER_EMAIL_ADDRESS"/> utilizzava in precedenza Brave</translation>
 <translation id="1384923383737428730">È stato rilevato software dannoso sul tuo computer. Brave può rimuoverlo, ripristinare le tue impostazioni e disattivare le estensioni per ristabilire il normale funzionamento del browser.</translation>
 <translation id="8919921662052966648">Impossibile sincronizzare i dati in Brave. Aggiorna la passphrase di sincronizzazione.</translation>
@@ -181,7 +186,9 @@ Per ulteriori informazioni, controlla l'email all'indirizzo <ph name="ACCOUNT_EM
 <translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
 <translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Regola inbound per consentire il traffico mDNS in Brave.</translation>
-<translation id="7276297358157391541">Brave può offrire una funzione di controllo ortografico migliore inviando il testo digitato nel browser ai server di Brave Software. Puoi, così, usufruire della stessa tecnologia di controllo ortografico utilizzata dalla Ricerca Brave Software.</translation>
+<translation id="8207657266087451193">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave Software. Puoi disattivare questa funzionalità in qualsiasi momento nelle Impostazioni.</translation>
+<translation id="5499063270485366718">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave Software.</translation>
+<translation id="3870835867536344658">Viene usato lo stesso controllo ortografico utilizzato nella Ricerca Brave Software. Il testo digitato nel browser viene inviato a Brave Software. Puoi modificare questo comportamento in qualsiasi momento nelle impostazioni.</translation>
 <translation id="1807774211756215222">Apri link in una nuova &amp;scheda di Brave</translation>
 <translation id="4624945300945265642">Apri link in una finestra di navigazione in inco&amp;gnito di Brave</translation>
 <translation id="7863882214613921971">Apri link in una nuova &amp;scheda di Brave</translation>

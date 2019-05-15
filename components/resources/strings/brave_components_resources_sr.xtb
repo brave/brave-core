@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Zaradite tokene tako što ćete gledati oglase u Brave-u. Oglasi su prikazani na osnovu vaših interesa, kako je zaključeno iz vašeg ponašanja na pregledaču. Nijedna privatna informacija ili istorija pregledanja nikad ne napušta vaš pregledač.</translation>
 <translation id="6112368337882254910">Automatski doprinosi</translation>
 <translation id="1527222983464337010">Automatski način da podržite objavljivače i stvaralace sadržaja. Postavite mesečno plaćanje i surfujte normalno. Veb lokacija koju posetite dobija automatski vašu donaciju, u odnosu na vašu pažnju prema lokaciji, što Brave meri.</translation>
-<translation id="7178655681744815321">Trenutna zarada ovog meseca (procena)</translation>
 <translation id="8157096848242649588">Datum uplate</translation>
 <translation id="5208388044986603165">Broj primljenih reklamnih obaveštenja</translation>
 <translation id="4229016885653790965">Žao nam je! Reklame još uvek nisu dostupne u vašem regionu.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Budite plaćeni za pregledanje relevantnih reklama koje poštuju vašu privatnost.</translation>
 <translation id="3361548743396744457">Podržite svoje omiljene lokacije samo pretražujući –  ili dajte napojnicu lokaciji kad god želite.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="4493850495402472953">i</translation>
+<translation id="8804164990146287819">Smernice za privatnost</translation>
+<translation id="4281844954008187215">Uslovi korišcenja usluge</translation>
 <translation id="7530570094705720669">Stvaranje novčanika</translation>
 <translation id="2105596359439030979">Vaša pažnja je dragocena. Zarađujte pregleđivanjem oglasa koji poštuju privatnost i prosledite ih dalje da biste podržali kreatore sadržaja koji vam se sviđaju.</translation>
 <translation id="516395624550019162">Da, ušao sam!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">bez vaše saglasnosti.</translation>
 <translation id="7147673045905733351">Danas, Brave vam želi dobrodošlicu na novi internet.</translation>
 <translation id="1350763070659630336">Tamo gde se ceni Vaše vreme, Vaši lični podaci se čuvaju poverljivim, a Vama se zaista plaća za Vašu pažnju.</translation>
+<translation id="880341991877949255">Sa vašim starim pregledačem, plaćate da pregledavate veb gledajući oglase sa vašom dragocenom pažnjom. Provodite vaše dragoceno vreme preuzimajući invazivnu oglasnu tehnologiju koja prenosi vaše dragocene privatne podatke oglašivačima— bez vaše saglasnosti.</translation>
 <translation id="5830306739231399614">Nažalost, još uvek nema tokena.</translation>
 <translation id="7359258898775969374">3 načina za popunjavanje Vašeg novčanika:</translation>
 <translation id="8087614920008846901">Možete dodati sredstva.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Pogledajte šta’je unapređeno</translation>
 <translation id="4083384190339959182">Mi’ smo dali Brave plaćanjima veliku nadogradnju.</translation>
 <translation id="5395851053710553429">Spremite se da iskusite sledeći Internet.</translation>
-<translation id="880341991877949255">Sa vašim starim pregledačem, plaćate da pregledavate veb gledajući oglase sa vašom dragocenom pažnjom. Provodite vaše dragoceno vreme preuzimajući invazivnu oglasnu tehnologiju koja prenosi vaše dragocene privatne podatke oglašivačima— bez vaše saglasnosti.</translation>
 <translation id="2549982302631665116">Danas Vam Brejv želi dobrodošlicu na novi internet. Tamo gde se ceni Vaše vreme, Vaši lični podaci se čuvaju poverljivim, a Vama se zaista plaća za Vašu pažnju.</translation>
 <translation id="3780605330121608425">Vaš novčanik</translation>
 <translation id="6727483290601442544">Vidi detalje</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Dodaj novi uređaj</translation>
 <translation id="8780295742023331191">Vidi šifru sinhronizacije</translation>
 <translation id="1755198127524719638">Sinhronizuj podešavanja</translation>
-<translation id="7558480201297099157">Upravljajte informacijama koje želite da sinhronizujete između uređaja. Ova podešavanja utiču samo na ovaj uređaj.</translation>
 <translation id="8820817407110198400">Obeleživači</translation>
 <translation id="5591129654353352557">Podešavanja za sačuvane sajtove</translation>
 <translation id="7859704718976024901">Istorija pregledanja</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Šifra lanca sinhronizacije</translation>
 <translation id="2899261497479389619">Na vašem ciljnom računaru, idite na Brave Sinhronizaciju u postavkama i kliknite na dugme</translation>
 <translation id="4827439149833241990">“Imam šifru sinhronizacije”.</translation>
-<translation id="24067401253841795">Unesite reči šifre lanca sinhronizacije prikazane ispod.</translation>
 <translation id="8914601399214979966">Umesto toga koristite moju kameru</translation>
 <translation id="3034163433136515805">Vidi QR šifru</translation>
 <translation id="5093410893656857925">Izaberite tip uređaja</translation>

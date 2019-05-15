@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings/constants.js b/chrome/browser/resources/settings/site_settings/constants.js
-index de901e4a552bd900012218aea0f26baa515265fc..5d605870996fc0cbe3182a3a05a7c92aafe068e0 100644
+index ec53175735016ab858311a19ab9c298a955ac2b0..cff76e9219f90e562b7b7af70ee8e3c198cb47b4 100644
 --- a/chrome/browser/resources/settings/site_settings/constants.js
 +++ b/chrome/browser/resources/settings/site_settings/constants.js
-@@ -34,6 +34,7 @@ settings.ContentSettingsTypes = {
+@@ -35,6 +35,7 @@ settings.ContentSettingsTypes = {
    ADS: 'ads',
    CLIPBOARD: 'clipboard',
    SENSORS: 'sensors',

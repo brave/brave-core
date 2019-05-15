@@ -46,17 +46,14 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="3155170474926428993">Tor-starter</translation>
 <translation id="2515126961943087659">Bat Ads-tjeneste</translation>
 <translation id="7924918279836988121">Bat-reskontrotjeneste</translation>
-<translation id="768979911142179781">Standarder for Brave-skjold</translation>
-<translation id="9185018653595759199">Sosiale knapper og innlogginger</translation>
-<translation id="6894114137169961038">Annonsekontroll</translation>
-<translation id="1096802265930928584">kontroll av informasjonskapsler</translation>
+<translation id="4472575034687746823">Kom i gang</translation>
+<translation id="6303294677342628402">Skjold</translation>
 <translation id="8919235146866304148">Fingeravtrykkbeskyttelse</translation>
 <translation id="520895744850022668">HTTPS Overalt</translation>
 <translation id="5259716416204774556">Script-blokkering</translation>
 <translation id="7498695072878479744">Tillat innloggingsknapper fra Google på tredjepartssider</translation>
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
 <translation id="5165042248369837294">Tillatt innebygde tvitringer fra Twitter</translation>
-<translation id="958971637207126733">Tillat innebygd LinkedIn</translation>
 <translation id="6067014455220527258">Blokker annonser</translation>
 <translation id="6985711843506827936">Tillat annonser og sporing</translation>
 <translation id="6132506775968708399">Blokker tredjeparts informasjonskapsler</translation>
@@ -76,7 +73,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="2414886740292270097">Mørkt</translation>
 <translation id="1360441190790440400">Samme som Linux</translation>
 <translation id="1336940801687497203">Samme som Windows</translation>
-<translation id="8721331068159819483">Samme som MacOS</translation>
 <translation id="6786747875388722282">Utvidelser</translation>
 <translation id="2896916411183256228">Bruker WebTorrent til å vise torrents direkte i nettleseren. Støtter torrent-filer og magnetlenker.</translation>
 <translation id="6554397389149987360">Bruk Hangouts-komponenten for å aktivere skjermdeling og andre funksjoner i nettleseren.</translation>

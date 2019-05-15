@@ -76,9 +76,13 @@ Brave Software Brave is unable to recover your settings.</translation>
 <translation id="5874882355102994015">Brave cannot show the print preview when the built-in PDF viewer is missing.</translation>
 <translation id="8880183781256147665">Adding to Brave ...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> may be dangerous, so Brave has blocked it.</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> may be dangerous, so Brave has blocked it. You're defended by Advanced Protection.</translation>
 <translation id="9067428552314418522">This file is dangerous, so Brave has blocked it.</translation>
+<translation id="2938460345748897177">This file is dangerous, so Brave has blocked it. You're defended by Advanced Protection.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> is dangerous, so Brave has blocked it.</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> is dangerous, so Brave has blocked it. You're defended by Advanced Protection.</translation>
 <translation id="89367911614620585">This file may be dangerous, so Brave has blocked it.</translation>
+<translation id="8943391224520748272">This file may be dangerous, so Brave has blocked it. You're defended by Advanced Protection.</translation>
 <translation id="9183662282810237335">Exit Brave anyway?</translation>
 <translation id="3834935463915107022">Quit Brave anyway?</translation>
 <translation id="8797356639448065696">Brave is in background mode.</translation>
@@ -129,6 +133,7 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
 <translation id="1326766910007115955">You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords and other settings will become permanently tied to <ph name="USER_NAME"/>. You will be able to delete this data via the Brave Software Accounts Dashboard, but you will not be able to associate this data with another account. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords and other settings will become permanently tied to <ph name="USER_NAME"/>. You will be able to delete this data via the Brave Software Accounts Dashboard, but you will not be able to associate this data with another account. You can optionally create a new profile to keep your existing Brave data separate. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Your system administrator has configured Brave to open an alternative browser to access <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">Your system administrator has configured Brave to open <ph name="ALTERNATIVE_BROWSER_NAME"/> to access <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> was previously using Brave</translation>
 <translation id="1384923383737428730">There's harmful software on your computer. Brave can remove it, restore your settings and disable extensions to make your browser work normally again.</translation>
 <translation id="8919921662052966648">Brave could not sync your data. Please update your Sync passphrase.</translation>
@@ -179,7 +184,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL"/> for further instructions.<
 <translation id="1912973375560256099">Inbound rule for Brave to allow mDNS traffic.</translation>
 <translation id="8207657266087451193">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave Software. You can turn this off in settings at any time.</translation>
 <translation id="5499063270485366718">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave Software.</translation>
-<translation id="7276297358157391541">Brave can provide smarter spell-checking by sending what you type in the browser to Brave Software servers, allowing you to use the same spell-checking technology used by Brave Software search.</translation>
+<translation id="3870835867536344658">This uses the same spellchecker that's used in Brave Software search. Text that you type in the browser is sent to Brave Software. You can always change this behaviour in settings.</translation>
 <translation id="1807774211756215222">Open link in new Brave &amp;tab</translation>
 <translation id="4624945300945265642">Open link in Brave inco&amp;gnito window</translation>
 <translation id="7863882214613921971">Open Link in New Brave &amp;tab</translation>

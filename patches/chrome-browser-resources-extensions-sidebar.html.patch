@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/md_extensions/sidebar.html b/chrome/browser/resources/md_extensions/sidebar.html
+diff --git a/chrome/browser/resources/extensions/sidebar.html b/chrome/browser/resources/extensions/sidebar.html
 index 8aaf1ef5fe8867e044d5d42198019e3009fb9de5..c8622c931c4955f8f7f3c9237bcbeb71135ec7e5 100644
---- a/chrome/browser/resources/md_extensions/sidebar.html
-+++ b/chrome/browser/resources/md_extensions/sidebar.html
+--- a/chrome/browser/resources/extensions/sidebar.html
++++ b/chrome/browser/resources/extensions/sidebar.html
 @@ -78,6 +78,7 @@
          <paper-ripple></paper-ripple>
        </a>

@@ -38,10 +38,11 @@
 <translation id="3303855915957856445">一致する結果は見つかりませんでした</translation>
 <translation id="8967866634928501045">Alt+Shift+A キーで表示します</translation>
 <translation id="998747458861718449">検証(&amp;I)</translation>
+<translation id="741204030948306876">有効にする</translation>
+<translation id="780301667611848630">いいえ</translation>
 <translation id="3943582379552582368">戻る(&amp;B)</translation>
 <translation id="6691936601825168937">進む(&amp;F)</translation>
 <translation id="3280237271814976245">名前を付けて保存(&amp;A)...</translation>
-<translation id="2941880727166628951">デバイスに送信</translation>
 <translation id="1175364870820465910">印刷(&amp;P)...</translation>
 <translation id="8664389313780386848">ページのソースを表示(&amp;V)</translation>
 <translation id="2889064240420137087">次のプログラムでリンクを開く...</translation>
@@ -93,10 +94,10 @@
 <translation id="1732768497619250086">Brave Software から画像の説明を取得</translation>
 <translation id="7561196759112975576">常に使用</translation>
 <translation id="2241634353105152135">一回限り</translation>
-<translation id="741204030948306876">有効にする</translation>
-<translation id="780301667611848630">いいえ</translation>
-<translation id="4572259796527554261">候補を表示する</translation>
-<translation id="3435896845095436175">有効にする</translation>
+<translation id="3387614642886316601">拡張スペルチェックを使用する</translation>
+<translation id="6992554835374084304">拡張スペルチェックの有効化</translation>
+<translation id="5860491529813859533">オンにする</translation>
+<translation id="7658239707568436148">キャンセル</translation>
 <translation id="8915370057835397490">候補を読み込んでいます</translation>
 <translation id="6191804255817539692">候補は以上です</translation>
 <translation id="1901303067676059328">すべて選択(&amp;A)</translation>
@@ -107,7 +108,6 @@
 <translation id="6042308850641462728">もっと見る</translation>
 <translation id="6268252012308737255"><ph name="APP"/> で開く</translation>
 <translation id="5509693895992845810">別名で保存(&amp;A)...</translation>
-<translation id="3480119035619598820">デバイスに送信</translation>
 <translation id="7421925624202799674">ページのソースを表示(&amp;V)</translation>
 <translation id="1588870296199743671">次のプログラムでリンクを開く...</translation>
 <translation id="3760460896538743390">バックグラウンド ページの検証(&amp;B)</translation>
@@ -149,9 +149,10 @@
 <translation id="4022426551683927403">辞書に追加(&amp;A)</translation>
 <translation id="6849870115130610913">Brave Software から画像の説明を取得</translation>
 <translation id="372722114124766626">今回のみ</translation>
-<translation id="8917490105272468696">有効にする</translation>
+<translation id="4079140982534148664">拡張スペルチェックを使用</translation>
+<translation id="7487141338393529395">拡張スペルチェックの有効化</translation>
+<translation id="3435896845095436175">有効にする</translation>
 <translation id="7473891865547856676">スキップ</translation>
-<translation id="2867003629889664976">候補を表示する</translation>
 <translation id="6264365405983206840">すべて選択(&amp;A)</translation>
 <translation id="3948116654032448504"><ph name="SEARCH_ENGINE"/> で画像を検索(&amp;S)</translation>
 <translation id="2932085390869194046">パスワードを自動生成...</translation>
@@ -164,7 +165,7 @@
 <translation id="4423482519432579560">スペルチェック(&amp;S)</translation>
 <translation id="1049795001945932310">言語設定(&amp;L)</translation>
 <translation id="6498249116389603658">選択したすべての言語(&amp;A)</translation>
-<translation id="8188120771410500975">テキスト フィールドのスペルチェック(&amp;C)</translation>
+<translation id="5978277834170881274">基本スペルチェックを使用(&amp;U)</translation>
 <translation id="4200983522494130825">新しいタブ(&amp;T)</translation>
 <translation id="8418445294933751433">タブで表示(&amp;S)</translation>
 <translation id="1723824996674794290">新しいウィンドウ(&amp;N)</translation>
@@ -323,7 +324,9 @@
 <translation id="3916445069167113093">この種類のファイルはコンピュータに損害を与える可能性があります。<ph name="FILE_NAME"/> のダウンロードを続けますか？</translation>
 <translation id="5727728807527375859">拡張機能、アプリ、テーマはパソコンに悪影響を与える可能性があります。処理を続けてもよろしいですか？</translation>
 <translation id="6285120108426285413"><ph name="FILE_NAME"/> は一般的にダウンロードされているファイルではなく、危害を及ぼす可能性があります。</translation>
+<translation id="6573998787994398565"><ph name="FILE_NAME"/> は一般的にダウンロードされているファイルではなく、危害を及ぼす可能性があります。現在、高度な保護機能が適用されています。</translation>
 <translation id="4907161631261076876">このファイルは一般的にダウンロードされているファイルではなく、危害を及ぼす可能性があります。</translation>
+<translation id="9041909613332246191">このファイルは一般的にダウンロードされているファイルではなく、危害を及ぼす可能性があります。現在、高度な保護機能が適用されています。</translation>
 <translation id="2773802008104670137">この種類のファイルはパソコンに危害を及ぼす可能性があります。</translation>
 <translation id="7815680994978050279">危険なダウンロードがブロックされました</translation>
 <translation id="6141988275892716286">ダウンロードの確認</translation>
@@ -343,7 +346,6 @@
 <translation id="8200772114523450471">再開</translation>
 <translation id="2770465223704140727">リストから削除</translation>
 <translation id="7702574632857388784"><ph name="FILE_NAME"/> をリストから削除</translation>
-<translation id="7658239707568436148">キャンセル</translation>
 <translation id="7144878232160441200">再読み込み</translation>
 <translation id="5170568018924773124">フォルダを開く</translation>
 <translation id="1581962803218266616">Finder で表示</translation>
@@ -358,6 +360,10 @@
 <translation id="495170559598752135">操作</translation>
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; によりダウンロードされました</translation>
 <translation id="6395403722585816044">シークレット モードでダウンロード</translation>
+<translation id="4551763574344810652">元に戻すには <ph name="MODIFIER_KEY_DESCRIPTION"/> を押します</translation>
+<translation id="2079545284768500474">取り消す</translation>
+<translation id="2490481887078769936">「<ph name="FILE_NAME"/>」をリストから削除しました</translation>
+<translation id="1429300045468813835">すべて消去</translation>
 <translation id="8028803902702117856"><ph name="FILE_NAME"/> をダウンロードしています。<ph name="SIZE"/> 完了</translation>
 <translation id="5632592977009207922">ダウンロードしています（残り <ph name="PERCENT_REMAINING"/>%）</translation>
 <translation id="313963229645891001">ダウンロードしています。<ph name="STATUS"/></translation>
@@ -418,6 +424,10 @@
 <translation id="3067198179881736288">アプリをインストールしますか？</translation>
 <translation id="7072010813301522126">ショートカット名</translation>
 <translation id="3275778913554317645">ウィンドウとして開く</translation>
+<translation id="7193051357671784796">このアプリは組織によって追加されました。インストールを完了するにはアプリを再起動してください。</translation>
+<translation id="5895138241574237353">再起動</translation>
+<translation id="3479552764303398839">後で</translation>
+<translation id="1008557486741366299">後で</translation>
 <translation id="8201192017531062522">Brave アプリが開いている間 Brave は実行され続けます。</translation>
 <translation id="7397305826909094212">すべての Brave アプリを終了</translation>
 <translation id="5026874946691314267">今後このメッセージを表示しない</translation>
@@ -750,6 +760,7 @@
 <translation id="5715711091495208045">プラグイン ブローカー: <ph name="PLUGIN_NAME"/></translation>
 <translation id="3222066309010235055">事前レンダリング: <ph name="PRERENDER_CONTENTS_NAME"/></translation>
 <translation id="6748217015615267851">レンダラ: <ph name="RENDERER_URL"/></translation>
+<translation id="2156294658807918600">Service Worker: <ph name="SCRIPT_URL"/></translation>
 <translation id="241082044617551207">不明なプラグイン</translation>
 <translation id="7903925330883316394">ユーティリティ: <ph name="UTILITY_TYPE"/></translation>
 <translation id="219008588003277019">ネイティブ クライアント モジュール: <ph name="NEXE_NAME"/></translation>
@@ -773,10 +784,8 @@
 <translation id="4873312501243535625">メディア ファイル チェッカー</translation>
 <translation id="5972666587303800813">機能なしのサービス</translation>
 <translation id="3061707000357573562">サービスへのパッチの適用</translation>
-<translation id="3580923162759633716">プロファイリング サービス</translation>
 <translation id="1914326953223720820">解凍サービス</translation>
 <translation id="1545775234664667895">テーマ「<ph name="THEME_NAME"/>」をインストールしました</translation>
-<translation id="2079545284768500474">取り消す</translation>
 <translation id="2256115617011615191">今すぐ再起動</translation>
 <translation id="4545028762441890696">再度有効にするには次の新しい権限を許可してください。</translation>
 <translation id="3009487527589249344">「<ph name="EXTENSION_NAME"/>」は、不正な拡張機能として認識されているためインストールされませんでした</translation>
@@ -962,8 +971,8 @@
 <translation id="2643698698624765890">[ウィンドウ] メニューの [拡張機能] をクリックして拡張機能を管理できます。</translation>
 <translation id="7953955868932471628">ショートカットの管理</translation>
 <translation id="1470811252759861213">お使いのどの端末でも同じ拡張機能を使用するには、<ph name="SIGN_IN_LINK"/>します。</translation>
-<translation id="316854673539778496">お使いのどの端末でも同じ拡張機能を使用するには、ログインして同期を有効にします。</translation>
-<translation id="8079938625609335826">お使いのどの端末でも同じ拡張機能を使用するには、同期を有効にします。</translation>
+<translation id="2490782392574942205">お使いのどのパソコンでも同じ拡張機能を使用するには、ログインして同期を有効にします</translation>
+<translation id="3919145445993746351">お使いのどのパソコンでも同じ拡張機能を使用するには、同期を有効にします</translation>
 <translation id="4977942889532008999">アクセスの確認</translation>
 <translation id="5780011244986845107">選択したフォルダには、機密ファイルが含まれています。このフォルダに対する永続的な読み取りアクセス権を「<ph name="APP_NAME"/>」に付与してもよろしいですか？</translation>
 <translation id="5365881113273618889">選択したフォルダには、機密ファイルが含まれています。このフォルダに対する永続的な書き込みアクセス権を「<ph name="APP_NAME"/>」に付与してもよろしいですか？</translation>
@@ -982,6 +991,8 @@
 <translation id="220138918934036434">ボタンを非表示にする</translation>
 <translation id="7898627924844766532">ツールバーに残す</translation>
 <translation id="6082651258230788217">ツールバーに表示</translation>
+<translation id="7461924472993315131">固定</translation>
+<translation id="4285498937028063278">固定を解除</translation>
 <translation id="8137559199583651773">拡張機能を管理</translation>
 <translation id="3727187387656390258">ポップアップを検証</translation>
 <translation id="3526034519184079374">サイトのデータを読み取れないか、変更できません</translation>
@@ -1186,9 +1197,13 @@
 <translation id="6690659332373509948">ファイル <ph name="FILE_NAME"/> を解析できません</translation>
 <translation id="2773288106548584039">従来のブラウザのサポート</translation>
 <translation id="8141584439523427891">まもなく代替ブラウザで開きます</translation>
+<translation id="7450761244949417357">まもなく <ph name="ALTERNATIVE_BROWSER_NAME"/> で開きます</translation>
 <translation id="2804043232879091219">代替ブラウザを開けませんでした</translation>
+<translation id="692114467174262153"><ph name="ALTERNATIVE_BROWSER_NAME"/> を開けませんでした</translation>
 <translation id="1070705170564860382"><ph name="COUNTDOWN_SECONDS"/> 秒後に代替ブラウザで開きます</translation>
+<translation id="3481268647794498892"><ph name="COUNTDOWN_SECONDS"/> 秒後に <ph name="ALTERNATIVE_BROWSER_NAME"/> で開きます</translation>
 <translation id="4586275095964870617">「<ph name="URL"/>」を代替ブラウザで開けませんでした。システム管理者にお問い合わせください。</translation>
+<translation id="736877393389250337"><ph name="URL"/> を <ph name="ALTERNATIVE_BROWSER_NAME"/> で開けませんでした。システム管理者にお問い合わせください。</translation>
 <translation id="465878909996028221">ブラウザのリダイレクトでは、http、https、file プロトコルのみサポートされています。</translation>
 <translation id="1962233722219655970">このページは、お使いのパソコンでは動作しないネイティブ クライアント アプリを使用しています。</translation>
 <translation id="7540972813190816353">更新の確認中にエラーが発生しました: <ph name="ERROR"/></translation>
@@ -1240,6 +1255,7 @@
 <translation id="8391712576156218334">画像を利用できません。しばらくしてからもう一度お試しください。</translation>
 <translation id="1564414980088536597">この画像は使用できません。別の画像を選択してください。</translation>
 <translation id="385051799172605136">戻る</translation>
+<translation id="8033827949643255796">選択しました</translation>
 <translation id="3497560059572256875">Doodle を共有</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Twitter</translation>
@@ -1266,6 +1282,10 @@
 <translation id="5939518447894949180">リセット</translation>
 <translation id="5546865291508181392">検索</translation>
 <translation id="833986336429795709">このリンクを開くにはアプリを選択します</translation>
+<translation id="192494336144674234">アプリケーションで開く</translation>
+<translation id="9053893665344928494">選択内容を保存</translation>
+<translation id="5541687815721799001">アプリを使用</translation>
+<translation id="5340857474604400806">Brave に留まる</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/>（シークレット モード）</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/>（アップデート利用可）</translation>
@@ -1313,7 +1333,6 @@
 <translation id="720715819012336933">{NUM_PAGES,plural, =1{ページを離れる}other{ページを離れる}}</translation>
 <translation id="8093359998839330381"><ph name="PLUGIN_NAME"/> が応答していません</translation>
 <translation id="8393511274964623038">プラグインを停止</translation>
-<translation id="82871696630048499">ウェブページはメモリ不足のため再読み込みされました。</translation>
 <translation id="5578059481725149024">自動ログイン</translation>
 <translation id="6810613314571580006">保存されている認証情報を使用してウェブサイトに自動的にログインします。この機能が無効になっている場合は、ウェブサイトにログインするときに毎回確認を求められます。</translation>
 <translation id="5454166040603940656">- <ph name="PROVIDER"/></translation>
@@ -1357,12 +1376,14 @@
 <translation id="6076448957780543068">このスクリーンショットを含める</translation>
 <translation id="7052237160939977163">パフォーマンス追跡データを送信する</translation>
 <translation id="5526928694260255286"><ph name="BEGIN_LINK"/>Bluetooth ログ<ph name="END_LINK"/>を添付する（Brave Software 内部）</translation>
+<translation id="3047644958362961983">アシスタントの事象を詳しく把握できるよう、情報の提供をお願いいたします。ご提供いただいた情報の保存期間は最大 90 日間です。情報へのアクセスは、エンジニアリングやフィードバックの担当者に制限されます。</translation>
 <translation id="1705635099498185261">Bluetooth の問題の診断に向けて、Brave Software 社員はフィードバック レポートに追加の Bluetooth ログを含めることができます。このオプションのチェックボックスがオンになっている場合、レポートには現在のセッションの btsnoop ログと HCI ログが含められます。その際、個人を特定できる情報は可能な限り削除されます。これらのログへのアクセスは、Listnr での Brave OS プロダクト グループのマネージャーのみに制限されます。ログは 90 日経過後に消去されます。</translation>
 <translation id="4206323443866416204">ご意見の報告</translation>
 <translation id="3681311097828166361">ご意見をお寄せいただきありがとうございます。現在オフラインのため、ご報告の内容は後で送信されます。</translation>
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>システム情報<ph name="END_LINK1"/>を送信する</translation>
 <translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>システム情報<ph name="END_LINK1"/>と<ph name="BEGIN_LINK2"/>指標データ<ph name="END_LINK2"/>を送信する</translation>
 <translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>システムとアプリの情報<ph name="END_LINK1"/>と<ph name="BEGIN_LINK2"/>指標<ph name="END_LINK2"/>を送信する</translation>
+<translation id="3894123633473837029">Sherlog から最近のアシスタント履歴を含める。これには、ID、位置情報、デバッグ情報などが含まれる可能性があります。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="8329196515830093443">ファイルはデバッグのため Brave Software に送信されます</translation>
 <translation id="8227119283605456246">添付ファイル</translation>
 <translation id="5367091008316207019">ファイルを読み取っています...</translation>
@@ -1373,9 +1394,6 @@
 <translation id="1483493594462132177">送信</translation>
 <translation id="6885771755599377173">システム情報のプレビュー</translation>
 <translation id="1016566241875885511">追加情報（省略可）</translation>
-<translation id="6083886770200509573">クラッシュが発生する、通常とは異なる起動ページやツールバーが表示される、突然表示される広告を消せないなど、Brave の動作が普段と異なる場合は、Brave クリーンアップ ツールを実行すると問題を解決できる可能性があります。</translation>
-<translation id="7719662019953070946">Brave クリーンアップ ツールをダウンロード</translation>
-<translation id="8281886186245836920">スキップ</translation>
 <translation id="8026334261755873520">閲覧履歴データを消去する</translation>
 <translation id="7409836189476010449">Flash の実行</translation>
 <translation id="4718442817388594217">選択したデータが Brave から削除され、同期された端末からも削除されました。他の Brave Software サービスでの検索や操作など、Brave Software アカウントの他の形式の閲覧履歴が <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> に残ることがあります。</translation>
@@ -1513,7 +1531,6 @@
 
 <ph name="CONTROL_PANEL_APPLET_NAME"/> を開きますか？</translation>
 <translation id="2799223571221894425">再起動</translation>
-<translation id="5895138241574237353">再起動</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">プラットフォーム</translation>
 <translation id="7022562585984256452">ホームページが設定されました。</translation>
@@ -1553,6 +1570,10 @@
 <translation id="6015796118275082299">年</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
 <translation id="7671130400130574146">システム タイトル バーと枠線の使用</translation>
+<translation id="3775705724665058594">お使いのデバイスに送信</translation>
+<translation id="6061882183774845124">リンクをデバイスに送信</translation>
+<translation id="8249615410597138718">お使いのデバイスに送信</translation>
+<translation id="5310281978693206542">リンクをデバイスに送信</translation>
 <translation id="4520385623207007473">使用中の Cookie</translation>
 <translation id="4763408175235639573">このページを表示したときに以下の Cookie が設定されました</translation>
 <translation id="2719936478972253983">以下の Cookie がブロックされました</translation>
@@ -1642,12 +1663,14 @@
 <translation id="8371695176452482769">お話しください</translation>
 <translation id="2942560570858569904">待機しています…</translation>
 <translation id="6436164536244065364">ウェブストアで見る</translation>
+<translation id="5258992782919386492">このデバイスにインストール</translation>
 <translation id="3331974543021145906">アプリ情報</translation>
 <translation id="9121814364785106365">固定されたタブとして開く</translation>
 <translation id="6920989436227028121">通常のタブとして開く</translation>
 <translation id="189210018541388520">全画面表示</translation>
 <translation id="6096047740730590436">最大化して開く</translation>
 <translation id="7256710573727326513">タブで開く</translation>
+<translation id="7636919061354591437">このデバイスにインストール</translation>
 <translation id="2993517869960930405">アプリ情報</translation>
 <translation id="2867768963760577682">固定されたタブとして開く</translation>
 <translation id="1390548061267426325">通常のタブとして開く</translation>
@@ -1684,6 +1707,7 @@
 <translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> で問題が発生しました</translation>
 <translation id="4610162781778310380"><ph name="PLUGIN_NAME"/> でエラーが発生しました</translation>
 <translation id="778330624322499012"><ph name="PLUGIN_NAME"/> を読み込めませんでした</translation>
+<translation id="7438976808740265764">Flash Player のサポートは 2020 年 12 月で終了します。</translation>
 <translation id="3739254215541673094"><ph name="APPLICATION"/> を開きますか？</translation>
 <translation id="2188881192257509750"><ph name="APPLICATION"/> を開く</translation>
 <translation id="620722923698527029">このタイプのリンクは常に関連付けられたアプリで開く</translation>
@@ -1928,6 +1952,15 @@
 <translation id="8363142353806532503">マイクがブロックされています</translation>
 <translation id="2762441749940182211">カメラがブロックされています</translation>
 <translation id="5074318175948309511">新しい設定を有効にするには、ページの再読み込みが必要な可能性があります。</translation>
+<translation id="3325910708063135066">Mac のシステム環境設定でカメラとマイクがオフになっています</translation>
+<translation id="5383377866517186886">Mac のシステム環境設定でカメラがオフになっています</translation>
+<translation id="6545867563032584178">Mac のシステム環境設定でマイクがオフになっています</translation>
+<translation id="2332192922827071008">設定を開く</translation>
+<translation id="1620510694547887537">カメラ</translation>
+<translation id="3227137524299004712">マイク</translation>
+<translation id="4209251085232852247">オフになっています</translation>
+<translation id="2804680522274557040">カメラがオフになっています</translation>
+<translation id="6309510305002439352">マイクがオフになっています</translation>
 <translation id="8282947398454257691">デバイス固有の ID の認識</translation>
 <translation id="8329449853370113380"><ph name="URL"/> から、保護されたコンテンツの再生許可を求められています。デバイスの識別情報が Brave Software により確認されます。</translation>
 <translation id="2650609753175229582"><ph name="URL"/> が保護されたコンテンツの再生を要求しています。デバイスの認証情報が Brave Software によって確認され、このサイトによる認証情報へのアクセスが許可されます。</translation>
@@ -1951,7 +1984,6 @@
 <translation id="8105368624971345109">オフにする</translation>
 <translation id="1036348656032585052">オフにする</translation>
 <translation id="3423858849633684918"><ph name="PRODUCT_NAME"/> を再起動してください</translation>
-<translation id="8876215549894133151">形式:</translation>
 <translation id="2294358108254308676"><ph name="PRODUCT_NAME"/> をインストールしますか？</translation>
 <translation id="586567932979200359"><ph name="PRODUCT_NAME"/> はディスク イメージから実行されています。パソコンにインストールすると、ディスク イメージなしで実行できるようになり、常に最新の状態に維持できます。</translation>
 <translation id="4849517651082200438">インストールしない</translation>
@@ -2006,8 +2038,6 @@
 <translation id="1712552549805331520"><ph name="URL"/> から、ローカルのパソコンにデータを永続的に保存する許可を求められています</translation>
 <translation id="1997484222658892567"><ph name="URL"/> から、ローカルのパソコンに大きなデータを永続的に保存する許可を求められています</translation>
 <translation id="7648992873808071793">このデバイスのファイルの保存</translation>
-<translation id="7461924472993315131">固定</translation>
-<translation id="4285498937028063278">固定を解除</translation>
 <translation id="8871551568777368300">管理者によって固定</translation>
 <translation id="4110895898888439383">ハイ コントラスト モードでウェブをブラウジングする</translation>
 <translation id="614940544461990577">次をお試しください:</translation>
@@ -2106,6 +2136,7 @@
 <translation id="3202173864863109533">このタブの音声はミュートされています。</translation>
 <translation id="5562781907504170924">このタブは Bluetooth デバイスに接続しています。</translation>
 <translation id="5884474295213649357">このタブは USB デバイスに接続されています。</translation>
+<translation id="1010498023906173788">このタブはシリアルポートに接続しています。</translation>
 <translation id="8466417995783206254">このタブではピクチャー イン ピクチャー モードで動画を再生しています。</translation>
 <translation id="2585724835339714757">このタブではデスクトップ画面が共有されます。</translation>
 <translation id="1542514202066550870">このタブは VR コンテンツをヘッドセットに配信しています。</translation>
@@ -2116,6 +2147,7 @@
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> - オーディオがミュートされています</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> - Bluetooth デバイスに接続されています</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> - USB デバイスに接続されています</translation>
+<translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> - シリアルポートを接続しました</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> - ネットワーク エラー</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> - クラッシュしました</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> - パソコンのコンテンツが共有されています</translation>
@@ -2128,6 +2160,8 @@
 <translation id="6459799433792303855">アクティブなウィンドウが別のディスプレイに移動しました。</translation>
 <translation id="6551508934388063976">コマンドを使用できません。Ctrl+N を押して新しいウィンドウを開いてください。</translation>
 <translation id="3831486154586836914">ウィンドウ概観モードに切り替わりました</translation>
+<translation id="4380648069038809855">全画面表示に切り替えました</translation>
+<translation id="1766575458646819543">全画面表示を終了しました</translation>
 <translation id="8736288397686080465">このサイトはバックグラウンドで更新されました。</translation>
 <translation id="6945221475159498467">選択</translation>
 <translation id="4130199216115862831">デバイスログ</translation>
@@ -2144,6 +2178,7 @@
 <translation id="8847988622838149491">USB</translation>
 <translation id="5086082738160935172">HID</translation>
 <translation id="4034824040120875894">プリンタ</translation>
+<translation id="2633764681656412085">FIDO</translation>
 <translation id="2242687258748107519">ファイル情報</translation>
 <translation id="930268624053534560">詳細なタイムスタンプ</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
@@ -2155,8 +2190,9 @@
 <translation id="2593289874938379417">Brave はリクエストされたリソースにアクセスできません。</translation>
 <translation id="760197030861754408"><ph name="LANDING_PAGE"/> で接続してください。</translation>
 <translation id="3648348069317717750">「<ph name="USB_DEVICE_NAME"/>」を検出しました</translation>
-<translation id="2382095919147960379">このデバイスを Linux に接続する</translation>
-<translation id="5308380583665731573">接続</translation>
+<translation id="5042282098504489593"><ph name="USB_DEVICE_NAME"/> を Linux に接続する設定を開きます</translation>
+<translation id="1072700771426194907">USB デバイスが検出されました</translation>
+<translation id="7830594666202422257">Linux に接続</translation>
 <translation id="59324397759951282"><ph name="MANUFACTURER_NAME"/> の USB デバイス</translation>
 <translation id="8763927697961133303">USB デバイス</translation>
 <translation id="8798099450830957504">既定</translation>
@@ -2179,6 +2215,7 @@
 <translation id="3271648667212143903"><ph name="ORIGIN"/> が接続を要求しています</translation>
 <translation id="7945031593909029181">「<ph name="CHROME_EXTENSION_NAME"/>」が接続を要求しています</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/>（<ph name="DEVICE_ID"/>）</translation>
+<translation id="5308380583665731573">接続</translation>
 <translation id="8480869669560681089"><ph name="VENDOR_NAME"/> 製の不明なデバイス</translation>
 <translation id="1500297251995790841">不明なデバイス [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="7003844668372540529">不明な商品（<ph name="PRODUCT_ID"/>、ベンダー: <ph name="VENDOR_NAME"/>）</translation>
@@ -2246,8 +2283,7 @@
 <translation id="6009781704028455063">内蔵センサー</translation>
 <translation id="3630132874740063857">スマートフォン</translation>
 <translation id="6930036377490597025">外部セキュリティ キーまたは内蔵センサー</translation>
-<translation id="5567950944308676169">セキュリティ キーを差し込み、有効にします</translation>
-<translation id="6648051959475508072">セキュリティ キーが有効化されました</translation>
+<translation id="51143538739122961">セキュリティ キーを挿入し、タップしてください</translation>
 <translation id="7352651011704765696">問題が発生しました</translation>
 <translation id="8514746246728959655">別のセキュリティ キーを試す</translation>
 <translation id="8337047789441383384">このセキュリティ キーは登録済みです。再度登録する必要はありません。</translation>
@@ -2257,7 +2293,6 @@
 <translation id="8379878387931047019">この端末では、このウェブサイトからリクエストされているセキュリティ キーのタイプはサポートされていません。</translation>
 <translation id="7135729336746831607">Bluetooth をオンにしますか？</translation>
 <translation id="6176043333338857209">セキュリティ キーとの通信のため、Bluetooth が一時的にオンになります</translation>
-<translation id="5860491529813859533">オンにする</translation>
 <translation id="4252899949534773101">Bluetooth が無効です</translation>
 <translation id="8188389033983459049">続行するには、端末の設定で Bluetooth をオンにしてください</translation>
 <translation id="6022705094403139349">セキュリティ キーをペア設定する準備はできましたか？</translation>
@@ -2288,9 +2323,26 @@
 <translation id="4303079906735388947">セキュリティ キーの新しい PIN を設定します</translation>
 <translation id="1805967612549112634">PIN の確認</translation>
 <translation id="4871322859485617074">PIN に無効な文字が含まれています</translation>
-<translation id="2344214284954353199">PIN が短すぎます。</translation>
-<translation id="2203484353475059657">確認の値が一致しません。</translation>
-<translation id="88870264962436283">「<ph name="APP_NAME"/>」で Touch ID を使用</translation>
+<translation id="8896022254727357590">PIN は 4 文字以上で入力してください</translation>
+<translation id="7669825497510425694">{NUM_ATTEMPTS,plural, =1{PIN が正しくありません。あと 1 回試行できます。}other{PIN が正しくありません。あと # 回試行できます。}}</translation>
+<translation id="5078796286268621944">PIN が正しくありません</translation>
+<translation id="1233497634904001272">リクエストを完了するには、セキュリティ キーをもう一度タップしてください。</translation>
+<translation id="8136269678443988272">入力した PIN が一致しません</translation>
+<translation id="1136712381129578788">PIN の入力間違いが許容回数を超えたため、セキュリティ キーがロックされています。ロックを解除するには、セキュリティ キーをいったん取り外し、もう一度挿入してください。</translation>
+<translation id="3778208826288864398">PIN の入力間違いが許容回数を超えたため、セキュリティ キーがロックされています。セキュリティ キーをリセットする必要があります。</translation>
+<translation id="7246230585855757313">セキュリティ キーを挿入し直して、もう一度お試しください</translation>
+<translation id="629730747756840877">アカウント</translation>
+<translation id="3792938779249970121">アカウントの選択</translation>
+<translation id="4718490098585891067">ログインするアカウントを選択:</translation>
+<translation id="8734671092194994316">有効にすると、<ph name="WEBSITE"/> へのアクセスがセキュリティ キーに記録されるようになります。</translation>
+<translation id="8428628598981198790">お使いのセキュリティ キーはこのサイトでは使用できません</translation>
+<translation id="4358169392473932247">認証情報の内部保存がリクエストされましたが、そのセキュリティ キーはこの機能に対応していません。</translation>
+<translation id="7069811530847688087"><ph name="WEBSITE"/> では、最新のセキュリティ キーまたは別の種類のセキュリティ キーが必要となる可能性があります</translation>
+<translation id="3984431586879874039">このサイトによるセキュリティ キーへのアクセスを許可しますか？</translation>
+<translation id="8948939328578167195"><ph name="WEBSITE"/> から、セキュリティ キーのメーカーとモデルの読み取り許可がリクエストされています</translation>
+<translation id="7618452966706304788">シークレット モードで <ph name="APP_NAME"/> に Touch ID を使用しますか？</translation>
+<translation id="3098826269712097986">ログインデータはシークレット モードの終了後に Brave に保存されます。そのため、このウェブサイトでは後でもう一度 Touch ID を使用する必要があります。</translation>
+<translation id="2172784515318616985">次へ</translation>
 <translation id="5186185447130319458">シークレット モード</translation>
 <translation id="7643842463591647490">{0,plural, =1{開いているウィンドウ # 個}other{開いているウィンドウ # 個}}</translation>
 <translation id="2579188629646253712">シークレット モードを終了</translation>
@@ -2384,8 +2436,6 @@
 <translation id="3440663250074896476"><ph name="BOOKMARK_NAME"/> に対するその他の操作</translation>
 <translation id="2903457445916429186">選択したアイテムを開く</translation>
 <translation id="962802172452141067">ブックマーク フォルダ ツリー</translation>
-<translation id="1338776410427958681"><ph name="FOLDER_NAME"/> を折りたたみます</translation>
-<translation id="4467101674048705704"><ph name="FOLDER_NAME"/> を展開します</translation>
 <translation id="2683638487103917598">フォルダが並べ替えられました</translation>
 <translation id="7201118060536064622">「<ph name="DELETED_ITEM_NAME"/>」が削除されました</translation>
 <translation id="8271246892936492311">{COUNT,plural, =1{1 個のブックマークが削除されました}other{# 個のブックマークが削除されました}}</translation>
@@ -2400,12 +2450,10 @@
 <translation id="4422347585044846479">このページのブックマークを編集します</translation>
 <translation id="4776146737004271126">Android の設定を開く</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{なし}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/>、<ph name="APP_2"/>}=3{<ph name="APP_1"/>、<ph name="APP_2"/>、<ph name="APP_3"/>}=4{<ph name="APP_1"/>、<ph name="APP_2"/>、<ph name="APP_3"/>、他 1 個のアプリ}other{<ph name="APP_1"/>、<ph name="APP_2"/>、<ph name="APP_3"/>、他 <ph name="EXTRA_APPS"/> 個のアプリ}}</translation>
-<translation id="7742008146327708230">最近開いたアプリ</translation>
-<translation id="1620510694547887537">カメラ</translation>
+<translation id="702252130983202758">マイアプリ</translation>
 <translation id="8831664945713891930">拡張機能の設定を開く</translation>
 <translation id="5138227688689900538">一部を表示</translation>
 <translation id="5646376287012673985">現在地</translation>
-<translation id="3227137524299004712">マイク</translation>
 <translation id="5270167208902136840">その他の <ph name="NUMBER_OF_MORE_APPS"/> 個のアプリを表示</translation>
 <translation id="2482878487686419369">通知</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> 個のアプリ</translation>
@@ -2479,6 +2527,7 @@
 <translation id="4159681666905192102">これは <ph name="CUSTODIAN_EMAIL"/> と <ph name="SECOND_CUSTODIAN_EMAIL"/> によって管理されている子供向けのアカウントです。</translation>
 <translation id="5958529069007801266">監視対象ユーザー</translation>
 <translation id="5720705177508910913">現在のユーザー</translation>
+<translation id="1850357845349976573">{0,plural, =1{シークレット}other{開いているシークレット ウィンドウ # 個}}</translation>
 <translation id="37784332082579802">{0,plural, =1{シークレット}other{シークレット（#）}}</translation>
 <translation id="5070556616376997776">シークレット モード使用中</translation>
 <translation id="2199298570273670671">エラー</translation>
@@ -2584,6 +2633,24 @@
 <translation id="3021066826692793094">蝶</translation>
 <translation id="3809272675881623365">ウサギ</translation>
 <translation id="4124935795427217608">ユニコーン</translation>
+<translation id="5123433949759960244">バスケットボール</translation>
+<translation id="6876155724392614295">自転車</translation>
+<translation id="7774365994322694683">鳥</translation>
+<translation id="2771816809568414714">チーズ</translation>
+<translation id="4943368462779413526">フットボール</translation>
+<translation id="2046702855113914483">ラーメン</translation>
+<translation id="1150565364351027703">サングラス</translation>
+<translation id="4693155481716051732">お寿司</translation>
+<translation id="2468402215065996499">たまごっち</translation>
+<translation id="8391218455464584335">レコード</translation>
+<translation id="4804827417948292437">アボカド</translation>
+<translation id="3619115746895587757">カプチーノ</translation>
+<translation id="377050016711188788">アイスクリーム</translation>
+<translation id="4330191372652740264">氷水</translation>
+<translation id="4364327530094270451">メロン</translation>
+<translation id="4779136857077979611">おにぎり</translation>
+<translation id="5068919226082848014">ピザ</translation>
+<translation id="6170470584681422115">サンドイッチ</translation>
 <translation id="1830550083491357902">ログインしていません</translation>
 <translation id="5941153596444580863">ユーザーを追加...</translation>
 <translation id="9149866541089851383">編集...</translation>
@@ -2644,387 +2711,6 @@
 <translation id="6365411474437319296">家族や友だちを追加</translation>
 <translation id="7388044238629873883">もうすぐ終わりです。</translation>
 <translation id="8688579245973331962">名前が見つからない場合</translation>
-<translation id="5788127256798019331">Play ファイル</translation>
-<translation id="174173592514158117">すべての Play フォルダを表示する</translation>
-<translation id="5024856940085636730">操作に予想より時間がかかっています。中止しますか？</translation>
-<translation id="6205710420833115353">一部の操作に予想より時間がかかっています。中止しますか？</translation>
-<translation id="4669606053856530811">「<ph name="SOURCE_NAME"/>」のメンバーはこれらのアイテムにアクセスできなくなります（ただし個別に共有されている場合はアクセス可能です）。</translation>
-<translation id="9035012421917565900">この操作は元に戻せません（これらのアイテムを「<ph name="DESTINATION_NAME"/>」に戻すことはできません）。</translation>
-<translation id="9130775360844693113">「<ph name="DESTINATION_NAME"/>」のメンバーがこれらのアイテムにアクセスできるようになります。</translation>
-<translation id="8834164572807951958">「<ph name="DESTINATION_NAME"/>」のメンバーが、これらのアイテムのコピーにアクセスできるようになります。</translation>
-<translation id="3236289833370040187">所有権が <ph name="DESTINATION_DOMAIN"/> に移ります。</translation>
-<translation id="7765158879357617694">移動</translation>
-<translation id="8249296373107784235">中止</translation>
-<translation id="6268185425799226387">Brave Software ドライブ</translation>
-<translation id="4425149324548788773">マイドライブ</translation>
-<translation id="1786636458339910689">チームドライブ</translation>
-<translation id="5010406651457630570">パソコン</translation>
-<translation id="8106045200081704138">共有アイテム</translation>
-<translation id="6549689063733911810">最近使用したアイテム</translation>
-<translation id="981121421437150478">オフライン</translation>
-<translation id="9034924485347205037">Linux ファイル</translation>
-<translation id="9219103736887031265">画像</translation>
-<translation id="6146563240635539929">動画</translation>
-<translation id="3616113530831147358">音声</translation>
-<translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>注:<ph name="END_BOLD"/> これらのファイルは一時的なもので、ディスクの空き容量を増やすために自動的に削除されることがあります。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
-<translation id="4873265419374180291"><ph name="NUMBER_OF_BYTES"/> バイト</translation>
-<translation id="4788401404269709922"><ph name="NUMBER_OF_KB"/> KB</translation>
-<translation id="996903396648773764"><ph name="NUMBER_OF_MB"/> MB</translation>
-<translation id="7189874332498648577"><ph name="NUMBER_OF_GB"/> GB</translation>
-<translation id="7827012282502221009"><ph name="NUMBER_OF_TB"/> TB</translation>
-<translation id="1589128298353575783"><ph name="NUMBER_OF_PB"/> PB</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
-<translation id="169515659049020177">Shift</translation>
-<translation id="3924145049010392604">Meta</translation>
-<translation id="6129953537138746214">Space</translation>
-<translation id="8179976553408161302">Enter</translation>
-<translation id="5583640892426849032">Backspace</translation>
-<translation id="174937106936716857">合計ファイル数</translation>
-<translation id="2425665904502185219">合計ファイルサイズ</translation>
-<translation id="1942765061641586207">画像解像度</translation>
-<translation id="4002066346123236978">タイトル</translation>
-<translation id="4631887759990505102">アーティスト</translation>
-<translation id="2448312741937722512">種類</translation>
-<translation id="5145331109270917438">更新日</translation>
-<translation id="8487700953926739672">オフラインでの利用</translation>
-<translation id="2230062665678605299">フォルダ「<ph name="FOLDER_NAME"/>」を作成することができません。<ph name="ERROR_MESSAGE"/></translation>
-<translation id="2163152940313951844">「<ph name="CHARACTER_NAME"/>」は無効な文字です。</translation>
-<translation id="642282551015776456">この名前はフォルダのファイル名として使用できません</translation>
-<translation id="2070909990982335904">ドットで始まる名前はシステム専用です。別の名前を指定してください。</translation>
-<translation id="8456681095658380701">名前が無効です</translation>
-<translation id="2943503720238418293">もう少し短い名前にしてください</translation>
-<translation id="4973523518332075481">名前は <ph name="MAX_LENGTH"/> 文字以内で指定してください</translation>
-<translation id="1307931752636661898">[Linux ファイル] を表示できません</translation>
-<translation id="5851063901794976166">ここには何もありません...</translation>
-<translation id="3749289110408117711">ファイル名</translation>
-<translation id="3280431534455935878">準備中</translation>
-<translation id="6607272825297743757">ファイル情報</translation>
-<translation id="6395575651121294044"><ph name="NUMBER_OF_FILES"/> 個のアイテム</translation>
-<translation id="2138867954865495510">「<ph name="PATH"/>」を開くことができません: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>まだデバイスを取り外さないでください。<ph name="END_BOLD"/>
-   <ph name="LINE_BREAKS"/>
-   使用中のデバイスを取り外すと、データが失われる恐れがあります。操作が完了してから、ファイル アプリを使ってデバイスを取り外してください。</translation>
-<translation id="5686799162999241776"><ph name="BEGIN_BOLD"/>アーカイブまたは仮想ディスクから切断できません<ph name="END_BOLD"/>
-   <ph name="LINE_BREAKS"/>
-   アーカイブまたは仮想ディスク上のすべてのファイルを閉じてから、もう一度お試しください。</translation>
-<translation id="7794058097940213561">デバイスをフォーマット</translation>
-<translation id="8151638057146502721">設定</translation>
-<translation id="7928710562641958568">デバイスの取り出し</translation>
-<translation id="7864662577698025113">新しいサービスを追加</translation>
-<translation id="1943097386230153518">新しいサービスをインストール</translation>
-<translation id="2562685439590298522">ドキュメント</translation>
-<translation id="2925966894897775835">スプレッドシート</translation>
-<translation id="2943400156390503548">スライド</translation>
-<translation id="5649768706273821470">聴く</translation>
-<translation id="4582497162516204941">Linux（ベータ版）でのインストール</translation>
-<translation id="4195249722193633765">Linux（ベータ版）でのアプリのインストール</translation>
-<translation id="7248671827512403053">アプリケーション</translation>
-<translation id="3866249974567520381">説明</translation>
-<translation id="183183971458492120">情報を読み込んでいます...</translation>
-<translation id="8157684860301034423">アプリ情報を取得できませんでした。</translation>
-<translation id="5678784840044122290">Linux アプリケーションはお使いの端末でご利用いただけるようになります。ランチャーにアイコンが追加されている可能性もあります。</translation>
-<translation id="9213073329713032541">インストールを開始しました。</translation>
-<translation id="2782104745158847185">Linux アプリケーションのインストール中にエラーが発生しました</translation>
-<translation id="5911887972742538906">Linux アプリケーションのインストール中にエラーが発生しました。</translation>
-<translation id="942954117721265519">このディレクトリには画像がありません。</translation>
-<translation id="7100897339030255923"><ph name="COUNT"/> 個のアイテムが選択されています</translation>
-<translation id="5177526793333269655">サムネイル ビュー</translation>
-<translation id="1035094536595558507">スライド モード</translation>
-<translation id="7508545000531937079">スライドショー</translation>
-<translation id="1430915738399379752">印刷</translation>
-<translation id="38275787300541712">終了後は Enter を押します</translation>
-<translation id="4880520557730313061">自動修正</translation>
-<translation id="4924638091161556692">修正済み</translation>
-<translation id="6019169947004469866">トリミング</translation>
-<translation id="4372884569765913867">1×1</translation>
-<translation id="7576032389798113292">6×4</translation>
-<translation id="8157939133946352716">7×5</translation>
-<translation id="2661146741306740526">16×9</translation>
-<translation id="3007214526293698309">比率を固定</translation>
-<translation id="7982283708762922719">高さ</translation>
-<translation id="4734518477988699048">入力値が無効です。</translation>
-<translation id="3644896802912593514">幅</translation>
-<translation id="3626281679859535460">輝度</translation>
-<translation id="5061708541166515394">コントラスト</translation>
-<translation id="1467432559032391204">左</translation>
-<translation id="1346748346194534595">右</translation>
-<translation id="3144126448740580210">完了</translation>
-<translation id="2453576648990281505">このファイルは既に存在します</translation>
-<translation id="1847880352285315359">保存されました</translation>
-<translation id="5158593464696388225">画像を保存できませんでした。</translation>
-<translation id="2787047795752739979">オリジナルを上書き</translation>
-<translation id="8775404590947523323">編集内容は自動的に保存されます。<ph name="BREAKS"/>オリジナルの画像のコピーを残す場合、[オリジナルを上書き] チェックボックスをオフにしてください。</translation>
-<translation id="7873831373602885875"><ph name="FOLDER_NAME"/> に保存できません。編集内容はすべてダウンロード フォルダ内の <ph name="DOWNLOADS_FOLDER"/> に保存されます。</translation>
-<translation id="691516599546977041"><ph name="FOLDER_NAME"/> に保存できません。編集した画像はダウンロード フォルダに保存されます。</translation>
-<translation id="8066773524873206594">編集内容はすべて <ph name="DOWNLOADS_FOLDER"/> に保存されます。</translation>
-<translation id="8153607920959057464">このファイルは表示できませんでした。</translation>
-<translation id="6227235786875481728">このファイルは再生できませんでした。</translation>
-<translation id="9154418932169119429">この画像はオフラインでは表示できません。</translation>
-<translation id="1844692022597038441">このファイルはオフラインでは表示できません。</translation>
-<translation id="2929414043040740704">Brave Software ドライブから復元されたファイル</translation>
-<translation id="2085470240340828803">「<ph name="FILENAME"/>」という名前のファイルは既に存在します。どのように処理しますか？</translation>
-<translation id="4801956050125744859">両方を保持</translation>
-<translation id="1062407476771304334">置換</translation>
-<translation id="1556189134700913550">すべてに適用</translation>
-<translation id="988685240266037636">「<ph name="FILE_NAME"/>」という名前のファイルはすでに存在します。置き換えますか？</translation>
-<translation id="9038620279323455325">「<ph name="FILE_NAME"/>」という名前のファイルはすでに存在します。別の名前を選択してください。</translation>
-<translation id="4212740939091998969">「<ph name="FOLDER_NAME"/>」という名前のフォルダはすでに存在します。別の名前を選択してください。</translation>
-<translation id="1497522201463361063">ファイル「<ph name="FILE_NAME"/>」の名前を変更することができません。<ph name="ERROR_MESSAGE"/></translation>
-<translation id="5330512191124428349">情報を見る</translation>
-<translation id="8312871300878166382">フォルダに貼り付け</translation>
-<translation id="7040138676081995583">アプリケーションで開く...</translation>
-<translation id="6189412234224385711"><ph name="EXTENSION_NAME"/> で開く</translation>
-<translation id="2547921442987553570"><ph name="EXTENSION_NAME"/> に追加</translation>
-<translation id="386548886866354912"><ph name="EXTENSION_NAME"/> を同梱</translation>
-<translation id="3078461028045006476"><ph name="EXTENSION_NAME"/> と共有</translation>
-<translation id="4197674956721858839">zip 圧縮</translation>
-<translation id="1572585716423026576">壁紙に設定</translation>
-<translation id="204914487372604757">ショートカットを作成</translation>
-<translation id="799547531016638432">ショートカットを削除</translation>
-<translation id="5494920125229734069">すべて選択する</translation>
-<translation id="7295662345261934369">他のユーザーと共有</translation>
-<translation id="2001796770603320721">ドライブで管理</translation>
-<translation id="5318819489018851358">Linux と共有</translation>
-<translation id="6806699711453372963">Linux との共有を管理</translation>
-<translation id="7505167922889582512">非表示のファイルを表示</translation>
-<translation id="7846076177841592234">選択解除</translation>
-<translation id="2377319039870049694">リスト表示に切り替え</translation>
-<translation id="3003633581067744647">サムネイル表示に切り替え</translation>
-<translation id="604001903249547235">クラウド バックアップ</translation>
-<translation id="505639225383557233">Brave OS のクラウド バックアップ</translation>
-<translation id="8656896237683963068">メディア デバイスの写真や動画を Brave Software ドライブにバックアップします。</translation>
-<translation id="3057861065630527966">写真や動画をバックアップします</translation>
-<translation id="7730494089396812859">クラウド バックアップの詳細を表示します</translation>
-<translation id="2850124913210091882">バックアップ</translation>
-<translation id="5731409020711461763">1 件の新しい写真</translation>
-<translation id="5004584466530475658"><ph name="FILE_COUNT"/> 件の新しい写真</translation>
-<translation id="6934241953272494177">メディア デバイスをスキャンしています...
-    <ph name="LINE_BREAK1"/>
-    <ph name="FILE_COUNT"/>が見つかりました</translation>
-<translation id="3466147780910026086">ご利用のメディア デバイスをスキャンしています...</translation>
-<translation id="2611866923243604397">すべて <ph name="BEGIN_LINK"/>Brave Software ドライブ<ph name="END_LINK"/>にバックアップ済みです</translation>
-<translation id="3620292326130836921">すべてバックアップ済みです。</translation>
-<translation id="1536674585581593431"><ph name="FILE_COUNT"/>が見つかりました。
-    <ph name="LINE_BREAK1"/>
-    ドライブの割り当て容量が十分にありません。あと <ph name="FILE_SIZE"/> 必要です。
-    <ph name="LINE_BREAK2"/>
-    写真の選択数を減らしてください。</translation>
-<translation id="2473109739642988997">Brave Software ドライブの割り当て容量が十分にありません。</translation>
-<translation id="1148097584170732637"><ph name="FILE_COUNT"/>が見つかりました。
-    <ph name="LINE_BREAK1"/>
-    ローカル ストレージに十分な空き容量がありません。あと <ph name="FILE_SIZE"/> 必要です。
-    <ph name="LINE_BREAK2"/>
-    写真の選択数を減らしてみてください。</translation>
-<translation id="2352947182261340447">ローカル ストレージに十分な空き容量がありません。</translation>
-<translation id="1127657192797926968"><ph name="FILE_COUNT"/>が見つかりました
-    <ph name="LINE_BREAK1"/>
-    <ph name="BEGIN_LINK"/>Brave Software ドライブ<ph name="END_LINK"/>にバックアップできます</translation>
-<translation id="4905417359854579806"><ph name="FILE_COUNT"/>をバックアップできます</translation>
-<translation id="5029447434471675822"><ph name="FILE_COUNT"/>を <ph name="BEGIN_LINK"/>Brave Software ドライブ<ph name="END_LINK"/>にバックアップしています</translation>
-<translation id="4215448920900139318"><ph name="FILE_COUNT"/>をバックアップしています</translation>
-<translation id="2419376816263920133"><ph name="FILE_COUNT"/> 枚の写真を <ph name="BEGIN_LINK"/>Brave Software ドライブ<ph name="END_LINK"/>にバックアップしました</translation>
-<translation id="2994669386200004489"><ph name="FILE_NAME"/> をバックアップできませんでした</translation>
-<translation id="4724850507808590449"><ph name="FILE_COUNT"/> 枚の写真をバックアップしました</translation>
-<translation id="1351692861129622852"><ph name="FILE_COUNT"/> 件のファイルをインポートしています...</translation>
-<translation id="117624967391683467"><ph name="FILE_NAME"/> をコピーしています...</translation>
-<translation id="7359359531237882347"><ph name="NUMBER_OF_ITEMS"/> 個のアイテムをコピーしています...</translation>
-<translation id="7627790789328695202"><ph name="FILE_NAME"/> は既に存在しています。名前を変更してもう一度お試しください。</translation>
-<translation id="5691596662111998220"><ph name="FILE_NAME"/> が存在しません。</translation>
-<translation id="4336032328163998280">コピーできませんでした。<ph name="ERROR_MESSAGE"/></translation>
-<translation id="5913638992615760742">コピーできませんでした。予期しないエラー: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="6133173853026656527"><ph name="FILE_NAME"/> を移動しています...</translation>
-<translation id="7654209398114106148"><ph name="NUMBER_OF_ITEMS"/> 個のアイテムを移動しています...</translation>
-<translation id="6007237601604674381">移動できませんでした。<ph name="ERROR_MESSAGE"/></translation>
-<translation id="1933345018156373194">移動できませんでした。予期しないエラー: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="3326821416087822643"><ph name="FILE_NAME"/> を圧縮しています...</translation>
-<translation id="1722487484194605434"><ph name="NUMBER_OF_ITEMS"/> 個のアイテムを圧縮しています...</translation>
-<translation id="8810671769985673465">圧縮できませんでした。アイテム「<ph name="FILE_NAME"/>」が存在します。</translation>
-<translation id="9133055936679483811">圧縮できませんでした。<ph name="ERROR_MESSAGE"/></translation>
-<translation id="4973970068702235170">圧縮できませんでした。予期しないエラー: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="653019979737152879"><ph name="FILE_NAME"/> を同期しています...</translation>
-<translation id="8579285237314169903"><ph name="NUMBER_OF_FILES"/> 個のアイテムを同期しています...</translation>
-<translation id="8137331602592933310">「<ph name="FILENAME"/>」を共有しました。ファイルの所有者ではないため、このファイルを削除することはできません。</translation>
-<translation id="6277279884155292049">Brave Software ドライブは現在ご利用いただけません。Brave Software ドライブが利用可能になったときに、自動的にアップロードを再開します。</translation>
-<translation id="1114160088213746286">Brave Software ドライブでは「<ph name="FILENAME"/>」を直ちに同期できませんでした。時間を置いて再試行します。</translation>
-<translation id="4893296294301184587">「<ph name="FILENAME"/>」はアップロードされていません。Brave Software ドライブに十分な空き容量がありません。</translation>
-<translation id="5163869187418756376">共有できませんでした。接続を確認し、しばらくしてからもう一度お試しください。</translation>
-<translation id="656398493051028875">「<ph name="FILENAME"/>」を削除しています...</translation>
-<translation id="1047956942837015229"><ph name="COUNT"/> 件の項目を削除しています...</translation>
-<translation id="6558280019477628686">エラーが発生しました。一部の項目が削除されていない可能性があります。</translation>
-<translation id="3470502288861289375">コピーしています...</translation>
-<translation id="8669949407341943408">移動しています...</translation>
-<translation id="6718273304615422081">圧縮しています...</translation>
-<translation id="1338950911836659113">削除しています...</translation>
-<translation id="9064939804718829769">処理しています...</translation>
-<translation id="3609785682760573515">同期しています...</translation>
-<translation id="1464724975715666883">1 件のエラーがあります。</translation>
-<translation id="3495304270784461826"><ph name="COUNT"/> 件のエラーがあります。</translation>
-<translation id="6643016212128521049">クリア</translation>
-<translation id="4988205478593450158">「<ph name="FILE_NAME"/>」を削除してもよろしいですか？</translation>
-<translation id="2225536596944493418"><ph name="NUMBER_OF_ITEMS"/> 個のアイテムを削除してもよろしいですか？</translation>
-<translation id="7953739707111622108">ファイルシステムが認識されなかったため、このデバイスを開くことはできません。</translation>
-<translation id="3726463242007121105">ファイルシステムがサポートされていないため、このデバイスを開くことはできません。</translation>
-<translation id="3414856743105198592">リムーバブル メディアをフォーマットすると、すべてのデータが消去されます。続行しますか？</translation>
-<translation id="6287852322318138013">このファイルを開くアプリを選択してください</translation>
-<translation id="7268659760406822741">利用可能なサービス</translation>
-<translation id="5038625366300922036">もっと見る...</translation>
-<translation id="4823651846660089135">デバイスは読み取り専用です</translation>
-<translation id="6346310558342052870">アクセスが制限されています</translation>
-<translation id="3780536599611287598">ファイルを「<ph name="FOLDER_NAME"/>」に移動する権限がありません。</translation>
-<translation id="1538729222189715449">[Linux ファイル] を開いています...</translation>
-<translation id="1000498691615767391">フォルダを選択して開く</translation>
-<translation id="3353984535370177728">アップロードするフォルダを選択</translation>
-<translation id="8569764466147087991">ファイルを選択して開く</translation>
-<translation id="9131598836763251128">1 つ以上のファイルを選択</translation>
-<translation id="7191454237977785534">名前を付けて保存</translation>
-<translation id="3811494700605067549">1 個のファイルを選択しました</translation>
-<translation id="6751256176799620176">フォルダを 1 個選択しました</translation>
-<translation id="2378075407703503998"><ph name="SELCTED_FILE_COUNT"/> 個のファイルを選択</translation>
-<translation id="6998711733709403587"><ph name="SELCTED_FOLDERS_COUNT"/> 個のフォルダを選択しました</translation>
-<translation id="4839847978919684242"><ph name="SELCTED_FILES_COUNT"/> 個のアイテムを選択</translation>
-<translation id="4969785127455456148">アルバム</translation>
-<translation id="5700087501958648444">オーディオ情報</translation>
-<translation id="912419004897138677">コーデック</translation>
-<translation id="5253070652067921974">作成者</translation>
-<translation id="3437801641691368414">作成日時</translation>
-<translation id="8395901698320285466">サイズ</translation>
-<translation id="8193175696669055101">デバイスモデル</translation>
-<translation id="2084108471225856927">デバイス設定</translation>
-<translation id="303198083543495566">位置情報</translation>
-<translation id="5358764674931277">フレームレート</translation>
-<translation id="4309915981827077375">一般情報</translation>
-<translation id="1249250836236328755">ジャンル</translation>
-<translation id="7711920809702896782">画像情報</translation>
-<translation id="4568854179928172494">更新日時</translation>
-<translation id="943972244133411984">更新者</translation>
-<translation id="9099674669267916096">ページ数</translation>
-<translation id="8294431847097064396">ソース</translation>
-<translation id="1363028406613469049">トラック</translation>
-<translation id="1775381402323441512">動画情報</translation>
-<translation id="3335337277364016868">録音された年</translation>
-<translation id="5534520101572674276">サイズを計算しています</translation>
-<translation id="3786301125658655746">現在オフラインです</translation>
-<translation id="6150853954427645995">このファイルを保存してオフラインで使用できるようにするには、オンラインに戻ってファイルを右クリックし、[<ph name="OFFLINE_CHECKBOX_NAME"/>] オプションを選択します。</translation>
-<translation id="8223479393428528563">これらのファイルを保存してオフラインで使用できるようにするには、オンラインに戻ってファイルを右クリックし、[<ph name="OFFLINE_CHECKBOX_NAME"/>] オプションを選択します。</translation>
-<translation id="3830674330436234648">再生機能はご利用いただけません</translation>
-<translation id="1810764548349082891">プレビュー機能はご利用いただけません</translation>
-<translation id="421017592316736757">このファイルにアクセスするには、オンライン接続が必要です。</translation>
-<translation id="180035236176489073">このファイルにアクセスするには、オンライン接続が必要です。</translation>
-<translation id="1190144681599273207">このファイルを取得すると、約 <ph name="FILE_SIZE"/> のモバイル データを使用します。</translation>
-<translation id="7839804798877833423">このファイルを取得すると、約 <ph name="FILE_SIZE"/> のモバイル データを使用します。</translation>
-<translation id="6813005947820333339">Brave Software ドライブの同期は既定で無効になっています（モバイルデータを使用する場合）。</translation>
-<translation id="696203921837389374">モバイルデータとの同期を有効にする</translation>
-<translation id="637062427944097960">このファイルは別のデスクトップで開かれます。表示するには <ph name="USER_NAME"/>（<ph name="MAIL_ADDRESS"/>）に移動してください。</translation>
-<translation id="5330145655348521461">これらのファイルは別のデスクトップで開かれます。表示するには <ph name="USER_NAME"/>（<ph name="MAIL_ADDRESS"/>）に移動してください。</translation>
-<translation id="8686213429977032554">未共有のドライブ ファイル</translation>
-<translation id="7850851215703745691">未共有のドライブ ファイル</translation>
-<translation id="1839704667838141620">このファイルの共有方法を変更してください</translation>
-<translation id="1864676585353837027">これらのファイルの共有方法を変更してください</translation>
-<translation id="197560921582345123">共同編集者</translation>
-<translation id="8671210955687109937">閲覧者（コメント可）</translation>
-<translation id="799923393800005025">閲覧者</translation>
-<translation id="7925686952655276919">モバイル データを使用して同期しない</translation>
-<translation id="7106346894903675391">追加容量を購入...</translation>
-<translation id="3549797760399244642">drive.google.com にアクセスします...</translation>
-<translation id="3451154303153932176">Brave Software ドライブの残容量: <ph name="SPACE_AVAILABLE"/></translation>
-<translation id="4552678318981539154">追加ストレージを購入</translation>
-<translation id="6990081529015358884">空き容量が不足しています</translation>
-<translation id="5521447721624713749">現在 Brave Software ドライブにアクセスできません。</translation>
-<translation id="7788080748068240085">「<ph name="FILE_NAME"/>」をオフラインで保存するには、あと <ph name="TOTAL_FILE_SIZE"/> の空き領域が必要です。次をお試しください:<ph name="MARKUP_1"/>
-        <ph name="MARKUP_2"/>オフライン アクセスが不要になったファイルの固定を解除する<ph name="MARKUP_3"/>
-        <ph name="MARKUP_4"/>ダウンロード フォルダからファイルを削除する<ph name="MARKUP_5"/></translation>
-<translation id="7606199793785990727">Brave Software ドライブにアクセスできませんでした。<ph name="BEGIN_LINK"/>ログアウト<ph name="END_LINK"/>してもう一度ログインしてください。</translation>
-<translation id="585883343689351092">Brave Software ドライブへようこそ。</translation>
-<translation id="6862635236584086457">このフォルダに保存されているすべてのファイルが自動的にオンラインにバックアップされます。</translation>
-<translation id="7220787572447472056"><ph name="MARKUP_1"/>どこからでも、オフラインでもファイルにアクセス<ph name="MARKUP_2"/>
-        Brave Software ドライブでは最新の状態のファイルをどの端末からでも利用できます。<ph name="MARKUP_3"/>
-        <ph name="MARKUP_4"/>ファイルの安全性を確保<ph name="MARKUP_5"/>
-        端末に問題が生じても、ファイルは Brave Software ドライブで安全に保存されます。<ph name="MARKUP_6"/>
-        <ph name="MARKUP_7"/>ファイルの作成、共有、共同作業<ph name="MARKUP_8"/>
-        他のユーザーとの作業をすべて 1 か所で行うことができます。<ph name="MARKUP_9"/></translation>
-<translation id="4878716980734452132">このファイル形式はサポートされていません。<ph name="BEGIN_LINK"/>Brave ウェブストア<ph name="END_LINK"/>にアクセスして、この形式のファイルを開くことができるアプリをお探しください。
-    <ph name="BEGIN_LINK_HELP"/>詳細<ph name="END_LINK_HELP"/></translation>
-<translation id="6230272341631206186">このファイルは Windows ソフトウェアを使用する PC 向けのもので、Brave OS を実行するデバイスとは互換性がありません。<ph name="BEGIN_LINK_HELP"/>詳細<ph name="END_LINK_HELP"/></translation>
-<translation id="3072401511615920367">このファイルは Macintosh ソフトウェアを使用するパソコン向けのもので、Brave OS を実行するデバイスとは互換性がありません。<ph name="BEGIN_LINK"/>Brave ウェブストア<ph name="END_LINK"/>で、このデバイスで使用できる代わりのアプリをお探しください。<ph name="BEGIN_LINK_HELP"/>詳細<ph name="END_LINK_HELP"/></translation>
-<translation id="7589661784326793847">少々お待ちください</translation>
-<translation id="3096967955765855393">Brave Software では、より安全にウェブを閲覧できる方法を常に追求しています。以前は、どのウェブサイトでも、ブラウザに拡張機能を追加するように指示することができました。Brave Software Brave の最新バージョンでは、ユーザーのインストールの意思をより明確に確認するため、拡張機能の追加は拡張機能ページで行うこととなりました。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
-<translation id="4892969127351273348">「<ph name="APP_NAME"/>」で開くことができません</translation>
-<translation id="52446585071384036"><ph name="APP_NAME"/> でファイルを開くには、まず [Linux ファイル] フォルダにコピーします。</translation>
-<translation id="5368191757080475556">Linux とのフォルダ共有</translation>
-<translation id="5857774240076772505">Linux アプリに対して、<ph name="FOLDER_NAME"/> フォルダのファイルの編集を許可します</translation>
-<translation id="2280597422213958082">Linux アプリに対して、Brave Software ドライブのファイルの編集を許可します。変更が加えられた場合は他のデバイスに同期されます。</translation>
-<translation id="4290535918735525311">1 個のフォルダを Linux と共有しました</translation>
-<translation id="2377590462528165447"><ph name="NUMBER_OF_ITEMS"/> 個のフォルダが Linux と共有されています</translation>
-<translation id="4572815280350369984"><ph name="FILE_TYPE"/> ファイル</translation>
-<translation id="5533102081734025921">画像（<ph name="IMAGE_TYPE"/>）</translation>
-<translation id="2614589611416690597">動画（<ph name="VIDEO_TYPE"/>）</translation>
-<translation id="8042602468072383151">音声（<ph name="AUDIO_TYPE"/>）</translation>
-<translation id="7799329977874311193">HTML ドキュメント</translation>
-<translation id="2208158072373999562">Zip アーカイブ</translation>
-<translation id="2028997212275086731">RAR アーカイブ</translation>
-<translation id="8466234950814670489">tar アーカイブ</translation>
-<translation id="1119069657431255176">bzip2 で圧縮された tar アーカイブ</translation>
-<translation id="6820687829547641339">gzip で圧縮された tar アーカイブ</translation>
-<translation id="8329978297633540474">テキスト</translation>
-<translation id="2887525882758501333">PDF ドキュメント</translation>
-<translation id="1049926623896334335">Word ドキュメント</translation>
-<translation id="4784330909746505604">PowerPoint プレゼンテーション</translation>
-<translation id="8860454412039442620">Excel スプレッドシート</translation>
-<translation id="5383943761832211733">Brave Software ドキュメント</translation>
-<translation id="5924916971643100883">Brave Software スプレッドシート</translation>
-<translation id="3667369474859528036">Brave Software プレゼンテーション</translation>
-<translation id="3411013849623404696">Brave Software 図形描画</translation>
-<translation id="7481041283483972362">Brave Software Table</translation>
-<translation id="784862457750027723">Brave Software フォーム</translation>
-<translation id="3320425620177764157">Brave Software マップ</translation>
-<translation id="7452737073539387970">Brave Software サイト</translation>
-<translation id="4445959220475380548">Brave Software ドライブ リンク</translation>
-<translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="1131292764548273687">このファイル形式はサポートされていません。Brave ウェブストアにアクセスして、この形式のファイルを開くことができるアプリをお探しください。</translation>
-<translation id="9010211493509471179">このファイルは Macintosh ソフトウェアを使用するパソコン用に作成されています。Brave OS を実行するデバイスとは互換性がありません。Brave ウェブストアで代わりのアプリをお探しください。</translation>
-<translation id="5059989099965370411">このファイルは Windows ソフトウェアを使用する PC 用に作成されています。Brave OS を実行するデバイスとは互換性がありません。Brave ウェブストアで代わりのアプリをお探しください。</translation>
-<translation id="5833610766403489739">このファイルは移動されています。ダウンロード保存先の設定を確認し、もう一度お試しください。</translation>
-<translation id="3966388904776714213">オーディオ プレーヤー</translation>
-<translation id="3245321423178950146">不明なアーティスト</translation>
-<translation id="509429900233858213">エラーが発生しました。</translation>
-<translation id="1864756863218646478">ファイルが見つかりませんでした。</translation>
-<translation id="1673103856845176271">セキュリティ上の理由で、ファイルにアクセスできませんでした。</translation>
-<translation id="5524517123096967210">ファイルを読むことができませんでした。</translation>
-<translation id="1665611772925418501">ファイルを修正することができませんでした。</translation>
-<translation id="1358735829858566124">このファイルまたはディレクトリは使用できません。</translation>
-<translation id="8342318071240498787">同じ名前のファイルまたはディレクトリが既に存在しています。</translation>
-<translation id="8965697826696209160">空き容量が不足しています。</translation>
-<translation id="7126604456862387217">「&lt;b&gt;<ph name="SEARCH_STRING"/>&lt;/b&gt;」 - &lt;em&gt;&lt;/em&gt;ドライブを検索</translation>
-<translation id="2888807692577297075">&lt;b&gt;「<ph name="SEARCH_STRING"/>」&lt;/b&gt;に一致するアイテムはありません</translation>
-<translation id="2843806747483486897">デフォルトを変更...</translation>
-<translation id="3254434849914415189"><ph name="FILE_TYPE"/> ファイルのデフォルト アプリを選択:</translation>
-<translation id="8038111231936746805">（デフォルト）</translation>
-<translation id="5982621672636444458">並べ替え方法</translation>
-<translation id="2984337792991268709">今日 <ph name="TODAY_DAYTIME"/></translation>
-<translation id="8336153091935557858">昨日 <ph name="YESTERDAY_DAYTIME"/></translation>
-<translation id="1807938677607439181">すべてのファイル</translation>
-<translation id="240770291734945588"><ph name="SPACE_AVAILABLE"/> 使用可能</translation>
-<translation id="6199801702437275229">空き容量情報を待機中...</translation>
-<translation id="6485131920355264772">空き容量情報を取得できませんでした</translation>
-<translation id="7748626145866214022">アクションバーのオプションが増えました。アクションバーにフォーカスを移動するには Alt+A キーを押してください。</translation>
-<translation id="2303301624314357662">ファイル <ph name="FILE_NAME"/> を開いています。</translation>
-<translation id="2291538123825441971"><ph name="NUMBER_OF_FILES"/> 個のファイルを開いています。</translation>
-<translation id="2305020378527873881"><ph name="VOLUME_NAME"/> が取り外されました。</translation>
-<translation id="6710213216561001401">前へ</translation>
-<translation id="1395262318152388157">シーク スライダー</translation>
-<translation id="4880214202172289027">音量スライダー</translation>
-<translation id="7544853251252956727">シャッフル</translation>
-<translation id="8079530767338315840">繰り返し</translation>
-<translation id="4158739975813877944">再生リストを開く</translation>
-<translation id="4656293982926141856">このパソコン</translation>
-<translation id="2676946222714718093">再生中:</translation>
-<translation id="3930521966936686665">再生するデバイス</translation>
-<translation id="4732760563705710320">この動画はキャスト デバイスでサポートされていません。</translation>
-<translation id="2672394958563893062">エラーが発生しました。クリックすると最初から再生します。</translation>
-<translation id="6827236167376090743">この動画は繰り返し再生されます。</translation>
-<translation id="6248400709929739064">字幕を有効にする</translation>
-<translation id="7881969471599061635">字幕を無効にする</translation>
 <translation id="4168015872538332605"><ph name="PRIMARY_EMAIL"/> に帰属する設定の一部を共有しています。これらの設定は、マルチ ログインを使用した場合にのみこのアカウントに適用されます。</translation>
 <translation id="1485141095922496924">バージョン: <ph name="PRODUCT_VERSION"/>（<ph name="PRODUCT_CHANNEL"/>）<ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
 <translation id="3764314093345384080">ビルド情報の詳細</translation>
@@ -3068,7 +2754,7 @@
 <translation id="5840822070878669614">Brave ウェブストアを開く</translation>
 <translation id="6073903501322152803">ユーザー補助機能を追加</translation>
 <translation id="7988355189918024273">ユーザー補助機能を有効にする</translation>
-<translation id="3274899353071794175">画像に有効な説明がない場合に、Brave で説明を自動的に生成できるよう画像をスキャンします。</translation>
+<translation id="5499063270485366718">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave Software に画像が送信されます。</translation>
 <translation id="2558896001721082624">システム メニューにユーザー補助オプションを常に表示する</translation>
 <translation id="7280649757394340890">テキスト読み上げの音声の設定</translation>
 <translation id="6635956300022133031">テキスト読み上げ用の音声を選択してカスタマイズします</translation>
@@ -3101,12 +2787,6 @@
 <translation id="8710187907779883426">短い（1 秒）</translation>
 <translation id="4305227814872083840">長い（2 秒）</translation>
 <translation id="2860150991415616761">非常に長い（4 秒）</translation>
-<translation id="5573248369095789351">停止操作</translation>
-<translation id="2427507373259914951">左クリック</translation>
-<translation id="8203795194971602413">右クリック</translation>
-<translation id="1999763610967697511">ドラッグ＆ドロップ</translation>
-<translation id="8142441511840089262">ダブルクリック</translation>
-<translation id="485592688953820832">なし（一時停止）</translation>
 <translation id="1217668622537098248">終了後、デフォルトの左クリック動作に戻す</translation>
 <translation id="3682824389861648626">移動のしきい値</translation>
 <translation id="5511379779384092781">特小</translation>
@@ -3121,6 +2801,7 @@
 <translation id="48704129375571883">その他の機能を追加</translation>
 <translation id="7230787553283372882">テキストサイズをカスタマイズします</translation>
 <translation id="214169863967063661">表示設定を開く</translation>
+<translation id="3616113530831147358">音声</translation>
 <translation id="6793604637258913070">テキスト キャレットが表示されるか移動したときに強調表示する</translation>
 <translation id="7376553024552204454">移動時にマウスカーソルを強調表示する</translation>
 <translation id="4150201353443180367">表示</translation>
@@ -3174,9 +2855,10 @@
 <translation id="3819257035322786455">バックアップ</translation>
 <translation id="3233271424239923319">Linux のアプリとファイルをバックアップします</translation>
 <translation id="184273675144259287">Linux のアプリとファイルを以前のバックアップで置き換えます</translation>
-<translation id="2200603218210188859">USB デバイス設定</translation>
-<translation id="2706892089432507937">USB デバイス</translation>
-<translation id="5187892128515678283">USB デバイスを Linux と共有するには、スイッチをオンにします。デバイスを取り外すと共有は終了します。</translation>
+<translation id="7105390788077117391">USB の設定</translation>
+<translation id="3201422919974259695">使用可能な USB デバイスがここに表示されます。</translation>
+<translation id="907264006778172906">Linux に USB デバイスへのアクセスを許可します。デバイスの削除後は、Linux にその USB デバイスは記憶されません。</translation>
+<translation id="3661172646479098821">現在、Android デバイスのみがサポートされています。</translation>
 <translation id="2295473777859797944">Brave Software Play ストア</translation>
 <translation id="572155275267014074">Android 設定</translation>
 <translation id="4767209642168463274">Brave Software Play のアプリとゲームを Bravebook にインストールします。&lt;a target="_blank" href="<ph name="URL"/>"&gt;詳細&lt;/a&gt;</translation>
@@ -3216,6 +2898,7 @@
 <translation id="5860033963881614850">オフ</translation>
 <translation id="5916664084637901428">オン</translation>
 <translation id="1378613616312864539">この設定は <ph name="NAME"/> により制御されています</translation>
+<translation id="6643016212128521049">クリア</translation>
 <translation id="8465252176946159372">無効です</translation>
 <translation id="8647834505253004544">有効なウェブアドレスではありません</translation>
 <translation id="7946586320617670168">保護されている発行元でなければなりません</translation>
@@ -3224,6 +2907,7 @@
 <translation id="5595485650161345191">住所の編集</translation>
 <translation id="6207937957461833379">国/地域</translation>
 <translation id="4378154925671717803">電話</translation>
+<translation id="2448312741937722512">種類</translation>
 <translation id="9064275926664971810">フォームにワンクリックで自動入力できるようにします</translation>
 <translation id="9095253524804455615">削除</translation>
 <translation id="451515744433878153">削除</translation>
@@ -3408,6 +3092,7 @@
 <translation id="1989112275319619282">閲覧</translation>
 <translation id="3625481642044239431">無効なファイルが選択されています。もう一度お試しください。</translation>
 <translation id="2462752602710430187"><ph name="PRINTER_NAME"/> を追加しました</translation>
+<translation id="7380768571499464492">更新: <ph name="PRINTER_NAME"/></translation>
 <translation id="9057119625587205566">近くにプリンタはありません</translation>
 <translation id="3213187967168344806">プリンタを追加できません。パソコンを再起動してもう一度お試しください。</translation>
 <translation id="4052689580269971502">プリンタに接続できません。プリンタの電源が入っていて、Wi-Fi または USB 経由で Bravebook に接続されていることを確認してください。</translation>
@@ -3536,6 +3221,7 @@
 <translation id="8452135315243592079">SIM カードがありません</translation>
 <translation id="2617342710774726426">SIM カードはロックされています</translation>
 <translation id="4848518990323155912">SIM カードのロックを有効にする（モバイルデータの使用には PIN 入力が必要）</translation>
+<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">SIM PIN を入力</translation>
 <translation id="8431909052837336408">SIM PIN を変更</translation>
 <translation id="289644616180464099">SIM カードはロックされています</translation>
@@ -3547,11 +3233,13 @@
 <translation id="1164899421101904659">PIN ロック解除キーを入力</translation>
 <translation id="7582582252461552277">このネットワークを優先する</translation>
 <translation id="7469894403370665791">このネットワークに自動接続する</translation>
+<translation id="4267953847983678297">モバイル ネットワークに自動接続する</translation>
 <translation id="7987814697832569482">この VPN で常に接続する</translation>
 <translation id="8821045908425223359">IP アドレスを自動的に設定</translation>
 <translation id="8986362086234534611">切断</translation>
 <translation id="7881483672146086348">アカウントを表示</translation>
 <translation id="2392369802118427583">有効にする</translation>
+<translation id="8151638057146502721">設定</translation>
 <translation id="5920543303088087579">このネットワークへの接続は管理者によって無効にされています</translation>
 <translation id="1235458158152011030">既知のネットワーク</translation>
 <translation id="3003144360685731741">優先ネットワーク</translation>
@@ -3579,7 +3267,6 @@
 <translation id="7707922173985738739">モバイルデータを使用します</translation>
 <translation id="8944099748578356325">バッテリー消費が速くなります（現在 <ph name="BATTERY_PERCENTAGE"/>%）</translation>
 <translation id="3651488188562686558">Wi-Fi から切断します</translation>
-<translation id="3479552764303398839">後で</translation>
 <translation id="7378812711085314936">データ接続を行う</translation>
 <translation id="3483333858382889684">同じ Brave Software アカウントでモバイルデータ接続を利用している他の端末を自動検出する</translation>
 <translation id="5637476008227280525">モバイルデータの有効化</translation>
@@ -3698,11 +3385,11 @@
 <translation id="3161522574479303604">すべての言語</translation>
 <translation id="3312424061798279731">有効な言語</translation>
 <translation id="3182749001423093222">スペルチェック</translation>
-<translation id="4441548209689510310">スペルチェック オプションを表示</translation>
-<translation id="4358353773267946514"><ph name="LANGUAGE_1"/>、<ph name="LANGUAGE_2"/></translation>
-<translation id="3909690856344416952"><ph name="LANGUAGE_1"/>、<ph name="LANGUAGE_2"/>、他 1 言語</translation>
-<translation id="5740331643563157105"><ph name="LANGUAGE_1"/>、<ph name="LANGUAGE_2"/>、他 <ph name="NUM_ADDITIONAL_LANGUAGES"/> 言語</translation>
-<translation id="3436038974659740746">カスタム スペルチェック</translation>
+<translation id="5423829801105537712">基本スペルチェック</translation>
+<translation id="2564653188463346023">拡張スペルチェック</translation>
+<translation id="8944680893327873975">Brave Software 検索と同じスペルチェックを使用します。ブラウザに入力したテキストは Brave Software に送信されます。</translation>
+<translation id="7335974957018254119">スペルチェックを使用する言語</translation>
+<translation id="2469375675106140201">スペルチェックをカスタマイズ</translation>
 <translation id="2667463864537187133">スペルチェックの管理</translation>
 <translation id="2665394472441560184">新しい単語を追加</translation>
 <translation id="4567772783389002344">単語を追加</translation>
@@ -3723,13 +3410,8 @@
 <translation id="9038649477754266430">予測サービスを使用してページをより迅速に読み込む</translation>
 <translation id="7981313251711023384">ページをプリロードして閲覧と検索をすばやく行えるようにする</translation>
 <translation id="2468205691404969808">Cookie を使って設定を保存する（これらのページにアクセスしない場合も Cookie が保持されます）</translation>
-<translation id="1641113438599504367">セーフ ブラウジング</translation>
-<translation id="773905249182896430">危険なサイトからユーザーと端末を保護します</translation>
-<translation id="8983677657449185470">セーフ ブラウジングの改善に協力する</translation>
-<translation id="199861668945335092">一部のシステム情報とページのコンテンツを Brave Software に送信します</translation>
-<translation id="490074449735753175">ウェブ サービスを使用してスペル ミスの解決を支援する</translation>
-<translation id="3523078749603005179">ユーザーがブラウザに入力した内容を Brave Software に送信し、高度なスペルチェックを行います</translation>
-<translation id="2564653188463346023">拡張スペルチェック</translation>
+<translation id="4991384657077828949">Brave のセキュリティ改善に協力する</translation>
+<translation id="2875273286298348523">ブラウザに入力したテキストが Brave から Brave Software に送信されます。</translation>
 <translation id="9079153198295609735">使用統計データと障害レポートを Brave Software に自動送信します</translation>
 <translation id="5941220456342415404">診断と使用状況のデータを Brave Software に自動送信する</translation>
 <translation id="918192811481327695">Brave の機能と動作の改善に協力する</translation>
@@ -3806,6 +3488,7 @@
 <translation id="16815041330799488">クリップボードにコピーされているテキストや画像へのアクセスをサイトに許可しない</translation>
 <translation id="3668823961463113931">ハンドラ</translation>
 <translation id="5689516760719285838">現在地</translation>
+<translation id="9219103736887031265">画像</translation>
 <translation id="7521387064766892559">Javascript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">支払いハンドラ</translation>
@@ -3831,6 +3514,10 @@
 <translation id="8666584013686199826">サイトから USB デバイスへのアクセス許可を求められたときに確認する</translation>
 <translation id="6291949900244949761">サイトから USB デバイスへのアクセス許可を求められたときに確認する（推奨）</translation>
 <translation id="5336126339807372270">USB デバイスへのアクセスをどのサイトにも許可しない</translation>
+<translation id="7638605456503525968">シリアルポート</translation>
+<translation id="4085270836953633510">サイトからシリアルポートへのアクセス許可を求められたときに確認する</translation>
+<translation id="2322318151094136999">サイトからシリアルポートへのアクセス許可を求められたときに確認する（推奨）</translation>
+<translation id="1906828677882361942">シリアルポートへのアクセスをどのサイトにも許可しない</translation>
 <translation id="8973557916016709913">拡大縮小値の指定を削除</translation>
 <translation id="1706625117072057435">ズームレベル</translation>
 <translation id="6385543213911723544">サイトでは Cookie データの保存と読み込みが可能です</translation>
@@ -3846,8 +3533,6 @@
 <translation id="2913331724188855103">サイトに Cookie データの保存と読み取りを許可する（推奨）</translation>
 <translation id="5908769186679515905">サイトでの Flash の実行をブロックする</translation>
 <translation id="6096007141921397775">Brave を終了するまで、Flash の設定は保持されます。</translation>
-<translation id="2972642118232180842">重要なコンテンツのみを実行する（推奨）</translation>
-<translation id="7084192839369222683">重要なコンテンツのみを実行する</translation>
 <translation id="8074127646604999664">最近閉じたサイトがデータの送受信を完了できるようにする</translation>
 <translation id="7062222374113411376">最近閉じたサイトがデータの送受信を完了できるようにする（推奨）</translation>
 <translation id="5068918910148307423">最近閉じたサイトがデータの送受信を完了できないようにする</translation>
@@ -3911,6 +3596,7 @@
 <translation id="4354344420232759511">アクセスしたサイトがここに表示されます</translation>
 <translation id="3757733214359997190">サイトが見つかりません</translation>
 <translation id="5763751966069581670">USB デバイスが見つかりませんでした</translation>
+<translation id="1863182668524159459">シリアルポートが見つかりません</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">サイトの追加</translation>
 <translation id="5052499409147950210">サイトの編集</translation>
@@ -3926,7 +3612,6 @@
 <translation id="4590324241397107707">データベース ストレージ</translation>
 <translation id="8016266267177410919">一時ストレージ</translation>
 <translation id="4175737294868205930">永続的ストレージ</translation>
-<translation id="6105877918873366097">最終アクセス日</translation>
 <translation id="1296497012903089238">証明書の種類</translation>
 <translation id="8553342806078037065">他のユーザーを管理</translation>
 <translation id="8907706281008466056">Brave Software プロフィール写真</translation>
@@ -3958,6 +3643,7 @@
 <translation id="1987317783729300807">アカウント</translation>
 <translation id="8418661265246754237">Brave Software アカウント</translation>
 <translation id="3297951628821704004">この端末からアカウントを削除</translation>
+<translation id="4659077111144409915">メイン アカウント</translation>
 <translation id="3158033540161634471">指紋の設定</translation>
 <translation id="1587907146729660231">電源ボタンを指でタップしてください</translation>
 <translation id="176193854664720708">指紋認証センサーは電源ボタンに搭載されています。いずれかの指で軽く触れてください。</translation>
@@ -4088,13 +3774,17 @@
 <translation id="6586451623538375658">マウスのメイン ボタンを右にする</translation>
 <translation id="221872881068107022">逆スクロール</translation>
 <translation id="1510238584712386396">ランチャー</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">CapsLock</translation>
 <translation id="1114202307280046356">ひし形</translation>
 <translation id="89720367119469899">エスケープ</translation>
+<translation id="5583640892426849032">Backspace</translation>
 <translation id="1951012854035635156">アシスタント</translation>
 <translation id="1938351510777341717">外部コマンド</translation>
 <translation id="7969046989155602842">コマンド</translation>
 <translation id="585979798156957858">外部メタキー</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4991420928586866460">キーボードの最上段のキーをファンクション キーとして使用する</translation>
 <translation id="85486688517848470">キーボードの最上段にあるキーの動作を切り替えるには、検索キーを押したままにします</translation>
 <translation id="4400632832271803360">キーボードの最上段にあるキーの動作を切り替えるには、ランチャー キーを押したままにします</translation>
@@ -4154,6 +3844,7 @@
 <translation id="7758450972308449809">ディスプレイの外枠を調整します</translation>
 <translation id="5608580678041221894">トリミング範囲を調整または移動するには次のキーをタップします</translation>
 <translation id="2822634587701817431">拡大または縮小</translation>
+<translation id="7765158879357617694">移動</translation>
 <translation id="6801435275744557998">タッチスクリーンのキャリブレーション</translation>
 <translation id="6856623341093082836">タッチスクリーンをを設定し、精度を調整します</translation>
 <translation id="4598556348158889687">ストレージ管理</translation>
@@ -4196,6 +3887,7 @@
 <translation id="2789927670850159391">Bravebook をスマートフォンと接続します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">対象となる端末はありません。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">確認を待っています。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
+<translation id="6518133107902771759">確認</translation>
 <translation id="7179187931092694802">スマートフォンで Bravebook のロックを解除します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">インスタント テザリング</translation>
 <translation id="6415900369006735853">スマートフォンを使用してインターネットに接続します</translation>
@@ -4247,6 +3939,30 @@
 <translation id="2992931425024192067">すべての通知内容を表示する</translation>
 <translation id="8592141010104017453">通知を一切表示しない</translation>
 <translation id="7642778300616172920">プライベートな内容を表示しない</translation>
+<translation id="5640133431808313291">セキュリティ キーの管理</translation>
+<translation id="8509177919508253835">セキュリティ キーをリセットして PIN を作成します</translation>
+<translation id="7652954539215530680">PIN の作成</translation>
+<translation id="8246776524656196770">PIN（個人識別番号）を使ってセキュリティ キーを保護します</translation>
+<translation id="5973605538625120605">PIN の変更</translation>
+<translation id="6242589501614145408">セキュリティ キーのリセット</translation>
+<translation id="1470967055429794975">セキュリティ キーに保存されているすべてのデータ（PIN を含む）が消去されます</translation>
+<translation id="4670688170798478686">リセットの確認</translation>
+<translation id="1981544341227357861">デバイスからセキュリティ キーを取り外してもう一度挿入し、タップします。</translation>
+<translation id="714285394257538643">セキュリティ キーのリセットを確定するには、もう一度タップします。セキュリティ キーに保存されているすべての認証情報と PIN が消去されます。</translation>
+<translation id="4120388883569225797">このセキュリティ キーはリセットできません</translation>
+<translation id="7691077781194517083">このセキュリティ キーをリセットできません。エラー <ph name="ERROR_CODE"/>。</translation>
+<translation id="4124823734405044952">セキュリティ キーがリセットされました</translation>
+<translation id="8644655801811752511">このセキュリティ キーをリセットできません。キーの挿入直後にリセットしてみてください。</translation>
+<translation id="8845164297565101021">セキュリティ キーを挿入してタップし、PIN を作成するか変更してください</translation>
+<translation id="6957044667612803194">このセキュリティ キーでは PIN がサポートされていません</translation>
+<translation id="7212097698621322584">PIN を変更するには、現在の PIN を入力してください。PIN がわからない場合は、セキュリティ キーをリセットしたうえで新しい PIN を作成する必要があります。</translation>
+<translation id="2637400434494156704">PIN が正しくありません。あと 1 回試行できます。</translation>
+<translation id="3341699307020049241">PIN が正しくありません。あと <ph name="RETRIES"/> 回試行できます。</translation>
+<translation id="2439545803278355377">新しい PIN を入力してください。PIN は 4 文字以上の長さにする必要があり、文字や数字などを含めることができます。</translation>
+<translation id="1781291988450150470">現在の PIN</translation>
+<translation id="3732530910372558017">PIN は 63 文字以内で指定してください</translation>
+<translation id="1307165550267142340">PIN が作成されました</translation>
+<translation id="2699911226086014512">PIN の操作に失敗しました。コード: <ph name="RETRIES"/></translation>
 <translation id="3341703758641437857">ファイルの URL へのアクセスを許可する</translation>
 <translation id="9003647077635673607">すべてのウェブサイトで許可する</translation>
 <translation id="698524779381350301">以下のサイトで自動的にアクセスを許可する</translation>
@@ -4269,6 +3985,7 @@
 <translation id="6841186874966388268">エラー</translation>
 <translation id="3487007233252413104">無名関数</translation>
 <translation id="3264582393905923483">コンテキスト</translation>
+<translation id="6921104647315081813">アクティビティを削除</translation>
 <translation id="1607139524282324606">エラー項目を消去</translation>
 <translation id="6025215716629925253">スタック トレース</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;1 行が非表示です&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> 行が非表示です&gt;}}</translation>
@@ -4289,6 +4006,10 @@
 <translation id="6073451960410192870">撮影を停止</translation>
 <translation id="8719472795285728850">拡張機能のアクティビティをリッスンしています...</translation>
 <translation id="2540449034743108469">拡張機能のアクティビティをリッスンするには [開始] を押してください</translation>
+<translation id="885246833287407341">API 関数の引数</translation>
+<translation id="3600051066689725006">ウェブ リクエスト情報</translation>
+<translation id="5812674658566766066">すべて展開</translation>
+<translation id="3115580024857770654">すべて折りたたむ</translation>
 <translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">ビューを検証</translation>
 <translation id="181577467034453336">他 <ph name="NUMBER_OF_VIEWS"/> 件...</translation>
@@ -4296,6 +4017,7 @@
 <translation id="4854477725773269949">シークレット モードでの実行を許可する</translation>
 <translation id="6124650939968185064">次の拡張機能は、この拡張機能に依存しています:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/>（ID: <ph name="ID_PH"/>）</translation>
+<translation id="3866249974567520381">説明</translation>
 <translation id="6508248480704296122"><ph name="NAME_PH"/> に関連しています</translation>
 <translation id="1410197035576869800">アプリのアイコン</translation>
 <translation id="3664511988987167893">拡張機能アイコン</translation>
@@ -4307,6 +4029,7 @@
 <translation id="7152478047064750137">この拡張機能に特別な権限は必要ありません</translation>
 <translation id="1004218526896219317">サイトへのアクセス</translation>
 <translation id="7385896526023870365">この拡張機能はサイトへのアクセスが追加されていません。</translation>
+<translation id="8294431847097064396">ソース</translation>
 <translation id="8523849605371521713">ポリシーにより追加</translation>
 <translation id="5087249366037322692">サードパーティにより追加</translation>
 <translation id="6788210894632713004">パッケージ化されていない拡張機能</translation>
@@ -4350,12 +4073,14 @@
 <translation id="1909880997794698664">このデバイスをキオスク モードに固定してもよろしいですか？</translation>
 <translation id="1512210426710821809">この設定を元に戻すには、<ph name="IDS_SHORT_PRODUCT_OS_NAME"/> の再インストールが必要になります</translation>
 <translation id="4472575034687746823">利用を開始</translation>
+<translation id="8281886186245836920">スキップ</translation>
 <translation id="2342740338116612727">ブックマークを追加しました</translation>
 <translation id="7835178595033117206">ブックマークを削除しました</translation>
 <translation id="742130257665691897">ブックマークを削除しました</translation>
 <translation id="2785008241190445880">ブックマークを置き換えました</translation>
-<translation id="4320948194796820126">メールサービスへのブックマークを追加</translation>
+<translation id="5468853758063275923">Brave をデフォルトのブラウザに設定しました</translation>
 <translation id="2950533317914339731">お気に入りの Brave Software アプリへのブックマークを追加します</translation>
+<translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">マップ</translation>
 <translation id="6709133671862442373">ニュース</translation>
 <translation id="995782501881226248">YouTube</translation>
@@ -4365,6 +4090,8 @@
 <translation id="4359717112757026264">Cityscape</translation>
 <translation id="6691541770654083180">地球</translation>
 <translation id="5033266061063942743">幾何学模様</translation>
+<translation id="7789963078219276159">スタートページの背景が<ph name="CATEGORY"/>に変更されました。</translation>
+<translation id="8771300903067484968">スタートページの背景をデフォルトの背景にリセットしました。</translation>
 <translation id="239760341987199724">Brave をデフォルト ブラウザに設定する</translation>
 <translation id="96037229054033864">Brave Software 検索や Brave Software の最先端技術をブラウジングで活用できます</translation>
 <translation id="296137235951584143">Brave を独自にカスタマイズ</translation>
@@ -4373,10 +4100,10 @@
 <translation id="3707821975049107110">Brave をすでにご利用の場合はログイン</translation>
 <translation id="1573150740912592860">現在の状態を保存する</translation>
 <translation id="567643736130151854">ログインして同期を有効にすれば、ブックマーク、パスワード、その他の設定をどの端末からでもご利用いただけます</translation>
-<translation id="8282356762694872144">メールに移動しますか？</translation>
 <translation id="5939847200023027600">PDF コンポジター サービス</translation>
 <translation id="725758059478686223">印刷サービス</translation>
 <translation id="5877584842898320529">選択したプリンタは利用できないか、正しくインストールされていません。<ph name="BR"/>プリンタを確認するか、別のプリンタを選択してみてください。</translation>
+<translation id="1430915738399379752">印刷</translation>
 <translation id="1031362278801463162">プレビューを読み込んでいます</translation>
 <translation id="6147020289383635445">印刷プレビューの表示に失敗しました。</translation>
 <translation id="7413400642818115607">選択した Brave Software クラウド プリントのデバイスはサポートが終了しています。<ph name="BR"/>パソコンのシステムの設定でプリンタを設定してみてください。</translation>
@@ -4389,6 +4116,9 @@
 <translation id="5431318178759467895">カラー</translation>
 <translation id="2050339315714019657">縦</translation>
 <translation id="3317459757438853210">両面印刷</translation>
+<translation id="9053563360605707198">両面に印刷する</translation>
+<translation id="2996722619877761919">長辺とじ</translation>
+<translation id="1172750555846831341">短辺とじ</translation>
 <translation id="4988526792673242964">ページ</translation>
 <translation id="7771452384635174008">レイアウト</translation>
 <translation id="3303818374450886607">部数</translation>
@@ -4398,6 +4128,7 @@
 <translation id="5746169159649715125">PDF に保存</translation>
 <translation id="1955272076204612657">Brave Software ドライブに保存</translation>
 <translation id="2580924999637585241">印刷総数: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
+<translation id="73174032666024687"><ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">枚</translation>
 <translation id="8813811964357448561">枚</translation>
 <translation id="8180239481735238521">ページ</translation>
@@ -4450,6 +4181,9 @@
 <translation id="7453008956351770337">このプリンタを選択すると、次の拡張機能にプリンタへのアクセスを許可することになります。</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> はこのプリンタと通信できませんでした。プリンタが接続されていることを確認して、もう一度お試しください。</translation>
 <translation id="6530186581263215931">管理者が行った設定です</translation>
+<translation id="3053273573829329829">ユーザー PIN を有効にする</translation>
+<translation id="6922745772873733498">印刷するには PIN を入力してください</translation>
+<translation id="2396783860772170191">4 桁の PIN（0000～9999）を入力してください</translation>
 <translation id="4994754230098574403">設定しています</translation>
 <translation id="1396139853388185343">プリンタの設定中にエラーが発生しました</translation>
 <translation id="2379281330731083556">システム ダイアログを使用して印刷... <ph name="SHORTCUT_KEY"/></translation>
@@ -4466,20 +4200,25 @@
 <translation id="79766959863778284">XR 分離端末サービス</translation>
 <translation id="8909833622202089127">サイトで現在地が追跡されています</translation>
 <translation id="375636864092143889">サイトでマイクが使用されています</translation>
-<translation id="310671807099593501">サイトで Bluetooth が使用されています</translation>
 <translation id="7256069762010468647">サイトでカメラが使用されています</translation>
 <translation id="7340650977506865820">サイトで画面が共有されています</translation>
 <translation id="1805738995123446102">バックグラウンドのタブでマイクが使用されています</translation>
-<translation id="1112420131909513020">バックグラウンドのタブで Bluetooth が使用されています</translation>
 <translation id="8715480913140015283">バックグラウンドのタブでカメラが使用されています</translation>
 <translation id="6155141482566063812">バックグラウンドのタブで画面が共有されています</translation>
 <translation id="661907246513853610">サイトに現在地の追跡が許可されています</translation>
 <translation id="8991520179165052608">サイトにマイクの使用が許可されています</translation>
-<translation id="7681095912841365527">サイトに Bluetooth の使用が許可されています</translation>
 <translation id="3085412380278336437">サイトにカメラの使用が許可されています</translation>
 <translation id="9180380851667544951">サイトに画面の共有が許可されています</translation>
-<translation id="400314203296796334">ブロックまたは許可を設定するには、ヘッドセットを外してください。</translation>
-<translation id="4922897038695506037"><ph name="URL_HOST"/> が追加の許可をリクエストしています。</translation>
+<translation id="310671807099593501">サイトで Bluetooth が使用されています</translation>
+<translation id="1112420131909513020">バックグラウンドのタブで Bluetooth が使用されています</translation>
+<translation id="7681095912841365527">サイトに Bluetooth の使用が許可されています</translation>
+<translation id="1484979925941077974">サイトで Bluetooth が使用されています</translation>
+<translation id="4892229439761351791">サイトに Bluetooth の使用が許可されています</translation>
+<translation id="6416743254476733475">パソコンで許可またはブロックしてください。</translation>
+<translation id="6124698108608891449">このサイトが追加の権限をリクエストしています。</translation>
+<translation id="6551612971599078809">サイトで USB が使用されています</translation>
+<translation id="3088052000289932193">サイトで MIDI が使用されています</translation>
+<translation id="7004402701596653846">サイトで MIDI が使用される可能性があります</translation>
 <translation id="7574650250151586813">テキストを入力するには、Daydream キーボード アプリを更新してください</translation>
 <translation id="983511809958454316">この機能は VR ではサポートされていません</translation>
 <translation id="4008291085758151621">サイト情報は VR ではご利用いただけません</translation>
@@ -4487,6 +4226,7 @@
 <translation id="6313641880021325787">VR を終了</translation>
 <translation id="2670429602441959756">このページには VR でまだご利用いただけない機能が含まれています。VR モードを終了します...</translation>
 <translation id="1802687198411089702">ページが応答していません。しばらくお待ちいただくか、終了してください。</translation>
+<translation id="1041175011127912238">このページは応答していません</translation>
 <translation id="3987938432087324095">聞き取れませんでした。</translation>
 <translation id="6923132443355966645">スクロール / クリック</translation>
 <translation id="6041155700700864984">全画面表示を終了</translation>

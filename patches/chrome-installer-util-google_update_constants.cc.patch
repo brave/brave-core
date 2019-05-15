@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/google_update_constants.cc b/chrome/installer/util/google_update_constants.cc
-index f1ce1fbba3147b9f2c66bab79018c776ae144d53..9eced089da97dc81bc04f3f188ca2620e4cf5bd2 100644
+index ba074e1acbd9844d629d234b525e6fed4b266cef..25eccc73e80488f6f6fdcb92c58219a82f0c54e6 100644
 --- a/chrome/installer/util/google_update_constants.cc
 +++ b/chrome/installer/util/google_update_constants.cc
 @@ -6,6 +6,17 @@

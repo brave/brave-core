@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.html b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-index 750900dfc674d286bef0b3d2c5a764c6035a232c..9e0a76ef24509fcee33343b7761eadb3e2f3af17 100644
+index f1da2b75b06709921dc6838a4655c2be3877ca8e..6c5b04391ee046fad6f7a6a15ef41954e2e0579c 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.html
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.html
-@@ -94,6 +94,7 @@
+@@ -96,6 +96,7 @@
              on-click="onSyncAndGoogleServicesClick_"
              hidden="[[!unifiedConsentEnabled_]]"></cr-link-row>
  <if expr="not chromeos">
@@ -10,7 +10,7 @@ index 750900dfc674d286bef0b3d2c5a764c6035a232c..9e0a76ef24509fcee33343b7761eadb3
          <settings-toggle-button id="signinAllowedToggle"
              pref="{{prefs.signin.allowed_on_next_startup}}"
              label="$i18n{signinAllowedTitle}"
-@@ -101,6 +102,7 @@
+@@ -103,6 +104,7 @@
              on-settings-boolean-control-change="onSigninAllowedChange_"
              no-set-pref>
          </settings-toggle-button>
@@ -18,7 +18,7 @@ index 750900dfc674d286bef0b3d2c5a764c6035a232c..9e0a76ef24509fcee33343b7761eadb3
  </if><!-- not chromeos -->
          <template is="dom-if" if="[[!unifiedConsentEnabled_]]">
            <settings-personalization-options prefs="{{prefs}}"
-@@ -229,6 +231,7 @@
+@@ -219,6 +221,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -26,7 +26,7 @@ index 750900dfc674d286bef0b3d2c5a764c6035a232c..9e0a76ef24509fcee33343b7761eadb3
        <template is="dom-if" route-path="/content/backgroundSync" no-search>
          <settings-subpage page-title="$i18n{siteSettingsBackgroundSync}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -246,6 +249,7 @@
+@@ -236,6 +239,7 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
@@ -34,7 +34,7 @@ index 750900dfc674d286bef0b3d2c5a764c6035a232c..9e0a76ef24509fcee33343b7761eadb3
        <template is="dom-if" route-path="/content/camera" no-search>
          <settings-subpage page-title="$i18n{siteSettingsCategoryCamera}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
-@@ -273,11 +277,13 @@
+@@ -263,11 +267,13 @@
                toggle-on-label="$i18n{siteSettingsCookiesAllowedRecommended}"
                sub-option-label="$i18n{deleteDataPostSession}">
            </category-default-setting>
@@ -45,10 +45,10 @@ index 750900dfc674d286bef0b3d2c5a764c6035a232c..9e0a76ef24509fcee33343b7761eadb3
                sub-label="$i18n{thirdPartyCookieSublabel}">
            </settings-toggle-button>
 +</if>
-           <div id="site-data-trigger" class="settings-box" actionable
-               on-click="onSiteDataTap_">
-              <div class="start" id="cookiesLink">
-@@ -356,11 +362,13 @@
+           <cr-link-row id="site-data-trigger" class="hr"
+               on-click="onSiteDataTap_" label="$i18n{siteSettingsCookieLink}">
+           </cr-link-row>
+@@ -340,11 +346,13 @@
          <settings-subpage page-title="$i18n{siteSettingsCategoryJavascript}"
              search-label="$i18n{siteSettingsAllSitesSearch}"
              search-term="{{searchFilter_}}">
@@ -62,7 +62,7 @@ index 750900dfc674d286bef0b3d2c5a764c6035a232c..9e0a76ef24509fcee33343b7761eadb3
            <category-setting-exceptions
                category="{{ContentSettingsTypes.JAVASCRIPT}}"
                block-header="$i18n{siteSettingsBlock}"
-@@ -445,6 +453,19 @@
+@@ -429,6 +437,19 @@
            </category-setting-exceptions>
          </settings-subpage>
        </template>
