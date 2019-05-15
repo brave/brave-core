@@ -10,17 +10,19 @@ extern "C" {
 
 namespace adblock {
 
-class Blocker {
+class Engine {
  public:
-  Blocker(const std::string& rules);
-  bool Matches(const std::string& url, const std::string& tab_url,
+  Engine(const std::string& rules);
+  bool Matches(const std::string& url, const std::string& host,
+      const std::string& tab_host, bool is_third_party,
       const std::string& resource_type);
-  ~Blocker();
+  bool Deserialize(const char* serialized_data);
+  ~Engine();
 
  private:
-  Blocker(const Blocker&) = delete;
-  void operator=(const Blocker&) = delete;
-  C_Blocker *raw;
+  Engine(const Engine&) = delete;
+  void operator=(const Engine&) = delete;
+  C_Engine* raw;
 };
 
 }  // namespace adblock

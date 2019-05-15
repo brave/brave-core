@@ -6,24 +6,31 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-typedef struct C_Blocker C_Blocker;
+typedef struct C_Engine C_Engine;
 
 /**
- * Create a new `Blocker`.
+ * Create a new `Engine`.
  */
-C_Blocker *blocker_create(const char *rules);
+C_Engine *engine_create(const char *rules);
 
 /**
- * Destroy a `Blocker` once you are done with it.
+ * Deserializes a previously serialized data file list.
  */
-void blocker_destroy(C_Blocker *blocker);
+bool engine_deserialize(C_Engine *engine, const char *data);
 
 /**
- * Checks if a `url` matches for the specified `Blocker` within the context.
+ * Destroy a `Engine` once you are done with it.
  */
-bool blocker_match(C_Blocker *blocker,
-                   const char *url,
-                   const char *tab_url,
-                   const char *resource_type);
+void engine_destroy(C_Engine *engine);
+
+/**
+ * Checks if a `url` matches for the specified `Engine` within the context.
+ */
+bool engine_match(C_Engine *engine,
+                  const char *url,
+                  const char *host,
+                  const char *tab_host,
+                  bool third_party,
+                  const char *resource_type);
 
 #endif /* ADBLOCK_RUST_FFI_H */
