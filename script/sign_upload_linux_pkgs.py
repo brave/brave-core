@@ -111,12 +111,13 @@ def main():
 
     # remove files older than 120 days from dist_dir
     delete_age = 120 * 86400
+    # do not remove files that match this pattern
+    global exclude_patterns
+    exclude_patterns = ['.*keyring.*']
 
     logging.info("Performing removal of files older than 120 days in directory: {}".format(dist_dir))
 
-    # act=False is used for testing, instead of actually removing the files
-    # we just report what files would be removed
-    remove_files_older_x_days(dist_dir, delete_age, act=False)
+    remove_files_older_x_days(dist_dir, delete_age, act=True)
 
     # Now upload to aptly and rpm repos
 
@@ -155,6 +156,15 @@ def main():
         exit(message)
 
 
+def locate_excludes(x):
+    found = False
+    for i in exclude_patterns:
+        m = re.search(i, x)
+        if m:
+            found = True
+    return not found
+
+
 def remove_files_older_x_days(dir, age, act=False):
     items = get_files_older_x_days(dir, age)
     for i in items:
@@ -179,7 +189,9 @@ def remove_files_older_x_days(dir, age, act=False):
 def get_files_older_x_days(dir, age):
     items = []
     now = time.time()
-    for f in os.listdir(dir):
+    files = os.listdir(dir)
+    files = [f for f in filter(locate_excludes, files)]
+    for f in files:
         path = os.path.join(dir, f)
         if os.path.isfile(path):
             if os.stat(path).st_mtime < now - age:
