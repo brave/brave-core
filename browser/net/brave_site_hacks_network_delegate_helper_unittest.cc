@@ -1,8 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
+
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
@@ -39,13 +44,17 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ForbesWithCookieHeader) {
   headers.SetHeader(kCookieHeader, "name=value; name2=value2; name3=value3");
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
-      callback, brave_request_info);
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+                                                          &headers,
+                                                          callback,
+                                                          brave_request_info);
   std::string cookies;
   headers.GetHeader(kCookieHeader, &cookies);
-  EXPECT_TRUE(cookies.find(std::string("; ") + kForbesExtraCookies) != std::string::npos);
+  EXPECT_TRUE(cookies.find(std::string("; ") + kForbesExtraCookies) !=
+              std::string::npos);
   EXPECT_EQ(ret, net::OK);
 }
 
@@ -58,10 +67,13 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ForbesWithoutCookieHeader) {
   net::HttpRequestHeaders headers;
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
-      callback, brave_request_info);
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+                                                          &headers,
+                                                          callback,
+                                                          brave_request_info);
   std::string cookies;
   headers.GetHeader(kCookieHeader, &cookies);
   EXPECT_TRUE(cookies.find(kForbesExtraCookies) != std::string::npos);
@@ -79,10 +91,13 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, NotForbesNoCookieChange) {
   headers.SetHeader(kCookieHeader, "name=value; name2=value2; name3=value3");
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
-      callback, brave_request_info);
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+                                                          &headers,
+                                                          callback,
+                                                          brave_request_info);
   std::string cookies;
   headers.GetHeader(kCookieHeader, &cookies);
   EXPECT_STREQ(cookies.c_str(), expected_cookies.c_str());
@@ -99,14 +114,18 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, NoScriptTwitterMobileRedirect) {
   headers.SetHeader(kRefererHeader, "https://twitter.com/");
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
-      callback, brave_request_info);
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+                                                          &headers,
+                                                          callback,
+                                                          brave_request_info);
   EXPECT_EQ(ret, net::ERR_ABORTED);
 }
 
-TEST_F(BraveSiteHacksNetworkDelegateHelperTest, AllowTwitterMobileRedirectFromDiffSite) {
+TEST_F(BraveSiteHacksNetworkDelegateHelperTest,
+       AllowTwitterMobileRedirectFromDiffSite) {
   GURL url("https://mobile.twitter.com/i/nojs_router?path=%2F");
   net::TestDelegate test_delegate;
   std::unique_ptr<net::URLRequest> request =
@@ -116,10 +135,13 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, AllowTwitterMobileRedirectFromDi
   headers.SetHeader(kRefererHeader, "https://brianbondy.com/");
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
-      callback, brave_request_info);
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+                                                          &headers,
+                                                          callback,
+                                                          brave_request_info);
   EXPECT_EQ(ret, net::OK);
 }
 
@@ -133,10 +155,13 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, TwitterNoCancelWithReferer) {
   headers.SetHeader(kRefererHeader, "https://twitter.com/");
   std::shared_ptr<brave::BraveRequestInfo>
       brave_request_info(new brave::BraveRequestInfo());
-  brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+  brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                              brave_request_info);
   brave::ResponseCallback callback;
-  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(), &headers,
-      callback, brave_request_info);
+  int ret = brave::OnBeforeStartTransaction_SiteHacksWork(request.get(),
+                                                          &headers,
+                                                          callback,
+                                                          brave_request_info);
   EXPECT_EQ(ret, net::OK);
 }
 
@@ -158,9 +183,11 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerPreserved) {
 
     std::shared_ptr<brave::BraveRequestInfo>
         brave_request_info(new brave::BraveRequestInfo());
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                                brave_request_info);
     brave::ResponseCallback callback;
-    int ret = brave::OnBeforeURLRequest_SiteHacksWork(callback, brave_request_info);
+    int ret = brave::OnBeforeURLRequest_SiteHacksWork(callback,
+                                                      brave_request_info);
     EXPECT_EQ(ret, net::OK);
     // new_url should not be set
     EXPECT_TRUE(brave_request_info->new_url_spec.empty());
@@ -186,9 +213,11 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerCleared) {
 
     std::shared_ptr<brave::BraveRequestInfo>
         brave_request_info(new brave::BraveRequestInfo());
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                                brave_request_info);
     brave::ResponseCallback callback;
-    int ret = brave::OnBeforeURLRequest_SiteHacksWork(callback, brave_request_info);
+    int ret = brave::OnBeforeURLRequest_SiteHacksWork(callback,
+                                                      brave_request_info);
     EXPECT_EQ(ret, net::OK);
     // new_url should not be set
     EXPECT_TRUE(brave_request_info->new_url_spec.empty());
@@ -196,7 +225,8 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerCleared) {
   });
 }
 
-TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerWouldBeClearedButExtensionSite) {
+TEST_F(BraveSiteHacksNetworkDelegateHelperTest,
+       ReferrerWouldBeClearedButExtensionSite) {
   std::vector<GURL> urls({
     GURL("https://digg.com/7"),
     GURL("https://slashdot.org/5"),
@@ -208,15 +238,18 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerWouldBeClearedButExtensi
     std::unique_ptr<net::URLRequest> request =
         context()->CreateRequest(url, net::IDLE, &test_delegate,
                                  TRAFFIC_ANNOTATION_FOR_TESTS);
-    request->set_site_for_cookies(GURL("chrome-extension://aemmndcbldboiebfnladdacbdfmadadm/test.html"));
+    request->set_site_for_cookies(
+        GURL("chrome-extension://aemmndcbldboiebfnladdacbdfmadadm/test.html"));
     std::string original_referrer = "https://hello.brianbondy.com/about";
     request->SetReferrer(original_referrer);
 
     std::shared_ptr<brave::BraveRequestInfo>
         brave_request_info(new brave::BraveRequestInfo());
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(), brave_request_info);
+    brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                                brave_request_info);
     brave::ResponseCallback callback;
-    int ret = brave::OnBeforeURLRequest_SiteHacksWork(callback, brave_request_info);
+    int ret = brave::OnBeforeURLRequest_SiteHacksWork(callback,
+                                                      brave_request_info);
     EXPECT_EQ(ret, net::OK);
     // new_url should not be set
     EXPECT_TRUE(brave_request_info->new_url_spec.empty());

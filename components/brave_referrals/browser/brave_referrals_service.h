@@ -1,10 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_REFERRALS_SERVICE_H_
-#define BRAVE_BROWSER_BRAVE_REFERRALS_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_BRAVE_REFERRALS_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_BRAVE_REFERRALS_SERVICE_H_
 
+#include <memory>
 #include <string>
 
 #include "base/files/file_path.h"
@@ -26,7 +28,7 @@ namespace brave {
 
 class BraveReferralsService {
  public:
-  BraveReferralsService(PrefService* pref_service);
+  explicit BraveReferralsService(PrefService* pref_service);
   ~BraveReferralsService();
 
   void Start();
@@ -94,4 +96,4 @@ void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry);
 
 }  // namespace brave
 
-#endif  // BRAVE_BROWSER_BRAVE_REFERRALS_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_BRAVE_REFERRALS_SERVICE_H_
