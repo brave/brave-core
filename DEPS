@@ -14,7 +14,7 @@ deps = {
   "vendor/sparkle": "https://github.com/brave/Sparkle.git@c0759cce415d7c0feae45005c8a013b1898711f0",
   "vendor/bat-native-rapidjson": "https://github.com/brave-intl/bat-native-rapidjson.git@86aafe2ef89835ae71c9ed7c2527e3bb3000930e",
   "vendor/bip39wally-core-native": "https://github.com/brave-intl/bip39wally-core-native.git@9b119931c702d55be994117eb505d56310720b1d",
-  "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@b8ef1a3f85aec0a0522a9230d59b3958a2150fab",
+  "vendor/bat-native-anonize": "https://github.com/brave-intl/bat-native-anonize.git@e3742ba3e8942eea9e4755d91532491871bd3116",
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@1b4362968c8f22720bfb75af6f506d4ecc0f3116",
   "components/brave_sync/extension/brave-sync": "https://github.com/brave/sync.git@896d733ddcf5fb1a99611a0830d4824b4cb22a68",
   "components/brave_sync/extension/brave-crypto": "https://github.com/brave/crypto@54f35a7bd6e297620c6add188f1b31af3d0ec561",
