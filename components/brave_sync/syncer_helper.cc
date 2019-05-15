@@ -45,8 +45,10 @@ void ReCalculateOrder(bookmarks::BookmarkModel* model,
 
 uint64_t GetIndexByOrder(const std::string& record_order) {
   uint64_t index = 0;
-  char last_ch = record_order.back();
-  bool result = base::StringToUint64(std::string(&last_ch), &index);
+  size_t last_dot_index = record_order.rfind(".");
+  DCHECK(last_dot_index != std::string::npos);
+  std::string last_digit = record_order.substr(last_dot_index + 1);
+  bool result = base::StringToUint64(last_digit, &index);
   --index;
   DCHECK(index >= 0);
   DCHECK(result);
