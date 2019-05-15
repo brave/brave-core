@@ -12,6 +12,7 @@ module.exports = (env, argv) => ({
     alias: {
       'bittorrent-tracker': path.resolve(__dirname, '../../node_modules/bittorrent-tracker'),
       'brave-ui': path.resolve(__dirname, '../../node_modules/brave-ui/src'),
+      '~brave-core-ui': path.resolve(__dirname, '../../ui/webui/components'),
       'dgram': 'chrome-dgram',
       'dns': path.resolve(__dirname, '../common/dns.ts'),
       'net': 'chrome-net',

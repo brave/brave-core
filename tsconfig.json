@@ -19,6 +19,7 @@
     "baseUrl": ".",
     "paths": {
       "brave-ui": ["node_modules/brave-ui/src"],
+      "~brave-core-ui/*": ["ui/webui/components/*"],
       "brave-ui/*": ["node_modules/brave-ui/src/*"]
     },
     "typeRoots": [
