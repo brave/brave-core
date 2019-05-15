@@ -67,10 +67,10 @@ class LedgerImpl : public ledger::Ledger,
   bool CreateWallet() override;
 
   void SetPublisherInfo(
-      std::unique_ptr<ledger::PublisherInfo> publisher_info) override;
+      ledger::PublisherInfoPtr publisher_info) override;
 
   void SetActivityInfo(
-      std::unique_ptr<ledger::PublisherInfo> publisher_info) override;
+      ledger::PublisherInfoPtr publisher_info) override;
 
   void GetPublisherInfo(const std::string& publisher_key,
                         ledger::PublisherInfoCallback callback) override;
@@ -92,9 +92,9 @@ class LedgerImpl : public ledger::Ledger,
                            const ledger::ActivityInfoFilter& filter,
                            ledger::PublisherInfoListCallback callback) override;
 
-  void DoDirectTip(const ledger::PublisherInfo& publisher,
-                        int amount,
-                        const std::string& currency) override;
+  void DoDirectTip(const std::string& publisher_id,
+                   int amount,
+                   const std::string& currency) override;
 
   void SetRewardsMainEnabled(bool enabled) override;
 
@@ -258,7 +258,7 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_blob);
 
   void OnPanelPublisherInfo(ledger::Result result,
-                           std::unique_ptr<ledger::PublisherInfo> info,
+                           ledger::PublisherInfoPtr info,
                            uint64_t windowId);
 
   void OnExcludedSitesChanged(const std::string& publisher_id,
@@ -399,7 +399,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void NormalizeContributeWinners(
       ledger::PublisherInfoList* newList,
-      const ledger::PublisherInfoList& list,
+      const ledger::PublisherInfoList* list,
       uint32_t /* next_record */);
 
   void SetTimer(uint64_t time_offset, uint32_t* timer_id) const;
@@ -415,7 +415,7 @@ class LedgerImpl : public ledger::Ledger,
   bool HasSufficientBalanceToReconcile() override;
 
   void SaveNormalizedPublisherList(
-      const ledger::PublisherInfoList& normalized_list);
+      ledger::PublisherInfoList normalized_list);
 
   void
   GetAddressesForPaymentId(ledger::WalletAddressesCallback callback) override;
@@ -485,11 +485,11 @@ class LedgerImpl : public ledger::Ledger,
 
   void ModifyPublisherVerified(
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher,
+    ledger::PublisherInfoPtr publisher,
     ledger::PublisherInfoCallback callback);
 
   void ModifyPublisherListVerified(
-    const ledger::PublisherInfoList&,
+    ledger::PublisherInfoList,
     uint32_t record,
     ledger::PublisherInfoListCallback callback);
 
@@ -511,7 +511,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnPublisherInfoSavedInternal(
       ledger::Result result,
-      std::unique_ptr<ledger::PublisherInfo> info);
+      ledger::PublisherInfoPtr info);
 
   void DownloadPublisherList(
       ledger::LoadURLCallback callback);

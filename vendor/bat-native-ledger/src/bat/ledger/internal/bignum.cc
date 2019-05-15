@@ -7,6 +7,10 @@
 
 #include "bat/ledger/internal/bignum.h"
 
+extern "C" {
+#include "relic.h"  // NOLINT
+}
+
 namespace braveledger_bat_bignum {
 
 void prepareBigNum(bn_t& big_num, const std::string& probi) {  // NOLINT

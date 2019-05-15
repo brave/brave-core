@@ -78,7 +78,7 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
     const ledger::VisitData& visit_data,
     uint64_t window_id,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info);
+    ledger::PublisherInfoPtr publisher_info);
 
   void OnEmbedResponse(
     const uint64_t duration,
@@ -117,7 +117,7 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
                  const ledger::VisitData& visit_data);
 
   void OnMediaPublisherActivity(ledger::Result result,
-                                std::unique_ptr<ledger::PublisherInfo> info,
+                                ledger::PublisherInfoPtr info,
                                 uint64_t window_id,
                                 const ledger::VisitData& visit_data,
                                 const std::string& media_key,
@@ -133,7 +133,7 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
                             const std::string& publisher_key,
                             bool is_custom_path,
                             ledger::Result result,
-                            std::unique_ptr<ledger::PublisherInfo> info);
+                            ledger::PublisherInfoPtr info);
 
   void GetChannelHeadlineVideo(
     uint64_t window_id,
@@ -153,7 +153,7 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
                       const ledger::VisitData& visit_data,
                       const std::string& media_key,
                       ledger::Result result,
-                      std::unique_ptr<ledger::PublisherInfo> info);
+                      ledger::PublisherInfoPtr info);
 
   void OnChannelIdForUser(
     uint64_t window_id,

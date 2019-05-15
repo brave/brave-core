@@ -108,14 +108,13 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD2(GetPublisherBanner,
       void(const std::string&,
            brave_rewards::GetPublisherBannerCallback));
+  MOCK_METHOD3(OnTip, void(const std::string&,
+                           int,
+                           bool));
   MOCK_METHOD4(OnTip, void(const std::string&,
-                              int,
-                              bool,
-                              const ledger::PublisherInfo*));
-  MOCK_METHOD4(OnTip, void(const std::string&,
-                              int,
-                              bool,
-                              std::unique_ptr<brave_rewards::ContentSite>));
+                           int,
+                           bool,
+                           std::unique_ptr<brave_rewards::ContentSite>));
   MOCK_METHOD1(RemoveRecurringTip, void(const std::string&));
   MOCK_METHOD1(GetRecurringTipsUI,
       void(brave_rewards::GetRecurringTipsCallback));

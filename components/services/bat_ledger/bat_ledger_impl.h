@@ -117,8 +117,9 @@ class BatLedgerImpl : public mojom::BatLedger,
   void GetPublisherBanner(const std::string& publisher_id,
       GetPublisherBannerCallback callback) override;
 
-  void DoDirectTip(const std::string& publisher_info, int32_t amount,
-      const std::string& currency) override;
+  void DoDirectTip(const std::string& publisher_id,
+                   int32_t amount,
+                   const std::string& currency) override;
 
   void RemoveRecurringTip(const std::string& publisher_key) override;
   void GetBootStamp(GetBootStampCallback callback) override;
@@ -196,12 +197,12 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   static void OnGetRecurringTips(
       CallbackHolder<GetRecurringTipsCallback>* holder,
-      const ledger::PublisherInfoList& list,
+      ledger::PublisherInfoList list,
       uint32_t num);
 
   static void OnGetOneTimeTips(
       CallbackHolder<GetRecurringTipsCallback>* holder,
-      const ledger::PublisherInfoList& list,
+      ledger::PublisherInfoList list,
       uint32_t num);
   static void OnRefreshPublisher(
       CallbackHolder<RefreshPublisherCallback>* holder,
@@ -209,13 +210,13 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   static void OnGetActivityInfoList(
     CallbackHolder<GetActivityInfoListCallback>* holder,
-    const ledger::PublisherInfoList& list,
+    ledger::PublisherInfoList list,
     uint32_t num);
 
   static void OnLoadPublisherInfo(
     CallbackHolder<LoadPublisherInfoCallback>* holder,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info);
+    ledger::PublisherInfoPtr info);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

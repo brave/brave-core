@@ -380,11 +380,11 @@ std::string LedgerImpl::URIEncode(const std::string& value) {
 
 void LedgerImpl::OnPublisherInfoSavedInternal(
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info) {
+    ledger::PublisherInfoPtr info) {
   bat_publishers_->OnPublisherInfoSaved(result, std::move(info));
 }
 
-void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info) {
+void LedgerImpl::SetPublisherInfo(ledger::PublisherInfoPtr info) {
   if (info) {
     info->verified = bat_publishers_->isVerified(info->id);
   }
@@ -397,7 +397,7 @@ void LedgerImpl::SetPublisherInfo(std::unique_ptr<ledger::PublisherInfo> info) {
                 _2));
 }
 
-void LedgerImpl::SetActivityInfo(std::unique_ptr<ledger::PublisherInfo> info) {
+void LedgerImpl::SetActivityInfo(ledger::PublisherInfoPtr info) {
   if (info) {
     info->verified = bat_publishers_->isVerified(info->id);
   }
@@ -449,7 +449,7 @@ void LedgerImpl::LoadNicewareList(ledger::GetNicewareListCallback callback) {
 
 void LedgerImpl::ModifyPublisherVerified(
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher,
+    ledger::PublisherInfoPtr publisher,
     ledger::PublisherInfoCallback callback) {
   if (publisher) {
     publisher->verified = bat_publishers_->isVerified(publisher->id);
@@ -459,18 +459,18 @@ void LedgerImpl::ModifyPublisherVerified(
 }
 
 void LedgerImpl::ModifyPublisherListVerified(
-    const ledger::PublisherInfoList& list,
+    ledger::PublisherInfoList list,
     uint32_t record,
     ledger::PublisherInfoListCallback callback) {
   ledger::PublisherInfoList new_list;
 
   for (const auto& publisher : list) {
-    ledger::PublisherInfo info(publisher);
-    info.verified = bat_publishers_->isVerified(info.id);
-    new_list.push_back(info);
+    auto info = publisher->Clone();
+    info->verified = bat_publishers_->isVerified(info->id);
+    new_list.push_back(std::move(info));
   }
 
-  callback(new_list, record);
+  callback(std::move(new_list), record);
 }
 
 void LedgerImpl::GetPublisherInfo(const std::string& publisher_key,
@@ -782,10 +782,10 @@ void LedgerImpl::SaveUnverifiedContribution(
   ledger_client_->SavePendingContribution(list);
 }
 
-void LedgerImpl::DoDirectTip(const ledger::PublisherInfo& publisher,
-                                  int amount,
-                                  const std::string& currency) {
-  if (publisher.id.empty()) {
+void LedgerImpl::DoDirectTip(const std::string& publisher_id,
+                             int amount,
+                             const std::string& currency) {
+  if (publisher_id.empty()) {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
       "Failed direct donation due to missing publisher id";
 
@@ -793,12 +793,12 @@ void LedgerImpl::DoDirectTip(const ledger::PublisherInfo& publisher,
     return;
   }
 
-  bool is_verified = bat_publishers_->isVerified(publisher.id);
+  bool is_verified = bat_publishers_->isVerified(publisher_id);
 
   // Save to the pending list if not verified
   if (!is_verified) {
     ledger::PendingContribution contribution;
-    contribution.publisher_key = publisher.id;
+    contribution.publisher_key = publisher_id;
     contribution.amount = amount;
     contribution.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
 
@@ -810,7 +810,7 @@ void LedgerImpl::DoDirectTip(const ledger::PublisherInfo& publisher,
     return;
   }
 
-  auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(publisher.id,
+  auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(publisher_id,
                                                                amount,
                                                                currency);
   auto direction_list =
@@ -1012,7 +1012,7 @@ void LedgerImpl::GetMediaActivityFromUrl(
 
 void LedgerImpl::OnPanelPublisherInfo(
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info,
+    ledger::PublisherInfoPtr info,
     uint64_t windowId) {
   ledger_client_->OnPanelPublisherInfo(result, std::move(info), windowId);
 }
@@ -1362,7 +1362,7 @@ void LedgerImpl::SaveContributionInfo(
 
 void LedgerImpl::NormalizeContributeWinners(
     ledger::PublisherInfoList* newList,
-    const ledger::PublisherInfoList& list,
+    const ledger::PublisherInfoList* list,
     uint32_t record) {
   bat_publishers_->NormalizeContributeWinners(newList, list, record);
 }
@@ -1397,10 +1397,8 @@ bool LedgerImpl::HasSufficientBalanceToReconcile() {
 }
 
 void LedgerImpl::SaveNormalizedPublisherList(
-    const ledger::PublisherInfoList& normalized_list) {
-  ledger::PublisherInfoListStruct list;
-  list.list = normalized_list;
-  ledger_client_->SaveNormalizedPublisherList(list);
+    ledger::PublisherInfoList list) {
+  ledger_client_->SaveNormalizedPublisherList(std::move(list));
 }
 
 void LedgerImpl::GetAddressesForPaymentId(

@@ -80,7 +80,7 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
     const uint64_t window_id,
     const std::string& user_id,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info);
+    ledger::PublisherInfoPtr publisher_info);
 
   void FetchDataFromUrl(
     const std::string& url,
@@ -104,7 +104,7 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
     const std::string& media_id,
     const std::string& publisher_blob,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info);
+    ledger::PublisherInfoPtr info);
 
   void OnPublisherInfo(
     uint64_t window_id,
@@ -113,7 +113,7 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
     const std::string& media_id,
     const std::string& publisher_blob,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info);
+    ledger::PublisherInfoPtr publisher_info);
 
   void SavePublisherInfo(const uint64_t duration,
                          const std::string& media_key,

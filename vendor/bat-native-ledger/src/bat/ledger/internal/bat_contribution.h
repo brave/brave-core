@@ -159,19 +159,19 @@ class BatContribution {
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListAuto(
       const std::string& viewing_id,
-      const ledger::PublisherInfoList& all,
+      const ledger::PublisherInfoList* all,
       double* budget);
 
   // RECURRING DONTAIONS: from the list gets only verified publishers and
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListRecurring(
       const std::string& viewing_id,
-      const ledger::PublisherInfoList& all,
+      const ledger::PublisherInfoList* all,
       double* budget);
 
   // Entry point for contribution where we have publisher info list
   void ReconcilePublisherList(ledger::REWARDS_CATEGORY category,
-                              const ledger::PublisherInfoList& list,
+                              ledger::PublisherInfoList list,
                               uint32_t next_record);
 
   // Resets reconcile stamps

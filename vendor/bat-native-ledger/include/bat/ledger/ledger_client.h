@@ -52,10 +52,10 @@ class LEDGER_EXPORT LogStream {
 };
 
 using PublisherInfoCallback =
-    std::function<void(Result, std::unique_ptr<PublisherInfo>)>;
+    std::function<void(Result, PublisherInfoPtr)>;
 // TODO(nejczdovc) we should be providing result back as well
 using PublisherInfoListCallback =
-    std::function<void(const PublisherInfoList&, uint32_t /* next_record */)>;
+    std::function<void(PublisherInfoList, uint32_t /* next_record */)>;
 using GetNicewareListCallback =
     std::function<void(Result, const std::string&)>;
 using RecurringRemoveCallback = std::function<void(Result)>;
@@ -103,10 +103,10 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void LoadNicewareList(ledger::GetNicewareListCallback callback) = 0;
 
-  virtual void SavePublisherInfo(std::unique_ptr<PublisherInfo> publisher_info,
-                                PublisherInfoCallback callback) = 0;
+  virtual void SavePublisherInfo(PublisherInfoPtr publisher_info,
+                                 PublisherInfoCallback callback) = 0;
 
-  virtual void SaveActivityInfo(std::unique_ptr<PublisherInfo> publisher_info,
+  virtual void SaveActivityInfo(PublisherInfoPtr publisher_info,
                                 PublisherInfoCallback callback) = 0;
 
   virtual void LoadPublisherInfo(const std::string& publisher_key,
@@ -125,8 +125,8 @@ class LEDGER_EXPORT LedgerClient {
                                 const std::string& publisher_id) = 0;
 
   virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
-                                    ActivityInfoFilter filter,
-                                    PublisherInfoListCallback callback) = 0;
+                                   ActivityInfoFilter filter,
+                                   PublisherInfoListCallback callback) = 0;
 
   // TODO(anyone) this can be removed
   virtual void FetchGrants(const std::string& lang,
@@ -148,7 +148,7 @@ class LEDGER_EXPORT LedgerClient {
                              const ledger::Grant& grant) = 0;
 
   virtual void OnPanelPublisherInfo(Result result,
-                                   std::unique_ptr<ledger::PublisherInfo>,
+                                   ledger::PublisherInfoPtr publisher_info,
                                    uint64_t windowId) = 0;
 
   virtual void OnExcludedSitesChanged(const std::string& publisher_id,
@@ -207,7 +207,7 @@ class LEDGER_EXPORT LedgerClient {
   virtual void OnRestorePublishers(ledger::OnRestoreCallback callback) = 0;
 
   virtual void SaveNormalizedPublisherList(
-    const ledger::PublisherInfoListStruct& normalized_list) = 0;
+      ledger::PublisherInfoList normalized_list) = 0;
 
   virtual void SaveState(const std::string& name,
                          const std::string& value,

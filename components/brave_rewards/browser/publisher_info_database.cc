@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 #include <string>
+#include <utility>
 
 #include "base/bind.h"
 #include "base/command_line.h"
@@ -185,19 +186,18 @@ void PublisherInfoDatabase::GetOneTimeTips(ledger::PublisherInfoList* list,
   info_sql.BindInt(2, ledger::REWARDS_CATEGORY::ONE_TIME_TIP);
 
   while (info_sql.Step()) {
-    std::string id(info_sql.ColumnString(0));
+    auto publisher = ledger::PublisherInfo::New();
 
-    ledger::PublisherInfo publisher(id);
+    publisher->id = info_sql.ColumnString(0);
+    publisher->name = info_sql.ColumnString(1);
+    publisher->url = info_sql.ColumnString(2);
+    publisher->favicon_url = info_sql.ColumnString(3);
+    publisher->weight = info_sql.ColumnDouble(4);
+    publisher->reconcile_stamp = info_sql.ColumnInt64(5);
+    publisher->verified = info_sql.ColumnBool(6);
+    publisher->provider = info_sql.ColumnString(7);
 
-    publisher.name = info_sql.ColumnString(1);
-    publisher.url = info_sql.ColumnString(2);
-    publisher.favicon_url = info_sql.ColumnString(3);
-    publisher.weight = info_sql.ColumnDouble(4);
-    publisher.reconcile_stamp = info_sql.ColumnInt64(5);
-    publisher.verified = info_sql.ColumnBool(6);
-    publisher.provider = info_sql.ColumnString(7);
-
-    list->push_back(publisher);
+    list->push_back(std::move(publisher));
   }
 }
 
@@ -288,7 +288,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   return transaction.Commit();
 }
 
-std::unique_ptr<ledger::PublisherInfo>
+ledger::PublisherInfoPtr
 PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -306,8 +306,7 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
   info_sql.BindString(0, publisher_key);
 
   if (info_sql.Step()) {
-    std::unique_ptr<ledger::PublisherInfo> info;
-    info.reset(new ledger::PublisherInfo());
+    auto info = ledger::PublisherInfo::New();
     info->id = info_sql.ColumnString(0);
     info->name = info_sql.ColumnString(1);
     info->url = info_sql.ColumnString(2);
@@ -323,7 +322,7 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
   return nullptr;
 }
 
-std::unique_ptr<ledger::PublisherInfo>
+ledger::PublisherInfoPtr
 PublisherInfoDatabase::GetPanelPublisher(
     const ledger::ActivityInfoFilter& filter) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -349,8 +348,7 @@ PublisherInfoDatabase::GetPanelPublisher(
   info_sql.BindString(2, filter.id);
 
   if (info_sql.Step()) {
-    std::unique_ptr<ledger::PublisherInfo> info;
-    info.reset(new ledger::PublisherInfo());
+    auto info = ledger::PublisherInfo::New();
     info->id = info_sql.ColumnString(0);
     info->name = info_sql.ColumnString(1);
     info->url = info_sql.ColumnString(2);
@@ -504,7 +502,7 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfos(
   }
 
   for (const auto& info : list) {
-    if (!InsertOrUpdateActivityInfo(info)) {
+    if (!InsertOrUpdateActivityInfo(*info)) {
       transaction.Rollback();
       return false;
     }
@@ -621,24 +619,23 @@ bool PublisherInfoDatabase::GetActivityList(
   }
 
   while (info_sql.Step()) {
-    std::string id(info_sql.ColumnString(0));
-
-    ledger::PublisherInfo info(id);
-    info.duration = info_sql.ColumnInt64(1);
-    info.score = info_sql.ColumnDouble(2);
-    info.percent = info_sql.ColumnInt64(3);
-    info.weight = info_sql.ColumnDouble(4);
-    info.verified = info_sql.ColumnBool(5);
-    info.excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
+    auto info = ledger::PublisherInfo::New();
+    info->id = info_sql.ColumnString(0);
+    info->duration = info_sql.ColumnInt64(1);
+    info->score = info_sql.ColumnDouble(2);
+    info->percent = info_sql.ColumnInt64(3);
+    info->weight = info_sql.ColumnDouble(4);
+    info->verified = info_sql.ColumnBool(5);
+    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
         info_sql.ColumnInt(6));
-    info.name = info_sql.ColumnString(7);
-    info.url = info_sql.ColumnString(8);
-    info.provider = info_sql.ColumnString(9);
-    info.favicon_url = info_sql.ColumnString(10);
-    info.reconcile_stamp = info_sql.ColumnInt64(11);
-    info.visits = info_sql.ColumnInt(12);
+    info->name = info_sql.ColumnString(7);
+    info->url = info_sql.ColumnString(8);
+    info->provider = info_sql.ColumnString(9);
+    info->favicon_url = info_sql.ColumnString(10);
+    info->reconcile_stamp = info_sql.ColumnInt64(11);
+    info->visits = info_sql.ColumnInt(12);
 
-    list->push_back(info);
+    list->push_back(std::move(info));
   }
 
   return true;
@@ -718,7 +715,7 @@ bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
   return statement.Run();
 }
 
-std::unique_ptr<ledger::PublisherInfo>
+ledger::PublisherInfoPtr
 PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -739,7 +736,7 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
   info_sql.BindString(0, media_key);
 
   if (info_sql.Step()) {
-    std::unique_ptr<ledger::PublisherInfo> info(new ledger::PublisherInfo());
+    auto info = ledger::PublisherInfo::New();
     info->id = info_sql.ColumnString(0);
     info->name = info_sql.ColumnString(1);
     info->url = info_sql.ColumnString(2);
@@ -835,18 +832,17 @@ void PublisherInfoDatabase::GetRecurringTips(
       "INNER JOIN publisher_info AS pi ON rd.publisher_id = pi.publisher_id "));
 
   while (info_sql.Step()) {
-    std::string id(info_sql.ColumnString(0));
+    auto publisher = ledger::PublisherInfo::New();
+    publisher->id = info_sql.ColumnString(0);
+    publisher->name = info_sql.ColumnString(1);
+    publisher->url = info_sql.ColumnString(2);
+    publisher->favicon_url = info_sql.ColumnString(3);
+    publisher->weight = info_sql.ColumnDouble(4);
+    publisher->reconcile_stamp = info_sql.ColumnInt64(5);
+    publisher->verified = info_sql.ColumnBool(6);
+    publisher->provider = info_sql.ColumnString(7);
 
-    ledger::PublisherInfo publisher(id);
-    publisher.name = info_sql.ColumnString(1);
-    publisher.url = info_sql.ColumnString(2);
-    publisher.favicon_url = info_sql.ColumnString(3);
-    publisher.weight = info_sql.ColumnDouble(4);
-    publisher.reconcile_stamp = info_sql.ColumnInt64(5);
-    publisher.verified = info_sql.ColumnBool(6);
-    publisher.provider = info_sql.ColumnString(7);
-
-    list->push_back(publisher);
+    list->push_back(std::move(publisher));
   }
 }
 

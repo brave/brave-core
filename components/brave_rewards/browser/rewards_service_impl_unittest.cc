@@ -53,7 +53,7 @@ class MockRewardsServiceObserver : public RewardsServiceObserver {
   MOCK_METHOD2(OnPublisherBanner,
       void(RewardsService*, const brave_rewards::PublisherBanner));
   MOCK_METHOD4(OnPanelPublisherInfo,
-      void(RewardsService*, int, ledger::PublisherInfo*, uint64_t));
+      void(RewardsService*, int, ledger::PublisherInfoPtr, uint64_t));
 };
 
 class RewardsServiceTest : public testing::Test {

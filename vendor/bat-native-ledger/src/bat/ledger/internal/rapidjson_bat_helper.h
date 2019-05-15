@@ -17,18 +17,15 @@ namespace ledger {
 
 struct AutoContributeProps;
 struct BalanceReportInfo;
-struct ContributionInfo;
 struct ReconcileInfo;
 struct Grant;
 struct PublisherBanner;
-struct PublisherInfo;
 struct ActivityInfoFilter;
 struct RewardsInternalsInfo;
 struct VisitData;
 struct WalletInfo;
 struct PendingContribution;
 struct PendingContributionList;
-struct PublisherInfoListStruct;
 
 }  // namespace ledger
 
@@ -67,10 +64,8 @@ void saveToJson(JsonWriter* writer, const WALLET_INFO_ST&);
 void saveToJson(JsonWriter* writer, const GRANTS_PROPERTIES_ST&);
 void saveToJson(JsonWriter* writer, const ledger::AutoContributeProps&);
 void saveToJson(JsonWriter* writer, const ledger::BalanceReportInfo&);
-void saveToJson(JsonWriter* writer, const ledger::ContributionInfo&);
 void saveToJson(JsonWriter* writer, const ledger::Grant&);
 void saveToJson(JsonWriter* writer, const ledger::PublisherBanner&);
-void saveToJson(JsonWriter* writer, const ledger::PublisherInfo&);
 void saveToJson(JsonWriter* writer, const ledger::ActivityInfoFilter&);
 void saveToJson(JsonWriter* writer, const ledger::ReconcileInfo&);
 void saveToJson(JsonWriter* writer, const ledger::RewardsInternalsInfo&);
@@ -78,7 +73,6 @@ void saveToJson(JsonWriter* writer, const ledger::VisitData&);
 void saveToJson(JsonWriter* writer, const ledger::WalletInfo&);
 void saveToJson(JsonWriter* writer, const ledger::PendingContribution&);
 void saveToJson(JsonWriter* writer, const ledger::PendingContributionList&);
-void saveToJson(JsonWriter* writer, const ledger::PublisherInfoListStruct&);
 void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST&);
 void saveToJson(JsonWriter* writer, const GRANT&);
 
