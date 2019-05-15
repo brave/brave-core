@@ -64,24 +64,25 @@ export const modifyNoScriptInfo: ModifyNoScriptInfo = (state, tabId, url, modifi
  * @returns {State} The modified application state
  */
 export const resetNoScriptInfo: ResetNoScriptInfo = (state, tabId, newOrigin) => {
-  const tabs: Tabs = state.tabs
+  const tabs: Tabs = { ...state.tabs }
 
   if (newOrigin !== tabs[tabId].origin) { // navigate away
+    console.log('navigated away!', tabs[tabId].origin)
     tabs[tabId].noScriptInfo = {}
   }
-
-  const noScriptInfo = getNoScriptInfo(state, tabId)
-  const allScripts = Object.entries(noScriptInfo)
-
-  for (const [url] of allScripts) {
+  Object.keys(tabs[tabId].noScriptInfo).map(key => {
     // only keep entries which users want to allow
-    // if (tabs[tabId].noScriptInfo[url].willBlock) {
-    //   delete tabs[tabId].noScriptInfo[url]
-    // }
-    const groupedScriptsBlockedState = { userInteracted: false, actuallyBlocked: false }
-    state = modifyNoScriptInfo(state, tabId, url, groupedScriptsBlockedState)
-  }
-  return state
+    if (
+      tabs[tabId].noScriptInfo[key].userInteracted === false &&
+      (
+        tabs[tabId].noScriptInfo[key].willBlock ||
+        tabs[tabId].noScriptInfo[key].actuallyBlocked
+      )
+     ) {
+      delete tabs[tabId].noScriptInfo[key]
+    }
+  })
+  return { ...state, tabs }
 }
 
 /**

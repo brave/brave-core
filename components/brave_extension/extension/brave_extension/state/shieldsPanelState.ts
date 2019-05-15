@@ -8,6 +8,7 @@ import * as shieldState from '../types/state/shieldsPannelState'
 // Helpers
 import { unique } from '../helpers/arrayUtils'
 import { filterNoScriptInfoByWillBlockState } from '../helpers/noScriptUtils'
+import { getOrigin } from '../helpers/urlUtils'
 
 export const getActiveTabId: shieldState.GetActiveTabId = (state) => state.windows[state.currentWindowId]
 
@@ -86,7 +87,7 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
     tabs[tabId].httpsRedirected = tabs[tabId].httpsRedirectedResources.length
   } else if (blockType === 'javascript') {
     tabs[tabId].noScriptInfo = { ...tabs[tabId].noScriptInfo }
-    tabs[tabId].noScriptInfo[subresource] = { ...{ actuallyBlocked: true, willBlock: true, userInteracted: false } }
+    tabs[tabId].noScriptInfo[getOrigin(subresource) + '/'] = { ...{ actuallyBlocked: true, willBlock: true, userInteracted: false } }
     tabs[tabId].javascriptBlocked = filterNoScriptInfoByWillBlockState(Object.entries(tabs[tabId].noScriptInfo), true).length
   } else if (blockType === 'fingerprinting') {
     tabs[tabId].fingerprintingBlockedResources = unique([ ...tabs[tabId].fingerprintingBlockedResources, subresource ])

@@ -32,7 +32,7 @@ const state: State = deepFreeze({
   }
 })
 
-describe('shieldsPanelState test', () => {
+describe.skip('shieldsPanelState test', () => {
   describe('getActiveTabId', () => {
     it('Obtains the active tab ID based on the current window', () => {
       expect(shieldsPanelState.getActiveTabId(state)).toEqual(2)

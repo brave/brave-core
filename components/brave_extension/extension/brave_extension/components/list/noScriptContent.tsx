@@ -51,8 +51,8 @@ export default class NoScriptList extends React.PureComponent<Props, {}> {
   }
 
   setBlockState (url: string) {
-    // this.props.allowScriptOriginsOnce([url])
     this.props.setScriptBlockedCurrentState(url)
+    this.props.allowScriptOriginsOnce([url])
   }
 
   setBlockStateGroup (hostname: string, maybeBlock: boolean) {

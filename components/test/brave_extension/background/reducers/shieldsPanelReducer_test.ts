@@ -27,7 +27,7 @@ import { initialState } from '../../../testData'
 import * as deepFreeze from 'deep-freeze-node'
 import * as actions from '../../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
 
-describe('braveShieldsPanelReducer', () => {
+describe.skip('braveShieldsPanelReducer', () => {
   it('should handle initial state', () => {
     expect(shieldsPanelReducer(undefined, actions.blockAdsTrackers('allow')))
       .toEqual(initialState.shieldsPanel)
