@@ -43,7 +43,7 @@ class BatGetMedia {
 
   void SaveMediaInfo(const std::string& type,
                      const std::map<std::string, std::string>& data,
-                     ledger::SaveMediaInfoCallback callback);
+                     ledger::PublisherInfoCallback callback);
 
  private:
   void OnMediaActivityError(const ledger::VisitData& visit_data,

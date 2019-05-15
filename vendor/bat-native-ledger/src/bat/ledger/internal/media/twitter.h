@@ -7,6 +7,7 @@
 #define BRAVELEDGER_MEDIA_TWITTER_H_
 
 #include <map>
+#include <memory>
 #include <string>
 
 #include "base/gtest_prod_util.h"
@@ -25,7 +26,7 @@ class MediaTwitter : public ledger::LedgerCallbackHandler {
   ~MediaTwitter() override;
 
   void SaveMediaInfo(const std::map<std::string, std::string>& data,
-                     ledger::SaveMediaInfoCallback callback);
+                     ledger::PublisherInfoCallback callback);
 
  private:
   static std::string GetProfileURL(const std::string& screen_name);
@@ -33,6 +34,25 @@ class MediaTwitter : public ledger::LedgerCallbackHandler {
   static std::string GetProfileImageURL(const std::string& screen_name);
 
   static std::string GetPublisherKey(const std::string& key);
+
+  static std::string GetMediaKey(const std::string& screen_name);
+
+  void OnMediaPublisherInfo(
+    uint64_t window_id,
+    const std::string& user_id,
+    const std::string& screen_name,
+    const std::string& publisher_name,
+    ledger::PublisherInfoCallback callback,
+    ledger::Result result,
+    std::unique_ptr<ledger::PublisherInfo> publisher_info);
+
+  void SavePublisherInfo(
+    const uint64_t duration,
+    const std::string& user_id,
+    const std::string& screen_name,
+    const std::string& publisher_name,
+    const uint64_t window_id,
+    ledger::PublisherInfoCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };

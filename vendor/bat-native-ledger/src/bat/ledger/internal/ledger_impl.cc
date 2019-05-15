@@ -1529,7 +1529,7 @@ scoped_refptr<base::SequencedTaskRunner> LedgerImpl::GetTaskRunner() {
 
 void LedgerImpl::SaveMediaInfo(const std::string& type,
                                const std::map<std::string, std::string>& data,
-                               ledger::SaveMediaInfoCallback callback) {
+                               ledger::PublisherInfoCallback callback) {
   bat_get_media_->SaveMediaInfo(type, data, callback);
 }
 

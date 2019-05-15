@@ -443,7 +443,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void SaveMediaInfo(const std::string& type,
                      const std::map<std::string, std::string>& data,
-                     ledger::SaveMediaInfoCallback callback) override;
+                     ledger::PublisherInfoCallback callback) override;
 
   void SetInlineTipSetting(const std::string& key, bool enabled) override;
 

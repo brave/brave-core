@@ -104,7 +104,7 @@ void BatGetMedia::OnMediaActivityError(const ledger::VisitData& visit_data,
 
 void BatGetMedia::SaveMediaInfo(const std::string& type,
                                 const std::map<std::string, std::string>& data,
-                                ledger::SaveMediaInfoCallback callback) {
+                                ledger::PublisherInfoCallback callback) {
   if (type == TWITTER_MEDIA_TYPE) {
     media_twitter_->SaveMediaInfo(data, callback);
     return;
