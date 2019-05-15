@@ -19,8 +19,6 @@ namespace ledger {
 using PublisherInfo = mojom::PublisherInfo;
 using PublisherInfoPtr = mojom::PublisherInfoPtr;
 using PublisherInfoList = std::vector<PublisherInfoPtr>;
-// TODO - remove this
-using PublisherInfoListStruct = PublisherInfoList;
 
 const char _clear_favicon[] = "clear";
 

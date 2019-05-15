@@ -238,7 +238,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::OnRestoreCallback callback));
 
   MOCK_METHOD1(SaveNormalizedPublisherList, void(
-      ledger::PublisherInfoListStruct normalized_list));
+      ledger::PublisherInfoList normalized_list));
 
   MOCK_METHOD1(SetConfirmationsIsReady, void(
       const bool is_ready));

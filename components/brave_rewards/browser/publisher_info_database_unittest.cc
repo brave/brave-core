@@ -6,6 +6,7 @@
 #include <fstream>
 #include <streambuf>
 #include <string>
+#include <utility>
 
 #include "brave/components/brave_rewards/browser/publisher_info_database.h"
 
