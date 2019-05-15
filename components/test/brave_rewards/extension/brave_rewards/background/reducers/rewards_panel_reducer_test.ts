@@ -221,6 +221,49 @@ describe('rewards panel reducer', () => {
 
         expect(state.rewardsPanelData).toEqual(expectedState)
       })
+
+      it('switching between two tabs that has the same url', () => {
+        const initState: Rewards.State = {
+          ...defaultState,
+          walletCreated: true,
+          enabledMain: true,
+          publishers: {
+            id_1: {
+              tabUrl: 'https://clifton.io',
+              publisher_key: 'clifton.io',
+              tabId: 1
+            }
+          }
+        }
+
+        const expectedState: Rewards.State = {
+          ...defaultState,
+          walletCreated: true,
+          enabledMain: true,
+          publishers: {
+            id_1: {
+              tabUrl: 'https://clifton.io',
+              publisher_key: 'clifton.io',
+              tabId: 2
+            }
+          }
+        }
+
+        let state = reducers({ rewardsPanelData: initState }, {
+          type: types.ON_TAB_RETRIEVED,
+          payload: {
+            tab: {
+              url: 'https://clifton.io',
+              incognito: false,
+              active: true,
+              windowId: 1,
+              id: 2
+            }
+          }
+        })
+
+        expect(state.rewardsPanelData).toEqual(expectedState)
+      })
     })
   })
 
