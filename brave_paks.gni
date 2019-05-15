@@ -90,12 +90,12 @@ template("brave_extra_paks") {
 
     if (enable_extensions) {
       sources += [
-        "$root_gen_dir/brave/browser/resources/md_extensions/brave_extensions_resources.pak",
+        "$root_gen_dir/brave/browser/resources/extensions/brave_extensions_resources.pak",
         "$root_gen_dir/brave/components/brave_extension/brave_extension_resources.pak",
       ]
 
       deps += [
-        "//brave/browser/resources/md_extensions:resources",
+        "//brave/browser/resources/extensions:resources",
         "//brave/common/extensions/api",
         "//brave/components/brave_extension:resources",
       ]

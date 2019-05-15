@@ -44,8 +44,8 @@ source_set("ui") {
       "omnibox/brave_omnibox_client.h",
       "toolbar/brave_app_menu_model.cc",
       "toolbar/brave_app_menu_model.h",
-      "webui/brave_md_settings_ui.cc",
-      "webui/brave_md_settings_ui.h",
+      "webui/brave_settings_ui.cc",
+      "webui/brave_settings_ui.h",
       "webui/navigation_bar_data_provider.cc",
       "webui/navigation_bar_data_provider.h",
       "webui/settings/brave_privacy_handler.cc",
@@ -78,6 +78,8 @@ source_set("ui") {
 
   if (is_win || is_mac || is_desktop_linux) {
     sources += [
+      "views/profiles/brave_incognito_menu_view.cc",
+      "views/profiles/brave_incognito_menu_view.h",
       "views/profiles/brave_profile_chooser_view.cc",
       "views/profiles/brave_profile_chooser_view.h",
       "webui/brave_welcome_ui.cc",
@@ -164,7 +166,7 @@ source_set("ui") {
     ]
 
     deps += [
-      "//brave/browser/resources/md_extensions:resources",
+      "//brave/browser/resources/extensions:resources",
       "//brave/components/brave_extension:static_resources",
       "//brave/components/brave_extension:generated_resources",
       "//chrome/browser/extensions",

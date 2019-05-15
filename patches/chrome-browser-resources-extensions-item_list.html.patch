@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/md_extensions/item_list.html b/chrome/browser/resources/md_extensions/item_list.html
-index 3e1234472547b8ea6538fcca732bfafce518fce8..c8bfc1e4d618275fb3812af7389b300ce08ecc27 100644
---- a/chrome/browser/resources/md_extensions/item_list.html
-+++ b/chrome/browser/resources/md_extensions/item_list.html
+diff --git a/chrome/browser/resources/extensions/item_list.html b/chrome/browser/resources/extensions/item_list.html
+index 472399917db838154e6433bbdcff7794d1916a8d..479693f146de176296615e5622405dc10cb60129 100644
+--- a/chrome/browser/resources/extensions/item_list.html
++++ b/chrome/browser/resources/extensions/item_list.html
 @@ -7,6 +7,7 @@
  <link rel="import" href="chrome://resources/polymer/v1_0/iron-a11y-announcer/iron-a11y-announcer.html">
  <link rel="import" href="item.html">

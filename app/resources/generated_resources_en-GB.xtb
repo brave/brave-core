@@ -38,10 +38,11 @@
 <translation id="3303855915957856445">No search results found</translation>
 <translation id="8967866634928501045">Press Alt Shift A to show</translation>
 <translation id="998747458861718449">I&amp;nspect</translation>
+<translation id="741204030948306876">Yes, I'm in</translation>
+<translation id="780301667611848630">No, thank you</translation>
 <translation id="3943582379552582368">&amp;Back</translation>
 <translation id="6691936601825168937">&amp;Forward</translation>
 <translation id="3280237271814976245">Save &amp;as...</translation>
-<translation id="2941880727166628951">Send to my devices</translation>
 <translation id="1175364870820465910">&amp;Print...</translation>
 <translation id="8664389313780386848">&amp;View page source</translation>
 <translation id="2889064240420137087">Open link with...</translation>
@@ -93,10 +94,10 @@
 <translation id="1732768497619250086">Get image descriptions from Brave Software</translation>
 <translation id="7561196759112975576">Always</translation>
 <translation id="2241634353105152135">Just once</translation>
-<translation id="741204030948306876">Yes, I'm in</translation>
-<translation id="780301667611848630">No, thank you</translation>
-<translation id="4572259796527554261">Ask Brave Software for suggestions</translation>
-<translation id="3435896845095436175">Enable</translation>
+<translation id="3387614642886316601">Use enhanced spell check</translation>
+<translation id="6992554835374084304">Turn on enhanced spell check</translation>
+<translation id="5860491529813859533">Turn on</translation>
+<translation id="7658239707568436148">Cancel</translation>
 <translation id="8915370057835397490">Loading suggestion</translation>
 <translation id="6191804255817539692">No more suggestions from Brave Software</translation>
 <translation id="1901303067676059328">Select &amp;all</translation>
@@ -107,7 +108,6 @@
 <translation id="6042308850641462728">More</translation>
 <translation id="6268252012308737255">Open with <ph name="APP"/></translation>
 <translation id="5509693895992845810">Save &amp;As...</translation>
-<translation id="3480119035619598820">Send to My Devices</translation>
 <translation id="7421925624202799674">&amp;View Page Source</translation>
 <translation id="1588870296199743671">Open Link With...</translation>
 <translation id="3760460896538743390">Inspect &amp;Background Page</translation>
@@ -149,9 +149,10 @@
 <translation id="4022426551683927403">&amp;Add to Dictionary</translation>
 <translation id="6849870115130610913">Get Image Descriptions from Brave Software</translation>
 <translation id="372722114124766626">Just Once</translation>
-<translation id="8917490105272468696">Yes, I'm In</translation>
+<translation id="4079140982534148664">Use Enhanced Spell Check</translation>
+<translation id="7487141338393529395">Turn on Enhanced Spell Check</translation>
+<translation id="3435896845095436175">Enable</translation>
 <translation id="7473891865547856676">No Thanks</translation>
-<translation id="2867003629889664976">Ask Brave Software for Suggestions</translation>
 <translation id="6264365405983206840">Select &amp;All</translation>
 <translation id="3948116654032448504">&amp;Search <ph name="SEARCH_ENGINE"/> for Image</translation>
 <translation id="2932085390869194046">Suggest password...</translation>
@@ -164,7 +165,7 @@
 <translation id="4423482519432579560">&amp;Spellcheck</translation>
 <translation id="1049795001945932310">&amp;Language settings</translation>
 <translation id="6498249116389603658">&amp;All your languages</translation>
-<translation id="8188120771410500975">&amp;Check the spelling of text fields</translation>
+<translation id="5978277834170881274">Use basic spell check</translation>
 <translation id="4200983522494130825">New &amp;tab</translation>
 <translation id="8418445294933751433">&amp;Show as tab</translation>
 <translation id="1723824996674794290">&amp;New window</translation>
@@ -323,7 +324,9 @@
 <translation id="3916445069167113093">This type of file can harm your computer. Do you want to keep <ph name="FILE_NAME"/> anyway?</translation>
 <translation id="5727728807527375859">Extensions, apps and themes can harm your computer. Are you sure that you want to continue?</translation>
 <translation id="6285120108426285413"><ph name="FILE_NAME"/> is not commonly downloaded and may be dangerous.</translation>
+<translation id="6573998787994398565"><ph name="FILE_NAME"/> is not commonly downloaded and may be dangerous. You're defended by Advanced Protection.</translation>
 <translation id="4907161631261076876">This file is not commonly downloaded and may be dangerous.</translation>
+<translation id="9041909613332246191">This file is not commonly downloaded and may be dangerous. You're defended by Advanced Protection.</translation>
 <translation id="2773802008104670137">This type of file may harm your computer.</translation>
 <translation id="7815680994978050279">Dangerous download blocked</translation>
 <translation id="6141988275892716286">Confirm download</translation>
@@ -343,7 +346,6 @@
 <translation id="8200772114523450471">Resume</translation>
 <translation id="2770465223704140727">Remove from list</translation>
 <translation id="7702574632857388784">Remove <ph name="FILE_NAME"/> from list</translation>
-<translation id="7658239707568436148">Cancel</translation>
 <translation id="7144878232160441200">Retry</translation>
 <translation id="5170568018924773124">Show in folder</translation>
 <translation id="1581962803218266616">Show in Finder</translation>
@@ -358,6 +360,10 @@
 <translation id="495170559598752135">Actions</translation>
 <translation id="3612673635130633812">Downloaded by &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">Downloaded in Incognito</translation>
+<translation id="4551763574344810652">Press <ph name="MODIFIER_KEY_DESCRIPTION"/> to undo</translation>
+<translation id="2079545284768500474">Undo</translation>
+<translation id="2490481887078769936">Removed '<ph name="FILE_NAME"/>' from list</translation>
+<translation id="1429300045468813835">Cleared all</translation>
 <translation id="8028803902702117856">Downloading <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="5632592977009207922">Downloading, <ph name="PERCENT_REMAINING"/>% remaining</translation>
 <translation id="313963229645891001">Downloading, <ph name="STATUS"/></translation>
@@ -418,6 +424,10 @@
 <translation id="3067198179881736288">Install app?</translation>
 <translation id="7072010813301522126">Shortcut name</translation>
 <translation id="3275778913554317645">Open as window</translation>
+<translation id="7193051357671784796">This app was added by your organisation. Restart the app to finish installing it.</translation>
+<translation id="5895138241574237353">Restart</translation>
+<translation id="3479552764303398839">Not now</translation>
+<translation id="1008557486741366299">Not Now</translation>
 <translation id="8201192017531062522">Brave will keep running while Brave Apps are open.</translation>
 <translation id="7397305826909094212">Quit all Brave Apps</translation>
 <translation id="5026874946691314267">Don't show this again</translation>
@@ -750,6 +760,7 @@
 <translation id="5715711091495208045">Plug-in Broker: <ph name="PLUGIN_NAME"/></translation>
 <translation id="3222066309010235055">Prerender: <ph name="PRERENDER_CONTENTS_NAME"/></translation>
 <translation id="6748217015615267851">Renderer: <ph name="RENDERER_URL"/></translation>
+<translation id="2156294658807918600">Service Worker: <ph name="SCRIPT_URL"/></translation>
 <translation id="241082044617551207">Unknown plug-in</translation>
 <translation id="7903925330883316394">Utility: <ph name="UTILITY_TYPE"/></translation>
 <translation id="219008588003277019">Native Client module: <ph name="NEXE_NAME"/></translation>
@@ -773,10 +784,8 @@
 <translation id="4873312501243535625">Media File Checker</translation>
 <translation id="5972666587303800813">No-op Service</translation>
 <translation id="3061707000357573562">Patch Service</translation>
-<translation id="3580923162759633716">Profiling Service</translation>
 <translation id="1914326953223720820">Unzip Service</translation>
 <translation id="1545775234664667895">Installed theme "<ph name="THEME_NAME"/>"</translation>
-<translation id="2079545284768500474">Undo</translation>
 <translation id="2256115617011615191">Restart now</translation>
 <translation id="4545028762441890696">To re-enable it, accept the new permissions:</translation>
 <translation id="3009487527589249344">Brave Software has flagged '<ph name="EXTENSION_NAME"/>' as malicious, and installation has been prevented</translation>
@@ -962,8 +971,8 @@
 <translation id="2643698698624765890">Manage your extensions by clicking Extensions in the Window menu.</translation>
 <translation id="7953955868932471628">Manage shortcuts</translation>
 <translation id="1470811252759861213">To get your extensions on all your computers, <ph name="SIGN_IN_LINK"/>.</translation>
-<translation id="316854673539778496">To get all your extensions on all your devices, sign in and turn on sync.</translation>
-<translation id="8079938625609335826">To get all your extensions on all your devices, turn on sync.</translation>
+<translation id="2490782392574942205">To get your extensions on all your computers, sign in and turn on sync</translation>
+<translation id="3919145445993746351">To get your extensions on all your computers, turn on sync</translation>
 <translation id="4977942889532008999">Confirm Access</translation>
 <translation id="5780011244986845107">The folder that you selected contains sensitive files. Are you sure that you want to grant '<ph name="APP_NAME"/>' permanent read access to this folder?</translation>
 <translation id="5365881113273618889">The folder that you selected contains sensitive files. Are you sure that you want to grant '<ph name="APP_NAME"/>' permanent write access to this folder?</translation>
@@ -982,6 +991,8 @@
 <translation id="220138918934036434">Hide button</translation>
 <translation id="7898627924844766532">Keep in toolbar</translation>
 <translation id="6082651258230788217">Show in toolbar</translation>
+<translation id="7461924472993315131">Pin</translation>
+<translation id="4285498937028063278">Unpin</translation>
 <translation id="8137559199583651773">Manage extensions</translation>
 <translation id="3727187387656390258">Inspect pop-up</translation>
 <translation id="3526034519184079374">Can't Read or Change Site's Data</translation>
@@ -1186,9 +1197,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6690659332373509948">Unable to parse file: <ph name="FILE_NAME"/></translation>
 <translation id="2773288106548584039">Legacy Browser Support</translation>
 <translation id="8141584439523427891">Opening in alternative browser now</translation>
+<translation id="7450761244949417357">Opening in <ph name="ALTERNATIVE_BROWSER_NAME"/> now</translation>
 <translation id="2804043232879091219">The alternative browser could not be opened</translation>
+<translation id="692114467174262153"><ph name="ALTERNATIVE_BROWSER_NAME"/> could not be opened</translation>
 <translation id="1070705170564860382">Opening in alternative browser in <ph name="COUNTDOWN_SECONDS"/> seconds</translation>
+<translation id="3481268647794498892">Opening in <ph name="ALTERNATIVE_BROWSER_NAME"/> in <ph name="COUNTDOWN_SECONDS"/> seconds</translation>
 <translation id="4586275095964870617"><ph name="URL"/> could not be open in an alternative browser. Please contact your system administrator.</translation>
+<translation id="736877393389250337"><ph name="URL"/> could not be open in <ph name="ALTERNATIVE_BROWSER_NAME"/>. Please contact your system administrator.</translation>
 <translation id="465878909996028221">Only http, https and file protocols are supported for browser redirects.</translation>
 <translation id="1962233722219655970">This page uses a Native Client app that doesn't work on your computer.</translation>
 <translation id="7540972813190816353">An error occurred while checking for updates: <ph name="ERROR"/></translation>
@@ -1212,6 +1227,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5867841422488265304">Search or type web address</translation>
 <translation id="2129873093718581193">Search Brave Software or type URL</translation>
 <translation id="6363797201514053536">Search Brave Software or type a URL</translation>
+<translation id="4888839742663123585">Search Brave Software</translation>
 <translation id="6078323886959318429">Add shortcut</translation>
 <translation id="6324916366299863871">Edit shortcut</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1240,6 +1256,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8391712576156218334">Image is unavailable. Try again later.</translation>
 <translation id="1564414980088536597">This image can't be used. Choose a different image.</translation>
 <translation id="385051799172605136">Back</translation>
+<translation id="8033827949643255796">selected</translation>
 <translation id="3497560059572256875">Share Doodle</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Twitter</translation>
@@ -1266,6 +1283,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5939518447894949180">Reset</translation>
 <translation id="5546865291508181392">Find</translation>
 <translation id="833986336429795709">To open this link, choose an app</translation>
+<translation id="192494336144674234">Open with</translation>
+<translation id="9053893665344928494">Remember my choice</translation>
+<translation id="5541687815721799001">Use app</translation>
+<translation id="5340857474604400806">Stay in Brave</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Update is available)</translation>
@@ -1313,7 +1334,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="720715819012336933">{NUM_PAGES,plural, =1{Exit page}other{Exit pages}}</translation>
 <translation id="8093359998839330381"><ph name="PLUGIN_NAME"/> isn't responding</translation>
 <translation id="8393511274964623038">Stop plug-in</translation>
-<translation id="82871696630048499">The web page was reloaded because it ran out of memory.</translation>
 <translation id="5578059481725149024">Auto sign-in</translation>
 <translation id="6810613314571580006">Automatically sign in to websites using stored credentials. When the feature is disabled, you will be asked for confirmation every time before signing in to a website.</translation>
 <translation id="5454166040603940656">with <ph name="PROVIDER"/></translation>
@@ -1364,6 +1384,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8713570323158206935">Send <ph name="BEGIN_LINK1"/>system information<ph name="END_LINK1"/></translation>
 <translation id="6395423953133416962">Send <ph name="BEGIN_LINK1"/>system information<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>metrics<ph name="END_LINK2"/></translation>
 <translation id="6270770586500173387">Send <ph name="BEGIN_LINK1"/>system and app information<ph name="END_LINK1"/>, and <ph name="BEGIN_LINK2"/>metrics<ph name="END_LINK2"/></translation>
+<translation id="3894123633473837029">Include recent Assistant history via Sherlog. This may include your identity, location and debug info. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="8329196515830093443">File will be sent to Brave Software for debugging</translation>
 <translation id="8227119283605456246">Attach file</translation>
 <translation id="5367091008316207019">Reading file..</translation>
@@ -1374,9 +1395,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1483493594462132177">Send</translation>
 <translation id="6885771755599377173">System information preview</translation>
 <translation id="1016566241875885511">Additional info (optional)</translation>
-<translation id="6083886770200509573">Is Brave crashing, showing unusual start-up pages, toolbars or unexpected ads you can't get rid of, or otherwise changing your browsing experience? You may be able to fix the problem by running the Brave Clean-Up Tool.</translation>
-<translation id="7719662019953070946">Download Brave Clean-Up Tool</translation>
-<translation id="8281886186245836920">Skip</translation>
 <translation id="8026334261755873520">Clear browsing data</translation>
 <translation id="7409836189476010449">Run Flash</translation>
 <translation id="4718442817388594217">The selected data has been removed from Brave and synced devices. Your Brave Software Account may have other forms of browsing history such as searches and activity from other Brave Software services at <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1514,7 +1532,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 
   Would you like to start <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="2799223571221894425">Relaunch</translation>
-<translation id="5895138241574237353">Restart</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Platform</translation>
 <translation id="7022562585984256452">Your home page has been set.</translation>
@@ -1554,6 +1571,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6015796118275082299">Year</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
 <translation id="7671130400130574146">Use system title bar and borders</translation>
+<translation id="3775705724665058594">Send to your devices</translation>
+<translation id="6061882183774845124">Send link to your devices</translation>
+<translation id="8249615410597138718">Send to Your Devices</translation>
+<translation id="5310281978693206542">Send Link to Your Devices</translation>
 <translation id="4520385623207007473">Cookies in use</translation>
 <translation id="4763408175235639573">The following cookies were set when you viewed this page</translation>
 <translation id="2719936478972253983">The following cookies were blocked</translation>
@@ -1643,12 +1664,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8371695176452482769">Speak now</translation>
 <translation id="2942560570858569904">Waiting...</translation>
 <translation id="6436164536244065364">View in Web Store</translation>
+<translation id="5258992782919386492">Install on this device</translation>
 <translation id="3331974543021145906">App info</translation>
 <translation id="9121814364785106365">Open as pinned tab</translation>
 <translation id="6920989436227028121">Open as standard tab</translation>
 <translation id="189210018541388520">Open full screen</translation>
 <translation id="6096047740730590436">Open maximised</translation>
 <translation id="7256710573727326513">Open in a tab</translation>
+<translation id="7636919061354591437">Install on this device</translation>
 <translation id="2993517869960930405">App Info</translation>
 <translation id="2867768963760577682">Open as a Pinned Tab</translation>
 <translation id="1390548061267426325">Open as a Standard Tab</translation>
@@ -1685,6 +1708,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> has crashed</translation>
 <translation id="4610162781778310380"><ph name="PLUGIN_NAME"/> has encountered an error</translation>
 <translation id="778330624322499012">Could not load <ph name="PLUGIN_NAME"/></translation>
+<translation id="7438976808740265764">Flash Player will no longer be supported after December 2020.</translation>
 <translation id="3739254215541673094">Open <ph name="APPLICATION"/>?</translation>
 <translation id="2188881192257509750">Open <ph name="APPLICATION"/></translation>
 <translation id="620722923698527029">Always open these types of links in the associated app</translation>
@@ -1929,6 +1953,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8363142353806532503">Microphone blocked</translation>
 <translation id="2762441749940182211">Camera blocked</translation>
 <translation id="5074318175948309511">This page may need to be reloaded before the new settings take effect.</translation>
+<translation id="3325910708063135066">Camera and microphone are turned off in Mac System Preferences</translation>
+<translation id="5383377866517186886">Camera is turned off in Mac System Preferences</translation>
+<translation id="6545867563032584178">Microphone is turned off in Mac System Preferences</translation>
+<translation id="2332192922827071008">Open preferences</translation>
+<translation id="1620510694547887537">Camera</translation>
+<translation id="3227137524299004712">Microphone</translation>
+<translation id="4209251085232852247">Turned off</translation>
+<translation id="2804680522274557040">Camera turned off</translation>
+<translation id="6309510305002439352">Microphone turned off</translation>
 <translation id="8282947398454257691">Know your unique device identifier</translation>
 <translation id="8329449853370113380"><ph name="URL"/> wants to play protected content. Your device’s identity will be verified by Brave Software.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> wants to play protected content. Your device's identity will be verified by Brave Software and may be accessed by this site.</translation>
@@ -1952,7 +1985,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8105368624971345109">Turn Off</translation>
 <translation id="1036348656032585052">Turn off</translation>
 <translation id="3423858849633684918">Please Relaunch <ph name="PRODUCT_NAME"/></translation>
-<translation id="8876215549894133151">Format:</translation>
 <translation id="2294358108254308676">Do you want to install <ph name="PRODUCT_NAME"/>?</translation>
 <translation id="586567932979200359">You're running <ph name="PRODUCT_NAME"/> from its disk image. Installing it on your computer lets you run it without the disk image and ensures that it will be kept up to date.</translation>
 <translation id="4849517651082200438">Don't Install</translation>
@@ -2007,8 +2039,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1712552549805331520"><ph name="URL"/> wants to permanently store data on your local computer</translation>
 <translation id="1997484222658892567"><ph name="URL"/> wants to permanently store large data on your local computer</translation>
 <translation id="7648992873808071793">Store files on this device</translation>
-<translation id="7461924472993315131">Pin</translation>
-<translation id="4285498937028063278">Unpin</translation>
 <translation id="8871551568777368300">Pinned by administrator</translation>
 <translation id="4110895898888439383">Browse the web in high contrast mode</translation>
 <translation id="614940544461990577">Try:</translation>
@@ -2107,6 +2137,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3202173864863109533">This tab's audio is being muted.</translation>
 <translation id="5562781907504170924">This tab is connected to a Bluetooth device.</translation>
 <translation id="5884474295213649357">This tab is connected to a USB device.</translation>
+<translation id="1010498023906173788">This tab is connected to a serial port.</translation>
 <translation id="8466417995783206254">This tab is playing a video in picture-in-picture mode.</translation>
 <translation id="2585724835339714757">This tab is sharing your screen.</translation>
 <translation id="1542514202066550870">This tab is presenting VR content to a headset.</translation>
@@ -2117,6 +2148,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> – Audio muted</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> – Bluetooth device connected</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> – USB device connected</translation>
+<translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> – Serial port connected</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> – Network error</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> – Crashed</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> – Desktop content shared</translation>
@@ -2129,6 +2161,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6459799433792303855">Active window moved to another display.</translation>
 <translation id="6551508934388063976">Command unavailable. Press control-N to open a new window.</translation>
 <translation id="3831486154586836914">Entered window overview mode</translation>
+<translation id="4380648069038809855">Entered full screen</translation>
+<translation id="1766575458646819543">Exited full screen</translation>
 <translation id="8736288397686080465">This site has been updated in the background.</translation>
 <translation id="6945221475159498467">Select</translation>
 <translation id="4130199216115862831">Device Log</translation>
@@ -2145,6 +2179,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8847988622838149491">USB</translation>
 <translation id="5086082738160935172">HID</translation>
 <translation id="4034824040120875894">Printer</translation>
+<translation id="2633764681656412085">FIDO</translation>
 <translation id="2242687258748107519">File Info</translation>
 <translation id="930268624053534560">Detailed Timestamps</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
@@ -2156,8 +2191,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2593289874938379417">Brave does not have access to the requested resource.</translation>
 <translation id="760197030861754408">Go to <ph name="LANDING_PAGE"/> to connect.</translation>
 <translation id="3648348069317717750"><ph name="USB_DEVICE_NAME"/> detected</translation>
-<translation id="2382095919147960379">Connect this device to Linux</translation>
-<translation id="5308380583665731573">Connect</translation>
+<translation id="5042282098504489593">Open Settings to connect <ph name="USB_DEVICE_NAME"/> to Linux</translation>
+<translation id="1072700771426194907">USB device detected</translation>
+<translation id="7830594666202422257">Connect to Linux</translation>
 <translation id="59324397759951282">USB device from <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="8763927697961133303">USB device</translation>
 <translation id="8798099450830957504">Default</translation>
@@ -2180,6 +2216,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3271648667212143903"><ph name="ORIGIN"/> wants to connect</translation>
 <translation id="7945031593909029181">"<ph name="CHROME_EXTENSION_NAME"/>" wants to connect</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
+<translation id="5308380583665731573">Connect</translation>
 <translation id="8480869669560681089">Unknown device from <ph name="VENDOR_NAME"/></translation>
 <translation id="1500297251995790841">Unknown device [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="7003844668372540529">Unknown product <ph name="PRODUCT_ID"/> from <ph name="VENDOR_NAME"/></translation>
@@ -2247,8 +2284,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6009781704028455063">Built-in sensor</translation>
 <translation id="3630132874740063857">Your phone</translation>
 <translation id="6930036377490597025">External security key or built-in sensor</translation>
-<translation id="5567950944308676169">Plug in your security key and activate it</translation>
-<translation id="6648051959475508072">Security key activated...</translation>
+<translation id="51143538739122961">Insert your security key and touch it</translation>
 <translation id="7352651011704765696">Something went wrong</translation>
 <translation id="8514746246728959655">Try a different security key</translation>
 <translation id="8337047789441383384">You already registered this security key. You don't have to register it again.</translation>
@@ -2258,7 +2294,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8379878387931047019">This device doesn't support the type of security key requested by this website</translation>
 <translation id="7135729336746831607">Turn on Bluetooth?</translation>
 <translation id="6176043333338857209">Bluetooth will be temporarily turned on to communicate with your security key</translation>
-<translation id="5860491529813859533">Turn on</translation>
 <translation id="4252899949534773101">Bluetooth is disabled</translation>
 <translation id="8188389033983459049">Check your device settings and turn it on to continue</translation>
 <translation id="6022705094403139349">Ready to pair your security key?</translation>
@@ -2289,9 +2324,26 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4303079906735388947">Set up a new PIN for your security key</translation>
 <translation id="1805967612549112634">Confirm PIN</translation>
 <translation id="4871322859485617074">PIN contains invalid characters</translation>
-<translation id="2344214284954353199">PIN is too short.</translation>
-<translation id="2203484353475059657">Confirmation does not match.</translation>
-<translation id="88870264962436283">Use Touch ID with <ph name="APP_NAME"/></translation>
+<translation id="8896022254727357590">PIN must be at least four characters</translation>
+<translation id="7669825497510425694">{NUM_ATTEMPTS,plural, =1{Incorrect PIN. You have one attempt remaining.}other{Incorrect PIN. You have # attempts remaining.}}</translation>
+<translation id="5078796286268621944">Incorrect PIN</translation>
+<translation id="1233497634904001272">Touch your security key again to complete the request.</translation>
+<translation id="8136269678443988272">The PINs that you entered don’t match</translation>
+<translation id="1136712381129578788">The security key is locked because the wrong PIN was entered too many times. To unlock it, remove and reinsert it.</translation>
+<translation id="3778208826288864398">The security key is locked because the wrong PIN was entered too many times. You’ll need to reset the security key.</translation>
+<translation id="7246230585855757313">Reinsert your security key and try again</translation>
+<translation id="629730747756840877">Account</translation>
+<translation id="3792938779249970121">Select account</translation>
+<translation id="4718490098585891067">Select an account to sign in:</translation>
+<translation id="8734671092194994316">This will leave a record of your visit to <ph name="WEBSITE"/> on your security key.</translation>
+<translation id="8428628598981198790">Your security key can't be used with this site</translation>
+<translation id="4358169392473932247">That security key does not support internal storage of credentials, but that feature was requested.</translation>
+<translation id="7069811530847688087"><ph name="WEBSITE"/> may require a newer or different kind of security key</translation>
+<translation id="3984431586879874039">Allow this site to see your security key?</translation>
+<translation id="8948939328578167195"><ph name="WEBSITE"/> wants to see the make and model of your security key</translation>
+<translation id="7618452966706304788">Do you want to use Touch ID with <ph name="APP_NAME"/> in Incognito mode?</translation>
+<translation id="3098826269712097986">Sign-in data will be stored in Brave after you exit Incognito mode. This will let you use Touch ID with this website again later.</translation>
+<translation id="2172784515318616985">Continue</translation>
 <translation id="5186185447130319458">Incognito</translation>
 <translation id="7643842463591647490">{0,plural, =1{# open window}other{# open windows}}</translation>
 <translation id="2579188629646253712">Exit incognito</translation>
@@ -2385,8 +2437,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3440663250074896476">More actions for <ph name="BOOKMARK_NAME"/></translation>
 <translation id="2903457445916429186">Open selected items</translation>
 <translation id="962802172452141067">Bookmark folder tree</translation>
-<translation id="1338776410427958681">Collapse <ph name="FOLDER_NAME"/></translation>
-<translation id="4467101674048705704">Expand <ph name="FOLDER_NAME"/></translation>
 <translation id="2683638487103917598">Folder sorted</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' deleted</translation>
 <translation id="8271246892936492311">{COUNT,plural, =1{1 bookmark deleted}other{# bookmarks deleted}}</translation>
@@ -2401,12 +2451,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4422347585044846479">Edit bookmark for this page</translation>
 <translation id="4776146737004271126">Open Android settings</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{None}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> and <ph name="APP_2"/>}=3{<ph name="APP_1"/>, <ph name="APP_2"/> and <ph name="APP_3"/>}=4{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> and 1 other app}other{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> and <ph name="EXTRA_APPS"/> other apps}}</translation>
-<translation id="7742008146327708230">Recently opened apps</translation>
-<translation id="1620510694547887537">Camera</translation>
+<translation id="702252130983202758">Your apps</translation>
 <translation id="8831664945713891930">Open Extensions settings</translation>
 <translation id="5138227688689900538">Show less</translation>
 <translation id="5646376287012673985">Location</translation>
-<translation id="3227137524299004712">Microphone</translation>
 <translation id="5270167208902136840">Show <ph name="NUMBER_OF_MORE_APPS"/> more apps</translation>
 <translation id="2482878487686419369">Notifications</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> apps</translation>
@@ -2480,6 +2528,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4159681666905192102">This is an account for kids managed by <ph name="CUSTODIAN_EMAIL"/> and <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Supervised user</translation>
 <translation id="5720705177508910913">Current user</translation>
+<translation id="1850357845349976573">{0,plural, =1{Incognito}other{# open incognito windows}}</translation>
 <translation id="37784332082579802">{0,plural, =1{Incognito}other{Incognito (#)}}</translation>
 <translation id="5070556616376997776">You're incognito</translation>
 <translation id="2199298570273670671">Error</translation>
@@ -2585,6 +2634,24 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3021066826692793094">Butterfly</translation>
 <translation id="3809272675881623365">Rabbit</translation>
 <translation id="4124935795427217608">Unicorn</translation>
+<translation id="5123433949759960244">Basketball</translation>
+<translation id="6876155724392614295">Cycle</translation>
+<translation id="7774365994322694683">Bird</translation>
+<translation id="2771816809568414714">Cheese</translation>
+<translation id="4943368462779413526">Football</translation>
+<translation id="2046702855113914483">Ramen</translation>
+<translation id="1150565364351027703">Sunglasses</translation>
+<translation id="4693155481716051732">Sushi</translation>
+<translation id="2468402215065996499">Tamagotchi</translation>
+<translation id="8391218455464584335">Vinyl</translation>
+<translation id="4804827417948292437">Avocado</translation>
+<translation id="3619115746895587757">Cappuccino</translation>
+<translation id="377050016711188788">Ice-cream</translation>
+<translation id="4330191372652740264">Ice water</translation>
+<translation id="4364327530094270451">Melon</translation>
+<translation id="4779136857077979611">Onigiri</translation>
+<translation id="5068919226082848014">Pizza</translation>
+<translation id="6170470584681422115">Sandwich</translation>
 <translation id="1830550083491357902">Not signed in</translation>
 <translation id="5941153596444580863">Add person</translation>
 <translation id="9149866541089851383">Edit...</translation>
@@ -2645,387 +2712,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6365411474437319296">Add family and friends</translation>
 <translation id="7388044238629873883">You've almost finished!</translation>
 <translation id="8688579245973331962">Don't see your name?</translation>
-<translation id="5788127256798019331">Play files</translation>
-<translation id="174173592514158117">Show all Play folders</translation>
-<translation id="5024856940085636730">An operation is taking longer than expected. Do you want to abort it?</translation>
-<translation id="6205710420833115353">Some operations are taking longer than expected. Do you want to abort them?</translation>
-<translation id="4669606053856530811">Members of '<ph name="SOURCE_NAME"/>' will lose access unless these items are shared with them.</translation>
-<translation id="9035012421917565900">The items cannot be moved back into '<ph name="DESTINATION_NAME"/>', so you won't be able to undo this action.</translation>
-<translation id="9130775360844693113">Members of '<ph name="DESTINATION_NAME"/>' will gain access to these items.</translation>
-<translation id="8834164572807951958">Members of '<ph name="DESTINATION_NAME"/>' will gain access to the copy of these items.</translation>
-<translation id="3236289833370040187">Ownership will be transferred to <ph name="DESTINATION_DOMAIN"/>.</translation>
-<translation id="7765158879357617694">Move</translation>
-<translation id="8249296373107784235">Abort</translation>
-<translation id="6268185425799226387">Brave Software Drive</translation>
-<translation id="4425149324548788773">My Drive</translation>
-<translation id="1786636458339910689">Team Drives</translation>
-<translation id="5010406651457630570">Computers</translation>
-<translation id="8106045200081704138">Shared with me</translation>
-<translation id="6549689063733911810">Recent</translation>
-<translation id="981121421437150478">Offline</translation>
-<translation id="9034924485347205037">Linux files</translation>
-<translation id="9219103736887031265">Images</translation>
-<translation id="6146563240635539929">Videos</translation>
-<translation id="3616113530831147358">Audio</translation>
-<translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Caution:<ph name="END_BOLD"/>  These files are temporary and may be automatically deleted to free up disk space.  <ph name="BEGIN_LINK"/>Learn More<ph name="END_LINK"/></translation>
-<translation id="4873265419374180291"><ph name="NUMBER_OF_BYTES"/> bytes</translation>
-<translation id="4788401404269709922"><ph name="NUMBER_OF_KB"/> KB</translation>
-<translation id="996903396648773764"><ph name="NUMBER_OF_MB"/> MB</translation>
-<translation id="7189874332498648577"><ph name="NUMBER_OF_GB"/> GB</translation>
-<translation id="7827012282502221009"><ph name="NUMBER_OF_TB"/> TB</translation>
-<translation id="1589128298353575783"><ph name="NUMBER_OF_PB"/> PB</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
-<translation id="169515659049020177">Shift</translation>
-<translation id="3924145049010392604">Meta</translation>
-<translation id="6129953537138746214">Space</translation>
-<translation id="8179976553408161302">Enter</translation>
-<translation id="5583640892426849032">Backspace</translation>
-<translation id="174937106936716857">Total file count</translation>
-<translation id="2425665904502185219">Total file size</translation>
-<translation id="1942765061641586207">Image resolution</translation>
-<translation id="4002066346123236978">Title</translation>
-<translation id="4631887759990505102">Artist</translation>
-<translation id="2448312741937722512">Types</translation>
-<translation id="5145331109270917438">Date modified</translation>
-<translation id="8487700953926739672">Available offline</translation>
-<translation id="2230062665678605299">Unable to create folder "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
-<translation id="2163152940313951844">Invalid character: <ph name="CHARACTER_NAME"/></translation>
-<translation id="642282551015776456">This name may not be used as a file or folder name</translation>
-<translation id="2070909990982335904">Names starting with dot are reserved for the system. Please choose another name.</translation>
-<translation id="8456681095658380701">Invalid name</translation>
-<translation id="2943503720238418293">Use a shorter name</translation>
-<translation id="4973523518332075481">Use a name that's <ph name="MAX_LENGTH"/> characters or less</translation>
-<translation id="1307931752636661898">Unable to view Linux files</translation>
-<translation id="5851063901794976166">Nothing to see here...</translation>
-<translation id="3749289110408117711">File name</translation>
-<translation id="3280431534455935878">Preparing</translation>
-<translation id="6607272825297743757">File info</translation>
-<translation id="6395575651121294044"><ph name="NUMBER_OF_FILES"/> items</translation>
-<translation id="2138867954865495510">Unable to open '<ph name="PATH"/>': <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Don't remove your device just yet!<ph name="END_BOLD"/>
-   <ph name="LINE_BREAKS"/>
-   Removing your device while it is in use may cause data loss. Please wait until the operation is over, then eject the device using the Files app.</translation>
-<translation id="5686799162999241776"><ph name="BEGIN_BOLD"/>Can't disconnect from an archive or virtual disk<ph name="END_BOLD"/>
-   <ph name="LINE_BREAKS"/>
-   Close all files on the archive or virtual disk, then try again.</translation>
-<translation id="7794058097940213561">Format device</translation>
-<translation id="8151638057146502721">Configure</translation>
-<translation id="7928710562641958568">Eject device</translation>
-<translation id="7864662577698025113">Add new service</translation>
-<translation id="1943097386230153518">Install new service</translation>
-<translation id="2562685439590298522">Docs</translation>
-<translation id="2925966894897775835">Sheets</translation>
-<translation id="2943400156390503548">Slides</translation>
-<translation id="5649768706273821470">Listen</translation>
-<translation id="4582497162516204941">Install with Linux (Beta)</translation>
-<translation id="4195249722193633765">Install app with Linux (Beta)</translation>
-<translation id="7248671827512403053">Application</translation>
-<translation id="3866249974567520381">Description</translation>
-<translation id="183183971458492120">Loading information...</translation>
-<translation id="8157684860301034423">Failed to retrieve app info.</translation>
-<translation id="5678784840044122290">The Linux application will be available within your Terminal and may also show an icon in your Launcher.</translation>
-<translation id="9213073329713032541">Installation successfully started.</translation>
-<translation id="2782104745158847185">Error installing Linux application</translation>
-<translation id="5911887972742538906">An error occurred during installation of your Linux application.</translation>
-<translation id="942954117721265519">No images in this directory.</translation>
-<translation id="7100897339030255923"><ph name="COUNT"/> items selected</translation>
-<translation id="5177526793333269655">Thumbnail view</translation>
-<translation id="1035094536595558507">Slide view</translation>
-<translation id="7508545000531937079">Slideshow</translation>
-<translation id="1430915738399379752">Print</translation>
-<translation id="38275787300541712">Press Enter when you've finished</translation>
-<translation id="4880520557730313061">Auto-fix</translation>
-<translation id="4924638091161556692">Fixed</translation>
-<translation id="6019169947004469866">Crop</translation>
-<translation id="4372884569765913867">1 x 1</translation>
-<translation id="7576032389798113292">6 x 4</translation>
-<translation id="8157939133946352716">7 x 5</translation>
-<translation id="2661146741306740526">16 x 9</translation>
-<translation id="3007214526293698309">Fix ratio</translation>
-<translation id="7982283708762922719">Height</translation>
-<translation id="4734518477988699048">Input value is invalid.</translation>
-<translation id="3644896802912593514">Width</translation>
-<translation id="3626281679859535460">Brightness</translation>
-<translation id="5061708541166515394">Contrast</translation>
-<translation id="1467432559032391204">Left</translation>
-<translation id="1346748346194534595">Right</translation>
-<translation id="3144126448740580210">DONE</translation>
-<translation id="2453576648990281505">File already exists</translation>
-<translation id="1847880352285315359">Saved</translation>
-<translation id="5158593464696388225">Failed to save image.</translation>
-<translation id="2787047795752739979">Overwrite original</translation>
-<translation id="8775404590947523323">Your edits are saved automatically.<ph name="BREAKS"/>To keep a copy of the original image, untick "Overwrite original"</translation>
-<translation id="7873831373602885875">Cannot save to <ph name="FOLDER_NAME"/>. All edits will be saved to <ph name="DOWNLOADS_FOLDER"/> in the Downloads folder.</translation>
-<translation id="691516599546977041">Cannot save to <ph name="FOLDER_NAME"/>. Edited images will be saved in the Downloads folder.</translation>
-<translation id="8066773524873206594">All edits will be saved to <ph name="DOWNLOADS_FOLDER"/>.</translation>
-<translation id="8153607920959057464">This file could not be displayed.</translation>
-<translation id="6227235786875481728">This file could not be played.</translation>
-<translation id="9154418932169119429">This image is not available offline.</translation>
-<translation id="1844692022597038441">This file is not available offline.</translation>
-<translation id="2929414043040740704">Recovered files from Brave Software Drive</translation>
-<translation id="2085470240340828803">A file named "<ph name="FILENAME"/>" already exists. What do you want to do?</translation>
-<translation id="4801956050125744859">Keep both</translation>
-<translation id="1062407476771304334">Replace</translation>
-<translation id="1556189134700913550">Apply to all</translation>
-<translation id="988685240266037636">A file named '<ph name="FILE_NAME"/>' already exists. Do you want to replace it?</translation>
-<translation id="9038620279323455325">The file named '<ph name="FILE_NAME"/>' already exists. Please choose a different name.</translation>
-<translation id="4212740939091998969">The folder named '<ph name="FOLDER_NAME"/>' already exists. Please choose a different name.</translation>
-<translation id="1497522201463361063">Unable to rename "<ph name="FILE_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5330512191124428349">Get info</translation>
-<translation id="8312871300878166382">Paste into folder</translation>
-<translation id="7040138676081995583">Open with...</translation>
-<translation id="6189412234224385711">Open with <ph name="EXTENSION_NAME"/></translation>
-<translation id="2547921442987553570">Add to <ph name="EXTENSION_NAME"/></translation>
-<translation id="386548886866354912">Pack with <ph name="EXTENSION_NAME"/></translation>
-<translation id="3078461028045006476">Share with <ph name="EXTENSION_NAME"/></translation>
-<translation id="4197674956721858839">Zip selection</translation>
-<translation id="1572585716423026576">Set as wallpaper</translation>
-<translation id="204914487372604757">Create shortcut</translation>
-<translation id="799547531016638432">Remove shortcut</translation>
-<translation id="5494920125229734069">Select all</translation>
-<translation id="7295662345261934369">Share with others</translation>
-<translation id="2001796770603320721">Manage in Drive</translation>
-<translation id="5318819489018851358">Share with Linux</translation>
-<translation id="6806699711453372963">Manage Linux sharing</translation>
-<translation id="7505167922889582512">Show hidden files</translation>
-<translation id="7846076177841592234">Cancel selection</translation>
-<translation id="2377319039870049694">Switch to list view</translation>
-<translation id="3003633581067744647">Switch to thumbnail view</translation>
-<translation id="604001903249547235">Cloud backup</translation>
-<translation id="505639225383557233">Brave OS Cloud backup</translation>
-<translation id="8656896237683963068">Back up your media device’s photos and videos to Brave Software Drive.</translation>
-<translation id="3057861065630527966">Backup your photos and videos</translation>
-<translation id="7730494089396812859">Show Cloud backup details</translation>
-<translation id="2850124913210091882">Back Up</translation>
-<translation id="5731409020711461763">One new photo</translation>
-<translation id="5004584466530475658"><ph name="FILE_COUNT"/> new photos</translation>
-<translation id="6934241953272494177">Scanning your media device…
-    <ph name="LINE_BREAK1"/>
-    <ph name="FILE_COUNT"/> found</translation>
-<translation id="3466147780910026086">Scanning your media device...</translation>
-<translation id="2611866923243604397">All backed up to <ph name="BEGIN_LINK"/>Brave Software Drive!<ph name="END_LINK"/></translation>
-<translation id="3620292326130836921">All backed up!</translation>
-<translation id="1536674585581593431"><ph name="FILE_COUNT"/> found.
-    <ph name="LINE_BREAK1"/>
-    Your Brave Software Drive quota isn't large enough. Additional <ph name="FILE_SIZE"/> needed.
-    <ph name="LINE_BREAK2"/>
-    Try selecting fewer photos.</translation>
-<translation id="2473109739642988997">Your Brave Software Drive quota isn't large enough.</translation>
-<translation id="1148097584170732637"><ph name="FILE_COUNT"/> found.
-    <ph name="LINE_BREAK1"/>
-    Not enough space available in local storage. Additional <ph name="FILE_SIZE"/> needed.
-    <ph name="LINE_BREAK2"/>
-    Try selecting fewer photos.</translation>
-<translation id="2352947182261340447">Not enough space available in local storage.</translation>
-<translation id="1127657192797926968"><ph name="FILE_COUNT"/> found
-    <ph name="LINE_BREAK1"/>
-    Ready to back up to <ph name="BEGIN_LINK"/>Brave Software Drive<ph name="END_LINK"/></translation>
-<translation id="4905417359854579806">Ready to backup <ph name="FILE_COUNT"/></translation>
-<translation id="5029447434471675822">Backing up <ph name="FILE_COUNT"/> to <ph name="BEGIN_LINK"/>Brave Software Drive<ph name="END_LINK"/></translation>
-<translation id="4215448920900139318">Backing up <ph name="FILE_COUNT"/></translation>
-<translation id="2419376816263920133"><ph name="FILE_COUNT"/> photos backed up to <ph name="BEGIN_LINK"/>Brave Software Drive<ph name="END_LINK"/></translation>
-<translation id="2994669386200004489">Couldn't back up <ph name="FILE_NAME"/></translation>
-<translation id="4724850507808590449"><ph name="FILE_COUNT"/> photos backed up</translation>
-<translation id="1351692861129622852">Importing <ph name="FILE_COUNT"/> files...</translation>
-<translation id="117624967391683467">Copying <ph name="FILE_NAME"/>...</translation>
-<translation id="7359359531237882347">Copying <ph name="NUMBER_OF_ITEMS"/> items…</translation>
-<translation id="7627790789328695202">Whoops, <ph name="FILE_NAME"/> already exists. Rename it and try again.</translation>
-<translation id="5691596662111998220">Whoops, <ph name="FILE_NAME"/> no longer exists.</translation>
-<translation id="4336032328163998280">Copy operation failed. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5913638992615760742">Copy operation failed, unexpected error: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="6133173853026656527">Moving <ph name="FILE_NAME"/>...</translation>
-<translation id="7654209398114106148">Moving <ph name="NUMBER_OF_ITEMS"/> items…</translation>
-<translation id="6007237601604674381">Move failed. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1933345018156373194">Move failed, unexpected error: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="3326821416087822643">Zipping <ph name="FILE_NAME"/>...</translation>
-<translation id="1722487484194605434">Zipping <ph name="NUMBER_OF_ITEMS"/> items…</translation>
-<translation id="8810671769985673465">Zipping failed, item exists: '<ph name="FILE_NAME"/>'</translation>
-<translation id="9133055936679483811">Zipping failed. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4973970068702235170">Zipping failed, unexpected error: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="653019979737152879">Syncing <ph name="FILE_NAME"/>...</translation>
-<translation id="8579285237314169903">Syncing <ph name="NUMBER_OF_FILES"/> items...</translation>
-<translation id="8137331602592933310">"<ph name="FILENAME"/>" has been shared with you. You cannot delete it because you do not own it.</translation>
-<translation id="6277279884155292049">Brave Software Drive is not available right now. Uploading will automatically restart once Brave Software Drive is back.</translation>
-<translation id="1114160088213746286">Brave Software Drive was unable to sync "<ph name="FILENAME"/>" right now. Brave Software Drive will try again later.</translation>
-<translation id="4893296294301184587">"<ph name="FILENAME"/>" was not uploaded. There is not enough free space in your Brave Software Drive.</translation>
-<translation id="5163869187418756376">Sharing failed. Please check your connection and try again later.</translation>
-<translation id="656398493051028875">Deleting "<ph name="FILENAME"/>"...</translation>
-<translation id="1047956942837015229">Deleting <ph name="COUNT"/> items...</translation>
-<translation id="6558280019477628686">An error occurred. Some items may not have been deleted.</translation>
-<translation id="3470502288861289375">Copying...</translation>
-<translation id="8669949407341943408">Moving...</translation>
-<translation id="6718273304615422081">Zipping...</translation>
-<translation id="1338950911836659113">Deleting...</translation>
-<translation id="9064939804718829769">Transferring...</translation>
-<translation id="3609785682760573515">Syncing...</translation>
-<translation id="1464724975715666883">1 error.</translation>
-<translation id="3495304270784461826"><ph name="COUNT"/> errors.</translation>
-<translation id="6643016212128521049">Clear</translation>
-<translation id="4988205478593450158">Are you sure that you want to delete '<ph name="FILE_NAME"/>'?</translation>
-<translation id="2225536596944493418">Are you sure that you want to delete <ph name="NUMBER_OF_ITEMS"/> items?</translation>
-<translation id="7953739707111622108">This device cannot be opened because its file system was not recognised.</translation>
-<translation id="3726463242007121105">This device cannot be opened because its file system is not supported.</translation>
-<translation id="3414856743105198592">Formatting the removable media is going to erase all data. Do you wish to continue?</translation>
-<translation id="6287852322318138013">Select an app to open this file</translation>
-<translation id="7268659760406822741">Available services</translation>
-<translation id="5038625366300922036">See more...</translation>
-<translation id="4823651846660089135">Device is read-only</translation>
-<translation id="6346310558342052870">Access restricted</translation>
-<translation id="3780536599611287598">You don't have permission to move files into '<ph name="FOLDER_NAME"/>'.</translation>
-<translation id="1538729222189715449">Opening Linux files...</translation>
-<translation id="1000498691615767391">Select a folder to open</translation>
-<translation id="3353984535370177728">Select a folder to upload</translation>
-<translation id="8569764466147087991">Select a file to open</translation>
-<translation id="9131598836763251128">Select one or more files</translation>
-<translation id="7191454237977785534">Save file as</translation>
-<translation id="3811494700605067549">1 file selected</translation>
-<translation id="6751256176799620176">1 folder selected</translation>
-<translation id="2378075407703503998"><ph name="SELCTED_FILE_COUNT"/> files selected</translation>
-<translation id="6998711733709403587"><ph name="SELCTED_FOLDERS_COUNT"/> folders selected</translation>
-<translation id="4839847978919684242"><ph name="SELCTED_FILES_COUNT"/> items selected</translation>
-<translation id="4969785127455456148">Album</translation>
-<translation id="5700087501958648444">Audio info</translation>
-<translation id="912419004897138677">Codec</translation>
-<translation id="5253070652067921974">Created by</translation>
-<translation id="3437801641691368414">Created time</translation>
-<translation id="8395901698320285466">Dimensions</translation>
-<translation id="8193175696669055101">Device model</translation>
-<translation id="2084108471225856927">Device settings</translation>
-<translation id="303198083543495566">Geography</translation>
-<translation id="5358764674931277">Frame rate</translation>
-<translation id="4309915981827077375">General info</translation>
-<translation id="1249250836236328755">Genre</translation>
-<translation id="7711920809702896782">Image info</translation>
-<translation id="4568854179928172494">Modified time</translation>
-<translation id="943972244133411984">Modified by</translation>
-<translation id="9099674669267916096">Page count</translation>
-<translation id="8294431847097064396">Source</translation>
-<translation id="1363028406613469049">Track</translation>
-<translation id="1775381402323441512">Video info</translation>
-<translation id="3335337277364016868">Year recorded</translation>
-<translation id="5534520101572674276">Calculating size</translation>
-<translation id="3786301125658655746">You are offline</translation>
-<translation id="6150853954427645995">To save this file for offline use, get back online, right-click the file and select the <ph name="OFFLINE_CHECKBOX_NAME"/> option.</translation>
-<translation id="8223479393428528563">To save these files for offline use, get back online, right-click the files and select the <ph name="OFFLINE_CHECKBOX_NAME"/> option.</translation>
-<translation id="3830674330436234648">No playback available.</translation>
-<translation id="1810764548349082891">No preview available</translation>
-<translation id="421017592316736757">You must be online to access this file.</translation>
-<translation id="180035236176489073">You must be online to access these files.</translation>
-<translation id="1190144681599273207">Fetching this file will use approximately <ph name="FILE_SIZE"/> of mobile data.</translation>
-<translation id="7839804798877833423">Fetching these files will use approximately <ph name="FILE_SIZE"/> of mobile data.</translation>
-<translation id="6813005947820333339">Brave Software Drive sync is disabled by default, when using mobile data.</translation>
-<translation id="696203921837389374">Enable syncing over mobile data</translation>
-<translation id="637062427944097960">This file opened on a different desktop. Move to <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>) to view it.</translation>
-<translation id="5330145655348521461">These files opened on a different desktop. Move to <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>) to view it.</translation>
-<translation id="8686213429977032554">This Drive file isn't shared yet</translation>
-<translation id="7850851215703745691">These Drive files aren't shared yet</translation>
-<translation id="1839704667838141620">Change how this file is shared</translation>
-<translation id="1864676585353837027">Change how these files are shared</translation>
-<translation id="197560921582345123">Can edit</translation>
-<translation id="8671210955687109937">Can comment</translation>
-<translation id="799923393800005025">Can view</translation>
-<translation id="7925686952655276919">Do not use mobile data for sync</translation>
-<translation id="7106346894903675391">Buy more storage...</translation>
-<translation id="3549797760399244642">Go to drive.google.com...</translation>
-<translation id="3451154303153932176">Brave Software Drive space left: <ph name="SPACE_AVAILABLE"/>.</translation>
-<translation id="4552678318981539154">Buy more storage</translation>
-<translation id="6990081529015358884">You have run out of space</translation>
-<translation id="5521447721624713749">Brave Software Drive cannot be reached at this time.</translation>
-<translation id="7788080748068240085">To save "<ph name="FILE_NAME"/>" offline you must free up an additional <ph name="TOTAL_FILE_SIZE"/> of space:<ph name="MARKUP_1"/>
-    <ph name="MARKUP_2"/>unpin files that you no longer need to access offline<ph name="MARKUP_3"/>
-    <ph name="MARKUP_4"/>delete files from your Downloads folder<ph name="MARKUP_5"/></translation>
-<translation id="7606199793785990727">Brave Software Drive could not be reached. Please <ph name="BEGIN_LINK"/>log out<ph name="END_LINK"/> and log back in.</translation>
-<translation id="585883343689351092">Welcome to Brave Software Drive!</translation>
-<translation id="6862635236584086457">All files saved in this folder are backed up online automatically</translation>
-<translation id="7220787572447472056"><ph name="MARKUP_1"/>Access files from everywhere, even offline.<ph name="MARKUP_2"/>
-    Files in Brave Software Drive are up to date and available from any device.<ph name="MARKUP_3"/>
-    <ph name="MARKUP_4"/>Keep your files safe.<ph name="MARKUP_5"/>
-    No matter what happens to your device, your files are safely stored in Brave Software Drive.<ph name="MARKUP_6"/>
-    <ph name="MARKUP_7"/>Share, create and collaborate<ph name="MARKUP_8"/>
-    on files with others all in one place.<ph name="MARKUP_9"/></translation>
-<translation id="4878716980734452132">This file type is not supported. Please visit the <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> to find an app that can open this type of file.
-    <ph name="BEGIN_LINK_HELP"/>Learn More<ph name="END_LINK_HELP"/></translation>
-<translation id="6230272341631206186">This file is designed for a PC using Windows software. This is not compatible with your device which runs Brave OS. <ph name="BEGIN_LINK_HELP"/>Find out more<ph name="END_LINK_HELP"/></translation>
-<translation id="3072401511615920367">This file is designed for a computer using Macintosh software. This is not compatible with your device which runs Brave OS. Please search the <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> for a suitable replacement app.<ph name="BEGIN_LINK_HELP"/>Learn More<ph name="END_LINK_HELP"/></translation>
-<translation id="7589661784326793847">Wait just a sec</translation>
-<translation id="3096967955765855393">We're constantly looking for ways to make your browsing safer. Previously, any website could prompt you to add an extension into your browser. In the latest versions of Brave Software Brave, you must explicitly tell Brave that you want to install these extensions by adding them through the Extensions page. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
-<translation id="4892969127351273348">Unable to open with <ph name="APP_NAME"/></translation>
-<translation id="52446585071384036">To open files with <ph name="APP_NAME"/>, first copy to Linux files folder.</translation>
-<translation id="5368191757080475556">Share folder with Linux</translation>
-<translation id="5857774240076772505">Give Linux apps permission to modify files in the <ph name="FOLDER_NAME"/> folder</translation>
-<translation id="2280597422213958082">Give Linux apps permission to modify files in your Brave Software Drive. Changes will sync to your other devices.</translation>
-<translation id="4290535918735525311">1 folder shared with Linux</translation>
-<translation id="2377590462528165447"><ph name="NUMBER_OF_ITEMS"/> folders shared with Linux</translation>
-<translation id="4572815280350369984"><ph name="FILE_TYPE"/> file</translation>
-<translation id="5533102081734025921"><ph name="IMAGE_TYPE"/> image</translation>
-<translation id="2614589611416690597"><ph name="VIDEO_TYPE"/> video</translation>
-<translation id="8042602468072383151"><ph name="AUDIO_TYPE"/> audio</translation>
-<translation id="7799329977874311193">HTML document</translation>
-<translation id="2208158072373999562">Zip archive</translation>
-<translation id="2028997212275086731">RAR archive</translation>
-<translation id="8466234950814670489">Tar archive</translation>
-<translation id="1119069657431255176">Bzip2 compressed tar archive</translation>
-<translation id="6820687829547641339">Gzip compressed tar archive</translation>
-<translation id="8329978297633540474">Plain text</translation>
-<translation id="2887525882758501333">PDF document</translation>
-<translation id="1049926623896334335">Word document</translation>
-<translation id="4784330909746505604">PowerPoint presentation</translation>
-<translation id="8860454412039442620">Excel spreadsheet</translation>
-<translation id="5383943761832211733">Brave Software document</translation>
-<translation id="5924916971643100883">Brave Software spreadsheet</translation>
-<translation id="3667369474859528036">Brave Software Presentation</translation>
-<translation id="3411013849623404696">Brave Software drawing</translation>
-<translation id="7481041283483972362">Brave Software table</translation>
-<translation id="784862457750027723">Brave Software form</translation>
-<translation id="3320425620177764157">Brave Software map</translation>
-<translation id="7452737073539387970">Brave Software site</translation>
-<translation id="4445959220475380548">Brave Software Drive link</translation>
-<translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="1131292764548273687">This file type is not supported. Please visit the Brave Web Store to find an app that can open this type of file.</translation>
-<translation id="9010211493509471179">This file is designed for a computer using Macintosh software. This is not compatible with your device which runs Brave OS. Please search the Brave Web Store for a suitable replacement app.</translation>
-<translation id="5059989099965370411">This file is designed for a PC using Windows software. This is not compatible with your device running Brave OS. Please search the Brave Web Store for a suitable replacement app.</translation>
-<translation id="5833610766403489739">This file has wandered off somewhere. Please check your download location setting and try again.</translation>
-<translation id="3966388904776714213">Audio Player</translation>
-<translation id="3245321423178950146">Unknown Artist</translation>
-<translation id="509429900233858213">An error occurred.</translation>
-<translation id="1864756863218646478">The file could not be found.</translation>
-<translation id="1673103856845176271">The file could not be accessed for security reasons.</translation>
-<translation id="5524517123096967210">The file could not be read.</translation>
-<translation id="1665611772925418501">The file could not be modified.</translation>
-<translation id="1358735829858566124">The file or the directory is not usable.</translation>
-<translation id="8342318071240498787">A file or a directory with the same name already exists.</translation>
-<translation id="8965697826696209160">There is not enough space.</translation>
-<translation id="7126604456862387217">'&lt;b&gt;<ph name="SEARCH_STRING"/>&lt;/b&gt;' - &lt;em&gt;search Drive&lt;/em&gt;</translation>
-<translation id="2888807692577297075">No items match &lt;b&gt;"<ph name="SEARCH_STRING"/>"&lt;/b&gt;</translation>
-<translation id="2843806747483486897">Change default...</translation>
-<translation id="3254434849914415189">Choose the default app for <ph name="FILE_TYPE"/> files:</translation>
-<translation id="8038111231936746805">(default)</translation>
-<translation id="5982621672636444458">Sort options</translation>
-<translation id="2984337792991268709">Today <ph name="TODAY_DAYTIME"/></translation>
-<translation id="8336153091935557858">Yesterday <ph name="YESTERDAY_DAYTIME"/></translation>
-<translation id="1807938677607439181">All files</translation>
-<translation id="240770291734945588"><ph name="SPACE_AVAILABLE"/> available</translation>
-<translation id="6199801702437275229">Waiting for space info...</translation>
-<translation id="6485131920355264772">Failed to retrieve space info</translation>
-<translation id="7748626145866214022">More options available on the action bar. Press Alt + A to focus the action bar.</translation>
-<translation id="2303301624314357662">Opening file <ph name="FILE_NAME"/>.</translation>
-<translation id="2291538123825441971">Opening <ph name="NUMBER_OF_FILES"/> files.</translation>
-<translation id="2305020378527873881"><ph name="VOLUME_NAME"/> has been ejected.</translation>
-<translation id="6710213216561001401">Previous</translation>
-<translation id="1395262318152388157">Seek slider</translation>
-<translation id="4880214202172289027">Volume slider</translation>
-<translation id="7544853251252956727">Shuffle</translation>
-<translation id="8079530767338315840">Repeat</translation>
-<translation id="4158739975813877944">Open play list</translation>
-<translation id="4656293982926141856">This computer</translation>
-<translation id="2676946222714718093">Playing on</translation>
-<translation id="3930521966936686665">Play on</translation>
-<translation id="4732760563705710320">Sorry, this video is not supported by your cast device.</translation>
-<translation id="2672394958563893062">An error occurred. Click to restart from the beginning.</translation>
-<translation id="6827236167376090743">This video will keep playing until the cows come home.</translation>
-<translation id="6248400709929739064">Enable subtitles</translation>
-<translation id="7881969471599061635">Disable subtitles</translation>
 <translation id="4168015872538332605">Some settings belonging to <ph name="PRIMARY_EMAIL"/> are being shared with you. These settings only affect your account when using multiple sign-in.</translation>
 <translation id="1485141095922496924">Version <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
 <translation id="3764314093345384080">Detailed build information</translation>
@@ -3069,7 +2755,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5840822070878669614">Open Brave Web Store</translation>
 <translation id="6073903501322152803">Add accessibility features</translation>
 <translation id="7988355189918024273">Enable accessibility features</translation>
-<translation id="3274899353071794175">If an image doesn’t have a useful description, Brave will provide one for you. Images are scanned by Brave Software.</translation>
+<translation id="5499063270485366718">If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave Software.</translation>
 <translation id="2558896001721082624">Always show accessibility options in the system menu</translation>
 <translation id="7280649757394340890">Text-to-Speech voice settings</translation>
 <translation id="6635956300022133031">Select and customise text-to-speech voices</translation>
@@ -3102,12 +2788,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8710187907779883426">short (1s)</translation>
 <translation id="4305227814872083840">long (2s)</translation>
 <translation id="2860150991415616761">very long (4s)</translation>
-<translation id="5573248369095789351">Dwell action</translation>
-<translation id="2427507373259914951">Left click</translation>
-<translation id="8203795194971602413">Right click</translation>
-<translation id="1999763610967697511">Drag and drop</translation>
-<translation id="8142441511840089262">Double click</translation>
-<translation id="485592688953820832">No action (pause)</translation>
 <translation id="1217668622537098248">Revert to left click after action</translation>
 <translation id="3682824389861648626">Movement threshold</translation>
 <translation id="5511379779384092781">Extra small</translation>
@@ -3122,6 +2802,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="48704129375571883">Add additional features</translation>
 <translation id="7230787553283372882">Customise your text size</translation>
 <translation id="214169863967063661">Open appearance settings</translation>
+<translation id="3616113530831147358">Audio</translation>
 <translation id="6793604637258913070">Highlight the text caret when it appears or moves</translation>
 <translation id="7376553024552204454">Highlight the mouse cursor when it's moving</translation>
 <translation id="4150201353443180367">Display</translation>
@@ -3175,9 +2856,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3819257035322786455">Back Up</translation>
 <translation id="3233271424239923319">Backup Linux apps and files</translation>
 <translation id="184273675144259287">Replace your Linux apps and files with a previous backup</translation>
-<translation id="2200603218210188859">USB device preferences</translation>
-<translation id="2706892089432507937">USB Devices</translation>
-<translation id="5187892128515678283">Share a USB device with Linux by turning the toggle on. Sharing will only last until the device is detached.</translation>
+<translation id="7105390788077117391">USB preferences</translation>
+<translation id="3201422919974259695">Available USB devices will appear here.</translation>
+<translation id="907264006778172906">Give Linux permission to access USB devices. Linux won't remember a USB device once it's removed.</translation>
+<translation id="3661172646479098821">Only Android devices are currently supported.</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Android settings</translation>
 <translation id="4767209642168463274">Install apps and games from Brave Software Play on your Bravebook. &lt;a target='_blank' href='<ph name="URL"/>'&gt;Learn more&lt;/a&gt;</translation>
@@ -3217,6 +2899,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5860033963881614850">Off</translation>
 <translation id="5916664084637901428">On</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> is controlling this setting</translation>
+<translation id="6643016212128521049">Clear</translation>
 <translation id="8465252176946159372">Not valid</translation>
 <translation id="8647834505253004544">Not a valid web address</translation>
 <translation id="7946586320617670168">Origin must be secure</translation>
@@ -3225,6 +2908,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5595485650161345191">Edit address</translation>
 <translation id="6207937957461833379">Country/Region</translation>
 <translation id="4378154925671717803">Phone</translation>
+<translation id="2448312741937722512">Types</translation>
 <translation id="9064275926664971810">Enable Autofill to fill out forms in a single click</translation>
 <translation id="9095253524804455615">Remove</translation>
 <translation id="451515744433878153">Remove</translation>
@@ -3409,6 +3093,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1989112275319619282">Browse</translation>
 <translation id="3625481642044239431">Invalid file selected. Try again.</translation>
 <translation id="2462752602710430187">Added <ph name="PRINTER_NAME"/></translation>
+<translation id="7380768571499464492">Updated <ph name="PRINTER_NAME"/></translation>
 <translation id="9057119625587205566">No printers nearby</translation>
 <translation id="3213187967168344806">Can’t add printer. Restart your computer and try again.</translation>
 <translation id="4052689580269971502">Can’t connect to printer. Check that the printer is turned on and is connected to your Bravebook by Wi-Fi or USB.</translation>
@@ -3537,6 +3222,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8452135315243592079">Missing SIM card</translation>
 <translation id="2617342710774726426">SIM card is locked</translation>
 <translation id="4848518990323155912">Enable SIM card locking (require PIN to use mobile data)</translation>
+<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">Enter SIM PIN</translation>
 <translation id="8431909052837336408">Change SIM PIN</translation>
 <translation id="289644616180464099">SIM Card is locked</translation>
@@ -3548,11 +3234,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1164899421101904659">Enter PIN Unlock Key</translation>
 <translation id="7582582252461552277">Prefer this network</translation>
 <translation id="7469894403370665791">Automatically connect to this network</translation>
+<translation id="4267953847983678297">Automatically connect to mobile network</translation>
 <translation id="7987814697832569482">Always connect through this VPN</translation>
 <translation id="8821045908425223359">Configure IP address automatically</translation>
 <translation id="8986362086234534611">Forget</translation>
 <translation id="7881483672146086348">View Account</translation>
 <translation id="2392369802118427583">Activate</translation>
+<translation id="8151638057146502721">Configure</translation>
 <translation id="5920543303088087579">Connecting to this network is disabled by your administrator</translation>
 <translation id="1235458158152011030">Known networks</translation>
 <translation id="3003144360685731741">Preferred networks</translation>
@@ -3580,7 +3268,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7707922173985738739">Use mobile data</translation>
 <translation id="8944099748578356325">Use the battery more quickly (currently <ph name="BATTERY_PERCENTAGE"/>%)</translation>
 <translation id="3651488188562686558">Disconnect from Wi-Fi</translation>
-<translation id="3479552764303398839">Not now</translation>
 <translation id="7378812711085314936">Get data connection</translation>
 <translation id="3483333858382889684">Let this device find other devices with your Brave Software Account that have a mobile data connection</translation>
 <translation id="5637476008227280525">Mobile data enable</translation>
@@ -3699,11 +3386,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3161522574479303604">All languages</translation>
 <translation id="3312424061798279731">Enabled languages</translation>
 <translation id="3182749001423093222">Spell check</translation>
-<translation id="4441548209689510310">Show spell check options</translation>
-<translation id="4358353773267946514"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/></translation>
-<translation id="3909690856344416952"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/>, and 1 other</translation>
-<translation id="5740331643563157105"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/>, and <ph name="NUM_ADDITIONAL_LANGUAGES"/> others</translation>
-<translation id="3436038974659740746">Customised spelling</translation>
+<translation id="5423829801105537712">Basic spell check</translation>
+<translation id="2564653188463346023">Enhanced spell check</translation>
+<translation id="8944680893327873975">Uses the same spell checker that’s used in Brave Software search. Text that you type in the browser is sent to Brave Software.</translation>
+<translation id="7335974957018254119">Use spell check for</translation>
+<translation id="2469375675106140201">Customise spell check</translation>
 <translation id="2667463864537187133">Manage spell check</translation>
 <translation id="2665394472441560184">Add a new word</translation>
 <translation id="4567772783389002344">Add word</translation>
@@ -3724,13 +3411,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="9038649477754266430">Use a prediction service to load pages more quickly</translation>
 <translation id="7981313251711023384">Preload pages for faster browsing and searching</translation>
 <translation id="2468205691404969808">Uses cookies to remember your preferences, even if you don’t visit those pages</translation>
-<translation id="1641113438599504367">Safe Browsing</translation>
-<translation id="773905249182896430">Protects you and your device from dangerous sites</translation>
-<translation id="8983677657449185470">Help improve Safe Browsing</translation>
-<translation id="199861668945335092">Sends some system information and page content to Brave Software</translation>
-<translation id="490074449735753175">Use a web service to help resolve spelling errors</translation>
-<translation id="3523078749603005179">Smarter spell-checking by sending what you type in the browser to Brave Software</translation>
-<translation id="2564653188463346023">Enhanced spell check</translation>
+<translation id="4991384657077828949">Help improve Brave security</translation>
+<translation id="2875273286298348523">Brave sends the text that you type in the browser to Brave Software</translation>
 <translation id="9079153198295609735">Automatically send usage statistics and crash reports to Brave Software</translation>
 <translation id="5941220456342415404">Automatically send diagnostic and usage data to Brave Software</translation>
 <translation id="918192811481327695">Help improve Brave's features and performance</translation>
@@ -3807,6 +3489,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="16815041330799488">Do not allow sites to see text and images copied to the clipboard</translation>
 <translation id="3668823961463113931">Handlers</translation>
 <translation id="5689516760719285838">Location</translation>
+<translation id="9219103736887031265">Images</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Payment Handlers</translation>
@@ -3832,6 +3515,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8666584013686199826">Ask when a site wants to access USB devices</translation>
 <translation id="6291949900244949761">Ask when a site wants to access USB devices (recommended)</translation>
 <translation id="5336126339807372270">Do not allow any sites to access USB devices</translation>
+<translation id="7638605456503525968">Serial ports</translation>
+<translation id="4085270836953633510">Ask when a site wants to access serial ports</translation>
+<translation id="2322318151094136999">Ask when a site wants to access serial ports (recommended)</translation>
+<translation id="1906828677882361942">Do not allow any sites to access serial ports</translation>
 <translation id="8973557916016709913">Remove zoom level</translation>
 <translation id="1706625117072057435">Zoom levels</translation>
 <translation id="6385543213911723544">Sites can save and read cookie data</translation>
@@ -3847,8 +3534,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2913331724188855103">Allow sites to save and read cookie data (recommended)</translation>
 <translation id="5908769186679515905">Block sites from running Flash</translation>
 <translation id="6096007141921397775">Your Flash settings will be kept until you quit Brave.</translation>
-<translation id="2972642118232180842">Run only important content (recommended)</translation>
-<translation id="7084192839369222683">Run only important content</translation>
 <translation id="8074127646604999664">Allow recently closed sites to finish sending and receiving data</translation>
 <translation id="7062222374113411376">Allow recently closed sites to finish sending and receiving data (recommended)</translation>
 <translation id="5068918910148307423">Do not allow recently closed sites to finish sending and receiving data</translation>
@@ -3912,6 +3597,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4354344420232759511">Sites that you visit will appear here</translation>
 <translation id="3757733214359997190">No sites found</translation>
 <translation id="5763751966069581670">No USB devices found</translation>
+<translation id="1863182668524159459">No serial ports found</translation>
 <translation id="8546541260734613940">[*.]sample.co.uk</translation>
 <translation id="7366415735885268578">Add a site</translation>
 <translation id="5052499409147950210">Edit site</translation>
@@ -3927,7 +3613,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4590324241397107707">Database Storage</translation>
 <translation id="8016266267177410919">Temporary storage</translation>
 <translation id="4175737294868205930">Persistent storage</translation>
-<translation id="6105877918873366097">Last accessed</translation>
 <translation id="1296497012903089238">Certificate Type</translation>
 <translation id="8553342806078037065">Manage other people</translation>
 <translation id="8907706281008466056">Brave Software Profile photo</translation>
@@ -3959,6 +3644,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1987317783729300807">Accounts</translation>
 <translation id="8418661265246754237">Brave Software Accounts</translation>
 <translation id="3297951628821704004">Remove account from this device</translation>
+<translation id="4659077111144409915">Primary account</translation>
 <translation id="3158033540161634471">Set up your fingerprint</translation>
 <translation id="1587907146729660231">Touch the power button with your finger</translation>
 <translation id="176193854664720708">The fingerprint sensor is in the power button. Touch it lightly with any finger.</translation>
@@ -4089,13 +3775,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6586451623538375658">Swap the primary mouse button</translation>
 <translation id="221872881068107022">Reverse scrolling</translation>
 <translation id="1510238584712386396">Launcher</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">Diamond</translation>
 <translation id="89720367119469899">Escape</translation>
+<translation id="5583640892426849032">Backspace</translation>
 <translation id="1951012854035635156">Assistant</translation>
 <translation id="1938351510777341717">External Command</translation>
 <translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">External Meta</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4991420928586866460">Treat top-row keys as function keys</translation>
 <translation id="85486688517848470">Hold the Search key to switch the behaviour of the top-row keys</translation>
 <translation id="4400632832271803360">Hold the Launcher key to switch the behaviour of the top-row keys</translation>
@@ -4155,6 +3845,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7758450972308449809">Adjust the boundaries of your display</translation>
 <translation id="5608580678041221894">Tap the following keys to adjust or move the cropping area</translation>
 <translation id="2822634587701817431">Shrink/Expand</translation>
+<translation id="7765158879357617694">Move</translation>
 <translation id="6801435275744557998">Calibrate touchscreen</translation>
 <translation id="6856623341093082836">Set up and adjust the accuracy of your touchscreen</translation>
 <translation id="4598556348158889687">Storage management</translation>
@@ -4197,6 +3888,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2789927670850159391">Connect your Bravebook with your phone. <ph name="LINK_BEGIN"/>Learn more<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">No eligible devices. <ph name="LINK_BEGIN"/>Find out more<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Waiting for verification. <ph name="LINK_BEGIN"/>Find out more<ph name="LINK_END"/></translation>
+<translation id="6518133107902771759">Verify</translation>
 <translation id="7179187931092694802">Unlock your Bravebook with your phone. <ph name="LINK_BEGIN"/>Find out more<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant Tethering</translation>
 <translation id="6415900369006735853">Connect to the Internet through your phone</translation>
@@ -4248,6 +3940,30 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2992931425024192067">Show all notification content</translation>
 <translation id="8592141010104017453">Don't show notifications at all</translation>
 <translation id="7642778300616172920">Hide sensitive content</translation>
+<translation id="5640133431808313291">Manage security keys</translation>
+<translation id="8509177919508253835">Reset security keys and create PINs</translation>
+<translation id="7652954539215530680">Create a PIN</translation>
+<translation id="8246776524656196770">Protect your security key with a PIN (Personal Identification Number)</translation>
+<translation id="5973605538625120605">Change a PIN</translation>
+<translation id="6242589501614145408">Reset your security key</translation>
+<translation id="1470967055429794975">This will erase all data on the security key, including its PIN</translation>
+<translation id="4670688170798478686">Confirm reset</translation>
+<translation id="1981544341227357861">Remove your security key from your device, then reinsert and touch it.</translation>
+<translation id="714285394257538643">To confirm that you want to reset your security key, touch it again. All credentials stored on the security key and its PIN will be erased.</translation>
+<translation id="4120388883569225797">Can’t reset this security key</translation>
+<translation id="7691077781194517083">Can’t reset this security key. Error <ph name="ERROR_CODE"/>.</translation>
+<translation id="4124823734405044952">Your security key has been reset</translation>
+<translation id="8644655801811752511">Can’t reset this security key. Try resetting the key immediately after inserting it.</translation>
+<translation id="8845164297565101021">Insert and touch your security key to create or change a PIN.</translation>
+<translation id="6957044667612803194">This security key doesn’t support PINs</translation>
+<translation id="7212097698621322584">Enter your current PIN to change it. If you don’t know your PIN, you’ll need to reset the security key, then create a new PIN.</translation>
+<translation id="2637400434494156704">Incorrect PIN. You have one attempt remaining.</translation>
+<translation id="3341699307020049241">Incorrect PIN. You have <ph name="RETRIES"/> attempts remaining.</translation>
+<translation id="2439545803278355377">Enter your new PIN. A PIN must be at least four characters long and can contain letters, numbers and other characters.</translation>
+<translation id="1781291988450150470">Current PIN</translation>
+<translation id="3732530910372558017">PIN must be at most 63 characters</translation>
+<translation id="1307165550267142340">Your PIN was created</translation>
+<translation id="2699911226086014512">PIN operation failed with code <ph name="RETRIES"/>.</translation>
 <translation id="3341703758641437857">Allow access to file URLs</translation>
 <translation id="9003647077635673607">Allow on all websites</translation>
 <translation id="698524779381350301">Automatically allow access on the following sites</translation>
@@ -4270,6 +3986,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6841186874966388268">Errors</translation>
 <translation id="3487007233252413104">anonymous function</translation>
 <translation id="3264582393905923483">Context</translation>
+<translation id="6921104647315081813">Clear activities</translation>
 <translation id="1607139524282324606">Clear entry</translation>
 <translation id="6025215716629925253">Stack Trace</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;1 line not shown&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> lines not shown&gt;}}</translation>
@@ -4290,6 +4007,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6073451960410192870">Stop recording</translation>
 <translation id="8719472795285728850">Listening for extension activities...</translation>
 <translation id="2540449034743108469">Press 'Start' to listen for extension activities</translation>
+<translation id="885246833287407341">API function arguments</translation>
+<translation id="3600051066689725006">Web request info</translation>
+<translation id="5812674658566766066">Expand all</translation>
+<translation id="3115580024857770654">Collapse all</translation>
 <translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Inspect views</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> more...</translation>
@@ -4297,6 +4018,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4854477725773269949">Allow in incognito</translation>
 <translation id="6124650939968185064">The following extensions depend on this extension:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
+<translation id="3866249974567520381">Description</translation>
 <translation id="6508248480704296122">Related to <ph name="NAME_PH"/></translation>
 <translation id="1410197035576869800">App Icon</translation>
 <translation id="3664511988987167893">Extension Icon</translation>
@@ -4308,6 +4030,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7152478047064750137">This extension requires no special permissions</translation>
 <translation id="1004218526896219317">Site access</translation>
 <translation id="7385896526023870365">This extension has no additional site access.</translation>
+<translation id="8294431847097064396">Source</translation>
 <translation id="8523849605371521713">Added by policy</translation>
 <translation id="5087249366037322692">Added by a third party</translation>
 <translation id="6788210894632713004">Unpacked extension</translation>
@@ -4351,12 +4074,14 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1909880997794698664">Are you sure you want to permanently keep this device in kiosk mode?</translation>
 <translation id="1512210426710821809">The only way to undo this is to re-install <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="4472575034687746823">Get started</translation>
+<translation id="8281886186245836920">Skip</translation>
 <translation id="2342740338116612727">Bookmarks added</translation>
 <translation id="7835178595033117206">Bookmark removed</translation>
 <translation id="742130257665691897">Bookmarks removed</translation>
 <translation id="2785008241190445880">Bookmark replaced</translation>
-<translation id="4320948194796820126">Add a bookmark to your email</translation>
+<translation id="5468853758063275923">Brave is your default browser</translation>
 <translation id="2950533317914339731">Add bookmarks to your favourite Brave Software apps</translation>
+<translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">News</translation>
 <translation id="995782501881226248">YouTube</translation>
@@ -4376,10 +4101,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3707821975049107110">Already a Brave user? Sign in</translation>
 <translation id="1573150740912592860">Save your progress</translation>
 <translation id="567643736130151854">Sign in and turn on sync to get your bookmarks, passwords and more on all devices</translation>
-<translation id="8282356762694872144">Continue to your email?</translation>
 <translation id="5939847200023027600">PDF Compositor Service</translation>
 <translation id="725758059478686223">Printing Service</translation>
 <translation id="5877584842898320529">The selected printer is not available or not installed correctly. <ph name="BR"/> Check your printer or try selecting another printer.</translation>
+<translation id="1430915738399379752">Print</translation>
 <translation id="1031362278801463162">Loading preview</translation>
 <translation id="6147020289383635445">Print preview failed.</translation>
 <translation id="7413400642818115607">The selected Brave Software Cloud Print device is no longer supported. <ph name="BR"/> Try setting up the printer in your computer's system settings.</translation>
@@ -4392,6 +4117,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5431318178759467895">Colour</translation>
 <translation id="2050339315714019657">Portrait</translation>
 <translation id="3317459757438853210">Two-sided</translation>
+<translation id="9053563360605707198">Print on both sides</translation>
+<translation id="2996722619877761919">Flip on long edge</translation>
+<translation id="1172750555846831341">Flip on short edge</translation>
 <translation id="4988526792673242964">Pages</translation>
 <translation id="7771452384635174008">Layout</translation>
 <translation id="3303818374450886607">Copies</translation>
@@ -4401,6 +4129,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="5746169159649715125">Save as PDF</translation>
 <translation id="1955272076204612657">Save to Brave Software Drive</translation>
 <translation id="2580924999637585241">Total: <ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
+<translation id="73174032666024687"><ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">sheets of paper</translation>
 <translation id="8813811964357448561">sheet of paper</translation>
 <translation id="8180239481735238521">page</translation>
@@ -4453,6 +4182,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7453008956351770337">By selecting this printer, you are giving the following extension the permission to access your printer:</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> could not communicate with this printer. Make sure that the printer is plugged in and try again.</translation>
 <translation id="6530186581263215931">These settings are enforced by your administrator</translation>
+<translation id="3053273573829329829">Enable user pin</translation>
+<translation id="6922745772873733498">Enter a pin to print</translation>
+<translation id="2396783860772170191">Enter 4-digit pin (0000-9999)</translation>
 <translation id="4994754230098574403">Setting up</translation>
 <translation id="1396139853388185343">Error setting up printer</translation>
 <translation id="2379281330731083556">Print using system dialogue... <ph name="SHORTCUT_KEY"/></translation>
@@ -4469,20 +4201,25 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="79766959863778284">XR Isolated Device Service</translation>
 <translation id="8909833622202089127">Site is tracking your location</translation>
 <translation id="375636864092143889">Site is using your microphone</translation>
-<translation id="310671807099593501">Site is using Bluetooth</translation>
 <translation id="7256069762010468647">Site is using your camera</translation>
 <translation id="7340650977506865820">Site is sharing your screen</translation>
 <translation id="1805738995123446102">Background tab is using your microphone</translation>
-<translation id="1112420131909513020">Background tab is using Bluetooth</translation>
 <translation id="8715480913140015283">Background tab is using your camera</translation>
 <translation id="6155141482566063812">Background tab is sharing your screen</translation>
 <translation id="661907246513853610">Site can track your location</translation>
 <translation id="8991520179165052608">Site can use your microphone</translation>
-<translation id="7681095912841365527">Site can use Bluetooth</translation>
 <translation id="3085412380278336437">Site can use your camera</translation>
 <translation id="9180380851667544951">Site can share your screen</translation>
-<translation id="400314203296796334">Remove headset to block or allow.</translation>
-<translation id="4922897038695506037"><ph name="URL_HOST"/> has requested additional permissions.</translation>
+<translation id="310671807099593501">Site is using Bluetooth</translation>
+<translation id="1112420131909513020">Background tab is using Bluetooth</translation>
+<translation id="7681095912841365527">Site can use Bluetooth</translation>
+<translation id="1484979925941077974">Site is using Bluetooth</translation>
+<translation id="4892229439761351791">Site can use Bluetooth</translation>
+<translation id="6416743254476733475">Allow or block on your computer.</translation>
+<translation id="6124698108608891449">This site needs more permissions.</translation>
+<translation id="6551612971599078809">Site is using USB</translation>
+<translation id="3088052000289932193">Site is using MIDI</translation>
+<translation id="7004402701596653846">Site can use MIDI</translation>
 <translation id="7574650250151586813">To type text, update the Daydream Keyboard app</translation>
 <translation id="983511809958454316">This feature is not supported in VR</translation>
 <translation id="4008291085758151621">Site information is not available in VR</translation>
@@ -4490,6 +4227,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6313641880021325787">EXIT VR</translation>
 <translation id="2670429602441959756">This page contains features not yet supported in VR. Exiting...</translation>
 <translation id="1802687198411089702">The page isn't responding. You can wait for it or exit.</translation>
+<translation id="1041175011127912238">This page isn't responding</translation>
 <translation id="3987938432087324095">Sorry, didn't catch that.</translation>
 <translation id="6923132443355966645">Scroll/Click</translation>
 <translation id="6041155700700864984">Exit Full Screen</translation>

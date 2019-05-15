@@ -38,10 +38,11 @@
 <translation id="3303855915957856445">هیچ نتیجه‌ای برای جستجو یافت نشد</translation>
 <translation id="8967866634928501045">‏Alt Shift A را برای نمایش فشار دهید</translation>
 <translation id="998747458861718449">بازرسی</translation>
+<translation id="741204030948306876">بله، موافقم</translation>
+<translation id="780301667611848630">نه متشکرم</translation>
 <translation id="3943582379552582368">&amp;برگشت</translation>
 <translation id="6691936601825168937">&amp;ارسال کردن</translation>
 <translation id="3280237271814976245">ذخیره &amp;بعنوان</translation>
-<translation id="2941880727166628951">ارسال به دستگاه‌های من</translation>
 <translation id="1175364870820465910">&amp;چاپ...</translation>
 <translation id="8664389313780386848">&amp;مشاهده منبع صفحه</translation>
 <translation id="2889064240420137087">بازکردن پیوند با...</translation>
@@ -93,10 +94,10 @@
 <translation id="1732768497619250086">‏دریافت توضیحات تصویر از Brave Software</translation>
 <translation id="7561196759112975576">همیشه</translation>
 <translation id="2241634353105152135">فقط یک بار</translation>
-<translation id="741204030948306876">بله، موافقم</translation>
-<translation id="780301667611848630">نه متشکرم</translation>
-<translation id="4572259796527554261">‏درخواست از Brave Software برای پیشنهادات</translation>
-<translation id="3435896845095436175">فعال کردن</translation>
+<translation id="3387614642886316601">استفاده از غلط‌گیر املای بهبودیافته</translation>
+<translation id="6992554835374084304">روشن کردن غلط‌گیر املای بهبودیافته</translation>
+<translation id="5860491529813859533">روشن کردن</translation>
+<translation id="7658239707568436148">لغو</translation>
 <translation id="8915370057835397490">در حال بارگیری پیشنهادات</translation>
 <translation id="6191804255817539692">‏پیشنهاد دیگری از Brave Software وجود ندارد</translation>
 <translation id="1901303067676059328">انتخاب &amp;همه</translation>
@@ -107,7 +108,6 @@
 <translation id="6042308850641462728">بیشتر</translation>
 <translation id="6268252012308737255">باز کردن با <ph name="APP"/></translation>
 <translation id="5509693895992845810">ذخیره &amp;به‌عنوان...</translation>
-<translation id="3480119035619598820">ارسال به دستگاه‌های من</translation>
 <translation id="7421925624202799674">&amp;مشاهده منبع صفحه</translation>
 <translation id="1588870296199743671">بازکردن پیوند با...</translation>
 <translation id="3760460896538743390">بازرسی صفحه &amp;پس‌زمینه</translation>
@@ -149,9 +149,10 @@
 <translation id="4022426551683927403">&amp;افزودن به واژه‌نامه</translation>
 <translation id="6849870115130610913">‏دریافت توضیحات تصویر از Brave Software</translation>
 <translation id="372722114124766626">فقط یک‌بار</translation>
-<translation id="8917490105272468696">بله، موافقم</translation>
+<translation id="4079140982534148664">استفاده از غلط‌گیر املای بهبودیافته</translation>
+<translation id="7487141338393529395">روشن کردن غلط‌گیر املای بهبود‌یافته</translation>
+<translation id="3435896845095436175">فعال کردن</translation>
 <translation id="7473891865547856676">نه متشکرم</translation>
-<translation id="2867003629889664976">‏درخواست از Brave Software برای پیشنهادات</translation>
 <translation id="6264365405983206840">انتخاب &amp;همه</translation>
 <translation id="3948116654032448504">&amp;جستجوی <ph name="SEARCH_ENGINE"/> برای تصویر</translation>
 <translation id="2932085390869194046">پیشنهاد گذرواژه…</translation>
@@ -164,7 +165,7 @@
 <translation id="4423482519432579560">&amp;غلط‌گیر املا</translation>
 <translation id="1049795001945932310">&amp;تنظیمات زبان</translation>
 <translation id="6498249116389603658">&amp;همه زبان‌های شما</translation>
-<translation id="8188120771410500975">&amp;بررسی املای فیلدهای نوشتاری</translation>
+<translation id="5978277834170881274">&amp;استفاده از غلط‌گیر املای پایه</translation>
 <translation id="4200983522494130825">&amp;برگه جدید</translation>
 <translation id="8418445294933751433">&amp;نمایش به‌صورت برگه</translation>
 <translation id="1723824996674794290">پنجره &amp;جدید</translation>
@@ -323,7 +324,9 @@
 <translation id="3916445069167113093">این نوع فایل می‌تواند به رایانهٔ شما آسیب برساند. آیا با این وجود می‌خواهید <ph name="FILE_NAME"/> را نگه دارید؟</translation>
 <translation id="5727728807527375859">ممکن است افزونه‌ها برنامه‌ها، و طرح‌های زمینه به رایانهٔ شما صدمه بزنند. آیا مطمئنید می‌خواهید ادامه دهید؟</translation>
 <translation id="6285120108426285413"><ph name="FILE_NAME"/> معمولاً بارگیری نمی‌شود و ممکن است خطرناک باشد.</translation>
+<translation id="6573998787994398565"><ph name="FILE_NAME"/> معمولاً بارگیری نمی‌شود و ممکن است خطرناک باشد. ازطریق «محافظت پیشرفته» حفاظت می‌شوید.</translation>
 <translation id="4907161631261076876">این فایل معمولاً بارگیری نمی‌شود و ممکن است خطرناک باشد.</translation>
+<translation id="9041909613332246191">این فایل معمولاً بارگیری نمی‌شود و ممکن است خطرناک باشد. ازطریق «محافظت پیشرفته» حفاظت می‌شوید.</translation>
 <translation id="2773802008104670137">این نوع فایل ممکن است به رایانه شما صدمه بزند.</translation>
 <translation id="7815680994978050279">بارگیری خطرناک مسدود شد</translation>
 <translation id="6141988275892716286">تأیید بارگیری</translation>
@@ -343,7 +346,6 @@
 <translation id="8200772114523450471">ازسرگیری</translation>
 <translation id="2770465223704140727">حذف از فهرست</translation>
 <translation id="7702574632857388784">برداشتن <ph name="FILE_NAME"/> از فهرست</translation>
-<translation id="7658239707568436148">لغو</translation>
 <translation id="7144878232160441200">سعی مجدد</translation>
 <translation id="5170568018924773124">نمایش در پوشه</translation>
 <translation id="1581962803218266616">‏نمایش در Finder</translation>
@@ -358,6 +360,10 @@
 <translation id="495170559598752135">کنش‌ها</translation>
 <translation id="3612673635130633812">‏بارگیری‌شده توسط &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">دانلود‌شده در ناشناس</translation>
+<translation id="4551763574344810652">برای واگرد، <ph name="MODIFIER_KEY_DESCRIPTION"/> را فشار دهید</translation>
+<translation id="2079545284768500474">واگرد</translation>
+<translation id="2490481887078769936">«<ph name="FILE_NAME"/>» از فهرست برداشته شد</translation>
+<translation id="1429300045468813835">همه موارد پاک شدند</translation>
 <translation id="8028803902702117856">درحال بارگیری <ph name="SIZE"/>، <ph name="FILE_NAME"/></translation>
 <translation id="5632592977009207922">درحال بارگیری، <ph name="PERCENT_REMAINING"/>% باقی‌مانده است</translation>
 <translation id="313963229645891001">درحال بارگیری، <ph name="STATUS"/></translation>
@@ -418,6 +424,10 @@
 <translation id="3067198179881736288">برنامه نصب شود؟</translation>
 <translation id="7072010813301522126">نام میان‌بر</translation>
 <translation id="3275778913554317645">باز کردن به‌عنوان پنجره</translation>
+<translation id="7193051357671784796">این برنامه توسط سازمانتان اضافه شده است. برای تکمیل نصب، برنامه را بازراه‌اندازی کنید.</translation>
+<translation id="5895138241574237353">راه‌اندازی مجدد</translation>
+<translation id="3479552764303398839">اکنون نه</translation>
+<translation id="1008557486741366299">اکنون نه</translation>
 <translation id="8201192017531062522">‏وقتی برنامه‌های Brave باز هستند، Brave همچنان اجرا می‌شود.</translation>
 <translation id="7397305826909094212">‏خروج از همه برنامه‌های Brave</translation>
 <translation id="5026874946691314267">این مورد دیگر نشان داده نشود.</translation>
@@ -750,6 +760,7 @@
 <translation id="5715711091495208045">واسطه افزایه:‌ <ph name="PLUGIN_NAME"/></translation>
 <translation id="3222066309010235055">پیش رندر: <ph name="PRERENDER_CONTENTS_NAME"/></translation>
 <translation id="6748217015615267851">تولید‌کننده تصویر: <ph name="RENDERER_URL"/></translation>
+<translation id="2156294658807918600">عامل خدماتی: <ph name="SCRIPT_URL"/></translation>
 <translation id="241082044617551207">افزایه ناشناس</translation>
 <translation id="7903925330883316394">ابزار: <ph name="UTILITY_TYPE"/></translation>
 <translation id="219008588003277019">‏ماژول Native Client: <ph name="NEXE_NAME"/></translation>
@@ -773,10 +784,8 @@
 <translation id="4873312501243535625">بررسی‌کننده فایل رسانه‌ای</translation>
 <translation id="5972666587303800813">سرویس غیرفعال</translation>
 <translation id="3061707000357573562">سرویس وصله</translation>
-<translation id="3580923162759633716">سرویس نمایه‌سازی</translation>
 <translation id="1914326953223720820">سرویس خارج کردن از فشرده‌سازی</translation>
 <translation id="1545775234664667895">طرح زمینه نصب شده "<ph name="THEME_NAME"/>"</translation>
-<translation id="2079545284768500474">واگرد</translation>
 <translation id="2256115617011615191">راه‌اندازی مجدد در این لحظه</translation>
 <translation id="4545028762441890696">برای دوباره فعال کردن آن، مجوزهای جدید را بپذیرید:</translation>
 <translation id="3009487527589249344">‏‫Brave Software‏ «<ph name="EXTENSION_NAME"/>» را به عنوان برنامه مخرب پرچم‌‌گذاری کرده است و از نصب آن جلوگیری شده است</translation>
@@ -961,8 +970,8 @@
 <translation id="2643698698624765890">با کلیک کردن روی افزونه‌ها در منوی پنجره، برنامه‌های افزودنی نصب شده خود را مدیریت کنید.</translation>
 <translation id="7953955868932471628">مدیریت میان‌برها</translation>
 <translation id="1470811252759861213">برای دریافت افزونه‌هایتان در همه رایانه‌هایتان، <ph name="SIGN_IN_LINK"/>.</translation>
-<translation id="316854673539778496">برای اینکه همه افزونه‌هایتان را در همه دستگاه‌ها دریافت کنید، به سیستم وارد شوید و همگام‌سازی را روشن کنید.</translation>
-<translation id="8079938625609335826">برای اینکه همه افزونه‌هایتان را در همه دستگاه‌ها دریافت کنید، همگام‌سازی را روشن کنید.</translation>
+<translation id="2490782392574942205">برای دریافت افزونه‌ها در همه رایانه‌هایتان، به سیستم وارد شوید و همگام‌سازی را روشن کنید</translation>
+<translation id="3919145445993746351">برای دریافت افزونه‌ها در همه رایانه‌هایتان، همگام‌سازی را روشن کنید</translation>
 <translation id="4977942889532008999">تأیید دسترسی</translation>
 <translation id="5780011244986845107">پوشه‌ای که انتخاب کرده‌اید حاوی فایل‌های حساسی است. آیا مطمئنید می‌خواهید به «<ph name="APP_NAME"/>» دسترسی دائم خواندن این پوشه را بدهید؟</translation>
 <translation id="5365881113273618889">پوشه‌ای که انتخاب کرده‌اید حاوی فایل‌های حساسی است. آیا مطمئنید می‌خواهید به «<ph name="APP_NAME"/>» دسترسی دائم نوشتن این پوشه را بدهید؟</translation>
@@ -981,6 +990,8 @@
 <translation id="220138918934036434">دکمه پنهان کردن</translation>
 <translation id="7898627924844766532">نگه داشتن در نوار ابزار</translation>
 <translation id="6082651258230788217">نمایش در نوار ابزار</translation>
+<translation id="7461924472993315131">پین</translation>
+<translation id="4285498937028063278">لغو پین</translation>
 <translation id="8137559199583651773">مدیریت افزونه‌ها</translation>
 <translation id="3727187387656390258">بازرسی پنجره بازشو</translation>
 <translation id="3526034519184079374">خواندن داده‌های سایت یا تغییر آن‌ها امکان‌پذیر نیست</translation>
@@ -1185,9 +1196,13 @@
 <translation id="6690659332373509948">این فایل تجزیه نمی‌شود: <ph name="FILE_NAME"/></translation>
 <translation id="2773288106548584039">پشتیبانی از مرورگر قدیمی</translation>
 <translation id="8141584439523427891">اکنون باز کردن در مرورگر جایگزین</translation>
+<translation id="7450761244949417357">اکنون درحال باز کردن در <ph name="ALTERNATIVE_BROWSER_NAME"/></translation>
 <translation id="2804043232879091219">مرورگر جایگزین باز نشد</translation>
+<translation id="692114467174262153"><ph name="ALTERNATIVE_BROWSER_NAME"/> باز نشد</translation>
 <translation id="1070705170564860382">باز کردن در مرورگر جایگزین پس از<ph name="COUNTDOWN_SECONDS"/> ثانیه دیگر</translation>
+<translation id="3481268647794498892">درحال باز شدن در <ph name="ALTERNATIVE_BROWSER_NAME"/> در<ph name="COUNTDOWN_SECONDS"/> ثانیه</translation>
 <translation id="4586275095964870617"><ph name="URL"/> نمی‌تواند در مرورگر جایگزینی باز شود. لطفاً با سرپرست سیستم تماس بگیرید.</translation>
+<translation id="736877393389250337"><ph name="URL"/> در <ph name="ALTERNATIVE_BROWSER_NAME"/> باز نشد. لطفاً با سرپرست سیستم تماس بگیرید.</translation>
 <translation id="465878909996028221">‏فقط پروتکل‌های فایل، http و https برای ویژگی هدایت کردن مرورگر پشتیبانی می‌شوند.</translation>
 <translation id="1962233722219655970">‏این صفحه از برنامه Native Client استفاده می‌کند که روی رایانه شما کار نمی‌کند.</translation>
 <translation id="7540972813190816353">در هنگام بررسی برای وجود به‌روزرسانی خطایی رخ داد: <ph name="ERROR"/></translation>
@@ -1211,6 +1226,7 @@
 <translation id="5867841422488265304">نشانی وب را جستجو یا تایپ کنید</translation>
 <translation id="2129873093718581193">‏در Brave Software جستجو کنید یا نشانی وب را تایپ کنید</translation>
 <translation id="6363797201514053536">‏جستجوی Brave Software یا تایپ نشانی وب</translation>
+<translation id="4888839742663123585">‏جستجو در Brave Software</translation>
 <translation id="6078323886959318429">افزودن میان‌بر</translation>
 <translation id="6324916366299863871">ویرایش میان‌بر</translation>
 <translation id="4405117686468554883">‏‎*.jpeg،‏ ‎*.jpg،‏ ‎*.png</translation>
@@ -1239,6 +1255,7 @@
 <translation id="8391712576156218334">تصویر دردسترس نیست. بعداً دوباره امتحان کنید.</translation>
 <translation id="1564414980088536597">از این تصویر نمی‌توان استفاده کرد. تصویر دیگری انتخاب کنید.</translation>
 <translation id="385051799172605136">بازگشت</translation>
+<translation id="8033827949643255796">انتخاب شد</translation>
 <translation id="3497560059572256875">‏هم‌رسانی Doodle</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Twitter</translation>
@@ -1265,6 +1282,10 @@
 <translation id="5939518447894949180">بازنشانی</translation>
 <translation id="5546865291508181392">یافتن</translation>
 <translation id="833986336429795709">برای باز کردن این پیوند، برنامه‌ای انتخاب کنید</translation>
+<translation id="192494336144674234">باز کردن با</translation>
+<translation id="9053893665344928494">انتخاب من به خاطر سپرده شود</translation>
+<translation id="5541687815721799001">استفاده از برنامه</translation>
+<translation id="5340857474604400806">‏ماندن در Brave</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ناشناس)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (به‌روزرسانی موجود است)</translation>
@@ -1312,7 +1333,6 @@
 <translation id="720715819012336933">{NUM_PAGES,plural, =1{خروج از صفحه}one{خروج از صفحه‌ها}other{خروج از صفحه‌ها}}</translation>
 <translation id="8093359998839330381"><ph name="PLUGIN_NAME"/> پاسخ نمی‌دهد</translation>
 <translation id="8393511274964623038">توقف افزایه</translation>
-<translation id="82871696630048499">صفحه وب تازه‌سازی شد زیرا با کمبود حافظه روبرو شد.</translation>
 <translation id="5578059481725149024">ورود به سیستم خودکار</translation>
 <translation id="6810613314571580006">با استفاده از اعتبارنامه‌های ذخیره‌شده، به‌طور خودکار به سیستم وب‌سایت‌ها وارد شوید. وقتی این قابلیت غیرفعال است، هر بار قبل از وارد شدن به وب‌سایت از شما برای تأیید اطلاعات درخواست می‌شود.</translation>
 <translation id="5454166040603940656">با <ph name="PROVIDER"/></translation>
@@ -1363,6 +1383,7 @@
 <translation id="8713570323158206935">ارسال <ph name="BEGIN_LINK1"/>اطلاعات سیستم<ph name="END_LINK1"/></translation>
 <translation id="6395423953133416962">ارسال <ph name="BEGIN_LINK1"/>اطلاعات سیستم<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>معیارها<ph name="END_LINK2"/></translation>
 <translation id="6270770586500173387">ارسال <ph name="BEGIN_LINK1"/>اطلاعات برنامه و سیستم<ph name="END_LINK1"/> و <ph name="BEGIN_LINK2"/>معیارها<ph name="END_LINK2"/></translation>
+<translation id="3894123633473837029">‏شامل سابقه اخیر «دستیار» ازطریق Sherlog می‌شود. این مورد ممکن است شامل هویت، مکان، و اطلاعات اشکال‌زدایی شما شود <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
 <translation id="8329196515830093443">‏فایل برای اشکال‌زدایی به Brave Software ارسال خواهد شد</translation>
 <translation id="8227119283605456246">پیوست کردن فایل</translation>
 <translation id="5367091008316207019">درحال خواندن فایل ...</translation>
@@ -1373,9 +1394,6 @@
 <translation id="1483493594462132177">ارسال</translation>
 <translation id="6885771755599377173">پیش‌نمایش اطلاعات سیستم</translation>
 <translation id="1016566241875885511">اطلاعات تکمیلی (اختیاری)</translation>
-<translation id="6083886770200509573">‏آیا Brave خراب می‌شود، صفحات شروع، نوارابزار غیرمعمول یا آگهی‌های ناخواسته‌ای نشان می‌دهد که نمی‌توانید از شرشان خلاص شوید یا به روش دیگری تجربه مرور شما را تغییر می‌دهد؟ ممکن است با اجرای «ابزار پاک‌سازی Brave»، بتوانید این مشکل را رفع کنید.</translation>
-<translation id="7719662019953070946">‏بارگیری ابزار پاک‌سازی Brave</translation>
-<translation id="8281886186245836920">رد شدن</translation>
 <translation id="8026334261755873520">پاک کردن داده‌های مرور</translation>
 <translation id="7409836189476010449">‏اجرای Flash</translation>
 <translation id="4718442817388594217">‏داده‌های انتخاب‌شده از Brave و دستگاه‌های همگام‌سازی‌شده برداشته شده‌اند. ممکن است حساب Brave Software شما در <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/> شکل‌های دیگری از سابقه مرور (مانند جستجوها و فعالیت از سایر سرویس‌های Brave Software) داشته باشد.</translation>
@@ -1513,7 +1531,6 @@
 
   آیا می‌خواهید <ph name="CONTROL_PANEL_APPLET_NAME"/> را شروع کنید؟</translation>
 <translation id="2799223571221894425">راه‌اندازی مجدد</translation>
-<translation id="5895138241574237353">راه‌اندازی مجدد</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">پلت فورم</translation>
 <translation id="7022562585984256452">صفحه اصلی شما تنظیم شد.</translation>
@@ -1553,6 +1570,10 @@
 <translation id="6015796118275082299">سال</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
 <translation id="7671130400130574146">استفاده از نوار عنوان سیستم و مرزها</translation>
+<translation id="3775705724665058594">ارسال به دستگاه‌هایتان</translation>
+<translation id="6061882183774845124">ارسال پیوند به دستگاه‌هایتان</translation>
+<translation id="8249615410597138718">ارسال به دستگاه‌هایتان</translation>
+<translation id="5310281978693206542">ارسال پیوند به دستگاه‌هایتان</translation>
 <translation id="4520385623207007473">کوکی‌های درحال استفاده</translation>
 <translation id="4763408175235639573">وقتی این صفحه را مشاهده کردید، کوکی‌های زیر تنظیم شدند</translation>
 <translation id="2719936478972253983">کوکی‌های زیر مسدود شدند</translation>
@@ -1642,12 +1663,14 @@
 <translation id="8371695176452482769">اکنون صحبت کنید</translation>
 <translation id="2942560570858569904">درحال انتظار…</translation>
 <translation id="6436164536244065364">نمایش در فروشگاه وب</translation>
+<translation id="5258992782919386492">نصب در این دستگاه</translation>
 <translation id="3331974543021145906">اطلاعات برنامه</translation>
 <translation id="9121814364785106365">باز کردن به‌عنوان برگه الصاق شده</translation>
 <translation id="6920989436227028121">باز کردن به‌عنوان برگه عادی</translation>
 <translation id="189210018541388520">باز کردن تمام صفحه</translation>
 <translation id="6096047740730590436">باز کردن در حداکثر اندازه</translation>
 <translation id="7256710573727326513">باز کردن در برگه</translation>
+<translation id="7636919061354591437">نصب در این دستگاه</translation>
 <translation id="2993517869960930405">اطلاعات برنامه</translation>
 <translation id="2867768963760577682">بازکردن به‌عنوان برگه پین شده</translation>
 <translation id="1390548061267426325">بازکردن به‌عنوان برگه عادی</translation>
@@ -1684,6 +1707,7 @@
 <translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> خراب شده است</translation>
 <translation id="4610162781778310380"><ph name="PLUGIN_NAME"/> با خطایی مواجه شده است</translation>
 <translation id="778330624322499012"><ph name="PLUGIN_NAME"/> بارگیری نشد</translation>
+<translation id="7438976808740265764">‏Flash Player دیگر پس از دسامبر ۲۰۲۰ پشتیبانی نمی‌شود.</translation>
 <translation id="3739254215541673094"><ph name="APPLICATION"/> باز شود؟</translation>
 <translation id="2188881192257509750">باز کردن <ph name="APPLICATION"/></translation>
 <translation id="620722923698527029">همیشه این نوع پیوندها در برنامه مرتبط باز شوند</translation>
@@ -1928,6 +1952,15 @@
 <translation id="8363142353806532503">میکروفون مسدود شده است</translation>
 <translation id="2762441749940182211">دوربین مسدود شده است</translation>
 <translation id="5074318175948309511">شاید لازم باشد که این صفحه قبل از اعمال شدن تنظیمات جدید، بارگذاری مجدد شود.</translation>
+<translation id="3325910708063135066">‏در «تنظیمات برگزیده سیستم Mac»، دوربین و میکروفون خاموش‌اند</translation>
+<translation id="5383377866517186886">‏در «تنظیمات برگزیده سیستم Mac»، دوربین خاموش است</translation>
+<translation id="6545867563032584178">‏در «تنظیمات برگزیده سیستم Mac»، میکروفون خاموش است</translation>
+<translation id="2332192922827071008">باز کردن اولویت‌ها</translation>
+<translation id="1620510694547887537">دوربین</translation>
+<translation id="3227137524299004712">میکروفن</translation>
+<translation id="4209251085232852247">خاموش</translation>
+<translation id="2804680522274557040">دوربین خاموش است</translation>
+<translation id="6309510305002439352">میکروفون خاموش است</translation>
 <translation id="8282947398454257691">شناسه یکتای دستگاهتان را بداند</translation>
 <translation id="8329449853370113380">‏<ph name="URL"/> می‌خواهد محتوای محافظت‌شده را پخش کند. Brave Software هویت دستگاهتان را به تأیید می‌رساند.</translation>
 <translation id="2650609753175229582">‏<ph name="URL"/> می‌خواهد محتوای محافظت‌شده پخش کند. هویت دستگاهتان توسط Brave Software به‌تأیید می‌رسد و ممکن است این سایت به آن دسترسی داشته باشد.</translation>
@@ -1951,7 +1984,6 @@
 <translation id="8105368624971345109">خاموش کردن</translation>
 <translation id="1036348656032585052">خاموش کردن</translation>
 <translation id="3423858849633684918">لطفاً <ph name="PRODUCT_NAME"/> را مجدداً راه‌اندازی کنید</translation>
-<translation id="8876215549894133151">قالب:</translation>
 <translation id="2294358108254308676">آیا می‌خواهید <ph name="PRODUCT_NAME"/> را نصب کنید؟</translation>
 <translation id="586567932979200359">شما <ph name="PRODUCT_NAME"/> را از تصویر دیسک آن اجرا می‌کنید. با نصب آن روی رایانه می‌توانید آن را بدون تصویر دیسک اجرا کنید، و مطمئن شوید که به روز نگه داشته خواهد شد.</translation>
 <translation id="4849517651082200438">نصب نشود</translation>
@@ -2006,8 +2038,6 @@
 <translation id="1712552549805331520"><ph name="URL"/> می‌خواهد داده‌ها را برای همیشه در رایانه محلی‌تان ذخیره کند</translation>
 <translation id="1997484222658892567"><ph name="URL"/> می‌خواهد داده‌های بزرگ را برای همیشه در رایانه محلی‌تان ذخیره کند</translation>
 <translation id="7648992873808071793">ذخیره کردن فایل در این دستگاه</translation>
-<translation id="7461924472993315131">پین</translation>
-<translation id="4285498937028063278">لغو پین</translation>
 <translation id="8871551568777368300">پین‌شده توسط سرپرست</translation>
 <translation id="4110895898888439383">مرور وب در حالت کنتراست بالا</translation>
 <translation id="614940544461990577">این موارد را امتحان کنید:</translation>
@@ -2106,6 +2136,7 @@
 <translation id="3202173864863109533">صدای این برگه قطع شده است.</translation>
 <translation id="5562781907504170924">این برگه به دستگاه بلوتوث متصل است.</translation>
 <translation id="5884474295213649357">‏این برگه به دستگاه USB متصل است.</translation>
+<translation id="1010498023906173788">این برگه به درگاه سریال متصل است.</translation>
 <translation id="8466417995783206254">این برگه درحال پخش ویدیو در حالت تصویردرتصویر است.</translation>
 <translation id="2585724835339714757">این برگه درحال اشتراک‌گذاری صفحه‌نمایش شماست.</translation>
 <translation id="1542514202066550870">‏این برگه محتوای VR را به هدست ارائه می‌دهد.</translation>
@@ -2116,6 +2147,7 @@
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> - بی‌صدا شده است</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> - دستگاه بلوتوث متصل شد</translation>
 <translation id="6026819612896463875">‏<ph name="WINDOW_TITLE"/> - دستگاه USB متصل است</translation>
+<translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> - متصل به درگاه سریال</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> - خطای شبکه</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> - خراب شد</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> - محتوای میز کار هم‌رسانی می‌شود</translation>
@@ -2128,6 +2160,8 @@
 <translation id="6459799433792303855">پنجره فعال به نمایشگر دیگری منتقل شد.</translation>
 <translation id="6551508934388063976">‏فرمان در دسترس نیست. برای باز کردن پنجره‌ای جدید، Control-N را فشار دهید.</translation>
 <translation id="3831486154586836914">وارد حالت مرور کلی پنجره شدید</translation>
+<translation id="4380648069038809855">حالت تمام‌صفحه فعال شد</translation>
+<translation id="1766575458646819543">از حالت تمام‌صفحه خارج شد</translation>
 <translation id="8736288397686080465">این سایت در پس‌زمینه به‌روزرسانی شده است.</translation>
 <translation id="6945221475159498467">انتخاب</translation>
 <translation id="4130199216115862831">گزارش دستگاه</translation>
@@ -2144,6 +2178,7 @@
 <translation id="8847988622838149491">USB</translation>
 <translation id="5086082738160935172">HID</translation>
 <translation id="4034824040120875894">چاپگر</translation>
+<translation id="2633764681656412085">FIDO</translation>
 <translation id="2242687258748107519">اطلاعات فایل</translation>
 <translation id="930268624053534560">مهرهای زمان با جزئیات</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
@@ -2155,8 +2190,9 @@
 <translation id="2593289874938379417">‏Brave به منبع درخواستی دسترسی ندارد.</translation>
 <translation id="760197030861754408">رفتن به <ph name="LANDING_PAGE"/> جهت اتصال.</translation>
 <translation id="3648348069317717750"><ph name="USB_DEVICE_NAME"/> شناسایی شد</translation>
-<translation id="2382095919147960379">‏اتصال این دستگاه به Linux</translation>
-<translation id="5308380583665731573">اتصال</translation>
+<translation id="5042282098504489593">‏برای اتصال <ph name="USB_DEVICE_NAME"/> به Linux، «تنظیمات» را باز کنید</translation>
+<translation id="1072700771426194907">‏دستگاه USB شناسایی شد</translation>
+<translation id="7830594666202422257">‏اتصال به Linux</translation>
 <translation id="59324397759951282">‏دستگاه USB ساخت <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="8763927697961133303">‏دستگاه USB</translation>
 <translation id="8798099450830957504">پیش‌فرض</translation>
@@ -2179,6 +2215,7 @@
 <translation id="3271648667212143903"><ph name="ORIGIN"/> می‌خواهد مرتبط شود</translation>
 <translation id="7945031593909029181">«<ph name="CHROME_EXTENSION_NAME"/>» می‌خواهد مرتبط شود</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
+<translation id="5308380583665731573">اتصال</translation>
 <translation id="8480869669560681089">دستگاه نامشخص از <ph name="VENDOR_NAME"/></translation>
 <translation id="1500297251995790841">دستگاه نامشخص [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="7003844668372540529">محصول نامشخص <ph name="PRODUCT_ID"/> از <ph name="VENDOR_NAME"/></translation>
@@ -2246,8 +2283,7 @@
 <translation id="6009781704028455063">حسگر داخلی</translation>
 <translation id="3630132874740063857">تلفن شما</translation>
 <translation id="6930036377490597025">کلید امنیتی خارجی یا حسگر داخلی</translation>
-<translation id="5567950944308676169">کلید امنیتی‌تان را وصل و فعال کنید</translation>
-<translation id="6648051959475508072">کلید امنیتی فعال شد...</translation>
+<translation id="51143538739122961">کلید امنیتی را وارد و لمس کنید</translation>
 <translation id="7352651011704765696">مشکلی پیش آمد</translation>
 <translation id="8514746246728959655">کلید امنیتی دیگری را امتحان کنید</translation>
 <translation id="8337047789441383384">قبلاً این کلید امنیتی را ثبت کرده‌اید. لازم نیست آن را دوباره ثبت کنید.</translation>
@@ -2257,7 +2293,6 @@
 <translation id="8379878387931047019">این دستگاه نوع کلید امنیتیِ درخواستی ازجانب این وب‌سایت را پشتیبانی نمی‌کند</translation>
 <translation id="7135729336746831607">بلوتوث روشن شود؟</translation>
 <translation id="6176043333338857209">بلوتوث، برای ارتباط با کلید امنیتی‌تان، موقتاً روشن می‌شود</translation>
-<translation id="5860491529813859533">روشن کردن</translation>
 <translation id="4252899949534773101">بلوتوث غیرفعال است</translation>
 <translation id="8188389033983459049">تنظیمات دستگاه را بررسی کنید و برای ادامه، آن را روشن کنید</translation>
 <translation id="6022705094403139349">برای مرتبط کردن کلید امنیتی‌تان آماده‌اید؟</translation>
@@ -2288,9 +2323,26 @@
 <translation id="4303079906735388947">پین جدیدی برای کلید امنیتی‌تان تنظیم کنید</translation>
 <translation id="1805967612549112634">تأیید پین</translation>
 <translation id="4871322859485617074">پین حاوی نویسه‌های نامعتبر است</translation>
-<translation id="2344214284954353199">پین خیلی کوتاه است.</translation>
-<translation id="2203484353475059657">تأیید مطابقت ندارد.</translation>
-<translation id="88870264962436283">استفاده از شناسه لمسی در <ph name="APP_NAME"/></translation>
+<translation id="8896022254727357590">پین باید حداقل ۴ نویسه داشته باشد</translation>
+<translation id="7669825497510425694">{NUM_ATTEMPTS,plural, =1{پین اشتباه است. یک بار دیگر می‌توانید امتحان کنید.}one{پین اشتباه است. # بار دیگر می‌توانید امتحان کنید.}other{پین اشتباه است. # بار دیگر می‌توانید امتحان کنید.}}</translation>
+<translation id="5078796286268621944">پین اشتباه</translation>
+<translation id="1233497634904001272">برای تکمیل درخواست، دوباره کلید امنیتی را لمس کنید.</translation>
+<translation id="8136269678443988272">پین‌هایی که وارد کردید، مطابقت ندارند</translation>
+<translation id="1136712381129578788">چون چندین‌بار پین اشتباه وارد شده، کلید امنیتی قفل شده است. برای باز کردن قفل کلید امنیتی، آن را بردارید و دوباره وارد کنید.</translation>
+<translation id="3778208826288864398">چون چندین‌بار پین اشتباه وارد شده، کلید امنیتی قفل شده است. باید کلید امنیتی‌ را بازنشانی کنید.</translation>
+<translation id="7246230585855757313">کلید امنیتی را مجدداً وارد کنید و دوباره امتحان کنید</translation>
+<translation id="629730747756840877">حساب</translation>
+<translation id="3792938779249970121">انتخاب حساب</translation>
+<translation id="4718490098585891067">برای ورود به سیستم، حسابی را انتخاب کنید:</translation>
+<translation id="8734671092194994316">با این کار، سابقه‌ای از بازدیدتان از <ph name="WEBSITE"/> در کلید امنیتی‌تان ثبت خواهد شد.</translation>
+<translation id="8428628598981198790">نمی‌توان از کلید امنیتی‌تان در این سایت استفاده کرد.</translation>
+<translation id="4358169392473932247">این کلید امنیتی فضای ذخیره‌سازی داخلی مربوط به اطلاعات کاربری را پشتیبانی نمی‌کند، اما این ویژگی درخواست شده است.</translation>
+<translation id="7069811530847688087">ممکن است <ph name="WEBSITE"/> به کلید امنیتی جدیدتر یا نوع دیگری نیاز داشته باشد</translation>
+<translation id="3984431586879874039">به این سایت اجازه می‌دهید کلید امنیتی‌تان را ببیند؟</translation>
+<translation id="8948939328578167195"><ph name="WEBSITE"/> می‌خواهد ساخت و مدل کلید امنیتی‌تان را ببیند</translation>
+<translation id="7618452966706304788">می‌خواهید در <ph name="APP_NAME"/> درحالت ناشناس از «شناسه لمسی» استفاده کنید؟</translation>
+<translation id="3098826269712097986">‏داده‌های مربوط به ورود به سیستم، پس از خروج از حالت ناشناس، در Brave ذخیره می‌شود. بنابراین، بعداً دوباره می‌توانید در این وب‌سایت از «شناسه لمسی» استفاده کنید.</translation>
+<translation id="2172784515318616985">ادامه</translation>
 <translation id="5186185447130319458">ناشناس</translation>
 <translation id="7643842463591647490">{0,plural, =1{# پنجره باز}one{# پنجره باز}other{# پنجره باز}}</translation>
 <translation id="2579188629646253712">خروج از حالت ناشناس</translation>
@@ -2384,8 +2436,6 @@
 <translation id="3440663250074896476">کنش‌های بیشتر برای <ph name="BOOKMARK_NAME"/></translation>
 <translation id="2903457445916429186">باز کردن موارد انتخاب‌شده</translation>
 <translation id="962802172452141067">درخت پوشه نشانک</translation>
-<translation id="1338776410427958681">کوچک کردن <ph name="FOLDER_NAME"/></translation>
-<translation id="4467101674048705704">بزرگ کردن <ph name="FOLDER_NAME"/></translation>
 <translation id="2683638487103917598">پوشه مرتب شد</translation>
 <translation id="7201118060536064622">«<ph name="DELETED_ITEM_NAME"/>» حذف شد</translation>
 <translation id="8271246892936492311">{COUNT,plural, =1{۱ نشانک حذف شد}one{# نشانک حذف شد}other{# نشانک حذف شد}}</translation>
@@ -2400,12 +2450,10 @@
 <translation id="4422347585044846479">ویرایش نشانک برای این صفحه</translation>
 <translation id="4776146737004271126">‏باز کردن تنظیمات Android</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{هیچ‌کدام}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> و <ph name="APP_2"/>}=3{<ph name="APP_1"/>،‏ <ph name="APP_2"/> و <ph name="APP_3"/>}=4{<ph name="APP_1"/>،‏ <ph name="APP_2"/>،‏ <ph name="APP_3"/> و ۱ برنامه دیگر}one{<ph name="APP_1"/>،‏ <ph name="APP_2"/>،‏ <ph name="APP_3"/> و <ph name="EXTRA_APPS"/> برنامه دیگر}other{<ph name="APP_1"/>،‏ <ph name="APP_2"/>،‏ <ph name="APP_3"/> و <ph name="EXTRA_APPS"/> برنامه دیگر}}</translation>
-<translation id="7742008146327708230">برنامه‌های اخیراً بازشده</translation>
-<translation id="1620510694547887537">دوربین</translation>
+<translation id="702252130983202758">برنامه‌های شما</translation>
 <translation id="8831664945713891930">باز کردن تنظیمات افزونه‌ها</translation>
 <translation id="5138227688689900538">نمایش موارد کمتر</translation>
 <translation id="5646376287012673985">مکان</translation>
-<translation id="3227137524299004712">میکروفن</translation>
 <translation id="5270167208902136840">نمایش <ph name="NUMBER_OF_MORE_APPS"/> برنامه بیشتر</translation>
 <translation id="2482878487686419369">اعلان‌ها</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> برنامه</translation>
@@ -2479,6 +2527,7 @@
 <translation id="4159681666905192102">این یک حساب مخصوص بچه‌ها است که توسط <ph name="CUSTODIAN_EMAIL"/> و <ph name="SECOND_CUSTODIAN_EMAIL"/> مدیریت می‌شود.</translation>
 <translation id="5958529069007801266">کاربر نظارت‌شده</translation>
 <translation id="5720705177508910913">کاربر کنونی</translation>
+<translation id="1850357845349976573">{0,plural, =1{حالت ناشناس}one{# پنجره ناشناس}other{# پنجره ناشناس}}</translation>
 <translation id="37784332082579802">{0,plural, =1{حالت ناشناس}one{حالت ناشناس (#)}other{حالت ناشناس (#)}}</translation>
 <translation id="5070556616376997776">در حالت ناشناس هستید</translation>
 <translation id="2199298570273670671">خطا</translation>
@@ -2584,6 +2633,24 @@
 <translation id="3021066826692793094">پروانه</translation>
 <translation id="3809272675881623365">خرگوش</translation>
 <translation id="4124935795427217608">تک‌شاخ</translation>
+<translation id="5123433949759960244">بسکتبال</translation>
+<translation id="6876155724392614295">دوچرخه‌</translation>
+<translation id="7774365994322694683">پرنده</translation>
+<translation id="2771816809568414714">پنیر</translation>
+<translation id="4943368462779413526">فوتبال</translation>
+<translation id="2046702855113914483">رامن</translation>
+<translation id="1150565364351027703">عینک آفتابی</translation>
+<translation id="4693155481716051732">سوشی</translation>
+<translation id="2468402215065996499">تاماگوچی</translation>
+<translation id="8391218455464584335">صفحه گرامافون</translation>
+<translation id="4804827417948292437">آووکادو</translation>
+<translation id="3619115746895587757">کاپوچینو</translation>
+<translation id="377050016711188788">بستنی</translation>
+<translation id="4330191372652740264">آب یخ</translation>
+<translation id="4364327530094270451">خربزه</translation>
+<translation id="4779136857077979611">اونیگیری</translation>
+<translation id="5068919226082848014">پیتزا</translation>
+<translation id="6170470584681422115">ساندویچ</translation>
 <translation id="1830550083491357902">وارد سیستم نشده است</translation>
 <translation id="5941153596444580863">افزودن شخص...</translation>
 <translation id="9149866541089851383">ویرایش...</translation>
@@ -2644,387 +2711,6 @@
 <translation id="6365411474437319296">افزودن خانواده و دوستان</translation>
 <translation id="7388044238629873883">شما تقریباً آماده‌اید!</translation>
 <translation id="8688579245973331962">نامتان را مشاهده نمی‌کنید؟</translation>
-<translation id="5788127256798019331">‏فایل‌های Play</translation>
-<translation id="174173592514158117">‏نمایش همه پوشه‌های Play</translation>
-<translation id="5024856940085636730">اقدام بیشتر از انتظار طول می‌کشد. می‌خواهید از این کار صرف‌نظر کنید؟</translation>
-<translation id="6205710420833115353">برخی از کارکردها بیشتر از انتظار طول می‌کشند. می‌خواهید از آنها صرف‌نظر کنید؟</translation>
-<translation id="4669606053856530811">اگر این موارد با اعضای «<ph name="SOURCE_NAME"/>» هم‌رسانی نشوند، دسترسی را از دست خواهند داد.</translation>
-<translation id="9035012421917565900">این موارد نمی‌توانند به «<ph name="DESTINATION_NAME"/>» برگردانده شوند، بنابراین نمی‌توانید این اقدام را واگرد کنید.</translation>
-<translation id="9130775360844693113">اعضای «<ph name="DESTINATION_NAME"/>» به این موارد دسترسی پیدا می‌کنند.</translation>
-<translation id="8834164572807951958">اعضای «<ph name="DESTINATION_NAME"/>»، برای کپی کردن این موارد، دسترسی پیدا می‌کنند.</translation>
-<translation id="3236289833370040187">مالکیت به <ph name="DESTINATION_DOMAIN"/> منتقل می‌شود.</translation>
-<translation id="7765158879357617694">انتقال</translation>
-<translation id="8249296373107784235">لغو</translation>
-<translation id="6268185425799226387">Brave Software Drive</translation>
-<translation id="4425149324548788773">My Drive</translation>
-<translation id="1786636458339910689">‏درایوهای گروه</translation>
-<translation id="5010406651457630570">رایانه‌ها</translation>
-<translation id="8106045200081704138">اشتراک‌گذاری شده با من</translation>
-<translation id="6549689063733911810">اخیر</translation>
-<translation id="981121421437150478">آفلاین</translation>
-<translation id="9034924485347205037">‏فایل‌های Linux</translation>
-<translation id="9219103736887031265">تصاویر</translation>
-<translation id="6146563240635539929">ویدیو</translation>
-<translation id="3616113530831147358">صوتی</translation>
-<translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>احتیاط:<ph name="END_BOLD"/> این فایل‌ها موقتی هستند و ممکن است به صورت خودکار حذف شوند تا فضای آزاد دیسک بیشتر شود. <ph name="BEGIN_LINK"/>بیشتر بیاموزید<ph name="END_LINK"/></translation>
-<translation id="4873265419374180291"><ph name="NUMBER_OF_BYTES"/> بایت</translation>
-<translation id="4788401404269709922"><ph name="NUMBER_OF_KB"/> کیلوبایت</translation>
-<translation id="996903396648773764"><ph name="NUMBER_OF_MB"/> مگابایت</translation>
-<translation id="7189874332498648577"><ph name="NUMBER_OF_GB"/> گیگابایت</translation>
-<translation id="7827012282502221009"><ph name="NUMBER_OF_TB"/> ترابایت</translation>
-<translation id="1589128298353575783"><ph name="NUMBER_OF_PB"/> پتابایت</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
-<translation id="169515659049020177">تبدیل</translation>
-<translation id="3924145049010392604">Meta</translation>
-<translation id="6129953537138746214">فاصله</translation>
-<translation id="8179976553408161302">ورود</translation>
-<translation id="5583640892426849032">Backspace</translation>
-<translation id="174937106936716857">تعداد کل فایل‌ها</translation>
-<translation id="2425665904502185219">حجم کل فایل</translation>
-<translation id="1942765061641586207">وضوح تصویر</translation>
-<translation id="4002066346123236978">عنوان</translation>
-<translation id="4631887759990505102">هنرمند</translation>
-<translation id="2448312741937722512">نوع</translation>
-<translation id="5145331109270917438">تاریخ تغییر</translation>
-<translation id="8487700953926739672">امکان دسترسی به صورت آفلاین</translation>
-<translation id="2230062665678605299">پوشه «<ph name="FOLDER_NAME"/>» را نمی‌توان ایجاد کرد.<ph name="ERROR_MESSAGE"/></translation>
-<translation id="2163152940313951844">نویسه نامعتبر: <ph name="CHARACTER_NAME"/></translation>
-<translation id="642282551015776456">این نام ممکن است به‌عنوان نام فایلی از پوشه استفاده نشود</translation>
-<translation id="2070909990982335904">نام‌هایی که با نقطه شروع می‌شوند برای سیستم رزرو شده‌ند. لطفاً" نام دیگری انتخاب کنید.</translation>
-<translation id="8456681095658380701">نام نامعتبر</translation>
-<translation id="2943503720238418293">از نام کوتاه‌تری استفاده کنید</translation>
-<translation id="4973523518332075481">‏از نامی استفاده کنید که ‎<ph name="MAX_LENGTH"/> نویسه یا کمتر داشته باشد</translation>
-<translation id="1307931752636661898">‏نمی‌توان فایل‌های Linux را مشاهده کرد</translation>
-<translation id="5851063901794976166">موردی برای مشاهده موجود نیست...</translation>
-<translation id="3749289110408117711">نام فایل</translation>
-<translation id="3280431534455935878">آماده‌سازی</translation>
-<translation id="6607272825297743757">اطلاعات فایل</translation>
-<translation id="6395575651121294044"><ph name="NUMBER_OF_FILES"/> مورد</translation>
-<translation id="2138867954865495510">«<ph name="PATH"/>» باز نشد: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5159383109919732130">‏<ph name="BEGIN_BOLD"/>هنوز دستگاه خود را جدا نکنید!<ph name="END_BOLD"/>
- <ph name="LINE_BREAKS"/>
- جداکردن دستگاه هنگامی که در حال استفاده است ممکن است باعث از دست رفتن داده‌ها شود.  لطفاً تا به پایان رسیدن عملیات صبر کنید، سپس دستگاه را با استفاده از برنامه Files خارج نمایید.</translation>
-<translation id="5686799162999241776"><ph name="BEGIN_BOLD"/>ارتباط با بایگانی یا دیسک مجازی نمی‌تواند قطع شود<ph name="END_BOLD"/>
-   <ph name="LINE_BREAKS"/>
-   همه فایل‌های روی بایگانی یا دیسک مجازی را ببندید و سپس دوباره امتحان کنید.</translation>
-<translation id="7794058097940213561">قالب‌بندی دستگاه</translation>
-<translation id="8151638057146502721">پیکربندی</translation>
-<translation id="7928710562641958568">خارج کردن دستگاه</translation>
-<translation id="7864662577698025113">افزودن سرویس جدید</translation>
-<translation id="1943097386230153518">نصب سرویس جدید</translation>
-<translation id="2562685439590298522">اسناد</translation>
-<translation id="2925966894897775835">صفحات</translation>
-<translation id="2943400156390503548">اسلایدها</translation>
-<translation id="5649768706273821470">گوش دادن</translation>
-<translation id="4582497162516204941">‏نصب با Linux (بتا)</translation>
-<translation id="4195249722193633765">‏نصب برنامه با Linux (بتا)</translation>
-<translation id="7248671827512403053">برنامه کاربردی</translation>
-<translation id="3866249974567520381">توضیح</translation>
-<translation id="183183971458492120">درحال بارگیری اطلاعات...</translation>
-<translation id="8157684860301034423">اطلاعات برنامه بازیابی نشد.</translation>
-<translation id="5678784840044122290">‏برنامه Linux در «ترمینال» دردسترس خواهد بود و ممکن است در «راه‌انداز» هم نمادی نشان داده شود.</translation>
-<translation id="9213073329713032541">نصب باموفقیت شروع شد.</translation>
-<translation id="2782104745158847185">‏خطا هنگام نصب برنامه Linux</translation>
-<translation id="5911887972742538906">‏هنگام نصب برنامه Linux خطایی روی داد.</translation>
-<translation id="942954117721265519">تصویری در دایرکتوری وجود ندارد.</translation>
-<translation id="7100897339030255923"><ph name="COUNT"/> مورد انتخاب شدند</translation>
-<translation id="5177526793333269655">نمای تصویر کوچک</translation>
-<translation id="1035094536595558507">مشاهده اسلاید</translation>
-<translation id="7508545000531937079">نمایش اسلاید</translation>
-<translation id="1430915738399379752">چاپ</translation>
-<translation id="38275787300541712">‏پس از انجام کار، Enter را فشار دهید</translation>
-<translation id="4880520557730313061">تصحیح خودکار</translation>
-<translation id="4924638091161556692">تصحیح شد</translation>
-<translation id="6019169947004469866">برش</translation>
-<translation id="4372884569765913867">۱x۱</translation>
-<translation id="7576032389798113292">۶x۴</translation>
-<translation id="8157939133946352716">۷x۵</translation>
-<translation id="2661146741306740526">۱۶x۹</translation>
-<translation id="3007214526293698309">تثبیت نسبت</translation>
-<translation id="7982283708762922719">ارتفاع</translation>
-<translation id="4734518477988699048">مقدار ورودی نامعتبر است.</translation>
-<translation id="3644896802912593514">عرض</translation>
-<translation id="3626281679859535460">روشنایی</translation>
-<translation id="5061708541166515394">کنتراست</translation>
-<translation id="1467432559032391204">چپ</translation>
-<translation id="1346748346194534595">راست</translation>
-<translation id="3144126448740580210">تمام</translation>
-<translation id="2453576648990281505">فایل ازقبل موجود است</translation>
-<translation id="1847880352285315359">ذخیره شد</translation>
-<translation id="5158593464696388225">تصویر ذخیره نشد.</translation>
-<translation id="2787047795752739979">رونویسی نسخهٔ اصلی</translation>
-<translation id="8775404590947523323">ویرایش‌های شما به‌طور خودکار ذخیره می‌شوند.<ph name="BREAKS"/>برای داشتن یک نسخه از تصویر اصلی٬ علامت «رونویسی نسخهٔ اصلی» را بردارید.</translation>
-<translation id="7873831373602885875">در <ph name="FOLDER_NAME"/> ذخیره نشد. همه ویرایش‌ها در <ph name="DOWNLOADS_FOLDER"/> در پوشه «بارگیری‌ها» ذخیره می‌شوند.</translation>
-<translation id="691516599546977041">در <ph name="FOLDER_NAME"/> ذخیره نشد. تصاویر ویرایش‌شده در پوشه بارگیری‌ها ذخیره خواهند شد.</translation>
-<translation id="8066773524873206594">همه ویرایش‌ها در <ph name="DOWNLOADS_FOLDER"/> ذخیره می‌شوند.</translation>
-<translation id="8153607920959057464">این فایل نمایش داده نمی‌شود.</translation>
-<translation id="6227235786875481728">این فایل اجرا نمی‌شود.</translation>
-<translation id="9154418932169119429">این تصویر به‌صورت آفلاین در دسترس نیست.</translation>
-<translation id="1844692022597038441">این فایل به‌صورت آفلاین در دسترس نیست.</translation>
-<translation id="2929414043040740704">‏فایل‌های بازیابی‌شده از Brave Software Drive</translation>
-<translation id="2085470240340828803">فایلی با نام «<ph name="FILENAME"/>» از قبل وجود دارد. می‌خواهید چه کاری انجام دهید؟</translation>
-<translation id="4801956050125744859">حفظ هر دو</translation>
-<translation id="1062407476771304334">جایگزینی</translation>
-<translation id="1556189134700913550">اعمال به همه</translation>
-<translation id="988685240266037636">فایلی با نام «<ph name="FILE_NAME"/>» ازقبل وجود دارد. می‌خواهید آن را جایگزین کنید؟</translation>
-<translation id="9038620279323455325">فایلی با نام «<ph name="FILE_NAME"/>» ازقبل وجود دارد. لطفاً نام دیگری انتخاب کنید.</translation>
-<translation id="4212740939091998969">پوشه‌ای با نام «<ph name="FOLDER_NAME"/>» ازقبل وجود دارد. لطفاً نام دیگری انتخاب کنید.</translation>
-<translation id="1497522201463361063">تغییرنام «<ph name="FILE_NAME"/>» ممکن نیست.<ph name="ERROR_MESSAGE"/></translation>
-<translation id="5330512191124428349">دریافت اطلاعات</translation>
-<translation id="8312871300878166382">جای‌گذاری در پوشه</translation>
-<translation id="7040138676081995583">باز کردن با...</translation>
-<translation id="6189412234224385711">بازکردن با <ph name="EXTENSION_NAME"/></translation>
-<translation id="2547921442987553570">افزودن به <ph name="EXTENSION_NAME"/></translation>
-<translation id="386548886866354912">بسته‌بندی با <ph name="EXTENSION_NAME"/></translation>
-<translation id="3078461028045006476">اشتراک‌گذاری با <ph name="EXTENSION_NAME"/></translation>
-<translation id="4197674956721858839">انتخاب فایل‌های فشرده</translation>
-<translation id="1572585716423026576">تنظیم به‌عنوان تصویر زمینه</translation>
-<translation id="204914487372604757">ایجاد میان‌بر</translation>
-<translation id="799547531016638432">حذف میان‌بر</translation>
-<translation id="5494920125229734069">انتخاب همه</translation>
-<translation id="7295662345261934369">هم‌رسانی با دیگران</translation>
-<translation id="2001796770603320721">مدیریت در درایو</translation>
-<translation id="5318819489018851358">‏هم‌رسانی با Linux</translation>
-<translation id="6806699711453372963">‏مدیریت هم‌رسانی با Linux</translation>
-<translation id="7505167922889582512">نمایش فایل‌های پنهان</translation>
-<translation id="7846076177841592234">لغو انتخاب</translation>
-<translation id="2377319039870049694">جابه‌جایی به نمای فهرستی</translation>
-<translation id="3003633581067744647">تغییر وضعیت به نمای تصویر کوچک</translation>
-<translation id="604001903249547235">‏پشتیبان‌گیری Cloud</translation>
-<translation id="505639225383557233">‏نسخه پشتیبان Brave OS Cloud</translation>
-<translation id="8656896237683963068">‏از عکس‌ها و ویدیوهای دستگاه رسانه‌تان در Brave Software Drive پشتیبان بگیرید.</translation>
-<translation id="3057861065630527966">از عکس‌ها و ویدئوهایتان پشتیبان بگیرید</translation>
-<translation id="7730494089396812859">‏نمایش جزئیات پشتیبان‌گیری Cloud</translation>
-<translation id="2850124913210091882">پشتیبان‌گیری</translation>
-<translation id="5731409020711461763">۱ عکس‌ جدید</translation>
-<translation id="5004584466530475658"><ph name="FILE_COUNT"/> عکس جدید</translation>
-<translation id="6934241953272494177">در حال اسکن کردن دستگاه رسانه شما...
-    <ph name="LINE_BREAK1"/>
-    <ph name="FILE_COUNT"/> مورد پیدا شد</translation>
-<translation id="3466147780910026086">در حال اسکن دستگاه رسانه شما...</translation>
-<translation id="2611866923243604397">‏همه در <ph name="BEGIN_LINK"/>Brave Software Drive<ph name="END_LINK"/> پشتیبان گرفته شدند</translation>
-<translation id="3620292326130836921">همه پشتیبان‌گیری شدند.</translation>
-<translation id="1536674585581593431">‏<ph name="FILE_COUNT"/> مورد پیدا شد.
-    <ph name="LINE_BREAK1"/>
-    سهمیه Brave Software Drive شما به اندازه کافی بزرگ نیست. <ph name="FILE_SIZE"/> فضای اضافی لازم است.
-    <ph name="LINE_BREAK2"/>
-    عکس‌های کمتری انتخاب کنید.</translation>
-<translation id="2473109739642988997">‏سهمیه Brave Software Drive شما به اندازه کافی بزرگ نیست.</translation>
-<translation id="1148097584170732637"><ph name="FILE_COUNT"/> مورد پیدا شد.
-    <ph name="LINE_BREAK1"/>
-    در حافظه محلی فضای کافی در دسترس نیست. <ph name="FILE_SIZE"/> فضای اضافی لازم است.
-    <ph name="LINE_BREAK2"/>
-    عکس‌های کمتری انتخاب کنید.</translation>
-<translation id="2352947182261340447">فضای کافی در حافظه محلی در دسترس نیست.</translation>
-<translation id="1127657192797926968">‏<ph name="FILE_COUNT"/> مورد پیدا شد
-    <ph name="LINE_BREAK1"/>
-    آماده برای پشتیبان‌گیری در <ph name="BEGIN_LINK"/>Brave Software Drive<ph name="END_LINK"/></translation>
-<translation id="4905417359854579806">آماده پشتیبان گرفتن از <ph name="FILE_COUNT"/> مورد</translation>
-<translation id="5029447434471675822">‏درحال پشتیبان‌گیری از <ph name="FILE_COUNT"/> در <ph name="BEGIN_LINK"/>Brave Software Drive<ph name="END_LINK"/></translation>
-<translation id="4215448920900139318">درحال پشتیبان‌ گرفتن از <ph name="FILE_COUNT"/></translation>
-<translation id="2419376816263920133">‏<ph name="FILE_COUNT"/> عکس در <ph name="BEGIN_LINK"/>Brave Software Drive<ph name="END_LINK"/> پشتیبان گرفته شدند</translation>
-<translation id="2994669386200004489"><ph name="FILE_NAME"/> پشتیبان‌گیری نشد</translation>
-<translation id="4724850507808590449"><ph name="FILE_COUNT"/> عکس پشتیبان گرفته شدند</translation>
-<translation id="1351692861129622852">وارد کردن <ph name="FILE_COUNT"/> فایل...</translation>
-<translation id="117624967391683467">درحال کپی <ph name="FILE_NAME"/>...</translation>
-<translation id="7359359531237882347">در حال کپی کردن <ph name="NUMBER_OF_ITEMS"/> مورد…</translation>
-<translation id="7627790789328695202">اوه، <ph name="FILE_NAME"/> از قبل وجود دارد. نام آن را تغییر دهید و دوباره امتحان کنید.</translation>
-<translation id="5691596662111998220">اوه، <ph name="FILE_NAME"/> دیگر وجود ندارد.</translation>
-<translation id="4336032328163998280">فرایند رونوشت‌برداری انجام نشد. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5913638992615760742">عملیات کپی انجام نشد، خطای غیرمنتظره: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="6133173853026656527">در حال انتقال <ph name="FILE_NAME"/></translation>
-<translation id="7654209398114106148">درحال انتقال <ph name="NUMBER_OF_ITEMS"/> مورد…</translation>
-<translation id="6007237601604674381">انتقال انجام نشد. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1933345018156373194">انتقال انجام نشد، خطای غیرمنتظره: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="3326821416087822643">در حال فشرده‌سازی <ph name="FILE_NAME"/>...</translation>
-<translation id="1722487484194605434">در حال فشرده‌سازی <ph name="NUMBER_OF_ITEMS"/> مورد…</translation>
-<translation id="8810671769985673465">فشرده‌سازی انجام نشد، موارد موجود: «<ph name="FILE_NAME"/>»</translation>
-<translation id="9133055936679483811">فشرده‌سازی انجام نشد. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4973970068702235170">فشرده‌سازی انجام نشد، خطای غیرمنتظره: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="653019979737152879">در حال همگام‌سازی <ph name="FILE_NAME"/>...</translation>
-<translation id="8579285237314169903">در حال همگام‌سازی <ph name="NUMBER_OF_FILES"/> مورد...</translation>
-<translation id="8137331602592933310">«<ph name="FILENAME"/>» با شما به اشتراک گذاشته شده است. شما نمی‌توانید آن را حذف کنید زیرا به شما تعلق ندارد.</translation>
-<translation id="6277279884155292049">‏Brave Software Drive در حال حاضر در دسترس نیست. به محض در دسترس قرار گرفتن Brave Software Drive بارگذاری کردن به صورت خودکار دوباره شروع می‌شود.</translation>
-<translation id="1114160088213746286">‏Brave Software Drive نتوانست در این لحظه «<ph name="FILENAME"/>» را همگام‌سازی کند. Brave Software Drive بعداً دوباره امتحان می‌کند.</translation>
-<translation id="4893296294301184587">‏«<ph name="FILENAME"/>» بارگذاری نشد. فضای کافی در Brave Software Drive شما وجود ندارد.</translation>
-<translation id="5163869187418756376">اشتراک‌گذاری انجام نشد. اتصال خود را بررسی کرده، بعداً دوباره امتحان کنید.</translation>
-<translation id="656398493051028875">در حال حذف «<ph name="FILENAME"/>»...</translation>
-<translation id="1047956942837015229">در حال حذف <ph name="COUNT"/> مورد...</translation>
-<translation id="6558280019477628686">خطایی روی داد. ممکن است بعضی از موارد حذف نشده باشند.</translation>
-<translation id="3470502288861289375">در حال کپی کردن...</translation>
-<translation id="8669949407341943408">در حال انتقال...</translation>
-<translation id="6718273304615422081">در حال فشرده سازی ...</translation>
-<translation id="1338950911836659113">در حال حذف...</translation>
-<translation id="9064939804718829769">در حال انتقال...</translation>
-<translation id="3609785682760573515">در حال همگام‌سازی...</translation>
-<translation id="1464724975715666883">۱ خطا.</translation>
-<translation id="3495304270784461826"><ph name="COUNT"/> خطا.</translation>
-<translation id="6643016212128521049">پاک کردن</translation>
-<translation id="4988205478593450158">آیا مطمئنید می‌خواهید «<ph name="FILE_NAME"/>» را حذف کنید؟</translation>
-<translation id="2225536596944493418">مطمئنید می‌خواهید <ph name="NUMBER_OF_ITEMS"/> مورد را حذف کنید؟</translation>
-<translation id="7953739707111622108">این دستگاه باز نمی‌شود زیرا سیستم فایل‌ آن شناسایی نشد.</translation>
-<translation id="3726463242007121105">این دستگاه باز نمی‌شود زیرا سیستم فایل آن پشتیبانی نمی‌شود.</translation>
-<translation id="3414856743105198592">قالب‌بندی رسانه حذف شدنی سبب پاک شدن تمام داده‌ها می‌شود. ادامه می‌دهید؟</translation>
-<translation id="6287852322318138013">یک برنامه را برای باز کردن این فایل انتخاب کنید</translation>
-<translation id="7268659760406822741">خدمات موجود</translation>
-<translation id="5038625366300922036">مشاهده موارد بیشتر...</translation>
-<translation id="4823651846660089135">دستگاه فقط خواندنی است</translation>
-<translation id="6346310558342052870">دسترسی محدود</translation>
-<translation id="3780536599611287598">اجازه ندارید فایل‌ها را به «<ph name="FOLDER_NAME"/>» منتقل کنید.</translation>
-<translation id="1538729222189715449">‏درحال باز کردن فایل‌های Linux…</translation>
-<translation id="1000498691615767391">انتخاب پوشه برای باز کردن</translation>
-<translation id="3353984535370177728">انتخاب یک پوشه برای بارگذاری</translation>
-<translation id="8569764466147087991">انتخاب فایلی برای باز کردن</translation>
-<translation id="9131598836763251128">انتخاب یک یا چند فایل</translation>
-<translation id="7191454237977785534">ذخیره فایل به‌عنوان</translation>
-<translation id="3811494700605067549">۱ فایل انتخاب شد</translation>
-<translation id="6751256176799620176">۱ پوشه انتخاب شد</translation>
-<translation id="2378075407703503998"><ph name="SELCTED_FILE_COUNT"/> فایل انتخاب شد</translation>
-<translation id="6998711733709403587"><ph name="SELCTED_FOLDERS_COUNT"/> پوشه‌ انتخاب شد</translation>
-<translation id="4839847978919684242"><ph name="SELCTED_FILES_COUNT"/> مورد انتخاب شد</translation>
-<translation id="4969785127455456148">آلبوم</translation>
-<translation id="5700087501958648444">اطلاعات صوتی</translation>
-<translation id="912419004897138677">کدک</translation>
-<translation id="5253070652067921974">ایجاد شده توسط</translation>
-<translation id="3437801641691368414">زمان ایجاد</translation>
-<translation id="8395901698320285466">ابعاد</translation>
-<translation id="8193175696669055101">مدل دستگاه</translation>
-<translation id="2084108471225856927">تنظیمات دستگاه</translation>
-<translation id="303198083543495566">جغرافیا</translation>
-<translation id="5358764674931277">نرخ فریم</translation>
-<translation id="4309915981827077375">اطلاعات عمومی</translation>
-<translation id="1249250836236328755">ژانر</translation>
-<translation id="7711920809702896782">اطلاعات تصویر</translation>
-<translation id="4568854179928172494">زمان اصلاح</translation>
-<translation id="943972244133411984">اصلاح‌شده توسط</translation>
-<translation id="9099674669267916096">تعداد صفحه</translation>
-<translation id="8294431847097064396">منبع</translation>
-<translation id="1363028406613469049">تراک</translation>
-<translation id="1775381402323441512">اطلاعات ویدیو</translation>
-<translation id="3335337277364016868">سال ضبط</translation>
-<translation id="5534520101572674276">محاسبه اندازه</translation>
-<translation id="3786301125658655746">شما آفلاین هستید</translation>
-<translation id="6150853954427645995">برای ذخیره این فایل جهت استفاده آفلاین، دوباره انلاین شوید، روی فایل کلیک راست کنید و گزینه <ph name="OFFLINE_CHECKBOX_NAME"/> را انتخاب کنید.</translation>
-<translation id="8223479393428528563">برای ذخیره این فایل‌ها جهت استفاده آفلاین، دوباره آنلاین شوید، روی فایل‌ها کلیک راست کنید و گزینه <ph name="OFFLINE_CHECKBOX_NAME"/> را انتخاب کنید.</translation>
-<translation id="3830674330436234648">بازپخش در دسترس نیست</translation>
-<translation id="1810764548349082891">پیش‌نمایشی وجود ندارد</translation>
-<translation id="421017592316736757">باید آنلاین باشید تا به این فایل دسترسی داشته باشید.</translation>
-<translation id="180035236176489073">باید آنلاین باشید تا به این فایل‌ها دسترسی داشته باشید.</translation>
-<translation id="1190144681599273207">دریافت این فایل تقریباً <ph name="FILE_SIZE"/> از داده تلفن همراه شما را مصرف می‌کند.</translation>
-<translation id="7839804798877833423">دریافت این فایل‌ها تقریباً <ph name="FILE_SIZE"/> از داده تلفن همراه شما را مصرف می‌کند.</translation>
-<translation id="6813005947820333339">‏هنگام استفاده از داده‌های شبکه همراه، همگام‌سازی Brave Software Drive به صورت پیش‌فرض غیرفعال است.</translation>
-<translation id="696203921837389374">فعال کردن همگام‌سازی از طریق داده تلفن همراه</translation>
-<translation id="637062427944097960">این فایل در میزکار دیگری باز شده است. به <ph name="USER_NAME"/> ‏(<ph name="MAIL_ADDRESS"/>) بروید تا آن را مشاهده کنید.</translation>
-<translation id="5330145655348521461">این فایل‌ها در میزکار دیگری باز شده‌اند. به <ph name="USER_NAME"/> ‏(<ph name="MAIL_ADDRESS"/>) بروید تا آن را مشاهده کنید.</translation>
-<translation id="8686213429977032554">‏این فایل Drive هنوز به اشتراک گذاشته نشده است</translation>
-<translation id="7850851215703745691">‏این فایل‌های Drive هنوز به اشتراک گذاشته نشده‌اند</translation>
-<translation id="1839704667838141620">نحوه اشتراک‌گذاری این فایل را تغییر دهید</translation>
-<translation id="1864676585353837027">نحوه اشتراک‌گذاری این فایل‌ها را تغییر دهید</translation>
-<translation id="197560921582345123">می‌تواند ویرایش کند</translation>
-<translation id="8671210955687109937">می‌تواند نظر بدهد</translation>
-<translation id="799923393800005025">می‌تواند مشاهده کند</translation>
-<translation id="7925686952655276919">از داده‌های تلفن همراه برای همگام‌سازی استفاده نشود</translation>
-<translation id="7106346894903675391">خرید فضای ذخیره بیشتر...</translation>
-<translation id="3549797760399244642">‏رفتن به drive.google.com…</translation>
-<translation id="3451154303153932176">‏فضای باقیمانده در Brave Software Drive: <ph name="SPACE_AVAILABLE"/> .</translation>
-<translation id="4552678318981539154">خرید فضای ذخیره بیشتر</translation>
-<translation id="6990081529015358884">فضای شما تمام شده است</translation>
-<translation id="5521447721624713749">‏دسترسی به Brave Software Drive در حال حاضر ممکن نیست.</translation>
-<translation id="7788080748068240085">برای ذخیره «<ph name="FILE_NAME"/>» به‌صورت آفلاین باید <ph name="TOTAL_FILE_SIZE"/> فضای دیگر خالی کنید:<ph name="MARKUP_1"/>
-        <ph name="MARKUP_2"/>فایل‌هایی را که دیگر نمی‌خواهید به آن‌ها دسترسی آفلاین داشته باشید٬ لغو پین کنید<ph name="MARKUP_3"/>
-        <ph name="MARKUP_4"/>فایل‌ها را از پوشه دانلودهایتان حذف کنید<ph name="MARKUP_5"/></translation>
-<translation id="7606199793785990727">‏دسترسی به Brave Software Drive امکان‌پذیر نیست. لطفاً <ph name="BEGIN_LINK"/>از سیستم خارج شوید<ph name="END_LINK"/> و دوباره وارد شوید.</translation>
-<translation id="585883343689351092">‏به Brave Software Drive خوش آمدید!</translation>
-<translation id="6862635236584086457">از همه فایل‌های ذخیره شده در این پوشه به‌صورت خودکار و آنلاین نسخهٔ پشتیبان تهیه می‌شود</translation>
-<translation id="7220787572447472056">‏<ph name="MARKUP_1"/>در همه جا به فایل‌ها دسترسی داشته باشید، حتی وقتی به اینترنت متصل نیستید.<ph name="MARKUP_2"/>
-        فایل‌های موجود در Brave Software Drive به‌روز هستند و از هر دستگاهی می‌توان به آن‌ها دسترسی داشت.<ph name="MARKUP_3"/>
-        <ph name="MARKUP_4"/>فایل‌هایتان را ایمن نگه دارید.<ph name="MARKUP_5"/>
-        مهم نیست برای دستگاه شما چه اتفاقی می‌افتد، فایل‌های شما در Brave Software Drive به‌صورت امن ذخیره می‌شوند.<ph name="MARKUP_6"/>
-       فایل‌ها را با دیگران <ph name="MARKUP_7"/>اشتراک‌گذاری، ایجاد و مشارکت<ph name="MARKUP_8"/>
-       کنید، همه این کارها را در یک مکان انجام دهید.<ph name="MARKUP_9"/></translation>
-<translation id="4878716980734452132">‏این نوع فایل پشتیبانی نمی‌شود. لطفاً از <ph name="BEGIN_LINK"/>فروشگاه وب<ph name="END_LINK"/> Brave بازدید کنید تا برنامه‌ای پیدا کنید که بتواند این نوع فایل را باز کند.
- <ph name="BEGIN_LINK_HELP"/>بیشتر بدانید<ph name="END_LINK_HELP"/></translation>
-<translation id="6230272341631206186">‏این فایل برای رایانه‌ای که از نرم‌افزار Windows استفاده می‌کند طراحی شده است. این فایل با دستگاه شما که سیستم‌عامل Brave را اجرا می‌کند سازگار نیست. <ph name="BEGIN_LINK_HELP"/>بیشتر بدانید<ph name="END_LINK_HELP"/></translation>
-<translation id="3072401511615920367">‏این فایل برای رایانه‌ای طراحی شده است که از نرم‌افزار Macintosh استفاده می‌کند. این فایل با دستگاه شما که Brave OS روی آن نصب است، سازگار نیست. لطفاً <ph name="BEGIN_LINK"/>فروشگاه وب Brave‏<ph name="END_LINK"/> را برای برنامه مناسب جایگزین بررسی کنید.<ph name="BEGIN_LINK_HELP"/>بیشتر بدانید<ph name="END_LINK_HELP"/></translation>
-<translation id="7589661784326793847">چند ثانیه صبر کنید</translation>
-<translation id="3096967955765855393">‏همواره به دنبال راه‌هایی هستیم تا مرورتان را ایمن‌تر کنیم. قبلاً هر وب‌سایتی از شما می‌خواست برنامه‌افزودنی‌ای را در مرورگرتان اضافه کنید. در جدیدترین نسخه Brave Software Brave، باید به Brave صراحتاً بگویید که می‌خواهید با افزودن این برنامه‌های افزودنی از طریق صفحه افزونه‌ها آنها را نصب کنید. <ph name="BEGIN_LINK"/>بیشتر بدانید<ph name="END_LINK"/></translation>
-<translation id="4892969127351273348">با <ph name="APP_NAME"/> باز نشد</translation>
-<translation id="52446585071384036">‏برای باز کردن فایل‌ها با <ph name="APP_NAME"/>، ابتدا آن‌ها را در پوشه فایل‌های Linux کپی کنید.</translation>
-<translation id="5368191757080475556">‏هم‌رسانی پوشه با Linux</translation>
-<translation id="5857774240076772505">‏به برنامه‌های Linux اجازه دهید فایل‌های پوشه <ph name="FOLDER_NAME"/> را تغییر دهند</translation>
-<translation id="2280597422213958082">‏به برنامه‌های Linux اجازه دهید فایل‌های موجود در Brave Software Drive را تغییر دهند. تغییرات در سایر دستگاه‌هایتان همگام‌سازی خواهد شد.</translation>
-<translation id="4290535918735525311">‏۱ پوشه با Linux هم‌رسانی شد</translation>
-<translation id="2377590462528165447">‏<ph name="NUMBER_OF_ITEMS"/> پوشه با Linux هم‌رسانی شد</translation>
-<translation id="4572815280350369984">فایل <ph name="FILE_TYPE"/></translation>
-<translation id="5533102081734025921">تصویر <ph name="IMAGE_TYPE"/></translation>
-<translation id="2614589611416690597">ویدیوی <ph name="VIDEO_TYPE"/></translation>
-<translation id="8042602468072383151">فایل صوتی <ph name="AUDIO_TYPE"/></translation>
-<translation id="7799329977874311193">‏سند HTML</translation>
-<translation id="2208158072373999562">فایل بایگانی زیپ</translation>
-<translation id="2028997212275086731">‏بایگانی RAR</translation>
-<translation id="8466234950814670489">تار نوار</translation>
-<translation id="1119069657431255176">‏بایگانی نوار فشرده Bzip2</translation>
-<translation id="6820687829547641339">‏بایگانی نوار فشرده Gzip</translation>
-<translation id="8329978297633540474">نوشتار ساده</translation>
-<translation id="2887525882758501333">‏سند PDF</translation>
-<translation id="1049926623896334335">‏سند Word</translation>
-<translation id="4784330909746505604">‏ارائه PowerPoint</translation>
-<translation id="8860454412039442620">‏صفحه‌گسترده Excel</translation>
-<translation id="5383943761832211733">‏سند Brave Software</translation>
-<translation id="5924916971643100883">‏صفحه‌گسترده Brave Software</translation>
-<translation id="3667369474859528036">‏ارائه Brave Software</translation>
-<translation id="3411013849623404696">‏طراحی Brave Software</translation>
-<translation id="7481041283483972362">‏جدول Brave Software</translation>
-<translation id="784862457750027723">‏فرم Brave Software</translation>
-<translation id="3320425620177764157">‏نقشه Brave Software</translation>
-<translation id="7452737073539387970">‏سایت Brave Software</translation>
-<translation id="4445959220475380548">‏پیوند Brave Software Drive</translation>
-<translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="1131292764548273687">‏این نوع فایل پشتیبانی نمی‌شود. لطفاً فروشگاه وب Brave را بازدید کنید تا برنامه‌ای را پیدا کنید که بتواند این نوع فایل را باز کند.</translation>
-<translation id="9010211493509471179">‏این فایل برای رایانه‌ای که از نرم‌افزار Macintosh استفاده می‌کند طراحی شده است. با دستگاه شما که سیستم عامل Brave را اجرا می‌کند، سازگار نیست. لطفاً فروشگاه وب Brave را برای یک برنامه جایگزین مناسب جستجو کنید.</translation>
-<translation id="5059989099965370411">‏این فایل برای رایانه‌ای که از نرم‌افزار Windows استفاده می‌کند طراحی شده است. این فایل با دستگاه شما که سیستم عامل Brave را اجرا می‌کند، سازگار نیست. لطفاً «فروشگاه وب Brave» را برای یک برنامه جایگزین مناسب جستجو کنید.</translation>
-<translation id="5833610766403489739">این فایل در جایی سرگردان شده است. لطفاً تنظیم محل دانلودتان را بررسی کنید و دوباره امتحان کنید.</translation>
-<translation id="3966388904776714213">پخش‌کننده صوتی</translation>
-<translation id="3245321423178950146">هنرمند ناشناس</translation>
-<translation id="509429900233858213">خطایی روی داد.</translation>
-<translation id="1864756863218646478">این فایل پیدا نشد.</translation>
-<translation id="1673103856845176271">دسترسی به این فایل به دلایل امنیتی ممکن نبود.</translation>
-<translation id="5524517123096967210">امکان خواندن فایل وجود نداشت.</translation>
-<translation id="1665611772925418501">امکان تغییر این فایل وجود نداشت.</translation>
-<translation id="1358735829858566124">فایل یا فهرست راهنما قابل استفاده نیست.</translation>
-<translation id="8342318071240498787">یک فایل یا یک پوشه با همین نام از قبل وجود دارد.</translation>
-<translation id="8965697826696209160">فضای کافی وجود ندارد.</translation>
-<translation id="7126604456862387217">‏'&lt;b&gt;<ph name="SEARCH_STRING"/>&lt;/b&gt;' - &lt;em&gt;جستجوی Drive&lt;/em&gt;</translation>
-<translation id="2888807692577297075">‏هیچ موردی با &lt;b&gt;«<ph name="SEARCH_STRING"/>»&lt;/b&gt; مطابق نیست</translation>
-<translation id="2843806747483486897">تغییر پیش‌فرض...</translation>
-<translation id="3254434849914415189">برنامه پیش‌فرض را برای فایل‌های <ph name="FILE_TYPE"/> انتخاب کنید:</translation>
-<translation id="8038111231936746805">(پیش‌‏فرض)</translation>
-<translation id="5982621672636444458">گزینه‌های مرتب‌سازی</translation>
-<translation id="2984337792991268709">امروز <ph name="TODAY_DAYTIME"/></translation>
-<translation id="8336153091935557858">دیروز <ph name="YESTERDAY_DAYTIME"/></translation>
-<translation id="1807938677607439181">همه فایل‌ها</translation>
-<translation id="240770291734945588"><ph name="SPACE_AVAILABLE"/> دردسترس</translation>
-<translation id="6199801702437275229">منتظر اطلاعات فضا...</translation>
-<translation id="6485131920355264772">دریافت اطلاعات فضا انجام نشد</translation>
-<translation id="7748626145866214022">‏گزینه‌های بیشتر در نوار کنش دردسترس است. برای تمرکز بر نوار کنش، Alt + A را فشار دهید.</translation>
-<translation id="2303301624314357662">درحال باز کردن فایل <ph name="FILE_NAME"/>.</translation>
-<translation id="2291538123825441971">درحال باز کردن <ph name="NUMBER_OF_FILES"/> فایل.</translation>
-<translation id="2305020378527873881"><ph name="VOLUME_NAME"/> خارج شد.</translation>
-<translation id="6710213216561001401">قبلی</translation>
-<translation id="1395262318152388157">اسلایدر جستجو</translation>
-<translation id="4880214202172289027">اسلایدر میزان صدا</translation>
-<translation id="7544853251252956727">درهم</translation>
-<translation id="8079530767338315840">تکرار</translation>
-<translation id="4158739975813877944">باز کردن فهرست پخش</translation>
-<translation id="4656293982926141856">این رایانه</translation>
-<translation id="2676946222714718093">در حال پخش در</translation>
-<translation id="3930521966936686665">پخش در</translation>
-<translation id="4732760563705710320">متأسفیم، دستگاه فرستادن شما، این ویدئو را پشتیبانی نمی‌کند.</translation>
-<translation id="2672394958563893062">خطایی رخ داده است. برای شروع مجدد از ابتدا، کلیک کنید.</translation>
-<translation id="6827236167376090743">پخش این ویدئو ادامه می‌یابد و تکرار می‌شود.</translation>
-<translation id="6248400709929739064">فعال کردن زیرنویس</translation>
-<translation id="7881969471599061635">غیرفعال کردن زیرنویس</translation>
 <translation id="4168015872538332605">برخی از تنظیمات متعلق به <ph name="PRIMARY_EMAIL"/> با شما به اشتراک گذاشته می‌شود. این تنظیمات وقتی از ورود چندگانه به سیستم استفاده شود، فقط در حساب شما اعمال می‌شود.</translation>
 <translation id="1485141095922496924">نسخه <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
 <translation id="3764314093345384080">اطلاعات دقیق ساخت</translation>
@@ -3068,7 +2754,7 @@
 <translation id="5840822070878669614">‏باز کردن نت‌بازار Brave</translation>
 <translation id="6073903501322152803">افزودن قابلیت‌های دسترس‌پذیری</translation>
 <translation id="7988355189918024273">فعالسازی ویژگی‌های دسترسی</translation>
-<translation id="3274899353071794175">‏اگر تصویری توضیح مفیدی نداشته باشد، Brave توضیحی برای شما ارائه خواهد کرد. Brave Software تصاویر را اسکن می‌کند.</translation>
+<translation id="5499063270485366718">‏اگر تصویری توضیح مفیدی نداشته باشد، Brave توضیحی برای شما ارائه خواهد کرد. برای ایجاد توضیحات، تصاویر به Brave Software ارسال می‌شود.</translation>
 <translation id="2558896001721082624">گزینه‌های دسترس‌پذیری در منوی سیستم همیشه نمایش داده شوند</translation>
 <translation id="7280649757394340890">تنظیمات صدای نوشتار به گفتار</translation>
 <translation id="6635956300022133031">انتخاب و سفارشی‌سازی صداهای نوشتار به گفتار</translation>
@@ -3101,12 +2787,6 @@
 <translation id="8710187907779883426">کوتاه (۱ ثانیه)</translation>
 <translation id="4305227814872083840">طولانی (۲ ثانیه)</translation>
 <translation id="2860150991415616761">خیلی طولانی است (۴ ثانیه)</translation>
-<translation id="5573248369095789351">کنش هنگام توقف</translation>
-<translation id="2427507373259914951">کلیک چپ</translation>
-<translation id="8203795194971602413">کلیک راست</translation>
-<translation id="1999763610967697511">کشیدن و رها کردن</translation>
-<translation id="8142441511840089262">دوبار کلیک کردن</translation>
-<translation id="485592688953820832">بی‌حرکت (مکث)</translation>
 <translation id="1217668622537098248">بعد از کنش، به کلیک چپ بازنشانی کنید</translation>
 <translation id="3682824389861648626">آستانه حرکت</translation>
 <translation id="5511379779384092781">بسیار کوچک</translation>
@@ -3121,6 +2801,7 @@
 <translation id="48704129375571883">افزودن قابلیت‌های بیشتر</translation>
 <translation id="7230787553283372882">سفارشی کردن اندازه نوشتار</translation>
 <translation id="214169863967063661">باز کردن تنظیمات شکل ظاهری</translation>
+<translation id="3616113530831147358">صوتی</translation>
 <translation id="6793604637258913070">برجسته کردن نشانگر نوشتار درصورتی‌که ظاهر شود یا حرکت کند</translation>
 <translation id="7376553024552204454">برجسته کردن نشانگر موشواره هنگامی که حرکت می‌کند</translation>
 <translation id="4150201353443180367">صفحه‌نمایش</translation>
@@ -3174,9 +2855,10 @@
 <translation id="3819257035322786455">تهیهٔ پشتیبان</translation>
 <translation id="3233271424239923319">‏پشتیبان‌گیری برنامه‌ها و فایل‌های Linux</translation>
 <translation id="184273675144259287">‏برنامه‌ها و فایل‌های Linux خود را با نسخه پشتیبان قبلی جایگزین کنید</translation>
-<translation id="2200603218210188859">‏تنظیمات برگزیده دستگاه USB</translation>
-<translation id="2706892089432507937">‏دستگاه‌های USB</translation>
-<translation id="5187892128515678283">‏به‌اشتراک گذاشتن دستگاه USB با Linux ازطریق روشن کردن دکمه روشن/خاموش. به‌اشتراک گذاشتن فقط تا وقتی دستگاه جدا شود ادامه می‌یابد.</translation>
+<translation id="7105390788077117391">‏اولویت‌های USB</translation>
+<translation id="3201422919974259695">‏دستگاه‌های USB دردسترس در اینجا نشان داده می‌شود.</translation>
+<translation id="907264006778172906">‏به Linux اجازه می‌دهد به دستگاه‌های USB دسترسی پیدا کند. Linux بعد از برداشتن دستگاه usb، آن را به خاطر نمی‌سپارد.</translation>
+<translation id="3661172646479098821">‏درحال‌حاضر فقط دستگاه‌های Android پشتیبانی می‌شود.</translation>
 <translation id="2295473777859797944">‏فروشگاه Brave Software Play</translation>
 <translation id="572155275267014074">‏تنظیمات Android</translation>
 <translation id="4767209642168463274">‏نصب برنامه‌ها و بازی‌‌ها از Brave Software Play در Bravebook‏. &lt;a target="_blank" href="‏<ph name="URL"/>"&gt;بیشتر بدانید&lt;/a&gt;</translation>
@@ -3216,6 +2898,7 @@
 <translation id="5860033963881614850">خاموش</translation>
 <translation id="5916664084637901428">روشن</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> در حال کنترل این تنظیمات است</translation>
+<translation id="6643016212128521049">پاک کردن</translation>
 <translation id="8465252176946159372">معتبر نیست</translation>
 <translation id="8647834505253004544">نشانی وب معتبر نیست</translation>
 <translation id="7946586320617670168">مبدأ باید امن باشد</translation>
@@ -3224,6 +2907,7 @@
 <translation id="5595485650161345191">ویرایش آدرس</translation>
 <translation id="6207937957461833379">کشور/منطقه</translation>
 <translation id="4378154925671717803">تلفن</translation>
+<translation id="2448312741937722512">نوع</translation>
 <translation id="9064275926664971810">برای پر کردن فرم‌ها با یک کلیک، «تکمیل خودکار» را فعال کنید</translation>
 <translation id="9095253524804455615">پاک کردن</translation>
 <translation id="451515744433878153">پاک کردن</translation>
@@ -3408,6 +3092,7 @@
 <translation id="1989112275319619282">مشاهده محتوای موجود در فروشگاه ما</translation>
 <translation id="3625481642044239431">فایل انتخاب‌شده معتبر نیست. دوباره امتحان کنید.</translation>
 <translation id="2462752602710430187"><ph name="PRINTER_NAME"/> اضافه شد</translation>
+<translation id="7380768571499464492"><ph name="PRINTER_NAME"/> به‌روزرسانی شد</translation>
 <translation id="9057119625587205566">هیچ چاپگری در این نزدیکی نیست</translation>
 <translation id="3213187967168344806">چاپگر اضافه نشد. رایانه را بازراه‌اندازی کرده و دوباره امتحان کنید.</translation>
 <translation id="4052689580269971502">‏چاپگر متصل نشد. بررسی کنید چاپگر روشن و ازطریق Wi-Fi یا USB به Bravebook متصل باشد.</translation>
@@ -3536,6 +3221,7 @@
 <translation id="8452135315243592079">سیم‌کارت وجود ندارد</translation>
 <translation id="2617342710774726426">سیم‌کارت قفل است</translation>
 <translation id="4848518990323155912">فعال کردن قفل سیم‌کارت (برای استفاده از داده تلفن همراه به پین نیاز است)</translation>
+<translation id="8179976553408161302">ورود</translation>
 <translation id="5075131525758602494">پین سیم کارت را وارد کنید</translation>
 <translation id="8431909052837336408">تغییر پین سیم</translation>
 <translation id="289644616180464099">سیم‌کارت قفل است</translation>
@@ -3547,11 +3233,13 @@
 <translation id="1164899421101904659">کلید باز کردن قفل پین را وارد کنید</translation>
 <translation id="7582582252461552277">این شبکه ارجحیت دارد</translation>
 <translation id="7469894403370665791">اتصال به این شبکه به صورت خودکار</translation>
+<translation id="4267953847983678297">اتصال خودکار به شبکه داده تلفن همراه</translation>
 <translation id="7987814697832569482">‏همیشه ازطریق این VPN اتصال برقرار شود</translation>
 <translation id="8821045908425223359">‏پیکربندی خودکار نشانی IP</translation>
 <translation id="8986362086234534611">فراموش شود</translation>
 <translation id="7881483672146086348">مشاهده حساب</translation>
 <translation id="2392369802118427583">فعالسازی</translation>
+<translation id="8151638057146502721">پیکربندی</translation>
 <translation id="5920543303088087579">سرپرستتان اتصال به این شبکه را غیرفعال کرده است</translation>
 <translation id="1235458158152011030">شبکه‌های شناخته‌شده</translation>
 <translation id="3003144360685731741">شبکه‌های برگزیده</translation>
@@ -3579,7 +3267,6 @@
 <translation id="7707922173985738739">استفاده از داده تلفن همراه</translation>
 <translation id="8944099748578356325">استفاده سریع‌تر از باتری (درحال‌حاضر <ph name="BATTERY_PERCENTAGE"/>٪)</translation>
 <translation id="3651488188562686558">‏قطع اتصال Wi-Fi</translation>
-<translation id="3479552764303398839">اکنون نه</translation>
 <translation id="7378812711085314936">دریافت اتصال داده</translation>
 <translation id="3483333858382889684">‏به این دستگاه اجازه داده شود دستگاه‌های دیگری را که حساب Brave Software شما به آن‌ها اضافه شده و اتصال داده تلفن همراه دارند، پیدا کند</translation>
 <translation id="5637476008227280525">فعال کردن داده تلفن همراه</translation>
@@ -3698,11 +3385,11 @@
 <translation id="3161522574479303604">همه زبان‌ها</translation>
 <translation id="3312424061798279731">زبان‌های فعال</translation>
 <translation id="3182749001423093222">غلط‌گیر املا</translation>
-<translation id="4441548209689510310">نمایش گزینه‌های غلط‌گیر املا</translation>
-<translation id="4358353773267946514"><ph name="LANGUAGE_1"/>، <ph name="LANGUAGE_2"/></translation>
-<translation id="3909690856344416952"><ph name="LANGUAGE_1"/>، <ph name="LANGUAGE_2"/> و ۱ زبان دیگر</translation>
-<translation id="5740331643563157105"><ph name="LANGUAGE_1"/>، <ph name="LANGUAGE_2"/> و <ph name="NUM_ADDITIONAL_LANGUAGES"/> زبان دیگر</translation>
-<translation id="3436038974659740746">املای سفارشی</translation>
+<translation id="5423829801105537712">غلط‌گیر املایی پایه</translation>
+<translation id="2564653188463346023">غلط‌گیر املا بهبودیافته</translation>
+<translation id="8944680893327873975">‏از همان غلط‌گیر املایی استفاده می‌کند که در جستجوی Brave Software استفاده می‌شود. نوشتاری که در مرورگر تایپ کرده‌اید برای Brave Software ارسال می‌شود.</translation>
+<translation id="7335974957018254119">استفاده از غلط‌گیر املا برای</translation>
+<translation id="2469375675106140201">سفارشی کردن غلطگیر املا</translation>
 <translation id="2667463864537187133">مدیریت غلط‌گیر املا</translation>
 <translation id="2665394472441560184">افزودن کلمه جدید</translation>
 <translation id="4567772783389002344">افزودن واژه</translation>
@@ -3723,13 +3410,8 @@
 <translation id="9038649477754266430">استفاده از یک سرویس پیش‌بینی برای بار کردن سریع‌تر صفحه‌ها</translation>
 <translation id="7981313251711023384">پیش‌بارگیری صفحه‌ها برای مرور و جستجوی سریع‌تر</translation>
 <translation id="2468205691404969808">از کوکی‌ها برای به خاطر سپردن اولویت‌های شما استفاده می‌کند؛ حتی اگر از آن صفحه‌ها بازدید نکنید</translation>
-<translation id="1641113438599504367">مرور ایمن</translation>
-<translation id="773905249182896430">از شما و دستگاهتان دربرابر سایت‌های خطرناک محافظت می‌کند</translation>
-<translation id="8983677657449185470">کمک به بهبود مرور ایمن</translation>
-<translation id="199861668945335092">‏برخی از اطلاعات سیستم و محتوای صفحه را به Brave Software ارسال می‌کند</translation>
-<translation id="490074449735753175">استفاده از سرویس وب برای برطرف کردن خطاهای املایی</translation>
-<translation id="3523078749603005179">‏غلط‌گیر املای هوشمندتر با ارسال آنچه در مرورگر تایپ می‌کنید به Brave Software</translation>
-<translation id="2564653188463346023">غلط‌گیر املا بهبودیافته</translation>
+<translation id="4991384657077828949">‏کمک به بهبود امنیت Brave</translation>
+<translation id="2875273286298348523">‏Brave نوشتاری را که در مرورگر تایپ می‌کنید، برای Brave Software ارسال می‌کند</translation>
 <translation id="9079153198295609735">‏ارسال خودکار آمار کاربرد و گزارش‌های خرابی به Brave Software</translation>
 <translation id="5941220456342415404">‏ارسال خودکار داده‌های تشخیصی و میزان استفاده به Brave Software</translation>
 <translation id="918192811481327695">‏کمک به بهبود ویژگی‌ها و عملکرد Brave</translation>
@@ -3806,6 +3488,7 @@
 <translation id="16815041330799488">به سایت‌ها اجازه داده نشود به نوشتار و تصاویر کپی‌شده در بریده‌دان دسترسی پیدا کنند</translation>
 <translation id="3668823961463113931">کنترل‌کننده‌ها</translation>
 <translation id="5689516760719285838">مکان</translation>
+<translation id="9219103736887031265">تصاویر</translation>
 <translation id="7521387064766892559">جاوا اسکریپت</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">کنترل‌کننده‌های پرداخت</translation>
@@ -3831,6 +3514,10 @@
 <translation id="8666584013686199826">‏وقتی سایتی می‌خواهد به دستگاه‌های USB دسترسی پیدا کند سؤال شود</translation>
 <translation id="6291949900244949761">‏وقتی سایتی می‌خواهد به دستگاه‌های USB‌ دسترسی پیدا کند سؤال شود (توصیه می‌شود)</translation>
 <translation id="5336126339807372270">‏به هیچ سایتی اجازه دسترسی به دستگاه‌های USB داده نشود</translation>
+<translation id="7638605456503525968">درگاه‌های سریال</translation>
+<translation id="4085270836953633510">اگر سایتی بخواهد به درگاه‌های سریال دسترسی یابد، سؤال شود</translation>
+<translation id="2322318151094136999">اگر سایتی بخواهد به درگاه‌های سریال دسترسی یابد، سؤال شود (توصیه می‌شود)</translation>
+<translation id="1906828677882361942">عدم‌امکان دسترسی به درگاه‌های سریال به هیچ سایتی</translation>
 <translation id="8973557916016709913">برداشتن سطح بزرگ‌نمایی</translation>
 <translation id="1706625117072057435">سطوح بزرگ‌نمایی</translation>
 <translation id="6385543213911723544">سایت‌ها می‌توانند داده‌های کوکی را ذخیره کرده و بخوانند</translation>
@@ -3846,8 +3533,6 @@
 <translation id="2913331724188855103">سایت‌ها مجاز به ذخیره و خواندن داده‌های کوکی باشند (توصیه می‌شود)</translation>
 <translation id="5908769186679515905">‏اجرای Flash در سایت‌ها مسدود شود</translation>
 <translation id="6096007141921397775">‏تنظیمات Flash تا وقتی از Brave خارج شوید حفظ می‌شود.</translation>
-<translation id="2972642118232180842">فقط محتوای مهم اجرا شود (توصیه می‌شود)</translation>
-<translation id="7084192839369222683">فقط محتوای مهم اجرا شود</translation>
 <translation id="8074127646604999664">اجازه به سایت‌های اخیراً بسته‌شده برای تکمیل ارسال و دریافت</translation>
 <translation id="7062222374113411376">به سایت‌های اخیراً بسته‌شده امکان داده شود ارسال و دریافت داده را تکمیل کند (توصیه می‌شود)</translation>
 <translation id="5068918910148307423">به سایت‌های اخیراً بسته‌شده امکان داده نشود ارسال و دریافت داده را تکمیل کنند</translation>
@@ -3911,6 +3596,7 @@
 <translation id="4354344420232759511">سایت‌هایی که بازدید می‌کنید اینجا نشان داده می‌شود</translation>
 <translation id="3757733214359997190">سایتی یافت نشد</translation>
 <translation id="5763751966069581670">‏هیچ دستگاه USB پیدا نشد</translation>
+<translation id="1863182668524159459">درگاه سریالی یافت نشد</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">افزودن سایت</translation>
 <translation id="5052499409147950210">ویرایش سایت</translation>
@@ -3926,7 +3612,6 @@
 <translation id="4590324241397107707">فضای ذخیره‌سازی پایگاه داده</translation>
 <translation id="8016266267177410919">فضای ذخیره‌سازی موقت</translation>
 <translation id="4175737294868205930">محل ذخیره‌سازی دائمی</translation>
-<translation id="6105877918873366097">آخرین دسترسی</translation>
 <translation id="1296497012903089238">نوع گواهینامه</translation>
 <translation id="8553342806078037065">مدیریت افراد دیگر</translation>
 <translation id="8907706281008466056">‏عکس نمایهٔ Brave Software</translation>
@@ -3958,6 +3643,7 @@
 <translation id="1987317783729300807">حساب‌ها</translation>
 <translation id="8418661265246754237">‏حساب‌های Brave Software</translation>
 <translation id="3297951628821704004">برداشتن حساب از این دستگاه</translation>
+<translation id="4659077111144409915">حساب اصلی</translation>
 <translation id="3158033540161634471">ثبت اثرانگشت</translation>
 <translation id="1587907146729660231">دکمه روشن/خاموش را با انگشتتان لمس کنید</translation>
 <translation id="176193854664720708">حسگر اثر انگشت روی دکمه روشن/خاموش است. با یکی از انگشت‌هایتان آن را به‌آرامی لمس کنید.</translation>
@@ -4088,13 +3774,17 @@
 <translation id="6586451623538375658">جابجایی دکمه اصلی ماوس</translation>
 <translation id="221872881068107022">پیمایش معکوس</translation>
 <translation id="1510238584712386396">راه‌انداز</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">الماسی</translation>
 <translation id="89720367119469899">فرار</translation>
+<translation id="5583640892426849032">Backspace</translation>
 <translation id="1951012854035635156">دستیار</translation>
 <translation id="1938351510777341717">فرمان خارجی</translation>
 <translation id="7969046989155602842">فرمان</translation>
 <translation id="585979798156957858">فراداده خارجی</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4991420928586866460">در نظر گرفتن کلیدهای ردیف بالا به عنوان کلیدهای عملکرد</translation>
 <translation id="85486688517848470">برای جابه‌جایی بین رفتار کلیدهای ردیف بالا، کلید جستجو را نگه‌دارید</translation>
 <translation id="4400632832271803360">برای تغییر عملکرد کلیدهای ردیف بالا، کلید «راه‌انداز» را نگه‌دارید</translation>
@@ -4154,6 +3844,7 @@
 <translation id="7758450972308449809">تنظیم مرزهای نمایشگرتان</translation>
 <translation id="5608580678041221894">برای تنظیم یا انتقال ناحیه بریده‌شده، روی کلیدهای زیر ضربه بزنید</translation>
 <translation id="2822634587701817431">کوچک کردن / بزرگ کردن</translation>
+<translation id="7765158879357617694">انتقال</translation>
 <translation id="6801435275744557998">کالیبراسیون صفحه لمسی</translation>
 <translation id="6856623341093082836">راه‌اندازی و تنظیم دقت صفحه لمسی</translation>
 <translation id="4598556348158889687">مدیریت فضای ذخیره‌سازی</translation>
@@ -4196,6 +3887,7 @@
 <translation id="2789927670850159391">‏Bravebook را به تلفن متصل کنید. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">دستگاه واجد شرایطی وجود ندارد. <ph name="LINK_BEGIN"/>بیشتر بدانید.<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">در انتظار تأیید. <ph name="LINK_BEGIN"/>بیشتر بدانید.<ph name="LINK_END"/></translation>
+<translation id="6518133107902771759">تأیید</translation>
 <translation id="7179187931092694802">‏باز کردن قفل Bravebook با تلفن. <ph name="LINK_BEGIN"/>بیشتر بدانید<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">اتصال فوری به اینترنت با تلفن همراه</translation>
 <translation id="6415900369006735853">اتصال به اینترنت ازطریق تلفن</translation>
@@ -4247,6 +3939,30 @@
 <translation id="2992931425024192067">نمایش کل محتوای اعلان</translation>
 <translation id="8592141010104017453">هرگز اعلان نشان داده نشود</translation>
 <translation id="7642778300616172920">پنهان کردن محتوای حساس</translation>
+<translation id="5640133431808313291">مدیریت کلیدهای امنیتی</translation>
+<translation id="8509177919508253835">بازنشانی کلیدهای امنیتی و ایجاد پین</translation>
+<translation id="7652954539215530680">ایجاد پین</translation>
+<translation id="8246776524656196770">محافظت از کلید امنیتی بااستفاده از پین (شماره شناسایی شخصی)</translation>
+<translation id="5973605538625120605">تغییر پین</translation>
+<translation id="6242589501614145408">بازنشانی کلید امنیتی</translation>
+<translation id="1470967055429794975">با این کار، همه داده‌های موجود در کلید امنیتی، ازجمله پین آن، پاک‌سازی می‌شود</translation>
+<translation id="4670688170798478686">تأیید بازنشانی</translation>
+<translation id="1981544341227357861">کلید امنیتی‌تان را از دستگاه بردارید، سپس آن را دوباره وارد و لمس کنید.</translation>
+<translation id="714285394257538643">برای تأیید اینکه می‌خواهید کلید امنیتی‌تان را بازنشانی کنید، دوباره آن را لمس کنید. همه اطلاعات کاربری ذخیره‌شده در کلید امنیتی و پین آن پاک‌سازی خواهد شد.</translation>
+<translation id="4120388883569225797">نمی‌توان این کلید امنیتی را بازنشانی کرد</translation>
+<translation id="7691077781194517083">نمی‌توان این کلید امنیتی را بازنشانی کرد. خطای <ph name="ERROR_CODE"/>.</translation>
+<translation id="4124823734405044952">کلید امنیتی بازنشانی شد</translation>
+<translation id="8644655801811752511">نمی‌توان این کلید امنیتی را بازنشانی کرد. بازنشاندن این کلید را بلافاصله پس از وارد کردنش امتحان کنید.</translation>
+<translation id="8845164297565101021">برای ایجاد یا تغییر پین، کلید امنیتی را وارد و لمس کنید</translation>
+<translation id="6957044667612803194">این کلید امنیتی از پین‌ها پشتیبانی نمی‌کند</translation>
+<translation id="7212097698621322584">پین کنونی‌تان را برای تغییر پین وارد کنید. اگر پین‌ خود را نمی‌دانید، باید کلید امنیتی را بازنشانی کنید و سپس پین جدیدی ایجاد کنید.</translation>
+<translation id="2637400434494156704">پین اشتباه است. یک بار دیگر می‌توانید امتحان کنید.</translation>
+<translation id="3341699307020049241">پین اشتباه است. <ph name="RETRIES"/> بار دیگر می‌توانید امتحان کنید.</translation>
+<translation id="2439545803278355377">پین جدید را وارد کنید. پین باید حداقل چهار نویسه داشته باشد و می‌تواند حاوی حروف، اعداد، و سایر نویسه‌ها باشد.</translation>
+<translation id="1781291988450150470">پین کنونی</translation>
+<translation id="3732530910372558017">پین باید حداکثر ۶۳ نویسه داشته باشد</translation>
+<translation id="1307165550267142340">پین ایجاد شد</translation>
+<translation id="2699911226086014512">عملیات پین به‌دلیل کد خطای <ph name="RETRIES"/> انجام نشد.</translation>
 <translation id="3341703758641437857">اجازهٔ دسترسی به نشانی‌های وب فایل</translation>
 <translation id="9003647077635673607">در همه وب‌سایت‌ها مجاز باشد</translation>
 <translation id="698524779381350301">دسترسی به سایت‌های زیر به‌طور خودکار مجاز شود</translation>
@@ -4269,6 +3985,7 @@
 <translation id="6841186874966388268">خطاها</translation>
 <translation id="3487007233252413104">تابع ناشناس</translation>
 <translation id="3264582393905923483">زمینه</translation>
+<translation id="6921104647315081813">پاک کردن فعالیت‌ها</translation>
 <translation id="1607139524282324606">پاک کردن ورودی</translation>
 <translation id="6025215716629925253">ردیابی پشته‌ای</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;۱ خط نشان داده نمی‌شود&gt;}one{&lt;<ph name="NUMBER_OF_LINES"/> خط نشان داده نمی‌شوند&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> خط نشان داده نمی‌شوند&gt;}}</translation>
@@ -4289,6 +4006,10 @@
 <translation id="6073451960410192870">توقف ضبط</translation>
 <translation id="8719472795285728850">درحال گوش دادن به فعالیت‌های افزونه...</translation>
 <translation id="2540449034743108469">برای گوش دادن به فعالیت‌های افزونه، روی «شروع» فشار دهید</translation>
+<translation id="885246833287407341">‏متغیرهای مستقل عملکرد API</translation>
+<translation id="3600051066689725006">اطلاعات درخواست وب</translation>
+<translation id="5812674658566766066">بزرگ کردن همه</translation>
+<translation id="3115580024857770654">کوچک کردن همه موارد</translation>
 <translation id="1890674179660343635">‏&lt;span&gt;شناسه: &lt;/span&gt;‏<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">بازرسی بازدیدها</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> مورد دیگر…</translation>
@@ -4296,6 +4017,7 @@
 <translation id="4854477725773269949">در ناشناس مجاز است</translation>
 <translation id="6124650939968185064">افزودنه‌های زیر به این برنامه افزودنی وابسته هستند:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (شناسه: <ph name="ID_PH"/>)</translation>
+<translation id="3866249974567520381">توضیح</translation>
 <translation id="6508248480704296122">مرتبط با <ph name="NAME_PH"/></translation>
 <translation id="1410197035576869800">نماد برنامه</translation>
 <translation id="3664511988987167893">نماد افزونه</translation>
@@ -4307,6 +4029,7 @@
 <translation id="7152478047064750137">این افزونه به مجوز خاصی نیاز ندارد</translation>
 <translation id="1004218526896219317">دسترسی به سایت</translation>
 <translation id="7385896526023870365">این افزونه هیچ‌گونه دسترسی اضافی به سایت ندارد.</translation>
+<translation id="8294431847097064396">منبع</translation>
 <translation id="8523849605371521713">به‌موجب خط‌مشی اضافه شد</translation>
 <translation id="5087249366037322692">توسط یک شخص ثالث اضافه شده است</translation>
 <translation id="6788210894632713004">افزونه غیر فشرده</translation>
@@ -4350,12 +4073,14 @@
 <translation id="1909880997794698664">آیا مطمئن هستید که می‌خواهید این دستگاه را برای همیشه در حالت کیوسک نگه دارید؟</translation>
 <translation id="1512210426710821809">تنها راه برای واگرد این مورد، نصب مجدد <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> است</translation>
 <translation id="4472575034687746823">شروع به کار</translation>
+<translation id="8281886186245836920">رد شدن</translation>
 <translation id="2342740338116612727">نشانک‌ها اضافه شد</translation>
 <translation id="7835178595033117206">نشانک حذف شد</translation>
 <translation id="742130257665691897">نشانک‌ها برداشته شد</translation>
 <translation id="2785008241190445880">نشانک جایگزین شد</translation>
-<translation id="4320948194796820126">افزودن نشانک به ایمیل</translation>
+<translation id="5468853758063275923">‏Brave مرورگر پیش‌فرض شما است</translation>
 <translation id="2950533317914339731">‏اضافه کردن نشانک‌ها به برنامه‌های Brave Software دلخواه</translation>
+<translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">اخبار</translation>
 <translation id="995782501881226248">YouTube</translation>
@@ -4375,10 +4100,10 @@
 <translation id="3707821975049107110">‏قبلاً کاربر Brave بوده‌اید؟ به سیستم وارد شوید</translation>
 <translation id="1573150740912592860">ذخیره پیشرفت</translation>
 <translation id="567643736130151854">برای دریافت نشانک‌ها، گذرواژه‌ها و سایر موارد در همه دستگاه‌ها، به سیستم وارد شوید و همگام‌سازی را روشن کنید</translation>
-<translation id="8282356762694872144">با ایمیلتان ادامه می‌دهید؟</translation>
 <translation id="5939847200023027600">‏سرویس ترکیب‌کننده PDF</translation>
 <translation id="725758059478686223">سرویس چاپ</translation>
 <translation id="5877584842898320529">چاپگر انتخابی موجود نیست یا به‌درستی نصب نشده است. <ph name="BR"/> چاپگر خود را بررسی کنید یا چاپگر دیگری را انتخاب کنید.</translation>
+<translation id="1430915738399379752">چاپ</translation>
 <translation id="1031362278801463162">بارگیری پیش‌نمایش</translation>
 <translation id="6147020289383635445">پیش‌نمایش چاپ کار نمی‌کند.</translation>
 <translation id="7413400642818115607">‏دستگاه Brave Software Cloud Print انتخاب‌شده دیگر پشتیبانی نمی‌شود. <ph name="BR"/> چاپگر را در تنظیمات سیستم رایانه‌تان راه‌اندازی کنید.</translation>
@@ -4391,6 +4116,9 @@
 <translation id="5431318178759467895">رنگ</translation>
 <translation id="2050339315714019657">عمودی</translation>
 <translation id="3317459757438853210">دو طرفه</translation>
+<translation id="9053563360605707198">چاپ دورو</translation>
+<translation id="2996722619877761919">ورق زدن از طرف لبه بلندتر</translation>
+<translation id="1172750555846831341">ورق زدن ازطرف لبه کوتاه‌تر</translation>
 <translation id="4988526792673242964">صفحات</translation>
 <translation id="7771452384635174008">صفحه آرایی</translation>
 <translation id="3303818374450886607">کپی ها</translation>
@@ -4400,6 +4128,7 @@
 <translation id="5746169159649715125">‏ذخیره به‌عنوان PDF</translation>
 <translation id="1955272076204612657">‏‫ذخیره در Brave Software Drive</translation>
 <translation id="2580924999637585241">مجموع: <ph name="SHEETS_LABEL"/><ph name="NUMBER_OF_SHEETS"/></translation>
+<translation id="73174032666024687"><ph name="NUMBER_OF_SHEETS"/><ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">صفحات کاغذ</translation>
 <translation id="8813811964357448561">صفحه کاغذ</translation>
 <translation id="8180239481735238521">صفحه</translation>
@@ -4452,6 +4181,9 @@
 <translation id="7453008956351770337">با انتخاب این چاپگر، به افزونه زیر اجازه دسترسی به چاپگرتان را می‌دهید:</translation>
 <translation id="2902127500170292085"><ph name="EXTENSION_NAME"/> نتوانست با این چاپگر ارتباط برقرار کند. مطمئن شوید چاپگر روشن است و دوباره امتحان کنید.</translation>
 <translation id="6530186581263215931">این تنظیمات توسط سرپرست سیستم شما اعمال شده است</translation>
+<translation id="3053273573829329829">فعال کردن پین کاربر</translation>
+<translation id="6922745772873733498">برای چاپ کردن، پین را وارد کنید</translation>
+<translation id="2396783860772170191">پین ۴ رقمی را وارد کنید (۹۹۹۹-۰۰۰۰)</translation>
 <translation id="4994754230098574403">درحال راه‌اندازی</translation>
 <translation id="1396139853388185343">خطا هنگام راه‌اندازی چاپگر</translation>
 <translation id="2379281330731083556">چاپ با استفاده از گفتگوی سیستم... <ph name="SHORTCUT_KEY"/></translation>
@@ -4468,20 +4200,25 @@
 <translation id="79766959863778284">‏سرویس دستگاه جداشده با XR</translation>
 <translation id="8909833622202089127">سایت درحال ردیابی مکان شما است</translation>
 <translation id="375636864092143889">سایت درحال استفاده از میکروفون شما است</translation>
-<translation id="310671807099593501">سایت درحال استفاده از بلوتوث شما است</translation>
 <translation id="7256069762010468647">سایت درحال استفاده از دوربین شما است</translation>
 <translation id="7340650977506865820">سایت درحال هم‌رسانی صفحه‌نمایش شما است</translation>
 <translation id="1805738995123446102">برگه پس‌زمینه درحال استفاده از میکروفون است</translation>
-<translation id="1112420131909513020">برگه پس‌زمینه درحال استفاده از بلوتوث است</translation>
 <translation id="8715480913140015283">برگه پس‌زمینه درحال استفاده از دوربین است</translation>
 <translation id="6155141482566063812">برگه پس‌زمینه درحال هم‌رسانی صفحه‌نمایش است</translation>
 <translation id="661907246513853610">سایت می‌تواند مکانتان را ردیابی کند</translation>
 <translation id="8991520179165052608">سایت می‌تواند از میکروفن شما استفاده کند</translation>
-<translation id="7681095912841365527">سایت می‌تواند از بلوتوث استفاده کند</translation>
 <translation id="3085412380278336437">سایت می‌تواند از دوربینتان استفاده کند</translation>
 <translation id="9180380851667544951">سایت می‌تواند صفحه‌نمایشتان را هم‌رسانی کند</translation>
-<translation id="400314203296796334">برای مسدود کردن یا مجاز کردن، هدست را بردارید.</translation>
-<translation id="4922897038695506037"><ph name="URL_HOST"/> مجوزهای دیگری را درخواست کرده است.</translation>
+<translation id="310671807099593501">سایت درحال استفاده از بلوتوث شما است</translation>
+<translation id="1112420131909513020">برگه پس‌زمینه درحال استفاده از بلوتوث است</translation>
+<translation id="7681095912841365527">سایت می‌تواند از بلوتوث استفاده کند</translation>
+<translation id="1484979925941077974">سایت درحال استفاده از بلوتوث است</translation>
+<translation id="4892229439761351791">سایت می‌تواند از بلوتوث استفاده کند</translation>
+<translation id="6416743254476733475">در رایانه مجاز یا مسدود کنید.</translation>
+<translation id="6124698108608891449">این سایت به مجوزهای بیشتری نیاز دارد.</translation>
+<translation id="6551612971599078809">‏سایت درحال استفاده از USB است</translation>
+<translation id="3088052000289932193">‏سایت درحال استفاده از MIDI است</translation>
+<translation id="7004402701596653846">‏سایت می‌تواند از MIDI استفاده کند</translation>
 <translation id="7574650250151586813">‏برای تایپ نوشتار، برنامه صفحه کلید Daydream را به‌روزرسانی کنید</translation>
 <translation id="983511809958454316">‏این ویژگی در VR پشتیبانی نمی‌شود</translation>
 <translation id="4008291085758151621">‏اطلاعات سایت در VR در دسترس نیست</translation>
@@ -4489,6 +4226,7 @@
 <translation id="6313641880021325787">‏خروج از VR</translation>
 <translation id="2670429602441959756">این صفحه حاوی قابلیت‌هایی است که هنوز در حالت «واقعیت مجازی» پشتیبانی نمی‌شوند. درحال خروج…</translation>
 <translation id="1802687198411089702">صفحه پاسخ نمی‌دهد. می‌توانید منتظر بمانید یا خارج شوید.</translation>
+<translation id="1041175011127912238">این صفحه پاسخ نمی‌دهد</translation>
 <translation id="3987938432087324095">متأسفم، متوجه نشدم.</translation>
 <translation id="6923132443355966645">پیمایش / کلیک</translation>
 <translation id="6041155700700864984">خروج از تمام صفحه</translation>

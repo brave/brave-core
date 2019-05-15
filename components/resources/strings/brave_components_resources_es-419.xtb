@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Obtén tokens mirando publicidades en Brave. Las publicidades presentadas se basan en tus intereses, según lo inferido a partir del comportamiento de tu navegador. Ningún dato personal ni historial de navegación jamás saldrá de tu navegador.</translation>
 <translation id="6112368337882254910">Contribución automática</translation>
 <translation id="1527222983464337010">Una forma automática de apoyar a quienes publican y a los creadores de contenido. Establece un pago mensual y navega normalmente. Los sitios que visitas reciben contribuciones de manera automática en función de tu atención medida por Brave.</translation>
-<translation id="7178655681744815321">Ingresos actuales este mes (aproximados)</translation>
 <translation id="8157096848242649588">Fecha de pago</translation>
 <translation id="5208388044986603165">Notificaciones de anuncios recibidas</translation>
 <translation id="4229016885653790965">Lo sentimos. Todavía no hay anuncios disponibles en su región.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Gana dinero por mirar publicidades relevantes que respetan tu privacidad.</translation>
 <translation id="3361548743396744457">Apoya a tus sitios preferidos simplemente navegando o dándole una propina a un sitio en cualquier momento que quieras.</translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
+<translation id="4493850495402472953">y</translation>
+<translation id="8804164990146287819">Política de privacidad</translation>
+<translation id="4281844954008187215">Condiciones de servicio</translation>
 <translation id="7530570094705720669">Cómo crear una billetera</translation>
 <translation id="2105596359439030979">Tu atención es valiosa. Gana mirando publicidades que respetan la privacidad y paga para apoyar a los creadores que te encantan.</translation>
 <translation id="516395624550019162">¡Sí, acepto!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">sin tu consentimiento.</translation>
 <translation id="7147673045905733351">Hoy, Brave le da la bienvenida a una nueva Internet.</translation>
 <translation id="1350763070659630336">Donde su tiempo es valioso, se mantiene la privacidad de sus datos personales y realmente le pagan por su atención.</translation>
+<translation id="880341991877949255">Con su antiguo navegador, usted pagaba para navegar por la web mirando publicidades con su valiosa atención. Pasaba su valioso tiempo descargando tecnología contra publicidades invasivas que transmitían sus valiosos datos privados a publicistas — sin su consentimiento.</translation>
 <translation id="5830306739231399614">Lamentablemente, aún no tienes tokens.</translation>
 <translation id="7359258898775969374">Tres formas de llenar tu billetera:</translation>
 <translation id="8087614920008846901">Puedes agregar fondos.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Descubre qué mejoró</translation>
 <translation id="4083384190339959182">Hemos mejorado Brave Payments en gran medida.</translation>
 <translation id="5395851053710553429">Prepárate para experimentar la próxima Internet.</translation>
-<translation id="880341991877949255">Con su antiguo navegador, usted pagaba para navegar por la web mirando publicidades con su valiosa atención. Pasaba su valioso tiempo descargando tecnología contra publicidades invasivas que transmitían sus valiosos datos privados a publicistas — sin su consentimiento.</translation>
 <translation id="2549982302631665116">Hoy Brave te da la bienvenida a la nueva Internet; una en la que tu tiempo es valioso, tus datos personales se mantienen resguardados y donde realmente te pagan por tu atención.</translation>
 <translation id="3780605330121608425">Tu billetera</translation>
 <translation id="6727483290601442544">Ver detalles</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Agregar nuevo dispositivo</translation>
 <translation id="8780295742023331191">Ver código de sincronización</translation>
 <translation id="1755198127524719638">Configuración de sincronización</translation>
-<translation id="7558480201297099157">Gestione qué información le gustaría sincronizar entre dispositivos. Esta configuración se aplica solo a este dispositivo.</translation>
 <translation id="8820817407110198400">Favoritos</translation>
 <translation id="5591129654353352557">Configuración del sitio guardada</translation>
 <translation id="7859704718976024901">Historial de navegación</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Código de cadena de sincronización</translation>
 <translation id="2899261497479389619">En su computadora, busque Brave Sync en el panel de configuración y haga clic en el botón</translation>
 <translation id="4827439149833241990">“Tengo un código de sincronización”.</translation>
-<translation id="24067401253841795">Ingrese el código de cadena de sincronización que aparece a continuación.</translation>
 <translation id="8914601399214979966">Prefiero usar mi cámara</translation>
 <translation id="3034163433136515805">Ver código QR</translation>
 <translation id="5093410893656857925">Elegir tipo de dispositivo</translation>

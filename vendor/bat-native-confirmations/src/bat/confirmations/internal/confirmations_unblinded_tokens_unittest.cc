@@ -96,7 +96,7 @@ class ConfirmationsUnblindedTokensTest : public ::testing::Test {
       return false;
     }
 
-    std::ifstream ifs{path.value()};
+    std::ifstream ifs{path.value().c_str()};
     if (ifs.fail()) {
       *value = "";
       return false;

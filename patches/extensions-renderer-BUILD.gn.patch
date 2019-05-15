@@ -1,8 +1,8 @@
 diff --git a/extensions/renderer/BUILD.gn b/extensions/renderer/BUILD.gn
-index 1a0409017a908ff192fe620ae3d81eb2861b6655..bcf17f7da5f4451877c62c6958ddbae28b19b23f 100644
+index 4e0663d7f4a289d960412cd40d0df88ac4c22b5e..c17c2eccd2b389aeeb49b096745b58dff3aa3f85 100644
 --- a/extensions/renderer/BUILD.gn
 +++ b/extensions/renderer/BUILD.gn
-@@ -346,6 +346,8 @@ jumbo_source_set("renderer") {
+@@ -310,6 +310,8 @@ jumbo_source_set("renderer") {
      "//third_party/cld_3/src/src:cld_3",
    ]
  

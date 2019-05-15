@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/metrics/chrome_metrics_services_manager_client.cc b/chrome/browser/metrics/chrome_metrics_services_manager_client.cc
-index e960bdb53cf25dfa53da5e3771d2fbba4354159d..f3b3d2a012254c5ecb6261ca573395dac74596f0 100644
+index a2b6dc6dcc4caca41a07330a3d11c7c961aed05c..887b50d7adc1b060eed6527bbc4de12fb56be373 100644
 --- a/chrome/browser/metrics/chrome_metrics_services_manager_client.cc
 +++ b/chrome/browser/metrics/chrome_metrics_services_manager_client.cc
 @@ -144,7 +144,7 @@ class ChromeMetricsServicesManagerClient::ChromeEnabledStateProvider

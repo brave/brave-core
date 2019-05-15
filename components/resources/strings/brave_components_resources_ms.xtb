@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Dapatkan token dengan melihat iklan di Brave. Iklan yang dipaparkan adalah berdasarkan minat anda, sebagaimana yang disimpulkan dari tingkah laku anda semasa melayari web. Tiada data peribadi atau sejarah pelayaran web akan meninggalkan pelayar web anda.</translation>
 <translation id="6112368337882254910">Auto-Sumbang</translation>
 <translation id="1527222983464337010">Cara automatik untuk menyokong penerbit dan pencipta kandungan. Tetapkan bayaran bulanan dan layari seperti biasa. Laman yang anda lawati akan menerima sumbangan anda secara automatik, berdasarkan perhatian anda yang diukur oleh Brave.</translation>
-<translation id="7178655681744815321">Pendapatan semasa bulan ini (Anggaran)</translation>
 <translation id="8157096848242649588">Tarikh pembayaran</translation>
 <translation id="5208388044986603165">Pemberitahuan iklan diterima</translation>
 <translation id="4229016885653790965">Maaf! Iklan belum ada di kawasan anda.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Dapatkan bayaran dengan menonton iklan berkaitan yang menghormati privasi anda.</translation>
 <translation id="3361548743396744457">Sokong laman kesukaan anda hanya dengan melayari – atau klik pada laman bila saja anda suka.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="4493850495402472953">dan</translation>
+<translation id="8804164990146287819">Dasar Privasi</translation>
+<translation id="4281844954008187215">Syarat Perkhidmatan</translation>
 <translation id="7530570094705720669">Mencipta dompet</translation>
 <translation id="2105596359439030979">Perhatian anda adalah sangat berharga. Peroleh ganjaran dengan melihat iklan yang menghormati privasi dan bayarnya terus kepada pencipta kandungan pilihan anda.</translation>
 <translation id="516395624550019162">Ya, saya mahu!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">tanpa kebenaran anda.</translation>
 <translation id="7147673045905733351">Hari ini, Brave mengalu-alukan anda ke internet baru.</translation>
 <translation id="1350763070659630336">Satu-satunya tempat dimana masa anda dihargai, data peribadi anda disimpan sulit, dan anda dibayar untuk perhatian anda.</translation>
+<translation id="880341991877949255">Dengan pelayar lama anda, anda membayar untuk melayari web dengan melihat iklan menggunakan perhatian berharga anda. Anda meluangkan masa berharga anda memuat turun teknologi iklan invasif yang menghantar data peribadi berharga anda ke pengiklan — tanpa kebenaran anda.</translation>
 <translation id="5830306739231399614">Maaf, belum ada token.</translation>
 <translation id="7359258898775969374">3 cara untuk mengisi dompet anda:</translation>
 <translation id="8087614920008846901">Anda boleh menambahkan dana.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Semak apa yang ditambah baik</translation>
 <translation id="4083384190339959182">Kami’ve telah memberikan Brave Payment naik taraf berskala besar.</translation>
 <translation id="5395851053710553429">Bersiap sedia untuk merasai pengalaman Internet seterusnya.</translation>
-<translation id="880341991877949255">Dengan pelayar lama anda, anda membayar untuk melayari web dengan melihat iklan menggunakan perhatian berharga anda. Anda meluangkan masa berharga anda memuat turun teknologi iklan invasif yang menghantar data peribadi berharga anda ke pengiklan — tanpa kebenaran anda.</translation>
 <translation id="2549982302631665116">Hari ini, Brave mengalu-alukan anda ke Internet baru. Dimana masa anda dihargai, data peribadi anda disimpan sulit, dan anda dibayar atas perhatian anda.</translation>
 <translation id="3780605330121608425">Dompet anda</translation>
 <translation id="6727483290601442544">Lihat Butiran</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Tambah Peranti Baru</translation>
 <translation id="8780295742023331191">Lihat Kod Segerak</translation>
 <translation id="1755198127524719638">Tetapan Segerak</translation>
-<translation id="7558480201297099157">Uruskan maklumat yang anda ingin segerakkan antara peranti. Tetapan ini hanya memberi kesan kepada peranti ini.</translation>
 <translation id="8820817407110198400">Penanda buku</translation>
 <translation id="5591129654353352557">Tetapan Tapak Disimpan</translation>
 <translation id="7859704718976024901">Sejarah Semakan Imbas</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Segerakkan Kod Rantaian</translation>
 <translation id="2899261497479389619">Pada komputer sasaran anda, navigasi ke Segerak Brave dalam tetapan dan klik pada butangnya</translation>
 <translation id="4827439149833241990">“Saya ada Kod Segerak”.</translation>
-<translation id="24067401253841795">Masukkan perkataan kod rantai penyegerakan yang ditunjukkan di bawah.</translation>
 <translation id="8914601399214979966">Sebaliknya gunakan kamera saya</translation>
 <translation id="3034163433136515805">Lihat Kod QR</translation>
 <translation id="5093410893656857925">Pilih Jenis Peranti</translation>

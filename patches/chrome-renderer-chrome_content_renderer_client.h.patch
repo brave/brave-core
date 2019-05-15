@@ -1,8 +1,8 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
-index 315fadea197fdd5836f3a71647cc0e52660d125e..d4a11cccdac968793b5ee0b656b8cbc6224a914f 100644
+index 770d49a61dc957bdb537b9103df3fd69c6d36354..7aa1829ec55b9bda9f736137b886dbeeb1215e3a 100644
 --- a/chrome/renderer/chrome_content_renderer_client.h
 +++ b/chrome/renderer/chrome_content_renderer_client.h
-@@ -239,6 +239,7 @@ class ChromeContentRendererClient
+@@ -238,6 +238,7 @@ class ChromeContentRendererClient
    base::WeakPtr<ChromeRenderThreadObserver> GetChromeObserver() const;
  
   private:

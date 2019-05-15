@@ -46,17 +46,14 @@
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="2515126961943087659">Рекламный сервис BAT</translation>
 <translation id="7924918279836988121">Служба учета BAT-транзакций</translation>
-<translation id="768979911142179781">Настройки щитов Brave по умолчанию</translation>
-<translation id="9185018653595759199">Кнопки соцсетей и вход</translation>
-<translation id="6894114137169961038">Контроль рекламы</translation>
-<translation id="1096802265930928584">Управление файлами cookie</translation>
+<translation id="4472575034687746823">Начало работы</translation>
+<translation id="6303294677342628402">Защита</translation>
 <translation id="8919235146866304148">Защита от цифровых следов</translation>
 <translation id="520895744850022668">HTTPS в любом месте</translation>
 <translation id="5259716416204774556">Блокирование скриптов</translation>
 <translation id="7498695072878479744">Разрешить кнопки входа в Google на сторонних сайтах</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
 <translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
-<translation id="958971637207126733">Разрешить встраивание LinkedIn</translation>
 <translation id="6067014455220527258">Блокировать всплывающую рекламу</translation>
 <translation id="6985711843506827936">Разрешить рекламу и отслеживание</translation>
 <translation id="6132506775968708399">Блокировать куки-файлы 3-й стороны</translation>
@@ -76,7 +73,6 @@
 <translation id="2414886740292270097">Темная</translation>
 <translation id="1360441190790440400">Как Linux</translation>
 <translation id="1336940801687497203">Как Windows</translation>
-<translation id="8721331068159819483">Как MacOS</translation>
 <translation id="6786747875388722282">Расширения</translation>
 <translation id="2896916411183256228">WebTorrent позволит отображать информацию о торрентах прямо в браузере. Поддерживаются торрент-файлы и magnet-ссылки.</translation>
 <translation id="6554397389149987360">С помощью компонента Hangouts можно прямо в браузере демонстрировать свой экран и пользоваться другими возможностями.</translation>

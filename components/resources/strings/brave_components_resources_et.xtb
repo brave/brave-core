@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Teenige tokeneid, vaadates Brave'i ilmuvaid reklaame. Reklaamid põhinevad teie eelistustel ja sirvimise ajalool. Teie isikuandmed ega sirvimise ajalugu ei jõua kunagi brauserist väljapoole.</translation>
 <translation id="6112368337882254910">Automaatne panustamine</translation>
 <translation id="1527222983464337010">Automaatne viis toetada väljaandjaid ja sisuloojaid. Määrake igakuine panus ja jätkake oma tavapärast sirvimist. Külastatavad veebisaidid saavad teie panused automaatselt ja see põhineb teie aktiivsusel, mida mõõdab Brave.</translation>
-<translation id="7178655681744815321">Selle kuu preemiad (prognoos)</translation>
 <translation id="8157096848242649588">Maksekuupäev</translation>
 <translation id="5208388044986603165">Saadud reklaamteated</translation>
 <translation id="4229016885653790965">Vabandame! Ads ei ole veel teie piirkonnas saadaval.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Saage preemiaid privaatsust austavate reklaamide vaatamise eest.</translation>
 <translation id="3361548743396744457">Toetage oma lemmikveebisaite, sirvides või premeerides neid endale sobival hetkel.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="4493850495402472953">ja</translation>
+<translation id="8804164990146287819">privaatsuspoliitika</translation>
+<translation id="4281844954008187215">teenusetingimustega</translation>
 <translation id="7530570094705720669">Rahakoti loomine</translation>
 <translation id="2105596359439030979">Teie aktiivsus on oluline. Saage preemiaid selle eest, et vaatate reklaame, mis austavad teie privaatsust, ja edastage neid, et toetada oma lemmiksisuloojaid.</translation>
 <translation id="516395624550019162">Jah, olen käsi!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">ilma teie nõusolekuta.</translation>
 <translation id="7147673045905733351">Täna tervitab Brave teid uut internetti kasutama.</translation>
 <translation id="1350763070659630336">Ruumi, kus teie aega hinnatakse, teie isikuandmeid hoitakse privaatsena ja tähelepanu eest premeeritakse.</translation>
+<translation id="880341991877949255">Oma vana brauseriga maksite sirvimise eest sellega, et vaatasite reklaame. Panustasite palju aega selleks, et laadida alla reklaamidega seotud tehnoloogiat, mis omakorda edastas teie privaatseid andmeid ilma loata reklaamitegijatele.</translation>
 <translation id="5830306739231399614">Kahjuks ei ole veel ühtegi tokenit.</translation>
 <translation id="7359258898775969374">3 meetodit, kuidas oma rahakotti täita.</translation>
 <translation id="8087614920008846901">Võite lisada vahendeid.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Vaadake, mis on uus</translation>
 <translation id="4083384190339959182">Brave Payments on läbinud suure värskenduskuuri.</translation>
 <translation id="5395851053710553429">Kogege internetti uuel moel.</translation>
-<translation id="880341991877949255">Oma vana brauseriga maksite sirvimise eest sellega, et vaatasite reklaame. Panustasite palju aega selleks, et laadida alla reklaamidega seotud tehnoloogiat, mis omakorda edastas teie privaatseid andmeid ilma loata reklaamitegijatele.</translation>
 <translation id="2549982302631665116">Nüüd kutsub Brave teid uude veebiruumi. Ruumi, kus teie aega hinnatakse, teie isikuandmeid hoitakse privaatsena ja reklaamide vaatamise eest antakse preemiat.</translation>
 <translation id="3780605330121608425">Teie rahakott</translation>
 <translation id="6727483290601442544">Vaata andmeid</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Lisa uus seade</translation>
 <translation id="8780295742023331191">Kuva sünkroonimiskood</translation>
 <translation id="1755198127524719638">Sünkroonimise sätted</translation>
-<translation id="7558480201297099157">Seadmete vahel sünkroonitavate andmete haldamine. Sätted mõjutavad ainult seda seadet.</translation>
 <translation id="8820817407110198400">Järjehoidjad</translation>
 <translation id="5591129654353352557">Salvestatud saidi seaded</translation>
 <translation id="7859704718976024901">Lehitsemisajalugu</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Sünkroonimisahela kood</translation>
 <translation id="2899261497479389619">Sihtarvutis valige sätete alt Brave Sync ja klõpsake nuppu</translation>
 <translation id="4827439149833241990">“Mul on sünkroonimiskood”.</translation>
-<translation id="24067401253841795">Sisestage allpool kuvatud sünkroonimisahela koodisõnad.</translation>
 <translation id="8914601399214979966">Kasuta hoopis kaamerat</translation>
 <translation id="3034163433136515805">Vaadake QR-koodi</translation>
 <translation id="5093410893656857925">Valige seadmetüüp</translation>

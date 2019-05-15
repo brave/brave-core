@@ -46,17 +46,14 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="3155170474926428993">Selector de Tor</translation>
 <translation id="2515126961943087659">Servicio publicitario BAT</translation>
 <translation id="7924918279836988121">Servicio de contabilidad de BAT</translation>
-<translation id="768979911142179781">Valores predeterminados de los escudos de Brave</translation>
-<translation id="9185018653595759199">Botones de redes sociales e inicios de sesión</translation>
-<translation id="6894114137169961038">Control de publicidad</translation>
-<translation id="1096802265930928584">Control de cookies</translation>
+<translation id="4472575034687746823">Comenzar</translation>
+<translation id="6303294677342628402">Escudos</translation>
 <translation id="8919235146866304148">Protección de huellas digitales</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Bloqueo de scripts</translation>
 <translation id="7498695072878479744">Permitir botones de inicio de sesión de Google en sitios externos</translation>
 <translation id="863171915776379000">Permitir publicaciones integradas e inicios de sesión de Facebook</translation>
 <translation id="5165042248369837294">Permitir tuits integrados de Twitter</translation>
-<translation id="958971637207126733">Permitir publicaciones integradas de LinkedIn</translation>
 <translation id="6067014455220527258">Bloquear publicidades</translation>
 <translation id="6985711843506827936">Permitir publicidades y rastro</translation>
 <translation id="6132506775968708399">Bloquear cookies de terceros</translation>
@@ -76,7 +73,6 @@ Al instalar esta extensión, aceptas los Términos de Uso de Google Widevine. Al
 <translation id="2414886740292270097">Oscuro</translation>
 <translation id="1360441190790440400">Igual a Linux</translation>
 <translation id="1336940801687497203">Igual a Windows</translation>
-<translation id="8721331068159819483">Igual a MacOS</translation>
 <translation id="6786747875388722282">Extensiones</translation>
 <translation id="2896916411183256228">Usa WebTorrnet para mostrar torrents directamente en el navegador. Admite archivos torrent y enlaces magnéticos.</translation>
 <translation id="6554397389149987360">Usa el componente Hangouts para compartir la pantalla y habilitar otras funciones en el navegador.</translation>

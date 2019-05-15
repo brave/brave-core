@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Kiếm token khi xem quảng cáo trên Brave. Quảng cáo trình bày dựa trên sở thích của bạn, theo như suy ra từ hành vi duyệt web của bạn. Không có bất kỳ dữ liệu cá nhân hay lịch sử duyệt nào rời khỏi trình duyệt của bạn.</translation>
 <translation id="6112368337882254910">Tự động Đóng góp</translation>
 <translation id="1527222983464337010">Một cách tự động để hỗ trợ nhà xuất bản và nhà sáng tạo nội dung. Thiết lập thanh toán hàng tháng và duyệt web bình thường. Các trang web bạn truy cập nhận được khoản đóng góp của bạn tự động, dựa trên sự chú ý của bạn do Brave đo lường.</translation>
-<translation id="7178655681744815321">Tiền kiếm được tháng này (Ước tính)</translation>
 <translation id="8157096848242649588">Ngày thanh toán</translation>
 <translation id="5208388044986603165">Thông báo quảng cáo đã nhận được</translation>
 <translation id="4229016885653790965">Rất tiếc! Quảng cáo chưa có sẵn trong khu vực của bạn.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Được trả tiền khi xem các quảng cáo liên quan và tôn trọng sự riêng tư của bạn.</translation>
 <translation id="3361548743396744457">Hỗ trợ những trang mà bạn yêu thích chỉ bằng cách duyệt web – hoặc gửi tiền tip cho trang web vào bất kỳ lúc nào bạn muốn.</translation>
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
+<translation id="4493850495402472953">và</translation>
+<translation id="8804164990146287819">Chính sách Quyền riêng tư</translation>
+<translation id="4281844954008187215">Điều khoản Dịch vụ</translation>
 <translation id="7530570094705720669">Tạo ví</translation>
 <translation id="2105596359439030979">Sự chú ý của bạn rất quý báu. Kiếm tiền bằng cách xem quảng cáo tôn trọng sự riêng tư, và thanh toán trực tiếp để ủng hộ nhà sáng tạo nội dung mà bạn thích.</translation>
 <translation id="516395624550019162">Vâng, tôi tham gia!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">mà không được bạn đồng ý.</translation>
 <translation id="7147673045905733351">Hôm nay, Brave chào đón bạn đến với Internet mới.</translation>
 <translation id="1350763070659630336">Nơi mà thời gian của bạn được trân trọng, dữ liệu cá nhân của bạn được giữ riêng tư, và bạn thực sự được trả công cho sự chú ý của mình.</translation>
+<translation id="880341991877949255">Với trình duyệt cũ của mình, bạn trả tiền để duyệt web bằng cách xem các quảng cáo với sự chú ý quý giá của mình. Bạn dành thời gian quý giá của mình để tải về công nghệ quảng cáo xâm phạm quyền riêng tư vốn truyền các dữ liệu riêng tư quý giá của bạn đến các nhà quảng cáo mà không được bạn đồng ý.</translation>
 <translation id="5830306739231399614">Tiếc thay, chưa có token.</translation>
 <translation id="7359258898775969374">3 cách để làm đầy ví của bạn:</translation>
 <translation id="8087614920008846901">Bạn có thể thêm tiền đóng góp.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Xem có gì được cải thiện</translation>
 <translation id="4083384190339959182">Chúng tôi đã thực hiện nâng cấp lớn cho Thanh toán Brave.</translation>
 <translation id="5395851053710553429">Hãy sẵn sàng để trải nghiệm Internet tiếp theo.</translation>
-<translation id="880341991877949255">Với trình duyệt cũ của mình, bạn trả tiền để duyệt web bằng cách xem các quảng cáo với sự chú ý quý giá của mình. Bạn dành thời gian quý giá của mình để tải về công nghệ quảng cáo xâm phạm quyền riêng tư vốn truyền các dữ liệu riêng tư quý giá của bạn đến các nhà quảng cáo mà không được bạn đồng ý.</translation>
 <translation id="2549982302631665116">Hôm nay, Brave chào đón bạn đến với Internet mới. Một nơi mà thời gian của bạn được coi trọng, dữ liệu cá nhân của bạn được giữ riêng tư và bạn thật sự được trả tiền cho sự chú ý của mình.</translation>
 <translation id="3780605330121608425">Ví của bạn</translation>
 <translation id="6727483290601442544">Xem Chi tiết</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Thêm Thiết bị Mới</translation>
 <translation id="8780295742023331191">Xem Mã Đồng bộ</translation>
 <translation id="1755198127524719638">Cài đặt Đồng bộ</translation>
-<translation id="7558480201297099157">Quản lý thông tin gì mà bạn muốn đồng bộ giữa các thiết bị. Những cài đặt này chỉ có tác dụng với thiết bị này.</translation>
 <translation id="8820817407110198400">Dấu trang</translation>
 <translation id="5591129654353352557">Thiết lập trang đã lưu</translation>
 <translation id="7859704718976024901">Lịch sử duyệt web</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Mã Chuỗi Đồng bộ</translation>
 <translation id="2899261497479389619">Trên máy tính mục tiêu của bạn, vào mục Đồng bộ Brave trong cài đặt và nhấp vào nút</translation>
 <translation id="4827439149833241990">“Tôi có Mã Đồng bộ”.</translation>
-<translation id="24067401253841795">Nhập từ mã chuỗi đồng bộ được hiển thị bên dưới.</translation>
 <translation id="8914601399214979966">Sử dụng máy ảnh của tôi thay thế</translation>
 <translation id="3034163433136515805">Xem Mã QR</translation>
 <translation id="5093410893656857925">Chọn Loại Thiết bị</translation>

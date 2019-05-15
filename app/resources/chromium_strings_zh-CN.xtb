@@ -74,9 +74,13 @@ Brave 无法恢复您的设置。</translation>
 <translation id="5874882355102994015">在缺少内置 PDF 查看器的情况下，Brave 无法显示打印预览。</translation>
 <translation id="8880183781256147665">正在添加到 Brave...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> 可能存在危险，因此 Brave 已将其拦截。</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> 可能含有危险因素，所以 Brave 已拦截它。您已注册“高级保护”计划，因此受其保护。</translation>
 <translation id="9067428552314418522">此文件存在危险，因此 Brave 已将其拦截。</translation>
+<translation id="2938460345748897177">此文件含有危险因素，所以 Brave 已拦截它。您已注册“高级保护”计划，因此受其保护。</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> 存在危险，因此 Brave 已将其拦截。</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> 含有危险因素，所以 Brave 已拦截它。您已注册“高级保护”计划，因此受其保护。</translation>
 <translation id="89367911614620585">此文件可能存在危险，因此 Brave 已将其拦截。</translation>
+<translation id="8943391224520748272">此文件可能含有危险因素，所以 Brave 已拦截它。您已注册“高级保护”计划，因此受其保护。</translation>
 <translation id="9183662282810237335">仍要退出 Brave？</translation>
 <translation id="3834935463915107022">仍要退出 Brave？</translation>
 <translation id="8797356639448065696">Brave处于后台运行模式。</translation>
@@ -127,6 +131,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="1326766910007115955">您目前登录的帐号是一个托管帐号，该帐号的管理员将能够控制您的 Brave 个人资料。您的 Brave 数据（例如您的应用、书签、历史记录、密码和其他设置）将永远与 <ph name="USER_NAME"/> 相关联。您可以通过 Brave Software 帐号信息中心删除这些数据，但无法将这些数据与其他帐号相关联。<ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">您目前登录的帐号是一个托管帐号，该帐号的管理员将能够控制您的 Brave 个人资料。您的 Brave 数据（例如您的应用、书签、历史记录、密码和其他设置）将永远与 <ph name="USER_NAME"/> 相关联。您可以通过 Brave Software 帐号信息中心删除这些数据，但无法将这些数据与其他帐号相关联。您可以选择创建新的个人资料来单独存储您现有的 Brave 数据。<ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">您的系统管理员已将 Brave 配置为使用备用浏览器访问 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
+<translation id="5380963249588143069">您的系统管理员已将 Brave 配置为使用<ph name="ALTERNATIVE_BROWSER_NAME"/>访问 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 之前使用的是 Brave</translation>
 <translation id="1384923383737428730">您的计算机上存在有害软件。Brave 可以移除该软件、恢复您的设置并停用扩展程序，以确保您的浏览器能够重新正常运行。</translation>
 <translation id="8919921662052966648">Brave无法同步您的数据。请更新您的同步密码。</translation>
@@ -177,7 +182,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="1912973375560256099">Brave的入站规则，允许mDNS流量。</translation>
 <translation id="8207657266087451193">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave Software。您可以随时在“设置”中关闭此功能。</translation>
 <translation id="5499063270485366718">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave Software。</translation>
-<translation id="7276297358157391541">Brave 会将您在浏览器中输入的内容发送到 Brave Software 服务器，并让您使用 Brave Software 搜索所用的拼写检查技术，从而为您提供更智能的拼写检查功能。</translation>
+<translation id="3870835867536344658">这项服务会使用 Brave Software 搜索所用的拼写检查工具。您在浏览器中输入的文字会被发送给 Brave Software。您随时可在“设置”中更改此行为。</translation>
 <translation id="1807774211756215222">在 Brave 新标签页中打开链接(&amp;T)</translation>
 <translation id="4624945300945265642">在 Brave 无痕式窗口中打开链接(&amp;G)</translation>
 <translation id="7863882214613921971">在 Brave 新标签页中打开链接(&amp;T)</translation>

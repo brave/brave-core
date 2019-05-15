@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Pata vianzio kwa kutazama matangazo kwenye Brave. Matangazo yanayowasilishwa ni kulingana na mapendeleo yako, kutokana na uzoeufu wako wa kuperuzi mtandaoni. Hakuna taarifa binafsi au historia za kuvinjari ambazo zinatoka nje ya kisakuzi chako.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="1527222983464337010">Njia ya kiotomati ya kuwasaidia wachapishaji na watengenezaji wa maudhui. Weka malipo ya kila mwezi na peruzi kwa kawaida. Tovuti unayoitembelea hupokea michango yako kiotomati, kulingana na umakini wako kama unavyopimwa na Brave.</translation>
-<translation id="7178655681744815321">Mapato ya sasa mwezi huu (Makadirio)</translation>
 <translation id="8157096848242649588">Tarehe ya malipo</translation>
 <translation id="5208388044986603165">Viarifu vya tangazo vimepokelewa</translation>
 <translation id="4229016885653790965">Samahani! Matangazo hayapatikani kwenye eneo lako.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Lipwa kwa kutazama matangazo muafaka ambayo yanaheshimu faragha yako.</translation>
 <translation id="3361548743396744457">Saidia tovuti zako unazozipenda kwa kuperuzi tu – au changia tovuti muda wowote unaopenda.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="4493850495402472953">na</translation>
+<translation id="8804164990146287819">Sera ya Faragha</translation>
+<translation id="4281844954008187215">Masharti ya Huduma</translation>
 <translation id="7530570094705720669">Kutengeneza waleti</translation>
 <translation id="2105596359439030979">Umakini wako ni wa thamani. Pata kipato kwa kutazama matangazo yanayoheshimu faragha, na yalipie moja kwa moja kuwasaidia watengeneza maudhui unaowapenda.</translation>
 <translation id="516395624550019162">Ndiyo, ninakubali!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">bila ridhaa yako.</translation>
 <translation id="7147673045905733351">Leo, Brave inakukaribisha katika intaneti mpya.</translation>
 <translation id="1350763070659630336">Mahali ambapo muda wako unathaminiwa, taarifa zako binafsi zinawekwa siri, na kimsingi unalipwa kwa umkini wako.</translation>
+<translation id="880341991877949255">Kwa visakuzi vya zamani, ulilipia kuperuzi wavuti kwa kutazama matangazo kwa umakini wako wa thamani, kutumia muda wako wa thamani kupakua tekenolojia vamizi ya matangazo, ambayo hutuma taarifa zako binafsi kwa watoaji matangazo  — ya biashara bila ridhaa yako.</translation>
 <translation id="5830306739231399614">Inasikitisha, hakuna vianzio.</translation>
 <translation id="7359258898775969374">Njia 3 za kujaza waleti yako:</translation>
 <translation id="8087614920008846901">Unaeza kuongeza fedha</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Angalia kile kilichoboreshwa</translation>
 <translation id="4083384190339959182">Tu’meboresha Brave Malipo kwa kiwango cha juu.</translation>
 <translation id="5395851053710553429">Kaa tayari kupata uzoefu wa Intaneti inayokuja.</translation>
-<translation id="880341991877949255">Kwa visakuzi vya zamani, ulilipia kuperuzi wavuti kwa kutazama matangazo kwa umakini wako wa thamani, kutumia muda wako wa thamani kupakua tekenolojia vamizi ya matangazo, ambayo hutuma taarifa zako binafsi kwa watoaji matangazo  — ya biashara bila ridhaa yako.</translation>
 <translation id="2549982302631665116">Leo, Brave inakukaribisha katika intanenti mpya. Mahali ambapo muda wako unathaminiwa, taarifa zako binafsi zinawekwa siri, na kimsingi unalipwa kwa umakini wako.</translation>
 <translation id="3780605330121608425">Waleti yako</translation>
 <translation id="6727483290601442544">Tazama Maelezo</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Ongeza Kifaa Kipya</translation>
 <translation id="8780295742023331191">Tazama Msimbo wa Kuoanisha</translation>
 <translation id="1755198127524719638">Mipangilio ya Kuoanisha</translation>
-<translation id="7558480201297099157">Dhibiti ni taarifa gani ambayo ungependa kuoanisha baina ya vifaa. Mipamngilio hii huathiri kifaa hiki tu.</translation>
 <translation id="8820817407110198400">Vialamisho</translation>
 <translation id="5591129654353352557">Mipangilio ya Tovuti Zilizohifadhiwa</translation>
 <translation id="7859704718976024901">Historia ya Kuvinjari</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Msimbo wa Mnyororo wa Kuoanisha</translation>
 <translation id="2899261497479389619">Katika kompyuta yako lengwa, nenda kwenye Brave Sync katika mipangilio na bofya kitufe hicho.</translation>
 <translation id="4827439149833241990">“Nina Msimbo wa Kuoanisha”.</translation>
-<translation id="24067401253841795">Ingiza maneno ya msimbo wa mnyororo wa kuoanisha yaliyoonyeshwa hapa chini.</translation>
 <translation id="8914601399214979966">Tumia kamera yangu badala yake</translation>
 <translation id="3034163433136515805">Tazama Msimbo wa QR</translation>
 <translation id="5093410893656857925">Chagua Aina ya Kifaa</translation>
