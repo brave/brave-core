@@ -65,6 +65,7 @@ class AdsServiceImpl : public AdsService,
   bool IsSupportedRegion() const override;
 
   void SetAdsEnabled(const bool is_enabled) override;
+  void MigrateAdsEnabled(const bool is_enabled) override;
 
   void SetAdsPerHour(const uint64_t ads_per_hour) override;
 
