@@ -35,7 +35,6 @@ extern const char kTwitterRedirectURL[];
 
 extern const char kCookieHeader[];
 extern const char kRefererHeader[];
-extern const char kBravePartnerHeader[];
 
 extern const char kBittorrentMimeType[];
 extern const char kOctetStreamMimeType[];

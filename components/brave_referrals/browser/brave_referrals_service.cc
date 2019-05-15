@@ -198,7 +198,6 @@ void BraveReferralsService::OnReferralHeadersLoadComplete(
     LOG(ERROR) << "Failed to parse referral headers response";
     return;
   }
-  pref_service_->Set(kReferralHeaders, root.value());
 }
 
 void BraveReferralsService::OnReferralInitLoadComplete(
@@ -233,11 +232,6 @@ void BraveReferralsService::OnReferralInitLoadComplete(
     return;
   }
 
-  const base::Value* headers = root->FindKey("headers");
-  if (headers) {
-    pref_service_->Set(kReferralHeaders, *headers);
-  }
-
   const base::Value* download_id = root->FindKey("download_id");
   pref_service_->SetString(kReferralDownloadID, download_id->GetString());
 
@@ -249,7 +243,6 @@ void BraveReferralsService::OnReferralInitLoadComplete(
               content::OpenURLParams open_url_params(gurl, content::Referrer(),
         WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
-    open_url_params.extra_headers = FormatExtraHeaders(headers, gurl);
     browser_displayer.browser()->OpenURL(open_url_params);
   }
 
@@ -576,32 +569,6 @@ void BraveReferralsService::CheckForReferralFinalization() {
       kMaxReferralServerResponseSizeBytes);
 }
 
-std::string BraveReferralsService::FormatExtraHeaders(
-    const base::Value* referral_headers,
-    const GURL& url) {
-  if (!referral_headers)
-    return std::string();
-
-  const base::ListValue* referral_headers_list = nullptr;
-  if (!referral_headers->GetAsList(&referral_headers_list))
-    return std::string();
-
-  const base::DictionaryValue* request_headers_dict = nullptr;
-  if (!GetMatchingReferralHeaders(*referral_headers_list, &request_headers_dict,
-                                  url))
-    return std::string();
-
-  std::string extra_headers;
-  for (const auto& it : request_headers_dict->DictItems()) {
-    extra_headers += base::StringPrintf("%s: %s\r\n", it.first.c_str(),
-                                        it.second.GetString().c_str());
-  }
-  if (!extra_headers.empty())
-    extra_headers += "\r\n";
-
-  return extra_headers;
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<BraveReferralsService> BraveReferralsServiceFactory(
@@ -616,7 +583,6 @@ void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(kReferralTimestamp, std::string());
   registry->RegisterTimePref(kReferralAttemptTimestamp, base::Time());
   registry->RegisterIntegerPref(kReferralAttemptCount, 0);
-  registry->RegisterListPref(kReferralHeaders);
 }
 
 }  // namespace brave

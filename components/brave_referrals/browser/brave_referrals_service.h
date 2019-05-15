@@ -49,8 +49,6 @@ class BraveReferralsService {
   std::string BuildReferralFinalizationCheckPayload() const;
   void FetchReferralHeaders();
   void CheckForReferralFinalization();
-  std::string FormatExtraHeaders(const base::Value* referral_headers,
-                                 const GURL& url);
 
   // Invoked from RepeatingTimer when referral headers timer fires.
   void OnFetchReferralHeadersTimerFired();
