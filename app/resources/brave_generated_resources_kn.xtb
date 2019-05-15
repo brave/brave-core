@@ -46,17 +46,14 @@
 <translation id="3155170474926428993">Tor ಲಾಂಚರ್</translation>
 <translation id="2515126961943087659">Bat ಜಾಹೀರಾತುಗಳ ಸೇವೆ</translation>
 <translation id="7924918279836988121">Bat Ledger ಸೇವೆ</translation>
-<translation id="768979911142179781">Brave ಶೀಲ್ಡ್ ಡೀಫಾಲ್ಟ್‌ಗಳು</translation>
-<translation id="9185018653595759199">ಸೋಶಿಯಲ್ ಬಟನ್‌ಗಳು ಮತ್ತು ಲಾಗಿನ್‌ಗಳು</translation>
-<translation id="6894114137169961038">ಜಾಹೀರಾತು ನಿಯಂತ್ರಣ</translation>
-<translation id="1096802265930928584">ಕುಕೀ ನಿಯಂತ್ರಣ</translation>
+<translation id="4472575034687746823">ಪ್ರಾರಂಭ</translation>
+<translation id="6303294677342628402">ಶೀಲ್ಡ್‌ಗಳು</translation>
 <translation id="8919235146866304148">ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ಸಂರಕ್ಷಣೆ</translation>
 <translation id="520895744850022668">HTTPS ಎಲ್ಲೆಡೆ</translation>
 <translation id="5259716416204774556">ಸ್ಕ್ರಿಪ್ಟ್ ನಿರ್ಬಂಧಿಸುವಿಕೆ</translation>
 <translation id="7498695072878479744">Google ಲಾಗಿನ್ ಬಟನ್‌ಗಳನ್ನು ತೃತೀಯ ಪಕ್ಷದ ಸೈಟ್‌ಗಳಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
 <translation id="863171915776379000">ಫೇಸ್‌ಬುಕ್ ಲಾಗಿನ್‌ಗಳನ್ನು ಮತ್ತು ಎಂಬೆಡ್ ಮಾಡಿದ ಪೋಸ್ಟ್‌ಗಳನ್ಮು ಅನುಮತಿಸಿ</translation>
 <translation id="5165042248369837294">ಎಂಬೆಡ್ ಮಾಡಿದ ಟ್ವೀಟ್‌ಗಳನ್ನು ಟ್ವಿಟರ್‌ಗೆ ಅನುಮತಿಸಿ</translation>
-<translation id="958971637207126733">ಲಿಂಕ್ಡ್‌ಇನ್ ಎಂಬೆಡ್‌ಗಳನ್ನು ಅನುಮತಿಸಿ</translation>
 <translation id="6067014455220527258">ಜಾಹೀರಾತು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="6985711843506827936">ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಟ್ರ್ಯಾಕಿಂಗ್‌ಗೆ ಅನುಮತಿಸಿ</translation>
 <translation id="6132506775968708399">3ನೇ ವ್ಯಕ್ತಿಯ ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
@@ -76,7 +73,6 @@
 <translation id="2414886740292270097">ಕಪ್ಪು</translation>
 <translation id="1360441190790440400">ಲಿನಕ್ಸ್ ರೀತಿ</translation>
 <translation id="1336940801687497203">ವಿಂಡೋಸ್ ರೀತಿ</translation>
-<translation id="8721331068159819483">ಮ್ಯಾಕ್‌ಒಎಸ್‌ ರೀತಿ</translation>
 <translation id="6786747875388722282">ವಿಸ್ತರಣೆಗಳು</translation>
 <translation id="2896916411183256228">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ನೇರವಾಗಿ torrent ಗಳನ್ನು ಪ್ರದರ್ಶಿಸಲು WebTorrent ಅನ್ನು ಬಳಸುತ್ತದೆ. torrent ಫೈಲ್‌ಗಳು ಮತ್ತು ಮ್ಯಾಗ್ನೆಟ್ ಲಿಂಕ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುತ್ತದೆ.</translation>
 <translation id="6554397389149987360">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಪರದೆ ಹಂಚಿಕೆ ಮತ್ತು ಇತರ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಲು Hangouts ಅಂಶವನ್ನು ಬಳಸುತ್ತದೆ.</translation>

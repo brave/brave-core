@@ -41,6 +41,8 @@
 <translation id="8958799246752641148">Tor menyembunyikan alamat IP Anda dari situs yang Anda kunjungi dengan mengirim rute penjelajahan Anda melalui beberapa peladen Tor sebelum mencapai tujuan Anda. Sambungan ini dienkripsi, jadi penyedia layanan Internet atau bos Anda tidak dapat melihat situs yang Anda kunjungi. Tor dapat memperlambat penjelajahan dan beberapa situs mungkin tidak bekerja sama sekali.</translation>
 <translation id="520608572871993342">Menggunakan Jendela Pribadi hanya mengubah apa yang Brave lakukan pada perangkat Anda — dan tidak mengubah perilaku aplikasi lainnya. Tor menyembunyikan alamat IP Anda dari situs yang dikunjungi, dan menyembunyikan situs yang Anda kunjungi dari ISP atau kantor Anda. Buka Jendela Pribadi dengan Tor dari menu, atau dengan {{ key }}.</translation>
 <translation id="6975708438781948564">Pelajari lebih lanjut tentang Tor di Brave</translation>
+<translation id="4272382368346338917">Filter Tambahan</translation>
+<translation id="8949292968394988358">Peringatan: Mengaktifkan terlalu banyak filter dapat menurunkan kinerja</translation>
 <translation id="1869685517625607604">Total Iklan Diblokir:</translation>
 <translation id="4673764878177947707">Filter Ubahsuai</translation>
 <translation id="8803682034537762884">Satu per baris, filter dijelaskan dalam sintaks filter Adblock Plus</translation>
@@ -68,7 +70,7 @@
 <translation id="5946611334574299206">Dapatkan token dengan melihat iklan di Brave. Iklan disajikan berdasarkan minat Anda, yang disimpulkan dari perilaku penjelajahan Anda. Tak ada data pribadi atau riwayat penjelajahan yang meninggalkan peramban Anda.</translation>
 <translation id="6112368337882254910">Kontribusi Otomatis</translation>
 <translation id="1527222983464337010">Cara otomatis untuk mendukung penerbit dan pembuat konten. Atur pembayaran bulanan dan menjelajah seperti biasa. Situs yang Anda kunjungi otomatis menerima kontribusi, berdasarkan atensi Anda yang diukur oleh Brave.</translation>
-<translation id="7178655681744815321">Pendapatan bulan ini (Perkiraan)</translation>
+<translation id="7178655681744815321">Perkiraan pendapatan periode ini</translation>
 <translation id="8157096848242649588">Tanggal pembayaran</translation>
 <translation id="5208388044986603165">Pemberitahuan iklan yang diterima</translation>
 <translation id="4229016885653790965">Maaf! Iklan belum tersedia di wilayah Anda.</translation>
@@ -151,6 +153,9 @@
 <translation id="4235360514405112390">Valid</translation>
 <translation id="2700943637868737038">ID Penonton:</translation>
 <translation id="3576689061489548788">ID Dompet Pembayaran:</translation>
+<translation id="758790787422117549">Persona ID</translation>
+<translation id="2223892939866251845">User ID</translation>
+<translation id="1642443162274867084">Dompet dibuat</translation>
 <translation id="5094577350232361255">tentang</translation>
 <translation id="4918086044614829423">Terima</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave adalah merek dagang terdaftar dari Brave Software. Nama situs mungkin merupakan merek dagang atau merek dagang terdaftar dari pemilik situs.</translation>
@@ -166,8 +171,14 @@
 <translation id="3671566813999349838">Jumlah</translation>
 <translation id="3819257035322786455">Cadangkan</translation>
 <translation id="1312977698678162065">Dapatkan bayaran untuk melihat iklan relevan yang menghormati privasi Anda.</translation>
+<translation id="7655723274266132226">Sekarang Anda bisa mendapatkan penghasilan dari melihat iklan.</translation>
+<translation id="2975780980638932742">Brave Ads telah tiba!</translation>
 <translation id="3361548743396744457">Dukung situs favorit Anda hanya dengan menjelajah – atau berikan tip ke situs kapanpun Anda suka.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="4493850495402472953">dan</translation>
+<translation id="8804164990146287819">Kebijakan Privasi</translation>
+<translation id="4281844954008187215">Ketentuan Layanan</translation>
+<translation id="4405997465645469914">Dengan mengaktifkan Brave Rewards, Anda menyatakan bahwa Anda telah membaca dan menyetujui</translation>
 <translation id="7530570094705720669">Membuat wallet</translation>
 <translation id="2105596359439030979">Atensi Anda berharga. Dapatkan pendapatan dengan melihat iklan yang menghormati privasi Anda, dan menggunakannya untuk mendukung pembuat konten yang Anda suka.</translation>
 <translation id="516395624550019162">Ya, saya mau!</translation>
@@ -277,6 +288,7 @@
 <translation id="5010112177773747965">tanpa izin Anda.</translation>
 <translation id="7147673045905733351">Hari ini Brave menyambut Anda ke internet yang baru,</translation>
 <translation id="1350763070659630336">Salah satu yang menghargai waktu Anda, menjaga data personal Anda tetap pribadi, dan Anda sungguh mendapatkan bayaran untuk atensi Anda.</translation>
+<translation id="880341991877949255">Di peramban lama Anda, Anda membayar untuk mejelajah web dengan melihat iklan dengan atensi Anda yang berharga. Anda menghabiskan waktu mengunduh teknologi iklan invasif yang mentransfer data pribadi Anda yang berharga ke para pengiklan — tanpa seizin Anda.</translation>
 <translation id="5830306739231399614">Sayangnya, belum ada token.</translation>
 <translation id="7359258898775969374">3 cara untuk mengisi dompet Anda:</translation>
 <translation id="8087614920008846901">Anda dapat menambahkan dana.</translation>
@@ -309,6 +321,7 @@
 <translation id="4914597931214386232">Hibah Token Diklaim</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transaksi</translation>
+<translation id="3124090095880236567">Aktifkan Iklan</translation>
 <translation id="8987812599455325915">Ini mengaktifkan iklan serta kontribusi otomatis. Anda dapat mengaktifkan atau menonaktifkannya secara terpisah kapan saja.</translation>
 <translation id="1485484147452131556">Aktifkan Rewards</translation>
 <translation id="2448312741937722512">Jenis</translation>
@@ -328,7 +341,6 @@
 <translation id="318487899513214296">Lihat apa saja yang ditingkatkan</translation>
 <translation id="4083384190339959182">Kami memberikan Brave Payments peningkatan besar.</translation>
 <translation id="5395851053710553429">Bersiap untuk merasakan Internet generasi berikutnya.</translation>
-<translation id="880341991877949255">Di peramban lama Anda, Anda membayar untuk mejelajah web dengan melihat iklan dengan atensi Anda yang berharga. Anda menghabiskan waktu mengunduh teknologi iklan invasif yang mentransfer data pribadi Anda yang berharga ke para pengiklan — tanpa seizin Anda.</translation>
 <translation id="2549982302631665116">Hari ini Brave menyambut Anda ke Internet yang baru. Salah satu yang menghargai waktu Anda, menjaga data personal Anda tetap pribadi, dan Anda sungguh mendapatkan bayaran untuk atensi Anda.</translation>
 <translation id="3780605330121608425">Dompet Anda</translation>
 <translation id="6727483290601442544">Lihat Rincian</translation>
@@ -351,7 +363,7 @@
 <translation id="1061533051865606843">Tambahkan Perangkat Baru</translation>
 <translation id="8780295742023331191">Lihat Kode Sinkronisasi</translation>
 <translation id="1755198127524719638">Setelan Sinkronisasi</translation>
-<translation id="7558480201297099157">Kelola informasi yang ingin Anda sinkronkan antarperangkat. Setelan ini hanya mempengaruhi perangkat ini.</translation>
+<translation id="7558480201297099157">Kelola jenis informasi yang ingin Anda sinkronkan antarperangkat. Setelan ini hanya mempengaruhi perangkat ini.</translation>
 <translation id="8820817407110198400">Markah</translation>
 <translation id="5591129654353352557">Setelan Situs Tersimpan</translation>
 <translation id="7859704718976024901">Riwayat Penelusuran</translation>
@@ -379,7 +391,7 @@
 <translation id="5086223971958279691">Kode Rantai Sinkronisasi</translation>
 <translation id="2899261497479389619">Di komputer tujuan, masuk ke Brave Sync di setelan dan klik tombolnya</translation>
 <translation id="4827439149833241990">“Saya punya Kode Sinkronisasi”.</translation>
-<translation id="24067401253841795">Masukkan kata-kata kode rantai sinkronisasi yang ditampilkan di bawah ini.</translation>
+<translation id="24067401253841795">Masukkan kode rantai sinkronisasi di bawah ini. Perlakukan kode ini seperti sandi. Jika seseorang mengetahuinya, mereka dapat membaca dan mengubah data tersinkronisasi Anda.</translation>
 <translation id="8914601399214979966">Gunakan kamera saya</translation>
 <translation id="3034163433136515805">Lihat Kode QR</translation>
 <translation id="5093410893656857925">Pilih Tipe Perangkat</translation>
@@ -392,4 +404,6 @@
 <translation id="8349682220522608879">Tambahkan kode sinkronisasi.</translation>
 <translation id="1468095392829989299">Tidak dapat menghubungi peladen Sinkronisasi</translation>
 <translation id="1399673826422570698">Anda mungkin mengalami masalah jaringan, atau terjadi masalah pada peladen Sinkronisasi.</translation>
+<translation id="5286379413446391050">Tidak dapat tersambung ke peladen Sync</translation>
+<translation id="2410472020237369473">Jam komputer Anda mungkin disetel ke waktu dan zona waktu yang salah. Periksa setelan jam Anda.</translation>
 </translationbundle>

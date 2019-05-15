@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Verdien tokens door advertenties te bekijken in Brave. Advertenties worden getoond op basis van je interesses, door analyse van je browsing geschiedenis. Geen persoonlijke data van je browsing geschiedenis zal de browser verlaten.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="1527222983464337010">Een automatische manier om uitgevers en makers van content te steunen. Stel een maandelijkse betaling in en browse zoals gewoonlijk. De websites die je bezoekt ontvangen je bijdragen, op basis van je aandacht gemeten door Brave, automatisch.</translation>
-<translation id="7178655681744815321">Huidige verdiensten deze maand (geschat)</translation>
 <translation id="8157096848242649588">Betalingsdatum</translation>
 <translation id="5208388044986603165">Advertentiemeldingen ontvangen</translation>
 <translation id="4229016885653790965">Sorry! Ads are not yet available in your region.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Word betaald door het kijken van relevante advertenties die je privacy respecteren</translation>
 <translation id="3361548743396744457">Steun je favoriete websites door te browsen – of geef een website een tip wanneer je maar wilt.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="4493850495402472953">en</translation>
+<translation id="8804164990146287819">Privacybeleid</translation>
+<translation id="4281844954008187215">Servicevoorwaarden</translation>
 <translation id="7530570094705720669">Wallet aanmaken</translation>
 <translation id="2105596359439030979">Je aandacht is waardevol. Verdien met het bekijken van advertentie die je privacy respecteren, en betaal content creators waar je van houdt om hen te ondersteunen</translation>
 <translation id="516395624550019162">Ja, ik doe mee!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">zonder je toestemming.</translation>
 <translation id="7147673045905733351">Vandaag verwelkomt Brave je op het nieuwe internet.</translation>
 <translation id="1350763070659630336">Waar er waardering is voor je tijd, je persoonlijke gegevens vertrouwelijk blijven en je daadwerkelijk betaald wordt voor je aandacht.</translation>
+<translation id="880341991877949255">Met  je oude browser betaalde je voor het surfen op het internet door, met je kostbare aandacht, advertenties te bekijken. Je besteedde je kostbare tijd aan het downloaden van invasieve technologie van advertenties, die je waardevolle persoonlijke gegevens doorgaven —  aan adverteerders - zonder je toestemming.</translation>
 <translation id="5830306739231399614">Helaas, nog geen tokens.</translation>
 <translation id="7359258898775969374">3 manieren om je wallet de vullen:</translation>
 <translation id="8087614920008846901">Je kan geld toevoegen.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Bekijk wat we hebben verbeterd</translation>
 <translation id="4083384190339959182">We ’hebben het Brave Betalingssysteem een flinke upgrade gegeven.</translation>
 <translation id="5395851053710553429">Maak je klaar om het nieuwe internet te ervaren.</translation>
-<translation id="880341991877949255">Met  je oude browser betaalde je voor het surfen op het internet door, met je kostbare aandacht, advertenties te bekijken. Je besteedde je kostbare tijd aan het downloaden van invasieve technologie van advertenties, die je waardevolle persoonlijke gegevens doorgaven —  aan adverteerders - zonder je toestemming.</translation>
 <translation id="2549982302631665116">Vandaag verwelkomt Brave je op het nieuwe internet. Waar er waardering is voor je tijd, je persoonlijke gegevens vertrouwelijk blijven en je daadwerkelijk betaald wordt voor je aandacht.</translation>
 <translation id="3780605330121608425">Je wallet</translation>
 <translation id="6727483290601442544">Bekijk de Details</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Nieuw apparaat toevoegen</translation>
 <translation id="8780295742023331191">Synchronisatiecode bekijken</translation>
 <translation id="1755198127524719638">Synchronisatie-instellingen</translation>
-<translation id="7558480201297099157">Beheer welke gegevens je wilt synchroniseren tussen apparaten. Deze instellingen worden alleen op dit apparaat toegepast.</translation>
 <translation id="8820817407110198400">Bladwijzers</translation>
 <translation id="5591129654353352557">Opgeslagen site-instellingen</translation>
 <translation id="7859704718976024901">Browsegeschiedenis</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Synchronisatieketencode</translation>
 <translation id="2899261497479389619">Ga op je doelcomputer naar Brave Sync in de instellingen en klik op de knop</translation>
 <translation id="4827439149833241990">“Ik heb een synchronisatiecode”.</translation>
-<translation id="24067401253841795">Voer de codewoorden voor de synchronisatieketen die hieronder worden weergegeven in.</translation>
 <translation id="8914601399214979966">In plaats daarvan mijn camera gebruiken</translation>
 <translation id="3034163433136515805">QR-code bekijken</translation>
 <translation id="5093410893656857925">Apparaattype kiezen</translation>

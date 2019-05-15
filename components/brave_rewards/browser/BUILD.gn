@@ -64,12 +64,8 @@ source_set("browser") {
     "//third_party/leveldatabase",
   ]
 
-  if (is_android) {
-    sources += [
-      "//extensions/common/one_shot_event.h",
-      "//extensions/common/one_shot_event.cc",
-    ]
-  } else {
+  if (!is_android) {
+    # on android, one shot is part of base lib
     deps += [
       # for one shot event
       "//extensions/common",

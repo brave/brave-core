@@ -9,4 +9,4 @@ index 0542e022aeaedc240cf0bc79b9acebfe121fcc4d..ac9fe90cb2d96fa9850c066ae33630a6
 +  BraveCustomizeBookmarksDataSource(source);
    // Build an Accelerator to describe undo shortcut
    // NOTE: the undo shortcut is also defined in bookmarks/command_manager.js
-   // TODO(b/893033): de-duplicate shortcut by moving all shortcut definitions
+   // TODO(crbug/893033): de-duplicate shortcut by moving all shortcut

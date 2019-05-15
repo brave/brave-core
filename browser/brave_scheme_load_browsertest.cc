@@ -9,8 +9,6 @@
 #include "brave/common/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_list.h"
-#include "chrome/browser/ui/browser_list_observer.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -21,7 +19,6 @@
 #include "net/dns/mock_host_resolver.h"
 
 class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
-                                   public BrowserListObserver,
                                    public TabStripModelObserver {
  public:
   void SetUpOnMainThread() override {
@@ -35,9 +32,6 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
 
     ASSERT_TRUE(embedded_test_server()->Start());
   }
-
-  // BrowserListObserver overrides:
-  void OnBrowserAdded(Browser* browser) override { popup_ = browser; }
 
   // TabStripModelObserver overrides:
   void OnTabStripModelChanged(
@@ -92,8 +86,6 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
               private_model->GetActiveWebContents()->GetVisibleURL().spec());
     EXPECT_EQ(1, private_browser->tab_strip_model()->count());
   }
-
-  Browser* popup_ = nullptr;
 };
 
 // Test whether brave page is not loaded from different host by window.open().
@@ -117,23 +109,19 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, NotAllowedToLoadTest) {
 // Test whether brave page is not loaded from different host by window.open().
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        NotAllowedToLoadTestByWindowOpenWithNoOpener) {
-  BrowserList::GetInstance()->AddObserver(this);
-
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("example.com", "/brave_scheme_load.html"));
+
+  browser()->tab_strip_model()->AddObserver(this);
 
   ASSERT_TRUE(ExecuteScript(
       active_contents(),
       "window.domAutomationController.send(openBraveSettingsWithNoOpener())"));
 
-  auto* popup_tab = popup_->tab_strip_model()->GetActiveWebContents();
-
-  WaitForLoadStop(popup_tab);
-
   // Loading brave page should be blocked in new window.
-  DCHECK_EQ(popup_tab->GetVisibleURL().spec(), content::kBlockedURL);
+  DCHECK_EQ(active_contents()->GetVisibleURL().spec(), content::kBlockedURL);
 
-  BrowserList::GetInstance()->RemoveObserver(this);
+  browser()->tab_strip_model()->RemoveObserver(this);
 }
 
 // Test whether brave page is not loaded from different host directly by

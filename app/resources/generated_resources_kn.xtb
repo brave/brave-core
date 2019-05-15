@@ -38,10 +38,11 @@
 <translation id="3303855915957856445">ಯಾವುದೇ ಹುಡುಕಾಟ ಫಲಿತಾಂಶಗಳು ಕಂಡುಬಂದಿಲ್ಲ</translation>
 <translation id="8967866634928501045">ತೋರಿಸಲು Alt Shift A ಒತ್ತಿರಿ</translation>
 <translation id="998747458861718449">ಪ&amp;ರಿಶೀಲಿಸಿ</translation>
+<translation id="741204030948306876">ಹೌದು, ನಾನಿದ್ದೇನೆ</translation>
+<translation id="780301667611848630">ಬೇಡ, ಧನ್ಯವಾದಗಳು</translation>
 <translation id="3943582379552582368">&amp;ಹಿಂದೆ</translation>
 <translation id="6691936601825168937">&amp;ಮುಂದೆ ತನ್ನಿ</translation>
 <translation id="3280237271814976245">&amp;ಇದರಂತೆ ಉಳಿಸು</translation>
-<translation id="2941880727166628951">ನನ್ನ ಸಾಧನಗಳಿಗೆ ಕಳುಹಿಸಿ</translation>
 <translation id="1175364870820465910">&amp;ಮುದ್ರಿಸಿ...</translation>
 <translation id="8664389313780386848">ಫ್ರೇಮ್ ಮೂಲವನ್ನು &amp;ವೀಕ್ಷಿಸಿ</translation>
 <translation id="2889064240420137087">ಇದರೊಂದಿಗೆ Open Link...</translation>
@@ -93,10 +94,10 @@
 <translation id="1732768497619250086">Brave Software ನಿಂದ ಚಿತ್ರದ ವಿವರಣೆಗಳನ್ನು ಪಡೆಯಿರಿ</translation>
 <translation id="7561196759112975576">ಯಾವಾಗಲೂ</translation>
 <translation id="2241634353105152135">ಕೇವಲ ಒಂದು ಬಾರಿ</translation>
-<translation id="741204030948306876">ಹೌದು, ನಾನಿದ್ದೇನೆ</translation>
-<translation id="780301667611848630">ಬೇಡ, ಧನ್ಯವಾದಗಳು</translation>
-<translation id="4572259796527554261">ಸಲಹೆಗಳಿಗಾಗಿ Brave Software ಅನ್ನು ಕೇಳಿ</translation>
-<translation id="3435896845095436175">ಸಕ್ರಿಯಗೊಳಿಸು</translation>
+<translation id="3387614642886316601">ವರ್ಧಿತ ಕಾಗುಣಿತ ಪರೀಕ್ಷೆಯನ್ನು ಬಳಸಿ</translation>
+<translation id="6992554835374084304">ವರ್ಧಿತ ಕಾಗುಣಿತ ಪರೀಕ್ಷೆಯನ್ನು ಆನ್ ಮಾಡಿ</translation>
+<translation id="5860491529813859533">ಆನ್ ಮಾಡಿ</translation>
+<translation id="7658239707568436148">ರದ್ದುಮಾಡಿ</translation>
 <translation id="8915370057835397490">ಸಲಹೆಯನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ</translation>
 <translation id="6191804255817539692">Brave Software ನಿಂದ ಇನ್ಯಾವುದೇ ಸಲಹೆಗಳಿಲ್ಲ</translation>
 <translation id="1901303067676059328">&amp;ಎಲ್ಲ ಆಯ್ಕೆ ಮಾಡಿ</translation>
@@ -107,7 +108,6 @@
 <translation id="6042308850641462728">ಇನ್ನಷ್ಟು</translation>
 <translation id="6268252012308737255"><ph name="APP"/> ರಿಂದ ತೆರೆಯಿರಿ</translation>
 <translation id="5509693895992845810">&amp;ಇದರಂತೆ ಉಳಿಸು...</translation>
-<translation id="3480119035619598820">ನನ್ನ ಸಾಧನಗಳಿಗೆ ಕಳುಹಿಸಿ</translation>
 <translation id="7421925624202799674">ಫ್ರೇಮ್ ಮೂಲವನ್ನು &amp;ವೀಕ್ಷಿಸಿ</translation>
 <translation id="1588870296199743671">ಇದರೊಂದಿಗೆ Open Link...</translation>
 <translation id="3760460896538743390">&amp;ಹಿನ್ನಲೆ ಪುಟ ಪರಿಶೀಲಿಸಿ</translation>
@@ -149,9 +149,10 @@
 <translation id="4022426551683927403">ನಿಘಂಟಿಗೆ &amp;ಸೇರಿಸಿ</translation>
 <translation id="6849870115130610913">Brave Software ನಿಂದ ಚಿತ್ರದ ವಿವರಣೆಗಳನ್ನು ಪಡೆಯಿರಿ</translation>
 <translation id="372722114124766626">ಒಮ್ಮೆ ಮಾತ್ರ</translation>
-<translation id="8917490105272468696">ಹೌದು, ನಾನು ಒಪ್ಪಿಕೊಳ್ಳುತ್ತೇನೆ</translation>
+<translation id="4079140982534148664">ವರ್ಧಿತ ಕಾಗುಣಿತ ಪರೀಕ್ಷೆಯನ್ನು ಬಳಸಿ</translation>
+<translation id="7487141338393529395">ವರ್ಧಿತ ಕಾಗುಣಿತ ಪರೀಕ್ಷೆಯನ್ನು ಆನ್ ಮಾಡಿ</translation>
+<translation id="3435896845095436175">ಸಕ್ರಿಯಗೊಳಿಸು</translation>
 <translation id="7473891865547856676">ಇಲ್ಲ, ಧನ್ಯವಾದಗಳು</translation>
-<translation id="2867003629889664976">ಸಲಹೆಗಳಿಗಾಗಿ Brave Software ಅನ್ನು ಕೇಳಿ</translation>
 <translation id="6264365405983206840">&amp;ಎಲ್ಲ ಆಯ್ಕೆ ಮಾಡಿ</translation>
 <translation id="3948116654032448504">ಚಿತ್ರಕ್ಕಾಗಿ <ph name="SEARCH_ENGINE"/> ಹುಡು&amp;ಕಿ</translation>
 <translation id="2932085390869194046">ಪಾಸ್‌ವರ್ಡ್ ಅನ್ನು ಸೂಚಿಸಿ...</translation>
@@ -164,7 +165,7 @@
 <translation id="4423482519432579560">&amp;ಕಾಗುಣಿತಪರೀಕ್ಷೆ</translation>
 <translation id="1049795001945932310">&amp;ಭಾಷೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="6498249116389603658">&amp;ನಿಮ್ಮ ಎಲ್ಲಾ ಭಾಷೆಗಳು</translation>
-<translation id="8188120771410500975">&amp;ಪಠ್ಯ ಕ್ಷೇತ್ರಗಳ ಕಾಗುಣಿತ ಪರಿಶೀಲಿಸಿ</translation>
+<translation id="5978277834170881274">&amp;ಸಾಮಾನ್ಯ ಕಾಗುಣಿತ ಪರೀಕ್ಷೆಯನ್ನು ಬಳಸಿ</translation>
 <translation id="4200983522494130825">ಹೊಸ &amp;ಟ್ಯಾಬ್</translation>
 <translation id="8418445294933751433">ಟ್ಯಾಬ್‌ನಂತೆ &amp;ತೋರಿಸಿ</translation>
 <translation id="1723824996674794290">&amp;ಹೊಸ ವಿಂಡೋ</translation>
@@ -323,7 +324,9 @@
 <translation id="3916445069167113093">ಈ ಫೈಲ್‌ನ ಪ್ರಕಾರವು ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್‌ಗೆ ಹಾನಿಯನ್ನುಂಟು ಮಾಡಬಹುದು. ನೀವು <ph name="FILE_NAME"/> ಅನ್ನು ಹೇಗಿದ್ದರೂ ಇರಿಸಲು ಬಯಸುವಿರಾ?</translation>
 <translation id="5727728807527375859">ವಿಸ್ತರಣೆಗಳು, ಅಪ್ಲೀಕೇಶನ್‌ಗಳು ಮತ್ತು ಥೀಮ್‌ಗಳು ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್ ಅನ್ನು ಹಾನಿಗೊಳಿಸಬಹುದು. ನೀವು ಮುಂದುವರಿಯುವುದು ಖಚಿತವೇ?</translation>
 <translation id="6285120108426285413"><ph name="FILE_NAME"/> ಅನ್ನು ಸಾಮಾನ್ಯವಾಗಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುವುದಿಲ್ಲ ಮತ್ತು ಅಪಾಯಕಾರಿಯಾಗಿರಬಹುದು.</translation>
+<translation id="6573998787994398565"><ph name="FILE_NAME"/> ಅನ್ನು ಸಾಮಾನ್ಯ ರೀತಿಯಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ ಮತ್ತು ಇದು ಅಪಾಯಕಾರಿಯಾಗಿರಬಹುದು. ಸುಧಾರಿತ ಸಂರಕ್ಷಣೆಯ ಮೂಲಕ ನಿಮ್ಮನ್ನು ರಕ್ಷಿಸಲಾಗಿದೆ.</translation>
 <translation id="4907161631261076876">ಈ ಫೈಲ್ ಅನ್ನು ಸಾಮಾನ್ಯ ರೀತಿಯಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ ಮತ್ತು ಅಪಾಯಕಾರಿಯಾಗಿರಬಹುದು.</translation>
+<translation id="9041909613332246191">ಈ ಫೈಲ್ ಅನ್ನು ಸಾಮಾನ್ಯ ರೀತಿಯಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ ಮತ್ತು ಅಪಾಯಕಾರಿಯಾಗಿರಬಹುದು. ಸುಧಾರಿತ ಸಂರಕ್ಷಣೆಯ ಮೂಲಕ ನಿಮ್ಮನ್ನು ರಕ್ಷಿಸಲಾಗಿದೆ.</translation>
 <translation id="2773802008104670137">ಈ ಪ್ರಕಾರದ ಫೈಲ್ ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್‌ಗೆ ಹಾನಿ ಮಾಡಬಹುದು.</translation>
 <translation id="7815680994978050279">ಅಪಾಯಕಾರಿ ಡೌನ್‌ಲೋಡ್ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="6141988275892716286">ಡೌನ್‌ಲೋಡ್ ಅನ್ನು ದೃಢೀಕರಿಸಿ</translation>
@@ -343,7 +346,6 @@
 <translation id="8200772114523450471">ಪುನರಾರಂಭಿಸು</translation>
 <translation id="2770465223704140727">ಪಟ್ಟಿಯಿಂದ ತೆಗೆದುಹಾಕಿ</translation>
 <translation id="7702574632857388784">ಪಟ್ಟಿಯಿಂದ <ph name="FILE_NAME"/> ತೆಗೆದುಹಾಕಿ</translation>
-<translation id="7658239707568436148">ರದ್ದುಮಾಡಿ</translation>
 <translation id="7144878232160441200">ಮರುಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="5170568018924773124">ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ತೋರಿಸಿ</translation>
 <translation id="1581962803218266616">ಫೈಂಡರ್‌ನಲ್ಲಿ ತೋರಿಸಿ</translation>
@@ -358,6 +360,10 @@
 <translation id="495170559598752135">ಕ್ರಿಯೆಗಳು</translation>
 <translation id="3612673635130633812">&lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; ನಿಂದ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="6395403722585816044">ಅಜ್ಞಾತದಲ್ಲಿ ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="4551763574344810652">ರದ್ದುಮಾಡಲು <ph name="MODIFIER_KEY_DESCRIPTION"/> ಅನ್ನು ಒತ್ತಿರಿ</translation>
+<translation id="2079545284768500474">ರದ್ದುಮಾಡು</translation>
+<translation id="2490481887078769936">ಪಟ್ಟಿಯಿಂದ '<ph name="FILE_NAME"/>' ಅನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ</translation>
+<translation id="1429300045468813835">ಎಲ್ಲವನ್ನೂ ತೆರವುಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="8028803902702117856">ಡೌನ್‌ಲೋಡ್‌ ಮಾಡಲಾಗುತ್ತಿದೆ <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="5632592977009207922">ಡೌನ್‌ಲೋಡ್‌ ಮಾಡಲಾಗುತ್ತಿದೆ, <ph name="PERCENT_REMAINING"/>% ಬಾಕಿ ಉಳಿದಿದೆ</translation>
 <translation id="313963229645891001">ಡೌನ್‌ಲೋಡ್‌ ಮಾಡಲಾಗುತ್ತಿದೆ, <ph name="STATUS"/></translation>
@@ -418,6 +424,10 @@
 <translation id="3067198179881736288">ಅಪ್ಲಿಕೇಶನ್ ಇನ್‌ಸ್ಟಾಲ್‌ ಮಾಡಬೇಕೇ?</translation>
 <translation id="7072010813301522126">ಶಾರ್ಟ್‌ಕಟ್ ಹೆಸರು</translation>
 <translation id="3275778913554317645">ವಿಂಡೊ ಅಂತೆ ತೆರೆಯಿರಿ</translation>
+<translation id="7193051357671784796">ನಿಮ್ಮ ಸಂಸ್ಥೆಯು ಈ ಆ್ಯಪ್ ಅನ್ನು ಸೇರಿಸಿದೆ. ಆ್ಯಪ್ ಇನ್‌ಸ್ಟಾಲೇಶನ್ ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು, ಅದನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ.</translation>
+<translation id="5895138241574237353">ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
+<translation id="3479552764303398839">ಈಗ ಬೇಡ</translation>
+<translation id="1008557486741366299">ಈಗಲೇ ಅಲ್ಲ</translation>
 <translation id="8201192017531062522">Brave Apps ತೆರೆದಿರುವಾಗ Brave ರನ್ ಆಗುತ್ತಲೇ ಇರುತ್ತದೆ.</translation>
 <translation id="7397305826909094212">ಎಲ್ಲ Brave ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ತ್ಯಜಿಸಿ</translation>
 <translation id="5026874946691314267">ಇದನ್ನು ಮತ್ತೆ ತೋರಿಸಬೇಡ</translation>
@@ -751,6 +761,7 @@
 <translation id="5715711091495208045">ಪ್ಲಗಿನ್ ಬ್ರೋಕರ್: <ph name="PLUGIN_NAME"/></translation>
 <translation id="3222066309010235055">ಪ್ರೀರೆಂಡರ್: <ph name="PRERENDER_CONTENTS_NAME"/></translation>
 <translation id="6748217015615267851">ರೆಂಡರರ್: <ph name="RENDERER_URL"/></translation>
+<translation id="2156294658807918600">ಸೇವಾ ಕಾರ್ಯಕರ್ತ: <ph name="SCRIPT_URL"/></translation>
 <translation id="241082044617551207">ಅಪರಿಚಿತ ಪ್ಲಗ್-ಇನ್</translation>
 <translation id="7903925330883316394">ಉಪಯುಕ್ತತೆ: <ph name="UTILITY_TYPE"/></translation>
 <translation id="219008588003277019">ಸ್ಥಳೀಯ ಕ್ಲೈಂಟ್ ಮಾಡ್ಯೂಲ್: <ph name="NEXE_NAME"/></translation>
@@ -774,10 +785,8 @@
 <translation id="4873312501243535625">ಮಾಧ್ಯಮ ಫೈಲ್ ಪರೀಕ್ಷಕ</translation>
 <translation id="5972666587303800813">ಯಾವುದೇ ಕಾರ್ಯಾಚರಣೆ ಸೇವೆಯಿಲ್ಲ</translation>
 <translation id="3061707000357573562">ಪ್ಯಾಚ್ ಸೇವೆ</translation>
-<translation id="3580923162759633716">ಪ್ರೊಫೈಲಿಂಗ್ ಸೇವೆ</translation>
 <translation id="1914326953223720820">ಸೇವೆಯನ್ನು ಅನ್ ಜಿಪ್ ಮಾಡಿ</translation>
 <translation id="1545775234664667895">ಸ್ಥಾಪಿಸಲಾಗಿರುವ ಥೀಮ್ "<ph name="THEME_NAME"/>"</translation>
-<translation id="2079545284768500474">ರದ್ದುಮಾಡು</translation>
 <translation id="2256115617011615191">ಈಗ ಮರುಪ್ರಾರಂಭಿಸು</translation>
 <translation id="4545028762441890696">ಇದನ್ನು ಮರು-ಸಕ್ರಿಯಗೊಳಿಸಲು, ಹೊಸ ಅನುಮತಿಗಳನ್ನು ಸ್ವೀಕರಿಸಿ:</translation>
 <translation id="3009487527589249344"><ph name="EXTENSION_NAME"/> ದೋಷಪೂರಿತವೆಂದು Brave Software ಫ್ಲ್ಯಾಗ್ ಮಾಡಿದೆ ಹಾಗೂ ಅದರ ಇನ್‌ಸ್ಟಾಲೇಶನ್ ಅನ್ನು ತಡೆಗಟ್ಟಲಾಗಿದೆ</translation>
@@ -962,8 +971,8 @@
 <translation id="2643698698624765890">ವಿಂಡೋ ಮೆನುವಿನಲ್ಲಿರುವ ‘ವಿಸ್ತರಣೆಗಳು’ ಅನ್ನು ಕ್ಲಿಕ್‌ ಮಾಡುವ ಮೂಲಕ ನಿಮ್ಮ ವಿಸ್ತರಣೆಗಳನ್ನು ನಿರ್ವಹಿಸಿ.</translation>
 <translation id="7953955868932471628">ಶಾರ್ಟ್‌ಕಟ್‌ಗಳನ್ನು ನಿರ್ವಹಿಸು</translation>
 <translation id="1470811252759861213">ನಿಮ್ಮ ಎಲ್ಲಾ ಕಂಪ್ಯೂಟರ್‌ಗಳಲ್ಲಿ ನಿಮ್ಮ ವಿಸ್ತರಣೆಗಳನ್ನು ಪಡೆಯಲು, <ph name="SIGN_IN_LINK"/>.</translation>
-<translation id="316854673539778496">ನಿಮ್ಮ ಎಲ್ಲಾ ಸಾಧನಗಳಲ್ಲಿ ನಿಮ್ಮ ಎಲ್ಲಾ ವಿಸ್ತರಣೆಗಳನ್ನು ಪಡೆಯಲು, ಸೈನ್ ಇನ್ ಮಾಡಿ ಮತ್ತು ಸಿಂಕ್ ಆನ್ ಮಾಡಿ.</translation>
-<translation id="8079938625609335826">ನಿಮ್ಮ ಎಲ್ಲಾ ಸಾಧನಗಳಲ್ಲಿ ನಿಮ್ಮ ಎಲ್ಲಾ ವಿಸ್ತರಣೆಗಳನ್ನು ಪಡೆದುಕೊಳ್ಳಲು, ಸಿಂಕ್ ಆನ್ ಮಾಡಿ.</translation>
+<translation id="2490782392574942205">ನಿಮ್ಮ ಎಲ್ಲಾ ವಿಸ್ತರಣೆಗಳನ್ನು, ನಿಮ್ಮ ಎಲ್ಲಾ ಕಂಪ್ಯೂಟರ್‌ಗಳಲ್ಲೂ ಪಡೆಯಲು, ಸೈನ್ ಇನ್ ಮಾಡಿ ಮತ್ತು ಸಿಂಕ್ ಅನ್ನು ಆನ್ ಮಾಡಿ</translation>
+<translation id="3919145445993746351">ನಿಮ್ಮ ಎಲ್ಲಾ ಕಂಪ್ಯೂಟರ್‌ಗಳಲ್ಲೂ ನಿಮ್ಮ ವಿಸ್ತರಣೆಗಳನ್ನು ಪಡೆಯಲು, ಸಿಂಕ್ ಅನ್ನು ಆನ್ ಮಾಡಿ</translation>
 <translation id="4977942889532008999">ಪ್ರವೇಶ ದೃಢೀಕರಿಸಿ</translation>
 <translation id="5780011244986845107">ನೀವು ಆಯ್ಕೆ ಮಾಡಿದ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಸೂಕ್ಷ್ಮವಾದ ಫೈಲ್‌ಗಳಿವೆ. ಈ ಫೋಲ್ಡರ್ ಅನ್ನು ಓದಲು "<ph name="APP_NAME"/>" ಗೆ ಶಾಶ್ವತ ಪ್ರವೇಶ ಒದಗಿಸಲು ನೀವು ಖಂಡಿತವಾಗಿಯೂ ಬಯಸುತ್ತೀರಾ?</translation>
 <translation id="5365881113273618889">ನೀವು ಆಯ್ಕೆ ಮಾಡಿದ ಫೋಲ್ಡ‌ರ್‌ನಲ್ಲಿ ಸೂಕ್ಷ್ಮವಾದ ಫೈಲ್‌ಗಳಿವೆ. ಈ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಬರೆಯಲು "<ph name="APP_NAME"/>" ಗೆ ಶಾಶ್ವತ ಪ್ರವೇಶ ಒದಗಿಸಲು ನೀವು ಖಂಡಿತವಾಗಿಯೂ ಬಯಸುತ್ತೀರಾ?</translation>
@@ -982,6 +991,8 @@
 <translation id="220138918934036434">ಬಟನ್ ಅನ್ನು ಮರೆಮಾಡು</translation>
 <translation id="7898627924844766532">ಪರಿಕರಪಟ್ಟಿಯಲ್ಲಿ ಇರಿಸು</translation>
 <translation id="6082651258230788217">ಪರಿಕರಪಟ್ಟಿಯಲ್ಲಿ ತೋರಿಸು</translation>
+<translation id="7461924472993315131">ಪಿನ್</translation>
+<translation id="4285498937028063278">ಅನ್‌ಪಿನ್</translation>
 <translation id="8137559199583651773">ವಿಸ್ತರಣೆಗಳನ್ನು ನಿರ್ವಹಿಸಿ</translation>
 <translation id="3727187387656390258">ಪಾಪ್‌ಅಪ್ ಪರೀಕ್ಷಿಸಿ</translation>
 <translation id="3526034519184079374">ಸೈಟ್‌ನ ಡೇಟಾವನ್ನು ಓದಲು ಅಥವಾ ಬದಲಾಯಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ</translation>
@@ -1183,9 +1194,13 @@
 <translation id="6690659332373509948">ಫೈಲ್ ಅನ್ನು ಪಾರ್ಸ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ: <ph name="FILE_NAME"/></translation>
 <translation id="2773288106548584039">ಪಾರಂಪರಿಕ ಬ್ರೌಸರ್ ಬೆಂಬಲ</translation>
 <translation id="8141584439523427891">ಇದೀಗ ಪರ್ಯಾಯ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ತೆರೆಯಲಾಗುತ್ತಿದೆ</translation>
+<translation id="7450761244949417357">ಇದೀಗ <ph name="ALTERNATIVE_BROWSER_NAME"/> ನಲ್ಲಿ ತೆರೆಯಲಾಗುತ್ತಿದೆ</translation>
 <translation id="2804043232879091219">ಪರ್ಯಾಯ ಬ್ರೌಸರ್‌‌ ಅನ್ನು ತೆರೆಯಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="692114467174262153"><ph name="ALTERNATIVE_BROWSER_NAME"/> ಅನ್ನು ತೆರೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</translation>
 <translation id="1070705170564860382"><ph name="COUNTDOWN_SECONDS"/> ಸೆಕೆಂಡುಗಳಲ್ಲಿ ಪರ್ಯಾಯ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ತೆರೆಯಲಾಗುತ್ತಿದೆ</translation>
+<translation id="3481268647794498892"><ph name="COUNTDOWN_SECONDS"/> ಸೆಕೆಂಡುಗಳಲ್ಲಿ <ph name="ALTERNATIVE_BROWSER_NAME"/> ನಲ್ಲಿ ತೆರೆಯಲಾಗುತ್ತದೆ</translation>
 <translation id="4586275095964870617"><ph name="URL"/> ಅನ್ನು ಪರ್ಯಾಯ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ತೆರೆಯಲಾಗುವುದಿಲ್ಲ. ದಯವಿಟ್ಟು ನಿಮ್ಮ ಸಿಸ್ಟಂ ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ.</translation>
+<translation id="736877393389250337"><ph name="URL"/> ಅನ್ನು <ph name="ALTERNATIVE_BROWSER_NAME"/> ನಲ್ಲಿ ತೆರೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ನಿಮ್ಮ ಸಿಸ್ಟಂ ನಿರ್ವಾಹಕರನ್ನು ಸಂಪರ್ಕಿಸಿ.</translation>
 <translation id="465878909996028221">http, https ಮತ್ತು ಫೈಲ್ ಪ್ರೊಟೊಕಾಲ್‌ಗಳು ಮಾತ್ರವೇ ಬ್ರೌಸರ್ ಮರುನಿರ್ದೇಶನಗಳಿಗೆ ಬೆಂಬಲಿತವಾಗಿವೆ.</translation>
 <translation id="1962233722219655970">ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಕಾರ್ಯನಿರ್ವಹಿಸದೇ ಇರುವಂತಹ ಸ್ಥಳೀಯ ಕ್ಲೈಂಟ್ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಈ ಪುಟವು ಬಳಸುತ್ತದೆ.</translation>
 <translation id="7540972813190816353">ನವೀಕರಣಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸುತ್ತಿರುವಾಗ ದೋಷವೊಂದು ಸಂಭವಿಸಿದೆ: <ph name="ERROR"/></translation>
@@ -1237,6 +1252,7 @@
 <translation id="8391712576156218334">ಚಿತ್ರ ಲಭ್ಯವಿಲ್ಲ. ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="1564414980088536597">ಈ ಚಿತ್ರವನ್ನು ಬಳಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಬೇರೆಯ ಚಿತ್ರವನ್ನು ಆರಿಸಿ.</translation>
 <translation id="385051799172605136">ಹಿಂದೆ</translation>
+<translation id="8033827949643255796">ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="3497560059572256875">ಡೂಡಲ್ ಹಂಚಿಕೊಳ್ಳಿ</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Twitter</translation>
@@ -1263,6 +1279,10 @@
 <translation id="5939518447894949180">ಮರುಹೊಂದಿಸು</translation>
 <translation id="5546865291508181392">ಹುಡುಕಿ</translation>
 <translation id="833986336429795709">ಈ ಲಿಂಕ್ ತೆರೆಯಲು, ಅಪ್ಲಿಕೇಶನ್ ಆಯ್ಕೆ ಮಾಡಿ</translation>
+<translation id="192494336144674234">ಇದರೊಂದಿಗೆ ತೆರೆಯಿರಿ</translation>
+<translation id="9053893665344928494">ನನ್ನ ಆಯ್ಕೆಯನ್ನು ನೆನಪಿಡಿ</translation>
+<translation id="5541687815721799001">ಅಪ್ಲಿಕೇಶನ್ ಬಳಸಿ</translation>
+<translation id="5340857474604400806">Brave ನಲ್ಲೇ ಮುಂದುವರಿಯಿರಿ</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (ಅದೃಶ್ಯ)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (ಅಪ್‌ಡೇಟ್‌ ಲಭ್ಯವಿದೆ)</translation>
@@ -1310,7 +1330,6 @@
 <translation id="720715819012336933">{NUM_PAGES,plural, =1{ನಿರ್ಗಮನ ಪುಟ}one{ನಿರ್ಗಮನ ಪುಟಗಳು}other{ನಿರ್ಗಮನ ಪುಟಗಳು}}</translation>
 <translation id="8093359998839330381"><ph name="PLUGIN_NAME"/> ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತಿಲ್ಲ</translation>
 <translation id="8393511274964623038">ಪ್ಲಗ್-ಇನ್ ನಿಲ್ಲಿಸಿ</translation>
-<translation id="82871696630048499">ವೆಬ್ ಪುಟದಲ್ಲಿ ಸಾಕಷ್ಟು ಮೆಮೊರಿ ಇಲ್ಲದ ಕಾರಣ, ಅದನ್ನು ಪುನಃ ಲೋಡ್ ಮಾಡಲಾಗಿದೆ.</translation>
 <translation id="5578059481725149024">ಸ್ವಯಂ ಸೈನ್-ಇನ್</translation>
 <translation id="6810613314571580006">ಸಂಗ್ರಹಿಸಲಾದ ರುಜುವಾತುಗಳನ್ನು ಬಳಸಿಕೊಳ್ಳುವ ಮೂಲಕ ವೆಬ್‌ಸೈಟ್‌ಗಳಿಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸೈನ್ ಇನ್ ಮಾಡಿ. ವೈಶಿಷ್ಟ್ಯವನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದಾಗ, ವೆಬ್‌ಸೈಟ್‌ಗೆ ಸೈನ್ ಇನ್ ಮಾಡುವ ಮೊದಲು ಪ್ರತಿ ಬಾರಿಯೂ ನಿಮಗೆ ದೃಢೀಕರಿಸಲು ಕೇಳಲಾಗುವುದು.</translation>
 <translation id="5454166040603940656"><ph name="PROVIDER"/> ಜೊತೆಗೆ</translation>
@@ -1361,6 +1380,7 @@
 <translation id="8713570323158206935"><ph name="BEGIN_LINK1"/>ಸಿಸ್ಟಂ ಮಾಹಿತಿಯನ್ನು<ph name="END_LINK1"/> ಕಳುಹಿಸಿ</translation>
 <translation id="6395423953133416962"><ph name="BEGIN_LINK1"/>ಸಿಸ್ಟಂ‌ ಮಾಹಿತಿ<ph name="END_LINK1"/> ಮತ್ತು <ph name="BEGIN_LINK2"/>ಮೆಟ್ರಿಕ್‌ಗಳನ್ನು<ph name="END_LINK2"/> ಕಳುಹಿಸಿ</translation>
 <translation id="6270770586500173387"><ph name="BEGIN_LINK1"/>ಸಿಸ್ಟಂ ಮತ್ತು ಅಪ್ಲಿಕೇಶನ್ ಮಾಹಿತಿ<ph name="END_LINK1"/> ಮತ್ತು <ph name="BEGIN_LINK2"/>ಮಾಪನಗಳನ್ನು<ph name="END_LINK2"/> ಕಳುಹಿಸಿ</translation>
+<translation id="3894123633473837029">Sherlog ಮೂಲಕ ಇತ್ತೀಚಿನ ಅಸಿಸ್ಟೆಂಟ್ ಇತಿಹಾಸವನ್ನು ಸೇರಿಸಿ. ಇದು ನಿಮ್ಮ ಗುರುತು, ಸ್ಥಳ ಮತ್ತು ಡೀಬಗ್ ಮಾಹಿತಿಯನ್ನು ಒಳಗೊಂಡಿರಬಹುದು. <ph name="BEGIN_LINK"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="END_LINK"/></translation>
 <translation id="8329196515830093443">ಡೀಬಗ್ ಮಾಡಲು Brave Software ಗೆ ಫೈಲ್ ಕಳುಹಿಸಲಾಗುತ್ತದೆ</translation>
 <translation id="8227119283605456246">ಫೈಲ್‌‎ ಲಗತ್ತಿಸಿ</translation>
 <translation id="5367091008316207019">ಓದುತ್ತಿರುವ ಫೈಲ್..</translation>
@@ -1371,9 +1391,6 @@
 <translation id="1483493594462132177">ಕಳುಹಿಸು</translation>
 <translation id="6885771755599377173">ಸಿಸ್ಟಂ ಮಾಹಿತಿ ಪೂರ್ವವೀಕ್ಷಣೆ</translation>
 <translation id="1016566241875885511">ಹೆಚ್ಚುವರಿ ಮಾಹಿತಿ (ಐಚ್ಛಿಕ)</translation>
-<translation id="6083886770200509573">Brave ಕ್ರ್ಯಾಶ್ ಆಗುತ್ತಿದೆಯೇ, ಕಿರಿಕಿರಿಯುಂಟುಮಾಡುವ ಸ್ಟಾರ್ಟಪ್‌‌ ಪುಟಗಳನ್ನು ತೋರಿಸುತ್ತಿದೆಯೇ, ಪರಿಕರ ಪಟ್ಟಿಗಳು, ತೆಗೆದುಹಾಕಲು ಸಾಧ್ಯವಾಗದಂಥ ಅನಿರೀಕ್ಷಿತ ಜಾಹೀರಾತುಗಳನ್ನು ತೋರಿಸುತ್ತಿದೆಯೇ ಅಥವಾ ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಅನುಭವವನ್ನು ಬದಲಾಯಿಸುತ್ತಿದೆಯೇ? Brave ಸ್ವಚ್ಛತಾ ಸಾಧನವನ್ನು ರನ್ ಮಾಡುವ ಮೂಲಕ ಈ ಎಲ್ಲಾ ಸಮಸ್ಯೆಗಳಿಗೆ ನೀವು ಪರಿಹಾರ ಕಂಡುಕೊಳ್ಳಬಹುದು.</translation>
-<translation id="7719662019953070946">Brave ಸ್ವಚ್ಛತಾ ಸಾಧನ ಡೌನ್‌ಲೋಡ್‌ ಮಾಡು</translation>
-<translation id="8281886186245836920">ಸ್ಕಿಪ್‌</translation>
 <translation id="8026334261755873520">ಬ್ರೌಸಿಂಗ್ ಡೇಟಾವನ್ನು ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="7409836189476010449">ಫ್ಲ್ಯಾಶ್ ರನ್ ಮಾಡು</translation>
 <translation id="4718442817388594217">ಆಯ್ಕೆಮಾಡಲಾದ ಡೇಟಾವನ್ನು Brave ಮತ್ತು ಸಿಂಕ್ ಮಾಡಲ್ಪಟ್ಟ ಸಾಧನಗಳಿಂದ ತೆಗೆದುಹಾಕಲಾಗಿದೆ. ನಿಮ್ಮ Brave Software ಖಾತೆಯು <ph name="BEGIN_LINK"/>history.google.com<ph name="END_LINK"/>ನಲ್ಲಿನ ಇತರ Brave Software ಸೇವೆಗಳಲ್ಲಿ ಹುಡುಕಾಟಗಳು ಮತ್ತು ಚಟುವಟಿಕೆಯಂತಹ ಬ್ರೌಸಿಂಗ್ ಹುಡುಕಾಟಗಳ ಇತರ ಪ್ರಕಾರಗಳನ್ನು ಹೊಂದಿರಬಹುದು.</translation>
@@ -1511,7 +1528,6 @@
 
   ನೀವು <ph name="CONTROL_PANEL_APPLET_NAME"/> ಪ್ರಾರಂಭಿಸಲು ಬಯಸುವಿರಾ?</translation>
 <translation id="2799223571221894425">ಮರುಪ್ರಾರಂಭಿಸು</translation>
-<translation id="5895138241574237353">ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">ಪ್ಲಾಟ್‌ಫಾರ್ಮ್</translation>
 <translation id="7022562585984256452">ನಿಮ್ಮ ಮುಖಪಟವನ್ನು ಹೊಂದಿಸಲಾಗಿದೆ.</translation>
@@ -1551,6 +1567,10 @@
 <translation id="6015796118275082299">ವರ್ಷ</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
 <translation id="7671130400130574146">ಸಿಸ್ಟಂ ಶೀರ್ಷಿಕೆ ಪಟ್ಟಿ ಮತ್ತು ಅಂಚುಗಳನ್ನು ಬಳಸಿ</translation>
+<translation id="3775705724665058594">ನಿಮ್ಮ ಸಾಧನಗಳಿಗೆ ಕಳುಹಿಸಿ</translation>
+<translation id="6061882183774845124">ನಿಮ್ಮ ಸಾಧನಗಳಿಗೆ ಲಿಂಕ್ ಕಳುಹಿಸಿ</translation>
+<translation id="8249615410597138718">ನಿಮ್ಮ ಸಾಧನಗಳಿಗೆ ಕಳುಹಿಸಿ</translation>
+<translation id="5310281978693206542">ನಿಮ್ಮ ಸಾಧನಗಳಿಗೆ ಲಿಂಕ್ ಕಳುಹಿಸಿ</translation>
 <translation id="4520385623207007473">ಬಳಕೆಯಲ್ಲಿರುವ ಕುಕೀಗಳು</translation>
 <translation id="4763408175235639573">ನೀವು ಈ ಪುಟವನ್ನು ವೀಕ್ಷಿಸುವಾಗ ಕೆಳಗಿನ ಕುಕೀಗಳನ್ನು ಹೊಂದಿಸಲಾಗಿದೆ</translation>
 <translation id="2719936478972253983">ಕೆಳಗಿನ ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
@@ -1640,12 +1660,14 @@
 <translation id="8371695176452482769">ಈಗ ಮಾತನಾಡಿ</translation>
 <translation id="2942560570858569904">ನಿರೀಕ್ಷಿಸಲಾಗುತ್ತಿದೆ...</translation>
 <translation id="6436164536244065364">ವೆಬ್ ಅಂಗಡಿಯಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
+<translation id="5258992782919386492">ಈ ಸಾಧನದಲ್ಲಿ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</translation>
 <translation id="3331974543021145906">ಅಪ್ಲಿಕೇಶನ್‌ ಮಾಹಿತಿ</translation>
 <translation id="9121814364785106365">ಪಿನ್ ಮಾಡಿದ ಟ್ಯಾಬ್ ಆಗಿ ತೆರೆ</translation>
 <translation id="6920989436227028121">ದಿನನಿತ್ಯದ ಟ್ಯಾಬ್ ಅಂತೆ ತೆರೆಯಿರಿ</translation>
 <translation id="189210018541388520">ಪೂರ್ಣ ಪರದೆಯನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="6096047740730590436">ಗರಿಷ್ಠಗೊಳಿಸುವಿಕೆಯಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
 <translation id="7256710573727326513">ಟ್ಯಾಬ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
+<translation id="7636919061354591437">ಈ ಸಾಧನದಲ್ಲಿ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</translation>
 <translation id="2993517869960930405">ಅಪ್ಲಿಕೇಶನ್ ಮಾಹಿತಿ</translation>
 <translation id="2867768963760577682">ಪಿನ್ ಮಾಡಿದ ಟ್ಯಾಬ್ ಅಂತೆ ತೆರೆಯಿರಿ</translation>
 <translation id="1390548061267426325">ದಿನನಿತ್ಯದ ಟ್ಯಾಬ್ ಅಂತೆ ತೆರೆಯಿರಿ</translation>
@@ -1682,6 +1704,7 @@
 <translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> ಕ್ರ್ಯಾಶ್ ಆಗಿದೆ</translation>
 <translation id="4610162781778310380"><ph name="PLUGIN_NAME"/> ಗೆ ದೋಷ ಎದುರಾಗಿದೆ</translation>
 <translation id="778330624322499012"><ph name="PLUGIN_NAME"/> ಅನ್ನು ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ</translation>
+<translation id="7438976808740265764">ಡಿಸೆಂಬರ್ 2020 ರ ಬಳಿಕ ಫ್ಲ್ಯಾಶ್ ಪ್ಲೇಯರ್‌ಗೆ ಬೆಂಬಲವಿರುವುದಿಲ್ಲ.</translation>
 <translation id="3739254215541673094"><ph name="APPLICATION"/> ತೆರೆಯುವುದೇ?</translation>
 <translation id="2188881192257509750"><ph name="APPLICATION"/> ತೆರೆಯಿರಿ</translation>
 <translation id="620722923698527029">ಸಂಬಂಧಿತ ಅಪ್ಲಿಕೇಶನ್‍ನಲ್ಲಿ ಈ ಪ್ರಕಾರದ ಲಿಂಕ್‍ಗಳನ್ನು ಯಾವಾಗಲೂ ತೆರೆಯಿರಿ</translation>
@@ -1925,6 +1948,15 @@
 <translation id="8363142353806532503">ಮೈಕ್ರೊಫೋನ್ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="2762441749940182211">ಕ್ಯಾಮೆರಾವನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="5074318175948309511">ಹೊಸ ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಪರಿಣಾಮಕಾರಿಯಾಗುವುದಕ್ಕೆ ಮೊದಲು ಈ ಪುಟವನ್ನು ರಿಲೋಡ್ ಮಾಡಬೇಕಾಗುತ್ತದೆ.</translation>
+<translation id="3325910708063135066">Mac ಸಿಸ್ಟಂ ಆದ್ಯತೆಗಳಲ್ಲಿ ಕ್ಯಾಮರಾ ಹಾಗೂ ಮೈಕ್ರೋಫೋನ್ ಅನ್ನು ಆಫ್ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="5383377866517186886">Mac ಸಿಸ್ಟಂ ಆದ್ಯತೆಗಳಲ್ಲಿ ಕ್ಯಾಮರಾವನ್ನು ಆಫ್ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="6545867563032584178">Mac ಸಿಸ್ಟಂ ಆದ್ಯತೆಗಳಲ್ಲಿ ಮೈಕ್ರೋಫೋನ್ ಅನ್ನು ಆಫ್ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="2332192922827071008">ಪ್ರಾಶಸ್ತ್ಯಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
+<translation id="1620510694547887537">ಕ್ಯಾಮರಾ</translation>
+<translation id="3227137524299004712">ಮೈಕ್ರೋಫೋನ್</translation>
+<translation id="4209251085232852247">ಆಫ್ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="2804680522274557040">ಕ್ಯಾಮರಾವನ್ನು ಆಫ್‌ ಮಾಡಲಾಗಿದೆ</translation>
+<translation id="6309510305002439352">ಮೈಕ್ರೋಫೋನ್ ಅನ್ನು ಆಫ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="8282947398454257691">ನಿಮ್ಮ ಅನನ್ಯ ಸಾಧನ ಗುರುತಿಸುವಿಕೆ ತಿಳಿದುಕೊಳ್ಳಿ</translation>
 <translation id="8329449853370113380">ಸಂರಕ್ಷಿಸಲಾದ ವಿಷಯವನ್ನು ಪ್ಲೇ ಮಾಡಲು <ph name="URL"/> ಬಯಸುತ್ತದೆ. ನಿಮ್ಮ ಸಾಧನದ ಗುರುತನ್ನು Brave Software ಪರಿಶೀಲಿಸುವುದು.</translation>
 <translation id="2650609753175229582"><ph name="URL"/>, ಸಂರಕ್ಷಿತ ವಿಷಯವನ್ನು ಪ್ಲೇ ಮಾಡಲು ಬಯಸುತ್ತದೆ. ನಿಮ್ಮ ಸಾಧನದ ಗುರುತನ್ನು Brave Software ಪರಿಶೀಲಿಸುತ್ತದೆ ಮತ್ತು ಅದಕ್ಕೆ ಈ ಸೈಟ್ ಪ್ರವೇಶ ಪಡೆಯಬಹುದು.</translation>
@@ -1948,7 +1980,6 @@
 <translation id="8105368624971345109">ಆಫ್ ಮಾಡು</translation>
 <translation id="1036348656032585052">ಆಫ್ ಮಾಡು</translation>
 <translation id="3423858849633684918">ದಯವಿಟ್ಟು <ph name="PRODUCT_NAME"/> ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ</translation>
-<translation id="8876215549894133151">ಸ್ವರೂಪ:</translation>
 <translation id="2294358108254308676">ನೀವು <ph name="PRODUCT_NAME"/> ಅನ್ನು ಸ್ಥಾಪಿಸಲು ಬಯಸುತ್ತೀರಾ?</translation>
 <translation id="586567932979200359">ನೀವು <ph name="PRODUCT_NAME"/> ಅನ್ನು ಅದರ ಡಿಸ್ಕ್‌ ಇಮೇಜ್‌‌‌ನಿಂದ ಚಾಲನೆ ಮಾಡುತ್ತಿರುವಿರಿ. ಅದನ್ನು ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಸ್ಥಾಪನೆ ಮಾಡಿದರೆ ಅದು ನಿಮಗೆ ಡಿಸ್ಕ್ ಇಮೇಜ್ ಇಲ್ಲದೆಯೆ ಚಾಲನೆ ಮಾಡಲು ನಿಮಗೆ ಅನುಮತಿಸುತ್ತದೆ, ಮತ್ತು ಆಗಿಂದಾಗ್ಗೆ ನವೀಕೃತಗೊಂಡಿದೆಯೆ ಎಂಬುದನ್ನು ಖಚಿತಪಡಿಸುತ್ತದೆ.</translation>
 <translation id="4849517651082200438">ಸ್ಥಾಪಿಸಬೇಡಿ</translation>
@@ -2003,8 +2034,6 @@
 <translation id="1712552549805331520">ನಿಮ್ಮ ಸ್ಥಳೀಯ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಡೇಟಾವನ್ನು ಶಾಶ್ವತವಾಗಿ ಸಂಗ್ರಹಣೆ ಮಾಡಲು <ph name="URL"/> ಬಯಸುತ್ತದೆ</translation>
 <translation id="1997484222658892567">ನಿಮ್ಮ ಸ್ಥಳೀಯ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ದೊಡ್ಡ ಪ್ರಮಾಣದ ಡೇಟಾವನ್ನು ಸಂಗ್ರಹಣೆ ಮಾಡಲು <ph name="URL"/> ಬಯಸುತ್ತದೆ</translation>
 <translation id="7648992873808071793">ಈ ಸಾಧನದಲ್ಲಿ ಫೈಲ್‌ಗಳನ್ನು ಸಂಗ್ರಹಿಸಿ</translation>
-<translation id="7461924472993315131">ಪಿನ್</translation>
-<translation id="4285498937028063278">ಅನ್‌ಪಿನ್</translation>
 <translation id="8871551568777368300">ನಿರ್ವಾಹಕರಿಂದ ಪಿನ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="4110895898888439383">ಅಧಿಕ ಕಾಂಟ್ರಾಸ್ಟ್ ಮೋಡ್‌ನಲ್ಲಿ ವೆಬ್ ಅನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ</translation>
 <translation id="614940544461990577">ಪ್ರಯತ್ನಿಸಿ:</translation>
@@ -2103,6 +2132,7 @@
 <translation id="3202173864863109533">ಈ ಟ್ಯಾಬ್‌ನ ಆಡಿಯೋವನ್ನು ಮ್ಯೂಟ್ ಮಾಡಲಾಗುತ್ತಿದೆ.</translation>
 <translation id="5562781907504170924">ಈ ಟ್ಯಾಬ್ ಬ್ಲೂಟೂತ್‌ ಸಾಧನಕ್ಕೆ ಸಂಪರ್ಕಗೊಂಡಿದೆ.</translation>
 <translation id="5884474295213649357">ಈ ಟ್ಯಾಬ್ USB ಸಾಧನಕ್ಕೆ ಸಂಪರ್ಕಗೊಂಡಿದೆ.</translation>
+<translation id="1010498023906173788">ಈ ಟ್ಯಾಬ್, ಸೀರಿಯಲ್ ಪೋರ್ಟ್‌ಗೆ ಸಂಪರ್ಕಗೊಂಡಿದೆ.</translation>
 <translation id="8466417995783206254">ಚಿತ್ರದಲ್ಲಿನ ಚಿತ್ರ ಮೋಡ್‌ನಲ್ಲಿ ಈ ಟ್ಯಾಬ್ ವೀಡಿಯೊವನ್ನು ಪ್ಲೇ ಮಾಡುತ್ತಿದೆ.</translation>
 <translation id="2585724835339714757">ಈ ಟ್ಯಾಬ್, ನಿಮ್ಮ ಪರದೆಯನ್ನು ಹಂಚಿಕೊಳ್ಳುತ್ತಿದೆ.</translation>
 <translation id="1542514202066550870">ಈ ಟ್ಯಾಬ್ ಹೆಡ್‌ಸೆಟ್‌ಗೆ VR ವಿಷಯವನ್ನು ಪ್ರಸ್ತುತಪಡಿಸುತ್ತಿದೆ.</translation>
@@ -2113,6 +2143,7 @@
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> - ಆಡಿಯೋ ಮ್ಯೂಟ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> - ಬ್ಲೂಟೂತ್ ಸಾಧನ ಸಂಪರ್ಕಗೊಂಡಿದೆ</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> - USB ಸಾಧನ ಸಂಪರ್ಕಗೊಂಡಿದೆ</translation>
+<translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> - ಸೀರಿಯಲ್ ಪೋರ್ಟ್ ಸಂಪರ್ಕಗೊಂಡಿದೆ</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> - ನೆಟ್‌ವರ್ಕ್ ದೋಷ</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> - ಕ್ರ್ಯಾಶ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> - ಡೆಸ್ಕ್‌ಟಾಪ್ ವಿಷಯವನ್ನು ಹಂಚಲಾಗಿದೆ</translation>
@@ -2125,6 +2156,8 @@
 <translation id="6459799433792303855">ಮತ್ತೊಂದು ಡಿಸ್‌ಪ್ಲೇಗೆ ಸಕ್ರಿಯ ವಿಂಡೋವನ್ನು ಸರಿಸಲಾಗಿದೆ.</translation>
 <translation id="6551508934388063976">ಕಮಾಂಡ್ ಲಭ್ಯವಿಲ್ಲ. ಹೊಸ ವಿಂಡೋ ತೆರೆಯಲು control-N ಒತ್ತಿರಿ.</translation>
 <translation id="3831486154586836914">ವಿಂಡೊ ಅವಲೋಕನ ಮೋಡ್‌ಗೆ ಪ್ರವೇಶಿಸಲಾಗಿದೆ</translation>
+<translation id="4380648069038809855">ಪೂರ್ಣಪರದೆಗೆ ಪ್ರವೇಶಿಸಲಾಗಿದೆ</translation>
+<translation id="1766575458646819543">ಪೂರ್ಣ ಪರದೆಯಿಂದ ನಿರ್ಗಮಿಸಲಾಗಿದೆ</translation>
 <translation id="8736288397686080465">ಈ ಸೈಟ್ ಅನ್ನು ಹಿನ್ನೆಲೆಯಲ್ಲಿ ಅಪ್‌ಡೇಟ್‌ ಮಾಡಲಾಗಿದೆ.</translation>
 <translation id="6945221475159498467">ಆಯ್ಕೆಮಾಡಿ</translation>
 <translation id="4130199216115862831">ಸಾಧನದ ಲಾಗ್</translation>
@@ -2141,6 +2174,7 @@
 <translation id="8847988622838149491">USB</translation>
 <translation id="5086082738160935172">HID</translation>
 <translation id="4034824040120875894">ಪ್ರಿಂಟರ್</translation>
+<translation id="2633764681656412085">FIDO</translation>
 <translation id="2242687258748107519">ಫೈಲ್ ಮಾಹಿತಿ</translation>
 <translation id="930268624053534560">ವಿವರವಾದ ಸಮಯಮೊಹರುಗಳು</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
@@ -2152,8 +2186,9 @@
 <translation id="2593289874938379417">ವಿನಂತಿಸಿದ ಸಂಪನ್ಮೂಲದಲ್ಲಿ Brave ಪ್ರವೇಶವನ್ನು ಹೊಂದಿಲ್ಲ.</translation>
 <translation id="760197030861754408">ಸಂಪರ್ಕಪಡಿಸಲು <ph name="LANDING_PAGE"/> ಗೆ ಹೋಗಿ.</translation>
 <translation id="3648348069317717750"><ph name="USB_DEVICE_NAME"/> ಪತ್ತೆ ಮಾಡಲಾಗಿದೆ</translation>
-<translation id="2382095919147960379">ಈ ಸಾಧನವನ್ನು Linux ಗೆ ಸಂಪರ್ಕಿಸಿ</translation>
-<translation id="5308380583665731573">ಸಂಪರ್ಕಿಸು</translation>
+<translation id="5042282098504489593"><ph name="USB_DEVICE_NAME"/> ಅನ್ನು Linux ಗೆ ಸಂಪರ್ಕಿಸಲು, ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
+<translation id="1072700771426194907">USB ಸಾಧನವನ್ನು ಪತ್ತೆಹಚ್ಚಲಾಗಿದೆ</translation>
+<translation id="7830594666202422257">Linux ಗೆ ಸಂಪರ್ಕಿಸಿ</translation>
 <translation id="59324397759951282"><ph name="MANUFACTURER_NAME"/> ರಿಂದ USB ಸಾಧನ</translation>
 <translation id="8763927697961133303">USB ಸಾಧನ</translation>
 <translation id="8798099450830957504">ಡಿಫಾಲ್ಟ್</translation>
@@ -2176,6 +2211,7 @@
 <translation id="3271648667212143903"><ph name="ORIGIN"/> ಸಂಪರ್ಕಿಸಲು ಬಯಸುತ್ತದೆ</translation>
 <translation id="7945031593909029181">"<ph name="CHROME_EXTENSION_NAME"/>" ಸಂಪರ್ಕಿಸಲು ಬಯಸುತ್ತದೆ</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
+<translation id="5308380583665731573">ಸಂಪರ್ಕಿಸು</translation>
 <translation id="8480869669560681089"><ph name="VENDOR_NAME"/> ನಿಂದ ಅಪರಿಚಿತ ಸಾಧನ</translation>
 <translation id="1500297251995790841">ಅಪರಿಚಿತ ಸಾಧನ [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="7003844668372540529"><ph name="VENDOR_NAME"/> ಅವರಿಂದ <ph name="PRODUCT_ID"/> ಅಪರಿಚಿತ ಉತ್ಪನ್ನ</translation>
@@ -2243,8 +2279,7 @@
 <translation id="6009781704028455063">ಅಂತರ್ನಿರ್ಮಿತ ಸೆನ್ಸರ್</translation>
 <translation id="3630132874740063857">ನಿಮ್ಮ ಫೋನ್</translation>
 <translation id="6930036377490597025">ಬಾಹ್ಯ ಸುರಕ್ಷತೆ ಕೀ ಅಥವಾ ಅಂತರ್ನಿರ್ಮಿತ ಸೆನ್ಸರ್</translation>
-<translation id="5567950944308676169">ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯನ್ನು ಪ್ಲಗ್-ಇನ್ ಮಾಡಿ ಮತ್ತು ಅದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
-<translation id="6648051959475508072">ಸುರಕ್ಷತಾ ಕೀ ಸಕ್ರಿಯಗೊಂಡಿದೆ...</translation>
+<translation id="51143538739122961">ನಿಮ್ಮ ಭದ್ರತೆ ಕೀ ಅನ್ನು ಸೇರ್ಪಡಿಸಿ ಮತ್ತು ಅದನ್ನು ಸ್ಪರ್ಶಿಸಿ</translation>
 <translation id="7352651011704765696">ಯಾವುದೋ ತಪ್ಪು ಸಂಭವಿಸಿದೆ</translation>
 <translation id="8514746246728959655">ಬೇರೊಂದು ಭದ್ರತೆ ಕೀಯನ್ನು ಬಳಸಿ ನೋಡಿ</translation>
 <translation id="8337047789441383384">ನೀವು ಈ ಭದ್ರತೆ ಕೀಯನ್ನು ಈಗಾಗಲೇ ನೋಂದಾಯಿಸಿದ್ದೀರಿ. ನೀವು ಅದನ್ನು ಮತ್ತೊಮ್ಮೆ ನೋಂದಾಯಿಸಬೇಕಾದ ಅಗತ್ಯವಿಲ್ಲ.</translation>
@@ -2254,7 +2289,6 @@
 <translation id="8379878387931047019">ಈ ವೆಬ್‌ಸೈಟ್ ವಿನಂತಿಸಿದ ಸುರಕ್ಷತಾ ಕೀಯ ಪ್ರಕಾರವನ್ನು ಈ ಸಾಧನ ಬೆಂಬಲಿಸುವುದಿಲ್ಲ</translation>
 <translation id="7135729336746831607">ಬ್ಲೂಟೂತ್ ಆನ್ ಮಾಡುವುದೇ?</translation>
 <translation id="6176043333338857209">ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯೊಂದಿಗೆ ಸಂವಹನ ನಡೆಸಲು ಬ್ಲೂಟೂತ್ ಅನ್ನು ತಾತ್ಕಾಲಿಕವಾಗಿ ಆನ್ ಮಾಡಲಾಗುತ್ತದೆ</translation>
-<translation id="5860491529813859533">ಆನ್ ಮಾಡಿ</translation>
 <translation id="4252899949534773101">ಬ್ಲೂಟೂತ್ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
 <translation id="8188389033983459049">ನಿಮ್ಮ ಸಾಧನದ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಿ ಮತ್ತು ಮುಂದುವರಿಸಲು ಬ್ಲೂಟೂತ್ ಆನ್ ಮಾಡಿ</translation>
 <translation id="6022705094403139349">ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯನ್ನು ಜೋಡಿಸಲು ಸಿದ್ಧರಾಗಿರುವಿರಾ?</translation>
@@ -2285,9 +2319,26 @@
 <translation id="4303079906735388947">ನಿಮ್ಮ ಭದ್ರತೆ ಕೀಗಾಗಿ ಹೊಸ ಪಿನ್ ಹೊಂದಿಸಿ</translation>
 <translation id="1805967612549112634">ಪಿನ್‌ ದೃಢೀಕರಿಸಿ</translation>
 <translation id="4871322859485617074">ಪಿನ್ ಅಮಾನ್ಯ ಅಕ್ಷರಗಳನ್ನು ಒಳಗೊಂಡಿದೆ</translation>
-<translation id="2344214284954353199">ಪಿನ್ ತುಂಬಾ ಚಿಕ್ಕದಾಗಿದೆ.</translation>
-<translation id="2203484353475059657">ದೃಢೀಕರಣವು ಹೊಂದಾಣಿಕೆಯಾಗುತ್ತಿಲ್ಲ.</translation>
-<translation id="88870264962436283"><ph name="APP_NAME"/> ನೊಂದಿಗೆ ಸ್ಪರ್ಶ ಐಡಿ ಬಳಸಿ</translation>
+<translation id="8896022254727357590">ಪಿನ್ ಕನಿಷ್ಠ 4 ಅಕ್ಷರಗಳಾಗಿರಬೇಕು</translation>
+<translation id="7669825497510425694">{NUM_ATTEMPTS,plural, =1{ಪಿನ್ ತಪ್ಪಾಗಿದೆ. ನೀವು ಇನ್ನೂ ಒಂದು ಬಾರಿ ಪ್ರಯತ್ನಿಸಬಹುದು.}one{ಪಿನ್ ತಪ್ಪಾಗಿದೆ. ನೀವು ಇನ್ನೂ # ಬಾರಿ ಪ್ರಯತ್ನಿಸಬಹುದು.}other{ಪಿನ್ ತಪ್ಪಾಗಿದೆ. ನೀವು ಇನ್ನೂ # ಬಾರಿ ಪ್ರಯತ್ನಿಸಬಹುದು.}}</translation>
+<translation id="5078796286268621944">ತಪ್ಪಾದ PIN</translation>
+<translation id="1233497634904001272">ವಿನಂತಿಯನ್ನು ಪೂರ್ತಿಗೊಳಿಸಲು, ನಿಮ್ಮ ಭದ್ರತೆ ಕೀ ಅನ್ನು ಮತ್ತೊಮ್ಮೆ ಸ್ಪರ್ಶಿಸಿ.</translation>
+<translation id="8136269678443988272">ನೀವು ನಮೂದಿಸಿರುವ ಪಿನ್‌ಗಳು ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ</translation>
+<translation id="1136712381129578788">ತಪ್ಪಾದ ಪಿನ್ ಸಂಖ್ಯೆಯನ್ನು ಹಲವಾರು ಬಾರಿ ನಮೂದಿಸಿರುವ ಕಾರಣದಿಂದಾಗಿ, ಭದ್ರತೆ ಕೀ ಅನ್ನು ಲಾಕ್ ಮಾಡಲಾಗಿದೆ. ಅನ್‌ಲಾಕ್ ಮಾಡಲು, ಅದನ್ನು ತೆಗೆದು ಮರುಸೇರ್ಪಡಿಸಿ.</translation>
+<translation id="3778208826288864398">ತಪ್ಪಾದ ಪಿನ್ ಸಂಖ್ಯೆಯನ್ನು ಹಲವಾರು ಬಾರಿ ನಮೂದಿಸಿರುವ ಕಾರಣದಿಂದಾಗಿ, ಭದ್ರತೆ ಕೀ ಅನ್ನು ಲಾಕ್ ಮಾಡಲಾಗಿದೆ. ನೀವು ಭದ್ರತೆ ಕೀ ಅನ್ನು ಮರುಹೊಂದಿಸಬೇಕಾಗುತ್ತದೆ.</translation>
+<translation id="7246230585855757313">ನಿಮ್ಮ ಭದ್ರತೆ ಕೀ ಅನ್ನು ಮರುಸೇರ್ಪಡಿಸಿ ಮತ್ತು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</translation>
+<translation id="629730747756840877">ಖಾತೆ</translation>
+<translation id="3792938779249970121">ಖಾತೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</translation>
+<translation id="4718490098585891067">ಸೈನ್ ಇನ್ ಮಾಡಲು ಖಾತೆಯನ್ನು ಆಯ್ಕೆ ಮಾಡಿ:</translation>
+<translation id="8734671092194994316">ಇದು <ph name="WEBSITE"/> ಗೆ ನಿಮ್ಮ ಭೇಟಿಯ ಮಾಹಿತಿಯನ್ನು ನಿಮ್ಮ ಭದ್ರತೆ ಕೀಯಲ್ಲಿ ಉಳಿಸುತ್ತದೆ.</translation>
+<translation id="8428628598981198790">ನಿಮ್ಮ ಭದ್ರತೆ ಕೀ ಅನ್ನು ಈ ಸೈಟ್ ಜೊತೆಗೆ ಬಳಸಲಾಗುವುದಿಲ್ಲ</translation>
+<translation id="4358169392473932247">ರುಜುವಾತುಗಳನ್ನು ಆಂತರಿಕವಾಗಿ ಸಂಗ್ರಹಣೆ ಮಾಡುವುದನ್ನು ಆ ಸುರಕ್ಷತಾ ಕೀಯು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ, ಆದರೆ ಆ ವೈಶಿಷ್ಟ್ಯವನ್ನು ವಿನಂತಿಸಲಾಗಿದೆ.</translation>
+<translation id="7069811530847688087"><ph name="WEBSITE"/> ಗೆ ಹೊಸದಾದ ಮತ್ತು ಬೇರೆ ರೀತಿಯ ಭದ್ರತೆ ಕೀ ಅಗತ್ಯವಿರಬಹುದು</translation>
+<translation id="3984431586879874039">ನಿಮ್ಮ ಭದ್ರತೆ ಕೀ ಅನ್ನು ನೋಡಲು ಈ ಸೈಟ್‌ಗೆ ಅನುಮತಿಸುವುದೇ?</translation>
+<translation id="8948939328578167195">ನಿಮ್ಮ ಭದ್ರತೆ ಕೀಯ ತಯಾರಕರ ಬ್ರಾಂಡ್ ಹೆಸರು ಮತ್ತು ಮಾದರಿಯನ್ನು <ph name="WEBSITE"/> ನೋಡಲು ಬಯಸುತ್ತದೆ</translation>
+<translation id="7618452966706304788">ನೀವು ಅಜ್ಞಾತ ಮೋಡ್‌ನಲ್ಲಿ <ph name="APP_NAME"/> ಜೊತೆಗೆ ಸ್ಪರ್ಶ ಐಡಿ ಅನ್ನು ಬಳಸಲು ಬಯಸುತ್ತೀರಾ?</translation>
+<translation id="3098826269712097986">ನೀವು ಅಜ್ಞಾತ ಮೋಡ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿದ ಬಳಿಕ, ಸೈನ್ ಇನ್ ಡೇಟಾವನ್ನು Brave ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ. ಇದು ನಂತರದಲ್ಲಿ ಈ ವೆಬ್‌ಸೈಟ್‌ನೊಂದಿಗೆ ಸ್ಪರ್ಶ ಐಡಿ ಅನ್ನು ಮತ್ತೊಮ್ಮೆ ಬಳಸಲು ನಿಮಗೆ ಅವಕಾಶ ಮಾಡಿಕೊಡುತ್ತದೆ.</translation>
+<translation id="2172784515318616985">ಮುಂದುವರಿಸಿ</translation>
 <translation id="5186185447130319458">ಅದೃಶ್ಯ</translation>
 <translation id="7643842463591647490">{0,plural, =1{# ತೆರೆದ ವಿಂಡೋ}one{# ತೆರೆದ ವಿಂಡೋಗಳು}other{# ತೆರೆದ ವಿಂಡೋಗಳು}}</translation>
 <translation id="2579188629646253712">ಅದೃಶ್ಯ ಮೋಡ್‌ನಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
@@ -2381,8 +2432,6 @@
 <translation id="3440663250074896476"><ph name="BOOKMARK_NAME"/> ಗಾಗಿ ಇನ್ನಷ್ಟು ಕ್ರಿಯೆಗಳು</translation>
 <translation id="2903457445916429186">ಆಯ್ಕೆ ಮಾಡಲಾದ ಐಟಂಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="962802172452141067">ಬುಕ್‌ಮಾರ್ಕ್ ಫೋಲ್ಡರ್ ಟ್ರೀ</translation>
-<translation id="1338776410427958681"><ph name="FOLDER_NAME"/> ಕುಗ್ಗಿಸಿ</translation>
-<translation id="4467101674048705704"><ph name="FOLDER_NAME"/> ವಿಸ್ತರಿಸಿ</translation>
 <translation id="2683638487103917598">ಫೋಲ್ಡರ್ ವಿಂಗಡಿಸಲಾಗಿದೆ</translation>
 <translation id="7201118060536064622">'<ph name="DELETED_ITEM_NAME"/>' ಅನ್ನು ಅಳಿಸಲಾಗಿದೆ</translation>
 <translation id="8271246892936492311">{COUNT,plural, =1{1 ಬುಕ್‌ಮಾರ್ಕ್ ಅಳಿಸಲಾಗಿದೆ}one{# ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಅಳಿಸಲಾಗಿದೆ}other{# ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಅಳಿಸಲಾಗಿದೆ}}</translation>
@@ -2397,12 +2446,10 @@
 <translation id="4422347585044846479">ಈ ಪುಟಕ್ಕಾಗಿ ಬುಕ್‌ಮಾರ್ಕ್ ಅನ್ನು ಎಡಿಟ್ ಮಾಡಿ</translation>
 <translation id="4776146737004271126">Android ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{ಯಾವುದೂ ಇಲ್ಲ}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> ಮತ್ತು <ph name="APP_2"/>}=3{<ph name="APP_1"/>, <ph name="APP_2"/>, ಮತ್ತು <ph name="APP_3"/>}=4{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/>, ಮತ್ತು 1 ಇತರ ಆ್ಯಪ್}one{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/>, ಮತ್ತು <ph name="EXTRA_APPS"/> ಇತರ ಆ್ಯಪ್‌ಗಳು}other{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/>, ಮತ್ತು <ph name="EXTRA_APPS"/> ಇತರ ಆ್ಯಪ್‌ಗಳು}}</translation>
-<translation id="7742008146327708230">ಇತ್ತೀಚೆಗಷ್ಟೇ ತೆರೆಯಲಾಗಿರುವ ಆ್ಯಪ್‌ಗಳು</translation>
-<translation id="1620510694547887537">ಕ್ಯಾಮರಾ</translation>
+<translation id="702252130983202758">ನಿಮ್ಮ ಆ್ಯಪ್‌ಗಳು</translation>
 <translation id="8831664945713891930">ವಿಸ್ತರಣೆಗಳ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
 <translation id="5138227688689900538">ಕಡಿಮೆ ತೋರಿಸಿ</translation>
 <translation id="5646376287012673985">ಸ್ಥಳ</translation>
-<translation id="3227137524299004712">ಮೈಕ್ರೋಫೋನ್</translation>
 <translation id="5270167208902136840">ಇನ್ನೂ <ph name="NUMBER_OF_MORE_APPS"/> ಆ್ಯಪ್‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="2482878487686419369">ಸೂಚನೆಗಳು</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> ಆ್ಯಪ್‌ಗಳು</translation>
@@ -2477,6 +2524,7 @@
 <translation id="4159681666905192102"><ph name="CUSTODIAN_EMAIL"/> ಮತ್ತು <ph name="SECOND_CUSTODIAN_EMAIL"/> ಅವರು ಮಕ್ಕಳಿಗೆ ನಿರ್ವಹಿಸುವಂತಹ ಖಾತೆಯಾಗಿರುತ್ತದೆ.</translation>
 <translation id="5958529069007801266">ಮೇಲ್ವಿಚಾರಣೆಗೊಳಪಟ್ಟ ಬಳಕೆದಾರರು</translation>
 <translation id="5720705177508910913">ಪ್ರಸ್ತುತ ಬಳಕೆದಾರ</translation>
+<translation id="1850357845349976573">{0,plural, =1{ಅಜ್ಞಾತ}one{# ಅಜ್ಞಾತ ವಿಂಡೋಗಳನ್ನು ತೆರೆಯಿರಿ}other{# ಅಜ್ಞಾತ ವಿಂಡೋಗಳನ್ನು ತೆರೆಯಿರಿ}}</translation>
 <translation id="37784332082579802">{0,plural, =1{ಅದೃಶ್ಯ}one{ಅದೃಶ್ಯ (#)}other{ಅದೃಶ್ಯ (#)}}</translation>
 <translation id="5070556616376997776">ನೀವು ಅದೃಶ್ಯ ಮೋಡ್‌ನಲ್ಲಿರುವಿರಿ</translation>
 <translation id="2199298570273670671">ದೋಷ</translation>
@@ -2582,6 +2630,24 @@
 <translation id="3021066826692793094">ಚಿಟ್ಟೆ</translation>
 <translation id="3809272675881623365">ಮೊಲ</translation>
 <translation id="4124935795427217608">ಯುನಿಕಾರ್ನ್</translation>
+<translation id="5123433949759960244">ಬ್ಯಾಸ್ಕೆಟ್‌ಬಾಲ್‌</translation>
+<translation id="6876155724392614295">ಬೈಕ್</translation>
+<translation id="7774365994322694683">ಪಕ್ಷಿ</translation>
+<translation id="2771816809568414714">ಚೀಸ್</translation>
+<translation id="4943368462779413526">ಫುಟ್‌ಬಾಲ್</translation>
+<translation id="2046702855113914483">ರಾಮೆನ್</translation>
+<translation id="1150565364351027703">ಸನ್‌ಗ್ಲಾಸ್‌ಗಳು</translation>
+<translation id="4693155481716051732">ಸುಶಿ</translation>
+<translation id="2468402215065996499">ತಮಗೋಟ್ಚಿ</translation>
+<translation id="8391218455464584335">ವಿನೈಲ್</translation>
+<translation id="4804827417948292437">ಆವಕಾಡೊ</translation>
+<translation id="3619115746895587757">ಕ್ಯಾಪಚಿನೊ</translation>
+<translation id="377050016711188788">ಐಸ್ ಕ್ರೀಂ</translation>
+<translation id="4330191372652740264">ಐಸ್ ವಾಟರ್</translation>
+<translation id="4364327530094270451">ಕರಬೂಜ ಹಣ್ಣು</translation>
+<translation id="4779136857077979611">ಒನಿಗಿರಿ</translation>
+<translation id="5068919226082848014">ಪಿಜ್ಜಾ</translation>
+<translation id="6170470584681422115">ಸ್ಯಾಂಡ್‌ವಿಚ್</translation>
 <translation id="1830550083491357902">ಸೈನ್ ಇನ್ ಆಗಿಲ್ಲ</translation>
 <translation id="5941153596444580863">ವ್ಯಕ್ತಿಯನ್ನು ಸೇರಿಸಿ...</translation>
 <translation id="9149866541089851383">ಎಡಿಟ್...</translation>
@@ -2642,375 +2708,6 @@
 <translation id="6365411474437319296">ಸ್ನೇಹಿತರು ಮತ್ತು ಕುಟುಂಬದವರನ್ನು ಸೇರಿಸಿ</translation>
 <translation id="7388044238629873883">ನೀವು ಬಹುತೇಕ ಪೂರೈಸಿರುವಿರಿ!</translation>
 <translation id="8688579245973331962">ನಿಮ್ಮ ಹೆಸರು ಕಾಣಲಿಲ್ಲವೇ?</translation>
-<translation id="5788127256798019331">Play ಫೈಲ್‌ಗಳು</translation>
-<translation id="174173592514158117">ಎಲ್ಲ Play ಫೋಲ್ಡರ್‌‌ಗಳನ್ನು ತೋರಿಸಿ</translation>
-<translation id="5024856940085636730">ಕಾರ್ಯಾಚರಣೆಯು ನಿರೀಕ್ಷಿಸಿದ್ದಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ಕಾಲವನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿದೆ. ನೀವು ಅದನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲು ಬಯಸುವಿರಾ?</translation>
-<translation id="6205710420833115353">ಕೆಲವು ಕಾರ್ಯಾಚರಣೆಗಳು ನಿರೀಕ್ಷಿಸಿದ್ದಕ್ಕಿಂತಲೂ ಹೆಚ್ಚಿನ ಸಮಯವನ್ನು ತೆಗೆದುಕೊಳ್ಳುತ್ತಿದೆ. ನೀವು ಅವುಗಳನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲು ಬಯಸುವಿರಾ?</translation>
-<translation id="4669606053856530811"><ph name="SOURCE_NAME"/> ನ ಸದಸ್ಯರೊಂದಿಗೆ ಈ ಐಟಂಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳದ ಹೊರತು ಅವರು ಪ್ರವೇಶವನ್ನು ಕಳೆದುಕೊಳ್ಳುತ್ತಾರೆ.</translation>
-<translation id="9035012421917565900">ಐಟಂಗಳನ್ನು '<ph name="DESTINATION_NAME"/>' ಗೆ ಮರಳಿ ಹಿಂತಿರುಗಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ, ಆದ್ದರಿಂದ ನಿಮಗೆ ಈ ಕ್ರಿಯೆಯನ್ನು ರದ್ದುಪಡಿಸಲು ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ.</translation>
-<translation id="9130775360844693113">ಈ ಐಟಂಗಳಿಗೆ '<ph name="DESTINATION_NAME"/>' ನ ಸದಸ್ಯರು ಪ್ರವೇಶ ಪಡೆದುಕೊಳ್ಳುವರು.</translation>
-<translation id="8834164572807951958">ಈ ಐಟಂಗಳನ್ನು ನಕಲಿಸಲು '<ph name="DESTINATION_NAME"/>' ನ ಸದಸ್ಯರು ಪ್ರವೇಶವನ್ನು ಪಡೆದುಕೊಂಡಿರುತ್ತಾರೆ.</translation>
-<translation id="3236289833370040187"><ph name="DESTINATION_DOMAIN"/> ಗೆ ಮಾಲೀಕತ್ವವನ್ನು ವರ್ಗಾಯಿಸಲಾಗವುದು.</translation>
-<translation id="7765158879357617694">ಸರಿಸು</translation>
-<translation id="8249296373107784235">ನಿಷ್ಫಲಗೊಳಿಸು</translation>
-<translation id="6268185425799226387">Brave Software ಡ್ರೈವ್‌‌</translation>
-<translation id="4425149324548788773">ನನ್ನ ಡ್ರೈವ್</translation>
-<translation id="1786636458339910689">ತಂಡದ ಡ್ರೈವ್‌ಗಳು</translation>
-<translation id="5010406651457630570">ಕಂಪ್ಯೂಟರ್‌ಗಳು</translation>
-<translation id="8106045200081704138">ನನ್ನೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿದ್ದು</translation>
-<translation id="6549689063733911810">ಇತ್ತೀಚಿನದು</translation>
-<translation id="981121421437150478">ಆಫ್‌ಲೈನ್</translation>
-<translation id="9034924485347205037">Linux ಫೈಲ್‌ಗಳು</translation>
-<translation id="9219103736887031265">ಚಿತ್ರಗಳು</translation>
-<translation id="6146563240635539929">ವೀಡಿಯೊಗಳು</translation>
-<translation id="3616113530831147358">ಆಡಿಯೋ</translation>
-<translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>ಎಚ್ಚರಿಕೆ:<ph name="END_BOLD"/>  ಡಿಸ್ಕ್ ಸ್ಥಳವನ್ನು ಮುಕ್ತಗೊಳಿಸಲು ಈ ಫೈಲ್‌ಗಳು ತಾತ್ಕಾಲಿಕವಾಗಿರುತ್ತವೆ ಹಾಗೂ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಅಳಿಸಲಾಗಬಹುದಾಗಿದೆ.  <ph name="BEGIN_LINK"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="END_LINK"/></translation>
-<translation id="4873265419374180291"><ph name="NUMBER_OF_BYTES"/> ಬೈಟ್‌ಗಳು</translation>
-<translation id="4788401404269709922"><ph name="NUMBER_OF_KB"/> KB</translation>
-<translation id="996903396648773764"><ph name="NUMBER_OF_MB"/> MB</translation>
-<translation id="7189874332498648577"><ph name="NUMBER_OF_GB"/> GB</translation>
-<translation id="7827012282502221009"><ph name="NUMBER_OF_TB"/> TB</translation>
-<translation id="1589128298353575783"><ph name="NUMBER_OF_PB"/> PB</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
-<translation id="169515659049020177">Shift</translation>
-<translation id="3924145049010392604">Meta</translation>
-<translation id="6129953537138746214">ಸ್ಪೇಸ್</translation>
-<translation id="8179976553408161302">Enter</translation>
-<translation id="5583640892426849032">Backspace</translation>
-<translation id="174937106936716857">ಒಟ್ಟು ಫೈಲ್‌ ಎಣಿಕೆ</translation>
-<translation id="2425665904502185219">ಒಟ್ಟು ಫೈಲ್‌ನ ಗಾತ್ರ</translation>
-<translation id="1942765061641586207">ಚಿತ್ರದ ರೆಸಲ್ಯೂಷನ್‌‌</translation>
-<translation id="4002066346123236978">ಶೀರ್ಷಿಕೆ</translation>
-<translation id="4631887759990505102">ಕಲೆಗಾರ</translation>
-<translation id="2448312741937722512">ಪ್ರಕಾರ</translation>
-<translation id="5145331109270917438">ದಿನಾಂಕ ಮಾರ್ಪಡಿಸಿದೆ</translation>
-<translation id="8487700953926739672">ಆಫ್‌ಲೈನ್ ಲಭ್ಯವಿದೆ</translation>
-<translation id="2230062665678605299">"<ph name="FOLDER_NAME"/>" ಫೋಲ್ಡರ್ ಅನ್ನು ರಚಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="2163152940313951844">ಅಮಾನ್ಯ ಅಕ್ಷರ: <ph name="CHARACTER_NAME"/></translation>
-<translation id="642282551015776456">ಈ ಹೆಸರನ್ನು ಫೋಲ್ಡರ್‌ನ ಫೈಲ್‌ನಂತೆ ಬಳಸಲಾಗುವುದಿಲ್ಲ</translation>
-<translation id="2070909990982335904">ಡಾಟ್‌ನೊಂದಿಗೆ ಪ್ರಾರಂಭವಾಗುವ ಹೆಸರುಗಳನ್ನು ಸಿಸ್ಟಂಗಾಗಿ ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ. ದಯವಿಟ್ಟು ಇನ್ನೊಂದು ಹೆಸರನ್ನು ಆಯ್ಕೆಮಾಡಿ.</translation>
-<translation id="8456681095658380701">ಅಮಾನ್ಯವಾದ ಹೆಸರು</translation>
-<translation id="2943503720238418293">ಕಡಿಮೆ ಅಕ್ಷರಗಳನ್ನು ಹೊಂದಿರುವ ಹೆಸರನ್ನು ಬಳಸಿ</translation>
-<translation id="4973523518332075481"><ph name="MAX_LENGTH"/> ಅಕ್ಷರಗಳು ಅಥವಾ ಕಡಿಮೆ ಅಕ್ಷರಗಳನ್ನು ಹೊಂದಿರುವ ಹೆಸರನ್ನು ಬಳಸಿ</translation>
-<translation id="1307931752636661898">Linux ಫೈಲ್‌ಗಳನ್ನು ವೀಕ್ಷಿಸಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ</translation>
-<translation id="5851063901794976166">ಇಲ್ಲಿ ನೋಡಲು ಏನೂ ಇಲ್ಲ...</translation>
-<translation id="3749289110408117711">ಫೈಲ್ ಹೆಸರು</translation>
-<translation id="3280431534455935878">ತಯಾರಿ ನಡೆಸಲಾಗುತ್ತಿದೆ</translation>
-<translation id="6607272825297743757">ಫೈಲ್ ಮಾಹಿತಿ</translation>
-<translation id="6395575651121294044"><ph name="NUMBER_OF_FILES"/> ಐಟಂಗಳು</translation>
-<translation id="2138867954865495510">"<ph name="PATH"/>" ತೆರೆಯಲು ಸಾಧ್ಯವಾಗುತ್ತಿಲ್ಲ: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>ನಿಮ್ಮ ಸಾಧನವನ್ನು ಈಗಲೇ ತೆಗೆದುಹಾಕಬೇಡಿ!<ph name="END_BOLD"/>
-       <ph name="LINE_BREAKS"/>
-       ಬಳಕೆಯಲ್ಲಿರುವ ಸಂದರ್ಭದಲ್ಲಿಯೇ ನಿಮ್ಮ ಸಾಧನವನ್ನು ತೆಗೆಯುವುದರಿಂದ ಡೇಟಾ ನಾಶವಾಗಲು ಕಾರಣವಾಗಬಹುದು.  ದಯವಿಟ್ಟು ಕಾರ್ಯಾಚರಣೆ ಮುಗಿಯುವವರೆಗೂ ನಿರೀಕ್ಷಿಸಿ, ನಂತರ ಫೈಲ್‌ಗಳ ಅಪ್ಲಿಕೇಶನ್ ಬಳಸಿಕೊಂಡು ಸಾಧನವನ್ನು ಹೊರಹಾಕಿ.</translation>
-<translation id="5686799162999241776"><ph name="BEGIN_BOLD"/>ಆರ್ಕೈವ್ ಅಥವಾ ವರ್ಚುವಲ್ ಡಿಸ್ಕ್‌ನಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಲಾಗುವುದಿಲ್ಲ<ph name="END_BOLD"/> <ph name="LINE_BREAKS"/>ಆರ್ಕೈವ್ ಅಥವಾ ವರ್ಚುವಲ್ ಡಿಸ್ಕ್‌ನಲ್ಲಿ ಎಲ್ಲಾ ಫೈಲ್‌ಗಳನ್ನು ಮುಚ್ಚಿ, ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
-<translation id="7794058097940213561">ಸಾಧನವನ್ನು ಸ್ವರೂಪಗೊಳಿಸಿ</translation>
-<translation id="8151638057146502721">ಕಾನ್ಫಿಗರ್ ಮಾಡಿ</translation>
-<translation id="7928710562641958568">ಸಾಧನ ತೆಗೆದುಹಾಕು</translation>
-<translation id="7864662577698025113">ಹೊಸ ಸೇವೆಯನ್ನು ಸೇರಿಸಿ</translation>
-<translation id="1943097386230153518">ಹೊಸ ಸೇವೆಯನ್ನು ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</translation>
-<translation id="2562685439590298522">ಡಾಕ್ಸ್</translation>
-<translation id="2925966894897775835">ಶೀಟ್‌ಗಳು</translation>
-<translation id="2943400156390503548">ಸ್ಲೈಡ್‌ಗಳು</translation>
-<translation id="5649768706273821470">ಆಲಿಸು</translation>
-<translation id="4582497162516204941">Linux (ಬೀಟಾ) ನೊಂದಿಗೆ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</translation>
-<translation id="4195249722193633765">Linux (ಬೀಟಾ) ನೊಂದಿಗೆ ಆ್ಯಪ್‌ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಿ</translation>
-<translation id="7248671827512403053">ಅಪ್ಲಿಕೇಶನ್</translation>
-<translation id="3866249974567520381">ವಿವರಣೆ</translation>
-<translation id="183183971458492120">ಮಾಹಿತಿಯನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="8157684860301034423">ಆ್ಯಪ್‌ ಮಾಹಿತಿಯನ್ನು ಪಡೆದುಕೊಳ್ಳಲು ವಿಫಲವಾಗಿದೆ.</translation>
-<translation id="5678784840044122290">ನಿಮ್ಮ ಟರ್ಮಿನಲ್‌ ಒಳಗೇ Linux ಅಪ್ಲಿಕೇಶನ್ ಲಭ್ಯವಿರುತ್ತದೆ ಮತ್ತು ಅದು ನಿಮ್ಮ ಲಾಂಚರ್‌ನಲ್ಲಿ ಐಕಾನ್ ಒಂದನ್ನು ಸಹ ತೋರಿಸಬಹುದು.</translation>
-<translation id="9213073329713032541">ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡುವಿಕೆಯು ಯಶಸ್ವಿಯಾಗಿ ಆರಂಭಗೊಂಡಿದೆ.</translation>
-<translation id="2782104745158847185">Linux ಅಪ್ಲಿಕೇಶನ್‌ ಇನ್‌ಸ್ಟಾಲ್‌ ಮಾಡುವಲ್ಲಿ ದೋಷ ಕಂಡುಬಂದಿದೆ</translation>
-<translation id="5911887972742538906">ನಿಮ್ಮ Linux ಅಪ್ಲಿಕೇಶನ್ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡುವಾಗ ಒಂದು ದೋಷ ಸಂಭವಿಸಿದೆ.</translation>
-<translation id="942954117721265519">ಈ ಡೈರೆಕ್ಟರಿಯಲ್ಲಿ ಯಾವುದೇ ಚಿತ್ರಗಳಿಲ್ಲ.</translation>
-<translation id="7100897339030255923"><ph name="COUNT"/> ಐಟಂಗಳನ್ನು ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ</translation>
-<translation id="5177526793333269655">ಚಿಕ್ಕಚಿತ್ರ ವೀಕ್ಷಣೆ</translation>
-<translation id="1035094536595558507">ಸ್ಲೈಡ್ ವೀಕ್ಷಿಸಿ</translation>
-<translation id="7508545000531937079">ಸ್ಲೈಡ್‌ಶೋ</translation>
-<translation id="1430915738399379752">ಮುದ್ರಿಸು</translation>
-<translation id="38275787300541712">ಮುಗಿಸಿದಾಗ ನಮೂದನೆಯನ್ನು ಒತ್ತಿರಿ</translation>
-<translation id="4880520557730313061">ಸ್ವಯಂ-ಹೊಂದಿಸು</translation>
-<translation id="4924638091161556692">ಸ್ಥಿರವಾದ</translation>
-<translation id="6019169947004469866">ಕ್ರಾಪ್</translation>
-<translation id="4372884569765913867">1x1</translation>
-<translation id="7576032389798113292">6x4</translation>
-<translation id="8157939133946352716">7x5</translation>
-<translation id="2661146741306740526">16x9</translation>
-<translation id="3007214526293698309">ಅನುಪಾತ ಹೊಂದಿಸು</translation>
-<translation id="7982283708762922719">ಎತ್ತರ</translation>
-<translation id="4734518477988699048">ಇನ್‌ಪುಟ್ ಮೌಲ್ಯವು ಅಮಾನ್ಯವಾಗಿದೆ.</translation>
-<translation id="3644896802912593514">ಅಗಲ</translation>
-<translation id="3626281679859535460">ಪ್ರಕಾಶಮಾನ</translation>
-<translation id="5061708541166515394">ಕಾಂಟ್ರಾಸ್ಟ್‌‌</translation>
-<translation id="1467432559032391204">ಎಡಕ್ಕೆ</translation>
-<translation id="1346748346194534595">ಬಲಕ್ಕೆ</translation>
-<translation id="3144126448740580210">ಮುಗಿದಿದೆ</translation>
-<translation id="2453576648990281505">ಈಗಾಗಲೇ ಫೈಲ್ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ</translation>
-<translation id="1847880352285315359">ಉಳಿಸಲಾಗಿದೆ</translation>
-<translation id="5158593464696388225">ಚಿತ್ರವನ್ನು ಉಳಿಸಲು ವಿಫಲವಾಗಿದೆ.</translation>
-<translation id="2787047795752739979">ಮೂಲವನ್ನು ಮೇಲ್ಬರಹಗೊಳಿಸು</translation>
-<translation id="8775404590947523323">ನಿಮ್ಮ ಸಂಪಾದನೆಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಉಳಿಸಲಾಗಿದೆ. <ph name="BREAKS"/> ಮೂಲ ಚಿತ್ರದ ನಕಲೊಂದನ್ನು ಇರಿಸಿಕೊಳ್ಳಲು, "ಮೂಲವನ್ನು ಮೇಲ್ಬರಹಗೊಳಿಸು" ಅನ್ನು ಅನ್‌ಚೆಕ್ ಮಾಡಿ.</translation>
-<translation id="7873831373602885875"><ph name="FOLDER_NAME"/> ನಲ್ಲಿ ಉಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಎಲ್ಲಾ ಎಡಿಟ್‌ಗಳನ್ನು, ಡೌನ್‌ಲೋಡ್‌ಗಳ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ <ph name="DOWNLOADS_FOLDER"/> ಎಂಬಲ್ಲಿ ಉಳಿಸಲಾಗುತ್ತದೆ.</translation>
-<translation id="691516599546977041"><ph name="FOLDER_NAME"/> ನಲ್ಲಿ ಉಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಎಡಿಟ್ ಮಾಡಿದ ಚಿತ್ರಗಳನ್ನು ಡೌನ್‌ಲೋಡ್‌ಗಳ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಉಳಿಸಲಾಗುತ್ತದೆ.</translation>
-<translation id="8066773524873206594">ಎಲ್ಲಾ ಎಡಿಟ್‌ಗಳನ್ನು <ph name="DOWNLOADS_FOLDER"/> ನಲ್ಲಿ ಉಳಿಸಲಾಗುತ್ತದೆ.</translation>
-<translation id="8153607920959057464">ಈ ಫೈಲ್ ಅನ್ನು ಪ್ರದರ್ಶಿಸಲಾಗಿಲ್ಲ.</translation>
-<translation id="6227235786875481728">ಈ ಫೈಲ್ ಅನ್ನು ಪ್ರದರ್ಶಿಸಲಾಗಿಲ್ಲ.</translation>
-<translation id="9154418932169119429">ಈ ಚಿತ್ರವು ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ.</translation>
-<translation id="1844692022597038441">ಈ ಫೈಲ್ ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿ ಲಭ್ಯವಿಲ್ಲ.</translation>
-<translation id="2929414043040740704">Brave Software ಡ್ರೈವ್‌ನಿಂದ ಮರುಪಡೆಯಲಾದ ಫೈಲ್‌ಗಳು</translation>
-<translation id="2085470240340828803">"<ph name="FILENAME"/>" ಹೆಸರಿನ ಫೈಲ್ ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ. ನೀವು ಏನು ಮಾಡಬೇಕೆಂದು ಬಯಸುವಿರಿ?</translation>
-<translation id="4801956050125744859">ಎರಡನ್ನೂ ಇರಿಸಿಕೊಳ್ಳಿ</translation>
-<translation id="1062407476771304334">ಸ್ಥಾನಾಂತರಿಸು</translation>
-<translation id="1556189134700913550">ಎಲ್ಲಕ್ಕೂ ಅನ್ವಯಿಸು</translation>
-<translation id="988685240266037636">"<ph name="FILE_NAME"/>" ಹೆಸರಿನ ಫೈಲ್ ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ. ಇದನ್ನು ನೀವು ಬದಲಾಯಿಸಲು ಬಯಸುತ್ತೀರಾ?</translation>
-<translation id="9038620279323455325">"<ph name="FILE_NAME"/>" ಹೆಸರಿನ ಫೈಲ್ ಈಗಾಗಲೇ ಇದೆ. ಬೇರೊಂದು ಹೆಸರನ್ನು ಆರಿಸಿ.</translation>
-<translation id="4212740939091998969">"<ph name="FOLDER_NAME"/>" ಹೆಸರಿನ ಫೋಲ್ಡರ್ ಈಗಾಗಲೇ ಇದೆ. ಬೇರೊಂದು ಹೆಸರನ್ನು ಆಯ್ಕೆಮಾಡಿ.</translation>
-<translation id="1497522201463361063">"<ph name="FILE_NAME"/>" ಗೆ ಮರುಮರುಹೆಸರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5330512191124428349">ಮಾಹಿತಿ ಪಡೆಯಿರಿ</translation>
-<translation id="8312871300878166382">ಫೋಲ್ಡರ್‌ಗೆ ಅಂಟಿಸಿ</translation>
-<translation id="7040138676081995583">ಇದರೊಂದಿಗೆ ತೆರೆಯಿರಿ...</translation>
-<translation id="6189412234224385711"><ph name="EXTENSION_NAME"/> ಮೂಲಕ ತೆರೆಯಿರಿ</translation>
-<translation id="2547921442987553570"><ph name="EXTENSION_NAME"/> ಗೆ ಸೇರಿಸಿ</translation>
-<translation id="386548886866354912"><ph name="EXTENSION_NAME"/> ಜೊತೆಗೆ ಪ್ಯಾಕ್</translation>
-<translation id="3078461028045006476"><ph name="EXTENSION_NAME"/> ಜೊತೆಗೆ ಹಂಚಿಕೊಳ್ಳಿ</translation>
-<translation id="4197674956721858839">ಜಿಪ್ ಆಯ್ಕೆ</translation>
-<translation id="1572585716423026576">ವಾಲ್‌ಪೇಪರ್ ಆಗಿ ಹೊಂದಿಸಿ</translation>
-<translation id="204914487372604757">ಒಳದಾರಿಯನ್ನು ರಚಿಸು</translation>
-<translation id="799547531016638432">ಶಾರ್ಟ್‌ಕಟ್‌ ತೆಗೆದುಹಾಕು</translation>
-<translation id="5494920125229734069">ಎಲ್ಲವನ್ನೂ ಆಯ್ಕೆ ಮಾಡಿ</translation>
-<translation id="7295662345261934369">ಇತರರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ</translation>
-<translation id="2001796770603320721">ಡ್ರೈವ್‌ನಲ್ಲಿ ನಿರ್ವಹಿಸಿ</translation>
-<translation id="5318819489018851358">Linux ನೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ</translation>
-<translation id="6806699711453372963">Linux ಹಂಚಿಕೆಯನ್ನು ನಿರ್ವಹಿಸಿ</translation>
-<translation id="7505167922889582512">ಮರೆಮಾಡಿದ ಫೈಲ್‌ಗಳನ್ನು ತೋರಿಸು</translation>
-<translation id="7846076177841592234">ಆಯ್ಕೆ ರದ್ದುಮಾಡಿ</translation>
-<translation id="2377319039870049694">ಪಟ್ಟಿ ವೀಕ್ಷಣೆಗೆ ಬದಲಾಯಿಸಿ</translation>
-<translation id="3003633581067744647">ಥಂಬ್‌ನೇಲ್‌ ವೀಕ್ಷಣೆಗೆ ಬದಲಾಯಿಸಿ</translation>
-<translation id="604001903249547235">ಮೇಘ ಬ್ಯಾಕಪ್</translation>
-<translation id="505639225383557233">Brave OS ಮೇಘ ಬ್ಯಾಕಪ್</translation>
-<translation id="8656896237683963068">ನಿಮ್ಮ ಮಾಧ್ಯಮ ಸಾಧನದ ಫೋಟೋಗಳು ಮತ್ತು ವೀಡಿಯೊಗಳನ್ನು Brave Software ಡ್ರೈವ್‌ಗೆ ಬ್ಯಾಕಪ್ ಮಾಡಿ.</translation>
-<translation id="3057861065630527966">ನಿಮ್ಮ ಫೋಟೋಗಳು ಮತ್ತು ವೀಡಿಯೊಗಳನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ</translation>
-<translation id="7730494089396812859">ಮೇಘ ಬ್ಯಾಕಪ್ ವಿವರಗಳನ್ನು ತೋರಿಸು</translation>
-<translation id="2850124913210091882">ಬ್ಯಾಕಪ್‌ ಮಾಡು</translation>
-<translation id="5731409020711461763">1 ಹೊಸ ಫೋಟೋ</translation>
-<translation id="5004584466530475658"><ph name="FILE_COUNT"/> ಹೊಸ ಫೋಟೋಗಳು</translation>
-<translation id="6934241953272494177">ನಿಮ್ಮ ಮಾಧ್ಯಮ ಸಾಧನವನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗುತ್ತಿದೆ... <ph name="LINE_BREAK1"/> <ph name="FILE_COUNT"/> ಕಂಡುಬಂದಿವೆ</translation>
-<translation id="3466147780910026086">ನಿಮ್ಮ ಮಾಧ್ಯಮ ಸಾಧನವನ್ನು ಸ್ಕ್ಯಾನ್ ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="2611866923243604397"><ph name="BEGIN_LINK"/>Brave Software ಡ್ರೈವ್<ph name="END_LINK"/> ಗೆ ಎಲ್ಲವನ್ನೂ ಬ್ಯಾಕಪ್ ಮಾಡಲಾಗಿದೆ!</translation>
-<translation id="3620292326130836921">ಎಲ್ಲವನ್ನೂ ಬ್ಯಾಕಪ್ ಮಾಡಲಾಗಿದೆ!</translation>
-<translation id="1536674585581593431"><ph name="FILE_COUNT"/> ಕಂಡುಬಂದಿವೆ. <ph name="LINE_BREAK1"/> ನಿಮ್ಮ Brave Software ಡ್ರೈವ್‌‌ ಕೋಟಾ ಸಾಕಷ್ಟು ದೊಡ್ಡದಾಗಿಲ್ಲ. ಹೆಚ್ಚುವರಿ <ph name="FILE_SIZE"/> ಅಗತ್ಯವಿದೆ. <ph name="LINE_BREAK2"/> ಕೆಲವು ಫೋಟೋಗಳನ್ನು ಆಯ್ಕೆಮಾಡುವ ಮೂಲಕ ಪ್ರಯತ್ನಿಸಿ.</translation>
-<translation id="2473109739642988997">ನಿಮ್ಮ Brave Software ಡ್ರೈವ್ ಕೋಟಾ ಸಾಕಷ್ಟು ದೊಡ್ಡದಾಗಿಲ್ಲ.</translation>
-<translation id="1148097584170732637"><ph name="FILE_COUNT"/> ಕಂಡುಬಂದಿವೆ. <ph name="LINE_BREAK1"/> ಸಾಧನದಲ್ಲಿ ಸಾಕಷ್ಟು ಸ್ಥಳಾವಕಾಶವಿಲ್ಲ. ಇನ್ನಷ್ಟು <ph name="FILE_SIZE"/> ಅಗತ್ಯವಿದೆ. <ph name="LINE_BREAK2"/> ಕೆಲವು ಫೋಟೋಗಳನ್ನು ಆಯ್ಕೆಮಾಡುವ ಮೂಲಕ ಪ್ರಯತ್ನಿಸಿ.</translation>
-<translation id="2352947182261340447">ಸ್ಥಳೀಯ ಸಂಗ್ರಹಣೆಯಲ್ಲಿ ಸಾಕಷ್ಟು ಸ್ಥಳಾವಕಾಶ ಲಭ್ಯವಿಲ್ಲ.</translation>
-<translation id="1127657192797926968"><ph name="FILE_COUNT"/> ಕಂಡುಬಂದಿವೆ <ph name="LINE_BREAK1"/> <ph name="BEGIN_LINK"/>Brave Software ಡ್ರೈವ್<ph name="END_LINK"/> ಗೆ ಬ್ಯಾಕಪ್ ಮಾಡಲು ಸಿದ್ಧವಾಗಿದೆ</translation>
-<translation id="4905417359854579806"><ph name="FILE_COUNT"/> ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಲು ಸಿದ್ಧವಾಗಿದೆ</translation>
-<translation id="5029447434471675822"><ph name="BEGIN_LINK"/>Brave Software ಡ್ರೈವ್<ph name="END_LINK"/> ಗೆ <ph name="FILE_COUNT"/> ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಲಾಗುತ್ತಿದೆ</translation>
-<translation id="4215448920900139318"><ph name="FILE_COUNT"/> ಬ್ಯಾಕಪ್ ಮಾಡಲಾಗುತ್ತಿದೆ</translation>
-<translation id="2419376816263920133"><ph name="BEGIN_LINK"/>Brave Software ಡ್ರೈವ್<ph name="END_LINK"/> ಗೆ <ph name="FILE_COUNT"/> ಫೋಟೋಗಳನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಲಾಗಿದೆ</translation>
-<translation id="2994669386200004489"><ph name="FILE_NAME"/> ಅನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</translation>
-<translation id="4724850507808590449"><ph name="FILE_COUNT"/> ಫೋಟೋಗಳನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಲಾಗಿದೆ</translation>
-<translation id="1351692861129622852"><ph name="FILE_COUNT"/> ಫೈಲ್‌ಗಳನ್ನು ಆಮದು ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="117624967391683467"><ph name="FILE_NAME"/> ನಕಲಿಸಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="7359359531237882347"><ph name="NUMBER_OF_ITEMS"/> ಐಟಂಗಳನ್ನು ನಕಲಿಸಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="7627790789328695202">ಓಹ್, <ph name="FILE_NAME"/> ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ. ಅದನ್ನು ಮರುಹೆಸರಿಸಿ ಹಾಗೂ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
-<translation id="5691596662111998220">ಓಹ್, <ph name="FILE_NAME"/> ಇನ್ನು ಮುಂದೆ ಅಸ್ತಿತ್ವದಲ್ಲಿರುವುದಿಲ್ಲ.</translation>
-<translation id="4336032328163998280">ನಕಲು ಕಾರ್ಯಾಚರಣೆ ವಿಫಲವಾಗಿದೆ. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5913638992615760742">ನಕಲಿಸುವಿಕೆ ಕಾರ್ಯಾಚರಣೆ ವಿಫಲವಾಗಿದೆ, ಅನಿರೀಕ್ಷಿತ ದೋಷ: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="6133173853026656527"><ph name="FILE_NAME"/> ಗೆ ಸರಿಸಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="7654209398114106148"><ph name="NUMBER_OF_ITEMS"/> ಐಟಂಗಳನ್ನು ಸರಿಸಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="6007237601604674381">ಸರಿಸುವುದು ವಿಫಲವಾಗಿದೆ. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1933345018156373194">ಸರಿಸಲು ವಿಫಲವಾಗಿದೆ, ಅನಿರೀಕ್ಷಿತ ದೋಷ: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="3326821416087822643"><ph name="FILE_NAME"/> ಅನ್ನು ಜಿಪ್ ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="1722487484194605434"><ph name="NUMBER_OF_ITEMS"/> ಐಟಂಗಳನ್ನು ಝಿಪ್ ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="8810671769985673465">ಝಿಪ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ, ಈ ಐಟಂ ಈಗಾಗಲೇ ಇದೆ: "<ph name="FILE_NAME"/>"</translation>
-<translation id="9133055936679483811">ಜಿಪ್ ಮಾಡುವಿಕೆಯು ವಿಫಲವಾಗಿದೆ. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4973970068702235170">ಝಿಪ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ, ಅನಿರೀಕ್ಷಿತ ದೋಷ: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="653019979737152879"><ph name="FILE_NAME"/> ಸಿಂಕ್‌ ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="8579285237314169903"><ph name="NUMBER_OF_FILES"/> ಐಟಂಗಳನ್ನು ಸಿಂಕ್ ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="8137331602592933310">"<ph name="FILENAME"/>" ಅನ್ನು ನಿಮ್ಮೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ. ನೀವು ಅದನ್ನು ಹೊಂದಿಲ್ಲದಿರುವ ಕಾರಣ ನಿಮಗೆ ಅದನ್ನು ಅಳಿಸಲಾಗುವುದಿಲ್ಲ.</translation>
-<translation id="6277279884155292049">Brave Software ಡ್ರೈವ್‌ ಇದೀಗ ಲಭ್ಯವಿಲ್ಲ. Brave Software ಡ್ರೈವ್‌ ಒಮ್ಮೆ ಹಿಂತಿರುಗಿದರೆ ಅಪ್‌ಲೋಡ್‌ ಆಗುವುದು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಮರುಪ್ರಾರಂಭಗೊಳ್ಳುತ್ತದೆ.</translation>
-<translation id="1114160088213746286">Brave Software ಡ್ರೈವ್‌ಗೆ ಇದೀಗ "<ph name="FILENAME"/>" ಅನ್ನು ಸಿಂಕ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ. Brave Software ಡ್ರೈವ್ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸುತ್ತದೆ.</translation>
-<translation id="4893296294301184587">"<ph name="FILENAME"/>" ಅನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಲಾಗಿಲ್ಲ. ನಿಮ್ಮ Brave Software ಡ್ರೈವ್‌ನಲ್ಲಿ ಸಾಕಷ್ಟು ಸ್ಥಳಾವಕಾಶವಿಲ್ಲ.</translation>
-<translation id="5163869187418756376">ಹಂಚಿಕೆ ವಿಫಲಗೊಂಡಿದೆ. ನಿಮ್ಮ ಸಂಪರ್ಕವನ್ನು ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ನಂತರ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
-<translation id="656398493051028875">"<ph name="FILENAME"/>" ಅಳಿಸಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="1047956942837015229"><ph name="COUNT"/> ಐಟಂಗಳನ್ನು ಅಳಿಸಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="6558280019477628686">ದೋಷ ಸಂಭವಿಸಿದೆ. ಕೆಲವು ಐಟಂಗಳನ್ನು ಅಳಿಸಲು ಸಾಧ್ಯವಾಗದಿರಬಹುದು.</translation>
-<translation id="3470502288861289375">ನಕಲಿಸಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="8669949407341943408">ಸರಿಸಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="6718273304615422081">ಜಿಪ್ ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="1338950911836659113">ಅಳಿಸಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="9064939804718829769">ವರ್ಗಾಯಿಸಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="3609785682760573515">ಸಿಂಕ್‌ ಮಾಡಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="1464724975715666883">1 ದೋಷ.</translation>
-<translation id="3495304270784461826"><ph name="COUNT"/> ದೋಷಗಳು.</translation>
-<translation id="6643016212128521049">ತೆರವುಗೊಳಿಸಿ</translation>
-<translation id="4988205478593450158">ನೀವು ಖಂಡಿತವಾಗಿಯೂ "<ph name="FILE_NAME"/>" ಅನ್ನು ಅಳಿಸಲು ಬಯಸುತ್ತೀರಾ?</translation>
-<translation id="2225536596944493418">ನೀವು ಖಂಡಿತವಾಗಿಯೂ <ph name="NUMBER_OF_ITEMS"/> ಐಟಂಗಳನ್ನು ಅಳಿಸಲು ಬಯಸುವಿರಾ?</translation>
-<translation id="7953739707111622108">ಇದರ ಫೈಲ್‌ಸಿಸ್ಟಂ ಅನ್ನು ಗುರುತಿಸಲಾಗದ ಕಾರಣ ಈ ಸಾಧನವನ್ನು ತೆರೆಯಲಾಗಲಿಲ್ಲ.</translation>
-<translation id="3726463242007121105">ಇದರ ಫೈಲ್‌ಸಿಸ್ಟಂ ಅನ್ನು ಬೆಂಬಲಿಸದ ಕಾರಣ ಈ ಸಾಧನವನ್ನು ತೆರೆಯಲಾಗುವುದಿಲ್ಲ.</translation>
-<translation id="3414856743105198592">ತೆಗೆದುಹಾಕುವ ಮಾಧ್ಯಮದ ಸ್ವರೂಪಣೆಯು ಎಲ್ಲ ಡೇಟಾವನ್ನು ಅಳಿಸಿ ಹಾಕುತ್ತದೆ. ನೀವು ಇದನ್ನು ಮುಂದುವರಿಸಲು ಬಯಸುವಿರಾ?</translation>
-<translation id="6287852322318138013">ಈ ಫೈಲ್ ತೆರೆಯಲು ಒಂದು ಅಪ್ಲಿಕೇಶನ್ ಆಯ್ಕೆಮಾಡಿ</translation>
-<translation id="7268659760406822741">ಲಭ್ಯವಿರುವ ಸೇವೆಗಳು</translation>
-<translation id="5038625366300922036">ಇನ್ನಷ್ಟು ನೋಡಿ...</translation>
-<translation id="4823651846660089135">ಸಾಧನ ಓದಲು ಮಾತ್ರ ಆಗಿದೆ</translation>
-<translation id="6346310558342052870">ಪ್ರವೇಶ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
-<translation id="3780536599611287598">ಫೈಲ್‌ಗಳನ್ನು '<ph name="FOLDER_NAME"/>' ಗೆ ಸರಿಸಲು ನಿಮಗೆ ಅನುಮತಿಯಿಲ್ಲ.</translation>
-<translation id="1538729222189715449">Linux ಫೈಲ್‌ಗಳನ್ನು ತೆರೆಯಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="1000498691615767391">ತೆರೆಯಲು ಫೋಲ್ಡರ್‌ವೊಂದನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</translation>
-<translation id="3353984535370177728">ಅಪ್‌ಲೋಡ್‌ ಮಾಡಲು ಫೋಲ್ಡರ್‌ವೊಂದನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
-<translation id="8569764466147087991">ತೆರೆಯಲು ಫೈಲ್‌ವೊಂದನ್ನು ಆಯ್ಕೆ ಮಾಡಿ</translation>
-<translation id="9131598836763251128">ಒಂದು ಅಥವಾ ಹೆಚ್ಚು ಫೈಲ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಿ</translation>
-<translation id="7191454237977785534">ಇದರಂತೆ ಫೈಲ್ ಉಳಿಸಿ</translation>
-<translation id="3811494700605067549">1 ಫೈಲ್ ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ</translation>
-<translation id="6751256176799620176">1 ಫೋಲ್ಡರ್ ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ</translation>
-<translation id="2378075407703503998"><ph name="SELCTED_FILE_COUNT"/> ಫೈಲ್‌ಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ</translation>
-<translation id="6998711733709403587"><ph name="SELCTED_FOLDERS_COUNT"/> ಫೋಲ್ಡರ್‌ಗಳನ್ನು ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ</translation>
-<translation id="4839847978919684242"><ph name="SELCTED_FILES_COUNT"/> ಐಟಂಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಲಾಗಿದೆ</translation>
-<translation id="4969785127455456148">ಆಲ್ಬಮ್</translation>
-<translation id="5700087501958648444">ಆಡಿಯೊ ಮಾಹಿತಿ</translation>
-<translation id="912419004897138677">ಕೋಡೆಕ್</translation>
-<translation id="5253070652067921974">ಇವರಿಂದ ರಚಿಸಲ್ಪಟ್ಟಿದೆ</translation>
-<translation id="3437801641691368414">ರಚಿಸಿದ ಸಮಯ</translation>
-<translation id="8395901698320285466">ಅಳತೆಗಳು</translation>
-<translation id="8193175696669055101">ಸಾಧನ ಮಾದರಿ</translation>
-<translation id="2084108471225856927">ಸಾಧನ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
-<translation id="303198083543495566">ಭೂಗೋಳಶಾಸ್ತ್ರ</translation>
-<translation id="5358764674931277">ಫ್ರೇಮ್‌ ರೇಟ್</translation>
-<translation id="4309915981827077375">ಸಾಮಾನ್ಯ ಮಾಹಿತಿ</translation>
-<translation id="1249250836236328755">ಪ್ರಕಾರ</translation>
-<translation id="7711920809702896782">ಚಿತ್ರ ಮಾಹಿತಿ</translation>
-<translation id="4568854179928172494">ಮಾರ್ಪಡಿಸಿದ ಸಮಯ</translation>
-<translation id="943972244133411984">ಮಾರ್ಪಡಿಸಿದವರು</translation>
-<translation id="9099674669267916096">ಪುಟ ಎಣಿಕೆ</translation>
-<translation id="8294431847097064396">ಮೂಲ</translation>
-<translation id="1363028406613469049">ಟ್ರ್ಯಾಕ್</translation>
-<translation id="1775381402323441512">ವೀಡಿಯೊ ಮಾಹಿತಿ</translation>
-<translation id="3335337277364016868">ರೆಕಾರ್ಡ್ ಮಾಡಿದ ವರ್ಷ</translation>
-<translation id="5534520101572674276">ಗಾತ್ರವನ್ನು ಲೆಕ್ಕಹಾಕಲಾಗುತ್ತಿದೆ</translation>
-<translation id="3786301125658655746">ನೀವು ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿರುವಿರಿ</translation>
-<translation id="6150853954427645995">ಆಫ್‌ಲೈನ್ ಬಳಕೆಗೆ ಈ ಫೈಲ್ ಉಳಿಸಲು, ಆನ್‌ಲೈನ್‌ಗೆ ಹಿಂತಿರುಗಿ, ಫೈಲ್ ಅನ್ನು ರೈಟ್-ಕ್ಲಿಕ್ ಮಾಡಿ ಹಾಗೂ <ph name="OFFLINE_CHECKBOX_NAME"/> ಆಯ್ಕೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ.</translation>
-<translation id="8223479393428528563">ಆಫ್‌‌ಲೈನ್ ಬಳಕೆಗಾಗಿ ಈ ಫೈಲ್ ಗಳನ್ನು ಉಳಿಸಲು, ಆನ್‌ಲೈನ್‌ಗೆ ಹಿಂತಿರುಗಲು, ಫೈಲ್‌ಗಳ ಮೇಲೆ ಬಲ ಕ್ಲಿಕ್ ಮಾಡಿ, ಮತ್ತು <ph name="OFFLINE_CHECKBOX_NAME"/> ಆಯ್ಕೆಯನ್ನು ಆರಿಸಿ.</translation>
-<translation id="3830674330436234648">ಯಾವುದೇ ಪ್ಲೇಬ್ಯಾಕ್ ಲಭ್ಯವಿಲ್ಲ</translation>
-<translation id="1810764548349082891">ಯಾವುದೇ ಪೂರ್ವವೀಕ್ಷಣೆ ಲಭ್ಯವಿಲ್ಲ</translation>
-<translation id="421017592316736757">ಈ ಫೈಲ್ ಅನ್ನು ಪ್ರವೇಶಿಸಲು ನೀವು ಆನ್‌ಲೈನ್‌ನಲ್ಲಿರಬೇಕು.</translation>
-<translation id="180035236176489073">ಈ ಫೈಲ್‌ಗಳನ್ನು ಪ್ರವೇಶಿಸಲು ನೀವು ಆನ್‌ಲೈನ್‌ನಲ್ಲಿರಬೇಕು.</translation>
-<translation id="1190144681599273207">ಈ ಫೈಲ್ ಅನ್ನು ಪಡೆಯುವುದರಿಂದ ಮೊಬೈಲ್ ಡೇಟಾದ ಸುಮಾರು <ph name="FILE_SIZE"/> ಅನ್ನು ಬಳಸುತ್ತದೆ.</translation>
-<translation id="7839804798877833423">ಈ ಫೈಲ್‌ಗಳನ್ನು ಪಡೆಯುವುದರಿಂದ ಮೊಬೈಲ್ ಡೇಟಾದ ಸುಮಾರು <ph name="FILE_SIZE"/> ಅನ್ನು ಬಳಸುತ್ತದೆ.</translation>
-<translation id="6813005947820333339">ಮೊಬೈಲ್ ಡೇಟಾವನ್ನು ಬಳಸುತ್ತಿರುವಾಗ, Brave Software ಡ್ರೈವ್ ಸಿಂಕ್ ಅನ್ನು ಡಿಫಾಲ್ಟ್ ಮೂಲಕ ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ.</translation>
-<translation id="696203921837389374">ಮೊಬೈಲ್ ಡೇಟಾ ಮೂಲಕ ಸಿಂಕ್ ಮಾಡುವುದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
-<translation id="637062427944097960">ಈ ಫೈಲ್‍ ಬೇರೆಯ ಡೆಸ್ಕ್‌ಟಾಪ್‍‍ನಲ್ಲಿ ತೆರೆಯಲಾಗಿದೆ. ಅದನ್ನು ವೀಕ್ಷಿಸಲು <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>) ಗೆ ಸರಿಸಿ.</translation>
-<translation id="5330145655348521461">ಈ ಫೈಲ್‍‍ಗಳನ್ನು ವಿವಿಧ ಡೆಸ್ಕ್‌ಟಾಪ್‍‍ಗಳಲ್ಲಿ ತೆರೆಯಲಾಗಿದೆ. ಅದನ್ನು ವೀಕ್ಷಿಸಲು <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>) ಗೆ ಸರಿಸಿ.</translation>
-<translation id="8686213429977032554">ಈ ಡ್ರೈವ್ ಫೈಲ್ ಅನ್ನು ಇನ್ನೂ ಹಂಚಿಕೊಳ್ಳಲಾಗಿಲ್ಲ</translation>
-<translation id="7850851215703745691">ಈ ಡ್ರೈವ್ ಫೈಲ್‌ಗಳನ್ನು ಇನ್ನೂ ಹಂಚಿಕೊಂಡಿಲ್ಲ.</translation>
-<translation id="1839704667838141620">ಈ ಫೈಲ್‌ ಹಂಚಿಕೆಯಾಗಿರುವ ಬಗೆಯನ್ನು ಬದಲಾಯಿಸಿ</translation>
-<translation id="1864676585353837027">ಈ ಫೈಲ್‌ಗಳು ಹಂಚಿಕೆಯಾಗಿರುವ ಬಗೆಯನ್ನು ಬದಲಾಯಿಸಿ</translation>
-<translation id="197560921582345123">ಸಂಪಾದಿಸಬಹುದು</translation>
-<translation id="8671210955687109937">ಕಾಮೆಂಟ್ ಮಾಡಬಹುದು</translation>
-<translation id="799923393800005025">ವೀಕ್ಷಿಸಬಹುದು</translation>
-<translation id="7925686952655276919">ಸಿಂಕ್ ಮಾಡುವುದಕ್ಕಾಗಿ ಮೊಬೈಲ್ ಡೇಟಾವನ್ನು ಬಳಸಬೇಡಿ</translation>
-<translation id="7106346894903675391">ಇನ್ನಷ್ಟು ಸಂಗ್ರಹಣೆಯನ್ನು ಖರೀದಿಸಿ...</translation>
-<translation id="3549797760399244642">drive.google.com ಗೆ ಹೋಗಿ...</translation>
-<translation id="3451154303153932176">Brave Software ಡ್ರೈವ್ ಅಂತರ ಉಳಿದಿದೆ: <ph name="SPACE_AVAILABLE"/>.</translation>
-<translation id="4552678318981539154">ಇನ್ನಷ್ಟು ಸಂಗ್ರಹಣೆಯನ್ನು ಖರೀದಿಸಿ</translation>
-<translation id="6990081529015358884">ನಿಮ್ಮ ಬಳಿ ಇದ್ದ ಸ್ಥಳ ಖಾಲಿಯಾಗಿದೆ</translation>
-<translation id="5521447721624713749">ಈ ಸಮಯದಲ್ಲಿ Brave Software ಡ್ರೈವ್‌ ಅನ್ನು ತಲುಪಲು ಸಾಧ್ಯವಿಲ್ಲ.</translation>
-<translation id="7788080748068240085">"<ph name="FILE_NAME"/>"  ಅನ್ನು ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿ ಉಳಿಸಲು ನೀವು ಹೆಚ್ಚುವರಿ <ph name="TOTAL_FILE_SIZE"/> ಸ್ಥಳವನ್ನು ತೆರವುಗೊಳಿಸಬೇಕು:<ph name="MARKUP_1"/>
-    <ph name="MARKUP_2"/>ಆಫ್‌ಲೈನ್‌ನಲ್ಲಿ ಪ್ರವೇಶಿಸಲು ನಿಮಗೆ ಇನ್ನು ಮುಂದೆ ಅವಶ್ಯಕತೆಯಿಲ್ಲದಂತಹ ಫೈಲ್‌ಗಳನ್ನು ಅನ್‌ಪಿನ್ ಮಾಡಿ<ph name="MARKUP_3"/>
-    <ph name="MARKUP_4"/>ನಿಮ್ಮ ಡೌನ್‌ಲೋಡ್ ಫೋಲ್ಡರ್‌ನ ಫೈಲ್‌ಗಳನ್ನು ಅಳಿಸಿ<ph name="MARKUP_5"/></translation>
-<translation id="7606199793785990727">Brave Software ಡ್ರೈವ್ ಅನ್ನು ತಲುಪಲಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು <ph name="BEGIN_LINK"/>ಲಾಗ್ ಔಟ್<ph name="END_LINK"/> ಮಾಡಿ ಹಾಗೂ ಮತ್ತೆ ಹಿಂತಿರುಗಿ ಲಾಗ್ ಇನ್ ಮಾಡಿ.</translation>
-<translation id="585883343689351092">Brave Software ಡ್ರೈವ್‌ಗೆ ಸುಸ್ವಾಗತ!</translation>
-<translation id="6862635236584086457">ಈ ಫೋಲ್ಡರ್‌ನಲ್ಲಿ ಉಳಿಸಲಾದ ಎಲ್ಲಾ ಫೈಲ್‌ಗಳನ್ನು ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಬ್ಯಾಕಪ್ ಮಾಡಲಾಗಿದೆ</translation>
-<translation id="7220787572447472056"><ph name="MARKUP_1"/>ಆಫ್‌ಲೈ‌ನ್‌ನಲ್ಲಿದ್ದರೂ ಸಹ, ಎಲ್ಲಿಂದಬೇಕಾದರೂ ಫೈಲ್‌ಗಳನ್ನು ಪ್ರವೇಶಿಸಿ.<ph name="MARKUP_2"/>
-    Brave Software ಡ್ರೈವ್‌ನಲ್ಲಿರುವ ಫೈಲ್‌ಗಳು ನವೀಕೃತವಾಗಿವೆ ಮತ್ತು ಯಾವುದೇ ಸಾಧನದಿಂದ ಲಭ್ಯವಿರುತ್ತವೆ.<ph name="MARKUP_3"/>
-    <ph name="MARKUP_4"/>ಮ್ಮ ಫೈಲ್‌ಗಳನ್ನು ಸುರಕ್ಷಿತವಾಗಿರಿಸಿ.<ph name="MARKUP_5"/>
-    ನಿಮ್ಮ ಸಾಧನಕ್ಕೆ ಏನೇ ಆದರೂ ಚಿಂತಿಸಬೇಕಿಲ್ಲ, ನಿಮ್ಮ ಫೈಲ್‌ಗಳು ಸುರಕ್ಷಿತವಾಗಿ Brave Software ಡ್ರೈವ್‌ನಲ್ಲಿ ಸಂಗ್ರಹವಾಗಿರುತ್ತವೆ.<ph name="MARKUP_6"/>
-    <ph name="MARKUP_7"/>
-        ಫೈಲ್‌ಗಳಲ್ಲಿ ಇತರರೊಂದಿಗೆ ಒಂದೇ ಸ್ಥಳದಲ್ಲಿ<ph name="MARKUP_8"/>
-    
-        ಹಂಚಿ, ರಚಿಸಿ ಮತ್ತು ಸಹಯೋಗಿಸಿ.<ph name="MARKUP_9"/></translation>
-<translation id="4878716980734452132">ಈ ಫೈಲ್ ಪ್ರಕಾರವು ಬೆಂಬಲಿತವಾಗಿಲ್ಲ. ದಯವಿಟ್ಟು ಈ ಪ್ರಕಾರದ ಫೈಲ್ ಅನ್ನು ತೆರೆಯಬಹುದಾದ ಅಪ್ಲಿಕೇಶನ್ ಹುಡುಕಲು <ph name="BEGIN_LINK"/>Brave ವೆಬ್ ಅಂಗಡಿಗೆ<ph name="END_LINK"/> ಭೇಟಿ ನೀಡಿ.
-	      <ph name="BEGIN_LINK_HELP"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="END_LINK_HELP"/></translation>
-<translation id="6230272341631206186">ಈ ಫೈಲ್ ಅನ್ನು Windows ಸಾಫ್ಟ್‌ವೇರ್ ಬಳಸುವ PC ಗಾಗಿ ವಿನ್ಯಾಸಗೊಳಿಸಲಾಗಿದೆ. Brave OS ನಲ್ಲಿ ರನ್ ಆಗುವ ನಿಮ್ಮ ಸಾಧನದ ಜೊತೆಗೆ ಇದು ಹೊಂದಾಣಿಕೆಯಾಗುವುದಿಲ್ಲ. <ph name="BEGIN_LINK_HELP"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="END_LINK_HELP"/></translation>
-<translation id="3072401511615920367">Macintosh ಸಾಫ್ಟ್‌ವೇರ್‌‌ ಬಳಸಿಕೊಂಡು ಕಂಪ್ಯೂಟರ್‌‌ಗಾಗಿ ಈ ಫೈಲ್‌ ಅನ್ನು ವಿನ್ಯಾಸಗೊಳಿಸಲಾಗಿದೆ. Brave OS ಅನ್ನು ರನ್‌ ಮಾಡುವ ಸಾಧನದ ಜೊತೆಗೆ ಇದು ಹೊಂದಾಣಿಕೆಗೊಳ್ಳುವುದಿಲ್ಲ. ದಯವಿಟ್ಟು ಸೂಕ್ತವಾದ ಬದಲಿ ಅಪ್ಲಿಕೇಶನ್‌ಗಾಗಿ <ph name="BEGIN_LINK"/>Brave ವೆಬ್‌ ಅಂಗಡಿಯಲ್ಲಿ<ph name="END_LINK"/> ಹುಡುಕಿ.<ph name="BEGIN_LINK_HELP"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="END_LINK_HELP"/></translation>
-<translation id="7589661784326793847">ಸ್ವಲ್ಪ ಕಾಯಿರಿ</translation>
-<translation id="3096967955765855393">ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಸುರಕ್ಷಿತವಾಗಿರಿಸಲು ನಾವು ನಿರಂತರವಾಗಿ ಪ್ರಯತ್ನಿಸುತ್ತಿರುತ್ತೇವೆ. ಹಿಂದೆ, ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನಲ್ಲಿ ವಿಸ್ತರಣೆಯನ್ನು ಸೇರಿಸಲು ನಿಮಗೆ ಯಾವುದೇ ವೆಬ್‌ಸೈಟ್‌‌ ಕಾರ್ಯನಿರ್ವಹಿಸಿರಬಹುದು. ಇತ್ತೀಚಿನ Brave Software Brave ಆವೃತ್ತಿಗಳಲ್ಲಿ, ವಿಸ್ತರಣೆಗಳ ಪುಟದಿಂದ ಅವುಗಳನ್ನು ಸೇರಿಸುವ ಮೂಲಕ ಈ ವಿಸ್ತರಣೆಗಳನ್ನು ಸ್ಥಾಪಿಸಲು ಬಯಸುವುದಾಗಿ ನೀವು Brave ಗೆ ಸ್ಪಷ್ಟವಾಗಿ ತಿಳಿಸಬೇಕು. <ph name="BEGIN_LINK"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="END_LINK"/></translation>
-<translation id="4892969127351273348"><ph name="APP_NAME"/> ಬಳಸಿ ತೆರೆಯಲು ಸಾಧ್ಯವಿಲ್ಲ</translation>
-<translation id="52446585071384036"><ph name="APP_NAME"/> ಬಳಸಿ ಫೈಲ್‌ಗಳನ್ನು ತೆರೆಯಲು, ಮೊದಲು ಅವುಗಳನ್ನು Linux ಫೈಲ್‌ಗಳ ಫೋಲ್ಡರ್‌ಗೆ ನಕಲಿಸಿ.</translation>
-<translation id="5368191757080475556">Linux ಮೂಲಕ ಫೋಲ್ಡರ್ ಹಂಚಿಕೊಳ್ಳಿ</translation>
-<translation id="5857774240076772505"><ph name="FOLDER_NAME"/> ಫೋಲ್ಡರ್‌ನಲ್ಲಿರುವ ಫೈಲ್‌ಗಳನ್ನು ಮಾರ್ಪಡಿಸಲು Linux ಆ್ಯಪ್‍ಗಳಿಗೆ ಅನುಮತಿ ನೀಡಿ</translation>
-<translation id="2280597422213958082">ನಿಮ್ಮ Brave Software ಡ್ರೈವ್‌ನಲ್ಲಿರುವ ಫೈಲ್‌ಗಳನ್ನು ಮಾರ್ಪಡಿಸಲು Linux ಆ್ಯಪ್‌ಗಳಿಗೆ ಅನುಮತಿ ನೀಡಿ. ಈ ಬದಲಾವಣೆಗಳು, ನಿಮ್ಮ ಇತರ ಸಾಧನಗಳೊಂದಿಗೆ ಸಿಂಕ್ ಆಗುತ್ತವೆ.</translation>
-<translation id="4290535918735525311">Linux ಮೂಲಕ 1 ಫೋಲ್ಡರ್ ಅನ್ನು ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ</translation>
-<translation id="2377590462528165447">Linux ನೊಂದಿಗೆ <ph name="NUMBER_OF_ITEMS"/> ಫೋಲ್ಡರ್‌ಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ</translation>
-<translation id="4572815280350369984"><ph name="FILE_TYPE"/> ಫೈಲ್</translation>
-<translation id="5533102081734025921"><ph name="IMAGE_TYPE"/> ಚಿತ್ರ</translation>
-<translation id="2614589611416690597"><ph name="VIDEO_TYPE"/> ವೀಡಿಯೊ</translation>
-<translation id="8042602468072383151"><ph name="AUDIO_TYPE"/> ಆಡಿಯೋ</translation>
-<translation id="7799329977874311193">HTML ಡಾಕ್ಯುಮೆಂಟ್</translation>
-<translation id="2208158072373999562">ಜಿಪ್  ಆರ್ಕೈವ್</translation>
-<translation id="2028997212275086731">RAR ಆರ್ಕೈವ್</translation>
-<translation id="8466234950814670489">ತಾರ್ ಆರ್ಕೈವ್</translation>
-<translation id="1119069657431255176">Bzip2 ಸಂಕ್ಷೇಪಿಸಿದ tar ಆರ್ಕೈವ್</translation>
-<translation id="6820687829547641339">Gzip ಸಂಕ್ಷೇಪಿಸಿದ tar ಆರ್ಕೈವ್</translation>
-<translation id="8329978297633540474">ಸರಳ ಪಠ್ಯ</translation>
-<translation id="2887525882758501333">PDF  ಡಾಕ್ಯುಮೆಂಟ್</translation>
-<translation id="1049926623896334335">Word ಡಾಕ್ಯುಮೆಂಟ್</translation>
-<translation id="4784330909746505604">PowerPoint ಪ್ರದರ್ಶನ</translation>
-<translation id="8860454412039442620">Excel ಸ್ಪ್ರೆಡ್‌ಶೀಟ್</translation>
-<translation id="5383943761832211733">Brave Software ಡಾಕ್ಯುಮೆಂಟ್‌</translation>
-<translation id="5924916971643100883">Brave Software ಸ್ಪ್ರೆಡ್‌ಶೀಟ್‌</translation>
-<translation id="3667369474859528036">Brave Software ಪ್ರಸ್ತುತಿ</translation>
-<translation id="3411013849623404696">Brave Software ರೇಖಾಚಿತ್ರ</translation>
-<translation id="7481041283483972362">Brave Software ಕೋಷ್ಟಕ</translation>
-<translation id="784862457750027723">Brave Software ಫಾರ್ಮ್</translation>
-<translation id="3320425620177764157">Brave Software ನಕ್ಷೆ</translation>
-<translation id="7452737073539387970">Brave Software ಸೈಟ್</translation>
-<translation id="4445959220475380548">Brave Software ಡ್ರೈವ್ ಲಿಂಕ್</translation>
-<translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="1131292764548273687">ಈ ಫೈಲ್ ಪ್ರಕಾರವು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ. ದಯವಿಟ್ಟು ಈ ಪ್ರಕಾರ ಫೈಲ್ ತೆರೆಯಬಹುದಾದ ಅಪ್ಲಿಕೇಶನ್ ಹುಡುಕಲು Brave ವೆಬ್ ಅಂಗಡಿಗೆ ಭೇಟಿ ನೀಡಿ.</translation>
-<translation id="9010211493509471179">Macintosh ಸಾಫ್ಟ್‌ವೇರ್ ಬಳಸುವ ಕಂಪ್ಯೂಟರ್‌ಗಾಗಿ ಈ ಫೈಲ್ ವಿನ್ಯಾಸಗೊಳಿಸಲಾಗಿದೆ. ನಿಮ್ಮ ಸಾಧನವು Brave OS ನೊಂದಿಗೆ ರನ್ ಆಗುವುದರಿಂದಾಗಿ ಇದು ಹೊಂದಾಣಿಕೆಯಾಗುವುದಿಲ್ಲ. ಸೂಕ್ತವಾದ ಬದಲಿ ಅಪ್ಲಿಕೇಶನ್‌ಗಾಗಿ ದಯವಿಟ್ಟು Brave ವೆಬ್ ಅಂಗಡಿಯನ್ನು ಹುಡುಕಿ.</translation>
-<translation id="5059989099965370411">ಈ ಫೈಲನ್ನು Windows ಸಾಫ್ಟ್‌ವೇರ್ ಬಳಸಿಕೊಂಡು ಪಿಸಿಗೆ ವಿನ್ಯಾಸಗೊಳಿಸಲಾಗಿದೆ. Brave OS ನಲ್ಲಿ ರನ್ ಆಗುವ ನಿಮ್ಮ ಸಾಧನದ ಜೊತೆಗೆ ಇದು ಹೊಂದಾಣಿಕೆಯಾಗುವುದಿಲ್ಲ. ದಯವಿಟ್ಟು ಸೂಕ್ತವಾದ ಬದಲಿ ಅಪ್ಲಿಕೇಶನ್‌ಗಾಗಿ Brave ವೆಬ್ ಅಂಗಡಿಯನ್ನು ಹುಡುಕಿ.</translation>
-<translation id="5833610766403489739">ಈ ಫೈಲ್ ಎಲ್ಲಿಯೋ ಹೋಗಿಬಿಟ್ಟಿದೆ. ನಿಮ್ಮ ಡೌನ್‌ಲೋಡ್ ಸ್ಥಳ ಸೆಟ್ಟಿಂಗ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿ ಹಾಗೂ ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
-<translation id="3966388904776714213">ಆಡಿಯೊ ಪ್ಲೇಯರ್</translation>
-<translation id="3245321423178950146">ಅಪರಿಚಿತ ಕಲಾವಿದ</translation>
-<translation id="509429900233858213">ದೋಷವೊಂದು ಕಾಣಿಸಿಕೊಂಡಿದೆ.</translation>
-<translation id="1864756863218646478">ಫೈಲ್ ಅನ್ನು ಕಂಡುಹಿಡಿಯಲಾಗಲಿಲ್ಲ.</translation>
-<translation id="1673103856845176271">ಸುರಕ್ಷತಾ ಕಾರಣಗಳಿಗಾಗಿ ಫೈಲ್ ಅನ್ನು ಪ್ರವೇಶಿಸಲಾಗಲಿಲ್ಲ.</translation>
-<translation id="5524517123096967210">ಫೈಲ್ ಅನ್ನು ಓದಲಾಗಲಿಲ್ಲ.</translation>
-<translation id="1665611772925418501">ಫೈಲ್ ಅನ್ನು ಮಾರ್ಪಡಿಸಲಾಗಲಿಲ್ಲ.</translation>
-<translation id="1358735829858566124">ಫೈಲ್ ಅಥವಾ ಡೈರೆಕ್ಟರಿ ಬಳಸಲಾಗುವುದಿಲ್ಲ.</translation>
-<translation id="8342318071240498787">ಒಂದೇ ಹೆಸರಿನೊಂದಿಗೆ ಫೈಲ್ ಅಥವಾ ಡೈರೆಕ್ಟರಿ ಈಗಾಗಲೇ ಅಸ್ತಿತ್ವದಲ್ಲಿದೆ.</translation>
-<translation id="8965697826696209160">ಸಾಕಷ್ಟು ಸ್ಥಳಾವಕಾಶವಿಲ್ಲ.</translation>
-<translation id="7126604456862387217">'&lt;b&gt;<ph name="SEARCH_STRING"/>&lt;/b&gt;' - &lt;em&gt;ಡ್ರೈವ್ ಹುಡುಕಿ&lt;/em&gt;</translation>
-<translation id="2888807692577297075">&lt;b&gt;"<ph name="SEARCH_STRING"/>"&lt;/b&gt; ಗೆ ಯಾವ ಐಟಂಗಳೂ ಹೊಂದಿಕೆಯಾಗುವುದಿಲ್ಲ</translation>
-<translation id="2843806747483486897">ಡಿಫಾಲ್ಟ್‌ ಅನ್ನು ಬದಲಾಯಿಸಿ...</translation>
-<translation id="3254434849914415189"><ph name="FILE_TYPE"/> ಫೈಲ್‌ಗಳಿಗಾಗಿ ಡಿಫಾಲ್ಟ್ ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಆರಿಸಿ:</translation>
-<translation id="8038111231936746805">(ಡಿಫಾಲ್ಟ್)</translation>
-<translation id="5982621672636444458">ಆಯ್ಕೆಗಳನ್ನು ವಿಂಗಡಿಸು</translation>
-<translation id="2984337792991268709">ಇಂದು <ph name="TODAY_DAYTIME"/></translation>
-<translation id="8336153091935557858">ನಿನ್ನೆ <ph name="YESTERDAY_DAYTIME"/></translation>
-<translation id="1807938677607439181">ಎಲ್ಲ ಫೈಲ್‌ಗಳು</translation>
-<translation id="240770291734945588"><ph name="SPACE_AVAILABLE"/> ಲಭ್ಯವಿದೆ</translation>
-<translation id="6199801702437275229">ಅಂತರ ಮಾಹಿತಿಗಾಗಿ ನಿರೀಕ್ಷಿಸಲಾಗುತ್ತಿದೆ...</translation>
-<translation id="6485131920355264772">ಅಂತರ ಮಾಹಿತಿಯನ್ನು ಹಿಂಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ</translation>
-<translation id="7748626145866214022">ಕ್ರಿಯೆಯ ಬಾರ್‌ನಲ್ಲಿ ಹೆಚ್ಚಿನ ಆಯ್ಕೆಗಳು ಲಭ್ಯವಿವೆ. ಕ್ರಿಯೆಯ ಬಾರ್ ಅನ್ನು ಫೋಕಸ್ ಮಾಡಲು Alt + A ಒತ್ತಿರಿ.</translation>
-<translation id="2303301624314357662"><ph name="FILE_NAME"/> ಫೈಲ್ ಅನ್ನು ತೆರೆಯಲಾಗುತ್ತಿದೆ.</translation>
-<translation id="2291538123825441971"><ph name="NUMBER_OF_FILES"/> ಫೈಲ್‌ಗಳನ್ನು ತೆರೆಯಲಾಗುತ್ತಿದೆ.</translation>
-<translation id="2305020378527873881"><ph name="VOLUME_NAME"/> ಅನ್ನು ಎಜೆಕ್ಟ್ ಮಾಡಲಾಗಿದೆ.</translation>
-<translation id="6710213216561001401">ಹಿಂದೆ</translation>
-<translation id="1395262318152388157">ಸೀಕ್ ಸ್ಲೈಡರ್</translation>
-<translation id="4880214202172289027">ಧ್ವನಿಮಟ್ಟ ಸ್ಲೈಡರ್</translation>
-<translation id="7544853251252956727">ಶಫಲ್ ಮಾಡಿ</translation>
-<translation id="8079530767338315840">ಪುನರಾವರ್ತಿಸು</translation>
-<translation id="4158739975813877944">ಪ್ಲೇಪಟ್ಟಿ ತೆರೆಯಿರಿ</translation>
-<translation id="4656293982926141856">ಈ ಕಂಪ್ಯೂಟರ್</translation>
-<translation id="2676946222714718093">ಪ್ಲೇ ಆಗುತ್ತಿದೆ</translation>
-<translation id="3930521966936686665">ಪ್ಲೇ ಮಾಡಿ</translation>
-<translation id="4732760563705710320">ಕ್ಷಮಿಸಿ, ಈ ವೀಡಿಯೊ ನಿಮ್ಮ ಬಿತ್ತರಿಸುವ ಸಾಧನದಿಂದ ಬೆಂಬಲಿಸುವುದಿಲ್ಲ</translation>
-<translation id="2672394958563893062">ದೋಷವೊಂದು ಸಂಭವಿಸಿದೆ. ಮೊದಲಿನಿಂದ ಮರುಪ್ರಾರಂಭಿಸಲು ಕ್ಲಿಕ್ ಮಾಡಿ.</translation>
-<translation id="6827236167376090743">ಈ ವೀಡಿಯೊ ಸತತವಾಗಿ ಪ್ಲೇ ಆಗುತ್ತಲೇ ಇರುತ್ತದೆ.</translation>
-<translation id="6248400709929739064">ಉಪಶೀರ್ಷಿಕೆಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸು</translation>
-<translation id="7881969471599061635">ಉಪಶೀರ್ಷಿಕೆಗಳನ್ನು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸು</translation>
 <translation id="4168015872538332605"><ph name="PRIMARY_EMAIL"/> ಸೇರಿದಂತಹ ಕೆಲವು ಸೆಟ್ಟಿಂಗ್‍ಗಳನ್ನು ನಿಮ್ಮೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಲಾಗಿದೆ. ಬಹು ಸೈನ್‍-ಇನ್ ಬಳಸುವಾಗ ಮಾತ್ರ ಈ ಸೆಟ್ಟಿಂಗ್‍ಗಳು ನಿಮ್ಮ ಖಾತೆಯ ಮೇಲೆ ಪರಿಣಾಮ ಬೀರುತ್ತವೆ.</translation>
 <translation id="1485141095922496924">ಆವೃತ್ತಿ <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
 <translation id="3764314093345384080">ವಿವರವಾದ ಬಿಲ್ಡ್ ಮಾಹಿತಿ</translation>
@@ -3054,7 +2751,7 @@
 <translation id="5840822070878669614">Brave ವೆಬ್‌ ಅಂಗಡಿ ತೆರೆಯಿರಿ</translation>
 <translation id="6073903501322152803">ಪ್ರವೇಶಿಸುವಿಕೆ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಸೇರಿಸಿ</translation>
 <translation id="7988355189918024273">ಪ್ರವೇಶದ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
-<translation id="3274899353071794175">ಚಿತ್ರದಲ್ಲಿ ಉಪಯುಕ್ತ ವಿವರಣೆಯು ಇಲ್ಲದಿದ್ದರೆ, Brave ನಿಮಗಾಗಿ ಒಂದು ವಿವರಣೆಯನ್ನು ಒದಗಿಸುತ್ತದೆ. ಚಿತ್ರಗಳನ್ನು Brave Software ಸ್ಕ್ಯಾನ್ ಮಾಡಿದೆ.</translation>
+<translation id="5499063270485366718">ಚಿತ್ರದಲ್ಲಿ ಉಪಯುಕ್ತ ವಿವರಣೆಯು ಇಲ್ಲದಿದ್ದರೆ, Brave ನಿಮಗಾಗಿ ಒಂದು ವಿವರಣೆಯನ್ನು ಒದಗಿಸಲು ಪ್ರಯತ್ನಿಸುತ್ತದೆ. ವಿವರಣೆಗಳನ್ನು ರಚಿಸಲು, ಚಿತ್ರಗಳನ್ನು Brave Software ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತದೆ.</translation>
 <translation id="2558896001721082624">ಸಿಸ್ಟಂ ಮೆನುವಿನಲ್ಲಿ ಪ್ರವೇಶದ ಆಯ್ಕೆಗಳನ್ನು ಯಾವಾಗಲೂ ತೋರಿಸಿ</translation>
 <translation id="7280649757394340890">ಪಠ್ಯದಿಂದ ಧ್ವನಿಯ ಧ್ವನಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="6635956300022133031">"ಪಠ್ಯದಿಂದ ಧ್ವನಿ" ಧ್ವನಿಗಳನ್ನು ಆಯ್ಕೆ ಮಾಡಿ ಮತ್ತು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
@@ -3087,12 +2784,6 @@
 <translation id="8710187907779883426">ಚಿಕ್ಕ (1s)</translation>
 <translation id="4305227814872083840">ದೀರ್ಘ (2s)</translation>
 <translation id="2860150991415616761">ಬಹಳ ದೀರ್ಘ (4s)</translation>
-<translation id="5573248369095789351">ಡ್ವೆಲ್ ಕ್ರಿಯೆ</translation>
-<translation id="2427507373259914951">ಎಡ-ಕ್ಲಿಕ್</translation>
-<translation id="8203795194971602413">ಬಲ-ಕ್ಲಿಕ್</translation>
-<translation id="1999763610967697511">ಎಳೆಯಿರಿ ಮತ್ತು ಬಿಡಿ</translation>
-<translation id="8142441511840089262">ಡಬಲ್‌ ಕ್ಲಿಕ್</translation>
-<translation id="485592688953820832">ಯಾವುದೇ ಕ್ರಮ ಕೈಗೊಳ್ಳಬೇಡಿ (ವಿರಾಮಗೊಳಿಸಿ)</translation>
 <translation id="1217668622537098248">ಕ್ರಿಯೆಯ ನಂತರ ಎಡ ಕ್ಲಿಕ್‌ಗೆ ಹಿಂತಿರುಗಿಸಿ</translation>
 <translation id="3682824389861648626">ಚಲನೆಯ ಮಿತಿ</translation>
 <translation id="5511379779384092781">ತುಂಬಾ ಸಣ್ಣದು</translation>
@@ -3107,6 +2798,7 @@
 <translation id="48704129375571883">ಹೆಚ್ಚುವರಿ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಸೇರಿಸಿ</translation>
 <translation id="7230787553283372882">ನಿಮ್ಮ ಪಠ್ಯ ಗಾತ್ರ ಗ್ರಾಹಕೀಯಗೊಳಿಸಿ</translation>
 <translation id="214169863967063661">ಗೋಚರತೆ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ತೆರೆಯಿರಿ</translation>
+<translation id="3616113530831147358">ಆಡಿಯೋ</translation>
 <translation id="6793604637258913070">ಪಠ್ಯ ಕೆರೆಡ್ ಕಂಡುಬಂದಾಗ ಅಥವಾ ಸರಿಸಿದಾಗ ಅದನ್ನು ಹೈಲೈಟ್ ಮಾಡಿ</translation>
 <translation id="7376553024552204454">ಮೌಸ್ ಕರ್ಸರ್ ಅನ್ನು ಸರಿಸುವಾಗ ಹೈಲೈಟ್ ಮಾಡಿ</translation>
 <translation id="4150201353443180367">ಡಿಸ್‌ಪ್ಲೇ</translation>
@@ -3160,9 +2852,10 @@
 <translation id="3819257035322786455">ಬ್ಯಾಕಪ್‌</translation>
 <translation id="3233271424239923319">Linux ಆ್ಯಪ್‌ಗಳು ಮತ್ತು ಫೈಲ್‌ಗಳನ್ನು ಬ್ಯಾಕಪ್ ಮಾಡಿ</translation>
 <translation id="184273675144259287">ನಿಮ್ಮ Linux ಆ್ಯಪ್‌ಗಳು ಮತ್ತು ಫೈಲ್‌ಗಳನ್ನು ಹಿಂದಿನ ಬ್ಯಾಕಪ್‌ನೊಂದಿಗೆ ಬದಲಾಯಿಸಿ</translation>
-<translation id="2200603218210188859">USB ಸಾಧನದ ಆದ್ಯತೆಗಳು</translation>
-<translation id="2706892089432507937">USB ಸಾಧನಗಳು</translation>
-<translation id="5187892128515678283">ಟಾಗಲ್ ಆನ್ ಮಾಡುವ ಮೂಲಕ USB ಸಾಧನವನ್ನು Linux ನೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳಿ. ಸಾಧನದ ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡ ಬಳಿಕ ಹಂಚಿಕೆಯು ಕೊನೆಗೊಳ್ಳುತ್ತದೆ.</translation>
+<translation id="7105390788077117391">USB ಆದ್ಯತೆಗಳು</translation>
+<translation id="3201422919974259695">ಲಭ್ಯವಿರುವ USB ಸಾಧನಗಳು ಇಲ್ಲಿ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತವೆ.</translation>
+<translation id="907264006778172906">USB ಸಾಧನಗಳಿಗೆ ಪ್ರವೇಶ ಪಡೆಯಲು Linux ಗೆ ಅನುಮತಿ ನೀಡಿ. USB ಸಾಧನವನ್ನು ತೆಗೆದುಹಾಕಿದ ಬಳಿಕ, Linux ಗೆ ಅದರ ಮಾಹಿತಿ ನೆನಪಿನಲ್ಲಿ ಇರುವುದಿಲ್ಲ.</translation>
+<translation id="3661172646479098821">ಪ್ರಸ್ತುತ, Android ಸಾಧನಗಳಿಗೆ ಮಾತ್ರ ಬೆಂಬಲವಿದೆ.</translation>
 <translation id="2295473777859797944">Brave Software Play ಸ್ಟೋರ್</translation>
 <translation id="572155275267014074">Android ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="4767209642168463274">ನಿಮ್ಮ Bravebook ನಲ್ಲಿ Brave Software Playಯಿಂದ ಅಪ್ಲಿಕೇಶನ್‌ಗಳನ್ನು ಮತ್ತು ಗೇಮ್‌ಗಳನ್ನು ಸ್ಥಾಪಿಸಿ. &lt;a target="_blank" href="<ph name="URL"/>"&gt;ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ&lt;/a&gt;</translation>
@@ -3202,6 +2895,7 @@
 <translation id="5860033963881614850">ಆಫ್</translation>
 <translation id="5916664084637901428">ಆನ್‌</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> ಅವರು ಈ ಸೆಟ್ಟಿಂಗ್ ಅನ್ನು ನಿಯಂತ್ರಿಸುತ್ತಿದ್ದಾರೆ</translation>
+<translation id="6643016212128521049">ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="8465252176946159372">ಮಾನ್ಯವಾಗಿಲ್ಲ</translation>
 <translation id="8647834505253004544">ಇದು ಮಾನ್ಯವಾದ ವೆಬ್‌ ವಿಳಾಸವಲ್ಲ</translation>
 <translation id="7946586320617670168">ಮೂಲವು ಸುರಕ್ಷಿತವಾಗಿರಬೇಕು</translation>
@@ -3210,6 +2904,7 @@
 <translation id="5595485650161345191">ವಿಳಾಸ ಎಡಿಟ್ ಮಾಡಿ</translation>
 <translation id="6207937957461833379">ರಾಷ್ಟ್ರ/ಪ್ರದೇಶ</translation>
 <translation id="4378154925671717803">ಫೋನ್</translation>
+<translation id="2448312741937722512">ಪ್ರಕಾರ</translation>
 <translation id="9064275926664971810">ಒಂದು ಕ್ಲಿಕ್‌ನೊಂದಿಗೆ ವೆಬ್ ಫಾರ್ಮ್‌ಗಳನ್ನು ತುಂಬಲು ಸ್ವಯಂ ತುಂಬುವಿಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="9095253524804455615">ತೆಗೆದುಹಾಕು</translation>
 <translation id="451515744433878153">ತೆಗೆದುಹಾಕು</translation>
@@ -3394,6 +3089,7 @@
 <translation id="1989112275319619282">ಬ್ರೌಸ್ ಮಾಡಿ</translation>
 <translation id="3625481642044239431">ಅಮಾನ್ಯ ಫೈಲ್ ಆಯ್ಕೆಯಾಗಿದೆ. ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="2462752602710430187"><ph name="PRINTER_NAME"/> ಸೇರಿಸಲಾಗಿದೆ</translation>
+<translation id="7380768571499464492"><ph name="PRINTER_NAME"/> ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="9057119625587205566">ಸಮೀಪದಲ್ಲಿ ಯಾವುದೇ ಪ್ರಿಂಟರ್‌ಗಳಿಲ್ಲ</translation>
 <translation id="3213187967168344806">ಪ್ರಿಂಟರ್ ಸೇರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಿ ಮತ್ತು ಪುನಃ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="4052689580269971502">ಪ್ರಿಂಟರ್ ಅನ್ನು ಸಂಪರ್ಕಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಪ್ರಿಂಟರ್ ಆನ್ ಆಗಿದೆಯೇ ಮತ್ತು ಅದು ನಿಮ್ಮ Bravebook ಗೆ ವೈ-ಫೈ ಅಥವಾ USB ಮೂಲಕ ಸಂಪರ್ಕ ಹೊಂದಿದೆಯೇ ಎಂದು ಪರಿಶೀಲಿಸಿ.</translation>
@@ -3524,6 +3220,7 @@
 <translation id="8452135315243592079">ಕಾಣೆಯಾಗಿರುವ ಸಿಮ್ ಕಾರ್ಡ್</translation>
 <translation id="2617342710774726426">ಸಿಮ್‌ ಕಾರ್ಡ್ ಲಾಕ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="4848518990323155912">ಸಿಮ್ ಕಾರ್ಡ್ ಲಾಕ್ ಮಾಡುವಿಕೆಯನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ (ಮೊಬೈಲ್ ಡೇಟಾ ಬಳಸಲು ಪಿನ್ ಅಗತ್ಯವಿದೆ)</translation>
+<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">ಸಿಮ್‌ ಪಿನ್‌ ನಮೂದಿಸಿ</translation>
 <translation id="8431909052837336408">ಸಿಮ್‌ ಪಿನ್‌ ಬದಲಾಯಿಸು</translation>
 <translation id="289644616180464099">ಸಿಮ್‌ ಕಾರ್ಡ್ ಲಾಕ್ ಮಾಡಲಾಗಿದೆ</translation>
@@ -3535,11 +3232,13 @@
 <translation id="1164899421101904659">ಪಿನ್ ಅನ್‌ಲಾಕ್ ಕೀ ನಮೂದಿಸಿ</translation>
 <translation id="7582582252461552277">ಈ ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಆದ್ಯತೆ ನೀಡಿ</translation>
 <translation id="7469894403370665791">ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಈ ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಸಂಪರ್ಕಿಸಿ</translation>
+<translation id="4267953847983678297">ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸೆಲ್ಯುಲರ್ ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಸಂಪರ್ಕಿಸಿ</translation>
 <translation id="7987814697832569482">ಯಾವಾಗಲೂ ಈ VPN ಮೂಲಕವೇ ಸಂಪರ್ಕಿಸಿ</translation>
 <translation id="8821045908425223359">ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಐಪಿ ವಿಳಾಸವನ್ನು ಕಾನ್ಫಿಗರ್ ಮಾಡಿ</translation>
 <translation id="8986362086234534611">ಮರೆತುಹೋಗು</translation>
 <translation id="7881483672146086348">ಖಾತೆಯನ್ನು ವೀಕ್ಷಿಸಿ</translation>
 <translation id="2392369802118427583">ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
+<translation id="8151638057146502721">ಕಾನ್ಫಿಗರ್ ಮಾಡಿ</translation>
 <translation id="5920543303088087579">ಈ ನೆಟ್‌ವರ್ಕ್‌ಗೆ ಸಂಪರ್ಕಿಸುವುದನ್ನು ನಿಮ್ಮ ನಿರ್ವಾಹಕರು ನಿಷ್ಕ್ರಿಯಗೊಳಿಸಿದ್ದಾರೆ</translation>
 <translation id="1235458158152011030">ತಿಳಿದಿರುವ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
 <translation id="3003144360685731741">ಆದ್ಯತೆಯ ನೆಟ್‌ವರ್ಕ್‌ಗಳು</translation>
@@ -3567,7 +3266,6 @@
 <translation id="7707922173985738739">ಮೊಬೈಲ್‌ ಡೇಟಾ ಬಳಸಿ</translation>
 <translation id="8944099748578356325">ಇನ್ನಷ್ಟು ತ್ವರಿತವಾಗಿ ಬ್ಯಾಟರಿ ಬಳಸಿ (ಪ್ರಸ್ತುತವಾಗಿ <ph name="BATTERY_PERCENTAGE"/>%)</translation>
 <translation id="3651488188562686558">ವೈ-ಫೈ ನಿಂದ ಸಂಪರ್ಕ ಕಡಿತಗೊಳಿಸಿ</translation>
-<translation id="3479552764303398839">ಈಗ ಬೇಡ</translation>
 <translation id="7378812711085314936">ಡೇಟಾ ಸಂಪರ್ಕವನ್ನು ಪಡೆಯಿರಿ</translation>
 <translation id="3483333858382889684">ಮೊಬೈಲ್‌ ಡೇಟಾ ಸಂಪರ್ಕವನ್ನು ಹೊಂದಿರುವ ನಿಮ್ಮ Brave Software ಖಾತೆಯ ಮೂಲಕ ಇತರ ಸಾಧನಗಳನ್ನು ಈ ಸಾಧನ ಪತ್ತೆಮಾಡಲು ಅನುಮತಿಸಿ</translation>
 <translation id="5637476008227280525">ಮೊಬೈಲ್ ಡೇಟಾವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
@@ -3686,11 +3384,11 @@
 <translation id="3161522574479303604">ಎಲ್ಲಾ ಭಾಷೆಗಳು</translation>
 <translation id="3312424061798279731">ಸಕ್ರಿಯಗೊಳಿಸಲಾದ ಭಾಷೆಗಳು</translation>
 <translation id="3182749001423093222">ಕಾಗುಣಿತ ಪರಿಶೀಲನೆ</translation>
-<translation id="4441548209689510310">ಕಾಗುಣಿತ ಪರಿಶೀಲನೆ ಆಯ್ಕೆಗಳನ್ನು ತೋರಿಸು</translation>
-<translation id="4358353773267946514"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/></translation>
-<translation id="3909690856344416952"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/>, ಹಾಗೂ ಮತ್ತೊಂದು</translation>
-<translation id="5740331643563157105"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/> ಮತ್ತು <ph name="NUM_ADDITIONAL_LANGUAGES"/> ಇತರೆ</translation>
-<translation id="3436038974659740746">ಕಸ್ಟಮ್ ಕಾಗುಣಿತ</translation>
+<translation id="5423829801105537712">ಪ್ರಾಥಮಿಕ ಕಾಗುಣಿತ ಪರೀಕ್ಷೆ</translation>
+<translation id="2564653188463346023">ವರ್ಧಿತ ಕಾಗುಣಿತ ಪರೀಕ್ಷೆ</translation>
+<translation id="8944680893327873975">Brave Software ಹುಡುಕಾಟದಲ್ಲಿ ಬಳಸುವ ಕಾಗುಣಿತ ಪರೀಕ್ಷಕವನ್ನೇ ಬಳಸಿ. ನೀವು ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಟೈಪ್ ಮಾಡುವ ಪಠ್ಯವನ್ನು Brave Software ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತದೆ.</translation>
+<translation id="7335974957018254119">ಈ ಭಾಷೆಗಳಿಗಾಗಿ ಕಾಗುಣಿತ ಪರೀಕ್ಷೆಯನ್ನು ಬಳಸಿ</translation>
+<translation id="2469375675106140201">ಕಾಗುಣಿತ ಪರೀಕ್ಷೆಯನ್ನು ಕಸ್ಟಮೈಸ್ ಮಾಡಿ</translation>
 <translation id="2667463864537187133">ಕಾಗುಣಿತ ಪರಿಶೀಲನೆ ನಿರ್ವಹಿಸಿ</translation>
 <translation id="2665394472441560184">ಹೊಸ ಪದವನ್ನು ಸೇರಿಸಿ</translation>
 <translation id="4567772783389002344">ಪದ ಸೇರಿಸು</translation>
@@ -3711,13 +3409,8 @@
 <translation id="9038649477754266430">ಪುಟಗಳನ್ನು ಹೆಚ್ಚು ವೇಗವಾಗಿ ಲೋಡ್ ಮಾಡಲು ಮುನ್ನೋಟಗಳನ್ನು ಬಳಸಿ</translation>
 <translation id="7981313251711023384">ವೇಗವಾದ ಬ್ರೌಸಿಂಗ್ ಮತ್ತು ಹುಡುಕಾಟಕ್ಕಾಗಿ ಪುಟಗಳನ್ನು ಮುಂಚಿತವಾಗಿ ಲೋಡ್ ಮಾಡಿ</translation>
 <translation id="2468205691404969808">ನೀವು ಆ ಪುಟಗಳಿಗೆ ಭೇಟಿ ನೀಡದಿದ್ದರೂ, ನಿಮ್ಮ ಆದ್ಯತೆಗಳನ್ನು ನೆನಪಿಟ್ಟುಕೊಳ್ಳಲು ಕುಕೀಗಳನ್ನು ಬಳಸುತ್ತದೆ</translation>
-<translation id="1641113438599504367">ಸುರಕ್ಷಿತ ಬ್ರೌಸಿಂಗ್</translation>
-<translation id="773905249182896430">ಅಪಾಯಕಾರಿ ಸೈಟ್‌ಗಳಿಂದ ನಿಮ್ಮನ್ನು ಮತ್ತು ನಿಮ್ಮ ಸಾಧನವನ್ನು ರಕ್ಷಿಸುತ್ತದೆ</translation>
-<translation id="8983677657449185470">ಸುರಕ್ಷಿತ ಬ್ರೌಸಿಂಗ್ ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ</translation>
-<translation id="199861668945335092">ಸಿಸ್ಟಂ ಕುರಿತಾದ ಕೆಲವು ಮಾಹಿತಿ ಮತ್ತು ಪುಟದ ವಿಷಯವನ್ನು Brave Software ಗೆ ಕಳುಹಿಸುತ್ತದೆ</translation>
-<translation id="490074449735753175">ಕಾಗುಣಿತ ದೋಷಗಳ ಪರಿಹಾರಕ್ಕೆ ವೆಬ್ ಸೇವೆಯನ್ನು ಬಳಸು</translation>
-<translation id="3523078749603005179">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ನೀವು ಟೈಪ್ ಮಾಡುವುದನ್ನು Brave Software ಗೆ ಕಳುಹಿಸುವ ಮೂಲಕ ಬುದ್ಧಿವಂತಿಕೆಯ ಕಾಗುಣಿತ ಪರಿಶೀಲಿಸುವಿಕೆ</translation>
-<translation id="2564653188463346023">ವರ್ಧಿತ ಕಾಗುಣಿತ ಪರೀಕ್ಷೆ</translation>
+<translation id="4991384657077828949">Brave ಭದ್ರತೆಯನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ</translation>
+<translation id="2875273286298348523">Brave, ನೀವು ಬ್ರೌಸರ್‌ನಲ್ಲಿ ಟೈಪ್ ಮಾಡುವ ಪಠ್ಯವನ್ನು Brave Software ಗೆ ಕಳುಹಿಸುತ್ತದೆ</translation>
 <translation id="9079153198295609735">ಬಳಕೆಯ ಅಂಕಿಅಂಶಗಳನ್ನು ಮತ್ತು ಕ್ರಾಶ್ ವರದಿಗಳನ್ನು Brave Software ಗೆ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ರವಾನಿಸು</translation>
 <translation id="5941220456342415404">Brave Software ಗೆ ಡಯಾಗ್ನಸ್ಟಿಕ್ ಮತ್ತು ಡೇಟಾ ಬಳಕೆಯನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಕಳುಹಿಸು</translation>
 <translation id="918192811481327695">Brave ನ ವೈಶಿಷ್ಟ್ಯಗಳು ಹಾಗೂ ಕೆಲಸ ನಿರ್ವಹಣೆಯನ್ನು ಸುಧಾರಿಸಲು ಸಹಾಯ ಮಾಡಿ</translation>
@@ -3794,6 +3487,7 @@
 <translation id="16815041330799488">ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ನಕಲಿಸಿರುವ ಪಠ್ಯ ಮತ್ತು ಚಿತ್ರಗಳನ್ನು ನೋಡಲು ಸೈಟ್‌ಗಳಿಗೆ ಅನುಮತಿ ನೀಡಬೇಡಿ</translation>
 <translation id="3668823961463113931">ಹ್ಯಾಂಡ್‌ಲರ್‌ಗಳು</translation>
 <translation id="5689516760719285838">ಸ್ಥಳ</translation>
+<translation id="9219103736887031265">ಚಿತ್ರಗಳು</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">ಫ್ಲ್ಯಾಶ್‌</translation>
 <translation id="6951153907720526401">ಪಾವತಿ ಹ್ಯಾಂಡ್‌ಲರ್‌ಗಳು</translation>
@@ -3819,6 +3513,10 @@
 <translation id="8666584013686199826">ಒಂದು ಸೈಟ್ USB ಸಾಧನಗಳನ್ನು ಪ್ರವೇಶಿಸಲು ಬಯಸಿದಾಗ ಕೇಳಿ</translation>
 <translation id="6291949900244949761">ಒಂದು ಸೈಟ್ USB ಸಾಧನಗಳನ್ನು ಪ್ರವೇಶಿಸಲು ಬಯಸಿದಾಗ ಕೇಳಿ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿರುವುದು)</translation>
 <translation id="5336126339807372270">USB ಸಾಧನಗಳಿಗೆ ಪ್ರವೇಶ ಪಡೆಯಲು ಯಾವುದೇ ಸೈಟ್‌ಗಳಿಗೂ ಅನುಮತಿಸಬೇಡಿ</translation>
+<translation id="7638605456503525968">ಸೀರಿಯಲ್ ಪೋರ್ಟ್‌ಗಳು</translation>
+<translation id="4085270836953633510">ಯಾವುದೇ ಸೈಟ್, ಸೀರಿಯಲ್ ಪೋರ್ಟ್‌ಗಳಿಗೆ ಪ್ರವೇಶ ಪಡೆಯಲು ವಿನಂತಿಸಿದಾಗ, ಕೇಳಿ</translation>
+<translation id="2322318151094136999">ಯಾವುದೇ ಸೈಟ್, ಸೀರಿಯಲ್ ಪೋರ್ಟ್‌ಗಳಿಗೆ ಪ್ರವೇಶ ಪಡೆಯಲು ವಿನಂತಿಸಿದಾಗ, ಕೇಳಿ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)</translation>
+<translation id="1906828677882361942">ಸೀರಿಯಲ್ ಪೋರ್ಟ್‌ಗಳಿಗೆ ಪ್ರವೇಶಿಸಲು, ಯಾವುದೇ ಸೈಟ್‌ಗಳಿಗೆ ಅನುಮತಿ ನೀಡಬೇಡಿ</translation>
 <translation id="8973557916016709913">ಝೂಮ್‌ ಮಟ್ಟವನ್ನು ತೆಗೆದುಹಾಕಿ</translation>
 <translation id="1706625117072057435">ಝೂಮ್ ಹಂತಗಳು</translation>
 <translation id="6385543213911723544">ಸೈಟ್‌ಗಳು ಕುಕೀ ಡೇಟಾವನ್ನು ಉಳಿಸಬಹುದು ಮತ್ತು ಓದಬಹುದು</translation>
@@ -3834,8 +3532,6 @@
 <translation id="2913331724188855103">ಕುಕೀ ಡೇಟಾವನ್ನು ಉಳಿಸಲು ಮತ್ತು ರೀಡ್ ಮಾಡಲು ಸೈಟ್‌ಗಳನ್ನು ಅನುಮತಿಸಿ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)</translation>
 <translation id="5908769186679515905">ಫ್ಲ್ಯಾಷ್ ರನ್ ಮಾಡುವಿಕೆಯಿಂದ ಸೈಟ್‌ಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="6096007141921397775">ನೀವು Brave ನಿಂದ ನಿರ್ಗಮಿಸುವವರೆಗೆ ನಿಮ್ಮ ಫ್ಲ್ಯಾಶ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಇರಿಸಲಾಗುತ್ತದೆ.</translation>
-<translation id="2972642118232180842">ಮುಖ್ಯ ವಿಷಯವನ್ನು ಮಾತ್ರ ರನ್ ಮಾಡಿ (ಶಿಫಾರಸು ಮಾಡಲಾಗಿದೆ)</translation>
-<translation id="7084192839369222683">ಮುಖ್ಯ ವಿಷಯವನ್ನು ಮಾತ್ರ ರನ್ ಮಾಡಿ</translation>
 <translation id="8074127646604999664">ಡೇಟಾ ಕಳುಹಿಸುವುದನ್ನು ಮತ್ತು ಸ್ವೀಕರಿಸುವುದನ್ನು ಮುಕ್ತಾಯಗೊಳಿಸಲು ಇತ್ತೀಚಿಗೆ ಮುಚ್ಚಲಾದ ಸೈಟ್‌ಗಳಿಗೆ ಅನುಮತಿಸಿ</translation>
 <translation id="7062222374113411376">ಡೇಟಾ ಕಳುಹಿಸುವುದನ್ನು ಮತ್ತು ಸ್ವೀಕರಿಸುವುದನ್ನು ಮುಕ್ತಾಯಗೊಳಿಸಲು ಇತ್ತೀಚಿಗೆ ಮುಚ್ಚಿದ ಸೈಟ್‌ಗಳಿಗೆ ಅನುಮತಿಸಿ (ಶಿಫಾರಸು ಮಾಡಿದೆ)</translation>
 <translation id="5068918910148307423">ಡೇಟಾ ಕಳುಹಿಸುವುದನ್ನು ಮತ್ತು ಸ್ವೀಕರಿಸುವುದನ್ನು ಮುಕ್ತಾಯಗೊಳಿಸಲು ಇತ್ತೀಚಿಗೆ ಮುಚ್ಚಿದ ಸೈಟ್‌ಗಳಿಗೆ ಅನುಮತಿಸಬೇಡ</translation>
@@ -3900,6 +3596,7 @@
 <translation id="4354344420232759511">ನೀವು ಭೇಟಿ ಮಾಡುವ ಸೈಟ್‌ಗಳು ಇಲ್ಲಿ ಗೋಚರಿಸುತ್ತವೆ</translation>
 <translation id="3757733214359997190">ಯಾವುದೇ ಸೈಟ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ</translation>
 <translation id="5763751966069581670">ಯಾವುದೇ USB ಸಾಧನಗಳು ಕಂಡುಬಂದಿಲ್ಲ</translation>
+<translation id="1863182668524159459">ಯಾವುದೇ ಸೀರಿಯಲ್ ಪೋರ್ಟ್‌ಗಳು ಕಂಡುಬಂದಿಲ್ಲ</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">ಸೈಟ್ ಸೇರಿಸಿ</translation>
 <translation id="5052499409147950210">ಸೈಟ್ ಎಡಿಟ್ ಮಾಡಿ</translation>
@@ -3915,7 +3612,6 @@
 <translation id="4590324241397107707">ಡೇಟಾಬೇಸ್ ಸಂಗ್ರಹಣೆ</translation>
 <translation id="8016266267177410919">ತಾತ್ಕಾಲಿಕ ಸಂಗ್ರಹ</translation>
 <translation id="4175737294868205930">ಶಾಶ್ವತವಾಗಿರುವ ಸಂಗ್ರಹಣೆ</translation>
-<translation id="6105877918873366097">ಕೊನೆಯ ಬಾರಿ ಪ್ರವೇಶಿಸಿರುವುದು</translation>
 <translation id="1296497012903089238">ಪ್ರಮಾಣಪತ್ರದ ಪ್ರಕಾರ</translation>
 <translation id="8553342806078037065">ಇತರ ವ್ಯಕ್ತಿಗಳನ್ನು ನಿರ್ವಹಿಸು</translation>
 <translation id="8907706281008466056">Brave Software ಪ್ರೊಫೈಲ್ ಫೋಟೋ</translation>
@@ -3947,6 +3643,7 @@
 <translation id="1987317783729300807">ಖಾತೆಗಳು</translation>
 <translation id="8418661265246754237">Brave Software ಖಾತೆಗಳು</translation>
 <translation id="3297951628821704004">ಈ ಸಾಧನದಿಂದ ಖಾತೆಯನ್ನು ತೆಗೆದುಹಾಕಿ</translation>
+<translation id="4659077111144409915">ಪ್ರಾಥಮಿಕ ಖಾತೆ</translation>
 <translation id="3158033540161634471">ನಿಮ್ಮ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಅನ್ನು ಸೆಟಪ್‌ ಮಾಡಿ</translation>
 <translation id="1587907146729660231">ನಿಮ್ಮ ಬೆರಳಿನಿಂದ ಪವರ್ ಬಟನ್ ಅನ್ನು ಸ್ಪರ್ಶಿಸಿ</translation>
 <translation id="176193854664720708">ಪವರ್ ಬಟನ್‌ನಲ್ಲಿ ಫಿಂಗರ್‌ಪ್ರಿಂಟ್ ಸೆನ್ಸರ್ ಇದೆ. ಯಾವುದೇ ಬೆರಳಿನಿಂದ ಅದನ್ನು ಲಘುವಾಗಿ ಸ್ಪರ್ಶಿಸಿ.</translation>
@@ -4077,13 +3774,17 @@
 <translation id="6586451623538375658">ಪ್ರಾಥಮಿಕ ಮೌಸ್ ಬಟನ್ ಅನ್ನು ಸ್ವ್ಯಾಪ್ ಮಾಡಿ</translation>
 <translation id="221872881068107022">ಹಿಮ್ಮುಖ ಸ್ಕ್ರಾಲ್ ಮಾಡುವಿಕೆ</translation>
 <translation id="1510238584712386396">ಲಾಂಚರ್</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">ವಜ್ರ</translation>
 <translation id="89720367119469899">ಎಸ್ಕೇಪ್</translation>
+<translation id="5583640892426849032">Backspace</translation>
 <translation id="1951012854035635156">ಸಹಾಯಕ</translation>
 <translation id="1938351510777341717">ಬಾಹ್ಯ ಕಮಾಂಡ್ ಕೀ</translation>
 <translation id="7969046989155602842">ಕಮಾಂಡ್</translation>
 <translation id="585979798156957858">ಬಾಹ್ಯ ಮೆಟಾ ಕೀ</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4991420928586866460">ಮೇಲಿನ-ಸಾಲು ಕೀಲಿಗಳನ್ನು ಕಾರ್ಯದ ಕೀಲಿಗಳಂತೆ ಪರಿಗಣಿಸಿ</translation>
 <translation id="85486688517848470">ಮೇಲಿನ-ಸಾಲುಗಳ ಕೀಗಳ ನಡುವಳಿಕೆಯನ್ನು ಬದಲಾಯಿಸಲು ಹುಡುಕಾಟದ ಕೀ ಅನ್ನು ಒತ್ತಿ ಹಿಡಿಯಿರಿ</translation>
 <translation id="4400632832271803360">ಮೇಲಿನ-ಸಾಲುಗಳ ಕೀಗಳ ನಡವಳಿಕೆಯನ್ನು ಬದಲಿಸಲು ಲಾಂಚರ್ ಕೀ ಅನ್ನು ಒತ್ತಿ ಹಿಡಿಯಿರಿ</translation>
@@ -4143,6 +3844,7 @@
 <translation id="7758450972308449809">ನಿಮ್ಮ ಪ್ರದರ್ಶನದ ಗಡಿಗಳನ್ನು ಹೊಂದಿಸಿ</translation>
 <translation id="5608580678041221894">ಕ್ರಾಪ್ ಮಾಡಿರುವ ಪ್ರದೇಶವನ್ನು ಸರಿಹೊಂದಿಸಲು ಅಥವಾ ಸರಿಸಲು ಈ ಮುಂದಿನ ಕೀಗಳನ್ನು ಟ್ಯಾಪ್ ಮಾಡಿ</translation>
 <translation id="2822634587701817431">ಕುಗ್ಗಿಸಿ/ವಿಸ್ತರಿಸಿ</translation>
+<translation id="7765158879357617694">ಸರಿಸು</translation>
 <translation id="6801435275744557998">ಟಚ್‌ಸ್ಕ್ರೀನ್ ಕ್ಯಾಲಿಬ್ರೇಟ್ ಮಾಡಿ</translation>
 <translation id="6856623341093082836">ನಿಮ್ಮ ಟಚ್‌ಸ್ಕ್ರೀನ್‌ ನಿಖರತೆಯನ್ನು ಸೆಟಪ್ ಮಾಡಿ ಮತ್ತು ಹೊಂದಿಸಿ</translation>
 <translation id="4598556348158889687">ಸಂಗ್ರಹಣೆ ನಿರ್ವಹಣೆ</translation>
@@ -4185,6 +3887,7 @@
 <translation id="2789927670850159391">ನಿಮ್ಮ ಫೋನ್‌‍ನ ಮೂಲಕ ನಿಮ್ಮ Bravebook ಅನ್ನು ಸಂಪರ್ಕಿಸಿ. <ph name="LINK_BEGIN"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">ಯಾವುದೇ ಅರ್ಹ ಸಾಧನಗಳಿಲ್ಲ. <ph name="LINK_BEGIN"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">ಪರಿಶೀಲನೆಗಾಗಿ ನಿರೀಕ್ಷಿಸಲಾಗುತ್ತಿದೆ. <ph name="LINK_BEGIN"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_END"/></translation>
+<translation id="6518133107902771759">ಪರಿಶೀಲಿಸಿ</translation>
 <translation id="7179187931092694802">ನಿಮ್ಮ ಫೋನ್‌‍ನ ಮೂಲಕ ನಿಮ್ಮ Bravebook ಅನ್ನು ಅನ್‌ಲಾಕ್ ಮಾಡಿ. <ph name="LINK_BEGIN"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">ತತ್‌ಕ್ಷಣದ ಟೆಥರಿಂಗ್‌</translation>
 <translation id="6415900369006735853">ನಿಮ್ಮ ಫೋನ್‌ನ ಮೂಲಕ ಇಂಟರ್ನೆಟ್‌ಗೆ ಸಂಪರ್ಕಗೊಳಿಸಿ</translation>
@@ -4236,6 +3939,30 @@
 <translation id="2992931425024192067">ಎಲ್ಲಾ ಅಧಿಸೂಚನೆ ವಿಷಯಗಳನ್ನು ತೋರಿಸಿ</translation>
 <translation id="8592141010104017453">ಅಧಿಸೂಚನೆಗಳನ್ನು ತೋರಿಸಲೇಬೇಡಿ</translation>
 <translation id="7642778300616172920">ಸೂಕ್ಷ್ಮ ವಿಷಯವನ್ನು ಮರೆಮಾಡಿ</translation>
+<translation id="5640133431808313291">ಸುರಕ್ಷತಾ ಕೀಗಳನ್ನು ನಿರ್ವಹಿಸಿ</translation>
+<translation id="8509177919508253835">ಸುರಕ್ಷತಾ ಕೀಗಳನ್ನು ಮರುಹೊಂದಿಸಿ ಮತ್ತು ಪಿನ್‌ಗಳನ್ನು ರಚಿಸಿ</translation>
+<translation id="7652954539215530680">ಪಿನ್ ರಚಿಸಿ</translation>
+<translation id="8246776524656196770">ಪಿನ್ (ವೈಯಕ್ತಿಕ ಗುರುತಿಸುವಿಕೆ ಸಂಖ್ಯೆ) ಮೂಲಕ ನಿಮ್ಮ ಭದ್ರತೆ ಕೀ ಅನ್ನು ಸಂರಕ್ಷಿಸಿ</translation>
+<translation id="5973605538625120605">ಪಿನ್ ಬದಲಾಯಿಸಿ</translation>
+<translation id="6242589501614145408">ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯನ್ನು ಮರುಹೊಂದಿಸಿ</translation>
+<translation id="1470967055429794975">ಸುರಕ್ಷತಾ ಕೀಯ ಪಿನ್ ಸೇರಿದಂತೆ, ಅದರಲ್ಲಿರುವ ಎಲ್ಲಾ ಡೇಟಾವನ್ನು ಇದು ಅಳಿಸಿಹಾಕುತ್ತದೆ</translation>
+<translation id="4670688170798478686">ಮರುಹೊಂದಿಸುವುದನ್ನು ಖಚಿತಪಡಿಸಿ</translation>
+<translation id="1981544341227357861">ನಿಮ್ಮ ಸಾಧನದಿಂದ ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯನ್ನು ತೆಗೆಯಿರಿ, ನಂತರ ಅದನ್ನು ಪುನಃ ಸೇರಿಸಿ ಮತ್ತು ಸ್ಪರ್ಶಿಸಿ.</translation>
+<translation id="714285394257538643">ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯನ್ನು ಮರುಹೊಂದಿಸಲು ಬಯಸುತ್ತೀರಿ ಎಂಬುದನ್ನು ಖಚಿತಪಡಿಸಲು, ಅದನ್ನು ಪುನಃ ಸ್ಪರ್ಶಿಸಿ. ಸುರಕ್ಷತಾ ಕೀಯಲ್ಲಿ ಸಂಗ್ರಹಣೆ ಮಾಡಿರುವ ಎಲ್ಲಾ ರುಜುವಾತುಗಳು ಹಾಗೂ ಅದರ ಪಿನ್ ಅನ್ನು ಅಳಿಸಲಾಗುತ್ತದೆ.</translation>
+<translation id="4120388883569225797">ಈ ಭದ್ರತೆ ಕೀ ಅನ್ನು ಮರುಹೊಂದಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ</translation>
+<translation id="7691077781194517083">ಈ ಭದ್ರತೆ ಕೀ ಅನ್ನು ಮರುಹೊಂದಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ದೋಷ <ph name="ERROR_CODE"/>.</translation>
+<translation id="4124823734405044952">ನಿಮ್ಮ ಭದ್ರತೆ ಕೀ ಅನ್ನು ಮರುಹೊಂದಿಸಲಾಗಿದೆ</translation>
+<translation id="8644655801811752511">ಈ ಭದ್ರತೆ ಕೀ ಅನ್ನು ಮರುಹೊಂದಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ. ಕೀ ಅನ್ನು ಮರುಸೇರ್ಪಡಿಸಿದ ನಂತರ, ಅದನ್ನು ಕೂಡಲೇ ಮರುಹೊಂದಿಸಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
+<translation id="8845164297565101021">ಪಿನ್ ಅನ್ನು ರಚಿಸಲು ಅಥವಾ ಬದಲಾಯಿಸಲು, ನಿಮ್ಮ ಸುರಕ್ಷತಾ ಕೀಯನ್ನು ಸೇರಿಸಿ ಮತ್ತು ಅದನ್ನು ಸ್ಪರ್ಶಿಸಿ.</translation>
+<translation id="6957044667612803194">ಈ ಭದ್ರತೆ ಕೀ, ಪಿನ್‌ಗಳನ್ನು ಬೆಂಬಲಿಸುವುದಿಲ್ಲ</translation>
+<translation id="7212097698621322584">ಪಿನ್ ಬದಲಾಯಿಸಲು, ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಪಿನ್ ಅನ್ನು ನಮೂದಿಸಿ. ನಿಮ್ಮ ಪಿನ್ ನಿಮಗೆ ಗೊತ್ತಿಲ್ಲದಿದ್ದರೆ, ನೀವು ಭದ್ರತೆ ಕೀ ಅನ್ನು ಮರುಹೊಂದಿಸಿ, ಆಮೇಲೆ ಹೊಸ ಪಿನ್ ಅನ್ನು ರಚಿಸಬೇಕಾಗುತ್ತದೆ.</translation>
+<translation id="2637400434494156704">ಪಿನ್ ತಪ್ಪಾಗಿದೆ. ನೀವು ಇನ್ನೂ ಒಂದು ಬಾರಿ ಪ್ರಯತ್ನಿಸಬಹುದು.</translation>
+<translation id="3341699307020049241">ಪಿನ್ ತಪ್ಪಾಗಿದೆ. ನೀವು ಇನ್ನೂ <ph name="RETRIES"/> ಬಾರಿ ಪ್ರಯತ್ನಿಸಬಹುದು.</translation>
+<translation id="2439545803278355377">ನಿಮ್ಮ ಹೊಸ ಪಿನ್ ನಮೂದಿಸಿ ಪಿನ್‌ನಲ್ಲಿ ಕನಿಷ್ಠ ನಾಲ್ಕು ಕ್ಯಾರೆಕ್ಟರ್‌ಗಳಿರಬೇಕು ಮತ್ತು ಅದರಲ್ಲಿ ಅಕ್ಷರಗಳು, ಅಂಕಿಗಳು ಹಾಗೂ ಇತರ ಕ್ಯಾರೆಕ್ಟರ್‌ಗಳು ಇರಬಹುದು.</translation>
+<translation id="1781291988450150470">ಸದ್ಯದ ಪಿನ್‌</translation>
+<translation id="3732530910372558017">ಪಿನ್ ಗರಿಷ್ಠ 63 ಅಕ್ಷರಗಳಾಗಿರಬೇಕು</translation>
+<translation id="1307165550267142340">ನಿಮ್ಮ ಪಿನ್ ರಚಿಸಲಾಗಿದೆ</translation>
+<translation id="2699911226086014512">ಪಿನ್ ಕಾರ್ಯಾಚರಣೆಯು ವಿಫಲವಾಗಿದೆ ಮತ್ತು <ph name="RETRIES"/> ಕೋಡ್ ಅನ್ನು ಮರಳಿಸಿದೆ.</translation>
 <translation id="3341703758641437857">URL ಗಳನ್ನು ಫೈಲ್‌ಗಳಿಗೆ ಪ್ರವೇಶಿಸಲು ಅನುಮತಿಸಿ</translation>
 <translation id="9003647077635673607">ಎಲ್ಲ ವೆಬ್‌ಸೈಟ್‌ಗಳಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
 <translation id="698524779381350301">ಈ ಕೆಳಗಿನ ಸೈಟ್‌ಗಳಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಪ್ರವೇಶವನ್ನು ಅನುಮತಿಸಿ</translation>
@@ -4258,6 +3985,7 @@
 <translation id="6841186874966388268">ದೋಷಗಳು</translation>
 <translation id="3487007233252413104">ಅನಾಮಧೇಯ ಕಾರ್ಯ</translation>
 <translation id="3264582393905923483">ಸಂದರ್ಭ</translation>
+<translation id="6921104647315081813">ಚಟುವಟಿಕೆಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="1607139524282324606">ಪ್ರವೇಶವನ್ನು ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="6025215716629925253">ಸ್ಟ್ಯಾಕ್ ಪತ್ತೆ</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;1 ಸಾಲನ್ನು ತೋರಿಸಿಲ್ಲ&gt;}one{&lt;<ph name="NUMBER_OF_LINES"/> ಸಾಲುಗಳನ್ನು ತೋರಿಸಿಲ್ಲ&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> ಸಾಲುಗಳನ್ನು ತೋರಿಸಿಲ್ಲ&gt;}}</translation>
@@ -4278,6 +4006,10 @@
 <translation id="6073451960410192870">ರೆಕಾರ್ಡಿಂಗ್ ನಿಲ್ಲಿಸಿ</translation>
 <translation id="8719472795285728850">ವಿಸ್ತರಣೆ ಚಟುವಟಿಕೆಗಳಿಗಾಗಿ ಆಲಿಸಲಾಗುತ್ತಿದೆ...</translation>
 <translation id="2540449034743108469">ವಿಸ್ತರಣೆ ಚಟುವಟಿಕೆಗಳಿಗಾಗಿ ಆಲಿಸಲು "ಪ್ರಾರಂಭಿಸಿ" ಒತ್ತಿರಿ</translation>
+<translation id="885246833287407341">API ಕಾರ್ಯಾಚರಣೆಯ ಆರ್ಗ್ಯುಮೆಂಟ್‌ಗಳು</translation>
+<translation id="3600051066689725006">ವೆಬ್ ಕೋರಿಕೆ ಮಾಹಿತಿ</translation>
+<translation id="5812674658566766066">ಎಲ್ಲವನ್ನೂ ವಿಸ್ತರಿಸಿ</translation>
+<translation id="3115580024857770654">ಎಲ್ಲವನ್ನೂ ಕುಗ್ಗಿಸಿ</translation>
 <translation id="1890674179660343635">&lt;span&gt;ID:&lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">ವೀಕ್ಷಣೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> ಇನ್ನಷ್ಟು...</translation>
@@ -4285,6 +4017,7 @@
 <translation id="4854477725773269949">ಅಜ್ಞಾತವಾಗಿ ಅನುಮತಿಸಿ</translation>
 <translation id="6124650939968185064">ಕೆಳಗಿನ ವಿಸ್ತರಣೆಗಳು ಈ ವಿಸ್ತರಣೆಯ ಮೇಲೆ ಅವಲಂಬಿತವಾಗಿವೆ:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
+<translation id="3866249974567520381">ವಿವರಣೆ</translation>
 <translation id="6508248480704296122"><ph name="NAME_PH"/> ಗೆ ಸಂಬಂಧಿಸಿದೆ</translation>
 <translation id="1410197035576869800">ಅಪ್ಲಿಕೇಶನ್ ಐಕಾನ್</translation>
 <translation id="3664511988987167893">ವಿಸ್ತರಣೆ ಐಕಾನ್</translation>
@@ -4296,6 +4029,7 @@
 <translation id="7152478047064750137">ಈ ವಿಸ್ತರಣೆಗೆ ಯಾವುದೇ ವಿಶೇಷ ಅನುಮತಿಗಳ ಅಗತ್ಯವಿಲ್ಲ</translation>
 <translation id="1004218526896219317">ಸೈಟ್ ಪ್ರವೇಶ</translation>
 <translation id="7385896526023870365">ಈ ವಿಸ್ತರಣೆಯು, ಸೈಟ್‌ಗೆ ಹೆಚ್ಚುವರಿ ಪ್ರವೇಶ ಹೊಂದಿರುವುದಿಲ್ಲ.</translation>
+<translation id="8294431847097064396">ಮೂಲ</translation>
 <translation id="8523849605371521713">ಕಾರ್ಯನೀತಿಯಿಂದ ಸೇರಿಸಲಾಗಿದೆ</translation>
 <translation id="5087249366037322692">ಥರ್ಡ್ ಪಾರ್ಟಿ ಮೂಲಕ ಸೇರಿಸಲಾಗಿದೆ</translation>
 <translation id="6788210894632713004">ಬಿಚ್ಚಿದ ವಿಸ್ತರಣೆ</translation>
@@ -4339,12 +4073,14 @@
 <translation id="1909880997794698664">ನೀವು ಈ ಸಾಧನವನ್ನು ಕಿಯೋಸ್ಕ್ ಮೋಡ‌್‌ನಲ್ಲಿ ಶಾಶ್ವತವಾಗಿ ಇರಿಸಲು ಖಚಿತವಾಗಿ ಬಯಸುವಿರಾ?</translation>
 <translation id="1512210426710821809">ಇದನ್ನು ರದ್ದುಗೊಳಿಸಲು ಇರುವ ಏಕೈಕ ಮಾರ್ಗವೆಂದರೆ <ph name="IDS_SHORT_PRODUCT_OS_NAME"/> ಅನ್ನು ಮರುಸ್ಥಾಪಿಸುವುದು</translation>
 <translation id="4472575034687746823">ಪ್ರಾರಂಭ</translation>
+<translation id="8281886186245836920">ಸ್ಕಿಪ್‌</translation>
 <translation id="2342740338116612727">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಸೇರಿಸಲಾಗಿದೆ</translation>
 <translation id="7835178595033117206">ಬುಕ್‌ಮಾರ್ಕ್ ಅನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ</translation>
 <translation id="742130257665691897">ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ</translation>
 <translation id="2785008241190445880">ಬುಕ್‌ಮಾರ್ಕ್ ಅನ್ನು ಬದಲಾಯಿಸಲಾಗಿದೆ</translation>
-<translation id="4320948194796820126">ನಿಮ್ಮ ಇಮೇಲ್‌ಗೆ ಬುಕ್‌ಮಾರ್ಕ್ ಸೇರಿಸಿ</translation>
+<translation id="5468853758063275923">Brave ನಿಮ್ಮ ಡಿಫಾಲ್ಟ್ ಬ್ರೌಸರ್ ಆಗಿದೆ</translation>
 <translation id="2950533317914339731">ನಿಮ್ಮ ಮೆಚ್ಚಿನ Brave Software ಆ್ಯಪ್‌ಗಳಿಗೆ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳನ್ನು ಸೇರಿಸಿ</translation>
+<translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">ನಕ್ಷೆಗಳು</translation>
 <translation id="6709133671862442373">ಸುದ್ದಿ</translation>
 <translation id="995782501881226248">YouTube</translation>
@@ -4364,10 +4100,10 @@
 <translation id="3707821975049107110">ಈಗಾಗಲೇ Brave ಬಳಕೆದಾರರಾಗಿದ್ದೀರಾ? ಸೈನ್ ಇನ್ ಮಾಡಿ</translation>
 <translation id="1573150740912592860">ನಿಮ್ಮ ಪ್ರಗತಿಯನ್ನು ಉಳಿಸಿ</translation>
 <translation id="567643736130151854">ನಿಮ್ಮ ಬುಕ್‌ಮಾರ್ಕ್‌ಗಳು, ಪಾಸ್‌ವರ್ಡ್‌ಗಳು ಮತ್ತು ಹೆಚ್ಚಿನವುಗಳನ್ನು ಎಲ್ಲಾ ಸಾಧನಗಳಲ್ಲಿ ಪಡೆದುಕೊಳ್ಳಲು ಸೈನ್ ಇನ್ ಮಾಡಿ ಮತ್ತು ಸಿಂಕ್ ಆನ್ ಮಾಡಿ</translation>
-<translation id="8282356762694872144">ನಿಮ್ಮ ಇಮೇಲ್‌ಗೆ ಮುಂದುವರೆಯುವುದೇ?</translation>
 <translation id="5939847200023027600">PDF ಸಂಯೋಜಕ ಸೇವೆ</translation>
 <translation id="725758059478686223">ಮುದ್ರಿಸುವ ಸೇವೆ</translation>
 <translation id="5877584842898320529">ಆಯ್ಕೆಮಾಡಿದ ಪ್ರಿಂಟರ್ ಲಭ್ಯವಿಲ್ಲ ಅಥವಾ ಸರಿಯಾಗಿ ಇನ್‌ಸ್ಟಾಲ್ ಮಾಡಲಾಗಿಲ್ಲ. <ph name="BR"/> ನಿಮ್ಮ ಪ್ರಿಂಟರ್ ಪರೀಕ್ಷಿಸಿ ಅಥವಾ ಬೇರೊಂದು ಪ್ರಿಂಟರ್ ಆಯ್ಕೆಮಾಡಿ.</translation>
+<translation id="1430915738399379752">ಮುದ್ರಿಸು</translation>
 <translation id="1031362278801463162">ಪೂರ್ವವೀಕ್ಷಣೆ ಲೋಡ್ ಆಗುತ್ತಿದೆ</translation>
 <translation id="6147020289383635445">ಮುದ್ರಣ ಪೂರ್ವವೀಕ್ಷಣೆ ವಿಫಲಗೊಂಡಿದೆ.</translation>
 <translation id="7413400642818115607">Brave Software ಕ್ಲೌಡ್‌ ಮುದ್ರಣ ಸಾಧನವು ಇನ್ನು ಮುಂದೆ ಬೆಂಬಲಿಸುವುದಿಲ್ಲ. <ph name="BR"/> ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್‌ ಸಿಸ್ಟಮ್‌ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿನ ಪ್ರಿಂಟರ್‌ ಅನ್ನು ಸೆಟಪ್‌ ಮಾಡಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
@@ -4380,6 +4116,9 @@
 <translation id="5431318178759467895">ಬಣ್ಣ</translation>
 <translation id="2050339315714019657">ಪೋಟ್ರೇಟ್</translation>
 <translation id="3317459757438853210">ಎರಡು-ಕಡೆಗಳಿಂದ</translation>
+<translation id="9053563360605707198">ಎರಡೂ ಬದಿಗಳಲ್ಲಿ ಮುದ್ರಿಸಿ</translation>
+<translation id="2996722619877761919">ಉದ್ದದ ಅಂಚಿನಲ್ಲಿ ಫ್ಲಿಪ್ ಮಾಡಿ</translation>
+<translation id="1172750555846831341">ಚಿಕ್ಕ ಅಂಚಿನಲ್ಲಿ ಫ್ಲಿಪ್ ಮಾಡಿ</translation>
 <translation id="4988526792673242964">ಪುಟಗಳು</translation>
 <translation id="7771452384635174008">ಲೇಔಟ್</translation>
 <translation id="3303818374450886607">ಪ್ರತಿಗಳು</translation>
@@ -4389,6 +4128,7 @@
 <translation id="5746169159649715125">PDF ನಂತೆ ಉಳಿಸಿ</translation>
 <translation id="1955272076204612657">Brave Software ಡ್ರೈವ್‌ನಲ್ಲಿ ಉಳಿಸಿ</translation>
 <translation id="2580924999637585241">ಒಟ್ಟು:<ph name="NUMBER_OF_SHEETS"/><ph name="SHEETS_LABEL"/></translation>
+<translation id="73174032666024687"><ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">ಕಾಗದದ ಹಾಳೆಗಳು</translation>
 <translation id="8813811964357448561">ಕಾಗದದ ಹಾಳೆ</translation>
 <translation id="8180239481735238521">ಪುಟ</translation>
@@ -4441,6 +4181,9 @@
 <translation id="7453008956351770337">ಈ ಪ್ರಿಂಟರ್‌ ಆಯ್ಕೆ ಮಾಡುವ ಮೂಲಕ ನಿಮ್ಮ ಪ್ರಿಂಟರ್‌ ಪ್ರವೇಶಕ್ಕೆ ನೀವು ಈ ಮುಂದಿನ ವಿಸ್ತರಣೆ ಅನುಮತಿಯನ್ನು ನೀಡುತ್ತಿರುವಿರಿ:</translation>
 <translation id="2902127500170292085">ಈ ಪ್ರಿಂಟರ್‌ ಜೊತೆಗೆ <ph name="EXTENSION_NAME"/> ಸಂವಹನ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ಪ್ರಿಂಟರ್‌ ಪ್ಲಗಿನ್‌ ಮಾಡಲಾಗಿದೆಯೇ ಎಂಬುದನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ ಹಾಗೂ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="6530186581263215931">ಈ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ನಿಮ್ಮ ನಿರ್ವಾಹಕರು ಜಾರಿಗೊಳಿಸಿದ್ದಾರೆ</translation>
+<translation id="3053273573829329829">ಬಳಕೆದಾರ ಪಿನ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
+<translation id="6922745772873733498">ಮುದ್ರಿಸಲು ಪಿನ್ ಸಂಖ್ಯೆಯನ್ನು ನಮೂದಿಸಿ</translation>
+<translation id="2396783860772170191">4 ಅಂಕಿಯ ಪಿನ್ (0000-9999) ಅನ್ನು ನಮೂದಿಸಿ</translation>
 <translation id="4994754230098574403">ಹೊಂದಿಸಲಾಗುತ್ತಿದೆ</translation>
 <translation id="1396139853388185343">ಪ್ರಿಂಟರ್ ಹೊಂದಿಸುವಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ</translation>
 <translation id="2379281330731083556">ಸಿಸ್ಟಂ ಸಂವಾದವನ್ನು ಬಳಸಿ ಮುದ್ರಿಸಿ... <ph name="SHORTCUT_KEY"/></translation>
@@ -4457,20 +4200,25 @@
 <translation id="79766959863778284">XR ಪ್ರತ್ಯೇಕ ಸಾಧನ ಸೇವೆ</translation>
 <translation id="8909833622202089127">ನಿಮ್ಮ ಸ್ಧಳವನ್ನು ಸೈಟ್‌ ಟ್ರ್ಯಾಕ್ ಮಾಡುತ್ತಿದೆ</translation>
 <translation id="375636864092143889">ನಿಮ್ಮ ಮೈಕ್ರೊಫೋನ್ ಅನ್ನು ಸೈಟ್‌ ಬಳಸುತ್ತಿದೆ</translation>
-<translation id="310671807099593501">ಸೈಟ್‌ ಬ್ಲೂಟೂತ್ ಅನ್ನು ಬಳಸುತ್ತಿದೆ</translation>
 <translation id="7256069762010468647">ನಿಮ್ಮ ಕ್ಯಾಮರಾವನ್ನು ಸೈಟ್‌ ಬಳಸುತ್ತಿದೆ</translation>
 <translation id="7340650977506865820">ನಿಮ್ಮ ಪರದೆಯನ್ನು ಸೈಟ್‌ ಹಂಚಿಕೊಳ್ಳುತ್ತಿದೆ</translation>
 <translation id="1805738995123446102">ಹಿನ್ನೆಲೆ ಟ್ಯಾಬ್‌ ನಿಮ್ಮ ಮೈಕ್ರೋಫೋನ್‌ ಅನ್ನು ಬಳಸುತ್ತಿದೆ</translation>
-<translation id="1112420131909513020">ಹಿನ್ನೆಲೆ ಟ್ಯಾಬ್ ಬ್ಲೂಟೂತ್ ಅನ್ನು ಬಳಸುತ್ತಿದೆ</translation>
 <translation id="8715480913140015283">ಹಿನ್ನೆಲೆ ಟ್ಯಾಬ್ ನಿಮ್ಮ ಕ್ಯಾಮರಾವನ್ನು ಬಳಸುತ್ತಿದೆ</translation>
 <translation id="6155141482566063812">ಹಿನ್ನೆಲೆ ಟ್ಯಾಬ್ ನಿಮ್ಮ ಪರದೆಯನ್ನು ಹಂಚಿಕೊಳ್ಳುತ್ತಿದೆ</translation>
 <translation id="661907246513853610">ನಿಮ್ಮ ಸ್ಧಳವನ್ನು ಸೈಟ್‌ ಟ್ರ್ಯಾಕ್ ಮಾಡಬಹುದು</translation>
 <translation id="8991520179165052608">ನಿಮ್ಮ ಮೈಕ್ರೊಫೋನ್ ಅನ್ನು ಸೈಟ್‌ ಬಳಸಿಕೊಳ್ಳಬಹುದು</translation>
-<translation id="7681095912841365527">ಸೈಟ್‌ ಬ್ಲೂಟೂತ್ ಅನ್ನು ಬಳಸಬಹುದು</translation>
 <translation id="3085412380278336437">ನಿಮ್ಮ ಕ್ಯಾಮರಾವನ್ನು ಸೈಟ್ ಬಳಸಬಹುದು</translation>
 <translation id="9180380851667544951">ನಿಮ್ಮ ಪರದೆಯನ್ನು ಸೈಟ್‌ ಹಂಚಿಕೊಳ್ಳಬಹುದು</translation>
-<translation id="400314203296796334">ನಿರ್ಬಂಧಿಸಲು ಅಥವಾ ಅನುಮತಿಸಲು ಹೆಡ್‌ಸೆಟ್ ತೆಗೆದುಹಾಕಿ.</translation>
-<translation id="4922897038695506037"><ph name="URL_HOST"/> ಹೆಚ್ಚುವರಿ ಅನುಮತಿಗಳನ್ನು ವಿನಂತಿಸುತ್ತಿದೆ.</translation>
+<translation id="310671807099593501">ಸೈಟ್‌ ಬ್ಲೂಟೂತ್ ಅನ್ನು ಬಳಸುತ್ತಿದೆ</translation>
+<translation id="1112420131909513020">ಹಿನ್ನೆಲೆ ಟ್ಯಾಬ್ ಬ್ಲೂಟೂತ್ ಅನ್ನು ಬಳಸುತ್ತಿದೆ</translation>
+<translation id="7681095912841365527">ಸೈಟ್‌ ಬ್ಲೂಟೂತ್ ಅನ್ನು ಬಳಸಬಹುದು</translation>
+<translation id="1484979925941077974">ಸೈಟ್‌, ಬ್ಲೂಟೂತ್ ಅನ್ನು ಬಳಸುತ್ತಿದೆ</translation>
+<translation id="4892229439761351791">ಸೈಟ್, ಬ್ಲೂಟೂತ್ ಅನ್ನು ಬಳಸಬಹುದು</translation>
+<translation id="6416743254476733475">ನಿಮ್ಮ ಕಂಪ್ಯೂಟರ್‌ನಲ್ಲಿ ಅನುಮತಿಸಿ ಅಥವಾ ನಿರ್ಬಂಧಿಸಿ.</translation>
+<translation id="6124698108608891449">ಈ ಸೈಟ್‌ಗೆ ಇನ್ನಷ್ಟು ಅನುಮತಿಗಳ ಅಗತ್ಯವಿದೆ.</translation>
+<translation id="6551612971599078809">ಸೈಟ್, USB ಅನ್ನು ಬಳಸುತ್ತಿದೆ</translation>
+<translation id="3088052000289932193">ಸೈಟ್, MIDI ಅನ್ನು ಬಳಸುತ್ತಿದೆ</translation>
+<translation id="7004402701596653846">ಸೈಟ್, MIDI ಅನ್ನು ಬಳಸಬಹುದು</translation>
 <translation id="7574650250151586813">ಪಠ್ಯವನ್ನು ಟೈಪ್ ಮಾಡಲು, ಡೇಡ್ರೀಮ್ ಕೀಬೋರ್ಡ್ ಆ್ಯಪ್ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಿ</translation>
 <translation id="983511809958454316">ಈ ವೈಶಿಷ್ಟ್ಯವು VR ನಲ್ಲಿ ಬೆಂಬಲಿತವಾಗಿಲ್ಲ</translation>
 <translation id="4008291085758151621">VR ನಲ್ಲಿ ಸೈಟ್ ಮಾಹಿತಿಯು ಲಭ್ಯವಿಲ್ಲ</translation>
@@ -4478,6 +4226,7 @@
 <translation id="6313641880021325787">VR ನಿಂದ ನಿರ್ಗಮಿಸಿ</translation>
 <translation id="2670429602441959756">VR ನಲ್ಲಿ ಇನ್ನೂ ಬೆಂಬಲಿಸದ ವೈಶಿಷ್ಟ್ಯಗಳನ್ನು ಈ ಪುಟವು ಒಳಗೊಂಡಿದೆ. ನಿರ್ಗಮಿಸುತ್ತಿದೆ...</translation>
 <translation id="1802687198411089702">ಪುಟವು ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತಿಲ್ಲ. ನೀವು ಅದಕ್ಕಾಗಿ ಕಾಯಬಹುದು ಅಥವಾ ನಿರ್ಗಮಿಸಬಹುದು.</translation>
+<translation id="1041175011127912238">ಈ ಪುಟವು ಪ್ರತಿಕ್ರಿಯಿಸುತ್ತಿಲ್ಲ</translation>
 <translation id="3987938432087324095">ಕ್ಷಮಿಸಿ, ಅದನ್ನು ಗ್ರಹಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ.</translation>
 <translation id="6923132443355966645">ಸ್ಕ್ರಾಲ್ / ಕ್ಲಿಕ್</translation>
 <translation id="6041155700700864984">ಪೂರ್ಣಪರದೆಯಿಂದ ನಿರ್ಗಮಿಸಿ</translation>

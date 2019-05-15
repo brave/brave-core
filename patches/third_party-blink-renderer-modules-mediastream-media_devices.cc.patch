@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/mediastream/media_devices.cc b/third_party/blink/renderer/modules/mediastream/media_devices.cc
-index 223370b5618cfd3215fec6b4414076a94e329b35..4848f83878580bb96084c8481846df92bf3c7798 100644
+index a55f9f1e6f805f5f2fb304fc03fa19a235d1dd53..e5c6709be3778b8c36fd2d5f4e63bf9062c4a866 100644
 --- a/third_party/blink/renderer/modules/mediastream/media_devices.cc
 +++ b/third_party/blink/renderer/modules/mediastream/media_devices.cc
 @@ -4,6 +4,7 @@
@@ -10,7 +10,7 @@ index 223370b5618cfd3215fec6b4414076a94e329b35..4848f83878580bb96084c8481846df92
  #include "services/service_manager/public/cpp/interface_provider.h"
  #include "third_party/blink/public/platform/platform.h"
  #include "third_party/blink/public/platform/task_type.h"
-@@ -78,6 +79,9 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state) {
+@@ -70,6 +71,9 @@ ScriptPromise MediaDevices::enumerateDevices(ScriptState* script_state) {
          script_state, DOMException::Create(DOMExceptionCode::kNotSupportedError,
                                             "Current frame is detached."));
    }
@@ -18,5 +18,5 @@ index 223370b5618cfd3215fec6b4414076a94e329b35..4848f83878580bb96084c8481846df92
 +    return ScriptPromise::CastUndefined(script_state);
 +  }
  
-   ScriptPromiseResolver* resolver = ScriptPromiseResolver::Create(script_state);
+   auto* resolver = MakeGarbageCollected<ScriptPromiseResolver>(script_state);
    ScriptPromise promise = resolver->Promise();

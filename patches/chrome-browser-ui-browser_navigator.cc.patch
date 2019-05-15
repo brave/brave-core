@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index 923eb172b0fcfd9f396f30cce4dc91593960056e..10d6e15e608927bf0c88ba034e3180fd0679acb6 100644
+index 0d1221f617040499eeff4955458d6139b6baa1b2..6806bcaaef009be13f8c79d3a045bfdd09d72ca7 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
-@@ -104,6 +104,7 @@ Browser* GetOrCreateBrowser(Profile* profile, bool user_gesture) {
+@@ -105,6 +105,7 @@ Browser* GetOrCreateBrowser(Profile* profile, bool user_gesture) {
  // Returns true on success. Otherwise, if changing params leads the browser into
  // an erroneous state, returns false.
  bool AdjustNavigateParamsForURL(NavigateParams* params) {
@@ -10,7 +10,7 @@ index 923eb172b0fcfd9f396f30cce4dc91593960056e..10d6e15e608927bf0c88ba034e3180fd
    if (params->contents_to_insert || params->switch_to_singleton_tab ||
        IsURLAllowedInIncognito(params->url, params->initiating_profile) ||
        params->initiating_profile->IsGuestSession()) {
-@@ -717,6 +718,7 @@ void Navigate(NavigateParams* params) {
+@@ -724,6 +725,7 @@ void Navigate(NavigateParams* params) {
  bool IsHostAllowedInIncognito(const GURL& url) {
    std::string scheme = url.scheme();
    base::StringPiece host = url.host_piece();

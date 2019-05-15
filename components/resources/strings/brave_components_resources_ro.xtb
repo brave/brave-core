@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Câștigați token-uri vizualizând reclame pe Brave. Reclamele prezentate sunt în funcție de ceea ce vă interesează, conform comportamentului dumneavoastră de navigare. Niciodată nicio dată personală sau istoric de navigare nu părăsesc browserul.</translation>
 <translation id="6112368337882254910">Contribuție automată</translation>
 <translation id="1527222983464337010">Un mod automat de a sprijini agențiile de publicitate și creatorii de conținut. Setați o plată lunară și navigați normal. Siteurile pe care le vizitați primesc automat contribuțiile dumneavoastră, în funcție de atenția acordată măsurată de Brave.</translation>
-<translation id="7178655681744815321">Câștiguri curente luna aceasta (estimate)</translation>
 <translation id="8157096848242649588">Data plății</translation>
 <translation id="5208388044986603165">Notificări de anunțuri primite</translation>
 <translation id="4229016885653790965">Ne pare rău! Anunțurile nu sunt încă disponibile în rtegiunea ta.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Sunteți plătiți să vedeți reclame relevante care vă respectă confidențialitatea.</translation>
 <translation id="3361548743396744457">Sprijiniți siteurile preferate doar prin navigare – sau oferiți o plată unui site oricând doriți.</translation>
 <translation id="3333887201479867589">Recompense Brave</translation>
+<translation id="4493850495402472953">și</translation>
+<translation id="8804164990146287819">Politica de Confidențialitate</translation>
+<translation id="4281844954008187215">Termeni Servicii</translation>
 <translation id="7530570094705720669">Creare portofel</translation>
 <translation id="2105596359439030979">Atenția dumneavoastră este valoroasă. Câștigați vizualizând reclame care respectă confidențialitatea și plătiți mai departe pentru a susține creatorii de conținut care vă plac.</translation>
 <translation id="516395624550019162">Da, am intrat!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">fără consimțământul dumneavoastră.</translation>
 <translation id="7147673045905733351">Astăzi, Brave vă urează bun venit pe noul internet.</translation>
 <translation id="1350763070659630336">Unul în care timpul dvs. este prețuit, datele dvs. personale sunt menținute confidențiale și chiar sunteți plătit pentru atenția dvs.</translation>
+<translation id="880341991877949255">Cu vechiul browser, plăteați să navigați vizualizând reclame cu atenția dumneavoastră prețioasă. Vă petreceați timpul prețios descărcând tehnologii invazive de reclame care transmiteau datele dumneavoastră private valoroase către agențiile de publicitate — fără consimțământul dumneavoastră.</translation>
 <translation id="5830306739231399614">Din păcate, încă nu aveți simboluri.</translation>
 <translation id="7359258898775969374">3 moduri pentru a vă umple portofelul:</translation>
 <translation id="8087614920008846901">Puteți adăuga fonduri.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Vedeți ce’ s-a îmbunătățit</translation>
 <translation id="4083384190339959182">Am’ realizat o actualizare importantă a Brave Payments.</translation>
 <translation id="5395851053710553429">Pregătiți-vă să experimentați următorul Internet.</translation>
-<translation id="880341991877949255">Cu vechiul browser, plăteați să navigați vizualizând reclame cu atenția dumneavoastră prețioasă. Vă petreceați timpul prețios descărcând tehnologii invazive de reclame care transmiteau datele dumneavoastră private valoroase către agențiile de publicitate — fără consimțământul dumneavoastră.</translation>
 <translation id="2549982302631665116">Astăzi, Brave vă urează bun venit pe noul Internet. Unul în care timpul dumneavoastră este prețuit, datele personale sunt păstrate confidențiale și chiar sunteți plătiți pentru atenția acordată.</translation>
 <translation id="3780605330121608425">Portofelul dumneavoastră</translation>
 <translation id="6727483290601442544">Vizualizați detalii</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Adaugă Dispozitiv Nou</translation>
 <translation id="8780295742023331191">Vizualizare Cod Sincronizare</translation>
 <translation id="1755198127524719638">Setări sincronizare</translation>
-<translation id="7558480201297099157">Administrați ce informații doriți să fie sincronizate între dispozitive. Aceste setări au efect doar la acest dispozitiv.</translation>
 <translation id="8820817407110198400">Marcaje</translation>
 <translation id="5591129654353352557">Setări site salvate</translation>
 <translation id="7859704718976024901">Istoric de navigare</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Cod Lanț de Sincronizare</translation>
 <translation id="2899261497479389619">Pe computerul țintă, navigați la Sincronizare Brave din setări și apăsați pe buton</translation>
 <translation id="4827439149833241990">“Am un Cod de Sincronizare”.</translation>
-<translation id="24067401253841795">Introduceți cuvintele cod pentru lanțul de sincronizare afișate mai jos.</translation>
 <translation id="8914601399214979966">Utilizează camera mea în schimb</translation>
 <translation id="3034163433136515805">Vizualizare Cod QR</translation>
 <translation id="5093410893656857925">Alegeți Tip Dispozitiv</translation>

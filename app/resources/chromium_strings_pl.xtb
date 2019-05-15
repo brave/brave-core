@@ -77,9 +77,13 @@ Brave nie może odzyskać ustawień.</translation>
 <translation id="5874882355102994015">Brave nie może pokazać podglądu wydruku, gdy nie ma wbudowanej przeglądarki PDF.</translation>
 <translation id="8880183781256147665">Dodawanie do Brave...</translation>
 <translation id="3561569806301739367">Plik <ph name="FILE_NAME"/> może być niebezpieczny, dlatego został zablokowany przez Brave.</translation>
+<translation id="6205431412329939367">Plik <ph name="FILE_NAME"/> może być niebezpieczny, dlatego został zablokowany przez Brave. O Twoje bezpieczeństwo dba Ochrona zaawansowana.</translation>
 <translation id="9067428552314418522">Ten plik jest niebezpieczny, dlatego został zablokowany przez Brave.</translation>
+<translation id="2938460345748897177">Ten plik jest niebezpieczny, dlatego został zablokowany przez Brave. O Twoje bezpieczeństwo dba Ochrona zaawansowana.</translation>
 <translation id="4168372721886011198">Plik <ph name="FILE_NAME"/> jest niebezpieczny, dlatego został zablokowany przez Brave.</translation>
+<translation id="8858456697111532356">Plik <ph name="FILE_NAME"/> jest niebezpieczny, dlatego został zablokowany przez Brave. O Twoje bezpieczeństwo dba Ochrona zaawansowana.</translation>
 <translation id="89367911614620585">Ten plik może być niebezpieczny, dlatego został zablokowany przez Brave.</translation>
+<translation id="8943391224520748272">Ten plik może być niebezpieczny, dlatego został zablokowany przez Brave. O Twoje bezpieczeństwo dba Ochrona zaawansowana.</translation>
 <translation id="9183662282810237335">Zamknąć Brave mimo to?</translation>
 <translation id="3834935463915107022">Zamknąć Brave mimo to?</translation>
 <translation id="8797356639448065696">Brave jest w trybie działania w tle</translation>
@@ -130,6 +134,7 @@ Jeśli jednak zalogujesz się teraz, informacje Brave, takie jak zakładki, hist
 <translation id="1326766910007115955">Logujesz się na zarządzane konto i przekazujesz jego administratorowi kontrolę nad swoim profilem Brave. Twoje dane Brave, takie jak aplikacje, zakładki, historia, hasła i inne ustawienia, zostaną trwale powiązane z użytkownikiem <ph name="USER_NAME"/>. Będzie można je usunąć w Panelu kont Brave Software, ale nie będzie można ich powiązać z innym kontem. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Logujesz się na zarządzane konto i przekazujesz jego administratorowi kontrolę nad swoim profilem Brave. Twoje dane Brave, takie jak aplikacje, zakładki, historia, hasła i inne ustawienia, zostaną trwale powiązane z użytkownikiem <ph name="USER_NAME"/>. Będzie można je usunąć w Panelu kont Brave Software, ale nie będzie można ich powiązać z innym kontem. Możesz też utworzyć nowy profil, by przechowywać swoje dotychczasowe dane Brave osobno. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Administrator systemu skonfigurował Brave do otwierania alternatywnej przeglądarki dla witryny <ph name="TARGET_URL_HOSTNAME">$1</ph>.</translation>
+<translation id="5380963249588143069">Administrator systemu skonfigurował Brave tak, by strona <ph name="TARGET_URL_HOSTNAME"/> otwierała się w przeglądarce <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
 <translation id="2591326305549412656">Użytkownik <ph name="USER_EMAIL_ADDRESS"/> wcześniej używał Brave</translation>
 <translation id="1384923383737428730">Masz na komputerze szkodliwe oprogramowanie. Brave może je usunąć, przywrócić Twoje ustawienia i wyłączyć rozszerzenia, by przeglądarka znów działała normalnie.</translation>
 <translation id="8919921662052966648">Brave nie może zsynchronizować Twoich danych. Zaktualizuj hasło synchronizacji.</translation>
@@ -186,7 +191,7 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="3856641371299712128">Reguła dla ruchu przychodzącego w Brave Dev zezwalająca na ruch mDNS.</translation>
 <translation id="8207657266087451193">Jeśli obraz nie ma przydatnego opisu, Brave spróbuje go dla Ciebie stworzyć. W tym celu obrazy zostaną wysłane do Brave Software. W każdej chwili możesz wyłączyć tę funkcję w ustawieniach.</translation>
 <translation id="5499063270485366718">Jeśli obraz nie ma przydatnego opisu, Brave spróbuje go dla Ciebie stworzyć. W tym celu obrazy zostaną wysłane do Brave Software.</translation>
-<translation id="7276297358157391541">Brave może lepiej sprawdzać pisownię, przesyłając do serwerów Brave Software tekst, który wpisujesz w przeglądarce. Dzięki temu możesz korzystać z tej samej technologii sprawdzania pisowni co wyszukiwarka Brave Software.</translation>
+<translation id="3870835867536344658">Będzie stosowany ten sam mechanizm sprawdzania pisowni, który jest używany w wyszukiwarce Brave Software. Tekst wpisywany w przeglądarce jest wysyłany do Brave Software. Zawsze możesz to zmienić w ustawieniach.</translation>
 <translation id="1807774211756215222">O&amp;twórz link w nowej karcie Brave</translation>
 <translation id="4624945300945265642">Otwórz link w oknie inco&amp;gnito Brave</translation>
 <translation id="7863882214613921971">O&amp;twórz link w nowej karcie Brave</translation>

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/logging.h"
+#include "base/one_shot_event.h"
 #include "brave/browser/extensions/api/brave_sync_event_router.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
@@ -22,7 +23,6 @@
 #include "content/public/browser/browser_thread.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
-#include "extensions/common/one_shot_event.h"
 
 namespace brave_sync {
 

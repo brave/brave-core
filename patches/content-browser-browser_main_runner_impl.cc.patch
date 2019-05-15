@@ -1,5 +1,5 @@
 diff --git a/content/browser/browser_main_runner_impl.cc b/content/browser/browser_main_runner_impl.cc
-index 5e6c0fff5d4d033bd8a2685c933df1bd13bc88eb..15199dde0b0fa96424a17d428e4dabeef672cd1e 100644
+index 28e6d582c17df0eba92980115eed52aeb3afff63..b38efc0205d3f82730979a28fadf2f14edd288a8 100644
 --- a/content/browser/browser_main_runner_impl.cc
 +++ b/content/browser/browser_main_runner_impl.cc
 @@ -19,6 +19,7 @@
@@ -10,8 +10,8 @@ index 5e6c0fff5d4d033bd8a2685c933df1bd13bc88eb..15199dde0b0fa96424a17d428e4dabee
  #include "build/build_config.h"
  #include "components/tracing/common/trace_startup_config.h"
  #include "components/tracing/common/tracing_switches.h"
-@@ -110,8 +111,8 @@ int BrowserMainRunnerImpl::Initialize(const MainFunctionParams& parameters) {
-     gfx::win::MaybeInitializeDirectWrite();
+@@ -109,8 +110,8 @@ int BrowserMainRunnerImpl::Initialize(const MainFunctionParams& parameters) {
+     gfx::win::InitializeDirectWrite();
  #endif  // OS_WIN
  
 -    main_loop_.reset(
