@@ -5,6 +5,7 @@ assert(bundle_widevine_cdm || enable_widevine_cdm_component)
 source_set("widevine") {
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
     "//components/content_settings/core/common",
     "//content/public/browser",
     "//content/public/common",

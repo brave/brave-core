@@ -13,6 +13,7 @@
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
+#include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/version_info.h"
 #include "brave/common/brave_switches.h"
 #include "chrome/browser/profiles/profile.h"
@@ -56,4 +57,5 @@ void BraveMdSettingsUI::AddResources(content::WebUIDataSource* html_source,
                           command_line.HasSwitch(switches::kDisableBraveSync));
   html_source->AddString("braveProductVersion",
     version_info::GetBraveVersionWithoutChromiumMajorVersion());
+  NavigationBarDataProvider::Initialize(html_source);
 }
