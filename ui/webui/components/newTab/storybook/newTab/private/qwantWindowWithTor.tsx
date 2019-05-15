@@ -3,25 +3,22 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-
-// Feature-specific components
 import {
   Grid2Columns,
   Box,
+  Content,
   HeaderBox,
   Title,
   SubTitle,
   Text,
   TorImage,
+  TorLockImage,
   Separator,
   FakeButton
-} from '~brave-core-ui/newTab/private'
-import TorContent from './torContent'
-// Helpers
-import { getLocale } from '../../../common/locale'
+} from '../../../private'
 
-// Assets
-const privateWindowImg = require('../../../img/newtab/private-window.svg')
+import locale from './fakeLocale'
+const privateWindowImg = require('../assets/private-window-tor.svg')
 
 export default class QwantTab extends React.PureComponent<{}, {}> {
   render () {
@@ -31,20 +28,25 @@ export default class QwantTab extends React.PureComponent<{}, {}> {
           <div>
             <TorImage src={privateWindowImg} />
             <div>
-              <SubTitle>{getLocale('headerLabel')}</SubTitle>
-              <Title>{getLocale('headerTitle')}</Title>
-              <Text>{getLocale('headerText')}</Text>
+              <SubTitle>{locale.headerLabel}</SubTitle>
+              <Title>{locale.headerTorTitle}</Title>
+              <Text>{locale.headerTorText}</Text>
             </div>
           </div>
         </HeaderBox>
         <Box>
-          <TorContent />
+          <Content>
+            <TorLockImage />
+            <SubTitle>{locale.boxTorLabel2}</SubTitle>
+            <Title>{locale.boxTorTitle}</Title>
+            <Text>{locale.boxTorText}</Text>
+          </Content>
           <Separator />
           <FakeButton
             href='https://support.brave.com/hc/en-us/articles/360018121491'
             target='_blank'
           >
-            {getLocale('boxTorButton')}
+            {locale.boxTorButton}
           </FakeButton>
         </Box>
       </Grid2Columns>

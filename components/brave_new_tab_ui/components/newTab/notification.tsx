@@ -9,7 +9,7 @@ import {
   SiteRemovalNotification,
   SiteRemovalAction,
   SiteRemovalText
-} from 'brave-ui/features/newTab/default'
+} from '~brave-core-ui/newTab/default'
 
 // Icons
 import { CloseStrokeIcon } from 'brave-ui/components/icons'

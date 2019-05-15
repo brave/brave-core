@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Page, PageWrapper } from 'brave-ui/features/newTab/private'
+import { Page, PageWrapper } from '~brave-core-ui/newTab/private'
 
 // Components group
 import PrivateTab from './privateTab'

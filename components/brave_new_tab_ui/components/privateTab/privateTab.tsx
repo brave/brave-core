@@ -20,10 +20,10 @@ import {
   Separator,
   FakeButton,
   Link
-} from 'brave-ui/features/newTab/private'
+} from '~brave-core-ui/newTab/private'
 
 // Components
-import { Toggle } from 'brave-ui/features/shields'
+import { Toggle } from '~brave-core-ui/newTab/private/toggle'
 import TorContent from './torContent'
 
 // Helpers
