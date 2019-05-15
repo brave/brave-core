@@ -25,6 +25,7 @@
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
+#include "net/http/http_status_code.h"
 
 using namespace braveledger_bat_client; //  NOLINT
 using namespace braveledger_bat_publishers; //  NOLINT
@@ -882,7 +883,7 @@ void LedgerImpl::LoadPublishersListCallback(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  if (response_status_code == 200 && !response.empty()) {
+  if (response_status_code == net::HTTP_OK && !response.empty()) {
     bat_publishers_->RefreshPublishersList(response);
   } else {
     BLOG(this, ledger::LogLevel::LOG_ERROR) <<
@@ -1107,7 +1108,8 @@ void LedgerImpl::LogResponse(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
-  std::string stat = response_status_code == 200 ? "Success" : "Failure";
+  std::string stat =
+      response_status_code == net::HTTP_OK ? "Success" : "Failure";
 
   std::string formatted_headers = "";
   for (auto header = headers.begin(); header != headers.end(); ++header) {

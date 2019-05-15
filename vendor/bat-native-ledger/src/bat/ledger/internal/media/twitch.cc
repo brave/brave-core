@@ -11,6 +11,7 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/twitch.h"
+#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -499,7 +500,7 @@ void MediaTwitch::OnEmbedResponse(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     // TODO(anyone): add error handler
     return;
   }
