@@ -44,7 +44,7 @@ class MediaTwitter : public ledger::LedgerCallbackHandler {
     const std::string& publisher_name,
     ledger::PublisherInfoCallback callback,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info);
+    ledger::PublisherInfoPtr publisher_info);
 
   void SavePublisherInfo(
     const uint64_t duration,

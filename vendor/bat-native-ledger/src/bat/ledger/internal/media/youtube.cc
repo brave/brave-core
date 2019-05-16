@@ -378,7 +378,7 @@ void MediaYouTube::ProcessActivityFromUrl(uint64_t window_id,
 
 void MediaYouTube::OnSaveMediaVisit(
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info) {
+    ledger::PublisherInfoPtr info) {
   // TODO(nejczdovc): handle if needed
 }
 

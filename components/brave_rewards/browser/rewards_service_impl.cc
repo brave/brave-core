@@ -2244,16 +2244,14 @@ void RewardsServiceImpl::SaveRecurringTip(
 void RewardsServiceImpl::OnTwitterPublisherInfoSaved(
     SaveMediaInfoCallback callback,
     int result,
-    const std::string& json_publisher) {
+    ledger::PublisherInfoPtr publisher) {
   if (Connected()) {
     ledger::Result result_converted = static_cast<ledger::Result>(result);
     std::unique_ptr<brave_rewards::ContentSite> site;
 
     if (result_converted == ledger::Result::LEDGER_OK) {
-      ledger::PublisherInfo publisher;
-    publisher.loadFromJson(json_publisher);
-    site = std::make_unique<brave_rewards::ContentSite>
-        (PublisherInfoToContentSite(publisher));
+      site = std::make_unique<brave_rewards::ContentSite>(
+          PublisherInfoToContentSite(*publisher));
     }
 
     std::move(callback).Run(std::move(site));

@@ -231,7 +231,7 @@ void BatPublishers::saveVisitInternal(
       panel_info->favicon_url = std::string();
     }
 
-    auto callback_info = std::make_unique<ledger::PublisherInfo>(*panel_info);
+    auto callback_info = panel_info->Clone();
     callback(ledger::Result::LEDGER_OK, std::move(callback_info));
 
     if (window_id > 0) {
@@ -747,7 +747,7 @@ void BatPublishers::getPublisherActivityFromUrl(
 
 void BatPublishers::OnSaveVisitInternal(
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info) {
+    ledger::PublisherInfoPtr info) {
   // TODO(nejczdovc): handle if needed
 }
 

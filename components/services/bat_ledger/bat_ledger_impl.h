@@ -232,7 +232,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnSaveMediaInfoCallback(
     CallbackHolder<SaveMediaInfoCallback>* holder,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info);
+    ledger::PublisherInfoPtr info);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

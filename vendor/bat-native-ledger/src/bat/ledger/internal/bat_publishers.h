@@ -190,7 +190,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void OnSaveVisitInternal(
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info);
+    ledger::PublisherInfoPtr info);
 
   void OnPanelPublisherInfo(
       ledger::Result result,

@@ -515,14 +515,9 @@ void BatLedgerImpl::LoadPublisherInfo(
 void BatLedgerImpl::OnSaveMediaInfoCallback(
     CallbackHolder<SaveMediaInfoCallback>* holder,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info) {
-  std::string publisher;
-  if (info) {
-    publisher = info->ToJson();
-  }
-
+    ledger::PublisherInfoPtr publisher_info) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(result, publisher);
+    std::move(holder->get()).Run(result, std::move(publisher_info));
   }
 
   delete holder;

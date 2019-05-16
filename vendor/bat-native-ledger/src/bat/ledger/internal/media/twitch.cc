@@ -365,7 +365,7 @@ void MediaTwitch::ProcessActivityFromUrl(uint64_t window_id,
 
 void MediaTwitch::OnSaveMediaVisit(
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info) {
+    ledger::PublisherInfoPtr info) {
   // TODO(nejczdovc): handle if needed
 }
 

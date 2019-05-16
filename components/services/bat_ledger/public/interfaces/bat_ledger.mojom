@@ -120,7 +120,7 @@ interface BatLedger {
   StartAutoContribute();
 
   SaveMediaInfo(string type, map<string, string> args) => (int32 result,
-        string publisher_info);
+        ledger.mojom.PublisherInfo? publisher_info);
 
   SetInlineTipSetting(string key, bool enabled);
 

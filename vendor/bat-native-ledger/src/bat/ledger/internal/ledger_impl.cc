@@ -148,7 +148,7 @@ void LedgerImpl::OnShow(uint32_t tab_id, const uint64_t& current_time) {
 
 void LedgerImpl::OnSaveVisit(
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> info) {
+    ledger::PublisherInfoPtr info) {
   // TODO(nejczdovc): handle if needed
 }
 

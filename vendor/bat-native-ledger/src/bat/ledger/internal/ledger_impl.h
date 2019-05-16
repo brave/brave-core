@@ -461,7 +461,7 @@ class LedgerImpl : public ledger::Ledger,
   void OnShow(uint32_t tab_id, const uint64_t& current_time) override;
 
   void OnSaveVisit(ledger::Result result,
-                   std::unique_ptr<ledger::PublisherInfo> info);
+                   ledger::PublisherInfoPtr info);
 
   void OnHide(uint32_t tab_id, const uint64_t& current_time) override;
 

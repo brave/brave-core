@@ -100,7 +100,7 @@ void MediaTwitter::OnMediaPublisherInfo(
     const std::string& publisher_name,
     ledger::PublisherInfoCallback callback,
     ledger::Result result,
-    std::unique_ptr<ledger::PublisherInfo> publisher_info) {
+    ledger::PublisherInfoPtr publisher_info) {
   if (result != ledger::Result::LEDGER_OK  &&
     result != ledger::Result::NOT_FOUND) {
     callback(ledger::Result::LEDGER_ERROR, nullptr);
