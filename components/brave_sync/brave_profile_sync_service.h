@@ -11,6 +11,26 @@
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
 #include "components/browser_sync/profile_sync_service.h"
 
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkAdded);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkDeleted);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetSyncWords);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, GetSeed);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnBraveSyncPrefsChanged);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnDeleteDevice);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnDeleteDeviceWhenSelfDeleted);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnResetSync);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, ClientOnGetInitData);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetInitData);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncPrefsChanged);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncDebug);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncReadyAlreadyWithSync);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncReadyNewToSync);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetExistingObjects);
+
+class BraveSyncServiceTest;
+
 namespace brave_sync {
 namespace prefs {
 class Prefs;
@@ -71,9 +91,31 @@ class BraveProfileSyncService : public browser_sync::ProfileSyncService,
 
   brave_sync::BraveSyncClient* GetBraveSyncClient() override;
 
- private:
-
   bool IsBraveSyncEnabled() const override;
+  bool IsBraveSyncInitialized() const;
+  bool IsBraveSyncConfigured() const;
+
+ private:
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkDeleted);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, GetSyncWords);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, GetSeed);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnBraveSyncPrefsChanged);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnDeleteDevice);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnDeleteDeviceWhenOneDevice);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest,
+                           OnDeleteDeviceWhenSelfDeleted);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnResetSync);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, ClientOnGetInitData);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetInitData);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncPrefsChanged);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncDebug);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncReadyAlreadyWithSync);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncReadyNewToSync);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetExistingObjects);
+  friend class ::BraveSyncServiceTest;
+
   void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override;
   void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
                        base::WaitableEvent* wevent) override;
@@ -109,7 +151,7 @@ class BraveProfileSyncService : public browser_sync::ProfileSyncService,
   std::string brave_sync_words_;
 
   brave_sync::GetRecordsCallback get_record_cb_;
-  base::WaitableEvent* wevent_;
+  base::WaitableEvent* wevent_ = nullptr;
 
   // Registrar used to monitor the brave_profile prefs.
   PrefChangeRegistrar brave_pref_change_registrar_;
