@@ -48,6 +48,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/network_service_instance.h"
 #include "content/public/common/service_manager_connection.h"
+#include "net/base/network_change_notifier.h"
 #include "net/url_request/url_fetcher.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
 #include "services/service_manager/public/cpp/connector.h"
@@ -1027,8 +1028,7 @@ void AdsServiceImpl::LoadSampleBundle(
 
 bool AdsServiceImpl::IsNetworkConnectionAvailable() {
 #if defined(OS_ANDROID)
-  // TODO(bridiver) - fix for android
-  return true;
+  return !net::NetworkChangeNotifier::IsOffline();
 #else
   return !content::GetNetworkConnectionTracker()->IsOffline();
 #endif
