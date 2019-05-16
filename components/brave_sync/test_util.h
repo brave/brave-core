@@ -32,6 +32,7 @@ class MockBraveSyncClient : public BraveSyncClient {
   ~MockBraveSyncClient() override;
 
   MOCK_METHOD0(sync_message_handler, SyncMessageHandler*());
+  MOCK_METHOD1(set_sync_message_handler, void(SyncMessageHandler*));
   MOCK_METHOD4(SendGotInitData, void(const Uint8Array& seed,
     const Uint8Array& device_id, const client_data::Config& config,
     const std::string& sync_words));

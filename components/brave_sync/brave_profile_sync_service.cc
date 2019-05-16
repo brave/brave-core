@@ -357,20 +357,18 @@ void BraveProfileSyncService::OnSetSyncBookmarks(const bool sync_bookmarks) {
 
 void BraveProfileSyncService::OnSetSyncBrowsingHistory(
     const bool sync_browsing_history) {
-  NOTIMPLEMENTED();
+  brave_sync_prefs_->SetSyncHistoryEnabled(sync_browsing_history);
 }
 
 void BraveProfileSyncService::OnSetSyncSavedSiteSettings(
     const bool sync_saved_site_settings) {
-  NOTIMPLEMENTED();
+  brave_sync_prefs_->SetSyncSiteSettingsEnabled(sync_saved_site_settings);
 }
 
 void BraveProfileSyncService::BackgroundSyncStarted(bool startup) {
-  NOTIMPLEMENTED();
 }
 
 void BraveProfileSyncService::BackgroundSyncStopped(bool shutdown) {
-  NOTIMPLEMENTED();
 }
 
 void BraveProfileSyncService::OnSyncDebug(const std::string& message) {
@@ -749,6 +747,14 @@ BraveSyncClient* BraveProfileSyncService::GetBraveSyncClient() {
 
 bool BraveProfileSyncService::IsBraveSyncEnabled() const{
   return brave_sync_prefs_->GetSyncEnabled();
+}
+
+bool BraveProfileSyncService::IsBraveSyncInitialized() const {
+  return brave_sync_initialized_;
+}
+
+bool BraveProfileSyncService::IsBraveSyncConfigured() const {
+  return brave_sync_configured_;
 }
 
 void BraveProfileSyncService::OnPollSyncCycle(GetRecordsCallback cb,

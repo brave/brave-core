@@ -1,12 +1,12 @@
 diff --git a/components/sync/driver/sync_client.h b/components/sync/driver/sync_client.h
-index 1cc9f14d35f7edae21fc21a3bd9970a7e60f4222..e19603dcf48f4d9d1c88961dccfaaef7ccf08824 100644
+index 1cc9f14d35f7edae21fc21a3bd9970a7e60f4222..9c69b2e5cab29d7c757b6a06d3619bcb32fa681b 100644
 --- a/components/sync/driver/sync_client.h
 +++ b/components/sync/driver/sync_client.h
 @@ -73,6 +73,8 @@ class SyncClient {
    // Returns the current SyncApiComponentFactory instance.
    virtual SyncApiComponentFactory* GetSyncApiComponentFactory() = 0;
  
-+  virtual brave_sync::BraveSyncClient* GetBraveSyncClient() = 0;
++  virtual brave_sync::BraveSyncClient* GetBraveSyncClient();
 +
   private:
    DISALLOW_COPY_AND_ASSIGN(SyncClient);
