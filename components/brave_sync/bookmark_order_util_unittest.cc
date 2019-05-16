@@ -8,24 +8,18 @@
 
 namespace brave_sync {
 
-class BookmarkOrderUtilTest : public testing::Test {
-public:
-protected:
-private:
-};
-
-TEST_F(BookmarkOrderUtilTest, OrderToIntVect_EmptyString) {
+TEST(BookmarkOrderUtilTest, OrderToIntVect_EmptyString) {
   std::vector<int> result = OrderToIntVect("");
   EXPECT_TRUE(result.empty());
 }
 
-TEST_F(BookmarkOrderUtilTest, OrderToIntVect_SingleValue) {
+TEST(BookmarkOrderUtilTest, OrderToIntVect_SingleValue) {
   std::vector<int> result = OrderToIntVect("1");
   ASSERT_EQ(result.size(), 1u);
   EXPECT_EQ(result.at(0), 1);
 }
 
-TEST_F(BookmarkOrderUtilTest, OrderToIntVect_TypicalValue) {
+TEST(BookmarkOrderUtilTest, OrderToIntVect_TypicalValue) {
   std::vector<int> result = OrderToIntVect("1.7.4");
   ASSERT_EQ(result.size(), 3u);
   EXPECT_TRUE(result.at(0) == 1);
@@ -33,18 +27,18 @@ TEST_F(BookmarkOrderUtilTest, OrderToIntVect_TypicalValue) {
   EXPECT_TRUE(result.at(2) == 4);
 }
 
-TEST_F(BookmarkOrderUtilTest, OrderToIntVect_WrongValue) {
+TEST(BookmarkOrderUtilTest, OrderToIntVect_WrongValue) {
   std::vector<int> result = OrderToIntVect("..");
   EXPECT_TRUE(result.empty());
 }
 
-TEST_F(BookmarkOrderUtilTest, OrderToIntVect_SemiWrongValue) {
+TEST(BookmarkOrderUtilTest, OrderToIntVect_SemiWrongValue) {
   std::vector<int> result = OrderToIntVect(".5.");
   ASSERT_EQ(result.size(), 1u);
   EXPECT_EQ(result.at(0), 5);
 }
 
-TEST_F(BookmarkOrderUtilTest, CompareOrder) {
+TEST(BookmarkOrderUtilTest, CompareOrder) {
   EXPECT_FALSE(CompareOrder("", ""));
   EXPECT_TRUE(CompareOrder("1", "2"));
   EXPECT_TRUE(CompareOrder("1", "1.1"));
