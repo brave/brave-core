@@ -196,4 +196,4 @@ export async function setViewPreferences (preferences: SetViewPreferencesData): 
 export const onShieldsPanelShown = () =>
   new Promise<void>((resolve) => {
     chrome.braveShields.onShieldsPanelShown()
-})
+  })

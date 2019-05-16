@@ -62,7 +62,7 @@ export class WelcomePage extends React.Component<Props, State> {
 
   onClickLetsGo = () => {
     this.setState({
-      currentScreen: this.state.currentScreen + 1,
+      currentScreen: this.state.currentScreen + 1
     })
   }
 
@@ -79,13 +79,13 @@ export class WelcomePage extends React.Component<Props, State> {
 
   onClickSlideBullet = (nextScreen: number) => {
     this.setState({
-      currentScreen: nextScreen,
+      currentScreen: nextScreen
     })
   }
 
   onClickNext = () => {
     this.setState({
-      currentScreen: this.state.currentScreen + 1,
+      currentScreen: this.state.currentScreen + 1
     })
   }
 
