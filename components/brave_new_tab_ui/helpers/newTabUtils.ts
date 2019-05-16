@@ -8,3 +8,20 @@ export const isHttpOrHttps = (url?: string) => {
   }
   return /^https?:/i.test(url)
 }
+
+/**
+ * Obtains a letter / char that represents the current site
+ * @param site - The site requested from the top site's list
+ */
+export const getCharForSite = (site: NewTab.Site) => {
+  let name
+  if (!site.title) {
+    try {
+      name = new window.URL(site.url || '').hostname
+    } catch (e) {
+      console.warn('getCharForSite', { url: site.url || '' })
+    }
+  }
+  name = site.title || name || '?'
+  return name.charAt(0).toUpperCase()
+}
