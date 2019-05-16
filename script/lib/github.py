@@ -6,10 +6,6 @@ import re
 import requests
 import sys
 import base64
-import logging
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
-from urllib3.exceptions import MaxRetryError
 try:
     from util import execute, scoped_cwd
 except ImportError:
@@ -35,22 +31,6 @@ class GitHub:
     def __getattr__(self, attr):
         return _Callable(self, '/%s' % attr)
 
-    def retry_session(retries=5, session=None, backoff_factor=0.3, status_forcelist=(500, 502, 503, 504),
-                      raise_on_status=True):
-        session = session or requests.Session()
-        retry = Retry(
-            total=retries,
-            read=retries,
-            connect=retries,
-            backoff_factor=backoff_factor,
-            status_forcelist=status_forcelist,
-            raise_on_status=True,
-        )
-        adapter = HTTPAdapter(max_retries=retry)
-        session.mount('http://', adapter)
-        session.mount('https://', adapter)
-        return session
-
     def send(self, method, path, **kw):
         if 'headers' not in kw:
             kw['headers'] = dict()
@@ -68,17 +48,10 @@ class GitHub:
                 kw['data'] = json.dumps(kw['data'])
 
         try:
-            if method == "post":
-                logging.debug("Using session to override urllib3 Retry function for POST actions")
-                session = self.retry_session()
-                r = getattr(session, method)(url, **kw).json()
-            else:
-                r = getattr(requests, method)(url, **kw).json()
+            r = getattr(requests, method)(url, **kw).json()
         except ValueError:
             # Returned response may be empty in some cases
             r = {}
-        except MaxRetryError:
-            raise MaxRetryError
         if 'message' in r:
             raise Exception(json.dumps(r, indent=2, separators=(',', ': ')))
         return r
