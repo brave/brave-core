@@ -9,7 +9,7 @@
 
 namespace brave_rewards {
 
-void RecordWalletBalanceP3A(bool wallet_created, size_t b) {
+void RecordWalletBalanceP3A(bool wallet_created, uint64_t b) {
   int answer = 0;
   if (wallet_created) {
     if (b < 10) {

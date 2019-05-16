@@ -190,9 +190,9 @@ std::string URLMethodToRequestType(ledger::URL_METHOD method) {
   }
 }
 
-size_t RoundProbiToUint64(base::StringPiece probi) {
+uint64_t RoundProbiToUint64(base::StringPiece probi) {
   if (probi.size() < 18) return 0;
-  size_t grant = 0;
+  uint64_t grant = 0;
   base::StringToUint64(probi.substr(0, probi.size() - 18), &grant);
   return grant;
 }
@@ -208,7 +208,7 @@ void ExtractAndLogP3AStats(const base::DictionaryValue& dict) {
 
   // Get grants.
   const base::Value* grants_value = dict.FindKey("grants");
-  size_t total_grants = 0;
+  uint64_t total_grants = 0;
   if (grants_value) {
     if (!grants_value->is_list()) {
       LOG(WARNING) << "Bad grant value in ledger_state.";
@@ -233,7 +233,7 @@ void ExtractAndLogP3AStats(const base::DictionaryValue& dict) {
       }
     }
   }
-  const size_t total =
+  const uint64_t total =
       RoundProbiToUint64(probi_value->GetString()) - total_grants;
   RecordWalletBalanceP3A(true, total);
 }
