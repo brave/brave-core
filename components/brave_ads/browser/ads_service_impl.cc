@@ -318,10 +318,12 @@ AdsServiceImpl::~AdsServiceImpl() {
 }
 
 void AdsServiceImpl::OnInitialize() {
+  LOG(WARNING) << "albert OnInitialize called";
   ResetTimer();
 }
 
 void AdsServiceImpl::OnCreate() {
+  LOG(WARNING) << "albert OnCreate called";
   if (connected()) {
     bat_ads_->Initialize(
         base::BindOnce(&AdsServiceImpl::OnInitialize, AsWeakPtr()));
@@ -871,8 +873,10 @@ void AdsServiceImpl::ShowNotification(
 
   notification_ids_[notification_id] = std::move(info);
 
+  /**
   display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
                             *notification);
+                            */
 
   uint32_t timer_id = next_timer_id();
 

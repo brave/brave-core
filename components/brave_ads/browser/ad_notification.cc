@@ -15,7 +15,8 @@
 #include "chrome/browser/profiles/profile.h"
 
 #if defined(OS_ANDROID)
-#include "chrome/browser/jni_headers/chrome/jni/BraveAds_jni.h"
+#include "chrome/android/jni_headers/chrome/jni/BraveAds_jni.h"
+// #include "jni/BraveAds_jni.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "base/android/jni_android.h"
