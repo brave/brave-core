@@ -26,7 +26,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/network_service_instance.h"
 #include "content/public/test/test_browser_thread_bundle.h"
-#include "services/network/test/test_network_connection_tracker.h"
 #include "net/base/network_interfaces.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -89,6 +88,7 @@
 //                           | BraveSyncServiceTest.OnResetSync
 // OnBraveSyncPrefsChanged   | +
 
+using bookmarks::BookmarkModel;
 using brave_sync::BraveSyncService;
 using brave_sync::BraveProfileSyncService;
 using brave_sync::BraveSyncServiceObserver;
@@ -96,9 +96,33 @@ using brave_sync::jslib::SyncRecord;
 using brave_sync::MockBraveSyncClient;
 using brave_sync::RecordsList;
 using brave_sync::SimpleDeviceRecord;
-using network::mojom::ConnectionType;
 using testing::_;
 using testing::AtLeast;
+
+bool DevicesContains(brave_sync::SyncDevices* devices, const std::string& id,
+    const std::string& name) {
+  DCHECK(devices);
+  for (const auto& device : devices->devices_) {
+    if (device.device_id_ == id && device.name_ == name) {
+      return true;
+    }
+  }
+  return false;
+}
+
+MATCHER_P2(ContainsDeviceRecord, action, name,
+    "contains device sync record with params") {
+  for (const auto& record : arg) {
+    if (record->has_device()) {
+      const auto& device = record->GetDevice();
+      if (record->action == action &&
+          device.name == name) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
 
 class MockBraveSyncServiceObserver : public BraveSyncServiceObserver {
  public:
@@ -129,6 +153,10 @@ class BraveSyncServiceTest : public testing::Test {
        profile(),
        base::BindRepeating(&brave_sync::BuildFakeBookmarkModelForTests));
 
+    model_ = BookmarkModelFactory::GetForBrowserContext(
+        Profile::FromBrowserContext(profile_.get()));
+    EXPECT_NE(model(), nullptr);
+
     sync_client_ = new MockBraveSyncClient();
     brave_sync::BraveSyncClientImpl::set_for_testing(sync_client_);
 
@@ -154,6 +182,7 @@ class BraveSyncServiceTest : public testing::Test {
   Profile* profile() { return profile_.get(); }
   BraveProfileSyncService* sync_service() { return sync_service_; }
   MockBraveSyncClient* sync_client() { return sync_client_; }
+  BookmarkModel* model() { return model_; }
   MockBraveSyncServiceObserver* observer() { return observer_.get(); }
   brave_sync::prefs::Prefs* brave_sync_prefs() {
     return sync_service_->brave_sync_prefs_.get(); }
@@ -167,6 +196,7 @@ class BraveSyncServiceTest : public testing::Test {
   std::unique_ptr<Profile> profile_;
   BraveProfileSyncService* sync_service_;
   MockBraveSyncClient* sync_client_;
+  BookmarkModel* model_;  // Not owns
   std::unique_ptr<MockBraveSyncServiceObserver> observer_;
 
   base::ScopedTempDir temp_dir_;
@@ -313,31 +343,6 @@ TEST_F(BraveSyncServiceTest, GetSeed) {
   std::string expected_seed = brave_sync::StrFromUint8Array(binary_seed);
   EXPECT_EQ(sync_service()->GetSeed(), expected_seed);
   EXPECT_TRUE(brave_sync_prefs()->GetPrevSeed().empty());
-}
-
-bool DevicesContains(brave_sync::SyncDevices* devices, const std::string& id,
-    const std::string& name) {
-  DCHECK(devices);
-  for (const auto& device : devices->devices_) {
-    if (device.device_id_ == id && device.name_ == name) {
-      return true;
-    }
-  }
-  return false;
-}
-
-MATCHER_P2(ContainsDeviceRecord, action, name,
-    "contains device sync record with params") {
-  for (const auto& record : arg) {
-    if (record->has_device()) {
-      const auto& device = record->GetDevice();
-      if (record->action == action &&
-          device.name == name) {
-        return true;
-      }
-    }
-  }
-  return false;
 }
 
 TEST_F(BraveSyncServiceTest, OnDeleteDevice) {
@@ -597,6 +602,13 @@ TEST_F(BraveSyncServiceTest, OnSaveBookmarksBaseOrder) {
   sync_service()->OnSaveBookmarksBaseOrder("1.1.");
   EXPECT_EQ(profile()->GetPrefs()->GetString(
        brave_sync::prefs::kSyncBookmarksBaseOrder), "1.1.");
+  // Permanent node order
+  std::string order;
+  model()->bookmark_bar_node()->GetMetaInfo("order", &order);
+  EXPECT_EQ(order, "1.1.1");
+  order.clear();
+  model()->other_node()->GetMetaInfo("order", &order);
+  EXPECT_EQ(order, "1.1.2");
 }
 
 TEST_F(BraveSyncServiceTest, OnBraveSyncPrefsChanged) {
