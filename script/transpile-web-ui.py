@@ -17,7 +17,9 @@ def main():
     if args.extra_relative_path is not None:
         webpack_gen_dir = webpack_gen_dir + args.extra_relative_path
     transpile_web_uis(args.production, webpack_gen_dir,
-                      args.entry, args.public_asset_path)
+                      args.entry,
+                      args.depfile_path[0], args.depfile_outputpath[0],
+                      args.public_asset_path)
     generate_grd(args.target_gen_dir[0], args.resource_name[0])
 
 
@@ -31,6 +33,8 @@ def parse_args():
                         help='Entry points',
                         required=True)
     parser.add_argument('--target_gen_dir', nargs=1)
+    parser.add_argument('--depfile_outputpath', nargs=1)
+    parser.add_argument('--depfile_path', nargs=1)
     parser.add_argument('--resource_name', nargs=1)
     parser.add_argument('--extra_relative_path', nargs='?')
     parser.add_argument('--public_asset_path', nargs='?')
@@ -55,7 +59,7 @@ def clean_target_dir(target_dir, env=None):
 
 
 def transpile_web_uis(production, target_gen_dir,
-                      entry_points, public_asset_path=None, env=None):
+                      entry_points, depfile_path, depfile_outputpath, public_asset_path=None, env=None):
     if env is None:
         env = os.environ.copy()
 
@@ -74,6 +78,8 @@ def transpile_web_uis(production, target_gen_dir,
         args.append(entry)
 
     env["TARGET_GEN_DIR"] = os.path.abspath(target_gen_dir)
+    env["DEPFILE_PATH"] = depfile_path
+    env["DEPFILE_OUTPUT_PATH"] = depfile_outputpath
 
     dirname = os.path.abspath(os.path.join(__file__, '..', '..'))
     with scoped_cwd(dirname):
