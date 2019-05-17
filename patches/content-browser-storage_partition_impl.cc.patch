@@ -1,8 +1,8 @@
 diff --git a/content/browser/storage_partition_impl.cc b/content/browser/storage_partition_impl.cc
-index 3ab76283f2f892b2fff9cb5688e6324a9410a0b7..56a4ac58e37db53d2354b2caaa4897d1c5ed777f 100644
+index ab64e8ae556da9444770eb6482159ee2b5073b66..bed2dc653a75d550be95e24ed888eb68e8c0c6b3 100644
 --- a/content/browser/storage_partition_impl.cc
 +++ b/content/browser/storage_partition_impl.cc
-@@ -975,6 +975,7 @@ void StoragePartitionImpl::OnCanSendReportingReports(
+@@ -976,6 +976,7 @@ void StoragePartitionImpl::OnCanSendReportingReports(
      bool allowed = permission_controller->GetPermissionStatus(
                         PermissionType::BACKGROUND_SYNC, origin_url,
                         origin_url) == blink::mojom::PermissionStatus::GRANTED;
@@ -10,7 +10,7 @@ index 3ab76283f2f892b2fff9cb5688e6324a9410a0b7..56a4ac58e37db53d2354b2caaa4897d1
      if (allowed)
        origins_out.push_back(origin);
    }
-@@ -987,7 +988,7 @@ void StoragePartitionImpl::OnCanSendDomainReliabilityUpload(
+@@ -988,7 +989,7 @@ void StoragePartitionImpl::OnCanSendDomainReliabilityUpload(
      OnCanSendDomainReliabilityUploadCallback callback) {
    PermissionController* permission_controller =
        BrowserContext::GetPermissionController(browser_context_);
