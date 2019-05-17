@@ -9,6 +9,7 @@
 #include "brave/browser/brave_stats_updater_util.h"
 #include "brave/browser/version_info.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
 #include "chrome/common/channel_info.h"
@@ -97,6 +98,7 @@ void BraveStatsUpdater::Start() {
   // code.
   DCHECK(!server_ping_startup_timer_);
   server_ping_startup_timer_ = std::make_unique<base::OneShotTimer>();
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   if (pref_service_->GetBoolean(kReferralCheckedForPromoCodeFile)) {
     StartServerPingStartupTimer();
   } else {
@@ -107,6 +109,9 @@ void BraveStatsUpdater::Start() {
         base::Bind(&BraveStatsUpdater::OnReferralCheckedForPromoCodeFileChanged,
                    base::Unretained(this)));
   }
+#else
+  StartServerPingStartupTimer();
+#endif
 
   // Periodic timer.
   DCHECK(!server_ping_periodic_timer_);
