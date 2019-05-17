@@ -198,7 +198,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetAutoContributeProps(
       const GetAutoContributePropsCallback& callback) override;
-  void GetPendingContributionsTotal(
+  void GetPendingContributionsTotalUI(
       const GetPendingContributionsTotalCallback& callback) override;
   void GetRewardsMainEnabled(
       const GetRewardsMainEnabledCallback& callback) const override;
@@ -388,6 +388,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnRemoveAllPendingContributionsUI(int32_t result);
 
+  void OnGetPendingContributionsTotal(
+    const ledger::PendingContributionsTotalCallback& callback,
+    double amount);
+
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
   void OnWalletInitialized(ledger::Result result) override;
@@ -519,6 +523,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void RemoveAllPendingContributions(
     const ledger::RemovePendingContributionCallback& callback) override;
+
+  void GetPendingContributionsTotal(
+    const ledger::PendingContributionsTotalCallback& callback) override;
 
   // end ledger::LedgerClient
 

@@ -285,7 +285,7 @@ BraveRewardsGetPendingContributionsTotalFunction::Run() {
           std::make_unique<base::Value>(0.0)));
   }
 
-  rewards_service->GetPendingContributionsTotal(base::Bind(
+  rewards_service->GetPendingContributionsTotalUI(base::Bind(
         &BraveRewardsGetPendingContributionsTotalFunction::OnGetPendingTotal,
         this));
   return RespondLater();

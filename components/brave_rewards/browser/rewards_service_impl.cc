@@ -2762,23 +2762,41 @@ void RewardsServiceImpl::SavePendingContribution(
                  AsWeakPtr()));
 }
 
+void RewardsServiceImpl::GetPendingContributionsTotalUI(
+    const GetPendingContributionsTotalCallback& callback) {
+  bat_ledger_->GetPendingContributionsTotal(std::move(callback));
+}
+
 double PendingContributionsTotalOnFileTaskRunner(
     PublisherInfoDatabase* backend) {
   if (!backend) {
-    return 0;
+    return 0.0;
   }
 
   return backend->GetReservedAmount();
 }
 
+void RewardsServiceImpl::OnGetPendingContributionsTotal(
+    const ledger::PendingContributionsTotalCallback& callback,
+    double amount) {
+  if (!Connected()) {
+    callback(0.0);
+    return;
+  }
+
+  callback(amount);
+}
+
 void RewardsServiceImpl::GetPendingContributionsTotal(
-    const GetPendingContributionsTotalCallback& callback) {
+    const ledger::PendingContributionsTotalCallback& callback) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
       base::Bind(&PendingContributionsTotalOnFileTaskRunner,
                  publisher_info_backend_.get()),
-      callback);
+      base::Bind(&RewardsServiceImpl::OnGetPendingContributionsTotal,
+                 AsWeakPtr(),
+                 callback));
 }
 
 bool RestorePublisherOnFileTaskRunner(PublisherInfoDatabase* backend) {

@@ -152,6 +152,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void RemoveAllPendingContributions(
     const ledger::RemovePendingContributionCallback& callback) override;
 
+  void GetPendingContributionsTotal(
+    const ledger::PendingContributionsTotalCallback& callback) override;
+
  private:
   bool Connected() const;
 

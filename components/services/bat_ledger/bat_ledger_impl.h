@@ -181,6 +181,9 @@ class BatLedgerImpl : public mojom::BatLedger,
   void RemoveAllPendingContributions(
     RemovePendingContributionCallback callback) override;
 
+  void GetPendingContributionsTotal(
+    GetPendingContributionsTotalCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
@@ -262,6 +265,10 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnRemoveAllPendingContributions(
     CallbackHolder<RemovePendingContributionCallback>* holder,
     ledger::Result result);
+
+  static void OnGetPendingContributionsTotal(
+    CallbackHolder<GetPendingContributionsTotalCallback>* holder,
+    double amount);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

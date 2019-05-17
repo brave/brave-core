@@ -307,6 +307,9 @@ class LEDGER_EXPORT Ledger {
 
   virtual void RemoveAllPendingContributions(
     const ledger::RemovePendingContributionCallback& callback) = 0;
+
+  virtual void GetPendingContributionsTotal(
+    const ledger::PendingContributionsTotalCallback& callback) = 0;
 };
 
 }  // namespace ledger

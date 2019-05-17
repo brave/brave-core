@@ -793,4 +793,21 @@ void BatLedgerClientMojoProxy::RemoveAllPendingContributions(
       base::BindOnce(&OnRemoveAllPendingContributions, std::move(callback)));
 }
 
+void OnGetPendingContributionsTotal(
+    const ledger::PendingContributionsTotalCallback& callback,
+    double amount) {
+  callback(amount);
+}
+
+void BatLedgerClientMojoProxy::GetPendingContributionsTotal(
+    const ledger::PendingContributionsTotalCallback& callback) {
+  if (!Connected()) {
+    callback(0.0);
+    return;
+  }
+
+  bat_ledger_client_->GetPendingContributionsTotal(
+      base::BindOnce(&OnGetPendingContributionsTotal, std::move(callback)));
+}
+
 }  // namespace bat_ledger

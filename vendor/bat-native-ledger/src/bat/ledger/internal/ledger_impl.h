@@ -465,6 +465,9 @@ class LedgerImpl : public ledger::Ledger,
   void RemoveAllPendingContributions(
     const ledger::RemovePendingContributionCallback& callback) override;
 
+  void GetPendingContributionsTotal(
+    const ledger::PendingContributionsTotalCallback& callback) override;
+
  private:
   void AddRecurringPayment(const std::string& publisher_id,
                            const double& value) override;

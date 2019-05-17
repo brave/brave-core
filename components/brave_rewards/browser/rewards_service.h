@@ -182,7 +182,7 @@ class RewardsService : public KeyedService {
   virtual void SetBackupCompleted() = 0;
   virtual void GetAutoContributeProps(
     const GetAutoContributePropsCallback& callback) = 0;
-  virtual void GetPendingContributionsTotal(
+  virtual void GetPendingContributionsTotalUI(
     const GetPendingContributionsTotalCallback& callback) = 0;
   virtual void GetRewardsMainEnabled(
     const GetRewardsMainEnabledCallback& callback) const = 0;

@@ -71,6 +71,7 @@ using GetExcludedPublishersNumberDBCallback = std::function<void(uint32_t)>;
 using PendingContributionInfoListCallback =
     std::function<void(const PendingContributionInfoList&)>;
 using RemovePendingContributionCallback = std::function<void(Result)>;
+using PendingContributionsTotalCallback = std::function<void(double)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -237,6 +238,9 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void RemoveAllPendingContributions(
     const ledger::RemovePendingContributionCallback& callback) = 0;
+
+  virtual void GetPendingContributionsTotal(
+    const ledger::PendingContributionsTotalCallback& callback) = 0;
 };
 
 }  // namespace ledger

@@ -967,9 +967,8 @@ void RewardsDOMHandler::SetBackupCompleted(const base::ListValue *args) {
 
 void RewardsDOMHandler::GetPendingContributionsTotal(
     const base::ListValue* args) {
-  // refactor this as total is not needed and we should just fetch all of them
   if (rewards_service_) {
-    rewards_service_->GetPendingContributionsTotal(base::Bind(
+    rewards_service_->GetPendingContributionsTotalUI(base::Bind(
           &RewardsDOMHandler::OnGetPendingContributionsTotal,
           weak_factory_.GetWeakPtr()));
   }

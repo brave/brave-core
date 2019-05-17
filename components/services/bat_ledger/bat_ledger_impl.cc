@@ -649,4 +649,25 @@ void BatLedgerImpl::RemoveAllPendingContributions(
                 _1));
 }
 
+// static
+void BatLedgerImpl::OnGetPendingContributionsTotal(
+    CallbackHolder<GetPendingContributionsTotalCallback>* holder,
+    double amount) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(amount);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::GetPendingContributionsTotal(
+    GetPendingContributionsTotalCallback callback) {
+  auto* holder = new CallbackHolder<GetPendingContributionsTotalCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetPendingContributionsTotal(
+      std::bind(BatLedgerImpl::OnGetPendingContributionsTotal,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger

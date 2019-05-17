@@ -759,4 +759,24 @@ void LedgerClientMojoProxy::RemoveAllPendingContributions(
                 _1));
 }
 
+// static
+void LedgerClientMojoProxy::OnGetPendingContributionsTotal(
+    CallbackHolder<GetPendingContributionsTotalCallback>* holder,
+    double amount) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(amount);
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetPendingContributionsTotal(
+    GetPendingContributionsTotalCallback callback) {
+  // deleted in OnGetPendingContributionsTotal
+  auto* holder = new CallbackHolder<GetPendingContributionsTotalCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->GetPendingContributionsTotal(
+      std::bind(LedgerClientMojoProxy::OnGetPendingContributionsTotal,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger
