@@ -1,5 +1,6 @@
+import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 declare_args() {
-  brave_ads_enabled = !is_android
+  brave_ads_enabled = !is_android && brave_rewards_enabled
 }
