@@ -18,12 +18,12 @@ export const Header = styled<{}, 'header'>('header')`
 
   > *:first-child {
     grid-area: stats;
-    margin-left: 70px;
+    margin: 0 70px 0 70px;
   }
 
   > *:nth-child(2) {
     grid-area: clock;
-    margin-right: 70px;
+    margin: 0 70px 0 70px;
   }
 
   > *:nth-child(3) {
