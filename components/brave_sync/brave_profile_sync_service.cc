@@ -613,17 +613,13 @@ void BraveProfileSyncService::SetPermanentNodesOrder(
   std::string order;
   model_->bookmark_bar_node()->GetMetaInfo("order", &order);
   if (order.empty()) {
-    bookmarks::BookmarkNode* mutable_bookmark_bar_node =
-      const_cast<bookmarks::BookmarkNode*>(model_->bookmark_bar_node());
-    model_->SetNodeMetaInfo(mutable_bookmark_bar_node, "order",
+    model_->SetNodeMetaInfo(model_->bookmark_bar_node(), "order",
                             base_order + "1");
   }
   order.clear();
   model_->other_node()->GetMetaInfo("order", &order);
   if (order.empty()) {
-    bookmarks::BookmarkNode* mutable_other_node =
-      const_cast<bookmarks::BookmarkNode*>(model_->other_node());
-    model_->SetNodeMetaInfo(mutable_other_node, "order", base_order + "2");
+    model_->SetNodeMetaInfo(model_->other_node(), "order", base_order + "2");
   }
   brave_sync_prefs_->SetMigratedBookmarksVersion(2);
 }

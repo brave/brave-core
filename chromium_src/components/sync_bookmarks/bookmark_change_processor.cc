@@ -1,6 +1,29 @@
+#include "components/bookmarks/browser/bookmark_model.h"
+
+namespace {
+
+class ScopedPauseObserver {
+ public:
+  explicit ScopedPauseObserver(bookmarks::BookmarkModel* model,
+                               bookmarks::BookmarkModelObserver* observer) :
+      model_(model),  observer_(observer) {
+    DCHECK_NE(observer_, nullptr);
+    DCHECK_NE(model_, nullptr);
+    model_->RemoveObserver(observer_);
+  }
+  ~ScopedPauseObserver() {
+    model_->AddObserver(observer_);
+  }
+
+ private:
+  bookmarks::BookmarkModel* model_;  // Not owned
+  bookmarks::BookmarkModelObserver* observer_;
+};
+
+}   // namespace
+
 #include "brave/components/brave_sync/syncer_helper.h"
 #include "../../../../components/sync_bookmarks/bookmark_change_processor.cc"
-#include "components/bookmarks/browser/bookmark_model.h"
 
 namespace sync_bookmarks {
 
@@ -16,10 +39,9 @@ bool BookmarkChangeProcessor::IsFirstLoadedFavicon(const BookmarkNode* node) {
   if (node->GetMetaInfo("FirstLoadedFavicon", &FirstLoadedFavicon)) {
     if (!node->icon_url())
       return true;
-    bookmark_model_->RemoveObserver(this);
+    ScopedPauseObserver pause(bookmark_model_, this);
     BookmarkNode* mutable_node = const_cast<BookmarkNode*>(node);
     mutable_node->DeleteMetaInfo("FirstLoadedFavicon");
-    bookmark_model_->AddObserver(this);
     return true;
   }
   return false;
