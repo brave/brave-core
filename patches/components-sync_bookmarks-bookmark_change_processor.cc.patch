@@ -1,5 +1,5 @@
 diff --git a/components/sync_bookmarks/bookmark_change_processor.cc b/components/sync_bookmarks/bookmark_change_processor.cc
-index acb064faac3ee975ec07be4977fc0970309dfb15..3b4110a5e4803b7ede262ab416376fda0879b94d 100644
+index acb064faac3ee975ec07be4977fc0970309dfb15..06d371a7136f7f287db0bdae8fd18ae7de4656c1 100644
 --- a/components/sync_bookmarks/bookmark_change_processor.cc
 +++ b/components/sync_bookmarks/bookmark_change_processor.cc
 @@ -87,6 +87,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(
@@ -14,19 +14,11 @@ index acb064faac3ee975ec07be4977fc0970309dfb15..3b4110a5e4803b7ede262ab416376fda
      // Acquire a scoped write lock via a transaction.
      syncer::WriteTransaction trans(FROM_HERE, share_handle(), &new_version);
      sync_id = model_associator_->GetSyncIdFromChromeId(node->id());
-+    bookmark_model_->RemoveObserver(this);
++    ScopedPauseObserver pause(bookmark_model_, this);
      if (sync_id != syncer::kInvalidId) {
        UpdateSyncNode(
            node, bookmark_model_, &trans, model_associator_, error_handler());
-@@ -257,6 +259,7 @@ void BookmarkChangeProcessor::CreateOrUpdateSyncNode(const BookmarkNode* node) {
-                                model_associator_,
-                                error_handler());
-     }
-+    bookmark_model_->AddObserver(this);
-   }
- 
-   if (syncer::kInvalidId != sync_id) {
-@@ -383,7 +386,8 @@ int64_t BookmarkChangeProcessor::UpdateSyncNode(
+@@ -383,7 +385,8 @@ int64_t BookmarkChangeProcessor::UpdateSyncNode(
  
  void BookmarkChangeProcessor::BookmarkMetaInfoChanged(
      BookmarkModel* model, const BookmarkNode* node) {
@@ -36,19 +28,18 @@ index acb064faac3ee975ec07be4977fc0970309dfb15..3b4110a5e4803b7ede262ab416376fda
  }
  
  void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
-@@ -416,6 +420,11 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
+@@ -416,6 +419,10 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
        return;
      }
  
-+    model->RemoveObserver(this);
++    ScopedPauseObserver pause(bookmark_model_, this);
 +    brave_sync::AddBraveMetaInfo(child, model, old_parent != new_parent);
 +    SetSyncNodeMetaInfo(child, &sync_node);
-+    model->AddObserver(this);
 +
      if (!PlaceSyncNode(MOVE, new_parent, new_index, &trans, &sync_node,
                         model_associator_)) {
        syncer::SyncError error(FROM_HERE,
-@@ -429,6 +438,11 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
+@@ -429,6 +436,11 @@ void BookmarkChangeProcessor::BookmarkNodeMoved(BookmarkModel* model,
  
    UpdateTransactionVersion(new_version, model,
                             std::vector<const BookmarkNode*>(1, child));
@@ -60,7 +51,7 @@ index acb064faac3ee975ec07be4977fc0970309dfb15..3b4110a5e4803b7ede262ab416376fda
  }
  
  void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
-@@ -458,6 +472,8 @@ void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
+@@ -458,6 +470,8 @@ void BookmarkChangeProcessor::BookmarkNodeFaviconChanged(
      return;
    }
  
@@ -69,24 +60,22 @@ index acb064faac3ee975ec07be4977fc0970309dfb15..3b4110a5e4803b7ede262ab416376fda
    CreateOrUpdateSyncNode(node);
  }
  
-@@ -490,6 +506,11 @@ void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
+@@ -490,6 +504,10 @@ void BookmarkChangeProcessor::BookmarkNodeChildrenReordered(
        DCHECK_EQ(sync_child.GetParentId(),
                  model_associator_->GetSyncIdFromChromeId(node->id()));
  
-+      model->RemoveObserver(this);
++      ScopedPauseObserver pause(bookmark_model_, this);
 +      brave_sync::AddBraveMetaInfo(child, model, false);
 +      SetSyncNodeMetaInfo(child, &sync_child);
-+      model->AddObserver(this);
 +
        if (!PlaceSyncNode(MOVE, node, i, &trans, &sync_child,
                           model_associator_)) {
          syncer::SyncError error(FROM_HERE,
-@@ -718,10 +739,13 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
+@@ -718,10 +736,12 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
                     << src.GetBookmarkSpecifics().url();
          continue;
        }
-+      BookmarkNode* mutable_node = const_cast<BookmarkNode*>(dst);
-+      mutable_node->SetMetaInfo("FirstLoadedFavicon", "true");
++      bookmark_model_->SetNodeMetaInfo(dst, "FirstLoadedFavicon", "true");
        model_associator_->Associate(dst, src);
      }
  
