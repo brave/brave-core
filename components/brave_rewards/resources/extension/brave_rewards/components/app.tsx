@@ -61,6 +61,9 @@ export class RewardsPanel extends React.Component<Props, State> {
     ) {
       this.getTabData()
     }
+    if (!prevProps.rewardsPanelData.enabledMain && this.props.rewardsPanelData.enabledMain) {
+      chrome.windows.getCurrent({}, this.onWindowCallback)
+    }
   }
 
   getTabData () {
