@@ -1,29 +1,6 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("ui") {
-  inputs = [
-    "actions/sync_actions.ts",
-    "components/commonDialogs/areYouSure.tsx",
-    "components/commonDialogs/cancelDeviceSyncing.tsx",
-    "components/modals/deviceType.tsx",
-    "components/modals/enterSyncCode.tsx",
-    "components/modals/removeDevice.tsx",
-    "components/modals/resetSync.tsx",
-    "components/modals/scanCode.tsx",
-    "components/modals/viewSyncCode.tsx",
-    "components/app.tsx",
-    "components/disabledContent.tsx",
-    "components/enabledContent.tsx",
-    "constants/sync_types.ts",
-    "reducers/index.ts",
-    "reducers/sync_reducer.ts",
-    "brave_sync.html",
-    "brave_sync.tsx",
-    "helpers.ts",
-    "storage.ts",
-    "store.ts"
-  ]
-
   entry_points = [
     ["brave_sync", rebase_path("brave_sync.tsx")]
   ]

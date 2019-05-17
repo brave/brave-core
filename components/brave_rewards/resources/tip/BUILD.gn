@@ -1,19 +1,6 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("tip") {
-  inputs = [
-    "actions/tip_actions.ts",
-    "brave_tip.html",
-    "brave_tip.tsx",
-    "components/app.tsx",
-    "components/siteBanner.tsx",
-    "constants/tip_types.ts",
-    "reducers/tip_reducer.ts",
-    "reducers/index.ts",
-    "store.ts",
-    "utils.ts",
-  ]
-
   entry_points = [
     ["brave_tip", rebase_path("brave_tip.tsx")]
   ]
