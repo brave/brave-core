@@ -933,10 +933,10 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
   auto is_supported_region = ads_service_->IsSupportedRegion();
   ads_data.SetBoolean("adsIsSupported", is_supported_region);
 
-  auto is_ads_enabled = ads_service_->IsAdsEnabled();
+  auto is_ads_enabled = ads_service_->IsEnabled();
   ads_data.SetBoolean("adsEnabled", is_ads_enabled);
 
-  auto ads_per_hour = ads_service_->GetAdsPerHour();
+  auto ads_per_hour = ads_service_->AdsPerHour();
   ads_data.SetInteger("adsPerHour", ads_per_hour);
 
   #if BUILDFLAG(BRAVE_ADS_ENABLED)

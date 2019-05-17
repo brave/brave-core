@@ -12,23 +12,21 @@
 #include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/sessions/core/session_id.h"
+#include "chrome/browser/profiles/profile.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
-
-using IsSupportedRegionCallback = base::OnceCallback<void(bool)>;
 
 class AdsService : public KeyedService {
  public:
   AdsService() = default;
 
   virtual bool IsSupportedRegion() const = 0;
+  virtual bool IsEnabled() const = 0;
+  virtual uint64_t AdsPerHour() const = 0;
 
-  virtual bool IsAdsEnabled() const = 0;
-  virtual void SetAdsEnabled(const bool is_enabled) = 0;
-
-  virtual uint64_t GetAdsPerHour() const = 0;
-  virtual void SetAdsPerHour(const uint64_t ads_per_hour) = 0;
+  virtual void SetAdsEnabled(bool enabled) = 0;
+  virtual void SetAdsPerHour(uint64_t ads_per_hour) = 0;
 
   // ads::Ads proxy
   virtual void TabUpdated(
@@ -38,9 +36,17 @@ class AdsService : public KeyedService {
   virtual void TabClosed(SessionID tab_id) = 0;
   virtual void OnMediaStart(SessionID tab_id) = 0;
   virtual void OnMediaStop(SessionID tab_id) = 0;
-  virtual void ClassifyPage(
-      const std::string& url,
-      const std::string& page) = 0;
+  virtual void ClassifyPage(const std::string& url,
+                            const std::string& page) = 0;
+  virtual void OnShow(Profile* profile, const std::string& notification_id) = 0;
+  virtual void OpenSettings(Profile* profile,
+                                  const GURL& origin,
+                                  bool should_close) = 0;
+  virtual void OnClose(Profile* profile,
+                       const GURL& origin,
+                       const std::string& notification_id,
+                       bool by_user,
+                       base::OnceClosure completed_closure) = 0;
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
  private:
