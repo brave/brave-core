@@ -9,5 +9,7 @@
 #include "brave/browser/ui/views/profiles/brave_avatar_toolbar_button.h"
 
 #define LocationBarView BraveLocationBarView
+#define AvatarToolbarButton BraveAvatarToolbarButton
 #include "../../../../../../../chrome/browser/ui/views/toolbar/toolbar_view.cc" // NOLINT
 #undef LocationBarView
+#undef AvatarToolbarButton

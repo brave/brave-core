@@ -1,8 +1,8 @@
 diff --git a/content/browser/frame_host/navigation_request.cc b/content/browser/frame_host/navigation_request.cc
-index 05336f93301b9d34b7e195b0ca3296b4c7c0a825..a4394cb3612c1e23cdf73fb6ef3af189290b0ef1 100644
+index ff845a4963826736b6030d7179a70dcd9d74d241..466cc388c20feafd1cc7ff53accef95e68a97911 100644
 --- a/content/browser/frame_host/navigation_request.cc
 +++ b/content/browser/frame_host/navigation_request.cc
-@@ -1636,6 +1636,11 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -1593,6 +1593,11 @@ void NavigationRequest::OnStartChecksComplete(
    headers.MergeFrom(navigation_handle_->TakeModifiedRequestHeaders());
    begin_params_->headers = headers.ToString();
  

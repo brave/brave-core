@@ -1,15 +1,9 @@
-/* Copyright (c) 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
+/* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/extensions/api/brave_shields_api.h"
 
-#include <memory>
-#include <string>
-#include <utility>
-
-#include "base/strings/string_number_conversions.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -74,7 +68,7 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
         &contents,
         nullptr)) {
     return RespondNow(Error(tabs_constants::kTabNotFoundError,
-                            base::NumberToString(params->tab_id)));
+                            base::IntToString(params->tab_id)));
   }
 
   BraveShieldsWebContentsObserver::FromWebContents(

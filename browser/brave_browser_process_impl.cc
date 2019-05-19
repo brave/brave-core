@@ -42,8 +42,9 @@ using content::BrowserThread;
 BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
 }
 
-BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
-    : BrowserProcessImpl(startup_data) {
+BraveBrowserProcessImpl::BraveBrowserProcessImpl(
+    ChromeFeatureListCreator* chrome_feature_list_creator)
+    : BrowserProcessImpl(chrome_feature_list_creator) {
   g_browser_process = this;
   g_brave_browser_process = this;
 

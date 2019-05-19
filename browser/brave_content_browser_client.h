@@ -21,7 +21,8 @@ class BrowserContext;
 
 class BraveContentBrowserClient : public ChromeContentBrowserClient {
  public:
-  explicit BraveContentBrowserClient(StartupData* startup_data = nullptr);
+  BraveContentBrowserClient(
+      ChromeFeatureListCreator* chrome_feature_list_creator = nullptr);
   ~BraveContentBrowserClient() override;
 
   // Overridden from ChromeContentBrowserClient:
@@ -50,9 +51,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       ui::PageTransition page_transition,
       bool has_user_gesture,
       const std::string& method,
-      const net::HttpRequestHeaders& headers,
-      network::mojom::URLLoaderFactoryRequest* factory_request,
-      network::mojom::URLLoaderFactory*& out_factory) override;  // NOLINT
+      const net::HttpRequestHeaders& headers) override;
 
   content::ContentBrowserClient::AllowWebBluetoothResult AllowWebBluetooth(
       content::BrowserContext* browser_context,

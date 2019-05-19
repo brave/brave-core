@@ -23,10 +23,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/update_client/activity_data_service.h"
 #include "components/update_client/net/network_chromium.h"
-#include "components/update_client/patch/patch_impl.h"
 #include "components/update_client/protocol_handler.h"
-#include "components/update_client/unzip/unzip_impl.h"
-#include "components/update_client/unzipper.h"
 #include "components/update_client/update_query_params.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/common/service_manager_connection.h"
@@ -64,8 +61,8 @@ class BraveConfigurator : public update_client::Configurator {
   std::string GetDownloadPreference() const override;
   scoped_refptr<update_client::NetworkFetcherFactory> GetNetworkFetcherFactory()
       override;
-  scoped_refptr<update_client::UnzipperFactory> GetUnzipperFactory() override;
-  scoped_refptr<update_client::PatcherFactory> GetPatcherFactory() override;
+  std::unique_ptr<service_manager::Connector> CreateServiceManagerConnector()
+      const override;
   bool EnabledDeltas() const override;
   bool EnabledComponentUpdates() const override;
   bool EnabledBackgroundDownloader() const override;
@@ -85,8 +82,6 @@ class BraveConfigurator : public update_client::Configurator {
   ConfiguratorImpl configurator_impl_;
   PrefService* pref_service_;  // This member is not owned by this class.
   scoped_refptr<update_client::NetworkFetcherFactory> network_fetcher_factory_;
-  scoped_refptr<update_client::UnzipperFactory> unzip_factory_;
-  scoped_refptr<update_client::PatcherFactory> patch_factory_;
 
   ~BraveConfigurator() override {}
 };
@@ -171,28 +166,12 @@ BraveConfigurator::GetNetworkFetcherFactory() {
   return network_fetcher_factory_;
 }
 
-scoped_refptr<update_client::UnzipperFactory>
-BraveConfigurator::GetUnzipperFactory() {
+std::unique_ptr<service_manager::Connector>
+BraveConfigurator::CreateServiceManagerConnector() const {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (!unzip_factory_) {
-    unzip_factory_ = base::MakeRefCounted<update_client::UnzipChromiumFactory>(
-        content::ServiceManagerConnection::GetForProcess()
-            ->GetConnector()
-            ->Clone());
-  }
-  return unzip_factory_;
-}
-
-scoped_refptr<update_client::PatcherFactory>
-BraveConfigurator::GetPatcherFactory() {
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  if (!patch_factory_) {
-    patch_factory_ = base::MakeRefCounted<update_client::PatchChromiumFactory>(
-        content::ServiceManagerConnection::GetForProcess()
-            ->GetConnector()
-            ->Clone());
-  }
-  return patch_factory_;
+  return content::ServiceManagerConnection::GetForProcess()
+      ->GetConnector()
+      ->Clone();
 }
 
 bool BraveConfigurator::EnabledDeltas() const {
@@ -234,7 +213,7 @@ std::string BraveConfigurator::GetAppGuid() const {
 
 std::unique_ptr<update_client::ProtocolHandlerFactory>
 BraveConfigurator::GetProtocolHandlerFactory() const {
-  return configurator_impl_.GetProtocolHandlerFactory();
+  return std::make_unique<update_client::ProtocolHandlerFactoryXml>();
 }
 
 update_client::RecoveryCRXElevator BraveConfigurator::GetRecoveryCRXElevator()

@@ -10,7 +10,6 @@
 #include "chrome/common/chrome_switches.h"
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "components/autofill/core/common/autofill_features.h"
-#include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/unified_consent/feature.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"

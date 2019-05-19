@@ -46,7 +46,6 @@
 #include "components/search_engines/template_url_data_util.h"
 #include "net/cookies/canonical_cookie.h"
 #include "net/cookies/cookie_constants.h"
-#include "net/cookies/cookie_options.h"
 #include "net/url_request/url_request_context.h"
 #include "net/url_request/url_request_context_getter.h"
 #include "services/network/public/mojom/cookie_manager.mojom.h"
@@ -71,13 +70,11 @@ void BraveProfileWriter::AddCookies(
       ->GetNetworkContext()
       ->GetCookieManager(mojo::MakeRequest(&cookie_manager));
 
-  net::CookieOptions options;
-  options.set_include_httponly();  // modify_http_only
   for (auto& cookie : cookies) {
     cookie_manager->SetCanonicalCookie(
         cookie,
         "https",  // secure_source
-        options,
+        true,  // modify_http_only
         // Fire and forget
         network::mojom::CookieManager::SetCanonicalCookieCallback());
   }

@@ -108,8 +108,9 @@ bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
 
 }  // namespace
 
-BraveContentBrowserClient::BraveContentBrowserClient(StartupData* startup_data)
-    : ChromeContentBrowserClient(startup_data) {}
+BraveContentBrowserClient::BraveContentBrowserClient(
+    ChromeFeatureListCreator* chrome_feature_list_creator)
+    : ChromeContentBrowserClient(chrome_feature_list_creator) {}
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
@@ -213,9 +214,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     ui::PageTransition page_transition,
     bool has_user_gesture,
     const std::string& method,
-    const net::HttpRequestHeaders& headers,
-    network::mojom::URLLoaderFactoryRequest* factory_request,
-    network::mojom::URLLoaderFactory*& out_factory) {  // NOLINT
+    const net::HttpRequestHeaders& headers) {
   if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
                                        page_transition, has_user_gesture)) {
     return true;
@@ -223,8 +222,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, child_id, navigation_data, is_main_frame,
-      page_transition, has_user_gesture, method, headers, factory_request,
-      out_factory);
+      page_transition, has_user_gesture, method, headers);
 }
 
 void BraveContentBrowserClient::RegisterOutOfProcessServices(

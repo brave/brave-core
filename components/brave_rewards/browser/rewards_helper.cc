@@ -69,10 +69,10 @@ void RewardsHelper::ResourceLoadComplete(
   if (!rewards_service_ || !render_frame_host)
     return;
 
-  if (resource_load_info.resource_type == content::ResourceType::kMedia ||
-      resource_load_info.resource_type == content::ResourceType::kXhr ||
-      resource_load_info.resource_type == content::ResourceType::kImage ||
-      resource_load_info.resource_type == content::ResourceType::kScript) {
+  if (resource_load_info.resource_type == content::RESOURCE_TYPE_MEDIA ||
+      resource_load_info.resource_type == content::RESOURCE_TYPE_XHR ||
+      resource_load_info.resource_type == content::RESOURCE_TYPE_IMAGE ||
+      resource_load_info.resource_type == content::RESOURCE_TYPE_SCRIPT) {
     rewards_service_->OnXHRLoad(
         tab_id_,
         GURL(resource_load_info.url),
@@ -87,14 +87,14 @@ void RewardsHelper::DidAttachInterstitialPage() {
 }
 
 void RewardsHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
-                                        const content::MediaPlayerId& id) {
+                         const MediaPlayerId& id) {
   if (rewards_service_)
     rewards_service_->OnMediaStart(tab_id_);
 }
 
 void RewardsHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& video_type,
-    const content::MediaPlayerId& id,
+    const MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason reason) {
   if (rewards_service_)
     rewards_service_->OnMediaStop(tab_id_);

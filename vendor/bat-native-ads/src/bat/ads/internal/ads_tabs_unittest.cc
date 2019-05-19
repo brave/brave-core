@@ -125,7 +125,7 @@ class AdsTabsTest : public ::testing::Test {
       return false;
     }
 
-    std::ifstream ifs{path.value().c_str()};
+    std::ifstream ifs{path.value()};
     if (ifs.fail()) {
       *value = "";
       return false;

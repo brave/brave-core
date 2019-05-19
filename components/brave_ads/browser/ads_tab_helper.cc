@@ -150,16 +150,15 @@ void AdsTabHelper::TabUpdated() {
       is_active_ && is_browser_active_);
 }
 
-void AdsTabHelper::MediaStartedPlaying(
-    const MediaPlayerInfo& video_type,
-    const content::MediaPlayerId& id) {
+void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
+                         const MediaPlayerId& id) {
   if (ads_service_)
     ads_service_->OnMediaStart(tab_id_);
 }
 
 void AdsTabHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& video_type,
-    const content::MediaPlayerId& id,
+    const MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason reason) {
   if (ads_service_)
     ads_service_->OnMediaStop(tab_id_);

@@ -9,7 +9,6 @@
 #include <string>
 #include <utility>
 
-#include "base/one_shot_event.h"
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_action_view.h"
 #include "brave/browser/ui/views/rounded_separator.h"
@@ -26,6 +25,7 @@
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/browser/extension_system.h"
+#include "extensions/common/one_shot_event.h"
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/layout/grid_layout.h"
 #include "ui/views/view.h"
@@ -140,10 +140,10 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension,
     // do not require that logic.
     // If we do require notifications when popups are open or closed,
     // then we should inherit and pass |this| through.
-    actions_[id].view_controller_ = std::make_unique<BraveActionViewController>(
+    actions_[id].view_controller_ =
+        std::make_unique<BraveActionViewController>(
         extension, browser_,
-        extension_action_manager_->GetExtensionAction(*extension), nullptr,
-        /*in_overflow_mode*/false);
+        extension_action_manager_->GetExtensionAction(*extension), nullptr);
     // The button view
     actions_[id].view_ = std::make_unique<BraveActionView>(
         actions_[id].view_controller_.get(), this);
