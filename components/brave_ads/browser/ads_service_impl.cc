@@ -58,7 +58,10 @@
 #include "ui/message_center/public/cpp/notification.h"
 
 #if defined(OS_ANDROID)
+#include "base/android/jni_android.h"
+#include "chrome/android/jni_headers/chrome/jni/BraveAds_jni.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#include "chrome/browser/android/tab_android.h"
 #include "net/android/network_library.h"
 #endif
 
@@ -140,7 +143,11 @@ class AdsNotificationHandler : public NotificationHandler {
                const base::Optional<base::string16>& reply,
                base::OnceClosure completed_closure) override {
     if (ads_service_ && !action_index.has_value()) {
+#if defined(OS_ANDROID)
+      ads_service_->OnClick(profile, origin, notification_id, action_index, reply);
+#else
       ads_service_->OpenSettings(profile, origin, true);
+#endif
     }
   }
 
@@ -873,10 +880,11 @@ void AdsServiceImpl::ShowNotification(
 
   notification_ids_[notification_id] = std::move(info);
 
-  /**
+// (Albert Wang): Should figure out why this call isn't working on Android. It should work
+// #if !defined(OS_ANDROID)
   display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
                             *notification);
-                            */
+// #endif
 
   uint32_t timer_id = next_timer_id();
 
@@ -1072,9 +1080,61 @@ void AdsServiceImpl::OnClose(Profile* profile,
     std::move(completed_closure).Run();
 }
 
+void AdsServiceImpl::OnClick(Profile* profile,
+               const GURL& origin,
+               const std::string& notification_id,
+               const base::Optional<int>& action_index,
+               const base::Optional<base::string16>& reply) {
+  // GURL("chrome://brave_ads/?" + *notification_id) this is what origin_url is
+  if (notification_ids_.find(notification_id) == notification_ids_.end())
+    return;
+
+  auto notification_info = base::WrapUnique(
+      notification_ids_[notification_id].release());
+  notification_ids_.erase(notification_id);
+
+  display_service_->Close(NotificationHandler::Type::BRAVE_ADS, notification_id);
+
+  if (connected()) {
+    bat_ads_->GenerateAdReportingNotificationResultEvent(
+        notification_info->ToJson(),
+        ToMojomNotificationResultInfoResultType(
+            ads::NotificationResultInfoResultType::CLICKED));
+  }
+
+  GURL url(notification_info->url);
+  if (!url.is_valid()) {
+    LOG(WARNING) << "Invalid notification URL: " << notification_info->url;
+    return;
+  }
+
+#if defined(OS_ANDROID)
+  NavigateParams nav_params(profile, url, ui::PAGE_TRANSITION_LINK);
+#else
+  Browser* browser = chrome::FindTabbedBrowser(profile, false);
+  if (!browser)
+    browser = new Browser(Browser::CreateParams(profile, true));
+
+  NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
+#endif
+  nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  nav_params.window_action = NavigateParams::SHOW_WINDOW;
+#if defined(OS_ANDROID)
+  // TabModelList::HandlePopupNavigation(&nav_params);
+  JNIEnv* env = base::android::AttachCurrentThread();
+  base::android::ScopedJavaGlobalRef<jobject> java_obj_;
+  java_obj_.Reset(env, Java_BraveAds_create(env, 0).obj());
+  base::android::ScopedJavaLocalRef<jstring> jurl = base::android::ConvertUTF8ToJavaString(env, notification_info->url.c_str());
+  Java_BraveAds_openPageFromNative(env, java_obj_, jurl);
+#else
+  Navigate(&nav_params);
+#endif
+}
+
 void AdsServiceImpl::OpenSettings(Profile* profile,
                                   const GURL& origin,
                                   bool should_close) {
+  // GURL("chrome://brave_ads/?" + *notification_id) this is what origin_url is
   DCHECK(origin.has_query());
   auto notification_id = origin.query();
 

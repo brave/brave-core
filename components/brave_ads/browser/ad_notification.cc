@@ -5,8 +5,6 @@
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
-#include "base/android/jni_android.h"
-#include "base/android/jni_string.h"
 #include "brave/browser/version_info.h"
 #include "base/strings/utf_string_conversions.h"
 #include "ui/message_center/public/cpp/notification.h"
@@ -15,8 +13,9 @@
 #include "chrome/browser/profiles/profile.h"
 
 #if defined(OS_ANDROID)
-#include "chrome/android/jni_headers/chrome/jni/BraveAds_jni.h"
+// #include "chrome/android/jni_headers/chrome/jni/BraveAds_jni.h"
 // #include "jni/BraveAds_jni.h"
+// #include "base/android/jni_string.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "chrome/browser/profiles/profile_android.h"
 #include "base/android/jni_android.h"
@@ -38,6 +37,7 @@ using base::android::ScopedJavaLocalRef;
 // static
 // (Albert Wang): Copied syntax from profile_android.cc
 // void BraveAds::OnShowHelper(
+/*
 void BraveAds::OnShowHelper(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
@@ -48,8 +48,10 @@ void BraveAds::OnShowHelper(
   LOG(WARNING) << "albert got on show!";
   ads_service_->OnShow(profile, base::android::ConvertJavaStringToUTF8(env, uuid));
 }
+*/
 
 // static
+/*
 void BraveAds::OnClickHelper(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
@@ -61,8 +63,10 @@ void BraveAds::OnClickHelper(
   LOG(WARNING) << "albert got on click!" << base::android::ConvertJavaStringToUTF8(env, url);
   ads_service_->OpenSettings(profile, GURL(base::android::ConvertJavaStringToUTF8(env, url)), should_close);
 }
+*/
 
 // static
+/*
 void BraveAds::OnDismissHelper(
     JNIEnv* env,
     const base::android::JavaParamRef<jobject>& j_profile_android,
@@ -76,6 +80,7 @@ void BraveAds::OnDismissHelper(
   LOG(WARNING) << "albert got on dismiss!";
   ads_service_->OnClose(profile, GURL(base::android::ConvertJavaStringToUTF8(env, url)), base::android::ConvertJavaStringToUTF8(env, uuid), dismissed_by_user, base::OnceClosure());
 }
+*/
 
 // static
 std::unique_ptr<message_center::Notification> CreateAdNotification(
@@ -119,6 +124,7 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
 #endif
 
 #if defined(OS_ANDROID)
+  /*
   JNIEnv* env = base::android::AttachCurrentThread();
   base::android::ScopedJavaGlobalRef<jobject> java_obj_;
   java_obj_.Reset(env, Java_BraveAds_create(env, 0).obj());
@@ -127,6 +133,7 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
   base::android::ScopedJavaLocalRef<jstring> jurl = base::android::ConvertUTF8ToJavaString(env, notification_info.url.c_str());
   base::android::ScopedJavaLocalRef<jstring> juuid = base::android::ConvertUTF8ToJavaString(env, notification_info.uuid.c_str());
   Java_BraveAds_showNotificationFromNative(env, java_obj_, jadvertiser, jtext, jurl, juuid);
+  */
 #endif
 
   return notification;

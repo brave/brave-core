@@ -39,6 +39,11 @@ class AdsService : public KeyedService {
   virtual void ClassifyPage(const std::string& url,
                             const std::string& page) = 0;
   virtual void OnShow(Profile* profile, const std::string& notification_id) = 0;
+  virtual void OnClick(Profile* profile,
+               const GURL& origin,
+               const std::string& notification_id,
+               const base::Optional<int>& action_index,
+               const base::Optional<base::string16>& reply) = 0;
   virtual void OpenSettings(Profile* profile,
                                   const GURL& origin,
                                   bool should_close) = 0;

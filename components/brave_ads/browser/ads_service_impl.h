@@ -30,6 +30,11 @@
 #include "ui/base/idle/idle.h"
 #endif
 
+#if defined(OS_ANDROID)
+#include "base/android/jni_string.h"
+#include "base/android/jni_android.h"
+#endif
+
 using brave_rewards::RewardsNotificationService;
 
 class NotificationDisplayService;
@@ -80,6 +85,11 @@ class AdsServiceImpl : public AdsService,
       const std::string& notification_id,
       bool by_user,
       base::OnceClosure completed_closure) override;
+  void OnClick(Profile* profile,
+               const GURL& origin,
+               const std::string& notification_id,
+               const base::Optional<int>& action_index,
+               const base::Optional<base::string16>& reply) override;
   void OpenSettings(
       Profile* profile,
       const GURL& origin,
