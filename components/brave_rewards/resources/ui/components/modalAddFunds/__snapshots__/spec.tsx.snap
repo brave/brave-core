@@ -35,6 +35,10 @@ exports[`ModalAddFunds tests basic tests matches the snapshot 1`] = `
   -webkit-box-align: stretch;
   -ms-flex-align: stretch;
   align-items: stretch;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
 }
 
 .c10 {
@@ -142,6 +146,7 @@ exports[`ModalAddFunds tests basic tests matches the snapshot 1`] = `
         </p>
         <div
           className="c8"
+          data-test-id="addresses"
         />
         <div
           className="c9"

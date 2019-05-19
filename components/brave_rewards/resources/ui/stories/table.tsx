@@ -211,10 +211,10 @@ storiesOf('Feature Components/Rewards/Table', module)
     const rows: PendingDetailRow[] = [
       {
         profile: {
-          name: 'Bart Baker',
-          verified: false,
+          name: 'Jonathon Doe',
+          verified: true,
           provider: 'youtube',
-          src: bart
+          src: favicon
         },
         url: 'https://brave.com',
         type: 'recurring',

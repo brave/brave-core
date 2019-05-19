@@ -74,6 +74,7 @@ export default class ModalAddFunds extends React.PureComponent<Props, State> {
       <StyledAddress
         isMobile={!!isMobile}
         key={`address-${address.type}`}
+        data-test-id='single-address'
       >
         <StyledHeader>
           <StyledLogo>
@@ -123,7 +124,7 @@ export default class ModalAddFunds extends React.PureComponent<Props, State> {
           <StyledText>
             {getLocale('addFundsText')}
           </StyledText>
-          <StyledAddresses>
+          <StyledAddresses data-test-id='addresses'>
             {
               addresses && addresses.map((address: Address) => this.getAddress(address))
             }

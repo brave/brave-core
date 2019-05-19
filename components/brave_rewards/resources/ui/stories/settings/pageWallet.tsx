@@ -252,7 +252,8 @@ class PageWallet extends React.Component<{}, State> {
             {
               name: 'Add funds',
               action: doNothing,
-              icon: <WalletAddIcon />
+              icon: <WalletAddIcon />,
+              testId: 'panel-add-funds'
             },
             {
               name: 'Withdraw Funds',

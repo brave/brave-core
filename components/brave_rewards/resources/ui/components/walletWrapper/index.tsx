@@ -80,6 +80,7 @@ export interface ActionWallet {
   icon: React.ReactNode
   name: string
   action: () => void
+  testId?: string
 }
 
 export type NotificationType = 'ads' | 'ads-launch' | 'backupWallet' | 'contribute' | 'grant' | 'insufficientFunds' | 'tipsProcessed' | 'error' | ''
@@ -132,10 +133,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     }
   }
 
-  generateActions (actions: { icon: React.ReactNode, name: string, action: () => void }[], id?: string) {
+  generateActions (actions: { icon: React.ReactNode, name: string, testId?: string, action: () => void }[], id?: string) {
     return actions && actions.map((action, i: number) => {
       return (
-        <StyledAction key={`${id}-${i}`} onClick={action.action}>
+        <StyledAction key={`${id}-${i}`} onClick={action.action} data-test-id={action.testId}>
           <StyledActionIcon>{action.icon}</StyledActionIcon>
           <StyledActionText>{action.name}</StyledActionText>
         </StyledAction>

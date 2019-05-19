@@ -36,6 +36,7 @@ export const StyledAddresses = styled<{}, 'div'>('div') `
   flex-wrap: wrap;
   margin: 0 -15px;
   align-items: stretch;
+  justify-content: center;
 `
 
 export const StyledAddress = styled<StyleProps, 'div'>('div') `
