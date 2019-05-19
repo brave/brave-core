@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/plugins/chrome_plugin_service_filter.cc b/chrome/browser/plugins/chrome_plugin_service_filter.cc
-index e16e00dc888ba30efc55f416e391b798956eb84b..d9a0e12916d1238e7c113fec679d3e6761c33bde 100644
+index 5c2a2d0adf1ca353d4ab8dd23475c9d6e6df3b55..dc8f62521ba5c78fcee7e79d028ee8ddc8964e7f 100644
 --- a/chrome/browser/plugins/chrome_plugin_service_filter.cc
 +++ b/chrome/browser/plugins/chrome_plugin_service_filter.cc
 @@ -52,7 +52,7 @@ class ProfileContentSettingObserver : public content_settings::Observer {
-       PluginService::GetInstance()->PurgePluginListCache(profile_, false);
+     PluginService::GetInstance()->PurgePluginListCache(profile_, false);
  
      const GURL primary(primary_pattern.ToString());
 -    if (primary.is_valid()) {

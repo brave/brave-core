@@ -77,9 +77,13 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="5874882355102994015">Brave, dahili PDF görüntüleyici yokken baskı önizlemeyi gösteremez.</translation>
 <translation id="8880183781256147665">Brave'a ekleniyor ...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> tehlikeli olabileceği için Brave tarafından engellendi.</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> tehlikeli olabileceği için Brave tarafından engellendi. Güvenliğiniz Gelişmiş Koruma tarafından sağlanıyor.</translation>
 <translation id="9067428552314418522">Bu dosya tehlikeli olduğu için Brave tarafından engellendi.</translation>
+<translation id="2938460345748897177">Bu dosya tehlikeli olduğu için Brave tarafından engellendi. Güvenliğiniz Gelişmiş Koruma tarafından sağlanıyor.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> tehlikeli olduğu için Brave tarafından engellendi.</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> tehlikeli olduğu için Brave tarafından engellendi. Güvenliğiniz Gelişmiş Koruma tarafından sağlanıyor.</translation>
 <translation id="89367911614620585">Bu dosya tehlikeli olabileceği için Brave tarafından engellendi.</translation>
+<translation id="8943391224520748272">Bu dosya tehlikeli olabileceği için Brave tarafından engellendi. Güvenliğiniz Gelişmiş Koruma tarafından sağlanıyor.</translation>
 <translation id="9183662282810237335">Yine de Brave'dan çıkılsın mı?</translation>
 <translation id="3834935463915107022">Yine de Brave'dan çıkılsın mı?</translation>
 <translation id="8797356639448065696">Brave arka plan modunda.</translation>
@@ -130,6 +134,7 @@ Yine de oturum açarsanız, yer işaretleriniz, geçmişiniz ve diğer ayarları
 <translation id="1326766910007115955">Yönetilen bir hesapla oturum açıyor ve hesabın yöneticisine Brave profilinizi denetleme izni veriyorsunuz. Uygulamalarınız, yer işaretleriniz, geçmişiniz, şifreleriniz ve diğer ayarlarınız gibi Brave verileriniz kalıcı olarak <ph name="USER_NAME"/> ile bağlantılandırılacaktır. Brave Software Hesapları Hesap Özeti'ni kullanarak bu verileri silebilecek, ancak bu verileri başka bir hesapla ilişkilendiremeyeceksiniz. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Yönetilen bir hesapla oturum açıyor ve hesabın yöneticisine Brave profilinizi denetleme izni veriyorsunuz. Uygulamalarınız, yer işaretleriniz, geçmişiniz, şifreleriniz ve diğer ayarlarınız gibi Brave verileriniz kalıcı olarak <ph name="USER_NAME"/> ile bağlantılandırılacaktır. Brave Software Hesapları Hesap Özeti'ni kullanarak bu verileri silebilecek, ancak bu verileri başka bir hesapla ilişkilendiremeyeceksiniz. İsterseniz mevcut Brave verilerinizi ayrı tutmak için yeni bir profil oluşturabilirsiniz. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Sistem yöneticiniz, Brave'u, <ph name="TARGET_URL_HOSTNAME"/> sitesini alternatif bir tarayıcıda açacak şekilde yapılandırmış.</translation>
+<translation id="5380963249588143069">Sistem yöneticiniz Brave'u <ph name="TARGET_URL_HOSTNAME"/> adresine erişmek için <ph name="ALTERNATIVE_BROWSER_NAME"/> tarayıcısını açacak şekilde yapılandırmış.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> önceden Brave kullanıyordu</translation>
 <translation id="1384923383737428730">Bilgisayarınızda zararlı yazılım var. Brave, tarayıcınızın tekrar normal şekilde çalışmasını sağlamak için bunu kaldırabilir, ayarlarınızı geri yükleyebilir ve uzantıları devre dışı bırakabilir.</translation>
 <translation id="8919921662052966648">Brave, verilerinizi senkronize edemedi. Lütfen Senkronizasyon parolanızı güncelleyin.</translation>
@@ -184,7 +189,9 @@ Daha fazla talimat için lütfen e-postanızı (<ph name="ACCOUNT_EMAIL"/>) kont
 <translation id="7272074097076644710">Brave Beta için mDNS trafiğine izin vermek için gelen kural.</translation>
 <translation id="4991512282053949769">Brave Gecelik için mDNS trafiğine izin vermek için gelen kural.</translation>
 <translation id="3856641371299712128">Brave Geliştirici için mDNS trafiğine izin vermek için gelen kural.</translation>
-<translation id="7276297358157391541">Brave, tarayıcıda yazdıklarınızı Brave Software sunucularına gönderip akıllı yazım denetimi olanağı sağlayabilir ve Brave Software arama tarafından kullanılan yazım denetimi teknolojisini kullanmanıza olanak tanır.</translation>
+<translation id="8207657266087451193">Bir resmin işe yarar bir açıklaması yoksa, Brave sizin için bir açıklama sağlamaya çalışır. Açıklama oluşturmak için resimler Brave Software'a gönderilir. Bu özelliği istediğiniz zaman ayarlardan kapatabilirsiniz.</translation>
+<translation id="5499063270485366718">Bir resmin işe yarar bir açıklaması yoksa, Brave sizin için bir açıklama sağlamaya çalışır. Açıklama oluşturmak için resimler Brave Software'a gönderilir.</translation>
+<translation id="3870835867536344658">Bu işlev, Brave Software Arama'da kullanılan yazım denetiminin aynısını kullanır. Tarayıcıda yazdığınız metin Brave Software'a gönderilir. Bu davranışı istediğiniz zaman ayarlardan değiştirebilirsiniz.</translation>
 <translation id="1807774211756215222">Bağlantıyı yeni Brave &amp;sekmesinde aç</translation>
 <translation id="4624945300945265642">Bağlantıyı Brave &amp;gizli penceresinde aç</translation>
 <translation id="7863882214613921971">Bağlantıyı Yeni Brave &amp;sekmesinde aç</translation>

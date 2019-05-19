@@ -76,9 +76,13 @@ Kai kurios funkcijos gali būti nepasiekiamos ir nuostatų pakeitimai nebus išs
 <translation id="5874882355102994015">„Brave“ negalima rodyti spaudinio peržiūros, jei nėra įtaisytos PDF žiūryklės.</translation>
 <translation id="8880183781256147665">Pridedama prie „Brave“...</translation>
 <translation id="3561569806301739367">Failas „<ph name="FILE_NAME"/>“ gali būti pavojingas, todėl „Brave“ jį užblokavo.</translation>
+<translation id="6205431412329939367">Failas „<ph name="FILE_NAME"/>“ gali būti pavojingas, todėl „Brave“ jį užblokavo. Jus saugo Papildomos apsaugos programa.</translation>
 <translation id="9067428552314418522">Šis failas pavojingas, todėl „Brave“ jį užblokavo.</translation>
+<translation id="2938460345748897177">Šis failas pavojingas, todėl „Brave“ jį užblokavo. Jus saugo Papildomos apsaugos programa.</translation>
 <translation id="4168372721886011198">Failas „<ph name="FILE_NAME"/>“ pavojingas, todėl „Brave“ jį užblokavo.</translation>
+<translation id="8858456697111532356">Failas „<ph name="FILE_NAME"/>“ pavojingas, todėl „Brave“ jį užblokavo. Jus saugo Papildomos apsaugos programa.</translation>
 <translation id="89367911614620585">Šis failas gali būti pavojingas, todėl „Brave“ jį užblokavo.</translation>
+<translation id="8943391224520748272">Šis failas gali būti pavojingas, todėl „Brave“ jį užblokavo. Jus saugo Papildomos apsaugos programa.</translation>
 <translation id="9183662282810237335">Vis tiek išeiti iš „Brave“?</translation>
 <translation id="3834935463915107022">Vis tiek išeiti iš „Brave“?</translation>
 <translation id="8797356639448065696">„Brave“ veikia fono režimu.</translation>
@@ -129,6 +133,7 @@ Prisijungus bet kuriuo būdu, „Brave“ informacija, pvz., žymės, istorija i
 <translation id="1326766910007115955">Prisijungiate su valdoma paskyra ir leidžiate jos administratoriui valdyti jūsų „Brave“ profilį. „Brave“ duomenys, pvz., programos, žymės, istorija, slaptažodžiai ir kiti nustatymai, bus visam laikui susieti su <ph name="USER_NAME"/>. Galėsite ištrinti šiuos duomenis naudodami „Brave Software“ paskyrų informacijos suvestinę, bet negalėsite susieti šių duomenų su kita paskyra. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Prisijungiate su valdoma paskyra ir leidžiate jos administratoriui valdyti jūsų „Brave“ profilį. „Brave“ duomenys, pvz., programos, žymės, istorija, slaptažodžiai ir kiti nustatymai, bus visam laikui susieti su <ph name="USER_NAME"/>. Galėsite ištrinti šiuos duomenis naudodami „Brave Software“ paskyrų informacijos suvestinę, bet negalėsite susieti šių duomenų su kita paskyra. Galite pasirinktinai sukurti naują profilį, kad esami „Brave“ duomenys būtų saugomi atskirai. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Sistemos administratorius sukonfigūravo „Brave“ atidaryti alternatyvią naršyklę, kad būtų galima pasiekti <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">Sistemos administratorius sukonfigūravo „Brave“ atidaryti naršyklę „<ph name="ALTERNATIVE_BROWSER_NAME"/>“, norint pasiekti <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> anksčiau naudojo „Brave“</translation>
 <translation id="1384923383737428730">Kompiuteryje yra kenkėjiškos programinės įrangos. „Brave“ gali ją pašalinti, atkurti nustatymus ir išjungti plėtinius, kad naršyklė vėl veiktų įprastai.</translation>
 <translation id="8919921662052966648">„Brave“ negali sinchronizuoti jūsų duomenų. Atnaujinkite sinchronizavimo slaptafrazę.</translation>
@@ -177,7 +182,9 @@ Patikrinkite el. pašto adresu <ph name="ACCOUNT_EMAIL"/> išsiųstą laišką, 
 <translation id="2871190378186459992">Atraskite puikių „Brave“ programų, žaidimų, plėtinių ir temų.</translation>
 <translation id="3350544518197210895">„Brave“ (mDNS-In)</translation>
 <translation id="1912973375560256099">„Brave“ skirta taisyklė, pagal kurią leidžiamas mDNS srautas.</translation>
-<translation id="7276297358157391541">„Brave“ gali teikti išmanesnę rašybos tikrinimo funkciją, siųsdama tai, ką įvedate naršyklėje, „Brave Software“ serveriams. Tai suteikia galimybę naudoti tą pačią rašybos tikrinimo technologiją, kuri naudojama „Brave Software“ paieškoje.</translation>
+<translation id="8207657266087451193">Jei nebus naudingo vaizdo aprašo, „Brave“ bandys jums jį pateikti. Kad būtų galima kurti aprašus, vaizdai siunčiami į sistemą „Brave Software“. Šią parinktį galite bet kada išjungti skiltyje „Nustatymai“.</translation>
+<translation id="5499063270485366718">Jei nebus naudingo vaizdo aprašo, „Brave“ bandys jums jį pateikti. Kad būtų galima kurti aprašus, vaizdai siunčiami į sistemą „Brave Software“.</translation>
+<translation id="3870835867536344658">Naudojamas tas pats rašybos tikrinimas kaip ir „Brave Software“ paieškoje. Tekstas, kurį įvedate naršyklėje, nusiunčiamas „Brave Software“. Šį veikimą visada galite pakeisti nustatymuose.</translation>
 <translation id="1807774211756215222">Atidaryti nuorodą naujame „Brave“ &amp;skirtuke</translation>
 <translation id="4624945300945265642">Atidaryti nuorodą „Brave“ inko&amp;gnito lange</translation>
 <translation id="7863882214613921971">Atidaryti nuorodą naujame „Brave“ &amp;skirtuke</translation>

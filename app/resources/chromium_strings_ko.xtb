@@ -76,9 +76,13 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="5874882355102994015">기본 제공되는 PDF 뷰어가 없으면 Brave에서 인쇄 미리보기를 표시할 수 없습니다.</translation>
 <translation id="8880183781256147665">Brave에 추가하는 중...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/>은(는) 위험할 수 있으므로 Brave에서 차단했습니다.</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/>은(는) 위험할 수도 있는 파일이므로 Brave에서 차단했습니다. 사용자를 안전하게 보호하는 고급 보호 기능이 작동 중입니다.</translation>
 <translation id="9067428552314418522">이 파일은 위험하므로 Brave에서 차단했습니다.</translation>
+<translation id="2938460345748897177">위험한 파일이므로 Brave에서 차단했습니다. 사용자를 안전하게 보호하는 고급 보호 기능이 작동 중입니다.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/>은(는) 위험한 파일이므로 Brave에서 차단했습니다.</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/>은(는) 위험한 파일이므로 Brave에서 차단했습니다. 사용자를 안전하게 보호하는 고급 보호 기능이 작동 중입니다.</translation>
 <translation id="89367911614620585">이 파일은 위험할 수 있으므로 Brave에서 차단했습니다.</translation>
+<translation id="8943391224520748272">위험할 수도 있는 파일이므로 Brave에서 차단했습니다. 사용자를 안전하게 보호하는 고급 보호 기능이 작동 중입니다.</translation>
 <translation id="9183662282810237335">Brave을 종료하시겠습니까?</translation>
 <translation id="3834935463915107022">Brave을 종료하시겠습니까?</translation>
 <translation id="8797356639448065696">Brave이 백그라운드 모드로 실행 중입니다.</translation>
@@ -129,6 +133,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="1326766910007115955">관리 계정으로 로그인하고 Brave 프로필에 대한 관리자 제어권을 부여하려고 합니다. 앱, 북마크, 방문 기록, 비밀번호 및 기타 설정 등 Brave 데이터가 <ph name="USER_NAME"/> 계정에 영구적으로 연결됩니다. 이후 이 데이터를 Brave Software 계정 대시보드에서 삭제할 수는 있지만 다른 계정에 연결할 수는 없습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">관리 계정으로 로그인하고 Brave 프로필에 대한 관리자 제어권을 부여하려고 합니다. 앱, 북마크, 방문 기록, 비밀번호 및 기타 설정 등 Brave 데이터가 <ph name="USER_NAME"/> 계정에 영구적으로 연결됩니다. 이후 이 데이터를 Brave Software 계정 대시보드에서 삭제할 수는 있지만 다른 계정에 연결할 수는 없습니다. 기존 Brave 데이터를 유지하려면 새 프로필을 만드는 방법이 있습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">시스템 관리자가 <ph name="TARGET_URL_HOSTNAME"/> 액세스를 위해 대체 브라우저를 열도록 Brave을 구성했습니다.</translation>
+<translation id="5380963249588143069">시스템 관리자가 <ph name="TARGET_URL_HOSTNAME"/> 액세스를 위해 <ph name="ALTERNATIVE_BROWSER_NAME"/>을(를) 열도록 Brave을 구성했습니다.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/>에서 이전에 Brave을 사용한 적이 있음</translation>
 <translation id="1384923383737428730">컴퓨터에 유해한 소프트웨어가 있습니다. Brave에서 유해한 소프트웨어를 삭제하고, 설정을 복원하고, 확장 프로그램을 사용 중지하여 브라우저가 다시 정상적으로 작동하도록 할 수 있습니다.</translation>
 <translation id="8919921662052966648">Brave에서 데이터를 동기화하지 못했습니다. 동기화 암호를 업데이트하시기 바랍니다.</translation>
@@ -177,7 +182,9 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="2871190378186459992">Brave에 유용한 앱, 게임, 확장 프로그램, 테마를 찾아보세요.</translation>
 <translation id="3350544518197210895">Brave(mDNS-In)</translation>
 <translation id="1912973375560256099">Brave이 mDNS 트래픽을 허용하는 인바운드 규칙입니다.</translation>
-<translation id="7276297358157391541">Brave에서 제공하는 더욱 지능적인 맞춤법 검사 기능은 사용자가 브라우저에 입력한 내용을 Brave Software 서버에 보내는 방식을 사용하므로 사용자가 Brave Software 검색에서 사용하는 것과 동일한 맞춤법 검사 기술을 사용할 수 있습니다.</translation>
+<translation id="8207657266087451193">이미지에 유용한 설명이 없으면 Brave에서 자동으로 설명을 제공하려고 시도합니다. 설명을 생성하기 위해 이미지가 Brave Software로 전송됩니다. 이 기능은 언제든지 설정에서 사용 중지할 수 있습니다.</translation>
+<translation id="5499063270485366718">이미지에 유용한 설명이 없으면 Brave에서 자동으로 설명을 제공하려고 시도합니다. 설명을 생성하기 위해 이미지가 Brave Software로 전송됩니다.</translation>
+<translation id="3870835867536344658">Brave Software 검색과 동일한 맞춤법 검사기가 사용됩니다. 브라우저에 입력되는 텍스트는 Brave Software로 전송됩니다. 설정에서 언제든지 이 동작을 변경할 수 있습니다.</translation>
 <translation id="1807774211756215222">새 Brave 탭에서 링크 열기(&amp;T)</translation>
 <translation id="4624945300945265642">Brave 시크릿 창에서 링크 열기(&amp;G)</translation>
 <translation id="7863882214613921971">새 Brave 탭에서 링크 열기(&amp;T)</translation>

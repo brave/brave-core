@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
-index f95cbea71c0efa127002b95c2392ef11b3e66542..961d0c5976b0c0f010678977e2d437ed53148367 100644
+index 2b8918425aeac998f8f59ab2e253d3bc3383101a..888ee5ca8fe636137cb5650ed9c9f3cbce06ebf6 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl2_rendering_context_base.cc
 @@ -9,6 +9,7 @@
@@ -28,7 +28,7 @@ index f95cbea71c0efa127002b95c2392ef11b3e66542..961d0c5976b0c0f010678977e2d437ed
  
    WebGLFramebuffer* framebuffer_binding = GetFramebufferBinding(target);
    DCHECK(!framebuffer_binding || framebuffer_binding->Object());
-@@ -5866,6 +5871,8 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
+@@ -5863,6 +5868,8 @@ ScriptValue WebGL2RenderingContextBase::getTexParameter(
      GLenum pname) {
    if (isContextLost() || !ValidateTextureBinding("getTexParameter", target))
      return ScriptValue::CreateNull(script_state);

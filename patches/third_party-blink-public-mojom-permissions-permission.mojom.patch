@@ -1,7 +1,7 @@
-diff --git a/third_party/blink/public/platform/modules/permissions/permission.mojom b/third_party/blink/public/platform/modules/permissions/permission.mojom
-index 0476935916fc87251fd17489abea696421b1c346..1e718abb888b3b150fc2d7bac98249fa236d1b27 100644
---- a/third_party/blink/public/platform/modules/permissions/permission.mojom
-+++ b/third_party/blink/public/platform/modules/permissions/permission.mojom
+diff --git a/third_party/blink/public/mojom/permissions/permission.mojom b/third_party/blink/public/mojom/permissions/permission.mojom
+index b46e7f9224ed069b40bcba90039b862f836acd30..9a60b6d2b92ea89f504697ea6386a2988d2d3acc 100644
+--- a/third_party/blink/public/mojom/permissions/permission.mojom
++++ b/third_party/blink/public/mojom/permissions/permission.mojom
 @@ -22,6 +22,7 @@ enum PermissionName {
    PAYMENT_HANDLER,
    BACKGROUND_FETCH,

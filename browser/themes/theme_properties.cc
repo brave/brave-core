@@ -32,8 +32,6 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
     case ThemeProperties::COLOR_TOOLBAR:
     case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR:
     case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR_INACTIVE:
-    case ThemeProperties::COLOR_DETACHED_BOOKMARK_BAR_BACKGROUND:
-    case ThemeProperties::COLOR_CONTROL_BACKGROUND:
       return kLightToolbar;
     case ThemeProperties::COLOR_TAB_TEXT:
     case ThemeProperties::COLOR_BOOKMARK_TEXT:
@@ -70,8 +68,6 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     case ThemeProperties::COLOR_TOOLBAR:
     case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR:
     case ThemeProperties::COLOR_TOOLBAR_TOP_SEPARATOR_INACTIVE:
-    case ThemeProperties::COLOR_DETACHED_BOOKMARK_BAR_BACKGROUND:
-    case ThemeProperties::COLOR_CONTROL_BACKGROUND:
     case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
       return kDarkToolbar;
     case ThemeProperties::COLOR_TAB_TEXT:
@@ -111,8 +107,6 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
-    case ThemeProperties::COLOR_DETACHED_BOOKMARK_BAR_BACKGROUND:
-    case ThemeProperties::COLOR_CONTROL_BACKGROUND:
     case ThemeProperties::COLOR_TOOLBAR_CONTENT_AREA_SEPARATOR:
       return kPrivateToolbar;
     case ThemeProperties::COLOR_TAB_TEXT:

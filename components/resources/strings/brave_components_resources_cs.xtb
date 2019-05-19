@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Získávejte známky za prohlížení reklam na Brave. Zobrazované reklamy vycházejí z vašich zájmů zjištěných podle chování při prohlížení stránek. Vaše osobní údaje ani údaje o historii vyhledávání se z vašeho prohlížeče nedostanou ven.</translation>
 <translation id="6112368337882254910">Automatický příspěvek</translation>
 <translation id="1527222983464337010">Automatický způsob podpory vydavatelů a tvůrců obsahu. Nastavte měsíční platbu a procházejte jako obvykle. Stránky, které navštívíte, obdrží vaše příspěvky automaticky, na základě vaší pozornosti, kterou měří Brave.</translation>
-<translation id="7178655681744815321">Aktuální výdělek za tento měsíc (odhad)</translation>
 <translation id="8157096848242649588">Datum platby</translation>
 <translation id="5208388044986603165">Přijatých oznámení s reklamami</translation>
 <translation id="4229016885653790965">Pardon! Reklamy nejsou ve vašem regionu k dispozici.</translation>
@@ -169,6 +168,9 @@ Povolte je návštěvou</translation>
 <translation id="1312977698678162065">Získávejte peníze za zobrazování relevantních reklam, které respektují vaše soukromí.</translation>
 <translation id="3361548743396744457">Podpořte vaše oblíben stránky pouhým prohlížením, nebo stránce pošlete příspěvek kdykoliv budete chtít.</translation>
 <translation id="3333887201479867589">Odměny Brave</translation>
+<translation id="4493850495402472953">a</translation>
+<translation id="8804164990146287819">Zásady ochrany osobních údajů</translation>
+<translation id="4281844954008187215">Smluvní podmínky</translation>
 <translation id="7530570094705720669">Vytváření peněženky</translation>
 <translation id="2105596359439030979">Vaše pozornost má svoji cenu. Vydělávejte si prohlížením reklam respektujících soukromí a svými příspěvky podporujte tvůrce obsahu, který máte rádi.</translation>
 <translation id="516395624550019162">Ano, jsem tam!</translation>
@@ -278,6 +280,7 @@ Povolte je návštěvou</translation>
 <translation id="5010112177773747965">bez vašeho svolení.</translation>
 <translation id="7147673045905733351">Brave vás dnes vítá na novém internetu.</translation>
 <translation id="1350763070659630336">Takovém, kde má váš čas svoji ceny, vaše osobní údaje jsou v bezpečí a kde dostáváte zaplaceno za vaši pozornost.</translation>
+<translation id="880341991877949255">U vašeho předchozího prohlížeče jste za procházení webu platili zobrazováním reklam, které vyžadovaly vaši cennou pozornost. Drahocenný čas jste trávili stahováním invazivní reklamní technologie, která přenášela vaše hodnotná osobní data tvůrcům reklam — to vše bez vašeho souhlasu.</translation>
 <translation id="5830306739231399614">Zatím bohužel žádné známky</translation>
 <translation id="7359258898775969374">Peněženku lze dobíjet třemi způsoby:</translation>
 <translation id="8087614920008846901">Můžete přidávat prostředky.</translation>
@@ -329,7 +332,6 @@ Povolte je návštěvou</translation>
 <translation id="318487899513214296">Podívejte se, co jsme vylepšili</translation>
 <translation id="4083384190339959182">Platby Brave se dočkaly velké aktualizace.</translation>
 <translation id="5395851053710553429">Připravte se na zážitek z nového internetu.</translation>
-<translation id="880341991877949255">U vašeho předchozího prohlížeče jste za procházení webu platili zobrazováním reklam, které vyžadovaly vaši cennou pozornost. Drahocenný čas jste trávili stahováním invazivní reklamní technologie, která přenášela vaše hodnotná osobní data tvůrcům reklam — to vše bez vašeho souhlasu.</translation>
 <translation id="2549982302631665116">Brave vás dnes vítá na novém internetu. Takovém, kde má váš čas svoji ceny, vaše osobní údaje jsou v bezpečí a kde dostáváte zaplaceno za vaši pozornost.</translation>
 <translation id="3780605330121608425">Vaše peněženka</translation>
 <translation id="6727483290601442544">Zobrazit podrobnosti</translation>
@@ -352,7 +354,6 @@ Povolte je návštěvou</translation>
 <translation id="1061533051865606843">Přidat nové zařízení</translation>
 <translation id="8780295742023331191">Zobrazit synchronizační kód</translation>
 <translation id="1755198127524719638">Nastavení synchronizace</translation>
-<translation id="7558480201297099157">Spravujte informace, které si přejete synchronizovat napříč zařízeními. Tato nastavení ovlivní pouze toto zařízení.</translation>
 <translation id="8820817407110198400">Záložky</translation>
 <translation id="5591129654353352557">Uložená nastavení stránky</translation>
 <translation id="7859704718976024901">Historie procházení</translation>
@@ -380,7 +381,6 @@ Povolte je návštěvou</translation>
 <translation id="5086223971958279691">Řetězcový kód synchronizace</translation>
 <translation id="2899261497479389619">Na vašem cílovém počítači přejděte na Brave Sync v nastavení a klikněte na tlačítko</translation>
 <translation id="4827439149833241990">“Mám synchronizační klíč”.</translation>
-<translation id="24067401253841795">Vložte níže uvedená slova kódu pro řetězcovou synchronizaci.</translation>
 <translation id="8914601399214979966">Namísto toho použít moji kameru</translation>
 <translation id="3034163433136515805">Zobrazit QR kód</translation>
 <translation id="5093410893656857925">Zvolte typ zařízení</translation>

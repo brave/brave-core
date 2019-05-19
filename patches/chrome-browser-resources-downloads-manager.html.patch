@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/downloads/manager.html b/chrome/browser/resources/downloads/manager.html
-index fff6c6d07161dd9832b14db084cb38be3d7a953f..e1b587a6a1462b4c5b778f7776000ab9f30be202 100644
+index 4407c5e120957d8dc059af2c2598c7a991e3b944..622f2b92a507ecd28cd4aab73e0872a8cd6ec432 100644
 --- a/chrome/browser/resources/downloads/manager.html
 +++ b/chrome/browser/resources/downloads/manager.html
-@@ -19,7 +19,7 @@
+@@ -20,7 +20,7 @@
  
  <dom-module id="downloads-manager">
    <template>

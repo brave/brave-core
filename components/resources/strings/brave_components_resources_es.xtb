@@ -41,6 +41,7 @@
 <translation id="8958799246752641148">Tor oculta tu dirección IP a los sitios web que visitas dirigiendo tu navegación a través de varios servidores Tor antes de que llegue a tu destino. Estas conexiones están encriptadas, por lo que ni tu ISP ni tu jefe podrán ver los sitios que visitas. Tor puede ralentizar la navegación y es posible que algunos sitios no funcionen en absoluto.</translation>
 <translation id="520608572871993342">Usar una Ventana Privada solo cambia lo que hace Brave en tu dispositivo, no cambia el comportamiento de nadie más. Tor oculta tu dirección IP a los sitios web que visitas, y oculta los sitios web que has visitado a tu ISP. Abre una Ventana Privada con Tor desde el menú, o con {{ key }}.</translation>
 <translation id="6975708438781948564">Saber más sobre Tor en Brave</translation>
+<translation id="4272382368346338917">Filtros adicionales</translation>
 <translation id="1869685517625607604">Total de anuncios bloqueados</translation>
 <translation id="4673764878177947707">Filtros personalizados</translation>
 <translation id="8803682034537762884">Uno por línea, los filtros se describen en la sintaxis de filtros de Adblock Plus</translation>
@@ -68,7 +69,6 @@
 <translation id="5946611334574299206">Gana tokens visualizando anuncios en Brave. Los anuncios ofrecidos están basados en tus intereses, tal y como se deduce de tu comportamiento de navegación. Ningún dato personal o historial de navegación sale de tu navegador.</translation>
 <translation id="6112368337882254910">Contribución Automática</translation>
 <translation id="1527222983464337010">Una forma automática de apoyar a los editores y creadores de contenido. Establece un pago mensual y navega de manera habitual. Los sitios web que hayas visitado reciben contribuciones automáticamente, según tu atención medida por Brave.</translation>
-<translation id="7178655681744815321">Ganancias actuales este mes (estimación)</translation>
 <translation id="8157096848242649588">Fecha de pago</translation>
 <translation id="5208388044986603165">Notificaciones de anuncios recibidas</translation>
 <translation id="4229016885653790965">¡Lo sentimos! Aún no hay anuncios disponibles en tu región.</translation>
@@ -166,8 +166,12 @@
 <translation id="3671566813999349838">Cantidad</translation>
 <translation id="3819257035322786455">Copia de seguridad</translation>
 <translation id="1312977698678162065">Recibe pagos por visualizar anuncios relevantes que respetan tu privacidad.</translation>
+<translation id="2975780980638932742">¡Brave Ads ha llegado!</translation>
 <translation id="3361548743396744457">Apoya a tus sitios favoritos con solo navegar – o da una propina aun sitio web cuando lo desees</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="4493850495402472953">y</translation>
+<translation id="8804164990146287819">Política de privacidad</translation>
+<translation id="4281844954008187215">Condiciones de uso</translation>
 <translation id="7530570094705720669">Creando cartera</translation>
 <translation id="2105596359439030979">Tu atención es valiosa. Gana por visualizar anuncios relacionados con la privacidad y apoya directamente a tus creadores de contenido favoritos.</translation>
 <translation id="516395624550019162">¡Sí, me apunto!</translation>
@@ -277,6 +281,7 @@
 <translation id="5010112177773747965">sin tu consentimiento.</translation>
 <translation id="7147673045905733351">Hoy, Brave te da la bienvenida al nuevo internet</translation>
 <translation id="1350763070659630336">Una vez valorado tu tiempo, tus datos personales se mantienen privados y recibes pagos por tu atención.</translation>
+<translation id="880341991877949255">Con tu antiguo navegador, pagabas por navegar viendo anuncios que reclamaban tu valiosa atención. Gastabas tu tiempo descargando con publicidad invasiva que enviaba tus datos personales a los anunciantes sin tu consentimiento.</translation>
 <translation id="5830306739231399614">Lamentablemente no hay tokens aún</translation>
 <translation id="7359258898775969374">3 maneras de recargar tu Wallet:</translation>
 <translation id="8087614920008846901">Puedes añadir fondos.</translation>
@@ -328,7 +333,6 @@
 <translation id="318487899513214296">Echa un vistazo a las mejoras realizadas</translation>
 <translation id="4083384190339959182">Le hemos dado a Brave Payments una gran actualización.</translation>
 <translation id="5395851053710553429">Prepárate para experimentar el próximo Internet.</translation>
-<translation id="880341991877949255">Con tu antiguo navegador, pagabas por navegar viendo anuncios que reclamaban tu valiosa atención. Gastabas tu valioso tiempo descargando con publicidad invasiva que enviaba tus datos personales a los anunciantes sin tu consentimiento.</translation>
 <translation id="2549982302631665116">Hoy, Brave te da la bienvenida a un nuevo Internet. Un Internet en el que se valora tu tiempo, tus datos personales se mantienen privados y recibes pagos por tu atención.</translation>
 <translation id="3780605330121608425">Tu Wallet</translation>
 <translation id="6727483290601442544">Ver detalles</translation>
@@ -351,7 +355,6 @@
 <translation id="1061533051865606843">Añadir un dispositivo nuevo</translation>
 <translation id="8780295742023331191">Ver código de sincronización</translation>
 <translation id="1755198127524719638">Configuración de Brave Sync</translation>
-<translation id="7558480201297099157">Gestiona la información que quieres sincronizar entre los dispositivos. Estos ajustes solo afectarán a este dispositivo.</translation>
 <translation id="8820817407110198400">Marcadores</translation>
 <translation id="5591129654353352557">Ajustes de página guardados</translation>
 <translation id="7859704718976024901">Historial de navegación</translation>
@@ -379,7 +382,6 @@
 <translation id="5086223971958279691">Código de la cadena de Brave Sync</translation>
 <translation id="2899261497479389619">En el ordenador de destino, dirígete al menú de Brave Sync en Ajustes y haz click en el botón</translation>
 <translation id="4827439149833241990">“Tengo un código de sincronización”.</translation>
-<translation id="24067401253841795">Introduce las palabras de la cadena de Brave Sync que se muestran a continuación.</translation>
 <translation id="8914601399214979966">Usar mi cámara en su lugar</translation>
 <translation id="3034163433136515805">Ver código QR</translation>
 <translation id="5093410893656857925">Selecciona el tipo de dispositivo</translation>

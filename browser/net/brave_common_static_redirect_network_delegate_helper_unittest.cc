@@ -40,7 +40,8 @@ TEST_F(BraveCommonStaticRedirectNetworkDelegateHelperTest,
        ModifyComponentUpdaterURL) {
   net::TestDelegate test_delegate;
   std::string query_string("?foo=bar");
-  GURL url(std::string(component_updater::kUpdaterDefaultUrl) + query_string);
+  GURL url(std::string(component_updater::kUpdaterJSONDefaultUrl) +
+           query_string);
   std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
       url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
   std::shared_ptr<brave::BraveRequestInfo> before_url_context(

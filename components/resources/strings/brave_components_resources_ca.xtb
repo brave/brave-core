@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Guanya tokens veient anuncis a Brave. Els anuncis presentats es basen en els vostres interessos, tal com es dedueix del vostre comportament de navegació. Les dades personals o el historial de navegació mai no surt del navegador.</translation>
 <translation id="6112368337882254910">Auto-Contribució</translation>
 <translation id="1527222983464337010">Una manera automàtica de donar suport a editors i creadors de contingut. Estableix un pagament mensual i navega normalment. Els llocs que visitis rebran les teves aportacions de manera automàtica, segons la teva atenció, tal com ho ha mesurat Brave.</translation>
-<translation id="7178655681744815321">Guanys aquest mes (estimació)</translation>
 <translation id="8157096848242649588">Data de pagament</translation>
 <translation id="5208388044986603165">Notificacions d'anunci rebudes</translation>
 <translation id="4229016885653790965">Vaja! Els anuncis encara no estan disponibles a la teva regió.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Cobra per veure anuncis rellevants que respecten la teva intimitat.</translation>
 <translation id="3361548743396744457">Recolza els teus llocs preferits només navegant – o dóna propina a un lloc web en qualsevol moment que vulguis.</translation>
 <translation id="3333887201479867589">Premis de Brave</translation>
+<translation id="4493850495402472953">i</translation>
+<translation id="8804164990146287819">Política de privadesa</translation>
+<translation id="4281844954008187215">Condicions del servei</translation>
 <translation id="7530570094705720669">S'està creant la cartera</translation>
 <translation id="2105596359439030979">La teva atenció és valuosa. Guanya visualitzant anuncis respectuosos amb la intimitat i paga per donar suport als creadors de contingut que t'agraden.</translation>
 <translation id="516395624550019162">Sí, soc aquí!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">sense el teu consentiment.</translation>
 <translation id="7147673045905733351">Avui, Brave et dona la benvinguda a la nova Internet.</translation>
 <translation id="1350763070659630336">Un on es valora el teu temps, les teves dades personals es mantenen privades i on se't paga per la teva atenció.</translation>
+<translation id="880341991877949255">Amb el teu navegador antic, has pagat per navegar per la web mirant anuncis amb la teva valuosa atenció. Has gastat el teu valuós temps en baixar tecnologia d'anuncis invasius que ha transmès les teves valuoses dades privades als anunciants  — sense el teu consentiment.</translation>
 <translation id="5830306739231399614">Per desgràcia encara no hi ha tokens.</translation>
 <translation id="7359258898775969374">3 maneres d'omplir la teva cartera:</translation>
 <translation id="8087614920008846901">Pots afegir fons.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Comprova el que ’ ha millorat</translation>
 <translation id="4083384190339959182">Hem actualitzat Pagaments de Brave.</translation>
 <translation id="5395851053710553429">Prepara't per experimentar la nova Internet.</translation>
-<translation id="880341991877949255">Amb el teu navegador antic, has pagat per navegar per la web mirant anuncis amb la teva valuosa atenció. Has gastat el teu valuós temps en baixar tecnologia d'anuncis invasius que ha transmès les teves valuoses dades privades als anunciants  — sense el teu consentiment.</translation>
 <translation id="2549982302631665116">Brave et dona la benvinguda a la nova Internet. On es valora el teu temps, les teves dades personals es mantenen privades i, en efecte, se't paga per la teva atenció.</translation>
 <translation id="3780605330121608425">La teva cartera</translation>
 <translation id="6727483290601442544">Veure detalls</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Afegir nou dispositiu</translation>
 <translation id="8780295742023331191">Veure el codi de sincronització</translation>
 <translation id="1755198127524719638">Configuració de sincronització</translation>
-<translation id="7558480201297099157">Gestiona la informació que vols sincronitzar entre els dispositius. Aquesta configuració només tindrà efecte en aquest dispositiu.</translation>
 <translation id="8820817407110198400">Adreces d'interès</translation>
 <translation id="5591129654353352557">S'ha desat la configuració del lloc</translation>
 <translation id="7859704718976024901">Historial de navegació</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Codi de cadena de sincronització</translation>
 <translation id="2899261497479389619">Ves a la configuració del teu ordinador de destinació, i entra a Sincronització Sync.</translation>
 <translation id="4827439149833241990">“Tinc un codi de sincronització”.</translation>
-<translation id="24067401253841795">Introdueix les paraules del codi de cadena de sincronització que es mostren a sota.</translation>
 <translation id="8914601399214979966">Fer servir la meva càmera, doncs</translation>
 <translation id="3034163433136515805">Veure codi QR</translation>
 <translation id="5093410893656857925">Tria el tipus de dispositiu</translation>

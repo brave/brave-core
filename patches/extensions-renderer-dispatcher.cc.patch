@@ -1,0 +1,13 @@
+diff --git a/extensions/renderer/dispatcher.cc b/extensions/renderer/dispatcher.cc
+index 34b53284ff4a62a4c0cac277e859ce39fcaf89a1..d3b27935dcea9a84d8ebebb26a0893234ae9846c 100644
+--- a/extensions/renderer/dispatcher.cc
++++ b/extensions/renderer/dispatcher.cc
+@@ -1419,7 +1419,7 @@ void Dispatcher::RequireGuestViewModules(ScriptContext* context) {
+ std::unique_ptr<NativeExtensionBindingsSystem> Dispatcher::CreateBindingsSystem(
+     std::unique_ptr<IPCMessageSender> ipc_sender) {
+   auto bindings_system =
+-      std::make_unique<NativeExtensionBindingsSystem>(std::move(ipc_sender));
++      std::make_unique<BraveNativeExtensionBindingsSystem>(std::move(ipc_sender));
+   delegate_->InitializeBindingsSystem(this, bindings_system.get());
+   return bindings_system;
+ }

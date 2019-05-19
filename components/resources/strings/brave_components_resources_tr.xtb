@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Brave'de reklam izleyerek token kazanın. Gösterilen reklamlar, tarama alışkanlığınızdan esinlenilerek ilgi alanlarınıza göre temellendirilir. Hiçbir kişisel veri ya da tarama geçmişi tarayıcınızdan ayrılmaz.</translation>
 <translation id="6112368337882254910">Otomatik-Katkı</translation>
 <translation id="1527222983464337010">Yayıncıları ve içerik oluşturucularını desteklemenin otomatik bir yoludur. Aylık bir ödeme belirleyin ve normal olarak gezinin. Ziyaret ettiğiniz siteler, Brave tarafından ölçülen ilgilenme durumunuza dayanarak, katkılarınızı otomatik olarak alır.</translation>
-<translation id="7178655681744815321">Bu ayki mevcut kazançlar (Tahmini)</translation>
 <translation id="8157096848242649588">Ödeme tarihi</translation>
 <translation id="5208388044986603165">Alınan reklam bildirimleri</translation>
 <translation id="4229016885653790965">Üzgünüz! Bölgenizde henüz reklamlar kullanılamıyor.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Gizliliğinize saygılı ve alakalı reklamlar görüntüleyerek ödeme alın.</translation>
 <translation id="3361548743396744457">Favori sitelerinize yalnızca görüntüleyerek destek olun; veya istediğiniz zaman bir siteye bahşiş verin.</translation>
 <translation id="3333887201479867589">Brave Ödülleri</translation>
+<translation id="4493850495402472953">ve</translation>
+<translation id="8804164990146287819">Gizlilik Politikası</translation>
+<translation id="4281844954008187215">Kullanım Şartları</translation>
 <translation id="7530570094705720669">Cüzdan oluşturmak</translation>
 <translation id="2105596359439030979">Dikkatiniz değerlidir. Gizliliğe saygılı reklamları görüntüleyerek para kazanın ve bunu yönlendirerek sevdiğiniz içerik oluşturucularını destekleyin.</translation>
 <translation id="516395624550019162">Evet, varım!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">onayınız olmadan.</translation>
 <translation id="7147673045905733351">Bugün, Brave sizi yeni internette ağırlıyor.</translation>
 <translation id="1350763070659630336">Vaktinize değer verilen, kişisel verilerinizin saklı tutulduğu ve ilginiz karşılığında gerçekten ödeme aldığınız tek yer.</translation>
+<translation id="880341991877949255">Eski tarayıcınızla, değerli dikkatinizi  internette gezinmek için reklamları görüntülemeye harcadınız. Değerli vaktinizi, değerli özel bilgilerinizi onayınız olmadan reklamcılara aktaran istilacı reklam teknolojilerini indirerek geçirdiniz.</translation>
 <translation id="5830306739231399614">Üzgünüz. Henüz jeton yok.</translation>
 <translation id="7359258898775969374">Cüzdanınızı doldurmanın 3 yolu:</translation>
 <translation id="8087614920008846901">Para ekleyebilirsiniz.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Nelerin geliştirildiğini kontrol edin</translation>
 <translation id="4083384190339959182">Brave Ödemelerde büyük bir güncelleme gerçekleştirdik.</translation>
 <translation id="5395851053710553429">Yeni interneti tecrübe etmek için hazırlan.</translation>
-<translation id="880341991877949255">Eski tarayıcınızla, değerli dikkatinizi  internette gezinmek için reklamları görüntülemeye harcadınız. Değerli vaktinizi, değerli özel bilgilerinizi onayınız olmadan reklamcılara aktaran istilacı reklam teknolojilerini indirerek geçirdiniz.</translation>
 <translation id="2549982302631665116">Brave, bugün seni yeni internete davet ediyor. Vaktinize değer verilen, kişisel verilerinizin saklı tutulduğu ve ilginiz karşılığında gerçekten ödeme aldığınız tek yer.</translation>
 <translation id="3780605330121608425">Cüzdanınız</translation>
 <translation id="6727483290601442544">Detayları Görüntüle</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Yeni Cihaz Ekle</translation>
 <translation id="8780295742023331191">Sync Kodunu Görüntüle</translation>
 <translation id="1755198127524719638">Senkronizasyon Ayarları</translation>
-<translation id="7558480201297099157">Cihazlar arasında hangi bilgileri senkronize etmek istediğinizi yönetin. Bu ayarlar yalnızca bu cihazı etkiler.</translation>
 <translation id="8820817407110198400">Yer imleri</translation>
 <translation id="5591129654353352557">Kayıtlı Site Ayarları</translation>
 <translation id="7859704718976024901">Gözatma Geçmişi</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Sync Chain Kodu</translation>
 <translation id="2899261497479389619">Hedef bilgisayarınızda, ayarlardan Brave Sync'e gidin ve düğmeye tıklayın.</translation>
 <translation id="4827439149833241990">“Bir Sync Kodum var”.</translation>
-<translation id="24067401253841795">Aşağıda gösterilen senkronizasyon zinciri kodu kelimelerini girin.</translation>
 <translation id="8914601399214979966">Bunun yerine benim kameramı kullan</translation>
 <translation id="3034163433136515805">QR Kodunu Görüntüle</translation>
 <translation id="5093410893656857925">Cihaz Türünü Seçin</translation>

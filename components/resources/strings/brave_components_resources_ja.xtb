@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Braveで広告を視聴してトークンを獲得しましょう。ご自身の閲覧状況から推測される関心に基づいて、広告が表示されます。個人データや閲覧履歴は一切ブラウザの外へ出ることはありません。</translation>
 <translation id="6112368337882254910">オートコントリビュート</translation>
 <translation id="1527222983464337010">パブリッシャーやコンテンツ制作者を自動で支援する方法です。毎月の支払いを設定し、いつも通りにウェブ閲覧しましょう。あなたが訪問するサイトはBraveによって計測されたあなたの関心に基づき、あなたからの寄付を自動的に受けとります。</translation>
-<translation id="7178655681744815321">今月の現在の収益 (推定)</translation>
 <translation id="8157096848242649588">支払い日</translation>
 <translation id="5208388044986603165">受け取った広告通知</translation>
 <translation id="4229016885653790965">申し訳ありません！広告はお住まいの地域ではまだご利用いただけません。</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">プライバシー重視型広告を閲覧して報酬を得る。</translation>
 <translation id="3361548743396744457">サイトを閲覧したりチップを払うことで、いつでも好きなときにお気に入りのサイトを支援してください。</translation>
 <translation id="3333887201479867589">Braveリワード</translation>
+<translation id="4493850495402472953">および</translation>
+<translation id="8804164990146287819">プライバシーポリシー</translation>
+<translation id="4281844954008187215">利用規約</translation>
 <translation id="7530570094705720669">ウォレットの作成</translation>
 <translation id="2105596359439030979">あなたの注目度は重要です。プライバシー重視型の広告を閲覧することで報酬を得て、あなたのお気に入りのサイトを支援することができます。</translation>
 <translation id="516395624550019162">参加します！</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">あなたの同意なく。</translation>
 <translation id="7147673045905733351">今、Braveがあなたを新しいインターネットへ招待します。</translation>
 <translation id="1350763070659630336">あなたの時間が重視される場所で個人データの秘密を保ち、実際にあなたの注目に対して報酬が支払われます。</translation>
+<translation id="880341991877949255">旧来のブラウザでは、 あなたの貴重な注意力を広告に向けることでウェブ閲覧の支払いをしています。侵襲的な広告テクノロジーをダウンロードするためにあなたの貴重な時間を割かなければならず、さらにそれは大事な個人データをあなたの同意なく広告主へ送信しています。</translation>
 <translation id="5830306739231399614">残念ながらトークンがまだありません。</translation>
 <translation id="7359258898775969374">ウォレットを満たす3つの方法：</translation>
 <translation id="8087614920008846901">資金を追加することができます。</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">改善点をチェック</translation>
 <translation id="4083384190339959182">Brave Paymentsを大幅アップグレードしました。</translation>
 <translation id="5395851053710553429">次世代インターネットを体験する準備はよろしいですか。</translation>
-<translation id="880341991877949255">旧来のブラウザでは、 あなたの貴重な注意力を広告に向けることでウェブ閲覧の支払いをしています。侵襲的な広告テクノロジーをダウンロードするためにあなたの貴重な時間を割かなければならず、さらにそれは大事な個人データをあなたの同意なく広告主へ送信しています。</translation>
 <translation id="2549982302631665116">今、Braveがあなたを新しいインターネットへ招待します。あなたの時間が重視される場所で個人データの秘密を保ち、実際にあなたの注目に対して報酬が支払われます。</translation>
 <translation id="3780605330121608425">あなたのウォレット</translation>
 <translation id="6727483290601442544">詳細を表示</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">新たなデバイスを追加</translation>
 <translation id="8780295742023331191">同期コードを見る</translation>
 <translation id="1755198127524719638">設定の同期</translation>
-<translation id="7558480201297099157">デバイス間で同期させたい情報を管理してください。これらの設定はこのデバイスでのみ有効です。</translation>
 <translation id="8820817407110198400">ブックマーク</translation>
 <translation id="5591129654353352557">保存済みのサイト設定</translation>
 <translation id="7859704718976024901">閲覧履歴</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">チェーンコードの同期</translation>
 <translation id="2899261497479389619">目的のコンピューターで、設定からBrave 同期に行き、ボタンをクリックして下さい</translation>
 <translation id="4827439149833241990">「同期コードを持っています。」</translation>
-<translation id="24067401253841795">以下に表示された同期チェーンコードワードを入力する。</translation>
 <translation id="8914601399214979966">代わりに自分のカメラを使う</translation>
 <translation id="3034163433136515805">QR コードを見る</translation>
 <translation id="5093410893656857925">デバイスの種類を選んでください</translation>

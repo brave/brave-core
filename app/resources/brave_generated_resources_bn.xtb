@@ -46,17 +46,14 @@
 <translation id="3155170474926428993">টর লঞ্চার</translation>
 <translation id="2515126961943087659">Bat বিজ্ঞাপন পরিষেবা</translation>
 <translation id="7924918279836988121">Bat Ledger পরিষেবা</translation>
-<translation id="768979911142179781">Brave শিল্ডস ডিফল্ট</translation>
-<translation id="9185018653595759199">সোশ্যাল বোতাম এবং লগইনসমূহ</translation>
-<translation id="6894114137169961038">বিজ্ঞাপন নিয়ন্ত্রণ</translation>
-<translation id="1096802265930928584">কুকি নিয়ন্ত্রণ</translation>
+<translation id="4472575034687746823">শুরু করুন</translation>
+<translation id="6303294677342628402">শিল্ড</translation>
 <translation id="8919235146866304148">আঙ্গুলের ছাপের নিরাপত্তা</translation>
 <translation id="520895744850022668">HTTPS সর্বত্র</translation>
 <translation id="5259716416204774556">স্ক্রিপ্ট অবরুদ্ধ করা</translation>
 <translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে Google লগইন বোতামগুলির অনুমতি দিন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
-<translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
 <translation id="6067014455220527258">বিজ্ঞাপন অবরুদ্ধ করুন</translation>
 <translation id="6985711843506827936">বিজ্ঞাপন এবং ট্র্যাকিং এর অনুমতি দিন</translation>
 <translation id="6132506775968708399">3য় পক্ষের কুকিগুলি অবরুদ্ধ করুন</translation>
@@ -76,7 +73,6 @@
 <translation id="2414886740292270097">অন্ধকার</translation>
 <translation id="1360441190790440400">Linux এর মতো</translation>
 <translation id="1336940801687497203">Windows এর মতো</translation>
-<translation id="8721331068159819483">MacOS এর মতো</translation>
 <translation id="6786747875388722282">এক্সটেনশনগুলি</translation>
 <translation id="2896916411183256228">সরাসরি ব্রাউজারে torrents প্রদর্শন করতে WebTorrent ব্যবহার করে। torrent ফাইলগুলি এবং magnet লিঙ্কগুলিকে সমর্থন করে।</translation>
 <translation id="6554397389149987360">ব্রাউজারে স্ক্রিন শেয়ারিং এবং অন্যান্য বৈশিষ্ট্য সক্ষম করতে Hangouts উপাদানগুলি ব্যবহার করে।</translation>

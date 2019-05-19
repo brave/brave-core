@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/profiles/incognito_menu_view.h b/chrome/browser/ui/views/profiles/incognito_menu_view.h
+index 80d161fd199b4b6d8257228783ed8cd656bf5bc2..7694aac35cd8cd2fb3c071e9ce15a26cef6c43ac 100644
+--- a/chrome/browser/ui/views/profiles/incognito_menu_view.h
++++ b/chrome/browser/ui/views/profiles/incognito_menu_view.h
+@@ -34,6 +34,7 @@ class IncognitoMenuView : public ProfileMenuViewBase,
+   ~IncognitoMenuView() override;
+ 
+  private:
++  friend class BraveIncognitoMenuView;
+   // views::BubbleDialogDelegateView:
+   void Init() override;
+   base::string16 GetAccessibleWindowTitle() const override;
+@@ -41,7 +42,7 @@ class IncognitoMenuView : public ProfileMenuViewBase,
+   // views::ButtonListener:
+   void ButtonPressed(views::Button* sender, const ui::Event& event) override;
+ 
+-  void Reset();
++  virtual void Reset();
+ 
+   // Adds the incognito window count view.
+   void AddIncognitoWindowCountView();
