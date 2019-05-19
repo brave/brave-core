@@ -163,6 +163,14 @@
     "message": "oke",
     "description": "Used in notification to dismiss notification"
   },
+  "braveAdsLaunchMsg": {
+    "message": "Sekarang Anda bisa mendapatkan penghasilan dari melihat iklan.",
+    "description": "Message for ads launch notification"
+  },
+  "braveAdsLaunchTitle": {
+    "message": "Brave Ads telah tiba!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave Ads",
     "description": "Notification title when we display info about ads"
@@ -186,7 +194,7 @@
     "description": "Description for new grant notification"
   },
   "backupNow": {
-    "message": "Cadangkan Sekarang",
+    "message": "Cadangkan",
     "description": "Notification button text when we ask user to backup wallet"
   },
   "backupWalletTitle": {
@@ -289,6 +297,10 @@
     "message": "Hibah ini tidak lagi tersedia.",
     "description": "Error title when user missed a grant."
   },
+  "unVerifiedCheck": {
+    "message": "Cek Lagi...",
+    "description": "Text of link that allows to check verified status of unverified publisher"
+  },
   "unVerifiedPublisher": {
     "message": "Belum diverifikasi",
     "description": "Status of the publisher shown in the panel"
@@ -318,7 +330,7 @@
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "Saat ini Anda tidak mendapatkan Imbalan saat menjelajah web. Aktifkan kembali Imbalan\n",
+    "message": "Saat ini Anda tidak mendapatkan Rewards saat menjelajah web. Aktifkan kembali Rewards",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
@@ -376,5 +388,29 @@
   "welcomeBack": {
     "message": "Selamat Datang Kembali!",
     "description": "Title message for wallet disabled panel"
+  },
+  "tipsProcessedNotification": {
+    "message": "Tip bulanan Anda sudah diproses!",
+    "description": "Message for monthly tips processed notification"
+  },
+  "contributionTips": {
+    "message": "Kontribusi & Tip",
+    "description": "Title for monthly tips processed notification"
+  },
+  "serviceTextPanelWelcome": {
+    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "description": "Terms of service panel opt-in text"
+  },
+  "bat": {
+    "message": "BAT",
+    "description": "BAT text for displaying converted tip amount."
+  },
+  "turnOnAds": {
+    "message": "Aktifkan Iklan",
+    "description": "Prompt to turn on Ads via notification"
+  },
+  "adsEarnings": {
+    "message": "earned from ads",
+    "description": "Description text for ad grants in grant details"
   }
 }

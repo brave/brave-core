@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behaviour. No personal data or browsing history ever leaves your browser.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="1527222983464337010">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The sites you visit receive your contributions automatically, based on your attention as measured by Brave.</translation>
-<translation id="7178655681744815321">Current earnings this month (Estimated)</translation>
 <translation id="8157096848242649588">Payment date</translation>
 <translation id="5208388044986603165">Ad notifications received</translation>
 <translation id="4229016885653790965">Sorry! Ads are not yet available in your region.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Get paid to view relevant ads that respect your privacy.</translation>
 <translation id="3361548743396744457">Support your favourite sites just by browsing – or tip a site any time you like.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="4493850495402472953">and</translation>
+<translation id="8804164990146287819">Privacy Policy</translation>
+<translation id="4281844954008187215">Terms of Service</translation>
 <translation id="7530570094705720669">Creating wallet</translation>
 <translation id="2105596359439030979">Your attention is valuable. Earn by viewing privacy-respecting ads and pay it forward to support content creators you love.</translation>
 <translation id="516395624550019162">Yes, I'm In!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">without your consent.</translation>
 <translation id="7147673045905733351">Today, Brave welcomes you to the new Internet.</translation>
 <translation id="1350763070659630336">One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</translation>
+<translation id="880341991877949255">With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmitted your valuable private data to advertisers ― without your consent.</translation>
 <translation id="5830306739231399614">Sadly, no tokens yet.</translation>
 <translation id="7359258898775969374">3 ways to fill your wallet:</translation>
 <translation id="8087614920008846901">You can add funds.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Check out what's improved</translation>
 <translation id="4083384190339959182">We've given Brave Payments a big upgrade.</translation>
 <translation id="5395851053710553429">Get ready to experience the next Internet.</translation>
-<translation id="880341991877949255">With your old browser, you paid to browse the web by viewing ads with your valuable attention. You spent your valuable time downloading invasive ad technology that transmitted your valuable private data to advertisers ― without your consent.</translation>
 <translation id="2549982302631665116">Today, Brave welcomes you to the new Internet. One where your time is valued, your personal data is kept private, and you actually get paid for your attention.</translation>
 <translation id="3780605330121608425">Your wallet</translation>
 <translation id="6727483290601442544">View Details</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Add New Device</translation>
 <translation id="8780295742023331191">View Sync Code</translation>
 <translation id="1755198127524719638">Sync Settings</translation>
-<translation id="7558480201297099157">Manage what information you would like to sync between devices. These settings only effect this device.</translation>
 <translation id="8820817407110198400">Bookmarks</translation>
 <translation id="5591129654353352557">Saved Site Settings</translation>
 <translation id="7859704718976024901">Browsing History</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Sync Chain Code</translation>
 <translation id="2899261497479389619">On your target computer, navigate to Brave Sync in settings and click the button</translation>
 <translation id="4827439149833241990">“I have a Sync Code”.</translation>
-<translation id="24067401253841795">Enter the sync chain code words shown below.</translation>
 <translation id="8914601399214979966">Use my camera instead</translation>
 <translation id="3034163433136515805">View QR Code</translation>
 <translation id="5093410893656857925">Choose Device Type</translation>

@@ -163,6 +163,14 @@
     "message": "確定",
     "description": "Used in notification to dismiss notification"
   },
+  "braveAdsLaunchMsg": {
+    "message": "現在您可以透過檢視廣告來賺錢了。",
+    "description": "Message for ads launch notification"
+  },
+  "braveAdsLaunchTitle": {
+    "message": "Brave 廣告抵達了！",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave 廣告",
     "description": "Notification title when we display info about ads"
@@ -289,6 +297,10 @@
     "message": "不再提供這筆經費。",
     "description": "Error title when user missed a grant."
   },
+  "unVerifiedCheck": {
+    "message": "再次檢查……",
+    "description": "Text of link that allows to check verified status of unverified publisher"
+  },
   "unVerifiedPublisher": {
     "message": "未經驗證",
     "description": "Status of the publisher shown in the panel"
@@ -376,5 +388,29 @@
   "welcomeBack": {
     "message": "歡迎回來！",
     "description": "Title message for wallet disabled panel"
+  },
+  "tipsProcessedNotification": {
+    "message": "您的每月小費已被處理！",
+    "description": "Message for monthly tips processed notification"
+  },
+  "contributionTips": {
+    "message": "貢獻與小費",
+    "description": "Title for monthly tips processed notification"
+  },
+  "serviceTextPanelWelcome": {
+    "message": "透過點選「加入 Rewards」，您即暗示您已經閱讀並同意",
+    "description": "Terms of service panel opt-in text"
+  },
+  "bat": {
+    "message": "BAT",
+    "description": "BAT text for displaying converted tip amount."
+  },
+  "turnOnAds": {
+    "message": "開啟廣告",
+    "description": "Prompt to turn on Ads via notification"
+  },
+  "adsEarnings": {
+    "message": "earned from ads",
+    "description": "Description text for ad grants in grant details"
   }
 }

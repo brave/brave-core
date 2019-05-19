@@ -46,17 +46,14 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="3155170474926428993">Inicializador Tor</translation>
 <translation id="2515126961943087659">Serviço de anúncios BAT</translation>
 <translation id="7924918279836988121">Serviço de Ledger Bat</translation>
-<translation id="768979911142179781">Escudos pré-definidos Brave</translation>
-<translation id="9185018653595759199">Botões Sociais e Logins</translation>
-<translation id="6894114137169961038">Controlo de anúncios</translation>
-<translation id="1096802265930928584">Controlo de Cookies</translation>
+<translation id="4472575034687746823">Começar</translation>
+<translation id="6303294677342628402">Proteções</translation>
 <translation id="8919235146866304148">Proteção de impressões digitais</translation>
 <translation id="520895744850022668">HTTPS em todo o lado</translation>
 <translation id="5259716416204774556">Bloquear script</translation>
 <translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins e posts incorporados do Facebook</translation>
 <translation id="5165042248369837294">Permitir tweets incorporados do Twitter</translation>
-<translation id="958971637207126733">Permitir incorporações do LinkedIn</translation>
 <translation id="6067014455220527258">Bloquear anúncios</translation>
 <translation id="6985711843506827936">Permite anúncios e monitorização</translation>
 <translation id="6132506775968708399">Bloquear cookies de terceiros</translation>
@@ -76,7 +73,6 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="2414886740292270097">Escuro</translation>
 <translation id="1360441190790440400">Igual ao Linux</translation>
 <translation id="1336940801687497203">Igual ao Windows</translation>
-<translation id="8721331068159819483">Igual ao MacOS</translation>
 <translation id="6786747875388722282">Extensões</translation>
 <translation id="2896916411183256228">Utiliza WebTorrent para exibir torrents diretamente no navegador. É compatível com ficheiros de torrents e magnet links.</translation>
 <translation id="6554397389149987360">Utiliza um componente de Hangouts para permitir a partilha de ecrã e outras funcionalidades no navegador.</translation>

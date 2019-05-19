@@ -1,7 +1,7 @@
-diff --git a/chrome/browser/resources/md_extensions/toolbar.html b/chrome/browser/resources/md_extensions/toolbar.html
+diff --git a/chrome/browser/resources/extensions/toolbar.html b/chrome/browser/resources/extensions/toolbar.html
 index 6f3b663fdf1dfe3098c39508f55cd74f9e7bb36e..6199623b0c4710b81ed59c19a5e9d8c6f75861f9 100644
---- a/chrome/browser/resources/md_extensions/toolbar.html
-+++ b/chrome/browser/resources/md_extensions/toolbar.html
+--- a/chrome/browser/resources/extensions/toolbar.html
++++ b/chrome/browser/resources/extensions/toolbar.html
 @@ -2,7 +2,7 @@
  
  <link rel="import" href="chrome://resources/cr_elements/cr_toast/cr_toast.html">

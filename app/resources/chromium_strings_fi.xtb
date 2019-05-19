@@ -74,9 +74,13 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="5874882355102994015">Brave ei voi näyttää tulostusesikatselua, koska PDF-katseluohjelma puuttuu.</translation>
 <translation id="8880183781256147665">Lisätään Braveiin...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> voi olla vaarallinen, joten Brave on estänyt sen.</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> voi olla vaarallinen, joten Brave on estänyt sen. Lisäsuojaus pitää puoliasi.</translation>
 <translation id="9067428552314418522">Tämä tiedosto on vaarallinen, joten Brave on estänyt sen.</translation>
+<translation id="2938460345748897177">Tämä tiedosto on vaarallinen, joten Brave on estänyt sen. Lisäsuojaus pitää puoliasi.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> on vaarallinen, joten Brave on estänyt sen.</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> on vaarallinen, joten Brave on estänyt sen. Lisäsuojaus pitää puoliasi.</translation>
 <translation id="89367911614620585">Tämä tiedosto voi olla vaarallinen, joten Brave on estänyt sen.</translation>
+<translation id="8943391224520748272">Tämä tiedosto voi olla vaarallinen, joten Brave on estänyt sen. Lisäsuojaus pitää puoliasi.</translation>
 <translation id="9183662282810237335">Suljetaanko Brave silti?</translation>
 <translation id="3834935463915107022">Suljetaanko Brave silti?</translation>
 <translation id="8797356639448065696">Brave on käynnissä taustalla</translation>
@@ -127,6 +131,7 @@ Jos kirjaudut silti sisään, Brave-tiedot, kuten kirjanmerkit, historia ja aset
 <translation id="1326766910007115955">Olet kirjautumassa sisään hallinnoidulla tilillä ja antamassa tilin järjestelmänvalvojalle oikeuden hallita Brave-profiiliasi. Brave-tietosi, kuten sovelluksesi, kirjanmerkkisi, historiasi, salasanasi ja muut asetuksesi, yhdistetään pysyvästi käyttäjätiliin <ph name="USER_NAME"/>. Voit poistaa nämä tiedot Brave Software-tilien Hallintapaneelissa, mutta et voi liittää tietoja toiseen tiliin. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Olet kirjautumassa sisään hallinnoidulla tilillä ja antamassa tilin järjestelmänvalvojalle oikeuden hallita Brave-profiiliasi. Brave-tietosi, kuten sovelluksesi, kirjanmerkkisi, historiasi, salasanasi ja muut asetuksesi, yhdistetään pysyvästi käyttäjätiliin <ph name="USER_NAME"/>. Voit poistaa nämä tiedot Brave Software-tilien Hallintapaneelissa, mutta et voi liittää tietoja toiseen tiliin. Halutessasi voit luoda uuden profiilin, jolloin aiemmat Brave-tietosi pysyvät erillään. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Järjestelmänvalvojasi on määrittänyt Bravein avaamaan toisen selaimen, jolla <ph name="TARGET_URL_HOSTNAME"/> avataan.</translation>
+<translation id="5380963249588143069">Järjestelmänvalvojasi on määrittänyt Bravein avaamaan osoitteen <ph name="TARGET_URL_HOSTNAME"/> selaimella <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> käytti aiemmin Braveia</translation>
 <translation id="1384923383737428730">Tietokoneellasi on haitallinen ohjelmisto. Brave voi poistaa sen, palauttaa asetuksesi ja poistaa laajennukset käytöstä, jotta selaimesi toimii taas normaalisti.</translation>
 <translation id="8919921662052966648">Brave ei voinut synkronoida tietoja. Päivitä synkronoinnin tunnuslause.</translation>
@@ -175,7 +180,9 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="2871190378186459992">Löydät hienoja sovelluksia, pelejä, laajennuksia ja teemoja Braveille.</translation>
 <translation id="3350544518197210895">Brave (saapuva mDNS)</translation>
 <translation id="1912973375560256099">Bravein saapuvien yhteyksien sääntö, joka sallii mDNS-liikenteen.</translation>
-<translation id="7276297358157391541">Brave voi tarjota älykkäämmän oikeinkirjoituksen tarkistuspalvelun lähettämällä selaimeen kirjoittamasi tekstin Brave Softwaren palvelimille. Näin voit käyttää Brave Software-haun kanssa samaa oikeinkirjoituksen tarkistustekniikkaa.</translation>
+<translation id="8207657266087451193">Jos kuvalla ei ole hyödyllistä kuvausta, Brave yrittää luoda sellaisen. Kuvat lähetetään Brave Softwarelle kuvausten luomista varten. Voit milloin tahansa poistaa tämän käytöstä asetuksissa.</translation>
+<translation id="5499063270485366718">Jos kuvalla ei ole hyödyllistä kuvausta, Brave yrittää luoda sellaisen. Kuvat lähetetään Brave Softwarelle kuvausten luomista varten.</translation>
+<translation id="3870835867536344658">Tämä käyttää samaa oikeinkirjoituksen tarkistusta kuin Brave Software Haku. Selaimeen kirjoittamasi teksti lähetetään Brave Softwarelle. Voit muuttaa tätä milloin tahansa asetuksista.</translation>
 <translation id="1807774211756215222">Avaa linkki uudella Bravein välilehdellä</translation>
 <translation id="4624945300945265642">Avaa linkki Bravein inco&amp;gnito-ikkunassa</translation>
 <translation id="7863882214613921971">Avaa linkki uudella Bravein välilehdellä</translation>

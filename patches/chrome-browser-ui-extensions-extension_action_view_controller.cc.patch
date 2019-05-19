@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/extensions/extension_action_view_controller.cc b/chrome/browser/ui/extensions/extension_action_view_controller.cc
+index 905f9f30b85458f0b30fb1e871531a2211db181a..e0cf4351310ffd2d4b196b870af669cd071001a4 100644
+--- a/chrome/browser/ui/extensions/extension_action_view_controller.cc
++++ b/chrome/browser/ui/extensions/extension_action_view_controller.cc
+@@ -61,7 +61,6 @@ ExtensionActionViewController::ExtensionActionViewController(
+           extensions::ExtensionRegistry::Get(browser_->profile())),
+       popup_host_observer_(this),
+       weak_factory_(this) {
+-  DCHECK(main_bar);
+   DCHECK(extension_action);
+   DCHECK(extension_action->action_type() == ActionInfo::TYPE_PAGE ||
+          extension_action->action_type() == ActionInfo::TYPE_BROWSER);

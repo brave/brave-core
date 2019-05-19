@@ -1,8 +1,8 @@
 diff --git a/ui/native_theme/native_theme_win.cc b/ui/native_theme/native_theme_win.cc
-index 0df107bf9757a81897e9312a9eba977b8a173646..61e4f4ce671c5e0f92208b54aade903110ddc7a7 100644
+index 040374661374b565372fd62822ffccd7c963fd19..2d3cef44d7423223adccb32ac306309fdc5a19d6 100644
 --- a/ui/native_theme/native_theme_win.cc
 +++ b/ui/native_theme/native_theme_win.cc
-@@ -1934,7 +1934,11 @@ void NativeThemeWin::RegisterThemeRegkeyObserver() {
+@@ -1933,7 +1933,11 @@ void NativeThemeWin::RegisterThemeRegkeyObserver() {
    DCHECK(hkcu_themes_regkey_.Valid());
    hkcu_themes_regkey_.StartWatching(base::BindOnce(
        [](NativeThemeWin* native_theme) {

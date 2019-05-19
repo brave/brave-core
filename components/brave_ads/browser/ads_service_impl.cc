@@ -885,8 +885,8 @@ void AdsServiceImpl::ShowNotification(
 
   notification_ids_[notification_id] = std::move(info);
 
-  display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
-                            *notification);
+  display_service_->Display(NotificationHandler::Type::BRAVE_ADS, *notification,
+                            /*metadata=*/nullptr);
 
   uint32_t timer_id = next_timer_id();
 

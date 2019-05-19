@@ -163,6 +163,14 @@
     "message": "u redu",
     "description": "Used in notification to dismiss notification"
   },
+  "braveAdsLaunchMsg": {
+    "message": "Now you can earn by viewing ads.",
+    "description": "Message for ads launch notification"
+  },
+  "braveAdsLaunchTitle": {
+    "message": "Brave Ads has arrived!",
+    "description": "Message used in notification to let users know Ads is available"
+  },
   "braveAdsTitle": {
     "message": "Brave oglasi",
     "description": "Notification title when we display info about ads"
@@ -289,6 +297,10 @@
     "message": "Ovo odobrenje više nije dostupno.",
     "description": "Error title when user missed a grant."
   },
+  "unVerifiedCheck": {
+    "message": "Check Again...",
+    "description": "Text of link that allows to check verified status of unverified publisher"
+  },
   "unVerifiedPublisher": {
     "message": "Još nije verifikovano",
     "description": "Status of the publisher shown in the panel"
@@ -376,5 +388,29 @@
   "welcomeBack": {
     "message": "Dobro došli nazad!",
     "description": "Title message for wallet disabled panel"
+  },
+  "tipsProcessedNotification": {
+    "message": "Your monthly tips have been processed!",
+    "description": "Message for monthly tips processed notification"
+  },
+  "contributionTips": {
+    "message": "Contributions & Tips",
+    "description": "Title for monthly tips processed notification"
+  },
+  "serviceTextPanelWelcome": {
+    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "description": "Terms of service panel opt-in text"
+  },
+  "bat": {
+    "message": "BAT",
+    "description": "BAT text for displaying converted tip amount."
+  },
+  "turnOnAds": {
+    "message": "Turn on Ads",
+    "description": "Prompt to turn on Ads via notification"
+  },
+  "adsEarnings": {
+    "message": "earned from ads",
+    "description": "Description text for ad grants in grant details"
   }
 }

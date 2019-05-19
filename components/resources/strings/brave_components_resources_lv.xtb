@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Pelniet merķierus, aplūkojot reklāmas Brave. Reklāmas tiek rādītas, balstotiets uz Jūsu interesēm, kas iegūtas no Jūsu pārlūkošanas paradumiem. Personas dati vai pārlūkošanas vēsture nekad nepamet Jūsu pārlūku.</translation>
 <translation id="6112368337882254910">Automātiska ziedošana</translation>
 <translation id="1527222983464337010">Automātisks veids, kā atbalstīt publicētājus un satura veidotājus. Iestatiet ikmēneša maksājumu un pārlūkojiet kā parasti. Jūsu apmeklētās vietnes saņem Jūsu ziedojumus automātiski, balstoties uz Jūsu veltīto uzmanību pēc Brave mērījumiem.</translation>
-<translation id="7178655681744815321">Šī mēneša pašreizējie ienākumi (aptuveni)</translation>
 <translation id="8157096848242649588">Maksājuma datums</translation>
 <translation id="5208388044986603165">Saņemtie reklāmu paziņojumi</translation>
 <translation id="4229016885653790965">Diemžēl reklāmas vēl nav pieejamas jūsu reģionā.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Nopelniet, skatoties saistītu reklāmu, kas ciena Jūsu konfidencialitāti.</translation>
 <translation id="3361548743396744457">Atbalstiet savas iecienītās vietnes, vienkārši pārlūkojot, vai iedodiet vietnei dzeramnaudu, kad vien vēlaties.</translation>
 <translation id="3333887201479867589">Brave balvas</translation>
+<translation id="4493850495402472953">un</translation>
+<translation id="8804164990146287819">Privātuma politika</translation>
+<translation id="4281844954008187215">Pakalpojuma noteikumi</translation>
 <translation id="7530570094705720669">Maka izveide</translation>
 <translation id="2105596359439030979">Jūsu veltītā uzmanība ir vērtīga. Nopelniet, skatoties privātumu cienošas reklāmas, un atbalstiet savus iemīļotos satura veidotājus.</translation>
 <translation id="516395624550019162">Jā, aiziet!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">bez jūsu piekrišanas.</translation>
 <translation id="7147673045905733351">Šodien Brave ielūdz jūs apskatīt jauno interneta pārlūkprogrammu.</translation>
 <translation id="1350763070659630336">Šeit jūsu laiks tiek novērtēts, tiek ievērota jūsu personas datu konfidencialitāte, un jums ir iespēja pat nopelnīt par veltīto uzmanību.</translation>
+<translation id="880341991877949255">Ar jūsu veco pārlūkprogrammu jūs maksājāt, lai pārlūkotu tīmekli, veltot reklāmām savu uzmanību. Jūs tērējāt savu vērtīgo laiku, lejupielādējot agresīvas reklāmu tehnoloģijas, kas pārraida jūsu vērtīgos konfidenciālos datus reklāmu izvietotājiem — bez jūsu piekrišanas.</translation>
 <translation id="5830306739231399614">Diemžēl pagaidām nav marķieru.</translation>
 <translation id="7359258898775969374">Trīs veidi, ka papildināt maku:</translation>
 <translation id="8087614920008846901">Jūs varat pievienot līdzekļus.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Apskatiet uzlabojumus</translation>
 <translation id="4083384190339959182">Esam sagādājuši lielu jauninājumu Brave maksājumiem.</translation>
 <translation id="5395851053710553429">Esiet gatavi izbaudīt nākamo internetu.</translation>
-<translation id="880341991877949255">Ar jūsu veco pārlūkprogrammu jūs maksājāt, lai pārlūkotu tīmekli, veltot reklāmām savu uzmanību. Jūs tērējāt savu vērtīgo laiku, lejupielādējot agresīvas reklāmu tehnoloģijas, kas pārraida jūsu vērtīgos konfidenciālos datus reklāmu izvietotājiem — bez jūsu piekrišanas.</translation>
 <translation id="2549982302631665116">Šodien Brave Jūs ielūdz uz jauno internetu. Un tādu internetu, kur Jūsu laiks tiek novērtēts, tiek ievērota Jūsu personas datu konfidencialitāte un Jūs pat nopelnat par savu veltīto uzmanību.</translation>
 <translation id="3780605330121608425">Jūsu maks</translation>
 <translation id="6727483290601442544">Skatīt informāciju</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Pievienot jaunu ierīci</translation>
 <translation id="8780295742023331191">Skatīt sinhronizācijas kodu</translation>
 <translation id="1755198127524719638">Sinhronizācijas iestatījumi</translation>
-<translation id="7558480201297099157">Pārvaldiet informāciju, kuru vēlaties sinhronizēt starp ierīcēm. Šie iestatījumi attiecas tikai uz šo ierīci.</translation>
 <translation id="8820817407110198400">Grāmatzīmes</translation>
 <translation id="5591129654353352557">Saglabātie vietnes iestatījumi</translation>
 <translation id="7859704718976024901">Pārlūkošanas vēsture</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Sinhronizācijas ķēdes kods</translation>
 <translation id="2899261497479389619">Mērķa datora iestatījumos pārejiet uz Brave Sync pakalpojumu un noklikšķiniet uz pogas</translation>
 <translation id="4827439149833241990">“Man ir sinhronizācijas kods”.</translation>
-<translation id="24067401253841795">Ievadiet tālāk norādītos sinhronizācijas ķēdes koda vārdus.</translation>
 <translation id="8914601399214979966">Tā vietā izmantot manu kameru</translation>
 <translation id="3034163433136515805">Skatiet QR kodu</translation>
 <translation id="5093410893656857925">Ierīces veida izvēle</translation>
