@@ -56,12 +56,12 @@ async function getFileListDeep (dirPath) {
   )
 }
 
-async function createDynamicGDR (name, idPrefix, targetDir) {
+async function createDynamicGDR (name, grdName, idPrefix, targetDir) {
   // normalize path so relative path ignores leading path.sep
   if (!targetDir.endsWith(path.sep)) {
     targetDir += path.sep
   }
-  const gdrPath = path.join(targetDir, `${name}.grd`)
+  const gdrPath = path.join(targetDir, grdName)
   // remove previously generated file
   try {
     await fs.unlink(gdrPath)
@@ -79,6 +79,7 @@ async function createDynamicGDR (name, idPrefix, targetDir) {
 const resourceName = process.env.RESOURCE_NAME
 const idPrefix = process.env.ID_PREFIX
 const targetDir = process.env.TARGET_DIR
+const grdName = process.env.GRD_NAME
 
 if (!targetDir) {
   throw new Error("TARGET_DIR env variable is required!")
@@ -89,9 +90,12 @@ if (!idPrefix) {
 if (!resourceName) {
   throw new Error("RESOURCE_NAME env variable is required!")
 }
+if (!grdName) {
+  throw new Error("GRD_NAME env variable is required!")
+}
 
 // main
-createDynamicGDR(resourceName, idPrefix, targetDir)
+createDynamicGDR(resourceName, grdName, idPrefix, targetDir)
 .catch(err => {
   console.error(err)
   process.exit(1)

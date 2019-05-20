@@ -11,16 +11,28 @@ if sys.platform in ['win32', 'cygwin']:
 
 
 def main():
+    # Accept all paths as either absolute or relative to working dir,
+    # except grd_path, which we must know the relative location of
+    # in order to create a valid depfile.
     args = parse_args()
-    clean_target_dir(args.target_gen_dir[0])
-    webpack_gen_dir = args.target_gen_dir[0]
+
+    output_path_absolute = os.path.abspath(args.output_path[0])
+    grd_path = os.path.join(args.output_path[0], args.grd_name[0])
+    grd_path_absolute = os.path.abspath(grd_path)
+
+    clean_target_dir(output_path_absolute)
+
+    webpack_gen_dir = output_path_absolute
     if args.extra_relative_path is not None:
         webpack_gen_dir = webpack_gen_dir + args.extra_relative_path
+
+    depfile_path = os.path.abspath(args.depfile_path[0])
+
     transpile_web_uis(args.production, webpack_gen_dir,
                       args.entry,
-                      args.depfile_path[0], args.depfile_outputpath[0],
+                      depfile_path, grd_path,
                       args.public_asset_path)
-    generate_grd(args.target_gen_dir[0], args.resource_name[0])
+    generate_grd(output_path_absolute, args.grd_name[0], args.resource_name[0])
 
 
 def parse_args():
@@ -32,20 +44,18 @@ def parse_args():
                         action='append',
                         help='Entry points',
                         required=True)
-    parser.add_argument('--target_gen_dir', nargs=1)
-    parser.add_argument('--depfile_outputpath', nargs=1)
+    parser.add_argument('--output_path', nargs=1)
     parser.add_argument('--depfile_path', nargs=1)
+    parser.add_argument('--grd_name', nargs=1)
     parser.add_argument('--resource_name', nargs=1)
     parser.add_argument('--extra_relative_path', nargs='?')
     parser.add_argument('--public_asset_path', nargs='?')
     args = parser.parse_args()
     # validate args
-    if (args.target_gen_dir is None or
-        len(args.target_gen_dir) is not 1 or
-            len(args.target_gen_dir[0]) is 0):
-        raise Exception("target_gen_dir argument was not specified correctly")
-    if "out" not in args.target_gen_dir[0]:
-        raise Exception("target_gen_dir did not contain 'out'")
+    if (args.output_path is None or
+        len(args.output_path) is not 1 or
+            len(args.output_path[0]) is 0):
+        raise Exception(" output_path argument was not specified correctly")
     # args are valid
     return args
 
@@ -59,7 +69,7 @@ def clean_target_dir(target_dir, env=None):
 
 
 def transpile_web_uis(production, target_gen_dir,
-                      entry_points, depfile_path, depfile_outputpath, public_asset_path=None, env=None):
+                      entry_points, depfile_path, depfile_sourcename, public_asset_path=None, env=None):
     if env is None:
         env = os.environ.copy()
 
@@ -76,25 +86,25 @@ def transpile_web_uis(production, target_gen_dir,
     # entrypoints
     for entry in entry_points:
         args.append(entry)
-
-    env["TARGET_GEN_DIR"] = os.path.abspath(target_gen_dir)
+    env["TARGET_GEN_DIR"] = target_gen_dir
     env["DEPFILE_PATH"] = depfile_path
-    env["DEPFILE_OUTPUT_PATH"] = depfile_outputpath
+    env["DEPFILE_SOURCE_NAME"] = depfile_sourcename
 
     dirname = os.path.abspath(os.path.join(__file__, '..', '..'))
     with scoped_cwd(dirname):
         execute_stdout(args, env)
 
 
-def generate_grd(target_include_dir, resource_name, env=None):
+def generate_grd(target_include_dir, grd_name, resource_name, env=None):
     if env is None:
         env = os.environ.copy()
 
     args = [NPM, 'run', 'web-ui-gen-grd']
 
     env["RESOURCE_NAME"] = resource_name
+    env["GRD_NAME"] = grd_name
     env["ID_PREFIX"] = "IDR_" + resource_name.upper() + '_'
-    env["TARGET_DIR"] = os.path.abspath(target_include_dir)
+    env["TARGET_DIR"] = target_include_dir
 
     dirname = os.path.abspath(os.path.join(__file__, '..', '..'))
     with scoped_cwd(dirname):

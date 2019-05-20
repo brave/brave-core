@@ -4,7 +4,7 @@
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
 // Outputs a file containing all files that were used in
-// the compilation.
+// the compilation, to be used by the ninja build system.
 // This can be useful to know which files to monitor for changes
 // to cause a re-build only when neccessary.
 
@@ -13,6 +13,8 @@ const fs = require('fs')
 const mkdirp = require('mkdirp')
 
 function generateDepfileContent(outputName, depPaths) {
+  // File format is "dependency information in the syntax of a Makefile"
+  // (https://ninja-build.org/manual.html#_depfile)
   return `${outputName}: ${depPaths.join(' ')}`
 }
 
@@ -25,7 +27,7 @@ class GenerateDepfilePlugin {
   constructor (options) {
     this.options = {
       depfilePath: 'depfile.d',
-      depfileOutputPath: '[UnknownOutputName]',
+      depfileSourceName: '[UnknownOutputName]',
       ...options
     }
   }
@@ -35,7 +37,7 @@ class GenerateDepfilePlugin {
     compiler.hooks.compilation.tap(this.constructor.name, (compilation) => {
       compilation.hooks.finishModules.tap(this.constructor.name, (modules) => {
         const absoluteDepsPaths = modules.map(module => module.resource)
-        const depfileContent = generateDepfileContent(this.options.depfileOutputPath, absoluteDepsPaths)
+        const depfileContent = generateDepfileContent(this.options.depfileSourceName, absoluteDepsPaths)
         writeDepfileContentSync(this.options.depfilePath, depfileContent)
       })
     })

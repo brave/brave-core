@@ -22,7 +22,7 @@ module.exports = (env, argv) => ({
   plugins: [
     new GenerateDepfilePlugin({
       depfilePath: process.env.DEPFILE_PATH,
-      depfileOutputPath: process.env.DEPFILE_OUTPUT_PATH
+      depfileSourceName: process.env.DEPFILE_SOURCE_NAME
     })
   ],
   module: {
