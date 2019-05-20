@@ -1,9 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 
+#include <memory>
 #include <string>
 
 #include "base/sequenced_task_runner.h"
@@ -97,13 +99,6 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
       kForbesExtraCookies);
   if (IsBlockTwitterSiteHack(request, headers)) {
     return net::ERR_ABORTED;
-  }
-  if (IsUAWhitelisted(request->url())) {
-    std::string user_agent;
-    if (headers->GetHeader(kUserAgentHeader, &user_agent)) {
-      base::ReplaceFirstSubstringAfterOffset(&user_agent, 0, "Chrome", "Brave Chrome");
-      headers->SetHeader(kUserAgentHeader, user_agent);
-    }
   }
   return net::OK;
 }
