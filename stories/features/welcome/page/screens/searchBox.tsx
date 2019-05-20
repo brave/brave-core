@@ -7,6 +7,7 @@ import * as React from 'react'
 
 // Feature-specific components
 import { Content, Title, Paragraph } from '../../../../../src/features/welcome/'
+import { SelectBox } from '../../../../../src/features/shields'
 
 // Shared components
 import { Button } from '../../../../../src/components'
@@ -21,11 +22,12 @@ interface Props {
   index: number
   currentScreen: number
   onClick: () => void
+  fakeOnChange: () => void
 }
 
 export default class SearchEngineBox extends React.PureComponent<Props, {}> {
   render () {
-    const { index, currentScreen, onClick } = this.props
+    const { index, currentScreen, onClick, fakeOnChange } = this.props
     return (
       <Content
         zIndex={index}
@@ -36,11 +38,16 @@ export default class SearchEngineBox extends React.PureComponent<Props, {}> {
         <WelcomeSearchImage />
         <Title>{locale.setDefaultSearchEngine}</Title>
         <Paragraph>{locale.chooseSearchEngine}</Paragraph>
+          <SelectBox onChange={fakeOnChange}>
+            <option value='DuckDuckGo'>{locale.fakeSearchProvider1}</option>
+            <option value='Google'>{locale.fakeSearchProvider2}</option>
+            <option value='Bing'>{locale.fakeSearchProvider3}</option>
+          </SelectBox>
           <Button
             level='primary'
             type='accent'
             size='large'
-            text={locale.search}
+            text={locale.confirm}
             onClick={onClick}
           />
       </Content>

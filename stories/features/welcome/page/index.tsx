@@ -79,10 +79,14 @@ export default class WelcomePage extends React.PureComponent<{}, State> {
     console.log('IMPORTED!')
   }
 
-  onClickConfirmDefaultSearchEngine = () => {
+  onChangeDefaultSearchEngine = () => {
     this.setState({ fakeChangedSearchEngine: !this.state.fakeChangedSearchEngine })
-    this.setState({ currentScreen: this.state.currentScreen + 1 })
     console.log('CHANGED DEFAULT SEARCH ENGINE!')
+  }
+
+  onClickConfirmDefaultSearchEngine = () => {
+    this.setState({ currentScreen: this.state.currentScreen + 1 })
+    console.log('CONFIRMED DEFAULT SEARCH ENGINE!')
   }
 
   onClickChooseYourTheme = () => {
@@ -126,7 +130,7 @@ export default class WelcomePage extends React.PureComponent<{}, State> {
             <SlideContent>
               <WelcomeBox index={1} currentScreen={currentScreen} onClick={this.onClickLetsGo} />
               <ImportBox index={2} currentScreen={currentScreen} onClick={this.onClickImport} />
-              <SearchBox index={3} currentScreen={currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} />
+              <SearchBox index={3} currentScreen={currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} fakeOnChange={this.onChangeDefaultSearchEngine} />
               <ThemeBox index={4} currentScreen={currentScreen} onClick={this.onClickChooseYourTheme} />
               <ShieldsBox index={5} currentScreen={currentScreen} />
               <RewardsBox index={6} currentScreen={currentScreen} onClick={this.onClickRewardsGetStarted} />
