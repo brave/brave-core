@@ -111,7 +111,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       return true
     }
     case 'inlineTipSetting': {
-      // Check if rewards is enabled
+      // Check if inline tip is enabled
       chrome.braveRewards.getInlineTipSetting(msg.key, function (enabled: boolean) {
         sendResponse({ enabled })
       })

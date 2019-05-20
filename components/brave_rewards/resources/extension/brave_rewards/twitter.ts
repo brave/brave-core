@@ -5,6 +5,8 @@
 // Utils
 import { getMessage } from './background/api/locale_api'
 
+let timeout: any = null
+
 const getTweetMetaData = (tweet: Element): RewardsTip.TweetMetaData | null => {
   if (!tweet) {
     return null
@@ -129,20 +131,28 @@ const configureBraveTipAction = () => {
         const actions = tweets[i].getElementsByClassName('js-actions')[0]
         if (actions) {
           const braveTipActions = actions.getElementsByClassName('action-brave-tip')
-          if (rewards.enabled && inlineTip.enabled) {
-            if (braveTipActions.length === 0) {
-              actions.appendChild(createBraveTipAction(tweets[i]))
-            }
-          } else {
-            if (braveTipActions.length === 1) {
-              actions.removeChild(braveTipActions[0])
-            }
+          const tippingEnabled = rewards.enabled && inlineTip.enabled
+          if (tippingEnabled && braveTipActions.length === 0) {
+            actions.appendChild(createBraveTipAction(tweets[i]))
+          } else if (!tippingEnabled && braveTipActions.length === 1) {
+            actions.removeChild(braveTipActions[0])
           }
         }
       }
     })
   })
-  setTimeout(configureBraveTipAction, 3000)
+  timeout = setTimeout(configureBraveTipAction, 3000)
 }
+
+// In order to deal with infinite scrolling and overlays, periodically
+// check if injection needs to occur (mitigate the performance cost
+// by only running this when the foreground tab is active or visible)
+document.addEventListener('visibilitychange', function () {
+  if (document.hidden) {
+    clearTimeout(timeout)
+  } else {
+    timeout = setTimeout(configureBraveTipAction, 3000)
+  }
+})
 
 configureBraveTipAction()

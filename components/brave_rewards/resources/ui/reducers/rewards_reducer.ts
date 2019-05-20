@@ -187,6 +187,11 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       const key = action.payload.key
       const value = action.payload.value
+
+      if (!value || value === '') {
+        break
+      }
+
       let inlineTip = state.inlineTip
 
       inlineTip[key] = value

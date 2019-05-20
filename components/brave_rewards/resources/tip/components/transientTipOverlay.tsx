@@ -19,6 +19,13 @@ interface Props extends RewardsTip.ComponentProps {
 }
 
 class TransientTipOverlay extends React.Component<Props, {}> {
+  componentDidMount () {
+    if (this.props.timeout) {
+      setTimeout(() => {
+        this.onClose()
+      }, this.props.timeout)
+    }
+  }
 
   get actions () {
     return this.props.actions
@@ -64,12 +71,6 @@ class TransientTipOverlay extends React.Component<Props, {}> {
 
     if (!verified) {
       logo = ''
-    }
-
-    if (this.props.timeout) {
-      setTimeout(() => {
-        this.onClose()
-      }, this.props.timeout)
     }
 
     return (

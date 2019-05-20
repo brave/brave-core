@@ -496,7 +496,7 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& publisher_key,
       bool verified);
   void OnTwitterPublisherInfoSaved(SaveMediaInfoCallback callback,
-                                   int result,
+                                   int32_t result,
                                    ledger::PublisherInfoPtr publisher);
 
   bool Connected() const;

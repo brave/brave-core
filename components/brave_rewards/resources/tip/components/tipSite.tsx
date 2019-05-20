@@ -18,7 +18,6 @@ interface Props extends RewardsTip.ComponentProps {
 }
 
 class TipSite extends React.Component<Props, {}> {
-
   get actions () {
     return this.props.actions
   }

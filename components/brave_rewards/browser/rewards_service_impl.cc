@@ -2243,8 +2243,12 @@ void RewardsServiceImpl::SaveRecurringTip(
 
 void RewardsServiceImpl::OnTwitterPublisherInfoSaved(
     SaveMediaInfoCallback callback,
-    int result,
+    int32_t result,
     ledger::PublisherInfoPtr publisher) {
+  if (!Connected()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
   if (Connected()) {
     ledger::Result result_converted = static_cast<ledger::Result>(result);
     std::unique_ptr<brave_rewards::ContentSite> site;

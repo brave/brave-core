@@ -119,6 +119,14 @@ class Banner extends React.Component<Props, State> {
     return !!recurringDonation
   }
 
+  getScreenName = (tweetMetaData?: RewardsTip.TweetMetaData) => {
+    if (!tweetMetaData) {
+      return ''
+    }
+
+    return `@${tweetMetaData.screenName}`
+  }
+
   get addFundsLink () {
     return 'chrome://rewards/#add-funds'
   }
@@ -127,6 +135,7 @@ class Banner extends React.Component<Props, State> {
     const { walletInfo } = this.props.rewardsDonateData
     const { balance } = walletInfo
 
+    const tweetMetaData = this.props.tweetMetaData
     const publisher = this.props.publisher
     const verified = publisher.verified
     let logo = publisher.logo
@@ -134,11 +143,6 @@ class Banner extends React.Component<Props, State> {
     const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
     if (internalFavicon.test(publisher.logo)) {
       logo = `chrome://favicon/size/160@2x/${publisher.logo}`
-    }
-
-    let screenName
-    if (this.props.tweetMetaData) {
-      screenName = `@${this.props.tweetMetaData.screenName}`
     }
 
     if (!verified) {
@@ -150,7 +154,7 @@ class Banner extends React.Component<Props, State> {
         domain={publisher.publisherKey}
         title={publisher.title}
         name={publisher.name}
-        screenName={screenName}
+        screenName={this.getScreenName(tweetMetaData)}
         provider={publisher.provider as Provider}
         recurringDonation={this.hasRecurringTip(publisher.publisherKey)}
         balance={balance.toString() || '0'}

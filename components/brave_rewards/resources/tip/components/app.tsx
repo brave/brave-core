@@ -23,9 +23,25 @@ interface Props extends RewardsTip.ComponentProps {
 }
 
 export class App extends React.Component<Props, {}> {
-
   get actions () {
     return this.props.actions
+  }
+
+  getTipBanner = (publisher: RewardsTip.Publisher, tweetMetaData?: RewardsTip.TweetMetaData) => {
+    if (tweetMetaData) {
+      return (
+        <TipTwitterUser
+          publisher={publisher}
+          tweetMetaData={tweetMetaData}
+        />
+      )
+    } else {
+      return (
+        <TipSite
+          publisher={publisher}
+        />
+      )
+    }
   }
 
   render () {
@@ -35,6 +51,7 @@ export class App extends React.Component<Props, {}> {
       return null
     }
 
+    const tweetMetaData = this.props.dialogArgs.tweetMetaData
     const publisherKey = this.props.dialogArgs.publisherKey
     const publisher = publishers[publisherKey]
 
@@ -42,26 +59,9 @@ export class App extends React.Component<Props, {}> {
       return null
     }
 
-    let tip
-    const tweetMetaData = this.props.dialogArgs.tweetMetaData
-    if (tweetMetaData) {
-      tip = (
-        <TipTwitterUser
-          publisher={publisher}
-          tweetMetaData={tweetMetaData}
-        />
-      )
-    } else {
-      tip = (
-        <TipSite
-          publisher={publisher}
-        />
-      )
-    }
-
     return (
       <div>
-        {tip}
+        {this.getTipBanner(publisher, tweetMetaData)}
       </div>
     )
   }
