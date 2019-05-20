@@ -6,7 +6,12 @@
 import os
 import json
 import requests
-from .config import get_raw_version, get_env_var
+import sys
+
+dirname = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.join(dirname, '..'))
+
+from config import get_raw_version, get_env_var  # noqa: E402
 
 BRAVE_REPO = "brave/brave-browser"
 BRAVE_CORE_REPO = "brave/brave-core"
