@@ -16,7 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
 
 class AdBlockClient;
@@ -47,7 +47,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
 
   SEQUENCE_CHECKER(sequence_checker_);
   std::unique_ptr<AdBlockClient> ad_block_client_;
-  DATFileDataBuffer buffer_;
+  brave_component_updater::DATFileDataBuffer buffer_;
 
  private:
   void OnDATFileDataReady();

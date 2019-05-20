@@ -19,7 +19,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 
 namespace brave_shields {
 
@@ -93,7 +93,9 @@ void ReferrerWhitelistService::OnComponentReady(
     REFERRER_DAT_FILE_VERSION).AppendASCII(REFERRER_DAT_FILE);
   GetTaskRunner()->PostTaskAndReply(
       FROM_HERE,
-      base::Bind(&GetDATFileAsString, dat_file_path, &file_contents_),
+      base::Bind(&brave_component_updater::GetDATFileAsString,
+                 dat_file_path,
+                 &file_contents_),
       base::Bind(&ReferrerWhitelistService::OnDATFileDataReady,
                  weak_factory_.GetWeakPtr()));
 }

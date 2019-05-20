@@ -18,7 +18,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/vendor/autoplay-whitelist/autoplay_whitelist_parser.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
@@ -67,7 +67,9 @@ void AutoplayWhitelistService::OnComponentReady(
 
   GetTaskRunner()->PostTaskAndReply(
       FROM_HERE,
-      base::Bind(&GetDATFileData, dat_file_path, &buffer_),
+      base::Bind(&brave_component_updater::GetDATFileData,
+                 dat_file_path,
+                 &buffer_),
       base::Bind(&AutoplayWhitelistService::OnDATFileDataReady,
                  weak_factory_.GetWeakPtr()));
 }

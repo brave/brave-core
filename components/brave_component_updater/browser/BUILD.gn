@@ -1,0 +1,6 @@
+source_set("browser") {
+  sources = [
+    "dat_file_util.cc",
+    "dat_file_util.h",
+  ]
+}

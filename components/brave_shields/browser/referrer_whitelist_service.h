@@ -19,7 +19,6 @@
 #include "base/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/browser/base_local_data_files_observer.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
 #include "extensions/common/url_pattern.h"
 #include "url/gurl.h"

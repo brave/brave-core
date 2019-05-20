@@ -33,8 +33,6 @@ source_set("brave_shields") {
     "brave_shields_web_contents_observer.h",
     "brave_resource_dispatcher_host_delegate.cc",
     "brave_resource_dispatcher_host_delegate.h",
-    "dat_file_util.cc",
-    "dat_file_util.h",
     "https_everywhere_recently_used_cache.h",
     "https_everywhere_service.cc",
     "https_everywhere_service.h",
@@ -54,6 +52,7 @@ source_set("brave_shields") {
   }
 
   deps = [
+    "//brave/components/brave_component_updater/browser",
     "//brave/content:common",
     "//brave/vendor/ad-block/brave:ad-block",
     "//brave/vendor/tracking-protection/brave:tracking-protection",

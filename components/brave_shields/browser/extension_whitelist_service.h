@@ -18,7 +18,7 @@
 #include "base/sequence_checker.h"
 #include "base/sequenced_task_runner.h"
 #include "brave/components/brave_shields/browser/base_local_data_files_observer.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
 
@@ -49,7 +49,7 @@ class ExtensionWhitelistService : public BaseLocalDataFilesObserver {
 
   void OnDATFileDataReady();
 
-  brave_shields::DATFileDataBuffer buffer_;
+  brave_component_updater::DATFileDataBuffer buffer_;
 
   std::unique_ptr<ExtensionWhitelistParser> extension_whitelist_client_;
 

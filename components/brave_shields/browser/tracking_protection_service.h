@@ -23,7 +23,7 @@
 #include "base/synchronization/lock.h"
 #include "brave/components/brave_shields/browser/base_local_data_files_observer.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
-#include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
 
@@ -116,9 +116,9 @@ class TrackingProtectionService : public BaseLocalDataFilesObserver {
   base::flat_set<std::string> first_party_storage_trackers_;
   std::map<RenderFrameIdKey, GURL> render_frame_key_to_starting_site_url;
 
-  brave_shields::DATFileDataBuffer storage_trackers_buffer_;
+  brave_component_updater::DATFileDataBuffer storage_trackers_buffer_;
 #endif
-  brave_shields::DATFileDataBuffer buffer_;
+  brave_component_updater::DATFileDataBuffer buffer_;
 
   std::unique_ptr<CTPParser> tracking_protection_client_;
   std::vector<std::string> third_party_base_hosts_;

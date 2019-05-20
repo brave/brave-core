@@ -19,10 +19,9 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
@@ -182,7 +181,7 @@ void AdBlockBaseService::EnableTagOnFileTaskRunner(
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
   GetTaskRunner()->PostTaskAndReply(
       FROM_HERE,
-      base::Bind(&brave_shields::GetDATFileData, dat_file_path, &buffer_),
+      base::Bind(&brave_component_updater::GetDATFileData, dat_file_path, &buffer_),
       base::Bind(&AdBlockBaseService::OnDATFileDataReady,
                  weak_factory_.GetWeakPtr()));
 }

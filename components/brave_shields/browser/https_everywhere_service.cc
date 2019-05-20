@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/base_paths.h"
+#include "base/bind.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/macros.h"
@@ -18,8 +19,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/scoped_blocking_call.h"
 #include "base/values.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
-#include "chrome/browser/browser_process.h"
 #include "third_party/leveldatabase/src/include/leveldb/db.h"
 #include "third_party/re2/src/re2/re2.h"
 #include "third_party/zlib/google/zip.h"

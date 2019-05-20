@@ -18,7 +18,7 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "brave/vendor/tracking-protection/TPParser.h"
@@ -275,7 +275,8 @@ void TrackingProtectionService::OnComponentReady(
 
   GetTaskRunner()->PostTaskAndReply(
       FROM_HERE,
-      base::Bind(&GetDATFileData, navigation_tracking_protection_path,
+      base::Bind(&brave_component_updater::GetDATFileData,
+                 navigation_tracking_protection_path,
                  &buffer_),
       base::Bind(&TrackingProtectionService::OnDATFileDataReady,
                  weak_factory_.GetWeakPtr()));
@@ -290,7 +291,8 @@ void TrackingProtectionService::OnComponentReady(
 
   GetTaskRunner()->PostTaskAndReply(
       FROM_HERE,
-      base::Bind(&GetDATFileData, storage_tracking_protection_path,
+      base::Bind(&brave_component_updater::GetDATFileData,
+                 storage_tracking_protection_path,
                  &storage_trackers_buffer_),
       base::Bind(&TrackingProtectionService::ParseStorageTrackersData,
                  weak_factory_.GetWeakPtr()));
