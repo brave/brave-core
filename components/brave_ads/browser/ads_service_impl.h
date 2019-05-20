@@ -105,6 +105,11 @@ class AdsServiceImpl : public AdsService,
       const std::string& notification_id,
       bool by_user,
       base::OnceClosure completed_closure);
+  void OnClick(Profile* profile,
+               const GURL& origin,
+               const std::string& notification_id,
+               const base::Optional<int>& action_index,
+               const base::Optional<base::string16>& reply);
   void OpenSettings(
       Profile* profile,
       const GURL& origin,
