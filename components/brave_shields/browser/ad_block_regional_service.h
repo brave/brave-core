@@ -29,7 +29,6 @@ class AdBlockRegionalService : public AdBlockBaseService {
 
   std::string GetUUID() const { return uuid_; }
   std::string GetTitle() const { return title_; }
-  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override;
 
  protected:
   bool Init() override;

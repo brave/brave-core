@@ -46,7 +46,6 @@ class AdBlockRegionalServiceManager {
                           bool* cancel_request_explicitly);
   void EnableTag(const std::string& tag, bool enabled);
   void EnableFilterList(const std::string& uuid, bool enabled);
-  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
 
  private:
   friend class ::AdBlockServiceTest;

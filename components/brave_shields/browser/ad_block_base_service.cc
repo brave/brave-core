@@ -17,7 +17,6 @@
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/dat_file_util.h"

@@ -177,12 +177,6 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
                      base::Unretained(this), uuid, enabled));
 }
 
-scoped_refptr<base::SequencedTaskRunner>
-AdBlockRegionalServiceManager::GetTaskRunner() {
-  // We share the same task runner for all ad-block and TP code
-  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
-}
-
 // static
 bool AdBlockRegionalServiceManager::IsSupportedLocale(
     const std::string& locale) {

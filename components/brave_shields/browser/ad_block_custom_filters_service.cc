@@ -58,12 +58,6 @@ void AdBlockCustomFiltersService::UpdateCustomFiltersOnFileTaskRunner(
     ad_block_client_->parse(custom_filters.c_str());
 }
 
-scoped_refptr<base::SequencedTaskRunner>
-AdBlockCustomFiltersService::GetTaskRunner() {
-  // We share the same task runner for all ad-block and TP code
-  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<AdBlockCustomFiltersService>

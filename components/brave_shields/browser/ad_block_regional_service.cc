@@ -18,14 +18,12 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 #include "brave/vendor/ad-block/data_file_version.h"
 #include "brave/vendor/ad-block/lists/regions.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_shields {
@@ -86,12 +84,6 @@ void AdBlockRegionalService::SetComponentIdAndBase64PublicKeyForTest(
 void AdBlockRegionalService::SetDATFileVersionForTest(
   const std::string& dat_file_version) {
   g_ad_block_regional_dat_file_version_ = dat_file_version;
-}
-
-scoped_refptr<base::SequencedTaskRunner>
-AdBlockRegionalService::GetTaskRunner() {
-  // We share the same task runner for all ad-block and TP code
-  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
