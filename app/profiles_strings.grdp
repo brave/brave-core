@@ -18,8 +18,11 @@
   <message name="IDS_GENERIC_USER_AVATAR_LABEL" desc="Label shown for the user that is currently active, when there are multiple user accounts.">
     Current user
   </message>
-  <message name="IDS_INCOGNITO_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu, opened in private mode.">
-    Private
+  <message name="IDS_INCOGNITO_BUBBLE_ACCESSIBLE_TITLE" desc="Accessible title of the avatar menu, opened in private mode. The message also shows the number of open private windows if they are more than one. [ICU Syntax]">
+      {0, plural,
+        =1 {Private}
+        other {# open private windows}
+      }
   </message>
   <message name="IDS_AVATAR_BUTTON_INCOGNITO" desc="Short label for the avatar button when the user is in private mode and the number of open private windows if there are more than one private window open. [ICU Syntax]" meaning="This window is browsing in private mode and there are more than one private windows open. The counter is not shown when there is only one private window open.">
     {0, plural,
@@ -357,6 +360,60 @@
   </message>
   <message name="IDS_DEFAULT_AVATAR_LABEL_37" desc="The label for the unicorn avatar.">
     Unicorn
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_38" desc="The label for the basketball avatar.">
+    Basketball
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_39" desc="The label for the bike avatar.">
+    Bike
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_40" desc="The label for the bird avatar.">
+    Bird
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_41" desc="The label for the cheese avatar.">
+    Cheese
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_42" desc="The label for the football avatar.">
+    Football
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_43" desc="The label for the ramen avatar.">
+    Ramen
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_44" desc="The label for the sunglasses avatar.">
+    Sunglasses
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_45" desc="The label for the sushi avatar.">
+    Sushi
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_46" desc="The label for the tamagotchi avatar.">
+    Tamagotchi
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_47" desc="The label for the vinyl avatar.">
+    Vinyl
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_48" desc="The label for the avocado avatar.">
+    Avocado
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_49" desc="The label for the cappuccino avatar.">
+    Cappuccino
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_50" desc="The label for the icecream avatar.">
+    Icecream
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_51" desc="The label for the icewater avatar.">
+    Icewater
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_52" desc="The label for the melon avatar.">
+    Melon
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_53" desc="The label for the onigiri avatar.">
+    Onigiri
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_54" desc="The label for the pizza avatar.">
+    Pizza
+  </message>
+  <message name="IDS_DEFAULT_AVATAR_LABEL_55" desc="The label for the sandwich avatar.">
+    Sandwich
   </message>
 
   <message name="IDS_PROFILES_LOCAL_PROFILE_STATE" desc="This is displayed underneath the profile name for profiles that are not signed in to sync.">

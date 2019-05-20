@@ -76,9 +76,13 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="5874882355102994015">Brave ne more pokazati predogleda tiskanja, če ni vgrajenega pregledovalnika datotek PDF.</translation>
 <translation id="8880183781256147665">Dodajanje v Brave ...</translation>
 <translation id="3561569806301739367">Datoteka <ph name="FILE_NAME"/> je morda nevarna, zato jo je Brave blokiral.</translation>
+<translation id="6205431412329939367">Datoteka <ph name="FILE_NAME"/> je morda nevarna, zato jo je Brave blokiral. Varuje vas dodatna zaščita.</translation>
 <translation id="9067428552314418522">Ta datoteka je nevarna, zato jo je Brave blokiral.</translation>
+<translation id="2938460345748897177">Ta datoteka je nevarna, zato jo je Brave blokiral. Varuje vas dodatna zaščita.</translation>
 <translation id="4168372721886011198">Datoteka <ph name="FILE_NAME"/> je nevarna, zato jo je Brave blokiral.</translation>
+<translation id="8858456697111532356">Datoteka <ph name="FILE_NAME"/> je nevarna, zato jo je Brave blokiral. Varuje vas dodatna zaščita.</translation>
 <translation id="89367911614620585">Ta datoteka je morda nevarna, zato jo je Brave blokiral.</translation>
+<translation id="8943391224520748272">Ta datoteka je morda nevarna, zato jo je Brave blokiral. Varuje vas dodatna zaščita.</translation>
 <translation id="9183662282810237335">Želite vseeno zapreti Brave?</translation>
 <translation id="3834935463915107022">Želite vseeno zapreti Brave?</translation>
 <translation id="8797356639448065696">Brave se izvaja v ozadju.</translation>
@@ -129,6 +133,7 @@ Brave ne more obnoviti vaših nastavitev.</translation>
 <translation id="1326766910007115955">Prijavljate se z upravljanim računom in s tem njegovemu skrbniku omogočate nadzor vašega profila v Braveu. Vaši podatki v Braveu, kot so aplikacije, zaznamki, zgodovina, gesla in druge nastavitve, bodo postali trajno povezani z uporabnikom <ph name="USER_NAME"/>. Te podatke boste lahko izbrisali na nadzorni plošči za Brave Software Račune, vendar jih ne boste mogli povezati z drugim računom. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Prijavljate se z upravljanim računom in s tem njegovemu skrbniku omogočate nadzor vašega profila v Braveu. Vaši podatki v Braveu, kot so aplikacije, zaznamki, zgodovina, gesla in druge nastavitve, bodo postali trajno povezani z uporabnikom <ph name="USER_NAME"/>. Te podatke boste lahko izbrisali na nadzorni plošči za Brave Software Račune, vendar jih ne boste mogli povezati z drugim računom. Če želite, lahko ustvarite nov profil, da bodo obstoječi podatki v Braveu ostali ločeni. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Skrbnik sistema je Brave nastavil tako, da za dostop do <ph name="TARGET_URL_HOSTNAME"/> odpre drug brskalnik.</translation>
+<translation id="5380963249588143069">Skrbnik sistema je Brave nastavil tako, da za dostop do <ph name="TARGET_URL_HOSTNAME"/> odpre brskalnik <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
 <translation id="2591326305549412656">Uporabnik <ph name="USER_EMAIL_ADDRESS"/> je prej uporabljal Brave</translation>
 <translation id="1384923383737428730">V računalniku je nameščena škodljiva programska oprema. Brave jo lahko odstrani, obnovi vaše nastavitve in onemogoči razširitve, da bo brskalnik spet normalno deloval.</translation>
 <translation id="8919921662052966648">Brave ni mogel sinhronizirati podatkov. Posodobite sinhronizacijsko geslo.</translation>
@@ -177,7 +182,9 @@ Nadaljnja navodila preberite v e-poštnem sporočilu, ki ste ga prejeli na <ph n
 <translation id="2871190378186459992">Odkrijte zanimive aplikacije, igre, razširitve in teme za Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Pravilo za dohodni promet za Brave, ki omogoča promet mDNS.</translation>
-<translation id="7276297358157391541">Brave omogoča pametnejše črkovanje, tako da vaše vnose v brskalnik pošilja v Googlove strežnike in s tem omogoči, da uporabljate isto tehnologijo preverjanja črkovanja, kot jo uporablja Googlovo iskanje.</translation>
+<translation id="8207657266087451193">Če slika nima koristnega opisa, ga bo Brave poskušal zagotoviti. Opisi se ustvarijo tako, da se slike pošljejo Googlu. To lahko kadar koli izklopite v nastavitvah.</translation>
+<translation id="5499063270485366718">Če slika nima koristnega opisa, ga bo Brave poskušal zagotoviti. Opisi se ustvarijo tako, da se slike pošljejo Googlu.</translation>
+<translation id="3870835867536344658">Uporabljeno je isto preverjanje črkovanja kot v Iskanju Brave Software. Besedilo, ki ga vnesete v brskalniku, je poslano Googlu. To lahko kadar koli spremenite v nastavitvah.</translation>
 <translation id="1807774211756215222">Odpiranje povezave na novem &amp;zavihku v Braveu</translation>
 <translation id="4624945300945265642">Odpri povezavo v Braveovem oknu brez bele&amp;ženja zgodovine</translation>
 <translation id="7863882214613921971">Odpiranje povezave na novem &amp;zavihku v Braveu</translation>

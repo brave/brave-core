@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_host/chrome_render_message_filter.h b/chrome/browser/renderer_host/chrome_render_message_filter.h
-index 1b8b9c5cfc50bcee13fb994cdbed9afe46c0b897..a6df9a04ac992b1840259cdb69ca524dbcc4149f 100644
+index 70c61e40907b7c38d39079c6ff695f9cbe7c6f38..29bd1c52e9e0d94f3c4753cd8001b20f7078457f 100644
 --- a/chrome/browser/renderer_host/chrome_render_message_filter.h
 +++ b/chrome/browser/renderer_host/chrome_render_message_filter.h
 @@ -16,6 +16,7 @@

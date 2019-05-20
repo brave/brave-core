@@ -79,9 +79,13 @@ Brave 無法復原你的設定。</translation>
 <translation id="5874882355102994015">缺乏內建的 PDF 檢視器時，Brave 無法顯示列印預覽畫面。</translation>
 <translation id="8880183781256147665">正在新增至 Brave...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> 可能不安全，因此遭到 Brave 封鎖。</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> 可能不安全，因此遭到 Brave 封鎖。你已啟用進階保護功能。</translation>
 <translation id="9067428552314418522">這個檔案並不安全，因此遭到 Brave 封鎖。</translation>
+<translation id="2938460345748897177">這個檔案不安全，因此遭到 Brave 封鎖。你已啟用進階保護功能。</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> 並不安全，因此遭到 Brave 封鎖。</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> 不安全，因此遭到 Brave 封鎖。你已啟用進階保護功能。</translation>
 <translation id="89367911614620585">這個檔案可能不安全，因此遭到 Brave 封鎖。</translation>
+<translation id="8943391224520748272">這個檔案可能不安全，因此遭到 Brave 封鎖。你已啟用進階保護功能。</translation>
 <translation id="9183662282810237335">確定要結束 Brave 嗎？</translation>
 <translation id="3834935463915107022">確定要關閉 Brave 嗎？</translation>
 <translation id="8797356639448065696">Brave 正在背景模式中執行。</translation>
@@ -132,6 +136,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="1326766910007115955">你已登入管理化環境下的帳戶，並將管理控制權授予你的 Brave 設定檔。你的 Brave 資料 (例如應用程式、書籤、記錄、密碼和其他設定) 均將永久與 <ph name="USER_NAME"/> 建立關聯。你可以透過 Brave Software 帳戶資訊主頁刪除這些資料，但你無法將這些資料與其他帳戶建立關聯。<ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">你已登入管理化環境下的帳戶，並將管理控制權授予你的 Brave 設定檔。你的 Brave 資料 (例如應用程式、書籤、記錄、密碼和其他設定) 均將永久與 <ph name="USER_NAME"/> 建立關聯。你可以透過 Brave Software 帳戶資訊主頁刪除這些資料，但你無法將這些資料與其他帳戶建立關聯。如要另行保留現有的 Brave 資料，你可以選擇建立新的設定檔。<ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">您的系統管理員設定了 Brave 開啟替代瀏覽器以存取 <ph name="TARGET_URL_HOSTNAME">$1<ex>example.com</ex></ph>。</translation>
+<translation id="5380963249588143069">你的系統管理員已設定由 Brave 開啟 <ph name="ALTERNATIVE_BROWSER_NAME"/> 以存取 <ph name="TARGET_URL_HOSTNAME"/>。</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> 先前使用的是 Brave</translation>
 <translation id="1384923383737428730">你的電腦安裝了有害軟體。Brave 可以移除該軟體、復原設定及停用擴充功能，讓你的瀏覽器恢復正常運作。</translation>
 <translation id="8919921662052966648">Brave 無法同步處理你的資料，請更新你的同步通關密語。</translation>
@@ -188,7 +193,7 @@ Brave 無法復原你的設定。</translation>
 <translation id="3856641371299712128">Brave Dev 允許 mDNS 流量的連入規則。</translation>
 <translation id="8207657266087451193">如果圖片缺少有用的說明，Brave 會嘗試為你提供說明。系統會將圖片傳送給 Brave Software，以便產生說明。你隨時可以在設定中關閉這項功能。</translation>
 <translation id="5499063270485366718">如果圖片缺少有用的說明，Brave 會嘗試為你提供說明。系統會將圖片傳送給 Brave Software，以便產生說明。</translation>
-<translation id="7276297358157391541">Brave 可將您在瀏覽器中輸入的字詞傳送給 Brave Software 伺服器，並透過 Brave Software 搜尋所使用的拼字檢查技術，為您提供更精確的拼字檢查功能。</translation>
+<translation id="3870835867536344658">這會使用與 Brave Software 搜尋相同的拼字檢查技術。系統會將你在瀏覽器中輸入的文字傳送給 Brave Software。你隨時可以在設定中變更這項行為。</translation>
 <translation id="1807774211756215222">在新的 Brave 分頁中開啟連結(&amp;T)</translation>
 <translation id="4624945300945265642">在 Brave 無痕式視窗中開啟連結(&amp;G)</translation>
 <translation id="7863882214613921971">在新的 Brave 分頁中開啟連結(&amp;T)</translation>

@@ -74,9 +74,13 @@ Brave nu poate recupera setările.</translation>
 <translation id="5874882355102994015">Brave nu poate afișa previzualizarea înainte de printare când vizualizatorul PDF încorporat lipsește.</translation>
 <translation id="8880183781256147665">Se adaugă la Brave...</translation>
 <translation id="3561569806301739367">Este posibil ca <ph name="FILE_NAME"/> să fie periculos, așadar Brave l-a blocat.</translation>
+<translation id="6205431412329939367">Este posibil ca fișierul <ph name="FILE_NAME"/> să fie periculos, așadar Brave l-a blocat. Te apără Protecția avansată.</translation>
 <translation id="9067428552314418522">Fișierul este periculos, așadar Brave l-a blocat.</translation>
+<translation id="2938460345748897177">Fișierul este periculos și, prin urmare, Brave l-a blocat. Te apără Protecția avansată.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> este periculos, așadar Brave l-a blocat.</translation>
+<translation id="8858456697111532356">Fișierul <ph name="FILE_NAME"/> este periculos, așadar Brave l-a blocat. Te apără Protecția avansată.</translation>
 <translation id="89367911614620585">Este posibil ca fișierul să fie periculos, așadar Brave l-a blocat.</translation>
+<translation id="8943391224520748272">Este posibil ca fișierul să fie periculos, așadar Brave l-a blocat. Te apără Protecția avansată.</translation>
 <translation id="9183662282810237335">Ieși din Brave oricum?</translation>
 <translation id="3834935463915107022">Ieși din Brave oricum?</translation>
 <translation id="8797356639448065696">Brave este în modul fundal.</translation>
@@ -127,6 +131,7 @@ Dacă totuși vă conectați, informațiile Brave cum ar fi marcajele, istoricul
 <translation id="1326766910007115955">Vă conectați cu un cont gestionat și îi permiteți administratorului acestuia controlul asupra profilului dvs. Brave. Datele Brave, cum ar fi aplicațiile, marcajele, istoricul, parolele și alte setări vor fi asociate definitiv cu <ph name="USER_NAME"/>. Veți putea să ștergeți aceste date prin intermediul Tabloului de bord pentru Conturi Brave Software, însă nu veți putea să asociați aceste date cu alt cont. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Vă conectați cu un cont gestionat și îi permiteți administratorului acestuia controlul asupra profilului dvs. Brave. Datele Brave, cum ar fi aplicațiile, marcajele, istoricul, parolele și alte setări vor fi asociate definitiv cu <ph name="USER_NAME"/>. Veți putea să ștergeți aceste date prin intermediul Tabloului de bord pentru Conturi Brave Software, însă nu veți putea să asociați aceste date cu alt cont. Aveți opțiunea de a crea un profil nou, pentru a păstra separat datele Brave existente. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Administratorul de sistem a configurat Brave să deschidă un browser secundar pentru a accesa <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">Administratorul sistemului a configurat Brave să deschidă <ph name="ALTERNATIVE_BROWSER_NAME"/> pentru a accesa <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> a folosit Brave anterior</translation>
 <translation id="1384923383737428730">Ai software dăunător pe computer. Brave poate să îl elimine, să restabilească setările și să dezactiveze extensiile pentru ca browserul să funcționeze normal din nou.</translation>
 <translation id="8919921662052966648">Brave nu a putut sincroniza datele. Actualizați expresia de acces pentru sincronizare.</translation>
@@ -175,7 +180,9 @@ Verifică e-mailul la <ph name="ACCOUNT_EMAIL"/> pentru instrucțiuni suplimenta
 <translation id="2871190378186459992">Descoperă aplicații, jocuri, extensii și teme extraordinare pentru Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Regula de intrare pentru Brave pentru a permite traficul mDNS.</translation>
-<translation id="7276297358157391541">Brave poate oferi o verificare a ortografiei mai inteligentă prin trimiterea textului introdus în browser la serverele Brave Software, permițându-ți să folosești aceeași tehnologie de verificare a ortografiei folosită de Căutare Brave Software.</translation>
+<translation id="8207657266087451193">Dacă o imagine nu are o descriere utilă, Brave va încerca să o completeze. Pentru a crea descrieri, imaginile sunt trimise la Brave Software. Poți dezactiva această opțiune oricând din setări.</translation>
+<translation id="5499063270485366718">Dacă o imagine nu are o descriere utilă, Brave va încerca să o completeze. Pentru a crea descrieri, imaginile sunt trimise la Brave Software.</translation>
+<translation id="3870835867536344658">Folosește același verificator ortografic folosit în Căutarea Brave Software. Textul pe care îl introduci în browser este trimis la Brave Software. Poți schimba acest comportament în setări.</translation>
 <translation id="1807774211756215222">Deschide linkul într-o &amp;filă Brave nouă</translation>
 <translation id="4624945300945265642">Deschide linkul într-o fereastră Brave inco&amp;gnito</translation>
 <translation id="7863882214613921971">Deschide linkul într-o &amp;filă Brave nouă</translation>

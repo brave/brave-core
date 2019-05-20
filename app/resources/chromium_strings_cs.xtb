@@ -76,9 +76,13 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="5874882355102994015">Pokud chybí integrovaný program k zobrazení souborů PDF, nemůže prohlížeč Brave zobrazit náhled tisku.</translation>
 <translation id="8880183781256147665">Přidávání do prohlížeče Brave...</translation>
 <translation id="3561569806301739367">Soubor <ph name="FILE_NAME"/> může být nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
+<translation id="6205431412329939367">Soubor <ph name="FILE_NAME"/> může být nebezpečný, proto jej prohlížeč Brave zablokoval. Jste chráněni pokročilou ochranou.</translation>
 <translation id="9067428552314418522">Tento soubor je nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
+<translation id="2938460345748897177">Tento soubor je nebezpečný, proto jej prohlížeč Brave zablokoval. Jste chráněni pokročilou ochranou.</translation>
 <translation id="4168372721886011198">Soubor <ph name="FILE_NAME"/> je nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
+<translation id="8858456697111532356">Soubor <ph name="FILE_NAME"/> je nebezpečný, proto jej počítač Brave zablokoval. Jste chráněni pokročilou ochranou.</translation>
 <translation id="89367911614620585">Tento soubor může být nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
+<translation id="8943391224520748272">Tento soubor může být nebezpečný, proto jej prohlížeč Brave zablokoval. Jste chráněni pokročilou ochranou.</translation>
 <translation id="9183662282810237335">Přesto Brave ukončit?</translation>
 <translation id="3834935463915107022">Přesto Brave ukončit?</translation>
 <translation id="8797356639448065696">Brave je v režimu na pozadí.</translation>
@@ -129,6 +133,7 @@ Pokud se přesto přihlásíte, budou data prohlížeče Brave (například zál
 <translation id="1326766910007115955">Přihlašujete se pomocí spravovaného účtu a poskytujete jeho správci kontrolu nad vaším profilem prohlížeče Brave. Vaše údaje prohlížeče Brave, například aplikace, záložky, historie, hesla a jiná nastavení, budou trvale přidružena k účtu <ph name="USER_NAME"/>. Tyto údaje budete moci smazat pomocí Hlavního panelu v Účtech Brave Software, ale nebudete je moci přidružit k jinému účtu. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Přihlašujete se pomocí spravovaného účtu a poskytujete jeho správci kontrolu nad vaším profilem prohlížeče Brave. Vaše údaje prohlížeče Brave, například aplikace, záložky, historie, hesla a jiná nastavení, budou trvale přidružena k účtu <ph name="USER_NAME"/>. Tyto údaje budete moci smazat pomocí stránky Dashboard služby Účty Brave Software, ale nebudete je moci přidružit k jinému účtu. Pokud chcete uchovat existující údaje prohlížeče Brave odděleně, můžete vytvořit nový profil. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Administrátor systému nakonfiguroval prohlížeč Brave tak, aby pro přístup k adrese <ph name="TARGET_URL_HOSTNAME"/> otevřel alternativní prohlížeč.</translation>
+<translation id="5380963249588143069">Administrátor systému nakonfiguroval prohlížeč Brave tak, aby pro přístup k adrese <ph name="TARGET_URL_HOSTNAME"/> otevřel prohlížeč <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
 <translation id="2591326305549412656">Před vámi prohlížeč Brave používal uživatel <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="1384923383737428730">Máte v počítači škodlivý software. Brave ho může odstranit, obnovit vaše nastavení a zakázat rozšíření, aby prohlížeč opět fungoval jako obvykle.</translation>
 <translation id="8919921662052966648">Prohlížeč Brave vaše data nemohl synchronizovat. Aktualizujte prosím heslovou frázi pro synchronizaci.</translation>
@@ -179,7 +184,7 @@ Další pokyny naleznete v e-mailu ve svém účtu <ph name="ACCOUNT_EMAIL"/>.<
 <translation id="1912973375560256099">Pravidlo příchozího provozu pro prohlížeč Brave, které povolí provoz mDNS.</translation>
 <translation id="8207657266087451193">Pokud obrázek nemá užitečný popis, Brave se vám jej pokusí poskytnout. Za účelem vytváření popisů jsou obrázky odesílány do Googlu. Tuto funkci můžete kdykoliv vypnout v nastavení.</translation>
 <translation id="5499063270485366718">Pokud obrázek nemá užitečný popis, Brave se vám jej pokusí poskytnout. Za účelem vytváření popisů jsou obrázky odesílány do Googlu.</translation>
-<translation id="7276297358157391541">Brave může poskytovat lepší kontrolu pravopisu tím, že text zadaný do prohlížeče odešle na servery Brave Software. Umožňuje vám tak používat stejnou technologii kontroly pravopisu, jakou používá Vyhledávání Brave Software.</translation>
+<translation id="3870835867536344658">Tato funkce využívá stejnou službu kontroly pravopisu, jaká se používá ve vyhledávání Brave Software. Text, který v prohlížeči zadáte, se odešle do Googlu. Toto chování můžete kdykoliv změnit v nastavení.</translation>
 <translation id="1807774211756215222">Otevřít odkaz na nové kar&amp;tě prohlížeče Brave</translation>
 <translation id="4624945300945265642">Otevřít odkaz v &amp;anonymním okně prohlížeče Brave</translation>
 <translation id="7863882214613921971">Otevřít odkaz na nové kar&amp;tě prohlížeče Brave</translation>

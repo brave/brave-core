@@ -46,17 +46,14 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="3155170474926428993">Tor -laukaisin</translation>
 <translation id="2515126961943087659">Bat-mainospalvelu</translation>
 <translation id="7924918279836988121">BAT-tilikirjapalvelu</translation>
-<translation id="768979911142179781">Braven oletussuojaus</translation>
-<translation id="9185018653595759199">Sosiaaliset painikkeet ja kirjautumiset</translation>
-<translation id="6894114137169961038">Mainostenhallinta</translation>
-<translation id="1096802265930928584">Evästeiden hallinta</translation>
+<translation id="4472575034687746823">Aloita</translation>
+<translation id="6303294677342628402">Shields</translation>
 <translation id="8919235146866304148">Tunnistesuojaus</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Komentosarjojen esto</translation>
 <translation id="7498695072878479744">Salli Googlen sisäänkirjautumispainikkeet kolmannen osapuolen sivuilla</translation>
 <translation id="863171915776379000">Salli Facebookin sisäänkirjautumiset ja upotetut julkaisut</translation>
 <translation id="5165042248369837294">Salli Twitterin upotetut tviitit</translation>
-<translation id="958971637207126733">Salli Linkedin-upotukset</translation>
 <translation id="6067014455220527258">Estä mainokset</translation>
 <translation id="6985711843506827936">Salli mainokset ja seuranta</translation>
 <translation id="6132506775968708399">Estä kolmannen osapuolen evästeet</translation>
@@ -76,7 +73,6 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="2414886740292270097">Pimeä</translation>
 <translation id="1360441190790440400">Sama kuin Linux</translation>
 <translation id="1336940801687497203">Sama kuin Windows</translation>
-<translation id="8721331068159819483">Sama kuin MacOS</translation>
 <translation id="6786747875388722282">Laajennukset</translation>
 <translation id="2896916411183256228">Käyttää WebTorrentia torrent-tiedostojen näyttämiseen suoraan selaimessa. Tukee torrent-tiedostoja sekä magneettilinkkejä.</translation>
 <translation id="6554397389149987360">Käytä Hangouts-komponenttia ruudunjaon sekä muiden ominaisuuksien käytön mahdollistamiseen selaimessa.</translation>

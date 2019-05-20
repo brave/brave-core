@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -32,12 +33,9 @@ const char* BookmarkButton::GetClassName() const {
   return "BookmarkButton";
 }
 
-bool BookmarkButton::GetTooltipText(const gfx::Point& p,
-                                  base::string16* tooltip) const {
-  int textId = active_ ? IDS_TOOLTIP_STARRED
-                                      : IDS_TOOLTIP_STAR;
-  tooltip->assign(l10n_util::GetStringUTF16(textId));
-  return true;
+base::string16 BookmarkButton::GetTooltipText(const gfx::Point& p) const {
+  int textId = active_ ? IDS_TOOLTIP_STARRED : IDS_TOOLTIP_STAR;
+  return l10n_util::GetStringUTF16(textId);
 }
 
 void BookmarkButton::GetAccessibleNodeData(ui::AXNodeData* node_data) {
@@ -54,9 +52,7 @@ void BookmarkButton::SetHighlighted(bool bubble_visible) {
 }
 
 void BookmarkButton::SetToggled(bool on) {
-
   active_ = on;
-
   const ui::ThemeProvider* tp = GetThemeProvider();
 
   SkColor icon_color = tp->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);

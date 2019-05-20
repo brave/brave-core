@@ -11,6 +11,7 @@
 #include "base/base64url.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/net/url_context.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/shield_exceptions.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
@@ -164,7 +165,7 @@ int OnBeforeURLRequest_AdBlockTPPreWork(
   // be looked up, so do nothing.
   if (ctx->tab_origin.is_empty() || !ctx->allow_brave_shields ||
       ctx->allow_ads ||
-      ctx->resource_type == content::RESOURCE_TYPE_LAST_TYPE) {
+      ctx->resource_type == BraveRequestInfo::kInvalidResourceType) {
     return net::OK;
   }
 

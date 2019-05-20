@@ -1,16 +1,24 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/brave_actions/brave_action_view_controller.h"
 
+#include <memory>
+#include <string>
+#include <utility>
+
 #include "brave/browser/ui/brave_actions/brave_action_icon_with_badge_image_source.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/extension_action.h"
+#include "chrome/browser/extensions/extension_view_host.h"
+#include "chrome/browser/extensions/extension_view_host_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_tab_helper.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/toolbar/toolbar_action_view_delegate.h"
 #include "components/vector_icons/vector_icons.h"
 #include "ui/base/theme_provider.h"
 #include "ui/gfx/canvas.h"
@@ -28,13 +36,6 @@ bool BraveActionViewController::IsEnabled(
   return is_enabled;
 }
 
-void BraveActionViewController::HideActivePopup() {
-  // Usually, for an extension this should call the main extensions
-  // toolbar_actions_bar_->HideActivePopup(), but we don't have a reference
-  // to that, and it doesn't seem neccessary, whether the extension is opened
-  // via mouse or keyboard (if a `commands` extension property is present)
-}
-
 bool BraveActionViewController::DisabledClickOpensMenu() const {
   // disabled is a per-tab state
   return false;
@@ -45,13 +46,42 @@ ui::MenuModel* BraveActionViewController::GetContextMenu() {
   return nullptr;
 }
 
+ExtensionActionViewController*
+BraveActionViewController::GetPreferredPopupViewController() {
+  return this;
+}
+
+bool BraveActionViewController::TriggerPopupWithUrl(
+    PopupShowAction show_action,
+    const GURL& popup_url,
+    bool grant_tab_permissions) {
+  std::unique_ptr<extensions::ExtensionViewHost> host =
+      extensions::ExtensionViewHostFactory::CreatePopupHost(popup_url,
+                                                            browser_);
+  if (!host)
+    return false;
+
+  popup_host_ = host.get();
+  popup_host_observer_.Add(popup_host_);
+  ShowPopup(std::move(host), grant_tab_permissions, show_action);
+  return true;
+}
+
+void BraveActionViewController::OnPopupClosed() {
+  popup_host_observer_.Remove(popup_host_);
+  popup_host_ = nullptr;
+  view_delegate_->OnPopupClosed();
+}
+
 gfx::Image BraveActionViewController::GetIcon(
     content::WebContents* web_contents,
     const gfx::Size& size) {
-  return gfx::Image(gfx::ImageSkia(GetIconImageSource(web_contents, size), size));
+  return gfx::Image(
+      gfx::ImageSkia(GetIconImageSource(web_contents, size), size));
 }
 
-std::unique_ptr<BraveActionIconWithBadgeImageSource> BraveActionViewController::GetIconImageSource(
+std::unique_ptr<BraveActionIconWithBadgeImageSource>
+BraveActionViewController::GetIconImageSource(
   content::WebContents* web_contents, const gfx::Size& size) {
   int tab_id = SessionTabHelper::IdForTab(web_contents).id();
   // generate icon

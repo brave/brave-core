@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/html/media/autoplay_policy.cc b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
-index 38713aa16f30d0c88191de3f351743d1b61071e6..f31539238a3ee194d80e6f00d71349fefc87b4bd 100644
+index d4545d68030b822a57753454460d3066b9aaeefa..ca7f6d6828149dd3bbef9b18f17952e428b71eb3 100644
 --- a/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 +++ b/third_party/blink/renderer/core/html/media/autoplay_policy.cc
 @@ -139,6 +139,10 @@ bool AutoplayPolicy::DocumentHasUserExceptionFlag(const Document& document) {
@@ -13,7 +13,7 @@ index 38713aa16f30d0c88191de3f351743d1b61071e6..f31539238a3ee194d80e6f00d71349fe
    return GetAutoplayPolicyForDocument(document) !=
           AutoplayPolicy::Type::kNoUserGestureRequired;
  }
-@@ -311,6 +315,10 @@ bool AutoplayPolicy::IsGestureNeededForPlayback() const {
+@@ -319,6 +323,10 @@ bool AutoplayPolicy::IsGestureNeededForPlayback() const {
    if (!IsLockedPendingUserGesture())
      return false;
  
@@ -22,5 +22,5 @@ index 38713aa16f30d0c88191de3f351743d1b61071e6..f31539238a3ee194d80e6f00d71349fe
 +    return false;
 +#endif
    // We want to allow muted video to autoplay if:
-   // - the flag is enabled;
-   // - Autoplay is enabled in settings;
+   // - The element is allowed to autoplay muted;
+   // - Autoplay is enabled in settings.

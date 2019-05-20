@@ -74,9 +74,13 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="5874882355102994015">Brave tidak dapat memaparkan pratonton cetakan apabila alat lihat PDF terbina dalam tiada.</translation>
 <translation id="8880183781256147665">Menambah ke Brave...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> mungkin berbahaya, jadi Brave telah menyekat fail itu.</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> mungkin berbahaya, maka Brave telah menyekat fail itu. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="9067428552314418522">Fail ini berbahaya, maka Brave telah menyekatnya.</translation>
+<translation id="2938460345748897177">Fail ini berbahaya, maka Brave telah menyekatnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> berbahaya, jadi Brave telah menyekat fail itu.</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> berbahaya, maka Brave telah menyekat fail itu. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="89367911614620585">Fail ini mungkin berbahaya, maka Brave telah menyekatnya.</translation>
+<translation id="8943391224520748272">Fail ini mungkin berbahaya, maka Brave telah menyekatnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="9183662282810237335">Keluar daripada Brave juga?</translation>
 <translation id="3834935463915107022">Keluar daripada Brave juga?</translation>
 <translation id="8797356639448065696">Brave dalam mod latar belakang.</translation>
@@ -127,6 +131,7 @@ Meneruskan juga log masuk akan menggabungkan maklumat Brave seperti penanda hala
 <translation id="1326766910007115955">Anda log masuk menggunakan akaun yang terurus dan memberikan pentadbirnya kawalan ke atas profil Brave anda. Data Brave anda, seperti apl, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan terikat kepada <ph name="USER_NAME"/> secara kekal. Anda akan dapat memadamkan data ini melalui Papan Pemuka Akaun Brave Software, tetapi anda tidak akan dapat mengaitkan data ini dengan akaun lain. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Anda log masuk menggunakan akaun yang terurus dan memberikan pentadbirnya kawalan ke atas profil Brave anda. Data Brave anda, seperti apl, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan terikat kepada <ph name="USER_NAME"/> secara kekal. Anda akan dapat memadamkan data ini melalui Papan Pemuka Akaun Brave Software, tetapi anda tidak akan dapat mengaitkan data ini dengan akaun lain. Anda boleh memilih untuk membuat profil baharu untuk mengasingkan data Brave anda yang sedia ada. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Pentadbir sistem anda telah mengkonfigurasikan Brave agar membuka penyemak imbas alternatif untuk mengakses <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">Pentadbir sistem anda telah mengkonfigurasikan Brave agar membuka <ph name="ALTERNATIVE_BROWSER_NAME"/> untuk mengakses <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> menggunakan Brave sebelum ini</translation>
 <translation id="1384923383737428730">Terdapat perisian yang berbahaya pada komputer anda. Brave boleh mengalih keluar perisian tersebut, memulihkan tetapan anda dan melumpuhkan sambungan supaya penyemak imbas anda dapat berfungsi seperti biasa semula.</translation>
 <translation id="8919921662052966648">Brave tidak dapat menyegerakkan data anda. Sila kemas kini frasa laluan Segerak anda.</translation>
@@ -177,7 +182,7 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="1912973375560256099">Peraturan masuk bagi Brave untuk membolehkan trafik mDNS.</translation>
 <translation id="8207657266087451193">Jika imej tiada perihalan yang berguna, Brave akan cuba memberikan perihalan untuk anda. Untuk membuat perihalan, imej dihantar kepada Brave Software. Anda boleh mematikan pilihan ini dalam tetapan pada bila-bila masa.</translation>
 <translation id="5499063270485366718">Jika imej tiada perihalan yang berguna, Brave akan cuba memberikan perihalan untuk anda. Untuk membuat perihalan, imej dihantar kepada Brave Software.</translation>
-<translation id="7276297358157391541">Brave dapat menyediakan semakan ejaan yang lebih pintar dengan menghantar apa yang anda taip dalam penyemak imbas kepada pelayan Brave Software, membolehkan anda menggunakan teknologi semakan ejaan yang sama seperti yang digunakan oleh carian Brave Software.</translation>
+<translation id="3870835867536344658">Ini menggunakan penyemak ejaan yang sama seperti yang digunakan dalam carian Brave Software. Teks yang anda taip dalam penyemak imbas akan dihantar kepada Brave Software. Anda boleh menukar gelagat ini dalam tetapan pada bila-bila masa.</translation>
 <translation id="1807774211756215222">Buka pautan dalam &amp;tab Brave baharu</translation>
 <translation id="4624945300945265642">Buka pautan dalam tetingkap inko&amp;gnito Brave</translation>
 <translation id="7863882214613921971">Buka Pautan dalam &amp;tab Brave Baharu</translation>

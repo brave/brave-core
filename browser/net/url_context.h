@@ -76,7 +76,9 @@ struct BraveRequestInfo {
   bool cancel_request_explicitly = false;
   // Default to invalid type for resource_type, so delegate helpers
   // can properly detect that the info couldn't be obtained.
-  content::ResourceType resource_type = content::RESOURCE_TYPE_LAST_TYPE;
+  static constexpr content::ResourceType kInvalidResourceType =
+      static_cast<content::ResourceType>(-1);
+  content::ResourceType resource_type = kInvalidResourceType;
 
   static void FillCTXFromRequest(const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx);

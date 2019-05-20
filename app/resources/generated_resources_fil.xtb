@@ -38,10 +38,11 @@
 <translation id="3303855915957856445">Walang nakitang resulta ng paghahanap</translation>
 <translation id="8967866634928501045">Pindutin ang Alt Shift A upang ipakita</translation>
 <translation id="998747458861718449">Surii&amp;n</translation>
+<translation id="741204030948306876">Oo, sali ako</translation>
+<translation id="780301667611848630">Hindi salamat</translation>
 <translation id="3943582379552582368">&amp;Bumalik</translation>
 <translation id="6691936601825168937">&amp;Sumulong</translation>
 <translation id="3280237271814976245">I-save &amp;bilang...</translation>
-<translation id="2941880727166628951">Ipadala sa aking mga device</translation>
 <translation id="1175364870820465910">&amp;I-print...</translation>
 <translation id="8664389313780386848">&amp;Tingnan ang page source</translation>
 <translation id="2889064240420137087">Buksan ang link gamit ang...</translation>
@@ -93,10 +94,10 @@
 <translation id="1732768497619250086">Kumuha ng mga paglalarawan ng larawan mula sa Brave Software</translation>
 <translation id="7561196759112975576">Palagi</translation>
 <translation id="2241634353105152135">Isang beses lang</translation>
-<translation id="741204030948306876">Oo, sali ako</translation>
-<translation id="780301667611848630">Hindi salamat</translation>
-<translation id="4572259796527554261">Humingi ng mga suhestyon sa Brave Software</translation>
-<translation id="3435896845095436175">I-enable</translation>
+<translation id="3387614642886316601">Gumamit ng pinahusay na pang-check ng pagbabaybay</translation>
+<translation id="6992554835374084304">I-on ang pinahusay na pang-check ng pagbabaybay</translation>
+<translation id="5860491529813859533">I-on</translation>
+<translation id="7658239707568436148">Kanselahin</translation>
 <translation id="8915370057835397490">Nilo-load ang suhestiyon</translation>
 <translation id="6191804255817539692">Wala nang mga suhestiyon mula sa Brave Software</translation>
 <translation id="1901303067676059328">Piliin ang &amp;lahat</translation>
@@ -107,7 +108,6 @@
 <translation id="6042308850641462728">Higit pa</translation>
 <translation id="6268252012308737255">Buksan sa <ph name="APP"/></translation>
 <translation id="5509693895992845810">I-save &amp;Bilang...</translation>
-<translation id="3480119035619598820">Ipadala sa Aking Mga Device</translation>
 <translation id="7421925624202799674">&amp;Tingnan ang Pinagmulan ng Pahina</translation>
 <translation id="1588870296199743671">Buksan ang Link Gamit ang...</translation>
 <translation id="3760460896538743390">Siyasatin ang Pahina ng &amp;Background</translation>
@@ -149,9 +149,10 @@
 <translation id="4022426551683927403">&amp;Idagdag sa Diksyunaryo</translation>
 <translation id="6849870115130610913">Kumuha ng Mga Paglalarawan ng Larawan mula sa Brave Software</translation>
 <translation id="372722114124766626">Isang Beses Lang</translation>
-<translation id="8917490105272468696">Oo, Tinatanggap Ko</translation>
+<translation id="4079140982534148664">Gumamit ng Pinahusay na Pang-check ng Pagbabaybay</translation>
+<translation id="7487141338393529395">I-on ang Pinahusay na Pang-check ng Pagbabaybay</translation>
+<translation id="3435896845095436175">I-enable</translation>
 <translation id="7473891865547856676">Hindi, Salamat</translation>
-<translation id="2867003629889664976">Humingi ng Mga Suhestyon sa Brave Software</translation>
 <translation id="6264365405983206840">Piliin &amp;Lahat</translation>
 <translation id="3948116654032448504">&amp;Maghanap sa <ph name="SEARCH_ENGINE"/> para sa Larawan</translation>
 <translation id="2932085390869194046">Magmungkahi ng Password...</translation>
@@ -164,7 +165,7 @@
 <translation id="4423482519432579560">&amp;Spellcheck</translation>
 <translation id="1049795001945932310">&amp;Mga setting ng wika</translation>
 <translation id="6498249116389603658">&amp;Lahat ng iyong wika</translation>
-<translation id="8188120771410500975">&amp;Tingnan ang spelling ng mga field ng text</translation>
+<translation id="5978277834170881274">&amp;Gumamit ng basic na pang-check ng pagbabaybay</translation>
 <translation id="4200983522494130825">Bagong &amp;tab</translation>
 <translation id="8418445294933751433">&amp;Ipakita bilang tab</translation>
 <translation id="1723824996674794290">&amp;Bagong window</translation>
@@ -323,7 +324,9 @@
 <translation id="3916445069167113093">Maaaring makapinsala sa iyong computer ang uri ng file na ito. Gusto mo pa rin bang panatilihin ang <ph name="FILE_NAME"/>?</translation>
 <translation id="5727728807527375859">Maaaring mapinsala ng mga extension, apps, at mga tema ang iyong computer. Sigurado ka bang gusto mong magpatuloy?</translation>
 <translation id="6285120108426285413">Hindi karaniwang dina-download ang <ph name="FILE_NAME"/> at maaaring mapanganib ito.</translation>
+<translation id="6573998787994398565">Ang <ph name="FILE_NAME"/> ay hindi karaniwang dina-download at puwedeng mapanganib. Pinoprotektahan ka ng Advanced na Proteksyon.</translation>
 <translation id="4907161631261076876">Hindi karaniwang dina-download ang app na ito at maaaring mapanganib.</translation>
+<translation id="9041909613332246191">Hindi karaniwang dina-download ang file na ito at puwedeng mapanganib. Pinoprotektahan ka ng Advanced na Proteksyon.</translation>
 <translation id="2773802008104670137">Maaaring maapektuhan ng ganitong uri ng file ang iyong computer.</translation>
 <translation id="7815680994978050279">Na-block ang mapanganib na download</translation>
 <translation id="6141988275892716286">Kumpirmahin ang pag-download</translation>
@@ -343,7 +346,6 @@
 <translation id="8200772114523450471">Resume</translation>
 <translation id="2770465223704140727">Alisin sa listahan</translation>
 <translation id="7702574632857388784">Alisin ang <ph name="FILE_NAME"/> sa listahan</translation>
-<translation id="7658239707568436148">Kanselahin</translation>
 <translation id="7144878232160441200">Subukang muli</translation>
 <translation id="5170568018924773124">Ipinakita sa folder</translation>
 <translation id="1581962803218266616">Show in Finder</translation>
@@ -358,6 +360,10 @@
 <translation id="495170559598752135">Mga Pagkilos</translation>
 <translation id="3612673635130633812">Na-download ng &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt;</translation>
 <translation id="6395403722585816044">Na-download sa Incognito</translation>
+<translation id="4551763574344810652">Pindutin ang <ph name="MODIFIER_KEY_DESCRIPTION"/> para i-undo</translation>
+<translation id="2079545284768500474">I-undo</translation>
+<translation id="2490481887078769936">Inalis ang '<ph name="FILE_NAME"/>' sa listahan</translation>
+<translation id="1429300045468813835">Na-clear lahat</translation>
 <translation id="8028803902702117856">Dina-download ang <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="5632592977009207922">Nagda-download, <ph name="PERCENT_REMAINING"/>% ang natitira</translation>
 <translation id="313963229645891001">Nagda-download, <ph name="STATUS"/></translation>
@@ -418,6 +424,10 @@
 <translation id="3067198179881736288">I-install ang app?</translation>
 <translation id="7072010813301522126">Pangalan ng shortcut</translation>
 <translation id="3275778913554317645">Buksan bilang window</translation>
+<translation id="7193051357671784796">Idinagdag ng iyong organisasyon ang app na ito. I-restart ang app para tapusin ang pag-install nito.</translation>
+<translation id="5895138241574237353">I-restart</translation>
+<translation id="3479552764303398839">Hindi ngayon</translation>
+<translation id="1008557486741366299">Hindi Ngayon</translation>
 <translation id="8201192017531062522">Patuloy na tatakbo ang Brave habang nakabukas ang Brave Apps.</translation>
 <translation id="7397305826909094212">Umalis sa lahat ng Brave Apps</translation>
 <translation id="5026874946691314267">Huwag itong ipakita muli</translation>
@@ -750,6 +760,7 @@
 <translation id="5715711091495208045">Broker ng plugin: <ph name="PLUGIN_NAME"/></translation>
 <translation id="3222066309010235055">Prerender: <ph name="PRERENDER_CONTENTS_NAME"/></translation>
 <translation id="6748217015615267851">Tagapag-render: <ph name="RENDERER_URL"/></translation>
+<translation id="2156294658807918600">Service Worker: <ph name="SCRIPT_URL"/></translation>
 <translation id="241082044617551207">Hindi kilalang plugin</translation>
 <translation id="7903925330883316394">Utility: <ph name="UTILITY_TYPE"/></translation>
 <translation id="219008588003277019">Module ng Native Client: <ph name="NEXE_NAME"/></translation>
@@ -773,10 +784,8 @@
 <translation id="4873312501243535625">Pangsuri ng Media File</translation>
 <translation id="5972666587303800813">No-op na Serbisyo</translation>
 <translation id="3061707000357573562">Serbisyo sa Pag-patch</translation>
-<translation id="3580923162759633716">Serbisyo sa Pag-profile</translation>
 <translation id="1914326953223720820">I-unzip ang Serbisyo</translation>
 <translation id="1545775234664667895">Naka-install na temang "<ph name="THEME_NAME"/>"</translation>
-<translation id="2079545284768500474">I-undo</translation>
 <translation id="2256115617011615191">I-restart ngayon</translation>
 <translation id="4545028762441890696">Upang muli itong i-enable, tanggapin ang mga bagong pahintulot:</translation>
 <translation id="3009487527589249344">Na-flag ng Brave Software ang "<ph name="EXTENSION_NAME"/>" bilang nakakahamak at pinigilan ang pag-install</translation>
@@ -962,8 +971,8 @@
 <translation id="2643698698624765890">Pamahalaan ang iyong mga extension sa pamamagitan ng pag-click sa Mga Extension sa menu na Window.</translation>
 <translation id="7953955868932471628">Pamahalaan ang mga shortcut</translation>
 <translation id="1470811252759861213">Upang mailagay ang iyong mga extension sa lahat ng iyong computer, <ph name="SIGN_IN_LINK"/>.</translation>
-<translation id="316854673539778496">Upang mailagay ang lahat ng iyong extension sa lahat ng device mo, mag-sign in at i-on ang pag-sync.</translation>
-<translation id="8079938625609335826">Upang makuha ang lahat ng iyong extension sa lahat ng device mo, i-on ang pag-sync.</translation>
+<translation id="2490782392574942205">Para makuha ang iyong mga extension sa lahat ng computer mo, mag-sign in at i-on ang pag-sync</translation>
+<translation id="3919145445993746351">Para makuha ang iyong mga extension sa lahat ng computer mo, i-on ang pag-sync</translation>
 <translation id="4977942889532008999">Kumpirmahin ang Pag-access</translation>
 <translation id="5780011244986845107">Naglalaman ng mga sensitibong file ang folder na pinili mo. Sigurado ka bang gusto mong bigyan ang "<ph name="APP_NAME"/>" ng permanenteng access sa pag-read sa folder na ito?</translation>
 <translation id="5365881113273618889">Naglalaman ng mga sensitibong file ang pinili mong folder. Sigurado ka bang gusto mong bigyan ang "<ph name="APP_NAME"/>" ng permanenteng access sa pag-write sa folder na ito?</translation>
@@ -982,6 +991,8 @@
 <translation id="220138918934036434">Itago ang pindutan</translation>
 <translation id="7898627924844766532">Panatilihin sa toolbar</translation>
 <translation id="6082651258230788217">Ipakita sa toolbar</translation>
+<translation id="7461924472993315131">I-pin</translation>
+<translation id="4285498937028063278">I-unpin</translation>
 <translation id="8137559199583651773">Pamahalaan ang mga extension</translation>
 <translation id="3727187387656390258">Siyasatin ang popup</translation>
 <translation id="3526034519184079374">Hindi Mabasa o Mapalitan ang Data ng Site</translation>
@@ -1186,9 +1197,13 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6690659332373509948">Hindi magawang i-parse ang file: <ph name="FILE_NAME"/></translation>
 <translation id="2773288106548584039">Suporta sa Legacy Browser</translation>
 <translation id="8141584439523427891">Binubuksan ngayon sa alternatibong browser</translation>
+<translation id="7450761244949417357">Binubuksan ngayon sa <ph name="ALTERNATIVE_BROWSER_NAME"/></translation>
 <translation id="2804043232879091219">Hindi mabuksan ang alternatibong browser</translation>
+<translation id="692114467174262153">Hindi mabuksan ang <ph name="ALTERNATIVE_BROWSER_NAME"/></translation>
 <translation id="1070705170564860382">Bubuksan sa alternatibong browser pagkalipas ng <ph name="COUNTDOWN_SECONDS"/> (na) segundo</translation>
+<translation id="3481268647794498892">Bubukas sa <ph name="ALTERNATIVE_BROWSER_NAME"/> sa loob ng <ph name="COUNTDOWN_SECONDS"/> segundo</translation>
 <translation id="4586275095964870617">Hindi mabuksan ang <ph name="URL"/> sa isang alternatibong browser. Mangyaring makipag-ugnayan sa iyong system administrator.</translation>
+<translation id="736877393389250337">Hindi mabuksan ang <ph name="URL"/> sa <ph name="ALTERNATIVE_BROWSER_NAME"/>. Makipag-ugnayan sa iyong system administrator.</translation>
 <translation id="465878909996028221">Tanging http, https at file protocol ang sinusuportahan para sa mga pag-redirect ng browser.</translation>
 <translation id="1962233722219655970">Gumagamit ang pahinang ito ng Native Client app na hindi gumagana sa iyong computer.</translation>
 <translation id="7540972813190816353">Naganap ang isang error habang nagsusuri ng mga update: <ph name="ERROR"/></translation>
@@ -1212,6 +1227,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5867841422488265304">Maghanap o mag-type ng web address</translation>
 <translation id="2129873093718581193">Hanapin sa Brave Software o i-type ang URL</translation>
 <translation id="6363797201514053536">Maghanap sa Brave Software o mag-type ng URL</translation>
+<translation id="4888839742663123585">Maghanap sa Brave Software</translation>
 <translation id="6078323886959318429">Magdagdag ng shortcut</translation>
 <translation id="6324916366299863871">I-edit ang shortcut</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, at *.png</translation>
@@ -1240,6 +1256,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8391712576156218334">Hindi available ang larawan. Subukang muli sa ibang pagkakataon.</translation>
 <translation id="1564414980088536597">Hindi magagamit ang larawang ito. Pumili ng ibang larawan.</translation>
 <translation id="385051799172605136">Bumalik</translation>
+<translation id="8033827949643255796">pinili</translation>
 <translation id="3497560059572256875">Ibahagi ang Doodle</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Twitter</translation>
@@ -1266,6 +1283,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5939518447894949180">I-reset</translation>
 <translation id="5546865291508181392">Find</translation>
 <translation id="833986336429795709">Para buksan ang link na ito, pumili ng app</translation>
+<translation id="192494336144674234">Buksan gamit ang</translation>
+<translation id="9053893665344928494">Tandaan ang aking pinili</translation>
+<translation id="5541687815721799001">Gamitin ang app</translation>
+<translation id="5340857474604400806">Manatili sa Brave</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (Incognito)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> - <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Available ang update)</translation>
@@ -1313,7 +1334,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="720715819012336933">{NUM_PAGES,plural, =1{Umalis sa Page}one{Umalis sa Mga Page}other{Umalis sa Mga Page}}</translation>
 <translation id="8093359998839330381">Hindi tumutugon ang <ph name="PLUGIN_NAME"/></translation>
 <translation id="8393511274964623038">Ihinto ang plugin</translation>
-<translation id="82871696630048499">Na-reload ang web page dahil naubusan na ito ng memory.</translation>
 <translation id="5578059481725149024">Awtomatikong pag-sign in</translation>
 <translation id="6810613314571580006">Awtomatikong mag-sign in sa mga website gamit ang mga nakaimbak na kredensyal. Kapag naka-disable ang feature, palagi kang hihingan ng kumpirmasyon bago ka mag-sign in sa isang website.</translation>
 <translation id="5454166040603940656">sa <ph name="PROVIDER"/></translation>
@@ -1364,6 +1384,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8713570323158206935">Ipadala ang <ph name="BEGIN_LINK1"/>impormasyon ng system<ph name="END_LINK1"/></translation>
 <translation id="6395423953133416962">Ipadala ang <ph name="BEGIN_LINK1"/>impormasyon ng system<ph name="END_LINK1"/> at <ph name="BEGIN_LINK2"/>mga sukatan<ph name="END_LINK2"/></translation>
 <translation id="6270770586500173387">Ipadala ang <ph name="BEGIN_LINK1"/>impormasyon ng system at app<ph name="END_LINK1"/>, at <ph name="BEGIN_LINK2"/>mga sukatan<ph name="END_LINK2"/></translation>
+<translation id="3894123633473837029">Isama ang kamakailang history ng Assistant sa pamamagitan ng Sherlog. Puwedeng kasama rito ang iyong pagkakakilanlan, lokasyon, at impormasyon sa pag-debug. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
 <translation id="8329196515830093443">Ipapadala ang file sa Brave Software para sa pagde-debug</translation>
 <translation id="8227119283605456246">Mag-attach ng file</translation>
 <translation id="5367091008316207019">Binabasa ang file..</translation>
@@ -1374,9 +1395,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1483493594462132177">Ipadala</translation>
 <translation id="6885771755599377173">Preview ng Impormasyon ng System</translation>
 <translation id="1016566241875885511">Karagdagang impormasyon (opsyonal)</translation>
-<translation id="6083886770200509573">Ang Brave ba ay nagka-crash, nagpapakita ng mga hindi karaniwang page sa pagsisimula, toolbar o hindi inaasahang ad na hindi mo maalis, o kung hindi man ay bumabago sa iyong karanasan sa pagba-browse? Maaari mong maaayos ang problema sa pamamagitan ng pagpapatakbo ng Brave Cleanup Tool.</translation>
-<translation id="7719662019953070946">I-download ang Brave Cleanup Tool</translation>
-<translation id="8281886186245836920">Laktawan</translation>
 <translation id="8026334261755873520">I-clear ang data ng pagba-browse</translation>
 <translation id="7409836189476010449">Patakbuhin ang Flash</translation>
 <translation id="4718442817388594217">Inalis sa Brave at sa mga naka-sync na device ang napiling data. Maaaring may iba pang anyo ng history ng pag-browse ang iyong Brave Software Account tulad ng mga paghahanap at aktibidad mula sa iba pang serbisyo ng Brave Software sa <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1514,7 +1532,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 
   Gusto mo bang simulan ang <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="2799223571221894425">Ilunsad Muli</translation>
-<translation id="5895138241574237353">I-restart</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Platform</translation>
 <translation id="7022562585984256452">Naitakda na ang iyong home page.</translation>
@@ -1554,6 +1571,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6015796118275082299">Taon</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
 <translation id="7671130400130574146">Gumamit ng system title bar at mga hangganan</translation>
+<translation id="3775705724665058594">Ipadala sa iyong mga device</translation>
+<translation id="6061882183774845124">Ipadala ang link sa iyong mga device</translation>
+<translation id="8249615410597138718">Ipadala sa Iyong Mga Device</translation>
+<translation id="5310281978693206542">Ipadala ang Link sa Iyong Mga Device</translation>
 <translation id="4520385623207007473">Ginagamit ang cookies</translation>
 <translation id="4763408175235639573">Itinakda ang sumusunod na cookies noong tiningnan mo ang page na ito</translation>
 <translation id="2719936478972253983">Na-block ang sumusunod na cookies</translation>
@@ -1643,12 +1664,14 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8371695176452482769">Magsalita ngayon</translation>
 <translation id="2942560570858569904">Naghihintay...</translation>
 <translation id="6436164536244065364">Tingnan sa Web Store</translation>
+<translation id="5258992782919386492">I-install sa device na ito</translation>
 <translation id="3331974543021145906">Impormasyon ng app</translation>
 <translation id="9121814364785106365">Binuksan bilang na-pin na tab</translation>
 <translation id="6920989436227028121">Buksan bilang regular na tab</translation>
 <translation id="189210018541388520">Buksan sa buong screen</translation>
 <translation id="6096047740730590436">Buksan ang naka-maximize</translation>
 <translation id="7256710573727326513">Buksan sa isang tab</translation>
+<translation id="7636919061354591437">I-install sa Device na ito</translation>
 <translation id="2993517869960930405">Impormasyon ng App</translation>
 <translation id="2867768963760577682">Buksan bilang Naka-pin na Tab</translation>
 <translation id="1390548061267426325">Buksan bilang Regular na Tab</translation>
@@ -1685,6 +1708,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4500114933761911433">Nag-crash ang <ph name="PLUGIN_NAME"/></translation>
 <translation id="4610162781778310380">Nagkaroon ng error ang <ph name="PLUGIN_NAME"/></translation>
 <translation id="778330624322499012">Hindi ma-load ang <ph name="PLUGIN_NAME"/></translation>
+<translation id="7438976808740265764">Hindi na susuportahan ang Flash Player pagkatapos ng Disyembre 2020.</translation>
 <translation id="3739254215541673094">Buksan ang <ph name="APPLICATION"/>?</translation>
 <translation id="2188881192257509750">Buksan ang <ph name="APPLICATION"/></translation>
 <translation id="620722923698527029">Palaging buksan ang ganitong mga uri ng link sa nauugnay na app</translation>
@@ -1929,6 +1953,15 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8363142353806532503">Naka-block ang mikropono</translation>
 <translation id="2762441749940182211">Naka-block ang camera</translation>
 <translation id="5074318175948309511">Maaaring kailangan na muling i-load ang page na ito bago gumana ang mga bagong setting.</translation>
+<translation id="3325910708063135066">Naka-off ang camera at mikropono sa System Preferences ng Mac</translation>
+<translation id="5383377866517186886">Naka-off ang camera sa System Preferences ng Mac</translation>
+<translation id="6545867563032584178">Naka-off ang mikropono sa System Preferences ng Mac</translation>
+<translation id="2332192922827071008">Buksan ang Mga Kagustuhan</translation>
+<translation id="1620510694547887537">Camera</translation>
+<translation id="3227137524299004712">Mikropono</translation>
+<translation id="4209251085232852247">Naka-off</translation>
+<translation id="2804680522274557040">Naka-off ang camera</translation>
+<translation id="6309510305002439352">Naka-off ang mikropono</translation>
 <translation id="8282947398454257691">Alamin ang natatanging identifier ng iyong device</translation>
 <translation id="8329449853370113380">Gusto ng <ph name="URL"/> na mag-play ng pinoprotektahang content. Ive-veify ng Brave Software ang pagkakakilanlan ng iyong device.</translation>
 <translation id="2650609753175229582">Gusto ng <ph name="URL"/> na mag-play ng pinoprotektahang content. Ive-verify ng Brave Software ang pagkakakilanlan ng iyong device, at maaari itong i-access ng site na ito.</translation>
@@ -1952,7 +1985,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8105368624971345109">I-off</translation>
 <translation id="1036348656032585052">I-off</translation>
 <translation id="3423858849633684918">Pakilunsad Muli ang <ph name="PRODUCT_NAME"/></translation>
-<translation id="8876215549894133151">Format:</translation>
 <translation id="2294358108254308676">Nais mo bang i-install ang <ph name="PRODUCT_NAME"/>?</translation>
 <translation id="586567932979200359">Pinapatakbo mo ang <ph name="PRODUCT_NAME"/> mula sa larawan nito sa disk. Ang pag-install nito ay magbibigay-daan sa iyong patakbuhin ito nang walang larawan ng disk, at makakatiyak na pananatilihin itong napapanahon.</translation>
 <translation id="4849517651082200438">Huwag I-install</translation>
@@ -2007,8 +2039,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1712552549805331520">Gusto ng <ph name="URL"/> na permanenteng mag-store ng data sa iyong lokal na computer</translation>
 <translation id="1997484222658892567">Gusto ng <ph name="URL"/> na permanenteng mag-store ng malaking data sa iyong lokal na computer</translation>
 <translation id="7648992873808071793">Mag-store ng mga file sa device na ito</translation>
-<translation id="7461924472993315131">I-pin</translation>
-<translation id="4285498937028063278">I-unpin</translation>
 <translation id="8871551568777368300">Na-pin ng administrator</translation>
 <translation id="4110895898888439383">I-browse ang web sa high contrast mode</translation>
 <translation id="614940544461990577">Subukang:</translation>
@@ -2107,6 +2137,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3202173864863109533">Iminu-mute ang audio ng tab na ito.</translation>
 <translation id="5562781907504170924">Nakakonekta ang tab na ito sa isang Bluetooth Device.</translation>
 <translation id="5884474295213649357">Nakakonekta ang tab na ito sa isang USB device.</translation>
+<translation id="1010498023906173788">Nakakonekta ang tab na ito sa isang serial port.</translation>
 <translation id="8466417995783206254">Nagpe-play ang tab na ito ng video sa picture-in-picture mode.</translation>
 <translation id="2585724835339714757">Ibinabahagi ng tab na ito ang iyong screen.</translation>
 <translation id="1542514202066550870">Nagpapakita ang tab na ito ng VR content sa isang headset.</translation>
@@ -2117,6 +2148,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> - Naka-mute ang audio</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> - May nakakonektang bluetooth device</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> - May nakakonektang USB device</translation>
+<translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> - Nakakonekta ang serial port</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> - Error sa network</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> - Nag-crash</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> - Ibinabahagi ang content ng desktop</translation>
@@ -2129,6 +2161,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6459799433792303855">Inilipat ang aktibong window sa ibang display.</translation>
 <translation id="6551508934388063976">Hindi available ang command. Pindutin ang control-N upang magbukas ng bagong window.</translation>
 <translation id="3831486154586836914">Pumasok ka sa overview mode ng window</translation>
+<translation id="4380648069038809855">Pumasok sa full screen</translation>
+<translation id="1766575458646819543">Umalis sa full screen</translation>
 <translation id="8736288397686080465">Na-update ang site na ito sa background.</translation>
 <translation id="6945221475159498467">Pumili</translation>
 <translation id="4130199216115862831">Log ng Device</translation>
@@ -2145,6 +2179,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8847988622838149491">USB</translation>
 <translation id="5086082738160935172">HID</translation>
 <translation id="4034824040120875894">Printer</translation>
+<translation id="2633764681656412085">FIDO</translation>
 <translation id="2242687258748107519">Info ng File</translation>
 <translation id="930268624053534560">Mga Detalyadong Timestamp</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
@@ -2156,8 +2191,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2593289874938379417">Walang access ang Brave sa hiniling na mapagkukunan.</translation>
 <translation id="760197030861754408">Pumunta sa <ph name="LANDING_PAGE"/> upang kumonekta.</translation>
 <translation id="3648348069317717750">Natukoy ang <ph name="USB_DEVICE_NAME"/></translation>
-<translation id="2382095919147960379">Ikonekta ang device na ito sa Linux</translation>
-<translation id="5308380583665731573">Kumonekta</translation>
+<translation id="5042282098504489593">Buksan ang Mga Setting para ikonekta ang <ph name="USB_DEVICE_NAME"/> sa Linux</translation>
+<translation id="1072700771426194907">Na-detect ang USB device</translation>
+<translation id="7830594666202422257">Kumonekta sa Linux</translation>
 <translation id="59324397759951282">USB device mula sa <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="8763927697961133303">USB device</translation>
 <translation id="8798099450830957504">Default</translation>
@@ -2180,6 +2216,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3271648667212143903">Gustong kumonekta ng <ph name="ORIGIN"/></translation>
 <translation id="7945031593909029181">Gustong kumonekta ng "<ph name="CHROME_EXTENSION_NAME"/>"</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
+<translation id="5308380583665731573">Kumonekta</translation>
 <translation id="8480869669560681089">Hindi kilalang device mula sa <ph name="VENDOR_NAME"/></translation>
 <translation id="1500297251995790841">Hindi kilalang device [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="7003844668372540529">Hindi kilalang produkto na <ph name="PRODUCT_ID"/> mula sa <ph name="VENDOR_NAME"/></translation>
@@ -2247,8 +2284,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6009781704028455063">Built-in na sensor</translation>
 <translation id="3630132874740063857">Iyong telepono</translation>
 <translation id="6930036377490597025">External na security key o built-in na sensor</translation>
-<translation id="5567950944308676169">I-plug in ang iyong security key at i-activate ito</translation>
-<translation id="6648051959475508072">Na-activate ang security key...</translation>
+<translation id="51143538739122961">Ipasok ang iyong security key at pindutin ito</translation>
 <translation id="7352651011704765696">Nagkaroon ng problema</translation>
 <translation id="8514746246728959655">Sumubok ng ibang security key</translation>
 <translation id="8337047789441383384">Naiparehistro mo na ang security key na ito. Hindi mo na ito kailangang muling iparehistro.</translation>
@@ -2258,7 +2294,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8379878387931047019">Hindi sinusuportahan ng device na ito ang uri ng security key na hiniling ng website na ito</translation>
 <translation id="7135729336746831607">I-on ang Bluetooth?</translation>
 <translation id="6176043333338857209">Pansamantalang io-on ang Bluetooth para makipag-ugnayan sa iyong security key</translation>
-<translation id="5860491529813859533">I-on</translation>
 <translation id="4252899949534773101">Naka-disable ang Bluetooth</translation>
 <translation id="8188389033983459049">Suriin ang mga setting ng iyong device at i-on ito para magpatuloy</translation>
 <translation id="6022705094403139349">Handa ka na bang ipares ang iyong security key?</translation>
@@ -2289,9 +2324,26 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4303079906735388947">Mag-set up ng bagong PIN para sa iyong security key</translation>
 <translation id="1805967612549112634">Kumpirmahin ang PIN</translation>
 <translation id="4871322859485617074">Naglalaman ang PIN ng mga invalid na character</translation>
-<translation id="2344214284954353199">Masyadong maikli ang PIN.</translation>
-<translation id="2203484353475059657">Hindi nagtutugma ang pagkumpirma.</translation>
-<translation id="88870264962436283">Gamitin ang Touch ID sa <ph name="APP_NAME"/></translation>
+<translation id="8896022254727357590">Dapat ay hindi bababa sa 4 na character ang PIN</translation>
+<translation id="7669825497510425694">{NUM_ATTEMPTS,plural, =1{Maling PIN. May isa kang pagtatangkang natitira.}one{Maling PIN. May # kang pagtatangkang natitira.}other{Maling PIN. May # kang pagtatangkang natitira.}}</translation>
+<translation id="5078796286268621944">Maling PIN</translation>
+<translation id="1233497634904001272">Pindutin ulit ang iyong security key para kumpletuhin ang kahilingan.</translation>
+<translation id="8136269678443988272">Hindi tugma ang mga PIN na inilagay mo</translation>
+<translation id="1136712381129578788">Na-lock ang security key dahil napakaraming beses nang nailagay ang maling PIN. Para i-unlock ito, alisin at ipasok ulit ito.</translation>
+<translation id="3778208826288864398">Na-lock ang security key dahil napakaraming beses nang nailagay ang maling PIN. Kakailanganin mong i-reset ang security key.</translation>
+<translation id="7246230585855757313">Muling ipasok ang iyong security key at subukan ulit</translation>
+<translation id="629730747756840877">Account</translation>
+<translation id="3792938779249970121">Pumili ng account</translation>
+<translation id="4718490098585891067">Pumili ng account para mag-sign in:</translation>
+<translation id="8734671092194994316">Mag-iiwan ito ng tala ng iyong pagbisita sa <ph name="WEBSITE"/> sa security key mo.</translation>
+<translation id="8428628598981198790">Hindi puwedeng gamitin ang iyong security key sa site na ito</translation>
+<translation id="4358169392473932247">Hindi sinusuportahan ng naturang security key ang internal storage ng mga kredensyal pero hiniling ang naturang feature.</translation>
+<translation id="7069811530847688087">Puwedeng mangailangan ang <ph name="WEBSITE"/> ng mas bago o ibang uri ng security key</translation>
+<translation id="3984431586879874039">Payagan ang site na ito na makita ang iyong security key?</translation>
+<translation id="8948939328578167195">Gusto ng <ph name="WEBSITE"/> na makita ang manufacturer at modelo ng iyong security key</translation>
+<translation id="7618452966706304788">Gusto mo bang gamitin ang Touch ID sa <ph name="APP_NAME"/> gamit ang Incognito mode?</translation>
+<translation id="3098826269712097986">Iso-store ang data ng pag-sign in sa Brave pagkatapos mong lumabas sa Incognito mode. Nagbibigay-daan ito sa iyong gamitin ulit ang Touch ID sa website na ito sa ibang pagkakataon.</translation>
+<translation id="2172784515318616985">Magpatuloy</translation>
 <translation id="5186185447130319458">Incognito</translation>
 <translation id="7643842463591647490">{0,plural, =1{# bukas na window}one{# bukas na window}other{# na bukas na window}}</translation>
 <translation id="2579188629646253712">Lumabas sa Incognito</translation>
@@ -2385,8 +2437,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3440663250074896476">Higit pang aksyon para sa <ph name="BOOKMARK_NAME"/></translation>
 <translation id="2903457445916429186">Buksan ang mga piniling item</translation>
 <translation id="962802172452141067">Folder tree ng bookmark</translation>
-<translation id="1338776410427958681">I-collapse ang <ph name="FOLDER_NAME"/></translation>
-<translation id="4467101674048705704">I-expand ang <ph name="FOLDER_NAME"/></translation>
 <translation id="2683638487103917598">Pinagbukod-bukod ang folder</translation>
 <translation id="7201118060536064622">Na-delete ang '<ph name="DELETED_ITEM_NAME"/>'</translation>
 <translation id="8271246892936492311">{COUNT,plural, =1{Na-delete ang 1 bookmark}one{Na-delete ang # bookmark}other{Na-delete ang # na bookmark}}</translation>
@@ -2401,12 +2451,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4422347585044846479">I-edit ang bookmark para sa pahinang ito</translation>
 <translation id="4776146737004271126">Buksan ang mga setting ng Android</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{Wala}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> at <ph name="APP_2"/>}=3{<ph name="APP_1"/>, <ph name="APP_2"/>, at <ph name="APP_3"/>}=4{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/>, at 1 pang app}one{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/>, at <ph name="EXTRA_APPS"/> pang app}other{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/>, at <ph name="EXTRA_APPS"/> pang app}}</translation>
-<translation id="7742008146327708230">Mga kamakailang binuksang app</translation>
-<translation id="1620510694547887537">Camera</translation>
+<translation id="702252130983202758">Ang iyong mga app</translation>
 <translation id="8831664945713891930">Buksan ang mga setting ng Mga Extension</translation>
 <translation id="5138227688689900538">Magpakita ng mas kaunti</translation>
 <translation id="5646376287012673985">Lokasyon</translation>
-<translation id="3227137524299004712">Mikropono</translation>
 <translation id="5270167208902136840">Magpakita ng <ph name="NUMBER_OF_MORE_APPS"/> pang app</translation>
 <translation id="2482878487686419369">Mga Abiso</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> (na) app</translation>
@@ -2480,6 +2528,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4159681666905192102">Isa itong account para sa mga bata na pinamamahalaan nina <ph name="CUSTODIAN_EMAIL"/> at <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Pinangangasiwaang user</translation>
 <translation id="5720705177508910913">Kasalukuyang user</translation>
+<translation id="1850357845349976573">{0,plural, =1{Incognito}one{# bukas na incognito window}other{# na bukas na incognito window}}</translation>
 <translation id="37784332082579802">{0,plural, =1{Incognito}one{Incognito (#)}other{Incognito (#)}}</translation>
 <translation id="5070556616376997776">Incognito ka</translation>
 <translation id="2199298570273670671">Nagka-error</translation>
@@ -2585,6 +2634,24 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3021066826692793094">Paruparo</translation>
 <translation id="3809272675881623365">Kuneho</translation>
 <translation id="4124935795427217608">Unicorn</translation>
+<translation id="5123433949759960244">Basketball</translation>
+<translation id="6876155724392614295">Bisikleta</translation>
+<translation id="7774365994322694683">Ibon</translation>
+<translation id="2771816809568414714">Keso</translation>
+<translation id="4943368462779413526">Football</translation>
+<translation id="2046702855113914483">Ramen</translation>
+<translation id="1150565364351027703">Sunglasses</translation>
+<translation id="4693155481716051732">Sushi</translation>
+<translation id="2468402215065996499">Tamagotchi</translation>
+<translation id="8391218455464584335">Vinyl</translation>
+<translation id="4804827417948292437">Abukado</translation>
+<translation id="3619115746895587757">Cappuccino</translation>
+<translation id="377050016711188788">Icecream</translation>
+<translation id="4330191372652740264">Icewater</translation>
+<translation id="4364327530094270451">Melon</translation>
+<translation id="4779136857077979611">Onigiri</translation>
+<translation id="5068919226082848014">Pizza</translation>
+<translation id="6170470584681422115">Sandwich</translation>
 <translation id="1830550083491357902">Hindi naka-sign in</translation>
 <translation id="5941153596444580863">Magdagdag ng tao...</translation>
 <translation id="9149866541089851383">I-edit...</translation>
@@ -2645,387 +2712,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6365411474437319296">Magdagdag ng pamilya at mga kaibigan</translation>
 <translation id="7388044238629873883">Halos tapos ka na!</translation>
 <translation id="8688579245973331962">Hindi makita ang iyong pangalan?</translation>
-<translation id="5788127256798019331">Mga Play file</translation>
-<translation id="174173592514158117">Ipakita ang lahat ng folder ng Play</translation>
-<translation id="5024856940085636730">Mas matagal kaysa sa inaasahan ang isang pagpapatakbo. Gusto mo ba itong i-abort?</translation>
-<translation id="6205710420833115353">Mas matagal kaysa sa inaasahan ang ilang operasyon. Gusto mo bang i-abort ang mga ito?</translation>
-<translation id="4669606053856530811">Mawawalan ng access ang mga miyembro ng '<ph name="SOURCE_NAME"/>' maliban na lang kung ibinahagi sa kanila ang mga item na ito.</translation>
-<translation id="9035012421917565900">Hindi na maibabalik ang mga item sa '<ph name="DESTINATION_NAME"/>,' kaya hindi mo maa-undo ang pagkilos na ito.</translation>
-<translation id="9130775360844693113">Magkakaroon ng access ang mga miyembro ng '<ph name="DESTINATION_NAME"/>' sa mga item na ito.</translation>
-<translation id="8834164572807951958">Magkakaroon ng access ang mga miyembro ng '<ph name="DESTINATION_NAME"/>' sa mga kopya ng mga item na ito.</translation>
-<translation id="3236289833370040187">Ililipat ang pagmamay-ari sa <ph name="DESTINATION_DOMAIN"/>.</translation>
-<translation id="7765158879357617694">Ilipat</translation>
-<translation id="8249296373107784235">I-abort</translation>
-<translation id="6268185425799226387">Brave Software Drive</translation>
-<translation id="4425149324548788773">Aking Drive</translation>
-<translation id="1786636458339910689">Mga Drive ng Team</translation>
-<translation id="5010406651457630570">Mga Computer</translation>
-<translation id="8106045200081704138">Ibinahagi sa akin</translation>
-<translation id="6549689063733911810">Kamakailan</translation>
-<translation id="981121421437150478">Offline</translation>
-<translation id="9034924485347205037">Mga Linux file</translation>
-<translation id="9219103736887031265">Mga Larawan</translation>
-<translation id="6146563240635539929">Mga Video</translation>
-<translation id="3616113530831147358">Audio</translation>
-<translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Mag-ingat:<ph name="END_BOLD"/> Ang mga file na ito ay pansamantala at maaaring awtomatikong tanggalin upang magbakante ng espasyo sa disk.  <ph name="BEGIN_LINK"/>Matuto nang Higit Pa<ph name="END_LINK"/></translation>
-<translation id="4873265419374180291"><ph name="NUMBER_OF_BYTES"/> bytes</translation>
-<translation id="4788401404269709922"><ph name="NUMBER_OF_KB"/> KB</translation>
-<translation id="996903396648773764"><ph name="NUMBER_OF_MB"/> MB</translation>
-<translation id="7189874332498648577"><ph name="NUMBER_OF_GB"/> GB</translation>
-<translation id="7827012282502221009"><ph name="NUMBER_OF_TB"/> TB</translation>
-<translation id="1589128298353575783"><ph name="NUMBER_OF_PB"/> PB</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
-<translation id="169515659049020177">Shift</translation>
-<translation id="3924145049010392604">Meta</translation>
-<translation id="6129953537138746214">Puwang</translation>
-<translation id="8179976553408161302">Enter</translation>
-<translation id="5583640892426849032">Backspace</translation>
-<translation id="174937106936716857">Kabuuang bilang ng file</translation>
-<translation id="2425665904502185219">Kabuuang laki ng file</translation>
-<translation id="1942765061641586207">Resolution ng larawan</translation>
-<translation id="4002066346123236978">Pamagat</translation>
-<translation id="4631887759990505102">Artist</translation>
-<translation id="2448312741937722512">Uri</translation>
-<translation id="5145331109270917438">Petsa ng pagbabago</translation>
-<translation id="8487700953926739672">Available sa offline</translation>
-<translation id="2230062665678605299">Hindi malikha ang folder na "<ph name="FOLDER_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
-<translation id="2163152940313951844">Invalid na character: <ph name="CHARACTER_NAME"/></translation>
-<translation id="642282551015776456">Hindi maaaring gamitin ang pangalang ito bilang isang pangalan ng file o folder</translation>
-<translation id="2070909990982335904">Nakalaan para sa system ang mga pangalang nagsisimula sa tuldok. Mangyaring pumili ng isa pang pangalan.</translation>
-<translation id="8456681095658380701">Di-wastong pangalan</translation>
-<translation id="2943503720238418293">Gumamit ng mas maikling pangalan</translation>
-<translation id="4973523518332075481">Gumamit ng pangalang may <ph name="MAX_LENGTH"/> (na) character o mas kaunti</translation>
-<translation id="1307931752636661898">Hindi matingnan ang mga Linux file</translation>
-<translation id="5851063901794976166">Walang itong laman...</translation>
-<translation id="3749289110408117711">File name</translation>
-<translation id="3280431534455935878">Ihinahanda</translation>
-<translation id="6607272825297743757">Impormasyon ng file</translation>
-<translation id="6395575651121294044"><ph name="NUMBER_OF_FILES"/> (na) item</translation>
-<translation id="2138867954865495510">Hindi mabuksan ang "<ph name="PATH"/>": <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Huwag munang alisin ang iyong device!<ph name="END_BOLD"/>
-   <ph name="LINE_BREAKS"/>
-   Maaaring magsanhi ng pagkawala ng data ang pag-aalis sa iyong device habang ginagamit ito.  Mangyaring maghintay hanggang matapos ang operasyon, pagkatapos ay i-eject ang device gamit ang Files app.</translation>
-<translation id="5686799162999241776"><ph name="BEGIN_BOLD"/>Hindi makadiskonekta sa isang archive o virtual disk<ph name="END_BOLD"/>
-   <ph name="LINE_BREAKS"/>
-   Isara ang lahat ng file sa archive o virtual disk, pagkatapos ay subukang muli.</translation>
-<translation id="7794058097940213561">I-format ang device</translation>
-<translation id="8151638057146502721">I-configure</translation>
-<translation id="7928710562641958568">I-eject ang device</translation>
-<translation id="7864662577698025113">Magdagdag ng bagong serbisyo</translation>
-<translation id="1943097386230153518">Mag-install ng bagong serbisyo</translation>
-<translation id="2562685439590298522">Docs</translation>
-<translation id="2925966894897775835">Sheets</translation>
-<translation id="2943400156390503548">Slides</translation>
-<translation id="5649768706273821470">Pakinggan</translation>
-<translation id="4582497162516204941">I-install gamit ang Linux (Beta)</translation>
-<translation id="4195249722193633765">I-install ang app gamit ang Linux (Beta)</translation>
-<translation id="7248671827512403053">Application</translation>
-<translation id="3866249974567520381">Paglalarawan</translation>
-<translation id="183183971458492120">Nilo-load ang impormasyon...</translation>
-<translation id="8157684860301034423">Hindi na-retrieve ang impormasyon ng app.</translation>
-<translation id="5678784840044122290">Magiging available ang Linux application sa iyong Terminal at maaari din itong magpakita ng icon sa Launcher mo.</translation>
-<translation id="9213073329713032541">Matagumpay na nasimulan ang pag-install.</translation>
-<translation id="2782104745158847185">Nagkaroon ng error sa pag-install ng Linux application</translation>
-<translation id="5911887972742538906">Nagkaroon ng error habang ini-install ang iyong Linux application.</translation>
-<translation id="942954117721265519">Walang mga larawan sa direktoryong ito.</translation>
-<translation id="7100897339030255923"><ph name="COUNT"/> (na) item ang pinili</translation>
-<translation id="5177526793333269655">View na thumbnail</translation>
-<translation id="1035094536595558507">Slide na view</translation>
-<translation id="7508545000531937079">Slideshow</translation>
-<translation id="1430915738399379752">I-print</translation>
-<translation id="38275787300541712">Pindutin ang Enter kapag tapos na</translation>
-<translation id="4880520557730313061">Auto-fix</translation>
-<translation id="4924638091161556692">Naayos</translation>
-<translation id="6019169947004469866">I-crop</translation>
-<translation id="4372884569765913867">1x1</translation>
-<translation id="7576032389798113292">6x4</translation>
-<translation id="8157939133946352716">7x5</translation>
-<translation id="2661146741306740526">16x9</translation>
-<translation id="3007214526293698309">Itakda ang ratio</translation>
-<translation id="7982283708762922719">Taas</translation>
-<translation id="4734518477988699048">Di-wasto ang value ng input.</translation>
-<translation id="3644896802912593514">Lapad</translation>
-<translation id="3626281679859535460">Tingkad</translation>
-<translation id="5061708541166515394">Contrast</translation>
-<translation id="1467432559032391204">Kaliwa</translation>
-<translation id="1346748346194534595">Kanan</translation>
-<translation id="3144126448740580210">TAPOS NA</translation>
-<translation id="2453576648990281505">Umiiral na ang file</translation>
-<translation id="1847880352285315359">Na-save</translation>
-<translation id="5158593464696388225">Hindi na-save ang larawan.</translation>
-<translation id="2787047795752739979">Patungan ang orihinal</translation>
-<translation id="8775404590947523323">Awtomatikong na-save ang iyong mga pag-edit.<ph name="BREAKS"/>Upang maitago ang kopya ng orihinal na larawan, tanggalan ng check ang "Patungan ang orihinal"</translation>
-<translation id="7873831373602885875">Hindi maaaring mag-save sa <ph name="FOLDER_NAME"/>. Mase-save ang lahat ng pag-edit sa <ph name="DOWNLOADS_FOLDER"/> sa folder na Mga Download.</translation>
-<translation id="691516599546977041">Hindi maaaring mag-save sa <ph name="FOLDER_NAME"/>. Mase-save sa folder na Mga Download ang mga na-edit na larawan.</translation>
-<translation id="8066773524873206594">Mase-save ang lahat ng pag-edit sa <ph name="DOWNLOADS_FOLDER"/>.</translation>
-<translation id="8153607920959057464">Hindi maipakita ang file na ito.</translation>
-<translation id="6227235786875481728">Hindi ma-play ang file na ito.</translation>
-<translation id="9154418932169119429">Hindi available offline ang larawang ito.</translation>
-<translation id="1844692022597038441">Hindi available offline ang file na ito.</translation>
-<translation id="2929414043040740704">Mga nabawing file mula sa Brave Software Drive</translation>
-<translation id="2085470240340828803">Umiiral na ang isang file na may pangalang "<ph name="FILENAME"/>". Ano ang gusto mong gawin?</translation>
-<translation id="4801956050125744859">Panatilihin pareho</translation>
-<translation id="1062407476771304334">Palitan</translation>
-<translation id="1556189134700913550">Ilapat sa lahat</translation>
-<translation id="988685240266037636">Mayroon nang file na may pangalang "<ph name="FILE_NAME"/>." Gusto mo ba itong palitan?</translation>
-<translation id="9038620279323455325">Mayroon nang file na may pangalang "<ph name="FILE_NAME"/>." Pumili ng ibang pangalan.</translation>
-<translation id="4212740939091998969">Mayroon nang folder na may pangalang "<ph name="FOLDER_NAME"/>." Pumili ng ibang pangalan.</translation>
-<translation id="1497522201463361063">Hindi mapalatan ang pangalan "<ph name="FILE_NAME"/>". <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5330512191124428349">Kumuha ng impormasyon</translation>
-<translation id="8312871300878166382">I-paste sa loob ng folder</translation>
-<translation id="7040138676081995583">Buksan gamit ang...</translation>
-<translation id="6189412234224385711">Buksan gamit ang <ph name="EXTENSION_NAME"/></translation>
-<translation id="2547921442987553570">Idagdag sa <ph name="EXTENSION_NAME"/></translation>
-<translation id="386548886866354912">I-pack kasama ng <ph name="EXTENSION_NAME"/></translation>
-<translation id="3078461028045006476">Ibahagi sa <ph name="EXTENSION_NAME"/></translation>
-<translation id="4197674956721858839">Pagpili ng zip</translation>
-<translation id="1572585716423026576">Itakda bilang wallpaper</translation>
-<translation id="204914487372604757">Lumikha ng shortcut sa</translation>
-<translation id="799547531016638432">Alisin ang shortcut</translation>
-<translation id="5494920125229734069">Piliin ang lahat</translation>
-<translation id="7295662345261934369">Ibahagi sa iba</translation>
-<translation id="2001796770603320721">Pamahalaan sa Drive</translation>
-<translation id="5318819489018851358">Ibahagi sa Linux</translation>
-<translation id="6806699711453372963">Pamahalaan ang pagbabahagi ng Linux</translation>
-<translation id="7505167922889582512">Magpakita ng mga natatagong file</translation>
-<translation id="7846076177841592234">Kanselahin ang pinili</translation>
-<translation id="2377319039870049694">Lumipat sa list view</translation>
-<translation id="3003633581067744647">Lumipat sa thumbnail view</translation>
-<translation id="604001903249547235">Pag-back up sa Cloud</translation>
-<translation id="505639225383557233">Backup sa Brave OS Cloud</translation>
-<translation id="8656896237683963068">I-back up ang mga larawan at video ng iyong media device sa Brave Software Drive.</translation>
-<translation id="3057861065630527966">I-back up ang iyong mga larawan at video</translation>
-<translation id="7730494089396812859">Ipakita ang mga detalye ng pag-back up sa Cloud</translation>
-<translation id="2850124913210091882">I-back up</translation>
-<translation id="5731409020711461763">1 bagong larawan</translation>
-<translation id="5004584466530475658"><ph name="FILE_COUNT"/> (na) bagong larawan</translation>
-<translation id="6934241953272494177">Sina-scan ang iyong media device...
-    <ph name="LINE_BREAK1"/>
-    <ph name="FILE_COUNT"/> ang nakita</translation>
-<translation id="3466147780910026086">Sina-scan ang iyong media device...</translation>
-<translation id="2611866923243604397">Naka-back up na ang lahat sa <ph name="BEGIN_LINK"/>Brave Software Drive!<ph name="END_LINK"/></translation>
-<translation id="3620292326130836921">Naka-back up na ang lahat!</translation>
-<translation id="1536674585581593431"><ph name="FILE_COUNT"/> ang nakita.
-    <ph name="LINE_BREAK1"/>
-    Hindi sapat ang laki ng iyong quota sa Brave Software Drive. Kailangan ng karagdagang <ph name="FILE_SIZE"/>.
-    <ph name="LINE_BREAK2"/>
-    Subukang pumili ng mas kaunting larawan.</translation>
-<translation id="2473109739642988997">Hindi sapat ang laki ng iyong quota sa Brave Software Drive.</translation>
-<translation id="1148097584170732637"><ph name="FILE_COUNT"/> ang nakita.
-    <ph name="LINE_BREAK1"/>
-    Walang available na sapat na espasyo sa lokal na storage. Kailangan ng karagdagang <ph name="FILE_SIZE"/>.
-    <ph name="LINE_BREAK2"/>
-    Subukang pumili ng mas kaunting larawan.</translation>
-<translation id="2352947182261340447">Walang available na sapat na espasyo sa lokal na storage.</translation>
-<translation id="1127657192797926968"><ph name="FILE_COUNT"/> ang nakita
-    <ph name="LINE_BREAK1"/>
-    Handa nang i-back up sa <ph name="BEGIN_LINK"/>Brave Software Drive<ph name="END_LINK"/></translation>
-<translation id="4905417359854579806">Handa nang i-back up ang <ph name="FILE_COUNT"/></translation>
-<translation id="5029447434471675822">Bina-back up ang <ph name="FILE_COUNT"/> sa <ph name="BEGIN_LINK"/>Brave Software Drive<ph name="END_LINK"/></translation>
-<translation id="4215448920900139318">Bina-back up ang <ph name="FILE_COUNT"/></translation>
-<translation id="2419376816263920133"><ph name="FILE_COUNT"/> (na) larawan ang na-back up sa <ph name="BEGIN_LINK"/>Brave Software Drive<ph name="END_LINK"/></translation>
-<translation id="2994669386200004489">Hindi ma-back up ang <ph name="FILE_NAME"/></translation>
-<translation id="4724850507808590449"><ph name="FILE_COUNT"/> (na) larawan ang na-back up</translation>
-<translation id="1351692861129622852">Nag-i-import ng <ph name="FILE_COUNT"/> (na) file...</translation>
-<translation id="117624967391683467">Kinokopya ang <ph name="FILE_NAME"/>...</translation>
-<translation id="7359359531237882347">Kinokopya ang <ph name="NUMBER_OF_ITEMS"/> (na) item...</translation>
-<translation id="7627790789328695202">Whoops, umiiral na ang <ph name="FILE_NAME"/>. Palitan ang pangalan nito at subukang muli.</translation>
-<translation id="5691596662111998220">Whoops, hindi na umiiral ang <ph name="FILE_NAME"/>.</translation>
-<translation id="4336032328163998280">Nabigo ang pagkopya. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5913638992615760742">Hindi nakopya, nagkaroon ng hindi inaasahang error: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="6133173853026656527">Inililipat ang <ph name="FILE_NAME"/>...</translation>
-<translation id="7654209398114106148">Inililipat ang <ph name="NUMBER_OF_ITEMS"/> (na) item...</translation>
-<translation id="6007237601604674381">Nabigo ang paglipat. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1933345018156373194">Hindi nailipat, nagkaroon ng hindi inaasahang error: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="3326821416087822643">Sini-zip ang <ph name="FILE_NAME"/>...</translation>
-<translation id="1722487484194605434">Zini-zip ang <ph name="NUMBER_OF_ITEMS"/> (na) item...</translation>
-<translation id="8810671769985673465">Hindi na-zip, may item: "<ph name="FILE_NAME"/>"</translation>
-<translation id="9133055936679483811">Nabigo ang pag-zip. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4973970068702235170">Hindi na-zip, nagkaroon ng hindi inaasahang error: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="653019979737152879">Sini-sync ang <ph name="FILE_NAME"/>...</translation>
-<translation id="8579285237314169903">Nagsi-sync ng <ph name="NUMBER_OF_FILES"/> (na) item...</translation>
-<translation id="8137331602592933310">Ibinahagi sa iyo ang "<ph name="FILENAME"/>." Hindi mo ito matatanggal dahil hindi mo ito pagmamay-ari.</translation>
-<translation id="6277279884155292049">Hindi available sa ngayon ang Brave Software Drive. Awtomatikong magre-restart ang pag-a-upload sa sandaling bumalik na ang Brave Software Drive.</translation>
-<translation id="1114160088213746286">Hindi na-sync ng Brave Software Drive ang "<ph name="FILENAME"/>" sa ngayon. Susubukang muli ng Brave Software Drive sa ibang pagkakataon.</translation>
-<translation id="4893296294301184587">Hindi na-upload ang "<ph name="FILENAME"/>." Walang sapat na bakanteng espasyo sa iyong Brave Software Drive.</translation>
-<translation id="5163869187418756376">Nabigo ang pagbabahagi. Suriin ang iyong koneksyon at subukang muli sa ibang pagkakataon.</translation>
-<translation id="656398493051028875">Tinatanggal ang "<ph name="FILENAME"/>"...</translation>
-<translation id="1047956942837015229">Nagtatanggal ng <ph name="COUNT"/> (na) item...</translation>
-<translation id="6558280019477628686">Nagka-error. Maaaring may ilang item na hindi na-delete.</translation>
-<translation id="3470502288861289375">Kinokopya...</translation>
-<translation id="8669949407341943408">Inililipat...</translation>
-<translation id="6718273304615422081">Nagzi-zip...</translation>
-<translation id="1338950911836659113">Nagtatanggal...</translation>
-<translation id="9064939804718829769">Naglilipat...</translation>
-<translation id="3609785682760573515">Nagsi-sync...</translation>
-<translation id="1464724975715666883">1 error.</translation>
-<translation id="3495304270784461826"><ph name="COUNT"/> (na) error.</translation>
-<translation id="6643016212128521049">I-clear</translation>
-<translation id="4988205478593450158">Sigurado ka bang gusto mong i-delete ang "<ph name="FILE_NAME"/>"?</translation>
-<translation id="2225536596944493418">Sigurado ka bang gusto mong i-delete ang <ph name="NUMBER_OF_ITEMS"/> (na) item?</translation>
-<translation id="7953739707111622108">Hindi mabuksan ang device na ito dahil hindi nakilala ang filesystem nito.</translation>
-<translation id="3726463242007121105">Hindi mabuksan ang device na ito dahil hindi sinusuportahan ang filesystem nito.</translation>
-<translation id="3414856743105198592">Buburahin ng pag-format sa naaalis na media ang lahat ng data. Nais mo bang magpatuloy?</translation>
-<translation id="6287852322318138013">Pumili ng isang app upang buksan ang file na ito</translation>
-<translation id="7268659760406822741">Mga available na serbisyo</translation>
-<translation id="5038625366300922036">Tingnan ang higit pa...</translation>
-<translation id="4823651846660089135">Read-only ang device</translation>
-<translation id="6346310558342052870">Pinaghihigpitan ang access</translation>
-<translation id="3780536599611287598">Wala kang pahintulot na maglipat ng mga file sa '<ph name="FOLDER_NAME"/>'.</translation>
-<translation id="1538729222189715449">Binubuksan ang mga Linux file...</translation>
-<translation id="1000498691615767391">Piliin ang isang folder para buksan</translation>
-<translation id="3353984535370177728">Pumili ng folder na i-a-upload</translation>
-<translation id="8569764466147087991">Piliin ang isang file para buksan</translation>
-<translation id="9131598836763251128">Pumili ng isa o higit pang mga file</translation>
-<translation id="7191454237977785534">I-save ang file bilang</translation>
-<translation id="3811494700605067549">1 file ang napili</translation>
-<translation id="6751256176799620176">1 folder ang napili</translation>
-<translation id="2378075407703503998"><ph name="SELCTED_FILE_COUNT"/> (na) file ang pinili</translation>
-<translation id="6998711733709403587"><ph name="SELCTED_FOLDERS_COUNT"/> (na) folder ang napili</translation>
-<translation id="4839847978919684242"><ph name="SELCTED_FILES_COUNT"/> (na) item ang pinili</translation>
-<translation id="4969785127455456148">Album</translation>
-<translation id="5700087501958648444">Impormasyon ng audio</translation>
-<translation id="912419004897138677">Codec</translation>
-<translation id="5253070652067921974">Ginawa ni</translation>
-<translation id="3437801641691368414">Oras ng pagkakagawa</translation>
-<translation id="8395901698320285466">Mga Sakop</translation>
-<translation id="8193175696669055101">Modelo ng device</translation>
-<translation id="2084108471225856927">Mga setting ng device</translation>
-<translation id="303198083543495566">Heograpiya</translation>
-<translation id="5358764674931277">Frame rate</translation>
-<translation id="4309915981827077375">Pangkalahatang impormasyon</translation>
-<translation id="1249250836236328755">Genre</translation>
-<translation id="7711920809702896782">Impormasyon ng larawan</translation>
-<translation id="4568854179928172494">Oras ng pagbago</translation>
-<translation id="943972244133411984">Binago ni</translation>
-<translation id="9099674669267916096">Bilang ng page</translation>
-<translation id="8294431847097064396">Pinagmulan</translation>
-<translation id="1363028406613469049">Track</translation>
-<translation id="1775381402323441512">Impormasyon ng video</translation>
-<translation id="3335337277364016868">Taon kung kailan na-record</translation>
-<translation id="5534520101572674276">Kinakalkula ang laki</translation>
-<translation id="3786301125658655746">Naka-offline ka</translation>
-<translation id="6150853954427645995">Upang i-save ang file na ito para sa offline na paggamit, mag-online muli, i-right click ang file at piliin ang opsyong <ph name="OFFLINE_CHECKBOX_NAME"/>.</translation>
-<translation id="8223479393428528563">Upang i-save ang mga file na ito para sa offline na paggamit, mag-online muli, i-right click ang mga file at piliin ang opsyong <ph name="OFFLINE_CHECKBOX_NAME"/>.</translation>
-<translation id="3830674330436234648">Walang available na playback</translation>
-<translation id="1810764548349082891">Walang available na preview</translation>
-<translation id="421017592316736757">Kailangan kang mag-online upang ma-access ang file na ito.</translation>
-<translation id="180035236176489073">Kailangan kang mag-online upang ma-access ang mga file na ito.</translation>
-<translation id="1190144681599273207">Ang pagkuha sa file na ito ay gagamit ng humigit-kumulang <ph name="FILE_SIZE"/> (na) mobile data.</translation>
-<translation id="7839804798877833423">Ang pagkuha sa mga file na ito ay gagamit ng humigit-kumulang <ph name="FILE_SIZE"/> (na) mobile data.</translation>
-<translation id="6813005947820333339">Naka-disable ang Brave Software Drive bilang default, kapag gumagamit ng mobile data.</translation>
-<translation id="696203921837389374">I-enable ang pagsi-sync gamit ang mobile data</translation>
-<translation id="637062427944097960">Ang file na ito na binuksan sa ibang desktop. Ilipat sa <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>) upang tingnan ito.</translation>
-<translation id="5330145655348521461">Ang mga file na ito na binuksan sa ibang desktop. Ilipat sa <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>) upang tingnan ito.</translation>
-<translation id="8686213429977032554">Hindi pa ibinabahagi ang file sa Drive na ito</translation>
-<translation id="7850851215703745691">Hindi pa ibinabahagi ang mga file sa Drive na ito</translation>
-<translation id="1839704667838141620">Baguhin kung paano ibinabahagi ang file na ito</translation>
-<translation id="1864676585353837027">Baguhin kung paano ibinabahagi ang mga file na ito</translation>
-<translation id="197560921582345123">Makakapag-edit</translation>
-<translation id="8671210955687109937">Makakapagkomento</translation>
-<translation id="799923393800005025">Makakatingin</translation>
-<translation id="7925686952655276919">Huwag gumamit ng data sa mobile para sa pag-sync</translation>
-<translation id="7106346894903675391">Bumili ng higit pang storage...</translation>
-<translation id="3549797760399244642">Pumunta sa drive.google.com...</translation>
-<translation id="3451154303153932176">Natitirang espasyo sa Brave Software Drive: <ph name="SPACE_AVAILABLE"/>.</translation>
-<translation id="4552678318981539154">Bumili ng higit pang storage</translation>
-<translation id="6990081529015358884">Naubusan ka na ng espasyo</translation>
-<translation id="5521447721624713749">Hindi maaabot ang Brave Software Drive sa ngayon.</translation>
-<translation id="7788080748068240085">Upang i-save ang "<ph name="FILE_NAME"/>" offline, dapat kang magbakante ng karagdagang <ph name="TOTAL_FILE_SIZE"/> ng espasyo:<ph name="MARKUP_1"/>
-    <ph name="MARKUP_2"/>mag-unpin ng mga file na hindi mo na kailangang i-access offline<ph name="MARKUP_3"/>
-    <ph name="MARKUP_4"/>magtanggal ng mga file sa iyong folder na Mga Download<ph name="MARKUP_5"/></translation>
-<translation id="7606199793785990727">Hindi maabot ang Brave Software Drive. Mangyaring <ph name="BEGIN_LINK"/>mag-log out<ph name="END_LINK"/> at mag-log in muli.</translation>
-<translation id="585883343689351092">Maligayang pagdating sa Brave Software Drive!</translation>
-<translation id="6862635236584086457">Lahat ng file na na-save sa folder na ito ay awtomatikong na-back up online</translation>
-<translation id="7220787572447472056"><ph name="MARKUP_1"/>Mag-access ng mga file kahit saan, kahit offline.<ph name="MARKUP_2"/>
-    Napapanahon ang mga file sa Brave Software Drive at available sa anumang device.<ph name="MARKUP_3"/>
-    <ph name="MARKUP_4"/>Panatilihing ligtas ang iyong mga file.<ph name="MARKUP_5"/>
-    Anuman ang mangyari sa iyong device, ligtas na nakaimbak ang iyong mga file sa Brave Software Drive.<ph name="MARKUP_6"/>
-    <ph name="MARKUP_7"/>Magbahagi, gumawa at mag-collaborate<ph name="MARKUP_8"/>
-    sa mga file kasama ng iba pa, lahat sa iisang lugar.<ph name="MARKUP_9"/></translation>
-<translation id="4878716980734452132">Hindi sinusuportahan ang uri ng file na ito. Pakibisita ang <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> upang maghanap ng app na makakapagbukas sa ganitong uri ng file.
-    <ph name="BEGIN_LINK_HELP"/>Matuto Nang Higit Pa<ph name="END_LINK_HELP"/></translation>
-<translation id="6230272341631206186">Idinisenyo ang file na ito para sa PC na gumagamit ng Windows software. Hindi ito compatible sa iyong device na tumatakbo sa Brave OS. <ph name="BEGIN_LINK_HELP"/>Matuto Pa<ph name="END_LINK_HELP"/></translation>
-<translation id="3072401511615920367">Idinisenyo ang file na ito para sa computer na gumagamit ng Macintosh software. Hindi ito tugma sa iyong device na nagpapatakbo ng Brave OS. Mangyaring maghanap sa <ph name="BEGIN_LINK"/>Brave Web Store<ph name="END_LINK"/> para sa isang naaangkop na pamalit na app. <ph name="BEGIN_LINK_HELP"/>Matuto nang Higit Pa<ph name="END_LINK_HELP"/></translation>
-<translation id="7589661784326793847">Maghintay lamang ng isang segundo</translation>
-<translation id="3096967955765855393">Patuloy kaming naghahanap ng mga paraan upang gawing mas ligtas ang iyong pagba-browse. Noong nakaraan, maaari kang i-prompt ng anumang website na magdagdag ng extension sa iyong browser. Sa mga pinakabagong bersyon ng Brave Software Brave, dapat na tahasan mong sabihin sa Brave na gusto mong i-install ang mga extension na ito sa pamamagitan ng pagdaragdag sa mga ito sa page ng Mga Extension. <ph name="BEGIN_LINK"/>Matuto nang higit pa<ph name="END_LINK"/></translation>
-<translation id="4892969127351273348">Hindi mabuksan gamit ang <ph name="APP_NAME"/></translation>
-<translation id="52446585071384036">Para magbukas ng mga file gamit ang <ph name="APP_NAME"/>, kopyahin muna ang mga ito sa folder ng mga file ng Linux.</translation>
-<translation id="5368191757080475556">Ibahagi ang folder sa Linux</translation>
-<translation id="5857774240076772505">Bigyan ng pahintulot ang mga Linux app na baguhin ang mga file sa folder na <ph name="FOLDER_NAME"/></translation>
-<translation id="2280597422213958082">Bigyan ang mga Linux app ng pahintulot na baguhin ang mga file sa iyong Brave Software Drive. Masi-sync sa iba mo pang device ang mga pagbabago.</translation>
-<translation id="4290535918735525311">1 folder ang naibahagi sa Linux</translation>
-<translation id="2377590462528165447">Nagbahagi ng <ph name="NUMBER_OF_ITEMS"/> (na) folder sa Linux</translation>
-<translation id="4572815280350369984"><ph name="FILE_TYPE"/> na file</translation>
-<translation id="5533102081734025921"><ph name="IMAGE_TYPE"/> na larawan</translation>
-<translation id="2614589611416690597"><ph name="VIDEO_TYPE"/> na video</translation>
-<translation id="8042602468072383151"><ph name="AUDIO_TYPE"/> na audio</translation>
-<translation id="7799329977874311193">HTML na dokumento</translation>
-<translation id="2208158072373999562">Zip archive</translation>
-<translation id="2028997212275086731">Archive na RAR</translation>
-<translation id="8466234950814670489">Archive na Tar</translation>
-<translation id="1119069657431255176">Archive na tar na Bzip2 compressed</translation>
-<translation id="6820687829547641339">Archive na tar na Gzip compressed</translation>
-<translation id="8329978297633540474">Plain text</translation>
-<translation id="2887525882758501333">PDF na dokumento</translation>
-<translation id="1049926623896334335">Dokumento ng Word</translation>
-<translation id="4784330909746505604">Presentation ng PowerPoint</translation>
-<translation id="8860454412039442620">Spreadsheet ng Excel</translation>
-<translation id="5383943761832211733">Dokumento ng Brave Software</translation>
-<translation id="5924916971643100883">Spreadsheet ng Brave Software</translation>
-<translation id="3667369474859528036">Presentation ng Brave Software</translation>
-<translation id="3411013849623404696">Drawing ng Brave Software</translation>
-<translation id="7481041283483972362">Talahanayan ng Brave Software</translation>
-<translation id="784862457750027723">Form ng Brave Software</translation>
-<translation id="3320425620177764157">Brave Software map</translation>
-<translation id="7452737073539387970">Site ng Brave Software</translation>
-<translation id="4445959220475380548">link ng Brave Software Drive</translation>
-<translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="1131292764548273687">Hindi sinusuportahan ang uri ng file na ito. Pakibisita ang Brave Web Store upang makahanap ng app na makakapagbukas ng ganitong uri ng file.</translation>
-<translation id="9010211493509471179">Idinisenyo ang file na ito para sa isang computer na gumagamit ng Macintosh software. Hindi ito tugma sa iyong device na nagpapatakbo ng Brave OS. Mangyaring maghanap sa Brave Web Store ng naaangkop na pamalit na app.</translation>
-<translation id="5059989099965370411">Idinisenyo ang file na ito para sa isang PC na gumagamit ng Windows software. Hindi ito tugma sa iyong device na nagpapatakbo ng Brave OS. Mangyaring maghanap sa Brave Web Store ng naaangkop na pamalit na app.</translation>
-<translation id="5833610766403489739">Nawala ang file na ito. Pakitingnan ang iyong setting ng lokasyon ng pag-download at subukang muli.</translation>
-<translation id="3966388904776714213">Audio Player</translation>
-<translation id="3245321423178950146">Hindi Kilalang Artist</translation>
-<translation id="509429900233858213">May naganap na error.</translation>
-<translation id="1864756863218646478">Hindi mahanap ang file.</translation>
-<translation id="1673103856845176271">Hindi ma-access ang file sa mga kadahilanang pang-seguridad.</translation>
-<translation id="5524517123096967210">Hindi mabasa ang file.</translation>
-<translation id="1665611772925418501">Hindi mababago ang file.</translation>
-<translation id="1358735829858566124">Hindi nagagamit ang file o ang direktoryo.</translation>
-<translation id="8342318071240498787">Umiiral na ang isang file o direktoryong may parehong pangalan.</translation>
-<translation id="8965697826696209160">Walang sapat na espasyo.</translation>
-<translation id="7126604456862387217">'&lt;b&gt;<ph name="SEARCH_STRING"/>&lt;/b&gt;' - &lt;em&gt;maghanap sa Drive&lt;/em&gt;</translation>
-<translation id="2888807692577297075">Walang mga item na tumutugma sa &lt;b&gt;"<ph name="SEARCH_STRING"/>"&lt;/b&gt;</translation>
-<translation id="2843806747483486897">Baguhin ang default...</translation>
-<translation id="3254434849914415189">Piliin ang default na app para sa mga <ph name="FILE_TYPE"/> na file:</translation>
-<translation id="8038111231936746805">(default)</translation>
-<translation id="5982621672636444458">Mga opsyon sa pag-uuri</translation>
-<translation id="2984337792991268709">Ngayon <ph name="TODAY_DAYTIME"/></translation>
-<translation id="8336153091935557858">Kahapon <ph name="YESTERDAY_DAYTIME"/></translation>
-<translation id="1807938677607439181">Lahat ng file</translation>
-<translation id="240770291734945588"><ph name="SPACE_AVAILABLE"/> ang available</translation>
-<translation id="6199801702437275229">Hinihintay ang impormasyon ng espasyo...</translation>
-<translation id="6485131920355264772">Nabigong kunin ang impormasyon ng espasyo</translation>
-<translation id="7748626145866214022">Available ang higit pang opsyon sa action bar. Pindutin ang Alt + A para i-focus ang action bar.</translation>
-<translation id="2303301624314357662">Binubuksan ang file na <ph name="FILE_NAME"/>.</translation>
-<translation id="2291538123825441971">Binubuksan ang <ph name="NUMBER_OF_FILES"/> (na) file.</translation>
-<translation id="2305020378527873881">Na-eject ang <ph name="VOLUME_NAME"/>.</translation>
-<translation id="6710213216561001401">Nakaraan</translation>
-<translation id="1395262318152388157">Slider ng seek bar</translation>
-<translation id="4880214202172289027">Slider ng volume</translation>
-<translation id="7544853251252956727">I-shuffle</translation>
-<translation id="8079530767338315840">Ulitin</translation>
-<translation id="4158739975813877944">Buksan ang play list</translation>
-<translation id="4656293982926141856">Sa computer na ito</translation>
-<translation id="2676946222714718093">Nagpe-play sa</translation>
-<translation id="3930521966936686665">I-play sa</translation>
-<translation id="4732760563705710320">Paumanhin, hindi sinusuportahan ang video na ito ng iyong cast device.</translation>
-<translation id="2672394958563893062">May naganap na error. I-click upang magsimulang muli.</translation>
-<translation id="6827236167376090743">Magpe-play ang video na ito nang paulit-ulit sa napakahabang panahon.</translation>
-<translation id="6248400709929739064">I-enable ang mga subtitle</translation>
-<translation id="7881969471599061635">I-disable ang mga subtitle</translation>
 <translation id="4168015872538332605">Ang ilang setting ni <ph name="PRIMARY_EMAIL"/> ay ibinabahagi sa iyo. Naaapektuhan lang ng mga setting na ito ang iyong account kapag gumagamit ng multiple na pag-sign in.</translation>
 <translation id="1485141095922496924">Bersyon <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
 <translation id="3764314093345384080">Detalyadong impormasyon ng build</translation>
@@ -3069,7 +2755,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5840822070878669614">Buksan ang Brave Web Store</translation>
 <translation id="6073903501322152803">Magdagdag ng mga feature ng pagiging naa-access</translation>
 <translation id="7988355189918024273">Paganahin ang mga tampok sa pagiging maa-access</translation>
-<translation id="3274899353071794175">Kung walang kapaki-pakinabang na paglalarawan ang isang larawan, magbibigay nito ang Brave para sa iyo. Sina-scan ng Brave Software ang mga larawan.</translation>
+<translation id="5499063270485366718">Kung hindi sapat ang deskripsyon ng isang larawan, susubukan ng Brave na ayusin ito para sa iyo. Para gumawa ng mga deskripsyon, ipinapadala ang mga larawan sa Brave Software.</translation>
 <translation id="2558896001721082624">Ipakita ang mga opsyon sa accessibility sa menu ng system</translation>
 <translation id="7280649757394340890">Mga setting ng boses ng Text-to-Speech</translation>
 <translation id="6635956300022133031">Pumili at mag-customize ng mga boses ng text-to-speech</translation>
@@ -3102,12 +2788,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8710187907779883426">maikli (1s)</translation>
 <translation id="4305227814872083840">mahaba (2s)</translation>
 <translation id="2860150991415616761">napakahaba (4s)</translation>
-<translation id="5573248369095789351">Pagkilos ng pananatili</translation>
-<translation id="2427507373259914951">Mag-left click</translation>
-<translation id="8203795194971602413">Mag-right click</translation>
-<translation id="1999763610967697511">Mag-drag at drop</translation>
-<translation id="8142441511840089262">I-double click</translation>
-<translation id="485592688953820832">Walang pagkilos (i-pause)</translation>
 <translation id="1217668622537098248">I-revert sa pag-left click pagkatapos ng pagkilos</translation>
 <translation id="3682824389861648626">Limitasyon sa paggalaw</translation>
 <translation id="5511379779384092781">Sobrang liit</translation>
@@ -3122,6 +2802,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="48704129375571883">Magdagdag ng mga karagdagang feature</translation>
 <translation id="7230787553283372882">I-customize ang laki ng iyong text</translation>
 <translation id="214169863967063661">Buksan ang mga setting ng hitsura</translation>
+<translation id="3616113530831147358">Audio</translation>
 <translation id="6793604637258913070">I-highlight ang text caret kapag lumabas o gumalaw ito</translation>
 <translation id="7376553024552204454">I-highlight ang cursor ng mouse kapag gumagalaw ito</translation>
 <translation id="4150201353443180367">Display</translation>
@@ -3175,9 +2856,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3819257035322786455">Backup</translation>
 <translation id="3233271424239923319">I-back up ang mga app at file ng Linux</translation>
 <translation id="184273675144259287">Palitan ang iyong mga app at file ng Linux ng isang nakaraang backup</translation>
-<translation id="2200603218210188859">Mga kagustuhan sa USB Device</translation>
-<translation id="2706892089432507937">Mga USB Device</translation>
-<translation id="5187892128515678283">Magbahagi ng USB device sa Linux sa pamamagitan ng pag-on. Mahihinto lang ang pagbabahagi kapag na-detach ang device.</translation>
+<translation id="7105390788077117391">Mga kagustuhans sa USB</translation>
+<translation id="3201422919974259695">Lalabas dito ang mga available na USB device.</translation>
+<translation id="907264006778172906">Pahintulutan ang Linux na i-access ang mga USB device. Hindi maaalala ng Linux ang isang usb device pagkatapos itong alisin.</translation>
+<translation id="3661172646479098821">Ang mga Android device lang ang kasalukuyang sinusuportahan.</translation>
 <translation id="2295473777859797944">Brave Software Play Store</translation>
 <translation id="572155275267014074">Mga setting ng Android</translation>
 <translation id="4767209642168463274">Mag-install ng mga app at laro mula sa Brave Software Play sa iyong Bravebook. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Matuto pa&lt;/a&gt;</translation>
@@ -3217,6 +2899,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5860033963881614850">Naka-off</translation>
 <translation id="5916664084637901428">Naka-on</translation>
 <translation id="1378613616312864539">Kinokontrol ng <ph name="NAME"/> ang setting na ito</translation>
+<translation id="6643016212128521049">I-clear</translation>
 <translation id="8465252176946159372">Hindi wasto</translation>
 <translation id="8647834505253004544">Di-wastong email address</translation>
 <translation id="7946586320617670168">Dapat ay secure ang pinagmulan</translation>
@@ -3225,6 +2908,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5595485650161345191">Mag-edit ng address</translation>
 <translation id="6207937957461833379">Bansa/Rehiyon</translation>
 <translation id="4378154925671717803">Telepono</translation>
+<translation id="2448312741937722512">Uri</translation>
 <translation id="9064275926664971810">I-enable ang Autofill upang punan ang mga form sa isahang pag-click</translation>
 <translation id="9095253524804455615">Alisin</translation>
 <translation id="451515744433878153">Alisin</translation>
@@ -3409,6 +3093,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1989112275319619282">Mag-browse</translation>
 <translation id="3625481642044239431">Invalid ang file na napili. Subukang muli.</translation>
 <translation id="2462752602710430187">Idinagdag ang <ph name="PRINTER_NAME"/></translation>
+<translation id="7380768571499464492">Na-update ang <ph name="PRINTER_NAME"/></translation>
 <translation id="9057119625587205566">Walang printer sa malapit</translation>
 <translation id="3213187967168344806">Hindi maidagdag ang printer. I-restart ang iyong computer at subukang muli.</translation>
 <translation id="4052689580269971502">Hindi makakonekta sa printer. Tiyaking naka-on ang printer at nakakonekta ito sa iyong Bravebook sa pamamagitan ng Wi-Fi o USB.</translation>
@@ -3537,6 +3222,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8452135315243592079">Walang nakalagay na SIM card</translation>
 <translation id="2617342710774726426">Naka-lock ang SIM card</translation>
 <translation id="4848518990323155912">I-enable ang pagla-lock ng SIM card (kailangan ang PIN upang magamit ang mobile data)</translation>
+<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">Ilagay ang PIN ng SIM</translation>
 <translation id="8431909052837336408">Palitan ang PIN ng SIM</translation>
 <translation id="289644616180464099">Naka-lock ang SIM Card</translation>
@@ -3548,11 +3234,13 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1164899421101904659">Ilagay ang PIN Unlock Key</translation>
 <translation id="7582582252461552277">Gustuhin ang network na ito</translation>
 <translation id="7469894403370665791">Awtomatikong kumonekta sa network na ito</translation>
+<translation id="4267953847983678297">Awtomatikong kumonekta sa cellular network</translation>
 <translation id="7987814697832569482">Palaging kumonekta sa pamamagitan ng VPN na ito</translation>
 <translation id="8821045908425223359">Awtomatikong i-configure ang IP address</translation>
 <translation id="8986362086234534611">Kalimutan</translation>
 <translation id="7881483672146086348">Tingnan ang Account</translation>
 <translation id="2392369802118427583">I-activate</translation>
+<translation id="8151638057146502721">I-configure</translation>
 <translation id="5920543303088087579">Na-disable ng iyong administrator ang pagkonekta sa network na ito</translation>
 <translation id="1235458158152011030">Mga kilalang network</translation>
 <translation id="3003144360685731741">Mga gustong network</translation>
@@ -3580,7 +3268,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7707922173985738739">Gumamit ng mobile data</translation>
 <translation id="8944099748578356325">Mas mabilis na mauubos ang baterya (kasalukuyang <ph name="BATTERY_PERCENTAGE"/>%)</translation>
 <translation id="3651488188562686558">Idiskonekta sa Wi-Fi</translation>
-<translation id="3479552764303398839">Hindi ngayon</translation>
 <translation id="7378812711085314936">Kumuha ng koneksyon ng data</translation>
 <translation id="3483333858382889684">Hayaan ang device na ito na humanap ng iba pang device sa iyong Brave Software Account na may koneksyon sa mobile data</translation>
 <translation id="5637476008227280525">Pag-enable sa mobile data</translation>
@@ -3699,11 +3386,11 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3161522574479303604">Lahat ng wika</translation>
 <translation id="3312424061798279731">Mga naka-enable na wika</translation>
 <translation id="3182749001423093222">Pang-check ng pagbabaybay</translation>
-<translation id="4441548209689510310">Ipakita ang mga opsyon sa pang-check ng pagbabaybay</translation>
-<translation id="4358353773267946514"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/></translation>
-<translation id="3909690856344416952"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/> at 1 pa</translation>
-<translation id="5740331643563157105"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/> at <ph name="NUM_ADDITIONAL_LANGUAGES"/> pa</translation>
-<translation id="3436038974659740746">Custom na pagbabaybay</translation>
+<translation id="5423829801105537712">Pangunahing spell check</translation>
+<translation id="2564653188463346023">Pinahusay na pang-check ng pagbabaybay</translation>
+<translation id="8944680893327873975">Ginagamit ang parehong spell checker na ginagamit sa paghahanap sa Brave Software. Ipapadala sa Brave Software ang text na tina-type mo.</translation>
+<translation id="7335974957018254119">Gumamit ng pang-check ng pagbabaybay para sa</translation>
+<translation id="2469375675106140201">I-customize ang spell check</translation>
 <translation id="2667463864537187133">Pamahalaan ang pang-check ng pagbabaybay</translation>
 <translation id="2665394472441560184">Magdagdag ng bagong salita</translation>
 <translation id="4567772783389002344">Magdagdag ng salita</translation>
@@ -3724,13 +3411,8 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="9038649477754266430">Gumamit ng serbisyo sa paghula upang ma-load ang mga page nang mas mabilis</translation>
 <translation id="7981313251711023384">I-preload ang mga page para sa mas mabilis na pag-browse at paghahanap</translation>
 <translation id="2468205691404969808">Gumamit ng mga cookie para matandaan ang iyong mga kagustuhan kahit na hindi mo binibisita ang mga page na iyon</translation>
-<translation id="1641113438599504367">Ligtas na Pagba-browse</translation>
-<translation id="773905249182896430">Pinoprotektahan ka at ang iyong device mula sa mapapanganib na site</translation>
-<translation id="8983677657449185470">Tumulong na pahusayin ang Ligtas na Pag-browse</translation>
-<translation id="199861668945335092">Nagpapadala ng ilang impormasyon ng system at content ng page sa Brave Software</translation>
-<translation id="490074449735753175">Gumamit ng serbisyo sa web upang makatulong na lutasin ang mga error sa spelling</translation>
-<translation id="3523078749603005179">Para sa mas mahusay na pagsusuri ng pagbabaybay, ipadala sa Brave Software kung ano ang tina-type mo sa browser</translation>
-<translation id="2564653188463346023">Pinahusay na pang-check ng pagbabaybay</translation>
+<translation id="4991384657077828949">Tulungang paigtingin ang seguridad ng Brave</translation>
+<translation id="2875273286298348523">Ipinapadala ng Brave sa Brave Software ang text na tina-type mo sa browser</translation>
 <translation id="9079153198295609735">Awtomatikong ipadala ang mga istatistika ng paggamit at mga ulat ng pag-crash sa Brave Software</translation>
 <translation id="5941220456342415404">Awtomatikong magpadala ng data ng diagnostic at paggamit sa Brave Software.</translation>
 <translation id="918192811481327695">Tumulong sa pagpapahusay sa mga feature at performance ng Brave</translation>
@@ -3807,6 +3489,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="16815041330799488">Huwag payagan ang mga site na makita ang text at mga larawang kinopya sa clipboard</translation>
 <translation id="3668823961463113931">Mga Handler</translation>
 <translation id="5689516760719285838">Lokasyon</translation>
+<translation id="9219103736887031265">Mga Larawan</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Mga Tagapangasiwa ng Pagbabayad</translation>
@@ -3832,6 +3515,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8666584013686199826">Magtanong kapag gusto ng isang site na i-access ang mga USB device</translation>
 <translation id="6291949900244949761">Magtanong kapag gusto ng isang site na i-access ang mga USB device (inirerekomenda)</translation>
 <translation id="5336126339807372270">Huwag payagan ang anumang site na i-access ang mga USB device</translation>
+<translation id="7638605456503525968">Mga serial port</translation>
+<translation id="4085270836953633510">Tanungin kung kailan gusto ng site na i-access ang mga serial port</translation>
+<translation id="2322318151094136999">Magtanong kapag gustong i-access ng isang site ang mga serial port (inirerekomenda)</translation>
+<translation id="1906828677882361942">Huwag payagan ang anumang site na i-access ang mga serial port</translation>
 <translation id="8973557916016709913">Mag-alis ng antas ng zoom</translation>
 <translation id="1706625117072057435">Mga antas ng pag-zoom</translation>
 <translation id="6385543213911723544">Maaaring mag-save at magbasa ng data ng cookie ang mga site</translation>
@@ -3847,8 +3534,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2913331724188855103">Payagan ang mga site na mag-save at magbasa ng data ng cookie (inirerekomenda)</translation>
 <translation id="5908769186679515905">I-block ang mga site sa pagpapatakbo ng Flash</translation>
 <translation id="6096007141921397775">Papanatilihin ang mga setting ng iyong Flash hanggang sa umalis ka sa Brave.</translation>
-<translation id="2972642118232180842">Magpatakbo lang ng mahalagang content (inirerekomenda)</translation>
-<translation id="7084192839369222683">Magpatakbo lang ng mahalagang content</translation>
 <translation id="8074127646604999664">Payagan ang mga kamakailang isinarang site na tapusin ang pagpapadala at pagtanggap ng data</translation>
 <translation id="7062222374113411376">Payagan ang mga kamakailang isinarang site na tapusin ang pagpapadala at pagtanggap ng data</translation>
 <translation id="5068918910148307423">Huwag payagan ang mga kamakailang isinarang site na tapusin ang pagpapadala at pagtanggap ng data</translation>
@@ -3912,6 +3597,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4354344420232759511">Lalabas dito ang mga site na binibisita mo</translation>
 <translation id="3757733214359997190">Walang nakitang site</translation>
 <translation id="5763751966069581670">Walang nahanap na USB device</translation>
+<translation id="1863182668524159459">Walang nakitang serial port</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Magdagdag ng site</translation>
 <translation id="5052499409147950210">I-edit ang site</translation>
@@ -3927,7 +3613,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4590324241397107707">Storage ng database</translation>
 <translation id="8016266267177410919">Pansamantalang storage</translation>
 <translation id="4175737294868205930">Matagalang storage</translation>
-<translation id="6105877918873366097">Huling na-access</translation>
 <translation id="1296497012903089238">Uri ng Certificate</translation>
 <translation id="8553342806078037065">Pamahalaan ang iba pang mga tao</translation>
 <translation id="8907706281008466056">Larawan sa Profile sa Brave Software</translation>
@@ -3959,6 +3644,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1987317783729300807">Mga Account</translation>
 <translation id="8418661265246754237">Mga Brave Software Account</translation>
 <translation id="3297951628821704004">Alisin ang account sa device na ito</translation>
+<translation id="4659077111144409915">Pangunahing account</translation>
 <translation id="3158033540161634471">I-set up ang iyong fingerprint</translation>
 <translation id="1587907146729660231">Pindutin ang power button gamit ang iyong daliri</translation>
 <translation id="176193854664720708">Nasa power button ang sensor para sa fingerprint. Pundutin ito nang magaan gamit ang alinmang daliri.</translation>
@@ -4089,13 +3775,17 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6586451623538375658">Palitan ang pangunahing button ng mouse</translation>
 <translation id="221872881068107022">Reverse na pag-scroll</translation>
 <translation id="1510238584712386396">Launcher</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">Diamond</translation>
 <translation id="89720367119469899">Escape</translation>
+<translation id="5583640892426849032">Backspace</translation>
 <translation id="1951012854035635156">Assistant</translation>
 <translation id="1938351510777341717">External na Command</translation>
 <translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">External na Meta</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4991420928586866460">Ituring ang mga top-row key bilang mga function key</translation>
 <translation id="85486688517848470">Pindutin nang matagal ang Key sa paghahanap upang palitan ang gawi ng mga key sa itaas na row</translation>
 <translation id="4400632832271803360">Pindutin nang matagal ang key ng Launcher upang mapalitan ang gawi ng mga key sa itaas na row</translation>
@@ -4155,6 +3845,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7758450972308449809">Isaayos ang mga hangganan ng iyong display</translation>
 <translation id="5608580678041221894">I-tap ang mga sumusunod na key upang isaayos o ilipat ang lugar ng pag-crop</translation>
 <translation id="2822634587701817431">Paliitin / Palawakin</translation>
+<translation id="7765158879357617694">Ilipat</translation>
 <translation id="6801435275744557998">I-calibrate ang touchscreen</translation>
 <translation id="6856623341093082836">I-set up at isaayos ang katumpakan ng iyong touchscreen</translation>
 <translation id="4598556348158889687">Pamamahala sa storage</translation>
@@ -4197,6 +3888,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2789927670850159391">Ikonekta ang iyong Bravebook gamit ang telepono mo. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Walang kwalipikadong device. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Naghihintay ng pag-verify. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
+<translation id="6518133107902771759">I-verify</translation>
 <translation id="7179187931092694802">I-unlock ang iyong Bravebook gamit ang telepono mo. <ph name="LINK_BEGIN"/>Matuto pa<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Instant na Pag-tether</translation>
 <translation id="6415900369006735853">Kumonekta sa internet sa pamamagitan ng iyong telepono</translation>
@@ -4248,6 +3940,30 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2992931425024192067">Ipakita ang lahat ng content ng notification</translation>
 <translation id="8592141010104017453">Huwag magpakita ng anumang notification</translation>
 <translation id="7642778300616172920">Itago ang sensitibong content</translation>
+<translation id="5640133431808313291">Pamahalaan ang mga security key</translation>
+<translation id="8509177919508253835">I-reset ang mga security key at gumawa ng mga PIN</translation>
+<translation id="7652954539215530680">Gumawa ng PIN</translation>
+<translation id="8246776524656196770">Protektahan ang iyong security key gamit ang PIN (Personal Identification Number)</translation>
+<translation id="5973605538625120605">Magpalit ng PIN</translation>
+<translation id="6242589501614145408">I-reset ang iyong security key</translation>
+<translation id="1470967055429794975">Buburahin nito ang lahat ng data sa security key, kabilang ang PIN nito</translation>
+<translation id="4670688170798478686">Kumpirmahin ang pag-reset</translation>
+<translation id="1981544341227357861">Alisin ang iyong security key mula sa device mo, pagkatapos ay muling ipasok at pindutin ito.</translation>
+<translation id="714285394257538643">Para kumpirmahing gusto mong i-reset ang iyong security key, pindutin itong muli. Buburahin ang lahat ng kredensyal na naka-store sa security key at PIN nito.</translation>
+<translation id="4120388883569225797">Hindi puwedeng i-reset ang security key na ito</translation>
+<translation id="7691077781194517083">Hindi puwedeng i-reset ang security key na ito. Error <ph name="ERROR_CODE"/>.</translation>
+<translation id="4124823734405044952">Na-reset ang iyong security key</translation>
+<translation id="8644655801811752511">Hindi puwedeng i-reset ang security key na ito. Subukang i-reset kaagad ang key pagkatapos itong ipasok.</translation>
+<translation id="8845164297565101021">Ipasok at pindutin ang iyong security key para gumawa o magpalit ng PIN.</translation>
+<translation id="6957044667612803194">Hindi sinusuportahan ng security key na ito ang mga PIN</translation>
+<translation id="7212097698621322584">Ilagay ang kasalukuyan mong PIN para palitan ito. Kung hindi mo alam ang iyong PIN, kakailanganin mong i-reset ang security key, pagkatapos ay gumawa ng bagong PIN.</translation>
+<translation id="2637400434494156704">Maling PIN. May isa kang pagtatangkang natitira.</translation>
+<translation id="3341699307020049241">Maling PIN. Mayroon kang <ph name="RETRIES"/> pagtatangkang natitira.</translation>
+<translation id="2439545803278355377">Ilagay ang bago mong PIN. Dapat ay may hindi bababa sa apat na character ang PIN, at puwede itong maglaman ng mga titik, numero, at iba pang character.</translation>
+<translation id="1781291988450150470">Kasalukuyang PIN</translation>
+<translation id="3732530910372558017">Dapat ang PIN ay hindi lalampas sa 63 character</translation>
+<translation id="1307165550267142340">Nagawa ang iyong PIN</translation>
+<translation id="2699911226086014512">Hindi nagamit ang PIN na may code <ph name="RETRIES"/>.</translation>
 <translation id="3341703758641437857">Payagan ang access na mag-file ng mga URL</translation>
 <translation id="9003647077635673607">Payagan sa lahat ng website</translation>
 <translation id="698524779381350301">Awtomatikong payagan ang pag-access sa mga sumusunod na site</translation>
@@ -4270,6 +3986,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6841186874966388268">Mga error</translation>
 <translation id="3487007233252413104">hindi kilalang function</translation>
 <translation id="3264582393905923483">Konteksto</translation>
+<translation id="6921104647315081813">I-clear ang mga aktibidad</translation>
 <translation id="1607139524282324606">I-clear ang entry</translation>
 <translation id="6025215716629925253">Stack Trace</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;1 linya ang hindi ipinapakita&gt;}one{&lt;<ph name="NUMBER_OF_LINES"/> linya ang hindi ipinapakita&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> (na) linya ang hindi ipinapakita&gt;}}</translation>
@@ -4290,6 +4007,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6073451960410192870">Ihinto ang pag-record</translation>
 <translation id="8719472795285728850">Nakikinig para sa mga aktibidad ng extension...</translation>
 <translation id="2540449034743108469">Pindutin ang "Simulan" para makinig sa mga aktibidad ng extension</translation>
+<translation id="885246833287407341">Mga argument ng API function</translation>
+<translation id="3600051066689725006">Impormasyon ng kahilingan sa web</translation>
+<translation id="5812674658566766066">I-expand lahat</translation>
+<translation id="3115580024857770654">I-collapse lahat</translation>
 <translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Siyasatin ang mga view</translation>
 <translation id="181577467034453336"><ph name="NUMBER_OF_VIEWS"/> pa...</translation>
@@ -4297,6 +4018,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4854477725773269949">Payagan sa incognito</translation>
 <translation id="6124650939968185064">Nakadepende ang mga sumusunod na extension sa extension na ito:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ID: <ph name="ID_PH"/>)</translation>
+<translation id="3866249974567520381">Paglalarawan</translation>
 <translation id="6508248480704296122">Kaugnay ng <ph name="NAME_PH"/></translation>
 <translation id="1410197035576869800">Icon ng App</translation>
 <translation id="3664511988987167893">Icon ng Extension</translation>
@@ -4308,6 +4030,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7152478047064750137">Hindi nangangailangan ang extension na ito ng mga espesyal na pahintulot</translation>
 <translation id="1004218526896219317">Access sa site</translation>
 <translation id="7385896526023870365">Walang karagdagang access sa site ang extension na ito.</translation>
+<translation id="8294431847097064396">Pinagmulan</translation>
 <translation id="8523849605371521713">Idinagdag ng patakaran</translation>
 <translation id="5087249366037322692">Idinagdag ng isang third-party</translation>
 <translation id="6788210894632713004">Hindi naka-pack na extension</translation>
@@ -4351,12 +4074,14 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1909880997794698664">Sigurado ka bang gusto mong permanenteng panatilihin sa kiosk mode ang device na ito?</translation>
 <translation id="1512210426710821809">Ang tanging paraan upang ma-undo ito ay muling i-install ang <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="4472575034687746823">Magsimula</translation>
+<translation id="8281886186245836920">Laktawan</translation>
 <translation id="2342740338116612727">Nagdagdag ng mga bookmark</translation>
 <translation id="7835178595033117206">Inalis ang bookmark</translation>
 <translation id="742130257665691897">Naalis ang mga bookmark</translation>
 <translation id="2785008241190445880">Pinalitan ang bookmark</translation>
-<translation id="4320948194796820126">Magdagdag ng bookmark sa email mo</translation>
+<translation id="5468853758063275923">Ang Brave ay ang default mong browser</translation>
 <translation id="2950533317914339731">Magdagdag ng mga bookmark sa iyong paboritong Brave Software Apps</translation>
+<translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Balita</translation>
 <translation id="995782501881226248">YouTube</translation>
@@ -4376,10 +4101,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3707821975049107110">Brave user ka na ba? Mag-sign in</translation>
 <translation id="1573150740912592860">I-save ang iyong progress</translation>
 <translation id="567643736130151854">Mag-sign in at i-on ang pag-sync para makuha ang iyong mga bookmark, password, at higit pa sa lahat ng device</translation>
-<translation id="8282356762694872144">Magpatuloy sa iyong email?</translation>
 <translation id="5939847200023027600">Serbisyo sa PDF Compositor</translation>
 <translation id="725758059478686223">Serbisyo sa Pag-print</translation>
 <translation id="5877584842898320529">Hindi available o hindi naka-install nang tama ang napiling printer. <ph name="BR"/> Suriin ang iyong printer o subukang pumili ng ibang printer.</translation>
+<translation id="1430915738399379752">I-print</translation>
 <translation id="1031362278801463162">Preview ng paglo-load</translation>
 <translation id="6147020289383635445">Nabigo ang preview ng pag-print.</translation>
 <translation id="7413400642818115607">Hindi na sinusuportahan ang Brave Software Cloud Print device. <ph name="BR"/> Subukang i-set up ang printer sa mga setting ng system ng iyong computer.</translation>
@@ -4392,6 +4117,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5431318178759467895">Kulay</translation>
 <translation id="2050339315714019657">Portrait</translation>
 <translation id="3317459757438853210">Magkabilaan</translation>
+<translation id="9053563360605707198">Mag-print sa magkabilang bahagi</translation>
+<translation id="2996722619877761919">I-flip sa mahabang dulo</translation>
+<translation id="1172750555846831341">I-flip sa maikling dulo</translation>
 <translation id="4988526792673242964">Mga Page</translation>
 <translation id="7771452384635174008">Layout</translation>
 <translation id="3303818374450886607">Mga kopya</translation>
@@ -4401,6 +4129,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="5746169159649715125">I-save bilang PDF</translation>
 <translation id="1955272076204612657">I-save sa Brave Software Drive</translation>
 <translation id="2580924999637585241">Kabuuan: <ph name="NUMBER_OF_SHEETS"/><ph name="SHEETS_LABEL"/></translation>
+<translation id="73174032666024687"><ph name="NUMBER_OF_SHEETS"/><ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">mga sheet ng papel</translation>
 <translation id="8813811964357448561">piraso ng papel</translation>
 <translation id="8180239481735238521">pahina</translation>
@@ -4453,6 +4182,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7453008956351770337">Sa pamamagitan ng pagpili sa printer na ito, binibigyan mo ng pahintulot ang sumusunod na extension upang i-access ang iyong printer:</translation>
 <translation id="2902127500170292085">Ang <ph name="EXTENSION_NAME"/> ay hindi magawang makipag-ugnayan sa printer na ito. Tiyaking naka-plug in ang printer at subukang muli.</translation>
 <translation id="6530186581263215931">Ipinapatupad ng iyong administrator ang mga setting na ito</translation>
+<translation id="3053273573829329829">I-enable ang pin ng user</translation>
+<translation id="6922745772873733498">Maglagay ng pin para mag-print</translation>
+<translation id="2396783860772170191">Ilagay ang 4 na digit na pin (0000-9999)</translation>
 <translation id="4994754230098574403">Sine-set up</translation>
 <translation id="1396139853388185343">Nagkaroon ng error sa pag-set up ng printer</translation>
 <translation id="2379281330731083556">I-print gamit ang dialog ng system... <ph name="SHORTCUT_KEY"/></translation>
@@ -4469,20 +4201,25 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="79766959863778284">XR Isolated Device Service</translation>
 <translation id="8909833622202089127">Sinusubaybayan ng site ang iyong lokasyon</translation>
 <translation id="375636864092143889">Ginagamit ng site ang iyong mikropono</translation>
-<translation id="310671807099593501">Gumagamit ng bluetooth ang site</translation>
 <translation id="7256069762010468647">Ginagamit ng site ang iyong camera</translation>
 <translation id="7340650977506865820">Ibinabahagi ng site ang iyong screen</translation>
 <translation id="1805738995123446102">Ginagamit ng tab sa background ang iyong mikropono</translation>
-<translation id="1112420131909513020">Gumagamit ng bluetooth ang tab sa background</translation>
 <translation id="8715480913140015283">Ginagamit ng tab sa background ang iyong camera</translation>
 <translation id="6155141482566063812">Ibinabahagi ng tab sa background ang iyong screen</translation>
 <translation id="661907246513853610">Maaaring subaybayan ng site ang iyong lokasyon</translation>
 <translation id="8991520179165052608">Maaaring gamitin ng site ang iyong mikropono</translation>
-<translation id="7681095912841365527">Maaaring gumamit ng bluetooth ang site</translation>
 <translation id="3085412380278336437">Maaaring gamitin ng site ang iyong camera</translation>
 <translation id="9180380851667544951">Maaaring ibahagi ng site ang iyong screen</translation>
-<translation id="400314203296796334">Alisin ang headset para i-block o payagan.</translation>
-<translation id="4922897038695506037">Humiling ang <ph name="URL_HOST"/> ng mga karagdagang pahintulot.</translation>
+<translation id="310671807099593501">Gumagamit ng bluetooth ang site</translation>
+<translation id="1112420131909513020">Gumagamit ng bluetooth ang tab sa background</translation>
+<translation id="7681095912841365527">Maaaring gumamit ng bluetooth ang site</translation>
+<translation id="1484979925941077974">Gumagamit ng Bluetooth ang site</translation>
+<translation id="4892229439761351791">Puwedeng gumamit ng Bluetooth ang site</translation>
+<translation id="6416743254476733475">Payagan o i-block sa iyong computer.</translation>
+<translation id="6124698108608891449">Kailangan ng site na ito ng higit pang pahintulot.</translation>
+<translation id="6551612971599078809">Gumagamit ng USB ang site</translation>
+<translation id="3088052000289932193">Gumagamit ng MIDI ang site</translation>
+<translation id="7004402701596653846">Puwedeng gumamit ang site ng MIDI</translation>
 <translation id="7574650250151586813">Para makapag-type ng text, i-update ang Daydream Keyboard app</translation>
 <translation id="983511809958454316">Hindi sinusuportahan ang feature na ito sa VR</translation>
 <translation id="4008291085758151621">Hindi available ang impormasyon ng site sa VR</translation>
@@ -4490,6 +4227,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6313641880021325787">LUMABAS SA VR</translation>
 <translation id="2670429602441959756">Naglalaman ang page na ito ng mga feature na hindi pa sinusuportahan sa VR. Lumalabas...</translation>
 <translation id="1802687198411089702">Hindi tumutugon ang page. Maaari mo itong hintayin o maaari kang lumabas.</translation>
+<translation id="1041175011127912238">Hindi tumutugon ang page na ito</translation>
 <translation id="3987938432087324095">Paumanhin, hindi ko naunawaan iyon.</translation>
 <translation id="6923132443355966645">Mag-scroll / Mag-click</translation>
 <translation id="6041155700700864984">Lumabas sa Fullscreen</translation>

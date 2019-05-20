@@ -74,9 +74,13 @@
 <translation id="5874882355102994015">組み込みの PDF ビューアがない場合、Brave では印刷プレビューを表示できません。</translation>
 <translation id="8880183781256147665">Brave に追加...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> は危険なファイルの可能性があるため、Brave でブロックしました。</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> は危険なファイルの可能性があるため、Brave でブロックされました。現在、高度な保護機能が適用されています。</translation>
 <translation id="9067428552314418522">このファイルは危険なファイルであるため、Brave でブロックしました。</translation>
+<translation id="2938460345748897177">このファイルは危険なファイルであるため、Brave でブロックされました。現在、高度な保護機能が適用されています。</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> は危険なファイルであるため、Brave でブロックしました。</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> は危険なファイルであるため、Brave でブロックされました。現在、高度な保護機能が適用されています。</translation>
 <translation id="89367911614620585">このファイルは危険なファイルの可能性があるため、Brave でブロックしました。</translation>
+<translation id="8943391224520748272">このファイルは危険なファイルの可能性があるため、Brave でブロックされました。現在、高度な保護機能が適用されています。</translation>
 <translation id="9183662282810237335">今すぐ Brave を終了しますか？</translation>
 <translation id="3834935463915107022">今すぐ Brave を終了しますか？</translation>
 <translation id="8797356639448065696">Brave はバックグラウンド モードです。</translation>
@@ -127,6 +131,7 @@
 <translation id="1326766910007115955">現在、管理対象アカウントでログインしており、あなたの Brave プロフィールを管理者が制御できる状態になっています。あなたの Brave データ（アプリ、ブックマーク、履歴、パスワードなどの設定）は永続的に <ph name="USER_NAME"/> に関連付けられます。このデータは Brave Software アカウントのダッシュボードを介して削除できますが、このデータを別のアカウントに関連付けることはできなくなります。<ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">現在、管理対象アカウントでログインしており、あなたの Brave プロフィールを管理者が制御できる状態になっています。あなたの Brave データ（アプリ、ブックマーク、履歴、パスワードなどの設定）は永続的に <ph name="USER_NAME"/> に関連付けられます。このデータは Brave Software アカウントのダッシュボードを介して削除できますが、このデータを別のアカウントに関連付けることはできなくなります。新しいプロフィールを作成して、既存の Brave データを別に保管することができます。<ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">システム管理者が、<ph name="TARGET_URL_HOSTNAME"/> へのアクセスに代替ブラウザを開くよう Brave を設定しています。</translation>
+<translation id="5380963249588143069">システム管理者が、<ph name="TARGET_URL_HOSTNAME"/> へのアクセスに <ph name="ALTERNATIVE_BROWSER_NAME"/> を開くよう Brave を設定しています。</translation>
 <translation id="2591326305549412656">Brave の前回の使用者は <ph name="USER_EMAIL_ADDRESS"/> です</translation>
 <translation id="1384923383737428730">お使いのパソコンに有害なソフトウェアが見つかりました。Brave では、ブラウザを正常な動作に戻すためにこのソフトウェアを削除し、設定を復元して、拡張機能を無効化することができます。</translation>
 <translation id="8919921662052966648">Brave はデータを同期できませんでした。同期パスフレーズを更新してください。</translation>
@@ -175,7 +180,9 @@
 <translation id="2871190378186459992">Brave の優れたアプリ、ゲーム、拡張機能、テーマをぜひご利用ください。</translation>
 <translation id="3350544518197210895">Brave（mDNS インバウンド）</translation>
 <translation id="1912973375560256099">mDNS トラフィックを許可する Brave のインバウンド ルールです。</translation>
-<translation id="7276297358157391541">Brave ではブラウザに入力された内容を Brave Software のサーバーに送信することで高度なスペルチェックを実現し、Brave Software 検索で使用されるスペルチェック テクノロジーを活用できます。</translation>
+<translation id="8207657266087451193">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave Software に画像が送信されます。この機能は設定でいつでも無効にできます。</translation>
+<translation id="5499063270485366718">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave Software に画像が送信されます。</translation>
+<translation id="3870835867536344658">Brave Software 検索と同じスペルチェックが使用されます。ブラウザに入力したテキストは Brave Software に送信されます。この動作はいつでも設定で変更できます。</translation>
 <translation id="1807774211756215222">新しい Brave タブでリンクを開く(&amp;T)</translation>
 <translation id="4624945300945265642">Brave のシークレット ウインドウでリンクを開く(&amp;G)</translation>
 <translation id="7863882214613921971">新しい Brave タブでリンクを開く(&amp;T)</translation>
