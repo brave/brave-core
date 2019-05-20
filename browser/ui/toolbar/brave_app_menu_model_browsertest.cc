@@ -18,6 +18,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/test_utils.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 
 using BraveAppMenuBrowserTest = InProcessBrowserTest;
 
@@ -32,7 +33,11 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
   EXPECT_NE(-1, normal_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC));
 
   auto* command_controller = browser()->command_controller();
+  #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+  #else
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+  #endif
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
   // Create proviate browser.
@@ -49,7 +54,11 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
   EXPECT_NE(-1, private_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC));
 
   command_controller = private_browser->command_controller();
+  #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+  #else
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+  #endif
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
   content::WindowedNotificationObserver browser_creation_observer(

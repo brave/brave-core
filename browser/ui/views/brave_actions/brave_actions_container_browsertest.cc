@@ -7,7 +7,7 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
+#include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/chrome_notification_types.h"
 #include "chrome/browser/profiles/profile.h"
@@ -23,6 +23,10 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/test/test_utils.h"
+
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#include "brave/components/brave_rewards/common/pref_names.h"
+#endif
 
 class BraveActionsContainerTest : public InProcessBrowserTest {
  public:
@@ -57,6 +61,7 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
   DISALLOW_COPY_AND_ASSIGN(BraveActionsContainerTest);
 };
 
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
   // By default the action should be shown.
   EXPECT_FALSE(prefs_->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled));
@@ -90,7 +95,7 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
-                       BraveRewadsActionHiddenInGuestSession) {
+                       BraveRewardsActionHiddenInGuestSession) {
     // By default the action should be shown.
   EXPECT_FALSE(prefs_->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled));
   EXPECT_FALSE(prefs_->GetBoolean(kHideBraveRewardsButton));
@@ -120,3 +125,4 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
   Init(browser);
   CheckBraveRewardsActionShown(false);
 }
+#endif
