@@ -485,7 +485,7 @@ void BraveProfileSyncService::OnSyncReady() {
     ProfileSyncService::GetUserSettings()
       ->SetSelectedTypes(false, syncer::UserSelectableTypeSet());
     // default enable bookmark
-    OnSetSyncBookmarks(true);
+    brave_sync_prefs_->SetSyncBookmarksEnabled(true);
     ProfileSyncService::GetUserSettings()->SetSyncRequested(true);
   }
 }
@@ -692,6 +692,7 @@ void BraveProfileSyncService::OnResolvedPreferences(
   bool contains_only_one_device = false;
 
   auto sync_devices = brave_sync_prefs_->GetSyncDevices();
+  auto old_devices_size = sync_devices->size();
   for (const auto &record : records) {
     DCHECK(record->has_device() || record->has_sitesetting());
     if (record->has_device()) {
@@ -714,6 +715,12 @@ void BraveProfileSyncService::OnResolvedPreferences(
   }  // for each device
 
   brave_sync_prefs_->SetSyncDevices(*sync_devices);
+
+  if (old_devices_size < 2 && sync_devices->size() >= 2) {
+    // Re-enable sync of bookmarks
+    bool sync_bookmarks = brave_sync_prefs_->GetSyncBookmarksEnabled();
+    OnSetSyncBookmarks(sync_bookmarks);
+  }
 
   if (this_device_deleted) {
     ResetSyncInternal();
