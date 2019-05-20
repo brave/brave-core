@@ -161,6 +161,9 @@ class MockRewardsService : public RewardsService {
                                                  const std::string&,
                                                  uint64_t));
   MOCK_METHOD0(RemoveAllPendingContributionsUI, void());
+
+  MOCK_METHOD1(GetPendingContributionsTotalUI, void(
+    const brave_rewards::GetPendingContributionsTotalCallback& callback));
 };
 
 class AdsServiceTest : public testing::Test {

@@ -188,9 +188,9 @@ declare namespace Rewards {
     provider: string
     favIcon: string
     amount: number
-    addedDate: number
+    addedDate: string
     category: RewardsCategory
     viewingId: string
-    expirationDate: number
+    expirationDate: string
   }
 }

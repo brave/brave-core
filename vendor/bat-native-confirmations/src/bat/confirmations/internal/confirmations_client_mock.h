@@ -259,6 +259,9 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD1(RemoveAllPendingContributions, void(
     const ledger::RemovePendingContributionCallback& callback));
+
+  MOCK_METHOD1(GetPendingContributionsTotal, void(
+    const ledger::PendingContributionsTotalCallback& callback));
 };
 
 }  // namespace confirmations

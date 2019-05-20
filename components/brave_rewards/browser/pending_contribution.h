@@ -25,7 +25,7 @@ struct PendingContributionInfo {
   double amount = 0;
   uint32_t added_date = 0;
   std::string viewing_id;
-  int category;
+  int32_t category;
   uint32_t expiration_date = 0;
 };
 

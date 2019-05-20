@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
 
+#include <stdint.h>
+
 #include <utility>
 #include <memory>
 #include <string>
@@ -1131,18 +1133,21 @@ void RewardsDOMHandler::OnGetPendingContributions(
   if (web_ui()->CanCallJavascript()) {
     auto contributions = std::make_unique<base::ListValue>();
     for (auto const& item : *list) {
-      auto contribution = std::make_unique<base::DictionaryValue>();
-      contribution->SetString("publisherKey", item.publisher_key);
-      contribution->SetBoolean("verified", item.verified);
-      contribution->SetString("name", item.name);
-      contribution->SetString("provider", item.provider);
-      contribution->SetString("url", item.url);
-      contribution->SetString("favIcon", item.favicon_url);
-      contribution->SetDouble("amount", item.amount);
-      contribution->SetInteger("addedDate", item.added_date);
-      contribution->SetInteger("category", item.category);
-      contribution->SetString("viewingId", item.viewing_id);
-      contribution->SetInteger("expirationDate", item.expiration_date);
+      auto contribution =
+          std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
+      contribution->SetKey("publisherKey", base::Value(item.publisher_key));
+      contribution->SetKey("verified", base::Value(item.verified));
+      contribution->SetKey("name", base::Value(item.name));
+      contribution->SetKey("provider", base::Value(item.provider));
+      contribution->SetKey("url", base::Value(item.url));
+      contribution->SetKey("favIcon", base::Value(item.favicon_url));
+      contribution->SetKey("amount", base::Value(item.amount));
+      contribution->SetKey("addedDate",
+          base::Value(std::to_string(item.added_date)));
+      contribution->SetKey("category", base::Value(item.category));
+      contribution->SetKey("viewingId", base::Value(item.viewing_id));
+      contribution->SetKey("expirationDate",
+          base::Value(std::to_string(item.expiration_date)));
       contributions->Append(std::move(contribution));
     }
 
@@ -1153,18 +1158,19 @@ void RewardsDOMHandler::OnGetPendingContributions(
 
 void RewardsDOMHandler::RemovePendingContribution(
     const base::ListValue* args) {
-  if (rewards_service_) {
-    std::string publisher_key;
-    std::string viewing_id;
-    int added_date;
-    args->GetString(0, &publisher_key);
-    args->GetString(1, &viewing_id);
-    args->GetInteger(2, &added_date);
-    rewards_service_->RemovePendingContributionUI(
-        publisher_key,
-        viewing_id,
-        static_cast<uint64_t>(added_date));
+  CHECK_EQ(3U, args->GetSize());
+  if (!rewards_service_) {
+    return;
   }
+
+  const std::string publisher_key = args->GetList()[0].GetString();
+  const std::string viewing_id = args->GetList()[1].GetString();
+  const std::string temp = args->GetList()[2].GetString();
+  uint64_t added_date = std::stoull(temp);
+  rewards_service_->RemovePendingContributionUI(
+      publisher_key,
+      viewing_id,
+      added_date);
 }
 
 void RewardsDOMHandler::RemoveAllPendingContributions(
