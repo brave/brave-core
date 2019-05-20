@@ -283,8 +283,6 @@ class LedgerImpl : public ledger::Ledger,
   void GetPublisherBanner(const std::string& publisher_id,
                           ledger::PublisherBannerCallback callback) override;
 
-  double GetBalance() override;
-
   void OnReconcileCompleteSuccess(const std::string& viewing_id,
                                   const ledger::REWARDS_CATEGORY category,
                                   const std::string& probi,

@@ -193,10 +193,6 @@ bool BatState::IsWalletCreated() const {
   return state_->bootStamp_ != 0u;
 }
 
-double BatState::GetBalance() const {
-  return state_->walletProperties_.balance_;
-}
-
 const std::string& BatState::GetPaymentId() const {
   return state_->walletInfo_.paymentId_;
 }
