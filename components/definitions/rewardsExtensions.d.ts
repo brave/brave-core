@@ -34,6 +34,7 @@ declare namespace RewardsExtension {
     name?: string
     percentage?: number
     provider?: string
+    tabId?: number
     tabUrl?: string
     url?: string
     verified?: boolean
