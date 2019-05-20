@@ -84,10 +84,6 @@ class AdBlockStats: LocalAdblockResourceProtocol {
     }
     
     func shouldBlock(_ request: URLRequest) -> Bool {
-        // synchronize code from this point on.
-        objc_sync_enter(self)
-        defer { objc_sync_exit(self) }
-        
         guard let url = request.url else {
             return false
         }
