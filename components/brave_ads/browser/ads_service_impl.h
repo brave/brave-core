@@ -30,11 +30,6 @@
 #include "ui/base/idle/idle.h"
 #endif
 
-#if defined(OS_ANDROID)
-#include "base/android/jni_string.h"
-#include "base/android/jni_android.h"
-#endif
-
 using brave_rewards::RewardsNotificationService;
 
 class NotificationDisplayService;
@@ -78,22 +73,6 @@ class AdsServiceImpl : public AdsService,
   void OnMediaStart(SessionID tab_id) override;
   void OnMediaStop(SessionID tab_id) override;
   void ClassifyPage(const std::string& url, const std::string& page) override;
-  void OnShow(Profile* profile, const std::string& notification_id) override;
-  void OnClose(
-      Profile* profile,
-      const GURL& origin,
-      const std::string& notification_id,
-      bool by_user,
-      base::OnceClosure completed_closure) override;
-  void OnClick(Profile* profile,
-               const GURL& origin,
-               const std::string& notification_id,
-               const base::Optional<int>& action_index,
-               const base::Optional<base::string16>& reply) override;
-  void OpenSettings(
-      Profile* profile,
-      const GURL& origin,
-      bool should_close) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
 
   void Shutdown() override;
@@ -119,6 +98,22 @@ class AdsServiceImpl : public AdsService,
   void ProcessIdleState(ui::IdleState idle_state);
 #endif
   int GetIdleThreshold();
+  void OnShow(Profile* profile, const std::string& notification_id);
+  void OnClose(
+      Profile* profile,
+      const GURL& origin,
+      const std::string& notification_id,
+      bool by_user,
+      base::OnceClosure completed_closure);
+  void OnClick(Profile* profile,
+               const GURL& origin,
+               const std::string& notification_id,
+               const base::Optional<int>& action_index,
+               const base::Optional<base::string16>& reply);
+  void OpenSettings(
+      Profile* profile,
+      const GURL& origin,
+      bool should_close);
 
   // AdsClient implementation
   bool IsForeground() const override;

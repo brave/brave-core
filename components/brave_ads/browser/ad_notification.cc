@@ -4,6 +4,7 @@
 
 #include "brave/browser/version_info.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
+
 #include "base/strings/utf_string_conversions.h"
 #include "ui/message_center/public/cpp/notification.h"
 #include "ui/message_center/public/cpp/notification_types.h"

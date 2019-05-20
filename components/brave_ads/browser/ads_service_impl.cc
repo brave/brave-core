@@ -59,6 +59,7 @@
 
 #if defined(OS_ANDROID)
 #include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
 #include "chrome/android/jni_headers/chrome/jni/BraveAds_jni.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "chrome/browser/android/tab_android.h"
@@ -325,12 +326,10 @@ AdsServiceImpl::~AdsServiceImpl() {
 }
 
 void AdsServiceImpl::OnInitialize() {
-  LOG(WARNING) << "albert OnInitialize called";
   ResetTimer();
 }
 
 void AdsServiceImpl::OnCreate() {
-  LOG(WARNING) << "albert OnCreate called";
   if (connected()) {
     bat_ads_->Initialize(
         base::BindOnce(&AdsServiceImpl::OnInitialize, AsWeakPtr()));
@@ -880,11 +879,8 @@ void AdsServiceImpl::ShowNotification(
 
   notification_ids_[notification_id] = std::move(info);
 
-// (Albert Wang): Should figure out why this call isn't working on Android. It should work
-// #if !defined(OS_ANDROID)
   display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
                             *notification);
-// #endif
 
   uint32_t timer_id = next_timer_id();
 
@@ -1080,12 +1076,15 @@ void AdsServiceImpl::OnClose(Profile* profile,
     std::move(completed_closure).Run();
 }
 
+/**
+ * (Albert Wang): Android 
+ */
 void AdsServiceImpl::OnClick(Profile* profile,
                const GURL& origin,
                const std::string& notification_id,
                const base::Optional<int>& action_index,
                const base::Optional<base::string16>& reply) {
-  // GURL("chrome://brave_ads/?" + *notification_id) this is what origin_url is
+  // (Albert Wang): GURL("chrome://brave_ads/?" + *notification_id) this is what origin_url is
   if (notification_ids_.find(notification_id) == notification_ids_.end())
     return;
 
@@ -1120,7 +1119,6 @@ void AdsServiceImpl::OnClick(Profile* profile,
   nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
 #if defined(OS_ANDROID)
-  // TabModelList::HandlePopupNavigation(&nav_params);
   JNIEnv* env = base::android::AttachCurrentThread();
   base::android::ScopedJavaGlobalRef<jobject> java_obj_;
   java_obj_.Reset(env, Java_BraveAds_create(env, 0).obj());
@@ -1134,7 +1132,6 @@ void AdsServiceImpl::OnClick(Profile* profile,
 void AdsServiceImpl::OpenSettings(Profile* profile,
                                   const GURL& origin,
                                   bool should_close) {
-  // GURL("chrome://brave_ads/?" + *notification_id) this is what origin_url is
   DCHECK(origin.has_query());
   auto notification_id = origin.query();
 
