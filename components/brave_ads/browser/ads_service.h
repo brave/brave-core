@@ -17,6 +17,8 @@
 
 namespace brave_ads {
 
+using IsSupportedRegionCallback = base::OnceCallback<void(bool)>;
+
 class AdsService : public KeyedService {
  public:
   AdsService() = default;
@@ -24,10 +26,10 @@ class AdsService : public KeyedService {
   virtual bool IsSupportedRegion() const = 0;
 
   virtual bool IsAdsEnabled() const = 0;
-  virtual void SetAdsEnabled(bool enabled) = 0;
+  virtual void SetAdsEnabled(const bool is_enabled) = 0;
 
   virtual uint64_t GetAdsPerHour() const = 0;
-  virtual void SetAdsPerHour(uint64_t ads_per_hour) = 0;
+  virtual void SetAdsPerHour(const uint64_t ads_per_hour) = 0;
 
   // ads::Ads proxy
   virtual void TabUpdated(
