@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "content/public/common/resource_type.h"
 
 class AdBlockServiceTest;

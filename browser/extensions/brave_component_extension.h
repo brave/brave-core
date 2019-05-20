@@ -9,25 +9,15 @@
 #include <string>
 
 #include "base/files/file_path.h"
-#include "components/component_updater/component_updater_service.h"
 
-// Just used to give access to OnDemandUpdater since it's private.
-// Chromium has ComponentsUI which is a friend class, so we just
-// do this hack here to gain access.
-class ComponentsUI {
- public:
-  void OnDemandUpdate(component_updater::ComponentUpdateService* cus,
-                      const std::string& component_id);
-};
-
-class BraveComponentExtension : public ComponentsUI {
+class BraveComponentExtension {
  public:
   BraveComponentExtension();
   virtual ~BraveComponentExtension();
   void Register(const std::string& component_name,
                 const std::string& component_id,
                 const std::string& component_base64_public_key);
-  static bool Unregister(const std::string& component_id);
+  bool Unregister();
 
  protected:
   virtual void OnComponentRegistered(const std::string& component_id);

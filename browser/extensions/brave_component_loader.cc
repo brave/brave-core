@@ -19,6 +19,7 @@
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/components_ui.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/browser/extension_prefs.h"
@@ -27,9 +28,13 @@ namespace extensions {
 
 // static
 bool BraveComponentLoader::IsPdfjsDisabled() {
+#if defined(OS_ANDROID)
+  return true;
+#else
   const base::CommandLine& command_line =
     *base::CommandLine::ForCurrentProcess();
   return command_line.HasSwitch(switches::kDisablePDFJSExtension);
+#endif
 }
 
 BraveComponentLoader::BraveComponentLoader(
@@ -41,18 +46,18 @@ BraveComponentLoader::BraveComponentLoader(
       profile_(profile),
       profile_prefs_(profile_prefs),
       testing_callbacks_(nullptr) {
+// TODO(bridiver) - this doesn't belong here
+#if !defined(OS_ANDROID)
   ObserveOpenPdfExternallySetting();
+#endif
 }
 
 BraveComponentLoader::~BraveComponentLoader() {
 }
 
 void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
-  ComponentsUI demand_updater;
-  // This weird looking call is ok, it is just like this to not need
-  // to patch for friend access.
-  demand_updater.OnDemandUpdate(g_browser_process->component_updater(),
-      extension_id);
+  // TODO(bridiver) - I don't think this is correct
+  ComponentsUI::OnDemandUpdate(extension_id);
 }
 
 void BraveComponentLoader::OnComponentReady(std::string extension_id,
@@ -126,6 +131,7 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   }
 }
 
+#if !defined(OS_ANDROID)
 void BraveComponentLoader::ObserveOpenPdfExternallySetting() {
   // Observe the setting change only in regular profiles since the PDF settings
   // page is not available in Guest/Tor profiles.
@@ -137,6 +143,7 @@ void BraveComponentLoader::ObserveOpenPdfExternallySetting() {
         base::Unretained(this)));
   }
 }
+#endif
 
 void BraveComponentLoader::UpdatePdfExtension(const std::string& pref_name) {
   DCHECK(pref_name == prefs::kPluginsAlwaysOpenPdfExternally);

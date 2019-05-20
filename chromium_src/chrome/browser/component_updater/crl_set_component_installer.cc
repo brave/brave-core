@@ -12,6 +12,7 @@
 #if !defined(OS_ANDROID)
 #include "brave/browser/extensions/brave_component_extension.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "chrome/browser/ui/webui/components_ui.h"
 #endif
 
 namespace component_updater {
@@ -19,9 +20,7 @@ namespace component_updater {
 void OnCRLSetRegistered() {
 // https://github.com/brave/browser-android-tabs/issues/857
 #if !defined(OS_ANDROID)
-  ComponentsUI demand_updater;
-  demand_updater.OnDemandUpdate(g_browser_process->component_updater(),
-                                crl_set_extension_id);
+  ComponentsUI::OnDemandUpdate(crl_set_extension_id);
 #endif
 }
 

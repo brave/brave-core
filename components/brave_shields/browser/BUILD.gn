@@ -59,6 +59,7 @@ source_set("brave_shields") {
     "//brave/vendor/tracking-protection/brave:tracking-protection",
     "//brave/vendor/autoplay-whitelist/brave:autoplay-whitelist",
     "//chrome/common",
+    "//components/prefs",
     "//third_party/leveldatabase",
   ]
 

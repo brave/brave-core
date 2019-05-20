@@ -164,7 +164,7 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
     } else {
       DCHECK(it != regional_services_.end());
       it->second->Stop();
-      BraveComponentExtension::Unregister(uuid);
+      it->second->Unregister();
       regional_services_.erase(it);
     }
   }

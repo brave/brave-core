@@ -12,14 +12,9 @@
 #include "base/callback.h"
 #include "brave/browser/component_updater/brave_component_installer.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/ui/webui/components_ui.h"
+#include "components/component_updater/component_updater_service.h"
 
-void ComponentsUI::OnDemandUpdate(
-    component_updater::ComponentUpdateService* cus,
-    const std::string& component_id) {
-  cus->GetOnDemandUpdater().OnDemandUpdate(
-      component_id, component_updater::OnDemandUpdater::Priority::FOREGROUND,
-      component_updater::Callback());
-}
 
 BraveComponentExtension::BraveComponentExtension() {
 }
@@ -46,14 +41,13 @@ void BraveComponentExtension::Register(
                            registered_callback, ready_callback);
 }
 
-// static
-bool BraveComponentExtension::Unregister(const std::string& component_id) {
+bool BraveComponentExtension::Unregister() {
   return g_browser_process->component_updater()->UnregisterComponent(
-      component_id);
+      component_id_);
 }
 
 void BraveComponentExtension::OnComponentRegistered(const std::string& component_id) {
-  OnDemandUpdate(g_browser_process->component_updater(), component_id);
+  ComponentsUI::OnDemandUpdate(component_id);
 }
 
 void BraveComponentExtension::OnComponentReady(
