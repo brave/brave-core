@@ -63,12 +63,12 @@ class TPStatsBlocklistChecker {
             return deferred
         }
         
+        // Getting this domain inside of asyncrhonous clousre below can cause thread locks(#1094)
+        assertIsMainThread("Getting enabled blocklists should happen on main thread")
+        let domainBlockLists = BlocklistName.blocklists(forDomain: domain).on
+        
         DispatchQueue.global().async {
-            var enabledLists = Set<BlocklistName>()
-            
-            domain.managedObjectContext?.performAndWait {
-                enabledLists = BlocklistName.blocklists(forDomain: domain).on
-            }
+            let enabledLists = domainBlockLists
             
             if let resourceType = resourceType {
                 switch resourceType {
