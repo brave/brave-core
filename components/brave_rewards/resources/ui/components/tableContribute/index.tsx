@@ -95,7 +95,7 @@ export default class TableContribute extends React.PureComponent<Props, {}> {
         content: [
           {
             content: (
-              <StyledLink href={row.url} target={'_blank'}>
+              <StyledLink href={row.url} target={'_blank'} data-test-id={'ac_link_' + row.profile.name}>
                 <Profile
                   title={row.profile.name}
                   provider={row.profile.provider}
