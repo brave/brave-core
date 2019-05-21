@@ -149,7 +149,6 @@ void BraveReferralsService::OnReferralInitLoadComplete(
     return;
   }
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   const base::Value* download_id = root->FindKey("download_id");
   pref_service_->SetString(kReferralDownloadID, download_id->GetString());
 
@@ -167,7 +166,6 @@ void BraveReferralsService::OnReferralInitLoadComplete(
   task_runner_->PostTask(FROM_HERE,
                          base::Bind(&BraveReferralsService::DeletePromoCodeFile,
                                     base::Unretained(this)));
-#endif
 }
 
 void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
@@ -209,13 +207,11 @@ void BraveReferralsService::OnReferralFinalizationCheckLoadComplete(
 }
 
 void BraveReferralsService::OnReadPromoCodeComplete() {
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   pref_service_->SetBoolean(kReferralCheckedForPromoCodeFile, true);
   if (!promo_code_.empty()) {
     pref_service_->SetString(kReferralPromoCode, promo_code_);
     InitReferral();
   }
-#endif
 }
 
 void BraveReferralsService::GetFirstRunTime() {
@@ -321,11 +317,9 @@ void BraveReferralsService::MaybeDeletePromoCodePref() const {
   if (!delete_time_str.empty())
     base::StringToUint64(delete_time_str, &delete_time);
 
-#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   base::Time now = base::Time::Now();
   if (now - first_run_timestamp_ >= base::TimeDelta::FromSeconds(delete_time))
     pref_service_->ClearPref(kReferralPromoCode);
-#endif
 }
 
 std::string BraveReferralsService::BuildReferralInitPayload() const {
