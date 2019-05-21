@@ -264,6 +264,12 @@ void AdsImpl::TabUpdated(
     return;
   }
 
+#if defined(OS_ANDROID)
+  if (url.empty()) {
+    return;
+  }
+#endif
+
   client_->UpdateLastUserActivity();
 
   if (is_active) {
@@ -364,6 +370,8 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
   if (UrlHostsMatch(url, last_shown_notification_info_.url)) {
     BLOG(INFO) << "Site visited " << url
         << ", URL is from last shown notification";
+
+    StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
 
     return;
   }
@@ -1189,7 +1197,6 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
     case NotificationResultInfoResultType::CLICKED: {
       writer.String("clicked");
       client_->UpdateAdsUUIDSeen(info.uuid, 1);
-      StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
 
       break;
     }
