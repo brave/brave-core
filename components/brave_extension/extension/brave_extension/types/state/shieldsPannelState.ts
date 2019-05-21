@@ -108,3 +108,7 @@ export interface FocusedWindowChanged {
 export interface RequestDataAndUpdateActiveTab {
   (state: State, windowId: number, tabId: number): State
 }
+
+export interface PersistAllNoScriptSettings {
+  (state: State, tabId: number): State
+}

@@ -105,12 +105,11 @@ export interface BlockJavaScript {
 }
 
 interface AllowScriptOriginsOnceReturn {
-  type: types.ALLOW_SCRIPT_ORIGINS_ONCE,
-  origins: string[]
+  type: types.ALLOW_SCRIPT_ORIGINS_ONCE
 }
 
 export interface AllowScriptOriginsOnce {
-  (origins: string[]): AllowScriptOriginsOnceReturn
+  (): AllowScriptOriginsOnceReturn
 }
 
 interface ChangeNoScriptSettingsReturn {
@@ -131,6 +130,14 @@ export interface ChangeAllNoScriptSettings {
   (shouldBlock: boolean): ChangeAllNoScriptSettingsReturn
 }
 
+interface SetFinalScriptsBlockedStateReturn {
+  type: types.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE
+}
+
+export interface SetFinalScriptsBlockedState {
+  (): SetFinalScriptsBlockedStateReturn
+}
+
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
@@ -143,4 +150,5 @@ export type shieldPanelActions =
   BlockCookiesReturn |
   AllowScriptOriginsOnceReturn |
   ChangeNoScriptSettingsReturn |
-  ChangeAllNoScriptSettingsReturn
+  ChangeAllNoScriptSettingsReturn |
+  SetFinalScriptsBlockedStateReturn

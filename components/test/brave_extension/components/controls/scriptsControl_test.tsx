@@ -19,7 +19,7 @@ const fakeProps: Props = {
   changeNoScriptSettings: (origin: string) => ({ type: actionTypes.CHANGE_NO_SCRIPT_SETTINGS, origin }),
   blockJavaScript: (setting: BlockJSOptions) => ({ type: actionTypes.JAVASCRIPT_TOGGLED, setting }),
   changeAllNoScriptSettings: (shouldBlock: boolean) => ({ type: actionTypes.CHANGE_ALL_NO_SCRIPT_SETTINGS, shouldBlock }),
-  allowScriptOriginsOnce: (origins: string[]) => ({ type: actionTypes.ALLOW_SCRIPT_ORIGINS_ONCE, origins })
+  allowScriptOriginsOnce: () => ({ type: actionTypes.ALLOW_SCRIPT_ORIGINS_ONCE })
 }
 
 describe('ScriptsControl component', () => {

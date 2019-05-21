@@ -16,7 +16,8 @@ import {
   ChangeAllNoScriptSettings,
   AllowScriptOriginsOnce,
   BlockCookies,
-  BlockFingerprinting
+  BlockFingerprinting,
+  SetFinalScriptsBlockedState
 } from '../types/actions/shieldsPanelActions'
 import { BlockCookiesOptions, BlockJSOptions, BlockFPOptions } from '../types/other/blockTypes'
 import { NoScriptInfo } from '../types/other/noScriptInfo'
@@ -36,6 +37,7 @@ interface JavaScriptProps {
   blockJavaScript: BlockJavaScript
   changeAllNoScriptSettings: ChangeAllNoScriptSettings
   allowScriptOriginsOnce: AllowScriptOriginsOnce
+  setFinalScriptsBlockedState: SetFinalScriptsBlockedState
 }
 
 interface CookiesProps {
@@ -70,6 +72,7 @@ export default class PrivacyControls extends React.PureComponent<Props, {}> {
           blockJavaScript={this.props.blockJavaScript}
           changeAllNoScriptSettings={this.props.changeAllNoScriptSettings}
           allowScriptOriginsOnce={this.props.allowScriptOriginsOnce}
+          setFinalScriptsBlockedState={this.props.setFinalScriptsBlockedState}
         />
         <CookiesControl
           isBlockedListOpen={this.props.isBlockedListOpen}

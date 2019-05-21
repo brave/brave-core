@@ -28,7 +28,8 @@ import {
   BlockCookies,
   AllowScriptOriginsOnce,
   ChangeNoScriptSettings,
-  ChangeAllNoScriptSettings
+  ChangeAllNoScriptSettings,
+  SetFinalScriptsBlockedState
 } from '../types/actions/shieldsPanelActions'
 
 interface Props {
@@ -42,6 +43,7 @@ interface Props {
     allowScriptOriginsOnce: AllowScriptOriginsOnce
     changeNoScriptSettings: ChangeNoScriptSettings
     changeAllNoScriptSettings: ChangeAllNoScriptSettings
+    setFinalScriptsBlockedState: SetFinalScriptsBlockedState
   }
   shieldsPanelTabData: Tab
 }
@@ -138,6 +140,7 @@ export default class Shields extends React.PureComponent<Props, State> {
                 fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
                 fingerprintingBlockedResources={shieldsPanelTabData.fingerprintingBlockedResources}
                 blockFingerprinting={actions.blockFingerprinting}
+                setFinalScriptsBlockedState={actions.setFinalScriptsBlockedState}
               />
             </>
           )

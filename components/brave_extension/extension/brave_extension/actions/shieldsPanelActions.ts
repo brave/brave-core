@@ -68,10 +68,9 @@ export const blockCookies: actions.BlockCookies = (setting) => {
   }
 }
 
-export const allowScriptOriginsOnce: actions.AllowScriptOriginsOnce = (origins) => {
+export const allowScriptOriginsOnce: actions.AllowScriptOriginsOnce = () => {
   return {
-    type: types.ALLOW_SCRIPT_ORIGINS_ONCE,
-    origins
+    type: types.ALLOW_SCRIPT_ORIGINS_ONCE
   }
 }
 
@@ -86,5 +85,15 @@ export const changeAllNoScriptSettings: actions.ChangeAllNoScriptSettings = (sho
   return {
     type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS,
     shouldBlock
+  }
+}
+
+/**
+ * Set the final state to all resources so they could be stored persistently in
+ * the blocked/allowed list
+ */
+export const setFinalScriptsBlockedState: actions.SetFinalScriptsBlockedState = () => {
+  return {
+    type: types.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE
   }
 }

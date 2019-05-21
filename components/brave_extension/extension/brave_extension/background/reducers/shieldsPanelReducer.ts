@@ -2,10 +2,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Types
 import * as shieldsPanelTypes from '../../constants/shieldsPanelTypes'
 import * as windowTypes from '../../constants/windowTypes'
 import * as tabTypes from '../../constants/tabTypes'
 import * as webNavigationTypes from '../../constants/webNavigationTypes'
+import { State } from '../../types/state/shieldsPannelState'
+import { Actions } from '../../types/actions/index'
+
+// State helpers
+import * as shieldsPanelState from '../../state/shieldsPanelState'
+import * as noScriptState from '../../state/noScriptState'
+
+// APIs
 import {
   setAllowBraveShields,
   setAllowAds,
@@ -19,9 +28,9 @@ import {
   setAllowScriptOriginsOnce
 } from '../api/shieldsAPI'
 import { reloadTab } from '../api/tabsAPI'
-import * as shieldsPanelState from '../../state/shieldsPanelState'
-import { Actions } from '../../types/actions/index'
-import { State } from '../../types/state/shieldsPannelState'
+
+// Helpers
+import { getAllowedScriptsOrigins } from '../../helpers/noScriptUtils'
 
 export default function shieldsPanelReducer (state: State = { tabs: {}, windows: {}, currentWindowId: -1 }, action: Actions) {
   switch (action.type) {
@@ -244,7 +253,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
         console.error('Active tab not found')
         break
       }
-      setAllowScriptOriginsOnce(action.origins, tabData.id)
+      setAllowScriptOriginsOnce(getAllowedScriptsOrigins(tabData.noScriptInfo), tabData.id)
         .then(() => {
           requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
           reloadTab(tabData.id, true).catch(() => {
@@ -265,6 +274,9 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       const tabId: number = shieldsPanelState.getActiveTabId(state)
       state = shieldsPanelState.changeAllNoScriptSettings(state, tabId, action.shouldBlock)
       break
+    }
+    case shieldsPanelTypes.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE: {
+      state = noScriptState.setFinalScriptsBlockedState(state)
     }
   }
   return state

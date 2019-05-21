@@ -36,7 +36,8 @@ import {
   ChangeNoScriptSettings,
   BlockJavaScript,
   ChangeAllNoScriptSettings,
-  AllowScriptOriginsOnce
+  AllowScriptOriginsOnce,
+  SetFinalScriptsBlockedState
 } from '../../types/actions/shieldsPanelActions'
 
 interface CommonProps {
@@ -55,6 +56,7 @@ interface JavaScriptProps {
   blockJavaScript: BlockJavaScript
   changeAllNoScriptSettings: ChangeAllNoScriptSettings
   allowScriptOriginsOnce: AllowScriptOriginsOnce
+  setFinalScriptsBlockedState: SetFinalScriptsBlockedState
 }
 
 export type Props = CommonProps & JavaScriptProps
@@ -122,6 +124,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
       allowScriptOriginsOnce,
       changeNoScriptSettings,
       changeAllNoScriptSettings,
+      setFinalScriptsBlockedState,
       noScriptInfo
     } = this.props
     const { scriptsBlockedOpen } = this.state
@@ -158,6 +161,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
               allowScriptOriginsOnce={allowScriptOriginsOnce}
               changeNoScriptSettings={changeNoScriptSettings}
               changeAllNoScriptSettings={changeAllNoScriptSettings}
+              setFinalScriptsBlockedState={setFinalScriptsBlockedState}
             />
         }
       </>

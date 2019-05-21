@@ -99,10 +99,8 @@ describe('shieldsPanelActions', () => {
   })
 
   it('allowScriptOriginsOnce action', () => {
-    const origins = ['https://a.com', 'https://b.com']
-    expect(actions.allowScriptOriginsOnce(origins)).toEqual({
-      type: types.ALLOW_SCRIPT_ORIGINS_ONCE,
-      origins
+    expect(actions.allowScriptOriginsOnce()).toEqual({
+      type: types.ALLOW_SCRIPT_ORIGINS_ONCE
     })
   })
 

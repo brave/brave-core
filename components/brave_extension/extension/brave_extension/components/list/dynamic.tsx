@@ -30,8 +30,12 @@ import { NoScriptInfo } from '../../types/other/noScriptInfo'
 import {
   AllowScriptOriginsOnce,
   ChangeNoScriptSettings,
-  ChangeAllNoScriptSettings
+  ChangeAllNoScriptSettings,
+  SetFinalScriptsBlockedState
 } from '../../types/actions/shieldsPanelActions'
+
+// Utils
+import { getBlockScriptText } from '../../helpers/noScriptUtils'
 
 interface Props {
   favicon: string
@@ -43,6 +47,7 @@ interface Props {
   allowScriptOriginsOnce: AllowScriptOriginsOnce
   changeNoScriptSettings: ChangeNoScriptSettings
   changeAllNoScriptSettings: ChangeAllNoScriptSettings
+  setFinalScriptsBlockedState: SetFinalScriptsBlockedState
 }
 
 export default class DynamicList extends React.PureComponent<Props, {}> {
@@ -54,17 +59,16 @@ export default class DynamicList extends React.PureComponent<Props, {}> {
 
   onClickBlockOrAllowScript = (event: React.MouseEvent<HTMLButtonElement>) => {
     this.props.changeNoScriptSettings(event.currentTarget.id)
+    this.props.allowScriptOriginsOnce()
   }
 
   onClickAllowOrBlockAll (shouldBlock: boolean) {
     this.props.changeAllNoScriptSettings(shouldBlock)
+    this.props.allowScriptOriginsOnce()
   }
 
-  onClickApplyScriptsOnce = () => {
-    const { list } = this.props
-    const allOrigins = Object.keys(list)
-    const allNonBlockedOrigins = allOrigins.filter(key => list[key].willBlock === false)
-    this.props.allowScriptOriginsOnce(allNonBlockedOrigins)
+  onClickConfirmApplyScripts = () => {
+    this.props.setFinalScriptsBlockedState()
   }
 
   getList = (isBlocked: boolean) => {
@@ -77,7 +81,7 @@ export default class DynamicList extends React.PureComponent<Props, {}> {
         <BlockedListItemWithOptions key={index}>
           <span title={origin}>{origin}</span>
           <LinkAction id={origin} onClick={this.onClickBlockOrAllowScript}>
-            {list[origin].willBlock ? getLocale('allow') : getLocale('block')}
+            {getBlockScriptText(list[origin].userInteracted, !isBlocked)}
           </LinkAction>
         </BlockedListItemWithOptions>
       )
@@ -123,7 +127,7 @@ export default class DynamicList extends React.PureComponent<Props, {}> {
         <BlockedListFooterWithOptions>
           <LinkAction onClick={onClose}>{getLocale('cancel')}</LinkAction>
           <ShieldsButton
-            onClick={this.onClickApplyScriptsOnce}
+            onClick={this.onClickConfirmApplyScripts}
             level='primary'
             type='accent'
             text={getLocale('applyOnce')}
