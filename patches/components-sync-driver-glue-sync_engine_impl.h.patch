@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/glue/sync_engine_impl.h b/components/sync/driver/glue/sync_engine_impl.h
-index db4f0ef865957a38dc1b510f31ebd49b83cb57b9..4daca79263fec199188e54667d1a9b7312ba7aac 100644
+index 9fce092e22ca630fa3f5efa0bc1e963a86659625..89f7155a590b71cdab381967009384ef2d040c06 100644
 --- a/components/sync/driver/glue/sync_engine_impl.h
 +++ b/components/sync/driver/glue/sync_engine_impl.h
-@@ -158,6 +158,12 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
+@@ -160,6 +160,12 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
  
    SyncEngineHost* host() { return host_; }
  
@@ -13,9 +13,9 @@ index db4f0ef865957a38dc1b510f31ebd49b83cb57b9..4daca79263fec199188e54667d1a9b73
 +      GetRecordsCallback cb, std::unique_ptr<RecordsList> records) override;
 +
   private:
-   friend class SyncBackendHostCore;
+   friend class SyncEngineBackend;
  
-@@ -221,6 +227,9 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
+@@ -215,6 +221,9 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
    ModelTypeSet last_enabled_types_;
    bool sessions_invalidation_enabled_ = false;
  

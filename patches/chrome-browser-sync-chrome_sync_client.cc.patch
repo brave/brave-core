@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sync/chrome_sync_client.cc b/chrome/browser/sync/chrome_sync_client.cc
-index 3efbe8f776e1ecfd212fee726fad5c360d9788c6..ce8f6e05186781e40a0224125ed248a6fa102dc9 100644
+index ffb7c9f0a5fb78d160fbcfdba6cd3e3b8ed10179..0afc072de8a2f8f874baa66374078df5fcb62b3f 100644
 --- a/chrome/browser/sync/chrome_sync_client.cc
 +++ b/chrome/browser/sync/chrome_sync_client.cc
-@@ -164,7 +164,8 @@ syncer::ModelTypeSet GetDisabledTypesFromCommandLine() {
+@@ -165,7 +165,8 @@ syncer::ModelTypeSet GetDisabledTypesFromCommandLine() {
  
  }  // namespace
  

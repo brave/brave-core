@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine_impl/sync_manager_impl.h b/components/sync/engine_impl/sync_manager_impl.h
-index d0f1d63cc184c2b0780fea268a52cf52262efbd9..07bff3e8280dc7b621895076fd09851ffacfe4b2 100644
+index 10c1a959d084e504f8bcf58b05c047bd6b5ca33d..2b8b6769ae84f10eae4f0b5f01e360282dd497df 100644
 --- a/components/sync/engine_impl/sync_manager_impl.h
 +++ b/components/sync/engine_impl/sync_manager_impl.h
-@@ -202,6 +202,8 @@ class SyncManagerImpl
+@@ -199,6 +199,8 @@ class SyncManagerImpl
  
    using NotificationInfoMap = std::map<ModelType, NotificationInfo>;
  

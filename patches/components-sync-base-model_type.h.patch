@@ -1,12 +1,12 @@
 diff --git a/components/sync/base/model_type.h b/components/sync/base/model_type.h
-index ca6acf4cdbded08bbd1a69c27827ecf0374a0d11..56f2ae314dfff6d8df3df67ec1edd9b92d1d9d93 100644
+index db7e7d7d68eabab6ed7e1a3ccfe125e3e571e382..3bf5bd32c2aa567d16a6f90953556fb5283dc592 100644
 --- a/components/sync/base/model_type.h
 +++ b/components/sync/base/model_type.h
-@@ -271,6 +271,7 @@ constexpr ModelTypeSet ProxyTypes() {
+@@ -241,6 +241,7 @@ constexpr ModelTypeSet ProxyTypes() {
  // - They support custom update application and conflict resolution logic.
  // - All change processing occurs on the sync thread (GROUP_PASSIVE).
  constexpr ModelTypeSet ControlTypes() {
 +  return ModelTypeSet(UNSPECIFIED);
-   return ModelTypeSet::FromRange(FIRST_CONTROL_MODEL_TYPE,
-                                  LAST_CONTROL_MODEL_TYPE);
+   return ModelTypeSet(NIGORI);
  }
+ 

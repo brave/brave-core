@@ -1,8 +1,8 @@
 diff --git a/components/sync/driver/data_type_manager_impl.cc b/components/sync/driver/data_type_manager_impl.cc
-index 9dc9226269704e8a2412634b231a6d54c8bc93f6..c746e46fdec8c992fcafb87f3e89927979165019 100644
+index f19aeafebc707eaf703b0fa71bf1c2d80dba2596..2b0a2cfe99203e331dabb6ec741649b0af4bf0aa 100644
 --- a/components/sync/driver/data_type_manager_impl.cc
 +++ b/components/sync/driver/data_type_manager_impl.cc
-@@ -546,8 +546,8 @@ ModelTypeSet DataTypeManagerImpl::PrepareConfigureParams(
+@@ -542,8 +542,8 @@ ModelTypeSet DataTypeManagerImpl::PrepareConfigureParams(
    types_to_download.PutAll(clean_types);
    types_to_download.RemoveAll(ProxyTypes());
    types_to_download.RemoveAll(CommitOnlyTypes());
