@@ -2,12 +2,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Initial state
 import { defaultState as welcomeData } from '../../components/brave_welcome_ui/storage'
 import { defaultState as rewardsData } from '../../components/brave_rewards/resources/ui/storage'
 import { defaultState as adblockData } from '../../components/brave_adblock_ui/storage'
 import { defaultState as syncData } from '../../components/brave_sync/ui/storage'
+
+// Types
 import { Tab } from '../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
 import { BlockDetails } from '../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
+
+// Helpers
 import * as deepFreeze from 'deep-freeze-node'
 
 export class ChromeEvent {
@@ -33,6 +38,28 @@ export const rewardsInitialState: Rewards.ApplicationState = { rewardsData }
 export const adblockInitialState: AdBlock.ApplicationState = { adblockData }
 
 export const syncInitialState: Sync.ApplicationState = { syncData }
+
+export const newTabInitialState: NewTab.ApplicationState = {
+  newTabData: {
+    topSites: [],
+    ignoredTopSites: [],
+    pinnedTopSites: [],
+    gridSites: [],
+    showEmptyPage: false,
+    isIncognito: new ChromeEvent(),
+    useAlternativePrivateSearchEngine: false,
+    isTor: false,
+    isQwant: false,
+    bookmarks: {},
+    stats: {
+      adsBlockedStat: 0,
+      trackersBlockedStat: 0,
+      javascriptBlockedStat: 0,
+      httpsUpgradesStat: 0,
+      fingerprintingBlockedStat: 0
+    }
+  }
+}
 
 interface CustomTab extends Tab {
   url: string
@@ -187,7 +214,13 @@ export const getMockChrome = () => {
       }
     },
     bookmarks: {
-      search: function () {
+      create: function (bookmark: chrome.bookmarks.BookmarkCreateArg, callback?: (result: chrome.bookmarks.BookmarkTreeNode[]) => void) {
+        return
+      },
+      remove: function (id: string, callback?: Function) {
+        return
+      },
+      search: function (query: string, callback: (results: chrome.bookmarks.BookmarkTreeNode[]) => void) {
         return
       }
     }

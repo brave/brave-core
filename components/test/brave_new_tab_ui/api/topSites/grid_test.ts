@@ -1,11 +1,10 @@
-/* global describe, it */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { getGridSites } from '../../brave_new_tab_ui/api'
+import { getGridSites } from '../../../../brave_new_tab_ui/api/topSites/grid'
 
-describe('new tab api tests', () => {
+describe('new tab grid api tests', () => {
   const defaultState = {
     topSites: [],
     ignoredTopSites: [],

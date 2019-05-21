@@ -2,8 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-// Constants
-import { images as backgrounds } from './constants/backgrounds'
+import * as backgroundAPI from './api/background'
 
 // Utils
 import { debounce } from '../common/debounce'
@@ -30,12 +29,6 @@ const defaultState: NewTab.State = {
   }
 }
 
-const randomBackgroundImage = (): NewTab.Image => {
-  const randomIndex: number = Math.floor(Math.random() * backgrounds.length)
-  const image: NewTab.Image = Object.assign({}, backgrounds[randomIndex])
-  return image
-}
-
 export const getLoadTimeData = (state: NewTab.State) => {
   state = { ...state }
   state.stats = defaultState.stats
@@ -49,7 +42,7 @@ export const getLoadTimeData = (state: NewTab.State) => {
 
 const cleanData = (state: NewTab.State): NewTab.State => {
   state = { ...state }
-  state.backgroundImage = randomBackgroundImage()
+  state.backgroundImage = backgroundAPI.randomBackgroundImage()
   state = getLoadTimeData(state)
   return state
 }

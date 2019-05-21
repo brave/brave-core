@@ -5,7 +5,7 @@
 import * as React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import * as dataFetchAPI from './api/dataFetch'
 
 import Theme from 'brave-ui/theme/brave-default'
 import { ThemeProvider } from 'brave-ui/theme'
@@ -15,7 +15,6 @@ import App from './components/app'
 
 // Utils
 import store from './store'
-import * as newTabActions from './actions/new_tab_actions'
 import 'emptykit.css'
 
 // Fonts
@@ -37,7 +36,7 @@ window.cr.define('brave_new_tab', function () {
   }
 
   function statsUpdated () {
-    const actions = bindActionCreators(newTabActions, store.dispatch.bind(store))
+    const actions = dataFetchAPI.getActions()
     actions.statsUpdated()
   }
 
