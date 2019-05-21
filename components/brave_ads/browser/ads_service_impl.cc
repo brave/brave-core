@@ -1083,8 +1083,19 @@ void AdsServiceImpl::OnClick(Profile* profile,
                const base::Optional<int>& action_index,
                const base::Optional<base::string16>& reply) {
   // GURL("chrome://brave_ads/?" + *notification_id) this is what origin_url is
+#if defined(OS_ANDROID)
+  JNIEnv* env = base::android::AttachCurrentThread();
+  base::android::ScopedJavaGlobalRef<jobject> java_obj_;
+  java_obj_.Reset(env, Java_BraveAds_create(env, 0).obj());
+  if (notification_ids_.find(notification_id) == notification_ids_.end()) {
+    base::android::ScopedJavaLocalRef<jstring> jurl = base::android::ConvertUTF8ToJavaString(env, "https://brave.com/");
+    Java_BraveAds_openPageFromNative(env, java_obj_, jurl);
+    return;
+  }
+#else
   if (notification_ids_.find(notification_id) == notification_ids_.end())
     return;
+#endif
 
   auto notification_info = base::WrapUnique(
       notification_ids_[notification_id].release());
@@ -1117,9 +1128,6 @@ void AdsServiceImpl::OnClick(Profile* profile,
   nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
 #if defined(OS_ANDROID)
-  JNIEnv* env = base::android::AttachCurrentThread();
-  base::android::ScopedJavaGlobalRef<jobject> java_obj_;
-  java_obj_.Reset(env, Java_BraveAds_create(env, 0).obj());
   base::android::ScopedJavaLocalRef<jstring> jurl = base::android::ConvertUTF8ToJavaString(env, notification_info->url.c_str());
   Java_BraveAds_openPageFromNative(env, java_obj_, jurl);
 #else
