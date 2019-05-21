@@ -34,8 +34,12 @@ export interface State {
   fakeChangedDefaultTheme: boolean
 }
 
-export default class WelcomePage extends React.PureComponent<{}, State> {
-  constructor (props: {}) {
+export interface Props {
+  isDefaultSearchGoogle: boolean
+}
+
+export default class WelcomePage extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
     super(props)
     this.state = {
       currentScreen: 1,
@@ -120,6 +124,7 @@ export default class WelcomePage extends React.PureComponent<{}, State> {
 
   render () {
     const { currentScreen, fakeChangedSearchEngine } = this.state
+    const { isDefaultSearchGoogle } = this.props
     return (
       <>
         <BackgroundContainer>
@@ -130,7 +135,7 @@ export default class WelcomePage extends React.PureComponent<{}, State> {
             <SlideContent>
               <WelcomeBox index={1} currentScreen={currentScreen} onClick={this.onClickLetsGo} />
               <ImportBox index={2} currentScreen={currentScreen} onClick={this.onClickImport} />
-              <SearchBox index={3} currentScreen={currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} fakeOnChange={this.onChangeDefaultSearchEngine} fakeSearchEngineSelected={fakeChangedSearchEngine}/>
+              <SearchBox index={3} currentScreen={currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} fakeOnChange={this.onChangeDefaultSearchEngine} fakeSearchEngineSelected={fakeChangedSearchEngine} isDefaultSearchGoogle={isDefaultSearchGoogle}/>
               <ThemeBox index={4} currentScreen={currentScreen} onClick={this.onClickChooseYourTheme} />
               <ShieldsBox index={5} currentScreen={currentScreen} />
               <RewardsBox index={6} currentScreen={currentScreen} onClick={this.onClickRewardsGetStarted} />

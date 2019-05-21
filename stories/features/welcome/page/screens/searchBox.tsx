@@ -24,11 +24,13 @@ interface Props {
   onClick: () => void
   fakeOnChange: () => void
   fakeSearchEngineSelected: boolean
+  isDefaultSearchGoogle: boolean
 }
 
 export default class SearchEngineBox extends React.PureComponent<Props, {}> {
   render () {
-    const { index, currentScreen, onClick, fakeOnChange, fakeSearchEngineSelected } = this.props
+    const { index, currentScreen, onClick, fakeOnChange, fakeSearchEngineSelected, isDefaultSearchGoogle } = this.props
+    const bodyText = isDefaultSearchGoogle ? `${locale.chooseSearchEngine} ${locale.privateExperience}` : locale.chooseSearchEngine
     return (
       <Content
         zIndex={index}
@@ -38,7 +40,7 @@ export default class SearchEngineBox extends React.PureComponent<Props, {}> {
       >
         <WelcomeSearchImage />
         <Title>{locale.setDefaultSearchEngine}</Title>
-        <Paragraph>{locale.chooseSearchEngine}</Paragraph>
+        <Paragraph>{bodyText}</Paragraph>
           <SelectGrid>
             <SelectBox onChange={fakeOnChange}>
               <option value=''>{locale.selectSearchEngine}</option>

@@ -16,6 +16,7 @@ const locale = {
   setDefault: 'Set default',
   setDefaultSearchEngine: 'Set default search engine',
   chooseSearchEngine: 'Choose the search engine you would like to use by default when searching the web from the URL bar.',
+  privateExperience: 'For a more private search experience, try DuckDuckGo.',
   selectSearchEngine: 'Select a search engine',
   fakeSearchProvider1: 'DuckDuckGo',
   fakeSearchProvider2: 'Google (default)',
