@@ -6,6 +6,7 @@
 #include <cmath>
 
 #include "brave/browser/brave_stats_updater_params.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
@@ -69,7 +70,9 @@ void BraveStatsUpdaterParams::LoadPrefs() {
   week_of_installation_ = pref_service_->GetString(kWeekOfInstallation);
   if (week_of_installation_.empty())
     week_of_installation_ = GetLastMondayAsYMD();
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   referral_promo_code_ = pref_service_->GetString(kReferralPromoCode);
+#endif
 }
 
 void BraveStatsUpdaterParams::SavePrefs() {
