@@ -14,6 +14,6 @@ storiesOf('Feature Components/Welcome', module)
   .addDecorator(withKnobs)
   .add('Page', () => {
     return (
-      <WelcomePage isDefaultSearchGoogle={boolean('Is default google?', true)}/>
+      <WelcomePage isDefaultSearchGoogle={boolean('Is default search google?', true)}/>
     )
   })
