@@ -142,6 +142,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void GetPendingContributionsTotal(
       GetPendingContributionsTotalCallback callback) override;
 
+  void GetCountryCodes(
+      const std::vector<std::string>& countries,
+      GetCountryCodesCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
@@ -270,6 +274,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnGetPendingContributionsTotal(
       CallbackHolder<GetPendingContributionsTotalCallback>* holder,
       double amount);
+
+  static void OnGetCountryCodes(
+      CallbackHolder<GetCountryCodesCallback>* holder,
+      const std::vector<int32_t>& countries);
 
   ledger::LedgerClient* ledger_client_;
 

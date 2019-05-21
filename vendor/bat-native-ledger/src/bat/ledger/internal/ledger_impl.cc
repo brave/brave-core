@@ -3,6 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <stdint.h>
+
+#include <algorithm>
 #include <ctime>
 #include <iostream>
 #include <random>
@@ -636,13 +639,31 @@ bool LedgerImpl::GetAutoContribute() const {
   return bat_state_->GetAutoContribute();
 }
 
-std::map<std::string, std::string> LedgerImpl::GetAddresses() {
+void LedgerImpl::GetAddresses(
+    int32_t current_country_code,
+    ledger::GetAddressesCallback callback) {
+  ledger_client_->GetCountryCodes(
+      braveledger_ledger::_add_funds_limited_countries,
+      std::bind(&LedgerImpl::GetAddressesInternal,
+                             this,
+                             _1,
+                             current_country_code,
+                             callback));
+}
+
+void LedgerImpl::GetAddressesInternal(
+    const std::vector<int32_t>& country_codes,
+    int32_t current_country_code,
+    ledger::GetAddressesCallback callback) {
   std::map<std::string, std::string> addresses;
   addresses.emplace("BAT", GetBATAddress());
-  addresses.emplace("BTC", GetBTCAddress());
-  addresses.emplace("ETH", GetETHAddress());
-  addresses.emplace("LTC", GetLTCAddress());
-  return addresses;
+  if (std::find(country_codes.begin(), country_codes.end(),
+      current_country_code) == country_codes.end()) {
+    addresses.emplace("BTC", GetBTCAddress());
+    addresses.emplace("ETH", GetETHAddress());
+    addresses.emplace("LTC", GetLTCAddress());
+  }
+  callback(addresses);
 }
 
 const std::string& LedgerImpl::GetBATAddress() const {
