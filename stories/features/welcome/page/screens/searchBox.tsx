@@ -23,11 +23,12 @@ interface Props {
   currentScreen: number
   onClick: () => void
   fakeOnChange: () => void
+  fakeSearchEngineSelected: boolean
 }
 
 export default class SearchEngineBox extends React.PureComponent<Props, {}> {
   render () {
-    const { index, currentScreen, onClick, fakeOnChange } = this.props
+    const { index, currentScreen, onClick, fakeOnChange, fakeSearchEngineSelected } = this.props
     return (
       <Content
         zIndex={index}
@@ -40,15 +41,16 @@ export default class SearchEngineBox extends React.PureComponent<Props, {}> {
         <Paragraph>{locale.chooseSearchEngine}</Paragraph>
           <SelectGrid>
             <SelectBox onChange={fakeOnChange}>
+              <option value=''>{locale.selectSearchEngine}</option>
               <option value='DuckDuckGo'>{locale.fakeSearchProvider1}</option>
               <option value='Google'>{locale.fakeSearchProvider2}</option>
-              <option value='Bing'>{locale.fakeSearchProvider3}</option>
             </SelectBox>
             <Button
               level='primary'
               type='accent'
               size='large'
-              text={locale.confirm}
+              text={locale.setDefault}
+              disabled={!fakeSearchEngineSelected}
               onClick={onClick}
             />
           </SelectGrid>

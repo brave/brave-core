@@ -119,7 +119,7 @@ export default class WelcomePage extends React.PureComponent<{}, State> {
   }
 
   render () {
-    const { currentScreen } = this.state
+    const { currentScreen, fakeChangedSearchEngine } = this.state
     return (
       <>
         <BackgroundContainer>
@@ -130,7 +130,7 @@ export default class WelcomePage extends React.PureComponent<{}, State> {
             <SlideContent>
               <WelcomeBox index={1} currentScreen={currentScreen} onClick={this.onClickLetsGo} />
               <ImportBox index={2} currentScreen={currentScreen} onClick={this.onClickImport} />
-              <SearchBox index={3} currentScreen={currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} fakeOnChange={this.onChangeDefaultSearchEngine} />
+              <SearchBox index={3} currentScreen={currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} fakeOnChange={this.onChangeDefaultSearchEngine} fakeSearchEngineSelected={fakeChangedSearchEngine}/>
               <ThemeBox index={4} currentScreen={currentScreen} onClick={this.onClickChooseYourTheme} />
               <ShieldsBox index={5} currentScreen={currentScreen} />
               <RewardsBox index={6} currentScreen={currentScreen} onClick={this.onClickRewardsGetStarted} />
