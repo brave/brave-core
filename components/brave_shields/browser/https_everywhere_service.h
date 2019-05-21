@@ -24,6 +24,8 @@ class DB;
 
 class HTTPSEverywhereServiceTest;
 
+using brave_component_updater::BraveComponent;
+
 namespace brave_shields {
 
 const std::string kHTTPSEverywhereComponentName("Brave HTTPS Everywhere Updater");
@@ -52,7 +54,7 @@ public:
 
 class HTTPSEverywhereService : public BaseBraveShieldsService {
  public:
-   HTTPSEverywhereService();
+   HTTPSEverywhereService(BraveComponent::Delegate* delegate);
    ~HTTPSEverywhereService() override;
   bool GetHTTPSURL(const GURL* url, const uint64_t& request_id,
       std::string& new_url);
@@ -96,7 +98,8 @@ class HTTPSEverywhereService : public BaseBraveShieldsService {
 };
 
 // Creates the HTTPSEverywhereService
-std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory();
+std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory(
+    BraveComponent::Delegate* delegate);
 
 }  // namespace brave_shields
 

@@ -17,12 +17,15 @@
 #include "base/memory/ptr_util.h"
 #include "base/task_runner_util.h"
 #include "base/task/post_task.h"
-#include "base/threading/thread_restrictions.h"
+
+using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 
-BaseBraveShieldsService::BaseBraveShieldsService()
-    : initialized_(false),
+BaseBraveShieldsService::BaseBraveShieldsService(
+    BraveComponent::Delegate* delegate)
+    : BraveComponent(delegate),
+      initialized_(false),
       task_runner_(
           base::CreateSequencedTaskRunnerWithTraits({base::MayBlock(),
               base::TaskPriority::USER_VISIBLE,

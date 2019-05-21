@@ -7,7 +7,6 @@
 #undef RegisterWidevineCdmComponent
 
 #include "brave/browser/brave_browser_process_impl.h"
-#include "brave/browser/extensions/brave_component_extension.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/ui/webui/components_ui.h"

@@ -7,9 +7,11 @@
 
 #include "base/files/file_path.h"
 #include "base/sequenced_task_runner.h"
-#include "brave/browser/extensions/brave_component_extension.h"
+#include "brave/components/brave_component_updater/browser/brave_component.h"
 
 class BraveTorClientUpdaterTest;
+
+using brave_component_updater::BraveComponent;
 
 namespace extensions {
 
@@ -48,9 +50,9 @@ const std::string kTorClientComponentBase64PublicKey =
     "2QIDAQAB";
 #endif
 
-class BraveTorClientUpdater : public BraveComponentExtension {
+class BraveTorClientUpdater : public BraveComponent {
  public:
-   BraveTorClientUpdater();
+   BraveTorClientUpdater(BraveComponent::Delegate* delegate);
    ~BraveTorClientUpdater() override;
 
   void Register();
@@ -81,7 +83,8 @@ class BraveTorClientUpdater : public BraveComponentExtension {
 };
 
 // Creates the BraveTorClientUpdater
-std::unique_ptr<BraveTorClientUpdater> BraveTorClientUpdaterFactory();
+std::unique_ptr<BraveTorClientUpdater>
+BraveTorClientUpdaterFactory(BraveComponent::Delegate* delegate);
 
 }  // namespace extensions
 

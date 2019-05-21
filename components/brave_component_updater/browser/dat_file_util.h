@@ -9,8 +9,6 @@
 #include <string>
 #include <vector>
 
-#include "base/callback_forward.h"
-
 namespace base {
 class FilePath;
 }

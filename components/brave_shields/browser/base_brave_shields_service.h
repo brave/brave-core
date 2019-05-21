@@ -10,23 +10,24 @@
 
 #include <memory>
 #include <string>
-#include <vector>
 // TODO(brave): <mutex> is an unapproved C++11 header
 #include <mutex>  // NOLINT
 
 #include "base/files/file_path.h"
 #include "base/sequenced_task_runner.h"
-#include "brave/browser/extensions/brave_component_extension.h"
+#include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "content/public/common/resource_type.h"
 #include "url/gurl.h"
+
+using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 
 // The brave shields service in charge of checking brave shields like ad-block,
 // tracking protection, etc.
-class BaseBraveShieldsService : public BraveComponentExtension {
+class BaseBraveShieldsService : public brave_component_updater::BraveComponent {
  public:
-  BaseBraveShieldsService();
+  BaseBraveShieldsService(BraveComponent::Delegate* delegate);
   ~BaseBraveShieldsService() override;
   bool Start();
   void Stop();

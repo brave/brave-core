@@ -77,10 +77,10 @@ namespace brave {
 BraveComponentInstallerPolicy::BraveComponentInstallerPolicy(
     const std::string& name,
     const std::string& base64_public_key,
-    const ReadyCallback& ready_callback)
+    ReadyCallback ready_callback)
     : name_(name),
       base64_public_key_(base64_public_key),
-      ready_callback_(ready_callback) {
+      ready_callback_(std::move(ready_callback)) {
   base::Base64Decode(base64_public_key, &public_key_);
 }
 
@@ -117,10 +117,12 @@ void BraveComponentInstallerPolicy::OnCustomUninstall() {
 }
 
 void BraveComponentInstallerPolicy::ComponentReady(
-  const base::Version& version,
-  const base::FilePath& install_dir,
-  std::unique_ptr<base::DictionaryValue> manifest) {
-  ready_callback_.Run(install_dir, GetManifestString(*manifest, base64_public_key_));
+    const base::Version& version,
+    const base::FilePath& install_dir,
+    std::unique_ptr<base::DictionaryValue> manifest) {
+  std::move(ready_callback_).Run(
+      install_dir,
+      GetManifestString(*manifest, base64_public_key_));
 }
 
 base::FilePath BraveComponentInstallerPolicy::GetRelativeInstallDir() const {
@@ -152,11 +154,12 @@ void RegisterComponent(
     component_updater::ComponentUpdateService* cus,
     const std::string& name,
     const std::string& base64_public_key,
-    const base::Closure& registered_callback,
-    const ReadyCallback& ready_callback) {
+    base::OnceClosure registered_callback,
+    ReadyCallback ready_callback) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
-    std::make_unique<BraveComponentInstallerPolicy>(name, base64_public_key, ready_callback));
-  installer->Register(cus, registered_callback);
+      std::make_unique<BraveComponentInstallerPolicy>(
+          name, base64_public_key, std::move(ready_callback)));
+  installer->Register(cus, std::move(registered_callback));
 }
 
 }  // namespace brave

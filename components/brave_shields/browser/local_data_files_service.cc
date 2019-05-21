@@ -4,18 +4,12 @@
 
 #include "brave/components/brave_shields/browser/local_data_files_service.h"
 
-#include <algorithm>
 #include <utility>
 
 #include "base/base_paths.h"
-#include "base/bind.h"
-#include "base/logging.h"
-#include "base/macros.h"
-#include "base/memory/ptr_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/base_local_data_files_observer.h"
+
+using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 
@@ -24,8 +18,9 @@ std::string LocalDataFilesService::g_local_data_files_component_id_(
 std::string LocalDataFilesService::g_local_data_files_component_base64_public_key_(
   kLocalDataFilesComponentBase64PublicKey);
 
-LocalDataFilesService::LocalDataFilesService()
-  : initialized_(false),
+LocalDataFilesService::LocalDataFilesService(BraveComponent::Delegate* delegate)
+  : BraveComponent(delegate),
+    initialized_(false),
     observers_already_called_(false),
     weak_factory_(this) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
@@ -69,8 +64,9 @@ void LocalDataFilesService::SetComponentIdAndBase64PublicKeyForTest(
 
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
-std::unique_ptr<LocalDataFilesService> LocalDataFilesServiceFactory() {
-  return std::make_unique<LocalDataFilesService>();
+std::unique_ptr<LocalDataFilesService>
+LocalDataFilesServiceFactory(BraveComponent::Delegate* delegate) {
+  return std::make_unique<LocalDataFilesService>(delegate);
 }
 
 }  // namespace brave_shields

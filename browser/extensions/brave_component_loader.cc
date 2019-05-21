@@ -10,7 +10,6 @@
 #include "base/command_line.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/component_updater/brave_component_installer.h"
-#include "brave/browser/extensions/brave_component_extension.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"

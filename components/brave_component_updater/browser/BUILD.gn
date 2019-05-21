@@ -1,6 +1,12 @@
 source_set("browser") {
   sources = [
+    "brave_component.cc",
+    "brave_component.h",
     "dat_file_util.cc",
     "dat_file_util.h",
+  ]
+
+  deps = [
+    "//base",
   ]
 }

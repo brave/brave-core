@@ -86,7 +86,10 @@ std::string
 HTTPSEverywhereService::g_https_everywhere_component_base64_public_key_(
     kHTTPSEverywhereComponentBase64PublicKey);
 
-HTTPSEverywhereService::HTTPSEverywhereService() : level_db_(nullptr) {
+HTTPSEverywhereService::HTTPSEverywhereService(
+    BraveComponent::Delegate* delegate)
+    : BaseBraveShieldsService(delegate),
+      level_db_(nullptr) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
@@ -102,7 +105,8 @@ void HTTPSEverywhereService::Cleanup() {
 }
 
 bool HTTPSEverywhereService::Init() {
-  Register(kHTTPSEverywhereComponentName, g_https_everywhere_component_id_,
+  Register(kHTTPSEverywhereComponentName,
+           g_https_everywhere_component_id_,
            g_https_everywhere_component_base64_public_key_);
   return true;
 }
@@ -391,8 +395,9 @@ void HTTPSEverywhereService::SetIgnorePortForTest(bool ignore) {
 
 // The brave shields factory. Using the Brave Shields as a singleton
 // is the job of the browser process.
-std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory() {
-  return std::make_unique<HTTPSEverywhereService>();
+std::unique_ptr<HTTPSEverywhereService> HTTPSEverywhereServiceFactory(
+    BraveComponent::Delegate* delegate) {
+  return std::make_unique<HTTPSEverywhereService>(delegate);
 }
 
 }  // namespace brave_shields

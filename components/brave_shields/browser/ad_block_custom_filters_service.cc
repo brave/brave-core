@@ -13,9 +13,12 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 
+using brave_component_updater::BraveComponent;
+
 namespace brave_shields {
 
-AdBlockCustomFiltersService::AdBlockCustomFiltersService() {
+AdBlockCustomFiltersService::AdBlockCustomFiltersService(
+    BraveComponent::Delegate* delegate) : AdBlockBaseService(delegate) {
 }
 
 AdBlockCustomFiltersService::~AdBlockCustomFiltersService() {
@@ -61,8 +64,8 @@ void AdBlockCustomFiltersService::UpdateCustomFiltersOnFileTaskRunner(
 ///////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<AdBlockCustomFiltersService>
-AdBlockCustomFiltersServiceFactory() {
-  return std::make_unique<AdBlockCustomFiltersService>();
+AdBlockCustomFiltersServiceFactory(BraveComponent::Delegate* delegate) {
+  return std::make_unique<AdBlockCustomFiltersService>(delegate);
 }
 
 }  // namespace brave_shields

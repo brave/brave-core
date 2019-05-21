@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "brave/browser/tor/buildflags.h"
+#include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "chrome/browser/browser_process_impl.h"
 #include "extensions/buildflags/buildflags.h"
@@ -38,6 +39,8 @@ class TrackingProtectionService;
 namespace extensions {
 class BraveTorClientUpdater;
 }
+
+using brave_component_updater::BraveComponent;
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
@@ -71,6 +74,9 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
  private:
   void CreateProfileManager();
 
+  BraveComponent::Delegate* brave_component_updater_delegate();
+
+  std::unique_ptr<BraveComponent::Delegate> brave_component_updater_delegate_;
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
   std::unique_ptr<brave_shields::AdBlockCustomFiltersService>
       ad_block_custom_filters_service_;

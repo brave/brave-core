@@ -22,13 +22,15 @@
 class AdBlockClient;
 class AdBlockServiceTest;
 
+using brave_component_updater::BraveComponent;
+
 namespace brave_shields {
 
 // The base class of the brave shields service in charge of ad-block
 // checking and init.
 class AdBlockBaseService : public BaseBraveShieldsService {
  public:
-  AdBlockBaseService();
+  AdBlockBaseService(BraveComponent::Delegate* delegate);
   ~AdBlockBaseService() override;
 
   bool ShouldStartRequest(const GURL &url, content::ResourceType resource_type,

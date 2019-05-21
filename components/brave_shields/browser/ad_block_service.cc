@@ -33,15 +33,20 @@ std::string AdBlockService::g_ad_block_component_base64_public_key_(
 std::string AdBlockService::g_ad_block_dat_file_version_(
     base::NumberToString(DATA_FILE_VERSION));
 
-AdBlockService::AdBlockService() {
+AdBlockService::AdBlockService(
+    brave_component_updater::BraveComponent::Delegate* delegate)
+    : AdBlockBaseService(delegate) {
 }
 
 AdBlockService::~AdBlockService() {
 }
 
 bool AdBlockService::Init() {
-  AdBlockBaseService::Init();
-  Register(kAdBlockComponentName, g_ad_block_component_id_,
+  if (!AdBlockBaseService::Init())
+    return false;
+
+  Register(kAdBlockComponentName,
+           g_ad_block_component_id_,
            g_ad_block_component_base64_public_key_);
   return true;
 }
@@ -72,8 +77,9 @@ void AdBlockService::SetDATFileVersionForTest(
 ///////////////////////////////////////////////////////////////////////////////
 
 // The Adblock service factory.
-std::unique_ptr<AdBlockService> AdBlockServiceFactory() {
-  return std::make_unique<AdBlockService>();
+std::unique_ptr<AdBlockService> AdBlockServiceFactory(
+    brave_component_updater::BraveComponent::Delegate* delegate) {
+  return std::make_unique<AdBlockService>(delegate);
 }
 
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry) {

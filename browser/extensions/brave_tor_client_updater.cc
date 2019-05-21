@@ -10,6 +10,8 @@
 #include "base/task/post_task.h"
 #include "third_party/re2/src/re2/re2.h"
 
+using brave_component_updater::BraveComponent;
+
 namespace extensions {
 
 std::string BraveTorClientUpdater::g_tor_client_component_id_(
@@ -17,8 +19,9 @@ std::string BraveTorClientUpdater::g_tor_client_component_id_(
 std::string BraveTorClientUpdater::g_tor_client_component_base64_public_key_(
     kTorClientComponentBase64PublicKey);
 
-BraveTorClientUpdater::BraveTorClientUpdater()
-    : task_runner_(
+BraveTorClientUpdater::BraveTorClientUpdater(BraveComponent::Delegate* delegate)
+    : BraveComponent(delegate),
+      task_runner_(
           base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})),
       registered_(false) {
 }
@@ -30,9 +33,9 @@ void BraveTorClientUpdater::Register() {
   if (registered_)
     return;
 
-  BraveComponentExtension::Register(kTorClientComponentName,
-                                    g_tor_client_component_id_,
-                                    g_tor_client_component_base64_public_key_);
+  BraveComponent::Register(kTorClientComponentName,
+                               g_tor_client_component_id_,
+                               g_tor_client_component_base64_public_key_);
   registered_ = true;
 }
 
@@ -96,8 +99,9 @@ void BraveTorClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
 ///////////////////////////////////////////////////////////////////////////////
 
 // The Brave Tor client extension factory.
-std::unique_ptr<BraveTorClientUpdater> BraveTorClientUpdaterFactory() {
-  return std::make_unique<BraveTorClientUpdater>();
+std::unique_ptr<BraveTorClientUpdater>
+BraveTorClientUpdaterFactory(BraveComponent::Delegate* delegate) {
+  return std::make_unique<BraveTorClientUpdater>(delegate);
 }
 
 }  // namespace extensions

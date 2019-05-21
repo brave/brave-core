@@ -34,7 +34,7 @@ const char kAdBlockComponentBase64PublicKey[] =
 // The brave shields service in charge of ad-block checking and init.
 class AdBlockService : public AdBlockBaseService {
  public:
-  AdBlockService();
+  AdBlockService(brave_component_updater::BraveComponent::Delegate* delegate);
   ~AdBlockService() override;
 
  protected:
@@ -57,7 +57,8 @@ class AdBlockService : public AdBlockBaseService {
 };
 
 // Creates the AdBlockService
-std::unique_ptr<AdBlockService> AdBlockServiceFactory();
+std::unique_ptr<AdBlockService> AdBlockServiceFactory(
+    brave_component_updater::BraveComponent::Delegate* delegate);
 
 // Registers the local_state preferences used by Adblock
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry);

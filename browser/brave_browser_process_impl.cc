@@ -13,6 +13,7 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/browser/component_updater/brave_component_updater_configurator.h"
+#include "brave/browser/component_updater/brave_component_updater_delegate.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
@@ -76,6 +77,15 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
                      base::Unretained(brave_stats_updater_.get())));
 }
 
+brave_component_updater::BraveComponent::Delegate*
+BraveBrowserProcessImpl::brave_component_updater_delegate() {
+  if (!brave_component_updater_delegate_)
+    brave_component_updater_delegate_ =
+        std::make_unique<brave::BraveComponentUpdaterDelegate>();
+
+  return brave_component_updater_delegate_.get();
+}
+
 component_updater::ComponentUpdateService*
 BraveBrowserProcessImpl::component_updater() {
   if (component_updater_)
@@ -117,7 +127,8 @@ BraveBrowserProcessImpl::ad_block_service() {
   if (ad_block_service_)
     return ad_block_service_.get();
 
-  ad_block_service_ = brave_shields::AdBlockServiceFactory();
+  ad_block_service_ =
+      brave_shields::AdBlockServiceFactory(brave_component_updater_delegate());
   return ad_block_service_.get();
 }
 
@@ -125,7 +136,8 @@ brave_shields::AdBlockCustomFiltersService*
 BraveBrowserProcessImpl::ad_block_custom_filters_service() {
   if (!ad_block_custom_filters_service_)
     ad_block_custom_filters_service_ =
-        brave_shields::AdBlockCustomFiltersServiceFactory();
+        brave_shields::AdBlockCustomFiltersServiceFactory(
+            brave_component_updater_delegate());
   return ad_block_custom_filters_service_.get();
 }
 
@@ -133,7 +145,8 @@ brave_shields::AdBlockRegionalServiceManager*
 BraveBrowserProcessImpl::ad_block_regional_service_manager() {
   if (!ad_block_regional_service_manager_)
     ad_block_regional_service_manager_ =
-        brave_shields::AdBlockRegionalServiceManagerFactory();
+        brave_shields::AdBlockRegionalServiceManagerFactory(
+              brave_component_updater_delegate());
   return ad_block_regional_service_manager_.get();
 }
 
@@ -179,7 +192,8 @@ brave_shields::HTTPSEverywhereService*
 BraveBrowserProcessImpl::https_everywhere_service() {
   if (!https_everywhere_service_)
     https_everywhere_service_ =
-        brave_shields::HTTPSEverywhereServiceFactory();
+        brave_shields::HTTPSEverywhereServiceFactory(
+            brave_component_updater_delegate());
   return https_everywhere_service_.get();
 }
 
@@ -187,7 +201,8 @@ brave_shields::LocalDataFilesService*
 BraveBrowserProcessImpl::local_data_files_service() {
   if (!local_data_files_service_)
     local_data_files_service_ =
-        brave_shields::LocalDataFilesServiceFactory();
+        brave_shields::LocalDataFilesServiceFactory(
+            brave_component_updater_delegate());
   return local_data_files_service_.get();
 }
 
@@ -197,7 +212,8 @@ BraveBrowserProcessImpl::tor_client_updater() {
   if (tor_client_updater_)
     return tor_client_updater_.get();
 
-  tor_client_updater_ = extensions::BraveTorClientUpdaterFactory();
+  tor_client_updater_ = extensions::BraveTorClientUpdaterFactory(
+      brave_component_updater_delegate());
   return tor_client_updater_.get();
 }
 #endif

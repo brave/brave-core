@@ -10,7 +10,6 @@
 #include "chrome/browser/browser_process.h"
 
 #if !defined(OS_ANDROID)
-#include "brave/browser/extensions/brave_component_extension.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/ui/webui/components_ui.h"
 #endif

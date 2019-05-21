@@ -26,6 +26,7 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 
+using brave_component_updater::BraveComponent;
 using namespace net::registry_controlled_domains;  // NOLINT
 
 namespace {
@@ -104,8 +105,8 @@ FilterOption ResourceTypeToFilterOption(content::ResourceType resource_type) {
 
 namespace brave_shields {
 
-AdBlockBaseService::AdBlockBaseService()
-    : BaseBraveShieldsService(),
+AdBlockBaseService::AdBlockBaseService(BraveComponent::Delegate* delegate)
+    : BaseBraveShieldsService(delegate),
       ad_block_client_(new AdBlockClient()),
       weak_factory_(this) {
   DETACH_FROM_SEQUENCE(sequence_checker_);

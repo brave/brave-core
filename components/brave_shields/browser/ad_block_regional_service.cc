@@ -34,8 +34,11 @@ std::string
 std::string AdBlockRegionalService::g_ad_block_regional_dat_file_version_(
     base::NumberToString(DATA_FILE_VERSION));
 
-AdBlockRegionalService::AdBlockRegionalService(const std::string& uuid)
-    : uuid_(uuid) {
+AdBlockRegionalService::AdBlockRegionalService(
+    const std::string& uuid,
+    brave_component_updater::BraveComponent::Delegate* delegate)
+    : AdBlockBaseService(delegate),
+      uuid_(uuid) {
 }
 
 AdBlockRegionalService::~AdBlockRegionalService() {
@@ -89,8 +92,9 @@ void AdBlockRegionalService::SetDATFileVersionForTest(
 ///////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<AdBlockRegionalService> AdBlockRegionalServiceFactory(
-    const std::string& uuid) {
-  return std::make_unique<AdBlockRegionalService>(uuid);
+    const std::string& uuid,
+    brave_component_updater::BraveComponent::Delegate* delegate) {
+  return std::make_unique<AdBlockRegionalService>(uuid, delegate);
 }
 
 }  // namespace brave_shields

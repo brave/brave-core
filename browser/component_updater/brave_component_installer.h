@@ -18,11 +18,7 @@
 #include "components/component_updater/component_installer.h"
 #include "components/update_client/update_client.h"
 
-namespace base {
-class FilePath;
-}  // namespace base
-
-using ReadyCallback = base::Callback<void(const base::FilePath&,
+using ReadyCallback = base::OnceCallback<void(const base::FilePath&,
     const std::string& manifest)>;
 
 namespace brave {
@@ -32,7 +28,7 @@ class BraveComponentInstallerPolicy :
  public:
   explicit BraveComponentInstallerPolicy(const std::string& name,
       const std::string& base64_public_key,
-      const ReadyCallback& ready_callback);
+      ReadyCallback ready_callback);
 
   ~BraveComponentInstallerPolicy() override;
 
@@ -67,8 +63,8 @@ class BraveComponentInstallerPolicy :
 void RegisterComponent(component_updater::ComponentUpdateService* cus,
     const std::string& name,
     const std::string& base64_public_key,
-    const base::Closure& registered_callback,
-    const ReadyCallback& ready_callback);
+    base::OnceClosure registered_callback,
+    ReadyCallback ready_callback);
 
 }  // namespace brave
 

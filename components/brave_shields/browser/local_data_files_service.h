@@ -16,13 +16,14 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "brave/browser/extensions/brave_component_extension.h"
-#include "content/public/common/resource_type.h"
+#include "brave/components/brave_component_updater/browser/brave_component.h"
 
 class AdBlockServiceTest;
 class AutoplayWhitelistServiceTest;
 class ReferrerWhitelistServiceTest;
 class TrackingProtectionServiceTest;
+
+using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 
@@ -41,9 +42,9 @@ const char kLocalDataFilesComponentBase64PublicKey[] =
 
 // The component in charge of delegating access to different DAT files
 // such as tracking protection and video autoplay whitelist
-class LocalDataFilesService : public BraveComponentExtension {
+class LocalDataFilesService : public BraveComponent {
  public:
-  LocalDataFilesService();
+  LocalDataFilesService(BraveComponent::Delegate* delegate);
   ~LocalDataFilesService() override;
   bool Start();
   bool IsInitialized() const { return initialized_; }
@@ -75,7 +76,8 @@ class LocalDataFilesService : public BraveComponentExtension {
 };
 
 // Creates the LocalDataFilesService
-std::unique_ptr<LocalDataFilesService> LocalDataFilesServiceFactory();
+std::unique_ptr<LocalDataFilesService>
+LocalDataFilesServiceFactory(BraveComponent::Delegate* delegate);
 
 }  // namespace brave_shields
 
