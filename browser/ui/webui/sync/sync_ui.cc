@@ -16,7 +16,6 @@
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/profile_sync_service_factory.h"
-#include "components/browser_sync/profile_sync_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_ui_message_handler.h"
 

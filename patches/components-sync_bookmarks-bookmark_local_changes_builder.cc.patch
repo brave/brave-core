@@ -1,12 +1,12 @@
 diff --git a/components/sync_bookmarks/bookmark_local_changes_builder.cc b/components/sync_bookmarks/bookmark_local_changes_builder.cc
-index 9d4210fe4771ac67df1f9563f1fc722f8fc35aae..ee2beb034b5e5f487c0fca0e88a31a7c241180ea 100644
+index f0b7bc6f9cea4eb3cb2386906bfc57be8bb5f802..5a96ebc0b5a2e3534d513a67b400c6997e786c05 100644
 --- a/components/sync_bookmarks/bookmark_local_changes_builder.cc
 +++ b/components/sync_bookmarks/bookmark_local_changes_builder.cc
-@@ -66,6 +66,7 @@ BookmarkLocalChangesBuilder::BuildCommitRequests(size_t max_entries) const {
-       data.specifics = CreateSpecificsFromBookmarkNode(
+@@ -66,6 +66,7 @@ syncer::CommitRequestDataList BookmarkLocalChangesBuilder::BuildCommitRequests(
+       data->specifics = CreateSpecificsFromBookmarkNode(
            node, bookmark_model_, /*force_favicon_load=*/true);
-       data.non_unique_name = data.specifics.bookmark().title();
+       data->non_unique_name = data->specifics.bookmark().title();
 +      brave_sync::AddBraveMetaInfo(node, bookmark_model_, true);
      }
-     request.entity = data.PassToPtr();
-     request.sequence_number = metadata->sequence_number();
+     auto request = std::make_unique<syncer::CommitRequestData>();
+     request->entity = std::move(data);

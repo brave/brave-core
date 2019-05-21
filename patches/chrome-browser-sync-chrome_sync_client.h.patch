@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/sync/chrome_sync_client.h b/chrome/browser/sync/chrome_sync_client.h
-index c89058c8815f8983dafaeb88edf1a239f11a9b08..bb22a19336d91fcf476607a3399bbbe850fa5f47 100644
+index f52eb2c251db195a2b4ba8b5a85ea5b05102f686..2dc398a6be0cbb3c148cb34cdf811ed1fea48934 100644
 --- a/chrome/browser/sync/chrome_sync_client.h
 +++ b/chrome/browser/sync/chrome_sync_client.h
-@@ -60,6 +60,7 @@ class ChromeSyncClient : public browser_sync::BrowserSyncClient {
-   scoped_refptr<syncer::ModelSafeWorker> CreateModelWorkerForGroup(
+@@ -63,6 +63,7 @@ class ChromeSyncClient : public browser_sync::BrowserSyncClient {
        syncer::ModelSafeGroup group) override;
    syncer::SyncApiComponentFactory* GetSyncApiComponentFactory() override;
+   syncer::SyncTypePreferenceProvider* GetPreferenceProvider() override;
 +  brave_sync::BraveSyncClient* GetBraveSyncClient() override;
  
   private:
    Profile* const profile_;
-@@ -82,6 +83,8 @@ class ChromeSyncClient : public browser_sync::BrowserSyncClient {
+@@ -85,6 +86,8 @@ class ChromeSyncClient : public browser_sync::BrowserSyncClient {
    // Generates and monitors the ExtensionsActivity object used by sync.
    ExtensionsActivityMonitor extensions_activity_monitor_;
  

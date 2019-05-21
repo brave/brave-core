@@ -9,7 +9,7 @@
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
-#include "components/browser_sync/profile_sync_service.h"
+#include "components/sync/driver/profile_sync_service.h"
 
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkAdded);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkDeleted);
@@ -36,7 +36,7 @@ namespace prefs {
 class Prefs;
 }   // namespace prefs
 
-class BraveProfileSyncService : public browser_sync::ProfileSyncService,
+class BraveProfileSyncService : public syncer::ProfileSyncService,
                                 public BraveSyncService,
                                 public SyncMessageHandler {
  public:

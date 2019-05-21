@@ -175,7 +175,7 @@ void CreateResolveList(
 }   // namespace
 
 BraveProfileSyncService::BraveProfileSyncService(InitParams init_params)
-  : browser_sync::ProfileSyncService(std::move(init_params)) {
+  : syncer::ProfileSyncService(std::move(init_params)) {
   brave_sync_words_ = std::string();
   brave_sync_prefs_ =
     std::make_unique<prefs::Prefs>(
@@ -344,13 +344,13 @@ void BraveProfileSyncService::OnSetSyncEnabled(const bool sync_this_device) {
 
 void BraveProfileSyncService::OnSetSyncBookmarks(const bool sync_bookmarks) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  syncer::ModelTypeSet type_set =
-    ProfileSyncService::GetUserSettings()->GetChosenDataTypes();
+  syncer::UserSelectableTypeSet type_set =
+    ProfileSyncService::GetUserSettings()->GetSelectedTypes();
   if (sync_bookmarks)
-    type_set.Put(syncer::BOOKMARKS);
+    type_set.Put(syncer::UserSelectableType::kBookmarks);
   else
-    type_set.Remove(syncer::BOOKMARKS);
-  ProfileSyncService::GetUserSettings()->SetChosenDataTypes(false,
+    type_set.Remove(syncer::UserSelectableType::kBookmarks);
+  ProfileSyncService::GetUserSettings()->SetSelectedTypes(false,
                                                                 type_set);
   brave_sync_prefs_->SetSyncBookmarksEnabled(sync_bookmarks);
 }
@@ -483,7 +483,7 @@ void BraveProfileSyncService::OnSyncReady() {
   // first time setup sync or migrated from legacy sync
   if (sync_prefs.GetLastSyncedTime().is_null()) {
     ProfileSyncService::GetUserSettings()
-      ->SetChosenDataTypes(false, syncer::ModelTypeSet());
+      ->SetSelectedTypes(false, syncer::UserSelectableTypeSet());
     // default enable bookmark
     OnSetSyncBookmarks(true);
     ProfileSyncService::GetUserSettings()->SetSyncRequested(true);
@@ -573,7 +573,7 @@ bool BraveProfileSyncService::IsAuthenticatedAccountPrimary() const {
 
 void BraveProfileSyncService::Shutdown() {
   SignalWaitableEvent();
-  browser_sync::ProfileSyncService::Shutdown();
+  syncer::ProfileSyncService::Shutdown();
 }
 
 void BraveProfileSyncService::NotifySyncSetupError(const std::string& error) {

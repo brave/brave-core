@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine_impl/cycle/sync_cycle.h b/components/sync/engine_impl/cycle/sync_cycle.h
-index b41478d4cf2c1f3ee5a0e7effc43fe21b6184383..6c3b5a6972cf80cb5597f570bcc4c3abc0de9555 100644
+index 0971b6014231f8046eca9202840acc6167960057..e7c9f40c1f3294650597dab18d558c998cf8dd95 100644
 --- a/components/sync/engine_impl/cycle/sync_cycle.h
 +++ b/components/sync/engine_impl/cycle/sync_cycle.h
-@@ -84,6 +84,10 @@ class SyncCycle {
+@@ -80,6 +80,10 @@ class SyncCycle {
      // Called when server requests a migration.
      virtual void OnReceivedMigrationRequest(ModelTypeSet types) = 0;
  

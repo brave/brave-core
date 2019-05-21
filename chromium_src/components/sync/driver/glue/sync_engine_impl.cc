@@ -23,7 +23,7 @@ void SyncEngineImpl::DispatchGetRecordsCallback(
     GetRecordsCallback cb, std::unique_ptr<RecordsList> records) {
   sync_task_runner_->PostTask(
     FROM_HERE,
-    base::BindOnce(&SyncBackendHostCore::DoDispatchGetRecordsCallback, core_,
+    base::BindOnce(&SyncEngineBackend::DoDispatchGetRecordsCallback, backend_,
                    cb, std::move(records)));
 }
 

@@ -1,8 +1,8 @@
 diff --git a/components/sync/engine_impl/sync_scheduler_impl.h b/components/sync/engine_impl/sync_scheduler_impl.h
-index 56f6bf0ef065f776c24d473f7b9cc3b1d8d81e7d..ab31cca4a79738d27c8255c8a951dc7d92191d13 100644
+index 4bab39098da187109f291f1c0ab03fd0cc34d326..f48cf362f1030fd8b269ad213330255de95ea82c 100644
 --- a/components/sync/engine_impl/sync_scheduler_impl.h
 +++ b/components/sync/engine_impl/sync_scheduler_impl.h
-@@ -81,6 +81,12 @@ class SyncSchedulerImpl : public SyncScheduler {
+@@ -79,6 +79,12 @@ class SyncSchedulerImpl : public SyncScheduler {
    void OnReceivedGuRetryDelay(const base::TimeDelta& delay) override;
    void OnReceivedMigrationRequest(ModelTypeSet types) override;
  
@@ -15,7 +15,7 @@ index 56f6bf0ef065f776c24d473f7b9cc3b1d8d81e7d..ab31cca4a79738d27c8255c8a951dc7d
    bool IsGlobalThrottle() const;
    bool IsGlobalBackoff() const;
  
-@@ -179,6 +185,7 @@ class SyncSchedulerImpl : public SyncScheduler {
+@@ -177,6 +183,7 @@ class SyncSchedulerImpl : public SyncScheduler {
    // current thread. In the future it will request access token here.
    void TrySyncCycleJob();
    void TrySyncCycleJobImpl();
@@ -23,7 +23,7 @@ index 56f6bf0ef065f776c24d473f7b9cc3b1d8d81e7d..ab31cca4a79738d27c8255c8a951dc7d
  
    // Transitions out of the THROTTLED WaitInterval then calls TryCanaryJob().
    // This function is for global throttling.
-@@ -288,6 +295,9 @@ class SyncSchedulerImpl : public SyncScheduler {
+@@ -281,6 +288,9 @@ class SyncSchedulerImpl : public SyncScheduler {
    // Used to prevent changing nudge delays by the server in integration tests.
    bool force_short_nudge_delay_for_test_ = false;
  

@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/sync/profile_sync_service_factory.h b/chrome/browser/sync/profile_sync_service_factory.h
-index ccbf83240e4fd135d1c8f3cf7a451d78b9a3ad90..02d7bdf45ec6bc557ee5252a2847be06b222bfb1 100644
+index 2e2f416a055c4bcc67c02b43ccc90ac8c13bc8f0..faaf8531cb8f28e7c46550b47c5d4ed476a9ee93 100644
 --- a/chrome/browser/sync/profile_sync_service_factory.h
 +++ b/chrome/browser/sync/profile_sync_service_factory.h
 @@ -38,6 +38,8 @@ class ProfileSyncServiceFactory : public BrowserContextKeyedServiceFactory {
    // absolutely necessary! Prefer GetForProfile instead.
-   static browser_sync::ProfileSyncService* GetAsProfileSyncServiceForProfile(
+   static syncer::ProfileSyncService* GetAsProfileSyncServiceForProfile(
        Profile* profile);
 +  static brave_sync::BraveProfileSyncService*
 +    GetAsBraveProfileSyncServiceForProfile(Profile* profile);

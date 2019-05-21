@@ -13,6 +13,7 @@ SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse*, ModelTypeSet*,
 #include "base/time/time.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "components/sync/base/hash_util.h"
+#include "components/sync/base/time.h"
 #include "components/sync/syncable/syncable_proto_util.h"
 #include "components/sync/engine_impl/loopback_server/loopback_server_entity.h"
 #include "url/gurl.h"

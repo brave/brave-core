@@ -1,31 +1,14 @@
 // For use_transport_only_mode
 #define IsSyncFeatureEnabled IsBraveSyncEnabled
-#include "../../../../components/browser_sync/profile_sync_service.cc"
+#include "../../../../components/sync/driver/profile_sync_service.cc"
 
 #include "base/bind.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "chrome/browser/sync/chrome_sync_client.h"
-#include "components/sync/engine/sync_credentials.h"
 #include "content/public/browser/browser_thread.h"
 
 namespace syncer {
-const int64_t kBraveDefaultShortPollIntervalSeconds = 60;
-const int64_t kBraveDefaultLongPollIntervalSeconds = 90;
-}
-
-namespace browser_sync {
-
-namespace {
-
-syncer::SyncCredentials GetDummyCredentials() {
-  syncer::SyncCredentials credentials;
-  credentials.account_id = "dummy_account_id";
-  credentials.email = "dummy_email";
-  credentials.sync_token = "dummy_access_token";
-  return credentials;
-}
-
-}   // namespace
+const int64_t kBraveDefaultPollIntervalSeconds = 60;
 
 syncer::SyncClient* ProfileSyncService::GetSyncClient() {
   DCHECK(sync_client_);
@@ -47,14 +30,9 @@ void ProfileSyncService::BraveEngineParamsInit(
       base::BindRepeating(&ProfileSyncService::OnPollSyncCycle,
                           sync_enabled_weak_factory_.GetWeakPtr());
 
-  params->credentials = GetDummyCredentials();
-
-  sync_prefs_.SetShortPollInterval(
+  sync_prefs_.SetPollInterval(
     base::TimeDelta::FromSeconds(
-      syncer::kBraveDefaultShortPollIntervalSeconds));
-  sync_prefs_.SetLongPollInterval(
-    base::TimeDelta::FromSeconds(
-      syncer::kBraveDefaultLongPollIntervalSeconds));
+      syncer::kBraveDefaultPollIntervalSeconds));
 }
 
 void ProfileSyncService::OnNudgeSyncCycle(
@@ -67,4 +45,4 @@ bool ProfileSyncService::IsBraveSyncEnabled() const {
   return false;
 }
 
-}   // namespace browser_sync
+}   // namespace syncer
