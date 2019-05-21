@@ -26,11 +26,10 @@
 #include "chrome/common/chrome_switches.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/omnibox/common/omnibox_features.h"
 #include "components/password_manager/core/common/password_manager_features.h"
 #include "components/unified_consent/feature.h"
-#include "content/public/common/content_features.h"
 #include "extensions/common/extension_features.h"
-#include "gpu/config/gpu_finch_features.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/ui_base_features.h"
@@ -139,17 +138,15 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       extensions_features::kNewExtensionUpdaterService.name,
 #endif
       features::kDesktopPWAWindowing.name,
+      omnibox::kSimplifyHttpsIndicator.name,
   };
 
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
       autofill::features::kAutofillSaveCardSignInAfterLocalSave.name,
       autofill::features::kAutofillServerCommunication.name,
-      features::kAudioServiceOutOfProcess.name,
-      features::kDefaultEnableOopRasterization.name,
       network::features::kNetworkService.name,
       unified_consent::kUnifiedConsent.name,
-      features::kLookalikeUrlNavigationSuggestionsUI.name,
   };
 
   command_line.AppendFeatures(enabled_features, disabled_features);

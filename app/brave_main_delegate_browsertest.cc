@@ -11,10 +11,12 @@
 #include "chrome/browser/domain_reliability/service_factory.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
+#include "components/omnibox/common/omnibox_features.h"
 #include "components/unified_consent/feature.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/web_preferences.h"
+#include "extensions/common/extension_features.h"
 #include "gpu/config/gpu_finch_features.h"
 #include "services/network/public/cpp/features.h"
 
@@ -51,4 +53,17 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 
   for (const auto* feature : disabled_features)
     EXPECT_FALSE(base::FeatureList::IsEnabled(*feature));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
+   const base::Feature* enabled_features[] = {
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+      &extensions_features::kNewExtensionUpdaterService,
+#endif
+      &features::kDesktopPWAWindowing,
+      &omnibox::kSimplifyHttpsIndicator,
+  };
+
+  for (const auto* feature : enabled_features)
+    EXPECT_TRUE(base::FeatureList::IsEnabled(*feature));
 }

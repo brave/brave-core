@@ -1,0 +1,13 @@
+diff --git a/components/variations/service/BUILD.gn b/components/variations/service/BUILD.gn
+index bdabd37ad8d0f98aad110d68f8058885d3f3c31a..98864341b6223ca591bcd19dc9097d1b6fb829b0 100644
+--- a/components/variations/service/BUILD.gn
++++ b/components/variations/service/BUILD.gn
+@@ -11,7 +11,7 @@ declare_args() {
+   # Note: this setting is ignored if is_chrome_branded.
+   # TODO(thakis): It's strange this is called "_like_official_build" but then
+   # checks is_chrome_branded, not is_official_build.
+-  fieldtrial_testing_like_official_build = is_chrome_branded
++  fieldtrial_testing_like_official_build = true
+ }
+ 
+ fieldtrial_testing_enabled =
