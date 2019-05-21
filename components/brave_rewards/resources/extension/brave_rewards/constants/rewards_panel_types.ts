@@ -35,7 +35,8 @@ export const enum types {
   ON_RECURRING_TIPS = '@@rewards_panel/ON_RECURRING_TIPS',
   ON_PUBLISHER_BANNER = '@@rewards_panel/ON_PUBLISHER_BANNER',
   ON_PUBLISHER_STATUS_REFRESHED = '@@rewards_panel/ON_PUBLISHER_STATUS_REFRESHED',
-  ON_ALL_NOTIFICATIONS = '@@rewards_panel/ON_ALL_NOTIFICATIONS'
+  ON_ALL_NOTIFICATIONS = '@@rewards_panel/ON_ALL_NOTIFICATIONS',
+  ON_INIT = '@@rewards_panel/ON_INIT'
 }
 
 // Note: This declaration must match the RewardsNotificationType enum in
