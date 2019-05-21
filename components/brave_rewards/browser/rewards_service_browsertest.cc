@@ -21,10 +21,13 @@
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/network_session_configurator/common/network_switches.h"
 #include "content/public/browser/notification_service.h"
 #include "content/public/browser/notification_types.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -41,8 +44,25 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
       new net::test_server::BasicHttpResponse());
   http_response->set_code(net::HTTP_OK);
   http_response->set_content_type("text/html");
-  http_response->set_content(
-      "<html><head></head><body><div>Hello, world!</div></body></html>");
+  if (request.relative_url == "/twitter") {
+    http_response->set_content(
+        "<html>"
+        "  <head></head>"
+        "  <body>"
+        "    <div class='tweet'>"
+        "      <div class='js-actions'>Hello, Twitter!</div>"
+        "    </div>"
+        "  </body>"
+        "</html>");
+  } else {
+    http_response->set_content(
+        "<html>"
+        "  <head></head>"
+        "  <body>"
+        "    <div>Hello, world!</div>"
+        "  </body>"
+        "</html>");
+  }
   return std::move(http_response);
 }
 
@@ -79,9 +99,22 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());
-    InitEmbeddedTestServer();
+
+    // Setup up embedded test server for HTTP requests
+    embedded_test_server()->RegisterRequestHandler(
+        base::BindRepeating(&HandleRequest));
+    ASSERT_TRUE(embedded_test_server()->Start());
+
+    // Setup up embedded test server for HTTPS requests
+    https_server_.reset(new net::EmbeddedTestServer(
+        net::test_server::EmbeddedTestServer::TYPE_HTTPS));
+    https_server_->SetSSLConfig(net::EmbeddedTestServer::CERT_OK);
+    https_server_->RegisterRequestHandler(base::BindRepeating(&HandleRequest));
+    ASSERT_TRUE(https_server_->Start());
+
     brave::RegisterPathProvider();
     ReadTestData();
     rewards_service_ = static_cast<brave_rewards::RewardsServiceImpl*>(
@@ -97,10 +130,13 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     InProcessBrowserTest::TearDown();
   }
 
-  void InitEmbeddedTestServer() {
-    embedded_test_server()->RegisterRequestHandler(base::Bind(&HandleRequest));
-    ASSERT_TRUE(embedded_test_server()->Start());
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    // HTTPS server only serves a valid cert for localhost, so this is needed
+    // to load pages from other hosts without an error
+    command_line->AppendSwitch(switches::kIgnoreCertificateErrors);
   }
+
+  net::EmbeddedTestServer* https_server() { return https_server_.get(); }
 
   void RunUntilIdle() {
     base::RunLoop loop;
@@ -531,7 +567,7 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
         content::NotificationService::AllSources());
 
     // Click button to initiate sending a tip
-     content::EvalJsResult js_result = EvalJs(
+    content::EvalJsResult js_result = EvalJs(
       popup_contents,
       "new Promise((resolve) => {"
       "let count = 10;"
@@ -730,6 +766,30 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     }
   }
 
+  bool IsTwitterTipsInjected() {
+    content::EvalJsResult js_result =
+        EvalJs(contents(),
+               "new Promise((resolve) => {"
+               "let count = 10;"
+               "var interval = setInterval(function() {"
+               "  if (count === 0) {"
+               "    clearInterval(interval);"
+               "    resolve(false);"
+               "  } else {"
+               "    count -= 1;"
+               "  }"
+               "  const braveTipActions"
+               "    = document.querySelectorAll(\".action-brave-tip\");"
+               "  if (braveTipActions && braveTipActions.length === 1) {"
+               "    clearInterval(interval);"
+               "    resolve(true);"
+               "  }"
+               "}, 500);});",
+               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+               content::ISOLATED_WORLD_ID_CONTENT_END);
+    return js_result.ExtractBool();
+  }
+
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
                            uint32_t result) {
     ASSERT_TRUE(result == ledger::Result::WALLET_CREATED ||
@@ -795,6 +855,8 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
   MOCK_METHOD1(OnGetShortRetries, void(bool));
+
+  std::unique_ptr<net::EmbeddedTestServer> https_server_;
 
   brave_rewards::RewardsServiceImpl* rewards_service_;
 
@@ -1408,4 +1470,49 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
+}
+
+// Brave tip icon is injected when visiting Twitter
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TwitterTipsInjectedOnTwitter) {
+  // Enable Rewards
+  EnableRewards();
+
+  // Navigate to Twitter in a new tab
+  GURL url = https_server()->GetURL("twitter.com", "/twitter");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  // Ensure that Twitter tips injection is active
+  EXPECT_TRUE(IsTwitterTipsInjected());
+}
+
+// Brave tip icon is not injected when visiting Twitter while Brave
+// Rewards is disabled
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       TwitterTipsNotInjectedWhenRewardsDisabled) {
+  // Navigate to Twitter in a new tab
+  GURL url = https_server()->GetURL("twitter.com", "/twitter");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  // Ensure that Twitter tips injection is not active
+  EXPECT_FALSE(IsTwitterTipsInjected());
+}
+
+// Brave tip icon is not injected into non-Twitter sites
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       TwitterTipsNotInjectedOnNonTwitter) {
+  // Enable Rewards
+  EnableRewards();
+
+  // Navigate to a non-Twitter site in a new tab
+  GURL url = embedded_test_server()->GetURL("google.com", "/twitter");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  // Ensure that Twitter tips injection is not active
+  EXPECT_FALSE(IsTwitterTipsInjected());
 }
