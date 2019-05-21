@@ -25,7 +25,7 @@ namespace brave_shields {
 
 // The brave shields service in charge of checking brave shields like ad-block,
 // tracking protection, etc.
-class BaseBraveShieldsService : public brave_component_updater::BraveComponent {
+class BaseBraveShieldsService : public BraveComponent {
  public:
   BaseBraveShieldsService(BraveComponent::Delegate* delegate);
   ~BaseBraveShieldsService() override;
@@ -37,7 +37,6 @@ class BaseBraveShieldsService : public brave_component_updater::BraveComponent {
       const std::string& tab_host,
       bool* did_match_exception,
       bool* cancel_request_explicitly);
-  virtual scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
 
  protected:
   virtual bool Init() = 0;

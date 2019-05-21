@@ -6,9 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_REFERRER_WHITELIST_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_REFERRER_WHITELIST_SERVICE_H_
 
-#include <stdint.h>
-
-#include <map>
 #include <memory>
 #include <string>
 #include <vector>
@@ -16,10 +13,7 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "base/sequenced_task_runner.h"
-#include "base/values.h"
-#include "brave/components/brave_shields/browser/base_local_data_files_observer.h"
-#include "content/public/common/resource_type.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 #include "extensions/common/url_pattern.h"
 #include "url/gurl.h"
 
@@ -28,29 +22,28 @@
 
 class ReferrerWhitelistServiceTest;
 
+using brave_component_updater::LocalDataFilesObserver;
+using brave_component_updater::LocalDataFilesService;
+
 namespace brave_shields {
 
 // The brave shields service in charge of referrer whitelist
-class ReferrerWhitelistService : public BaseLocalDataFilesObserver {
+class ReferrerWhitelistService : public LocalDataFilesObserver {
  public:
-  ReferrerWhitelistService();
+  explicit ReferrerWhitelistService(
+      LocalDataFilesService* local_data_files_service);
   ~ReferrerWhitelistService() override;
 
   bool IsWhitelisted(const GURL& firstPartyOrigin,
                      const GURL& subresourceUrl) const;
-  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
 
-  // implementation of BaseLocalDataFilesObserver
+  // implementation of LocalDataFilesObserver
   void OnComponentReady(const std::string& component_id,
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
 
  private:
   friend class ::ReferrerWhitelistServiceTest;
-
-  void OnDATFileDataReady();
-
-  typedef std::vector<URLPattern> URLPatternList;
 
   struct ReferrerWhitelist {
     URLPattern first_party_pattern;
@@ -60,16 +53,26 @@ class ReferrerWhitelistService : public BaseLocalDataFilesObserver {
     ~ReferrerWhitelist();
   };
 
-  std::string file_contents_;
+  bool IsWhitelisted(const std::vector<ReferrerWhitelist> whitelist,
+                     const GURL& first_party_origin,
+                     const GURL& subresource_url) const;
+  void OnDATFileDataReady(std::string contents);
+  void OnDATFileDataReadyOnIOThread(std::vector<ReferrerWhitelist> whitelist);
+
+  typedef std::vector<URLPattern> URLPatternList;
+
   std::vector<ReferrerWhitelist> referrer_whitelist_;
+  std::vector<ReferrerWhitelist> referrer_whitelist_io_thread_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<ReferrerWhitelistService> weak_factory_;
+  base::WeakPtrFactory<ReferrerWhitelistService> weak_factory_io_thread_;
   DISALLOW_COPY_AND_ASSIGN(ReferrerWhitelistService);
 };
 
 // Creates the ReferrerWhitelistService
-std::unique_ptr<ReferrerWhitelistService> ReferrerWhitelistServiceFactory();
+std::unique_ptr<ReferrerWhitelistService> ReferrerWhitelistServiceFactory(
+    LocalDataFilesService* local_data_files_service);
 
 }  // namespace brave_shields
 

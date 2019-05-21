@@ -71,7 +71,7 @@ void AdBlockRegionalService::OnComponentReady(
       install_dir.AppendASCII(g_ad_block_regional_dat_file_version_)
           .AppendASCII(uuid_)
           .AddExtension(FILE_PATH_LITERAL(".dat"));
-  AdBlockBaseService::GetDATFileData(dat_file_path);
+  GetDATFileData(dat_file_path);
 }
 
 // static

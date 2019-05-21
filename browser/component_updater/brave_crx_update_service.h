@@ -23,7 +23,6 @@ class BraveCrxUpdateService : public CrxUpdateService {
                         std::unique_ptr<UpdateScheduler> scheduler,
                         scoped_refptr<UpdateClient> update_client);
 
-  bool RegisterComponent(const CrxComponent& component) override;
   ~BraveCrxUpdateService() override {}
 
  private:

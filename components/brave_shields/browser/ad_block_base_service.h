@@ -30,6 +30,10 @@ namespace brave_shields {
 // checking and init.
 class AdBlockBaseService : public BaseBraveShieldsService {
  public:
+  using GetDATFileDataResult =
+      std::pair<std::unique_ptr<AdBlockClient>,
+                brave_component_updater::DATFileDataBuffer>;
+
   AdBlockBaseService(BraveComponent::Delegate* delegate);
   ~AdBlockBaseService() override;
 
@@ -43,19 +47,24 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   bool Init() override;
   void Cleanup() override;
 
-  void EnableTagOnFileTaskRunner(std::string tag, bool enabled);
   void GetDATFileData(const base::FilePath& dat_file_path);
+
   AdBlockClient* GetAdBlockClientForTest();
 
   SEQUENCE_CHECKER(sequence_checker_);
   std::unique_ptr<AdBlockClient> ad_block_client_;
-  brave_component_updater::DATFileDataBuffer buffer_;
 
  private:
-  void OnDATFileDataReady();
+  void UpdateAdBlockClient(
+      std::unique_ptr<AdBlockClient> ad_block_client,
+      brave_component_updater::DATFileDataBuffer buffer);
+  void OnGetDATFileData(GetDATFileDataResult result);
+  void EnableTagOnIOThread(const std::string& tag, bool enabled);
   void OnPreferenceChanges(const std::string& pref_name);
 
+  brave_component_updater::DATFileDataBuffer buffer_;
   base::WeakPtrFactory<AdBlockBaseService> weak_factory_;
+  base::WeakPtrFactory<AdBlockBaseService> weak_factory_io_thread_;
   DISALLOW_COPY_AND_ASSIGN(AdBlockBaseService);
 };
 

@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "base/logging.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 
@@ -33,13 +34,14 @@ void GetDATFileData(const base::FilePath& file_path,
   }
 }
 
-void GetDATFileAsString(const base::FilePath& file_path,
-                        std::string* contents) {
-  bool success = base::ReadFileToString(file_path, contents);
-  if (!success || contents->empty()) {
+std::string GetDATFileAsString(const base::FilePath& file_path) {
+  std::string contents;
+  bool success = base::ReadFileToString(file_path, &contents);
+  if (!success || contents.empty()) {
     LOG(ERROR) << "GetDATFileAsString: cannot "
                << "read dat file " << file_path;
   }
+  return contents;
 }
 
 }  // namespace brave_component_updater

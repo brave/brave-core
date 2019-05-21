@@ -16,29 +16,33 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "base/sequenced_task_runner.h"
-#include "brave/components/brave_shields/browser/base_local_data_files_observer.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "content/public/common/resource_type.h"
-#include "url/gurl.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 
 class ExtensionWhitelistParser;
 class BraveExtensionProviderTest;
 class BravePDFDownloadTest;
 
+using brave_component_updater::LocalDataFilesObserver;
+using brave_component_updater::LocalDataFilesService;
+
+// TODO(bridiver) - move out of brave shields
 namespace brave_shields {
 
 // The brave shields service in charge of extension whitelist
-class ExtensionWhitelistService : public BaseLocalDataFilesObserver {
+class ExtensionWhitelistService : public LocalDataFilesObserver {
  public:
-  ExtensionWhitelistService();
+  using GetDATFileDataResult =
+      std::pair<std::unique_ptr<ExtensionWhitelistParser>,
+                                brave_component_updater::DATFileDataBuffer>;
+
+  ExtensionWhitelistService(LocalDataFilesService* local_data_files_service);
   ~ExtensionWhitelistService() override;
 
   bool IsWhitelisted(const std::string& extension_id) const;
   bool IsBlacklisted(const std::string& extension_id) const;
-  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
 
-  // implementation of BaseLocalDataFilesObserver
+  // implementation of LocalDataFilesObserver
   void OnComponentReady(const std::string& component_id,
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
@@ -47,19 +51,19 @@ class ExtensionWhitelistService : public BaseLocalDataFilesObserver {
   friend class ::BraveExtensionProviderTest;
   friend class ::BravePDFDownloadTest;
 
-  void OnDATFileDataReady();
-
-  brave_component_updater::DATFileDataBuffer buffer_;
+  void OnGetDATFileData(GetDATFileDataResult result);
 
   std::unique_ptr<ExtensionWhitelistParser> extension_whitelist_client_;
-
+  brave_component_updater::DATFileDataBuffer buffer_;
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<ExtensionWhitelistService> weak_factory_;
+
   DISALLOW_COPY_AND_ASSIGN(ExtensionWhitelistService);
 };
 
 // Creates the ExtensionWhitelistService
-std::unique_ptr<ExtensionWhitelistService> ExtensionWhitelistServiceFactory();
+std::unique_ptr<ExtensionWhitelistService> ExtensionWhitelistServiceFactory(
+    LocalDataFilesService* local_data_files_service);
 
 }  // namespace brave_shields
 

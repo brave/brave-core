@@ -5,32 +5,24 @@
 
 #include "brave/components/brave_shields/browser/extension_whitelist_service.h"
 
-#include <algorithm>
 #include <utility>
 
-#include "base/base_paths.h"
 #include "base/bind.h"
-#include "base/logging.h"
-#include "base/macros.h"
-#include "base/memory/ptr_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/local_data_files_service.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "base/task_runner_util.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/vendor/extension-whitelist/extension_whitelist_parser.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 namespace brave_shields {
 
-ExtensionWhitelistService::ExtensionWhitelistService()
-    : extension_whitelist_client_(new ExtensionWhitelistParser()),
+ExtensionWhitelistService::ExtensionWhitelistService(
+    LocalDataFilesService* local_data_files_service)
+    : LocalDataFilesObserver(local_data_files_service),
+      extension_whitelist_client_(new ExtensionWhitelistParser()),
       weak_factory_(this) {
-  DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
 ExtensionWhitelistService::~ExtensionWhitelistService() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   extension_whitelist_client_.reset();
 }
 
@@ -44,53 +36,45 @@ bool ExtensionWhitelistService::IsBlacklisted(const std::string& extension_id) c
   return extension_whitelist_client_->isBlacklisted(extension_id.c_str());
 }
 
-void ExtensionWhitelistService::OnDATFileDataReady() {
-  if (buffer_.empty()) {
-    LOG(ERROR) << "Could not obtain extension whitelist data";
-    return;
-  }
-  extension_whitelist_client_.reset(new ExtensionWhitelistParser());
-  if (!extension_whitelist_client_->deserialize(
-        reinterpret_cast<char*>(&buffer_.front()))) {
-    extension_whitelist_client_.reset();
-    LOG(ERROR) << "Failed to deserialize extension whitelist data";
-    return;
-  }
-}
-
 void ExtensionWhitelistService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::FilePath dat_file_path = install_dir
+      .AppendASCII(EXTENSION_DAT_FILE_VERSION)
+      .AppendASCII(EXTENSION_DAT_FILE);
 
-  base::FilePath dat_file_path = install_dir.AppendASCII(
-    EXTENSION_DAT_FILE_VERSION).AppendASCII(EXTENSION_DAT_FILE);
-
-  GetTaskRunner()->PostTaskAndReply(
+  base::PostTaskAndReplyWithResult(
+      local_data_files_service()->GetTaskRunner().get(),
       FROM_HERE,
-      base::Bind(&brave_component_updater::GetDATFileData,
-                 dat_file_path,
-                 &buffer_),
-      base::Bind(&ExtensionWhitelistService::OnDATFileDataReady,
-                 weak_factory_.GetWeakPtr()));
+      base::BindOnce(
+          &brave_component_updater::LoadDATFileData<ExtensionWhitelistParser>,
+          dat_file_path),
+      base::BindOnce(&ExtensionWhitelistService::OnGetDATFileData,
+                     weak_factory_.GetWeakPtr()));
 }
 
-scoped_refptr<base::SequencedTaskRunner>
-  ExtensionWhitelistService::GetTaskRunner() {
-  // We share the same task runner as ad-block code
-  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
+void ExtensionWhitelistService::OnGetDATFileData(GetDATFileDataResult result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (result.second.empty()) {
+    LOG(ERROR) << "Could not obtain extension whitelist data";
+    return;
+  }
+  if (!result.first.get()) {
+    LOG(ERROR) << "Failed to deserialize extension whitelist data";
+    return;
+  }
+
+  extension_whitelist_client_ = std::move(result.first);
+  buffer_ = std::move(result.second);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// The extension whitelist factory. Using the Brave Shields as a singleton
-// is the job of the browser process.
-std::unique_ptr<ExtensionWhitelistService> ExtensionWhitelistServiceFactory() {
-  std::unique_ptr<ExtensionWhitelistService> service =
-    std::make_unique<ExtensionWhitelistService>();
-  g_brave_browser_process->local_data_files_service()->AddObserver(
-    service.get());
-  return service;
+std::unique_ptr<ExtensionWhitelistService> ExtensionWhitelistServiceFactory(
+    LocalDataFilesService* local_data_files_service) {
+  return std::make_unique<ExtensionWhitelistService>(local_data_files_service);
 }
 
 }  // namespace brave_shields

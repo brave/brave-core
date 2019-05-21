@@ -101,7 +101,7 @@ void HTTPSEverywhereService::Cleanup() {
   GetTaskRunner()->PostTask(
       FROM_HERE,
       base::Bind(&HTTPSEverywhereService::CloseDatabase,
-                 base::Unretained(this)));
+                 AsWeakPtr()));
 }
 
 bool HTTPSEverywhereService::Init() {
@@ -147,7 +147,7 @@ void HTTPSEverywhereService::OnComponentReady(
   GetTaskRunner()->PostTask(
       FROM_HERE,
       base::Bind(&HTTPSEverywhereService::InitDB,
-                 base::Unretained(this),
+                 AsWeakPtr(),
                  install_dir));
 }
 

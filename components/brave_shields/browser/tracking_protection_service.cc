@@ -5,23 +5,16 @@
 
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 
-#include <algorithm>
 #include <utility>
 
-#include "base/base_paths.h"
 #include "base/bind.h"
-#include "base/command_line.h"
-#include "base/logging.h"
-#include "base/macros.h"
-#include "base/memory/ptr_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
-#include "brave/components/brave_shields/browser/local_data_files_service.h"
+#include "base/task/post_task.h"
+#include "base/task_runner_util.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "brave/vendor/tracking-protection/TPParser.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)
 #include "base/strings/string_split.h"
@@ -29,12 +22,9 @@
 #include "brave/components/brave_shields/browser/tracking_protection_helper.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "content/browser/web_contents/web_contents_impl.h"
-#include "content/public/browser/browser_thread.h"
-
-using content::BrowserThread;
 #endif
 
+using content::BrowserThread;
 using content_settings::BraveCookieSettings;
 
 namespace brave_shields {
@@ -48,13 +38,17 @@ const char kStorageTrackersFile[] = "StorageTrackingProtection.dat";
 
 const int kThirdPartyHostsCacheSize = 20;
 
-TrackingProtectionService::TrackingProtectionService()
-    : tracking_protection_client_(new CTPParser()), weak_factory_(this) {
-  DETACH_FROM_SEQUENCE(sequence_checker_);
+TrackingProtectionService::TrackingProtectionService(
+    LocalDataFilesService* local_data_files_service)
+    : LocalDataFilesObserver(local_data_files_service),
+      tracking_protection_client_(new CTPParser()),
+      weak_factory_(this),
+      weak_factory_io_thread_(this) {
 }
 
 TrackingProtectionService::~TrackingProtectionService() {
-  tracking_protection_client_.reset();
+  BrowserThread::DeleteSoon(
+      BrowserThread::IO, FROM_HERE, tracking_protection_client_.release());
 }
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)
@@ -175,25 +169,35 @@ bool TrackingProtectionService::ShouldStoreState(HostContentSettingsMap* map,
          first_party_storage_trackers_.end();
 }
 
-void TrackingProtectionService::ParseStorageTrackersData() {
-  if (storage_trackers_buffer_.empty()) {
-    LOG(ERROR) << "Could not obtain tracking protection data";
+void TrackingProtectionService::OnGetSTPDATFileData(std::string contents) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  if (contents.empty()) {
+    LOG(ERROR) << "Could not obtain first party trackers data";
     return;
   }
 
-  std::string trackers(storage_trackers_buffer_.begin(),
-                       storage_trackers_buffer_.end());
   std::vector<std::string> storage_trackers =
-      base::SplitString(base::StringPiece(trackers.data(), trackers.size()),
+      base::SplitString(base::StringPiece(contents.data(), contents.size()),
                         ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   if (storage_trackers.empty()) {
     LOG(ERROR) << "No first party trackers found";
     return;
   }
+
+  base::PostTaskWithTraits(
+      FROM_HERE, {BrowserThread::IO},
+      base::BindOnce(&TrackingProtectionService::UpdateFirstPartyStorageTrackers,
+                     weak_factory_io_thread_.GetWeakPtr(),
+                     std::move(storage_trackers)));
+}
+
+void TrackingProtectionService::UpdateFirstPartyStorageTrackers(
+    std::vector<std::string>) {
   first_party_storage_trackers_ =
       base::flat_set<std::string>(std::move(storage_trackers));
 }
+
 #endif
 
 bool TrackingProtectionService::ShouldStoreState(BraveCookieSettings* settings,
@@ -220,13 +224,13 @@ bool TrackingProtectionService::ShouldStartRequest(
     const std::string& tab_host,
     bool* matching_exception_filter,
     bool* cancel_request_explicitly) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   // There are no exceptions in the TP service, but exceptions are
   // combined with brave/ad-block.
   if (matching_exception_filter) {
     *matching_exception_filter = false;
   }
   // Intentionally don't set cancel_request_explicitly
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::string host = url.host();
   if (!tracking_protection_client_->matchesTracker(tab_host.c_str(),
                                                    host.c_str())) {
@@ -251,57 +255,69 @@ bool TrackingProtectionService::ShouldStartRequest(
   return false;
 }
 
-void TrackingProtectionService::OnDATFileDataReady() {
-  if (buffer_.empty()) {
+void TrackingProtectionService::OnGetDATFileData(GetDATFileDataResult result) {
+  if (result.second.empty()) {
     LOG(ERROR) << "Could not obtain tracking protection data";
     return;
   }
-  tracking_protection_client_.reset(new CTPParser());
-  if (!tracking_protection_client_->deserialize(
-          reinterpret_cast<char*>(&buffer_.front()))) {
-    tracking_protection_client_.reset();
+  if (!result.first.get()) {
     LOG(ERROR) << "Failed to deserialize tracking protection data";
     return;
   }
+
+  base::PostTaskWithTraits(
+      FROM_HERE, {BrowserThread::IO},
+      base::BindOnce(&TrackingProtectionService::UpdateTrackingProtectionClient,
+                     weak_factory_io_thread_.GetWeakPtr(),
+                     std::move(result.first),
+                     std::move(result.second)));
+}
+
+void TrackingProtectionService::UpdateTrackingProtectionClient(
+    std::unique_ptr<CTPParser> tracking_protection_client,
+    brave_component_updater::DATFileDataBuffer buffer) {
+  tracking_protection_client_ = std::move(tracking_protection_client);
+  buffer_ = std::move(buffer);
 }
 
 void TrackingProtectionService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  base::FilePath navigation_tracking_protection_path =
-      install_dir.AppendASCII(kDatFileVersion)
-          .AppendASCII(kNavigationTrackersFile);
+  base::FilePath navigation_tracking_protection_path = install_dir
+      .AppendASCII(kDatFileVersion)
+      .AppendASCII(kNavigationTrackersFile);
 
-  GetTaskRunner()->PostTaskAndReply(
+  base::PostTaskAndReplyWithResult(
+      local_data_files_service()->GetTaskRunner().get(),
       FROM_HERE,
-      base::Bind(&brave_component_updater::GetDATFileData,
-                 navigation_tracking_protection_path,
-                 &buffer_),
-      base::Bind(&TrackingProtectionService::OnDATFileDataReady,
-                 weak_factory_.GetWeakPtr()));
+      base::BindOnce(&brave_component_updater::LoadDATFileData<CTPParser>,
+                     navigation_tracking_protection_path),
+      base::BindOnce(&TrackingProtectionService::OnGetDATFileData,
+                     weak_factory_.GetWeakPtr()));
 
 #if BUILDFLAG(BRAVE_STP_ENABLED)
   if (!TrackingProtectionHelper::IsSmartTrackingProtectionEnabled()) {
     return;
   }
-  base::FilePath storage_tracking_protection_path =
-      install_dir.AppendASCII(kDatFileVersion)
-          .AppendASCII(kStorageTrackersFile);
+  base::FilePath storage_tracking_protection_path = install_dir
+      .AppendASCII(kDatFileVersion)
+      .AppendASCII(kStorageTrackersFile);
 
-  GetTaskRunner()->PostTaskAndReply(
+  base::PostTaskAndReplyWithResult(
+      local_data_files_service()->GetTaskRunner().get(),
       FROM_HERE,
-      base::Bind(&brave_component_updater::GetDATFileData,
-                 storage_tracking_protection_path,
-                 &storage_trackers_buffer_),
-      base::Bind(&TrackingProtectionService::ParseStorageTrackersData,
-                 weak_factory_.GetWeakPtr()));
+      base::BindOnce(&brave_component_updater::GetDATFileAsString,
+                     storage_tracking_protection_path),
+      base::BindOnce(&TrackingProtectionService::OnGetSTPDATFileData,
+                     weak_factory_.GetWeakPtr()));
 #endif
 }
 
 // Ported from Android: net/blockers/blockers_worker.cc
 std::vector<std::string> TrackingProtectionService::GetThirdPartyHosts(
     const std::string& base_host) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   {
     base::AutoLock guard(third_party_hosts_lock_);
     std::map<std::string, std::vector<std::string>>::const_iterator iter =
@@ -355,21 +371,12 @@ std::vector<std::string> TrackingProtectionService::GetThirdPartyHosts(
   return hosts;
 }
 
-scoped_refptr<base::SequencedTaskRunner>
-TrackingProtectionService::GetTaskRunner() {
-  // We share the same task runner for all ad-block and TP code
-  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
-// The tracking protection factory. Using the Brave Shields as a singleton
-// is the job of the browser process.
-std::unique_ptr<TrackingProtectionService> TrackingProtectionServiceFactory() {
+std::unique_ptr<TrackingProtectionService> TrackingProtectionServiceFactory(
+    LocalDataFilesService* local_data_files_service) {
   std::unique_ptr<TrackingProtectionService> service =
-      std::make_unique<TrackingProtectionService>();
-  g_brave_browser_process->local_data_files_service()->AddObserver(
-      service.get());
+      std::make_unique<TrackingProtectionService>(local_data_files_service);
   return service;
 }
 

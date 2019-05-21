@@ -9,9 +9,7 @@
 #include <string>
 #include <vector>
 
-namespace base {
-class FilePath;
-}
+#include "base/files/file_path.h"
 
 namespace brave_component_updater {
 
@@ -19,8 +17,22 @@ using DATFileDataBuffer = std::vector<unsigned char>;
 
 void GetDATFileData(const base::FilePath& file_path,
                     DATFileDataBuffer* buffer);
-void GetDATFileAsString(const base::FilePath& file_path,
-                        std::string* contents);
+std::string GetDATFileAsString(const base::FilePath& file_path);
+
+template<typename T>
+std::pair<std::unique_ptr<T>, DATFileDataBuffer> LoadDATFileData(
+    const base::FilePath& dat_file_path) {
+  DATFileDataBuffer buffer;
+  GetDATFileData(dat_file_path, &buffer);
+  std::unique_ptr<T> client;
+  client = std::make_unique<T>();
+  if (buffer.empty() ||
+      !client->deserialize(reinterpret_cast<char*>(&buffer.front())))
+    client.reset();
+
+  return std::pair<std::unique_ptr<T>, DATFileDataBuffer>(
+      std::move(client), std::move(buffer));
+}
 
 }  // namespace brave_component_updater
 

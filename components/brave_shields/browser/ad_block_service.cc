@@ -57,7 +57,7 @@ void AdBlockService::OnComponentReady(const std::string& component_id,
   base::FilePath dat_file_path =
       install_dir.AppendASCII(g_ad_block_dat_file_version_)
           .AppendASCII(DAT_FILE);
-  AdBlockBaseService::GetDATFileData(dat_file_path);
+  GetDATFileData(dat_file_path);
 }
 
 // static

@@ -24,6 +24,10 @@ class BraveStatsUpdater;
 class BraveWidevineBundleManager;
 #endif
 
+namespace brave_component_updater {
+class LocalDataFilesService;
+}
+
 namespace brave_shields {
 class AdBlockService;
 class AdBlockCustomFiltersService;
@@ -31,7 +35,6 @@ class AdBlockRegionalServiceManager;
 class AutoplayWhitelistService;
 class ExtensionWhitelistService;
 class HTTPSEverywhereService;
-class LocalDataFilesService;
 class ReferrerWhitelistService;
 class TrackingProtectionService;
 }  // namespace brave_shields
@@ -49,6 +52,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 
   // BrowserProcess implementation.
   component_updater::ComponentUpdateService* component_updater() override;
+  void ResourceDispatcherHostCreated() override;
 
   ProfileManager* profile_manager() override;
 
@@ -63,7 +67,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
   brave_shields::ReferrerWhitelistService* referrer_whitelist_service();
   brave_shields::TrackingProtectionService* tracking_protection_service();
   brave_shields::HTTPSEverywhereService* https_everywhere_service();
-  brave_shields::LocalDataFilesService* local_data_files_service();
+  brave_component_updater::LocalDataFilesService* local_data_files_service();
 #if BUILDFLAG(ENABLE_TOR)
   extensions::BraveTorClientUpdater* tor_client_updater();
 #endif
@@ -92,7 +96,7 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
-  std::unique_ptr<brave_shields::LocalDataFilesService>
+  std::unique_ptr<brave_component_updater::LocalDataFilesService>
       local_data_files_service_;
   std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)

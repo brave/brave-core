@@ -2,16 +2,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_shields/browser/local_data_files_service.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 
-#include <utility>
-
-#include "base/base_paths.h"
-#include "brave/components/brave_shields/browser/base_local_data_files_observer.h"
+// #include "base/base_paths.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_observer.h"
 
 using brave_component_updater::BraveComponent;
 
-namespace brave_shields {
+namespace brave_component_updater {
 
 std::string LocalDataFilesService::g_local_data_files_component_id_(
   kLocalDataFilesComponentId);
@@ -20,13 +18,12 @@ std::string LocalDataFilesService::g_local_data_files_component_base64_public_ke
 
 LocalDataFilesService::LocalDataFilesService(BraveComponent::Delegate* delegate)
   : BraveComponent(delegate),
-    initialized_(false),
-    observers_already_called_(false),
-    weak_factory_(this) {
-  DETACH_FROM_SEQUENCE(sequence_checker_);
-}
+    initialized_(false) {}
 
-LocalDataFilesService::~LocalDataFilesService() { }
+LocalDataFilesService::~LocalDataFilesService() {
+  for (auto& observer : observers_)
+    observer.OnLocalDataFilesServiceDestroyed();
+}
 
 bool LocalDataFilesService::Start() {
   if (initialized_)
@@ -38,18 +35,20 @@ bool LocalDataFilesService::Start() {
   return true;
 }
 
-void LocalDataFilesService::AddObserver(BaseLocalDataFilesObserver* observer) {
-  DCHECK(!observers_already_called_);
-  observers_.push_back(observer);
-}
-
 void LocalDataFilesService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  observers_already_called_ = true;
-  for (BaseLocalDataFilesObserver* observer : observers_)
-    observer->OnComponentReady(component_id, install_dir, manifest);
+  for (auto& observer : observers_)
+    observer.OnComponentReady(component_id, install_dir, manifest);
+}
+
+void LocalDataFilesService::AddObserver(LocalDataFilesObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void LocalDataFilesService::RemoveObserver(LocalDataFilesObserver* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 // static
@@ -62,11 +61,9 @@ void LocalDataFilesService::SetComponentIdAndBase64PublicKeyForTest(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// The brave shields factory. Using the Brave Shields as a singleton
-// is the job of the browser process.
 std::unique_ptr<LocalDataFilesService>
 LocalDataFilesServiceFactory(BraveComponent::Delegate* delegate) {
   return std::make_unique<LocalDataFilesService>(delegate);
 }
 
-}  // namespace brave_shields
+}  // namespace brave_component_updater

@@ -16,13 +16,13 @@
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 #include "brave/components/brave_shields/browser/extension_whitelist_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
-#include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/io_thread.h"
@@ -48,8 +48,7 @@ BraveBrowserProcessImpl* g_brave_browser_process = nullptr;
 
 using content::BrowserThread;
 
-BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
-}
+BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {}
 
 BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
     : BrowserProcessImpl(startup_data) {
@@ -115,6 +114,23 @@ BraveBrowserProcessImpl::component_updater() {
   return component_updater_.get();
 }
 
+void BraveBrowserProcessImpl::ResourceDispatcherHostCreated() {
+  BrowserProcessImpl::ResourceDispatcherHostCreated();
+  ad_block_service()->Start();
+  ad_block_custom_filters_service()->Start();
+  ad_block_regional_service_manager()->Start();
+  https_everywhere_service()->Start();
+
+  autoplay_whitelist_service();
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  extension_whitelist_service();
+#endif
+  referrer_whitelist_service();
+  tracking_protection_service();
+  // Now start the local data files service, which calls all observers.
+  local_data_files_service()->Start();
+}
+
 ProfileManager* BraveBrowserProcessImpl::profile_manager() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!created_profile_manager_)
@@ -154,7 +170,8 @@ brave_shields::AutoplayWhitelistService*
 BraveBrowserProcessImpl::autoplay_whitelist_service() {
   if (!autoplay_whitelist_service_) {
     autoplay_whitelist_service_ =
-        brave_shields::AutoplayWhitelistServiceFactory();
+        brave_shields::AutoplayWhitelistServiceFactory(
+            local_data_files_service());
   }
   return autoplay_whitelist_service_.get();
 }
@@ -164,7 +181,8 @@ brave_shields::ExtensionWhitelistService*
 BraveBrowserProcessImpl::extension_whitelist_service() {
   if (!extension_whitelist_service_) {
     extension_whitelist_service_ =
-        brave_shields::ExtensionWhitelistServiceFactory();
+        brave_shields::ExtensionWhitelistServiceFactory(
+            local_data_files_service());
   }
   return extension_whitelist_service_.get();
 }
@@ -174,7 +192,8 @@ brave_shields::ReferrerWhitelistService*
 BraveBrowserProcessImpl::referrer_whitelist_service() {
   if (!referrer_whitelist_service_) {
     referrer_whitelist_service_ =
-      brave_shields::ReferrerWhitelistServiceFactory();
+      brave_shields::ReferrerWhitelistServiceFactory(
+          local_data_files_service());
   }
   return referrer_whitelist_service_.get();
 }
@@ -183,7 +202,8 @@ brave_shields::TrackingProtectionService*
 BraveBrowserProcessImpl::tracking_protection_service() {
   if (!tracking_protection_service_) {
     tracking_protection_service_ =
-        brave_shields::TrackingProtectionServiceFactory();
+        brave_shields::TrackingProtectionServiceFactory(
+            local_data_files_service());
   }
   return tracking_protection_service_.get();
 }
@@ -197,11 +217,11 @@ BraveBrowserProcessImpl::https_everywhere_service() {
   return https_everywhere_service_.get();
 }
 
-brave_shields::LocalDataFilesService*
+brave_component_updater::LocalDataFilesService*
 BraveBrowserProcessImpl::local_data_files_service() {
   if (!local_data_files_service_)
     local_data_files_service_ =
-        brave_shields::LocalDataFilesServiceFactory(
+        brave_component_updater::LocalDataFilesServiceFactory(
             brave_component_updater_delegate());
   return local_data_files_service_.get();
 }

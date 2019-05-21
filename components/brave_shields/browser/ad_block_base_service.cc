@@ -12,21 +12,23 @@
 
 #include "base/bind.h"
 #include "base/files/file_path.h"
-#include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/threading/thread_restrictions.h"
+#include "base/task/post_task.h"
 #include "brave/browser/net/url_context.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 
 using brave_component_updater::BraveComponent;
+using content::BrowserThread;
 using namespace net::registry_controlled_domains;  // NOLINT
 
 namespace {
@@ -108,7 +110,8 @@ namespace brave_shields {
 AdBlockBaseService::AdBlockBaseService(BraveComponent::Delegate* delegate)
     : BaseBraveShieldsService(delegate),
       ad_block_client_(new AdBlockClient()),
-      weak_factory_(this) {
+      weak_factory_(this),
+      weak_factory_io_thread_(this) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
@@ -117,13 +120,14 @@ AdBlockBaseService::~AdBlockBaseService() {
 }
 
 void AdBlockBaseService::Cleanup() {
-  ad_block_client_.reset();
+  BrowserThread::DeleteSoon(
+      BrowserThread::IO, FROM_HERE, ad_block_client_.release());
 }
 
 bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
     content::ResourceType resource_type, const std::string& tab_host,
     bool* did_match_exception, bool* cancel_request_explicitly) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   FilterOption current_option = ResourceTypeToFilterOption(resource_type);
 
   // Determine third-party here so the library doesn't need to figure it out.
@@ -163,15 +167,17 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
 }
 
 void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
-  GetTaskRunner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&AdBlockBaseService::EnableTagOnFileTaskRunner,
-                     base::Unretained(this), tag, enabled));
+  base::PostTaskWithTraits(
+      FROM_HERE, {BrowserThread::IO},
+      base::BindOnce(&AdBlockBaseService::EnableTagOnIOThread,
+                     weak_factory_io_thread_.GetWeakPtr(),
+                     tag,
+                     enabled));
 }
 
-void AdBlockBaseService::EnableTagOnFileTaskRunner(
-    std::string tag, bool enabled) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+void AdBlockBaseService::EnableTagOnIOThread(
+    const std::string& tag, bool enabled) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   if (enabled) {
     ad_block_client_->addTag(tag);
   } else {
@@ -180,25 +186,42 @@ void AdBlockBaseService::EnableTagOnFileTaskRunner(
 }
 
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
-  GetTaskRunner()->PostTaskAndReply(
+  base::PostTaskAndReplyWithResult(
+      GetTaskRunner().get(),
       FROM_HERE,
-      base::Bind(&brave_component_updater::GetDATFileData, dat_file_path, &buffer_),
-      base::Bind(&AdBlockBaseService::OnDATFileDataReady,
-                 weak_factory_.GetWeakPtr()));
+      base::BindOnce(
+          &brave_component_updater::LoadDATFileData<AdBlockClient>,
+          dat_file_path),
+      base::BindOnce(&AdBlockBaseService::OnGetDATFileData,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void AdBlockBaseService::OnDATFileDataReady() {
-  if (buffer_.empty()) {
+void AdBlockBaseService::OnGetDATFileData(GetDATFileDataResult result) {
+  if (result.second.empty()) {
     LOG(ERROR) << "Could not obtain ad block data";
     return;
   }
-  if (!ad_block_client_->deserialize(
-      reinterpret_cast<char*>(&buffer_.front()))) {
-    ad_block_client_.reset(new AdBlockClient());
+  if (!result.first.get()) {
     LOG(ERROR) << "Failed to deserialize ad block data";
     return;
   }
+
+  base::PostTaskWithTraits(
+      FROM_HERE, {BrowserThread::IO},
+      base::BindOnce(&AdBlockBaseService::UpdateAdBlockClient,
+                     weak_factory_io_thread_.GetWeakPtr(),
+                     std::move(result.first),
+                     std::move(result.second)));
 }
+
+void AdBlockBaseService::UpdateAdBlockClient(
+    std::unique_ptr<AdBlockClient> ad_block_client,
+    brave_component_updater::DATFileDataBuffer buffer) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  ad_block_client_ = std::move(ad_block_client);
+  buffer_ = std::move(buffer);
+}
+
 
 bool AdBlockBaseService::Init() {
   return true;

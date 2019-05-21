@@ -5,32 +5,27 @@
 
 #include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 
-#include <algorithm>
-#include <utility>
-
-#include "base/base_paths.h"
 #include "base/bind.h"
-#include "base/logging.h"
-#include "base/macros.h"
-#include "base/memory/ptr_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/local_data_files_service.h"
-#include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "base/task/post_task.h"
+#include "base/task_runner_util.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/vendor/autoplay-whitelist/autoplay_whitelist_parser.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
+using brave_component_updater::LocalDataFilesObserver;
+using brave_component_updater::LocalDataFilesService;
+
 namespace brave_shields {
 
-AutoplayWhitelistService::AutoplayWhitelistService()
-    : autoplay_whitelist_client_(new AutoplayWhitelistParser()),
+AutoplayWhitelistService::AutoplayWhitelistService(
+    LocalDataFilesService* local_data_files_service)
+    : LocalDataFilesObserver(local_data_files_service),
+      autoplay_whitelist_client_(new AutoplayWhitelistParser()),
       weak_factory_(this) {
-  DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
 AutoplayWhitelistService::~AutoplayWhitelistService() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   autoplay_whitelist_client_.reset();
 }
 
@@ -43,53 +38,45 @@ bool AutoplayWhitelistService::ShouldAllowAutoplay(const GURL& url) {
   return autoplay_whitelist_client_->matchesHost(etld_plus_one.c_str());
 }
 
-void AutoplayWhitelistService::OnDATFileDataReady() {
-  if (buffer_.empty()) {
-    LOG(ERROR) << "Could not obtain autoplay whitelist data";
-    return;
-  }
-  autoplay_whitelist_client_.reset(new AutoplayWhitelistParser());
-  if (!autoplay_whitelist_client_->deserialize(
-        reinterpret_cast<char*>(&buffer_.front()))) {
-    autoplay_whitelist_client_.reset();
-    LOG(ERROR) << "Failed to deserialize autoplay whitelist data";
-    return;
-  }
-}
-
 void AutoplayWhitelistService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  base::FilePath dat_file_path =  install_dir
+      .AppendASCII(AUTOPLAY_DAT_FILE_VERSION)
+      .AppendASCII(AUTOPLAY_DAT_FILE);
 
-  base::FilePath dat_file_path = install_dir.AppendASCII(
-    AUTOPLAY_DAT_FILE_VERSION).AppendASCII(AUTOPLAY_DAT_FILE);
-
-  GetTaskRunner()->PostTaskAndReply(
+  base::PostTaskAndReplyWithResult(
+      local_data_files_service()->GetTaskRunner().get(),
       FROM_HERE,
-      base::Bind(&brave_component_updater::GetDATFileData,
-                 dat_file_path,
-                 &buffer_),
-      base::Bind(&AutoplayWhitelistService::OnDATFileDataReady,
-                 weak_factory_.GetWeakPtr()));
+      base::BindOnce(
+          &brave_component_updater::LoadDATFileData<AutoplayWhitelistParser>,
+          dat_file_path),
+      base::BindOnce(&AutoplayWhitelistService::OnGetDATFileData,
+                     weak_factory_.GetWeakPtr()));
 }
 
-scoped_refptr<base::SequencedTaskRunner>
-  AutoplayWhitelistService::GetTaskRunner() {
-  // We share the same task runner as ad-block code
-  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
+void AutoplayWhitelistService::OnGetDATFileData(GetDATFileDataResult result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (result.second.empty()) {
+    LOG(ERROR) << "Could not obtain autoplay whitelist data";
+    return;
+  }
+  if (!result.first.get()) {
+    LOG(ERROR) << "Failed to deserialize autoplay whitelist data";
+    return;
+  }
+
+  autoplay_whitelist_client_ = std::move(result.first);
+  buffer_ = std::move(result.second);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-// The autoplay whitelist factory. Using the Brave Shields as a singleton
-// is the job of the browser process.
-std::unique_ptr<AutoplayWhitelistService> AutoplayWhitelistServiceFactory() {
-  std::unique_ptr<AutoplayWhitelistService> service =
-    std::make_unique<AutoplayWhitelistService>();
-  g_brave_browser_process->local_data_files_service()->AddObserver(
-    service.get());
-  return service;
+// The autoplay whitelist factory
+std::unique_ptr<AutoplayWhitelistService> AutoplayWhitelistServiceFactory(
+    LocalDataFilesService* local_data_files_service) {
+  return std::make_unique<AutoplayWhitelistService>(local_data_files_service);
 }
 
 }  // namespace brave_shields

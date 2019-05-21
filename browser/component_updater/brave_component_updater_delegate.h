@@ -12,6 +12,10 @@
 
 using brave_component_updater::BraveComponent;
 
+namespace base {
+class SequencedTaskRunner;
+}
+
 namespace brave {
 
 class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
@@ -26,8 +30,11 @@ class BraveComponentUpdaterDelegate : public BraveComponent::Delegate {
                 BraveComponent::ReadyCallback ready_callback) override;
   bool Unregister(const std::string& component_id) override;
   void OnDemandUpdate(const std::string& component_id) override;
+  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override;
 
  private:
+  scoped_refptr<base::SequencedTaskRunner> task_runner_;
+
   DISALLOW_COPY_AND_ASSIGN(BraveComponentUpdaterDelegate);
 };
 

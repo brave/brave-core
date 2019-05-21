@@ -12,8 +12,8 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/extension_whitelist_service.h"
-#include "brave/components/brave_shields/browser/local_data_files_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -61,7 +61,7 @@ bool BraveExtensionProvider::IsVetted(const std::string id) {
       pdfjs_extension_id,
       hangouts_extension_id,
       widevine_extension_id,
-      brave_shields::kLocalDataFilesComponentId,
+      brave_component_updater::kLocalDataFilesComponentId,
       // Web Store
       "ahfgeienlihckogmohjhadlkjgocpleb",
       // Brave Automation Extension

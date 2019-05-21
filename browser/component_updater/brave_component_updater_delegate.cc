@@ -4,6 +4,8 @@
 
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
 
+#include "base/sequenced_task_runner.h"
+#include "base/task/post_task.h"
 #include "brave/browser/component_updater/brave_component_installer.h"
 #include "chrome/browser/ui/webui/components_ui.h"
 #include "chrome/browser/browser_process.h"
@@ -13,7 +15,11 @@ using brave_component_updater::BraveComponent;
 
 namespace brave {
 
-BraveComponentUpdaterDelegate::BraveComponentUpdaterDelegate() {
+BraveComponentUpdaterDelegate::BraveComponentUpdaterDelegate()
+    : task_runner_(
+          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock(),
+              base::TaskPriority::USER_VISIBLE,
+              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {
 }
 
 BraveComponentUpdaterDelegate::~BraveComponentUpdaterDelegate() {}
@@ -39,6 +45,10 @@ bool BraveComponentUpdaterDelegate::Unregister(
 void BraveComponentUpdaterDelegate::OnDemandUpdate(
     const std::string& component_id) {
   ComponentsUI::OnDemandUpdate(component_id);
+}
+
+scoped_refptr<base::SequencedTaskRunner> BraveComponentUpdaterDelegate::GetTaskRunner() {
+  return task_runner_;
 }
 
 }  // namespace brave

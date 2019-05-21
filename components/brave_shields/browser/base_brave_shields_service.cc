@@ -15,8 +15,6 @@
 #include "base/logging.h"
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
-#include "base/task_runner_util.h"
-#include "base/task/post_task.h"
 
 using brave_component_updater::BraveComponent;
 
@@ -25,11 +23,7 @@ namespace brave_shields {
 BaseBraveShieldsService::BaseBraveShieldsService(
     BraveComponent::Delegate* delegate)
     : BraveComponent(delegate),
-      initialized_(false),
-      task_runner_(
-          base::CreateSequencedTaskRunnerWithTraits({base::MayBlock(),
-              base::TaskPriority::USER_VISIBLE,
-              base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {
+      initialized_(false) {
 }
 
 BaseBraveShieldsService::~BaseBraveShieldsService() {
@@ -71,11 +65,6 @@ bool BaseBraveShieldsService::ShouldStartRequest(const GURL& url,
   }
   // Intentionally don't set cancel_request_explicitly
   return true;
-}
-
-scoped_refptr<base::SequencedTaskRunner>
-BaseBraveShieldsService::GetTaskRunner() {
-  return task_runner_;
 }
 
 }  // namespace brave_shields

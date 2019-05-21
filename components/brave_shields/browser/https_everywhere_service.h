@@ -5,18 +5,16 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_HTTPS_EVERYHWERE_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_HTTPS_EVERYHWERE_SERVICE_H_
 
-#include <stdint.h>
-
 #include <memory>
 #include <string>
 #include <vector>
 #include <mutex>
 
 #include "base/files/file_path.h"
+#include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "brave/components/brave_shields/browser/https_everywhere_recently_used_cache.h"
-#include "content/public/common/resource_type.h"
 
 namespace leveldb {
 class DB;
@@ -42,17 +40,18 @@ const std::string kHTTPSEverywhereComponentBase64PublicKey =
 
 struct HTTPSE_REDIRECTS_COUNT_ST {
 public:
-    HTTPSE_REDIRECTS_COUNT_ST(uint64_t request_identifier,
-        unsigned int redirects):
-      request_identifier_(request_identifier),
-      redirects_(redirects) {
-    }
+  HTTPSE_REDIRECTS_COUNT_ST(uint64_t request_identifier,
+      unsigned int redirects):
+    request_identifier_(request_identifier),
+    redirects_(redirects) {
+  }
 
-    uint64_t request_identifier_;
-    unsigned int redirects_;
+  uint64_t request_identifier_;
+  unsigned int redirects_;
 };
 
-class HTTPSEverywhereService : public BaseBraveShieldsService {
+class HTTPSEverywhereService : public BaseBraveShieldsService,
+                         public base::SupportsWeakPtr<HTTPSEverywhereService> {
  public:
    HTTPSEverywhereService(BraveComponent::Delegate* delegate);
    ~HTTPSEverywhereService() override;

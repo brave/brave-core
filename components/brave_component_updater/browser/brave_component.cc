@@ -6,11 +6,13 @@
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 
 #include "base/bind.h"
-#include "base/bind_helpers.h"
+#include "base/sequenced_task_runner.h"
 
 namespace brave_component_updater {
 
-BraveComponent::BraveComponent(Delegate* delegate) : delegate_(delegate) {}
+BraveComponent::BraveComponent(Delegate* delegate)
+    : delegate_(delegate),
+      weak_factory_(this) {}
 
 BraveComponent::~BraveComponent() {
 }
@@ -18,13 +20,17 @@ BraveComponent::~BraveComponent() {
 void BraveComponent::Register(const std::string& component_name,
                               const std::string& component_id,
                               const std::string& component_base64_public_key) {
+  component_name_ = component_name;
+  component_id_ = component_id;
+  component_base64_public_key_ = component_base64_public_key;
+
   auto registered_callback =
       base::BindOnce(&BraveComponent::OnComponentRegistered,
                      delegate_,
                      component_id);
   auto ready_callback =
       base::BindOnce(&BraveComponent::OnComponentReady,
-                     AsWeakPtr(),
+                     weak_factory_.GetWeakPtr(),
                      component_id);
 
   delegate_->Register(component_name_,
@@ -37,17 +43,20 @@ bool BraveComponent::Unregister() {
   return delegate_->Unregister(component_id_);
 }
 
-// static
-void BraveComponent::OnComponentRegistered(
-    Delegate* delegate,
-    const std::string& component_id) {
-  delegate->OnDemandUpdate(component_id);
+scoped_refptr<base::SequencedTaskRunner> BraveComponent::GetTaskRunner() {
+  return delegate_->GetTaskRunner();
 }
 
 void BraveComponent::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
-    const std::string& manifest) {
+    const std::string& manifest) {}
+
+// static
+void BraveComponent::OnComponentRegistered(
+    Delegate* delegate,
+    const std::string& component_id) {
+  delegate->OnDemandUpdate(component_id);
 }
 
 }  // namespace brave_component_updater
