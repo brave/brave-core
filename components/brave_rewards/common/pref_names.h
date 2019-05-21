@@ -25,6 +25,7 @@ extern const char kRewardsExternalWallets[];
 extern const char kStateServerPublisherListStamp[];
 extern const char kStateUpholdAnonAddress[];
 
+extern const char kUseRewardsStagingServer[];
 }  // namespace prefs
 }  // namespace brave_rewards
 

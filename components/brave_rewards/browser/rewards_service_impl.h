@@ -696,6 +696,8 @@ class RewardsServiceImpl : public RewardsService,
   void AddPrivateObserver(RewardsServicePrivateObserver* observer) override;
   void RemovePrivateObserver(RewardsServicePrivateObserver* observer) override;
 
+  bool ShouldUseStagingServerForAndroid();
+
 #if defined(OS_ANDROID)
   void CreateWalletAttestationResult(bool result,
       const std::string& result_string);
