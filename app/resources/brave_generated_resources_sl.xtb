@@ -46,17 +46,14 @@
 <translation id="3155170474926428993">Zaganjalnik brskalnika Tor</translation>
 <translation id="2515126961943087659">Storitev oglasov BAT</translation>
 <translation id="7924918279836988121">Storitev poslovne knjige Bat</translation>
-<translation id="768979911142179781">Privzete nastavitve ščita brskalnika Brave</translation>
-<translation id="9185018653595759199">Gumbi družbenih omrežij in prijava vanje</translation>
-<translation id="6894114137169961038">Upravljanje oglasov</translation>
-<translation id="1096802265930928584">Upravljanje piškotkov</translation>
+<translation id="4472575034687746823">Kako začeti</translation>
+<translation id="6303294677342628402">Ščiti</translation>
 <translation id="8919235146866304148">Zaščita proti ustvarjanju prstnih odtisov</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Blokiranje skripta</translation>
 <translation id="7498695072878479744">Dovoli gumbe za prijavo Google na spletnih mestih drugih ponudnikov</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
-<translation id="958971637207126733">Dovoli vdelane vsebine z LinkedIna</translation>
 <translation id="6067014455220527258">Blokiraj oglase</translation>
 <translation id="6985711843506827936">Dovoli oglase in sledenje</translation>
 <translation id="6132506775968708399">Blokiraj piškotke tretjih oseb</translation>
@@ -76,7 +73,6 @@
 <translation id="2414886740292270097">Temno</translation>
 <translation id="1360441190790440400">Enako kot Linux</translation>
 <translation id="1336940801687497203">Enako kot Windows</translation>
-<translation id="8721331068159819483">Enako kot MacOs</translation>
 <translation id="6786747875388722282">Razširitve</translation>
 <translation id="2896916411183256228">Uporablja WebTorrent za prikaz torrentov, neposredno v brskalniku. Podpira datoteke torrent in povezave magnet.</translation>
 <translation id="6554397389149987360">Uporabi komponento Hangouts za omogočanje skupne rabe zaslona in drugih funkcij v brskalniku.</translation>

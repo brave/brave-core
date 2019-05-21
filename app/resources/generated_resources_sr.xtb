@@ -38,10 +38,11 @@
 <translation id="3303855915957856445">Нису пронађени резултати претраге</translation>
 <translation id="8967866634928501045">За приказивање притисните Alt + Shift + A</translation>
 <translation id="998747458861718449">П&amp;регледај</translation>
+<translation id="741204030948306876">Да, омогући</translation>
+<translation id="780301667611848630">Не, хвала</translation>
 <translation id="3943582379552582368">&amp;Назад</translation>
 <translation id="6691936601825168937">&amp;Проследи</translation>
 <translation id="3280237271814976245">Сачувај &amp;као...</translation>
-<translation id="2941880727166628951">Пошаљи на моје уређаје</translation>
 <translation id="1175364870820465910">&amp;Одштампај...</translation>
 <translation id="8664389313780386848">&amp;Прикажи извор странице</translation>
 <translation id="2889064240420137087">Отвори линк користећи...</translation>
@@ -93,10 +94,10 @@
 <translation id="1732768497619250086">Преузимај описе слика са Brave Software-а</translation>
 <translation id="7561196759112975576">Увек</translation>
 <translation id="2241634353105152135">Само једном</translation>
-<translation id="741204030948306876">Да, омогући</translation>
-<translation id="780301667611848630">Не, хвала</translation>
-<translation id="4572259796527554261">Затражи предлоге од Brave Software-а</translation>
-<translation id="3435896845095436175">Омогући</translation>
+<translation id="3387614642886316601">Користите побољшану проверу правописа</translation>
+<translation id="6992554835374084304">Укључите побољшану проверу правописа</translation>
+<translation id="5860491529813859533">Укључи</translation>
+<translation id="7658239707568436148">Otkaži</translation>
 <translation id="8915370057835397490">Учитавање предлога</translation>
 <translation id="6191804255817539692">Нема више предлога са Brave Software-а</translation>
 <translation id="1901303067676059328">Изабери &amp;све</translation>
@@ -107,7 +108,6 @@
 <translation id="6042308850641462728">Више</translation>
 <translation id="6268252012308737255">Отвори помоћу апликације <ph name="APP"/></translation>
 <translation id="5509693895992845810">Сачувај &amp;као...</translation>
-<translation id="3480119035619598820">Пошаљи на моје уређаје</translation>
 <translation id="7421925624202799674">&amp;Прикажи извор странице</translation>
 <translation id="1588870296199743671">Отвори линк користећи...</translation>
 <translation id="3760460896538743390">Провери страницу &amp;позадине</translation>
@@ -149,9 +149,10 @@
 <translation id="4022426551683927403">&amp;Додај у речник</translation>
 <translation id="6849870115130610913">Преузимај описе слика са Brave Software-а</translation>
 <translation id="372722114124766626">Само једном</translation>
-<translation id="8917490105272468696">Да, омогући</translation>
+<translation id="4079140982534148664">Користите побољшану проверу правописа</translation>
+<translation id="7487141338393529395">Укључите побољшану проверу правописа</translation>
+<translation id="3435896845095436175">Омогући</translation>
 <translation id="7473891865547856676">Не, хвала</translation>
-<translation id="2867003629889664976">Затражи предлоге од Brave Software-а</translation>
 <translation id="6264365405983206840">Изабери &amp;све</translation>
 <translation id="3948116654032448504">&amp;Потражи слику у претраживачу <ph name="SEARCH_ENGINE"/></translation>
 <translation id="2932085390869194046">Предложи лозинку...</translation>
@@ -164,7 +165,7 @@
 <translation id="4423482519432579560">&amp;Провера правописа</translation>
 <translation id="1049795001945932310">&amp;Подешавања језика</translation>
 <translation id="6498249116389603658">&amp;Сви ваши језици</translation>
-<translation id="8188120771410500975">&amp;Провери правопис у пољима за текст</translation>
+<translation id="5978277834170881274">&amp;Користи основну проверу правописа</translation>
 <translation id="4200983522494130825">Нова &amp;картица</translation>
 <translation id="8418445294933751433">&amp;Прикажи као картицу</translation>
 <translation id="1723824996674794290">&amp;Нови прозор</translation>
@@ -323,7 +324,9 @@
 <translation id="3916445069167113093">Овај тип датотеке може да нашкоди рачунару. Да ли ипак желите да задржите датотеку <ph name="FILE_NAME"/>?</translation>
 <translation id="5727728807527375859">Додаци, апликације и теме могу да оштете рачунар. Желите ли стварно да наставите?</translation>
 <translation id="6285120108426285413">Датотека <ph name="FILE_NAME"/> се обично не преузима и може да буде опасна.</translation>
+<translation id="6573998787994398565">Датотека <ph name="FILE_NAME"/> се обично не преузима и може да буде опасна. Штити вас напредна заштита.</translation>
 <translation id="4907161631261076876">Ова датотека се не преузима често и може да буде опасна.</translation>
+<translation id="9041909613332246191">Ова датотека се не преузима често и може да буде опасна. Штити вас напредна заштита.</translation>
 <translation id="2773802008104670137">Ова врста датотеке може да нашкоди рачунару.</translation>
 <translation id="7815680994978050279">Опасно преузимање је блокирано</translation>
 <translation id="6141988275892716286">Потврдите преузимање</translation>
@@ -343,7 +346,6 @@
 <translation id="8200772114523450471">Настави</translation>
 <translation id="2770465223704140727">Уклони са листе</translation>
 <translation id="7702574632857388784">Уклоните датотеку <ph name="FILE_NAME"/> са листе</translation>
-<translation id="7658239707568436148">Otkaži</translation>
 <translation id="7144878232160441200">Пробај поново</translation>
 <translation id="5170568018924773124">Прикажи у директоријуму</translation>
 <translation id="1581962803218266616">Прикажи у Finder-у</translation>
@@ -358,6 +360,10 @@
 <translation id="495170559598752135">Радње</translation>
 <translation id="3612673635130633812">Додатак &lt;a href="<ph name="URL"/>"&gt;<ph name="EXTENSION"/>&lt;/a&gt; је преузео</translation>
 <translation id="6395403722585816044">Преузето је у режиму без архивирања</translation>
+<translation id="4551763574344810652">Притисните <ph name="MODIFIER_KEY_DESCRIPTION"/> да бисте опозвали</translation>
+<translation id="2079545284768500474">Opozovi radnju</translation>
+<translation id="2490481887078769936">Датотека „<ph name="FILE_NAME"/>“ је уклоњена са листе</translation>
+<translation id="1429300045468813835">Све је обрисано</translation>
 <translation id="8028803902702117856">Преузима се <ph name="SIZE"/>, <ph name="FILE_NAME"/></translation>
 <translation id="5632592977009207922">Преузима се, још <ph name="PERCENT_REMAINING"/>%</translation>
 <translation id="313963229645891001">Преузима се, <ph name="STATUS"/></translation>
@@ -418,6 +424,10 @@
 <translation id="3067198179881736288">Желите ли да инсталирате апликацију?</translation>
 <translation id="7072010813301522126">Назив пречице</translation>
 <translation id="3275778913554317645">Отвори као прозор</translation>
+<translation id="7193051357671784796">Ову апликацију је додала ваша организација. Поново је покрените да бисте завршили инсталацију.</translation>
+<translation id="5895138241574237353">Покрени поново</translation>
+<translation id="3479552764303398839">Не сада</translation>
+<translation id="1008557486741366299">Не сада</translation>
 <translation id="8201192017531062522">Brave ће наставити да ради док су Brave апликације отворене.</translation>
 <translation id="7397305826909094212">Изађи из свих Brave апликација</translation>
 <translation id="5026874946691314267">Не приказуј ово поново</translation>
@@ -751,6 +761,7 @@
 <translation id="5715711091495208045">Посредник додатне компоненте: <ph name="PLUGIN_NAME"/></translation>
 <translation id="3222066309010235055">Претприказивање: <ph name="PRERENDER_CONTENTS_NAME"/></translation>
 <translation id="6748217015615267851">Приказивач: <ph name="RENDERER_URL"/></translation>
+<translation id="2156294658807918600">Сервисер: <ph name="SCRIPT_URL"/></translation>
 <translation id="241082044617551207">Непозната додатна компонента</translation>
 <translation id="7903925330883316394">Помоћни процес: <ph name="UTILITY_TYPE"/></translation>
 <translation id="219008588003277019">Модул оригиналног клијента: <ph name="NEXE_NAME"/></translation>
@@ -774,10 +785,8 @@
 <translation id="4873312501243535625">Провера медијских датотека</translation>
 <translation id="5972666587303800813">Услуга без операције</translation>
 <translation id="3061707000357573562">Услуга крпљења</translation>
-<translation id="3580923162759633716">Услуга профилисања</translation>
 <translation id="1914326953223720820">Услуга за отпакивање датотека</translation>
 <translation id="1545775234664667895">Инсталирана је тема „<ph name="THEME_NAME"/>“</translation>
-<translation id="2079545284768500474">Opozovi radnju</translation>
 <translation id="2256115617011615191">Поново покрени одмах</translation>
 <translation id="4545028762441890696">Да бисте га поново омогућили, прихватите нове дозволе:</translation>
 <translation id="3009487527589249344">Brave Software је означио додатак „<ph name="EXTENSION_NAME"/>“ као злонамеран и инсталација је спречена</translation>
@@ -963,8 +972,8 @@
 <translation id="2643698698624765890">Управљајте додацима кликом на ставку Додаци у менију Прозор.</translation>
 <translation id="7953955868932471628">Управљај пречицама</translation>
 <translation id="1470811252759861213">Да би вам додаци били доступни на свим рачунарима, <ph name="SIGN_IN_LINK"/>.</translation>
-<translation id="316854673539778496">Да би вам додаци били доступни на свим уређајима, пријавите се и укључите синхронизацију.</translation>
-<translation id="8079938625609335826">Да би вам сви додаци били доступни на свим уређајима, укључите синхронизацију.</translation>
+<translation id="2490782392574942205">Да би вам додаци били доступни на свим рачунарима, пријавите се и укључите синхронизацију</translation>
+<translation id="3919145445993746351">Да би вам додаци били доступни на свим рачунарима, укључите синхронизацију</translation>
 <translation id="4977942889532008999">Потврдите приступ</translation>
 <translation id="5780011244986845107">Директоријум који сте изабрали садржи осетљиве датотеке. Желите ли стварно да одобрите апликацији „<ph name="APP_NAME"/>“ сталан приступ за читање за овај директоријум?</translation>
 <translation id="5365881113273618889">Директоријум који сте изабрали садржи осетљиве датотеке. Желите ли стварно да одобрите апликацији „<ph name="APP_NAME"/>“ сталан приступ за уписивање за овај директоријум?</translation>
@@ -983,6 +992,8 @@
 <translation id="220138918934036434">Сакриј дугме</translation>
 <translation id="7898627924844766532">Задржи на траци с алаткама</translation>
 <translation id="6082651258230788217">Прикажи на траци с алаткама</translation>
+<translation id="7461924472993315131">Закачи</translation>
+<translation id="4285498937028063278">Откачи</translation>
 <translation id="8137559199583651773">Управљај додацима</translation>
 <translation id="3727187387656390258">Испитај искачући прозор</translation>
 <translation id="3526034519184079374">Читање или мењање података сајта није успело</translation>
@@ -1187,9 +1198,13 @@
 <translation id="6690659332373509948">Није могуће рашчланити датотеку: <ph name="FILE_NAME"/></translation>
 <translation id="2773288106548584039">Подршка за застареле прегледаче</translation>
 <translation id="8141584439523427891">Сада се отвара у алтернативном прегледачу</translation>
+<translation id="7450761244949417357">Сада се отвара у прегледачу <ph name="ALTERNATIVE_BROWSER_NAME"/></translation>
 <translation id="2804043232879091219">Нисмо успели да отворимо алтернативни прегледач</translation>
+<translation id="692114467174262153">Отварање прегледача <ph name="ALTERNATIVE_BROWSER_NAME"/> није успело</translation>
 <translation id="1070705170564860382">Отвара се у алтернативном прегледачу за <ph name="COUNTDOWN_SECONDS"/> сек</translation>
+<translation id="3481268647794498892">Отвара се у прегледачу <ph name="ALTERNATIVE_BROWSER_NAME"/> за <ph name="COUNTDOWN_SECONDS"/> сек</translation>
 <translation id="4586275095964870617">Нисмо успели да отворимо <ph name="URL"/> у алтернативном прегледачу. Контактирајте администратора система.</translation>
+<translation id="736877393389250337">Прегледач <ph name="ALTERNATIVE_BROWSER_NAME"/> није успео да отвори <ph name="URL"/>. Контактирајте администратора система.</translation>
 <translation id="465878909996028221">За преусмеравања у прегледачу подржани су само протоколи http, https и file.</translation>
 <translation id="1962233722219655970">Ова страница користи Native Client апликацију која не функционише на вашем рачунару.</translation>
 <translation id="7540972813190816353">Дошло је до грешке при провери ажурирања: <ph name="ERROR"/></translation>
@@ -1213,6 +1228,7 @@
 <translation id="5867841422488265304">Претражите или унесите веб-адресу</translation>
 <translation id="2129873093718581193">Претражите Brave Software или унесите URL</translation>
 <translation id="6363797201514053536">Претражите Brave Software или унесите URL</translation>
+<translation id="4888839742663123585">Претражите Brave Software</translation>
 <translation id="6078323886959318429">Додај пречицу</translation>
 <translation id="6324916366299863871">Измени пречицу</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1241,6 +1257,7 @@
 <translation id="8391712576156218334">Слика је недоступна. Пробајте поново касније.</translation>
 <translation id="1564414980088536597">Коришћење ове слике није успело. Одаберите другу слику.</translation>
 <translation id="385051799172605136">Назад</translation>
+<translation id="8033827949643255796">изабрано</translation>
 <translation id="3497560059572256875">Дели дудл логотип</translation>
 <translation id="6365069501305898914">Facebook</translation>
 <translation id="2635094637295383009">Tviter</translation>
@@ -1267,6 +1284,10 @@
 <translation id="5939518447894949180">Ресетуј</translation>
 <translation id="5546865291508181392">Пронађи</translation>
 <translation id="833986336429795709">Изаберите апликацију да бисте отворили овај линк</translation>
+<translation id="192494336144674234">Отвори помоћу</translation>
+<translation id="9053893665344928494">Запамти избор</translation>
+<translation id="5541687815721799001">Користи апликацију</translation>
+<translation id="5340857474604400806">Остани у Brave-у</translation>
 <translation id="6827869674836193263"><ph name="WINDOW_TITLE"/> (без архивирања)</translation>
 <translation id="4960294539892203357"><ph name="WINDOW_TITLE"/> – <ph name="PROFILE_NAME"/></translation>
 <translation id="5428850089342283580"><ph name="ACCNAME_APP"/> (Доступно је ажурирање)</translation>
@@ -1314,7 +1335,6 @@
 <translation id="720715819012336933">{NUM_PAGES,plural, =1{Затвори страницу}one{Затвори странице}few{Затвори странице}other{Затвори странице}}</translation>
 <translation id="8093359998839330381">Додатна компонента <ph name="PLUGIN_NAME"/> не реагује</translation>
 <translation id="8393511274964623038">Заустави додатну компоненту</translation>
-<translation id="82871696630048499">Веб-страница се поново учитала зато што јој је понестало меморије.</translation>
 <translation id="5578059481725149024">Аутоматско пријављивање</translation>
 <translation id="6810613314571580006">Аутоматски се пријављујте на веб-сајтове помоћу сачуваних акредитива. Када је ова функција онемогућена, тражићемо потврду пре сваког пријављивања на веб-сајт.</translation>
 <translation id="5454166040603940656">са добављачем <ph name="PROVIDER"/></translation>
@@ -1365,6 +1385,7 @@
 <translation id="8713570323158206935">Шаљи <ph name="BEGIN_LINK1"/>информације о систему<ph name="END_LINK1"/></translation>
 <translation id="6395423953133416962">Шаљи <ph name="BEGIN_LINK1"/>информације<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>показатеље<ph name="END_LINK2"/> о систему</translation>
 <translation id="6270770586500173387">Шаљи <ph name="BEGIN_LINK1"/>информације о систему и апликацијама<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>показатеље<ph name="END_LINK2"/></translation>
+<translation id="3894123633473837029">Уврсти недавну историју Помоћника преко Sherlog-а. Она може да обухвата ваш идентитет, локацију и информације о отклањању грешака. <ph name="BEGIN_LINK"/>Сазнајте више<ph name="END_LINK"/></translation>
 <translation id="8329196515830093443">Датотека ће бити послата Brave Software-у ради отклањања грешака</translation>
 <translation id="8227119283605456246">Приложи датотеку</translation>
 <translation id="5367091008316207019">Читање датотеке..</translation>
@@ -1375,9 +1396,6 @@
 <translation id="1483493594462132177">Пошаљи</translation>
 <translation id="6885771755599377173">Преглед информација о систему</translation>
 <translation id="1016566241875885511">Додатне информације (опционално)</translation>
-<translation id="6083886770200509573">Да ли Brave отказује, приказује необичне почетне странице, траке с алаткама или неочекиване огласе које не можете да уклоните или на други начин мења доживљај прегледања? Можда ћете моћи да решите проблем ако покренете Алатку за чишћење Brave-а.</translation>
-<translation id="7719662019953070946">Преузми Алатку за чишћење Brave-а</translation>
-<translation id="8281886186245836920">Прескочи</translation>
 <translation id="8026334261755873520">Обришите податке прегледања</translation>
 <translation id="7409836189476010449">Покрене Flash</translation>
 <translation id="4718442817388594217">Изабрани подаци су уклоњени из Brave-а и са синхронизованих уређаја. Brave Software налог можда има друге облике историје прегледања, попут претрага и активности на другим Brave Software услугама на <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
@@ -1515,7 +1533,6 @@
 
   Желите ли одмах да покренете <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="2799223571221894425">Поново покрени</translation>
-<translation id="5895138241574237353">Покрени поново</translation>
 <translation id="6280912520669706465">ARC</translation>
 <translation id="4728558894243024398">Платформа</translation>
 <translation id="7022562585984256452">Почетна страница је подешена.</translation>
@@ -1555,6 +1572,10 @@
 <translation id="6015796118275082299">Година</translation>
 <translation id="5152275065296016556">Brave Software Pay</translation>
 <translation id="7671130400130574146">Користи системску траку наслова и ивице</translation>
+<translation id="3775705724665058594">Пошаљите на своје уређаје</translation>
+<translation id="6061882183774845124">Пошаљите линк на своје уређаје</translation>
+<translation id="8249615410597138718">Пошаљите на своје уређаје</translation>
+<translation id="5310281978693206542">Пошаљите линк на своје уређаје</translation>
 <translation id="4520385623207007473">Колачићи у употреби</translation>
 <translation id="4763408175235639573">Следећи колачићи су постављени док сте гледали ову страницу</translation>
 <translation id="2719936478972253983">Следећи колачићи су блокирани</translation>
@@ -1644,12 +1665,14 @@
 <translation id="8371695176452482769">Почните да говорите</translation>
 <translation id="2942560570858569904">Чека се...</translation>
 <translation id="6436164536244065364">Прикажи у Веб продавници</translation>
+<translation id="5258992782919386492">Инсталирај на овом уређају</translation>
 <translation id="3331974543021145906">Информације о апликацији</translation>
 <translation id="9121814364785106365">Отвори као закачену картицу</translation>
 <translation id="6920989436227028121">Отвори као уобичајену картицу</translation>
 <translation id="189210018541388520">Отвори цео екран</translation>
 <translation id="6096047740730590436">Отвори увећано</translation>
 <translation id="7256710573727326513">Отвори на картици</translation>
+<translation id="7636919061354591437">Инсталирај на овом уређају</translation>
 <translation id="2993517869960930405">Информације о апликацији</translation>
 <translation id="2867768963760577682">Отвори као закачену картицу</translation>
 <translation id="1390548061267426325">Отвори као уобичајену картицу</translation>
@@ -1686,6 +1709,7 @@
 <translation id="4500114933761911433">Додатна компонента <ph name="PLUGIN_NAME"/> је отказала</translation>
 <translation id="4610162781778310380">Додатна компонента <ph name="PLUGIN_NAME"/> је наишла на грешку</translation>
 <translation id="778330624322499012">Није могуће учитати <ph name="PLUGIN_NAME"/></translation>
+<translation id="7438976808740265764">Flash Player више неће бити подржан од децембра 2020.</translation>
 <translation id="3739254215541673094">Желите ли да отворите <ph name="APPLICATION"/>?</translation>
 <translation id="2188881192257509750">Отвори <ph name="APPLICATION"/></translation>
 <translation id="620722923698527029">Увек отварај ове типове линкова у повезаној апликацији</translation>
@@ -1930,6 +1954,15 @@
 <translation id="8363142353806532503">Микрофон је блокиран</translation>
 <translation id="2762441749940182211">Камера је блокирана</translation>
 <translation id="5074318175948309511">Можда треба поново да учитате ову страницу да би нова подешавања ступила на снагу.</translation>
+<translation id="3325910708063135066">Камера и микрофон су искључени у подешавањима Mac система</translation>
+<translation id="5383377866517186886">Камера је искључена у подешавањима Mac система</translation>
+<translation id="6545867563032584178">Микрофон је искључен у подешавањима Mac система</translation>
+<translation id="2332192922827071008">Отвори Подешавања</translation>
+<translation id="1620510694547887537">Камера</translation>
+<translation id="3227137524299004712">Микрофон</translation>
+<translation id="4209251085232852247">Искључено</translation>
+<translation id="2804680522274557040">Дозвола за камеру је искључена</translation>
+<translation id="6309510305002439352">Дозвола за микрофон је искључена</translation>
 <translation id="8282947398454257691">зна јединствени идентификатор уређаја</translation>
 <translation id="8329449853370113380"><ph name="URL"/> жели да пусти заштићени садржај. Brave Software ће потврдити идентитет уређаја.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> жели да пусти заштићени садржај. Brave Software ће потврдити идентитет уређаја и овај сајт ће моћи да му приступа.</translation>
@@ -1953,7 +1986,6 @@
 <translation id="8105368624971345109">Искључи</translation>
 <translation id="1036348656032585052">Искључи</translation>
 <translation id="3423858849633684918">Рестартујте <ph name="PRODUCT_NAME"/></translation>
-<translation id="8876215549894133151">Формат:</translation>
 <translation id="2294358108254308676">Желите ли да инсталирате <ph name="PRODUCT_NAME"/>?</translation>
 <translation id="586567932979200359">Покрећете <ph name="PRODUCT_NAME"/> са диска. Инсталација на рачунар омогућава покретање без диска и редовно ажурирање.</translation>
 <translation id="4849517651082200438">Не инсталирај</translation>
@@ -2008,8 +2040,6 @@
 <translation id="1712552549805331520"><ph name="URL"/> жели трајно да складишти податке на локалном рачунару</translation>
 <translation id="1997484222658892567"><ph name="URL"/> жели да трајно складишти велику количину података на вашем локалном рачунару</translation>
 <translation id="7648992873808071793">складишти датотеке на овом уређају</translation>
-<translation id="7461924472993315131">Закачи</translation>
-<translation id="4285498937028063278">Откачи</translation>
 <translation id="8871551568777368300">Закачио је администратор</translation>
 <translation id="4110895898888439383">Прегледајте веб у режиму високог контраста</translation>
 <translation id="614940544461990577">Покушајте:</translation>
@@ -2108,6 +2138,7 @@
 <translation id="3202173864863109533">Звук ове картице је искључен.</translation>
 <translation id="5562781907504170924">Ова картица је повезана са Bluetooth уређајем.</translation>
 <translation id="5884474295213649357">Ова картица је повезана са USB уређајем.</translation>
+<translation id="1010498023906173788">Ова картица је повезана са серијским портом.</translation>
 <translation id="8466417995783206254">Ова картица репродукује видео у режиму слике у слици.</translation>
 <translation id="2585724835339714757">Ова картица дели екран.</translation>
 <translation id="1542514202066550870">ВР садржај ове картице приказује се преко хедсета.</translation>
@@ -2118,6 +2149,7 @@
 <translation id="353316712352074340"><ph name="WINDOW_TITLE"/> – Звук је искључен</translation>
 <translation id="9176611096776448349"><ph name="WINDOW_TITLE"/> – Bluetooth уређаје је повезан</translation>
 <translation id="6026819612896463875"><ph name="WINDOW_TITLE"/> – USB уређај је повезан</translation>
+<translation id="7031608529463141342"><ph name="WINDOW_TITLE"/> – серијски порт је повезан</translation>
 <translation id="324849028894344899"><ph name="WINDOW_TITLE"/> – грешка на мрежи</translation>
 <translation id="8980951173413349704"><ph name="WINDOW_TITLE"/> – Отказао је</translation>
 <translation id="6579705087617859690"><ph name="WINDOW_TITLE"/> – дели се садржај екрана</translation>
@@ -2130,6 +2162,8 @@
 <translation id="6459799433792303855">Активни прозор је померен на други екран.</translation>
 <translation id="6551508934388063976">Команда није доступна. Притисните control-N да бисте отворили нови прозор.</translation>
 <translation id="3831486154586836914">Ушли сте у режим прегледа прозора</translation>
+<translation id="4380648069038809855">Ушли сте у режим целог екрана</translation>
+<translation id="1766575458646819543">Изашли сте из режима целог екрана</translation>
 <translation id="8736288397686080465">Овај сајт је ажуриран у позадини.</translation>
 <translation id="6945221475159498467">Изабери</translation>
 <translation id="4130199216115862831">Евиденција уређаја</translation>
@@ -2146,6 +2180,7 @@
 <translation id="8847988622838149491">USB</translation>
 <translation id="5086082738160935172">Уређај са интерфејсом за људе</translation>
 <translation id="4034824040120875894">Штампач</translation>
+<translation id="2633764681656412085">FIDO</translation>
 <translation id="2242687258748107519">Информације о датотеци</translation>
 <translation id="930268624053534560">Детаљне временске ознаке</translation>
 <translation id="6519437681804756269">[<ph name="TIMESTAMP"/>]
@@ -2157,8 +2192,9 @@
 <translation id="2593289874938379417">Brave нема приступ захтеваном ресурсу.</translation>
 <translation id="760197030861754408">Идите на <ph name="LANDING_PAGE"/> да бисте се повезали.</translation>
 <translation id="3648348069317717750">Уређај <ph name="USB_DEVICE_NAME"/> је откривен</translation>
-<translation id="2382095919147960379">Повежите овај уређај са Linux-ом</translation>
-<translation id="5308380583665731573">Повезивање</translation>
+<translation id="5042282098504489593">Отворите Подешавања да бисте повезали <ph name="USB_DEVICE_NAME"/> са Linux-ом</translation>
+<translation id="1072700771426194907">Откривен је USB уређај</translation>
+<translation id="7830594666202422257">Повежи са Linux-ом</translation>
 <translation id="59324397759951282">USB произвођача <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="8763927697961133303">USB уређај</translation>
 <translation id="8798099450830957504">Подразумевано</translation>
@@ -2181,6 +2217,7 @@
 <translation id="3271648667212143903"><ph name="ORIGIN"/> жели да се повеже</translation>
 <translation id="7945031593909029181">„<ph name="CHROME_EXTENSION_NAME"/>“ жели да се повеже</translation>
 <translation id="3949790930165450333"><ph name="DEVICE_NAME"/> (<ph name="DEVICE_ID"/>)</translation>
+<translation id="5308380583665731573">Повезивање</translation>
 <translation id="8480869669560681089">Непознат уређај произвођача <ph name="VENDOR_NAME"/></translation>
 <translation id="1500297251995790841">Непознат уређај [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="7003844668372540529">Непознати производ <ph name="PRODUCT_ID"/> продавца <ph name="VENDOR_NAME"/></translation>
@@ -2248,8 +2285,7 @@
 <translation id="6009781704028455063">Уграђени сензор</translation>
 <translation id="3630132874740063857">Телефон</translation>
 <translation id="6930036377490597025">Екстерни безбедносни кључ или уграђени сензор</translation>
-<translation id="5567950944308676169">Прикључите безбедносни кључ и активирајте га</translation>
-<translation id="6648051959475508072">Безбедносни кључ је активиран...</translation>
+<translation id="51143538739122961">Уметните безбедносни кључ и додирните га</translation>
 <translation id="7352651011704765696">Нешто није у реду</translation>
 <translation id="8514746246728959655">Пробајте са неким другим безбедносним кључем</translation>
 <translation id="8337047789441383384">Већ сте регистровали овај безбедносни кључ. Не морате поново да га региструјете.</translation>
@@ -2259,7 +2295,6 @@
 <translation id="8379878387931047019">Овај уређај не подржава тип безбедносног кључа који захтева овај веб-сајт</translation>
 <translation id="7135729336746831607">Желите ли да укључите Bluetooth?</translation>
 <translation id="6176043333338857209">Привремено ћемо укључити Bluetooth да бисмо успоставили комуникацију са безбедносним кључем</translation>
-<translation id="5860491529813859533">Укључи</translation>
 <translation id="4252899949534773101">Bluetooth је онемогућен</translation>
 <translation id="8188389033983459049">Проверите подешавања уређаја и укључите га да бисте наставили</translation>
 <translation id="6022705094403139349">Да ли сте спремни да упарите безбедносни кључ?</translation>
@@ -2290,9 +2325,26 @@
 <translation id="4303079906735388947">Подесите нови PIN за безбедносни кључ</translation>
 <translation id="1805967612549112634">Потврдите PIN</translation>
 <translation id="4871322859485617074">PIN садржи неважеће знакове</translation>
-<translation id="2344214284954353199">PIN је прекратак.</translation>
-<translation id="2203484353475059657">Вредност коју сте унели за потврду се не подудара са првом вредношћу коју сте унели.</translation>
-<translation id="88870264962436283">Користите Touch ID за апликацију <ph name="APP_NAME"/></translation>
+<translation id="8896022254727357590">PIN мора да садржи најмање 4 знака</translation>
+<translation id="7669825497510425694">{NUM_ATTEMPTS,plural, =1{Нетачан PIN. Имате још један покушај.}one{Нетачан PIN. Имате још # покушај.}few{Нетачан PIN. Имате још # покушаја.}other{Нетачан PIN. Имате још # покушаја.}}</translation>
+<translation id="5078796286268621944">Нетачан PIN</translation>
+<translation id="1233497634904001272">Поново додирните безбедносни кључ да бисте довршили захтев.</translation>
+<translation id="8136269678443988272">Унети PIN-ови се не подударају</translation>
+<translation id="1136712381129578788">Безбедносни кључ је закључан јер сте превише пута унели погрешан PIN. Да бисте га откључали, уклоните га, па га поново уметните.</translation>
+<translation id="3778208826288864398">Безбедносни кључ је закључан јер сте превише пута унели погрешан PIN. Треба да ресетујете безбедносни кључ.</translation>
+<translation id="7246230585855757313">Поново уметните безбедносни кључ и пробајте поново</translation>
+<translation id="629730747756840877">налог</translation>
+<translation id="3792938779249970121">Изаберите налог</translation>
+<translation id="4718490098585891067">Изаберите налог да бисте се пријавили:</translation>
+<translation id="8734671092194994316">Ово ће забележити посету сајту <ph name="WEBSITE"/> на безбедносном кључу.</translation>
+<translation id="8428628598981198790">Не можете да користите безбедносни кључ на овом сајту</translation>
+<translation id="4358169392473932247">Тај безбедносни кључ не подржава интерно складиштење акредитива, али та функција је захтевана.</translation>
+<translation id="7069811530847688087"><ph name="WEBSITE"/> можда захтева новију или другачију врсту безбедносног кључа</translation>
+<translation id="3984431586879874039">Желите ли да дозволите овом сајту да види безбедносни кључ?</translation>
+<translation id="8948939328578167195"><ph name="WEBSITE"/> жели да види произвођача и модел безбедносног кључа</translation>
+<translation id="7618452966706304788">Да ли желите да користите Touch ID са апликацијом <ph name="APP_NAME"/> у режиму без архивирања?</translation>
+<translation id="3098826269712097986">Подаци о пријављивању се чувају у Brave-у када изађете из режима без архивирања. То ће вам омогућити да касније поново користите Touch ID са овим веб-сајтом.</translation>
+<translation id="2172784515318616985">Настави</translation>
 <translation id="5186185447130319458">Без архивирања</translation>
 <translation id="7643842463591647490">{0,plural, =1{# отворен прозор}one{# отворен прозор}few{# отворена прозора}other{# отворених прозора}}</translation>
 <translation id="2579188629646253712">Затвори режим без архивирања</translation>
@@ -2386,8 +2438,6 @@
 <translation id="3440663250074896476">Још радњи за обележивач <ph name="BOOKMARK_NAME"/></translation>
 <translation id="2903457445916429186">Отворите изабране ставке</translation>
 <translation id="962802172452141067">Стабло директоријума обележивача</translation>
-<translation id="1338776410427958681">Скупи директоријум <ph name="FOLDER_NAME"/></translation>
-<translation id="4467101674048705704">Прошири директоријум <ph name="FOLDER_NAME"/></translation>
 <translation id="2683638487103917598">Директоријум је сортиран</translation>
 <translation id="7201118060536064622">Ставка „<ph name="DELETED_ITEM_NAME"/>“ је избрисана</translation>
 <translation id="8271246892936492311">{COUNT,plural, =1{1 обележивач је избрисан}one{# обележивач је избрисан}few{# обележивача су избрисана}other{# обележивача је избрисано}}</translation>
@@ -2402,12 +2452,10 @@
 <translation id="4422347585044846479">Измените обележивач за ову страницу</translation>
 <translation id="4776146737004271126">Отвори подешавања Android-а</translation>
 <translation id="6559023360691182159">{COUNT,plural, =0{Ниједна}=1{<ph name="APP_1"/>}=2{<ph name="APP_1"/> и <ph name="APP_2"/>}=3{<ph name="APP_1"/>, <ph name="APP_2"/> и <ph name="APP_3"/>}=4{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> и још 1 апликација}one{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> и још <ph name="EXTRA_APPS"/> апликација}few{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> и још <ph name="EXTRA_APPS"/> апликације}other{<ph name="APP_1"/>, <ph name="APP_2"/>, <ph name="APP_3"/> и још <ph name="EXTRA_APPS"/> апликација}}</translation>
-<translation id="7742008146327708230">Недавно отваране апликације</translation>
-<translation id="1620510694547887537">Камера</translation>
+<translation id="702252130983202758">Апликације</translation>
 <translation id="8831664945713891930">Отвори подешавања додатака</translation>
 <translation id="5138227688689900538">Прикажи мање</translation>
 <translation id="5646376287012673985">Локација</translation>
-<translation id="3227137524299004712">Микрофон</translation>
 <translation id="5270167208902136840">Прикажи још апликација (<ph name="NUMBER_OF_MORE_APPS"/>)</translation>
 <translation id="2482878487686419369">Обавештења</translation>
 <translation id="228758327756499171">Апликација: <ph name="NUMBER_OF_MORE_APPS"/></translation>
@@ -2481,6 +2529,7 @@
 <translation id="4159681666905192102">Ово је налог за децу којим управљају <ph name="CUSTODIAN_EMAIL"/> и <ph name="SECOND_CUSTODIAN_EMAIL"/>.</translation>
 <translation id="5958529069007801266">Корисник под надзором</translation>
 <translation id="5720705177508910913">Тренутни корисник</translation>
+<translation id="1850357845349976573">{0,plural, =1{Без архивирања}one{# отворен прозор без архивирања}few{# отворена прозора без архивирања}other{# отворених прозора без архивирања}}</translation>
 <translation id="37784332082579802">{0,plural, =1{Без архивирања}one{Без архивирања (#)}few{Без архивирања (#)}other{Без архивирања (#)}}</translation>
 <translation id="5070556616376997776">Ништа се не архивира</translation>
 <translation id="2199298570273670671">Грешка</translation>
@@ -2586,6 +2635,24 @@
 <translation id="3021066826692793094">Лептир</translation>
 <translation id="3809272675881623365">Зец</translation>
 <translation id="4124935795427217608">Једнорог</translation>
+<translation id="5123433949759960244">Кошаркашка лопта</translation>
+<translation id="6876155724392614295">Бицикл</translation>
+<translation id="7774365994322694683">Птица</translation>
+<translation id="2771816809568414714">Сир</translation>
+<translation id="4943368462779413526">Фудбалска лопта</translation>
+<translation id="2046702855113914483">Рамен</translation>
+<translation id="1150565364351027703">Наочари за сунце</translation>
+<translation id="4693155481716051732">Суши</translation>
+<translation id="2468402215065996499">Тамагочи</translation>
+<translation id="8391218455464584335">Грамофонска плоча</translation>
+<translation id="4804827417948292437">Авокадо</translation>
+<translation id="3619115746895587757">Капучино</translation>
+<translation id="377050016711188788">Сладолед</translation>
+<translation id="4330191372652740264">Вода са ледом</translation>
+<translation id="4364327530094270451">Диња</translation>
+<translation id="4779136857077979611">Онигири</translation>
+<translation id="5068919226082848014">Пица</translation>
+<translation id="6170470584681422115">Сендвич</translation>
 <translation id="1830550083491357902">Нисте пријављени</translation>
 <translation id="5941153596444580863">Додај особу...</translation>
 <translation id="9149866541089851383">Измени...</translation>
@@ -2646,387 +2713,6 @@
 <translation id="6365411474437319296">Додајте породицу и пријатеље</translation>
 <translation id="7388044238629873883">Још мало па готово!</translation>
 <translation id="8688579245973331962">Не видите своје име?</translation>
-<translation id="5788127256798019331">Play датотеке</translation>
-<translation id="174173592514158117">Прикажи све Play директоријуме</translation>
-<translation id="5024856940085636730">Радња траје дуже од очекиваног. Желите ли да је прекинете?</translation>
-<translation id="6205710420833115353">Неке радње трају дуже од очекиваног. Желите ли да их прекинете?</translation>
-<translation id="4669606053856530811">Чланови из „<ph name="SOURCE_NAME"/>“ ће изгубити приступ ако се ове ставке не деле са њима.</translation>
-<translation id="9035012421917565900">Ставке не могу да се врате у „<ph name="DESTINATION_NAME"/>“, па нећете моћи да опозовете ову радњу.</translation>
-<translation id="9130775360844693113">Чланови из „<ph name="DESTINATION_NAME"/>“ ће добити приступ овим ставкама.</translation>
-<translation id="8834164572807951958">Чланови из „<ph name="DESTINATION_NAME"/>“ ће добити приступ копији ових ставки.</translation>
-<translation id="3236289833370040187">Власништво ће бити пренесено на <ph name="DESTINATION_DOMAIN"/>.</translation>
-<translation id="7765158879357617694">Премести</translation>
-<translation id="8249296373107784235">Откажи</translation>
-<translation id="6268185425799226387">Brave Software диск</translation>
-<translation id="4425149324548788773">Мој диск</translation>
-<translation id="1786636458339910689">Дискови тимова</translation>
-<translation id="5010406651457630570">Рачунари</translation>
-<translation id="8106045200081704138">Дељено са мном</translation>
-<translation id="6549689063733911810">Недавно</translation>
-<translation id="981121421437150478">Офлајн</translation>
-<translation id="9034924485347205037">Linux датотеке</translation>
-<translation id="9219103736887031265">Слике</translation>
-<translation id="6146563240635539929">Видео снимци</translation>
-<translation id="3616113530831147358">Аудио</translation>
-<translation id="1815861158988915678"><ph name="BEGIN_BOLD"/>Опрез:<ph name="END_BOLD"/> Ове датотеке су привремене и могу да се аутоматски избришу да би се ослободио простор на диску. <ph name="BEGIN_LINK"/>Сазнајте више<ph name="END_LINK"/></translation>
-<translation id="4873265419374180291"><ph name="NUMBER_OF_BYTES"/> бајт(ов)а</translation>
-<translation id="4788401404269709922"><ph name="NUMBER_OF_KB"/> KB</translation>
-<translation id="996903396648773764"><ph name="NUMBER_OF_MB"/> MB</translation>
-<translation id="7189874332498648577"><ph name="NUMBER_OF_GB"/> GB</translation>
-<translation id="7827012282502221009"><ph name="NUMBER_OF_TB"/> TB</translation>
-<translation id="1589128298353575783"><ph name="NUMBER_OF_PB"/> PB</translation>
-<translation id="3126026824346185272">Ctrl</translation>
-<translation id="2515586267016047495">Alt</translation>
-<translation id="169515659049020177">Shift</translation>
-<translation id="3924145049010392604">Meta</translation>
-<translation id="6129953537138746214">Размак</translation>
-<translation id="8179976553408161302">Enter</translation>
-<translation id="5583640892426849032">Backspace</translation>
-<translation id="174937106936716857">Укупан број датотека</translation>
-<translation id="2425665904502185219">Укупна величина датотеке</translation>
-<translation id="1942765061641586207">Резолуција слике</translation>
-<translation id="4002066346123236978">Наслов</translation>
-<translation id="4631887759990505102">Извођач</translation>
-<translation id="2448312741937722512">Тип</translation>
-<translation id="5145331109270917438">Датум измене</translation>
-<translation id="8487700953926739672">Доступно ван мреже</translation>
-<translation id="2230062665678605299">Није могуће направити директоријум „<ph name="FOLDER_NAME"/>“. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="2163152940313951844">Неважећи знак: <ph name="CHARACTER_NAME"/></translation>
-<translation id="642282551015776456">Овај назив не може да се користи као назив датотеке или директоријума</translation>
-<translation id="2070909990982335904">Називи који почињу тачком резервисани су за систем. Изаберите други назив.</translation>
-<translation id="8456681095658380701">Неважеће име</translation>
-<translation id="2943503720238418293">Користите краћи назив</translation>
-<translation id="4973523518332075481">Користите назив чији је максимални број знакова <ph name="MAX_LENGTH"/></translation>
-<translation id="1307931752636661898">Приказ Linux датотека није успео</translation>
-<translation id="5851063901794976166">Овде нема ничега...</translation>
-<translation id="3749289110408117711">Назив датотеке</translation>
-<translation id="3280431534455935878">Припрема</translation>
-<translation id="6607272825297743757">Информације о датотеци</translation>
-<translation id="6395575651121294044">Ставки: <ph name="NUMBER_OF_FILES"/></translation>
-<translation id="2138867954865495510">Отварање „<ph name="PATH"/>“ није успело: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5159383109919732130"><ph name="BEGIN_BOLD"/>Немојте још да уклањате уређај!<ph name="END_BOLD"/>
-       <ph name="LINE_BREAKS"/>
-       Ако уклоните уређај док се још користи, може да дође до губитка података. Сачекајте да се операција заврши, па избаците уређај помоћу апликације Датотеке.</translation>
-<translation id="5686799162999241776"><ph name="BEGIN_BOLD"/>Није успео прекид везе са архивским или виртуелним диском<ph name="END_BOLD"/>
-   <ph name="LINE_BREAKS"/>
-   Затворите све датотеке на архивском или виртуелном диску, па пробајте поново.</translation>
-<translation id="7794058097940213561">Форматирање уређаја</translation>
-<translation id="8151638057146502721">Конфигуриши</translation>
-<translation id="7928710562641958568">Избаци уређај</translation>
-<translation id="7864662577698025113">Додајте нову услугу</translation>
-<translation id="1943097386230153518">Инсталирајте нову услугу</translation>
-<translation id="2562685439590298522">Документи</translation>
-<translation id="2925966894897775835">Табеле</translation>
-<translation id="2943400156390503548">Презентације</translation>
-<translation id="5649768706273821470">Слушај</translation>
-<translation id="4582497162516204941">Инсталирај за Linux (бета)</translation>
-<translation id="4195249722193633765">Инсталирајте Linux апликацију (бета)</translation>
-<translation id="7248671827512403053">Апликација</translation>
-<translation id="3866249974567520381">Опис</translation>
-<translation id="183183971458492120">Информације се учитавају...</translation>
-<translation id="8157684860301034423">Преузимање информација о апликацији није успело.</translation>
-<translation id="5678784840044122290">Linux апликација ће бити доступна на терминалу, а можда ће приказивати и икону у Покретачу.</translation>
-<translation id="9213073329713032541">Инсталација је започета.</translation>
-<translation id="2782104745158847185">Грешка при инсталирању Linux апликације</translation>
-<translation id="5911887972742538906">Дошло је до грешке током инсталирања Linux апликације.</translation>
-<translation id="942954117721265519">Нема слика у овом директоријуму.</translation>
-<translation id="7100897339030255923">Изабраних ставки: <ph name="COUNT"/></translation>
-<translation id="5177526793333269655">Приказ сличица</translation>
-<translation id="1035094536595558507">Приказ слајда</translation>
-<translation id="7508545000531937079">Пројекција слајдова</translation>
-<translation id="1430915738399379752">Штампај</translation>
-<translation id="38275787300541712">Притисните Enter када завршите</translation>
-<translation id="4880520557730313061">Аутоматски исправи</translation>
-<translation id="4924638091161556692">Фиксирана</translation>
-<translation id="6019169947004469866">Опсеци</translation>
-<translation id="4372884569765913867">1×1</translation>
-<translation id="7576032389798113292">6×4</translation>
-<translation id="8157939133946352716">7×5</translation>
-<translation id="2661146741306740526">16×9</translation>
-<translation id="3007214526293698309">Поправи сразмеру</translation>
-<translation id="7982283708762922719">Висина</translation>
-<translation id="4734518477988699048">Унета вредност је неважећа.</translation>
-<translation id="3644896802912593514">Ширина</translation>
-<translation id="3626281679859535460">Осветљеност</translation>
-<translation id="5061708541166515394">Контраст</translation>
-<translation id="1467432559032391204">Улево</translation>
-<translation id="1346748346194534595">Удесно</translation>
-<translation id="3144126448740580210">ГОТОВО</translation>
-<translation id="2453576648990281505">Датотека већ постоји</translation>
-<translation id="1847880352285315359">Сачувано је</translation>
-<translation id="5158593464696388225">Чување слике није успело.</translation>
-<translation id="2787047795752739979">Замени оригинал</translation>
-<translation id="8775404590947523323">Измене се аутоматски чувају.<ph name="BREAKS"/>Да бисте задржали копију оригиналне слике, опозовите избор у пољу за потврду „Замени оригинал“</translation>
-<translation id="7873831373602885875">Чување у директоријуму <ph name="FOLDER_NAME"/> није успело. Све измене биће сачуване у директоријуму <ph name="DOWNLOADS_FOLDER"/> у директоријуму Подешавања.</translation>
-<translation id="691516599546977041">Чување у директоријуму <ph name="FOLDER_NAME"/> није успело. Измењене слике ће бити сачуване у директоријуму Преузимања.</translation>
-<translation id="8066773524873206594">Све измене биће сачуване у: <ph name="DOWNLOADS_FOLDER"/>.</translation>
-<translation id="8153607920959057464">Ову датотеку није могуће приказати.</translation>
-<translation id="6227235786875481728">Ову датотеку није могуће пустити.</translation>
-<translation id="9154418932169119429">Ова слика није доступна ван мреже.</translation>
-<translation id="1844692022597038441">Ова датотека није доступна ван мреже.</translation>
-<translation id="2929414043040740704">Враћене датотеке са Brave Software диска</translation>
-<translation id="2085470240340828803">Датотека са називом „<ph name="FILENAME"/>“ већ постоји. Шта желите да урадите?</translation>
-<translation id="4801956050125744859">Задржи обе</translation>
-<translation id="1062407476771304334">Замени</translation>
-<translation id="1556189134700913550">Примени на све</translation>
-<translation id="988685240266037636">Датотека „<ph name="FILE_NAME"/>“ већ постоји. Да ли желите да је замените?</translation>
-<translation id="9038620279323455325">Датотека „<ph name="FILE_NAME"/>“ већ постоји. Одаберите други назив.</translation>
-<translation id="4212740939091998969">Директоријум „<ph name="FOLDER_NAME"/>“ већ постоји. Одаберите други назив.</translation>
-<translation id="1497522201463361063">Није могуће преименовати датотеку „<ph name="FILE_NAME"/>“. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5330512191124428349">Преузми податке</translation>
-<translation id="8312871300878166382">Налепи у директоријум</translation>
-<translation id="7040138676081995583">Отвори помоћу апликације...</translation>
-<translation id="6189412234224385711">Отвори помоћу додатка <ph name="EXTENSION_NAME"/></translation>
-<translation id="2547921442987553570">Додај у <ph name="EXTENSION_NAME"/></translation>
-<translation id="386548886866354912">Спакуј помоћу додатка <ph name="EXTENSION_NAME"/></translation>
-<translation id="3078461028045006476">Дели помоћу додатка <ph name="EXTENSION_NAME"/></translation>
-<translation id="4197674956721858839">Избор за додавање у zip датотеку</translation>
-<translation id="1572585716423026576">Постави као позадину</translation>
-<translation id="204914487372604757">Направи пречицу</translation>
-<translation id="799547531016638432">Уклони пречицу</translation>
-<translation id="5494920125229734069">Избор свих ставки</translation>
-<translation id="7295662345261934369">Делите са другима</translation>
-<translation id="2001796770603320721">Управљајте на Диску</translation>
-<translation id="5318819489018851358">Дели са Linux-ом</translation>
-<translation id="6806699711453372963">Управљајте Linux дељењем</translation>
-<translation id="7505167922889582512">Прикажи скривене датотеке</translation>
-<translation id="7846076177841592234">Откажи избор</translation>
-<translation id="2377319039870049694">Пређи на приказ листе</translation>
-<translation id="3003633581067744647">Пређи на приказ сличица</translation>
-<translation id="604001903249547235">Прављење резервних копија у клауду</translation>
-<translation id="505639225383557233">Резервне копије у клауду за Brave ОС</translation>
-<translation id="8656896237683963068">Направите резервне копије слика и видео снимака са медијског уређаја на Brave Software диску.</translation>
-<translation id="3057861065630527966">Направите резервне копије слика и видео снимака</translation>
-<translation id="7730494089396812859">Прикажите детаље о прављењу резервних копија у клауду</translation>
-<translation id="2850124913210091882">Направи резервну копију</translation>
-<translation id="5731409020711461763">1 нова слика</translation>
-<translation id="5004584466530475658">Нове слике (<ph name="FILE_COUNT"/>)</translation>
-<translation id="6934241953272494177">Медијски уређај се скенира...
-    <ph name="LINE_BREAK1"/>
-    Пронађене су датотеке (<ph name="FILE_COUNT"/>)</translation>
-<translation id="3466147780910026086">Медијски уређај се скенира...</translation>
-<translation id="2611866923243604397">Резервне копије свих датотека су направљене на <ph name="BEGIN_LINK"/>Brave Software диску!<ph name="END_LINK"/></translation>
-<translation id="3620292326130836921">Направљене су резервне копије свих датотека!</translation>
-<translation id="1536674585581593431">Пронађене су датотеке (<ph name="FILE_COUNT"/>).
-    <ph name="LINE_BREAK1"/>
-    Квота за Brave Software диск није довољно велика. Потребно је још <ph name="FILE_SIZE"/>.
-    <ph name="LINE_BREAK2"/>
-    Пробајте да изаберете мање слика.</translation>
-<translation id="2473109739642988997">Квота за Brave Software диск није довољно велика.</translation>
-<translation id="1148097584170732637">Пронађене су датотеке (<ph name="FILE_COUNT"/>).
-    <ph name="LINE_BREAK1"/>
-    Немате довољно простора у локалној меморији. Потребно је још <ph name="FILE_SIZE"/>.
-    <ph name="LINE_BREAK2"/>
-    Пробајте да изаберете мање слика.</translation>
-<translation id="2352947182261340447">Немате довољно простора у локалној меморији.</translation>
-<translation id="1127657192797926968">Пронађене су датотеке (<ph name="FILE_COUNT"/>)
-    <ph name="LINE_BREAK1"/>
-    Све је спремно за прављење резервних копија на <ph name="BEGIN_LINK"/>Brave Software диску<ph name="END_LINK"/></translation>
-<translation id="4905417359854579806">Све је спремно за прављење резервних копија (<ph name="FILE_COUNT"/>)</translation>
-<translation id="5029447434471675822">Праве се резервне копије (<ph name="FILE_COUNT"/>) на <ph name="BEGIN_LINK"/>Brave Software диску<ph name="END_LINK"/></translation>
-<translation id="4215448920900139318">Праве се резервне копије (<ph name="FILE_COUNT"/>)</translation>
-<translation id="2419376816263920133">Резервна копија слика (<ph name="FILE_COUNT"/>) је направљена на <ph name="BEGIN_LINK"/>Brave Software диску<ph name="END_LINK"/></translation>
-<translation id="2994669386200004489">Прављење резервне копије за датотеку <ph name="FILE_NAME"/> није успело</translation>
-<translation id="4724850507808590449">Направљена је резервна копија слика (<ph name="FILE_COUNT"/>)</translation>
-<translation id="1351692861129622852">Увозе се датотеке (<ph name="FILE_COUNT"/>)...</translation>
-<translation id="117624967391683467">Копирање датотеке <ph name="FILE_NAME"/>...</translation>
-<translation id="7359359531237882347">Копирају се ставке (<ph name="NUMBER_OF_ITEMS"/>)...</translation>
-<translation id="7627790789328695202">Упс, <ph name="FILE_NAME"/> већ постоји. Преименујте датотеку и покушајте поново.</translation>
-<translation id="5691596662111998220">Упс, <ph name="FILE_NAME"/> више не постоји.</translation>
-<translation id="4336032328163998280">Операција копирања није успела. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="5913638992615760742">Операција копирања није успела, неочекивана грешка: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="6133173853026656527">Премештање датотеке <ph name="FILE_NAME"/>...</translation>
-<translation id="7654209398114106148">Премештају се ставке (<ph name="NUMBER_OF_ITEMS"/>)...</translation>
-<translation id="6007237601604674381">Премештање није успело. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="1933345018156373194">Премештање није успело, неочекивана грешка: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="3326821416087822643">Додавање датотеке <ph name="FILE_NAME"/> у zip датотеку...</translation>
-<translation id="1722487484194605434">Ставке (<ph name="NUMBER_OF_ITEMS"/>) се додају у датотеку...</translation>
-<translation id="8810671769985673465">Додавање у zip датотеку није успело, ставка постоји: „<ph name="FILE_NAME"/>“</translation>
-<translation id="9133055936679483811">Додавање у zip датотеку није успело. <ph name="ERROR_MESSAGE"/></translation>
-<translation id="4973970068702235170">Додавање у zip датотеку није успело, неочекивана грешка: <ph name="ERROR_MESSAGE"/></translation>
-<translation id="653019979737152879">Синхронизује се <ph name="FILE_NAME"/>...</translation>
-<translation id="8579285237314169903">Синхронизују се ставке (<ph name="NUMBER_OF_FILES"/>)...</translation>
-<translation id="8137331602592933310">„<ph name="FILENAME"/>“ се дели са вама. Не можете да је избришете јер није у вашем власништву.</translation>
-<translation id="6277279884155292049">Brave Software диск тренутно није доступан. Отпремање ће се аутоматски поново покренути када Brave Software диск постане доступан.</translation>
-<translation id="1114160088213746286">Brave Software диск тренутно није успео да синхронизује „<ph name="FILENAME"/>“. Brave Software диск ће покушати поново касније.</translation>
-<translation id="4893296294301184587">Датотека „<ph name="FILENAME"/>“ није отпремљена. Није било довољно слободног места на Brave Software диску.</translation>
-<translation id="5163869187418756376">Дељење није успело. Проверите везу и покушајте поново касније.</translation>
-<translation id="656398493051028875">Брисање „<ph name="FILENAME"/>“...</translation>
-<translation id="1047956942837015229">Брисање ставки (<ph name="COUNT"/>)...</translation>
-<translation id="6558280019477628686">Дошло је до грешке. Неке ставке можда нису избрисане.</translation>
-<translation id="3470502288861289375">Копирање...</translation>
-<translation id="8669949407341943408">Премештање...</translation>
-<translation id="6718273304615422081">Прављење zip датотеке...</translation>
-<translation id="1338950911836659113">Брисање...</translation>
-<translation id="9064939804718829769">Пренос...</translation>
-<translation id="3609785682760573515">Синхронизовање...</translation>
-<translation id="1464724975715666883">1 грешка.</translation>
-<translation id="3495304270784461826"><ph name="COUNT"/> грешака.</translation>
-<translation id="6643016212128521049">Обриши</translation>
-<translation id="4988205478593450158">Желите ли стварно да избришете „<ph name="FILE_NAME"/>“?</translation>
-<translation id="2225536596944493418">Желите ли стварно да избришете ставке (<ph name="NUMBER_OF_ITEMS"/>)?</translation>
-<translation id="7953739707111622108">Овај уређај не може да се отвори јер његов систем датотека није препознат.</translation>
-<translation id="3726463242007121105">Овај уређај не може да се отвори јер његов систем датотека није подржан.</translation>
-<translation id="3414856743105198592">Форматирањем уклоњивих медија бришете све податке. Да ли желите да наставите?</translation>
-<translation id="6287852322318138013">Изаберите апликацију за отварање ове датотеке</translation>
-<translation id="7268659760406822741">Доступне услуге</translation>
-<translation id="5038625366300922036">Прикажи више...</translation>
-<translation id="4823651846660089135">Уређај је само за читање</translation>
-<translation id="6346310558342052870">Приступ је ограничен</translation>
-<translation id="3780536599611287598">Немате дозволу да премештате датотеке у „<ph name="FOLDER_NAME"/>“.</translation>
-<translation id="1538729222189715449">Отварају се Linux датотеке…</translation>
-<translation id="1000498691615767391">Избор директоријума за отварање</translation>
-<translation id="3353984535370177728">Избор директоријума за отпремање</translation>
-<translation id="8569764466147087991">Избор датотеке за отварање</translation>
-<translation id="9131598836763251128">Избор једне или више датотека</translation>
-<translation id="7191454237977785534">Сачувај датотеку као</translation>
-<translation id="3811494700605067549">Изабрана је 1 датотека</translation>
-<translation id="6751256176799620176">Изабран је 1 директоријум</translation>
-<translation id="2378075407703503998">Изабраних датотека: <ph name="SELCTED_FILE_COUNT"/></translation>
-<translation id="6998711733709403587">Изабраних директоријума: <ph name="SELCTED_FOLDERS_COUNT"/></translation>
-<translation id="4839847978919684242">Изабраних ставки: <ph name="SELCTED_FILES_COUNT"/></translation>
-<translation id="4969785127455456148">Албум</translation>
-<translation id="5700087501958648444">Информације о аудио датотеци</translation>
-<translation id="912419004897138677">Кодек</translation>
-<translation id="5253070652067921974">Аутор</translation>
-<translation id="3437801641691368414">Време прављења</translation>
-<translation id="8395901698320285466">Димензије</translation>
-<translation id="8193175696669055101">Модел уређаја</translation>
-<translation id="2084108471225856927">Подешавања уређаја</translation>
-<translation id="303198083543495566">Географија</translation>
-<translation id="5358764674931277">Брзина кадрова</translation>
-<translation id="4309915981827077375">Опште информације</translation>
-<translation id="1249250836236328755">Жанр</translation>
-<translation id="7711920809702896782">Информације о датотеци слике</translation>
-<translation id="4568854179928172494">Време измене</translation>
-<translation id="943972244133411984">Изменио/ла</translation>
-<translation id="9099674669267916096">Број страница</translation>
-<translation id="8294431847097064396">Извор</translation>
-<translation id="1363028406613469049">Песма</translation>
-<translation id="1775381402323441512">Информације о видео датотеци</translation>
-<translation id="3335337277364016868">Година снимања</translation>
-<translation id="5534520101572674276">Израчунавање величине</translation>
-<translation id="3786301125658655746">Офлајн сте</translation>
-<translation id="6150853954427645995">Да бисте сачували ову датотеку за офлајн коришћење, повежите се поново на интернет, кликните десним тастером на датотеку и изаберите опцију <ph name="OFFLINE_CHECKBOX_NAME"/>.</translation>
-<translation id="8223479393428528563">Да бисте сачували ове датотеке за офлајн коришћење, повежите се поново на интернет, кликните десним тастером на датотеке и изаберите опцију <ph name="OFFLINE_CHECKBOX_NAME"/>.</translation>
-<translation id="3830674330436234648">Репродукција није доступна</translation>
-<translation id="1810764548349082891">Преглед није доступан</translation>
-<translation id="421017592316736757">Морате да будете на мрежи да бисте приступили овој датотеци.</translation>
-<translation id="180035236176489073">Морате да будете на мрежи да бисте приступили овим датотекама.</translation>
-<translation id="1190144681599273207">Преузимање ове датотеке ће искористити око <ph name="FILE_SIZE"/> података за мобилне уређаје.</translation>
-<translation id="7839804798877833423">Преузимање ових датотека ће искористити око <ph name="FILE_SIZE"/> података за мобилне уређаје.</translation>
-<translation id="6813005947820333339">Синхронизација са Brave Software диском је подразумевано онемогућена када се користи мобилна веза за пренос података.</translation>
-<translation id="696203921837389374">Омогући синхронизацију преко мобилне везе за пренос података</translation>
-<translation id="637062427944097960">Ова датотека је отворена на другом профилу. Пређите на <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>) да бисте је погледали.</translation>
-<translation id="5330145655348521461">Ове датотеке су отворене на другом профилу. Пређите на <ph name="USER_NAME"/> (<ph name="MAIL_ADDRESS"/>) да бисте их погледали.</translation>
-<translation id="8686213429977032554">Ова датотека са Диска се још увек не дели</translation>
-<translation id="7850851215703745691">Ове датотеке на Диску се још увек не деле</translation>
-<translation id="1839704667838141620">Промените начин дељења ове датотеке</translation>
-<translation id="1864676585353837027">Промените начин дељења ових датотека</translation>
-<translation id="197560921582345123">Може да мења</translation>
-<translation id="8671210955687109937">Може да коментарише</translation>
-<translation id="799923393800005025">Може да прегледа</translation>
-<translation id="7925686952655276919">Не користи податке за мобилне уређаје за синхронизацију</translation>
-<translation id="7106346894903675391">Купи још меморијског простора...</translation>
-<translation id="3549797760399244642">Иди на drive.google.com...</translation>
-<translation id="3451154303153932176">Преостали простор на Brave Software диску: <ph name="SPACE_AVAILABLE"/>.</translation>
-<translation id="4552678318981539154">Купи још меморијског простора</translation>
-<translation id="6990081529015358884">Понестало вам је простора</translation>
-<translation id="5521447721624713749">Тренутно није могуће успоставити везу са Brave Software диском.</translation>
-<translation id="7788080748068240085">Да бисте сачували „<ph name="FILE_NAME"/>“ офлајн, морате да ослободите још <ph name="TOTAL_FILE_SIZE"/> простора:<ph name="MARKUP_1"/>
-    <ph name="MARKUP_2"/>откачите датотеке којима више не морате да приступате офлајн<ph name="MARKUP_3"/>
-    <ph name="MARKUP_4"/>избришите датотеке из директоријума Преузимања<ph name="MARKUP_5"/></translation>
-<translation id="7606199793785990727">Није могуће успоставити везу са Brave Software диском. <ph name="BEGIN_LINK"/>Одјавите се<ph name="END_LINK"/>, па се поново пријавите.</translation>
-<translation id="585883343689351092">Добро дошли у Brave Software диск!</translation>
-<translation id="6862635236584086457">За све датотеке сачуване у овом директоријуму аутоматски се прави резервна копија на мрежи</translation>
-<translation id="7220787572447472056"><ph name="MARKUP_1"/>Приступајте датотекама било где, чак и офлајн.<ph name="MARKUP_2"/>
-    Датотеке на Brave Software диску су ажуриране и доступне са било ког уређаја.<ph name="MARKUP_3"/>
-    <ph name="MARKUP_4"/>Заштитите датотеке.<ph name="MARKUP_5"/>
-    Без обзира на то шта се деси са уређајем, датотеке се безбедно чувају на Brave Software диску.<ph name="MARKUP_6"/>
-    <ph name="MARKUP_7"/>Делите и правите датотеке и сарађујте<ph name="MARKUP_8"/>
-    на њима са другима, и све то на једном месту.<ph name="MARKUP_9"/></translation>
-<translation id="4878716980734452132">Овај тип датотеке није подржан. Посетите <ph name="BEGIN_LINK"/>Brave веб-продавницу<ph name="END_LINK"/> да бисте пронашли апликацију која може да отвара овај тип датотеке.
-        <ph name="BEGIN_LINK_HELP"/>Сазнајте више<ph name="END_LINK_HELP"/></translation>
-<translation id="6230272341631206186">Датотека је осмишљена за рачунар који користи Windows софтвер. Није компатибилна са уређајем, који користи Brave ОС. <ph name="BEGIN_LINK_HELP"/>Сазнајте више<ph name="END_LINK_HELP"/></translation>
-<translation id="3072401511615920367">Ова датотека је дизајнирана за рачунар који користи Macintosh софтвер. Она није компатибилна са вашим уређајем који користи Brave ОС. Претражите <ph name="BEGIN_LINK"/>Brave веб-продавницу<ph name="END_LINK"/> да бисте пронашли одговарајућу апликацију за замену.<ph name="BEGIN_LINK_HELP"/>Сазнајте више<ph name="END_LINK_HELP"/></translation>
-<translation id="7589661784326793847">Сачекајте тренутак</translation>
-<translation id="3096967955765855393">Стално тражимо нове начине да учинимо прегледање безбеднијим. Раније је сваки веб-сајт могао да вам затражи да додате додатак у прегледач. У најновијим верзијама Brave Software Brave-а морате експлицитно да кажете Brave-у да желите да инсталирате те додатке тако што ћете их додати преко странице Додаци. <ph name="BEGIN_LINK"/>Сазнајте више<ph name="END_LINK"/></translation>
-<translation id="4892969127351273348">Отварање помоћу апликације <ph name="APP_NAME"/> није успело</translation>
-<translation id="52446585071384036">Да бисте отварали датотеке помоћу апликације <ph name="APP_NAME"/>, прво их копирајте у директоријум Linux датотека.</translation>
-<translation id="5368191757080475556">Делите директоријум са Linux-ом</translation>
-<translation id="5857774240076772505">Дозволите да Linux апликације мењају датотеке у директоријуму <ph name="FOLDER_NAME"/></translation>
-<translation id="2280597422213958082">Дозволите да Linux апликације мењају датотеке на Brave Software диску. Промене ће се синхронизовати са другим уређајима.</translation>
-<translation id="4290535918735525311">1 директоријум се дели са Linux-ом</translation>
-<translation id="2377590462528165447">Директоријуми (<ph name="NUMBER_OF_ITEMS"/>) се деле са Linux-ом</translation>
-<translation id="4572815280350369984">Датотека <ph name="FILE_TYPE"/></translation>
-<translation id="5533102081734025921">Слика <ph name="IMAGE_TYPE"/></translation>
-<translation id="2614589611416690597">Видео <ph name="VIDEO_TYPE"/></translation>
-<translation id="8042602468072383151">Аудио датотека <ph name="AUDIO_TYPE"/></translation>
-<translation id="7799329977874311193">HTML документ</translation>
-<translation id="2208158072373999562">Zip архива</translation>
-<translation id="2028997212275086731">RAR архива</translation>
-<translation id="8466234950814670489">Tar архива</translation>
-<translation id="1119069657431255176">Bzip2 компримована tar архива</translation>
-<translation id="6820687829547641339">Gzip компримована tar архива</translation>
-<translation id="8329978297633540474">Чисти текст</translation>
-<translation id="2887525882758501333">PDF документ</translation>
-<translation id="1049926623896334335">Word документ</translation>
-<translation id="4784330909746505604">PowerPoint презентација</translation>
-<translation id="8860454412039442620">Excel табела</translation>
-<translation id="5383943761832211733">Brave Software документ</translation>
-<translation id="5924916971643100883">Brave Software табела</translation>
-<translation id="3667369474859528036">Brave Software презентација</translation>
-<translation id="3411013849623404696">Brave Software цртеж</translation>
-<translation id="7481041283483972362">Brave Software табела</translation>
-<translation id="784862457750027723">Brave Software образац</translation>
-<translation id="3320425620177764157">Brave Software мапа</translation>
-<translation id="7452737073539387970">Brave Software сајт</translation>
-<translation id="4445959220475380548">Веза Brave Software диска</translation>
-<translation id="5288481194217812690"><ph name="FILENAME"/></translation>
-<translation id="1131292764548273687">Овај тип датотеке није подржан. Посетите Brave веб-продавницу и пронађите апликацију која може да отвара овај тип датотеке.</translation>
-<translation id="9010211493509471179">Ова датотека је осмишљена за рачунар који користи Macintosh софтвер. Није компатибилна са уређајем, који користи Brave ОС. Претражите Brave веб-продавницу да бисте нашли одговарајућу замену за апликацију.</translation>
-<translation id="5059989099965370411">Датотека је осмишљена за рачунар који користи Windows софтвер. Није компатибилна са уређајем, који користи Brave ОС. Претражите Brave веб-продавницу да бисте нашли одговарајућу замену за апликацију.</translation>
-<translation id="5833610766403489739">Датотека се негде изгубила. Проверите подешавање локације за преузимања и покушајте поново.</translation>
-<translation id="3966388904776714213">Аудио плејер</translation>
-<translation id="3245321423178950146">Непознати извођач</translation>
-<translation id="509429900233858213">Дошло је до грешке.</translation>
-<translation id="1864756863218646478">Није могуће пронаћи датотеку.</translation>
-<translation id="1673103856845176271">Није могуће приступити датотеци из безбедносних разлога.</translation>
-<translation id="5524517123096967210">Није могуће прочитати датотеку.</translation>
-<translation id="1665611772925418501">Није могуће изменити датотеку.</translation>
-<translation id="1358735829858566124">Није могуће користити датотеку или директоријум.</translation>
-<translation id="8342318071240498787">Већ постоји датотека или директоријум са истим називом.</translation>
-<translation id="8965697826696209160">Нема довољно простора.</translation>
-<translation id="7126604456862387217">„&lt;b&gt;<ph name="SEARCH_STRING"/>&lt;/b&gt;“ – &lt;em&gt;претражи Диск&lt;/em&gt;</translation>
-<translation id="2888807692577297075">Ниједна ставка се не подудара са упитом &lt;b&gt;„<ph name="SEARCH_STRING"/>“&lt;/b&gt;</translation>
-<translation id="2843806747483486897">Промени подразумевано...</translation>
-<translation id="3254434849914415189">Изаберите подразумевану апликацију за датотеке <ph name="FILE_TYPE"/>:</translation>
-<translation id="8038111231936746805">(подразумевано)</translation>
-<translation id="5982621672636444458">Опције сортирања</translation>
-<translation id="2984337792991268709">Данас у <ph name="TODAY_DAYTIME"/></translation>
-<translation id="8336153091935557858">Јуче у <ph name="YESTERDAY_DAYTIME"/></translation>
-<translation id="1807938677607439181">Све датотеке</translation>
-<translation id="240770291734945588"><ph name="SPACE_AVAILABLE"/> слободног простора</translation>
-<translation id="6199801702437275229">Чекају се информације о простору...</translation>
-<translation id="6485131920355264772">Преузимање информација о простору није успело</translation>
-<translation id="7748626145866214022">Још опција је доступно на траци са радњама. Притисните Alt+A да бисте фокусирали траку са радњама.</translation>
-<translation id="2303301624314357662">Отвара се датотека <ph name="FILE_NAME"/>.</translation>
-<translation id="2291538123825441971">Отварају се датотеке (<ph name="NUMBER_OF_FILES"/>).</translation>
-<translation id="2305020378527873881"><ph name="VOLUME_NAME"/> је избачен.</translation>
-<translation id="6710213216561001401">Претходно</translation>
-<translation id="1395262318152388157">Клизач за тражење</translation>
-<translation id="4880214202172289027">Клизач за јачину звука</translation>
-<translation id="7544853251252956727">Пусти насумично</translation>
-<translation id="8079530767338315840">Пусти поново</translation>
-<translation id="4158739975813877944">Отвори плејлисту</translation>
-<translation id="4656293982926141856">Овај рачунар</translation>
-<translation id="2676946222714718093">Пуштено на</translation>
-<translation id="3930521966936686665">Пусти на</translation>
-<translation id="4732760563705710320">Жао нам је, уређај за пребацивање не подржава овај видео.</translation>
-<translation id="2672394958563893062">Дошло је до грешке. Кликните да бисте кренули из почетка.</translation>
-<translation id="6827236167376090743">Репродукција овог видео снимка ће се наставити у недоглед.</translation>
-<translation id="6248400709929739064">Омогући титлове</translation>
-<translation id="7881969471599061635">Онемогући титлове</translation>
 <translation id="4168015872538332605">Нека подешавања чији је власник <ph name="PRIMARY_EMAIL"/> се деле са вама. Та подешавања утичу на налог само када користите вишеструко пријављивање.</translation>
 <translation id="1485141095922496924">Верзија <ph name="PRODUCT_VERSION"/> (<ph name="PRODUCT_CHANNEL"/>) <ph name="PRODUCT_MODIFIER"/> <ph name="PRODUCT_VERSION_BITS"/></translation>
 <translation id="3764314093345384080">Детаљне информације о верзији</translation>
@@ -3070,7 +2756,7 @@
 <translation id="5840822070878669614">Отворите Brave веб-продавницу</translation>
 <translation id="6073903501322152803">Додај функције приступачности</translation>
 <translation id="7988355189918024273">Омогући функције приступачности</translation>
-<translation id="3274899353071794175">Ако слика нема користан опис, Brave ће вам га пружити. Brave Software скенира слике.</translation>
+<translation id="5499063270485366718">Ако слика нема користан опис, Brave ће пробати да вам га пружи. Слике се шаљу Brave Software-у ради прављења описа.</translation>
 <translation id="2558896001721082624">Увек приказуј опције приступачности у системском менију</translation>
 <translation id="7280649757394340890">Подешавања гласа за претварање текста у говор</translation>
 <translation id="6635956300022133031">Изаберите и прилагодите гласове за претварање текста у говор</translation>
@@ -3103,12 +2789,6 @@
 <translation id="8710187907779883426">кратко (1 с)</translation>
 <translation id="4305227814872083840">Дуго (2 с)</translation>
 <translation id="2860150991415616761">веома дуго (4 с)</translation>
-<translation id="5573248369095789351">Радња за задржавање</translation>
-<translation id="2427507373259914951">Леви клик</translation>
-<translation id="8203795194971602413">Десни клик</translation>
-<translation id="1999763610967697511">Превлачење и отпуштање</translation>
-<translation id="8142441511840089262">Двоструки клик</translation>
-<translation id="485592688953820832">Ништа се не предузима (паузирање)</translation>
 <translation id="1217668622537098248">Врати на леви клик после радње</translation>
 <translation id="3682824389861648626">Ограничење кретања</translation>
 <translation id="5511379779384092781">Веома мала</translation>
@@ -3123,6 +2803,7 @@
 <translation id="48704129375571883">Додајте још функција</translation>
 <translation id="7230787553283372882">Прилагодите величину текста</translation>
 <translation id="214169863967063661">Отвори подешавања изгледа</translation>
+<translation id="3616113530831147358">Аудио</translation>
 <translation id="6793604637258913070">Истичи курсор за текст када се појави или креће</translation>
 <translation id="7376553024552204454">Истичи курсор миша док се креће</translation>
 <translation id="4150201353443180367">Екран</translation>
@@ -3176,9 +2857,10 @@
 <translation id="3819257035322786455">Резервна копија</translation>
 <translation id="3233271424239923319">Направите резервне копије Linux апликација и датотека</translation>
 <translation id="184273675144259287">Замените Linux апликације и датотеке претходном резервном копијом</translation>
-<translation id="2200603218210188859">Подешавања USB уређаја</translation>
-<translation id="2706892089432507937">USB уређаји</translation>
-<translation id="5187892128515678283">Укључите прекидач да бисте делили USB уређај са Linux-ом. Дељење ће бити омогућено само док је уређај повезан.</translation>
+<translation id="7105390788077117391">Подешавања USB-а</translation>
+<translation id="3201422919974259695">Доступни USB уређаји ће се приказивати овде.</translation>
+<translation id="907264006778172906">Дајте Linux-у дозволу да приступа USB уређајима. Linux неће запамтити USB уређај када га уклоните.</translation>
+<translation id="3661172646479098821">Тренутно су подржани само Android уређаји.</translation>
 <translation id="2295473777859797944">Brave Software Play продавница</translation>
 <translation id="572155275267014074">Android подешавања</translation>
 <translation id="4767209642168463274">Инсталирајте апликације и игре са Brave Software Play-а на Bravebook-у. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Сазнајте више&lt;/a&gt;</translation>
@@ -3218,6 +2900,7 @@
 <translation id="5860033963881614850">Isključi</translation>
 <translation id="5916664084637901428">Укључено</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> контролише ово подешавање</translation>
+<translation id="6643016212128521049">Обриши</translation>
 <translation id="8465252176946159372">Није важећи</translation>
 <translation id="8647834505253004544">Веб-адреса није важећа</translation>
 <translation id="7946586320617670168">Извор мора да буде безбедан</translation>
@@ -3226,6 +2909,7 @@
 <translation id="5595485650161345191">Измена адресе</translation>
 <translation id="6207937957461833379">Земља/регија</translation>
 <translation id="4378154925671717803">Телефон</translation>
+<translation id="2448312741937722512">Тип</translation>
 <translation id="9064275926664971810">Омогућавање аутоматског попуњавања веб-образаца једним кликом</translation>
 <translation id="9095253524804455615">Уклони</translation>
 <translation id="451515744433878153">Уклони</translation>
@@ -3410,6 +3094,7 @@
 <translation id="1989112275319619282">Прегледај</translation>
 <translation id="3625481642044239431">Изабрали сте неважећу датотеку. Пробајте поново.</translation>
 <translation id="2462752602710430187">Додато је: <ph name="PRINTER_NAME"/></translation>
+<translation id="7380768571499464492">Ажурирано: <ph name="PRINTER_NAME"/></translation>
 <translation id="9057119625587205566">Нема штампача у близини</translation>
 <translation id="3213187967168344806">Додавање штампача није успело. Рестартујте рачунар и пробајте поново.</translation>
 <translation id="4052689580269971502">Повезивање са штампачем није успело. Проверите да ли је штампач укључен и повезан са Bravebook-ом помоћу Wi-Fi-ја или USB-а.</translation>
@@ -3538,6 +3223,7 @@
 <translation id="8452135315243592079">SIM картица недостаје</translation>
 <translation id="2617342710774726426">SIM картица је закључана</translation>
 <translation id="4848518990323155912">Омогући закључавање SIM картице (потребан је PIN за коришћење мобилних података)</translation>
+<translation id="8179976553408161302">Enter</translation>
 <translation id="5075131525758602494">Унесите PIN SIM картице</translation>
 <translation id="8431909052837336408">Промените PIN SIM картице</translation>
 <translation id="289644616180464099">SIM картица је закључана</translation>
@@ -3549,11 +3235,13 @@
 <translation id="1164899421101904659">Унесите шифру за откључавање PIN-а</translation>
 <translation id="7582582252461552277">Подеси као приоритетну мрежу</translation>
 <translation id="7469894403370665791">Аутоматски се повезуј са овом мрежом</translation>
+<translation id="4267953847983678297">Аутоматски се повезуј са мобилном мрежом</translation>
 <translation id="7987814697832569482">Увек се повезуј преко овог VPN-а</translation>
 <translation id="8821045908425223359">Аутоматски конфигуриши IP адресу</translation>
 <translation id="8986362086234534611">Заборави</translation>
 <translation id="7881483672146086348">Прикажи налог</translation>
 <translation id="2392369802118427583">Активирај</translation>
+<translation id="8151638057146502721">Конфигуриши</translation>
 <translation id="5920543303088087579">Администратор је онемогућио повезивање са овом мрежом</translation>
 <translation id="1235458158152011030">Познате мреже</translation>
 <translation id="3003144360685731741">Жељене мреже</translation>
@@ -3581,7 +3269,6 @@
 <translation id="7707922173985738739">Користи мобилне податке</translation>
 <translation id="8944099748578356325">бржа потрошња батерије (тренутно <ph name="BATTERY_PERCENTAGE"/>%)</translation>
 <translation id="3651488188562686558">прекинути везу са Wi-Fi-јем</translation>
-<translation id="3479552764303398839">Не сада</translation>
 <translation id="7378812711085314936">Коришћење везе за пренос података</translation>
 <translation id="3483333858382889684">Омогућите овом уређају да пронађе друге уређаје са вашим Brave Software налогом који имају везу за пренос података преко мобилног оператера</translation>
 <translation id="5637476008227280525">Омогући мобилне податке</translation>
@@ -3700,11 +3387,11 @@
 <translation id="3161522574479303604">Сви језици</translation>
 <translation id="3312424061798279731">Омогућени језици</translation>
 <translation id="3182749001423093222">Провера правописа</translation>
-<translation id="4441548209689510310">Приказуј опције за проверу правописа</translation>
-<translation id="4358353773267946514"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/></translation>
-<translation id="3909690856344416952"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/> и још 1</translation>
-<translation id="5740331643563157105"><ph name="LANGUAGE_1"/>, <ph name="LANGUAGE_2"/> и још <ph name="NUM_ADDITIONAL_LANGUAGES"/></translation>
-<translation id="3436038974659740746">Прилагођена провера правописа</translation>
+<translation id="5423829801105537712">Основна провера правописа</translation>
+<translation id="2564653188463346023">Побољшана провера правописа</translation>
+<translation id="8944680893327873975">Користи исту проверу правописа као Brave Software претрага. Текст који унесете у прегледач се шаље Brave Software-у.</translation>
+<translation id="7335974957018254119">Користите проверу правописа за:</translation>
+<translation id="2469375675106140201">Прилагодите проверу правописа</translation>
 <translation id="2667463864537187133">Управљање провером правописа</translation>
 <translation id="2665394472441560184">Додајте нову реч</translation>
 <translation id="4567772783389002344">Додај реч</translation>
@@ -3725,13 +3412,8 @@
 <translation id="9038649477754266430">Користите услугу предвиђања да бисте брже учитавали странице</translation>
 <translation id="7981313251711023384">Странице се учитавају унапред ради бржег прегледања и претраживања</translation>
 <translation id="2468205691404969808">Користи колачиће да би се запамтила подешавања, чак и када не посећујете те странице</translation>
-<translation id="1641113438599504367">Безбедно прегледање</translation>
-<translation id="773905249182896430">Штити вас и уређај од опасних сајтова</translation>
-<translation id="8983677657449185470">Помозите нам да побољшамо Безбедно прегледање</translation>
-<translation id="199861668945335092">Шаљи неке системске информације и садржај страница Brave Software-у</translation>
-<translation id="490074449735753175">Користи веб услугу за лакше отклањање правописних грешака</translation>
-<translation id="3523078749603005179">Паметнија провера правописа слањем текста који уносите у прегледач Brave Software-у</translation>
-<translation id="2564653188463346023">Побољшана провера правописа</translation>
+<translation id="4991384657077828949">Помозите нам да побољшамо Brave безбедност</translation>
+<translation id="2875273286298348523">Текст који уносите у прегледач Brave шаље Brave Software-у.</translation>
 <translation id="9079153198295609735">Аутоматски шаљи Brave Software-у статистичке податке о коришћењу и извештаје о отказивању</translation>
 <translation id="5941220456342415404">Аутоматски шаљи дијагностику и податке о коришћењу Brave Software-у</translation>
 <translation id="918192811481327695">Помозите нам да побољшамо Brave-ове функције и учинак</translation>
@@ -3808,6 +3490,7 @@
 <translation id="16815041330799488">Не дозвољавај сајтовима да виде текст и слике који су копирани у привремену меморију</translation>
 <translation id="3668823961463113931">Обрађивачи</translation>
 <translation id="5689516760719285838">Локација</translation>
+<translation id="9219103736887031265">Слике</translation>
 <translation id="7521387064766892559">JavaScript</translation>
 <translation id="4552089082226364758">Flash</translation>
 <translation id="6951153907720526401">Обрађивачи плаћања</translation>
@@ -3833,6 +3516,10 @@
 <translation id="8666584013686199826">Питај када сајт жели да приступи USB уређајима</translation>
 <translation id="6291949900244949761">Питај када сајт жели да приступи USB уређајима (препоручено)</translation>
 <translation id="5336126339807372270">Не дозвољавај сајтовима да приступају USB уређајима</translation>
+<translation id="7638605456503525968">Серијски портови</translation>
+<translation id="4085270836953633510">Питај када сајт жели да приступи серијским портовима</translation>
+<translation id="2322318151094136999">Питај када сајт жели да приступи серијским портовима (препоручено)</translation>
+<translation id="1906828677882361942">Не дозвољавај сајтовима да приступају серијским портовима</translation>
 <translation id="8973557916016709913">Уклони ниво зумирања</translation>
 <translation id="1706625117072057435">Нивои зумирања</translation>
 <translation id="6385543213911723544">Сајтови могу да чувају и читају податке колачића</translation>
@@ -3848,8 +3535,6 @@
 <translation id="2913331724188855103">Дозволи сајтовима да чувају и читају податке колачића (препоручује се)</translation>
 <translation id="5908769186679515905">Блокирај сајтове да не би покретали Flash</translation>
 <translation id="6096007141921397775">Задржаће се подешавања Flash-а док не затворите Brave.</translation>
-<translation id="2972642118232180842">Покрећи само важан садржај (препоручено)</translation>
-<translation id="7084192839369222683">Покрећи само важан садржај</translation>
 <translation id="8074127646604999664">Дозволи да недавно затворени сајтови заврше слање и пријем података</translation>
 <translation id="7062222374113411376">Дозволи да недавно затворени сајтови заврше слање и примање података (препоручено)</translation>
 <translation id="5068918910148307423">Не дозвољавај да недавно затворени сајтови заврше слање и примање података</translation>
@@ -3913,6 +3598,7 @@
 <translation id="4354344420232759511">Овде се приказују сајтови које сте посетили</translation>
 <translation id="3757733214359997190">Није пронађен ниједан сајт</translation>
 <translation id="5763751966069581670">Није пронађен ниједан USB уређај</translation>
+<translation id="1863182668524159459">Нисмо пронашли ниједан серијски порт</translation>
 <translation id="8546541260734613940">[*.]example.com</translation>
 <translation id="7366415735885268578">Додајте сајт</translation>
 <translation id="5052499409147950210">Измените сајт</translation>
@@ -3928,7 +3614,6 @@
 <translation id="4590324241397107707">Складиштење базе података</translation>
 <translation id="8016266267177410919">Привремени меморијски простор</translation>
 <translation id="4175737294868205930">Стални меморијски простор</translation>
-<translation id="6105877918873366097">Последњи приступ</translation>
 <translation id="1296497012903089238">Тип сертификата</translation>
 <translation id="8553342806078037065">Управљање другим људима</translation>
 <translation id="8907706281008466056">Слика Brave Software профила</translation>
@@ -3960,6 +3645,7 @@
 <translation id="1987317783729300807">Налози</translation>
 <translation id="8418661265246754237">Brave Software налози</translation>
 <translation id="3297951628821704004">Уклони налог са овог уређаја</translation>
+<translation id="4659077111144409915">Примарни налог</translation>
 <translation id="3158033540161634471">Подесите отисак прста</translation>
 <translation id="1587907146729660231">Прстом додирните дугме за укључивање</translation>
 <translation id="176193854664720708">Сензор за отисак прста је у дугмету за напајање. Лагано га додирните било којим прстом.</translation>
@@ -4090,13 +3776,17 @@
 <translation id="6586451623538375658">Замени примарни тастер миша</translation>
 <translation id="221872881068107022">Обрнуто померање</translation>
 <translation id="1510238584712386396">Покретач</translation>
+<translation id="3126026824346185272">Ctrl</translation>
+<translation id="2515586267016047495">Alt</translation>
 <translation id="131364520783682672">Caps Lock</translation>
 <translation id="1114202307280046356">Дијамант</translation>
 <translation id="89720367119469899">Escape</translation>
+<translation id="5583640892426849032">Backspace</translation>
 <translation id="1951012854035635156">Помоћник</translation>
 <translation id="1938351510777341717">Спољна команда</translation>
 <translation id="7969046989155602842">Command</translation>
 <translation id="585979798156957858">Спољни мета тастер</translation>
+<translation id="3924145049010392604">Meta</translation>
 <translation id="4991420928586866460">Третирај тастере из горњег реда као функцијске тастере</translation>
 <translation id="85486688517848470">Задржите тастер за претрагу да бисте променили понашање тастера у горњем реду</translation>
 <translation id="4400632832271803360">Задржите тастер за Покретач да бисте променили понашање тастера у горњем реду</translation>
@@ -4156,6 +3846,7 @@
 <translation id="7758450972308449809">Прилагодите границе приказа</translation>
 <translation id="5608580678041221894">Додирните следеће тастере да бисте прилагодили или преместили област опсецања</translation>
 <translation id="2822634587701817431">Скупи/прошири</translation>
+<translation id="7765158879357617694">Премести</translation>
 <translation id="6801435275744557998">Калибрација додирног екрана</translation>
 <translation id="6856623341093082836">Подесите и прилагодите прецизност додирног екрана</translation>
 <translation id="4598556348158889687">Управљање меморијским простором</translation>
@@ -4198,6 +3889,7 @@
 <translation id="2789927670850159391">Повежите Bravebook са телефоном. <ph name="LINK_BEGIN"/>Сазнајте више<ph name="LINK_END"/></translation>
 <translation id="1397500194120344683">Нема уређаја који испуњавају услове. <ph name="LINK_BEGIN"/>Сазнајте више<ph name="LINK_END"/></translation>
 <translation id="5739235828260127894">Чека се верификација. <ph name="LINK_BEGIN"/>Сазнајте више<ph name="LINK_END"/></translation>
+<translation id="6518133107902771759">Верификуј</translation>
 <translation id="7179187931092694802">Откључајте Bravebook помоћу телефона. <ph name="LINK_BEGIN"/>Сазнајте више<ph name="LINK_END"/></translation>
 <translation id="5430931332414098647">Тренутно привезивање</translation>
 <translation id="6415900369006735853">Повежите се на интернет помоћу телефона</translation>
@@ -4249,6 +3941,30 @@
 <translation id="2992931425024192067">Приказуј сав садржај обавештења</translation>
 <translation id="8592141010104017453">Не приказуј никаква обавештења</translation>
 <translation id="7642778300616172920">Сакриј осетљив садржај</translation>
+<translation id="5640133431808313291">Управљајте безбедносним кључевима</translation>
+<translation id="8509177919508253835">Ресетујте безбедносне кључеве и направите PIN-ове</translation>
+<translation id="7652954539215530680">Направите PIN</translation>
+<translation id="8246776524656196770">Заштитите безбедносни кључ помоћу PIN-а (личног идентификационог броја)</translation>
+<translation id="5973605538625120605">Промените PIN</translation>
+<translation id="6242589501614145408">Ресетујте безбедносни кључ</translation>
+<translation id="1470967055429794975">Тиме ћете обрисати све податке са безбедносног кључа, укључујући његов PIN</translation>
+<translation id="4670688170798478686">Потврдите ресетовање</translation>
+<translation id="1981544341227357861">Уклоните безбедносни кључ са уређаја, па га поново уметните и додирните.</translation>
+<translation id="714285394257538643">Да бисте потврдили да желите да ресетујете безбедносни кључ, поново га додирните. Избрисаћете све акредитиве који се чувају на безбедносном кључу и његов PIN.</translation>
+<translation id="4120388883569225797">Ресетовање овог безбедносног кључа није успело</translation>
+<translation id="7691077781194517083">Ресетовање овог безбедносног кључа није успело. Грешка <ph name="ERROR_CODE"/>.</translation>
+<translation id="4124823734405044952">Безбедносни кључ је ресетован</translation>
+<translation id="8644655801811752511">Ресетовање овог безбедносног кључа није успело. Ресетујте кључ чим га уметнете.</translation>
+<translation id="8845164297565101021">Уметните и додирните безбедносни кључ да бисте направили или променили PIN.</translation>
+<translation id="6957044667612803194">Овај безбедносни кључ не подржава PIN-ове</translation>
+<translation id="7212097698621322584">Унесите актуелни PIN да бисте га променили. Ако не знате PIN, морате да ресетујете безбедносни кључ, па да направите нови PIN.</translation>
+<translation id="2637400434494156704">Нетачан PIN. Имате још један покушај.</translation>
+<translation id="3341699307020049241">Нетачан PIN. Имате још <ph name="RETRIES"/> покушаја.</translation>
+<translation id="2439545803278355377">Унесите нови PIN. PIN мора да има бар четири знака и може да садржи слова, бројеве и друге знакове.</translation>
+<translation id="1781291988450150470">Актуелни PIN</translation>
+<translation id="3732530910372558017">PIN сме да садржи највише 63 знака</translation>
+<translation id="1307165550267142340">Направили сте PIN</translation>
+<translation id="2699911226086014512">PIN операција није успела, кôд грешке <ph name="RETRIES"/>.</translation>
 <translation id="3341703758641437857">Дозволи приступ URL адресама датотека</translation>
 <translation id="9003647077635673607">Дозволи на свим веб-сајтовима</translation>
 <translation id="698524779381350301">Аутоматски дозволи приступ на следећим сајтовима</translation>
@@ -4271,6 +3987,7 @@
 <translation id="6841186874966388268">Грешке</translation>
 <translation id="3487007233252413104">анонимна функција</translation>
 <translation id="3264582393905923483">Контекст</translation>
+<translation id="6921104647315081813">Обришите активности</translation>
 <translation id="1607139524282324606">Обриши унос</translation>
 <translation id="6025215716629925253">Стање низа</translation>
 <translation id="2214893006758804920">{LINE_COUNT,plural, =1{&lt;1 ред није приказан&gt;}one{&lt;<ph name="NUMBER_OF_LINES"/> ред није приказан&gt;}few{&lt;<ph name="NUMBER_OF_LINES"/> реда нису приказана&gt;}other{&lt;<ph name="NUMBER_OF_LINES"/> редова није приказано&gt;}}</translation>
@@ -4291,6 +4008,10 @@
 <translation id="6073451960410192870">Заустави снимање</translation>
 <translation id="8719472795285728850">Слушају се и траже активности додатака...</translation>
 <translation id="2540449034743108469">Притисните „Почетак“ да бисте слушали активности прегледача</translation>
+<translation id="885246833287407341">Променљиве за API функцију</translation>
+<translation id="3600051066689725006">Информације о веб-захтеву</translation>
+<translation id="5812674658566766066">Прошири све</translation>
+<translation id="3115580024857770654">Скупи све</translation>
 <translation id="1890674179660343635">&lt;span&gt;ID: &lt;/span&gt;<ph name="EXTENSION_ID"/></translation>
 <translation id="1805822111539868586">Проверите приказе</translation>
 <translation id="181577467034453336">још <ph name="NUMBER_OF_VIEWS"/>…</translation>
@@ -4298,6 +4019,7 @@
 <translation id="4854477725773269949">Омогући у режиму без архивирања</translation>
 <translation id="6124650939968185064">Следећи додаци зависе од овог додатка:</translation>
 <translation id="1708713382908678956"><ph name="NAME_PH"/> (ИД: <ph name="ID_PH"/>)</translation>
+<translation id="3866249974567520381">Опис</translation>
 <translation id="6508248480704296122">Сродно са ставком <ph name="NAME_PH"/></translation>
 <translation id="1410197035576869800">Икона апликације</translation>
 <translation id="3664511988987167893">Икона додатка</translation>
@@ -4309,6 +4031,7 @@
 <translation id="7152478047064750137">Овај додатак не захтева никакве специјалне дозволе</translation>
 <translation id="1004218526896219317">Приступ сајту</translation>
 <translation id="7385896526023870365">Овај додатак нема додатни приступ сајту.</translation>
+<translation id="8294431847097064396">Извор</translation>
 <translation id="8523849605371521713">Додале су смернице</translation>
 <translation id="5087249366037322692">Додала је трећа страна</translation>
 <translation id="6788210894632713004">Отпакован додатак</translation>
@@ -4352,12 +4075,14 @@
 <translation id="1909880997794698664">Да ли стварно желите да трајно задржите овај уређај у киоск режиму?</translation>
 <translation id="1512210426710821809">Једини начин да ово опозовете је да поново инсталирате <ph name="IDS_SHORT_PRODUCT_OS_NAME"/></translation>
 <translation id="4472575034687746823">Започнимо</translation>
+<translation id="8281886186245836920">Прескочи</translation>
 <translation id="2342740338116612727">Обележивачи су додати</translation>
 <translation id="7835178595033117206">Обележивач је уклоњен</translation>
 <translation id="742130257665691897">Обележивачи су уклоњени</translation>
 <translation id="2785008241190445880">Обележивач је замењен</translation>
-<translation id="4320948194796820126">Додајте обележивач у имејл</translation>
+<translation id="5468853758063275923">Brave је подразумевани прегледач</translation>
 <translation id="2950533317914339731">Додајте обележиваче у омиљене Brave Software апликације</translation>
+<translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Мапе</translation>
 <translation id="6709133671862442373">Вести</translation>
 <translation id="995782501881226248">YouTube</translation>
@@ -4377,10 +4102,10 @@
 <translation id="3707821975049107110">Већ користите Brave? Пријавите се</translation>
 <translation id="1573150740912592860">Сачувајте досадашњи напредак</translation>
 <translation id="567643736130151854">Пријавите се да би вам обележивачи, лозинке и други садржај били доступни на свим уређајима</translation>
-<translation id="8282356762694872144">Желите ли да наставите на имејл?</translation>
 <translation id="5939847200023027600">Услуга PDF Compositor</translation>
 <translation id="725758059478686223">Услуга штампања</translation>
 <translation id="5877584842898320529">Изабрани штампач није доступан или није правилно инсталиран. <ph name="BR"/> Проверите штампач или изаберите неки други.</translation>
+<translation id="1430915738399379752">Штампај</translation>
 <translation id="1031362278801463162">Учитавање прегледа</translation>
 <translation id="6147020289383635445">Преглед пре штампања није успео.</translation>
 <translation id="7413400642818115607">Изабрани уређај за Brave Software Cloud штампање више није подржан. <ph name="BR"/> Пробајте да подесите штампач у подешавањима система за рачунар.</translation>
@@ -4393,6 +4118,9 @@
 <translation id="5431318178759467895">У боји</translation>
 <translation id="2050339315714019657">Вертикално</translation>
 <translation id="3317459757438853210">Обострано</translation>
+<translation id="9053563360605707198">Штампај двострано</translation>
+<translation id="2996722619877761919">Окрени по дужој ивици</translation>
+<translation id="1172750555846831341">Окрени по краћој ивици</translation>
 <translation id="4988526792673242964">Странице</translation>
 <translation id="7771452384635174008">Распоред</translation>
 <translation id="3303818374450886607">Примерака</translation>
@@ -4402,6 +4130,7 @@
 <translation id="5746169159649715125">Сачувај као PDF</translation>
 <translation id="1955272076204612657">Чување на Brave Software диску</translation>
 <translation id="2580924999637585241">Укупно: <ph name="NUMBER_OF_SHEETS"/><ph name="SHEETS_LABEL"/></translation>
+<translation id="73174032666024687"><ph name="NUMBER_OF_SHEETS"/> <ph name="SHEETS_LABEL"/></translation>
 <translation id="4091434297613116013">листови папира</translation>
 <translation id="8813811964357448561">лист папира</translation>
 <translation id="8180239481735238521">страница</translation>
@@ -4454,6 +4183,9 @@
 <translation id="7453008956351770337">Када изаберете овај штампач, дајете дозволу за приступ штампачу следећем додатку:</translation>
 <translation id="2902127500170292085">Комуникација додатка <ph name="EXTENSION_NAME"/> са овим штампачем није успела. Проверите да ли је штампач прикључен и покушајте поново.</translation>
 <translation id="6530186581263215931">Администратор примењује ова подешавања</translation>
+<translation id="3053273573829329829">Омогући PIN корисника</translation>
+<translation id="6922745772873733498">Унесите PIN да бисте штампали</translation>
+<translation id="2396783860772170191">Унесите 4-цифрени PIN (0000–9999)</translation>
 <translation id="4994754230098574403">Подешава се</translation>
 <translation id="1396139853388185343">Дошло је до грешке при подешавању штампача</translation>
 <translation id="2379281330731083556">Штампај помоћу системског дијалога... <ph name="SHORTCUT_KEY"/></translation>
@@ -4470,20 +4202,25 @@
 <translation id="79766959863778284">XR услуга изолованог уређаја</translation>
 <translation id="8909833622202089127">Сајт прати локацију</translation>
 <translation id="375636864092143889">Сајт користи микрофон</translation>
-<translation id="310671807099593501">Сајт користи Bluetooth</translation>
 <translation id="7256069762010468647">Сајт користи камеру</translation>
 <translation id="7340650977506865820">Сајт дели екран</translation>
 <translation id="1805738995123446102">Картица у позадини користи микрофон</translation>
-<translation id="1112420131909513020">Картица у позадини користи Bluetooth</translation>
 <translation id="8715480913140015283">Картица у позадини користи камеру</translation>
 <translation id="6155141482566063812">Картица у позадини дели екран</translation>
 <translation id="661907246513853610">Сајт може да прати локацију</translation>
 <translation id="8991520179165052608">Сајт може да користи микрофон</translation>
-<translation id="7681095912841365527">Сајт може да користи Bluetooth</translation>
 <translation id="3085412380278336437">Сајт може да користи камеру</translation>
 <translation id="9180380851667544951">Сајт може да дели екран</translation>
-<translation id="400314203296796334">Уклоните слушалице да бисте блокирали или дозволили.</translation>
-<translation id="4922897038695506037"><ph name="URL_HOST"/> је затражио додатне дозволе.</translation>
+<translation id="310671807099593501">Сајт користи Bluetooth</translation>
+<translation id="1112420131909513020">Картица у позадини користи Bluetooth</translation>
+<translation id="7681095912841365527">Сајт може да користи Bluetooth</translation>
+<translation id="1484979925941077974">Сајт користи Bluetooth</translation>
+<translation id="4892229439761351791">Сајт може да користи Bluetooth</translation>
+<translation id="6416743254476733475">Дозволите или блокирајте на рачунару.</translation>
+<translation id="6124698108608891449">Овај сајт тражи још дозвола.</translation>
+<translation id="6551612971599078809">Сајт користи USB</translation>
+<translation id="3088052000289932193">Сајт користи MIDI</translation>
+<translation id="7004402701596653846">Сајт може да користи MIDI</translation>
 <translation id="7574650250151586813">Да бисте куцали текст, ажурирајте апликацију Daydream тастатура</translation>
 <translation id="983511809958454316">Ова функција није подржана у ВР-у</translation>
 <translation id="4008291085758151621">Информације о сајтовима нису доступне у ВР-у</translation>
@@ -4491,6 +4228,7 @@
 <translation id="6313641880021325787">ИЗАЂИ ИЗ ВР-А</translation>
 <translation id="2670429602441959756">Ова страница садржи функције које још увек нису подржане у режиму виртуелне реалности. Затвара се...</translation>
 <translation id="1802687198411089702">Страница се не одазива. Можете да сачекате да почне да се одазива или да је затворите.</translation>
+<translation id="1041175011127912238">Ова страница не реагује</translation>
 <translation id="3987938432087324095">Жао нам је, нисмо вас чули.</translation>
 <translation id="6923132443355966645">Померајте/кликните</translation>
 <translation id="6041155700700864984">Изађи из целог екрана</translation>

@@ -12,29 +12,21 @@ class BraveProfileChooserView : public ProfileChooserView {
  private:
   friend class ProfileChooserView;
 
-  BraveProfileChooserView(views::Button* anchor_button,
-                          const gfx::Rect& anchor_rect,
-                          gfx::NativeView parent_window,
-                          Browser* browser,
-                          profiles::BubbleViewMode view_mode,
-                          signin::GAIAServiceType service_type,
-                          signin_metrics::AccessPoint access_point,
-                          bool is_source_keyboard);
-  ~BraveProfileChooserView() override;
+  using ProfileChooserView::ProfileChooserView;
+  ~BraveProfileChooserView() override = default;
 
   // views::ButtonListener:
   void ButtonPressed(views::Button* sender, const ui::Event& event) override;
 
-  void ResetView() override;
+  void Reset() override;
 
-  views::View* BraveCreateDiceSyncErrorView(
-      const AvatarMenu::Item& avatar_item,
-      sync_ui_util::AvatarSyncErrorType error,
-      int button_string_id);
+  void AddDiceSyncErrorView(const AvatarMenu::Item& avatar_item,
+                            sync_ui_util::AvatarSyncErrorType error,
+                            int button_string_id) override;
 
-  void AddTorButton(views::GridLayout* layout);
+  void AddTorButton(ProfileMenuViewBase::MenuItems* menu_items);
 
-  views::LabelButton* tor_profile_button_;
+  views::Button* tor_profile_button_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveProfileChooserView);
 };

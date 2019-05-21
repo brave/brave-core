@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Gagnez des jetons en regardant des annonces dans Brave. Les annonces sont basées sur vos centres d'intérêts déduits de votre navigation. Aucune donnée personnelle ni aucun historique de navigation ne quittera jamais votre navigateur.</translation>
 <translation id="6112368337882254910">Auto-Contribuer</translation>
 <translation id="1527222983464337010">Un moyen automatique de soutenir des éditeurs et créateurs de contenus. Définissez un paiement mensuel et naviguez comme à votre habitude. Les sites que vous consultez recevront vos contributions automatiquement, sur base de la mesure de votre attention réalisée par Brave.</translation>
-<translation id="7178655681744815321">Gains actuels du mois (estimation)</translation>
 <translation id="8157096848242649588">Date de paiement</translation>
 <translation id="5208388044986603165">Notifications publicitaires reçues</translation>
 <translation id="4229016885653790965">Désolé ! Les publicités ne sont pas encore disponibles dans votre région.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Gagnez de l'argent en regardant des annonces respectueuses de votre vie privée.</translation>
 <translation id="3361548743396744457">Soutenez vos sites favoris simplement en les consultant—ou faites un don sur un site quand vous en avez envie.</translation>
 <translation id="3333887201479867589">Récompenses Brave</translation>
+<translation id="4493850495402472953">et</translation>
+<translation id="8804164990146287819">Politique de confidentialité</translation>
+<translation id="4281844954008187215">Conditions d'utilisation</translation>
 <translation id="7530570094705720669">Création du porte-monnaie</translation>
 <translation id="2105596359439030979">Votre attention est précieuse. Valorisez-la en regardant des annonces respectueuses de votre vie privée, et profitez-en pour soutenir les créateurs de contenus que vous aimez.</translation>
 <translation id="516395624550019162">Ça y est, j'y suis !</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">Sans votre consentement.</translation>
 <translation id="7147673045905733351">Aujourd'hui, Brave vous accueil dans un nouvel internet.</translation>
 <translation id="1350763070659630336">Un Internet où la valeur de votre temps est reconnue, où vos données personnelles restent confidentielles et où vous êtes réellement rémunéré-e pour votre attention.</translation>
+<translation id="880341991877949255">Avec votre ancien navigateur, vous payiez votre navigation sur le web avec votre précieuse attention, en visionnant des publicités. Vous passiez un temps précieux à télécharger une technologie de publicité invasive qui transmettait vos précieuses données personnelles à des publicitaires — sans votre consentement.</translation>
 <translation id="5830306739231399614">Malheureusement, vous n'avez pas encore de jeton.</translation>
 <translation id="7359258898775969374">3 manières de remplir votre porte-monnaie :</translation>
 <translation id="8087614920008846901">Vous pouvez ajouter des fonds.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Regardez ce qui ’s a été amélioré</translation>
 <translation id="4083384190339959182">Nous avons effectué une importante mise à niveau de Brave Payments.</translation>
 <translation id="5395851053710553429">Soyez prêt à expérimenter un nouvel Internet.</translation>
-<translation id="880341991877949255">Avec votre ancien navigateur, vous payiez votre navigation sur le web avec votre précieuse attention, en visionnant des publicités. Vous passiez un temps précieux à télécharger une technologie de publicité invasive qui transmettait vos précieuses données personnelles à des publicitaires — sans votre consentement.</translation>
 <translation id="2549982302631665116">Aujourd'hui, Brave vous accueille sur le nouvel Internet. Un Internet où la valeur de votre temps est reconnue, où vos données personnelles restent confidentielles et où vous êtes réellement rémunéré-e pour votre attention.</translation>
 <translation id="3780605330121608425">Votre porte-monnaie</translation>
 <translation id="6727483290601442544">Voir Détails</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Ajouter un nouvel appareil</translation>
 <translation id="8780295742023331191">Afficher le code de synchronisation</translation>
 <translation id="1755198127524719638">Paramètres de synchronisation</translation>
-<translation id="7558480201297099157">Gérez les informations que vous souhaitez synchroniser entre les appareils. Ces réglages n'ont d'effet que sur cet appareil.</translation>
 <translation id="8820817407110198400">Favoris</translation>
 <translation id="5591129654353352557">Paramètres du site enregistrés</translation>
 <translation id="7859704718976024901">Historique de navigation</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Code de la chaîne de synchronisation</translation>
 <translation id="2899261497479389619">Sur votre ordinateur cible, accédez à Brave Synchronisation dans les paramètres et cliquez sur le bouton</translation>
 <translation id="4827439149833241990">“J'ai un code de synchronisation”.</translation>
-<translation id="24067401253841795">Entrez les mots du code de la chaîne de synchronisation ci-dessous.</translation>
 <translation id="8914601399214979966">Utiliser plutôt mon appareil photo</translation>
 <translation id="3034163433136515805">Afficher le code QR</translation>
 <translation id="5093410893656857925">Choisir le type d'appareil</translation>

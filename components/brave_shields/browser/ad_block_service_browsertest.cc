@@ -334,7 +334,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 // regional blocker.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
   g_browser_process->SetApplicationLocale("fr");
-  ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
+  ASSERT_STREQ(g_browser_process->GetApplicationLocale().c_str(), "fr");
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
@@ -363,7 +363,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdsGetBlockedByRegionalBlocker) {
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
                        NotAdsDoNotGetBlockedByRegionalBlocker) {
   g_browser_process->SetApplicationLocale("fr");
-  ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
+  ASSERT_STREQ(g_browser_process->GetApplicationLocale().c_str(), "fr");
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
@@ -544,7 +544,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
     ExceptionAdsAreAllowedAcrossClients) {
   AddRulesToAdBlock("*ad_fr*\n@@*ad_fr.png*");
   g_browser_process->SetApplicationLocale("fr");
-  ASSERT_EQ(g_browser_process->GetApplicationLocale(), "fr");
+  ASSERT_STREQ(g_browser_process->GetApplicationLocale().c_str(), "fr");
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 

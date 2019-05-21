@@ -1,5 +1,5 @@
 diff --git a/components/safe_browsing/db/v4_protocol_manager_util.cc b/components/safe_browsing/db/v4_protocol_manager_util.cc
-index e6be471871b850e1fbb53c3f822276f428bc9a74..e98914154f173a80e4ed0972f9b1131457ab6047 100644
+index dcc86e9fede9918634871f73f2201a5b2b82cf65..c7e49e2e1b09ad5899dc8ef8702d35a79bc831b6 100644
 --- a/components/safe_browsing/db/v4_protocol_manager_util.cc
 +++ b/components/safe_browsing/db/v4_protocol_manager_util.cc
 @@ -27,7 +27,7 @@ namespace safe_browsing {

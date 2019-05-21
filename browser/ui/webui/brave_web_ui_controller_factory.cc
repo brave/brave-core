@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
-#include "brave/browser/ui/webui/brave_md_settings_ui.h"
+#include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
@@ -60,7 +60,7 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   } else if (host == chrome::kChromeUINewTabHost) {
     return new BraveNewTabUI(web_ui, url.host());
   } else if (host == chrome::kChromeUISettingsHost) {
-    return new BraveMdSettingsUI(web_ui, url.host());
+    return new BraveSettingsUI(web_ui, url.host());
   }
   return nullptr;
 }

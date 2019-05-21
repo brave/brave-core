@@ -422,18 +422,33 @@ Brave is unable to recover your settings.
       <message name="IDS_PROMPT_DOWNLOAD_CHANGES_SETTINGS" desc="Message shown on the download shelf when the download is known to change settings in the browser in a malicious way.">
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous, so Brave has blocked it.
       </message>
+      <message name="IDS_PROMPT_DOWNLOAD_CHANGES_SETTINGS_IN_ADVANCED_PROTECTION" desc="Message shown on the download shelf when the download is known to change settings in the browser in a malicious way. This variant is shown when the user is enrolled in the Advanced Protection program.">
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> may be dangerous, so Brave has blocked it. You're defended by Advanced Protection.
+      </message>
 
       <message name="IDS_PROMPT_MALICIOUS_DOWNLOAD_URL" desc="Message shown to the user to validate the download when the download url is classified to lead to malware by the safebrowsing database.">
         This file is dangerous, so Brave has blocked it.
       </message>
+      <message name="IDS_PROMPT_MALICIOUS_DOWNLOAD_URL_IN_ADVANCED_PROTECTION" desc="Message shown to the user to validate the download when the download url is classified to lead to malware by the safebrowsing database. This variant is shown when the user is enrolled in this Advanced Protection program.">
+        This file is dangerous, so Brave has blocked it. You're defended by Advanced Protection.
+      </message>
       <message name="IDS_PROMPT_MALICIOUS_DOWNLOAD_CONTENT" desc="Message shown to the user to validate the download when the download content is classified to lead to malware by safebrowsing.">
         <ph name="FILE_NAME">$1<ex>malware.exe</ex></ph> is dangerous, so Brave has blocked it.
+      </message>
+      <message name="IDS_PROMPT_MALICIOUS_DOWNLOAD_CONTENT_IN_ADVANCED_PROTECTION" desc="Message shown to the user to validate the download when the download content is classified to lead to malware by safebrowsing. This variant is shown when the user is enrolled in the Advanced Protection program.">
+        <ph name="FILE_NAME">$1<ex>malware.exe</ex></ph> is dangerous, so Brave has blocked it. You're defended by Advanced Protection.
       </message>
       <message name="IDS_BLOCK_REASON_DANGEROUS_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is malware.">
         This file is dangerous, so Brave has blocked it.
       </message>
+      <message name="IDS_BLOCK_REASON_DANGEROUS_DOWNLOAD_IN_ADVANCED_PROTECTION" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is malware. This variant is shown when the user is enrolled in the Advanced Protection program.">
+        This file is dangerous, so Brave has blocked it. You're defended by Advanced Protection.
+      </message>
       <message name="IDS_BLOCK_REASON_UNWANTED_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is unwanted sofware.">
         This file may be dangerous, so Brave has blocked it.
+      </message>
+      <message name="IDS_BLOCK_REASON_UNWANTED_DOWNLOAD_IN_ADVANCED_PROTECTION" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is unwanted sofware. This variant is shown when the user is enrolled in the Advanced Protection program.">
+        This file may be dangerous, so Brave has blocked it. You're defended by Advanced Protection.
       </message>
 
       <!-- Abandon in-progress downloads confirmation dialog -->
@@ -542,7 +557,7 @@ Brave is unable to recover your settings.
       <message name="IDS_EXTENSIONS_UNINSTALL" desc="The link for uninstalling extensions.">
         Remove from Brave...
       </message>
-      <message name="IDS_MD_EXTENSIONS_SHORTCUT_SCOPE_IN_CHROME" desc="The label to indicate that a shortcut will be triggerable only from within the Brave application.">
+      <message name="IDS_EXTENSIONS_SHORTCUT_SCOPE_IN_CHROME" desc="The label to indicate that a shortcut will be triggerable only from within the Brave application.">
         In Brave
       </message>
 
@@ -681,8 +696,11 @@ Signing in anyway will merge Brave information like bookmarks, history, and othe
 
       <!-- about:browser-switch strings -->
       <if expr="is_win or is_macosx or (is_linux and not is_chromeos)">
-        <message name="IDS_ABOUT_BROWSER_SWITCH_DESCRIPTION" desc="Description shown while waiting for an alternative browser to open">
+        <message name="IDS_ABOUT_BROWSER_SWITCH_DESCRIPTION_UNKNOWN_BROWSER" desc="Description shown while waiting for an alternative browser to open, when the browser name is not auto-detected">
           Your system administrator has configured Brave to open an alternative browser to access <ph name="TARGET_URL_HOSTNAME">$1<ex>example.com</ex></ph>.
+        </message>
+        <message name="IDS_ABOUT_BROWSER_SWITCH_DESCRIPTION_KNOWN_BROWSER" desc="Description shown while waiting for an alternative browser to open, when the browser name is auto-detected">
+          Your system administrator has configured Brave to open <ph name="ALTERNATIVE_BROWSER_NAME">$2<ex>Internet Explorer</ex></ph> to access <ph name="TARGET_URL_HOSTNAME">$1<ex>example.com</ex></ph>.
         </message>
       </if>
 
@@ -912,7 +930,7 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
           If an image doesn’t have a useful description, Brave will try to provide one for you. To create descriptions, images are sent to Brave.
         </message>
         <message name="IDS_CONTENT_CONTEXT_SPELLING_BUBBLE_TEXT" desc="The text of a bubble that confirms users allows integrating the spelling service of Brave to Brave.">
-          Brave can provide smarter spell-checking by sending what you type in the browser to Brave servers, allowing you to use the same spell-checking technology used by Brave search.
+          This uses the same spellchecker that's used in Brave search. Text you type in the browser is sent to Brave. You can always change this behavior in settings.
         </message>
         <if expr="not use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKNEWTAB_INAPP" desc="The name of the command to open a link in a newly created browser tab when the user is in an app window">
@@ -961,6 +979,17 @@ Please check your email at <ph name="ACCOUNT_EMAIL">$2<ex>jane.doe@example.com</
           Restart
         </message>
       </if>
+
+      <!-- Cannot update when other instances open dialog -->
+      <message name="IDS_UPDATE_OTHER_INSTANCES_SAME_USER_DIALOG_TITLE" desc="The title for the dialog shown when multiple copies of Brave are running during a requested update.">
+        Quit all copies of Brave.
+      </message>
+      <message name="IDS_UPDATE_OTHER_INSTANCES_SAME_USER_DIALOG_MESSAGE" desc="The message for the dialog shown when multiple copies of Brave are running during a requested update.">
+        Other copies of Brave are running. To update, close them.
+      </message>
+      <message name="IDS_UPDATE_OTHER_INSTANCES_OTHER_USER_AUTHENTICATION_PROMPT" desc="The window title for the other instances dialog.">
+        To update, Brave needs to stop running on this computer. This may cause other users logged into this computer to lose unsaved changes.
+      </message>
 
       <!-- Update bubble -->
       <message name="IDS_REINSTALL_APP" desc="Text for the button the user clicks to reinstall the app.">

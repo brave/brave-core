@@ -26,15 +26,16 @@
   <message name="IDS_ONBOARDING_WELCOME_BOOKMARK_REPLACED" desc="String read for accessibility to inform the user a bookmark was replaced.">
     Bookmark replaced
   </message>
-
-  <!-- NUX email provider selection module -->
-  <message name="IDS_ONBOARDING_WELCOME_NUX_EMAIL_TITLE" desc="Text shown to prompt the users to select an email service to add as bookmark.">
-    Add a bookmark to your email
+  <message name="IDS_ONBOARDING_DEFAULT_BROWSER_CHANGED" desc="text notifying users that their default browser is successfully changed to Brave">
+    Brave is your default browser
   </message>
 
   <!-- NUX Brave apps selection module -->
   <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_DESCRIPTION" desc="Description of what this section in the onboarding workflow does.">
     Add bookmarks to your favorite Brave Apps
+  </message>
+  <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_GMAIL" desc="Label for a button that creates a bookmark to gmail.com, this should be the name of the brand.">
+    Gmail
   </message>
   <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_MAPS" desc="Label for a button that creates a bookmark to maps.google.com, this should be the name of the brand.">
     Maps
@@ -44,9 +45,6 @@
   </message>
   <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_TRANSLATE" desc="Label for a button that creates a bookmark to translate.google.com, this should be the name of the brand.">
     Translate
-  </message>
-  <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_WEB_STORE" desc="Label for a button that creates a bookmark to chrome.google.com/webstore, this should be the name of the brand.">
-    Web Store
   </message>
   <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_YOUTUBE" desc="Label for a button that creates a bookmark to youtube.com, this should be the name of the brand.">
     YouTube
@@ -120,14 +118,6 @@
     Sign in and turn on sync to get your bookmarks, passwords and more on all devices
   </message>
   <message name="IDS_ONBOARDING_WELCOME_SIGNIN_VIEW_SIGNIN" desc="The label for a button to let users sign in to chrome.">
-    Continue
-  </message>
-
-  <!-- Email interstitial view -->
-  <message name="IDS_ONBOARDING_WELCOME_EMAIL_INTERSTITIAL_TITLE" desc="Text shown to ask users whether or not they want to be directed to the email provider they previously selected, or skip this and start using the browser.">
-    Continue to your email?
-  </message>
-  <message name="IDS_ONBOARDING_WELCOME_EMAIL_INTERSTITIAL_CONTINUE" desc="Label for the button to direct the user to the email provider they previously selected.">
     Continue
   </message>
 </grit-part>

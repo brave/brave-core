@@ -1,17 +1,8 @@
-diff --git a/chrome/browser/ui/views/tabs/tab_style.cc b/chrome/browser/ui/views/tabs/tab_style.cc
-index 7aaac14f7d4293090c396b765273ec646ed907c5..218f4785fa2cf63976f6e44de102d16e3903d9a2 100644
---- a/chrome/browser/ui/views/tabs/tab_style.cc
-+++ b/chrome/browser/ui/views/tabs/tab_style.cc
-@@ -180,7 +180,7 @@ int GetContentsHorizontalInsetSize() {
- 
- // Returns the height of the separator between tabs.
- int GetSeparatorHeight() {
--  return ui::MaterialDesignController::touch_ui() ? 24 : 20;
-+  return ui::MaterialDesignController::touch_ui() ? 24 : 24;
- }
- 
- void DrawHighlight(gfx::Canvas* canvas,
-@@ -307,6 +307,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,
+diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
+index 464249bcc81eeec81b89969fb85af88f212a06eb..25b6147a25e61d29aa4cfec86b0badc2486d239a 100644
+--- a/chrome/browser/ui/views/tabs/tab_style_views.cc
++++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
+@@ -224,6 +224,7 @@ SkPath GM2TabStyle::GetPath(PathType path_type,
    // When the radius shrinks, it leaves a gap between the bottom corners and the
    // edge of the tab. Make sure we account for this - and for any adjustment we
    // may have made to the location of the tab!
@@ -19,7 +10,7 @@ index 7aaac14f7d4293090c396b765273ec646ed907c5..218f4785fa2cf63976f6e44de102d16e
    const float corner_gap = (right - tab_right) - bottom_radius;
  
    SkPath path;
-@@ -579,7 +580,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
+@@ -496,7 +497,7 @@ TabStyle::SeparatorBounds GM2TabStyle::GetSeparatorBounds(float scale) const {
    separator_bounds.leading =
        gfx::RectF(aligned_bounds.x() + corner_radius,
                   aligned_bounds.y() +
@@ -28,7 +19,7 @@ index 7aaac14f7d4293090c396b765273ec646ed907c5..218f4785fa2cf63976f6e44de102d16e
                   separator_size.width(), separator_size.height());
  
    separator_bounds.trailing = separator_bounds.leading;
-@@ -891,12 +892,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
+@@ -756,12 +757,16 @@ void GM2TabStyle::PaintSeparators(gfx::Canvas* canvas) const {
                                                     SK_AlphaOPAQUE));
    };
  

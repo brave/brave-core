@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Ansaitse poletteja katsomalla mainoksia Bravessa. Näytetyt mainokset perustuvat mieltymyksiisi, jotka määritellään selainkäyttäytymisesi perusteella. Henkilökohtaisia tietojasi tai selaushistoriaasi ei koskaan lähetetä selaimesi ulkopuolelle.</translation>
 <translation id="6112368337882254910">Osallistu automaattisesti</translation>
 <translation id="1527222983464337010">Automaattinen tapa tukea julkaisijoita ja sisällöntuottajia. Aseta kuukausittainen maksu ja selaile normaalisti. Vierailemasi sivustot saavat lahjoituksesi automaattisesti, perustuen Braven mittaamaan huomioosi.</translation>
-<translation id="7178655681744815321">Nykyiset ansiot tässä kuussa (arvioitu)</translation>
 <translation id="8157096848242649588">Maksupäivä</translation>
 <translation id="5208388044986603165">Mainosilmoitukset vastaanotettu</translation>
 <translation id="4229016885653790965">Olemme pahoillamme! Alueellesi ei ole vielä saatavilla mainoksia.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">Saa palkkio yksityisyyttäsi kunnioittavien, relevanttien mainosten katselusta.</translation>
 <translation id="3361548743396744457">Tue suosikkisivustojasi selailemalla niitä – tai tippaa mitä tahansa sivustoa, josta pidät.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="4493850495402472953">ja</translation>
+<translation id="8804164990146287819">Tietosuojakäytäntö</translation>
+<translation id="4281844954008187215">Palveluehdot</translation>
 <translation id="7530570094705720669">Luodaan lompakkoa</translation>
 <translation id="2105596359439030979">Huomiosi on arvokasta. Ansaitse rahaa katsomalla yksityisyyttä kunnioittavia mainoksia ja anna hyvän kiertää tukemalla rakastamiasi sisällöntuottajia.</translation>
 <translation id="516395624550019162">Kyllä, olen mukana!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">ilman suostumustasi.</translation>
 <translation id="7147673045905733351">Tänään Brave toivottaa sinut tervetulleeksi uuteen Internetiin.</translation>
 <translation id="1350763070659630336">Paikka, jossa aikasi on arvokasta, tietosi pidetään turvassa ja huomiostasi maksetaan.</translation>
+<translation id="880341991877949255">Vanhalla selaimellasi maksoit selaamisesta katselemalla mainoksia. Käytit arvokasta aikaasi lataamalla hyökkäävää mainosteknologiaa, joka välittää yksityisiä tietojasi mainostajille — ilman suostumustasi.</translation>
 <translation id="5830306739231399614">Harmi, ei vielä tokeneita.</translation>
 <translation id="7359258898775969374">3 tapaa täyttää lompakkosi:</translation>
 <translation id="8087614920008846901">Voit lisätä varoja.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">Katso mitä’ paransivat</translation>
 <translation id="4083384190339959182">Olemme antaneet Brave-maksuille suuren päivityksen.</translation>
 <translation id="5395851053710553429">Valmistaudu kokemaan seuraava Internet.</translation>
-<translation id="880341991877949255">Vanhalla selaimellasi maksoit selaamisesta katselemalla mainoksia. Käytit arvokasta aikaasi lataamalla hyökkäävää mainosteknologiaa, joka välittää yksityisiä tietojasi mainostajille — ilman suostumustasi.</translation>
 <translation id="2549982302631665116">Tänää Brave toivottaa sinut tervetulleeksi uuteen Internetiin. Se on paikka, jossa aikasi on arvokasta, tietosi pidetään turvassa ja huomiostasi maksetaan.</translation>
 <translation id="3780605330121608425">Lompakkosi</translation>
 <translation id="6727483290601442544">Katso yksityiskohdat</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">Lisää uusi laite</translation>
 <translation id="8780295742023331191">Näytä synkronointikoodi</translation>
 <translation id="1755198127524719638">Synkronointiasetukset</translation>
-<translation id="7558480201297099157">Hallinnoi laitteiden välillä synkronoitavia tietoja. Nämä asetukset vaikuttavat ainoastaan tähän laitteeseen.</translation>
 <translation id="8820817407110198400">Kirjanmerkit</translation>
 <translation id="5591129654353352557">Tallennettujen sivustojen asetukset</translation>
 <translation id="7859704718976024901">Selaushistoria</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">Synkronointiketjun koodi</translation>
 <translation id="2899261497479389619">Etsi kohdetietokoneesi asetuksista löytyvä Brave-synkronointi ja napauta painiketta</translation>
 <translation id="4827439149833241990">“Minulla on synkronointikoodi”.</translation>
-<translation id="24067401253841795">Syötä alla olevat synkronointiketjun sanat.</translation>
 <translation id="8914601399214979966">Käytä sen sijaan minun kameraani</translation>
 <translation id="3034163433136515805">Näytä ruutukoodi</translation>
 <translation id="5093410893656857925">Valitse laitteen tyyppi</translation>

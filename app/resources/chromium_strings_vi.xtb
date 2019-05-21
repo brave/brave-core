@@ -74,9 +74,13 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="5874882355102994015">Brave không thể hiển thị chế độ xem trước bản in khi thiếu trình xem PDF tích hợp.</translation>
 <translation id="8880183781256147665">Đang thêm vào Brave...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> có thể nguy hiểm, do đó Brave đã chặn tệp.</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> có thể nguy hiểm nên đã bị Brave chặn. Tính năng Bảo vệ nâng cao giữ an toàn cho bạn.</translation>
 <translation id="9067428552314418522">Tệp này nguy hiểm, do đó Brave đã chặn tệp.</translation>
+<translation id="2938460345748897177">Tệp này nguy hiểm nên đã bị Brave chặn. Tính năng Bảo vệ nâng cao giữ an toàn cho bạn.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> nguy hiểm, do đó Brave đã chặn tệp.</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> nguy hiểm nên đã bị Brave chặn. Tính năng Bảo vệ nâng cao giữ an toàn cho bạn.</translation>
 <translation id="89367911614620585">Tệp này nguy hiểm, do đó Brave đã chặn tệp.</translation>
+<translation id="8943391224520748272">Tệp này có thể nguy hiểm nên đã bị Brave chặn. Tính năng Bảo vệ nâng cao giữ an toàn cho bạn.</translation>
 <translation id="9183662282810237335">Bạn vẫn muốn thoát khỏi Brave?</translation>
 <translation id="3834935463915107022">Bạn vẫn muốn thoát khỏi Brave?</translation>
 <translation id="8797356639448065696">Brave đang chạy trong nền.</translation>
@@ -127,6 +131,7 @@ Brave không thể khôi phục cài đặt của bạn.</translation>
 <translation id="1326766910007115955">Bạn đang đăng nhập bằng tài khoản được quản lý và cấp cho quản trị viên của tài khoản quyền kiểm soát cấu hình Brave của bạn. Dữ liệu Brave của bạn, chẳng hạn như ứng dụng, dấu trang, lịch sử, mật khẩu và các cài đặt khác sẽ vĩnh viễn được liên kết với <ph name="USER_NAME"/>. Bạn có thể xóa dữ liệu này thông qua Trang tổng quan của tài khoản Brave Software nhưng không thể liên kết dữ liệu này với tài khoản khác. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Bạn đang đăng nhập bằng tài khoản được quản lý và cấp cho quản trị viên của tài khoản quyền kiểm soát cấu hình Brave của bạn. Dữ liệu Brave của bạn, chẳng hạn như ứng dụng, dấu trang, lịch sử, mật khẩu và các cài đặt khác sẽ vĩnh viễn được liên kết với <ph name="USER_NAME"/>. Bạn có thể xóa dữ liệu này thông qua Trang tổng quan của tài khoản Brave Software nhưng không thể liên kết dữ liệu này với tài khoản khác. Bạn có thể tùy chọn tạo cấu hình mới để giữ cho dữ liệu Brave hiện có của bạn riêng biệt. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Quản trị viên hệ thống của bạn đã định cấu hình Brave để mở một trình duyệt thay thế khi truy cập vào <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">Quản trị viên hệ thống đã định cấu hình Brave để mở <ph name="ALTERNATIVE_BROWSER_NAME"/> khi truy cập vào <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> trước đó đã sử dụng Brave</translation>
 <translation id="1384923383737428730">Máy tính của bạn có phần mềm độc hại. Brave có thể xóa phần mềm này, khôi phục các tùy chọn cài đặt của bạn và tắt tiện ích để giúp trình duyệt hoạt động lại bình thường.</translation>
 <translation id="8919921662052966648">Brave không thể đồng bộ hóa dữ liệu của bạn. Vui lòng cập nhật cụm mật khẩu Đồng bộ hóa của bạn.</translation>
@@ -177,7 +182,7 @@ Vui lòng xem email của bạn tại <ph name="ACCOUNT_EMAIL"/> để được 
 <translation id="1912973375560256099">Quy tắc kết nối để Brave cho phép lưu lượng truy cập mDNS.</translation>
 <translation id="8207657266087451193">Brave sẽ cố gắng mô tả cho bạn những hình ảnh không có nội dung mô tả hữu ích. Để tạo nội dung mô tả, các hình ảnh sẽ được gửi cho Brave Software. Bạn có thể tắt dịch vụ này trong phần cài đặt bất kỳ lúc nào.</translation>
 <translation id="5499063270485366718">Brave sẽ cố gắng mô tả cho bạn những hình ảnh không có nội dung mô tả hữu ích. Để tạo nội dung mô tả, các hình ảnh sẽ được gửi cho Brave Software.</translation>
-<translation id="7276297358157391541">Brave có thể cung cấp tính năng kiểm tra chính tả thông minh hơn bằng cách gửi những gì bạn nhập vào trình duyệt tới máy chủ Brave Software, cho phép bạn sử dụng cùng một công nghệ kiểm tra chính tả mà tìm kiếm của Brave Software sử dụng.</translation>
+<translation id="3870835867536344658">Dịch vụ này sử dụng cùng một trình kiểm tra lỗi chính tả dùng trong Brave Software Tìm kiếm. Brave gửi cho Brave Software văn bản mà bạn nhập vào trình duyệt. Bạn luôn có thể thay đổi hành động này trong các tùy chọn cài đặt.</translation>
 <translation id="1807774211756215222">Mở liên kết trong tab mới của Brave</translation>
 <translation id="4624945300945265642">Mở liên kết trong cửa sổ ẩn danh của Brave</translation>
 <translation id="7863882214613921971">Mở liên kết trong tab mới của Brave</translation>

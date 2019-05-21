@@ -46,17 +46,14 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="3155170474926428993">Tor'i käivitaja</translation>
 <translation id="2515126961943087659">Bat reklaamide teenus</translation>
 <translation id="7924918279836988121">BAT-registri teenus</translation>
-<translation id="768979911142179781">Brave'i kaitse vaikeseaded</translation>
-<translation id="9185018653595759199">Sotsiaalsed nupud ja sisselogimised</translation>
-<translation id="6894114137169961038">Reklaamide juhtimine</translation>
-<translation id="1096802265930928584">Küpsiste juhtimine</translation>
+<translation id="4472575034687746823">Alustamine</translation>
+<translation id="6303294677342628402">Kaitse</translation>
 <translation id="8919235146866304148">Brauserituvastuse kaitse</translation>
 <translation id="520895744850022668">HTTPS Kõikjal</translation>
 <translation id="5259716416204774556">Skriptide blokeerimine</translation>
 <translation id="7498695072878479744">Luba Google'i sisselogimisnupud kolmanda osapoole saitidel</translation>
 <translation id="863171915776379000">Luba Facebooki sisselogimised ja manustatud postitused</translation>
 <translation id="5165042248369837294">Luba Twitteri manustatud tweet'id</translation>
-<translation id="958971637207126733">Luba LinkedIn'i manustatud postitused</translation>
 <translation id="6067014455220527258">Blokeeri reklaamid</translation>
 <translation id="6985711843506827936">Luba reklaamid ja jälgimine</translation>
 <translation id="6132506775968708399">Blokeeri 3. osapoole küpsised</translation>
@@ -76,7 +73,6 @@ Selle laienduse installimisel nõustute Google Widevine'i kasutustingimustega. N
 <translation id="2414886740292270097">Tume</translation>
 <translation id="1360441190790440400">Sama mis Linuxil</translation>
 <translation id="1336940801687497203">Sama mis Windowsil</translation>
-<translation id="8721331068159819483">Sama mis macOSil</translation>
 <translation id="6786747875388722282">Laiendused</translation>
 <translation id="2896916411183256228">Kasutab rakendust WebTorrent torrentite kuvamiseks otse brauseris. Toetab torrent-faile ja magnetlinke.</translation>
 <translation id="6554397389149987360">Kasutab Hangouts-komponenti kuva jagamise ja muude funktsioonide aktiveerimiseks brauseris.</translation>

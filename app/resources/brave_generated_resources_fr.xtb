@@ -46,17 +46,14 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="3155170474926428993">Lanceur Tor</translation>
 <translation id="2515126961943087659">Service de publicités BAT</translation>
 <translation id="7924918279836988121">Service Bat Ledger</translation>
-<translation id="768979911142179781">Boucliers Brave par défaut</translation>
-<translation id="9185018653595759199">Boutons et connexions des réseaux sociaux</translation>
-<translation id="6894114137169961038">Contrôle des publicités</translation>
-<translation id="1096802265930928584">Contrôle des cookies</translation>
+<translation id="4472575034687746823">Premiers pas</translation>
+<translation id="6303294677342628402">Protections</translation>
 <translation id="8919235146866304148">Protection contre la prise d'empreintes</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Blocage de script</translation>
 <translation id="7498695072878479744">Autoriser les boutons de connexion Google sur les sites tiers</translation>
 <translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
 <translation id="5165042248369837294">Autoriser les tweets intégrés de Twitter</translation>
-<translation id="958971637207126733">Autoriser les intégrations LinkedIn</translation>
 <translation id="6067014455220527258">Bloquer les publicités</translation>
 <translation id="6985711843506827936">Autoriser les publicités et le suivi</translation>
 <translation id="6132506775968708399">Bloquer les cookies tiers</translation>
@@ -76,7 +73,6 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="2414886740292270097">Sombre</translation>
 <translation id="1360441190790440400">Identique à Linux</translation>
 <translation id="1336940801687497203">Identique à Windows</translation>
-<translation id="8721331068159819483">Identique à MacOS</translation>
 <translation id="6786747875388722282">Extensions</translation>
 <translation id="2896916411183256228">Utilise WebTorrent pour afficher les torrents directement dans le navigateur. Compatible avec les fichiers torrent et les liens magnétiques.</translation>
 <translation id="6554397389149987360">Utilise le composant Hangouts pour activer le partage d'écran et d'autres fonctionnalités dans le navigateur.</translation>

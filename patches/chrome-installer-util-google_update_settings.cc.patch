@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/google_update_settings.cc b/chrome/installer/util/google_update_settings.cc
-index 4f0ad5378847cb9ee99569a206994c50683d06bf..6e128e4631a358208b9b3cda3213c52b9773403f 100644
+index cd16813d1e1be175cf52c330c2437bfe6288f01a..3b5ca9696b9ebc1e52556316a43c703d3aa20542 100644
 --- a/chrome/installer/util/google_update_settings.cc
 +++ b/chrome/installer/util/google_update_settings.cc
-@@ -31,7 +31,11 @@ using base::win::RegKey;
+@@ -28,7 +28,11 @@ using base::win::RegKey;
  using installer::InstallationState;
  
  const wchar_t GoogleUpdateSettings::kPoliciesKey[] =
@@ -14,7 +14,7 @@ index 4f0ad5378847cb9ee99569a206994c50683d06bf..6e128e4631a358208b9b3cda3213c52b
  const wchar_t GoogleUpdateSettings::kUpdatePolicyValue[] = L"UpdateDefault";
  const wchar_t GoogleUpdateSettings::kDownloadPreferencePolicyValue[] =
      L"DownloadPreference";
-@@ -43,6 +47,11 @@ const wchar_t GoogleUpdateSettings::kCheckPeriodOverrideMinutes[] =
+@@ -40,6 +44,11 @@ const wchar_t GoogleUpdateSettings::kCheckPeriodOverrideMinutes[] =
  const int GoogleUpdateSettings::kCheckPeriodOverrideMinutesMax =
      60 * 24 * 7 * 6;
  
@@ -26,7 +26,7 @@ index 4f0ad5378847cb9ee99569a206994c50683d06bf..6e128e4631a358208b9b3cda3213c52b
  const GoogleUpdateSettings::UpdatePolicy
  GoogleUpdateSettings::kDefaultUpdatePolicy =
  #if defined(GOOGLE_CHROME_BUILD)
-@@ -887,3 +896,7 @@ bool GoogleUpdateSettings::ReadExperimentLabels(
+@@ -834,3 +843,7 @@ bool GoogleUpdateSettings::ReadExperimentLabels(
  
    return result == ERROR_SUCCESS;
  }

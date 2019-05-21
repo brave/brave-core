@@ -68,7 +68,6 @@
 <translation id="5946611334574299206">Brave에서 광고를 보고 토큰을 받으세요. 광고는 사용자의 검색 행위에서 추론한 관심사를 바탕으로 제공됩니다. 개인 데이터나 검색 기록은 유출되지 않습니다.</translation>
 <translation id="6112368337882254910">자동 기부</translation>
 <translation id="1527222983464337010">출판인과 콘텐츠 제작자를 자동으로 후원하는 방법. 월 지불액을 설정하시고 평소처럼 인터넷을 돌아다니십시오. 방문한 사이트들은 Brave에 의해 측정된 여러분의 관심 정도에 따라 자동으로 기부금액을 받게 됩니다.</translation>
-<translation id="7178655681744815321">이번달 수익 현황(예상)</translation>
 <translation id="8157096848242649588">결제 날짜</translation>
 <translation id="5208388044986603165">받은 광고 알림</translation>
 <translation id="4229016885653790965">죄송합니다! 귀하의 지역에서는 아직 광고가 제공되지 않습니다.</translation>
@@ -168,6 +167,9 @@
 <translation id="1312977698678162065">귀하의 개인 정보를 존중하는 관련 광고를 보고 보상을 받으세요.</translation>
 <translation id="3361548743396744457">좋아하는 사이트를 둘러보는 것만으로 후원하시거나 – 언제든 원하시는 때 사이트에 팁을 주세요.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
+<translation id="4493850495402472953">및</translation>
+<translation id="8804164990146287819">개인정보 보호 정책</translation>
+<translation id="4281844954008187215">서비스 약관</translation>
 <translation id="7530570094705720669">월렛 생성 중</translation>
 <translation id="2105596359439030979">귀하의 관심은 소중합니다. 개인 정보를 존중하는 광고를 시청해서 보상을 받고 선행을 베풀어 귀하가 사랑하는 콘텐츠 제작자를 지원해 보세요.</translation>
 <translation id="516395624550019162">네, 참여합니다!</translation>
@@ -277,6 +279,7 @@
 <translation id="5010112177773747965">당신의 동의 없이요.</translation>
 <translation id="7147673045905733351">오늘, Brave가 여러분을 새로운 인터넷 세상으로 초대합니다.</translation>
 <translation id="1350763070659630336">여러분의 시간이 가치 있게 여겨지고, 개인 데이터가 비공개로 유지되며, 관심이 실제 수익 창출로 이어지는 곳.</translation>
+<translation id="880341991877949255">구버전 브라우저에서는 신경 쓰며 광고를 시청함으로써 인터넷 검색 비용을 지불했습니다. 당신은 소중한 개인 정보를 광고주에게 전송하는 침투성 광고 기술을 다운로드하면서 귀중한 시간을 허비했습니다 — 당신의 동의 없이요.</translation>
 <translation id="5830306739231399614">토큰이 아직 없습니다.</translation>
 <translation id="7359258898775969374">지갑을 채울 3가지 방법:</translation>
 <translation id="8087614920008846901">자금을 추가할 수 있습니다.</translation>
@@ -328,7 +331,6 @@
 <translation id="318487899513214296">무엇이 개선되었는지 확인하기</translation>
 <translation id="4083384190339959182">Brave 결제가 크게 업그레이드됐습니다.</translation>
 <translation id="5395851053710553429">다음 인터넷을 경험할 준비를 하세요.</translation>
-<translation id="880341991877949255">구버전 브라우저에서는 신경 쓰며 광고를 시청함으로써 인터넷 검색 비용을 지불했습니다. 당신은 소중한 개인 정보를 광고주에게 전송하는 침투성 광고 기술을 다운로드하면서 귀중한 시간을 허비했습니다 — 당신의 동의 없이요.</translation>
 <translation id="2549982302631665116">Brave가 새로운 인터넷에 오신 여러분을 환영합니다. 이곳에선 당신의 시간이 소중하게 여겨지고, 당신의 개인 정보가 지켜지며, 당신의 관심이 실제로 보상을 받습니다.</translation>
 <translation id="3780605330121608425">귀하의 월렛</translation>
 <translation id="6727483290601442544">세부 내용 보기</translation>
@@ -351,7 +353,6 @@
 <translation id="1061533051865606843">새 장치 추가하기</translation>
 <translation id="8780295742023331191">동기화 코드 보기</translation>
 <translation id="1755198127524719638">동기화 설정</translation>
-<translation id="7558480201297099157">장치간에 동기화를 원하는 정보를 관리하세요. 이들 설정은 이 장치에만 영향을 주게 됩니다.</translation>
 <translation id="8820817407110198400">북마크</translation>
 <translation id="5591129654353352557">저장된 사이트 설정</translation>
 <translation id="7859704718976024901">검색 내역</translation>
@@ -379,7 +380,6 @@
 <translation id="5086223971958279691">동기화 체인 코드</translation>
 <translation id="2899261497479389619">귀하의 타깃 컴퓨터에서, 설정의  브레이브 동기화로 가신 후 버튼을 클릭하세요</translation>
 <translation id="4827439149833241990">“저는 동기화 코드가 있습니다”.</translation>
-<translation id="24067401253841795">아래에 보이는 동기화 체인 코드 단어들을 입력하세요.</translation>
 <translation id="8914601399214979966">대신 제 카메라를 이용하세요</translation>
 <translation id="3034163433136515805">QR 코드 보기</translation>
 <translation id="5093410893656857925">장치 형태를 고르세요</translation>

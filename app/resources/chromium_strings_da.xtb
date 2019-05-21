@@ -74,9 +74,13 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="5874882355102994015">Brave kan ikke vise udskrifter, når den indbyggede PDF-fremviser mangler.</translation>
 <translation id="8880183781256147665">Føjer til Brave...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> kan være skadelig, så Brave har blokeret den.</translation>
+<translation id="6205431412329939367"><ph name="FILE_NAME"/> kan være skadelig, så Brave har blokeret den. Du beskyttes af Avanceret beskyttelse.</translation>
 <translation id="9067428552314418522">Denne fil er farlig, så Brave har blokeret den.</translation>
+<translation id="2938460345748897177">Denne fil er skadelig, så Brave har blokeret den. Du beskyttes af Avanceret beskyttelse.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> er skadelig, så Brave har blokeret den.</translation>
+<translation id="8858456697111532356"><ph name="FILE_NAME"/> er skadelig, så Brave har blokeret den. Du beskyttes af Avanceret beskyttelse.</translation>
 <translation id="89367911614620585">Denne fil kan være farlig, så Brave har blokeret den.</translation>
+<translation id="8943391224520748272">Denne fil kan være skadelig, så Brave har blokeret den. Du beskyttes af Avanceret beskyttelse.</translation>
 <translation id="9183662282810237335">Vil du afslutte Brave alligevel?</translation>
 <translation id="3834935463915107022">Vil du slutte Brave alligevel?</translation>
 <translation id="8797356639448065696">Brave kører i baggrunden.</translation>
@@ -127,6 +131,7 @@ Hvis du logger ind alligevel, flettes Brave-oplysninger, som f.eks. bogmærker, 
 <translation id="1326766910007115955">Du er ved at logge ind med en administreret konto og giver dens administrator kontrol over din profil i Brave. Dine Brave-data, f.eks. dine apps, bogmærker, historikdata, adgangskoder og andre indstillinger, knyttes permanent til <ph name="USER_NAME"/>. Du kan slette disse data via betjeningspanelet for Brave Software Konti, men du kan ikke knytte disse data til en anden konto. <ph name="LEARN_MORE"/></translation>
 <translation id="650055380213106997">Du er ved at logge ind med en administreret konto og give dens administrator kontrol over din profil i Brave. Dine Brave-data, f.eks. dine apps, bogmærker, historikdata, adgangskoder og andre indstillinger, knyttes permanent til <ph name="USER_NAME"/>. Du kan slette disse data via betjeningspanelet for Brave Software Konti, men du kan ikke knytte disse data til en anden konto. Du kan eventuelt oprette en ny profil for at holde dine Brave-data adskilt. <ph name="LEARN_MORE"/></translation>
 <translation id="2444257125841652328">Din systemadministrator har konfigureret Brave til at åbne en anden browser for at få adgang til <ph name="TARGET_URL_HOSTNAME"/>.</translation>
+<translation id="5380963249588143069">Din systemadministrator har konfigureret Brave til at åbne <ph name="ALTERNATIVE_BROWSER_NAME"/> for at få adgang til <ph name="TARGET_URL_HOSTNAME"/>.</translation>
 <translation id="2591326305549412656"><ph name="USER_EMAIL_ADDRESS"/> brugte tidligere Brave</translation>
 <translation id="1384923383737428730">Der er skadelig software på din computer. Brave kan fjerne den, gendanne dine indstillinger og deaktivere udgivelser, så din browser fungerer normalt igen.</translation>
 <translation id="8919921662052966648">Brave kunne ikke synkronisere dine data. Opdater din adgangssætning til synkronisering.</translation>
@@ -175,7 +180,9 @@ Gå til din mail på <ph name="ACCOUNT_EMAIL"/> for at få yderligere vejledning
 <translation id="2871190378186459992">Find fantastiske apps, spil, udvidelser og temaer til Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="1912973375560256099">Indgående regel for Brave om at tillade mDNS-trafik.</translation>
-<translation id="7276297358157391541">Brave kan anvende smartere stavekontrol ved at sende dine indtastninger i browseren til Brave Softwares servere, så du kan bruge den samme teknologi til stavekontrol, som der anvendes i Brave Software-søgninger.</translation>
+<translation id="8207657266087451193">Hvis et billede ikke har en brugbar beskrivelse, forsøger Brave at angive en for dig. Billederne sendes til Brave Software, så der kan oprettes beskrivelser. Du kan til enhver tid deaktivere denne funktion i indstillingerne.</translation>
+<translation id="5499063270485366718">Hvis et billede ikke har en brugbar beskrivelse, forsøger Brave at angive en for dig. Billederne sendes til Brave Software, så der kan oprettes beskrivelser.</translation>
+<translation id="3870835867536344658">Dette anvender den samme stavekontrol, som anvendes i Brave Software Søgning. Tekst, som du angiver i browseren, sendes til Brave Software. Du kan altid ændre dette i indstillingerne.</translation>
 <translation id="1807774211756215222">Åbn linket på en ny Brave-&amp;fane</translation>
 <translation id="4624945300945265642">Åbn linket i et Brave-inko&amp;gnitovindue</translation>
 <translation id="7863882214613921971">Åbn linket på en ny Brave-&amp;fane</translation>

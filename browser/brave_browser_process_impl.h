@@ -38,8 +38,7 @@ class BraveTorClientUpdater;
 
 class BraveBrowserProcessImpl : public BrowserProcessImpl {
  public:
-  BraveBrowserProcessImpl(
-      ChromeFeatureListCreator* chrome_feature_list_creator);
+  explicit BraveBrowserProcessImpl(StartupData* startup_data);
   ~BraveBrowserProcessImpl() override;
 
   // BrowserProcess implementation.

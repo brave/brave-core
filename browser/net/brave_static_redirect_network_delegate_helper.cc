@@ -125,7 +125,7 @@ int OnBeforeURLRequest_StaticRedirectWork(
       // We do allow redirects to the Google update server for extensions we
       // don't support
       URLPattern(URLPattern::SCHEME_HTTPS,
-          "https://update.googleapis.com/service/update2"),
+          "https://update.googleapis.com/service/update2/json"),
 
       // Rewards URLs
       URLPattern(URLPattern::SCHEME_HTTPS,

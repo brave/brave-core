@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/profiles/incognito_menu_view.cc b/chrome/browser/ui/views/profiles/incognito_menu_view.cc
+index fe5c72fdb67d2921612742ef2fdb477048698816..f09a72b12b3d0ef71e2190bf8e3630bf813aa54d 100644
+--- a/chrome/browser/ui/views/profiles/incognito_menu_view.cc
++++ b/chrome/browser/ui/views/profiles/incognito_menu_view.cc
+@@ -94,6 +94,7 @@ void IncognitoMenuView::AddIncognitoWindowCountView() {
+ 
+   ProfileMenuViewBase::MenuItems menu_items;
+   menu_items.push_back(std::move(title_card));
++  static_cast<BraveIncognitoMenuView*>(this)->AddTorButton(&menu_items);
+   AddMenuItems(menu_items, true);
+ 
+   std::unique_ptr<HoverButton> close_button = std::make_unique<HoverButton>(

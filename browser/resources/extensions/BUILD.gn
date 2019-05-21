@@ -14,7 +14,7 @@ grit("resources") {
     "brave_extensions_resources.pak",
   ]
 
-  output_dir = "$root_gen_dir/brave/browser/resources/md_extensions"
+  output_dir = "$root_gen_dir/brave/browser/resources/extensions"
   resource_ids = "//brave/browser/resources/resource_ids"
 }
 
@@ -28,7 +28,7 @@ action("unpak_brave_extensions_resources") {
   script = "//chrome/browser/resources/unpack_pak.py"
 
   pak_file = "brave_extensions_resources.pak"
-  out_folder = "$root_gen_dir/chrome/browser/resources/md_extensions/extensions_resources.unpak"
+  out_folder = "$root_gen_dir/chrome/browser/resources/extensions/extensions_resources.unpak"
 
   inputs = [
     "$target_gen_dir/brave_extensions_resources.pak",

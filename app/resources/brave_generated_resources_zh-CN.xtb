@@ -46,17 +46,14 @@
 <translation id="3155170474926428993">Tor 启动器</translation>
 <translation id="2515126961943087659">Bat Ads 服务</translation>
 <translation id="7924918279836988121">Bat Ledger 服务</translation>
-<translation id="768979911142179781">Brave 屏蔽默认</translation>
-<translation id="9185018653595759199">社交按钮和登录</translation>
-<translation id="6894114137169961038">广告控制</translation>
-<translation id="1096802265930928584">Cookie 控制</translation>
+<translation id="4472575034687746823">开始使用</translation>
+<translation id="6303294677342628402">屏蔽</translation>
 <translation id="8919235146866304148">指纹识别保护</translation>
 <translation id="520895744850022668">HTTPS 随处可用</translation>
 <translation id="5259716416204774556">正在阻止脚本</translation>
 <translation id="7498695072878479744">第三方网站上的 Google 登录按钮可用</translation>
 <translation id="863171915776379000">Facebook 登录和嵌入式帖子可用</translation>
 <translation id="5165042248369837294">允许 Twitter 嵌入推文</translation>
-<translation id="958971637207126733">允许 LinkedIn 嵌入</translation>
 <translation id="6067014455220527258">拦截广告</translation>
 <translation id="6985711843506827936">允许广告和追踪</translation>
 <translation id="6132506775968708399">拦截第三方 cookies</translation>
@@ -76,7 +73,6 @@
 <translation id="2414886740292270097">暗</translation>
 <translation id="1360441190790440400">与 Linux 相同</translation>
 <translation id="1336940801687497203">与窗口相同</translation>
-<translation id="8721331068159819483">与 MacOS 相同</translation>
 <translation id="6786747875388722282">扩展程序</translation>
 <translation id="2896916411183256228">使用 WebTorrent 直接在浏览器中显示种子。支持种子文件和磁力链接。</translation>
 <translation id="6554397389149987360">使用环聊组件在浏览器中启用屏幕共享和其他功能。</translation>
