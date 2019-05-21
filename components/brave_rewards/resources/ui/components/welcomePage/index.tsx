@@ -203,7 +203,7 @@ class WelcomePage extends React.PureComponent<Props, {}> {
           !this.isTouchScreen
           ? <StyledTOSWrapper>
               <StyledServiceText>
-                {getLocale('serviceTextWelcome')} <StyledServiceLink onClick={onTOSClick}>{getLocale('termsOfService')}</StyledServiceLink> {getLocale('and')} <StyledServiceLink onClick={onPrivacyClick}>{getLocale('privacyPolicy')}</StyledServiceLink>.
+                {getLocale('serviceTextReady')} <StyledServiceLink onClick={onTOSClick}>{getLocale('termsOfService')}</StyledServiceLink> {getLocale('and')} <StyledServiceLink onClick={onPrivacyClick}>{getLocale('privacyPolicy')}</StyledServiceLink>.
               </StyledServiceText>
             </StyledTOSWrapper>
           : null

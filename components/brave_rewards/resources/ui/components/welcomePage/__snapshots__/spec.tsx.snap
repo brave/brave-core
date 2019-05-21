@@ -816,7 +816,7 @@ exports[`WelcomePage tests basic tests matches the snapshot 1`] = `
               <span
                 className="c49"
               >
-                MISSING: serviceTextWelcome
+                MISSING: serviceTextReady
                  
                 <a
                   className="c50"
