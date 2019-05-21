@@ -1,26 +1,30 @@
-// /* This Source Code Form is subject to the terms of the Mozilla Public
-//  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
-//  * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Types
 import * as shieldsPanelTypes from '../../constants/shieldsPanelTypes'
 import * as windowTypes from '../../constants/windowTypes'
 import * as tabTypes from '../../constants/tabTypes'
 import * as webNavigationTypes from '../../constants/webNavigationTypes'
-import {
-  setAllowBraveShields,
-  requestShieldPanelData
-} from '../api/shieldsAPI'
-import { reloadTab } from '../api/tabsAPI'
-import * as shieldsPanelState from '../../state/shieldsPanelState'
+import * as cosmeticFilterTypes from '../../constants/cosmeticFilterTypes'
 import { State } from '../../types/state/shieldsPannelState'
 import { Actions } from '../../types/actions/index'
-import * as cosmeticFilterTypes from '../../constants/cosmeticFilterTypes'
+
+// APIs
+import { setAllowBraveShields, requestShieldPanelData } from '../api/shieldsAPI'
+import { reloadTab } from '../api/tabsAPI'
 import {
   removeSiteFilter,
   addSiteCosmeticFilter,
   applySiteFilters,
   removeAllFilters
 } from '../api/cosmeticFilterAPI'
+
+// State helpers
+import * as shieldsPanelState from '../../state/shieldsPanelState'
+import * as noScriptState from '../../state/noScriptState'
+import { getOrigin } from '../../helpers/urlUtils'
 
 const focusedWindowChanged = (state: State, windowId: number): State => {
   if (windowId !== -1) {
@@ -54,7 +58,7 @@ export default function cosmeticFilterReducer (state: State = {
       if (action.isMainFrame) {
         state = shieldsPanelState.resetBlockingStats(state, action.tabId)
         state = shieldsPanelState.resetBlockingResources(state, action.tabId)
-        state = shieldsPanelState.resetNoScriptInfo(state, action.tabId, new window.URL(action.url).origin)
+        state = noScriptState.resetNoScriptInfo(state, action.tabId, getOrigin(action.url))
       }
       applySiteFilters(tabData.hostname)
       break

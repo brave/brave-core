@@ -11,11 +11,12 @@ import {
   ArrowDownIcon,
   BlockedInfoRowStats,
   BlockedInfoRowText,
+  LinkAction,
   Toggle
 } from 'brave-ui/features/shields'
 
 // Group Components
-import DynamicList from '../list/dynamic'
+import NoScript from '../list/noScript'
 
 // Locale
 import { getLocale } from '../../background/api/localeAPI'
@@ -33,10 +34,11 @@ import {
 import { BlockJSOptions } from '../../types/other/blockTypes'
 import { NoScriptInfo } from '../../types/other/noScriptInfo'
 import {
-  ChangeNoScriptSettings,
   BlockJavaScript,
-  ChangeAllNoScriptSettings,
   AllowScriptOriginsOnce,
+  SetScriptBlockedCurrentState,
+  SetGroupedScriptsBlockedCurrentState,
+  SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState
 } from '../../types/actions/shieldsPanelActions'
 
@@ -52,10 +54,11 @@ interface JavaScriptProps {
   javascript: BlockJSOptions
   javascriptBlocked: number
   noScriptInfo: NoScriptInfo
-  changeNoScriptSettings: ChangeNoScriptSettings
   blockJavaScript: BlockJavaScript
-  changeAllNoScriptSettings: ChangeAllNoScriptSettings
   allowScriptOriginsOnce: AllowScriptOriginsOnce
+  setScriptBlockedCurrentState: SetScriptBlockedCurrentState
+  setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
+  setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
   setFinalScriptsBlockedState: SetFinalScriptsBlockedState
 }
 
@@ -116,21 +119,28 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
     this.props.blockJavaScript(shouldBlockJavaScript)
   }
 
+  onClickAllowScriptsOnce = () => {
+    this.props.setAllScriptsBlockedCurrentState(false)
+    this.props.setFinalScriptsBlockedState()
+    this.props.allowScriptOriginsOnce()
+  }
+
   render () {
     const {
       favicon,
       hostname,
       isBlockedListOpen,
       allowScriptOriginsOnce,
-      changeNoScriptSettings,
-      changeAllNoScriptSettings,
-      setFinalScriptsBlockedState,
-      noScriptInfo
+      noScriptInfo,
+      setScriptBlockedCurrentState,
+      setGroupedScriptsBlockedCurrentState,
+      setAllScriptsBlockedCurrentState,
+      setFinalScriptsBlockedState
     } = this.props
     const { scriptsBlockedOpen } = this.state
     return (
       <>
-        <BlockedInfoRow id='scriptsControl'>
+        <BlockedInfoRow id='scriptsControl' extraColumn={true}>
           <BlockedInfoRowData
             disabled={this.maybeDisableResourcesRow}
             tabIndex={this.tabIndex}
@@ -141,6 +151,17 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
             <BlockedInfoRowStats id='blockScriptsStat'>{this.javascriptBlockedDisplay}</BlockedInfoRowStats>
             <BlockedInfoRowText>{getLocale('scriptsBlocked')}</BlockedInfoRowText>
           </BlockedInfoRowData>
+          {
+            this.maybeDisableResourcesRow === false
+              && (
+                <LinkAction
+                  size='small'
+                  onClick={this.onClickAllowScriptsOnce}
+                >
+                  {getLocale('allowScriptsOnce')}
+                </LinkAction>
+              )
+          }
           <Toggle
             id='blockScripts'
             size='small'
@@ -151,16 +172,15 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
         </BlockedInfoRow>
         {
           scriptsBlockedOpen &&
-            <DynamicList
+            <NoScript
               favicon={favicon}
               hostname={hostname}
-              origin={origin}
-              name={getLocale('scriptsOnThisSite')}
-              list={noScriptInfo}
+              noScriptInfo={noScriptInfo}
               onClose={this.onOpenScriptsBlocked}
               allowScriptOriginsOnce={allowScriptOriginsOnce}
-              changeNoScriptSettings={changeNoScriptSettings}
-              changeAllNoScriptSettings={changeAllNoScriptSettings}
+              setScriptBlockedCurrentState={setScriptBlockedCurrentState}
+              setGroupedScriptsBlockedCurrentState={setGroupedScriptsBlockedCurrentState}
+              setAllScriptsBlockedCurrentState={setAllScriptsBlockedCurrentState}
               setFinalScriptsBlockedState={setFinalScriptsBlockedState}
             />
         }

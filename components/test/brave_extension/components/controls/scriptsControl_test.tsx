@@ -16,10 +16,12 @@ const fakeProps: Props = {
   javascript: 'allow',
   javascriptBlocked: 0,
   noScriptInfo: {},
-  changeNoScriptSettings: (origin: string) => ({ type: actionTypes.CHANGE_NO_SCRIPT_SETTINGS, origin }),
   blockJavaScript: (setting: BlockJSOptions) => ({ type: actionTypes.JAVASCRIPT_TOGGLED, setting }),
-  changeAllNoScriptSettings: (shouldBlock: boolean) => ({ type: actionTypes.CHANGE_ALL_NO_SCRIPT_SETTINGS, shouldBlock }),
-  allowScriptOriginsOnce: () => ({ type: actionTypes.ALLOW_SCRIPT_ORIGINS_ONCE })
+  allowScriptOriginsOnce: () => ({ type: actionTypes.ALLOW_SCRIPT_ORIGINS_ONCE }),
+  setScriptBlockedCurrentState: () => ({ type: actionTypes.SET_SCRIPT_BLOCKED_ONCE_CURRENT_STATE, url: '' }),
+  setGroupedScriptsBlockedCurrentState: () => ({ type: actionTypes.SET_GROUPED_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE, origin: '', maybeBlock: true }),
+  setAllScriptsBlockedCurrentState: () => ({ type: actionTypes.SET_ALL_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE, maybeBlock: true }),
+  setFinalScriptsBlockedState: () => ({ type: actionTypes.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE })
 }
 
 describe('ScriptsControl component', () => {

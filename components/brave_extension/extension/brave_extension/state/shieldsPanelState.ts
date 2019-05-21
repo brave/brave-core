@@ -1,8 +1,11 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this file,
-* You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Types
 import * as shieldState from '../types/state/shieldsPannelState'
+
+// Helpers
 import { unique } from '../helpers/arrayUtils'
 import { getTotalResourcesBlocked } from '../helpers/shieldsUtils'
 import { setBadgeText, setIcon } from '../background/api/browserActionAPI'
@@ -93,9 +96,8 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
     tabs[tabId].httpsRedirectedResources = unique([ ...tabs[tabId].httpsRedirectedResources, subresource ])
     tabs[tabId].httpsRedirected = tabs[tabId].httpsRedirectedResources.length
   } else if (blockType === 'javascript') {
-    const origin = new window.URL(subresource).origin + '/'
     tabs[tabId].noScriptInfo = { ...tabs[tabId].noScriptInfo }
-    tabs[tabId].noScriptInfo[origin] = { ...{ actuallyBlocked: true, willBlock: true, userInteracted: false } }
+    tabs[tabId].noScriptInfo[subresource] = { ...{ actuallyBlocked: true, willBlock: true, userInteracted: false } }
     tabs[tabId].javascriptBlockedResources = unique([ ...tabs[tabId].javascriptBlockedResources, subresource ])
     tabs[tabId].javascriptBlocked = tabs[tabId].javascriptBlockedResources.length
   } else if (blockType === 'fingerprinting') {
@@ -103,40 +105,6 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
     tabs[tabId].fingerprintingBlocked = tabs[tabId].fingerprintingBlockedResources.length
   }
 
-  return { ...state, tabs }
-}
-
-export const changeNoScriptSettings: shieldState.ChangeNoScriptSettings = (state, tabId, origin) => {
-  const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0, noScriptInfo: {} }, ...tabs[tabId] }
-  tabs[tabId].noScriptInfo[origin].actuallyBlocked = !tabs[tabId].noScriptInfo[origin].actuallyBlocked
-  tabs[tabId].noScriptInfo[origin].userInteracted = true
-  return { ...state, tabs }
-}
-
-export const resetNoScriptInfo: shieldState.ResetNoScriptInfo = (state, tabId, newOrigin) => {
-  const tabs: shieldState.Tabs = { ...state.tabs }
-  if (newOrigin !== tabs[tabId].origin) { // navigate away
-    tabs[tabId].noScriptInfo = {}
-  }
-  return { ...state, tabs }
-}
-
-export const changeAllNoScriptSettings: shieldState.ChangeAllNoScriptSettings = (state, tabId, shouldBlock) => {
-  const tabs: shieldState.Tabs = { ...state.tabs }
-  Object.keys(tabs[tabId].noScriptInfo).map(key => {
-    tabs[tabId].noScriptInfo[key].actuallyBlocked = shouldBlock
-    tabs[tabId].noScriptInfo[key].userInteracted = true
-  })
-  return { ...state, tabs }
-}
-
-export const persistAllNoScriptSettings: shieldState.PersistAllNoScriptSettings = (state, tabId) => {
-  const tabs: shieldState.Tabs = { ...state.tabs }
-  Object.keys(tabs[tabId].noScriptInfo).map(key => {
-    tabs[tabId].noScriptInfo[key].willBlock = tabs[tabId].noScriptInfo[key].actuallyBlocked
-    tabs[tabId].noScriptInfo[key].userInteracted = false
-  })
   return { ...state, tabs }
 }
 

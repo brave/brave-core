@@ -74,17 +74,39 @@ export const allowScriptOriginsOnce: actions.AllowScriptOriginsOnce = () => {
   }
 }
 
-export const changeNoScriptSettings: actions.ChangeNoScriptSettings = (origin) => {
+/**
+ * Set a given script resource state to be in the allowed/blocked list
+ * @param {string} url - The resource URL
+ * @param {boolean} maybeBlock - Whether or not the resource should be blocked
+ */
+export const setScriptBlockedCurrentState: actions.SetScriptBlockedCurrentState = (url) => {
   return {
-    type: types.CHANGE_NO_SCRIPT_SETTINGS,
-    origin
+    type: types.SET_SCRIPT_BLOCKED_ONCE_CURRENT_STATE,
+    url
   }
 }
 
-export const changeAllNoScriptSettings: actions.ChangeAllNoScriptSettings = (shouldBlock) => {
+/**
+ * Set all child resources of a given hostname to be in the allowed/blocked list
+ * @param {string} origin - The blocked resource hostname
+ * @param {boolean} maybeBlock - Whether or not the resource should be blocked
+ */
+export const setGroupedScriptsBlockedCurrentState: actions.SetGroupedScriptsBlockedCurrentState = (origin, maybeBlock) => {
   return {
-    type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS,
-    shouldBlock
+    type: types.SET_GROUPED_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE,
+    origin,
+    maybeBlock
+  }
+}
+
+/**
+ * Set all resources in blocked/allowed state to be in the allowed/blocked list
+ * @param {boolean} maybeBlock - Whether or not the resource should be blocked
+ */
+export const setAllScriptsBlockedCurrentState: actions.SetAllScriptsBlockedCurrentState = (maybeBlock) => {
+  return {
+    type: types.SET_ALL_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE,
+    maybeBlock
   }
 }
 

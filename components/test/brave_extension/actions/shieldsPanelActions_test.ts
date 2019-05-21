@@ -103,12 +103,4 @@ describe('shieldsPanelActions', () => {
       type: types.ALLOW_SCRIPT_ORIGINS_ONCE
     })
   })
-
-  it('changeNoScriptSettings action', () => {
-    const origin = 'https://a.com'
-    expect(actions.changeNoScriptSettings(origin)).toEqual({
-      type: types.CHANGE_NO_SCRIPT_SETTINGS,
-      origin
-    })
-  })
 })
