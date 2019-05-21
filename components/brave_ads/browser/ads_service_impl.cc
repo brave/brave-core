@@ -1076,15 +1076,13 @@ void AdsServiceImpl::OnClose(Profile* profile,
     std::move(completed_closure).Run();
 }
 
-/**
- * (Albert Wang): Android 
- */
+// Implementation for Android
 void AdsServiceImpl::OnClick(Profile* profile,
                const GURL& origin,
                const std::string& notification_id,
                const base::Optional<int>& action_index,
                const base::Optional<base::string16>& reply) {
-  // (Albert Wang): GURL("chrome://brave_ads/?" + *notification_id) this is what origin_url is
+  // GURL("chrome://brave_ads/?" + *notification_id) this is what origin_url is
   if (notification_ids_.find(notification_id) == notification_ids_.end())
     return;
 

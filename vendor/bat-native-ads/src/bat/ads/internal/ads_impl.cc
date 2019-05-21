@@ -49,6 +49,7 @@ AdsImpl::AdsImpl(AdsClient* ads_client) :
     collect_activity_timer_id_(0),
     delivering_notifications_timer_id_(0),
     sustained_ad_interaction_timer_id_(0),
+    last_sustaining_ad_url_(""),
     next_easter_egg_timestamp_in_seconds_(0),
     client_(std::make_unique<Client>(this, ads_client)),
     bundle_(std::make_unique<Bundle>(this, ads_client)),
@@ -118,6 +119,8 @@ void AdsImpl::Deinitialize() {
   StopDeliveringNotifications();
 
   StopSustainingAdInteraction();
+
+  last_sustaining_ad_url_ = "";
 
   RemoveAllHistory();
 
@@ -264,12 +267,6 @@ void AdsImpl::TabUpdated(
     return;
   }
 
-#if defined(OS_ANDROID)
-  if (url.empty()) {
-    return;
-  }
-#endif
-
   client_->UpdateLastUserActivity();
 
   if (is_active) {
@@ -371,7 +368,13 @@ void AdsImpl::ClassifyPage(const std::string& url, const std::string& html) {
     BLOG(INFO) << "Site visited " << url
         << ", URL is from last shown notification";
 
-    StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
+    if (last_sustaining_ad_url_ != url) {
+      last_sustaining_ad_url_ = url;
+
+      StartSustainingAdInteraction(kSustainAdInteractionAfterSeconds);
+    } else {
+      BLOG(INFO) << "Already sustaining Ad interaction for " << url;
+    }
 
     return;
   }
@@ -797,8 +800,6 @@ bool AdsImpl::ShowAd(
   notification_info->creative_set_id = ad_info.creative_set_id;
   notification_info->uuid = ad_info.uuid;
 
-  last_shown_notification_info_ = NotificationInfo(*notification_info);
-
   // TODO(Terry Mancey): Implement Log (#44)
   // 'Notification shown', {category, winnerOverTime, arbitraryKey,
   // notificationUrl, notificationText, advertiser, uuid, hierarchy}
@@ -1197,6 +1198,8 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
     case NotificationResultInfoResultType::CLICKED: {
       writer.String("clicked");
       client_->UpdateAdsUUIDSeen(info.uuid, 1);
+
+      last_shown_notification_info_ = NotificationInfo(info);
 
       break;
     }
