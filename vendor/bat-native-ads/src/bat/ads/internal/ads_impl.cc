@@ -96,7 +96,7 @@ void AdsImpl::InitializeStep3() {
   NotificationAllowedCheck(false);
 
   if (IsMobile()) {
-    StartDeliveringNotifications(kDeliverNotificationsAfterSeconds);
+    StartDeliveringNotifications();
   }
 
   ConfirmAdUUIDIfAdEnabled();
@@ -899,8 +899,11 @@ bool AdsImpl::IsCollectingActivity() const {
   return true;
 }
 
-void AdsImpl::StartDeliveringNotifications(const uint64_t start_timer_in) {
+void AdsImpl::StartDeliveringNotifications() {
   StopDeliveringNotifications();
+
+  uint64_t start_time_in =
+      base::Time::kSecondsPerHour / ads_client_->GetAdsPerHour();
 
   delivering_notifications_timer_id_ = ads_client_->SetTimer(start_timer_in);
   if (delivering_notifications_timer_id_ == 0) {
@@ -917,9 +920,7 @@ void AdsImpl::StartDeliveringNotifications(const uint64_t start_timer_in) {
 void AdsImpl::DeliverNotification() {
   NotificationAllowedCheck(true);
 
-  if (IsMobile()) {
-    StartDeliveringNotifications(kDeliverNotificationsAfterSeconds);
-  }
+  StartDeliveringNotifications();
 }
 
 void AdsImpl::StopDeliveringNotifications() {
