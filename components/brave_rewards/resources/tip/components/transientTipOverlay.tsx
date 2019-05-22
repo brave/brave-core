@@ -14,7 +14,7 @@ import * as rewardsActions from '../actions/tip_actions'
 
 interface Props extends RewardsTip.ComponentProps {
   publisher: RewardsTip.Publisher
-  timeout: number
+  timeout?: number
   onTweet?: () => void
 }
 

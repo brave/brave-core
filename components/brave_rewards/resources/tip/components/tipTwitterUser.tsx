@@ -50,7 +50,6 @@ class TipTwitterUser extends React.Component<Props, {}> {
           finished
           ? <TransientTipOverlay
               publisher={publisher}
-              timeout={0}
               onTweet={this.onTweet}
           />
           : null
