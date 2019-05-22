@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 2423d123e6b32960ef450f101ce1b79c3fd418df..8ee23d272f75616cd6f15ced10e34049b4e8ae59 100644
+index 02f17d2b4e93d27964fe6663c4feddccc9634619..bd0459db766702d7bc0127914e687421e34852da 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -38,7 +38,7 @@ if (enable_vr) {
