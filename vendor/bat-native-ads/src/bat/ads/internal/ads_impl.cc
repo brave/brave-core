@@ -902,7 +902,7 @@ bool AdsImpl::IsCollectingActivity() const {
 void AdsImpl::StartDeliveringNotifications() {
   StopDeliveringNotifications();
 
-  uint64_t start_time_in =
+  uint64_t start_timer_in =
       base::Time::kSecondsPerHour / ads_client_->GetAdsPerHour();
 
   delivering_notifications_timer_id_ = ads_client_->SetTimer(start_timer_in);
