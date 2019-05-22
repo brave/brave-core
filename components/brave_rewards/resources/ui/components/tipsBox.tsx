@@ -162,6 +162,11 @@ class TipBox extends React.Component<Props, State> {
   }
 
   donationSettingsChild = () => {
+    const { enabledMain } = this.props.rewardsData
+    if (!enabledMain) {
+      return null
+    }
+
     let value = this.props.rewardsData.inlineTip
 
     if (!value) {
@@ -174,7 +179,7 @@ class TipBox extends React.Component<Props, State> {
       <>
         <Grid columns={1}>
           <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
-            <ControlWrapper text={getLocale('donationTipOnLike')}>
+            <ControlWrapper text={getLocale('donationAbility')}>
               <Checkbox
                 value={value}
                 multiple={true}
