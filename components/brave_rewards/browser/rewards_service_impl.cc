@@ -2985,4 +2985,22 @@ void RewardsServiceImpl::OnInlineTipSetting(
   std::move(callback).Run(enabled);
 }
 
+void RewardsServiceImpl::GetShareURL(
+      const std::string& type,
+      const std::map<std::string, std::string>& args,
+      GetShareURLCallback callback) {
+  bat_ledger_->GetShareURL(
+      type,
+      mojo::MapToFlatMap(args),
+      base::BindOnce(&RewardsServiceImpl::OnShareURL,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnShareURL(
+    GetShareURLCallback callback,
+    const std::string& url) {
+  std::move(callback).Run(url);
+}
+
 }  // namespace brave_rewards

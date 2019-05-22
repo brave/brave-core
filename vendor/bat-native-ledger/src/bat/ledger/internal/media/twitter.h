@@ -28,6 +28,8 @@ class MediaTwitter : public ledger::LedgerCallbackHandler {
   void SaveMediaInfo(const std::map<std::string, std::string>& data,
                      ledger::PublisherInfoCallback callback);
 
+  std::string GetShareURL(const std::map<std::string, std::string>& args);
+
  private:
   static std::string GetProfileURL(const std::string& screen_name);
 

@@ -151,6 +151,10 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD2(GetInlineTipSetting,
              void(const std::string& key,
                   brave_rewards::GetInlineTipSettingCallback callback));
+  MOCK_METHOD3(GetShareURL,
+             void(const std::string& type,
+                  const std::map<std::string, std::string>& args,
+                  brave_rewards::GetShareURLCallback callback));
 };
 
 class AdsServiceTest : public testing::Test {

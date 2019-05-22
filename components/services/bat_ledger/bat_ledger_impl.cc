@@ -569,4 +569,11 @@ void BatLedgerImpl::GetInlineTipSetting(
   std::move(callback).Run(ledger_->GetInlineTipSetting(key));
 }
 
+void BatLedgerImpl::GetShareURL(
+    const std::string& type,
+    const base::flat_map<std::string, std::string>& args,
+    GetShareURLCallback callback) {
+  std::move(callback).Run(ledger_->GetShareURL(type, mojo::FlatMapToMap(args)));
+}
+
 }  // namespace bat_ledger

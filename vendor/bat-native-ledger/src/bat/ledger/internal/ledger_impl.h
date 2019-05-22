@@ -449,6 +449,10 @@ class LedgerImpl : public ledger::Ledger,
 
   bool GetInlineTipSetting(const std::string& key) override;
 
+  std::string GetShareURL(
+      const std::string& type,
+      const std::map<std::string, std::string>& args) override;
+
  private:
   void AddRecurringPayment(const std::string& publisher_id,
                            const double& value) override;

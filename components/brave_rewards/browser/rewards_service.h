@@ -80,6 +80,7 @@ using RefreshPublisherCallback =
 using SaveMediaInfoCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSite>)>;
 using GetInlineTipSettingCallback = base::OnceCallback<void(bool)>;
+using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -218,6 +219,11 @@ class RewardsService : public KeyedService {
   virtual void GetInlineTipSetting(
       const std::string& key,
       GetInlineTipSettingCallback callback) = 0;
+
+  virtual void GetShareURL(
+      const std::string& type,
+      const std::map<std::string, std::string>& args,
+      GetShareURLCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

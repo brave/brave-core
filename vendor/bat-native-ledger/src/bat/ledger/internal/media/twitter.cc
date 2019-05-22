@@ -93,6 +93,31 @@ void MediaTwitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
                     _2));
 }
 
+std::string MediaTwitter::GetShareURL(
+    const std::map<std::string, std::string>& args) {
+  auto comment = args.find("comment");
+  auto name = args.find("name");
+  auto tweet_id = args.find("tweet_id");
+  if (comment == args.end() || name == args.end() || tweet_id == args.end())
+    return std::string();
+
+  // If a tweet ID was specified, then quote the original tweet along
+  // with the supplied comment; otherwise, just tweet the comment.
+  std::string share_url;
+  if (!tweet_id->second.empty()) {
+    std::string quoted_tweet_url =
+        base::StringPrintf("https://twitter.com/%s/status/%s",
+                           name->second.c_str(), tweet_id->second.c_str());
+    share_url =
+        base::StringPrintf("https://twitter.com/intent/tweet?url=%s&text=%s",
+                           quoted_tweet_url.c_str(), comment->second.c_str());
+  } else {
+    share_url = base::StringPrintf("https://twitter.com/intent/tweet?text=%s",
+                                   comment->second.c_str());
+  }
+  return share_url;
+}
+
 void MediaTwitter::OnMediaPublisherInfo(
     uint64_t window_id,
     const std::string& user_id,

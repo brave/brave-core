@@ -164,6 +164,11 @@ class BatLedgerImpl : public mojom::BatLedger,
     const std::string& key,
     GetInlineTipSettingCallback callback) override;
 
+  void GetShareURL(
+    const std::string& type,
+    const base::flat_map<std::string, std::string>& args,
+    GetShareURLCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;

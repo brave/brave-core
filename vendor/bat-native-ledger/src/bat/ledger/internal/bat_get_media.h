@@ -45,6 +45,9 @@ class BatGetMedia {
                      const std::map<std::string, std::string>& data,
                      ledger::PublisherInfoCallback callback);
 
+  std::string GetShareURL(const std::string& type,
+                          const std::map<std::string, std::string>& args);
+
  private:
   void OnMediaActivityError(const ledger::VisitData& visit_data,
                           const std::string& type,

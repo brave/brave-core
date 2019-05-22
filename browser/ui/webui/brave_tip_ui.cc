@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/webui/brave_tip_ui.h"
 
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
@@ -64,6 +65,8 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
 
   void OnPublisherBanner(
       std::unique_ptr<brave_rewards::PublisherBanner> banner);
+
+  void OnTwitterShareURL(const std::string& url);
 
   // RewardsServiceObserver implementation
   void OnWalletProperties(
@@ -278,28 +281,6 @@ void RewardsTipDOMHandler::OnPublisherBanner(
       "brave_rewards_tip.publisherBanner", result);
 }
 
-std::string ConstructTweetIntentURL(const std::string& name,
-                                    const std::string& tweet_id) {
-  // If a tweet ID was specified, then compliment the Twitter user and
-  // quote the original tweet; otherwise, just tweet a generic comment
-  // about this tip.
-  std::string intent_url;
-  std::string comment = l10n_util::GetStringFUTF8(
-      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET, base::UTF8ToUTF16(name));
-  if (!tweet_id.empty()) {
-    std::string quoted_tweet_url = base::StringPrintf(
-        "https://twitter.com/%s/status/%s", name.c_str(), tweet_id.c_str());
-    intent_url =
-        base::StringPrintf("https://twitter.com/intent/tweet?url=%s&text=%s",
-                           quoted_tweet_url.c_str(), comment.c_str());
-  } else {
-    intent_url = base::StringPrintf("https://twitter.com/intent/tweet?text=%s",
-                                    comment.c_str());
-  }
-
-  return intent_url;
-}
-
 }  // namespace
 
 BraveTipUI::BraveTipUI(content::WebUI* web_ui, const std::string& name)
@@ -368,6 +349,9 @@ void RewardsTipDOMHandler::OnRecurringTipSaved(
 void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
   DCHECK_EQ(args->GetSize(), 2U);
 
+  if (!rewards_service_)
+    return;
+
   // Retrieve the relevant metadata from arguments.
   std::string name;
   if (!args->GetString(0, &name))
@@ -376,12 +360,25 @@ void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
   if (!args->GetString(1, &tweet_id))
     return;
 
-  // Construct the Twitter intent URL for the tip comment/compliment.
-  GURL gurl(ConstructTweetIntentURL(name, tweet_id));
+  // Share the tip comment/compliment on Twitter.
+  std::string comment = l10n_util::GetStringFUTF8(
+      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET, base::UTF8ToUTF16(name));
+  std::map<std::string, std::string> share_url_args;
+  share_url_args["comment"] = comment;
+  share_url_args["name"] = name.erase(0, 1);
+  share_url_args["tweet_id"] = tweet_id;
+  rewards_service_->GetShareURL(
+      "twitter", share_url_args,
+      base::BindOnce(&RewardsTipDOMHandler::OnTwitterShareURL,
+                     base::Unretained(this)));
+}
+
+void RewardsTipDOMHandler::OnTwitterShareURL(const std::string& url) {
+  GURL gurl(url);
   if (!gurl.is_valid())
     return;
 
-  // Open a new tab with the prepopulated tweet ready to post.
+  // Open a new tab with the prepopulated tweet ready to share.
   chrome::ScopedTabbedBrowserDisplayer browser_displayer(
       Profile::FromWebUI(web_ui()));
   content::OpenURLParams open_url_params(

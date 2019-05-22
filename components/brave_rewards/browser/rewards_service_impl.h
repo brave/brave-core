@@ -228,6 +228,11 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& key,
       GetInlineTipSettingCallback callback) override;
 
+  void GetShareURL(
+      const std::string& type,
+      const std::map<std::string, std::string>& args,
+      GetShareURLCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartAutoContributeForTest();
@@ -332,6 +337,8 @@ class RewardsServiceImpl : public RewardsService,
                                      ledger::PublisherInfoPtr info);
 
   void OnInlineTipSetting(GetInlineTipSettingCallback callback, bool enabled);
+
+  void OnShareURL(GetShareURLCallback callback, const std::string& url);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

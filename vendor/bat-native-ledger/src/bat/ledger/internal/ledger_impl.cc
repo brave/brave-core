@@ -1541,4 +1541,10 @@ bool LedgerImpl::GetInlineTipSetting(const std::string& key) {
   return bat_state_->GetInlineTipSetting(key);
 }
 
+std::string LedgerImpl::GetShareURL(
+    const std::string& type,
+    const std::map<std::string, std::string>& args) {
+  return bat_get_media_->GetShareURL(type, args);
+}
+
 }  // namespace bat_ledger
