@@ -1,4 +1,5 @@
 const path = require('path')
+const GenerateDepfilePlugin = require('./webpack-plugin-depfile')
 
 module.exports = (env, argv) => ({
   devtool: argv.mode === 'development' ? '#inline-source-map' : false,
@@ -18,6 +19,12 @@ module.exports = (env, argv) => ({
       'torrent-discovery': path.resolve(__dirname, '../../node_modules/torrent-discovery')
     }
   },
+  plugins: [
+    new GenerateDepfilePlugin({
+      depfilePath: process.env.DEPFILE_PATH,
+      depfileSourceName: process.env.DEPFILE_SOURCE_NAME
+    })
+  ],
   module: {
     rules: [
       {

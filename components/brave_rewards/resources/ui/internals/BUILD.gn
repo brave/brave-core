@@ -1,21 +1,6 @@
 import("//brave/components/common/typescript.gni")
 
 transpile_web_ui("internals") {
-  inputs = [
-    "actions/rewards_internals_actions.ts",
-    "brave_rewards_internals.html",
-    "brave_rewards_internals.tsx",
-    "components/app.tsx",
-    "components/currentReconcile.tsx",
-    "components/keyInfoSeed.tsx",
-    "components/walletPaymentId.tsx",
-    "constants/rewards_internals_types.ts",
-    "reducers/rewards_internals_reducer.ts",
-    "reducers/index.ts",
-    "storage.ts",
-    "store.ts",
-  ]
-
   entry_points = [
     ["brave_rewards_internals", rebase_path("brave_rewards_internals.tsx")]
   ]
