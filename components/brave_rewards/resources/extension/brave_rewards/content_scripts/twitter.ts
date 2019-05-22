@@ -39,9 +39,10 @@ const getTweetMetaData = (tweet: Element): RewardsTip.TweetMetaData | null => {
 const createBraveTipAction = (tweet: Element) => {
   // Create the tip action
   const braveTipAction = document.createElement('div')
-  braveTipAction.className = 'ProfileTweet-action action-brave-tip'
+  braveTipAction.className = 'ProfileTweet-action js-tooltip action-brave-tip'
   braveTipAction.style.display = 'inline-block'
   braveTipAction.style.minWidth = '80px'
+  braveTipAction.setAttribute('data-original-title', getMessage('twitterTipsHoverText'))
 
   // Create the tip button
   const braveTipButton = document.createElement('button')
@@ -73,7 +74,6 @@ const createBraveTipAction = (tweet: Element) => {
   braveTipIconContainer.style.lineHeight = '0'
   braveTipIconContainer.style.position = 'relative'
   braveTipIconContainer.style.verticalAlign = 'middle'
-  braveTipIconContainer.setAttribute('data-original-title', getMessage('twitterTipsHoverText'))
   braveTipButton.appendChild(braveTipIconContainer)
 
   // Create the tip icon
@@ -115,6 +115,11 @@ const createBraveTipAction = (tweet: Element) => {
   // Create the shadow DOM root that hosts our injected DOM elements
   const shadowRoot = braveTipAction.attachShadow({ mode: 'open' })
   shadowRoot.appendChild(braveTipButton)
+
+  // Create style element for hover color
+  const style = document.createElement('style')
+  style.innerHTML = '.ProfileTweet-actionButton :hover { color: #FB542B }'
+  shadowRoot.appendChild(style)
 
   return braveTipAction
 }

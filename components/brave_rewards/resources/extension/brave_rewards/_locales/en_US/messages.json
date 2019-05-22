@@ -414,7 +414,7 @@
     "description": "Description text for ad grants in grant details"
   },
   "twitterTipsHoverText": {
-    "message": "Tip",
+    "message": "Tip this tweet",
     "description": "Hover text for Twitter tips action"
   },
   "twitterTipsIconLabel": {
