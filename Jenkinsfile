@@ -12,7 +12,6 @@ pipeline {
         booleanParam(name: "WIPE_WORKSPACE", defaultValue: false, description: "")
         booleanParam(name: "RUN_INIT", defaultValue: false, description: "")
         booleanParam(name: "DISABLE_SCCACHE", defaultValue: false, description: "")
-        // TODO: add SKIP_SIGNING
         booleanParam(name: "DEBUG", defaultValue: false, description: "")
     }
     environment {
@@ -30,14 +29,16 @@ pipeline {
                     RUN_INIT = params.RUN_INIT
                     DISABLE_SCCACHE = params.DISABLE_SCCACHE
                     DEBUG = params.DEBUG
-                    BRANCH_TO_BUILD = (env.CHANGE_BRANCH.equals(null) ? env.BRANCH_NAME : env.CHANGE_BRANCH)
-                    TARGET_BRANCH = (env.CHANGE_TARGET.equals(null) ? BRANCH_TO_BUILD : env.CHANGE_TARGET)
-                    BRANCH_EXISTS_IN_BB = httpRequest(url: GITHUB_API + "/brave-browser/branches/" + BRANCH_TO_BUILD, validResponseCodes: "100:499", authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).status.equals(200)
+                    BRANCH = env.BRANCH_NAME
+                    TARGET_BRANCH = "master"
                     if (env.CHANGE_BRANCH) {
-                        def prNumber = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH_TO_BUILD, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0].number
+                        BRANCH = env.CHANGE_BRANCH
+                        TARGET_BRANCH = env.CHANGE_TARGET
+                        def prNumber = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0].number
                         def prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls/" + prNumber, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)
                         env.SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equals("CI/Skip") }.equals(1)
                     }
+                    BRANCH_EXISTS_IN_BB = httpRequest(url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).status.equals(200)
                 }
             }
         }
@@ -45,7 +46,7 @@ pipeline {
             steps {
                 script {
                     if (env.SKIP == true) {
-                        print "Aborting build as PR is in draft or has \"CI/Skip\" label."
+                        print "Aborting build as PR is in draft or has \"CI/Skip\" label"
                         stopCurrentBuild()
                     }
                     for (build in getBuilds()) {
@@ -91,9 +92,9 @@ pipeline {
                     set -e
 
                     cd brave-browser
-                    git checkout -b ${BRANCH_TO_BUILD}
+                    git checkout -b ${BRANCH}
 
-                    echo "Pushing branch ..."
+                    echo "Pushing branch"
                     git push ${BB_REPO}
                 """
             }
@@ -110,29 +111,29 @@ pipeline {
                     set -e
 
                     cd brave-browser
-                    git checkout ${BRANCH_TO_BUILD}
+                    git checkout ${BRANCH}
 
                     if [ "`cat package.json | jq -r .version`" != "`cat ../package.json | jq -r .version`" ]; then
                         set +e
 
-                        echo "Version mismatch between brave-browser and brave-core in package.json! Attempting rebase on brave-browser..."
+                        echo "Version mismatch between brave-browser and brave-core in package.json, attempting rebase on brave-browser"
 
-                        echo "Fetching latest changes and pruning refs..."
+                        echo "Fetching latest changes and pruning refs"
                         git fetch --prune
 
-                        echo "Rebasing ${BRANCH_TO_BUILD} branch on brave-browser against ${TARGET_BRANCH}..."
+                        echo "Rebasing ${BRANCH} branch on brave-browser against ${TARGET_BRANCH}"
                         git rebase origin/${TARGET_BRANCH}
 
                         if [ \$? -ne 0 ]; then
-                            echo "Failed to rebase (conflicts), will need to be manually rebased!"
+                            echo "Failed to rebase (conflicts), will need to be manually rebased"
                             git rebase --abort
                         else
-                            echo "Rebased, force pushing to brave-browser..."
+                            echo "Rebased, force pushing to brave-browser"
                             git push --force ${BB_REPO}
                         fi
 
                         if [ "`cat package.json | jq -r .version`" != "`cat ../package.json | jq -r .version`" ]; then
-                            echo "Version mismatch between brave-browser and brave-core in package.json! Please try rebasing this branch in brave-core as well."
+                            echo "Version mismatch between brave-browser and brave-core in package.json, please try rebasing this branch in brave-core as well"
                             exit 1
                         fi
 
@@ -151,7 +152,7 @@ pipeline {
                         startBraveBrowserBuild()
                     }
                     catch (hudson.AbortException ex) {
-                        print "Sleeping 6m so new branch is discovered or associated PR created in brave-browser..."
+                        print "Sleeping 6m so new branch is discovered or associated PR created in brave-browser"
                         sleep(time: 6, unit: "MINUTES")
                         startBraveBrowserBuild()
                     }
@@ -172,15 +173,14 @@ def getBuilds() {
 }
 
 def startBraveBrowserBuild() {
-    def prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-browser/pulls?head=brave:" + BRANCH_TO_BUILD, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0]
+    def prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-browser/pulls?head=brave:" + BRANCH, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0]
     def prNumber = prDetails ? prDetails.number : ""
-    def refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode(BRANCH_TO_BUILD, "UTF-8")
+    def refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode(BRANCH, "UTF-8")
     params = [
         string(name: "CHANNEL", value: CHANNEL),
         booleanParam(name: "WIPE_WORKSPACE", value: WIPE_WORKSPACE),
         booleanParam(name: "RUN_INIT", value: RUN_INIT),
         booleanParam(name: "DISABLE_SCCACHE", value: DISABLE_SCCACHE),
-        // TODO: add SKIP_SIGNING
         booleanParam(name: "DEBUG", value: DEBUG)
     ]
     currentBuild.result = build(job: "brave-browser-build-pr/" + refToBuild, parameters: params, propagate: false).result
