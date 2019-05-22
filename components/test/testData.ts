@@ -92,7 +92,6 @@ export const tabs: Tabs = {
     adsBlockedResources: [],
     trackersBlockedResources: [],
     httpsRedirectedResources: [],
-    javascriptBlockedResources: [],
     fingerprintingBlockedResources: []
   }
 }

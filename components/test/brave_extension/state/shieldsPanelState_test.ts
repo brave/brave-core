@@ -252,7 +252,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           3: {
@@ -297,7 +296,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           3: {
@@ -322,7 +320,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           4: {
@@ -347,7 +344,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           }
         },
@@ -387,7 +383,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           3: {
@@ -412,7 +407,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           4: {
@@ -437,7 +431,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           }
         },
@@ -474,7 +467,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           3: {
@@ -499,7 +491,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           4: {
@@ -524,7 +515,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           }
         },
@@ -559,7 +549,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           3: {
@@ -584,7 +573,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           4: {
@@ -609,7 +597,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           }
         },
@@ -643,7 +630,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [ 'https://test.brave.com' ],
             fingerprintingBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             trackersBlockedResources: []
           },
           3: {
@@ -681,7 +667,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             fingerprintingBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             trackersBlockedResources: [ 'https://test.brave.com' ]
           },
           3: {
@@ -721,7 +706,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             fingerprintingBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [ 'https://test.brave.com' ],
             trackersBlockedResources: []
           },
           3: {
@@ -767,7 +751,6 @@ describe('shieldsPanelState test', () => {
           adsBlockedResources: [],
           trackersBlockedResources: [],
           httpsRedirectedResources: [],
-          javascriptBlockedResources: [],
           fingerprintingBlockedResources: []
         },
         3: {
@@ -795,7 +778,6 @@ describe('shieldsPanelState test', () => {
           adsBlockedResources: [],
           trackersBlockedResources: [],
           httpsRedirectedResources: [],
-          javascriptBlockedResources: [],
           fingerprintingBlockedResources: []
         }
       },
@@ -843,7 +825,7 @@ describe('shieldsPanelState test', () => {
               adsBlockedResources: [],
               trackersBlockedResources: [],
               httpsRedirectedResources: [],
-              javascriptBlockedResources: [],
+
               fingerprintingBlockedResources: []
             },
             3: {
@@ -871,7 +853,7 @@ describe('shieldsPanelState test', () => {
               adsBlockedResources: [],
               trackersBlockedResources: [],
               httpsRedirectedResources: [],
-              javascriptBlockedResources: [],
+
               fingerprintingBlockedResources: []
             }
           },
@@ -909,7 +891,7 @@ describe('shieldsPanelState test', () => {
               adsBlockedResources: [],
               trackersBlockedResources: [],
               httpsRedirectedResources: [],
-              javascriptBlockedResources: [],
+
               fingerprintingBlockedResources: []
             },
             3: {
@@ -937,7 +919,7 @@ describe('shieldsPanelState test', () => {
               adsBlockedResources: [],
               trackersBlockedResources: [],
               httpsRedirectedResources: [],
-              javascriptBlockedResources: [],
+
               fingerprintingBlockedResources: []
             }
           },

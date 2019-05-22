@@ -294,7 +294,6 @@ describe('cosmeticFilterReducer', () => {
         adsBlockedResources: [],
         fingerprintingBlockedResources: [],
         httpsRedirectedResources: [],
-        javascriptBlockedResources: [],
         trackersBlockedResources: []
       }
     },
@@ -345,7 +344,6 @@ describe('cosmeticFilterReducer', () => {
                 adsBlockedResources: [],
                 fingerprintingBlockedResources: [],
                 httpsRedirectedResources: [],
-                javascriptBlockedResources: [],
                 trackersBlockedResources: []
               }
             },
