@@ -76,7 +76,7 @@ class TransientTipOverlay extends React.Component<Props, {}> {
     return (
       <DonationOverlay
         onClose={this.onClose}
-        onTweet={this.props.onTweet}
+        onTweet={!monthlyDate ? this.props.onTweet : undefined}
         success={true}
         domain={domain}
         amount={currentTipAmount}
