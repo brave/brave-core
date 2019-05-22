@@ -619,7 +619,7 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
       return;
     }
 
-    if (!IsAllowedToShowAds()) {
+    if (!IsMobile() && !IsAllowedToShowAds()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'not allowed based on history' }
 
