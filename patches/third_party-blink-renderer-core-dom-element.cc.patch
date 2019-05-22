@@ -1,0 +1,45 @@
+diff --git a/third_party/blink/renderer/core/dom/element.cc b/third_party/blink/renderer/core/dom/element.cc
+index 8a7abaeb53db0fdbe3f1ba9d52c7a2770ad9438b..1ad787c8cc0110ce99089c9bd8eddcab0cebfce5 100644
+--- a/third_party/blink/renderer/core/dom/element.cc
++++ b/third_party/blink/renderer/core/dom/element.cc
+@@ -162,6 +162,10 @@
+ #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
+ #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
+ 
++#if defined(BRAVE_CHROMIUM_BUILD)
++#include "third_party/blink/renderer/core/dom/element_additions.cc"
++#endif
++
+ namespace blink {
+ 
+ using namespace html_names;
+@@ -1699,8 +1703,11 @@ ALWAYS_INLINE void Element::SetAttributeInternal(
+     return;
+   }
+ 
++  // Brave addition
++  AtomicString modified_value = PossiblyModifyAttrParam(*this, name, new_value);
++
+   if (index == kNotFound) {
+-    AppendAttributeInternal(name, new_value,
++    AppendAttributeInternal(name, modified_value,
+                             in_synchronization_of_lazy_attribute);
+     return;
+   }
+@@ -1712,12 +1719,12 @@ ALWAYS_INLINE void Element::SetAttributeInternal(
+ 
+   if (!in_synchronization_of_lazy_attribute)
+     WillModifyAttribute(existing_attribute_name, existing_attribute_value,
+-                        new_value);
+-  if (new_value != existing_attribute_value)
+-    EnsureUniqueElementData().Attributes().at(index).SetValue(new_value);
++                        modified_value);
++  if (modified_value != existing_attribute_value)
++    EnsureUniqueElementData().Attributes().at(index).SetValue(modified_value);
+   if (!in_synchronization_of_lazy_attribute)
+     DidModifyAttribute(existing_attribute_name, existing_attribute_value,
+-                       new_value);
++                       modified_value);
+ }
+ 
+ static inline AtomicString MakeIdForStyleResolution(const AtomicString& value,
