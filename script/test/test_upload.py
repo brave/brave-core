@@ -7,16 +7,12 @@
 import sys
 import unittest
 import os
+import upload
 from githubmock import Repo, Release, Asset
-from mock import (Mock, MagicMock, patch)
+from mock import MagicMock
 
 dirname = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.join(dirname, '..'))
-sys.path.append(os.path.join(dirname, '..', 'lib'))
-
-from github import *                            # noqa: E402
-import upload                                   # noqa: E402
-from urllib3.exceptions import MaxRetryError    # noqa: E402
 
 
 # get an existing release (in draft status) from GitHub given a tag name
@@ -25,17 +21,18 @@ class TestGetDraft(unittest.TestCase):
         self.repo = Repo()
 
     def test_returns_existing_draft(self):
-        self.repo.releases._releases = [{'tag_name': 'test', 'allow_published_release_updates': False}]
-        self.assertEquals(upload.get_release(self.repo, 'test', False), None)
+        self.repo.releases._releases = [{'tag_name': 'test', 'draft': True}]
+        self.assertEquals(upload.get_release(self.repo,
+                                             'test')['tag_name'], 'test', False)
 
     def test_fails_on_existing_release(self):
-        self.repo.releases._releases = [{'tag_name': 'test', 'allow_published_release_updates': False}]
+        self.repo.releases._releases = [{'tag_name': 'test', 'draft': False, 'allow_published_release_updates': False}]
         self.assertRaises(UserWarning, upload.get_release, self.repo, 'test', False)
 
     def test_returns_none_on_new_draft(self):
-        self.repo.releases._releases = [{'tag_name': 'old', 'allow_published_release_updates': False}]
+        self.repo.releases._releases = [{'tag_name': 'old', 'draft': False}]
         upload.get_release(self.repo, 'new', False)
-        self.assertEquals(upload.get_release(self.repo, 'test', False), None)
+        self.assertEquals(upload.get_release(self.repo, 'test'), None)
 
 
 class TestGetBravePackages(unittest.TestCase):
@@ -292,17 +289,6 @@ class TestUploadBrave(unittest.TestCase):
         upload.upload_brave(self.repo, self.release, self.file_path)
         upload.upload_sha256_checksum.assert_called_with(
             self.release.tag_name, self.file_path)
-
-    @patch('github.GitHub.retry_session')
-    def test_retry_session(self, github_retry):
-        urlpart1 = "https://uploads.github.com:443/repos/brave/brave-browser/"
-        urlpart2 = "releases/17325413/assets?name=brave-browser-0.61.51-1.x86_64.rpm"
-        github_retry.side_effect = MaxRetryError("retry_session_pool", urlpart1 + urlpart2,
-                                                 MaxRetryError)
-        try:
-            github_retry()
-        except MaxRetryError as mre:
-            print("Caught MaxRetryError: {}".format(mre))
 
     # TODO: test `armv7l` code path
 
