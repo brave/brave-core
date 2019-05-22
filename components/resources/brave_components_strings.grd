@@ -318,6 +318,7 @@
       <message name="IDS_BRAVE_UI_TERMS_OF_SERVICE" desc="">Terms of Service</message>
       <message name="IDS_BRAVE_UI_SERVICE_TEXT_TOGGLE" desc="">By turning on Brave Rewards, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_SERVICE_TEXT_WELCOME" desc="">By clicking ‘Yes, I'm in!’, you indicate that you have read and agree to the</message>
+      <message name="IDS_BRAVE_UI_SERVICE_TEXT_READY" desc="">By clicking ‘Yes, I'm Ready!’, you indicate that you have read and agree to the</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_CREATING_TEXT" desc="">Creating wallet</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_DESC" desc="">Your attention is valuable. Earn by viewing privacy-respecting ads, and pay it forward to support content creators you love.</message>
       <message name="IDS_BRAVE_UI_BRAVE_REWARDS_OPT_IN_TEXT" desc="">Yes, I'm In!</message>
