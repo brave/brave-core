@@ -120,6 +120,7 @@ const createBraveTipAction = (tweet: Element) => {
 }
 
 const configureBraveTipAction = () => {
+  clearTimeout(timeout)
   chrome.runtime.sendMessage('rewardsEnabled', function (rewards) {
     const msg = {
       type: 'inlineTipSetting',
@@ -148,9 +149,8 @@ const configureBraveTipAction = () => {
 // check if injection needs to occur (mitigate the performance cost
 // by only running this when the foreground tab is active or visible)
 document.addEventListener('visibilitychange', function () {
-  if (document.hidden) {
-    clearTimeout(timeout)
-  } else {
+  clearTimeout(timeout)
+  if (!document.hidden) {
     timeout = setTimeout(configureBraveTipAction, 3000)
   }
 })
