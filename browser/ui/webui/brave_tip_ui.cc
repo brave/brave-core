@@ -131,8 +131,8 @@ void RewardsTipDOMHandler::RegisterMessages() {
 
 void RewardsTipDOMHandler::GetPublisherTipData(
     const base::ListValue* args) {
-  std::string publisher_key;
-  args->GetString(0, &publisher_key);
+  CHECK_EQ(1U, args->GetSize());
+  const std::string publisher_key = args->GetList()[0].GetString();
   rewards_service_->GetPublisherBanner(
       publisher_key,
       base::Bind(&RewardsTipDOMHandler::OnPublisherBanner,
@@ -199,15 +199,15 @@ void RewardsTipDOMHandler::OnWalletProperties(
 }
 
 void RewardsTipDOMHandler::OnTip(const base::ListValue* args) {
-  if (!rewards_service_ || !args)
+  if (!rewards_service_ || !args) {
     return;
+  }
 
-  std::string publisher_key;
-  int amount;
-  bool recurring;
-  args->GetString(0, &publisher_key);
-  args->GetInteger(1, &amount);
-  args->GetBoolean(2, &recurring);
+  CHECK_EQ(3U, args->GetSize());
+
+  const std::string publisher_key = args->GetList()[0].GetString();
+  const int amount = args->GetList()[1].GetInt();
+  const bool recurring = args->GetList()[2].GetBool();
 
   if (publisher_key.empty() || amount < 1) {
     // TODO(nejczdovc) add error

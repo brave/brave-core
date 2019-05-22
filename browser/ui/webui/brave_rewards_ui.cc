@@ -470,11 +470,10 @@ void RewardsDOMHandler::OnGrant(
 }
 
 void RewardsDOMHandler::GetGrants(const base::ListValue* args) {
+  CHECK_EQ(2U, args->GetSize());
   if (rewards_service_) {
-    std::string lang;
-    std::string paymentId;
-    args->GetString(0, &lang);
-    args->GetString(1, &paymentId);
+    const std::string lang = args->GetList()[0].GetString();
+    const std::string paymentId = args->GetList()[1].GetString();
     rewards_service_->FetchGrants(lang, paymentId);
   }
 }
@@ -497,11 +496,10 @@ void RewardsDOMHandler::OnGrantCaptcha(
 }
 
 void RewardsDOMHandler::GetGrantCaptcha(const base::ListValue* args) {
+  CHECK_EQ(2U, args->GetSize());
   if (rewards_service_) {
-    std::string promotion_id;
-    std::string promotion_type;
-    args->GetString(0, &promotion_id);
-    args->GetString(1, &promotion_type);
+    const std::string promotion_id = args->GetList()[0].GetString();
+    const std::string promotion_type = args->GetList()[1].GetString();
     rewards_service_->GetGrantCaptcha(promotion_id, promotion_type);
   }
 }
@@ -522,9 +520,9 @@ void RewardsDOMHandler::GetWalletPassphrase(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::RecoverWallet(const base::ListValue *args) {
+  CHECK_EQ(1U, args->GetSize());
   if (rewards_service_) {
-    std::string passPhrase;
-    args->GetString(0, &passPhrase);
+    const std::string passPhrase = args->GetList()[0].GetString();
     rewards_service_->RecoverWallet(passPhrase);
   }
 }
@@ -556,11 +554,10 @@ void RewardsDOMHandler::OnRecoverWallet(
 }
 
 void RewardsDOMHandler::SolveGrantCaptcha(const base::ListValue *args) {
+  CHECK_EQ(2U, args->GetSize());
   if (rewards_service_) {
-    std::string solution;
-    std::string promotionId;
-    args->GetString(0, &solution);
-    args->GetString(1, &promotionId);
+    const std::string solution = args->GetList()[0].GetString();
+    const std::string promotionId = args->GetList()[1].GetString();
     rewards_service_->SolveGrantCaptcha(solution, promotionId);
   }
 }
@@ -679,11 +676,10 @@ void RewardsDOMHandler::OnGetAllNotifications(
         notifications_list) {}
 
 void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
+  CHECK_EQ(2U, args->GetSize());
   if (rewards_service_) {
-    std::string key;
-    std::string value;
-    args->GetString(0, &key);
-    args->GetString(1, &value);
+    const std::string key = args->GetList()[0].GetString();
+    const std::string value = args->GetList()[1].GetString();
 
     if (key == "enabledMain") {
       rewards_service_->SetRewardsMainEnabled(value == "true");
@@ -718,9 +714,9 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::ExcludePublisher(const base::ListValue *args) {
+  CHECK_EQ(1U, args->GetSize());
   if (rewards_service_) {
-    std::string publisherKey;
-    args->GetString(0, &publisherKey);
+    const std::string publisherKey = args->GetList()[0].GetString();
     rewards_service_->ExcludePublisher(publisherKey);
   }
 }
@@ -799,9 +795,9 @@ void RewardsDOMHandler::OnReconcileComplete(
 }
 
 void RewardsDOMHandler::RemoveRecurringTip(const base::ListValue *args) {
+  CHECK_EQ(1U, args->GetSize());
   if (rewards_service_) {
-    std::string publisherKey;
-    args->GetString(0, &publisherKey);
+    const std::string publisherKey = args->GetList()[0].GetString();
     rewards_service_->RemoveRecurringTip(publisherKey);
   }
 }
@@ -918,15 +914,13 @@ void RewardsDOMHandler::GetAdsData(const base::ListValue *args) {
 }
 
 void RewardsDOMHandler::SaveAdsSetting(const base::ListValue* args) {
+  CHECK_EQ(2U, args->GetSize());
   if (!ads_service_) {
     return;
   }
 
-  std::string key;
-  args->GetString(0, &key);
-
-  std::string value;
-  args->GetString(1, &value);
+  const std::string key = args->GetList()[0].GetString();
+  const std::string value = args->GetList()[1].GetString();
 
   if (key == "adsEnabled") {
     ads_service_->SetAdsEnabled(value == "true");
