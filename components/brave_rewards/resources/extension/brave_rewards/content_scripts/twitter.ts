@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Utils
-import { getMessage } from './background/api/locale_api'
+import { getMessage } from '../background/api/locale_api'
 
 let timeout: any = null
 

@@ -31,7 +31,7 @@
         "https://*.twitter.com/*"
       ],
       "js": [
-        "out/brave_rewards_panel_content.bundle.js"
+        "out/brave_rewards_panel_content_twitter.bundle.js"
       ]
     }
   ],
