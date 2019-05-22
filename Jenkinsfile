@@ -29,6 +29,7 @@ pipeline {
                     RUN_INIT = params.RUN_INIT
                     DISABLE_SCCACHE = params.DISABLE_SCCACHE
                     DEBUG = params.DEBUG
+                    SKIP = false
                     BRANCH = env.BRANCH_NAME
                     TARGET_BRANCH = "master"
                     if (env.CHANGE_BRANCH) {
@@ -36,7 +37,7 @@ pipeline {
                         TARGET_BRANCH = env.CHANGE_TARGET
                         def prNumber = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0].number
                         def prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls/" + prNumber, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)
-                        env.SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equals("CI/Skip") }.equals(1)
+                        SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equals("CI/Skip") }.equals(1)
                     }
                     BRANCH_EXISTS_IN_BB = httpRequest(url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).status.equals(200)
                 }
@@ -45,13 +46,13 @@ pipeline {
         stage("abort") {
             steps {
                 script {
-                    if (env.SKIP == true) {
-                        print "Aborting build as PR is in draft or has \"CI/Skip\" label"
+                    if (SKIP) {
+                        echo "Aborting build as PR is in draft or has \"CI/Skip\" label"
                         stopCurrentBuild()
                     }
                     for (build in getBuilds()) {
                         if (build.isBuilding() && build.getNumber() < env.BUILD_NUMBER.toInteger()) {
-                            print "Aborting older running build " + build
+                            echo "Aborting older running build " + build
                             build.doStop()
                             // build.finish(hudson.model.Result.ABORTED, new java.io.IOException("Aborting build"))
                         }
@@ -61,7 +62,7 @@ pipeline {
         }
         stage("checkout") {
             when {
-                expression { env.SKIP != true }
+                expression { !SKIP }
             }
             steps {
                 sh """
@@ -83,7 +84,7 @@ pipeline {
         stage("branch-create") {
             when {
                 allOf {
-                    expression { env.SKIP != true }
+                    expression { !SKIP }
                     expression { !BRANCH_EXISTS_IN_BB }
                 }
             }
@@ -102,7 +103,7 @@ pipeline {
         stage("branch-rebase") {
             when {
                 allOf {
-                    expression { env.SKIP != true }
+                    expression { !SKIP }
                     expression { BRANCH_EXISTS_IN_BB }
                 }
             }
@@ -113,7 +114,7 @@ pipeline {
                     cd brave-browser
                     git checkout ${BRANCH}
 
-                    if [ "`cat package.json | jq -r .version`" != "`cat ../package.json | jq -r .version`" ]; then
+                    if [ "`jq -r .version package.json`" != "`jq -r .version ../package.json`" ]; then
                         set +e
 
                         echo "Version mismatch between brave-browser and brave-core in package.json, attempting rebase on brave-browser"
@@ -132,7 +133,7 @@ pipeline {
                             git push --force ${BB_REPO}
                         fi
 
-                        if [ "`cat package.json | jq -r .version`" != "`cat ../package.json | jq -r .version`" ]; then
+                        if [ "`jq -r .version package.json`" != "`jq -r .version ../package.json`" ]; then
                             echo "Version mismatch between brave-browser and brave-core in package.json, please try rebasing this branch in brave-core as well"
                             exit 1
                         fi
@@ -144,7 +145,7 @@ pipeline {
         }
         stage("build") {
             when {
-                expression { env.SKIP != true }
+                expression { !SKIP }
             }
             steps {
                 script {
@@ -152,7 +153,7 @@ pipeline {
                         startBraveBrowserBuild()
                     }
                     catch (hudson.AbortException ex) {
-                        print "Sleeping 6m so new branch is discovered or associated PR created in brave-browser"
+                        echo "Sleeping 6m so new branch is discovered or associated PR created in brave-browser"
                         sleep(time: 6, unit: "MINUTES")
                         startBraveBrowserBuild()
                     }
