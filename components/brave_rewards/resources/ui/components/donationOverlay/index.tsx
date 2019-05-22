@@ -26,16 +26,17 @@ import {
   StyledClose,
   StyledLogoWrapper,
   StyledLogoBorder,
+  StyledLogoIcon,
   StyledLogoImage,
   StyledDomainText,
   StyledDateText,
   StyledDate,
   StyledMonthlyInfo,
-  StyledButtonWrapper
+  StyledButtonWrapper,
+  StyledTwitterShareButton
 } from './style'
 import { getLocale } from '../../../helpers'
-import { CloseCircleOIcon, PaperAirplaneIcon } from '../../../components/icons'
-import { Button } from '../../../components'
+import { CloseCircleOIcon, LogoTwitterIcon, PaperAirplaneIcon } from '../../../components/icons'
 
 export interface Props {
   id?: string
@@ -165,12 +166,12 @@ export default class DonationOverlay extends React.PureComponent<Props, {}> {
                               {getLocale('tellOthers')}
                             </StyleSubHeaderText>
                             <StyledButtonWrapper>
-                              <Button
-                                text={getLocale('tweetNow')}
-                                size={'medium'}
-                                type={'default'}
-                                onClick={onTweet}
-                              />
+                              <StyledTwitterShareButton onClick={onTweet}>
+                                {getLocale('tweetNow')}
+                                <StyledLogoIcon>
+                                  <LogoTwitterIcon />
+                                </StyledLogoIcon>
+                              </StyledTwitterShareButton>
                             </StyledButtonWrapper>
                           </>
                           : null

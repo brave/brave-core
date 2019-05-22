@@ -225,6 +225,31 @@ export const StyledDate = styled<{}, 'span'>('span')`
   color: ${p => p.theme.color.brandBrave};
 `
 
+export const StyledTwitterShareButton = styled<{}, 'button'>('button')`
+  box-sizing: border-box;
+  background: #38A1F3;
+  border: none;
+  color: white;
+  outline-color: transparent;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  font-family: Poppins, sans-serif;
+  user-select: none;
+  font-size: 13px;
+  border-radius: 20px;
+  width: auto;
+  min-width: 100px;
+  padding: 7px 10px;
+`
+
+export const StyledLogoIcon = styled<{}, 'div'>('div')`
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+`
+
 export const StyledButtonWrapper = styled<{}, 'div'>('div')`
   display: flex;
   margin-top: 20px;
