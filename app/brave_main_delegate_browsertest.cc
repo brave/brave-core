@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/browser/domain_reliability/service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_switches.h"
-#include "chrome/browser/domain_reliability/service_factory.h"
+#include "chrome/test/base/in_process_browser_test.h"
 #include "components/autofill/core/common/autofill_features.h"
 #include "components/autofill/core/common/autofill_payments_features.h"
 #include "components/omnibox/common/omnibox_features.h"
@@ -27,12 +27,12 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest,
   EXPECT_TRUE(base::CommandLine::ForCurrentProcess()->HasSwitch(
       switches::kDisableDomainReliability));
   EXPECT_FALSE(domain_reliability::DomainReliabilityServiceFactory::
-               ShouldCreateService());
+                   ShouldCreateService());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
-  EXPECT_TRUE(base::CommandLine::ForCurrentProcess()->HasSwitch(
-      switches::kNoPings));
+  EXPECT_TRUE(
+      base::CommandLine::ForCurrentProcess()->HasSwitch(switches::kNoPings));
   content::WebContents* contents =
       browser()->tab_strip_model()->GetActiveWebContents();
   const content::WebPreferences prefs =
@@ -56,12 +56,12 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
-   const base::Feature* enabled_features[] = {
+  const base::Feature* enabled_features[] = {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-      &extensions_features::kNewExtensionUpdaterService,
+    &extensions_features::kNewExtensionUpdaterService,
 #endif
-      &features::kDesktopPWAWindowing,
-      &omnibox::kSimplifyHttpsIndicator,
+    &features::kDesktopPWAWindowing,
+    &omnibox::kSimplifyHttpsIndicator,
   };
 
   for (const auto* feature : enabled_features)
