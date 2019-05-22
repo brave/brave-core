@@ -180,7 +180,7 @@
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_DESC" desc="Explainer text about importing from another browser">Brave makes it easy to set up your usual environment by importing bookmarks and settings from other browsers installed on your computer.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_IMPORT_BUTTON" desc="Button to import from another browser">Import</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_TITLE" desc="Welcome message title for shields">Manage your shields</message>
-      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC" desc="Explainer text about shields">Brave shields protects you from unwanted ads and trackers while browsing. If you encounter an issue while browsing a particular site, adjust your protection level from the shields panel in the toolbar.</message>
+      <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_DESC" desc="Explainer text about shields">Protect against privacy-invading ads and trackers while browsing with Brave Shields. Set Shields to "down" if a site doesn’t seem to be working properly.</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SHIELDS_BUTTON" desc="Button to open shield settings">Shield Settings</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_TITLE" desc="Welcome message title for search engines">Change your search engine</message>
       <message name="IDS_BRAVE_WELCOME_PAGE_SEARCH_DESC" desc="Explainer text about search engines in Brave">Choose the search engine you would like to use by default when searching the web from the address bar.</message>
