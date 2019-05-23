@@ -163,7 +163,6 @@ int OnBeforeURLRequest_AdBlockTPPreWork(
     return net::OK;
   }
 
-  // TODO(bridiver) - fix this
   OnBeforeURLRequestAdBlockTP(ctx);
 
   return net::OK;

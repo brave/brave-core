@@ -53,7 +53,7 @@ class ReferrerWhitelistService : public LocalDataFilesObserver {
     ~ReferrerWhitelist();
   };
 
-  bool IsWhitelisted(const std::vector<ReferrerWhitelist> whitelist,
+  bool IsWhitelisted(const std::vector<ReferrerWhitelist>& whitelist,
                      const GURL& first_party_origin,
                      const GURL& subresource_url) const;
   void OnDATFileDataReady(std::string contents);

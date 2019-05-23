@@ -48,7 +48,7 @@ bool ReferrerWhitelistService::IsWhitelisted(
 }
 
 bool ReferrerWhitelistService::IsWhitelisted(
-    const std::vector<ReferrerWhitelist> whitelist,
+    const std::vector<ReferrerWhitelist>& whitelist,
     const GURL& first_party_origin,
     const GURL& subresource_url) const {
   for (auto rw : whitelist) {
