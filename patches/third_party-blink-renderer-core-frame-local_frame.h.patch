@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/frame/local_frame.h b/third_party/blink/renderer/core/frame/local_frame.h
-index 8c8492e0c5382e7a1b7cd27f915e60c81120dd6a..693481c70333bdd07c8d0a3a8910aabec3259835 100644
+index 24cb43a04b0d06bdc11d70e2206ffa9b968437e0..2b2aed8a571067ea470cbecf476d470d9852c236 100644
 --- a/third_party/blink/renderer/core/frame/local_frame.h
 +++ b/third_party/blink/renderer/core/frame/local_frame.h
 @@ -55,6 +55,11 @@
@@ -14,7 +14,7 @@ index 8c8492e0c5382e7a1b7cd27f915e60c81120dd6a..693481c70333bdd07c8d0a3a8910aabe
  namespace base {
  class SingleThreadTaskRunner;
  }
-@@ -445,6 +450,14 @@ class CORE_EXPORT LocalFrame final : public Frame,
+@@ -440,6 +445,14 @@ class CORE_EXPORT LocalFrame final : public Frame,
    // navigations go through.
    void MaybeLogAdClickNavigation();
  
@@ -29,7 +29,7 @@ index 8c8492e0c5382e7a1b7cd27f915e60c81120dd6a..693481c70333bdd07c8d0a3a8910aabe
   private:
    friend class FrameNavigationDisabler;
  
-@@ -579,6 +592,11 @@ class CORE_EXPORT LocalFrame final : public Frame,
+@@ -573,6 +586,11 @@ class CORE_EXPORT LocalFrame final : public Frame,
  
    mojom::FrameLifecycleState lifecycle_state_ =
        mojom::FrameLifecycleState::kRunning;

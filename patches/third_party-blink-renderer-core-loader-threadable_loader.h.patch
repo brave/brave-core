@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/threadable_loader.h b/third_party/blink/renderer/core/loader/threadable_loader.h
-index d52f55547792d43ceab18df9b0a0021989fb5226..6beeb6f5216a753709ac5673f944161db5962b86 100644
+index 64154b40978e9a696d25ff2493d827f2a44d7dab..73ed8f7484649aa674ae41f9efd275692d5912d5 100644
 --- a/third_party/blink/renderer/core/loader/threadable_loader.h
 +++ b/third_party/blink/renderer/core/loader/threadable_loader.h
 @@ -50,11 +50,16 @@
@@ -29,7 +29,7 @@ index d52f55547792d43ceab18df9b0a0021989fb5226..6beeb6f5216a753709ac5673f944161d
  
   private:
    class AssignOnScopeExit;
-@@ -182,6 +190,7 @@ class CORE_EXPORT ThreadableLoader final
+@@ -181,6 +189,7 @@ class CORE_EXPORT ThreadableLoader final
    // Issues a CORS preflight.
    void LoadPreflightRequest(const ResourceRequest&,
                              const ResourceLoaderOptions&);
@@ -37,7 +37,7 @@ index d52f55547792d43ceab18df9b0a0021989fb5226..6beeb6f5216a753709ac5673f944161d
    // Loads actual_request_.
    void LoadActualRequest();
    // Clears actual_request_ and reports access control check failure to
-@@ -274,6 +283,10 @@ class CORE_EXPORT ThreadableLoader final
+@@ -273,6 +282,10 @@ class CORE_EXPORT ThreadableLoader final
  
    RawResourceClientStateChecker checker_;
  

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc b/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
-index 5039504e8deefa41d5880a398722a72eeb118d4d..75bf942e1aa42653777fcd3564ef3ec14cbda1de 100644
+index 8f10c9dfb2f5203c3e000f6522d9a50b73660318..09757c7b3109251b7beee11210b8855373057099 100644
 --- a/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
 +++ b/third_party/blink/renderer/core/html/lazy_load_frame_observer.cc
-@@ -177,6 +177,15 @@ void LazyLoadFrameObserver::LoadImmediately() {
+@@ -180,6 +180,15 @@ void LazyLoadFrameObserver::LoadImmediately() {
    // DisconnectContentFrame() if the content frame changes.
    DCHECK(element_->ContentFrame());
  

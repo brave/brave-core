@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
-index 6f19b08f41cf815e17d1d97870f5936771b8794c..bffc7fc5f7d3b347d64d409b2211b8e9b9132228 100644
+index 481c9b9bdebef21fa7a78698a95be7fa6901673b..a803d6246d92d2ecc402442843a1d2af3d6502a3 100644
 --- a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
 +++ b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
-@@ -260,6 +260,11 @@
+@@ -263,6 +263,11 @@
  #include "third_party/blink/renderer/platform/wtf/hash_map.h"
  #include "third_party/blink/renderer/platform/wtf/time.h"
  
@@ -14,7 +14,7 @@ index 6f19b08f41cf815e17d1d97870f5936771b8794c..bffc7fc5f7d3b347d64d409b2211b8e9
  namespace blink {
  
  static int g_frame_count = 0;
-@@ -825,6 +830,19 @@ void WebLocalFrameImpl::RequestExecuteScriptInIsolatedWorld(
+@@ -828,6 +833,19 @@ void WebLocalFrameImpl::RequestExecuteScriptInIsolatedWorld(
    CHECK_GT(world_id, DOMWrapperWorld::kMainWorldId);
    CHECK_LT(world_id, DOMWrapperWorld::kDOMWrapperWorldEmbedderWorldIdLimit);
  

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/loader/threadable_loader.cc b/third_party/blink/renderer/core/loader/threadable_loader.cc
-index 0c7fa5dd225cf58468ad138b604e9f8ae1e4e0d7..825bed0fd2997d541dd0eb5b8c8fd95293c8f03a 100644
+index 24596cc77563fa369224e51e95b92c87f5762519..fd8322e47ac56a65b2ee4d4da49626bccfe53c43 100644
 --- a/third_party/blink/renderer/core/loader/threadable_loader.cc
 +++ b/third_party/blink/renderer/core/loader/threadable_loader.cc
 @@ -73,6 +73,8 @@
@@ -11,7 +11,7 @@ index 0c7fa5dd225cf58468ad138b604e9f8ae1e4e0d7..825bed0fd2997d541dd0eb5b8c8fd952
  namespace blink {
  
  namespace {
-@@ -1087,6 +1089,18 @@ void ThreadableLoader::LoadRequest(
+@@ -1059,6 +1061,18 @@ void ThreadableLoader::LoadRequest(
    if (request.GetRequestContext() == mojom::RequestContextType::VIDEO ||
        request.GetRequestContext() == mojom::RequestContextType::AUDIO) {
      DCHECK(async_);
@@ -30,7 +30,7 @@ index 0c7fa5dd225cf58468ad138b604e9f8ae1e4e0d7..825bed0fd2997d541dd0eb5b8c8fd952
      RawResource::FetchMedia(new_params, resource_fetcher_, this);
    } else if (request.GetRequestContext() ==
               mojom::RequestContextType::MANIFEST) {
-@@ -1097,6 +1111,7 @@ void ThreadableLoader::LoadRequest(
+@@ -1069,6 +1083,7 @@ void ThreadableLoader::LoadRequest(
    } else {
      RawResource::FetchSynchronously(new_params, resource_fetcher_, this);
    }
@@ -38,7 +38,7 @@ index 0c7fa5dd225cf58468ad138b604e9f8ae1e4e0d7..825bed0fd2997d541dd0eb5b8c8fd952
  }
  
  const SecurityOrigin* ThreadableLoader::GetSecurityOrigin() const {
-@@ -1111,10 +1126,16 @@ Document* ThreadableLoader::GetDocument() const {
+@@ -1083,10 +1098,16 @@ Document* ThreadableLoader::GetDocument() const {
  }
  
  void ThreadableLoader::Trace(blink::Visitor* visitor) {

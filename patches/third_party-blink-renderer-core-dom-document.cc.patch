@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64b3becbe9 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..5a9922074263a45fe3adf489c3fbf51d8407b08e 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -305,6 +305,11 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+@@ -310,6 +310,11 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
  static WeakDocumentSet& liveDocumentSet();
  #endif
  
@@ -14,15 +14,7 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
  namespace blink {
  
  using namespace html_names;
-@@ -734,7 +739,6 @@ Document::Document(const DocumentInit& initializer,
-         &FetchContext::NullInstance(), GetTaskRunner(TaskType::kNetworking)));
-   }
-   DCHECK(fetcher_);
--
-   root_scroller_controller_ = RootScrollerController::Create(*this);
- 
-   // We depend on the url getting immediately set in subframes, but we
-@@ -774,6 +778,10 @@ Document::Document(const DocumentInit& initializer,
+@@ -768,6 +773,10 @@ Document::Document(const DocumentInit& initializer,
  #ifndef NDEBUG
    liveDocumentSet().insert(this);
  #endif
@@ -33,7 +25,7 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
  }
  
  Document::~Document() {
-@@ -784,8 +792,26 @@ Document::~Document() {
+@@ -778,8 +787,26 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);

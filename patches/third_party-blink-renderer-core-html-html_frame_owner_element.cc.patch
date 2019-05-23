@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/html_frame_owner_element.cc b/third_party/blink/renderer/core/html/html_frame_owner_element.cc
-index 0060f0b2e252f5c9634206203e3f14a2de4cdda1..6010a54fb67790658adb7e364f221dc0a757a7a1 100644
+index bfc6b9530d1d98e70e2e082dc10ea693ddfa2c87..c851942cdc64fce861defa4ea71a1dd009a32e4a 100644
 --- a/third_party/blink/renderer/core/html/html_frame_owner_element.cc
 +++ b/third_party/blink/renderer/core/html/html_frame_owner_element.cc
-@@ -50,6 +50,12 @@
+@@ -51,6 +51,12 @@
  #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
  
@@ -15,7 +15,7 @@ index 0060f0b2e252f5c9634206203e3f14a2de4cdda1..6010a54fb67790658adb7e364f221dc0
  namespace blink {
  
  namespace {
-@@ -385,6 +391,13 @@ bool HTMLFrameOwnerElement::LoadOrRedirectSubframe(
+@@ -422,6 +428,13 @@ bool HTMLFrameOwnerElement::LoadOrRedirectSubframe(
  
    LocalFrame* child_frame =
        GetDocument().GetFrame()->Client()->CreateFrame(frame_name, this);

@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/element.cc b/third_party/blink/renderer/core/dom/element.cc
-index 604cf11d38e8bb700e9df9b1ebd1c862b07b6930..485e2b62d79d2c9195e8ad9664fc68a88ecb3a0e 100644
+index d86329b115ae842fac8218a9d7f175b888576ae5..d833a81eaa0d25ebed8f01a414105a4d42a01aad 100644
 --- a/third_party/blink/renderer/core/dom/element.cc
 +++ b/third_party/blink/renderer/core/dom/element.cc
-@@ -161,6 +161,14 @@
+@@ -162,6 +162,14 @@
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  #include "third_party/blink/renderer/platform/wtf/text/text_position.h"
  
@@ -17,7 +17,7 @@ index 604cf11d38e8bb700e9df9b1ebd1c862b07b6930..485e2b62d79d2c9195e8ad9664fc68a8
  namespace blink {
  
  using namespace html_names;
-@@ -223,7 +231,14 @@ Element* Element::Create(const QualifiedName& tag_name, Document* document) {
+@@ -329,7 +337,14 @@ Element* Element::Create(const QualifiedName& tag_name, Document* document) {
  Element::Element(const QualifiedName& tag_name,
                   Document* document,
                   ConstructionType type)
@@ -33,7 +33,7 @@ index 604cf11d38e8bb700e9df9b1ebd1c862b07b6930..485e2b62d79d2c9195e8ad9664fc68a8
  
  inline ElementRareData* Element::GetElementRareData() const {
    DCHECK(HasRareData());
-@@ -4551,6 +4566,12 @@ void Element::DidAddAttribute(const QualifiedName& name,
+@@ -4778,6 +4793,12 @@ void Element::DidAddAttribute(const QualifiedName& name,
    AttributeChanged(AttributeModificationParams(
        name, g_null_atom, value, AttributeModificationReason::kDirectly));
    probe::DidModifyDOMAttr(this, name, value);
@@ -46,7 +46,7 @@ index 604cf11d38e8bb700e9df9b1ebd1c862b07b6930..485e2b62d79d2c9195e8ad9664fc68a8
    DispatchSubtreeModifiedEvent();
  }
  
-@@ -4562,6 +4583,15 @@ void Element::DidModifyAttribute(const QualifiedName& name,
+@@ -4789,6 +4810,15 @@ void Element::DidModifyAttribute(const QualifiedName& name,
    AttributeChanged(AttributeModificationParams(
        name, old_value, new_value, AttributeModificationReason::kDirectly));
    probe::DidModifyDOMAttr(this, name, new_value);
@@ -62,7 +62,7 @@ index 604cf11d38e8bb700e9df9b1ebd1c862b07b6930..485e2b62d79d2c9195e8ad9664fc68a8
    // Do not dispatch a DOMSubtreeModified event here; see bug 81141.
  }
  
-@@ -4572,6 +4602,15 @@ void Element::DidRemoveAttribute(const QualifiedName& name,
+@@ -4799,6 +4829,15 @@ void Element::DidRemoveAttribute(const QualifiedName& name,
    AttributeChanged(AttributeModificationParams(
        name, old_value, g_null_atom, AttributeModificationReason::kDirectly));
    probe::DidRemoveDOMAttr(this, name);
