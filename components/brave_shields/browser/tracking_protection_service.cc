@@ -170,7 +170,6 @@ bool TrackingProtectionService::ShouldStoreState(HostContentSettingsMap* map,
 }
 
 void TrackingProtectionService::OnGetSTPDATFileData(std::string contents) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   if (contents.empty()) {
     LOG(ERROR) << "Could not obtain first party trackers data";
     return;
@@ -194,7 +193,7 @@ void TrackingProtectionService::OnGetSTPDATFileData(std::string contents) {
 }
 
 void TrackingProtectionService::UpdateFirstPartyStorageTrackers(
-    std::vector<std::string>) {
+    std::vector<std::string> storage_trackers) {
   first_party_storage_trackers_ =
       base::flat_set<std::string>(std::move(storage_trackers));
 }
