@@ -12,12 +12,12 @@
 #include <memory>
 #include <sstream>
 #include <string>
-#include "base/logging.h"
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_set.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_delete.h"
@@ -59,9 +59,6 @@ using ::std::stringstream;
 using ::std::to_string;
 using ::std::unique_ptr;
 using ::std::vector;
-
-#define PG_LOG(msg) LOG(INFO) << "*PageGraph* " << msg
-#define PG_LOG_IF(condition, msg) << LOG_IF(INFO, condition) << msg
 
 namespace brave_page_graph {
 
@@ -167,7 +164,7 @@ void PageGraph::RegisterHTMLTextNodeCreated(const DOMNodeId node_id,
 void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
     const DOMNodeId parent_node_id, const DOMNodeId before_sibling_id) {
 
-  const DOMNodeId inserted_parent_node_id = (parent_node_id) 
+  const DOMNodeId inserted_parent_node_id = (parent_node_id)
     ? parent_node_id
     : kRootNodeId;
 
@@ -190,7 +187,7 @@ void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
 void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
     const DOMNodeId parent_node_id, const DOMNodeId before_sibling_id) {
 
-  const DOMNodeId inserted_parent_node_id = (parent_node_id) 
+  const DOMNodeId inserted_parent_node_id = (parent_node_id)
     ? parent_node_id
     : kRootNodeId;
 
@@ -453,7 +450,7 @@ void PageGraph::RegisterElmForRemoteScript(const DOMNodeId node_id,
   script_tracker_.AddScriptUrlForElm(url, node_id);
 }
 
-void PageGraph::RegisterUrlForScriptSource(const KURL& url, 
+void PageGraph::RegisterUrlForScriptSource(const KURL& url,
     const ScriptSourceCode& code) {
   PG_LOG("RegisterUrlForScriptSource: url: " + URLToString(url));
   script_tracker_.AddCodeFetchedFromUrl(code, url);
@@ -477,7 +474,7 @@ void PageGraph::RegisterScriptCompilation(
   script_tracker_.SetScriptIdForCode(script_id, code);
 
   // Note that at the end of this method, the script node exists in the
-  // graph, but isn't connected to anything.  That association 
+  // graph, but isn't connected to anything.  That association
   NodeScript* const code_node = new NodeScript(this, script_id, type);
   AddNode(code_node);
   script_nodes_.emplace(script_id, code_node);

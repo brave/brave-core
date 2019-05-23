@@ -6,7 +6,7 @@
 #include "brave/third_party/blink/brave_page_graph/script_tracker.h"
 #include <map>
 #include <vector>
-#include "base/logging.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_source_code.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
@@ -16,6 +16,7 @@ using ::blink::DOMNodeId;
 using ::blink::KURL;
 using ::blink::ScriptSourceCode;
 using ::std::map;
+using ::std::to_string;
 using ::std::vector;
 
 namespace brave_page_graph {
@@ -77,8 +78,8 @@ void ScriptTracker::SetScriptIdForCode(const ScriptId script_id,
   // we don't know about (TODO: handle cases of partial compilation,
   // eval, and similar).
   LOG_ASSERT(
-    source_hash_to_script_url_hash_.count(code_hash) > 0 || 
-    source_hash_to_node_ids_.count(code_hash) > 0 || 
+    source_hash_to_script_url_hash_.count(code_hash) > 0 ||
+    source_hash_to_node_ids_.count(code_hash) > 0 ||
     extension_source_hash_to_script_url_hash_.count(code_hash) > 0);
 
   if (extension_source_hash_to_script_url_hash_.count(code_hash) == 1) {
@@ -97,13 +98,13 @@ ScriptTrackerScriptSource ScriptTracker::GetSourceOfScript(
   LOG_ASSERT(
     script_id_to_extension_source_hash_.count(top_script_id) == 1 ||
     script_id_to_source_hash_.count(top_script_id) == 1);
-  
+
   if (script_id_to_extension_source_hash_.count(top_script_id) == 1) {
     return kScriptTrackerScriptSourceExtension;
   }
-  
+
   if (script_id_to_source_hash_.count(top_script_id) == 1) {
-    return kScriptTrackerScriptSourcePage; 
+    return kScriptTrackerScriptSourcePage;
   }
 
   return kScriptTrackerScriptSourceUnknown;
@@ -144,7 +145,7 @@ vector<ScriptId> ScriptTracker::GetScriptIdsForElm(
   vector<ScriptId> script_ids;
 
   const bool node_has_urls = node_id_to_script_url_hashes_.count(node_id) > 0;
-  const bool node_has_sources = node_id_to_source_hashes_.count(node_id) > 0; 
+  const bool node_has_sources = node_id_to_source_hashes_.count(node_id) > 0;
 
   if (node_has_urls == false && node_has_sources == false) {
     return script_ids;
@@ -181,9 +182,12 @@ void ScriptTracker::AddTopLevelScriptId(const ScriptId script_id) {
 
 void ScriptTracker::AddChildScriptIdForParentScriptId(
     const ScriptId child_script_id, const ScriptId parent_script_id) {
+  PG_LOG("AddChildScriptIdForParentScriptId: child: "
+      + to_string(child_script_id) + " parent: "
+      + to_string(parent_script_id));
   LOG_ASSERT(child_to_parent_script_.count(parent_script_id) == 0);
   LOG_ASSERT(parent_script_ids_.count(child_script_id) == 0);
-  
+
   child_to_parent_script_.emplace(child_script_id, parent_script_id);
 }
 
