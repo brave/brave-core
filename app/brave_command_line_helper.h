@@ -21,6 +21,7 @@ class BraveCommandLineHelper {
   inline ~BraveCommandLineHelper() = default;
 
   void AppendSwitch(const char* switch_key);
+  void AppendSwitchASCII(const char* switch_key, const char* value);
   void AppendFeatures(const std::unordered_set<const char*>& enabled,
                       const std::unordered_set<const char*>& disabled);
 

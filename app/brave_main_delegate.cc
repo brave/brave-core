@@ -131,6 +131,8 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
   command_line.AppendSwitch(switches::kNoPings);
+  command_line.AppendSwitchASCII(switches::kExtensionsInstallVerification,
+      switches::kExtensionContentVerificationEnforceStrict);
 
   // Enabled features.
   const std::unordered_set<const char*> enabled_features = {
