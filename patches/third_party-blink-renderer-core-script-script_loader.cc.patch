@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script/script_loader.cc b/third_party/blink/renderer/core/script/script_loader.cc
-index 79e02389ecb1b3bf080bce04dae801f694eb3f98..80f7c930634de0db939104c7aaa52b0061cbd125 100644
+index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..330e217fbf6d676ebc69d4b208dec70819674433 100644
 --- a/third_party/blink/renderer/core/script/script_loader.cc
 +++ b/third_party/blink/renderer/core/script/script_loader.cc
 @@ -63,6 +63,14 @@
@@ -25,7 +25,7 @@ index 79e02389ecb1b3bf080bce04dae801f694eb3f98..80f7c930634de0db939104c7aaa52b00
    PendingScriptClient::Trace(visitor);
  }
  
-@@ -564,6 +573,20 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -569,6 +578,20 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
        else
          encoding = element_document.Encoding();
  
@@ -46,7 +46,7 @@ index 79e02389ecb1b3bf080bce04dae801f694eb3f98..80f7c930634de0db939104c7aaa52b00
        // <spec step="24.6.A">"classic"
        //
        // Fetch a classic script given url, settings object, options, classic
-@@ -642,6 +665,23 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -647,6 +670,23 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
          // <spec step="25.2.A.3">The script is ready.</spec>
          //
          // Implemented by ClassicPendingScript.
@@ -70,7 +70,7 @@ index 79e02389ecb1b3bf080bce04dae801f694eb3f98..80f7c930634de0db939104c7aaa52b00
          break;
        }
  
-@@ -952,4 +992,15 @@ ScriptLoader::GetPendingScriptIfControlledByScriptRunnerForCrossDocMove() {
+@@ -959,4 +999,15 @@ ScriptLoader::GetPendingScriptIfControlledByScriptRunnerForCrossDocMove() {
    return pending_script_;
  }
  

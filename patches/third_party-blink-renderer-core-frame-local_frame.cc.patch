@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/frame/local_frame.cc b/third_party/blink/renderer/core/frame/local_frame.cc
-index a7b483e821fe73f4d725ae21b3182778024c5bed..ecb0294e62d87b926e7b7be8067432d3bf035478 100644
+index dd0e2f0df7b59ff0899473b96eac6ed3fb2f4122..bde4b15617712c6d123074ab7a5d93a10c67522a 100644
 --- a/third_party/blink/renderer/core/frame/local_frame.cc
 +++ b/third_party/blink/renderer/core/frame/local_frame.cc
-@@ -121,6 +121,12 @@
+@@ -120,6 +120,12 @@
  #include "third_party/blink/renderer/platform/scheduler/public/frame_scheduler.h"
  #include "third_party/blink/renderer/platform/wtf/std_lib_extras.h"
  
@@ -15,7 +15,7 @@ index a7b483e821fe73f4d725ae21b3182778024c5bed..ecb0294e62d87b926e7b7be8067432d3
  namespace blink {
  
  namespace {
-@@ -1841,4 +1847,24 @@ void LocalFrame::MaybeLogAdClickNavigation() {
+@@ -1731,4 +1737,24 @@ void LocalFrame::MaybeLogAdClickNavigation() {
      UseCounter::Count(GetDocument(), WebFeature::kAdClickNavigation);
  }
  
