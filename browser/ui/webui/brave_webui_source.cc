@@ -466,6 +466,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "rewardsOffText5", IDS_BRAVE_UI_REWARDS_OFF_TEXT5 },
         { "serviceTextToggle", IDS_BRAVE_UI_SERVICE_TEXT_TOGGLE },
         { "serviceTextWelcome", IDS_BRAVE_UI_SERVICE_TEXT_WELCOME },
+        { "serviceTextReady", IDS_BRAVE_UI_SERVICE_TEXT_READY },
         { "termsOfService", IDS_BRAVE_UI_TERMS_OF_SERVICE }
       }
     }, {
