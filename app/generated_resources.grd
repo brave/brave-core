@@ -5043,6 +5043,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_ACCESSIBILITY_EVENTS_INFOBAR_TEXT" desc="Text requesting permission for a site to listen to accessibility events, for example if the user has a screen reader or braille device enabled">
           <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to respond to accessibility events
         </message>
+        <message name="IDS_ACCESSIBILITY_EVENTS_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to listen to accessibility events, for example if the user has a screen reader or braille device enabled">
+          Accessibility Events
+        </message>
       </if>
 
       <!-- Clipboard permission -->
@@ -5052,6 +5055,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <if expr="is_android">
         <message name="IDS_CLIPBOARD_INFOBAR_TEXT" desc="Text requesting permission for a site to read data from the system clipboard">
           <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to see text and images copied to the clipboard
+        </message>
+        <message name="IDS_CLIPBOARD_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to read data from the system clipboard">
+          Clipboard
         </message>
       </if>
       <message name="IDS_ALLOWED_CLIPBOARD_TITLE" desc="Title of the info bubble shown when a site has been allowed access to read the contents of the system clipboard.">
@@ -6855,6 +6861,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MULTI_DOWNLOAD_WARNING" desc="Warning invoked if multiple downloads are attempted without user interaction.">
         <ph name="ORIGIN">$1<ex>https://backgroundfetch.com</ex></ph> wants to download multiple files
       </message>
+      <if expr="is_android">
+        <message name="IDS_MULTI_DOWNLOAD_WARNING_TITLE" desc="Title text for warning dialog invoked if multiple downloads are attempted without user interaction.">
+          Download
+        </message>
+      </if>
       <message name="IDS_MULTI_DOWNLOAD_PERMISSION_FRAGMENT" desc="Permission request shown if multiple downloads are attempted without user interaction and there are multiple permissions requested. Follows a prompt: 'This site would like to:'">
         Download multiple files
       </message>
@@ -7299,6 +7310,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_NOTIFICATIONS_INFOBAR_TEXT" desc="Text requesting permission for Web Notifications.">
         <ph name="site">$1<ex>mail.google.com</ex></ph> wants to send you notifications
       </message>
+      <if expr="is_android">
+        <message name="IDS_NOTIFICATIONS_PERMISSION_TITLE" desc="Title text for dialog requesting permission for Web Notifications.">
+          Notifications
+        </message>
+      </if>
       <message name="IDS_NOTIFICATION_PERMISSIONS_FRAGMENT" desc="Permission sentence fragment to show following the prompt 'This site wants to:' in a permissions request">
         Show notifications
       </message>
@@ -7724,6 +7740,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_GEOLOCATION_INFOBAR_TEXT" desc="Mobile: Text requesting permission for a site to access the user's physical location">
           <ph name="URL">$1<ex>maps.google.com</ex></ph> wants to use your device's location
         </message>
+        <message name="IDS_GEOLOCATION_PERMISSION_TITLE" desc="Mobile: Title text for dialog requesting permission for a site to access the user's physical location">
+          Location
+        </message>
       </if>
       <message name="IDS_GEOLOCATION_INFOBAR_PERMISSION_FRAGMENT" desc="Permission fragment used in the permission bubble, after 'This site wants to:' asking for permission to access the user's physical location.">
         Know your location
@@ -7754,6 +7773,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MIDI_SYSEX_INFOBAR_TEXT" desc="Text requesting permission for a site to access MIDI devices with system exclusive messages.">
         <ph name="URL">$1<ex>www.google.com</ex></ph> wants to get full control of your MIDI devices
       </message>
+      <if expr="is_android">
+        <message name="IDS_MIDI_SYSEX_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to access MIDI devices with system exclusive messages.">
+          MIDI Devices
+        </message>
+      </if>
       <message name="IDS_MIDI_SYSEX_PERMISSION_FRAGMENT" desc="Permission asked in the permission bubble when a URL wants to access MIDI devices with system exclusive messages, along with other permissions requests. Preceded by the prompt 'This site would like to:'">
         Use your MIDI devices
       </message>
@@ -7870,6 +7894,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_PROTECTED_MEDIA_IDENTIFIER_PER_DEVICE_PROVISIONING_INFOBAR_TEXT" desc="Text requesting permission for a site to access protected media identifier. It shows the origin of the URL.">
           <ph name="URL">$1<ex>https://www.youtube.com</ex></ph> wants to play protected content. Your device's identity will be verified by Brave and may be accessed by this site.
+        </message>
+        <message name="IDS_PROTECTED_MEDIA_IDENTIFIER_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to access protected media identifier.">
+          Protected Media Identifier
         </message>
       </if>
       <message name="IDS_MANAGE_PASSWORDS_CONFIRM_GENERATED_TEXT" desc="A message that the browser shows after saving a password it has autogenerated for the user. This message appears in a bubble and contains a link to all the user's saved autogenerated passwords. The link text is a separate string in the translation console and appears here as placeholder text.">
@@ -8101,6 +8128,17 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_MEDIA_CAPTURE_VIDEO_ONLY_PERMISSION_FRAGMENT" desc="Permission fragment shown in the permissions bubble when a web page requests access to the computer's camera.">
         Use your camera
       </message>
+      <if expr="is_android">
+        <message name="IDS_MEDIA_CAPTURE_AUDIO_ONLY_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to access the device's microphone.">
+          Microphone
+        </message>
+        <message name="IDS_MEDIA_CAPTURE_VIDEO_ONLY_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to access the device's camera.">
+          Camera
+        </message>
+        <message name="IDS_MEDIA_CAPTURE_AUDIO_AND_VIDEO_PERMISSION_TITLE" desc="Title text for dialog requesting permission for a site to access the device's microphone and camera.">
+          Media
+        </message>
+      </if>
 
       <!-- Sensor messages -->
       <message name="IDS_SENSORS_ALLOWED_TOOLTIP" desc="Location bar icon tooltip text when a page is allowed to use device's sensors.">
@@ -8153,6 +8191,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
         <message name="IDS_REQUEST_LARGE_QUOTA_INFOBAR_TEXT" desc="Mobile: For Android device. Text requesting permission for a site to use a new (larger) quota to persistently store large data on the user's device (e.g. for persistent-type filesystem).">
           <ph name="URL">$1<ex>html5rocks.com</ex></ph> wants to permanently store large data on your device
+        </message>
+        <message name="IDS_REQUEST_QUOTA_PERMISSION_TITLE" desc="Mobile: For Android device. Title text for dialog requesting permission for a site to use a new (larger) quota to persistently store large data on the user's device (e.g. for persistent-type filesystem).">
+          Storage
         </message>
       </if>
       <if expr="not is_android">
