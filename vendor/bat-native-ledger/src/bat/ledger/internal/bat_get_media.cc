@@ -67,6 +67,9 @@ void BatGetMedia::GetMediaActivityFromUrl(
     media_twitch_->ProcessActivityFromUrl(window_id,
                                           visit_data,
                                           publisher_blob);
+  } else if (type == TWITTER_MEDIA_TYPE) {
+    media_twitter_->ProcessActivityFromUrl(window_id,
+                                           visit_data);
   } else {
     OnMediaActivityError(visit_data, type, window_id);
   }
