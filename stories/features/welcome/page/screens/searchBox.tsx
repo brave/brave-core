@@ -23,13 +23,30 @@ interface Props {
   currentScreen: number
   onClick: () => void
   fakeOnChange: () => void
-  fakeSearchEngineSelected: boolean
   isDefaultSearchGoogle: boolean
 }
 
-export default class SearchEngineBox extends React.PureComponent<Props, {}> {
+interface State {
+  searchEngineSelected: boolean
+}
+
+export default class SearchEngineBox extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      searchEngineSelected: false
+    }
+  }
+
+  onChangeDefaultSearchEngine = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log((event.target.value) !== '')
+    this.setState({ searchEngineSelected: (event.target.value) !== '' })
+    this.props.fakeOnChange()
+  }
+
   render () {
-    const { index, currentScreen, onClick, fakeOnChange, fakeSearchEngineSelected, isDefaultSearchGoogle } = this.props
+    const { index, currentScreen, onClick, isDefaultSearchGoogle } = this.props
+    const { searchEngineSelected } = this.state
     const bodyText = isDefaultSearchGoogle ? `${locale.chooseSearchEngine} ${locale.privateExperience}` : locale.chooseSearchEngine
     return (
       <Content
@@ -42,7 +59,7 @@ export default class SearchEngineBox extends React.PureComponent<Props, {}> {
         <Title>{locale.setDefaultSearchEngine}</Title>
         <Paragraph>{bodyText}</Paragraph>
           <SelectGrid>
-            <SelectBox onChange={fakeOnChange}>
+            <SelectBox onChange={this.onChangeDefaultSearchEngine}>
               <option value=''>{locale.selectSearchEngine}</option>
               <option value='DuckDuckGo'>{locale.fakeSearchProvider1}</option>
               <option value='Google'>{locale.fakeSearchProvider2}</option>
@@ -52,7 +69,7 @@ export default class SearchEngineBox extends React.PureComponent<Props, {}> {
               type='accent'
               size='large'
               text={locale.setDefault}
-              disabled={!fakeSearchEngineSelected}
+              disabled={!searchEngineSelected}
               onClick={onClick}
             />
           </SelectGrid>
