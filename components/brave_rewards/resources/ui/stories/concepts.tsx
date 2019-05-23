@@ -286,7 +286,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       </div>
     )
   })
-  .add('Wallet Panel', withState({ grant: defaultGrant, notification: grantNotification, showSummary: false, tipsEnabled: true, includeInAuto: true, refreshingPublisher: false }, (store) => {
+  .add('Wallet Panel', withState({ grant: defaultGrant, notification: grantNotification, showSummary: false, tipsEnabled: true, includeInAuto: true, refreshingPublisher: false, publisherRefreshed: false, verified: false }, (store) => {
     const curveRgb = '233,235,255'
     const panelRgb = '249,251,252'
 
@@ -312,6 +312,13 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
 
     const onRefreshPublisher = () => {
       store.set({ refreshingPublisher: !store.state.refreshingPublisher })
+      setTimeout(() => {
+        store.set({
+          refreshingPublisher: !store.state.refreshingPublisher,
+          publisherRefreshed: !store.state.publisherRefreshed,
+          verified: true
+        })
+      }, 3000)
     }
 
     const onToggleTips = () => {
@@ -433,6 +440,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
               donationAmounts={donationAmounts}
               onIncludeInAuto={onIncludeInAuto}
               refreshingPublisher={store.state.refreshingPublisher}
+              publisherRefreshed={store.state.publisherRefreshed}
               onRefreshPublisher={onRefreshPublisher}
             />
             <WalletSummary

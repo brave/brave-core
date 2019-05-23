@@ -13,15 +13,23 @@ import {
   StyledTitle,
   StyledProvider,
   StyledProviderWrap,
+  StyledProviderWrapRefreshing,
+  StyledProviderWrapRefreshFinished,
   StyledInlineVerified,
   StyledVerifiedText,
   StyledInlineUnVerified,
   StyledVerifiedCheckLink,
+  StyledVerifiedCheckNoLink,
+  StyledRefreshCheckOverlayFinished,
   StyledRefresh,
+  StyledRefreshLoaderFinished,
+  StyledRefreshOverlay,
+  StyledRefreshOverlayFinished,
+  StyledRefreshFinished,
   StyledVerifiedDivider
 } from './style'
 import { getLocale } from '../../../helpers'
-import { VerifiedSIcon, UnVerifiedSIcon, LoaderIcon } from '../../../components/icons'
+import { VerifiedSIcon, UnVerifiedSIcon, LoaderIcon, CheckmarkCircleS } from '../../../components/icons'
 
 export type Provider = 'twitter' | 'youtube' | 'twitch'
 
@@ -63,6 +71,173 @@ export default class Profile extends React.PureComponent<Props, {}> {
     return src ? src : ''
   }
 
+  getVerifiedInfo = () => {
+    return (
+      <>
+        <StyledInlineVerified>
+          <VerifiedSIcon />
+        </StyledInlineVerified>{' '}
+        <StyledVerifiedText>
+          {getLocale('verifiedPublisher')}
+        </StyledVerifiedText>
+      </>
+    )
+  }
+
+  getDefaultVerifiedPanelWrap = () => {
+    return (
+      <StyledProviderWrap>
+        {
+          this.getVerifiedInfo()
+        }
+      </StyledProviderWrap>
+    )
+  }
+
+  getVerifiedPanelWrapRefreshing = () => {
+    return (
+      <>
+        <StyledProviderWrapRefreshing>
+          {
+            this.getVerifiedInfo()
+          }
+        </StyledProviderWrapRefreshing>
+        <StyledRefreshOverlay>
+          <StyledRefresh>
+            <LoaderIcon />
+          </StyledRefresh>
+        </StyledRefreshOverlay>
+      </>
+    )
+  }
+
+  getVerifiedPanelWrapRefreshFinished = () => {
+    return (
+      <>
+        <StyledProviderWrapRefreshFinished>
+          {
+            this.getVerifiedInfo()
+          }
+        </StyledProviderWrapRefreshFinished>
+        <StyledRefreshOverlayFinished>
+          <StyledRefreshLoaderFinished>
+            <LoaderIcon />
+          </StyledRefreshLoaderFinished>
+        </StyledRefreshOverlayFinished>
+        <StyledRefreshCheckOverlayFinished>
+          <StyledRefreshFinished>
+            <CheckmarkCircleS />
+          </StyledRefreshFinished>
+        </StyledRefreshCheckOverlayFinished>
+      </>
+    )
+  }
+
+  getVerifiedPanelWrapping = () => {
+    const {
+      refreshingPublisher,
+      publisherRefreshed
+    } = this.props
+
+    return (
+      !refreshingPublisher && !publisherRefreshed ?
+        this.getDefaultVerifiedPanelWrap()
+    : !publisherRefreshed && refreshingPublisher ?
+        this.getVerifiedPanelWrapRefreshing()
+    :
+      this.getVerifiedPanelWrapRefreshFinished()
+    )
+  }
+
+  getUnverifiedInfo = () => {
+    return (
+      <>
+        <StyledInlineUnVerified>
+          <UnVerifiedSIcon />
+        </StyledInlineUnVerified>{' '}
+        <StyledVerifiedText>
+          {getLocale('unVerifiedPublisher')}
+        </StyledVerifiedText>
+        <StyledVerifiedDivider />
+      </>
+    )
+  }
+
+  getDefaultUnverifiedPanelWrap = () => {
+    const { onRefreshPublisher } = this.props
+    return (
+      <StyledProviderWrap>
+        {
+          this.getUnverifiedInfo()
+        }
+        <StyledVerifiedCheckLink onClick={onRefreshPublisher}>
+          {getLocale('unVerifiedCheck')}
+        </StyledVerifiedCheckLink>
+      </StyledProviderWrap>
+    )
+  }
+
+  getUnverifiedPanelWrapRefreshing = () => {
+    return (
+      <>
+        <StyledProviderWrapRefreshing>
+          {
+            this.getUnverifiedInfo()
+          }
+          <StyledVerifiedCheckLink>
+            {getLocale('unVerifiedCheck')}
+          </StyledVerifiedCheckLink>
+        </StyledProviderWrapRefreshing>
+        <StyledRefreshOverlay>
+          <StyledRefresh>
+            <LoaderIcon />
+          </StyledRefresh>
+        </StyledRefreshOverlay>
+      </>
+    )
+  }
+
+  getUnverifiedPanelWrapRefreshFinished = () => {
+    return (
+      <>
+        <StyledProviderWrapRefreshFinished>
+          {
+            this.getUnverifiedInfo()
+          }
+          <StyledVerifiedCheckNoLink>
+            {getLocale('unVerifiedCheck')}
+          </StyledVerifiedCheckNoLink>
+        </StyledProviderWrapRefreshFinished>
+        <StyledRefreshOverlayFinished>
+          <StyledRefreshLoaderFinished>
+            <LoaderIcon />
+          </StyledRefreshLoaderFinished>
+        </StyledRefreshOverlayFinished>
+        <StyledRefreshCheckOverlayFinished>
+          <StyledRefreshFinished>
+            <CheckmarkCircleS />
+          </StyledRefreshFinished>
+        </StyledRefreshCheckOverlayFinished>
+      </>
+    )
+  }
+
+  getUnverifiedPanelWrapping = () => {
+    const {
+      refreshingPublisher,
+      publisherRefreshed
+    } = this.props
+
+    return (
+      !publisherRefreshed && !refreshingPublisher ?
+        this.getDefaultUnverifiedPanelWrap()
+      : !publisherRefreshed && refreshingPublisher ?
+        this.getUnverifiedPanelWrapRefreshing()
+      :
+        this.getUnverifiedPanelWrapRefreshFinished()
+    )
+  }
+
   render () {
     const {
       id,
@@ -71,10 +246,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
       src,
       title,
       verified,
-      showUnVerifiedHelpIcon,
-      onRefreshPublisher,
-      refreshingPublisher,
-      publisherRefreshed
+      showUnVerifiedHelpIcon
     } = this.props
 
     return (
@@ -96,38 +268,9 @@ export default class Profile extends React.PureComponent<Props, {}> {
               </StyledProvider>
             ) : null}
           </StyledTitleWrap>
-          {verified && type === 'big' ? (
-            <StyledProviderWrap>
-              <StyledInlineVerified>
-                <VerifiedSIcon />
-              </StyledInlineVerified>{' '}
-              <StyledVerifiedText>
-                {getLocale('verifiedPublisher')}
-              </StyledVerifiedText>
-            </StyledProviderWrap>
-          ) : showUnVerifiedHelpIcon ? (
-            <StyledProviderWrap>
-              <StyledInlineUnVerified>
-                <UnVerifiedSIcon />
-              </StyledInlineUnVerified>{' '}
-              <StyledVerifiedText>
-                {getLocale('unVerifiedPublisher')}
-              </StyledVerifiedText>
-              <StyledVerifiedDivider />
-              {
-                !publisherRefreshed ?
-                  refreshingPublisher ?
-                    <StyledRefresh>
-                      <LoaderIcon />
-                    </StyledRefresh>
-                    : <StyledVerifiedCheckLink onClick={onRefreshPublisher}>
-                      {getLocale('unVerifiedCheck')}
-                    </StyledVerifiedCheckLink>
-                  :
-                  null
-              }
-            </StyledProviderWrap>
-          ) : null}
+          {verified && type === 'big' ? this.getVerifiedPanelWrapping()
+          : showUnVerifiedHelpIcon ? this.getUnverifiedPanelWrapping()
+          : null}
         </StyledContent>
       </StyledWrapper>
     )

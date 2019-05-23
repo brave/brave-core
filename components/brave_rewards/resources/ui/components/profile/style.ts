@@ -4,6 +4,58 @@
 
 import styled, { css } from '../../../theme'
 import { Props } from './index'
+import { keyframes } from 'styled-components'
+
+const fadeInOut = keyframes`
+  0% {
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+`
+
+const fadeIn = keyframes`
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 1;
+  }
+`
+
+const fadeOutWrap = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0.2;
+  }
+`
+
+const fadeInFromNull = keyframes`
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+`
+
+const fadeOutToNull = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+`
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
   position: relative;
@@ -73,6 +125,31 @@ export const StyledProviderWrap = styled<{}, 'div'>('div')`
   margin: 4px 0;
 `
 
+export const StyledProviderWrapRefreshing = styled<{}, 'div'>('div')`
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  margin: 4px 0;
+  opacity: 0.2;
+  animation-name: ${fadeOutWrap};
+  animation-duration: 500ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+`
+
+export const StyledProviderWrapRefreshFinished = styled<{}, 'div'>('div')`
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  margin: 4px 0;
+  opacity: 0.2;
+  animation-name: ${fadeIn};
+  animation-duration: 500ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+  animation-delay: 2250ms;
+`
+
 export const StyledVerifiedText = styled<{}, 'span'>('span')`
   color: ${p => p.theme.palette.grey800};
 `
@@ -87,6 +164,11 @@ export const StyledVerifiedCheckLink = styled<{}, 'span'>('span')`
     text-decoration: underline;
     color: ${p => p.theme.palette.blurple400};
   }
+`
+export const StyledVerifiedCheckNoLink = styled<{}, 'span'>('span')`
+  color: ${p => p.theme.palette.grey400};
+  text-decoration: none;
+  z-index: 1;
 `
 
 export const StyledVerifiedDivider = styled.span`
@@ -107,8 +189,78 @@ export const StyledInlineUnVerified = styled(StyledInlineVerified)`
   color: ${p => p.theme.palette.grey500};
 `
 
-export const StyledRefresh = styled(StyledInlineVerified)`
+export const StyledRefreshOverlay = styled<{}, 'div'>('div')`
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: absolute;
   display: flex;
+  justify-content: center;
+  color: ${p => p.theme.palette.blurple500};
+  top: 0;
+  left: 0;
+  margin-top: 25px;
+`
+
+export const StyledRefreshOverlayFinished = styled<{}, 'div'>('div')`
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  color: ${p => p.theme.palette.blurple500};
+  top: 0;
+  left: 0;
+  margin-top: 25px;
+  opacity: 1;
+  animation-name: ${fadeOutToNull};
+  animation-duration: 500ms;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+`
+
+export const StyledRefreshCheckOverlayFinished = styled<{}, 'div'>('div')`
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  color: ${p => p.theme.palette.blurple500};
+  top: 0;
+  left: 0;
+  margin-top: 25px;
+  opacity: 0;
+  animation-name: ${fadeInOut};
+  animation-delay: 1000ms;
+  animation-duration: 1250ms;
+  animation-timing-function: ease-in-out;
+  animation-fill-mode: forwards;
+`
+
+export const StyledRefresh = styled(StyledInlineVerified)`
+  position: absolute;
+  text-align: center;
+  display: flex;
+  opacity: 0;
+  animation-name: ${fadeInFromNull};
+  animation-duration: 500ms;
+  animation-timing-function: ease-in;
+  animation-fill-mode: forwards;
+`
+
+export const StyledRefreshLoaderFinished = styled(StyledInlineVerified)`
+  position: absolute;
+  text-align: center;
+  display: flex;
+`
+
+export const StyledRefreshFinished = styled<{}, 'span'>('span')`
+  position: absolute;
+  height: 24px;
+  width: 24px;
+  color: ${p => p.theme.palette.blurple500};
 `
 
 export const StyledSubTitle = styled.span`
