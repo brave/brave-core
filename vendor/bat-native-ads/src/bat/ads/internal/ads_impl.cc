@@ -619,7 +619,7 @@ void AdsImpl::CheckReadyAdServe(const bool forced) {
       return;
     }
 
-    if (!IsMobile() && !IsAllowedToShowAds()) {
+    if (!IsAllowedToShowAds()) {
       // TODO(Terry Mancey): Implement Log (#44)
       // 'Notification not made', { reason: 'not allowed based on history' }
 
@@ -835,24 +835,43 @@ bool AdsImpl::HistoryRespectsRollingTimeConstraint(
 }
 
 bool AdsImpl::IsAllowedToShowAds() {
+  auto does_history_respect_ads_per_day_limit =
+      DoesHistoryRespectAdsPerDayLimit();
+
+  bool does_history_respect_minimum_wait_time;
+  if (!IsMobile()) {
+    does_history_respect_minimum_wait_time =
+        DoesHistoryRespectMinimumWaitTimeToShowAds();
+  } else {
+    does_history_respect_minimum_wait_time = true;
+  }
+
+  return does_history_respect_minimum_wait_time &&
+      does_history_respect_ads_per_day_limit;
+}
+
+bool AdsImpl::DoesHistoryRespectMinimumWaitTimeToShowAds() {
   auto ads_shown_history = client_->GetAdsShownHistory();
 
   auto hour_window = base::Time::kSecondsPerHour;
   auto hour_allowed = ads_client_->GetAdsPerHour();
-  auto respects_hour_limit = HistoryRespectsRollingTimeConstraint(
+  bool respects_day_limit = HistoryRespectsRollingTimeConstraint(
       ads_shown_history, hour_window, hour_allowed);
-
-  auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
-  auto day_allowed = ads_client_->GetAdsPerDay();
-  auto respects_day_limit = HistoryRespectsRollingTimeConstraint(
-      ads_shown_history, day_window, day_allowed);
 
   auto minimum_wait_time = hour_window / hour_allowed;
   bool respects_minimum_wait_time = HistoryRespectsRollingTimeConstraint(
       ads_shown_history, minimum_wait_time, 0);
 
-  return respects_hour_limit && respects_day_limit &&
-      respects_minimum_wait_time;
+  return respects_day_limit && respects_minimum_wait_time;
+}
+
+bool AdsImpl::DoesHistoryRespectAdsPerDayLimit() {
+  auto ads_shown_history = client_->GetAdsShownHistory();
+
+  auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
+  auto day_allowed = ads_client_->GetAdsPerDay();
+  return HistoryRespectsRollingTimeConstraint(
+      ads_shown_history, day_window, day_allowed);
 }
 
 void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
@@ -902,8 +921,8 @@ bool AdsImpl::IsCollectingActivity() const {
 void AdsImpl::StartDeliveringNotifications() {
   StopDeliveringNotifications();
 
-  uint64_t start_timer_in =
-      base::Time::kSecondsPerHour / ads_client_->GetAdsPerHour();
+  uint64_t start_timer_in = 60;
+  // base::Time::kSecondsPerHour / ads_client_->GetAdsPerHour();
 
   delivering_notifications_timer_id_ = ads_client_->SetTimer(start_timer_in);
   if (delivering_notifications_timer_id_ == 0) {
