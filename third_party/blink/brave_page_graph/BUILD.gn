@@ -19,6 +19,7 @@ source_set("brave_page_graph") {
     sources = [
       "graphml.cc",
       "graphml.h",
+      "logging.h",
       "graph_item/node/node.cc",
       "graph_item/node/node.h",
       "graph_item/node/node_actor.cc",
