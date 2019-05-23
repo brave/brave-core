@@ -2,14 +2,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Types
 import * as types from '../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
-import * as actions from '../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
 import { ShieldDetails, BlockDetails } from '../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
 import {
   BlockOptions,
   BlockFPOptions,
   BlockCookiesOptions
-} from '../../types/other/blockTypes'
+} from '../../../brave_extension/extension/brave_extension/types/other/blockTypes'
+
+// Actions
+import * as actions from '../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
 
 describe('shieldsPanelActions', () => {
   it('shieldsPanelDataUpdated', () => {
@@ -101,6 +104,38 @@ describe('shieldsPanelActions', () => {
   it('allowScriptOriginsOnce action', () => {
     expect(actions.allowScriptOriginsOnce()).toEqual({
       type: types.ALLOW_SCRIPT_ORIGINS_ONCE
+    })
+  })
+
+  it('setScriptBlockedCurrentState', () => {
+    const url = 'https://awesome-anthony-tseng.website'
+    expect(actions.setScriptBlockedCurrentState(url)).toEqual({
+      type: types.SET_SCRIPT_BLOCKED_ONCE_CURRENT_STATE,
+      url
+    })
+  })
+
+  it('setGroupedScriptsBlockedCurrentState', () => {
+    const origin = 'https://clifton.io'
+    const maybeBlock = false
+    expect(actions.setGroupedScriptsBlockedCurrentState(origin, maybeBlock)).toEqual({
+      type: types.SET_GROUPED_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE,
+      origin,
+      maybeBlock
+    })
+  })
+
+  it('setAllScriptsBlockedCurrentState', () => {
+    const maybeBlock = true
+    expect(actions.setAllScriptsBlockedCurrentState(maybeBlock)).toEqual({
+      type: types.SET_ALL_SCRIPTS_BLOCKED_ONCE_CURRENT_STATE,
+      maybeBlock
+    })
+  })
+
+  it('setFinalScriptsBlockedState', () => {
+    expect(actions.setFinalScriptsBlockedState()).toEqual({
+      type: types.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE
     })
   })
 })
