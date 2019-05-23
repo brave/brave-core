@@ -198,7 +198,7 @@ public:
   }
 
   void InitService() {
-    brave_shields::LocalDataFilesService::
+    brave_component_updater::LocalDataFilesService::
         SetComponentIdAndBase64PublicKeyForTest(
             kLocalDataFilesComponentTestId,
             kLocalDataFilesComponentTestBase64PublicKey);
@@ -227,7 +227,7 @@ public:
   void WaitForAutoplayWhitelistServiceThread() {
     scoped_refptr<base::ThreadTestHelper> io_helper(
         new base::ThreadTestHelper(
-            g_brave_browser_process->autoplay_whitelist_service()->GetTaskRunner()));
+            g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 

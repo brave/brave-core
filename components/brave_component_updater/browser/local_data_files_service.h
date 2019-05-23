@@ -13,13 +13,6 @@
 #include "base/observer_list.h"
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 
-namespace brave_shields {
-class AdBlockServiceTest;
-class AutoplayWhitelistServiceTest;
-class ReferrerWhitelistServiceTest;
-class TrackingProtectionServiceTest;
-}
-
 namespace brave_component_updater {
 
 class LocalDataFilesObserver;
@@ -46,21 +39,18 @@ class LocalDataFilesService : public BraveComponent {
   void AddObserver(LocalDataFilesObserver* observer);
   void RemoveObserver(LocalDataFilesObserver* observer);
 
+  static void SetComponentIdAndBase64PublicKeyForTest(
+      const std::string& component_id,
+      const std::string& component_base64_public_key);
+
  protected:
   void OnComponentReady(const std::string& component_id,
       const base::FilePath& install_dir,
       const std::string& manifest) override;
 
  private:
-  friend class brave_shields::AdBlockServiceTest;
-  friend class brave_shields::AutoplayWhitelistServiceTest;
-  friend class brave_shields::ReferrerWhitelistServiceTest;
-  friend class brave_shields::TrackingProtectionServiceTest;
   static std::string g_local_data_files_component_id_;
   static std::string g_local_data_files_component_base64_public_key_;
-  static void SetComponentIdAndBase64PublicKeyForTest(
-      const std::string& component_id,
-      const std::string& component_base64_public_key);
 
   bool initialized_;
   base::ObserverList<LocalDataFilesObserver>::Unchecked observers_;

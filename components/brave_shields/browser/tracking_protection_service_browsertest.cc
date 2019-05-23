@@ -11,7 +11,7 @@
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
-#include "brave/components/brave_shields/browser/local_data_files_service.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/net/url_request_mock_util.h"
@@ -99,7 +99,7 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
   }
 
   void InitService() {
-    brave_shields::LocalDataFilesService::
+    brave_component_updater::LocalDataFilesService::
         SetComponentIdAndBase64PublicKeyForTest(
             kTrackingProtectionComponentTestId,
             kTrackingProtectionComponentTestBase64PublicKey);
@@ -129,7 +129,7 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
 
   void WaitForTrackingProtectionServiceThread() {
     scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->tracking_protection_service()
+        g_brave_browser_process->local_data_files_service()
             ->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }

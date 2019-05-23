@@ -12,7 +12,7 @@
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/local_data_files_service.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
@@ -125,7 +125,7 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
   }
 
   void InitTrackingProtectionService() {
-    brave_shields::LocalDataFilesService::
+    brave_component_updater::LocalDataFilesService::
         SetComponentIdAndBase64PublicKeyForTest(
             kTrackingProtectionComponentTestId,
             kTrackingProtectionComponentTestBase64PublicKey);
@@ -220,13 +220,13 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
 
   void WaitForDefaultAdBlockServiceThread() {
     scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->ad_block_service()->GetTaskRunner()));
+        g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 
   void WaitForRegionalAdBlockServiceThread() {
     scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->ad_block_regional_service_manager()
+        g_brave_browser_process->local_data_files_service()
             ->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
@@ -234,7 +234,7 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
   void WaitForTrackingProtectionServiceThread() {
     scoped_refptr<base::ThreadTestHelper> io_helper(
         new base::ThreadTestHelper(
-            g_brave_browser_process->tracking_protection_service()
+            g_brave_browser_process->local_data_files_service()
                ->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
