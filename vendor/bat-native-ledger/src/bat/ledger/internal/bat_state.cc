@@ -412,4 +412,18 @@ void BatState::SetAddress(std::map<std::string, std::string> addresses) {
   SaveState();
 }
 
+void BatState::SetInlineTipSetting(const std::string& key, bool enabled) {
+  state_->inline_tip_[key] = enabled;
+  SaveState();
+}
+
+bool BatState::GetInlineTipSetting(const std::string& key) const {
+  if (state_->inline_tip_.find(key) == state_->inline_tip_.end()) {
+    // not found, all tips are on by default
+    return true;
+  } else {
+    return state_->inline_tip_[key];
+  }
+}
+
 }  // namespace braveledger_bat_state

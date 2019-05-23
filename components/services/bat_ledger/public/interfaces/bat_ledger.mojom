@@ -118,6 +118,16 @@ interface BatLedger {
   RefreshPublisher(string publisher_key) => (bool verified);
 
   StartAutoContribute();
+
+  SaveMediaInfo(string type, map<string, string> args) => (int32 result,
+        ledger.mojom.PublisherInfo? publisher_info);
+
+  SetInlineTipSetting(string key, bool enabled);
+
+  GetInlineTipSetting(string key) => (bool enabled);
+
+  GetShareURL(string type, map<string, string> args) =>
+      (string url);
 };
 
 interface BatLedgerClient {

@@ -149,6 +149,10 @@ class BatState {
 
   void SetAddress(std::map<std::string, std::string> addresses);
 
+  void SetInlineTipSetting(const std::string& key, bool enabled);
+
+  bool GetInlineTipSetting(const std::string& key) const;
+
  private:
   void SaveState();
 

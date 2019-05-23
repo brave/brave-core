@@ -234,7 +234,8 @@ class LedgerImpl : public ledger::Ledger,
   void SaveMediaVisit(const std::string& publisher_id,
                       const ledger::VisitData& visit_data,
                       const uint64_t& duration,
-                      const uint64_t window_id) override;
+                      const uint64_t window_id,
+                      const ledger::PublisherInfoCallback callback);
 
   void SetPublisherExclude(
       const std::string& publisher_id,
@@ -440,6 +441,18 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback) override;
 
+  void SaveMediaInfo(const std::string& type,
+                     const std::map<std::string, std::string>& data,
+                     ledger::PublisherInfoCallback callback) override;
+
+  void SetInlineTipSetting(const std::string& key, bool enabled) override;
+
+  bool GetInlineTipSetting(const std::string& key) override;
+
+  std::string GetShareURL(
+      const std::string& type,
+      const std::map<std::string, std::string>& args) override;
+
  private:
   void AddRecurringPayment(const std::string& publisher_id,
                            const double& value) override;
@@ -450,6 +463,9 @@ class LedgerImpl : public ledger::Ledger,
   void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
 
   void OnShow(uint32_t tab_id, const uint64_t& current_time) override;
+
+  void OnSaveVisit(ledger::Result result,
+                   ledger::PublisherInfoPtr info);
 
   void OnHide(uint32_t tab_id, const uint64_t& current_time) override;
 

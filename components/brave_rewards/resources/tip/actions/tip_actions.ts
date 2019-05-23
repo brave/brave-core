@@ -9,6 +9,11 @@ import { types } from '../constants/tip_types'
 
 export const onCloseDialog = () => action(types.ON_CLOSE_DIALOG)
 
+export const onTweet = (name: string, tweetId: string) => action(types.ON_TWEET, {
+  name,
+  tweetId
+})
+
 export const onPublisherBanner = (data: RewardsTip.Publisher) => action(types.ON_PUBLISHER_BANNER, {
   data
 })

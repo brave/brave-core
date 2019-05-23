@@ -224,11 +224,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
 
-  virtual void SaveMediaVisit(const std::string& publisher_id,
-                              const ledger::VisitData& visit_data,
-                              const uint64_t& duration,
-                              const uint64_t window_id) = 0;
-
   virtual void SetPublisherExclude(
       const std::string& publisher_id,
       const ledger::PUBLISHER_EXCLUDE& exclude) = 0;
@@ -287,6 +282,18 @@ class LEDGER_EXPORT Ledger {
       ledger::OnRefreshPublisherCallback callback) = 0;
 
   virtual void StartAutoContribute() = 0;
+
+  virtual void SaveMediaInfo(const std::string& type,
+                             const std::map<std::string, std::string>& data,
+                             ledger::PublisherInfoCallback callback) = 0;
+
+  virtual void SetInlineTipSetting(const std::string& key, bool enabled) = 0;
+
+  virtual bool GetInlineTipSetting(const std::string& key) = 0;
+
+  virtual std::string GetShareURL(
+      const std::string& type,
+      const std::map<std::string, std::string>& args) = 0;
 };
 
 }  // namespace ledger

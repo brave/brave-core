@@ -2241,6 +2241,38 @@ void RewardsServiceImpl::SaveRecurringTip(
                      AsWeakPtr()));
 }
 
+void RewardsServiceImpl::OnTwitterPublisherInfoSaved(
+    SaveMediaInfoCallback callback,
+    int32_t result,
+    ledger::PublisherInfoPtr publisher) {
+  if (!Connected()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+  if (Connected()) {
+    ledger::Result result_converted = static_cast<ledger::Result>(result);
+    std::unique_ptr<brave_rewards::ContentSite> site;
+
+    if (result_converted == ledger::Result::LEDGER_OK) {
+      site = std::make_unique<brave_rewards::ContentSite>(
+          PublisherInfoToContentSite(*publisher));
+    }
+
+    std::move(callback).Run(std::move(site));
+  }
+}
+
+void RewardsServiceImpl::SaveTwitterPublisherInfo(
+      const std::map<std::string, std::string>& args,
+    SaveMediaInfoCallback callback) {
+  bat_ledger_->SaveMediaInfo(
+      "twitter",
+      mojo::MapToFlatMap(args),
+      base::BindOnce(&RewardsServiceImpl::OnTwitterPublisherInfoSaved,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
 ledger::PublisherInfoList GetRecurringTipsOnFileTaskRunner(
     PublisherInfoDatabase* backend) {
   ledger::PublisherInfoList list;
@@ -2930,6 +2962,45 @@ void RewardsServiceImpl::OnRefreshPublisher(
 const RewardsNotificationService::RewardsNotificationsMap&
 RewardsServiceImpl::GetAllNotifications() {
   return notification_service_->GetAllNotifications();
+}
+
+void RewardsServiceImpl::SetInlineTipSetting(const std::string& key,
+                                             bool enabled) {
+  bat_ledger_->SetInlineTipSetting(key, enabled);
+}
+
+void RewardsServiceImpl::GetInlineTipSetting(
+      const std::string& key,
+      GetInlineTipSettingCallback callback) {
+  bat_ledger_->GetInlineTipSetting(
+      key,
+      base::BindOnce(&RewardsServiceImpl::OnInlineTipSetting,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnInlineTipSetting(
+    GetInlineTipSettingCallback callback,
+    bool enabled) {
+  std::move(callback).Run(enabled);
+}
+
+void RewardsServiceImpl::GetShareURL(
+      const std::string& type,
+      const std::map<std::string, std::string>& args,
+      GetShareURLCallback callback) {
+  bat_ledger_->GetShareURL(
+      type,
+      mojo::MapToFlatMap(args),
+      base::BindOnce(&RewardsServiceImpl::OnShareURL,
+          AsWeakPtr(),
+          std::move(callback)));
+}
+
+void RewardsServiceImpl::OnShareURL(
+    GetShareURLCallback callback,
+    const std::string& url) {
+  std::move(callback).Run(url);
 }
 
 }  // namespace brave_rewards

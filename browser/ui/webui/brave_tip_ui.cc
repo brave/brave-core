@@ -5,31 +5,36 @@
 
 #include "brave/browser/ui/webui/brave_tip_ui.h"
 
+#include <map>
 #include <memory>
 #include <string>
 #include <utility>
 
 #include "base/memory/weak_ptr.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ui/webui/basic_ui.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
+#include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/brave_tip_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/scoped_tabbed_browser_displayer.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/browser/web_ui_message_handler.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/components/brave_rewards/browser/publisher_banner.h"
+#include "ui/base/l10n/l10n_util.h"
 
 using content::WebUIMessageHandler;
 
@@ -56,9 +61,12 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
   void OnReconcileStamp(uint64_t reconcile_stamp);
   void OnGetRecurringTips(
       std::unique_ptr<brave_rewards::ContentSiteList> list);
+  void TweetTip(const base::ListValue *args);
 
   void OnPublisherBanner(
       std::unique_ptr<brave_rewards::PublisherBanner> banner);
+
+  void OnTwitterShareURL(const std::string& url);
 
   // RewardsServiceObserver implementation
   void OnWalletProperties(
@@ -114,6 +122,10 @@ void RewardsTipDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards_tip.getReconcileStamp",
       base::BindRepeating(&RewardsTipDOMHandler::GetReconcileStamp,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_tip.tweetTip",
+      base::BindRepeating(&RewardsTipDOMHandler::TweetTip,
                           base::Unretained(this)));
 }
 
@@ -291,6 +303,9 @@ BraveTipUI::BraveTipUI(content::WebUI* web_ui, const std::string& name)
   handler->Init();
 }
 
+BraveTipUI::~BraveTipUI() {
+}
+
 void RewardsTipDOMHandler::GetReconcileStamp(const base::ListValue *args) {
   if (rewards_service_) {
     rewards_service_->GetReconcileStamp(base::Bind(
@@ -331,5 +346,43 @@ void RewardsTipDOMHandler::OnRecurringTipSaved(
       "brave_rewards_tip.recurringTipSaved", base::Value(success));
 }
 
-BraveTipUI::~BraveTipUI() {
+void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
+  DCHECK_EQ(args->GetSize(), 2U);
+
+  if (!rewards_service_)
+    return;
+
+  // Retrieve the relevant metadata from arguments.
+  std::string name;
+  if (!args->GetString(0, &name))
+    return;
+  std::string tweet_id;
+  if (!args->GetString(1, &tweet_id))
+    return;
+
+  // Share the tip comment/compliment on Twitter.
+  std::string comment = l10n_util::GetStringFUTF8(
+      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET, base::UTF8ToUTF16(name));
+  std::map<std::string, std::string> share_url_args;
+  share_url_args["comment"] = comment;
+  share_url_args["name"] = name.erase(0, 1);
+  share_url_args["tweet_id"] = tweet_id;
+  rewards_service_->GetShareURL(
+      "twitter", share_url_args,
+      base::BindOnce(&RewardsTipDOMHandler::OnTwitterShareURL,
+                     base::Unretained(this)));
+}
+
+void RewardsTipDOMHandler::OnTwitterShareURL(const std::string& url) {
+  GURL gurl(url);
+  if (!gurl.is_valid())
+    return;
+
+  // Open a new tab with the prepopulated tweet ready to share.
+  chrome::ScopedTabbedBrowserDisplayer browser_displayer(
+      Profile::FromWebUI(web_ui()));
+  content::OpenURLParams open_url_params(
+      gurl, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
+  browser_displayer.browser()->OpenURL(open_url_params);
 }

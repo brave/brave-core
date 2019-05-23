@@ -77,6 +77,10 @@ using GetPublisherBannerCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::PublisherBanner>)>;
 using RefreshPublisherCallback =
     base::OnceCallback<void(bool, const std::string&)>;
+using SaveMediaInfoCallback =
+    base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSite>)>;
+using GetInlineTipSettingCallback = base::OnceCallback<void(bool)>;
+using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -205,6 +209,21 @@ class RewardsService : public KeyedService {
 
   virtual const RewardsNotificationService::RewardsNotificationsMap&
   GetAllNotifications() = 0;
+
+  virtual void SaveTwitterPublisherInfo(
+      const std::map<std::string, std::string>& args,
+      SaveMediaInfoCallback callback) = 0;
+
+  virtual void SetInlineTipSetting(const std::string& key, bool enabled) = 0;
+
+  virtual void GetInlineTipSetting(
+      const std::string& key,
+      GetInlineTipSettingCallback callback) = 0;
+
+  virtual void GetShareURL(
+      const std::string& type,
+      const std::map<std::string, std::string>& args,
+      GetShareURLCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

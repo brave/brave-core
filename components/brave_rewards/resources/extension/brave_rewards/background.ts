@@ -78,3 +78,47 @@ chrome.runtime.onConnect.addListener(function () {
     }
   })
 })
+
+const tipTwitterUser = (tweetMetaData: RewardsTip.TweetMetaData) => {
+  chrome.tabs.query({
+    active: true,
+    windowId: chrome.windows.WINDOW_ID_CURRENT
+  }, (tabs) => {
+    if (!tabs || tabs.length === 0) {
+      return
+    }
+    const tabId = tabs[0].id
+    if (tabId === undefined) {
+      return
+    }
+    chrome.braveRewards.tipTwitterUser(tabId, tweetMetaData)
+  })
+}
+
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  const action = typeof msg === 'string' ? msg : msg.type
+  switch (action) {
+    case 'tipTwitterUser': {
+      tipTwitterUser(msg.tweetMetaData)
+      return false
+    }
+    case 'rewardsEnabled': {
+      // Check if rewards is enabled
+      chrome.braveRewards.getRewardsMainEnabled(function (enabled: boolean) {
+        sendResponse({ enabled })
+      })
+      // Must return true for asynchronous calls to sendResponse
+      return true
+    }
+    case 'inlineTipSetting': {
+      // Check if inline tip is enabled
+      chrome.braveRewards.getInlineTipSetting(msg.key, function (enabled: boolean) {
+        sendResponse({ enabled })
+      })
+      // Must return true for asynchronous calls to sendResponse
+      return true
+    }
+    default:
+      return false
+  }
+})

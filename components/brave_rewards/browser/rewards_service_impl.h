@@ -218,6 +218,21 @@ class RewardsServiceImpl : public RewardsService,
 
   void SetContributionAmount(const double amount) const override;
 
+  void SaveTwitterPublisherInfo(
+      const std::map<std::string, std::string>& args,
+      SaveMediaInfoCallback callback) override;
+
+  void SetInlineTipSetting(const std::string& key, bool enabled) override;
+
+  void GetInlineTipSetting(
+      const std::string& key,
+      GetInlineTipSettingCallback callback) override;
+
+  void GetShareURL(
+      const std::string& type,
+      const std::map<std::string, std::string>& args,
+      GetShareURLCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartAutoContributeForTest();
@@ -320,6 +335,10 @@ class RewardsServiceImpl : public RewardsService,
   void OnPublisherActivityInfoLoaded(ledger::PublisherInfoCallback callback,
                                      uint32_t result,
                                      ledger::PublisherInfoPtr info);
+
+  void OnInlineTipSetting(GetInlineTipSettingCallback callback, bool enabled);
+
+  void OnShareURL(GetShareURLCallback callback, const std::string& url);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
@@ -483,6 +502,9 @@ class RewardsServiceImpl : public RewardsService,
       RefreshPublisherCallback callback,
       const std::string& publisher_key,
       bool verified);
+  void OnTwitterPublisherInfoSaved(SaveMediaInfoCallback callback,
+                                   int32_t result,
+                                   ledger::PublisherInfoPtr publisher);
 
   bool Connected() const;
   void ConnectionClosed();

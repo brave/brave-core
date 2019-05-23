@@ -9,7 +9,8 @@ group("brave_rewards") {
 transpile_web_ui("brave_rewards_panel") {
   entry_points = [
     ["brave_rewards_panel", rebase_path("brave_rewards_panel.tsx")],
-    ["brave_rewards_panel_background", rebase_path("background.ts")]
+    ["brave_rewards_panel_background", rebase_path("background.ts")],
+    ["brave_rewards_panel_content_twitter", rebase_path("content_scripts/twitter.ts")]
   ]
 
   resource_name = "brave_rewards_panel"

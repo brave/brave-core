@@ -511,6 +511,31 @@ void BatLedgerImpl::LoadPublisherInfo(
       std::bind(BatLedgerImpl::OnLoadPublisherInfo, holder, _1, _2));
 }
 
+// static
+void BatLedgerImpl::OnSaveMediaInfoCallback(
+    CallbackHolder<SaveMediaInfoCallback>* holder,
+    ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result, std::move(publisher_info));
+  }
+
+  delete holder;
+}
+
+void BatLedgerImpl::SaveMediaInfo(
+    const std::string& type,
+    const base::flat_map<std::string, std::string>& args,
+    SaveMediaInfoCallback callback) {
+  auto* holder = new CallbackHolder<SaveMediaInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->SaveMediaInfo(
+      type,
+      mojo::FlatMapToMap(args),
+      std::bind(BatLedgerImpl::OnSaveMediaInfoCallback, holder, _1, _2));
+}
+
 void BatLedgerImpl::OnRefreshPublisher(
     CallbackHolder<RefreshPublisherCallback>* holder,
     bool verified) {
@@ -532,6 +557,23 @@ void BatLedgerImpl::RefreshPublisher(
 
 void BatLedgerImpl::StartAutoContribute() {
   ledger_->StartAutoContribute();
+}
+
+void BatLedgerImpl::SetInlineTipSetting(const std::string& key, bool enabled) {
+  ledger_->SetInlineTipSetting(key, enabled);
+}
+
+void BatLedgerImpl::GetInlineTipSetting(
+    const std::string& key,
+    GetInlineTipSettingCallback callback) {
+  std::move(callback).Run(ledger_->GetInlineTipSetting(key));
+}
+
+void BatLedgerImpl::GetShareURL(
+    const std::string& type,
+    const base::flat_map<std::string, std::string>& args,
+    GetShareURLCallback callback) {
+  std::move(callback).Run(ledger_->GetShareURL(type, mojo::FlatMapToMap(args)));
 }
 
 }  // namespace bat_ledger

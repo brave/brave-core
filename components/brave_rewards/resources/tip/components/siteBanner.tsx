@@ -7,8 +7,8 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import { SiteBanner } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
+import { SiteBanner, TweetBox } from 'brave-ui/features/rewards'
 
 // Utils
 import * as tipActions from '../actions/tip_actions'
@@ -16,6 +16,7 @@ import * as utils from '../utils'
 
 interface Props extends RewardsTip.ComponentProps {
   publisher: RewardsTip.Publisher
+  tweetMetaData?: RewardsTip.TweetMetaData
 }
 
 interface State {
@@ -118,6 +119,14 @@ class Banner extends React.Component<Props, State> {
     return !!recurringDonation
   }
 
+  getScreenName = (tweetMetaData?: RewardsTip.TweetMetaData) => {
+    if (!tweetMetaData) {
+      return ''
+    }
+
+    return `@${tweetMetaData.screenName}`
+  }
+
   get addFundsLink () {
     return 'chrome://rewards/#add-funds'
   }
@@ -126,6 +135,7 @@ class Banner extends React.Component<Props, State> {
     const { walletInfo } = this.props.rewardsDonateData
     const { balance } = walletInfo
 
+    const tweetMetaData = this.props.tweetMetaData
     const publisher = this.props.publisher
     const verified = publisher.verified
     let logo = publisher.logo
@@ -144,6 +154,7 @@ class Banner extends React.Component<Props, State> {
         domain={publisher.publisherKey}
         title={publisher.title}
         name={publisher.name}
+        screenName={this.getScreenName(tweetMetaData)}
         provider={publisher.provider as Provider}
         recurringDonation={this.hasRecurringTip(publisher.publisherKey)}
         balance={balance.toString() || '0'}
@@ -160,7 +171,11 @@ class Banner extends React.Component<Props, State> {
         learnMoreNotice={'https://brave.com/faq-rewards/#unclaimed-funds'}
         addFundsLink={this.addFundsLink}
       >
-        {publisher.description}
+      {
+        this.props.tweetMetaData
+        ? <TweetBox tweetText={this.props.tweetMetaData.tweetText} tweetTimestamp={this.props.tweetMetaData.tweetTimestamp} />
+        : publisher.description
+      }
       </SiteBanner>
     )
   }

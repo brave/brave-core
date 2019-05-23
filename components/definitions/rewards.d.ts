@@ -41,6 +41,9 @@ declare namespace Rewards {
     enabledAds: boolean
     enabledContribute: boolean
     enabledMain: boolean
+    inlineTip: {
+      twitter: boolean
+    }
     firstLoad: boolean | null
     grants?: Grant[]
     excludedPublishersNumber: number

@@ -355,6 +355,47 @@
         ]
       },
       {
+        "name": "tipTwitterUser",
+        "type": "function",
+        "description": "Allow the user to perform a donation to a Twitter user",
+        "parameters": [
+          {
+            "name": "tabID",
+            "type": "integer"
+          },
+          {
+            "name": "tweetMetaData",
+            "type": "object",
+            "properties": {
+              "userId": {
+                "type": "string",
+                "description": "User ID of tweet author"
+              },
+              "name": {
+                "type": "string",
+                "description": "Name of tweet author"
+              },
+              "screenName": {
+                "type": "string",
+                "description": "Twitter handle of tweet author"
+              },
+              "tweetId": {
+                "type": "string",
+                "description": "Unique tweet ID"
+              },
+              "tweetTimestamp": {
+                "type": "number",
+                "description": "Timestamp (in milliseconds) of tweet"
+              },
+              "tweetText": {
+                "type": "string",
+                "description": "Textual contents of tweet"
+              }
+            }
+          }
+        ]
+      },
+      {
         "name": "getPublisherData",
         "type": "function",
         "description": "Get publisher data",
@@ -646,6 +687,27 @@
                     }
                   }
                 }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getInlineTipSetting",
+        "type": "function",
+        "description": "Gets setting for inline tip for provided key",
+        "parameters": [
+          {
+            "name": "key",
+            "value": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "enabled",
+                "type": "boolean"
               }
             ]
           }

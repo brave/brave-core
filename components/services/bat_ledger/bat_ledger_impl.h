@@ -153,6 +153,22 @@ class BatLedgerImpl : public mojom::BatLedger,
     const std::string& publisher_key,
     LoadPublisherInfoCallback callback) override;
 
+  void SaveMediaInfo(
+      const std::string& type,
+      const base::flat_map<std::string, std::string>& args,
+      SaveMediaInfoCallback callback) override;
+
+  void SetInlineTipSetting(const std::string& key, bool enabled) override;
+
+  void GetInlineTipSetting(
+    const std::string& key,
+    GetInlineTipSettingCallback callback) override;
+
+  void GetShareURL(
+    const std::string& type,
+    const base::flat_map<std::string, std::string>& args,
+    GetShareURLCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
@@ -215,6 +231,11 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   static void OnLoadPublisherInfo(
     CallbackHolder<LoadPublisherInfoCallback>* holder,
+    ledger::Result result,
+    ledger::PublisherInfoPtr info);
+
+  static void OnSaveMediaInfoCallback(
+    CallbackHolder<SaveMediaInfoCallback>* holder,
     ledger::Result result,
     ledger::PublisherInfoPtr info);
 

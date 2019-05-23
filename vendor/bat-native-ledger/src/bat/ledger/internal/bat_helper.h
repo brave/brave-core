@@ -365,6 +365,7 @@ struct CLIENT_STATE_ST {
   CurrentReconciles current_reconciles_;
   bool auto_contribute_ = false;
   bool rewards_enabled_ = false;
+  std::map<std::string, bool> inline_tip_;
 };
 
 struct GRANTS_PROPERTIES_ST {

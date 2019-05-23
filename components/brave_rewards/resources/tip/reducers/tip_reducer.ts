@@ -31,6 +31,12 @@ const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = 
       state.currentTipRecurring = false
       chrome.send('dialogClose')
       break
+    case types.ON_TWEET:
+      chrome.send('brave_rewards_tip.tweetTip', [
+        payload.name,
+        payload.tweetId
+      ])
+      break
     case types.ON_PUBLISHER_BANNER: {
       state = { ...state }
       if (!state.publishers) {

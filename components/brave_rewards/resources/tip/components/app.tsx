@@ -7,105 +7,62 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Components
-import Banner from './siteBanner'
-import DonationOverlay from 'brave-ui/features/rewards/donationOverlay'
+import TipSite from './tipSite'
+import TipTwitterUser from './tipTwitterUser'
 
 // Utils
 import * as rewardsActions from '../actions/tip_actions'
 
-interface Props extends RewardsTip.ComponentProps {
+interface TipDialogArgs {
   publisherKey: string
+  tweetMetaData?: RewardsTip.TweetMetaData
+}
+
+interface Props extends RewardsTip.ComponentProps {
+  dialogArgs: TipDialogArgs
 }
 
 export class App extends React.Component<Props, {}> {
-
   get actions () {
     return this.props.actions
   }
 
-  onClose = () => {
-    this.actions.onCloseDialog()
-  }
-
-  generateTipOverlay = (publisher: RewardsTip.Publisher) => {
-    let domain = ''
-    let monthlyDate
-    const {
-      currentTipAmount,
-      currentTipRecurring,
-      reconcileStamp
-    } = this.props.rewardsDonateData
-
-    const publisherKey = publisher && publisher.publisherKey
-
-    if (!publisherKey) {
-      return null
-    }
-
-    if (currentTipRecurring && reconcileStamp) {
-      monthlyDate = new Date(reconcileStamp * 1000).toLocaleDateString()
-    }
-
-    if (publisher.provider && publisher.name) {
-      domain = publisher.name
+  getTipBanner = (publisher: RewardsTip.Publisher, tweetMetaData?: RewardsTip.TweetMetaData) => {
+    if (tweetMetaData) {
+      return (
+        <TipTwitterUser
+          publisher={publisher}
+          tweetMetaData={tweetMetaData}
+        />
+      )
     } else {
-      domain = publisherKey
+      return (
+        <TipSite
+          publisher={publisher}
+        />
+      )
     }
-
-    const verified = publisher.verified
-    let logo = publisher.logo
-
-    const internalFavicon = /^https:\/\/[a-z0-9-]+\.invalid(\/)?$/
-    if (internalFavicon.test(publisher.logo)) {
-      logo = `chrome://favicon/size/160@2x/${publisher.logo}`
-    }
-
-    if (!verified) {
-      logo = ''
-    }
-
-    setTimeout(() => {
-      this.onClose()
-    }, 3000)
-
-    return (
-      <DonationOverlay
-        onClose={this.onClose}
-        success={true}
-        domain={domain}
-        amount={currentTipAmount}
-        monthlyDate={monthlyDate}
-        logo={logo}
-      />
-    )
   }
 
   render () {
-    const { finished, error, publishers } = this.props.rewardsDonateData
+    const { publishers } = this.props.rewardsDonateData
 
     if (!publishers) {
       return null
     }
 
-    const publisher = publishers[this.props.publisherKey]
+    const tweetMetaData = this.props.dialogArgs.tweetMetaData
+    const publisherKey = this.props.dialogArgs.publisherKey
+    const publisher = publishers[publisherKey]
 
     if (!publisher) {
       return null
     }
 
     return (
-      <>
-        {
-          !finished && !error
-          ? <Banner publisher={publisher} />
-          : null
-        }
-        {
-          finished
-          ? this.generateTipOverlay(publisher)
-          : null
-        }
-      </>
+      <div>
+        {this.getTipBanner(publisher, tweetMetaData)}
+      </div>
     )
   }
 }

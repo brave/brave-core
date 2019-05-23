@@ -4,6 +4,7 @@
 
 export const enum types {
   ON_CLOSE_DIALOG = '@@rewards/ON_CLOSE_DIALOG',
+  ON_TWEET = '@@rewards/ON_TWEET',
   ON_PUBLISHER_BANNER = '@@rewards/ON_PUBLISHER_BANNER',
   ON_WALLET_PROPERTIES = '@@rewards/ON_WALLET_PROPERTIES',
   GET_WALLET_PROPERTIES = '@@rewards/GET_WALLET_PROPERTIES',
