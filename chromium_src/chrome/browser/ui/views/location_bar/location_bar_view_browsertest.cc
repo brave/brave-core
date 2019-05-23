@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 
+#include "base/strings/string_util.h"
 #include "chrome/browser/ssl/security_state_tab_helper.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -77,7 +78,7 @@ class SecurityIndicatorTest : public InProcessBrowserTest {
 IN_PROC_BROWSER_TEST_F(SecurityIndicatorTest, CheckIndicatorText) {
   const GURL kMockNonsecureURL =
       embedded_test_server()->GetURL("example.test", "/");
-  const base::string16 kEmptyString = base::string16();
+  const base::string16 kEmptyString = base::EmptyString16();
 
   const struct {
     GURL url;
