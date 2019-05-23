@@ -1,18 +1,18 @@
 diff --git a/third_party/blink/renderer/core/html/html_script_element.cc b/third_party/blink/renderer/core/html/html_script_element.cc
-index bab8769dc88693b05095316a24545ce65c97565f..8f4ac82ac336f5315372e46dc27dc667698be654 100644
+index d9cb90da2d99510d616211ce104e3da99424f3ea..6b3a3d8cf8e3b31306c9a815cf74bf430618e2cf 100644
 --- a/third_party/blink/renderer/core/html/html_script_element.cc
 +++ b/third_party/blink/renderer/core/html/html_script_element.cc
 @@ -41,6 +41,8 @@
- #include "third_party/blink/renderer/core/trustedtypes/trusted_types_util.h"
  #include "third_party/blink/renderer/platform/bindings/exception_state.h"
+ #include "third_party/blink/renderer/platform/runtime_enabled_features.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
  namespace blink {
  
  using namespace html_names;
-@@ -49,7 +51,11 @@ inline HTMLScriptElement::HTMLScriptElement(Document& document,
-                                             const CreateElementFlags flags)
+@@ -49,7 +51,11 @@ HTMLScriptElement::HTMLScriptElement(Document& document,
+                                      const CreateElementFlags flags)
      : HTMLElement(kScriptTag, document),
        loader_(InitializeScriptLoader(flags.IsCreatedByParser(),
 -                                     flags.WasAlreadyStarted())) {}

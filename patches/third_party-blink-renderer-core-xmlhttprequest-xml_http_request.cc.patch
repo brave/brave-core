@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-index 6e229da0f3543c04fccb460af789c000ae3ab5cb..97c45a4cbd5ce52e6fa786e4633efa3a8af93b21 100644
+index 6166612476ad3d639a27471f9992dfd0b2a1043a..3f7fe59e1ac86f07fd1ef85f9a5d4e27e6bb67ca 100644
 --- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
 +++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-@@ -92,6 +92,13 @@
+@@ -93,6 +93,13 @@
  #include "third_party/blink/renderer/platform/wtf/text/cstring.h"
  #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
  
@@ -16,7 +16,7 @@ index 6e229da0f3543c04fccb460af789c000ae3ab5cb..97c45a4cbd5ce52e6fa786e4633efa3a
  namespace blink {
  
  namespace {
-@@ -1163,6 +1170,21 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
+@@ -1165,6 +1172,21 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
                                                     resource_loader_options);
    loader_->SetTimeout(timeout_);
    loader_->Start(request);
@@ -27,7 +27,7 @@ index 6e229da0f3543c04fccb460af789c000ae3ab5cb..97c45a4cbd5ce52e6fa786e4633efa3a
 +      ::brave_page_graph::PageGraph* page_graph = isolate_->GetPageGraph();
 +      if (page_graph != nullptr) {
 +        page_graph->RegisterRequestStartFromCurrentScript(
-+          raw_resource->Identifier(), url_,
++          raw_resource->InspectorId(), url_,
 +          brave_page_graph::RequestType::kRequestTypeAJAX);
 +      }
 +    }

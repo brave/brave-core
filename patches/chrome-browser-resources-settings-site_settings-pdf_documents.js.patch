@@ -1,11 +1,19 @@
 diff --git a/chrome/browser/resources/settings/site_settings/pdf_documents.js b/chrome/browser/resources/settings/site_settings/pdf_documents.js
-index 66f61a6db59bc5a549db3ec505518462f72b5cb7..367b6e80aebaea557fba9aa216ce70dc9fec1bdf 100644
+index 66f61a6db59bc5a549db3ec505518462f72b5cb7..60bf0f46bd6c54d75e1021a25e03f9a609441c06 100644
 --- a/chrome/browser/resources/settings/site_settings/pdf_documents.js
 +++ b/chrome/browser/resources/settings/site_settings/pdf_documents.js
-@@ -17,4 +17,4 @@ Polymer({
+@@ -17,4 +17,12 @@ Polymer({
        notify: true,
      },
    },
 -});
++
++  /** @override */
++  ready: function () {
++    if (loadTimeData.getBoolean('isPdfjsDisabled')) {
++      this.$.toggle.disabled = true;
++      this.$.toggle.checked = true;
++    }
++  },
 +});
 \ No newline at end of file

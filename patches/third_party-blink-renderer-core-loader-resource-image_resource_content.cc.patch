@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/loader/resource/image_resource_content.cc b/third_party/blink/renderer/core/loader/resource/image_resource_content.cc
-index b2a1d1f3a7a2cf096144a9adb9c38496e46e66e6..d02307a42d1ce6d3790e6142fe8990929665a75e 100644
+index 1a9981b13d6cf9db050fa2ca10dc582e6a2498a2..dad61c3830b97033347a6fff01ec9dfca60a81f2 100644
 --- a/third_party/blink/renderer/core/loader/resource/image_resource_content.cc
 +++ b/third_party/blink/renderer/core/loader/resource/image_resource_content.cc
-@@ -22,6 +22,13 @@
+@@ -23,6 +23,13 @@
  #include "third_party/blink/renderer/platform/wtf/vector.h"
  #include "v8/include/v8.h"
  
@@ -16,7 +16,7 @@ index b2a1d1f3a7a2cf096144a9adb9c38496e46e66e6..d02307a42d1ce6d3790e6142fe899092
  namespace blink {
  
  namespace {
-@@ -128,6 +135,18 @@ ImageResourceContent* ImageResourceContent::Fetch(FetchParameters& params,
+@@ -129,6 +136,18 @@ ImageResourceContent* ImageResourceContent::Fetch(FetchParameters& params,
    return resource->GetContent();
  }
  
@@ -27,7 +27,7 @@ index b2a1d1f3a7a2cf096144a9adb9c38496e46e66e6..d02307a42d1ce6d3790e6142fe899092
 +  ImageResource* resource = ImageResource::Fetch(params, fetcher);
 +  if (!resource)
 +    return nullptr;
-+  *identifier = resource->Identifier();
++  *identifier = resource->InspectorId();
 +  return resource->GetContent();
 +}
 +#endif

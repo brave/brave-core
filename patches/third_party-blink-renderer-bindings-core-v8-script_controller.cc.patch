@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/script_controller.cc b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
-index 63d3684c66dd2ca6112637f846421f840e67ee2f..ed2935644496d6b167f5714b5d36c99254060e0f 100644
+index 5987273c80d97900860b893d561d8466098d23c3..f549e4372e6f675b3ee66c99215de2ef28540e2f 100644
 --- a/third_party/blink/renderer/bindings/core/v8/script_controller.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
 @@ -71,6 +71,13 @@

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/container_node.cc b/third_party/blink/renderer/core/dom/container_node.cc
-index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b57d13cd62 100644
+index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..e4464e08a8fd5d652c69cbb64511eda6ab295194 100644
 --- a/third_party/blink/renderer/core/dom/container_node.cc
 +++ b/third_party/blink/renderer/core/dom/container_node.cc
 @@ -61,6 +61,13 @@
@@ -16,7 +16,7 @@ index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b5
  namespace blink {
  
  static void DispatchChildInsertionEvents(Node&);
-@@ -925,7 +932,44 @@ void ContainerNode::NotifyNodeInsertedInternal(
+@@ -930,7 +937,44 @@ void ContainerNode::NotifyNodeInsertedInternal(
    EventDispatchForbiddenScope assert_no_event_dispatch;
    ScriptForbiddenScope forbid_script;
  
@@ -61,7 +61,7 @@ index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b5
      // As an optimization we don't notify leaf nodes when when inserting
      // into detached subtrees that are not in a shadow tree.
      if (!isConnected() && !IsInShadowTree() && !node.IsContainerNode())
-@@ -947,6 +991,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
+@@ -952,6 +996,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
      // As an optimization we skip notifying Text nodes and other leaf nodes
      // of removal when they're not in the Document tree and not in a shadow root
      // since the virtual call to removedFrom is not needed.

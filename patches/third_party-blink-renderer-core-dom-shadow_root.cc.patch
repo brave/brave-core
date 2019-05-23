@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/shadow_root.cc b/third_party/blink/renderer/core/dom/shadow_root.cc
-index edec50e12ef40630ec554589aeec6db0bb057e7a..1e6a53f5d792bc7b60385b9dbf7d92f35f3745f2 100644
+index e1b14d1c5db06951ddb1a60f31494c7d9019ccb6..bf0f4e56157105f42b7f07cf5df8764f259037ac 100644
 --- a/third_party/blink/renderer/core/dom/shadow_root.cc
 +++ b/third_party/blink/renderer/core/dom/shadow_root.cc
 @@ -48,6 +48,12 @@

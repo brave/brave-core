@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/document.h b/third_party/blink/renderer/core/dom/document.h
-index 9cbc69b499d67f686fd31bd667e0fbbbd0cce66d..751cdc0cded6f9c775c69747128614340ab0b9cc 100644
+index c89f9d712e9a061cb4218c2863e058f5a62173ae..d71a6a97aa965691cfbdc9e33d878122eb5c7b7b 100644
 --- a/third_party/blink/renderer/core/dom/document.h
 +++ b/third_party/blink/renderer/core/dom/document.h
-@@ -75,6 +75,12 @@
+@@ -73,6 +73,12 @@
  #include "third_party/blink/renderer/platform/wtf/casting.h"
  #include "third_party/blink/renderer/platform/wtf/hash_set.h"
  
@@ -15,9 +15,9 @@ index 9cbc69b499d67f686fd31bd667e0fbbbd0cce66d..751cdc0cded6f9c775c6974712861434
  namespace base {
  class SingleThreadTaskRunner;
  }
-@@ -1536,6 +1542,10 @@ class CORE_EXPORT Document : public ContainerNode,
-       AXID ax_id,
-       WebComputedAXTree* tree);
+@@ -1540,6 +1546,10 @@ class CORE_EXPORT Document : public ContainerNode,
+   // inside a cross-process frame (MimeHandlerView).
+   void SetShowBeforeUnloadDialog(bool show_dialog);
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  brave_page_graph::PageGraph* GetPageGraph();
@@ -26,7 +26,7 @@ index 9cbc69b499d67f686fd31bd667e0fbbbd0cce66d..751cdc0cded6f9c775c6974712861434
   protected:
    void DidUpdateSecurityOrigin() final;
  
-@@ -1548,6 +1558,10 @@ class CORE_EXPORT Document : public ContainerNode,
+@@ -1552,6 +1562,10 @@ class CORE_EXPORT Document : public ContainerNode,
      return parser_sync_policy_;
    }
  
