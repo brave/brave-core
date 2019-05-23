@@ -33,7 +33,7 @@ class AdBlockRegionalService;
 // managing regional AdBlock clients.
 class AdBlockRegionalServiceManager {
  public:
-  AdBlockRegionalServiceManager(BraveComponent::Delegate* delegate);
+  explicit AdBlockRegionalServiceManager(BraveComponent::Delegate* delegate);
   ~AdBlockRegionalServiceManager();
 
   static bool IsSupportedLocale(const std::string& locale);

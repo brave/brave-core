@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/json/json_reader.h"
 #include "base/task/post_task.h"

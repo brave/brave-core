@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -99,7 +100,8 @@ bool BraveComponentInstallerPolicy::VerifyInstallation(
       install_dir.Append(FILE_PATH_LITERAL("manifest.json")));
 }
 
-bool BraveComponentInstallerPolicy::SupportsGroupPolicyEnabledComponentUpdates() const {
+bool BraveComponentInstallerPolicy::
+SupportsGroupPolicyEnabledComponentUpdates() const {
   return false;
 }
 
@@ -107,7 +109,8 @@ bool BraveComponentInstallerPolicy::RequiresNetworkEncryption() const {
   return false;
 }
 
-update_client::CrxInstaller::Result BraveComponentInstallerPolicy::OnCustomInstall(
+update_client::CrxInstaller::Result
+BraveComponentInstallerPolicy::OnCustomInstall(
   const base::DictionaryValue& manifest,
   const base::FilePath& install_dir) {
   return Result(InstallError::NONE);
@@ -146,7 +149,8 @@ std::vector<std::string> BraveComponentInstallerPolicy::GetMimeTypes() const {
   return std::vector<std::string>();
 }
 
-update_client::InstallerAttributes BraveComponentInstallerPolicy::GetInstallerAttributes() const {
+update_client::InstallerAttributes
+BraveComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
 }
 

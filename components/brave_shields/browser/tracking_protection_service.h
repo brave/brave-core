@@ -6,11 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_TRACKING_PROTECTION_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_TRACKING_PROTECTION_SERVICE_H_
 
-#include <stdint.h>
-
 #include <map>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_set.h"
@@ -43,7 +42,8 @@ class TrackingProtectionService : public LocalDataFilesObserver {
   using GetDATFileDataResult =
       std::pair<std::unique_ptr<CTPParser>,
                 brave_component_updater::DATFileDataBuffer>;
-  TrackingProtectionService(LocalDataFilesService* local_data_files_service);
+  explicit TrackingProtectionService(
+      LocalDataFilesService* local_data_files_service);
   ~TrackingProtectionService() override;
 
   bool ShouldStartRequest(const GURL& spec,

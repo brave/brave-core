@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/component_updater/brave_component_updater_delegate.h"
+
+#include <utility>
 
 #include "base/sequenced_task_runner.h"
 #include "base/task/post_task.h"
@@ -47,7 +50,8 @@ void BraveComponentUpdaterDelegate::OnDemandUpdate(
   ComponentsUI::OnDemandUpdate(component_id);
 }
 
-scoped_refptr<base::SequencedTaskRunner> BraveComponentUpdaterDelegate::GetTaskRunner() {
+scoped_refptr<base::SequencedTaskRunner>
+BraveComponentUpdaterDelegate::GetTaskRunner() {
   return task_runner_;
 }
 

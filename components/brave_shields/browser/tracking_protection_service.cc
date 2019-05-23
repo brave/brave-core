@@ -187,9 +187,10 @@ void TrackingProtectionService::OnGetSTPDATFileData(std::string contents) {
 
   base::PostTaskWithTraits(
       FROM_HERE, {BrowserThread::IO},
-      base::BindOnce(&TrackingProtectionService::UpdateFirstPartyStorageTrackers,
-                     weak_factory_io_thread_.GetWeakPtr(),
-                     std::move(storage_trackers)));
+      base::BindOnce(
+          &TrackingProtectionService::UpdateFirstPartyStorageTrackers,
+          weak_factory_io_thread_.GetWeakPtr(),
+          std::move(storage_trackers)));
 }
 
 void TrackingProtectionService::UpdateFirstPartyStorageTrackers(

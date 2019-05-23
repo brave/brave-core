@@ -27,7 +27,7 @@ void OnBeforeURLRequest_HttpseFileWork(
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_NE(ctx->request_identifier, 0U);
   g_brave_browser_process->https_everywhere_service()->
-    GetHTTPSURL(&ctx->request_url, ctx->request_identifier, ctx->new_url_spec);
+    GetHTTPSURL(&ctx->request_url, ctx->request_identifier, &ctx->new_url_spec);
 }
 
 void OnBeforeURLRequest_HttpsePostFileWork(
@@ -72,8 +72,9 @@ int OnBeforeURLRequest_HttpsePreFileWork(
 
   if (is_valid_url) {
     if (!g_brave_browser_process->https_everywhere_service()->
-        GetHTTPSURLFromCacheOnly(&ctx->request_url, ctx->request_identifier,
-          ctx->new_url_spec)) {
+        GetHTTPSURLFromCacheOnly(&ctx->request_url,
+                                 ctx->request_identifier,
+                                 &ctx->new_url_spec)) {
       g_brave_browser_process->https_everywhere_service()->
         GetTaskRunner()->PostTaskAndReply(FROM_HERE,
           base::Bind(OnBeforeURLRequest_HttpseFileWork, ctx),

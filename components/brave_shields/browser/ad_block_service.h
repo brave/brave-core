@@ -14,9 +14,10 @@
 
 #include "brave/components/brave_shields/browser/ad_block_base_service.h"
 #include "components/prefs/pref_registry_simple.h"
-#include "content/public/common/resource_type.h"
 
 class AdBlockServiceTest;
+
+using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 
@@ -34,7 +35,7 @@ const char kAdBlockComponentBase64PublicKey[] =
 // The brave shields service in charge of ad-block checking and init.
 class AdBlockService : public AdBlockBaseService {
  public:
-  AdBlockService(brave_component_updater::BraveComponent::Delegate* delegate);
+  explicit AdBlockService(BraveComponent::Delegate* delegate);
   ~AdBlockService() override;
 
  protected:
@@ -58,7 +59,7 @@ class AdBlockService : public AdBlockBaseService {
 
 // Creates the AdBlockService
 std::unique_ptr<AdBlockService> AdBlockServiceFactory(
-    brave_component_updater::BraveComponent::Delegate* delegate);
+    BraveComponent::Delegate* delegate);
 
 // Registers the local_state preferences used by Adblock
 void RegisterPrefsForAdBlockService(PrefRegistrySimple* registry);

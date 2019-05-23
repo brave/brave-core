@@ -32,7 +32,7 @@ class BraveComponent {
     virtual scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() = 0;
   };
 
-  BraveComponent(Delegate* delegate);
+  explicit BraveComponent(Delegate* delegate);
   virtual ~BraveComponent();
   void Register(const std::string& component_name,
                 const std::string& component_id,

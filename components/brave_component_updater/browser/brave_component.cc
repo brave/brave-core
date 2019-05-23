@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_component_updater/browser/brave_component.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/sequenced_task_runner.h"
 

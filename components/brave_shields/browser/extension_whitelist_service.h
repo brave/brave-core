@@ -6,11 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_EXTENSION_WHITELIST_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_EXTENSION_WHITELIST_SERVICE_H_
 
-#include <stdint.h>
-
 #include <map>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -36,7 +35,8 @@ class ExtensionWhitelistService : public LocalDataFilesObserver {
       std::pair<std::unique_ptr<ExtensionWhitelistParser>,
                                 brave_component_updater::DATFileDataBuffer>;
 
-  ExtensionWhitelistService(LocalDataFilesService* local_data_files_service);
+  explicit ExtensionWhitelistService(
+      LocalDataFilesService* local_data_files_service);
   ~ExtensionWhitelistService() override;
 
   bool IsWhitelisted(const std::string& extension_id) const;

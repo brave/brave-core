@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_DAT_FILE_UTIL_H_
-#define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_DAT_FILE_UTIL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_DAT_FILE_UTIL_H_
+#define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_DAT_FILE_UTIL_H_
 
+#include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -36,4 +38,4 @@ std::pair<std::unique_ptr<T>, DATFileDataBuffer> LoadDATFileData(
 
 }  // namespace brave_component_updater
 
-#endif  // BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_DAT_FILE_UTIL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_DAT_FILE_UTIL_H_

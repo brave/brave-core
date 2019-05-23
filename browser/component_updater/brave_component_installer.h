@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_COMPONENT_INSTALLER_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_COMPONENT_INSTALLER_H_
+#ifndef BRAVE_BROWSER_COMPONENT_UPDATER_BRAVE_COMPONENT_INSTALLER_H_
+#define BRAVE_BROWSER_COMPONENT_UPDATER_BRAVE_COMPONENT_INSTALLER_H_
 
 #include <stdint.h>
 
@@ -68,4 +69,4 @@ void RegisterComponent(component_updater::ComponentUpdateService* cus,
 
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_BRAVE_COMPONENT_INSTALLER_H_
+#endif  // BRAVE_BROWSER_COMPONENT_UPDATER_BRAVE_COMPONENT_INSTALLER_H_

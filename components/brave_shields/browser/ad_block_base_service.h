@@ -10,6 +10,7 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -34,7 +35,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
       std::pair<std::unique_ptr<AdBlockClient>,
                 brave_component_updater::DATFileDataBuffer>;
 
-  AdBlockBaseService(BraveComponent::Delegate* delegate);
+  explicit AdBlockBaseService(BraveComponent::Delegate* delegate);
   ~AdBlockBaseService() override;
 
   bool ShouldStartRequest(const GURL &url, content::ResourceType resource_type,

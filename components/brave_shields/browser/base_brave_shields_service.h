@@ -27,7 +27,7 @@ namespace brave_shields {
 // tracking protection, etc.
 class BaseBraveShieldsService : public BraveComponent {
  public:
-  BaseBraveShieldsService(BraveComponent::Delegate* delegate);
+  explicit BaseBraveShieldsService(BraveComponent::Delegate* delegate);
   ~BaseBraveShieldsService() override;
   bool Start();
   void Stop();

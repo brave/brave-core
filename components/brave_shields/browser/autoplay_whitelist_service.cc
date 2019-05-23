@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 
+#include <utility>
+
 #include "base/bind.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"

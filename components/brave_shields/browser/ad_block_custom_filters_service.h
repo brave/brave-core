@@ -21,7 +21,7 @@ namespace brave_shields {
 // checking and init.
 class AdBlockCustomFiltersService : public AdBlockBaseService {
  public:
-  AdBlockCustomFiltersService(BraveComponent::Delegate* delegate);
+  explicit AdBlockCustomFiltersService(BraveComponent::Delegate* delegate);
   ~AdBlockCustomFiltersService() override;
 
   std::string GetCustomFilters();

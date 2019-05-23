@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -36,10 +37,10 @@ const char kVideoPlayingDetect[] =
 
 using extensions::ExtensionBrowserTest;
 
-const std::string kLocalDataFilesComponentTestId(
-    "eclbkhjphkhalklhipiicaldjbnhdfkc");
+const char kLocalDataFilesComponentTestId[] =
+    "eclbkhjphkhalklhipiicaldjbnhdfkc";
 
-const std::string kLocalDataFilesComponentTestBase64PublicKey =
+const char kLocalDataFilesComponentTestBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsleoSxQ3DN+6xym2P1uX"
     "mN6ArIWd9Oru5CSjS0SRE5upM2EnAl/C20TP8JdIlPi/3tk/SN6Y92K3xIhAby5F"
     "0rbPDSTXEWGy72tv2qb/WySGwDdvYQu9/J5sEDneVcMrSHcC0VWgcZR0eof4BfOy"
@@ -49,123 +50,124 @@ const std::string kLocalDataFilesComponentTestBase64PublicKey =
     "qwIDAQAB";
 
 class AutoplayPermissionContextBrowserTest : public InProcessBrowserTest {
-  public:
-    void SetUpOnMainThread() override {
-      InProcessBrowserTest::SetUpOnMainThread();
+ public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
 
-      content_client_.reset(new ChromeContentClient);
-      content::SetContentClient(content_client_.get());
-      browser_content_client_.reset(new BraveContentBrowserClient());
-      content::SetBrowserClientForTesting(browser_content_client_.get());
+    content_client_.reset(new ChromeContentClient);
+    content::SetContentClient(content_client_.get());
+    browser_content_client_.reset(new BraveContentBrowserClient());
+    content::SetBrowserClientForTesting(browser_content_client_.get());
 
-      host_resolver()->AddRule("*", "127.0.0.1");
-      content::SetupCrossSiteRedirector(embedded_test_server());
+    host_resolver()->AddRule("*", "127.0.0.1");
+    content::SetupCrossSiteRedirector(embedded_test_server());
 
-      brave::RegisterPathProvider();
-      base::FilePath test_data_dir;
-      base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-      test_data_dir = test_data_dir.AppendASCII("autoplay");
-      embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    test_data_dir = test_data_dir.AppendASCII("autoplay");
+    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
-      ASSERT_TRUE(embedded_test_server()->Start());
+    ASSERT_TRUE(embedded_test_server()->Start());
 
-      autoplay_method_url_ =
-        embedded_test_server()->GetURL("a.com", "/autoplay_by_method.html");
-      autoplay_attr_url_ =
-        embedded_test_server()->GetURL("a.com", "/autoplay_by_attr.html");
-      autoplay_method_muted_url_ =
-        embedded_test_server()->GetURL("a.com", "/autoplay_by_method_muted.html");
-      autoplay_attr_muted_url_ =
-        embedded_test_server()->GetURL("a.com", "/autoplay_by_attr_muted.html");
-      file_autoplay_method_url_ =
-        GURL("file://" + test_data_dir.AsUTF8Unsafe() +
-             "/autoplay_by_method.html");
-      file_autoplay_attr_url_ =
-        GURL("file://" + test_data_dir.AsUTF8Unsafe() +
-             "/autoplay_by_attr.html");
+    autoplay_method_url_ =
+      embedded_test_server()->GetURL("a.com", "/autoplay_by_method.html");
+    autoplay_attr_url_ =
+      embedded_test_server()->GetURL("a.com", "/autoplay_by_attr.html");
+    autoplay_method_muted_url_ =
+      embedded_test_server()->GetURL("a.com", "/autoplay_by_method_muted.html");
+    autoplay_attr_muted_url_ =
+      embedded_test_server()->GetURL("a.com", "/autoplay_by_attr_muted.html");
+    file_autoplay_method_url_ =
+      GURL("file://" + test_data_dir.AsUTF8Unsafe() +
+           "/autoplay_by_method.html");
+    file_autoplay_attr_url_ =
+      GURL("file://" + test_data_dir.AsUTF8Unsafe() +
+           "/autoplay_by_attr.html");
 
-      GURL pattern_url = embedded_test_server()->GetURL("a.com", "/index.html");
-      top_level_page_pattern_ =
-          ContentSettingsPattern::FromString(pattern_url.spec());
-    }
+    GURL pattern_url = embedded_test_server()->GetURL("a.com", "/index.html");
+    top_level_page_pattern_ =
+        ContentSettingsPattern::FromString(pattern_url.spec());
+  }
 
-    void TearDown() override {
-      browser_content_client_.reset();
-      content_client_.reset();
-    }
+  void TearDown() override {
+    browser_content_client_.reset();
+    content_client_.reset();
+  }
 
-    const GURL& autoplay_method_url() { return autoplay_method_url_; }
-    const GURL& autoplay_attr_url() { return autoplay_attr_url_; }
-    const GURL& autoplay_method_muted_url() { return autoplay_method_muted_url_; }
-    const GURL& autoplay_attr_muted_url() { return autoplay_attr_muted_url_; }
-    const GURL& file_autoplay_method_url() { return file_autoplay_method_url_; }
-    const GURL& file_autoplay_attr_url() { return file_autoplay_attr_url_; }
+  const GURL& autoplay_method_url() { return autoplay_method_url_; }
+  const GURL& autoplay_attr_url() { return autoplay_attr_url_; }
+  const GURL& autoplay_method_muted_url() { return autoplay_method_muted_url_; }
+  const GURL& autoplay_attr_muted_url() { return autoplay_attr_muted_url_; }
+  const GURL& file_autoplay_method_url() { return file_autoplay_method_url_; }
+  const GURL& file_autoplay_attr_url() { return file_autoplay_attr_url_; }
 
-    const ContentSettingsPattern& top_level_page_pattern() {
-      return top_level_page_pattern_;
-    }
+  const ContentSettingsPattern& top_level_page_pattern() {
+    return top_level_page_pattern_;
+  }
 
-    HostContentSettingsMap * content_settings() {
-      return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-    }
+  HostContentSettingsMap * content_settings() {
+    return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  }
 
-    void AllowAutoplay() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern_,
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_AUTOPLAY,
-          std::string(),
-          CONTENT_SETTING_ALLOW);
-    }
+  void AllowAutoplay() {
+    content_settings()->SetContentSettingCustomScope(
+        top_level_page_pattern_,
+        ContentSettingsPattern::Wildcard(),
+        CONTENT_SETTINGS_TYPE_AUTOPLAY,
+        std::string(),
+        CONTENT_SETTING_ALLOW);
+  }
 
-    void AskAutoplay() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern_,
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_AUTOPLAY,
-          std::string(),
-          CONTENT_SETTING_ASK);
-    }
+  void AskAutoplay() {
+    content_settings()->SetContentSettingCustomScope(
+        top_level_page_pattern_,
+        ContentSettingsPattern::Wildcard(),
+        CONTENT_SETTINGS_TYPE_AUTOPLAY,
+        std::string(),
+        CONTENT_SETTING_ASK);
+  }
 
-    void BlockAutoplay() {
-      content_settings()->SetContentSettingCustomScope(
-          top_level_page_pattern_,
-          ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_AUTOPLAY,
-          std::string(),
-          CONTENT_SETTING_BLOCK);
-    }
+  void BlockAutoplay() {
+    content_settings()->SetContentSettingCustomScope(
+        top_level_page_pattern_,
+        ContentSettingsPattern::Wildcard(),
+        CONTENT_SETTINGS_TYPE_AUTOPLAY,
+        std::string(),
+        CONTENT_SETTING_BLOCK);
+  }
 
-    content::WebContents* contents() {
-      return browser()->tab_strip_model()->GetActiveWebContents();
-    }
+  content::WebContents* contents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
 
-    bool NavigateToURLUntilLoadStop(const GURL& url) {
-      ui_test_utils::NavigateToURL(browser(), url);
-      return WaitForLoadStop(contents());
-    }
+  bool NavigateToURLUntilLoadStop(const GURL& url) {
+    ui_test_utils::NavigateToURL(browser(), url);
+    return WaitForLoadStop(contents());
+  }
 
-    void WaitForPlaying() {
-      std::string msg_from_renderer;
-      ASSERT_TRUE(ExecuteScriptAndExtractString(contents(), "notifyWhenPlaying();",
-                                                &msg_from_renderer));
-      ASSERT_EQ("PLAYING", msg_from_renderer);
-    }
+  void WaitForPlaying() {
+    std::string msg_from_renderer;
+    ASSERT_TRUE(ExecuteScriptAndExtractString(contents(),
+                                              "notifyWhenPlaying();",
+                                              &msg_from_renderer));
+    ASSERT_EQ("PLAYING", msg_from_renderer);
+  }
 
-  private:
-    GURL autoplay_method_url_;
-    GURL autoplay_attr_url_;
-    GURL autoplay_method_muted_url_;
-    GURL autoplay_attr_muted_url_;
-    GURL file_autoplay_method_url_;
-    GURL file_autoplay_attr_url_;
-    ContentSettingsPattern top_level_page_pattern_;
-    std::unique_ptr<ChromeContentClient> content_client_;
-    std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
+ private:
+  GURL autoplay_method_url_;
+  GURL autoplay_attr_url_;
+  GURL autoplay_method_muted_url_;
+  GURL autoplay_attr_muted_url_;
+  GURL file_autoplay_method_url_;
+  GURL file_autoplay_attr_url_;
+  ContentSettingsPattern top_level_page_pattern_;
+  std::unique_ptr<ChromeContentClient> content_client_;
+  std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
 };
 
 class AutoplayWhitelistServiceTest : public ExtensionBrowserTest {
-public:
+ public:
   AutoplayWhitelistServiceTest() {}
 
   void SetUp() override {
@@ -185,7 +187,8 @@ public:
   void PreRunTestOnMainThread() override {
     ExtensionBrowserTest::PreRunTestOnMainThread();
     WaitForAutoplayWhitelistServiceThread();
-    ASSERT_TRUE(g_brave_browser_process->local_data_files_service()->IsInitialized());
+    ASSERT_TRUE(
+        g_brave_browser_process->local_data_files_service()->IsInitialized());
   }
 
   void InitEmbeddedTestServer() {
@@ -212,8 +215,8 @@ public:
   bool InstallAutoplayWhitelistExtension() {
     base::FilePath test_data_dir;
     GetTestDataDir(&test_data_dir);
-    const extensions::Extension* mock_extension =
-        InstallExtension(test_data_dir.AppendASCII("autoplay-whitelist-data"), 1);
+    const extensions::Extension* mock_extension = InstallExtension(
+        test_data_dir.AppendASCII("autoplay-whitelist-data"), 1);
     if (!mock_extension)
       return false;
 
@@ -225,9 +228,8 @@ public:
   }
 
   void WaitForAutoplayWhitelistServiceThread() {
-    scoped_refptr<base::ThreadTestHelper> io_helper(
-        new base::ThreadTestHelper(
-            g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
+    scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
+        g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 
@@ -242,14 +244,15 @@ public:
 
   void WaitForPlaying() {
     std::string msg_from_renderer;
-    ASSERT_TRUE(ExecuteScriptAndExtractString(contents(), "notifyWhenPlaying();",
+    ASSERT_TRUE(ExecuteScriptAndExtractString(contents(),
+                                              "notifyWhenPlaying();",
                                               &msg_from_renderer));
     ASSERT_EQ("PLAYING", msg_from_renderer);
   }
 
   const GURL& whitelist_autoplay_url() { return whitelist_autoplay_url_; }
 
-private:
+ private:
   GURL whitelist_autoplay_url_;
 };
 

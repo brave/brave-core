@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define RegisterWidevineCdmComponent RegisterWidevineCdmComponent_ChromiumImpl
-#include "../../../../../chrome/browser/component_updater/widevine_cdm_component_installer.cc"
+#include "../../../../../chrome/browser/component_updater/widevine_cdm_component_installer.cc"  // NOLINT
 #undef RegisterWidevineCdmComponent
 
 #include "brave/browser/brave_browser_process_impl.h"
