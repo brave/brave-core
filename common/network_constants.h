@@ -19,6 +19,7 @@ extern const char kEmptyDataURI[];
 extern const char kEmptyImageDataURI[];
 extern const char kJSDataURLPrefix[];
 extern const char kGeoLocationsPattern[];
+extern const char kGoogleAnalyticsPattern[];
 extern const char kGoogleTagManagerPattern[];
 extern const char kGoogleTagServicesPattern[];
 extern const char kForbesPattern[];

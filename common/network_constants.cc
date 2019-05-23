@@ -38,6 +38,8 @@ const char kCRLSetPrefix3[] =
 const char kCRLSetPrefix4[] =
     "*://storage.googleapis.com/update-delta/hfnkpimlhhgieaddgfemjhofmfblmnib"
     "/*crxd";
+const char kGoogleAnalyticsPattern[] =
+    "https://www.google-analytics.com/analytics.js";
 const char kGoogleTagManagerPattern[] =
     "https://www.googletagmanager.com/gtm.js";
 const char kGoogleTagServicesPattern[] =
