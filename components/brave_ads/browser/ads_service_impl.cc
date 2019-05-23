@@ -1088,7 +1088,7 @@ void AdsServiceImpl::OnClick(Profile* profile,
   base::android::ScopedJavaGlobalRef<jobject> java_obj_;
   java_obj_.Reset(env, Java_BraveAds_create(env, 0).obj());
   if (notification_ids_.find(notification_id) == notification_ids_.end()) {
-    base::android::ScopedJavaLocalRef<jstring> jurl = base::android::ConvertUTF8ToJavaString(env, "https://brave.com/");
+    base::android::ScopedJavaLocalRef<jstring> jurl = base::android::ConvertUTF8ToJavaString(env, "chrome://newtab");
     Java_BraveAds_openPageFromNative(env, java_obj_, jurl);
     return;
   }
