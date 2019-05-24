@@ -100,8 +100,7 @@ bool LedgerImpl::CreateWallet(const std::string& safetynet_token) {
   }
 
   initializing_ = true;
-  bat_wallet_->CreateWalletIfNecessary();
-  bat_wallet_->registerPersona(safetynet_token);
+  bat_wallet_->CreateWalletIfNecessary(safetynet_token);
   return true;
 }
 
