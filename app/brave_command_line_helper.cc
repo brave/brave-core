@@ -94,9 +94,8 @@ void BraveCommandLineHelper::AppendCSV(
   command_line_.AppendSwitchASCII(switch_key, ss.str());
 }
 
-void BraveCommandLineHelper::AppendSwitchASCII(
-    const char* switch_key,
-    const char* value) {
-    if (!command_line_.HasSwitch(switch_key))
+void BraveCommandLineHelper::AppendSwitchASCII(const char* switch_key,
+                                               const char* value) {
+  if (!command_line_.HasSwitch(switch_key))
     command_line_.AppendSwitchASCII(switch_key, value);
 }
