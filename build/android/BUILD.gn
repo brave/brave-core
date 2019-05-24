@@ -1,6 +1,6 @@
 import("//brave/build/config.gni")
 
-copy("brave_apk") {
+copy("brave") {
   visibility = [ "*" ]
   deps = []
   sources = []
