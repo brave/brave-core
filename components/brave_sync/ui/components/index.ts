@@ -8,6 +8,7 @@ export {
   EnabledContent,
   Main,
   SyncCard,
+  SyncCardContent,
   TableRowId,
   TableRowDevice,
   TableRowRemove,

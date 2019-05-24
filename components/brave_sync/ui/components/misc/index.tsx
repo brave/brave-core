@@ -2,8 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import * as React from 'react'
 import styled from '../../../theme'
 import { Card } from '../../../components'
+import { CardProps } from '../../../components/layout/card'
 
 export const DisabledContent = styled<{}, 'div'>('div')`
   display: flex;
@@ -27,7 +29,10 @@ export const Main = styled<{}, 'main'>('main')`
   margin: auto;
 `
 
-export const SyncCard = styled(Card)`
+export const SyncCard: React.FC<CardProps> = (props) =>
+  <Card useDefaultContentPadding={false} {...props} />
+
+export const SyncCardContent = styled('div')`
   padding: 60px 80px;
 `
 

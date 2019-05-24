@@ -12,6 +12,7 @@ import {
   DisabledContent,
   Main,
   SyncCard,
+  SyncCardContent,
   Title,
   DisabledContentButtonGrid,
   TableGrid,
@@ -71,27 +72,29 @@ export default class SyncDisabledContent extends React.PureComponent<{}, State> 
               : null
           }
           <SyncCard>
-            <TableGrid isDeviceTable={false}>
-              <SyncStartIcon />
-              <div>
-                <Title level={2}>{getLocale('syncTitle')}</Title>
-                <Paragraph>{getLocale('syncDescription')}</Paragraph>
-                <DisabledContentButtonGrid>
-                  <Button
-                    level='primary'
-                    type='accent'
-                    onClick={this.onClickNewSyncChainButton}
-                    text={getLocale('startSyncChain')}
-                  />
-                  <Button
-                    level='secondary'
-                    type='accent'
-                    onClick={this.onClickEnterSyncChainCodeButton}
-                    text={getLocale('enterSyncChainCode')}
-                  />
-                </DisabledContentButtonGrid>
-              </div>
-            </TableGrid>
+            <SyncCardContent>
+              <TableGrid isDeviceTable={false}>
+                <SyncStartIcon />
+                <div>
+                  <Title level={2}>{getLocale('syncTitle')}</Title>
+                  <Paragraph>{getLocale('syncDescription')}</Paragraph>
+                  <DisabledContentButtonGrid>
+                    <Button
+                      level='primary'
+                      type='accent'
+                      onClick={this.onClickNewSyncChainButton}
+                      text={getLocale('startSyncChain')}
+                    />
+                    <Button
+                      level='secondary'
+                      type='accent'
+                      onClick={this.onClickEnterSyncChainCodeButton}
+                      text={getLocale('enterSyncChainCode')}
+                    />
+                  </DisabledContentButtonGrid>
+                </div>
+              </TableGrid>
+            </SyncCardContent>
           </SyncCard>
         </Main>
       </DisabledContent>
