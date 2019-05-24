@@ -48,7 +48,7 @@ group("browser_dependencies") {
 group("brave") {
   deps = []
   if (is_android) {
-    deps += [ "//chrome/android:chrome_public_apk" ]
+    deps += [ "//brave/build/android:brave_apk" ]
   } else {
     deps += [
       ":generate_version",
