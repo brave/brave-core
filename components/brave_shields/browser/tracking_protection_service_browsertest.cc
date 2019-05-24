@@ -19,6 +19,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 
@@ -33,6 +34,7 @@ const char kRedirectPage[] = "/client-redirect?";
 const char kStoragePage[] = "/storage.html";
 #endif
 
+using content::BrowserThread;
 using extensions::ExtensionBrowserTest;
 
 const char kTrackingPage[] = "/tracking.html";
@@ -77,7 +79,7 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
   void SetUpOnMainThread() override {
     ExtensionBrowserTest::SetUpOnMainThread();
     base::PostTaskWithTraits(
-        FROM_HERE, {content::BrowserThread::IO},
+        FROM_HERE, {BrowserThread::IO},
         base::BindOnce(&chrome_browser_net::SetUrlRequestMocksEnabled, true));
     host_resolver()->AddRule("*", "127.0.0.1");
   }
@@ -128,9 +130,12 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
   }
 
   void WaitForTrackingProtectionServiceThread() {
+    scoped_refptr<base::ThreadTestHelper> tr_helper(new base::ThreadTestHelper(
+        g_brave_browser_process->local_data_files_service()->GetTaskRunner()));
+    ASSERT_TRUE(tr_helper->Run());
     scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->local_data_files_service()
-            ->GetTaskRunner()));
+        base::CreateSingleThreadTaskRunnerWithTraits({BrowserThread::IO})
+            .get()));
     ASSERT_TRUE(io_helper->Run());
   }
 };
