@@ -95,6 +95,8 @@ class BraveProfileSyncService : public syncer::ProfileSyncService,
   bool IsBraveSyncInitialized() const;
   bool IsBraveSyncConfigured() const;
 
+  syncer::ModelTypeSet GetPreferredDataTypes() const override;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkDeleted);
