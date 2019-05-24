@@ -106,9 +106,17 @@ double Uniform_01(uint64_t e, uint64_t u) {
   // truncation of the binary expansion.
   u |= 0x8000000000000001ULL;
 
-  // Convert to double and scale by the exponent.
+  // Round to double in [2^63, 2^64].
   s = static_cast<double>(u);
-  return ldexp(s, -(64 + e));
+
+  // Scale into [1/2, 1].
+  s *= ldexp(1, -64);
+
+  // Apply the exponent.  This is a separate step, and done with
+  // multiplication, because some platforms have broken ldexp.
+  s *= ldexp(1, -e);
+
+  return s;
 }
 
 }  // namespace deterministic
