@@ -490,6 +490,14 @@ void BraveProfileSyncService::OnSyncReady() {
   }
 }
 
+syncer::ModelTypeSet BraveProfileSyncService::GetPreferredDataTypes() const {
+  // Force DEVICE_INFO type to have nudge cycle each time to fetch
+  // Brave sync devices.
+  // Will be picked up by ProfileSyncService::ConfigureDataTypeManager
+  return Union(ProfileSyncService::GetPreferredDataTypes(),
+      { syncer::DEVICE_INFO });
+}
+
 void BraveProfileSyncService::OnGetExistingObjects(
     const std::string& category_name,
     std::unique_ptr<RecordsList> records,
