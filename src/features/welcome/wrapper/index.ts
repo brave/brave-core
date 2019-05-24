@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled, { css, keyframes } from 'styled-components'
-import { Card } from '../../../index'
 
 const fadeIn = keyframes`
   from {
@@ -92,7 +91,7 @@ export const Page = styled<{}, 'div'>('div')`
   justify-content: center;
 `
 
-export const Panel = styled(Card)`
+export const Panel = styled('div')`
   user-select: none;
   /* animation start state must be the same as "from" keyframe */
   opacity: 0;
@@ -103,17 +102,21 @@ export const Panel = styled(Card)`
   animation-timing-function: ease-out;
   animation-fill-mode: forwards;
   /* end of animation stuff */
+  box-sizing: border-box;
   position: relative;
   overflow: hidden;
+  margin: 0;
   background-color: rgba(255,255,255,0.99);
   border-radius: 20px;
   box-shadow: 0 6px 12px 0 rgba(39, 46, 64, 0.2);
   max-width: 600px;
+  width: 100%;
   min-height: 540px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   padding: 0;
+  font-size: inherit;
 `
 
 export const SlideContent = styled<{}, 'div'>('div')`
