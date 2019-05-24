@@ -114,11 +114,12 @@ void BatGetMedia::SaveMediaInfo(const std::string& type,
   }
 }
 
+// static
 std::string BatGetMedia::GetShareURL(
     const std::string& type,
     const std::map<std::string, std::string>& args) {
   if (type == TWITTER_MEDIA_TYPE)
-    return media_twitter_->GetShareURL(args);
+    return braveledger_media::MediaTwitter::GetShareURL(args);
 
   return std::string();
 }

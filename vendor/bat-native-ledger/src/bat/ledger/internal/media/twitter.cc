@@ -211,13 +211,20 @@ void MediaTwitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
                     _2));
 }
 
+// static
 std::string MediaTwitter::GetShareURL(
     const std::map<std::string, std::string>& args) {
   auto comment = args.find("comment");
   auto name = args.find("name");
   auto tweet_id = args.find("tweet_id");
-  if (comment == args.end() || name == args.end() || tweet_id == args.end())
+  auto hashtag = args.find("hashtag");
+  if (comment == args.end() || name == args.end() || hashtag == args.end())
     return std::string();
+
+  // Append hashtag to comment ("%20%23" = percent-escaped space and
+  // number sign)
+  std::string comment_with_hashtag =
+      comment->second + "%20%23" + hashtag->second;
 
   // If a tweet ID was specified, then quote the original tweet along
   // with the supplied comment; otherwise, just tweet the comment.
@@ -226,12 +233,12 @@ std::string MediaTwitter::GetShareURL(
     std::string quoted_tweet_url =
         base::StringPrintf("https://twitter.com/%s/status/%s",
                            name->second.c_str(), tweet_id->second.c_str());
-    share_url =
-        base::StringPrintf("https://twitter.com/intent/tweet?url=%s&text=%s",
-                           quoted_tweet_url.c_str(), comment->second.c_str());
+    share_url = base::StringPrintf(
+        "https://twitter.com/intent/tweet?text=%s&url=%s",
+        comment_with_hashtag.c_str(), quoted_tweet_url.c_str());
   } else {
     share_url = base::StringPrintf("https://twitter.com/intent/tweet?text=%s",
-                                   comment->second.c_str());
+                                   comment_with_hashtag.c_str());
   }
   return share_url;
 }
