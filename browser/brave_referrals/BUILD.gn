@@ -1,12 +1,12 @@
-import("//brave/components/brave_referrals/buildflags/buildflags.gni")
+import("//brave/browser/brave_referrals/buildflags/buildflags.gni")
 
 declare_args() {
   brave_referrals_api_key = ""
 }
 
-source_set("browser") {
+source_set("brave_referrals") {
   deps = [
-    "//brave/components/brave_referrals/buildflags",
+    "//brave/browser/brave_referrals/buildflags",
   ]
 
   if (enable_brave_referrals) {

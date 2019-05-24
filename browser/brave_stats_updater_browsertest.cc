@@ -4,11 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "brave/browser/brave_referrals/brave_referrals_service.h"
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/testing_pref_service.h"

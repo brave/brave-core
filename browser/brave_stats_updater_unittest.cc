@@ -6,9 +6,9 @@
 #include "brave/browser/brave_stats_updater.h"
 
 #include "base/time/time.h"
+#include "brave/browser/brave_referrals/brave_referrals_service.h"
 #include "brave/browser/brave_stats_updater_params.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
