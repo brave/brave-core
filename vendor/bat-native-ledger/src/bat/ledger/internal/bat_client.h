@@ -75,7 +75,7 @@ class BatClient {
 
   void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback);
 
-  void CreateWalletIfNecessary();
+  void CreateWalletIfNecessary(const std::string& safetynet_token);
 
   ledger::WalletInfo WalletPropertiesToWalletInfo(
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
