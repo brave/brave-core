@@ -787,7 +787,7 @@ void BatClient::GetAddressesForPaymentIdCallback(
   ledger_->SetAddresses(addresses);
 }
 
-void BatClient::CreateWalletIfNecessary() {
+void BatClient::CreateWalletIfNecessary(const std::string& safetynet_token) {
   const auto payment_id = ledger_->GetPaymentId();
   const auto stamp = ledger_->GetBootStamp();
   const auto persona_id = ledger_->GetPersonaId();
@@ -802,7 +802,7 @@ void BatClient::CreateWalletIfNecessary() {
      "We need to clear persona Id and start again";
   ledger_->SetPersonaId("");
 
-  registerPersona("");
+  registerPersona(safetynet_token);
 }
 
 void BatClient::getGrantViaSafetynetCheck() {
