@@ -2,20 +2,16 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import * as React from 'react'
 import styled from '../../../theme'
 import { Type } from './index'
 import Card, { CardProps } from '../../../components/layout/card'
-import { ComponentType } from 'react'
 
 interface StyleProps {
   open?: boolean
   float?: string
   checked?: boolean
   type?: Type
-}
-
-interface CardStyleProps extends CardProps {
-  hasAlert?: boolean
 }
 
 const colors: Record<Type, string> = {
@@ -29,10 +25,10 @@ export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   margin: 0 0 24px;
 `
 
-export const StyledCard = styled(Card as ComponentType<CardStyleProps>)`
-  font-family: ${p => p.theme.fontFamily.body};
-  padding: 32px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, .2);
+const CustomCard: React.FC<CardProps> = (props) =>
+  <Card emphasis={'60'} {...props} />
+
+export const StyledCard = styled(CustomCard)`
   font-size: 14px;
 `
 

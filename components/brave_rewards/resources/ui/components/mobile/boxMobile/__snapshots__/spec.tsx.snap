@@ -6,19 +6,17 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   width: 100%;
   min-height: auto;
   margin: 0;
-  padding: 30px 36px;
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,.15);
   font-size: inherit;
+  font-family: Muli,sans-serif;
   box-sizing: border-box;
   position: relative;
 }
 
 .c0 {
   margin-bottom: 12px;
-  padding: 0;
-  font-family: Muli,sans-serif;
 }
 
 .c2 {
@@ -105,37 +103,41 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   data-test-id="box"
 >
   <div
-    className="c2"
+    className="c0 "
   >
     <div
-      className="c3"
-      open={true}
+      className="c2"
     >
       <div
-        className="c4"
+        className="c3"
+        open={true}
       >
         <div
-          className="c5"
+          className="c4"
         >
           <div
-            className="c6"
+            className="c5"
           >
-            test
+            <div
+              className="c6"
+            >
+              test
+            </div>
           </div>
+          <div
+            className="c7"
+          />
         </div>
         <div
-          className="c7"
+          className="c8"
         />
-      </div>
-      <div
-        className="c8"
-      />
-      <div
-        className="c9"
-      >
         <div
-          className="c10"
-        />
+          className="c9"
+        >
+          <div
+            className="c10"
+          />
+        </div>
       </div>
     </div>
   </div>

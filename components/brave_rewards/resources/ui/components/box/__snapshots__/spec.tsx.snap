@@ -6,13 +6,17 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   width: 100%;
   min-height: auto;
   margin: 0;
-  padding: 30px 36px;
   background-color: #fff;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.15);
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
   font-size: inherit;
+  font-family: Muli,sans-serif;
   box-sizing: border-box;
   position: relative;
+}
+
+.c3 {
+  padding: 32px;
 }
 
 .c0 {
@@ -21,13 +25,10 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
 }
 
 .c1 {
-  font-family: Muli,sans-serif;
-  padding: 32px;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2);
   font-size: 14px;
 }
 
-.c3 {
+.c4 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -42,7 +43,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   justify-content: center;
 }
 
-.c4 {
+.c5 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -52,7 +53,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   flex-direction: column;
 }
 
-.c6 {
+.c7 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -63,7 +64,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   color: #4b4c5c;
 }
 
-.c8 {
+.c9 {
   width: 100%;
   font-size: 15px;
   color: #5e6175;
@@ -71,7 +72,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   line-height: 1.7;
 }
 
-.c9 {
+.c10 {
   -webkit-flex-basis: 100%;
   -ms-flex-preferred-size: 100%;
   flex-basis: 100%;
@@ -82,13 +83,13 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   margin-top: 25px;
 }
 
-.c10 {
+.c11 {
   background: #fff;
   display: none;
   width: 100%;
 }
 
-.c11 {
+.c12 {
   display: none;
   position: absolute;
   right: 24px;
@@ -102,7 +103,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   color: #84889c;
 }
 
-.c5 {
+.c6 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -118,7 +119,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   height: 100%;
 }
 
-.c13 {
+.c14 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -126,7 +127,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   margin: 0 0 24px;
 }
 
-.c7 {
+.c8 {
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -137,7 +138,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   align-items: center;
 }
 
-.c14 {
+.c15 {
   font-size: 20px;
   font-weight: 600;
   font-family: Poppins,sans-serif;
@@ -152,7 +153,7 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
   align-items: center;
 }
 
-.c12 {
+.c13 {
   width: 100%;
   height: 100%;
   fill: currentColor;
@@ -166,58 +167,62 @@ exports[`Box tests basic tests matches the snapshot 1`] = `
     data-test-id="box"
   >
     <div
-      className="c3"
+      className="c1 c3"
     >
       <div
         className="c4"
-        open={true}
       >
         <div
           className="c5"
+          open={true}
         >
           <div
             className="c6"
           >
-            test
+            <div
+              className="c7"
+            >
+              test
+            </div>
+            <div
+              className="c8"
+            />
           </div>
           <div
-            className="c7"
+            className="c9"
+          />
+          <div
+            className="c10"
           />
         </div>
         <div
-          className="c8"
-        />
-        <div
-          className="c9"
-        />
-      </div>
-      <div
-        className="c10"
-      >
-        <button
           className="c11"
         >
-          <svg
-            aria-hidden="true"
+          <button
             className="c12"
-            focusable="false"
-            viewBox="0 0 32 32"
           >
-            <path
-              d="M16 3a13 13 0 1 0 13 13A13 13 0 0 0 16 3zm0 24a11 11 0 1 1 11-11 11 11 0 0 1-11 11z"
-            />
-            <path
-              d="M20.71 11.29a1 1 0 0 0-1.42 0L16 14.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l3.3 3.29-3.3 3.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.29-3.3 3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L17.41 16l3.3-3.29a1 1 0 0 0 0-1.42z"
-            />
-          </svg>
-        </button>
-        <div
-          className="c13"
-        >
+            <svg
+              aria-hidden="true"
+              className="c13"
+              focusable="false"
+              viewBox="0 0 32 32"
+            >
+              <path
+                d="M16 3a13 13 0 1 0 13 13A13 13 0 0 0 16 3zm0 24a11 11 0 1 1 11-11 11 11 0 0 1-11 11z"
+              />
+              <path
+                d="M20.71 11.29a1 1 0 0 0-1.42 0L16 14.59l-3.29-3.3a1 1 0 0 0-1.42 1.42l3.3 3.29-3.3 3.29a1 1 0 0 0 0 1.42 1 1 0 0 0 1.42 0l3.29-3.3 3.29 3.3a1 1 0 0 0 1.42 0 1 1 0 0 0 0-1.42L17.41 16l3.3-3.29a1 1 0 0 0 0-1.42z"
+              />
+            </svg>
+          </button>
           <div
             className="c14"
           >
-            test MISSING: settings
+            <div
+              className="c15"
+            >
+              test MISSING: settings
+            </div>
           </div>
         </div>
       </div>

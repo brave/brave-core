@@ -3,8 +3,9 @@
 * You can obtain one at http://mozilla.org/MPL/2.0/.
 */
 
-import styled from 'styled-components'
-import Card from '../../../components/layout/card'
+import { ComponentType } from 'react'
+import styled from '../../../theme'
+import Card, { CardProps } from '../../../components/layout/card'
 import palette from '../../../theme/colors'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
@@ -13,7 +14,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   margin-bottom: 28px;
 `
 
-export const StyledCard = styled(Card)`
+export const StyledCard = styled<CardProps>(Card as ComponentType<CardProps>)`
   font-family: Poppins, sans-serif;
 `
 

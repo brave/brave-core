@@ -2,10 +2,10 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import * as React from 'react'
 import styled, { css } from '../../../../theme'
 import { Type } from './index'
 import Card, { CardProps } from '../../../../components/layout/card'
-import { ComponentType } from 'react'
 
 interface StyleProps {
   open?: boolean
@@ -14,10 +14,6 @@ interface StyleProps {
   enabled?: boolean
   detailView?: boolean
   contentShown?: boolean
-}
-
-interface CardStyleProps extends CardProps {
-  checked?: boolean
 }
 
 const colors: Record<Type, string> = {
@@ -39,10 +35,11 @@ const getFixedStyling = (detailView?: boolean) => {
   `
 }
 
-export const StyledCard = styled(Card as ComponentType<CardStyleProps>)`
+const CustomCard: React.FC<CardProps> = (props) =>
+  <Card useDefaultContentPadding={false} {...props} />
+
+export const StyledCard = styled(CustomCard)`
   margin-bottom: 12px;
-  padding: 0;
-  font-family: ${p => p.theme.fontFamily.body};
 `
 
 export const StyledFlip = styled<{}, 'div'>('div')`

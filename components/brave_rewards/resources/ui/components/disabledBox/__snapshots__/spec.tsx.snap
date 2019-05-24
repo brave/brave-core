@@ -6,13 +6,17 @@ exports[`DisabledBox tests basic tests matches the snapshot 1`] = `
   width: 100%;
   min-height: auto;
   margin: 0;
-  padding: 30px 36px;
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0,0,0,.15);
   font-size: inherit;
+  font-family: Muli,sans-serif;
   box-sizing: border-box;
   position: relative;
+}
+
+.c3 {
+  padding: 32px;
 }
 
 .c0 {
@@ -25,7 +29,7 @@ exports[`DisabledBox tests basic tests matches the snapshot 1`] = `
   font-family: Poppins,sans-serif;
 }
 
-.c3 {
+.c4 {
   width: 541px;
   color: #4C54D2;
   font-size: 22px;
@@ -38,7 +42,7 @@ exports[`DisabledBox tests basic tests matches the snapshot 1`] = `
   padding-bottom: 5px;
 }
 
-.c4 {
+.c5 {
   color: #84889c;
   font-size: 16px;
   font-weight: normal;
@@ -51,7 +55,7 @@ exports[`DisabledBox tests basic tests matches the snapshot 1`] = `
   font-family: Muli,sans-serif;
 }
 
-.c4:first-of-type {
+.c5:first-of-type {
   padding-bottom: 10px;
 }
 
@@ -61,26 +65,30 @@ exports[`DisabledBox tests basic tests matches the snapshot 1`] = `
   <div
     className="c1 c2"
   >
-    <span
-      className="c3"
+    <div
+      className="c1 c3"
     >
-      MISSING: whyBraveRewards
-    </span>
-    <p
-      className="c4"
-    >
-      MISSING: rewardsOffText5
-    </p>
-    <span
-      className="c3"
-    >
-      MISSING: rewardsOffText3
-    </span>
-    <p
-      className="c4"
-    >
-      MISSING: rewardsOffText4
-    </p>
+      <span
+        className="c4"
+      >
+        MISSING: whyBraveRewards
+      </span>
+      <p
+        className="c5"
+      >
+        MISSING: rewardsOffText5
+      </p>
+      <span
+        className="c4"
+      >
+        MISSING: rewardsOffText3
+      </span>
+      <p
+        className="c5"
+      >
+        MISSING: rewardsOffText4
+      </p>
+    </div>
   </div>
 </div>
 `;

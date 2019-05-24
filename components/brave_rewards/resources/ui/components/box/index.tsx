@@ -74,7 +74,6 @@ export default class Box extends React.PureComponent<Props, {}> {
       <StyledWrapper>
         <StyledCard
           testId={id}
-          hasAlert={!!attachedAlert}
         >
           <StyledFlip>
             <StyledContentWrapper open={!settingsOpened}>

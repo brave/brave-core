@@ -290,7 +290,6 @@ export default class BoxMobile extends React.PureComponent<Props, State> {
     return (
       <StyledCard
         testId={id}
-        checked={checked}
       >
         <StyledFlip>
           <StyledContentWrapper open={!this.state.settings}>
