@@ -25,7 +25,7 @@ FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetInitData);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSaveBookmarksBaseOrder);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncPrefsChanged);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncDebug);
-FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncReadyAlreadyWithSync);
+FORWARD_DECLARE_TEST(BraveSyncServiceTest, StartSyncNonDeviceRecords);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnSyncReadyNewToSync);
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, OnGetExistingObjects);
 
@@ -113,7 +113,7 @@ class BraveProfileSyncService : public syncer::ProfileSyncService,
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetInitData);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncPrefsChanged);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncDebug);
-  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncReadyAlreadyWithSync);
+  FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, StartSyncNonDeviceRecords);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnSyncReadyNewToSync);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetExistingObjects);
   friend class ::BraveSyncServiceTest;

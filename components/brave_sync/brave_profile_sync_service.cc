@@ -350,9 +350,9 @@ void BraveProfileSyncService::OnSetSyncBookmarks(const bool sync_bookmarks) {
     type_set.Put(syncer::UserSelectableType::kBookmarks);
   else
     type_set.Remove(syncer::UserSelectableType::kBookmarks);
-  ProfileSyncService::GetUserSettings()->SetSelectedTypes(false,
-                                                                type_set);
-  brave_sync_prefs_->SetSyncBookmarksEnabled(sync_bookmarks);
+  ProfileSyncService::GetUserSettings()->SetSelectedTypes(false, type_set);
+  if (brave_sync_prefs_->GetSyncBookmarksEnabled() != sync_bookmarks)
+    brave_sync_prefs_->SetSyncBookmarksEnabled(sync_bookmarks);
 }
 
 void BraveProfileSyncService::OnSetSyncBrowsingHistory(
