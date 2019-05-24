@@ -12,6 +12,13 @@ export const getActiveTabId: shieldState.GetActiveTabId = (state) => state.windo
 
 export const getActiveTabData: shieldState.GetActiveTabData = (state) => state.tabs[getActiveTabId(state)]
 
+export const isShieldsActive = (state: shieldState.State, tabId: number): boolean => {
+  if (!state.tabs[tabId]) {
+    return false
+  }
+  return state.tabs[tabId].braveShields !== 'block'
+}
+
 export const updateActiveTab: shieldState.UpdateActiveTab = (state, windowId, tabId) => {
   let windows: shieldState.Windows = { ...state.windows } || {}
   windows[windowId] = tabId

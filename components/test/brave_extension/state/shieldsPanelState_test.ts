@@ -51,6 +51,40 @@ describe('shieldsPanelState test', () => {
       })
     })
   })
+  describe('isShieldsActive', () => {
+    it('returns false if tab id can not be found', () => {
+      const assertion = shieldsPanelState.isShieldsActive(state, 123123123123)
+      expect(assertion).toBe(false)
+    })
+    it('returns false if braveShields is set to `block`', () => {
+      const newState: State = deepFreeze({
+        ...state,
+        tabs: {
+          ...state.tabs,
+          2: {
+            ...state.tabs[2],
+            braveShields: 'block'
+          }
+        }
+      })
+      const assertion = shieldsPanelState.isShieldsActive(newState, 2)
+      expect(assertion).toBe(false)
+    })
+    it('returns true if braveShields is not set to block', () => {
+      const newState: State = deepFreeze({
+        ...state,
+        tabs: {
+          ...state.tabs,
+          2: {
+            ...state.tabs[2],
+            braveShields: 'allow'
+          }
+        }
+      })
+      const assertion = shieldsPanelState.isShieldsActive(newState, 2)
+      expect(assertion).toBe(true)
+    })
+  })
   describe('updateActiveTab', () => {
     it('can update focused window', () => {
       expect(shieldsPanelState.updateActiveTab(state, 1, 4)).toEqual({
