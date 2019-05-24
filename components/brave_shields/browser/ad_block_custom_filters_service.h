@@ -13,18 +13,19 @@
 
 class AdBlockServiceTest;
 
+using brave_component_updater::BraveComponent;
+
 namespace brave_shields {
 
 // The brave shields service in charge of custom filter ad-block
 // checking and init.
 class AdBlockCustomFiltersService : public AdBlockBaseService {
  public:
-  AdBlockCustomFiltersService();
+  explicit AdBlockCustomFiltersService(BraveComponent::Delegate* delegate);
   ~AdBlockCustomFiltersService() override;
 
   std::string GetCustomFilters();
   bool UpdateCustomFilters(const std::string& custom_filters);
-  scoped_refptr<base::SequencedTaskRunner> GetTaskRunner() override;
 
  protected:
   bool Init() override;
@@ -38,7 +39,7 @@ class AdBlockCustomFiltersService : public AdBlockBaseService {
 
 // Creates the AdBlockCustomFiltersService
 std::unique_ptr<AdBlockCustomFiltersService>
-AdBlockCustomFiltersServiceFactory();
+AdBlockCustomFiltersServiceFactory(BraveComponent::Delegate* delegate);
 
 }  // namespace brave_shields
 

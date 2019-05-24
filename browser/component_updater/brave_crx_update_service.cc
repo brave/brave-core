@@ -42,44 +42,6 @@ void BraveCrxUpdateService::Start() {
       base::DoNothing());
 }
 
-bool BraveCrxUpdateService::RegisterComponent(const CrxComponent& component) {
-  DCHECK(thread_checker_.CalledOnValidThread());
-  if (component.pk_hash.empty() || !component.version.IsValid() ||
-      !component.installer) {
-    return false;
-  }
-
-  // Update the registration data if the component has been registered before.
-  const std::string id(GetCrxComponentID(component));
-  auto it = components_.find(id);
-  if (it != components_.end()) {
-    it->second = component;
-    return true;
-  }
-
-  components_.insert(std::make_pair(id, component));
-  components_order_.push_back(id);
-  for (const auto& mime_type : component.handled_mime_types)
-    component_ids_by_mime_type_[mime_type] = id;
-
-  // Create an initial state for this component. The state is mutated in
-  // response to events from the UpdateClient instance.
-  CrxUpdateItem item;
-  item.id = id;
-  item.component = component;
-  const auto inserted = component_states_.insert(std::make_pair(id, item));
-  DCHECK(inserted.second);
-
-  // Start the timer if this is the first component registered. The first timer
-  // event occurs after an interval defined by the component update
-  // configurator. The subsequent timer events are repeated with a period
-  // defined by the same configurator.
-  if (components_.size() == 1)
-    Start();
-
-  return true;
-}
-
 bool BraveCrxUpdateService::CheckForUpdates(
     UpdateScheduler::OnFinishedCallback on_finished) {
   DCHECK(thread_checker_.CalledOnValidThread());

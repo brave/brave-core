@@ -48,7 +48,9 @@ class BraveComponentLoader : public ComponentLoader {
   void AddHangoutServicesExtension() override;
 #endif  // BUILDFLAG(ENABLE_HANGOUT_SERVICES_EXTENSION)
   friend class ::BraveComponentLoaderTest;
+#if !defined(OS_ANDROID)
   void ObserveOpenPdfExternallySetting();
+#endif
   // Callback for changes to the AlwaysOpenPdfExternally setting.
   void UpdatePdfExtension(const std::string& pref_name);
 

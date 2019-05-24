@@ -5,27 +5,29 @@
 
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 
-#include <algorithm>
 #include <utility>
 
-#include "base/base_paths.h"
 #include "base/bind.h"
 #include "base/json/json_reader.h"
-#include "base/logging.h"
-#include "base/macros.h"
-#include "base/memory/ptr_util.h"
-#include "base/strings/utf_string_conversions.h"
-#include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_browser_process_impl.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "base/task/post_task.h"
+#include "base/task_runner_util.h"
+#include "base/values.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "content/public/browser/browser_task_traits.h"
+#include "content/public/browser/browser_thread.h"
+
+using brave_component_updater::LocalDataFilesObserver;
+using brave_component_updater::LocalDataFilesService;
+using content::BrowserThread;
 
 namespace brave_shields {
 
-ReferrerWhitelistService::ReferrerWhitelistService()
-    : weak_factory_(this) {
-  DETACH_FROM_SEQUENCE(sequence_checker_);
+ReferrerWhitelistService::ReferrerWhitelistService(
+    LocalDataFilesService* local_data_files_service)
+    : LocalDataFilesObserver(local_data_files_service),
+      weak_factory_(this),
+      weak_factory_io_thread_(this) {
 }
 
 ReferrerWhitelistService::~ReferrerWhitelistService() {
@@ -37,11 +39,24 @@ ReferrerWhitelistService::ReferrerWhitelist::ReferrerWhitelist(
 ReferrerWhitelistService::ReferrerWhitelist::~ReferrerWhitelist() = default;
 
 bool ReferrerWhitelistService::IsWhitelisted(
-    const GURL& firstPartyOrigin, const GURL& subresourceUrl) const {
-  for (auto rw : referrer_whitelist_) {
-    if (rw.first_party_pattern.MatchesURL(firstPartyOrigin)) {
+    const GURL& first_party_origin, const GURL& subresource_url) const {
+  if (BrowserThread::CurrentlyOn(BrowserThread::IO)) {
+    return IsWhitelisted(
+        referrer_whitelist_io_thread_, first_party_origin, subresource_url);
+  } else {
+    return IsWhitelisted(
+        referrer_whitelist_, first_party_origin, subresource_url);
+  }
+}
+
+bool ReferrerWhitelistService::IsWhitelisted(
+    const std::vector<ReferrerWhitelist>& whitelist,
+    const GURL& first_party_origin,
+    const GURL& subresource_url) const {
+  for (auto rw : whitelist) {
+    if (rw.first_party_pattern.MatchesURL(first_party_origin)) {
       for (auto subresource_pattern : rw.subresource_pattern_list) {
-        if (subresource_pattern.MatchesURL(subresourceUrl)) {
+        if (subresource_pattern.MatchesURL(subresource_url)) {
           return true;
         }
       }
@@ -50,15 +65,15 @@ bool ReferrerWhitelistService::IsWhitelisted(
   return false;
 }
 
-void ReferrerWhitelistService::OnDATFileDataReady() {
+void ReferrerWhitelistService::OnDATFileDataReady(std::string contents) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   referrer_whitelist_.clear();
-  if (file_contents_.empty()) {
+  if (contents.empty()) {
     LOG(ERROR) << "Could not obtain referrer whitelist data";
     return;
   }
-  base::Optional<base::Value> root = base::JSONReader::Read(file_contents_);
-  file_contents_.clear();
+  base::Optional<base::Value> root = base::JSONReader::Read(contents);
+  contents.clear();
   if (!root) {
     LOG(ERROR) << "Failed to parse referrer whitelist data";
     return;
@@ -83,37 +98,42 @@ void ReferrerWhitelistService::OnDATFileDataReady() {
       referrer_whitelist_.push_back(rw);
     }
   }
+
+  base::PostTaskWithTraits(
+      FROM_HERE, {BrowserThread::IO},
+      base::BindOnce(&ReferrerWhitelistService::OnDATFileDataReadyOnIOThread,
+                     weak_factory_io_thread_.GetWeakPtr(),
+                     referrer_whitelist_));
+}
+
+void ReferrerWhitelistService::OnDATFileDataReadyOnIOThread(
+    std::vector<ReferrerWhitelist> whitelist) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  referrer_whitelist_io_thread_ = std::move(whitelist);
 }
 
 void ReferrerWhitelistService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  base::FilePath dat_file_path = install_dir.AppendASCII(
-    REFERRER_DAT_FILE_VERSION).AppendASCII(REFERRER_DAT_FILE);
-  GetTaskRunner()->PostTaskAndReply(
-      FROM_HERE,
-      base::Bind(&GetDATFileAsString, dat_file_path, &file_contents_),
-      base::Bind(&ReferrerWhitelistService::OnDATFileDataReady,
-                 weak_factory_.GetWeakPtr()));
-}
+  base::FilePath dat_file_path = install_dir
+      .AppendASCII(REFERRER_DAT_FILE_VERSION)
+      .AppendASCII(REFERRER_DAT_FILE);
 
-scoped_refptr<base::SequencedTaskRunner>
-  ReferrerWhitelistService::GetTaskRunner() {
-  // We share the same task runner as ad-block code
-  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
+  base::PostTaskAndReplyWithResult(
+      local_data_files_service()->GetTaskRunner().get(),
+      FROM_HERE,
+      base::BindOnce(&brave_component_updater::GetDATFileAsString,
+                     dat_file_path),
+      base::BindOnce(&ReferrerWhitelistService::OnDATFileDataReady,
+                     weak_factory_.GetWeakPtr()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-// The referrer whitelist factory. Using the Brave Shields as a singleton
-// is the job of the browser process.
-std::unique_ptr<ReferrerWhitelistService> ReferrerWhitelistServiceFactory() {
-  std::unique_ptr<ReferrerWhitelistService> service =
-    std::make_unique<ReferrerWhitelistService>();
-  g_brave_browser_process->local_data_files_service()->AddObserver(
-    service.get());
-  return service;
+std::unique_ptr<ReferrerWhitelistService> ReferrerWhitelistServiceFactory(
+    LocalDataFilesService* local_data_files_service) {
+  return std::make_unique<ReferrerWhitelistService>(local_data_files_service);
 }
 
 }  // namespace brave_shields

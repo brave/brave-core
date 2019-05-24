@@ -1,0 +1,16 @@
+source_set("browser") {
+  sources = [
+    "brave_component.cc",
+    "brave_component.h",
+    "dat_file_util.cc",
+    "dat_file_util.h",
+    "local_data_files_service.cc",
+    "local_data_files_service.h",
+    "local_data_files_observer.cc",
+    "local_data_files_observer.h",
+  ]
+
+  deps = [
+    "//base",
+  ]
+}

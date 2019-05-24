@@ -3,30 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_LOCAL_DATA_FILES_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_LOCAL_DATA_FILES_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_LOCAL_DATA_FILES_SERVICE_H_
+#define BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_LOCAL_DATA_FILES_SERVICE_H_
 
-#include <stdint.h>
-
-#include <map>
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "base/files/file_path.h"
-#include "base/memory/weak_ptr.h"
-#include "base/sequence_checker.h"
-#include "brave/browser/extensions/brave_component_extension.h"
-#include "content/public/common/resource_type.h"
+#include "base/observer_list.h"
+#include "brave/components/brave_component_updater/browser/brave_component.h"
 
-class AdBlockServiceTest;
-class AutoplayWhitelistServiceTest;
-class ReferrerWhitelistServiceTest;
-class TrackingProtectionServiceTest;
+namespace brave_component_updater {
 
-namespace brave_shields {
-
-class BaseLocalDataFilesObserver;
+class LocalDataFilesObserver;
 
 const char kLocalDataFilesComponentName[] = "Brave Local Data Updater";
 const char kLocalDataFilesComponentId[] = "afalakplffnnnlkncjhbmahjfjhmlkal";
@@ -41,13 +30,18 @@ const char kLocalDataFilesComponentBase64PublicKey[] =
 
 // The component in charge of delegating access to different DAT files
 // such as tracking protection and video autoplay whitelist
-class LocalDataFilesService : public BraveComponentExtension {
+class LocalDataFilesService : public BraveComponent {
  public:
-  LocalDataFilesService();
+  explicit LocalDataFilesService(BraveComponent::Delegate* delegate);
   ~LocalDataFilesService() override;
   bool Start();
   bool IsInitialized() const { return initialized_; }
-  void AddObserver(BaseLocalDataFilesObserver* observer);
+  void AddObserver(LocalDataFilesObserver* observer);
+  void RemoveObserver(LocalDataFilesObserver* observer);
+
+  static void SetComponentIdAndBase64PublicKeyForTest(
+      const std::string& component_id,
+      const std::string& component_base64_public_key);
 
  protected:
   void OnComponentReady(const std::string& component_id,
@@ -55,28 +49,19 @@ class LocalDataFilesService : public BraveComponentExtension {
       const std::string& manifest) override;
 
  private:
-  friend class ::AdBlockServiceTest;
-  friend class ::AutoplayWhitelistServiceTest;
-  friend class ::ReferrerWhitelistServiceTest;
-  friend class ::TrackingProtectionServiceTest;
   static std::string g_local_data_files_component_id_;
   static std::string g_local_data_files_component_base64_public_key_;
-  static void SetComponentIdAndBase64PublicKeyForTest(
-      const std::string& component_id,
-      const std::string& component_base64_public_key);
 
-  std::vector<BaseLocalDataFilesObserver*> observers_;
-
-  SEQUENCE_CHECKER(sequence_checker_);
   bool initialized_;
-  bool observers_already_called_;
-  base::WeakPtrFactory<LocalDataFilesService> weak_factory_;
+  base::ObserverList<LocalDataFilesObserver>::Unchecked observers_;
+
   DISALLOW_COPY_AND_ASSIGN(LocalDataFilesService);
 };
 
 // Creates the LocalDataFilesService
-std::unique_ptr<LocalDataFilesService> LocalDataFilesServiceFactory();
+std::unique_ptr<LocalDataFilesService>
+LocalDataFilesServiceFactory(BraveComponent::Delegate* delegate);
 
-}  // namespace brave_shields
+}  // namespace brave_component_updater
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SHIELDS_BROWSER_LOCAL_DATA_FILES_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_COMPONENT_UPDATER_BROWSER_LOCAL_DATA_FILES_SERVICE_H_

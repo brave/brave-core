@@ -10,17 +10,20 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/brave_shields/browser/base_brave_shields_service.h"
-#include "brave/components/brave_shields/browser/dat_file_util.h"
+#include "brave/components/brave_component_updater/browser/dat_file_util.h"
 #include "content/public/common/resource_type.h"
 
 class AdBlockClient;
 class AdBlockServiceTest;
+
+using brave_component_updater::BraveComponent;
 
 namespace brave_shields {
 
@@ -28,7 +31,10 @@ namespace brave_shields {
 // checking and init.
 class AdBlockBaseService : public BaseBraveShieldsService {
  public:
-  AdBlockBaseService();
+  using GetDATFileDataResult =
+      brave_component_updater::LoadDATFileDataResult<AdBlockClient>;
+
+  explicit AdBlockBaseService(BraveComponent::Delegate* delegate);
   ~AdBlockBaseService() override;
 
   bool ShouldStartRequest(const GURL &url, content::ResourceType resource_type,
@@ -41,19 +47,24 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   bool Init() override;
   void Cleanup() override;
 
-  void EnableTagOnFileTaskRunner(std::string tag, bool enabled);
   void GetDATFileData(const base::FilePath& dat_file_path);
+
   AdBlockClient* GetAdBlockClientForTest();
 
   SEQUENCE_CHECKER(sequence_checker_);
   std::unique_ptr<AdBlockClient> ad_block_client_;
-  DATFileDataBuffer buffer_;
 
  private:
-  void OnDATFileDataReady();
+  void UpdateAdBlockClient(
+      std::unique_ptr<AdBlockClient> ad_block_client,
+      brave_component_updater::DATFileDataBuffer buffer);
+  void OnGetDATFileData(GetDATFileDataResult result);
+  void EnableTagOnIOThread(const std::string& tag, bool enabled);
   void OnPreferenceChanges(const std::string& pref_name);
 
+  brave_component_updater::DATFileDataBuffer buffer_;
   base::WeakPtrFactory<AdBlockBaseService> weak_factory_;
+  base::WeakPtrFactory<AdBlockBaseService> weak_factory_io_thread_;
   DISALLOW_COPY_AND_ASSIGN(AdBlockBaseService);
 };
 

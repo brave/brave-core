@@ -18,14 +18,12 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "brave/components/brave_shields/browser/ad_block_service_helper.h"
 #include "brave/vendor/ad-block/ad_block_client.h"
 #include "brave/vendor/ad-block/data_file_version.h"
 #include "brave/vendor/ad-block/lists/regions.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_shields {
@@ -36,8 +34,11 @@ std::string
 std::string AdBlockRegionalService::g_ad_block_regional_dat_file_version_(
     base::NumberToString(DATA_FILE_VERSION));
 
-AdBlockRegionalService::AdBlockRegionalService(const std::string& uuid)
-    : uuid_(uuid) {
+AdBlockRegionalService::AdBlockRegionalService(
+    const std::string& uuid,
+    brave_component_updater::BraveComponent::Delegate* delegate)
+    : AdBlockBaseService(delegate),
+      uuid_(uuid) {
 }
 
 AdBlockRegionalService::~AdBlockRegionalService() {
@@ -70,7 +71,7 @@ void AdBlockRegionalService::OnComponentReady(
       install_dir.AppendASCII(g_ad_block_regional_dat_file_version_)
           .AppendASCII(uuid_)
           .AddExtension(FILE_PATH_LITERAL(".dat"));
-  AdBlockBaseService::GetDATFileData(dat_file_path);
+  GetDATFileData(dat_file_path);
 }
 
 // static
@@ -88,17 +89,12 @@ void AdBlockRegionalService::SetDATFileVersionForTest(
   g_ad_block_regional_dat_file_version_ = dat_file_version;
 }
 
-scoped_refptr<base::SequencedTaskRunner>
-AdBlockRegionalService::GetTaskRunner() {
-  // We share the same task runner for all ad-block and TP code
-  return g_brave_browser_process->ad_block_service()->GetTaskRunner();
-}
-
 ///////////////////////////////////////////////////////////////////////////////
 
 std::unique_ptr<AdBlockRegionalService> AdBlockRegionalServiceFactory(
-    const std::string& uuid) {
-  return std::make_unique<AdBlockRegionalService>(uuid);
+    const std::string& uuid,
+    brave_component_updater::BraveComponent::Delegate* delegate) {
+  return std::make_unique<AdBlockRegionalService>(uuid, delegate);
 }
 
 }  // namespace brave_shields
