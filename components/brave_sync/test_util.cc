@@ -6,7 +6,6 @@
 
 #include "base/files/file_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -32,7 +31,6 @@ std::unique_ptr<Profile> CreateBraveSyncProfile(const base::FilePath& path) {
   std::unique_ptr<sync_preferences::PrefServiceSyncable> prefs(
       factory.CreateSyncable(registry.get()));
   RegisterUserProfilePrefs(registry.get());
-  prefs::Prefs::RegisterProfilePrefs(registry.get());
 
   TestingProfile::Builder profile_builder;
   profile_builder.SetPrefService(std::move(prefs));
