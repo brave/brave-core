@@ -22,7 +22,11 @@ void GetDATFileData(const base::FilePath& file_path,
 std::string GetDATFileAsString(const base::FilePath& file_path);
 
 template<typename T>
-std::pair<std::unique_ptr<T>, DATFileDataBuffer> LoadDATFileData(
+using LoadDATFileDataResult =
+    std::pair<std::unique_ptr<T>, brave_component_updater::DATFileDataBuffer>;
+
+template<typename T>
+LoadDATFileDataResult<T> LoadDATFileData(
     const base::FilePath& dat_file_path) {
   DATFileDataBuffer buffer;
   GetDATFileData(dat_file_path, &buffer);
@@ -32,9 +36,10 @@ std::pair<std::unique_ptr<T>, DATFileDataBuffer> LoadDATFileData(
       !client->deserialize(reinterpret_cast<char*>(&buffer.front())))
     client.reset();
 
-  return std::pair<std::unique_ptr<T>, DATFileDataBuffer>(
+  return LoadDATFileDataResult<T>(
       std::move(client), std::move(buffer));
 }
+
 
 }  // namespace brave_component_updater
 

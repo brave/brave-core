@@ -29,8 +29,7 @@ namespace brave_shields {
 class AutoplayWhitelistService : public LocalDataFilesObserver {
  public:
   using GetDATFileDataResult =
-      std::pair<std::unique_ptr<AutoplayWhitelistParser>,
-                brave_component_updater::DATFileDataBuffer>;
+      brave_component_updater::LoadDATFileDataResult<AutoplayWhitelistParser>;
 
   explicit AutoplayWhitelistService(
       LocalDataFilesService* local_data_files_service);

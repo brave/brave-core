@@ -32,8 +32,7 @@ namespace brave_shields {
 class ExtensionWhitelistService : public LocalDataFilesObserver {
  public:
   using GetDATFileDataResult =
-      std::pair<std::unique_ptr<ExtensionWhitelistParser>,
-                                brave_component_updater::DATFileDataBuffer>;
+      brave_component_updater::LoadDATFileDataResult<ExtensionWhitelistParser>;
 
   explicit ExtensionWhitelistService(
       LocalDataFilesService* local_data_files_service);

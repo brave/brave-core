@@ -40,8 +40,8 @@ namespace brave_shields {
 class TrackingProtectionService : public LocalDataFilesObserver {
  public:
   using GetDATFileDataResult =
-      std::pair<std::unique_ptr<CTPParser>,
-                brave_component_updater::DATFileDataBuffer>;
+      brave_component_updater::LoadDATFileDataResult<CTPParser>;
+
   explicit TrackingProtectionService(
       LocalDataFilesService* local_data_files_service);
   ~TrackingProtectionService() override;

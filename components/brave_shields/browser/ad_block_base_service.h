@@ -32,8 +32,7 @@ namespace brave_shields {
 class AdBlockBaseService : public BaseBraveShieldsService {
  public:
   using GetDATFileDataResult =
-      std::pair<std::unique_ptr<AdBlockClient>,
-                brave_component_updater::DATFileDataBuffer>;
+      brave_component_updater::LoadDATFileDataResult<AdBlockClient>;
 
   explicit AdBlockBaseService(BraveComponent::Delegate* delegate);
   ~AdBlockBaseService() override;

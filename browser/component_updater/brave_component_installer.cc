@@ -23,6 +23,8 @@
 #include "components/update_client/utils.h"
 #include "crypto/sha2.h"
 
+using brave_component_updater::BraveComponent;
+
 namespace {
 using Result = update_client::CrxInstaller::Result;
 using InstallError = update_client::InstallError;
@@ -78,7 +80,7 @@ namespace brave {
 BraveComponentInstallerPolicy::BraveComponentInstallerPolicy(
     const std::string& name,
     const std::string& base64_public_key,
-    ReadyCallback ready_callback)
+    BraveComponent::ReadyCallback ready_callback)
     : name_(name),
       base64_public_key_(base64_public_key),
       ready_callback_(std::move(ready_callback)) {
@@ -159,7 +161,7 @@ void RegisterComponent(
     const std::string& name,
     const std::string& base64_public_key,
     base::OnceClosure registered_callback,
-    ReadyCallback ready_callback) {
+    BraveComponent::ReadyCallback ready_callback) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<BraveComponentInstallerPolicy>(
           name, base64_public_key, std::move(ready_callback)));

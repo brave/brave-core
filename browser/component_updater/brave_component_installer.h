@@ -16,11 +16,11 @@
 #include "base/callback.h"
 #include "base/files/file_path.h"
 #include "base/macros.h"
+#include "brave/components/brave_component_updater/browser/brave_component.h"
 #include "components/component_updater/component_installer.h"
 #include "components/update_client/update_client.h"
 
-using ReadyCallback = base::OnceCallback<void(const base::FilePath&,
-    const std::string& manifest)>;
+using brave_component_updater::BraveComponent;
 
 namespace brave {
 
@@ -29,7 +29,7 @@ class BraveComponentInstallerPolicy :
  public:
   explicit BraveComponentInstallerPolicy(const std::string& name,
       const std::string& base64_public_key,
-      ReadyCallback ready_callback);
+      BraveComponent::ReadyCallback ready_callback);
 
   ~BraveComponentInstallerPolicy() override;
 
@@ -56,7 +56,7 @@ class BraveComponentInstallerPolicy :
   std::string name_;
   std::string base64_public_key_;
   std::string public_key_;
-  ReadyCallback ready_callback_;
+  BraveComponent::ReadyCallback ready_callback_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveComponentInstallerPolicy);
 };
@@ -65,7 +65,7 @@ void RegisterComponent(component_updater::ComponentUpdateService* cus,
     const std::string& name,
     const std::string& base64_public_key,
     base::OnceClosure registered_callback,
-    ReadyCallback ready_callback);
+    BraveComponent::ReadyCallback ready_callback);
 
 }  // namespace brave
 
