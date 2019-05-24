@@ -169,16 +169,17 @@ def get_brave_packages(dir, channel, version):
                 file_desired = 'Brave-Browser' + channel_capitalized_dashed + '.dmg'
                 file_desired_pkg = 'Brave-Browser' + channel_capitalized_dashed + '.pkg'
 
-                if re.match(r'Brave Browser ' + channel_capitalized_spaced + r'.*\.dmg$', file):
+                if re.match(r'Brave Browser' + channel_capitalized_spaced + r'.*\.dmg$', file):
                     filecopy(file_path, file_desired)
                     pkgs.append(file_desired)
-                elif file == file_desired and file_desired not in pkgs:
+                elif file == file_desired:
                     pkgs.append(file_desired)
+
                 if channel in ['release', 'nightly']:
-                    if re.match(r'Brave Browser ' + channel_capitalized_spaced + r'.*\.pkg$', file):
+                    if re.match(r'Brave Browser' + channel_capitalized_spaced + r'.*\.pkg$', file):
                         filecopy(file_path, file_desired_pkg)
                         pkgs.append(file_desired_pkg)
-                    elif file == file_desired_pkg and file_desired_pkg not in pkgs:
+                    elif file == file_desired_pkg:
                         pkgs.append(file_desired_pkg)
             elif PLATFORM == 'linux':
                 if channel == 'release':
@@ -234,7 +235,8 @@ def get_brave_packages(dir, channel, version):
                               file):
                     filecopy(file_path, file_desired_standalone_untagged)
                     pkgs.append(file_desired_standalone_untagged)
-    return pkgs
+
+    return sorted(list(set(pkgs)))
 
 
 def parse_args():
@@ -329,13 +331,13 @@ you're looking for a little extra spice and adventure in your browsing.'''
 
     body = '''{warning}
 
-### Mac installation
+# Mac installation
 Install Brave-Browser.dmg on your system.
 
-### Linux install instructions
+# Linux install instructions
 http://brave-browser.readthedocs.io/en/latest/installing-brave.html#linux
 
-### Windows
+# Windows
 {win} will fetch and install the latest available version from our
 update server.'''.format(warning=warning, win=winstallers)
 
