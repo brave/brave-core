@@ -133,8 +133,7 @@ void LedgerImpl::CreateWallet(const std::string& safetynet_token,
       this,
       _1,
       std::move(callback));
-  bat_wallet_->CreateWalletIfNecessary(std::move(on_wallet));
-  bat_wallet_->registerPersona(safetynet_token);
+  bat_wallet_->CreateWalletIfNecessary(safetynet_token, std::move(on_wallet));
 }
 
 braveledger_bat_helper::CURRENT_RECONCILE LedgerImpl::GetReconcileById(
