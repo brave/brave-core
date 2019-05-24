@@ -276,6 +276,7 @@ void TrackingProtectionService::OnGetDATFileData(GetDATFileDataResult result) {
 void TrackingProtectionService::UpdateTrackingProtectionClient(
     std::unique_ptr<CTPParser> tracking_protection_client,
     brave_component_updater::DATFileDataBuffer buffer) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
   tracking_protection_client_ = std::move(tracking_protection_client);
   buffer_ = std::move(buffer);
 }
