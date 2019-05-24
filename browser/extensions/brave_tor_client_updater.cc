@@ -21,7 +21,7 @@ namespace extensions {
 #if defined(OS_WIN)
 const char kTorClientComponentName[] = "Brave Tor Client Updater (Windows)";
 const char kTorClientComponentId[] = "cpoalefficncklhjfpglfiplenlpccdb";
-const char kTorClientComponentBase64PublicKey =
+const char kTorClientComponentBase64PublicKey[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1AYAsmR/VoRwkZCsjRpD"
     "58xjrgngW5y17H6BqQ7/CeNSpmXlcMXy6bJs2D/yeS96rhZSrQSHTzS9h/ieo/NZ"
     "F5PIwcv07YsG5sRd6zF5a6m92aWCQa1OkbL6jpcpL2Tbc4mCqNxhKMErT7EtIIWL"
