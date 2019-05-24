@@ -1,0 +1,12 @@
+diff --git a/components/sync/base/sync_prefs.cc b/components/sync/base/sync_prefs.cc
+index e0233e2c1fe41e7aca1514321881a9defe99e11f..8331c1add5cbc209023cfb938b11ef8c564e2b90 100644
+--- a/components/sync/base/sync_prefs.cc
++++ b/components/sync/base/sync_prefs.cc
+@@ -186,6 +186,7 @@ void SyncPrefs::RegisterProfilePrefs(
+ #if defined(OS_CHROMEOS)
+   registry->RegisterStringPref(kSyncSpareBootstrapToken, "");
+ #endif
++  brave_sync::prefs::Prefs::RegisterProfilePrefs(registry);
+ }
+ 
+ void SyncPrefs::AddSyncPrefObserver(SyncPrefObserver* sync_pref_observer) {
