@@ -21,3 +21,4 @@ const char kBraveUIRewardsURL[] = "chrome://rewards/";
 const char kBraveUIAdblockURL[] = "chrome://adblock/";
 const char kBraveUITipURL[] = "chrome://tip/";
 const char kBraveUISyncURL[] = "chrome://sync/";
+const char kBraveUIWalletURL[] = "chrome://wallet/";
