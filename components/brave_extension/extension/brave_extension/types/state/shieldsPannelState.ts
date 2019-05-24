@@ -92,3 +92,19 @@ export interface ResetNoScriptInfo {
 export interface ChangeAllNoScriptSettings {
   (state: State, tabId: number, shouldBlock: boolean): State
 }
+
+export interface UpdateShieldsIconBadgeText {
+  (state: State): void
+}
+export interface UpdateShieldsIconImage {
+  (state: State): void
+}
+export interface UpdateShieldsIcon {
+  (state: State): void
+}
+export interface FocusedWindowChanged {
+  (state: State, windowId: number): State
+}
+export interface RequestDataAndUpdateActiveTab {
+  (state: State, windowId: number, tabId: number): State
+}

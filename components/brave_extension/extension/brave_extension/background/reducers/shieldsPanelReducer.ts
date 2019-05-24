@@ -18,55 +18,10 @@ import {
   requestShieldPanelData,
   setAllowScriptOriginsOnce
 } from '../api/shieldsAPI'
-import { setBadgeText, setIcon } from '../api/browserActionAPI'
 import { reloadTab } from '../api/tabsAPI'
 import * as shieldsPanelState from '../../state/shieldsPanelState'
-import { State, Tab } from '../../types/state/shieldsPannelState'
 import { Actions } from '../../types/actions/index'
-import { getTotalResourcesBlocked } from '../../helpers/shieldsUtils'
-
-const updateShieldsIconBadgeText = (state: State) => {
-  const tabId: number = shieldsPanelState.getActiveTabId(state)
-  const tab: Tab = state.tabs[tabId]
-  if (tab) {
-    const total = getTotalResourcesBlocked(tab)
-    // do not show any badge if there are no blocked items
-    setBadgeText(tabId, total > 99 ? '99+' : total > 0 ? total.toString() : '')
-  }
-}
-
-const updateShieldsIconImage = (state: State) => {
-  const tabId: number = shieldsPanelState.getActiveTabId(state)
-  const tab: Tab = state.tabs[tabId]
-  if (tab) {
-    const url: string = tab.url
-    const isShieldsActive: boolean = state.tabs[tabId].braveShields !== 'block'
-    setIcon(url, tabId, isShieldsActive)
-  }
-}
-
-const updateShieldsIcon = (state: State) => {
-  updateShieldsIconBadgeText(state)
-  updateShieldsIconImage(state)
-}
-
-const focusedWindowChanged = (state: State, windowId: number): State => {
-  if (windowId !== -1) {
-    state = shieldsPanelState.updateFocusedWindow(state, windowId)
-    if (shieldsPanelState.getActiveTabId(state)) {
-      requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-      updateShieldsIcon(state)
-    } else {
-      console.warn('no tab id so cannot request shield data from window focus change!')
-    }
-  }
-  return state
-}
-
-const updateActiveTab = (state: State, windowId: number, tabId: number): State => {
-  requestShieldPanelData(tabId)
-  return shieldsPanelState.updateActiveTab(state, windowId, tabId)
-}
+import { State } from '../../types/state/shieldsPannelState'
 
 export default function shieldsPanelReducer (state: State = { tabs: {}, windows: {}, currentWindowId: -1 }, action: Actions) {
   switch (action.type) {
@@ -84,26 +39,26 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
     }
     case windowTypes.WINDOW_CREATED: {
       if (action.window.focused || Object.keys(state.windows).length === 0) {
-        state = focusedWindowChanged(state, action.window.id)
+        state = shieldsPanelState.focusedWindowChanged(state, action.window.id)
       }
       break
     }
     case windowTypes.WINDOW_FOCUS_CHANGED: {
-      state = focusedWindowChanged(state, action.windowId)
+      state = shieldsPanelState.focusedWindowChanged(state, action.windowId)
       break
     }
     case tabTypes.ACTIVE_TAB_CHANGED: {
       const windowId: number = action.windowId
       const tabId: number = action.tabId
-      state = updateActiveTab(state, windowId, tabId)
-      updateShieldsIcon(state)
+      state = shieldsPanelState.requestDataAndUpdateActiveTab(state, windowId, tabId)
+      shieldsPanelState.updateShieldsIcon(state)
       break
     }
     case tabTypes.TAB_DATA_CHANGED: {
       const tab: chrome.tabs.Tab = action.tab
       if (tab.active && tab.id) {
-        state = updateActiveTab(state, tab.windowId, tab.id)
-        updateShieldsIcon(state)
+        state = shieldsPanelState.requestDataAndUpdateActiveTab(state, tab.windowId, tab.id)
+        shieldsPanelState.updateShieldsIcon(state)
       }
       break
     }
@@ -114,14 +69,14 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       }
 
       if (tab.active && tab.id) {
-        state = updateActiveTab(state, tab.windowId, tab.id)
-        updateShieldsIcon(state)
+        state = shieldsPanelState.requestDataAndUpdateActiveTab(state, tab.windowId, tab.id)
+        shieldsPanelState.updateShieldsIcon(state)
       }
       break
     }
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED: {
       state = shieldsPanelState.updateTabShieldsData(state, action.details.id, action.details)
-      updateShieldsIcon(state)
+      shieldsPanelState.updateShieldsIcon(state)
       break
     }
     case shieldsPanelTypes.SHIELDS_TOGGLED: {
@@ -188,7 +143,7 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       state = shieldsPanelState.updateResourceBlocked(
         state, tabId, action.details.blockType, action.details.subresource)
       if (tabId === currentTabId) {
-        updateShieldsIconBadgeText(state)
+        shieldsPanelState.updateShieldsIconBadgeText(state)
       }
       break
     }

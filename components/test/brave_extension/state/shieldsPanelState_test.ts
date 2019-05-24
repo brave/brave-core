@@ -4,6 +4,7 @@
 
 import * as deepFreeze from 'deep-freeze-node'
 import * as shieldsPanelState from '../../../brave_extension/extension/brave_extension/state/shieldsPanelState'
+import * as shieldsAPI from '../../../brave_extension/extension/brave_extension/background/api/shieldsAPI'
 import { State } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
 
 const state: State = deepFreeze({
@@ -901,6 +902,162 @@ describe('shieldsPanelState test', () => {
             2: 3
           }
         })
+    })
+  })
+  describe('updateShieldsIconBadgeText', () => {
+    let spy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(chrome.browserAction, 'setBadgeText')
+    })
+    afterEach(() => {
+      spy.mockRestore()
+    })
+    it('calls setBadgeText if tab exists', () => {
+      shieldsPanelState.updateShieldsIconBadgeText(state)
+      expect(spy).toHaveBeenCalled()
+      expect(spy.mock.calls[0][0]).toEqual({ tabId: 2, text: '' })
+    })
+    it('does not call setBadgeText if tab does not exist', () => {
+      const newState: State = deepFreeze({
+        currentWindowId: 1,
+        tabs: {},
+        windows: { 1: 2 }
+      })
+      shieldsPanelState.updateShieldsIconBadgeText(newState)
+      expect(spy).not.toHaveBeenCalled()
+    })
+  })
+  describe('updateShieldsIconImage', () => {
+    let spy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(chrome.browserAction, 'setIcon')
+    })
+    afterEach(() => {
+      spy.mockRestore()
+    })
+    it('calls setIcon if tab exists', () => {
+      shieldsPanelState.updateShieldsIconImage(state)
+      expect(spy).toHaveBeenCalled()
+      expect(spy.mock.calls[0][0]).toEqual({
+        tabId: 2,
+        path: {
+          '18': 'assets/img/shields-on.png',
+          '36': 'assets/img/shields-on@2x.png',
+          '54': 'assets/img/shields-on@3x.png'
+        }
+      })
+    })
+    it('does not call setIcon if tab does not exist', () => {
+      const newState: State = deepFreeze({
+        currentWindowId: 1,
+        tabs: {},
+        windows: { 1: 2 }
+      })
+      shieldsPanelState.updateShieldsIconImage(newState)
+      expect(spy).not.toHaveBeenCalled()
+    })
+  })
+  describe('updateShieldsIcon', () => {
+    let updateShieldsIconBadgeTextSpy: jest.SpyInstance
+    let updateShieldsIconImageSpy: jest.SpyInstance
+    beforeEach(() => {
+      updateShieldsIconBadgeTextSpy = jest.spyOn(chrome.browserAction, 'setIcon')
+      updateShieldsIconImageSpy = jest.spyOn(chrome.browserAction, 'setIcon')
+    })
+    afterEach(() => {
+      updateShieldsIconBadgeTextSpy.mockRestore()
+      updateShieldsIconImageSpy.mockRestore()
+    })
+    it('calls updateShieldsIconBadgeText', () => {
+      shieldsPanelState.updateShieldsIcon(state)
+      expect(updateShieldsIconBadgeTextSpy).toHaveBeenCalled()
+      expect(updateShieldsIconBadgeTextSpy.mock.calls[0][0]).toEqual({
+        path: {
+          '18': 'assets/img/shields-on.png',
+          '36': 'assets/img/shields-on@2x.png',
+          '54': 'assets/img/shields-on@3x.png'
+        },
+        tabId: 2
+      })
+    })
+    it('calls updateShieldsIconImage', () => {
+      shieldsPanelState.updateShieldsIconImage(state)
+      expect(updateShieldsIconImageSpy).toHaveBeenCalled()
+      expect(updateShieldsIconImageSpy.mock.calls[0][0]).toEqual({
+        path: {
+          '18': 'assets/img/shields-on.png',
+          '36': 'assets/img/shields-on@2x.png',
+          '54': 'assets/img/shields-on@3x.png'
+        },
+        tabId: 2
+      })
+    })
+  })
+  describe('focusedWindowChanged', () => {
+    let requestShieldPanelDataSpy: jest.SpyInstance
+    let updateShieldsIconSpy: jest.SpyInstance
+    let consoleWarnSpy: jest.SpyInstance
+    beforeEach(() => {
+      requestShieldPanelDataSpy = jest.spyOn(shieldsAPI, 'requestShieldPanelData')
+      updateShieldsIconSpy = jest.spyOn(shieldsPanelState, 'updateShieldsIcon')
+      consoleWarnSpy = jest.spyOn(global.console, 'warn')
+    })
+    afterEach(() => {
+      requestShieldPanelDataSpy.mockRestore()
+      updateShieldsIconSpy.mockRestore()
+      consoleWarnSpy.mockRestore()
+    })
+    it('does not modify state if windowId equals -1', () => {
+      const assertion = shieldsPanelState.focusedWindowChanged(state, 1)
+      expect(assertion).toEqual(state)
+    })
+    it('updates focused window', () => {
+      const focusedWindow = 1337
+      const assertion = shieldsPanelState.focusedWindowChanged(state, focusedWindow)
+      expect(assertion.currentWindowId).toBe(focusedWindow)
+    })
+    it('calls requestShieldPanelData if active tab id is defined', () => {
+      shieldsPanelState.focusedWindowChanged(state, 1)
+      expect(requestShieldPanelDataSpy).toHaveBeenCalled()
+      expect(requestShieldPanelDataSpy.mock.calls[0][0]).toEqual(2)
+    })
+    it('calls updateShieldsIcon if active tab id is defined', () => {
+      shieldsPanelState.focusedWindowChanged(state, 1)
+      expect(updateShieldsIconSpy).toHaveBeenCalled()
+      expect(updateShieldsIconSpy.mock.calls[0][0]).toEqual(state)
+    })
+    it('calls a console warning when active tab id is not defined', () => {
+      shieldsPanelState.focusedWindowChanged(state, 123123123123123123)
+      expect(consoleWarnSpy).toBeCalled()
+    })
+  })
+  describe('requestDataAndUpdateActiveTab', () => {
+    let requestShieldPanelDataSpy: jest.SpyInstance
+    beforeEach(() => {
+      requestShieldPanelDataSpy = jest.spyOn(shieldsPanelState, 'updateActiveTab')
+    })
+    afterEach(() => {
+      requestShieldPanelDataSpy.mockRestore()
+    })
+    it('calls requestShieldPanelData', () => {
+      shieldsPanelState.requestDataAndUpdateActiveTab(state, state.windows['1'], state.tabs['2'])
+      expect(requestShieldPanelDataSpy).toHaveBeenCalled()
+      expect(requestShieldPanelDataSpy.mock.calls[0][0]).toEqual(state)
+    })
+    it('updates active tab', () => {
+      const newState = {
+        ...state,
+        tabs: {
+          ...state.tabs,
+          2: {
+            ...state.tabs[2],
+            NEW_UPDATED_PROPERTY: {}
+          }
+        }
+      }
+      const assertion = shieldsPanelState
+        .requestDataAndUpdateActiveTab(newState, 1, 2)
+      expect(assertion).toEqual({ ...state, ...newState })
     })
   })
 })
