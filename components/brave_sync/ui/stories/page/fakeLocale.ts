@@ -23,7 +23,7 @@ const locale: any = {
   syncSettings: 'Brave Sync Settings',
   settings: 'Settings',
   syncSettingsDescription:
-    'Manage the content you would like to sync between devices. These settings only effect this device.',
+    'Manage the content you would like to sync between devices. These settings only affect this device.',
   bookmarks: 'Bookmarks',
   savedSiteSettings: 'Saved Site Settings',
   browsingHistory: 'Browsing History',
