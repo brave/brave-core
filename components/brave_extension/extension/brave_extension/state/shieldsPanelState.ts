@@ -4,6 +4,9 @@
 
 import * as shieldState from '../types/state/shieldsPannelState'
 import { unique } from '../helpers/arrayUtils'
+import { getTotalResourcesBlocked } from '../helpers/shieldsUtils'
+import { setBadgeText, setIcon } from '../background/api/browserActionAPI'
+import { requestShieldPanelData } from '../background/api/shieldsAPI'
 
 export const getActiveTabId: shieldState.GetActiveTabId = (state) => state.windows[state.currentWindowId]
 
@@ -136,4 +139,47 @@ export const resetBlockingResources: shieldState.ResetBlockingResources = (state
   const tabs: shieldState.Tabs = { ...state.tabs }
   tabs[tabId] = { ...tabs[tabId], ...{ adsBlockedResources: [], trackersBlockedResources: [], httpsRedirectedResources: [], javascriptBlockedResources: [], fingerprintingBlockedResources: [] } }
   return { ...state, tabs }
+}
+
+export const updateShieldsIconBadgeText: shieldState.UpdateShieldsIconBadgeText = (state) => {
+  const tabId: number = getActiveTabId(state)
+  const tab: shieldState.Tab = state.tabs[tabId]
+  if (tab) {
+    const total = getTotalResourcesBlocked(tab)
+    // do not show any badge if there are no blocked items
+    setBadgeText(tabId, total > 99 ? '99+' : total > 0 ? total.toString() : '')
+  }
+}
+
+export const updateShieldsIconImage: shieldState.UpdateShieldsIconImage = (state) => {
+  const tabId: number = getActiveTabId(state)
+  const tab: shieldState.Tab = state.tabs[tabId]
+  if (tab) {
+    const url: string = tab.url
+    const isShieldsActive: boolean = state.tabs[tabId].braveShields !== 'block'
+    setIcon(url, tabId, isShieldsActive)
+  }
+}
+
+export const updateShieldsIcon: shieldState.UpdateShieldsIcon = (state) => {
+  updateShieldsIconBadgeText(state)
+  updateShieldsIconImage(state)
+}
+
+export const focusedWindowChanged: shieldState.FocusedWindowChanged = (state, windowId) => {
+  if (windowId !== -1) {
+    state = updateFocusedWindow(state, windowId)
+    if (getActiveTabId(state)) {
+      requestShieldPanelData(getActiveTabId(state))
+      updateShieldsIcon(state)
+    } else {
+      console.warn('no tab id so cannot request shield data from window focus change!')
+    }
+  }
+  return state
+}
+
+export const requestDataAndUpdateActiveTab: shieldState.RequestDataAndUpdateActiveTab = (state, windowId, tabId) => {
+  requestShieldPanelData(tabId)
+  return updateActiveTab(state, windowId, tabId)
 }
