@@ -15,6 +15,7 @@ import * as rewardsActions from '../actions/tip_actions'
 import { getLocale } from '../../../../common/locale'
 
 interface Props extends RewardsTip.ComponentProps {
+  url: string
   publisher: RewardsTip.Publisher
   tweetMetaData: RewardsTip.TweetMetaData
 }

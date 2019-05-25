@@ -74,6 +74,8 @@ ExtensionFunction::ResponseAction BraveRewardsTipSiteFunction::Run() {
 
   auto params_dict = std::make_unique<base::DictionaryValue>();
   params_dict->SetString("publisherKey", params->publisher_key);
+  params_dict->SetString(
+      "url", contents ? contents->GetLastCommittedURL().spec() : std::string());
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
 
   return RespondNow(NoArguments());
@@ -143,6 +145,7 @@ void BraveRewardsTipTwitterUserFunction::OnTwitterPublisherInfoSaved(
 
   auto params_dict = std::make_unique<base::DictionaryValue>();
   params_dict->SetString("publisherKey", publisher_info->id);
+  params_dict->SetString("url", publisher_info->url);
 
   auto tweet_meta_data_dict = std::make_unique<base::DictionaryValue>();
   tweet_meta_data_dict->SetString("name", publisher_info->name);

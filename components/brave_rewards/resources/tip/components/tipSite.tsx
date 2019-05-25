@@ -14,6 +14,7 @@ import TransientTipOverlay from './transientTipOverlay'
 import * as rewardsActions from '../actions/tip_actions'
 
 interface Props extends RewardsTip.ComponentProps {
+  url: string
   publisher: RewardsTip.Publisher
 }
 
@@ -23,7 +24,15 @@ class TipSite extends React.Component<Props, {}> {
   }
 
   onTweet = () => {
-    this.actions.onTweet(this.props.publisher.name, '')
+    let name = this.props.publisher.name
+    if (this.props.publisher.provider === 'twitter') {
+      const url = this.props.url
+      if (url && url.length > 0) {
+        name = `@${url.replace(/^.*\/(.*)$/, '$1')}`
+      }
+    }
+
+    this.actions.onTweet(name, '')
     this.actions.onCloseDialog()
   }
 

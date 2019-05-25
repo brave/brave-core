@@ -14,6 +14,7 @@ import TipTwitterUser from './tipTwitterUser'
 import * as rewardsActions from '../actions/tip_actions'
 
 interface TipDialogArgs {
+  url: string
   publisherKey: string
   tweetMetaData?: RewardsTip.TweetMetaData
 }
@@ -27,10 +28,11 @@ export class App extends React.Component<Props, {}> {
     return this.props.actions
   }
 
-  getTipBanner = (publisher: RewardsTip.Publisher, tweetMetaData?: RewardsTip.TweetMetaData) => {
+  getTipBanner = (url: string, publisher: RewardsTip.Publisher, tweetMetaData?: RewardsTip.TweetMetaData) => {
     if (tweetMetaData) {
       return (
         <TipTwitterUser
+          url={url}
           publisher={publisher}
           tweetMetaData={tweetMetaData}
         />
@@ -38,6 +40,7 @@ export class App extends React.Component<Props, {}> {
     } else {
       return (
         <TipSite
+          url={url}
           publisher={publisher}
         />
       )
@@ -51,6 +54,7 @@ export class App extends React.Component<Props, {}> {
       return null
     }
 
+    const url = this.props.dialogArgs.url
     const tweetMetaData = this.props.dialogArgs.tweetMetaData
     const publisherKey = this.props.dialogArgs.publisherKey
     const publisher = publishers[publisherKey]
@@ -61,7 +65,7 @@ export class App extends React.Component<Props, {}> {
 
     return (
       <div>
-        {this.getTipBanner(publisher, tweetMetaData)}
+        {this.getTipBanner(url, publisher, tweetMetaData)}
       </div>
     )
   }
