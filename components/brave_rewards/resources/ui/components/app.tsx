@@ -32,6 +32,15 @@ export class App extends React.Component<Props, State> {
     if (!this.props.rewardsData.walletCreated) {
       this.actions.checkWalletExistence()
     }
+
+    if (this.props.rewardsData.enabledMain &&
+        !this.props.rewardsData.enabledAdsMigrated) {
+      const { adsEnabled, adsIsSupported } = this.props.rewardsData.adsData
+
+      if (adsIsSupported) {
+        this.props.actions.onAdsSettingSave('adsEnabledMigrated', adsEnabled)
+      }
+    }
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {

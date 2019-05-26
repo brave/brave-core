@@ -11,6 +11,7 @@ export const defaultState: Rewards.State = {
   createdTimestamp: null,
   enabledMain: false,
   enabledAds: true,
+  enabledAdsMigrated: false,
   enabledContribute: true,
   firstLoad: null,
   walletCreated: false,
