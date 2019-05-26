@@ -33,10 +33,6 @@ BraveComponentLoader::BraveComponentLoader(
     : ComponentLoader(extension_service, profile_prefs, local_state, profile),
       profile_(profile),
       profile_prefs_(profile_prefs) {
-// TODO(bridiver) - this doesn't belong here
-#if !defined(OS_ANDROID)
-  ObserveOpenPdfExternallySetting();
-#endif
 }
 
 BraveComponentLoader::~BraveComponentLoader() {
