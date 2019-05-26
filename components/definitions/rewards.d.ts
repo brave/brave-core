@@ -39,6 +39,7 @@ declare namespace Rewards {
     donationAbilityTwitter: boolean
     donationAbilityYT: boolean
     enabledAds: boolean
+    enabledAdsMigrated: boolean
     enabledContribute: boolean
     enabledMain: boolean
     inlineTip: {
