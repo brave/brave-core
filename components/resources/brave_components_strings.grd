@@ -478,6 +478,7 @@
       <message name="IDS_BRAVE_UI_TURN_ON_REWARDS_TITLE" desc="">Activate Rewards</message>
       <message name="IDS_BRAVE_UI_TWEET_NOW" desc="">Tweet</message>
       <message name="IDS_BRAVE_UI_TWEET_TIP_TITLE" desc="">Tip @{{ user }} for their tweet:</message>
+      <message name="IDS_BRAVE_UI_TWEET_TIP_TITLE_EMPTY" desc="We use this title when twitter text is empty">Tip @{{ user }} for their tweet!</message>
       <message name="IDS_BRAVE_UI_TYPE" desc="">Type</message>
       <message name="IDS_BRAVE_UI_VERIFIED_PUBLISHER" desc="">Brave Verified Publisher</message>
       <message name="IDS_BRAVE_UI_VIEW_MONTHLY" desc="">View Monthly Statement for Details</message>

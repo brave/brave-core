@@ -37,7 +37,13 @@ class TipTwitterUser extends React.Component<Props, {}> {
 
     const publisher = this.props.publisher
     const tweetMetaData = this.props.tweetMetaData
-    publisher.title = getLocale('tweetTipTitle', { user: tweetMetaData.screenName })
+    const key =
+      tweetMetaData &&
+      tweetMetaData.tweetText &&
+      tweetMetaData.tweetText.length > 0
+      ? 'tweetTipTitle'
+      : 'tweetTipTitleEmpty'
+    publisher.title = getLocale(key, { user: tweetMetaData.screenName })
 
     return (
       <>
