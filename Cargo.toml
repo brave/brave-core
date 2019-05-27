@@ -5,7 +5,7 @@ authors = ["Brian R. Bondy <netzen@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-adblock="0.1.5"
+adblock="0.1.9"
 
 [lib]
 crate-type = [
