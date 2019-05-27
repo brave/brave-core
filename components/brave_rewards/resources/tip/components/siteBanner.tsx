@@ -131,6 +131,20 @@ class Banner extends React.Component<Props, State> {
     return 'chrome://rewards/#add-funds'
   }
 
+  getTweetText () {
+    if (!this.props.tweetMetaData ||
+        !this.props.tweetMetaData.tweetText ||
+        this.props.tweetMetaData.tweetText.length === 0) {
+      return null
+    }
+
+    return (
+      <TweetBox
+        tweetText={this.props.tweetMetaData.tweetText}
+        tweetTimestamp={this.props.tweetMetaData.tweetTimestamp}
+      />)
+  }
+
   render () {
     const { walletInfo } = this.props.rewardsDonateData
     const { balance } = walletInfo
@@ -173,7 +187,7 @@ class Banner extends React.Component<Props, State> {
       >
       {
         this.props.tweetMetaData
-        ? <TweetBox tweetText={this.props.tweetMetaData.tweetText} tweetTimestamp={this.props.tweetMetaData.tweetTimestamp} />
+        ? this.getTweetText()
         : publisher.description
       }
       </SiteBanner>
