@@ -88,7 +88,7 @@ export const StyledBanner = styled<StyleProps, 'div'>('div')`
 `
 
 export const StyledBannerImage = styled<Partial<Props>, 'div'>('div')`
-  font-size: ${p => !p.bgImage ? '38px' : 0};
+  font-size: 38px;
   font-weight: 600;
   line-height: 0.74;
   color: #d1d1db;

@@ -254,9 +254,9 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
           </StyledClose>
           <StyledBannerImage bgImage={bgImage}>
             {
-              !isMobile
-                ? this.getBannerImageContent(name, screenName, domain, provider)
-                : null
+              !isMobile && !bgImage
+              ? this.getBannerImageContent(name, screenName, domain, provider)
+              : null
             }
           </StyledBannerImage>
           <StyledContentWrapper isMobile={isMobile}>
