@@ -20,6 +20,14 @@ bool Engine::Deserialize(const char* serialized_data) {
   return engine_deserialize(raw, serialized_data);
 }
 
+void Engine::AddTag(const std::string& tag) {
+  engine_add_tag(raw, tag.c_str());
+}
+
+void Engine::RemoveTag(const std::string& tag) {
+  engine_remove_tag(raw, tag.c_str());
+}
+
 Engine::~Engine() {
   engine_destroy(raw);
 }

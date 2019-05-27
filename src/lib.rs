@@ -35,6 +35,33 @@ pub unsafe extern "C" fn engine_match(
         .matched
 }
 
+/// Adds a tag to the engine for consideration
+#[no_mangle]
+pub unsafe extern "C" fn engine_add_tag(
+    engine: *mut Engine,
+    tag: *const c_char,
+) {
+    let tag = CStr::from_ptr(tag).to_str().unwrap();
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    engine
+        .tags_enable(&[tag]);
+}
+
+
+/// Removes a tag to the engine for consideration
+#[no_mangle]
+pub unsafe extern "C" fn engine_remove_tag(
+    engine: *mut Engine,
+    tag: *const c_char,
+) {
+    let tag = CStr::from_ptr(tag).to_str().unwrap();
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    engine
+        .tags_disable(&[tag]);
+}
+
 /// Deserializes a previously serialized data file list.
 #[no_mangle]
 pub unsafe extern "C" fn engine_deserialize(engine: *mut Engine, data: *const c_char) -> bool {

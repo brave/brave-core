@@ -9,6 +9,11 @@
 typedef struct C_Engine C_Engine;
 
 /**
+ * Adds a tag to the engine for consideration
+ */
+void engine_add_tag(C_Engine *engine, const char *tag);
+
+/**
  * Create a new `Engine`.
  */
 C_Engine *engine_create(const char *rules);
@@ -32,5 +37,10 @@ bool engine_match(C_Engine *engine,
                   const char *tab_host,
                   bool third_party,
                   const char *resource_type);
+
+/**
+ * Removes a tag to the engine for consideration
+ */
+void engine_remove_tag(C_Engine *engine, const char *tag);
 
 #endif /* ADBLOCK_RUST_FFI_H */

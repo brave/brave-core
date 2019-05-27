@@ -17,6 +17,8 @@ class Engine {
       const std::string& tab_host, bool is_third_party,
       const std::string& resource_type);
   bool Deserialize(const char* serialized_data);
+  void AddTag(const std::string& tag);
+  void RemoveTag(const std::string& tag);
   ~Engine();
 
  private:
