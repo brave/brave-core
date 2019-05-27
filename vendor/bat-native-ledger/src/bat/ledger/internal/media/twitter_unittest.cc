@@ -33,6 +33,36 @@ TEST(MediaTwitterTest, GetProfileImageURL) {
   ASSERT_EQ(result, "https://twitter.com/emerick/profile_image?size=original");
 }
 
+TEST(MediaTwitterTest, GetShareURLWithoutQuotedTweet) {
+  std::map<std::string, std::string> args;
+  args["comment"] =
+      "I just tipped @emerick using the Brave browser. Check it out at "
+      "https://brave.com/tips.";
+  args["name"] = "emerick";
+  args["hashtag"] = "TipWithBrave";
+  std::string result = braveledger_media::MediaTwitter::GetShareURL(args);
+  ASSERT_EQ(result,
+            "https://twitter.com/intent/tweet?text=I just tipped @emerick "
+            "using the Brave browser. Check it out at "
+            "https://brave.com/tips.%20%23TipWithBrave");
+}
+
+TEST(MediaTwitterTest, GetShareURLWithQuotedTweet) {
+  std::map<std::string, std::string> args;
+  args["comment"] =
+      "I just tipped @emerick using the Brave browser. Check it out at "
+      "https://brave.com/tips.";
+  args["name"] = "emerick";
+  args["hashtag"] = "TipWithBrave";
+  args["tweet_id"] = "215559040011481088";
+  std::string result = braveledger_media::MediaTwitter::GetShareURL(args);
+  ASSERT_EQ(result,
+            "https://twitter.com/intent/tweet?text=I just tipped @emerick "
+            "using the Brave browser. Check it out at "
+            "https://brave.com/tips.%20%23TipWithBrave&url=https://twitter.com/"
+            "emerick/status/215559040011481088");
+}
+
 TEST(MediaTwitterTest, GetPublisherKey) {
   // key is empty
   std::string result = braveledger_media::MediaTwitter::GetPublisherKey("");
