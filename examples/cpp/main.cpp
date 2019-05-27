@@ -48,11 +48,11 @@ void TestBasics() {
                 "@@good-advertisement\n"
                 );
   Check(true, false, false, "Basic match", engine, "http://example.com/-advertisement-icon.",
-      "example.com", "example.com", true, "image");
+      "example.com", "example.com", false , "image");
   Check(false, false, false, "Basic not match", engine, "https://brianbondy.com",
-      "brianbondy.com", "example.com", false, "image");
+      "brianbondy.com", "example.com", true, "image");
   Check(false, false, true, "Basic saved from exception", engine, "http://example.com/good-advertisement-icon.",
-      "example.com", "example.com", true, "image");
+      "example.com", "example.com", false, "image");
 }
 
 void TestTags() {
@@ -62,15 +62,15 @@ void TestTags() {
                 "-advertisement/script.$tag=abc\n");
   Check(false, false, false, "Without needed tags", engine,
       "http://example.com/-advertisement-icon.", "example.com", "example.com",
-      true, "image");
+      false, "image");
   engine.AddTag("abc");
   Check(true, false, false, "With needed tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
-      "example.com", true, "image");
+      "example.com", false, "image");
   engine.RemoveTag("abc");
   Check(false, false, false, "With removed tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
-      "example.com", true, "image");
+      "example.com", false, "image");
 }
 
 void TestExplicitCancel() {
@@ -78,16 +78,27 @@ void TestExplicitCancel() {
                 "@@-advertisement-icon-good\n");
   Check(true, true, false, "Without needed tags", engine,
       "http://example.com/-advertisement-icon", "example.com", "example.com",
-      true, "image");
+      false, "image");
   Check(false, false, true, "Without needed tags", engine,
       "http://example.com/-advertisement-icon-good", "example.com", "example.com",
+      false, "image");
+}
+
+void TestThirdParty() {
+  Engine engine("-advertisement-icon$third-party");
+  Check(true, false, false, "Without needed tags", engine,
+      "http://example.com/-advertisement-icon", "example.com", "brianbondy.com",
       true, "image");
+  Check(false, false, false, "Without needed tags", engine,
+      "http://example.com/-advertisement-icon", "example.com", "example.com",
+      false, "image");
 }
 
 int main() {
   TestBasics();
   TestTags();
   TestExplicitCancel();
+  TestThirdParty();
   cout << num_passed << " passed, " <<
       num_failed << " failed" << endl;
   cout << "Success!";
