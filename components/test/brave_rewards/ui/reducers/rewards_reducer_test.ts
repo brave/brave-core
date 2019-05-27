@@ -163,4 +163,103 @@ describe('rewards reducer', () => {
       })
     })
   })
+
+  describe('ON_INLINE_TIP_SETTINGS_CHANGE', () => {
+    it('state does not have inlineTip', () => {
+      const initState: Rewards.State = { }
+      initState.adsData = {
+        adsEnabled: false,
+        adsPerHour: 2,
+        adsUIEnabled: false,
+        adsNotificationsReceived: 0,
+        adsEstimatedEarnings: 0,
+        adsIsSupported: false
+      }
+
+      const expectedState: Rewards.State = {
+        inlineTip: {
+          twitter: true
+        }
+      }
+
+      const assertion = reducers({
+        rewardsData: {}
+      }, {
+        type: types.ON_INLINE_TIP_SETTINGS_CHANGE,
+        payload: {
+          key: 'twitter',
+          value: true
+        }
+      })
+      expect(assertion).toEqual({
+        rewardsData: expectedState
+      })
+    })
+
+    it('value is empty', () => {
+      const initState: Rewards.State = { ...defaultState }
+
+      const expectedState: Rewards.State = { ...defaultState }
+      expectedState.inlineTip = {
+        twitter: true
+      }
+
+      const assertion = reducers({
+        rewardsData: initState
+      }, {
+        type: types.ON_INLINE_TIP_SETTINGS_CHANGE,
+        payload: {
+          key: 'twitter',
+          value: null
+        }
+      })
+      expect(assertion).toEqual({
+        rewardsData: expectedState
+      })
+    })
+
+    it('key is empty', () => {
+      const initState: Rewards.State = { ...defaultState }
+
+      const expectedState: Rewards.State = { ...defaultState }
+      expectedState.inlineTip = {
+        twitter: true
+      }
+
+      const assertion = reducers({
+        rewardsData: initState
+      }, {
+        type: types.ON_INLINE_TIP_SETTINGS_CHANGE,
+        payload: {
+          key: '',
+          value: true
+        }
+      })
+      expect(assertion).toEqual({
+        rewardsData: expectedState
+      })
+    })
+
+    it('all ok', () => {
+      const initState: Rewards.State = { ...defaultState }
+
+      const expectedState: Rewards.State = { ...defaultState }
+      expectedState.inlineTip = {
+        twitter: false
+      }
+
+      const assertion = reducers({
+        rewardsData: initState
+      }, {
+        type: types.ON_INLINE_TIP_SETTINGS_CHANGE,
+        payload: {
+          key: 'twitter',
+          value: false
+        }
+      })
+      expect(assertion).toEqual({
+        rewardsData: expectedState
+      })
+    })
+  })
 })
