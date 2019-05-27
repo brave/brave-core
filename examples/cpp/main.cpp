@@ -8,32 +8,51 @@ using namespace adblock;
 size_t num_passed = 0;
 size_t num_failed = 0;
 
-void Check(bool expected_result, const std::string& test_description,
+void Check(bool expected_result,
+    bool expected_cancel, bool expected_saved_from_exception,
+    const std::string& test_description,
     Engine& engine, const std::string& url, const std::string& host,
     const std::string& tab_host, bool third_party,
     const std::string& resource_type) {
-  bool match = engine.Matches(url, host, tab_host, third_party, resource_type);
+  bool cancel;
+  bool saved_from_exception;
+  bool match = engine.Matches(url, host, tab_host, third_party,
+      resource_type, &cancel, &saved_from_exception);
   cout << test_description << "... ";
   if (expected_result != match) {
     cout << "Failed!" << endl;
     cout << "Unexpected result: " << url << " in " << tab_host << endl;
     num_failed++;
+  } else if (cancel != expected_cancel) {
+    cout << "Failed!" << endl;
+    cout << "Unexpected cancel value: " << url <<
+      " in " << tab_host << endl;
+  } else if (saved_from_exception != expected_saved_from_exception) {
+    cout << "Failed!" << endl;
+    cout << "Unexpected saved from exception value: " << url <<
+      " in " << tab_host << endl;
   } else {
     cout << "Passed!" << endl;
     num_passed++;
   }
-  assert(expected_result == match);
+  assert(expected_result == match &&
+      cancel == expected_cancel &&
+      saved_from_exception == expected_saved_from_exception);
 }
 
 void TestBasics() {
   Engine engine("-advertisement-icon.\n"
                 "-advertisement-management\n"
                 "-advertisement.\n"
-                "-advertisement/script.\n");
-  Check(true, "Basic match", engine, "http://example.com/-advertisement-icon.",
+                "-advertisement/script.\n"
+                "@@good-advertisement\n"
+                );
+  Check(true, false, false, "Basic match", engine, "http://example.com/-advertisement-icon.",
       "example.com", "example.com", true, "image");
-  Check(false, "Basic not match", engine, "https://brianbondy.com",
+  Check(false, false, false, "Basic not match", engine, "https://brianbondy.com",
       "brianbondy.com", "example.com", false, "image");
+  Check(false, false, true, "Basic saved from exception", engine, "http://example.com/good-advertisement-icon.",
+      "example.com", "example.com", true, "image");
 }
 
 void TestTags() {
@@ -41,22 +60,34 @@ void TestTags() {
                 "-advertisement-management$tag=abc\n"
                 "-advertisement.$tag=abc\n"
                 "-advertisement/script.$tag=abc\n");
-  Check(false, "Without needed tags", engine,
+  Check(false, false, false, "Without needed tags", engine,
       "http://example.com/-advertisement-icon.", "example.com", "example.com",
       true, "image");
   engine.AddTag("abc");
-  Check(true, "With needed tags",
+  Check(true, false, false, "With needed tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
       "example.com", true, "image");
   engine.RemoveTag("abc");
-  Check(false, "With removed tags",
+  Check(false, false, false, "With removed tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
       "example.com", true, "image");
+}
+
+void TestExplicitCancel() {
+  Engine engine("-advertisement-icon$explicitcancel\n"
+                "@@-advertisement-icon-good\n");
+  Check(true, true, false, "Without needed tags", engine,
+      "http://example.com/-advertisement-icon", "example.com", "example.com",
+      true, "image");
+  Check(false, false, true, "Without needed tags", engine,
+      "http://example.com/-advertisement-icon-good", "example.com", "example.com",
+      true, "image");
 }
 
 int main() {
   TestBasics();
   TestTags();
+  TestExplicitCancel();
   cout << num_passed << " passed, " <<
       num_failed << " failed" << endl;
   cout << "Success!";

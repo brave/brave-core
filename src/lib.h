@@ -36,7 +36,9 @@ bool engine_match(C_Engine *engine,
                   const char *host,
                   const char *tab_host,
                   bool third_party,
-                  const char *resource_type);
+                  const char *resource_type,
+                  bool *explicit_cancel,
+                  bool *saved_from_exception);
 
 /**
  * Removes a tag to the engine for consideration

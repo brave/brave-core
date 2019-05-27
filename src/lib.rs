@@ -23,6 +23,8 @@ pub unsafe extern "C" fn engine_match(
     tab_host: *const c_char,
     third_party: bool,
     resource_type: *const c_char,
+    explicit_cancel: *mut bool,
+    saved_from_exception: *mut bool,
 ) -> bool {
     let url = CStr::from_ptr(url).to_str().unwrap();
     let host = CStr::from_ptr(host).to_str().unwrap();
@@ -30,9 +32,14 @@ pub unsafe extern "C" fn engine_match(
     let resource_type = CStr::from_ptr(resource_type).to_str().unwrap();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
-    engine
-        .check_network_urls_with_hostnames(url, host, tab_host, resource_type, Some(third_party))
-        .matched
+    let blocker_result =
+        engine.check_network_urls_with_hostnames(url, host, tab_host,
+                                                 resource_type,
+                                                 Some(third_party));
+    *explicit_cancel = blocker_result.explicit_cancel;
+    *saved_from_exception =
+        blocker_result.filter != None && blocker_result.exception != None;
+    blocker_result.matched
 }
 
 /// Adds a tag to the engine for consideration

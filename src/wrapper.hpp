@@ -15,7 +15,8 @@ class Engine {
   Engine(const std::string& rules);
   bool Matches(const std::string& url, const std::string& host,
       const std::string& tab_host, bool is_third_party,
-      const std::string& resource_type);
+      const std::string& resource_type, bool* explicit_cancel,
+      bool* saved_from_exception);
   bool Deserialize(const char* serialized_data);
   void AddTag(const std::string& tag);
   void RemoveTag(const std::string& tag);

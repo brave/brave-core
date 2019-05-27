@@ -11,9 +11,11 @@ Engine::Engine(const std::string& rules) : raw(engine_create(rules.c_str())) {
 
 bool Engine::Matches(const std::string& url, const std::string& host,
     const std::string& tab_host, bool is_third_party,
-    const std::string& resource_type) {
+    const std::string& resource_type, bool* explicit_cancel,
+    bool* saved_from_exception) {
   return engine_match(raw, url.c_str(), host.c_str(),tab_host.c_str(),
-      is_third_party, resource_type.c_str());
+      is_third_party, resource_type.c_str(), explicit_cancel,
+      saved_from_exception);
 }
 
 bool Engine::Deserialize(const char* serialized_data) {
