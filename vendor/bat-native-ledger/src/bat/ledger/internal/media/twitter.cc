@@ -229,7 +229,7 @@ std::string MediaTwitter::GetShareURL(
   // If a tweet ID was specified, then quote the original tweet along
   // with the supplied comment; otherwise, just tweet the comment.
   std::string share_url;
-  if (!tweet_id->second.empty()) {
+  if (tweet_id != args.end() && !tweet_id->second.empty()) {
     std::string quoted_tweet_url =
         base::StringPrintf("https://twitter.com/%s/status/%s",
                            name->second.c_str(), tweet_id->second.c_str());
