@@ -1,9 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_IMPL_H
-#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_IMPL_H
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_IMPL_H_
+
+#include <memory>
+#include <string>
+#include <vector>
 
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "base/macros.h"
@@ -21,7 +26,7 @@ class BraveSyncEventRouter;
 namespace brave_sync {
 
 namespace prefs {
-  class Prefs;
+class Prefs;
 }
 
 using extensions::Extension;
@@ -46,7 +51,7 @@ class BraveSyncClientImpl : public BraveSyncClient,
   void SendFetchSyncRecords(
     const std::vector<std::string> &category_names, const base::Time &startAt,
     const int max_records) override;
-  void SendFetchSyncDevices() override ;
+  void SendFetchSyncDevices() override;
   void SendResolveSyncRecords(
       const std::string& category_name,
       std::unique_ptr<SyncRecordAndExistingList> records) override;
@@ -92,6 +97,6 @@ class BraveSyncClientImpl : public BraveSyncClient,
   DISALLOW_COPY_AND_ASSIGN(BraveSyncClientImpl);
 };
 
-} // namespace brave_sync
+}   // namespace brave_sync
 
-#endif // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_IMPL_H
+#endif    // BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_IMPL_H_

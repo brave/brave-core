@@ -1,4 +1,14 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "components/sync/engine_impl/get_updates_processor.h"
+
+#include <algorithm>
+#include <memory>
+#include <string>
+#include <utility>
 
 namespace syncer {
 namespace {
@@ -6,7 +16,7 @@ SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse*, ModelTypeSet*,
                               std::unique_ptr<brave_sync::RecordsList>);
 }   // namespace
 }   // namespace syncer
-#include "../../../../../components/sync/engine_impl/get_updates_processor.cc"
+#include "../../../../../components/sync/engine_impl/get_updates_processor.cc"    // NOLINT
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
@@ -126,7 +136,8 @@ void AddRootForType(sync_pb::SyncEntity* entity, ModelType type) {
   entity->mutable_specifics()->CopyFrom(specifics);
 }
 
-void AddPermanentNode(sync_pb::SyncEntity* entity, const std::string& name, const std::string& tag) {
+void AddPermanentNode(sync_pb::SyncEntity* entity, const std::string& name,
+                      const std::string& tag) {
   DCHECK(entity);
   sync_pb::EntitySpecifics specifics;
   AddDefaultFieldValue(BOOKMARKS, &specifics);

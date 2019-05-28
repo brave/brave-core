@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
+
+#include <string>
+#include <utility>
 
 #include "brave/common/extensions/api/brave_sync.h"
 #include "brave/components/brave_sync/client/client_data.h"
@@ -12,10 +16,11 @@
 namespace brave_sync {
 
 void ConvertConfig(const brave_sync::client_data::Config &config,
-  extensions::api::brave_sync::Config &config_extension) {
-  config_extension.api_version = config.api_version;
-  config_extension.server_url = config.server_url;
-  config_extension.debug = config.debug;
+  extensions::api::brave_sync::Config* config_extension) {
+  DCHECK(config_extension);
+  config_extension->api_version = config.api_version;
+  config_extension->server_url = config.server_url;
+  config_extension->debug = config.debug;
 }
 
 std::unique_ptr<brave_sync::jslib::Site> FromExtSite(
@@ -51,7 +56,7 @@ std::unique_ptr<brave_sync::jslib::SiteSetting> FromExtSiteSetting(
   }
   CHECK_AND_ASSIGN(zoomLevel, zoom_level);
   CHECK_AND_ASSIGN(shieldsUp, shields_up);
-  //DCHECK(false);
+  // DCHECK(false);
   // site_setting-> = ext_site_setting.ad_control;
   // site_setting-> = ext_site_setting.cookie_control;
   CHECK_AND_ASSIGN(safeBrowsing, safe_browsing);
@@ -113,8 +118,8 @@ std::unique_ptr<extensions::api::brave_sync::Site> FromLibSite(
   ext_site->location = lib_site.location;
   ext_site->title = lib_site.title;
   ext_site->custom_title = lib_site.customTitle;
-  ext_site->last_accessed_time = 0;//lib_site.lastAccessedTime.ToJsTime();
-  ext_site->creation_time = 0;//lib_site.creationTime.ToJsTime();
+  ext_site->last_accessed_time = 0;   // lib_site.lastAccessedTime.ToJsTime();
+  ext_site->creation_time = 0;    // lib_site.creationTime.ToJsTime();
   ext_site->favicon = lib_site.favicon;
 
   return ext_site;
@@ -175,9 +180,9 @@ std::unique_ptr<extensions::api::brave_sync::SiteSetting> FromLibSiteSetting(
 
   ext_site_setting->zoom_level.reset(new double(lib_site_setting.zoomLevel));
   ext_site_setting->shields_up.reset(new bool (lib_site_setting.shieldsUp));
-  //ext_site_setting->ad_control = lib_site_setting.adControl;
-  //ext_site_setting->cookie_control = lib_site_setting.cookieControl;
-  //DCHECK(false);
+  // ext_site_setting->ad_control = lib_site_setting.adControl;
+  // ext_site_setting->cookie_control = lib_site_setting.cookieControl;
+  // DCHECK(false);
   ext_site_setting->safe_browsing.reset(
       new bool(lib_site_setting.safeBrowsing));
   ext_site_setting->no_script.reset(new bool(lib_site_setting.noScript));
@@ -204,11 +209,11 @@ std::unique_ptr<extensions::api::brave_sync::Device> FromLibDevice(
   return ext_device;
 }
 
-std::unique_ptr<extensions::api::brave_sync::SyncRecord> FromLibSyncRecord(
+std::unique_ptr<SyncRecord> FromLibSyncRecord(
     const brave_sync::SyncRecordPtr &lib_record) {
   DCHECK(lib_record);
-  std::unique_ptr<extensions::api::brave_sync::SyncRecord> ext_record =
-      std::make_unique<extensions::api::brave_sync::SyncRecord>();
+  std::unique_ptr<SyncRecord> ext_record =
+      std::make_unique<SyncRecord>();
 
   ext_record->action = static_cast<int>(lib_record->action);
   ext_record->device_id = UCharVecFromString(lib_record->deviceId);
@@ -236,10 +241,12 @@ std::unique_ptr<extensions::api::brave_sync::SyncRecord> FromLibSyncRecord(
 }
 
 brave_sync::SyncRecordPtr FromExtSyncRecord(
-    const extensions::api::brave_sync::SyncRecord &ext_record) {
-  brave_sync::SyncRecordPtr record = std::make_unique<brave_sync::jslib::SyncRecord>();
+    const SyncRecord &ext_record) {
+  brave_sync::SyncRecordPtr record =
+    std::make_unique<brave_sync::jslib::SyncRecord>();
 
-  record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(ext_record.action,
+  record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(
+    ext_record.action,
     brave_sync::jslib::SyncRecord::Action::A_MIN,
     brave_sync::jslib::SyncRecord::Action::A_MAX,
     brave_sync::jslib::SyncRecord::Action::A_INVALID);
@@ -288,21 +295,21 @@ brave_sync::SyncRecordPtr FromExtSyncRecord(
 
 void ConvertSyncRecords(
     const std::vector<extensions::api::brave_sync::SyncRecord>& ext_records,
-  std::vector<brave_sync::SyncRecordPtr> &records) {
-  DCHECK(records.empty());
+  std::vector<brave_sync::SyncRecordPtr>* records) {
+  DCHECK(records);
+  DCHECK(records->empty());
 
-  for (const extensions::api::brave_sync::SyncRecord &ext_record : ext_records) {
+  for (const auto &ext_record : ext_records) {
     brave_sync::SyncRecordPtr record = FromExtSyncRecord(ext_record);
-    records.emplace_back(std::move(record));
+    records->emplace_back(std::move(record));
   }
 }
 
 void ConvertResolvedPairs(
     const SyncRecordAndExistingList& records_and_existing_objects,
-    std::vector<extensions::api::brave_sync::RecordAndExistingObject>&
-        records_and_existing_objects_ext) {
-
-  DCHECK(records_and_existing_objects_ext.empty());
+    std::vector<RecordAndExistingObject>* records_and_existing_objects_ext) {
+  DCHECK(records_and_existing_objects_ext);
+  DCHECK(records_and_existing_objects_ext->empty());
 
   for (const SyncRecordAndExistingPtr &src : records_and_existing_objects) {
     DCHECK(src->first.get() != nullptr);
@@ -315,20 +322,21 @@ void ConvertResolvedPairs(
       dest->local_record = FromLibSyncRecord(src->second);
     }
 
-    records_and_existing_objects_ext.emplace_back(std::move(*dest));
+    records_and_existing_objects_ext->emplace_back(std::move(*dest));
   }
 }
 
 void ConvertSyncRecordsFromLibToExt(
     const std::vector<brave_sync::SyncRecordPtr>& records,
-    std::vector<extensions::api::brave_sync::SyncRecord>& records_extension) {
-  DCHECK(records_extension.empty());
+    std::vector<SyncRecord>* records_extension) {
+  DCHECK(records_extension);
+  DCHECK(records_extension->empty());
 
   for (const brave_sync::SyncRecordPtr &src : records) {
-    std::unique_ptr<extensions::api::brave_sync::SyncRecord> dest =
+    std::unique_ptr<SyncRecord> dest =
         FromLibSyncRecord(src);
-    records_extension.emplace_back(std::move(*dest));
+    records_extension->emplace_back(std::move(*dest));
   }
 }
 
-} // namespace brave_sync
+}   // namespace brave_sync

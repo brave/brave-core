@@ -1,4 +1,14 @@
-#include "../../../../../../components/sync/driver/glue/sync_engine_backend.cc"
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "../../../../../../components/sync/driver/glue/sync_engine_backend.cc"   // NOLINT
+
+#include "brave/chromium_src/components/sync/driver/glue/sync_engine_backend.h"
+
+#include <memory>
+#include <utility>
 
 #include "brave/components/brave_sync/jslib_messages.h"
 

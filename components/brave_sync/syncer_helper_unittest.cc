@@ -59,7 +59,6 @@ class SyncerHelperTest : public testing::Test {
     model_->SetNodeMetaInfo(model_->bookmark_bar_node(), "order", "1.0.1");
 
     model_->SetNodeMetaInfo(model_->other_node(), "order", "1.0.2");
-
   }
 
   void TearDown() override {
@@ -187,7 +186,7 @@ TEST_F(SyncerHelperTest, AddBraveMetaInfoNodeChildrenReordered) {
   order_a.clear();
   order_b.clear();
   order_c.clear();
- 
+
   node_a->GetMetaInfo("order", &order_a);
   EXPECT_EQ(order_a, "1.0.1.2");
   node_b->GetMetaInfo("order", &order_b);

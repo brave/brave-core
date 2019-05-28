@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/client/brave_sync_client_impl.h"
@@ -645,7 +647,8 @@ TEST_F(BraveSyncServiceTest, StartSyncNonDeviceRecords) {
                            brave_sync::prefs::kSyncBookmarksBaseOrder, "1.1.");
   profile()->GetPrefs()->SetBoolean(
                             brave_sync::prefs::kSyncBookmarksEnabled, true);
-  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(syncer::prefs::kSyncBookmarks));
+  EXPECT_FALSE(profile()->GetPrefs()->GetBoolean(
+                                        syncer::prefs::kSyncBookmarks));
   brave_sync_prefs()->SetThisDeviceId("1");
   RecordsList records;
   records.push_back(SimpleDeviceRecord(

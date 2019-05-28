@@ -1,6 +1,14 @@
-#include "brave/components/brave_sync/jslib_messages.h"
-#include "base/synchronization/waitable_event.h"
-#include "../../../../../components/sync/engine_impl/syncer.cc"
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/chromium_src/components/sync/engine_impl/syncer.h"
+
+#include <memory>
+#include <utility>
+
+#include "../../../../../components/sync/engine_impl/syncer.cc"   // NOLINT
 
 namespace syncer {
 

@@ -1,11 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #ifndef BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_EVENT_ROUTER_H_
 #define BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_EVENT_ROUTER_H_
 
 #include <string>
+#include <vector>
 #include "extensions/browser/event_router.h"
 
 class Profile;
@@ -16,9 +18,9 @@ namespace brave_sync {
 struct SyncRecord;
 struct Config;
 struct RecordAndExistingObject;
-} // namespace brave_sync
-} // namespace api
-} // namespace extensions
+}   // namespace brave_sync
+}   // namespace api
+}   // namespace extensions
 
 using extensions::api::brave_sync::RecordAndExistingObject;
 
@@ -30,7 +32,7 @@ namespace extensions {
 
 class BraveSyncEventRouter {
  public:
-  BraveSyncEventRouter(Profile* profile);
+  explicit BraveSyncEventRouter(Profile* profile);
   ~BraveSyncEventRouter();
 
   void GotInitData(
@@ -59,10 +61,10 @@ class BraveSyncEventRouter {
 
   void LoadClient();
 
-private:
+ private:
   EventRouter* event_router_;
 };
 
-} // namespace extensions
+}   // namespace extensions
 
-#endif // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_EVENT_ROUTER_H_
+#endif    // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_EVENT_ROUTER_H_
