@@ -1516,3 +1516,62 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Ensure that Twitter tips injection is not active
   EXPECT_FALSE(IsTwitterTipsInjected());
 }
+
+// Check pending contributions
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       PendingContributionTip) {
+  const std::string publisher = "example.com";
+
+  // Observe the Rewards service
+  rewards_service_->AddObserver(this);
+
+  // Enable Rewards
+  EnableRewards();
+
+  // Tip unverified publisher
+  TipPublisher(publisher, false, false);
+
+  // Check that link for pending is shown
+  {
+    content::EvalJsResult js_result = EvalJs(
+        contents(),
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(0).then(() => "
+        "  document.querySelector(\"[data-test-id='reservedAllLink']\")"
+        "    .parentElement.parentElement.innerText);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(
+        js_result.ExtractString().find("Show all pending contributions"),
+        std::string::npos);
+  }
+
+  // Open modal
+  {
+    ASSERT_TRUE(ExecJs(contents(),
+        "if (document.querySelector(\"[data-test-id='reservedAllLink']\")) {"
+        "  document.querySelector("
+        "      \"[data-test-id='reservedAllLink']\").click();"
+        "}",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END));
+  }
+
+  // Make sure that table is populated
+  {
+    content::EvalJsResult js_result = EvalJs(
+        contents(),
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(0).then(() => "
+        " document.querySelector(\"[id='pendingContributionTable']\")"
+        "    .getElementsByTagName('a')[0].innerText);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(
+        js_result.ExtractString().find(publisher),
+        std::string::npos);
+  }
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
+}

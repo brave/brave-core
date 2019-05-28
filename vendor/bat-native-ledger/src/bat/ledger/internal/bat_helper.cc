@@ -2973,4 +2973,44 @@ void saveToJson(JsonWriter* writer, const ledger::RewardsInternalsInfo& info) {
   writer->EndObject();
 }
 
+void saveToJson(JsonWriter* writer,
+                const ledger::PendingContributionInfo& info) {
+  writer->StartObject();
+
+  writer->String("publisher_key");
+  writer->String(info.publisher_key.c_str());
+
+  writer->String("category");
+  writer->Int(info.category);
+
+  writer->String("verified");
+  writer->Bool(info.verified);
+
+  writer->String("name");
+  writer->String(info.name.c_str());
+
+  writer->String("url");
+  writer->String(info.url.c_str());
+
+  writer->String("provider");
+  writer->String(info.provider.c_str());
+
+  writer->String("favicon_url");
+  writer->String(info.favicon_url.c_str());
+
+  writer->String("amount");
+  writer->Double(info.amount);
+
+  writer->String("added_date");
+  writer->Uint64(info.added_date);
+
+  writer->String("viewing_id");
+  writer->String(info.viewing_id.c_str());
+
+  writer->String("expiration_date");
+  writer->Uint64(info.expiration_date);
+
+  writer->EndObject();
+}
+
 }  // namespace braveledger_bat_helper

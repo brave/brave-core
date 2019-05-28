@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "bat/ledger/export.h"
+#include "bat/ledger/publisher_info.h"
 
 namespace ledger {
 
@@ -38,6 +39,29 @@ LEDGER_EXPORT struct PendingContributionList {
 
   std::vector<PendingContribution> list_;
 };
+
+LEDGER_EXPORT struct PendingContributionInfo {
+  PendingContributionInfo();
+  PendingContributionInfo(const PendingContributionInfo& info);
+  ~PendingContributionInfo();
+
+  const std::string ToJson() const;
+  bool loadFromJson(const std::string& json);
+
+  std::string publisher_key;
+  REWARDS_CATEGORY category;
+  bool verified;
+  std::string name;
+  std::string url;
+  std::string provider;
+  std::string favicon_url;
+  double amount = 0;
+  uint64_t added_date = 0;
+  std::string viewing_id;
+  uint64_t expiration_date = 0;
+};
+
+using PendingContributionInfoList = std::vector<PendingContributionInfo>;
 
 }  // namespace ledger
 

@@ -27,6 +27,8 @@ source_set("browser") {
     "wallet_properties.h",
     "grant.cc",
     "grant.h",
+    "pending_contribution.cc",
+    "pending_contribution.h",
     "publisher_banner.cc",
     "publisher_banner.h",
     "contribution_info.cc",

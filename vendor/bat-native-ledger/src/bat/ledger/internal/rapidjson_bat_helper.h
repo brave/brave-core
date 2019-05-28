@@ -26,6 +26,7 @@ struct VisitData;
 struct WalletInfo;
 struct PendingContribution;
 struct PendingContributionList;
+struct PendingContributionInfo;
 
 }  // namespace ledger
 
@@ -75,6 +76,7 @@ void saveToJson(JsonWriter* writer, const ledger::PendingContribution&);
 void saveToJson(JsonWriter* writer, const ledger::PendingContributionList&);
 void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST&);
 void saveToJson(JsonWriter* writer, const GRANT&);
+void saveToJson(JsonWriter* writer, const ledger::PendingContributionInfo&);
 
 template <typename T>
 void saveToJsonString(const T& t, std::string* json) {

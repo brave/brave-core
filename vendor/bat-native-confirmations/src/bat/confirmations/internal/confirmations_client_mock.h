@@ -247,6 +247,21 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD1(GetExcludedPublishersNumberDB, void(
       ledger::GetExcludedPublishersNumberDBCallback callback));
+
+  MOCK_METHOD1(GetPendingContributions, void(
+      const ledger::PendingContributionInfoListCallback& callback));
+
+  MOCK_METHOD4(RemovePendingContribution, void(
+      const std::string& publisher_key,
+      const std::string& viewing_id,
+      uint64_t added_date,
+      const ledger::RemovePendingContributionCallback& callback));
+
+  MOCK_METHOD1(RemoveAllPendingContributions, void(
+    const ledger::RemovePendingContributionCallback& callback));
+
+  MOCK_METHOD1(GetPendingContributionsTotal, void(
+    const ledger::PendingContributionsTotalCallback& callback));
 };
 
 }  // namespace confirmations

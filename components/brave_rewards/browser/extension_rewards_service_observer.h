@@ -46,6 +46,9 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnRecurringTipRemoved(RewardsService* rewards_service,
                              bool success) override;
 
+  void OnPendingContributionRemoved(RewardsService* rewards_service,
+                                    int32_t result) override;
+
   // RewardsServicePrivateObserver implementation
   void OnGetCurrentBalanceReport(RewardsService* rewards_service,
                                  const BalanceReport& balance_report) override;
