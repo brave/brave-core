@@ -174,23 +174,23 @@ TEST(MediaTwitterTest, GetUserId) {
 TEST(MediaTwitterTest, GetPublisherName) {
   // response is empty
   std::string result =
-      braveledger_media::MediaTwitter::GetPublisherName("", "emerick");
+      braveledger_media::MediaTwitter::GetPublisherName("");
   ASSERT_EQ(result, "");
 
   // without twitter
   result = braveledger_media::MediaTwitter::
-      GetPublisherName("<title>Hi</title>", "emerick");
+      GetPublisherName("<title>Hi</title>");
   ASSERT_EQ(result, "Hi");
 
   // current twitter
   result = braveledger_media::MediaTwitter::
-      GetPublisherName("<title>Name (@emerick) / Twitter</title>", "emerick");
+      GetPublisherName("<title>Name (@emerick) / Twitter</title>");
   ASSERT_EQ(result, "Name");
 
   // new twitter
   result = braveledger_media::MediaTwitter::
-      GetPublisherName("<title>Name (@emerick) | Twitter</title>", "emerick");
-  ASSERT_EQ(result, "Name");
+      GetPublisherName("<title>My Name (@emerick) | Twitter</title>");
+  ASSERT_EQ(result, "My Name");
 }
 
 }  // namespace braveledger_media
