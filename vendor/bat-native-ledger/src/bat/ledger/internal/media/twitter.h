@@ -52,8 +52,7 @@ class MediaTwitter : public ledger::LedgerCallbackHandler {
 
   static std::string GetUserId(const std::string& response);
 
-  static std::string GetPublisherName(const std::string& response,
-                                      const std::string& user_name);
+  static std::string GetPublisherName(const std::string& response);
 
   void OnMediaPublisherInfo(
     uint64_t window_id,

@@ -150,33 +150,24 @@ std::string MediaTwitter::GetUserId(const std::string& response) {
 }
 
 // static
-std::string MediaTwitter::GetPublisherName(const std::string& response,
-                                           const std::string& user_name) {
+std::string MediaTwitter::GetPublisherName(const std::string& response) {
   if (response.empty()) {
     return std::string();
   }
 
-  std::string title = braveledger_media::ExtractData(
+  const std::string title = braveledger_media::ExtractData(
       response, "<title>", "</title>");
 
   if (title.empty()) {
     return std::string();
   }
 
-  base::ReplaceSubstringsAfterOffset(&title,
-                                     0,
-                                     " (@" + user_name + ")",
-                                     "");
+  std::vector<std::string> parts = base::SplitStringUsingSubstr(
+      title, " (@", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-  base::ReplaceSubstringsAfterOffset(&title,
-                                     0,
-                                     " / Twitter",
-                                     "");
-
-  base::ReplaceSubstringsAfterOffset(&title,
-                                     0,
-                                     " | Twitter",
-                                     "");
+  if (parts.size() > 0) {
+    return parts.at(0);
+  }
 
   return title;
 }
@@ -453,7 +444,7 @@ void MediaTwitter::OnUserPage(
 
   const std::string user_id = GetUserId(response);
   const std::string user_name = GetUserNameFromUrl(visit_data.path);
-  std::string publisher_name = GetPublisherName(response, user_name);
+  std::string publisher_name = GetPublisherName(response);
 
   if (publisher_name.empty()) {
     publisher_name = user_name;
