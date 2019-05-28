@@ -58,15 +58,14 @@ bool RewriteManifestFile(
   return true;
 }
 
-std::string GetManifestString(const base::DictionaryValue& manifest,
+std::string GetManifestString(std::unique_ptr<base::DictionaryValue> manifest,
     const std::string &public_key) {
-  std::unique_ptr<base::DictionaryValue> final_manifest(manifest.DeepCopy());
-  final_manifest->SetString("key", public_key);
+  manifest->SetString("key", public_key);
 
   std::string manifest_json;
   JSONStringValueSerializer serializer(&manifest_json);
   serializer.set_pretty_print(true);
-  if (!serializer.Serialize(*final_manifest)) {
+  if (!serializer.Serialize(*manifest)) {
     return "";
   }
   return manifest_json;
@@ -125,9 +124,17 @@ void BraveComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& install_dir,
     std::unique_ptr<base::DictionaryValue> manifest) {
-  std::move(ready_callback_).Run(
-      install_dir,
-      GetManifestString(*manifest, base64_public_key_));
+  // It appears to be possible for the ComponentInstaller to call
+  // `ComponentReady` more than once. There is a call in
+  // ComponentInstaller::FinishRegistration and another one in
+  // ComponentInstaller::Install. So a call to Register followed by a call
+  // to Install could result in a crash here. See
+  // https://github.com/brave/brave-browser/issues/4624
+  if (!ready_callback_.is_null()) {
+    std::move(ready_callback_).Run(
+          install_dir,
+          GetManifestString(std::move(manifest), base64_public_key_));
+  }
 }
 
 base::FilePath BraveComponentInstallerPolicy::GetRelativeInstallDir() const {
