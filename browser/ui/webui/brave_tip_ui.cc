@@ -363,8 +363,11 @@ void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
   // Share the tip comment/compliment on Twitter.
   std::string comment = l10n_util::GetStringFUTF8(
       IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET, base::UTF8ToUTF16(name));
+  std::string hashtag = l10n_util::GetStringUTF8(
+      IDS_BRAVE_REWARDS_LOCAL_COMPLIMENT_TWEET_HASHTAG);
   std::map<std::string, std::string> share_url_args;
   share_url_args["comment"] = comment;
+  share_url_args["hashtag"] = hashtag;
   share_url_args["name"] = name.erase(0, 1);
   share_url_args["tweet_id"] = tweet_id;
   rewards_service_->GetShareURL(

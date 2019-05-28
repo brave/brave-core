@@ -6,9 +6,10 @@
 #ifndef BRAVELEDGER_MEDIA_TWITTER_H_
 #define BRAVELEDGER_MEDIA_TWITTER_H_
 
+#include <stdint.h>
+
 #include <map>
 #include <memory>
-#include <stdint.h>
 #include <string>
 
 #include "base/gtest_prod_util.h"
@@ -30,7 +31,8 @@ class MediaTwitter : public ledger::LedgerCallbackHandler {
   void SaveMediaInfo(const std::map<std::string, std::string>& data,
                      ledger::PublisherInfoCallback callback);
 
-  std::string GetShareURL(const std::map<std::string, std::string>& args);
+  static std::string GetShareURL(
+      const std::map<std::string, std::string>& args);
 
   void ProcessActivityFromUrl(uint64_t window_id,
                               const ledger::VisitData& visit_data);
