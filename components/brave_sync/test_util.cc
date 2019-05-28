@@ -1,8 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_sync/test_util.h"
+
+#include <utility>
 
 #include "base/files/file_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -40,8 +43,9 @@ std::unique_ptr<Profile> CreateBraveSyncProfile(const base::FilePath& path) {
 
 std::unique_ptr<KeyedService> BuildFakeBookmarkModelForTests(
     content::BrowserContext* context) {
+  using bookmarks::BookmarkModel;
+  using bookmarks::TestBookmarkClient;
   // Don't need context, unless we have more than one profile
-  using namespace bookmarks;
   std::unique_ptr<TestBookmarkClient> client(new TestBookmarkClient());
   std::unique_ptr<BookmarkModel> model(
       TestBookmarkClient::CreateModelWithClient(std::move(client)));
@@ -138,4 +142,4 @@ SyncRecordPtr SimpleDeviceRecord(
   return record;
 }
 
-}  // namespace
+}   // namespace brave_sync

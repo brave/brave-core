@@ -1,6 +1,11 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 // For use_transport_only_mode
 #define IsSyncFeatureEnabled IsBraveSyncEnabled
-#include "../../../../components/sync/driver/profile_sync_service.cc"
+#include "../../../../components/sync/driver/profile_sync_service.cc"   // NOLINT
 
 #include "base/bind.h"
 #include "brave/components/brave_sync/jslib_messages.h"

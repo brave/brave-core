@@ -50,7 +50,7 @@ uint64_t GetIndexByOrder(const std::string& record_order) {
   std::string last_digit = record_order.substr(last_dot_index + 1);
   bool result = base::StringToUint64(last_digit, &index);
   --index;
-  DCHECK(index >= 0);
+  DCHECK_GE(index, 0u);
   DCHECK(result);
   return index;
 }

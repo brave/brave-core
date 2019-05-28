@@ -104,7 +104,7 @@ ExtensionFunction::ResponseAction BraveSyncGetExistingObjectsFunction::Run() {
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto records = std::make_unique<std::vector<::brave_sync::SyncRecordPtr>>();
-  ::brave_sync::ConvertSyncRecords(params->records, *records.get());
+  ::brave_sync::ConvertSyncRecords(params->records, records.get());
 
   BraveProfileSyncService* sync_service =
     GetProfileSyncService(browser_context());
@@ -124,7 +124,7 @@ ExtensionFunction::ResponseAction BraveSyncResolvedSyncRecordsFunction::Run() {
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
   auto records = std::make_unique<std::vector<::brave_sync::SyncRecordPtr>>();
-  ::brave_sync::ConvertSyncRecords(params->records, *records.get());
+  ::brave_sync::ConvertSyncRecords(params->records, records.get());
 
   BraveProfileSyncService* sync_service =
     GetProfileSyncService(browser_context());

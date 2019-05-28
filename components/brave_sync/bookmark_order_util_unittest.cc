@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -22,9 +23,9 @@ TEST(BookmarkOrderUtilTest, OrderToIntVect_SingleValue) {
 TEST(BookmarkOrderUtilTest, OrderToIntVect_TypicalValue) {
   std::vector<int> result = OrderToIntVect("1.7.4");
   ASSERT_EQ(result.size(), 3u);
-  EXPECT_TRUE(result.at(0) == 1);
-  EXPECT_TRUE(result.at(1) == 7);
-  EXPECT_TRUE(result.at(2) == 4);
+  EXPECT_EQ(result.at(0), 1);
+  EXPECT_EQ(result.at(1), 7);
+  EXPECT_EQ(result.at(2), 4);
 }
 
 TEST(BookmarkOrderUtilTest, OrderToIntVect_WrongValue) {
@@ -54,4 +55,4 @@ TEST(BookmarkOrderUtilTest, CompareOrder) {
   EXPECT_FALSE(CompareOrder("1.7.0.2", "1.7.0.1"));
 }
 
-} // namespace brave_sync
+}   // namespace brave_sync

@@ -1,3 +1,8 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 namespace sync_pb {
 class ClientToServerMessage;
 class ClientToServerResponse;
@@ -15,7 +20,7 @@ SyncerError PostBraveCommit(sync_pb::ClientToServerMessage* message,
 
 }   // namespace syncer
 
-#include "../../../../../components/sync/engine_impl/commit.cc"
+#include "../../../../../components/sync/engine_impl/commit.cc"   // NOLINT
 #include "base/base64.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
@@ -155,7 +160,7 @@ ConvertCommitsToBraveRecords(sync_pb::ClientToServerMessage* message,
       response->mutable_commit()->add_entryresponse();
     CreateSuccessfulCommitResponse(entity, entry_response, new_object_id);
   }
- return record_list;
+  return record_list;
 }
 
 SyncerError PostBraveCommit(sync_pb::ClientToServerMessage* message,
@@ -168,5 +173,5 @@ SyncerError PostBraveCommit(sync_pb::ClientToServerMessage* message,
   return SyncerError(SyncerError::SYNCER_OK);
 }
 
-}
+}   // namespace
 }   // namespace syncer

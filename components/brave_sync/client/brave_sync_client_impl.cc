@@ -72,7 +72,7 @@ void BraveSyncClientImpl::SendGotInitData(const Uint8Array& seed,
                                           const std::string& sync_words) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   extensions::api::brave_sync::Config config_extension;
-  ConvertConfig(config, config_extension);
+  ConvertConfig(config, &config_extension);
   brave_sync_event_router_->GotInitData(seed, device_id, config_extension,
                                         sync_words);
 }
@@ -99,7 +99,7 @@ void BraveSyncClientImpl::SendResolveSyncRecords(
       records_and_existing_objects_ext;
 
   ConvertResolvedPairs(*records_and_existing_objects,
-                       records_and_existing_objects_ext);
+                       &records_and_existing_objects_ext);
 
   brave_sync_event_router_->ResolveSyncRecords(category_name,
     records_and_existing_objects_ext);
@@ -109,7 +109,7 @@ void BraveSyncClientImpl::SendSyncRecords(const std::string &category_name,
                                           const RecordsList &records) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   std::vector<extensions::api::brave_sync::SyncRecord> records_ext;
-  ConvertSyncRecordsFromLibToExt(records, records_ext);
+  ConvertSyncRecordsFromLibToExt(records, &records_ext);
 
   brave_sync_event_router_->SendSyncRecords(category_name, records_ext);
 }

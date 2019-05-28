@@ -1,12 +1,17 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "brave/browser/ui/webui/sync/sync_ui.h"
+
+#include <memory>
+#include <utility>
 
 #include "base/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_sync/brave_profile_sync_service.h" 
+#include "brave/components/brave_sync/brave_profile_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
@@ -121,7 +126,8 @@ void SyncUIDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
   sync_service_ =
     static_cast<brave_sync::BraveSyncService*>(
-      ProfileSyncServiceFactory::GetAsBraveProfileSyncServiceForProfile(profile));
+      ProfileSyncServiceFactory::GetAsBraveProfileSyncServiceForProfile(
+        profile));
   if (sync_service_)
     sync_service_->AddObserver(this);
 }
@@ -247,7 +253,7 @@ void SyncUIDOMHandler::OnHaveSyncWords(
       "sync_ui_exports.haveSyncWords", base::Value(sync_words));
 }
 
-} // namespace
+}   // namespace
 
 SyncUI::SyncUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name,

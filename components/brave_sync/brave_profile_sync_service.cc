@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_sync/brave_profile_sync_service.h"
 
+#include <utility>
+#include <vector>
+
 #include "base/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/values_conv.h"
@@ -218,7 +221,6 @@ BraveProfileSyncService::BraveProfileSyncService(InitParams init_params)
       !brave_sync_prefs_->GetThisDeviceName().empty()) {
     brave_sync_configured_ = true;
   }
-
 }
 
 void BraveProfileSyncService::OnNudgeSyncCycle(
@@ -756,7 +758,7 @@ BraveSyncClient* BraveProfileSyncService::GetBraveSyncClient() {
   return ProfileSyncService::GetSyncClient()->GetBraveSyncClient();
 }
 
-bool BraveProfileSyncService::IsBraveSyncEnabled() const{
+bool BraveProfileSyncService::IsBraveSyncEnabled() const {
   return brave_sync_prefs_->GetSyncEnabled();
 }
 

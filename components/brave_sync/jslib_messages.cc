@@ -1,7 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
 #include "brave/components/brave_sync/jslib_messages.h"
+
+#include <utility>
+
 #include "brave/components/brave_sync/values_conv.h"
 #include "base/logging.h"
 #include "base/values.h"
@@ -54,7 +59,7 @@ Bookmark::Bookmark(const Bookmark& bookmark) {
 Bookmark::~Bookmark() = default;
 
 std::unique_ptr<Bookmark> Bookmark::Clone(const Bookmark& bookmark) {
-   return std::make_unique<Bookmark>(bookmark);
+  return std::make_unique<Bookmark>(bookmark);
 }
 
 SiteSetting::SiteSetting() : zoomLevel(1.0f), shieldsUp(true),
@@ -66,21 +71,22 @@ SiteSetting::SiteSetting() : zoomLevel(1.0f), shieldsUp(true),
 
 SiteSetting::~SiteSetting() = default;
 
-std::unique_ptr<SiteSetting> SiteSetting::Clone(const SiteSetting& site_setting) {
-   auto ret_val = std::make_unique<SiteSetting>();
-   ret_val->hostPattern = site_setting.hostPattern;
-   ret_val->zoomLevel = site_setting.zoomLevel;
-   ret_val->shieldsUp = site_setting.shieldsUp;
-   ret_val->adControl = site_setting.adControl;
-   ret_val->cookieControl = site_setting.cookieControl;
-   ret_val->safeBrowsing = site_setting.safeBrowsing;
-   ret_val->noScript = site_setting.noScript;
-   ret_val->httpsEverywhere = site_setting.httpsEverywhere;
-   ret_val->fingerprintingProtection = site_setting.fingerprintingProtection;
-   ret_val->ledgerPayments = site_setting.ledgerPayments;
-   ret_val->ledgerPaymentsShown = site_setting.ledgerPaymentsShown;
-   ret_val->fields = site_setting.fields;
-   return  ret_val;
+std::unique_ptr<SiteSetting> SiteSetting::Clone(
+    const SiteSetting& site_setting) {
+  auto ret_val = std::make_unique<SiteSetting>();
+  ret_val->hostPattern = site_setting.hostPattern;
+  ret_val->zoomLevel = site_setting.zoomLevel;
+  ret_val->shieldsUp = site_setting.shieldsUp;
+  ret_val->adControl = site_setting.adControl;
+  ret_val->cookieControl = site_setting.cookieControl;
+  ret_val->safeBrowsing = site_setting.safeBrowsing;
+  ret_val->noScript = site_setting.noScript;
+  ret_val->httpsEverywhere = site_setting.httpsEverywhere;
+  ret_val->fingerprintingProtection = site_setting.fingerprintingProtection;
+  ret_val->ledgerPayments = site_setting.ledgerPayments;
+  ret_val->ledgerPaymentsShown = site_setting.ledgerPaymentsShown;
+  ret_val->fields = site_setting.fields;
+  return  ret_val;
 }
 
 Device::Device() = default;
@@ -88,9 +94,9 @@ Device::Device() = default;
 Device::~Device() = default;
 
 std::unique_ptr<Device> Device::Clone(const Device& device) {
-   auto ret_val = std::make_unique<Device>();
-   ret_val->name = device.name;
-   return  ret_val;
+  auto ret_val = std::make_unique<Device>();
+  ret_val->name = device.name;
+  return  ret_val;
 }
 
 SyncRecord::SyncRecord() : action(SyncRecord::Action::A_INVALID) {}
@@ -98,25 +104,25 @@ SyncRecord::SyncRecord() : action(SyncRecord::Action::A_INVALID) {}
 SyncRecord::~SyncRecord() = default;
 
 std::unique_ptr<SyncRecord> SyncRecord::Clone(const SyncRecord& record) {
-   auto ret_val = std::make_unique<SyncRecord>();
+  auto ret_val = std::make_unique<SyncRecord>();
 
-   ret_val->action = record.action;
-   ret_val->deviceId = record.deviceId;
-   ret_val->objectId = record.objectId;
-   ret_val->objectData = record.objectData;
-   if (record.has_bookmark()) {
-     ret_val->SetBookmark(Bookmark::Clone(record.GetBookmark()));
-   } else if (record.has_historysite()) {
-     ret_val->SetHistorySite(Site::Clone(record.GetHistorySite()));
-   } else if (record.has_sitesetting()) {
-     ret_val->SetSiteSetting(SiteSetting::Clone(record.GetSiteSetting()));
-   } else if (record.has_device()) {
-     ret_val->SetDevice(Device::Clone(record.GetDevice()));
-   }
+  ret_val->action = record.action;
+  ret_val->deviceId = record.deviceId;
+  ret_val->objectId = record.objectId;
+  ret_val->objectData = record.objectData;
+  if (record.has_bookmark()) {
+    ret_val->SetBookmark(Bookmark::Clone(record.GetBookmark()));
+  } else if (record.has_historysite()) {
+    ret_val->SetHistorySite(Site::Clone(record.GetHistorySite()));
+  } else if (record.has_sitesetting()) {
+    ret_val->SetSiteSetting(SiteSetting::Clone(record.GetSiteSetting()));
+  } else if (record.has_device()) {
+    ret_val->SetDevice(Device::Clone(record.GetDevice()));
+  }
 
-   ret_val->syncTimestamp = record.syncTimestamp;
+  ret_val->syncTimestamp = record.syncTimestamp;
 
-   return  ret_val;
+  return  ret_val;
 }
 
 bool SyncRecord::has_bookmark() const {
@@ -161,25 +167,29 @@ Bookmark* SyncRecord::mutable_bookmark() {
 }
 
 void SyncRecord::SetBookmark(std::unique_ptr<Bookmark> bookmark) {
-  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() && !has_device());
+  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() &&
+         !has_device());
   bookmark_ = std::move(bookmark);
 }
 
 void SyncRecord::SetHistorySite(std::unique_ptr<Site> history_site) {
-  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() && !has_device());
+  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() &&
+         !has_device());
   history_site_ = std::move(history_site);
 }
 
 void SyncRecord::SetSiteSetting(std::unique_ptr<SiteSetting> site_setting) {
-  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() && !has_device());
+  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() &&
+         !has_device());
   site_setting_ = std::move(site_setting);
 }
 
 void SyncRecord::SetDevice(std::unique_ptr<Device> device) {
-  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() && !has_device());
+  DCHECK(!has_bookmark() && !has_historysite() && !has_sitesetting() &&
+         !has_device());
   device_ = std::move(device);
 }
 
-} // jslib
+}   // namespace jslib
 
-} // namespace brave_sync
+}   // namespace brave_sync
