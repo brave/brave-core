@@ -622,12 +622,10 @@ void RewardsDOMHandler::OnGetAddresses(
     const std::map<std::string, std::string>& addresses) {
   if (web_ui()->CanCallJavascript() && (
       func_name == "addresses" || func_name == "addressesForPaymentId")) {
-    base::DictionaryValue data;
-    data.SetString("BAT", addresses.at("BAT"));
-    data.SetString("BTC", addresses.at("BTC"));
-    data.SetString("ETH", addresses.at("ETH"));
-    data.SetString("LTC", addresses.at("LTC"));
-
+    base::Value data(base::Value::Type::DICTIONARY);
+    for (auto& address : addresses) {
+      data.SetKey(address.first, base::Value(address.second));
+    }
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards." + func_name, data);
   }
 }

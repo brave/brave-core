@@ -155,6 +155,10 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) override;
 
+  void GetCountryCodes(
+      const std::vector<std::string>& countries,
+      ledger::GetCountryCodesCallback callback) override;
+
  private:
   bool Connected() const;
 

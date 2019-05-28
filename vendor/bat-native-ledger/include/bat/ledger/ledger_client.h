@@ -72,6 +72,8 @@ using PendingContributionInfoListCallback =
     std::function<void(PendingContributionInfoList)>;
 using RemovePendingContributionCallback = std::function<void(Result)>;
 using PendingContributionsTotalCallback = std::function<void(double)>;
+using GetCountryCodesCallback =
+    std::function<void(const std::vector<int32_t>&)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -241,6 +243,10 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) = 0;
+
+  virtual void GetCountryCodes(
+      const std::vector<std::string>& countries,
+      GetCountryCodesCallback callback) = 0;
 };
 
 }  // namespace ledger

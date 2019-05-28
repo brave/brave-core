@@ -119,6 +119,10 @@ static const uint64_t _grant_load_interval = 24 * 60 * 60;
 // pending contribution expiration in seconds (90 days)
 static const uint64_t _pending_contribution_expiration = 90 * 24 * 60 * 60;
 
+static const std::vector<std::string> _add_funds_limited_countries = {
+  "JP"
+};
+
 }  // namespace braveledger_ledger
 
 #endif  // BRAVELEDGER_STATIC_VALUES_H_

@@ -84,6 +84,7 @@ using GetInlineTipSettingCallback = base::OnceCallback<void(bool)>;
 using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using GetPendingContributionsCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::PendingContributionInfoList>)>;
+using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
 
 class RewardsService : public KeyedService {
  public:
