@@ -24,6 +24,7 @@ declare_args() {
   chrome_version_major = ""
   build_omaha = false
   tag_ap =""
+  target_apk_base=""
 
   skip_signing = false
 }

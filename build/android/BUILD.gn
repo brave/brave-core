@@ -1,1 +1,30 @@
-group("brave") {}
+import("//brave/build/config.gni")
+
+copy("brave") {
+  visibility = [ "*" ]
+  deps = []
+  sources = []
+  apk_type = target_apk_base
+  file_name_part = ""
+  if (target_cpu == "arm64" || target_cpu == "x86_64" || apk_type == "mono") {
+    deps += ["//chrome/android:monochrome_public_apk"]
+    file_name_part = "Mono"
+    sources += [
+      "$root_out_dir/apks/MonochromePublic.apk"
+    ]
+  } else if (apk_type == "modern") {
+    deps += ["//chrome/android:chrome_modern_public_apk"]
+    file_name_part = "Modern"
+    sources += [
+      "$root_out_dir/apks/ChromeModernPublic.apk"
+    ]
+  } else {
+    deps += ["//chrome/android:chrome_public_apk"]
+    sources += [
+      "$root_out_dir/apks/ChromePublic.apk"
+    ]
+  }
+  outputs = [
+    "$root_out_dir/apks/Brave$file_name_part$target_cpu.apk",
+  ]
+}
