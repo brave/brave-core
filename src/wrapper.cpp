@@ -67,6 +67,8 @@ std::vector<FilterList>& FilterList::GetFilterLists(const std::string &category)
   return list;
 }
 
+Engine::Engine() : raw(engine_create("")) {
+}
 
 Engine::Engine(const std::string& rules) : raw(engine_create(rules.c_str())) {
 }

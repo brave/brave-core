@@ -41,6 +41,7 @@ private:
 
 class Engine {
  public:
+  Engine();
   Engine(const std::string& rules);
   bool matches(const std::string& url, const std::string& host,
       const std::string& tab_host, bool is_third_party,
