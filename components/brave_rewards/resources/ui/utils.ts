@@ -95,7 +95,7 @@ export const getAddresses = (addresses?: Record<Rewards.AddressesType, Rewards.A
 
   sortedArray.forEach((type: Rewards.AddressesType) => {
     const item: Rewards.Address = addresses[type]
-    if (item) {
+    if (item && item.address) {
       result.push({
         type,
         qr: item.qr,

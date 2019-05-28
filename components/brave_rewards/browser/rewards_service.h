@@ -81,7 +81,7 @@ using GetPublisherBannerCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::PublisherBanner>)>;
 using RefreshPublisherCallback =
     base::OnceCallback<void(bool, const std::string&)>;
-
+using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
 class RewardsService : public KeyedService {
  public:
   RewardsService();

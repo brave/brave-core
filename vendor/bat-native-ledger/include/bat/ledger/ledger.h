@@ -6,6 +6,8 @@
 #ifndef BAT_LEDGER_LEDGER_H_
 #define BAT_LEDGER_LEDGER_H_
 
+#include <stdint.h>
+
 #include <map>
 #include <memory>
 #include <string>
@@ -64,6 +66,8 @@ using OnWalletPropertiesCallback = std::function<void(const ledger::Result,
                                   std::unique_ptr<ledger::WalletInfo>)>;
 using OnRefreshPublisherCallback =
     std::function<void(bool)>;
+using GetAddressesCallback =
+    std::function<void(std::map<std::string, std::string>)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -173,7 +177,9 @@ class LEDGER_EXPORT Ledger {
                               int year,
                               const ledger::BalanceReportInfo& report_info) = 0;
 
-  virtual std::map<std::string, std::string> GetAddresses() = 0;
+  virtual void GetAddresses(
+      int32_t current_country_code,
+      ledger::GetAddressesCallback callback) = 0;
 
   virtual const std::string& GetBATAddress() const = 0;
 

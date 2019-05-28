@@ -6,6 +6,8 @@
 #ifndef BAT_LEDGER_LEDGER_IMPL_H_
 #define BAT_LEDGER_LEDGER_IMPL_H_
 
+#include <stdint.h>
+
 #include <memory>
 #include <map>
 #include <string>
@@ -123,7 +125,9 @@ class LedgerImpl : public ledger::Ledger,
 
   void SaveUnverifiedContribution(const ledger::PendingContributionList& list);
 
-  std::map<std::string, std::string> GetAddresses() override;
+  void GetAddresses(
+      int32_t current_country_code,
+      ledger::GetAddressesCallback callback) override;
 
   const std::string& GetBATAddress() const override;
 
@@ -525,6 +529,11 @@ class LedgerImpl : public ledger::Ledger,
       const std::map<std::string, std::string>& headers,
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback);
+
+  void GetAddressesInternal(
+      const std::vector<int32_t>& country_codes,
+      int32_t current_country_code,
+      ledger::GetAddressesCallback callback);
 
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;

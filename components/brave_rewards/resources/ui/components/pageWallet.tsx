@@ -315,7 +315,8 @@ class PageWallet extends React.Component<Props, State> {
             {
               name: getLocale('panelAddFunds'),
               action: this.onModalAddFundsToggle,
-              icon: <WalletAddIcon />
+              icon: <WalletAddIcon />,
+              testId: 'panel-add-funds'
             }
           ]}
           onSettingsClick={this.onModalBackupOpen}

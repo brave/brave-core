@@ -139,6 +139,9 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void GetExcludedPublishersNumberDB(
       ledger::GetExcludedPublishersNumberDBCallback callback) override;
+  void GetCountryCodes(
+      const std::vector<std::string>& countries,
+      ledger::GetCountryCodesCallback callback) override;
 
  private:
   bool Connected() const;

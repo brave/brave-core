@@ -726,4 +726,24 @@ void LedgerClientMojoProxy::GetOneTimeTips(
                 _2));
 }
 
+void LedgerClientMojoProxy::OnGetCountryCodes(
+    CallbackHolder<GetCountryCodesCallback>* holder,
+    const std::vector<int32_t>& countries) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(countries);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetCountryCodes(
+    const std::vector<std::string>& countries,
+    GetCountryCodesCallback callback) {
+  auto* holder = new CallbackHolder<GetCountryCodesCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->GetCountryCodes(countries,
+      std::bind(LedgerClientMojoProxy::OnGetCountryCodes,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger

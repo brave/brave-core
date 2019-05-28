@@ -5,6 +5,8 @@
 
 #include "brave/components/services/bat_ledger/bat_ledger_impl.h"
 
+#include <stdint.h>
+
 #include <map>
 #include <string>
 #include <utility>
@@ -233,8 +235,22 @@ void BatLedgerImpl::SolveGrantCaptcha(const std::string& solution,
   ledger_->SolveGrantCaptcha(solution, promotion_id);
 }
 
-void BatLedgerImpl::GetAddresses(GetAddressesCallback callback) {
-  std::move(callback).Run(mojo::MapToFlatMap(ledger_->GetAddresses()));
+void BatLedgerImpl::OnGetAddresses(
+    CallbackHolder<GetAddressesCallback>* holder,
+    std::map<std::string, std::string> addresses) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(mojo::MapToFlatMap(addresses));
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::GetAddresses(
+    int32_t current_country_code,
+    GetAddressesCallback callback) {
+  auto* holder = new CallbackHolder<GetAddressesCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->GetAddresses(current_country_code,
+      std::bind(BatLedgerImpl::OnGetAddresses, holder, _1));
 }
 
 void BatLedgerImpl::GetBATAddress(GetBATAddressCallback callback) {

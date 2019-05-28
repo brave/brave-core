@@ -69,7 +69,8 @@ using OnLoadCallback = std::function<void(const ledger::Result,
                                           const std::string&)>;
 using OnResetCallback = std::function<void(const ledger::Result)>;
 using GetExcludedPublishersNumberDBCallback = std::function<void(uint32_t)>;
-
+using GetCountryCodesCallback =
+    std::function<void(const std::vector<int32_t>&)>;
 class LEDGER_EXPORT LedgerClient {
  public:
   virtual ~LedgerClient() = default;
@@ -223,6 +224,9 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void GetExcludedPublishersNumberDB(
       ledger::GetExcludedPublishersNumberDBCallback callback) = 0;
+  virtual void GetCountryCodes(
+      const std::vector<std::string>& countries,
+      GetCountryCodesCallback callback) = 0;
 };
 
 }  // namespace ledger

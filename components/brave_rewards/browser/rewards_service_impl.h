@@ -189,6 +189,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetReconcileTime(const GetReconcileTimeCallback& callback);
   void SetShortRetries(bool short_retries);
   void GetShortRetries(const GetShortRetriesCallback& callback);
+  void SetCurrentCountry(const std::string& current_country);
 
   void GetAutoContributeProps(
       const GetAutoContributePropsCallback& callback) override;
@@ -472,6 +473,9 @@ class RewardsServiceImpl : public RewardsService,
       RefreshPublisherCallback callback,
       const std::string& publisher_key,
       bool verified);
+  void GetCountryCodes(
+      const std::vector<std::string>& countries,
+      ledger::GetCountryCodesCallback callback) override;
 
   bool Connected() const;
   void ConnectionClosed();
@@ -508,6 +512,8 @@ class RewardsServiceImpl : public RewardsService,
   std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
 
   uint32_t next_timer_id_;
+
+  std::string current_country_for_test_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceImpl);
 };

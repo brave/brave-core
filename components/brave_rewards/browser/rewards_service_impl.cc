@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 
+#include <stdint.h>
+
 #include <algorithm>
 #include <functional>
 #include <limits>
@@ -55,6 +57,7 @@
 #include "chrome/browser/browser_process_impl.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/country_codes/country_codes.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/favicon_base/favicon_types.h"
 #include "components/prefs/pref_service.h"
@@ -1481,9 +1484,17 @@ void RewardsServiceImpl::GetAddresses(const GetAddressesCallback& callback) {
   if (!Connected()) {
     return;
   }
+  int32_t current_country =
+      country_codes::GetCountryIDFromPrefs(profile_->GetPrefs());
+  if (!current_country_for_test_.empty() &&
+      current_country_for_test_.size() > 1) {
+    current_country = country_codes::CountryCharsToCountryID(
+        current_country_for_test_.at(0), current_country_for_test_.at(1));
+  }
 
-  bat_ledger_->GetAddresses(base::BindOnce(&RewardsServiceImpl::OnGetAddresses,
-        AsWeakPtr(), callback));
+  bat_ledger_->GetAddresses(current_country,
+      base::BindOnce(&RewardsServiceImpl::OnGetAddresses,
+              AsWeakPtr(), callback));
 }
 
 void RewardsServiceImpl::SetRewardsMainEnabled(bool enabled) {
@@ -2571,6 +2582,13 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
 
       SetShortRetries(short_retries);
     }
+
+    if (name == "current-country") {
+      const std::string& current_country_(base::ToUpperASCII(value));
+      if (!current_country_.empty() && current_country_.size() == 2) {
+        SetCurrentCountry(current_country_);
+      }
+    }
   }
 }
 
@@ -2670,6 +2688,11 @@ void RewardsServiceImpl::SetReconcileTime(int32_t time) {
 
 void RewardsServiceImpl::SetShortRetries(bool short_retries) {
   bat_ledger_service_->SetShortRetries(short_retries);
+}
+
+void RewardsServiceImpl::SetCurrentCountry(
+    const std::string& current_country) {
+  current_country_for_test_ = current_country;
 }
 
 ledger::Result SavePendingContributionOnFileTaskRunner(
@@ -2917,6 +2940,17 @@ void RewardsServiceImpl::OnRefreshPublisher(
 const RewardsNotificationService::RewardsNotificationsMap&
 RewardsServiceImpl::GetAllNotifications() {
   return notification_service_->GetAllNotifications();
+}
+
+void RewardsServiceImpl::GetCountryCodes(
+    const std::vector<std::string>& countries,
+    ledger::GetCountryCodesCallback callback) {
+  std::vector<std::int32_t> country_codes;
+  for (const auto& country : countries) {
+    country_codes.push_back(country_codes::CountryCharsToCountryID(
+        country.at(0), country.at(1)));
+  }
+  callback(country_codes);
 }
 
 }  // namespace brave_rewards
