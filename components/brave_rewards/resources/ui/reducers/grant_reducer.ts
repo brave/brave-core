@@ -30,7 +30,7 @@ const updateGrant = (newGrant: Rewards.Grant, grants: Rewards.Grant[]) => {
 const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
   switch (action.type) {
     case types.GET_GRANTS:
-      chrome.send('brave_rewards.getGrants', [])
+      chrome.send('brave_rewards.getGrants', ['', ''])
       break
     case types.ON_GRANT:
       state = { ...state }
