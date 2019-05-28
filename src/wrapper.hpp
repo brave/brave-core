@@ -42,13 +42,13 @@ private:
 class Engine {
  public:
   Engine(const std::string& rules);
-  bool Matches(const std::string& url, const std::string& host,
+  bool matches(const std::string& url, const std::string& host,
       const std::string& tab_host, bool is_third_party,
       const std::string& resource_type, bool* explicit_cancel,
       bool* saved_from_exception);
-  bool Deserialize(const char* serialized_data);
-  void AddTag(const std::string& tag);
-  void RemoveTag(const std::string& tag);
+  bool deserialize(const char* serialized_data);
+  void addTag(const std::string& tag);
+  void removeTag(const std::string& tag);
   ~Engine();
 
  private:

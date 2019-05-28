@@ -16,7 +16,7 @@ void Check(bool expected_result,
     const std::string& resource_type) {
   bool cancel;
   bool saved_from_exception;
-  bool match = engine.Matches(url, host, tab_host, third_party,
+  bool match = engine.matches(url, host, tab_host, third_party,
       resource_type, &cancel, &saved_from_exception);
   cout << test_description << "... ";
   if (expected_result != match) {
@@ -63,11 +63,11 @@ void TestTags() {
   Check(false, false, false, "Without needed tags", engine,
       "http://example.com/-advertisement-icon.", "example.com", "example.com",
       false, "image");
-  engine.AddTag("abc");
+  engine.addTag("abc");
   Check(true, false, false, "With needed tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
       "example.com", false, "image");
-  engine.RemoveTag("abc");
+  engine.removeTag("abc");
   Check(false, false, false, "With removed tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
       "example.com", false, "image");
