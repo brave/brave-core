@@ -468,6 +468,18 @@ class LedgerImpl : public ledger::Ledger,
   void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) override;
 
+  void ContributeUnverifiedPublishers();
+
+  bool IsPublisherVerified(const std::string& publisher_key);
+
+  void OnContributeUnverifiedPublishers(ledger::Result result,
+                                        const std::string& publisher_key = "",
+                                        const std::string& publisher_name = "");
+
+  void SavePublisherProcessed(const std::string& publisher_key);
+
+  bool WasPublisherAlreadyProcessed(const std::string& publisher_key);
+
  private:
   void AddRecurringPayment(const std::string& publisher_id,
                            const double& value) override;

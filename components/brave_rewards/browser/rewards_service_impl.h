@@ -555,6 +555,11 @@ class RewardsServiceImpl : public RewardsService,
       const std::vector<std::string>& countries,
       ledger::GetCountryCodesCallback callback) override;
 
+  void OnContributeUnverifiedPublishers(
+      ledger::Result result,
+      const std::string& publisher_key,
+      const std::string& publisher_name) override;
+
   bool Connected() const;
   void ConnectionClosed();
 

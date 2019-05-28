@@ -68,4 +68,5 @@ private:
   void SetTimer(uint64_t time_offset, uint32_t * timer_id) override;
   std::string URIEncode(const std::string & value) override;
   std::unique_ptr<ledger::LogStream> VerboseLog(const char * file, int line, int vlog_level) const override;
+  void OnContributeUnverifiedPublishers(ledger::Result result, const std::string& publisher_key, const std::string& publisher_name) override;
 };

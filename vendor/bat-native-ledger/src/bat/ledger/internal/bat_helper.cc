@@ -619,6 +619,7 @@ PUBLISHER_STATE_ST::PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST& state) {
   monthly_balances_ = state.monthly_balances_;
   recurring_donation_ = state.recurring_donation_;
   migrate_score_2 = state.migrate_score_2;
+  processed_pending_publishers = state.processed_pending_publishers;
 }
 
 PUBLISHER_STATE_ST::~PUBLISHER_STATE_ST() {}
@@ -687,6 +688,13 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
     } else {
       migrate_score_2 = true;
     }
+
+    if (d.HasMember("processed_pending_publishers") &&
+        d["processed_pending_publishers"].IsArray()) {
+      for (auto & i : d["processed_pending_publishers"].GetArray()) {
+        processed_pending_publishers.push_back(i.GetString());
+      }
+    }
   }
 
   return !error;
@@ -733,6 +741,13 @@ void saveToJson(JsonWriter* writer, const PUBLISHER_STATE_ST& data) {
 
   writer->String("migrate_score_2");
   writer->Bool(data.migrate_score_2);
+
+  writer->String("processed_pending_publishers");
+  writer->StartArray();
+  for (auto &p : data.processed_pending_publishers) {
+   writer->String(p.c_str());
+  }
+  writer->EndArray();
 
   writer->EndObject();
 }

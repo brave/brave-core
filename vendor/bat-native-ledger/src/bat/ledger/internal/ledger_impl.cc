@@ -1606,4 +1606,31 @@ void LedgerImpl::GetPendingContributionsTotal(
   ledger_client_->GetPendingContributionsTotal(callback);
 }
 
+void LedgerImpl::ContributeUnverifiedPublishers() {
+  bat_contribution_->ContributeUnverifiedPublishers();
+}
+
+bool LedgerImpl::IsPublisherVerified(const std::string& publisher_key) {
+  return bat_publishers_->isVerified(publisher_key);
+}
+
+void LedgerImpl::OnContributeUnverifiedPublishers(
+    ledger::Result result,
+    const std::string& publisher_key,
+    const std::string& publisher_name) {
+  ledger_client_->OnContributeUnverifiedPublishers(result,
+                                                   publisher_key,
+                                                   publisher_name);
+}
+
+
+
+void LedgerImpl::SavePublisherProcessed(const std::string& publisher_key) {
+  bat_publishers_->SavePublisherProcessed(publisher_key);
+}
+
+bool LedgerImpl::WasPublisherAlreadyProcessed(const std::string& publisher_key) {
+  return bat_publishers_->WasPublisherAlreadyProcessed(publisher_key);
+}
+
 }  // namespace bat_ledger

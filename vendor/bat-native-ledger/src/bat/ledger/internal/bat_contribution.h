@@ -153,6 +153,8 @@ class BatContribution {
   // Triggers contribution process for auto contribute table
   void StartAutoContribute();
 
+  void ContributeUnverifiedPublishers();
+
  private:
   std::string GetAnonizeProof(const std::string& registrar_VK,
                               const std::string& id,
@@ -326,11 +328,22 @@ class BatContribution {
       std::unique_ptr<ledger::WalletInfo> info,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
+  void OnRemovePendingContribution(ledger::Result result);
+
+  void OnContributeUnverifiedPublishers(
+    double balance,
+    const ledger::PendingContributionInfoList& list);
+
+  void OnContributeUnverifiedWallet(
+    ledger::Result result,
+    std::unique_ptr<ledger::WalletInfo> wallet);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   uint32_t last_reconcile_timer_id_;
   uint32_t last_prepare_vote_batch_timer_id_;
   uint32_t last_vote_batch_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
+  uint32_t unverified_publishers_timer_id_;
 
   // For testing purposes
   friend class BatContributionTest;

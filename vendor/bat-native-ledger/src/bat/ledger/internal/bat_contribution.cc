@@ -12,10 +12,12 @@
 #include <memory>
 #include <vector>
 #include <utility>
+#include <bat/ledger/ledger_callback_handler.h>
 
 #include "anon/anon.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
+#include "base/time/time.h"
 #include "bat/ledger/internal/bat_contribution.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
@@ -1578,6 +1580,12 @@ void BatContribution::OnTimer(uint32_t timer_id) {
     return;
   }
 
+  if (timer_id == unverified_publishers_timer_id_) {
+    unverified_publishers_timer_id_ = 0;
+    ContributeUnverifiedPublishers();
+    return;
+  }
+
   for (std::pair<std::string, uint32_t> const& value : retry_timers_) {
     if (value.second == timer_id) {
       std::string viewing_id = value.first;
@@ -1827,6 +1835,119 @@ void BatContribution::DoRetry(const std::string& viewing_id) {
     case ledger::ContributionRetry::STEP_NO:
       break;
   }
+}
+
+void BatContribution::OnRemovePendingContribution(ledger::Result result) {
+  if (result == ledger::Result::LEDGER_OK) {
+    ledger_->OnContributeUnverifiedPublishers(
+        ledger::Result::PENDING_PUBLISHER_REMOVED);
+  }
+}
+
+void BatContribution::OnContributeUnverifiedPublishers(
+    double balance,
+    const ledger::PendingContributionInfoList& list) {
+  if (list.empty()) {
+    return;
+  }
+
+  if (!list.empty() && balance == 0) {
+    ledger_->OnContributeUnverifiedPublishers(
+        ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
+    return;
+  }
+
+  base::Time now = base::Time::Now();
+  double now_seconds = now.ToDoubleT();
+
+  ledger::PendingContributionInfoPtr current;
+
+  for (auto& item : list) {
+    // remove pending contribution if it's over expiration date
+    if (now_seconds > item->expiration_date) {
+      ledger_->RemovePendingContribution(
+          item->publisher_key,
+          item->viewing_id,
+          item->added_date,
+          std::bind(&BatContribution::OnRemovePendingContribution,
+                    this,
+                    _1));
+      continue;
+    }
+
+    // verified status didn't change
+    if (!ledger_->IsPublisherVerified(item->publisher_key)) {
+      continue;
+    }
+
+    if (!current) {
+      current = item->Clone();
+    }
+  }
+
+  if (!current) {
+    return;
+  }
+
+  if (!ledger_->WasPublisherAlreadyProcessed(current->publisher_key)) {
+    ledger_->OnContributeUnverifiedPublishers(
+        ledger::Result::VERIFIED_PUBLISHER,
+        current->publisher_key,
+        current->name);
+    ledger_->SavePublisherProcessed(current->publisher_key);
+  }
+
+  // Trigger contribution
+  if (balance >= current->amount) {
+    auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(
+        current->publisher_key,
+        current->amount,
+        "BAT");
+
+    braveledger_bat_helper::PublisherList list;
+    auto direction_list = std::vector
+        <braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
+    InitReconcile(ledger_->GenerateGUID(),
+                  ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
+                  list,
+                  direction_list);
+
+    ledger_->RemovePendingContribution(
+        current->publisher_key,
+        current->viewing_id,
+        current->added_date,
+        std::bind(&BatContribution::OnRemovePendingContribution,
+                  this,
+                  _1));
+
+    SetTimer(&unverified_publishers_timer_id_);
+  } else {
+    ledger_->OnContributeUnverifiedPublishers(
+        ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
+  }
+}
+
+void BatContribution::ContributeUnverifiedPublishers() {
+  ledger_->FetchWalletProperties(
+      std::bind(&BatContribution::OnContributeUnverifiedWallet,
+                this,
+                _1,
+                _2));
+}
+
+void BatContribution::OnContributeUnverifiedWallet(
+    ledger::Result result,
+    std::unique_ptr<ledger::WalletInfo> wallet) {
+  if (result != ledger::Result::LEDGER_OK || !wallet) {
+    return;
+  }
+
+  ledger_->GetPendingContributions(
+      std::bind(&BatContribution::OnContributeUnverifiedPublishers,
+                this,
+                wallet->balance_,
+                _1));
+
 }
 
 }  // namespace braveledger_bat_contribution

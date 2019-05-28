@@ -243,6 +243,11 @@ class LEDGER_EXPORT LedgerClient {
   virtual void GetCountryCodes(
       const std::vector<std::string>& countries,
       GetCountryCodesCallback callback) = 0;
+
+  virtual void OnContributeUnverifiedPublishers(
+      ledger::Result result,
+      const std::string& publisher_key,
+      const std::string& publisher_name) = 0;
 };
 
 }  // namespace ledger

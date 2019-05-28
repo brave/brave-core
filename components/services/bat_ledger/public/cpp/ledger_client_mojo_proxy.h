@@ -142,6 +142,11 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::vector<std::string>& countries,
       GetCountryCodesCallback callback) override;
 
+  void OnContributeUnverifiedPublishers(
+      int32_t result,
+      const std::string& publisher_key,
+      const std::string& publisher_name) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*

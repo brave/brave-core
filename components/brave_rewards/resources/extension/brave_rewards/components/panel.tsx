@@ -198,10 +198,14 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  openRewardsAddFundsPage () {
+  openRewardsAddFundsPage (id?: string) {
     chrome.tabs.create({
       url: 'chrome://rewards/#add-funds'
     })
+
+    if (id) {
+      this.actions.deleteNotification(id)
+    }
   }
 
   showTipSiteDetail = () => {
@@ -254,6 +258,9 @@ export class Panel extends React.Component<Props, State> {
         break
       case 'ads-launch':
         clickEvent = this.openRewardsPage.bind(this, id)
+        break
+      case 'insufficientFunds':
+        clickEvent = this.openRewardsAddFundsPage.bind(this, id)
         break
       default:
         clickEvent = undefined
@@ -335,6 +342,22 @@ export class Panel extends React.Component<Props, State> {
       case RewardsNotificationType.REWARDS_NOTIFICATION_ADS_LAUNCH:
         type = 'ads-launch'
         text = getMessage('braveAdsLaunchMsg')
+        break
+      case RewardsNotificationType.REWARDS_NOTIFICATION_VERIFIED_PUBLISHER: {
+        let name = ''
+        if (notification.args &&
+            Array.isArray(notification.args) &&
+            notification.args.length > 0) {
+          name = notification.args[0]
+        }
+
+        type = 'pendingContribution'
+        text = getMessage('verifiedPublisherNotification', [name])
+        break
+      }
+      case RewardsNotificationType.REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS:
+        type = 'insufficientFunds'
+        text = getMessage('pendingNotEnoughFundsNotification')
         break
       default:
         type = ''
