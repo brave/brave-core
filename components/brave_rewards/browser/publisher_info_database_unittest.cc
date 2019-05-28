@@ -598,7 +598,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfos) {
   ledger::PublisherInfoList list_empty;
 
   success = publisher_info_database_->InsertOrUpdateActivityInfos(list_empty);
-  EXPECT_FALSE(success);
+  EXPECT_TRUE(success);
 
   /**
    * One publisher has empty ID
