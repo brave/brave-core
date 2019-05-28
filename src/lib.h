@@ -8,6 +8,18 @@
 
 typedef struct C_Engine C_Engine;
 
+typedef struct {
+  const char *uuid;
+  const char *url;
+  const char *title;
+  const char *lang;
+  const char *lang2;
+  const char *lang3;
+  const char *support_url;
+  const char *component_id;
+  const char *base64_public_key;
+} C_FList;
+
 /**
  * Adds a tag to the engine for consideration
  */
@@ -44,5 +56,15 @@ bool engine_match(C_Engine *engine,
  * Removes a tag to the engine for consideration
  */
 void engine_remove_tag(C_Engine *engine, const char *tag);
+
+/**
+ * Get the specific default list size
+ */
+C_FList filter_list_get(const char *category, size_t i);
+
+/**
+ * Get the default list size. `category` must be one of "regions" or "default"
+ */
+size_t filter_list_size(const char *category);
 
 #endif /* ADBLOCK_RUST_FFI_H */

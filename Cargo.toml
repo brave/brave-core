@@ -6,6 +6,7 @@ edition = "2018"
 
 [dependencies]
 adblock="0.1.9"
+libc = "0.2"
 
 [lib]
 crate-type = [

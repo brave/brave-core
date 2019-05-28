@@ -94,11 +94,44 @@ void TestThirdParty() {
       false, "image");
 }
 
+void TestDefaultLists() {
+  std::vector<FilterList>& default_lists = FilterList::GetDefaultLists();
+  assert(default_lists.size() == 6);
+  FilterList& l = default_lists[0];
+  assert(l.uuid == "67F880F5-7602-4042-8A3D-01481FD7437A");
+  assert(l.url == "https://easylist.to/easylist/easylist.txt");
+  assert(l.title == "EasyList");
+  assert(l.url == "https://easylist.to/easylist/easylist.txt");
+  assert(l.langs.size() == 0);
+  assert(l.support_url == "https://easylist.to/");
+  assert(l.component_id.empty());
+  assert(l.base64_public_key.empty());
+  num_passed++;
+}
+
+void TestRegionalLists() {
+  std::vector<FilterList>& regional_lists = FilterList::GetRegionalLists();
+  assert(regional_lists.size() >= 40);
+  std::vector<FilterList>::iterator it =
+    std::find_if(regional_lists.begin(), regional_lists.end(),
+      [](FilterList& list) {
+        return list.uuid == "80470EEC-970F-4F2C-BF6B-4810520C72E6";
+      });
+  assert(it != regional_lists.end());
+  assert(it->langs.size() == 3);
+  assert(it->langs[0] == "ru");
+  assert(it->langs[1] == "uk");
+  assert(it->langs[2] == "be");
+  num_passed++;
+}
+
 int main() {
   TestBasics();
   TestTags();
   TestExplicitCancel();
   TestThirdParty();
+  TestDefaultLists();
+  TestRegionalLists();
   cout << num_passed << " passed, " <<
       num_failed << " failed" << endl;
   cout << "Success!";

@@ -6,6 +6,68 @@ extern "C" {
 
 namespace adblock {
 
+std::vector<FilterList> FilterList::default_list;
+std::vector<FilterList> FilterList::regional_list;
+
+FilterList::FilterList(const std::string& uuid,
+                       const std::string& url,
+                       const std::string& title,
+                       const std::vector<std::string>& langs,
+                       const std::string& support_url,
+                       const std::string& component_id,
+                       const std::string& base64_public_key)
+    : uuid(uuid),
+      url(url),
+      title(title),
+      langs(langs),
+      support_url(support_url),
+      component_id(component_id),
+      base64_public_key(base64_public_key) {}
+
+FilterList::FilterList(const FilterList& other) = default;
+
+FilterList::~FilterList() {
+}
+
+// [static]
+std::vector<FilterList>&  FilterList::GetDefaultLists() {
+  return GetFilterLists("default");
+}
+
+// [static]
+std::vector<FilterList>&  FilterList::GetRegionalLists() {
+  return GetFilterLists("regions");
+}
+
+std::vector<FilterList>& FilterList::GetFilterLists(const std::string &category) {
+  std::vector<FilterList>& list =
+    category == "regions" ? regional_list : default_list;
+  if (list.size() > 0) {
+    return list;
+  }
+
+  size_t size = filter_list_size(category.c_str());
+  for (size_t i = 0; i < size; i++) {
+    std::vector<std::string> langs;
+    C_FList l = filter_list_get(category.c_str(), i);
+    if (strlen(l.lang) > 0)
+      langs.push_back(l.lang);
+    if (strlen(l.lang2) > 0)
+      langs.push_back(l.lang2);
+    if (strlen(l.lang3) > 0)
+      langs.push_back(l.lang3);
+    list.push_back(FilterList(l.uuid,
+             l.url,
+             l.title,
+             langs,
+             l.support_url,
+             l.component_id,
+             l.base64_public_key));
+  }
+  return list;
+}
+
+
 Engine::Engine(const std::string& rules) : raw(engine_create(rules.c_str())) {
 }
 

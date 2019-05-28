@@ -1,14 +1,43 @@
 #ifndef ADBLOCK_RUST_FFI_SRC_WRAPPER_HPP_
 #define ADBLOCK_RUST_FFI_SRC_WRAPPER_HPP_
-
 #include <memory>
 #include <string>
+#include <vector>
 
 extern "C" {
 #include "lib.h"
 }
 
 namespace adblock {
+
+class FilterList {
+ public:
+  FilterList(const std::string& uuid,
+             const std::string& url,
+             const std::string& title,
+             const std::vector<std::string>& langs,
+             const std::string& support_url,
+             const std::string& component_id,
+             const std::string& base64_public_key);
+  FilterList(const FilterList& other);
+  ~FilterList();
+
+  static std::vector<FilterList>& GetDefaultLists();
+  static std::vector<FilterList>& GetRegionalLists();
+
+  const std::string uuid;
+  const std::string url;
+  const std::string title;
+  const std::vector<std::string> langs;
+  const std::string support_url;
+  const std::string component_id;
+  const std::string base64_public_key;
+
+private:
+  static std::vector<FilterList>& GetFilterLists(const std::string &category);
+  static std::vector<FilterList> default_list;
+  static std::vector<FilterList> regional_list;
+};
 
 class Engine {
  public:

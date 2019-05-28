@@ -33,6 +33,7 @@ name = "adblock-ffi"
 version = "0.1.0"
 dependencies = [
  "adblock 0.1.10 (registry+https://github.com/rust-lang/crates.io-index)",
+ "libc 0.2.51 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
