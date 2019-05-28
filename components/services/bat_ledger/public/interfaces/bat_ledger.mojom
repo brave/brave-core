@@ -129,7 +129,7 @@ interface BatLedger {
   GetShareURL(string type, map<string, string> args) =>
       (string url);
 
-  GetPendingContributions() => (array<string> list);
+  GetPendingContributions() => (array<ledger.mojom.PendingContributionInfo> list);
 
   RemovePendingContribution(string publisher_key, string viewing_id,
       uint64 added_date) => (int32 result);
@@ -199,7 +199,7 @@ interface BatLedgerClient {
   [Sync]
   URIEncode(string value) => (string encoded_value);
 
-  SavePendingContribution(string list);
+  SavePendingContribution(array<ledger.mojom.PendingContribution> list);
 
   LoadActivityInfo(string filter) =>
       (int32 result, ledger.mojom.PublisherInfo? publisher_info);
@@ -222,7 +222,7 @@ interface BatLedgerClient {
 
   GetExcludedPublishersNumberDB() => (uint32 number);
 
-  GetPendingContributions() => (array<string> info_list);
+  GetPendingContributions() => (array<ledger.mojom.PendingContributionInfo> list);
 
   RemovePendingContribution(string publisher_key, string viewing_id,
       uint64 added_date) => (int32 result);

@@ -359,11 +359,11 @@ class RewardsServiceImpl : public RewardsService,
 
   void OnGetPendingContributionsUI(
     GetPendingContributionsCallback callback,
-    const std::vector<std::string>& json_list);
+    ledger::PendingContributionInfoList list);
 
   void OnGetPendingContributions(
     const ledger::PendingContributionInfoListCallback& callback,
-    const ledger::PendingContributionInfoList& list);
+    ledger::PendingContributionInfoList list);
 
   void OnGetExcludedPublishersNumberDB(
     ledger::GetExcludedPublishersNumberDBCallback callback,
@@ -499,7 +499,7 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoPtr publisher_info);
 
   void SavePendingContribution(
-      const ledger::PendingContributionList& list) override;
+      ledger::PendingContributionList list) override;
 
   void OnSavePendingContribution(ledger::Result result);
 

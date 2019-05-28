@@ -801,8 +801,8 @@ void LedgerImpl::SetBalanceReport(
 }
 
 void LedgerImpl::SaveUnverifiedContribution(
-    const ledger::PendingContributionList& list) {
-  ledger_client_->SavePendingContribution(list);
+    ledger::PendingContributionList list) {
+  ledger_client_->SavePendingContribution(std::move(list));
 }
 
 void LedgerImpl::DoDirectTip(const std::string& publisher_id,
@@ -820,15 +820,15 @@ void LedgerImpl::DoDirectTip(const std::string& publisher_id,
 
   // Save to the pending list if not verified
   if (!is_verified) {
-    ledger::PendingContribution contribution;
-    contribution.publisher_key = publisher_id;
-    contribution.amount = amount;
-    contribution.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
+    auto contribution = ledger::PendingContribution::New();
+    contribution->publisher_key = publisher_id;
+    contribution->amount = amount;
+    contribution->category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
 
     ledger::PendingContributionList list;
-    list.list_ = std::vector<ledger::PendingContribution> { contribution };
+    list.push_back(std::move(contribution));
 
-    SaveUnverifiedContribution(list);
+    SaveUnverifiedContribution(std::move(list));
 
     return;
   }
@@ -1550,17 +1550,17 @@ std::string LedgerImpl::GetShareURL(
 void LedgerImpl::OnGetPendingContributions(
     const ledger::PendingContributionInfoList& list,
     ledger::PendingContributionInfoListCallback callback) {
-  std::vector<ledger::PendingContributionInfo> new_list;
+  ledger::PendingContributionInfoList new_list;
   for (const auto& item : list) {
-    ledger::PendingContributionInfo new_item(item);
-    new_item.expiration_date =
-        new_item.added_date +
+    auto new_item = item->Clone();
+    new_item->expiration_date =
+        new_item->added_date +
         braveledger_ledger::_pending_contribution_expiration;
 
-    new_list.push_back(new_item);
+    new_list.push_back(std::move(new_item));
   }
 
-  callback(new_list);
+  callback(std::move(new_list));
 }
 
 void LedgerImpl::GetPendingContributions(

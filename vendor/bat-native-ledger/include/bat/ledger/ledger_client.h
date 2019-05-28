@@ -69,7 +69,7 @@ using OnLoadCallback = std::function<void(const ledger::Result,
 using OnResetCallback = std::function<void(const ledger::Result)>;
 using GetExcludedPublishersNumberDBCallback = std::function<void(uint32_t)>;
 using PendingContributionInfoListCallback =
-    std::function<void(const PendingContributionInfoList&)>;
+    std::function<void(PendingContributionInfoList)>;
 using RemovePendingContributionCallback = std::function<void(Result)>;
 using PendingContributionsTotalCallback = std::function<void(double)>;
 
@@ -195,7 +195,7 @@ class LEDGER_EXPORT LedgerClient {
       ledger::LoadURLCallback callback) = 0;
 
   virtual void SavePendingContribution(
-      const ledger::PendingContributionList& list) = 0;
+      ledger::PendingContributionList list) = 0;
 
   // Logs debug information
   virtual std::unique_ptr<LogStream> Log(

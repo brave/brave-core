@@ -2751,13 +2751,13 @@ void RewardsServiceImpl::OnSavePendingContribution(ledger::Result result) {
 }
 
 void RewardsServiceImpl::SavePendingContribution(
-      const ledger::PendingContributionList& list) {
+      ledger::PendingContributionList list) {
   base::PostTaskAndReplyWithResult(
       file_task_runner_.get(),
       FROM_HERE,
       base::Bind(&SavePendingContributionOnFileTaskRunner,
                  publisher_info_backend_.get(),
-                 list),
+                 std::move(list)),
       base::Bind(&RewardsServiceImpl::OnSavePendingContribution,
                  AsWeakPtr()));
 }
@@ -3034,32 +3034,30 @@ ledger::PendingContributionInfoList PendingContributionsOnFileTaskRunner(
 }
 
 PendingContributionInfo PendingContributionLedgerToRewards(
-    const ledger::PendingContributionInfo& contribution) {
+    const ledger::PendingContributionInfoPtr contribution) {
   PendingContributionInfo info;
-  info.publisher_key = contribution.publisher_key;
-  info.category = contribution.category;
-  info.verified = contribution.verified;
-  info.name = contribution.name;
-  info.url = contribution.url;
-  info.provider = contribution.provider;
-  info.favicon_url = contribution.favicon_url;
-  info.amount = contribution.amount;
-  info.added_date = contribution.added_date;
-  info.viewing_id = contribution.viewing_id;
-  info.expiration_date = contribution.expiration_date;
+  info.publisher_key = contribution->publisher_key;
+  info.category = contribution->category;
+  info.verified = contribution->verified;
+  info.name = contribution->name;
+  info.url = contribution->url;
+  info.provider = contribution->provider;
+  info.favicon_url = contribution->favicon_url;
+  info.amount = contribution->amount;
+  info.added_date = contribution->added_date;
+  info.viewing_id = contribution->viewing_id;
+  info.expiration_date = contribution->expiration_date;
   return info;
 }
 
 void RewardsServiceImpl::OnGetPendingContributionsUI(
     GetPendingContributionsCallback callback,
-    const std::vector<std::string>& json_list) {
+    ledger::PendingContributionInfoList list) {
   std::unique_ptr<brave_rewards::PendingContributionInfoList> new_list(
       new brave_rewards::PendingContributionInfoList);
-  for (auto &json_contribution : json_list) {
-    ledger::PendingContributionInfo contribution;
-    contribution.loadFromJson(json_contribution);
+  for (auto &item : list) {
     brave_rewards::PendingContributionInfo new_contribution =
-        PendingContributionLedgerToRewards(contribution);
+        PendingContributionLedgerToRewards(std::move(item));
     new_list->push_back(new_contribution);
   }
 
@@ -3076,12 +3074,12 @@ void RewardsServiceImpl::GetPendingContributionsUI(
 
 void RewardsServiceImpl::OnGetPendingContributions(
     const ledger::PendingContributionInfoListCallback& callback,
-    const ledger::PendingContributionInfoList& list) {
+    ledger::PendingContributionInfoList list) {
   if (!Connected()) {
     return;
   }
 
-  callback(list);
+  callback(std::move(list));
 }
 
 void RewardsServiceImpl::GetPendingContributions(

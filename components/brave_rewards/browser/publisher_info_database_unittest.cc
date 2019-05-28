@@ -624,25 +624,26 @@ TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
   base::FilePath db_file;
   CreateTempDatabase(&temp_dir, &db_file);
 
-  ledger::PendingContribution contribution1;
-  contribution1.publisher_key = "key1";
-  contribution1.amount = 10;
-  contribution1.added_date = 10;
-  contribution1.viewing_id = "fsodfsdnf23r23rn";
-  contribution1.category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
+  auto contribution1 = ledger::PendingContribution::New();
+  contribution1->publisher_key = "key1";
+  contribution1->amount = 10;
+  contribution1->added_date = 10;
+  contribution1->viewing_id = "fsodfsdnf23r23rn";
+  contribution1->category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
 
-  ledger::PendingContribution contribution2;
-  contribution2.publisher_key = "key2";
-  contribution2.amount = 20;
-  contribution2.viewing_id = "aafsofdfsdnf23r23rn";
-  contribution2.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
+  auto contribution2 = ledger::PendingContribution::New();
+  contribution2->publisher_key = "key2";
+  contribution2->amount = 20;
+  contribution2->viewing_id = "aafsofdfsdnf23r23rn";
+  contribution2->category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
+
 
   ledger::PendingContributionList list;
-  list.list_.push_back(contribution1);
-  list.list_.push_back(contribution2);
+  list.push_back(contribution1->Clone());
+  list.push_back(contribution2->Clone());
 
   bool success = publisher_info_database_->InsertPendingContribution(
-      list);
+      std::move(list));
   EXPECT_TRUE(success);
 
   std::string query = "SELECT * FROM pending_contribution";
@@ -652,21 +653,21 @@ TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
 
   // First contribution
   EXPECT_TRUE(info_sql.Step());
-  EXPECT_EQ(info_sql.ColumnString(0), contribution1.publisher_key);
-  EXPECT_EQ(info_sql.ColumnDouble(1), contribution1.amount);
+  EXPECT_EQ(info_sql.ColumnString(0), contribution1->publisher_key);
+  EXPECT_EQ(info_sql.ColumnDouble(1), contribution1->amount);
   EXPECT_GE(info_sql.ColumnInt64(2), 20);
-  EXPECT_EQ(info_sql.ColumnString(3), contribution1.viewing_id);
+  EXPECT_EQ(info_sql.ColumnString(3), contribution1->viewing_id);
   EXPECT_EQ(static_cast<ledger::REWARDS_CATEGORY>(info_sql.ColumnInt(4)),
-      contribution1.category);
+      contribution1->category);
 
   // Second contribution
   EXPECT_TRUE(info_sql.Step());
-  EXPECT_EQ(info_sql.ColumnString(0), contribution2.publisher_key);
-  EXPECT_EQ(info_sql.ColumnDouble(1), contribution2.amount);
+  EXPECT_EQ(info_sql.ColumnString(0), contribution2->publisher_key);
+  EXPECT_EQ(info_sql.ColumnDouble(1), contribution2->amount);
   EXPECT_GE(info_sql.ColumnInt64(2), 0);
-  EXPECT_EQ(info_sql.ColumnString(3), contribution2.viewing_id);
+  EXPECT_EQ(info_sql.ColumnString(3), contribution2->viewing_id);
   EXPECT_EQ(static_cast<ledger::REWARDS_CATEGORY>(info_sql.ColumnInt(4)),
-      contribution2.category);
+      contribution2->category);
 }
 
 TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
@@ -1043,35 +1044,35 @@ void PublisherInfoDatabaseTest::PreparePendingContributions() {
   EXPECT_EQ(CountTableRows("publisher_info"), 4);
 
   // Insert some pending contributions
-  ledger::PendingContribution contribution1;
-  contribution1.publisher_key = "key1";
-  contribution1.amount = 10;
-  contribution1.viewing_id = "fsodfsdnf23r23rn";
-  contribution1.category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
+  auto contribution1 = ledger::PendingContribution::New();
+  contribution1->publisher_key = "key1";
+  contribution1->amount = 10;
+  contribution1->viewing_id = "fsodfsdnf23r23rn";
+  contribution1->category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
 
-  ledger::PendingContribution contribution2;
-  contribution2.publisher_key = "key2";
-  contribution2.amount = 20;
-  contribution2.viewing_id = "aafsoffdffdfsdnf23r23rn";
-  contribution2.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
+  auto contribution2 = ledger::PendingContribution::New();
+  contribution2->publisher_key = "key2";
+  contribution2->amount = 20;
+  contribution2->viewing_id = "aafsoffdffdfsdnf23r23rn";
+  contribution2->category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
 
-  ledger::PendingContribution contribution3;
-  contribution3.publisher_key = "key3";
-  contribution3.amount = 30;
-  contribution3.viewing_id = "aafszxfzcofdfsdnf23r23rn";
-  contribution3.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
+  auto contribution3 = ledger::PendingContribution::New();
+  contribution3->publisher_key = "key3";
+  contribution3->amount = 30;
+  contribution3->viewing_id = "aafszxfzcofdfsdnf23r23rn";
+  contribution3->category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
 
-  ledger::PendingContribution contribution4;
-  contribution4.publisher_key = "key4";
-  contribution4.amount = 40;
-  contribution4.viewing_id = "aafsofdfs12333dnf23r23rn";
-  contribution4.category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
+  auto contribution4 = ledger::PendingContribution::New();
+  contribution4->publisher_key = "key4";
+  contribution4->amount = 40;
+  contribution4->viewing_id = "aafsofdfs12333dnf23r23rn";
+  contribution4->category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
 
   ledger::PendingContributionList list;
-  list.list_.push_back(contribution1);
-  list.list_.push_back(contribution2);
-  list.list_.push_back(contribution3);
-  list.list_.push_back(contribution4);
+  list.push_back(std::move(contribution1));
+  list.push_back(std::move(contribution2));
+  list.push_back(std::move(contribution3));
+  list.push_back(std::move(contribution4));
 
   success = publisher_info_database_->InsertPendingContribution(
       list);
@@ -1093,12 +1094,12 @@ TEST_F(PublisherInfoDatabaseTest, GetPendingContributions) {
   publisher_info_database_->GetPendingContributions(&select_list);
   EXPECT_EQ(static_cast<int>(select_list.size()), 4);
 
-  EXPECT_EQ(select_list.at(0).publisher_key, "key1");
-  EXPECT_EQ(select_list.at(1).publisher_key, "key2");
-  EXPECT_EQ(select_list.at(2).publisher_key, "key3");
-  EXPECT_EQ(select_list.at(3).publisher_key, "key4");
+  EXPECT_EQ(select_list.at(0)->publisher_key, "key1");
+  EXPECT_EQ(select_list.at(1)->publisher_key, "key2");
+  EXPECT_EQ(select_list.at(2)->publisher_key, "key3");
+  EXPECT_EQ(select_list.at(3)->publisher_key, "key4");
 
-  EXPECT_EQ(select_list.at(0).url, "https://key1.com");
+  EXPECT_EQ(select_list.at(0)->url, "https://key1.com");
 }
 
 TEST_F(PublisherInfoDatabaseTest, RemovePendingContributions) {
@@ -1113,20 +1114,20 @@ TEST_F(PublisherInfoDatabaseTest, RemovePendingContributions) {
   */
   ledger::PendingContributionInfoList select_list;
   publisher_info_database_->GetPendingContributions(&select_list);
-  EXPECT_EQ(select_list.at(0).publisher_key, "key1");
+  EXPECT_EQ(select_list.at(0)->publisher_key, "key1");
   bool success = publisher_info_database_->RemovePendingContributions(
       "key1",
       "fsodfsdnf23r23rn",
-      select_list.at(0).added_date);
+      select_list.at(0)->added_date);
   EXPECT_TRUE(success);
 
   ledger::PendingContributionInfoList list;
   publisher_info_database_->GetPendingContributions(&list);
   EXPECT_EQ(static_cast<int>(list.size()), 3);
 
-  EXPECT_EQ(list.at(0).publisher_key, "key2");
-  EXPECT_EQ(list.at(1).publisher_key, "key3");
-  EXPECT_EQ(list.at(2).publisher_key, "key4");
+  EXPECT_EQ(list.at(0)->publisher_key, "key2");
+  EXPECT_EQ(list.at(1)->publisher_key, "key3");
+  EXPECT_EQ(list.at(2)->publisher_key, "key4");
 
   /**
    * Trying to delete not existing row

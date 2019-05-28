@@ -568,11 +568,11 @@ std::string BatLedgerClientMojoProxy::URIEncode(const std::string& value) {
 }
 
 void BatLedgerClientMojoProxy::SavePendingContribution(
-      const ledger::PendingContributionList& list) {
+      ledger::PendingContributionList list) {
   if (!Connected())
     return;
 
-  bat_ledger_client_->SavePendingContribution(list.ToJson());
+  bat_ledger_client_->SavePendingContribution(std::move(list));
 }
 
 void OnLoadActivityInfo(
@@ -730,22 +730,14 @@ void BatLedgerClientMojoProxy::GetExcludedPublishersNumberDB(
 
 void OnGetPendingContributions(
     const ledger::PendingContributionInfoListCallback& callback,
-    const std::vector<std::string>& info_list) {
-  ledger::PendingContributionInfoList list;
-
-  for (const auto& info : info_list) {
-    ledger::PendingContributionInfo new_info;
-    new_info.loadFromJson(info);
-    list.push_back(new_info);
-  }
-
-  callback(list);
+    ledger::PendingContributionInfoList list) {
+  callback(std::move(list));
 }
 
 void BatLedgerClientMojoProxy::GetPendingContributions(
     const ledger::PendingContributionInfoListCallback& callback) {
   if (!Connected()) {
-    callback(std::vector<ledger::PendingContributionInfo>());
+    callback(ledger::PendingContributionInfoList());
     return;
   }
 
