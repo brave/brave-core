@@ -924,17 +924,17 @@ bool PublisherInfoDatabase::InsertPendingContribution
     return false;
   }
 
-  for (const auto& item : list.list_) {
+  for (const auto& item : list) {
     sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
       "INSERT INTO pending_contribution "
       "(publisher_id, amount, added_date, viewing_id, category) "
       "VALUES (?, ?, ?, ?, ?)"));
 
-    statement.BindString(0, item.publisher_key);
-    statement.BindDouble(1, item.amount);
+    statement.BindString(0, item->publisher_key);
+    statement.BindDouble(1, item->amount);
     statement.BindInt64(2, now_seconds);
-    statement.BindString(3, item.viewing_id);
-    statement.BindInt(4, item.category);
+    statement.BindString(3, item->viewing_id);
+    statement.BindInt(4, item->category);
     statement.Run();
   }
 
@@ -982,20 +982,20 @@ void PublisherInfoDatabase::GetPendingContributions(
       "INNER JOIN publisher_info AS pi ON pc.publisher_id = pi.publisher_id"));
 
   while (info_sql.Step()) {
-    ledger::PendingContributionInfo info;
-    info.publisher_key = info_sql.ColumnString(0);
-    info.name = info_sql.ColumnString(1);
-    info.url = info_sql.ColumnString(2);
-    info.favicon_url = info_sql.ColumnString(3);
-    info.verified = info_sql.ColumnBool(4);
-    info.provider = info_sql.ColumnString(5);
-    info.amount = info_sql.ColumnDouble(6);
-    info.added_date = info_sql.ColumnInt64(7);
-    info.viewing_id = info_sql.ColumnString(8);
-    info.category =
+    auto info = ledger::PendingContributionInfo::New();
+    info->publisher_key = info_sql.ColumnString(0);
+    info->name = info_sql.ColumnString(1);
+    info->url = info_sql.ColumnString(2);
+    info->favicon_url = info_sql.ColumnString(3);
+    info->verified = info_sql.ColumnBool(4);
+    info->provider = info_sql.ColumnString(5);
+    info->amount = info_sql.ColumnDouble(6);
+    info->added_date = info_sql.ColumnInt64(7);
+    info->viewing_id = info_sql.ColumnString(8);
+    info->category =
         static_cast<ledger::REWARDS_CATEGORY>(info_sql.ColumnInt(9));
 
-    list->push_back(info);
+    list->push_back(std::move(info));
   }
 }
 

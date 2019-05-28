@@ -118,7 +118,7 @@ class LedgerImpl : public ledger::Ledger,
                         int year,
                         const ledger::BalanceReportInfo& report_info) override;
 
-  void SaveUnverifiedContribution(const ledger::PendingContributionList& list);
+  void SaveUnverifiedContribution(ledger::PendingContributionList list);
 
   std::map<std::string, std::string> GetAddresses() override;
 

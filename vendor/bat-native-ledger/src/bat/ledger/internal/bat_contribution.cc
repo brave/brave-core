@@ -121,19 +121,19 @@ ledger::PublisherInfoList BatContribution::GetVerifiedListAuto(
 
   // non-verified publishers
   for (const auto& publisher : temp) {
-    ledger::PendingContribution contribution;
-    contribution.amount =
+    auto contribution = ledger::PendingContribution::New();
+    contribution->amount =
         (static_cast<double>(publisher->percent) / 100) * ac_amount;
-    contribution.publisher_key = publisher->id;
-    contribution.viewing_id = viewing_id;
-    contribution.category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
+    contribution->publisher_key = publisher->id;
+    contribution->viewing_id = viewing_id;
+    contribution->category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
 
-    non_verified_bat += contribution.amount;
-    non_verified.list_.push_back(contribution);
+    non_verified_bat += contribution->amount;
+    non_verified.push_back(std::move(contribution));
   }
 
-  if (non_verified.list_.size() > 0) {
-    ledger_->SaveUnverifiedContribution(non_verified);
+  if (non_verified.size() > 0) {
+    ledger_->SaveUnverifiedContribution(std::move(non_verified));
   }
 
   *budget = ac_amount - non_verified_bat;
@@ -157,18 +157,18 @@ ledger::PublisherInfoList BatContribution::GetVerifiedListRecurring(
       verified.push_back(publisher->Clone());
       *budget += publisher->weight;
     } else {
-      ledger::PendingContribution contribution;
-      contribution.amount = publisher->weight;
-      contribution.publisher_key = publisher->id;
-      contribution.viewing_id = viewing_id;
-      contribution.category = ledger::REWARDS_CATEGORY::RECURRING_TIP;
+      auto contribution = ledger::PendingContribution::New();
+      contribution->amount = publisher->weight;
+      contribution->publisher_key = publisher->id;
+      contribution->viewing_id = viewing_id;
+      contribution->category = ledger::REWARDS_CATEGORY::RECURRING_TIP;
 
-      non_verified.list_.push_back(contribution);
+      non_verified.push_back(std::move(contribution));
     }
   }
 
-  if (non_verified.list_.size() > 0) {
-    ledger_->SaveUnverifiedContribution(non_verified);
+  if (non_verified.size() > 0) {
+    ledger_->SaveUnverifiedContribution(std::move(non_verified));
   }
 
   return verified;

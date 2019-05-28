@@ -209,7 +209,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       uint64_t windowId));
 
   MOCK_METHOD1(SavePendingContribution, void(
-      const ledger::PendingContributionList& list));
+      ledger::PendingContributionList list));
 
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,

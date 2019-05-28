@@ -2892,42 +2892,6 @@ void saveToJson(JsonWriter* writer,
   writer->EndObject();
 }
 
-void saveToJson(JsonWriter* writer,
-                const ledger::PendingContribution& contribution) {
-  writer->StartObject();
-
-  writer->String("publisher_key");
-  writer->String(contribution.publisher_key.c_str());
-
-  writer->String("amount");
-  writer->Double(contribution.amount);
-
-  writer->String("added_date");
-  writer->Uint64(contribution.added_date);
-
-  writer->String("viewing_id");
-  writer->String(contribution.viewing_id.c_str());
-
-  writer->String("category");
-  writer->Int(contribution.category);
-
-  writer->EndObject();
-}
-
-void saveToJson(JsonWriter* writer,
-                const ledger::PendingContributionList& contributions) {
-  writer->StartObject();
-
-  writer->String("list");
-  writer->StartArray();
-  for (const auto& contribution : contributions.list_) {
-    saveToJson(writer, contribution);
-  }
-  writer->EndArray();
-
-  writer->EndObject();
-}
-
 void saveToJson(JsonWriter* writer, const ledger::ReconcileInfo& data) {
   writer->StartObject();
 
@@ -2969,46 +2933,6 @@ void saveToJson(JsonWriter* writer, const ledger::RewardsInternalsInfo& info) {
 
   writer->String("boot_stamp");
   writer->Uint64(info.boot_stamp);
-
-  writer->EndObject();
-}
-
-void saveToJson(JsonWriter* writer,
-                const ledger::PendingContributionInfo& info) {
-  writer->StartObject();
-
-  writer->String("publisher_key");
-  writer->String(info.publisher_key.c_str());
-
-  writer->String("category");
-  writer->Int(info.category);
-
-  writer->String("verified");
-  writer->Bool(info.verified);
-
-  writer->String("name");
-  writer->String(info.name.c_str());
-
-  writer->String("url");
-  writer->String(info.url.c_str());
-
-  writer->String("provider");
-  writer->String(info.provider.c_str());
-
-  writer->String("favicon_url");
-  writer->String(info.favicon_url.c_str());
-
-  writer->String("amount");
-  writer->Double(info.amount);
-
-  writer->String("added_date");
-  writer->Uint64(info.added_date);
-
-  writer->String("viewing_id");
-  writer->String(info.viewing_id.c_str());
-
-  writer->String("expiration_date");
-  writer->Uint64(info.expiration_date);
 
   writer->EndObject();
 }

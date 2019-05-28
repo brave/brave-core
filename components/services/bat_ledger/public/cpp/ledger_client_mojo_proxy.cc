@@ -470,11 +470,9 @@ void LedgerClientMojoProxy::LoadURL(const std::string& url,
       std::bind(LedgerClientMojoProxy::OnLoadURL, holder, _1, _2, _3));
 }
 
-void LedgerClientMojoProxy::SavePendingContribution(const std::string& list) {
-  ledger::PendingContributionList contribution_list;
-  contribution_list.loadFromJson(list);
-
-  ledger_client_->SavePendingContribution(contribution_list);
+void LedgerClientMojoProxy::SavePendingContribution(
+    ledger::PendingContributionList list) {
+  ledger_client_->SavePendingContribution(std::move(list));
 }
 
 // static
@@ -691,14 +689,9 @@ void LedgerClientMojoProxy::GetOneTimeTips(
 // static
 void LedgerClientMojoProxy::OnGetPendingContributions(
     CallbackHolder<GetPendingContributionsCallback>* holder,
-    const ledger::PendingContributionInfoList& info_list) {
-  std::vector<std::string> list;
-  for (const auto& info : info_list) {
-    list.push_back(info.ToJson());
-  }
-
+    ledger::PendingContributionInfoList list) {
   if (holder->is_valid())
-    std::move(holder->get()).Run(list);
+    std::move(holder->get()).Run(std::move(list));
   delete holder;
 }
 

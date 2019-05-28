@@ -579,15 +579,9 @@ void BatLedgerImpl::GetShareURL(
 // static
 void BatLedgerImpl::OnGetPendingContributions(
     CallbackHolder<GetPendingContributionsCallback>* holder,
-    const ledger::PendingContributionInfoList& list) {
-
-  std::vector<std::string> json_list;
-  for (auto const& item : list) {
-    json_list.push_back(item.ToJson());
-  }
-
+    ledger::PendingContributionInfoList list) {
   if (holder->is_valid()) {
-    std::move(holder->get()).Run(json_list);
+    std::move(holder->get()).Run(std::move(list));
   }
   delete holder;
 }

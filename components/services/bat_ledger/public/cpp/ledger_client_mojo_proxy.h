@@ -94,8 +94,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
     int32_t method,
     LoadURLCallback callback) override;
 
-  void SavePendingContribution(
-      const std::string& list) override;
+  void SavePendingContribution(ledger::PendingContributionList list) override;
 
   void LoadActivityInfo(const std::string& filter,
       LoadActivityInfoCallback callback) override;
@@ -257,7 +256,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
 
   static void OnGetPendingContributions(
       CallbackHolder<GetPendingContributionsCallback>* holder,
-      const ledger::PendingContributionInfoList& info_list);
+      ledger::PendingContributionInfoList info_list);
 
   static void OnRemovePendingContribution(
       CallbackHolder<RemovePendingContributionCallback>* holder,

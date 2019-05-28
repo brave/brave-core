@@ -107,7 +107,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   std::string URIEncode(const std::string& value) override;
 
   void SavePendingContribution(
-      const ledger::PendingContributionList& list) override;
+      ledger::PendingContributionList list) override;
 
   void LoadActivityInfo(ledger::ActivityInfoFilter filter,
                         ledger::PublisherInfoCallback callback) override;

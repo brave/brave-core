@@ -27,3 +27,25 @@ struct PublisherInfo {
 
   array<ContributionInfo> contributions;
 };
+
+struct PendingContribution {
+  string publisher_key;
+  double amount;
+  uint64 added_date;
+  string viewing_id;
+  int32 category;
+};
+
+struct PendingContributionInfo {
+  string publisher_key;
+  int32 category;
+  bool verified;
+  string name;
+  string url;
+  string provider;
+  string favicon_url;
+  double amount;
+  uint64 added_date;
+  string viewing_id;
+  uint64 expiration_date;
+};

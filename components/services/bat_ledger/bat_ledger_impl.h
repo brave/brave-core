@@ -256,7 +256,7 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   static void OnGetPendingContributions(
     CallbackHolder<GetPendingContributionsCallback>* holder,
-    const ledger::PendingContributionInfoList& list);
+    ledger::PendingContributionInfoList list);
 
   static void OnRemovePendingContribution(
     CallbackHolder<RemovePendingContributionCallback>* holder,
