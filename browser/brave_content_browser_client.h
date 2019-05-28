@@ -80,8 +80,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
                        const GURL& url) override;
 
-  std::string GetUserAgent() const override;
-
  private:
   bool AllowAccessCookie(const GURL& url, const GURL& first_party,
       content::ResourceContext* context, int render_process_id,

@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
+index 139a600b09250af07e4771852d02e1be4fe84e2c..13f4b3aeae9b647bc15a98c76e517ca86cdd431c 100644
+--- a/chrome/browser/chrome_content_browser_client.cc
++++ b/chrome/browser/chrome_content_browser_client.cc
+@@ -30,6 +30,7 @@
+ #include "base/system/sys_info.h"
+ #include "base/task/post_task.h"
+ #include "base/threading/thread_task_runner_handle.h"
++#include "brave/common/brave_switches.h"
+ #include "build/build_config.h"
+ #include "chrome/app/chrome_content_browser_overlay_manifest.h"
+ #include "chrome/app/chrome_content_gpu_overlay_manifest.h"
+@@ -1073,6 +1074,11 @@ std::string GetUserAgent() {
+   if (command_line->HasSwitch(switches::kUseMobileUserAgent))
+     product += " Mobile";
+ #endif
++  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
++         switches::kDisableOverrideUA)) {
++    return content::BuildUserAgentFromProduct(product) +
++        " Brave/" + version_info::GetMajorVersionNumber();
++  }
+   return content::BuildUserAgentFromProduct(product);
+ }
+ 
