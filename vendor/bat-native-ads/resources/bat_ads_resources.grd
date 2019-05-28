@@ -14,6 +14,7 @@
       <include name="IDR_ADS_USER_MODEL_EN" file="user_models/languages/en/user_model.json" type="BINDATA" compress="gzip" />
       <include name="IDR_ADS_USER_MODEL_DE" file="user_models/languages/de/user_model.json" type="BINDATA" compress="gzip" />
       <include name="IDR_ADS_USER_MODEL_FR" file="user_models/languages/fr/user_model.json" type="BINDATA" compress="gzip" />
+      <include name="IDR_ADS_USER_MODEL_JA" file="user_models/languages/ja/user_model.json" type="BINDATA" compress="gzip" />
     </includes>
   </release>
 </grit>

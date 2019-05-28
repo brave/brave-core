@@ -225,7 +225,7 @@ void AdsImpl::InitializeUserModel(
   BLOG(INFO) << "Initializing user model for \"" << language << "\" language";
 
   user_model_.reset(usermodel::UserModel::CreateInstance());
-  user_model_->InitializePageClassifier(json);
+  user_model_->InitializePageClassifier(json, language);
 
   BLOG(INFO) << "Initialized user model for \"" << language << "\" language";
 }

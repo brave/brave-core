@@ -62,7 +62,7 @@ static const std::map<std::string, bool> kSupportedRegions = {
   { "IL", false },  // Israel
   { "IN", false },  // India
   { "IT", false },  // Italy
-  { "JP", false },  // Japan
+  { "JP", true  },  // Japan
   { "KR", false },  // Korea
   { "MX", false },  // Mexico
   { "NL", false },  // Netherlands

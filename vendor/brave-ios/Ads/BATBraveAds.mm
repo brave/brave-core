@@ -299,7 +299,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 
 - (const std::vector<std::string>)getUserModelLanguages
 {
-  std::vector<std::string> languages = { "en", "fr", "de" };
+  std::vector<std::string> languages = { "en", "fr", "de", "ja" };
   return languages;
 }
 
