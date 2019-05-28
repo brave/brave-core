@@ -533,11 +533,11 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientReferrerTest,
 
 IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, OverrideUATest) {
   const std::string appended_ua =
-      GetUserAgent() + " Brave/" + version_info::GetMajorVersionNumber();
+      "Brave/" + version_info::GetMajorVersionNumber();
   content::EvalJsResult js_result =
       EvalJs(browser()->tab_strip_model()->GetActiveWebContents(),
              "navigator.userAgent");
-  EXPECT_EQ(js_result.ExtractString(), appended_ua);
+  EXPECT_TRUE(js_result.ExtractString().find(appended_ua) != std::string::npos);
 }
 
 class BraveContentBrowserClientWithoutUAOverride

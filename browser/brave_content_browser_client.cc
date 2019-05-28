@@ -39,7 +39,6 @@
 #include "chrome/common/url_constants.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/services/heap_profiling/public/mojom/heap_profiling_client.mojom.h"
-#include "components/version_info/version_info.h"
 #include "content/browser/frame_host/render_frame_host_impl.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
@@ -348,13 +347,4 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
 #else
   return url;
 #endif
-}
-
-std::string BraveContentBrowserClient::GetUserAgent() const {
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kDisableOverrideUA))
-    return ChromeContentBrowserClient::GetUserAgent();
-
-  return ChromeContentBrowserClient::GetUserAgent() +
-      " Brave/" + version_info::GetMajorVersionNumber();
 }

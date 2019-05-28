@@ -110,7 +110,6 @@ source_set("browser_process") {
     "//components/unified_consent",
     "//components/update_client:patch_impl",
     "//components/update_client:unzip_impl",
-    "//components/version_info",
     "//content/public/browser",
     "//content/public/common",
     "//extensions/buildflags",
