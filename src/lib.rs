@@ -135,7 +135,7 @@ pub unsafe extern "C" fn filter_list_get(category: *const c_char, i: size_t) -> 
             .expect("Error: CString::new()")
             .into_raw(),
     };
-    if list.langs.len() > 0 {
+    if !list.langs.is_empty() {
         new_list.lang = CString::new(list.langs[0].clone())
             .expect("Error: CString::new()")
             .into_raw();
