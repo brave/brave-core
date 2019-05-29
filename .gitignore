@@ -32,3 +32,8 @@ cmake-build-debug/
 coverage/
 /build/rustup/
 venv/
+*.dmg
+*.pkg
+*.deb
+*.rpm
+*.exe
