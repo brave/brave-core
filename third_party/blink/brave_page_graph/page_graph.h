@@ -109,6 +109,8 @@ friend EdgeNodeInsert;
   ScriptId PopActiveScript();
   ScriptId PeekActiveScript() const;
 
+  void Log(const std::string& str) const;
+
  protected:
   void AddNode(Node* const node);
   void AddEdge(const Edge* const edge);
