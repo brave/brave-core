@@ -61,7 +61,7 @@ class BatClient {
 
   void GetWalletProperties(ledger::OnWalletPropertiesCallback callback);
 
-  void getGrantViaSafetynetCheck();
+  void getGrantViaSafetynetCheck(const std::string& promotionId);
 
   void getWalletProperties();
 
@@ -98,6 +98,7 @@ class BatClient {
       const std::map<std::string, std::string>& headers);
 
   void setGrantCallback(
+      const std::string& promotionId,
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
@@ -114,8 +115,8 @@ class BatClient {
       const std::map<std::string, std::string>& headers,
       const std::string& paymentId);
 
-  void getGrantViaSafetynetCheckCallback(int response_status_code, const std::string& response,
-      const std::map<std::string, std::string>& headers);
+  void getGrantViaSafetynetCheckCallback(const std::string& promotionId, int response_status_code,
+      const std::string& response, const std::map<std::string, std::string>& headers);
 
   std::string getAnonizeProof(const std::string& registrarVK,
                               const std::string& id,

@@ -1512,16 +1512,16 @@ scoped_refptr<base::SequencedTaskRunner> LedgerImpl::GetTaskRunner() {
   return task_runner_;
 }
 
-void LedgerImpl::GetGrantViaSafetynetCheck() const {
-  bat_client_->getGrantViaSafetynetCheck();
+void LedgerImpl::GetGrantViaSafetynetCheck(const std::string & promotionId) const {
+  bat_client_->getGrantViaSafetynetCheck(promotionId);
 }
 
-void LedgerImpl::OnGrantViaSafetynetCheck(const std::string& nonce) {
-  ledger_client_->OnGrantViaSafetynetCheck(nonce);
+void LedgerImpl::OnGrantViaSafetynetCheck(const std::string& promotionId, const std::string& nonce) {
+  ledger_client_->OnGrantViaSafetynetCheck(promotionId, nonce);
 }
 
-void LedgerImpl::ApplySafetynetToken(const std::string& token) const {
-  bat_client_->setGrant("", "", token);
+void LedgerImpl::ApplySafetynetToken(const std::string& promotionId, const std::string& token) const {
+  bat_client_->setGrant("", promotionId, token);
 }
 
 }  // namespace bat_ledger
