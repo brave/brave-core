@@ -2,18 +2,26 @@
 
 set -euo pipefail
 
-if [[ $# -lt "4" ]]; then
-  echo "usage: $0 <source_app> <dest_app> <packaging_dir> <mac_signing_keychain> <mac_signing_identifier> <mac_provisioning_profile> <extra_flags>"
+if [[ ${#} -lt "7" ]]; then
+  echo "usage: $0 <input_dir> <output_dir> <packaging_dir> <is_development> <mac_provisioning_profile> <mac_signing_keychain> <mac_signing_identifier>"
   exit 1
 fi
 
-SOURCE="${1}"
-DEST="${2}"
+SOURCE_DIR="${1}"
+DEST_DIR="${2}"
 PKG_DIR="${3}"
-MAC_SIGNING_KEYCHAIN="${4}"
-MAC_SIGNING_IDENTIFIER="${5}"
-MAC_PROVISIONING_PROFILE="${6}"
-MAC_ENTITLEMENTS_PLIST="${7}"
+DEVELOPMENT=
+if [[ "${4}" = "True" ]]; then
+  DEVELOPMENT="--development"
+fi
+MAC_PROVISIONING_PROFILE="${5}"
+MAC_SIGNING_KEYCHAIN="${6}"
+MAC_SIGNING_IDENTIFIER="${7}"
+
+if [[ -z ${7} ]]; then
+  echo "Error: mac_signing_identifier is empty. Cannot sign."
+  exit 1
+fi
 
 function check_exit() {
     return=$?;
@@ -28,20 +36,16 @@ function check_exit() {
 
 trap check_exit EXIT
 
-if [[ -d "$DEST" ]]; then
-  rm -rf "$DEST"
-fi
+# Copy signing script to the packaging directory
+SCRIPT_DIR=$(dirname ${0})
+cp -f "${SCRIPT_DIR}/sign_brave.py" "${PKG_DIR}"
 
-tmpdir=$(dirname "$DEST")
-mkdir -p "$tmpdir"
-
-cp -a "$SOURCE" "$DEST"
-
-if [[ ${#} -eq 8 ]]; then
-EXTRA_FLAGS="${8}"
-"${PKG_DIR}/sign_versioned_dir.sh" "$DEST" "$MAC_SIGNING_KEYCHAIN" "$MAC_SIGNING_IDENTIFIER" "$EXTRA_FLAGS"
-"${PKG_DIR}/sign_app.sh" "$DEST" "$MAC_SIGNING_KEYCHAIN" "$MAC_SIGNING_IDENTIFIER" "$MAC_PROVISIONING_PROFILE" "${MAC_ENTITLEMENTS_PLIST}" "$EXTRA_FLAGS"
+# Invoke python script to do the signing.
+if [[ -z "${DEVELOPMENT}" ]]; then
+  # Copy mac_provisioning_profile to the packaging_dir since that's where the
+  # signing scripts expects to find it.
+  cp -f "$MAC_PROVISIONING_PROFILE" "$PKG_DIR"
+  "${PKG_DIR}/sign_brave.py" --input "$SOURCE_DIR" --output "$DEST_DIR" --keychain "$MAC_SIGNING_KEYCHAIN" --identity "$MAC_SIGNING_IDENTIFIER" --no-dmg --provisioning-profile "$MAC_PROVISIONING_PROFILE"
 else
-"${PKG_DIR}/sign_versioned_dir.sh" "$DEST" "$MAC_SIGNING_KEYCHAIN" "$MAC_SIGNING_IDENTIFIER"
-"${PKG_DIR}/sign_app.sh" "$DEST" "$MAC_SIGNING_KEYCHAIN" "$MAC_SIGNING_IDENTIFIER" "$MAC_PROVISIONING_PROFILE" "${MAC_ENTITLEMENTS_PLIST}"
+  "${PKG_DIR}/sign_brave.py" --input "$SOURCE_DIR" --output "$DEST_DIR" --keychain "$MAC_SIGNING_KEYCHAIN" --identity "$MAC_SIGNING_IDENTIFIER" --no-dmg "$DEVELOPMENT"
 fi

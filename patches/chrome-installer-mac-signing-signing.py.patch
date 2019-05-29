@@ -1,0 +1,17 @@
+diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
+index b56853e5e2649328a81a2de20228de5abda08f11..b460edf666adc54862e5d783b60352065ce67531 100644
+--- a/chrome/installer/mac/signing/signing.py
++++ b/chrome/installer/mac/signing/signing.py
+@@ -84,6 +84,12 @@ def get_parts(config):
+                 options=CodeSignOptions.RESTRICT +
+                 CodeSignOptions.LIBRARY_VALIDATION,
+                 verify_options=VerifyOptions.IGNORE_RESOURCES),
++        'sparkle-framework':
++            CodeSignedProduct(
++                '{.framework_dir}/Frameworks/Sparkle.framework'
++                .format(config),
++                'org.sparkle-project.Sparkle',
++                verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT),
+     }
+ 
+     dylibs = (
