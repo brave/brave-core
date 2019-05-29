@@ -146,13 +146,11 @@ group("create_dist") {
     if (skip_signing) {
       deps += [ "build/mac:create_unsigned_dmg" ]
     } else {
-      deps += [ "build/mac:create_dist_mac" ]
-      if (brave_channel == "") {
-        deps += [
-          "build/mac:create_pkg",
-          "build/mac:sign_pkg",
-        ]
-      }
+      deps += [
+        "build/mac:create_dist_mac",
+        "build/mac:create_pkg",
+        "build/mac:sign_pkg"
+      ]
     }
   }
   if (is_linux) {
