@@ -228,8 +228,8 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
     }
     case types.INCLUDE_IN_AUTO_CONTRIBUTION: {
       let publisherKey = payload.publisherKey
-      let excluded = payload.excluded
-      chrome.braveRewards.includeInAutoContribution(publisherKey, excluded)
+      let exclude = payload.exclude
+      chrome.braveRewards.includeInAutoContribution(publisherKey, exclude)
       break
     }
     case types.ON_PENDING_CONTRIBUTIONS_TOTAL: {

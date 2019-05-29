@@ -101,7 +101,7 @@ class RewardsServiceImpl : public RewardsService,
                          const std::string& promotionId) const override;
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
-  void RecoverWallet(const std::string passPhrase) const override;
+  void RecoverWallet(const std::string& passPhrase) const override;
   void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
@@ -153,9 +153,7 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoCallback callback) override;
   void SaveMediaPublisherInfo(const std::string& media_key,
                               const std::string& publisher_id) override;
-  void ExcludePublisher(const std::string publisherKey) const override;
   void RestorePublishers() override;
-  void RestorePublisher(const std::string publisherKey) const override;
   void GetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback) override;
   void GetCurrentBalanceReport() override;
@@ -180,7 +178,7 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoListCallback callback) override;
   void SetContributionAutoInclude(
       const std::string& publisher_key,
-      bool excluded) override;
+      bool exclude) override;
   RewardsNotificationService* GetNotificationService() const override;
   bool CheckImported() override;
   void SetBackupCompleted() override;

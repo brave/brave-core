@@ -687,10 +687,11 @@ void RewardsDOMHandler::OnExcludedSitesChanged(
     brave_rewards::RewardsService* rewards_service,
     std::string publisher_id,
     bool excluded) {
-  if (rewards_service_) {
-    base::ListValue args;
-    GetExcludedSites(&args);
+  if (!web_ui()->CanCallJavascript()) {
+    return;
   }
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.excludedSiteChanged");
 }
 
 void RewardsDOMHandler::OnNotificationAdded(
@@ -753,27 +754,32 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     }
   }
 }
-
 void RewardsDOMHandler::ExcludePublisher(const base::ListValue *args) {
   CHECK_EQ(1U, args->GetSize());
-  if (rewards_service_) {
-    const std::string publisherKey = args->GetList()[0].GetString();
-    rewards_service_->ExcludePublisher(publisherKey);
+  if (!rewards_service_) {
+    return;
   }
+
+  const std::string publisherKey = args->GetList()[0].GetString();
+  rewards_service_->SetContributionAutoInclude(publisherKey, true);
 }
 
 void RewardsDOMHandler::RestorePublishers(const base::ListValue *args) {
-  if (rewards_service_) {
-    rewards_service_->RestorePublishers();
+  if (!rewards_service_) {
+    return;
   }
+
+  rewards_service_->RestorePublishers();
 }
 
 void RewardsDOMHandler::RestorePublisher(const base::ListValue *args) {
-  if (rewards_service_) {
-    std::string publisherKey;
-    args->GetString(0, &publisherKey);
-    rewards_service_->RestorePublisher(publisherKey);
+  CHECK_EQ(1U, args->GetSize());
+  if (!rewards_service_) {
+    return;
   }
+
+  std::string publisherKey = args->GetList()[0].GetString();
+  rewards_service_->SetContributionAutoInclude(publisherKey, false);
 }
 
 void RewardsDOMHandler::OnContentSiteList(

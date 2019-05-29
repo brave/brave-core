@@ -57,9 +57,9 @@ export const deleteNotification = (id: string) => action(types.DELETE_NOTIFICATI
   id
 })
 
-export const includeInAutoContribution = (publisherKey: string, excluded: boolean) => action(types.INCLUDE_IN_AUTO_CONTRIBUTION, {
+export const includeInAutoContribution = (publisherKey: string, exclude: boolean) => action(types.INCLUDE_IN_AUTO_CONTRIBUTION, {
   publisherKey,
-  excluded
+  exclude
 })
 
 export const getGrants = () => action(types.GET_GRANTS)

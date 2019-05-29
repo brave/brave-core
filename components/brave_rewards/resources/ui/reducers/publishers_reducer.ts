@@ -20,11 +20,12 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       state.autoContributeList = action.payload.list
       break
     case types.ON_EXCLUDED_LIST: {
-      state = { ...state }
-      if (action.payload.list) {
-        state.excludedList = action.payload.list
-        chrome.send('brave_rewards.getContributionList')
+      if (!action.payload.list) {
+        break
       }
+
+      state = { ...state }
+      state.excludedList = action.payload.list
       break
     }
     case types.ON_EXCLUDE_PUBLISHER: {

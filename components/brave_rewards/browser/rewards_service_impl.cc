@@ -210,7 +210,7 @@ bool SaveMediaPublisherInfoOnFileTaskRunner(
 
 ledger::PublisherInfoPtr
 LoadPublisherInfoOnFileTaskRunner(
-    const std::string publisher_key,
+    const std::string& publisher_key,
     PublisherInfoDatabase* backend) {
   if (!backend)
     return nullptr;
@@ -220,7 +220,7 @@ LoadPublisherInfoOnFileTaskRunner(
 
 ledger::PublisherInfoPtr
 LoadMediaPublisherInfoOnFileTaskRunner(
-    const std::string media_key,
+    const std::string& media_key,
     PublisherInfoDatabase* backend) {
   ledger::PublisherInfoPtr info;
   if (!backend)
@@ -774,29 +774,11 @@ base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
                      AsWeakPtr()));
 }
 
-void RewardsServiceImpl::ExcludePublisher(
-    const std::string publisherKey) const {
-  if (!Connected())
-    return;
-
-  bat_ledger_->SetPublisherExclude(publisherKey,
-                                   ledger::PUBLISHER_EXCLUDE::EXCLUDED);
-}
-
 void RewardsServiceImpl::RestorePublishers() {
   if (!Connected())
     return;
 
   bat_ledger_->RestorePublishers();
-}
-
-void RewardsServiceImpl::RestorePublisher(
-    const std::string publisherKey) const {
-  if (!Connected())
-    return;
-
-  bat_ledger_->SetPublisherExclude(publisherKey,
-                                   ledger::PUBLISHER_EXCLUDE::DEFAULT);
 }
 
 void RewardsServiceImpl::OnMediaPublisherInfoSaved(bool success) {
@@ -1470,7 +1452,7 @@ void RewardsServiceImpl::GetWalletPassphrase(
   bat_ledger_->GetWalletPassphrase(callback);
 }
 
-void RewardsServiceImpl::RecoverWallet(const std::string passPhrase) const {
+void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) const {
   if (!Connected()) {
     return;
   }
@@ -2409,7 +2391,7 @@ void RewardsServiceImpl::RemoveRecurringTip(const std::string& publisher_key) {
 }
 
 bool RemoveRecurringTipOnFileTaskRunner(
-    const std::string publisher_key, PublisherInfoDatabase* backend) {
+    const std::string& publisher_key, PublisherInfoDatabase* backend) {
   if (!backend) {
     return false;
   }
@@ -2456,16 +2438,16 @@ void RewardsServiceImpl::TriggerOnGetCurrentBalanceReport(
 
 void RewardsServiceImpl::SetContributionAutoInclude(
     const std::string& publisher_key,
-    bool excluded) {
+    bool exclude) {
   if (!Connected())
     return;
 
-  ledger::PUBLISHER_EXCLUDE exclude =
-      excluded
+  ledger::PUBLISHER_EXCLUDE status =
+      exclude
       ? ledger::PUBLISHER_EXCLUDE::EXCLUDED
       : ledger::PUBLISHER_EXCLUDE::INCLUDED;
 
-  bat_ledger_->SetPublisherExclude(publisher_key, exclude);
+  bat_ledger_->SetPublisherExclude(publisher_key, status);
 }
 
 RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {

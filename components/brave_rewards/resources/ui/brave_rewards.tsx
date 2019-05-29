@@ -173,6 +173,11 @@ window.cr.define('brave_rewards', function () {
     }
   }
 
+  function excludedSiteChanged () {
+    getActions().getExcludedSites()
+    getActions().getContributeList()
+  }
+
   return {
     initialize,
     walletCreated,
@@ -204,7 +209,8 @@ window.cr.define('brave_rewards', function () {
     recurringTipSaved,
     recurringTipRemoved,
     onContributionSaved,
-    onRemovePendingContribution
+    onRemovePendingContribution,
+    excludedSiteChanged
   }
 })
 

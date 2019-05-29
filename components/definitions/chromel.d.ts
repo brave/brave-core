@@ -40,7 +40,7 @@ declare namespace chrome.braveRewards {
   const onGrantCaptcha: {
     addListener: (callback: (properties: RewardsExtension.Captcha) => void) => void
   }
-  const includeInAutoContribution: (publisherKey: string, excluded: boolean) => {}
+  const includeInAutoContribution: (publisherKey: string, exclude: boolean) => {}
   const getGrants: () => {}
   const getGrantCaptcha: (promotionId: string, type: string) => {}
   const solveGrantCaptcha: (solution: string, promotionId: string) => {}
