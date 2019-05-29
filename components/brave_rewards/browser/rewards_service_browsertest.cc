@@ -3,9 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_split.h"
+#include "base/memory/weak_ptr.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
 #include "bat/ledger/ledger.h"
@@ -16,6 +19,8 @@
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"  // NOLINT
+#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"  // NOLINT
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_paths.h"
@@ -94,8 +99,11 @@ namespace brave_test_resp {
   std::string surveyor_voting_credential_;
 }  // namespace brave_test_resp
 
-class BraveRewardsBrowserTest : public InProcessBrowserTest,
-                                public brave_rewards::RewardsServiceObserver {
+class BraveRewardsBrowserTest :
+    public InProcessBrowserTest,
+    public brave_rewards::RewardsServiceObserver,
+    public brave_rewards::RewardsNotificationServiceObserver,
+    public base::SupportsWeakPtr<BraveRewardsBrowserTest> {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -210,7 +218,8 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
         *response = brave_test_resp::surveyor_voting_;
     } else if (URLMatches(url, GET_PUBLISHERS_LIST_V1, "",
                           SERVER_TYPES::PUBLISHER_DISTRO)) {
-      *response = "[[\"duckduckgo.com\",true,false]]";
+      *response =
+          "[[\"bumpsmack.com\",true,false],[\"duckduckgo.com\",true,false]]";
     }
   }
 
@@ -254,6 +263,14 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
       return;
     wait_for_reconcile_completed_loop_.reset(new base::RunLoop);
     wait_for_reconcile_completed_loop_->Run();
+  }
+
+  void WaitForInsufficientFundsNotification() {
+    if (insufficient_notification_would_have_already_shown_) {
+      return;
+    }
+    wait_for_insufficient_notification_loop_.reset(new base::RunLoop);
+    wait_for_insufficient_notification_loop_->Run();
   }
 
   void GetReconcileTime() {
@@ -490,7 +507,9 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     EXPECT_NE(js_result.ExtractString().find("30.0 BAT"), std::string::npos);
   }
 
-  void VisitPublisher(const std::string& publisher, bool verified) {
+  void VisitPublisher(const std::string& publisher,
+                      bool verified,
+                      bool last_add = false) {
     GURL url = embedded_test_server()->GetURL(publisher, "/index.html");
     ui_test_utils::NavigateToURLWithDisposition(
         browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -513,8 +532,8 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
         contents(),
         "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
         "delay(1000).then(() => "
-        "  document.querySelector(\"[data-test-id='autoContribute']\")."
-        "    getElementsByTagName('a')[0].innerText);",
+        "  document.querySelector(\"[data-test-id='ac_link_" + publisher + "']"
+        "\").innerText);",
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END);
     EXPECT_STREQ(js_result.ExtractString().c_str(), publisher.c_str());
@@ -524,21 +543,25 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
       // favicon and the verified icon
       content::EvalJsResult js_result =
           EvalJs(contents(),
-                 "document.querySelector(\"[data-test-id='autoContribute']\")."
-                 "    getElementsByTagName('svg').length === 2;",
-                 content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                 content::ISOLATED_WORLD_ID_CONTENT_END);
+                "document.querySelector(\"[data-test-id='ac_link_" +
+                publisher + "']\").getElementsByTagName('svg').length === 1;",
+                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                content::ISOLATED_WORLD_ID_CONTENT_END);
       EXPECT_TRUE(js_result.ExtractBool());
     } else {
       // An unverified site has one image associated with it, the site's
       // favicon
       content::EvalJsResult js_result =
           EvalJs(contents(),
-                 "document.querySelector(\"[data-test-id='autoContribute']\")."
-                 "    getElementsByTagName('svg').length === 1;",
-                 content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                 content::ISOLATED_WORLD_ID_CONTENT_END);
+                "document.querySelector(\"[data-test-id='ac_link_" +
+                publisher + "']\").getElementsByTagName('svg').length === 0;",
+                content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                content::ISOLATED_WORLD_ID_CONTENT_END);
       EXPECT_TRUE(js_result.ExtractBool());
+    }
+
+    if (last_add) {
+      last_publisher_added_ = true;
     }
   }
 
@@ -851,6 +874,46 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
     ac_low_amount_ = true;
   }
 
+  void OnNotificationAdded(
+      brave_rewards::RewardsNotificationService* rewards_notification_service,
+      const brave_rewards::RewardsNotificationService::RewardsNotification&
+      notification) {
+    const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&
+        notifications = rewards_notification_service->GetAllNotifications();
+    for (const auto& notification : notifications) {
+      if (notification.second.type_ ==
+          brave_rewards::RewardsNotificationService::RewardsNotificationType
+          ::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS) {
+        insufficient_notification_would_have_already_shown_ = true;
+        if (wait_for_insufficient_notification_loop_) {
+          wait_for_insufficient_notification_loop_->Quit();
+        }
+      }
+    }
+  }
+
+  /**
+   * When using notification observer for insufficient funds, tests will fail
+   * for sufficient funds because observer will never be called for
+   * notification. Use this as callback to know when we come back with
+   * sufficient funds to prevent inf loop
+   * */
+  void ShowNotificationAddFundsForTesting(bool sufficient) {
+    if (sufficient) {
+      insufficient_notification_would_have_already_shown_ = true;
+      if (wait_for_insufficient_notification_loop_) {
+        wait_for_insufficient_notification_loop_->Quit();
+      }
+    }
+  }
+
+  void CheckInsufficientFundsForTesting() {
+    rewards_service_->MaybeShowNotificationAddFundsForTesting(
+        base::BindOnce(
+            &BraveRewardsBrowserTest::ShowNotificationAddFundsForTesting,
+            AsWeakPtr()));
+  }
+
   MOCK_METHOD1(OnGetProduction, void(bool));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
@@ -881,9 +944,13 @@ class BraveRewardsBrowserTest : public InProcessBrowserTest,
   bool reconcile_completed_ = false;
   unsigned int reconcile_status_ = ledger::LEDGER_ERROR;
 
+  std::unique_ptr<base::RunLoop> wait_for_insufficient_notification_loop_;
+  bool insufficient_notification_would_have_already_shown_ = false;
+
   bool contribution_made_ = false;
   bool tip_made = false;
   bool ac_low_amount_ = false;
+  bool last_publisher_added_ = false;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
@@ -1631,4 +1698,142 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AddFundsCountryLimited) {
     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
     content::ISOLATED_WORLD_ID_CONTENT_END);
   ASSERT_TRUE(js_result.ExtractBool());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+    InsufficientNotificationForVerifiedsZeroAmountZeroPublishers) {
+  rewards_service_->GetNotificationService()->AddObserver(this);
+  EnableRewards();
+  CheckInsufficientFundsForTesting();
+  WaitForInsufficientFundsNotification();
+  const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&
+      notifications = rewards_service_->GetAllNotifications();
+
+  if (notifications.empty()) {
+    SUCCEED();
+  }
+  bool notification_shown = false;
+  for (const auto& notification : notifications) {
+    if (notification.second.type_ ==
+        brave_rewards::RewardsNotificationService::RewardsNotificationType
+        ::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS) {
+      notification_shown = true;
+      break;
+    }
+  }
+  EXPECT_FALSE(notification_shown);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       InsufficientNotificationForVerifiedsDefaultAmount) {
+  rewards_service_->AddObserver(this);
+  rewards_service_->GetNotificationService()->AddObserver(this);
+  EnableRewards();
+  // Claim grant using panel
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  // Visit publishers
+  const bool verified = true;
+  while (!last_publisher_added_) {
+    VisitPublisher("duckduckgo.com", verified);
+    VisitPublisher("bumpsmack.com", verified);
+    VisitPublisher("google.com", !verified, true);
+  }
+
+  CheckInsufficientFundsForTesting();
+  WaitForInsufficientFundsNotification();
+  const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&
+      notifications = rewards_service_->GetAllNotifications();
+
+  if (notifications.empty()) {
+    SUCCEED();
+  }
+  bool notification_shown = false;
+  for (const auto& notification : notifications) {
+    if (notification.second.type_ ==
+        brave_rewards::RewardsNotificationService::RewardsNotificationType
+        ::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS) {
+      notification_shown = true;
+      break;
+    }
+  }
+  EXPECT_FALSE(notification_shown);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       InsufficientNotificationForVerifiedsSufficientAmount) {
+  rewards_service_->AddObserver(this);
+  rewards_service_->GetNotificationService()->AddObserver(this);
+
+  EnableRewards();
+  // Claim grant using panel
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  // Visit publishers
+  const bool verified = true;
+  while (!last_publisher_added_) {
+    VisitPublisher("duckduckgo.com", verified);
+    VisitPublisher("bumpsmack.com", verified);
+    VisitPublisher("google.com", !verified, true);
+  }
+
+  rewards_service_->SetContributionAmount(40.0);
+
+  CheckInsufficientFundsForTesting();
+  WaitForInsufficientFundsNotification();
+  const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&
+      notifications = rewards_service_->GetAllNotifications();
+  if (notifications.empty()) {
+    SUCCEED();
+  }
+  bool notification_shown = false;
+  for (const auto& notification : notifications) {
+    if (notification.second.type_ ==
+        brave_rewards::RewardsNotificationService::RewardsNotificationType
+        ::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS) {
+      notification_shown = true;
+      break;
+    }
+  }
+  EXPECT_FALSE(notification_shown);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       InsufficientNotificationForVerifiedsInsufficientAmount) {
+  rewards_service_->AddObserver(this);
+  rewards_service_->GetNotificationService()->AddObserver(this);
+  EnableRewards();
+  // Claim grant using panel
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
+  // Visit publishers
+  const bool verified = true;
+  while (!last_publisher_added_) {
+    VisitPublisher("duckduckgo.com", verified);
+    VisitPublisher("bumpsmack.com", verified);
+    VisitPublisher("google.com", !verified, true);
+  }
+  rewards_service_->SetContributionAmount(100.0);
+
+  rewards_service_->CheckInsufficientFundsForTesting();
+  WaitForInsufficientFundsNotification();
+  const brave_rewards::RewardsNotificationService::RewardsNotificationsMap&
+      notifications = rewards_service_->GetAllNotifications();
+
+  if (notifications.empty()) {
+    FAIL() << "Should see Insufficient Funds notification";
+  }
+  bool notification_shown = false;
+  for (const auto& notification : notifications) {
+    if (notification.second.type_ ==
+        brave_rewards::RewardsNotificationService::RewardsNotificationType
+        ::REWARDS_NOTIFICATION_INSUFFICIENT_FUNDS) {
+      notification_shown = true;
+      break;
+    }
+  }
+  EXPECT_TRUE(notification_shown);
 }

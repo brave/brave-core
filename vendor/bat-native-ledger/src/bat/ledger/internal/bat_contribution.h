@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/bat_helper.h"
 
@@ -146,6 +147,8 @@ class BatContribution {
                                   ledger::ACTIVITY_MONTH month,
                                   int year,
                                   uint32_t date);
+  void HasSufficientBalance(
+    ledger::HasSufficientBalanceToReconcileCallback callback);
 
   // Triggers contribution process for auto contribute table
   void StartAutoContribute();
@@ -298,11 +301,41 @@ class BatContribution {
 
   void DoRetry(const std::string& viewing_id);
 
+  void GetVerifiedAutoAmount(
+      const ledger::PublisherInfoList& publisher_list,
+      uint32_t record,
+      double balance,
+      ledger::HasSufficientBalanceToReconcileCallback callback);
+
+  void GetVerifiedRecurringAmount(
+      const ledger::PublisherInfoList& publisher_list,
+      uint32_t record,
+      double balance,
+      double budget,
+      ledger::HasSufficientBalanceToReconcileCallback callback);
+
+  static double GetAmountFromVerifiedAuto(
+      const ledger::PublisherInfoList& publisher_list,
+      double ac_amount);
+
+  static double GetAmountFromVerifiedRecurring(
+      const ledger::PublisherInfoList& publisher_list);
+
+  void OnSufficientBalanceWallet(
+      ledger::Result result,
+      std::unique_ptr<ledger::WalletInfo> info,
+      ledger::HasSufficientBalanceToReconcileCallback callback);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   uint32_t last_reconcile_timer_id_;
   uint32_t last_prepare_vote_batch_timer_id_;
   uint32_t last_vote_batch_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
+
+  // For testing purposes
+  friend class BatContributionTest;
+  FRIEND_TEST_ALL_PREFIXES(BatContributionTest, GetAmountFromVerifiedAuto);
+  FRIEND_TEST_ALL_PREFIXES(BatContributionTest, GetAmountFromVerifiedRecurring);
 };
 
 }  // namespace braveledger_bat_contribution

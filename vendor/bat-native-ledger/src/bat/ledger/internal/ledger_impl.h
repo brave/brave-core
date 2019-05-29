@@ -417,7 +417,8 @@ class LedgerImpl : public ledger::Ledger,
 
   double GetDefaultContributionAmount() override;
 
-  bool HasSufficientBalanceToReconcile() override;
+  void HasSufficientBalanceToReconcile(
+      ledger::HasSufficientBalanceToReconcileCallback callback) override;
 
   void SaveNormalizedPublisherList(
       ledger::PublisherInfoList normalized_list);
