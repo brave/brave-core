@@ -45,8 +45,7 @@ def main():
     if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
         logging.basicConfig(level=logging.DEBUG)
         logging.getLogger("urllib3").setLevel(logging.DEBUG)
-        logging.debug(
-            "DEBUG_HTTP_HEADERS env var is enabled, logging HTTP headers")
+        logging.debug("DEBUG_HTTP_HEADERS env var is enabled, logging HTTP headers")
         debug_requests_on()
 
     # BRAVE_REPO is defined in lib/helpers.py for now
@@ -62,10 +61,8 @@ def main():
 
     print('[INFO] Uploading release {}'.format(release['tag_name']))
     # Upload Brave with GitHub Releases API.
-    upload_brave(repo, release, os.path.join(dist_dir(), DIST_NAME),
-                 force=args.force)
-    upload_brave(repo, release, os.path.join(dist_dir(), SYMBOLS_NAME),
-                 force=args.force)
+    upload_brave(repo, release, os.path.join(dist_dir(), DIST_NAME), force=args.force)
+    upload_brave(repo, release, os.path.join(dist_dir(), SYMBOLS_NAME), force=args.force)
     # if PLATFORM == 'darwin':
     #     upload_brave(repo, release, os.path.join(dist_dir(), DSYM_NAME))
     # elif PLATFORM == 'win32':
@@ -73,43 +70,31 @@ def main():
 
     # Upload chromedriver and mksnapshot.
     chromedriver = get_zip_name('chromedriver', get_chromedriver_version())
-    upload_brave(repo, release, os.path.join(dist_dir(), chromedriver),
-                 force=args.force)
+    upload_brave(repo, release, os.path.join(dist_dir(), chromedriver), force=args.force)
 
-    pkgs = get_brave_packages(output_dir(), release_channel(),
-                              get_raw_version())
+    pkgs = get_brave_packages(output_dir(), release_channel(), get_raw_version())
 
     if PLATFORM == 'darwin':
         for pkg in pkgs:
-            upload_brave(repo, release, os.path.join(output_dir(), pkg),
-                         force=args.force)
+            upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
     elif PLATFORM == 'win32':
         if get_target_arch() == 'x64':
-            upload_brave(repo, release, os.path.join(output_dir(),
-                                                     'brave_installer.exe'),
+            upload_brave(repo, release, os.path.join(output_dir(), 'brave_installer.exe'),
                          'brave_installer-x64.exe', force=args.force)
             for pkg in pkgs:
-                upload_brave(repo, release, os.path.join(output_dir(), pkg),
-                             force=args.force)
+                upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
         else:
-            upload_brave(repo, release, os.path.join(output_dir(),
-                                                     'brave_installer.exe'),
+            upload_brave(repo, release, os.path.join(output_dir(), 'brave_installer.exe'),
                          'brave_installer-ia32.exe', force=args.force)
             for pkg in pkgs:
-                upload_brave(repo, release, os.path.join(output_dir(), pkg),
-                             force=args.force)
+                upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
     else:
         if get_target_arch() == 'x64':
             for pkg in pkgs:
-                upload_brave(repo, release, os.path.join(output_dir(), pkg),
-                             force=args.force)
+                upload_brave(repo, release, os.path.join(output_dir(), pkg), force=args.force)
         else:
-            upload_brave(repo, release, os.path.join(output_dir(),
-                                                     'brave-i386.rpm'),
-                         force=args.force)
-            upload_brave(repo, release, os.path.join(output_dir(),
-                                                     'brave-i386.deb'),
-                         force=args.force)
+            upload_brave(repo, release, os.path.join(output_dir(), 'brave-i386.rpm'), force=args.force)
+            upload_brave(repo, release, os.path.join(output_dir(), 'brave-i386.deb'), force=args.force)
 
     # mksnapshot = get_zip_name('mksnapshot', get_brave_version())
     # upload_brave(repo, release, os.path.join(dist_dir(), mksnapshot))
@@ -151,8 +136,7 @@ def get_brave_packages(dir, channel, version):
     def filecopy(file_path, file_desired):
         file_desired_path = os.path.join(dir, file_desired)
         if os.path.isfile(file_path):
-            print('[INFO] Copying file ' + file_path + ' to ' +
-                  file_desired_path)
+            print('[INFO] Copying file ' + file_path + ' to ' + file_desired_path)
             shutil.copy(file_path, file_desired_path)
         return file_desired_path
 
@@ -162,79 +146,57 @@ def get_brave_packages(dir, channel, version):
         if os.path.isfile(os.path.join(dir, file)):
             file_path = os.path.join(dir, file)
             if PLATFORM == 'darwin':
-                channel_capitalized_dashed = '' if (
-                    channel == 'release') else ('-' + channel_capitalized)
-                channel_capitalized_spaced = '' if (
-                    channel == 'release') else (' ' + channel_capitalized)
-                file_desired = 'Brave-Browser' + channel_capitalized_dashed + '.dmg'
-                file_desired_pkg = 'Brave-Browser' + channel_capitalized_dashed + '.pkg'
+                channel_capitalized_dashed = '' if (channel == 'release') else ('-' + channel_capitalized)
+                channel_capitalized_spaced = '' if (channel == 'release') else (' ' + channel_capitalized)
+                file_dmg = 'Brave-Browser' + channel_capitalized_dashed + '.dmg'
+                file_pkg = 'Brave-Browser' + channel_capitalized_dashed + '.pkg'
 
                 if re.match(r'Brave Browser' + channel_capitalized_spaced + r'.*\.dmg$', file):
-                    filecopy(file_path, file_desired)
-                    pkgs.append(file_desired)
-                elif file == file_desired:
-                    pkgs.append(file_desired)
-
-                if channel in ['release', 'nightly']:
-                    if re.match(r'Brave Browser' + channel_capitalized_spaced + r'.*\.pkg$', file):
-                        filecopy(file_path, file_desired_pkg)
-                        pkgs.append(file_desired_pkg)
-                    elif file == file_desired_pkg:
-                        pkgs.append(file_desired_pkg)
+                    filecopy(file_path, file_dmg)
+                    pkgs.append(file_dmg)
+                elif file == file_dmg:
+                    pkgs.append(file_dmg)
+                elif re.match(r'Brave Browser' + channel_capitalized_spaced + r'.*\.pkg$', file):
+                    filecopy(file_path, file_pkg)
+                    pkgs.append(file_pkg)
+                elif file == file_pkg:
+                    pkgs.append(file_pkg)
             elif PLATFORM == 'linux':
-                if channel == 'release':
-                    if re.match(r'brave-browser' + '_' + version +
-                                r'.*\.deb$', file) \
-                        or re.match(r'brave-browser' + '-' + version +
-                                    r'.*\.rpm$', file):
-                        pkgs.append(file)
-                else:
-                    if re.match(r'brave-browser-' + channel + '_' +
-                                version + r'.*\.deb$', file) \
-                        or re.match(r'brave-browser-' + channel + '-' +
-                                    version + r'.*\.rpm$', file):
-                        pkgs.append(file)
+                channel_dashed = '' if (channel == 'release') else ('-' + channel)
+                if re.match(r'brave-browser' + channel_dashed + '_' + version + r'.*\.deb$', file):
+                    pkgs.append(file)
+                elif re.match(r'brave-browser' + channel_dashed + '-' + version + r'.*\.rpm$', file):
+                    pkgs.append(file)
             elif PLATFORM == 'win32':
                 arch = '32' if (get_target_arch() == 'ia32') else ''
-                file_desired_stub = 'BraveBrowser' + channel_capitalized + 'Setup' + arch + '.exe'
-                file_desired_stub_silent = 'BraveBrowserSilent' + \
-                    channel_capitalized + 'Setup' + arch + '.exe'
-                file_desired_stub_untagged = 'BraveBrowserUntagged' + \
-                    channel_capitalized + 'Setup' + arch + '.exe'
-                file_desired_standalone = 'BraveBrowserStandalone' + \
-                    channel_capitalized + 'Setup' + arch + '.exe'
-                file_desired_standalone_silent = 'BraveBrowserStandaloneSilent' + \
-                    channel_capitalized + 'Setup' + arch + '.exe'
-                file_desired_standalone_untagged = 'BraveBrowserStandaloneUntagged' + \
-                    channel_capitalized + 'Setup' + arch + '.exe'
+                channel_arch_extension = channel_capitalized + 'Setup' + arch + '.exe'
+                file_stub = 'BraveBrowser' + channel_arch_extension
+                file_stub_silent = 'BraveBrowserSilent' + channel_arch_extension
+                file_stub_untagged = 'BraveBrowserUntagged' + channel_arch_extension
+                file_stn = 'BraveBrowserStandalone' + channel_arch_extension
+                file_stn_silent = 'BraveBrowserStandaloneSilent' + channel_arch_extension
+                file_stn_untagged = 'BraveBrowserStandaloneUntagged' + channel_arch_extension
 
-                if re.match(r'BraveBrowser' + channel_capitalized +
-                            r'Setup' + arch + r'_.*\.exe', file):
-                    filecopy(file_path, file_desired_stub)
-                    pkgs.append(file_desired_stub)
-                elif re.match(r'BraveBrowserSilent' + channel_capitalized +
-                              r'Setup' + arch + r'_.*\.exe', file):
-                    filecopy(file_path, file_desired_stub_silent)
-                    pkgs.append(file_desired_stub_silent)
-                elif re.match(r'BraveBrowserUntagged' + channel_capitalized +
-                              r'Setup' + arch + r'_.*\.exe', file):
-                    filecopy(file_path, file_desired_stub_untagged)
-                    pkgs.append(file_desired_stub_untagged)
-                elif re.match(r'BraveBrowserStandalone' +
-                              channel_capitalized + r'Setup' + arch + r'_.*\.exe',
-                              file):
-                    filecopy(file_path, file_desired_standalone)
-                    pkgs.append(file_desired_standalone)
-                elif re.match(r'BraveBrowserStandaloneSilent' +
-                              channel_capitalized + r'Setup' + arch + r'_.*\.exe',
-                              file):
-                    filecopy(file_path, file_desired_standalone_silent)
-                    pkgs.append(file_desired_standalone_silent)
-                elif re.match(r'BraveBrowserStandaloneUntagged' +
-                              channel_capitalized + r'Setup' + arch + r'_.*\.exe',
-                              file):
-                    filecopy(file_path, file_desired_standalone_untagged)
-                    pkgs.append(file_desired_standalone_untagged)
+                if re.match(r'BraveBrowser' + channel_capitalized + r'Setup' + arch + r'_.*\.exe', file):
+                    filecopy(file_path, file_stub)
+                    pkgs.append(file_stub)
+                elif re.match(r'BraveBrowserSilent' + channel_capitalized + r'Setup' + arch + r'_.*\.exe', file):
+                    filecopy(file_path, file_stub_silent)
+                    pkgs.append(file_stub_silent)
+                elif re.match(r'BraveBrowserUntagged' + channel_capitalized + r'Setup' + arch + r'_.*\.exe', file):
+                    filecopy(file_path, file_stub_untagged)
+                    pkgs.append(file_stub_untagged)
+                elif re.match(r'BraveBrowserStandalone' + channel_capitalized + r'Setup' + arch + r'_.*\.exe', file):
+                    filecopy(file_path, file_stn)
+                    pkgs.append(file_stn)
+                elif re.match(r'BraveBrowserStandaloneSilent' + channel_capitalized + r'Setup' + arch +
+                              r'_.*\.exe', file):
+                    filecopy(file_path, file_stn_silent)
+                    pkgs.append(file_stn_silent)
+                elif re.match(r'BraveBrowserStandaloneUntagged' + channel_capitalized + r'Setup' + arch +
+                              r'_.*\.exe', file):
+                    filecopy(file_path, file_stn_untagged)
+                    pkgs.append(file_stn_untagged)
 
     return sorted(list(set(pkgs)))
 
@@ -294,6 +256,9 @@ def get_text_with_editor(name):
 
 def create_release_draft(repo, tag):
     name = '{0} {1}'.format(release_name(), tag)
+    channel = release_channel()
+    channel_capitalized_dashed = '' if (channel == 'release') else ('-' + channel.capitalize())
+
     # TODO: Parse release notes from CHANGELOG.md
 
     nightly_winstallers = (
@@ -308,21 +273,21 @@ def create_release_draft(repo, tag):
     nightly_dev_beta_warning = '''*This is not the released version of Brave.
 **Be careful** - things are unstable and might even be broken.*
 
-These builds are an unpolished and unfinished early preview for the new
-version of Brave on the desktop. These builds show our work in progress and
-they aren't for the faint-of-heart. Features may be missing or broken in new
-and exciting ways; familiar functionality may have unfamiliar side-effects.
-These builds showcase the newest advances that we're bringing to your browser,
-but this is still a prototype, not a reliable daily driver. Try it out only if
+These builds are an unpolished and unfinished early preview for the new \
+version of Brave on the desktop. These builds show our work in progress and \
+they aren't for the faint-of-heart. Features may be missing or broken in new \
+and exciting ways; familiar functionality may have unfamiliar side-effects. \
+These builds showcase the newest advances that we're bringing to your browser, \
+but this is still a prototype, not a reliable daily driver. Try it out only if \
 you're looking for a little extra spice and adventure in your browsing.'''
 
-    if release_channel() in 'nightly':
+    if channel == 'nightly':
         winstallers = nightly_winstallers
         warning = nightly_dev_beta_warning
-    elif release_channel() in 'dev':
+    elif channel == 'dev':
         winstallers = dev_winstallers
         warning = nightly_dev_beta_warning
-    elif release_channel() in 'beta':
+    elif channel == 'beta':
         winstallers = beta_winstallers
         warning = nightly_dev_beta_warning
     else:
@@ -332,21 +297,19 @@ you're looking for a little extra spice and adventure in your browsing.'''
     body = '''{warning}
 
 # Mac installation
-Install Brave-Browser.dmg on your system.
+Install Brave-Browser{channel_capitalized_dashed}.dmg on your system.
 
 # Linux install instructions
 http://brave-browser.readthedocs.io/en/latest/installing-brave.html#linux
 
 # Windows
-{win} will fetch and install the latest available version from our
-update server.'''.format(warning=warning, win=winstallers)
+{win} will fetch and install the latest available version from our \
+update server.'''.format(warning=warning, channel_capitalized_dashed=channel_capitalized_dashed, win=winstallers)
 
     data = dict(tag_name=tag, name=name, body=body, draft=True)
 
-    release = retry_func(
-        lambda run: repo.releases.post(data=data),
-        catch=requests.exceptions.ConnectionError, retries=3
-    )
+    release = retry_func(lambda run: repo.releases.post(data=data),
+                         catch=requests.exceptions.ConnectionError, retries=3)
     return release
 
 
@@ -373,8 +336,7 @@ def upload_brave(github, release, file_path, filename=None, force=False):
             print('[INFO] force deleted "' + filename + '".')
 
         retry_func(
-            lambda ran: upload_io_to_github(github, release, filename, f,
-                                            'application/zip'),
+            lambda ran: upload_io_to_github(github, release, filename, f, 'application/zip'),
             catch_func=lambda ran: delete_file(github, release, filename),
             catch=requests.exceptions.ConnectionError, retries=3
         )
@@ -430,12 +392,9 @@ def delete_file(github, release, name, retries=3):
     )
     for asset in release['assets']:
         if asset['name'] == name:
-            print("[INFO] Deleting file name '{}' with asset id {}"
-                  .format(name, asset['id']))
-            retry_func(
-                lambda run: github.releases.assets(asset['id']).delete(),
-                catch=requests.exceptions.ConnectionError, retries=3
-            )
+            print("[INFO] Deleting file name '{}' with asset id {}".format(name, asset['id']))
+            retry_func(lambda run: github.releases.assets(asset['id']).delete(),
+                       catch=requests.exceptions.ConnectionError, retries=3)
 
 
 if __name__ == '__main__':
