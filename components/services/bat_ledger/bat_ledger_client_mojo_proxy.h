@@ -124,7 +124,7 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
 
   void SaveNormalizedPublisherList(
     const ledger::PublisherInfoListStruct& normalized_list) override;
-  void OnGrantViaSafetynetCheck(const std::string& nonce) override;
+  void OnGrantViaSafetynetCheck(const std::string& promotionId, const std::string& nonce) override;
 
   void SaveState(const std::string& name,
                  const std::string& value,
