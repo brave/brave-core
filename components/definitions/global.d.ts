@@ -51,5 +51,8 @@ declare global {
     sync_ui_exports: {
       initialize: () => void
     }
+    brave_wallet: {
+      initialize: () => void
+    }
   }
 }

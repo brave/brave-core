@@ -199,4 +199,15 @@ source_set("ui") {
       "//brave/components/brave_rewards/resources:ui_generated_resources",
     ]
   }
+
+  if (!is_official_build) {
+    sources += [
+      "webui/brave_wallet_ui.cc",
+      "webui/brave_wallet_ui.h",
+    ]
+
+    deps += [
+      "//brave/components/brave_wallet_ui:generated_resources",
+    ]
+  }
 }

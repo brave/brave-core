@@ -10,6 +10,7 @@ const char kAdblockJS[] = "brave_adblock.js";
 const char kRewardsHost[] = "rewards";
 const char kRewardsInternalsHost[] = "rewards-internals";
 const char kRewardsJS[] = "brave_rewards.js";
+const char kWalletHost[] = "wallet";
 const char kWelcomeHost[] = "welcome";
 const char kWelcomeJS[] = "brave_welcome.js";
 const char kTipHost[] = "tip";

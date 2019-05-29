@@ -19,6 +19,10 @@
   "<(ROOT_GEN_DIR)/brave/web-ui-brave_welcome/brave_welcome.grd": {
     "includes": [33240],
   },
+  # This file is generated during the build.
+  "<(ROOT_GEN_DIR)/brave/web-ui-brave_wallet/brave_wallet.grd": {
+    "includes": [33340],
+  },
   "brave/browser/resources/settings/settings_resources.grd": {
     "structures": [34500],
     "includes": [34900],

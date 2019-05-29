@@ -23,6 +23,9 @@
       <include name="IDR_BRAVE_WELCOME_HTML" file="../brave_welcome_ui/brave_welcome.html" type="BINDATA" />
       <include name="IDR_BRAVE_WELCOME_PAGE_FAVICON" file="../img/welcome/favicon.ico" type="BINDATA" />
 
+      <!-- WebUI wallet page resources -->
+      <include name="IDR_BRAVE_WALLET_HTML" file="../brave_wallet_ui/brave_wallet.html" type="BINDATA" />
+
       <!-- WebUI newtab resources -->
       <!-- TODO: move to brave_new_tab_ui component -->
       <include name="IDR_BRAVE_NEW_TAB_HTML" file="../brave_new_tab_ui/brave_new_tab.html" type="BINDATA" />

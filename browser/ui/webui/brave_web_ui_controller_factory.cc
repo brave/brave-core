@@ -13,6 +13,7 @@
 #include "brave/browser/ui/webui/sync/sync_ui.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "chrome/common/url_constants.h"
 #include "url/gurl.h"
@@ -26,6 +27,10 @@
 #include "brave/browser/ui/webui/brave_tip_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
+#endif
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/ui/webui/brave_wallet_ui.h"
 #endif
 
 using content::WebUI;
@@ -59,6 +64,10 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   } else if (host == kTipHost) {
     return new BraveTipUI(web_ui, url.host());
 #endif
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  } else if (host == kWalletHost) {
+    return new BraveWalletUI(web_ui, url.host());
+#endif
 #if !defined(OS_ANDROID)
   } else if (host == kWelcomeHost) {
     return new BraveWelcomeUI(web_ui, url.host());
@@ -83,6 +92,9 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kRewardsHost ||
       url.host_piece() == kRewardsInternalsHost ||
       url.host_piece() == kTipHost ||
+#endif
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+      url.host_piece() == kWalletHost ||
 #endif
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == chrome::kChromeUIWelcomeURL ||
