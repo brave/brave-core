@@ -7,8 +7,10 @@
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_SERVICE_FACTORY_H_
 
 #include "base/memory/singleton.h"
-#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
+#include "components/keyed_service/content/browser_context_keyed_service_factory.h"
+#include "content/public/browser/notification_observer.h"
+#include "content/public/browser/notification_registrar.h"
 
 class Profile;
 
@@ -17,7 +19,8 @@ class RewardsService;
 
 // Singleton that owns all RewardsService and associates them with
 // Profiles.
-class RewardsServiceFactory : public BrowserContextKeyedServiceFactory {
+class RewardsServiceFactory : public BrowserContextKeyedServiceFactory,
+                              public content::NotificationObserver {
  public:
   static brave_rewards::RewardsService* GetForProfile(Profile* profile);
 
@@ -37,6 +40,13 @@ class RewardsServiceFactory : public BrowserContextKeyedServiceFactory {
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
   bool ServiceIsNULLWhileTesting() const override;
+
+  // content::NotificationObserver:
+  void Observe(int type,
+               const content::NotificationSource& source,
+               const content::NotificationDetails& details) override;
+
+  content::NotificationRegistrar registrar_;
 
   DISALLOW_COPY_AND_ASSIGN(RewardsServiceFactory);
 };

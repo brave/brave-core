@@ -21,6 +21,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"  // NOLINT
 #include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"  // NOLINT
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/chrome_paths.h"
@@ -1836,4 +1837,16 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     }
   }
   EXPECT_TRUE(notification_shown);
+}
+
+// Test whether rewards is diabled in private profile.
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PrefsTestInPrivateWindow) {
+  EnableRewards();
+  auto* profile = browser()->profile();
+  EXPECT_TRUE(profile->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kBraveRewardsEnabled));
+
+  Profile* private_profile = profile->GetOffTheRecordProfile();
+  EXPECT_FALSE(private_profile->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kBraveRewardsEnabled));
 }
