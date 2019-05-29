@@ -253,6 +253,79 @@ TEST_F(BraveWidevineBundleManagerTest, UpdateFailTest) {
   CheckPrefsStatesAreInitialState();
 }
 
+TEST_F(BraveWidevineBundleManagerTest, UpdateRetryAndFinallyFailedTest) {
+  PrepareTest(false);
+
+  initial_opted_in_value_ = true;
+  initial_version_string_ = "1.0.0.0";
+
+  // Set installed state with different version to trigger update.
+  pref_service()->SetBoolean(kWidevineOptedIn, initial_opted_in_value_);
+  pref_service()->SetString(kWidevineInstalledVersion, initial_version_string_);
+
+  manager_.StartupCheck();
+
+  manager_.DoDelayedBackgroundUpdate();
+  manager_.InstallDone("failed");
+  EXPECT_EQ(1, manager_.background_update_retry_);
+
+  manager_.DoDelayedBackgroundUpdate();
+  manager_.InstallDone("failed");
+  EXPECT_EQ(2, manager_.background_update_retry_);
+
+  manager_.DoDelayedBackgroundUpdate();
+  manager_.InstallDone("failed");
+  EXPECT_EQ(3, manager_.background_update_retry_);
+
+  manager_.DoDelayedBackgroundUpdate();
+  manager_.InstallDone("failed");
+  EXPECT_EQ(4, manager_.background_update_retry_);
+
+  manager_.DoDelayedBackgroundUpdate();
+  manager_.InstallDone("failed");
+  EXPECT_EQ(5, manager_.background_update_retry_);
+
+  manager_.DoDelayedBackgroundUpdate();
+  manager_.InstallDone("failed");
+  // No retry anymore after five trying.
+  EXPECT_NE(6, manager_.background_update_retry_);
+
+  CheckPrefsStatesAreInitialState();
+}
+
+TEST_F(BraveWidevineBundleManagerTest, UpdateRetryAndFinallySuccessTest) {
+  PrepareTest(false);
+
+  initial_opted_in_value_ = true;
+  initial_version_string_ = "1.0.0.0";
+
+  // Set installed state with different version to trigger update.
+  pref_service()->SetBoolean(kWidevineOptedIn, initial_opted_in_value_);
+  pref_service()->SetString(kWidevineInstalledVersion, initial_version_string_);
+
+  manager_.StartupCheck();
+
+  manager_.DoDelayedBackgroundUpdate();
+  manager_.InstallDone("failed");
+  EXPECT_EQ(1, manager_.background_update_retry_);
+
+  manager_.DoDelayedBackgroundUpdate();
+  manager_.InstallDone("failed");
+  EXPECT_EQ(2, manager_.background_update_retry_);
+
+  manager_.DoDelayedBackgroundUpdate();
+  manager_.InstallDone("failed");
+  EXPECT_EQ(3, manager_.background_update_retry_);
+
+  manager_.DoDelayedBackgroundUpdate();
+  manager_.InstallDone("");
+
+  // No retry after install success.
+  EXPECT_EQ(3, manager_.background_update_retry_);
+
+  CheckPrefsStatesAreInstalledState();
+}
+
 TEST_F(BraveWidevineBundleManagerTest, MessageStringTest) {
   PrepareTest(true);
 

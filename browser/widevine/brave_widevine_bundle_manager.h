@@ -67,6 +67,10 @@ class BraveWidevineBundleManager {
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, InProgressTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, UpdateTriggerTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, UpdateFailTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest,
+                           UpdateRetryAndFinallyFailedTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest,
+                           UpdateRetryAndFinallySuccessTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, InstallSuccessTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, DownloadFailTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, UnzipFailTest);
@@ -91,6 +95,8 @@ class BraveWidevineBundleManager {
 
   void InstallDone(const std::string& error);
   void DoDelayedBackgroundUpdate();
+  void ScheduleBackgroundUpdate();
+  void OnBackgroundUpdateFinished(const std::string& error);
 
   scoped_refptr<base::SequencedTaskRunner> file_task_runner();
 
@@ -100,6 +106,7 @@ class BraveWidevineBundleManager {
   DoneCallback done_callback_;
   bool in_progress_ = false;
   bool needs_restart_ = false;
+  int background_update_retry_ = 0;
   std::unique_ptr<network::SimpleURLLoader> bundle_loader_;
   scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 

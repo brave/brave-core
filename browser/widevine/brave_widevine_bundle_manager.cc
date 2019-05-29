@@ -40,6 +40,9 @@
 
 namespace {
 
+// Try five times when background update is failed.
+const int kMaxBackgroundUpdateRetry = 5;
+
 int GetBackgroundUpdateDelayInMins() {
   return base::CommandLine::ForCurrentProcess()->HasSwitch(
       switches::kFastWidevineBundleUpdate) ? 0 : 5;
@@ -290,14 +293,38 @@ void BraveWidevineBundleManager::StartupCheck() {
                          << WIDEVINE_CDM_VERSION_STRING << ") is found and"
                          << " background update is scheduled.";
     update_requested_ = true;
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-        FROM_HERE,
-        base::BindOnce(&BraveWidevineBundleManager::DoDelayedBackgroundUpdate,
-                       weak_factory_.GetWeakPtr()),
-        base::TimeDelta::FromMinutes(GetBackgroundUpdateDelayInMins()));
+    ScheduleBackgroundUpdate();
+
+    return;
   }
 
   DVLOG(1) << __func__ << ": latest widevine version is installed.";
+}
+
+void BraveWidevineBundleManager::ScheduleBackgroundUpdate() {
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&BraveWidevineBundleManager::DoDelayedBackgroundUpdate,
+                     weak_factory_.GetWeakPtr()),
+      base::TimeDelta::FromMinutes(GetBackgroundUpdateDelayInMins()));
+}
+
+void BraveWidevineBundleManager::OnBackgroundUpdateFinished(
+    const std::string& error) {
+  if (!error.empty()) {
+    LOG(ERROR) << __func__ << ": " << error;
+    if (background_update_retry_ < kMaxBackgroundUpdateRetry) {
+      background_update_retry_++;
+      DVLOG(1) << __func__ << ": " << "schedule background update again("
+                                   << background_update_retry_ << ")";
+      ScheduleBackgroundUpdate();
+    }
+    return;
+  }
+
+  DVLOG(1) << __func__ << ": Widevine update success";
+  // Set new widevine version to installed version prefs.
+  SetWidevinePrefsAsInstalledState();
 }
 
 void BraveWidevineBundleManager::DoDelayedBackgroundUpdate() {
@@ -311,17 +338,10 @@ void BraveWidevineBundleManager::DoDelayedBackgroundUpdate() {
            << " from " << installed_version
            << " to " << WIDEVINE_CDM_VERSION_STRING;
 
-  InstallWidevineBundle(base::BindOnce([](const std::string& error) {
-    if (!error.empty()) {
-      LOG(ERROR) << __func__ << ": " << error;
-      return;
-    }
-
-    DVLOG(1) << __func__ << ": Widevine update success";
-    // Set new widevine version to installed version prefs.
-    SetWidevinePrefsAsInstalledState();
-  }),
-  false);
+  InstallWidevineBundle(
+      base::BindOnce(&BraveWidevineBundleManager::OnBackgroundUpdateFinished,
+                     weak_factory_.GetWeakPtr()),
+      false);
 }
 
 int
