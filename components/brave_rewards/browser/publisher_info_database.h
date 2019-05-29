@@ -54,8 +54,6 @@ class PublisherInfoDatabase {
 
   bool RestorePublishers();
 
-  int GetExcludedPublishersCount();
-
   bool InsertOrUpdateActivityInfo(const ledger::PublisherInfo& info);
 
   bool InsertOrUpdateActivityInfos(const ledger::PublisherInfoList& list);
@@ -64,6 +62,8 @@ class PublisherInfoDatabase {
                        int limit,
                        const ledger::ActivityInfoFilter& filter,
                        ledger::PublisherInfoList* list);
+
+  bool GetExcludedList(ledger::PublisherInfoList* list);
 
   bool InsertOrUpdateMediaPublisherInfo(const std::string& media_key,
                                         const std::string& publisher_id);

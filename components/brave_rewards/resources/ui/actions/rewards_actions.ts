@@ -91,6 +91,10 @@ export const onContributeList = (list: Rewards.Publisher[]) => action(types.ON_C
   list
 })
 
+export const onExcludedList = (list: Rewards.ExcludedPublisher[]) => action(types.ON_EXCLUDED_LIST, {
+  list
+})
+
 export const onBalanceReports = (reports: Record<string, Rewards.Report>) => action(types.ON_BALANCE_REPORTS, {
   reports
 })
@@ -108,10 +112,6 @@ export const onWalletExists = (exists: boolean) => action(types.ON_WALLET_EXISTS
 })
 
 export const restorePublishers = () => action(types.ON_RESTORE_PUBLISHERS)
-
-export const onExcludedNumber = (num: number) => action(types.ON_EXCLUDED_PUBLISHERS_NUMBER, {
-  num
-})
 
 export const onContributionAmount = (amount: number) => action(types.ON_CONTRIBUTION_AMOUNT, {
   amount
@@ -185,8 +185,6 @@ export const getTransactionHistoryForThisCycle = () => action(types.GET_TRANSACT
 
 export const onTransactionHistoryForThisCycleChanged = () => action(types.ON_TRANSACTION_HISTORY_FOR_THIS_CYCLE_CHANGED)
 
-export const getExcludedPublishersNumber = () => action(types.GET_EXCLUDED_PUBLISHERS_NUMBER)
-
 export const getRewardsMainEnabled = () => action(types.GET_REWARDS_MAIN_ENABLED)
 
 export const onRecurringTipSaved = (success: boolean) => action(types.ON_RECURRING_TIP_SAVED, {
@@ -215,3 +213,9 @@ export const removePendingContribution = (publisherKey: string, viewingId: strin
   })
 
 export const removeAllPendingContribution = () => action(types.REMOVE_ALL_PENDING_CONTRIBUTION)
+
+export const restorePublisher = (publisherKey: string) => action(types.ON_RESTORE_PUBLISHER, {
+  publisherKey
+})
+
+export const getExcludedSites = () => action(types.GET_EXCLUDED_SITES)

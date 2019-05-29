@@ -19,16 +19,13 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
 
       state.autoContributeList = action.payload.list
       break
-    case types.ON_EXCLUDED_PUBLISHERS_NUMBER: {
-      state = { ...state }
-      let num = parseInt(action.payload.num, 10)
-
-      if (isNaN(num)) {
-        num = 0
+    case types.ON_EXCLUDED_LIST: {
+      if (!action.payload.list) {
+        break
       }
 
-      state.excludedPublishersNumber = num
-
+      state = { ...state }
+      state.excludedList = action.payload.list
       break
     }
     case types.ON_EXCLUDE_PUBLISHER: {
@@ -38,6 +35,15 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       }
 
       chrome.send('brave_rewards.excludePublisher', [publisherKey])
+      break
+    }
+    case types.ON_RESTORE_PUBLISHER: {
+      const publisherKey: string = action.payload.publisherKey
+      if (!publisherKey) {
+        break
+      }
+
+      chrome.send('brave_rewards.restorePublisher', [publisherKey])
       break
     }
     case types.ON_RESTORE_PUBLISHERS:
@@ -68,12 +74,12 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
       }
       state.tipsList = action.payload.list
       break
-    case types.GET_EXCLUDED_PUBLISHERS_NUMBER:
-      chrome.send('brave_rewards.getExcludedPublishersNumber')
-      break
     case types.ON_RECURRING_TIP_SAVED:
     case types.ON_RECURRING_TIP_REMOVED:
       chrome.send('brave_rewards.getRecurringTips')
+      break
+    case types.GET_EXCLUDED_SITES:
+      chrome.send('brave_rewards.getExcludedSites')
       break
   }
 

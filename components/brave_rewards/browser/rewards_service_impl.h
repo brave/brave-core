@@ -101,9 +101,7 @@ class RewardsServiceImpl : public RewardsService,
                          const std::string& promotionId) const override;
   void GetWalletPassphrase(
       const GetWalletPassphraseCallback& callback) override;
-  void GetExcludedPublishersNumber(
-      const GetExcludedPublishersNumberCallback& callback) override;
-  void RecoverWallet(const std::string passPhrase) const override;
+  void RecoverWallet(const std::string& passPhrase) const override;
   void GetContentSiteList(
       uint32_t start,
       uint32_t limit,
@@ -111,6 +109,7 @@ class RewardsServiceImpl : public RewardsService,
       uint64_t reconcile_stamp,
       bool allow_non_verified,
       uint32_t min_visits,
+      bool fetch_excluded,
       const GetContentSiteListCallback& callback) override;
   void OnGetContentSiteList(
       const GetContentSiteListCallback& callback,
@@ -154,7 +153,6 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoCallback callback) override;
   void SaveMediaPublisherInfo(const std::string& media_key,
                               const std::string& publisher_id) override;
-  void ExcludePublisher(const std::string publisherKey) const override;
   void RestorePublishers() override;
   void GetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback) override;
@@ -180,7 +178,7 @@ class RewardsServiceImpl : public RewardsService,
       ledger::PublisherInfoListCallback callback) override;
   void SetContributionAutoInclude(
       const std::string& publisher_key,
-      bool excluded) override;
+      bool exclude) override;
   RewardsNotificationService* GetNotificationService() const override;
   bool CheckImported() override;
   void SetBackupCompleted() override;
@@ -370,10 +368,6 @@ class RewardsServiceImpl : public RewardsService,
     const ledger::PendingContributionInfoListCallback& callback,
     ledger::PendingContributionInfoList list);
 
-  void OnGetExcludedPublishersNumberDB(
-    ledger::GetExcludedPublishersNumberDBCallback callback,
-    int number);
-
   void OnURLLoaderComplete(network::SimpleURLLoader* loader,
                            ledger::LoadURLCallback callback,
                            std::unique_ptr<std::string> response_body);
@@ -513,9 +507,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void SaveNormalizedPublisherList(
       ledger::PublisherInfoList list) override;
-
-  void GetExcludedPublishersNumberDB(
-      ledger::GetExcludedPublishersNumberDBCallback callback) override;
 
   void GetPendingContributions(
     const ledger::PendingContributionInfoListCallback& callback) override;

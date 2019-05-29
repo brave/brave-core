@@ -90,12 +90,6 @@ void OnResetState(const ledger::OnSaveCallback& callback,
   callback(ToLedgerResult(result));
 }
 
-void OnExcludedNumberDB(
-    const ledger::GetExcludedPublishersNumberDBCallback& callback,
-    uint32_t result) {
-  callback(result);
-}
-
 void OnGetCountryCodes(
     const ledger::GetCountryCodesCallback& callback,
     const std::vector<int32_t>& countries) {
@@ -722,17 +716,6 @@ void BatLedgerClientMojoProxy::ConfirmationsTransactionHistoryDidChange() {
 
 bool BatLedgerClientMojoProxy::Connected() const {
   return bat_ledger_client_.is_bound();
-}
-
-void BatLedgerClientMojoProxy::GetExcludedPublishersNumberDB(
-    ledger::GetExcludedPublishersNumberDBCallback callback) {
-  if (!Connected()) {
-    callback(0);
-    return;
-  }
-
-  bat_ledger_client_->GetExcludedPublishersNumberDB(
-      base::BindOnce(&OnExcludedNumberDB, std::move(callback)));
 }
 
 void OnGetPendingContributions(

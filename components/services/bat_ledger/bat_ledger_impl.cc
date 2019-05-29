@@ -208,24 +208,6 @@ void BatLedgerImpl::GetWalletPassphrase(GetWalletPassphraseCallback callback) {
   std::move(callback).Run(ledger_->GetWalletPassphrase());
 }
 
-// static
-void BatLedgerImpl::OnGetExcludedPublishersNumber(
-    CallbackHolder<GetExcludedPublishersNumberCallback>* holder,
-    uint32_t number) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(number);
-  delete holder;
-}
-
-void BatLedgerImpl::GetExcludedPublishersNumber(
-    GetExcludedPublishersNumberCallback callback) {
-  // delete in OnGetExcludedPublishersNumber
-  auto* holder = new CallbackHolder<GetExcludedPublishersNumberCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->GetExcludedPublishersNumber(
-      std::bind(BatLedgerImpl::OnGetExcludedPublishersNumber, holder, _1));
-}
-
 void BatLedgerImpl::RecoverWallet(const std::string& passPhrase) {
   ledger_->RecoverWallet(passPhrase);
 }

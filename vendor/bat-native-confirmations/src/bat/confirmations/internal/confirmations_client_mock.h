@@ -203,10 +203,9 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const URLRequestMethod method,
       URLRequestCallback callback));
 
-  MOCK_METHOD3(SetContributionAutoInclude, void(
+  MOCK_METHOD2(SetContributionAutoInclude, void(
       const std::string& publisher_key,
-      bool excluded,
-      uint64_t windowId));
+      bool exclude));
 
   MOCK_METHOD1(SavePendingContribution, void(
       ledger::PendingContributionList list));
@@ -244,9 +243,6 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const bool is_ready));
 
   MOCK_METHOD0(ConfirmationsTransactionHistoryDidChange, void());
-
-  MOCK_METHOD1(GetExcludedPublishersNumberDB, void(
-      ledger::GetExcludedPublishersNumberDBCallback callback));
 
   MOCK_METHOD1(GetPendingContributions, void(
       const ledger::PendingContributionInfoListCallback& callback));

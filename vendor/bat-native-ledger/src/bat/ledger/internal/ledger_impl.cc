@@ -618,11 +618,6 @@ unsigned int LedgerImpl::GetPublisherMinVisits() const {
   return bat_publishers_->getPublisherMinVisits();
 }
 
-void LedgerImpl::GetExcludedPublishersNumber(
-    ledger::GetExcludedPublishersNumberDBCallback callback) const {
-  ledger_client_->GetExcludedPublishersNumberDB(callback);
-}
-
 bool LedgerImpl::GetPublisherAllowNonVerified() const {
   return bat_publishers_->getPublisherAllowNonVerified();
 }

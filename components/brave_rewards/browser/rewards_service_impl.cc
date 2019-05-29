@@ -210,7 +210,7 @@ bool SaveMediaPublisherInfoOnFileTaskRunner(
 
 ledger::PublisherInfoPtr
 LoadPublisherInfoOnFileTaskRunner(
-    const std::string publisher_key,
+    const std::string& publisher_key,
     PublisherInfoDatabase* backend) {
   if (!backend)
     return nullptr;
@@ -220,7 +220,7 @@ LoadPublisherInfoOnFileTaskRunner(
 
 ledger::PublisherInfoPtr
 LoadMediaPublisherInfoOnFileTaskRunner(
-    const std::string media_key,
+    const std::string& media_key,
     PublisherInfoDatabase* backend) {
   ledger::PublisherInfoPtr info;
   if (!backend)
@@ -258,7 +258,12 @@ ledger::PublisherInfoList GetActivityListOnFileTaskRunner(
   if (!backend)
     return list;
 
-  ignore_result(backend->GetActivityList(start, limit, filter, &list));
+  if (filter.excluded ==
+    ledger::EXCLUDE_FILTER::FILTER_EXCLUDED) {
+    ignore_result(backend->GetExcludedList(&list));
+  } else {
+    ignore_result(backend->GetActivityList(start, limit, filter, &list));
+  }
   return list;
 }
 
@@ -536,13 +541,15 @@ void RewardsServiceImpl::GetContentSiteList(
     uint64_t reconcile_stamp,
     bool allow_non_verified,
     uint32_t min_visits,
+    bool fetch_excluded,
     const GetContentSiteListCallback& callback) {
   ledger::ActivityInfoFilter filter;
   filter.min_duration = min_visit_time;
   filter.order_by.push_back(std::pair<std::string, bool>("ai.percent", false));
   filter.reconcile_stamp = reconcile_stamp;
-  filter.excluded =
-    ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
+  filter.excluded = fetch_excluded
+    ? ledger::EXCLUDE_FILTER::FILTER_EXCLUDED
+    : ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
   filter.percent = 1;
   filter.non_verified = allow_non_verified;
   filter.min_visits = min_visits;
@@ -765,15 +772,6 @@ base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
                     publisher_info_backend_.get()),
       base::Bind(&RewardsServiceImpl::OnMediaPublisherInfoSaved,
                      AsWeakPtr()));
-}
-
-void RewardsServiceImpl::ExcludePublisher(
-    const std::string publisherKey) const {
-  if (!Connected())
-    return;
-
-  bat_ledger_->SetPublisherExclude(publisherKey,
-                                   ledger::PUBLISHER_EXCLUDE::EXCLUDED);
 }
 
 void RewardsServiceImpl::RestorePublishers() {
@@ -1454,16 +1452,7 @@ void RewardsServiceImpl::GetWalletPassphrase(
   bat_ledger_->GetWalletPassphrase(callback);
 }
 
-void RewardsServiceImpl::GetExcludedPublishersNumber(
-    const GetExcludedPublishersNumberCallback& callback) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_->GetExcludedPublishersNumber(callback);
-}
-
-void RewardsServiceImpl::RecoverWallet(const std::string passPhrase) const {
+void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) const {
   if (!Connected()) {
     return;
   }
@@ -2402,7 +2391,7 @@ void RewardsServiceImpl::RemoveRecurringTip(const std::string& publisher_key) {
 }
 
 bool RemoveRecurringTipOnFileTaskRunner(
-    const std::string publisher_key, PublisherInfoDatabase* backend) {
+    const std::string& publisher_key, PublisherInfoDatabase* backend) {
   if (!backend) {
     return false;
   }
@@ -2449,16 +2438,16 @@ void RewardsServiceImpl::TriggerOnGetCurrentBalanceReport(
 
 void RewardsServiceImpl::SetContributionAutoInclude(
     const std::string& publisher_key,
-    bool excluded) {
+    bool exclude) {
   if (!Connected())
     return;
 
-  ledger::PUBLISHER_EXCLUDE exclude =
-      excluded
+  ledger::PUBLISHER_EXCLUDE status =
+      exclude
       ? ledger::PUBLISHER_EXCLUDE::EXCLUDED
       : ledger::PUBLISHER_EXCLUDE::INCLUDED;
 
-  bat_ledger_->SetPublisherExclude(publisher_key, exclude);
+  bat_ledger_->SetPublisherExclude(publisher_key, status);
 }
 
 RewardsNotificationService* RewardsServiceImpl::GetNotificationService() const {
@@ -2911,38 +2900,6 @@ void RewardsServiceImpl::GetAddressesForPaymentId(
 
   bat_ledger_->GetAddressesForPaymentId(
       base::BindOnce(&RewardsServiceImpl::OnGetAddresses,
-                     AsWeakPtr(),
-                     callback));
-}
-
-int GetExcludedPublishersNumberOnFileTaskRunner(
-    PublisherInfoDatabase* backend) {
-  if (!backend) {
-    return 0;
-  }
-
-  return backend->GetExcludedPublishersCount();
-}
-
-void RewardsServiceImpl::OnGetExcludedPublishersNumberDB(
-    ledger::GetExcludedPublishersNumberDBCallback callback,
-    int number) {
-  if (!Connected()) {
-    callback(0);
-    return;
-  }
-
-  callback(number);
-}
-
-void RewardsServiceImpl::GetExcludedPublishersNumberDB(
-      ledger::GetExcludedPublishersNumberDBCallback callback) {
-  base::PostTaskAndReplyWithResult(
-      file_task_runner_.get(),
-      FROM_HERE,
-      base::BindOnce(&GetExcludedPublishersNumberOnFileTaskRunner,
-                     publisher_info_backend_.get()),
-      base::BindOnce(&RewardsServiceImpl::OnGetExcludedPublishersNumberDB,
                      AsWeakPtr(),
                      callback));
 }

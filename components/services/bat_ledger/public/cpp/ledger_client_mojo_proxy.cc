@@ -646,25 +646,6 @@ void LedgerClientMojoProxy::ConfirmationsTransactionHistoryDidChange() {
 }
 
 // static
-void LedgerClientMojoProxy::OnGetExcludedPublishersNumberDB(
-    CallbackHolder<GetExcludedPublishersNumberDBCallback>* holder,
-    uint32_t number) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(number);
-  delete holder;
-}
-
-void LedgerClientMojoProxy::GetExcludedPublishersNumberDB(
-    GetExcludedPublishersNumberDBCallback callback) {
-  // deleted in OnGetRecurringTips
-  auto* holder = new CallbackHolder<GetExcludedPublishersNumberDBCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_client_->GetExcludedPublishersNumberDB(
-      std::bind(LedgerClientMojoProxy::OnGetExcludedPublishersNumberDB,
-        holder, _1));
-}
-
-// static
 void LedgerClientMojoProxy::OnGetOneTimeTips(
     CallbackHolder<GetOneTimeTipsCallback>* holder,
     ledger::PublisherInfoList publisher_info_list,

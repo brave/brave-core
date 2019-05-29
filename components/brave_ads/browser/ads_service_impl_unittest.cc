@@ -35,13 +35,14 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD0(CreateWallet, void());
   MOCK_METHOD0(FetchWalletProperties, void());
-  MOCK_METHOD7(GetContentSiteList,
+  MOCK_METHOD8(GetContentSiteList,
       void(uint32_t,
            uint32_t,
            uint64_t,
            uint64_t,
            bool,
            uint32_t,
+           bool,
            const brave_rewards::GetContentSiteListCallback&));
   MOCK_METHOD2(FetchGrants, void(const std::string&, const std::string&));
   MOCK_METHOD2(GetGrantCaptcha, void(const std::string&, const std::string&));
@@ -49,10 +50,7 @@ class MockRewardsService : public RewardsService {
                                              const std::string&));
   MOCK_METHOD1(GetWalletPassphrase,
       void(const brave_rewards::GetWalletPassphraseCallback&));
-  MOCK_METHOD1(GetExcludedPublishersNumber,
-      void(const brave_rewards::GetExcludedPublishersNumberCallback&));
-  MOCK_CONST_METHOD1(RecoverWallet, void(const std::string));
-  MOCK_CONST_METHOD1(ExcludePublisher, void(const std::string));
+  MOCK_CONST_METHOD1(RecoverWallet, void(const std::string&));
   MOCK_METHOD0(RestorePublishers, void());
   MOCK_METHOD2(OnLoad, void(SessionID, const GURL&));
   MOCK_METHOD1(OnUnload, void(SessionID));
