@@ -66,6 +66,7 @@ class BraveWidevineBundleManager {
 
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, InProgressTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, UpdateTriggerTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, UpdateFailTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, InstallSuccessTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, DownloadFailTest);
   FRIEND_TEST_ALL_PREFIXES(BraveWidevineBundleManagerTest, UnzipFailTest);

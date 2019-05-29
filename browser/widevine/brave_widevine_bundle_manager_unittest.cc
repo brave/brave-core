@@ -90,8 +90,9 @@ class BraveWidevineBundleManagerTest : public testing::Test {
   }
 
   void CheckPrefsStatesAreInitialState() {
-    EXPECT_EQ(false, pref_service()->GetBoolean(kWidevineOptedIn));
-    EXPECT_EQ(BraveWidevineBundleManager::kWidevineInvalidVersion,
+    EXPECT_EQ(initial_opted_in_value_,
+              pref_service()->GetBoolean(kWidevineOptedIn));
+    EXPECT_EQ(initial_version_string_,
               pref_service()->GetString(kWidevineInstalledVersion));
   }
 
@@ -106,15 +107,18 @@ class BraveWidevineBundleManagerTest : public testing::Test {
   TestingProfileManager testing_profile_manager_;
   base::ScopedTempDir temp_dir_;
   TestClient client_;
+  bool initial_opted_in_value_ = false;
+  std::string initial_version_string_ =
+      BraveWidevineBundleManager::kWidevineInvalidVersion;
 };
 
-TEST_F(BraveWidevineBundleManagerTest, InitialPrefsest) {
+TEST_F(BraveWidevineBundleManagerTest, InitialPrefsTest) {
   PrepareTest(true);
 
   CheckPrefsStatesAreInitialState();
 }
 
-TEST_F(BraveWidevineBundleManagerTest, InitialWithCdmResteredTest) {
+TEST_F(BraveWidevineBundleManagerTest, InitialWithCdmRestoredTest) {
   PrepareTest(false);
 
   CheckPrefsStatesAreInitialState();
@@ -219,13 +223,34 @@ TEST_F(BraveWidevineBundleManagerTest, UpdateTriggerTest) {
   pref_service()->SetBoolean(kWidevineOptedIn, true);
   pref_service()->SetString(kWidevineInstalledVersion, "1.0.0.0");
 
+
   EXPECT_FALSE(manager_.update_requested_);
 
   manager_.StartupCheck();
   EXPECT_TRUE(manager_.update_requested_);
   manager_.DoDelayedBackgroundUpdate();
   manager_.InstallDone("");
+
   CheckPrefsStatesAreInstalledState();
+}
+
+// Test whether prev prefs are persisted after update failure.
+TEST_F(BraveWidevineBundleManagerTest, UpdateFailTest) {
+  PrepareTest(false);
+
+  initial_opted_in_value_ = true;
+  initial_version_string_ = "1.0.0.0";
+
+  // Set installed state with different version to trigger update.
+  pref_service()->SetBoolean(kWidevineOptedIn, initial_opted_in_value_);
+  pref_service()->SetString(kWidevineInstalledVersion, initial_version_string_);
+
+  manager_.StartupCheck();
+  manager_.DoDelayedBackgroundUpdate();
+  // Non empty string means failure - it's error message.
+  manager_.InstallDone("failed");
+
+  CheckPrefsStatesAreInitialState();
 }
 
 TEST_F(BraveWidevineBundleManagerTest, MessageStringTest) {

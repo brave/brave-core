@@ -57,17 +57,27 @@ base::Optional<base::FilePath> GetTargetWidevineBundleDir() {
   return base::Optional<base::FilePath>();
 }
 
-void SetWidevinePrefs(bool enable) {
+void ResetWidevinePrefs() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   Profile* profile = ProfileManager::GetActiveUserProfile();
   DCHECK(profile);
 
-  profile->GetPrefs()->SetBoolean(kWidevineOptedIn, enable);
+  profile->GetPrefs()->SetBoolean(kWidevineOptedIn, false);
   profile->GetPrefs()->SetString(
       kWidevineInstalledVersion,
-      enable ? WIDEVINE_CDM_VERSION_STRING
-             : BraveWidevineBundleManager::kWidevineInvalidVersion);
+      BraveWidevineBundleManager::kWidevineInvalidVersion);
+}
+
+void SetWidevinePrefsAsInstalledState() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  Profile* profile = ProfileManager::GetActiveUserProfile();
+  DCHECK(profile);
+
+  profile->GetPrefs()->SetBoolean(kWidevineOptedIn, true);
+  profile->GetPrefs()->SetString(kWidevineInstalledVersion,
+                                 WIDEVINE_CDM_VERSION_STRING);
 }
 
 }  // namespace
@@ -227,11 +237,12 @@ void BraveWidevineBundleManager::InstallDone(const std::string& error) {
   set_in_progress(false);
 
   // On success, marks that browser needs to restart to enable widevine.
-  // Otherwiase, reset prefs to initial state.
+  // On failure, don't change current prefs values.
+  // If this failure comes from first install, prefs states are initial state.
+  // If this failure comes from from update, prefs states are currently
+  // installed state.
   if (error.empty())
     set_needs_restart(true);
-  else
-    SetWidevinePrefs(false);
 
   std::move(done_callback_).Run(error);
 }
@@ -252,7 +263,7 @@ void BraveWidevineBundleManager::StartupCheck() {
     DVLOG(1) << __func__ << ": reset widevine prefs state";
     // Widevine is not installed yet. Don't need to check.
     // Also reset prefs to make as initial state.
-    SetWidevinePrefs(false);
+    ResetWidevinePrefs();
     return;
   }
 
@@ -263,7 +274,7 @@ void BraveWidevineBundleManager::StartupCheck() {
   // bundle unzipping and prefs setting is done asynchronously.
   if (!profile->GetPrefs()->GetBoolean(kWidevineOptedIn)) {
     DVLOG(1) << __func__ << ": recover invalid widevine prefs state";
-    SetWidevinePrefs(true);
+    SetWidevinePrefsAsInstalledState();
     return;
   }
 
@@ -308,7 +319,7 @@ void BraveWidevineBundleManager::DoDelayedBackgroundUpdate() {
 
     DVLOG(1) << __func__ << ": Widevine update success";
     // Set new widevine version to installed version prefs.
-    SetWidevinePrefs(true);
+    SetWidevinePrefsAsInstalledState();
   }),
   false);
 }
@@ -323,7 +334,7 @@ BraveWidevineBundleManager::GetWidevinePermissionRequestTextFragment() const {
 
 void BraveWidevineBundleManager::WillRestart() const {
   DCHECK(needs_restart());
-  SetWidevinePrefs(true);
+  SetWidevinePrefsAsInstalledState();
   DVLOG(1) << __func__;
 }
 
