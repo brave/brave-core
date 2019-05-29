@@ -143,7 +143,10 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
       state = shieldsPanelState.updateResourceBlocked(
         state, tabId, action.details.blockType, action.details.subresource)
       if (tabId === currentTabId) {
-        shieldsPanelState.updateShieldsIconBadgeText(state)
+        const isShieldsActive: boolean = shieldsPanelState.isShieldsActive(state, tabId)
+        if (isShieldsActive) {
+          shieldsPanelState.updateShieldsIconBadgeText(state)
+        }
       }
       break
     }
