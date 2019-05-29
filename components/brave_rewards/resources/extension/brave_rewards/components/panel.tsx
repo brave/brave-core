@@ -27,18 +27,20 @@ interface State {
   publisherKey: string | null
   refreshingPublisher: boolean
   publisherRefreshed: boolean
+  timerPassed: boolean
 }
 
 export class Panel extends React.Component<Props, State> {
   private defaultTipAmounts: number[]
-
+  private delayTimer: ReturnType<typeof setTimeout>
   constructor (props: Props) {
     super(props)
     this.state = {
       showSummary: true,
       publisherKey: null,
       refreshingPublisher: false,
-      publisherRefreshed: false
+      publisherRefreshed: false,
+      timerPassed: false
     }
     this.defaultTipAmounts = [1, 5, 10]
   }
@@ -83,6 +85,10 @@ export class Panel extends React.Component<Props, State> {
         publisherKey: null
       })
     }
+  }
+
+  componentWillUnmount () {
+    clearTimeout(this.delayTimer)
   }
 
   get gradientColor () {
@@ -414,10 +420,33 @@ export class Panel extends React.Component<Props, State> {
     return defaultContribution
   }
 
+  initiateDelayCounter = () => {
+    clearTimeout(this.delayTimer)
+    this.delayTimer = setTimeout(() => {
+      this.setState({
+        timerPassed: true
+      })
+    }, 2000)
+  }
+
+  resetPublisherStatus = (wasVerified: boolean) => {
+    if (wasVerified || this.state.timerPassed) {
+      this.setState({
+        timerPassed: false,
+        refreshingPublisher: false,
+        publisherRefreshed: true
+      })
+    } else {
+      setTimeout(this.resetPublisherStatus, 250)
+    }
+  }
+
   refreshPublisher = () => {
     this.setState({
-      refreshingPublisher: true
+      refreshingPublisher: true,
+      timerPassed: false
     })
+    this.initiateDelayCounter()
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     const publisherKey = publisher && publisher.publisher_key
     if (publisherKey) {
@@ -425,10 +454,7 @@ export class Panel extends React.Component<Props, State> {
         if (publisherKey) {
           this.actions.refreshPublisher(verified, publisherKey)
         }
-        this.setState({
-          refreshingPublisher: false,
-          publisherRefreshed: true
-        })
+        this.resetPublisherStatus(verified)
       })
     }
   }
