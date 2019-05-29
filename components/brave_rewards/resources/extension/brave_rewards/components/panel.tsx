@@ -429,15 +429,15 @@ export class Panel extends React.Component<Props, State> {
     }, 2000)
   }
 
-  resetPublisherStatus = () => {
-    if (!this.state.timerPassed) {
-      setTimeout(this.resetPublisherStatus, 250)
-    } else {
+  resetPublisherStatus = (wasVerified: boolean) => {
+    if (wasVerified || this.state.timerPassed) {
       this.setState({
         timerPassed: false,
         refreshingPublisher: false,
         publisherRefreshed: true
       })
+    } else {
+      setTimeout(this.resetPublisherStatus, 250)
     }
   }
 
@@ -454,7 +454,7 @@ export class Panel extends React.Component<Props, State> {
         if (publisherKey) {
           this.actions.refreshPublisher(verified, publisherKey)
         }
-        this.resetPublisherStatus()
+        this.resetPublisherStatus(verified)
       })
     }
   }
