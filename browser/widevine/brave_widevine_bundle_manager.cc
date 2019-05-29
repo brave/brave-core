@@ -11,6 +11,7 @@
 
 #include "base/bind.h"
 #include "base/callback.h"
+#include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
@@ -19,6 +20,7 @@
 #include "base/task/post_task.h"
 #include "brave/browser/widevine/brave_widevine_bundle_unzipper.h"
 #include "brave/common/pref_names.h"
+#include "brave/common/brave_switches.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -38,7 +40,10 @@
 
 namespace {
 
-constexpr int kWidevineBackgroundUpdateDelayInMins = 5;
+int GetBackgroundUpdateDelayInMins() {
+  return base::CommandLine::ForCurrentProcess()->HasSwitch(
+      switches::kFastWidevineBundleUpdate) ? 0 : 5;
+}
 
 base::Optional<base::FilePath> GetTargetWidevineBundleDir() {
   base::FilePath widevine_cdm_dir;
@@ -271,13 +276,18 @@ void BraveWidevineBundleManager::StartupCheck() {
 
   // Do delayed update if installed version and latest version are different.
   if (installed_version != WIDEVINE_CDM_VERSION_STRING) {
+    DVLOG(1) << __func__ << ": new widevine version("
+                         << WIDEVINE_CDM_VERSION_STRING << ") is found and"
+                         << " background update is scheduled.";
     update_requested_ = true;
     base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
         FROM_HERE,
         base::BindOnce(&BraveWidevineBundleManager::DoDelayedBackgroundUpdate,
                        weak_factory_.GetWeakPtr()),
-        base::TimeDelta::FromMinutes(kWidevineBackgroundUpdateDelayInMins));
+        base::TimeDelta::FromMinutes(GetBackgroundUpdateDelayInMins()));
   }
+
+  DVLOG(1) << __func__ << ": latest widevine version is installed.";
 }
 
 void BraveWidevineBundleManager::DoDelayedBackgroundUpdate() {
@@ -298,6 +308,8 @@ void BraveWidevineBundleManager::DoDelayedBackgroundUpdate() {
     }
 
     DVLOG(1) << __func__ << ": Widevine update success";
+    // Set new widevine version to installed version prefs.
+    SetWidevinePrefs(true);
   }),
   false);
 }

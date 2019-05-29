@@ -88,14 +88,14 @@ class BraveWidevineBundleManagerTest : public testing::Test {
   }
 
   void CheckPrefsStatesAreInitialState() {
-    DCHECK_EQ(false, pref_service()->GetBoolean(kWidevineOptedIn));
-    DCHECK_EQ(BraveWidevineBundleManager::kWidevineInvalidVersion,
+    EXPECT_EQ(false, pref_service()->GetBoolean(kWidevineOptedIn));
+    EXPECT_EQ(BraveWidevineBundleManager::kWidevineInvalidVersion,
               pref_service()->GetString(kWidevineInstalledVersion));
   }
 
   void CheckPrefsStatesAreInstalledState() {
-    DCHECK_EQ(true, pref_service()->GetBoolean(kWidevineOptedIn));
-    DCHECK_EQ(WIDEVINE_CDM_VERSION_STRING,
+    EXPECT_EQ(true, pref_service()->GetBoolean(kWidevineOptedIn));
+    EXPECT_EQ(WIDEVINE_CDM_VERSION_STRING,
               pref_service()->GetString(kWidevineInstalledVersion));
   }
 
@@ -140,16 +140,16 @@ TEST_F(BraveWidevineBundleManagerTest, InProgressTest) {
   manager_.StartupCheck();
   manager_.InstallWidevineBundle(base::BindOnce([](const std::string&) {}),
                                  false);
-  DCHECK(manager_.in_progress());
+  EXPECT_TRUE(manager_.in_progress());
 
   manager_.InstallDone("");
-  DCHECK(!manager_.in_progress());
+  EXPECT_FALSE(manager_.in_progress());
 }
 
 TEST_F(BraveWidevineBundleManagerTest, InstallSuccessTest) {
   PrepareTest(true);
 
-  DCHECK(!manager_.needs_restart());
+  EXPECT_FALSE(manager_.needs_restart());
 
   manager_.StartupCheck();
   manager_.InstallWidevineBundle(base::BindOnce([](const std::string&) {}),
@@ -157,7 +157,7 @@ TEST_F(BraveWidevineBundleManagerTest, InstallSuccessTest) {
 
   manager_.InstallDone("");
 
-  DCHECK(manager_.needs_restart());
+  EXPECT_TRUE(manager_.needs_restart());
   CheckPrefsStatesAreInitialState();
 
   manager_.WillRestart();
@@ -167,20 +167,20 @@ TEST_F(BraveWidevineBundleManagerTest, InstallSuccessTest) {
 TEST_F(BraveWidevineBundleManagerTest, RetryInstallAfterFail) {
   PrepareTest(true);
 
-  DCHECK(!manager_.needs_restart());
+  EXPECT_FALSE(manager_.needs_restart());
   manager_.StartupCheck();
   manager_.InstallWidevineBundle(base::BindOnce([](const std::string&) {}),
                                  false);
 
   manager_.InstallDone("failed");
 
-  DCHECK(!manager_.needs_restart());
+  EXPECT_FALSE(manager_.needs_restart());
   CheckPrefsStatesAreInitialState();
 
   // Check request install again goes in-progress state.
   manager_.InstallWidevineBundle(base::BindOnce([](const std::string&) {}),
                                  false);
-  DCHECK(manager_.in_progress());
+  EXPECT_TRUE(manager_.in_progress());
 }
 
 TEST_F(BraveWidevineBundleManagerTest, DownloadFailTest) {
@@ -189,11 +189,11 @@ TEST_F(BraveWidevineBundleManagerTest, DownloadFailTest) {
   manager_.StartupCheck();
   manager_.InstallWidevineBundle(base::BindOnce([](const std::string&) {}),
                                  false);
-  DCHECK(manager_.in_progress());
+  EXPECT_TRUE(manager_.in_progress());
 
   // Empty path means download fail.
   manager_.OnBundleDownloaded(base::FilePath());
-  DCHECK(!manager_.in_progress());
+  EXPECT_FALSE(manager_.in_progress());
   CheckPrefsStatesAreInitialState();
 }
 
@@ -203,10 +203,10 @@ TEST_F(BraveWidevineBundleManagerTest, UnzipFailTest) {
   manager_.StartupCheck();
   manager_.InstallWidevineBundle(base::BindOnce([](const std::string&) {}),
                                  false);
-  DCHECK(manager_.in_progress());
+  EXPECT_TRUE(manager_.in_progress());
 
   manager_.OnBundleUnzipped("unzip failed");
-  DCHECK(!manager_.in_progress());
+  EXPECT_FALSE(manager_.in_progress());
   CheckPrefsStatesAreInitialState();
 }
 
@@ -217,20 +217,23 @@ TEST_F(BraveWidevineBundleManagerTest, UpdateTriggerTest) {
   pref_service()->SetBoolean(kWidevineOptedIn, true);
   pref_service()->SetString(kWidevineInstalledVersion, "1.0.0.0");
 
-  DCHECK(!manager_.update_requested_);
+  EXPECT_FALSE(manager_.update_requested_);
 
   manager_.StartupCheck();
-  DCHECK(manager_.update_requested_);
+  EXPECT_TRUE(manager_.update_requested_);
+  manager_.DoDelayedBackgroundUpdate();
+  manager_.InstallDone("");
+  CheckPrefsStatesAreInstalledState();
 }
 
 TEST_F(BraveWidevineBundleManagerTest, MessageStringTest) {
   PrepareTest(true);
 
-  DCHECK(!manager_.needs_restart());
-  DCHECK_EQ(IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL,
+  EXPECT_FALSE(manager_.needs_restart());
+  EXPECT_EQ(IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL,
             manager_.GetWidevinePermissionRequestTextFragment());
 
   manager_.set_needs_restart(true);
-  DCHECK_EQ(IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER,
+  EXPECT_EQ(IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_RESTART_BROWSER,
             manager_.GetWidevinePermissionRequestTextFragment());
 }
