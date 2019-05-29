@@ -20,7 +20,7 @@ namespace brave_page_graph {
 
 EdgeRequestStart::EdgeRequestStart(PageGraph* const graph,
     Node* const out_node, NodeResource* const in_node,
-    const InspectorId request_id, const RequestType type) : 
+    const InspectorId request_id, const RequestType type) :
       EdgeRequest(graph, out_node, in_node, request_id, kRequestStatusStart),
       type_(type) {}
 
@@ -36,6 +36,10 @@ RequestType EdgeRequestStart::GetRequestType() const {
 
 NodeResource* EdgeRequestStart::GetResourceNode() const {
   return static_cast<NodeResource*>(in_node_);
+}
+
+RequestUrl EdgeRequestStart::GetRequestedUrl() const {
+  return GetResourceNode()->GetUrl();
 }
 
 Node* EdgeRequestStart::GetRequestingNode() const {
