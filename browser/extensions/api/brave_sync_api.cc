@@ -41,7 +41,8 @@ ExtensionFunction::ResponseAction BraveSyncGetInitDataFunction::Run() {
   BraveProfileSyncService* sync_service =
     GetProfileSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->OnGetInitData(params->sync_version);
+  sync_service->GetBraveSyncClient()->sync_message_handler()->OnGetInitData(
+      params->sync_version);
 
   return RespondNow(NoArguments());
 }
@@ -54,7 +55,7 @@ ExtensionFunction::ResponseAction BraveSyncSyncSetupErrorFunction::Run() {
   BraveProfileSyncService* sync_service =
     GetProfileSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->OnSyncSetupError(
+  sync_service->GetBraveSyncClient()->sync_message_handler()->OnSyncSetupError(
       params->error);
 
   return RespondNow(NoArguments());
@@ -68,7 +69,7 @@ ExtensionFunction::ResponseAction BraveSyncSyncDebugFunction::Run() {
   BraveProfileSyncService* sync_service =
     GetProfileSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->OnSyncDebug(
+  sync_service->GetBraveSyncClient()->sync_message_handler()->OnSyncDebug(
       params->message);
 
   return RespondNow(NoArguments());
@@ -82,7 +83,7 @@ ExtensionFunction::ResponseAction BraveSyncSaveInitDataFunction::Run() {
   BraveProfileSyncService* sync_service =
     GetProfileSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->OnSaveInitData(
+  sync_service->GetBraveSyncClient()->sync_message_handler()->OnSaveInitData(
       params->seed ? *params->seed : std::vector<uint8_t>(),
       params->device_id ? *params->device_id : std::vector<uint8_t>());
 
@@ -109,11 +110,12 @@ ExtensionFunction::ResponseAction BraveSyncGetExistingObjectsFunction::Run() {
   BraveProfileSyncService* sync_service =
     GetProfileSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->OnGetExistingObjects(
-    params->category_name,
-    std::move(records),
-    base::Time::FromJsTime(params->last_record_timestamp),
-    params->is_truncated);
+  sync_service->GetBraveSyncClient()->sync_message_handler()
+    ->OnGetExistingObjects(
+      params->category_name,
+      std::move(records),
+      base::Time::FromJsTime(params->last_record_timestamp),
+      params->is_truncated);
 
   return RespondNow(NoArguments());
 }
@@ -129,9 +131,8 @@ ExtensionFunction::ResponseAction BraveSyncResolvedSyncRecordsFunction::Run() {
   BraveProfileSyncService* sync_service =
     GetProfileSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->OnResolvedSyncRecords(
-    params->category_name,
-    std::move(records));
+  sync_service->GetBraveSyncClient()->sync_message_handler()
+    ->OnResolvedSyncRecords(params->category_name, std::move(records));
 
   return RespondNow(NoArguments());
 }
@@ -145,8 +146,8 @@ BraveSyncSaveBookmarksBaseOrderFunction::Run() {
   BraveProfileSyncService* sync_service =
     GetProfileSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->OnSaveBookmarksBaseOrder(
-      params->order);
+  sync_service->GetBraveSyncClient()->sync_message_handler()
+    ->OnSaveBookmarksBaseOrder(params->order);
 
   return RespondNow(NoArguments());
 }
@@ -159,7 +160,8 @@ ExtensionFunction::ResponseAction BraveSyncSyncWordsPreparedFunction::Run() {
   BraveProfileSyncService* sync_service =
     GetProfileSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->OnSyncWordsPrepared(params->words);
+  sync_service->GetBraveSyncClient()->sync_message_handler()
+    ->OnSyncWordsPrepared(params->words);
 
   return RespondNow(NoArguments());
 }

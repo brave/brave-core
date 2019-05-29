@@ -34,15 +34,17 @@ void BraveSyncClientImpl::set_for_testing(BraveSyncClient* sync_client) {
 }
 
 // static
-BraveSyncClient* BraveSyncClient::Create(Profile* profile) {
+BraveSyncClient* BraveSyncClient::Create(SyncMessageHandler* handler,
+                                         Profile* profile) {
   if (brave_sync_client_for_testing_)
     return brave_sync_client_for_testing_;
 
-  return new BraveSyncClientImpl(profile);
+  return new BraveSyncClientImpl(handler, profile);
 }
 
-BraveSyncClientImpl::BraveSyncClientImpl(Profile* profile) :
-    handler_(nullptr),
+BraveSyncClientImpl::BraveSyncClientImpl(SyncMessageHandler* handler,
+                                         Profile* profile) :
+    handler_(handler),
     profile_(profile),
     sync_prefs_(new brave_sync::prefs::Prefs(profile->GetPrefs())),
     extension_loaded_(false),
@@ -58,12 +60,6 @@ BraveSyncClientImpl::~BraveSyncClientImpl() {}
 
 SyncMessageHandler* BraveSyncClientImpl::sync_message_handler() {
   return handler_;
-}
-
-void BraveSyncClientImpl::set_sync_message_handler(
-    SyncMessageHandler* handler) {
-  DCHECK(handler);
-  handler_ = handler;
 }
 
 void BraveSyncClientImpl::SendGotInitData(const Uint8Array& seed,

@@ -13,6 +13,7 @@
 #include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
+#include "brave/components/brave_sync/client/brave_sync_client_impl.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/settings.h"
@@ -177,13 +178,14 @@ void CreateResolveList(
 
 }   // namespace
 
-BraveProfileSyncService::BraveProfileSyncService(InitParams init_params)
-  : syncer::ProfileSyncService(std::move(init_params)) {
+BraveProfileSyncService::BraveProfileSyncService(Profile* profile,
+                                                 InitParams init_params) :
+    syncer::ProfileSyncService(std::move(init_params)),
+    brave_sync_client_(BraveSyncClient::Create(this, profile)) {
   brave_sync_words_ = std::string();
   brave_sync_prefs_ =
     std::make_unique<prefs::Prefs>(
       ProfileSyncService::GetSyncClient()->GetPrefService());
-  GetBraveSyncClient()->set_sync_message_handler(this);
 
   // Moniter syncs prefs required in GetSettingsAndDevices
   brave_pref_change_registrar_.Init(
@@ -229,7 +231,7 @@ void BraveProfileSyncService::OnNudgeSyncCycle(
     record->deviceId = brave_sync_prefs_->GetThisDeviceId();
   }
   if (!records->empty())
-    GetBraveSyncClient()->SendSyncRecords(
+    brave_sync_client_->SendSyncRecords(
       jslib_const::SyncRecordType_BOOKMARKS, *records);
 }
 
@@ -332,7 +334,7 @@ void BraveProfileSyncService::GetSyncWords() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   // Ask sync client
   std::string seed = brave_sync_prefs_->GetSeed();
-  GetBraveSyncClient()->NeedSyncWords(seed);
+  brave_sync_client_->NeedSyncWords(seed);
 }
 
 std::string BraveProfileSyncService::GetSeed() {
@@ -417,7 +419,7 @@ void BraveProfileSyncService::OnGetInitData(const std::string& sync_version) {
   config.api_version = brave_sync_prefs_->GetApiVersion();
   config.server_url = "https://sync.brave.com";
   config.debug = true;
-  GetBraveSyncClient()->SendGotInitData(seed, device_id, config,
+  brave_sync_client_->SendGotInitData(seed, device_id, config,
                                         brave_sync_words_);
 }
 
@@ -466,7 +468,7 @@ void BraveProfileSyncService::OnSyncReady() {
     brave_sync_prefs_->GetBookmarksBaseOrder();
   if (bookmarks_base_order.empty()) {
     std::string platform = tools::GetPlatformName();
-    GetBraveSyncClient()->SendGetBookmarksBaseOrder(
+    brave_sync_client_->SendGetBookmarksBaseOrder(
                             brave_sync_prefs_->GetThisDeviceId(),
                             platform);
     // OnSyncReady will be called by OnSaveBookmarksBaseOrder
@@ -519,7 +521,7 @@ void BraveProfileSyncService::OnGetExistingObjects(
         *records.get(), records_and_existing_objects.get(),
         model_,
         brave_sync_prefs_.get());
-    GetBraveSyncClient()->SendResolveSyncRecords(
+    brave_sync_client_->SendResolveSyncRecords(
         category_name, std::move(records_and_existing_objects));
   }
 }
@@ -659,7 +661,7 @@ void BraveProfileSyncService::FetchSyncRecords(const bool bookmarks,
   brave_sync_prefs_->SetLastFetchTime(base::Time::Now());
 
   base::Time start_at_time = brave_sync_prefs_->GetLatestRecordTime();
-  GetBraveSyncClient()->SendFetchSyncRecords(
+  brave_sync_client_->SendFetchSyncRecords(
     category_names,
     start_at_time,
     max_records);
@@ -691,7 +693,7 @@ void BraveProfileSyncService::SendDeviceSyncRecord(
       object_id,
       static_cast<SyncRecord::Action>(action),
       device_id);
-  GetBraveSyncClient()->SendSyncRecords(
+  brave_sync_client_->SendSyncRecords(
       SyncRecordType_PREFERENCES, *records);
 }
 
@@ -744,7 +746,7 @@ void BraveProfileSyncService::OnResolvedPreferences(
 
 void BraveProfileSyncService::OnBraveSyncPrefsChanged(const std::string& pref) {
   if (pref == prefs::kSyncEnabled) {
-    GetBraveSyncClient()->OnSyncEnabledChanged();
+    brave_sync_client_->OnSyncEnabledChanged();
     if (!brave_sync_prefs_->GetSyncEnabled()) {
       brave_sync_initialized_ = false;
       ProfileSyncService::GetUserSettings()->SetSyncRequested(false);
@@ -755,7 +757,7 @@ void BraveProfileSyncService::OnBraveSyncPrefsChanged(const std::string& pref) {
 
 BraveSyncClient* BraveProfileSyncService::GetBraveSyncClient() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return ProfileSyncService::GetSyncClient()->GetBraveSyncClient();
+  return brave_sync_client_.get();
 }
 
 bool BraveProfileSyncService::IsBraveSyncEnabled() const {
@@ -774,7 +776,7 @@ void BraveProfileSyncService::OnPollSyncCycle(GetRecordsCallback cb,
                                          base::WaitableEvent* wevent) {
   if (IsTimeEmpty(brave_sync_prefs_->GetLastFetchTime()))
     SendCreateDevice();
-  GetBraveSyncClient()->SendFetchSyncDevices();
+  brave_sync_client_->SendFetchSyncDevices();
 
   if (!brave_sync_initialized_) {
     wevent->Signal();
