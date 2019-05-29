@@ -43,7 +43,6 @@ class BraveSyncClientImpl : public BraveSyncClient,
 
   // BraveSync to Browser messages
   SyncMessageHandler* sync_message_handler() override;
-  void set_sync_message_handler(SyncMessageHandler* handler) override;
 
   // Browser to BraveSync messages
   void SendGotInitData(const Uint8Array& seed, const Uint8Array& device_id,
@@ -68,7 +67,7 @@ class BraveSyncClientImpl : public BraveSyncClient,
   friend class ::BraveSyncServiceTest;
   static void set_for_testing(BraveSyncClient* sync_client);
 
-  explicit BraveSyncClientImpl(Profile* profile);
+  explicit BraveSyncClientImpl(SyncMessageHandler* handler, Profile* profile);
 
   void OnExtensionInitialized() override;
   void OnSyncEnabledChanged() override;

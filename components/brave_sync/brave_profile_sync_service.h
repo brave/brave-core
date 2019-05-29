@@ -43,7 +43,7 @@ class BraveProfileSyncService : public syncer::ProfileSyncService,
                                 public BraveSyncService,
                                 public SyncMessageHandler {
  public:
-  explicit BraveProfileSyncService(InitParams init_params);
+  explicit BraveProfileSyncService(Profile* profile, InitParams init_params);
 
   ~BraveProfileSyncService() override;
 
@@ -92,7 +92,7 @@ class BraveProfileSyncService : public syncer::ProfileSyncService,
   // once (before this object is destroyed).
   void Shutdown() override;
 
-  brave_sync::BraveSyncClient* GetBraveSyncClient() override;
+  BraveSyncClient* GetBraveSyncClient() override;
 
   bool IsBraveSyncEnabled() const override;
   bool IsBraveSyncInitialized() const;
@@ -162,6 +162,8 @@ class BraveProfileSyncService : public syncer::ProfileSyncService,
   PrefChangeRegistrar brave_pref_change_registrar_;
 
   bookmarks::BookmarkModel* model_ = nullptr;
+
+  std::unique_ptr<BraveSyncClient> brave_sync_client_;
 
   // Used to ensure that certain operations are performed on the sequence that
   // this object was created on.
