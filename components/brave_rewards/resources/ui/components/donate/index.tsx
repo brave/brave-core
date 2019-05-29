@@ -114,7 +114,7 @@ export default class Donate extends React.PureComponent<Props, State> {
             <StyledAmountsWrapper isMobile={isMobile}>
               {
                 donationAmounts && donationAmounts.map((donation: Donation) => {
-                  return <div key={`${id}-donate-${donation.tokens}`}>
+                  return <div key={`${id}-tip-${donation.tokens}`}>
                     <Amount
                       isMobile={isMobile}
                       amount={donation.tokens}
@@ -130,7 +130,7 @@ export default class Donate extends React.PureComponent<Props, State> {
           {children}
         </StyledContent>
 
-        <StyledSend onClick={this.validateDonation}>
+        <StyledSend onClick={this.validateDonation} data-test-id={'send-tip-button'}>
           <StyledButtonWrapper isMobile={isMobile}>
             <StyledSendButton>
               <StyledIconSend disabled={disabled} donateType={donateType}>

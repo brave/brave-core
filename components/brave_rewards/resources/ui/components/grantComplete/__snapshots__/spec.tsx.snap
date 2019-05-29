@@ -129,11 +129,13 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   >
     <button
       className="c5 c6"
+      id="grant-completed-ok"
       size="call-to-action"
       type="accent"
     >
       <div
         className="c7"
+        id="grant-completed-ok"
         size="call-to-action"
         type="accent"
       >

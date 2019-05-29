@@ -507,6 +507,7 @@ exports[`List tests basic tests matches the snapshot 1`] = `
           </div>
           <div
             className="c27"
+            data-test-id="send-tip-button"
             onClick={[Function]}
           >
             <div

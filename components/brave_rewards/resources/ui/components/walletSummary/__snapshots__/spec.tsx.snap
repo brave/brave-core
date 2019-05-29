@@ -192,6 +192,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
     <div>
       <div
         className="c4"
+        data-test-id="summary-grant"
       >
         <div
           className="c5"
@@ -233,6 +234,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       </div>
       <div
         className="c4"
+        data-test-id="summary-ads"
       >
         <div
           className="c5"
@@ -274,6 +276,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       </div>
       <div
         className="c4"
+        data-test-id="summary-contribute"
       >
         <div
           className="c5"
@@ -315,6 +318,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       </div>
       <div
         className="c4"
+        data-test-id="summary-donation"
       >
         <div
           className="c5"
@@ -356,6 +360,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
       </div>
       <div
         className="c4"
+        data-test-id="summary-tips"
       >
         <div
           className="c5"

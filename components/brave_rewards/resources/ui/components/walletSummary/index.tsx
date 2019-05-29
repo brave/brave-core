@@ -93,6 +93,7 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
         current++
         result.push((
           <ListToken
+            testId={`summary-${item.key}`}
             key={`summary-${tokenSize}-${index}-${data.tokens}`}
             size={tokenSize}
             value={data.tokens}
@@ -144,8 +145,8 @@ export default class WalletSummary extends React.PureComponent<Props, {}> {
             {this.generateList()}
             {
               reservedAmount && reservedAmount > 0
-              ? <StyledReservedWrapper>
-                {getLocale('reservedAmountText', { reservedAmount })} <StyledReservedLink href={reservedMoreLink} target={'_blank'}>
+              ? <StyledReservedWrapper data-test-id={'pending-contribution-box'}>
+                {getLocale('reservedAmountText', { reservedAmount: reservedAmount.toFixed(1) })} <StyledReservedLink href={reservedMoreLink} target={'_blank'}>
                   {getLocale('reservedMoreLink')}
                 </StyledReservedLink>
                 {

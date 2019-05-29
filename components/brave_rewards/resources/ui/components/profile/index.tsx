@@ -170,7 +170,7 @@ export default class Profile extends React.PureComponent<Props, {}> {
         {
           this.getUnverifiedInfo()
         }
-        <StyledVerifiedCheckLink onClick={onRefreshPublisher}>
+        <StyledVerifiedCheckLink onClick={onRefreshPublisher} data-test-id={'unverified-check-button'}>
           {getLocale('unVerifiedCheck')}
         </StyledVerifiedCheckLink>
       </StyledProviderWrap>

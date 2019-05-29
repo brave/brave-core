@@ -54,6 +54,7 @@ export default class GrantComplete extends React.PureComponent<Props, {}> {
             size={'call-to-action'}
             type={'accent'}
             onClick={onClose}
+            id={'grant-completed-ok'}
           />
         </StyledButtonWrapper>
       </StyledWrapper>

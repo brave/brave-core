@@ -81,6 +81,7 @@ exports[`Amount tests basic tests matches the snapshot 1`] = `
 
 <button
   className="c0"
+  data-test-id="amount-wrapper"
   id="amount"
   onClick={[Function]}
 >

@@ -83,7 +83,17 @@ export interface ActionWallet {
   testId?: string
 }
 
-export type NotificationType = 'ads' | 'ads-launch' | 'backupWallet' | 'contribute' | 'grant' | 'insufficientFunds' | 'tipsProcessed' | 'error' | ''
+export type NotificationType =
+  'ads' |
+  'ads-launch' |
+  'backupWallet' |
+  'contribute' |
+  'grant' |
+  'insufficientFunds' |
+  'tipsProcessed' |
+  'error' |
+  'pendingContribution' |
+  ''
 
 export interface Notification {
   id: string
@@ -264,6 +274,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         buttonText = getLocale('backupNow')
         buttonAction = this.onNotificationClick
         break
+      case 'insufficientFunds':
+        buttonText = getLocale('addFunds')
+        buttonAction = this.onNotificationClick
+        break
       default:
         buttonText = getLocale('ok').toUpperCase()
         break
@@ -289,8 +303,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
     return (
       <>
-        <StyledNotificationCloseIcon>
-          <CloseCircleOIcon onClick={onClose} />
+        <StyledNotificationCloseIcon data-test-id={'notification-close'} onClick={onClose}>
+          <CloseCircleOIcon />
         </StyledNotificationCloseIcon>
         <StyledNotificationContent>
           {this.getNotificationIcon(notification)}
@@ -323,6 +337,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         break
       case 'contribute':
       case 'tipsProcessed':
+      case 'pendingContribution':
         icon = loveIconUrl
         break
       case 'grant':
@@ -369,6 +384,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         break
       case 'tipsProcessed':
         typeText = getLocale('contributionTips')
+        break
+      case 'pendingContribution':
+        typeText = getLocale('pendingContributionTitle')
         break
       default:
         typeText = ''

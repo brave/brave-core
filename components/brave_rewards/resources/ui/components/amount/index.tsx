@@ -33,7 +33,7 @@ export default class Amount extends React.PureComponent<Props, {}> {
     const { id, onSelect, amount, selected, type, converted, currency, isMobile } = this.props
 
     return (
-      <StyledWrapper id={id} onClick={onSelect.bind(this, amount)} isMobile={isMobile}>
+      <StyledWrapper id={id} onClick={onSelect.bind(this, amount)} isMobile={isMobile} data-test-id={'amount-wrapper'}>
         <StyledAmount selected={selected} type={type} isMobile={isMobile}>
           <StyledLogo isMobile={isMobile}><BatColorIcon /></StyledLogo><StyledNumber>{amount}</StyledNumber> <StyledTokens>{type === 'big' ? 'BAT' : null}</StyledTokens>
         </StyledAmount>
