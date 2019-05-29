@@ -1,5 +1,6 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -65,9 +66,6 @@ source_set("extensions") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_extension:static_resources",
     "//brave/components/brave_extension:generated_resources",
-    "//brave/components/brave_sync",
-    "//brave/components/brave_sync:generated_resources",
-    "//brave/components/brave_sync:static_resources",
     "//components/prefs",
     "//components/update_client:patch_impl",
     "//components/update_client:unzip_impl",
@@ -81,6 +79,13 @@ source_set("extensions") {
     deps += [
       "//brave/components/brave_rewards/resources/extension:extension_generated_resources",
       "//brave/components/brave_rewards/resources/extension:static_resources",
+    ]
+  }
+  if (enable_brave_sync) {
+    deps += [
+    "//brave/components/brave_sync",
+    "//brave/components/brave_sync:generated_resources",
+    "//brave/components/brave_sync:static_resources",
     ]
   }
   if (enable_brave_webtorrent) {

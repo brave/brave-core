@@ -10,12 +10,12 @@
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
-#include "brave/browser/ui/webui/sync/sync_ui.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "chrome/common/url_constants.h"
+#include "extensions/buildflags/buildflags.h"
 #include "url/gurl.h"
 
 #if !defined(OS_ANDROID)
@@ -31,6 +31,10 @@
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 #include "brave/browser/ui/webui/brave_wallet_ui.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/browser/ui/webui/sync/sync_ui.h"
 #endif
 
 using content::WebUI;
@@ -52,13 +56,16 @@ WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
 template<>
 WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
-  if (host == kBraveUISyncHost && brave_sync::BraveSyncService::is_enabled()) {
-    return new SyncUI(web_ui, url.host());
-  } else if (host == kAdblockHost) {
+  if (host == kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   } else if (host == kWalletHost) {
     return new BraveWalletUI(web_ui, url.host());
+#endif
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  } else if (host == kBraveUISyncHost &&
+             brave_sync::BraveSyncService::is_enabled()) {
+    return new SyncUI(web_ui, url.host());
 #endif
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   } else if (host == kRewardsHost) {

@@ -755,10 +755,12 @@ void BraveProfileSyncService::OnBraveSyncPrefsChanged(const std::string& pref) {
   NotifySyncStateChanged();
 }
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 BraveSyncClient* BraveProfileSyncService::GetBraveSyncClient() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return brave_sync_client_.get();
 }
+#endif
 
 bool BraveProfileSyncService::IsBraveSyncEnabled() const {
   return brave_sync_prefs_->GetSyncEnabled();

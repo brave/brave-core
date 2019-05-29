@@ -7,6 +7,8 @@ import("//tools/grit/repack.gni")
 if (enable_brave_sync) {
   source_set("js_sync_lib_impl") {
     sources = [
+      "brave_profile_sync_service.cc",
+      "brave_profile_sync_service.h",
       "client/brave_sync_client.h",
       "client/brave_sync_client_impl.cc",
       "client/brave_sync_client_impl.h",
@@ -48,12 +50,23 @@ source_set("jslib_messages") {
   ]
 }
 
+source_set("prefs") {
+  sources = [
+    "brave_sync_prefs.cc",
+    "brave_sync_prefs.h",
+  ]
+
+  deps = [
+    "//components/prefs",
+  ]
+}
+
 source_set("core") {
   sources = [
     "bookmark_order_util.cc",
     "bookmark_order_util.h",
-    "brave_sync_prefs.cc",
-    "brave_sync_prefs.h",
+    "brave_sync_service.cc",
+    "brave_sync_service.h",
     "settings.cc",
     "settings.h",
     "sync_devices.cc",
@@ -68,8 +81,8 @@ source_set("core") {
 
   deps = [
     ":jslib_messages",
+    ":prefs",
     "//base",
-    "//components/prefs",
     "//crypto",
     "//extensions/buildflags",
   ]
@@ -83,10 +96,6 @@ source_set("core") {
 
 source_set("brave_sync") {
   sources = [
-    "brave_sync_service.cc",
-    "brave_sync_service.h",
-    "brave_profile_sync_service.cc",
-    "brave_profile_sync_service.h",
     "brave_sync_service_observer.h",
   ]
 
@@ -94,7 +103,6 @@ source_set("brave_sync") {
     ":core",
     "buildflags",
     "//base",
-    "//components/browser_sync",
     "//components/bookmarks/browser",
     "//components/keyed_service/content",
     "//components/keyed_service/core",

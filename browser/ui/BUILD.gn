@@ -3,6 +3,7 @@ import("//build/config/features.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_sync/buildflags/buildflags.gni")
 import("//chrome/common/features.gni")
 
 source_set("ui") {
@@ -19,9 +20,14 @@ source_set("ui") {
     "webui/brave_web_ui_controller_factory.h",
     "webui/brave_webui_source.cc",
     "webui/brave_webui_source.h",
-    "webui/sync/sync_ui.cc",
-    "webui/sync/sync_ui.h",
   ]
+
+  if (enable_brave_sync) {
+    sources += [
+      "webui/sync/sync_ui.cc",
+      "webui/sync/sync_ui.h",
+    ]
+  }
 
   if (!is_android) {
     sources += [
@@ -139,9 +145,6 @@ source_set("ui") {
     "//brave/components/brave_rewards/browser",
     "//brave/components/brave_rewards/resources",
     "//brave/components/brave_shields/browser",
-    "//brave/components/brave_sync",
-    "//brave/components/brave_sync:static_resources",
-    "//brave/components/brave_sync:generated_resources",
     "//brave/components/brave_welcome_ui:generated_resources",
     "//brave/browser:sparkle_buildflags",
     "//brave/browser/devtools",
@@ -158,6 +161,14 @@ source_set("ui") {
     "//ui/resources",
     "//ui/gfx",
   ]
+
+  if (enable_brave_sync) {
+    deps += [
+      "//brave/components/brave_sync",
+      "//brave/components/brave_sync:static_resources",
+      "//brave/components/brave_sync:generated_resources",
+    ]
+  }
 
   if (!is_android) {
     deps += [
