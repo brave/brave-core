@@ -6,9 +6,13 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SYNC_PROFILE_SYNC_SERVICE_FACTORY_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SYNC_PROFILE_SYNC_SERVICE_FACTORY_H_
 
+#include "extensions/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 namespace brave_sync {
 class BraveProfileSyncService;
 }   // namespace brave_sync
+#endif
 #include "../../../../../chrome/browser/sync/profile_sync_service_factory.h"
 
 #endif    // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_SYNC_PROFILE_SYNC_SERVICE_FACTORY_H_   // NOLINT

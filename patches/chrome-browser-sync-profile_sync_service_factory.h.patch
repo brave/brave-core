@@ -1,13 +1,15 @@
 diff --git a/chrome/browser/sync/profile_sync_service_factory.h b/chrome/browser/sync/profile_sync_service_factory.h
-index 2e2f416a055c4bcc67c02b43ccc90ac8c13bc8f0..faaf8531cb8f28e7c46550b47c5d4ed476a9ee93 100644
+index 2e2f416a055c4bcc67c02b43ccc90ac8c13bc8f0..0e400986726357c866b9b93c215451e8f8f2e9b0 100644
 --- a/chrome/browser/sync/profile_sync_service_factory.h
 +++ b/chrome/browser/sync/profile_sync_service_factory.h
-@@ -38,6 +38,8 @@ class ProfileSyncServiceFactory : public BrowserContextKeyedServiceFactory {
+@@ -38,6 +38,10 @@ class ProfileSyncServiceFactory : public BrowserContextKeyedServiceFactory {
    // absolutely necessary! Prefer GetForProfile instead.
    static syncer::ProfileSyncService* GetAsProfileSyncServiceForProfile(
        Profile* profile);
++#if BUILDFLAG(ENABLE_EXTENSIONS)
 +  static brave_sync::BraveProfileSyncService*
 +    GetAsBraveProfileSyncServiceForProfile(Profile* profile);
++#endif
  
    // Returns whether a SyncService has already been created for the profile.
    // Note that GetForProfile will create the service if it doesn't exist yet.

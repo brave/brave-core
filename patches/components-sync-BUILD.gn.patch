@@ -1,12 +1,13 @@
 diff --git a/components/sync/BUILD.gn b/components/sync/BUILD.gn
-index 0606b7e68670877100114732174af25ad0b42f77..c75b39c7d0c7647b17a047eb732089bf38549956 100644
+index 0606b7e68670877100114732174af25ad0b42f77..22a62cebbd47644c4f189be012134f7c04c92af4 100644
 --- a/components/sync/BUILD.gn
 +++ b/components/sync/BUILD.gn
-@@ -99,6 +99,7 @@ jumbo_static_library("base") {
+@@ -99,6 +99,8 @@ jumbo_static_library("base") {
    ]
    deps = [
      "//base:i18n",
 +    "//brave/components/brave_sync:jslib_messages",
++    "//brave/components/brave_sync:prefs",
      "//components/os_crypt",
      "//components/pref_registry",
      "//components/prefs",

@@ -92,7 +92,9 @@ class BraveProfileSyncService : public syncer::ProfileSyncService,
   // once (before this object is destroyed).
   void Shutdown() override;
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
   BraveSyncClient* GetBraveSyncClient() override;
+#endif
 
   bool IsBraveSyncEnabled() const override;
   bool IsBraveSyncInitialized() const;

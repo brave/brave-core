@@ -5,13 +5,17 @@
 
 #include "brave/chromium_src/chrome/browser/sync/profile_sync_service_factory.h"
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/components/brave_sync/brave_profile_sync_service.h"
 using brave_sync::BraveProfileSyncService;
+#endif
 #include "../../../../../chrome/browser/sync/profile_sync_service_factory.cc"   // NOLINT
 
+#if BUILDFLAG(ENABLE_EXTENSIONS)
 // static
 BraveProfileSyncService*
 ProfileSyncServiceFactory::GetAsBraveProfileSyncServiceForProfile(
     Profile* profile) {
   return static_cast<BraveProfileSyncService*>(GetForProfile(profile));
 }
+#endif
