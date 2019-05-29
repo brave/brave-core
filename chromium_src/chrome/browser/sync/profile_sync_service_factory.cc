@@ -5,6 +5,7 @@
 
 #include "brave/chromium_src/chrome/browser/sync/profile_sync_service_factory.h"
 
+#include "brave/common/brave_switches.h"
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/components/brave_sync/brave_profile_sync_service.h"
 using brave_sync::BraveProfileSyncService;

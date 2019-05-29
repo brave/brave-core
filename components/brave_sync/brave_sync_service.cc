@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_sync/brave_sync_service.h"
 
-#include "base/command_line.h"
-#include "brave/common/brave_switches.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
 
 namespace brave_sync {
@@ -20,13 +18,6 @@ void BraveSyncService::AddObserver(BraveSyncServiceObserver* observer) {
 
 void BraveSyncService::RemoveObserver(BraveSyncServiceObserver* observer) {
   observers_.RemoveObserver(observer);
-}
-
-// static
-bool BraveSyncService::is_enabled() {
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-  return !command_line.HasSwitch(switches::kDisableBraveSync);
 }
 
 }  // namespace brave_sync
