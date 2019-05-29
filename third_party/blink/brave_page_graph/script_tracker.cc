@@ -174,6 +174,7 @@ vector<ScriptId> ScriptTracker::GetScriptIdsForElm(
 void ScriptTracker::AddTopLevelScriptId(const ScriptId script_id) {
   LOG_ASSERT(parent_script_ids_.count(script_id) == 0);
   parent_script_ids_.emplace(script_id, script_id);
+  return;
   for (int i = max_script_id_ + 1; i < script_id; i += 1) {
     AddChildScriptIdForParentScriptId(i, script_id);
   }
@@ -185,8 +186,13 @@ void ScriptTracker::AddChildScriptIdForParentScriptId(
   PG_LOG("AddChildScriptIdForParentScriptId: child: "
       + to_string(child_script_id) + " parent: "
       + to_string(parent_script_id));
-  LOG_ASSERT(child_to_parent_script_.count(parent_script_id) == 0);
-  LOG_ASSERT(parent_script_ids_.count(child_script_id) == 0);
+  // Either we should not have see this parent script before, or
+  // the mapping should be identical to the existing one (e.g. these
+  // mappings might be redundant but they should never change).
+  LOG_ASSERT(child_to_parent_script_.count(parent_script_id) == 0 ||
+      child_to_parent_script_.at(parent_script_id) == child_script_id);
+  LOG_ASSERT(parent_script_ids_.count(child_script_id) == 0 ||
+      parent_script_ids_.at(child_script_id) == parent_script_id);
 
   child_to_parent_script_.emplace(child_script_id, parent_script_id);
 }

@@ -38,6 +38,10 @@ NodeResource* EdgeRequestStart::GetResourceNode() const {
   return static_cast<NodeResource*>(in_node_);
 }
 
+RequestUrl EdgeRequestStart::GetRequestedUrl() const {
+  return GetResourceNode()->GetUrl();
+}
+
 Node* EdgeRequestStart::GetRequestingNode() const {
   return out_node_;
 }
