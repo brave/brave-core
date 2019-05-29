@@ -36,7 +36,7 @@
 #include "services/service_manager/public/cpp/connector.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
 #include "url/gurl.h"
-#include "widevine_cdm_version.h"
+#include "widevine_cdm_version.h"  // NOLINT
 
 namespace {
 
@@ -138,8 +138,7 @@ void BraveWidevineBundleManager::DownloadWidevineBundle(
   bundle_loader_->DownloadToTempFile(
       g_browser_process->system_network_context_manager()
           ->GetURLLoaderFactory(),
-      std::move(callback)
-  );
+      std::move(callback));
 }
 
 void BraveWidevineBundleManager::OnBundleDownloaded(
@@ -180,7 +179,7 @@ void BraveWidevineBundleManager::Unzip(
     const base::FilePath& target_bundle_dir) {
   if (is_test_) return;
 
-   BraveWidevineBundleUnzipper::Create(
+  BraveWidevineBundleUnzipper::Create(
       content::ServiceManagerConnection::GetForProcess()->GetConnector(),
       file_task_runner(),
       base::BindOnce(&BraveWidevineBundleManager::OnBundleUnzipped,
@@ -249,7 +248,7 @@ void BraveWidevineBundleManager::StartupCheck() {
   };
 
   // If cdms has widevine cdminfo, it means that filesystem has widevine lib.
-  if (std::find_if(cdms.begin(), cdms.end(), has_widevine) == cdms.end() ) {
+  if (std::find_if(cdms.begin(), cdms.end(), has_widevine) == cdms.end()) {
     DVLOG(1) << __func__ << ": reset widevine prefs state";
     // Widevine is not installed yet. Don't need to check.
     // Also reset prefs to make as initial state.

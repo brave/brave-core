@@ -5,6 +5,8 @@
 
 #include "brave/browser/widevine/brave_widevine_bundle_manager.h"
 
+#include <vector>
+
 #include "base/files/scoped_temp_dir.h"
 #include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -21,7 +23,7 @@
 #include "media/base/decrypt_config.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
-#include "widevine_cdm_version.h"
+#include "widevine_cdm_version.h"  // NOLINT
 
 class TestClient : public content::TestContentClient {
  public:
