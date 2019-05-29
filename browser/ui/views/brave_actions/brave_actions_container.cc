@@ -118,9 +118,6 @@ bool BraveActionsContainer::ShouldAddAction(const std::string& id) const {
 }
 
 bool BraveActionsContainer::ShouldAddBraveRewardsAction() const {
-  // Guest (and Tor for now) should not show the action.
-  if (browser_->profile()->IsGuestSession())
-    return false;
   const PrefService* prefs = browser_->profile()->GetPrefs();
   return prefs->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled) ||
          !prefs->GetBoolean(kHideBraveRewardsButton);
