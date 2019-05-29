@@ -1,9 +1,14 @@
+import("//brave/build/config.gni")
 import("//chrome/browser/resources/optimize_webui.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 
+is_release_channel = brave_channel == ""
+
 grit("resources") {
   source = "settings_resources.grd"
+
+  defines = ["is_release_channel=$is_release_channel"]
 
   source_is_generated = optimize_webui
 
