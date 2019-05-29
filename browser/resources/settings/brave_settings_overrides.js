@@ -151,21 +151,24 @@ BravePatching.RegisterPolymerTemplateModifications({
     peopleEl.insertAdjacentElement('afterend', getStartedEl)
     // Remove People item
     peopleEl.remove()
-    // Add Extensions item
-    const extensionEl = createMenuElement(loadTimeData.getString('braveDefaultExtensions'), '/extensions', 'brave_settings:extensions')
-    getStartedEl.insertAdjacentElement('afterend', extensionEl)
+    // Move Appearance item
+    const appearanceBrowserEl = getMenuElement(templateContent, '/appearance')
+    getStartedEl.insertAdjacentElement('afterend', appearanceBrowserEl)
     // Add Sync item
     const syncEl = createMenuElement(loadTimeData.getString('braveSync'), '/braveSync', 'brave_settings:sync')
-    extensionEl.insertAdjacentElement('afterend', syncEl)
+    appearanceBrowserEl.insertAdjacentElement('afterend', syncEl)
     // Add Shields item
     const shieldsEl = createMenuElement(loadTimeData.getString('braveShieldsTitle'), '/shields',  'brave_settings:shields')
     syncEl.insertAdjacentElement('afterend', shieldsEl)
     // Add Embed Blocking item
     const embedEl = createMenuElement(loadTimeData.getString('socialBlocking'), '/socialBlocking', 'brave_settings:social-permissions')
     shieldsEl.insertAdjacentElement('afterend', embedEl)
-    // Swap search and appearance
+    // Move search item
     const searchEl = getMenuElement(templateContent, '/search')
     embedEl.insertAdjacentElement('afterend', searchEl)
+    // Add Extensions item
+    const extensionEl = createMenuElement(loadTimeData.getString('braveDefaultExtensions'), '/extensions', 'brave_settings:extensions')
+    searchEl.insertAdjacentElement('afterend', extensionEl)
     // Remove default Browser
     const defaultBrowserEl = getMenuElement(templateContent, '/defaultBrowser')
     defaultBrowserEl.remove()
@@ -234,46 +237,72 @@ BravePatching.RegisterPolymerTemplateModifications({
     if (!basicPageEl) {
       console.error('[Brave Settings Overrides] Could not find basicPage element to insert Getting Started section')
     } else {
-      const sectionsFromTop = document.createElement('div')
-      sectionsFromTop.innerHTML = `
-        <template is="dom-if" if="[[showPage_(pageVisibility.getStarted)]]">
-          <settings-section page-title="${loadTimeData.getString('braveGetStartedTitle')}" section="getStarted">
-            <brave-settings-getting-started prefs={{prefs}} page-visibility=[[pageVisibility]]></brave-settings-getting-started>
-          </settings-section>
-        </template>
-        <template is="dom-if" if="[[showPage_(pageVisibility.extensions)]]">
-          <settings-section page-title="${loadTimeData.getString('braveDefaultExtensions')}" section="extensions">
-            <settings-brave-default-extensions-page prefs="{{prefs}}"></settings-brave-default-extensions-page>
-          </settings-section>
-        </template>
-        <template is="dom-if" if="[[showPage_(pageVisibility.braveSync)]]"
-        restamp>
-          <settings-section page-title="${loadTimeData.getString('braveSync')}" section="braveSync">
-            <settings-brave-sync-page prefs="{{prefs}}"></settings-brave-sync-page>
-          </settings-section>
-        </template>
-        <template is="dom-if" if="[[showPage_(pageVisibility.shields)]]"
-        restamp>
-          <settings-section page-title="${loadTimeData.getString('braveShieldsTitle')}"
-              section="shields">
-            <settings-default-brave-shields-page  prefs="{{prefs}}"></settings-default-brave-shields-page>
-          </settings-section>
-        </template>
-        <template is="dom-if" if="[[showPage_(pageVisibility.socialBlocking)]]"
-        restamp>
-          <settings-section page-title="${loadTimeData.getString('socialBlocking')}"
-              section="socialBlocking">
-            <settings-social-blocking-page prefs="{{prefs}}"></settings-social-blocking-page>
-          </settings-section>
-        </template>
+      const sectionGetStarted = document.createElement('template')
+      sectionGetStarted.setAttribute('is', 'dom-if')
+      sectionGetStarted.setAttribute('restamp', true)
+      sectionGetStarted.setAttribute('if', '[[showPage_(pageVisibility.getStarted)]]')
+      sectionGetStarted.innerHTML = `
+        <settings-section page-title="${loadTimeData.getString('braveGetStartedTitle')}" section="getStarted">
+          <brave-settings-getting-started prefs={{prefs}} page-visibility=[[pageVisibility]]></brave-settings-getting-started>
+        </settings-section>
       `
-      basicPageEl.insertAdjacentElement('afterbegin', sectionsFromTop)
-      // Move 'search' to before 'appearance'
-      const searchEl = getSectionElement(actualTemplate.content, 'search')
-      sectionsFromTop.insertAdjacentElement('beforeend', searchEl)
+      const sectionExtensions = document.createElement('template')
+      sectionExtensions.setAttribute('is', 'dom-if')
+      sectionExtensions.setAttribute('restamp', true)
+      sectionExtensions.setAttribute('if', '[[showPage_(pageVisibility.extensions)]]')
+      sectionExtensions.innerHTML = `
+        <settings-section page-title="${loadTimeData.getString('braveDefaultExtensions')}" section="extensions">
+          <settings-brave-default-extensions-page prefs="{{prefs}}"></settings-brave-default-extensions-page>
+        </settings-section>
+      `
+      const sectionSync = document.createElement('template')
+      sectionSync.setAttribute('is', 'dom-if')
+      sectionSync.setAttribute('restamp', true)
+      sectionSync.setAttribute('if', '[[showPage_(pageVisibility.braveSync)]]')
+      sectionSync.innerHTML = `
+        <settings-section page-title="${loadTimeData.getString('braveSync')}" section="braveSync">
+          <settings-brave-sync-page prefs="{{prefs}}"></settings-brave-sync-page>
+        </settings-section>
+      `
+      const sectionShields = document.createElement('template')
+      sectionShields.setAttribute('is', 'dom-if')
+      sectionShields.setAttribute('restamp', true)
+      sectionShields.setAttribute('if', '[[showPage_(pageVisibility.shields)]]')
+      sectionShields.innerHTML = `
+        <settings-section page-title="${loadTimeData.getString('braveShieldsTitle')}"
+            section="shields">
+          <settings-default-brave-shields-page  prefs="{{prefs}}"></settings-default-brave-shields-page>
+        </settings-section>
+      `
+      const sectionSocialBlocking = document.createElement('template')
+      sectionSocialBlocking.setAttribute('is', 'dom-if')
+      sectionSocialBlocking.setAttribute('restamp', true)
+      sectionSocialBlocking.setAttribute('if', '[[showPage_(pageVisibility.socialBlocking)]]')
+      sectionSocialBlocking.innerHTML = `
+        <settings-section page-title="${loadTimeData.getString('socialBlocking')}"
+            section="socialBlocking">
+          <settings-social-blocking-page prefs="{{prefs}}"></settings-social-blocking-page>
+        </settings-section>
+      `
+      // Get Started at top
+      basicPageEl.insertAdjacentElement('afterbegin', sectionGetStarted)
+      // Move Appearance item
+      const sectionAppearance = getSectionElement(actualTemplate.content, 'appearance')
+      sectionGetStarted.insertAdjacentElement('afterend', sectionAppearance)
+      // Insert sync
+      sectionAppearance.insertAdjacentElement('afterend', sectionSync)
+      // Insert shields
+      sectionSync.insertAdjacentElement('afterend', sectionShields)
+      // Insert Social Blocking
+      sectionShields.insertAdjacentElement('afterend', sectionSocialBlocking)
+      // Move search
+      const sectionSearch = getSectionElement(actualTemplate.content, 'search')
+      sectionSocialBlocking.insertAdjacentElement('afterend', sectionSearch)
+      // Insert extensions
+      sectionSearch.insertAdjacentElement('afterend', sectionExtensions)
       // Remove 'startup'
-      const startupEl = getSectionElement(actualTemplate.content, 'onStartup')
-      startupEl.remove()
+      const sectionStartup = getSectionElement(actualTemplate.content, 'onStartup')
+      sectionStartup.remove()
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')
       if (!advancedTemplate) {
@@ -293,9 +322,9 @@ BravePatching.RegisterPolymerTemplateModifications({
       }
       advancedToggleText.innerText = loadTimeData.getString('braveAdditionalSettingsTitle')
       // Move autofill to after privacy
-      const autofillEl = getSectionElement(actualTemplate.content, 'autofill')
-      const privacyEl = getSectionElement(advancedSubSectionsTemplate.content, 'privacy')
-      privacyEl.insertAdjacentElement('afterend', autofillEl)
+      const sectionAutofill = getSectionElement(actualTemplate.content, 'autofill')
+      const sectionPrivacy = getSectionElement(advancedSubSectionsTemplate.content, 'privacy')
+      sectionPrivacy.insertAdjacentElement('afterend', sectionAutofill)
     }
   },
   'settings-default-browser-page': (templateContent) => {
