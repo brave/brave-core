@@ -1,0 +1,75 @@
+declare_args() {
+  use_adblock_shared_lib = is_mac
+  adblock_flags = ""
+}
+
+adblock_shared_lib_install_name = ""
+
+if (use_adblock_shared_lib && adblock_flags == "") {
+  if (!is_component_build) {
+    adblock_shared_lib_install_name = "@loader_path/../../Libraries/libadblock.dylib"
+    adblock_flags = "-C link-args=-Wl,-install_name,$adblock_shared_lib_install_name"
+  }
+}
+
+adblock_build_path = "$root_gen_dir/adblock/out"
+
+adblock_lib_path = adblock_build_path
+
+adblock_target = ""
+
+# See https://forge.rust-lang.org/platform-support.html for possible targets
+if (is_win) {
+  if (target_cpu == "x86") {
+    adblock_flags += " -C target-feature=+crt-static"
+    adblock_target = "i686-pc-windows-msvc"
+  } else if (target_cpu == "x64") {
+    adblock_target = "x86_64-pc-windows-msvc"
+  }
+} else if (is_mac) {
+  if (target_cpu == "x64") {
+    adblock_target = "x86_64-apple-darwin"
+  }
+} else if (is_linux) {
+  if (target_cpu == "x64") {
+    adblock_target = "x86_64-unknown-linux-gnu"
+  }
+} else if (is_android) {
+  if (target_cpu == "arm") {
+    adblock_target = "arm-linux-androideabi"
+  } else if (target_cpu == "arm64") {
+    adblock_target = "aarch64-linux-android"
+  } else if (target_cpu == "x86") {
+    adblock_target = "i686-linux-android"
+  } else if (target_cpu == "x64") {
+    adblock_target = "x86_64-linux-android"
+  }
+} else if (is_ios) {
+  if (target_cpu == "arm64") {
+    adblock_target = "aarch64-apple-ios"
+  } else if (target_cpu == "x64") {
+    adblock_target = "x86_64-apple-ios"
+  }
+}
+
+if (adblock_target != "") {
+  adblock_lib_path += "/" + adblock_target
+}
+
+if (is_debug) {
+  adblock_lib_path += "/debug"
+} else {
+  adblock_lib_path += "/release"
+}
+
+if (is_win) {
+  adblock_lib_path += "/adblock.lib"
+} else if (is_linux || is_android || is_ios) {
+  adblock_lib_path += "/libadblock.a"
+} else if (is_mac) {
+  if (use_adblock_shared_lib) {
+    adblock_lib_path += "/libadblock.dylib"
+  } else {
+    adblock_lib_path += "/libadblock.a"
+  }
+}
