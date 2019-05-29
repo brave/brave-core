@@ -12,6 +12,7 @@
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
+#include "components/bookmarks/browser/bookmark_model.h"
 #include "components/sync/driver/profile_sync_service.h"
 
 FORWARD_DECLARE_TEST(BraveSyncServiceTest, BookmarkAdded);

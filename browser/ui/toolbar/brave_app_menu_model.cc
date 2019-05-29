@@ -7,7 +7,7 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/profiles/profile_util.h"
-#include "brave/components/brave_sync/brave_sync_service.h"
+#include "brave/common/brave_switches.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
@@ -43,7 +43,7 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
           IDC_SHOW_BRAVE_WALLET,
           IDS_SHOW_BRAVE_WALLET);
     #endif
-    if (brave_sync::BraveSyncService::is_enabled()) {
+    if (switches::IsBraveSyncAllowedByFlag()) {
       InsertItemWithStringIdAt(
           #if BUILDFLAG(BRAVE_WALLET_ENABLED)
             GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET),

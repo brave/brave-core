@@ -54,6 +54,10 @@ source_set("prefs") {
   sources = [
     "brave_sync_prefs.cc",
     "brave_sync_prefs.h",
+    "settings.cc",
+    "settings.h",
+    "sync_devices.cc",
+    "sync_devices.h",
   ]
 
   deps = [
@@ -67,10 +71,6 @@ source_set("core") {
     "bookmark_order_util.h",
     "brave_sync_service.cc",
     "brave_sync_service.h",
-    "settings.cc",
-    "settings.h",
-    "sync_devices.cc",
-    "sync_devices.h",
     "syncer_helper.cc",
     "syncer_helper.h",
     "tools.cc",

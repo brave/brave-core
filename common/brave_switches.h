@@ -8,6 +8,10 @@
 
 namespace switches {
 
+// This function can be called from any thread, and the implementation doesn't
+// assume it's running on the UI thread.
+bool IsBraveSyncAllowedByFlag();
+
 // All switches in alphabetical order. The switches should be documented
 // alongside the definition of their values in the .cc file.
 extern const char kDisableBraveExtension[];

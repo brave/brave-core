@@ -11,7 +11,6 @@
 
 #include "base/macros.h"
 #include "base/observer_list.h"
-#include "components/bookmarks/browser/bookmark_storage.h"
 #include "extensions/buildflags/buildflags.h"
 
 class Profile;
@@ -22,8 +21,6 @@ class BraveSyncClient;
 class BraveSyncServiceObserver;
 class Settings;
 class SyncDevices;
-
-bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node);
 
 class BraveSyncService {
  public:
@@ -54,8 +51,6 @@ class BraveSyncService {
 
   void AddObserver(BraveSyncServiceObserver* observer);
   void RemoveObserver(BraveSyncServiceObserver* observer);
-
-  static bool is_enabled();
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   virtual BraveSyncClient* GetBraveSyncClient() = 0;

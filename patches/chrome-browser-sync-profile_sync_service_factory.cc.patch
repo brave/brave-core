@@ -1,7 +1,16 @@
 diff --git a/chrome/browser/sync/profile_sync_service_factory.cc b/chrome/browser/sync/profile_sync_service_factory.cc
-index a1d9f0f8a50a9922d45645a48c235fb0f61d3729..c8414fb6cf9a829d1f3db822f688d4c5c91d523b 100644
+index a1d9f0f8a50a9922d45645a48c235fb0f61d3729..a818f0fe4d029d6d6149ac221b79299d9dea5ec4 100644
 --- a/chrome/browser/sync/profile_sync_service_factory.cc
 +++ b/chrome/browser/sync/profile_sync_service_factory.cc
+@@ -104,7 +104,7 @@ ProfileSyncServiceFactory* ProfileSyncServiceFactory::GetInstance() {
+ // static
+ syncer::SyncService* ProfileSyncServiceFactory::GetForProfile(
+     Profile* profile) {
+-  if (!switches::IsSyncAllowedByFlag()) {
++  if (!switches::IsSyncAllowedByFlag() || !switches::IsBraveSyncAllowedByFlag()) {
+     return nullptr;
+   }
+ 
 @@ -263,7 +263,11 @@ KeyedService* ProfileSyncServiceFactory::BuildServiceInstanceFor(
    }
  

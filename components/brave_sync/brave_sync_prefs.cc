@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 
-#include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/sync_devices.h"
 #include "components/prefs/pref_service.h"
@@ -95,8 +94,7 @@ void Prefs::SetBookmarksBaseOrder(const std::string& order) {
 }
 
 bool Prefs::GetSyncEnabled() const {
-  return BraveSyncService::is_enabled() &&
-    pref_service_->GetBoolean(kSyncEnabled);
+  return pref_service_->GetBoolean(kSyncEnabled);
 }
 
 void Prefs::SetSyncEnabled(const bool sync_this_device) {
