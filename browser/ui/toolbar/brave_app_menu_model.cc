@@ -11,6 +11,7 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 
 BraveAppMenuModel::BraveAppMenuModel(
     ui::AcceleratorProvider* provider,
@@ -35,9 +36,19 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
         GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
         IDC_SHOW_BRAVE_REWARDS,
         IDS_SHOW_BRAVE_REWARDS);
-    if (brave_sync::BraveSyncService::is_enabled()) {
+    #if BUILDFLAG(BRAVE_WALLET_ENABLED)
       InsertItemWithStringIdAt(
           GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
+          IDC_SHOW_BRAVE_WALLET,
+          IDS_SHOW_BRAVE_WALLET);
+    #endif
+    if (brave_sync::BraveSyncService::is_enabled()) {
+      InsertItemWithStringIdAt(
+          #if BUILDFLAG(BRAVE_WALLET_ENABLED)
+            GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET),
+          #else
+            GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
+          #endif
           IDC_SHOW_BRAVE_SYNC,
           IDS_SHOW_BRAVE_SYNC);
     }

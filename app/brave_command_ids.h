@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -15,6 +16,7 @@
 #define IDC_NEW_OFFTHERECORD_WINDOW_TOR 56003
 #define IDC_CONTENT_CONTEXT_OPENLINKTOR 56004
 #define IDC_SHOW_BRAVE_SYNC      56005
+#define IDC_SHOW_BRAVE_WALLET    56006
 
 #define IDC_BRAVE_COMMANDS_LAST  57000
 
