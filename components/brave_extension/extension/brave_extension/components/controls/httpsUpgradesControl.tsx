@@ -15,7 +15,7 @@ import {
 } from 'brave-ui/features/shields'
 
 // Group Components
-import StaticList from '../list/static'
+import HTTPSUpgrades from '../list/httpsUpgrades'
 
 // Locale
 import { getLocale } from '../../background/api/localeAPI'
@@ -128,11 +128,10 @@ export default class HTTPSUpgradesControl extends React.PureComponent<Props, Sta
         </BlockedInfoRow>
         {
           connectionsUpgradedOpen &&
-            <StaticList
+            <HTTPSUpgrades
               favicon={favicon}
               hostname={hostname}
               stats={httpsRedirected}
-              name={getLocale('connectionsUpgradedHTTPS')}
               list={httpsRedirectedResources}
               onClose={this.onOpenConnectionsUpgradedToHTTPS}
             />
