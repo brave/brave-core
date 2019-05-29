@@ -777,6 +777,17 @@ void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
   profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, is_enabled);
 }
 
+void AdsServiceImpl::MigrateAdsEnabled(const bool is_enabled) {
+  if (profile_->GetPrefs()->GetBoolean(
+      prefs::kBraveAdsEnabledMigrated)) {
+    return;
+  }
+
+  SetAdsEnabled(is_enabled);
+
+  profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabledMigrated, true);
+}
+
 uint64_t AdsServiceImpl::GetAdsPerHour() const {
   return profile_->GetPrefs()->GetUint64(prefs::kBraveAdsPerHour);
 }

@@ -96,6 +96,7 @@ void AdsServiceFactory::RegisterProfilePrefs(
   }
 
   registry->RegisterBooleanPref(prefs::kBraveAdsEnabled, false);
+  registry->RegisterBooleanPref(prefs::kBraveAdsEnabledMigrated, false);
 
   registry->RegisterUint64Pref(prefs::kBraveAdsPerHour, 2);
 
