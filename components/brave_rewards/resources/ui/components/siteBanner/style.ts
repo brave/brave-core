@@ -2,7 +2,7 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { Props } from './index'
 import bg1Url from './assets/bg_bats.svg'
 import bg2Url from './assets/bg_hearts.svg'
@@ -10,49 +10,18 @@ import bg2Url from './assets/bg_hearts.svg'
 interface StyleProps {
   padding?: boolean
   bg?: string
-  isMobile?: boolean
   isTwitterTip?: boolean
-}
-
-const getTextStyle = (isMobile?: boolean) => {
-  if (!isMobile) {
-    return css`
-      flex-grow: 1;
-      flex-shrink: 1;
-      flex-basis: calc(100% - 217px);
-    `
-  }
-
-  return css`
-    display: block;
-    margin-top: -60px;
-  `
-}
-
-const getDonationStyle = (isMobile?: boolean) => {
-  if (!isMobile) {
-    return null
-  }
-
-  return css`
-    width: 100%;
-    bottom: 0;
-    left: 0;
-    height: 237px;
-    position: fixed;
-    box-shadow: 0 -2px 8px 0 rgba(12,13,33,0.35);
-  `
 }
 
 export const StyledWrapper = styled<StyleProps, 'div'>('div')`
   overflow-y: scroll;
-  height: ${p => p.isMobile ? 'calc(100% - 237px)' : 'auto'};
-  padding: ${p => p.isMobile ? '10px 15' : 0}px;
+  height: auto;
+  padding: 0px;
   font-family: Poppins, sans-serif;
 `
 
 export const StyledContentWrapper = styled<StyleProps, 'div'>('div')`
-  display: ${p => p.isMobile ? 'block' : 'flex'};
+  display: flex;
   justify-content: space-between;
   align-items: stretch;
   align-content: flex-start;
@@ -78,12 +47,11 @@ export const StyledDonation = styled<StyleProps, 'div'>('div')`
   justify-content: space-between;
   display: flex;
   flex-direction: column;
-  ${p => getDonationStyle(p.isMobile)}
 `
 
 export const StyledBanner = styled<StyleProps, 'div'>('div')`
   position: relative;
-  min-width: ${p => p.isMobile ? 'unset' : '900px'};
+  min-width: 900px;
   background: #DBE3F3;
 `
 
@@ -114,7 +82,7 @@ export const StyledClose = styled<{}, 'button'>('button')`
 `
 
 export const StyledLogoWrapper = styled<StyleProps, 'div'>('div')`
-  padding-left: ${p => p.isMobile ? 20 : 45}px;
+  padding-left: 45px;
   flex-basis: 217px;
 `
 
@@ -123,21 +91,21 @@ export const StyledLogoText = styled<StyleProps, 'div'>('div')`
   -webkit-background-clip: text;
   color: transparent;
   filter: invert(1) grayscale(1) contrast(9);
-  font-size: ${p => p.isMobile ? 50 : 80}px;
+  font-size: 80px;
   font-weight: 600;
   text-align: center;
   letter-spacing: 0;
   line-height: 1;
   text-transform: uppercase;
   user-select: none;
-  margin-top: ${p => p.isMobile ? -15 : 0}px;
+  margin-top: 0px;
 `
 
 export const StyledLogoBorder = styled<StyleProps, 'div'>('div')`
   border: 6px solid #fff;
   border-radius: 50%;
-  width: ${p => p.isMobile ? 100 : 160}px;
-  height: ${p => p.isMobile ? 100 : 160}px;
+  width: 160px;
+  height: 160px;
   background: ${p => p.bg || '#DE4D26'};
   padding-top: ${p => p.padding ? '35px' : 0};
   margin: -66px 0 25px;
@@ -145,7 +113,9 @@ export const StyledLogoBorder = styled<StyleProps, 'div'>('div')`
 `
 
 export const StyledTextWrapper = styled<StyleProps, 'div'>('div')`
-  ${p => getTextStyle(p.isMobile)}
+  flex-grow: 1;
+  flex-shrink: 1;
+  flex-basis: calc(100% - 217px);
 `
 
 export const StyledTitle = styled<StyleProps, 'div'>('div')`
@@ -153,8 +123,8 @@ export const StyledTitle = styled<StyleProps, 'div'>('div')`
   font-weight: 600;
   line-height: 1;
   color: #4b4c5c;
-  margin: ${p => p.isMobile ? 25 : 10}px 0 0;
-  padding-left: ${p => p.isMobile ? 25 : 0}px;
+  margin: 10px 0 0;
+  padding-left: 0px;
 `
 
 export const StyledText = styled<StyleProps, 'div'>('div')`
@@ -163,15 +133,15 @@ export const StyledText = styled<StyleProps, 'div'>('div')`
   line-height: 1.5;
   color: #686978;
   padding-right: 37px;
-  padding-left: ${p => p.isMobile ? 25 : 0}px;
+  padding-left: 0px;
 `
 
 export const StyledWallet = styled<StyleProps, 'div'>('div')`
   font-size: 12px;
   color: #afb2f1;
   text-align: right;
-  margin: ${p => p.isMobile ? 20 : 8}px 0 10px;
-  padding: 0 ${p => p.isMobile ? 20 : 19}px 0 55px;
+  margin: 8px 0 10px;
+  padding: 0 19px 0 55px;
 `
 
 export const StyledTokens = styled<{}, 'span'>('span')`
@@ -228,8 +198,8 @@ export const StyledSocialIcon = styled<{}, 'span'>('span')`
 
 export const StyledSocialWrapper = styled<StyleProps, 'div'>('div')`
   text-align: right;
-  padding-right: ${p => p.isMobile ? 0 : 40}px;
-  margin-top: ${p => p.isMobile ? 5 : 15}px;
+  padding-right: 40px;
+  margin-top: 15px;
 `
 
 export const StyledEmptyBox = styled<{}, 'div'>('div')`
@@ -245,9 +215,9 @@ export const StyledLogoImage = styled<StyleProps, 'div'>('div')`
 `
 
 export const StyledCheckbox = styled<StyleProps, 'div'>('div')`
-  width: ${p => p.isMobile ? 232 : 180}px;
-  padding-left: ${p => p.isMobile ? 40 : 0}px;
-  margin: ${p => p.isMobile ? '15px auto 5px auto' : '15px 0 5px'};
+  width: 180px;
+  padding-left: 0px;
+  margin: 15px 0 5px;
 `
 export const StyledNoticeWrapper = styled<{}, 'div'>('div')`
   background: #fff;

@@ -71,7 +71,6 @@ export interface Props {
   children?: React.ReactNode
   onDonate: (amount: string, monthly: boolean) => void
   onClose?: () => void
-  isMobile?: boolean
   logoBgColor?: CSS.Color
   showUnVerifiedNotice?: boolean
   learnMoreNotice?: string
@@ -98,7 +97,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
     }
 
     return !logo
-      ? <StyledLogoText isMobile={this.props.isMobile}>{letter}</StyledLogoText>
+      ? <StyledLogoText>{letter}</StyledLogoText>
       : <StyledLogoImage bg={logo} />
   }
 
@@ -249,43 +248,42 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       currentAmount,
       name,
       screenName,
-      isMobile,
       showUnVerifiedNotice,
       learnMoreNotice,
       addFundsLink
     } = this.props
 
+    const isTwitterTip: boolean = !!(screenName && screenName !== '')
+
     return (
       <StyledWrapper
         id={id}
-        isMobile={isMobile}
         onKeyUp={this.onKeyUp}
         tabIndex={0}
       >
-        <StyledBanner isMobile={isMobile}>
+        <StyledBanner>
           <StyledClose onClick={onClose}>
             <CloseCircleOIcon />
           </StyledClose>
           <StyledBannerImage bgImage={bgImage}>
             {
-              !isMobile && !bgImage
+              !bgImage
               ? this.getBannerImageContent(name, screenName, domain, provider)
               : null
             }
           </StyledBannerImage>
-          <StyledContentWrapper isMobile={isMobile}>
+          <StyledContentWrapper>
             <StyledContent>
-              <StyledLogoWrapper isMobile={isMobile}>
+              <StyledLogoWrapper>
                 <StyledLogoBorder
-                  isMobile={isMobile}
                   padding={!logo}
                   bg={logoBgColor}
                 >
                   {this.getLogo(logo, domain, name)}
                 </StyledLogoBorder>
               </StyledLogoWrapper>
-              <StyledTextWrapper isMobile={isMobile}>
-                <StyledSocialWrapper isMobile={isMobile}>
+              <StyledTextWrapper>
+                <StyledSocialWrapper>
                   {this.getSocial(social)}
                 </StyledSocialWrapper>
                 {
@@ -301,20 +299,19 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
                     </StyledNoticeWrapper>
                     : null
                 }
-                <StyledTitle isMobile={isMobile} isTwitterTip={(screenName && screenName !== '') ? true : false}>
+                <StyledTitle isTwitterTip={isTwitterTip}>
                   {this.getTitle(title)}
                 </StyledTitle>
-                <StyledText isMobile={isMobile}>
+                <StyledText>
                   {this.getText(children)}
                 </StyledText>
               </StyledTextWrapper>
             </StyledContent>
-            <StyledDonation isMobile={isMobile}>
-              <StyledWallet isMobile={isMobile}>
+            <StyledDonation>
+              <StyledWallet>
                 {getLocale('walletBalance')} <StyledTokens>{balance} BAT</StyledTokens>
               </StyledWallet>
               <Donate
-                isMobile={isMobile}
                 balance={parseFloat(balance)}
                 donationAmounts={donationAmounts}
                 title={getLocale('donationAmount')}
@@ -327,7 +324,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
               >
                 {
                   !recurringDonation
-                    ? <StyledCheckbox isMobile={isMobile}>
+                    ? <StyledCheckbox>
                       <Checkbox
                         testId={'monthlyCheckbox'}
                         value={{ make: this.state.monthly }}
