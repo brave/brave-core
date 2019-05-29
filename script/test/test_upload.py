@@ -43,9 +43,8 @@ class TestGetBravePackages(unittest.TestCase):
                 name_linux_rpm = 'brave-browser' + channel_dashed + '-0.50.8-1.x86_64.rpm'
                 with open(os.path.join(self.get_pkgs_dir, 'darwin', name_darwin), 'w') as f:
                     f.write(name_darwin + '\n')
-                if channel in ['release', 'nightly']:
-                    with open(os.path.join(self.get_pkgs_dir, 'darwin', name_darwin_pkg), 'w') as f:
-                        f.write(name_darwin_pkg + '\n')
+                with open(os.path.join(self.get_pkgs_dir, 'darwin', name_darwin_pkg), 'w') as f:
+                    f.write(name_darwin_pkg + '\n')
                 with open(os.path.join(self.get_pkgs_dir, 'linux', name_linux_deb), 'w') as f:
                     f.write(name_linux_deb + '\n')
                 with open(os.path.join(self.get_pkgs_dir, 'linux', name_linux_rpm), 'w') as f:
@@ -61,31 +60,34 @@ class TestGetBravePackages(unittest.TestCase):
                         f.write(name32 + '\n')
         self.__class__._is_setup = True
 
-    def test_only_returns_release_darwin_packages(self):
-        upload.PLATFORM = 'darwin'
-        pkgs = list(upload.get_brave_packages(
-            os.path.join(self.get_pkgs_dir, upload.PLATFORM),
-            'release', '0.50.8'))
-        self.assertEquals(pkgs, sorted(['Brave-Browser.dmg', 'Brave-Browser.pkg']))
-
     def test_only_returns_nightly_darwin_packages(self):
         upload.PLATFORM = 'darwin'
         pkgs = list(upload.get_brave_packages(os.path.join(
             self.get_pkgs_dir, upload.PLATFORM), 'nightly', '0.50.8'))
-        self.assertEquals(pkgs, sorted(['Brave-Browser-Nightly.dmg', 'Brave-Browser-Nightly.pkg']))
+        self.assertEquals(pkgs, sorted(
+            ['Brave-Browser-Nightly.dmg', 'Brave-Browser-Nightly.pkg']))
 
     def test_only_returns_dev_darwin_package(self):
         upload.PLATFORM = 'darwin'
         pkgs = list(upload.get_brave_packages(os.path.join(
             self.get_pkgs_dir, upload.PLATFORM), 'dev', '0.50.8'))
-        self.assertEquals(pkgs, ['Brave-Browser-Dev.dmg'])
+        self.assertEquals(pkgs, sorted(
+            ['Brave-Browser-Dev.dmg', 'Brave-Browser-Dev.pkg']))
 
     def test_only_returns_beta_darwin_package(self):
         upload.PLATFORM = 'darwin'
         pkgs = list(upload.get_brave_packages(
+            os.path.join(self.get_pkgs_dir, upload.PLATFORM), 'beta', '0.50.8'))
+        self.assertEquals(pkgs, sorted(
+            ['Brave-Browser-Beta.dmg', 'Brave-Browser-Beta.pkg']))
+
+    def test_only_returns_release_darwin_packages(self):
+        upload.PLATFORM = 'darwin'
+        pkgs = list(upload.get_brave_packages(
             os.path.join(self.get_pkgs_dir, upload.PLATFORM),
-            'beta', '0.50.8'))
-        self.assertEquals(pkgs, ['Brave-Browser-Beta.dmg'])
+            'release', '0.50.8'))
+        self.assertEquals(pkgs, sorted(
+            ['Brave-Browser.dmg', 'Brave-Browser.pkg']))
 
     def test_only_returns_nightly_linux_packages(self):
         upload.PLATFORM = 'linux'
