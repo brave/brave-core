@@ -9,6 +9,7 @@ import {
   StyledDonation,
   StyledContent,
   StyledBanner,
+  StyledBannerFiller,
   StyledBannerImage,
   StyledClose,
   StyledContentWrapper,
@@ -269,7 +270,7 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
             {
               !bgImage
               ? this.getBannerImageContent(name, screenName, domain, provider)
-              : null
+              : <StyledBannerFiller />
             }
           </StyledBannerImage>
           <StyledContentWrapper>

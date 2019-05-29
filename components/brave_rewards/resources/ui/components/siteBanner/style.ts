@@ -60,11 +60,17 @@ export const StyledBannerImage = styled<Partial<Props>, 'div'>('div')`
   font-weight: 600;
   line-height: 0.74;
   color: #d1d1db;
-  height: 176px;
+  min-height: 176px;
+  overflow: hidden;
   background: ${p => p.bgImage
     ? `url(${p.bgImage}) no-repeat top center / cover`
     : `url(${bg1Url}) no-repeat top left, url(${bg2Url}) no-repeat top right, #9e9fab`
   };
+`
+
+// 900:176 is the aspect ratio for banner images.
+export const StyledBannerFiller = styled<{}, 'div'>('div')`
+  padding-top: calc(176 / 900 * 100%);
 `
 
 export const StyledClose = styled<{}, 'button'>('button')`
