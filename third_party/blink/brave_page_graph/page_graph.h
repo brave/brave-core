@@ -87,7 +87,7 @@ friend EdgeNodeInsert;
   // Remote scripts are scripts that reference remote code (eg src=...).
   void RegisterElmForRemoteScript(const blink::DOMNodeId node_id,
     const blink::KURL& url);
-  void RegisterUrlForScriptSource(const blink::KURL& url, 
+  void RegisterUrlForScriptSource(const blink::KURL& url,
     const blink::ScriptSourceCode& code);
   void RegisterUrlForExtensionScriptSource(const blink::WebString& url,
     const blink::WebString& code);
@@ -108,6 +108,8 @@ friend EdgeNodeInsert;
   void PushActiveScript(const ScriptId script_id);
   ScriptId PopActiveScript();
   ScriptId PeekActiveScript() const;
+
+  void Log(const std::string& str) const;
 
  protected:
   void AddNode(Node* const node);
@@ -130,12 +132,12 @@ friend EdgeNodeInsert;
   // the graph's construction if needed.
   PageGraphId id_counter_ = 0;
 
-  // These vectors owns the all the items that are shared and indexed across
+  // These vectors own all of the items that are shared and indexed across
   // the rest of the graph.  All the other pointers (the weak pointers)
   // do not own their data.
   std::vector<std::unique_ptr<Node> > nodes_;
   std::vector<std::unique_ptr<const Edge> > edges_;
-  
+
   // Vectors for tracking other ways of referencing graph elements, non-owning.
   std::vector<const GraphItem*> graph_items_;
 

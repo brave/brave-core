@@ -338,13 +338,16 @@ void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
   // URL in the same document.  This might need to be changed.
   PG_LOG("RegisterRequestStartFromElm: " + to_string(node_id)
     + ", request id: " + to_string(request_id) +
-    + ", url:" + local_url
+    + ", url: " + local_url
     + ", type: " + to_string(type));
 
   // We should know about the node thats issuing the request.
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
-  // We should also not have seen a request with this id before.
-  LOG_ASSERT(current_requests_.count(request_id) == 0);
+  // Either we should not have seen this request before (first condition),
+  // or the previously seen request should have the same url as this
+  // request (second condition).
+  LOG_ASSERT(current_requests_.count(request_id) == 0 ||
+      current_requests_.at(request_id)->GetRequestedUrl() == local_url);
 
   NodeHTMLElement* const requesting_node = element_nodes_.at(node_id);
   NodeResource* requested_node;
@@ -517,7 +520,12 @@ void PageGraph::RegisterChildScriptIdForParentScriptId(
 }
 
 void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {
-  PG_LOG("RegisterScriptExecStart: " + to_string(script_id));
+  static ScriptId prev_script_id = 0;
+  // Just keep the logs a little quieter...
+  if (script_id != prev_script_id) {
+    PG_LOG("RegisterScriptExecStart: " + to_string(script_id));
+    prev_script_id = script_id;
+  }
   const ScriptId top_script_id = script_tracker_.TopLevelScriptIdForScriptId(
     script_id);
   LOG_ASSERT(script_nodes_.count(top_script_id) == 1);
@@ -525,7 +533,7 @@ void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {
 }
 
 void PageGraph::RegisterScriptExecStop(const ScriptId script_id) {
-  PG_LOG("RegisterScriptExecStop: " + to_string(script_id));
+  // PG_LOG("RegisterScriptExecStop: " + to_string(script_id));
   const ScriptId top_script_id = script_tracker_.TopLevelScriptIdForScriptId(
     script_id);
   LOG_ASSERT(script_nodes_.count(top_script_id) == 1);
@@ -615,12 +623,12 @@ NodeExtension* PageGraph::GetExtensionNode() {
 }
 
 void PageGraph::PushActiveScript(const ScriptId script_id) {
-  PG_LOG("PushActiveScript: script_id: " + to_string(script_id));
+  // PG_LOG("PushActiveScript: script_id: " + to_string(script_id));
   active_script_stack_.push_back(script_id);
 }
 
 ScriptId PageGraph::PopActiveScript() {
-  PG_LOG("PopActiveScript");
+  // PG_LOG("PopActiveScript");
   ScriptId top_script_id = 0;
   if (active_script_stack_.empty() == false) {
     top_script_id = active_script_stack_.back();
@@ -636,6 +644,8 @@ ScriptId PageGraph::PeekActiveScript() const {
   return active_script_stack_.back();
 }
 
-
+void PageGraph::Log(const string& str) const {
+  PG_LOG(str);
+}
 
 }  // namespace brave_page_graph

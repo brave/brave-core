@@ -26,6 +26,7 @@ friend class PageGraph;
 
   NodeResource* GetResourceNode() const override;
   Node* GetRequestingNode() const override;
+  RequestUrl GetRequestedUrl() const;
 
  protected:
   EdgeRequestStart(PageGraph* const graph, Node* const out_node,
