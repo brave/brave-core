@@ -1,0 +1,16 @@
+diff --git a/chrome/chrome_proxy/chrome_proxy_main_win.cc b/chrome/chrome_proxy/chrome_proxy_main_win.cc
+index 2f0ac834da5d1aff7a8917b835b4fb0bee5ed534..1b045e72048e7a1e55c74b673a0d7d01c7cef241 100644
+--- a/chrome/chrome_proxy/chrome_proxy_main_win.cc
++++ b/chrome/chrome_proxy/chrome_proxy_main_win.cc
+@@ -13,7 +13,11 @@
+ namespace {
+ 
+ constexpr base::FilePath::CharType kChromeExecutable[] =
++#if defined(BRAVE_CHROMIUM_BUILD)
++    FILE_PATH_LITERAL("brave.exe");
++#else
+     FILE_PATH_LITERAL("chrome.exe");
++#endif
+ 
+ constexpr base::FilePath::CharType kChromeProxyExecutable[] =
+     FILE_PATH_LITERAL("chrome_proxy.exe");
