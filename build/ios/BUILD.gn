@@ -1,5 +1,5 @@
 import("//brave/build/config.gni")
 
 group("brave") {
-  deps = [ "//brave/vendor/bat-native-ledger:bat-native-ledger-standalone" ]
+  deps = [ "//brave/vendor/brave-ios" ]
 }

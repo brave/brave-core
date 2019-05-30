@@ -44,6 +44,10 @@ config("internal_config") {
   ]
 }
 
+group("brave-ios") {
+  public_deps = [ ":brave-rewards-ios-framework" ]
+}
+
 ios_framework_bundle("brave-rewards-ios-framework") {
   output_name = "BraveRewards"
   output_dir = root_out_dir
