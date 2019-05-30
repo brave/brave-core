@@ -1,4 +1,5 @@
 import("//brave/build/config.gni")
+import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
 import("//testing/test.gni")
@@ -56,7 +57,6 @@ test("brave_unit_tests") {
     "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_tor_network_delegate_helper_unittest.cc",
-    "//brave/browser/net/brave_translate_redirect_network_delegate_helper_unittest.cc",
     "//brave/browser/profiles/tor_unittest_profile_manager.cc",
     "//brave/browser/profiles/tor_unittest_profile_manager.h",
     "//brave/browser/profiles/brave_profile_manager_unittest.cc",
@@ -136,6 +136,12 @@ test("brave_unit_tests") {
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/confirmations_client_mock.cc",
       "//brave/vendor/bat-native-confirmations/src/bat/confirmations/internal/confirmations_client_mock.h",
       "//brave/vendor/bat-native-usermodel/test/usermodel_unittest.cc",
+    ]
+  }
+
+  if (enable_brave_translate) {
+    sources += [
+      "//brave/browser/net/brave_translate_redirect_network_delegate_helper_unittest.cc",
     ]
   }
 

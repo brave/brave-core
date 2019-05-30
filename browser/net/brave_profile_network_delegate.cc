@@ -12,7 +12,7 @@
 #include "brave/browser/net/brave_referrals_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
 #include "brave/browser/net/brave_tor_network_delegate_helper.h"
-#include "brave/browser/net/brave_translate_redirect_network_delegate_helper.h"
+#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -21,6 +21,10 @@
 #include "brave/components/brave_webtorrent/browser/net/brave_torrent_redirect_network_delegate_helper.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
+#include "brave/browser/net/brave_translate_redirect_network_delegate_helper.h"
+#endif
 
 BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
     extensions::EventRouterForwarder* event_router) :
@@ -50,9 +54,11 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   callback = base::Bind(brave::OnBeforeURLRequest_TorWork);
   before_url_request_callbacks_.push_back(callback);
 
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
   callback = base::BindRepeating(
       brave::OnBeforeURLRequest_TranslateRedirectWork);
   before_url_request_callbacks_.push_back(callback);
+#endif
 
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
       base::Bind(brave::OnBeforeStartTransaction_SiteHacksWork);
