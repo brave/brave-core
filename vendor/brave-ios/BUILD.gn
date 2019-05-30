@@ -25,7 +25,6 @@ config("internal_config") {
 
   cflags = [
     "-w",
-    "-fobjc-arc",
     "-fobjc-weak",
     "-fobjc-abi-version=2",
     "-fobjc-legacy-dispatch",
@@ -55,7 +54,6 @@ ios_framework_bundle("brave-rewards-ios-framework") {
   info_plist = "Info.plist"
 
   configs += [ ":internal_config" ]
-  configs += [ "//build/config/compiler:enable_arc" ]
   configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
 
   deps = [
