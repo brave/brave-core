@@ -279,7 +279,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       base_path_(profile_->GetPath().AppendASCII("ads_service")),
       next_timer_id_(0),
       ads_launch_id_(0),
-      is_supported_region_(false),
       bundle_state_backend_(
           new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
@@ -337,28 +336,18 @@ void AdsServiceImpl::OnCreate() {
 }
 
 void AdsServiceImpl::MaybeStart(bool should_restart) {
-  if (should_restart)
+  if (!IsSupportedRegion()) {
+    LOG(WARNING) << GetAdsLocale() << " locale does not support Ads";
     Shutdown();
-
-  if (!StartService()) {
-    LOG(ERROR) << "Failed to start Ads service";
     return;
   }
 
-  bat_ads_service_->IsSupportedRegion(GetAdsLocale(),
-      base::BindOnce(&AdsServiceImpl::OnMaybeStartForRegion,
-          AsWeakPtr(), should_restart));
-}
-
-void AdsServiceImpl::OnMaybeStartForRegion(
-    bool should_restart,
-    bool is_supported_region) {
-  is_supported_region_ = is_supported_region;
-
-  if (!is_supported_region_) {
-    LOG(WARNING) << GetAdsLocale() << " locale does not support Ads";
-
+  if (should_restart) {
     Shutdown();
+  }
+
+  if (!StartService()) {
+    LOG(ERROR) << "Failed to start Ads service";
     return;
   }
 
@@ -733,7 +722,8 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
 }
 
 bool AdsServiceImpl::IsSupportedRegion() const {
-  return is_supported_region_;
+  auto locale = LocaleHelper::GetInstance()->GetLocale();
+  return ads::Ads::IsSupportedRegion(locale);
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {

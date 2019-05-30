@@ -198,9 +198,6 @@ class AdsServiceImpl : public AdsService,
   void OnCreate();
   void OnInitialize();
   void MaybeStart(bool should_restart);
-  void OnMaybeStartForRegion(
-      bool should_restart,
-      bool is_supported_region);
   void NotificationTimedOut(
       uint32_t timer_id,
       const std::string& notification_id);
@@ -225,7 +222,6 @@ class AdsServiceImpl : public AdsService,
   std::map<uint32_t, std::unique_ptr<base::OneShotTimer>> timers_;
   uint32_t next_timer_id_;
   uint32_t ads_launch_id_;
-  bool is_supported_region_;
   std::unique_ptr<BundleStateDatabase> bundle_state_backend_;
   NotificationDisplayService* display_service_;  // NOT OWNED
   brave_rewards::RewardsService* rewards_service_;  // NOT OWNED
