@@ -1324,7 +1324,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
       "}, 500);});",
       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
       content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("Brave Verified Publisher"),
+    EXPECT_NE(js_result.ExtractString().find("Brave Verified Creator"),
               std::string::npos);
     EXPECT_NE(js_result.ExtractString().find(publisher), std::string::npos);
   }
