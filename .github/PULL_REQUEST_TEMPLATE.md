@@ -24,6 +24,7 @@
   - [ ] https://github.com/brave/brave-browser/wiki/Brave%E2%80%99s-Use-of-Referral-Codes
   - [ ] https://github.com/brave/brave-browser/wiki/Custom-Headers
   - [ ] https://github.com/brave/brave-browser/wiki/Web-compatibility-issues-with-tracking-protection
+  - [ ] https://github.com/brave/brave-browser/wiki/QA-Guide
 
 ## Test Plan:
 
