@@ -9,6 +9,7 @@
 #include <string>
 
 #include "brave/browser/net/url_context.h"
+#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/translate_network_constants.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
@@ -304,6 +305,7 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(ret, net::OK);
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
 TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, RedirectTranslate) {
   net::TestDelegate test_delegate;
   std::string query_string(
@@ -350,5 +352,6 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest,
   EXPECT_EQ(before_url_context->new_url_spec, expected_url);
   EXPECT_EQ(ret, net::OK);
 }
+#endif
 
 }  // namespace
