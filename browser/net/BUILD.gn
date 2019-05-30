@@ -1,4 +1,5 @@
 import("//brave/browser/tor/buildflags/buildflags.gni")
+import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
@@ -23,8 +24,6 @@ source_set("net") {
     "brave_static_redirect_network_delegate_helper.h",
     "brave_system_network_delegate.cc",
     "brave_system_network_delegate.h",
-    "brave_translate_redirect_network_delegate_helper.cc",
-    "brave_translate_redirect_network_delegate_helper.h",
     "url_context.cc",
     "url_context.h",
   ]
@@ -54,6 +53,13 @@ source_set("net") {
   if (enable_brave_webtorrent) {
     deps += [
       "//brave/components/brave_webtorrent/browser/net",
+    ]
+  }
+
+  if (enable_brave_translate) {
+    sources += [
+      "brave_translate_redirect_network_delegate_helper.cc",
+      "brave_translate_redirect_network_delegate_helper.h",
     ]
   }
 }
