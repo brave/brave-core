@@ -25,14 +25,14 @@ class TipSite extends React.Component<Props, {}> {
 
   onTweet = () => {
     let name = this.props.publisher.name
-    if (this.props.publisher.provider === 'twitter') {
+    let provider = this.props.publisher.provider
+    if (provider === 'twitter') {
       const url = this.props.url
       if (url && url.length > 0) {
         name = `@${url.replace(/^.*\/(.*)$/, '$1')}`
       }
     }
-
-    this.actions.onTweet(name, '')
+    this.actions.onTweet(name, '', provider)
     this.actions.onCloseDialog()
   }
 

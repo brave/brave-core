@@ -24,7 +24,6 @@ export const defaultState: RewardsTip.State = {
 
 const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = defaultState, action) => {
   const payload = action.payload
-
   switch (action.type) {
     case types.ON_CLOSE_DIALOG:
       state = { ...state }
@@ -34,7 +33,8 @@ const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = 
     case types.ON_TWEET:
       chrome.send('brave_rewards_tip.tweetTip', [
         payload.name,
-        payload.tweetId
+        payload.tweetId,
+        payload.provider
       ])
       break
     case types.ON_PUBLISHER_BANNER: {
