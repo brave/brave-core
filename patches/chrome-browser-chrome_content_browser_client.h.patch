@@ -1,8 +1,24 @@
 diff --git a/chrome/browser/chrome_content_browser_client.h b/chrome/browser/chrome_content_browser_client.h
-index 6bbed7653db996a26aa120b667546dbe758e72d5..0e1438dbd5ee1da1155e99a6d2a32cd19560d1dc 100644
+index 6bbed7653db996a26aa120b667546dbe758e72d5..66dceb9a90d8a10769332f4e0ba9d0ba65ea9a3e 100644
 --- a/chrome/browser/chrome_content_browser_client.h
 +++ b/chrome/browser/chrome_content_browser_client.h
-@@ -619,6 +619,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
+@@ -108,13 +108,14 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
+   void SetBrowserStartupIsCompleteForTesting() override;
+   std::string GetStoragePartitionIdForSite(
+       content::BrowserContext* browser_context,
+-      const GURL& site) override;
++      const GURL& site, const GURL& first_party) override;
+   bool IsShuttingDown() override;
+   bool IsValidStoragePartitionId(content::BrowserContext* browser_context,
+                                  const std::string& partition_id) override;
+   void GetStoragePartitionConfigForSite(
+       content::BrowserContext* browser_context,
+       const GURL& site,
++      const GURL& first_party,
+       bool can_be_default,
+       std::string* partition_domain,
+       std::string* partition_name,
+@@ -619,6 +620,7 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
                                   content::BrowserContext* browser_context);
  
   private:

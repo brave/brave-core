@@ -1,0 +1,12 @@
+diff --git a/content/public/browser/site_instance.h b/content/public/browser/site_instance.h
+index e3b2796e1d539338be3b82d0f30d63fe55e0532f..c004e7e6de9b4c569ff906b5a2995a07c7b8bf08 100644
+--- a/content/public/browser/site_instance.h
++++ b/content/public/browser/site_instance.h
+@@ -115,6 +115,7 @@ class CONTENT_EXPORT SiteInstance : public base::RefCounted<SiteInstance> {
+   //   i.e. an origin with the host "deeply.nested.subdomain.example.com"
+   //   corresponds to a site URL with the host "example.com".
+   virtual const GURL& GetSiteURL() const = 0;
++  virtual const GURL& GetFirstPartyURL() const = 0;
+ 
+   // Gets a SiteInstance for the given URL that shares the current
+   // BrowsingInstance, creating a new SiteInstance if necessary.  This ensures

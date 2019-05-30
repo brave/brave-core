@@ -1,0 +1,126 @@
+diff --git a/content/browser/browsing_instance.cc b/content/browser/browsing_instance.cc
+index d48d14414a12f83bf0c65ae8988e5b0a4dc3f241..e284a877102d0d6e390fbdaf57e492fad9ef0751 100644
+--- a/content/browser/browsing_instance.cc
++++ b/content/browser/browsing_instance.cc
+@@ -59,18 +59,30 @@ bool BrowsingInstance::IsDefaultSiteInstance(
+          site_instance == default_site_instance_.get();
+ }
+ 
+-bool BrowsingInstance::HasSiteInstance(const GURL& url) {
++bool BrowsingInstance::HasSiteInstance(const GURL& url,
++                                       const GURL& first_party) {
+   std::string site = SiteInstanceImpl::GetSiteForURL(isolation_context_, url)
+                          .possibly_invalid_spec();
++  std::string fp_site =
++    SiteInstanceImpl::GetSiteForURL(isolation_context_, first_party)
++        .possibly_invalid_spec();
++  auto key = std::make_pair(site, fp_site);
+ 
+-  return site_instance_map_.find(site) != site_instance_map_.end();
++  return site_instance_map_.find(key) != site_instance_map_.end();
+ }
+ 
+ scoped_refptr<SiteInstanceImpl> BrowsingInstance::GetSiteInstanceForURL(
+     const GURL& url,
+     bool allow_default_instance) {
++  return GetSiteInstanceForURL(url, url, allow_default_instance);
++}
++
++scoped_refptr<SiteInstanceImpl> BrowsingInstance::GetSiteInstanceForURL(
++    const GURL& url,
++    const GURL& first_party,
++    bool allow_default_instance) {
+   scoped_refptr<SiteInstanceImpl> site_instance =
+-      GetSiteInstanceForURLHelper(url, allow_default_instance);
++      GetSiteInstanceForURLHelper(url, first_party, allow_default_instance);
+ 
+   if (site_instance)
+     return site_instance;
+@@ -81,36 +93,46 @@ scoped_refptr<SiteInstanceImpl> BrowsingInstance::GetSiteInstanceForURL(
+   // Set the site of this new SiteInstance, which will register it with us,
+   // unless this URL should leave the SiteInstance's site unassigned.
+   if (SiteInstance::ShouldAssignSiteForURL(url))
+-    instance->SetSite(url);
++    instance->SetSite(url, first_party);
+   return instance;
+ }
+ 
+ void BrowsingInstance::GetSiteAndLockForURL(const GURL& url,
++                                            const GURL& first_party,
+                                             bool allow_default_instance,
+                                             GURL* site_url,
++                                            GURL* first_party_url,
+                                             GURL* lock_url) {
+   scoped_refptr<SiteInstanceImpl> site_instance =
+-      GetSiteInstanceForURLHelper(url, allow_default_instance);
++      GetSiteInstanceForURLHelper(url, first_party, allow_default_instance);
+ 
+   if (site_instance) {
+     *site_url = site_instance->GetSiteURL();
++    *first_party_url = site_instance->GetFirstPartyURL();
+     *lock_url = site_instance->lock_url();
+     return;
+   }
+ 
+   *site_url = SiteInstanceImpl::GetSiteForURL(
+       isolation_context_, url, true /* should_use_effective_urls */);
++  *first_party_url = SiteInstanceImpl::GetSiteForURL(
++      isolation_context_, first_party, true /* should_use_effective_urls */);
+   *lock_url =
+       SiteInstanceImpl::DetermineProcessLockURL(isolation_context_, url);
+ }
+ 
+ scoped_refptr<SiteInstanceImpl> BrowsingInstance::GetSiteInstanceForURLHelper(
+     const GURL& url,
++    const GURL& first_party,
+     bool allow_default_instance) {
+   std::string site = SiteInstanceImpl::GetSiteForURL(isolation_context_, url)
+                          .possibly_invalid_spec();
++  std::string fp_site =
++    SiteInstanceImpl::GetSiteForURL(isolation_context_, url)
++        .possibly_invalid_spec();
++  auto key = std::make_pair(site, fp_site);
+ 
+-  auto i = site_instance_map_.find(site);
++  auto i = site_instance_map_.find(key);
+   if (i != site_instance_map_.end())
+     return i->second;
+ 
+@@ -146,16 +168,19 @@ void BrowsingInstance::RegisterSiteInstance(SiteInstanceImpl* site_instance) {
+     return;
+ 
+   std::string site = site_instance->GetSiteURL().possibly_invalid_spec();
++  std::string fp_site =
++    site_instance->GetFirstPartyURL().possibly_invalid_spec();
++  auto key = std::make_pair(site, fp_site);
+ 
+   // Only register if we don't have a SiteInstance for this site already.
+   // It's possible to have two SiteInstances point to the same site if two
+   // tabs are navigated there at the same time.  (We don't call SetSite or
+   // register them until DidNavigate.)  If there is a previously existing
+   // SiteInstance for this site, we just won't register the new one.
+-  auto i = site_instance_map_.find(site);
++  auto i = site_instance_map_.find(key);
+   if (i == site_instance_map_.end()) {
+     // Not previously registered, so register it.
+-    site_instance_map_[site] = site_instance;
++    site_instance_map_[key] = site_instance;
+   }
+ }
+ 
+@@ -163,11 +188,14 @@ void BrowsingInstance::UnregisterSiteInstance(SiteInstanceImpl* site_instance) {
+   DCHECK(site_instance->browsing_instance_.get() == this);
+   DCHECK(site_instance->HasSite());
+   std::string site = site_instance->GetSiteURL().possibly_invalid_spec();
++  std::string fp_site =
++    site_instance->GetFirstPartyURL().possibly_invalid_spec();
++  auto key = std::make_pair(site, fp_site);
+ 
+   // Only unregister the SiteInstance if it is the same one that is registered
+   // for the site.  (It might have been an unregistered SiteInstance.  See the
+   // comments in RegisterSiteInstance.)
+-  auto i = site_instance_map_.find(site);
++  auto i = site_instance_map_.find(key);
+   if (i != site_instance_map_.end() && i->second == site_instance) {
+     // Matches, so erase it.
+     site_instance_map_.erase(i);

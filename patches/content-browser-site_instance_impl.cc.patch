@@ -1,0 +1,74 @@
+diff --git a/content/browser/site_instance_impl.cc b/content/browser/site_instance_impl.cc
+index 3e288465ccfcb1ae19db599127f4899d1d5aa74b..9db520b2547d245c7f31be3b1f0232ac38779c42 100644
+--- a/content/browser/site_instance_impl.cc
++++ b/content/browser/site_instance_impl.cc
+@@ -73,12 +73,13 @@ scoped_refptr<SiteInstanceImpl> SiteInstanceImpl::Create(
+ // static
+ scoped_refptr<SiteInstanceImpl> SiteInstanceImpl::CreateForURL(
+     BrowserContext* browser_context,
+-    const GURL& url) {
++    const GURL& url,
++    const GURL& first_party) {
+   DCHECK(browser_context);
+   // This will create a new SiteInstance and BrowsingInstance.
+   scoped_refptr<BrowsingInstance> instance(
+       new BrowsingInstance(browser_context));
+-  return instance->GetSiteInstanceForURL(url,
++  return instance->GetSiteInstanceForURL(url, first_party,
+                                          /* allow_default_instance */ false);
+ }
+ 
+@@ -218,7 +219,7 @@ void SiteInstanceImpl::PreventAssociationWithSpareProcess() {
+   can_associate_with_spare_process_ = false;
+ }
+ 
+-void SiteInstanceImpl::SetSite(const GURL& url) {
++void SiteInstanceImpl::SetSite(const GURL& url, const GURL& first_party) {
+   // TODO(creis): Consider calling ShouldAssignSiteForURL internally, rather
+   // than before multiple call sites.  See https://crbug.com/949220.
+   TRACE_EVENT2("navigation", "SiteInstanceImpl::SetSite",
+@@ -236,7 +237,8 @@ void SiteInstanceImpl::SetSite(const GURL& url) {
+   BrowserContext* browser_context = browsing_instance_->GetBrowserContext();
+   original_url_ = url;
+   browsing_instance_->GetSiteAndLockForURL(
+-      url, /* allow_default_instance */ false, &site_, &lock_url_);
++      url, first_party, /* allow_default_instance */ false,
++      &site_, &first_party_, &lock_url_);
+ 
+   // Now that we have a site, register it with the BrowsingInstance.  This
+   // ensures that we won't create another SiteInstance for this site within
+@@ -272,13 +274,15 @@ bool SiteInstanceImpl::HasSite() const {
+ }
+ 
+ bool SiteInstanceImpl::HasRelatedSiteInstance(const GURL& url) {
+-  return browsing_instance_->HasSiteInstance(url);
++  GURL first_party = (HasSite() ? first_party_ : url);
++  return browsing_instance_->HasSiteInstance(url, first_party);
+ }
+ 
+ scoped_refptr<SiteInstance> SiteInstanceImpl::GetRelatedSiteInstance(
+     const GURL& url) {
++  GURL first_party = (HasSite() ? first_party_ : url);
+   return browsing_instance_->GetSiteInstanceForURL(
+-      url, /* allow_default_instance */ true);
++      url, first_party, /* allow_default_instance */ true);
+ }
+ 
+ bool SiteInstanceImpl::IsRelatedSiteInstance(const SiteInstance* instance) {
+@@ -310,13 +314,15 @@ bool SiteInstanceImpl::HasWrongProcessForURL(const GURL& url) {
+   // If the site URL is an extension (e.g., for hosted apps or WebUI) but the
+   // process is not (or vice versa), make sure we notice and fix it.
+   GURL site_url;
++  GURL first_party_url;
+   GURL origin_lock;
+ 
+   // Note: This call must return information that is identical to what
+   // would be reported in the SiteInstance returned by
+   // GetRelatedSiteInstance(url).
+   browsing_instance_->GetSiteAndLockForURL(
+-      url, /* allow_default_instance */ true, &site_url, &origin_lock);
++      url, first_party_, /* allow_default_instance */ true,
++      &site_url, &first_party_url, &origin_lock);
+ 
+   // Note that HasProcess() may return true if process_ is null, in
+   // process-per-site cases where there's an existing process available.

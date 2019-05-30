@@ -1,0 +1,17 @@
+diff --git a/content/browser/storage_partition_impl_map.cc b/content/browser/storage_partition_impl_map.cc
+index 27a2400e1e28b021630094333ab5ae0f2c874e0a..aa23d9706450615851165f4f733c27062dd0e86a 100644
+--- a/content/browser/storage_partition_impl_map.cc
++++ b/content/browser/storage_partition_impl_map.cc
+@@ -470,8 +470,11 @@ void StoragePartitionImplMap::AsyncObliterate(
+   std::string partition_domain;
+   std::string partition_name;
+   bool in_memory = false;
++  // TODO(riastradh): XXX XXX XXX THIS IS WRONG: We need to obliterate
++  // every storage partition with this site _and_ that has this site
++  // as a first party.  UGH!
+   GetContentClient()->browser()->GetStoragePartitionConfigForSite(
+-      browser_context_, site, false, &partition_domain,
++      browser_context_, site, site, false, &partition_domain,
+       &partition_name, &in_memory);
+ 
+   // Find the active partitions for the domain. Because these partitions are

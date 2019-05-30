@@ -1,0 +1,22 @@
+diff --git a/content/public/browser/content_browser_client.cc b/content/public/browser/content_browser_client.cc
+index 445e1febebe62b014d995a2bfb8ceefedc1e5e6a..685bfd2dd974e73f6d2e301a753b6f55df297e51 100644
+--- a/content/public/browser/content_browser_client.cc
++++ b/content/public/browser/content_browser_client.cc
+@@ -469,7 +469,8 @@ bool ContentBrowserClient::ShouldUseGmsCoreGeolocationProvider() {
+ 
+ std::string ContentBrowserClient::GetStoragePartitionIdForSite(
+     BrowserContext* browser_context,
+-    const GURL& site) {
++    const GURL& site,
++    const GURL& first_party) {
+   DCHECK(browser_context);
+   return std::string();
+ }
+@@ -487,6 +488,7 @@ bool ContentBrowserClient::IsValidStoragePartitionId(
+ void ContentBrowserClient::GetStoragePartitionConfigForSite(
+     BrowserContext* browser_context,
+     const GURL& site,
++    const GURL& first_party,
+     bool can_be_default,
+     std::string* partition_domain,
+     std::string* partition_name,

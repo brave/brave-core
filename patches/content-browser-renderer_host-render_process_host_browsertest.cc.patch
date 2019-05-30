@@ -1,0 +1,32 @@
+diff --git a/content/browser/renderer_host/render_process_host_browsertest.cc b/content/browser/renderer_host/render_process_host_browsertest.cc
+index 7c551b5c0ef1f42015f606c28e1ecf29baa5f3e8..18c74cf1a79df44ce132fe406489f1aa755c0ffd 100644
+--- a/content/browser/renderer_host/render_process_host_browsertest.cc
++++ b/content/browser/renderer_host/render_process_host_browsertest.cc
+@@ -370,6 +370,7 @@ class CustomStoragePartitionForSomeSites : public TestContentBrowserClient {
+ 
+   void GetStoragePartitionConfigForSite(BrowserContext* browser_context,
+                                         const GURL& site,
++                                        const GURL& first_party,
+                                         bool can_be_default,
+                                         std::string* partition_domain,
+                                         std::string* partition_name,
+@@ -389,7 +390,8 @@ class CustomStoragePartitionForSomeSites : public TestContentBrowserClient {
+   }
+ 
+   std::string GetStoragePartitionIdForSite(BrowserContext* browser_context,
+-                                           const GURL& site) override {
++                                           const GURL& site,
++                                           const GURL& first_party) override {
+     if (site == site_to_isolate_)
+       return "custom";
+     return "";
+@@ -425,7 +427,8 @@ IN_PROC_BROWSER_TEST_F(RenderProcessHostTest,
+   StoragePartition* default_storage =
+       BrowserContext::GetDefaultStoragePartition(browser_context);
+   StoragePartition* custom_storage =
+-      BrowserContext::GetStoragePartitionForSite(browser_context, test_site);
++      BrowserContext::GetStoragePartitionForSite(browser_context, test_site,
++                                                 test_site);
+   EXPECT_NE(default_storage, custom_storage);
+ 
+   // Open a test window - it should be associated with the default storage

@@ -1,0 +1,14 @@
+diff --git a/content/browser/web_contents/web_contents_impl.cc b/content/browser/web_contents/web_contents_impl.cc
+index 1491bf580c59b6550194aae03c4bdd7f9d6ffc06..468f62f45daf50a70107b01b434b7701080ace7b 100644
+--- a/content/browser/web_contents/web_contents_impl.cc
++++ b/content/browser/web_contents/web_contents_impl.cc
+@@ -2736,7 +2736,8 @@ void WebContentsImpl::CreateNewWindow(
+   const std::string& partition_id =
+       GetContentClient()->browser()->
+           GetStoragePartitionIdForSite(GetBrowserContext(),
+-                                       site_instance->GetSiteURL());
++                                       site_instance->GetSiteURL(),
++                                       site_instance->GetFirstPartyURL());
+   StoragePartition* partition = BrowserContext::GetStoragePartition(
+       GetBrowserContext(), site_instance.get());
+   DOMStorageContextWrapper* dom_storage_context =

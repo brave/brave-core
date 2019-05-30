@@ -1,0 +1,22 @@
+diff --git a/content/browser/download/download_manager_impl.cc b/content/browser/download/download_manager_impl.cc
+index a44f99945f96375b935dba9d06ebf428046624f4..65ca52cac7fd20738c53d742083ea9a389710fe5 100644
+--- a/content/browser/download/download_manager_impl.cc
++++ b/content/browser/download/download_manager_impl.cc
+@@ -1335,14 +1335,15 @@ void DownloadManagerImpl::BeginResourceDownloadOnChecksComplete(
+     StoragePartitionImpl* storage_partition =
+         static_cast<StoragePartitionImpl*>(
+             BrowserContext::GetStoragePartitionForSite(browser_context_,
+-                                                       site_url));
++                                                       site_url, tab_url));
+     std::string storage_domain;
+     auto* site_instance = rfh->GetSiteInstance();
+     if (site_instance) {
+       std::string partition_name;
+       bool in_memory;
+       GetContentClient()->browser()->GetStoragePartitionConfigForSite(
+-          browser_context_, site_url, true, &storage_domain, &partition_name,
++          browser_context_, site_url, tab_url,
++          true, &storage_domain, &partition_name,
+           &in_memory);
+     }
+     url_loader_factory_getter =

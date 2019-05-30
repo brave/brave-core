@@ -82,10 +82,12 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   std::string GetStoragePartitionIdForSite(
       content::BrowserContext* browser_context,
-      const GURL& site) override;
+      const GURL& site,
+      const GURL& first_party) override;
   void GetStoragePartitionConfigForSite(
       content::BrowserContext* browser_context,
       const GURL& site,
+      const GURL& first_party,
       bool can_be_default,
       std::string* partition_domain,
       std::string* partition_name,

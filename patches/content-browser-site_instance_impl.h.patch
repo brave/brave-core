@@ -1,0 +1,41 @@
+diff --git a/content/browser/site_instance_impl.h b/content/browser/site_instance_impl.h
+index a55149d3e45e3167c80471a6a476c724cb1fd5a9..dae80a5d586ffb72db8fa25faf03c9e891ad4450 100644
+--- a/content/browser/site_instance_impl.h
++++ b/content/browser/site_instance_impl.h
+@@ -40,6 +40,10 @@ class CONTENT_EXPORT SiteInstanceImpl final : public SiteInstance,
+   static scoped_refptr<SiteInstanceImpl> CreateForURL(
+       BrowserContext* browser_context,
+       const GURL& url);
++  static scoped_refptr<SiteInstanceImpl> CreateForURL(
++      BrowserContext* browser_context,
++      const GURL& url,
++      const GURL& first_party);
+   static bool ShouldAssignSiteForURL(const GURL& url);
+ 
+   // Returns whether |lock_url| is at least at the granularity of a site (i.e.,
+@@ -68,6 +72,7 @@ class CONTENT_EXPORT SiteInstanceImpl final : public SiteInstance,
+   RenderProcessHost* GetProcess() override;
+   BrowserContext* GetBrowserContext() const override;
+   const GURL& GetSiteURL() const override;
++  const GURL& GetFirstPartyURL() const override;
+   scoped_refptr<SiteInstance> GetRelatedSiteInstance(const GURL& url) override;
+   bool IsRelatedSiteInstance(const SiteInstance* instance) override;
+   size_t GetRelatedActiveContentsCount() override;
+@@ -167,6 +172,7 @@ class CONTENT_EXPORT SiteInstanceImpl final : public SiteInstance,
+   // URL does not have a valid registered domain, then the full hostname is
+   // stored.
+   void SetSite(const GURL& url);
++  void SetSite(const GURL& url, const GURL& first_party);
+   bool HasSite() const;
+ 
+   // Returns whether there is currently a related SiteInstance (registered with
+@@ -346,6 +352,9 @@ class CONTENT_EXPORT SiteInstanceImpl final : public SiteInstance,
+   // The URL which was used to set the |site_| for this SiteInstance.
+   GURL original_url_;
+ 
++  // The first party of the main frame.
++  GURL first_party_;
++
+   // The URL to use when locking a process to this SiteInstance's site via
+   // LockToOrigin().  This is the same as |site_| except for cases involving
+   // effective URLs, such as hosted apps.  In those cases, this URL is a site

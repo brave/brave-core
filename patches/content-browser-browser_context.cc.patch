@@ -1,0 +1,32 @@
+diff --git a/content/browser/browser_context.cc b/content/browser/browser_context.cc
+index b2b3920da3b082122d317137c7f8064032ddf6d5..80ec810f68d74f9aea1b0de862040dd35dc6148b 100644
+--- a/content/browser/browser_context.cc
++++ b/content/browser/browser_context.cc
+@@ -429,7 +429,8 @@ StoragePartition* BrowserContext::GetStoragePartition(
+ 
+   if (site_instance) {
+     GetContentClient()->browser()->GetStoragePartitionConfigForSite(
+-        browser_context, site_instance->GetSiteURL(), true,
++        browser_context,
++        site_instance->GetSiteURL(), site_instance->GetFirstPartyURL(), true,
+         &partition_domain, &partition_name, &in_memory);
+   }
+ 
+@@ -440,14 +441,15 @@ StoragePartition* BrowserContext::GetStoragePartition(
+ StoragePartition* BrowserContext::GetStoragePartitionForSite(
+     BrowserContext* browser_context,
+     const GURL& site,
++    const GURL& first_party,
+     bool can_create) {
+   std::string partition_domain;
+   std::string partition_name;
+   bool in_memory;
+ 
+   GetContentClient()->browser()->GetStoragePartitionConfigForSite(
+-      browser_context, site, true, &partition_domain, &partition_name,
+-      &in_memory);
++      browser_context, site, first_party, true,
++      &partition_domain, &partition_name, &in_memory);
+ 
+   return GetStoragePartitionFromConfig(browser_context, partition_domain,
+                                        partition_name, in_memory, can_create);

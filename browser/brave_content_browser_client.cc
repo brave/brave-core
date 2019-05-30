@@ -351,12 +351,15 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
 
 std::string BraveContentBrowserClient::GetStoragePartitionIdForSite(
     content::BrowserContext* browser_context,
-    const GURL& site) {
+    const GURL& site,
+    const GURL& first_party) {
   std::string partition_id =
     ChromeContentBrowserClient::GetStoragePartitionIdForSite(
-        browser_context, site);
+        browser_context, site, first_party);
   if (browser_context->IsTorProfile()) {
-    partition_id = site.spec();
+    // Kludge!  Must make for valid URL syntax.
+    DCHECK(site.spec().find('#') == std::string::npos);
+    partition_id = site.spec() + "#" + first_party.spec();
   }
   DCHECK(IsValidStoragePartitionId(browser_context, partition_id));
   return partition_id;
@@ -365,16 +368,18 @@ std::string BraveContentBrowserClient::GetStoragePartitionIdForSite(
 void BraveContentBrowserClient::GetStoragePartitionConfigForSite(
     content::BrowserContext* browser_context,
     const GURL& site,
+    const GURL& first_party,
     bool can_be_default,
     std::string* partition_domain,
     std::string* partition_name,
     bool* in_memory) {
   ChromeContentBrowserClient::GetStoragePartitionConfigForSite(
-      browser_context, site, can_be_default, partition_domain, partition_name,
-      in_memory);
+      browser_context, site, first_party, can_be_default,
+      partition_domain, partition_name, in_memory);
   if (browser_context->IsTorProfile()) {
     if (!site.is_empty()) {
-      *partition_domain = site.host();
+      DCHECK(site.host().find('/') == std::string::npos);
+      *partition_domain = site.host() + "/" + first_party.host();
       *partition_name = "tor";
     }
     *in_memory = true;

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
-index 139a600b09250af07e4771852d02e1be4fe84e2c..13f4b3aeae9b647bc15a98c76e517ca86cdd431c 100644
+index 139a600b09250af07e4771852d02e1be4fe84e2c..5fcfff189d401577d891100d79ae89382cfd79bb 100644
 --- a/chrome/browser/chrome_content_browser_client.cc
 +++ b/chrome/browser/chrome_content_browser_client.cc
 @@ -30,6 +30,7 @@
@@ -22,3 +22,21 @@ index 139a600b09250af07e4771852d02e1be4fe84e2c..13f4b3aeae9b647bc15a98c76e517ca8
    return content::BuildUserAgentFromProduct(product);
  }
  
+@@ -1251,7 +1257,8 @@ bool ChromeContentBrowserClient::IsShuttingDown() {
+ 
+ std::string ChromeContentBrowserClient::GetStoragePartitionIdForSite(
+     content::BrowserContext* browser_context,
+-    const GURL& site) {
++    const GURL& site,
++    const GURL& first_party) {
+   std::string partition_id;
+ 
+   // The partition ID for webview guest processes is the string value of its
+@@ -1283,6 +1290,7 @@ bool ChromeContentBrowserClient::IsValidStoragePartitionId(
+ void ChromeContentBrowserClient::GetStoragePartitionConfigForSite(
+     content::BrowserContext* browser_context,
+     const GURL& site,
++    const GURL& first_party,
+     bool can_be_default,
+     std::string* partition_domain,
+     std::string* partition_name,

@@ -1,0 +1,51 @@
+diff --git a/content/browser/browsing_instance.h b/content/browser/browsing_instance.h
+index 5c0bd8c42977237b487928e9d1fbf94d8c04d8d6..8f65c1eb55eca67123cebf3b61000a4afebd84f5 100644
+--- a/content/browser/browsing_instance.h
++++ b/content/browser/browsing_instance.h
+@@ -100,6 +100,7 @@ class CONTENT_EXPORT BrowsingInstance final
+   // Returns whether this BrowsingInstance has registered a SiteInstance for
+   // the site of the given URL.
+   bool HasSiteInstance(const GURL& url);
++  bool HasSiteInstance(const GURL& url, const GURL& first_party);
+ 
+   // Get the SiteInstance responsible for rendering the given URL.  Should
+   // create a new one if necessary, but should not create more than one
+@@ -114,14 +115,20 @@ class CONTENT_EXPORT BrowsingInstance final
+   scoped_refptr<SiteInstanceImpl> GetSiteInstanceForURL(
+       const GURL& url,
+       bool allow_default_instance);
++  scoped_refptr<SiteInstanceImpl> GetSiteInstanceForURL(
++      const GURL& url,
++      const GURL& first_party,
++      bool allow_default_instance);
+ 
+   // Gets site and lock URLs for |url| that are identical with what these
+   // values would be if we called GetSiteInstanceForURL() with the same
+   // |url| and |allow_default_instance|. This method is used when we need this
+   // information, but do not want to create a SiteInstance yet.
+   void GetSiteAndLockForURL(const GURL& url,
++                            const GURL& first_party,
+                             bool allow_default_instance,
+                             GURL* site_url,
++                            GURL* first_party_url,
+                             GURL* lock_url);
+ 
+   // Helper function used by GetSiteInstanceForURL() and GetSiteAndLockForURL()
+@@ -134,6 +141,7 @@ class CONTENT_EXPORT BrowsingInstance final
+   // Note: This method is not intended to be called by code outside this object.
+   scoped_refptr<SiteInstanceImpl> GetSiteInstanceForURLHelper(
+       const GURL& url,
++      const GURL& first_party,
+       bool allow_default_instance);
+ 
+   // Adds the given SiteInstance to our map, to ensure that we do not create
+@@ -163,7 +171,8 @@ class CONTENT_EXPORT BrowsingInstance final
+ 
+   // Map of site to SiteInstance, to ensure we only have one SiteInstance per
+   // site.
+-  typedef std::unordered_map<std::string, SiteInstanceImpl*> SiteInstanceMap;
++  typedef std::map<std::pair<std::string, std::string>, SiteInstanceImpl*>
++    SiteInstanceMap;
+ 
+   // The next available browser-global BrowsingInstance ID.
+   static int next_browsing_instance_id_;

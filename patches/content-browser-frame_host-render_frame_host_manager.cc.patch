@@ -1,0 +1,19 @@
+diff --git a/content/browser/frame_host/render_frame_host_manager.cc b/content/browser/frame_host/render_frame_host_manager.cc
+index 56aa5739aa3e364fb56c20e5cafe60302693d85d..7d6de033a5c812d3ba7325d215cfc0e819c87f8f 100644
+--- a/content/browser/frame_host/render_frame_host_manager.cc
++++ b/content/browser/frame_host/render_frame_host_manager.cc
+@@ -1685,6 +1685,14 @@ scoped_refptr<SiteInstance> RenderFrameHostManager::ConvertToSiteInstance(
+     return candidate_instance;
+   }
+ 
++  // If this is not the main frame, create a site instance that
++  // remembers what the main frame's first-party URL is.
++  if (!frame_tree_node_->IsMainFrame()) {
++    return SiteInstanceImpl::CreateForURL(
++        delegate_->GetControllerForRenderManager().GetBrowserContext(),
++        descriptor.dest_url, current_instance->GetSiteURL());
++  }
++
+   // Otherwise return a newly created one.
+   return SiteInstance::CreateForURL(
+       delegate_->GetControllerForRenderManager().GetBrowserContext(),

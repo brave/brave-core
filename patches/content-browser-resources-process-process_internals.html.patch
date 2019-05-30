@@ -1,0 +1,15 @@
+diff --git a/content/browser/resources/process/process_internals.html b/content/browser/resources/process/process_internals.html
+index d5afec18d64c7bdeacd64a39358ee272deee6633..7f778d4303a4c7213e496ca7dfe85666155d132d 100644
+--- a/content/browser/resources/process/process_internals.html
++++ b/content/browser/resources/process/process_internals.html
+@@ -42,8 +42,8 @@
+         <div>Legend:</div>
+         <div>Frame[<i>process_id</i>:<i>routing_id</i>]:
+           SI:<i>site_instance_id</i>, <i>whether process is locked to a
+-            site</i>, site: <i>site_url</i> | url:
+-          <i>last_committed_url</i>
++            site</i>, site: <i>site_url</i>, firstParty: <i>first_party_url</i>
++          | url: <i>last_committed_url</i>
+         </div>
+         <tree id="tree-view"></tree>
+       </div>

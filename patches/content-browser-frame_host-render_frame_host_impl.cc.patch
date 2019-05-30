@@ -1,0 +1,15 @@
+diff --git a/content/browser/frame_host/render_frame_host_impl.cc b/content/browser/frame_host/render_frame_host_impl.cc
+index 64bd8abb107a09c05824d5e13b9c86f52d2745ea..e72885f6aae9f82e090a9a67c226db16d9e2faee 100644
+--- a/content/browser/frame_host/render_frame_host_impl.cc
++++ b/content/browser/frame_host/render_frame_host_impl.cc
+@@ -4719,7 +4719,9 @@ void RenderFrameHostImpl::CommitNavigation(
+       std::string partition_name;
+       bool in_memory;
+       GetContentClient()->browser()->GetStoragePartitionConfigForSite(
+-          browser_context, site_instance_->GetSiteURL(), true, &storage_domain,
++          browser_context,
++          site_instance_->GetSiteURL(), site_instance_->GetFirstPartyURL(),
++          true, &storage_domain,
+           &partition_name, &in_memory);
+     }
+     non_network_url_loader_factories_.emplace(

@@ -1,8 +1,26 @@
 diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
-index 39174b67d1d3613a8cd7a02cc49d911ba8686a40..df0396eab93feddb8ba40c48609b6ea5d5754b25 100644
+index 39174b67d1d3613a8cd7a02cc49d911ba8686a40..8c931399fb99b5cc64be81f64f47be87324e2a52 100644
 --- a/content/public/browser/content_browser_client.h
 +++ b/content/public/browser/content_browser_client.h
-@@ -1554,6 +1554,14 @@ class CONTENT_EXPORT ContentBrowserClient {
+@@ -707,7 +707,8 @@ class CONTENT_EXPORT ContentBrowserClient {
+   // config with a site.
+   virtual std::string GetStoragePartitionIdForSite(
+       BrowserContext* browser_context,
+-      const GURL& site);
++      const GURL& site,
++      const GURL& first_party);
+ 
+   // Allows the embedder to provide a validation check for |partition_id|s.
+   // This domain of valid entries should match the range of outputs for
+@@ -733,6 +734,7 @@ class CONTENT_EXPORT ContentBrowserClient {
+   virtual void GetStoragePartitionConfigForSite(
+       BrowserContext* browser_context,
+       const GURL& site,
++      const GURL& first_party,
+       bool can_be_default,
+       std::string* partition_domain,
+       std::string* partition_name,
+@@ -1554,6 +1556,14 @@ class CONTENT_EXPORT ContentBrowserClient {
    virtual ui::AXMode GetAXModeForBrowserContext(
        BrowserContext* browser_context);
  

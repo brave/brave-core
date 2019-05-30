@@ -1,0 +1,14 @@
+diff --git a/content/browser/resources/process/process_internals.js b/content/browser/resources/process/process_internals.js
+index f7a7fd7d790e6510474c4243f89b1cff49b18053..309c7b7cb944dcedcc61fd5b39988556dc807b6e 100644
+--- a/content/browser/resources/process/process_internals.js
++++ b/content/browser/resources/process/process_internals.js
+@@ -95,6 +95,9 @@ function frameToTreeItem(frame) {
+   if (frame.siteInstance.siteUrl) {
+     itemLabel += `, site:${frame.siteInstance.siteUrl.url}`;
+   }
++  if (frame.siteInstance.firstPartyUrl) {
++    itemLabel += `, firstParty:${frame.siteInstance.firstPartyUrl.url}`;
++  }
+   if (frame.lastCommittedUrl) {
+     itemLabel += ` | url: ${frame.lastCommittedUrl.url}`;
+   }

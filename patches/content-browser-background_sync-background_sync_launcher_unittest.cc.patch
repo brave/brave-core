@@ -1,0 +1,12 @@
+diff --git a/content/browser/background_sync/background_sync_launcher_unittest.cc b/content/browser/background_sync/background_sync_launcher_unittest.cc
+index 41bbe372ed5198916ca3d54820aee4869895dd91..8089b9bcaf5b857c9fa949297f93d7d9c3f80f95 100644
+--- a/content/browser/background_sync/background_sync_launcher_unittest.cc
++++ b/content/browser/background_sync/background_sync_launcher_unittest.cc
+@@ -40,6 +40,7 @@ class TestBrowserClient : public ContentBrowserClient {
+ 
+   void GetStoragePartitionConfigForSite(BrowserContext* browser_context,
+                                         const GURL& site,
++                                        const GURL& first_party,
+                                         bool can_be_default,
+                                         std::string* partition_domain,
+                                         std::string* partition_name,

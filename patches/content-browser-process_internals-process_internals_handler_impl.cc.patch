@@ -1,0 +1,15 @@
+diff --git a/content/browser/process_internals/process_internals_handler_impl.cc b/content/browser/process_internals/process_internals_handler_impl.cc
+index cf430dd5cec92772a1f74c17117730bd78af155e..769285709dbc094ef36d7e4dbdaff0de494cb054 100644
+--- a/content/browser/process_internals/process_internals_handler_impl.cc
++++ b/content/browser/process_internals/process_internals_handler_impl.cc
+@@ -42,6 +42,10 @@ namespace {
+       site_instance->HasSite()
+           ? base::make_optional(site_instance->GetSiteURL())
+           : base::nullopt;
++  frame_info->site_instance->first_party_url =
++      site_instance->HasSite()
++          ? base::make_optional(site_instance->GetFirstPartyURL())
++          : base::nullopt;
+ 
+   for (size_t i = 0; i < ftn->child_count(); ++i) {
+     frame_info->subframes.push_back(FrameTreeNodeToFrameInfo(ftn->child_at(i)));

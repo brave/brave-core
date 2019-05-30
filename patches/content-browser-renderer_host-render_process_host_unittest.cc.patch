@@ -1,0 +1,12 @@
+diff --git a/content/browser/renderer_host/render_process_host_unittest.cc b/content/browser/renderer_host/render_process_host_unittest.cc
+index cc190205816d0ac8b951e705f9e62c9f1a22e4fe..3a4b34ecdc2b89e6154be653c3e5ea621d0f180b 100644
+--- a/content/browser/renderer_host/render_process_host_unittest.cc
++++ b/content/browser/renderer_host/render_process_host_unittest.cc
+@@ -813,6 +813,7 @@ class StoragePartitionContentBrowserClient : public ContentBrowserClient {
+  private:
+   void GetStoragePartitionConfigForSite(BrowserContext* browser_context,
+                                         const GURL& site,
++                                        const GURL& first_party,
+                                         bool can_be_default,
+                                         std::string* partition_domain,
+                                         std::string* partition_name,

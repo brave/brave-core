@@ -1,0 +1,12 @@
+diff --git a/content/browser/process_internals/process_internals.mojom b/content/browser/process_internals/process_internals.mojom
+index fe11eebcb85395dd6e3cb363c9733571746b2d0f..ec138824d1ceacf67e30518dfa4a6d78447f73ce 100644
+--- a/content/browser/process_internals/process_internals.mojom
++++ b/content/browser/process_internals/process_internals.mojom
+@@ -15,6 +15,7 @@ struct SiteInstanceInfo {
+   bool locked;
+ 
+   url.mojom.Url? site_url;
++  url.mojom.Url? first_party_url;
+ };
+ 
+ // Basic information describing a frame and all of its subframes.
