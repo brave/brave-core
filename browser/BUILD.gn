@@ -87,6 +87,7 @@ source_set("browser_process") {
     "ui",
     "//base",
     "//brave/browser/tor",
+    "//brave/browser/translate/buildflags",
     "//brave/common",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_component_updater/browser",
