@@ -1,0 +1,13 @@
+diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
+index 2423d123e6b32960ef450f101ce1b79c3fd418df..8ee23d272f75616cd6f15ced10e34049b4e8ae59 100644
+--- a/chrome/android/BUILD.gn
++++ b/chrome/android/BUILD.gn
+@@ -38,7 +38,7 @@ if (enable_vr) {
+   import("//chrome/android/features/vr/vr_module_tmpl.gni")
+ }
+ 
+-manifest_package = "org.chromium.chrome"
++declare_args() { manifest_package = "org.chromium.chrome" }
+ test_manifest_package = "org.chromium.chrome.tests"
+ 
+ chrome_public_jinja_variables = default_chrome_public_jinja_variables +
