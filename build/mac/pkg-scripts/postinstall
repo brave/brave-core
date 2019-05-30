@@ -6,11 +6,26 @@
 installerPath=$1
 installationPath=$2
 
-# TODO: ugly to assume the name of the app, especially with multi-channel.
-# Luckily for now, release channel is the only channel with a pkg installer.
-installationAppPath="$installationPath/Brave Browser.app"
+# Detect if installer contained a referral promotion code within the filename
+# Will also get a channel-safe version of the application name (based on the .pkg file name)
 installerPathPromoCodeRegex='.+-(([a-zA-Z0-9]{3}[0-9]{3})|([a-zA-Z]{1,}-[a-zA-Z]{1,}))([[:blank:]]?\([0-9]+\))?\.pkg$'
-userDataDir="$HOME/Library/Application Support/BraveSoftware/Brave-Browser"
+if [[ $installerPath =~ $installerPathPromoCodeRegex ]]; then
+  echo "Installer path matched for promo code"
+  n=${#BASH_REMATCH[*]}
+  if [ $n -ge 1 ]; then
+    promoCode=${BASH_REMATCH[1]}
+    echo "Got promo code: $promoCode"
+  fi
+  appName=$(basename "$1" | sed "s/.pkg//" | sed "s/ /\-/g" | sed "s/-${promoCode}//")
+else
+  echo "Installer path did not match for promo code"
+  promoCode=""
+  appName=$(basename "$1" | sed "s/.pkg//" | sed "s/ /\-/g")
+fi
+
+appNameNoDash=$(echo $appName | sed "s/-/ /g")
+installationAppPath="$installationPath/${appNameNoDash}.app"
+userDataDir="$HOME/Library/Application Support/BraveSoftware/${appName}"
 promoCodePath="$userDataDir/promoCode"
 
 # pkg runs this script as root so we need to get current username
@@ -28,25 +43,14 @@ sudo chmod -R 775 "$installationAppPath"
 sudo chown -R $userName "$installationAppPath"
 sudo chgrp -R admin "$installationAppPath"
 
-# Detect if installer contained a referral promotion code within the filename
-if [[ $installerPath =~ $installerPathPromoCodeRegex ]]; then
-  echo "Installer path matched for promo code"
-  n=${#BASH_REMATCH[*]}
-  if [ $n -ge 1 ]; then
-    promoCode=${BASH_REMATCH[1]}
-    echo "Got promo code: $promoCode"
-    echo "Writing to user data directory at: $userDataDir/promoCode"
-    # TODO: it is a bit ugly to assume the user-data path here, and to manually
-    # write to it and hopefully set the correct permissions. An alternative would
-    # be to run Brave with a flag, similar to the process for Windows.
-    mkdir -p "$userDataDir"
-    echo "$promoCode" > "$promoCodePath"
-    # fix permissions
-    sudo chown "$userName" "$userDataDir"
-    sudo chown "$userName" "$promoCodePath"
-  fi
-else
-  echo "Installer path did not match for promo code"
+# handle promoCode specific logic (if promoCode was found)
+if [ "$promoCode" != "" ]; then
+  echo "Writing to user data directory at: $promoCodePath"
+  mkdir -p "$userDataDir"
+  echo "$promoCode" > "$promoCodePath"
+  # fix permissions
+  sudo chown "$userName" "$userDataDir"
+  sudo chown "$userName" "$promoCodePath"
 fi
 
 exit 0
