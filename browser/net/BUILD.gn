@@ -1,3 +1,4 @@
+import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//build/config/features.gni")
 
 source_set("net") {
@@ -25,8 +26,6 @@ source_set("net") {
     "brave_system_network_delegate.h",
     "brave_tor_network_delegate_helper.cc",
     "brave_tor_network_delegate_helper.h",
-    "brave_translate_redirect_network_delegate_helper.cc",
-    "brave_translate_redirect_network_delegate_helper.h",
     "url_context.cc",
     "url_context.h",
   ]
@@ -43,6 +42,13 @@ source_set("net") {
   if (!is_android) {
     deps += [
       "//brave/app:brave_generated_resources_grit",
+    ]
+  }
+
+  if (enable_brave_translate) {
+    sources += [
+      "brave_translate_redirect_network_delegate_helper.cc",
+      "brave_translate_redirect_network_delegate_helper.h",
     ]
   }
 }
