@@ -7,6 +7,13 @@ import("//extensions/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 source_set("browser_process") {
+  visibility = [
+    "//chrome/browser/*",
+    "//brave/browser/*",
+    "//brave:browser_dependencies",
+    "//brave/test:*"
+  ]
+
   sources = [
     "autocomplete/brave_autocomplete_provider_client.cc",
     "autocomplete/brave_autocomplete_provider_client.h",
@@ -187,6 +194,13 @@ source_set("version_info") {
 }
 
 source_set("browser") {
+  visibility = [
+    "//chrome/browser/*",
+    "//brave/browser/*",
+    "//brave:browser_dependencies",
+    "//brave/test:*"
+  ]
+
   deps = [
     "//chrome/browser",
   ]

@@ -3,6 +3,6 @@ declare_args() {
   brave_branding_path_component = ""
 }
 
-if (brave_chromium_build) {
+if (brave_chromium_build && !is_ios) {
   brave_branding_path_component = "brave"
 }
