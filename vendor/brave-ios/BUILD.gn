@@ -3,18 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
-
 if (is_ios) {
   import("//build/config/ios/rules.gni")
-}
-
-config("external_config") {
-  visibility = [ ":*" ]
-  include_dirs = [
-    ".",
-    "$target_gen_dir/include",
-  ]
 }
 
 config("internal_config") {
