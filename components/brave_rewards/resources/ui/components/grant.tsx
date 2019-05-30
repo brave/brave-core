@@ -12,7 +12,7 @@ import {
   GrantCaptcha,
   GrantComplete
 } from 'brave-ui/features/rewards'
-import GrantClaim, { Type } from 'brave-ui/features/rewards/grantClaim'
+import GrantClaim, { Type as GrantType } from 'brave-ui/features/rewards/grantClaim'
 
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
@@ -26,6 +26,24 @@ interface State {
 
 interface Props extends Rewards.ComponentProps {
   grant: Rewards.Grant
+}
+
+type GrantWrapperContentProps = {
+  title: string
+  text: string
+}
+
+function getGrantWrapperContentProps(grantType: GrantType): GrantWrapperContentProps {
+  if (grantType === 'ads') {
+    return {
+      title: getLocale('grantTitleAds'),
+      text: getLocale('grantSubtitleAds')
+    }
+  }
+  return {
+    title: getLocale('grantTitleUGP'),
+    text: getLocale('grantSubtitleUGP')
+  }
 }
 
 // TODO add local when we know what we will get from the server
@@ -165,7 +183,7 @@ class Grant extends React.Component<Props, State> {
       <>
         {
           this.state.grantShow && type
-            ? <GrantClaim type={type as Type} onClaim={this.onGrantShow.bind(this, promoId)} testId={'claimGrant'}/>
+            ? <GrantClaim type={type as GrantType} onClaim={this.onGrantShow.bind(this, promoId)} testId={'claimGrant'}/>
             : null
         }
         {
@@ -178,8 +196,7 @@ class Grant extends React.Component<Props, State> {
             ? <GrantWrapper
               data-test-id={'grantWrapper'}
               onClose={this.onFinish}
-              title={'It’s your lucky day!'}
-              text={'Your token grant is on its way.'}
+              {...getGrantWrapperContentProps(type as GrantType)}
             >
               <GrantComplete onClose={this.onFinish} amount={tokens} date={date} testId={'newTokenGrant'} />
             </GrantWrapper>
