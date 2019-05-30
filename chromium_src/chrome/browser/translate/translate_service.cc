@@ -6,7 +6,7 @@
 #include "brave/browser/translate/buildflags/buildflags.h"
 
 namespace {
-bool IsBraveTranslateEnable() {
+bool IsBraveTranslateEnabled() {
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
   return true;
 #endif
