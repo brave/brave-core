@@ -1,0 +1,162 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+
+if (is_ios) {
+  import("//build/config/ios/rules.gni")
+}
+
+dep_base = rebase_path("../..", "//")
+
+
+config("external_config") {
+  visibility = [ ":*" ]
+  include_dirs = [
+    ".",
+    "$target_gen_dir/include",
+  ]
+}
+
+config("internal_config") {
+  visibility = [
+    ":*",
+    "//brave/test:*",
+  ]
+
+  cflags = [
+    "-w",
+    "-fobjc-arc",
+    "-fobjc-weak",
+    "-fobjc-abi-version=2",
+    "-fobjc-legacy-dispatch",
+  ]
+  include_dirs = [
+    ".",
+    "Ads",
+    "Ads/Generated",
+    "Ledger",
+    "Ledger/Generated",
+    "Ledger/Data",
+    "Ledger/Data/CoreDataGenerated/Model",
+    "Ledger/Models",
+    "Shared",
+    "objc-gen",
+    rebase_path("bat-native-ledger/include", dep_base),
+    rebase_path("bat-native-ads/include", dep_base),
+    "$root_gen_dir/brave/vendor/bat-native-ledger/include",
+  ]
+}
+
+group("brave-rewards-ios") {
+  public_deps = [
+    ":rewards-ios",
+  ]
+}
+
+ios_framework_bundle("brave-rewards-ios-framework") {
+  output_name = "BraveRewards"
+  output_dir = root_out_dir
+
+  info_plist = "Info.plist"
+
+  configs += [ ":internal_config" ]
+  configs += [ "//build/config/compiler:enable_arc" ]
+  configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
+
+  deps = [
+    ":rewards-ios",
+    ":brave-rewards-ios-framework-resources",
+    ":brave-rewards-ios-compile-coredata"
+  ]
+
+  sources = [
+    "BATBraveRewards.m",
+    "Ledger/BATBraveLedger.mm",
+    "Ledger/Data/BATLedgerDatabase.mm",
+    "Ledger/Data/DataController.mm",
+    "Ledger/Generated/NativeLedgerClient.mm",
+    "Ledger/Generated/Records.mm",
+    "Ledger/Models/BATActivityInfoFilter.mm",
+    "Ledger/Models/BATPublisherInfo+Private.mm",
+    "Ledger/Models/BATPublisherInfo.mm",
+    "Ledger/Models/BATPendingContribution.mm",
+    "Ledger/Models/BATRewardsNotification.m",
+    "Shared/BATCommonOperations.mm",
+    "Shared/NSURL+Extensions.mm",
+    "Shared/RewardsLogStream.mm",
+    "objc-gen/CppTransformations.h",
+    "Ads/BATAdsNotification.mm",
+    "Ads/BATBraveAds.mm",
+    "Ads/Generated/NativeAdsClient.mm",
+    "Ledger/Data/CoreDataGenerated/Model/ActivityInfo+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/ActivityInfo+CoreDataProperties.m",
+    "Ledger/Data/CoreDataGenerated/Model/ContributionInfo+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/ContributionInfo+CoreDataProperties.m",
+    "Ledger/Data/CoreDataGenerated/Model/MediaPublisherInfo+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/MediaPublisherInfo+CoreDataProperties.m",
+    "Ledger/Data/CoreDataGenerated/Model/PendingContribution+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/PendingContribution+CoreDataProperties.m",
+    "Ledger/Data/CoreDataGenerated/Model/PublisherInfo+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/PublisherInfo+CoreDataProperties.m",
+    "Ledger/Data/CoreDataGenerated/Model/RecurringDonation+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/RecurringDonation+CoreDataProperties.m",
+  ]
+
+  public_headers = [
+    "BraveRewards.h",
+    "BATBraveRewards.h",
+    "Ledger/BATBraveLedger.h",
+    "Ledger/Generated/Records.h",
+    "Ledger/Generated/Enums.h",
+    "Ledger/Models/BATPublisherInfo.h",
+    "Ledger/Models/BATActivityInfoFilter.h",
+    "Ledger/Models/BATRewardsNotification.h",
+    "Ads/BATBraveAds.h",
+    "Ads/BATAdsNotification.h"
+  ]
+}
+
+copy("brave-rewards-ios-framework-resources") {
+  ads_dir = rebase_path("bat-native-ads", dep_base)
+  ledger_dir = rebase_path("bat-native-ledger", dep_base)
+  sources = [
+    "$ads_dir/resources/bundle-schema.json",
+    "$ads_dir/resources/catalog-schema.json",
+    "$ads_dir/resources/sample_bundle.json",
+    "$ads_dir/resources/locales",
+    "$ledger_dir/niceware/wordlist"
+  ]
+  outputs = [
+    "$root_out_dir/BraveRewards.framework/{{source_file_part}}",
+  ]
+}
+
+action("brave-rewards-ios-compile-coredata") {
+  script = "lib/compile-model.py"
+  outputs = [ "$root_out_dir/BraveRewards.framework/Model.momd/" ]
+  out_dir = rebase_path(root_out_dir)
+  in_dir = rebase_path("Ledger/Data/Model.xcdatamodeld")
+  args = [
+    "--model=$in_dir",
+    "--output=$out_dir/BraveRewards.framework/",
+  ]
+}
+
+source_set("rewards-ios") {
+  deps = [
+    rebase_path("bat-native-ledger", dep_base),
+    rebase_path("bat-native-ads", dep_base)
+  ]
+
+  libs = [
+    "Foundation.framework",
+    "UIKit.framework",
+    "Security.framework",
+    "CoreData.framework",
+    "SystemConfiguration.framework",
+    "Network.framework"
+   ]
+}

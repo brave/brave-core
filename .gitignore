@@ -11,6 +11,7 @@
 !/vendor/bat-native-ledger
 !/vendor/bat-native-confirmations
 !/vendor/bat-native-ads
+!/vendor/brave-ios
 !/vendor/CPPLINT.cfg
 node_modules/
 *.xcodeproj
