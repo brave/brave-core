@@ -32,7 +32,11 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuBrowserTest, BasicTest) {
   // -1 means |model| doesn't have passed command id.
   EXPECT_NE(-1, normal_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS));
   EXPECT_NE(-1, normal_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_SYNC));
+  #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   EXPECT_NE(-1, normal_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET));
+  #else
+  EXPECT_EQ(-1, normal_model.GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET));
+  #endif
 
   auto* command_controller = browser()->command_controller();
   #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
