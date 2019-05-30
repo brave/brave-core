@@ -9,9 +9,6 @@ if (is_ios) {
   import("//build/config/ios/rules.gni")
 }
 
-dep_base = rebase_path("../..", "//")
-
-
 config("external_config") {
   visibility = [ ":*" ]
   include_dirs = [
@@ -43,16 +40,7 @@ config("internal_config") {
     "Ledger/Data/CoreDataGenerated/Model",
     "Ledger/Models",
     "Shared",
-    "objc-gen",
-    rebase_path("bat-native-ledger/include", dep_base),
-    rebase_path("bat-native-ads/include", dep_base),
-    "$root_gen_dir/brave/vendor/bat-native-ledger/include",
-  ]
-}
-
-group("brave-rewards-ios") {
-  public_deps = [
-    ":rewards-ios",
+    "objc-gen"
   ]
 }
 
@@ -67,7 +55,8 @@ ios_framework_bundle("brave-rewards-ios-framework") {
   configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
 
   deps = [
-    ":rewards-ios",
+    "//brave/vendor/bat-native-ledger",
+    "//brave/vendor/bat-native-ads",
     ":brave-rewards-ios-framework-resources",
     ":brave-rewards-ios-compile-coredata"
   ]
@@ -117,11 +106,20 @@ ios_framework_bundle("brave-rewards-ios-framework") {
     "Ads/BATBraveAds.h",
     "Ads/BATAdsNotification.h"
   ]
+
+  libs = [
+    "Foundation.framework",
+    "UIKit.framework",
+    "Security.framework",
+    "CoreData.framework",
+    "SystemConfiguration.framework",
+    "Network.framework"
+  ]
 }
 
-copy("brave-rewards-ios-framework-resources") {
-  ads_dir = rebase_path("bat-native-ads", dep_base)
-  ledger_dir = rebase_path("bat-native-ledger", dep_base)
+bundle_data("brave-rewards-ios-framework-resources") {
+  ads_dir = "//brave/vendor/bat-native-ads"
+  ledger_dir = "//brave/vendor/bat-native-ledger"
   sources = [
     "$ads_dir/resources/bundle-schema.json",
     "$ads_dir/resources/catalog-schema.json",
@@ -130,7 +128,7 @@ copy("brave-rewards-ios-framework-resources") {
     "$ledger_dir/niceware/wordlist"
   ]
   outputs = [
-    "$root_out_dir/BraveRewards.framework/{{source_file_part}}",
+    "{{bundle_resources_dir}}//{{source_file_part}}",
   ]
 }
 
@@ -143,20 +141,4 @@ action("brave-rewards-ios-compile-coredata") {
     "--model=$in_dir",
     "--output=$out_dir/BraveRewards.framework/",
   ]
-}
-
-source_set("rewards-ios") {
-  deps = [
-    rebase_path("bat-native-ledger", dep_base),
-    rebase_path("bat-native-ads", dep_base)
-  ]
-
-  libs = [
-    "Foundation.framework",
-    "UIKit.framework",
-    "Security.framework",
-    "CoreData.framework",
-    "SystemConfiguration.framework",
-    "Network.framework"
-   ]
 }
