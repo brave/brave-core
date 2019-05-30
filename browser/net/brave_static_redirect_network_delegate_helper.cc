@@ -8,6 +8,7 @@
 #include <memory>
 #include <vector>
 
+#include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/translate_network_constants.h"
 #include "extensions/common/url_pattern.h"
@@ -33,11 +34,12 @@ int OnBeforeURLRequest_StaticRedirectWork(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRLSetPrefix4);
   static URLPattern crxDownload_pattern(
       URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kCRXDownloadPrefix);
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
   static URLPattern translate_pattern(URLPattern::SCHEME_HTTPS,
       kTranslateElementJSPattern);
   static URLPattern translate_language_pattern(URLPattern::SCHEME_HTTPS,
       kTranslateLanguagePattern);
-
+#endif
   if (geo_pattern.MatchesURL(ctx->request_url)) {
     ctx->new_url_spec = GURL(GOOGLEAPIS_ENDPOINT GOOGLEAPIS_API_KEY).spec();
     return net::OK;
@@ -89,7 +91,7 @@ int OnBeforeURLRequest_StaticRedirectWork(
     ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
     return net::OK;
   }
-
+#if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
   if (translate_pattern.MatchesURL(ctx->request_url)) {
     replacements.SetQueryStr(ctx->request_url.query_piece());
     replacements.SetPathStr(ctx->request_url.path_piece());
@@ -102,6 +104,7 @@ int OnBeforeURLRequest_StaticRedirectWork(
     ctx->new_url_spec = GURL(kBraveTranslateLanguageEndpoint).spec();
     return net::OK;
   }
+#endif
 
 #if !defined(NDEBUG)
   GURL gurl = ctx->request_url;

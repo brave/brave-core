@@ -73,6 +73,7 @@ source_set("browser_process") {
     ":version_info",
     "//base",
     "//brave/browser/tor",
+    "//brave/browser/translate/buildflags",
     "//brave/common",
     "//brave/components/brave_ads/browser",
     "//brave/components/brave_rewards/browser",
