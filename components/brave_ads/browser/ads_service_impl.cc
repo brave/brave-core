@@ -733,7 +733,9 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
 }
 
 bool AdsServiceImpl::IsSupportedRegion() const {
-  return is_supported_region_;
+  auto locale = LocaleHelper::GetInstance()->GetLocale();
+  auto is_supported_region = ads::Ads::IsSupportedRegion(locale);
+  return is_supported_region;
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
