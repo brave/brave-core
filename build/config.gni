@@ -8,7 +8,7 @@ declare_args() {
   # "nightly" for nightly channel release.
   # "" for stable channel release.
   brave_channel = ""
-
+  is_release_channel = true
   base_sparkle_update_url = ""
 
   brave_dsa_file = "dsa_pub.pem"
@@ -105,3 +105,5 @@ if (is_win) {
 } else if (is_linux) {
   brave_platform = "linux"
 }
+
+is_release_channel = brave_channel == ""

@@ -3,8 +3,6 @@ import("//chrome/browser/resources/optimize_webui.gni")
 import("//chrome/common/features.gni")
 import("//tools/grit/grit_rule.gni")
 
-is_release_channel = brave_channel == ""
-
 grit("resources") {
   source = "settings_resources.grd"
 
