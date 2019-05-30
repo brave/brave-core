@@ -19,7 +19,7 @@
     self.storagePath = storagePath;
     _timers = [[NSMutableDictionary alloc] init];
     _runningTasks = [[NSMutableArray alloc] init];
-    
+
     // Setup the ads directory for persistant storage
     if (self.storagePath.length > 0) {
       if (![NSFileManager.defaultManager fileExistsAtPath:self.storagePath isDirectory:nil]) {
@@ -55,7 +55,7 @@
 {
   self.currentTimerID++;
   const auto timerID = self.currentTimerID;
-  
+
   auto const __weak weakSelf = self;
   self.timers[[NSNumber numberWithUnsignedInt:timerID]] =
   [NSTimer scheduledTimerWithTimeInterval:offset repeats:false block:^(NSTimer * _Nonnull timer) {
@@ -78,27 +78,27 @@
   const auto session = NSURLSession.sharedSession;
   const auto nsurl = [NSURL URLWithString:[NSString stringWithUTF8String:url.c_str()]];
   const auto request = [[NSMutableURLRequest alloc] initWithURL:nsurl];
-  
+
   // At the moment `headers` is ignored, as I'm not sure how to use an array of strings to setup HTTP headers...
-  
+
   if (content_type.length() > 0) {
     [request setValue:[NSString stringWithUTF8String:content_type.c_str()] forHTTPHeaderField:@"Content-Type"];
   }
-  
+
   request.HTTPMethod = [NSString stringWithUTF8String:method.c_str()];
-  
+
   if (method != "GET" && content.length() > 0) {
     // Assumed http body
     request.HTTPBody = [[NSString stringWithUTF8String:content.c_str()] dataUsingEncoding:NSUTF8StringEncoding];
   }
-  
+
   const auto __weak weakSelf = self;
   NSURLSessionDataTask *task = nil;
   task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable urlResponse, NSError * _Nullable error) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) { return; };
     [strongSelf.runningTasks removeObject:task];
-    
+
     const auto response = (NSHTTPURLResponse *)urlResponse;
     std::string json;
     if (data) {
@@ -107,7 +107,7 @@
     }
     // For some reason I couldn't just do `std::map<std::string, std::string> responseHeaders;` due to std::map's
     // non-const key insertion
-    auto responseHeaders = new std::map<std::string, std::string>();
+    auto* responseHeaders = new std::map<std::string, std::string>();
     [response.allHeaderFields enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
       if (![key isKindOfClass:NSString.class] || ![obj isKindOfClass:NSString.class]) { return; }
       std::string stringKey(key.UTF8String);

@@ -92,7 +92,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
     self.state = [[NSMutableDictionary alloc] initWithContentsOfFile:self.randomStatePath] ?: [[NSMutableDictionary alloc] init];
     self.fileWriteThread = dispatch_queue_create("com.rewards.file-write", DISPATCH_QUEUE_SERIAL);
     self.mPendingGrants = [[NSMutableArray alloc] init];
-    
+
     self.prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
     if (!self.prefs) {
       self.prefs = [[NSMutableDictionary alloc] init];
@@ -104,19 +104,19 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
       self.prefs[kUserHasFundedKey] = @(NO);
       [self savePrefs];
     }
-    
+
     ledgerClient = new NativeLedgerClient(self);
     ledger = ledger::Ledger::CreateInstance(ledgerClient);
     ledger->Initialize();
-    
+
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
-    
+
     if (self.walletCreated) {
       [self fetchWalletDetails:nil];
     }
-    
+
     [self readNotificationsFromDisk];
   }
   return self;
@@ -126,7 +126,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 {
   [NSNotificationCenter.defaultCenter removeObserver:self];
   [self.notificationStartupTimer invalidate];
-  
+
   delete ledger;
   delete ledgerClient;
 }
@@ -222,7 +222,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 - (void)onWalletProperties:(ledger::Result)result arg1:(std::unique_ptr<ledger::WalletInfo>)arg1
 {
   if (result == ledger::LEDGER_OK) {
-    const auto walletInfo = arg1.get();
+    const auto* walletInfo = arg1.get();
     if (walletInfo != nullptr) {
       self.walletInfo = [[BATWalletInfo alloc] initWithWalletInfo:*walletInfo];
     } else {
@@ -326,7 +326,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   ledger->GetPublisherInfo(std::string(publisherId.UTF8String), ^(ledger::Result result, ledger::PublisherInfoPtr info) {
     if (result == ledger::LEDGER_OK) {
-      const auto& publisherInfo = info.get();
+      const auto* publisherInfo = info.get();
       if (publisherInfo != nullptr) {
         completion([[BATPublisherInfo alloc] initWithPublisherInfo:*publisherInfo]);
       }
@@ -355,7 +355,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   const auto cppFilter = filter ? filter.cppObj : ledger::ActivityInfoFilter();
   ledger->GetActivityInfo(cppFilter, ^(ledger::Result result, ledger::PublisherInfoPtr info) {
     if (result == ledger::LEDGER_OK) {
-      const auto& publisherInfo = info.get();
+      const auto* publisherInfo = info.get();
       if (publisherInfo != nullptr) {
         completion([[BATPublisherInfo alloc] initWithPublisherInfo:*publisherInfo]);
       }
@@ -379,7 +379,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   ledger->GetMediaPublisherInfo(std::string(mediaKey.UTF8String), ^(ledger::Result result, ledger::PublisherInfoPtr info) {
     if (result == ledger::LEDGER_OK) {
-      const auto& publisherInfo = info.get();
+      const auto* publisherInfo = info.get();
       if (publisherInfo != nullptr) {
         completion([[BATPublisherInfo alloc] initWithPublisherInfo:*publisherInfo]);
       }
@@ -490,10 +490,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   if (result == ledger::LEDGER_OK) {
     [self.mPendingGrants addObject:[[BATGrant alloc] initWithGrant:grant]];
-    
+
     bool isUGP = [self isGrantUGP:grant];
     auto notificationKind = isUGP ? BATRewardsNotificationKindGrant : BATRewardsNotificationKindGrantAds;
-    
+
     [self addNotificationOfKind:notificationKind
                        userInfo:nil
                  notificationID:[self notificationIDForGrant:grant]
@@ -547,9 +547,9 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                                  report_type,
                                  grant.probi);
   }
-  
+
   [self clearNotificationWithID:[self notificationIDForGrant:grant]];
-  
+
   // TODO:
   // brave-core notifies that the balance report has been updated here.
   // brave-core notifies that ongrantfinished was called here
@@ -586,13 +586,13 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   if (result == ledger::Result::LEDGER_OK) {
     const auto now = [NSDate date];
     const auto nowTimestamp = [now timeIntervalSince1970];
-    
+
     [self fetchWalletDetails:nil];
-    
+
     if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
       [self showTipsProcessedNotificationIfNeccessary];
     }
-    
+
     ledger->OnReconcileCompleteSuccess(viewing_id,
                                        category,
                                        probi,
@@ -600,23 +600,23 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                                        BATGetPublisherYear(now),
                                        nowTimestamp);
   }
-  
+
   if ((result == ledger::Result::LEDGER_OK && category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) ||
       result == ledger::Result::LEDGER_ERROR ||
       result == ledger::Result::NOT_ENOUGH_FUNDS ||
       result == ledger::Result::TIP_ERROR) {
-    
+
     const auto viewingId = [NSString stringWithUTF8String:viewing_id.c_str()];
     const auto info = @{ @"viewingId": viewingId,
                          @"result": @((BATResult)result),
                          @"category": @((BATRewardsCategory)category),
                          @"amount": [NSString stringWithUTF8String:probi.c_str()] };
-    
+
     [self addNotificationOfKind:BATRewardsNotificationKindAutoContribute
                        userInfo:info
                  notificationID:[NSString stringWithFormat:@"contribution_%@", viewingId]];
   }
-  
+
   // TODO:
   // brave-core notifies that the balance report has been updated here.
   // brave-core notifies all observers that reconciles completed here.
@@ -685,7 +685,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 - (void)applicationDidBecomeActive
 {
   ledger->OnForeground(self.selectedTabId, [[NSDate date] timeIntervalSince1970]);
-  
+
   // Check if the last notification check was more than a day ago
   if (fabs([self.lastNotificationCheckDate timeIntervalSinceNow]) > 60*60*24) {
     [self checkForNotificationsAndFetchGrants];
@@ -710,12 +710,12 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   for (NSURLQueryItem *item in urlComponents.queryItems) {
     partsMap[std::string(item.name.UTF8String)] = std::string(item.value.UTF8String);
   }
-  
+
   ledger::VisitData visit("", "",
                           std::string(url.absoluteString.UTF8String),
                           tabId,
                           "", "", "", "");
-  
+
   ledger->OnXHRLoad(tabId,
                     std::string(url.absoluteString.UTF8String),
                     partsMap,
@@ -730,9 +730,9 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                           std::string(url.absoluteString.UTF8String),
                           tabId,
                           "", "", "", "");
-  
+
   const auto postDataString = [[NSString alloc] initWithData:postData encoding:NSUTF8StringEncoding];
-  
+
   ledger->OnPostData(std::string(url.absoluteString.UTF8String),
                      std::string(firstPartyURL.absoluteString.UTF8String),
                      std::string(referrerURL.absoluteString.UTF8String),
@@ -799,16 +799,16 @@ BATLedgerBridge(BOOL,
     } else {
       int adsReceived = 0;
       double estimatedEarnings = 0.0;
-      
+
       for (const auto& transaction : list->transactions) {
         if (transaction.estimated_redemption_value == 0.0) {
           continue;
         }
-        
+
         adsReceived++;
         estimatedEarnings += transaction.estimated_redemption_value;
       }
-      
+
       completion((NSInteger)adsReceived, estimatedEarnings);
     }
   });
@@ -857,7 +857,7 @@ BATLedgerBridge(BOOL,
   if (!self.isEnabled) {
     return;
   }
-  
+
   // Startup timer, begins after 30-second delay.
   self.notificationStartupTimer =
   [NSTimer scheduledTimerWithTimeInterval:30
@@ -870,7 +870,7 @@ BATLedgerBridge(BOOL,
 - (void)checkForNotificationsAndFetchGrants
 {
   self.lastNotificationCheckDate = [NSDate date];
-  
+
   [self showBackupNotificationIfNeccessary];
   [self showAddFundsNotificationIfNeccessary];
   [self fetchGrants:std::string() paymentId:std::string()];
@@ -903,7 +903,7 @@ BATLedgerBridge(BOOL,
 {
   const auto stamp = ledger->GetReconcileStamp();
   const auto now = [[NSDate date] timeIntervalSince1970];
-  
+
   // Show add funds notification if reconciliation will occur in the
   // next 3 days and balance is too low.
   if (stamp - now > 3 * kOneDay) {
@@ -919,12 +919,12 @@ BATLedgerBridge(BOOL,
   if (self.hasSufficientBalanceToReconcile) {
     return;
   }
-  
+
   // Set next add funds notification in 3 days
   const auto nextTime = [[NSDate date] timeIntervalSince1970] + (kOneDay * 3);
   self.prefs[kNextAddFundsDateNotificationKey] = @(nextTime);
   [self savePrefs];
-  
+
   [self addNotificationOfKind:BATRewardsNotificationKindInsufficientFunds
                      userInfo:nil
                notificationID:@"rewards_notification_insufficient_funds"];
@@ -964,7 +964,7 @@ BATLedgerBridge(BOOL,
       return;
     }
   }
-  
+
   const auto notification = [[BATRewardsNotification alloc] initWithID:notificationID
                                                              dateAdded:[[NSDate date] timeIntervalSince1970]
                                                                   kind:kind
@@ -972,12 +972,12 @@ BATLedgerBridge(BOOL,
   if (onlyOnce) {
     notification.displayed = YES;
   }
-  
+
   [self.mNotifications addObject:notification];
-  
+
   // Post to observers
   [NSNotificationCenter.defaultCenter postNotificationName:BATBraveLedgerNotificationAdded object:nil];
-  
+
   [self writeNotificationsToDisk];
 }
 
@@ -990,7 +990,7 @@ BATLedgerBridge(BOOL,
     self.mNotifications = [[NSMutableArray alloc] init];
     return;
   }
-  
+
   NSError *error;
   self.mNotifications = [NSKeyedUnarchiver unarchivedObjectOfClass:NSArray.self fromData:data error:&error];
   if (!self.mNotifications) {
@@ -1005,7 +1005,7 @@ BATLedgerBridge(BOOL,
     // Nothing to write
     return;
   }
-  
+
   NSError *error;
   const auto data = [NSKeyedArchiver archivedDataWithRootObject:self.notifications
                                           requiringSecureCoding:YES
@@ -1014,7 +1014,7 @@ BATLedgerBridge(BOOL,
     NSLog(@"Failed to write notifications to disk: %@", error);
     return;
   }
-  
+
   const auto path = [self.storagePath stringByAppendingPathComponent:@"notifications"];
   dispatch_async(self.fileWriteThread, ^{
     [data writeToFile:path atomically:YES];
@@ -1177,7 +1177,7 @@ BATLedgerBridge(BOOL,
   if (publishers.count == limit) {
     next_record = start + limit + 1;
   }
-  
+
   callback(VectorFromNSArray(publishers, ^ledger::PublisherInfoPtr(BATPublisherInfo *info){
     return info.cppObj.Clone();
   }), next_record);
@@ -1187,7 +1187,7 @@ BATLedgerBridge(BOOL,
 {
   const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:filter];
   const auto publishers = [BATLedgerDatabase publishersWithActivityFromOffset:start limit:limit filter:filter_];
-  
+
   [self handlePublisherListing:publishers start:start limit:limit callback:callback];
 }
 
@@ -1203,7 +1203,7 @@ BATLedgerBridge(BOOL,
 - (void)getRecurringTips:(ledger::PublisherInfoListCallback)callback
 {
   const auto publishers = [BATLedgerDatabase recurringTips];
-  
+
   [self handlePublisherListing:publishers start:0 limit:0 callback:callback];
 }
 
@@ -1213,7 +1213,7 @@ BATLedgerBridge(BOOL,
   const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:filter];
   // set limit to 2 to make sure there is only 1 valid result for the filter
   const auto publishers = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:2 filter:filter_];
-  
+
   [self handlePublisherListing:publishers start:0 limit:2 callback:^(const ledger::PublisherInfoList& list, uint32_t) {
     // activity info not found
     if (list.size() == 0) {
@@ -1274,14 +1274,14 @@ BATLedgerBridge(BOOL,
 - (void)onExcludedSitesChanged:(const std::string &)publisher_id exclude:(ledger::PUBLISHER_EXCLUDE)exclude
 {
   bool excluded = exclude == ledger::PUBLISHER_EXCLUDE::EXCLUDED;
-  
+
   if (excluded) {
     const auto stamp = ledger->GetReconcileStamp();
     const auto publisherID = [NSString stringWithUTF8String:publisher_id.c_str()];
     [BATLedgerDatabase deleteActivityInfoWithPublisherID:publisherID
                                           reconcileStamp:stamp];
   }
-  
+
   // TODO:
 //  for (auto& observer : observers_) {
 //    observer.OnExcludedSitesChanged(this, publisher_id, excluded);
@@ -1294,7 +1294,7 @@ BATLedgerBridge(BOOL,
       result != ledger::Result::NOT_FOUND) {
     return;
   }
-  
+
   // TODO:
 //  for (auto& observer : private_observers_) {
 //    observer.OnPanelPublisherInfo(this,
@@ -1319,7 +1319,7 @@ BATLedgerBridge(BOOL,
 
 - (void)saveActivityInfo:(ledger::PublisherInfoPtr)publisher_info callback:(ledger::PublisherInfoCallback)callback
 {
-  const auto info = publisher_info.get();
+  const auto* info = publisher_info.get();
   if (info != nullptr) {
     const auto publisher = [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
     [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:publisher];
@@ -1351,7 +1351,7 @@ BATLedgerBridge(BOOL,
     return [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
   });
   [BATLedgerDatabase insertOrUpdateActivitiesInfoFromPublishers:list];
-  
+
   // TODO: brave-core notifies observers about updated list
 }
 
@@ -1361,13 +1361,13 @@ BATLedgerBridge(BOOL,
     return [[BATPendingContribution alloc] initWithPendingContribution:*info];
   });
   [BATLedgerDatabase insertPendingContributions:list_];
-  
+
   // TODO: brave-core notifies observers about added pending contributions
 }
 
 - (void)savePublisherInfo:(ledger::PublisherInfoPtr)publisher_info callback:(ledger::PublisherInfoCallback)callback
 {
-  const auto info = publisher_info.get();
+  const auto* info = publisher_info.get();
   if (info != nullptr) {
     const auto publisher = [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
     [BATLedgerDatabase insertOrUpdatePublisherInfo:publisher];
@@ -1379,32 +1379,32 @@ BATLedgerBridge(BOOL,
 
 - (void)getCountryCodes:(const std::vector<std::string> &)countries callback:(ledger::GetCountryCodesCallback)callback
 {
-  
+
 }
 
 - (void)getPendingContributions:(const ledger::PendingContributionInfoListCallback &)callback
 {
-  
+
 }
 
 - (void)getPendingContributionsTotal:(const ledger::PendingContributionsTotalCallback &)callback
 {
-  
+
 }
 
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId
 {
-  
+
 }
 
 - (void)removeAllPendingContributions:(const ledger::RemovePendingContributionCallback &)callback
 {
-  
+
 }
 
 - (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(const ledger::RemovePendingContributionCallback &)callback
 {
-  
+
 }
 
 @end
