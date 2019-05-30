@@ -5,6 +5,13 @@ import("//build/config/features.gni")
 import("//build/config/ui.gni")
 
 source_set("utility") {
+  visibility = [
+    "//chrome/utility/*",
+    "//brave/utility/*",
+    "//brave:child_dependencies",
+    "//brave/test:*"
+  ]
+
   sources = [
     "brave_content_utility_client.cc",
     "brave_content_utility_client.h",

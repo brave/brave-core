@@ -37,7 +37,7 @@ static_library("brave_test_support_unit") {
 }
 
 # TODO(bridiver) - fix tests on android
-if (!is_android) {
+if (!is_android && !is_ios) {
 test("brave_unit_tests") {
   testonly = true
   sources = [
