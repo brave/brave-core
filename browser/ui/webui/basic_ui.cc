@@ -12,8 +12,11 @@
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/bindings_policy.h"
 #include "ui/resources/grit/webui_resources_map.h"
+#if defined(OS_ANDROID)
+#include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
+#endif
 
-#if $CHROMIUM_CR73 != 0
+#if !defined(OS_ANDROID)
 content::WebUIDataSource* CreateBasicUIHTMLSource(
     Profile* profile,
     const std::string& name,
@@ -64,7 +67,7 @@ class BasicUI::BasicUIWebContentsObserver
   DISALLOW_COPY_AND_ASSIGN(BasicUIWebContentsObserver);
 };
 
-#if $CHROMIUM_CR73 != 0
+#if !defined(OS_ANDROID)
 BasicUI::BasicUI(content::WebUI* web_ui,
                  const std::string& name,
                  const GritResourceMap* resource_map,
