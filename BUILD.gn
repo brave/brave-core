@@ -5,10 +5,14 @@ import("//ui/base/ui_features.gni")
 import("//third_party/icu/config.gni")
 import("//build/config/locales.gni")
 import("//build/util/process_version.gni")
+import("//extensions/buildflags/buildflags.gni")
 import("//media/cdm/library_cdm/cdm_paths.gni")
-import("//brave/brave_paks.gni")
 import("//tools/v8_context_snapshot/v8_context_snapshot.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+
+if (!is_ios) {
+  import("//brave/brave_paks.gni")
+}
 
 if (is_mac) {
   import("//build/config/mac/rules.gni")
@@ -19,35 +23,37 @@ if (is_linux) {
   import("//brave/build/linux/channels.gni")
 }
 
-group("child_dependencies") {
-  deps = [
-    "//brave/renderer",
-    "//brave/utility",
-    "common"
-  ]
-}
-
-group("browser_dependencies") {
-  deps = [
-    "//brave/browser",
-    "common",
-    "chromium_src:browser",
-  ]
-
-  data_deps = [
-    ":unpacked_resources",
-  ]
-
-  if (!is_android) {
-    deps += [
-      ":packed_resources",
+if (!is_ios) {
+  group("child_dependencies") {
+    deps = [
+      "//brave/renderer",
+      "//brave/utility",
+      "common"
     ]
+  }
+
+  group("browser_dependencies") {
+    deps = [
+      "//brave/browser",
+      "common",
+      "chromium_src:browser",
+    ]
+
+    data_deps = [
+      ":unpacked_resources",
+    ]
+
+    if (!is_android && !is_ios) {
+      deps += [
+        ":packed_resources",
+      ]
+    }
   }
 }
 
 group("brave") {
   deps = ["build/$target_os:brave"]
-  if (!is_android) {
+  if (!is_android && !is_ios) {
     deps += [
       ":generate_version",
       "//chrome"
@@ -105,7 +111,7 @@ group("unpacked_resources") {
 }
 
 #TODO(bridiver) - what to do
-if (!is_android) {
+if (!is_android && !is_ios) {
 group("brave_tests") {
   testonly = true
 
@@ -116,7 +122,7 @@ group("brave_tests") {
 }
 }
 
-if (!is_android) {
+if (!is_android && !is_ios) {
   brave_paks("packed_resources") {
     if (is_mac) {
       output_dir = "$root_gen_dir/repack"
@@ -177,7 +183,7 @@ group("create_dist") {
   }
 }
 
-if (!is_mac && !is_android) {
+if (!is_mac && !is_android && !is_ios) {
   copy("brave_locale_dist_resources") {
     deps = [
       "//chrome:packed_resources",
@@ -247,7 +253,7 @@ if (target_cpu == "x86") {
   target_arch = target_cpu
 }
 
-if (!is_android) {
+if (!is_android && !is_ios) {
   chromedriver = "chromedriver"
   if (is_win) {
     chromedriver = "$chromedriver.exe"
@@ -309,7 +315,7 @@ process_version("generate_version") {
   output = "$root_out_dir/version"
 }
 
-if (!is_android) {
+if (!is_android && !is_ios) {
   copy("brave_dist_resources") {
     sources = [ "$root_out_dir/version" ]
 
@@ -407,7 +413,7 @@ action("create_dist_zips") {
 
   inputs = get_target_outputs(":brave_license_dist_resources")
 
-  if (!is_mac && !is_android) {
+  if (!is_mac && !is_android && !is_ios) {
     inputs += get_target_outputs(":brave_dist_resources")
     inputs += get_target_outputs(":brave_locale_dist_resources")
     if (enable_extensions) {
@@ -450,11 +456,11 @@ action("create_dist_zips") {
     "app/$current_os:dist_resources",
   ]
 
-  if (!is_android) {
+  if (!is_android && !is_ios) {
     deps += [ ":chromedriver_zip" ]
   }
 
-  if (!is_mac && !is_android) {
+  if (!is_mac && !is_android && !is_ios) {
     deps += [
       ":brave_dist_resources",
       ":brave_locale_dist_resources",
