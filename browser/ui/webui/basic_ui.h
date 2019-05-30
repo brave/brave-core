@@ -23,13 +23,13 @@ class WebUI;
 
 class Profile;
 
-#if $CHROMIUM_CR73 != 0
+#if !defined(OS_ANDROID)
 struct GzippedGritResourceMap;
 #else
 struct GritResourceMap;
 #endif
 
-#if $CHROMIUM_CR73 != 0
+#if !defined(OS_ANDROID)
 content::WebUIDataSource* CreateBasicUIHTMLSource(
     Profile* profile,
     const std::string& name,
@@ -46,7 +46,7 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(Profile* profile,
 
 class BasicUI : public content::WebUIController {
  public:
-#if $CHROMIUM_CR73 != 0
+#if !defined(OS_ANDROID)
   BasicUI(content::WebUI* web_ui,
           const std::string& host,
           const GritResourceMap* resource_map,

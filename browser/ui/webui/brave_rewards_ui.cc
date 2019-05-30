@@ -34,9 +34,13 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/bindings_policy.h"
+#if !defined(OS_ANDROID)
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_resources.h"
 #include "brave/components/brave_rewards/resources/grit/brave_rewards_generated_map.h"
 #else
+#include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
+#include "components/grit/components_resources.h"
+#include "components/grit/components_scaled_resources.h"
 #include "content/public/browser/url_data_source.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #endif
