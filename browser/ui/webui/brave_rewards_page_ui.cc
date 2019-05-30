@@ -37,6 +37,9 @@
 #include "content/public/browser/web_ui_message_handler.h"
 #include "content/public/common/bindings_policy.h"
 #if defined(OS_ANDROID)
+#include "components/brave_rewards/settings/resources/grit/brave_rewards_settings_generated_map.h"
+#include "components/grit/components_resources.h"
+#include "components/grit/components_scaled_resources.h"
 #include "content/public/browser/url_data_source.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #endif

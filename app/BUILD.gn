@@ -26,9 +26,12 @@ grit("brave_generated_resources_grit") {
     "root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
   ]
 
-  deps = [
-    "//brave/components/services:brave_content_manifest_overlays",
-  ]
+  if (!is_android) {
+    deps = [
+      "//brave/components/services:brave_content_manifest_overlays",
+    ]
+  }
+
   resource_ids = "//brave/browser/resources/resource_ids"
 }
 
