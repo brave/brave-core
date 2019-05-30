@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/translate/translate_service.cc b/chrome/browser/translate/translate_service.cc
+index 06eacc6c808221f905aea64e33dd64a3e373bb62..6805226401dbb53bec1c558421820dad06aa1e82 100644
+--- a/chrome/browser/translate/translate_service.cc
++++ b/chrome/browser/translate/translate_service.cc
+@@ -136,7 +136,7 @@ bool TranslateService::IsTranslatableURL(const GURL& url) {
+   // - Chrome OS file manager extension
+   // - an FTP page (as FTP pages tend to have long lists of filenames that may
+   //   confuse the CLD)
+-  return !url.is_empty() && !url.SchemeIs(content::kChromeUIScheme) &&
++  return IsBraveTranslateEnable() && !url.is_empty() && !url.SchemeIs(content::kChromeUIScheme) &&
+          !url.SchemeIs(content::kChromeDevToolsScheme) &&
+ #if defined(OS_CHROMEOS)
+          !(url.SchemeIs(extensions::kExtensionScheme) &&

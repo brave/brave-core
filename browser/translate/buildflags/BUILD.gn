@@ -1,0 +1,9 @@
+import("//build/buildflag_header.gni")
+import("//brave/browser/translate/buildflags/buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_BRAVE_TRANSLATE=$enable_brave_translate",
+  ]
+}
