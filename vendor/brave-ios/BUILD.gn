@@ -61,8 +61,8 @@ ios_framework_bundle("brave-rewards-ios-framework") {
   deps = [
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ads",
-    ":brave-rewards-ios-framework-resources",
-    ":brave-rewards-ios-compile-coredata"
+    ":resources",
+    ":coredata"
   ]
 
   sources = [
@@ -121,7 +121,7 @@ ios_framework_bundle("brave-rewards-ios-framework") {
   ]
 }
 
-bundle_data("brave-rewards-ios-framework-resources") {
+bundle_data("resources") {
   ads_dir = "//brave/vendor/bat-native-ads"
   ledger_dir = "//brave/vendor/bat-native-ledger"
   sources = [
@@ -129,20 +129,45 @@ bundle_data("brave-rewards-ios-framework-resources") {
     "$ads_dir/resources/catalog-schema.json",
     "$ads_dir/resources/sample_bundle.json",
     "$ads_dir/resources/locales",
-    "$ledger_dir/niceware/wordlist"
+    "$ledger_dir/niceware/wordlist",
   ]
   outputs = [
-    "{{bundle_resources_dir}}//{{source_file_part}}",
+    "{{bundle_resources_dir}}/{{source_file_part}}",
   ]
 }
 
-action("brave-rewards-ios-compile-coredata") {
+bundle_data("coredata") {
+  sources = [
+    "$root_gen_dir/Model.momd/Model.mom",
+    "$root_gen_dir/Model.momd/VersionInfo.plist",
+  ]
+
+  outputs = [
+    "{{bundle_resources_dir}}/Model.momd/{{source_file_part}}",
+  ]
+
+  public_deps = [
+    ":compile-coredata"
+  ]
+}
+
+action("compile-coredata") {
   script = "lib/compile-model.py"
-  outputs = [ "$root_out_dir/BraveRewards.framework/Model.momd/" ]
-  out_dir = rebase_path(root_out_dir)
-  in_dir = rebase_path("Ledger/Data/Model.xcdatamodeld")
+
+  inputs = [
+    "Ledger/Data/Model.xcdatamodeld",
+  ]
+
+  outputs = [
+    "$root_gen_dir/Model.momd/Model.mom",
+    "$root_gen_dir/Model.momd/VersionInfo.plist",
+  ]
+
+  model = rebase_path("Ledger/Data/Model.xcdatamodeld")
+  out_dir = rebase_path(root_gen_dir)
+
   args = [
-    "--model=$in_dir",
-    "--output=$out_dir/BraveRewards.framework/",
+    "--model=$model",
+    "--output=$out_dir",
   ]
 }
