@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_LEDGER_BAT_LEDGER_IMPL_H_
 
+#include <stdint.h>
+
 #include <map>
 #include <memory>
 #include <string>
@@ -84,7 +86,9 @@ class BatLedgerImpl : public mojom::BatLedger,
       const std::string& solution,
       const std::string& promotionId) override;
 
-  void GetAddresses(GetAddressesCallback callback) override;
+  void GetAddresses(
+      int32_t current_country_code,
+      GetAddressesCallback callback) override;
   void GetBATAddress(GetBATAddressCallback callback) override;
   void GetBTCAddress(GetBTCAddressCallback callback) override;
   void GetETHAddress(GetETHAddressCallback callback) override;
@@ -216,6 +220,10 @@ class BatLedgerImpl : public mojom::BatLedger,
     CallbackHolder<LoadPublisherInfoCallback>* holder,
     ledger::Result result,
     std::unique_ptr<ledger::PublisherInfo> info);
+
+  static void OnGetAddresses(
+    CallbackHolder<GetAddressesCallback>* holder,
+    std::map<std::string, std::string> addresses);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

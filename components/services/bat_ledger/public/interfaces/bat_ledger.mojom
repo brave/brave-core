@@ -61,7 +61,7 @@ interface BatLedger {
   RecoverWallet(string passPhrase);
   SolveGrantCaptcha(string solution, string promotionId);
 
-  GetAddresses() => (map<string, string> addresses);
+  GetAddresses(int32 current_country_code) => (map<string, string> addresses);
   GetBATAddress() => (string address);
   GetBTCAddress() => (string address);
   GetETHAddress() => (string address);
@@ -191,4 +191,7 @@ interface BatLedgerClient {
   ConfirmationsTransactionHistoryDidChange();
 
   GetExcludedPublishersNumberDB() => (uint32 number);
+
+  GetCountryCodes(array<string> countries) =>
+        (array<int32> limited_country_codes);
 };
