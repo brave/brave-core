@@ -1,8 +1,16 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 02f17d2b4e93d27964fe6663c4feddccc9634619..bd0459db766702d7bc0127914e687421e34852da 100644
+index 2423d123e6b32960ef450f101ce1b79c3fd418df..733f758517a9aabdcf1f99f8ec581da062420d97 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -38,7 +38,7 @@ if (enable_vr) {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/android/brave_java_sources.gni")
+ import("//build/config/android/config.gni")
+ import("//build/config/android/rules.gni")
+ import("//build/config/python.gni")
+@@ -38,7 +39,7 @@ if (enable_vr) {
    import("//chrome/android/features/vr/vr_module_tmpl.gni")
  }
  
@@ -11,3 +19,12 @@ index 02f17d2b4e93d27964fe6663c4feddccc9634619..bd0459db766702d7bc0127914e687421
  test_manifest_package = "org.chromium.chrome.tests"
  
  chrome_public_jinja_variables = default_chrome_public_jinja_variables +
+@@ -411,7 +412,7 @@ android_library("chrome_java") {
+   android_manifest_for_lint = chrome_public_android_manifest
+ 
+   # From java_sources.gni.
+-  java_files = chrome_java_sources + [
++  java_files = chrome_java_sources + brave_java_sources + [
+                  app_hooks_impl,
+                  _chrome_version_java_file,
+                ]
