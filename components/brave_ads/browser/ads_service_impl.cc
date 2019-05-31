@@ -873,6 +873,7 @@ void AdsServiceImpl::ShowNotification(
   display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
                             *notification);
 
+#if !defined(OS_ANDROID)
   uint32_t timer_id = next_timer_id();
 
   timers_[timer_id] = std::make_unique<base::OneShotTimer>();
@@ -881,6 +882,7 @@ void AdsServiceImpl::ShowNotification(
       base::BindOnce(
           &AdsServiceImpl::NotificationTimedOut, AsWeakPtr(),
               timer_id, notification_id));
+#endif
 }
 
 void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
