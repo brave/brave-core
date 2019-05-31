@@ -82,8 +82,8 @@ bool Engine::matches(const std::string& url, const std::string& host,
       saved_from_exception);
 }
 
-bool Engine::deserialize(const char* serialized_data) {
-  return engine_deserialize(raw, serialized_data);
+bool Engine::deserialize(const char* data, size_t data_size) {
+  return engine_deserialize(raw, data, data_size);
 }
 
 void Engine::addTag(const std::string& tag) {

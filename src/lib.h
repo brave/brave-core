@@ -33,7 +33,7 @@ C_Engine *engine_create(const char *rules);
 /**
  * Deserializes a previously serialized data file list.
  */
-bool engine_deserialize(C_Engine *engine, const char *data);
+bool engine_deserialize(C_Engine *engine, const char *data, size_t data_size);
 
 /**
  * Destroy a `Engine` once you are done with it.
