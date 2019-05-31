@@ -791,7 +791,7 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - Ads & Confirmations
 
-- (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings))completion;
+- (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings))completion
 {
   ledger->GetTransactionHistoryForThisCycle(^(std::unique_ptr<ledger::TransactionsInfo> list) {
     if (list == nullptr || list->transactions.empty()) {
