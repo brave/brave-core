@@ -150,8 +150,8 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
       network::features::kNetworkService.name,
       unified_consent::kUnifiedConsent.name,
       features::kLookalikeUrlNavigationSuggestionsUI.name,
-#if !BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
-      translate::kTranslateUI.name,
+#if !defined(CHROME_MULTIPLE_DLL_CHILD) && !BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
+      translate::kTranslateUI.name,  // only available in browser process
 #endif
   };
   command_line.AppendFeatures(enabled_features, disabled_features);
