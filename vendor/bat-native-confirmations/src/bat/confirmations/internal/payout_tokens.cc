@@ -9,8 +9,7 @@
 #include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/redeem_payment_tokens_request.h"
-
-#include "base/rand_util.h"
+#include "brave_base/random.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -23,6 +22,7 @@ PayoutTokens::PayoutTokens(
     ConfirmationsClient* confirmations_client,
     UnblindedTokens* unblinded_payment_tokens) :
     next_retry_start_timer_in_(0),
+    backoff_count_(0),
     confirmations_(confirmations),
     confirmations_client_(confirmations_client),
     unblinded_payment_tokens_(unblinded_payment_tokens) {
@@ -38,6 +38,8 @@ void PayoutTokens::Payout(const WalletInfo& wallet_info) {
   DCHECK(!wallet_info.public_key.empty());
 
   BLOG(INFO) << "Payout";
+
+  backoff_count_ = 0;           // reset exponential backoff
 
   wallet_info_ = WalletInfo(wallet_info);
 
@@ -137,14 +139,14 @@ void PayoutTokens::ScheduleNextPayout() const {
 void PayoutTokens::RetryNextPayout() {
   BLOG(INFO) << "Retry next payout";
 
-  if (next_retry_start_timer_in_ == 0) {
-    next_retry_start_timer_in_ = 2 * base::Time::kSecondsPerMinute;
-  } else {
-    next_retry_start_timer_in_ *= 2;
-  }
+  next_retry_start_timer_in_ = 2 * base::Time::kSecondsPerMinute;
+  // Overflow happens only if we have already backed off so many times
+  // our expected waiting time is longer than the lifetime of the
+  // universe.
+  next_retry_start_timer_in_ <<= backoff_count_++;
 
-  auto rand_delay = base::RandInt(0, next_retry_start_timer_in_ / 10);
-  next_retry_start_timer_in_ += rand_delay;
+  auto rand_delay = brave_base::random::Geometric(next_retry_start_timer_in_);
+  next_retry_start_timer_in_ = rand_delay;
 
   confirmations_->StartPayingOutRedeemedTokens(next_retry_start_timer_in_);
 }

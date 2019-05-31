@@ -16,10 +16,10 @@
 #include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/time.h"
 
-#include "base/rand_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/time/time.h"
+#include "brave_base/random.h"
 
 #include "third_party/re2/src/re2/re2.h"
 
@@ -967,13 +967,13 @@ uint64_t ConfirmationsImpl::CalculateTokenRedemptionTimeInSeconds() {
   uint64_t start_timer_in;
   if (now_in_seconds >= next_token_redemption_date_in_seconds_) {
     // Browser was launched after the token redemption date
-    start_timer_in = base::RandInt(0, 1 * base::Time::kSecondsPerMinute);
+    start_timer_in = 1 * base::Time::kSecondsPerMinute;
   } else {
     start_timer_in = next_token_redemption_date_in_seconds_ - now_in_seconds;
   }
 
-  auto rand_delay = base::RandInt(0, start_timer_in / 10);
-  start_timer_in += rand_delay;
+  auto rand_delay = brave_base::random::Geometric(start_timer_in);
+  start_timer_in = rand_delay;
 
   return start_timer_in;
 }

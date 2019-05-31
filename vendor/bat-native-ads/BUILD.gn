@@ -145,5 +145,6 @@ source_set("ads") {
     "//url",
     rebase_path("bat-native-usermodel", dep_base),
     rebase_path("bat-native-rapidjson", dep_base),
+    rebase_path("brave_base", dep_base),
   ]
 }
