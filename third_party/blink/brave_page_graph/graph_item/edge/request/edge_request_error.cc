@@ -19,7 +19,7 @@ namespace brave_page_graph {
 
 EdgeRequestError::EdgeRequestError(PageGraph* const graph,
     NodeResource* const out_node, Node* const in_node,
-    const InspectorId request_id) : 
+    const InspectorId request_id) :
       EdgeRequest(graph, out_node, in_node, request_id, kRequestStatusError) {}
 
 EdgeRequestError::~EdgeRequestError() {}
