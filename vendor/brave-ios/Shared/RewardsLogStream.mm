@@ -7,7 +7,7 @@
 RewardsLogStream::RewardsLogStream(const char* file,
                                    const int line,
                                    const ledger::LogLevel log_level) {
-  
+
   std::map<ledger::LogLevel, std::string> map {
     {ledger::LOG_ERROR, "ERROR"},
     {ledger::LOG_WARNING, "WARNING"},
@@ -26,7 +26,7 @@ RewardsLogStream::RewardsLogStream(const char* file,
     {ads::LOG_WARNING, "WARNING"},
     {ads::LOG_INFO, "INFO"}
   };
-  
+
   constructLogMessageWithPrefix(map[log_level], file, line);
 }
 

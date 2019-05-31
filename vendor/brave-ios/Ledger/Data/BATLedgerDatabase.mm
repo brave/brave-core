@@ -18,22 +18,22 @@
   fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(clazz)
                                     inManagedObjectContext:context];
   fetchRequest.fetchLimit = 1;
-  
+
   const auto predicates = [[NSMutableArray<NSPredicate *> alloc] init];
   [predicates addObject:[NSPredicate predicateWithFormat:@"publisherID == %@", publisherID]];
-  
+
   if (additionalPredicate) {
     [predicates addObject:additionalPredicate];
   }
-  
+
   fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
-  
+
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
     NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
   }
-  
+
   return fetchedObjects.firstObject;
 }
 
@@ -65,13 +65,13 @@
                                     inManagedObjectContext:context];
   fetchRequest.fetchLimit = 1;
   fetchRequest.predicate = [NSPredicate predicateWithFormat:@"mediaKey == %@", mediaKey];
-  
+
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
     NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
   }
-  
+
   return fetchedObjects.firstObject;
 }
 
@@ -116,7 +116,7 @@
   if (info.id.length == 0) {
     return;
   }
-  
+
   [DataController.shared performOnContext:context task:^(NSManagedObjectContext * _Nonnull context) {
     const auto pi = [self getPublisherInfoWithID:info.id context:context] ?:
       [[PublisherInfo alloc] initWithEntity:PublisherInfo.entity
@@ -138,14 +138,14 @@
     fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(PublisherInfo.class)
                                       inManagedObjectContext:context];
     fetchRequest.predicate = [NSPredicate predicateWithFormat:@"excluded == %d", BATPublisherExcludeExcluded];
-    
+
     NSError *error;
     const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
-    
+
     if (error) {
       NSLog(@"%s: %@", __PRETTY_FUNCTION__, error);
     }
-    
+
     for (PublisherInfo *info in fetchedObjects) {
       info.excluded = BATPublisherExcludeDefault;
     }
@@ -159,7 +159,7 @@
   fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(PublisherInfo.class)
                                     inManagedObjectContext:context];
   fetchRequest.predicate = [NSPredicate predicateWithFormat:@"excluded == %d", BATPublisherExcludeExcluded];
-  
+
   NSError *error;
   const auto count = [context countForFetchRequest:fetchRequest error:&error];
   if (error) {
@@ -193,13 +193,13 @@
                                     inManagedObjectContext:context];
   fetchRequest.predicate = [NSPredicate predicateWithFormat:@"month = %d AND year = %d AND category = %d",
                             month, year, BATRewardsCategoryOneTimeTip];
-  
+
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
     NSLog(@"%@", error);
   }
-  
+
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
   for (ContributionInfo *ci in fetchedObjects) {
     auto info = [[BATPublisherInfo alloc] init];
@@ -228,16 +228,16 @@
   if (info.id.length == 0) {
     return;
   }
-  
+
   [DataController.shared performOnContext:context task:^(NSManagedObjectContext * _Nonnull context) {
     [self insertOrUpdatePublisherInfo:info context:context];
-    
+
     const auto publisherFromInfo = [self getActivityInfoWithPublisherID:info.id
                                                          reconcileStamp:info.reconcileStamp context:context];
-    
+
     const auto ai = publisherFromInfo ?:
       [[ActivityInfo alloc] initWithEntity:ActivityInfo.entity insertIntoManagedObjectContext:context];
-    
+
     ai.publisher = [self getPublisherInfoWithID:info.id context:context];
     ai.publisherID = info.id;
     ai.duration = info.duration;
@@ -270,27 +270,27 @@
       fetchRequest.fetchOffset = start;
     }
   }
-  
+
   NSMutableArray *sortDescriptors = [[NSMutableArray alloc] init];
   for (BATActivityInfoFilterOrderPair *orderPair in filter.orderBy) {
     [sortDescriptors addObject:[NSSortDescriptor sortDescriptorWithKey:orderPair.propertyName ascending:orderPair.ascending]];
   }
   fetchRequest.sortDescriptors = sortDescriptors;
-  
+
   const auto predicates = [[NSMutableArray<NSPredicate *> alloc] init];
-  
+
   if (filter.id.length > 0) {
     [predicates addObject:[NSPredicate predicateWithFormat:@"publisherID == %@", filter.id]];
   }
-  
+
   if (filter.reconcileStamp > 0) {
     [predicates addObject:[NSPredicate predicateWithFormat:@"reconcileStamp == %ld", filter.reconcileStamp]];
   }
-  
+
   if (filter.minDuration > 0) {
     [predicates addObject:[NSPredicate predicateWithFormat:@"duration >= %ld", filter.minDuration]];
   }
-  
+
   if (filter.excluded != BATExcludeFilterFilterAll) {
     if (filter.excluded != BATExcludeFilterFilterAllExceptExcluded) {
       [predicates addObject:[NSPredicate predicateWithFormat:@"publisher.excluded == %d", filter.excluded]];
@@ -298,25 +298,25 @@
       [predicates addObject:[NSPredicate predicateWithFormat:@"publisher.excluded != %d", BATExcludeFilterFilterExcluded]];
     }
   }
-  
+
   if (filter.percent) {
     [predicates addObject:[NSPredicate predicateWithFormat:@"percent >= %d", filter.percent]];
   }
-  
+
   if (filter.minVisits) {
     [predicates addObject:[NSPredicate predicateWithFormat:@"visits >= %d", filter.minVisits]];
   }
-  
+
   if (predicates.count > 0) {
     fetchRequest.predicate = [NSCompoundPredicate andPredicateWithSubpredicates:predicates];
   }
-  
+
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
     NSLog(@"%@", error);
   }
-  
+
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
   for (ActivityInfo *activity in fetchedObjects) {
     auto info = [[BATPublisherInfo alloc] init];
@@ -344,13 +344,13 @@
     request.entity = [NSEntityDescription entityForName:NSStringFromClass(ActivityInfo.class)
                                  inManagedObjectContext:context];
     request.predicate = [NSPredicate predicateWithFormat:@"publisherID == %@ AND reconcileStamp == %ld", publisherID, reconcileStamp];
-    
+
     NSError *error;
     const auto fetchedObjects = [context executeFetchRequest:request error:&error];
     if (error) {
       NSLog(@"%@", error);
     }
-    
+
     for (ActivityInfo *info in fetchedObjects) {
       [context deleteObject:info];
     }
@@ -375,7 +375,7 @@
   if (mediaKey.length == 0 || publisherID.length == 0) {
     return;
   }
-  
+
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
     auto mi = [self getMediaPublisherInfoWithMediaKey:mediaKey context:context] ?: [[MediaPublisherInfo alloc] initWithEntity:MediaPublisherInfo.entity
                           insertIntoManagedObjectContext:context];
@@ -392,13 +392,13 @@
   const auto fetchRequest = RecurringDonation.fetchRequest;
   fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(RecurringDonation.class)
                                     inManagedObjectContext:context];
-  
+
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (error) {
     NSLog(@"%@", error);
   }
-  
+
   const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
   for (RecurringDonation *rd in fetchedObjects) {
     auto info = [[BATPublisherInfo alloc] init];
@@ -422,7 +422,7 @@
   if (publisherID.length == 0) {
     return;
   }
-  
+
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
     auto rd = [self getRecurringDonationWithPublisherID:publisherID context:context] ?: [[RecurringDonation alloc] initWithEntity:RecurringDonation.entity
                          insertIntoManagedObjectContext:context];
@@ -442,7 +442,7 @@
   if (!donationExists) {
     return NO;
   }
-  
+
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
     const auto donation = [self getRecurringDonationWithPublisherID:publisherID context:context];
     [context deleteObject:donation];
@@ -474,13 +474,13 @@
   const auto fetchRequest = PendingContribution.fetchRequest;
   fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(PendingContribution.class)
                                     inManagedObjectContext:context];
-  
+
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
   if (!fetchedObjects) {
     NSLog(@"%@", error);
   }
-  
+
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wobjc-messaging-id"
   return [[fetchedObjects valueForKeyPath:@"@sum.amount"] doubleValue];

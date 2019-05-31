@@ -35,7 +35,7 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
   NativeAdsClient *adsClient;
   ads::Ads *ads;
   std::unique_ptr<ads::BundleState> bundleState;
-  
+
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
 }
@@ -53,7 +53,7 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
   if ((self = [super init])) {
     self.storagePath = path;
     self.commonOps = [[BATCommonOperations alloc] initWithStoragePath:path];
-    
+
     self.prefsWriteThread = dispatch_queue_create("com.rewards.ads.prefs", DISPATCH_QUEUE_SERIAL);
     self.prefs = [[NSMutableDictionary alloc] initWithContentsOfFile:[self prefsPath]];
     if (!self.prefs) {
@@ -62,13 +62,13 @@ static NSString * const kNumberOfAdsPerHourKey = @"BATNumberOfAdsPerHour";
       self.numberOfAllowableAdsPerHour = kDefaultNumberOfAdsPerHour;
       self.enabled = YES;
     }
-    
+
     [self setupNetworkMonitoring];
-    
+
     adsClient = new NativeAdsClient(self);
     ads = ads::Ads::CreateInstance(adsClient);
     ads->Initialize();
-    
+
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
@@ -150,7 +150,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production);
 - (void)setupNetworkMonitoring
 {
   auto const __weak weakSelf = self;
-  
+
   monitorQueue = dispatch_queue_create("bat.nw.monitor", DISPATCH_QUEUE_SERIAL);
   networkMonitor = nw_path_monitor_create();
   nw_path_monitor_set_queue(networkMonitor, monitorQueue);
@@ -233,7 +233,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production);
   if (info.get() != nullptr) {
     const auto notification = [[BATAdsNotification alloc] initWithNotificationInfo:*info.get()];
     [self.delegate braveAds:self showNotification:notification];
-    
+
     ads->GenerateAdReportingNotificationShownEvent(*info.get());
   }
 }
@@ -250,7 +250,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production);
     callback(ads::Result::FAILED, category, {});
     return;
   }
-  
+
   callback(ads::Result::SUCCESS, category, categories->second);
 }
 
@@ -400,7 +400,7 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production);
     callback(ads::Result::FAILED, "");
     return;
   }
-  
+
   NSError *error = nil;
   const auto contents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
   if (!contents || error) {

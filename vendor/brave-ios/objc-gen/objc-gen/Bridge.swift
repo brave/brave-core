@@ -9,11 +9,11 @@ extension Cursor {
   var isConstCXXMethod: Bool {
     return clang_CXXMethod_isConst(cursor) == 1
   }
-  
+
   var isPureVirtualCXXMethod: Bool {
     return clang_CXXMethod_isPureVirtual(cursor) == 1
   }
-  
+
   var resultType: CXType {
     return clang_getResultType(type)
   }
@@ -28,13 +28,13 @@ struct Method: Hashable, Comparable {
       return Interface.Property.formatted(name: name)
     }
   }
-  
+
   let resultType: String
   let resultIsVoid: Bool
   let name: String
   let isConst: Bool
   let arguments: [Argument]
-  
+
   private static func typeStringFixingLackingNamespace(_ type: CXType) -> String {
     let numberOfTemplateArgs = clang_Type_getNumTemplateArguments(type)
     let typeString = clang_getTypeSpelling(type).stringAndDisposeAfter
@@ -45,7 +45,7 @@ struct Method: Hashable, Comparable {
     }
     return typeString
   }
-  
+
   init(cursor: Cursor) {
     self.resultType = Method.typeStringFixingLackingNamespace(cursor.resultType)
     self.resultIsVoid = cursor.resultType.kind == CXType_Void
@@ -65,7 +65,7 @@ struct Method: Hashable, Comparable {
       )
     }
   }
-  
+
   var generatedPublicDecleration: String {
     var s = "\(resultType) \(name)(\(arguments.map { "\($0.type) \($0.name)" }.joined(separator: ", ")))"
     if isConst {
@@ -74,7 +74,7 @@ struct Method: Hashable, Comparable {
     s.append(" override;")
     return s
   }
-  
+
   func generatedSourceImplementation(parentClass: String) -> String {
     var s = "\(resultType) \(parentClass)::\(name)(\(arguments.map { "\($0.type) \($0.name)" }.joined(separator: ", ")))"
     if isConst {
@@ -82,7 +82,7 @@ struct Method: Hashable, Comparable {
     }
     return s
   }
-  
+
   var generatedProtocolMethodCall: String {
     if name.isEmpty { return "" }
     var s: String
@@ -100,7 +100,7 @@ struct Method: Hashable, Comparable {
     }
     return s
   }
-  
+
   var generatedProtocolMethodDecleration: String {
     if name.isEmpty { return "" }
     var s = "- (\(resultType))"
@@ -115,7 +115,7 @@ struct Method: Hashable, Comparable {
     s.append(";")
     return s
   }
-  
+
   static func < (lhs: Method, rhs: Method) -> Bool {
     return lhs.name < rhs.name
   }
@@ -144,10 +144,10 @@ func createBridge(from clientFile: String, className: String, includePaths: [Str
   if errorCode.rawValue != 0 {
     print("Couldn't parse \(clientFile)")
   }
-  
+
   var methods: Set<Method> = []
   var namespace: String = ""
-  
+
   func _traverse(nodes: [Cursor]) {
     for node in nodes where !node.children.isEmpty && node.isFromMainFile {
       switch node.kind {
@@ -165,9 +165,9 @@ func createBridge(from clientFile: String, className: String, includePaths: [Str
       }
     }
   }
-  
+
   _traverse(nodes: Cursor(clang_getTranslationUnitCursor(unit)).children)
-  
+
   var updatedPath = clientFile
   includePaths.forEach {
     updatedPath = updatedPath.replacingOccurrences(of: $0, with: "")
@@ -175,14 +175,14 @@ func createBridge(from clientFile: String, className: String, includePaths: [Str
   if updatedPath.hasPrefix("/") {
     updatedPath = String(updatedPath.dropFirst())
   }
-  
+
   let sortedMethods = methods.sorted()
   let outputedFiles: [TemplateOutput] = [
     NativeClientHeaderOutput(namespace: namespace, className: className, includeHeader: updatedPath, methods: sortedMethods),
     NativeClientSourceOutput(className: className, methods: sortedMethods),
     NativeClientBridgeProtocolOutput(className: className, includeHeader: updatedPath, methods: sortedMethods)
   ]
-  
+
   do {
     try FileManager.default.createDirectory(atPath: outputDirectory, withIntermediateDirectories: true, attributes: nil)
     try outputedFiles.forEach {

@@ -59,7 +59,7 @@
   [[NSFileManager defaultManager] removeItemAtPath:self.configuration.stateStoragePath error:nil];
   [[NSFileManager defaultManager] removeItemAtURL:DataController.shared.storeURL error:nil];
   DataController.shared = [[DataController alloc] init];
-  
+
   [self setupLedgerAndAds];
 }
 
@@ -74,13 +74,13 @@
     self.configuration = configuration;
     self.ledgerClass = ledgerClass ?: BATBraveLedger.class;
     self.adsClass = adsClass ?: BATBraveAds.class;
-    
+
     [self setupLedgerAndAds];
-    
+
     BATBraveAds.debug = !configuration.production;
     BATBraveAds.production = configuration.production;
     BATBraveAds.testing = configuration.testing;
-    
+
     BATBraveLedger.debug = !configuration.production;
     BATBraveLedger.production = configuration.production;
     BATBraveLedger.testing = configuration.testing;

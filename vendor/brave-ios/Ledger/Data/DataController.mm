@@ -41,7 +41,7 @@ static DataController *_dataController = nil;
   if ((self = [super init])) {
     self.operationQueue = [[NSOperationQueue alloc] init];
     self.operationQueue.maxConcurrentOperationCount = 1;
-    
+
     // Setup container
     const auto bundle = [NSBundle bundleForClass:DataController.class];
     const auto modelURL = [bundle URLForResource:@"Model" withExtension:@"momd"];
@@ -114,13 +114,13 @@ static DataController *_dataController = nil;
     task(context);
     return;
   }
-  
+
   [self.operationQueue addOperationWithBlock:^{
     const auto backgroundContext = [DataController newBackgroundContext];
     // performAndWait doesn't block main thread because it fires on OperationQueue`s background thread.
     [backgroundContext performBlockAndWait:^{
       task(backgroundContext);
-      
+
       if (save && backgroundContext.hasChanges) {
         assert(![NSThread isMainThread]);
         NSError *error;
