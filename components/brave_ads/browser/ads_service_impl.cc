@@ -145,7 +145,8 @@ class AdsNotificationHandler : public NotificationHandler {
                base::OnceClosure completed_closure) override {
     if (ads_service_ && !action_index.has_value()) {
 #if defined(OS_ANDROID)
-      ads_service_->OnClick(profile, origin, notification_id, action_index, reply);
+      ads_service_->OnClick(profile, origin, notification_id,
+          action_index, reply);
 #else
       ads_service_->OpenSettings(profile, origin, true);
 #endif
@@ -1092,6 +1093,8 @@ void AdsServiceImpl::OnClick(Profile* profile,
   notification_ids_.erase(notification_id);
 
   display_service_->Close(NotificationHandler::Type::BRAVE_ADS, notification_id);
+  display_service_->Close(
+      NotificationHandler::Type::BRAVE_ADS, notification_id);
 
   if (connected()) {
     bat_ads_->GenerateAdReportingNotificationResultEvent(
