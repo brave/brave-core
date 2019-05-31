@@ -91,16 +91,17 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)activityInfoWithFilter:(nullable BATActivityInfoFilter *)filter
                     completion:(void (^)(BATPublisherInfo * _Nullable info))completion;
 
-// Unavailable until we figure out what it actually does and how to use it
 - (void)publisherActivityFromURL:(NSURL *)URL
                       faviconURL:(NSURL *)faviconURL
-                        windowID:(uint64_t)windowID
-                   publisherBlob:(NSString *)publisherBlob NS_UNAVAILABLE;
+                   publisherBlob:(NSString *)publisherBlob;
 
 - (void)mediaPublisherInfoForMediaKey:(NSString *)mediaKey
                            completion:(void (^)(BATPublisherInfo * _Nullable info))completion;
 
 - (void)updateMediaPublisherInfo:(NSString *)publisherId mediaKey:(NSString *)mediaKey;
+
+/// Returns activity info for current reconcile stamp.
+- (nullable BATPublisherInfo *)currentActivityInfoWithPublisherId:(NSString *)publisherId;
 
 /// Update a publishers exclusion state
 - (void)updatePublisherExclusionState:(NSString *)publisherId state:(BATPublisherExclude)state
