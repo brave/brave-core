@@ -344,15 +344,15 @@ void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
   // We should know about the node thats issuing the request.
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   // Either we should not have seen this request before (first condition),
-  // or the previously seen request should have the same url as this
-  // request (second condition).
+  // or request has already completed and is being served from the cache
+  // (second condition).
   LOG_ASSERT(current_requests_.count(request_id) == 0 ||
-      current_requests_.at(request_id)->GetRequestedUrl() == local_url);
+      cache_fed_requests_.count(request_id) == 1);
 
   NodeHTMLElement* const requesting_node = element_nodes_.at(node_id);
   NodeResource* requested_node;
   if (resource_nodes_.count(local_url) == 0) {
-    PG_LOG("RegisterRequestStartFromElm: First time seeing request for " + local_url);
+    // PG_LOG("RegisterRequestStartFromElm: First time seeing request for " + local_url);
     requested_node = new NodeResource(this, local_url);
     AddNode(requested_node);
     resource_nodes_.emplace(local_url, requested_node);
@@ -362,11 +362,23 @@ void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
 
   const EdgeRequestStart* const edge = new EdgeRequestStart(this,
     requesting_node, requested_node, request_id, type);
-  current_requests_.emplace(request_id, edge);
   AddEdge(edge);
 
   requesting_node->AddOutEdge(edge);
   requested_node->AddInEdge(edge);
+
+  const bool is_from_cache = cache_fed_requests_.count(request_id) == 1;
+  if (is_from_cache) {
+    const ResourceType type = cache_fed_requests_.at(request_id);
+    const EdgeRequestComplete* complete_edge = new EdgeRequestComplete(this,
+      requested_node, requesting_node, request_id, type, true);
+    AddEdge(complete_edge);
+    cache_fed_requests_.erase(request_id);
+    requested_node->AddOutEdge(complete_edge);
+    requesting_node->AddInEdge(complete_edge);
+  } else {
+    current_requests_.emplace(request_id, edge);
+  }
 }
 
 void PageGraph::RegisterRequestStartFromCurrentScript(
@@ -374,12 +386,17 @@ void PageGraph::RegisterRequestStartFromCurrentScript(
   NodeActor* const acting_node = GetCurrentActingNode();
   LOG_ASSERT(acting_node->IsScript());
   const string local_url(url.GetString().Utf8().data());
-
   PG_LOG("RegisterRequestStartFromCurrentScript: script id:"
     + to_string((static_cast<NodeScript*>(acting_node))->GetScriptId())
     + ", request id: " + to_string(request_id) +
     + ", url:" + local_url
     + ", type: " + to_string(type));
+
+  // Either we should not have seen this request before (first condition),
+  // or request has already completed and is being served from the cache
+  // (second condition).
+  LOG_ASSERT(current_requests_.count(request_id)
+      + cache_fed_requests_.count(request_id) == 1);
 
   NodeResource* requested_node;
   if (resource_nodes_.count(local_url) == 0) {
@@ -398,22 +415,40 @@ void PageGraph::RegisterRequestStartFromCurrentScript(
 
   acting_node->AddOutEdge(edge);
   requested_node->AddInEdge(edge);
+
+  const bool is_from_cache = cache_fed_requests_.count(request_id) == 1;
+  if (is_from_cache) {
+    const ResourceType type = cache_fed_requests_.at(request_id);
+    const EdgeRequestComplete* complete_edge = new EdgeRequestComplete(this,
+      requested_node, acting_node, request_id, type, true);
+    AddEdge(complete_edge);
+    cache_fed_requests_.erase(request_id);
+    requested_node->AddOutEdge(complete_edge);
+    acting_node->AddInEdge(complete_edge);
+  }
 }
 
 void PageGraph::RegisterRequestComplete(const InspectorId request_id,
     const ResourceType type) {
-  PG_LOG("RegisterRequestComplete: " + to_string(request_id) +
-    ", successful: " + resource_type_to_string(type));
-  // There should be an outstanding request that is being closed here,
-  // otherwise, there is a request we didn't correctly register being sent.
-  LOG_ASSERT(current_requests_.count(request_id) == 1);
+  PG_LOG("RegisterRequestComplete: " + to_string(request_id)
+    + ", resource type: " + resource_type_to_string(type));
+
+  // Sometimes, if a resource was cached, the "complete" hook will trigger
+  // before the "start" message.  In these cases, we store the request for
+  // integration into the graph later on.
+  const bool was_cached = current_requests_.count(request_id) == 0;
+  if (was_cached) {
+    LOG_ASSERT(cache_fed_requests_.count(request_id) == 0);
+    cache_fed_requests_.emplace(request_id, type);
+    return;
+  }
 
   const EdgeRequestStart* const request_start_edge = current_requests_.at(request_id);
   NodeResource* const resource_node = request_start_edge->GetResourceNode();
   Node* const requesting_node = request_start_edge->GetRequestingNode();
 
   const EdgeRequestComplete* const request_edge = new EdgeRequestComplete(
-    this, resource_node, requesting_node, request_id, type);
+    this, resource_node, requesting_node, request_id, type, false);
   current_requests_.erase(request_id);
   AddEdge(request_edge);
 
@@ -533,7 +568,6 @@ void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {
 }
 
 void PageGraph::RegisterScriptExecStop(const ScriptId script_id) {
-  // PG_LOG("RegisterScriptExecStop: " + to_string(script_id));
   const ScriptId top_script_id = script_tracker_.TopLevelScriptIdForScriptId(
     script_id);
   LOG_ASSERT(script_nodes_.count(top_script_id) == 1);
