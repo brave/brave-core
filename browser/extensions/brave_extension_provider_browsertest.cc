@@ -44,34 +44,6 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, WhitelistedExtension) {
   ASSERT_TRUE(extension);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, PDFJSInstalls) {
-  base::FilePath test_data_dir;
-  GetTestDataDir(&test_data_dir);
-  InstallExtensionSilently(extension_service(),
-      test_data_dir.AppendASCII("pdfjs.crx"));
-
-  content::WebContents* contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-  GURL url = embedded_test_server()->GetURL("/test.pdf");
-  ui_test_utils::NavigateToURL(browser(), url);
-  ASSERT_TRUE(WaitForLoadStop(contents));
-
-  // Test.pdf is just a PDF file for an icon with title test.ico
-  base::string16 expected_title(base::ASCIIToUTF16("test.ico - test.pdf"));
-    content::TitleWatcher title_watcher(
-        browser()->tab_strip_model()->GetActiveWebContents(), expected_title);
-  ui_test_utils::NavigateToURL(browser(), url);
-  EXPECT_EQ(expected_title, title_watcher.WaitAndGetTitle());
-
-  // Make sure pdfjs embed exists
-  bool pdfjs_exists;
-  ASSERT_TRUE(content::ExecuteScriptAndExtractBool(
-      browser()->tab_strip_model()->GetWebContentsAt(0),
-      "window.domAutomationController.send("
-        "!!document.body.querySelector(\"#chrome-pdfjs-logo-bg\"))", &pdfjs_exists));
-  ASSERT_TRUE(pdfjs_exists);
-}
-
 // Load an extension page with an ad image, and make sure it is NOT blocked.
 // It would otherwise be blocked though if it wasn't an extension.
 IN_PROC_BROWSER_TEST_F(BraveExtensionProviderTest, AdsNotBlockedByDefaultBlockerInExtension) {
