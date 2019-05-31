@@ -86,12 +86,6 @@ source_set("core") {
     "//crypto",
     "//extensions/buildflags",
   ]
-
-  if (enable_brave_sync) {
-    deps += [
-      ":js_sync_lib_impl",
-    ]
-  }
 }
 
 source_set("brave_sync") {
@@ -109,6 +103,12 @@ source_set("brave_sync") {
     "//components/pref_registry",
     "//content/public/browser",
   ]
+
+  if (enable_brave_sync) {
+    deps += [
+      ":js_sync_lib_impl",
+    ]
+  }
 }
 
 pack_web_resources("generated_resources") {
