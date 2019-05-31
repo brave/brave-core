@@ -215,6 +215,7 @@ source_set("ui") {
     deps += [
       "//brave/components/brave_rewards/resources:tip_generated_resources",
       "//brave/components/brave_rewards/resources:ui_generated_resources",
+      "//brave/vendor/bat-native-ads",
     ]
   }
 

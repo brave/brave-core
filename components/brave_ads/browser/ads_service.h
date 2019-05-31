@@ -6,7 +6,9 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 
+#include <map>
 #include <string>
+#include <vector>
 
 #include "base/macros.h"
 #include "build/build_config.h"
@@ -14,9 +16,27 @@
 #include "components/sessions/core/session_id.h"
 #include "url/gurl.h"
 
+namespace ads {
+struct AdsHistory;
+}
+
 namespace brave_ads {
 
-using IsSupportedRegionCallback = base::OnceCallback<void(bool)>;
+using OnGetAdsHistoryCallback = base::OnceCallback<void(
+    const std::map<std::string, std::vector<ads::AdsHistory>>&)>;
+
+using OnToggleAdThumbUpCallback =
+    base::OnceCallback<void(const std::string&, int)>;
+using OnToggleAdThumbDownCallback =
+    base::OnceCallback<void(const std::string&, int)>;
+using OnToggleAdOptInActionCallback =
+    base::OnceCallback<void(const std::string&, int)>;
+using OnToggleAdOptOutActionCallback =
+    base::OnceCallback<void(const std::string&, int)>;
+using OnToggleSaveAdCallback =
+    base::OnceCallback<void(const std::string&, bool)>;
+using OnToggleFlagAdCallback =
+    base::OnceCallback<void(const std::string&, bool)>;
 
 class AdsService : public KeyedService {
  public:
@@ -29,6 +49,32 @@ class AdsService : public KeyedService {
 
   virtual uint64_t GetAdsPerHour() const = 0;
   virtual void SetAdsPerHour(const uint64_t ads_per_hour) = 0;
+
+  virtual void GetAdsHistory(OnGetAdsHistoryCallback callback) = 0;
+
+  virtual void ToggleAdThumbUp(const std::string& id,
+                               const std::string& creative_set_id,
+                               int action,
+                               OnToggleAdThumbUpCallback callback) = 0;
+  virtual void ToggleAdThumbDown(const std::string& id,
+                                 const std::string& creative_set_id,
+                                 int action,
+                                 OnToggleAdThumbDownCallback callback) = 0;
+  virtual void ToggleAdOptInAction(const std::string& category,
+                                   int action,
+                                   OnToggleAdOptInActionCallback callback) = 0;
+  virtual void ToggleAdOptOutAction(
+      const std::string& category,
+      int action,
+      OnToggleAdOptOutActionCallback callback) = 0;
+  virtual void ToggleSaveAd(const std::string& id,
+                            const std::string& creative_set_id,
+                            bool saved,
+                            OnToggleSaveAdCallback callback) = 0;
+  virtual void ToggleFlagAd(const std::string& id,
+                            const std::string& creative_set_id,
+                            bool flagged,
+                            OnToggleFlagAdCallback callback) = 0;
 
   // ads::Ads proxy
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;

@@ -282,6 +282,11 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "grantAlreadyClaimedText", IDS_BRAVE_REWARDS_LOCAL_GRANT_ALREADY_CLAIMED_TEXT },       // NOLINT
         { "redirectModalError", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR },       // NOLINT
 
+        { "click",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_CLICK },
+        { "dismiss",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_DISMISS },
+        { "landed",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_LANDED },
+        { "view",  IDS_BRAVE_REWARDS_LOCAL_ADS_CONFIRMATION_TYPE_VIEW },
+
         { "about", IDS_BRAVE_UI_ABOUT },
         { "accept", IDS_BRAVE_UI_ACCEPT },
         { "activityCopy", IDS_BRAVE_UI_ACTIVITY_COPY },
@@ -367,7 +372,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "makeMonthly", IDS_BRAVE_UI_MAKE_MONTHLY },
         { "manageWallet", IDS_BRAVE_UI_MANAGE_WALLET },
         { "markAsInappropriate", IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE },
-        { "markAsInappropriateChecked", IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE_CHECKED },
+        { "markAsInappropriateChecked", IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE_CHECKED },        // NOLINT
         { "monthApr", IDS_BRAVE_UI_MONTH_APR },
         { "monthAug", IDS_BRAVE_UI_MONTH_AUG },
         { "monthDec", IDS_BRAVE_UI_MONTH_DEC },

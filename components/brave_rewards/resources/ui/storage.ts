@@ -55,6 +55,7 @@ export const defaultState: Rewards.State = {
     adsNextPaymentDate: '',
     adsAdNotificationsReceivedThisMonth: 0
   },
+  adsHistory: [],
   pendingContributionTotal: 0,
   grants: [],
   currentGrant: undefined,

@@ -15,23 +15,25 @@
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/sequenced_task_runner.h"
-#include "base/task_runner_util.h"
 #include "base/task/post_task.h"
+#include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "base/i18n/time_formatting.h"
+#include "bat/ads/ad_history_detail.h"
 #include "bat/ads/ads.h"
+#include "bat/ads/ads_history.h"
 #include "bat/ads/notification_info.h"
 #include "bat/ads/notification_event_type.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
-#include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_ads/browser/bundle_state_database.h"
+#include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/browser_process.h"
@@ -1135,6 +1137,125 @@ uint64_t AdsServiceImpl::GetAdsPerHour() const {
 
 void AdsServiceImpl::SetAdsPerHour(const uint64_t ads_per_hour) {
   SetUint64Pref(prefs::kAdsPerHour, ads_per_hour);
+}
+
+void AdsServiceImpl::GetAdsHistory(OnGetAdsHistoryCallback callback) {
+  bat_ads_->GetAdsHistory(base::BindOnce(&AdsServiceImpl::OnGetAdsHistory,
+                                         AsWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::OnGetAdsHistory(
+    OnGetAdsHistoryCallback callback,
+    const base::flat_map<std::string, std::vector<std::string>>&
+        json_ads_history) {
+  std::map<std::string, std::vector<ads::AdsHistory>> ads_history_map;
+  for (const auto& entry : json_ads_history) {
+    std::vector<ads::AdsHistory> ads_history_list;
+    for (const auto& ads_history_entry : entry.second) {
+      ads::AdsHistory ads_history;
+      ads_history.FromJson(ads_history_entry);
+      ads_history_list.push_back(ads_history);
+    }
+    const std::string date = entry.first;
+    ads_history_map[date] = ads_history_list;
+  }
+
+  std::move(callback).Run(ads_history_map);
+}
+
+void AdsServiceImpl::ToggleAdThumbUp(const std::string& id,
+                                     const std::string& creative_set_id,
+                                     int action,
+                                     OnToggleAdThumbUpCallback callback) {
+  bat_ads_->ToggleAdThumbUp(id, creative_set_id, action,
+                            base::BindOnce(&AdsServiceImpl::OnToggleAdThumbUp,
+                                           AsWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::OnToggleAdThumbUp(OnToggleAdThumbUpCallback callback,
+                                       const std::string& id,
+                                       int action) {
+  std::move(callback).Run(id, action);
+}
+
+void AdsServiceImpl::ToggleAdThumbDown(const std::string& id,
+                                       const std::string& creative_set_id,
+                                       int action,
+                                       OnToggleAdThumbDownCallback callback) {
+  bat_ads_->ToggleAdThumbDown(
+      id, creative_set_id, action,
+      base::BindOnce(&AdsServiceImpl::OnToggleAdThumbDown, AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void AdsServiceImpl::OnToggleAdThumbDown(OnToggleAdThumbDownCallback callback,
+                                         const std::string& id,
+                                         int action) {
+  std::move(callback).Run(id, action);
+}
+
+void AdsServiceImpl::ToggleAdOptInAction(
+    const std::string& category,
+    int action,
+    OnToggleAdOptInActionCallback callback) {
+  bat_ads_->ToggleAdOptInAction(
+      category, action,
+      base::BindOnce(&AdsServiceImpl::OnToggleAdOptInAction, AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void AdsServiceImpl::OnToggleAdOptInAction(
+    OnToggleAdOptInActionCallback callback,
+    const std::string& category,
+    int action) {
+  std::move(callback).Run(category, action);
+}
+
+void AdsServiceImpl::ToggleAdOptOutAction(
+    const std::string& category,
+    int action,
+    OnToggleAdOptOutActionCallback callback) {
+  bat_ads_->ToggleAdOptOutAction(
+      category, action,
+      base::BindOnce(&AdsServiceImpl::OnToggleAdOptOutAction, AsWeakPtr(),
+                     std::move(callback)));
+}
+
+void AdsServiceImpl::OnToggleAdOptOutAction(
+    OnToggleAdOptOutActionCallback callback,
+    const std::string& category,
+    int action) {
+  std::move(callback).Run(category, action);
+}
+
+void AdsServiceImpl::ToggleSaveAd(const std::string& id,
+                                  const std::string& creative_set_id,
+                                  bool saved,
+                                  OnToggleSaveAdCallback callback) {
+  bat_ads_->ToggleSaveAd(id, creative_set_id, saved,
+                         base::BindOnce(&AdsServiceImpl::OnToggleSaveAd,
+                                        AsWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::OnToggleSaveAd(OnToggleSaveAdCallback callback,
+                                    const std::string& id,
+                                    bool saved) {
+  std::move(callback).Run(id, saved);
+}
+
+void AdsServiceImpl::ToggleFlagAd(const std::string& id,
+                                  const std::string& creative_set_id,
+                                  bool flagged,
+                                  OnToggleFlagAdCallback callback) {
+  bat_ads_->ToggleFlagAd(id, creative_set_id, flagged,
+                         base::BindOnce(&AdsServiceImpl::OnToggleFlagAd,
+                                        AsWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::OnToggleFlagAd(OnToggleSaveAdCallback callback,
+                                    const std::string& id,
+                                    bool flagged) {
+  std::move(callback).Run(id, flagged);
 }
 
 uint64_t AdsServiceImpl::GetAdsPerDay() const {

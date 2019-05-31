@@ -14,7 +14,11 @@
 
 #include "bat/ads/result.h"
 
+#include "bat/ads/internal/ad_preferences.h"
+
 namespace ads {
+
+struct AdHistoryDetail;
 
 struct ClientState {
   ClientState();
@@ -26,7 +30,8 @@ struct ClientState {
       const std::string& json,
       std::string* error_description = nullptr);
 
-  std::deque<uint64_t> ads_shown_history;
+  AdPreferences ad_prefs;
+  std::deque<AdHistoryDetail> ads_shown_history;
   std::string ad_uuid;
   std::map<std::string, uint64_t> ads_uuid_seen;
   uint64_t next_check_serve_ad_timestamp_in_seconds;

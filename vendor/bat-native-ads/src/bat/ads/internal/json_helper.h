@@ -18,21 +18,31 @@
 
 namespace ads {
 
-struct ClientInfo;
-struct IssuersInfo;
+struct AdContent;
+struct AdHistoryDetail;
 struct AdInfo;
-struct NotificationInfo;
-struct ClientState;
+struct AdPreferences;
+struct AdsHistory;
 struct BundleState;
+struct CategoryContent;
+struct ClientInfo;
+struct ClientState;
+struct IssuersInfo;
+struct NotificationInfo;
 
 using JsonWriter = rapidjson::Writer<rapidjson::StringBuffer>;
 
-void SaveToJson(JsonWriter* writer, const ClientInfo& info);
-void SaveToJson(JsonWriter* writer, const IssuersInfo& info);
+void SaveToJson(JsonWriter* writer, const AdContent& content);
+void SaveToJson(JsonWriter* writer, const AdHistoryDetail& detail);
 void SaveToJson(JsonWriter* writer, const AdInfo& info);
-void SaveToJson(JsonWriter* writer, const NotificationInfo& info);
-void SaveToJson(JsonWriter* writer, const ClientState& state);
+void SaveToJson(JsonWriter* writer, const AdPreferences& prefs);
+void SaveToJson(JsonWriter* writer, const AdsHistory& history);
 void SaveToJson(JsonWriter* writer, const BundleState& state);
+void SaveToJson(JsonWriter* writer, const CategoryContent& content);
+void SaveToJson(JsonWriter* writer, const ClientInfo& info);
+void SaveToJson(JsonWriter* writer, const ClientState& state);
+void SaveToJson(JsonWriter* writer, const IssuersInfo& info);
+void SaveToJson(JsonWriter* writer, const NotificationInfo& info);
 
 template <typename T>
 void SaveToJson(const T& t, std::string* json) {

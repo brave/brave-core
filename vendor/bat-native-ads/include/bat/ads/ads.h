@@ -6,15 +6,22 @@
 #ifndef BAT_ADS_ADS_H_
 #define BAT_ADS_ADS_H_
 
+#include <map>
 #include <string>
 #include <memory>
+#include <vector>
 
+#include "bat/ads/ad_content.h"
 #include "bat/ads/ads_client.h"
+#include "bat/ads/category_content.h"
 #include "bat/ads/export.h"
 #include "bat/ads/notification_event_type.h"
 #include "bat/ads/notification_info.h"
+#include "bat/ads/notification_result_type.h"
 
 namespace ads {
+
+struct AdsHistory;
 
 // Reduces the wait time before calling the StartCollectingActivity function
 extern bool _is_debug;
@@ -122,6 +129,51 @@ class ADS_EXPORT Ads {
 
   // Should be called to remove all cached history
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
+
+  // Should be called to retrieve ads history
+  virtual std::map<std::string, std::vector<AdsHistory>> GetAdsHistory() = 0;
+
+  // Should be called to indicate interest in the given ad. This is a
+  // toggle, so calling it again returns the setting to the neutral
+  // state
+  virtual AdContent::LikeAction ToggleAdThumbUp(
+      const std::string& id,
+      const std::string& creative_set_id,
+      AdContent::LikeAction action) = 0;
+
+  // Should be called to indicate a lack of interest in the given
+  // ad. This is a toggle, so calling it again returns the setting to
+  // the neutral state
+  virtual AdContent::LikeAction ToggleAdThumbDown(
+      const std::string& id,
+      const std::string& creative_set_id,
+      AdContent::LikeAction action) = 0;
+
+  // Should be called to opt-in to the given ad category. This is a
+  // toggle, so calling it again returns the setting to the neutral
+  // state
+  virtual CategoryContent::OptAction ToggleAdOptInAction(
+      const std::string& category,
+      CategoryContent::OptAction action) = 0;
+
+  // Should be called to opt-out of the given ad category. This is a
+  // toggle, so calling it again returns the setting to the neutral
+  // state
+  virtual CategoryContent::OptAction ToggleAdOptOutAction(
+      const std::string& category,
+      CategoryContent::OptAction action) = 0;
+
+  // Should be called to save an ad for later viewing. This is a
+  // toggle, so calling it again removes the ad from the saved list
+  virtual bool ToggleSaveAd(const std::string& id,
+                            const std::string& creative_set_id,
+                            bool saved) = 0;
+
+  // Should be called to flag an ad as inappropriate. This is a
+  // toggle, so calling it again unflags the ad
+  virtual bool ToggleFlagAd(const std::string& id,
+                            const std::string& creative_set_id,
+                            bool flagged) = 0;
 
  private:
   // Not copyable, not assignable

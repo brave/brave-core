@@ -4,9 +4,13 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/ads/internal/client_state.h"
+
+#include "bat/ads/ad_history_detail.h"
 #include "bat/ads/internal/json_helper.h"
 #include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/time.h"
+
+#include "base/strings/string_number_conversions.h"
 
 namespace ads {
 
@@ -77,12 +81,25 @@ Result ClientState::FromJson(
     return FAILED;
   }
 
+  if (client.HasMember("adPreferences")) {
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+    const auto& value = client["adPreferences"];
+    if (!value.Accept(writer) ||
+        ad_prefs.FromJson(buffer.GetString()) != SUCCESS) {
+      return FAILED;
+    }
+  }
+
   if (client.HasMember("adsShownHistory")) {
-    for (const auto& timestamp_in_seconds :
-        client["adsShownHistory"].GetArray()) {
-      auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
-          timestamp_in_seconds.GetUint64());
-      ads_shown_history.push_back(migrated_timestamp_in_seconds);
+    for (const auto& ad_shown : client["adsShownHistory"].GetArray()) {
+      AdHistoryDetail ad_history_detail;
+      rapidjson::StringBuffer buffer;
+      rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
+      if (ad_shown.Accept(writer) &&
+          ad_history_detail.FromJson(buffer.GetString()) == SUCCESS) {
+        ads_shown_history.push_back(ad_history_detail);
+      }
     }
   }
 
@@ -212,10 +229,13 @@ Result ClientState::FromJson(
 void SaveToJson(JsonWriter* writer, const ClientState& state) {
   writer->StartObject();
 
+  writer->String("adPreferences");
+  SaveToJson(writer, state.ad_prefs);
+
   writer->String("adsShownHistory");
   writer->StartArray();
   for (const auto& ad_shown : state.ads_shown_history) {
-    writer->Uint64(ad_shown);
+    SaveToJson(writer, ad_shown);
   }
   writer->EndArray();
 

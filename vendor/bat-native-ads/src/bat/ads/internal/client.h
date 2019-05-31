@@ -28,9 +28,29 @@ class Client {
 
   void Initialize(InitializeCallback callback);
 
-  void AppendCurrentTimeToAdsShownHistory();
-  const std::deque<uint64_t> GetAdsShownHistory();
-  void GetAdsShownHistory(const std::deque<uint64_t>& history);
+  void AppendAdToAdsShownHistory(const AdHistoryDetail& ad_history_detail);
+  const std::deque<AdHistoryDetail> GetAdsShownHistory();
+  AdContent::LikeAction ToggleAdThumbUp(const std::string& id,
+                                        const std::string& creative_set_id,
+                                        AdContent::LikeAction action);
+  AdContent::LikeAction ToggleAdThumbDown(const std::string& id,
+                                          const std::string& creative_set_id,
+                                          AdContent::LikeAction action);
+  CategoryContent::OptAction ToggleAdOptInAction(
+      const std::string& category,
+      CategoryContent::OptAction action);
+  CategoryContent::OptAction ToggleAdOptOutAction(
+      const std::string& category,
+      CategoryContent::OptAction action);
+  bool ToggleSaveAd(const std::string& id,
+                    const std::string& creative_set_id,
+                    bool saved);
+  bool ToggleFlagAd(const std::string& id,
+                    const std::string& creative_set_id,
+                    bool flagged);
+  bool IsFilteredCategory(const std::string& category) const;
+  bool IsFilteredAd(const std::string& creative_set_id) const;
+  bool IsFlaggedAd(const std::string& creative_set_id) const;
   void UpdateAdUUID();
   void UpdateAdsUUIDSeen(const std::string& uuid, uint64_t value);
   const std::map<std::string, uint64_t> GetAdsUUIDSeen();

@@ -57,6 +57,29 @@ class BatAdsImpl :
       GetNotificationForIdCallback callback) override;
   void OnNotificationEvent(const std::string& id, const int32_t type) override;
   void RemoveAllHistory(RemoveAllHistoryCallback callback) override;
+  void GetAdsHistory(GetAdsHistoryCallback callback) override;
+  void ToggleAdThumbUp(const std::string& id,
+                       const std::string& creative_set_id,
+                       int action,
+                       ToggleAdThumbUpCallback callback) override;
+  void ToggleAdThumbDown(const std::string& id,
+                         const std::string& creative_set_id,
+                         int action,
+                         ToggleAdThumbUpCallback callback) override;
+  void ToggleAdOptInAction(const std::string& category,
+                           int action,
+                           ToggleAdOptInActionCallback callback) override;
+  void ToggleAdOptOutAction(const std::string& category,
+                            int action,
+                            ToggleAdOptOutActionCallback callback) override;
+  void ToggleSaveAd(const std::string& id,
+                    const std::string& creative_set_id,
+                    bool saved,
+                    ToggleSaveAdCallback callback) override;
+  void ToggleFlagAd(const std::string& id,
+                    const std::string& creative_set_id,
+                    bool flagged,
+                    ToggleFlagAdCallback callback) override;
 
  private:
   // Workaround to pass base::OnceCallback into std::bind

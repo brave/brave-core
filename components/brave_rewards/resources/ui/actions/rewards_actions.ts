@@ -142,6 +142,70 @@ export const onAdsData = (adsData: Rewards.AdsData) => action(types.ON_ADS_DATA,
   adsData
 })
 
+export const getAdsHistory = () => action(types.GET_ADS_HISTORY)
+
+export const onAdsHistory = (adsHistory: Rewards.AdsHistoryData[]) => action(types.ON_ADS_HISTORY, {
+  adsHistory
+})
+
+export const toggleAdThumbUp = (uuid: string, creativeSetId: string, likeAction: number) => action(types.TOGGLE_AD_THUMB_UP, {
+  uuid,
+  creativeSetId,
+  likeAction
+})
+
+export const onToggleAdThumbUp = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_UP, {
+  result
+})
+
+export const toggleAdThumbDown = (uuid: string, creativeSetId: string, likeAction: number) => action(types.TOGGLE_AD_THUMB_DOWN, {
+  uuid,
+  creativeSetId,
+  likeAction
+})
+
+export const onToggleAdThumbDown = (result: Rewards.ToggleLikeAction) => action(types.ON_TOGGLE_AD_THUMB_DOWN, {
+  result
+})
+
+export const toggleAdOptInAction = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_IN_ACTION, {
+  category,
+  optAction
+})
+
+export const onToggleAdOptInAction = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_IN_ACTION, {
+  result
+})
+
+export const toggleAdOptOutAction = (category: string, optAction: number) => action(types.TOGGLE_AD_OPT_OUT_ACTION, {
+  category,
+  optAction
+})
+
+export const onToggleAdOptOutAction = (result: Rewards.ToggleOptAction) => action(types.ON_TOGGLE_AD_OPT_OUT_ACTION, {
+  result
+})
+
+export const toggleSaveAd = (uuid: string, creativeSetId: string, savedAd: boolean) => action(types.TOGGLE_SAVE_AD, {
+  uuid,
+  creativeSetId,
+  savedAd
+})
+
+export const onToggleSaveAd = (result: Rewards.ToggleSaveAd) => action(types.ON_TOGGLE_SAVE_AD, {
+  result
+})
+
+export const toggleFlagAd = (uuid: string, creativeSetId: string, flaggedAd: boolean) => action(types.TOGGLE_FLAG_AD, {
+  uuid,
+  creativeSetId,
+  flaggedAd
+})
+
+export const onToggleFlagAd = (result: Rewards.ToggleFlagAd) => action(types.ON_TOGGLE_FLAG_AD, {
+  result
+})
+
 export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS_SETTING_SAVE, {
   key,
   value

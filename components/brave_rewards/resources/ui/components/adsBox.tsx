@@ -43,6 +43,7 @@ class AdsBox extends React.Component<Props, State> {
 
   componentDidMount () {
     this.isShowAdsHistoryUrl()
+    this.props.actions.getAdsHistory()
   }
 
   componentDidUpdate (prevProps: Props) {
@@ -120,6 +121,9 @@ class AdsBox extends React.Component<Props, State> {
   }
 
   onAdsHistoryToggle = () => {
+    if (!this.state.modalShowAdsHistory) {
+      this.props.actions.getAdsHistory()
+    }
     this.setState({
       modalShowAdsHistory: !this.state.modalShowAdsHistory
     })
@@ -153,38 +157,40 @@ class AdsBox extends React.Component<Props, State> {
     }
   }
 
-  onThumbUpPress = () => {
-    console.log('onThumbUpPress')
+  onThumbUpPress = (uuid: string, creativeSetId: string, action: number) => {
+    this.props.actions.toggleAdThumbUp(uuid, creativeSetId, action)
   }
 
-  onThumbDownPress = () => {
-    console.log('onThumbDownPress')
+  onThumbDownPress = (uuid: string, creativeSetId: string, action: number) => {
+    this.props.actions.toggleAdThumbDown(uuid, creativeSetId, action)
   }
 
-  onOptInAction = () => {
-    console.log('onOptInAction')
+  onOptInAction = (category: string, action: number) => {
+    this.props.actions.toggleAdOptInAction(category, action)
   }
 
-  onOptOutAction = () => {
-    console.log('onOptOutAction')
+  onOptOutAction = (category: string, action: number) => {
+    this.props.actions.toggleAdOptOutAction(category, action)
   }
 
-  onMenuSave = () => {
-    console.log('onMenuSave')
+  onMenuSave = (uuid: string, creativeSetId: string, saved: boolean) => {
+    this.props.actions.toggleSaveAd(uuid, creativeSetId, saved)
   }
 
-  onMenuFlag = () => {
-    console.log('onMenuFlag')
+  onMenuFlag = (uuid: string, creativeSetId: string, flagged: boolean) => {
+    this.props.actions.toggleFlagAd(uuid, creativeSetId, flagged)
   }
 
   getAdHistoryData = (adHistoryData: Rewards.AdsHistoryData[], savedOnly: boolean) => {
-    return adHistoryData.map((item: Rewards.AdsHistoryData, ix: number) => {
+    return adHistoryData.map((item: Rewards.AdsHistoryData) => {
       return {
-        id: ix,
+        id: item.id,
         date: item.date,
         adDetailRows: (
-          item.adDetailRows.map((itemDetail: Rewards.AdHistoryDetail, jx: number) => {
+          item.adDetailRows.map((itemDetail: Rewards.AdHistoryDetail) => {
             const adContent: Rewards.AdContent = {
+              uuid: itemDetail.adContent.uuid,
+              creativeSetId: itemDetail.adContent.creativeSetId,
               brand: itemDetail.adContent.brand,
               brandInfo: itemDetail.adContent.brandInfo,
               brandLogo: itemDetail.adContent.brandLogo,
@@ -194,19 +200,35 @@ class AdsBox extends React.Component<Props, State> {
               adAction: itemDetail.adContent.adAction,
               savedAd: itemDetail.adContent.savedAd,
               flaggedAd: itemDetail.adContent.flaggedAd,
-              onThumbUpPress: () => this.onThumbUpPress(),
-              onThumbDownPress: () => this.onThumbDownPress(),
-              onMenuSave: () => this.onMenuSave(),
-              onMenuFlag: () => this.onMenuFlag()
+              onThumbUpPress: () =>
+                this.onThumbUpPress(itemDetail.adContent.uuid,
+                                    itemDetail.adContent.creativeSetId,
+                                    itemDetail.adContent.likeAction),
+              onThumbDownPress: () =>
+                this.onThumbDownPress(itemDetail.adContent.uuid,
+                                      itemDetail.adContent.creativeSetId,
+                                      itemDetail.adContent.likeAction),
+              onMenuSave: () =>
+                this.onMenuSave(itemDetail.adContent.uuid,
+                                itemDetail.adContent.creativeSetId,
+                                itemDetail.adContent.savedAd),
+              onMenuFlag: () =>
+                this.onMenuFlag(itemDetail.adContent.uuid,
+                                itemDetail.adContent.creativeSetId,
+                                itemDetail.adContent.flaggedAd)
             }
             const categoryContent: Rewards.CategoryContent = {
               category: itemDetail.categoryContent.category,
               optAction: itemDetail.categoryContent.optAction,
-              onOptInAction: () => this.onOptInAction(),
-              onOptOutAction: () => this.onOptOutAction()
+              onOptInAction: () =>
+                this.onOptInAction(itemDetail.categoryContent.category,
+                                   itemDetail.categoryContent.optAction),
+              onOptOutAction: () =>
+                this.onOptOutAction(itemDetail.categoryContent.category,
+                                    itemDetail.categoryContent.optAction)
             }
             return {
-              id: jx,
+              id: itemDetail.id,
               adContent: adContent,
               categoryContent: categoryContent
             }
@@ -229,137 +251,8 @@ class AdsBox extends React.Component<Props, State> {
 
   render () {
     const adsPerHour = 2
-    const adId: number = 0
-    const rowId: number = 0
     const savedOnly: boolean = false
 
-    /******** ASSUMED DATA - REMOVE UPON IMPLEMENTATION */
-    const adsHistory: Rewards.AdsHistoryData[] =
-    [
-      {
-        id: rowId,
-        date: '1/30',
-        adDetailRows: [
-          {
-            id: adId,
-            adContent: {
-              brand: 'Pepsi',
-              brandLogo: '',
-              brandUrl: 'https://www.pepsi.com',
-              brandDisplayUrl: 'pepsi.com',
-              brandInfo: 'Animation & VFX Degree - Degree in Animation |',
-              adAction: 'Viewed',
-              likeAction: 1,
-              savedAd: true,
-              flaggedAd: false
-            },
-            categoryContent: {
-              category: 'Entertainment',
-              optAction: 0
-            }
-          },
-          {
-            id: adId + 1,
-            adContent: {
-              brand: 'TESLA',
-              brandLogo: '',
-              brandDisplayUrl: 'tesla.com',
-              brandUrl: 'https://www.tesla.com',
-              brandInfo: 'Animation & VFX Degree - Degree in Animation |',
-              adAction: 'Clicked',
-              likeAction: 2,
-              savedAd: false,
-              flaggedAd: false
-            },
-            categoryContent: {
-              category: 'Auto',
-              optAction: 0
-            }
-          },
-          {
-            id: adId + 2,
-            adContent: {
-              brand: 'Disney',
-              brandLogo: '',
-              brandDisplayUrl: 'disney.com',
-              brandUrl: 'https://www.disney.com',
-              brandInfo: 'Animation & VFX Degree - Degree in Animation |',
-              adAction: 'Clicked',
-              likeAction: 0,
-              savedAd: false,
-              flaggedAd: true
-            },
-            categoryContent: {
-              category: 'Travel',
-              optAction: 0
-            }
-          }
-        ]
-      },
-      {
-        id: rowId + 1,
-        date: '1/29',
-        adDetailRows: [
-          {
-            id: adId + 3,
-            adContent: {
-              brand: 'Puma',
-              brandLogo: '',
-              brandDisplayUrl: 'puma.com',
-              brandUrl: 'https://www.puma.com',
-              brandInfo: 'Animation & VFX Degree - Degree in Animation |',
-              adAction: 'Viewed',
-              likeAction: 0,
-              savedAd: false,
-              flaggedAd: false
-            },
-            categoryContent: {
-              category: 'Sports',
-              optAction: 0
-            }
-          },
-          {
-            id: adId + 4,
-            adContent: {
-              brand: 'Expedia.com',
-              brandLogo: '',
-              brandDisplayUrl: 'expedia.com',
-              brandUrl: 'https://www.expedia.com',
-              brandInfo: 'Animation & VFX Degree - Degree in Animation |',
-              adAction: 'Viewed',
-              likeAction: 0,
-              savedAd: true,
-              flaggedAd: false
-            },
-            categoryContent: {
-              category: 'Travel',
-              optAction: 2
-            }
-          },
-          {
-            id: adId + 5,
-            adContent: {
-              brand: 'H&M',
-              brandLogo: '',
-              brandUrl: 'hm.com',
-              brandDisplayUrl: 'https://www.hm.com',
-              brandInfo: 'Animation & VFX Degree - Degree in Animation |',
-              adAction: 'Closed',
-              likeAction: 0,
-              savedAd: true,
-              flaggedAd: false
-            },
-            categoryContent: {
-              category: 'Fashion',
-              optAction: 1
-            }
-          }
-        ]
-      }
-    ]
-    /* end */
-
-    const rows = this.getAdHistoryData(adsHistory, savedOnly)
     let adsEnabled = false
     let adsUIEnabled = false
     let adsIsSupported = false
@@ -369,6 +262,7 @@ class AdsBox extends React.Component<Props, State> {
 
     const {
       adsData,
+      adsHistory,
       enabledMain,
       firstLoad,
       balance
@@ -386,6 +280,12 @@ class AdsBox extends React.Component<Props, State> {
     const enabled = adsEnabled && adsIsSupported
     const toggle = !(!enabledMain || !adsUIEnabled || !adsIsSupported)
     const showDisabled = firstLoad !== false || !toggle || !adsEnabled || !adsIsSupported
+
+    if (!adsHistory) {
+      return null
+    }
+
+    const rows = this.getAdHistoryData(adsHistory, savedOnly)
 
     return (
       <>
@@ -406,7 +306,7 @@ class AdsBox extends React.Component<Props, State> {
           <List title={getLocale('adsCurrentEarnings')}>
             <Tokens
               value={estimatedPendingRewards}
-              converted={utils.convertBalance(estimatedPendingRewards, walletInfo.rates)}
+              converted={utils.convertBalance(estimatedPendingRewards, balance.rates)}
             />
           </List>
           <List title={getLocale('adsPaymentDate')}>

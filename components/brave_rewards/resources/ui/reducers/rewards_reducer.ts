@@ -129,6 +129,121 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       state.adsData.adsIsSupported = action.payload.adsData.adsIsSupported
       break
     }
+    case types.GET_ADS_HISTORY: {
+      chrome.send('brave_rewards.getAdsHistory')
+      break
+    }
+    case types.ON_ADS_HISTORY: {
+      if (!action.payload.adsHistory) {
+        break
+      }
+
+      state = { ...state }
+
+      if (!state.adsHistory) {
+        state.adsHistory = defaultState.adsHistory
+      }
+
+      state.adsHistory = action.payload.adsHistory
+      break
+    }
+    case types.TOGGLE_AD_THUMB_UP: {
+      chrome.send('brave_rewards.toggleAdThumbUp',
+                  [action.payload.uuid, action.payload.creativeSetId, action.payload.likeAction])
+      break
+    }
+    case types.ON_TOGGLE_AD_THUMB_UP: {
+      state = { ...state }
+      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
+        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
+          if (detail.adContent.uuid === action.payload.result.uuid) {
+            detail.adContent.likeAction = action.payload.result.action
+          }
+        })
+      })
+      break
+    }
+    case types.TOGGLE_AD_THUMB_DOWN: {
+      chrome.send('brave_rewards.toggleAdThumbDown',
+                  [action.payload.uuid, action.payload.creativeSetId, action.payload.likeAction])
+      break
+    }
+    case types.ON_TOGGLE_AD_THUMB_DOWN: {
+      state = { ...state }
+      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
+        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
+          if (detail.adContent.uuid === action.payload.result.uuid) {
+            detail.adContent.likeAction = action.payload.result.action
+          }
+        })
+      })
+      break
+    }
+    case types.TOGGLE_AD_OPT_IN_ACTION: {
+      chrome.send('brave_rewards.toggleAdOptInAction',
+                  [action.payload.category, action.payload.optAction])
+      break
+    }
+    case types.ON_TOGGLE_AD_OPT_IN_ACTION: {
+      state = { ...state }
+      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
+        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
+          if (detail.categoryContent.category === action.payload.result.category) {
+            detail.categoryContent.optAction = action.payload.result.action
+          }
+        })
+      })
+      break
+    }
+    case types.TOGGLE_AD_OPT_OUT_ACTION: {
+      chrome.send('brave_rewards.toggleAdOptOutAction',
+                  [action.payload.category, action.payload.optAction])
+      break
+    }
+    case types.ON_TOGGLE_AD_OPT_OUT_ACTION: {
+      state = { ...state }
+      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
+        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
+          if (detail.categoryContent.category === action.payload.result.category) {
+            detail.categoryContent.optAction = action.payload.result.action
+            console.log(action.payload)
+          }
+        })
+      })
+      break
+    }
+    case types.TOGGLE_SAVE_AD: {
+      chrome.send('brave_rewards.toggleSaveAd',
+                  [action.payload.uuid, action.payload.creativeSetId, action.payload.savedAd])
+      break
+    }
+    case types.ON_TOGGLE_SAVE_AD: {
+      state = { ...state }
+      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
+        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
+          if (detail.adContent.uuid === action.payload.result.uuid) {
+            detail.adContent.savedAd = action.payload.result.saved
+          }
+        })
+      })
+      break
+    }
+    case types.TOGGLE_FLAG_AD: {
+      chrome.send('brave_rewards.toggleFlagAd',
+                  [action.payload.uuid, action.payload.creativeSetId, action.payload.flaggedAd])
+      break
+    }
+    case types.ON_TOGGLE_FLAG_AD: {
+      state = { ...state }
+      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
+        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
+          if (detail.adContent.uuid === action.payload.result.uuid) {
+            detail.adContent.flaggedAd = action.payload.result.flagged
+          }
+        })
+      })
+      break
+    }
     case types.ON_ADS_SETTING_SAVE: {
       state = { ...state }
       const key = action.payload.key
