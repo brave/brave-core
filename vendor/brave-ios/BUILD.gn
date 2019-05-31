@@ -53,6 +53,8 @@ ios_framework_bundle("brave-rewards-ios-framework") {
     ":coredata"
   ]
 
+  bundle_deps_filter = [ "//third_party/icu:icudata" ]
+
   sources = [
     "BATBraveRewards.m",
     "Ledger/BATBraveLedger.mm",
