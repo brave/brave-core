@@ -1,13 +1,22 @@
 diff --git a/chrome/common/mac/app_mode_chrome_locator.mm b/chrome/common/mac/app_mode_chrome_locator.mm
-index efd272e706ba56b748e4b76b96d76cbd03aa07ac..b5d8d8cfa223d276db7a328036deeef658bc0320 100644
+index efd272e706ba56b748e4b76b96d76cbd03aa07ac..ead12da6a0fc7381d8e6e43ec5e68e40c0105683 100644
 --- a/chrome/common/mac/app_mode_chrome_locator.mm
 +++ b/chrome/common/mac/app_mode_chrome_locator.mm
-@@ -79,7 +79,7 @@ bool GetChromeBundleInfo(const base::FilePath& chrome_bundle,
+@@ -79,9 +79,17 @@ bool GetChromeBundleInfo(const base::FilePath& chrome_bundle,
    // However, we want the shims to be agnostic to distribution and operate based
    // on the data in their plist, so encode the framework names here.
    NSDictionary* framework_for_exe = @{
--    @"Chromium": @"Chromium",
-+    @"Brave": @"Brave",
++#if defined(BRAVE_CHROMIUM_BUILD)
++    @"Brave Browser": @"Brave Browser",
++    @"Brave Browser Beta": @"Brave Browser Beta",
++    @"Brave Browser Dev": @"Brave Browser Dev",
++    @"Brave Browser Nightly": @"Brave Browser Nightly",
++    @"Brave Browser Development": @"Brave Browser Development",
++#else
+     @"Chromium": @"Chromium",
      @"Google Chrome": @"Google Chrome",
      @"Google Chrome Canary": @"Google Chrome",
++#endif
    };
+   NSString* framework_name = [framework_for_exe objectForKey:cr_bundle_exe];
+   NSString* cr_framework_shlib_path =
