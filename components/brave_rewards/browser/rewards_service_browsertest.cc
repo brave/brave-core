@@ -1645,6 +1645,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AddFunds) {
+  rewards_service_->SetCurrentCountry("US");  // any region except JP
   rewards_service_->AddObserver(this);
   EnableRewards();
   content::EvalJsResult js_result = EvalJs(
