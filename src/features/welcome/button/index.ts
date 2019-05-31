@@ -3,7 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { ComponentType } from 'react'
-import styled, { css } from 'styled-components'
+import styled, { css } from '../../../theme'
+import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
 
 interface BaseButtonProps {
   active?: boolean
@@ -19,17 +20,42 @@ const BaseButton = styled<BaseButtonProps, 'button'>('button')`
   border: none;
   cursor: pointer;
   outline: inherit;
-  letter-spacing:1px;
+`
+
+export const FooterButton = styled(Button as ComponentType<ButtonProps>)`
+  outline: none;
+  border: 1px solid ${p => p.theme.palette.grey400};
+  color: ${p => p.theme.color.text};
+
+  &:hover {
+    opacity: .9;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgba(255,80,0,0.2);
+  }
 `
 
 export const SkipButton = styled(BaseButton)`
-  color: #7C7D8C;
+  color: ${p => p.theme.color.text};
   text-decoration: underline;
   font-weight: 300;
   letter-spacing: 0;
 
   &:hover {
-    color: #343546;
+    opacity: .9;
+  }
+`
+
+export const PrimaryButton = styled(Button as ComponentType<ButtonProps>)`
+  outline: none;
+
+  &:hover {
+    opacity: .9;
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgba(255,80,0,0.2);
   }
 `
 

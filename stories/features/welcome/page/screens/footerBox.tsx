@@ -11,12 +11,12 @@ import {
   FooterMiddleColumn,
   FooterRightColumn,
   SkipButton,
+  FooterButton,
   Bullet
 } from '../../../../../src/features/welcome/'
 
 // Shared components
 import { ArrowRightIcon } from '../../../../../src/components/icons'
-import { Button } from '../../../../../src/components'
 
 // Utils
 import locale from '../fakeLocale'
@@ -49,7 +49,7 @@ export default class FooterBox extends React.PureComponent<Props, {}> {
             // don't show the next button in the first screen
             currentScreen !== 1
               ? (
-                <Button
+                <FooterButton
                   level='secondary'
                   type='default'
                   size='medium'
@@ -59,7 +59,7 @@ export default class FooterBox extends React.PureComponent<Props, {}> {
                 />
               )
               : currentScreen !== 1 && (
-                <Button
+                <FooterButton
                   level='secondary'
                   type='default'
                   size='medium'

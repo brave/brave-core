@@ -5,10 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph } from '../../../../../src/features/welcome/'
-
-// Shared components
-import { Button } from '../../../../../src/components'
+import { Content, Title, Paragraph, PrimaryButton } from '../../../../../src/features/welcome/'
 
 // Utils
 import locale from '../fakeLocale'
@@ -35,7 +32,7 @@ export default class ThemingBox extends React.PureComponent<Props, {}> {
         <WelcomeThemeImage />
         <Title>{locale.chooseYourTheme}</Title>
         <Paragraph>{locale.findToolbarTheme}</Paragraph>
-          <Button
+          <PrimaryButton
             level='primary'
             type='accent'
             size='large'

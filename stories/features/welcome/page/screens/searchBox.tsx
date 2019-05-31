@@ -6,11 +6,8 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, SelectGrid } from '../../../../../src/features/welcome/'
+import { Content, Title, Paragraph, SelectGrid, PrimaryButton } from '../../../../../src/features/welcome/'
 import { SelectBox } from '../../../../../src/features/shields'
-
-// Shared components
-import { Button } from '../../../../../src/components'
 
 // Utils
 import locale from '../fakeLocale'
@@ -64,7 +61,7 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
               <option value='DuckDuckGo'>{locale.fakeSearchProvider1}</option>
               <option value='Google'>{locale.fakeSearchProvider2}</option>
             </SelectBox>
-            <Button
+            <PrimaryButton
               level='primary'
               type='accent'
               size='large'

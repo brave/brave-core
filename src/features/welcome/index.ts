@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { SkipButton, Bullet } from './button'
+import { SkipButton, FooterButton, Bullet, PrimaryButton } from './button'
 import { Title, Paragraph } from './text'
 import {
   Footer,
@@ -18,6 +18,8 @@ import {
 
 export {
   SkipButton,
+  PrimaryButton,
+  FooterButton,
   Bullet,
   Title,
   Paragraph,

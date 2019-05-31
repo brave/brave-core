@@ -5,10 +5,9 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph } from '../../../../../src/features/welcome/'
+import { Content, Title, Paragraph, PrimaryButton } from '../../../../../src/features/welcome/'
 
 // Shared components
-import { Button } from '../../../../../src/components'
 import { ArrowRightIcon } from '../../../../../src/components/icons'
 
 // Utils
@@ -36,7 +35,7 @@ export default class ThemingBox extends React.PureComponent<Props, {}> {
         <WelcomeLionImage />
         <Title>{locale.welcome}</Title>
         <Paragraph>{locale.whatIsBrave}</Paragraph>
-        <Button
+        <PrimaryButton
           level='primary'
           type='accent'
           size='large'
