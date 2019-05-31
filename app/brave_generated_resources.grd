@@ -400,6 +400,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
      <message name="IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC" desc="The description for IPFS companion switch in settings">
         Uses IPFS companion extension to support IPFS in the browser.
       </message>
+      <message name="IDS_SETTINGS_PRIVACYPASS_ENABLED_DESC" desc="The description for Privacy Pass switch in settings">
+        Adds Privacy Pass extension to the browser.
+      </message>
       <message name="IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL" desc="The label of manage extensions link in settings">
         Manage extensions
       </message>

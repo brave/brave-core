@@ -25,6 +25,7 @@ Polymer({
     this.onWebTorrentEnabledChange_ = this.onWebTorrentEnabledChange_.bind(this)
     this.onHangoutsEnabledChange_ = this.onHangoutsEnabledChange_.bind(this)
     this.onIPFSCompanionEnabledChange_ = this.onIPFSCompanionEnabledChange_.bind(this)
+    this.onPrivacyPassEnabledChange_ = this.onPrivacyPassEnabledChange_.bind(this)
     this.openExtensionsPage_ = this.openExtensionsPage_.bind(this)
   },
 
@@ -38,6 +39,10 @@ Polymer({
 
   onIPFSCompanionEnabledChange_: function() {
     this.browserProxy_.setIPFSCompanionEnabled(this.$.ipfsCompanionEnabled.checked);
+  },
+
+  onPrivacyPassEnabledChange_: function() {
+    this.browserProxy_.setPrivacyPassEnabled(this.$.privacyPassEnabled.checked);
   },
 
   openExtensionsPage_: function() {

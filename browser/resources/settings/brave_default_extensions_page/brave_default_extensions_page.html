@@ -34,6 +34,12 @@
         sub-label="$i18n{ipfsCompanionEnabledDesc}"
         on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
     </settings-toggle-button>
+    <settings-toggle-button id="privacyPassEnabled"
+        pref="{{prefs.brave.privacypass_enabled}}"
+        label="Privacy Pass"
+        sub-label="$i18n{privacyPassEnabledDesc}"
+        on-settings-boolean-control-change="onPrivacyPassEnabledChange_">
+    </settings-toggle-button>
     <div class="settings-row" id="manageExtensionsRow">
       <cr-link-row icon-class="icon-external"
         label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">

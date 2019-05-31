@@ -48,6 +48,8 @@ void BraveExtensionManagement::OnExtensionLoaded(
     const Extension* extension) {
   if (extension->id() == ipfs_companion_extension_id)
     pref_service_->SetBoolean(kIPFSCompanionEnabled, true);
+  if (extension->id() == privacypass_extension_id)
+    pref_service_->SetBoolean(kPrivacyPassEnabled, true);
 }
 
 void BraveExtensionManagement::OnExtensionUnloaded(
@@ -56,6 +58,8 @@ void BraveExtensionManagement::OnExtensionUnloaded(
     UnloadedExtensionReason reason) {
   if (extension->id() == ipfs_companion_extension_id)
     pref_service_->SetBoolean(kIPFSCompanionEnabled, false);
+  if (extension->id() == privacypass_extension_id)
+    pref_service_->SetBoolean(kPrivacyPassEnabled, false);
 }
 
 }  // namespace extensions

@@ -22,3 +22,5 @@ const char ipfs_companion_extension_public_key[] =
     "XeG6nbYQnyfDip+UXe663zfBiNmwuVPo8R58zAOmpz7yAlCH+yEmj1YjQYpqbtYHwJwvN4elG"
     "F9wthgFNxoIZiqbe0wTUZiNjC1bZPiAed3+WftK0/P6czFpIP4SzjXszVps93l+yI15OB7Voe"
     "Fu6oQk5G0d1/38W7GotUwIDAQAB";
+
+const char privacypass_extension_id[] = "ajhmfdgkijocedmfjonnpjfojldioehi";

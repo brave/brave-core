@@ -27,6 +27,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void SetWebTorrentEnabled(const base::ListValue* args);
   void SetHangoutsEnabled(const base::ListValue* args);
   void SetIPFSCompanionEnabled(const base::ListValue* args);
+  void SetPrivacyPassEnabled(const base::ListValue* args);
 
   bool IsExtensionInstalled(const std::string& extension_id) const;
   void OnInstallResult(const std::string& pref_name,

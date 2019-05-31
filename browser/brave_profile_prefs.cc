@@ -119,6 +119,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // IPFS companion extension
   registry->RegisterBooleanPref(kIPFSCompanionEnabled, false);
+
+  // Privacy Pass extension
+  registry->RegisterBooleanPref(kPrivacyPassEnabled, false);
 }
 
 }  // namespace brave

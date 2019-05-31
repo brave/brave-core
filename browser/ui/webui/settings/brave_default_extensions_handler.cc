@@ -44,6 +44,11 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(
         &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
         base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setPrivacyPassEnabled",
+      base::BindRepeating(
+        &BraveDefaultExtensionsHandler::SetPrivacyPassEnabled,
+        base::Unretained(this)));
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
@@ -133,6 +138,33 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
     service->EnableExtension(ipfs_companion_extension_id);
   } else {
     service->DisableExtension(ipfs_companion_extension_id,
+        extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
+  }
+}
+
+void BraveDefaultExtensionsHandler::SetPrivacyPassEnabled(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
+
+  extensions::ExtensionService* service =
+      extensions::ExtensionSystem::Get(profile_)->extension_service();
+  if (enabled) {
+    if (!IsExtensionInstalled(privacypass_extension_id)) {
+      scoped_refptr<extensions::WebstoreInstallWithPrompt> installer =
+          new extensions::WebstoreInstallWithPrompt(
+              privacypass_extension_id, profile_,
+              base::BindOnce(&BraveDefaultExtensionsHandler::OnInstallResult,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             kPrivacyPassEnabled));
+      installer->BeginInstall();
+    }
+    service->EnableExtension(privacypass_extension_id);
+  } else {
+    service->DisableExtension(
+        privacypass_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
   }
 }

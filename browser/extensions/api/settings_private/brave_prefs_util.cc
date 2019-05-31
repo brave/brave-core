@@ -81,6 +81,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // IPFS Companion pref
   (*s_brave_whitelist)[kIPFSCompanionEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  // Privacy Pass pref
+  (*s_brave_whitelist)[kPrivacyPassEnabled] =
+          settings_api::PrefType::PREF_TYPE_BOOLEAN;
   return *s_brave_whitelist;
 }
 
