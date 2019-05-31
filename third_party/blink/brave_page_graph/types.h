@@ -44,6 +44,7 @@ typedef std::vector<const GraphMLXML> GraphMLXMLList;
 typedef enum {
   kGraphMLAttrDefBeforeNodeId = 0,
   kGraphMLAttrDefCallArgs,
+  kGraphMLAttrDefFromCache,
   kGraphMLAttrDefEdgeType,
   kGraphMLAttrDefIsStyle,
   kGraphMLAttrDefKey,
