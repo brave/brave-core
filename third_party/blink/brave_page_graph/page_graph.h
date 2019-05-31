@@ -183,6 +183,17 @@ friend EdgeNodeInsert;
   // Data structure used for mapping HTML script elements (and other
   // sources of script in a document) to v8 script units.
   ScriptTracker script_tracker_;
+
+  // Requests that come from the cache end up inverting the expected control
+  // flow (the "completed" path ends up getting followed before the "sent")
+  // path, so in order to tightly make sure we're catching all the relevant
+  // cases for these requests (script requests so far) have a holding
+  // structure for cache-fed-requests.
+  //
+  // Map is from the InspectorId of the request, to the resource
+  // type returned from the request, so that things can be matched up
+  // once we see the initial request.
+  std::map<InspectorId, blink::ResourceType> cache_fed_requests_;
 };
 
 }  // namespace brave_page_graph

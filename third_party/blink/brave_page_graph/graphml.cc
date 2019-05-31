@@ -34,7 +34,9 @@ namespace {
     kGraphMLAttrForTypeEdge, "before", kGraphMLAttrTypeLong);
   const GraphMLAttr* const call_args = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "args");
-  const GraphMLAttr* const edge_type = new GraphMLAttr(
+  const GraphMLAttr* const from_cache_attr = new GraphMLAttr(
+    kGraphMLAttrForTypeEdge, "from cache", kGraphMLAttrTypeBoolean);
+  const GraphMLAttr* const edge_type_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "edge type");
   const GraphMLAttr* const is_style_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "is style", kGraphMLAttrTypeBoolean);
@@ -72,10 +74,11 @@ namespace {
     kGraphMLAttrForTypeEdge, "value");
 
   const vector<const GraphMLAttr* const> _all_graphml_attrs = {attr_name,
-    attr_value, before_node_attr, call_args, edge_type, key_attr, method_attr,
-    tag_attr, node_id_attr, node_text, node_type, parent_node_attr, script_type,
-    status_type, success_attr, url_attr, request_id_attr, request_type_attr,
-    resource_type_attr, value_attr, is_style_attr};
+    attr_value, before_node_attr, call_args, edge_type_attr, key_attr,
+    method_attr, tag_attr, node_id_attr, node_text, node_type,
+    parent_node_attr, script_type, status_type, success_attr, url_attr,
+    request_id_attr, request_type_attr, resource_type_attr, value_attr,
+    is_style_attr, from_cache_attr};
 }
 
 const vector<const GraphMLAttr* const>& get_graphml_attrs() {
@@ -144,8 +147,10 @@ const GraphMLAttr* graphml_attr_def_for_type(const GraphMLAttrDef type) noexcept
       return before_node_attr;
     case kGraphMLAttrDefCallArgs:
       return call_args;
+    case kGraphMLAttrDefFromCache:
+      return from_cache_attr;
     case kGraphMLAttrDefEdgeType:
-      return edge_type;
+      return edge_type_attr;
     case kGraphMLAttrDefIsStyle:
       return is_style_attr;
     case kGraphMLAttrDefKey:
