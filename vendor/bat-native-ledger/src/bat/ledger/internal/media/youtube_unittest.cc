@@ -24,35 +24,35 @@ TEST(MediaYouTubeTest, GetMediaIdFromUrl) {
   data.url = "https://www.youtube.com/watch";
 
   std::string media =
-      braveledger_media::MediaYouTube::GetMediaIdFromUrl(data);
+      braveledger_media::MediaYouTube::GetMediaIdFromUrl(data.url);
   ASSERT_EQ(media, "");
 
   // single element in the url
   data.url = "https://www.youtube.com/watch?v=44444444";
 
   media =
-      braveledger_media::MediaYouTube::GetMediaIdFromUrl(data);
+      braveledger_media::MediaYouTube::GetMediaIdFromUrl(data.url);
   ASSERT_EQ(media, "44444444");
 
   // single element in the url with & appended
   data.url = "https://www.youtube.com/watch?v=44444444&";
 
   media =
-      braveledger_media::MediaYouTube::GetMediaIdFromUrl(data);
+      braveledger_media::MediaYouTube::GetMediaIdFromUrl(data.url);
   ASSERT_EQ(media, "44444444");
 
   // multiple elements in the url (id first)
   data.url = "https://www.youtube.com/watch?v=44444444&time_continue=580";
 
   media =
-      braveledger_media::MediaYouTube::GetMediaIdFromUrl(data);
+      braveledger_media::MediaYouTube::GetMediaIdFromUrl(data.url);
   ASSERT_EQ(media, "44444444");
 
   // multiple elements in the url
   data.url = "https://www.youtube.com/watch?time_continue=580&v=44444444";
 
   media =
-      braveledger_media::MediaYouTube::GetMediaIdFromUrl(data);
+      braveledger_media::MediaYouTube::GetMediaIdFromUrl(data.url);
   ASSERT_EQ(media, "44444444");
 }
 

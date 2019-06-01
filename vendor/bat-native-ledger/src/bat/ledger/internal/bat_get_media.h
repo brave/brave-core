@@ -35,10 +35,10 @@ class BatGetMedia {
 
   void ProcessMedia(const std::map<std::string, std::string>& parts,
                     const std::string& type,
-                    const ledger::VisitData& visit_data);
+                    ledger::VisitDataPtr visit_data);
 
   void GetMediaActivityFromUrl(uint64_t windowId,
-                               const ledger::VisitData& visit_data,
+                               ledger::VisitDataPtr visit_data,
                                const std::string& type,
                                const std::string& publisher_blob);
 
@@ -51,7 +51,7 @@ class BatGetMedia {
       const std::map<std::string, std::string>& args);
 
  private:
-  void OnMediaActivityError(const ledger::VisitData& visit_data,
+  void OnMediaActivityError(ledger::VisitDataPtr visit_data,
                           const std::string& type,
                           uint64_t windowId);
 

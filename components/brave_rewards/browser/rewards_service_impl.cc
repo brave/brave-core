@@ -589,15 +589,13 @@ void RewardsServiceImpl::OnLoad(SessionID tab_id, const GURL& url) {
 
   const std::string publisher_url = origin.scheme() + "://" + baseDomain + "/";
 
-  ledger::VisitData data(baseDomain,
-                         origin.host(),
-                         url.path(),
-                         tab_id.id(),
-                         baseDomain,
-                         publisher_url,
-                         "",
-                         "");
-  bat_ledger_->OnLoad(data.ToJson(), GetCurrentTimestamp());
+  ledger::VisitDataPtr data = ledger::VisitData::New();
+  data->tld = data->name = baseDomain;
+  data->domain = origin.host(),
+  data->path = url.path();
+  data->tab_id = tab_id.id();
+  data->url = publisher_url;
+  bat_ledger_->OnLoad(std::move(data), GetCurrentTimestamp());
 }
 
 void RewardsServiceImpl::OnUnload(SessionID tab_id) {
@@ -669,20 +667,15 @@ void RewardsServiceImpl::OnPostData(SessionID tab_id,
   if (output.empty())
     return;
 
-  ledger::VisitData visit_data(std::string(),
-                               std::string(),
-                               url.spec(),
-                               tab_id.id(),
-                               std::string(),
-                               std::string(),
-                               std::string(),
-                               std::string());
+  ledger::VisitDataPtr data = ledger::VisitData::New();
+  data->path = url.spec(),
+  data->tab_id = tab_id.id();
 
   bat_ledger_->OnPostData(url.spec(),
                           first_party_url.spec(),
                           referrer.spec(),
                           output,
-                          visit_data.ToJson());
+                          std::move(data));
 }
 
 void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
@@ -698,21 +691,16 @@ void RewardsServiceImpl::OnXHRLoad(SessionID tab_id,
     parts[it.GetKey()] = it.GetUnescapedValue();
   }
 
-  ledger::VisitData data(std::string(),
-                         std::string(),
-                         url.spec(),
-                         tab_id.id(),
-                         std::string(),
-                         std::string(),
-                         std::string(),
-                         std::string());
+  ledger::VisitDataPtr data = ledger::VisitData::New();
+  data->path = url.spec();
+  data->tab_id = tab_id.id();
 
   bat_ledger_->OnXHRLoad(tab_id.id(),
                          url.spec(),
                          mojo::MapToFlatMap(parts),
                          first_party_url.spec(),
                          referrer.spec(),
-                         data.ToJson());
+                         std::move(data));
 }
 
 void RewardsServiceImpl::LoadPublisherInfo(
@@ -1976,15 +1964,16 @@ void RewardsServiceImpl::GetPublisherActivityFromUrl(
   if (!Connected())
     return;
 
-  ledger::VisitData visitData;
-  visitData.domain = baseDomain;
-  visitData.path = parsedUrl.PathForRequest();
-  visitData.name = baseDomain;
-  visitData.url = origin.spec();
-  visitData.favicon_url = favicon_url;
+  ledger::VisitDataPtr visit_data = ledger::VisitData::New();
+  visit_data->domain = visit_data->name = baseDomain;
+  visit_data->path = parsedUrl.PathForRequest();
+  visit_data->url = origin.spec();
+  visit_data->favicon_url = favicon_url;
 
   bat_ledger_->GetPublisherActivityFromUrl(
-    windowId, visitData.ToJson(), publisher_blob);
+        windowId,
+        std::move(visit_data),
+        publisher_blob);
 }
 
 void RewardsServiceImpl::OnExcludedSitesChanged(

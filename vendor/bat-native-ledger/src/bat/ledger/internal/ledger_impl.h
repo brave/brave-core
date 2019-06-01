@@ -55,7 +55,8 @@ namespace bat_ledger {
 class LedgerImpl : public ledger::Ledger,
                    public ledger::LedgerCallbackHandler {
  public:
-  typedef std::map<uint32_t, ledger::VisitData>::const_iterator visit_data_iter;
+  typedef std::map<uint32_t,
+      ledger::VisitData>::const_iterator visit_data_iter;
 
   explicit LedgerImpl(ledger::LedgerClient* client);
   ~LedgerImpl() override;
@@ -251,12 +252,12 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetPublisherActivityFromUrl(
       uint64_t windowId,
-      const ledger::VisitData& visit_data,
+      ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob) override;
 
   void GetMediaActivityFromUrl(
       uint64_t windowId,
-      const ledger::VisitData& visit_data,
+      ledger::VisitDataPtr visit_data,
       const std::string& providerType,
       const std::string& publisher_blob);
 
@@ -485,7 +486,7 @@ class LedgerImpl : public ledger::Ledger,
   void AddRecurringPayment(const std::string& publisher_id,
                            const double& value) override;
 
-  void OnLoad(const ledger::VisitData& visit_data,
+  void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;
 
   void OnUnload(uint32_t tab_id, const uint64_t& current_time) override;
@@ -511,14 +512,14 @@ class LedgerImpl : public ledger::Ledger,
       const std::map<std::string, std::string>& parts,
       const std::string& first_party_url,
       const std::string& referrer,
-      const ledger::VisitData& visit_data) override;
+      ledger::VisitDataPtr visit_data) override;
 
   void OnPostData(
       const std::string& url,
       const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
-      const ledger::VisitData& visit_data) override;
+      ledger::VisitDataPtr visit_data) override;
 
   void OnTimer(uint32_t timer_id) override;
 

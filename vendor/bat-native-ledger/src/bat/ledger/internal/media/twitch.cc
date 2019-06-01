@@ -269,13 +269,14 @@ void MediaTwitch::OnMediaActivityError(const ledger::VisitData& visit_data,
   std::string name = TWITCH_MEDIA_TYPE;
 
   if (!url.empty()) {
-    ledger::VisitData new_data;
-    new_data.domain = url;
-    new_data.url = "https://" + url;
-    new_data.path = "/";
-    new_data.name = name;
+    ledger::VisitData new_visit_data;
+    new_visit_data.domain = url;
+    new_visit_data.url = "https://" + url;
+    new_visit_data.path = "/";
+    new_visit_data.name = name;
 
-    ledger_->GetPublisherActivityFromUrl(window_id, new_data, std::string());
+    ledger_->GetPublisherActivityFromUrl(
+        window_id, ledger::VisitData::New(new_visit_data), std::string());
   } else {
       BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
         << "Media activity error for "
@@ -565,7 +566,7 @@ void MediaTwitch::OnMediaPublisherActivity(
 
 void MediaTwitch::OnPublisherInfo(
     uint64_t window_id,
-    const ledger::VisitData visit_data,
+    const ledger::VisitData& visit_data,
     const std::string& media_key,
     const std::string& media_id,
     const std::string& publisher_blob,
@@ -629,16 +630,14 @@ void MediaTwitch::SavePublisherInfo(const uint64_t duration,
       "Publisher id is missing for: " << media_key;
     return;
   }
-
-  ledger::VisitData updated_visit_data(visit_data);
-
+  ledger::VisitData new_visit_data;
   if (fav_icon.length() > 0) {
-    updated_visit_data.favicon_url = fav_icon;
+    new_visit_data.favicon_url = fav_icon;
   }
 
-  updated_visit_data.provider = TWITCH_MEDIA_TYPE;
-  updated_visit_data.name = publisher_name;
-  updated_visit_data.url = publisher_url + "/videos";
+  new_visit_data.provider = TWITCH_MEDIA_TYPE;
+  new_visit_data.name = publisher_name;
+  new_visit_data.url = publisher_url + "/videos";
 
   auto callback = std::bind(&MediaTwitch::OnSaveMediaVisit,
                            this,
@@ -646,7 +645,7 @@ void MediaTwitch::SavePublisherInfo(const uint64_t duration,
                            _2);
 
   ledger_->SaveMediaVisit(key,
-                          updated_visit_data,
+                          new_visit_data,
                           duration,
                           window_id,
                           callback);

@@ -21,40 +21,18 @@
 #include "bat/ledger/transactions_info.h"
 #include "bat/ledger/rewards_internals_info.h"
 #include "bat/ledger/pending_contribution.h"
+#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace ledger {
+
+using VisitData = ledger::mojom::VisitData;
+using VisitDataPtr = ledger::mojom::VisitDataPtr;
 
 extern bool is_production;
 extern bool is_debug;
 extern bool is_testing;
 extern int reconcile_time;  // minutes
 extern bool short_retries;
-
-LEDGER_EXPORT struct VisitData {
-  VisitData();
-  VisitData(const std::string& _tld,
-            const std::string& _domain,
-            const std::string& _path,
-            uint32_t _tab_id,
-            const std::string& name,
-            const std::string& url,
-            const std::string& provider,
-            const std::string& favicon_url);
-  VisitData(const VisitData& data);
-  ~VisitData();
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string tld;
-  std::string domain;
-  std::string path;
-  uint32_t tab_id;
-  std::string name;
-  std::string url;
-  std::string provider;
-  std::string favicon_url;
-};
 
 using PublisherBannerCallback =
     std::function<void(std::unique_ptr<ledger::PublisherBanner> banner)>;
@@ -97,7 +75,7 @@ class LEDGER_EXPORT Ledger {
                            int amount,
                            const std::string& currency) = 0;
 
-  virtual void OnLoad(const VisitData& visit_data,
+  virtual void OnLoad(VisitDataPtr visit_data,
                       const uint64_t& current_time) = 0;
 
   virtual void OnUnload(uint32_t tab_id, const uint64_t& current_time) = 0;
@@ -120,7 +98,7 @@ class LEDGER_EXPORT Ledger {
       const std::map<std::string, std::string>& parts,
       const std::string& first_party_url,
       const std::string& referrer,
-      const VisitData& visit_data) = 0;
+      VisitDataPtr visit_data) = 0;
 
 
   virtual void OnPostData(
@@ -128,7 +106,7 @@ class LEDGER_EXPORT Ledger {
       const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
-      const VisitData& visit_data) = 0;
+      VisitDataPtr visit_data) = 0;
 
   virtual void OnTimer(uint32_t timer_id) = 0;
 
@@ -238,7 +216,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetPublisherActivityFromUrl(
       uint64_t windowId,
-      const ledger::VisitData& visit_data,
+      ledger::VisitDataPtr visit_data,
       const std::string& publisher_blob) = 0;
 
   virtual void SetBalanceReportItem(ACTIVITY_MONTH month,

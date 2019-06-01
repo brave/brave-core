@@ -49,7 +49,7 @@ void MediaReddit::OnMediaActivityError(
   new_visit_data.name = REDDIT_MEDIA_TYPE;
 
   ledger_->GetPublisherActivityFromUrl(
-      window_id, new_visit_data, std::string());
+      window_id, ledger::VisitData::New(new_visit_data), std::string());
 }
 
 void MediaReddit::UserPath(
