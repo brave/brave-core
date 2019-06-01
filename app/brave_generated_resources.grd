@@ -214,7 +214,7 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
         Brave colors
       </message>
       <message name="IDS_SETTINGS_APPEARANCE_SETTINGS_LOCATION_BAR_IS_WIDE" desc="The label for whether the location bar should display wide or not">
-        Use wide location bar
+        Use wide address bar
       </message>
       <message name="IDS_SETTINGS_HIDE_BRAVE_REWARDS_BUTTON_LABEL" desc="The label for settings switch controlling the visibility of Brave Rewards button">
         Hide Brave Rewards button
