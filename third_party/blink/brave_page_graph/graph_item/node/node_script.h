@@ -8,13 +8,14 @@
 
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_actor.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_requester.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
 
 class PageGraph;
 
-class NodeScript final : public NodeActor {
+class NodeScript final : public NodeActor, virtual public NodeRequester {
 friend class PageGraph;
  public:
   NodeScript() = delete;

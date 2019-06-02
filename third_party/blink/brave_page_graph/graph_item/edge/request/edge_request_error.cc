@@ -7,7 +7,7 @@
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_response.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -20,20 +20,13 @@ namespace brave_page_graph {
 EdgeRequestError::EdgeRequestError(PageGraph* const graph,
     NodeResource* const out_node, Node* const in_node,
     const InspectorId request_id) :
-      EdgeRequest(graph, out_node, in_node, request_id, kRequestStatusError) {}
+      EdgeRequestResponse(graph, out_node, in_node, request_id,
+          kRequestStatusError) {}
 
 EdgeRequestError::~EdgeRequestError() {}
 
 ItemName EdgeRequestError::GetItemName() const {
   return "EdgeRequestError#" + to_string(id_);
-}
-
-NodeResource* EdgeRequestError::GetResourceNode() const {
-  return static_cast<NodeResource*>(out_node_);
-}
-
-Node* EdgeRequestError::GetRequestingNode() const {
-  return in_node_;
 }
 
 ItemDesc EdgeRequestError::GetDescBody() const {

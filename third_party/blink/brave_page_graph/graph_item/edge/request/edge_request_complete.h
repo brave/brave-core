@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_COMPLETE_H_
 
 #include <string>
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_response.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
@@ -16,7 +16,7 @@ class Node;
 class NodeResource;
 class PageGraph;
 
-class EdgeRequestComplete final : public EdgeRequest {
+class EdgeRequestComplete final : public EdgeRequestResponse {
 friend class PageGraph;
  public:
   EdgeRequestComplete() = delete;
@@ -24,19 +24,14 @@ friend class PageGraph;
   ItemName GetItemName() const override;
   blink::ResourceType GetResourceType() const;
 
-  NodeResource* GetResourceNode() const override;
-  Node* GetRequestingNode() const override;
-  bool GetIsFromCache() const;
-
  protected:
   EdgeRequestComplete(PageGraph* const graph, NodeResource* const out_node,
     Node* const in_node, const InspectorId request_id,
-    const blink::ResourceType resource_type, const bool from_cache);
+    const blink::ResourceType resource_type);
   ItemDesc GetDescBody() const override;
   GraphMLXMLList GraphMLAttributes() const override;
 
   const blink::ResourceType resource_type_;
-  const bool from_cache_;
 };
 
 }  // namespace brave_page_graph
