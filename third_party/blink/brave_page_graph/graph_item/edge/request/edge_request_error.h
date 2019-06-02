@@ -7,7 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_ERROR_H_
 
 #include <string>
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_response.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
@@ -16,15 +16,12 @@ class Node;
 class NodeResource;
 class PageGraph;
 
-class EdgeRequestError final : public EdgeRequest {
+class EdgeRequestError final : public EdgeRequestResponse {
 friend class PageGraph;
  public:
   EdgeRequestError() = delete;
   ~EdgeRequestError() override;
   ItemName GetItemName() const override;
-
-  NodeResource* GetResourceNode() const override;
-  Node* GetRequestingNode() const override;
 
  protected:
   EdgeRequestError(PageGraph* const graph, NodeResource* const out_node,

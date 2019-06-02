@@ -36,6 +36,8 @@ source_set("brave_page_graph") {
       "graph_item/node/node_parser.h",
       "graph_item/node/node_resource.cc",
       "graph_item/node/node_resource.h",
+      "graph_item/node/node_requester.cc",
+      "graph_item/node/node_requester.h",
       "graph_item/node/node_script.cc",
       "graph_item/node/node_script.h",
       "graph_item/node/node_shields.cc",
@@ -78,6 +80,8 @@ source_set("brave_page_graph") {
       "graph_item/edge/request/edge_request_complete.h",
       "graph_item/edge/request/edge_request_error.cc",
       "graph_item/edge/request/edge_request_error.h",
+      "graph_item/edge/request/edge_request_response.cc",
+      "graph_item/edge/request/edge_request_response.h",
       "graph_item/edge/request/edge_request_start.cc",
       "graph_item/edge/request/edge_request_start.h",
       "graph_item/edge/edge_storage_delete.cc",
@@ -94,14 +98,14 @@ source_set("brave_page_graph") {
       "graph_item/graph_item.h",
       "page_graph.cc",
       "page_graph.h",
+      "requests/request_tracker.cc",
+      "requests/request_tracker.h",
+      "requests/tracked_request.cc",
+      "requests/tracked_request.h",
       "script_tracker.cc",
       "script_tracker.h",
       "types.cc",
       "types.h",
     ]
-
-    # deps = [
-    #   "//chrome/common",
-    # ]
   }
 }
