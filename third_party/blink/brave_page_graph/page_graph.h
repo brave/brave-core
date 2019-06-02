@@ -11,8 +11,9 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "brave/third_party/blink/brave_page_graph/script_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
+#include "brave/third_party/blink/brave_page_graph/script_tracker.h"
 
 namespace brave_page_graph {
 
@@ -33,6 +34,9 @@ class NodeShields;
 class NodeStorageCookieJar;
 class NodeStorageLocalStorage;
 class NodeWebAPI;
+class RequestTracker;
+class ScriptTracker;
+struct TrackedRequestRecord;
 
 class PageGraph {
 // Needed so that graph items can assign themself the next graph id.
@@ -73,7 +77,6 @@ friend EdgeNodeInsert;
     const RequestType type);
   void RegisterRequestStartFromCurrentScript(const InspectorId request_id,
     const blink::KURL& url, const RequestType type);
-
   void RegisterRequestComplete(const InspectorId request_id,
     const blink::ResourceType type);
   void RegisterRequestError(const InspectorId request_id);
@@ -125,6 +128,9 @@ friend EdgeNodeInsert;
   NodeExtension* GetExtensionNode();
   NodeActor* GetCurrentActingNode() const;
 
+  void PossiblyWriteRequestsIntoGraph(
+    const std::shared_ptr<const TrackedRequestRecord> record);
+
   std::vector<blink::DOMNodeId> NodeIdsForScriptId(const ScriptId script_id) const;
   std::vector<ScriptId> ScriptIdsForNodeId(const blink::DOMNodeId nodeId) const;
 
@@ -166,15 +172,7 @@ friend EdgeNodeInsert;
   std::map<ScriptId, NodeScript* const> script_nodes_;
   std::map<std::string, NodeScript* const> urls_for_extension_scripts_;
 
-  // Request handling
-  // ---
   std::atomic<ChildFrameId> current_max_child_frame_id_;
-  // Tracks requests that have started, but have not completed yet.
-  std::map<InspectorId, const EdgeRequestStart* const> current_requests_;
-  // Makes sure we don't have more than one node in the graph representing
-  // a single URL (not required for correctness, but keeps things tidier
-  // and makes some kinds of queries nicer).
-  std::map<RequestUrl, NodeResource* const> resource_nodes_;
 
   // Keeps track of which scripts are running, and conceptually mirrors the
   // JS stack.
@@ -184,16 +182,14 @@ friend EdgeNodeInsert;
   // sources of script in a document) to v8 script units.
   ScriptTracker script_tracker_;
 
-  // Requests that come from the cache end up inverting the expected control
-  // flow (the "completed" path ends up getting followed before the "sent")
-  // path, so in order to tightly make sure we're catching all the relevant
-  // cases for these requests (script requests so far) have a holding
-  // structure for cache-fed-requests.
-  //
-  // Map is from the InspectorId of the request, to the resource
-  // type returned from the request, so that things can be matched up
-  // once we see the initial request.
-  std::map<InspectorId, blink::ResourceType> cache_fed_requests_;
+  // Makes sure we don't have more than one node in the graph representing
+  // a single URL (not required for correctness, but keeps things tidier
+  // and makes some kinds of queries nicer).
+  std::map<RequestUrl, NodeResource* const> resource_nodes_;
+
+  // Data structure for keeping track of all the in-air requests that
+  // have been made, but have not completed.
+  RequestTracker request_tracker_;
 };
 
 }  // namespace brave_page_graph

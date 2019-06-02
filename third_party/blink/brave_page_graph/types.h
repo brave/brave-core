@@ -27,8 +27,11 @@ namespace brave_page_graph {
 
 class Element;
 class Edge;
+class EdgeRequestResponse;
+class EdgeRequestStart;
 class Node;
 class NodeHTML;
+class NodeRequester;
 
 typedef std::vector<const Edge*> EdgeList;
 typedef std::vector<Node*> NodeList;
@@ -44,7 +47,6 @@ typedef std::vector<const GraphMLXML> GraphMLXMLList;
 typedef enum {
   kGraphMLAttrDefBeforeNodeId = 0,
   kGraphMLAttrDefCallArgs,
-  kGraphMLAttrDefFromCache,
   kGraphMLAttrDefEdgeType,
   kGraphMLAttrDefIsStyle,
   kGraphMLAttrDefKey,

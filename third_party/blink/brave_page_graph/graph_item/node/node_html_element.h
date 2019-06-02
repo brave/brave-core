@@ -10,6 +10,7 @@
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_requester.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
@@ -26,7 +27,7 @@ class EdgeRequestError;
 class EdgeRequestStart;
 class NodeResource;
 
-class NodeHTMLElement final : public NodeHTML {
+class NodeHTMLElement final : public NodeHTML, virtual public NodeRequester {
 friend class PageGraph;
 friend class NodeHTMLText;
 friend class NodeHTML;
@@ -43,11 +44,8 @@ friend class NodeHTML;
   void AddInEdge(const EdgeAttributeSet* const edge);
   void AddInEdge(const EdgeAttributeDelete* const edge);
   void AddOutEdge(const EdgeAttributeDelete* const edge);
-  
+
   using Node::AddOutEdge;
-  // void AddOutEdge(const EdgeRequestComplete* const edge);
-  // void AddOutEdge(const EdgeRequestError* const edge);
-  // void AddOutEdge(const EdgeRequestStart* const edge);
 
   const HTMLNodeList& ChildNodes() const;
   GraphMLXML GetGraphMLTag() const override;
