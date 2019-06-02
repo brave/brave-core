@@ -42,6 +42,8 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_shields.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_cookiejar.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_localstorage.h"
+#include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
+#include "brave/third_party/blink/brave_page_graph/requests/tracked_request.h"
 #include "brave/third_party/blink/brave_page_graph/script_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
@@ -54,6 +56,7 @@ using ::std::endl;
 using ::std::make_unique;
 using ::std::map;
 using ::std::move;
+using ::std::shared_ptr;
 using ::std::string;
 using ::std::stringstream;
 using ::std::to_string;
@@ -107,7 +110,7 @@ NodeHTML* PageGraph::GetHTMLNode(const DOMNodeId node_id) const {
 }
 
 NodeHTMLElement* PageGraph::GetHTMLElementNode(const DOMNodeId node_id) const {
-  PG_LOG("GetHTMLElementNode: " + to_string(node_id));
+  PG_LOG("GetHTMLElementNode) node id: " + to_string(node_id));
   if (node_id == kRootNodeId) {
     return html_root_node_;
   }
@@ -123,7 +126,9 @@ NodeHTMLText* PageGraph::GetHTMLTextNode(const DOMNodeId node_id) const {
 void PageGraph::RegisterHTMLElementNodeCreated(const DOMNodeId node_id,
     const String& tag_name) {
   string local_tag_name(tag_name.Utf8().data());
-  PG_LOG("RegisterHTMLElementNodeCreated: " + to_string(node_id) + " (" + local_tag_name + ")");
+  PG_LOG("RegisterHTMLElementNodeCreated) node id: " + to_string(node_id)
+    + " (" + local_tag_name + ")");
+
   LOG_ASSERT(element_nodes_.count(node_id) == 0);
   NodeHTMLElement* const new_node = new NodeHTMLElement(this,
     node_id, local_tag_name);
@@ -144,8 +149,8 @@ void PageGraph::RegisterHTMLElementNodeCreated(const DOMNodeId node_id,
 void PageGraph::RegisterHTMLTextNodeCreated(const DOMNodeId node_id,
     const String& text) {
   string local_text(text.Utf8().data());
-  PG_LOG("RegisterHTMLTextNodeCreated: " + to_string(node_id) +
-    ", '" + local_text + "'");
+  PG_LOG("RegisterHTMLTextNodeCreated) node id: " + to_string(node_id)
+    + ", text: '" + local_text + "'");
   LOG_ASSERT(text_nodes_.count(node_id) == 0);
   NodeHTMLText* const new_node = new NodeHTMLText(this, node_id, local_text);
   AddNode(new_node);
@@ -168,8 +173,9 @@ void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
     ? parent_node_id
     : kRootNodeId;
 
-  PG_LOG("RegisterHTMLElementNodeInserted: " + to_string(node_id) + ", "
-    + to_string(inserted_parent_node_id) + ", " + to_string(before_sibling_id));
+  PG_LOG("RegisterHTMLElementNodeInserted) node id: " + to_string(node_id)
+    + ", parent id: " + to_string(inserted_parent_node_id)
+    + ", prev sibling id: " + to_string(before_sibling_id));
 
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   NodeHTMLElement* const inserted_node = element_nodes_.at(node_id);
@@ -191,8 +197,10 @@ void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
     ? parent_node_id
     : kRootNodeId;
 
-  PG_LOG("RegisterHTMLTextNodeInserted: (" + to_string(node_id) + "), " +
-    to_string(inserted_parent_node_id) + ", " + to_string(before_sibling_id));
+  PG_LOG("RegisterHTMLTextNodeInserted) node id: " + to_string(node_id)
+    + ", parent id: " + to_string(inserted_parent_node_id)
+    + ", prev sibling id: " + to_string(before_sibling_id));
+
   LOG_ASSERT(text_nodes_.count(node_id) == 1);
   NodeHTMLText* const inserted_node = text_nodes_.at(node_id);
 
@@ -207,7 +215,8 @@ void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
 }
 
 void PageGraph::RegisterHTMLElementNodeRemoved(const DOMNodeId node_id) {
-  PG_LOG("RegisterHTMLElementNodeRemoved: " + to_string(node_id));
+  PG_LOG("RegisterHTMLElementNodeRemoved) node id: " + to_string(node_id));
+
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   NodeHTMLElement* const removed_node = element_nodes_.at(node_id);
 
@@ -222,7 +231,8 @@ void PageGraph::RegisterHTMLElementNodeRemoved(const DOMNodeId node_id) {
 }
 
 void PageGraph::RegisterHTMLTextNodeRemoved(const DOMNodeId node_id) {
-  PG_LOG("RegisterHTMLTextNodeRemoved: " + to_string(node_id));
+  PG_LOG("RegisterHTMLTextNodeRemoved) node id: " + to_string(node_id));
+
   LOG_ASSERT(text_nodes_.count(node_id) == 1);
   NodeHTMLText* const removed_node = text_nodes_.at(node_id);
 
@@ -241,8 +251,10 @@ void PageGraph::RegisterInlineStyleSet(const DOMNodeId node_id,
   string local_attr_name(attr_name.Utf8().data());
   string local_attr_value(attr_value.Utf8().data());
 
-  PG_LOG("RegisterInlineStyleSet: " + to_string(node_id) + ", "
-    + local_attr_name + "=" + local_attr_value);
+  PG_LOG("RegisterInlineStyleSet) node id: " + to_string(node_id)
+    + ", attr: " + local_attr_name
+    + ", value: " + local_attr_value);
+
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
 
   NodeHTMLElement* const target_node = element_nodes_.at(node_id);
@@ -259,8 +271,10 @@ void PageGraph::RegisterInlineStyleSet(const DOMNodeId node_id,
 void PageGraph::RegisterInlineStyleDelete(const DOMNodeId node_id,
     const String& attr_name) {
   string local_attr_name(attr_name.Utf8().data());
-  PG_LOG("RegisterInlineStyleDelete: " + to_string(node_id) + ", "
-    + local_attr_name + "=");
+
+  PG_LOG("RegisterInlineStyleDelete) node id: " + to_string(node_id)
+    + ", attr: " + local_attr_name);
+
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
 
   NodeHTMLElement* const target_node = element_nodes_.at(node_id);
@@ -279,8 +293,10 @@ void PageGraph::RegisterAttributeSet(const DOMNodeId node_id,
   string local_attr_name(attr_name.Utf8().data());
   string local_attr_value(attr_value.Utf8().data());
 
-  PG_LOG("RegisterAttributeSet: " + to_string(node_id) + ", "
-    + local_attr_name + "=" + local_attr_value);
+  PG_LOG("RegisterAttributeSet) node id: " + to_string(node_id)
+    + ", attr: " + local_attr_name
+    + ", value: " + local_attr_value);
+
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
 
   NodeHTMLElement* const target_node = element_nodes_.at(node_id);
@@ -297,8 +313,10 @@ void PageGraph::RegisterAttributeSet(const DOMNodeId node_id,
 void PageGraph::RegisterAttributeDelete(const DOMNodeId node_id,
     const String& attr_name) {
   string local_attr_name(attr_name.Utf8().data());
-  PG_LOG("RegisterAttributeDelete: " + to_string(node_id) + ", "
-    + local_attr_name + "=");
+
+  PG_LOG("RegisterAttributeDelete) node id: " + to_string(node_id)
+    + ", attr: " + local_attr_name);
+
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
 
   NodeHTMLElement* const target_node = element_nodes_.at(node_id);
@@ -314,7 +332,8 @@ void PageGraph::RegisterAttributeDelete(const DOMNodeId node_id,
 
 void PageGraph::RegisterTextNodeChange(const blink::DOMNodeId node_id,
     const WTF::String& new_text) {
-  PG_LOG("RegisterNewTextNodeText: " + to_string(node_id));
+  PG_LOG("RegisterNewTextNodeText) node id: " + to_string(node_id));
+
   LOG_ASSERT(text_nodes_.count(node_id) == 1);
 
   NodeHTMLText* const text_node = text_nodes_.at(node_id);
@@ -334,25 +353,20 @@ void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
     const InspectorId request_id, const KURL& url,
     const RequestType type) {
   const string local_url(url.GetString().Utf8().data());
+
   // For now, explode if we're getting duplicate requests for the same
   // URL in the same document.  This might need to be changed.
-  PG_LOG("RegisterRequestStartFromElm: " + to_string(node_id)
+  PG_LOG("RegisterRequestStartFromElm) node id: " + to_string(node_id)
     + ", request id: " + to_string(request_id) +
     + ", url: " + local_url
     + ", type: " + to_string(type));
 
   // We should know about the node thats issuing the request.
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
-  // Either we should not have seen this request before (first condition),
-  // or request has already completed and is being served from the cache
-  // (second condition).
-  LOG_ASSERT(current_requests_.count(request_id) == 0 ||
-      cache_fed_requests_.count(request_id) == 1);
 
   NodeHTMLElement* const requesting_node = element_nodes_.at(node_id);
   NodeResource* requested_node;
   if (resource_nodes_.count(local_url) == 0) {
-    // PG_LOG("RegisterRequestStartFromElm: First time seeing request for " + local_url);
     requested_node = new NodeResource(this, local_url);
     AddNode(requested_node);
     resource_nodes_.emplace(local_url, requested_node);
@@ -360,25 +374,11 @@ void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
     requested_node = resource_nodes_.at(local_url);
   }
 
-  const EdgeRequestStart* const edge = new EdgeRequestStart(this,
-    requesting_node, requested_node, request_id, type);
-  AddEdge(edge);
+  const shared_ptr<const TrackedRequestRecord> request_record =
+    request_tracker_ .RegisterRequestStart(
+        request_id, requesting_node, requested_node, type);
 
-  requesting_node->AddOutEdge(edge);
-  requested_node->AddInEdge(edge);
-
-  const bool is_from_cache = cache_fed_requests_.count(request_id) == 1;
-  if (is_from_cache) {
-    const ResourceType type = cache_fed_requests_.at(request_id);
-    const EdgeRequestComplete* complete_edge = new EdgeRequestComplete(this,
-      requested_node, requesting_node, request_id, type, true);
-    AddEdge(complete_edge);
-    cache_fed_requests_.erase(request_id);
-    requested_node->AddOutEdge(complete_edge);
-    requesting_node->AddInEdge(complete_edge);
-  } else {
-    current_requests_.emplace(request_id, edge);
-  }
+  PossiblyWriteRequestsIntoGraph(request_record);
 }
 
 void PageGraph::RegisterRequestStartFromCurrentScript(
@@ -386,17 +386,11 @@ void PageGraph::RegisterRequestStartFromCurrentScript(
   NodeActor* const acting_node = GetCurrentActingNode();
   LOG_ASSERT(acting_node->IsScript());
   const string local_url(url.GetString().Utf8().data());
-  PG_LOG("RegisterRequestStartFromCurrentScript: script id:"
+  PG_LOG("RegisterRequestStartFromCurrentScript) script id:"
     + to_string((static_cast<NodeScript*>(acting_node))->GetScriptId())
     + ", request id: " + to_string(request_id) +
     + ", url:" + local_url
     + ", type: " + to_string(type));
-
-  // Either we should not have seen this request before (first condition),
-  // or request has already completed and is being served from the cache
-  // (second condition).
-  LOG_ASSERT(current_requests_.count(request_id)
-      + cache_fed_requests_.count(request_id) == 1);
 
   NodeResource* requested_node;
   if (resource_nodes_.count(local_url) == 0) {
@@ -408,89 +402,49 @@ void PageGraph::RegisterRequestStartFromCurrentScript(
     requested_node = resource_nodes_.at(local_url);
   }
 
-  const EdgeRequestStart* const edge = new EdgeRequestStart(this,
-    acting_node, requested_node, request_id, type);
-  current_requests_.emplace(request_id, edge);
-  AddEdge(edge);
+  const shared_ptr<const TrackedRequestRecord> request_record =
+    request_tracker_ .RegisterRequestStart(
+        request_id, acting_node, requested_node, type);
 
-  acting_node->AddOutEdge(edge);
-  requested_node->AddInEdge(edge);
-
-  const bool is_from_cache = cache_fed_requests_.count(request_id) == 1;
-  if (is_from_cache) {
-    const ResourceType type = cache_fed_requests_.at(request_id);
-    const EdgeRequestComplete* complete_edge = new EdgeRequestComplete(this,
-      requested_node, acting_node, request_id, type, true);
-    AddEdge(complete_edge);
-    cache_fed_requests_.erase(request_id);
-    requested_node->AddOutEdge(complete_edge);
-    acting_node->AddInEdge(complete_edge);
-  }
+  PossiblyWriteRequestsIntoGraph(request_record);
 }
 
 void PageGraph::RegisterRequestComplete(const InspectorId request_id,
     const ResourceType type) {
-  PG_LOG("RegisterRequestComplete: " + to_string(request_id)
+  PG_LOG("RegisterRequestComplete) request id: " + to_string(request_id)
     + ", resource type: " + resource_type_to_string(type));
 
-  // Sometimes, if a resource was cached, the "complete" hook will trigger
-  // before the "start" message.  In these cases, we store the request for
-  // integration into the graph later on.
-  const bool was_cached = current_requests_.count(request_id) == 0;
-  if (was_cached) {
-    LOG_ASSERT(cache_fed_requests_.count(request_id) == 0);
-    cache_fed_requests_.emplace(request_id, type);
-    return;
-  }
+  const shared_ptr<const TrackedRequestRecord> request_record =
+    request_tracker_ .RegisterRequestComplete(request_id, type);
 
-  const EdgeRequestStart* const request_start_edge = current_requests_.at(request_id);
-  NodeResource* const resource_node = request_start_edge->GetResourceNode();
-  Node* const requesting_node = request_start_edge->GetRequestingNode();
-
-  const EdgeRequestComplete* const request_edge = new EdgeRequestComplete(
-    this, resource_node, requesting_node, request_id, type, false);
-  current_requests_.erase(request_id);
-  AddEdge(request_edge);
-
-  resource_node->AddOutEdge(request_edge);
-  requesting_node->AddInEdge(request_edge);
+  PossiblyWriteRequestsIntoGraph(request_record);
 }
 
 void PageGraph::RegisterRequestError(const InspectorId request_id) {
-  PG_LOG("RegisterRequestError: " + to_string(request_id));
-  // There should be an outstanding request that is being closed here,
-  // otherwise, there is a request we didn't correctly register being sent.
-  LOG_ASSERT(current_requests_.count(request_id) == 1);
+  PG_LOG("RegisterRequestError) request id: " + to_string(request_id));
 
-  const EdgeRequestStart* const request_start_edge = current_requests_.at(request_id);
-  NodeResource* const resource_node = request_start_edge->GetResourceNode();
-  Node* const requesting_node = request_start_edge->GetRequestingNode();
+  const shared_ptr<const TrackedRequestRecord> request_record =
+    request_tracker_ .RegisterRequestError(request_id);
 
-  const EdgeRequestError* const request_edge = new EdgeRequestError(
-    this, resource_node, requesting_node, request_id);
-  current_requests_.erase(request_id);
-  AddEdge(request_edge);
-
-  resource_node->AddOutEdge(request_edge);
-  requesting_node->AddInEdge(request_edge);
+  PossiblyWriteRequestsIntoGraph(request_record);
 }
 
 void PageGraph::RegisterElmForLocalScript(const DOMNodeId node_id,
     const ScriptSourceCode& code) {
-  PG_LOG("RegisterElmForLocalScript: node_id: " + to_string(node_id));
+  PG_LOG("RegisterElmForLocalScript) node_id: " + to_string(node_id));
   script_tracker_.AddScriptSourceForElm(code, node_id);
 }
 
 void PageGraph::RegisterElmForRemoteScript(const DOMNodeId node_id,
     const KURL& url) {
-  PG_LOG("RegisterElmForRemoteScript: node_id: " + to_string(node_id) +
-    " url: " + URLToString(url));
+  PG_LOG("RegisterElmForRemoteScript) node_id: " + to_string(node_id)
+    + ", url: " + URLToString(url));
   script_tracker_.AddScriptUrlForElm(url, node_id);
 }
 
 void PageGraph::RegisterUrlForScriptSource(const KURL& url,
     const ScriptSourceCode& code) {
-  PG_LOG("RegisterUrlForScriptSource: url: " + URLToString(url));
+  PG_LOG("RegisterUrlForScriptSource) url: " + URLToString(url));
   script_tracker_.AddCodeFetchedFromUrl(code, url);
 }
 
@@ -498,8 +452,8 @@ void PageGraph::RegisterUrlForExtensionScriptSource(const blink::WebString& url,
     const blink::WebString& code) {
   const WTF::String url_string(url.Latin1().c_str(), url.length());
   const WTF::String code_string(code.Latin1().c_str(), code.length());
-  PG_LOG("RegisterUrlForExtensionScriptSource: url: " +
-    string(url_string.Utf8().data()));
+  PG_LOG("RegisterUrlForExtensionScriptSource: url: "
+    + string(url_string.Utf8().data()));
   script_tracker_.AddExtensionCodeFetchedFromUrl(code_string.Impl()->GetHash(),
     url_string.Impl()->GetHash());
 }
@@ -507,7 +461,7 @@ void PageGraph::RegisterUrlForExtensionScriptSource(const blink::WebString& url,
 void PageGraph::RegisterScriptCompilation(
     const ScriptSourceCode& code, const ScriptId script_id,
     const ScriptType type) {
-  PG_LOG("RegisterScriptCompilation: " + to_string(script_id));
+  PG_LOG("RegisterScriptCompilation) script id: " + to_string(script_id));
   script_tracker_.AddTopLevelScriptId(script_id);
   script_tracker_.SetScriptIdForCode(script_id, code);
 
@@ -541,15 +495,15 @@ void PageGraph::RegisterScriptCompilation(
 }
 
 void PageGraph::RegisterTopLevelScriptId(const ScriptId script_id) {
-  PG_LOG("RegisterTopLevelScriptId: " + to_string(script_id));
+  PG_LOG("RegisterTopLevelScriptId) script id: " + to_string(script_id));
   script_tracker_.AddTopLevelScriptId(script_id);
 }
 
 void PageGraph::RegisterChildScriptIdForParentScriptId(
     const ScriptId child_script_id, const ScriptId parent_script_id) {
-  PG_LOG("RegisterChildScriptIdForParentScriptId: parent: " +
-    to_string(parent_script_id) + " -> child: " +
-    to_string(child_script_id));
+  PG_LOG("RegisterChildScriptIdForParentScriptId) parent script id: "
+    + to_string(parent_script_id)
+    + ", child script id: " + to_string(child_script_id));
   script_tracker_.AddChildScriptIdForParentScriptId(child_script_id,
     parent_script_id);
 }
@@ -558,7 +512,7 @@ void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {
   static ScriptId prev_script_id = 0;
   // Just keep the logs a little quieter...
   if (script_id != prev_script_id) {
-    PG_LOG("RegisterScriptExecStart: " + to_string(script_id));
+    PG_LOG("RegisterScriptExecStart) script id: " + to_string(script_id));
     prev_script_id = script_id;
   }
   const ScriptId top_script_id = script_tracker_.TopLevelScriptIdForScriptId(
@@ -603,13 +557,65 @@ GraphMLXML PageGraph::ToGraphML() const {
 
 NodeActor* PageGraph::GetCurrentActingNode() const {
   const ScriptId current_script_id = PeekActiveScript();
-  PG_LOG("GetCurrentActingNode: script_id: " + to_string(current_script_id));
+  PG_LOG("GetCurrentActingNode) script id: " + to_string(current_script_id));
   if (current_script_id == 0) {
-    PG_LOG("GetCurrentActingNode: NodeParser");
+    PG_LOG("GetCurrentActingNode) NodeParser");
     return parser_node_;
   }
   LOG_ASSERT(script_nodes_.count(current_script_id) == 1);
   return script_nodes_.at(current_script_id);
+}
+
+void PageGraph::PossiblyWriteRequestsIntoGraph(
+    const shared_ptr<const TrackedRequestRecord> record) {
+  const TrackedRequest* const request = record->request.get();
+
+  // Don't record anything into the graph if we've already recorded
+  // this bacth of requests (first condition) or if this batch of requests
+  // hasn't finished yet (e.g. we don't have both a request and a response)
+  // (second condition).
+  if (record->is_first_reply == false ||
+      request->IsComplete() == false) {
+    return;
+  }
+
+  NodeResource* const resource = request->GetResource();
+  const bool was_error = request->GetIsError();
+  const RequestType request_type = request->GetRequestType();
+  const InspectorId request_id = request->GetRequestId();
+
+  if (was_error) {
+    const ResourceType resource_type = request->GetResourceType();
+    for (Node* const requester : request->GetRequesters()) {
+      const EdgeRequestStart* const start_edge = new EdgeRequestStart(this,
+        requester, resource, request_id, request_type);
+      AddEdge(start_edge);
+      requester->AddOutEdge(start_edge);
+      resource->AddInEdge(start_edge);
+
+      const EdgeRequestComplete* const complete_edge = new EdgeRequestComplete(
+        this, resource, requester, request_id, resource_type);
+      AddEdge(complete_edge);
+      resource->AddOutEdge(complete_edge);
+      requester->AddInEdge(complete_edge);
+    }
+    return;
+  }
+
+  // Handling the case when the requests returned with errors.
+  for (Node* const requester : request->GetRequesters()) {
+    const EdgeRequestStart* const start_edge = new EdgeRequestStart(this,
+      requester, resource, request_id, request_type);
+    AddEdge(start_edge);
+    requester->AddOutEdge(start_edge);
+    resource->AddInEdge(start_edge);
+
+    const EdgeRequestError* const error_edge = new EdgeRequestError(
+      this, resource, requester, request_id);
+    AddEdge(error_edge);
+    resource->AddOutEdge(error_edge);
+    requester->AddInEdge(error_edge);
+  }
 }
 
 const vector<unique_ptr<Node> >& PageGraph::Nodes() const {
@@ -639,12 +645,12 @@ void PageGraph::AddEdge(const Edge* const edge) {
 }
 
 vector<DOMNodeId> PageGraph::NodeIdsForScriptId(const ScriptId script_id) const {
-  PG_LOG("NodeIdsForScriptId: script_id: " + to_string(script_id));
+  PG_LOG("NodeIdsForScriptId) script id: " + to_string(script_id));
   return script_tracker_.GetElmsForScriptId(script_id);
 }
 
 vector<ScriptId> PageGraph::ScriptIdsForNodeId(const DOMNodeId node_id) const {
-  PG_LOG("ScriptIdsForNodeId: node_id: " + to_string(node_id));
+  PG_LOG("ScriptIdsForNodeId) node id: " + to_string(node_id));
   return script_tracker_.GetScriptIdsForElm(node_id);
 }
 
@@ -657,12 +663,10 @@ NodeExtension* PageGraph::GetExtensionNode() {
 }
 
 void PageGraph::PushActiveScript(const ScriptId script_id) {
-  // PG_LOG("PushActiveScript: script_id: " + to_string(script_id));
   active_script_stack_.push_back(script_id);
 }
 
 ScriptId PageGraph::PopActiveScript() {
-  // PG_LOG("PopActiveScript");
   ScriptId top_script_id = 0;
   if (active_script_stack_.empty() == false) {
     top_script_id = active_script_stack_.back();
