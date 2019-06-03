@@ -17,7 +17,6 @@
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/brave_cookie_blocking.h"
-#include "brave/common/brave_switches.h"
 #include "brave/common/tor/switches.h"
 #include "brave/common/tor/tor_launcher.mojom.h"
 #include "brave/common/webui_url_constants.h"

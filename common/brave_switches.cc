@@ -55,7 +55,4 @@ const char kDisableEncryptionWin[] = "disable-encryption-win";
 const char kEnableSmartTrackingProtection[] =
     "enable-smart-tracking-protection";
 
-// This prevents appending "Brave" to UA.
-const char kDisableOverrideUA[] = "disable-override-ua";
-
 }  // namespace switches
