@@ -80,8 +80,11 @@ pub unsafe extern "C" fn engine_remove_tag(engine: *mut Engine, tag: *const c_ch
 
 /// Deserializes a previously serialized data file list.
 #[no_mangle]
-pub unsafe extern "C" fn engine_deserialize(engine: *mut Engine, data: *const c_char,
-                                            data_size: size_t) -> bool {
+pub unsafe extern "C" fn engine_deserialize(
+    engine: *mut Engine,
+    data: *const c_char,
+    data_size: size_t,
+) -> bool {
     let data: &[u8] = std::slice::from_raw_parts(data as *const u8, data_size);
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
