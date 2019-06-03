@@ -4,15 +4,16 @@ copy("brave") {
   visibility = [ "*" ]
   deps = []
   sources = []
-  apk_type = target_apk_base
   file_name_part = ""
-  if (target_cpu == "arm64" || target_cpu == "x86_64" || apk_type == "mono") {
+  if (target_cpu == "arm64" ||
+      target_cpu == "x86_64" ||
+      target_apk_base == "mono") {
     deps += ["//chrome/android:monochrome_public_apk"]
     file_name_part = "Mono"
     sources += [
       "$root_out_dir/apks/MonochromePublic.apk"
     ]
-  } else if (apk_type == "modern") {
+  } else if (target_apk_base == "modern") {
     deps += ["//chrome/android:chrome_modern_public_apk"]
     file_name_part = "Modern"
     sources += [
