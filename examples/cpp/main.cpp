@@ -67,6 +67,11 @@ void TestTags() {
   Check(true, false, false, "With needed tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
       "example.com", false, "image");
+  // Adding a second tag doesn't clear the first.
+  engine.addTag("hello");
+  Check(true, false, false, "With needed tags",
+      engine, "http://example.com/-advertisement-icon.", "example.com",
+      "example.com", false, "image");
   engine.removeTag("abc");
   Check(false, false, false, "With removed tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
