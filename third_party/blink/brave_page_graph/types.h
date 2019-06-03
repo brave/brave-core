@@ -29,14 +29,10 @@ class Element;
 class Edge;
 class EdgeRequestResponse;
 class EdgeRequestStart;
+class GraphItem;
 class Node;
 class NodeHTML;
 class NodeRequester;
-
-typedef std::vector<const Edge*> EdgeList;
-typedef std::vector<Node*> NodeList;
-typedef std::vector<NodeHTML*> HTMLNodeList;
-typedef std::map<const std::string, const std::string> AttributeMap;
 
 typedef std::string ItemDesc;
 typedef std::string ItemName;
@@ -132,6 +128,21 @@ typedef uint64_t InspectorId;
 typedef uint64_t ChildFrameId;
 
 const blink::DOMNodeId kRootNodeId = INT_MAX;
+
+typedef std::vector<const Edge*> EdgeList;
+typedef std::vector<Node*> NodeList;
+typedef std::vector<std::unique_ptr<const Edge> > EdgeUniquePtrList;
+typedef std::vector<std::unique_ptr<Node> > NodeUniquePtrList;
+typedef std::vector<const GraphItem*> GraphItemList;
+typedef std::vector<NodeHTML*> HTMLNodeList;
+typedef std::vector<blink::DOMNodeId> DOMNodeIdList;
+typedef std::vector<ScriptId> ScriptIdList;
+typedef std::map<const std::string, const std::string> AttributeMap;
+
+typedef std::map<SourceCodeHash, ScriptId> HashToScriptIdMap;
+typedef std::map<ScriptId, SourceCodeHash> ScriptIdToHashMap;
+typedef std::map<SourceCodeHash, UrlHash> SourceToUrlMap;
+typedef std::map<UrlHash, SourceCodeHash> UrlToSourceMap;
 
 }  // namespace brave_page_graph
 
