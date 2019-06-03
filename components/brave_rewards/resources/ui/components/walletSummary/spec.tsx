@@ -25,9 +25,16 @@ describe('WalletSummary tests', () => {
 
   describe('basic tests', () => {
     it('matches the snapshot', () => {
+      const RealDate = Date
+      global.Date = class extends RealDate {
+        constructor () {
+          return new RealDate('2019-06-02')
+        }
+      }
       const component = baseComponent(props)
       const tree = create(component).toJSON()
       expect(tree).toMatchSnapshot()
+      global.Date = RealDate
     })
 
     it('renders the component', () => {
