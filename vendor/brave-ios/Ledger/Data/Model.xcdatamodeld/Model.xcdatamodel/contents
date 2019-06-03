@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18F132" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="ActivityInfo" representedClassName="ActivityInfo" syncable="YES">
+        <attribute name="duration" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="percent" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="publisherID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="reconcileStamp" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="score" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="visits" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="weight" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="publisher" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="activities" inverseEntity="PublisherInfo" syncable="YES"/>
+        <fetchIndex name="byPublisherIDIndex">
+            <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="ContributionInfo" representedClassName="ContributionInfo" syncable="YES">
+        <attribute name="category" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="date" attributeType="Integer 64" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="month" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="probi" attributeType="String" syncable="YES"/>
+        <attribute name="publisherID" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="year" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="publisher" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="contributions" inverseEntity="PublisherInfo" syncable="YES"/>
+        <fetchIndex name="byPublisherIDIndex">
+            <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="MediaPublisherInfo" representedClassName="MediaPublisherInfo" syncable="YES">
+        <attribute name="mediaKey" attributeType="String" syncable="YES"/>
+        <attribute name="publisherID" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="PendingContribution" representedClassName="PendingContribution" syncable="YES">
+        <attribute name="addedDate" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="amount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="category" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="publisherID" attributeType="String" syncable="YES"/>
+        <attribute name="viewingID" attributeType="String" syncable="YES"/>
+        <fetchIndex name="byPublisherIDIndex">
+            <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <entity name="PublisherInfo" representedClassName="PublisherInfo" syncable="YES">
+        <attribute name="excluded" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="faviconURL" optional="YES" attributeType="URI" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="provider" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="publisherID" attributeType="String" syncable="YES"/>
+        <attribute name="url" optional="YES" attributeType="URI" syncable="YES"/>
+        <attribute name="verified" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="activities" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ActivityInfo" inverseName="publisher" inverseEntity="ActivityInfo" syncable="YES"/>
+        <relationship name="contributions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ContributionInfo" inverseName="publisher" inverseEntity="ContributionInfo" syncable="YES"/>
+        <relationship name="recurringDonations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RecurringDonation" inverseName="publisher" inverseEntity="RecurringDonation" syncable="YES"/>
+    </entity>
+    <entity name="RecurringDonation" representedClassName="RecurringDonation" syncable="YES">
+        <attribute name="addedDate" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="amount" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="publisherID" attributeType="String" syncable="YES"/>
+        <relationship name="publisher" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="recurringDonations" inverseEntity="PublisherInfo" syncable="YES"/>
+        <fetchIndex name="byPublisherIDIndex">
+            <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
+        </fetchIndex>
+    </entity>
+    <elements>
+        <element name="ActivityInfo" positionX="-54" positionY="45" width="128" height="165"/>
+        <element name="ContributionInfo" positionX="-63" positionY="99" width="128" height="150"/>
+        <element name="MediaPublisherInfo" positionX="-54" positionY="108" width="128" height="75"/>
+        <element name="PendingContribution" positionX="-45" positionY="117" width="128" height="120"/>
+        <element name="PublisherInfo" positionX="-63" positionY="-18" width="128" height="195"/>
+        <element name="RecurringDonation" positionX="-36" positionY="126" width="128" height="105"/>
+    </elements>
+</model>

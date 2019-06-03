@@ -1,0 +1,164 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+if (is_ios) {
+  import("//build/config/ios/rules.gni")
+}
+
+config("internal_config") {
+  visibility = [
+    ":*",
+    "//brave/test:*",
+  ]
+
+  cflags = [
+    "-fobjc-weak",
+    "-fobjc-abi-version=2",
+    "-fobjc-legacy-dispatch",
+    "-Wno-objc-property-synthesis",
+  ]
+  include_dirs = [
+    ".",
+    "Ads",
+    "Ads/Generated",
+    "Ledger",
+    "Ledger/Generated",
+    "Ledger/Data",
+    "Ledger/Data/CoreDataGenerated/Model",
+    "Ledger/Models",
+    "Shared",
+    "objc-gen"
+  ]
+}
+
+group("brave-ios") {
+  public_deps = [ ":brave-rewards-ios-framework" ]
+}
+
+ios_framework_bundle("brave-rewards-ios-framework") {
+  output_name = "BraveRewards"
+  output_dir = root_out_dir
+
+  info_plist = "Info.plist"
+
+  configs += [ ":internal_config" ]
+  configs += [ "//build/config/compiler:enable_arc" ]
+  configs -= [ "//build/config/gcc:symbol_visibility_hidden" ]
+
+  deps = [
+    "//brave/vendor/bat-native-ledger",
+    "//brave/vendor/bat-native-ads",
+    ":resources",
+    ":coredata"
+  ]
+
+  bundle_deps_filter = [ "//third_party/icu:icudata" ]
+
+  sources = [
+    "BATBraveRewards.m",
+    "Ledger/BATBraveLedger.mm",
+    "Ledger/Data/BATLedgerDatabase.mm",
+    "Ledger/Data/DataController.mm",
+    "Ledger/Generated/NativeLedgerClient.mm",
+    "Ledger/Generated/Records.mm",
+    "Ledger/Models/BATActivityInfoFilter.mm",
+    "Ledger/Models/BATPublisherInfo+Private.mm",
+    "Ledger/Models/BATPublisherInfo.mm",
+    "Ledger/Models/BATPendingContribution.mm",
+    "Ledger/Models/BATRewardsNotification.m",
+    "Shared/BATCommonOperations.mm",
+    "Shared/NSURL+Extensions.mm",
+    "Shared/RewardsLogStream.mm",
+    "objc-gen/CppTransformations.h",
+    "Ads/BATAdsNotification.mm",
+    "Ads/BATBraveAds.mm",
+    "Ads/Generated/NativeAdsClient.mm",
+    "Ledger/Data/CoreDataGenerated/Model/ActivityInfo+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/ActivityInfo+CoreDataProperties.m",
+    "Ledger/Data/CoreDataGenerated/Model/ContributionInfo+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/ContributionInfo+CoreDataProperties.m",
+    "Ledger/Data/CoreDataGenerated/Model/MediaPublisherInfo+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/MediaPublisherInfo+CoreDataProperties.m",
+    "Ledger/Data/CoreDataGenerated/Model/PendingContribution+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/PendingContribution+CoreDataProperties.m",
+    "Ledger/Data/CoreDataGenerated/Model/PublisherInfo+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/PublisherInfo+CoreDataProperties.m",
+    "Ledger/Data/CoreDataGenerated/Model/RecurringDonation+CoreDataClass.m",
+    "Ledger/Data/CoreDataGenerated/Model/RecurringDonation+CoreDataProperties.m",
+  ]
+
+  public_headers = [
+    "BraveRewards.h",
+    "BATBraveRewards.h",
+    "Ledger/BATBraveLedger.h",
+    "Ledger/Generated/Records.h",
+    "Ledger/Generated/Enums.h",
+    "Ledger/Models/BATPublisherInfo.h",
+    "Ledger/Models/BATActivityInfoFilter.h",
+    "Ledger/Models/BATRewardsNotification.h",
+    "Ads/BATBraveAds.h",
+    "Ads/BATAdsNotification.h"
+  ]
+
+  libs = [
+    "Foundation.framework",
+    "UIKit.framework",
+    "Security.framework",
+    "CoreData.framework",
+    "SystemConfiguration.framework",
+    "Network.framework"
+  ]
+}
+
+bundle_data("resources") {
+  ads_dir = "//brave/vendor/bat-native-ads"
+  ledger_dir = "//brave/vendor/bat-native-ledger"
+  sources = [
+    "$ads_dir/resources/bundle-schema.json",
+    "$ads_dir/resources/catalog-schema.json",
+    "$ads_dir/resources/sample_bundle.json",
+    "$ads_dir/resources/locales",
+    "$ledger_dir/niceware/wordlist",
+  ]
+  outputs = [
+    "{{bundle_resources_dir}}/{{source_file_part}}",
+  ]
+}
+
+bundle_data("coredata") {
+  sources = [
+    "$root_gen_dir/Model.momd/Model.mom",
+    "$root_gen_dir/Model.momd/VersionInfo.plist",
+  ]
+
+  outputs = [
+    "{{bundle_resources_dir}}/Model.momd/{{source_file_part}}",
+  ]
+
+  public_deps = [
+    ":compile-coredata"
+  ]
+}
+
+action("compile-coredata") {
+  script = "lib/compile-model.py"
+
+  inputs = [
+    "Ledger/Data/Model.xcdatamodeld",
+  ]
+
+  outputs = [
+    "$root_gen_dir/Model.momd/Model.mom",
+    "$root_gen_dir/Model.momd/VersionInfo.plist",
+  ]
+
+  model = rebase_path("Ledger/Data/Model.xcdatamodeld")
+  out_dir = rebase_path(root_gen_dir)
+
+  args = [
+    "--model=$model",
+    "--output=$out_dir",
+  ]
+}
