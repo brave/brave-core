@@ -36,8 +36,6 @@ extern const char kDisableEncryptionWin[];
 
 extern const char kEnableSmartTrackingProtection[];
 
-extern const char kDisableOverrideUA[];
-
 extern const char kFastWidevineBundleUpdate[];
 
 }  // namespace switches
