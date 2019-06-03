@@ -69,7 +69,7 @@ void TestTags() {
       "example.com", false, "image");
   // Adding a second tag doesn't clear the first.
   engine.addTag("hello");
-  Check(true, false, false, "With needed tags",
+  Check(true, false, false, "With extra unneeded tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
       "example.com", false, "image");
   engine.removeTag("abc");
