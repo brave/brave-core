@@ -64,12 +64,15 @@
 #define YOUTUBE_MEDIA_TYPE              "youtube"
 #define TWITCH_MEDIA_TYPE               "twitch"
 #define TWITTER_MEDIA_TYPE              "twitter"
+#define REDDIT_MEDIA_TYPE               "reddit"
 #define YOUTUBE_PROVIDER_URL            "https://www.youtube.com/oembed"
 #define TWITCH_PROVIDER_URL             "https://api.twitch.tv/v5/oembed"
 #define YOUTUBE_TLD                     "youtube.com"
 #define TWITCH_TLD                      "twitch.tv"
 #define TWITTER_TLD                     "twitter.com"
+#define REDDIT_TLD                      "reddit.com"
 #define TWITCH_VOD_URL                  "https://www.twitch.tv/videos/"
+#define OLD_REDDIT_DOMAIN               "old.reddit.com"
 #define MEDIA_DELIMITER                 '_'
 #define WALLET_PASSPHRASE_DELIM         ' '
 #define DICTIONARY_DELIMITER            ','

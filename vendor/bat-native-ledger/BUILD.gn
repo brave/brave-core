@@ -110,6 +110,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/ledger_impl.h",
     "src/bat/ledger/internal/media/helper.h",
     "src/bat/ledger/internal/media/helper.cc",
+    "src/bat/ledger/internal/media/reddit.h",
+    "src/bat/ledger/internal/media/reddit.cc",
     "src/bat/ledger/internal/media/twitch.h",
     "src/bat/ledger/internal/media/twitch.cc",
     "src/bat/ledger/internal/media/twitter.h",

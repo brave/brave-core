@@ -707,7 +707,8 @@ void BatPublishers::getPublisherActivityFromUrl(
 
   const bool is_media = visit_data.domain == YOUTUBE_TLD ||
                         visit_data.domain == TWITCH_TLD ||
-                        visit_data.domain == TWITTER_TLD;
+                        visit_data.domain == TWITTER_TLD ||
+                        visit_data.domain == REDDIT_TLD;
 
   if (is_media &&
       visit_data.path != "" && visit_data.path != "/") {
@@ -716,6 +717,8 @@ void BatPublishers::getPublisherActivityFromUrl(
       type = TWITCH_MEDIA_TYPE;
     } else if (visit_data.domain == TWITTER_TLD) {
       type = TWITTER_MEDIA_TYPE;
+    } else if (visit_data.domain == REDDIT_TLD) {
+      type = REDDIT_MEDIA_TYPE;
     }
 
     ledger::VisitData new_visit_data(visit_data);

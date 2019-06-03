@@ -11,6 +11,7 @@
 #include <memory>
 
 #include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/internal/media/reddit.h"
 #include "bat/ledger/internal/media/twitch.h"
 #include "bat/ledger/internal/media/twitter.h"
 #include "bat/ledger/internal/media/youtube.h"
@@ -58,6 +59,7 @@ class BatGetMedia {
   std::unique_ptr<braveledger_media::MediaYouTube> media_youtube_;
   std::unique_ptr<braveledger_media::MediaTwitch> media_twitch_;
   std::unique_ptr<braveledger_media::MediaTwitter> media_twitter_;
+  std::unique_ptr<braveledger_media::MediaReddit> media_reddit_;
 };
 
 }  // namespace braveledger_bat_get_media
