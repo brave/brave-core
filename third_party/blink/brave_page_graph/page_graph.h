@@ -10,7 +10,6 @@
 #include <map>
 #include <memory>
 #include <string>
-#include <vector>
 #include "brave/third_party/blink/brave_page_graph/types.h"
 #include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/script_tracker.h"
@@ -96,9 +95,6 @@ friend EdgeNodeInsert;
     const blink::WebString& code);
   void RegisterScriptCompilation(const blink::ScriptSourceCode& code,
     const ScriptId script_id, const ScriptType type);
-  void RegisterTopLevelScriptId(const ScriptId script_id);
-  void RegisterChildScriptIdForParentScriptId(const ScriptId child_script_id,
-    const ScriptId parent_script_id);
 
   void RegisterScriptExecStart(const ScriptId script_id);
   // The Script ID is only used here as a sanity check to make sure we're
@@ -118,9 +114,9 @@ friend EdgeNodeInsert;
   void AddNode(Node* const node);
   void AddEdge(const Edge* const edge);
 
-  const std::vector<std::unique_ptr<Node> >& Nodes() const;
-  const std::vector<std::unique_ptr<const Edge> >& Edges() const;
-  const std::vector<const GraphItem*>& GraphItems() const;
+  const NodeUniquePtrList& Nodes() const;
+  const EdgeUniquePtrList& Edges() const;
+  const GraphItemList& GraphItems() const;
 
   NodeHTML* GetHTMLNode(const blink::DOMNodeId node_id) const;
   NodeHTMLElement* GetHTMLElementNode(const blink::DOMNodeId node_id) const;
@@ -131,8 +127,8 @@ friend EdgeNodeInsert;
   void PossiblyWriteRequestsIntoGraph(
     const std::shared_ptr<const TrackedRequestRecord> record);
 
-  std::vector<blink::DOMNodeId> NodeIdsForScriptId(const ScriptId script_id) const;
-  std::vector<ScriptId> ScriptIdsForNodeId(const blink::DOMNodeId nodeId) const;
+  DOMNodeIdList NodeIdsForScriptId(const ScriptId script_id) const;
+  ScriptIdList ScriptIdsForNodeId(const blink::DOMNodeId nodeId) const;
 
   // Monotonically increasing counter, used so that we can replay the
   // the graph's construction if needed.
@@ -141,11 +137,11 @@ friend EdgeNodeInsert;
   // These vectors own all of the items that are shared and indexed across
   // the rest of the graph.  All the other pointers (the weak pointers)
   // do not own their data.
-  std::vector<std::unique_ptr<Node> > nodes_;
-  std::vector<std::unique_ptr<const Edge> > edges_;
+  NodeUniquePtrList nodes_;
+  EdgeUniquePtrList edges_;
 
   // Vectors for tracking other ways of referencing graph elements, non-owning.
-  std::vector<const GraphItem*> graph_items_;
+  GraphItemList graph_items_;
 
   // Non-owning references to singleton items in the graph. (the owning
   // references will be in the above vectors).
@@ -176,7 +172,7 @@ friend EdgeNodeInsert;
 
   // Keeps track of which scripts are running, and conceptually mirrors the
   // JS stack.
-  std::vector<ScriptId> active_script_stack_;
+  ScriptIdList active_script_stack_;
 
   // Data structure used for mapping HTML script elements (and other
   // sources of script in a document) to v8 script units.
