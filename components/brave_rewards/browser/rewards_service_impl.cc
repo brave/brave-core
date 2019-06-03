@@ -989,7 +989,7 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
     observer.OnReconcileComplete(this,
                                  result,
                                  viewing_id,
-                                 std::to_string(category),
+                                 category,
                                  probi);
 }
 
@@ -2698,6 +2698,8 @@ bool RewardsServiceImpl::Connected() const {
 void RewardsServiceImpl::SetLedgerEnvForTesting() {
   bat_ledger_service_->SetTesting();
 
+  SetPublisherMinVisitTime(1);
+
   // this is needed because we are using braveledger_bat_helper::buildURL
   // directly in BraveRewardsBrowserTest
   #if defined(OFFICIAL_BUILD)
@@ -2707,8 +2709,8 @@ void RewardsServiceImpl::SetLedgerEnvForTesting() {
   #endif
 }
 
-void RewardsServiceImpl::StartAutoContributeForTest() {
-  bat_ledger_->StartAutoContribute();
+void RewardsServiceImpl::StartMonthlyContributionForTest() {
+  bat_ledger_->StartMonthlyContribution();
 }
 
 void RewardsServiceImpl::CheckInsufficientFundsForTesting() {

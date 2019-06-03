@@ -343,18 +343,17 @@ void RewardsNotificationServiceImpl::OnReconcileComplete(
     RewardsService* rewards_service,
     unsigned int result,
     const std::string& viewing_id,
-    const std::string& category,
+    int32_t category,
     const std::string& probi) {
   if ((result == ledger::Result::LEDGER_OK &&
-       category ==
-          std::to_string(ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE)) ||
+       category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) ||
        result == ledger::Result::LEDGER_ERROR ||
        result == ledger::Result::NOT_ENOUGH_FUNDS ||
        result == ledger::Result::TIP_ERROR) {
     RewardsNotificationService::RewardsNotificationArgs args;
     args.push_back(viewing_id);
     args.push_back(std::to_string(result));
-    args.push_back(category);
+    args.push_back(std::to_string(category));
     args.push_back(probi);
 
     AddNotification(

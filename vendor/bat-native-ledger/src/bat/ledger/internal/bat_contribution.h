@@ -150,10 +150,12 @@ class BatContribution {
   void HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback);
 
-  // Triggers contribution process for auto contribute table
-  void StartAutoContribute();
-
   void ContributeUnverifiedPublishers();
+
+  // Fetches recurring tips that will be then used for the contribution.
+  // This is called from global timer in impl.
+  // Can be also called manually
+  void StartMonthlyContribution();
 
  private:
   std::string GetAnonizeProof(const std::string& registrar_VK,
@@ -182,11 +184,10 @@ class BatContribution {
   // Resets reconcile stamps
   void ResetReconcileStamp();
 
-  // Fetches recurring tips that will be then used for the contribution.
-  // This is called from global timer in impl.
-  void OnTimerReconcile();
-
   bool ShouldStartAutoContribute();
+
+  // Triggers contribution process for auto contribute table
+  void StartAutoContribute();
 
   void OnWalletPropertiesForReconcile(
       const std::string& viewing_id,

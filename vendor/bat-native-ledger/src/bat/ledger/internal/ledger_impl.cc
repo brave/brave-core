@@ -683,13 +683,18 @@ uint64_t LedgerImpl::GetReconcileStamp() const {
 
 void LedgerImpl::OnReconcileComplete(ledger::Result result,
                                      const std::string& viewing_id,
-                                     const std::string& probi) {
+                                     const std::string& probi,
+                                     int32_t category) {
   auto reconcile = GetReconcileById(viewing_id);
+
+  if (category == 0) {
+    category = reconcile.category_;
+  }
 
   ledger_client_->OnReconcileComplete(
       result,
       viewing_id,
-      (ledger::REWARDS_CATEGORY)reconcile.category_,
+      static_cast<ledger::REWARDS_CATEGORY>(category),
       probi);
 }
 
@@ -1300,8 +1305,8 @@ void LedgerImpl::GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) {
   }
 }
 
-void LedgerImpl::StartAutoContribute() {
-  bat_contribution_->StartAutoContribute();
+void LedgerImpl::StartMonthlyContribution() {
+  bat_contribution_->StartMonthlyContribution();
 }
 
 const braveledger_bat_helper::WALLET_PROPERTIES_ST&
@@ -1629,7 +1634,8 @@ void LedgerImpl::SavePublisherProcessed(const std::string& publisher_key) {
   bat_publishers_->SavePublisherProcessed(publisher_key);
 }
 
-bool LedgerImpl::WasPublisherAlreadyProcessed(const std::string& publisher_key) {
+bool LedgerImpl::WasPublisherAlreadyProcessed(
+    const std::string& publisher_key) {
   return bat_publishers_->WasPublisherAlreadyProcessed(publisher_key);
 }
 

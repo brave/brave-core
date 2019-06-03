@@ -745,7 +745,7 @@ void saveToJson(JsonWriter* writer, const PUBLISHER_STATE_ST& data) {
   writer->String("processed_pending_publishers");
   writer->StartArray();
   for (auto &p : data.processed_pending_publishers) {
-   writer->String(p.c_str());
+    writer->String(p.c_str());
   }
   writer->EndArray();
 

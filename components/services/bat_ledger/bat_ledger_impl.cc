@@ -565,8 +565,8 @@ void BatLedgerImpl::RefreshPublisher(
       std::bind(BatLedgerImpl::OnRefreshPublisher, holder, _1));
 }
 
-void BatLedgerImpl::StartAutoContribute() {
-  ledger_->StartAutoContribute();
+void BatLedgerImpl::StartMonthlyContribution() {
+  ledger_->StartMonthlyContribution();
 }
 
 void BatLedgerImpl::SetInlineTipSetting(const std::string& key, bool enabled) {

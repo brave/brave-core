@@ -242,9 +242,15 @@ class RewardsServiceImpl : public RewardsService,
 
   void RemoveAllPendingContributionsUI() override;
 
+  void OnTip(const std::string& publisher_key,
+             int amount,
+             bool recurring) override;
+
+  void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
-  void StartAutoContributeForTest();
+  void StartMonthlyContributionForTest();
   void CheckInsufficientFundsForTesting();
   void MaybeShowNotificationAddFundsForTesting(
       base::OnceCallback<void(bool)> callback);
@@ -327,9 +333,6 @@ class RewardsServiceImpl : public RewardsService,
                                       bool success);
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
-  void OnTip(const std::string& publisher_key,
-             int amount,
-             bool recurring) override;
   void OnTip(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
 
@@ -437,7 +440,6 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::URL_METHOD method,
       ledger::LoadURLCallback callback) override;
   void SetRewardsMainEnabled(bool enabled) override;
-  void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
   void SetPublisherMinVisits(unsigned int visits) const override;
   void SetPublisherAllowNonVerified(bool allow) const override;
   void SetPublisherAllowVideos(bool allow) const override;

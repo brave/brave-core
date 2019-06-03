@@ -12,7 +12,6 @@
 #include <memory>
 #include <vector>
 #include <utility>
-#include <bat/ledger/ledger_callback_handler.h>
 
 #include "anon/anon.h"
 #include "base/task/post_task.h"
@@ -313,7 +312,7 @@ void BatContribution::ResetReconcileStamp() {
   SetReconcileTimer();
 }
 
-void BatContribution::OnTimerReconcile() {
+void BatContribution::StartMonthlyContribution() {
   if (!ledger_->GetRewardsMainEnabled()) {
     ResetReconcileStamp();
     return;
@@ -454,9 +453,11 @@ void BatContribution::StartReconcile(
     }
 
     if (list.size() == 0 || budget == 0) {
+      OnReconcileComplete(ledger::Result::RECURRING_TABLE_EMPTY,
+                          viewing_id,
+                          ledger::REWARDS_CATEGORY::RECURRING_TIP);
       BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
         "Recurring donation list is empty";
-      StartAutoContribute();
       return;
     }
 
@@ -643,6 +644,13 @@ void BatContribution::CurrentReconcileCallback(
   reconcile.amount_ = unsigned_tx.amount_;
   reconcile.currency_ = unsigned_tx.currency_;
   reconcile.destination_ = unsigned_tx.destination_;
+
+  if (ledger::is_testing) {
+    std::ostringstream amount;
+    amount << reconcile.fee_;
+    reconcile.amount_ = amount.str();
+  }
+
   success = ledger_->UpdateReconcile(reconcile);
 
   if (!success) {
@@ -757,6 +765,10 @@ void BatContribution::ReconcilePayloadCallback(
   transaction.contribution_rates_ = reconcile.rates_;
   transaction.contribution_fiat_amount_ = reconcile.amount_;
   transaction.contribution_fiat_currency_ = reconcile.currency_;
+
+  if (ledger::is_testing) {
+    transaction.contribution_probi_ = reconcile.amount_ + "000000000000000000";
+  }
 
   braveledger_bat_helper::Transactions transactions =
       ledger_->GetTransactions();
@@ -953,7 +965,7 @@ void BatContribution::OnReconcileComplete(ledger::Result result,
     StartAutoContribute();
   }
 
-  ledger_->OnReconcileComplete(result, viewing_id, probi);
+  ledger_->OnReconcileComplete(result, viewing_id, probi, category);
 
   if (result != ledger::Result::LEDGER_OK) {
     ledger_->RemoveReconcileById(viewing_id);
@@ -1564,7 +1576,7 @@ void BatContribution::VoteBatchCallback(
 void BatContribution::OnTimer(uint32_t timer_id) {
   if (timer_id == last_reconcile_timer_id_) {
     last_reconcile_timer_id_ = 0;
-    OnTimerReconcile();
+    StartMonthlyContribution();
     return;
   }
 
@@ -1920,19 +1932,15 @@ void BatContribution::OnContributeUnverifiedPublishers(
                   this,
                   _1));
 
-    SetTimer(&unverified_publishers_timer_id_);
+    if (ledger::is_testing) {
+      SetTimer(&unverified_publishers_timer_id_, 1);
+    } else {
+      SetTimer(&unverified_publishers_timer_id_);
+    }
   } else {
     ledger_->OnContributeUnverifiedPublishers(
         ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
   }
-}
-
-void BatContribution::ContributeUnverifiedPublishers() {
-  ledger_->FetchWalletProperties(
-      std::bind(&BatContribution::OnContributeUnverifiedWallet,
-                this,
-                _1,
-                _2));
 }
 
 void BatContribution::OnContributeUnverifiedWallet(
@@ -1947,7 +1955,14 @@ void BatContribution::OnContributeUnverifiedWallet(
                 this,
                 wallet->balance_,
                 _1));
+}
 
+void BatContribution::ContributeUnverifiedPublishers() {
+  ledger_->FetchWalletProperties(
+      std::bind(&BatContribution::OnContributeUnverifiedWallet,
+                this,
+                _1,
+                _2));
 }
 
 }  // namespace braveledger_bat_contribution

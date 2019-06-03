@@ -116,7 +116,7 @@ interface BatLedger {
       (uint32 result, ledger.mojom.PublisherInfo? info);
   RefreshPublisher(string publisher_key) => (bool verified);
 
-  StartAutoContribute();
+  StartMonthlyContribution();
 
   SaveMediaInfo(string type, map<string, string> args) => (int32 result,
         ledger.mojom.PublisherInfo? publisher_info);

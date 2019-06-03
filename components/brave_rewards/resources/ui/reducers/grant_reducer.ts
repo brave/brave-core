@@ -166,7 +166,14 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
       let newGrant: any = {}
       const properties: Rewards.Grant = action.payload.properties
 
-      if (!state.grants || !state.currentGrant) {
+      if (!state.grants) {
+        break
+      }
+
+      if (!state.currentGrant) {
+        state.firstLoad = false
+        state.grants = []
+        chrome.send('brave_rewards.getGrants', ['', ''])
         break
       }
 
