@@ -19,6 +19,7 @@
 #include "base/system/sys_info.h"
 #include "base/task/post_task.h"
 #include "base/values.h"
+#include "brave_base/random.h"
 #include "brave/common/network_constants.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -107,8 +108,8 @@ void BraveReferralsService::Start() {
   fetch_referral_headers_timer_ = std::make_unique<base::RepeatingTimer>();
   fetch_referral_headers_timer_->Start(
       FROM_HERE,
-      base::TimeDelta::FromSeconds(kFetchReferralHeadersFrequency +
-                                   base::RandInt(0, 60 * 10)),
+      base::TimeDelta::FromSeconds(
+        brave_base::random::Geometric(kFetchReferralHeadersFrequency)),
       this, &BraveReferralsService::OnFetchReferralHeadersTimerFired);
   DCHECK(fetch_referral_headers_timer_->IsRunning());
 
