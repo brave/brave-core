@@ -106,6 +106,8 @@ source_set("brave_page_graph") {
       "script_tracker.h",
       "types.cc",
       "types.h",
+      "dispatcher.cc",
+      "dispatcher.h",
     ]
   }
 }
