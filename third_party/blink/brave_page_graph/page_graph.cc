@@ -23,6 +23,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_set.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_delete.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute_attr.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_create.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_delete.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_insert.h"
@@ -383,13 +384,18 @@ void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
 void PageGraph::RegisterRequestStartFromCurrentScript(
     const InspectorId request_id, const KURL& url, const RequestType type) {
   NodeActor* const acting_node = GetCurrentActingNode();
-  LOG_ASSERT(acting_node->IsScript());
   const string local_url(url.GetString().Utf8().data());
-  PG_LOG("RegisterRequestStartFromCurrentScript) script id:"
+
+  PG_LOG("RegisterRequestStartFromCurrentScript) script id: "
     + to_string((static_cast<NodeScript*>(acting_node))->GetScriptId())
     + ", request id: " + to_string(request_id) +
-    + ", url:" + local_url
+    + ", url: " + local_url
     + ", type: " + to_string(type));
+  if (!acting_node->IsScript()) {
+    PG_LOG("Skipping, i hope this is pre-fetch...");
+    return;
+  }
+  LOG_ASSERT(acting_node->IsScript());
 
   NodeResource* requested_node;
   if (resource_nodes_.count(local_url) == 0) {
@@ -492,6 +498,30 @@ void PageGraph::RegisterScriptCompilation(
     extension_node->AddOutEdge(execute_edge);
     code_node->AddInEdge(execute_edge);
   }
+}
+
+void PageGraph::RegisterScriptCompilationFromAttr(
+    const blink::DOMNodeId node_id, const WTF::String& attr_name,
+    const WTF::String& attr_value, const ScriptId script_id) {
+  string local_attr_name(attr_name.Utf8().data());
+  string local_attr_value(attr_value.Utf8().data());
+  PG_LOG("RegisterScriptCompilationFromAttr) script id: "
+    + to_string(script_id)
+    + ", node id: " + to_string(node_id)
+    + ", attr name: " );
+  script_tracker_.AddScriptId(script_id, attr_value.Impl()->GetHash());
+
+  NodeScript* const code_node = new NodeScript(this, script_id,
+      kScriptTypeClassic);
+  AddNode(code_node);
+  script_nodes_.emplace(script_id, code_node);
+
+  NodeHTMLElement* const html_node = GetHTMLElementNode(node_id);
+  EdgeExecute* const execute_edge = new EdgeExecuteAttr(this, html_node,
+      code_node, local_attr_name);
+  AddEdge(execute_edge);
+  html_node->AddOutEdge(execute_edge);
+  code_node->AddInEdge(execute_edge);
 }
 
 void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {

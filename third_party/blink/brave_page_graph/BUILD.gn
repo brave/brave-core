@@ -60,6 +60,8 @@ source_set("brave_page_graph") {
       "graph_item/edge/edge_attribute.h",
       "graph_item/edge/edge_execute.cc",
       "graph_item/edge/edge_execute.h",
+      "graph_item/edge/edge_execute_attr.cc",
+      "graph_item/edge/edge_execute_attr.h",
       "graph_item/edge/edge_call.cc",
       "graph_item/edge/edge_call.h",
       "graph_item/edge/edge_html.cc",
