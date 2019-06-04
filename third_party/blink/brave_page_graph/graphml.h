@@ -38,9 +38,9 @@ class GraphMLAttr {
   const GraphMLAttrType type_;
 };
 
-const GraphMLAttr* graphml_attr_def_for_type(const GraphMLAttrDef type) noexcept;
-GraphMLXML graphml_attr_def_to_string(const GraphMLAttr attr_def) noexcept;
-const std::vector<const GraphMLAttr* const>& get_graphml_attrs();
+const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept;
+GraphMLXML GraphMLAttrDefToString(const GraphMLAttr attr_def) noexcept;
+const std::vector<const GraphMLAttr* const>& GetGraphMLAttrs();
 
 }  // namespace brave_page_graph
 

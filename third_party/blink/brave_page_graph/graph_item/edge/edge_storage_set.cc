@@ -37,9 +37,9 @@ ItemDesc EdgeStorageSet::GetDescBody() const {
 GraphMLXMLList EdgeStorageSet::GraphMLAttributes() const {
   GraphMLXMLList items = EdgeStorage::GraphMLAttributes();
   items.push_back(
-    graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)->ToValue("set"));
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)->ToValue("set"));
   items.push_back(
-    graphml_attr_def_for_type(kGraphMLAttrDefValue)->ToValue(value_));
+    GraphMLAttrDefForType(kGraphMLAttrDefValue)->ToValue(value_));
   return items;
 }
 

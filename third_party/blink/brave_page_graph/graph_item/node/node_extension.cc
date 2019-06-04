@@ -26,7 +26,7 @@ ItemName NodeExtension::GetItemName() const {
 
 GraphMLXMLList NodeExtension::GraphMLAttributes() const {
   GraphMLXMLList attrs;
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefNodeType)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
       ->ToValue("extension"));
   return attrs;
 }

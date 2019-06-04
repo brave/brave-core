@@ -29,7 +29,7 @@ ItemName EdgeNodeCreate::GetItemName() const {
 
 GraphMLXMLList EdgeNodeCreate::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)->ToValue("create")
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)->ToValue("create")
   };
 }
 

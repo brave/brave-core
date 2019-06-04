@@ -80,7 +80,7 @@ namespace {
   };
 }
 
-const vector<const GraphMLAttr* const>& get_graphml_attrs() {
+const vector<const GraphMLAttr* const>& GetGraphMLAttrs() {
   return _all_graphml_attrs;
 }
 
@@ -108,9 +108,9 @@ GraphMLId GraphMLAttr::GetGraphMLId() const {
 
 GraphMLXML GraphMLAttr::ToDefinition() const {
    return "<key id=\"" + GetGraphMLId() + "\" " +
-                "for=\"" + graphml_for_to_string(for_) + "\" " +
+                "for=\"" + GraphMLForToString(for_) + "\" " +
                 "attr.name=\"" + name_ + "\" " +
-                "attr.type=\"" + graphml_type_to_string(type_) + "\"/>";
+                "attr.type=\"" + RequestTypeToString(type_) + "\"/>";
 }
 
 GraphMLXML GraphMLAttr::ToValue(const char* value) const {
@@ -140,7 +140,7 @@ GraphMLXML GraphMLAttr::ToValue(const uint64_t value) const {
 
 }
 
-const GraphMLAttr* graphml_attr_def_for_type(const GraphMLAttrDef type) noexcept {
+const GraphMLAttr* GraphMLAttrDefForType(const GraphMLAttrDef type) noexcept {
   switch (type) {
     case kGraphMLAttrDefAttrName:
       return attr_name_attr;

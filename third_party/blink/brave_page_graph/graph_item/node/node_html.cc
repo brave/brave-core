@@ -31,7 +31,7 @@ void NodeHTML::MarkNodeDeleted() {
 
 GraphMLXMLList NodeHTML::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefNodeId)
+    GraphMLAttrDefForType(kGraphMLAttrDefNodeId)
       ->ToValue(node_id_ == kRootNodeId ? 0 : node_id_)
   };
 }

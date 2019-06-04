@@ -12,7 +12,7 @@ using ::std::string;
 
 namespace brave_page_graph {
 
-string graphml_type_to_string(const GraphMLAttrType type) noexcept {
+string RequestTypeToString(const GraphMLAttrType type) noexcept {
   switch (type) {
     case kGraphMLAttrTypeString:
       return "string";
@@ -32,7 +32,7 @@ string graphml_type_to_string(const GraphMLAttrType type) noexcept {
   }
 }
 
-string graphml_for_to_string(const GraphMLAttrForType type) noexcept {
+string GraphMLForToString(const GraphMLAttrForType type) noexcept {
   switch (type) {
     case kGraphMLAttrForTypeNode:
       return "node";
@@ -44,7 +44,7 @@ string graphml_for_to_string(const GraphMLAttrForType type) noexcept {
   }
 }
 
-string request_type_to_string(const RequestType type) noexcept {
+string RequestTypeToString(const RequestType type) noexcept {
   switch (type) {
     case kRequestTypeImage:
       return "Image";
@@ -70,7 +70,7 @@ string request_type_to_string(const RequestType type) noexcept {
   }
 }
 
-string resource_type_to_string(const blink::ResourceType type) noexcept {
+string ResourceTypeToString(const blink::ResourceType type) noexcept {
   switch (type) {
     case blink::ResourceType::kImage:
       return "image";
@@ -103,7 +103,7 @@ string resource_type_to_string(const blink::ResourceType type) noexcept {
   }
 }
 
-string script_type_to_string(const ScriptType type) noexcept {
+string ScriptTypeToString(const ScriptType type) noexcept {
   switch (type) {
     case kScriptTypeClassic:
       return "classic";
@@ -117,7 +117,7 @@ string script_type_to_string(const ScriptType type) noexcept {
   }
 }
 
-string request_status_to_string(const RequestStatus status) noexcept {
+string RequestStatusToString(const RequestStatus status) noexcept {
   switch (status) {
     case kRequestStatusStart:
       return "started";

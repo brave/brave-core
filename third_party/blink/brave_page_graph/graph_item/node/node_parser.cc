@@ -31,7 +31,7 @@ bool NodeParser::IsParser() const {
 
 GraphMLXMLList NodeParser::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefNodeType)
+    GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
       ->ToValue("parser")
   };
 }
