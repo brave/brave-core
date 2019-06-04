@@ -41,6 +41,8 @@
 <translation id="8958799246752641148">Tor oculta su dirección IP de los sitios que visita mediante el enrutamiento de su navegación a través de múltiples servidores de Tor antes de alcanzar el destino. Estas conexiones están cifradas, por lo que su ISP o empleador tampoco podrán ver los sitios que visita. La actividad de Tor puede ralentizar la navegación o inhabilitar el funcionamiento de ciertos sitios.</translation>
 <translation id="520608572871993342">El uso de ventanas privadas solo modifica la acción de Brave en su dispositivo — no modifica la acción de otros agentes. Tor oculta su dirección IP de los sitios que visita y, al mismo tiempo, oculta los sitios que visita de su proveedor de servicios de Internet o empleador. Abra una ventana privada con Tor desde el menú o con {{ tecla }}.</translation>
 <translation id="6975708438781948564">Obtenga más información sobre Tor en Brave</translation>
+<translation id="4272382368346338917">Filtros Adicionales</translation>
+<translation id="8949292968394988358">Advertencia: Activar demasiados filtros puede disminuir el rendimiento</translation>
 <translation id="1869685517625607604">Total de Publicidades Bloqueadas:</translation>
 <translation id="4673764878177947707">Filtros personalizados</translation>
 <translation id="8803682034537762884">Los filtros (uno por línea) se describen en la sintaxis de filtro de Adblock Plus</translation>
@@ -54,7 +56,6 @@
 <translation id="5633840519079139680">Configurar su entorno habitual es muy fácil, ya que Brave le permite importar favoritos y configuraciones de otros navegadores instalados en su computadora.</translation>
 <translation id="8275038454117074363">Importar</translation>
 <translation id="5540323067375019678">Administre sus escudos</translation>
-<translation id="4755560456428781763">Los escudos de Brave lo protegen de anuncios y rastreadores no deseados mientras navega. Si encuentra un problema en un sitio en particular, ajuste el nivel de protección desde el panel de escudos en la barra de herramientas.</translation>
 <translation id="3366308997091824722">Configuración de Escudo</translation>
 <translation id="3884404068544758153">Cambie su motor de búsqueda</translation>
 <translation id="438216590634144114">Elija el motor de búsqueda que quiere usar de forma predeterminada cuando navegue por Internet desde la barra de direcciones.</translation>
@@ -68,6 +69,7 @@
 <translation id="5946611334574299206">Obtén tokens mirando publicidades en Brave. Las publicidades presentadas se basan en tus intereses, según lo inferido a partir del comportamiento de tu navegador. Ningún dato personal ni historial de navegación jamás saldrá de tu navegador.</translation>
 <translation id="6112368337882254910">Contribución automática</translation>
 <translation id="1527222983464337010">Una forma automática de apoyar a quienes publican y a los creadores de contenido. Establece un pago mensual y navega normalmente. Los sitios que visitas reciben contribuciones de manera automática en función de tu atención medida por Brave.</translation>
+<translation id="7178655681744815321">Ingresos estimados este ciclo</translation>
 <translation id="8157096848242649588">Fecha de pago</translation>
 <translation id="5208388044986603165">Notificaciones de anuncios recibidas</translation>
 <translation id="4229016885653790965">Lo sentimos. Todavía no hay anuncios disponibles en su región.</translation>
@@ -106,7 +108,7 @@
 <translation id="1199044745726588100">5 segundos</translation>
 <translation id="4045581694057451126">8 segundos</translation>
 <translation id="8610523985422563960">1 minuto</translation>
-<translation id="7521774480426463961">Activar función para dar propinas en las publicaciones que tienen "Me gusta"</translation>
+<translation id="9031738692126722094">Habilite consejos de contenido en estos sitios</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Deja propinas en el acto a medida que encuentras contenido de lujo.</translation>
@@ -128,6 +130,7 @@
 <translation id="7797604753681168055">Recuperar ahora</translation>
 <translation id="1184075897575325927">Lo sentimos, parece que esta donación ya se ha reclamado.</translation>
 <translation id="282693359045252357">Próxima fecha de propina mensual</translation>
+<translation id="6231182869178328516">Recién le di una propina a <ph name="NAME">$1<ex>user</ex></ph> usando el navegador Brave. Aquí hay más información: https://brave.com/tips.</translation>
 <translation id="7422678632904904341">Monto:</translation>
 <translation id="5923611424721173182">Conciliación actual</translation>
 <translation id="5457113250005438886">No válido</translation>
@@ -150,6 +153,9 @@
 <translation id="4235360514405112390">Válido</translation>
 <translation id="2700943637868737038">ID de visualización:</translation>
 <translation id="3576689061489548788">ID de pago de billetera:</translation>
+<translation id="758790787422117549">Id. de rol</translation>
+<translation id="2223892939866251845">Id. de usuario</translation>
+<translation id="1642443162274867084">Billetera creada</translation>
 <translation id="5094577350232361255">acerca de</translation>
 <translation id="4918086044614829423">Aceptar</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave es una marca registrada de Brave Software. Los nombres de los sitios pueden ser marcas comerciales o marcas registradas de los propietarios de los sitios.</translation>
@@ -165,11 +171,16 @@
 <translation id="3671566813999349838">Monto</translation>
 <translation id="3819257035322786455">Copia de seguridad</translation>
 <translation id="1312977698678162065">Gana dinero por mirar publicidades relevantes que respetan tu privacidad.</translation>
+<translation id="7655723274266132226">Ahora mirar publicidades tiene su recompensa.</translation>
+<translation id="2975780980638932742">Las publicidades de Brave ya están aquí</translation>
 <translation id="3361548743396744457">Apoya a tus sitios preferidos simplemente navegando o dándole una propina a un sitio en cualquier momento que quieras.</translation>
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="4493850495402472953">y</translation>
 <translation id="8804164990146287819">Política de privacidad</translation>
 <translation id="4281844954008187215">Condiciones de servicio</translation>
+<translation id="4405997465645469914">Al activar las Recompensas de Brave, indica que ha leído y aceptado las</translation>
+<translation id="8819542691525488940">Al hacer clic en ‘Sí, acepto’, indica que ha leído y aceptado las</translation>
+<translation id="8071424789698327147">Al hacer clic en ‘Sí, acepto’, indica que ha leído y aceptado las</translation>
 <translation id="7530570094705720669">Cómo crear una billetera</translation>
 <translation id="2105596359439030979">Tu atención es valiosa. Gana mirando publicidades que respetan la privacidad y paga para apoyar a los creadores que te encantan.</translation>
 <translation id="516395624550019162">¡Sí, acepto!</translation>
@@ -206,7 +217,6 @@
 <translation id="7277134233385925078">Configurar propina mensual</translation>
 <translation id="8003573781961874199">Descargar como PDF</translation>
 <translation id="298067735430872465">Ingresos de las publicidades</translation>
-<translation id="3521361150443442734">Sus ingresos de los anuncios no están disponibles</translation>
 <translation id="8764029012618014430">Activar las propinas</translation>
 <translation id="3412655388715513818">Excluir este sitio</translation>
 <translation id="418343137736963579">Cantidad total de sitios que excluiste de Autocontribuir:</translation>
@@ -272,8 +282,8 @@
 <translation id="3626186271103896082">Haz una copia de seguridad de tu Billetera</translation>
 <translation id="5717619667204259673">Guarde esta clave de recuperación en un lugar seguro.</translation>
 <translation id="4699702339303280827">Siempre puede usar esta clave para recuperar su billetera si algo le sucede a su navegador o a su computadora. Pero asegúrese de protegerla; cualquier persona que sepa esta clave podría robar su billetera. Probablemente, lo más seguro sea escribirla en un papel o donde guarde información importante.</translation>
-<translation id="5759071143806884916">Puede colaborar con este sitio enviando una propina. De esa manera, podrá agradecerle por haber creado contenido excelente. Los creadores de contenido verificados reciben el pago de sus propinas durante la primera semana de cada mes calendario.</translation>
-<translation id="1704859330137112950">Si lo desea, puede configurar propinas mensuales para apoyar a este sitio de manera continua.</translation>
+<translation id="7354412786785889047">Puede colaborar con este creador de contenido enviando una propina. De esa manera, podrá agradecerle por haber creado contenido excelente. Los creadores verificados reciben el pago de sus propinas durante la primera semana de cada mes calendario.</translation>
+<translation id="3475063317678050010">Si lo desea, puede configurar propinas mensuales para apoyar a este creador de manera continua.</translation>
 <translation id="3074127054582480056">Atención</translation>
 <translation id="822513417008209372">Actualmente, estás apoyando a</translation>
 <translation id="5010112177773747965">sin tu consentimiento.</translation>
@@ -302,6 +312,7 @@
 <translation id="3536298624341433814">Enviar mi propina</translation>
 <translation id="1792148354504719133">sitio</translation>
 <translation id="5944430251223015324">sitios</translation>
+<translation id="1834493631938747505">Cuente a los demás sobre su propina.</translation>
 <translation id="8826007068782654809">Gracias</translation>
 <translation id="6665366815203065060">Ha enviado una propina a:</translation>
 <translation id="6432779622695508363">Dar propina como</translation>
@@ -312,8 +323,12 @@
 <translation id="4914597931214386232">Donaciones de tokens reclamadas</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transacciones</translation>
+<translation id="3124090095880236567">Activar anuncios</translation>
 <translation id="8987812599455325915">Esto activa tanto las publicidades como las contribuciones automáticas. Puedes activarlas o desactivarlas por separado en cualquier momento.</translation>
 <translation id="1485484147452131556">Activar recompensas</translation>
+<translation id="3983104749597726322">Tuit</translation>
+<translation id="5636843789453098076">Deje una propina a @{{ user }} por su tuit:</translation>
+<translation id="4242384385082203046">Deje una propina a @{{ user }} por su tuit.</translation>
 <translation id="2448312741937722512">Tipo</translation>
 <translation id="8772672608371898774">Publicador verificado de Brave</translation>
 <translation id="5050370287908180130">Ver el estado mensual para conocer los detalles</translation>
@@ -336,6 +351,15 @@
 <translation id="6727483290601442544">Ver detalles</translation>
 <translation id="1988679729106502285">NOTA:</translation>
 <translation id="5815103311506128988">Este creador todavía no se ha registrado para recibir contribuciones de usuarios de Brave. Su navegador seguirá intentando contribuir hasta que el creador confirme la titularidad o hasta que hayan transcurrido 90 días.</translation>
+<translation id="4292832015778676417">ingresos de publicidades</translation>
+<translation id="3197752845651180812">Contribuciones pendientes</translation>
+<translation id="3164105678355419142">Propina recurrente</translation>
+<translation id="2927922949538312364">Propina por única vez</translation>
+<translation id="6964891561514920613">Mostrar todas las contribuciones pendientes</translation>
+<translation id="4346944508027912677">Pendiente hasta el</translation>
+<translation id="7410549756000115387">No hay contribuciones pendientes…</translation>
+<translation id="1963227389609234879">Eliminar todo</translation>
+<translation id="923467487918828349">Mostrar todo</translation>
 <translation id="1181037720776840403">Eliminar</translation>
 <translation id="7885157704277298658">Copiado</translation>
 <translation id="5379640681913450928">Recuento de palabras:</translation>
@@ -353,6 +377,7 @@
 <translation id="1061533051865606843">Agregar nuevo dispositivo</translation>
 <translation id="8780295742023331191">Ver código de sincronización</translation>
 <translation id="1755198127524719638">Configuración de sincronización</translation>
+<translation id="7558480201297099157">Gestione qué información le gustaría sincronizar entre dispositivos. Esta configuración se aplica solo a este dispositivo.</translation>
 <translation id="8820817407110198400">Favoritos</translation>
 <translation id="5591129654353352557">Configuración del sitio guardada</translation>
 <translation id="7859704718976024901">Historial de navegación</translation>
@@ -380,6 +405,7 @@
 <translation id="5086223971958279691">Código de cadena de sincronización</translation>
 <translation id="2899261497479389619">En su computadora, busque Brave Sync en el panel de configuración y haga clic en el botón</translation>
 <translation id="4827439149833241990">“Tengo un código de sincronización”.</translation>
+<translation id="24067401253841795">Ingrese el código de cadena de sincronización que aparece a continuación. Trate este código como si fuera una contraseña. Si alguien accede a él, puede leer y modificar sus datos sincronizados.</translation>
 <translation id="8914601399214979966">Prefiero usar mi cámara</translation>
 <translation id="3034163433136515805">Ver código QR</translation>
 <translation id="5093410893656857925">Elegir tipo de dispositivo</translation>
@@ -392,4 +418,6 @@
 <translation id="8349682220522608879">Agregue un código de sincronización.</translation>
 <translation id="1468095392829989299">Error de contacto con los servidores de sincronización</translation>
 <translation id="1399673826422570698">Es posible que haya algún problema con la red o con los servidores de sincronización</translation>
+<translation id="5286379413446391050">Error de conexión con los servidores de sincronización</translation>
+<translation id="2410472020237369473">Es posible que el reloj de su computadora esté configurado con la hora o la zona horaria incorrecta. Verifique los ajustes de su reloj.</translation>
 </translationbundle>

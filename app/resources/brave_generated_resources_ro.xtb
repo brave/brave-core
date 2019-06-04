@@ -30,7 +30,6 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4150684676757176434">Continuă blocarea autoredării</translation>
 <translation id="7543906827780734027">Brave încă nu a evaluat această extensie - se poate să fie rău intenționată. Se adaugă oricum "<ph name="EXTENSION_NAME">$1<ex>Verificare Gmail</ex></ph>"?</translation>
 <translation id="2044383478723007273">Culori Brave</translation>
-<translation id="5341901626640816374">Utilizați bara mare de locație</translation>
 <translation id="6123134130710658846">Ascunde butonul Brave Rewards</translation>
 <translation id="7635711399568194460">Ascunde butonul Brave Rewards în bara locației când Brave Rewards nu este activat</translation>
 <translation id="7965178729203412357">Identitate nouă Tor</translation>
@@ -47,13 +46,20 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="2515126961943087659">Serviciu de anunțuri Bat</translation>
 <translation id="7924918279836988121">Serviciu Bat Ledger</translation>
 <translation id="4472575034687746823">Începeți</translation>
+<translation id="3400357268283240774">Setări suplimentare</translation>
 <translation id="6303294677342628402">Scuturi</translation>
+<translation id="768979911142179781">Setări implicite</translation>
+<translation id="5989930075012659993">Setările dvs. curente per site vor fi reținute.</translation>
+<translation id="9185018653595759199">Blocare pe rețelele de socializare</translation>
+<translation id="6894114137169961038">Control reclame</translation>
+<translation id="1096802265930928584">Control al fișierelor cookie</translation>
 <translation id="8919235146866304148">Protecție amprentare</translation>
 <translation id="520895744850022668">HTTPS peste tot</translation>
 <translation id="5259716416204774556">Blocare script</translation>
 <translation id="7498695072878479744">Permite butoanele de conectare Google pe siteurile terțe</translation>
 <translation id="863171915776379000">Permite conectările Facebook și postările încorporate</translation>
 <translation id="5165042248369837294">Permite tweet-uri încorporate Twitter</translation>
+<translation id="958971637207126733">Permite postări LinkedIn încorporate</translation>
 <translation id="6067014455220527258">Blochează reclame</translation>
 <translation id="6985711843506827936">Permite reclame și urmărire</translation>
 <translation id="6132506775968708399">Blochează cookie-uri de la terți</translation>
@@ -73,11 +79,14 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="2414886740292270097">Negru</translation>
 <translation id="1360441190790440400">Aceeași cu Linux</translation>
 <translation id="1336940801687497203">Aceeași cu Windows</translation>
+<translation id="8721331068159819483">La fel ca macOS</translation>
 <translation id="6786747875388722282">Extensii</translation>
 <translation id="2896916411183256228">Utilizează WebTorrent pentru afișarea torrent-elor direct în browser. Acceptă fișiere torrent și linkuri magnet.</translation>
 <translation id="6554397389149987360">Utilizează componenta Hangouts pentru activarea partajării ecranului și alte funcții din browser.</translation>
+<translation id="4154389611571860454">Folosește extensia companion IPFS pentru a accepta IPFS în browser.</translation>
 <translation id="8137559199583651773">Gestionați extensiile</translation>
 <translation id="4928988318462976765">Magazin Extensii Web</translation>
 <translation id="9181207987584064303">Vizualizare în Magazinul Extensii Web</translation>
 <translation id="4846154056248462491">La ieșire</translation>
+<translation id="5057399635433117814">Doriți ca această pagină să fie tradusă? Această comandă va trimite tot textul de pe pagină către Microsoft pentru traducere.</translation>
 </translationbundle>

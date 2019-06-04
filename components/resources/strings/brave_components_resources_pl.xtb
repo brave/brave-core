@@ -56,7 +56,7 @@
 <translation id="5633840519079139680">W przeglądarce Brave łatwo jest skonfigurować swoje zwykłe środowisko, importując zakładki i ustawienia z innych przeglądarek zainstalowanych na komputerze.</translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="5540323067375019678">Zarządzaj tarczami</translation>
-<translation id="4755560456428781763">Tarcza Brave chroni Cię przed niechcianymi reklamami i trackerami podczas przeglądania stron internetowych. Jeśli podczas przeglądania danej strony napotkasz problem, dostosuj poziom ochrony z panelu tarcz na pasku narzędzi.</translation>
+<translation id="3278033011827237847">Chroń się z tarczami Brave przed reklamami i skryptami śledzącymi naruszającymi prywatność. Wyłącz tarcze, jeśli strona nie działa poprawnie.</translation>
 <translation id="3366308997091824722">Ustawienia tarczy</translation>
 <translation id="3884404068544758153">Zmień wyszukiwarkę</translation>
 <translation id="438216590634144114">Wybierz przeglądarkę, której chcesz używać domyślnie, przeszukując Internet z paska adresowego.</translation>
@@ -109,7 +109,7 @@
 <translation id="1199044745726588100">5 sekund</translation>
 <translation id="4045581694057451126">8 sekund</translation>
 <translation id="8610523985422563960">1 minuta</translation>
-<translation id="7521774480426463961">Włącz możliwość przekazywania napiwków z ‘polubieniami’ postami</translation>
+<translation id="9031738692126722094">Włącz napiwki dotyczące treści w tych witrynach</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Przekazuj napiwek od razu, gdy trafisz na prawdziwą perełkę.</translation>
@@ -131,6 +131,8 @@
 <translation id="7797604753681168055">Odzyskaj teraz!</translation>
 <translation id="1184075897575325927">Przykro nam, wygląda na to, że ten grant został już wykorzystany.</translation>
 <translation id="282693359045252357">Data następnego miesięcznego napiwku</translation>
+<translation id="6231182869178328516">Daję napiwek <ph name="NAME">$1<ex>user</ex></ph>, korzystając z przeglądarki Brave. Sprawdź pod adresem https://brave.com/tips.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Kwota:</translation>
 <translation id="5923611424721173182">Obecne uzgodnienie</translation>
 <translation id="5457113250005438886">Nieprawidlowy</translation>
@@ -180,6 +182,7 @@
 <translation id="4281844954008187215">Warunki świadczenia usługi</translation>
 <translation id="4405997465645469914">Włączając Nagrody Brave zaznaczasz, że przeczytałeś i zgadzasz się na</translation>
 <translation id="8819542691525488940">Klikając zaznaczasz, że przeczytałeś i zgadzasz się na</translation>
+<translation id="8071424789698327147">Klikając Tak, gotowe!, oświadczasz, że znasz i akceptujesz</translation>
 <translation id="7530570094705720669">Tworzenie portfela</translation>
 <translation id="2105596359439030979">Twoja uwaga jest cenna. Zarabiaj, oglądając szanujące prywatność reklamy i przekazuj, to co zarobisz twórcom treści, które lubisz.</translation>
 <translation id="516395624550019162">Tak, wchodzę w to!</translation>
@@ -216,7 +219,7 @@
 <translation id="7277134233385925078">Ustaw miesięczny napiwek</translation>
 <translation id="8003573781961874199">Pobierz jako PDF</translation>
 <translation id="298067735430872465">Zarobki z reklam</translation>
-<translation id="3521361150443442734">Twoje zarobki z reklam są dostępne.</translation>
+<translation id="7965014118284846291">Twoje zarobki z reklam są dostępne.</translation>
 <translation id="8764029012618014430">Włącz napiwki</translation>
 <translation id="3412655388715513818">Wyklucz tę stronę</translation>
 <translation id="418343137736963579">Liczba stron wykluczonych z automatycznego wspierania:</translation>
@@ -282,8 +285,8 @@
 <translation id="3626186271103896082">Utwórz kopię zapasową portfela</translation>
 <translation id="5717619667204259673">Klucz ten należy przechowywać w bezpiecznym miejscu.</translation>
 <translation id="4699702339303280827">Zawsze możesz skorzystać z tego klucza, aby odzyskać portfel, jeśli coś przytrafi się Twojej przeglądarce lub komputerowi. Pamiętaj, aby ochronić go przed osobami, które mogłyby go użyć, by ukraść Twój portfel. Prawdopodobnie najbezpieczniej będzie zapisać klucz na kartce lub w innymi miejscu, w którym przechowujesz ważne informacje.</translation>
-<translation id="5759071143806884916">Możesz wesprzeć tę stronę, wysyłając napiwek i dziękując im w ten sposób za tworzenie świetnych treści. Zweryfikowani twórcy treści otrzymują zapłatę za napiwki w pierwszym tygodniu każdego miesiąca kalendarzowego.</translation>
-<translation id="1704859330137112950">Jeśli chcesz, możesz zaplanować miesięczne napiwki, aby regularnie wspierać tę stronę.</translation>
+<translation id="7354412786785889047">Możesz wesprzeć tego twórcę treści, dając napiwek. To forma podziękowania za tworzenie świetnych treści. Napiwek jest wypłacany zweryfikowanym twórcom w pierwszym tygodniu każdego miesiąca kalendarzowego.</translation>
+<translation id="3475063317678050010">Jeśli chcesz, możesz zaplanować comiesięczne, stałe napiwki w ramach wsparcia dla tego twórcy.</translation>
 <translation id="3074127054582480056">Uwaga</translation>
 <translation id="822513417008209372">Aktualnie wspierasz</translation>
 <translation id="5010112177773747965">bez Twojej zgody.</translation>
@@ -312,6 +315,7 @@
 <translation id="3536298624341433814">Wyślij napiwek</translation>
 <translation id="1792148354504719133">strona</translation>
 <translation id="5944430251223015324">strony</translation>
+<translation id="1834493631938747505">Powiedz innym o swoim napiwku.</translation>
 <translation id="8826007068782654809">Dziękujemy</translation>
 <translation id="6665366815203065060">Wysłałeś własnie napiwek do:</translation>
 <translation id="6432779622695508363">Daj napiwek z polubieniem</translation>
@@ -325,6 +329,9 @@
 <translation id="3124090095880236567">Włącz reklamy</translation>
 <translation id="8987812599455325915">Włącza to zarówno reklamy jak i wspieranie automatyczne. Możesz je w każdej chwili niezależnie włączyć lub wyłączyć.</translation>
 <translation id="1485484147452131556">Aktywuj Nagrody Brave</translation>
+<translation id="3983104749597726322">Tweet</translation>
+<translation id="5636843789453098076">Daj @{{ user }} napiwek za tweet:</translation>
+<translation id="4242384385082203046">Daj @{{ user }} napiwek za tweet!</translation>
 <translation id="2448312741937722512">Rodzaj</translation>
 <translation id="8772672608371898774">Zweryfikowany wydawca Brave</translation>
 <translation id="5050370287908180130">Zobacz szczegóły w zestawieniu miesięcznym</translation>
@@ -347,6 +354,20 @@
 <translation id="6727483290601442544">Zobacz Szczegóły</translation>
 <translation id="1988679729106502285">UWAGA:</translation>
 <translation id="5815103311506128988">Ten twórca nie zarejestrował się jeszcze w celu otrzymywania wsparcia od użytkowników przeglądarki Brave. Przeglądarka będzie usiłowała wnieść wsparcie do chwili, gdy dokonają weryfikacji, lub gdy minie 90 dni.</translation>
+<translation id="4292832015778676417">zarobione z reklam</translation>
+<translation id="3197752845651180812">Oczekujące wpłaty</translation>
+<translation id="3164105678355419142">Powtarzający się napiwek</translation>
+<translation id="2927922949538312364">Jednorazowy napiwek</translation>
+<translation id="6964891561514920613">Pokaż wszystkie oczekujące wpłaty</translation>
+<translation id="4346944508027912677">Oczekujące do</translation>
+<translation id="7410549756000115387">Brak oczekujących wpłat…</translation>
+<translation id="1963227389609234879">Usuń wszystko</translation>
+<translation id="1170315781901539495">Wykluczone strony</translation>
+<translation id="5119190679543565400">Przywróć tę stronę</translation>
+<translation id="9075700728717335924">Wykluczyłeś</translation>
+<translation id="4862817811647633830">stron ze wspierania automatycznego.</translation>
+<translation id="923467487918828349">Pokaż wszystko</translation>
+<translation id="5471305206221894680">Wspierane strony</translation>
 <translation id="1181037720776840403">Usuń</translation>
 <translation id="7885157704277298658">Skopiowano!</translation>
 <translation id="5379640681913450928">Liczba słów:</translation>

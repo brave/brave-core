@@ -30,7 +30,6 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4150684676757176434">Automatische Wiedergabe weiterhin blockieren</translation>
 <translation id="7543906827780734027">Brave hat diese Erweiterung noch nicht überprüft – sie könnte bösartig sein. "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" trotzdem hinzufügen?</translation>
 <translation id="2044383478723007273">Brave Farben</translation>
-<translation id="5341901626640816374">Breite Positionsleiste verwenden</translation>
 <translation id="6123134130710658846">Brave-Rewards-Button ausblenden</translation>
 <translation id="7635711399568194460">Blendet den Brave-Rewards-Button im Standortbalken aus, wenn Brave Rewards deaktiviert ist</translation>
 <translation id="7965178729203412357">Neue Tor-Identität</translation>
@@ -47,13 +46,20 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="2515126961943087659">Bat Ads-Service</translation>
 <translation id="7924918279836988121">Bat-Ledger-Dienst</translation>
 <translation id="4472575034687746823">Jetzt starten</translation>
+<translation id="3400357268283240774">Zusätzliche Einstellungen</translation>
 <translation id="6303294677342628402">Schilde</translation>
+<translation id="768979911142179781">Standardeinstellungen</translation>
+<translation id="5989930075012659993">Ihre derzeitigen Einstellungen pro Seite werden gespeichert.</translation>
+<translation id="9185018653595759199">Social-Media-Sperrung</translation>
+<translation id="6894114137169961038">Werbesteuerung</translation>
+<translation id="1096802265930928584">Cookie-Kontrolle</translation>
 <translation id="8919235146866304148">Fingerabdruckschutz</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Skriptblockierung</translation>
 <translation id="7498695072878479744">Google-Anmeldebuttons auf Seiten dritter Parteien erlauben</translation>
 <translation id="863171915776379000">Facebook-Anmeldungen und eingebettete Posts erlauben</translation>
 <translation id="5165042248369837294">Eingebettete Twitter-Nachrichten erlauben</translation>
+<translation id="958971637207126733">In LinkedIn eingebettete Beiträge erlauben</translation>
 <translation id="6067014455220527258">Werbung blockieren</translation>
 <translation id="6985711843506827936">Werbung und Tracking erlauben</translation>
 <translation id="6132506775968708399">Cookies von Drittanbietern blockieren</translation>
@@ -73,11 +79,14 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="2414886740292270097">Dunkel</translation>
 <translation id="1360441190790440400">Wie Linux</translation>
 <translation id="1336940801687497203">Wie Windows</translation>
+<translation id="8721331068159819483">Dasselbe wie macOS</translation>
 <translation id="6786747875388722282">Erweiterungen</translation>
 <translation id="2896916411183256228">Nutzt WebTorrent, um Torrents direkt im Browser anzuzeigen. Unterstützt Torrent-Dateien und Magnet-Links.</translation>
 <translation id="6554397389149987360">Nutzt Hangouts-Komponente, um das Teilen des Bildschirms und andere Funktionen im Browser zu ermöglichen.</translation>
+<translation id="4154389611571860454">Verwendet die IPFS-Erweiterung, um IPFS im Browser zu unterstützen.</translation>
 <translation id="8137559199583651773">Erweiterungen verwalten</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Im Web Extensions Store anzeigen</translation>
 <translation id="4846154056248462491">Beim Beenden</translation>
+<translation id="5057399635433117814">Diese Seite übersetzen? Dadurch wird der gesamte Text auf dieser Seite an Microsoft zur Übersetzung gesendet.</translation>
 </translationbundle>

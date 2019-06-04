@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Nebyly nalezeny žádné výsledky</translation>
 <translation id="8967866634928501045">Zobrazíte stisknutím Alt + Shift + A</translation>
 <translation id="998747458861718449">&amp;Prozkoumat</translation>
+<translation id="4428301600092811022">Získávat popisy obrázků z Googlu?</translation>
 <translation id="741204030948306876">Ano</translation>
 <translation id="780301667611848630">Ne, děkuji</translation>
 <translation id="3943582379552582368">&amp;Zpět</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">C&amp;entrum nápovědy</translation>
 <translation id="7324297612904500502">Fórum beta</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">Upravit vyhledávače...</translation>
 <translation id="5702898740348134351">Upravit vyhl&amp;edávače...</translation>
 <translation id="2454247629720664989">Klíčové slovo</translation>
@@ -1302,8 +1304,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6207200176136643843">Obnovit výchozí úroveň přiblížení</translation>
 <translation id="4953689047182316270">Reagovat na události přístupnosti</translation>
 <translation id="4677585247300749148"><ph name="URL"/> chce reagovat na události přístupnosti</translation>
+<translation id="2224471211857467033">Události přístupnosti</translation>
 <translation id="6116338172782435947">Přístup k textu a obrázkům zkopírovaným do schránky</translation>
 <translation id="3461266716147554923"><ph name="URL"/> chce získat přístup k textu a obrázkům zkopírovaným do schránky</translation>
+<translation id="2586657967955657006">Schránka</translation>
 <translation id="4838836835474292213">Byl povolen přístup ke čtení schránky</translation>
 <translation id="1415708812149920388">Byl odmítnut přístup ke čtení obsahu schránky</translation>
 <translation id="2365507699358342471">Tato stránka má přístup k textu a obrázkům zkopírovaným do schránky.</translation>
@@ -1730,6 +1734,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="7547317915858803630">Upozornění: Vaše nastavení aplikace <ph name="PRODUCT_NAME"/> jsou uložena na síťovém disku. To může vést ke zpomalení, chybám nebo ztrátě dat.</translation>
 <translation id="3122496702278727796">Nepodařilo se vytvořit datový adresář</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> se pokouší stáhnout několik souborů</translation>
+<translation id="7514365320538308">Stáhnout</translation>
 <translation id="691024665142758461">Stáhnout několik souborů</translation>
 <translation id="7004499039102548441">Nedávno použité karty</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 karta}few{# karty}many{# karty}other{# karet}}</translation>
@@ -1819,6 +1824,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="6156960295318603523">Nastavení jazyka</translation>
 <translation id="7931318309563332511">Neznámé</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> vám chce zasílat oznámení</translation>
+<translation id="2482878487686419369">Oznámení</translation>
 <translation id="7221855153210829124">Zobrazovat oznámení</translation>
 <translation id="8393700583063109961">Odeslat zprávu</translation>
 <translation id="6701535245008341853">Profil nelze načíst.</translation>
@@ -1920,6 +1926,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1753905327828125965">Nejnavštěvovanější</translation>
 <translation id="5612720917913232150">Web <ph name="URL"/> chce použít polohu vašeho počítače</translation>
 <translation id="4733082559415072992">Web <ph name="URL"/> chce použít polohu vašeho zařízení</translation>
+<translation id="5646376287012673985">Poloha</translation>
 <translation id="3016780570757425217">Přístup k údajům o vaší poloze</translation>
 <translation id="4068506536726151626">Tato stránka obsahuje prvky z následujících webů, které sledují vaši polohu:</translation>
 <translation id="4920887663447894854">Těmto webům bylo na této stránce zakázáno sledování vaší polohy.</translation>
@@ -1929,6 +1936,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3528033729920178817">Tato stránka sleduje vaši polohu.</translation>
 <translation id="1510030919967934016">Této stránce bylo zakázáno sledovat vaši polohu.</translation>
 <translation id="6910240653697687763">Web <ph name="URL"/> chce získat úplnou kontrolu nad zařízeními MIDI</translation>
+<translation id="1834583737373831634">Zařízení MIDI</translation>
 <translation id="8606726445206553943">Používat vaše zařízení MIDI</translation>
 <translation id="1849186935225320012">Tato stránka má úplnou kontrolu nad zařízeními MIDI.</translation>
 <translation id="2986010903908656993">U této stránky byla zablokována úplná kontrola zařízení MIDI.</translation>
@@ -1962,6 +1970,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="8282947398454257691">Znát jedinečný identifikátor vašeho zařízení</translation>
 <translation id="8329449853370113380">Web <ph name="URL"/> chce přehrát chráněný obsah. Brave Software ověří identitu vašeho zařízení.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> chce přehrávat chráněný obsah. Brave Software ověří identitu vašeho zařízení a tento web k ní může získat přístup.</translation>
+<translation id="1746402432151920942">Identifikátor chráněného média</translation>
 <translation id="1322046419516468189">K zobrazení a správě uložených hesel můžete použít svůj <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Heslo bylo uloženo. K zobrazení a správě uložených hesel můžete použít svůj <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Účet Brave Software</translation>
@@ -2021,18 +2030,24 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="3532844647053365774">Stránka <ph name="HOST"/> chce použít váš mikrofon</translation>
 <translation id="7108634116785509031">Webová stránka <ph name="HOST"/> chce použít vaši kameru</translation>
 <translation id="3691267899302886494">Web <ph name="HOST"/> chce sdílet vaši obrazovku</translation>
+<translation id="4275663329226226506">Média</translation>
 <translation id="8962918469425892674">Tento web používá senzory pohybu nebo osvětlení.</translation>
+<translation id="4532646538815530781">Tento web používá senzory pohybu.</translation>
 <translation id="6057381398996433816">Tomuto webu bylo zablokováno používání senzorů pohybu a osvětlení.</translation>
+<translation id="7707108266051544351">Tomuto webu bylo zablokováno používání senzorů pohybu.</translation>
 <translation id="1151917987301063366">Vždy povolit webu <ph name="HOST"/> přístup k senzorům</translation>
 <translation id="7377451353532943397">I nadále blokovat přístup k senzorům</translation>
 <translation id="6878422606530379992">Použití senzorů je povoleno</translation>
 <translation id="4031527940632463547">Použití senzorů je blokováno</translation>
 <translation id="4559617833001311418">Tento web používá vaše senzory pohybu nebo osvětlení.</translation>
+<translation id="5623282979409330487">Tento web používá senzory pohybu.</translation>
 <translation id="2309620859903500144">Tomuto webu byl zablokován přístup k senzorům pohybu nebo osvětlení.</translation>
+<translation id="6541638731489116978">Tomuto webu byl zablokován přístup k senzorům pohybu.</translation>
 <translation id="8645354835496065562">I nadále povolovat přístup k senzorům</translation>
 <translation id="2903882649406874750">Vždy hostiteli <ph name="HOST"/> blokovat přístup k senzorům</translation>
 <translation id="3194737229810486521">Stránka <ph name="URL"/> chce trvale ukládat data v zařízení</translation>
 <translation id="1030706264415084469">Stránka <ph name="URL"/> chce v zařízení trvale ukládat velké množství dat</translation>
+<translation id="885701979325669005">Úložiště</translation>
 <translation id="1712552549805331520">Stránka <ph name="URL"/> chce trvale ukládat data v místním počítači</translation>
 <translation id="1997484222658892567">Stránka <ph name="URL"/> chce trvale ukládat data v místním počítači</translation>
 <translation id="7648992873808071793">Ukládat soubory v tomto zařízení</translation>
@@ -2451,9 +2466,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="702252130983202758">Vaše aplikace</translation>
 <translation id="8831664945713891930">Otevřít nastavení rozšíření</translation>
 <translation id="5138227688689900538">Zobrazit méně</translation>
-<translation id="5646376287012673985">Poloha</translation>
 <translation id="5270167208902136840">Zobrazit další aplikace (<ph name="NUMBER_OF_MORE_APPS"/>)</translation>
-<translation id="2482878487686419369">Oznámení</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> aplikace</translation>
 <translation id="7207631048330366454">Hledat v aplikacích</translation>
 <translation id="9011424611726486705">Otevřít nastavení webu</translation>
@@ -2786,6 +2799,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="4305227814872083840">dlouhá (2 s)</translation>
 <translation id="2860150991415616761">velmi dlouhá (4 s)</translation>
 <translation id="1217668622537098248">Po akci vrátit na kliknutí levým tlačítkem</translation>
+<translation id="8781470833671194250">Stabilizace polohy při kliknutí</translation>
 <translation id="3682824389861648626">Limit pohybu</translation>
 <translation id="5511379779384092781">Velmi malý</translation>
 <translation id="2765217105034171413">Malé</translation>
@@ -3408,7 +3422,10 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="9038649477754266430">Používat službu předpovídání k rychlejšímu načítání stránek</translation>
 <translation id="7981313251711023384">Předběžně načítat stránky pro rychlejší procházení a vyhledávání</translation>
 <translation id="2468205691404969808">Používá soubory cookie k uložení vašeho nastavení i v případě, že stránky nenavštívíte</translation>
+<translation id="3181954750937456830">Bezpečné prohlížení (chrání vás a vaše zařízení před nebezpečnými weby)</translation>
+<translation id="7315322926489145388">Když je ohrožena vaše bezpečnost, odesílá adresy URL některých navštívených stránek do Googlu</translation>
 <translation id="4991384657077828949">Pomoci zlepšovat zabezpečení Chromu</translation>
+<translation id="1943176487615318915">Kvůli detekci nebezpečných aplikací a webů odesílá Brave do Googlu adresy URL některých navštívených stránek, omezené informace o systému a část obsahu stránek</translation>
 <translation id="2875273286298348523">Text, který v prohlížeči zadáte, odesílá Brave do Googlu</translation>
 <translation id="9079153198295609735">Automaticky posílat společnosti Brave Software statistiky používání a zprávy o selhání</translation>
 <translation id="5941220456342415404">Automaticky do Googlu odesílat diagnostické údaje a údaje o využití</translation>
@@ -3480,7 +3497,6 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1919345977826869612">Reklamy</translation>
 <translation id="5649053991847567735">Automatické stahování</translation>
 <translation id="3744111561329211289">Synchronizace na pozadí</translation>
-<translation id="2586657967955657006">Schránka</translation>
 <translation id="5518219166343146486">Zeptat se, když chce web získat přístup k textu a obrázkům zkopírovaným do schránky</translation>
 <translation id="2089795179672254991">Zeptat se, když chce web získat přístup k textu a obrázkům zkopírovaným do schránky (doporučeno)</translation>
 <translation id="16815041330799488">Nepovolovat webům přístup k textu a obrázkům zkopírovaným do schránky</translation>
@@ -3508,6 +3524,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1128109161498068552">Nepovolovat žádným webům využívání exkluzivních zpráv systému pro přístup k zařízením MIDI</translation>
 <translation id="2091887806945687916">Zvuk</translation>
 <translation id="4751476147751820511">Senzory pohybu nebo světla</translation>
+<translation id="1717218214683051432">Pohybová čidla</translation>
 <translation id="6059925163896151826">Zařízení USB</translation>
 <translation id="8666584013686199826">Zeptat se, když chce web získat přístup k zařízením USB</translation>
 <translation id="6291949900244949761">Zeptat se, když chce web získat přístup k zařízením USB (doporučeno)</translation>
@@ -3543,7 +3560,9 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="1660204651932907780">Povolit webům přehrávat zvuky (doporučeno)</translation>
 <translation id="3600792891314830896">Ztlumit weby, které přehrávají zvuky</translation>
 <translation id="5084230410268011727">Povolit webům používat senzory pohybu a světla</translation>
+<translation id="489454699928748701">Povolit webům používání senzorů pohybu</translation>
 <translation id="5047421709274785093">Bránit webům v používání senzorů pohybu a světla</translation>
+<translation id="6396988158856674517">Blokovat webům používání senzorů pohybu</translation>
 <translation id="2904456025988372123">Zeptat se, když se web pokusí stahovat soubory automaticky po stažení prvního souboru</translation>
 <translation id="3494769164076977169">Zeptat se po stažení prvního souboru, když se web pokouší stahovat soubory automaticky (doporučeno)</translation>
 <translation id="5036662165765606524">Nepovolovat žádnému webu automatické stahování několika souborů</translation>
@@ -4078,6 +4097,7 @@ Svůj soubor klíče uchovávejte na bezpečném místě. Budete jej potřebovat
 <translation id="2785008241190445880">Záložka byla nahrazena</translation>
 <translation id="5468853758063275923">Brave je váš výchozí prohlížeč</translation>
 <translation id="2950533317914339731">Přidejte záložky svých oblíbeným aplikací Brave Software</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Mapy</translation>
 <translation id="6709133671862442373">Zprávy</translation>

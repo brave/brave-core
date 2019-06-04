@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Hasil penelusuran tidak ditemukan</translation>
 <translation id="8967866634928501045">Tekan Alt Shift A untuk menampilkan</translation>
 <translation id="998747458861718449">I&amp;nspeksi</translation>
+<translation id="4428301600092811022">Dapatkan deskripsi gambar dari Brave Software?</translation>
 <translation id="741204030948306876">Ya, saya ikut</translation>
 <translation id="780301667611848630">Lain kali</translation>
 <translation id="3943582379552582368">&amp;Mundur</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">Pusat Bantuan</translation>
 <translation id="7324297612904500502">Forum Beta</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Edit mesin telusur...</translation>
 <translation id="5702898740348134351">&amp;Edit Mesin Telusur...</translation>
 <translation id="2454247629720664989">Kata kunci</translation>
@@ -1312,8 +1314,10 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6207200176136643843">Setel ulang ke tingkat zoom default</translation>
 <translation id="4953689047182316270">Merespons Acara Aksesibilitas</translation>
 <translation id="4677585247300749148"><ph name="URL"/> ingin merespons peristiwa aksesibilitas</translation>
+<translation id="2224471211857467033">Peristiwa Aksesibilitas</translation>
 <translation id="6116338172782435947">Melihat teks dan gambar yang disalin ke papan klip</translation>
 <translation id="3461266716147554923"><ph name="URL"/> ingin melihat teks dan gambar yang disalin ke papan klip</translation>
+<translation id="2586657967955657006">Papan klip</translation>
 <translation id="4838836835474292213">Akses baca papan klip diizinkan</translation>
 <translation id="1415708812149920388">Akses baca papan klip ditolak</translation>
 <translation id="2365507699358342471">Situs ini dapat melihat teks dan gambar yang disalin ke papan klip.</translation>
@@ -1741,6 +1745,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="7547317915858803630">Peringatan: setelan <ph name="PRODUCT_NAME"/> Anda disimpan di drive jaringan. Hal ini dapat mengakibatkan kelambatan, kerusakan, atau bahkan hilangnya data.</translation>
 <translation id="3122496702278727796">Gagal Membuat Direktori Data</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> ingin mendownload beberapa file</translation>
+<translation id="7514365320538308">Download</translation>
 <translation id="691024665142758461">Mendownload beberapa file</translation>
 <translation id="7004499039102548441">Tab Baru-baru Ini</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 Tab}other{# Tab}}</translation>
@@ -1832,6 +1837,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="6156960295318603523">Setelan Bahasa</translation>
 <translation id="7931318309563332511">Tidak dikenal</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> ingin mengirimkan notifikasi kepada Anda</translation>
+<translation id="2482878487686419369">Notifikasi</translation>
 <translation id="7221855153210829124">Tampilkan notifikasi</translation>
 <translation id="8393700583063109961">Kirim pesan</translation>
 <translation id="6701535245008341853">Tidak dapat memperoleh profil.</translation>
@@ -1933,6 +1939,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1753905327828125965">Sering Dibuka</translation>
 <translation id="5612720917913232150"><ph name="URL"/> ingin menggunakan lokasi komputer Anda</translation>
 <translation id="4733082559415072992"><ph name="URL"/> ingin menggunakan lokasi perangkat Anda</translation>
+<translation id="5646376287012673985">Lokasi</translation>
 <translation id="3016780570757425217">Mengetahui lokasi Anda</translation>
 <translation id="4068506536726151626">Halaman ini berisi elemen dari situs berikut yang melacak lokasi Anda:</translation>
 <translation id="4920887663447894854">Situs berikut telah dicekal agar tidak melacak lokasi Anda pada halaman ini:</translation>
@@ -1942,6 +1949,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3528033729920178817">Halaman ini melacak lokasi Anda.</translation>
 <translation id="1510030919967934016">Halaman ini telah dicekal agar tidak melacak lokasi Anda.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> ingin mendapatkan kontrol penuh atas perangkat MIDI Anda</translation>
+<translation id="1834583737373831634">Perangkat MIDI</translation>
 <translation id="8606726445206553943">Menggunakan perangkat MIDI Anda</translation>
 <translation id="1849186935225320012">Halaman ini memiliki kontrol penuh perangkat MIDI.</translation>
 <translation id="2986010903908656993">Halaman ini diblokir karena memiliki kontrol penuh atas perangkat MIDI.</translation>
@@ -1975,6 +1983,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8282947398454257691">Mengetahui pengenal perangkat unik Anda</translation>
 <translation id="8329449853370113380"><ph name="URL"/> ingin memutar konten yang dilindungi. Identitas perangkat Anda akan diverifikasi oleh Brave Software.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> ingin memutar konten yang dilindungi. Identitas perangkat Anda akan diverifikasi oleh Brave Software dan akan dapat diakses oleh situs ini.</translation>
+<translation id="1746402432151920942">ID Media yang Dilindungi</translation>
 <translation id="1322046419516468189">Lihat dan kelola sandi tersimpan di <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Sandi disimpan. Lihat dan kelola sandi tersimpan di <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
@@ -2035,18 +2044,24 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="3532844647053365774"><ph name="HOST"/> ingin menggunakan mikrofon Anda</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> ingin menggunakan kamera Anda</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> ingin berbagi layar Anda</translation>
+<translation id="4275663329226226506">Media</translation>
 <translation id="8962918469425892674">Situs ini menggunakan sensor gerakan atau sensor cahaya.</translation>
+<translation id="4532646538815530781">Situs ini menggunakan sensor gerakan.</translation>
 <translation id="6057381398996433816">Situs ini diblokir agar tidak menggunakan sensor gerakan dan sensor cahaya.</translation>
+<translation id="7707108266051544351">Situs ini telah diblokir agar tidak dapat mengakses sensor gerakan.</translation>
 <translation id="1151917987301063366">Selalu izinkan <ph name="HOST"/> mengakses sensor</translation>
 <translation id="7377451353532943397">Terus blokir akses sensor</translation>
 <translation id="6878422606530379992">Sensor diizinkan</translation>
 <translation id="4031527940632463547">Sensor diblokir</translation>
 <translation id="4559617833001311418">Situs ini mengakses sensor gerakan atau sensor cahaya Anda.</translation>
+<translation id="5623282979409330487">Situs ini sedang mengakses sensor gerakan.</translation>
 <translation id="2309620859903500144">Situs ini telah diblokir agar tidak dapat mengakses sensor gerakan atau sensor cahaya.</translation>
+<translation id="6541638731489116978">Situs ini telah diblokir agar tidak dapat mengakses sensor gerakan.</translation>
 <translation id="8645354835496065562">Terus izinkan akses sensor</translation>
 <translation id="2903882649406874750">Selalu blokir <ph name="HOST"/> agar tidak mengakses sensor</translation>
 <translation id="3194737229810486521"><ph name="URL"/> ingin menyimpan data di perangkat Anda secara permanen</translation>
 <translation id="1030706264415084469"><ph name="URL"/> ingin menyimpan data berukuran besar di perangkat Anda secara permanen</translation>
+<translation id="885701979325669005">Penyimpanan</translation>
 <translation id="1712552549805331520"><ph name="URL"/> ingin menyimpan data di komputer lokal Anda secara permanen</translation>
 <translation id="1997484222658892567"><ph name="URL"/> ingin menyimpan data berukuran besar di komputer lokal Anda secara permanen</translation>
 <translation id="7648992873808071793">Menyimpan file pada perangkat ini</translation>
@@ -2465,9 +2480,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="702252130983202758">Aplikasi Anda</translation>
 <translation id="8831664945713891930">Buka setelan Ekstensi</translation>
 <translation id="5138227688689900538">Tampilkan lebih sedikit</translation>
-<translation id="5646376287012673985">Lokasi</translation>
 <translation id="5270167208902136840">Tampilkan <ph name="NUMBER_OF_MORE_APPS"/> aplikasi lainnya</translation>
-<translation id="2482878487686419369">Notifikasi</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> aplikasi</translation>
 <translation id="7207631048330366454">Telusuri aplikasi</translation>
 <translation id="9011424611726486705">Buka setelan situs</translation>
@@ -2800,6 +2813,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="4305227814872083840">lama (2 dtk)</translation>
 <translation id="2860150991415616761">sangat lama (4 dtk)</translation>
 <translation id="1217668622537098248">Kembali ke klik kiri setelah tindakan</translation>
+<translation id="8781470833671194250">Stabilisasi posisi klik</translation>
 <translation id="3682824389861648626">Ambang batas gerakan</translation>
 <translation id="5511379779384092781">Sangat kecil</translation>
 <translation id="2765217105034171413">Kecil</translation>
@@ -3422,7 +3436,10 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="9038649477754266430">Gunakan layanan prediksi agar halaman dimuat dengan lebih cepat</translation>
 <translation id="7981313251711023384">Pramuat halaman agar browsing dan menelusuri lebih cepat</translation>
 <translation id="2468205691404969808">Menggunakan cookie untuk mengingat preferensi, meski Anda tidak membuka halaman tersebut</translation>
+<translation id="3181954750937456830">Safe Browsing (melindungi Anda dan perangkat dari situs berbahaya)</translation>
+<translation id="7315322926489145388">Mengirimkan URL beberapa halaman yang Anda kunjungi ke Brave Software, jika keamanan Anda berisiko</translation>
 <translation id="4991384657077828949">Bantu meningkatkan keamanan Brave</translation>
+<translation id="1943176487615318915">Untuk mendeteksi aplikasi dan situs berbahaya, Brave mengirimkan URL beberapa halaman yang Anda kunjungi, informasi sistem terbatas, dan beberapa konten halaman ke Brave Software</translation>
 <translation id="2875273286298348523">Brave mengirimkan teks yang Anda ketik di browser ke Brave Software</translation>
 <translation id="9079153198295609735">Kirim statistik penggunaan dan laporan kerusakan ke Brave Software secara otomatis</translation>
 <translation id="5941220456342415404">Otomatis kirimkan data diagnostik dan penggunaan ke Brave Software</translation>
@@ -3494,7 +3511,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1919345977826869612">Iklan</translation>
 <translation id="5649053991847567735">Download otomatis</translation>
 <translation id="3744111561329211289">Sinkronisasi latar belakang</translation>
-<translation id="2586657967955657006">Papan klip</translation>
 <translation id="5518219166343146486">Tanyakan saat situs ingin melihat teks dan gambar yang disalin ke papan klip</translation>
 <translation id="2089795179672254991">Tanyakan saat situs ingin melihat teks dan gambar yang disalin ke papan klip (direkomendasikan)</translation>
 <translation id="16815041330799488">Jangan izinkan situs melihat teks dan gambar yang disalin ke papan klip</translation>
@@ -3522,6 +3538,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1128109161498068552">Jangan izinkan situs apa pun untuk menggunakan pesan eksklusif sistem untuk mengakses perangkat MIDI</translation>
 <translation id="2091887806945687916">Suara</translation>
 <translation id="4751476147751820511">Sensor gerakan atau cahaya</translation>
+<translation id="1717218214683051432">Sensor gerakan</translation>
 <translation id="6059925163896151826">Perangkat USB</translation>
 <translation id="8666584013686199826">Tanyakan saat situs ingin mengakses perangkat USB</translation>
 <translation id="6291949900244949761">Tanyakan saat situs ingin mengakses perangkat USB (direkomendasikan)</translation>
@@ -3557,7 +3574,9 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="1660204651932907780">Mengizinkan situs memutar suara (direkomendasikan)</translation>
 <translation id="3600792891314830896">Mematikan suara situs yang memutar suara</translation>
 <translation id="5084230410268011727">Izinkan situs menggunakan sensor gerakan dan cahaya</translation>
+<translation id="489454699928748701">Izinkan situs menggunakan sensor gerakan</translation>
 <translation id="5047421709274785093">Blokir situs agar tidak menggunakan sensor gerakan dan cahaya</translation>
+<translation id="6396988158856674517">Blokir situs agar tidak menggunakan sensor gerakan</translation>
 <translation id="2904456025988372123">Tanyakan saat situs mencoba mendownload file secara otomatis setelah file pertama</translation>
 <translation id="3494769164076977169">Tanyakan saat situs mencoba mendownload file secara otomatis setelah file pertama (disarankan)</translation>
 <translation id="5036662165765606524">Jangan izinkan situs apa pun mendownload beberapa file secara otomatis</translation>
@@ -4092,6 +4111,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2785008241190445880">Bookmark diganti</translation>
 <translation id="5468853758063275923">Brave adalah browser default Anda</translation>
 <translation id="2950533317914339731">Tambahkan bookmark ke aplikasi Brave Software favorit Anda</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Berita</translation>
