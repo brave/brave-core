@@ -95,6 +95,9 @@ friend EdgeNodeInsert;
     const blink::WebString& code);
   void RegisterScriptCompilation(const blink::ScriptSourceCode& code,
     const ScriptId script_id, const ScriptType type);
+  void RegisterScriptCompilationFromAttr(const blink::DOMNodeId node_id,
+    const WTF::String& attr_name, const WTF::String& attr_value,
+    const ScriptId script_id);
 
   void RegisterScriptExecStart(const ScriptId script_id);
   // The Script ID is only used here as a sanity check to make sure we're

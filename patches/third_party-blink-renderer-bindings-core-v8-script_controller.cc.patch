@@ -16,7 +16,7 @@ index 63d3684c66dd2ca6112637f846421f840e67ee2f..ed2935644496d6b167f5714b5d36c992
  namespace blink {
  
  void ScriptController::Trace(blink::Visitor* visitor) {
-@@ -129,9 +136,33 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
+@@ -129,9 +136,32 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
               .ToLocal(&script))
        return result;
  
@@ -25,7 +25,6 @@ index 63d3684c66dd2ca6112637f846421f840e67ee2f..ed2935644496d6b167f5714b5d36c992
 +      ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
 +        ->GetPageGraph();
 +      if (page_graph != nullptr) {
-+        LOG(INFO) << source.Source().ToString().Utf8().data();
 +        page_graph->RegisterScriptCompilation(
 +          source, script->GetUnboundScript()->GetId(),
 +          ::brave_page_graph::ScriptType::kScriptTypeUnknown);
