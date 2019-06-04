@@ -317,7 +317,10 @@ bool ParseJSON(base::StringPiece json,
       { "name": "sync.brave.com", "mode": "force-https", "policy": "custom", "pins": "brave"},
       { "name": "sync-staging.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
       { "name": "publishers-distro.basicattentiontoken.org", "policy": "custom", "mode": "force-https", "pins": "brave"},
-      { "name": "publishers-staging-distro.basicattentiontoken.org", "policy": "custom", "mode": "force-https", "pins": "brave"}
+      { "name": "publishers-staging-distro.basicattentiontoken.org", "policy": "custom", "mode": "force-https", "pins": "brave"},
+      { "name": "p3a.brave.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
+      { "name": "p3a.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"},
+      { "name": "p3a-dev.bravesoftware.com", "policy": "custom", "mode": "force-https", "pins": "brave"}
     ]})brave_json";
 
   return ParseJSON_ChromiumImpl(brave_json, entries, pinsets);
