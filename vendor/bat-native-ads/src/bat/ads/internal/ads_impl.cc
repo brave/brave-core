@@ -248,7 +248,9 @@ void AdsImpl::OnMediaStopped(const int32_t tab_id) {
 }
 
 bool AdsImpl::IsMediaPlaying() const {
-  if (media_playing_.empty()) {
+  auto tab = media_playing_.find(last_shown_tab_id_);
+  if (tab == media_playing_.end()) {
+    // Media is not playing in the last shown tab
     return false;
   }
 
