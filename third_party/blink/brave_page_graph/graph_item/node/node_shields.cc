@@ -25,7 +25,7 @@ ItemName NodeShields::GetItemName() const {
 
 GraphMLXMLList NodeShields::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefNodeType)
+    GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
       ->ToValue("shields")
   };
 }

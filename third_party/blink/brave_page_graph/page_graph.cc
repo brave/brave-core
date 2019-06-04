@@ -416,7 +416,7 @@ void PageGraph::RegisterRequestStartFromCurrentScript(
 void PageGraph::RegisterRequestComplete(const InspectorId request_id,
     const ResourceType type) {
   PG_LOG("RegisterRequestComplete) request id: " + to_string(request_id)
-    + ", resource type: " + resource_type_to_string(type));
+    + ", resource type: " + ResourceTypeToString(type));
 
   const shared_ptr<const TrackedRequestRecord> request_record =
     request_tracker_ .RegisterRequestComplete(request_id, type);
@@ -556,7 +556,7 @@ GraphMLXML PageGraph::ToGraphML() const {
     << "\t\txsi:schemaLocation=\"http://graphml.graphdrawing.org/xmlns" << endl
     << "\t\t\thttp://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd\">" << endl;
 
-  for (const GraphMLAttr* const graphml_attr : get_graphml_attrs()) {
+  for (const GraphMLAttr* const graphml_attr : GetGraphMLAttrs()) {
     builder << "\t" << graphml_attr->ToDefinition() << "\n";
   }
 

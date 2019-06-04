@@ -34,7 +34,7 @@ ItemName EdgeExecute::GetItemName() const {
 
 GraphMLXMLList EdgeExecute::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
       ->ToValue("execute")
   };
 }

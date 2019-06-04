@@ -44,9 +44,9 @@ ItemDesc NodeResource::GetDescBody() const {
 
 GraphMLXMLList NodeResource::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefNodeType)
+    GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
       ->ToValue("resource"),
-    graphml_attr_def_for_type(kGraphMLAttrDefUrl)
+    GraphMLAttrDefForType(kGraphMLAttrDefUrl)
       ->ToValue(url_)
   };
 }

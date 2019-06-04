@@ -29,7 +29,7 @@ ItemName EdgeStorage::GetDescBody() const {
 
 GraphMLXMLList EdgeStorage::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefKey)
+    GraphMLAttrDefForType(kGraphMLAttrDefKey)
       ->ToValue(key_)
   };
 }

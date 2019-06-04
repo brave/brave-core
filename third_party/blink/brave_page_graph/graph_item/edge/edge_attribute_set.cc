@@ -39,9 +39,9 @@ ItemDesc EdgeAttributeSet::GetDescBody() const {
 
 GraphMLXMLList EdgeAttributeSet::GraphMLAttributes() const {
   GraphMLXMLList attrs = EdgeAttribute::GraphMLAttributes();
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefValue)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefValue)
       ->ToValue(AttributeValue()));
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
       ->ToValue("attr set"));
   return attrs;
 }

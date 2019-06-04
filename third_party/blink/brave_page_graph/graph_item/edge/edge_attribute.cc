@@ -34,11 +34,11 @@ bool EdgeAttribute::GetIsStyle() const {
 GraphMLXMLList EdgeAttribute::GraphMLAttributes() const {
   GraphMLXMLList attrs;
   attrs.push_back(
-    graphml_attr_def_for_type(kGraphMLAttrDefKey)->ToValue(GetAttributeName()));
+    GraphMLAttrDefForType(kGraphMLAttrDefKey)->ToValue(GetAttributeName()));
   
   if (is_style_) {
     attrs.push_back(
-      graphml_attr_def_for_type(kGraphMLAttrDefIsStyle)->ToValue(true));
+      GraphMLAttrDefForType(kGraphMLAttrDefIsStyle)->ToValue(true));
   }
 
   return attrs;
