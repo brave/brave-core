@@ -26,7 +26,7 @@ using ::std::vector;
 namespace brave_page_graph {
 
 namespace {
-  const GraphMLAttr* const attr_name = new GraphMLAttr(
+  const GraphMLAttr* const attr_name_attr = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "attr name");
   const GraphMLAttr* const attr_value = new GraphMLAttr(
     kGraphMLAttrForTypeEdge, "attr value");
@@ -72,7 +72,7 @@ namespace {
     kGraphMLAttrForTypeEdge, "value");
 
   const vector<const GraphMLAttr* const> _all_graphml_attrs = {
-    attr_name, attr_value, before_node_attr, call_args, edge_type_attr,
+    attr_name_attr, attr_value, before_node_attr, call_args, edge_type_attr,
     is_style_attr, key_attr, method_attr, tag_attr, node_id_attr,
     node_text, node_type, parent_node_attr, script_id_attr, script_type,
     status_type, success_attr, url_attr, request_id_attr,
@@ -142,6 +142,8 @@ GraphMLXML GraphMLAttr::ToValue(const uint64_t value) const {
 
 const GraphMLAttr* graphml_attr_def_for_type(const GraphMLAttrDef type) noexcept {
   switch (type) {
+    case kGraphMLAttrDefAttrName:
+      return attr_name_attr;
     case kGraphMLAttrDefBeforeNodeId:
       return before_node_attr;
     case kGraphMLAttrDefCallArgs:

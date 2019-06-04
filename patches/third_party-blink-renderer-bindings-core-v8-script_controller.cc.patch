@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/script_controller.cc b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
-index 5987273c80d97900860b893d561d8466098d23c3..f549e4372e6f675b3ee66c99215de2ef28540e2f 100644
+index 5987273c80d97900860b893d561d8466098d23c3..3a186ff24db9276a5c89fa330809449002dc04da 100644
 --- a/third_party/blink/renderer/bindings/core/v8/script_controller.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
 @@ -71,6 +71,13 @@
@@ -16,7 +16,7 @@ index 5987273c80d97900860b893d561d8466098d23c3..f549e4372e6f675b3ee66c99215de2ef
  namespace blink {
  
  void ScriptController::Trace(blink::Visitor* visitor) {
-@@ -130,9 +137,33 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
+@@ -130,9 +137,32 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
               .ToLocal(&script))
        return result;
  
@@ -25,7 +25,6 @@ index 5987273c80d97900860b893d561d8466098d23c3..f549e4372e6f675b3ee66c99215de2ef
 +      ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
 +        ->GetPageGraph();
 +      if (page_graph != nullptr) {
-+        LOG(INFO) << source.Source().ToString().Utf8().data();
 +        page_graph->RegisterScriptCompilation(
 +          source, script->GetUnboundScript()->GetId(),
 +          ::brave_page_graph::ScriptType::kScriptTypeUnknown);
