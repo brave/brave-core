@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Aucun résultat de recherche n'a été trouvé.</translation>
 <translation id="8967866634928501045">Appuyez sur Alt+Maj+A pour afficher</translation>
 <translation id="998747458861718449">I&amp;nspecter</translation>
+<translation id="4428301600092811022">Obtenir des descriptions d'images de Brave Software ?</translation>
 <translation id="741204030948306876">J'accepte</translation>
 <translation id="780301667611848630">Non merci</translation>
 <translation id="3943582379552582368">R&amp;etour</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">C&amp;entre d'aide</translation>
 <translation id="7324297612904500502">Forum bêta</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">Modifi&amp;er les moteurs de recherche...</translation>
 <translation id="5702898740348134351">Modifi&amp;er les moteurs de recherche...</translation>
 <translation id="2454247629720664989">Mot clé</translation>
@@ -1228,6 +1230,7 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="5867841422488265304">Recherchez ou saisissez une adresse Web</translation>
 <translation id="2129873093718581193">Rechercher sur Brave Software ou saisir une URL</translation>
 <translation id="6363797201514053536">Effectuez une recherche sur Brave Software ou saisissez une URL</translation>
+<translation id="4888839742663123585">Recherche Brave Software</translation>
 <translation id="6078323886959318429">Ajouter un raccourci</translation>
 <translation id="6324916366299863871">Modifier le raccourci</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1302,8 +1305,10 @@ Conservez votre fichier de clé en lieu sûr. Vous en aurez besoin lors de la cr
 <translation id="6207200176136643843">Réinitialiser le niveau de zoom par défaut</translation>
 <translation id="4953689047182316270">Répondre aux événements d'accessibilité</translation>
 <translation id="4677585247300749148"><ph name="URL"/> souhaite répondre aux événements d'accessibilité</translation>
+<translation id="2224471211857467033">Événements d'accessibilité</translation>
 <translation id="6116338172782435947">Voir le texte et les images copiés dans le presse-papiers</translation>
 <translation id="3461266716147554923"><ph name="URL"/> souhaite voir le texte et les images copiés dans le presse-papiers</translation>
+<translation id="2586657967955657006">Presse-papiers</translation>
 <translation id="4838836835474292213">Accès en lecture au presse-papiers autorisé</translation>
 <translation id="1415708812149920388">Accès en lecture au presse-papiers refusé</translation>
 <translation id="2365507699358342471">Ce site peut voir le texte et les images copiés dans le presse-papiers.</translation>
@@ -1731,6 +1736,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="7547317915858803630">Avertissement : Vos paramètres <ph name="PRODUCT_NAME"/> sont enregistrés sur un lecteur réseau, ce qui peut entraîner des ralentissements, des plantages, voire la perte de données.</translation>
 <translation id="3122496702278727796">Échec de la création du répertoire des données</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> souhaite télécharger plusieurs fichiers</translation>
+<translation id="7514365320538308">Télécharger</translation>
 <translation id="691024665142758461">Télécharger plusieurs fichiers</translation>
 <translation id="7004499039102548441">Onglets récents</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 onglet}one{# onglet}other{# onglets}}</translation>
@@ -1822,6 +1828,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="6156960295318603523">Paramètres linguistiques</translation>
 <translation id="7931318309563332511">Langue source inconnue</translation>
 <translation id="5426179911063097041">"<ph name="SITE"/>" requiert l'envoi de notifications</translation>
+<translation id="2482878487686419369">Notifications</translation>
 <translation id="7221855153210829124">Afficher les notifications</translation>
 <translation id="8393700583063109961">Envoyer un message</translation>
 <translation id="6701535245008341853">Impossible de charger le profil.</translation>
@@ -1923,6 +1930,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="1753905327828125965">Les + visités</translation>
 <translation id="5612720917913232150"><ph name="URL"/> souhaite avoir accès à la position de votre ordinateur</translation>
 <translation id="4733082559415072992"><ph name="URL"/> souhaite avoir accès à la position de votre appareil</translation>
+<translation id="5646376287012673985">Position</translation>
 <translation id="3016780570757425217">Connaître votre position</translation>
 <translation id="4068506536726151626">Cette page contient des éléments des sites ci-dessous qui suivent votre position géographique :</translation>
 <translation id="4920887663447894854">Le suivi de votre position géographique sur cette page a été bloqué pour les sites suivants :</translation>
@@ -1932,6 +1940,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="3528033729920178817">Cette page suit votre position géographique.</translation>
 <translation id="1510030919967934016">Le suivi de votre position géographique a été bloqué pour cette page.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> souhaite obtenir le contrôle total de vos appareils MIDI</translation>
+<translation id="1834583737373831634">Appareils MIDI</translation>
 <translation id="8606726445206553943">Utiliser vos appareils MIDI</translation>
 <translation id="1849186935225320012">Le contrôle total des appareils MIDI est activé pour cette page</translation>
 <translation id="2986010903908656993">Le contrôle total des appareils MIDI a été bloqué pour cette page.</translation>
@@ -1965,6 +1974,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="8282947398454257691">Connaître l'identifiant unique de votre appareil</translation>
 <translation id="8329449853370113380"><ph name="URL"/> souhaite diffuser un contenu protégé. L'identité de votre appareil sera validée par Brave Software.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> souhaite lire un contenu protégé. L'identité de votre appareil sera validée par Brave Software et peut être accessible à ce site.</translation>
+<translation id="1746402432151920942">Identifiant du contenu multimédia protégé</translation>
 <translation id="1322046419516468189">Afficher et gérer les mots de passe enregistrés de votre <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Mot de passe enregistré. Affichez et gérez les mots de passe enregistrés dans votre <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Compte Brave Software</translation>
@@ -2024,18 +2034,24 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> souhaite utiliser votre micro</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> souhaite utiliser votre appareil photo</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> souhaite partager votre écran</translation>
+<translation id="4275663329226226506">Médias</translation>
 <translation id="8962918469425892674">Ce site utilise des capteurs de mouvement ou de lumière.</translation>
+<translation id="4532646538815530781">Ce site utilise des capteurs de mouvement.</translation>
 <translation id="6057381398996433816">L'utilisation des capteurs de mouvement ou de lumière a été bloquée pour ce site.</translation>
+<translation id="7707108266051544351">L'utilisation des capteurs de mouvement a été bloquée pour ce site.</translation>
 <translation id="1151917987301063366">Toujours autoriser <ph name="HOST"/> à accéder aux capteurs</translation>
 <translation id="7377451353532943397">Continuer de bloquer l'accès aux capteurs</translation>
 <translation id="6878422606530379992">Capteurs autorisés</translation>
 <translation id="4031527940632463547">Capteurs bloqués</translation>
 <translation id="4559617833001311418">Ce site accède à vos capteurs de mouvement ou de lumière.</translation>
+<translation id="5623282979409330487">Ce site accède à vos capteurs de mouvement.</translation>
 <translation id="2309620859903500144">L'accès à vos capteurs de mouvement ou de lumière a été bloqué pour ce site.</translation>
+<translation id="6541638731489116978">L'accès à vos capteurs de mouvement est bloqué pour ce site.</translation>
 <translation id="8645354835496065562">Continuer d'autoriser l'accès aux capteurs</translation>
 <translation id="2903882649406874750">Toujours bloquer l'accès aux capteurs pour <ph name="HOST"/></translation>
 <translation id="3194737229810486521"><ph name="URL"/> souhaite stocker des données de façon permanente sur votre appareil</translation>
 <translation id="1030706264415084469"><ph name="URL"/> souhaite stocker de façon permanente des données volumineuses sur votre appareil</translation>
+<translation id="885701979325669005">Données stockées</translation>
 <translation id="1712552549805331520"><ph name="URL"/> souhaite stocker des données de façon permanente sur votre ordinateur local</translation>
 <translation id="1997484222658892567"><ph name="URL"/> souhaite stocker de façon permanente des données volumineuses sur votre ordinateur local</translation>
 <translation id="7648992873808071793">Stocker les fichiers sur cet appareil</translation>
@@ -2454,9 +2470,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="702252130983202758">Vos applications</translation>
 <translation id="8831664945713891930">Ouvrir les paramètres d'extension</translation>
 <translation id="5138227688689900538">Afficher moins</translation>
-<translation id="5646376287012673985">Position</translation>
 <translation id="5270167208902136840">Afficher <ph name="NUMBER_OF_MORE_APPS"/> autres applications</translation>
-<translation id="2482878487686419369">Notifications</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> applications</translation>
 <translation id="7207631048330366454">Rechercher dans les applications</translation>
 <translation id="9011424611726486705">Ouvrir les paramètres du site</translation>
@@ -2789,6 +2803,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="4305227814872083840">long (2 s)</translation>
 <translation id="2860150991415616761">très long (4 s)</translation>
 <translation id="1217668622537098248">Réactiver le clic gauche après l'action</translation>
+<translation id="8781470833671194250">Stabilisation de la position du curseur</translation>
 <translation id="3682824389861648626">Seuil de mouvement</translation>
 <translation id="5511379779384092781">Très léger</translation>
 <translation id="2765217105034171413">Petite</translation>
@@ -3411,7 +3426,10 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="9038649477754266430">Utiliser un service de prédiction pour charger les pages plus rapidement</translation>
 <translation id="7981313251711023384">Précharger les pages pour accélérer la navigation et la recherche</translation>
 <translation id="2468205691404969808">Utilise des cookies pour mémoriser vos préférences, même si vous n'accédez pas à ces pages</translation>
+<translation id="3181954750937456830">Navigation sécurisée (assure votre protection et celle de votre appareil contre les sites dangereux)</translation>
+<translation id="7315322926489145388">Envoyer à Brave Software les URL des pages que vous consultez présentant un risque pour votre sécurité</translation>
 <translation id="4991384657077828949">Contribuer à améliorer la sécurité de Brave</translation>
+<translation id="1943176487615318915">Pour détecter les applications et sites dangereux, Brave envoie à Brave Software l'URL de certaines pages que vous consultez, ainsi que des informations système limitées et une partie du contenu de certaines pages.</translation>
 <translation id="2875273286298348523">Brave envoie à Brave Software le texte que vous saisissez dans le navigateur</translation>
 <translation id="9079153198295609735">Envoie automatiquement les statistiques d'utilisation et les rapports d'erreur à Brave Software</translation>
 <translation id="5941220456342415404">Envoyer automatiquement des données de diagnostic et d'utilisation à Brave Software</translation>
@@ -3483,7 +3501,6 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="1919345977826869612">Annonces</translation>
 <translation id="5649053991847567735">Téléchargements automatiques</translation>
 <translation id="3744111561329211289">Synchronisation en arrière-plan</translation>
-<translation id="2586657967955657006">Presse-papiers</translation>
 <translation id="5518219166343146486">Me demander lorsqu'un site souhaite voir le texte et les images copiés dans le presse-papiers</translation>
 <translation id="2089795179672254991">Me demander lorsqu'un site souhaite voir le texte et les images copiés dans le presse-papiers (recommandé)</translation>
 <translation id="16815041330799488">Interdire aux sites de voir le texte et les images copiés dans le presse-papiers</translation>
@@ -3511,6 +3528,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="1128109161498068552">N'autoriser aucun site à utiliser des messages spécifiques au système pour accéder aux appareils MIDI</translation>
 <translation id="2091887806945687916">Son</translation>
 <translation id="4751476147751820511">Capteurs de mouvement ou de lumière</translation>
+<translation id="1717218214683051432">Capteurs de mouvement</translation>
 <translation id="6059925163896151826">Appareils USB</translation>
 <translation id="8666584013686199826">Me demander lorsqu'un site souhaite accéder aux appareils USB</translation>
 <translation id="6291949900244949761">Me demander lorsqu'un site souhaite accéder aux appareils USB (recommandé)</translation>
@@ -3546,7 +3564,9 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="1660204651932907780">Autoriser l'activation du son des sites (recommandé)</translation>
 <translation id="3600792891314830896">Couper le son des sites</translation>
 <translation id="5084230410268011727">Autoriser les sites à utiliser des capteurs de mouvement et de lumière</translation>
+<translation id="489454699928748701">Autoriser les sites à utiliser les capteurs de mouvement</translation>
 <translation id="5047421709274785093">Empêcher les sites d'utiliser des capteurs de mouvement et de lumière</translation>
+<translation id="6396988158856674517">Bloquer l'accès à vos capteurs de mouvement pour certains sites</translation>
 <translation id="2904456025988372123">Me demander lorsqu'un site tente de télécharger des fichiers automatiquement après le premier fichier</translation>
 <translation id="3494769164076977169">Me demander lorsque le téléchargement automatique de fichiers est requis sur un site après le premier fichier (recommandé)</translation>
 <translation id="5036662165765606524">N'autoriser le téléchargement automatique de plusieurs fichiers pour aucun site</translation>
@@ -4081,6 +4101,7 @@ Souhaitez-vous lancer <ph name="CONTROL_PANEL_APPLET_NAME"/> ?</translation>
 <translation id="2785008241190445880">Favori remplacé</translation>
 <translation id="5468853758063275923">Brave est votre navigateur par défaut</translation>
 <translation id="2950533317914339731">Ajouter des favoris à vos applications Brave Software préférées</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Actualités</translation>

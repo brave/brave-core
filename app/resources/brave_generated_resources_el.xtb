@@ -30,7 +30,6 @@
 <translation id="4150684676757176434">Συνέχιση του αποκλεισμού της αυτόματης εκτέλεσης</translation>
 <translation id="7543906827780734027">Το Brave δεν έχει αξιολογήσει ακόμα αυτή την επέκταση—ίσως είναι κακόβουλη.Προσθήκη «<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>» ούτως ή άλλως;</translation>
 <translation id="2044383478723007273">Χρώματα Brave</translation>
-<translation id="5341901626640816374">Χρησιμοποίηση μπάρας ευρείας τοποθεσίας</translation>
 <translation id="6123134130710658846">Απόκρυψη πλήκτρου Ανταμοιβών Brave</translation>
 <translation id="7635711399568194460">Απόκρυψη του πλήκτρου Ανταμοιβών Brave στη γραμμή τοποθεσίας όταν οι Ανταμοιβές Brave δεν είναι ενεργοποιημένες</translation>
 <translation id="7965178729203412357">Νέα Ταυτότητα Tor</translation>
@@ -47,13 +46,20 @@
 <translation id="2515126961943087659">Υπηρεσία διαφημίσεων BAT</translation>
 <translation id="7924918279836988121">Υπηρεσία Bat Ledger</translation>
 <translation id="4472575034687746823">Έναρξη</translation>
+<translation id="3400357268283240774">Πρόσθετες ρυθμίσεις</translation>
 <translation id="6303294677342628402">Ασπίδες</translation>
+<translation id="768979911142179781">Προεπιλογές</translation>
+<translation id="5989930075012659993">Οι τρέχουσες ρυθμίσεις σας για κάθε ιστοσελίδα θα διατηρηθούν.</translation>
+<translation id="9185018653595759199">Αποκλεισμός κοινωνικών μέσων</translation>
+<translation id="6894114137169961038">Έλεγχος διαφημίσεων</translation>
+<translation id="1096802265930928584">Έλεγχος Cookies</translation>
 <translation id="8919235146866304148">Προστασία με αποτύπωμα</translation>
 <translation id="520895744850022668">HTTPS Παντού</translation>
 <translation id="5259716416204774556">Αποκλεισμός script</translation>
 <translation id="7498695072878479744">Επιτρέψτε τα πλήκτρα σύνδεσης Google σε ιστότοπους τρίτων</translation>
 <translation id="863171915776379000">Επιτρέψτε σύνδεση με Facebook και ενσωματωμένες αναρτήσεις</translation>
 <translation id="5165042248369837294">Επιτρέψτε στο Twitter ενσωματωμένα tweet</translation>
+<translation id="958971637207126733">Να επιτρέπονται οι ενσωματωμένες αναρτήσεις LinkedIn</translation>
 <translation id="6067014455220527258">Αποκλεισμός διαφημίσεων</translation>
 <translation id="6985711843506827936">Να επιτρέπονται οι διαφημίσεις και η ιχνηλάτιση</translation>
 <translation id="6132506775968708399">Αποκλεισμός cookies τρίτων</translation>
@@ -73,11 +79,14 @@
 <translation id="2414886740292270097">Σκούρο</translation>
 <translation id="1360441190790440400">Ίδιο με Linux</translation>
 <translation id="1336940801687497203">Ίδιο με Windows</translation>
+<translation id="8721331068159819483">Το ίδιο όπως στο macOS</translation>
 <translation id="6786747875388722282">Επεκτάσεις</translation>
 <translation id="2896916411183256228">Χρησιμοποιεί το WebTorrent για την εμφάνιση torrents απευθείας στο πρόγραμμα περιήγησης. Υποστηρίζει αρχεία torrent και magnet συνδέσμους.</translation>
 <translation id="6554397389149987360">Χρησιμοποιεί το στοιχείο Hangouts για να ενεργοποιήσει την κοινή χρήση οθόνης και άλλες λειτουργίες στο πρόγραμμα περιήγησης.</translation>
+<translation id="4154389611571860454">Χρησιμοποιεί τη συνοδευτική επέκταση IPFS για υποστήριξη του IPFS στο πρόγραμμα περιήγησης</translation>
 <translation id="8137559199583651773">Διαχείριση επεκτάσεων</translation>
 <translation id="4928988318462976765">Ηλεκτρονικό Κατάστημα Επεκτάσεων</translation>
 <translation id="9181207987584064303">Προβολή στο Ηλεκτρονικό Κατάστημα των Επεκτάσεων</translation>
 <translation id="4846154056248462491">Κατά την έξοδο</translation>
+<translation id="5057399635433117814">Να μεταφραστεί αυτή η σελίδα; Με την επιλογή αυτή θα σταλεί όλο το κείμενο στη Microsoft για μετάφραση.</translation>
 </translationbundle>

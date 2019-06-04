@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">一致する結果は見つかりませんでした</translation>
 <translation id="8967866634928501045">Alt+Shift+A キーで表示します</translation>
 <translation id="998747458861718449">検証(&amp;I)</translation>
+<translation id="4428301600092811022">Brave Software から画像の説明を取得しますか？</translation>
 <translation id="741204030948306876">有効にする</translation>
 <translation id="780301667611848630">いいえ</translation>
 <translation id="3943582379552582368">戻る(&amp;B)</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">ヘルプセンター(&amp;E)</translation>
 <translation id="7324297612904500502">ベータ版フォーラム</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">検索エンジンの編集(&amp;E)...</translation>
 <translation id="5702898740348134351">検索エンジンの編集(&amp;E)...</translation>
 <translation id="2454247629720664989">キーワード</translation>
@@ -1227,6 +1229,7 @@
 <translation id="5867841422488265304">検索語句またはウェブアドレスを入力</translation>
 <translation id="2129873093718581193">Brave Software で検索、または URL を入力</translation>
 <translation id="6363797201514053536">Brave Software で検索または URL を入力</translation>
+<translation id="4888839742663123585">Brave Software で検索</translation>
 <translation id="6078323886959318429">ショートカットを追加</translation>
 <translation id="6324916366299863871">ショートカットの編集</translation>
 <translation id="4405117686468554883">*.jpeg、*.jpg、*.png</translation>
@@ -1301,8 +1304,10 @@
 <translation id="6207200176136643843">リセットしてデフォルトのズームレベルに戻す</translation>
 <translation id="4953689047182316270">ユーザー補助機能のイベントへの応答</translation>
 <translation id="4677585247300749148"><ph name="URL"/> から、ユーザー補助機能のイベントに応答する許可を求められています</translation>
+<translation id="2224471211857467033">ユーザー補助イベント</translation>
 <translation id="6116338172782435947">クリップボードにコピーしたテキストや画像へのアクセス</translation>
 <translation id="3461266716147554923"><ph name="URL"/> が、クリップボードにコピーされているテキストや画像にアクセスしようとしています</translation>
+<translation id="2586657967955657006">クリップボード</translation>
 <translation id="4838836835474292213">クリップボードへの読み取りアクセスが許可されています</translation>
 <translation id="1415708812149920388">クリップボードの読み取りアクセスが拒否されました</translation>
 <translation id="2365507699358342471">このサイトでは、クリップボードにコピーされているテキストや画像へのアクセスが許可されています。</translation>
@@ -1730,6 +1735,7 @@
 <translation id="7547317915858803630">警告: お使いの <ph name="PRODUCT_NAME"/> の設定はネットワーク ドライブに保存されています。遅延、クラッシュ、データ損失が生じる場合があります。</translation>
 <translation id="3122496702278727796">データ ディレクトリの作成に失敗しました</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> で複数のファイルがダウンロードされようとしています</translation>
+<translation id="7514365320538308">ダウンロード</translation>
 <translation id="691024665142758461">複数ファイルのダウンロード</translation>
 <translation id="7004499039102548441">最近使ったタブ</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 個のタブ}other{# 個のタブ}}</translation>
@@ -1821,6 +1827,7 @@
 <translation id="6156960295318603523">言語設定</translation>
 <translation id="7931318309563332511">不明</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> が通知を送信しようとしています。</translation>
+<translation id="2482878487686419369">通知</translation>
 <translation id="7221855153210829124">通知の表示</translation>
 <translation id="8393700583063109961">メッセージを送信</translation>
 <translation id="6701535245008341853">プロフィールを取得できませんでした。</translation>
@@ -1922,6 +1929,7 @@
 <translation id="1753905327828125965">よくアクセスするページ</translation>
 <translation id="5612720917913232150"><ph name="URL"/> から、パソコンの現在地情報の使用許可を求められています</translation>
 <translation id="4733082559415072992"><ph name="URL"/> から、端末の現在地情報の使用許可を求められています</translation>
+<translation id="5646376287012673985">現在地</translation>
 <translation id="3016780570757425217">ユーザーの現在地の認識</translation>
 <translation id="4068506536726151626">このページには、あなたの現在地を追跡している以下のサイトからの要素が含まれています。</translation>
 <translation id="4920887663447894854">以下のサイトは、このページ内であなたの現在地を追跡できないようブロックされています:</translation>
@@ -1931,6 +1939,7 @@
 <translation id="3528033729920178817">このページはあなたの現在地を追跡しています。</translation>
 <translation id="1510030919967934016">このページは、あなたの現在地を追跡できないようブロックされています。</translation>
 <translation id="6910240653697687763"><ph name="URL"/> から、MIDI デバイスをフル コントロールする許可を求められています</translation>
+<translation id="1834583737373831634">MIDI デバイス</translation>
 <translation id="8606726445206553943">MIDI デバイスの使用</translation>
 <translation id="1849186935225320012">このページは MIDI デバイスのフル コントロールが許可されています。</translation>
 <translation id="2986010903908656993">このページは MIDI デバイスのフル コントロールが許可されていません。</translation>
@@ -1964,6 +1973,7 @@
 <translation id="8282947398454257691">デバイス固有の ID の認識</translation>
 <translation id="8329449853370113380"><ph name="URL"/> から、保護されたコンテンツの再生許可を求められています。デバイスの識別情報が Brave Software により確認されます。</translation>
 <translation id="2650609753175229582"><ph name="URL"/> が保護されたコンテンツの再生を要求しています。デバイスの認証情報が Brave Software によって確認され、このサイトによる認証情報へのアクセスが許可されます。</translation>
+<translation id="1746402432151920942">保護されているメディア識別子</translation>
 <translation id="1322046419516468189"><ph name="SAVED_PASSWORDS_STORE"/> での保存パスワードの表示と管理</translation>
 <translation id="5297082477358294722">パスワードが保存されました。保存パスワードの表示と管理は <ph name="SAVED_PASSWORDS_STORE"/> で行えます。</translation>
 <translation id="5713644099811900409">Brave Software アカウントを使用</translation>
@@ -2023,18 +2033,24 @@
 <translation id="3532844647053365774"><ph name="HOST"/> から、マイクの使用許可を求められています</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> から、カメラの使用許可を求められています</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> から、画面の共有許可を求められています</translation>
+<translation id="4275663329226226506">メディア</translation>
 <translation id="8962918469425892674">このサイトはモーション センサーまたは光センサーを使用しています。</translation>
+<translation id="4532646538815530781">このサイトはモーション センサーを使用しています。</translation>
 <translation id="6057381398996433816">このサイトではモーション センサーと光センサーの使用がブロックされています。</translation>
+<translation id="7707108266051544351">このサイトではモーション センサーの使用がブロックされています。</translation>
 <translation id="1151917987301063366"><ph name="HOST"/> によるセンサーへのアクセスを常に許可する</translation>
 <translation id="7377451353532943397">センサーへのアクセスを引き続きブロックする</translation>
 <translation id="6878422606530379992">センサーが許可されました</translation>
 <translation id="4031527940632463547">センサーがブロックされました</translation>
 <translation id="4559617833001311418">このサイトはモーション センサーまたは光センサーにアクセスしています。</translation>
+<translation id="5623282979409330487">このサイトはモーション センサーにアクセスしています。</translation>
 <translation id="2309620859903500144">このサイトではモーション センサーまたは光センサーへのアクセスがブロックされています。</translation>
+<translation id="6541638731489116978">このサイトではモーション センサーへのアクセスがブロックされています。</translation>
 <translation id="8645354835496065562">センサーへのアクセスを引き続き許可する</translation>
 <translation id="2903882649406874750"><ph name="HOST"/> によるセンサーへのアクセスを常にブロックする</translation>
 <translation id="3194737229810486521"><ph name="URL"/> から、端末にデータを永続的に保存する許可を求められています</translation>
 <translation id="1030706264415084469"><ph name="URL"/> から、端末に大きなデータを永続的に保存する許可を求められています</translation>
+<translation id="885701979325669005">ストレージ</translation>
 <translation id="1712552549805331520"><ph name="URL"/> から、ローカルのパソコンにデータを永続的に保存する許可を求められています</translation>
 <translation id="1997484222658892567"><ph name="URL"/> から、ローカルのパソコンに大きなデータを永続的に保存する許可を求められています</translation>
 <translation id="7648992873808071793">このデバイスのファイルの保存</translation>
@@ -2453,9 +2469,7 @@
 <translation id="702252130983202758">マイアプリ</translation>
 <translation id="8831664945713891930">拡張機能の設定を開く</translation>
 <translation id="5138227688689900538">一部を表示</translation>
-<translation id="5646376287012673985">現在地</translation>
 <translation id="5270167208902136840">その他の <ph name="NUMBER_OF_MORE_APPS"/> 個のアプリを表示</translation>
-<translation id="2482878487686419369">通知</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> 個のアプリ</translation>
 <translation id="7207631048330366454">アプリを検索</translation>
 <translation id="9011424611726486705">サイトの設定を開きます</translation>
@@ -2788,6 +2802,7 @@
 <translation id="4305227814872083840">長い（2 秒）</translation>
 <translation id="2860150991415616761">非常に長い（4 秒）</translation>
 <translation id="1217668622537098248">終了後、デフォルトの左クリック動作に戻す</translation>
+<translation id="8781470833671194250">クリック位置のブレ補正</translation>
 <translation id="3682824389861648626">移動のしきい値</translation>
 <translation id="5511379779384092781">特小</translation>
 <translation id="2765217105034171413">小</translation>
@@ -3410,7 +3425,10 @@
 <translation id="9038649477754266430">予測サービスを使用してページをより迅速に読み込む</translation>
 <translation id="7981313251711023384">ページをプリロードして閲覧と検索をすばやく行えるようにする</translation>
 <translation id="2468205691404969808">Cookie を使って設定を保存する（これらのページにアクセスしない場合も Cookie が保持されます）</translation>
+<translation id="3181954750937456830">セーフ ブラウジング（危険なサイトからユーザーとデバイスを保護します）</translation>
+<translation id="7315322926489145388">セキュリティ上のリスクがある場合に、アクセスした一部のページの URL が Brave Software に送信されます</translation>
 <translation id="4991384657077828949">Brave のセキュリティ改善に協力する</translation>
+<translation id="1943176487615318915">危険なアプリやサイトを検出するために、アクセスした一部のページの URL と限定的なシステム情報、一部のページ コンテンツが Brave から Brave Software に送信されます</translation>
 <translation id="2875273286298348523">ブラウザに入力したテキストが Brave から Brave Software に送信されます。</translation>
 <translation id="9079153198295609735">使用統計データと障害レポートを Brave Software に自動送信します</translation>
 <translation id="5941220456342415404">診断と使用状況のデータを Brave Software に自動送信する</translation>
@@ -3482,7 +3500,6 @@
 <translation id="1919345977826869612">広告</translation>
 <translation id="5649053991847567735">自動ダウンロード</translation>
 <translation id="3744111561329211289">バックグラウンド同期</translation>
-<translation id="2586657967955657006">クリップボード</translation>
 <translation id="5518219166343146486">クリップボードにコピーされているテキストや画像にサイトがアクセスする際に確認する</translation>
 <translation id="2089795179672254991">クリップボードにコピーされているテキストや画像にサイトがアクセスする際に確認する（推奨）</translation>
 <translation id="16815041330799488">クリップボードにコピーされているテキストや画像へのアクセスをサイトに許可しない</translation>
@@ -3510,6 +3527,7 @@
 <translation id="1128109161498068552">システム エクスクルーシブ メッセージを使用して MIDI デバイスにアクセスすることをサイトに許可しない</translation>
 <translation id="2091887806945687916">音声</translation>
 <translation id="4751476147751820511">モーション センサーまたは光センサー</translation>
+<translation id="1717218214683051432">モーション センサー</translation>
 <translation id="6059925163896151826">USB デバイス</translation>
 <translation id="8666584013686199826">サイトから USB デバイスへのアクセス許可を求められたときに確認する</translation>
 <translation id="6291949900244949761">サイトから USB デバイスへのアクセス許可を求められたときに確認する（推奨）</translation>
@@ -3545,7 +3563,9 @@
 <translation id="1660204651932907780">音声の再生をサイトに許可する（推奨）</translation>
 <translation id="3600792891314830896">音声が再生されるサイトをミュートする</translation>
 <translation id="5084230410268011727">サイトによるモーション センサーと光センサーの使用を許可する</translation>
+<translation id="489454699928748701">サイトでのモーション センサーの使用を許可する</translation>
 <translation id="5047421709274785093">サイトによるモーション センサーと光センサーの使用をブロックする</translation>
+<translation id="6396988158856674517">サイトでのモーション センサーの使用をブロックする</translation>
 <translation id="2904456025988372123">サイトが最初のファイルに続いて他のファイルを自動的にダウンロードしようとする際に確認する</translation>
 <translation id="3494769164076977169">サイトが最初のファイルに続いて他のファイルを自動的にダウンロードしようとする際に確認する（推奨）</translation>
 <translation id="5036662165765606524">複数ファイルの自動ダウンロードをどのサイトにも許可しない</translation>
@@ -4080,6 +4100,7 @@
 <translation id="2785008241190445880">ブックマークを置き換えました</translation>
 <translation id="5468853758063275923">Brave をデフォルトのブラウザに設定しました</translation>
 <translation id="2950533317914339731">お気に入りの Brave Software アプリへのブックマークを追加します</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">マップ</translation>
 <translation id="6709133671862442373">ニュース</translation>

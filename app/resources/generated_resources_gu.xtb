@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">કોઈ શોધ પરિણામો મળ્યાં નથી</translation>
 <translation id="8967866634928501045">બતાવવા માટે Alt Shift A દબાવો</translation>
 <translation id="998747458861718449">ત&amp;પાસ કરો</translation>
+<translation id="4428301600092811022">Brave Software તરફથી છબીનાં વર્ણનો મેળવીએ?</translation>
 <translation id="741204030948306876">હા, હું સંમત છું</translation>
 <translation id="780301667611848630">નહીં, આભાર</translation>
 <translation id="3943582379552582368">&amp;પાછળ</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">સ&amp;હાય કેન્દ્ર</translation>
 <translation id="7324297612904500502">બીટા ચર્ચા મંચ</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;શોધ એન્જિન્સ સંપાદિત કરો...</translation>
 <translation id="5702898740348134351">&amp;શોધ એન્જિન્સ સંપાદિત કરો...</translation>
 <translation id="2454247629720664989">કીવર્ડ</translation>
@@ -1221,6 +1223,7 @@
 <translation id="5867841422488265304">વેબ ઍડ્રેસ શોધો અથવા લખો</translation>
 <translation id="2129873093718581193">Brave Softwareમાં શોધો અથવા URL ટાઇપ કરો</translation>
 <translation id="6363797201514053536">Brave Software પર શોધો અથવા URL લખો</translation>
+<translation id="4888839742663123585">Brave Software પર શોધો</translation>
 <translation id="6078323886959318429">શોર્ટકટ ઉમેરો</translation>
 <translation id="6324916366299863871">શૉર્ટકટમાં ફેરફાર કરો</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1295,8 +1298,10 @@
 <translation id="6207200176136643843">ડિફૉલ્ટ ઝૂમ સ્તર પર રીસેટ કરો</translation>
 <translation id="4953689047182316270">ઍક્સેસિબિલિટી ઇવેન્ટનો જવાબ આપો</translation>
 <translation id="4677585247300749148"><ph name="URL"/> ઍક્સેસિબિલિટી ઇવેન્ટનો જવાબ આપવા માગે છે</translation>
+<translation id="2224471211857467033">ઍક્સેસિબિલિટી ઇવેન્ટ</translation>
 <translation id="6116338172782435947">ક્લિપબોર્ડ પર કૉપિ કરેલ ટેક્સ્ટ અને છબીઓને જુઓ</translation>
 <translation id="3461266716147554923"><ph name="URL"/> ક્લિપબોર્ડ પર કૉપિ કરેલ ટેક્સ્ટ અને છબીઓને જોવા માંગે છે</translation>
+<translation id="2586657967955657006">ક્લિપબોર્ડ</translation>
 <translation id="4838836835474292213">ક્લિપબોર્ડ વાંચવાના ઍક્સેસની મંજૂરી આપેલ છે</translation>
 <translation id="1415708812149920388">ક્લિપબોર્ડ વાંચવાનો ઍક્સેસ નકારેલ છે</translation>
 <translation id="2365507699358342471">આ સાઇટ ક્લિપબોર્ડ પર કૉપિ કરેલ ટેક્સ્ટ અને છબીઓ જોઈ શકે છે.</translation>
@@ -1724,6 +1729,7 @@
 <translation id="7547317915858803630">ચેતવણી: <ph name="PRODUCT_NAME"/> સેટિંગ્સ નેટવર્ક ડ્રાઇવ પર સ્ટોર કરી છે. આનું પરિણામ ધીમી ગતિ, ક્રેશેસ અથવા ડેટાનું નુકસાન પણ હોઈ શકે છે.</translation>
 <translation id="3122496702278727796">ડેટા ડાયરેક્ટરી બનાવવામાટે નિષ્ફળ</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> એકથી વધુ ફાઇલો ડાઉનલોડ કરવા માગે છે</translation>
+<translation id="7514365320538308">ડાઉનલોડ કરો</translation>
 <translation id="691024665142758461">બહુવિધ ફાઇલોને ડાઉનલોડ કરવા</translation>
 <translation id="7004499039102548441">તાજેતરના ટૅબ્સ</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 ટેબ}one{# ટેબ્સ}other{# ટેબ્સ}}</translation>
@@ -1815,6 +1821,7 @@
 <translation id="6156960295318603523">ભાષા સેટિંગ્સ</translation>
 <translation id="7931318309563332511">અજાણ</translation>
 <translation id="5426179911063097041"><ph name="SITE"/>તમને નોટિફિકેશનો મોકલવા માગે છે</translation>
+<translation id="2482878487686419369">સૂચનાઓ</translation>
 <translation id="7221855153210829124">સૂચનાઓ દર્શાવો</translation>
 <translation id="8393700583063109961">સંદેશ મોકલો</translation>
 <translation id="6701535245008341853">પ્રોફાઇલ મેળવી શકાઈ નથી.</translation>
@@ -1916,6 +1923,7 @@
 <translation id="1753905327828125965">સૌથી વધુ જોવાયેલ</translation>
 <translation id="5612720917913232150"><ph name="URL"/> તમારા કમ્પ્યુટરનાં સ્થાનનો ઉપયોગ કરવા માગે છે</translation>
 <translation id="4733082559415072992"><ph name="URL"/> તમારા ઉપકરણના સ્થાનનો ઉપયોગ કરવા માગે છે</translation>
+<translation id="5646376287012673985">સ્થાન</translation>
 <translation id="3016780570757425217">તમારું સ્થાન જાણો</translation>
 <translation id="4068506536726151626">આ પૃષ્ઠમાં તમારા સ્થાનને ટ્રૅક કરતી નીચેની સાઇટ્સનાં ઘટકો શામેલ છે:</translation>
 <translation id="4920887663447894854">નીચેની સાઇટ્સને આ પૃષ્ઠ પર તમારા સ્થાનને ટ્રેક કરવાથી અવરોધિત કરી છે:</translation>
@@ -1925,6 +1933,7 @@
 <translation id="3528033729920178817">આ પૃષ્ઠ તમારા સ્થાનને ટ્રૅક કરી રહ્યું છે.</translation>
 <translation id="1510030919967934016">આ પૃષ્ઠને તમારા સ્થાનને ટ્રૅક કરવાથી અવરોધિત કરવામાં આવ્યું છે.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> તમારા MIDI ઉપકરણોનું પૂર્ણ નિયંત્રણ મેળવવા માગે છે</translation>
+<translation id="1834583737373831634">MIDI ડિવાઇસ</translation>
 <translation id="8606726445206553943">તમારા MIDI ઉપકરણોનો ઉપયોગ કરો</translation>
 <translation id="1849186935225320012">આ પૃષ્ઠ પાસે MIDI ઉપકરણોનું સંપૂર્ણ નિયંત્રણ છે.</translation>
 <translation id="2986010903908656993">આ પૃષ્ઠ MIDI ઉપકરણોના સંપૂર્ણ નિયંત્રણથી અવરોધિત કરવામાં આવ્યું છે.</translation>
@@ -1958,6 +1967,7 @@
 <translation id="8282947398454257691">તમારા અનન્ય ઉપકરણ ઓળખકર્તાને જાણો</translation>
 <translation id="8329449853370113380"><ph name="URL"/> સુરક્ષિત કન્ટેન્ટ ચલાવવા માગે છે. Brave Software દ્વારા તમારા ડિવાઇસની ઓળખ ચકાસવામાં આવશે.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> સુરક્ષિત કન્ટેન્ટ ચલાવવા માગે છે. Brave Software દ્વારા તમારા ડિવાઇસની ઓળખ ચકાસવામાં આવશે અને તે આ સાઇટ દ્વારા ઍક્સેસ કરવામાં આવી શકે છે.</translation>
+<translation id="1746402432151920942">સંરક્ષિત મીડિયા ઓળખકર્તા</translation>
 <translation id="1322046419516468189">સાચવેલા પાસવર્ડ તમારા <ph name="SAVED_PASSWORDS_STORE"/>માં જુઓ અને મેનેજ કરો</translation>
 <translation id="5297082477358294722">પાસવર્ડ સાચવ્યો. સાચવેલા પાસવર્ડ તમારા <ph name="SAVED_PASSWORDS_STORE"/>માં જુઓ અને મેનેજ કરો.</translation>
 <translation id="5713644099811900409">Brave Software એકાઉન્ટ</translation>
@@ -2017,18 +2027,24 @@
 <translation id="3532844647053365774"><ph name="HOST"/> તમારા માઇક્રોફોનનો ઉપયોગ કરવા માગે છે</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> તમારા કૅમેરાનો ઉપયોગ કરવા માગે છે</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> તમારી સ્ક્રીન શેર કરવા માગે છે</translation>
+<translation id="4275663329226226506">મીડિયા</translation>
 <translation id="8962918469425892674">આ સાઇટ મોશન અથવા લાઇટ સેન્સરનો ઉપયોગ કરી રહી છે.</translation>
+<translation id="4532646538815530781">આ સાઇટ મોશન સેન્સરનો ઉપયોગ કરી રહી છે.</translation>
 <translation id="6057381398996433816">આ સાઇટને મોશન અને લાઇટ સેન્સરનો ઉપયોગ કરવાથી બ્લૉક કરવામાં આવી છે.</translation>
+<translation id="7707108266051544351">આ સાઇટને મોશન સેન્સરનો ઉપયોગ કરવાથી બ્લૉક કરવામાં આવી છે.</translation>
 <translation id="1151917987301063366"><ph name="HOST"/>ને હંમેશાં સેન્સર ઍક્સેસ કરવાની મંજૂરી આપો</translation>
 <translation id="7377451353532943397">સેન્સર ઍક્સેસ બ્લૉક કરવાનું ચાલુ રાખો</translation>
 <translation id="6878422606530379992">સેન્સરને મંજૂરી છે</translation>
 <translation id="4031527940632463547">સેન્સર બ્લૉક કરેલ છે</translation>
 <translation id="4559617833001311418">આ સાઇટ તમારા મોશન અથવા લાઇટ સેન્સર ઍક્સેસ કરી રહી છે.</translation>
+<translation id="5623282979409330487">આ સાઇટ તમારા મોશન સેન્સરને ઍક્સેસ કરી રહી છે.</translation>
 <translation id="2309620859903500144">આ સાઇટને તમારા મોશન અથવા લાઇટ સેન્સરને ઍક્સેસ કરવાથી બ્લૉક કરવામાં આવી છે.</translation>
+<translation id="6541638731489116978">આ સાઇટને તમારા મોશન સેન્સરને ઍક્સેસ કરવાથી બ્લૉક કરવામાં આવી છે.</translation>
 <translation id="8645354835496065562">સેન્સરના ઍક્સેસની મંજૂરી ચાલુ રાખો</translation>
 <translation id="2903882649406874750"><ph name="HOST"/>ને હંમેશાં સેન્સરને ઍક્સેસ કરવાથી બ્લૉક કરો</translation>
 <translation id="3194737229810486521"><ph name="URL"/> તમારા ઉપકરણ પર કાયમી ધોરણે ડેટા સ્ટોર કરવા માગે છે</translation>
 <translation id="1030706264415084469"><ph name="URL"/> તમારા ઉપકરણ પર કાયમી ધોરણે વિશાળ ડેટા સ્ટોર કરવા માગે છે</translation>
+<translation id="885701979325669005">સ્ટોરેજ</translation>
 <translation id="1712552549805331520"><ph name="URL"/> તમારા સ્થાનિક કમ્પ્યુટર પર કાયમી ધોરણે ડેટા સ્ટોર કરવા માગે છે</translation>
 <translation id="1997484222658892567"><ph name="URL"/> તમારા સ્થાનિક કમ્પ્યુટર પર કાયમી ધોરણે વિશાળ ડેટા સ્ટોર કરવા માગે છે</translation>
 <translation id="7648992873808071793">આ ઉપકરણ પર ફાઇલો સાચવો</translation>
@@ -2448,9 +2464,7 @@ USB ડિવાઇસ</translation>
 <translation id="702252130983202758">તમારી ઍપ</translation>
 <translation id="8831664945713891930">એક્સ્ટેંશન સેટિંગ ખોલો</translation>
 <translation id="5138227688689900538">ઓછું બતાવો</translation>
-<translation id="5646376287012673985">સ્થાન</translation>
 <translation id="5270167208902136840">વધુ <ph name="NUMBER_OF_MORE_APPS"/> ઍપ બતાવો</translation>
-<translation id="2482878487686419369">સૂચનાઓ</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> ઍપ</translation>
 <translation id="7207631048330366454">ઍપ શોધો</translation>
 <translation id="9011424611726486705">સાઇટની સેટિંગ ખોલો</translation>
@@ -2783,6 +2797,7 @@ USB ડિવાઇસ</translation>
 <translation id="4305227814872083840">લાંબો વિલંબ (2 સે)</translation>
 <translation id="2860150991415616761">ખૂબ લાંબો વિલંબ (4 સે)</translation>
 <translation id="1217668622537098248">ક્રિયા કર્યા પછી ડાબી ક્લિક પર પાછા ફરો</translation>
+<translation id="8781470833671194250">સ્થિતિની સ્થિરતા પર ક્લિક કરો</translation>
 <translation id="3682824389861648626">ગતિવિધિનો થ્રેશોલ્ડ</translation>
 <translation id="5511379779384092781">વધુ નાની</translation>
 <translation id="2765217105034171413">નાનું</translation>
@@ -3405,7 +3420,10 @@ USB ડિવાઇસ</translation>
 <translation id="9038649477754266430">પૃષ્ઠોને વધુ ઝડપથી લોડ કરવા માટે પૂર્વાનુમાન સેવાનો ઉપયોગ કરો</translation>
 <translation id="7981313251711023384">ઝડપી બ્રાઉઝિંગ અને શોધ માટે પેજને પહેલેથી લોડ કરો</translation>
 <translation id="2468205691404969808">તમારી પસંદગીઓ યાદ રાખવા માટે કુકીનો ઉપયોગ કરે છે, પછી ભલે તમે તે પેજની મુલાકાત ન પણ લો</translation>
+<translation id="3181954750937456830">Safe Browsing (તમારું અને તમારા ડિવાઇસનું જોખમી સાઇટથી રક્ષણ કરે છે)</translation>
+<translation id="7315322926489145388">તમારી સુરક્ષા જોખમમાં હોય ત્યારે, તમે મુલાકાત લેતા હો તે કેટલાક પેજના URLs Brave Softwareને મોકલે છે</translation>
 <translation id="4991384657077828949">Brave સુરક્ષાને વધુ સારી બનાવવામાં સહાય કરો</translation>
+<translation id="1943176487615318915">જોખમી ઍપ અને સાઇટ શોધી કાઢવા માટે, Brave તમે મુલાકાત લો તે કેટલાક પેજના URLs, સિસ્ટમ વિશેની સીમિત માહિતી અને પેજનું કેટલુંક કન્ટેન્ટ Brave Softwareને મોકલે છે</translation>
 <translation id="2875273286298348523">તમે બાઉઝરમાં ટાઇપ કરો છો તે ટેક્સ્ટ Brave દ્વારા Brave Softwareને મોકલવામાં આવે છે</translation>
 <translation id="9079153198295609735">ઉપયોગિતા આંકડાઓ અને ક્રેશ રિપોર્ટ્સ Brave Software ને આપમેળે મોકલો</translation>
 <translation id="5941220456342415404">Brave Software ને આપમેળે નિદાન અને વપરાશ ડેટા મોકલો</translation>
@@ -3477,7 +3495,6 @@ USB ડિવાઇસ</translation>
 <translation id="1919345977826869612">જાહેરાતો</translation>
 <translation id="5649053991847567735">આપમેળે ડાઉનલોડ્સ</translation>
 <translation id="3744111561329211289">પૃષ્ઠભૂમિ સમન્વયન</translation>
-<translation id="2586657967955657006">ક્લિપબોર્ડ</translation>
 <translation id="5518219166343146486">જ્યારે ક્લિપબોર્ડ પર કૉપિ કરેલ ટેક્સ્ટ અને છબીઓને સાઇટ જોવા માંગે ત્યારે પૂછો</translation>
 <translation id="2089795179672254991">જ્યારે ક્લિપબોર્ડ પર કૉપિ કરેલ ટેક્સ્ટ અને છબીઓને સાઇટ જોવા માંગે ત્યારે પૂછો (સુઝાવ આપેલ)</translation>
 <translation id="16815041330799488">સાઇટને ક્લિપબોર્ડ પર કૉપિ કરેલ ટેક્સ્ટ અને છબીઓ જોવાની મંજૂરી આપશો નહીં</translation>
@@ -3505,6 +3522,7 @@ USB ડિવાઇસ</translation>
 <translation id="1128109161498068552">MIDI ઉપકરણોને ઍક્સેસ કરવા માટે સિસ્ટમના એકમાત્ર સંદેશાઓનો ઉપયોગ કરવાની કોઇપણ સાઇટ્સને  મંજૂરી આપશો નહીં</translation>
 <translation id="2091887806945687916">ધ્વનિ</translation>
 <translation id="4751476147751820511">મોશન અથવા લાઇટ સેન્સર</translation>
+<translation id="1717218214683051432">મોશન સેન્સર</translation>
 <translation id="6059925163896151826">USB ઉપકરણો</translation>
 <translation id="8666584013686199826">જ્યારે કોઈ સાઇટ USB ઉપકરણોને ઍક્સેસ કરવા માગે ત્યારે પૂછો</translation>
 <translation id="6291949900244949761">જ્યારે કોઈ સાઇટ USB ઉપકરણોને ઍક્સેસ કરવા માગે ત્યારે પૂછો (સુઝાવ આપેલ)</translation>
@@ -3540,7 +3558,9 @@ USB ડિવાઇસ</translation>
 <translation id="1660204651932907780">સાઇટને અવાજ ચલાવવાની મંજૂરી આપો (સુઝાવ આપેલ)</translation>
 <translation id="3600792891314830896">જે સાઇટ અવાજ ચલાવતી હોય તેઓનો અવાજ બંધ કરો</translation>
 <translation id="5084230410268011727">સાઇટને મોશન અને લાઇટ સેન્સરનો ઉપયોગ કરવાની મંજૂરી આપો</translation>
+<translation id="489454699928748701">સાઇટને મોશન સેન્સરનો ઉપયોગ કરવાની મંજૂરી આપો</translation>
 <translation id="5047421709274785093">સાઇટને મોશન અને લાઇટ સેન્સરનો ઉપયોગ કરવાથી બ્લૉક કરો</translation>
+<translation id="6396988158856674517">સાઇટને મોશન સેન્સરનો ઉપયોગ કરવાથી બ્લૉક કરો</translation>
 <translation id="2904456025988372123">પ્રથમ ફાઇલ પછી જ્યારે સાઇટ આપમેળે ફાઇલો ડાઉનલોડ કરવાનો પ્રયાસ કરે ત્યારે પૂછો</translation>
 <translation id="3494769164076977169">પ્રથમ ફાઇલ પછી જ્યારે સાઇટ આપમેળે ફાઇલો ડાઉનલોડ કરવાનો પ્રયાસ કરે ત્યારે પૂછો (ભલામણ કરેલ)</translation>
 <translation id="5036662165765606524">કોઈપણ સાઇટને આપમેળે બહુવિધ ફાઇલો ડાઉનલોડ કરવાની મંજૂરી આપશો નહીં</translation>
@@ -4075,6 +4095,7 @@ USB ડિવાઇસ</translation>
 <translation id="2785008241190445880">બુકમાર્ક બદલ્યું</translation>
 <translation id="5468853758063275923">Brave તમારું ડિફૉલ્ટ બ્રાઉઝર છે</translation>
 <translation id="2950533317914339731">તમારી મનપસંદ Brave Software ઍપ પર બુકમાર્ક ઉમેરો</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">નકશા</translation>
 <translation id="6709133671862442373">News</translation>

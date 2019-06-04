@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Нису пронађени резултати претраге</translation>
 <translation id="8967866634928501045">За приказивање притисните Alt + Shift + A</translation>
 <translation id="998747458861718449">П&amp;регледај</translation>
+<translation id="4428301600092811022">Желите ли да преузимате описе слика са Brave Software-а?</translation>
 <translation id="741204030948306876">Да, омогући</translation>
 <translation id="780301667611848630">Не, хвала</translation>
 <translation id="3943582379552582368">&amp;Назад</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">Ц&amp;ентар за помоћ</translation>
 <translation id="7324297612904500502">Форум за бета верзију</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Измени претраживаче...</translation>
 <translation id="5702898740348134351">&amp;Измени претраживаче...</translation>
 <translation id="2454247629720664989">Кључна реч</translation>
@@ -1303,8 +1305,10 @@
 <translation id="6207200176136643843">Ресетуј на подразумевани ниво зумирања</translation>
 <translation id="4953689047182316270">одговара на догађаје приступачности</translation>
 <translation id="4677585247300749148"><ph name="URL"/> жели да одговара на догађаје приступачности</translation>
+<translation id="2224471211857467033">Догађаји у вези са приступачношћу</translation>
 <translation id="6116338172782435947">да види текст и слике који су копирани у привремену меморију</translation>
 <translation id="3461266716147554923"><ph name="URL"/> жели да види текст и слике који су копирани у привремену меморију</translation>
+<translation id="2586657967955657006">Меморија</translation>
 <translation id="4838836835474292213">Приступ за читање привремене меморије је дозвољен</translation>
 <translation id="1415708812149920388">Приступ за читање привремене меморије је одбијен</translation>
 <translation id="2365507699358342471">Овај сајт може да види текст и слике који су копирани у привремену меморију.</translation>
@@ -1732,6 +1736,7 @@
 <translation id="7547317915858803630">Упозорење: Подешавања производа <ph name="PRODUCT_NAME"/> су ускладиштена на мрежном диску. То може да доведе до успоравања, отказивања па чак и губитка података.</translation>
 <translation id="3122496702278727796">Прављење директоријума са подацима није успело</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> жели да преузме више датотека</translation>
+<translation id="7514365320538308">Преузми</translation>
 <translation id="691024665142758461">да преузме више датотека</translation>
 <translation id="7004499039102548441">Недавне картице</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 картица}one{# картица}few{# картице}other{# картица}}</translation>
@@ -1823,6 +1828,7 @@
 <translation id="6156960295318603523">Подешавања језика</translation>
 <translation id="7931318309563332511">Непознато</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> жели да вам шаље обавештења</translation>
+<translation id="2482878487686419369">Обавештења</translation>
 <translation id="7221855153210829124">приказује обавештења</translation>
 <translation id="8393700583063109961">Пошаљите поруку</translation>
 <translation id="6701535245008341853">Није могуће учитати профил.</translation>
@@ -1924,6 +1930,7 @@
 <translation id="1753905327828125965">Најпосећеније</translation>
 <translation id="5612720917913232150"><ph name="URL"/> жели да користи локацију рачунара</translation>
 <translation id="4733082559415072992"><ph name="URL"/> жели да користи локацију уређаја</translation>
+<translation id="5646376287012673985">Локација</translation>
 <translation id="3016780570757425217">зна вашу локацију</translation>
 <translation id="4068506536726151626">Ова страница садржи елементе са следећих сајтова који прате локацију на којој се налазите:</translation>
 <translation id="4920887663447894854">Следећим сајтовима је онемогућено праћење ваше локације на овој страници:</translation>
@@ -1933,6 +1940,7 @@
 <translation id="3528033729920178817">Ова страница прати локацију на којој се налазите.</translation>
 <translation id="1510030919967934016">Овој страници је онемогућено да прати локацију на којој се налазите.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> жели да у потпуности контролише MIDI уређаје</translation>
+<translation id="1834583737373831634">MIDI уређаји</translation>
 <translation id="8606726445206553943">користи MIDI уређаје</translation>
 <translation id="1849186935225320012">Ова страница у потпуности контролише MIDI уређаје.</translation>
 <translation id="2986010903908656993">Спречено је да ова страница у потпуности контролише MIDI уређаје.</translation>
@@ -1966,6 +1974,7 @@
 <translation id="8282947398454257691">зна јединствени идентификатор уређаја</translation>
 <translation id="8329449853370113380"><ph name="URL"/> жели да пусти заштићени садржај. Brave Software ће потврдити идентитет уређаја.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> жели да пусти заштићени садржај. Brave Software ће потврдити идентитет уређаја и овај сајт ће моћи да му приступа.</translation>
+<translation id="1746402432151920942">Идентификатор заштићеног садржаја</translation>
 <translation id="1322046419516468189">Прегледајте сачуване лозинке и управљајте њима са <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Лозинка је сачувана. Прегледајте сачуване лозинке и управљајте њима са <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software налога</translation>
@@ -2025,18 +2034,24 @@
 <translation id="3532844647053365774"><ph name="HOST"/> жели да користи микрофон</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> жели да користи камеру</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> жели да дели ваш екран</translation>
+<translation id="4275663329226226506">Медији</translation>
 <translation id="8962918469425892674">Овај сајт користи сензоре покрета или светла.</translation>
+<translation id="4532646538815530781">Овај сајт користи сензоре за покрет.</translation>
 <translation id="6057381398996433816">Овом сајту је забрањено да користи сензоре за покрет и светло.</translation>
+<translation id="7707108266051544351">Овом сајту је забрањено да користи сензоре за покрет.</translation>
 <translation id="1151917987301063366">Увек дозволи да <ph name="HOST"/> приступа сензорима</translation>
 <translation id="7377451353532943397">Настави да блокираш приступ сензорима</translation>
 <translation id="6878422606530379992">Приступ сензорима је дозвољен</translation>
 <translation id="4031527940632463547">Приступ сензорима је блокиран</translation>
 <translation id="4559617833001311418">Овај сајт приступа сензорима за покрет или светло.</translation>
+<translation id="5623282979409330487">Овај сајт приступа сензорима за покрет.</translation>
 <translation id="2309620859903500144">Овом сајту је забрањен приступ сензорима за покрет или светло.</translation>
+<translation id="6541638731489116978">Овом сајту је забрањено да приступа сензорима за покрет.</translation>
 <translation id="8645354835496065562">Настави да дозвољаваш приступ сензорима</translation>
 <translation id="2903882649406874750">Никад не дозвољавај да <ph name="HOST"/> приступа сензорима</translation>
 <translation id="3194737229810486521"><ph name="URL"/> жели да трајно складишти податке на уређају</translation>
 <translation id="1030706264415084469"><ph name="URL"/> жели трајно да складишти велике количине података на уређају</translation>
+<translation id="885701979325669005">Меморијски простор</translation>
 <translation id="1712552549805331520"><ph name="URL"/> жели трајно да складишти податке на локалном рачунару</translation>
 <translation id="1997484222658892567"><ph name="URL"/> жели да трајно складишти велику количину података на вашем локалном рачунару</translation>
 <translation id="7648992873808071793">складишти датотеке на овом уређају</translation>
@@ -2455,9 +2470,7 @@
 <translation id="702252130983202758">Апликације</translation>
 <translation id="8831664945713891930">Отвори подешавања додатака</translation>
 <translation id="5138227688689900538">Прикажи мање</translation>
-<translation id="5646376287012673985">Локација</translation>
 <translation id="5270167208902136840">Прикажи још апликација (<ph name="NUMBER_OF_MORE_APPS"/>)</translation>
-<translation id="2482878487686419369">Обавештења</translation>
 <translation id="228758327756499171">Апликација: <ph name="NUMBER_OF_MORE_APPS"/></translation>
 <translation id="7207631048330366454">Претражите апликације</translation>
 <translation id="9011424611726486705">Отворите подешавања сајта</translation>
@@ -2790,6 +2803,7 @@
 <translation id="4305227814872083840">Дуго (2 с)</translation>
 <translation id="2860150991415616761">веома дуго (4 с)</translation>
 <translation id="1217668622537098248">Врати на леви клик после радње</translation>
+<translation id="8781470833671194250">Стабилизација положаја клика</translation>
 <translation id="3682824389861648626">Ограничење кретања</translation>
 <translation id="5511379779384092781">Веома мала</translation>
 <translation id="2765217105034171413">Мала</translation>
@@ -3412,7 +3426,10 @@
 <translation id="9038649477754266430">Користите услугу предвиђања да бисте брже учитавали странице</translation>
 <translation id="7981313251711023384">Странице се учитавају унапред ради бржег прегледања и претраживања</translation>
 <translation id="2468205691404969808">Користи колачиће да би се запамтила подешавања, чак и када не посећујете те странице</translation>
+<translation id="3181954750937456830">Безбедно прегледање (штити вас и уређај од опасних сајтова)</translation>
+<translation id="7315322926489145388">Шаље URL-ове неких страница које посећујете Brave Software-у када је безбедност угрожена</translation>
 <translation id="4991384657077828949">Помозите нам да побољшамо Brave безбедност</translation>
+<translation id="1943176487615318915">Да би откривао опасне апликације и сајтове, Brave шаље Brave Software-у URL-ове неких страница које посећујете, ограничене информације о систему и одређени садржај страница</translation>
 <translation id="2875273286298348523">Текст који уносите у прегледач Brave шаље Brave Software-у.</translation>
 <translation id="9079153198295609735">Аутоматски шаљи Brave Software-у статистичке податке о коришћењу и извештаје о отказивању</translation>
 <translation id="5941220456342415404">Аутоматски шаљи дијагностику и податке о коришћењу Brave Software-у</translation>
@@ -3484,7 +3501,6 @@
 <translation id="1919345977826869612">Oglasi</translation>
 <translation id="5649053991847567735">Аутоматска преузимања</translation>
 <translation id="3744111561329211289">Синхронизација у позадини</translation>
-<translation id="2586657967955657006">Меморија</translation>
 <translation id="5518219166343146486">Питај када сајт жели да види текст и слике који су копирани у привремену меморију</translation>
 <translation id="2089795179672254991">Питај када сајт жели да види текст и слике који су копирани у привремену меморију (препоручено)</translation>
 <translation id="16815041330799488">Не дозвољавај сајтовима да виде текст и слике који су копирани у привремену меморију</translation>
@@ -3512,6 +3528,7 @@
 <translation id="1128109161498068552">Не дозволи ниједном сајту да користи ексклузивне поруке система да би приступао MIDI уређајима</translation>
 <translation id="2091887806945687916">Звук</translation>
 <translation id="4751476147751820511">Сензори за покрет или светло</translation>
+<translation id="1717218214683051432">Сензори покрета</translation>
 <translation id="6059925163896151826">USB уређаји</translation>
 <translation id="8666584013686199826">Питај када сајт жели да приступи USB уређајима</translation>
 <translation id="6291949900244949761">Питај када сајт жели да приступи USB уређајима (препоручено)</translation>
@@ -3547,7 +3564,9 @@
 <translation id="1660204651932907780">Дозволи сајтовима да пуштају звук (препоручено)</translation>
 <translation id="3600792891314830896">Искључи звук сајтова који пуштају звук</translation>
 <translation id="5084230410268011727">Дозволи сајтовима да користе сензоре за покрет и светло</translation>
+<translation id="489454699928748701">Дозволи сајтовима да користе сензоре за покрет</translation>
 <translation id="5047421709274785093">Блокирај сајтове тако да не користе сензоре за покрет и светло</translation>
+<translation id="6396988158856674517">Не дозволи да сајтови користе сензоре за покрет</translation>
 <translation id="2904456025988372123">Питај када сајт покуша аутоматски да преузима датотеке после прве датотеке</translation>
 <translation id="3494769164076977169">Питај када сајт покуша аутоматски да преузима датотеке после прве датотеке (препоручено)</translation>
 <translation id="5036662165765606524">Не дозволи ниједном сајту да аутоматски преузима више датотека</translation>
@@ -4082,6 +4101,7 @@
 <translation id="2785008241190445880">Обележивач је замењен</translation>
 <translation id="5468853758063275923">Brave је подразумевани прегледач</translation>
 <translation id="2950533317914339731">Додајте обележиваче у омиљене Brave Software апликације</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Мапе</translation>
 <translation id="6709133671862442373">Вести</translation>

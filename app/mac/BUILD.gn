@@ -1,5 +1,7 @@
-import("//build/util/branding.gni")
 import("//brave/build/config.gni")
+import("//build/util/branding.gni")
+import("//build/util/version.gni")
+import("//chrome/common/features.gni")
 
 group("chromedriver_dist_resources") {}
 
@@ -7,7 +9,11 @@ chrome_framework_name = chrome_product_full_name + " Framework"
 chrome_helper_name = chrome_product_full_name + " Helper"
 
 # This must be same value in //chrome/BUILD.gn.
-chrome_framework_version = "A"
+if (new_mac_bundle_structure) {
+  chrome_framework_version = chrome_version_full
+} else {
+  chrome_framework_version = "A"
+}
 
 # This list must be updated with the two targets' deps list below, and
 # the list of _dsyms in :brave_dsym_archive.

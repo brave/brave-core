@@ -30,7 +30,6 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="4150684676757176434">Tiếp tục chặn tự động phát</translation>
 <translation id="7543906827780734027">Brave vẫn chưa xét duyệt tiện ích mở rộng này - tiện ích mở rộng này có thể độc hại. Vẫn thêm "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Màu sắc của brave</translation>
-<translation id="5341901626640816374">Dùng thanh địa chỉ rộng</translation>
 <translation id="6123134130710658846">Ẩn nút Tiền thưởng Brave</translation>
 <translation id="7635711399568194460">Ẩn nút Tiền thưởng Brave trên thanh địa chỉ khi Tiền thưởng Brave không được bật</translation>
 <translation id="7965178729203412357">Danh tính Tor mới</translation>
@@ -47,13 +46,20 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="2515126961943087659">Dịch vụ Bat Ads</translation>
 <translation id="7924918279836988121">Dịch vụ Sổ cái Bat</translation>
 <translation id="4472575034687746823">Bắt đầu</translation>
+<translation id="3400357268283240774">Cài đặt thêm</translation>
 <translation id="6303294677342628402">Lá chắn</translation>
+<translation id="768979911142179781">Mặc định</translation>
+<translation id="5989930075012659993">Các cài đặt hiện tại theo từng trang của bạn sẽ được lưu lại.</translation>
+<translation id="9185018653595759199">Chặn truyền thông xã hội</translation>
+<translation id="6894114137169961038">Kiểm soát quảng cáo</translation>
+<translation id="1096802265930928584">Kiểm soát cookie</translation>
 <translation id="8919235146866304148">Bảo vệ bằng vân tay</translation>
 <translation id="520895744850022668">HTTPS Everywhere (HTTPS Khắp mọi nơi)</translation>
 <translation id="5259716416204774556">Chặn tập lệnh</translation>
 <translation id="7498695072878479744">Cho phép nút đăng nhập Google trên các trang web của bên thứ ba</translation>
 <translation id="863171915776379000">Cho phép đăng nhập và nhúng bài viết Facebook</translation>
 <translation id="5165042248369837294">Cho phép nhúng bài viết Twitter</translation>
+<translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
 <translation id="6067014455220527258">Chặn quảng cáo</translation>
 <translation id="6985711843506827936">Cho phép quảng cáo và theo dõi</translation>
 <translation id="6132506775968708399">Chặn cookie của bên thứ 3</translation>
@@ -73,11 +79,14 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="2414886740292270097">Tối</translation>
 <translation id="1360441190790440400">Giống như Linux</translation>
 <translation id="1336940801687497203">Giống như Windows</translation>
+<translation id="8721331068159819483">Giống như macOS</translation>
 <translation id="6786747875388722282">Tiện ích mở rộng</translation>
 <translation id="2896916411183256228">Sử dụng WebTorrent để hiển thị torrent trực tiếp trong trình duyệt. Hỗ trợ các tập tin torrent và liên kết nam châm (magnet).</translation>
 <translation id="6554397389149987360">Sử dụng thành phần của Hangouts để cho phép chia sẻ màn hình và các tính năng khác trong trình duyệt.</translation>
+<translation id="4154389611571860454">Sử dụng tiện ích mở rộng đi kèm IPFS để hỗ trợ IPFS trong trình duyệt.</translation>
 <translation id="8137559199583651773">Quản lý tiện ích</translation>
 <translation id="4928988318462976765">Cửa hàng Tiện ích mở rộng Web</translation>
 <translation id="9181207987584064303">Xem trong Cửa hàng Tiện ích mở rộng Web</translation>
 <translation id="4846154056248462491">Khi thoát</translation>
+<translation id="5057399635433117814">Dịch trang này? Lệnh này sẽ gửi tất cả văn bản trên trang này đến Microsoft để dịch.</translation>
 </translationbundle>

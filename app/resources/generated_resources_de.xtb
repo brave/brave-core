@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Keine Suchergebnisse gefunden</translation>
 <translation id="8967866634928501045">Zum Anzeigen drücken Sie Alt + Umschalttaste + A</translation>
 <translation id="998747458861718449">Untersuchen</translation>
+<translation id="4428301600092811022">Bildbeschreibungen von Brave Software verwenden?</translation>
 <translation id="741204030948306876">Ja, bitte</translation>
 <translation id="780301667611848630">Kein Interesse</translation>
 <translation id="3943582379552582368">&amp;Zurück</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">H&amp;ilfe</translation>
 <translation id="7324297612904500502">Beta-Forum</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">Such&amp;maschinen bearbeiten...</translation>
 <translation id="5702898740348134351">Suchmaschin&amp;en bearbeiten...</translation>
 <translation id="2454247629720664989">Suchkürzel</translation>
@@ -1308,8 +1310,10 @@ Speichern Sie Ihre Schlüsseldatei an einem sicheren Ort. Sie benötigen die Dat
 <translation id="6207200176136643843">Auf Standard-Zoomstufe zurücksetzen</translation>
 <translation id="4953689047182316270">Auf Bedienungshilfen reagieren</translation>
 <translation id="4677585247300749148"><ph name="URL"/> möchte auf Bedienungshilfen reagieren</translation>
+<translation id="2224471211857467033">Bedienungshilfen</translation>
 <translation id="6116338172782435947">Texte und Bilder aus der Zwischenablage abrufen</translation>
 <translation id="3461266716147554923"><ph name="URL"/> möchte Texte und Bilder aus der Zwischenablage abrufen</translation>
+<translation id="2586657967955657006">Zwischenablage</translation>
 <translation id="4838836835474292213">Lesezugriff auf Zwischenablage erlaubt</translation>
 <translation id="1415708812149920388">Lesezugriff auf Zwischenablage verweigert</translation>
 <translation id="2365507699358342471">Diese Website kann Texte und Bilder aus der Zwischenablage abrufen.</translation>
@@ -1737,6 +1741,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="7547317915858803630">Warnung: Ihre <ph name="PRODUCT_NAME"/>-Einstellungen werden auf einem Netzlaufwerk gespeichert. Dies kann zu einer Verlangsamung, zu Abstürzen oder sogar zu Datenverlust führen.</translation>
 <translation id="3122496702278727796">Erstellen eines Datenverzeichnisses fehlgeschlagen</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> möchte mehrere Dateien herunterladen</translation>
+<translation id="7514365320538308">Herunterladen</translation>
 <translation id="691024665142758461">Mehrere Dateien herunterladen</translation>
 <translation id="7004499039102548441">Zuletzt geöffnete Tabs</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 Tab}other{# Tabs}}</translation>
@@ -1826,6 +1831,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="6156960295318603523">Spracheinstellungen</translation>
 <translation id="7931318309563332511">Unbekannt</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> möchte Ihnen Benachrichtigungen senden</translation>
+<translation id="2482878487686419369">Benachrichtigungen</translation>
 <translation id="7221855153210829124">Benachrichtigungen anzeigen</translation>
 <translation id="8393700583063109961">Nachricht senden</translation>
 <translation id="6701535245008341853">Profil konnte nicht geladen werden.</translation>
@@ -1927,6 +1933,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="1753905327828125965">Meistbesucht</translation>
 <translation id="5612720917913232150"><ph name="URL"/> möchte den Standort Ihres Computers nutzen</translation>
 <translation id="4733082559415072992"><ph name="URL"/> möchte den Standort Ihres Geräts nutzen</translation>
+<translation id="5646376287012673985">Ort</translation>
 <translation id="3016780570757425217">Ihren Standort abrufen</translation>
 <translation id="4068506536726151626">Diese Seite enthält Elemente von folgenden Websites, die Ihren Standort nachverfolgen:</translation>
 <translation id="4920887663447894854">Die folgenden Websites dürfen Ihren Standort auf dieser Seite nicht verfolgen:</translation>
@@ -1936,6 +1943,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="3528033729920178817">Diese Seite verfolgt Ihren Standort.</translation>
 <translation id="1510030919967934016">Diese Seite darf Ihren Standort nicht verfolgen.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> fordert die vollständige Kontrolle über Ihre MIDI-Geräte</translation>
+<translation id="1834583737373831634">MIDI-Geräte</translation>
 <translation id="8606726445206553943">Ihre MIDI-Geräte verwenden</translation>
 <translation id="1849186935225320012">Diese Seite hat vollständige Kontrolle über MIDI-Geräte.</translation>
 <translation id="2986010903908656993">Dieser Seite wurde keine vollständige Kontrolle über MIDI-Geräte gewährt.</translation>
@@ -1969,6 +1977,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="8282947398454257691">Ihre eindeutige Geräte-ID abrufen</translation>
 <translation id="8329449853370113380"><ph name="URL"/> möchte geschützte Inhalte abspielen. Die Identität Ihres Geräts wird von Brave Software geprüft.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> möchte geschützten Inhalt abspielen. Die Identität Ihres Geräts wird von Brave Software überprüft, weshalb möglicherweise ein Zugriff durch diese Website erfolgt.</translation>
+<translation id="1746402432151920942">Kennzeichnung für geschützte Medien</translation>
 <translation id="1322046419516468189">Gespeicherte Passwörter in Ihrem <ph name="SAVED_PASSWORDS_STORE"/> aufrufen und verwalten</translation>
 <translation id="5297082477358294722">Passwort gespeichert. Gespeicherte Passwörter können Sie in Ihrem <ph name="SAVED_PASSWORDS_STORE"/> aufrufen und verwalten</translation>
 <translation id="5713644099811900409">Brave Software-Konto</translation>
@@ -2028,18 +2037,24 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> möchte Ihr Mikrofon verwenden</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> möchte Ihre Kamera verwenden</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> möchte Ihren Bildschirm freigeben</translation>
+<translation id="4275663329226226506">Medien</translation>
 <translation id="8962918469425892674">Diese Website nutzt Bewegungs- oder Lichtsensoren.</translation>
+<translation id="4532646538815530781">Diese Website nutzt Bewegungssensoren.</translation>
 <translation id="6057381398996433816">Diese Website darf keine Bewegungs- und Lichtsensoren verwenden.</translation>
+<translation id="7707108266051544351">Die Nutzung von Bewegungssensoren wurde für diese Website blockiert.</translation>
 <translation id="1151917987301063366"><ph name="HOST"/> immer den Zugriff auf Sensoren erlauben</translation>
 <translation id="7377451353532943397">Zugriff auf den Sensor weiterhin blockieren</translation>
 <translation id="6878422606530379992">Sensorennutzung erlaubt</translation>
 <translation id="4031527940632463547">Sensoren blockiert</translation>
 <translation id="4559617833001311418">Diese Website greift auf meine Bewegungs- oder Lichtsensoren zu.</translation>
+<translation id="5623282979409330487">Diese Website greift auf Ihre Bewegungssensoren zu.</translation>
 <translation id="2309620859903500144">Diese Website darf nicht auf meine Bewegungs- oder Lichtsensoren zugreifen.</translation>
+<translation id="6541638731489116978">Diese Website darf nicht auf Ihre Bewegungssensoren zugreifen.</translation>
 <translation id="8645354835496065562">Zugriff auf Sensor weiterhin zulassen</translation>
 <translation id="2903882649406874750">Immer verhindern, dass <ph name="HOST"/> auf Sensoren zugreift</translation>
 <translation id="3194737229810486521"><ph name="URL"/> möchte Daten dauerhaft auf Ihrem Gerät speichern</translation>
 <translation id="1030706264415084469"><ph name="URL"/> möchte dauerhaft umfangreiche Daten auf Ihrem Gerät speichern</translation>
+<translation id="885701979325669005">Speicher</translation>
 <translation id="1712552549805331520"><ph name="URL"/> möchte Daten dauerhaft auf Ihrem lokalen Computer speichern</translation>
 <translation id="1997484222658892567"><ph name="URL"/> möchte umfangreiche Daten dauerhaft auf Ihrem lokalen Computer speichern</translation>
 <translation id="7648992873808071793">Dateien auf diesem Gerät speichern</translation>
@@ -2458,9 +2473,7 @@ Möchten Sie <ph name="CONTROL_PANEL_APPLET_NAME"/> starten?</translation>
 <translation id="702252130983202758">Meine Apps</translation>
 <translation id="8831664945713891930">Erweiterungseinstellungen öffnen</translation>
 <translation id="5138227688689900538">Weniger anzeigen</translation>
-<translation id="5646376287012673985">Ort</translation>
 <translation id="5270167208902136840"><ph name="NUMBER_OF_MORE_APPS"/> weitere Apps anzeigen</translation>
-<translation id="2482878487686419369">Benachrichtigungen</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> Apps</translation>
 <translation id="7207631048330366454">Apps finden</translation>
 <translation id="9011424611726486705">Website-Einstellungen öffnen</translation>
@@ -2794,6 +2807,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="4305227814872083840">lang (2 s)</translation>
 <translation id="2860150991415616761">sehr lang (4 s)</translation>
 <translation id="1217668622537098248">Nach Aktion zu Linksklick zurückkehren</translation>
+<translation id="8781470833671194250">Stabilisierung der Klickposition</translation>
 <translation id="3682824389861648626">Grenzwert für Mausbewegungen</translation>
 <translation id="5511379779384092781">Sehr klein</translation>
 <translation id="2765217105034171413">Klein</translation>
@@ -3416,7 +3430,10 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="9038649477754266430">Vorhersagefunktion zum schnelleren Laden von Seiten verwenden</translation>
 <translation id="7981313251711023384">Seiten vorab laden, um das Surfen und die Suche zu beschleunigen</translation>
 <translation id="2468205691404969808">Zum Speichern Ihrer Einstellungen werden Cookies verwendet, auch wenn Sie diese Seiten nicht besuchen</translation>
+<translation id="3181954750937456830">Safe Browsing (mich und mein Gerät vor schädlichen Websites schützen)</translation>
+<translation id="7315322926489145388">URLs einiger von mir besuchter Seiten an Brave Software senden, wenn meine Sicherheit gefährdet ist</translation>
 <translation id="4991384657077828949">Zur Verbesserung der Sicherheit von Brave beitragen</translation>
+<translation id="1943176487615318915">Brave sendet die URLs einiger von Ihnen besuchter Seiten, bestimmte Systeminformationen und einige Seiteninhalte an Brave Software, um gefährliche Apps und Websites zu erkennen</translation>
 <translation id="2875273286298348523">Brave sendet den in den Browser eingegebenen Text an Brave Software</translation>
 <translation id="9079153198295609735">Nutzungsstatistiken und Absturzberichte automatisch an Brave Software senden</translation>
 <translation id="5941220456342415404">Diagnose- und Nutzungsdaten automatisch an Brave Software senden</translation>
@@ -3488,7 +3505,6 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="1919345977826869612">Werbung</translation>
 <translation id="5649053991847567735">Auto-Downloads</translation>
 <translation id="3744111561329211289">Hintergrundsync</translation>
-<translation id="2586657967955657006">Zwischenablage</translation>
 <translation id="5518219166343146486">Nachfragen, wenn eine Website Texte und Bilder aus der Zwischenablage abrufen möchte</translation>
 <translation id="2089795179672254991">Nachfragen, wenn eine Website Texte und Bilder aus der Zwischenablage abrufen möchte (empfohlen)</translation>
 <translation id="16815041330799488">Websites keinen Zugriff auf Texte und Bilder gewähren, die sich in der Zwischenablage befinden</translation>
@@ -3516,6 +3532,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="1128109161498068552">Websites nicht gestatten, mittels systemexklusiver Meldungen auf MIDI-Geräte zuzugreifen</translation>
 <translation id="2091887806945687916">Ton</translation>
 <translation id="4751476147751820511">Bewegungs- oder Lichtsensoren</translation>
+<translation id="1717218214683051432">Bewegungssensoren</translation>
 <translation id="6059925163896151826">USB-Geräte</translation>
 <translation id="8666584013686199826">Nachfragen, wenn eine Website auf USB-Geräte zugreifen möchte</translation>
 <translation id="6291949900244949761">Nachfragen, wenn eine Website auf USB-Geräte zugreifen möchte (empfohlen)</translation>
@@ -3551,7 +3568,9 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="1660204651932907780">Wiedergabe von Ton auf Websites zulassen (empfohlen)</translation>
 <translation id="3600792891314830896">Websites stummschalten, die Ton wiedergeben</translation>
 <translation id="5084230410268011727">Verwendung von Bewegungs- und Lichtsensoren für Websites zulassen</translation>
+<translation id="489454699928748701">Websites erlauben, Bewegungssensoren zu verwenden</translation>
 <translation id="5047421709274785093">Verwendung von Bewegungs- und Lichtsensoren für Websites blockieren</translation>
+<translation id="6396988158856674517">Verwendung von Bewegungssensoren für Websites blockieren</translation>
 <translation id="2904456025988372123">Nachfragen, wenn eine Website versucht, nach der ersten Datei weitere Dateien automatisch herunterzuladen</translation>
 <translation id="3494769164076977169">Nachfragen, wenn eine Website versucht, Dateien nach der ersten Datei automatisch herunterzuladen (empfohlen)</translation>
 <translation id="5036662165765606524">Keiner Website gestatten, automatisch mehrere Dateien herunterzuladen</translation>
@@ -4086,6 +4105,7 @@ Andere Personen mit langsamen Verbindungen sehen Ihre Inhalte möglicherweise ni
 <translation id="2785008241190445880">Lesezeichen ersetzt</translation>
 <translation id="5468853758063275923">Brave ist Ihr Standardbrowser</translation>
 <translation id="2950533317914339731">Lesezeichen für Ihre Lieblings-Apps von Brave Software hinzufügen</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Nachrichten</translation>

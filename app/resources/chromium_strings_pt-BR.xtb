@@ -3,6 +3,9 @@
 <translationbundle lang="pt-BR">
 <translation id="5194812628624740897">Ao desconectar <ph name="USERNAME"/>, o histórico, os favoritos, as configurações e outros dados do Brave armazenados neste dispositivo serão excluídos. Os dados armazenados na sua Conta do Brave Software não serão apagados e poderão ser gerenciados no <ph name="GOOGLE_DASHBOARD_LINK"/>Painel de Controle do Brave Software<ph name="END_GOOGLE_DASHBOARD_LINK"/>.</translation>
 <translation id="939305735877869636">Brave</translation>
+<translation id="2069994121511856876">Brave Nightly</translation>
+<translation id="4947625801334180582">Brave Beta</translation>
+<translation id="2566435362010629810">Brave Dev</translation>
 <translation id="6373767849825830651">O Brave é um navegador que executa páginas e aplicativos da web com alta velocidade. É rápido, estável e fácil de usar. Navegue na web com mais segurança com a proteção contra malware e phishing incorporada ao Brave.</translation>
 <translation id="680297041157509674">Brave OS</translation>
 <translation id="4847979153841887006">Logotipo do Brave</translation>
@@ -21,6 +24,8 @@
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> Autores do Brave. Todos os direitos reservados.</translation>
 <translation id="2310890394934209120">O Brave OS tornou-se possível graças a um <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/> adicional.</translation>
 <translation id="8160794320557846790">O Brave OS tornou-se possível graças a um outro <ph name="BEGIN_LINK_CROS_OSS"/>software de código aberto<ph name="END_LINK_CROS_OSS"/>, como o <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="8948097099929452692">Não usado no Brave. Espaço reservado para manter mapas de recursos em sincronia.</translation>
+<translation id="5009217320733452434">Não usado no Brave. Espaço reservado para manter mapas de recursos em sincronia. Espera um argumento: &lt;ph nome="ARGUMENT"&gt;$1&lt;/ph&gt;.</translation>
 <translation id="6913582816347128893">É possível que o Brave não funcione corretamente, porque ele não é mais compatível com Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">É possível que o Brave não funcione corretamente, porque ele não é mais compatível com o Windows XP ou Windows Vista</translation>
 <translation id="189297655255130768">O Brave não está respondendo. Reiniciar agora?</translation>
@@ -174,7 +179,13 @@ Verifique seu e-mail em <ph name="ACCOUNT_EMAIL"/> para ver mais instruções.</
 <translation id="2433912322225810055">Controla também qual página deve ser exibida quando você inicia o Brave ou faz uma pesquisa na Omnibox.</translation>
 <translation id="2871190378186459992">Descubra ótimos aplicativos, jogos, extensões e temas para o Brave.</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
+<translation id="5846303060623790781">Brave Beta (mDNS-In)</translation>
+<translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
+<translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Regra interna para que o Brave permita tráfego mDNS.</translation>
+<translation id="7272074097076644710">Regra de entrada para o Brave Beta para permitir o tráfego mDNS.</translation>
+<translation id="4991512282053949769">Regra de entrada para o Brave Nightly para permitir o tráfego mDNS.</translation>
+<translation id="3856641371299712128">Regra de entrada para o Brave Dev para permitir o tráfego do mDNS.</translation>
 <translation id="8207657266087451193">Se uma imagem não tiver uma descrição útil, o Brave tentará fornecer uma para você. As imagens serão enviadas ao Brave Software para a criação de descrições. É possível desativar essa opção nas configurações a qualquer momento.</translation>
 <translation id="5499063270485366718">Se uma imagem não tiver uma descrição útil, o Brave tentará fornecer uma para você. As imagens serão enviadas ao Brave Software para a criação de descrições.</translation>
 <translation id="3870835867536344658">Esta opção usa o mesmo recurso de verificação ortográfica da Pesquisa Brave Software. O texto digitado no navegador é enviado para o Brave Software. É possível alterar esse comportamento nas configurações a qualquer momento.</translation>
@@ -188,6 +199,9 @@ Verifique seu e-mail em <ph name="ACCOUNT_EMAIL"/> para ver mais instruções.</
 <translation id="2522086024276534909">Reiniciar o Brave OS</translation>
 <translation id="8183252473547465084">É necessário reiniciar o Brave OS para que a atualização seja aplicada.</translation>
 <translation id="5895138241574237353">Reiniciar</translation>
+<translation id="8887390605192156061">Saia de todas as cópias do Brave.</translation>
+<translation id="1801551749768408825">Outras cópias do Brave estão em execução. Para atualizar, feche-as.</translation>
+<translation id="2632141563911437138">Para atualizar, é necessário interromper o Brave neste computador. Essa ação pode causar perda de dados não salvos de outros usuários conectados a esta máquina.</translation>
 <translation id="5875673934455379806">Reinstalar o Brave</translation>
 <translation id="2097604701283463988">O Brave está desatualizado</translation>
 <translation id="5173820533850252773">O Brave está desatualizado</translation>

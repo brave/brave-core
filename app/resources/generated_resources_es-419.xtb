@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">No se encontraron resultados en la búsqueda</translation>
 <translation id="8967866634928501045">Presiona Alt+mayúscula+A para mostrar</translation>
 <translation id="998747458861718449">Inspeccionar</translation>
+<translation id="4428301600092811022">¿Quieres obtener descripciones de imágenes de Brave Software?</translation>
 <translation id="741204030948306876">Sí, acepto</translation>
 <translation id="780301667611848630">No, gracias</translation>
 <translation id="3943582379552582368">&amp;Atrás</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">C&amp;entro de ayuda</translation>
 <translation id="7324297612904500502">Foro de la versión Beta</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Editar motores de búsqueda...</translation>
 <translation id="5702898740348134351">&amp;Modificar los motores de búsqueda...</translation>
 <translation id="2454247629720664989">Palabra clave</translation>
@@ -1302,8 +1304,10 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="6207200176136643843">Restablece el nivel de zoom predeterminado</translation>
 <translation id="4953689047182316270">Responder a los eventos de accesibilidad</translation>
 <translation id="4677585247300749148"><ph name="URL"/> desea responder a los eventos de accesibilidad</translation>
+<translation id="2224471211857467033">Eventos de accesibilidad</translation>
 <translation id="6116338172782435947">Ver el texto y las imágenes copiados en el portapapeles</translation>
 <translation id="3461266716147554923"><ph name="URL"/> desea ver el texto y las imágenes copiados en el portapapeles</translation>
+<translation id="2586657967955657006">Portapapeles</translation>
 <translation id="4838836835474292213">Se permitió el acceso de lectura al portapapeles</translation>
 <translation id="1415708812149920388">Se denegó el acceso de lectura al portapapeles</translation>
 <translation id="2365507699358342471">Este sitio puede ver el texto y las imágenes que se copiaron en el portapapeles.</translation>
@@ -1731,6 +1735,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="7547317915858803630">Advertencia: La configuración de <ph name="PRODUCT_NAME"/> se almacena en una unidad de red, lo que puede provocar ralentizaciones, fallas o, incluso, la pérdida de datos.</translation>
 <translation id="3122496702278727796">Se ha producido un error al crear el directorio de datos.</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> quiere descargar varios archivos</translation>
+<translation id="7514365320538308">Descargar</translation>
 <translation id="691024665142758461">Descargar varios archivos</translation>
 <translation id="7004499039102548441">Pestañas recientes</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 pestaña}other{# pestañas}}</translation>
@@ -1822,6 +1827,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="6156960295318603523">Configuración de idioma</translation>
 <translation id="7931318309563332511">Desconocido</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> quiere enviarte notificaciones</translation>
+<translation id="2482878487686419369">Notificaciones</translation>
 <translation id="7221855153210829124">Mostrar notificaciones</translation>
 <translation id="8393700583063109961">Enviar mensaje</translation>
 <translation id="6701535245008341853">No se pudo obtener el perfil.</translation>
@@ -1923,6 +1929,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="1753905327828125965">Más visitados</translation>
 <translation id="5612720917913232150"><ph name="URL"/> desea usar la ubicación de tu computadora</translation>
 <translation id="4733082559415072992"><ph name="URL"/> desea usar la ubicación de tu dispositivo</translation>
+<translation id="5646376287012673985">Ubicación</translation>
 <translation id="3016780570757425217">Determinar tu ubicación</translation>
 <translation id="4068506536726151626">Esta página contiene elementos de los siguientes sitios que están rastreando tu ubicación:</translation>
 <translation id="4920887663447894854">Se bloquearon los siguientes sitios para que no puedan rastrear tu ubicación en esta página:</translation>
@@ -1932,6 +1939,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="3528033729920178817">Esta página está rastreando tu ubicación.</translation>
 <translation id="1510030919967934016">Se bloqueó esta página para que no pueda rastrear tu ubicación.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> desea obtener el control total de tus dispositivos MIDI</translation>
+<translation id="1834583737373831634">Dispositivos MIDI</translation>
 <translation id="8606726445206553943">Usar tus dispositivos MIDI</translation>
 <translation id="1849186935225320012">Esta página tiene el control total de los dispositivos MIDI.</translation>
 <translation id="2986010903908656993">Se bloqueó esta página para que no tenga el control total de los dispositivos MIDI.</translation>
@@ -1965,6 +1973,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="8282947398454257691">Conocer tu identificador de dispositivo único</translation>
 <translation id="8329449853370113380"><ph name="URL"/> desea reproducir contenido protegido. Brave Software verificará la identidad de tu dispositivo.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> quiere reproducir contenido protegido. Brave Software verificará la identidad de tu dispositivo, y es posible que este sitio acceda a ella.</translation>
+<translation id="1746402432151920942">Identificador de medios protegidos</translation>
 <translation id="1322046419516468189">Consulta y administra las contraseñas guardadas en tu <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Se guardó la contraseña. Puedes ver y administrar las contraseñas guardadas en tu <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Cuenta de Brave Software</translation>
@@ -2024,18 +2033,24 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="3532844647053365774"><ph name="HOST"/> desea usar tu micrófono</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> desea usar tu cámara</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> desea compartir tu pantalla</translation>
+<translation id="4275663329226226506">Multimedia</translation>
 <translation id="8962918469425892674">Este sitio está usando los sensores de movimiento y luz.</translation>
+<translation id="4532646538815530781">Este sitio está usando los sensores de movimiento.</translation>
 <translation id="6057381398996433816">Este sitio no tiene permiso para usar los sensores de movimiento y luz.</translation>
+<translation id="7707108266051544351">Este sitio no tiene permiso para usar los sensores de movimiento.</translation>
 <translation id="1151917987301063366">Siempre permitir que <ph name="HOST"/> acceda a los sensores</translation>
 <translation id="7377451353532943397">Seguir bloqueando el acceso a los sensores</translation>
 <translation id="6878422606530379992">Se permite el acceso a los sensores</translation>
 <translation id="4031527940632463547">Se bloqueó el acceso a los sensores</translation>
 <translation id="4559617833001311418">Este sitio puede acceder a los sensores de movimiento o luz.</translation>
+<translation id="5623282979409330487">Este sitio accede a tus sensores de movimiento.</translation>
 <translation id="2309620859903500144">Este sitio no tiene permiso para acceder a los sensores de movimiento y luz.</translation>
+<translation id="6541638731489116978">Este sitio no tiene permiso para acceder a tus sensores de movimiento.</translation>
 <translation id="8645354835496065562">Seguir permitiendo el acceso a los sensores</translation>
 <translation id="2903882649406874750">No permitir nunca que <ph name="HOST"/> acceda a los sensores</translation>
 <translation id="3194737229810486521"><ph name="URL"/> desea almacenar datos de forma permanente en el dispositivo</translation>
 <translation id="1030706264415084469"><ph name="URL"/> quiere almacenar datos de gran tamaño de forma permanente en tu dispositivo</translation>
+<translation id="885701979325669005">Almacenamiento</translation>
 <translation id="1712552549805331520"><ph name="URL"/> desea almacenar de forma permanente los datos en tu computadora local</translation>
 <translation id="1997484222658892567"><ph name="URL"/> desea almacenar de forma permanente los datos de gran tamaño en tu computadora local</translation>
 <translation id="7648992873808071793">Almacenar archivos en el dispositivo</translation>
@@ -2454,9 +2469,7 @@ Mantén el archivo de clave en un lugar seguro. Debes crear las nuevas versiones
 <translation id="702252130983202758">Tus apps</translation>
 <translation id="8831664945713891930">Abrir configuración de extensiones</translation>
 <translation id="5138227688689900538">Mostrar menos</translation>
-<translation id="5646376287012673985">Ubicación</translation>
 <translation id="5270167208902136840">Mostrar <ph name="NUMBER_OF_MORE_APPS"/> apps más</translation>
-<translation id="2482878487686419369">Notificaciones</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> apps</translation>
 <translation id="7207631048330366454">Buscar apps</translation>
 <translation id="9011424611726486705">Abrir la configuración del sitio</translation>
@@ -2790,6 +2803,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="4305227814872083840">largo (2 s)</translation>
 <translation id="2860150991415616761">muy largo (4 s)</translation>
 <translation id="1217668622537098248">Volver al clic con el botón izquierdo después de la acción</translation>
+<translation id="8781470833671194250">Estabilización de la posición para hacer clic</translation>
 <translation id="3682824389861648626">Umbral de movimiento</translation>
 <translation id="5511379779384092781">Extrapequeño</translation>
 <translation id="2765217105034171413">Pequeño</translation>
@@ -3412,7 +3426,10 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="9038649477754266430">Utilizar un servicio de predicción para cargar las páginas más rápido</translation>
 <translation id="7981313251711023384">Cargar previamente las páginas para acelerar la navegación y las búsquedas</translation>
 <translation id="2468205691404969808">Usa cookies para recordar tus preferencias, incluso si no visitas esas páginas</translation>
+<translation id="3181954750937456830">Navegación segura (te protege a ti y tu dispositivo de sitios peligrosos)</translation>
+<translation id="7315322926489145388">Enviar a Brave Software las URL de algunas páginas que visitas, cuando tu seguridad esté en riesgo</translation>
 <translation id="4991384657077828949">Ayudar a mejorar la seguridad de Brave</translation>
+<translation id="1943176487615318915">Para detectar apps y sitios peligrosos, Brave envía a Brave Software URL de algunas páginas que visitas, información limitada sobre el sistema y contenido de algunas páginas</translation>
 <translation id="2875273286298348523">Brave envía el texto que escribes en el navegador a Brave Software</translation>
 <translation id="9079153198295609735">Enviar automáticamente estadísticas de uso e informes sobre fallos a Brave Software</translation>
 <translation id="5941220456342415404">Envía a Brave Software datos de uso y diagnóstico automáticamente</translation>
@@ -3484,7 +3501,6 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1919345977826869612">Anuncios</translation>
 <translation id="5649053991847567735">Descargas automáticas</translation>
 <translation id="3744111561329211289">Sincronización en segundo plano</translation>
-<translation id="2586657967955657006">Portapapeles</translation>
 <translation id="5518219166343146486">Preguntarme cuando un sitio desee ver el texto y las imágenes copiados en el portapapeles</translation>
 <translation id="2089795179672254991">Preguntarme cuando un sitio desee ver el texto y las imágenes copiados en el portapapeles (recomendado)</translation>
 <translation id="16815041330799488">No permitir que los sitios vean el texto ni las imágenes copiados en el portapapeles</translation>
@@ -3512,6 +3528,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1128109161498068552">No permitir que los sitios usen mensajes exclusivos del sistema para acceder a dispositivos MIDI</translation>
 <translation id="2091887806945687916">Sonido</translation>
 <translation id="4751476147751820511">Sensores de luz o movimiento</translation>
+<translation id="1717218214683051432">Sensores de movimiento</translation>
 <translation id="6059925163896151826">Dispositivos USB</translation>
 <translation id="8666584013686199826">Preguntarme cuando un sitio intente acceder a dispositivos USB</translation>
 <translation id="6291949900244949761">Preguntarme cuando un sitio desee acceder a dispositivos USB (recomendado)</translation>
@@ -3547,7 +3564,9 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="1660204651932907780">Permitir que los sitios reproduzcan sonido (recomendado)</translation>
 <translation id="3600792891314830896">Silenciar los sitios que reproducen sonido</translation>
 <translation id="5084230410268011727">Permitir el uso de los sensores de luz y movimiento en los sitios</translation>
+<translation id="489454699928748701">Permitir que los sitios usen los sensores de movimiento</translation>
 <translation id="5047421709274785093">Bloquear el uso de los sensores de luz y movimiento en los sitios</translation>
+<translation id="6396988158856674517">Impedir que los sitios usen los sensores de movimiento</translation>
 <translation id="2904456025988372123">Preguntarme cuando un sitio intente descargar archivos automáticamente después del primer archivo</translation>
 <translation id="3494769164076977169">Preguntarme cuando un sitio intente descargar archivos automáticamente después del primer archivo (recomendado)</translation>
 <translation id="5036662165765606524">No permitir que ningún sitio descargue varios archivos automáticamente</translation>
@@ -4082,6 +4101,7 @@ Es posible que los usuarios con conexiones lentas no puedan ver tu contenido.</t
 <translation id="2785008241190445880">Se reemplazó un favorito</translation>
 <translation id="5468853758063275923">Brave es el navegador predeterminado</translation>
 <translation id="2950533317914339731">Agrega tus apps de Brave Software preferidas como favoritos</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Noticias</translation>

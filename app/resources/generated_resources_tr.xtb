@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Arama sonucu bulunamadı</translation>
 <translation id="8967866634928501045">Göstermek için Alt+Üst Karakter+A tuşlarına basın</translation>
 <translation id="998747458861718449">İ&amp;ncele</translation>
+<translation id="4428301600092811022">Brave Software'dan resim açıklamaları alınsın mı?</translation>
 <translation id="741204030948306876">Evet, istiyorum</translation>
 <translation id="780301667611848630">Hayır, teşekkürler</translation>
 <translation id="3943582379552582368">&amp;Geri</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">Y&amp;ardım Merkezi</translation>
 <translation id="7324297612904500502">Beta Forumu</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Arama motorlarını düzenle...</translation>
 <translation id="5702898740348134351">&amp;Arama Motorlarını Düzenle...</translation>
 <translation id="2454247629720664989">Anahtar kelime</translation>
@@ -1229,6 +1231,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="5867841422488265304">Web adresini arayın veya yazın</translation>
 <translation id="2129873093718581193">Brave Software'da arayın veya URL'yi yazın</translation>
 <translation id="6363797201514053536">Brave Software'da arama yapın veya bir URL yazın</translation>
+<translation id="4888839742663123585">Brave Software’da Ara</translation>
 <translation id="6078323886959318429">Kısayol ekle</translation>
 <translation id="6324916366299863871">Kısayolu düzenleyin</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1303,8 +1306,10 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6207200176136643843">Varsayılan yakınlaştırma seviyesine sıfırla</translation>
 <translation id="4953689047182316270">Erişilebilirlikle İlgili Etkinliklere Yanıt Verme</translation>
 <translation id="4677585247300749148"><ph name="URL"/>, erişilebilirlikle ilgili etkinliklere yanıt vermek istiyor</translation>
+<translation id="2224471211857467033">Erişilebilirlik Etkinlikleri</translation>
 <translation id="6116338172782435947">Panoya kopyalanan metin ve resimleri görme</translation>
 <translation id="3461266716147554923"><ph name="URL"/>, panoya kopyalanan metin ve resimleri görmek istiyor</translation>
+<translation id="2586657967955657006">Pano</translation>
 <translation id="4838836835474292213">Pano okuma erişimine izin verildi</translation>
 <translation id="1415708812149920388">Pano okuma erişimi reddedildi</translation>
 <translation id="2365507699358342471">Bu site, panoya kopyalanan metin ve resimleri görebilir.</translation>
@@ -1732,6 +1737,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="7547317915858803630">Uyarı: <ph name="PRODUCT_NAME"/> ayarlarınız bir ağ sürücüsünde depolanıyor. Bu durum yavaşlamalara, kilitlenmelere, hatta veri kaybına neden olabilir.</translation>
 <translation id="3122496702278727796">Veri Dizini Oluşturulamadı</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> birden fazla dosya indirmek istiyor</translation>
+<translation id="7514365320538308">İndir</translation>
 <translation id="691024665142758461">Birden çok dosya indirme</translation>
 <translation id="7004499039102548441">Son Sekmeler</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 Sekme}other{# Sekme}}</translation>
@@ -1823,6 +1829,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="6156960295318603523">Dil Ayarları</translation>
 <translation id="7931318309563332511">Bilinmiyor</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> size bildirim göndermek istiyor</translation>
+<translation id="2482878487686419369">Bildirimler</translation>
 <translation id="7221855153210829124">Bildirimleri gösterme</translation>
 <translation id="8393700583063109961">İleti gönder</translation>
 <translation id="6701535245008341853">Profil alınamadı.</translation>
@@ -1924,6 +1931,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1753905327828125965">En Çok Ziyaret Edilenler</translation>
 <translation id="5612720917913232150"><ph name="URL"/>, bilgisayarınızın konumunu kullanmak istiyor</translation>
 <translation id="4733082559415072992"><ph name="URL"/>, cihazınızın konumunu kullanmak istiyor</translation>
+<translation id="5646376287012673985">Konum</translation>
 <translation id="3016780570757425217">Konumunuzu bilme</translation>
 <translation id="4068506536726151626">Bu sayfa, konumunuzu izleyen şu sitelerden öğeler içeriyor:</translation>
 <translation id="4920887663447894854">Aşağıdaki sitelerin bu sayfadaki konumunuzu izlemesi engellendi:</translation>
@@ -1933,6 +1941,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3528033729920178817">Bu sayfa konumunuzu izliyor.</translation>
 <translation id="1510030919967934016">Bu sayfanın konumunuzu izlemesi engellendi.</translation>
 <translation id="6910240653697687763"><ph name="URL"/>, MIDI cihazlarınız üzerinde tam denetim istiyor</translation>
+<translation id="1834583737373831634">MIDI Cihazlar</translation>
 <translation id="8606726445206553943">MIDI cihazlarınızı kullanma</translation>
 <translation id="1849186935225320012">Bu sayfa MIDI cihazları üzerinde tam denetime sahip.</translation>
 <translation id="2986010903908656993">Bu sayfanın MIDI cihazları üzerinde tam denetime sahip olması engellendi.</translation>
@@ -1966,6 +1975,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="8282947398454257691">Benzersiz cihaz tanımlayıcınızı bilme</translation>
 <translation id="8329449853370113380"><ph name="URL"/>, korumalı içeriği oynatmak istiyor. Cihazınızın kimliği Brave Software tarafından doğrulanacak.</translation>
 <translation id="2650609753175229582"><ph name="URL"/>, korunan içeriği oynatmak istiyor. Cihazınızın kimliği Brave Software tarafından doğrulanır ve bu site tarafından erişilebilir.</translation>
+<translation id="1746402432151920942">Korunan Medya Tanımlayıcı</translation>
 <translation id="1322046419516468189">Kayıtlı şifreleri <ph name="SAVED_PASSWORDS_STORE"/> üzerinde görüntüleyin ve yönetin</translation>
 <translation id="5297082477358294722">Şifre kaydedildi. Kayıtlı şifrelerinizi <ph name="SAVED_PASSWORDS_STORE"/> üzerinde görüntüleyebilir ve yönetebilirsiniz.</translation>
 <translation id="5713644099811900409">Brave Software Hesabı</translation>
@@ -2025,18 +2035,24 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="3532844647053365774"><ph name="HOST"/>, mikrofonunuzu kullanmak istiyor</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> kameranızı kullanmak istiyor</translation>
 <translation id="3691267899302886494"><ph name="HOST"/>, ekranınızı paylaşmak istiyor</translation>
+<translation id="4275663329226226506">Medya</translation>
 <translation id="8962918469425892674">Bu site hareket veya ışık sensörlerini kullanıyor.</translation>
+<translation id="4532646538815530781">Bu site hareket sensörlerini kullanıyor.</translation>
 <translation id="6057381398996433816">Bu sitenin hareket ve ışık sensörlerini kullanması engellendi.</translation>
+<translation id="7707108266051544351">Bu sitenin, hareket sensörlerini kullanması engellenmiştir.</translation>
 <translation id="1151917987301063366"><ph name="HOST"/> sitesinin sensörlere erişmesine her zaman izin ver</translation>
 <translation id="7377451353532943397">Sensör erişimini engellemeye devam et</translation>
 <translation id="6878422606530379992">Sensörlere izin verildi</translation>
 <translation id="4031527940632463547">Sensörler engellendi</translation>
 <translation id="4559617833001311418">Bu site hareket veya ışık sensörlerinize erişiyor.</translation>
+<translation id="5623282979409330487">Bu site, hareket sensörlerinize erişiyor.</translation>
 <translation id="2309620859903500144">Bu sitenin, hareket veya ışık sensörlerinize erişimi engellenmiştir.</translation>
+<translation id="6541638731489116978">Bu sitenin, hareket sensörlerinize erişimi engellenmiştir.</translation>
 <translation id="8645354835496065562">Sensör erişimine izin vermeye devam et</translation>
 <translation id="2903882649406874750"><ph name="HOST"/> sitesinin sensörlere erişimini her zaman engelle</translation>
 <translation id="3194737229810486521"><ph name="URL"/>, cihazınıza kalıcı olarak veri depolamak istiyor</translation>
 <translation id="1030706264415084469"><ph name="URL"/> büyük miktarda veriyi cihazınızda kalıcı olarak depolamak istiyor</translation>
+<translation id="885701979325669005">Depolama</translation>
 <translation id="1712552549805331520"><ph name="URL"/>, verileri yerel bilgisayarınızda kalıcı olarak saklamak istiyor</translation>
 <translation id="1997484222658892567"><ph name="URL"/>, yerel bilgisiayarınızda büyük miktarda veri depolamak istiyor</translation>
 <translation id="7648992873808071793">Dosyaları bu cihazda depolama</translation>
@@ -2455,9 +2471,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="702252130983202758">Uygulamalarınız</translation>
 <translation id="8831664945713891930">Uzantı ayarlarını aç</translation>
 <translation id="5138227688689900538">Daha az göster</translation>
-<translation id="5646376287012673985">Konum</translation>
 <translation id="5270167208902136840"><ph name="NUMBER_OF_MORE_APPS"/> uygulama daha göster</translation>
-<translation id="2482878487686419369">Bildirimler</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> uygulama</translation>
 <translation id="7207631048330366454">Uygulamalarda ara</translation>
 <translation id="9011424611726486705">Site ayarlarını aç</translation>
@@ -2790,6 +2804,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="4305227814872083840">uzun (2 sn.)</translation>
 <translation id="2860150991415616761">çok uzun (4 sn.)</translation>
 <translation id="1217668622537098248">İşlemden sonra sol tıklamaya geri döndürür</translation>
+<translation id="8781470833671194250">Tıklama pozisyonunu sabitleme</translation>
 <translation id="3682824389861648626">Hareket eşiği</translation>
 <translation id="5511379779384092781">Çok küçük</translation>
 <translation id="2765217105034171413">Küçük</translation>
@@ -3412,7 +3427,10 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="9038649477754266430">Sayfaları daha hızlı yüklemek için bir tahmin hizmeti kullan</translation>
 <translation id="7981313251711023384">Daha hızlı göz atmak ve arama yapmak için sayfaları önceden yükle</translation>
 <translation id="2468205691404969808">Belirtilen sayfaları ziyaret etmiyor olsanız bile tercihlerinizi hatırlamak için çerezler kullanır</translation>
+<translation id="3181954750937456830">Gizli Göz Atma (sizi ve cihazınızı tehlikelerden korur)</translation>
+<translation id="7315322926489145388">Güvenliğiniz risk altında olduğunda ziyaret ettiğiniz bazı sayfaların URL'lerini Brave Software'a gönderir</translation>
 <translation id="4991384657077828949">Brave güvenliğini iyileştirmeye yardımcı olun</translation>
+<translation id="1943176487615318915">Brave, tehlikeli uygulamaları ve siteleri algılamak için Brave Software'a ziyaret ettiğiniz bazı sitelerin URL'lerini, sınırlı sistem bilgisini ve bazı sayfa içeriklerini gönderir.</translation>
 <translation id="2875273286298348523">Brave, tarayıcıda yazdığınız metni Brave Software'a gönderir</translation>
 <translation id="9079153198295609735">Kullanım istatistiklerini ve çökme raporlarını otomatik olarak Brave Software'a gönder</translation>
 <translation id="5941220456342415404">Teşhis ve kullanım verilerini Brave Software'a otomatik olarak gönder</translation>
@@ -3484,7 +3502,6 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1919345977826869612">Reklamlar</translation>
 <translation id="5649053991847567735">Otomatik indirmeler</translation>
 <translation id="3744111561329211289">Arka plan senkronizasyonu</translation>
-<translation id="2586657967955657006">Pano</translation>
 <translation id="5518219166343146486">Siteler panoya kopyalanan metin ve resimleri görmek istediğinde sorulsun</translation>
 <translation id="2089795179672254991">Siteler panoya kopyalanan metin ve resimleri görmek istediğinde sorulsun (önerilen)</translation>
 <translation id="16815041330799488">Sitelerin panoya kopyalanan metin ve resimleri görmesine izin verme</translation>
@@ -3512,6 +3529,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1128109161498068552">Hiçbir sitenin MIDI cihazlarına erişmek için sisteme özel mesajları kullanmasına izin verme</translation>
 <translation id="2091887806945687916">Ses</translation>
 <translation id="4751476147751820511">Hareket veya ışık sensörleri</translation>
+<translation id="1717218214683051432">Hareket sensörleri</translation>
 <translation id="6059925163896151826">USB cihazları</translation>
 <translation id="8666584013686199826">Bir site USB cihazlarına erişmek istediğinde sor</translation>
 <translation id="6291949900244949761">Bir site USB cihazlarına erişmek istediğinde sor (önerilen)</translation>
@@ -3547,7 +3565,9 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="1660204651932907780">Sitelerin ses çalmasına izin ver (önerilir)</translation>
 <translation id="3600792891314830896">Ses çalan sitelerin sesini kapat</translation>
 <translation id="5084230410268011727">Sitelerin hareket ve ışık sensörlerini kullanmasına izin ver</translation>
+<translation id="489454699928748701">Sitelerin hareket sensörlerini kullanmasına izin ver</translation>
 <translation id="5047421709274785093">Sitelerin hareket ve ışık sensörlerini kullanmasını engelle</translation>
+<translation id="6396988158856674517">Sitelerin hareket sensörünü kullanmasını engelle</translation>
 <translation id="2904456025988372123">Bir site ilk dosyadan sonraki dosyaları otomatik olarak indirmeye çalıştığında bana sor</translation>
 <translation id="3494769164076977169">Bir site ilk dosyadan sonraki dosyaları otomatik olarak indirmeye çalıştığında bana sor (önerilen)</translation>
 <translation id="5036662165765606524">Hiçbir sitenin otomatik olarak birden fazla dosya indirmesine izin verme</translation>
@@ -4082,6 +4102,7 @@ Anahtar dosyanızı güvenli bir yerde saklayın. Uzantınızın yeni sürümler
 <translation id="2785008241190445880">Yer işareti değiştirildi</translation>
 <translation id="5468853758063275923">Brave varsayılan tarayıcınız</translation>
 <translation id="2950533317914339731">Favori Brave Software Uygulamalarınıza yer işaretleri ekleyin</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Haritalar</translation>
 <translation id="6709133671862442373">Haberler</translation>
