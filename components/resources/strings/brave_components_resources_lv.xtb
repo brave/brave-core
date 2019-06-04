@@ -41,6 +41,8 @@
 <translation id="8958799246752641148">Tor nerāda jūsu IP adresi vietnēm, ko apmeklējat, pārsūtot jūsu pārlūka datus caur vairākiem Tor serveriem, pirms tie sasniedz galamērķi. Šie savienojumi ir šifrēti, tāpēc jūsu ISP vai darba devējs nevar redzēt, kuras vietnes jūs apmeklējat. Tor var palēnināt pārlūkošanu, un atsevišķas vietnes var nestrādāt vispār.</translation>
 <translation id="520608572871993342">Inkognito loga izmantošana maina to, ko Brave dara jūsu ierīcē —, bet nemaina citu uzvedību. Tor slēpj jūsu IP adresi no vietnēm, ko apmeklējat, un slēpj vietnes no jūsu ISP vai jūsu darba devēja. Atveriet inkognito logu ar Tor no izvēlnes vai ar {{ key }}.</translation>
 <translation id="6975708438781948564">Uzzināt vairāk par Tor vietnē Brave</translation>
+<translation id="4272382368346338917">Papildu filtri</translation>
+<translation id="8949292968394988358">Brīdinājums. Pārāk daudzu filtru iespējošana samazinās veiktspēju.</translation>
 <translation id="1869685517625607604">Kopējais bloķēto reklāmu skaits:</translation>
 <translation id="4673764878177947707">Pielāgotie filtri</translation>
 <translation id="8803682034537762884">Viens katrai rindiņai, filtrs ir aprakstīts Adblock Plus filtru sintaksē</translation>
@@ -54,7 +56,6 @@
 <translation id="5633840519079139680">Brave atvieglo ierastās vides iestatīšanu, importējot grāmatzīmes un iestatījumus no citiem datorā instalētiem pārlūkiem.</translation>
 <translation id="8275038454117074363">Importēt</translation>
 <translation id="5540323067375019678">Pārvaldiet savus aizsargus</translation>
-<translation id="4755560456428781763">Brave aizsargi jūs aizsargā no nevēlamām reklāmām un izsekotājiem, kamēr lietojat pārlūku. Ja ievērojat kādu problēmu, pārlūkojot kādu vietni, pielāgojiet aizsardzības līmeni aizsargu panelī rīkjoslā.</translation>
 <translation id="3366308997091824722">Aizsarga iestatījumi</translation>
 <translation id="3884404068544758153">Nomainiet savu meklētājprogrammu</translation>
 <translation id="438216590634144114">Izvēlieties meklētājprogrammu, kuru vēlaties izmantot pēc noklusējuma, kad veicat meklēšanu tīmeklī, izmantojot adreses joslu.</translation>
@@ -68,6 +69,7 @@
 <translation id="5946611334574299206">Pelniet merķierus, aplūkojot reklāmas Brave. Reklāmas tiek rādītas, balstotiets uz Jūsu interesēm, kas iegūtas no Jūsu pārlūkošanas paradumiem. Personas dati vai pārlūkošanas vēsture nekad nepamet Jūsu pārlūku.</translation>
 <translation id="6112368337882254910">Automātiska ziedošana</translation>
 <translation id="1527222983464337010">Automātisks veids, kā atbalstīt publicētājus un satura veidotājus. Iestatiet ikmēneša maksājumu un pārlūkojiet kā parasti. Jūsu apmeklētās vietnes saņem Jūsu ziedojumus automātiski, balstoties uz Jūsu veltīto uzmanību pēc Brave mērījumiem.</translation>
+<translation id="7178655681744815321">Aprēķinātie šī cikla ienākumi</translation>
 <translation id="8157096848242649588">Maksājuma datums</translation>
 <translation id="5208388044986603165">Saņemtie reklāmu paziņojumi</translation>
 <translation id="4229016885653790965">Diemžēl reklāmas vēl nav pieejamas jūsu reģionā.</translation>
@@ -106,7 +108,7 @@
 <translation id="1199044745726588100">5 sekundes</translation>
 <translation id="4045581694057451126">8 sekundes</translation>
 <translation id="8610523985422563960">1 minūte</translation>
-<translation id="7521774480426463961">Iespējojiet iespēju dod dzeramnaudu ziņām, kas Jums "Patīk"</translation>
+<translation id="9031738692126722094">Iespējot satura līmeņa dzeramnaudas došanu šīm tīmekļa vietnēm</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Iedodiet dzeramnaudu, tiklīdz atrodat dārgakmeņus.</translation>
@@ -128,6 +130,7 @@
 <translation id="7797604753681168055">Atkopt tagad!</translation>
 <translation id="1184075897575325927">Piedodiet, bet izskatās, ka šis piešķīrums jau ir izņemts.</translation>
 <translation id="282693359045252357">Nākamās ikmēneša dzeramnaudas datums</translation>
+<translation id="6231182869178328516">Es tikko pieskāros <ph name="NAME">$1<ex>user</ex></ph>, kurš lieto Brave pārlūkprogrammu. Apskatiet to tīmekļa vietnē: https://brave.com/tips.</translation>
 <translation id="7422678632904904341">Summa:</translation>
 <translation id="5923611424721173182">Pašreizējā saskaņošana</translation>
 <translation id="5457113250005438886">Nederīgs</translation>
@@ -150,6 +153,9 @@
 <translation id="4235360514405112390">Derīgs</translation>
 <translation id="2700943637868737038">Skatītāja ID:</translation>
 <translation id="3576689061489548788">Maksājuma no maka ID:</translation>
+<translation id="758790787422117549">Personas ID</translation>
+<translation id="2223892939866251845">Lietotāja ID</translation>
+<translation id="1642443162274867084">Maks ir izveidots</translation>
 <translation id="5094577350232361255">par</translation>
 <translation id="4918086044614829423">Pieņemt</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave ir Brave Software reģistrēta preču zīme. Vietņu nosaukumi var būt vietnes īpašnieka preču zīmes vai reģistrētas preču zīmes.</translation>
@@ -165,11 +171,16 @@
 <translation id="3671566813999349838">Apjoms</translation>
 <translation id="3819257035322786455">Dublējums</translation>
 <translation id="1312977698678162065">Nopelniet, skatoties saistītu reklāmu, kas ciena Jūsu konfidencialitāti.</translation>
+<translation id="7655723274266132226">Tagad Jūs varat pelnīt, skatoties reklāmas.</translation>
+<translation id="2975780980638932742">Brave reklāmas ir klāt!</translation>
 <translation id="3361548743396744457">Atbalstiet savas iecienītās vietnes, vienkārši pārlūkojot, vai iedodiet vietnei dzeramnaudu, kad vien vēlaties.</translation>
 <translation id="3333887201479867589">Brave balvas</translation>
 <translation id="4493850495402472953">un</translation>
 <translation id="8804164990146287819">Privātuma politika</translation>
 <translation id="4281844954008187215">Pakalpojuma noteikumi</translation>
+<translation id="4405997465645469914">Ieslēdzot "Brave balvas", Jūs norādāt, ka izlasījāt un piekrītat</translation>
+<translation id="8819542691525488940">Noklikšķinot uz "Jā, es piekrītu!", Jūs  norādāt, ka izlasījāt un piekrītat</translation>
+<translation id="8071424789698327147">Noklikšķinot uz "Jā, esmu gatavs!", Jūs  norādāt, ka izlasījāt un piekrītat</translation>
 <translation id="7530570094705720669">Maka izveide</translation>
 <translation id="2105596359439030979">Jūsu veltītā uzmanība ir vērtīga. Nopelniet, skatoties privātumu cienošas reklāmas, un atbalstiet savus iemīļotos satura veidotājus.</translation>
 <translation id="516395624550019162">Jā, aiziet!</translation>
@@ -206,7 +217,6 @@
 <translation id="7277134233385925078">Iestatīt ikmēneša dzeramnaudu</translation>
 <translation id="8003573781961874199">Lejupielādēt kā PDF</translation>
 <translation id="298067735430872465">Peļņa no reklāmām</translation>
-<translation id="3521361150443442734">Jūsu peļņa no reklāmām ir pieejama.</translation>
 <translation id="8764029012618014430">Iespējot padomus</translation>
 <translation id="3412655388715513818">Izslēgt šo vietni</translation>
 <translation id="418343137736963579">Kopējais vietņu skaits, kas ir izslēgtas no automātiskās ziedošanas:</translation>
@@ -272,8 +282,8 @@
 <translation id="3626186271103896082">Dublējiet savu maku</translation>
 <translation id="5717619667204259673">Turiet šo atkopšanas atslēgu drošībā.</translation>
 <translation id="4699702339303280827">Jūs vienmēr varat izmantot šo atslēgu, lai atgūtu savu maku, ja ar jūsu pārlūkprogrammu vai datoru kaut kas ir noticis.  Taču parūpējieties par tās drošību — ikviens, kas iegūst šo atslēgu, var nozagt jūsu maku. Visdrošāk būtu to pierakstīt uz papīra vai turēt vietā, kur glabājat svarīgu informāciju.</translation>
-<translation id="5759071143806884916">Jūs varat atbalstīt šo tīmekļa vietni, nosūtot dzeramnaudu. Tas ir veids, kā pateikties vietnēm par lielisku saturu. Verificētiem satura veidotājiem dzeramnauda tiek izmaksāta katra kalendārā mēneša pirmajā nedēļā.</translation>
-<translation id="1704859330137112950">Ja vēlaties, varat iestatīt ikmēneša dzeramnaudas došanu, lai pastāvīgi atbalstītu šo vietni.</translation>
+<translation id="7354412786785889047">Jūs varat atbalstīt šo satura veidotāju, nosūtot dzeramnaudu. Tas ir veids, kā pateikties viņiem par lielisku saturu. Verificētiem satura veidotājiem dzeramnauda tiek izmaksāta katra kalendārā mēneša pirmajā nedēļā.</translation>
+<translation id="3475063317678050010">Ja vēlaties, varat iestatīt ikmēneša dzeramnaudas došanu, lai pastāvīgi atbalstītu šo satura veidotāju.</translation>
 <translation id="3074127054582480056">Uzmanību</translation>
 <translation id="822513417008209372">Jūs pašlaik atbalstāt</translation>
 <translation id="5010112177773747965">bez jūsu piekrišanas.</translation>
@@ -302,6 +312,7 @@
 <translation id="3536298624341433814">Sūtīt dzeramnaudu</translation>
 <translation id="1792148354504719133">vietne</translation>
 <translation id="5944430251223015324">vietnes</translation>
+<translation id="1834493631938747505">Pastāstīt citiem par Jūsu dzeramnaudu.</translation>
 <translation id="8826007068782654809">Paldies!</translation>
 <translation id="6665366815203065060">Jūs tikko nosūtījāt dzeramnaudu:</translation>
 <translation id="6432779622695508363">Iedot dzeramnaudu, ja patīk</translation>
@@ -312,8 +323,12 @@
 <translation id="4914597931214386232">Pieprasītie marķieru piešķīrumi</translation>
 <translation id="1634828734222219955">Kopā</translation>
 <translation id="3535654229833214438">Pārskaitījumi</translation>
+<translation id="3124090095880236567">Ieslēgt reklāmas</translation>
 <translation id="8987812599455325915">Tas iespējo gan reklāmas, gan automātisko ziedošanu. Jūs jebkurā laikā varat tās individuāli ieslēgt vai izslēgt.</translation>
 <translation id="1485484147452131556">Aktivizēt balvas</translation>
+<translation id="3983104749597726322">Tvīts</translation>
+<translation id="5636843789453098076">Dzeramnauda @{{ user }} par viņa(-as) tvītu:</translation>
+<translation id="4242384385082203046">Dzeramnauda @{{ user }} par viņa(-as) tvītu!</translation>
 <translation id="2448312741937722512">Tips</translation>
 <translation id="8772672608371898774">Brave apstiprināts publicētājs</translation>
 <translation id="5050370287908180130">Apskatīt ikmēneša informācijas paziņojumu</translation>
@@ -336,6 +351,15 @@
 <translation id="6727483290601442544">Skatīt informāciju</translation>
 <translation id="1988679729106502285">PIEZĪME.</translation>
 <translation id="5815103311506128988">Šis satura veidotājs vēl nav pierakstījies ziedojumu saņemšanai no Brave lietotājiem. Jūsu pārlūkprogramma atkārtoti mēģinās veikt ziedojumu līdz brīdim, kad tas tiks apstiprināts vai būs pagājušas 90 dienas.</translation>
+<translation id="4292832015778676417">nopelnīts no reklāmām</translation>
+<translation id="3197752845651180812">Neapmaksātie ziedojumi</translation>
+<translation id="3164105678355419142">Periodiska dzeramnauda</translation>
+<translation id="2927922949538312364">Vienreizēja dzeramnauda</translation>
+<translation id="6964891561514920613">Rādīt visus neapmaksātos ziedojumus</translation>
+<translation id="4346944508027912677">Kavējas līdz</translation>
+<translation id="7410549756000115387">Nav neapmaksātu ziedojumu...</translation>
+<translation id="1963227389609234879">Izņemt visu</translation>
+<translation id="923467487918828349">Rādīt visus</translation>
 <translation id="1181037720776840403">Noņemt</translation>
 <translation id="7885157704277298658">Nokopēts!</translation>
 <translation id="5379640681913450928">Vārdu skaits:</translation>
@@ -353,6 +377,7 @@
 <translation id="1061533051865606843">Pievienot jaunu ierīci</translation>
 <translation id="8780295742023331191">Skatīt sinhronizācijas kodu</translation>
 <translation id="1755198127524719638">Sinhronizācijas iestatījumi</translation>
+<translation id="7558480201297099157">Pārvaldiet informāciju, kuru vēlaties sinhronizēt starp ierīcēm. Šie iestatījumi attiecas tikai uz šo ierīci.</translation>
 <translation id="8820817407110198400">Grāmatzīmes</translation>
 <translation id="5591129654353352557">Saglabātie vietnes iestatījumi</translation>
 <translation id="7859704718976024901">Pārlūkošanas vēsture</translation>
@@ -380,6 +405,7 @@
 <translation id="5086223971958279691">Sinhronizācijas ķēdes kods</translation>
 <translation id="2899261497479389619">Mērķa datora iestatījumos pārejiet uz Brave Sync pakalpojumu un noklikšķiniet uz pogas</translation>
 <translation id="4827439149833241990">“Man ir sinhronizācijas kods”.</translation>
+<translation id="24067401253841795">Ievadiet sinhronizācijas ķēdes koda vārdus, kas norādīti turpmāk. Uztveriet šo kodu kā paroli. Ja kāda persona tam piekļūst, viņš(-a) var veikt izmaiņas Jūsu sinhronizētajos datos.</translation>
 <translation id="8914601399214979966">Tā vietā izmantot manu kameru</translation>
 <translation id="3034163433136515805">Skatiet QR kodu</translation>
 <translation id="5093410893656857925">Ierīces veida izvēle</translation>
@@ -392,4 +418,6 @@
 <translation id="8349682220522608879">Lūdzu, pievienojiet sinhronizācijas kodu.</translation>
 <translation id="1468095392829989299">Neizdevās izveidot savienojumu ar Sinhronizācijas serveriem</translation>
 <translation id="1399673826422570698">Iespējami tīkla traucējumi vai Sinhronizācijas serveru problēma.</translation>
+<translation id="5286379413446391050">Neizdevās pieslēgties Sinhronizācijas serveriem</translation>
+<translation id="2410472020237369473">Jūsu datora pulkstenī, iespējams, tiks iestatīts nepareizs laiks vai laika josla. Pārbaudiet sava pulksteņa iestatījumus.</translation>
 </translationbundle>

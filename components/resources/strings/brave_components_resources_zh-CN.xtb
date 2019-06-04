@@ -41,6 +41,8 @@
 <translation id="8958799246752641148">Tor通过在您进入网站之前将浏览内容路由到多个Tor服务器来隐藏您访问网站的IP地址。这些连接是加密的，因此您的ISP或雇主无’法查看您正’在访问的网站。Tor会减慢浏览速度，有些网站可能根本无法运行。</translation>
 <translation id="520608572871993342">使用私人窗口只会更改Brave在您的设备上所进行的操作— - 不会更改您设备上的其他操作。Tor会在您访问网站时隐藏您的IP地址，并对您的ISP或雇主隐藏您访问的网站。在菜单中通过Tor的打开私人窗口，或使用{{key}}。</translation>
 <translation id="6975708438781948564">了解有关Brave中Tor的更多信息</translation>
+<translation id="4272382368346338917">附加过滤器</translation>
+<translation id="8949292968394988358">警告：开启太多过滤器会降低性能</translation>
 <translation id="1869685517625607604">已拦截的广告总数：</translation>
 <translation id="4673764878177947707">自定义筛选器</translation>
 <translation id="8803682034537762884">每行一个筛选器且使用 Adblock Plus 筛选器语法描述筛选器</translation>
@@ -54,7 +56,6 @@
 <translation id="5633840519079139680">通过从计算机上安装的其他浏览器导入书签和设置，Brave 可以轻松设置您的常用环境。</translation>
 <translation id="8275038454117074363">导入</translation>
 <translation id="5540323067375019678">管理 Shield</translation>
-<translation id="4755560456428781763">Brave Shields 保护您在浏览期间免受讨厌的广告和追踪器之害。如果您在浏览特定网站期间遇到问题，请从工具栏上的 Shields 面板调整您的保护级别。</translation>
 <translation id="3366308997091824722">Shield 设置</translation>
 <translation id="3884404068544758153">修改搜索引擎</translation>
 <translation id="438216590634144114">选择您在通过地址栏搜索时所使用的默认搜索引擎。</translation>
@@ -68,6 +69,7 @@
 <translation id="5946611334574299206">在 Brave 中通过浏览广告赚取代币。根据您的喜好显示广告，这是根据您的浏览情况判断的。您的浏览器中不会留下私人数据或浏览历史。</translation>
 <translation id="6112368337882254910">自动贡献</translation>
 <translation id="1527222983464337010">这是一种支持发布者和内容创建者的自动方式。设置每月付款并正常浏览。您访问的网站会根据Brave测量的您的注意力自动收到您的贡献。</translation>
+<translation id="7178655681744815321">本周期预期收益</translation>
 <translation id="8157096848242649588">支付日期</translation>
 <translation id="5208388044986603165">广告通知已收到</translation>
 <translation id="4229016885653790965">抱歉! 您所在的地区尚未提供广告。</translation>
@@ -106,7 +108,7 @@
 <translation id="1199044745726588100">5秒</translation>
 <translation id="4045581694057451126">8 秒</translation>
 <translation id="8610523985422563960">1 分钟</translation>
-<translation id="7521774480426463961">启用为喜欢的帖文打赏的功能</translation>
+<translation id="9031738692126722094">在这些站点上启用内容级提示</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">当您找到宝石时当场打赏。</translation>
@@ -128,6 +130,7 @@
 <translation id="7797604753681168055">立即还原！</translation>
 <translation id="1184075897575325927">抱歉，此补助似乎已被领取。</translation>
 <translation id="282693359045252357">下月每月打赏日期</translation>
+<translation id="6231182869178328516">我最近使用 Brave 浏览器打赏了 <ph name="NAME">$1<ex>user</ex></ph>。快来 https://brave.com/tips 看看吧。</translation>
 <translation id="7422678632904904341">金额：</translation>
 <translation id="5923611424721173182">当前协调</translation>
 <translation id="5457113250005438886">无效</translation>
@@ -150,6 +153,9 @@
 <translation id="4235360514405112390">有效</translation>
 <translation id="2700943637868737038">正在查看 ID：</translation>
 <translation id="3576689061489548788">钱包付款 ID：</translation>
+<translation id="758790787422117549">角色ID</translation>
+<translation id="2223892939866251845">用户ID</translation>
+<translation id="1642443162274867084">创建钱包</translation>
 <translation id="5094577350232361255">关于</translation>
 <translation id="4918086044614829423">接受</translation>
 <translation id="6832986780040139899">©2016 –2018 Brave Software。Brave 是 Brave Software 的注册商标。网站名称可能是网站所有者的商标或注册商标。</translation>
@@ -165,11 +171,16 @@
 <translation id="3671566813999349838">金额</translation>
 <translation id="3819257035322786455">备份</translation>
 <translation id="1312977698678162065">付费浏览尊重您隐私的相关广告。</translation>
+<translation id="7655723274266132226">现在您可以通过看广告来赚钱。</translation>
+<translation id="2975780980638932742">Brave 广告来啦！</translation>
 <translation id="3361548743396744457">浏览 – 或随时给您喜欢的网站打赏以支持您的站点。</translation>
 <translation id="3333887201479867589">Brave 奖励</translation>
 <translation id="4493850495402472953">和</translation>
 <translation id="8804164990146287819">隐私政策</translation>
 <translation id="4281844954008187215">服务条款</translation>
+<translation id="4405997465645469914">启用“Brave奖励”，即表示您已阅读并同意服务条款</translation>
+<translation id="8819542691525488940">点击“好的，我要加入了！“，表示您已阅读并同意</translation>
+<translation id="8071424789698327147">单击“是的，我准备好了”，即表示您已阅读并同意</translation>
 <translation id="7530570094705720669">正在创建钱包</translation>
 <translation id="2105596359439030979">您的注意力很有价值。通过观看尊重隐私的广告来赚取收入，并支付给您喜爱的内容创作者。</translation>
 <translation id="516395624550019162">确认！</translation>
@@ -206,7 +217,6 @@
 <translation id="7277134233385925078">设置每月打赏</translation>
 <translation id="8003573781961874199">下载为PDF</translation>
 <translation id="298067735430872465">从广告中赚取的收益</translation>
-<translation id="3521361150443442734">您的广告收入可用。</translation>
 <translation id="8764029012618014430">启用打赏</translation>
 <translation id="3412655388715513818">不包括本站点</translation>
 <translation id="418343137736963579">为算在自动贡献之内的网站总数：</translation>
@@ -272,8 +282,8 @@
 <translation id="3626186271103896082">将钱包备份</translation>
 <translation id="5717619667204259673">保持此恢复密钥的安全性。</translation>
 <translation id="4699702339303280827">如果您的浏览器或电脑出现问题，您可以随时使用此密钥找回您的钱包。请妥善保管，取得密钥的人可盗窃您的钱包。最安全的办法是把它记在纸上，或保存在您保管重要信息的地方。</translation>
-<translation id="5759071143806884916">您可以通过打赏支持本网站。这是为了表示对优质内容提供者的感谢。每个月的第一个星期，已验证的内容创建者将获得他们的赏金。</translation>
-<translation id="1704859330137112950">如果您愿意，可以设置每月打赏以持续支持本网站。</translation>
+<translation id="7354412786785889047">您可以通过打赏支持内容创建者。这’是为了表示对优质内容提供者的感谢。每个月的第一个星期，已验证的创建者将获得他们的赏金。</translation>
+<translation id="3475063317678050010">您可根据需要设置每月打赏，以持续支持此创作者。</translation>
 <translation id="3074127054582480056">精力</translation>
 <translation id="822513417008209372">您当前支持</translation>
 <translation id="5010112177773747965">未经您同意。</translation>
@@ -302,6 +312,7 @@
 <translation id="3536298624341433814">发送我的赏金</translation>
 <translation id="1792148354504719133">站点</translation>
 <translation id="5944430251223015324">站点</translation>
+<translation id="1834493631938747505">告知他人你的赏金。</translation>
 <translation id="8826007068782654809">谢谢</translation>
 <translation id="6665366815203065060">您刚刚已发送打赏至：</translation>
 <translation id="6432779622695508363">给喜欢的内容打赏</translation>
@@ -312,8 +323,12 @@
 <translation id="4914597931214386232">已领取代币补助</translation>
 <translation id="1634828734222219955">总额</translation>
 <translation id="3535654229833214438">交易</translation>
+<translation id="3124090095880236567">开启广告</translation>
 <translation id="8987812599455325915">支持广告和自动投稿。您可以随时分别打开或关闭它们。</translation>
 <translation id="1485484147452131556">激活奖励</translation>
+<translation id="3983104749597726322">推文</translation>
+<translation id="5636843789453098076">对 @{{ user }} 的推文打赏：</translation>
+<translation id="4242384385082203046">对 @{{ user }} 的推文打赏！</translation>
 <translation id="2448312741937722512">类型</translation>
 <translation id="8772672608371898774">Brave 经验证的发布者</translation>
 <translation id="5050370287908180130">查看每月声明的详细信息</translation>
@@ -336,6 +351,15 @@
 <translation id="6727483290601442544">查看详情</translation>
 <translation id="1988679729106502285">注：</translation>
 <translation id="5815103311506128988">此创建者还未注册为Brave用户捐款的接收者。您的浏览器将会继续尝试捐款，直到该用户通过验证，但不会超过90天。</translation>
+<translation id="4292832015778676417">从广告中赚取</translation>
+<translation id="3197752845651180812">待处理的捐款</translation>
+<translation id="3164105678355419142">重复打赏</translation>
+<translation id="2927922949538312364">一次性赏金</translation>
+<translation id="6964891561514920613">显示所有待处理的捐款</translation>
+<translation id="4346944508027912677">待处理截止期限</translation>
+<translation id="7410549756000115387">无待处理的捐款...…</translation>
+<translation id="1963227389609234879">全部删除</translation>
+<translation id="923467487918828349">显示全部</translation>
 <translation id="1181037720776840403">删除</translation>
 <translation id="7885157704277298658">已复制！</translation>
 <translation id="5379640681913450928">字数：</translation>
@@ -353,6 +377,7 @@
 <translation id="1061533051865606843">添加新设备</translation>
 <translation id="8780295742023331191">查看同步密码</translation>
 <translation id="1755198127524719638">同步设置</translation>
+<translation id="7558480201297099157">管理您要在设备间同步的信息。这些设置只应用于此设备。</translation>
 <translation id="8820817407110198400">书签</translation>
 <translation id="5591129654353352557">保存的网站设置</translation>
 <translation id="7859704718976024901">浏览记录</translation>
@@ -380,6 +405,7 @@
 <translation id="5086223971958279691">同步链密码</translation>
 <translation id="2899261497479389619">在您的目标电脑上，在“设置”菜单中打开Brave同步，然后点击按钮</translation>
 <translation id="4827439149833241990">“我有同步密码”。</translation>
+<translation id="24067401253841795">输入下方显示的同步链代码文字。将该代码用作密码。如果他人获取了该信息，则他们可读取和修改您已同步的数据。</translation>
 <translation id="8914601399214979966">改用我的摄像头</translation>
 <translation id="3034163433136515805">查看二维码</translation>
 <translation id="5093410893656857925">选择设备类型</translation>
@@ -392,4 +418,6 @@
 <translation id="8349682220522608879">请添加同步代码。</translation>
 <translation id="1468095392829989299">无法连接同步服务器</translation>
 <translation id="1399673826422570698">可能存在网络问题，或者同步服务器有问题。</translation>
+<translation id="5286379413446391050">无法连接至 Sync 服务器</translation>
+<translation id="2410472020237369473">计算机的时钟时间或时区设置可能出错。请检查时钟设置。</translation>
 </translationbundle>

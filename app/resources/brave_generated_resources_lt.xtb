@@ -30,7 +30,6 @@
 <translation id="4150684676757176434">Toliau blokuoti automatinį leidimą</translation>
 <translation id="7543906827780734027">„Brave“ dar neperžiūrėjo šio plėtinio – jis gali būti kenkėjiškas. Ar vis tiek pridėti „<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>“?</translation>
 <translation id="2044383478723007273">„Brave“ spalvos</translation>
-<translation id="5341901626640816374">Naudoti plačią buvimo vietos juostą</translation>
 <translation id="6123134130710658846">Slėpti mygtuką „Brave Rewards“</translation>
 <translation id="7635711399568194460">Jei funkcija „Brave Rewards“ neįjungta, buvimo vietos juostoje esantį mygtuką „Brave Rewards“ paslėpti</translation>
 <translation id="7965178729203412357">Nauja „Tor“ tapatybė</translation>
@@ -47,13 +46,20 @@
 <translation id="2515126961943087659">„Bat Ads“ paslauga</translation>
 <translation id="7924918279836988121">BAT žurnalo paslauga</translation>
 <translation id="4472575034687746823">Pradėkite</translation>
+<translation id="3400357268283240774">Papildomi nustatymai</translation>
 <translation id="6303294677342628402">Skydai</translation>
+<translation id="768979911142179781">Numatyta</translation>
+<translation id="5989930075012659993">Bus išlaikyti jūsų dabartinio puslapio nustatymai.</translation>
+<translation id="9185018653595759199">Socialinės žiniasklaidos blokavimas</translation>
+<translation id="6894114137169961038">Reklamos kontrolė</translation>
+<translation id="1096802265930928584">Slapukų kontrolė</translation>
 <translation id="8919235146866304148">Kontrolinio kodo apsauga</translation>
 <translation id="520895744850022668">HTTPS visur</translation>
 <translation id="5259716416204774556">Scenarijų blokavimas</translation>
 <translation id="7498695072878479744">Trečiųjų šalių svetainėse leisti rodyti prisijungimo per „Google“ mygtukus</translation>
 <translation id="863171915776379000">Leisti rodyti prisijungimo per „Facebook“ formą ir įterptuosius įrašus</translation>
 <translation id="5165042248369837294">Leisti rodyti įterptąsias „Twitter“ žinutes</translation>
+<translation id="958971637207126733">Leisti rodyti įterptuosius „LinkedIn“ įrašus</translation>
 <translation id="6067014455220527258">Blokuoti reklamas</translation>
 <translation id="6985711843506827936">Leisti reklamas ir sekimą</translation>
 <translation id="6132506775968708399">Blokuoti trečiųjų šalių slapukus</translation>
@@ -73,11 +79,14 @@
 <translation id="2414886740292270097">Tamsu</translation>
 <translation id="1360441190790440400">Atitinka „Linux“</translation>
 <translation id="1336940801687497203">Atitinka „Windows“</translation>
+<translation id="8721331068159819483">Atitinka „MacOS“</translation>
 <translation id="6786747875388722282">Plėtiniai</translation>
 <translation id="2896916411183256228">Naudoja WebTorrent rodyti srautus tiesiogiai naršyklėje. Palaiko srauto failus ir magneto saitus.</translation>
 <translation id="6554397389149987360">Naudodamas Hangouts komponentą įjunk ekrano bendrinimą ir kitas naršyklės funkcijas.</translation>
+<translation id="4154389611571860454">Siekiant naršyklėje palaikyti IPFS naudojamas IPFS partnerio plėtinys.</translation>
 <translation id="8137559199583651773">Tvarkyti plėtinius</translation>
 <translation id="4928988318462976765">Plėtinių parduotuvė</translation>
 <translation id="9181207987584064303">Žiūrėti plėtinių parduotuvėje</translation>
 <translation id="4846154056248462491">Išjungiant</translation>
+<translation id="5057399635433117814">Išversti šį puslapį? Tokiu atveju visas šio puslapio tekstas bus nusiųstas „Microsoft“, kad būtų išverstas.</translation>
 </translationbundle>

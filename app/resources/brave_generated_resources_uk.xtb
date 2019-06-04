@@ -29,7 +29,6 @@
 <translation id="4150684676757176434">Продовжити блокувати автоматичне програвання</translation>
 <translation id="7543906827780734027">Brave ще не переглянув це розширення - воно може бути шкідливим. Додати "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" все одно?</translation>
 <translation id="2044383478723007273">Кольори Brave</translation>
-<translation id="5341901626640816374">Використовуйте широку панель місцезнаходження</translation>
 <translation id="6123134130710658846">Сховати кнопку Brave Rewards</translation>
 <translation id="7635711399568194460">Приховує кнопку Brave Rewards в адресному рядку, коли Brave Rewards вимкнено</translation>
 <translation id="7965178729203412357">Нова ідентичність Tor</translation>
@@ -46,13 +45,20 @@
 <translation id="2515126961943087659">Сервіс реклами з використанням BAT</translation>
 <translation id="7924918279836988121">Сервіс реєстраційного журналу Bat</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
+<translation id="3400357268283240774">Додаткові налаштування</translation>
 <translation id="6303294677342628402">Щити</translation>
+<translation id="768979911142179781">Стандартні налаштування</translation>
+<translation id="5989930075012659993">Ваші поточні налаштування за кожним сайтом буде збережено.</translation>
+<translation id="9185018653595759199">Блокування в соціальних медіа</translation>
+<translation id="6894114137169961038">Керування рекламними оголошеннями</translation>
+<translation id="1096802265930928584">Керування файлами cookie</translation>
 <translation id="8919235146866304148">Захист відбитком пальця</translation>
 <translation id="520895744850022668">HTTPS всюди</translation>
 <translation id="5259716416204774556">Блокування скриптів</translation>
 <translation id="7498695072878479744">Дозволити кнопки входу Google на сайтах третьої сторони</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
 <translation id="5165042248369837294">Дозволити вбудовані твіти Twitter</translation>
+<translation id="958971637207126733">Дозволити вбудовані пости LinkedIn</translation>
 <translation id="6067014455220527258">Блокувати рекламу</translation>
 <translation id="6985711843506827936">Дозволити рекламу й відстеження</translation>
 <translation id="6132506775968708399">Блокувати сторонні файли cookie</translation>
@@ -72,11 +78,14 @@
 <translation id="2414886740292270097">Темна</translation>
 <translation id="1360441190790440400">Така ж, як Linux</translation>
 <translation id="1336940801687497203">Такаж як Windows</translation>
+<translation id="8721331068159819483">Як і в macOS</translation>
 <translation id="6786747875388722282">Розширення</translation>
 <translation id="2896916411183256228">Використовує WebTorrent, щоб показувати торренти безпосередньо у браузері. Підтримує торрент файли та magnet посилання.</translation>
 <translation id="6554397389149987360">Використовує компоненти Hangouts, щоб увімкнути поширення екрану та інші функції у браузері.</translation>
+<translation id="4154389611571860454">Використовує супутнє розширення IPFS для підтримки IPFS у браузері.</translation>
 <translation id="8137559199583651773">Керувати розширеннями</translation>
 <translation id="4928988318462976765">Веб Магазин Розширень</translation>
 <translation id="9181207987584064303">Переглянути у Веб Магазині Розширень</translation>
 <translation id="4846154056248462491">На вихід</translation>
+<translation id="5057399635433117814">Перекласти цю сторінку? Увесь текст на цій сторінці буде надіслано до Microsoft для перекладу.</translation>
 </translationbundle>

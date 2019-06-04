@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">No se han encontrado resultados de búsqueda</translation>
 <translation id="8967866634928501045">Pulsa Alt + Mayús + A para mostrarlo</translation>
 <translation id="998747458861718449">I&amp;nspeccionar</translation>
+<translation id="4428301600092811022">¿Quieres obtener descripciones de imágenes de Brave Software?</translation>
 <translation id="741204030948306876">Sí, acepto</translation>
 <translation id="780301667611848630">No, gracias</translation>
 <translation id="3943582379552582368">&amp;Atrás</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">C&amp;entro de ayuda</translation>
 <translation id="7324297612904500502">Foro beta</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Editar motores de búsqueda...</translation>
 <translation id="5702898740348134351">&amp;Editar motores de búsqueda...</translation>
 <translation id="2454247629720664989">Palabra clave</translation>
@@ -1302,8 +1304,10 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="6207200176136643843">Restablecer el nivel de zoom predeterminado</translation>
 <translation id="4953689047182316270">Responder a eventos de accesibilidad</translation>
 <translation id="4677585247300749148"><ph name="URL"/> quiere responder a eventos de accesibilidad</translation>
+<translation id="2224471211857467033">Eventos de accesibilidad</translation>
 <translation id="6116338172782435947">Ver el texto y las imágenes que se hayan copiado en el portapapeles</translation>
 <translation id="3461266716147554923"><ph name="URL"/> quiere ver el texto y las imágenes que se hayan copiado en el portapapeles</translation>
+<translation id="2586657967955657006">Portapapeles</translation>
 <translation id="4838836835474292213">Se ha permitido el acceso de lectura al portapapeles</translation>
 <translation id="1415708812149920388">Se ha denegado el acceso de lectura al portapapeles</translation>
 <translation id="2365507699358342471">Este sitio web puede ver el texto y las imágenes que se hayan copiado en el portapapeles.</translation>
@@ -1730,6 +1734,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="7547317915858803630">Advertencia: la configuración de <ph name="PRODUCT_NAME"/> se almacena en una unidad de red, lo que puede provocar ralentizaciones, fallos e incluso pérdidas de datos.</translation>
 <translation id="3122496702278727796">Se ha producido un error al crear el directorio de datos.</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> quiere descargar varios archivos</translation>
+<translation id="7514365320538308">Descargar</translation>
 <translation id="691024665142758461">Descargar varios archivos</translation>
 <translation id="7004499039102548441">Pestañas recientes</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 pestaña}other{# pestañas}}</translation>
@@ -1821,6 +1826,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="6156960295318603523">Configuración de idioma</translation>
 <translation id="7931318309563332511">Desconocido</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> quiere enviarte notificaciones</translation>
+<translation id="2482878487686419369">Notificaciones</translation>
 <translation id="7221855153210829124">Mostrar notificaciones</translation>
 <translation id="8393700583063109961">Enviar mensaje</translation>
 <translation id="6701535245008341853">No se ha podido obtener el perfil.</translation>
@@ -1922,6 +1928,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1753905327828125965">Más visitado</translation>
 <translation id="5612720917913232150"><ph name="URL"/> quiere utilizar la ubicación de tu ordenador</translation>
 <translation id="4733082559415072992"><ph name="URL"/> quiere utilizar la ubicación de tu dispositivo</translation>
+<translation id="5646376287012673985">Ubicación</translation>
 <translation id="3016780570757425217">Conocer tu ubicación</translation>
 <translation id="4068506536726151626">Esta página contiene elementos de los siguientes sitios que hacen un seguimiento de tu ubicación:</translation>
 <translation id="4920887663447894854">Los sitios que se indican a continuación se han bloqueado para evitar que puedan hacer un seguimiento de tu ubicación en esta página:</translation>
@@ -1931,6 +1938,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3528033729920178817">Esta página está realizando un seguimiento de tu ubicación.</translation>
 <translation id="1510030919967934016">Se ha bloqueado esta página para que no pueda hacer un seguimiento de tu ubicación</translation>
 <translation id="6910240653697687763"><ph name="URL"/> quiere obtener un control absoluto de tus dispositivos MIDI</translation>
+<translation id="1834583737373831634">Dispositivos MIDI</translation>
 <translation id="8606726445206553943">Utilizar tus dispositivos MIDI</translation>
 <translation id="1849186935225320012">Esta página tiene un control absoluto de los dispositivos MIDI.</translation>
 <translation id="2986010903908656993">Se ha bloqueado esta página para que no tenga un control absoluto de los dispositivos MIDI.</translation>
@@ -1964,6 +1972,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="8282947398454257691">Conocer tu identificador de dispositivo único</translation>
 <translation id="8329449853370113380"><ph name="URL"/> quiere reproducir contenido protegido. Brave Software verificará la identidad de tu dispositivo.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> solicita reproducir contenido protegido. Brave Software verificará la identidad de tu dispositivo y el sitio web podrá consultarla.</translation>
+<translation id="1746402432151920942">Identificador de contenido multimedia protegido</translation>
 <translation id="1322046419516468189">Consulta y administra las contraseñas guardadas en tu <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Se ha guardado la contraseña. Consulta y gestiona las contraseñas guardadas en tu <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">cuenta de Brave Software</translation>
@@ -2023,18 +2032,24 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="3532844647053365774"><ph name="HOST"/> quiere usar el micrófono</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> quiere utilizar la cámara</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> quiere compartir tu pantalla</translation>
+<translation id="4275663329226226506">Multimedia</translation>
 <translation id="8962918469425892674">Este sitio web está usando los sensores de luz o movimiento.</translation>
+<translation id="4532646538815530781">Este sitio web está usando sensores de movimiento.</translation>
 <translation id="6057381398996433816">Este sitio web no tiene permiso para usar los sensores de luz y movimiento.</translation>
+<translation id="7707108266051544351">Este sitio web no tiene permiso para usar los sensores de movimiento.</translation>
 <translation id="1151917987301063366">Permitir siempre que <ph name="HOST"/> acceda a los sensores</translation>
 <translation id="7377451353532943397">Seguir bloqueando el acceso a los sensores</translation>
 <translation id="6878422606530379992">Sensores permitidos</translation>
 <translation id="4031527940632463547">Sensores bloqueados</translation>
 <translation id="4559617833001311418">Este sitio web tiene acceso a tus sensores de luz o movimiento.</translation>
+<translation id="5623282979409330487">Este sitio web está accediendo a los sensores de movimiento.</translation>
 <translation id="2309620859903500144">Esta página no tiene permiso para acceder a los sensores de luz y movimiento.</translation>
+<translation id="6541638731489116978">Este sitio web no tiene permiso para acceder a los sensores de movimiento.</translation>
 <translation id="8645354835496065562">Seguir permitiendo el acceso a los sensores</translation>
 <translation id="2903882649406874750">No permitir que <ph name="HOST"/> acceda a los sensores</translation>
 <translation id="3194737229810486521"><ph name="URL"/> quiere almacenar datos de forma permanente en tu dispositivo</translation>
 <translation id="1030706264415084469"><ph name="URL"/> quiere almacenar datos de gran tamaño de forma permanente en tu dispositivo</translation>
+<translation id="885701979325669005">Almacenamiento</translation>
 <translation id="1712552549805331520"><ph name="URL"/> quiere almacenar datos de forma permanente en tu ordenador local</translation>
 <translation id="1997484222658892567"><ph name="URL"/> quiere almacenar datos de gran tamaño de forma permanente en tu ordenador local</translation>
 <translation id="7648992873808071793">Almacenar archivos en este dispositivo</translation>
@@ -2453,9 +2468,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="702252130983202758">Tus aplicaciones</translation>
 <translation id="8831664945713891930">Abrir ajustes de extensiones</translation>
 <translation id="5138227688689900538">Mostrar menos</translation>
-<translation id="5646376287012673985">Ubicación</translation>
 <translation id="5270167208902136840">Mostrar <ph name="NUMBER_OF_MORE_APPS"/> aplicaciones más</translation>
-<translation id="2482878487686419369">Notificaciones</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> aplicaciones</translation>
 <translation id="7207631048330366454">Buscar aplicaciones</translation>
 <translation id="9011424611726486705">Abrir ajustes de sitios web</translation>
@@ -2788,6 +2801,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="4305227814872083840">largo (2 s)</translation>
 <translation id="2860150991415616761">muy largo (4 s)</translation>
 <translation id="1217668622537098248">Volver al clic izquierdo después de una acción</translation>
+<translation id="8781470833671194250">Estabilización de la posición de clic</translation>
 <translation id="3682824389861648626">Umbral de movimiento</translation>
 <translation id="5511379779384092781">Muy pequeño</translation>
 <translation id="2765217105034171413">Pequeño</translation>
@@ -3410,7 +3424,10 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="9038649477754266430">Utilizar un servicio de predicciones para que las páginas se carguen más rápido</translation>
 <translation id="7981313251711023384">Cargar previamente las páginas para que la navegación y las búsquedas sean más rápidas</translation>
 <translation id="2468205691404969808">Usa cookies para recordar tus preferencias aunque no visites esas páginas</translation>
+<translation id="3181954750937456830">Navegación Segura (te protege a ti y a tu dispositivo frente a sitios web peligrosos)</translation>
+<translation id="7315322926489145388">Envía a Brave Software las URL de algunas de las páginas que visitas cuando tu seguridad corre peligro</translation>
 <translation id="4991384657077828949">Ayudar a mejorar la seguridad de Brave</translation>
+<translation id="1943176487615318915">Para detectar aplicaciones y sitios web peligrosos, Brave envía a Brave Software las URL de algunas de las páginas que visitas, información limitada del sistema y parte del contenido de las páginas.</translation>
 <translation id="2875273286298348523">Brave envía el texto que escribes en el navegador a Brave Software</translation>
 <translation id="9079153198295609735">Envía automáticamente estadísticas de uso e informes sobre fallos a Brave Software</translation>
 <translation id="5941220456342415404">Enviar automáticamente los datos de uso y diagnóstico a Brave Software</translation>
@@ -3482,7 +3499,6 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1919345977826869612">Anuncios</translation>
 <translation id="5649053991847567735">Descargas automáticas</translation>
 <translation id="3744111561329211289">Sincronización en segundo plano</translation>
-<translation id="2586657967955657006">Portapapeles</translation>
 <translation id="5518219166343146486">Preguntar cuando un sitio web quiera ver el texto y las imágenes que se hayan copiado en el portapapeles</translation>
 <translation id="2089795179672254991">Preguntar cuando un sitio web quiera ver el texto y las imágenes que se hayan copiado en el portapapeles (recomendado)</translation>
 <translation id="16815041330799488">No permitir que los sitios web vean el texto y las imágenes que se hayan copiado en el portapapeles</translation>
@@ -3510,6 +3526,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1128109161498068552">No permitir que ningún sitio utilice mensajes exclusivos del sistema para acceder a los dispositivos MIDI</translation>
 <translation id="2091887806945687916">Sonido</translation>
 <translation id="4751476147751820511">Sensores de luz o movimiento</translation>
+<translation id="1717218214683051432">Sensores de movimiento</translation>
 <translation id="6059925163896151826">Dispositivos USB</translation>
 <translation id="8666584013686199826">Preguntar cuando un sitio web quiera acceder a los dispositivos USB</translation>
 <translation id="6291949900244949761">Preguntar cuando un sitio web quiera acceder a los dispositivos USB (recomendado)</translation>
@@ -3545,7 +3562,9 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="1660204651932907780">Permitir que los sitios web reproduzcan sonidos (recomendado)</translation>
 <translation id="3600792891314830896">Silenciar los sitios web que reproducen sonidos</translation>
 <translation id="5084230410268011727">Permitir que los sitios web usen los sensores de luz y movimiento</translation>
+<translation id="489454699928748701">Permitir que los sitios web usen los sensores de movimiento</translation>
 <translation id="5047421709274785093">Evitar que los sitios web usen los sensores de luz y movimiento</translation>
+<translation id="6396988158856674517">Impedir que los sitios web usen los sensores de movimiento</translation>
 <translation id="2904456025988372123">Preguntar cuando un sitio web intente descargar archivos automáticamente después del primer archivo</translation>
 <translation id="3494769164076977169">Preguntar cuando un sitio intente descargar archivos automáticamente después del primer archivo (recomendado)</translation>
 <translation id="5036662165765606524">No permitir que ningún sitio descargue varios archivos automáticamente</translation>
@@ -3689,7 +3708,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="8588866096426746242">Mostrar estadísticas del perfil</translation>
 <translation id="5535941515421698170">Eliminar también los datos de este dispositivo</translation>
 <translation id="7243632151880336635">Borrar y cerrar sesión</translation>
-<translation id="6406506848690869874">Sincronizar</translation>
+<translation id="6406506848690869874">Brave Sync</translation>
 <translation id="5428209950370661546">Otros servicios de Brave Software</translation>
 <translation id="7956662517480676674">Brave Sync y Servicios de Brave</translation>
 <translation id="2453021845418314664">Configuración avanzada de sincronización</translation>
@@ -4080,6 +4099,7 @@ Guarda tu archivo de clave en un lugar seguro, ya que lo necesitarás para crear
 <translation id="2785008241190445880">Marcador sustituido</translation>
 <translation id="5468853758063275923">Brave es tu navegador predeterminado</translation>
 <translation id="2950533317914339731">Añade marcadores a tus aplicaciones de Brave Software favoritas</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Noticias</translation>

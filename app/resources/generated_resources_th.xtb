@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">ไม่พบผลการค้นหา</translation>
 <translation id="8967866634928501045">กด Alt Shift A เพื่อแสดง</translation>
 <translation id="998747458861718449">&amp;ตรวจสอบ</translation>
+<translation id="4428301600092811022">รับคำอธิบายรูปภาพจาก Brave Software ไหม</translation>
 <translation id="741204030948306876">ได้สิ ตกลง</translation>
 <translation id="780301667611848630">ไม่ ขอบคุณ</translation>
 <translation id="3943582379552582368">&amp;กลับ</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">ศู&amp;นย์ช่วยเหลือ</translation>
 <translation id="7324297612904500502">ฟอรัมเบต้า</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">แ&amp;ก้ไขเครื่องมือค้นหา...</translation>
 <translation id="5702898740348134351">แ&amp;ก้ไขเครื่องมือค้นหา...</translation>
 <translation id="2454247629720664989">คีย์เวิร์ด</translation>
@@ -1302,8 +1304,10 @@
 <translation id="6207200176136643843">รีเซ็ตเป็นระดับการซูมเริ่มต้น</translation>
 <translation id="4953689047182316270">ตอบสนองต่อเหตุการณ์การเข้าถึงพิเศษ</translation>
 <translation id="4677585247300749148"><ph name="URL"/> ต้องการตอบสนองต่อเหตุการณ์การเข้าถึงพิเศษ</translation>
+<translation id="2224471211857467033">เหตุการณ์การช่วยเหลือพิเศษ</translation>
 <translation id="6116338172782435947">ดูข้อความและรูปภาพที่คัดลอกไปที่คลิปบอร์ด</translation>
 <translation id="3461266716147554923"><ph name="URL"/> ต้องการดูข้อความและรูปภาพที่คัดลอกไปยังคลิปบอร์ด</translation>
+<translation id="2586657967955657006">คลิปบอร์ด</translation>
 <translation id="4838836835474292213">อนุญาตการเข้าถึงการอ่านคลิปบอร์ด</translation>
 <translation id="1415708812149920388">การเข้าถึงการอ่านคลิปบอร์ดถูกปฏิเสธ</translation>
 <translation id="2365507699358342471">เว็บไซต์นี้จะดูข้อความและรูปภาพที่คัดลอกไปยังคลิปบอร์ดได้</translation>
@@ -1731,6 +1735,7 @@
 <translation id="7547317915858803630">คำเตือน: การตั้งค่า <ph name="PRODUCT_NAME"/> ของคุณได้รับการจัดเก็บไว้ที่ไดรฟ์เครือข่าย ซึ่งอาจส่งผลให้การทำงานล่าช้า เกิดข้อขัดข้อง หรือแม้แต่ข้อมูลสูญหาย</translation>
 <translation id="3122496702278727796">การสร้างไดเรกทอรีข้อมูลล้มเหลว</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> ต้องการดาวน์โหลดหลายไฟล์</translation>
+<translation id="7514365320538308">ดาวน์โหลด</translation>
 <translation id="691024665142758461">ดาวน์โหลดหลายไฟล์</translation>
 <translation id="7004499039102548441">แท็บล่าสุด</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 แท็บ}other{# แท็บ}}</translation>
@@ -1822,6 +1827,7 @@
 <translation id="6156960295318603523">การตั้งค่าภาษา</translation>
 <translation id="7931318309563332511">ไม่รู้จัก</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> ต้องการส่งการแจ้งเตือนให้คุณ</translation>
+<translation id="2482878487686419369">การแจ้งเตือน</translation>
 <translation id="7221855153210829124">แสดงการแจ้งเตือน</translation>
 <translation id="8393700583063109961">ส่งข้อความ</translation>
 <translation id="6701535245008341853">ไม่สามารถโหลดโปรไฟล์</translation>
@@ -1923,6 +1929,7 @@
 <translation id="1753905327828125965">เข้าชมบ่อยสุด</translation>
 <translation id="5612720917913232150"><ph name="URL"/> ต้องการใช้ตำแหน่งเครื่องคอมพิวเตอร์ของคุณ</translation>
 <translation id="4733082559415072992"><ph name="URL"/> ต้องการใช้ตำแหน่งอุปกรณ์ของคุณ</translation>
+<translation id="5646376287012673985">ตำแหน่ง</translation>
 <translation id="3016780570757425217">ทราบตำแหน่งของคุณ</translation>
 <translation id="4068506536726151626">หน้าเว็บนี้มีองค์ประกอบจากไซต์ต่อไปนี้ ซึ่งกำลังติดตามตำแหน่งของคุณ:</translation>
 <translation id="4920887663447894854">ไซต์ต่อไปนี้ถูกปิดกั้นไม่ให้ติดตามตำแหน่งของคุณบนหน้าเว็บนี้</translation>
@@ -1932,6 +1939,7 @@
 <translation id="3528033729920178817">หน้าเว็บนี้กำลังติดตามตำแหน่งของคุณอยู่</translation>
 <translation id="1510030919967934016">หน้านี้ถูกปิดกั้นไม่ให้ติดตามตำแหน่งของคุณ</translation>
 <translation id="6910240653697687763"><ph name="URL"/> ต้องการที่จะได้รับสิทธิ์ควบคุมอุปกรณ์ MIDI เต็มรูปแบบ</translation>
+<translation id="1834583737373831634">อุปกรณ์ MIDI</translation>
 <translation id="8606726445206553943">ใช้อุปกรณ์ MIDI ของคุณ</translation>
 <translation id="1849186935225320012">หน้านี้มีสิทธิ์ควบคุมอุปกรณ์ MIDI เต็มรูปแบบ</translation>
 <translation id="2986010903908656993">หน้านี้ถูกบล็อกจากการมีสิทธิ์ควบคุมอุปกรณ์ MIDI เต็มรูปแบบ</translation>
@@ -1965,6 +1973,7 @@
 <translation id="8282947398454257691">ทราบตัวระบุอุปกรณ์ที่ไม่ซ้ำกัน</translation>
 <translation id="8329449853370113380"><ph name="URL"/> ต้องการเปิดเนื้อหาที่มีการคุ้มครอง Brave Software จะตรวจสอบข้อมูลประจำตัวของอุปกรณ์</translation>
 <translation id="2650609753175229582"><ph name="URL"/> ต้องการเล่นเนื้อหาที่ได้รับความคุ้มครอง ข้อมูลประจำตัวของอุปกรณ์จะได้รับการยืนยันโดย Brave Software และเว็บไซต์นี้อาจเข้าถึงข้อมูลดังกล่าว</translation>
+<translation id="1746402432151920942">ตัวระบุสื่อที่มีการป้องกัน</translation>
 <translation id="1322046419516468189">ดูและจัดการรหัสผ่านที่บันทึกไว้ได้ใน<ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">บันทึกรหัสผ่านแล้ว ดูและจัดการรหัสผ่านที่บันทึกไว้ได้ใน<ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5713644099811900409">บัญชี Brave Software</translation>
@@ -2024,18 +2033,24 @@
 <translation id="3532844647053365774"><ph name="HOST"/> ต้องการใช้ไมโครโฟนของคุณ</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> ต้องการใช้กล้องถ่ายรูปของคุณ</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> ต้องการแชร์หน้าจอของคุณ</translation>
+<translation id="4275663329226226506">สื่อ</translation>
 <translation id="8962918469425892674">เว็บไซต์นี้ใช้เซ็นเซอร์ตรวจจับการเคลื่อนไหวหรือแสงอยู่</translation>
+<translation id="4532646538815530781">เว็บไซต์นี้ใช้เซ็นเซอร์ตรวจจับความเคลื่อนไหวอยู่</translation>
 <translation id="6057381398996433816">เว็บไซต์นี้ถูกบล็อกไม่ให้ใช้เซ็นเซอร์ตรวจจับการเคลื่อนไหวและแสง</translation>
+<translation id="7707108266051544351">เว็บไซต์นี้ถูกบล็อกไม่ให้ใช้เซ็นเซอร์ตรวจจับความเคลื่อนไหว</translation>
 <translation id="1151917987301063366">อนุญาตให้ <ph name="HOST"/> เข้าถึงเซ็นเซอร์เสมอ</translation>
 <translation id="7377451353532943397">บล็อกการเข้าถึงเซ็นเซอร์ต่อไป</translation>
 <translation id="6878422606530379992">อนุญาตให้ใช้เซ็นเซอร์</translation>
 <translation id="4031527940632463547">มีการบล็อกเซ็นเซอร์</translation>
 <translation id="4559617833001311418">เว็บไซต์นี้เข้าถึงเซ็นเซอร์ตรวจจับการเคลื่อนไหวหรือแสงอยู่</translation>
+<translation id="5623282979409330487">เว็บไซต์นี้เข้าถึงเซ็นเซอร์ตรวจจับความเคลื่อนไหวอยู่</translation>
 <translation id="2309620859903500144">เว็บไซต์นี้ถูกบล็อกไม่ให้เข้าถึงเซ็นเซอร์ตรวจจับการเคลื่อนไหวหรือแสง</translation>
+<translation id="6541638731489116978">เว็บไซต์นี้ถูกบล็อกไม่ให้เข้าถึงเซ็นเซอร์ตรวจจับความเคลื่อนไหว</translation>
 <translation id="8645354835496065562">อนุญาตการเข้าถึงเซ็นเซอร์ต่อไป</translation>
 <translation id="2903882649406874750">บล็อก <ph name="HOST"/> ไม่ให้เข้าถึงเซ็นเซอร์เสมอ</translation>
 <translation id="3194737229810486521"><ph name="URL"/> ต้องการจัดเก็บข้อมูลอย่างถาวรในอุปกรณ์ของคุณ</translation>
 <translation id="1030706264415084469"><ph name="URL"/> ต้องการจัดเก็บข้อมูลขนาดใหญ่อย่างถาวรในอุปกรณ์ของคุณ</translation>
+<translation id="885701979325669005">พื้นที่เก็บข้อมูล</translation>
 <translation id="1712552549805331520"><ph name="URL"/> ต้องการจัดเก็บข้อมูลถาวรในเครื่องคอมพิวเตอร์ของคุณ</translation>
 <translation id="1997484222658892567"><ph name="URL"/> ต้องการจัดเก็บข้อมูลขนาดใหญ่อย่างถาวรในเครื่องคอมพิวเตอร์ของคุณ</translation>
 <translation id="7648992873808071793">จัดเก็บไฟล์บนอุปกรณ์นี้</translation>
@@ -2454,9 +2469,7 @@
 <translation id="702252130983202758">แอปของคุณ</translation>
 <translation id="8831664945713891930">เปิดการตั้งค่าส่วนขยาย</translation>
 <translation id="5138227688689900538">แสดงน้อยลง</translation>
-<translation id="5646376287012673985">ตำแหน่ง</translation>
 <translation id="5270167208902136840">แสดงอีก <ph name="NUMBER_OF_MORE_APPS"/> แอป</translation>
-<translation id="2482878487686419369">การแจ้งเตือน</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> แอป</translation>
 <translation id="7207631048330366454">ค้นหาแอป</translation>
 <translation id="9011424611726486705">เปิดการตั้งค่าเว็บไซต์</translation>
@@ -2789,6 +2802,7 @@
 <translation id="4305227814872083840">นาน (2 วินาที)</translation>
 <translation id="2860150991415616761">นานมาก (4 วินาที)</translation>
 <translation id="1217668622537098248">เปลี่ยนกลับเป็นคลิกซ้ายหลังจากดำเนินการ</translation>
+<translation id="8781470833671194250">การป้องกันการสั่นไหวของตำแหน่งที่คลิก</translation>
 <translation id="3682824389861648626">เกณฑ์การเคลื่อนไหว</translation>
 <translation id="5511379779384092781">เล็กพิเศษ</translation>
 <translation id="2765217105034171413">ขนาดเล็ก</translation>
@@ -3411,7 +3425,10 @@
 <translation id="9038649477754266430">ใช้บริการการคาดคะเนเพื่อโหลดหน้าได้เร็วขึ้น</translation>
 <translation id="7981313251711023384">โหลดหน้าเว็บล่วงหน้าเพื่อให้เรียกดูและค้นหาได้เร็วขึ้น</translation>
 <translation id="2468205691404969808">ใช้คุกกี้เพื่อให้จดจำค่ากำหนดของคุณ แม้ว่าคุณไม่ได้เข้าชมหน้าเว็บเหล่านั้น</translation>
+<translation id="3181954750937456830">Brave Software Safe Browsing (ปกป้องคุณและอุปกรณ์จากเว็บไซต์ที่เป็นอันตราย)</translation>
+<translation id="7315322926489145388">ส่ง URL ของหน้าบางส่วนที่คุณเข้าชมไปให้ Brave Software เมื่อการรักษาความปลอดภัยมีความเสี่ยง</translation>
 <translation id="4991384657077828949">ช่วยปรับปรุงความปลอดภัยของ Brave</translation>
+<translation id="1943176487615318915">ในการตรวจหาแอปและเว็บไซต์ที่เป็นอันตราย Brave จะส่ง URL ของหน้าบางหน้าที่คุณเข้าชม ข้อมูลระบบที่จำกัด และเนื้อหาบางส่วนของหน้าไปให้ Brave Software</translation>
 <translation id="2875273286298348523">Brave จะส่งข้อความที่คุณพิมพ์ในเบราว์เซอร์ไปยัง Brave Software</translation>
 <translation id="9079153198295609735">ส่งสถิติการใช้งานและรายงานข้อขัดข้องไปยัง Brave Software โดยอัตโนมัติ</translation>
 <translation id="5941220456342415404">ส่งข้อมูลการวินิจฉัยและการใช้งานไปยัง Brave Software โดยอัตโนมัติ</translation>
@@ -3483,7 +3500,6 @@
 <translation id="1919345977826869612">โฆษณา</translation>
 <translation id="5649053991847567735">การดาวน์โหลดโดยอัตโนมัติ</translation>
 <translation id="3744111561329211289">ซิงค์ในแบ็กกราวด์</translation>
-<translation id="2586657967955657006">คลิปบอร์ด</translation>
 <translation id="5518219166343146486">ถามเมื่อเว็บไซต์ต้องการดูข้อความและรูปภาพที่คัดลอกไปยังคลิปบอร์ด</translation>
 <translation id="2089795179672254991">ถามเมื่อเว็บไซต์ต้องการดูข้อความและรูปภาพที่คัดลอกไปที่คลิปบอร์ด (แนะนำ)</translation>
 <translation id="16815041330799488">ไม่อนุญาตให้เว็บไซต์ดูข้อความและรูปภาพที่คัดลอกไปยังคลิปบอร์ด</translation>
@@ -3511,6 +3527,7 @@
 <translation id="1128109161498068552">ไม่อนุญาตให้ไซต์ใดๆ ใช้ข้อความเฉพาะของระบบในการเข้าถึงอุปกรณ์ MIDI</translation>
 <translation id="2091887806945687916">เสียง</translation>
 <translation id="4751476147751820511">เซ็นเซอร์จับความเคลื่อนไหวหรือเซ็นเซอร์แสง</translation>
+<translation id="1717218214683051432">เซ็นเซอร์ตรวจจับความเคลื่อนไหว</translation>
 <translation id="6059925163896151826">อุปกรณ์ USB</translation>
 <translation id="8666584013686199826">ถามเมื่อเว็บไซต์ต้องการเข้าถึงอุปกรณ์ USB</translation>
 <translation id="6291949900244949761">ถามเมื่อเว็บไซต์ต้องการเข้าถึงอุปกรณ์ USB (แนะนำ)</translation>
@@ -3546,7 +3563,9 @@
 <translation id="1660204651932907780">อนุญาตให้ไซต์เล่นเสียง (แนะนำ)</translation>
 <translation id="3600792891314830896">ปิดเสียงไซต์ที่เล่นเสียง</translation>
 <translation id="5084230410268011727">อนุญาตให้เว็บไซต์ใช้เซ็นเซอร์จับความเคลื่อนไหวและเซ็นเซอร์แสง</translation>
+<translation id="489454699928748701">อนุญาตให้เว็บไซต์ใช้เซ็นเซอร์ตรวจจับความเคลื่อนไหว</translation>
 <translation id="5047421709274785093">บล็อกเว็บไซต์ไม่ให้ใช้เซ็นเซอร์จับความเคลื่อนไหวและเซ็นเซอร์แสง</translation>
+<translation id="6396988158856674517">บล็อกเว็บไซต์ไม่ให้เข้าถึงเซ็นเซอร์ตรวจจับความเคลื่อนไหว</translation>
 <translation id="2904456025988372123">ถามเมื่อเว็บไซต์พยายามดาวน์โหลดไฟล์โดยอัตโนมัติหลังจากไฟล์แรก</translation>
 <translation id="3494769164076977169">ถามเมื่อไซต์พยายามดาวน์โหลดไฟล์โดยอัตโนมัติหลังจากไฟล์แรก (แนะนำ)</translation>
 <translation id="5036662165765606524">ไม่อนุญาตให้ไซต์ใดๆ ทำการดาวน์โหลดไฟล์หลายๆ ไฟล์โดยอัตโนมัติ</translation>
@@ -4081,6 +4100,7 @@
 <translation id="2785008241190445880">แทนที่บุ๊กมาร์กแล้ว</translation>
 <translation id="5468853758063275923">Brave เป็นเบราว์เซอร์เริ่มต้นของคุณ</translation>
 <translation id="2950533317914339731">เพิ่มบุ๊กมาร์กไปยังแอป Brave Software ที่คุณชอบ</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">ข่าวสาร</translation>

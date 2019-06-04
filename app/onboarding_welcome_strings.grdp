@@ -34,6 +34,11 @@
   <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_APPS_DESCRIPTION" desc="Description of what this section in the onboarding workflow does.">
     Add bookmarks to your favorite Brave Apps
   </message>
+  <if expr="_google_chrome">
+    <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_SEARCH" desc="Label for a button that creates a bookmark to google.com, this should be the name of the brand.">
+      Brave
+    </message>
+  </if>
   <message name="IDS_ONBOARDING_WELCOME_NUX_GOOGLE_GMAIL" desc="Label for a button that creates a bookmark to gmail.com, this should be the name of the brand.">
     Gmail
   </message>

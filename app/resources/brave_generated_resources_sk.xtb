@@ -30,7 +30,6 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="4150684676757176434">Pokračovať v blokovaní funkcie autoplay</translation>
 <translation id="7543906827780734027">Brave ešte nepreskúmal toto rozšírenie - môže to byť škodlivé. Aj tak pridať "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Farby Brave</translation>
-<translation id="5341901626640816374">Použiť široký adresný riadok</translation>
 <translation id="6123134130710658846">Skryť tlačidlo Brave odmeny</translation>
 <translation id="7635711399568194460">Keď nie sú povolené Brave odmeny, tlačidlo Brave odmeny na paneli lokality sa skryje</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
@@ -47,13 +46,20 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="2515126961943087659">Reklamná služba Bat</translation>
 <translation id="7924918279836988121">Služba Bat ledger</translation>
 <translation id="4472575034687746823">Začíname</translation>
+<translation id="3400357268283240774">Ďalšie nastavenia</translation>
 <translation id="6303294677342628402">Ochrana</translation>
+<translation id="768979911142179781">Prednastavenia</translation>
+<translation id="5989930075012659993">Vaše aktuálne nastavenia stránky zostanú zachované.</translation>
+<translation id="9185018653595759199">Blokovanie sociálnych médií</translation>
+<translation id="6894114137169961038">Kontrola reklám</translation>
+<translation id="1096802265930928584">Kontrola cookies</translation>
 <translation id="8919235146866304148">Zabezpečenie pomocou odtlačkov prstov</translation>
 <translation id="520895744850022668">HTTPS všade</translation>
 <translation id="5259716416204774556">Blokovanie skriptov</translation>
 <translation id="7498695072878479744">Povoliť prihlasovacie tlačidlá Google na stránkach tretích strán</translation>
 <translation id="863171915776379000">Povoliť prihlasovanie Facebook a embedované príspevky</translation>
 <translation id="5165042248369837294">Povoliť embedované tweety pre Twitter</translation>
+<translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
 <translation id="6067014455220527258">Blokovať reklamy</translation>
 <translation id="6985711843506827936">Povoliť reklamy a sledovanie</translation>
 <translation id="6132506775968708399">Zakázať cookies tretích strán</translation>
@@ -73,11 +79,14 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="2414886740292270097">Tmavý</translation>
 <translation id="1360441190790440400">Rovnaký ako Linux</translation>
 <translation id="1336940801687497203">Rovnaký ako Windows</translation>
+<translation id="8721331068159819483">Rovnaké ako macOS</translation>
 <translation id="6786747875388722282">Rozšírenia</translation>
 <translation id="2896916411183256228">Na zobrazenie torrentov priamo v prehliadači používa WebTorrent. Podporuje torrentové súbory a magnetové odkazy.</translation>
 <translation id="6554397389149987360">Používa komponenty služby Hangouts, ktoré umožňujú zdieľanie obrazovky a ďalšie funkcie v prehliadači.</translation>
+<translation id="4154389611571860454">Používa rozšírenie  IPFS companion na podporu IPFS v prehliadači.</translation>
 <translation id="8137559199583651773">Spravovať rozšírenia</translation>
 <translation id="4928988318462976765">Obchod s webovými rozšíreniami</translation>
 <translation id="9181207987584064303">Zobraziť v Obchode webových rozšírení</translation>
 <translation id="4846154056248462491">Pri ukončení</translation>
+<translation id="5057399635433117814">Preložiť túto stránku? Toto odošle všetok text tejto stránky na preklad do spoločnosti Microsoft.</translation>
 </translationbundle>

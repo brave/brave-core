@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">هیچ نتیجه‌ای برای جستجو یافت نشد</translation>
 <translation id="8967866634928501045">‏Alt Shift A را برای نمایش فشار دهید</translation>
 <translation id="998747458861718449">بازرسی</translation>
+<translation id="4428301600092811022">‏توضیحات تصویر از Brave Software دریافت شود؟</translation>
 <translation id="741204030948306876">بله، موافقم</translation>
 <translation id="780301667611848630">نه متشکرم</translation>
 <translation id="3943582379552582368">&amp;برگشت</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">مرکز را&amp;هنمایی</translation>
 <translation id="7324297612904500502">تالار گفتمان بتا</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;ویرایش موتورهای جستجو...</translation>
 <translation id="5702898740348134351">&amp;ویرایش موتورهای جستجو...</translation>
 <translation id="2454247629720664989">کلمه کلیدی</translation>
@@ -1301,8 +1303,10 @@
 <translation id="6207200176136643843">بازنشانی به سطح بزرگ‌نمایی پیش‌فرض</translation>
 <translation id="4953689047182316270">پاسخ دادن به رویدادهای مربوط به دسترس‌پذیری</translation>
 <translation id="4677585247300749148"><ph name="URL"/> می‌خواهد به رویدادهای مربوط به دسترس‌پذیری پاسخ دهد</translation>
+<translation id="2224471211857467033">رویدادهای دسترس‌پذیری</translation>
 <translation id="6116338172782435947">به نوشتار و تصاویر کپی‌شده در بریده‌دان دسترسی پیدا کند</translation>
 <translation id="3461266716147554923"><ph name="URL"/> می‌خواهد به نوشتار و تصاویر کپی‌شده در بریده‌دان دسترسی پیدا کند</translation>
+<translation id="2586657967955657006">کلیپ‌بورد</translation>
 <translation id="4838836835474292213">دسترسی برای خواندن محتوای بریده‌دان مجاز شد</translation>
 <translation id="1415708812149920388">دسترسی برای خواندن محتوای بریده‌دان امکان‌پذیر نیست</translation>
 <translation id="2365507699358342471">این سایت می‌تواند به نوشتار و تصاویر کپی‌شده در بریده‌دان دسترسی پیدا کند.</translation>
@@ -1730,6 +1734,7 @@
 <translation id="7547317915858803630">اخطار: تنظیمات <ph name="PRODUCT_NAME"/> شما در درایو شبکه ذخیره می‌شود. این کار ممکن است منجر به از دست رفتن دادهٰ‌ها٬ کند شدن و خرابی شود.</translation>
 <translation id="3122496702278727796">ایجاد دایرکتوری داده ناموفق بود</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> می‌خواهد چند فایل را بارگیری کند</translation>
+<translation id="7514365320538308">بارگیری</translation>
 <translation id="691024665142758461">بارگیری چندین فایل.</translation>
 <translation id="7004499039102548441">برگه‌های جدید</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{‏۱ برگه}one{‏# برگه}other{‏# برگه}}</translation>
@@ -1821,6 +1826,7 @@
 <translation id="6156960295318603523">تنظیمات زبان</translation>
 <translation id="7931318309563332511">ناشناس</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> می‌خواهد برایتان اعلان  ارسال کند</translation>
+<translation id="2482878487686419369">اعلان‌ها</translation>
 <translation id="7221855153210829124">نمایش اعلان‌ها</translation>
 <translation id="8393700583063109961">ارسال پیام</translation>
 <translation id="6701535245008341853">نمایه دریافت نشد.</translation>
@@ -1922,6 +1928,7 @@
 <translation id="1753905327828125965">بیشترین موارد بازدید شده</translation>
 <translation id="5612720917913232150"><ph name="URL"/> می‌خواهد از موقعیت مکانی رایانه شما استفاده کند</translation>
 <translation id="4733082559415072992"><ph name="URL"/> می‌خواهد از موقعیت مکانی دستگاهتان استفاده کند</translation>
+<translation id="5646376287012673985">مکان</translation>
 <translation id="3016780570757425217">مکان‌تان را بدانید</translation>
 <translation id="4068506536726151626">این صفحه کنشگرهایی از سایت‌های زیر دارد که مکان شما را ردیابی می‌کنند:</translation>
 <translation id="4920887663447894854">از ردیابی مکان شما در این صفحه توسط سایت‌های زیر جلوگیری شده است:</translation>
@@ -1931,6 +1938,7 @@
 <translation id="3528033729920178817">این صفحه مکان شما را ردیابی کرده است.</translation>
 <translation id="1510030919967934016">این صفحه برای ردیابی مکان شما مسدود شده است.</translation>
 <translation id="6910240653697687763">‏<ph name="URL"/> می‌خواهد کنترل کامل دستگاه‌های MIDI شما را به‌دست آورد</translation>
+<translation id="1834583737373831634">‏دستگاه‌های MIDI</translation>
 <translation id="8606726445206553943">‏استفاده از دستگاه‌های MIDI شما</translation>
 <translation id="1849186935225320012">‏این صفحه کنترل کامل دستگاه‌های MIDI را دارد.</translation>
 <translation id="2986010903908656993">‏این صفحه از داشتن کنترل کامل دستگاه‌های MIDI ممانعت شده است.</translation>
@@ -1964,6 +1972,7 @@
 <translation id="8282947398454257691">شناسه یکتای دستگاهتان را بداند</translation>
 <translation id="8329449853370113380">‏<ph name="URL"/> می‌خواهد محتوای محافظت‌شده را پخش کند. Brave Software هویت دستگاهتان را به تأیید می‌رساند.</translation>
 <translation id="2650609753175229582">‏<ph name="URL"/> می‌خواهد محتوای محافظت‌شده پخش کند. هویت دستگاهتان توسط Brave Software به‌تأیید می‌رسد و ممکن است این سایت به آن دسترسی داشته باشد.</translation>
+<translation id="1746402432151920942">شناسه رسانه محافظت‌شده</translation>
 <translation id="1322046419516468189">در <ph name="SAVED_PASSWORDS_STORE"/> گذرواژه‌های ذخیره‌شده‌تان را مشاهده و مدیریت کنید</translation>
 <translation id="5297082477358294722">گذرواژه ذخیره شد. گذرواژه‌های ذخیره‌شده‌تان را در <ph name="SAVED_PASSWORDS_STORE"/> مشاهده و مدیریت کنید.</translation>
 <translation id="5713644099811900409">‏حساب Brave Software</translation>
@@ -2023,18 +2032,24 @@
 <translation id="3532844647053365774"><ph name="HOST"/> می‌خواهد از میکروفن شما استفاده کند</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> می‌خواهد از دوربین شما استفاده کند</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> می‌خواهد صفحه شما را هم‌رسانی کند</translation>
+<translation id="4275663329226226506">رسانه</translation>
 <translation id="8962918469425892674">این سایت از حسگرهای نور یا حرکت استفاده می‌کند.</translation>
+<translation id="4532646538815530781">این سایت از حسگرهای حرکتی استفاده می‌کند</translation>
 <translation id="6057381398996433816">استفاده این سایت از حسگرهای نور و حرکت مسدود شده است.</translation>
+<translation id="7707108266051544351">دسترسی این سایت به حسگرهای حرکتی مسدود شده است.</translation>
 <translation id="1151917987301063366">همیشه اجازه دسترسی به حسگرها به <ph name="HOST"/> داده شود</translation>
 <translation id="7377451353532943397">دسترسی به حسگر همچنان مسدود شود</translation>
 <translation id="6878422606530379992">دسترسی به حسگرها مجاز شده است</translation>
 <translation id="4031527940632463547">حسگرها مسدود شدند</translation>
 <translation id="4559617833001311418">این سایت به حسگرهای نور یا حرکت دستگاهتان دسترسی دارد.</translation>
+<translation id="5623282979409330487">این سایت به حسگرهای حرکتی دسترسی دارد.</translation>
 <translation id="2309620859903500144">دسترسی این سایت به حسگرهای نور یا حرکت مسدود شده است.</translation>
+<translation id="6541638731489116978">دسترسی این سایت به حسگرهای حرکتی مسدود شده است.</translation>
 <translation id="8645354835496065562">دسترسی به حسگر همچنان مجاز باشد</translation>
 <translation id="2903882649406874750">همیشه دسترسی <ph name="HOST"/> به حسگرها مسدود شود</translation>
 <translation id="3194737229810486521"><ph name="URL"/> می‌خواهد داده‌ها را برای همیشه در دستگاهتان ذخیره کند</translation>
 <translation id="1030706264415084469"><ph name="URL"/> می‌خواهد داده‌های بزرگ را برای همیشه در دستگاهتان ذخیره کند</translation>
+<translation id="885701979325669005">فضای ذخیره‌سازی</translation>
 <translation id="1712552549805331520"><ph name="URL"/> می‌خواهد داده‌ها را برای همیشه در رایانه محلی‌تان ذخیره کند</translation>
 <translation id="1997484222658892567"><ph name="URL"/> می‌خواهد داده‌های بزرگ را برای همیشه در رایانه محلی‌تان ذخیره کند</translation>
 <translation id="7648992873808071793">ذخیره کردن فایل در این دستگاه</translation>
@@ -2453,9 +2468,7 @@
 <translation id="702252130983202758">برنامه‌های شما</translation>
 <translation id="8831664945713891930">باز کردن تنظیمات افزونه‌ها</translation>
 <translation id="5138227688689900538">نمایش موارد کمتر</translation>
-<translation id="5646376287012673985">مکان</translation>
 <translation id="5270167208902136840">نمایش <ph name="NUMBER_OF_MORE_APPS"/> برنامه بیشتر</translation>
-<translation id="2482878487686419369">اعلان‌ها</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> برنامه</translation>
 <translation id="7207631048330366454">جستجوی برنامه‌ها</translation>
 <translation id="9011424611726486705">باز کردن تنظیمات سایت</translation>
@@ -2788,6 +2801,7 @@
 <translation id="4305227814872083840">طولانی (۲ ثانیه)</translation>
 <translation id="2860150991415616761">خیلی طولانی است (۴ ثانیه)</translation>
 <translation id="1217668622537098248">بعد از کنش، به کلیک چپ بازنشانی کنید</translation>
+<translation id="8781470833671194250">تثبیت موقعیت کلیک</translation>
 <translation id="3682824389861648626">آستانه حرکت</translation>
 <translation id="5511379779384092781">بسیار کوچک</translation>
 <translation id="2765217105034171413">کوچک</translation>
@@ -3410,7 +3424,10 @@
 <translation id="9038649477754266430">استفاده از یک سرویس پیش‌بینی برای بار کردن سریع‌تر صفحه‌ها</translation>
 <translation id="7981313251711023384">پیش‌بارگیری صفحه‌ها برای مرور و جستجوی سریع‌تر</translation>
 <translation id="2468205691404969808">از کوکی‌ها برای به خاطر سپردن اولویت‌های شما استفاده می‌کند؛ حتی اگر از آن صفحه‌ها بازدید نکنید</translation>
+<translation id="3181954750937456830">مرور ایمن (از شما و دستگاهتان درمقابل سایت‌های خطرناک محافظت می‌کند)</translation>
+<translation id="7315322926489145388">‏اگر امنیتتان درخطر باشد، نشانی وب برخی از صفحه‌هایی را که بازدید می‌کنید به Brave Software می‌فرستد</translation>
 <translation id="4991384657077828949">‏کمک به بهبود امنیت Brave</translation>
+<translation id="1943176487615318915">‏برای حذف برنامه‌ها و سایت‌های خطرناک، Brave نشانی‌های وب برخی از صفحه‌هایی را که بازدید می‌کنید، اطلاعات سیستم محدود و برخی از محتوای صفحه را به Brave Software می‌فرستد.</translation>
 <translation id="2875273286298348523">‏Brave نوشتاری را که در مرورگر تایپ می‌کنید، برای Brave Software ارسال می‌کند</translation>
 <translation id="9079153198295609735">‏ارسال خودکار آمار کاربرد و گزارش‌های خرابی به Brave Software</translation>
 <translation id="5941220456342415404">‏ارسال خودکار داده‌های تشخیصی و میزان استفاده به Brave Software</translation>
@@ -3482,7 +3499,6 @@
 <translation id="1919345977826869612">آگهی‌ها</translation>
 <translation id="5649053991847567735">بارگیری‌های خودکار</translation>
 <translation id="3744111561329211289">همگام‌سازی پس‌زمینه</translation>
-<translation id="2586657967955657006">کلیپ‌بورد</translation>
 <translation id="5518219166343146486">وقتی سایتی می‌خواهد به نوشتار و تصاویر کپی‌شده در بریده‌دان دسترسی پیدا کند، سؤال شود.</translation>
 <translation id="2089795179672254991">وقتی سایتی می‌خواهد به نوشتار و تصاویر کپی‌شده در بریده‌دان دسترسی پیدا کند، سؤال شود (توصیه می‌شود)</translation>
 <translation id="16815041330799488">به سایت‌ها اجازه داده نشود به نوشتار و تصاویر کپی‌شده در بریده‌دان دسترسی پیدا کنند</translation>
@@ -3510,6 +3526,7 @@
 <translation id="1128109161498068552">‏به هیچ سایتی اجازه داده نشود برای دسترسی به دستگاه‌های MIDI از پیام‌های انحصاری سیستم استفاده کند</translation>
 <translation id="2091887806945687916">صدا</translation>
 <translation id="4751476147751820511">حسگرهای نوری یا حرکتی</translation>
+<translation id="1717218214683051432">حسگرهای حرکتی</translation>
 <translation id="6059925163896151826">‏دستگاه‌های USB</translation>
 <translation id="8666584013686199826">‏وقتی سایتی می‌خواهد به دستگاه‌های USB دسترسی پیدا کند سؤال شود</translation>
 <translation id="6291949900244949761">‏وقتی سایتی می‌خواهد به دستگاه‌های USB‌ دسترسی پیدا کند سؤال شود (توصیه می‌شود)</translation>
@@ -3545,7 +3562,9 @@
 <translation id="1660204651932907780">به سایت‌ها اجازه داده شود صدا پخش کنند (توصیه می‌شود)</translation>
 <translation id="3600792891314830896">سایت‌هایی که صدا پخش می‌کنند بی‌صدا شوند</translation>
 <translation id="5084230410268011727">استفاده از حسگرهای نوری و حرکتی توسط سایت‌ها مجاز شود</translation>
+<translation id="489454699928748701">سایت‌ها می‌توانند از حسگرهای حرکتی استفاده کنند</translation>
 <translation id="5047421709274785093">استفاده از حسگرهای نوری و حرکتی توسط سایت‌ها مسدود شود</translation>
+<translation id="6396988158856674517">سایت‌ها نمی‌توانند از حسگرهای حرکتی استفاده کنند</translation>
 <translation id="2904456025988372123">وقتی سایتی تلاش می‌کند پس از اولین فایل، فایل‌ها را به‌طور خودکار بارگیری کند، سؤال شود</translation>
 <translation id="3494769164076977169">وقتی سایتی تلاش می‌کند بعد از اولین فایل، فایل‌ها را به‌طور خودکار بارگیری کند سؤال شود (توصیه می‌شود)</translation>
 <translation id="5036662165765606524">به هیچ سایتی اجازه داده نشود چند فایل را به‌طور خودکار بارگیری کند</translation>
@@ -4080,6 +4099,7 @@
 <translation id="2785008241190445880">نشانک جایگزین شد</translation>
 <translation id="5468853758063275923">‏Brave مرورگر پیش‌فرض شما است</translation>
 <translation id="2950533317914339731">‏اضافه کردن نشانک‌ها به برنامه‌های Brave Software دلخواه</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">اخبار</translation>

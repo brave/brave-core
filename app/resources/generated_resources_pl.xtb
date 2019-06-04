@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Brak wyników wyszukiwania</translation>
 <translation id="8967866634928501045">Naciśnij Alt+Shift+A, by wyświetlić</translation>
 <translation id="998747458861718449">&amp;Zbadaj</translation>
+<translation id="4428301600092811022">Pobierać opisy obrazów z Brave Software?</translation>
 <translation id="741204030948306876">Tak</translation>
 <translation id="780301667611848630">Nie, dziękuję</translation>
 <translation id="3943582379552582368">&amp;Wstecz</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">C&amp;entrum pomocy</translation>
 <translation id="7324297612904500502">Forum użytkowników wersji beta</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Edytuj wyszukiwarki...</translation>
 <translation id="5702898740348134351">&amp;Edytuj wyszukiwarki...</translation>
 <translation id="2454247629720664989">Słowo kluczowe</translation>
@@ -479,7 +481,7 @@
 <translation id="6181431612547969857">Pobieranie zostało zablokowane</translation>
 <translation id="3267726687589094446">Dalej zezwalaj na automatyczne pobieranie wielu plików</translation>
 <translation id="8663099077749055505">Zawsze blokuj wiele pobierań automatycznych na <ph name="HOST"/></translation>
-<translation id="4627427111733173920">Pliki cookies zostały zablokowane</translation>
+<translation id="4627427111733173920">Pliki cookie zostały zablokowane</translation>
 <translation id="3758842566811519622">Pliki cookie skonfigurowane</translation>
 <translation id="3308116878371095290">Umieszczanie na komputerze plików cookie z tej strony jest niedozwolone.</translation>
 <translation id="2335122562899522968">Ta strona ustawia pliki cookie.</translation>
@@ -1320,14 +1322,16 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6207200176136643843">Przywróć domyślny poziom powiększenia</translation>
 <translation id="4953689047182316270">Odpowiadanie na zdarzenia dotyczące ułatwień dostępu</translation>
 <translation id="4677585247300749148"><ph name="URL"/> chce odpowiadać na zdarzenia dotyczące ułatwień dostępu</translation>
+<translation id="2224471211857467033">Zdarzenia związane z ułatwieniami dostępu</translation>
 <translation id="6116338172782435947">mieć dostęp do tekstu i obrazów skopiowanych do schowka</translation>
 <translation id="3461266716147554923"><ph name="URL"/> chce mieć dostęp do tekstu i obrazów skopiowanych do schowka</translation>
+<translation id="2586657967955657006">Schowek</translation>
 <translation id="4838836835474292213">Przyznano uprawnienia do odczytu zawartości schowka</translation>
 <translation id="1415708812149920388">Brak uprawnień do odczytu zawartości schowka</translation>
 <translation id="2365507699358342471">Ta strona ma dostęp do tekstu i obrazów skopiowanych do schowka.</translation>
 <translation id="3839516600093027468">Zawsze blokuj stronie <ph name="HOST"/> dostęp do schowka</translation>
 <translation id="4522600456902129422">Nadal zezwalaj tej stronie na dostęp do schowka</translation>
-<translation id="7303900363563182677">Ta strona nie ma dostępu do tekstu ani obrazów skopiowanych do schowka</translation>
+<translation id="7303900363563182677">Ta strona ma zablokowany dostęp do tekstów i obrazów skopiowanych do schowka</translation>
 <translation id="8005600846065423578">Zawsze zezwalaj stronie <ph name="HOST"/> na dostęp do schowka</translation>
 <translation id="6122095009389448667">Nadal blokuj tej stronie dostęp do schowka</translation>
 <translation id="3429275422858276529">Dodaj tę stronę do zakładek, by później łatwo ją znaleźć</translation>
@@ -1750,6 +1754,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="7547317915858803630">Ostrzeżenie: Twoje ustawienia <ph name="PRODUCT_NAME"/> są zapisywane na dysku sieciowym. Może to spowalniać działanie, powodować awarie, a nawet doprowadzić do utraty danych.</translation>
 <translation id="3122496702278727796">Nie można utworzyć katalogu danych</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> chce pobrać wiele plików</translation>
+<translation id="7514365320538308">Pobierz</translation>
 <translation id="691024665142758461">pobrać wiele plików</translation>
 <translation id="7004499039102548441">Ostatnie karty</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 karta}few{# karty}many{# kart}other{# karty}}</translation>
@@ -1841,6 +1846,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="6156960295318603523">Ustawienia języka</translation>
 <translation id="7931318309563332511">Nieznany</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> chce wysyłać Ci powiadomienia</translation>
+<translation id="2482878487686419369">Powiadomienia</translation>
 <translation id="7221855153210829124">Pokazywanie powiadomień</translation>
 <translation id="8393700583063109961">Wyślij wiadomość</translation>
 <translation id="6701535245008341853">Nie można uzyskać profilu.</translation>
@@ -1942,6 +1948,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="1753905327828125965">Najczęstsze</translation>
 <translation id="5612720917913232150"><ph name="URL"/> chce używać lokalizacji Twojego komputera</translation>
 <translation id="4733082559415072992"><ph name="URL"/> chce używać lokalizacji Twojego urządzenia</translation>
+<translation id="5646376287012673985">Lokalizacja</translation>
 <translation id="3016780570757425217">Sprawdzanie Twojej lokalizacji</translation>
 <translation id="4068506536726151626">Ta strona zawiera elementy z następujących witryn, które śledzą Twoją lokalizację:</translation>
 <translation id="4920887663447894854">Następującym stronom zablokowano możliwość śledzenia Twojej lokalizacji na tej stronie:</translation>
@@ -1951,11 +1958,12 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3528033729920178817">Ta strona śledzi Twoją lokalizację.</translation>
 <translation id="1510030919967934016">Tej stronie zablokowano możliwość śledzenia Twojej lokalizacji.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> chce mieć pełny dostęp do sterowania urządzeniami MIDI</translation>
+<translation id="1834583737373831634">Urządzenia MIDI</translation>
 <translation id="8606726445206553943">Korzystać z urządzeń MIDI</translation>
 <translation id="1849186935225320012">Ta strona ma pełny dostęp do sterowania urządzeniami MIDI.</translation>
 <translation id="2986010903908656993">Pełny dostęp do sterowania urządzeniami MIDI został zablokowany dla tej strony.</translation>
 <translation id="6228691855869374890">Ta strona ma pełny dostęp do sterowania urządzeniami MIDI.</translation>
-<translation id="2226449515541314767">Pełny dostęp do sterowania urządzeniami MIDI został dla tej strony zablokowany.</translation>
+<translation id="2226449515541314767">Ta strona ma zablokowany dostęp do sterowania urządzeniami MIDI.</translation>
 <translation id="5972017421290582825">Zarządzaj ustawieniami MIDI...</translation>
 <translation id="230927227160767054">Ta strona chce zainstalować moduł do obsługiwania usługi.</translation>
 <translation id="5885324376209859881">Zarządzaj ustawieniami multimediów...</translation>
@@ -1984,6 +1992,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="8282947398454257691">Odczytywanie unikalnego identyfikatora Twojego urządzenia</translation>
 <translation id="8329449853370113380"><ph name="URL"/> chce odtworzyć treści chronione. Tożsamość Twojego urządzenia zostanie zweryfikowana przez Brave Software.</translation>
 <translation id="2650609753175229582"><ph name="URL">$1</ph> chce odtworzyć treści chronione. Tożsamość Twojego urządzenia zostanie zweryfikowana przez Brave i może być dostępna dla tej strony.</translation>
+<translation id="1746402432151920942">Identyfikator chronionych treści multimedialnych</translation>
 <translation id="1322046419516468189">Swoje zapisane hasła znajdziesz tutaj: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Hasło zostało zapisane. Swoje zapisane hasła znajdziesz tutaj: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
@@ -2044,18 +2053,24 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="3532844647053365774"><ph name="HOST"/> chce korzystać z mikrofonu</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> chce korzystać z kamery</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> chce udostępnić Twój ekran</translation>
-<translation id="8962918469425892674">Ta strona używa czujników ruchu lub oświetlenia.</translation>
-<translation id="6057381398996433816">Tej stronie zablokowano dostęp do czujników ruchu lub oświetlenia.</translation>
+<translation id="4275663329226226506">Multimedia</translation>
+<translation id="8962918469425892674">Ta strona używa czujników ruchu lub światła.</translation>
+<translation id="4532646538815530781">Ta strona używa czujników ruchu.</translation>
+<translation id="6057381398996433816">Ta strona ma zablokowano dostęp do czujników ruchu lub światła.</translation>
+<translation id="7707108266051544351">Tej stronie zablokowano używanie czujników ruchu.</translation>
 <translation id="1151917987301063366">Zawsze zezwalaj witrynie <ph name="HOST"/> na dostęp do czujników</translation>
 <translation id="7377451353532943397">Nadal blokuj dostęp do czujników</translation>
 <translation id="6878422606530379992">Zezwolono na dostęp do czujników</translation>
 <translation id="4031527940632463547">Zablokowano dostęp do czujników</translation>
-<translation id="4559617833001311418">Ta strona ma dostęp do czujników ruchu lub oświetlenia.</translation>
-<translation id="2309620859903500144">Ta strona ma zablokowany dostęp do czujników ruchu i oświetlenia.</translation>
+<translation id="4559617833001311418">Ta strona ma dostęp do czujników ruchu lub światła.</translation>
+<translation id="5623282979409330487">Ta strona ma dostęp do czujników ruchu.</translation>
+<translation id="2309620859903500144">Ta strona ma zablokowany dostęp do czujników ruchu i światła.</translation>
+<translation id="6541638731489116978">Tej stronie zablokowano dostęp do czujników ruchu.</translation>
 <translation id="8645354835496065562">Nadal zezwalaj na dostęp do czujników</translation>
 <translation id="2903882649406874750">Zawsze blokuj witrynie <ph name="HOST"/> dostęp do czujników</translation>
 <translation id="3194737229810486521"><ph name="URL"/> chce na stałe przechowywać dane na Twoim urządzeniu</translation>
 <translation id="1030706264415084469"><ph name="URL"/> chce na stałe przechowywać dużą ilość danych na Twoim urządzeniu</translation>
+<translation id="885701979325669005">Pamięć</translation>
 <translation id="1712552549805331520"><ph name="URL"/> chce na stałe przechowywać dane na Twoim komputerze lokalnym</translation>
 <translation id="1997484222658892567"><ph name="URL"/> chce na stałe przechowywać dużą ilość danych na Twoim komputerze</translation>
 <translation id="7648992873808071793">Zapisywanie plików na tym urządzeniu</translation>
@@ -2481,9 +2496,7 @@ Przechowuj plik klucza w bezpiecznym miejscu. Będzie on potrzebny do utworzenia
 <translation id="702252130983202758">Twoje aplikacje</translation>
 <translation id="8831664945713891930">Otwórz ustawienia rozszerzeń</translation>
 <translation id="5138227688689900538">Pokaż mniej</translation>
-<translation id="5646376287012673985">Lokalizacja</translation>
 <translation id="5270167208902136840">Pokaż <ph name="NUMBER_OF_MORE_APPS">$1</ph> więcej aplikacji</translation>
-<translation id="2482878487686419369">Powiadomienia</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS">$1</ph> aplikacji</translation>
 <translation id="7207631048330366454">Wyszukaj aplikacje</translation>
 <translation id="9011424611726486705">Otwórz ustawienia strony</translation>
@@ -2817,6 +2830,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="4305227814872083840">długie (2 s)</translation>
 <translation id="2860150991415616761">bardzo długie (4 s)</translation>
 <translation id="1217668622537098248">Przywróć działanie po kliknięciu lewego przycisku myszy</translation>
+<translation id="8781470833671194250">Stabilizacja pozycji kliknięcia</translation>
 <translation id="3682824389861648626">Próg ruchu</translation>
 <translation id="5511379779384092781">Bardzo mały</translation>
 <translation id="2765217105034171413">Mały</translation>
@@ -2897,6 +2911,9 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="3201422919974259695">Tutaj będą widoczne dostępne urządzenia USB.</translation>
 <translation id="907264006778172906">Przyznaj Linuksowi dostęp do urządzeń USB. Linux nie będzie pamiętać urządzenia USB po jego odłączeniu.</translation>
 <translation id="3661172646479098821">Obecnie obsługiwane są tylko urządzenia z Androidem.</translation>
+<translation id="1679806121152819234">Wtyczka VM</translation>
+<translation id="1342664070754997846">Uruchom wtyczkę aplikacji VM na <ph name="DEVICE_TYPE">$1</ph></translation>
+<translation id="7508054832109420082">Zezwól na dostęp do drukarek</translation>
 <translation id="2295473777859797944">Sklep Brave Software Play</translation>
 <translation id="572155275267014074">Ustawienia Androida</translation>
 <translation id="4767209642168463274">Instaluj gry i aplikacje z Brave Software Play na Bravebooku. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Więcej informacji&lt;/a&gt;</translation>
@@ -3448,9 +3465,12 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="9038649477754266430">Używaj podpowiedzi, by strony ładowały się szybciej</translation>
 <translation id="7981313251711023384">Ładuj wstępnie strony, by przyspieszyć przeglądanie i wyszukiwanie</translation>
 <translation id="2468205691404969808">Zapisuje Twoje ustawienia w plikach cookie, nawet jeśli nie odwiedzasz tych stron</translation>
+<translation id="3181954750937456830">Bezpieczne przeglądanie (chroni Ciebie i Twoje urządzenie przed niebezpiecznymi witrynami)</translation>
+<translation id="7315322926489145388">Gdy Twoje bezpieczeństwo jest zagrożone, wysyła do Brave Software adresy URL odwiedzanych stron</translation>
 <translation id="4991384657077828949">Pomóż zwiększyć bezpieczeństwo Brave</translation>
+<translation id="1943176487615318915">Aby wykrywać niebezpieczne aplikacje i witryny, Brave wysyła do Brave Software adresy URL i część zawartości niektórych odwiedzanych przez Ciebie stron, a także niektóre informacje o systemie.</translation>
 <translation id="2875273286298348523">Brave wysyła do Brave Software to, co wpisujesz w przeglądarce</translation>
-<translation id="9079153198295609735">Automatycznie przesyłaj do Brave Software statystyki użytkowania i raporty o awariach</translation>
+<translation id="9079153198295609735">Automatycznie przesyłaj do Brave statystyki użytkowania i raporty o awariach</translation>
 <translation id="5941220456342415404">Automatycznie wysyłaj do Brave Software dane diagnostyczne i informacje o użytkowaniu</translation>
 <translation id="918192811481327695">Pomóż w ulepszaniu funkcji i działania Brave</translation>
 <translation id="9063160602596686558">Automatycznie przesyłaj do Brave raporty o awariach</translation>
@@ -3520,7 +3540,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="1919345977826869612">Reklamy</translation>
 <translation id="5649053991847567735">Pobieranie automatyczne</translation>
 <translation id="3744111561329211289">Synchronizacja w tle</translation>
-<translation id="2586657967955657006">Schowek</translation>
 <translation id="5518219166343146486">Pytaj, gdy strona chce uzyskać dostęp do tekstu i obrazów skopiowanych do schowka</translation>
 <translation id="2089795179672254991">Pytaj, gdy strona chce uzyskać dostęp do tekstu i obrazów skopiowanych do schowka (zalecane)</translation>
 <translation id="16815041330799488">Nie zezwalaj stronom na dostęp do tekstu i obrazów skopiowanych do schowka</translation>
@@ -3548,6 +3567,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="1128109161498068552">Nie zezwalaj żadnym stronom na używanie wiadomości zarezerwowanych dla systemu w celu uzyskania dostępu do urządzeń MIDI</translation>
 <translation id="2091887806945687916">Dźwięk</translation>
 <translation id="4751476147751820511">Czujniki ruchu lub światła</translation>
+<translation id="1717218214683051432">Czujniki ruchu</translation>
 <translation id="6059925163896151826">Urządzenia USB</translation>
 <translation id="8666584013686199826">Pytaj, gdy strona chce uzyskać dostęp do urządzeń USB</translation>
 <translation id="6291949900244949761">Pytaj, gdy strona chce uzyskać dostęp do urządzeń USB (zalecane)</translation>
@@ -3582,8 +3602,10 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="5390100381392048184">Zezwalaj na odtwarzanie dźwięku na stronach internetowych</translation>
 <translation id="1660204651932907780">Zezwalaj na odtwarzanie dźwięku na stronach internetowych (zalecane)</translation>
 <translation id="3600792891314830896">Wycisz strony, które odtwarzają dźwięk</translation>
-<translation id="5084230410268011727">Zezwalaj stronom internetowym na używanie czujników ruchu i światła</translation>
-<translation id="5047421709274785093">Nie zezwalaj stronom internetowym na używanie czujników ruchu i światła</translation>
+<translation id="5084230410268011727">Zezwalaj stronom na używanie czujników ruchu i światła</translation>
+<translation id="489454699928748701">Zezwalaj stronom na używanie czujników ruchu</translation>
+<translation id="5047421709274785093">Nie zezwalaj stronom na używanie czujników ruchu i światła</translation>
+<translation id="6396988158856674517">Blokuj stronom używanie czujników ruchu</translation>
 <translation id="2904456025988372123">Pytaj, gdy strona próbuje automatycznie pobrać pliki po pobraniu pierwszego</translation>
 <translation id="3494769164076977169">Pytaj, gdy strona próbuje automatycznie pobrać pliki po pobraniu pierwszego (zalecane)</translation>
 <translation id="5036662165765606524">Nie zezwalaj żadnym stronom na automatyczne pobieranie wielu plików</translation>
@@ -3677,10 +3699,11 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="6029292188939175871">usuń odcisk palca [<ph name="FINGERPRINT_NAME"/>], przycisk</translation>
 <translation id="1927632033341042996">Palec nr <ph name="NEW_FINGER_NUMBER"/></translation>
 <translation id="7665369617277396874">Dodaj konto</translation>
-<translation id="6776811409814583709">Tutaj możesz zarządzać wszystkimi aplikacjami i stronami internetowymi. Aplikacje i strony, które posiadają uprawnienia do prawidłowej pracy, mogą uzyskać dostęp do informacji o Twoim koncie.</translation>
+<translation id="6776811409814583709">Tutaj możesz zarządzać wszystkimi aplikacjami i stronami. Aplikacje i strony, które posiadają uprawnienia do prawidłowej pracy, mogą uzyskać dostęp do informacji o Twoim koncie.</translation>
 <translation id="1987317783729300807">Konta</translation>
 <translation id="8418661265246754237">Konta Brave Software</translation>
 <translation id="3297951628821704004">Usuń konto z tego urządzenia</translation>
+<translation id="8995603266996330174">Zarządzane przez <ph name="DOMAIN">$1</ph></translation>
 <translation id="4659077111144409915">Konto główne</translation>
 <translation id="3158033540161634471">Skonfiguruj odcisk palca</translation>
 <translation id="1587907146729660231">Dotknij palcem przycisku zasilania</translation>
@@ -3709,7 +3732,6 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="3608576286259426129">Podgląd obrazu użytkownika</translation>
 <translation id="2114896190328250491">Zdjęcie: <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Istniejące zdjęcie z kamery lub pliku</translation>
-<translation id="8995603266996330174">Zarządzane przez <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Inteligentne rozwiązania Brave Software w Brave</translation>
 <translation id="5244474230056479698">Synchronizowanie z <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Ponieważ to konto jest zarządzane przez <ph name="DOMAIN"/>, Twoje zakładki, historia, hasła i inne ustawienia zostaną usunięte z tego urządzenia. Twoje dane pozostaną zapisane na koncie Brave Software. Możesz nimi zarządzać w <ph name="BEGIN_LINK"/>Panelu Brave Software<ph name="END_LINK"/>.</translation>
@@ -4117,6 +4139,7 @@ Osoby z wolnym połączeniem mogą nie zobaczyć treści, które przesyłasz.</
 <translation id="2785008241190445880">Zakładka została zastąpiona</translation>
 <translation id="5468853758063275923">Brave jest domyślną przeglądarką</translation>
 <translation id="2950533317914339731">Dodaj zakładki do swoich ulubionych aplikacji Brave Software</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Mapy</translation>
 <translation id="6709133671862442373">Wiadomości</translation>
