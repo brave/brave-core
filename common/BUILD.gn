@@ -129,6 +129,7 @@ source_set("shield_exceptions") {
     deps += [
       "//base",
       "//components/url_pattern_index",
+      "//extensions/common:common_constants",
     ]
   } else {
     deps += [ "//extensions/common" ]
