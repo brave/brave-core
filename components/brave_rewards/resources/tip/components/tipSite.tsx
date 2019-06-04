@@ -51,6 +51,7 @@ class TipSite extends React.Component<Props, {}> {
           ? <TransientTipOverlay
               publisher={this.props.publisher}
               onTweet={this.onTweet}
+              timeout={3000}
           />
           : null
         }
