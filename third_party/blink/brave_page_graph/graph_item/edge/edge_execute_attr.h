@@ -3,34 +3,34 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_EXECUTE_H_
-#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_EXECUTE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_EXECUTE_ATTR_H_
+#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_EXECUTE_ATTR_H_
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
+#include <string>
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
 
-class NodeExtension;
 class NodeHTMLElement;
 class NodeScript;
 class PageGraph;
 
-class EdgeExecute : public Edge {
+class EdgeExecuteAttr : public EdgeExecute {
 friend class PageGraph;
  public:
-  EdgeExecute() = delete;
-  ~EdgeExecute() override;
+  EdgeExecuteAttr() = delete;
+  ~EdgeExecuteAttr() override;
   ItemName GetItemName() const override;
 
  protected:
-  EdgeExecute(PageGraph* const graph, NodeHTMLElement* const out_node,
-    NodeScript* const in_node);
-  EdgeExecute(PageGraph* const graph, NodeExtension* const out_node,
-    NodeScript* const in_node);
+  EdgeExecuteAttr(PageGraph* const graph, NodeHTMLElement* const out_node,
+    NodeScript* const in_node, const std::string& attr);
   GraphMLXMLList GraphMLAttributes() const override;
+
+  const std::string attr_;
 };
 
 }  // namespace brave_page_graph
 
-#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_EXECUTE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_EXECUTE_ATTR_H_
