@@ -427,7 +427,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
               platform={'youtube'}
               publisherImg={favicon}
               publisherName={'Jonathon Doe'}
-              monthlyAmount={'5.0'}
+              monthlyAmount={text('Monthly contribution', '5.0')}
               acEnabled={true}
               isVerified={boolean('Verified', false)}
               showUnVerified={boolean('Show Unverified', true)}
