@@ -33,12 +33,12 @@ RequestUrl EdgeRequest::GetRequestUrl() const {
 
 GraphMLXMLList EdgeRequest::GraphMLAttributes() const {
   return GraphMLXMLList({
-    graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
       ->ToValue("request"),
-    graphml_attr_def_for_type(kGraphMLAttrDefRequestId)
+    GraphMLAttrDefForType(kGraphMLAttrDefRequestId)
       ->ToValue(request_id_),
-    graphml_attr_def_for_type(kGraphMLAttrDefStatus)
-      ->ToValue(request_status_to_string(status_))
+    GraphMLAttrDefForType(kGraphMLAttrDefStatus)
+      ->ToValue(RequestStatusToString(status_))
   });
 }
 

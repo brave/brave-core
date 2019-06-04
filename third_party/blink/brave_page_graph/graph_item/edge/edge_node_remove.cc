@@ -27,7 +27,7 @@ ItemName EdgeNodeRemove::GetItemName() const {
 
 GraphMLXMLList EdgeNodeRemove::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
       ->ToValue("remove")
   };
 }

@@ -29,7 +29,7 @@ ItemName EdgeNodeDelete::GetItemName() const {
 
 GraphMLXMLList EdgeNodeDelete::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
       ->ToValue("delete")
   };
 }

@@ -74,14 +74,14 @@ typedef enum {
   kGraphMLAttrTypeDouble,
   kGraphMLAttrTypeUnknown
 } GraphMLAttrType;
-std::string graphml_type_to_string(const GraphMLAttrType type) noexcept;
+std::string RequestTypeToString(const GraphMLAttrType type) noexcept;
 
 typedef enum {
   kGraphMLAttrForTypeNode = 0,
   kGraphMLAttrForTypeEdge,
   kGraphMLAttrForTypeUnknown
 } GraphMLAttrForType;
-std::string graphml_for_to_string(const GraphMLAttrForType type) noexcept;
+std::string GraphMLForToString(const GraphMLAttrForType type) noexcept;
 
 typedef enum {
   kRequestTypeAJAX = 0,
@@ -96,9 +96,9 @@ typedef enum {
   kRequestTypeVideo,
   kRequestTypeUnknown
 } RequestType;
-std::string request_type_to_string(const RequestType type) noexcept;
+std::string RequestTypeToString(const RequestType type) noexcept;
 
-std::string resource_type_to_string(const blink::ResourceType type) noexcept;
+std::string ResourceTypeToString(const blink::ResourceType type) noexcept;
 
 typedef enum {
   kScriptTypeClassic = 0,
@@ -106,7 +106,7 @@ typedef enum {
   kScriptTypeExtension,
   kScriptTypeUnknown
 } ScriptType;
-std::string script_type_to_string(const ScriptType type) noexcept;
+std::string ScriptTypeToString(const ScriptType type) noexcept;
 
 typedef enum {
   kRequestStatusStart = 0,
@@ -114,7 +114,7 @@ typedef enum {
   kRequestStatusError,
   kRequestStatusBlocked
 } RequestStatus;
-std::string request_status_to_string(const RequestStatus status) noexcept;
+std::string RequestStatusToString(const RequestStatus status) noexcept;
 
 typedef unsigned SourceCodeHash;
 typedef unsigned UrlHash;

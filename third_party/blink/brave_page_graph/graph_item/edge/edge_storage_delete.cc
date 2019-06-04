@@ -31,7 +31,7 @@ ItemName EdgeStorageDelete::GetItemName() const {
 GraphMLXMLList EdgeStorageDelete::GraphMLAttributes() const {
   GraphMLXMLList items = EdgeStorage::GraphMLAttributes();
   items.push_back(
-    graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)->ToValue("delete"));
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)->ToValue("delete"));
   return items;
 }
 

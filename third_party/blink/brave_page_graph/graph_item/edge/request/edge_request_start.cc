@@ -47,13 +47,13 @@ Node* EdgeRequestStart::GetRequestingNode() const {
 }
 
 ItemDesc EdgeRequestStart::GetDescBody() const {
-  return GetItemName() + " [type:" + request_type_to_string(type_) + "]";
+  return GetItemName() + " [type:" + RequestTypeToString(type_) + "]";
 }
 
 GraphMLXMLList EdgeRequestStart::GraphMLAttributes() const {
   GraphMLXMLList attrs = EdgeRequest::GraphMLAttributes();
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefRequestType)
-      ->ToValue(request_type_to_string(type_)));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefRequestType)
+      ->ToValue(RequestTypeToString(type_)));
   return attrs;
 }
 

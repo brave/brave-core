@@ -33,9 +33,9 @@ ItemName EdgeTextChange::GetDescBody() const {
 
 GraphMLXMLList EdgeTextChange::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
       ->ToValue("text change"),
-    graphml_attr_def_for_type(kGraphMLAttrDefValue)
+    GraphMLAttrDefForType(kGraphMLAttrDefValue)
       ->ToValue(new_text_)
   };
 }

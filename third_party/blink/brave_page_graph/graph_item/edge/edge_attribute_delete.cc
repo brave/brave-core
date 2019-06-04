@@ -35,7 +35,7 @@ ItemDesc EdgeAttributeDelete::GetDescBody() const {
 
 GraphMLXMLList EdgeAttributeDelete::GraphMLAttributes() const {
   GraphMLXMLList attrs = EdgeAttribute::GraphMLAttributes();
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
       ->ToValue("attr delete"));
   return attrs;
 }
