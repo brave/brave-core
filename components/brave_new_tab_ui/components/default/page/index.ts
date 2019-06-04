@@ -30,6 +30,7 @@ export const Page = styled<{}, 'div'>('div')`
 
 interface DynamicBackgroundProps {
   background: string
+  showBackgroundImage: boolean
 }
 
 export const DynamicBackground = styled<DynamicBackgroundProps, 'div'>('div')`
@@ -37,26 +38,20 @@ export const DynamicBackground = styled<DynamicBackgroundProps, 'div'>('div')`
   background-position: top center;
   background-repeat: no-repeat;
   background-size: cover;
-  background-image: url(${(p) => p.background});
+  ${(p) => p.showBackgroundImage
+  ? ` background-image: url(${p.background});`
+  : ` background: linear-gradient(
+        to bottom right,
+        #4D54D1,
+        #A51C7B 50%,
+        #EE4A37 100%);
+    `
+  }
   display: flex;
   flex: 1;
   opacity: 0;
   animation: ${fadeIn} 300ms;
   animation-fill-mode: forwards;
-`
-
-export const Gradient = styled<{}, 'div'>('div')`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: linear-gradient(
-    rgba(0, 0, 0, 0.8),
-    rgba(0, 0, 0, 0) 35%,
-    rgba(0, 0, 0, 0) 80%,
-    rgba(0, 0, 0, 0.6) 100%
-  );
-  height: 100vh;
 `
 
 export const Link = styled<{}, 'a'>('a')`
@@ -81,7 +76,12 @@ export const Navigation = styled<{}, 'nav'>('nav')`
   display: flex;
 `
 
-export const IconLink = styled<{}, 'a'>('a')`
+interface IconLinkProps {
+  disabled?: boolean
+}
+
+export const IconLink = styled<IconLinkProps, 'a'>('a')`
+  pointer-events: ${p => p.disabled && 'none'};
   display: flex;
   width: 24px;
   height: 24px;
