@@ -5,4 +5,5 @@
 
 brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/init/BraveBrowserInitializer.java",
+  "../../brave/android/java/org/chromium/chrome/browser/search_engines/BraveTemplateUrlService.java",
 ]
