@@ -2,7 +2,7 @@
 # It is not intended for manual editing.
 [[package]]
 name = "adblock"
-version = "0.1.11"
+version = "0.1.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "addr 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -24,7 +24,7 @@ dependencies = [
 name = "adblock-ffi"
 version = "0.1.0"
 dependencies = [
- "adblock 0.1.11 (registry+https://github.com/rust-lang/crates.io-index)",
+ "adblock 0.1.12 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc 0.2.58 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -750,7 +750,7 @@ version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [metadata]
-"checksum adblock 0.1.11 (registry+https://github.com/rust-lang/crates.io-index)" = "ae9e4a67df4b5fe0cd8cd928f95aa80c6abc2299fa0853cb55d3674abee20418"
+"checksum adblock 0.1.12 (registry+https://github.com/rust-lang/crates.io-index)" = "8550bd066c5496352308004f52d2a30525ef35b08938b29ea42d304bd8e84040"
 "checksum addr 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "22199dd03e5cff19ede8c2b835c93460f998b4716e225d06d740d925ceac5d75"
 "checksum adler32 1.0.3 (registry+https://github.com/rust-lang/crates.io-index)" = "7e522997b529f05601e05166c07ed17789691f562762c7f3b987263d2dedee5c"
 "checksum aho-corasick 0.7.3 (registry+https://github.com/rust-lang/crates.io-index)" = "e6f484ae0c99fec2e858eb6134949117399f222608d84cadb3f58c1f97c2364c"
