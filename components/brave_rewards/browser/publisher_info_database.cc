@@ -470,8 +470,12 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfos(
   bool initialized = Init();
   DCHECK(initialized);
 
-  if (!initialized || list.size() == 0) {
+  if (!initialized) {
     return false;
+  }
+
+  if (list.size() == 0) {
+    return true;
   }
 
   sql::Transaction transaction(&GetDB());
