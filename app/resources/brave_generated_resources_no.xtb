@@ -30,7 +30,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="4150684676757176434">Fortsett å blokkere autoavspilling</translation>
 <translation id="7543906827780734027">Brave har ikke undersøkt denne filtypen enda, den kan være ondsinnet. Vil du legge til "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" likevel?</translation>
 <translation id="2044383478723007273">Brave farger</translation>
-<translation id="5341901626640816374">Bruk bred stedslinje</translation>
 <translation id="6123134130710658846">Skjul "Brave rewards"-knapp</translation>
 <translation id="7635711399568194460">Skjuler "Brave Rewards"-knappen i plasseringslinjen når Brave Reward ikke er aktivert</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
@@ -47,13 +46,20 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="2515126961943087659">Bat Ads-tjeneste</translation>
 <translation id="7924918279836988121">Bat-reskontrotjeneste</translation>
 <translation id="4472575034687746823">Kom i gang</translation>
+<translation id="3400357268283240774">Tilleggsinnstillinger</translation>
 <translation id="6303294677342628402">Skjold</translation>
+<translation id="768979911142179781">Standarder</translation>
+<translation id="5989930075012659993">De gjeldende sideinnstillingene dine vil bli beholdt.</translation>
+<translation id="9185018653595759199">Blokkering i sosiale medier</translation>
+<translation id="6894114137169961038">Annonsekontroll</translation>
+<translation id="1096802265930928584">Informasjonskapselkontroll</translation>
 <translation id="8919235146866304148">Fingeravtrykkbeskyttelse</translation>
 <translation id="520895744850022668">HTTPS Overalt</translation>
 <translation id="5259716416204774556">Script-blokkering</translation>
 <translation id="7498695072878479744">Tillat innloggingsknapper fra Google på tredjepartssider</translation>
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
 <translation id="5165042248369837294">Tillatt innebygde tvitringer fra Twitter</translation>
+<translation id="958971637207126733">Tillat LinkedIn-innebygde innlegg</translation>
 <translation id="6067014455220527258">Blokker annonser</translation>
 <translation id="6985711843506827936">Tillat annonser og sporing</translation>
 <translation id="6132506775968708399">Blokker tredjeparts informasjonskapsler</translation>
@@ -73,11 +79,14 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="2414886740292270097">Mørkt</translation>
 <translation id="1360441190790440400">Samme som Linux</translation>
 <translation id="1336940801687497203">Samme som Windows</translation>
+<translation id="8721331068159819483">Samme som macOS</translation>
 <translation id="6786747875388722282">Utvidelser</translation>
 <translation id="2896916411183256228">Bruker WebTorrent til å vise torrents direkte i nettleseren. Støtter torrent-filer og magnetlenker.</translation>
 <translation id="6554397389149987360">Bruk Hangouts-komponenten for å aktivere skjermdeling og andre funksjoner i nettleseren.</translation>
+<translation id="4154389611571860454">Bruker IPFS-utvidelse for å støtte IPFS i nettleseren.</translation>
 <translation id="8137559199583651773">Administrer utvidelser</translation>
 <translation id="4928988318462976765">Butikken for nettutvidelser</translation>
 <translation id="9181207987584064303">Vis i butikken for nettutvidelser</translation>
 <translation id="4846154056248462491">Ved avslutning</translation>
+<translation id="5057399635433117814">Oversette denne siden? Dette vil sende all tekst på denne siden til Microsoft for oversettelse</translation>
 </translationbundle>

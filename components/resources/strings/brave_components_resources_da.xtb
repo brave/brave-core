@@ -41,6 +41,8 @@
 <translation id="8958799246752641148">Tor skjuler din IP adresse på siderne du besøger, ved at route din browsing igennem adskillige Tor servere før den når din destination. Disse forbindelser er krypterede, så din internetudbyder eller arbejdsgiver kan heller ikke se hvilke sider du besøger. Tor kan nedsætte hastigheden på browsing, og der kan være visse sider som ikke fungerer.</translation>
 <translation id="520608572871993342">Når du bruger private vinduer, ændrer det kun hvad Brave gør på din enhed — det ændrer ikke andres adfærd. Tor skjuler din IP-adresse for de sider du besøger og skjuler siderne du besøger for din ISP eller din arbejdsgiver. Åbn et privat vindue med Tor fra menuen eller med {{ key }}.</translation>
 <translation id="6975708438781948564">Få mere at vide om Tor i Brave</translation>
+<translation id="4272382368346338917">Yderligere filtre</translation>
+<translation id="8949292968394988358">Advarsel: At slå for mange filtre til, vil gøre ydeevnen dårligere</translation>
 <translation id="1869685517625607604">Totale Rekamer Blokeret:</translation>
 <translation id="4673764878177947707">Tilpassede filtre</translation>
 <translation id="8803682034537762884">En per linje, et filter er beskredet i Adblock Plus' filtersyntax</translation>
@@ -54,7 +56,6 @@
 <translation id="5633840519079139680">Brave gør det nemt at indrette omgivelserne, som du kender dem, ved at importere bogmærker og indstillinger fra andre browsere, der er installeret på din computer.</translation>
 <translation id="8275038454117074363">Importér</translation>
 <translation id="5540323067375019678">Administrér dine beskyttelser</translation>
-<translation id="4755560456428781763">Brave-beskyttelser sikrer dig mod uønskede annoncer og sporingsværktøjer, mens du browser. Hvis du støder på et problem under et besøg på en bestemt side, kan du justere dit beskyttelsesniveau i beskyttelsespanelet i værktøjslinjen.</translation>
 <translation id="3366308997091824722">Beskyttelsesindstillinger</translation>
 <translation id="3884404068544758153">Skift søgemaskine</translation>
 <translation id="438216590634144114">Vælg den søgemaskine du ønsker at bruge som standard, når du søger på nettet fra adressebjælken.</translation>
@@ -68,6 +69,7 @@
 <translation id="5946611334574299206">Optjen tokens ved at se annoncer i Brave. Annoncer præsenteres på baggrund af dine interesser, udledt af din browseradfærd. Ingen personlige data eller browserhistorik forlader nogensinde din browser.</translation>
 <translation id="6112368337882254910">Auto-Bidrag</translation>
 <translation id="1527222983464337010">En automatisk måde hvorpå du kan støtte udgivere og indholdsskabere. Opret en måndelig betaling og brows normalt. Siderne du besøger modtager dine bidrag automatisk, baseret på din opmærksomhed som den bliver målt af Brave.</translation>
+<translation id="7178655681744815321">Estimeret indtjening i denne periode</translation>
 <translation id="8157096848242649588">Betalingsdato</translation>
 <translation id="5208388044986603165">Annonceunderretninger modtaget</translation>
 <translation id="4229016885653790965">Beklager! Annoncer er ikke tilgængelige i din region endnu.</translation>
@@ -106,7 +108,7 @@
 <translation id="1199044745726588100">5 sekunder</translation>
 <translation id="4045581694057451126">8 sekunder</translation>
 <translation id="8610523985422563960">1 minut</translation>
-<translation id="7521774480426463961">Aktiver evne til at tippe dig om opslag du ‘Liker8217;</translation>
+<translation id="9031738692126722094">Slå drikkepenge på indholdsniveau til på disse sider</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Donér på stedet, når du finder perler.</translation>
@@ -128,6 +130,7 @@
 <translation id="7797604753681168055">Gendan nu!</translation>
 <translation id="1184075897575325927">Beklager, det ser ud til, at dette tilskud allerede er taget.</translation>
 <translation id="282693359045252357">Næste månedlige drikkepengedato</translation>
+<translation id="6231182869178328516">Jeg har lige givet drikkepenge <ph name="NAME">$1<ex>user</ex></ph> ved hjælp af Brave Browser. Se den på https://brave.com/tips.</translation>
 <translation id="7422678632904904341">Beløb:</translation>
 <translation id="5923611424721173182">Nuværende afstemning</translation>
 <translation id="5457113250005438886">Ugyldig</translation>
@@ -150,6 +153,9 @@
 <translation id="4235360514405112390">Gyldig</translation>
 <translation id="2700943637868737038">Visnings-ID:</translation>
 <translation id="3576689061489548788">Betalings-ID for Wallet:</translation>
+<translation id="758790787422117549">Person-ID</translation>
+<translation id="2223892939866251845">Bruger-ID</translation>
+<translation id="1642443162274867084">Pung oprettet</translation>
 <translation id="5094577350232361255">om</translation>
 <translation id="4918086044614829423">Accepter</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave er et registreret varemærke af Brave Software. Sidenavne kan være varemærker eller registrerede varemærker af sideejeren.</translation>
@@ -165,11 +171,16 @@
 <translation id="3671566813999349838">Beløb</translation>
 <translation id="3819257035322786455">Sikkerhedskopi</translation>
 <translation id="1312977698678162065">Få betalt for at se relevante annoncer som respekterer dit privatliv.</translation>
+<translation id="7655723274266132226">Nu kan du tjene ved at se reklamer.</translation>
+<translation id="2975780980638932742">Brave Ads er nu på markedet!</translation>
 <translation id="3361548743396744457">Støt dine favoritsider ved bare at browse – eller donér til en side når du har lyst.</translation>
 <translation id="3333887201479867589">Brave Belønninger</translation>
 <translation id="4493850495402472953">og</translation>
 <translation id="8804164990146287819">Privatlivspolitik</translation>
 <translation id="4281844954008187215">Servicevilkår</translation>
+<translation id="4405997465645469914">Ved at slå Brave Rewards til, erklærer du at du har læst og accepterer</translation>
+<translation id="8819542691525488940">Ved at klikke på ‘Ja, jeg er med!’, erklærer du at du har læst og accepterer</translation>
+<translation id="8071424789698327147">Ved at klikke på ‘Ja, jeg er med!’, erklærer du at du har læst og accepterer</translation>
 <translation id="7530570094705720669">Opretter tegnebog</translation>
 <translation id="2105596359439030979">Din opmærksomhed er værdifuld. Tjen ved at se annoncer der respekterer dit privatliv, og giv det videre for at støtte de indholdsskabere du elsker.</translation>
 <translation id="516395624550019162">Ja, jeg er klar!</translation>
@@ -206,7 +217,6 @@
 <translation id="7277134233385925078">Fastsæt månedlig donation</translation>
 <translation id="8003573781961874199">Hent som PDF</translation>
 <translation id="298067735430872465">Indtjening fra reklamer</translation>
-<translation id="3521361150443442734">Dine annonceindtægter er tilgængelige.</translation>
 <translation id="8764029012618014430">Aktiver Tips</translation>
 <translation id="3412655388715513818">Ekskluder denne side</translation>
 <translation id="418343137736963579">Totale antal sider du har udeladt fra Automatisk Bidrage</translation>
@@ -272,8 +282,8 @@
 <translation id="3626186271103896082">Sikkerhedskopier din tegnebog</translation>
 <translation id="5717619667204259673">Bevar gendannelsesnøglen et sikkert sted.</translation>
 <translation id="4699702339303280827">Du kan altid bruge denne nøgle til at få din tegnebog tilbage, hvis der sker noget med din browser eller computer. Men sørg for at beskytte den — enhver, som finder denne nøgle, kan stjæle din tegnebog. Det’er nok sikrest at skrive den ned på et stykke papir, eller et andet sted hvor du opbevarer vigtige oplysninger.</translation>
-<translation id="5759071143806884916">Du kan støtte denne side ved at sende et tip. Det’er en måde at takke dem på for at skabe godt indhold. Godkendte indholdsskabere bliver betalt for deres tips i løbet af den første uge i hver kalendermåned.</translation>
-<translation id="1704859330137112950">Hvis du vil, kan du planlægge månedlige donationer for at støtte denne side på en kontinuerlig basis.</translation>
+<translation id="7354412786785889047">Du kan støtte denne indholdsskaber ved at sende drikkepenge. Det er en måde, hvorpå du kan takke dem for at skabe godt indhold. Bekræftede skabere bliver betalt for deres drikkepenge i den første måned af hver kalendermåned.</translation>
+<translation id="3475063317678050010">Hvis du ønsker det, kan du planlægge månedlige drikkepenge, for at støtte denne skaber på en regelmæssig basis.</translation>
 <translation id="3074127054582480056">Bemærk</translation>
 <translation id="822513417008209372">Du støtter i øjeblikket</translation>
 <translation id="5010112177773747965">uden dit samtykke.</translation>
@@ -302,6 +312,7 @@
 <translation id="3536298624341433814">Send mine Drikkepenge</translation>
 <translation id="1792148354504719133">side</translation>
 <translation id="5944430251223015324">sider</translation>
+<translation id="1834493631938747505">Fortæl os om dine drikkepenge.</translation>
 <translation id="8826007068782654809">Tak</translation>
 <translation id="6665366815203065060">Du har lige sendt drikkepenge til:</translation>
 <translation id="6432779622695508363">Tip om like</translation>
@@ -312,8 +323,12 @@
 <translation id="4914597931214386232">Token-Tilskud Taget</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transaktioner</translation>
+<translation id="3124090095880236567">Slå reklamer til</translation>
 <translation id="8987812599455325915">Dette aktiverer både reklamer og automatiske bidrag. Du kan når som helst slå dem til eller fra separat.</translation>
 <translation id="1485484147452131556">Aktiver belønninger</translation>
+<translation id="3983104749597726322">Tweet</translation>
+<translation id="5636843789453098076">Giv drikkepenge til @{{ user }} for deres tweet:</translation>
+<translation id="4242384385082203046">Giv drikkepenge til @{{ user }} for deres tweet!</translation>
 <translation id="2448312741937722512">Type</translation>
 <translation id="8772672608371898774">Brave-godkendt udgiver</translation>
 <translation id="5050370287908180130">Se den månedlige opgørelse for detaljer</translation>
@@ -336,6 +351,15 @@
 <translation id="6727483290601442544">Vis detaljer</translation>
 <translation id="1988679729106502285">NOTE:</translation>
 <translation id="5815103311506128988">Denne skaber har endnu ikke skrevet sig op til at modtage bidrag fra Brave-brugere. Din browser vil fortsat forsøge at bidrage indtil de godkender, eller indtil 90 dage er gået.</translation>
+<translation id="4292832015778676417">tjent på reklamer</translation>
+<translation id="3197752845651180812">Afventende bidrag</translation>
+<translation id="3164105678355419142">Tilbagevendende drikkepenge</translation>
+<translation id="2927922949538312364">Engangsdrikkepenge</translation>
+<translation id="6964891561514920613">Vis alle afventende bidragere</translation>
+<translation id="4346944508027912677">Afventer indtil</translation>
+<translation id="7410549756000115387">Ingen afventende bidrag…</translation>
+<translation id="1963227389609234879">Slet alle</translation>
+<translation id="923467487918828349">Vis alle</translation>
 <translation id="1181037720776840403">Fjern</translation>
 <translation id="7885157704277298658">Kopieret!</translation>
 <translation id="5379640681913450928">Ordoptælling:</translation>
@@ -353,6 +377,7 @@
 <translation id="1061533051865606843">Tilføj Ny Enhed</translation>
 <translation id="8780295742023331191">Se Synkroniseringskode</translation>
 <translation id="1755198127524719638">Synkroniseringsindstillinger</translation>
+<translation id="7558480201297099157">Administrer hvilke oplysninger du vil synkronisere mellem enheder. Disse indstillinger påvirker kun denne enhed.</translation>
 <translation id="8820817407110198400">Bogmærker</translation>
 <translation id="5591129654353352557">Gemte sideindstillinger</translation>
 <translation id="7859704718976024901">Browserhistorik</translation>
@@ -380,6 +405,7 @@
 <translation id="5086223971958279691">Kode for Synkroniseringskæde</translation>
 <translation id="2899261497479389619">Gå til Brave Synkronisering i din målcomputers indstillinger og klik på knappen</translation>
 <translation id="4827439149833241990">“Jeg har en Synkroniseringskode”.</translation>
+<translation id="24067401253841795">Indtast kædekodeordene for synkronisering vist nedenfor. Behandl denne kode som en adgangskode. Hvis nogen får fingre i den, kan de læse og ændre dine synkroniserede data.</translation>
 <translation id="8914601399214979966">Brug mit kamera i stedet</translation>
 <translation id="3034163433136515805">Se QR-Kode</translation>
 <translation id="5093410893656857925">Vælg Enhedstype</translation>
@@ -392,4 +418,6 @@
 <translation id="8349682220522608879">Tilføj venligst en synkroniseringskode.</translation>
 <translation id="1468095392829989299">Kunne ikke skabe forbindelse til synkroniseringsservere</translation>
 <translation id="1399673826422570698">Du har muligvis netværksproblemer, eller også er der et problem med synkroniseringsserverne.</translation>
+<translation id="5286379413446391050">Kunne ikke forbinde til synkroniseringservere</translation>
+<translation id="2410472020237369473">Din computers ur kan være indstillet til den forkerte tid eller tidszone. Tjek dine urindstillinger.</translation>
 </translationbundle>

@@ -30,7 +30,6 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4150684676757176434">Jatka automaattisen toiston estoa</translation>
 <translation id="7543906827780734027">Brave ei ole tarkastanut tätä laajennusta vielä – se saattaa olla haitallinen. Lisää "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" silti?</translation>
 <translation id="2044383478723007273">Brave -värit</translation>
-<translation id="5341901626640816374">Käytä laajennettua sijaintipalkkia</translation>
 <translation id="6123134130710658846">Piilota Brave Rewards -painike</translation>
 <translation id="7635711399568194460">Piilottaa Brave Rewards -painikkeen sijaintipalkissa, kun Brave Rewards ei ole sallittu</translation>
 <translation id="7965178729203412357">Uusi Tor-identiteetti</translation>
@@ -47,13 +46,20 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="2515126961943087659">Bat-mainospalvelu</translation>
 <translation id="7924918279836988121">BAT-tilikirjapalvelu</translation>
 <translation id="4472575034687746823">Aloita</translation>
+<translation id="3400357268283240774">Lisäasetukset</translation>
 <translation id="6303294677342628402">Shields</translation>
+<translation id="768979911142179781">Oletusarvot</translation>
+<translation id="5989930075012659993">Nykyiset sivukohtaiset asetuksesi säilytetään.</translation>
+<translation id="9185018653595759199">Sosiaalisen median esto</translation>
+<translation id="6894114137169961038">Mainosten hallinnointi</translation>
+<translation id="1096802265930928584">Evästeiden hallinnointi</translation>
 <translation id="8919235146866304148">Tunnistesuojaus</translation>
 <translation id="520895744850022668">HTTPS Everywhere</translation>
 <translation id="5259716416204774556">Komentosarjojen esto</translation>
 <translation id="7498695072878479744">Salli Googlen sisäänkirjautumispainikkeet kolmannen osapuolen sivuilla</translation>
 <translation id="863171915776379000">Salli Facebookin sisäänkirjautumiset ja upotetut julkaisut</translation>
 <translation id="5165042248369837294">Salli Twitterin upotetut tviitit</translation>
+<translation id="958971637207126733">Salli LinkedIn-upotuksen sisältävät julkaisut</translation>
 <translation id="6067014455220527258">Estä mainokset</translation>
 <translation id="6985711843506827936">Salli mainokset ja seuranta</translation>
 <translation id="6132506775968708399">Estä kolmannen osapuolen evästeet</translation>
@@ -73,11 +79,14 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="2414886740292270097">Pimeä</translation>
 <translation id="1360441190790440400">Sama kuin Linux</translation>
 <translation id="1336940801687497203">Sama kuin Windows</translation>
+<translation id="8721331068159819483">Sama kuin macOS</translation>
 <translation id="6786747875388722282">Laajennukset</translation>
 <translation id="2896916411183256228">Käyttää WebTorrentia torrent-tiedostojen näyttämiseen suoraan selaimessa. Tukee torrent-tiedostoja sekä magneettilinkkejä.</translation>
 <translation id="6554397389149987360">Käytä Hangouts-komponenttia ruudunjaon sekä muiden ominaisuuksien käytön mahdollistamiseen selaimessa.</translation>
+<translation id="4154389611571860454">Käyttää IPFS-kumppanilaajennusta IPFS:n tukemiseen selaimella.</translation>
 <translation id="8137559199583651773">Hallinnoi laajennuksia</translation>
 <translation id="4928988318462976765">Verkkolaajennusten myymälä</translation>
 <translation id="9181207987584064303">Näytä verkkolaajennusmyymälässä</translation>
 <translation id="4846154056248462491">Poistuessa</translation>
+<translation id="5057399635433117814">Haluatko kääntää tämän sivun? Tämä komento lähettää kaiken tämän sivun tekstin Microsoftille käännettäväksi.</translation>
 </translationbundle>

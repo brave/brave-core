@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">未找到任何搜索结果</translation>
 <translation id="8967866634928501045">同时按 Alt+Shift+A 即可显示</translation>
 <translation id="998747458861718449">检查(&amp;N)</translation>
+<translation id="4428301600092811022">要从 Brave Software 获取图片说明吗？</translation>
 <translation id="741204030948306876">立即启用</translation>
 <translation id="780301667611848630">不用了，谢谢</translation>
 <translation id="3943582379552582368">返回(&amp;B)</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">帮助中心(&amp;E)</translation>
 <translation id="7324297612904500502">Brave（测试版）论坛</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">修改搜索引擎(&amp;E)...</translation>
 <translation id="5702898740348134351">修改搜索引擎(&amp;E)...</translation>
 <translation id="2454247629720664989">关键字</translation>
@@ -1302,8 +1304,10 @@
 <translation id="6207200176136643843">重置为默认缩放级别</translation>
 <translation id="4953689047182316270">对无障碍事件做出响应</translation>
 <translation id="4677585247300749148"><ph name="URL"/> 想对无障碍事件做出响应</translation>
+<translation id="2224471211857467033">无障碍功能事件</translation>
 <translation id="6116338172782435947">查看复制到剪贴板的文字和图片</translation>
 <translation id="3461266716147554923"><ph name="URL"/> 想查看复制到剪贴板的文字和图片</translation>
+<translation id="2586657967955657006">剪贴板</translation>
 <translation id="4838836835474292213">已获准读取剪贴板</translation>
 <translation id="1415708812149920388">已被禁止读取剪贴板</translation>
 <translation id="2365507699358342471">此页面可以查看复制到剪贴板的文字和图片。</translation>
@@ -1730,6 +1734,7 @@
 <translation id="7547317915858803630">警告：您的 <ph name="PRODUCT_NAME"/>设置存储在网络驱动器上。这可能会导致速度变慢、崩溃，甚至数据丢失。</translation>
 <translation id="3122496702278727796">无法创建数据目录</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> 想下载多个文件</translation>
+<translation id="7514365320538308">下载</translation>
 <translation id="691024665142758461">下载多个文件</translation>
 <translation id="7004499039102548441">最近打开的标签页</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 个标签页}other{# 个标签页}}</translation>
@@ -1819,6 +1824,7 @@
 <translation id="6156960295318603523">语言设置</translation>
 <translation id="7931318309563332511">未知</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> 想向您发送通知</translation>
+<translation id="2482878487686419369">通知</translation>
 <translation id="7221855153210829124">显示通知</translation>
 <translation id="8393700583063109961">发送消息</translation>
 <translation id="6701535245008341853">无法获取个人资料。</translation>
@@ -1920,6 +1926,7 @@
 <translation id="1753905327828125965">常去网站</translation>
 <translation id="5612720917913232150"><ph name="URL"/> 想使用您计算机的位置信息</translation>
 <translation id="4733082559415072992"><ph name="URL"/> 想使用您设备的位置信息</translation>
+<translation id="5646376287012673985">位置</translation>
 <translation id="3016780570757425217">获取您的位置</translation>
 <translation id="4068506536726151626">此网页包含来自以下网站的元素，这些网站正在追踪您的位置：</translation>
 <translation id="4920887663447894854">系统已阻止以下网站跟踪您在此网页上的位置：</translation>
@@ -1929,6 +1936,7 @@
 <translation id="3528033729920178817">此网页正在跟踪您的位置。</translation>
 <translation id="1510030919967934016">系统已阻止此网页跟踪您的位置。</translation>
 <translation id="6910240653697687763"><ph name="URL"/> 想完全控制您的 MIDI 设备</translation>
+<translation id="1834583737373831634">MIDI 设备</translation>
 <translation id="8606726445206553943">使用您的 MIDI 设备</translation>
 <translation id="1849186935225320012">此页面可以完全控制 MIDI 设备。</translation>
 <translation id="2986010903908656993">已禁止该网页完全控制 MIDI 设备。</translation>
@@ -1962,6 +1970,7 @@
 <translation id="8282947398454257691">获取您的唯一设备标识符</translation>
 <translation id="8329449853370113380"><ph name="URL"/> 想播放受保护的内容。Brave Software 将对您的设备进行身份验证。</translation>
 <translation id="2650609753175229582"><ph name="URL"/> 想播放受保护内容。Brave Software 将会验证您的设备身份，而且此网站可能会查看您的设备身份。</translation>
+<translation id="1746402432151920942">受保护的媒体标识符</translation>
 <translation id="1322046419516468189">您可以查看和管理 <ph name="SAVED_PASSWORDS_STORE"/>中保存的密码</translation>
 <translation id="5297082477358294722">密码已保存。您可以查看和管理 <ph name="SAVED_PASSWORDS_STORE"/>中保存的密码。</translation>
 <translation id="5713644099811900409">Brave Software 帐号</translation>
@@ -2021,18 +2030,24 @@
 <translation id="3532844647053365774"><ph name="HOST"/> 想使用您的麦克风</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> 想使用您的摄像头</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> 想共享您的屏幕</translation>
+<translation id="4275663329226226506">媒体</translation>
 <translation id="8962918469425892674">此网站正在使用动态传感器或光传感器。</translation>
+<translation id="4532646538815530781">此网站正在使用动态传感器。</translation>
 <translation id="6057381398996433816">此网站已被禁止使用动态传感器和光传感器。</translation>
+<translation id="7707108266051544351">此网站已被禁止使用动态传感器。</translation>
 <translation id="1151917987301063366">始终允许 <ph name="HOST"/> 使用传感器</translation>
 <translation id="7377451353532943397">继续禁止使用传感器</translation>
 <translation id="6878422606530379992">已获准使用传感器</translation>
 <translation id="4031527940632463547">已禁止使用传感器</translation>
 <translation id="4559617833001311418">此网站正在使用您的动态传感器或光传感器。</translation>
+<translation id="5623282979409330487">此网站正在使用您的动态传感器。</translation>
 <translation id="2309620859903500144">此网站已被禁止使用您的动态传感器或光传感器。</translation>
+<translation id="6541638731489116978">此网站已被禁止使用您的动态传感器。</translation>
 <translation id="8645354835496065562">继续允许使用传感器</translation>
 <translation id="2903882649406874750">始终禁止 <ph name="HOST"/> 使用传感器</translation>
 <translation id="3194737229810486521"><ph name="URL"/> 想在您的设备上永久存储数据</translation>
 <translation id="1030706264415084469"><ph name="URL"/> 想在您的设备上永久存储大量数据</translation>
+<translation id="885701979325669005">存储数据</translation>
 <translation id="1712552549805331520"><ph name="URL"/> 想在您的本地计算机上永久存储数据</translation>
 <translation id="1997484222658892567"><ph name="URL"/> 想在您的本地计算机上永久存储大量数据</translation>
 <translation id="7648992873808071793">在此设备上存储文件</translation>
@@ -2451,9 +2466,7 @@
 <translation id="702252130983202758">您的应用</translation>
 <translation id="8831664945713891930">打开扩展程序设置</translation>
 <translation id="5138227688689900538">收起</translation>
-<translation id="5646376287012673985">位置</translation>
 <translation id="5270167208902136840">显示另外 <ph name="NUMBER_OF_MORE_APPS"/> 个应用</translation>
-<translation id="2482878487686419369">通知</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> 个应用</translation>
 <translation id="7207631048330366454">搜索应用</translation>
 <translation id="9011424611726486705">打开网站设置</translation>
@@ -2786,6 +2799,7 @@
 <translation id="4305227814872083840">长（2 秒）</translation>
 <translation id="2860150991415616761">非常长（4 秒）</translation>
 <translation id="1217668622537098248">执行完操作后还原到左键点击</translation>
+<translation id="8781470833671194250">点击位置防抖</translation>
 <translation id="3682824389861648626">鼠标移动阈值</translation>
 <translation id="5511379779384092781">特小</translation>
 <translation id="2765217105034171413">小</translation>
@@ -3408,7 +3422,10 @@
 <translation id="9038649477754266430">使用联想查询服务更快速地加载网页</translation>
 <translation id="7981313251711023384">预加载网页，以便实现更快速的浏览和搜索</translation>
 <translation id="2468205691404969808">使用 Cookie 记住您的偏好设置（即使您不访问这些网页）</translation>
+<translation id="3181954750937456830">安全浏览（保护您和您的设备不受危险网站的侵害）</translation>
+<translation id="7315322926489145388">当您面临安全风险时，将您所访问的部分网页的网址发送给 Brave Software</translation>
 <translation id="4991384657077828949">帮助我们改善 Brave 安全性</translation>
+<translation id="1943176487615318915">为了检测危险应用和网站，Brave 会将您所访问的部分网页的网址、有限的系统信息以及部分网页内容发送给 Brave Software</translation>
 <translation id="2875273286298348523">Brave 会将您在浏览器中输入的文字发送给 Brave Software</translation>
 <translation id="9079153198295609735">将使用情况统计信息和崩溃报告自动发送给 Brave Software</translation>
 <translation id="5941220456342415404">自动向 Brave Software 发送诊断数据和使用情况数据</translation>
@@ -3480,7 +3497,6 @@
 <translation id="1919345977826869612">广告</translation>
 <translation id="5649053991847567735">自动下载项</translation>
 <translation id="3744111561329211289">后台同步</translation>
-<translation id="2586657967955657006">剪贴板</translation>
 <translation id="5518219166343146486">当网站想查看复制到剪贴板的文字和图片时询问您</translation>
 <translation id="2089795179672254991">当网站想查看复制到剪贴板的文字和图片时询问您（推荐）</translation>
 <translation id="16815041330799488">不允许网站查看复制到剪贴板的文字和图片</translation>
@@ -3508,6 +3524,7 @@
 <translation id="1128109161498068552">禁止任何网站使用系统专有消息访问 MIDI 设备</translation>
 <translation id="2091887806945687916">声音</translation>
 <translation id="4751476147751820511">动态传感器或光传感器</translation>
+<translation id="1717218214683051432">动态传感器</translation>
 <translation id="6059925163896151826">USB 设备</translation>
 <translation id="8666584013686199826">当网站要访问 USB 设备时询问您</translation>
 <translation id="6291949900244949761">当网站要访问 USB 设备时询问您（推荐）</translation>
@@ -3543,7 +3560,9 @@
 <translation id="1660204651932907780">允许网站播放声音（推荐）</translation>
 <translation id="3600792891314830896">将播放声音的网站静音</translation>
 <translation id="5084230410268011727">允许网站使用动态传感器和光传感器</translation>
+<translation id="489454699928748701">允许网站使用动态传感器</translation>
 <translation id="5047421709274785093">禁止网站使用动态传感器和光传感器</translation>
+<translation id="6396988158856674517">禁止网站使用动态传感器</translation>
 <translation id="2904456025988372123">当网站下载第一个文件后要自动下载更多文件时询问您</translation>
 <translation id="3494769164076977169">当网站下载第一个文件后要自动下载更多文件时询问您（推荐）</translation>
 <translation id="5036662165765606524">禁止任何网站自动下载多个文件</translation>
@@ -4078,6 +4097,7 @@
 <translation id="2785008241190445880">已替换书签</translation>
 <translation id="5468853758063275923">Brave 是您的默认浏览器</translation>
 <translation id="2950533317914339731">为您最喜爱的 Brave Software 应用添加书签</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">地图</translation>
 <translation id="6709133671862442373">资讯</translation>

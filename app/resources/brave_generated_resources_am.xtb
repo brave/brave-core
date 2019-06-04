@@ -30,7 +30,6 @@
 <translation id="4150684676757176434">አውቶለይ መከላከሉን ይቀጥል</translation>
 <translation id="7543906827780734027">ብሬቭ ይህንን ቅጥያ ገና አልገመገመውም - ተንኮል ያዘለ ሊሆን ይችላል፡፡እንደሆነ እንዲሆን "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ልቀጥለው?</translation>
 <translation id="2044383478723007273">የብሬቭ ቀለም</translation>
-<translation id="5341901626640816374">ሰፊ የአካባቢ ባር ይጠቀሙ</translation>
 <translation id="6123134130710658846">የ Brave Rewards መምረጫ ቁልፍ ደብቅ</translation>
 <translation id="7635711399568194460">Brave Rewards  ካልበራ በአድራሻው አሞሌ ላይ ያለው የ Brave Rewards መጫኛ ይደበቃል።</translation>
 <translation id="7965178729203412357">አዲስ ቶር ተለይቷል</translation>
@@ -47,13 +46,20 @@
 <translation id="2515126961943087659">የባት የማስታወቂያ አገልግሎት</translation>
 <translation id="7924918279836988121">የBat Ledger አገልግሎት</translation>
 <translation id="4472575034687746823">ይጀምሩ</translation>
+<translation id="3400357268283240774">ተጨማሪ ቅንብሮች</translation>
 <translation id="6303294677342628402">መከላከያዎች</translation>
+<translation id="768979911142179781">ነባሪ</translation>
+<translation id="5989930075012659993">አሁን ያለው የቅድመ-ጣቢያዎ ቅንጅቶች ይንዳሉ ይቆያሉ።</translation>
+<translation id="9185018653595759199">የማህበራዊ ሚዲያ እገዳ</translation>
+<translation id="6894114137169961038">የማስታወቂያ ቁጥጥር</translation>
+<translation id="1096802265930928584">የኩኪ ቁጥጥር</translation>
 <translation id="8919235146866304148">የጣት አሻራ ጥበቃ</translation>
 <translation id="520895744850022668">HTTPS በሁሉም ቦተታ</translation>
 <translation id="5259716416204774556">ስክሪፕት መከላከል</translation>
 <translation id="7498695072878479744">የ Google መግቢያ መጫኛ ቁልፎችን በሶስተኛ ወገን ጣቢያዎች ላይ ይፍቀዱ።</translation>
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
 <translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
+<translation id="958971637207126733">LinkedIn ያካተታቸውን ልጥፎችን ፍቀድ</translation>
 <translation id="6067014455220527258">ማስታወቅያ ይከላከሉ</translation>
 <translation id="6985711843506827936">ማስታወቅያና መከታተል ይፍቀዱ</translation>
 <translation id="6132506775968708399">የ3ኛ ወገን ኩኪ ይከላከሉ</translation>
@@ -73,11 +79,14 @@
 <translation id="2414886740292270097">ጨለማ</translation>
 <translation id="1360441190790440400">ከ Linux ጋር ተመሳሳይ</translation>
 <translation id="1336940801687497203">ልክ እንደ Windows</translation>
+<translation id="8721331068159819483">ከ macOS ጋር ተመሳሳይ</translation>
 <translation id="6786747875388722282">ቅጥያዎች</translation>
 <translation id="2896916411183256228">WebTorrent ን በመጠቀም በቀጥታ ቶረንቶችን ማሰሻ ላይ ያሳያል። ለቶረንት ፋይሎች እና ማግኔት ሊንኮች ድጋፍ ያደርጋል።</translation>
 <translation id="6554397389149987360">በማሰሻው ላይ የማያ መጋራትን እና ሌሎች ባህሪያትን ለመጠቀም የ Hangouts ክፍሎችን ይጠቀሙ።</translation>
+<translation id="4154389611571860454">በአሳሽ ውስጥ IPFSን ለመደገፍ የ IPFS አጃቢ ቅጥያ ይጠቀማል።</translation>
 <translation id="8137559199583651773">ቅጥያዎችን ያስተዳድሩ</translation>
 <translation id="4928988318462976765">የድረገጽ ተቀጥላ ማከማቻ</translation>
 <translation id="9181207987584064303">የድር ቅጥያዎችን መደብር ውስጥ ይመልከቱ።</translation>
 <translation id="4846154056248462491">ሲወጣ</translation>
+<translation id="5057399635433117814">ይህ ገጽ ይተርጎም? ይሄ ሁሉንም ጽሁፎች ለትርጉም ወደ Microsoft እንዲላኩ ያደርጋቸዋል።</translation>
 </translationbundle>

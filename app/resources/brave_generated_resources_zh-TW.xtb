@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave 廣告阻擋</translation>
 <translation id="6406506848690869874">同步</translation>
+<translation id="8488282162676695335">Brave 錢包</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") 在 Brave 中是不允許的。</translation>
 <translation id="7450557937477381864">關閉 Chrome</translation>
 <translation id="7008934821596358692">關閉所有 Chrome 視窗以完成匯入。</translation>
@@ -30,7 +31,7 @@
 <translation id="4150684676757176434">繼續阻擋自動撥放</translation>
 <translation id="7543906827780734027">Brave還沒有評論過這個延伸──它可能是惡意的。 仍加"<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ？</translation>
 <translation id="2044383478723007273">Brave 顏色</translation>
-<translation id="5341901626640816374">使用寬網址列</translation>
+<translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="6123134130710658846">隱藏 Brave Rewards 按鈕</translation>
 <translation id="7635711399568194460">當 Brave Rewards 未啟用時，在網址列隱藏 Brave Rewards 按鈕</translation>
 <translation id="7965178729203412357">新 Tor 身分</translation>
@@ -38,8 +39,8 @@
 <translation id="5410152065859052603">Tor</translation>
 <translation id="3696187925156352769">打開 Tor 視窗</translation>
 <translation id="1434416574322382019">以 Tor 開啟新私有窗口</translation>
-<translation id="4703780849509456860">使用 Tor 在私有視窗中打開連結</translation>
-<translation id="3488584642074079080">使用 Tor 在私有視窗中打開連結</translation>
+<translation id="4703780849509456860">使用 Tor 在隱私視窗中打開連結</translation>
+<translation id="3488584642074079080">使用 Tor 在隱私視窗中打開連結</translation>
 <translation id="6313675821927505581">新的使用 Tor 的視窗</translation>
 <translation id="2638041073279639246">在使用 Tor 的隱私視窗中開啟連結</translation>
 <translation id="3425600262621021599">在使用 Tor 的 Brave 隱私視窗中開啟連結</translation>
@@ -75,7 +76,7 @@
 <translation id="1822560017823072927">預設公共和隱私介面</translation>
 <translation id="5825943197137337319">僅限預設公用介面</translation>
 <translation id="1689062823386843231">停用非代理 UDP</translation>
-<translation id="6645631466045614531">透過___存取同步</translation>
+<translation id="6645631466045614531">存取同步透過</translation>
 <translation id="1807246157184219062">亮</translation>
 <translation id="2414886740292270097">暗</translation>
 <translation id="1360441190790440400">與 Linux 相同</translation>

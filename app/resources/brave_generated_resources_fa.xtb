@@ -30,7 +30,6 @@
 <translation id="4150684676757176434">پخش خودکار همچنان مسدود شود</translation>
 <translation id="7543906827780734027">Brave هنوز این افزونه را مرور نکرده است - شاید مخرب باشد. درهرصورت "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" افزوده شود؟</translation>
 <translation id="2044383478723007273">رنگ‌های Brave</translation>
-<translation id="5341901626640816374">استفاده از نوار مکان پهن</translation>
 <translation id="6123134130710658846">پنهان کردن دکمه «پاداش‌های Brave»</translation>
 <translation id="7635711399568194460">وقتی «پاداش‌های Brave» فعال نباشد، دکمه «پاداش‌های Brave» را در نوار مکان پنهان می‌کند</translation>
 <translation id="7965178729203412357">هویت تور جدید</translation>
@@ -47,13 +46,20 @@
 <translation id="2515126961943087659">سرویس آگهی‌های Bat</translation>
 <translation id="7924918279836988121">سرویس بت لجر</translation>
 <translation id="4472575034687746823">شروع به کار</translation>
+<translation id="3400357268283240774">تنظیمات بیشتر</translation>
 <translation id="6303294677342628402">سپر ایمنی</translation>
+<translation id="768979911142179781">پیش‌فرض‌ها</translation>
+<translation id="5989930075012659993">تنظیمات مربوط به سایت فعلی شما بازیابی خواهند شد.</translation>
+<translation id="9185018653595759199">مسدود کردن رسانه اجتماعی</translation>
+<translation id="6894114137169961038">کنترل آگهی</translation>
+<translation id="1096802265930928584">کنترل کوکی</translation>
 <translation id="8919235146866304148">محافظت دربرابر انگشت‌نگاری</translation>
 <translation id="520895744850022668">HTTPS در همه جا</translation>
 <translation id="5259716416204774556">مسدود کردن اسکریپت</translation>
 <translation id="7498695072878479744">مجاز کردن دکمه‌های ورود به سیستم Google در سایت‌های شخص ثالث</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
+<translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
 <translation id="6067014455220527258">مسدود کردن آگهی‌ها</translation>
 <translation id="6985711843506827936">اجازه دادن به آگهی و ردیابی</translation>
 <translation id="6132506775968708399">مسدود کردن کوکی‌های شخص ثالث</translation>
@@ -73,11 +79,14 @@
 <translation id="2414886740292270097">تاریک</translation>
 <translation id="1360441190790440400">مشابه Linux</translation>
 <translation id="1336940801687497203">مشابه Windows</translation>
+<translation id="8721331068159819483">مشابه macOS</translation>
 <translation id="6786747875388722282">افزونه‌ها</translation>
 <translation id="2896916411183256228">از WebTorrent برای نمایش مستقیم تورنت‌ها در مرورگر استفاده می‌کند. از فایل‌های تورنت و پیوندهای آهنربایی پشتیبانی می‌کند.</translation>
 <translation id="6554397389149987360">از مؤلفه‌های Hangouts برای فعال کردن اشتراک‌گذاری صفحه و سایر ویژگی‌ها در مرورگر استفاده می‌کند.</translation>
+<translation id="4154389611571860454">برای پشتیبانی از IPFS در مرورگر، از افزونه همراه IPFS استفاده می‌کند.</translation>
 <translation id="8137559199583651773">مدیریت افزونه‌ها</translation>
 <translation id="4928988318462976765">فروشگاه افزونه‌های وب</translation>
 <translation id="9181207987584064303">مشاهده در «فروشگاه افزونه‌های وب»</translation>
 <translation id="4846154056248462491">در برگه خروج</translation>
+<translation id="5057399635433117814">این صفحه ترجمه شود؟ با این کار کل نوشتار موجود در این صفحه برای ترجمه به Microsoft ارسال خواهد شد.</translation>
 </translationbundle>
