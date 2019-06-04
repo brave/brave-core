@@ -181,9 +181,9 @@ void NodeHTMLElement::RemoveChildNode(NodeHTML* const child_node) {
 
 GraphMLXMLList NodeHTMLElement::GraphMLAttributes() const {
   GraphMLXMLList attrs = NodeHTML::GraphMLAttributes();
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefNodeType)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
       ->ToValue("html node"));
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefNodeTag)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeTag)
       ->ToValue(TagName()));
   return attrs;
 }

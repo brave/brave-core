@@ -61,7 +61,7 @@ GraphMLXML EdgeHTML::GetGraphMLTag() const {
 
 GraphMLXMLList EdgeHTML::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
       ->ToValue("structure")
   };
 }

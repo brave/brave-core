@@ -32,7 +32,7 @@ ItemName EdgeStorageRead::GetItemName() const {
 GraphMLXMLList EdgeStorageRead::GraphMLAttributes() const {
   GraphMLXMLList items = EdgeStorage::GraphMLAttributes();
   items.push_back(
-    graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)->ToValue("read"));
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)->ToValue("read"));
   return items;
 }
 

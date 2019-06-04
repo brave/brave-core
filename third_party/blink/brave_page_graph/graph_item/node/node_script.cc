@@ -60,15 +60,15 @@ string NodeScript::GetUrl() const {
 
 GraphMLXMLList NodeScript::GraphMLAttributes() const {
   GraphMLXMLList attrs;
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefNodeType)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
       ->ToValue("script"));
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefScriptId)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefScriptId)
       ->ToValue(script_id_));
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefScriptType)
-      ->ToValue(script_type_to_string(type_)));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefScriptType)
+      ->ToValue(ScriptTypeToString(type_)));
 
   if (IsInline() == false) {
-    attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefUrl)
+    attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefUrl)
       ->ToValue(GetUrl()));
   }
 
@@ -78,7 +78,7 @@ GraphMLXMLList NodeScript::GraphMLAttributes() const {
 ItemDesc NodeScript::GetDescBody() const {
   return GetItemName() +
     " [ScriptId:" + to_string(script_id_) +
-    ", Type:"  + script_type_to_string(type_) + "]"; 
+    ", Type:"  + ScriptTypeToString(type_) + "]"; 
 }
 
 }  // namespace brave_page_graph

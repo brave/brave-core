@@ -60,11 +60,11 @@ ItemDesc EdgeCall::GetDescBody() const {
 
 GraphMLXMLList EdgeCall::GraphMLAttributes() const {
   GraphMLXMLList attrs;
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
       ->ToValue("call"));
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefMethodName)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefMethodName)
       ->ToValue(method_));
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefCallArgs)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefCallArgs)
       ->ToValue(GetArgumentsString()));
   return attrs;
 }

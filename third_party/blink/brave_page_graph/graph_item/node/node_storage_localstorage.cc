@@ -25,7 +25,7 @@ ItemName NodeStorageLocalStorage::GetItemName() const {
 
 GraphMLXMLList NodeStorageLocalStorage::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefNodeType)
+    GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
       ->ToValue("local storage")
   };
 }

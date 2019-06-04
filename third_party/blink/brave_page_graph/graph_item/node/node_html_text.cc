@@ -40,9 +40,9 @@ const string& NodeHTMLText::Text() const {
 
 GraphMLXMLList NodeHTMLText::GraphMLAttributes() const {
   GraphMLXMLList attrs = NodeHTML::GraphMLAttributes();
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefNodeType)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
       ->ToValue("text node"));
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefNodeText)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeText)
       ->ToValue(Text()));
   return attrs;
 }

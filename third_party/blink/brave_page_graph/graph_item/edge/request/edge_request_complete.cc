@@ -37,13 +37,13 @@ blink::ResourceType EdgeRequestComplete::GetResourceType() const {
 
 ItemDesc EdgeRequestComplete::GetDescBody() const {
   return GetItemName()
-    + "[type: " + resource_type_to_string(resource_type_) + "]";
+    + "[type: " + ResourceTypeToString(resource_type_) + "]";
 }
 
 GraphMLXMLList EdgeRequestComplete::GraphMLAttributes() const {
   GraphMLXMLList attrs = EdgeRequest::GraphMLAttributes();
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefResourceType)
-    ->ToValue(resource_type_to_string(resource_type_)));
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefResourceType)
+    ->ToValue(ResourceTypeToString(resource_type_)));
   return attrs;
 }
 

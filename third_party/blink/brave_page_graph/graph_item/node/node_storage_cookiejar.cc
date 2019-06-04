@@ -25,7 +25,7 @@ ItemName NodeStorageCookieJar::GetItemName() const {
 
 GraphMLXMLList NodeStorageCookieJar::GraphMLAttributes() const {
   return {
-    graphml_attr_def_for_type(kGraphMLAttrDefNodeType)->ToValue("cookie jar")
+    GraphMLAttrDefForType(kGraphMLAttrDefNodeType)->ToValue("cookie jar")
   };
 }
 

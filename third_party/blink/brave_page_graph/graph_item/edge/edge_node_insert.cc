@@ -50,16 +50,16 @@ ItemDesc EdgeNodeInsert::GetDescBody() const {
 
 GraphMLXMLList EdgeNodeInsert::GraphMLAttributes() const {
   GraphMLXMLList attrs; {
-  attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefEdgeType)
+  attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)
       ->ToValue("insert"));
 
   if (parent_id_) {
-    attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefParentNodeId)
+    attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefParentNodeId)
         ->ToValue(parent_id_));
   }
 
   if (prior_sibling_id_)
-    attrs.push_back(graphml_attr_def_for_type(kGraphMLAttrDefBeforeNodeId)
+    attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefBeforeNodeId)
         ->ToValue(prior_sibling_id_));
   }
 

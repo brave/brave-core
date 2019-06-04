@@ -17,6 +17,8 @@ source_set("brave_page_graph") {
 
   if (brave_page_graph_enabled) {
     sources = [
+      "dispatchers.cc",
+      "dispatchers.h",
       "graphml.cc",
       "graphml.h",
       "logging.h",
@@ -108,8 +110,6 @@ source_set("brave_page_graph") {
       "script_tracker.h",
       "types.cc",
       "types.h",
-      "dispatcher.cc",
-      "dispatcher.h",
     ]
   }
 }
