@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Brave verifierad utgivare",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "Brave Verified Creator",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "Observation",
@@ -164,7 +164,7 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "Nu kan du skapa förtjänst genom att titta på annonser.",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
@@ -298,7 +298,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "Refresh Status",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +354,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Dina annonsintäkter är tillgängliga. ",
+    "message": "Your earnings from ads are available.",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,7 +390,7 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "Din månadsvisa dricks har behandlats!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
@@ -398,7 +398,7 @@
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "Genom att klicka på 'Gå med i Rewards', intygar du att du har läst och godkänner ",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -410,7 +410,15 @@
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "förtjänst från annonser",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "Ge dricks till denna tweet",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "Donation",
+    "description": "Icon label for Twitter tips"
   }
 }

@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Søket ga ingen treff</translation>
 <translation id="8967866634928501045">Trykk på Alt + Shift + A for å vise</translation>
 <translation id="998747458861718449">I&amp;nspiser</translation>
+<translation id="4428301600092811022">Vil du få bildebeskrivelser fra Brave Software?</translation>
 <translation id="741204030948306876">Ja, jeg er med</translation>
 <translation id="780301667611848630">Nei takk</translation>
 <translation id="3943582379552582368">Til&amp;bake</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">&amp;Brukerstøtte</translation>
 <translation id="7324297612904500502">Forumet for betaversjoner</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">R&amp;ediger søkemotorer...</translation>
 <translation id="5702898740348134351">R&amp;ediger søkemotorer</translation>
 <translation id="2454247629720664989">Søkeord</translation>
@@ -1227,6 +1229,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="5867841422488265304">Skriv inn søkeord eller en nettadresse</translation>
 <translation id="2129873093718581193">Søk på Brave Software, eller skriv inn en nettadresse</translation>
 <translation id="6363797201514053536">Søk i Brave Software eller skriv inn en nettadresse</translation>
+<translation id="4888839742663123585">Søk på Brave Software</translation>
 <translation id="6078323886959318429">Legg til snarvei</translation>
 <translation id="6324916366299863871">Endre snarvei</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1301,8 +1304,10 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="6207200176136643843">Tilbakestill til standard zoomnivå</translation>
 <translation id="4953689047182316270">Svar på tilgjengelighetshendelser</translation>
 <translation id="4677585247300749148"><ph name="URL"/> ber om å svare på tilgjengelighetshendelser</translation>
+<translation id="2224471211857467033">Tilgjengelighetshendelser</translation>
 <translation id="6116338172782435947">Se tekst og bilder som er kopiert til utklippstavlen</translation>
 <translation id="3461266716147554923"><ph name="URL"/> ber om å se tekst og bilder som er kopiert til utklippstavlen</translation>
+<translation id="2586657967955657006">Utklippstavle</translation>
 <translation id="4838836835474292213">Lesetilgang til utklippstavlen er tillatt</translation>
 <translation id="1415708812149920388">Lesetilgang til utklippstavlen er avvist</translation>
 <translation id="2365507699358342471">Dette nettstedet kan se tekst og bilder som er kopiert til utklippstavlen.</translation>
@@ -1728,6 +1733,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="7547317915858803630">Advarsel: <ph name="PRODUCT_NAME"/>-innstillingene dine lagres på en nettverksdisk. Dette kan forårsake forsinkelser, krasjer og til og med tap av data.</translation>
 <translation id="3122496702278727796">Kan ikke opprette datakatalog</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> ber om å laste ned flere filer</translation>
+<translation id="7514365320538308">Last ned</translation>
 <translation id="691024665142758461">Last ned flere filer.</translation>
 <translation id="7004499039102548441">Nylige faner</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 fane}other{# faner}}</translation>
@@ -1819,6 +1825,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="6156960295318603523">Språkinnstillinger</translation>
 <translation id="7931318309563332511">Ukjent</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> vil sende deg varsler</translation>
+<translation id="2482878487686419369">Varsler</translation>
 <translation id="7221855153210829124">Vis varsler</translation>
 <translation id="8393700583063109961">Send melding</translation>
 <translation id="6701535245008341853">Kan ikke hente profil.</translation>
@@ -1920,6 +1927,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="1753905327828125965">Mest besøkt</translation>
 <translation id="5612720917913232150"><ph name="URL"/> ber om å bruke posisjonen til enheten din</translation>
 <translation id="4733082559415072992"><ph name="URL"/> ber om å bruke posisjonen til enheten din</translation>
+<translation id="5646376287012673985">Sted</translation>
 <translation id="3016780570757425217">vite hvor du er</translation>
 <translation id="4068506536726151626">Denne siden inneholder elementer fra følgende nettsteder som sporer posisjonen din:</translation>
 <translation id="4920887663447894854">Følgende nettsteder har blitt nektet tillatelse til å spore posisjonen din på siden:</translation>
@@ -1929,6 +1937,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="3528033729920178817">Denne siden sporer posisjonen din.</translation>
 <translation id="1510030919967934016">Denne siden har blitt nektet tillatelse til å spore posisjonen din.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> ber om full kontroll over MIDI-enhetene dine</translation>
+<translation id="1834583737373831634">MIDI-enheter</translation>
 <translation id="8606726445206553943">bruke MIDI-enhetene dine</translation>
 <translation id="1849186935225320012">Denne siden har full kontroll over MIDI-enheter.</translation>
 <translation id="2986010903908656993">Full kontroll over MIDI-enheter er blokkert for denne siden.</translation>
@@ -1962,6 +1971,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="8282947398454257691">få kjennskap til den unike enhetsidentifikatoren</translation>
 <translation id="8329449853370113380"><ph name="URL"/> vil spille av beskyttet innhold. Identiteten til enheten din blir bekreftet av Brave Software.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> ber om tillatelse til å spille beskyttet innhold. Identiteten til enheten din bekreftes av Brave Software og kan bli gjort tilgjengelig for dette nettstedet.</translation>
+<translation id="1746402432151920942">Beskyttet medieidentifikator</translation>
 <translation id="1322046419516468189">Se og administrer lagrede passord i <ph name="SAVED_PASSWORDS_STORE"/> din</translation>
 <translation id="5297082477358294722">Passordet er lagret. Se og administrer lagrede passord på <ph name="SAVED_PASSWORDS_STORE"/> din.</translation>
 <translation id="5713644099811900409">Brave Software-konto</translation>
@@ -2021,18 +2031,24 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="3532844647053365774"><ph name="HOST"/> ber om å bruke mikrofonen din</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> ber om å bruke kameraet ditt</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> ber om å dele skjermen din</translation>
+<translation id="4275663329226226506">Medier</translation>
 <translation id="8962918469425892674">Dette nettstedet bruker bevegelses- eller lyssensorer.</translation>
+<translation id="4532646538815530781">Dette nettstedet bruker bevegelsessensorer.</translation>
 <translation id="6057381398996433816">Dette nettstedet er blokkert fra å bruke bevegelses- og lyssensorer.</translation>
+<translation id="7707108266051544351">Dette nettstedet er blokkert fra å bruke bevegelsessensorer.</translation>
 <translation id="1151917987301063366">Tillat alltid <ph name="HOST"/> å bruke sensorene</translation>
 <translation id="7377451353532943397">Fortsett blokkering av sensortilgang</translation>
 <translation id="6878422606530379992">Sensorer er tillatt</translation>
 <translation id="4031527940632463547">Sensorene er blokkerte</translation>
 <translation id="4559617833001311418">Dette nettstedet bruker bevegelses- eller lyssensorene dine.</translation>
+<translation id="5623282979409330487">Dette nettstedet bruker bevegelsessensorene dine.</translation>
 <translation id="2309620859903500144">Bevegelses- og lyssensorene er blokkert fra dette nettstedet.</translation>
+<translation id="6541638731489116978">Dette nettstedet er blokkert fra å få tilgang til bevegelsessensorene dine.</translation>
 <translation id="8645354835496065562">Fortsett å tillate sensortilgang</translation>
 <translation id="2903882649406874750">Blokkér alltid <ph name="HOST"/> fra å få tilgang til bevegelsessensorer</translation>
 <translation id="3194737229810486521"><ph name="URL"/> ber om å lagre data permanent på enheten din</translation>
 <translation id="1030706264415084469"><ph name="URL"/> ber om å lagre store datamengder permanent på enheten din</translation>
+<translation id="885701979325669005">Lagring</translation>
 <translation id="1712552549805331520"><ph name="URL"/> ber om å lagre data permanent på datamaskinen din</translation>
 <translation id="1997484222658892567"><ph name="URL"/> ber om å lagre store mengder data permanent på datamaskinen din</translation>
 <translation id="7648992873808071793">lagre filer på denne enheten</translation>
@@ -2451,9 +2467,7 @@ Oppbevar nøkkelfilen på et trygt sted. Du får bruk for den når du skal oppre
 <translation id="702252130983202758">Appene dine</translation>
 <translation id="8831664945713891930">Åpne innstillingene for utvidelser</translation>
 <translation id="5138227688689900538">Vis færre</translation>
-<translation id="5646376287012673985">Sted</translation>
 <translation id="5270167208902136840">Vis <ph name="NUMBER_OF_MORE_APPS"/> apper til</translation>
-<translation id="2482878487686419369">Varsler</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> apper</translation>
 <translation id="7207631048330366454">Søk etter apper</translation>
 <translation id="9011424611726486705">Åpne nettstedsinnstillinger</translation>
@@ -2786,6 +2800,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="4305227814872083840">lang (2 s)</translation>
 <translation id="2860150991415616761">svært lang (4 s)</translation>
 <translation id="1217668622537098248">Gå tilbake til venstreklikk etter handling</translation>
+<translation id="8781470833671194250">Stabilisering av klikkposisjon</translation>
 <translation id="3682824389861648626">Bevegelsesterskel</translation>
 <translation id="5511379779384092781">Ekstra liten</translation>
 <translation id="2765217105034171413">Liten</translation>
@@ -3408,7 +3423,10 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="9038649477754266430">Bruk en prediksjonstjeneste for å laste inn sider raskere</translation>
 <translation id="7981313251711023384">Last inn sider på forhånd for raskere nettlesing og søk</translation>
 <translation id="2468205691404969808">Bruker informasjonskapsler til å huske preferansene dine, selv om du ikke går til de sidene</translation>
+<translation id="3181954750937456830">Safe Browsing (beskytter deg og enheten din mot farlige nettsteder)</translation>
+<translation id="7315322926489145388">Sender Brave Software nettadressene til noen av sidene du besøker, når sikkerheten din står i fare</translation>
 <translation id="4991384657077828949">Bidra til å gjøre Brave sikrere</translation>
+<translation id="1943176487615318915">For å oppdage farlige apper og nettsteder sender Brave nettadressene til noen av sidene du besøker, begrenset systeminformasjon og noe sideinnhold til Brave Software.</translation>
 <translation id="2875273286298348523">Brave sender teksten du skriver inn i nettleseren, til Brave Software</translation>
 <translation id="9079153198295609735">Send bruksstatistikk og programstopprapporter automatisk til Brave Software</translation>
 <translation id="5941220456342415404">Send diagnostikk og bruksdata til Brave Software automatisk</translation>
@@ -3480,7 +3498,6 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="1919345977826869612">Reklamer</translation>
 <translation id="5649053991847567735">Automatiske nedlastinger</translation>
 <translation id="3744111561329211289">Bakgrunnssynkronisering</translation>
-<translation id="2586657967955657006">Utklippstavle</translation>
 <translation id="5518219166343146486">Spør når et nettsted ber om å se tekst og bilder som er kopiert til utklippstavlen</translation>
 <translation id="2089795179672254991">Spør når et nettsted ber om å se tekst og bilder som er kopiert til utklippstavlen (anbefalt)</translation>
 <translation id="16815041330799488">Ikke la nettsteder se tekst og bilder som er kopiert til utklippstavlen</translation>
@@ -3508,6 +3525,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="1128109161498068552">Ikke tillat at nettsteder bruker systemeksklusive meldinger for å få tilgang til MIDI-enheter</translation>
 <translation id="2091887806945687916">Lyd</translation>
 <translation id="4751476147751820511">Bevegelses- eller lyssensorer</translation>
+<translation id="1717218214683051432">Bevegelsessensorer</translation>
 <translation id="6059925163896151826">USB-enheter</translation>
 <translation id="8666584013686199826">Spør når et nettsted vil ha tilgang til USB-enheter</translation>
 <translation id="6291949900244949761">Spør når et nettsted vil ha tilgang til USB-enheter (anbefales)</translation>
@@ -3543,7 +3561,9 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="1660204651932907780">Tillat nettsteder å spille av lyd (anbefalt)</translation>
 <translation id="3600792891314830896">Kutt lyden for nettsteder som spiller av lyd</translation>
 <translation id="5084230410268011727">Tillat at nettsteder bruker bevegelses- og lyssensorer</translation>
+<translation id="489454699928748701">Gi nettsteder tilgang til bevegelsessensorer</translation>
 <translation id="5047421709274785093">Blokkér nettsteder fra å bruke bevegelses- og lyssensorer</translation>
+<translation id="6396988158856674517">Blokkér nettsteder fra å bruke bevegelsessensorer</translation>
 <translation id="2904456025988372123">Spør når et nettsted forsøker å laste ned filer automatisk etter den første filen</translation>
 <translation id="3494769164076977169">Spør når et nettsted forsøker å laste ned filer automatisk etter den første filen (anbefales)</translation>
 <translation id="5036662165765606524">Ikke tillat at nettsteder laster ned flere filer automatisk</translation>
@@ -4078,6 +4098,7 @@ Jeg tror ikke det er nødvendig å blokkere dette nettstedet.</translation>
 <translation id="2785008241190445880">Bokmerket er erstattet</translation>
 <translation id="5468853758063275923">Brave er standardnettleseren din</translation>
 <translation id="2950533317914339731">Legg til bokmerker i favorittappene dine fra Brave Software</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Nyheter</translation>

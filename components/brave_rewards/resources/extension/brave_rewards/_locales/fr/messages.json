@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Éditeur authentifié par Brave",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "Brave Verified Creator",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "Attention",
@@ -164,11 +164,11 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "Vous pouvez à présent gagner de l'argent en regardant de la publicité.",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "Brave Ads est arrivé !",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -298,7 +298,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "Refresh Status",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +354,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Les revenus de vos annonces sont disponibles.",
+    "message": "Your earnings from ads are available.",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,15 +390,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "Vos dons mensuels ont été traités !",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "Contributions et dons",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "En cliquant sur « Rejoindre Rewards », vous indiquez avoir lu et accepté les",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +406,19 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "Activer la publicité",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "gagné grâce à la publicité",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "Faire un don à ce tweet",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "Don",
+    "description": "Icon label for Twitter tips"
   }
 }

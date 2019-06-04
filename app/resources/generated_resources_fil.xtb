@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Walang nakitang resulta ng paghahanap</translation>
 <translation id="8967866634928501045">Pindutin ang Alt Shift A upang ipakita</translation>
 <translation id="998747458861718449">Surii&amp;n</translation>
+<translation id="4428301600092811022">Kumuha ng mga paglalarawan ng larawan mula sa Brave Software?</translation>
 <translation id="741204030948306876">Oo, sali ako</translation>
 <translation id="780301667611848630">Hindi salamat</translation>
 <translation id="3943582379552582368">&amp;Bumalik</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">Help Center</translation>
 <translation id="7324297612904500502">Forum sa Beta</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;I-edit ang mga search engine...</translation>
 <translation id="5702898740348134351">I-&amp;edit ang Mga Search Engine...</translation>
 <translation id="2454247629720664989">Keyword</translation>
@@ -1302,8 +1304,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6207200176136643843">I-reset sa default na antas ng pag-zoom</translation>
 <translation id="4953689047182316270">Tumugon sa Mga Kaganapan ng Pagiging Naa-access</translation>
 <translation id="4677585247300749148">Gustong tumugon ng <ph name="URL"/> sa mga kaganapan ng pagiging accessible</translation>
+<translation id="2224471211857467033">Mga Event sa Accessibility</translation>
 <translation id="6116338172782435947">Tingnan ang text at mga larawang kinopya sa clipboard</translation>
 <translation id="3461266716147554923">Gustong makita ng <ph name="URL"/> ang text at mga larawang kinopya sa clipboard</translation>
+<translation id="2586657967955657006">Clipboard</translation>
 <translation id="4838836835474292213">Pinapayagan ang read access sa clipboard</translation>
 <translation id="1415708812149920388">Tinanggihan ang read access sa clipboard</translation>
 <translation id="2365507699358342471">Makikita ng site na ito ang text at mga larawang kinopya sa clipboard.</translation>
@@ -1731,6 +1735,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="7547317915858803630">Babala: ang mga setting sa iyong <ph name="PRODUCT_NAME"/> ay nakatago sa isang network drive. Maaari itong magresulta sa mga pagbagal, pag-crash o pati na rin pagkawala ng data.</translation>
 <translation id="3122496702278727796">Nabigo Sa Paglikha ng Direktoryo sa Data</translation>
 <translation id="51918995459521422">Gustong mag-download ng <ph name="ORIGIN"/> ng maraming file</translation>
+<translation id="7514365320538308">I-download</translation>
 <translation id="691024665142758461">Mag-download ng maraming file</translation>
 <translation id="7004499039102548441">Mga Kamakailang Tab</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 Tab}one{# Tab}other{# na Tab}}</translation>
@@ -1822,6 +1827,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="6156960295318603523">Mga Setting ng Wika</translation>
 <translation id="7931318309563332511">Hindi Alam</translation>
 <translation id="5426179911063097041">Gusto ng <ph name="SITE"/> na padalhan ka ng mga notification</translation>
+<translation id="2482878487686419369">Mga Abiso</translation>
 <translation id="7221855153210829124">Ipakita ang mga notification</translation>
 <translation id="8393700583063109961">Ipadala ang mensahe</translation>
 <translation id="6701535245008341853">Hindi makuha ang profile.</translation>
@@ -1923,6 +1929,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1753905327828125965">Most Visited</translation>
 <translation id="5612720917913232150">Gustong gamitin ng <ph name="URL"/> ang lokasyon ng iyong computer</translation>
 <translation id="4733082559415072992">Gustong gamitin ng <ph name="URL"/> ang lokasyon ng iyong device</translation>
+<translation id="5646376287012673985">Lokasyon</translation>
 <translation id="3016780570757425217">Alamin ang iyong lokasyon</translation>
 <translation id="4068506536726151626">Naglalaman ang page na ito ng mga elemento mula sa sumusunod na mga site na sumusubaybay sa lokasyon mo:</translation>
 <translation id="4920887663447894854">Hinarangan ang sumusunod na mga site mula sa pagsubaybay ng iyong lokasyon sa pahinang ito:</translation>
@@ -1932,6 +1939,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3528033729920178817">Sinusubaybayan ng pahinang ito ang iyong lokasyon.</translation>
 <translation id="1510030919967934016">Naka-block ang pahinang ito mula sa pagsubaybay ng iyong lokasyon.</translation>
 <translation id="6910240653697687763">Gusto ng <ph name="URL"/> na magkaroon ng buong kontrol sa iyong mga MIDI device</translation>
+<translation id="1834583737373831634">Mga MIDI Device</translation>
 <translation id="8606726445206553943">Gamitin ang iyong mga MIDI device</translation>
 <translation id="1849186935225320012">May buong kontrol sa mga MIDI device ang pahinang ito.</translation>
 <translation id="2986010903908656993">Na-block ang pahinang ito mula sa pagkakaroon ng buong kontrol sa mga MIDI device.</translation>
@@ -1965,6 +1973,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="8282947398454257691">Alamin ang natatanging identifier ng iyong device</translation>
 <translation id="8329449853370113380">Gusto ng <ph name="URL"/> na mag-play ng pinoprotektahang content. Ive-veify ng Brave Software ang pagkakakilanlan ng iyong device.</translation>
 <translation id="2650609753175229582">Gusto ng <ph name="URL"/> na mag-play ng pinoprotektahang content. Ive-verify ng Brave Software ang pagkakakilanlan ng iyong device, at maaari itong i-access ng site na ito.</translation>
+<translation id="1746402432151920942">Pagkakakilanlan ng Pinoprotektahang Media</translation>
 <translation id="1322046419516468189">Tingnan at pamahalaan ang mga naka-save na password sa iyong <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Na-save ang password. Tingnan at pamahalaan ang mga naka-save na password sa iyong <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software Account</translation>
@@ -2024,18 +2033,24 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="3532844647053365774">Gustong gamitin ng <ph name="HOST"/> ang iyong mikropono</translation>
 <translation id="7108634116785509031">Gustong gamitin ng <ph name="HOST"/> ang iyong camera</translation>
 <translation id="3691267899302886494">Gustong ibahagi ng <ph name="HOST"/> ang iyong screen</translation>
+<translation id="4275663329226226506">Media</translation>
 <translation id="8962918469425892674">Gumagamit ang site na ito ng sensor ng paggalaw o liwanag.</translation>
+<translation id="4532646538815530781">Gumagamit ang site na ito ng mga sensor ng paggalaw.</translation>
 <translation id="6057381398996433816">Na-block ang site na ito sa paggamit ng sensor ng paggalaw at liwanag.</translation>
+<translation id="7707108266051544351">Na-block ang site na ito sa paggamit ng mga sensor ng paggalaw.</translation>
 <translation id="1151917987301063366">Palaging payagan ang <ph name="HOST"/> na i-access ang mga sensor</translation>
 <translation id="7377451353532943397">Patuloy na i-block ang access sa sensor</translation>
 <translation id="6878422606530379992">Pinapayagan ang mga sensor</translation>
 <translation id="4031527940632463547">Na-block ang mga sensor</translation>
 <translation id="4559617833001311418">Ina-access ng site na ito ang iyong sensor ng paggalaw o liwanag.</translation>
+<translation id="5623282979409330487">Ina-access ng site na ito ang iyong mga sensor ng paggalaw.</translation>
 <translation id="2309620859903500144">Na-block ang site na ito sa pag-access sa iyong sensor ng paggalaw o liwanag.</translation>
+<translation id="6541638731489116978">Na-block ang site na ito sa pag-access sa iyong mga sensor ng paggalaw.</translation>
 <translation id="8645354835496065562">Patuloy na payagan ang access sa sensor</translation>
 <translation id="2903882649406874750">Palaging i-block ang <ph name="HOST"/> sa pag-access sa mga sensor</translation>
 <translation id="3194737229810486521">Gusto ng <ph name="URL"/> na permanenteng mag-store ng data sa iyong device</translation>
 <translation id="1030706264415084469">Gusto ng <ph name="URL"/> na permanenteng mag-store ng malaking data sa iyong device</translation>
+<translation id="885701979325669005">Storage</translation>
 <translation id="1712552549805331520">Gusto ng <ph name="URL"/> na permanenteng mag-store ng data sa iyong lokal na computer</translation>
 <translation id="1997484222658892567">Gusto ng <ph name="URL"/> na permanenteng mag-store ng malaking data sa iyong lokal na computer</translation>
 <translation id="7648992873808071793">Mag-store ng mga file sa device na ito</translation>
@@ -2454,9 +2469,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="702252130983202758">Ang iyong mga app</translation>
 <translation id="8831664945713891930">Buksan ang mga setting ng Mga Extension</translation>
 <translation id="5138227688689900538">Magpakita ng mas kaunti</translation>
-<translation id="5646376287012673985">Lokasyon</translation>
 <translation id="5270167208902136840">Magpakita ng <ph name="NUMBER_OF_MORE_APPS"/> pang app</translation>
-<translation id="2482878487686419369">Mga Abiso</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> (na) app</translation>
 <translation id="7207631048330366454">Maghanap ng mga app</translation>
 <translation id="9011424611726486705">Buksan ang mga setting ng site</translation>
@@ -2789,6 +2802,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="4305227814872083840">mahaba (2s)</translation>
 <translation id="2860150991415616761">napakahaba (4s)</translation>
 <translation id="1217668622537098248">I-revert sa pag-left click pagkatapos ng pagkilos</translation>
+<translation id="8781470833671194250">Stabilization ng posisyon ng pag-click</translation>
 <translation id="3682824389861648626">Limitasyon sa paggalaw</translation>
 <translation id="5511379779384092781">Sobrang liit</translation>
 <translation id="2765217105034171413">Maliit</translation>
@@ -3411,7 +3425,10 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="9038649477754266430">Gumamit ng serbisyo sa paghula upang ma-load ang mga page nang mas mabilis</translation>
 <translation id="7981313251711023384">I-preload ang mga page para sa mas mabilis na pag-browse at paghahanap</translation>
 <translation id="2468205691404969808">Gumamit ng mga cookie para matandaan ang iyong mga kagustuhan kahit na hindi mo binibisita ang mga page na iyon</translation>
+<translation id="3181954750937456830">Ligtas na Pag-browse (pinoprotektahan ka at ang iyong device mula sa mga mapanganib na site)</translation>
+<translation id="7315322926489145388">Ipadala ang mga URL ng ilang page na binibisita mo sa Brave Software kapag nanganganib ang iyong seguridad</translation>
 <translation id="4991384657077828949">Tulungang paigtingin ang seguridad ng Brave</translation>
+<translation id="1943176487615318915">Para matukoy ang mapapanganib na app at site, nagpapadala ang Brave ng mga URL ng ilang page na binibisita mo, limitadong impormasyon ng system, at ilang content ng page sa Brave Software</translation>
 <translation id="2875273286298348523">Ipinapadala ng Brave sa Brave Software ang text na tina-type mo sa browser</translation>
 <translation id="9079153198295609735">Awtomatikong ipadala ang mga istatistika ng paggamit at mga ulat ng pag-crash sa Brave Software</translation>
 <translation id="5941220456342415404">Awtomatikong magpadala ng data ng diagnostic at paggamit sa Brave Software.</translation>
@@ -3483,7 +3500,6 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1919345977826869612">Mga Ad</translation>
 <translation id="5649053991847567735">Mga awtomatikong pag-download</translation>
 <translation id="3744111561329211289">Pag-sync sa background</translation>
-<translation id="2586657967955657006">Clipboard</translation>
 <translation id="5518219166343146486">Magtanong kapag gusto ng site na makita ang text at mga larawang kinopya sa clipboard</translation>
 <translation id="2089795179672254991">Magtanong kapag gusto ng site na makita ang text at mga larawang kinopya sa clipboard (inirerekomenda)</translation>
 <translation id="16815041330799488">Huwag payagan ang mga site na makita ang text at mga larawang kinopya sa clipboard</translation>
@@ -3511,6 +3527,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1128109161498068552">Huwag payagan ang anumang mga site na gamitin ang mga eksklusibong mensahe ng system upang i-access ang mga MIDI device</translation>
 <translation id="2091887806945687916">Tunog</translation>
 <translation id="4751476147751820511">Mga motion o light sensor</translation>
+<translation id="1717218214683051432">Mga sensor ng paggalaw</translation>
 <translation id="6059925163896151826">Mga USB device</translation>
 <translation id="8666584013686199826">Magtanong kapag gusto ng isang site na i-access ang mga USB device</translation>
 <translation id="6291949900244949761">Magtanong kapag gusto ng isang site na i-access ang mga USB device (inirerekomenda)</translation>
@@ -3546,7 +3563,9 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="1660204651932907780">Payagan ang mga site na mag-play ng tunog (inirerekomenda)</translation>
 <translation id="3600792891314830896">I-mute ang mga site na nagpe-play ng tunog</translation>
 <translation id="5084230410268011727">Payagan ang mga site na gumamit ng mga motion at light sensor</translation>
+<translation id="489454699928748701">Payagan ang mga site na gumamit ng mga sensor ng paggalaw</translation>
 <translation id="5047421709274785093">I-block ang paggamit ng mga site ng mga motion at light sensor</translation>
+<translation id="6396988158856674517">I-block ang mga site sa paggamit ng mga sensor ng paggalaw</translation>
 <translation id="2904456025988372123">Magtanong kapag sinubukan ng isang site na awtomatikong mag-download ng mga file pagkatapos ng unang file</translation>
 <translation id="3494769164076977169">Magtanong kapag sinusubukan ng isang site na awtomatikong mag-download ng mga file pagkatapos ng unang file (inirerekomenda)</translation>
 <translation id="5036662165765606524">Huwag payagan ang anumang site na awtomatikong mag-download ng maraming file</translation>
@@ -4081,6 +4100,7 @@ Ilagay ang iyong key file sa ligtas na lugar. Kailangan mo ito upang lumikha ng 
 <translation id="2785008241190445880">Pinalitan ang bookmark</translation>
 <translation id="5468853758063275923">Ang Brave ay ang default mong browser</translation>
 <translation id="2950533317914339731">Magdagdag ng mga bookmark sa iyong paboritong Brave Software Apps</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Balita</translation>

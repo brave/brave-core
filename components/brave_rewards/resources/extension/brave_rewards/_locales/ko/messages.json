@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Brave가 인증한 출판자 ",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "Brave Verified Creator",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "주의",
@@ -164,11 +164,11 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "이제 광고 보기로 돈을 벌 수 있습니다",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "Brave 광고가 왔습니다!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -298,7 +298,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "Refresh Status",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +354,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "귀하의 광고 수익을 사용하실 수 있습니다.",
+    "message": "Your earnings from ads are available.",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,15 +390,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "월간 팁이 처리되었습니다! ",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "기부금 및 팁",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": " ‘보상 참여 (Join Rewards)’를 클릭함으로써, 다음을 읽고 동의했음을 나타냅니다",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +406,19 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "광고 켜기",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "광고로부터 수입",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "이 트윗에 팁 주기",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "팁",
+    "description": "Icon label for Twitter tips"
   }
 }

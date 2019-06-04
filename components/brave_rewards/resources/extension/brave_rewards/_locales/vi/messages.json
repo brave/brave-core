@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Nhà xuất bản Chứng thực bởi Brave",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "Brave Verified Creator",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "Chú ý",
@@ -164,11 +164,11 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "Giờ đây bạn có thể kiếm tiền bằng cách xem quảng cáo.",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "Brave Ads đã xuất hiện!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -298,7 +298,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "Refresh Status",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +354,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Thu nhập quảng cáo của bạn đang có sẵn.",
+    "message": "Your earnings from ads are available.",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,15 +390,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "Tiền thưởng hàng tháng của bạn đã được xử lý!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "Đ",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "Nhấp vào 'Tham gia Quỹ thưởng' nghĩa là bạn đã đọc và đồng ý với",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +406,19 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "Bật Quảng cáo",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "thu được từ quảng cáo",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "Thưởng tweet này",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "Tiền tip",
+    "description": "Icon label for Twitter tips"
   }
 }

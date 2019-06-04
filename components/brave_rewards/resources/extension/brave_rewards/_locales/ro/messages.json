@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Editor verificat de Brave",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "Brave Verified Creator",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "Atenție",
@@ -164,11 +164,11 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "Acum puteți câștiga bani vizualizând reclame.",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "Brave Ads a sosit!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -298,7 +298,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "Refresh Status",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +354,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Câștigurile din anunțuri sunt disponibile.",
+    "message": "Your earnings from ads are available.",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,15 +390,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "Bacșișurile dvs. lunare au fost procesate!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "Contribuții și bacșișuri",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "Făcând clic pe „Alăturați-vă Rewards” dați de înțeles că ați citit și sunteți de acord cu",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +406,19 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "Activează Ads",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "câștigați din reclame",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "Dă un bacșiș acestui tweet",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "Indiciu",
+    "description": "Icon label for Twitter tips"
   }
 }

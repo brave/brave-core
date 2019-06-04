@@ -41,6 +41,8 @@
 <translation id="8958799246752641148">Tor מסתיר את כתובת ה-IP שלכם מהאתרים שבהם אתם מבקרים, על-ידי ניתוב הגלישה שלכם דרך מספר שרתי Tor לפני שהיא מגיעה ליעד שלך. חיבורים אלה מוצפנים, ולכן ספק שירותי האינטרנט או המעסיק שלכם לא יכולים לראות באילו אתרים אתם מבקרים. Tor יכול להאט את הגלישה וייתכן שחלק מהאתרים לא יפעלו כלל.</translation>
 <translation id="520608572871993342">השימוש בחלון פרטי משנה רק את מה ש-Brave עושה במכשיר שלכם —. הוא לא משנה את ההתנהגות של אף אחד. Tor מסתיר את כתובת ה-IP שלכם מפני האתרים שבהם אתם מבקרים, ומסתיר את האתרים שבהם אתם מבקרים מפני ספק האינטרנט או המעסיק שלכם. פתחו חלון פרטי עם Tor מתוך התפריט, או בעזרת {{ key }}.</translation>
 <translation id="6975708438781948564">למדו עוד אודות Tor ב-Brave</translation>
+<translation id="4272382368346338917">מסננים נוספים</translation>
+<translation id="8949292968394988358">אזהרה: הפעלת מסננים רבים מדי תפגום בביצועים</translation>
 <translation id="1869685517625607604">סך מודעות חסומות:</translation>
 <translation id="4673764878177947707">התאמה אישית של מסננים</translation>
 <translation id="8803682034537762884">אחד לשורה, מסנן מתואר בתחביר המסננים של Adblock Plus</translation>
@@ -54,7 +56,6 @@
 <translation id="5633840519079139680">Brave מקל על הגדרת הסביבה הרגילה שלכם על ידי יבוא סימניות והגדרות מדפדפנים אחרים המותקנים במחשב שלכם.</translation>
 <translation id="8275038454117074363">יבוא</translation>
 <translation id="5540323067375019678">נהלו את המגן שלכם</translation>
-<translation id="4755560456428781763">Brave shields מגן עליכם מפני  מודעות בלתי רצויות ומעקב בזמן הגלישה. אם אתם נתקלים בבעיה בעת גלישה באתר מסוים, שנו את רמת ההגנה שלכם מפאנל המגנים בסרגל הכלים.</translation>
 <translation id="3366308997091824722">הגדרות מגן:</translation>
 <translation id="3884404068544758153">שנו את מנוע החיפוש שלכם</translation>
 <translation id="438216590634144114">בחרו את מנוע החיפוש שבו תרצו להשתמש כברירת מחדל בעת חיפוש באינטרנט מסרגל הכתובות.</translation>
@@ -68,6 +69,7 @@
 <translation id="5946611334574299206">אגרו Tokens על ידי צפייה בפרסומות ב-Brave. הפרסומות המוצגות לכם מבוססות על תחומי העניין שלכם, כפי שנגזרו מהתנהגות הגלישה שלכם. שום מידע אישי או היסטוריית גלישה לעולם לא יוצאים מהדפדפן.</translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
 <translation id="1527222983464337010">דרך אוטומטית לתמוך בבעלי אתרים ויוצרי תוכן. הגדירו תשלום חודשי וגלשו כרגיל. האתרים שבהם אתם מבקרים מקבלים את התרומות שלכם באופן אוטומטי, בהתבסס על תשומת הלב שלכם כפי שהיא נמדדת על ידי Brave.</translation>
+<translation id="7178655681744815321">רווחים משוערים למחזור זה</translation>
 <translation id="8157096848242649588">תאריך תשלום</translation>
 <translation id="5208388044986603165">כל ההודעות התקבלו</translation>
 <translation id="4229016885653790965">סליחה! פרסומות אינן זמינות עדיין באזור שלך.</translation>
@@ -106,7 +108,7 @@
 <translation id="1199044745726588100">5 שניות</translation>
 <translation id="4045581694057451126">8 שניות</translation>
 <translation id="8610523985422563960">דקה</translation>
-<translation id="7521774480426463961">אפשרו קבלת טיפים על פוסטים שעשיתם להם 'לייק'</translation>
+<translation id="9031738692126722094">נא לאפשר טיפים על רמת התוכן באתרים אלה</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">טוויטר</translation>
 <translation id="3920963435109110161">תגמלו מיידית, כשתגלו אוצרות</translation>
@@ -128,6 +130,7 @@
 <translation id="7797604753681168055">שחזר כעת!</translation>
 <translation id="1184075897575325927">מצטערים, נראה שמענק זה כבר נתבע.</translation>
 <translation id="282693359045252357">תאריך הטיפ החודשי הבא</translation>
+<translation id="6231182869178328516">הרגע נתתי טיפ <ph name="NAME">$1<ex>user</ex></ph> באמצעות דפדפן Brave. אפשר לראות את זה ב-https://brave.com/tips.</translation>
 <translation id="7422678632904904341">סכום:</translation>
 <translation id="5923611424721173182">הסדר נוכחי</translation>
 <translation id="5457113250005438886">לא תקף</translation>
@@ -151,6 +154,9 @@
 <translation id="4235360514405112390">תקף</translation>
 <translation id="2700943637868737038">מזהה צפייה:</translation>
 <translation id="3576689061489548788">מזהה תשלום ארנק:</translation>
+<translation id="758790787422117549">מזהה אישיות</translation>
+<translation id="2223892939866251845">מזהה משתמש</translation>
+<translation id="1642443162274867084">הארנק נוצר</translation>
 <translation id="5094577350232361255">אודות</translation>
 <translation id="4918086044614829423">אשר</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software.
@@ -167,11 +173,16 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="3671566813999349838">כמות</translation>
 <translation id="3819257035322786455">גיבוי</translation>
 <translation id="1312977698678162065">קבלו תשלום כדי להציג מודעות רלוונטיות שמכבדות את פרטיותכם.</translation>
+<translation id="7655723274266132226">כעת באפשרותך להרוויח כסף מצפייה בפרסומות.</translation>
+<translation id="2975780980638932742">פרסומות Brave הגיעו!</translation>
 <translation id="3361548743396744457">תמכו באתרים האהובים עליכם על ידי גלישה – או תגמלו אתרים בכל עת שתרצו.</translation>
 <translation id="3333887201479867589">תגמולי Brave</translation>
 <translation id="4493850495402472953">ו</translation>
 <translation id="8804164990146287819">מדיניות הפרטיות</translation>
 <translation id="4281844954008187215">תנאי שירות</translation>
+<translation id="4405997465645469914">בהפעלת "פרסי Brave", את/ה מאשר/ת שקראת והסכמת ל-</translation>
+<translation id="8819542691525488940">בהקשה על  ‘כן, אני בפנים! 8217;, את/ה מאשר/ת שקראת והסכמת ל-</translation>
+<translation id="8071424789698327147">בהקשה על  ‘כן, אני בפנים! 8217;, את/ה מאשר/ת שקראת והסכמת ל-</translation>
 <translation id="7530570094705720669">יצירת ארנק</translation>
 <translation id="2105596359439030979">תשומת הלב שלכם מוערכת. הרוויחו על ידי צפייה במודעות המכבדות פרטיות, ושתפו עם אחרים תכנים של יוצרים שאתם אוהבים.</translation>
 <translation id="516395624550019162">כן, אני בפנים!</translation>
@@ -208,7 +219,6 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="7277134233385925078">הגדר טיפ חודשי</translation>
 <translation id="8003573781961874199">הורידו כקובץ PDF</translation>
 <translation id="298067735430872465">צבירה מפרסומות</translation>
-<translation id="3521361150443442734">הכנסותיך מפרסומות הן זמינות.</translation>
 <translation id="8764029012618014430">הפעל טיפים</translation>
 <translation id="3412655388715513818">מלבד אתר זה</translation>
 <translation id="418343137736963579">המספר הכולל של האתרים שאין באפשרותכם "לתרום להם אוטומטית":</translation>
@@ -274,8 +284,8 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="3626186271103896082">גבו את הארנק שלכם</translation>
 <translation id="5717619667204259673">שמרו את מפתח השחזור הזה באופן מוגן.</translation>
 <translation id="4699702339303280827">תמיד תוכלו להשתמש במפתח זה כדי לקבל את הארנק שלכם בחזרה אם משהו קורה לדפדפן או למחשב. אך הקפידו להגן עליו — כל מי שמקבל את המפתח הזה יכול לגנוב את הארנק שלכם. כנראה הכי בטוח לכתוב אותו על פיסת נייר, או בכל מקום אחר בו אתם שומרים מידע חשוב.</translation>
-<translation id="5759071143806884916">תוכלו לתמוך באתר זה באמצעות מתן טיפ. זוהי דרך להודות על יצירת תוכן נהדר. יוצרי תוכן מאומתים מקבלים תשלום של הטיפים שלהם במהלך השבוע הראשון של כל חודש קלנדרי.</translation>
-<translation id="1704859330137112950">אם תרצו, תוכלו לתזמן תגמולים חודשיים לתמיכה באתר זה באופן קבוע.</translation>
+<translation id="7354412786785889047">באפשרותך לתמוך ביוצר תוכן על ידי משלוח טיפ. זו דרך להודות להם על יצירת תוכן מעולה. יוצרים מאומתים מקבלים תשלום על הטיפי שלהם בשבוע הראשון של כל חודש קלנדרי.</translation>
+<translation id="3475063317678050010">אם תרצה/י, באפשרותך לתזמן טיפים חודשיים כדי לתמוך ביוצר זה באופן קבוע.</translation>
 <translation id="3074127054582480056">שימו לב</translation>
 <translation id="822513417008209372">אתם כרגע תומכים</translation>
 <translation id="5010112177773747965">ללא הסכמתכם.</translation>
@@ -304,6 +314,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="3536298624341433814">שלח את הטיפ שלי</translation>
 <translation id="1792148354504719133">אתר</translation>
 <translation id="5944430251223015324">אתרים</translation>
+<translation id="1834493631938747505">ספר/י לאחרים על הטיפ שלך.</translation>
 <translation id="8826007068782654809">תודה</translation>
 <translation id="6665366815203065060">הרגע שלחת טיפ אל:</translation>
 <translation id="6432779622695508363">טיפ לכל לייק</translation>
@@ -314,8 +325,12 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="4914597931214386232">מענקי אסימון נתבעו</translation>
 <translation id="1634828734222219955">סך הכל</translation>
 <translation id="3535654229833214438">העברות</translation>
+<translation id="3124090095880236567">הפעל פרסומות</translation>
 <translation id="8987812599455325915">פעולה זו מאפשרת הן פרסומות והן תרומות אוטומטיות. ניתן להפעיל או לכבות אפשרויות אלו בנפרד בכל עת.</translation>
 <translation id="1485484147452131556">הפעלת Rewards</translation>
+<translation id="3983104749597726322">ציוץ</translation>
+<translation id="5636843789453098076">תן/י ל-@{{ user }} טיפ על הציוץ שלו:</translation>
+<translation id="4242384385082203046">תן/י ל-@{{ user }} טיפ על הציוץ שלו!</translation>
 <translation id="2448312741937722512">סוג</translation>
 <translation id="8772672608371898774">מפרסם מאומת של Brave</translation>
 <translation id="5050370287908180130">צפייה בהצהרה החודשית עבור פרטים</translation>
@@ -338,6 +353,15 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="6727483290601442544">הצג פרטים</translation>
 <translation id="1988679729106502285">הערה:</translation>
 <translation id="5815103311506128988">יוצר זה עדיין לא נרשם לקבלת תרומות ממשתמשי Brave. הדפדפן ימשיך לנסות לתרום עד אשר יאומת או עד שיחלפו 90 יום.</translation>
+<translation id="4292832015778676417">סכום שהתקבל מפרסומות</translation>
+<translation id="3197752845651180812">תרומות ממתינות</translation>
+<translation id="3164105678355419142">טיפ חוזר</translation>
+<translation id="2927922949538312364">טיפ חד-פעמי</translation>
+<translation id="6964891561514920613">הצג את כל התרומות הממתינות</translation>
+<translation id="4346944508027912677">ממתין עד</translation>
+<translation id="7410549756000115387">אין תרומות ממתינות…</translation>
+<translation id="1963227389609234879">הסר הכל</translation>
+<translation id="923467487918828349">הצג הכל</translation>
 <translation id="1181037720776840403">הסר</translation>
 <translation id="7885157704277298658">הועתק!</translation>
 <translation id="5379640681913450928">ספירת מילים:</translation>
@@ -355,6 +379,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="1061533051865606843">הוסף התקן חדש</translation>
 <translation id="8780295742023331191">הצג קוד סנכרון</translation>
 <translation id="1755198127524719638">הגדרות סנכרון</translation>
+<translation id="7558480201297099157">נהל/י את המידע שברצונך לסנכרן בין מכשירים. הגדרות אלה משפיעות על מכשיר זה בלבד.</translation>
 <translation id="8820817407110198400">סימניות</translation>
 <translation id="5591129654353352557">הגדרות אתר שנשמרו</translation>
 <translation id="7859704718976024901">היסטוריית גלישה</translation>
@@ -382,6 +407,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="5086223971958279691">סנכרון קוד שרשרת</translation>
 <translation id="2899261497479389619">במחשב היעד, נווטו אל Brave Sync בהגדרות והקליקו על הלחצן</translation>
 <translation id="4827439149833241990">“יש לי קוד סנכרון”.</translation>
+<translation id="24067401253841795">נא להזין את מילות קוד שרשרת הסנכרון שלהלן. יש להתייחס לקוד זה כסיסמה. אם הוא ייפול לידיו של מישהו, הוא יוכל לקרוא ולשנות את המידע המסונכרן שלך.</translation>
 <translation id="8914601399214979966">במקום זאת, השתמש במצלמה שלי</translation>
 <translation id="3034163433136515805">הצג קוד QR</translation>
 <translation id="5093410893656857925">בחרו סוג מכשיר</translation>
@@ -394,4 +420,6 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="8349682220522608879">יש להוסיף קוד סנכרון.</translation>
 <translation id="1468095392829989299">לא ניתן היה ליצור קשר עם שרתי Sync</translation>
 <translation id="1399673826422570698">ייתכן וישנה בעיית רשת, או שישנה בעיה בשרתי Sync.</translation>
+<translation id="5286379413446391050">לא ניתן להתחבר לשרתי Sync</translation>
+<translation id="2410472020237369473">ייתכן ששעון המחשב שלך מוגדר לשעה או לאזור זמן לא נכונים. נא לבדוק את הגדרות השעון.</translation>
 </translationbundle>

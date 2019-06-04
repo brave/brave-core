@@ -48,8 +48,8 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Brave द्वारा प्रमाणित प्रकाशक ",
-    "description": "Tells user that this particular publisher is verified publisher"
+    "message": "Brave Verified Creator",
+    "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
     "message": "ध्यान ",
@@ -164,11 +164,11 @@
     "description": "Used in notification to dismiss notification"
   },
   "braveAdsLaunchMsg": {
-    "message": "Now you can earn by viewing ads.",
+    "message": "अब आप विज्ञापनों को देखकर कमा सकते हैं।",
     "description": "Message for ads launch notification"
   },
   "braveAdsLaunchTitle": {
-    "message": "Brave Ads has arrived!",
+    "message": "Brave विज्ञापन आ चुके हैं!",
     "description": "Message used in notification to let users know Ads is available"
   },
   "braveAdsTitle": {
@@ -298,7 +298,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Check Again...",
+    "message": "Refresh Status",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -354,7 +354,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "आपके विज्ञापनों की आय उपलब्ध है।",
+    "message": "Your earnings from ads are available.",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -390,15 +390,15 @@
     "description": "Title message for wallet disabled panel"
   },
   "tipsProcessedNotification": {
-    "message": "Your monthly tips have been processed!",
+    "message": "आपकी मासिक बख्शीश को प्रोसेस कर दिया गया है!",
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Contributions & Tips",
+    "message": "योगदान और बख्शीश",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "By clicking ‘Join Rewards’, you indicate that you have read and agree to the",
+    "message": "'Join Rewards’ पर क्लिक करके, आप सूचित करते हैं कि आपने पढ़ लिया है और इससे सहमत हैं",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -406,11 +406,19 @@
     "description": "BAT text for displaying converted tip amount."
   },
   "turnOnAds": {
-    "message": "Turn on Ads",
+    "message": "विज्ञापन चालू करें",
     "description": "Prompt to turn on Ads via notification"
   },
   "adsEarnings": {
-    "message": "earned from ads",
+    "message": "विज्ञापनों द्वारा कमाया हुआ",
     "description": "Description text for ad grants in grant details"
+  },
+  "twitterTipsHoverText": {
+    "message": "इस ट्वीट को बख्शीश दें",
+    "description": "Hover text for Twitter tips action"
+  },
+  "twitterTipsIconLabel": {
+    "message": "टिप ",
+    "description": "Icon label for Twitter tips"
   }
 }

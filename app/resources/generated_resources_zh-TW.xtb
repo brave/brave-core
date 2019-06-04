@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">找不到相符的搜尋結果</translation>
 <translation id="8967866634928501045">按下 Alt + Shift + A 鍵即可顯示</translation>
 <translation id="998747458861718449">檢查(&amp;N)</translation>
+<translation id="4428301600092811022">要取得 Brave Software 提供的圖片說明嗎？</translation>
 <translation id="741204030948306876">是，我要啟用</translation>
 <translation id="780301667611848630">不用了，謝謝</translation>
 <translation id="3943582379552582368">上一頁(&amp;B)</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">說明中心(&amp;E)</translation>
 <translation id="7324297612904500502">測試版論壇</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">編輯搜尋引擎(&amp;E)...</translation>
 <translation id="5702898740348134351">編輯搜尋引擎(&amp;E)...</translation>
 <translation id="2454247629720664989">關鍵字</translation>
@@ -1320,8 +1322,10 @@
 <translation id="6207200176136643843">重設為預設縮放等級</translation>
 <translation id="4953689047182316270">回應協助工具活動</translation>
 <translation id="4677585247300749148"><ph name="URL"/> 要求回應協助工具事件</translation>
+<translation id="2224471211857467033">無障礙工具活動</translation>
 <translation id="6116338172782435947">讀取已複製到剪貼簿的文字和圖片</translation>
 <translation id="3461266716147554923"><ph name="URL"/> 要求讀取已複製到剪貼簿的文字和圖片</translation>
+<translation id="2586657967955657006">剪貼簿</translation>
 <translation id="4838836835474292213">已允許讀取剪貼簿</translation>
 <translation id="1415708812149920388">已禁止讀取剪貼簿</translation>
 <translation id="2365507699358342471">這個網站可以讀取已複製到剪貼簿的文字和圖片。</translation>
@@ -1749,6 +1753,7 @@
 <translation id="7547317915858803630">警告：你的 <ph name="PRODUCT_NAME"/> 設定均儲存在網路硬碟中。這麼做可能導致速度變慢、當機，甚至資料遺失。</translation>
 <translation id="3122496702278727796">無法建立資料目錄</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> 想要下載多個檔案</translation>
+<translation id="7514365320538308">下載</translation>
 <translation id="691024665142758461">下載多個檔案</translation>
 <translation id="7004499039102548441">最近開啟的分頁</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 個分頁}other{# 個分頁}}</translation>
@@ -1838,6 +1843,7 @@
 <translation id="6156960295318603523">語言設定</translation>
 <translation id="7931318309563332511">不明</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> 要求傳送通知給你</translation>
+<translation id="2482878487686419369">通知</translation>
 <translation id="7221855153210829124">顯示通知</translation>
 <translation id="8393700583063109961">傳送訊息</translation>
 <translation id="6701535245008341853">無法取得設定檔。</translation>
@@ -1939,6 +1945,7 @@
 <translation id="1753905327828125965">最常造訪</translation>
 <translation id="5612720917913232150"><ph name="URL"/> 要求使用電腦的位置資訊</translation>
 <translation id="4733082559415072992"><ph name="URL"/> 要求使用裝置的位置資訊</translation>
+<translation id="5646376287012673985">位置</translation>
 <translation id="3016780570757425217">存取您的位置資訊</translation>
 <translation id="4068506536726151626">這個網頁包含來自下列網站的元素，且這些元素正在追蹤你的位置：</translation>
 <translation id="4920887663447894854">下列網站已遭封鎖，無法在你瀏覽此網頁時追蹤你的位置：</translation>
@@ -1948,6 +1955,7 @@
 <translation id="3528033729920178817">這個網頁正在追蹤你的位置。</translation>
 <translation id="1510030919967934016">此網頁已遭封鎖，無法追蹤你的位置。</translation>
 <translation id="6910240653697687763"><ph name="URL"/> 要求取得 MIDI 裝置的完整控制權限</translation>
+<translation id="1834583737373831634">MIDI 裝置</translation>
 <translation id="8606726445206553943">使用您的 MIDI 裝置</translation>
 <translation id="1849186935225320012">這個網頁可完整控制 MIDI 裝置。</translation>
 <translation id="2986010903908656993">這個網頁已遭封鎖，無法取得 MIDI 裝置的完整控制權。</translation>
@@ -1981,6 +1989,7 @@
 <translation id="8282947398454257691">存取您的專屬裝置識別碼</translation>
 <translation id="8329449853370113380"><ph name="URL"/> 要求播放受保護的內容。Brave Software 會驗證你裝置的識別資訊。</translation>
 <translation id="2650609753175229582"><ph name="URL"/> 想要播放受到保護的內容。Brave Software 會驗證你的裝置身分，這個網站可能也會存取你的裝置身分。</translation>
+<translation id="1746402432151920942">受保護媒體 ID</translation>
 <translation id="1322046419516468189">你可以查看及管理 <ph name="SAVED_PASSWORDS_STORE"/>中儲存的密碼</translation>
 <translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">密碼已儲存。你可以查看及管理 <ph name="SAVED_PASSWORDS_STORE"/>中儲存的密碼。</translation>
@@ -2041,18 +2050,24 @@
 <translation id="3532844647053365774"><ph name="HOST"/> 要求使用麥克風</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> 要求使用攝影機</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> 要求分享螢幕畫面</translation>
+<translation id="4275663329226226506">媒體</translation>
 <translation id="8962918469425892674">這個網站正在使用動作感應器或光源感應器。</translation>
+<translation id="4532646538815530781">這個網站正在使用動作感應器。</translation>
 <translation id="6057381398996433816">這個網站已遭封鎖，無法使用動作感應器和光源感應器。</translation>
+<translation id="7707108266051544351">這個網站無法使用動作感應器。</translation>
 <translation id="1151917987301063366">一律允許 <ph name="HOST"/> 存取感應器</translation>
 <translation id="7377451353532943397">繼續禁止存取感應器</translation>
 <translation id="6878422606530379992">可使用感應器</translation>
 <translation id="4031527940632463547">禁止使用感應器</translation>
 <translation id="4559617833001311418">這個網站正在存取你的動作感應器或光源感應器。</translation>
+<translation id="5623282979409330487">這個網站正在存取你的動作感應器。</translation>
 <translation id="2309620859903500144">這個網站已遭封鎖，無法存取你的動作感應器或光源感應器。</translation>
+<translation id="6541638731489116978">這個網站無法存取你的動作感應器。</translation>
 <translation id="8645354835496065562">繼續允許存取感應器</translation>
 <translation id="2903882649406874750">一律禁止 <ph name="HOST"/> 存取感應器</translation>
 <translation id="3194737229810486521"><ph name="URL"/> 要求在你的裝置上永久儲存資料</translation>
 <translation id="1030706264415084469"><ph name="URL"/> 要求在你的裝置上永久儲存大量資料</translation>
+<translation id="885701979325669005">儲存空間</translation>
 <translation id="1712552549805331520"><ph name="URL"/> 要求在你的本機電腦上永久儲存資料</translation>
 <translation id="1997484222658892567"><ph name="URL"/> 要求在你的本機電腦上永久儲存大量資料</translation>
 <translation id="7648992873808071793">在這個裝置上儲存檔案</translation>
@@ -2472,9 +2487,7 @@
 <translation id="702252130983202758">你的應用程式</translation>
 <translation id="8831664945713891930">開啟擴充功能設定</translation>
 <translation id="5138227688689900538">顯示較少</translation>
-<translation id="5646376287012673985">位置</translation>
 <translation id="5270167208902136840">顯示另外 <ph name="NUMBER_OF_MORE_APPS"/> 個應用程式</translation>
-<translation id="2482878487686419369">通知</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> 個應用程式</translation>
 <translation id="7207631048330366454">搜尋應用程式</translation>
 <translation id="9011424611726486705">開啟網站設定</translation>
@@ -2807,6 +2820,7 @@
 <translation id="4305227814872083840">長 (2 秒)</translation>
 <translation id="2860150991415616761">很長 (4 秒)</translation>
 <translation id="1217668622537098248">完成動作後還原至先前的按左鍵動作</translation>
+<translation id="8781470833671194250">點擊位置穩定功能</translation>
 <translation id="3682824389861648626">滑鼠移動限額</translation>
 <translation id="5511379779384092781">特小</translation>
 <translation id="2765217105034171413">小</translation>
@@ -2887,6 +2901,9 @@
 <translation id="3201422919974259695">可用的 USB 裝置將會顯示在這裡。</translation>
 <translation id="907264006778172906">請授權 Linux 存取 USB 裝置。移除後，Linux 將不會記住這部 USB 裝置。</translation>
 <translation id="3661172646479098821">目前僅支援 Android 裝置。</translation>
+<translation id="1679806121152819234">外掛程式虛擬機器</translation>
+<translation id="1342664070754997846">在您的 <ph name="DEVICE_TYPE">$1<ex>Bravebook</ex></ph> 上執行外掛程式虛擬機器</translation>
+<translation id="7508054832109420082">給予印表機的存取權限</translation>
 <translation id="2295473777859797944">Brave Software Play 商店</translation>
 <translation id="572155275267014074">Android 設定</translation>
 <translation id="4767209642168463274">在 Bravebook 上安裝來自 Brave Software Play 的應用程式和遊戲。&lt;a target="_blank" href="<ph name="URL"/>"&gt;瞭解詳情&lt;/a&gt;</translation>
@@ -3438,7 +3455,10 @@
 <translation id="9038649477754266430">使用預測查詢字串服務，讓系統更快載入網頁</translation>
 <translation id="7981313251711023384">預先載入網頁，以加快瀏覽及搜尋速度</translation>
 <translation id="2468205691404969808">使用 Cookie 記住你的偏好設定 (即使你沒有造訪這些網頁)</translation>
+<translation id="3181954750937456830">安全瀏覽 (保護你和你的裝置不受危險網站攻擊)</translation>
+<translation id="7315322926489145388">當網站具有安全性風險時，Brave 會將你造訪的部分網頁網址傳送給 Brave Software</translation>
 <translation id="4991384657077828949">協助改善 Brave 安全性</translation>
+<translation id="1943176487615318915">為了偵測危險的應用程式和網站，Brave 會將你造訪的部分網頁網址、部分系統資訊以及部分網頁內容傳送給 Brave Software</translation>
 <translation id="2875273286298348523">Brave 會將你在瀏覽器中輸入的文字傳送給 Brave Software</translation>
 <translation id="9079153198295609735">自動傳送使用統計資料及當機報告給 Brave Software</translation>
 <translation id="5941220456342415404">自動將診斷資料和使用情況資料傳送給 Brave Software</translation>
@@ -3510,7 +3530,6 @@
 <translation id="1919345977826869612">廣告</translation>
 <translation id="5649053991847567735">自動下載</translation>
 <translation id="3744111561329211289">背景同步處理</translation>
-<translation id="2586657967955657006">剪貼簿</translation>
 <translation id="5518219166343146486">當網站要讀取已複製到剪貼簿的文字和圖片時，必須先詢問你</translation>
 <translation id="2089795179672254991">當網站要讀取已複製到剪貼簿的文字和圖片時，必須先詢問你 (建議使用)</translation>
 <translation id="16815041330799488">禁止網站讀取已複製到剪貼簿的文字和圖片</translation>
@@ -3538,6 +3557,7 @@
 <translation id="1128109161498068552">禁止任何網站使用系統專用訊息存取 MIDI 裝置</translation>
 <translation id="2091887806945687916">音訊</translation>
 <translation id="4751476147751820511">動作或光源感應器</translation>
+<translation id="1717218214683051432">動作感應器</translation>
 <translation id="6059925163896151826">USB 裝置</translation>
 <translation id="8666584013686199826">網站要求存取 USB 裝置時詢問我</translation>
 <translation id="6291949900244949761">網站要求存取 USB 裝置時詢問我 (建議)</translation>
@@ -3573,7 +3593,9 @@
 <translation id="1660204651932907780">允許網站播放音訊 (建議)</translation>
 <translation id="3600792891314830896">將播放音訊的網站設為靜音</translation>
 <translation id="5084230410268011727">允許網站使用動作感應器和光源感應器</translation>
+<translation id="489454699928748701">允許網站使用動作感應器</translation>
 <translation id="5047421709274785093">禁止網站使用動作感應器和光源感應器</translation>
+<translation id="6396988158856674517">禁止網站使用動作感應器</translation>
 <translation id="2904456025988372123">當網站嘗試自動下載更多檔案時 (已下載第一個檔案)，必須先詢問您</translation>
 <translation id="3494769164076977169">在網站已下載第一個檔案，並且嘗試自動下載更多檔案時先通知你 (建議使用)</translation>
 <translation id="5036662165765606524">禁止任何網站自動下載多個檔案</translation>
@@ -3671,6 +3693,7 @@
 <translation id="1987317783729300807">帳戶</translation>
 <translation id="8418661265246754237">Brave Software 帳戶</translation>
 <translation id="3297951628821704004">從這個裝置移除帳戶</translation>
+<translation id="8995603266996330174">由 <ph name="DOMAIN">$1<ex>google.com</ex></ph> 管理</translation>
 <translation id="4659077111144409915">主要帳戶</translation>
 <translation id="3158033540161634471">設定指紋</translation>
 <translation id="1587907146729660231">用手指輕觸電源按鈕</translation>
@@ -3699,7 +3722,6 @@
 <translation id="3608576286259426129">使用者圖片預覽</translation>
 <translation id="2114896190328250491">相片提供：<ph name="NAME"/></translation>
 <translation id="7155171745945906037">現有的相機相片或圖庫相片</translation>
-<translation id="8995603266996330174">由 <ph name="DOMAIN"/> 管理</translation>
 <translation id="9125982323641182972">在 Brave 中體驗 Brave Software 智慧功能</translation>
 <translation id="5244474230056479698">同步到 <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">這個帳戶是由 <ph name="DOMAIN"/> 所管理，因此系統會將你的書籤、歷史記錄、密碼和其他設定從這個裝置上清除。不過，你的資料仍會儲存在你的 Brave Software 帳戶中，並可透過 <ph name="BEGIN_LINK"/>Brave Software 資訊主頁<ph name="END_LINK"/>管理。</translation>
@@ -4107,6 +4129,7 @@
 <translation id="2785008241190445880">已更換書籤</translation>
 <translation id="5468853758063275923">Brave 是你的預設瀏覽器</translation>
 <translation id="2950533317914339731">針對你喜愛的 Brave Software 應用程式新增書籤</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">地圖</translation>
 <translation id="6709133671862442373">新聞內容</translation>

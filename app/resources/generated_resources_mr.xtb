@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">कोणतेही शोध परिणाम आढळले नाहीत</translation>
 <translation id="8967866634928501045">दाखवण्यासाठी Alt Shift A दाबा</translation>
 <translation id="998747458861718449">तपासा</translation>
+<translation id="4428301600092811022">Brave Software वरून इमेज वर्णन मिळवायचे आहे का?</translation>
 <translation id="741204030948306876">होय, मला मान्य आहे</translation>
 <translation id="780301667611848630">नाही, नको</translation>
 <translation id="3943582379552582368">&amp;मागील</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">म&amp;दत केंद्र</translation>
 <translation id="7324297612904500502">बीटा फोरम</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">शोध इंजिन &amp;संपादित करा...</translation>
 <translation id="5702898740348134351">शोध इंजिने &amp;संपादित करा...</translation>
 <translation id="2454247629720664989">कीवर्ड</translation>
@@ -1222,6 +1224,7 @@
 <translation id="5867841422488265304">वेब पत्ता शोधा किंवा टाइप करा</translation>
 <translation id="2129873093718581193">Brave Software वर शोधा किंवा URL टाइप करा</translation>
 <translation id="6363797201514053536">Brave Software वर शोधा किंवा URL टाइप करा</translation>
+<translation id="4888839742663123585">Brave Software वर शोधा</translation>
 <translation id="6078323886959318429">शॉर्टकट जोडा</translation>
 <translation id="6324916366299863871">शॉर्टकट संपादित करा</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1296,8 +1299,10 @@
 <translation id="6207200176136643843">झूम स्तर डीफॉल्टवर रीसेट करा</translation>
 <translation id="4953689047182316270">प्रवेशयोग्यता कार्यक्रमांना प्रतिसाद द्या</translation>
 <translation id="4677585247300749148"><ph name="URL"/> ला अॅक्सेसिबिलिटी इव्‍हेंटना प्रतिसाद द्यायचा आहे</translation>
+<translation id="2224471211857467033">ॲक्सेसिबिलिटी इव्हेंट</translation>
 <translation id="6116338172782435947">क्लिपबोर्डवर कॉपी केलेला मजकूर आणि इमेज पहा</translation>
 <translation id="3461266716147554923"><ph name="URL"/> ला क्लिपबोर्डवर कॉपी केलेला मजकूर आणि इमेज पहायच्या आहेत</translation>
+<translation id="2586657967955657006">क्लिपबोर्ड</translation>
 <translation id="4838836835474292213">क्लिपबोर्डचा आशय वाचण्याची अनुमती दिली</translation>
 <translation id="1415708812149920388">क्लिपबोर्डचा रीड अ‍ॅक्सेस नाकारला</translation>
 <translation id="2365507699358342471">या पेजवर क्लिपबोर्डवर कॉपी केलेला मजकूर आणि इमेज दिसू शकतात.</translation>
@@ -1725,6 +1730,7 @@
 <translation id="7547317915858803630">चेतावणी: तुमची <ph name="PRODUCT_NAME"/> सेटिंग्ज एका नेटवर्क ड्राइव्हवर संचयित करण्यात आली आहेत. यामुळे वेग मंदावणे, क्रॅश किंवा डेटा गमावणे हे परिणाम देखील होऊ शकतात.</translation>
 <translation id="3122496702278727796">डेटा निर्देशिका तयार करण्यात अयशस्वी</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> ला एकाहून अधिक फायली डाउनलोड करायच्या आहेत</translation>
+<translation id="7514365320538308">डाउनलोड करा</translation>
 <translation id="691024665142758461">एकाधिक फायली डाउनलोड करा</translation>
 <translation id="7004499039102548441">अलीकडील टॅब</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 टॅब}one{# टॅब}other{# टॅब}}</translation>
@@ -1816,6 +1822,7 @@
 <translation id="6156960295318603523">भाषा सेटिंग्ज</translation>
 <translation id="7931318309563332511">अनोळखी</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> ला तुम्हाला सूचना पाठवायची आहे</translation>
+<translation id="2482878487686419369">सूचना</translation>
 <translation id="7221855153210829124">सूचना दर्शवा</translation>
 <translation id="8393700583063109961">संदेश पाठवा</translation>
 <translation id="6701535245008341853">प्रोफाइल मिळविणे शक्य नाही.</translation>
@@ -1917,6 +1924,7 @@
 <translation id="1753905327828125965">सर्वाधिक भेट दिलेले</translation>
 <translation id="5612720917913232150"><ph name="URL"/> ला तुमच्या काँप्युटरचे स्थान वापरायचे आहे</translation>
 <translation id="4733082559415072992"><ph name="URL"/> ला तुमच्या डिव्हाइसचे स्थान वापरायचे आहे</translation>
+<translation id="5646376287012673985">स्थान</translation>
 <translation id="3016780570757425217">आपले स्थान जाणून घ्या</translation>
 <translation id="4068506536726151626">या पेजवर आपले स्थान ट्रॅक करणार्‍या खालील साइटवरील घटक समाविष्ट आहेत:</translation>
 <translation id="4920887663447894854">या पेजवर आपले स्थान ट्रॅक करण्यापासून खालील साइट अवरोधित केल्या गेल्या आहेत:</translation>
@@ -1926,6 +1934,7 @@
 <translation id="3528033729920178817">हे पृष्ठ आपले स्थान ट्रॅक करत आहे.</translation>
 <translation id="1510030919967934016">आपले स्थान ट्रॅक करण्यापासून या पृष्ठास अवरोधित केले गेले आहे.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> ला तुमच्या MIDI डिव्हाइसचे पूर्ण नियंत्रण मिळवायचे आहे</translation>
+<translation id="1834583737373831634">MIDI डिव्हाइस</translation>
 <translation id="8606726445206553943">आपले MIDI डिव्हाइसेस वापरा</translation>
 <translation id="1849186935225320012">या पृष्ठास MIDI डिव्हाइसचे पूर्ण नियंत्रण आहे.</translation>
 <translation id="2986010903908656993">MIDI डिव्हाइसचे पूर्ण नियंत्रण असण्यापासून हे पृष्ठ अवरोधित केले गेले आहे.</translation>
@@ -1959,6 +1968,7 @@
 <translation id="8282947398454257691">तुमचा अनन्य डिव्हाइस अभिज्ञापक जाणून घ्या</translation>
 <translation id="8329449853370113380"><ph name="URL"/> ला संरक्षित आशय चालू करायचा आहे. तुमच्या डिव्हाइसची ओळख Brave Software द्वारे पडताळली जाईल</translation>
 <translation id="2650609753175229582"><ph name="URL"/> ला संरक्षित आशय प्ले करायचा आहे. तुमच्या डिव्हाइसच्या ओळखीची Brave Software कडून पडताळणी केली जाईल आणि कदाचित या साइटकडून अ‍ॅक्सेस केली जाईल.</translation>
+<translation id="1746402432151920942">संरक्षित मीडिया आयडेंटिफायर</translation>
 <translation id="1322046419516468189">सेव्ह केलेले पासवर्ड तुमच्या <ph name="SAVED_PASSWORDS_STORE"/> मध्ये पाहा आणि व्यवस्थापित करा</translation>
 <translation id="5297082477358294722">पासवर्ड सेव्ह केलेले आहेत. तुमच्या <ph name="SAVED_PASSWORDS_STORE"/> मध्ये सेव्ह केलेले पासवर्ड पाहा आणि व्यवस्थापित करा.</translation>
 <translation id="5713644099811900409">Brave Software खाते</translation>
@@ -2018,18 +2028,24 @@
 <translation id="3532844647053365774"><ph name="HOST"/> ला तुमचा मायक्रोफोन वापरायचा आहे</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> ला तुमचा कॅमेरा वापरायचा आहे</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> ला तुमची स्क्रीन शेअर करायची आहे</translation>
+<translation id="4275663329226226506">माध्यम</translation>
 <translation id="8962918469425892674">ही साइट गती किंवा प्रकाश सेन्सर वापरत आहे.</translation>
+<translation id="4532646538815530781">ही साइट मोशन सेन्सर वापरत आहे.</translation>
 <translation id="6057381398996433816">या साइटला तुमचे गती किंवा प्रकाश सेन्सर वापरण्यापासून ब्लॉक केले गेले आहे.</translation>
+<translation id="7707108266051544351">या साइटला मोशन सेन्सर वापरण्यापासून ब्लॉक केले आहे.</translation>
 <translation id="1151917987301063366"><ph name="HOST"/> ला नेहमी सेन्सर अॅक्सेस करू द्या</translation>
 <translation id="7377451353532943397">सेन्सर अॅक्सेस ब्लॉक करणे सुरू ठेवा</translation>
 <translation id="6878422606530379992">सेन्सरना अनुमती आहे</translation>
 <translation id="4031527940632463547">सेन्सर ब्लॉक केले गेले आहेत</translation>
 <translation id="4559617833001311418">ही साइट तुमचे गती किंवा प्रकाश सेन्सर अॅक्सेस करत आहे.</translation>
+<translation id="5623282979409330487">ही साइट तुमचा मोशन सेन्सर ॲक्सेस करत आहे.</translation>
 <translation id="2309620859903500144">या साइटला तुमचे गती किंवा प्रकाश सेन्सर अॅक्सेस करण्यापासून ब्लॉक केले गेले आहे.</translation>
+<translation id="6541638731489116978">या साइटला तुमचे मोशन सेन्सर अ‍ॅक्सेस करण्यापासून ब्लॉक केले आहे.</translation>
 <translation id="8645354835496065562">सेन्सर अॅक्सेस देणे सुरू ठेवा</translation>
 <translation id="2903882649406874750"><ph name="HOST"/> ला सेन्सर अॅक्सेस करण्यापासून नेहमी ब्लॉक करा</translation>
 <translation id="3194737229810486521"><ph name="URL"/> ला तुमच्या डिव्हाइसवर डेटा कायमचा स्टोअर करायचा आहे</translation>
 <translation id="1030706264415084469"><ph name="URL"/> ला तुमच्या डिव्हाइसवर मोठ्या प्रमाणावर डेटा कायमचा स्टोअर करायचा आहे</translation>
+<translation id="885701979325669005">स्टोरेज</translation>
 <translation id="1712552549805331520"><ph name="URL"/> ला तुमच्या स्थानिक काँप्युटरवर डेटा कायमचा स्टोअर करायचा आहे</translation>
 <translation id="1997484222658892567"><ph name="URL"/> ला तुमच्या स्थानिक काँप्युटरवर मोठ्या प्रमाणावर डेटा कायमचा स्टोअर करायचा आहे</translation>
 <translation id="7648992873808071793">या डिव्हाइसवर फायली संचयित करा</translation>
@@ -2448,9 +2464,7 @@
 <translation id="702252130983202758">तुमची अ‍ॅप्‍स</translation>
 <translation id="8831664945713891930">एक्स्टेंशन सेटिंग्ज उघडा</translation>
 <translation id="5138227688689900538">कमी दाखवा</translation>
-<translation id="5646376287012673985">स्थान</translation>
 <translation id="5270167208902136840">आणखी <ph name="NUMBER_OF_MORE_APPS"/>अ‍ॅप्स दाखवा</translation>
-<translation id="2482878487686419369">सूचना</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> अ‍ॅप्स</translation>
 <translation id="7207631048330366454">अ‍ॅप्स शोधा</translation>
 <translation id="9011424611726486705">साइटच्या सेटिंग्ज उघडा</translation>
@@ -2783,6 +2797,7 @@
 <translation id="4305227814872083840">मोठा (2s)</translation>
 <translation id="2860150991415616761">खूप दीर्घ (4s)</translation>
 <translation id="1217668622537098248">क्रिया केल्यानंतर डाव्या क्लिकवर परत जा</translation>
+<translation id="8781470833671194250">स्थान स्थिरीकरणावर क्लिक करा</translation>
 <translation id="3682824389861648626">हालचालाची मर्यादा</translation>
 <translation id="5511379779384092781">आणखी लहान</translation>
 <translation id="2765217105034171413">लहान</translation>
@@ -3405,7 +3420,10 @@
 <translation id="9038649477754266430">पेज अधिक द्रुतपणे लोड करण्यासाठी पूर्वानुमान सेवेचा वापर करा</translation>
 <translation id="7981313251711023384">जलद ब्राउझिंग आणि शोधाकरता पेज आधीच लोड करा</translation>
 <translation id="2468205691404969808">जरी तुम्ही त्या पेजना भेट देत नसलात तरी, तुमची प्राधान्ये लक्षात ठेवण्यासाठी कुकीजचा वापर करते</translation>
+<translation id="3181954750937456830">सुरक्षित ब्राउझिंग (तुम्हाला आणि तुमच्या डिव्हाइसना धोकादायक साइटपासून सुरक्षित ठेवते)</translation>
+<translation id="7315322926489145388">तुमची सुरक्षा धोक्यात असते तेव्हा, तुम्ही भेट दिलेल्या काही पेजचे URL Brave Software ला पाठवते</translation>
 <translation id="4991384657077828949">Brave सुरक्षेमध्ये सुधारणा करण्यात मदत करा</translation>
+<translation id="1943176487615318915">धोकादायक ॲप्स आणि साइट शोधण्यासाठी, Brave तुम्ही भेट दिलेल्या काही पेजचे URL, मर्यादित सिस्टमची माहिती आणि काही पेजचा आशय Brave Software कडे पाठवतो</translation>
 <translation id="2875273286298348523">तुम्ही ब्राउझरमध्ये टाइप करता तो मजकूर Brave Brave Software ला पाठवते</translation>
 <translation id="9079153198295609735">Brave Software ला वापर आकडेवारी आणि क्रॅश अहवाल आपोआप पाठवा</translation>
 <translation id="5941220456342415404">Brave Software कडे निदान आणि वापर डेटा स्वयंचलितपणे पाठवा</translation>
@@ -3478,7 +3496,6 @@
 <translation id="1919345977826869612">जाहिराती</translation>
 <translation id="5649053991847567735">स्वयंचलित डाउनलोड</translation>
 <translation id="3744111561329211289">पार्श्वभूमी संकालन</translation>
-<translation id="2586657967955657006">क्लिपबोर्ड</translation>
 <translation id="5518219166343146486">साइटला क्लिपबोर्डवर कॉपी केलेला मजकूर आणि इमेज पाहायच्या असतील, तेव्हा विचारा</translation>
 <translation id="2089795179672254991">साइटला तुम्ही क्लिपबोर्डवर कॉपी केलेला मजकूर आणि इमेज पाहायच्‍या असतील, तेव्हा विचारा (शिफारस केलेले)</translation>
 <translation id="16815041330799488">क्लिपबोर्डवर कॉपी केलेला मजकूर आणि इमेज पाहण्याची अनुमती साइटना देऊ नका</translation>
@@ -3506,6 +3523,7 @@
 <translation id="1128109161498068552">MIDI डिव्हाइसवर प्रवेश करण्यासाठी सिस्टम विशेष संदेश वापरण्याकरिता कोणत्याही साइटला अनुमती देऊ नका</translation>
 <translation id="2091887806945687916">ध्वनी</translation>
 <translation id="4751476147751820511">मोशन किंवा प्रकाश सेन्सर</translation>
+<translation id="1717218214683051432">मोशन सेन्सर</translation>
 <translation id="6059925163896151826">USB डिव्हाइसेस</translation>
 <translation id="8666584013686199826">साइटला केव्हा USB डिव्हाइस अॅक्सेस करायचे आहेत हे विचारा</translation>
 <translation id="6291949900244949761">साइटला केव्हा USB डिव्हाइस अॅक्सेस करायचे आहेत हे विचारा (शिफारस केलेले)</translation>
@@ -3541,7 +3559,9 @@
 <translation id="1660204651932907780">साइटना ध्वनी प्ले करण्याची परवानगी द्या (शिफारस केलेले)</translation>
 <translation id="3600792891314830896">ध्वनी प्ले करणाऱ्या साइट म्यूट करा</translation>
 <translation id="5084230410268011727">साइटना गती आणि प्रकाश सेन्सर वापरू द्या</translation>
+<translation id="489454699928748701">साइटना तुमचे मोशन सेन्सर वापरण्याची अनुमती द्या</translation>
 <translation id="5047421709274785093">गती आणि प्रकाश सेन्सर वापरण्यापासून साइटना ब्लॉक करा</translation>
+<translation id="6396988158856674517">मोशन सेन्सर वापरण्यापासून साइटना ब्लॉक करा</translation>
 <translation id="2904456025988372123">प्रथम फायलीनंतर जेव्हा एखादी साइट फायली स्वयंचलितपणे डाउनलोड करण्याचा प्रयत्न करते तेव्हा विचारा</translation>
 <translation id="3494769164076977169">प्रथम फायलीनंतर जेव्हा एखादी साइट फायली स्वयंचलितपणे डाउनलोड करण्याचा प्रयत्न करते तेव्हा विचारा (शिफारस केलेले)</translation>
 <translation id="5036662165765606524">एकाधिक फायली स्वयंचलितपणे डाउनलोड करण्यासाठी कोणत्याही साइटला अनुमती देऊ नका</translation>
@@ -4076,6 +4096,7 @@
 <translation id="2785008241190445880">बुकमार्क बदलले</translation>
 <translation id="5468853758063275923">तुमचे डीफॉल्ट ब्राउझर Brave आहे</translation>
 <translation id="2950533317914339731">तुमच्या आवडत्या Brave Software Apps वर बुकमार्क जोडा</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">नकाशे</translation>
 <translation id="6709133671862442373">News</translation>
