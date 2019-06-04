@@ -107,7 +107,7 @@ const std::string& BraveP3ALogStore::staged_log_signature() const {
 void BraveP3ALogStore::StageNextLog() {
   // Stage the next item.
   DCHECK(has_unsent_logs());
-  uint64_t rand_idx = base::RandUint64() % unsent_entries_.size();
+  uint64_t rand_idx = base::RandGenerator(unsent_entries_.size());
   staged_entry_key_ = *(unsent_entries_.begin() + rand_idx);
   DCHECK(!log_.find(staged_entry_key_)->second.sent);
 
