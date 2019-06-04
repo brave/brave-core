@@ -11,6 +11,7 @@
 
 #include "base/bind.h"
 #include "base/callback.h"
+#include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/logging.h"
@@ -19,6 +20,7 @@
 #include "base/task/post_task.h"
 #include "brave/browser/widevine/brave_widevine_bundle_unzipper.h"
 #include "brave/common/pref_names.h"
+#include "brave/common/brave_switches.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -34,11 +36,17 @@
 #include "services/service_manager/public/cpp/connector.h"
 #include "third_party/widevine/cdm/widevine_cdm_common.h"
 #include "url/gurl.h"
-#include "widevine_cdm_version.h"
+#include "widevine_cdm_version.h"  // NOLINT
 
 namespace {
 
-constexpr int kWidevineBackgroundUpdateDelayInMins = 5;
+// Try five times when background update is failed.
+const int kMaxBackgroundUpdateRetry = 5;
+
+int GetBackgroundUpdateDelayInMins() {
+  return base::CommandLine::ForCurrentProcess()->HasSwitch(
+      switches::kFastWidevineBundleUpdate) ? 0 : 5;
+}
 
 base::Optional<base::FilePath> GetTargetWidevineBundleDir() {
   base::FilePath widevine_cdm_dir;
@@ -52,17 +60,27 @@ base::Optional<base::FilePath> GetTargetWidevineBundleDir() {
   return base::Optional<base::FilePath>();
 }
 
-void SetWidevinePrefs(bool enable) {
+void ResetWidevinePrefs() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   Profile* profile = ProfileManager::GetActiveUserProfile();
   DCHECK(profile);
 
-  profile->GetPrefs()->SetBoolean(kWidevineOptedIn, enable);
+  profile->GetPrefs()->SetBoolean(kWidevineOptedIn, false);
   profile->GetPrefs()->SetString(
       kWidevineInstalledVersion,
-      enable ? WIDEVINE_CDM_VERSION_STRING
-             : BraveWidevineBundleManager::kWidevineInvalidVersion);
+      BraveWidevineBundleManager::kWidevineInvalidVersion);
+}
+
+void SetWidevinePrefsAsInstalledState() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  Profile* profile = ProfileManager::GetActiveUserProfile();
+  DCHECK(profile);
+
+  profile->GetPrefs()->SetBoolean(kWidevineOptedIn, true);
+  profile->GetPrefs()->SetString(kWidevineInstalledVersion,
+                                 WIDEVINE_CDM_VERSION_STRING);
 }
 
 }  // namespace
@@ -133,8 +151,7 @@ void BraveWidevineBundleManager::DownloadWidevineBundle(
   bundle_loader_->DownloadToTempFile(
       g_browser_process->system_network_context_manager()
           ->GetURLLoaderFactory(),
-      std::move(callback)
-  );
+      std::move(callback));
 }
 
 void BraveWidevineBundleManager::OnBundleDownloaded(
@@ -175,7 +192,7 @@ void BraveWidevineBundleManager::Unzip(
     const base::FilePath& target_bundle_dir) {
   if (is_test_) return;
 
-   BraveWidevineBundleUnzipper::Create(
+  BraveWidevineBundleUnzipper::Create(
       content::ServiceManagerConnection::GetForProcess()->GetConnector(),
       file_task_runner(),
       base::BindOnce(&BraveWidevineBundleManager::OnBundleUnzipped,
@@ -223,11 +240,12 @@ void BraveWidevineBundleManager::InstallDone(const std::string& error) {
   set_in_progress(false);
 
   // On success, marks that browser needs to restart to enable widevine.
-  // Otherwiase, reset prefs to initial state.
+  // On failure, don't change current prefs values.
+  // If this failure comes from first install, prefs states are initial state.
+  // If this failure comes from from update, prefs states are currently
+  // installed state.
   if (error.empty())
     set_needs_restart(true);
-  else
-    SetWidevinePrefs(false);
 
   std::move(done_callback_).Run(error);
 }
@@ -244,11 +262,11 @@ void BraveWidevineBundleManager::StartupCheck() {
   };
 
   // If cdms has widevine cdminfo, it means that filesystem has widevine lib.
-  if (std::find_if(cdms.begin(), cdms.end(), has_widevine) == cdms.end() ) {
+  if (std::find_if(cdms.begin(), cdms.end(), has_widevine) == cdms.end()) {
     DVLOG(1) << __func__ << ": reset widevine prefs state";
     // Widevine is not installed yet. Don't need to check.
     // Also reset prefs to make as initial state.
-    SetWidevinePrefs(false);
+    ResetWidevinePrefs();
     return;
   }
 
@@ -259,7 +277,7 @@ void BraveWidevineBundleManager::StartupCheck() {
   // bundle unzipping and prefs setting is done asynchronously.
   if (!profile->GetPrefs()->GetBoolean(kWidevineOptedIn)) {
     DVLOG(1) << __func__ << ": recover invalid widevine prefs state";
-    SetWidevinePrefs(true);
+    SetWidevinePrefsAsInstalledState();
     return;
   }
 
@@ -271,13 +289,42 @@ void BraveWidevineBundleManager::StartupCheck() {
 
   // Do delayed update if installed version and latest version are different.
   if (installed_version != WIDEVINE_CDM_VERSION_STRING) {
+    DVLOG(1) << __func__ << ": new widevine version("
+                         << WIDEVINE_CDM_VERSION_STRING << ") is found and"
+                         << " background update is scheduled.";
     update_requested_ = true;
-    base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
-        FROM_HERE,
-        base::BindOnce(&BraveWidevineBundleManager::DoDelayedBackgroundUpdate,
-                       weak_factory_.GetWeakPtr()),
-        base::TimeDelta::FromMinutes(kWidevineBackgroundUpdateDelayInMins));
+    ScheduleBackgroundUpdate();
+
+    return;
   }
+
+  DVLOG(1) << __func__ << ": latest widevine version is installed.";
+}
+
+void BraveWidevineBundleManager::ScheduleBackgroundUpdate() {
+  base::SequencedTaskRunnerHandle::Get()->PostDelayedTask(
+      FROM_HERE,
+      base::BindOnce(&BraveWidevineBundleManager::DoDelayedBackgroundUpdate,
+                     weak_factory_.GetWeakPtr()),
+      base::TimeDelta::FromMinutes(GetBackgroundUpdateDelayInMins()));
+}
+
+void BraveWidevineBundleManager::OnBackgroundUpdateFinished(
+    const std::string& error) {
+  if (!error.empty()) {
+    LOG(ERROR) << __func__ << ": " << error;
+    if (background_update_retry_ < kMaxBackgroundUpdateRetry) {
+      background_update_retry_++;
+      DVLOG(1) << __func__ << ": " << "schedule background update again("
+                                   << background_update_retry_ << ")";
+      ScheduleBackgroundUpdate();
+    }
+    return;
+  }
+
+  DVLOG(1) << __func__ << ": Widevine update success";
+  // Set new widevine version to installed version prefs.
+  SetWidevinePrefsAsInstalledState();
 }
 
 void BraveWidevineBundleManager::DoDelayedBackgroundUpdate() {
@@ -291,15 +338,10 @@ void BraveWidevineBundleManager::DoDelayedBackgroundUpdate() {
            << " from " << installed_version
            << " to " << WIDEVINE_CDM_VERSION_STRING;
 
-  InstallWidevineBundle(base::BindOnce([](const std::string& error) {
-    if (!error.empty()) {
-      LOG(ERROR) << __func__ << ": " << error;
-      return;
-    }
-
-    DVLOG(1) << __func__ << ": Widevine update success";
-  }),
-  false);
+  InstallWidevineBundle(
+      base::BindOnce(&BraveWidevineBundleManager::OnBackgroundUpdateFinished,
+                     weak_factory_.GetWeakPtr()),
+      false);
 }
 
 int
@@ -312,7 +354,7 @@ BraveWidevineBundleManager::GetWidevinePermissionRequestTextFragment() const {
 
 void BraveWidevineBundleManager::WillRestart() const {
   DCHECK(needs_restart());
-  SetWidevinePrefs(true);
+  SetWidevinePrefsAsInstalledState();
   DVLOG(1) << __func__;
 }
 

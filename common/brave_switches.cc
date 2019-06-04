@@ -55,4 +55,6 @@ const char kEnableSmartTrackingProtection[] =
 // This prevents appending "Brave" to UA.
 const char kDisableOverrideUA[] = "disable-override-ua";
 
+const char kFastWidevineBundleUpdate[] = "fast-widevine-bundle-update";
+
 }  // namespace switches
