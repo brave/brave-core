@@ -30,7 +30,6 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="4150684676757176434">Nastavite da blokirate automatsku reprodukciju</translation>
 <translation id="7543906827780734027">Brave nije još pregledao ekstenziju - može biti maliciozna. Dodajte svejedno "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ?</translation>
 <translation id="2044383478723007273">Boje Brave-a</translation>
-<translation id="5341901626640816374">Koristite široku traku lokacije</translation>
 <translation id="6123134130710658846">Sakrij taster za Brave nagrade</translation>
 <translation id="7635711399568194460">Sakriva taster za Brave nagrade u traci onda kada Brave nagrade nisu omogućene</translation>
 <translation id="7965178729203412357">Novi Tor identitet</translation>
@@ -47,13 +46,20 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="2515126961943087659">Bat Ads usluga</translation>
 <translation id="7924918279836988121">Usluga knjiženja BAT</translation>
 <translation id="4472575034687746823">Започнимо</translation>
+<translation id="3400357268283240774">Dodatna podešavanja</translation>
 <translation id="6303294677342628402">Štitovi</translation>
+<translation id="768979911142179781">Podrazumevano</translation>
+<translation id="5989930075012659993">Biće zadržana vaša trenutna podešavanja za lokaciju.</translation>
+<translation id="9185018653595759199">Blokiranje društvenih medija</translation>
+<translation id="6894114137169961038">Kontrola reklama</translation>
+<translation id="1096802265930928584">Kontrola kolačića</translation>
 <translation id="8919235146866304148">Zaštita od popisivanja</translation>
 <translation id="520895744850022668">HTTPS svuda</translation>
 <translation id="5259716416204774556">Blokiranje skripti</translation>
 <translation id="7498695072878479744">Dozvoli prijavljivanje putem Google-a na veb lokacijama treće strane</translation>
 <translation id="863171915776379000">Dozvoli prijavljivanje putem Facebook-a i ugrađene objave</translation>
 <translation id="5165042248369837294">Dozvoli Twitter ugrađene tvitove</translation>
+<translation id="958971637207126733">Dozvolite ugrađene objave Linkedinu</translation>
 <translation id="6067014455220527258">Blokirajte oglase</translation>
 <translation id="6985711843506827936">Dozvoli oglase i praćenje</translation>
 <translation id="6132506775968708399">Blokirajte kolačiće trećih strana</translation>
@@ -73,11 +79,14 @@ Instaliranjem ove ekstenzije, slažete se sa Google Widevine uslovima korišće
 <translation id="2414886740292270097">Tamno</translation>
 <translation id="1360441190790440400">Isto kao Linux</translation>
 <translation id="1336940801687497203">Isto kao Windows</translation>
+<translation id="8721331068159819483">Isto kao macOS</translation>
 <translation id="6786747875388722282">Proširenja</translation>
 <translation id="2896916411183256228">Koristi WebTorrent da prikazuje torrente direktno u pretraživaču. Podržava torrent fajlove i magnetne veze.</translation>
 <translation id="6554397389149987360">Koristi komponentu Hangouts da biste omogućili deljenje ekrana i druge funkcije u pregledaču.</translation>
+<translation id="4154389611571860454">Koristi IPFS propratno proširenje da podrži IPFS u pregledaču.</translation>
 <translation id="8137559199583651773">Управљај додацима</translation>
 <translation id="4928988318462976765">Prodavnica Veb proširenja</translation>
 <translation id="9181207987584064303">Prikaži u prodavnici Veb proširenja</translation>
 <translation id="4846154056248462491">Na izlazu</translation>
+<translation id="5057399635433117814">Prevedite ovu stranicu? Na ovaj način se šalje ceo tekst sa ove stranice na Microsoft da se prevede.</translation>
 </translationbundle>

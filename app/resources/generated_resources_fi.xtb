@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Ei hakutuloksia</translation>
 <translation id="8967866634928501045">Näytä painamalla Alt Vaihto A</translation>
 <translation id="998747458861718449">&amp;Tarkista</translation>
+<translation id="4428301600092811022">Käytetäänkö Brave Softwaren kuvaselityksiä?</translation>
 <translation id="741204030948306876">Kyllä</translation>
 <translation id="780301667611848630">Ei kiitos</translation>
 <translation id="3943582379552582368">&amp;Edellinen</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">Ohj&amp;ekeskus</translation>
 <translation id="7324297612904500502">Beta-keskusteluryhmä</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Muokkaa hakukoneita...</translation>
 <translation id="5702898740348134351">Muokkaa hakukon&amp;eita...</translation>
 <translation id="2454247629720664989">Avainsana</translation>
@@ -1226,6 +1228,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="5867841422488265304">Hae tai kirjoita verkko-osoite</translation>
 <translation id="2129873093718581193">Hae Brave Softwaresta tai kirjoita URL-osoite</translation>
 <translation id="6363797201514053536">Hae Brave Softwaresta tai kirjoita URL-osoite</translation>
+<translation id="4888839742663123585">Hae Brave Softwaresta</translation>
 <translation id="6078323886959318429">Lisää pikakuvake</translation>
 <translation id="6324916366299863871">Muokkaa pikanäppäintä</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1300,8 +1303,10 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6207200176136643843">Palauta zoomauksen oletustaso</translation>
 <translation id="4953689047182316270">Vastata esteettömyystapahtumiin</translation>
 <translation id="4677585247300749148"><ph name="URL"/> haluaa vastata esteettömyystapahtumiin.</translation>
+<translation id="2224471211857467033">Esteettömyystapahtumat</translation>
 <translation id="6116338172782435947">nähdä leikepöydälle kopioidun tekstin ja kuvat</translation>
 <translation id="3461266716147554923"><ph name="URL"/> haluaa nähdä leikepöydälle kopioidun tekstin ja kuvat.</translation>
+<translation id="2586657967955657006">Leikepöytä</translation>
 <translation id="4838836835474292213">Leikepöydän lukuoikeus myönnetty</translation>
 <translation id="1415708812149920388">Leikepöydän lukuoikeus evätty</translation>
 <translation id="2365507699358342471">Tämä sivu näkee leikepöydälle kopioidun tekstin ja kuvat.</translation>
@@ -1726,6 +1731,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="7547317915858803630">Varoitus: Tuotteen <ph name="PRODUCT_NAME"/> asetukset on tallennettu verkkoasemaan. Tämä voi aiheuttaa hidastuksia, virheitä tai tietojen menetyksiä.</translation>
 <translation id="3122496702278727796">Tietohakemiston luonti epäonnistui</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> haluaa ladata useita tiedostoja</translation>
+<translation id="7514365320538308">Lataa</translation>
 <translation id="691024665142758461">ladata useita tiedostoja</translation>
 <translation id="7004499039102548441">Hiljattain suljetut välilehdet</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 välilehti}other{# välilehteä}}</translation>
@@ -1817,6 +1823,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="6156960295318603523">Kieliasetukset</translation>
 <translation id="7931318309563332511">Tuntematon</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> haluaa lähettää sinulle ilmoituksia</translation>
+<translation id="2482878487686419369">Ilmoitukset</translation>
 <translation id="7221855153210829124">Näytä ilmoitukset</translation>
 <translation id="8393700583063109961">Lähetä viesti</translation>
 <translation id="6701535245008341853">Profiilin noutaminen epäonnistui.</translation>
@@ -1918,6 +1925,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1753905327828125965">Käydyimmät</translation>
 <translation id="5612720917913232150"><ph name="URL"/> haluaa käyttää tietokoneesi sijaintia.</translation>
 <translation id="4733082559415072992"><ph name="URL"/> haluaa käyttää laitteesi sijaintia.</translation>
+<translation id="5646376287012673985">Sijainti</translation>
 <translation id="3016780570757425217">Saada sijaintisi selville.</translation>
 <translation id="4068506536726151626">Tämä sivu sisältää osia seuraavista sivuistoista, jotka käyttävät sijaintiasi:</translation>
 <translation id="4920887663447894854">Seuraavia sivustoja on estetty käyttämästä sijaintiasi tällä sivulla:</translation>
@@ -1927,6 +1935,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3528033729920178817">Tämä sivu käyttää sijaintiasi.</translation>
 <translation id="1510030919967934016">Tätä sivua on estetty käyttämästä sijaintiasi.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> haluaa MIDI-laitteidesi täyden hallintaoikeuden.</translation>
+<translation id="1834583737373831634">MIDI-laitteet</translation>
 <translation id="8606726445206553943">Käyttää MIDI-laitteitasi.</translation>
 <translation id="1849186935225320012">Tällä sivulla on MIDI-laitteiden täysi käyttöoikeus.</translation>
 <translation id="2986010903908656993">Tältä sivulta on estetty MIDI-laitteiden täysi käyttöoikeus.</translation>
@@ -1960,6 +1969,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="8282947398454257691">Saada selville laitetunnuksesi.</translation>
 <translation id="8329449853370113380"><ph name="URL"/> yrittää toistaa suojattua sisältöä. Brave Software vahvistaa laitteesi tunnistetiedot.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> haluaa toistaa suojattua sisältöä. Brave Software vahvistaa laitteesi identiteetin, ja myös sivusto voi saada pääsyn laitteesi identiteettitietoihin.</translation>
+<translation id="1746402432151920942">Suojatun median tunniste</translation>
 <translation id="1322046419516468189">Katso ja ylläpidä salasanoja: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Salasana tallennettu. Katso ja ylläpidä tallennettuja salasanoja: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software-tilisi avulla</translation>
@@ -2019,18 +2029,24 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="3532844647053365774"><ph name="HOST"/> haluaa käyttää mikrofoniasi.</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> haluaa käyttää kameraasi.</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> haluaa jakaa laitteesi näytön.</translation>
+<translation id="4275663329226226506">Media</translation>
 <translation id="8962918469425892674">Tämä sivusto käyttää liikkeen- tai valontunnistimia.</translation>
+<translation id="4532646538815530781">Tämä sivusto käyttää liiketunnistimia.</translation>
 <translation id="6057381398996433816">Tältä sivustolta on estetty liikkeen- tai valontunnistimien käyttö.</translation>
+<translation id="7707108266051544351">Tältä sivustolta on estetty liikkeentunnistimien käyttö.</translation>
 <translation id="1151917987301063366"><ph name="HOST"/> saa aina luvan käyttää tunnistimia</translation>
 <translation id="7377451353532943397">Estä edelleen tunnistimien käyttö</translation>
 <translation id="6878422606530379992">Tunnistimet sallittu</translation>
 <translation id="4031527940632463547">Tunnistimet estetty</translation>
 <translation id="4559617833001311418">Tämä sivusto käyttää liikkeen- ja valontunnistimiasi.</translation>
+<translation id="5623282979409330487">Tämä sivusto käyttää liiketunnistimien lukemia.</translation>
 <translation id="2309620859903500144">Tältä sivustolta on estetty liikkeen- tai valontunnistimien käyttö.</translation>
+<translation id="6541638731489116978">Tältä sivustolta on estetty liiketunnistimien lukemien käyttö.</translation>
 <translation id="8645354835496065562">Salli edelleen tunnistimien käyttö</translation>
 <translation id="2903882649406874750"><ph name="HOST"/> ei saa koskaan käyttää tunnistimia</translation>
 <translation id="3194737229810486521"><ph name="URL"/> haluaa tallentaa tietoja pysyvästi laitteellesi.</translation>
 <translation id="1030706264415084469"><ph name="URL"/> haluaa tallentaa suuria tietomääriä pysyvästi laitteellesi.</translation>
+<translation id="885701979325669005">Tallennus</translation>
 <translation id="1712552549805331520"><ph name="URL"/> haluaa tallentaa tietoja pysyvästi paikalliselle tietokoneellesi.</translation>
 <translation id="1997484222658892567"><ph name="URL"/> haluaa tallentaa suuria tietomääriä pysyvästi paikalliselle tietokoneellesi.</translation>
 <translation id="7648992873808071793">Tallentaa tiedostoja tälle laitteelle.</translation>
@@ -2449,9 +2465,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="702252130983202758">Omat sovellukset</translation>
 <translation id="8831664945713891930">Avaa laajennusasetukset</translation>
 <translation id="5138227688689900538">Näytä vähemmän</translation>
-<translation id="5646376287012673985">Sijainti</translation>
 <translation id="5270167208902136840">Näytä <ph name="NUMBER_OF_MORE_APPS"/> muuta sovellusta</translation>
-<translation id="2482878487686419369">Ilmoitukset</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> sovellusta</translation>
 <translation id="7207631048330366454">Hae sovelluksia</translation>
 <translation id="9011424611726486705">Avaa sivustoasetukset</translation>
@@ -2786,6 +2800,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="4305227814872083840">pitkä (2 s)</translation>
 <translation id="2860150991415616761">hyvin pitkä (4 s)</translation>
 <translation id="1217668622537098248">Palaa ykkösklikkaukseen toiminnon jälkeen</translation>
+<translation id="8781470833671194250">Klikkauskohdan vakautus</translation>
 <translation id="3682824389861648626">Liikkeen raja-arvo</translation>
 <translation id="5511379779384092781">Erittäin pieni</translation>
 <translation id="2765217105034171413">Pieni</translation>
@@ -3408,7 +3423,10 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="9038649477754266430">Ennakointipalvelun avulla voit ladata sivuja nopeammin</translation>
 <translation id="7981313251711023384">Esilataa sivuja nopeuttaaksesi lataamista ja hakemista</translation>
 <translation id="2468205691404969808">Käyttää evästeitä asetustesi muistamiseen, vaikka et kävisi kyseisillä sivuilla</translation>
+<translation id="3181954750937456830">Selaussuoja (suojaa sinua ja laitettasi vaarallisilta sivustoilta)</translation>
+<translation id="7315322926489145388">Lähettää joidenkin avattujen sivujen URL-osoitteet Brave Softwarelle, kun turvallisuutesi on vaarassa</translation>
 <translation id="4991384657077828949">Auttaa parantamaan Braven suojausta.</translation>
+<translation id="1943176487615318915">Vaarallisia sovelluksia ja sivustoja löytääkseen Brave lähettää joidenkin avattujen sivujen URL-osoitteita, rajallisia järjestelmätietoja ja osia sivujen sisällöstä Brave Softwarelle</translation>
 <translation id="2875273286298348523">Brave lähettää selaimeen kirjoittamasi tekstin Brave Softwarelle</translation>
 <translation id="9079153198295609735">Lähetä Brave Softwarelle käyttötilastoja ja virheraportteja automaattisesti</translation>
 <translation id="5941220456342415404">Lähetä automaattisesti diagnostiikka- ja käyttötietoja Brave Softwarelle</translation>
@@ -3480,7 +3498,6 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1919345977826869612">Mainokset</translation>
 <translation id="5649053991847567735">Automaattiset lataukset</translation>
 <translation id="3744111561329211289">Taustasynkronointi</translation>
-<translation id="2586657967955657006">Leikepöytä</translation>
 <translation id="5518219166343146486">Kysy, kun sivusto haluaa nähdä leikepöydälle kopioidun tekstin ja kuvat</translation>
 <translation id="2089795179672254991">Kysy, kun sivusto haluaa nähdä leikepöydälle kopioidun tekstin ja kuvat (suositus)</translation>
 <translation id="16815041330799488">Älä anna sivustojen nähdä leikepöydälle kopioitua tekstiä ja kuvia</translation>
@@ -3508,6 +3525,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1128109161498068552">Älä anna sivustojen käyttää MIDI-laitteita järjestelmän omien viestien avulla</translation>
 <translation id="2091887806945687916">Ääni</translation>
 <translation id="4751476147751820511">Liike- tai valotunnistimet</translation>
+<translation id="1717218214683051432">Liiketunnistimet</translation>
 <translation id="6059925163896151826">USB-laitteet</translation>
 <translation id="8666584013686199826">Kysy aina, kun sivusto pyytää USB-laitteen käyttölupaa</translation>
 <translation id="6291949900244949761">Kysy aina, kun sivusto pyytää USB-laitteen käyttölupaa (suositus)</translation>
@@ -3543,7 +3561,9 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="1660204651932907780">Salli sivustojen toistaa ääniä (suositus)</translation>
 <translation id="3600792891314830896">Mykistä ääniä toistavat sivustot</translation>
 <translation id="5084230410268011727">Salli sivustojen käyttää liike- ja valotunnistimia.</translation>
+<translation id="489454699928748701">Anna sivustojen käyttää liiketunnistimia</translation>
 <translation id="5047421709274785093">Estä sivustoja käyttämästä liike- ja valotunnistimia.</translation>
+<translation id="6396988158856674517">Estä sivustoja käyttämästä liiketunnistimia</translation>
 <translation id="2904456025988372123">Kysy aina, kun sivusto yrittää ladata tiedostoja automaattisesti ensimmäisen tiedoston jälkeen</translation>
 <translation id="3494769164076977169">Kysy aina sivuston yrittäessä ladata tiedostoja automaattisesti ensimmäisen tiedoston jälkeen (suositus)</translation>
 <translation id="5036662165765606524">Älä anna sivustojen ladata useita tiedostoja automaattisesti</translation>
@@ -4078,6 +4098,7 @@ Tallenna avaintiedosto suojattuun sijaintiin. Tarvitset sitä, jos haluat luoda 
 <translation id="2785008241190445880">Kirjanmerkki korvattu</translation>
 <translation id="5468853758063275923">Brave on oletusselaimesi</translation>
 <translation id="2950533317914339731">Lisää kirjanmerkkejä tuttuihin Brave Software-sovelluksiin</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Uutiset</translation>

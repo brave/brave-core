@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Netika atrasts neviens meklēšanas rezultāts.</translation>
 <translation id="8967866634928501045">Lai skatītu saturu, nospiediet Alt+Shift+A.</translation>
 <translation id="998747458861718449">Pārbaudīt</translation>
+<translation id="4428301600092811022">Vai vēlaties iegūt attēlu aprakstus no Brave Software?</translation>
 <translation id="741204030948306876">Jā, piekrītu</translation>
 <translation id="780301667611848630">Nē, paldies</translation>
 <translation id="3943582379552582368">Atpakaļ</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">P&amp;alīdzības centrs</translation>
 <translation id="7324297612904500502">Beta versijas forums</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">Rediģēt meklējumprogrammas...</translation>
 <translation id="5702898740348134351">R&amp;ediģēt meklētājprogrammas...</translation>
 <translation id="2454247629720664989">Atslēgvārds</translation>
@@ -1244,6 +1246,7 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="5867841422488265304">Meklējiet vai ievadiet tīmekļa adresi</translation>
 <translation id="2129873093718581193">Meklējiet Brave Software tīklā vai ierakstiet vietrādi URL</translation>
 <translation id="6363797201514053536">Meklēt Brave Software tīklā vai ievadīt URL</translation>
+<translation id="4888839742663123585">Meklēt Brave Software tīklā</translation>
 <translation id="6078323886959318429">Pievienot saīsni</translation>
 <translation id="6324916366299863871">Saīsnes rediģēšana</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1318,8 +1321,10 @@ Glabājiet atslēgas failu drošā vietā. Tas būs vajadzīgs, lai izveidotu ja
 <translation id="6207200176136643843">Atiestatīt noklusējuma tālummaiņas līmeni</translation>
 <translation id="4953689047182316270">Atbildēt uz pieejamības notikumiem</translation>
 <translation id="4677585247300749148">Vietnē <ph name="URL"/> tiek pieprasīta atļauja reaģēt uz piekļūstamības notikumiem.</translation>
+<translation id="2224471211857467033">Pieejamības notikumi</translation>
 <translation id="6116338172782435947">Skatīt starpliktuvē kopēto tekstu un attēlus</translation>
 <translation id="3461266716147554923">Vietne <ph name="URL"/> vēlas skatīt starpliktuvē kopēto tekstu un attēlus.</translation>
+<translation id="2586657967955657006">Starpliktuve</translation>
 <translation id="4838836835474292213">Atļauta piekļuve starpliktuves satura lasīšanai</translation>
 <translation id="1415708812149920388">Liegta piekļuve starpliktuves satura lasīšanai</translation>
 <translation id="2365507699358342471">Šī vietne var skatīt starpliktuvē kopēto tekstu un attēlus.</translation>
@@ -1748,6 +1753,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="7547317915858803630">Brīdinājums: <ph name="PRODUCT_NAME"/> iestatījumi ir saglabāti tīkla diskā. Tādējādi var tikt palēnināta darbība, notikt avārijas vai tikt zaudēti dati.</translation>
 <translation id="3122496702278727796">Neizdevās radīt datu direktoriju</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> vēlas lejupielādēt vairākus failus</translation>
+<translation id="7514365320538308">Lejupielādēt</translation>
 <translation id="691024665142758461">lejupielādēt vairākus failus</translation>
 <translation id="7004499039102548441">Nesen atvērtas cilnes</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 cilnes}zero{# ciļņu}one{# cilne}other{# cilnes}}</translation>
@@ -1839,6 +1845,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="6156960295318603523">Valodas iestatījumi</translation>
 <translation id="7931318309563332511">Nezināma</translation>
 <translation id="5426179911063097041">No vietnes <ph name="SITE"/> tiek mēģināts nosūtīt paziņojumus.</translation>
+<translation id="2482878487686419369">Paziņojumi</translation>
 <translation id="7221855153210829124">Rādīt paziņojumus</translation>
 <translation id="8393700583063109961">Sūtīt ziņojumu</translation>
 <translation id="6701535245008341853">Nevarēja ielādēt profilu.</translation>
@@ -1940,6 +1947,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="1753905327828125965">Visapmeklētākais</translation>
 <translation id="5612720917913232150">Vietnē <ph name="URL"/> tiek pieprasīta atļauja izmantot jūsu datora atrašanās vietu.</translation>
 <translation id="4733082559415072992">Vietnē <ph name="URL"/> tiek pieprasīta atļauja izmantot jūsu ierīces atrašanās vietu.</translation>
+<translation id="5646376287012673985">Atrašanās vieta</translation>
 <translation id="3016780570757425217">uzzināt jūsu atrašanās vietu</translation>
 <translation id="4068506536726151626">Šajā lapā ir elementi no šādām vietnēm, kas izseko jūsu atrašanās vietu:</translation>
 <translation id="4920887663447894854">Šīs vietnes ir bloķētas un nevar izsekot jūsu atrašanās vietu šajā lapā:</translation>
@@ -1949,6 +1957,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="3528033729920178817">Šī lapa izseko jūsu atrašanās vietu.</translation>
 <translation id="1510030919967934016">Šī lapa ir bloķēta un nevar izsekot jūsu atrašanās vietu.</translation>
 <translation id="6910240653697687763">Vietnē <ph name="URL"/> tiek pieprasīta atļauja pilnībā pārvaldīt jūsu MIDI ierīces.</translation>
+<translation id="1834583737373831634">MIDI ierīces</translation>
 <translation id="8606726445206553943">izmantot jūsu MIDI ierīces</translation>
 <translation id="1849186935225320012">Šai lapai ir pieejama MIDI ierīču pilnīga pārvaldība.</translation>
 <translation id="2986010903908656993">Šajā lapā ir bloķēta MIDI ierīču pilnīga pārvaldība.</translation>
@@ -1982,6 +1991,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="8282947398454257691">uzzināt jūsu unikālo ierīces identifikatoru</translation>
 <translation id="8329449853370113380">Vietne <ph name="URL"/> vēlas atskaņot aizsargātu saturu. Brave Software verificēs jūsu ierīces identitāti.</translation>
 <translation id="2650609753175229582">Vietne <ph name="URL"/> vēlas atskaņot aizsargātu saturu. Jūsu ierīces identitāti pārbaudīs Brave Software, un tai var piekļūt šī vietne.</translation>
+<translation id="1746402432151920942">Aizsargāta multivides satura identifikators</translation>
 <translation id="1322046419516468189">Saglabātās paroles varat skatīt un pārvaldīt šeit: <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="3312599731068160560">https://passwords.google.com</translation>
 <translation id="5297082477358294722">Parole ir saglabāta. Skatiet un pārvaldiet saglabātās paroles šeit: <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
@@ -2042,18 +2052,24 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="3532844647053365774">Vietnē <ph name="HOST"/> tiek pieprasīta atļauja lietot jūsu mikrofonu.</translation>
 <translation id="7108634116785509031">Vietnē <ph name="HOST"/> tiek pieprasīta atļauja lietot jūsu kameru.</translation>
 <translation id="3691267899302886494">Vietnē <ph name="HOST"/> tiek pieprasīta atļauja kopīgot jūsu ekrānu.</translation>
+<translation id="4275663329226226506">Multivide</translation>
 <translation id="8962918469425892674">Šajā vietnē tiek izmantoti kustību vai gaismas sensori.</translation>
+<translation id="4532646538815530781">Šajā vietnē tiek izmantoti kustību sensori.</translation>
 <translation id="6057381398996433816">Šajā vietnē ir bloķēta kustību un gaismas sensoru izmantošana.</translation>
+<translation id="7707108266051544351">Šīs vietnes piekļuve kustību sensoriem ir bloķēta.</translation>
 <translation id="1151917987301063366">Vienmēr atļaut <ph name="HOST"/> piekļuvi sensoriem</translation>
 <translation id="7377451353532943397">Turpināt bloķēt piekļuvi sensoriem</translation>
 <translation id="6878422606530379992">Atļauti sensori</translation>
 <translation id="4031527940632463547">Bloķēti sensori</translation>
 <translation id="4559617833001311418">Šī vietne var piekļūt jūsu kustību vai gaismas sensoriem.</translation>
+<translation id="5623282979409330487">Šī vietne var piekļūt jūsu kustību sensoriem.</translation>
 <translation id="2309620859903500144">Šīs vietnes piekļuve kustību vai gaismas sensoriem ir bloķēta.</translation>
+<translation id="6541638731489116978">Šīs vietnes piekļuve jūsu kustību sensoriem ir bloķēta.</translation>
 <translation id="8645354835496065562">Turpināt atļaut piekļuvi sensoriem</translation>
 <translation id="2903882649406874750">Vienmēr bloķēt <ph name="HOST"/> piekļuvi sensoriem</translation>
 <translation id="3194737229810486521">Vietnē <ph name="URL"/> tiek pieprasīta atļauja pastāvīgi glabāt datus jūsu ierīcē.</translation>
 <translation id="1030706264415084469">Vietnē <ph name="URL"/> tika pieprasīta atļauja pastāvīgi glabāt jūsu ierīcē lielu datu apjomu.</translation>
+<translation id="885701979325669005">Krātuve</translation>
 <translation id="1712552549805331520">Vietnē <ph name="URL"/> tika pieprasīta atļauja pastāvīgi glabāt datus lokālajā datorā.</translation>
 <translation id="1997484222658892567">Vietnē <ph name="URL"/> tiek pieprasīta atļauja pastāvīgi uzglabāt lielu datu apjomu jūsu lokālajā datorā.</translation>
 <translation id="7648992873808071793">saglabāt failus šajā ierīcē</translation>
@@ -2473,9 +2489,7 @@ Vai vēlaties palaist rīku <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation
 <translation id="702252130983202758">Jūsu lietotnes</translation>
 <translation id="8831664945713891930">Atvērt paplašinājumu iestatījumus</translation>
 <translation id="5138227688689900538">Rādīt mazāk</translation>
-<translation id="5646376287012673985">Atrašanās vieta</translation>
 <translation id="5270167208902136840">Rādīt citas lietotnes (vēl <ph name="NUMBER_OF_MORE_APPS"/>)</translation>
-<translation id="2482878487686419369">Paziņojumi</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> lietotnes</translation>
 <translation id="7207631048330366454">Meklēt lietotnes</translation>
 <translation id="9011424611726486705">Atveriet vietnes iestatījumus</translation>
@@ -2809,6 +2823,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="4305227814872083840">ilga (2 s)</translation>
 <translation id="2860150991415616761">ļoti ilga (4 s)</translation>
 <translation id="1217668622537098248">Pēc darbības atjaunot peles kreisās pogas klikšķa funkciju</translation>
+<translation id="8781470833671194250">Klikšķa pozīcijas stabilizācija</translation>
 <translation id="3682824389861648626">Kustības slieksnis</translation>
 <translation id="5511379779384092781">Ļoti zems</translation>
 <translation id="2765217105034171413">Mazs</translation>
@@ -2889,6 +2904,9 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="3201422919974259695">Šeit tiks rādītas pieejamās USB ierīces.</translation>
 <translation id="907264006778172906">Piešķiriet operētājsistēmai Linux atļauju piekļūt USB ierīcēm. Pēc USB ierīces noņemšanas operētājsistēmā Linux netiks saglabāti šīs ierīces dati.</translation>
 <translation id="3661172646479098821">Pašlaik tiek atbalstītas tikai Android ierīces.</translation>
+<translation id="1679806121152819234">Spraudnis VM</translation>
+<translation id="1342664070754997846">Palaist spraudņa VM lietojumprogrammas Jūsu <ph name="DEVICE_TYPE"/></translation>
+<translation id="7508054832109420082">Atļaut piekļuvi printeriem</translation>
 <translation id="2295473777859797944">Brave Software Play veikals</translation>
 <translation id="572155275267014074">Android iestatījumi</translation>
 <translation id="4767209642168463274">Instalējiet lietotnes un spēles no pakalpojuma Brave Software Play savā Bravebook datorā. &lt;a target="_blank" href="<ph name="URL"/>"&gt;Uzziniet vairāk&lt;/a&gt;.</translation>
@@ -3440,7 +3458,10 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="9038649477754266430">Ieteikumu pakalpojuma izmantošana ātrākai lapu ielādei</translation>
 <translation id="7981313251711023384">Veikt lapu pirmsielādi, lai paātrinātu pārlūkošanu un meklēšanu</translation>
 <translation id="2468205691404969808">Izmanto sīkfailus, lai iegaumētu jūsu preferences, pat ja neapmeklējāt šīs lapas</translation>
+<translation id="3181954750937456830">Droša pārlūkošana (aizsargā jūs un ierīci pret bīstamām vietnēm)</translation>
+<translation id="7315322926489145388">Nosūta Brave Software serveriem dažu apmeklēto lapu vietrāžus URL, ja jūsu drošība ir apdraudēta</translation>
 <translation id="4991384657077828949">Palīdzēt uzlabot Brave drošību</translation>
+<translation id="1943176487615318915">Lai noteiktu bīstamas lietotnes un vietnes, pārlūkā Brave dažu jūsu apmeklēto lapu saturs, ierobežots sistēmas informācijas apjoms un daļa lapu satura tiek nosūtīta uzņēmumam Brave Software</translation>
 <translation id="2875273286298348523">Teksts, ko rakstāt pārlūkprogrammā Brave, tiek sūtīts Brave Software serveriem</translation>
 <translation id="9079153198295609735">Automātiski sūtīt lietošanas statistiku un avāriju pārskatus uzņēmumam Brave Software</translation>
 <translation id="5941220456342415404">Automātiski sūtīt diagnostikas un lietojuma datus Brave Software serveriem</translation>
@@ -3512,7 +3533,6 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1919345977826869612">Reklāmas</translation>
 <translation id="5649053991847567735">Automātiskās lejupielādes</translation>
 <translation id="3744111561329211289">Sinhronizācija fonā</translation>
-<translation id="2586657967955657006">Starpliktuve</translation>
 <translation id="5518219166343146486">Vaicāt, ja vietne vēlas skatīt starpliktuvē kopēto tekstu un attēlus</translation>
 <translation id="2089795179672254991">Vaicāt, ja vietne vēlas skatīt starpliktuvē kopēto tekstu un attēlus (ieteicams)</translation>
 <translation id="16815041330799488">Neļaut vietnēm skatīt starpliktuvē kopēto tekstu un attēlus</translation>
@@ -3540,6 +3560,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1128109161498068552">Neļaut nevienai vietnei izmantot ekskluzīvus sistēmas ziņojumus, lai piekļūtu MIDI ierīcēm</translation>
 <translation id="2091887806945687916">Signāls</translation>
 <translation id="4751476147751820511">Kustību vai gaismas sensori</translation>
+<translation id="1717218214683051432">Kustību sensori</translation>
 <translation id="6059925163896151826">USB ierīces</translation>
 <translation id="8666584013686199826">Vaicāt, ja vietne vēlas piekļūt USB ierīcēm</translation>
 <translation id="6291949900244949761">Vaicāt, ja vietne vēlas piekļūt USB ierīcēm (ieteicams)</translation>
@@ -3575,7 +3596,9 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1660204651932907780">Atļaut vietnēm atskaņot skaņu (ieteicams)</translation>
 <translation id="3600792891314830896">Izslēgt skaņu vietnēm, kurās tiek atskaņota skaņa</translation>
 <translation id="5084230410268011727">Atļaut vietnēm izmantot kustību un gaismas sensorus</translation>
+<translation id="489454699928748701">Ļaut vietnēm izmantot kustību sensorus</translation>
 <translation id="5047421709274785093">Neļaut vietnēm izmantot kustību un gaismas sensorus</translation>
+<translation id="6396988158856674517">Bloķēt kustību sensoru izmantošanu vietnēs</translation>
 <translation id="2904456025988372123">Vaicāt, ja vietne mēģina automātiski lejupielādēt failus pēc pirmā faila</translation>
 <translation id="3494769164076977169">Jautāt, ja vietne mēģina automātiski lejupielādēt failus pēc pirmā faila (ieteicams)</translation>
 <translation id="5036662165765606524">Neļaut nevienai vietnei automātiski lejupielādēt vairākus failus</translation>
@@ -3673,6 +3696,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="1987317783729300807">Konti</translation>
 <translation id="8418661265246754237">Brave Software konti</translation>
 <translation id="3297951628821704004">Noņemt kontu no šīs ierīces</translation>
+<translation id="8995603266996330174">Pārvalda <ph name="DOMAIN"/></translation>
 <translation id="4659077111144409915">Primārais konts</translation>
 <translation id="3158033540161634471">Iestatiet pirksta nospiedumu</translation>
 <translation id="1587907146729660231">Ar pirkstu pieskarieties barošanas pogai.</translation>
@@ -3701,7 +3725,6 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="3608576286259426129">Lietotāja attēla priekšskatījums</translation>
 <translation id="2114896190328250491">Fotogrāfs: <ph name="NAME"/></translation>
 <translation id="7155171745945906037">Esošs fotoattēls no kameras vai faila</translation>
-<translation id="8995603266996330174">Pārvalda domēnu <ph name="DOMAIN"/></translation>
 <translation id="9125982323641182972">Brave Software viedās tehnoloģijas pārlūkā Brave</translation>
 <translation id="5244474230056479698">Sinhronizēšana ar <ph name="EMAIL"/></translation>
 <translation id="4326270470840334364">Tā kā šo kontu pārvalda <ph name="DOMAIN"/>, jūsu grāmatzīmes, vēsture, paroles un citi iestatījumi tiks dzēsti no šīs ierīces. Tomēr jūsu dati joprojām tiks glabāti jūsu Brave Software kontā un tos var pārvaldīt <ph name="BEGIN_LINK"/>Brave Software informācijas panelī<ph name="END_LINK"/>.</translation>
@@ -4109,6 +4132,7 @@ Citas personas ar lēnu savienojumu, iespējams, neredzēs jūsu saturu.</transl
 <translation id="2785008241190445880">Grāmatzīme ir aizstāta</translation>
 <translation id="5468853758063275923">Brave ir jūsu noklusējuma pārlūks</translation>
 <translation id="2950533317914339731">Pievienojiet grāmatzīmes savām iecienītajām Brave Software lietotnēm</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Ziņas</translation>

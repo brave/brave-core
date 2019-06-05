@@ -41,6 +41,8 @@
 <translation id="8958799246752641148">Tor piilottaa IP-osoitteesi vierailemiltasi sivuilta ohjaamalla selaustietosi useiden Tor-serverien läpi, ennen kuin se saavuttaa määränpäänsä. Nämä ovat salattuja yhteyksiä, joten palveluntarjoajasi tai työnantajasi ei näe, millä sivustoilla vierailet. Tor voi hidastaa selausta ja jotkut sivustot eivät välttämättä toimi lainkaan.</translation>
 <translation id="520608572871993342">Yksityisten ikkunoiden käyttö muuttaa vain Braven toimintaa laitteellasi — se ei muuta kenenkään muun käytöstä. Tor piilottaa IP-osoitteesi vierailemiltasi sivustoilta ja piilottaa selaustietosi palveluntarjoajalta ja työnantajalta. Avaa yksityinen ikkunan Tor-valikosta tai  {{ key }}-näppäimellä.</translation>
 <translation id="6975708438781948564">Lisätietoa Torista Bravessa.</translation>
+<translation id="4272382368346338917">Lisäsuotimet</translation>
+<translation id="8949292968394988358">Varoitus: liian monen suotimen käyttö heikentää suoritustehoa</translation>
 <translation id="1869685517625607604">Mainoksia estetty yhteensä:</translation>
 <translation id="4673764878177947707">Mukautetut suodattimet</translation>
 <translation id="8803682034537762884">Yksi per rivi, suodatin on kuvailtu Adblock Plusin suodattimen syntaksissa</translation>
@@ -54,7 +56,6 @@
 <translation id="5633840519079139680">Brave tekee helpoksi tavallisen ympäristön määrittämisen tuomalla kirjanmerkit ja asetukset muista tietokoneellesi asennetuista kirjainmerkeistä.</translation>
 <translation id="8275038454117074363">Tuo</translation>
 <translation id="5540323067375019678">Hallitse suojiasi</translation>
-<translation id="4755560456428781763">Brave suojaa sinua ei-toivotuilta mainoksilta ja jäljittäjiltä selatessasi. Jos kohtaat ongelman selatessasi tietyllä sivustolla, säädät suojaustason työkalupalkin suojista.</translation>
 <translation id="3366308997091824722">Suoja-asetukset</translation>
 <translation id="3884404068544758153">Vaihda hakukoneen asetukset.</translation>
 <translation id="438216590634144114">Valitse oletushakukone, jota käytetään osoitekentän kautta tehtävissä verkkohauissa.</translation>
@@ -68,6 +69,7 @@
 <translation id="5946611334574299206">Ansaitse poletteja katsomalla mainoksia Bravessa. Näytetyt mainokset perustuvat mieltymyksiisi, jotka määritellään selainkäyttäytymisesi perusteella. Henkilökohtaisia tietojasi tai selaushistoriaasi ei koskaan lähetetä selaimesi ulkopuolelle.</translation>
 <translation id="6112368337882254910">Osallistu automaattisesti</translation>
 <translation id="1527222983464337010">Automaattinen tapa tukea julkaisijoita ja sisällöntuottajia. Aseta kuukausittainen maksu ja selaile normaalisti. Vierailemasi sivustot saavat lahjoituksesi automaattisesti, perustuen Braven mittaamaan huomioosi.</translation>
+<translation id="7178655681744815321">Tämän syklin ansioarvio</translation>
 <translation id="8157096848242649588">Maksupäivä</translation>
 <translation id="5208388044986603165">Mainosilmoitukset vastaanotettu</translation>
 <translation id="4229016885653790965">Olemme pahoillamme! Alueellesi ei ole vielä saatavilla mainoksia.</translation>
@@ -106,7 +108,7 @@
 <translation id="1199044745726588100">5 sekuntia</translation>
 <translation id="4045581694057451126">8 sekuntia</translation>
 <translation id="8610523985422563960">1 minuutti</translation>
-<translation id="7521774480426463961">Salli vinkkien antaminen ‘Tykätyissä’ julkaisuissa</translation>
+<translation id="9031738692126722094">Salli sisältötason tipit näillä sivustoilla</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Tipaa heti, kun löydät jotain mahtavaa.</translation>
@@ -128,6 +130,7 @@
 <translation id="7797604753681168055">Palauta nyt!</translation>
 <translation id="1184075897575325927">Valitettavasti tämä lahjoitus on nähtävästi jo lunastettu.</translation>
 <translation id="282693359045252357">Seuraavan kuukausittaisen vinkin päivämäärä</translation>
+<translation id="6231182869178328516">Annoin juuri tipin henkilölle <ph name="NAME">$1<ex>user</ex></ph> Brave-selaimen kautta. Voit tutustua siihen osoitteessa https://brave.com/tips.</translation>
 <translation id="7422678632904904341">Summa:</translation>
 <translation id="5923611424721173182">Nykyinen yhteensovitus</translation>
 <translation id="5457113250005438886">Ei pätevä</translation>
@@ -150,6 +153,9 @@
 <translation id="4235360514405112390">Pätevä</translation>
 <translation id="2700943637868737038">Katsotaan ID:tä:</translation>
 <translation id="3576689061489548788">Lompakkomaksun ID:</translation>
+<translation id="758790787422117549">Persoonatunnus</translation>
+<translation id="2223892939866251845">Käyttäjän tunnus</translation>
+<translation id="1642443162274867084">Lompakko luotu</translation>
 <translation id="5094577350232361255">tietoa</translation>
 <translation id="4918086044614829423">Hyväksy</translation>
 <translation id="6832986780040139899">©2016–2018 Brave-ohjelmisto. Brave on Brave Softwaren rekisteröity tuotemerkki. Sivustojen nimet saattavat olla sivustojen omistajien tuotemerkkejä tai rekisteröityjä tuotemerkkejä.</translation>
@@ -165,11 +171,16 @@
 <translation id="3671566813999349838">Summa</translation>
 <translation id="3819257035322786455">Varmuuskopiointi</translation>
 <translation id="1312977698678162065">Saa palkkio yksityisyyttäsi kunnioittavien, relevanttien mainosten katselusta.</translation>
+<translation id="7655723274266132226">Voit nyt ansaita rahaa mainoksia katsomalla.</translation>
+<translation id="2975780980638932742">Brave-mainokset ovat täällä</translation>
 <translation id="3361548743396744457">Tue suosikkisivustojasi selailemalla niitä – tai tippaa mitä tahansa sivustoa, josta pidät.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4493850495402472953">ja</translation>
 <translation id="8804164990146287819">Tietosuojakäytäntö</translation>
 <translation id="4281844954008187215">Palveluehdot</translation>
+<translation id="4405997465645469914">Asettamalla Brave-palkinnot päälle ilmaiset lukeneesi ja hyväksyväsi</translation>
+<translation id="8819542691525488940">Napauttamalla ‘Kyllä, mukana ollaan!’, -painiketta ilmaiset lukeneesi ja hyväksyväsi</translation>
+<translation id="8071424789698327147">Napauttamalla ‘Kyllä, olen valmis!’, -painiketta ilmaiset lukeneesi ja hyväksyväsi</translation>
 <translation id="7530570094705720669">Luodaan lompakkoa</translation>
 <translation id="2105596359439030979">Huomiosi on arvokasta. Ansaitse rahaa katsomalla yksityisyyttä kunnioittavia mainoksia ja anna hyvän kiertää tukemalla rakastamiasi sisällöntuottajia.</translation>
 <translation id="516395624550019162">Kyllä, olen mukana!</translation>
@@ -206,7 +217,6 @@
 <translation id="7277134233385925078">Aseta kuukausittainen tippi</translation>
 <translation id="8003573781961874199">Lataa PDF-tiedostona</translation>
 <translation id="298067735430872465">Ansaitset mainoksilla</translation>
-<translation id="3521361150443442734">Mainostulosi ovat saatavilla.</translation>
 <translation id="8764029012618014430">Salli vinkit</translation>
 <translation id="3412655388715513818">Älä sisällytä tätä sivua</translation>
 <translation id="418343137736963579">Automaattiselta lahjoitukselta estettyjen sivustojen kokonaismäärä:</translation>
@@ -272,8 +282,8 @@
 <translation id="3626186271103896082">Varmuuskopioi lompakkosi</translation>
 <translation id="5717619667204259673">Keep this recovery key safe.</translation>
 <translation id="4699702339303280827">Voit aina käyttää tätä avainta lompakkosi palauttamiseen, jos jotain käy selaimellesi tai tietokoneellesi. Muista kuitenkin pitää se turvassa — kuka tahansa avaimen omaava voi nimittäin varastaa lompakkosi. On todennäköisesti turvallisinta kirjoittaa se muistiin paperille tai muulle tärkeälle muistiinpanovälineellesi.</translation>
-<translation id="5759071143806884916">Voit tukea tätä sivustoa tipin lähettämällä. Se toimii kiitoksena laadukkaan sisällön tarjoamisesta. Vahvistetut sisällönkehittäjät saavat tippinsä jokaisen kalenterikuun ensimmäisenä viikkona.</translation>
-<translation id="1704859330137112950">Voit jättää tämän sivuston tueksi kuukausittaisen tipin, jos haluat.</translation>
+<translation id="7354412786785889047">Voit tukea tätä sisällönkehittäjää antamalla tipin. Se on kiitos mainion sisällön tuottamisesta. Vahvistetut kehittäjät saavat maksun tipeistään jokaisen kalenterikuun ensimmäisen viikon aikana.</translation>
+<translation id="3475063317678050010">Voit halutessasi ajastaa kuukausittain annettavia tippejä tukeaksesi tätä kehittäjää säännöllisesti.</translation>
 <translation id="3074127054582480056">Huomio</translation>
 <translation id="822513417008209372">Tuet’ tällä hetkellä kohdetta</translation>
 <translation id="5010112177773747965">ilman suostumustasi.</translation>
@@ -302,6 +312,7 @@
 <translation id="3536298624341433814">Lähetä tippini</translation>
 <translation id="1792148354504719133">sivusto</translation>
 <translation id="5944430251223015324">sivustot</translation>
+<translation id="1834493631938747505">Kerro muille tipistäsi.</translation>
 <translation id="8826007068782654809">Kiitos</translation>
 <translation id="6665366815203065060">Olet juuri lähettänyt vinkin kohteelle:</translation>
 <translation id="6432779622695508363">Vinkki tykätessä</translation>
@@ -312,8 +323,12 @@
 <translation id="4914597931214386232">Lunastetut tunnuslahjoitukset</translation>
 <translation id="1634828734222219955">Yhteensä</translation>
 <translation id="3535654229833214438">Liiketapahtumat</translation>
+<translation id="3124090095880236567">Aseta mainokset päälle</translation>
 <translation id="8987812599455325915">Tämä sallii sekä mainokset että automaattiset lahjoitukset. Voit ottaa ne erikseen pois käytöstä milloin tahansa.</translation>
 <translation id="1485484147452131556">Aktivoi palkinnot</translation>
+<translation id="3983104749597726322">Twiitti</translation>
+<translation id="5636843789453098076">Anna käyttäjälle @{{ user }} tippi twiitistä:</translation>
+<translation id="4242384385082203046">Anna käyttäjälle @{{ user }} tippi heidän twiitistään!</translation>
 <translation id="2448312741937722512">Tyyppi</translation>
 <translation id="8772672608371898774">Braven hyväksymä julkaisija</translation>
 <translation id="5050370287908180130">Katso lisätiedot kuukausiotteesta</translation>
@@ -336,6 +351,15 @@
 <translation id="6727483290601442544">Katso yksityiskohdat</translation>
 <translation id="1988679729106502285">HUOMIO:</translation>
 <translation id="5815103311506128988">Tämä kehittäjä ei ole vielä rekisteröitynyt vastaanottamaan  Brave-käyttäjien avustuksia. Selaimesi pyrkii tekemään avustuksia joko kyseisen henkilön vahvistukseen asti tai kunnes 90 päivää on kulunut.</translation>
+<translation id="4292832015778676417">ansaittu mainoksista</translation>
+<translation id="3197752845651180812">Odottavat lahjoitukset</translation>
+<translation id="3164105678355419142">Toistuva tippi</translation>
+<translation id="2927922949538312364">Kertatippi</translation>
+<translation id="6964891561514920613">Näytä kaikki odottavat lahjoitukset</translation>
+<translation id="4346944508027912677">Odotus päättyy</translation>
+<translation id="7410549756000115387">Ei odottavia lahjoituksia…</translation>
+<translation id="1963227389609234879">Poista kaikki</translation>
+<translation id="923467487918828349">Näytä kaikki</translation>
 <translation id="1181037720776840403">Poista</translation>
 <translation id="7885157704277298658">Kopioitu</translation>
 <translation id="5379640681913450928">Sanamäärä</translation>
@@ -353,6 +377,7 @@
 <translation id="1061533051865606843">Lisää uusi laite</translation>
 <translation id="8780295742023331191">Näytä synkronointikoodi</translation>
 <translation id="1755198127524719638">Synkronointiasetukset</translation>
+<translation id="7558480201297099157">Hallinnoi laitteiden välille synkronoitavaa tietoja. Nämä asetukset pätevät vain tähän laitteeseen.</translation>
 <translation id="8820817407110198400">Kirjanmerkit</translation>
 <translation id="5591129654353352557">Tallennettujen sivustojen asetukset</translation>
 <translation id="7859704718976024901">Selaushistoria</translation>
@@ -380,6 +405,7 @@
 <translation id="5086223971958279691">Synkronointiketjun koodi</translation>
 <translation id="2899261497479389619">Etsi kohdetietokoneesi asetuksista löytyvä Brave-synkronointi ja napauta painiketta</translation>
 <translation id="4827439149833241990">“Minulla on synkronointikoodi”.</translation>
+<translation id="24067401253841795">Syötä alla olevat synkronointiketjun koodisanat. Käsittele tätä koodia salasanan tavoin. Toisen henkilön saadessa koodin haltuunsa he voivat lukea ja muokata synkronoitua dataasi.</translation>
 <translation id="8914601399214979966">Käytä sen sijaan minun kameraani</translation>
 <translation id="3034163433136515805">Näytä ruutukoodi</translation>
 <translation id="5093410893656857925">Valitse laitteen tyyppi</translation>
@@ -392,4 +418,6 @@
 <translation id="8349682220522608879">Lisää synkronointikoodi.</translation>
 <translation id="1468095392829989299">Yhteyttä synkronointipalvelimiin ei voitu muodostaa.</translation>
 <translation id="1399673826422570698">Verkossa saattaa olla ongelmia tai synkronointipalvelimien suhteen saattaa olla ongelmia.</translation>
+<translation id="5286379413446391050">Synkronointipalvelimiin ei saatu yhteyttä</translation>
+<translation id="2410472020237369473">Tietokoneesi kello on saatettu asettaa väärän aikaan tai aikavyöhykkeelle. tarkista kellosi asetukset.</translation>
 </translationbundle>

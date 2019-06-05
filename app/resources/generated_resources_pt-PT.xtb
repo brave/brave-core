@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Não foram encontrados resultados da pesquisa</translation>
 <translation id="8967866634928501045">Prima Alt + Shift + A para mostrar.</translation>
 <translation id="998747458861718449">I&amp;nspecionar</translation>
+<translation id="4428301600092811022">Pretende obter descrições de imagens a partir do Brave Software?</translation>
 <translation id="741204030948306876">Sim, aceito</translation>
 <translation id="780301667611848630">Não, obrigado</translation>
 <translation id="3943582379552582368">&amp;Anterior</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">C&amp;entro de Ajuda</translation>
 <translation id="7324297612904500502">Fórum da versão beta</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Editar motores de pesquisa...</translation>
 <translation id="5702898740348134351">&amp;Editar motores de pesquisa...</translation>
 <translation id="2454247629720664989">Palavra-chave:</translation>
@@ -1303,8 +1305,10 @@ Mantenha o seu ficheiro de chave num local seguro, pois irá precisar dele para 
 <translation id="6207200176136643843">Repor o nível de zoom predefinido</translation>
 <translation id="4953689047182316270">Responder a eventos de acessibilidade</translation>
 <translation id="4677585247300749148"><ph name="URL"/> pretende responder a eventos de acessibilidade.</translation>
+<translation id="2224471211857467033">Eventos de acessibilidade</translation>
 <translation id="6116338172782435947">Ver o texto e as imagens copiados para a área de transferência</translation>
 <translation id="3461266716147554923"><ph name="URL"/> pretende ver o texto e as imagens copiados para a área de transferência.</translation>
+<translation id="2586657967955657006">Área de transferência</translation>
 <translation id="4838836835474292213">Acesso de leitura à área de transferência permitido</translation>
 <translation id="1415708812149920388">Acesso de leitura à área de transferência negado</translation>
 <translation id="2365507699358342471">Este site pode ver o texto e as imagens copiados para a área de transferência.</translation>
@@ -1733,6 +1737,7 @@ Pretende pará-lo?</translation>
 <translation id="7547317915858803630">Aviso: as definições do <ph name="PRODUCT_NAME"/> estão armazenadas numa unidade de rede. Isto pode resultar em lentidão, falhas ou mesmo perda de dados.</translation>
 <translation id="3122496702278727796">Falha ao criar directório de dados</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> pretende transferir vários ficheiros.</translation>
+<translation id="7514365320538308">Transferir</translation>
 <translation id="691024665142758461">Transferir vários ficheiros</translation>
 <translation id="7004499039102548441">Separadores recentes</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 separador}other{# separadores}}</translation>
@@ -1822,6 +1827,7 @@ Pretende pará-lo?</translation>
 <translation id="6156960295318603523">Definições de idioma</translation>
 <translation id="7931318309563332511">Desconhecido</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> pretende enviar-lhe notificações.</translation>
+<translation id="2482878487686419369">Notificações</translation>
 <translation id="7221855153210829124">Mostrar notificações</translation>
 <translation id="8393700583063109961">Enviar mensagem</translation>
 <translation id="6701535245008341853">Não foi possível obter o perfil.</translation>
@@ -1923,6 +1929,7 @@ Pretende pará-lo?</translation>
 <translation id="1753905327828125965">Mais visitados</translation>
 <translation id="5612720917913232150"><ph name="URL"/> pretende utilizar a localização do seu computador.</translation>
 <translation id="4733082559415072992"><ph name="URL"/> pretende utilizar a localização do seu dispositivo.</translation>
+<translation id="5646376287012673985">Local</translation>
 <translation id="3016780570757425217">Conhecer a sua localização</translation>
 <translation id="4068506536726151626">Esta página contém elementos dos seguintes sites que estão a monitorizar a sua localização:</translation>
 <translation id="4920887663447894854">Os sites seguintes foram bloqueados de monitorizar a sua localização nesta página:</translation>
@@ -1932,6 +1939,7 @@ Pretende pará-lo?</translation>
 <translation id="3528033729920178817">Esta página está a monitorizar a sua localização.</translation>
 <translation id="1510030919967934016">Esta página foi bloqueada de monitorizar a sua localização.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> pretende obter o controlo total sobre os seus dispositivos MIDI.</translation>
+<translation id="1834583737373831634">Dispositivos MIDI</translation>
 <translation id="8606726445206553943">Utilizar os seus dispositivos MIDI</translation>
 <translation id="1849186935225320012">Esta página tem controlo total sobre dispositivos MIDI.</translation>
 <translation id="2986010903908656993">Esta página foi impedida de ter controlo total sobre dispositivos MIDI.</translation>
@@ -1965,6 +1973,7 @@ Pretende pará-lo?</translation>
 <translation id="8282947398454257691">Saber o identificador único do seu dispositivo</translation>
 <translation id="8329449853370113380"><ph name="URL"/> pretende reproduzir conteúdo protegido. A Brave Software irá validar a identidade do seu dispositivo.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> pretende reproduzir conteúdo protegido. A identidade do seu dispositivo será validada pela Brave Software e este site poderá aceder à mesma.</translation>
+<translation id="1746402432151920942">Identificador de multimédia protegido</translation>
 <translation id="1322046419516468189">Veja e faça a gestão das palavras-passe guardadas em <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5297082477358294722">Palavra-passe guardada. Veja e faça a gestão das palavras-passe guardadas em <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Conta Brave Software</translation>
@@ -2024,18 +2033,24 @@ Pretende pará-lo?</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> pretende utilizar o seu microfone.</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> pretende utilizar a câmara.</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> pretende partilhar o seu ecrã.</translation>
+<translation id="4275663329226226506">Multimédia</translation>
 <translation id="8962918469425892674">Este site está a utilizar sensores de movimento ou de luz.</translation>
+<translation id="4532646538815530781">Este site está a utilizar os sensores de movimentos.</translation>
 <translation id="6057381398996433816">Este site foi impedido de utilizar os sensores de movimento e de luz.</translation>
+<translation id="7707108266051544351">Este site foi impedido de utilizar os sensores de movimentos.</translation>
 <translation id="1151917987301063366">Permitir sempre que <ph name="HOST"/> aceda aos sensores</translation>
 <translation id="7377451353532943397">Continuar a impedir o acesso aos sensores</translation>
 <translation id="6878422606530379992">Sensores permitidos</translation>
 <translation id="4031527940632463547">Sensores bloqueados</translation>
 <translation id="4559617833001311418">Este site está a aceder aos seus sensores de movimento ou de luz.</translation>
+<translation id="5623282979409330487">Este site está a aceder aos sensores de movimentos.</translation>
 <translation id="2309620859903500144">Este site foi impedido de aceder aos seus sensores de movimento ou de luz.</translation>
+<translation id="6541638731489116978">Este site foi impedido de aceder aos sensores de movimentos.</translation>
 <translation id="8645354835496065562">Continuar a permitir o acesso aos sensores</translation>
 <translation id="2903882649406874750">Impedir sempre que <ph name="HOST"/> aceda aos sensores</translation>
 <translation id="3194737229810486521"><ph name="URL"/> pretende armazenar permanentemente dados no seu dispositivo.</translation>
 <translation id="1030706264415084469"><ph name="URL"/> pretende armazenar permanentemente dados de grandes dimensões no seu dispositivo.</translation>
+<translation id="885701979325669005">Armazenamento</translation>
 <translation id="1712552549805331520"><ph name="URL"/> pretende armazenar permanentemente os dados no seu computador local.</translation>
 <translation id="1997484222658892567"><ph name="URL"/> pretende armazenar permanentemente dados de grandes dimensões no seu computador local.</translation>
 <translation id="7648992873808071793">Armazenar ficheiros neste dispositivo</translation>
@@ -2454,9 +2469,7 @@ Pretende pará-lo?</translation>
 <translation id="702252130983202758">As suas aplicações</translation>
 <translation id="8831664945713891930">Abrir as definições das Extensões</translation>
 <translation id="5138227688689900538">Mostrar menos</translation>
-<translation id="5646376287012673985">Local</translation>
 <translation id="5270167208902136840">Mostrar mais <ph name="NUMBER_OF_MORE_APPS"/> aplicações</translation>
-<translation id="2482878487686419369">Notificações</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> aplicações</translation>
 <translation id="7207631048330366454">Pesquisar aplicações</translation>
 <translation id="9011424611726486705">Abrir definições do site</translation>
@@ -2789,6 +2802,7 @@ Pretende pará-lo?</translation>
 <translation id="4305227814872083840">longo (2 seg)</translation>
 <translation id="2860150991415616761">muito longo (4 seg)</translation>
 <translation id="1217668622537098248">Reverter para clique com o botão esquerdo do rato após a ação.</translation>
+<translation id="8781470833671194250">Estabilização da posição do clique</translation>
 <translation id="3682824389861648626">Limite de movimentos</translation>
 <translation id="5511379779384092781">Extra pequeno</translation>
 <translation id="2765217105034171413">Pequeno</translation>
@@ -3411,7 +3425,10 @@ Pretende pará-lo?</translation>
 <translation id="9038649477754266430">Utilizar um serviço de previsão para carregar páginas mais rapidamente</translation>
 <translation id="7981313251711023384">Pré-carregar as páginas para uma navegação e uma pesquisa mais rápidas</translation>
 <translation id="2468205691404969808">Utiliza cookies para memorizar as suas preferências, mesmo que não visite essas páginas.</translation>
+<translation id="3181954750937456830">Navegação segura (protege o utilizador e o seu dispositivo contra sites perigosos)</translation>
+<translation id="7315322926489145388">Quando a sua segurança está em risco, envia para a Brave Software URLs de algumas páginas que visita.</translation>
 <translation id="4991384657077828949">Ajudar a melhorar a segurança do Brave</translation>
+<translation id="1943176487615318915">Para detetar aplicações e sites perigosos, o Brave envia para a Brave Software URLs de algumas páginas que visita, informações limitadas do sistema e algum conteúdo das páginas.</translation>
 <translation id="2875273286298348523">O Brave envia o texto que escrever no navegador para a Brave Software</translation>
 <translation id="9079153198295609735">Enviar automaticamente estatísticas de utilização e relatórios de falhas para a Brave Software</translation>
 <translation id="5941220456342415404">Enviar automaticamente dados de diagnóstico e de utilização para a Brave Software</translation>
@@ -3483,7 +3500,6 @@ Pretende pará-lo?</translation>
 <translation id="1919345977826869612">Anúncios</translation>
 <translation id="5649053991847567735">Transferências automáticas</translation>
 <translation id="3744111561329211289">Sincronização em segundo plano</translation>
-<translation id="2586657967955657006">Área de transferência</translation>
 <translation id="5518219166343146486">Perguntar quando um site pretender ver o texto e as imagens copiados para a área de transferência</translation>
 <translation id="2089795179672254991">Perguntar quando um site pretender ver o texto e as imagens copiados para a área de transferência (recomendado)</translation>
 <translation id="16815041330799488">Não permitir que os sites vejam o texto e as imagens copiados para a área de transferência</translation>
@@ -3511,6 +3527,7 @@ Pretende pará-lo?</translation>
 <translation id="1128109161498068552">Não permitir que os sites utilizem mensagens exclusivas do sistema para aceder a dispositivos MIDI</translation>
 <translation id="2091887806945687916">Som</translation>
 <translation id="4751476147751820511">Sensores de movimento ou de luz</translation>
+<translation id="1717218214683051432">Sensores de movimento</translation>
 <translation id="6059925163896151826">Dispositivos USB</translation>
 <translation id="8666584013686199826">Perguntar quando um site pretender aceder a dispositivos USB</translation>
 <translation id="6291949900244949761">Perguntar quando um site pretender aceder a dispositivos USB (recomendado)</translation>
@@ -3546,7 +3563,9 @@ Pretende pará-lo?</translation>
 <translation id="1660204651932907780">Permitir que os sites reproduzam som (recomendado)</translation>
 <translation id="3600792891314830896">Desativar o som dos sites que reproduzem som</translation>
 <translation id="5084230410268011727">Autorizar que os sites utilizem sensores de movimento e de luz</translation>
+<translation id="489454699928748701">Permitir que os sites utilizem os sensores de movimentos</translation>
 <translation id="5047421709274785093">Impedir que os sites utilizem sensores de movimento e de luz</translation>
+<translation id="6396988158856674517">Impedir que os sites utilizem os sensores de movimentos</translation>
 <translation id="2904456025988372123">Perguntar sempre que um site tentar transferir ficheiros automaticamente após o primeiro ficheiro</translation>
 <translation id="3494769164076977169">Perguntar sempre que um site tentar transferir ficheiros automaticamente após o primeiro ficheiro (recomendado)</translation>
 <translation id="5036662165765606524">Não permitir que os sites transfiram vários ficheiros automaticamente</translation>
@@ -4081,6 +4100,7 @@ Pretende pará-lo?</translation>
 <translation id="2785008241190445880">Marcador substituído</translation>
 <translation id="5468853758063275923">O Brave é o seu navegador predefinido</translation>
 <translation id="2950533317914339731">Adicione marcadores às suas aplicações Brave Software favoritas.</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Notícias</translation>
