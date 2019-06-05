@@ -53,6 +53,7 @@ enum TPStatsResourceType: String {
 
 class TPStatsBlocklistChecker {
     static let shared = TPStatsBlocklistChecker()
+    private let adblockSerialQueue = DispatchQueue(label: "com.brave.adblock-dispatch-queue")
 
     func isBlocked(request: URLRequest, domain: Domain, resourceType: TPStatsResourceType? = nil) -> Deferred<BlocklistName?> {
         let deferred = Deferred<BlocklistName?>()
@@ -74,7 +75,7 @@ class TPStatsBlocklistChecker {
         }
         let currentTabUrl = delegate.browserViewController.tabManager.selectedTab?.url
         
-        DispatchQueue.global().async {
+        adblockSerialQueue.async {
             let enabledLists = domainBlockLists
             
             if let resourceType = resourceType {
