@@ -25,7 +25,8 @@ void BackgroundHelperAndroid::OnApplicationStateChange(base::android::Applicatio
      TriggerOnForeground();
   }
   //ignoring diff between APPLICATION_STATE_HAS_PAUSED_ACTIVITIES and APPLICATION_STATE_HAS_STOPPED_ACTIVITIES
-  else if (last_state_ != state && last_state_ == base::android::ApplicationState::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
+  else if (last_state_ != state && last_state_ ==
+    base::android::ApplicationState::APPLICATION_STATE_HAS_RUNNING_ACTIVITIES) {
     TriggerOnBackground();
   }
   last_state_ = state;
@@ -50,5 +51,10 @@ void BackgroundHelperAndroid::CheckState() {
 BackgroundHelperAndroid* BackgroundHelperAndroid::GetInstance() {
   return base::Singleton<BackgroundHelperAndroid>::get();
 }
+
+BackgroundHelper* BackgroundHelper::GetInstance() {
+  return BackgroundHelperAndroid::GetInstance();
+}
+
 
 }  // namespace brave_ads

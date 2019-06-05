@@ -17,4 +17,9 @@ LocaleHelperAndroid* LocaleHelperAndroid::GetInstance() {
   return base::Singleton<LocaleHelperAndroid>::get();
 }
 
+LocaleHelper* LocaleHelper::GetInstance() {
+  return LocaleHelperAndroid::GetInstance();
+}
+
+
 }  // namespace brave_ads

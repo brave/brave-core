@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/locale_helper.h"
-#include "brave/components/brave_ads/browser/locale_helper_android.h"
 
 namespace brave_ads {
 
@@ -16,13 +15,11 @@ std::string LocaleHelper::GetLocale() const {
   return kDefaultLocale;
 }
 
+#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX)
 LocaleHelper* LocaleHelper::GetInstance() {
-#if defined(OS_ANDROID)
-  return  LocaleHelperAndroid::GetInstance();
-#else
-  // just return a dummy locale helper for all other platforms
+  // just return a dummy background helper for all other platforms
   return base::Singleton<LocaleHelper>::get();
-#endif
 }
+#endif
 
 }  // namespace brave_ads
