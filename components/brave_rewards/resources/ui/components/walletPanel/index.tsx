@@ -24,7 +24,6 @@ import {
   StyleToggleTips,
   StyledNoticeWrapper,
   StyledNoticeLink,
-  StyledOptionShown,
   StyledProfileWrapper,
   StyledSelect
 } from './style'
@@ -99,27 +98,25 @@ export default class WalletPanel extends React.PureComponent<Props, {}> {
     return (
       <StyledSelectWrapper>
         <StyledSelect
-          value={'show'}
+          value={monthlyAmount}
           onChange={this.props.onAmountChange}
         >
           {donationAmounts.map((token: Token, index: number) => {
+            const tokenValue = token.tokens.toString()
+            const paddingLength = tokenValue.length < 5
+              ? tokenValue.length === 4 ? 3 : 4
+              : 0
+            const padding = `${String.fromCharCode(160)}`.repeat(paddingLength)
+
             return (
               <option
                 key={`k-${token.tokens}`}
-                value={token.tokens}
+                value={tokenValue}
               >
-                {token.tokens} {getLocale('bat')} ({token.converted} USD)
+                {padding}{token.tokens} {getLocale('bat')} ({token.converted} USD)
               </option>
             )
-          }).concat(
-             <StyledOptionShown
-               key={'k-show'}
-               value={'show'}
-               disabled={true}
-             >
-               {monthlyAmount} {getLocale('bat')}
-             </StyledOptionShown>
-          )}
+          })}
         </StyledSelect>
       </StyledSelectWrapper>
     )
