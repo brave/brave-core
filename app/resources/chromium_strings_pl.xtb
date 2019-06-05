@@ -20,8 +20,8 @@
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="4685833011652060085">Pomoc do Brave</translation>
 <translation id="6474707902830053522">Skorzystaj z pomocy dotyczącej używania systemu operacyjnego Brave</translation>
-<translation id="8992261409816268381">Autorzy Brave</translation>
-<translation id="4651430425715739110">Copyright <ph name="YEAR"/> Autorzy Brave. Wszelkie prawa zastrzeżone.</translation>
+<translation id="8992261409816268381">Brave Software Inc</translation>
+<translation id="4651430425715739110">Chroniony prawem autorskim <ph name="YEAR"/> Brave Software Inc. Wszelkie prawa zastrzeżone.</translation>
 <translation id="2310890394934209120">Stworzenie systemu operacyjnego Brave było możliwe dzięki dodatkowym <ph name="BEGIN_LINK_CROS_OSS"/>programom o otwartym kodzie źródłowym<ph name="END_LINK_CROS_OSS"/>.</translation>
 <translation id="8160794320557846790">Opracowanie systemu operacyjnego Brave było możliwe dzięki dodatkowemu <ph name="BEGIN_LINK_CROS_OSS"/>oprogramowaniu open source<ph name="END_LINK_CROS_OSS"/>. To samo dotyczy funkcji <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (Beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
 <translation id="8948097099929452692">Nie używany w Brave. Symbol zastępczy umożliwiający synchronizację map zasobów.</translation>
@@ -202,6 +202,9 @@ Więcej instrukcji znajdziesz w e-mailu wysłanym na adres <ph name="ACCOUNT_EM
 <translation id="2522086024276534909">Ponowne uruchomienie Brave OS</translation>
 <translation id="8183252473547465084">Zastosowanie aktualizacji wymaga ponownego uruchomienia systemu operacyjnego Brave.</translation>
 <translation id="5895138241574237353">Uruchom ponownie</translation>
+<translation id="8887390605192156061">Zamknij wszystkie kopie Brave.</translation>
+<translation id="1801551749768408825">Są uruchomione inne kopie Brave. Zamknij je, by przeprowadzić aktualizację.</translation>
+<translation id="2632141563911437138">Aby można było przeprowadzić aktualizację, musisz wyłączyć Brave na tym komputerze. Może to spowodować, że inni zalogowani na nim użytkownicy utracą niezapisane dane.</translation>
 <translation id="5875673934455379806">Ponownie zainstaluj Brave</translation>
 <translation id="2097604701283463988">Brave jest nieaktualny</translation>
 <translation id="5173820533850252773">Brave jest nieaktualny</translation>

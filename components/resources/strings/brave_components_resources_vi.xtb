@@ -41,6 +41,8 @@
 <translation id="8958799246752641148">Tor ẩn địa chỉ IP của bạn khỏi các trang web bạn truy cập, bằng cách định tuyến việc duyệt web của bạn thông qua một số máy chủ Tor trước khi truy cập trang đích của bạn. Các kết nối này được mã hóa, do đó, ISP hoặc chủ của bạn không thể xem trang web nào bạn đang truy cập. Tor có thể làm chậm việc duyệt web và một số trang web có thể không hoạt động được.</translation>
 <translation id="520608572871993342">Sử dụng Cửa số Riêng tư chỉ thay đổi những gì Brave thực hiện trên thiết bị của bạn mà không thay đổi hành vi của bất kỳ điều gì khác. Tor ẩn địa chỉ IP của bạn khỏi những trang web mà bạn truy cập, và ẩn những trang web bạn truy cập khỏi ISP hoặc chủ của bạn. Mở Cửa sổ Riêng tư với Tor từ menu, hoặc với {{ key }}.</translation>
 <translation id="6975708438781948564">Tìm hiểu thêm về Tor trong Brave</translation>
+<translation id="4272382368346338917">Bộ lọc thêm</translation>
+<translation id="8949292968394988358">Lưu ý: Bật quá nhiều bộ lọc sẽ làm giảm hiệu năng</translation>
 <translation id="1869685517625607604">Tổng số quảng cáo đã chặn:</translation>
 <translation id="4673764878177947707">Bộ lọc Tùy chỉnh</translation>
 <translation id="8803682034537762884">Một cái mỗi dòng, bộ lọc được mô tả trong cú pháp bộ lọc của Adblock Plus</translation>
@@ -54,7 +56,6 @@
 <translation id="5633840519079139680">Brave khiến việc thiết lập môi trường thông thường của bạn trở nên dễ dàng bằng cách nhập dấu trang và cài đặt từ các trình duyệt khác đã cài đặt trên máy tính của bạn.</translation>
 <translation id="8275038454117074363">Nhập</translation>
 <translation id="5540323067375019678">Quản lý lá chắn của bạn</translation>
-<translation id="4755560456428781763">Các lá chắn Brave bảo vệ bạn khỏi những quảng cáo và trình theo dõi không mong muốn khi duyệt web. Nếu bạn gặp phải một vấn đề khi duyệt một trang, hãy điều chỉnh mức độ bảo vệ từ bảng lá chắn trên thanh công cụ.</translation>
 <translation id="3366308997091824722">Cài đặt lớp bảo vệ</translation>
 <translation id="3884404068544758153">Thay đổi công cụ tìm kiếm của bạn</translation>
 <translation id="438216590634144114">Chọn công cụ tìm kiếm bạn muốn sử dụng mặc định khi tìm kiếm trên web từ thanh địa chỉ.</translation>
@@ -68,6 +69,7 @@
 <translation id="5946611334574299206">Kiếm token khi xem quảng cáo trên Brave. Quảng cáo trình bày dựa trên sở thích của bạn, theo như suy ra từ hành vi duyệt web của bạn. Không có bất kỳ dữ liệu cá nhân hay lịch sử duyệt nào rời khỏi trình duyệt của bạn.</translation>
 <translation id="6112368337882254910">Tự động Đóng góp</translation>
 <translation id="1527222983464337010">Một cách tự động để hỗ trợ nhà xuất bản và nhà sáng tạo nội dung. Thiết lập thanh toán hàng tháng và duyệt web bình thường. Các trang web bạn truy cập nhận được khoản đóng góp của bạn tự động, dựa trên sự chú ý của bạn do Brave đo lường.</translation>
+<translation id="7178655681744815321">Thu nhập ước tính chu kỳ này</translation>
 <translation id="8157096848242649588">Ngày thanh toán</translation>
 <translation id="5208388044986603165">Thông báo quảng cáo đã nhận được</translation>
 <translation id="4229016885653790965">Rất tiếc! Quảng cáo chưa có sẵn trong khu vực của bạn.</translation>
@@ -106,7 +108,7 @@
 <translation id="1199044745726588100">5 giây</translation>
 <translation id="4045581694057451126">8 giây</translation>
 <translation id="8610523985422563960">1 phút</translation>
-<translation id="7521774480426463961">Bật khả năng cho gợi ý trên bài ‘Thích’</translation>
+<translation id="9031738692126722094">Bật chế độ thưởng theo cấp độ nội dung trên các trang này</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Gửi tiền tip ngay khi bạn tìm thấy điều hay.</translation>
@@ -128,6 +130,7 @@
 <translation id="7797604753681168055">Khôi phục ngay!</translation>
 <translation id="1184075897575325927">Rất tiếc, có vẻ như khoản thưởng này đã được nhận.</translation>
 <translation id="282693359045252357">Ngày gửi tiền tip hàng tháng tiếp theo</translation>
+<translation id="6231182869178328516">Tôi vừa thưởng <ph name="NAME">$1<ex>user</ex></ph> thông qua Trình duyệt Brave. Xem thêm tại https://brave.com/tips.</translation>
 <translation id="7422678632904904341">Số lượng:</translation>
 <translation id="5923611424721173182">Đối chiếu Hiện tại</translation>
 <translation id="5457113250005438886">Không hợp lệ</translation>
@@ -150,6 +153,9 @@
 <translation id="4235360514405112390">Hợp lệ</translation>
 <translation id="2700943637868737038">ID Xem</translation>
 <translation id="3576689061489548788">ID Ví Thanh toán:</translation>
+<translation id="758790787422117549">ID cá nhân</translation>
+<translation id="2223892939866251845">ID người dùng</translation>
+<translation id="1642443162274867084">Đã tạo ví</translation>
 <translation id="5094577350232361255">về</translation>
 <translation id="4918086044614829423">Chấp nhận</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave là thương hiệu đã đăng ký của Brave Software. Tên trang web có thể là thương hiệu hoặc thương hiệu đã đăng ký của chủ sở hữu trang web.</translation>
@@ -165,11 +171,16 @@
 <translation id="3671566813999349838">Số tiền</translation>
 <translation id="3819257035322786455">Sao lưu</translation>
 <translation id="1312977698678162065">Được trả tiền khi xem các quảng cáo liên quan và tôn trọng sự riêng tư của bạn.</translation>
+<translation id="7655723274266132226">Giờ đây bạn có thể kiếm tiền bằng cách xem quảng cáo.</translation>
+<translation id="2975780980638932742">Brave Ads đã xuất hiện!</translation>
 <translation id="3361548743396744457">Hỗ trợ những trang mà bạn yêu thích chỉ bằng cách duyệt web – hoặc gửi tiền tip cho trang web vào bất kỳ lúc nào bạn muốn.</translation>
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
 <translation id="4493850495402472953">và</translation>
 <translation id="8804164990146287819">Chính sách Quyền riêng tư</translation>
 <translation id="4281844954008187215">Điều khoản Dịch vụ</translation>
+<translation id="4405997465645469914">Bật Quỹ thưởng Brave nghĩa là bạn đã đọc và đồng ý với</translation>
+<translation id="8819542691525488940">Nhấp vào ‘Vâng, tôi tham gia!’ nghĩa là bạn đã đọc và đồng ý với</translation>
+<translation id="8071424789698327147">Nhấp vào ‘Vâng, tôi đã sẵn sàng!’ nghĩa là bạn đã đọc và đồng ý với</translation>
 <translation id="7530570094705720669">Tạo ví</translation>
 <translation id="2105596359439030979">Sự chú ý của bạn rất quý báu. Kiếm tiền bằng cách xem quảng cáo tôn trọng sự riêng tư, và thanh toán trực tiếp để ủng hộ nhà sáng tạo nội dung mà bạn thích.</translation>
 <translation id="516395624550019162">Vâng, tôi tham gia!</translation>
@@ -206,7 +217,6 @@
 <translation id="7277134233385925078">Thiết lập tiền tip hàng tháng</translation>
 <translation id="8003573781961874199">Tải về dưới dạng PDF</translation>
 <translation id="298067735430872465">Tiền kiếm được từ Quảng cáo</translation>
-<translation id="3521361150443442734">Thu nhập quảng cáo của bạn đã có sẵn.</translation>
 <translation id="8764029012618014430">Kcish hoạt tiền boa</translation>
 <translation id="3412655388715513818">Loại trừ trang web này</translation>
 <translation id="418343137736963579">Tổng số trang bạn đã loại khỏi Tự động-Đóng góp:</translation>
@@ -272,8 +282,8 @@
 <translation id="3626186271103896082">Sao lưu Ví của bạn</translation>
 <translation id="5717619667204259673">Giữ an toàn khóa khôi phục này.</translation>
 <translation id="4699702339303280827">Bạn luôn có thể sử dụng khóa này để lấy lại ví nếu có chuyện gì xảy ra với trình duyệt hoặc máy tính của bạn. Nhưng hãy đảm bảo bảo vệ khóa này — bất kỳ ai có được khóa này đều có thể đánh cắp ví của bạn. Có lẽ an toàn nhất là viết khóa này ra một tờ giấy, hoặc bất cứ nơi nào mà bạn giữ thông tin quan trọng.</translation>
-<translation id="5759071143806884916">Bạn có thể hỗ trợ trang web này bằng cách gửi một khoản tiền tip. Đây là một cách để cảm ơn họ đã làm những nội dung tuyệt vời. Người tạo nội dung đã xác minh sẽ nhận được tiền tip của họ trong tuần đầu tiên của mỗi tháng dương lịch.</translation>
-<translation id="1704859330137112950">Nếu bạn thích, bạn có thể lên lịch gửi tiền tip hàng tháng để hỗ trợ liên tục cho trang này.</translation>
+<translation id="7354412786785889047">Bạn có thể hỗ trợ người tạo nội dung này bằng cách thưởng tiền. Đây là một cách cảm ơn họ đã tạo ra nội dung tuyệt vời. Người tạo đã được xác minh nhận được tiền từ phần tiền thưởng của họ vào tuần đầu tiên của mỗi tháng dương lịch.</translation>
+<translation id="3475063317678050010">Nếu bạn muốn, bạn có thể đặt lịch thưởng hàng tháng để hỗ trợ liên tục cho người tạo nội dung này.</translation>
 <translation id="3074127054582480056">Chú ý</translation>
 <translation id="822513417008209372">Bạn hiện đang hỗ trợ</translation>
 <translation id="5010112177773747965">mà không được bạn đồng ý.</translation>
@@ -302,6 +312,7 @@
 <translation id="3536298624341433814">Gửi Tiền tip của tôi</translation>
 <translation id="1792148354504719133">trang web</translation>
 <translation id="5944430251223015324">trang web</translation>
+<translation id="1834493631938747505">Kể với người khác về tiền thưởng của bạn.</translation>
 <translation id="8826007068782654809">Xin cám ơn</translation>
 <translation id="6665366815203065060">Bạn vừa gửi một khoản tiền tip đến:</translation>
 <translation id="6432779622695508363">Gợi ý khi thích</translation>
@@ -312,8 +323,12 @@
 <translation id="4914597931214386232">Khoản thưởng Token Đã nhận</translation>
 <translation id="1634828734222219955">Tổng cộng</translation>
 <translation id="3535654229833214438">Giao dịch</translation>
+<translation id="3124090095880236567">Bật Quảng cáo</translation>
 <translation id="8987812599455325915">Điều này cho phép các khoản đóng góp quảng cáo và tự động. Bạn có thể bật hoặc tắt riêng lẻ từng mục vào bất kỳ lúc nào.</translation>
 <translation id="1485484147452131556">Kích hoạt Phần thưởng</translation>
+<translation id="3983104749597726322">Tweet</translation>
+<translation id="5636843789453098076">Thưởng cho @{{ user }} vì tweet của họ:</translation>
+<translation id="4242384385082203046">Thưởng cho @{{ user }} vì tweet của họ!</translation>
 <translation id="2448312741937722512">Loại</translation>
 <translation id="8772672608371898774">Nhà sản xuất Chứng thực bởi Brave</translation>
 <translation id="5050370287908180130">Xem Sao kê Hàng tháng để biết Chi tiết</translation>
@@ -336,6 +351,15 @@
 <translation id="6727483290601442544">Xem Chi tiết</translation>
 <translation id="1988679729106502285">LƯU Ý:</translation>
 <translation id="5815103311506128988">Người sáng tạo này vẫn chưa đăng ký để nhận đóng góp từ người dùng Brave. Trình duyệt của bạn sẽ tiếp tục cố gắng đóng góp cho đến khi họ xác minh hoặc cho đến khi đã qua 90 ngày.</translation>
+<translation id="4292832015778676417">thu được từ quảng cáo</translation>
+<translation id="3197752845651180812">Đóng góp chờ xử lý</translation>
+<translation id="3164105678355419142">Tiền thưởng thường chọn</translation>
+<translation id="2927922949538312364">Thưởng một lần</translation>
+<translation id="6964891561514920613">Hiển thị tất cả đóng góp đang chờ xử lý</translation>
+<translation id="4346944508027912677">Chờ xử lý đến khi</translation>
+<translation id="7410549756000115387">Không có đóng góp chờ xử lý…</translation>
+<translation id="1963227389609234879">Xóa Tất cả</translation>
+<translation id="923467487918828349">Hiển thị Tất cả</translation>
 <translation id="1181037720776840403">Xóa</translation>
 <translation id="7885157704277298658">Đã sao chép!</translation>
 <translation id="5379640681913450928">Số lượng chữ:</translation>
@@ -353,6 +377,7 @@
 <translation id="1061533051865606843">Thêm Thiết bị Mới</translation>
 <translation id="8780295742023331191">Xem Mã Đồng bộ</translation>
 <translation id="1755198127524719638">Cài đặt Đồng bộ</translation>
+<translation id="7558480201297099157">Quản lý các thông tin bạn muốn đồng bộ hóa trên các thiết bị. Các cài đặt này chỉ tác động đến thiết bị này.</translation>
 <translation id="8820817407110198400">Dấu trang</translation>
 <translation id="5591129654353352557">Thiết lập trang đã lưu</translation>
 <translation id="7859704718976024901">Lịch sử duyệt web</translation>
@@ -380,6 +405,7 @@
 <translation id="5086223971958279691">Mã Chuỗi Đồng bộ</translation>
 <translation id="2899261497479389619">Trên máy tính mục tiêu của bạn, vào mục Đồng bộ Brave trong cài đặt và nhấp vào nút</translation>
 <translation id="4827439149833241990">“Tôi có Mã Đồng bộ”.</translation>
+<translation id="24067401253841795">Nhập các từ mã chuỗi đồng bộ được hiển thị bên dưới. Coi mã này như mật khẩu. Nếu ai đó nắm được mã này, họ có thể đọc và sửa đổi dữ liệu đồng bộ hóa của bạn.</translation>
 <translation id="8914601399214979966">Sử dụng máy ảnh của tôi thay thế</translation>
 <translation id="3034163433136515805">Xem Mã QR</translation>
 <translation id="5093410893656857925">Chọn Loại Thiết bị</translation>
@@ -392,4 +418,6 @@
 <translation id="8349682220522608879">Vui lòng thêm mã đồng bộ.</translation>
 <translation id="1468095392829989299">Không thể liên hệ máy chủ Đồng bộ</translation>
 <translation id="1399673826422570698">Có thể bạn gặp phải sự cố về mạng hoặc có thể có vấn đề với máy chủ Đồng bộ.</translation>
+<translation id="5286379413446391050">Không kết nối được với máy chủ Đồng bộ</translation>
+<translation id="2410472020237369473">Thời gian hoặc múi giờ trên đồng hồ máy tính của bạn có thể không chính xác. Hãy kiểm tra cài đặt đồng hồ của bạn.</translation>
 </translationbundle>

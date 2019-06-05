@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">No search results found</translation>
 <translation id="8967866634928501045">Press Alt Shift A to show</translation>
 <translation id="998747458861718449">I&amp;nspect</translation>
+<translation id="4428301600092811022">Get image descriptions from Brave Software?</translation>
 <translation id="741204030948306876">Yes, I'm in</translation>
 <translation id="780301667611848630">No, thank you</translation>
 <translation id="3943582379552582368">&amp;Back</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">Help Centre</translation>
 <translation id="7324297612904500502">Beta forum</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Edit search engines...</translation>
 <translation id="5702898740348134351">&amp;Edit Search Engines...</translation>
 <translation id="2454247629720664989">Keyword</translation>
@@ -1302,8 +1304,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6207200176136643843">Reset to default zoom level</translation>
 <translation id="4953689047182316270">Respond to Accessibility Events</translation>
 <translation id="4677585247300749148"><ph name="URL"/> wants to respond to accessibility events</translation>
+<translation id="2224471211857467033">Accessibility events</translation>
 <translation id="6116338172782435947">See text and images copied to the clipboard</translation>
 <translation id="3461266716147554923"><ph name="URL"/> wants to see text and images copied to the clipboard</translation>
+<translation id="2586657967955657006">Clipboard</translation>
 <translation id="4838836835474292213">Clipboard read access allowed</translation>
 <translation id="1415708812149920388">Clipboard read access denied</translation>
 <translation id="2365507699358342471">This site can see text and images copied to the clipboard.</translation>
@@ -1731,6 +1735,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="7547317915858803630">Warning: your <ph name="PRODUCT_NAME"/> settings are stored on a network drive. This may result in slowdowns, crashes or even loss of data.</translation>
 <translation id="3122496702278727796">Failed To Create Data Directory</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> wants to download multiple files</translation>
+<translation id="7514365320538308">Download</translation>
 <translation id="691024665142758461">Download multiple files</translation>
 <translation id="7004499039102548441">Recent tabs</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 Tab}other{# Tabs}}</translation>
@@ -1822,6 +1827,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="6156960295318603523">Language Settings</translation>
 <translation id="7931318309563332511">Unknown</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> wants to send you notifications</translation>
+<translation id="2482878487686419369">Notifications</translation>
 <translation id="7221855153210829124">Show notifications</translation>
 <translation id="8393700583063109961">Send message</translation>
 <translation id="6701535245008341853">Could not get profile.</translation>
@@ -1923,6 +1929,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1753905327828125965">Most Visited</translation>
 <translation id="5612720917913232150"><ph name="URL"/> wants to use your computer's location</translation>
 <translation id="4733082559415072992"><ph name="URL"/> wants to use your device's location</translation>
+<translation id="5646376287012673985">Location</translation>
 <translation id="3016780570757425217">Know your location</translation>
 <translation id="4068506536726151626">This page contains elements from the following sites that are tracking your location:</translation>
 <translation id="4920887663447894854">The following sites have been blocked from tracking your location on this page:</translation>
@@ -1932,6 +1939,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3528033729920178817">This page is tracking your location.</translation>
 <translation id="1510030919967934016">This page has been blocked from tracking your location.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> wants to get full control of your MIDI devices</translation>
+<translation id="1834583737373831634">MIDI devices</translation>
 <translation id="8606726445206553943">Use your MIDI devices</translation>
 <translation id="1849186935225320012">This page has full control of MIDI devices.</translation>
 <translation id="2986010903908656993">This page has been blocked from having full control of MIDI devices.</translation>
@@ -1965,6 +1973,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="8282947398454257691">Know your unique device identifier</translation>
 <translation id="8329449853370113380"><ph name="URL"/> wants to play protected content. Your device’s identity will be verified by Brave Software.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> wants to play protected content. Your device's identity will be verified by Brave Software and may be accessed by this site.</translation>
+<translation id="1746402432151920942">Protected media identifier</translation>
 <translation id="1322046419516468189">View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Password saved. View and manage saved passwords in your <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software Account</translation>
@@ -2024,18 +2033,24 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="3532844647053365774"><ph name="HOST"/> wants to use your microphone</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> wants to use your camera</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> wants to share your screen</translation>
+<translation id="4275663329226226506">Media</translation>
 <translation id="8962918469425892674">This site is using motion or light sensors.</translation>
+<translation id="4532646538815530781">This site is using motion sensors.</translation>
 <translation id="6057381398996433816">This site has been blocked from using motion and light sensors.</translation>
+<translation id="7707108266051544351">This site has been blocked from using motion sensors.</translation>
 <translation id="1151917987301063366">Always allow <ph name="HOST"/> to access sensors</translation>
 <translation id="7377451353532943397">Continue blocking sensor access</translation>
 <translation id="6878422606530379992">Sensors allowed</translation>
 <translation id="4031527940632463547">Sensors blocked</translation>
 <translation id="4559617833001311418">This site is accessing your motion or light sensors.</translation>
+<translation id="5623282979409330487">This site is accessing your motion sensors.</translation>
 <translation id="2309620859903500144">This site has been blocked from accessing your motion or light sensors.</translation>
+<translation id="6541638731489116978">This site has been blocked from accessing your motion sensors.</translation>
 <translation id="8645354835496065562">Continue allowing sensor access</translation>
 <translation id="2903882649406874750">Always block <ph name="HOST"/> from accessing sensors</translation>
 <translation id="3194737229810486521"><ph name="URL"/> wants to permanently store data on your device</translation>
 <translation id="1030706264415084469"><ph name="URL"/> wants to permanently store large data on your device</translation>
+<translation id="885701979325669005">Storage</translation>
 <translation id="1712552549805331520"><ph name="URL"/> wants to permanently store data on your local computer</translation>
 <translation id="1997484222658892567"><ph name="URL"/> wants to permanently store large data on your local computer</translation>
 <translation id="7648992873808071793">Store files on this device</translation>
@@ -2454,9 +2469,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="702252130983202758">Your apps</translation>
 <translation id="8831664945713891930">Open Extensions settings</translation>
 <translation id="5138227688689900538">Show less</translation>
-<translation id="5646376287012673985">Location</translation>
 <translation id="5270167208902136840">Show <ph name="NUMBER_OF_MORE_APPS"/> more apps</translation>
-<translation id="2482878487686419369">Notifications</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> apps</translation>
 <translation id="7207631048330366454">Search apps</translation>
 <translation id="9011424611726486705">Open site settings</translation>
@@ -2789,6 +2802,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="4305227814872083840">long (2s)</translation>
 <translation id="2860150991415616761">very long (4s)</translation>
 <translation id="1217668622537098248">Revert to left click after action</translation>
+<translation id="8781470833671194250">Click position stabilisation</translation>
 <translation id="3682824389861648626">Movement threshold</translation>
 <translation id="5511379779384092781">Extra small</translation>
 <translation id="2765217105034171413">Small</translation>
@@ -3411,7 +3425,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="9038649477754266430">Use a prediction service to load pages more quickly</translation>
 <translation id="7981313251711023384">Preload pages for faster browsing and searching</translation>
 <translation id="2468205691404969808">Uses cookies to remember your preferences, even if you don’t visit those pages</translation>
+<translation id="3181954750937456830">Safe Browsing (protects you and your device from dangerous sites)</translation>
+<translation id="7315322926489145388">Sends URLs of some pages that you visit to Brave Software, when your security is at risk</translation>
 <translation id="4991384657077828949">Help improve Brave security</translation>
+<translation id="1943176487615318915">To detect dangerous apps and sites, Brave sends URLs of some pages that you visit, limited system information and some page content to Brave Software</translation>
 <translation id="2875273286298348523">Brave sends the text that you type in the browser to Brave Software</translation>
 <translation id="9079153198295609735">Automatically send usage statistics and crash reports to Brave Software</translation>
 <translation id="5941220456342415404">Automatically send diagnostic and usage data to Brave Software</translation>
@@ -3483,7 +3500,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1919345977826869612">Ads</translation>
 <translation id="5649053991847567735">Automatic downloads</translation>
 <translation id="3744111561329211289">Background sync</translation>
-<translation id="2586657967955657006">Clipboard</translation>
 <translation id="5518219166343146486">Ask when a site wants to see text and images copied to the clipboard</translation>
 <translation id="2089795179672254991">Ask when a site wants to see text and images copied to the clipboard (recommended)</translation>
 <translation id="16815041330799488">Do not allow sites to see text and images copied to the clipboard</translation>
@@ -3511,6 +3527,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1128109161498068552">Do not allow any sites to use system exclusive messages to access MIDI devices</translation>
 <translation id="2091887806945687916">Sound</translation>
 <translation id="4751476147751820511">Motion or light sensors</translation>
+<translation id="1717218214683051432">Motion sensors</translation>
 <translation id="6059925163896151826">USB devices</translation>
 <translation id="8666584013686199826">Ask when a site wants to access USB devices</translation>
 <translation id="6291949900244949761">Ask when a site wants to access USB devices (recommended)</translation>
@@ -3546,7 +3563,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="1660204651932907780">Allow sites to play sound (recommended)</translation>
 <translation id="3600792891314830896">Mute sites that play sound</translation>
 <translation id="5084230410268011727">Allow sites to use motion and light sensors</translation>
+<translation id="489454699928748701">Allow sites to use motion sensors</translation>
 <translation id="5047421709274785093">Block sites from using motion and light sensors</translation>
+<translation id="6396988158856674517">Block sites from using motion sensors</translation>
 <translation id="2904456025988372123">Ask when a site tries to download files automatically after the first file</translation>
 <translation id="3494769164076977169">Ask when a site tries to download files automatically after the first file (recommended)</translation>
 <translation id="5036662165765606524">Do not allow any site to download multiple files automatically</translation>
@@ -4081,6 +4100,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
 <translation id="2785008241190445880">Bookmark replaced</translation>
 <translation id="5468853758063275923">Brave is your default browser</translation>
 <translation id="2950533317914339731">Add bookmarks to your favourite Brave Software apps</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">News</translation>

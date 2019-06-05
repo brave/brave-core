@@ -4,12 +4,13 @@
 <translation id="3333887201479867589">Nagrody Brave</translation>
 <translation id="7942180974165298215">Blokada reklam Brave</translation>
 <translation id="6406506848690869874">Synchronizacja</translation>
+<translation id="8488282162676695335">Portfel Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2</ph>") - to rozszerzenie nie jest dozwolone w Brave.</translation>
 <translation id="7450557937477381864">Zamknij Chrome</translation>
 <translation id="7008934821596358692">Aby zakończyć importowanie, zamknij wszystkie okna przeglądarki Chrome.</translation>
 <translation id="5735465527556462863">Zamknij Brave (starą wersję)</translation>
 <translation id="7737066986958447692">Aby zakończyć importowanie, zamknij wszystkie okna Brave (starej wersji).</translation>
-<translation id="6447842834002726250">Pliki cookies</translation>
+<translation id="6447842834002726250">Pliki cookie</translation>
 <translation id="4983925687993168579">Statystyki</translation>
 <translation id="6165477144235978006">Płatności Brave</translation>
 <translation id="3489524616427966890">Otwieraj okna  i karty</translation>
@@ -30,7 +31,7 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="4150684676757176434">Kontynuuj blokowanie automatycznego odtwarzania</translation>
 <translation id="7543906827780734027">Brave nie zbadało jeszcze tego rozszerzenia - może być niebezpieczne. Dodać "<ph name="EXTENSION_NAME">$1</ph>" pomimo tego?</translation>
 <translation id="2044383478723007273">Kolory Brave</translation>
-<translation id="5341901626640816374">Korzystaj z szerokiego paska lokalizacji</translation>
+<translation id="2814998458708016836">Korzystaj z szerokiego paska adresu</translation>
 <translation id="6123134130710658846">Ukryj przycisk nagród Brave</translation>
 <translation id="7635711399568194460">Kiedy nagrody Brave są wyłączone, ukrywa przycisk nagród na pasku lokalizacji.</translation>
 <translation id="7965178729203412357">Nowa tożsamość Tor</translation>
@@ -46,9 +47,9 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="3155170474926428993">Program uruchamiający oprogramowanie Tor</translation>
 <translation id="2515126961943087659">Usługa Bat Ads</translation>
 <translation id="7924918279836988121">Usługa rejestrowania BAT</translation>
-<translation id="4472575034687746823">Rozpocznij</translation>
-<translation id="3400357268283240774">Ustawienia dodatkowe</translation>
-<translation id="6303294677342628402">Tarcze są</translation>
+<translation id="4472575034687746823">Podstawowe</translation>
+<translation id="3400357268283240774">Dodatkowe ustawienia</translation>
+<translation id="6303294677342628402">Tarcze</translation>
 <translation id="768979911142179781">Ustawienia domyślne</translation>
 <translation id="5989930075012659993">Twoje aktualne ustawienia dla poszczególnych stron zostaną zachowane.</translation>
 <translation id="9185018653595759199">Blokowanie sieci społecznościowych</translation>
@@ -63,9 +64,9 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
 <translation id="6067014455220527258">Blokuj reklamy</translation>
 <translation id="6985711843506827936">Zezwól na reklamy i śledzenie</translation>
-<translation id="6132506775968708399">Blokuj pliki cookies stron trzecich</translation>
-<translation id="5657156137487675418">Zezwól na wszystkie pliki cookies</translation>
-<translation id="6883611015375728278">Blokuj wszystkie pliki cookies</translation>
+<translation id="6132506775968708399">Blokuj pliki cookie stron trzecich</translation>
+<translation id="5657156137487675418">Zezwól na wszystkie pliki cookie</translation>
+<translation id="6883611015375728278">Blokuj wszystkie pliki cookie</translation>
 <translation id="1442559343076146186">Blokuj zbieranie odcisków palców przez strony trzecie</translation>
 <translation id="8034285923190068220">Zezwól na zbieranie odcisków palców</translation>
 <translation id="4540198958192073185">Blokuj zbieranie odcisków palców</translation>

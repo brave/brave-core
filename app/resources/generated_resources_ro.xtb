@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Nu s-au găsit rezultate de căutare</translation>
 <translation id="8967866634928501045">Apasă pe Alt+Shift+A pentru a afișa</translation>
 <translation id="998747458861718449">I&amp;nspectează</translation>
+<translation id="4428301600092811022">Descarci descrierile imaginii de la Brave Software?</translation>
 <translation id="741204030948306876">Da, accept</translation>
 <translation id="780301667611848630">Nu, mulțumesc</translation>
 <translation id="3943582379552582368">&amp;Înapoi</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">C&amp;entrul de ajutor</translation>
 <translation id="7324297612904500502">Forumul pentru versiunea beta</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Editează motoarele de căutare...</translation>
 <translation id="5702898740348134351">&amp;Editează motoarele de căutare...</translation>
 <translation id="2454247629720664989">Cuvânt cheie</translation>
@@ -1227,6 +1229,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="5867841422488265304">Caută sau introdu adresa web</translation>
 <translation id="2129873093718581193">Caută pe Brave Software sau introdu adresa URL</translation>
 <translation id="6363797201514053536">Caută pe Brave Software sau introdu o adresă URL</translation>
+<translation id="4888839742663123585">Caută pe Brave Software</translation>
 <translation id="6078323886959318429">Adaugă o comandă rapidă</translation>
 <translation id="6324916366299863871">Editează o comandă rapidă</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1301,8 +1304,10 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="6207200176136643843">Resetează la nivelul de zoom prestabilit</translation>
 <translation id="4953689047182316270">să răspundă evenimentelor de accesibilitate</translation>
 <translation id="4677585247300749148"><ph name="URL"/> dorește să răspundă evenimentelor de accesibilitate</translation>
+<translation id="2224471211857467033">Evenimente de accesibilitate</translation>
 <translation id="6116338172782435947">să afișeze textul și imaginile copiate în clipboard</translation>
 <translation id="3461266716147554923"><ph name="URL"/> dorește să vadă textul și imaginile copiate în clipboard</translation>
+<translation id="2586657967955657006">Clipboard</translation>
 <translation id="4838836835474292213">Accesul de citire la clipboard este permis</translation>
 <translation id="1415708812149920388">Accesul de citire la clipboard este interzis</translation>
 <translation id="2365507699358342471">Acest site poate să vadă textul și imaginile copiate în clipboard.</translation>
@@ -1730,6 +1735,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="7547317915858803630">Avertisment: setările <ph name="PRODUCT_NAME"/> sunt stocate pe o unitate de rețea, ceea ce poate duce la încetiniri, blocări sau chiar la pierderi de date.</translation>
 <translation id="3122496702278727796">Nu s-a reușit crearea directorului de date</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> vrea să descarce mai multe fișiere</translation>
+<translation id="7514365320538308">Descarcă</translation>
 <translation id="691024665142758461">să descarce mai multe fișiere</translation>
 <translation id="7004499039102548441">File recente</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{O filă}few{# file}other{# de file}}</translation>
@@ -1821,6 +1827,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="6156960295318603523">Setări de limbă</translation>
 <translation id="7931318309563332511">Necunoscută</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> dorește să îți trimită notificări</translation>
+<translation id="2482878487686419369">Notificări</translation>
 <translation id="7221855153210829124">Afișeze notificări</translation>
 <translation id="8393700583063109961">Trimite un mesaj</translation>
 <translation id="6701535245008341853">Profilul nu a putut fi preluat.</translation>
@@ -1922,6 +1929,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="1753905327828125965">Cele mai vizitate</translation>
 <translation id="5612720917913232150"><ph name="URL"/> dorește să utilizeze locația computerului</translation>
 <translation id="4733082559415072992"><ph name="URL"/> dorește să utilizeze locația dispozitivului</translation>
+<translation id="5646376287012673985">Locație</translation>
 <translation id="3016780570757425217">Afle locația</translation>
 <translation id="4068506536726151626">Această pagină conține elemente din următoarele site-uri care îți urmăresc locația:</translation>
 <translation id="4920887663447894854">Urmărirea locației pe această pagină a fost blocată pentru următoarele site-uri:</translation>
@@ -1931,6 +1939,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="3528033729920178817">Această pagină îți urmărește locația.</translation>
 <translation id="1510030919967934016">Urmărirea locației tale de către această pagină a fost blocată.</translation>
 <translation id="6910240653697687763">Adresa <ph name="URL"/> dorește să preia controlul complet asupra dispozitivelor MIDI</translation>
+<translation id="1834583737373831634">Dispozitive MIDI</translation>
 <translation id="8606726445206553943">Folosească dispozitive MIDI</translation>
 <translation id="1849186935225320012">Această pagină are control complet asupra dispozitivelor MIDI.</translation>
 <translation id="2986010903908656993">Această pagină a fost blocată și nu poate avea control complet asupra dispozitivelor MIDI.</translation>
@@ -1964,6 +1973,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="8282947398454257691">Află identificatorul unic de dispozitiv</translation>
 <translation id="8329449853370113380"><ph name="URL"/> vrea să redea conținut protejat. Brave Software va verifica identitatea dispozitivului tău.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> vrea să redea conținut protejat. Identitatea dispozitivului tău va fi verificată de Brave Software și poate fi accesată de acest site.</translation>
+<translation id="1746402432151920942">Identificator media protejat</translation>
 <translation id="1322046419516468189">Vezi și gestionează parolele salvate în <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Parola a fost salvată. Vezi și gestionează parolele salvate în <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Contul Brave Software</translation>
@@ -2023,18 +2033,24 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="3532844647053365774"><ph name="HOST"/> dorește să utilizeze microfonul</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> dorește să utilizeze camera foto</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> dorește să acceseze ecranul</translation>
+<translation id="4275663329226226506">Media</translation>
 <translation id="8962918469425892674">Acest site folosește senzorii de mișcare sau de lumină.</translation>
+<translation id="4532646538815530781">Site-ul folosește senzorii de mișcare.</translation>
 <translation id="6057381398996433816">Acest site nu are permisiunea de a folosi senzorii de mișcare și de lumină.</translation>
+<translation id="7707108266051544351">Site-ul nu are permisiunea de a folosi senzorii de mișcare.</translation>
 <translation id="1151917987301063366">Permite întotdeauna accesul <ph name="HOST"/> la senzori</translation>
 <translation id="7377451353532943397">Blochează în continuare accesul la senzori</translation>
 <translation id="6878422606530379992">Folosirea senzorilor este permisă</translation>
 <translation id="4031527940632463547">Senzorii sunt blocați</translation>
 <translation id="4559617833001311418">Acest site îți accesează senzorii de mișcare sau de lumină.</translation>
+<translation id="5623282979409330487">Acest site accesează senzorii de mișcare.</translation>
 <translation id="2309620859903500144">Accesul acestui site la senzorii de mișcare sau de lumină a fost blocat.</translation>
+<translation id="6541638731489116978">Site-ul nu are permisiunea de a accesa senzorii de mișcare.</translation>
 <translation id="8645354835496065562">Permite în continuare accesul la senzori</translation>
 <translation id="2903882649406874750">Blochează întotdeauna accesul <ph name="HOST"/> la senzori</translation>
 <translation id="3194737229810486521"><ph name="URL"/> dorește să stocheze permanent date pe dispozitiv</translation>
 <translation id="1030706264415084469"><ph name="URL"/> dorește să stocheze permanent cantități mari de date pe dispozitiv</translation>
+<translation id="885701979325669005">Stocare</translation>
 <translation id="1712552549805331520"><ph name="URL"/> dorește să stocheze permanent date pe computer</translation>
 <translation id="1997484222658892567"><ph name="URL"/> dorește să stocheze permanent cantități mari de date pe computer</translation>
 <translation id="7648992873808071793">Stocheze fișiere pe acest dispozitiv</translation>
@@ -2453,9 +2469,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="702252130983202758">Aplicațiile tale</translation>
 <translation id="8831664945713891930">Deschide setările pentru extensii</translation>
 <translation id="5138227688689900538">Afișează mai puțin</translation>
-<translation id="5646376287012673985">Locație</translation>
 <translation id="5270167208902136840">Afișează încă <ph name="NUMBER_OF_MORE_APPS"/> aplicații</translation>
-<translation id="2482878487686419369">Notificări</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> aplicații</translation>
 <translation id="7207631048330366454">Caută aplicații</translation>
 <translation id="9011424611726486705">Deschide setările pentru site</translation>
@@ -2788,6 +2802,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="4305227814872083840">lungă (2 sec.)</translation>
 <translation id="2860150991415616761">foarte lungă (4 sec.)</translation>
 <translation id="1217668622537098248">Revino la clic stânga după acțiune</translation>
+<translation id="8781470833671194250">Stabilizarea poziției clicului</translation>
 <translation id="3682824389861648626">Limită de mișcare</translation>
 <translation id="5511379779384092781">Foarte mică</translation>
 <translation id="2765217105034171413">Mic</translation>
@@ -3410,7 +3425,10 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="9038649477754266430">Folosește un serviciu de predicții pentru a încărca paginile mai rapid</translation>
 <translation id="7981313251711023384">Preîncarcă paginile pentru navigare și căutare mai rapide</translation>
 <translation id="2468205691404969808">Folosește cookie-uri pentru a-ți reține preferințele, chiar dacă nu accesezi paginile respective</translation>
+<translation id="3181954750937456830">Navigare sigură (protecție împotriva site-urilor periculoase)</translation>
+<translation id="7315322926489145388">Trimite la Brave Software adrese URL ale unor pagini pe care le accesezi, când securitatea este în pericol</translation>
 <translation id="4991384657077828949">Contribuie la îmbunătățirea securității pentru Brave</translation>
+<translation id="1943176487615318915">Pentru a detecta aplicațiile și site-urile periculoase, Brave trimite la Brave Software adresele URL ale unor pagini pe care le accesezi, informații de sistem limitate și o parte din conținutul paginii</translation>
 <translation id="2875273286298348523">Brave trimite textul pe care îl introduci în browser la Brave Software</translation>
 <translation id="9079153198295609735">Trimite automat la Brave Software statistici de utilizare și rapoarte de blocare</translation>
 <translation id="5941220456342415404">Trimite automat la Brave Software date de diagnosticare și de utilizare</translation>
@@ -3482,7 +3500,6 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="1919345977826869612">Reclame</translation>
 <translation id="5649053991847567735">Descărcări automate</translation>
 <translation id="3744111561329211289">Sincronizare în fundal</translation>
-<translation id="2586657967955657006">Clipboard</translation>
 <translation id="5518219166343146486">Întreabă-mă când un site dorește să vadă textul și imaginile copiate în clipboard</translation>
 <translation id="2089795179672254991">Întreabă-mă când un site dorește să vadă textul și imaginile copiate în clipboard (recomandat)</translation>
 <translation id="16815041330799488">Nu permite site-urilor să vadă textul și imaginile copiate în clipboard</translation>
@@ -3510,6 +3527,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="1128109161498068552">Nu permiteți niciunui site să utilizeze mesajele rezervate sistemului pentru a accesa dispozitive MIDI</translation>
 <translation id="2091887806945687916">Sunet</translation>
 <translation id="4751476147751820511">Senzori de mișcare sau de lumină</translation>
+<translation id="1717218214683051432">Senzori de mișcare</translation>
 <translation id="6059925163896151826">Dispozitive USB</translation>
 <translation id="8666584013686199826">Anunță-mă dacă un site vrea să acceseze dispozitive USB</translation>
 <translation id="6291949900244949761">Anunță-mă dacă un site vrea să acceseze dispozitive USB (recomandat)</translation>
@@ -3545,7 +3563,9 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="1660204651932907780">Permite site-urilor să redea sunet (recomandat)</translation>
 <translation id="3600792891314830896">Dezactivează sunetul pentru site-urile care îl redau</translation>
 <translation id="5084230410268011727">Permite folosirea senzorilor de mișcare și de lumină de către site-uri</translation>
+<translation id="489454699928748701">Permite site-urilor să folosească senzorii de mișcare</translation>
 <translation id="5047421709274785093">Blochează folosirea senzorilor de mișcare și de lumină de către site-uri</translation>
+<translation id="6396988158856674517">Împiedică site-urile să folosească senzori de mișcare</translation>
 <translation id="2904456025988372123">Întreabă-mă atunci când un site încearcă să descarce automat fișiere după primul fișier</translation>
 <translation id="3494769164076977169">Notifică-mă dacă un site încearcă să descarce automat fișiere după primul fișier (recomandat)</translation>
 <translation id="5036662165765606524">Nu permiteți niciunui site să descarce automat mai multe fișiere</translation>
@@ -4080,6 +4100,7 @@ Păstrează fișierul cu cheia într-un loc sigur. Acesta va fi necesar la crear
 <translation id="2785008241190445880">Marcajul a fost înlocuit</translation>
 <translation id="5468853758063275923">Brave este browserul prestabilit</translation>
 <translation id="2950533317914339731">Adaugă marcaje la aplicațiile Brave Software preferate</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Știri</translation>

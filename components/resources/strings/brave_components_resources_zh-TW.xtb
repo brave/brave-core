@@ -26,7 +26,7 @@
 <translation id="6248988683584659830">搜尋設定</translation>
 <translation id="730042046912793465">這是一個</translation>
 <translation id="2055363275850890030">隱私視窗</translation>
-<translation id="9133213713928851646">Brave 不記鍵您在私有視窗做什麼。您訪問的網站將不會顯示在您的歷史記錄中，而當您結束後， Cookie 就會消失。 不過，私有視窗仍無法讓您完全匿名上網。</translation>
+<translation id="9133213713928851646">Brave 不會記得您在隱私視窗做了哪些事情。您造訪的網站將不會顯示在您的歷史紀錄中，而當您結束瀏覽後，cookies 就會消失。不過，隱私視窗仍無法讓您完全匿名上網。</translation>
 <translation id="8760415064721320867">使用 Tor 的隱私視窗</translation>
 <translation id="4844209912525464363">Brave 不會記得您在使用 Tor 的隱私視窗裡做了什麼。因為使用了 Tor，您的瀏覽也會自您的網際網路服務提供者與雇主處隱藏，而您的 IP 也會對您造訪的網站隱藏。</translation>
 <translation id="778096729652828897">更多關於使用 Tor 的隱私視窗的資訊</translation>
@@ -39,7 +39,7 @@
 <translation id="1129265576134014816">這個隱私視窗更隱密了</translation>
 <translation id="805807983419360524">使用 Tor</translation>
 <translation id="8958799246752641148">Tor 會對您造訪的網站隱藏您的 IP 位置，方法是在到達您的目的地前先經由許多的 Tor 伺服器。這些連線是加密的，所以您的網際網路服務提供者或雇主都無法看到您正在造訪哪個網站。Tor 可能會拖慢瀏覽速度，而且某些網站可能沒辦法正常運作。</translation>
-<translation id="520608572871993342">使用私有視窗只會改變 Brave 在您的裝置上所做的事情──它不會改變其他人的行為。Tor 會從您訪問的網站隱藏您的 IP 地址，並對 ISP 或您的雇主隱藏訪問過網站。從選單中以 Tor 打開私有視窗，或使用{{key}}。</translation>
+<translation id="520608572871993342">使用隱私視窗只會改變 Brave 在您的裝置上所做的事情──它不會改變其他人的行為。Tor 會從對您造訪的網站隱藏您的 IP 位置，並對 ISP 或您的雇主隱藏造訪過這個網站的痕跡。從選單中以 Tor 打開隱私視窗，或使用 {{ key }}。</translation>
 <translation id="6975708438781948564">更多關於 Brave 中的 Tor 的資訊</translation>
 <translation id="4272382368346338917">額外的過濾器</translation>
 <translation id="8949292968394988358">警告：開啟太多過濾器可能會導致效能降低</translation>
@@ -56,7 +56,6 @@
 <translation id="5633840519079139680">透過從電腦上其他瀏覽器匯入書籤及設定，Brave 讓您可方便快速地設定您的慣用環境。</translation>
 <translation id="8275038454117074363">匯入</translation>
 <translation id="5540323067375019678">管理您的防護</translation>
-<translation id="4755560456428781763">Brave 防護可防止您在瀏覽時受到不想要的廣告和追蹤器干擾。若在瀏覽特定網站遇到問題，只要從工具列的防護面板調整防護層級即可。</translation>
 <translation id="3366308997091824722">防護設定</translation>
 <translation id="3884404068544758153">變更您的搜尋引擎</translation>
 <translation id="438216590634144114">選擇從網址列搜尋網頁時想使用的預設搜尋引擎。</translation>
@@ -109,7 +108,7 @@
 <translation id="1199044745726588100">5 秒</translation>
 <translation id="4045581694057451126">8 秒</translation>
 <translation id="8610523985422563960">1 分鐘</translation>
-<translation id="7521774480426463961">啟用給喜歡的貼文給小費的功能</translation>
+<translation id="9031738692126722094">啟用在這些網站打賞內文</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">當您找到寶石時馬上給小費。</translation>
@@ -131,6 +130,7 @@
 <translation id="7797604753681168055">立即復原！</translation>
 <translation id="1184075897575325927">抱歉，看來這筆經費已經被領了。</translation>
 <translation id="282693359045252357">下個每月小費日期</translation>
+<translation id="6231182869178328516">我剛剛使用 Brave Browser 打賞 <ph name="NAME">$1 給<ex>使用者</ex></ph>。到https://brave.com/tips 看看吧。</translation>
 <translation id="7422678632904904341">金額：</translation>
 <translation id="5923611424721173182">目前調和</translation>
 <translation id="5457113250005438886">無效</translation>
@@ -180,6 +180,7 @@
 <translation id="4281844954008187215">服務條款</translation>
 <translation id="4405997465645469914">開啟 Brave Rewards 時，將會認為您已經閱讀並同意</translation>
 <translation id="8819542691525488940">點選「是的，算我一份」時，將會認為您已經閱讀並同意</translation>
+<translation id="8071424789698327147">按一下「是的，我準備好了！」代表你已閱讀並同意</translation>
 <translation id="7530570094705720669">創造錢包</translation>
 <translation id="2105596359439030979">您的注意力是有價值的。透過觀看尊重隱私的廣告獲得收益，並將其支付出去以支持您喜愛的內容創作者。</translation>
 <translation id="516395624550019162">是，算我一份！</translation>
@@ -216,7 +217,7 @@
 <translation id="7277134233385925078">設定每月小費</translation>
 <translation id="8003573781961874199">以 PDF 格式下載</translation>
 <translation id="298067735430872465">自廣告而來的收益</translation>
-<translation id="3521361150443442734">您的廣告收入已經可用。</translation>
+<translation id="7965014118284846291">您的廣告收入已經可用。</translation>
 <translation id="8764029012618014430">啟用小費功能</translation>
 <translation id="3412655388715513818">排除此網站</translation>
 <translation id="418343137736963579">您排除自動捐助的網站總數：</translation>
@@ -282,8 +283,8 @@
 <translation id="3626186271103896082">備份您的錢包</translation>
 <translation id="5717619667204259673">請確保此復原金鑰的安全。</translation>
 <translation id="4699702339303280827">如果瀏覽器或電腦發生狀況，您隨時都可以使用此金鑰來取回錢包。但務必加以保護 — 任何拿到這個金鑰的人都可以竊取您的錢包。最安全的方式可能’就是寫在一張紙上，或任何其它您記錄重要資料的地方。</translation>
-<translation id="5759071143806884916">您可以寄發小費來支持這個網站。這’是感謝他們製作好內容的一種方式。經驗證的內容創作者在每個曆月的第一週期間賺到他們的小費。</translation>
-<translation id="1704859330137112950">如果您喜歡的話，您也可以安排每月的小費來持續支援此網站。</translation>
+<translation id="7354412786785889047">你可以藉由發送打賞來支持這位推文作者。這是感謝他們提供優質內容的方式。驗證過的作者在每個行事曆月份的第一週收到打賞。</translation>
+<translation id="3475063317678050010">如果喜歡的話，你可以排定每月打賞，以持續捐助的方式來支持這位推文作者。</translation>
 <translation id="3074127054582480056">注意</translation>
 <translation id="822513417008209372">您目前正在支援</translation>
 <translation id="5010112177773747965">未經您的同意。</translation>
@@ -312,6 +313,7 @@
 <translation id="3536298624341433814">傳送我的小費</translation>
 <translation id="1792148354504719133">網站</translation>
 <translation id="5944430251223015324">網站</translation>
+<translation id="1834493631938747505">告訴其他人關於你的打賞。</translation>
 <translation id="8826007068782654809">謝謝您</translation>
 <translation id="6665366815203065060">您已經傳送小費給：</translation>
 <translation id="6432779622695508363">在喜歡的時候給小費</translation>
@@ -325,6 +327,9 @@
 <translation id="3124090095880236567">開啟廣告</translation>
 <translation id="8987812599455325915">這會同時啟用廣告和自動捐獻。您可以在任何時候單獨開關它們。</translation>
 <translation id="1485484147452131556">啟用 Rewards</translation>
+<translation id="3983104749597726322">推文</translation>
+<translation id="5636843789453098076">打賞 @{{ user }} 嘉許他們的推文：</translation>
+<translation id="4242384385082203046">打賞 @{{ user }} 嘉許他們的推文！</translation>
 <translation id="2448312741937722512">類型</translation>
 <translation id="8772672608371898774">Brave 驗證出版者</translation>
 <translation id="5050370287908180130">檢視每月報告明細</translation>
@@ -347,6 +352,15 @@
 <translation id="6727483290601442544">查看詳情</translation>
 <translation id="1988679729106502285">注意：</translation>
 <translation id="5815103311506128988">這位建立者尚未登記接受 Brave 使用者的提撥金。您的瀏覽器會不斷嘗試提撥，直到他們驗證或 90 天過後為止。</translation>
+<translation id="4292832015778676417">從廣告賺取</translation>
+<translation id="3197752845651180812">預定的捐助</translation>
+<translation id="3164105678355419142">週期性打賞</translation>
+<translation id="2927922949538312364">單次打賞</translation>
+<translation id="6964891561514920613">顯示所有預定的捐助</translation>
+<translation id="4346944508027912677">預定直到</translation>
+<translation id="7410549756000115387">沒有預定的捐助……</translation>
+<translation id="1963227389609234879">全部移除</translation>
+<translation id="923467487918828349">全部顯示</translation>
 <translation id="1181037720776840403">移除</translation>
 <translation id="7885157704277298658">已複製！</translation>
 <translation id="5379640681913450928">字數：</translation>

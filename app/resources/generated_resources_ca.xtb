@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">No s'ha trobat cap resultat de la cerca</translation>
 <translation id="8967866634928501045">Prem Alt+Maj+A perquè es mostri</translation>
 <translation id="998747458861718449">I&amp;nspecciona</translation>
+<translation id="4428301600092811022">Vols obtenir descripcions d'imatges de Brave Software?</translation>
 <translation id="741204030948306876">Sí, ho accepto</translation>
 <translation id="780301667611848630">No, gràcies</translation>
 <translation id="3943582379552582368">&amp;Enrere</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">Centre d'ajuda</translation>
 <translation id="7324297612904500502">Fòrum per a la versió beta</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Edita els motors de cerca...</translation>
 <translation id="5702898740348134351">&amp;Edita els motors de cerca...</translation>
 <translation id="2454247629720664989">Paraula clau</translation>
@@ -1303,8 +1305,10 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6207200176136643843">Restableix el nivell de zoom predeterminat</translation>
 <translation id="4953689047182316270">Respondre als esdeveniments d'accessibilitat</translation>
 <translation id="4677585247300749148"><ph name="URL"/> vol respondre als esdeveniments d'accessibilitat</translation>
+<translation id="2224471211857467033">Esdeveniments d'accessibilitat</translation>
 <translation id="6116338172782435947">Veure el text i les imatges copiats al porta-retalls</translation>
 <translation id="3461266716147554923"><ph name="URL"/> vol veure el text i les imatges copiats al porta-retalls</translation>
+<translation id="2586657967955657006">Porta-retalls</translation>
 <translation id="4838836835474292213">S'ha permès l'accés de lectura al porta-retalls</translation>
 <translation id="1415708812149920388">S'ha denegat l'accés de lectura al porta-retalls</translation>
 <translation id="2365507699358342471">Aquest lloc web pot veure el text i les imatges copiats al porta-retalls.</translation>
@@ -1731,6 +1735,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="7547317915858803630">Advertiment: la vostra configuració de <ph name="PRODUCT_NAME"/> s'emmagatzema en una unitat de xarxa. Això pot provocar alentiments, bloquejos o fins i tot la pèrdua de dades.</translation>
 <translation id="3122496702278727796">Error en crear un directori de dades</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> vol baixar diversos fitxers</translation>
+<translation id="7514365320538308">Baixa</translation>
 <translation id="691024665142758461">Baixa diversos fitxers</translation>
 <translation id="7004499039102548441">Pestanyes recents</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 pestanya}other{# pestanyes}}</translation>
@@ -1820,6 +1825,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="6156960295318603523">Configuració d'idioma</translation>
 <translation id="7931318309563332511">Desconegut</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> et vol enviar notificacions</translation>
+<translation id="2482878487686419369">Notificacions</translation>
 <translation id="7221855153210829124">Mostrar notificacions</translation>
 <translation id="8393700583063109961">Envia el missatge</translation>
 <translation id="6701535245008341853">No s'ha pogut obtenir el perfil.</translation>
@@ -1921,6 +1927,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1753905327828125965">Els més visitats</translation>
 <translation id="5612720917913232150"><ph name="URL"/> vol utilitzar la ubicació de l'ordinador</translation>
 <translation id="4733082559415072992"><ph name="URL"/> vol utilitzar la ubicació del dispositiu</translation>
+<translation id="5646376287012673985">Ubicació</translation>
 <translation id="3016780570757425217">Saber la vostra ubicació</translation>
 <translation id="4068506536726151626">Aquesta pàgina conté elements dels llocs següents que fan un seguiment de la teva ubicació:</translation>
 <translation id="4920887663447894854">Els llocs següents han bloquejat el seguiment de la vostra ubicació en aquesta pàgina:</translation>
@@ -1930,6 +1937,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3528033729920178817">Aquesta pàgina fa el seguiment de la vostra ubicació.</translation>
 <translation id="1510030919967934016">Aquesta pàgina ha bloquejat el seguiment de la vostra ubicació.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> vol obtenir un control total dels teus dispositius MIDI</translation>
+<translation id="1834583737373831634">Dispositius MIDI</translation>
 <translation id="8606726445206553943">Utilitzar els dispositius MIDI</translation>
 <translation id="1849186935225320012">Aquesta pàgina té un control total dels dispositius MIDI.</translation>
 <translation id="2986010903908656993">S'ha bloquejat el control total d'aquesta pàgina sobre els dispositius MIDI.</translation>
@@ -1963,6 +1971,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="8282947398454257691">Saber l'identificador únic del dispositiu</translation>
 <translation id="8329449853370113380"><ph name="URL"/> vol reproduir contingut protegit. Brave Software verificarà la identitat del teu dispositiu.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> vol reproduir contingut protegit. Brave Software verificarà la identitat del teu dispositiu i aquest lloc web hi podrà accedir.</translation>
+<translation id="1746402432151920942">Identificador de contingut multimèdia protegit</translation>
 <translation id="1322046419516468189">Consulta i gestiona les contrasenyes desades al <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">S'ha desat la contrasenya. Consulta i gestiona les contrasenyes desades al <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Compte de Brave Software</translation>
@@ -2022,18 +2031,24 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="3532844647053365774"><ph name="HOST"/> vol utilitzar el micròfon</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> vol utilitzar la càmera</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> vol compartir la teva pantalla</translation>
+<translation id="4275663329226226506">Multimèdia</translation>
 <translation id="8962918469425892674">Aquest lloc web utilitza sensors de llum o moviment.</translation>
+<translation id="4532646538815530781">Aquest lloc web utilitza sensors de llum.</translation>
 <translation id="6057381398996433816">No es permet que aquest lloc web utilitzi els sensors de llum i moviment.</translation>
+<translation id="7707108266051544351">No es permet que aquest lloc web utilitzi els sensors de moviment.</translation>
 <translation id="1151917987301063366">Permet sempre que <ph name="HOST"/> accedeixi als sensors</translation>
 <translation id="7377451353532943397">Continua bloquejant l'accés als sensors</translation>
 <translation id="6878422606530379992">Sensors permesos</translation>
 <translation id="4031527940632463547">Sensors bloquejats</translation>
 <translation id="4559617833001311418">Aquest lloc web està accedint als teus sensors de llum i moviment.</translation>
+<translation id="5623282979409330487">Aquest lloc web està accedint als sensors de moviment.</translation>
 <translation id="2309620859903500144">Aquest lloc web no té permís per accedir als sensors de llum o moviment.</translation>
+<translation id="6541638731489116978">No es permet que aquest lloc web accedeixi als sensors de moviment.</translation>
 <translation id="8645354835496065562">Continua permetent l'accés als sensors</translation>
 <translation id="2903882649406874750">Impedeix sempre que <ph name="HOST"/> accedeixi als sensors</translation>
 <translation id="3194737229810486521"><ph name="URL"/> vol emmagatzemar dades al dispositiu de manera permanent</translation>
 <translation id="1030706264415084469"><ph name="URL"/> vol emmagatzemar una gran quantitat de dades al dispositiu de manera permanent</translation>
+<translation id="885701979325669005">Emmagatzematge</translation>
 <translation id="1712552549805331520"><ph name="URL"/> vol emmagatzemar dades a l'ordinador local de manera permanent</translation>
 <translation id="1997484222658892567"><ph name="URL"/> vol emmagatzemar una gran quantitat de dades a l'ordinador local de manera permanent</translation>
 <translation id="7648992873808071793">Emmagatzema fitxers en aquest dispositiu</translation>
@@ -2452,9 +2467,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="702252130983202758">Les teves aplicacions</translation>
 <translation id="8831664945713891930">Obre la configuració d'extensions</translation>
 <translation id="5138227688689900538">Mostra'n menys</translation>
-<translation id="5646376287012673985">Ubicació</translation>
 <translation id="5270167208902136840">Mostra <ph name="NUMBER_OF_MORE_APPS"/> aplicacions més</translation>
-<translation id="2482878487686419369">Notificacions</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> aplicacions</translation>
 <translation id="7207631048330366454">Cerca aplicacions</translation>
 <translation id="9011424611726486705">Obre la configuració del lloc web</translation>
@@ -2787,6 +2800,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="4305227814872083840">llarg (2 s)</translation>
 <translation id="2860150991415616761">molt llarg (4 s)</translation>
 <translation id="1217668622537098248">Torna al clic amb el botó esquerre després d'una acció</translation>
+<translation id="8781470833671194250">Estabilització de la posició de clic</translation>
 <translation id="3682824389861648626">Llindar de moviment</translation>
 <translation id="5511379779384092781">Molt petit</translation>
 <translation id="2765217105034171413">Petit</translation>
@@ -3409,7 +3423,10 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="9038649477754266430">Utilitza un servei de predicció per poder carregar les pàgines més ràpidament</translation>
 <translation id="7981313251711023384">Carrega les pàgines prèviament per poder-hi navegar i fer cerques més de pressa</translation>
 <translation id="2468205691404969808">Utilitza galetes per recordar les teves preferències, fins i tot si no visites aquestes pàgines</translation>
+<translation id="3181954750937456830">Navegació segura (et protegeix a tu i al teu dispositiu de llocs web perillosos)</translation>
+<translation id="7315322926489145388">Envia a Brave Software els URL d'algunes de les pàgines que visites quan la teva seguretat està en risc</translation>
 <translation id="4991384657077828949">Ajuda a millorar la seguretat de Brave</translation>
+<translation id="1943176487615318915">Per detectar aplicacions i llocs web perillosos, Brave envia a Brave Software els URL d'algunes de les pàgines que visites, informació limitada del sistema i part del contingut de les pàgines</translation>
 <translation id="2875273286298348523">Brave envia a Brave Software el text que escrius al navegador</translation>
 <translation id="9079153198295609735">Envia automàticament estadístiques d'ús i informes d'error a Brave Software</translation>
 <translation id="5941220456342415404">Envia automàticament dades de diagnòstic i d'ús a Brave Software</translation>
@@ -3481,7 +3498,6 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1919345977826869612">Anuncis</translation>
 <translation id="5649053991847567735">Baixades automàtiques</translation>
 <translation id="3744111561329211289">Sincronització en segon pla</translation>
-<translation id="2586657967955657006">Porta-retalls</translation>
 <translation id="5518219166343146486">Pregunta'm quan un lloc web vulgui veure el text i les imatges copiats al porta-retalls</translation>
 <translation id="2089795179672254991">Pregunta'm quan un lloc web vulgui veure el text i les imatges copiats al porta-retalls (opció recomanada)</translation>
 <translation id="16815041330799488">No permetis que els llocs web vegin el text i les imatges copiats al porta-retalls</translation>
@@ -3509,6 +3525,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1128109161498068552">No permetis que cap lloc utilitzi els missatges exclusius del sistema per accedir als dispositius MIDI</translation>
 <translation id="2091887806945687916">So</translation>
 <translation id="4751476147751820511">Sensors de moviment o de llum</translation>
+<translation id="1717218214683051432">Sensors de moviment</translation>
 <translation id="6059925163896151826">Dispositius USB</translation>
 <translation id="8666584013686199826">Pregunta'm quan un lloc web vulgui accedir a dispositius USB</translation>
 <translation id="6291949900244949761">Pregunta'm quan un lloc web vulgui accedir a dispositius USB (opció recomanada)</translation>
@@ -3544,7 +3561,9 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="1660204651932907780">Permet que els llocs web reprodueixin so (opció recomanada)</translation>
 <translation id="3600792891314830896">Silencia els llocs web que reprodueixen so</translation>
 <translation id="5084230410268011727">Permet que els llocs web utilitzin els sensors de moviment i de llum</translation>
+<translation id="489454699928748701">Permet que els llocs web utilitzin els sensors de moviment</translation>
 <translation id="5047421709274785093">Impedeix que els llocs web utilitzin els sensors de moviment i de llum</translation>
+<translation id="6396988158856674517">Impedeix que els llocs web utilitzin els sensors de moviment</translation>
 <translation id="2904456025988372123">Pregunta'm quan un lloc provi de baixar fitxers automàticament després del primer fitxer</translation>
 <translation id="3494769164076977169">Pregunta'm quan un lloc provi de baixar fitxers automàticament després del primer fitxer (opció recomanada)</translation>
 <translation id="5036662165765606524">No permetis que cap lloc baixi diversos fitxers automàticament</translation>
@@ -4079,6 +4098,7 @@ Deseu el fitxer de clau en una ubicació segura. El necessitareu per crear versi
 <translation id="2785008241190445880">L'adreça d'interès s'ha substituït</translation>
 <translation id="5468853758063275923">Brave és el navegador predeterminat</translation>
 <translation id="2950533317914339731">Afegeix adreces d'interès a les teves aplicacions de Brave Software preferides</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Notícies</translation>

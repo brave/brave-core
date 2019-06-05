@@ -56,7 +56,6 @@
 <translation id="5633840519079139680">Brave memudahkan Anda menyiapkan lingkungan yang biasa digunakan dengan mengimpor markah dan setelan dari peramban yang terpasang di komputer Anda.</translation>
 <translation id="8275038454117074363">Impor</translation>
 <translation id="5540323067375019678">Kelola perisai</translation>
-<translation id="4755560456428781763">Perisai Brave melindungi Anda dari iklan dan pelacak yang tidak diinginkan saat melakukan penjelajahan. Jika Anda mengalami masalah saat menelusuri situs tertentu, sesuaikan tingkat perlindungan dari panel perisai di bilah alat.</translation>
 <translation id="3366308997091824722">Setelan Perisai</translation>
 <translation id="3884404068544758153">Ubah mesin pencari</translation>
 <translation id="438216590634144114">Pilih mesin pencari yang ingin Anda gunakan secara baku saat mencari web dari bilah alamat.</translation>
@@ -109,7 +108,7 @@
 <translation id="1199044745726588100">5 detik</translation>
 <translation id="4045581694057451126">8 detik</translation>
 <translation id="8610523985422563960">1 menit</translation>
-<translation id="7521774480426463961">Aktifkan kemampuan untuk memberikan tip pada kiriman ‘Suka’</translation>
+<translation id="9031738692126722094">Aktifkan tips tingkat konten di situs-situs ini</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Beri tip secara langsung saat Anda menemukan permata.</translation>
@@ -131,6 +130,7 @@
 <translation id="7797604753681168055">Pulihkan sekarang!</translation>
 <translation id="1184075897575325927">Maaf, tampaknya hibah ini sudah diklaim.</translation>
 <translation id="282693359045252357">Tanggal tip bulanan berikutnya</translation>
+<translation id="6231182869178328516">Saya baru saja memberi tip untuk <ph name="NAME">$1<ex>user</ex></ph> melalui Brave Browser. Simak di https://brave.com/tips.</translation>
 <translation id="7422678632904904341">Jumlah:</translation>
 <translation id="5923611424721173182">Rekonsiliasi Saat Ini</translation>
 <translation id="5457113250005438886">Tidak valid</translation>
@@ -156,7 +156,7 @@
 <translation id="758790787422117549">Persona ID</translation>
 <translation id="2223892939866251845">User ID</translation>
 <translation id="1642443162274867084">Dompet dibuat</translation>
-<translation id="5094577350232361255">tentang</translation>
+<translation id="5094577350232361255">sekitar</translation>
 <translation id="4918086044614829423">Terima</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave adalah merek dagang terdaftar dari Brave Software. Nama situs mungkin merupakan merek dagang atau merek dagang terdaftar dari pemilik situs.</translation>
 <translation id="9026369588205476247">Untuk melindungi privasi Anda, laporan Brave Rewards ini tidak simpan, direkam, atau dicatat di mana pun selain di perangkat Anda (komputer ini). Ini tidak dapat diambil kembali dari Brave saat ada kehilangan data di perangkat Anda.</translation>
@@ -179,6 +179,8 @@
 <translation id="8804164990146287819">Kebijakan Privasi</translation>
 <translation id="4281844954008187215">Ketentuan Layanan</translation>
 <translation id="4405997465645469914">Dengan mengaktifkan Brave Rewards, Anda menyatakan bahwa Anda telah membaca dan menyetujui</translation>
+<translation id="8819542691525488940">Dengan mengklik ‘Ya, saya mau!’, Anda menyatakan telah membaca dan menyetujui</translation>
+<translation id="8071424789698327147">Dengan mengklik ‘Ya, Saya Siap!’, Anda menyatakan telah membaca dan menyetujui</translation>
 <translation id="7530570094705720669">Membuat wallet</translation>
 <translation id="2105596359439030979">Atensi Anda berharga. Dapatkan pendapatan dengan melihat iklan yang menghormati privasi Anda, dan menggunakannya untuk mendukung pembuat konten yang Anda suka.</translation>
 <translation id="516395624550019162">Ya, saya mau!</translation>
@@ -215,7 +217,6 @@
 <translation id="7277134233385925078">Atur tip bulanan</translation>
 <translation id="8003573781961874199">Unduh sebagai PDF</translation>
 <translation id="298067735430872465">Pendapatan dari Iklan</translation>
-<translation id="3521361150443442734">Pendapatan Iklan Anda telah tersedia.</translation>
 <translation id="8764029012618014430">Aktifkan Tip</translation>
 <translation id="3412655388715513818">Kecualikan situs ini</translation>
 <translation id="418343137736963579">Total jumlah situs yang Anda kecualikan dari Kontribusi Otomatis:</translation>
@@ -250,7 +251,7 @@
 <translation id="8051372105644249165">Token tidak cukup. Harap</translation>
 <translation id="3630697955794050612">mati</translation>
 <translation id="4921250468871504777">oke</translation>
-<translation id="7866482334467279021">nyala</translation>
+<translation id="7866482334467279021">di</translation>
 <translation id="1166682575529520472">Bulanan</translation>
 <translation id="8370173854533168890">Satu kali</translation>
 <translation id="9182287025588539628">Tip Satu Kali</translation>
@@ -281,8 +282,8 @@
 <translation id="3626186271103896082">Cadangkan Dompet Anda</translation>
 <translation id="5717619667204259673">Selalu simpan kunci pemulihan ini secara aman.</translation>
 <translation id="4699702339303280827">Anda selalu dapat menggunakan kunci ini untuk memulihkan dompet Anda kembali jika terjadi sesuatu pada peramban atau komputer Anda. Tetapi pastikan untuk melindunginya — siapa pun yang mendapatkan kunci ini dapat mencuri dompet Anda. Mungkin paling aman adalah menuliskannya di selembar kertas, atau di mana pun Anda menyimpan informasi penting.</translation>
-<translation id="5759071143806884916">Anda dapat mendukung situs ini dengan mengirimkan tip. Ini cara berterima kasih karena mereka telah membuat konten yang bagus. Pembuat konten yang telah diverifikasi akan menerima pembayaran tip yang diberikan pada mereka pada minggu pertama setiap bulan kalender.</translation>
-<translation id="1704859330137112950">Jika Anda suka, Anda dapat menjadwalkan tip bulanan untuk mendukung situs ini secara berkelanjutan.</translation>
+<translation id="7354412786785889047">Anda dapat mendukung kreator konten ini dengan mengirimkan tip. Inilah cara berterima kasih pada mereka karena telah menciptakan konten yang bagus. Kreator terverifikasi mendapatkan bayaran untuk tips mereka di minggu pertama tiap bulan.</translation>
+<translation id="3475063317678050010">Jika mau, Anda dapat menjadwalkan tips bulanan guna mendukung kreator ini secara berkelanjutan.</translation>
 <translation id="3074127054582480056">Atensi</translation>
 <translation id="822513417008209372">Anda saat ini mendukung</translation>
 <translation id="5010112177773747965">tanpa izin Anda.</translation>
@@ -311,6 +312,7 @@
 <translation id="3536298624341433814">Kirim Tip saya</translation>
 <translation id="1792148354504719133">situs</translation>
 <translation id="5944430251223015324">situs</translation>
+<translation id="1834493631938747505">Infokan orang lain tentang tip Anda.</translation>
 <translation id="8826007068782654809">Terima kasih</translation>
 <translation id="6665366815203065060">Anda mengirim tip ke:</translation>
 <translation id="6432779622695508363">Tip pada suka</translation>
@@ -324,6 +326,9 @@
 <translation id="3124090095880236567">Aktifkan Iklan</translation>
 <translation id="8987812599455325915">Ini mengaktifkan iklan serta kontribusi otomatis. Anda dapat mengaktifkan atau menonaktifkannya secara terpisah kapan saja.</translation>
 <translation id="1485484147452131556">Aktifkan Rewards</translation>
+<translation id="3983104749597726322">Tuit</translation>
+<translation id="5636843789453098076">Beri tip ke @{{ user }} untuk tuitnya:</translation>
+<translation id="4242384385082203046">Beri tip ke @{{ user }} untuk tuitnya!</translation>
 <translation id="2448312741937722512">Jenis</translation>
 <translation id="8772672608371898774">Penerbit Brave Terverifikasi</translation>
 <translation id="5050370287908180130">Lihat Laporan Bulanan untuk Detailnya</translation>
@@ -346,6 +351,15 @@
 <translation id="6727483290601442544">Lihat Rincian</translation>
 <translation id="1988679729106502285">CATATAN:</translation>
 <translation id="5815103311506128988">Pembuat ini belum mendaftar untuk menerima kontribusi dari pengguna Brave. Peramban Anda akan terus berusaha memberi kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
+<translation id="4292832015778676417">diperoleh dari iklan</translation>
+<translation id="3197752845651180812">Kontribusi tertunda</translation>
+<translation id="3164105678355419142">Tip berulang</translation>
+<translation id="2927922949538312364">Tip sekali saja</translation>
+<translation id="6964891561514920613">Tampilkan semua kontribusi tertunda</translation>
+<translation id="4346944508027912677">Tertunda sampai</translation>
+<translation id="7410549756000115387">Tidak ada kontribusi tertunda…</translation>
+<translation id="1963227389609234879">Hapus Semua</translation>
+<translation id="923467487918828349">Tampilkan Semua</translation>
 <translation id="1181037720776840403">Hapus</translation>
 <translation id="7885157704277298658">Disalin!</translation>
 <translation id="5379640681913450928">Jumlah Kata:</translation>

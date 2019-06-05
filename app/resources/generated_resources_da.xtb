@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Der blev ikke fundet nogen søgeresultater</translation>
 <translation id="8967866634928501045">Tryk på Alt+Shift+A for at vise</translation>
 <translation id="998747458861718449">U&amp;ndersøg</translation>
+<translation id="4428301600092811022">Vil du hente billedbeskrivelser fra Brave Software?</translation>
 <translation id="741204030948306876">Ja tak</translation>
 <translation id="780301667611848630">Nej tak</translation>
 <translation id="3943582379552582368">&amp;Tilbage</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">Hjælp</translation>
 <translation id="7324297612904500502">Betaforum</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Rediger søgemaskiner...</translation>
 <translation id="5702898740348134351">&amp;Rediger søgemaskiner...</translation>
 <translation id="2454247629720664989">Søgeord</translation>
@@ -1301,8 +1303,10 @@ Opbevar din nøglefil på et sikkert sted. Du skal bruge den til at oprette nye 
 <translation id="6207200176136643843">Nulstil til standardniveauet for zoom</translation>
 <translation id="4953689047182316270">Reagere på hændelser med hjælpefunktioner</translation>
 <translation id="4677585247300749148"><ph name="URL"/> anmoder om at reagere på handlinger foretaget i hjælpetilstand</translation>
+<translation id="2224471211857467033">Hjælpefunktioner</translation>
 <translation id="6116338172782435947">Se tekst og billeder, der er kopieret til udklipsholderen</translation>
 <translation id="3461266716147554923"><ph name="URL"/> vil gerne se tekst og billeder, der er kopieret til udklipsholderen</translation>
+<translation id="2586657967955657006">Udklipsholder</translation>
 <translation id="4838836835474292213">Der blev givet læseadgang til udklipsholderen</translation>
 <translation id="1415708812149920388">Læseadgang til udklipsholderen blev afvist</translation>
 <translation id="2365507699358342471">Dette website kan se tekst og billeder, der er kopieret til udklipsholderen.</translation>
@@ -1730,6 +1734,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="7547317915858803630">Advarsel: Dine indstillinger for <ph name="PRODUCT_NAME"/> er gemt på et netværksdrev. Dette resulterer muligvis i forsinkelser, nedbrud eller sågar datatab.</translation>
 <translation id="3122496702278727796">Oprettelsen af datamappe mislykkedes</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> vil downloade flere filer</translation>
+<translation id="7514365320538308">Download</translation>
 <translation id="691024665142758461">Download flere filer</translation>
 <translation id="7004499039102548441">Seneste faner</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 fane}one{# faner}other{# faner}}</translation>
@@ -1821,6 +1826,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="6156960295318603523">Sprogindstillinger</translation>
 <translation id="7931318309563332511">ukendt</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> vil sende underretninger til dig</translation>
+<translation id="2482878487686419369">Underretninger</translation>
 <translation id="7221855153210829124">Vise underretninger</translation>
 <translation id="8393700583063109961">Send en besked</translation>
 <translation id="6701535245008341853">Profilen kunne ikke hentes.</translation>
@@ -1922,6 +1928,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="1753905327828125965">Mest besøgte</translation>
 <translation id="5612720917913232150"><ph name="URL"/> anmoder om at anvende computerens placering</translation>
 <translation id="4733082559415072992"><ph name="URL"/> anmoder om at bruge enhedens placering</translation>
+<translation id="5646376287012673985">Placering</translation>
 <translation id="3016780570757425217">Kende din placering</translation>
 <translation id="4068506536726151626">Denne side indeholder elementer fra følgende websites, som sporer din placering:</translation>
 <translation id="4920887663447894854">Følgende websites kan ikke spore din placering på denne side:</translation>
@@ -1931,6 +1938,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="3528033729920178817">Denne side sporer din placering.</translation>
 <translation id="1510030919967934016">Dette website kan ikke spore din placering.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> anmoder om fuld kontrol over dine MIDI-enheder</translation>
+<translation id="1834583737373831634">MIDI-enheder</translation>
 <translation id="8606726445206553943">Brug dine MIDI-enheder</translation>
 <translation id="1849186935225320012">Denne side har fuld kontrol over MIDI-enheder.</translation>
 <translation id="2986010903908656993">Denne side er blevet forhindret i at have fuld kontrol over MIDI-enheder.</translation>
@@ -1964,6 +1972,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="8282947398454257691">Kende dit unikke enheds-id</translation>
 <translation id="8329449853370113380"><ph name="URL"/> vil afspille beskyttet indhold. Din enheds identitet bekræftes af Brave Software.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> vil afspille beskyttet indhold. Din enheds identitet bekræftes af Brave Software, og dette website får muligvis adgang til enheden.</translation>
+<translation id="1746402432151920942">Id for beskyttet medie</translation>
 <translation id="1322046419516468189">Se og administrer gemte adgangskoder på din <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Adgangskoden blev gemt. Se og administrer gemte adgangskoder på din <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">Brave Software-konto</translation>
@@ -2024,18 +2033,24 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> anmoder om at bruge din mikrofon</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> anmoder om at bruge dit kamera</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> anmoder om at dele din skærm</translation>
+<translation id="4275663329226226506">Medier</translation>
 <translation id="8962918469425892674">Dette website anvender bevægelses- og lyssensorer.</translation>
+<translation id="4532646538815530781">Dette website anvender bevægelsessensorer.</translation>
 <translation id="6057381398996433816">Dette website er blevet blokeret fra at anvende bevægelses- og lyssensorer.</translation>
+<translation id="7707108266051544351">Der er blokeret for brug af bevægelsessensorer på dette website.</translation>
 <translation id="1151917987301063366">Tillad altid, at <ph name="HOST"/> kan få adgang til sensorer</translation>
 <translation id="7377451353532943397">Fortsæt blokering af adgang til sensorer</translation>
 <translation id="6878422606530379992">Der er givet adgang til sensorer</translation>
 <translation id="4031527940632463547">Der er blokeret for sensorer</translation>
 <translation id="4559617833001311418">Dette website har adgang til dine bevægelses- og lyssensorer.</translation>
+<translation id="5623282979409330487">Dette website har adgang til dine bevægelsessensorer.</translation>
 <translation id="2309620859903500144">Dette website er blevet blokeret fra at få adgang til dine bevægelses- eller lyssensorer.</translation>
+<translation id="6541638731489116978">Der er blokeret for adgang til dine bevægelsessensorer på dette website.</translation>
 <translation id="8645354835496065562">Fortsæt med at tillade adgang til sensorer</translation>
 <translation id="2903882649406874750">Bloker altid <ph name="HOST"/> fra at få adgang til sensorer</translation>
 <translation id="3194737229810486521"><ph name="URL"/> anmoder om at gemme data permanent på din enhed</translation>
 <translation id="1030706264415084469"><ph name="URL"/> anmoder om at gemme store datamængder permanent på din enhed</translation>
+<translation id="885701979325669005">Lagerplads</translation>
 <translation id="1712552549805331520"><ph name="URL"/> anmoder om at gemme data permanent på din lokale computer</translation>
 <translation id="1997484222658892567"><ph name="URL"/> anmoder om at gemme store mængder data permanent på din lokale computer</translation>
 <translation id="7648992873808071793">Gemme filer på denne enhed</translation>
@@ -2454,9 +2469,7 @@ Vil du starte <ph name="CONTROL_PANEL_APPLET_NAME"/>?</translation>
 <translation id="702252130983202758">Dine apps</translation>
 <translation id="8831664945713891930">Åbn indstillingerne for udvidelser</translation>
 <translation id="5138227688689900538">Vis færre</translation>
-<translation id="5646376287012673985">Placering</translation>
 <translation id="5270167208902136840">Vis <ph name="NUMBER_OF_MORE_APPS"/> apps mere</translation>
-<translation id="2482878487686419369">Underretninger</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> apps</translation>
 <translation id="7207631048330366454">Søg efter apps</translation>
 <translation id="9011424611726486705">Åbn indstillinger for website</translation>
@@ -2790,6 +2803,7 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="4305227814872083840">lang (2 sek.)</translation>
 <translation id="2860150991415616761">meget lang (4 sek.)</translation>
 <translation id="1217668622537098248">Vend tilbage til venstreklik efter handling</translation>
+<translation id="8781470833671194250">Stabilisering af klikposition</translation>
 <translation id="3682824389861648626">Grænse for bevægelse</translation>
 <translation id="5511379779384092781">Ekstra lille</translation>
 <translation id="2765217105034171413">Lille</translation>
@@ -3412,7 +3426,10 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="9038649477754266430">Brug en forudsigelsestjeneste til hurtigere sideindlæsning</translation>
 <translation id="7981313251711023384">Forudindlæs sider, så du kan browse og søge hurtigere</translation>
 <translation id="2468205691404969808">Bruger cookies til at huske dine indstillinger, også selvom du ikke besøger siderne</translation>
+<translation id="3181954750937456830">Beskyttet browsing (beskytter dig og din enhed mod farlige websites)</translation>
+<translation id="7315322926489145388">Sender webadresser på nogle sider, som du besøger, til Brave Software, når din sikkerhed er truet</translation>
 <translation id="4991384657077828949">Hjælp med at forbedre sikkerheden i Brave</translation>
+<translation id="1943176487615318915">Brave sender webadresser på nogle sider, du besøger, begrænsede systemoplysninger og noget sideindhold til Brave Software med henblik på at registrere farlige apps og websites.</translation>
 <translation id="2875273286298348523">Brave sender den tekst, du angiver i browseren, til Brave Software</translation>
 <translation id="9079153198295609735">Send automatisk brugsstatistikker og nedbrudsrapporter til Brave Software</translation>
 <translation id="5941220456342415404">Send automatisk diagnostik og brugsdata til Brave Software</translation>
@@ -3484,7 +3501,6 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="1919345977826869612">Reklamer</translation>
 <translation id="5649053991847567735">Automatiske downloads</translation>
 <translation id="3744111561329211289">Synkronisering i baggrunden</translation>
-<translation id="2586657967955657006">Udklipsholder</translation>
 <translation id="5518219166343146486">Spørg om tilladelse, når et website vil se tekst og billeder, der er kopieret til udklipsholderen</translation>
 <translation id="2089795179672254991">Spørg om tilladelse, når et website vil se tekst og billeder, der er kopieret til udklipsholderen (anbefales)</translation>
 <translation id="16815041330799488">Tillad ikke, at websites kan se tekst og billeder, der er kopieret til udklipsholderen</translation>
@@ -3512,6 +3528,7 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="1128109161498068552">Tillad ikke, at websites bruger interne systemmeddelelser til at få adgang til MIDI-enheder</translation>
 <translation id="2091887806945687916">Lyd</translation>
 <translation id="4751476147751820511">Bevægelses- eller lyssensorer</translation>
+<translation id="1717218214683051432">Bevægelsessensorer</translation>
 <translation id="6059925163896151826">USB-enheder</translation>
 <translation id="8666584013686199826">Spørg om tilladelse, når et website vil have adgang til USB-enheder</translation>
 <translation id="6291949900244949761">Spørg om tilladelse, når et website vil have adgang til USB-enheder (anbefales)</translation>
@@ -3547,7 +3564,9 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="1660204651932907780">Tillad, at websites afspiller lyd (anbefales)</translation>
 <translation id="3600792891314830896">Lyden slås fra for websites, der afspiller lyd</translation>
 <translation id="5084230410268011727">Tillad, at websites anvender bevægelses- og lyssensorer</translation>
+<translation id="489454699928748701">Tillad brug af bevægelsessensorer på websites</translation>
 <translation id="5047421709274785093">Bloker websites, så de ikke kan anvende bevægelses- og lyssensorer</translation>
+<translation id="6396988158856674517">Bloker brug af bevægelsessensorer på websites</translation>
 <translation id="2904456025988372123">Spørg om tilladelse, når et website automatisk forsøger at downloade flere filer efter den første fil</translation>
 <translation id="3494769164076977169">Spørg om tilladelse, når et website automatisk forsøger at downloade flere filer efter den første fil (anbefales)</translation>
 <translation id="5036662165765606524">Tillad ikke, at nogen websites kan downloade flere filer automatisk</translation>
@@ -4082,6 +4101,7 @@ slettes permanent, når den administrerede bruger fjernes. Besøgte websites og 
 <translation id="2785008241190445880">Bogmærket er udskiftet</translation>
 <translation id="5468853758063275923">Brave er din standardbrowser</translation>
 <translation id="2950533317914339731">Føj bogmærker til dine foretrukne Brave Software-apps</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Nyheder</translation>

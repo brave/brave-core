@@ -41,6 +41,8 @@
 <translation id="8958799246752641148">Tor versteckt Ihre IP-Adresse vor den Seiten, die Sie besuchen, indem es Ihre Aufrufe und die angeforderten Daten über mehrere Tor-Server umleitet. Diese Verbindungen sind verschlüsselt, so dass Ihr Internetanbieter oder Arbeitgeber ebenfalls nicht sehen können, welche Seiten Sie besuchen. Tor kann das Surfen ausbremsen und manche Seiten funktionieren möglicherweise gar nicht.</translation>
 <translation id="520608572871993342">Das Surfen mit Privaten Fenstern ändert nur, was Brave auf Ihrem Gerät tut – es ändert nicht das Verhalten von allen anderen. Tor versteckt Ihre IP-Adresse vor den Seiten, die Sie besuchen, und die von Ihnen besuchten Seiten vor Ihrem Internetanbieter und Arbeitgeber. Ein Privates Tor-Fenster können Sie aus dem Menü oder mit {{ key }} öffnen.</translation>
 <translation id="6975708438781948564">Mehr erfahren über Tor in Brave</translation>
+<translation id="4272382368346338917">Zusätzliche Filter</translation>
+<translation id="8949292968394988358">Achtung: Wenn Sie zu viele Filter anschalten, wird die Leistung vermindert</translation>
 <translation id="1869685517625607604">Blockierte Werbung insgesamt:</translation>
 <translation id="4673764878177947707">Benutzerdefinierte Filter</translation>
 <translation id="8803682034537762884">Einmal pro Zeile, ein Filter ist in der Adblock-Plus-Filtersyntax beschrieben.</translation>
@@ -54,7 +56,6 @@
 <translation id="5633840519079139680">Brave macht es Ihnen einfach, Ihre gewohnte Browser-Umgebung einzurichten, indem Sie Ihre Lesezeichen und Einstellungen von anderen installierten Browsern importieren.</translation>
 <translation id="8275038454117074363">Importieren</translation>
 <translation id="5540323067375019678">Verwalten Sie Ihre Shields</translation>
-<translation id="4755560456428781763">Brave Shields schützt Sie beim Browsen vor unerwünschter Werbung und störenden Trackern. Wenn Sie beim Browsen auf einer bestimmten Seite auf ein Problem stoßen, passen Sie einfach Ihr Schutzniveau im Shields-Panel in der Toolbar an.</translation>
 <translation id="3366308997091824722">Brave Shields anpassen</translation>
 <translation id="3884404068544758153">Ändern Sie Ihre Suchmaschine</translation>
 <translation id="438216590634144114">Wählen Sie, welche Suchmaschine Sie standardmäßig verwenden wollen, wenn Sie von der Adresszeile aus das Web durchsuchen.</translation>
@@ -68,6 +69,7 @@
 <translation id="5946611334574299206">Verdienen Sie Tokens, indem Sie Werbung auf Brave anschauen. Werbung wird Ihnen auf Grundlage Ihrer Interessen, die sich aus Ihrem Browsing-Verhalten ergeben, vorgeschlagen. Persönliche Daten oder Browserverläufe verlassen niemals Ihren Browser.</translation>
 <translation id="6112368337882254910">Auto-Beitrag</translation>
 <translation id="1527222983464337010">Eine automatische Möglichkeit, um Herausgeber und Content Creators zu unterstützen. Legen Sie eine monatliche Zahlung fest und surfen Sie wie gewohnt. Die von Ihnen besuchten Seiten erhalten Ihre Beiträge automatisch, basierend darauf, wie viel Aufmerksamkeit Sie ihnen Brave zufolge geschenkt haben.</translation>
+<translation id="7178655681744815321">Geschätzte Einnahmen in diesem Zyklus</translation>
 <translation id="8157096848242649588">Zahlungsdatum</translation>
 <translation id="5208388044986603165">Werbebenachrichtigungen erhalten</translation>
 <translation id="4229016885653790965">Sorry! Werbung ist in Ihrer Region noch nicht verfügbar.</translation>
@@ -106,7 +108,7 @@
 <translation id="1199044745726588100">5 Sekunden</translation>
 <translation id="4045581694057451126">8 Sekunden</translation>
 <translation id="8610523985422563960">1 Minute</translation>
-<translation id="7521774480426463961">Aktivieren Sie die Möglichkeit, Trinkgelder für Ihre ‘Like’ zu geben.</translation>
+<translation id="9031738692126722094">Trinkgelder nach Inhaltsniveau auf diesen Seiten ermöglichen</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Tippen Sie auf die entsprechende Stelle, wenn Sie Edelsteine finden.</translation>
@@ -128,6 +130,7 @@
 <translation id="7797604753681168055">Jetzt wiederherstellen!</translation>
 <translation id="1184075897575325927">Leider scheint es, dass diese Zuwendung bereits beansprucht wurde.</translation>
 <translation id="282693359045252357">Nächstes monatliches Datum für Trinkgeld</translation>
+<translation id="6231182869178328516">Ich habe gerade <ph name="NAME">$1<ex>user</ex></ph> mit dem Brave-Browser ein Trinkgeld gegeben. Sehen Sie es sich unter https://brave.com/tips an.</translation>
 <translation id="7422678632904904341">Betrag:</translation>
 <translation id="5923611424721173182">Aktueller Abgleich</translation>
 <translation id="5457113250005438886">Ungültig</translation>
@@ -150,6 +153,9 @@
 <translation id="4235360514405112390">Gültig</translation>
 <translation id="2700943637868737038">Ansichts-ID:</translation>
 <translation id="3576689061489548788">Wallet-Zahlungs-ID:</translation>
+<translation id="758790787422117549">Persona-ID</translation>
+<translation id="2223892939866251845">Nutzer-ID</translation>
+<translation id="1642443162274867084">Geldbörse erstellt</translation>
 <translation id="5094577350232361255">über</translation>
 <translation id="4918086044614829423">Annehmen</translation>
 <translation id="6832986780040139899">©2016–2018 Brave Software. Brave ist ein eingetragenes Warenzeichen von Brave Software. Seitennamen können Marken oder eingetragene Warenzeichen des Seiteninhabers sein.</translation>
@@ -165,11 +171,16 @@
 <translation id="3671566813999349838">Betrag</translation>
 <translation id="3819257035322786455">Sicherung</translation>
 <translation id="1312977698678162065">Werden Sie bezahlt, relevante Werbung zu sehen, die Ihre Privatsphäre respektieren.</translation>
+<translation id="7655723274266132226">Jetzt können Sie verdienen, indem Sie Werbeanzeigen anschauen.</translation>
+<translation id="2975780980638932742">Brave Werbung ist da!</translation>
 <translation id="3361548743396744457">Unterstützen Sie Ihre Lieblingsseiten einfach durchs Surfen – oder spendieren Sie Seiten ein Trinkgeld, wann immer Sie möchten.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4493850495402472953">und</translation>
 <translation id="8804164990146287819">Datenschutzerklärung</translation>
 <translation id="4281844954008187215">Nutzungsbedingungen</translation>
+<translation id="4405997465645469914">Indem Sie Brave Belohnungen anschalten, signalisieren Sie, dass Sie Folgendes gelesen und akzeptiert haben:</translation>
+<translation id="8819542691525488940">Indem Sie auf ‘Ja, ich bin dabei!’klicken, signalisieren Sie, dass Sie Folgendes gelesen und akzeptiert haben:</translation>
+<translation id="8071424789698327147">Indem Sie auf ‘Ja, ich bin bereit!’ klicken, signalisieren Sie, dass Sie Folgendes gelesen und akzeptiert haben:</translation>
 <translation id="7530570094705720669">Wallet wird erstellt</translation>
 <translation id="2105596359439030979">Ihre Aufmerksamkeit ist wertvoll. Verdienen Sie durch das Anschauen von Werbung, die Ihre Privatsphäre respektieren, und zahlen Sie diese weiter, um die von Ihnen geliebten Inhaltsersteller zu unterstützen.</translation>
 <translation id="516395624550019162">Ja, ich bin dabei!</translation>
@@ -206,7 +217,6 @@
 <translation id="7277134233385925078">Monatliches Trinkgeld einrichten</translation>
 <translation id="8003573781961874199">Als PDF herunterladen</translation>
 <translation id="298067735430872465">Einnahmen aus Werbung</translation>
-<translation id="3521361150443442734">Ihre Werbeeinnahmen sind verfügbar.</translation>
 <translation id="8764029012618014430">Trinkgelder Aktivieren</translation>
 <translation id="3412655388715513818">Diese Seite ausschließen</translation>
 <translation id="418343137736963579">Gesamtanzahl der Webseiten, die Sie vom Selbsttätigen-Beitragen ausgeschlossen haben:</translation>
@@ -272,8 +282,8 @@
 <translation id="3626186271103896082">Sichern Sie Ihr Wallet</translation>
 <translation id="5717619667204259673">Bewahren Sie diesen Wiederherstellungsschlüssel sicher auf.</translation>
 <translation id="4699702339303280827">Sie können diesen Schlüssel jederzeit verwenden, um Ihr Wallet zurückzuerhalten, falls Ihrem Browser oder Computer etwas zustößt. Doch sorgen Sie dafür, dass er geschützt ist — jeder, der diesen Schlüssel erlangt, könnte Ihr Wallet stehlen. Am sichersten ist es wohl, ihn auf einem Stück Papier aufzuschreiben oder wo immer Sie sonst wichtige Informationen aufbewahren.</translation>
-<translation id="5759071143806884916">Sie können diese Website unterstützen, indem Sie ein Trinkgeld senden. Das ist eine Methode, um für die Erstellung großartiger Inhalte zu danken. Verifizierte Inhaltsersteller werden in der ersten Woche jedes Kalendermonats für ihre Trinkgelder bezahlt.</translation>
-<translation id="1704859330137112950">Wenn Sie möchten, können Sie montaliche Trinkgelder einrichten, um diese Seite durchgängig zu unterstützen.</translation>
+<translation id="7354412786785889047">Sie können diesen Urheber von Inhalten unterstützen, indem Sie ein Trinkgeld senden. Es’ist eine Möglichkeit, ihm für die Erstellung seiner großartigen Inhalte zu danken. Verifizierte Urheber werden im Lauf der ersten Woche in jedem Kalendermonat für ihre Trinkgelder bezahlt.</translation>
+<translation id="3475063317678050010">Wenn Sie möchten, können Sie monatliche Trinkgelder festsetzen, um diesen Urheber auf einer kontinuierlichen Basis zu unterstützen.</translation>
 <translation id="3074127054582480056">Aufmerksamkeit</translation>
 <translation id="822513417008209372">Sie unterstützen derzeit</translation>
 <translation id="5010112177773747965">ohne Ihre Zustimmung.</translation>
@@ -302,6 +312,7 @@
 <translation id="3536298624341433814">Mein Trinkgeld überweisen</translation>
 <translation id="1792148354504719133">Seite</translation>
 <translation id="5944430251223015324">Seiten</translation>
+<translation id="1834493631938747505">Erzählen Sie anderen von Ihrem Trinkgeld.</translation>
 <translation id="8826007068782654809">Vielen Dank</translation>
 <translation id="6665366815203065060">Sie haben gerade Trinkgeld gesendet an:</translation>
 <translation id="6432779622695508363">Trinkgeld bei Like</translation>
@@ -312,8 +323,12 @@
 <translation id="4914597931214386232">Token-Zuwendungen beansprucht</translation>
 <translation id="1634828734222219955">Insgesamt</translation>
 <translation id="3535654229833214438">Transaktionen</translation>
+<translation id="3124090095880236567">Werbung anschalten</translation>
 <translation id="8987812599455325915">Hierdurch werden sowohl Werbung als auch automatische Beiträge aktiviert. Sie können diese Optionen jederzeit separat ein- oder ausschalten.</translation>
 <translation id="1485484147452131556">Rewards aktivieren</translation>
+<translation id="3983104749597726322">Tweet</translation>
+<translation id="5636843789453098076">Trinkgeld @{{ user }} für den Tweet:</translation>
+<translation id="4242384385082203046">Geben Sie @{{ user }} ein Trinkgeld für den Tweet!</translation>
 <translation id="2448312741937722512">Art</translation>
 <translation id="8772672608371898774">Brave Verifizierter Herausgeber</translation>
 <translation id="5050370287908180130">Monatlichen Kontoauszug für Details Anschauen</translation>
@@ -336,6 +351,15 @@
 <translation id="6727483290601442544">Detaillierte Informationen anzeigen</translation>
 <translation id="1988679729106502285">HINWEIS:</translation>
 <translation id="5815103311506128988">Dieser Ersteller hat sich noch nicht angemeldet, um Beiträge von Brave-Nutzern zu erhalten. Ihr Browser wird weiterhin versuchen, ihm Beiträge zukommen zu lassen, bis er sich verifiziert hat oder bis 90 Tage verstrichen sind.</translation>
+<translation id="4292832015778676417">verdient aus Werbeanzeigen</translation>
+<translation id="3197752845651180812">Ausstehende Beiträge</translation>
+<translation id="3164105678355419142">Wiederkehrendes Trinkgeld</translation>
+<translation id="2927922949538312364">Einmaliges Trinkgeld</translation>
+<translation id="6964891561514920613">Alle ausstehenden Spenden anzeigen</translation>
+<translation id="4346944508027912677">Ausstehend bis</translation>
+<translation id="7410549756000115387">Keine ausstehenden Beiträge…</translation>
+<translation id="1963227389609234879">Alle entfernen</translation>
+<translation id="923467487918828349">Alle einblenden</translation>
 <translation id="1181037720776840403">Entfernen</translation>
 <translation id="7885157704277298658">Kopiert!</translation>
 <translation id="5379640681913450928">Wortanzahl:</translation>
@@ -353,6 +377,7 @@
 <translation id="1061533051865606843">Neues Gerät hinzufügen</translation>
 <translation id="8780295742023331191">Synchronisierungscode anzeigen</translation>
 <translation id="1755198127524719638">Sync-Einstellungen</translation>
+<translation id="7558480201297099157">Verwalten Sie, welche Informationen Sie zwischen Geräten synchronisieren möchten. Diese Einstellungen betreffen nur dieses Gerät.</translation>
 <translation id="8820817407110198400">Lesezeichen</translation>
 <translation id="5591129654353352557">Seiteneinstellungen gespeichert</translation>
 <translation id="7859704718976024901">Browserverlauf</translation>
@@ -380,6 +405,7 @@
 <translation id="5086223971958279691">Synchronisierungsketten-Code</translation>
 <translation id="2899261497479389619">Begeben Sie sich auf dem Zielcomputer in den Einstellungen zu 'Brave Sync' und klicken Sie auf die Schaltfläche</translation>
 <translation id="4827439149833241990">“Ich habe einen Synchronisierungscode”.</translation>
+<translation id="24067401253841795">Geben Sie die unten angezeigten Codewörter der Synchronisationskette ein. Behandeln Sie diesen Code wie ein Passwort. Wenn er in jemandes Besitz gelangt, kann derjenige Ihre synchronisierten Daten lesen und modifizieren.</translation>
 <translation id="8914601399214979966">Stattdessen meine Kamera verwenden</translation>
 <translation id="3034163433136515805">QR-Code anzeigen</translation>
 <translation id="5093410893656857925">Geräteart wählen</translation>
@@ -392,4 +418,6 @@
 <translation id="8349682220522608879">Bitte fügen Sie einen Sync-Code hinzu.</translation>
 <translation id="1468095392829989299">Keine Verbindung zu den Sync-Servern</translation>
 <translation id="1399673826422570698">Du hast ggf. Verbindungsstörungen, oder es besteht ein Problem mit den Sync-Servern.</translation>
+<translation id="5286379413446391050">Konnte nicht verbinden, um Server zu synchronisieren</translation>
+<translation id="2410472020237369473">Die Uhr Ihres Computers ist möglicherweise auf die falsche Zeit oder Zeitzone eingestellt. Ändern Sie die Einstellungen Ihrer Uhr.</translation>
 </translationbundle>
