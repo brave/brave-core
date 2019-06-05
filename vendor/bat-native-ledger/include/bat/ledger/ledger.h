@@ -284,7 +284,7 @@ class LEDGER_EXPORT Ledger {
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback) = 0;
 
-  virtual void StartAutoContribute() = 0;
+  virtual void StartMonthlyContribution() = 0;
 
   virtual void SaveMediaInfo(const std::string& type,
                              const std::map<std::string, std::string>& data,

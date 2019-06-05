@@ -150,11 +150,11 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
 #pragma mark - Global
 
-BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug);
-BATClassLedgerBridge(BOOL, isTesting, setTesting, is_testing);
-BATClassLedgerBridge(BOOL, isProduction, setProduction, is_production);
-BATClassLedgerBridge(int, reconcileTime, setReconcileTime, reconcile_time);
-BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries);
+BATClassLedgerBridge(BOOL, isDebug, setDebug, is_debug)
+BATClassLedgerBridge(BOOL, isTesting, setTesting, is_testing)
+BATClassLedgerBridge(BOOL, isProduction, setProduction, is_production)
+BATClassLedgerBridge(int, reconcileTime, setReconcileTime, reconcile_time)
+BATClassLedgerBridge(BOOL, useShortRetries, setUseShortRetries, short_retries)
 
 #pragma mark - Wallet
 
@@ -318,7 +318,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   return [BATLedgerDatabase reservedAmountForPendingContributions];
 }
 
-BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributionAmount);
+BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributionAmount)
 
 #pragma mark - Publishers
 
@@ -773,25 +773,25 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 BATLedgerBridge(BOOL,
                 isEnabled, setEnabled,
-                GetRewardsMainEnabled, SetRewardsMainEnabled);
+                GetRewardsMainEnabled, SetRewardsMainEnabled)
 
 BATLedgerBridge(UInt64,
                 minimumVisitDuration, setMinimumVisitDuration,
-                GetPublisherMinVisitTime, SetPublisherMinVisitTime);
+                GetPublisherMinVisitTime, SetPublisherMinVisitTime)
 
 BATLedgerBridge(UInt32,
                 minimumNumberOfVisits, setMinimumNumberOfVisits,
-                GetPublisherMinVisits, SetPublisherMinVisits);
+                GetPublisherMinVisits, SetPublisherMinVisits)
 
 BATLedgerBridge(BOOL,
                 allowUnverifiedPublishers, setAllowUnverifiedPublishers,
-                GetPublisherAllowNonVerified, SetPublisherAllowNonVerified);
+                GetPublisherAllowNonVerified, SetPublisherAllowNonVerified)
 
 BATLedgerBridge(BOOL,
                 allowVideoContributions, setAllowVideoContributions,
-                GetPublisherAllowVideos, SetPublisherAllowVideos);
+                GetPublisherAllowVideos, SetPublisherAllowVideos)
 
-BATLedgerReadonlyBridge(double, contributionAmount, GetContributionAmount);
+BATLedgerReadonlyBridge(double, contributionAmount, GetContributionAmount)
 
 - (void)setContributionAmount:(double)contributionAmount
 {
@@ -801,7 +801,7 @@ BATLedgerReadonlyBridge(double, contributionAmount, GetContributionAmount);
 
 BATLedgerBridge(BOOL,
                 isAutoContributeEnabled, setAutoContributeEnabled,
-                GetAutoContribute, SetAutoContribute);
+                GetAutoContribute, SetAutoContribute)
 
 #pragma mark - Ads & Confirmations
 
@@ -1419,6 +1419,15 @@ BATLedgerBridge(BOOL,
 }
 
 - (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(const ledger::RemovePendingContributionCallback &)callback
+{
+
+}
+
+// TODO: look at this PR https://github.com/brave/brave-core/pull/2512
+// This method is called in unverified publishers retry flow
+// With this call we notify client that this publisher now becamed verified
+// and we should notify user about it
+- (void)onContributeUnverifiedPublishers:(ledger::Result)result publisherKey:(const std::string &)publisher_key publisherName:(const std::string &)publisher_name
 {
 
 }

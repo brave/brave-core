@@ -262,6 +262,11 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD2(GetCountryCodes, void(
       const std::vector<std::string>& countries,
       ledger::GetCountryCodesCallback callback));
+
+  MOCK_METHOD3(OnContributeUnverifiedPublishers, void(
+      ledger::Result result,
+      const std::string& publisher_key,
+      const std::string& publisher_name));
 };
 
 }  // namespace confirmations

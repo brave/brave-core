@@ -7,6 +7,7 @@
 #include <cmath>
 #include <ctime>
 #include <utility>
+#include <vector>
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_publishers.h"
@@ -380,9 +381,7 @@ void BatPublishers::setPublisherAllowVideos(const bool& allow) {
 }
 
 uint64_t BatPublishers::getPublisherMinVisitTime() const {
-  return ledger::is_testing
-             ? braveledger_ledger::_default_min_publisher_duration_test
-             : state_->min_publisher_duration_;
+  return state_->min_publisher_duration_;
 }
 
 unsigned int BatPublishers::getPublisherMinVisits() const {
@@ -673,7 +672,11 @@ void BatPublishers::OnPublisherStateSaved(ledger::Result result) {
 
 void BatPublishers::RefreshPublishersList(const std::string& json) {
   ledger_->SavePublishersList(json);
-  loadPublisherList(json);
+  bool success = loadPublisherList(json);
+
+  if (success) {
+    ledger_->ContributeUnverifiedPublishers();
+  }
 }
 
 void BatPublishers::OnPublishersListSaved(ledger::Result result) {
@@ -894,6 +897,20 @@ void BatPublishers::RefreshPublisherVerifiedStatus(
     const std::string& publisher_key,
     ledger::OnRefreshPublisherCallback callback) {
   callback(isVerified(publisher_key));
+}
+
+void BatPublishers::SavePublisherProcessed(const std::string& publisher_key) {
+  const std::vector<std::string> list = state_->processed_pending_publishers;
+  if (std::find(list.begin(), list.end(), publisher_key) == list.end()) {
+    state_->processed_pending_publishers.push_back(publisher_key);
+  }
+  saveState();
+}
+
+bool BatPublishers::WasPublisherAlreadyProcessed(
+    const std::string& publisher_key) const {
+  const std::vector<std::string> list = state_->processed_pending_publishers;
+  return std::find(list.begin(), list.end(), publisher_key) != list.end();
 }
 
 }  // namespace braveledger_bat_publishers

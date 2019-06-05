@@ -189,7 +189,7 @@ NS_INLINE NSDictionary<NSString *, ObjCObj> *NSDictionaryFromMap(std::map<std::s
     d[[NSString stringWithCString:item.first.c_str() encoding:NSUTF8StringEncoding]] = transform(item.second);
   }
   return d;
-};
+}
 
 /// Convert any mapping to an NSDictionary of Obj-C objects by transforming both the key and the value types to Obj-C
 /// types
@@ -203,4 +203,4 @@ NS_INLINE NSDictionary<KObjC, VObjC> *NSDictionaryFromMap(std::map<K, V> m, KObj
     d[transformKey(item.first)] = transformValue(item.second);
   }
   return d;
-};
+}

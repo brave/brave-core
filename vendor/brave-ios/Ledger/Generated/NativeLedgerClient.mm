@@ -166,3 +166,6 @@ std::string NativeLedgerClient::URIEncode(const std::string & value) {
 std::unique_ptr<ledger::LogStream> NativeLedgerClient::VerboseLog(const char * file, int line, int vlog_level) const {
   return [bridge_ verboseLog:file line:line vlogLevel:vlog_level];
 }
+void NativeLedgerClient::OnContributeUnverifiedPublishers(ledger::Result result, const std::string& publisher_key, const std::string& publisher_name) {
+  return [bridge_ onContributeUnverifiedPublishers:result publisherKey:publisher_key publisherName:publisher_name];
+}

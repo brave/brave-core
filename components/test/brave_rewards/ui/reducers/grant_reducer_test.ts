@@ -379,7 +379,11 @@ describe('Grant Reducer', () => {
         }
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
+      const expectedState: Rewards.State = {
+        ...defaultState,
+        grants: [],
+        firstLoad: false
+      }
 
       expect(assertion).toEqual({
         rewardsData: expectedState

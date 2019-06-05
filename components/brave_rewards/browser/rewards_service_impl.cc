@@ -989,7 +989,7 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
     observer.OnReconcileComplete(this,
                                  result,
                                  viewing_id,
-                                 std::to_string(category),
+                                 category,
                                  probi);
 }
 
@@ -2698,6 +2698,8 @@ bool RewardsServiceImpl::Connected() const {
 void RewardsServiceImpl::SetLedgerEnvForTesting() {
   bat_ledger_service_->SetTesting();
 
+  SetPublisherMinVisitTime(1);
+
   // this is needed because we are using braveledger_bat_helper::buildURL
   // directly in BraveRewardsBrowserTest
   #if defined(OFFICIAL_BUILD)
@@ -2707,8 +2709,8 @@ void RewardsServiceImpl::SetLedgerEnvForTesting() {
   #endif
 }
 
-void RewardsServiceImpl::StartAutoContributeForTest() {
-  bat_ledger_->StartAutoContribute();
+void RewardsServiceImpl::StartMonthlyContributionForTest() {
+  bat_ledger_->StartMonthlyContribution();
 }
 
 void RewardsServiceImpl::CheckInsufficientFundsForTesting() {
@@ -3195,6 +3197,43 @@ void RewardsServiceImpl::GetCountryCodes(
         country.at(0), country.at(1)));
   }
   callback(country_codes);
+}
+
+void RewardsServiceImpl::OnContributeUnverifiedPublishers(
+      ledger::Result result,
+      const std::string& publisher_key,
+      const std::string& publisher_name) {
+  switch (result) {
+    case ledger::Result::PENDING_NOT_ENOUGH_FUNDS:
+    {
+      RewardsNotificationService::RewardsNotificationArgs args;
+      notification_service_->AddNotification(
+          RewardsNotificationService::
+          REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS,
+          args,
+          "rewards_notification_not_enough_funds");
+      break;
+    }
+    case ledger::Result::PENDING_PUBLISHER_REMOVED:
+    {
+      for (auto& observer : observers_) {
+        observer.OnPendingContributionRemoved(this, ledger::Result::LEDGER_OK);
+      }
+      break;
+    }
+    case ledger::Result::VERIFIED_PUBLISHER:
+    {
+      RewardsNotificationService::RewardsNotificationArgs args;
+      args.push_back(publisher_name);
+      notification_service_->AddNotification(
+          RewardsNotificationService::REWARDS_NOTIFICATION_VERIFIED_PUBLISHER,
+          args,
+          "rewards_notification_verified_publisher_" + publisher_key);
+      break;
+    }
+    default:
+      break;
+  }
 }
 
 }  // namespace brave_rewards
