@@ -11,12 +11,12 @@ import {
   FooterMiddleColumn,
   FooterRightColumn,
   SkipButton,
+  FooterButton,
   Bullet
 } from 'brave-ui/features/welcome'
 
 // Shared components
 import { ArrowRightIcon } from 'brave-ui/components/icons'
-import { Button } from 'brave-ui'
 
 // Utils
 import { getLocale } from '../../../common/locale'
@@ -62,7 +62,7 @@ export default class FooterBox extends React.PureComponent<Props, {}> {
             // don't show the next button in the first screen
             currentScreen !== 1
               ? (
-                <Button
+                <FooterButton
                   level='secondary'
                   type='default'
                   size='medium'
@@ -72,7 +72,7 @@ export default class FooterBox extends React.PureComponent<Props, {}> {
                 />
               )
               : currentScreen !== 1 && (
-                <Button
+                <FooterButton
                   level='secondary'
                   type='default'
                   size='medium'

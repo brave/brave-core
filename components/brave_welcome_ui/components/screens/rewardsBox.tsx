@@ -5,10 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph } from 'brave-ui/features/welcome'
-
-// Shared components
-import { Button } from 'brave-ui'
+import { Content, Title, Paragraph, PrimaryButton } from 'brave-ui/features/welcome'
 
 // Images
 import { WelcomeRewardsImage } from 'brave-ui/features/welcome/images'
@@ -35,7 +32,7 @@ export default class PaymentsBox extends React.PureComponent<Props, {}> {
         <WelcomeRewardsImage />
         <Title>{getLocale('enableBraveRewards')}</Title>
         <Paragraph>{getLocale('setupBraveRewards')}</Paragraph>
-        <Button
+        <PrimaryButton
           level='primary'
           type='accent'
           size='large'

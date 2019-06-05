@@ -6,10 +6,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph } from 'brave-ui/features/welcome'
-
-// Shared components
-import { Button } from 'brave-ui'
+import { Content, Title, Paragraph, PrimaryButton } from 'brave-ui/features/welcome'
 
 // Images
 import { WelcomeSearchImage } from 'brave-ui/features/welcome/images'
@@ -36,7 +33,7 @@ export default class SearchEngineBox extends React.PureComponent<Props, {}> {
         <WelcomeSearchImage />
         <Title>{getLocale('setDefaultSearchEngine')}</Title>
         <Paragraph>{getLocale('chooseSearchEngine')}</Paragraph>
-          <Button
+          <PrimaryButton
             level='primary'
             type='accent'
             size='large'
