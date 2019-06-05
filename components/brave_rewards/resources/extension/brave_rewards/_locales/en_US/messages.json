@@ -423,7 +423,7 @@
   },
   "verifiedPublisherNotification": {
     "message": "Creator $name$ recently verified",
-    "description": "Notification text that tells user which publisher did just verified",
+    "description": "Notification text that tells user which publisher just verified",
     "placeholders": {
       "name": {
         "content": "$1",

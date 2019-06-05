@@ -130,7 +130,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void SavePublisherProcessed(const std::string& publisher_key);
 
-  bool WasPublisherAlreadyProcessed(const std::string& publisher_key);
+  bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
 
  private:
   void onPublisherActivitySave(uint64_t windowId,

@@ -39,7 +39,8 @@ BatContribution::BatContribution(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
     last_reconcile_timer_id_(0u),
     last_prepare_vote_batch_timer_id_(0u),
-    last_vote_batch_timer_id_(0u) {
+    last_vote_batch_timer_id_(0u),
+    unverified_publishers_timer_id_(0u) {
   initAnonize();
 }
 
@@ -1863,7 +1864,7 @@ void BatContribution::OnContributeUnverifiedPublishers(
     return;
   }
 
-  if (!list.empty() && balance == 0) {
+  if (balance == 0) {
     ledger_->OnContributeUnverifiedPublishers(
         ledger::Result::PENDING_NOT_ENOUGH_FUNDS);
     return;
@@ -1874,7 +1875,7 @@ void BatContribution::OnContributeUnverifiedPublishers(
 
   ledger::PendingContributionInfoPtr current;
 
-  for (auto& item : list) {
+  for (const auto& item : list) {
     // remove pending contribution if it's over expiration date
     if (now_seconds > item->expiration_date) {
       ledger_->RemovePendingContribution(

@@ -479,7 +479,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void SavePublisherProcessed(const std::string& publisher_key);
 
-  bool WasPublisherAlreadyProcessed(const std::string& publisher_key);
+  bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
 
  private:
   void AddRecurringPayment(const std::string& publisher_id,

@@ -188,23 +188,23 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
-  openRewardsPage (id?: string) {
+  openRewardsPage (notificationId?: string) {
     chrome.tabs.create({
       url: 'brave://rewards'
     })
 
-    if (id) {
-      this.onCloseNotification(id)
+    if (notificationId) {
+      this.onCloseNotification(notificationId)
     }
   }
 
-  openRewardsAddFundsPage (id?: string) {
+  openRewardsAddFundsPage (notificationId?: string) {
     chrome.tabs.create({
       url: 'chrome://rewards/#add-funds'
     })
 
-    if (id) {
-      this.actions.deleteNotification(id)
+    if (notificationId) {
+      this.actions.deleteNotification(notificationId)
     }
   }
 

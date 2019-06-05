@@ -8,6 +8,7 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_split.h"
+#include "base/strings/stringprintf.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
@@ -443,17 +444,7 @@ class BraveRewardsBrowserTest :
   }
 
   std::string BalanceDoubleToString(double amount) {
-    std::vector<std::string> parts = base::SplitString(
-        std::to_string(amount),
-        ".",
-        base::TRIM_WHITESPACE,
-        base::SPLIT_WANT_NONEMPTY);
-
-    if (parts.size() == 2) {
-      return parts.at(0) + "." + parts.at(1).at(0);
-    }
-
-    return "";
+    return base::StringPrintf("%.1f", amount);
   }
 
   std::string GetBalance() {

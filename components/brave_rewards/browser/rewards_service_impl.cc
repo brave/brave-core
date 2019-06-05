@@ -3203,31 +3203,36 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
       ledger::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) {
-  if (result == ledger::Result::PENDING_NOT_ENOUGH_FUNDS) {
-    RewardsNotificationService::RewardsNotificationArgs args;
-    notification_service_->AddNotification(
-        RewardsNotificationService::
-        REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS,
-        args,
-        "rewards_notification_not_enough_funds");
-    return;
-  }
-
-  if (result == ledger::Result::PENDING_PUBLISHER_REMOVED) {
-    for (auto& observer : observers_) {
-      observer.OnPendingContributionRemoved(this, ledger::Result::LEDGER_OK);
+  switch (result) {
+    case ledger::Result::PENDING_NOT_ENOUGH_FUNDS:
+    {
+      RewardsNotificationService::RewardsNotificationArgs args;
+      notification_service_->AddNotification(
+          RewardsNotificationService::
+          REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS,
+          args,
+          "rewards_notification_not_enough_funds");
+      break;
     }
-    return;
-  }
-
-  if (result == ledger::Result::VERIFIED_PUBLISHER) {
-    RewardsNotificationService::RewardsNotificationArgs args;
-    args.push_back(publisher_name);
-    notification_service_->AddNotification(
-        RewardsNotificationService::REWARDS_NOTIFICATION_VERIFIED_PUBLISHER,
-        args,
-        "rewards_notification_verified_publisher_" + publisher_key);
-    return;
+    case ledger::Result::PENDING_PUBLISHER_REMOVED:
+    {
+      for (auto& observer : observers_) {
+        observer.OnPendingContributionRemoved(this, ledger::Result::LEDGER_OK);
+      }
+      break;
+    }
+    case ledger::Result::VERIFIED_PUBLISHER:
+    {
+      RewardsNotificationService::RewardsNotificationArgs args;
+      args.push_back(publisher_name);
+      notification_service_->AddNotification(
+          RewardsNotificationService::REWARDS_NOTIFICATION_VERIFIED_PUBLISHER,
+          args,
+          "rewards_notification_verified_publisher_" + publisher_key);
+      break;
+    }
+    default:
+      break;
   }
 }
 

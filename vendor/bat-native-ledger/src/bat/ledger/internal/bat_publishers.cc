@@ -908,7 +908,7 @@ void BatPublishers::SavePublisherProcessed(const std::string& publisher_key) {
 }
 
 bool BatPublishers::WasPublisherAlreadyProcessed(
-    const std::string& publisher_key) {
+    const std::string& publisher_key) const {
   const std::vector<std::string> list = state_->processed_pending_publishers;
   return std::find(list.begin(), list.end(), publisher_key) != list.end();
 }

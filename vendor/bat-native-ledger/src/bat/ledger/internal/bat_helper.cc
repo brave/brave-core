@@ -691,7 +691,7 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
 
     if (d.HasMember("processed_pending_publishers") &&
         d["processed_pending_publishers"].IsArray()) {
-      for (auto & i : d["processed_pending_publishers"].GetArray()) {
+      for (const auto & i : d["processed_pending_publishers"].GetArray()) {
         processed_pending_publishers.push_back(i.GetString());
       }
     }
@@ -744,7 +744,7 @@ void saveToJson(JsonWriter* writer, const PUBLISHER_STATE_ST& data) {
 
   writer->String("processed_pending_publishers");
   writer->StartArray();
-  for (auto &p : data.processed_pending_publishers) {
+  for (const auto &p : data.processed_pending_publishers) {
     writer->String(p.c_str());
   }
   writer->EndArray();

@@ -1635,7 +1635,7 @@ void LedgerImpl::SavePublisherProcessed(const std::string& publisher_key) {
 }
 
 bool LedgerImpl::WasPublisherAlreadyProcessed(
-    const std::string& publisher_key) {
+    const std::string& publisher_key) const {
   return bat_publishers_->WasPublisherAlreadyProcessed(publisher_key);
 }
 
