@@ -139,7 +139,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void RefreshPublisher(
       const std::string& publisher_key,
       RefreshPublisherCallback callback) override;
-  void StartAutoContribute() override;
+  void StartMonthlyContribution() override;
 
   void GetRecurringTips(GetRecurringTipsCallback callback) override;
 

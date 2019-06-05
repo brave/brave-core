@@ -8,6 +8,7 @@
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_split.h"
+#include "base/strings/stringprintf.h"
 #include "base/memory/weak_ptr.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
@@ -32,7 +33,6 @@
 #include "content/public/browser/notification_types.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
-#include "net/test/embedded_test_server/embedded_test_server.h"
 #include "net/test/embedded_test_server/http_request.h"
 #include "net/test/embedded_test_server/http_response.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -86,7 +86,6 @@ bool URLMatches(const std::string& url,
 namespace brave_test_resp {
   std::string registrarVK_;
   std::string verification_;
-  std::string wallet_;
   std::string grant_;
   std::string grant_v4_;
   std::string captcha_;
@@ -110,12 +109,6 @@ class BraveRewardsBrowserTest :
     InProcessBrowserTest::SetUpOnMainThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
-    content::SetupCrossSiteRedirector(embedded_test_server());
-
-    // Setup up embedded test server for HTTP requests
-    embedded_test_server()->RegisterRequestHandler(
-        base::BindRepeating(&HandleRequest));
-    ASSERT_TRUE(embedded_test_server()->Start());
 
     // Setup up embedded test server for HTTPS requests
     https_server_.reset(new net::EmbeddedTestServer(
@@ -152,6 +145,42 @@ class BraveRewardsBrowserTest :
     loop.RunUntilIdle();
   }
 
+  std::string GetWalletProperties() {
+    return
+    "{"
+      "\"altcurrency\": \"BAT\","
+      "\"probi\": \"0\","
+      "\"balance\": \"" + GetBalance() + ".0000\","
+      "\"unconfirmed\": \"0.0000\","
+      "\"rates\": {"
+        "\"BTC\": 0.00003105,"
+        "\"ETH\": 0.0007520713830465265,"
+        "\"XRP\": 0.6385015608740894,"
+        "\"BCH\": 0.000398527449465635,"
+        "\"LTC\": 0.003563298490127758,"
+        "\"DASH\": 0.0011736801836266257,"
+        "\"BTG\": 0.009819171067370777,"
+        "\"USD\": 0.214100307359946,"
+        "\"EUR\": 0.18357217273398782"
+      "},"
+      "\"parameters\": {"
+        "\"adFree\": {"
+          "\"currency\": \"BAT\","
+          "\"fee\": {"
+            "\"BAT\": 20"
+          "},"
+          "\"choices\": {"
+            "\"BAT\": [10,15,20,30,50,100]"
+          "},"
+          "\"range\": {"
+            "\"BAT\": [10,100]"
+          "},"
+          "\"days\": 30"
+        "}"
+      "}"
+    "}";
+  }
+
   void GetTestResponse(const std::string& url,
                        int* response_status_code,
                        std::string* response,
@@ -170,7 +199,7 @@ class BraveRewardsBrowserTest :
       *response = brave_test_resp::verification_;
     } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
                           SERVER_TYPES::BALANCE)) {
-      *response = brave_test_resp::wallet_;
+      *response = GetWalletProperties();
     } else if (URLMatches(url, WALLET_PROPERTIES, PREFIX_V2,
                           SERVER_TYPES::LEDGER)) {
       GURL gurl(url);
@@ -219,8 +248,21 @@ class BraveRewardsBrowserTest :
         *response = brave_test_resp::surveyor_voting_;
     } else if (URLMatches(url, GET_PUBLISHERS_LIST_V1, "",
                           SERVER_TYPES::PUBLISHER_DISTRO)) {
-      *response =
-          "[[\"bumpsmack.com\",true,false],[\"duckduckgo.com\",true,false]]";
+      if (alter_publisher_list_) {
+        *response =
+            "["
+            "[\"bumpsmack.com\",true,false],"
+            "[\"duckduckgo.com\",true,false],"
+            "[\"3zsistemi.si\",false,false]"
+            "]";
+      } else {
+        *response =
+            "["
+            "[\"bumpsmack.com\",true,false],"
+            "[\"duckduckgo.com\",true,false],"
+            "[\"3zsistemi.si\",true,false]"
+            "]";
+      }
     }
   }
 
@@ -259,11 +301,30 @@ class BraveRewardsBrowserTest :
     wait_for_publisher_list_normalized_loop_->Run();
   }
 
-  void WaitForReconcileCompleted() {
-    if (reconcile_completed_)
+  void WaitForACReconcileCompleted() {
+    if (ac_reconcile_completed_) {
       return;
-    wait_for_reconcile_completed_loop_.reset(new base::RunLoop);
-    wait_for_reconcile_completed_loop_->Run();
+    }
+    wait_for_ac_completed_loop_.reset(new base::RunLoop);
+    wait_for_ac_completed_loop_->Run();
+  }
+
+  void WaitForTipReconcileCompleted() {
+    if (tip_reconcile_completed_) {
+      return;
+    }
+    wait_for_tip_completed_loop_.reset(new base::RunLoop);
+    wait_for_tip_completed_loop_->Run();
+  }
+
+  void WaitForMultipleTipReconcileCompleted(int32_t needed) {
+    multiple_tip_reconcile_needed_ = needed;
+    if (multiple_tip_reconcile_completed_) {
+      return;
+    }
+
+    wait_for_multiple_tip_completed_loop_.reset(new base::RunLoop);
+    wait_for_multiple_tip_completed_loop_->Run();
   }
 
   void WaitForInsufficientFundsNotification() {
@@ -342,9 +403,7 @@ class BraveRewardsBrowserTest :
     ASSERT_TRUE(
         base::ReadFileToString(path.AppendASCII("verify_persona_resp.json"),
                                &brave_test_resp::verification_));
-    ASSERT_TRUE(base::ReadFileToString(
-        path.AppendASCII("wallet_balance_empty_resp.json"),
-        &brave_test_resp::wallet_));
+
     ASSERT_TRUE(base::ReadFileToString(path.AppendASCII("ugp_grant_resp.json"),
                                        &brave_test_resp::grant_));
     ASSERT_TRUE(
@@ -376,29 +435,24 @@ class BraveRewardsBrowserTest :
         &brave_test_resp::surveyor_voting_credential_));
   }
 
-  void UpdateTestData() {
-    base::ScopedAllowBlockingForTesting allow_blocking;
-    base::FilePath path;
-    GetTestDataDir(&path);
-    if (grant_finished_) {
-      if (contribution_made_) {
-        ASSERT_TRUE(base::ReadFileToString(
-            path.AppendASCII("wallet_balance_contributed_resp.json"),
-            &brave_test_resp::wallet_));
-      } else if (tip_made) {
-        ASSERT_TRUE(base::ReadFileToString(
-            path.AppendASCII("wallet_balance_tipped_resp.json"),
-            &brave_test_resp::wallet_));
+  void UpdateContributionBalance(double amount, bool verified = false) {
+    if (verified) {
+        balance_ -= amount;
       } else {
-        ASSERT_TRUE(base::ReadFileToString(
-            path.AppendASCII("wallet_balance_funded_resp.json"),
-            &brave_test_resp::wallet_));
+        pending_balance_ += amount;
       }
-    } else {
-      ASSERT_TRUE(base::ReadFileToString(
-          path.AppendASCII("wallet_balance_empty_resp.json"),
-          &brave_test_resp::wallet_));
-    }
+  }
+
+  std::string BalanceDoubleToString(double amount) {
+    return base::StringPrintf("%.1f", amount);
+  }
+
+  std::string GetBalance() {
+    return BalanceDoubleToString(balance_);
+  }
+
+  std::string GetPendingBalance() {
+    return BalanceDoubleToString(pending_balance_);
   }
 
   GURL rewards_url() {
@@ -477,7 +531,7 @@ class BraveRewardsBrowserTest :
     // Wait for grant to finish
     WaitForGrantFinished();
 
-    // Dismiss the grant notification
+    // Goes to final step
     if (use_panel) {
       ASSERT_TRUE(ExecJs(contents,
                          "document.getElementsByTagName('button')[0].click();",
@@ -506,12 +560,37 @@ class BraveRewardsBrowserTest :
     EXPECT_NE(js_result.ExtractString().find("Free Token Grant"),
               std::string::npos);
     EXPECT_NE(js_result.ExtractString().find("30.0 BAT"), std::string::npos);
+    balance_ += 30.0;
+
+    // Dismiss the grant notification
+    if (use_panel) {
+      content::EvalJsResult jsResult = EvalJs(contents,
+      "new Promise((resolve) => {"
+      "let count = 10;"
+      "let interval = setInterval(function() {"
+      "  if (count == 0) {"
+      "    clearInterval(interval);"
+      "    resolve(false);"
+      "  } else {"
+      "    count -= 1;"
+      "  }"
+      "  const button = document.getElementById(\"grant-completed-ok\");"
+      "  if (button) {"
+      "    clearInterval(interval);"
+      "    button.click();"
+      "    resolve(true);"
+      "  }"
+      "}, 500);});",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END);
+      ASSERT_TRUE(jsResult.ExtractBool());
+    }
   }
 
   void VisitPublisher(const std::string& publisher,
                       bool verified,
                       bool last_add = false) {
-    GURL url = embedded_test_server()->GetURL(publisher, "/index.html");
+    GURL url = https_server()->GetURL(publisher, "/index.html");
     ui_test_utils::NavigateToURLWithDisposition(
         browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
@@ -566,20 +645,19 @@ class BraveRewardsBrowserTest :
     }
   }
 
-  void TipPublisher(const std::string& publisher, bool verified, bool monthly) {
-    // Claim grant using settings page
-    const bool use_panel = true;
-    ClaimGrant(use_panel);
+  void TipPublisher(const std::string& publisher,
+                    bool verified = false,
+                    bool monthly = false,
+                    int32_t selection = 0) {
+    // we shouldn't be adding publisher to AC list,
+    // so that we can focus only on tipping part
+    rewards_service_->SetPublisherMinVisitTime(8);
 
-    // Navigate to a verified site in a new tab
-    GURL url = embedded_test_server()->GetURL(publisher, "/index.html");
+    // Navigate to a site in a new tab
+    GURL url = https_server()->GetURL(publisher, "/index.html");
     ui_test_utils::NavigateToURLWithDisposition(
         browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
-
-    // The minimum publisher duration when testing is 1 second (and the
-    // granularity is seconds), so wait for just over 2 seconds to elapse
-    base::PlatformThread::Sleep(base::TimeDelta::FromMilliseconds(2100));
 
     // Open the Rewards popup
     content::WebContents* popup_contents = OpenRewardsPopup();
@@ -623,13 +701,18 @@ class BraveRewardsBrowserTest :
     content::WebContents* site_banner_contents = site_banner_source.ptr();
     ASSERT_TRUE(site_banner_contents);
 
-    // Select the tip amount (1 BAT)
-    // TODO(emerick): Better to do this by data-test-id
+    const double amount = tip_amounts_.at(selection);
+    const std::string amount_str = std::to_string(static_cast<int32_t>(amount));
+
+    // Select the tip amount (default is 1.0 BAT)
     ASSERT_TRUE(ExecJs(
         site_banner_contents,
+        content::JsReplace(
         "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
         "delay(0).then(() => "
-        "  document.getElementsByTagName('button')[1].click());",
+        "  document.querySelectorAll(\"[data-test-id='amount-wrapper']\")[$1]"
+        "  .click());",
+        selection),
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END));
 
@@ -646,20 +729,19 @@ class BraveRewardsBrowserTest :
     }
 
     // Send the tip
-    // TODO(emerick): Better to do this by data-test-id
     ASSERT_TRUE(ExecJs(
         site_banner_contents,
         "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
         "delay(0).then(() => "
-        "  document.getElementsByTagName('button')[4].click());",
+        "  document.querySelector(\"[data-test-id='send-tip-button'] button\")"
+        "  .click());",
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END));
 
     // Signal that direct tip was made and update wallet with new
     // balance
-    if (!monthly) {
-      tip_made = true;
-      UpdateTestData();
+    if (!monthly && !verified) {
+      UpdateContributionBalance(amount, verified);
     }
 
     // Wait for thank you banner to load
@@ -676,7 +758,9 @@ class BraveRewardsBrowserTest :
           content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
           content::ISOLATED_WORLD_ID_CONTENT_END);
       EXPECT_NE(js_result.ExtractString().find(publisher), std::string::npos);
-      EXPECT_NE(js_result.ExtractString().find("1.0 BAT"), std::string::npos);
+      EXPECT_NE(js_result.ExtractString().find("" + amount_str + ".0 BAT"),
+                std::string::npos);
+
       if (monthly) {
         EXPECT_NE(js_result.ExtractString().find(
                       "Your first monthly tip will be sent on"),
@@ -689,30 +773,27 @@ class BraveRewardsBrowserTest :
         0,
         TabStripModel::UserGestureDetails(TabStripModel::GestureType::kOther));
 
-    // Wait for publisher list normalization
-    WaitForPublisherListNormalized();
-
     if (monthly) {
-      // Trigger auto contribution now, for monthly
-      rewards_service()->StartAutoContributeForTest();
+      // Trigger contribution process
+      rewards_service()->StartMonthlyContributionForTest();
 
       // Wait for reconciliation to complete
-      WaitForReconcileCompleted();
-      ASSERT_EQ(reconcile_status_, verified ? ledger::Result::LEDGER_OK
-                                            : ledger::Result::AC_TABLE_EMPTY);
-    }
+      WaitForTipReconcileCompleted();
+      const auto result = verified
+          ? ledger::Result::LEDGER_OK
+          : ledger::Result::RECURRING_TABLE_EMPTY;
+      ASSERT_EQ(tip_reconcile_status_, result);
 
-    // Signal that monthly contribution was made and update wallet
-    // with new balance
-    if (monthly) {
-      contribution_made_ = true;
-      UpdateTestData();
+      // Signal that monthly contribution was made and update wallet
+      // with new balance
+      if (!verified) {
+        UpdateContributionBalance(amount, verified);
+      }
     }
 
     if (verified) {
       // Make sure that balance is updated correctly
       {
-        const std::string balance = monthly ? "10.0 BAT" : "29.0 BAT";
         content::EvalJsResult js_result = EvalJs(
             contents(),
             "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
@@ -721,13 +802,15 @@ class BraveRewardsBrowserTest :
             "    .innerText);",
             content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
             content::ISOLATED_WORLD_ID_CONTENT_END);
-        EXPECT_NE(js_result.ExtractString().find(balance), std::string::npos);
+        EXPECT_NE(js_result.ExtractString().find(GetBalance()),
+                  std::string::npos);
       }
 
       // Check that tip table shows the appropriate tip amount
       {
-        const std::string selector =
-            monthly ? "[color='contribute']" : "[color='donation']";
+        const std::string selector = monthly
+            ? "[data-test-id='summary-donation']"
+            : "[data-test-id='summary-tips']";
         content::EvalJsResult js_result = EvalJs(
             contents(),
             content::JsReplace(
@@ -738,7 +821,9 @@ class BraveRewardsBrowserTest :
                 selector),
             content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
             content::ISOLATED_WORLD_ID_CONTENT_END);
-        EXPECT_NE(js_result.ExtractString().find("-1.0BAT"), std::string::npos);
+        EXPECT_NE(js_result.ExtractString()
+                  .find("-" + BalanceDoubleToString(amount) + "BAT"),
+                  std::string::npos);
       }
     } else {
       // Make sure that balance did not change
@@ -751,25 +836,22 @@ class BraveRewardsBrowserTest :
             "    .innerText);",
             content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
             content::ISOLATED_WORLD_ID_CONTENT_END);
-        EXPECT_NE(js_result.ExtractString().find("30.0 BAT"),
-                  std::string::npos);
+        EXPECT_NE(js_result.ExtractString().
+                  find(GetBalance() + " BAT"), std::string::npos);
       }
 
       // Make sure that pending contribution box shows the correct
       // amount
       {
-        const std::string amount = monthly ? "20" : "1";
         content::EvalJsResult js_result = EvalJs(
             contents(),
             "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
             "delay(0).then(() => "
-            "  document.querySelector(\"[id='root']\").innerText);",
+            "  document.querySelector"
+            "(\"[data-test-id='pending-contribution-box']\").innerText);",
             content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
             content::ISOLATED_WORLD_ID_CONTENT_END);
-        EXPECT_NE(js_result.ExtractString().find(
-                      "You\u2019ve designated " + amount +
-                      " BAT for creators who haven\u2019t yet signed up to "
-                      "receive contributions."),
+        EXPECT_NE(js_result.ExtractString().find(GetPendingBalance()),
                   std::string::npos);
       }
 
@@ -846,7 +928,6 @@ class BraveRewardsBrowserTest :
     ASSERT_EQ(result, ledger::Result::LEDGER_OK);
     grant_finished_ = true;
     grant_ = grant;
-    UpdateTestData();
     if (wait_for_grant_finished_loop_)
       wait_for_grant_finished_loop_->Quit();
   }
@@ -863,12 +944,44 @@ class BraveRewardsBrowserTest :
   void OnReconcileComplete(brave_rewards::RewardsService* rewards_service,
                            unsigned int result,
                            const std::string& viewing_id,
-                           const std::string& category,
+                           int32_t category,
                            const std::string& probi) {
-    reconcile_completed_ = true;
-    reconcile_status_ = result;
-    if (wait_for_reconcile_completed_loop_)
-      wait_for_reconcile_completed_loop_->Quit();
+    const size_t size = probi.size();
+    std::string amount = "0";
+    if (size > 18) {
+      amount = probi.substr(0, size - 18);
+    }
+
+    UpdateContributionBalance(std::stod(amount), true);
+
+    if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
+      ac_reconcile_completed_ = true;
+      ac_reconcile_status_ = result;
+      if (wait_for_ac_completed_loop_) {
+        wait_for_ac_completed_loop_->Quit();
+      }
+    }
+
+    if (category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP ||
+        category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+      // Single tip tracking
+      tip_reconcile_completed_ = true;
+      tip_reconcile_status_ = result;
+      if (wait_for_tip_completed_loop_) {
+        wait_for_tip_completed_loop_->Quit();
+      }
+
+      // Multiple tips
+      multiple_tip_reconcile_count_++;
+      multiple_tip_reconcile_status_ = result;
+
+      if (multiple_tip_reconcile_count_ == multiple_tip_reconcile_needed_) {
+        multiple_tip_reconcile_completed_ = true;
+        if (wait_for_multiple_tip_completed_loop_) {
+          wait_for_multiple_tip_completed_loop_->Quit();
+        }
+      }
+    }
   }
 
   void ACLowAmount() {
@@ -915,6 +1028,8 @@ class BraveRewardsBrowserTest :
             AsWeakPtr()));
   }
 
+  const std::vector<double> tip_amounts_ = {1.0, 5.0, 10.0};
+
   MOCK_METHOD1(OnGetProduction, void(bool));
   MOCK_METHOD1(OnGetDebug, void(bool));
   MOCK_METHOD1(OnGetReconcileTime, void(int32_t));
@@ -941,17 +1056,26 @@ class BraveRewardsBrowserTest :
   std::unique_ptr<base::RunLoop> wait_for_publisher_list_normalized_loop_;
   bool publisher_list_normalized_ = false;
 
-  std::unique_ptr<base::RunLoop> wait_for_reconcile_completed_loop_;
-  bool reconcile_completed_ = false;
-  unsigned int reconcile_status_ = ledger::LEDGER_ERROR;
+  std::unique_ptr<base::RunLoop> wait_for_ac_completed_loop_;
+  bool ac_reconcile_completed_ = false;
+  unsigned int ac_reconcile_status_ = ledger::LEDGER_ERROR;
+  std::unique_ptr<base::RunLoop> wait_for_tip_completed_loop_;
+  bool tip_reconcile_completed_ = false;
+  unsigned int tip_reconcile_status_ = ledger::LEDGER_ERROR;
+  std::unique_ptr<base::RunLoop> wait_for_multiple_tip_completed_loop_;
+  bool multiple_tip_reconcile_completed_ = false;
+  int32_t multiple_tip_reconcile_count_ = 0;
+  int32_t multiple_tip_reconcile_needed_ = 0;
+  unsigned int multiple_tip_reconcile_status_ = ledger::LEDGER_ERROR;
 
   std::unique_ptr<base::RunLoop> wait_for_insufficient_notification_loop_;
   bool insufficient_notification_would_have_already_shown_ = false;
 
-  bool contribution_made_ = false;
-  bool tip_made = false;
   bool ac_low_amount_ = false;
   bool last_publisher_added_ = false;
+  bool alter_publisher_list_ = false;
+  double balance_ = 0;
+  double pending_balance_ = 0;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, RenderWelcome) {
@@ -1293,7 +1417,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Navigate to a verified site in a new tab
   const std::string publisher = "duckduckgo.com";
-  GURL url = embedded_test_server()->GetURL(publisher, "/index.html");
+  GURL url = https_server()->GetURL(publisher, "/index.html");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
@@ -1340,7 +1464,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END);
     const std::string favicon =
-        "chrome://favicon/size/48@2x/http://" + publisher;
+        "chrome://favicon/size/48@2x/https://" + publisher;
     EXPECT_NE(js_result.ExtractString().find(favicon), std::string::npos);
   }
 
@@ -1374,7 +1498,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, VisitUnverifiedPublisher) {
 
   // Visit unverified publisher
   const bool verified = false;
-  VisitPublisher("google.com", verified);
+  VisitPublisher("brave.com", verified);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -1396,17 +1520,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
   const bool verified = true;
   VisitPublisher("duckduckgo.com", verified);
 
-  // Trigger auto contribution now
-  rewards_service()->StartAutoContributeForTest();
+  // Trigger contribution process
+  rewards_service()->StartMonthlyContributionForTest();
 
   // Wait for reconciliation to complete successfully
-  WaitForReconcileCompleted();
-  ASSERT_EQ(reconcile_status_, ledger::Result::LEDGER_OK);
-
-  // Signal that contribution was made and update wallet with new
-  // balance
-  contribution_made_ = true;
-  UpdateTestData();
+  WaitForACReconcileCompleted();
+  ASSERT_EQ(ac_reconcile_status_, ledger::Result::LEDGER_OK);
 
   // Make sure that balance is updated correctly
   {
@@ -1418,7 +1537,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
         "document.querySelector(\"[data-test-id='balance']\").innerText);",
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("10.0 BAT"), std::string::npos);
+    EXPECT_NE(js_result.ExtractString().find(GetBalance() + " BAT"),
+              std::string::npos);
   }
 
   // Check that summary table shows the appropriate contribution
@@ -1430,7 +1550,8 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AutoContribution) {
         "  document.querySelector(\"[color='contribute']\").innerText);",
         content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
         content::ISOLATED_WORLD_ID_CONTENT_END);
-    EXPECT_NE(js_result.ExtractString().find("-1.0BAT"), std::string::npos);
+    EXPECT_NE(js_result.ExtractString().find("-20.0BAT"),
+              std::string::npos);
   }
 
   // Stop observing the Rewards service
@@ -1445,10 +1566,13 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipVerifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
+  // Claim grant using settings page
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
   // Tip verified publisher
   const bool verified = true;
-  const bool monthly = false;
-  TipPublisher("duckduckgo.com", verified, monthly);
+  TipPublisher("duckduckgo.com", verified);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -1462,10 +1586,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, TipUnverifiedPublisher) {
   // Enable Rewards
   EnableRewards();
 
+  // Claim grant using settings page
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
   // Tip unverified publisher
-  const bool verified = false;
-  const bool monthly = false;
-  TipPublisher("google.com", verified, monthly);
+  TipPublisher("brave.com");
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -1479,6 +1605,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Enable Rewards
   EnableRewards();
+
+  // Claim grant using settings page
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
 
   // Tip verified publisher
   const bool verified = true;
@@ -1498,10 +1628,14 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
+  // Claim grant using settings page
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
   // Tip verified publisher
   const bool verified = false;
   const bool monthly = true;
-  TipPublisher("google.com", verified, monthly);
+  TipPublisher("brave.com", verified, monthly);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -1529,12 +1663,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   ACLowAmount();
 
-  // Trigger auto contribution now
-  rewards_service()->StartAutoContributeForTest();
+  // Trigger contribution process
+  rewards_service()->StartMonthlyContributionForTest();
 
   // Wait for reconciliation to complete successfully
-  WaitForReconcileCompleted();
-  ASSERT_EQ(reconcile_status_, ledger::Result::CONTRIBUTION_AMOUNT_TOO_LOW);
+  WaitForACReconcileCompleted();
+  ASSERT_EQ(ac_reconcile_status_, ledger::Result::CONTRIBUTION_AMOUNT_TOO_LOW);
 
   // Stop observing the Rewards service
   rewards_service_->RemoveObserver(this);
@@ -1576,7 +1710,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   EnableRewards();
 
   // Navigate to a non-Twitter site in a new tab
-  GURL url = embedded_test_server()->GetURL("google.com", "/twitter");
+  GURL url = https_server()->GetURL("brave.com", "/twitter");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
@@ -1596,8 +1730,12 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   // Enable Rewards
   EnableRewards();
 
+  // Claim grant using settings page
+  const bool use_panel = true;
+  ClaimGrant(use_panel);
+
   // Tip unverified publisher
-  TipPublisher(publisher, false, false);
+  TipPublisher(publisher);
 
   // Check that link for pending is shown
   {
@@ -1699,6 +1837,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AddFundsCountryLimited) {
     content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
     content::ISOLATED_WORLD_ID_CONTENT_END);
   ASSERT_TRUE(js_result.ExtractBool());
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -1723,6 +1864,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     }
   }
   EXPECT_FALSE(notification_shown);
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -1739,7 +1883,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   while (!last_publisher_added_) {
     VisitPublisher("duckduckgo.com", verified);
     VisitPublisher("bumpsmack.com", verified);
-    VisitPublisher("google.com", !verified, true);
+    VisitPublisher("brave.com", !verified, true);
   }
 
   CheckInsufficientFundsForTesting();
@@ -1760,6 +1904,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     }
   }
   EXPECT_FALSE(notification_shown);
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -1777,7 +1924,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   while (!last_publisher_added_) {
     VisitPublisher("duckduckgo.com", verified);
     VisitPublisher("bumpsmack.com", verified);
-    VisitPublisher("google.com", !verified, true);
+    VisitPublisher("brave.com", !verified, true);
   }
 
   rewards_service_->SetContributionAmount(40.0);
@@ -1799,6 +1946,9 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     }
   }
   EXPECT_FALSE(notification_shown);
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
@@ -1815,7 +1965,7 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   while (!last_publisher_added_) {
     VisitPublisher("duckduckgo.com", verified);
     VisitPublisher("bumpsmack.com", verified);
-    VisitPublisher("google.com", !verified, true);
+    VisitPublisher("brave.com", !verified, true);
   }
   rewards_service_->SetContributionAmount(100.0);
 
@@ -1837,6 +1987,10 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     }
   }
   EXPECT_TRUE(notification_shown);
+
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
 }
 
 // Test whether rewards is diabled in private profile.
@@ -1849,4 +2003,170 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, PrefsTestInPrivateWindow) {
   Profile* private_profile = profile->GetOffTheRecordProfile();
   EXPECT_FALSE(private_profile->GetPrefs()->GetBoolean(
       brave_rewards::prefs::kBraveRewardsEnabled));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       ProcessPendingContributions) {
+  rewards_service_->AddObserver(this);
+  rewards_service_->GetNotificationService()->AddObserver(this);
+
+  alter_publisher_list_ = true;
+
+  EnableRewards();
+
+  // Claim grant using panel
+  ClaimGrant(true);
+
+  // Tip unverified publisher
+  TipPublisher("brave.com");
+  rewards_service_->OnTip("brave.com", 5.0, false);
+  UpdateContributionBalance(5.0, false);  // update pending balance
+  TipPublisher("3zsistemi.si", false, false, 2);
+  TipPublisher("3zsistemi.si", false, false, 1);
+  TipPublisher("3zsistemi.si", false, false, 2);
+  TipPublisher("3zsistemi.si", false, false, 2);
+
+  // Make sure that pending contribution box shows the correct
+  // amount
+  {
+    content::EvalJsResult js_result = EvalJs(
+        contents(),
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(500).then(() => "
+        "  document.querySelector"
+        "(\"[data-test-id='pending-contribution-box']\").innerText);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(js_result.ExtractString().find(GetPendingBalance()),
+              std::string::npos);
+  }
+
+  alter_publisher_list_ = false;
+
+  browser()->tab_strip_model()->ActivateTabAt(
+      2,
+      TabStripModel::UserGestureDetails(TabStripModel::GestureType::kOther));
+
+  // Open the Rewards popup
+  content::WebContents* popup_contents = OpenRewardsPopup();
+  ASSERT_TRUE(popup_contents);
+
+  // Refresh publisher list
+  {
+    content::EvalJsResult jsResult = EvalJs(popup_contents,
+      "new Promise((resolve) => {"
+      "let count = 10;"
+      "let interval = setInterval(function() {"
+      "  if (count == 0) {"
+      "    clearInterval(interval);"
+      "    resolve(false);"
+      "  } else {"
+      "    count -= 1;"
+      "  }"
+      "  const button = "
+      "document.querySelector(\"[data-test-id='unverified-check-button']\");"
+      "  if (button) {"
+      "    clearInterval(interval);"
+      "    button.click();"
+      "    resolve(true);"
+      "  }"
+      "}, 500);});",
+      content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+      content::ISOLATED_WORLD_ID_CONTENT_END);
+      ASSERT_TRUE(jsResult.ExtractBool());
+  }
+
+  // Activate the Rewards settings page tab
+  browser()->tab_strip_model()->ActivateTabAt(
+      0,
+      TabStripModel::UserGestureDetails(TabStripModel::GestureType::kOther));
+
+  // Wait for new verified publisher to be processed
+  WaitForMultipleTipReconcileCompleted(3);
+  ASSERT_EQ(multiple_tip_reconcile_status_, ledger::Result::LEDGER_OK);
+  UpdateContributionBalance(-25.0, false);  // update pending balance
+
+  // Make sure that balance is updated correctly
+  {
+    content::EvalJsResult js_result = EvalJs(
+        contents(),
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(1000).then(() => "
+        "  document.querySelector(\"[data-test-id='balance']\")"
+        "    .innerText);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(js_result.ExtractString().find(GetBalance()),
+              std::string::npos);
+  }
+
+  // Check that wallet summary shows the appropriate tip amount
+  {
+    const std::string selector = "[data-test-id='summary-tips']";
+    content::EvalJsResult js_result = EvalJs(
+        contents(),
+        content::JsReplace(
+            "const delay = t => new Promise(resolve => setTimeout(resolve, "
+            "t));"
+            "delay(0).then(() => "
+            "  document.querySelector($1).innerText);",
+            selector),
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(js_result.ExtractString().find("-25.0BAT"),
+              std::string::npos);
+  }
+
+  // Make sure that pending contribution box shows the correct
+  // amount
+  {
+    content::EvalJsResult js_result = EvalJs(
+        contents(),
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(0).then(() => "
+        "  document.querySelector"
+        "(\"[data-test-id='pending-contribution-box']\").innerText);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(js_result.ExtractString().find(GetPendingBalance()),
+              std::string::npos);
+  }
+
+  // Open the Rewards popup
+  {
+    content::WebContents* popup_contents = OpenRewardsPopup();
+    ASSERT_TRUE(popup_contents);
+
+    // Check if verified notification is shown
+    content::EvalJsResult js_result = EvalJs(
+        popup_contents,
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(500).then(() => "
+        "  document.querySelector(\"[id='root']\").innerText);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(js_result.ExtractString().find("3zsistemi.si"),
+          std::string::npos);
+
+    // Close notification
+    ASSERT_TRUE(ExecJs(popup_contents,
+        "  document.querySelector("
+        "      \"[data-test-id='notification-close']\").click();",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END));
+
+    // Check if insufficient funds notification is shown
+    content::EvalJsResult js_result2 = EvalJs(
+        popup_contents,
+        "const delay = t => new Promise(resolve => setTimeout(resolve, t));"
+        "delay(500).then(() => "
+        "  document.querySelector(\"[id='root']\").innerText);",
+        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+        content::ISOLATED_WORLD_ID_CONTENT_END);
+    EXPECT_NE(js_result2.ExtractString().find("Insufficient Funds"),
+          std::string::npos);
+  }
+
+  // Stop observing the Rewards service
+  rewards_service_->RemoveObserver(this);
 }

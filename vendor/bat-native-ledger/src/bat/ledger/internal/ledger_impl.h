@@ -228,7 +228,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
-                           const std::string& probi = "0");
+                           const std::string& probi = "0",
+                           int32_t category = 0);
 
   std::string URIEncode(const std::string& value) override;
 
@@ -435,7 +436,7 @@ class LedgerImpl : public ledger::Ledger,
 
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
   void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) override;
-  void StartAutoContribute() override;
+  void StartMonthlyContribution() override;
 
   void RefreshPublisher(
       const std::string& publisher_key,
@@ -467,6 +468,18 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) override;
+
+  void ContributeUnverifiedPublishers();
+
+  bool IsPublisherVerified(const std::string& publisher_key);
+
+  void OnContributeUnverifiedPublishers(ledger::Result result,
+                                        const std::string& publisher_key = "",
+                                        const std::string& publisher_name = "");
+
+  void SavePublisherProcessed(const std::string& publisher_key);
+
+  bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
 
  private:
   void AddRecurringPayment(const std::string& publisher_id,
