@@ -16,8 +16,9 @@ def build_objcgen(xcode_path, objc_gen_root, output_dir):
 
 def generate_bridges(xcode_path, ledger, ads, output_dir, include_dirs):
     macos_includes = xcode_path + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
+    cpp_includes = "/Library/Developer/CommandLineTools/usr/include/c++/v1"
     system_includes = " ".join(include_dirs)
-    subprocess.call("{}/build/objc-gen {} {} {} -- {} {}".format(output_dir, ledger, ads, output_dir, macos_includes, system_includes), shell=True)
+    subprocess.call("{}/build/objc-gen {} {} {} -- {} {} {}".format(output_dir, ledger, ads, output_dir, macos_includes, cpp_includes, system_includes), shell=True)
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Generate Native Bridges for ledger & ads native libs')

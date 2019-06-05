@@ -15,6 +15,7 @@
 !/vendor/CPPLINT.cfg
 node_modules/
 *.xcodeproj
+*.xcuserdatad/
 *.swp
 *.pyc
 *.VC.db
