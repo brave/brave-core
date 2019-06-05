@@ -4,8 +4,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { StatsContainer, StatsItem } from './stats'
-import { Page, DynamicBackground, Gradient, Link, Navigation, IconLink, PhotoName } from './page'
+import { Page, DynamicBackground, Link, Navigation, IconLink, PhotoName } from './page'
 import { Header, Main, Footer } from './grid'
+import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle } from './settings'
 import { List, Tile, TileActionsContainer, TileAction, TileFavicon } from './topSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
 import { Clock } from './clock'
@@ -15,7 +16,6 @@ export {
   StatsItem,
   Page,
   DynamicBackground,
-  Gradient,
   Link,
   Navigation,
   IconLink,
@@ -31,5 +31,9 @@ export {
   SiteRemovalNotification,
   SiteRemovalText,
   SiteRemovalAction,
-  Clock
+  Clock,
+  SettingsMenu,
+  SettingsRow,
+  SettingsText,
+  SettingsTitle
 }

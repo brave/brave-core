@@ -4,13 +4,11 @@
 
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
-// import { withKnobs } from '@storybook/addon-knobs'
 
 // Components
 import NewTabPage from './default/index'
 
 storiesOf('Feature Components/New Tab/Default', module)
-  // .addDecorator(withKnobs)
   .add('Page', () => {
     return (
       <NewTabPage />

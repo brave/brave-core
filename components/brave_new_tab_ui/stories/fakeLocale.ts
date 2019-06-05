@@ -15,7 +15,10 @@ const locale: any = {
   thumbRemoved: 'Top site removed',
   undoRemoved: 'Undo',
   restoreAll: 'Restore All',
-  close: 'Close'
+  close: 'Close',
+  // settings
+  dashboardSettings: 'Dashboard Settings',
+  showBackgroundImg: 'Show background image'
 }
 
 export default locale
