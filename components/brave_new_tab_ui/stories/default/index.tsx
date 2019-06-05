@@ -6,9 +6,8 @@ import * as React from 'react'
 
 // Feature-specific components
 import { Clock } from '../../../../src/features/newTab/default/clock'
-import { Page, Header, Main, Footer, DynamicBackground } from '../../../../src/features/newTab/default'
+import { Page, Header, Main, Footer, DynamicBackground, Gradient } from '../../../../src/features/newTab/default'
 
-import Settings from './settings'
 import TopSitesList from './topSites/topSitesList'
 import Stats from './stats'
 import SiteRemovalNotification from './siteRemovalNotification'
@@ -22,36 +21,12 @@ import '../../../assets/fonts/muli.css'
 import '../../../assets/fonts/poppins.css'
 
 const generateRandomBackgroundData = getRandomBackgroundData(images)
-interface State {
-  showSettings: boolean
-  showBackgroundImage: boolean
-}
 
-export default class NewTabPage extends React.PureComponent<{}, State> {
-  constructor (props: {}) {
-    super(props)
-    this.state = {
-      showBackgroundImage: true,
-      showSettings: false
-    }
-  }
-
-  toggleShowBackgroundImage = () => {
-    this.setState({ showBackgroundImage: !this.state.showBackgroundImage })
-  }
-
-  showSettings = () => {
-    this.setState({ showSettings: true })
-  }
-
-  closeSettings = () => {
-    this.setState({ showSettings: false })
-  }
-
+export default class NewTabPage extends React.PureComponent<{}, {}> {
   render () {
-    const { showSettings, showBackgroundImage } = this.state
     return (
-      <DynamicBackground showBackgroundImage={showBackgroundImage} background={generateRandomBackgroundData.source}>
+      <DynamicBackground background={generateRandomBackgroundData.source}>
+        <Gradient />
         <Page>
           <Header>
             <Stats />
@@ -61,21 +36,8 @@ export default class NewTabPage extends React.PureComponent<{}, State> {
               <SiteRemovalNotification />
             </Main>
           </Header>
-          {
-            showSettings &&
-            <Settings
-              onClickOutside={this.closeSettings}
-              toggleShowBackgroundImage={this.toggleShowBackgroundImage}
-              showBackgroundImage={showBackgroundImage}
-            />
-          }
           <Footer>
-            <FooterInfo
-              backgroundImageInfo={generateRandomBackgroundData}
-              onClickSettings={this.showSettings}
-              isSettingsMenuOpen={showSettings}
-              showPhotoInfo={showBackgroundImage}
-            />
+            <FooterInfo backgroundImageInfo={generateRandomBackgroundData} />
           </Footer>
         </Page>
       </DynamicBackground>

@@ -8,40 +8,29 @@ import * as React from 'react'
 import { Link, Navigation, IconLink, PhotoName } from '../../../../src/features/newTab/default'
 
 // Icons
-import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon, SettingsIcon } from '../../../../src/components/icons'
+import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon } from '../../../../src/components/icons'
 
 // Helpers
 import { getLocale } from '../fakeLocale'
 
 interface Props {
   backgroundImageInfo: any
-  onClickSettings: () => void
-  isSettingsMenuOpen: boolean
-  showPhotoInfo: boolean
 }
 
 export default class FooterInfo extends React.PureComponent<Props, {}> {
   render () {
-    const {
-      backgroundImageInfo,
-      onClickSettings,
-      isSettingsMenuOpen,
-      showPhotoInfo
-    } = this.props
-
+    const { backgroundImageInfo } = this.props
     return (
       <>
-        <div>
-          {showPhotoInfo &&
-          <PhotoName>
-            {`${getLocale('photoBy')} `}
-            <Link href={backgroundImageInfo.link} rel='noopener' target='_blank'>
-              {backgroundImageInfo.author}
-            </Link>
-          </PhotoName>}
-        </div>
+      <div>
+        <PhotoName>
+          {`${getLocale('photoBy')} `}
+          <Link href={backgroundImageInfo.link} rel='noopener' target='_blank'>
+            {backgroundImageInfo.author}
+          </Link>
+        </PhotoName>
+      </div>
         <Navigation>
-          <IconLink onClick={onClickSettings} disabled={isSettingsMenuOpen}><SettingsIcon /></IconLink>
           <IconLink><SettingsAdvancedIcon /></IconLink>
           <IconLink><BookmarkBook /></IconLink>
           <IconLink><HistoryIcon /></IconLink>
