@@ -75,7 +75,7 @@ source_set("browser") {
       "//services/network/public/cpp",
       "//sql",
       "//ui/base",
-      "//ui/message_center/public/cpp", 
+      "//ui/message_center/public/cpp",
     ]
 
     if (is_win) {
