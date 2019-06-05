@@ -4,7 +4,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_ads/browser/background_helper.h"
-#include "brave/components/brave_ads/browser/background_helper_android.h"
 
 namespace brave_ads {
 
@@ -34,15 +33,11 @@ void BackgroundHelper::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
 }
 
+#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX)
 BackgroundHelper* BackgroundHelper::GetInstance() {
-#if defined(OS_ANDROID)
-  return  BackgroundHelperAndroid::GetInstance();
-#else
   // just return a dummy background helper for all other platforms
   return base::Singleton<BackgroundHelper>::get();
-#endif
 }
-
-
+#endif
 
 }  // namespace brave_ads
