@@ -3,8 +3,7 @@ pipeline {
         node { label "master" }
     }
     options {
-        // TODO: set max. no. of concurrent builds to 2
-        timeout(time: 8, unit: "HOURS")
+        timeout(time: 6, unit: "HOURS")
         timestamps()
     }
     parameters {
@@ -41,7 +40,7 @@ pipeline {
                         TARGET_BRANCH = env.CHANGE_TARGET
                         def prNumber = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls?head=brave:" + BRANCH, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)[0].number
                         def prDetails = readJSON(text: httpRequest(url: GITHUB_API + "/brave-core/pulls/" + prNumber, authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).content)
-                        SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equals("CI/Skip") }.equals(1)
+                        SKIP = prDetails.mergeable_state.equals("draft") or prDetails.labels.count { label -> label.name.equalsIgnoreCase("CI/skip") }.equals(1)
                     }
                     BRANCH_EXISTS_IN_BB = httpRequest(url: GITHUB_API + "/brave-browser/branches/" + BRANCH, validResponseCodes: "100:499", authentication: GITHUB_CREDENTIAL_ID, quiet: !DEBUG).status.equals(200)
                 }
@@ -51,7 +50,7 @@ pipeline {
             steps {
                 script {
                     if (SKIP) {
-                        echo "Aborting build as PR is in draft or has \"CI/Skip\" label"
+                        echo "Aborting build as PR is in draft or has \"CI/skip\" label"
                         stopCurrentBuild()
                     }
                     for (build in getBuilds()) {
@@ -99,7 +98,10 @@ pipeline {
                     cd brave-browser
                     git checkout -b ${BRANCH}
 
-                    echo "Pushing branch"
+                    echo "Creating CI branch"
+                    git commit --allow-empty -m "created CI branch"
+
+                    echo "Pushing"
                     git push ${BB_REPO}
                 """
             }
