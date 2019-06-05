@@ -41,6 +41,8 @@
 <translation id="8958799246752641148">Tor hides your IP address from the sites you visit, by routing your browsing through several Tor servers before it reaches your destination. These connections are encrypted, so your ISP or employer can't see which sites you're visiting either. Tor can slow down browsing and some sites might not work at all.</translation>
 <translation id="520608572871993342">Using Private Windows only changes what Brave does on your device ― it doesn't change anyone else's behaviour. Tor hides your IP address from the sites you visit, and hides the sites you visit from your ISP or your employer. Open a Private Window with Tor from the menu, or with {{ key }}.</translation>
 <translation id="6975708438781948564">Learn more about Tor in Brave</translation>
+<translation id="4272382368346338917">Additional Filters</translation>
+<translation id="8949292968394988358">Warning: Turning on too many filters will degrade performance</translation>
 <translation id="1869685517625607604">Total Ads Blocked:</translation>
 <translation id="4673764878177947707">Custom Filters</translation>
 <translation id="8803682034537762884">One per line, a filter is described in Adblock Plus filter syntax</translation>
@@ -54,7 +56,6 @@
 <translation id="5633840519079139680">Brave makes it easy to set up your usual environment by importing bookmarks and settings from other browsers installed on your computer.</translation>
 <translation id="8275038454117074363">Import</translation>
 <translation id="5540323067375019678">Manage your shields</translation>
-<translation id="4755560456428781763">Brave shields protects you from unwanted ads and trackers while browsing. If you encounter an issue while browsing a particular site, adjust your protection level from the shields panel in the toolbar.</translation>
 <translation id="3366308997091824722">Shield Settings</translation>
 <translation id="3884404068544758153">Change your search engine</translation>
 <translation id="438216590634144114">Choose the search engine you would like to use by default when searching the web from the address bar.</translation>
@@ -68,6 +69,7 @@
 <translation id="5946611334574299206">Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behaviour. No personal data or browsing history ever leaves your browser.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="1527222983464337010">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The sites you visit receive your contributions automatically, based on your attention as measured by Brave.</translation>
+<translation id="7178655681744815321">Estimated earnings this cycle</translation>
 <translation id="8157096848242649588">Payment date</translation>
 <translation id="5208388044986603165">Ad notifications received</translation>
 <translation id="4229016885653790965">Sorry! Ads are not yet available in your region.</translation>
@@ -106,7 +108,7 @@
 <translation id="1199044745726588100">5 seconds</translation>
 <translation id="4045581694057451126">8 seconds</translation>
 <translation id="8610523985422563960">1 minute</translation>
-<translation id="7521774480426463961">Enable ability to give tips on "Like" posts</translation>
+<translation id="9031738692126722094">Enable content-level tips on these sites</translation>
 <translation id="995782501881226248">YouTube</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Tip on the spot as you find gems.</translation>
@@ -128,6 +130,7 @@
 <translation id="7797604753681168055">Recover now!</translation>
 <translation id="1184075897575325927">Sorry, it appears that this grant has already been claimed.</translation>
 <translation id="282693359045252357">Next monthly tip date</translation>
+<translation id="6231182869178328516">I just tipped <ph name="NAME">$1<ex>use</ex></ph> using the Brave Browser. Check it out at https://brave.com/tips.</translation>
 <translation id="7422678632904904341">Amount:</translation>
 <translation id="5923611424721173182">Current Reconcile</translation>
 <translation id="5457113250005438886">Invalid</translation>
@@ -150,6 +153,9 @@
 <translation id="4235360514405112390">Valid</translation>
 <translation id="2700943637868737038">Viewing ID:</translation>
 <translation id="3576689061489548788">Wallet Payment ID:</translation>
+<translation id="758790787422117549">Persona ID</translation>
+<translation id="2223892939866251845">User ID</translation>
+<translation id="1642443162274867084">Wallet created</translation>
 <translation id="5094577350232361255">about</translation>
 <translation id="4918086044614829423">Accept</translation>
 <translation id="6832986780040139899">© 2016 © 2018 Brave Software. Brave is a registered trademark of Brave Software. Site names may be trademarks or registered trademarks of the site owner.</translation>
@@ -165,11 +171,16 @@
 <translation id="3671566813999349838">Amount</translation>
 <translation id="3819257035322786455">Backup</translation>
 <translation id="1312977698678162065">Get paid to view relevant ads that respect your privacy.</translation>
+<translation id="7655723274266132226">Now you can earn by viewing ads.</translation>
+<translation id="2975780980638932742">Brave Ads has arrived!</translation>
 <translation id="3361548743396744457">Support your favourite sites just by browsing – or tip a site any time you like.</translation>
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="4493850495402472953">and</translation>
 <translation id="8804164990146287819">Privacy Policy</translation>
 <translation id="4281844954008187215">Terms of Service</translation>
+<translation id="4405997465645469914">By turning on Brave Rewards, you indicate that you have read and agree to the</translation>
+<translation id="8819542691525488940">By clicking ‘Yes, I'm in!’, you indicate that you have read and agree to the</translation>
+<translation id="8071424789698327147">By clicking ‘Yes, I'm Ready!’, you indicate that you have read and agree to the</translation>
 <translation id="7530570094705720669">Creating wallet</translation>
 <translation id="2105596359439030979">Your attention is valuable. Earn by viewing privacy-respecting ads and pay it forward to support content creators you love.</translation>
 <translation id="516395624550019162">Yes, I'm In!</translation>
@@ -206,7 +217,6 @@
 <translation id="7277134233385925078">Set monthly tip</translation>
 <translation id="8003573781961874199">Download as PDF</translation>
 <translation id="298067735430872465">Earnings from Ads</translation>
-<translation id="3521361150443442734">Your Ads earnings are available.</translation>
 <translation id="8764029012618014430">Enable Tips</translation>
 <translation id="3412655388715513818">Exclude this site</translation>
 <translation id="418343137736963579">Total number of sites you excluded from Auto-Contribute:</translation>
@@ -272,8 +282,8 @@
 <translation id="3626186271103896082">Backup your Wallet</translation>
 <translation id="5717619667204259673">Keep this recovery key safe.</translation>
 <translation id="4699702339303280827">You can always use this key to get your wallet back if something happens to your browser or computer. But make sure to protect it — anyone who gets this key could steal your wallet. It’s probably safest to write it down on a piece of paper, or wherever else you keep important info.</translation>
-<translation id="5759071143806884916">You can support this site by sending a tip. It’s a way of thanking them for making great content. Verified content creators get paid for their tips during the first week of each calendar month.</translation>
-<translation id="1704859330137112950">If you like, you can schedule monthly tips to support this site on a continuous basis.</translation>
+<translation id="7354412786785889047">You can support this content creator by sending a tip. It’s a way of thanking them for making great content. Verified creators get paid for their tips during the first week of each calendar month.</translation>
+<translation id="3475063317678050010">If you like, you can schedule monthly tips to support this creator on a continuous basis.</translation>
 <translation id="3074127054582480056">Attention</translation>
 <translation id="822513417008209372">You're currently supporting</translation>
 <translation id="5010112177773747965">without your consent.</translation>
@@ -302,6 +312,7 @@
 <translation id="3536298624341433814">Send my Tip</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">sites</translation>
+<translation id="1834493631938747505">Tell others about your tip.</translation>
 <translation id="8826007068782654809">Thank you</translation>
 <translation id="6665366815203065060">You've just sent a tip to:</translation>
 <translation id="6432779622695508363">Tip on like</translation>
@@ -312,8 +323,12 @@
 <translation id="4914597931214386232">Token Grants Claimed</translation>
 <translation id="1634828734222219955">Total</translation>
 <translation id="3535654229833214438">Transactions</translation>
+<translation id="3124090095880236567">Turn on Ads</translation>
 <translation id="8987812599455325915">This enables both ads and automatic contributions. You can turn them on or off separately at any time.</translation>
 <translation id="1485484147452131556">Activate Rewards</translation>
+<translation id="3983104749597726322">Tweet</translation>
+<translation id="5636843789453098076">Tip @{{ user }} for their tweet:</translation>
+<translation id="4242384385082203046">Tip @{{ user }} for their tweet!</translation>
 <translation id="2448312741937722512">Types</translation>
 <translation id="8772672608371898774">Brave Verified Publisher</translation>
 <translation id="5050370287908180130">View Monthly Statement for Details</translation>
@@ -336,6 +351,15 @@
 <translation id="6727483290601442544">View Details</translation>
 <translation id="1988679729106502285">NOTE:</translation>
 <translation id="5815103311506128988">This creator has not yet signed up to receive contributions from Brave users. Your browser will keep trying to contribute until they verify, or until 90 days have passed.</translation>
+<translation id="4292832015778676417">earned from ads</translation>
+<translation id="3197752845651180812">Pending contributions</translation>
+<translation id="3164105678355419142">Recurring tip</translation>
+<translation id="2927922949538312364">One-time tip</translation>
+<translation id="6964891561514920613">Show all pending contributions</translation>
+<translation id="4346944508027912677">Pending until</translation>
+<translation id="7410549756000115387">No pending contributions…</translation>
+<translation id="1963227389609234879">Remove All</translation>
+<translation id="923467487918828349">Show All</translation>
 <translation id="1181037720776840403">Remove</translation>
 <translation id="7885157704277298658">Copied!</translation>
 <translation id="5379640681913450928">Word Count:</translation>
@@ -353,6 +377,7 @@
 <translation id="1061533051865606843">Add New Device</translation>
 <translation id="8780295742023331191">View Sync Code</translation>
 <translation id="1755198127524719638">Sync Settings</translation>
+<translation id="7558480201297099157">Manage what information you would like to sync between devices. These settings only affect this device.</translation>
 <translation id="8820817407110198400">Bookmarks</translation>
 <translation id="5591129654353352557">Saved Site Settings</translation>
 <translation id="7859704718976024901">Browsing History</translation>
@@ -380,6 +405,7 @@
 <translation id="5086223971958279691">Sync Chain Code</translation>
 <translation id="2899261497479389619">On your target computer, navigate to Brave Sync in settings and click the button</translation>
 <translation id="4827439149833241990">“I have a Sync Code”.</translation>
+<translation id="24067401253841795">Enter the sync chain code words shown below. Treat this code like a password. If someone gets hold of it, they can read and modify your synced data.</translation>
 <translation id="8914601399214979966">Use my camera instead</translation>
 <translation id="3034163433136515805">View QR Code</translation>
 <translation id="5093410893656857925">Choose Device Type</translation>
@@ -392,4 +418,6 @@
 <translation id="8349682220522608879">Please add a sync code.</translation>
 <translation id="1468095392829989299">Couldn't contact Sync servers</translation>
 <translation id="1399673826422570698">You might be having network trouble, or there could be a problem with the Sync servers.</translation>
+<translation id="5286379413446391050">Couldn't connect to Sync servers</translation>
+<translation id="2410472020237369473">Your computer's clock may be set to the wrong time or time zone. Check your clock settings.</translation>
 </translationbundle>

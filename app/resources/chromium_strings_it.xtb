@@ -24,6 +24,8 @@
 <translation id="4651430425715739110">Copyright <ph name="YEAR"/> The Brave Authors. Tutti i diritti riservati.</translation>
 <translation id="2310890394934209120">La realizzazione di Brave OS è stata possibile grazie a <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> aggiuntivi.</translation>
 <translation id="8160794320557846790">La realizzazione di Brave OS è stata possibile grazie a <ph name="BEGIN_LINK_CROS_OSS"/>software open source<ph name="END_LINK_CROS_OSS"/> aggiuntivo, come <ph name="BEGIN_LINK_LINUX_OSS"/>Linux (beta)<ph name="END_LINK_LINUX_OSS"/>.</translation>
+<translation id="8948097099929452692">Non usato in Brave. Segnaposto per mantenere sincronizzate le mappe della risorsa.</translation>
+<translation id="5009217320733452434">Non usato in Brave. Segnaposto per mantenere sincronizzate le mappe della risorsa. Richiede un argomento: &lt;ph name="ARGUMENT"&gt;$1&lt;/ph&gt;.</translation>
 <translation id="6913582816347128893">Brave potrebbe non funzionare correttamente perché non è più supportato su Mac OS X 10.9.</translation>
 <translation id="7977787072794666032">Brave potrebbe non funzionare correttamente perché non è più supportato su Windows XP o Windows Vista</translation>
 <translation id="189297655255130768">Brave non risponde. Riavviarlo ora?</translation>
@@ -186,6 +188,9 @@ Per ulteriori informazioni, controlla l'email all'indirizzo <ph name="ACCOUNT_EM
 <translation id="3599046180970731601">Brave Nightly (mDNS-In)</translation>
 <translation id="7881806463410697784">Brave Dev (mDNS-In)</translation>
 <translation id="1912973375560256099">Regola inbound per consentire il traffico mDNS in Brave.</translation>
+<translation id="7272074097076644710">Regola in ingresso per Brave Beta per permettere il traffico mDNS.</translation>
+<translation id="4991512282053949769">Regola in ingresso per Brave Nightly per permettere il traffico mDNS.</translation>
+<translation id="3856641371299712128">Regola in ingresso per Brave Dev per permettere il traffico mDNS.</translation>
 <translation id="8207657266087451193">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave Software. Puoi disattivare questa funzionalità in qualsiasi momento nelle Impostazioni.</translation>
 <translation id="5499063270485366718">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave Software.</translation>
 <translation id="3870835867536344658">Viene usato lo stesso controllo ortografico utilizzato nella Ricerca Brave Software. Il testo digitato nel browser viene inviato a Brave Software. Puoi modificare questo comportamento in qualsiasi momento nelle impostazioni.</translation>
@@ -199,6 +204,9 @@ Per ulteriori informazioni, controlla l'email all'indirizzo <ph name="ACCOUNT_EM
 <translation id="2522086024276534909">Riavvia Brave OS</translation>
 <translation id="8183252473547465084">Per applicare l'aggiornamento è necessario riavviare Brave OS.</translation>
 <translation id="5895138241574237353">Riavvia</translation>
+<translation id="8887390605192156061">Chiudi tutte le copie di Brave.</translation>
+<translation id="1801551749768408825">Sono in esecuzione altre copie di Brave. Chiudile per eseguire l'aggiornamento.</translation>
+<translation id="2632141563911437138">Per aggiornarsi, Brave deve essere chiuso su questo computer. Questo potrebbe causare la perdita di modifiche non salvate di altri utenti che hanno eseguito l'accesso a questo computer.</translation>
 <translation id="5875673934455379806">Reinstalla Brave</translation>
 <translation id="2097604701283463988">Brave non è aggiornato</translation>
 <translation id="5173820533850252773">Brave non è aggiornato</translation>

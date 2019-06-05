@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Không tìm thấy kết quả tìm kiếm nào</translation>
 <translation id="8967866634928501045">Nhấn tổ hợp phím Alt+Shift+A để hiển thị</translation>
 <translation id="998747458861718449">K&amp;iểm tra</translation>
+<translation id="4428301600092811022">Tải nội dung mô tả hình ảnh từ Brave Software?</translation>
 <translation id="741204030948306876">Có, tôi đồng ý</translation>
 <translation id="780301667611848630">Không, cảm ơn</translation>
 <translation id="3943582379552582368">&amp;Quay lại</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">Trung tâm trợ g&amp;iúp</translation>
 <translation id="7324297612904500502">Diễn đàn beta</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Chỉnh sửa công cụ tìm kiếm...</translation>
 <translation id="5702898740348134351">&amp;Chỉnh sửa Công cụ Tìm kiếm...</translation>
 <translation id="2454247629720664989">Từ khóa</translation>
@@ -1302,8 +1304,10 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6207200176136643843">Đặt lại về mức thu phóng mặc định</translation>
 <translation id="4953689047182316270">Phản hồi các sự kiện trợ năng</translation>
 <translation id="4677585247300749148"><ph name="URL"/> muốn phản hồi các sự kiện trợ năng</translation>
+<translation id="2224471211857467033">Sự kiện về dịch vụ Hỗ trợ tiếp cận</translation>
 <translation id="6116338172782435947">Xem văn bản và hình ảnh đã sao chép sang khay nhớ tạm</translation>
 <translation id="3461266716147554923"><ph name="URL"/> muốn xem văn bản và hình ảnh đã sao chép sang khay nhớ tạm</translation>
+<translation id="2586657967955657006">Khay nhớ tạm</translation>
 <translation id="4838836835474292213">Đã cho phép truy cập đọc khay nhớ tạm</translation>
 <translation id="1415708812149920388">Đã từ chối quyền truy cập đọc khay nhớ tạm</translation>
 <translation id="2365507699358342471">Trang web này có thể xem văn bản và hình ảnh đã sao chép sang khay nhớ tạm.</translation>
@@ -1731,6 +1735,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="7547317915858803630">Cảnh báo: cài đặt <ph name="PRODUCT_NAME"/> của bạn được lưu trữ trên ổ đĩa mạng. Điều này có thể dẫn đến giảm tốc độ, trục trặc hoặc thậm chí là mất dữ liệu.</translation>
 <translation id="3122496702278727796">Lỗi tạo Thư mục Dữ liệu</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> muốn tải nhiều tệp xuống</translation>
+<translation id="7514365320538308">Tải xuống</translation>
 <translation id="691024665142758461">Tải xuống nhiều tệp</translation>
 <translation id="7004499039102548441">Các tab gần đây</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 tab}other{# tab}}</translation>
@@ -1822,6 +1827,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="6156960295318603523">Cài đặt ngôn ngữ</translation>
 <translation id="7931318309563332511">Không xác định</translation>
 <translation id="5426179911063097041"><ph name="SITE"/> muốn gửi thông báo cho bạn</translation>
+<translation id="2482878487686419369">Thông báo</translation>
 <translation id="7221855153210829124">Hiển thị thông báo</translation>
 <translation id="8393700583063109961">Gửi tin nhắn</translation>
 <translation id="6701535245008341853">Không thể tải hồ sơ.</translation>
@@ -1923,6 +1929,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1753905327828125965">Truy cập nhiều nhất</translation>
 <translation id="5612720917913232150"><ph name="URL"/> muốn sử dụng thông tin vị trí máy tính của bạn</translation>
 <translation id="4733082559415072992"><ph name="URL"/> muốn sử dụng thông tin vị trí thiết bị của bạn</translation>
+<translation id="5646376287012673985">Vị trí</translation>
 <translation id="3016780570757425217">Biết vị trí của bạn</translation>
 <translation id="4068506536726151626">Trang này chứa các yếu tố từ các trang web đang theo dõi vị trí của bạn:</translation>
 <translation id="4920887663447894854">Các trang web sau đã bị chặn theo dõi vị trí của bạn trên trang này:</translation>
@@ -1932,6 +1939,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3528033729920178817">Trang này đang theo dõi vị trí của bạn.</translation>
 <translation id="1510030919967934016">Trang này đã bị chặn theo dõi vị trí của bạn.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> muốn có quyền kiểm soát toàn bộ thiết bị MIDI của bạn</translation>
+<translation id="1834583737373831634">Thiết bị MIDI</translation>
 <translation id="8606726445206553943">Sử dụng các thiết bị MIDI của bạn</translation>
 <translation id="1849186935225320012">Trang này có quyền kiểm soát toàn bộ thiết bị MIDI.</translation>
 <translation id="2986010903908656993">Trang này đã bị chặn quyền kiểm soát hoàn toàn thiết bị MIDI.</translation>
@@ -1965,6 +1973,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="8282947398454257691">Biết số nhận dạng thiết bị duy nhất của bạn</translation>
 <translation id="8329449853370113380"><ph name="URL"/> muốn phát nội dung được bảo vệ. Thông tin định danh thiết bị của bạn sẽ được Brave Software xác minh.</translation>
 <translation id="2650609753175229582"><ph name="URL"/> muốn phát nội dung được bảo vệ. Thông tin định danh của thiết bị sẽ được Brave Software xác minh và trang web này có thể truy cập vào thông tin đó.</translation>
+<translation id="1746402432151920942">Mã nhận dạng nội dung đa phương tiện được bảo vệ</translation>
 <translation id="1322046419516468189">Xem và quản lý mật khẩu đã lưu trong <ph name="SAVED_PASSWORDS_STORE"/> của bạn</translation>
 <translation id="5297082477358294722">Đã lưu mật khẩu. Hãy xem và quản lý mật khẩu đã lưu trong <ph name="SAVED_PASSWORDS_STORE"/> của bạn.</translation>
 <translation id="5713644099811900409">Tài khoản Brave Software</translation>
@@ -2024,18 +2033,24 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="3532844647053365774"><ph name="HOST"/> muốn sử dụng micrô của bạn</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> muốn sử dụng máy ảnh của bạn</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> muốn chia sẻ màn hình của bạn</translation>
+<translation id="4275663329226226506">Truyền thông</translation>
 <translation id="8962918469425892674">Trang web này đang sử dụng cảm biến chuyển động hoặc ánh sáng.</translation>
+<translation id="4532646538815530781">Trang web này đang sử dụng cảm biến chuyển động.</translation>
 <translation id="6057381398996433816">Trang web này đã bị chặn sử dụng cảm biến chuyển động và ánh sáng của thiết bị.</translation>
+<translation id="7707108266051544351">Trang web này đã bị chặn sử dụng cảm biến chuyển động.</translation>
 <translation id="1151917987301063366">Luôn cho phép <ph name="HOST"/> sử dụng các cảm biến của thiết bị</translation>
 <translation id="7377451353532943397">Tiếp tục chặn quyền sử dụng cảm biến</translation>
 <translation id="6878422606530379992">Được phép sử dụng cảm biến</translation>
 <translation id="4031527940632463547">Đã chặn sử dụng cảm biến</translation>
 <translation id="4559617833001311418">Trang web này đang sử dụng cảm biến chuyển động hoặc ánh sáng của thiết bị.</translation>
+<translation id="5623282979409330487">Trang web này đang sử dụng cảm biến chuyển động.</translation>
 <translation id="2309620859903500144">Trang web này đã bị chặn sử dụng cảm biến chuyển động hoặc ánh sáng của thiết bị.</translation>
+<translation id="6541638731489116978">Trang web này đã bị chặn sử dụng cảm biến chuyển động.</translation>
 <translation id="8645354835496065562">Tiếp tục cho phép sử dụng cảm biến</translation>
 <translation id="2903882649406874750">Luôn chặn <ph name="HOST"/> sử dụng các cảm biến của thiết bị</translation>
 <translation id="3194737229810486521"><ph name="URL"/> muốn lưu trữ vĩnh viễn dữ liệu trên thiết bị của bạn</translation>
 <translation id="1030706264415084469"><ph name="URL"/> muốn lưu trữ vĩnh viễn một lượng lớn dữ liệu trên thiết bị của bạn</translation>
+<translation id="885701979325669005">Bộ nhớ</translation>
 <translation id="1712552549805331520"><ph name="URL"/> muốn lưu trữ vĩnh viễn dữ liệu trên máy tính cục bộ của bạn</translation>
 <translation id="1997484222658892567"><ph name="URL"/> muốn lưu trữ vĩnh viễn một lượng lớn dữ liệu trên máy tính cục bộ của bạn</translation>
 <translation id="7648992873808071793">Lưu trữ tệp trên thiết bị này</translation>
@@ -2454,9 +2469,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="702252130983202758">Ứng dụng của bạn</translation>
 <translation id="8831664945713891930">Mở Cài đặt tiện ích</translation>
 <translation id="5138227688689900538">Ẩn bớt</translation>
-<translation id="5646376287012673985">Vị trí</translation>
 <translation id="5270167208902136840">Hiển thị <ph name="NUMBER_OF_MORE_APPS"/> ứng dụng khác</translation>
-<translation id="2482878487686419369">Thông báo</translation>
 <translation id="228758327756499171"><ph name="NUMBER_OF_MORE_APPS"/> ứng dụng</translation>
 <translation id="7207631048330366454">Tìm kiếm ứng dụng</translation>
 <translation id="9011424611726486705">Mở cài đặt trang web</translation>
@@ -2789,6 +2802,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="4305227814872083840">lâu (2 giây)</translation>
 <translation id="2860150991415616761">rất lâu (4 giây)</translation>
 <translation id="1217668622537098248">Trở về hành động nhấp chuột trái sau khi thực hiện hành động khác</translation>
+<translation id="8781470833671194250">Ổn định vị trí nhấp</translation>
 <translation id="3682824389861648626">Ngưỡng chuyển động</translation>
 <translation id="5511379779384092781">Quá nhỏ</translation>
 <translation id="2765217105034171413">Nhỏ</translation>
@@ -3411,7 +3425,10 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="9038649477754266430">Sử dụng dịch vụ gợi ý để tải trang nhanh hơn</translation>
 <translation id="7981313251711023384">Tải trước các trang để tìm kiếm và duyệt web nhanh hơn</translation>
 <translation id="2468205691404969808">Sử dụng cookie để ghi nhớ tùy chọn của bạn, ngay cả khi bạn không truy cập vào các trang đó</translation>
+<translation id="3181954750937456830">Duyệt web an toàn (bảo vệ bạn cũng như thiết bị của bạn khỏi các trang web nguy hiểm)</translation>
+<translation id="7315322926489145388">Gửi URL của một số trang mà bạn truy cập cho Brave Software khi bạn gặp rủi ro về bảo mật</translation>
 <translation id="4991384657077828949">Giúp cải thiện khả năng bảo mật của Brave</translation>
+<translation id="1943176487615318915">Để phát hiện các ứng dụng và trang web nguy hiểm, Brave sẽ gửi URL của một số trang mà bạn truy cập, thông tin hệ thống giới hạn và một số nội dung trang cho Brave Software</translation>
 <translation id="2875273286298348523">Brave gửi cho Brave Software nội dung mà bạn nhập vào trình duyệt</translation>
 <translation id="9079153198295609735">Tự động gửi số liệu thống kê về việc sử dụng và báo cáo sự cố cho Brave Software</translation>
 <translation id="5941220456342415404">Tự động gửi dữ liệu chẩn đoán và dữ liệu sử dụng cho Brave Software</translation>
@@ -3483,7 +3500,6 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1919345977826869612">Quảng cáo</translation>
 <translation id="5649053991847567735">Tự động tải xuống</translation>
 <translation id="3744111561329211289">Đồng bộ hóa dưới nền</translation>
-<translation id="2586657967955657006">Khay nhớ tạm</translation>
 <translation id="5518219166343146486">Hỏi khi một trang web muốn xem văn bản và hình ảnh đã sao chép sang khay nhớ tạm</translation>
 <translation id="2089795179672254991">Hỏi khi có một trang web muốn xem văn bản và hình ảnh đã sao chép sang khay nhớ tạm (được đề xuất)</translation>
 <translation id="16815041330799488">Không cho phép các trang web xem văn bản và hình ảnh đã sao chép sang khay nhớ tạm</translation>
@@ -3511,6 +3527,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1128109161498068552">Không cho phép bất cứ trang web nào sử dụng thông báo dành riêng cho hệ thống để truy cập thiết bị MIDI</translation>
 <translation id="2091887806945687916">Âm thanh</translation>
 <translation id="4751476147751820511">Cảm biến chuyển động hoặc ánh sáng</translation>
+<translation id="1717218214683051432">Cảm biến chuyển động</translation>
 <translation id="6059925163896151826">Thiết bị USB</translation>
 <translation id="8666584013686199826">Hỏi khi một trang web muốn truy cập vào các thiết bị USB</translation>
 <translation id="6291949900244949761">Hỏi khi một trang web muốn truy cập vào các thiết bị USB (khuyên dùng)</translation>
@@ -3546,7 +3563,9 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="1660204651932907780">Cho phép các trang web phát âm thanh (được đề xuất)</translation>
 <translation id="3600792891314830896">Tắt tiếng trên các trang web phát âm thanh</translation>
 <translation id="5084230410268011727">Cho phép các trang web sử dụng cảm biến chuyển động và ánh sáng</translation>
+<translation id="489454699928748701">Cho phép các trang web sử dụng cảm biến chuyển động</translation>
 <translation id="5047421709274785093">Chặn các trang web sử dụng cảm biến chuyển động và ánh sáng</translation>
+<translation id="6396988158856674517">Chặn không cho các trang web sử dụng cảm biến chuyển động</translation>
 <translation id="2904456025988372123">Hỏi khi trang web cố gắng tự động tải tệp xuống sau tệp đầu tiên</translation>
 <translation id="3494769164076977169">Hỏi khi trang web cố gắng tự động tải tệp xuống sau tệp đầu tiên (được đề xuất)</translation>
 <translation id="5036662165765606524">Không cho phép bất kỳ trang web nào tự động tải nhiều tệp xuống</translation>
@@ -4081,6 +4100,7 @@ Giữ tệp khóa của bạn ở nơi an toàn. Bạn sẽ cần tệp khóa đ
 <translation id="2785008241190445880">Đã thay thế dấu trang</translation>
 <translation id="5468853758063275923">Brave là trình duyệt mặc định của bạn</translation>
 <translation id="2950533317914339731">Thêm dấu trang vào các ứng dụng của Brave Software mà bạn ưa thích</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Maps</translation>
 <translation id="6709133671862442373">Tin tức</translation>

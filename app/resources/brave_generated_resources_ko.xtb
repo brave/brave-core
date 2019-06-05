@@ -30,7 +30,6 @@
 <translation id="4150684676757176434">계속해서 자동 재생 차단</translation>
 <translation id="7543906827780734027">Brave는 이 연장을 아직 검토하지 않았습니다 - 유언비어일 수도 있습니다. 그래도 "<ph name="EXTENSION_NAME"/>"을/를 추가할까요?</translation>
 <translation id="2044383478723007273">Brave 색상</translation>
-<translation id="5341901626640816374">넓은 위치 표시줄 사용</translation>
 <translation id="6123134130710658846">Brave Rewards 버튼 감추기</translation>
 <translation id="7635711399568194460">Brave Rewards가 비활성화되었을 시 로케이션 바에서 Brave Rewards를 감춥니다</translation>
 <translation id="7965178729203412357">새로운 Tor 계정</translation>
@@ -47,13 +46,20 @@
 <translation id="2515126961943087659">Bat 광고 서비스</translation>
 <translation id="7924918279836988121">배트 원장 서비스</translation>
 <translation id="4472575034687746823">시작하기</translation>
+<translation id="3400357268283240774">추가 설</translation>
 <translation id="6303294677342628402">보호</translation>
+<translation id="768979911142179781">기본값</translation>
+<translation id="5989930075012659993">기존 사이트당 설정이 유지됩니다.</translation>
+<translation id="9185018653595759199">소셜 미디어 차단</translation>
+<translation id="6894114137169961038">광고 통제</translation>
+<translation id="1096802265930928584">쿠키 통제</translation>
 <translation id="8919235146866304148">지문 정보 보호</translation>
 <translation id="520895744850022668">모든 사이트에서 HTTPS 사용</translation>
 <translation id="5259716416204774556">스크립트 차단</translation>
 <translation id="7498695072878479744">써드파티 사이트에서 Google 로그인 버튼 활성화합니다</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
+<translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
 <translation id="6067014455220527258">광고 차단</translation>
 <translation id="6985711843506827936">광고 및 추적 허용</translation>
 <translation id="6132506775968708399">제 3자 쿠키 차단하기</translation>
@@ -73,11 +79,14 @@
 <translation id="2414886740292270097">어두움</translation>
 <translation id="1360441190790440400">Linux와 동일</translation>
 <translation id="1336940801687497203">Windows와 동일</translation>
+<translation id="8721331068159819483">macOS와 동일</translation>
 <translation id="6786747875388722282">익스텐션들</translation>
 <translation id="2896916411183256228">브라우저에 직접 토렌트를 표시하려면 웹 토렌트를 사용하세요. 토렌트 파일들과 마그넷 링크들을 지원하세요.</translation>
 <translation id="6554397389149987360">화면 공유와 다른 기능들을 브라우저에서 사용하시려면 행아웃 요소들을 사용하세요.</translation>
+<translation id="4154389611571860454">IPFS 컴패니언 익스텐션을 사용해, 브라우저에서 IPFS를 지원하세요.</translation>
 <translation id="8137559199583651773">확장 프로그램 관리</translation>
 <translation id="4928988318462976765">웹 익스텐션 스토어</translation>
 <translation id="9181207987584064303">웹 익스텐션 스토어에서 보기</translation>
 <translation id="4846154056248462491">나갈 때</translation>
+<translation id="5057399635433117814">이 페이지를 번역할까요? 번역을 위해 이 페이지상의 모든 글을 Microsoft 로 보냅니다.</translation>
 </translationbundle>

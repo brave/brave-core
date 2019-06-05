@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">검색결과 없음</translation>
 <translation id="8967866634928501045">표시하려면 Alt Shift A를 누르세요</translation>
 <translation id="998747458861718449">검사(&amp;N)</translation>
+<translation id="4428301600092811022">Brave Software에서 이미지 설명을 가져올까요?</translation>
 <translation id="741204030948306876">사용</translation>
 <translation id="780301667611848630">아니요, 괜찮습니다.</translation>
 <translation id="3943582379552582368">뒤로(&amp;B)</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">고객센터(H)</translation>
 <translation id="7324297612904500502">베타 포럼</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">검색 엔진 변경(&amp;E)...</translation>
 <translation id="5702898740348134351">검색 엔진 변경(&amp;E)...</translation>
 <translation id="2454247629720664989">키워드</translation>
@@ -1225,6 +1227,7 @@
 <translation id="5867841422488265304">웹 주소 검색 또는 입력</translation>
 <translation id="2129873093718581193">Brave Software에서 검색하거나 URL을 입력하세요.</translation>
 <translation id="6363797201514053536">Brave Software 검색 또는 URL 입력</translation>
+<translation id="4888839742663123585">Brave Software 검색</translation>
 <translation id="6078323886959318429">바로가기 추가</translation>
 <translation id="6324916366299863871">바로가기 수정</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1299,8 +1302,10 @@
 <translation id="6207200176136643843">기본 확대/축소 수준으로 재설정</translation>
 <translation id="4953689047182316270">접근성 이벤트에 응답</translation>
 <translation id="4677585247300749148"><ph name="URL"/>에서 접근성 이벤트에 응답하려고 합니다</translation>
+<translation id="2224471211857467033">접근성 이벤트</translation>
 <translation id="6116338172782435947">클립보드에 복사된 텍스트 및 이미지를 확인합니다.</translation>
 <translation id="3461266716147554923"><ph name="URL"/>에서 클립보드에 복사된 텍스트 및 이미지를 확인하려고 합니다.</translation>
+<translation id="2586657967955657006">클립보드</translation>
 <translation id="4838836835474292213">클립보드 읽기 액세스 허용됨</translation>
 <translation id="1415708812149920388">클립 보드 읽기 액세스 거부됨</translation>
 <translation id="2365507699358342471">이 사이트는 클립보드에 복사된 텍스트와 이미지에 액세스할 수 있습니다.</translation>
@@ -1728,6 +1733,7 @@
 <translation id="7547317915858803630">경고: <ph name="PRODUCT_NAME"/> 설정이 네트워크 드라이브에 저장되었습니다. 이로 인해 속도 저하, 비정상 종료 그리고 데이터 손실까지 발생할 수 있습니다.</translation>
 <translation id="3122496702278727796">데이터 디렉토리 만들기 실패</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/>에서 여러 파일을 다운로드하려고 합니다.</translation>
+<translation id="7514365320538308">다운로드</translation>
 <translation id="691024665142758461">여러 파일 다운로드</translation>
 <translation id="7004499039102548441">최근 탭</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{탭 1개}other{탭 #개}}</translation>
@@ -1819,6 +1825,7 @@
 <translation id="6156960295318603523">언어 설정</translation>
 <translation id="7931318309563332511">알 수 없음</translation>
 <translation id="5426179911063097041"><ph name="SITE"/>에서 알림을 보내려고 합니다.</translation>
+<translation id="2482878487686419369">알림</translation>
 <translation id="7221855153210829124">알림 표시</translation>
 <translation id="8393700583063109961">메시지 보내기</translation>
 <translation id="6701535245008341853">프로필을 가져올 수 없습니다.</translation>
@@ -1920,6 +1927,7 @@
 <translation id="1753905327828125965">자주 방문한 페이지</translation>
 <translation id="5612720917913232150"><ph name="URL"/>에서 내 컴퓨터의 위치에 액세스하려고 합니다</translation>
 <translation id="4733082559415072992"><ph name="URL"/>에서 내 기기의 위치에 액세스하려고 합니다</translation>
+<translation id="5646376287012673985">위치</translation>
 <translation id="3016780570757425217">내 위치 확인</translation>
 <translation id="4068506536726151626">이 페이지에는 사용자 위치를 추적하는 다음 사이트의 요소가 포함되어 있습니다.</translation>
 <translation id="4920887663447894854">이 페이지에서 사용자 위치 추적이 차단된 사이트는 다음과 같습니다.</translation>
@@ -1929,6 +1937,7 @@
 <translation id="3528033729920178817">이 페이지에서는 사용자 위치를 추적합니다.</translation>
 <translation id="1510030919967934016">이 페이지는 위치 추적이 차단되었습니다.</translation>
 <translation id="6910240653697687763"><ph name="URL"/>에서 MIDI 기기를 완전히 제어하려고 합니다</translation>
+<translation id="1834583737373831634">MIDI 기기</translation>
 <translation id="8606726445206553943">MIDI 기기를 사용합니다.</translation>
 <translation id="1849186935225320012">이 페이지는 MIDI 기기를 완전히 제어할 수 있습니다.</translation>
 <translation id="2986010903908656993">이 페이지는 MIDI 기기를 완전히 제어할 수 없도록 차단되었습니다.</translation>
@@ -1962,6 +1971,7 @@
 <translation id="8282947398454257691">고유 기기 식별자 조회</translation>
 <translation id="8329449853370113380"><ph name="URL"/>에서 보호된 콘텐츠를 재생하려고 합니다. Brave Software에서 기기의 ID를 인증해야 합니다.</translation>
 <translation id="2650609753175229582"><ph name="URL"/>에서 보호된 콘텐츠를 재생하려고 합니다. Brave Software에서 이 기기의 신원을 확인하며 이 사이트에서 이 기기에 액세스할 수 있습니다.</translation>
+<translation id="1746402432151920942">보호된 미디어 식별자</translation>
 <translation id="1322046419516468189"><ph name="SAVED_PASSWORDS_STORE"/>에 저장된 비밀번호 보기 및 관리</translation>
 <translation id="5297082477358294722">비밀번호가 저장되었습니다. <ph name="SAVED_PASSWORDS_STORE"/>에서 저장된 비밀번호를 보고 관리하세요.</translation>
 <translation id="5713644099811900409">Brave Software 계정</translation>
@@ -2021,18 +2031,24 @@
 <translation id="3532844647053365774"><ph name="HOST"/>에서 마이크를 사용하려고 합니다</translation>
 <translation id="7108634116785509031"><ph name="HOST"/>에서 카메라에 액세스하려고 합니다</translation>
 <translation id="3691267899302886494"><ph name="HOST"/>에서 화면을 공유하려고 합니다</translation>
+<translation id="4275663329226226506">미디어</translation>
 <translation id="8962918469425892674">사이트에서 모션 센서 또는 조도 센서를 사용 중입니다.</translation>
+<translation id="4532646538815530781">사이트에서 움직임 감지 센서를 사용하고 있습니다.</translation>
 <translation id="6057381398996433816">모션 센서 및 조도 센서 사용이 차단된 사이트입니다.</translation>
+<translation id="7707108266051544351">움직임 감지 센서 사용이 차단된 사이트입니다.</translation>
 <translation id="1151917987301063366"><ph name="HOST"/>에서 센서에 액세스하도록 항상 허용</translation>
 <translation id="7377451353532943397">계속해서 센서 액세스 차단</translation>
 <translation id="6878422606530379992">센서가 허용됨</translation>
 <translation id="4031527940632463547">센서 차단됨</translation>
 <translation id="4559617833001311418">사이트가 모션 센서 또는 조도 센서에 액세스 중입니다.</translation>
+<translation id="5623282979409330487">사이트에서 움직임 감지 센서에 액세스하는 중입니다.</translation>
 <translation id="2309620859903500144">모션 센서 또는 조도 센서 액세스가 차단된 사이트입니다.</translation>
+<translation id="6541638731489116978">움직임 감지 센서 액세스가 차단된 사이트입니다.</translation>
 <translation id="8645354835496065562">계속해서 센서 액세스 허용</translation>
 <translation id="2903882649406874750">항상 <ph name="HOST"/>의 센서 액세스 차단</translation>
 <translation id="3194737229810486521"><ph name="URL"/>에서 내 기기에 데이터를 영구 저장하려고 합니다</translation>
 <translation id="1030706264415084469"><ph name="URL"/>에서 내 기기에 대용량 데이터를 영구 저장하려고 합니다</translation>
+<translation id="885701979325669005">저장소</translation>
 <translation id="1712552549805331520"><ph name="URL"/>에서 로컬 컴퓨터에 데이터를 영구 저장하려고 합니다</translation>
 <translation id="1997484222658892567"><ph name="URL"/>에서 로컬 컴퓨터에 대용량 데이터를 영구 저장하려고 합니다</translation>
 <translation id="7648992873808071793">이 기기에 파일 저장</translation>
@@ -2451,9 +2467,7 @@
 <translation id="702252130983202758">내 앱</translation>
 <translation id="8831664945713891930">확장 프로그램 설정 열기</translation>
 <translation id="5138227688689900538">간략히</translation>
-<translation id="5646376287012673985">위치</translation>
 <translation id="5270167208902136840"><ph name="NUMBER_OF_MORE_APPS"/>개 앱 더 표시</translation>
-<translation id="2482878487686419369">알림</translation>
 <translation id="228758327756499171">앱 <ph name="NUMBER_OF_MORE_APPS"/>개</translation>
 <translation id="7207631048330366454">앱 검색</translation>
 <translation id="9011424611726486705">사이트 설정 열기</translation>
@@ -2786,6 +2800,7 @@
 <translation id="4305227814872083840">길게(2초)</translation>
 <translation id="2860150991415616761">매우 길게(4초)</translation>
 <translation id="1217668622537098248">작업 후 왼쪽 클릭으로 되돌리기</translation>
+<translation id="8781470833671194250">클릭 위치 안정화</translation>
 <translation id="3682824389861648626">움직임 기준</translation>
 <translation id="5511379779384092781">아주 작게</translation>
 <translation id="2765217105034171413">작게</translation>
@@ -3408,7 +3423,10 @@
 <translation id="9038649477754266430">빠른 페이지 로드를 위해 예상 검색어 서비스 사용</translation>
 <translation id="7981313251711023384">더 빠른 인터넷 사용과 검색을 위해 페이지 미리 로드</translation>
 <translation id="2468205691404969808">페이지를 방문하지 않더라도 쿠키를 통해 환경설정 저장</translation>
+<translation id="3181954750937456830">세이프 브라우징(사용자와 사용자의 기기를 위험한 사이트로부터 보호)</translation>
+<translation id="7315322926489145388">보안상의 위험이 있을 때 일부 방문 페이지의 URL을 Brave Software로 전송함</translation>
 <translation id="4991384657077828949">Brave 보안 강화 개선에 참여하기</translation>
+<translation id="1943176487615318915">Brave은 위험한 앱 및 사이트를 감지하기 위해 일부 방문 페이지의 URL, 제한적인 시스템 정보, 페이지 콘텐츠 일부를 Brave Software로 전송합니다.</translation>
 <translation id="2875273286298348523">Brave이 브라우저에서 입력되는 텍스트를 Brave Software로 전송합니다.</translation>
 <translation id="9079153198295609735">사용 통계 및 비정상 종료 보고서를 Brave Software에 자동으로 보내기</translation>
 <translation id="5941220456342415404">진단 및 사용 데이터를 Brave Software에 자동 전송</translation>
@@ -3480,7 +3498,6 @@
 <translation id="1919345977826869612">광고</translation>
 <translation id="5649053991847567735">자동 다운로드</translation>
 <translation id="3744111561329211289">백그라운드 동기화</translation>
-<translation id="2586657967955657006">클립보드</translation>
 <translation id="5518219166343146486">사이트에서 클립보드에 복사된 텍스트 및 이미지를 보려는 경우 확인</translation>
 <translation id="2089795179672254991">사이트에서 클립보드에 복사된 텍스트 및 이미지를 보려는 경우 확인(권장)</translation>
 <translation id="16815041330799488">사이트에서 클립보드에 복사된 텍스트 및 이미지를 확인하도록 허용하지 않음</translation>
@@ -3508,6 +3525,7 @@
 <translation id="1128109161498068552">사이트에서 시스템 전용 메시지를 사용하여 MIDI 기기에 액세스하도록 허용하지 않음</translation>
 <translation id="2091887806945687916">소리</translation>
 <translation id="4751476147751820511">모션 또는 조도 센서</translation>
+<translation id="1717218214683051432">움직임 감지 센서</translation>
 <translation id="6059925163896151826">USB 기기</translation>
 <translation id="8666584013686199826">사이트에서 USB 기기에 액세스하려고 할 때 확인</translation>
 <translation id="6291949900244949761">사이트에서 USB 기기에 액세스하려고 할 때 확인(권장)</translation>
@@ -3543,7 +3561,9 @@
 <translation id="1660204651932907780">사이트에서 소리를 재생하도록 허용(권장)</translation>
 <translation id="3600792891314830896">소리를 재생하는 사이트 음소거</translation>
 <translation id="5084230410268011727">사이트에서 모션 및 조도 센서 사용 허용</translation>
+<translation id="489454699928748701">사이트에서 움직임 감지 센서를 사용하도록 허용</translation>
 <translation id="5047421709274785093">사이트에서 모션 및 조도 센서 사용 차단</translation>
+<translation id="6396988158856674517">사이트에서 움직임 감지 센서를 사용하지 못하도록 차단</translation>
 <translation id="2904456025988372123">사이트에서 첫 파일 다운로드 후 자동으로 파일을 다운로드하려고 할 때 확인</translation>
 <translation id="3494769164076977169">사이트에서 첫 파일 다운로드 후 자동으로 파일을 다운로드하려고 할 때 확인(권장)</translation>
 <translation id="5036662165765606524">사이트에서 여러 파일을 자동으로 다운로드하도록 허용하지 않음</translation>
@@ -4078,6 +4098,7 @@
 <translation id="2785008241190445880">북마크가 변경됨</translation>
 <translation id="5468853758063275923">Brave이 기본 브라우저로 설정되어 있습니다.</translation>
 <translation id="2950533317914339731">즐겨찾는 Brave Software 앱에 책갈피를 추가합니다.</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">지도</translation>
 <translation id="6709133671862442373">뉴스</translation>

@@ -38,6 +38,7 @@
 <translation id="3303855915957856445">Nerasta jokių paieškos rezultatų</translation>
 <translation id="8967866634928501045">Kad būtų parodyta, paspauskite „Alt“ + „Shift“ + A</translation>
 <translation id="998747458861718449">A&amp;pžiūrėti</translation>
+<translation id="4428301600092811022">Gauti vaizdų aprašų iš „Brave Software“?</translation>
 <translation id="741204030948306876">Taip, sutinku</translation>
 <translation id="780301667611848630">Ačiū, ne</translation>
 <translation id="3943582379552582368">&amp;Grįžti</translation>
@@ -241,6 +242,7 @@
 <translation id="1618268899808219593">P&amp;agalbos centras</translation>
 <translation id="7324297612904500502">Beta forumas</translation>
 <translation id="3705722231355495246">-</translation>
+<translation id="4150125039112138020">|</translation>
 <translation id="5912378097832178659">&amp;Redaguoti paieškos sistemas...</translation>
 <translation id="5702898740348134351">&amp;Redaguoti paieškos variklius...</translation>
 <translation id="2454247629720664989">Raktinis žodis</translation>
@@ -1228,6 +1230,7 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="5867841422488265304">Iešk. arba įveskite žiniatinklio adr.</translation>
 <translation id="2129873093718581193">Ieškokite „Brave Software“ arba įveskite URL</translation>
 <translation id="6363797201514053536">Ieškoti sistemoje „Brave Software“ arba įvesti URL</translation>
+<translation id="4888839742663123585">Ieškoti „Brave Software“</translation>
 <translation id="6078323886959318429">Pridėti spartųjį klavišą</translation>
 <translation id="6324916366299863871">Redaguoti spartųjį klavišą</translation>
 <translation id="4405117686468554883">*.jpeg, *.jpg, *.png</translation>
@@ -1302,8 +1305,10 @@ Rakto failą laikykite saugioje vietoje. Jo reikės, kai norėsite sukurti nauja
 <translation id="6207200176136643843">Nustatomas numatytasis mastelis</translation>
 <translation id="4953689047182316270">Reaguoti į pritaikymo neįgaliesiems įvykius</translation>
 <translation id="4677585247300749148"><ph name="URL"/> nori reaguoti į pritaikymo neįgaliesiems įvykius</translation>
+<translation id="2224471211857467033">Pritaikomumo įvykiai</translation>
 <translation id="6116338172782435947">Peržiūrėti tekstą ir vaizdus, nukopijuotus į iškarpinę</translation>
 <translation id="3461266716147554923"><ph name="URL"/> nori matyti tekstą ir vaizdus, nukopijuotus į iškarpinę</translation>
+<translation id="2586657967955657006">Iškarpinė</translation>
 <translation id="4838836835474292213">Iškarpinės skaitymo prieiga leidžiama</translation>
 <translation id="1415708812149920388">Iškarpinės skaitymo prieiga atmesta</translation>
 <translation id="2365507699358342471">Ši svetainė gali peržiūrėti tekstą ir vaizdus, nukopijuotus į iškarpinę.</translation>
@@ -1731,6 +1736,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="7547317915858803630">Įspėjimas: „<ph name="PRODUCT_NAME"/>“ nustatymai saugomi tinklo diske. Dėl to gali sulėtėti veikimas, atsirasti strigčių ar net būti prarasti duomenys.</translation>
 <translation id="3122496702278727796">Nepavyko sukurti duomenų aplanko</translation>
 <translation id="51918995459521422"><ph name="ORIGIN"/> nori atsisiųsti kelis failus</translation>
+<translation id="7514365320538308">Atsisiųsti</translation>
 <translation id="691024665142758461">Atsisiųsti kelis failus</translation>
 <translation id="7004499039102548441">Naujausi skirtukai</translation>
 <translation id="970047733946999531">{NUM_TABS,plural, =1{1 skirtukas}one{# skirtukas}few{# skirtukai}many{# skirtuko}other{# skirtukų}}</translation>
@@ -1822,6 +1828,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="6156960295318603523">Kalbos nustatymai</translation>
 <translation id="7931318309563332511">Nežinoma</translation>
 <translation id="5426179911063097041">Svetainė <ph name="SITE"/> nori siųsti jums pranešimus</translation>
+<translation id="2482878487686419369">Pranešimai</translation>
 <translation id="7221855153210829124">Rodyti pranešimus</translation>
 <translation id="8393700583063109961">Siųsti pranešimą</translation>
 <translation id="6701535245008341853">Profilio gauti nepavyko.</translation>
@@ -1923,6 +1930,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="1753905327828125965">Dažniausiai lankomi</translation>
 <translation id="5612720917913232150"><ph name="URL"/> nori naudoti kompiuterio vietovę</translation>
 <translation id="4733082559415072992"><ph name="URL"/> nori naudoti įrenginio vietovę</translation>
+<translation id="5646376287012673985">Vieta</translation>
 <translation id="3016780570757425217">Žinoti jūsų vietovę</translation>
 <translation id="4068506536726151626">Šiame puslapyje yra elementų iš šių svetainių, kuriose stebima jūsų vietovė:</translation>
 <translation id="4920887663447894854">Šios svetainės buvo užblokuotos, kad nebūtų galima šiame puslapyje stebėti jūsų vietovės:</translation>
@@ -1932,6 +1940,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="3528033729920178817">Šiame puslapyje stebima jūsų vietovė.</translation>
 <translation id="1510030919967934016">Šis puslapis buvo užblokuotas, kad nebūtų galima stebėti jūsų vietovės.</translation>
 <translation id="6910240653697687763"><ph name="URL"/> nori visiškai valdyti MIDI įrenginius</translation>
+<translation id="1834583737373831634">MIDI įrenginiai</translation>
 <translation id="8606726445206553943">Naudoti MIDI įrenginius</translation>
 <translation id="1849186935225320012">Šiame puslapyje visiškai valdomi MIDI įrenginiai.</translation>
 <translation id="2986010903908656993">Šis puslapis užblokuotas, kad negalėtų visiškai valdyti MIDI įrenginių.</translation>
@@ -1965,6 +1974,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="8282947398454257691">Žinoti unikalų įrenginio identifikatorių</translation>
 <translation id="8329449853370113380"><ph name="URL"/> nori leisti apsaugotą turinį. Įrenginio tapatybę patvirtins „Brave Software“</translation>
 <translation id="2650609753175229582"><ph name="URL"/> nori paleisti saugomą turinį Įrenginio tapatybę patvirtins „Brave Software“ ir įrenginį galės pasiekti ši svetainė.</translation>
+<translation id="1746402432151920942">Apsaugotos medijos identifikatorius</translation>
 <translation id="1322046419516468189">Peržiūrėkite ir tvarkykite išsaugotus slaptažodžius <ph name="SAVED_PASSWORDS_STORE"/></translation>
 <translation id="5297082477358294722">Slaptažodis išsaugotas. Peržiūrėkite ir tvarkykite išsaugotus slaptažodžius <ph name="SAVED_PASSWORDS_STORE"/>.</translation>
 <translation id="5713644099811900409">„Brave Software“ paskyra</translation>
@@ -2024,18 +2034,24 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="3532844647053365774"><ph name="HOST"/> nori naudoti mikrofoną</translation>
 <translation id="7108634116785509031"><ph name="HOST"/> nori naudoti fotoaparatą</translation>
 <translation id="3691267899302886494"><ph name="HOST"/> nori bendrinti ekrano vaizdą</translation>
+<translation id="4275663329226226506">Medija</translation>
 <translation id="8962918469425892674">Šioje svetainėje naudojami judesio arba šviesos jutikliai.</translation>
+<translation id="4532646538815530781">Šioje svetainėje naudojami judesio jutikliai.</translation>
 <translation id="6057381398996433816">Ši svetainė užblokuota, kad nebūtų naudojami judesio ir šviesos jutikliai.</translation>
+<translation id="7707108266051544351">Ši svetainė užblokuota, kad nebūtų naudojami judesio jutikliai.</translation>
 <translation id="1151917987301063366">Visada leisti <ph name="HOST"/> pasiekti jutiklius</translation>
 <translation id="7377451353532943397">Toliau blokuoti prieigą prie jutiklio</translation>
 <translation id="6878422606530379992">Jutikliai leidžiami</translation>
 <translation id="4031527940632463547">Jutikliai užblokuoti</translation>
 <translation id="4559617833001311418">Ši svetainė pasiekia judesio ir šviesos jutiklius.</translation>
+<translation id="5623282979409330487">Svetainė pasiekia judesio jutiklius.</translation>
 <translation id="2309620859903500144">Ši svetainė užblokuota, kad nebūtų naudojami judesio ar šviesos jutikliai.</translation>
+<translation id="6541638731489116978">Ši svetainė užblokuota, kad nepasiektų judesio jutiklių.</translation>
 <translation id="8645354835496065562">Toliau leisti prieigą prie jutiklio</translation>
 <translation id="2903882649406874750">Visada blokuoti <ph name="HOST"/>, kad nepasiektų jutiklių</translation>
 <translation id="3194737229810486521"><ph name="URL"/> prašo leidimo nuolat saugoti duomenis jūsų įrenginyje</translation>
 <translation id="1030706264415084469"><ph name="URL"/> prašo leidimo nuolat saugoti daug duomenų įrenginyje</translation>
+<translation id="885701979325669005">Saugykla</translation>
 <translation id="1712552549805331520"><ph name="URL"/> prašo leidimo nuolat saugoti duomenis vietiniame kompiuteryje</translation>
 <translation id="1997484222658892567"><ph name="URL"/> prašo leidimo nuolat saugoti daug duomenų vietiniame kompiuteryje</translation>
 <translation id="7648992873808071793">Saugoti failus šiame įrenginyje</translation>
@@ -2454,9 +2470,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="702252130983202758">Jūsų programos</translation>
 <translation id="8831664945713891930">Atidaryti skiltį „Plėtinių nustatymai“</translation>
 <translation id="5138227688689900538">Rodyti mažiau</translation>
-<translation id="5646376287012673985">Vieta</translation>
 <translation id="5270167208902136840">Rodyti dar <ph name="NUMBER_OF_MORE_APPS"/> progr.</translation>
-<translation id="2482878487686419369">Pranešimai</translation>
 <translation id="228758327756499171">Programų: <ph name="NUMBER_OF_MORE_APPS"/></translation>
 <translation id="7207631048330366454">Ieškoti programų</translation>
 <translation id="9011424611726486705">Atidaryti svetainės nustatymus</translation>
@@ -2789,6 +2803,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="4305227814872083840">ilga (2 sek.)</translation>
 <translation id="2860150991415616761">labai ilga (4 sek.)</translation>
 <translation id="1217668622537098248">Grąžinti kairįjį paspaudimą po veiksmo</translation>
+<translation id="8781470833671194250">Paspaudimo padėties stabilizavimas</translation>
 <translation id="3682824389861648626">Judesių slenkstis</translation>
 <translation id="5511379779384092781">Labai mažas</translation>
 <translation id="2765217105034171413">Mažas</translation>
@@ -3411,7 +3426,10 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="9038649477754266430">Naudokite numatymo paslaugą, kad puslapiai būtų įkeliami greičiau</translation>
 <translation id="7981313251711023384">Iš anksto įkelti puslapius, kad naršymo ir paieškos procesai vyktų greičiau</translation>
 <translation id="2468205691404969808">Naudoja slapukus, kad primintų jums apie nuostatas, net jei nesilankote tuose puslapiuose</translation>
+<translation id="3181954750937456830">Saugus naršymas (apsaugo jus ir jūsų įrenginį nuo pavojingų svetainių)</translation>
+<translation id="7315322926489145388">Siunčia „Brave Software“ kai kurių puslapių, kuriuose lankotės, URL, kai kyla pavojus jūsų saugai</translation>
 <translation id="4991384657077828949">Padėkite tobulinti „Brave“ saugą</translation>
+<translation id="1943176487615318915">Tam, kad būtų aptiktos pavojingos programos ir svetainės, „Brave“ siunčia „Brave Software“ kai kurių puslapių, kuriuose lankotės, URL, ribotą sistemos informaciją ir kai kurių puslapių turinį</translation>
 <translation id="2875273286298348523">„Brave“ tekstą, kurį įvedate naršyklėje, siunčia „Brave Software“</translation>
 <translation id="9079153198295609735">Automatiškai siųsti naudojimo statistiką ir strigčių ataskaitas „Brave Software“</translation>
 <translation id="5941220456342415404">Automatiškai siųsti diagnostikos ir naudojimo duomenis į sistemą „Brave Software“</translation>
@@ -3483,7 +3501,6 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="1919345977826869612">Reklama</translation>
 <translation id="5649053991847567735">Automatiškai atsisiųsti</translation>
 <translation id="3744111561329211289">Fono sinchronizavimas</translation>
-<translation id="2586657967955657006">Iškarpinė</translation>
 <translation id="5518219166343146486">Paklausti, kai svetainė nori matyti tekstą ir vaizdus, nukopijuotus į iškarpinę</translation>
 <translation id="2089795179672254991">Paklausti, kai svetainė nori matyti tekstą ir vaizdus, nukopijuotus į iškarpinę (rekomenduojama)</translation>
 <translation id="16815041330799488">Neleisti svetainėms peržiūrėti teksto ir vaizdų, nukopijuotų į iškarpinę</translation>
@@ -3511,6 +3528,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="1128109161498068552">Neleisti jokioms svetainėms naudoti sistemos išskirtinių pranešimų MIDI įrenginiams pasiekti</translation>
 <translation id="2091887806945687916">Garsas</translation>
 <translation id="4751476147751820511">Judesio arba šviesos jutikliai</translation>
+<translation id="1717218214683051432">Judesių jutikliai</translation>
 <translation id="6059925163896151826">USB įrenginiai</translation>
 <translation id="8666584013686199826">Paklausti, kai svetainė norite pasiekti USB įrenginius</translation>
 <translation id="6291949900244949761">Paklausti, kai svetainė nori pasiekti USB įrenginius (rekomenduojama)</translation>
@@ -3546,7 +3564,9 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="1660204651932907780">Leisti svetainėms leisti garsą (rekomenduojama)</translation>
 <translation id="3600792891314830896">Nutildyti svetaines, kurios leidžia garsą</translation>
 <translation id="5084230410268011727">Leisti svetainėms naudoti judesio ir šviesos jutiklius</translation>
+<translation id="489454699928748701">Leisti svetainėms naudoti judesio jutiklius</translation>
 <translation id="5047421709274785093">Neleisti svetainėms naudoti judesio ir šviesos jutiklių</translation>
+<translation id="6396988158856674517">Užblokuoti svetaines, kad nenaudotų judesio jutiklių</translation>
 <translation id="2904456025988372123">Klausti, kai svetainė bando atsisiųsti failus automatiškai po pirmo failo</translation>
 <translation id="3494769164076977169">Paklausti, kai svetainė bando atsisiųsti failus automatiškai po pirmo failo (rekomenduojama)</translation>
 <translation id="5036662165765606524">Neleisti jokiai svetainei automatiškai atsisiųsti kelis failus</translation>
@@ -4081,6 +4101,7 @@ Ar norite paleisti „<ph name="CONTROL_PANEL_APPLET_NAME"/>“?</translation>
 <translation id="2785008241190445880">Žymė pakeista</translation>
 <translation id="5468853758063275923">„Brave“ yra numatytoji naršyklė</translation>
 <translation id="2950533317914339731">Pridėkite žymių prie mėgstamiausių „Brave Software“ programų</translation>
+<translation id="939305735877869636">Brave Software</translation>
 <translation id="9030785788945687215">Gmail</translation>
 <translation id="3409785640040772790">Žemėlapiai</translation>
 <translation id="6709133671862442373">Naujienos</translation>

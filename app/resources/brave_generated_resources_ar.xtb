@@ -30,7 +30,6 @@
 <translation id="4150684676757176434">متابعة حظر التشغيل التلقائي</translation>
 <translation id="7543906827780734027">لم تراجع Brave هذا الامتداد بعد - قد يكون ضاراً. إضافة "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" على أي حال؟</translation>
 <translation id="2044383478723007273">ألوان Brave</translation>
-<translation id="5341901626640816374">استخدم شريط الموقع الواسع</translation>
 <translation id="6123134130710658846">إخفاء زر Brave Rewards</translation>
 <translation id="7635711399568194460">يخفي زر Brave Rewards في شريط الموقع عند عدم تمكين Brave Rewards</translation>
 <translation id="7965178729203412357">هوية تور الجديدة</translation>
@@ -47,13 +46,20 @@
 <translation id="2515126961943087659">خدمة إعلانات Bat</translation>
 <translation id="7924918279836988121">خدمة دفتر الأستاذ من Bat</translation>
 <translation id="4472575034687746823">الخطوات الأولى</translation>
+<translation id="3400357268283240774">إعدادات إضافية</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
+<translation id="768979911142179781">الإعدادات الافتراضية</translation>
+<translation id="5989930075012659993">سيتم الاحتفاظ بالإعدادات الحالية الخاصة بك لكل موقع.</translation>
+<translation id="9185018653595759199">حجب وسائل التواصل الاجتماعي</translation>
+<translation id="6894114137169961038">التحكم في الإعلان</translation>
+<translation id="1096802265930928584">التحكم في ملفات تعريف الارتباط</translation>
 <translation id="8919235146866304148">حماية البصمة</translation>
 <translation id="520895744850022668">HTTPS في كل مكان</translation>
 <translation id="5259716416204774556">حظر البرنامج النصية</translation>
 <translation id="7498695072878479744">السماح بإضافة أزرار تسجيل الدخول إلى جوجل على صفحات أطراف ثالثة</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
+<translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
 <translation id="6067014455220527258">حظر الإعلانات</translation>
 <translation id="6985711843506827936">السماح بالإعلانات والتتبع</translation>
 <translation id="6132506775968708399">حظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية</translation>
@@ -73,11 +79,14 @@
 <translation id="2414886740292270097">داكن</translation>
 <translation id="1360441190790440400">كنظام تشغيل Linux</translation>
 <translation id="1336940801687497203">كنظام تشغيل Windows</translation>
+<translation id="8721331068159819483">تماماً مثل ماك</translation>
 <translation id="6786747875388722282">الإضافات</translation>
 <translation id="2896916411183256228">استخدم WebTorrent لعرض ملفات التورنت مباشرة في المتصفح. تدعم ملفات التورنت والروابط المغناطيسية.</translation>
 <translation id="6554397389149987360">يستخدم عنصر تطبيق Hangouts لتمكين مشاركة الشاشة وغيرها من الميزات في المتصفح.</translation>
+<translation id="4154389611571860454">يستخدم ملحق رفيق IPFS لدعم IPFS في المستعرض.</translation>
 <translation id="8137559199583651773">إدارة الإضافات</translation>
 <translation id="4928988318462976765">متجر إضافات الويب</translation>
 <translation id="9181207987584064303">عرض في متجر إضافات الويب</translation>
 <translation id="4846154056248462491">عند الخروج</translation>
+<translation id="5057399635433117814">ترجم هذه الصفحة؟ سوف يرسل هذا كل النص في هذه الصفحة إلى Microsoft للترجمة.</translation>
 </translationbundle>
