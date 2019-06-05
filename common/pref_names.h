@@ -31,6 +31,7 @@ extern const char kReferralDownloadID[];
 extern const char kReferralTimestamp[];
 extern const char kReferralAttemptTimestamp[];
 extern const char kReferralAttemptCount[];
+extern const char kReferralHeaders[];
 extern const char kReferralCheckedForPromoCodeFile[];
 extern const char kHTTPSEVerywhereControlType[];
 extern const char kNoScriptControlType[];

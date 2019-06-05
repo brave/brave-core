@@ -13,10 +13,15 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
+#include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+#include "brave/browser/net/brave_referrals_network_delegate_helper.h"
+#endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/components/brave_rewards/browser/net/network_delegate_helper.h"
@@ -73,6 +78,12 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   brave::OnBeforeStartTransactionCallback start_transaction_callback =
       base::Bind(brave::OnBeforeStartTransaction_SiteHacksWork);
   before_start_transaction_callbacks_.push_back(start_transaction_callback);
+
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
+  start_transaction_callback =
+      base::Bind(brave::OnBeforeStartTransaction_ReferralsWork);
+  before_start_transaction_callbacks_.push_back(start_transaction_callback);
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   brave::OnHeadersReceivedCallback headers_received_callback =

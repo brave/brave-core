@@ -99,7 +99,7 @@ void RemoveTrackableSecurityHeadersForThirdParty(
 
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router)
-    : ChromeNetworkDelegate(event_router),
+    : ChromeNetworkDelegate(event_router), referral_headers_list_(nullptr),
       allow_google_auth_(true) {
   // Initialize the preference change registrar.
   base::PostTaskWithTraits(
@@ -112,6 +112,16 @@ BraveNetworkDelegateBase::~BraveNetworkDelegateBase() {}
 
 void BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  PrefService* prefs = g_browser_process->local_state();
+  pref_change_registrar_.reset(new PrefChangeRegistrar());
+  pref_change_registrar_->Init(prefs);
+  pref_change_registrar_->Add(
+      kReferralHeaders,
+      base::Bind(&BraveNetworkDelegateBase::OnReferralHeadersChanged,
+                 base::Unretained(this)));
+  // Retrieve current referral headers, if any.
+  OnReferralHeadersChanged();
+
   PrefService* user_prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   user_pref_change_registrar_.reset(new PrefChangeRegistrar());
   user_pref_change_registrar_->Init(user_prefs);
@@ -135,6 +145,23 @@ void BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI() {
   UpdateAdBlockFromPref(kTwitterEmbedControlType);
   UpdateAdBlockFromPref(kLinkedInEmbedControlType);
   allow_google_auth_ = user_prefs->GetBoolean(kGoogleLoginControlType);
+}
+
+void BraveNetworkDelegateBase::OnReferralHeadersChanged() {
+  DCHECK_CURRENTLY_ON(BrowserThread::UI);
+  if (const base::ListValue* referral_headers =
+          g_browser_process->local_state()->GetList(kReferralHeaders)) {
+    base::PostTaskWithTraits(
+        FROM_HERE, {BrowserThread::IO},
+        base::Bind(&BraveNetworkDelegateBase::SetReferralHeaders,
+                   base::Unretained(this), referral_headers->DeepCopy()));
+  }
+}
+
+void BraveNetworkDelegateBase::SetReferralHeaders(
+    base::ListValue* referral_headers) {
+  DCHECK_CURRENTLY_ON(BrowserThread::IO);
+  referral_headers_list_.reset(referral_headers);
 }
 
 int BraveNetworkDelegateBase::OnBeforeURLRequest(
@@ -166,6 +193,7 @@ int BraveNetworkDelegateBase::OnBeforeStartTransaction(
   brave::BraveRequestInfo::FillCTXFromRequest(request, ctx);
   ctx->event_type = brave::kOnBeforeStartTransaction;
   ctx->headers = headers;
+  ctx->referral_headers_list = referral_headers_list_.get();
   callbacks_[request->identifier()] = std::move(callback);
   RunNextCallback(request, ctx);
   return net::ERR_IO_PENDING;

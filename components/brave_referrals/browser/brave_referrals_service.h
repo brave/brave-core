@@ -1,12 +1,10 @@
-/* Copyright 2019 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
+/* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_BRAVE_REFERRALS_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_BRAVE_REFERRALS_SERVICE_H_
+#ifndef BRAVE_BROWSER_BRAVE_REFERRALS_SERVICE_H_
+#define BRAVE_BROWSER_BRAVE_REFERRALS_SERVICE_H_
 
-#include <memory>
 #include <string>
 
 #include "base/files/file_path.h"
@@ -28,7 +26,7 @@ namespace brave {
 
 class BraveReferralsService {
  public:
-  explicit BraveReferralsService(PrefService* pref_service);
+  BraveReferralsService(PrefService* pref_service);
   ~BraveReferralsService();
 
   void Start();
@@ -49,7 +47,18 @@ class BraveReferralsService {
   void InitReferral();
   std::string BuildReferralInitPayload() const;
   std::string BuildReferralFinalizationCheckPayload() const;
+  void FetchReferralHeaders();
   void CheckForReferralFinalization();
+  std::string FormatExtraHeaders(const base::Value* referral_headers,
+                                 const GURL& url);
+
+  // Invoked from RepeatingTimer when referral headers timer fires.
+  void OnFetchReferralHeadersTimerFired();
+
+  // Invoked from SimpleURLLoader after download of referral headers
+  // is complete.
+  void OnReferralHeadersLoadComplete(
+      std::unique_ptr<std::string> response_body);
 
   // Invoked from SimpleURLLoader after referral init load
   // completes.
@@ -66,8 +75,10 @@ class BraveReferralsService {
   bool initialized_;
   base::Time first_run_timestamp_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
+  std::unique_ptr<network::SimpleURLLoader> referral_headers_loader_;
   std::unique_ptr<network::SimpleURLLoader> referral_init_loader_;
   std::unique_ptr<network::SimpleURLLoader> referral_finalization_check_loader_;
+  std::unique_ptr<base::RepeatingTimer> fetch_referral_headers_timer_;
   PrefService* pref_service_;
   std::string promo_code_;
 
@@ -85,4 +96,4 @@ void RegisterPrefsForBraveReferralsService(PrefRegistrySimple* registry);
 
 }  // namespace brave
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REFERRALS_BROWSER_BRAVE_REFERRALS_SERVICE_H_
+#endif  // BRAVE_BROWSER_BRAVE_REFERRALS_SERVICE_H_
