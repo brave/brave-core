@@ -17,6 +17,7 @@ import {
   StyledThumbsUpIcon
 } from './style'
 import {
+  RedditColorIcon,
   ThumbsUpIcon,
   TwitchColorIcon,
   TwitterColorIcon,
@@ -24,7 +25,7 @@ import {
 } from '../../../components/icons'
 import { Toggle } from '../../../components'
 
-export type Provider = 'twitter' | 'youtube' | 'twitch'
+export type Provider = 'twitter' | 'youtube' | 'twitch' | 'reddit'
 
 export interface Props {
   id?: string
@@ -42,6 +43,8 @@ export default class ToggleTips extends React.PureComponent<Props, {}> {
         return <TwitterColorIcon />
       case 'twitch':
         return <TwitchColorIcon />
+      case 'reddit':
+        return <RedditColorIcon />
     }
   }
 

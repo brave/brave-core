@@ -44,11 +44,12 @@ import {
   TwitterColorIcon,
   YoutubeColorIcon,
   TwitchColorIcon,
+  RedditColorIcon,
   AlertCircleIcon
 } from '../../../components/icons'
 
 export type Social = { type: SocialType, url: string }
-export type SocialType = 'twitter' | 'youtube' | 'twitch'
+export type SocialType = 'twitter' | 'youtube' | 'twitch' | 'reddit'
 export type Donation = { tokens: string, converted: string, selected?: boolean }
 
 export interface Props {
@@ -112,6 +113,9 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       case 'twitch':
         logo = <TwitchColorIcon />
         break
+      case 'reddit':
+        logo = <RedditColorIcon />
+        break
     }
 
     return logo
@@ -157,6 +161,8 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
         return `${identifier} ${getLocale('on')} Twitter`
       case 'twitch':
         return `${identifier} ${getLocale('on')} Twitch`
+      case 'reddit':
+        return `${identifier} ${getLocale('on')} Reddit`
       default:
         return identifier
     }

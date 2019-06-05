@@ -122,7 +122,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
                 onAmountSelection={onAmountSelection}
                 currentAmount={store.state.currentAmount}
                 onClose={onClose}
-                provider={select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch' }, 'youtube')}
+                provider={select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit' }, 'youtube')}
                 social={[
                   {
                     type: 'twitter',
@@ -135,6 +135,10 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
                   {
                     type: 'twitch',
                     url: 'https://www.twitch.tv/duckduckgo'
+                  },
+                  {
+                    type: 'reddit',
+                    url: 'https://www.reddit.com/r/duckduckgo'
                   }
                 ]}
                 showUnVerifiedNotice={boolean('Show unverified notice', false)}
@@ -515,6 +519,10 @@ storiesOf('Feature Components/Rewards/Concepts/Mobile', module)
                   {
                     type: 'twitch',
                     url: 'https://www.twitch.tv/duckduckgo'
+                  },
+                  {
+                    type: 'reddit',
+                    url: 'https://www.reddit.com/r/duckduckgo'
                   }
                 ]}
               />

@@ -113,6 +113,7 @@ class DonationsBoxMobile extends React.Component<Props, State> {
               >
                 <div data-key='yt'>YouTube</div>
                 <div data-key='tw'>Twitter</div>
+                <div data-key='rd'>Reddit</div>
                 <div data-key='inst'>Instagram</div>
               </Checkbox>
             </ControlWrapper>
