@@ -1,5 +1,5 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 2423d123e6b32960ef450f101ce1b79c3fd418df..733f758517a9aabdcf1f99f8ec581da062420d97 100644
+index 02f17d2b4e93d27964fe6663c4feddccc9634619..6580087f7bdd344d7e4d00464a9224e99cc888f7 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -19,7 +19,7 @@ index 2423d123e6b32960ef450f101ce1b79c3fd418df..733f758517a9aabdcf1f99f8ec581da0
  test_manifest_package = "org.chromium.chrome.tests"
  
  chrome_public_jinja_variables = default_chrome_public_jinja_variables +
-@@ -411,7 +412,7 @@ android_library("chrome_java") {
+@@ -412,7 +413,7 @@ android_library("chrome_java") {
    android_manifest_for_lint = chrome_public_android_manifest
  
    # From java_sources.gni.
