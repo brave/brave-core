@@ -244,7 +244,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetPublisherExclude(
       const std::string& publisher_id,
-      const ledger::PUBLISHER_EXCLUDE& exclude) override;
+      const ledger::PUBLISHER_EXCLUDE& exclude,
+      ledger::SetPublisherExcludeCallback callback) override;
 
   void RestorePublishers() override;
 

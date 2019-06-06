@@ -458,8 +458,9 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
 
 void LedgerImpl::SetPublisherExclude(
     const std::string& publisher_id,
-    const ledger::PUBLISHER_EXCLUDE& exclude) {
-  bat_publishers_->setExclude(publisher_id, exclude);
+    const ledger::PUBLISHER_EXCLUDE& exclude,
+    ledger::SetPublisherExcludeCallback callback) {
+  bat_publishers_->setExclude(publisher_id, exclude, std::move(callback));
 }
 
 void LedgerImpl::RestorePublishers() {

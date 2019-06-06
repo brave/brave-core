@@ -182,6 +182,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetContributionAutoInclude(
       const std::string& publisher_key,
       bool exclude) override;
+  void OnSetContributionAutoInclude(const std::string& publisher_id,
+      int32_t filter);
   RewardsNotificationService* GetNotificationService() const override;
   bool CheckImported() override;
   void SetBackupCompleted() override;

@@ -298,17 +298,20 @@ void BatPublishers::OnPublisherInfoSaved(
 }
 
 void BatPublishers::setExclude(const std::string& publisher_id,
-                               const ledger::PUBLISHER_EXCLUDE& exclude) {
+                               const ledger::PUBLISHER_EXCLUDE& exclude,
+                               ledger::SetPublisherExcludeCallback callback) {
     ledger_->GetPublisherInfo(publisher_id,
         std::bind(&BatPublishers::onSetExcludeInternal,
                   this,
                   exclude,
+                  callback,
                   _1,
                   _2));
 }
 
 void BatPublishers::onSetExcludeInternal(
     ledger::PUBLISHER_EXCLUDE exclude,
+    ledger::SetPublisherExcludeCallback callback,
     ledger::Result result,
     ledger::PublisherInfoPtr publisher_info) {
   if (result != ledger::Result::LEDGER_OK &&
@@ -326,8 +329,7 @@ void BatPublishers::onSetExcludeInternal(
   std::string publisherKey = publisher_info->id;
 
   ledger_->SetPublisherInfo(std::move(publisher_info));
-
-  OnExcludedSitesChanged(publisherKey, exclude);
+  callback(publisherKey, exclude);
 }
 
 void BatPublishers::RestorePublishers() {
