@@ -1,10 +1,10 @@
 diff --git a/content/browser/permissions/permission_service_impl.cc b/content/browser/permissions/permission_service_impl.cc
-index 6d5525503adba9df92de57f502983f98b9b3e130..d97b35175bf9315ded053e823101933d963aacbb 100644
+index d698c592c82c54dc8456fe2a07926956bac13e52..3273fb9a95bfa6b0f575d416fcc6ff287bcee56b 100644
 --- a/content/browser/permissions/permission_service_impl.cc
 +++ b/content/browser/permissions/permission_service_impl.cc
-@@ -88,6 +88,9 @@ bool PermissionDescriptorToPermissionType(
-     case PermissionName::IDLE_DETECTION:
-       *permission_type = PermissionType::IDLE_DETECTION;
+@@ -91,6 +91,9 @@ bool PermissionDescriptorToPermissionType(
+     case PermissionName::PERIODIC_BACKGROUND_SYNC:
+       *permission_type = PermissionType::PERIODIC_BACKGROUND_SYNC;
        return true;
 +    case PermissionName::AUTOPLAY:
 +      *permission_type  = PermissionType::AUTOPLAY;

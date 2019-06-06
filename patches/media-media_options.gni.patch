@@ -1,5 +1,5 @@
 diff --git a/media/media_options.gni b/media/media_options.gni
-index 0c62e9b40706d4b03cec9f00d976d4061b336b50..01561cf6ba297102fc334386f040f578b6fbbfff 100644
+index b335dfa75715c24345f103dfd466e07cd85d108d..d7343c3fe5e6dab9f9cfa49330c65eee3dca8717 100644
 --- a/media/media_options.gni
 +++ b/media/media_options.gni
 @@ -9,6 +9,7 @@ import("//build/config/jumbo.gni")
@@ -10,7 +10,7 @@ index 0c62e9b40706d4b03cec9f00d976d4061b336b50..01561cf6ba297102fc334386f040f578
  
  # Do not expand this list without double-checking with OWNERS, this is a list of
  # all targets which roll up into the //media component. It controls visibility
-@@ -164,6 +165,9 @@ declare_args() {
+@@ -163,6 +164,9 @@ declare_args() {
    # Windows and Mac.
    enable_cdm_host_verification =
        enable_library_cdms && (is_mac || is_win) && is_chrome_branded

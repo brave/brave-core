@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/permissions/permission_request_impl.h b/chrome/browser/permissions/permission_request_impl.h
-index b9408a27dd68f90b30ae49d39c36aec0a30aff1b..e1509ff5153977840addbc3ec792b5de35120885 100644
+index 3524b3cadbf0e310ac3ba707d35d3ed782b83b34..f49e931202877fe2e33ba1a473b97b78865bbd4d 100644
 --- a/chrome/browser/permissions/permission_request_impl.h
 +++ b/chrome/browser/permissions/permission_request_impl.h
-@@ -33,11 +33,13 @@ class PermissionRequestImpl : public PermissionRequest {
+@@ -32,11 +32,13 @@ class PermissionRequestImpl : public PermissionRequest {
   private:
    // PermissionRequest:
    IconId GetIconId() const override;
