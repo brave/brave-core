@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index aef519913b5722a9a34d529977108ddc4a81e524..95e1c19b9b702561a80e91158cc4442c17339512 100644
+index 6cf1f8748cab9a9aba1b0843143d6d16389ff7c9..b2248e9ec6bbb02d372b799403f45b3cf5dae78c 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -250,7 +250,7 @@ void ToolbarView::Init() {
- #endif
-   }
-   if (show_avatar_toolbar_button)
--    avatar_ = new AvatarToolbarButton(browser_);
-+    avatar_ = new BraveAvatarToolbarButton(browser_);
+@@ -255,7 +255,7 @@ void ToolbarView::Init() {
  
-   app_menu_button_ = new BrowserAppMenuButton(this);
-   app_menu_button_->EnableCanvasFlippingForRTLUI(true);
+   std::unique_ptr<AvatarToolbarButton> avatar;
+   if (show_avatar_toolbar_button)
+-    avatar = std::make_unique<AvatarToolbarButton>(browser_);
++    avatar = std::make_unique<BraveAvatarToolbarButton>(browser_);
+ 
+   auto app_menu_button = std::make_unique<BrowserAppMenuButton>(this);
+   app_menu_button->EnableCanvasFlippingForRTLUI(true);

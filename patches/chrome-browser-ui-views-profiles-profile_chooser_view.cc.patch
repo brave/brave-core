@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/profiles/profile_chooser_view.cc b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-index 135ba56416678df8a4d687f8609477497868bfb0..87582374dca475029a3f9c6760b2406553b48e57 100644
+index 519d359adef052081e55b2431d18a363cdc12e5a..f7bde017f70536cfda717eaa014c5aab245d089b 100644
 --- a/chrome/browser/ui/views/profiles/profile_chooser_view.cc
 +++ b/chrome/browser/ui/views/profiles/profile_chooser_view.cc
-@@ -838,9 +838,12 @@ void ProfileChooserView::AddOptionsView(bool display_lock,
-       menu_items.push_back(std::move(guest_button));
+@@ -715,9 +715,12 @@ void ProfileChooserView::AddOptionsView(bool display_lock,
+           l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_GUEST_PROFILE_BUTTON));
      }
    }
 +  static_cast<BraveProfileChooserView*>(this)->AddTorButton(&menu_items);
@@ -14,4 +14,4 @@ index 135ba56416678df8a4d687f8609477497868bfb0..87582374dca475029a3f9c6760b24065
 +    text = l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_TOR);
    const gfx::VectorIcon& settings_icon =
        is_guest ? kCloseAllIcon : kSettingsIcon;
-   std::unique_ptr<HoverButton> button = std::make_unique<HoverButton>(
+   users_button_ = CreateAndAddButton(CreateVectorIcon(settings_icon), text);

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/permissions/permission_manager_factory.h b/chrome/browser/permissions/permission_manager_factory.h
-index be4990571b35bbdbd8c464c688d6050c0b9202c9..bce2e4efbcab5e366d8e57abe39ee9e4fd95704e 100644
+index 8b25b70cde3e79d803ddfed253076aa2551c2507..54ec1db8d222b6295f225ae6393853152f8dde46 100644
 --- a/chrome/browser/permissions/permission_manager_factory.h
 +++ b/chrome/browser/permissions/permission_manager_factory.h
 @@ -23,6 +23,7 @@ class PermissionManagerFactory : public BrowserContextKeyedServiceFactory {
