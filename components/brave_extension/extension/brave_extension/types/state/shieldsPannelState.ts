@@ -27,7 +27,6 @@ export interface Tab {
   adsBlockedResources: Array<string>
   trackersBlockedResources: Array<string>
   httpsRedirectedResources: Array<string>
-  javascriptBlockedResources: Array<string>
   fingerprintingBlockedResources: Array<string>
 }
 
@@ -81,16 +80,8 @@ export interface ResetBlockingResources {
   (state: State, tabId: number): State
 }
 
-export interface ChangeNoScriptSettings {
-  (state: State, tabId: number, origin: string): State
-}
-
 export interface ResetNoScriptInfo {
   (state: State, tabId: number, newOrigin: string): State
-}
-
-export interface ChangeAllNoScriptSettings {
-  (state: State, tabId: number, shouldBlock: boolean): State
 }
 
 export interface UpdateShieldsIconBadgeText {
@@ -107,4 +98,8 @@ export interface FocusedWindowChanged {
 }
 export interface RequestDataAndUpdateActiveTab {
   (state: State, windowId: number, tabId: number): State
+}
+
+export interface PersistAllNoScriptSettings {
+  (state: State, tabId: number): State
 }

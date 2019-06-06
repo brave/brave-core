@@ -27,8 +27,10 @@ import {
   BlockFingerprinting,
   BlockCookies,
   AllowScriptOriginsOnce,
-  ChangeNoScriptSettings,
-  ChangeAllNoScriptSettings
+  SetScriptBlockedCurrentState,
+  SetGroupedScriptsBlockedCurrentState,
+  SetAllScriptsBlockedCurrentState,
+  SetFinalScriptsBlockedState
 } from '../types/actions/shieldsPanelActions'
 
 interface Props {
@@ -40,8 +42,10 @@ interface Props {
     blockFingerprinting: BlockFingerprinting
     blockCookies: BlockCookies
     allowScriptOriginsOnce: AllowScriptOriginsOnce
-    changeNoScriptSettings: ChangeNoScriptSettings
-    changeAllNoScriptSettings: ChangeAllNoScriptSettings
+    setScriptBlockedCurrentState: SetScriptBlockedCurrentState
+    setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
+    setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
+    setFinalScriptsBlockedState: SetFinalScriptsBlockedState
   }
   shieldsPanelTabData: Tab
 }
@@ -126,10 +130,12 @@ export default class Shields extends React.PureComponent<Props, State> {
                 javascript={shieldsPanelTabData.javascript}
                 javascriptBlocked={shieldsPanelTabData.javascriptBlocked}
                 noScriptInfo={shieldsPanelTabData.noScriptInfo}
-                changeNoScriptSettings={actions.changeNoScriptSettings}
                 blockJavaScript={actions.blockJavaScript}
-                changeAllNoScriptSettings={actions.changeAllNoScriptSettings}
                 allowScriptOriginsOnce={actions.allowScriptOriginsOnce}
+                setScriptBlockedCurrentState={actions.setScriptBlockedCurrentState}
+                setGroupedScriptsBlockedCurrentState={actions.setGroupedScriptsBlockedCurrentState}
+                setAllScriptsBlockedCurrentState={actions.setAllScriptsBlockedCurrentState}
+                setFinalScriptsBlockedState={actions.setFinalScriptsBlockedState}
                 // Cookies
                 blockCookies={actions.blockCookies}
                 cookies={shieldsPanelTabData.cookies}

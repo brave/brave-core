@@ -1,12 +1,16 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public
-* License, v. 2.0. If a copy of the MPL was not distributed with this file,
-* You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Types
 import * as shieldState from '../types/state/shieldsPannelState'
+
+// Helpers
 import { unique } from '../helpers/arrayUtils'
 import { getTotalResourcesBlocked } from '../helpers/shieldsUtils'
 import { setBadgeText, setIcon } from '../background/api/browserActionAPI'
 import { requestShieldPanelData } from '../background/api/shieldsAPI'
+import { filterNoScriptInfoByWillBlockState } from '../helpers/noScriptUtils'
 
 export const getActiveTabId: shieldState.GetActiveTabId = (state) => state.windows[state.currentWindowId]
 
@@ -54,7 +58,6 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
     adsBlockedResources: [],
     trackersBlockedResources: [],
     httpsRedirectedResources: [],
-    javascriptBlockedResources: [],
     fingerprintingBlockedResources: []
   },
     ...tabs[tabId],
@@ -77,7 +80,6 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
       adsBlockedResources: [],
       trackersBlockedResources: [],
       httpsRedirectedResources: [],
-      javascriptBlockedResources: [],
       fingerprintingBlockedResources: []
     },
     ...tabs[tabId]
@@ -93,46 +95,14 @@ export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, 
     tabs[tabId].httpsRedirectedResources = unique([ ...tabs[tabId].httpsRedirectedResources, subresource ])
     tabs[tabId].httpsRedirected = tabs[tabId].httpsRedirectedResources.length
   } else if (blockType === 'javascript') {
-    const origin = new window.URL(subresource).origin + '/'
     tabs[tabId].noScriptInfo = { ...tabs[tabId].noScriptInfo }
-    tabs[tabId].noScriptInfo[origin] = { ...{ actuallyBlocked: true, willBlock: true } }
-    tabs[tabId].javascriptBlockedResources = unique([ ...tabs[tabId].javascriptBlockedResources, subresource ])
-    tabs[tabId].javascriptBlocked = tabs[tabId].javascriptBlockedResources.length
+    tabs[tabId].noScriptInfo[subresource] = { ...{ actuallyBlocked: true, willBlock: true, userInteracted: false } }
+    tabs[tabId].javascriptBlocked = filterNoScriptInfoByWillBlockState(Object.entries(tabs[tabId].noScriptInfo), true).length
   } else if (blockType === 'fingerprinting') {
     tabs[tabId].fingerprintingBlockedResources = unique([ ...tabs[tabId].fingerprintingBlockedResources, subresource ])
     tabs[tabId].fingerprintingBlocked = tabs[tabId].fingerprintingBlockedResources.length
   }
 
-  return { ...state, tabs }
-}
-
-export const changeNoScriptSettings: shieldState.ChangeNoScriptSettings = (state, tabId, origin) => {
-  const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...{ adsBlocked: 0, trackersBlocked: 0, httpsRedirected: 0, javascriptBlocked: 0, fingerprintingBlocked: 0, noScriptInfo: {} }, ...tabs[tabId] }
-  tabs[tabId].noScriptInfo[origin].willBlock = !tabs[tabId].noScriptInfo[origin].willBlock
-  return { ...state, tabs }
-}
-
-export const resetNoScriptInfo: shieldState.ResetNoScriptInfo = (state, tabId, newOrigin) => {
-  const tabs: shieldState.Tabs = { ...state.tabs }
-  if (newOrigin !== tabs[tabId].origin) { // navigate away
-    tabs[tabId].noScriptInfo = {}
-  }
-  Object.keys(tabs[tabId].noScriptInfo).map(key => {
-    tabs[tabId].noScriptInfo[key].actuallyBlocked = false
-    // only keep entries which users want to allow
-    if (tabs[tabId].noScriptInfo[key].willBlock) {
-      delete tabs[tabId].noScriptInfo[key]
-    }
-  })
-  return { ...state, tabs }
-}
-
-export const changeAllNoScriptSettings: shieldState.ChangeAllNoScriptSettings = (state, tabId, shouldBlock) => {
-  const tabs: shieldState.Tabs = { ...state.tabs }
-  Object.keys(tabs[tabId].noScriptInfo).map(key => {
-    tabs[tabId].noScriptInfo[key].willBlock = shouldBlock
-  })
   return { ...state, tabs }
 }
 
@@ -144,7 +114,7 @@ export const resetBlockingStats: shieldState.ResetBlockingStats = (state, tabId)
 
 export const resetBlockingResources: shieldState.ResetBlockingResources = (state, tabId) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
-  tabs[tabId] = { ...tabs[tabId], ...{ adsBlockedResources: [], trackersBlockedResources: [], httpsRedirectedResources: [], javascriptBlockedResources: [], fingerprintingBlockedResources: [] } }
+  tabs[tabId] = { ...tabs[tabId], ...{ adsBlockedResources: [], trackersBlockedResources: [], httpsRedirectedResources: [], fingerprintingBlockedResources: [] } }
   return { ...state, tabs }
 }
 

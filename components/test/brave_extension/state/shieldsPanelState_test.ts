@@ -2,10 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { State } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
 import * as deepFreeze from 'deep-freeze-node'
 import * as shieldsPanelState from '../../../brave_extension/extension/brave_extension/state/shieldsPanelState'
+import * as noScriptState from '../../../brave_extension/extension/brave_extension/state/noScriptState'
 import * as shieldsAPI from '../../../brave_extension/extension/brave_extension/background/api/shieldsAPI'
-import { State } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
 
 const state: State = deepFreeze({
   currentWindowId: 1,
@@ -251,7 +252,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           3: {
@@ -296,7 +296,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           3: {
@@ -321,7 +320,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           4: {
@@ -346,7 +344,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           }
         },
@@ -386,7 +383,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           3: {
@@ -411,7 +407,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           4: {
@@ -436,7 +431,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           }
         },
@@ -473,7 +467,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           3: {
@@ -498,7 +491,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           4: {
@@ -523,7 +515,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           }
         },
@@ -558,7 +549,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           3: {
@@ -583,7 +573,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           },
           4: {
@@ -608,7 +597,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             trackersBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             fingerprintingBlockedResources: []
           }
         },
@@ -642,7 +630,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [ 'https://test.brave.com' ],
             fingerprintingBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             trackersBlockedResources: []
           },
           3: {
@@ -680,7 +667,6 @@ describe('shieldsPanelState test', () => {
             adsBlockedResources: [],
             fingerprintingBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
             trackersBlockedResources: [ 'https://test.brave.com' ]
           },
           3: {
@@ -715,12 +701,11 @@ describe('shieldsPanelState test', () => {
             javascriptBlocked: 1,
             fingerprintingBlocked: 0,
             noScriptInfo: {
-              'https://test.brave.com/': { actuallyBlocked: true, willBlock: true }
+              'https://test.brave.com': { actuallyBlocked: true, willBlock: true, userInteracted: false }
             },
             adsBlockedResources: [],
             fingerprintingBlockedResources: [],
             httpsRedirectedResources: [],
-            javascriptBlockedResources: [ 'https://test.brave.com' ],
             trackersBlockedResources: []
           },
           3: {
@@ -760,13 +745,12 @@ describe('shieldsPanelState test', () => {
           fingerprintingBlocked: 0,
           url: 'https://brave.com',
           noScriptInfo: {
-            'https://a.com': { actuallyBlocked: true, willBlock: true },
-            'https://b.com': { actuallyBlocked: true, willBlock: false }
+            'https://a.com': { actuallyBlocked: true, willBlock: true, userInteracted: false },
+            'https://b.com': { actuallyBlocked: true, willBlock: false, userInteracted: false }
           },
           adsBlockedResources: [],
           trackersBlockedResources: [],
           httpsRedirectedResources: [],
-          javascriptBlockedResources: [],
           fingerprintingBlockedResources: []
         },
         3: {
@@ -788,13 +772,12 @@ describe('shieldsPanelState test', () => {
           fingerprintingBlocked: 0,
           url: 'https://brave.com',
           noScriptInfo: {
-            'https://a.com': { actuallyBlocked: true, willBlock: true },
-            'https://b.com': { actuallyBlocked: false, willBlock: false }
+            'https://a.com': { actuallyBlocked: true, willBlock: true, userInteracted: false },
+            'https://b.com': { actuallyBlocked: false, willBlock: false, userInteracted: false }
           },
           adsBlockedResources: [],
           trackersBlockedResources: [],
           httpsRedirectedResources: [],
-          javascriptBlockedResources: [],
           fingerprintingBlockedResources: []
         }
       },
@@ -805,7 +788,7 @@ describe('shieldsPanelState test', () => {
     }
     it('reset noScriptInfo for a specific tab without navigating away', () => {
       this.tabId = 2
-      expect(shieldsPanelState.resetNoScriptInfo(
+      expect(noScriptState.resetNoScriptInfo(
         stateWithAllowedScriptOrigins, this.tabId, 'https://brave.com')).toEqual({
           currentWindowId: 1,
           tabs: {
@@ -828,12 +811,21 @@ describe('shieldsPanelState test', () => {
               fingerprintingBlocked: 0,
               url: 'https://brave.com',
               noScriptInfo: {
-                'https://b.com': { actuallyBlocked: false, willBlock: false }
+                'https://a.com': {
+                  actuallyBlocked: true,
+                  userInteracted: false,
+                  willBlock: true
+                },
+                'https://b.com': {
+                  actuallyBlocked: true,
+                  userInteracted: false,
+                  willBlock: false
+                }
               },
               adsBlockedResources: [],
               trackersBlockedResources: [],
               httpsRedirectedResources: [],
-              javascriptBlockedResources: [],
+
               fingerprintingBlockedResources: []
             },
             3: {
@@ -855,13 +847,13 @@ describe('shieldsPanelState test', () => {
               fingerprintingBlocked: 0,
               url: 'https://brave.com',
               noScriptInfo: {
-                'https://a.com': { actuallyBlocked: true, willBlock: true },
-                'https://b.com': { actuallyBlocked: false, willBlock: false }
+                'https://a.com': { actuallyBlocked: true, willBlock: true, userInteracted: false },
+                'https://b.com': { actuallyBlocked: false, willBlock: false, userInteracted: false }
               },
               adsBlockedResources: [],
               trackersBlockedResources: [],
               httpsRedirectedResources: [],
-              javascriptBlockedResources: [],
+
               fingerprintingBlockedResources: []
             }
           },
@@ -873,7 +865,7 @@ describe('shieldsPanelState test', () => {
     })
     it('reset noScriptInfo for a specific tab with navigating away', () => {
       this.tabId = 2
-      expect(shieldsPanelState.resetNoScriptInfo(
+      expect(noScriptState.resetNoScriptInfo(
         stateWithAllowedScriptOrigins, this.tabId, 'https://test.brave.com')).toEqual({
           currentWindowId: 1,
           tabs: {
@@ -899,7 +891,7 @@ describe('shieldsPanelState test', () => {
               adsBlockedResources: [],
               trackersBlockedResources: [],
               httpsRedirectedResources: [],
-              javascriptBlockedResources: [],
+
               fingerprintingBlockedResources: []
             },
             3: {
@@ -921,13 +913,13 @@ describe('shieldsPanelState test', () => {
               fingerprintingBlocked: 0,
               url: 'https://brave.com',
               noScriptInfo: {
-                'https://a.com': { actuallyBlocked: true, willBlock: true },
-                'https://b.com': { actuallyBlocked: false, willBlock: false }
+                'https://a.com': { actuallyBlocked: true, willBlock: true, userInteracted: false },
+                'https://b.com': { actuallyBlocked: false, willBlock: false, userInteracted: false }
               },
               adsBlockedResources: [],
               trackersBlockedResources: [],
               httpsRedirectedResources: [],
-              javascriptBlockedResources: [],
+
               fingerprintingBlockedResources: []
             }
           },

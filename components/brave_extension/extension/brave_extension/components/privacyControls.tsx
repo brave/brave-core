@@ -11,12 +11,14 @@ import DeviceRecognitionControl from './controls/deviceRecognitionControl'
 
 // Types
 import {
-  ChangeNoScriptSettings,
   BlockJavaScript,
-  ChangeAllNoScriptSettings,
   AllowScriptOriginsOnce,
   BlockCookies,
-  BlockFingerprinting
+  BlockFingerprinting,
+  SetScriptBlockedCurrentState,
+  SetGroupedScriptsBlockedCurrentState,
+  SetAllScriptsBlockedCurrentState,
+  SetFinalScriptsBlockedState
 } from '../types/actions/shieldsPanelActions'
 import { BlockCookiesOptions, BlockJSOptions, BlockFPOptions } from '../types/other/blockTypes'
 import { NoScriptInfo } from '../types/other/noScriptInfo'
@@ -32,10 +34,12 @@ interface JavaScriptProps {
   javascript: BlockJSOptions
   javascriptBlocked: number
   noScriptInfo: NoScriptInfo
-  changeNoScriptSettings: ChangeNoScriptSettings
   blockJavaScript: BlockJavaScript
-  changeAllNoScriptSettings: ChangeAllNoScriptSettings
   allowScriptOriginsOnce: AllowScriptOriginsOnce
+  setScriptBlockedCurrentState: SetScriptBlockedCurrentState
+  setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
+  setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
+  setFinalScriptsBlockedState: SetFinalScriptsBlockedState
 }
 
 interface CookiesProps {
@@ -66,10 +70,12 @@ export default class PrivacyControls extends React.PureComponent<Props, {}> {
           javascript={this.props.javascript}
           javascriptBlocked={this.props.javascriptBlocked}
           noScriptInfo={this.props.noScriptInfo}
-          changeNoScriptSettings={this.props.changeNoScriptSettings}
           blockJavaScript={this.props.blockJavaScript}
-          changeAllNoScriptSettings={this.props.changeAllNoScriptSettings}
           allowScriptOriginsOnce={this.props.allowScriptOriginsOnce}
+          setScriptBlockedCurrentState={this.props.setScriptBlockedCurrentState}
+          setGroupedScriptsBlockedCurrentState={this.props.setGroupedScriptsBlockedCurrentState}
+          setAllScriptsBlockedCurrentState={this.props.setAllScriptsBlockedCurrentState}
+          setFinalScriptsBlockedState={this.props.setFinalScriptsBlockedState}
         />
         <CookiesControl
           isBlockedListOpen={this.props.isBlockedListOpen}
