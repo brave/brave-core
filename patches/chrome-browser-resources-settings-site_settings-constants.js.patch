@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/site_settings/constants.js b/chrome/browser/resources/settings/site_settings/constants.js
-index ec53175735016ab858311a19ab9c298a955ac2b0..cff76e9219f90e562b7b7af70ee8e3c198cb47b4 100644
+index 909b06ff3b4b674ac764761b8b186ada5294ebb3..17dd8f7df57add6c9c62cfe86cc0cd5d64dfabfe 100644
 --- a/chrome/browser/resources/settings/site_settings/constants.js
 +++ b/chrome/browser/resources/settings/site_settings/constants.js
 @@ -35,6 +35,7 @@ settings.ContentSettingsTypes = {
@@ -8,5 +8,5 @@ index ec53175735016ab858311a19ab9c298a955ac2b0..cff76e9219f90e562b7b7af70ee8e3c1
    SENSORS: 'sensors',
 +  AUTOPLAY: 'autoplay',
    PAYMENT_HANDLER: 'payment-handler',
+   BLUETOOTH_SCANNING: 'bluetooth-scanning',
  };
- 

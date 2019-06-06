@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
-index 278ecb99344ca92a8c60f9d9e73a0d25ec9c8b8c..5c6d062f4e9f0141955a10b0e50c6fab019bf6e0 100644
+index 8eb6db6927895617ed92587d62d5c3b5f9ff90bf..4220d89dd46d4eeffbd31414baa9a856b8d16790 100644
 --- a/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
 +++ b/chrome/browser/resources/settings/site_settings_page/site_settings_page.js
-@@ -113,7 +113,9 @@ Polymer({
+@@ -121,7 +121,9 @@ Polymer({
        [R.SITE_SETTINGS_UNSANDBOXED_PLUGINS, 'unsandboxed-plugins'],
        [R.SITE_SETTINGS_HANDLERS, 'protocol-handlers'],
        [R.SITE_SETTINGS_MIDI_DEVICES, 'midi-devices'],
