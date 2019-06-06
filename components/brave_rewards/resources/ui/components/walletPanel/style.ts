@@ -123,3 +123,7 @@ export const StyledSelect = styled<StyleProps, 'select'>('select')`
     outline: 0;
   }
 `
+
+export const StyledOptionShown = styled<{}, 'option'>('option')`
+  display: none;
+`
