@@ -90,7 +90,8 @@ open class Site: Identifiable, Hashable {
 
     // This hash is a bit limited in scope, but contains enough data to make a unique distinction.
     //  If modified, verify usage elsewhere, as places may rely on the hash only including these two elements.
-    open var hashValue: Int {
-        return 31 &* self.url.hash &+ self.title.hash
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(url)
+        hasher.combine(title)
     }
 }
