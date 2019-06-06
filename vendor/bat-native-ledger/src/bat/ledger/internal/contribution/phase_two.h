@@ -43,6 +43,15 @@ class PhaseTwo {
  private:
   unsigned int GetBallotsCount(const std::string& viewing_id);
 
+  bool GetStatisticalVotingWinner(
+      double dart,
+      const braveledger_bat_helper::PublisherList& list,
+      braveledger_bat_helper::WINNERS_ST* winner);
+
+  braveledger_bat_helper::Winners GetStatisticalVotingWinners(
+      uint32_t total_votes,
+      const braveledger_bat_helper::PublisherList& list);
+
   void GetContributeWinners(const unsigned int ballots,
                             const std::string& viewing_id,
                             const braveledger_bat_helper::PublisherList& list);
@@ -85,6 +94,10 @@ class PhaseTwo {
   Contribution* contribution_;   // NOT OWNED
   uint32_t last_prepare_vote_batch_timer_id_;
   uint32_t last_vote_batch_timer_id_;
+
+  // For testing purposes
+  friend class ContributionTest;
+  FRIEND_TEST_ALL_PREFIXES(ContributionTest, GetStatisticalVotingWinners);
 };
 
 }  // namespace braveledger_contribution

@@ -247,8 +247,15 @@ struct PUBLISHER_ST {
   uint64_t duration_ = 0u;
   double score_ = .0;
   unsigned int visits_ = 0;
+
+  // The mathematically rounded publisher voting weight, as described
+  // below.
   unsigned int percent_ = 0;
+
+  // The exact weight to use when calculating the number of votes to
+  // cast for each publisher.
   double weight_ = .0;
+
   bool verified_ = false;
 };
 
