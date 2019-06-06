@@ -98,9 +98,6 @@ class SettingsViewController: TableViewController {
     override func viewDidLoad() {
         
         navigationItem.title = Strings.Settings
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: Strings.Done, style: .done, target: self, action: #selector(tappedDone))
-        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "SettingsViewController.navigationItem.rightBarButtonItem"
-        navigationItem.rightBarButtonItem?.tintColor = BraveUX.BraveOrange
         
         tableView.accessibilityIdentifier = "SettingsViewController.tableView"
         tableView.separatorColor = UIConstants.TableViewSeparatorColor
@@ -126,10 +123,6 @@ class SettingsViewController: TableViewController {
         }
 
         return list
-    }
-    
-    @objc private func tappedDone() {
-        settingsDelegate?.settingsDidFinish(self)
     }
     
     // MARK: - Sections

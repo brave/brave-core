@@ -36,7 +36,6 @@ class FavoritesViewControllerTests: XCTestCase {
         let viewController = FavoritesViewController(profile: MockProfile(), dataSource: MockFavoritesDataSource())
         XCTAssertNotNil(viewController.view, "Unable to load view")
         XCTAssertNotNil(viewController.view.subviews.first { $0 is UICollectionView }, "`UICollectionView` missing from `FavoritesViewController` view.")
-        XCTAssertNil(viewController.linkNavigationDelegate)
         XCTAssertNil(viewController.delegate)
     }
 

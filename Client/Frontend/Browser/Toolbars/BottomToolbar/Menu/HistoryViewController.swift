@@ -15,15 +15,15 @@ private struct HistoryViewControllerUX {
   static let WelcomeScreenItemWidth = 170
 }
 
-class HistoryViewController: SiteTableViewController {
-  weak var linkNavigationDelegate: LinkNavigationDelegate?
+class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol {
+  weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
   fileprivate lazy var emptyStateOverlayView: UIView = self.createEmptyStateOverview()
   var frc: NSFetchedResultsController<History>?
   
-  let tabState: TabState
+    let isPrivateBrowsing: Bool
   
-  init(tabState: TabState) {
-    self.tabState = tabState
+  init(isPrivateBrowsing: Bool) {
+    self.isPrivateBrowsing = isPrivateBrowsing
     
     super.init(nibName: nil, bundle: nil)
     
@@ -43,6 +43,7 @@ class HistoryViewController: SiteTableViewController {
     frc!.delegate = self
     super.viewDidLoad()
     self.tableView.accessibilityIdentifier = "History List"
+    title = Strings.HistoryScreenTitle
     
     reloadData()
   }
@@ -129,10 +130,23 @@ class HistoryViewController: SiteTableViewController {
     let site = frc?.object(at: indexPath)
     
     if let u = site?.url, let url = URL(string: u) {
-      linkNavigationDelegate?.linkNavigatorDidSelectURL(url: url, visitType: .typed)
+        dismiss(animated: true) {
+            self.toolbarUrlActionsDelegate?.select(url: url, visitType: .typed)
+        }
     }
     tableView.deselectRow(at: indexPath, animated: true)
   }
+    
+    @objc private func longPressedCell(_ gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began,
+            let cell = gesture.view as? UITableViewCell,
+            let indexPath = tableView.indexPath(for: cell),
+            let urlString = frc?.object(at: indexPath).url else {
+                return
+        }
+        
+        presentLongPressActions(gesture, urlString: urlString, isPrivateBrowsing: isPrivateBrowsing)
+    }
   
   func numberOfSections(in tableView: UITableView) -> Int {
     return frc?.sections?.count ?? 0
@@ -206,66 +220,5 @@ extension HistoryViewController: NSFetchedResultsControllerDelegate {
       }
     }
     updateEmptyPanelState()
-  }
-}
-
-private let ActionSheetTitleMaxLength = 120
-
-extension HistoryViewController {
-  
-  @objc private func longPressedCell(_ gesture: UILongPressGestureRecognizer) {
-    guard gesture.state == .began,
-      let cell = gesture.view as? UITableViewCell,
-      let indexPath = tableView.indexPath(for: cell),
-      let history = frc?.object(at: indexPath) else {
-        return
-    }
-    
-    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-    
-    alert.title = history.url?.replacingOccurrences(of: "mailto:", with: "").ellipsize(maxLength: ActionSheetTitleMaxLength)
-    actionsForHistory(history, currentTabIsPrivate: tabState.type.isPrivate).forEach { alert.addAction($0) }
-    
-    let cancelAction = UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil)
-    alert.addAction(cancelAction)
-    
-    // If we're showing an arrow popup, set the anchor to the long press location.
-    if let popoverPresentationController = alert.popoverPresentationController {
-      popoverPresentationController.sourceView = view
-      popoverPresentationController.sourceRect = CGRect(origin: gesture.location(in: view), size: CGSize(width: 0, height: 16))
-      popoverPresentationController.permittedArrowDirections = .any
-    }
-    
-    present(alert, animated: true)
-  }
-  
-  private func actionsForHistory(_ history: History, currentTabIsPrivate: Bool) -> [UIAlertAction] {
-    guard let urlString = history.url, let url = URL(string: urlString) else { return [] }
-    
-    var items: [UIAlertAction] = []
-    // New Tab
-    items.append(UIAlertAction(title: Strings.OpenNewTabButtonTitle, style: .default, handler: { [weak self] _ in
-      guard let `self` = self else { return }
-      self.linkNavigationDelegate?.linkNavigatorDidRequestToOpenInNewTab(url, isPrivate: currentTabIsPrivate)
-    }))
-    if !currentTabIsPrivate {
-      // New Private Tab
-      items.append(UIAlertAction(title: Strings.OpenNewPrivateTabButtonTitle, style: .default, handler: { [weak self] _ in
-        guard let `self` = self else { return }
-        self.linkNavigationDelegate?.linkNavigatorDidRequestToOpenInNewTab(url, isPrivate: true)
-      }))
-    }
-    // Copy
-    items.append(UIAlertAction(title: Strings.CopyLinkActionTitle, style: .default, handler: { [weak self] _ in
-      guard let `self` = self else { return }
-      self.linkNavigationDelegate?.linkNavigatorDidRequestToCopyURL(url)
-    }))
-    // Share
-    items.append(UIAlertAction(title: Strings.ShareLinkActionTitle, style: .default, handler: { [weak self] _ in
-      guard let `self` = self else { return }
-      self.linkNavigationDelegate?.linkNavigatorDidRequestToShareURL(url)
-    }))
-    
-    return items
   }
 }
