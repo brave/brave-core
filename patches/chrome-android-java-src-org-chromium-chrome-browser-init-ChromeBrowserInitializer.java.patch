@@ -1,15 +1,15 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/init/ChromeBrowserInitializer.java b/chrome/android/java/src/org/chromium/chrome/browser/init/ChromeBrowserInitializer.java
-index 5380ce0f0b8203e52875d3128c9da0b6cdee4090..df1c77febbd09c7aa11fe4d933ac7a0f0d20e26b 100644
+index 613a6001b1be5e308a1d8d00bef997b436e3b7e4..985b9182ecf3f7bb9424716642fe0dee9be78ae3 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/init/ChromeBrowserInitializer.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/init/ChromeBrowserInitializer.java
-@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.ChromeSwitches;
+@@ -37,6 +37,7 @@ import org.chromium.chrome.browser.ChromeSwitches;
  import org.chromium.chrome.browser.FileProviderHelper;
  import org.chromium.chrome.browser.crash.LogcatExtractionRunnable;
  import org.chromium.chrome.browser.download.DownloadManagerService;
 +import org.chromium.chrome.browser.init.BraveBrowserInitializer;
  import org.chromium.chrome.browser.services.GoogleServicesManager;
- import org.chromium.chrome.browser.tabmodel.document.DocumentTabModelImpl;
  import org.chromium.chrome.browser.webapps.ActivityAssigner;
+ import org.chromium.chrome.browser.webapps.ChromeWebApkHost;
 @@ -92,7 +93,7 @@ public class ChromeBrowserInitializer {
       */
      public static ChromeBrowserInitializer getInstance() {

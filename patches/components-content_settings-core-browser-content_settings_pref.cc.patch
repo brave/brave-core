@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_pref.cc b/components/content_settings/core/browser/content_settings_pref.cc
-index 4f46fabd1e1ea5e34a5b3b4b05c5b30f5427431b..525a08702c2ded5941b01e64afa4422a8af88f4f 100644
+index 0efa391e8e477b86e16cccef26e36e861f900cec..e60a8cf62c00462bdaa5c2cfbd078869c80cc895 100644
 --- a/components/content_settings/core/browser/content_settings_pref.cc
 +++ b/components/content_settings/core/browser/content_settings_pref.cc
 @@ -87,7 +87,7 @@ ContentSettingsPref::ContentSettingsPref(

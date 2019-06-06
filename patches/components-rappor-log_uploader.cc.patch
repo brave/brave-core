@@ -1,8 +1,8 @@
 diff --git a/components/rappor/log_uploader.cc b/components/rappor/log_uploader.cc
-index cee35a966d821f98453ec185a8209b062ad51593..0a7a2c2656fea1068c7d6196b04aa6b8dedd94e6 100644
+index 4c42c52880ae1c289a6cc52839ad459756e04bac..3645a0e8fc6a92662ecac3f75b6ade08069bee60 100644
 --- a/components/rappor/log_uploader.cc
 +++ b/components/rappor/log_uploader.cc
-@@ -69,6 +69,7 @@ LogUploader::LogUploader(
+@@ -68,6 +68,7 @@ LogUploader::LogUploader(
  LogUploader::~LogUploader() {}
  
  void LogUploader::Start() {
