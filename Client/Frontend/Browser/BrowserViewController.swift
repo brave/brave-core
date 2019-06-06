@@ -47,7 +47,7 @@ class BrowserViewController: UIViewController {
     var readerModeBar: ReaderModeBarView?
     var readerModeCache: ReaderModeCache
     var statusBarOverlay: UIView!
-    fileprivate(set) var toolbar: TabToolbar?
+    fileprivate(set) var toolbar: BottomToolbarView?
     var searchController: SearchViewController?
     fileprivate var screenshotHelper: ScreenshotHelper!
     fileprivate var homePanelIsInline = false
@@ -109,7 +109,7 @@ class BrowserViewController: UIViewController {
     // TODO: weak references?
     var ignoredNavigation = Set<WKNavigation>()
     var typedNavigation = [WKNavigation: VisitType]()
-    var navigationToolbar: TabToolbarProtocol {
+    var navigationToolbar: ToolbarProtocol {
         return toolbar ?? urlBar
     }
     
@@ -221,7 +221,7 @@ class BrowserViewController: UIViewController {
         toolbar = nil
 
         if showToolbar {
-            toolbar = TabToolbar()
+            toolbar = BottomToolbarView()
             footer.addSubview(toolbar!)
             toolbar?.tabToolbarDelegate = self
 
@@ -1437,13 +1437,6 @@ extension BrowserViewController: URLBarDelegate {
         tabManager.selectedTab?.reload()
     }
     
-    func urlBarDidPressQRButton(_ urlBar: URLBarView) {
-        let qrCodeViewController = QRCodeViewController()
-        qrCodeViewController.qrCodeDelegate = self
-        let controller = QRCodeNavigationController(rootViewController: qrCodeViewController)
-        self.present(controller, animated: true, completion: nil)
-    }
-    
     func urlBarDidPressStop(_ urlBar: URLBarView) {
         tabManager.selectedTab?.stop()
     }
@@ -1649,38 +1642,34 @@ extension BrowserViewController: URLBarDelegate {
     }
     
     func urlBarDidTapMenuButton(_ urlBar: URLBarView) {
-        guard let selectedTab = tabManager.selectedTab else { return }
-        
-        let homePanel = HomeMenuController(profile: profile, tabState: selectedTab.tabState)
-        homePanel.preferredContentSize = CGSize(width: PopoverController.preferredPopoverWidth, height: 600.0)
-        homePanel.delegate = self
+        let homePanel = MenuViewController(bvc: self, tab: tabManager.selectedTab)
         let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
         popover.present(from: urlBar.menuButton, on: self)
     }
 }
 
-extension BrowserViewController: TabToolbarDelegate {
-    func tabToolbarDidPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+extension BrowserViewController: ToolbarDelegate {
+    func tabToolbarDidPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         tabManager.selectedTab?.goBack()
     }
 
-    func tabToolbarDidLongPressBack(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+    func tabToolbarDidLongPressBack(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
         showBackForwardList()
     }
     
-    func tabToolbarDidPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+    func tabToolbarDidPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         tabManager.selectedTab?.goForward()
     }
     
-    func tabToolbarDidPressShare(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+    func tabToolbarDidPressShare() {
         func share(url: URL) {
             presentActivityViewController(
                 url,
                 tab: url.isFileURL ? nil : tabManager.selectedTab,
                 sourceView: view,
-                sourceRect: view.convert(urlBar.shareButton.frame, from: urlBar.shareButton.superview),
+                sourceRect: view.convert(urlBar.menuButton.frame, from: urlBar.menuButton.superview),
                 arrowDirection: [.up]
             )
         }
@@ -1702,11 +1691,17 @@ extension BrowserViewController: TabToolbarDelegate {
         }
     }
     
-    func tabToolbarDidPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+    func tabToolbarDidPressMenu(_ tabToolbar: ToolbarProtocol, button: UIButton) {
+        let homePanel = MenuViewController(bvc: self, tab: tabManager.selectedTab)
+        let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
+        popover.present(from: tabToolbar.menuButton, on: self)
+    }
+    
+    func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         self.openBlankNewTab(focusLocationField: true, isPrivate: PrivateBrowsingManager.shared.isPrivateBrowsing)
     }
 
-    func tabToolbarDidLongPressAddTab(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+    func tabToolbarDidLongPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         showAddTabContextMenu(sourceView: toolbar ?? urlBar, button: button)
     }
     
@@ -1737,17 +1732,17 @@ extension BrowserViewController: TabToolbarDelegate {
         present(alertController, animated: true)
     }
     
-    func tabToolbarDidLongPressForward(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+    func tabToolbarDidLongPressForward(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         let generator = UIImpactFeedbackGenerator(style: .heavy)
         generator.impactOccurred()
         showBackForwardList()
     }
 
-    func tabToolbarDidPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+    func tabToolbarDidPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         showTabTray()
     }
     
-    func tabToolbarDidLongPressTabs(_ tabToolbar: TabToolbarProtocol, button: UIButton) {
+    func tabToolbarDidLongPressTabs(_ tabToolbar: ToolbarProtocol, button: UIButton) {
         guard self.presentedViewController == nil else {
             return
         }
@@ -1787,7 +1782,7 @@ extension BrowserViewController: TabToolbarDelegate {
         }
     }
     
-    func tabToolbarDidSwipeToChangeTabs(_ tabToolbar: TabToolbarProtocol, direction: UISwipeGestureRecognizer.Direction) {
+    func tabToolbarDidSwipeToChangeTabs(_ tabToolbar: ToolbarProtocol, direction: UISwipeGestureRecognizer.Direction) {
         let tabs = tabManager.tabsForCurrentMode
         guard let selectedTab = tabManager.selectedTab, let index = tabs.firstIndex(where: { $0 === selectedTab }) else { return }
         let newTabIndex = index + (direction == .left ? -1 : 1)
@@ -2833,35 +2828,48 @@ extension BrowserViewController: JSPromptAlertControllerDelegate {
     }
 }
 
-extension BrowserViewController: HomeMenuControllerDelegate {
-    
-    func menuDidOpenSettings(_ menu: HomeMenuController) {
-        menu.dismiss(animated: true) { [weak self] in
-            guard let `self` = self else { return }
-            let settingsController = SettingsViewController(profile: self.profile, tabManager: self.tabManager)
-            settingsController.settingsDelegate = self
-            let container = SettingsNavigationController(rootViewController: settingsController)
-            container.modalPresentationStyle = .formSheet
-            self.present(container, animated: true)
-        }
+extension BrowserViewController: ToolbarUrlActionsDelegate {
+    /// The types of actions a user can do in the menu given a URL
+    private enum ToolbarURLAction {
+        case openInCurrentTab
+        case openInNewTab(isPrivate: Bool)
+        case copy
+        case share
     }
     
-    func menuDidSelectURL(_ menu: HomeMenuController, url: URL, visitType: VisitType, action: MenuURLAction) {
+    func openInNewTab(_ url: URL, isPrivate: Bool) {
+        select(url, visitType: .unknown, action: .openInNewTab(isPrivate: isPrivate))
+    }
+    
+    func copy(_ url: URL) {
+        select(url, visitType: .unknown, action: .copy)
+    }
+    
+    func share(_ url: URL) {
+        select(url, visitType: .unknown, action: .share)
+    }
+    
+    func batchOpen(_ urls: [URL]) {
+        let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
+        self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
+    }
+    
+    func select(url: URL, visitType: VisitType) {
+        select(url, visitType: visitType, action: .openInCurrentTab)
+    }
+    
+    private func select(_ url: URL, visitType: VisitType, action: ToolbarURLAction) {
         switch action {
         case .openInCurrentTab:
-            menu.dismiss(animated: true)
             finishEditingAndSubmit(url, visitType: visitType)
-            
         case .openInNewTab(let isPrivate):
-            menu.dismiss(animated: true)
-            
-            let tab = self.tabManager.addTab(PrivilegedRequest(url: url) as URLRequest, afterTab: self.tabManager.selectedTab, isPrivate: isPrivate)
+            let tab = tabManager.addTab(PrivilegedRequest(url: url) as URLRequest, afterTab: tabManager.selectedTab, isPrivate: isPrivate)
             if isPrivate && !PrivateBrowsingManager.shared.isPrivateBrowsing {
-                self.tabManager.selectTab(tab)
+                tabManager.selectTab(tab)
             } else {
                 // If we are showing toptabs a user can just use the top tab bar
                 // If in overlay mode switching doesnt correctly dismiss the homepanels
-                guard !self.urlBar.inOverlayMode else {
+                guard !urlBar.inOverlayMode else {
                     return
                 }
                 // We're not showing the top tabs; show a toast to quick switch to the fresh new tab.
@@ -2870,27 +2878,18 @@ extension BrowserViewController: HomeMenuControllerDelegate {
                         self.tabManager.selectTab(tab)
                     }
                 })
-                self.show(toast: toast)
+                show(toast: toast)
             }
-            
         case .copy:
             UIPasteboard.general.url = url
         case .share:
-            menu.dismiss(animated: true) {
-                self.presentActivityViewController(
-                    url,
-                    sourceView: self.view,
-                    sourceRect: self.view.convert(self.urlBar.shareButton.frame, from: self.urlBar.shareButton.superview),
-                    arrowDirection: [.up]
-                )
-            }
+            presentActivityViewController(
+                url,
+                sourceView: view,
+                sourceRect: view.convert(urlBar.shareButton.frame, from: urlBar.shareButton.superview),
+                arrowDirection: [.up]
+            )
         }
-    }
-    
-    func menuDidBatchOpenURLs(_ menu: HomeMenuController, urls: [URL]) {
-        menu.dismiss(animated: true)
-        let tabIsPrivate = TabType.of(tabManager.selectedTab).isPrivate
-        self.tabManager.addTabsForURLs(urls, zombie: false, isPrivate: tabIsPrivate)
     }
 }
 
