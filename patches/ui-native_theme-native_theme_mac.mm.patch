@@ -1,16 +1,16 @@
 diff --git a/ui/native_theme/native_theme_mac.mm b/ui/native_theme/native_theme_mac.mm
-index 6246830e9316d0af911762a06709076cc7688fb9..132c8bb334be6442fba45d92ea633808ff84af00 100644
+index 9881259e8a9650e22a7d3a7a82af0598e0da299e..6ce5d0a97f8a88603a074aa39591b97aadd61e07 100644
 --- a/ui/native_theme/native_theme_mac.mm
 +++ b/ui/native_theme/native_theme_mac.mm
-@@ -323,7 +323,11 @@ void NativeThemeMac::UpdateDarkModeStatus() {
-   bool was_dark_mode = is_dark_mode_;
-   is_dark_mode_ = IsDarkMode();
-   if (was_dark_mode != is_dark_mode_)
+@@ -304,7 +304,11 @@ void NativeThemeMac::InitializeDarkModeStateAndObserver() {
+   appearance_observer_.reset(
+       [[NativeThemeEffectiveAppearanceObserver alloc] initWithHandler:^{
+         theme->set_dark_mode(IsDarkMode());
 +#if defined(BRAVE_CHROMIUM_BUILD)
-+    NotifyProperThemeObserver();
++        NotifyProperThemeObserver();
 +#else
-     NotifyObservers();
+         theme->NotifyObservers();
 +#endif
+       }]);
  }
  
- }  // namespace ui

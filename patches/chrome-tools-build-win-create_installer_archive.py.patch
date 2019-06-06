@@ -1,8 +1,8 @@
 diff --git a/chrome/tools/build/win/create_installer_archive.py b/chrome/tools/build/win/create_installer_archive.py
-index b16b16bdc439014bf647f80ca9b7ce8215cfbb6c..cbe2de456427ec4ac1c9073f5b124dc36394281a 100755
+index 61759912c424de8b3a1d92a7f9bf4456ca3f02e1..c3b6b5776d311bb912f724a47484963fc19ce8f8 100755
 --- a/chrome/tools/build/win/create_installer_archive.py
 +++ b/chrome/tools/build/win/create_installer_archive.py
-@@ -112,6 +112,71 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
+@@ -111,6 +111,71 @@ def CopyAllFilesToStagingDir(config, distribution, staging_dir, build_dir,
    if enable_hidpi == '1':
      CopySectionFilesToStagingDir(config, 'HIDPI', staging_dir, build_dir)
  
@@ -74,7 +74,7 @@ index b16b16bdc439014bf647f80ca9b7ce8215cfbb6c..cbe2de456427ec4ac1c9073f5b124dc3
  
  def CopySectionFilesToStagingDir(config, section, staging_dir, src_dir):
    """Copies installer archive files specified in section from src_dir to
-@@ -531,6 +596,11 @@ def main(options):
+@@ -530,6 +595,11 @@ def main(options):
      version_numbers = prev_version.split('.')
      prev_build_number = version_numbers[2] + '.' + version_numbers[3]
  
@@ -86,7 +86,7 @@ index b16b16bdc439014bf647f80ca9b7ce8215cfbb6c..cbe2de456427ec4ac1c9073f5b124dc3
    # Name of the archive file built (for example - chrome.7z or
    # patch-<old_version>-<new_version>.7z or patch-<new_version>.7z
    archive_file = CreateArchiveFile(options, staging_dir,
-@@ -599,6 +669,7 @@ def _ParseOptions():
+@@ -598,6 +668,7 @@ def _ParseOptions():
             'with the installer archive {x86|x64}.')
    parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                      default=False)

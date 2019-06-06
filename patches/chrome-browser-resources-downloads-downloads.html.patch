@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/downloads/downloads.html b/chrome/browser/resources/downloads/downloads.html
-index dcb81efa7c7e18d410a35e451d747060c496462f..a6ed97244e6b1af5b5fe485e58ae6e1ecc24ba90 100644
+index 05a625d0f349264f13bd98fff32984db56aadd2c..1ad650ef5011f79ebf6591ade055338a51a791d1 100644
 --- a/chrome/browser/resources/downloads/downloads.html
 +++ b/chrome/browser/resources/downloads/downloads.html
-@@ -5,6 +5,7 @@
-   <meta charset="utf-8">
+@@ -8,6 +8,7 @@
+ </if>
    <title>$i18n{title}</title>
    <link rel="stylesheet" href="chrome://resources/css/md_colors.css">
 +  <link rel="stylesheet" href="chrome://brave-resources/page_specific/downloads/downloads_loading_shim.css">
