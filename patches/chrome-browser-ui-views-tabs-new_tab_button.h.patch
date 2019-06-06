@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/views/tabs/new_tab_button.h b/chrome/browser/ui/views/tabs/new_tab_button.h
-index 344125c7e95ae25066ce350dc482ab56ff12c1b0..18ff6f4f868a4e47882f9fb7e3177cd745678731 100644
+index 211faf82c09c44ead799881d21c0ea22912a0620..08361bf1463eb75727fdb4062f25d83d392674d2 100644
 --- a/chrome/browser/ui/views/tabs/new_tab_button.h
 +++ b/chrome/browser/ui/views/tabs/new_tab_button.h
-@@ -60,6 +60,7 @@ class NewTabButton : public views::ImageButton,
-   FeaturePromoBubbleView* new_tab_promo() { return new_tab_promo_; }
+@@ -72,6 +72,7 @@ class NewTabButton : public views::ImageButton,
+   void RemoveLayerBeneathView(ui::Layer* old_layer) override;
  
   private:
 +  friend class BraveNewTabButton;
  // views::ImageButton:
  #if defined(OS_WIN)
    void OnMouseReleased(const ui::MouseEvent& event) override;
-@@ -83,12 +84,14 @@ class NewTabButton : public views::ImageButton,
+@@ -95,12 +96,14 @@ class NewTabButton : public views::ImageButton,
    void PaintFill(gfx::Canvas* canvas) const;
  
    // Paints a properly sized plus (+) icon into the center of the button.

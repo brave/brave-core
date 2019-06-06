@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index 6c8e21f6f5fe6b4872894a3be2723003d7bbd893..0c364889f9ffba745a6f8a884cbbdde581e4a50e 100644
+index 95a7bd8e8b581c6addec8b33880b2c03040f713a..b7037dd80a29bbd64a8ed66d4d01e585df589eed 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
-@@ -203,6 +203,7 @@ class BrowserProcessImpl : public BrowserProcess,
+@@ -206,6 +206,7 @@ class BrowserProcessImpl : public BrowserProcess,
    static void RegisterPrefs(PrefRegistrySimple* registry);
  
   private:
