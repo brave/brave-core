@@ -18,7 +18,8 @@ BatGetMedia::BatGetMedia(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
   media_youtube_(new braveledger_media::MediaYouTube(ledger)),
   media_twitch_(new braveledger_media::MediaTwitch(ledger)),
-  media_twitter_(new braveledger_media::MediaTwitter(ledger)) {
+  media_twitter_(new braveledger_media::MediaTwitter(ledger)),
+  media_reddit_(new braveledger_media::MediaReddit(ledger)) {
 }
 
 BatGetMedia::~BatGetMedia() {}
@@ -70,6 +71,8 @@ void BatGetMedia::GetMediaActivityFromUrl(
   } else if (type == TWITTER_MEDIA_TYPE) {
     media_twitter_->ProcessActivityFromUrl(window_id,
                                            visit_data);
+  } else if (type == REDDIT_MEDIA_TYPE) {
+    media_reddit_->ProcessActivityFromUrl(window_id, visit_data);
   } else {
     OnMediaActivityError(visit_data, type, window_id);
   }
