@@ -112,6 +112,7 @@ BraveNetworkDelegateBase::~BraveNetworkDelegateBase() {}
 
 void BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI() {
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+#if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   PrefService* prefs = g_browser_process->local_state();
   pref_change_registrar_.reset(new PrefChangeRegistrar());
   pref_change_registrar_->Init(prefs);
@@ -121,6 +122,7 @@ void BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI() {
                  base::Unretained(this)));
   // Retrieve current referral headers, if any.
   OnReferralHeadersChanged();
+#endif
 
   PrefService* user_prefs = ProfileManager::GetActiveUserProfile()->GetPrefs();
   user_pref_change_registrar_.reset(new PrefChangeRegistrar());
