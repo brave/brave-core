@@ -1,12 +1,12 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 02f17d2b4e93d27964fe6663c4feddccc9634619..6580087f7bdd344d7e4d00464a9224e99cc888f7 100644
+index 02f17d2b4e93d27964fe6663c4feddccc9634619..20e2acaead9c49ad98da3b17f92e5097e27b63b8 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
 @@ -2,6 +2,7 @@
  # Use of this source code is governed by a BSD-style license that can be
  # found in the LICENSE file.
  
-+import("//brave/android/brave_java_sources.gni")
++import("//brave/build/android/config.gni")
  import("//build/config/android/config.gni")
  import("//build/config/android/rules.gni")
  import("//build/config/python.gni")
@@ -19,12 +19,11 @@ index 02f17d2b4e93d27964fe6663c4feddccc9634619..6580087f7bdd344d7e4d00464a9224e9
  test_manifest_package = "org.chromium.chrome.tests"
  
  chrome_public_jinja_variables = default_chrome_public_jinja_variables +
-@@ -412,7 +413,7 @@ android_library("chrome_java") {
-   android_manifest_for_lint = chrome_public_android_manifest
- 
-   # From java_sources.gni.
--  java_files = chrome_java_sources + [
-+  java_files = chrome_java_sources + brave_java_sources + [
+@@ -416,6 +417,7 @@ android_library("chrome_java") {
                   app_hooks_impl,
                   _chrome_version_java_file,
                 ]
++  java_files += brave_java_sources
+ 
+   # Include sources from feed_java_sources.gni.
+   java_files += feed_java_sources
