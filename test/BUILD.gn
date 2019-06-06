@@ -8,7 +8,8 @@ import("//third_party/widevine/cdm/widevine.gni")
 group("fix_brave_test_install_name") {
   testonly = true
   deps = [
-    "//brave/vendor/challenge_bypass_ristretto_ffi:test_install_name"
+    "//brave/vendor/challenge_bypass_ristretto_ffi:test_install_name",
+    "//brave/vendor/adblock_rust_ffi:test_adblock_install_name"
   ]
 }
 

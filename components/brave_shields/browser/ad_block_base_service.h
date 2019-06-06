@@ -43,6 +43,7 @@ class AdBlockBaseService : public BaseBraveShieldsService {
     const std::string& tab_host, bool* did_match_exception,
     bool* cancel_request_explicitly) override;
   void EnableTag(const std::string& tag, bool enabled);
+  bool TagExists(const std::string& tag);
 
  protected:
   friend class ::AdBlockServiceTest;
@@ -50,8 +51,8 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   void Cleanup() override;
 
   void GetDATFileData(const base::FilePath& dat_file_path);
-
-  adblock::Engine* GetAdBlockClientForTest();
+  void AddKnownTagsToAdBlockInstance();
+  void ResetForTest(const std::string& rules);
 
   SEQUENCE_CHECKER(sequence_checker_);
   std::unique_ptr<adblock::Engine> ad_block_client_;

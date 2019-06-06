@@ -182,6 +182,10 @@ void AdBlockBaseService::EnableTagOnIOThread(
   }
 }
 
+bool AdBlockBaseService::TagExists(const std::string& tag) {
+  return std::find(tags_.begin(), tags_.end(), tag) != tags_.end();
+}
+
 void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
   base::PostTaskAndReplyWithResult(
       GetTaskRunner().get(),
@@ -217,17 +221,27 @@ void AdBlockBaseService::UpdateAdBlockClient(
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   ad_block_client_ = std::move(ad_block_client);
   buffer_ = std::move(buffer);
+  AddKnownTagsToAdBlockInstance();
+}
+
+void AdBlockBaseService::AddKnownTagsToAdBlockInstance() {
   std::for_each(tags_.begin(), tags_.end(), [&](const std::string tag) {
     ad_block_client_->addTag(tag);
   });
 }
 
+
 bool AdBlockBaseService::Init() {
   return true;
 }
 
-adblock::Engine* AdBlockBaseService::GetAdBlockClientForTest() {
-  return ad_block_client_.get();
+void AdBlockBaseService::ResetForTest(const std::string& rules) {
+  // This is temporary until adblock-rust supports incrementally adding
+  // filter rules to an existing instance. At which point the hack below
+  // will dissapear.
+  DETACH_FROM_SEQUENCE(sequence_checker_);
+  ad_block_client_.reset(new adblock::Engine(rules));
+  AddKnownTagsToAdBlockInstance();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
