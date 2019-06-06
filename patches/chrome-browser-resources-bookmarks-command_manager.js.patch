@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/bookmarks/command_manager.js b/chrome/browser/resources/bookmarks/command_manager.js
-index 8f153dd70e46d2d55145fc5bf17642a23bcb6a74..259303f27b4be54892f6414b50536bdf1b01a6b6 100644
+index a1675b32d1425fb0fb43141c44e2032aba5ad1c1..337ee5e73911d374665d47d47d402074718b010f 100644
 --- a/chrome/browser/resources/bookmarks/command_manager.js
 +++ b/chrome/browser/resources/bookmarks/command_manager.js
-@@ -409,7 +409,7 @@ cr.define('bookmarks', function() {
+@@ -405,7 +405,7 @@ cr.define('bookmarks', function() {
            chrome.bookmarks.export();
            break;
          case Command.HELP_CENTER:

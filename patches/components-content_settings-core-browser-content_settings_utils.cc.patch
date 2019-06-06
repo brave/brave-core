@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
-index cb34da5261318ce6c64eb3863713d00be1dd6ea5..dba64156cd6fbb4d3ce699830ecb9996b4cd7419 100644
+index 4cba738c02ff5526e6757513bfb14b1256efa705..49d1b761b24e0fcb3684066305be2aba87fe726d 100644
 --- a/components/content_settings/core/browser/content_settings_utils.cc
 +++ b/components/content_settings/core/browser/content_settings_utils.cc
 @@ -146,6 +146,14 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,

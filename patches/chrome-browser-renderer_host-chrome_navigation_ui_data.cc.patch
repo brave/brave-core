@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/renderer_host/chrome_navigation_ui_data.cc b/chrome/browser/renderer_host/chrome_navigation_ui_data.cc
-index 299a44a55eede0e318241c8885f00546e3f99ae1..ff079c76c3d76d53e16cdc28e81420ec2f35e56a 100644
+index f6c02c2dc40abf9d882a6ac6044c35b3a7c4d745..6d9a308fda0aa0d521979dff6226b12a08c8b87e 100644
 --- a/chrome/browser/renderer_host/chrome_navigation_ui_data.cc
 +++ b/chrome/browser/renderer_host/chrome_navigation_ui_data.cc
 @@ -52,7 +52,7 @@ ChromeNavigationUIData::CreateForMainFrameNavigation(
@@ -11,10 +11,10 @@ index 299a44a55eede0e318241c8885f00546e3f99ae1..ff079c76c3d76d53e16cdc28e81420ec
    navigation_ui_data->disposition_ = disposition;
    navigation_ui_data->data_reduction_proxy_page_id_ =
        data_reduction_proxy_page_id;
-@@ -73,7 +73,7 @@ ChromeNavigationUIData::CreateForMainFrameNavigation(
+@@ -72,7 +72,7 @@ ChromeNavigationUIData::CreateForMainFrameNavigation(
+ }
  
- std::unique_ptr<content::NavigationUIData> ChromeNavigationUIData::Clone()
-     const {
+ std::unique_ptr<content::NavigationUIData> ChromeNavigationUIData::Clone() {
 -  auto copy = std::make_unique<ChromeNavigationUIData>();
 +  auto copy = std::make_unique<BraveNavigationUIData>();
  

@@ -1,10 +1,10 @@
 diff --git a/content/public/browser/permission_type.h b/content/public/browser/permission_type.h
-index 16c3c2ad4ec798944aef5fba3437cd40fd73162c..644e00436164a0434f1ddf22320c2bd3ebf69967 100644
+index 5082c0011543a08f16fb8e9e630bc5f722c0214c..77c134bcaa430d75b98472c189a97571fdb77a9e 100644
 --- a/content/public/browser/permission_type.h
 +++ b/content/public/browser/permission_type.h
-@@ -32,6 +32,7 @@ enum class PermissionType {
-   BACKGROUND_FETCH = 17,
+@@ -33,6 +33,7 @@ enum class PermissionType {
    IDLE_DETECTION = 18,
+   PERIODIC_BACKGROUND_SYNC = 19,
  
 +  AUTOPLAY = 18,
    // Always keep this at the end.

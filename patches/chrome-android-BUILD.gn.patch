@@ -1,9 +1,9 @@
 diff --git a/chrome/android/BUILD.gn b/chrome/android/BUILD.gn
-index 02f17d2b4e93d27964fe6663c4feddccc9634619..bd0459db766702d7bc0127914e687421e34852da 100644
+index 0f2b8f1b094a7b1df1f479fada1b9cd3caf6150b..eeda8a376c613373454345ba8635c5b8cb97486f 100644
 --- a/chrome/android/BUILD.gn
 +++ b/chrome/android/BUILD.gn
-@@ -38,7 +38,7 @@ if (enable_vr) {
-   import("//chrome/android/features/vr/vr_module_tmpl.gni")
+@@ -42,7 +42,7 @@ if (dfmify_devtools) {
+   import("//chrome/android/features/devtools/devtools_module_tmpl.gni")
  }
  
 -manifest_package = "org.chromium.chrome"

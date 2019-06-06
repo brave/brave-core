@@ -1,13 +1,13 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 63be9ca9369fd761a4ca92a56cbf81a6ec3d56ed..0e81a26632d26450c2fdd7839214cfa52a614efb 100644
+index 6081b0f930f2d21fb04f444390cff8d6ac8424b9..c67254b9d690cdd70573e54f481b07d31f62086d 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
-@@ -470,6 +470,8 @@ test("browser_tests") {
-     "//third_party/blink/public:buildflags",
-   ]
+@@ -591,6 +591,8 @@ if (!is_android) {
+       "//v8",
+     ]
  
-+  deps += [ "//brave/test:brave_browser_tests_deps", ]
++    deps += [ "//brave/test:brave_browser_tests_deps", ]
 +
-   data_deps = [
-     "//testing/buildbot/filters:browser_tests_filters",
-     "//tools/media_engagement_preload:generator",
+     # Runtime dependencies
+     data_deps = [
+       "//ppapi:ppapi_tests",

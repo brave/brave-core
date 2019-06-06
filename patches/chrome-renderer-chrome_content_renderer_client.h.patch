@@ -1,9 +1,9 @@
 diff --git a/chrome/renderer/chrome_content_renderer_client.h b/chrome/renderer/chrome_content_renderer_client.h
-index 770d49a61dc957bdb537b9103df3fd69c6d36354..7aa1829ec55b9bda9f736137b886dbeeb1215e3a 100644
+index c8a58e5934d59e03819df8bd0a847c2be698dce5..602d2a1bbda24b1cf82a0598541363e99350a0d8 100644
 --- a/chrome/renderer/chrome_content_renderer_client.h
 +++ b/chrome/renderer/chrome_content_renderer_client.h
 @@ -238,6 +238,7 @@ class ChromeContentRendererClient
-   base::WeakPtr<ChromeRenderThreadObserver> GetChromeObserver() const;
+   ChromeRenderThreadObserver* GetChromeObserver() const;
  
   private:
 +  friend class BraveContentRendererClient;
