@@ -113,9 +113,10 @@ func generate(from files: [String], includePaths: [String], outputDirectory: Str
 let ledgerPath = ProcessInfo.processInfo.arguments[1]
 let adsPath = ProcessInfo.processInfo.arguments[2]
 let outputPath = ProcessInfo.processInfo.arguments[3]
+let frameworkPath = ProcessInfo.processInfo.arguments[4]
 
 let argCount = ProcessInfo.processInfo.arguments.count
-let includeDirectories = [String](ProcessInfo.processInfo.arguments[5..<argCount])
+let includeDirectories = [String](ProcessInfo.processInfo.arguments[6..<argCount])
 
 // Generate ledger files
 do {
@@ -131,6 +132,7 @@ do {
     className: "LedgerClient",
     systemIncludePaths: includeDirectories,
     includePaths: [includePath],
+    frameworkPath: frameworkPath,
     outputDirectory: outputPath
   )
 }
@@ -149,6 +151,7 @@ do {
     className: "AdsClient",
     systemIncludePaths: includeDirectories,
     includePaths: [includePath],
+    frameworkPath: frameworkPath,
     outputDirectory: outputPath
   )
 }
