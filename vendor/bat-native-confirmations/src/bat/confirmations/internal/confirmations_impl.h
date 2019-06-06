@@ -84,7 +84,7 @@ class ConfirmationsImpl : public Confirmations {
 
  private:
   bool is_initialized_;
-  void CheckReady();
+  void MaybeStart();
 
   // Wallet
   WalletInfo wallet_info_;

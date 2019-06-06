@@ -67,12 +67,9 @@ void ConfirmationsImpl::Initialize() {
   LoadState();
 }
 
-void ConfirmationsImpl::CheckReady() {
-  if (is_initialized_) {
-    return;
-  }
-
-  if (!state_has_loaded_ ||
+void ConfirmationsImpl::MaybeStart() {
+  if (is_initialized_ ||
+      !state_has_loaded_ ||
       !wallet_info_.IsValid() ||
       catalog_issuers_.empty()) {
     return;
@@ -690,7 +687,7 @@ void ConfirmationsImpl::OnStateLoaded(
 
   NotifyAdsIfConfirmationsIsReady();
 
-  CheckReady();
+  MaybeStart();
 }
 
 void ConfirmationsImpl::ResetState() {
@@ -721,7 +718,9 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
   BLOG(INFO) << "  Payment id: " << wallet_info_.payment_id;
   BLOG(INFO) << "  Public key: " << wallet_info_.public_key;
 
-  CheckReady();
+  NotifyAdsIfConfirmationsIsReady();
+
+  MaybeStart();
 }
 
 void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
@@ -741,7 +740,9 @@ void ConfirmationsImpl::SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) {
     catalog_issuers_.insert({issuer.public_key, issuer.name});
   }
 
-  CheckReady();
+  NotifyAdsIfConfirmationsIsReady();
+
+  MaybeStart();
 }
 
 std::map<std::string, std::string> ConfirmationsImpl::GetCatalogIssuers()

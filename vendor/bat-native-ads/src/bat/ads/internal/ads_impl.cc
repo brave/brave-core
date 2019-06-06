@@ -105,7 +105,7 @@ void AdsImpl::InitializeStep3() {
 }
 
 void AdsImpl::Deinitialize() {
-  if (!IsInitialized()) {
+  if (!is_initialized_) {
     BLOG(WARNING) << "Failed to deinitialize as not initialized";
 
     return;
