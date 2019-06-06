@@ -70,6 +70,10 @@ def create_config(identity, keychain, development, provisioning_profile):
                 return set(('libwidevinecdm.dylib',
                             'sparkle-framework',))
 
+            @property
+            def run_spctl_assess(self):
+                return True
+
         config_class = ProvisioningProfileCodeSignConfig
 
     return config_class(identity, keychain)
