@@ -37,7 +37,7 @@ copy("dist_resources") {
   ]
 
   public_deps = [
-    "//chrome_elf",
+    "//chrome/chrome_elf",
     "//third_party/angle:copy_compiler_dll",
   ]
 }
