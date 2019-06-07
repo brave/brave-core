@@ -48,6 +48,7 @@ def build(args):
     # Set environment variables for rustup
     env = os.environ.copy()
 
+    rustup_root = rustup_home
     rustup_home = os.path.join(rustup_home, RUST_DEPS_PACKAGE_VERSION)
     env['RUSTUP_HOME'] = rustup_home
 
@@ -56,7 +57,8 @@ def build(args):
 
     rustup_bin = os.path.abspath(os.path.join(rustup_home, 'bin'))
     rustup_bin_exe = os.path.join(rustup_bin, 'cargo.exe')
-    env['PATH'] = rustup_bin + os.pathsep + env['PATH']
+    toolchain_path = os.path.abspath(os.path.join(rustup_root, target, "bin"))
+    env['PATH'] = rustup_bin + os.pathsep + toolchain_path + os.pathsep + env['PATH']
 
     if args.mac_deployment_target is not None:
         env['MACOSX_DEPLOYMENT_TARGET'] = args.mac_deployment_target

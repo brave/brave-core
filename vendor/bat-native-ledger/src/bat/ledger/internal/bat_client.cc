@@ -597,7 +597,7 @@ void BatClient::getGrantsCallback(
     if (ok) {
       braveledger_bat_helper::GRANT_RESPONSE grantResponse;
       grantResponse.promotionId = properties.promotionId;
-      grantResponse.type = "ugp";
+      grantResponse.type = properties.type;
       grants_properties.grants_.push_back(grantResponse);
     }
   } 
@@ -628,24 +628,13 @@ void BatClient::setGrant(const std::string& captchaResponse,
   std::string promotionToSet = promotionId;
   if (promotionId.empty() && safetynet_token.empty()) {
     braveledger_bat_helper::GRANT properties;
+    properties.promotionId = promotionId;
     ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, properties);
     return;
   }
 
-  if (promotionId.empty() && !safetynet_token.empty()) {
-    braveledger_bat_helper::Grants state_grants = ledger_->GetGrants();
-
-    for (auto state_grant : state_grants) {
-      if ("ugp" == state_grant.type) {
-        promotionToSet = state_grant.promotionId;
-        break;
-      }
-    }
-    
-  }
-
   std::string keys[2] = {"promotionId", "captchaResponse"};
-  std::string values[2] = {promotionToSet, captchaResponse};
+  std::string values[2] = {promotionId, captchaResponse};
   std::string payload = braveledger_bat_helper::stringify(keys, values, safetynet_token.empty() ? 2 : 1);
 
   std::vector<std::string> headers;
@@ -653,7 +642,7 @@ void BatClient::setGrant(const std::string& captchaResponse,
     headers.push_back("safetynet-token:" + safetynet_token);
   }
 
-  auto callback = std::bind(&BatClient::setGrantCallback, this, _1, _2, _3, !safetynet_token.empty());
+  auto callback = std::bind(&BatClient::setGrantCallback, this, promotionId, _1, _2, _3, !safetynet_token.empty());
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
         safetynet_token.empty() ? PREFIX_V2 : PREFIX_V3),
@@ -662,6 +651,7 @@ void BatClient::setGrant(const std::string& captchaResponse,
 }
 
 void BatClient::setGrantCallback(
+    const std::string& promotionId,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
@@ -669,6 +659,7 @@ void BatClient::setGrantCallback(
   std::string error;
   unsigned int statusCode;
   braveledger_bat_helper::GRANT grant;
+  grant.promotionId =  promotionId;
   braveledger_bat_helper::getJSONResponse(response, &statusCode, &error);
 
   ledger_->LogResponse(__func__, response_status_code, response, headers);
@@ -687,12 +678,7 @@ void BatClient::setGrantCallback(
     return;
   }
 
-  bool ok = false;
-  if (is_safetynet_check) {
-    ok = grant.loadFromJsonSafetyNet(response);
-  } else {
-    ok = braveledger_bat_helper::loadFromJson(&grant, response);
-  }
+  bool  ok = braveledger_bat_helper::loadFromJson(&grant, response);
   if (!ok) {
     ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, grant);
     return;
@@ -702,8 +688,7 @@ void BatClient::setGrantCallback(
   braveledger_bat_helper::Grants state_grants = ledger_->GetGrants();
 
   for (auto state_grant : state_grants) {
-    if (grant.type == state_grant.type) {
-      grant.promotionId = state_grant.promotionId;
+    if (grant.promotionId == state_grant.promotionId) {
       ledger_->OnGrantFinish(ledger::Result::LEDGER_OK, grant);
       updated_grants.push_back(grant);
     } else {
@@ -805,19 +790,21 @@ void BatClient::CreateWalletIfNecessary(const std::string& safetynet_token) {
   registerPersona(safetynet_token);
 }
 
-void BatClient::getGrantViaSafetynetCheck() {
+void BatClient::getGrantViaSafetynetCheck(const std::string& promotionId) {
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
       (std::string)GET_PROMOTION_ATTESTATION + ledger_->GetPaymentId(),
       PREFIX_V1),
   std::vector<std::string>(), "", "",
   ledger::URL_METHOD::GET, std::bind(&BatClient::getGrantViaSafetynetCheckCallback,
                                    this,
+                                   promotionId,
                                    _1,
                                    _2,
                                    _3));
 }
 
-void BatClient::getGrantViaSafetynetCheckCallback(int response_status_code,
+void BatClient::getGrantViaSafetynetCheckCallback(const std::string& promotionId,
+                                                  int response_status_code,
                                                   const std::string& response,
                                                   const std::map<std::string,
                                                   std::string>& headers) {
@@ -826,12 +813,13 @@ void BatClient::getGrantViaSafetynetCheckCallback(int response_status_code,
   if (response_status_code != 200) {
     // Attestation failed
     braveledger_bat_helper::GRANT grant;
+    grant.promotionId = promotionId;
     ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED,
         grant);
     return;
   }
   std::string nonce;
   braveledger_bat_helper::getJSONValue("nonce", response, &nonce);
-  ledger_->OnGrantViaSafetynetCheck(nonce);
+  ledger_->OnGrantViaSafetynetCheck(promotionId, nonce);
 }
 }  // namespace braveledger_bat_client

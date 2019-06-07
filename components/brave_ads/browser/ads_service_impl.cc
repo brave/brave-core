@@ -49,6 +49,8 @@
 #include "content/public/browser/network_service_instance.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/common/service_manager_connection.h"
+#include "net/base/network_change_notifier.h"
+#include "net/url_request/url_fetcher.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -59,7 +61,11 @@
 #include "ui/message_center/public/cpp/notification.h"
 
 #if defined(OS_ANDROID)
+#include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
+#include "chrome/android/chrome_jni_headers/chrome/jni/BraveAds_jni.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#include "chrome/browser/android/tab_android.h"
 #include "net/android/network_library.h"
 #endif
 
@@ -141,7 +147,12 @@ class AdsNotificationHandler : public NotificationHandler {
                const base::Optional<base::string16>& reply,
                base::OnceClosure completed_closure) override {
     if (ads_service_ && !action_index.has_value()) {
+#if defined(OS_ANDROID)
+      ads_service_->OnClick(profile, origin, notification_id,
+          action_index, reply);
+#else
       ads_service_->OpenSettings(profile, origin, true);
+#endif
     }
   }
 
@@ -295,7 +306,6 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       base_path_(profile_->GetPath().AppendASCII("ads_service")),
       next_timer_id_(0),
       ads_launch_id_(0),
-      is_supported_region_(false),
       bundle_state_backend_(
           new BundleStateDatabase(base_path_.AppendASCII("bundle_state"))),
       display_service_(NotificationDisplayService::GetForProfile(profile_)),
@@ -353,28 +363,18 @@ void AdsServiceImpl::OnCreate() {
 }
 
 void AdsServiceImpl::MaybeStart(bool should_restart) {
-  if (should_restart)
+  if (!IsSupportedRegion()) {
+    LOG(WARNING) << GetAdsLocale() << " locale does not support Ads";
     Shutdown();
-
-  if (!StartService()) {
-    LOG(ERROR) << "Failed to start Ads service";
     return;
   }
 
-  bat_ads_service_->IsSupportedRegion(GetAdsLocale(),
-      base::BindOnce(&AdsServiceImpl::OnMaybeStartForRegion,
-          AsWeakPtr(), should_restart));
-}
-
-void AdsServiceImpl::OnMaybeStartForRegion(
-    bool should_restart,
-    bool is_supported_region) {
-  is_supported_region_ = is_supported_region;
-
-  if (!is_supported_region_) {
-    LOG(WARNING) << GetAdsLocale() << " locale does not support Ads";
-
+  if (should_restart) {
     Shutdown();
+  }
+
+  if (!StartService()) {
+    LOG(ERROR) << "Failed to start Ads service";
     return;
   }
 
@@ -409,37 +409,62 @@ bool AdsServiceImpl::StartService() {
   bat_ads_service_.set_connection_error_handler(
       base::Bind(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));
 
-  bool is_production = false;
+  UpdateIsProductionFlag();
+  UpdateIsDebugFlag();
+  UpdateIsTestingFlag();
+
+  return true;
+}
+
+#if defined(OS_ANDROID)
+void AdsServiceImpl::UpdateIsProductionFlag() {
+  auto is_production = profile_->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kUseRewardsStagingServer);
+  bat_ads_service_->SetProduction(is_production, base::NullCallback());
+}
+#else
+void AdsServiceImpl::UpdateIsProductionFlag() {
 #if defined(OFFICIAL_BUILD)
-  is_production = true;
+  auto is_production = true;
+#else
+  auto is_production = false;
 #endif
-  bool is_debug = true;
-#if defined(NDEBUG)
-  is_debug = false;
-#endif
-  bool is_testing = false;
 
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-
+  const auto& command_line = *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kStaging)) {
     is_production = false;
-  }
-  if (command_line.HasSwitch(switches::kProduction)) {
+  } else if (command_line.HasSwitch(switches::kProduction)) {
     is_production = true;
   }
+
+  bat_ads_service_->SetProduction(is_production, base::NullCallback());
+}
+#endif
+
+void AdsServiceImpl::UpdateIsDebugFlag() {
+#if defined(NDEBUG)
+  auto is_debug = false;
+#else
+  auto is_debug = true;
+#endif
+
+  const auto& command_line = *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kDebug)) {
     is_debug = true;
   }
+
+  bat_ads_service_->SetDebug(is_debug, base::NullCallback());
+}
+
+void AdsServiceImpl::UpdateIsTestingFlag() {
+  auto is_testing = false;
+
+  const auto& command_line = *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kTesting)) {
     is_testing = true;
   }
 
-  bat_ads_service_->SetProduction(is_production, base::NullCallback());
-  bat_ads_service_->SetDebug(is_debug, base::NullCallback());
   bat_ads_service_->SetTesting(is_testing, base::NullCallback());
-
-  return true;
 }
 
 void AdsServiceImpl::Start() {
@@ -764,7 +789,8 @@ void AdsServiceImpl::OnPrefsChanged(const std::string& pref) {
 }
 
 bool AdsServiceImpl::IsSupportedRegion() const {
-  return is_supported_region_;
+  auto locale = LocaleHelper::GetInstance()->GetLocale();
+  return ads::Ads::IsSupportedRegion(locale);
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
@@ -924,6 +950,7 @@ void AdsServiceImpl::ShowNotification(
   display_service_->Display(NotificationHandler::Type::BRAVE_ADS, *notification,
                             /*metadata=*/nullptr);
 
+#if !defined(OS_ANDROID)
   uint32_t timer_id = next_timer_id();
 
   timers_[timer_id] = std::make_unique<base::OneShotTimer>();
@@ -932,6 +959,7 @@ void AdsServiceImpl::ShowNotification(
       base::BindOnce(
           &AdsServiceImpl::NotificationTimedOut, AsWeakPtr(),
               timer_id, notification_id));
+#endif
 }
 
 void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
@@ -1078,8 +1106,7 @@ void AdsServiceImpl::LoadSampleBundle(
 
 bool AdsServiceImpl::IsNetworkConnectionAvailable() {
 #if defined(OS_ANDROID)
-  // TODO(bridiver) - fix for android
-  return true;
+  return !net::NetworkChangeNotifier::IsOffline();
 #else
   return !content::GetNetworkConnectionTracker()->IsOffline();
 #endif
@@ -1117,6 +1144,62 @@ void AdsServiceImpl::OnClose(Profile* profile,
 
   if (completed_closure)
     std::move(completed_closure).Run();
+}
+
+// Implementation for Android
+void AdsServiceImpl::OnClick(Profile* profile,
+               const GURL& origin,
+               const std::string& notification_id,
+               const base::Optional<int>& action_index,
+               const base::Optional<base::string16>& reply) {
+  // GURL("chrome://brave_ads/?" + *notification_id) this is what origin_url is
+  if (notification_ids_.find(notification_id) == notification_ids_.end()) {
+    LOG(WARNING) << "Notification id not found: " << notification_id;
+    return;
+  }
+
+  auto notification_info = base::WrapUnique(
+      notification_ids_[notification_id].release());
+  notification_ids_.erase(notification_id);
+
+  display_service_->Close(
+      NotificationHandler::Type::BRAVE_ADS, notification_id);
+
+  if (connected()) {
+    bat_ads_->GenerateAdReportingNotificationResultEvent(
+        notification_info->ToJson(),
+        ToMojomNotificationResultInfoResultType(
+            ads::NotificationResultInfoResultType::CLICKED));
+  }
+
+  GURL url(notification_info->url);
+  if (!url.is_valid()) {
+    LOG(WARNING) << "Invalid notification URL: " << notification_info->url;
+    return;
+  }
+
+#if defined(OS_ANDROID)
+  NavigateParams nav_params(profile, url, ui::PAGE_TRANSITION_LINK);
+#else
+  Browser* browser = chrome::FindTabbedBrowser(profile, false);
+  if (!browser)
+    browser = new Browser(Browser::CreateParams(profile, true));
+
+  NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
+#endif
+  nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  nav_params.window_action = NavigateParams::SHOW_WINDOW;
+#if defined(OS_ANDROID)
+  JNIEnv* env = base::android::AttachCurrentThread();
+  base::android::ScopedJavaGlobalRef<jobject> java_obj_;
+  java_obj_.Reset(env, Java_BraveAds_create(env, 0).obj());
+  base::android::ScopedJavaLocalRef<jstring> jurl =
+      base::android::ConvertUTF8ToJavaString(
+          env, notification_info->url.c_str());
+  Java_BraveAds_openPageFromNative(env, java_obj_, jurl);
+#else
+  Navigate(&nav_params);
+#endif
 }
 
 void AdsServiceImpl::OpenSettings(Profile* profile,

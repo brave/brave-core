@@ -345,11 +345,11 @@ bool Grant::loadFromJson(const std::string& json) {
     expiryTime = d["expiryTime"].GetUint64();
 
     // Check for type attribute, old grants which
-    // do not have the type attribute should default to ugp
+    // do not have the type attribute should default to android
     if (d.HasMember("type") && d["type"].IsString()) {
       type = d["type"].GetString();
     } else {
-      type = "ugp";
+      type = "android";
     }
   }
 

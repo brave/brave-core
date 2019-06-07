@@ -55,11 +55,4 @@ void BatAdsServiceImpl::SetDebug(
   std::move(callback).Run();
 }
 
-void BatAdsServiceImpl::IsSupportedRegion(
-    const std::string& locale,
-    IsSupportedRegionCallback callback) {
-  DCHECK(!has_initialized_);
-  std::move(callback).Run(ads::Ads::IsSupportedRegion(locale));
-}
-
 }  // namespace bat_ads

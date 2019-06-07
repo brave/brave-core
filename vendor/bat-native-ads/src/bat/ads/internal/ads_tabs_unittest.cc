@@ -140,6 +140,7 @@ class AdsTabsTest : public ::testing::Test {
 
 TEST_F(AdsTabsTest, Media_IsPlaying) {
   // Arrange
+  ads_->TabUpdated(1, "https://brave.com", true, false);
   ads_->OnMediaPlaying(1);
 
   // Act
@@ -151,6 +152,8 @@ TEST_F(AdsTabsTest, Media_IsPlaying) {
 
 TEST_F(AdsTabsTest, Media_NotPlaying) {
   // Arrange
+  ads_->TabUpdated(1, "https://brave.com", true, false);
+
   ads_->OnMediaPlaying(1);
   ads_->OnMediaPlaying(2);
 

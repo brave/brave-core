@@ -41,10 +41,6 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
       const bool is_debug,
       SetDebugCallback callback) override;
 
-  void IsSupportedRegion(
-      const std::string& locale,
-      IsSupportedRegionCallback callback) override;
-
  private:
   const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;
   bool has_initialized_;

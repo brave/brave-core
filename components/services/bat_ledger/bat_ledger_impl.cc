@@ -196,12 +196,12 @@ void BatLedgerImpl::FetchGrants(const std::string& lang,
   ledger_->FetchGrants(lang, payment_id, result_string);
 }
 
-void BatLedgerImpl::GetGrantViaSafetynetCheck() {
-  ledger_->GetGrantViaSafetynetCheck();
+void BatLedgerImpl::GetGrantViaSafetynetCheck(const std::string& promotionId) {
+  ledger_->GetGrantViaSafetynetCheck(promotionId);
 }
 
-void BatLedgerImpl::ApplySafetynetToken(const std::string& result_string) {
-  ledger_->ApplySafetynetToken(result_string);
+void BatLedgerImpl::ApplySafetynetToken(const std::string& promotionId, const std::string& result_string) {
+  ledger_->ApplySafetynetToken(promotionId, result_string);
 }
 
 void BatLedgerImpl::GetGrantCaptcha(

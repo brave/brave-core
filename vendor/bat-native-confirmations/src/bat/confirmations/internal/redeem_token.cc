@@ -432,7 +432,9 @@ void RedeemToken::OnRedeem(
         << " unblinded token";
   }
 
-  ScheduleNextRetryForFailedConfirmations();
+  if (!confirmations_->IsRetryingFailedConfirmations()) {
+    ScheduleNextRetryForFailedConfirmations();
+  }
 
   confirmations_->RefillTokensIfNecessary();
 }

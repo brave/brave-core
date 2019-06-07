@@ -47,6 +47,7 @@ class ConfirmationsImpl : public Confirmations {
   void AppendConfirmationToQueue(const ConfirmationInfo& confirmation_info);
   void RemoveConfirmationFromQueue(const ConfirmationInfo& confirmation_info);
   void StartRetryingFailedConfirmations(const uint64_t start_timer_in);
+  bool IsRetryingFailedConfirmations() const;
 
   // Estimated earnings
   uint64_t GetEstimatedEarningsStartTimestampInSeconds();
@@ -84,7 +85,7 @@ class ConfirmationsImpl : public Confirmations {
 
  private:
   bool is_initialized_;
-  void CheckReady();
+  void MaybeStart();
 
   // Wallet
   WalletInfo wallet_info_;
@@ -97,7 +98,6 @@ class ConfirmationsImpl : public Confirmations {
   uint32_t retry_failed_confirmations_timer_id_;
   void RetryFailedConfirmations() const;
   void StopRetryingFailedConfirmations();
-  bool IsRetryingFailedConfirmations() const;
   std::vector<ConfirmationInfo> confirmations_;
 
   // Transaction history
