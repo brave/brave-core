@@ -276,7 +276,7 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
                                  "UPDATE publisher_info SET favIcon = ? "
                                  "WHERE publisher_id = ?"));
 
-    if (favicon == ledger::_clear_favicon) {
+    if (favicon == ledger::kClearFavicon) {
       favicon.clear();
     }
 

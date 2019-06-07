@@ -20,7 +20,8 @@ using PublisherInfo = mojom::PublisherInfo;
 using PublisherInfoPtr = mojom::PublisherInfoPtr;
 using PublisherInfoList = std::vector<PublisherInfoPtr>;
 
-const char _clear_favicon[] = "clear";
+const char kClearFavicon[] = "clear";
+const char kIgnorePublisherBlob[] = "ignore";
 
 LEDGER_EXPORT enum REWARDS_CATEGORY {
   AUTO_CONTRIBUTE = 1 << 1,  // 2

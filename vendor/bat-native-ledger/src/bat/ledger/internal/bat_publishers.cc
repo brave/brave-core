@@ -174,7 +174,7 @@ void BatPublishers::saveVisitInternal(
         publisher_info->favicon_url = fav_icon;
     }
   } else {
-    publisher_info->favicon_url = ledger::_clear_favicon;
+    publisher_info->favicon_url = ledger::kClearFavicon;
   }
 
   publisher_info->name = visit_data.name;
@@ -227,7 +227,7 @@ void BatPublishers::saveVisitInternal(
   }
 
   if (panel_info) {
-    if (panel_info->favicon_url == ledger::_clear_favicon) {
+    if (panel_info->favicon_url == ledger::kClearFavicon) {
       panel_info->favicon_url = std::string();
     }
 
