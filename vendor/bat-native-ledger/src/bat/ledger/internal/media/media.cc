@@ -83,6 +83,8 @@ void Media::GetMediaActivityFromUrl(
                                            *visit_data);
   } else if (type == REDDIT_MEDIA_TYPE) {
     media_reddit_->ProcessActivityFromUrl(window_id, *visit_data);
+  } else if (type == VIMEO_MEDIA_TYPE) {
+    media_vimeo_->ProcessActivityFromUrl(window_id, *visit_data);
   } else {
     OnMediaActivityError(std::move(visit_data), type, window_id);
   }
@@ -99,23 +101,30 @@ void Media::OnMediaActivityError(ledger::VisitDataPtr visit_data,
   } else if (type == TWITCH_MEDIA_TYPE) {
     url = TWITCH_TLD;
     name = TWITCH_MEDIA_TYPE;
+  } else if (type == TWITTER_MEDIA_TYPE) {
+    url = TWITTER_TLD;
+    name = TWITTER_MEDIA_TYPE;
+  } else if (type == REDDIT_MEDIA_TYPE) {
+    url = REDDIT_TLD;
+    name = REDDIT_MEDIA_TYPE;
+  } else if (type == VIMEO_MEDIA_TYPE) {
+    url = VIMEO_TLD;
+    name = VIMEO_MEDIA_TYPE;
   }
 
-  if (!url.empty()) {
-    visit_data->domain = url;
-    visit_data->url = "https://" + url;
-    visit_data->path = "/";
-    visit_data->name = name;
-
-    ledger_->GetPublisherActivityFromUrl(
-        window_id, std::move(visit_data), std::string());
-  } else {
-      BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Media activity error for "
-        << type << " (name: "
-        << name << ", url: "
-        << visit_data->url << ")";
+  if (url.empty()) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+      << "Media activity error for url: "
+      << visit_data->url;
+    return;
   }
+
+  visit_data->domain = url;
+  visit_data->url = "https://" + url;
+  visit_data->path = "/";
+  visit_data->name = name;
+
+  ledger_->GetPublisherActivityFromUrl(window_id, std::move(visit_data), "");
 }
 
 void Media::SaveMediaInfo(const std::string& type,
@@ -134,8 +143,9 @@ void Media::SaveMediaInfo(const std::string& type,
 std::string Media::GetShareURL(
     const std::string& type,
     const std::map<std::string, std::string>& args) {
-  if (type == TWITTER_MEDIA_TYPE)
+  if (type == TWITTER_MEDIA_TYPE) {
     return braveledger_media::Twitter::GetShareURL(args);
+  }
 
   return std::string();
 }

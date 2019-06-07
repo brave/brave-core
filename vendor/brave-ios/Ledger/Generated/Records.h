@@ -7,7 +7,7 @@
 #import <Foundation/Foundation.h>
 #import "Enums.h"
 
-@class BATAutoContributeProps, BATBalanceReportInfo, BATContributionInfo, BATGrant, BATPublisherBanner, BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo, BATTwitchEventInfo, BATVisitData, BATWalletProperties;
+@class BATAutoContributeProps, BATBalanceReportInfo, BATContributionInfo, BATGrant, BATPublisherBanner, BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo, BATMediaEventInfo, BATVisitData, BATWalletProperties;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -94,8 +94,8 @@ NS_SWIFT_NAME(TransactionsInfo)
 @property (nonatomic) NSArray<BATTransactionInfo *> * transactions;
 @end
 
-NS_SWIFT_NAME(TwitchEventInfo)
-@interface BATTwitchEventInfo : NSObject
+NS_SWIFT_NAME(MediaEventInfo)
+@interface BATMediaEventInfo : NSObject
 @property (nonatomic) NSString * event;
 @property (nonatomic) NSString * time;
 @property (nonatomic) NSString * status;

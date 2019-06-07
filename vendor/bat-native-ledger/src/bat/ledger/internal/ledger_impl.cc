@@ -247,8 +247,8 @@ void LedgerImpl::OnPostData(
     std::vector<std::map<std::string, std::string>> parts;
     braveledger_media::GetVimeoParts(post_data, &parts);
 
-    for (size_t i = 0; i < parts.size(); i++) {
-      bat_get_media_->ProcessMedia(parts[i], type, std::move(visit_data));
+    for (auto part = parts.begin(); part != parts.end(); part++) {
+      bat_media_->ProcessMedia(*part, type, std::move(visit_data));
     }
     return;
   }

@@ -77,7 +77,7 @@ void GetVimeoParts(
     return;
   }
 
-  for (auto& item : data->GetList()) {
+  for (const auto& item : data->GetList()) {
     if (item.is_dict()) {
       std::map<std::string, std::string> part;
       auto* name = item.FindKey("name");
