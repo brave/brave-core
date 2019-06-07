@@ -16,7 +16,7 @@ def build_objcgen(xcode_path, objc_gen_root, output_dir):
 
 def generate_bridges(xcode_path, ledger, ads, output_dir, include_dirs):
     macos_includes = xcode_path + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include"
-    cpp_includes = "/Library/Developer/CommandLineTools/usr/include/c++/v1"
+    cpp_includes = xcode_path + "/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1"
     framework_dir = xcode_path + "/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"
     system_includes = " ".join(include_dirs)
     subprocess.call("{}/build/objc-gen {} {} {} {} -- {} {} {}".format(output_dir, ledger, ads, output_dir, framework_dir, macos_includes, cpp_includes, system_includes), shell=True)

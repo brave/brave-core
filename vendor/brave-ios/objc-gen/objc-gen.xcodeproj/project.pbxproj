@@ -16,6 +16,8 @@
 		27C461D222A866C400CE0CEB /* Output.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C461CD22A866C400CE0CEB /* Output.swift */; };
 		27C461D322A866C400CE0CEB /* Cursor+ObjC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C461CE22A866C400CE0CEB /* Cursor+ObjC.swift */; };
 		27C461D422A866C400CE0CEB /* Cursor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27C461CF22A866C400CE0CEB /* Cursor.swift */; };
+		27C461DA22AA93A600CE0CEB /* clang-c in Headers */ = {isa = PBXBuildFile; fileRef = 27C461D822AA939B00CE0CEB /* clang-c */; settings = {ATTRIBUTES = (Public, ); }; };
+		27C461DC22AA940200CE0CEB /* Clang.h in Headers */ = {isa = PBXBuildFile; fileRef = 27C461DB22AA93DF00CE0CEB /* Clang.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		27C461CD22A866C400CE0CEB /* Output.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Output.swift; sourceTree = "<group>"; };
 		27C461CE22A866C400CE0CEB /* Cursor+ObjC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Cursor+ObjC.swift"; sourceTree = "<group>"; };
 		27C461CF22A866C400CE0CEB /* Cursor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cursor.swift; sourceTree = "<group>"; };
+		27C461D822AA939B00CE0CEB /* clang-c */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "clang-c"; sourceTree = "<group>"; };
+		27C461DB22AA93DF00CE0CEB /* Clang.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Clang.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -114,9 +118,11 @@
 		27885E562263D64300A47647 /* Clang */ = {
 			isa = PBXGroup;
 			children = (
+				27C461D822AA939B00CE0CEB /* clang-c */,
 				27885E5E2263D66100A47647 /* link_clang.xcconfig */,
 				27885E5D2263D65300A47647 /* module.modulemap */,
 				27885E582263D64300A47647 /* Info.plist */,
+				27C461DB22AA93DF00CE0CEB /* Clang.h */,
 			);
 			path = Clang;
 			sourceTree = "<group>";
@@ -135,6 +141,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				27C461DC22AA940200CE0CEB /* Clang.h in Headers */,
+				27C461DA22AA93A600CE0CEB /* clang-c in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -377,6 +385,7 @@
 			baseConfigurationReference = 27885E5E2263D66100A47647 /* link_clang.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = "$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 			};
@@ -387,6 +396,7 @@
 			baseConfigurationReference = 27885E5E2263D66100A47647 /* link_clang.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				LD_RUNPATH_SEARCH_PATHS = "$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/lib";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 			};
