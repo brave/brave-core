@@ -142,22 +142,6 @@
 }
 @end
 
-@implementation BATVisitData
-- (instancetype)initWithVisitData:(const ledger::VisitData&)obj {
-  if ((self = [super init])) {
-    self.tld = [NSString stringWithUTF8String:obj.tld.c_str()];
-    self.domain = [NSString stringWithUTF8String:obj.domain.c_str()];
-    self.path = [NSString stringWithUTF8String:obj.path.c_str()];
-    self.tabId = obj.tab_id;
-    self.name = [NSString stringWithUTF8String:obj.name.c_str()];
-    self.url = [NSString stringWithUTF8String:obj.url.c_str()];
-    self.provider = [NSString stringWithUTF8String:obj.provider.c_str()];
-    self.faviconUrl = [NSString stringWithUTF8String:obj.favicon_url.c_str()];
-  }
-  return self;
-}
-@end
-
 @implementation BATWalletInfo
 - (instancetype)initWithWalletInfo:(const ledger::WalletInfo&)obj {
   if ((self = [super init])) {

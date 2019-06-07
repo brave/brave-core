@@ -101,18 +101,6 @@ NS_SWIFT_NAME(TwitchEventInfo)
 @property (nonatomic) NSString * status;
 @end
 
-NS_SWIFT_NAME(VisitData)
-@interface BATVisitData : NSObject
-@property (nonatomic) NSString * tld;
-@property (nonatomic) NSString * domain;
-@property (nonatomic) NSString * path;
-@property (nonatomic) unsigned int tabId;
-@property (nonatomic) NSString * name;
-@property (nonatomic) NSString * url;
-@property (nonatomic) NSString * provider;
-@property (nonatomic) NSString * faviconUrl;
-@end
-
 NS_SWIFT_NAME(WalletInfo)
 @interface BATWalletInfo : NSObject
 @property (nonatomic) NSString * altcurrency;
