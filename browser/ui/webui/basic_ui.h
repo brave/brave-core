@@ -22,12 +22,12 @@ class WebUI;
 
 class Profile;
 
-struct GzippedGritResourceMap;
+struct GritResourceMap;
 
 content::WebUIDataSource* CreateBasicUIHTMLSource(
     Profile* profile,
     const std::string& name,
-    const GzippedGritResourceMap* resource_map,
+    const GritResourceMap* resource_map,
     size_t resouece_map_size,
     int html_resource_id);
 
@@ -35,7 +35,7 @@ class BasicUI : public content::WebUIController {
  public:
   BasicUI(content::WebUI* web_ui,
           const std::string& host,
-          const GzippedGritResourceMap* resource_map,
+          const GritResourceMap* resource_map,
           size_t resouece_map_size,
           int html_resource_id);
   ~BasicUI() override;
