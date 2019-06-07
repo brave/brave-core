@@ -1130,7 +1130,7 @@ ledger::ServerPublisherInfoPtr PublisherInfoDatabase::GetServerPublisherInfo(
 // Other -------------------------------------------------------------------
 
 void PublisherInfoDatabase::RecordP3AStats(bool auto_contributions_on) {
-  if (!initialized) {
+  if (!initialized_) {
     return;
   }
 
