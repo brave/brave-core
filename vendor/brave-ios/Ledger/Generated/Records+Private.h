@@ -63,10 +63,6 @@
 - (instancetype)initWithTwitchEventInfo:(const ledger::TwitchEventInfo&)obj;
 @end
 
-@interface BATVisitData (Private)
-- (instancetype)initWithVisitData:(const ledger::VisitData&)obj;
-@end
-
 @interface BATWalletInfo (Private)
 - (instancetype)initWithWalletInfo:(const ledger::WalletInfo&)obj;
 @end

@@ -4,6 +4,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include <utility>
 
 #include "bat/ledger/internal/bat_get_media.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -41,44 +42,44 @@ std::string BatGetMedia::GetLinkType(const std::string& url,
 
 void BatGetMedia::ProcessMedia(const std::map<std::string, std::string>& parts,
                                const std::string& type,
-                               const ledger::VisitData& visit_data) {
-  if (parts.size() == 0 || !ledger_->GetRewardsMainEnabled()) {
+                               ledger::VisitDataPtr visit_data) {
+  if (parts.size() == 0 || !ledger_->GetRewardsMainEnabled() || !visit_data) {
     return;
   }
 
   if (type == YOUTUBE_MEDIA_TYPE) {
-    media_youtube_->ProcessMedia(parts, visit_data);
+    media_youtube_->ProcessMedia(parts, *visit_data);
     return;
   }
 
   if (type == TWITCH_MEDIA_TYPE) {
-    media_twitch_->ProcessMedia(parts, visit_data);
+    media_twitch_->ProcessMedia(parts, *visit_data);
     return;
   }
 }
 
 void BatGetMedia::GetMediaActivityFromUrl(
     uint64_t window_id,
-    const ledger::VisitData& visit_data,
+    ledger::VisitDataPtr visit_data,
     const std::string& type,
     const std::string& publisher_blob) {
   if (type == YOUTUBE_MEDIA_TYPE) {
-    media_youtube_->ProcessActivityFromUrl(window_id, visit_data);
+    media_youtube_->ProcessActivityFromUrl(window_id, *visit_data);
   } else if (type == TWITCH_MEDIA_TYPE) {
     media_twitch_->ProcessActivityFromUrl(window_id,
-                                          visit_data,
+                                          *visit_data,
                                           publisher_blob);
   } else if (type == TWITTER_MEDIA_TYPE) {
     media_twitter_->ProcessActivityFromUrl(window_id,
-                                           visit_data);
+                                           *visit_data);
   } else if (type == REDDIT_MEDIA_TYPE) {
-    media_reddit_->ProcessActivityFromUrl(window_id, visit_data);
+    media_reddit_->ProcessActivityFromUrl(window_id, *visit_data);
   } else {
-    OnMediaActivityError(visit_data, type, window_id);
+    OnMediaActivityError(std::move(visit_data), type, window_id);
   }
 }
 
-void BatGetMedia::OnMediaActivityError(const ledger::VisitData& visit_data,
+void BatGetMedia::OnMediaActivityError(ledger::VisitDataPtr visit_data,
                                        const std::string& type,
                                        uint64_t window_id) {
   std::string url;
@@ -92,19 +93,19 @@ void BatGetMedia::OnMediaActivityError(const ledger::VisitData& visit_data,
   }
 
   if (!url.empty()) {
-    ledger::VisitData new_data;
-    new_data.domain = url;
-    new_data.url = "https://" + url;
-    new_data.path = "/";
-    new_data.name = name;
+    visit_data->domain = url;
+    visit_data->url = "https://" + url;
+    visit_data->path = "/";
+    visit_data->name = name;
 
-    ledger_->GetPublisherActivityFromUrl(window_id, new_data, std::string());
+    ledger_->GetPublisherActivityFromUrl(
+        window_id, std::move(visit_data), std::string());
   } else {
       BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
         << "Media activity error for "
         << type << " (name: "
         << name << ", url: "
-        << visit_data.url << ")";
+        << visit_data->url << ")";
   }
 }
 

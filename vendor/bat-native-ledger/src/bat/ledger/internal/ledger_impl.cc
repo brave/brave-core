@@ -117,23 +117,25 @@ void LedgerImpl::RemoveReconcileById(const std::string& viewingId) {
   bat_state_->RemoveReconcileById(viewingId);
 }
 
-void LedgerImpl::OnLoad(const ledger::VisitData& visit_data,
+void LedgerImpl::OnLoad(ledger::VisitDataPtr visit_data,
                         const uint64_t& current_time) {
-  if (visit_data.domain.empty()) {
-    // Skip the same domain name
-    return;
-  }
-  visit_data_iter iter = current_pages_.find(visit_data.tab_id);
-  if (iter != current_pages_.end() &&
-      iter->second.domain == visit_data.domain) {
-    DCHECK(iter == current_pages_.end());
-    return;
-  }
+  if (visit_data.get()) {
+    if (visit_data->domain.empty()) {
+      // Skip the same domain name
+      return;
+    }
+    visit_data_iter iter = current_pages_.find(visit_data->tab_id);
+    if (iter != current_pages_.end() &&
+        iter->second.domain == visit_data->domain) {
+      DCHECK(iter == current_pages_.end());
+      return;
+    }
 
-  if (last_shown_tab_id_ == visit_data.tab_id) {
-    last_tab_active_time_ = current_time;
+    if (last_shown_tab_id_ == visit_data->tab_id) {
+      last_tab_active_time_ = current_time;
+    }
+    current_pages_[visit_data->tab_id] = *visit_data;
   }
-  current_pages_[visit_data.tab_id] = visit_data;
 }
 
 void LedgerImpl::OnUnload(uint32_t tab_id, const uint64_t& current_time) {
@@ -208,7 +210,7 @@ void LedgerImpl::OnXHRLoad(
     const std::map<std::string, std::string>& parts,
     const std::string& first_party_url,
     const std::string& referrer,
-    const ledger::VisitData& visit_data) {
+    ledger::VisitDataPtr visit_data) {
   std::string type = bat_get_media_->GetLinkType(url,
                                                  first_party_url,
                                                  referrer);
@@ -216,7 +218,7 @@ void LedgerImpl::OnXHRLoad(
     // It is not a media supported type
     return;
   }
-  bat_get_media_->ProcessMedia(parts, type, visit_data);
+  bat_get_media_->ProcessMedia(parts, type, std::move(visit_data));
 }
 
 void LedgerImpl::OnPostData(
@@ -224,7 +226,7 @@ void LedgerImpl::OnPostData(
       const std::string& first_party_url,
       const std::string& referrer,
       const std::string& post_data,
-      const ledger::VisitData& visit_data) {
+      ledger::VisitDataPtr visit_data) {
   std::string type = bat_get_media_->GetLinkType(url,
                                                  first_party_url,
                                                  referrer);
@@ -237,7 +239,7 @@ void LedgerImpl::OnPostData(
   if (TWITCH_MEDIA_TYPE == type) {
     braveledger_media::GetTwitchParts(post_data, &twitchParts);
     for (size_t i = 0; i < twitchParts.size(); i++) {
-      bat_get_media_->ProcessMedia(twitchParts[i], type, visit_data);
+      bat_get_media_->ProcessMedia(twitchParts[i], type, std::move(visit_data));
     }
   }
 }
@@ -1035,21 +1037,21 @@ bool LedgerImpl::IsWalletCreated() const {
 
 void LedgerImpl::GetPublisherActivityFromUrl(
     uint64_t windowId,
-    const ledger::VisitData& visit_data,
+    ledger::VisitDataPtr visit_data,
     const std::string& publisher_blob) {
   bat_publishers_->getPublisherActivityFromUrl(
       windowId,
-      visit_data,
+      *visit_data,
       publisher_blob);
 }
 
 void LedgerImpl::GetMediaActivityFromUrl(
     uint64_t windowId,
-    const ledger::VisitData& visit_data,
+    ledger::VisitDataPtr visit_data,
     const std::string& providerType,
     const std::string& publisher_blob) {
   bat_get_media_->GetMediaActivityFromUrl(windowId,
-                                          visit_data,
+                                          std::move(visit_data),
                                           providerType,
                                           publisher_blob);
 }

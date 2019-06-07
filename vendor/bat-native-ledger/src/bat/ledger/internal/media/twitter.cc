@@ -281,14 +281,14 @@ void MediaTwitter::SavePublisherInfo(
     return;
   }
 
-  ledger::VisitData visit_data;
-  visit_data.provider = TWITTER_MEDIA_TYPE;
-  visit_data.url = url;
-  visit_data.favicon_url = favicon_url;
-  visit_data.name = publisher_name;
+  ledger::VisitDataPtr visit_data = ledger::VisitData::New();
+  visit_data->provider = TWITTER_MEDIA_TYPE;
+  visit_data->url = url;
+  visit_data->favicon_url = favicon_url;
+  visit_data->name = publisher_name;
 
   ledger_->SaveMediaVisit(publisher_key,
-                          visit_data,
+                          *visit_data,
                           duration,
                           window_id,
                           callback);
@@ -321,13 +321,14 @@ void MediaTwitter::OnMediaActivityError(const ledger::VisitData& visit_data,
 
   DCHECK(!url.empty());
 
-  ledger::VisitData new_data;
-  new_data.domain = url;
-  new_data.url = "https://" + url;
-  new_data.path = "/";
-  new_data.name = name;
+  ledger::VisitData new_visit_data;
+  new_visit_data.domain = url;
+  new_visit_data.url = "https://" + url;
+  new_visit_data.path = "/";
+  new_visit_data.name = name;
 
-  ledger_->GetPublisherActivityFromUrl(window_id, new_data, std::string());
+  ledger_->GetPublisherActivityFromUrl(
+      window_id, ledger::VisitData::New(new_visit_data), std::string());
 }
 
 void MediaTwitter::ProcessActivityFromUrl(

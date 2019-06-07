@@ -376,7 +376,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 {
   auto visitData = [self visitDataForURL:URL tabId:0];
   visitData.favicon_url = std::string(faviconURL.absoluteString.UTF8String);
-  ledger->GetPublisherActivityFromUrl(1, visitData, std::string(publisherBlob.UTF8String));
+  ledger->GetPublisherActivityFromUrl(1, visitData.Clone(), std::string(publisherBlob.UTF8String));
 }
 
 - (void)mediaPublisherInfoForMediaKey:(NSString *)mediaKey completion:(void (^)(BATPublisherInfo * _Nullable))completion
@@ -714,7 +714,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 - (void)reportLoadedPageWithURL:(NSURL *)url tabId:(UInt32)tabId
 {
   const auto visit = [self visitDataForURL:url tabId:tabId];
-  ledger->OnLoad(visit, [[NSDate date] timeIntervalSince1970]);
+  ledger->OnLoad(visit.Clone(), [[NSDate date] timeIntervalSince1970]);
 }
 
 - (void)reportXHRLoad:(NSURL *)url tabId:(UInt32)tabId firstPartyURL:(NSURL *)firstPartyURL referrerURL:(NSURL *)referrerURL
@@ -735,7 +735,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                     partsMap,
                     std::string(firstPartyURL.absoluteString.UTF8String),
                     std::string(referrerURL.absoluteString.UTF8String),
-                    visit);
+                    visit.Clone());
 }
 
 - (void)reportPostData:(NSData *)postData url:(NSURL *)url tabId:(UInt32)tabId firstPartyURL:(NSURL *)firstPartyURL referrerURL:(NSURL *)referrerURL
@@ -751,7 +751,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                      std::string(firstPartyURL.absoluteString.UTF8String),
                      std::string(referrerURL.absoluteString.UTF8String),
                      std::string(postDataString.UTF8String),
-                     visit);
+                     visit.Clone());
 }
 
 - (void)reportMediaStartedWithTabId:(UInt32)tabId

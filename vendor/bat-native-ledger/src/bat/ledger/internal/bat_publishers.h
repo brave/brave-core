@@ -146,7 +146,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   void saveVisitInternal(
       std::string publisher_id,
-      ledger::VisitData visit_data,
+      const ledger::VisitData& visit_data,
       uint64_t duration,
       uint64_t window_id,
       const ledger::PublisherInfoCallback callback,

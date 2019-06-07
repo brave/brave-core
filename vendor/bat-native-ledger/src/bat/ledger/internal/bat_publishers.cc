@@ -139,7 +139,7 @@ std::string BatPublishers::GetBalanceReportName(
 
 void BatPublishers::saveVisitInternal(
     std::string publisher_id,
-    ledger::VisitData visit_data,
+    const ledger::VisitData& visit_data,
     uint64_t duration,
     uint64_t window_id,
     const ledger::PublisherInfoCallback callback,
@@ -721,16 +721,16 @@ void BatPublishers::getPublisherActivityFromUrl(
       type = REDDIT_MEDIA_TYPE;
     }
 
-    ledger::VisitData new_visit_data(visit_data);
+    ledger::VisitDataPtr new_visit_data = ledger::VisitData::New(visit_data);
 
-    if (!new_visit_data.url.empty()) {
-      new_visit_data.url.pop_back();
+    if (!new_visit_data->url.empty()) {
+      new_visit_data->url.pop_back();
     }
 
-    new_visit_data.url = new_visit_data.url + new_visit_data.path;
+    new_visit_data->url += new_visit_data->path;
 
     ledger_->GetMediaActivityFromUrl(windowId,
-                                     new_visit_data,
+                                     std::move(new_visit_data),
                                      type,
                                      publisher_blob);
     return;

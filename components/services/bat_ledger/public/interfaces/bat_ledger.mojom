@@ -35,7 +35,7 @@ interface BatLedger {
   GetAutoContribute() => (bool auto_contribute);
   GetReconcileStamp() => (uint64 reconcile_stamp);
 
-  OnLoad(string visit_data, uint64 current_time);
+  OnLoad(ledger.mojom.VisitData visit_data, uint64 current_time);
   OnUnload(uint32 tab_id, uint64 current_time);
   OnShow(uint32 tab_id, uint64 current_time);
   OnHide(uint32 tab_id, uint64 current_time);
@@ -44,10 +44,17 @@ interface BatLedger {
   OnMediaStart(uint32 tab_id, uint64 current_time);
   OnMediaStop(uint32 tab_id, uint64 current_time);
 
-  OnPostData(string url, string first_party_url, string referrer,
-             string post_data, string visit_data);
-  OnXHRLoad(uint32 tab_id, string url, map<string, string> parts,
-            string first_party_url, string referrer, string visit_data);
+  OnPostData(string url,
+             string first_party_url,
+             string referrer,
+             string post_data,
+             ledger.mojom.VisitData visit_data);
+  OnXHRLoad(uint32 tab_id,
+            string url,
+            map<string, string> parts,
+            string first_party_url,
+            string referrer,
+            ledger.mojom.VisitData visit_data);
 
   SetPublisherExclude(string publisher_key, int32 exclude);
   RestorePublishers();
@@ -84,7 +91,8 @@ interface BatLedger {
 
   IsWalletCreated() => (bool wallet_created);
 
-  GetPublisherActivityFromUrl(uint64 window_id, string visit_data,
+  GetPublisherActivityFromUrl(uint64 window_id,
+      ledger.mojom.VisitData visit_data,
       string publisher_blob);
   GetContributionAmount() => (double contribution_amount);
   GetPublisherBanner(string publisher_id) => (string banner);

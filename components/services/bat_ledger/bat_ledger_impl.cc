@@ -116,11 +116,9 @@ void BatLedgerImpl::GetReconcileStamp(GetReconcileStampCallback callback) {
   std::move(callback).Run(ledger_->GetReconcileStamp());
 }
 
-void BatLedgerImpl::OnLoad(const std::string& visit_data,
+void BatLedgerImpl::OnLoad(ledger::VisitDataPtr visit_data,
     uint64_t current_time) {
-  ledger::VisitData visitData;
-  if (visitData.loadFromJson(visit_data))
-    ledger_->OnLoad(visitData, current_time);
+  ledger_->OnLoad(std::move(visit_data), current_time);
 }
 
 void BatLedgerImpl::OnUnload(uint32_t tab_id, uint64_t current_time) {
@@ -153,20 +151,17 @@ void BatLedgerImpl::OnMediaStop(uint32_t tab_id, uint64_t current_time) {
 
 void BatLedgerImpl::OnPostData(const std::string& url,
     const std::string& first_party_url, const std::string& referrer,
-    const std::string& post_data, const std::string& visit_data) {
-  ledger::VisitData visitData;
-  if (visitData.loadFromJson(visit_data))
-    ledger_->OnPostData(url, first_party_url, referrer, post_data, visitData);
+    const std::string& post_data, ledger::VisitDataPtr visit_data) {
+  ledger_->OnPostData(
+      url, first_party_url, referrer, post_data, std::move(visit_data));
 }
 
 void BatLedgerImpl::OnXHRLoad(uint32_t tab_id, const std::string& url,
     const base::flat_map<std::string, std::string>& parts,
     const std::string& first_party_url, const std::string& referrer,
-    const std::string& visit_data) {
-  ledger::VisitData visitData;
-  if (visitData.loadFromJson(visit_data))
+    ledger::VisitDataPtr visit_data) {
     ledger_->OnXHRLoad(tab_id, url, mojo::FlatMapToMap(parts),
-        first_party_url, referrer, visitData);
+        first_party_url, referrer, std::move(visit_data));
 }
 
 void BatLedgerImpl::SetPublisherExclude(const std::string& publisher_key,
@@ -311,11 +306,10 @@ void BatLedgerImpl::IsWalletCreated(IsWalletCreatedCallback callback) {
 
 void BatLedgerImpl::GetPublisherActivityFromUrl(
     uint64_t window_id,
-    const std::string& visit_data,
+    ledger::VisitDataPtr visit_data,
     const std::string& publisher_blob) {
-  ledger::VisitData visitData;
-  if (visitData.loadFromJson(visit_data))
-    ledger_->GetPublisherActivityFromUrl(window_id, visitData, publisher_blob);
+  ledger_->GetPublisherActivityFromUrl(
+      window_id, std::move(visit_data), publisher_blob);
 }
 
 // static
