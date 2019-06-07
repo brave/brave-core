@@ -1,0 +1,13 @@
+diff --git a/net/traffic_annotation/BUILD.gn b/net/traffic_annotation/BUILD.gn
+index 771970a0462592317bcc061c7763eb55e67458df..66e73e69e4cf1e79ece8f49f59ad0c30f87647b2 100644
+--- a/net/traffic_annotation/BUILD.gn
++++ b/net/traffic_annotation/BUILD.gn
+@@ -8,7 +8,7 @@ source_set("traffic_annotation") {
+ }
+ 
+ source_set("test_support") {
+-  testonly = true
++#  testonly = true
+   sources = [
+     "network_traffic_annotation_test_helper.h",
+   ]
