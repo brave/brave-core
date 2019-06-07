@@ -1,0 +1,13 @@
+diff --git a/chrome/test/chromedriver/BUILD.gn b/chrome/test/chromedriver/BUILD.gn
+index ab46b4e2de94f567e2f010f6badae325db24ac61..0929168b9f17b4aa2bdd6e721bf71af8909d90d0 100644
+--- a/chrome/test/chromedriver/BUILD.gn
++++ b/chrome/test/chromedriver/BUILD.gn
+@@ -304,7 +304,7 @@ source_set("lib") {
+ }
+ 
+ executable("chromedriver") {
+-  testonly = true
++#  testonly = true
+   sources = [
+     "server/chromedriver_server.cc",
+   ]
