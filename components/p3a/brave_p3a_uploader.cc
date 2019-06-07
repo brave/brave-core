@@ -57,6 +57,7 @@ void BraveP3AUploader::UploadLog(const std::string& compressed_log_data,
   resource_request->url = server_url_;
   resource_request->allow_credentials = false;
   resource_request->method = "POST";
+  resource_request->headers.SetHeader("X-Brave-P3A", "?1");
 
   url_loader_ = network::SimpleURLLoader::Create(std::move(resource_request),
                                                  GetNetworkTrafficAnnotation());
