@@ -23,9 +23,6 @@
   <message name="IDS_ONBOARDING_WELCOME_BOOKMARKS_REMOVED" desc="String read for accessibility to inform the user that several bookmarks were removed.">
     Bookmarks removed
   </message>
-  <message name="IDS_ONBOARDING_WELCOME_BOOKMARK_REPLACED" desc="String read for accessibility to inform the user a bookmark was replaced.">
-    Bookmark replaced
-  </message>
   <message name="IDS_ONBOARDING_DEFAULT_BROWSER_CHANGED" desc="text notifying users that their default browser is successfully changed to Brave">
     Brave is your default browser
   </message>
@@ -56,8 +53,8 @@
   </message>
 
   <!-- NUX NTP background selection module -->
-  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_DESCRIPTION" desc="Description of what this section in the onboarding workflow does. This section lets a user change the wallpaper for their 'start page', which refers to the New Tab Page">
-    Pick a wallpaper for your start page
+  <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_DESCRIPTION" desc="Description of what this section in the onboarding workflow does. This section lets a user change the background for the New Tab Page">
+    Pick a background
   </message>
   <message name="IDS_ONBOARDING_WELCOME_NTP_BACKGROUND_DEFAULT_TITLE" desc="Label for the default option when selecting a background. The default is to not have a background.">
     Default
@@ -117,7 +114,7 @@
 
   <!-- Sign-in view -->
   <message name="IDS_ONBOARDING_WELCOME_SIGNIN_VIEW_HEADER" desc="Header for the page that prompts user to sign in to chrome.">
-    Save your progress
+    Your Brave, Everywhere
   </message>
   <message name="IDS_ONBOARDING_WELCOME_SIGNIN_VIEW_SUB_HEADER" desc="Sub-header for the page that prompts user to sign in to chrome.">
     Sign in and turn on sync to get your bookmarks, passwords and more on all devices
