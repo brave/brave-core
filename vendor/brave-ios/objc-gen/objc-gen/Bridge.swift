@@ -89,7 +89,7 @@ struct Method: Hashable, Comparable {
     if name.hasPrefix("URL") || name.hasPrefix("URI") {
       s = name
     } else {
-      s = "\(name.first!.lowercased() + String(name.dropFirst()))"
+      s = "\(String(name.first!).lowercased() + String(name.dropFirst()))"
     }
     if !arguments.isEmpty {
       let args = arguments.map {
@@ -107,7 +107,7 @@ struct Method: Hashable, Comparable {
     if name.hasPrefix("URL") || name.hasPrefix("URI") {
       s.append(name)
     } else {
-      s.append("\(name.first!.lowercased() + String(name.dropFirst()))")
+      s.append("\(String(name.first!).lowercased() + String(name.dropFirst()))")
     }
     if !arguments.isEmpty {
       s.append(":\(arguments.map { $0 == arguments.first ? "(\($0.type))\($0.name)" : "\($0.objcProtocolFormattedName):(\($0.type))\($0.name)" }.joined(separator: " "))")

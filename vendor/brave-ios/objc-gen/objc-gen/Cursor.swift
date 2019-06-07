@@ -58,10 +58,6 @@ extension CXString: CustomDebugStringConvertible {
 
 extension Cursor: CustomDebugStringConvertible {
   var debugDescription: String {
-    let prettyPrinted = clang_getCursorPrettyPrinted(cursor, nil).stringAndDisposeAfter
-    if prettyPrinted.count > 0 {
-      return prettyPrinted
-    }
     return "\(clang_getCursorKindSpelling(kind).stringAndDisposeAfter) \(clang_getCursorDisplayName(cursor).stringAndDisposeAfter)"
   }
 }
