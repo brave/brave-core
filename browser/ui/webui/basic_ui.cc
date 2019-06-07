@@ -20,7 +20,7 @@
 content::WebUIDataSource* CreateBasicUIHTMLSource(
     Profile* profile,
     const std::string& name,
-    const GzippedGritResourceMap* resource_map,
+    const GritResourceMap* resource_map,
     size_t resource_map_size,
     int html_resource_id) {
   content::WebUIDataSource* source =
@@ -61,7 +61,7 @@ class BasicUI::BasicUIWebContentsObserver
 
 BasicUI::BasicUI(content::WebUI* web_ui,
                  const std::string& name,
-                 const GzippedGritResourceMap* resource_map,
+                 const GritResourceMap* resource_map,
                  size_t resource_map_size,
                  int html_resource_id)
     : WebUIController(web_ui) {
