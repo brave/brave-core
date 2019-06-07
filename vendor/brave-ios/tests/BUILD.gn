@@ -1,0 +1,51 @@
+import("//build/config/ios/rules.gni")
+
+config("test_config") {
+  include_dirs = [ "tests" ]
+  out_dir = rebase_path(root_out_dir)
+  # Look for frameworks in `root_out_dir` and add a runtime search path
+  # to the framework's directory
+  ldflags = [
+    "-F$out_dir",
+    "-B@rpath/Frameworks",
+  ]
+}
+
+ios_xctest_test("brave-rewards-ios-tests") {
+  testonly = true
+
+  deps = [
+    "//brave/vendor/brave-ios:brave-rewards-ios-framework",
+    ":embed-framework",
+  ]
+
+  configs += [ "//brave/vendor/brave-ios:internal_config" ]
+  configs += [ ":test_config" ]
+  configs += [ "//build/config/compiler:enable_arc" ]
+
+  libs = [
+    "CoreData.framework",
+    "BraveRewards.framework"
+  ]
+
+  sources = [
+    "main.mm",
+    "LedgerDatabaseTests.mm",
+    "DictionaryTransformTests.mm",
+    "VectorTransformTests.mm",
+    "TestFoo.mm",
+  ]
+}
+
+bundle_data("embed-framework") {
+  testonly = true
+  deps = [
+    "//brave/vendor/brave-ios:brave-rewards-ios-framework",
+  ]
+  sources = [
+    "$root_out_dir/BraveRewards.framework",
+  ]
+  outputs = [
+    "{{bundle_resources_dir}}/Frameworks/{{source_file_part}}",
+  ]
+}
