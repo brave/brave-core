@@ -194,9 +194,10 @@ std::string MediaReddit::GetUserId(const std::string& response) {
   if (response.empty()) {
     return std::string();
   }
-
-  std::string id(braveledger_media::ExtractData(
-      response, "hideFromRobots\":false,\"id\":\"t2_", "\""));
+  const std::string pattern = braveledger_media::ExtractData(
+      response, "hideFromRobots\":", "\"isEmployee\"");
+  std::string id = braveledger_media::ExtractData(
+      pattern, "\"id\":\"t2_", "\"");
 
   if (id.empty()) {
     id = braveledger_media::ExtractData(
