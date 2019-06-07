@@ -198,6 +198,7 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Brave-OS-specific strings -->
       <if expr="chromeos">
         <part file="chromeos_strings.grdp" />
+        <part file="os_settings_strings.grdp" />
       </if>
 
       <!-- Settings specific strings -->
@@ -223,6 +224,9 @@ are declared in tools/grit/grit_rule.gni.
       <!-- Strings that are only used when VR devices are supported -->
       <if expr="enable_vr">
         <part file="vr_strings.grdp" />
+        <if expr="not is_android">
+          <part file="xr_consent_ui_strings.grdp" />
+        </if>
       </if>
 
       <!-- TODO add all of your "string table" messages here.  Remember to
@@ -787,10 +791,10 @@ are declared in tools/grit/grit_rule.gni.
             Turn On Enhanced Spell Check
           </message>
           <message name="IDS_CONTENT_CONTEXT_SPELLING_BUBBLE_ENABLE" desc="In Title Case: The button text that allows integrating the spelling service of Brave.">
-            Enable
+            Turn On
           </message>
           <message name="IDS_CONTENT_CONTEXT_SPELLING_BUBBLE_DISABLE" desc="In Title Case: The button text that disallows integrating the spelling service of Brave.">
-            No Thanks
+            Cancel
           </message>
           <message name="IDS_CONTENT_CONTEXT_SPELLING_CHECKING" desc="The place-holder message shown while the Spelling service is checking text">
             Loading suggestion
@@ -845,7 +849,7 @@ are declared in tools/grit/grit_rule.gni.
       </if>
       <if expr="not is_macosx">
         <message name="IDS_CONTENT_CONTEXT_SPELLCHECK_MENU" desc="The name of the menu item that shows the submenu for spellcheck options">
-          &amp;Spellcheck
+          &amp;Spell check
         </message>
         <message name="IDS_CONTENT_CONTEXT_LANGUAGE_SETTINGS" desc="The name of the menu item that opens spellcheck settings in a new tab">
           &amp;Language settings
@@ -1095,15 +1099,18 @@ are declared in tools/grit/grit_rule.gni.
 
       <!-- App menu -->
       <if expr="chromeos">
-        <message name="IDS_TOGGLE_REQUEST_TABLET_SITE" desc="The toggle to request tablet site on a touch dev.">
-          Request tablet site
+        <message name="IDS_TOGGLE_REQUEST_TABLET_SITE" desc="The toggle to request mobile version site on a touch dev.">
+          Request mobile site
         </message>
       </if>
       <message name="IDS_HELP_MENU" desc="The text label of the Help sub-menu item in the wrench menu">
         H&amp;elp
       </message>
-      <message name="IDS_MANAGED_BY_ORG" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users">
+      <message name="IDS_MANAGED" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users">
         Managed by your organization
+      </message>
+      <message name="IDS_MANAGED_BY" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users">
+        Managed by <ph name="ENROLLMENT_DOMAIN">$1<ex>example.com</ex></ph>
       </message>
       <if expr="not use_titlecase">
         <message name="IDS_IMPORT_SETTINGS_MENU_LABEL" desc="In sentence case: The app menu label to import bookmarks and settings.">
@@ -1467,13 +1474,13 @@ are declared in tools/grit/grit_rule.gni.
         <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is not commonly downloaded and may be dangerous.
       </message>
       <message name="IDS_PROMPT_UNCOMMON_DOWNLOAD_CONTENT_IN_ADVANCED_PROTECTION" desc="Message shown to the user to validate the download when the download content is classified as uncommon by safebrowsing. This variant is shown when the user is enrolled in the Advanced Protection program.">
-        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> is not commonly downloaded and may be dangerous. You're defended by Advanced Protection.
+        <ph name="FILE_NAME">$1<ex>bla.exe</ex></ph> was blocked by Advanced Protection.
       </message>
       <message name="IDS_BLOCK_REASON_UNCOMMON_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is uncommon.">
         This file is not commonly downloaded and may be dangerous.
       </message>
       <message name="IDS_BLOCK_REASON_UNCOMMON_DOWNLOAD_IN_ADVANCED_PROTECTION" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it is uncommon. This variant is shown when the user is enrolled in the Advanced Protection program.">
-        This file is not commonly downloaded and may be dangerous. You're defended by Advanced Protection.
+        This file was blocked by Advanced Protection.
       </message>
       <message name="IDS_BLOCK_REASON_GENERIC_DOWNLOAD" desc="Message shown to the user on chrome://downloads page to explain that this download is blocked because it may be dangerous.">
         This type of file may harm your computer.
@@ -2887,6 +2894,20 @@ are declared in tools/grit/grit_rule.gni.
         Exit full screen
       </message>
 
+      <!-- Tab sharing infobar -->
+      <message name="IDS_TAB_SHARING_INFOBAR_SHARING_CURRENT_TAB_LABEL" desc="Text displayed on an infobar when current tab is being shared.">
+       Sharing this tab to <ph name="APP_NAME">$1<ex>meet.google.com</ex></ph>
+      </message>
+      <message name="IDS_TAB_SHARING_INFOBAR_SHARING_ANOTHER_TAB_LABEL" desc="Text displayed on an infobar when another (non-current) tab is being shared.">
+       Sharing <ph name="TAB_NAME">$1<ex>youtube.com</ex></ph> to <ph name="APP_NAME">$2<ex>meet.google.com</ex></ph>
+      </message>
+      <message name="IDS_TAB_SHARING_INFOBAR_SHARE_BUTTON" desc="Text displayed on the button to share current tab.">
+       Share this tab
+      </message>
+      <message name="IDS_TAB_SHARING_INFOBAR_STOP_BUTTON" desc="Text displayed on the button to stop sharing a tab.">
+       Stop
+      </message>
+
       <!-- Task Manager Window -->
       <if expr="not is_android">
         <if expr="not use_titlecase">
@@ -3144,15 +3165,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
       </if>
 
-      <message name="IDS_UTILITY_PROCESS_PROXY_RESOLVER_NAME" desc="The name of the utility process used for out-of-process V8 proxy resolution.">
-        V8 Proxy Resolver
-      </message>
       <if expr="chromeos">
         <message name="IDS_UTILITY_PROCESS_CUPS_IPP_PARSER_SERVICE_NAME" desc="The name of the utility process used for parsing IPP requests out-of-process.">
           CUPS IPP Parser
-        </message>
-        <message name="IDS_UTILITY_PROCESS_IME_SERVICE_NAME" desc="The name of the utility process providing the input methods.">
-          Brave OS Input Method
         </message>
       </if>
       <message name="IDS_UTILITY_PROCESS_FILE_UTILITY_NAME" desc="The name of the utility process used for various Brave specific file operations.">
@@ -3180,12 +3195,6 @@ are declared in tools/grit/grit_rule.gni.
       </if>
       <message name="IDS_UTILITY_PROCESS_NOOP_SERVICE_NAME" desc="The name of the utility process which does nothing, used for experimentation.">
         No-op Service
-      </message>
-      <message name="IDS_UTILITY_PROCESS_PATCH_NAME" desc="The name of the utility process used for patching file operations.">
-        Patch Service
-      </message>
-      <message name="IDS_UTILITY_PROCESS_UNZIP_NAME" desc="The name of the utility process used for unzipping files.">
-        Unzip Service
       </message>
 
       <!-- Theme preview infobar -->
@@ -3502,6 +3511,9 @@ are declared in tools/grit/grit_rule.gni.
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_INPUT" desc="Permission string for access to input.">
           Read and change anything you type
+        </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_LOGIN_SCREEN_UI" desc="Permission string for access to login screen UI.">
+          Display UI on the login screen
         </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_MANAGEMENT" desc="Permisson string for access to extension management.">
           Manage your apps, extensions, and themes
@@ -4118,6 +4130,15 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSIONS_MENU_CONTEXT_MENU_TOOLTIP" desc="Title of the context menu for individual extensions in the Extensions Menu">
         More actions
       </message>
+      <message name="IDS_EXTENSIONS_MENU_ACCESSING_SITE_DATA" desc="Header for section of extensions that are able to access the current site's data">
+        Accessing this site's data
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_WANTS_TO_ACCESS_SITE_DATA" desc="Header for section of extensions that want to access the current site's data">
+        Wants to access this site's data
+      </message>
+      <message name="IDS_EXTENSIONS_MENU_CANT_ACCESS_SITE_DATA" desc="Header for section of extensions that can't access the current site's data">
+        Can't access this site's data
+      </message>
 
       <!-- Settings API bubble -->
       <message name="IDS_EXTENSIONS_SETTINGS_API_TITLE_HOME_PAGE_BUBBLE" desc="Title of a bubble warning users that an extension has overridden their home page setting">
@@ -4368,26 +4389,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
-      <!-- Preview InfoBar -->
-      <message name="IDS_PREVIEWS_INFOBAR_SAVED_DATA_TITLE" desc="The text of the infobar notifying the user that mobile data usage was reduced by showing a preview version of the web page instead of the full page.">
-         Saved data
-      </message>
-      <message name="IDS_PREVIEWS_INFOBAR_FASTER_PAGE_TITLE" desc="The text of the infobar notifying the user that a preview page has been shown to load faster.">
-         Faster page loaded
-      </message>
-      <message name="IDS_PREVIEWS_INFOBAR_LINK" desc="The text of the link to load the original page from the infobar notifying the user that a preview page has been shown.">
-         Show original
-      </message>
-      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_MINUTES" desc="The desciption stating how old a preview version of a page is in minutes. This is shown on the infobar notifying the user that a preview page has been shown. The number of minutes will always be at least two so 'minutes' should be translated in the plural.">
+      <!-- Preview Stale Page UI -->
+      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_MINUTES" desc="The desciption stating how old a preview version of a page is in minutes. This is shown on the UI notifying the user that a preview page has been shown. The number of minutes will always be at least two so 'minutes' should be translated in the plural.">
          Updated <ph name="MINUTES">$1<ex>30</ex></ph> min ago
       </message>
-      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_ONE_HOUR" desc="The desciption stating a preview version of a page is one hour old. This is shown on the infobar notifying the user that a preview page has been shown.">
+      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_ONE_HOUR" desc="The desciption stating a preview version of a page is one hour old. This is shown on the UI notifying the user that a preview page has been shown.">
          Updated 1hr ago
       </message>
-      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_HOURS" desc="The desciption stating how old a preview version of a page is in hours. This is shown on the infobar notifying the user that a preview page has been shown.">
+      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_HOURS" desc="The desciption stating how old a preview version of a page is in hours. This is shown on the UI notifying the user that a preview page has been shown.">
          Updated <ph name="HOURS">$1<ex>4</ex></ph> hrs ago
       </message>
-      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_UPDATED_NOW" desc="The desciption stating that a preview version of a page was just updated. This is shown on the infobar notifying the user that a preview page has been shown.">
+      <message name="IDS_PREVIEWS_INFOBAR_TIMESTAMP_UPDATED_NOW" desc="The desciption stating that a preview version of a page was just updated. This is shown on the UI notifying the user that a preview page has been shown.">
          Updated just now
       </message>
 
@@ -4738,6 +4750,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Search or type web address
         </message>
       </if>
+      <message name="IDS_OMNIBOX_WHY_THIS_SUGGESTION" desc="The title of a menu entry and bubble that explains why this suggestion appears in the omnibox popup.">
+        Why this suggestion?
+      </message>
+      <message name="IDS_OMNIBOX_REMOVE_SUGGESTION" desc="The text of a context menu entry to delete an omnibox suggestion.">
+        Remove suggestion
+      </message>
+      <message name="IDS_OMNIBOX_REMOVE_SUGGESTION_BUBBLE_TITLE" desc="The title of a bubble to delete an omnibox suggestion.">
+        Remove suggestion?
+      </message>
+      <message name="IDS_OMNIBOX_REMOVE_SUGGESTION_BUBBLE_DESCRIPTION" desc="The description of a bubble to delete an omnibox suggestion.">
+        This page will also be removed from your history and <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> activity.
+      </message>
 
       <!-- NTP -->
       <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT" desc="The text displayed in the fakebox (on the New Tab page) when it is empty, and Brave is the default search engine.">
@@ -4881,6 +4905,45 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_CUSTOMIZE_BUTTON_LABEL" desc="The label for customize button on the New Tab Page.">
         Customize
       </message>
+      <message name="IDS_NTP_CUSTOMIZE_MENU_BACKGROUND_LABEL" desc="The label for the backgrounds option in the customization menu on the New Tab Page.">
+        Background
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_MENU_SHORTCUTS_LABEL" desc="The label for the shortcuts option in the customization menu on the New Tab Page.">
+        Shortcuts
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_MENU_COLOR_LABEL" desc="The label for the colors and themes option in the customization menu on the New Tab Page">
+        Color and theme
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_NO_BACKGROUND_LABEL" desc="The label for the 'No background' tile in the customization menu on the New Tab Page">
+        No background
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_UPLOAD_FROM_DEVICE_LABEL" desc="The label for the 'Upload from device' tile in the customization menu on the New Tab Page">
+        Upload from device
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_HIDE_SHORTCUTS_LABEL" desc="The label for the option to hide shortcuts in the customization menu on the New Tab Page">
+        Hide shortcuts
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_HIDE_SHORTCUTS_DESC" desc="The description for the option to hide shortcuts in the customization menu on the New Tab Page">
+        Don't show shortcuts on this page
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_MY_SHORTCUTS_LABEL" desc="The label for the option to show user selected shortcuts in the customization menu on the New Tab Page">
+        My shortcuts
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_MOST_VISITED_LABEL" desc="The label for the option to show most visited sites in the customization menu on the New Tab Page">
+        Most visited sites
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_MY_SHORTCUTS_DESC" desc="The description for the option to show user selected shortcuts in the customization menu on the New Tab Page">
+        Shortcuts are suggested based on websites you visit often
+      </message>
+      <message name="IDS_NTP_CUSTOMIZE_MOST_VISITED_DESC" desc="The description for the option to show most visited sites in the customization menu on the New Tab Page">
+        Shortcuts are curated by you
+      </message>
+
+      <if expr="is_android">
+        <message name="IDS_NTP_EXPLORE_SITES_TILE_TITLE" desc="A label for a button that when clicked takes the user to a tab that contains categorized links to websites that are popular in their country. [CHAR_LIMIT=12]">
+          Top sites
+        </message>
+      </if>
 
       <!--Tooltip strings-->
       <message name="IDS_TOOLTIP_BACK" desc="The tooltip for back button">
@@ -4982,6 +5045,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <!--Accessible name/action strings-->
       <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a private window">
         <ph name="WINDOW_TITLE">$1</ph> (Private)
+      </message>
+      <message name="IDS_ACCESSIBLE_GUEST_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a guest mode window">
+        <ph name="WINDOW_TITLE">$1</ph> (Guest)
       </message>
       <message name="IDS_ACCESSIBLE_WINDOW_TITLE_WITH_PROFILE_FORMAT" desc="The format for describing the accessible window title when the window is associated with a particular named profile.">
         <ph name="WINDOW_TITLE">$1<ex>Wikipedia - Brave</ex></ph> - <ph name="PROFILE_NAME">$2<ex>John Smith</ex></ph>
@@ -6145,13 +6211,34 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
       </if>
 
-      <!-- Self share item in different context menus. -->
+      <!-- Self share item in different entry points. -->
+      <message name="IDS_OMNIBOX_ICON_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in different context menus.">
+        Send
+      </message>
+      <message name="IDS_OMNIBOX_TOOLTIP_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in different context menus.">
+        Send this page
+      </message>
+      <message name="IDS_OMNIBOX_BUBBLE_ITEM_SUBTITLE_TODAY_SEND_TAB_TO_SELF" desc="The label of valid device button inside omnibox bubble, which shows the last activated time of a valid device.">
+        Active today
+      </message>
+      <message name="IDS_OMNIBOX_BUBBLE_ITEM_SUBTITLE_DAY_SEND_TAB_TO_SELF" desc="The label of valid device button inside omnibox bubble, which shows the last activated time of a valid device.">
+        Active <ph name="DEVICE_LAST_ACTIVATED_TIME">$1<ex>- 1 day ago</ex></ph> day ago
+      </message>
+      <message name="IDS_OMNIBOX_BUBBLE_ITEM_SUBTITLE_DAYS_SEND_TAB_TO_SELF" desc="The label of valid device button inside omnibox bubble, which shows the last activated time of a valid device.">
+        Active <ph name="DEVICE_LAST_ACTIVATED_TIME">$1<ex>- 3 days ago</ex></ph> days ago
+      </message>
+      <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF_SINGLE_TARGET" desc="The label for the different context menu items for sharing this tab to the single other valid target device.">
+        Send to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
+      </message>
       <if expr="not use_titlecase">
         <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in different context menus.">
           Send to your devices
         </message>
         <message name="IDS_LINK_MENU_SEND_TAB_TO_SELF" desc="The label of item for share this tab to other devices in content area link right click menu.">
           Send link to your devices
+        </message>
+        <message name="IDS_LINK_MENU_SEND_TAB_TO_SELF_SINGLE_TARGET" desc="The label for the link context menu item for sharing this tab to the single other valid target device">
+          Send link to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
         </message>
       </if>
       <if expr="use_titlecase">
@@ -6160,6 +6247,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_LINK_MENU_SEND_TAB_TO_SELF" desc="In Title Case: The label of item for share this tab to other devices in content area link right click menu.">
           Send Link to Your Devices
+        </message>
+        <message name="IDS_LINK_MENU_SEND_TAB_TO_SELF_SINGLE_TARGET" desc="The label for the link context menu item for sharing this tab to the single other valid target device">
+          Send Link to <ph name="DEVICE_NAME">$1<ex>Ted's Pixel2</ex></ph>
         </message>
       </if>
 
@@ -6299,13 +6389,19 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <!-- Managed UI on pages like chrome://settings and chrome://downloads -->
       <if expr="not is_android">
         <if expr="chromeos">
-          <message name="IDS_MANAGED_BY_ORG_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
+          <message name="IDS_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
+            Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
+          </message>
+          <message name="IDS_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (BraveOS)">
+            Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph><ph name="DEVICE_TYPE">$2<ex>Bravebook</ex></ph> is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$3<ex>example.com</ex></ph>
           </message>
         </if>
         <if expr="not chromeos">
-          <message name="IDS_MANAGED_BY_ORG_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
-            Your <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
+          <message name="IDS_MANAGED_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
+            Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by your organization
+          </message>
+          <message name="IDS_MANAGED_BY_WITH_HYPERLINK" desc="Message to end users in Enterprise/EDU, with a link for more info (non-BraveOS)">
+            Your <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph>browser is managed<ph name="END_LINK">&lt;/a&gt;</ph> by <ph name="ENROLLMENT_DOMAIN">$2<ex>example.com</ex></ph>
           </message>
         </if>
       </if>
@@ -7109,26 +7205,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_SYNC_NTP_SETUP_IN_PROGRESS" desc="The message to display in the New Tab Page sync section when the sync setup is underway.">
           Setup in progress...
         </message>
-        <!-- Sync Promo New Tab Page bubble strings -->
-        <message name="IDS_SYNC_PROMO_NTP_BUBBLE_MESSAGE" desc="The body of the sync promo NTP bubble.">
-          You're now signed in to <ph name="SHORT_PRODUCT_NAME">$1<ex>Brave</ex></ph>. Your bookmarks, history, and other settings are being synced with your Brave Account.
-        </message>
-        <if expr="not use_titlecase">
-          <message name="IDS_SYNC_PROMO_NTP_BUBBLE_OK" desc="The ok button in the sync promo NTP bubble. Clicking on the button will dismiss the bubble.">
-            OK
-          </message>
-          <message name="IDS_SYNC_PROMO_NTP_BUBBLE_ADVANCED" desc="The advanced link in the sync promo NTP bubble. Clicking the link will take the user to advanced settings.">
-            Advanced...
-          </message>
-        </if>
-        <if expr="use_titlecase">
-          <message name="IDS_SYNC_PROMO_NTP_BUBBLE_OK" desc="In title case. The ok button in the sync promo NTP bubble. Clicking on the button will dismiss the bubble.">
-            OK
-          </message>
-          <message name="IDS_SYNC_PROMO_NTP_BUBBLE_ADVANCED" desc="In title case. The advanced link in the sync promo NTP bubble. Clicking the link will take the user to advanced settings.">
-            Advanced...
-          </message>
-        </if>
 
         <!-- Spinner dialog for waiting sync backend to start up -->
         <message name="IDS_SYNC_SETUP_SPINNER_TITLE" desc="The title of the sync setup dialog showing spinner.">
@@ -7961,16 +8037,10 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_AUTO_SIGNIN_FIRST_RUN_OK" desc="The text of the OK button in the dialog during the autosign-in first run experience.">
           OK, Got It
         </message>
-        <message name="IDS_AUTO_SIGNIN_FIRST_RUN_TURN_OFF" desc="The text of the 'turn off' button in the dialog during the autosign-in first run experience.">
-          Turn Off
-        </message>
       </if>
       <if expr="not use_titlecase">
         <message name="IDS_AUTO_SIGNIN_FIRST_RUN_OK" desc="The text of the OK button in the dialog during the autosign-in first run experience.">
           OK, got it
-        </message>
-        <message name="IDS_AUTO_SIGNIN_FIRST_RUN_TURN_OFF" desc="The text of the 'turn off' button in the dialog during the autosign-in first run experience.">
-          Turn off
         </message>
       </if>
 
@@ -8436,29 +8506,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Web Store
       </message>
 
-      <!-- Extension Storage Monitor notification strings -->
-      <message name="IDS_EXTENSION_STORAGE_MONITOR_TITLE" desc="The title of the notification when high disk usage is detected for an app or extension.">
-        High disk usage detected
-      </message>
-      <message name="IDS_EXTENSION_STORAGE_MONITOR_TEXT" desc="The message of the notification when high disk usage is detected for an app or extension.">
-        <ph name="NAME">$1<ex>Brave Docs</ex></ph> is using <ph name="USAGE">$2<ex>500</ex></ph> MB of disk space.
-      </message>
-      <message name="IDS_EXTENSION_STORAGE_MONITOR_BUTTON_DISMISS_APP" desc="Caption for the button to suppress high disk usage notifications for an app.">
-        Don't warn again for this app
-      </message>
-      <message name="IDS_EXTENSION_STORAGE_MONITOR_BUTTON_DISMISS_EXTENSION" desc="Caption for the button to suppress high disk usage notifications for an extension.">
-        Don't warn again for this extension
-      </message>
-      <message name="IDS_EXTENSION_STORAGE_MONITOR_BUTTON_UNINSTALL_APP" desc="Caption for the button to uninstall an app when high disk usage is detected.">
-        Remove app
-      </message>
-      <message name="IDS_EXTENSION_STORAGE_MONITOR_BUTTON_UNINSTALL_EXTENSION" desc="Caption for the button to uninstall an extension when high disk usage is detected.">
-        Remove extension
-      </message>
-
       <!-- Desktop media picker UI for Desktop Capture API -->
       <message name="IDS_DESKTOP_MEDIA_PICKER_TITLE" desc="Title for the window picker dialog shown when desktop capture is requested by an app.">
         Share your screen
+      </message>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_TITLE_SCREEN_ONLY" desc="Title for the window picker dialog shown when desktop capture of the entire screen is requested by an app.">
+        Share your entire screen
+      </message>
+      <message name="IDS_DESKTOP_MEDIA_PICKER_TITLE_WINDOW_ONLY" desc="Title for the window picker dialog shown when desktop capture of an application window is requested by an app.">
+        Share an application window
       </message>
       <message name="IDS_DESKTOP_MEDIA_PICKER_TEXT" desc="Text for the window picker dialog shown when desktop capture is requested by an app to be used by the app itself.">
         <ph name="APP_NAME">$1<ex>Brave Hangouts</ex></ph> wants to share the contents of your screen. Choose what you'd like to share.
@@ -8875,9 +8931,6 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_BLUETOOTH_DEVICE_CHOOSER_PAIR_BUTTON_TEXT" desc="Label on the button that closes the Bluetooth chooser popup and pairs the selected device.">
         Pair
       </message>
-      <message name="IDS_DEVICE_CHOOSER_CANCEL_BUTTON_TEXT" desc="Label on the button that closes the chooser popup without selecting an option.">
-        Cancel
-      </message>
       <message name="IDS_DEVICE_CHOOSER_GET_HELP_LINK_WITH_SCANNING_STATUS" desc="This text is shown at the bottom of the chooser popup with a link to 'Get help'.">
         Get help<ph name="SCANNING_STATUS">$1<ex> while scanning for devices...</ex></ph>
       </message>
@@ -8906,6 +8959,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_USB_DEVICE_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the USB chooser popup and connects the selected device.">
       Connect
     </message>
+    <message name="IDS_DEVICE_CHOOSER_CANCEL_BUTTON_TEXT" desc="Label on the button that closes the chooser popup without selecting an option.">
+      Cancel
+    </message>
 
     <!-- Device Chooser Device Name Unknown -->
     <message name="IDS_DEVICE_CHOOSER_DEVICE_NAME_UNKNOWN_DEVICE_WITH_VENDOR_NAME" desc="String describing an unknown device by its vendor name.">
@@ -8913,6 +8969,23 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
     <message name="IDS_DEVICE_CHOOSER_DEVICE_NAME_UNKNOWN_DEVICE_WITH_VENDOR_ID_AND_PRODUCT_ID" desc="String describing a device when only numeric vendor and product IDs are available.">
       Unknown device [<ph name="VENDOR_ID">$1<ex>123</ex></ph>:<ph name="PRODUCT_ID">$2<ex>123</ex></ph>]
+    </message>
+
+    <!-- Bluetooth Scanning Prompt -->
+    <message name="IDS_BLUETOOTH_SCANNING_PROMPT_NO_DEVICES_FOUND_PROMPT" desc="The label shown to the user to inform them that no nearby Bluetooth devices were found using the requirements that the application provided.">
+      No nearby devices found.
+    </message>
+    <message name="IDS_BLUETOOTH_SCANNING_PROMPT_ORIGIN" desc="The label that is used to introduce Bluetooth scanning prompt details to the user when it is from a website.">
+      <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to scan for nearby Bluetooth devices, the following devices have been found:
+    </message>
+    <message name="IDS_BLUETOOTH_SCANNING_PROMPT_ALLOW_BUTTON_TEXT" desc="Label on the button that allows Bluetooth scanning.">
+      Allow
+    </message>
+    <message name="IDS_BLUETOOTH_SCANNING_PROMPT_BLOCK_BUTTON_TEXT" desc="Label on the button that blocks Bluetooth scanning.">
+      Block
+    </message>
+    <message name="IDS_BLUETOOTH_SCANNING_DEVICE_UNKNOWN" desc="Text to identify Bluetooth devices of unknown or unsupported class.">
+      Unknown or unsupported device (<ph name="DEVICE_ID">$1<ex>A1:B2:C3:D4:E5:F6</ex></ph>)
     </message>
 
     <!-- Device descriptions for devices defined by policy with wildcards. -->
@@ -8951,6 +9024,22 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
     </if>
 
+    <!-- HID (Human Interface Device) chooser -->
+    <if expr="not is_android">
+      <message name="IDS_HID_CHOOSER_PROMPT_ORIGIN" desc="The label that is used to introduce the Human Interface Device (HID) chooser details to the user in a popup when it is from a website.">
+        <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect to a HID device
+      </message>
+      <message name="IDS_HID_CHOOSER_PROMPT_EXTENSION_NAME" desc="The label that is used to introduce Human Interface Device (HID) chooser details to the user in a popup when it is from a Brave extension.">
+        "<ph name="CHROME_EXTENSION_NAME">$1<ex>Brave Extension Name</ex></ph>" wants to connect to a HID device
+      </message>
+      <message name="IDS_HID_CHOOSER_ITEM_WITHOUT_NAME" desc="User option displaying the vendor ID and product ID for a Human Interface Device (HID) without a device name.">
+        Unknown Device (Vendor: <ph name="VENDOR_ID">$1<ex>0x1234</ex></ph>, Product: <ph name="PRODUCT_ID">$2<ex>0xabcd</ex></ph>)
+      </message>
+      <message name="IDS_HID_CHOOSER_ITEM_WITH_NAME" desc="User option displaying the device name, vendor ID, and product ID for a Human Interface Device (HID).">
+        <ph name="DEVICE_NAME">$1<ex>Wireless Controller</ex></ph> (Vendor: <ph name="VENDOR_ID">$2<ex>0x1234</ex></ph>, Product: <ph name="PRODUCT_ID">$3<ex>0xabcd</ex></ph>)
+      </message>
+    </if>
+
     <!-- Brave IME API activated bubble. -->
     <message name="IDS_IME_API_ACTIVATED_WARNING" desc="The Warning info when an IME extension is trying to activate.">
       <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> extension may collect all the text you type, including personal data like passwords and credit card numbers. Do you want to use this extension?
@@ -8980,6 +9069,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_UTILITY_PROCESS_UTILITY_WIN_NAME" desc="The name of the utility process used to handle Windows utility operations.">
         Windows Utilities
       </message>
+      <message name="IDS_UTILITY_PROCESS_QUARANTINE_SERVICE_NAME" desc="The name of the utility process used to handle file quarantine.">
+        Quarantine Service
+    </message>
     </if>
 
     <!-- Framebust / Blocked Redirection intervention message -->
@@ -9288,7 +9380,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Find the 6-digit PIN on the back of your security key
       </message>
       <message name="IDS_WEBAUTHN_BLE_PIN_ENTRY_PIN_LABEL" desc="Label text. Displayed next to a text box where the user enters the PIN code (a 6-digit number) to pair a Bluetooth device.">
-        Pin
+        PIN
       </message>
       <message name="IDS_WEBAUTHN_BLE_PIN_ENTRY_NEXT" desc="Button text. The user clicks this button once they have entered the PIN code (a 6-digit number) into a text vbox, so that the pairing of the Bluetooth device can continue.">
         Next
@@ -9387,22 +9479,22 @@ Please help our engineers fix this problem. Tell us what happened right before y
         Name
       </message>
       <message name="IDS_WEBAUTHN_SELECT_ACCOUNT" desc="The title on a dialog where the user is expected to select an account from a list. For example, the list may include several identities, e.g. joe@gmail.com, mary@gmail.com, and the user has to select one to login as.">
-        Select account
+        Select an account to sign in
       </message>
-      <message name="IDS_WEBAUTHN_SELECT_ACCOUNT_DESC" desc="The description on a dialog where the user is expected to select an account from a list. For example, the list may include several identities, e.g. joe@gmail.com, mary@gmail.com, and the user has to select one to login as.">
-        Select an account to sign in:
+      <message name="IDS_WEBAUTHN_UNKNOWN_ACCOUNT" desc="Label shown to the user on the list of account names if the account stored does not have a name associated to it.">
+        Unknown account
       </message>
       <message name="IDS_WEBAUTHN_RESIDENT_KEY_PRIVACY" desc="A message included in dialogs when activating a security key (an external physical device for user authentication) may cause information about a site visit to be recorded on that security key. Since this is a privacy concern, a message is shown to the user.">
-        This will leave a record of your visit to <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> on your security key.
+        A record of your visit to this site will be kept on your security key.
       </message>
       <message name="IDS_WEBAUTHN_ERROR_MISSING_CAPABILITY_TITLE" desc="Title of the dialog informing the user that the security key (an external physical device for user authentication) that they selected does not support some capability that the site requested.">
         Your security key can't be used with this site
       </message>
-      <message name="IDS_WEBAUTHN_MISSING_RESIDENT_KEYS_DESC" desc="The description on a dialog informing the user that the security key (an external physical device for user authentication) that they selected does not support storing credentials, but the website demanded this feature">
-        That security key does not support internal storage of credentials, but that feature was requested.
-      </message>
-      <message name="IDS_WEBAUTHN_MISSING_USER_VERIFICATION_DESC" desc="The description on a dialog informing the user that the security key (an external physical device for user authentication) that they selected does not support any methods of identifying its owner, e.g. a fingerprint reader or a secret code (PIN).">
+      <message name="IDS_WEBAUTHN_ERROR_MISSING_CAPABILITY_DESC" desc="The description on a dialog informing the user that the security key (an external physical device for user authentication) that they selected does not support some capability that the site requested.">
         <ph name="WEBSITE"><ex>accounts.google.com</ex>$1</ph> may require a newer or different kind of security key
+      </message>
+      <message name="IDS_WEBAUTHN_STORAGE_FULL_DESC" desc="The description on a dialog informing the user that the security key (an external physical device for user authentication) that they selected does not have enough storage capacity to create the requested account.">
+        Your security key does not have enough space for any more accounts.
       </message>
       <message name="IDS_WEBAUTHN_REQUEST_ATTESTATION_PERMISSION_TITLE" desc="Title of a dialog informing the user that the website wants to see information that identifies the user's Security Key, such as make and model number. The 'make' of a device is the brand name of the manufacturer, e.g. Yubikey is a make of Security Key. The 'model' of a device is the specific product, e.g. Yubikey Neo is a model of Security Key.">
         Allow this site to see your security key?

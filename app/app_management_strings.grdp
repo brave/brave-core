@@ -14,7 +14,7 @@
      other {<ph name="APP_1">$1<ex>Gmail</ex></ph>, <ph name="APP_2">$2<ex>Youtube</ex></ph>, <ph name="APP_3">$3<ex>Calendar</ex></ph>, and <ph name="EXTRA_APPS">$4<ex>4</ex></ph> other apps}}
   </message>
   <message name="IDS_APP_MANAGEMENT_APP_LIST_TITLE" desc="Title of app list card on main app management page.">
-    Your apps
+    Manage your apps
   </message>
   <message name="IDS_APP_MANAGEMENT_BACK" desc="Label for button for going back to the previous page.">
     Back
@@ -48,6 +48,12 @@
   </message>
   <message name="IDS_APP_MANAGEMENT_PERMISSIONS" desc="Label for permissions section in the app settings page.">
     Permissions
+  </message>
+  <message name="IDS_APP_MANAGEMENT_MORE_PERMISSIONS" desc="Label for a link to more permissions for an app.">
+    More permissions
+  </message>
+  <message name="IDS_APP_MANAGEMENT_THIS_APP_CAN" desc="Label for permissions that a Brave app can use.">
+    This app can:
   </message>
   <message name="IDS_APP_MANAGEMENT_PIN_TO_SHELF" desc="Label for the pin to shelf button in the app settings page.">
     Pin to shelf
