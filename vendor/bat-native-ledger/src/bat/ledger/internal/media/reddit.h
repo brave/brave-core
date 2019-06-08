@@ -30,6 +30,10 @@ class Reddit : public ledger::LedgerCallbackHandler {
       uint64_t window_id,
       const ledger::VisitData& visit_data);
 
+  void SaveMediaInfo(
+      const std::map<std::string, std::string>& data,
+      ledger::PublisherInfoCallback callback);
+
  private:
   void OnMediaActivityError(
       const ledger::VisitData& visit_data,
@@ -68,6 +72,24 @@ class Reddit : public ledger::LedgerCallbackHandler {
       const std::string& publisher_key,
       ledger::Result result,
       ledger::PublisherInfoPtr info);
+
+  void OnMediaPublisherInfo(
+      const std::string& user_name,
+      ledger::PublisherInfoCallback callback,
+      ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
+
+  void SavePublisherInfo(
+      const std::string& user_name,
+      ledger::PublisherInfoCallback callback,
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
+      ledger::VisitDataPtr visit_data);
+
+  void OnRedditSaved(
+      ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
 
   static std::string GetUserNameFromUrl(const std::string& path);
 

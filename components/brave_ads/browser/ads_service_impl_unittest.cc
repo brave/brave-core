@@ -166,6 +166,10 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD1(FetchBalance, void(
       brave_rewards::FetchBalanceCallback callback));
+
+  MOCK_METHOD2(SaveRedditPublisherInfo,
+             void(const std::map<std::string, std::string>&,
+                  brave_rewards::SaveMediaInfoCallback));
 };
 
 class AdsServiceTest : public testing::Test {

@@ -222,6 +222,11 @@ std::string Reddit::GetPublisherName(const std::string& response) {
   return user_name;
 }
 
+void Reddit::OnRedditSaved(
+    ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info) {
+}
+
 void Reddit::OnUserPage(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
@@ -244,23 +249,16 @@ void Reddit::OnUserPage(
   new_visit_data.url = GetProfileUrl(user_name);
   new_visit_data.favicon_url = GetProfileImageUrl(response);
   new_visit_data.name = publisher_name.empty() ? user_name : publisher_name;
-
-  ledger_->SaveMediaVisit(
-    publisher_key,
-    new_visit_data,
-    0,
-    window_id,
-    std::bind(&Reddit::OnUserActivity,
+  SavePublisherInfo(
+      user_name,
+      std::bind(&Reddit::OnRedditSaved,
           this,
-          window_id,
-          visit_data,
-          user_id,
           _1,
-          _2));
-
-  if (!media_key.empty()) {
-    ledger_->SetMediaPublisherInfo(media_key, publisher_key);
-  }
+          _2),
+          response_status_code,
+          response,
+          headers,
+          ledger::VisitData::New(new_visit_data));
 }
 
 // static
@@ -280,6 +278,98 @@ std::string Reddit::GetProfileImageUrl(const std::string& response) {
   const std::string image_url(braveledger_media::ExtractData(
       response, "accountIcon\":\"", "?"));
   return image_url;  // old reddit does not use account icons
+}
+
+void Reddit::OnMediaPublisherInfo(
+    const std::string& user_name,
+    ledger::PublisherInfoCallback callback,
+    ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info) {
+  if (result != ledger::Result::LEDGER_OK &&
+      result != ledger::Result::NOT_FOUND) {
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
+  GURL url(REDDIT_USER_URL + ledger_->URIEncode(user_name));
+  if (!url.is_valid()) {
+    callback(ledger::Result::TIP_ERROR, std::move(publisher_info));
+    return;
+  }
+
+  if (!publisher_info || result == ledger::Result::NOT_FOUND) {
+    FetchDataFromUrl(url.spec(),
+        std::bind(&Reddit::SavePublisherInfo,
+          this,
+          user_name,
+          callback,
+          _1,
+          _2,
+          _3,
+          nullptr));
+  } else {
+    callback(result, std::move(publisher_info));
+  }
+}
+
+void Reddit::SavePublisherInfo(
+    const std::string& user_name,
+    ledger::PublisherInfoCallback callback,
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    ledger::VisitDataPtr visit_data) {
+  const std::string user_id = GetUserId(response);
+  const std::string publisher_key = GetPublisherKey(user_id);
+  const std::string url = GetProfileUrl(user_name);
+  const std::string favicon_url = GetProfileImageUrl(response);
+  const std::string media_key = GetMediaKey(user_name, REDDIT_MEDIA_TYPE);
+
+  if (publisher_key.empty()) {
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+      "Publisher key is missing for: " << media_key;
+    return;
+  }
+
+  if (!visit_data) {
+    visit_data = ledger::VisitData::New();
+    visit_data->provider = REDDIT_MEDIA_TYPE;
+    visit_data->url = url;
+    visit_data->favicon_url = favicon_url;
+    visit_data->name = user_name;
+  }
+
+  ledger_->SaveMediaVisit(publisher_key,
+                          *visit_data,
+                          0,
+                          0,
+                          callback);
+
+  if (!media_key.empty()) {
+    ledger_->SetMediaPublisherInfo(media_key, publisher_key);
+  }
+}
+
+void Reddit::SaveMediaInfo(
+    const std::map<std::string, std::string>& data,
+    ledger::PublisherInfoCallback callback) {
+  auto user_name = data.find("user_name");
+  if (user_name == data.end()) {
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
+
+  const std::string media_key =
+      braveledger_media::GetMediaKey(user_name->second, REDDIT_MEDIA_TYPE);
+
+  ledger_->GetMediaPublisherInfo(
+      media_key,
+      std::bind(&Reddit::OnMediaPublisherInfo,
+                this,
+                user_name->second,
+                callback,
+                _1,
+                _2));
 }
 
 }  // namespace braveledger_media

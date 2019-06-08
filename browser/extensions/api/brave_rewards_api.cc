@@ -119,6 +119,43 @@ BraveRewardsTipTwitterUserFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveRewardsTipRedditUserFunction::BraveRewardsTipRedditUserFunction()
+    : weak_factory_(this) {
+}
+
+BraveRewardsTipRedditUserFunction::~BraveRewardsTipRedditUserFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveRewardsTipRedditUserFunction::Run() {
+  std::unique_ptr<brave_rewards::TipRedditUser::Params> params(
+      brave_rewards::TipRedditUser::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  if (profile->IsOffTheRecord()) {
+    return RespondNow(
+        Error("Cannot tip Reddit user in a private context"));
+  }
+
+  RewardsService* rewards_service = RewardsServiceFactory::GetForProfile(
+      profile);
+
+  if (rewards_service) {
+    AddRef();
+    std::map<std::string, std::string> args;
+    args["user_name"] = params->reddit_meta_data.user_name;
+    args["post_text"] = params->reddit_meta_data.post_text;
+    args["post_rel_date"] = params->reddit_meta_data.post_rel_date;
+    rewards_service->SaveRedditPublisherInfo(
+        args,
+        base::Bind(
+            &BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved,
+            weak_factory_.GetWeakPtr()));
+  }
+
+  return RespondNow(NoArguments());
+}
+
 void BraveRewardsTipTwitterUserFunction::OnTwitterPublisherInfoSaved(
     std::unique_ptr<::brave_rewards::ContentSite> publisher_info) {
   std::unique_ptr<brave_rewards::TipTwitterUser::Params> params(
@@ -160,6 +197,50 @@ void BraveRewardsTipTwitterUserFunction::OnTwitterPublisherInfoSaved(
   params_dict->SetDictionary("tweetMetaData", std::move(tweet_meta_data_dict));
 
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
+
+  Release();
+}
+
+void BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved(
+    std::unique_ptr<::brave_rewards::ContentSite> publisher_info) {
+  std::unique_ptr<brave_rewards::TipRedditUser::Params> params(
+      brave_rewards::TipRedditUser::Params::Create(*args_));
+
+  if (!publisher_info) {
+    Release();
+    return;
+  }
+
+  content::WebContents* contents = nullptr;
+  if (!ExtensionTabUtil::GetTabById(
+          params->tab_id,
+          Profile::FromBrowserContext(browser_context()),
+          false,
+          nullptr,
+          nullptr,
+          &contents,
+          nullptr)) {
+      return;
+  }
+
+  std::unique_ptr<base::DictionaryValue> params_dict =
+      std::make_unique<base::DictionaryValue>();
+  params_dict->SetStringKey("publisherKey", publisher_info->id);
+  params_dict->SetStringKey("url", publisher_info->url);
+
+  base::Value reddit_meta_data_dict(base::Value::Type::DICTIONARY);
+  reddit_meta_data_dict.SetStringKey("name", publisher_info->name);
+  reddit_meta_data_dict.SetStringKey(
+      "userName", params->reddit_meta_data.user_name);
+  reddit_meta_data_dict.SetStringKey(
+      "postText", params->reddit_meta_data.post_text);
+  reddit_meta_data_dict.SetStringKey(
+      "postRelDate", params->reddit_meta_data.post_rel_date);
+  params_dict->SetPath(
+        "redditMetaData", std::move(reddit_meta_data_dict));
+
+  ::brave_rewards::OpenTipDialog(
+      contents, std::move(params_dict));
 
   Release();
 }
