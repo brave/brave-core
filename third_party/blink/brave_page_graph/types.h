@@ -32,7 +32,6 @@ class EdgeRequestStart;
 class GraphItem;
 class Node;
 class NodeHTML;
-class NodeRequester;
 
 typedef std::string ItemDesc;
 typedef std::string ItemName;

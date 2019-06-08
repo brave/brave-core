@@ -5,6 +5,7 @@
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script.h"
 #include <string>
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_actor.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
@@ -58,6 +59,10 @@ string NodeScript::GetUrl() const {
   return url_;
 }
 
+void NodeScript::AddInEdge(const EdgeExecute* const edge) {
+  NodeActor::AddInEdge(edge);
+}
+
 GraphMLXMLList NodeScript::GraphMLAttributes() const {
   GraphMLXMLList attrs;
   attrs.push_back(GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
@@ -78,7 +83,7 @@ GraphMLXMLList NodeScript::GraphMLAttributes() const {
 ItemDesc NodeScript::GetDescBody() const {
   return GetItemName() +
     " [ScriptId:" + to_string(script_id_) +
-    ", Type:"  + ScriptTypeToString(type_) + "]"; 
+    ", Type:"  + ScriptTypeToString(type_) + "]";
 }
 
 }  // namespace brave_page_graph
