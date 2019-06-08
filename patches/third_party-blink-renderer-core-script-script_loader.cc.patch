@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script/script_loader.cc b/third_party/blink/renderer/core/script/script_loader.cc
-index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..330e217fbf6d676ebc69d4b208dec70819674433 100644
+index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..4a60a71c472ea6188d0ce4b545bece45e9540d7e 100644
 --- a/third_party/blink/renderer/core/script/script_loader.cc
 +++ b/third_party/blink/renderer/core/script/script_loader.cc
 @@ -63,6 +63,14 @@
@@ -17,15 +17,17 @@ index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..330e217fbf6d676ebc69d4b208dec708
  namespace blink {
  
  ScriptLoader::ScriptLoader(ScriptElementBase* element,
-@@ -101,6 +109,7 @@ void ScriptLoader::Trace(blink::Visitor* visitor) {
+@@ -101,6 +109,9 @@ void ScriptLoader::Trace(blink::Visitor* visitor) {
    visitor->Trace(pending_script_);
    visitor->Trace(prepared_pending_script_);
    visitor->Trace(resource_keep_alive_);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  visitor->Trace(script_elm_);
++#endif
    PendingScriptClient::Trace(visitor);
  }
  
-@@ -569,6 +578,20 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -569,6 +580,20 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
        else
          encoding = element_document.Encoding();
  
@@ -46,7 +48,7 @@ index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..330e217fbf6d676ebc69d4b208dec708
        // <spec step="24.6.A">"classic"
        //
        // Fetch a classic script given url, settings object, options, classic
-@@ -647,6 +670,23 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
+@@ -647,6 +672,23 @@ bool ScriptLoader::PrepareScript(const TextPosition& script_start_position,
          // <spec step="25.2.A.3">The script is ready.</spec>
          //
          // Implemented by ClassicPendingScript.
@@ -70,7 +72,7 @@ index 3d166cbb0501974997b5b50a3b68ec501f3d1cbe..330e217fbf6d676ebc69d4b208dec708
          break;
        }
  
-@@ -959,4 +999,15 @@ ScriptLoader::GetPendingScriptIfControlledByScriptRunnerForCrossDocMove() {
+@@ -959,4 +1001,15 @@ ScriptLoader::GetPendingScriptIfControlledByScriptRunnerForCrossDocMove() {
    return pending_script_;
  }
  

@@ -32,7 +32,7 @@ EdgeCall::EdgeCall(PageGraph* const graph, NodeScript* const out_node,
 EdgeCall::~EdgeCall() {}
 
 ItemName EdgeCall::GetItemName() const {
-  return "EdgeCall#" + ::std::to_string(id_);
+  return "EdgeCall#" + to_string(id_);
 }
 
 const vector<const string>& EdgeCall::GetArguments() const {

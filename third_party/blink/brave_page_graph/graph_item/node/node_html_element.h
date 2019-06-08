@@ -10,7 +10,6 @@
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_requester.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
@@ -27,7 +26,7 @@ class EdgeRequestError;
 class EdgeRequestStart;
 class NodeResource;
 
-class NodeHTMLElement final : public NodeHTML, virtual public NodeRequester {
+class NodeHTMLElement final : public NodeHTML {
 friend class PageGraph;
 friend class NodeHTMLText;
 friend class NodeHTML;
