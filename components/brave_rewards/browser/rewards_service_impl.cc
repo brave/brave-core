@@ -2246,6 +2246,36 @@ void RewardsServiceImpl::SaveTwitterPublisherInfo(
                      std::move(callback)));
 }
 
+void RewardsServiceImpl::OnRedditPublisherInfoSaved(
+    SaveMediaInfoCallback callback,
+    int32_t result,
+    ledger::PublisherInfoPtr publisher) {
+  if (!Connected()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+
+  ledger::Result result_converted = static_cast<ledger::Result>(result);
+  std::unique_ptr<brave_rewards::ContentSite> site;
+
+  if (result_converted == ledger::Result::LEDGER_OK) {
+    site = std::make_unique<brave_rewards::ContentSite>(
+        PublisherInfoToContentSite(*publisher));
+  }
+  std::move(callback).Run(std::move(site));
+}
+
+void RewardsServiceImpl::SaveRedditPublisherInfo(
+    const std::map<std::string, std::string>& args,
+    SaveMediaInfoCallback callback) {
+  bat_ledger_->SaveMediaInfo(
+      "reddit",
+      mojo::MapToFlatMap(args),
+      base::BindOnce(&RewardsServiceImpl::OnRedditPublisherInfoSaved,
+                    AsWeakPtr(),
+                    std::move(callback)));
+}
+
 ledger::PublisherInfoList GetRecurringTipsOnFileTaskRunner(
     PublisherInfoDatabase* backend) {
   ledger::PublisherInfoList list;
