@@ -33,13 +33,19 @@ declare namespace RewardsTip {
     verified: boolean
   }
 
-  interface TweetMetaData {
-    name: string
+  type MediaMetaData = {
+    mediaType: 'twitter',
+    twitterName: string
     screenName: string
     userId: string
     tweetId: string
     tweetTimestamp: number
     tweetText: string
+  } | {
+    mediaType: 'reddit'
+    userName: string
+    postText: string
+    postRelDate: string
   }
 
   interface RedditMetaData {

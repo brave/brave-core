@@ -13,7 +13,7 @@ const isOldReddit = () => {
     redditUrl.hostname.startsWith('np')
 }
 
-const getOldRedditMetaData = (redditPost: Element): RewardsTip.RedditMetaData | null => {
+const getOldRedditMetaData = (redditPost: Element): RewardsTip.MediaMetaData | null => {
   if (!redditPost) {
     return null
   }
@@ -55,13 +55,14 @@ const getOldRedditMetaData = (redditPost: Element): RewardsTip.RedditMetaData | 
   }
 
   return {
+    mediaType: 'reddit',
     userName: userName,
     postText: postText || '',
     postRelDate: postRelDate || ''
   }
 }
 
-const getRedditMetaData = (redditPost: Element): RewardsTip.RedditMetaData | null => {
+const getRedditMetaData = (redditPost: Element): RewardsTip.MediaMetaData | null => {
   if (!redditPost) {
     return null
   }
@@ -117,6 +118,7 @@ const getRedditMetaData = (redditPost: Element): RewardsTip.RedditMetaData | nul
   }
 
   return {
+    mediaType: 'reddit',
     userName: userName,
     postText: postText || '',
     postRelDate: postRelDate
@@ -284,7 +286,7 @@ const createBraveTipActionForOld = (redditPost: Element) => {
   braveTipButton.onclick = function (event) {
     const redditMetaData = getOldRedditMetaData(redditPost)
     if (redditMetaData) {
-      const msg = { type: 'tipRedditUser', redditMetaData: redditMetaData }
+      const msg = { type: 'tipInlineMedia', mediaMetaData: redditMetaData }
       chrome.runtime.sendMessage(msg)
     }
     event.stopPropagation()
@@ -308,7 +310,7 @@ const createBraveTipAction = (redditPost: Element, isPost: boolean) => {
   braveTipButton.onclick = function (event) {
     const redditMetaData = getRedditMetaData(redditPost)
     if (redditMetaData) {
-      const msg = { type: 'tipRedditUser', redditMetaData: redditMetaData }
+      const msg = { type: 'tipInlineMedia', mediaMetaData: redditMetaData }
       chrome.runtime.sendMessage(msg)
     }
     event.stopPropagation()

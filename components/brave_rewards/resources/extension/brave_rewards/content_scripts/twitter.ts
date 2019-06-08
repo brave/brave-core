@@ -7,7 +7,7 @@ import { getMessage } from '../background/api/locale_api'
 
 let timeout: any = null
 
-const getTweetMetaData = (tweet: Element): RewardsTip.TweetMetaData | null => {
+const getTweetMetaData = (tweet: Element): RewardsTip.MediaMetaData | null => {
   if (!tweet) {
     return null
   }
@@ -27,7 +27,8 @@ const getTweetMetaData = (tweet: Element): RewardsTip.TweetMetaData | null => {
   const tweetTimestamp = tweetTimestampElements[0].getAttribute('data-time') || ''
 
   return {
-    name: tweet.getAttribute('data-name') || '',
+    mediaType: 'twitter',
+    twitterName: tweet.getAttribute('data-name') || '',
     screenName: tweet.getAttribute('data-screen-name') || '',
     userId: tweet.getAttribute('data-user-id') || '',
     tweetId: tweet.getAttribute('data-tweet-id') || '',
@@ -61,7 +62,7 @@ const createBraveTipAction = (tweet: Element) => {
   braveTipButton.onclick = function (event) {
     const tweetMetaData = getTweetMetaData(tweet)
     if (tweetMetaData) {
-      const msg = { type: 'tipTwitterUser', tweetMetaData: tweetMetaData }
+      const msg = { type: 'tipInlineMedia', mediaMetaData: tweetMetaData }
       chrome.runtime.sendMessage(msg)
     }
     event.stopPropagation()

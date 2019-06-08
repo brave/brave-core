@@ -396,14 +396,18 @@
             "type": "integer"
           },
           {
-            "name": "tweetMetaData",
+            "name": "mediaMetaData",
             "type": "object",
             "properties": {
+              "mediaType": {
+                "type": "string",
+                "description": "description used in UI to identify the media type"
+              },
               "userId": {
                 "type": "string",
                 "description": "User ID of tweet author"
               },
-              "name": {
+              "twitterName": {
                 "type": "string",
                 "description": "Name of tweet author"
               },
@@ -437,9 +441,13 @@
             "type": "integer"
           },
           {
-            "name": "redditMetaData",
+            "name": "mediaMetaData",
             "type": "object",
             "properties": {
+              "mediaType": {
+                "type": "string",
+                "description": "description used in UI to identify the media type"
+              },
               "userName": {
                 "type": "string",
                 "description": "User name of the Reddit post/comment author"

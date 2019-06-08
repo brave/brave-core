@@ -79,7 +79,8 @@ chrome.runtime.onConnect.addListener(function () {
   })
 })
 
-const tipTwitterUser = (tweetMetaData: RewardsTip.TweetMetaData) => {
+const tipTwitterMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
+  mediaMetaData.mediaType = 'twitter'
   chrome.tabs.query({
     active: true,
     windowId: chrome.windows.WINDOW_ID_CURRENT
@@ -91,11 +92,12 @@ const tipTwitterUser = (tweetMetaData: RewardsTip.TweetMetaData) => {
     if (tabId === undefined) {
       return
     }
-    chrome.braveRewards.tipTwitterUser(tabId, tweetMetaData)
+    chrome.braveRewards.tipTwitterUser(tabId, mediaMetaData)
   })
 }
 
-const tipRedditUser = (redditMetaData: RewardsTip.RedditMetaData) => {
+const tipRedditMedia = (mediaMetaData: RewardsTip.MediaMetaData) => {
+  mediaMetaData.mediaType = 'reddit'
   chrome.tabs.query({
     active: true,
     windowId: chrome.windows.WINDOW_ID_CURRENT
@@ -107,19 +109,22 @@ const tipRedditUser = (redditMetaData: RewardsTip.RedditMetaData) => {
     if (tabId === undefined) {
       return
     }
-    chrome.braveRewards.tipRedditUser(tabId, redditMetaData)
+    chrome.braveRewards.tipRedditUser(tabId, mediaMetaData)
   })
 }
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   const action = typeof msg === 'string' ? msg : msg.type
   switch (action) {
-    case 'tipTwitterUser': {
-      tipTwitterUser(msg.tweetMetaData)
-      return false
-    }
-    case 'tipRedditUser': {
-      tipRedditUser(msg.redditMetaData)
+    case 'tipInlineMedia': {
+      switch (msg.mediaMetaData.mediaType) {
+        case 'twitter':
+          tipTwitterMedia(msg.mediaMetaData)
+          break
+        case 'reddit':
+          tipRedditMedia(msg.mediaMetaData)
+          break
+      }
       return false
     }
     case 'rewardsEnabled': {

@@ -8,8 +8,7 @@ import { connect } from 'react-redux'
 
 // Components
 import TipSite from './tipSite'
-import TipTwitterUser from './tipTwitterUser'
-import TipRedditUser from './tipRedditUser'
+import TipMediaUser from './tipMediaUser'
 
 // Utils
 import * as rewardsActions from '../actions/tip_actions'
@@ -17,8 +16,7 @@ import * as rewardsActions from '../actions/tip_actions'
 interface TipDialogArgs {
   url: string
   publisherKey: string
-  tweetMetaData?: RewardsTip.TweetMetaData
-  redditMetaData?: RewardsTip.RedditMetaData
+  mediaMetaData?: RewardsTip.MediaMetaData
 }
 
 interface Props extends RewardsTip.ComponentProps {
@@ -30,28 +28,20 @@ export class App extends React.Component<Props, {}> {
     return this.props.actions
   }
 
-  getTipBanner = (url: string, publisher: RewardsTip.Publisher, tweetMetaData?: RewardsTip.TweetMetaData, redditMetaData?: RewardsTip.RedditMetaData) => {
-    if (tweetMetaData) {
-      return (
-        <TipTwitterUser
-          url={url}
-          publisher={publisher}
-          tweetMetaData={tweetMetaData}
-        />
-      )
-    } else if (redditMetaData) {
-      return (
-        <TipRedditUser
-          url={url}
-          publisher={publisher}
-          redditMetaData={redditMetaData}
-        />
-      )
-    } else {
+  getTipBanner = (url: string, publisher: RewardsTip.Publisher, mediaMetaData: RewardsTip.MediaMetaData | undefined) => {
+    if (!mediaMetaData) {
       return (
         <TipSite
           url={url}
           publisher={publisher}
+        />
+      )
+    } else {
+      return (
+        <TipMediaUser
+          url={url}
+          publisher={publisher}
+          mediaMetaData={mediaMetaData}
         />
       )
     }
@@ -65,8 +55,7 @@ export class App extends React.Component<Props, {}> {
     }
 
     const url = this.props.dialogArgs.url
-    const tweetMetaData = this.props.dialogArgs.tweetMetaData
-    const redditMetaData = this.props.dialogArgs.redditMetaData
+    const mediaMetaData = this.props.dialogArgs.mediaMetaData
     const publisherKey = this.props.dialogArgs.publisherKey
     const publisher = publishers[publisherKey]
 
@@ -76,7 +65,7 @@ export class App extends React.Component<Props, {}> {
 
     return (
       <div>
-        {this.getTipBanner(url, publisher, tweetMetaData, redditMetaData)}
+        {this.getTipBanner(url, publisher, mediaMetaData)}
       </div>
     )
   }

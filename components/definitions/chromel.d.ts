@@ -15,8 +15,8 @@ declare namespace chrome.dns {
 declare namespace chrome.braveRewards {
   const createWallet: () => {}
   const tipSite: (tabId: number, publisherKey: string) => {}
-  const tipTwitterUser: (tabId: number, tweetMetaData: RewardsTip.TweetMetaData) => {}
-  const tipRedditUser: (tabId: number, redditMetaData: RewardsTip.RedditMetaData) => {}
+  const tipTwitterUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
+  const tipRedditUser: (tabId: number, mediaMetaData: RewardsTip.MediaMetaData) => {}
   const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
   const getWalletProperties: () => {}
   const getCurrentReport: () => {}

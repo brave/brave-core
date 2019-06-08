@@ -2214,39 +2214,7 @@ void RewardsServiceImpl::SaveRecurringTip(
                      AsWeakPtr()));
 }
 
-void RewardsServiceImpl::OnTwitterPublisherInfoSaved(
-    SaveMediaInfoCallback callback,
-    int32_t result,
-    ledger::PublisherInfoPtr publisher) {
-  if (!Connected()) {
-    std::move(callback).Run(nullptr);
-    return;
-  }
-  if (Connected()) {
-    ledger::Result result_converted = static_cast<ledger::Result>(result);
-    std::unique_ptr<brave_rewards::ContentSite> site;
-
-    if (result_converted == ledger::Result::LEDGER_OK) {
-      site = std::make_unique<brave_rewards::ContentSite>(
-          PublisherInfoToContentSite(*publisher));
-    }
-
-    std::move(callback).Run(std::move(site));
-  }
-}
-
-void RewardsServiceImpl::SaveTwitterPublisherInfo(
-      const std::map<std::string, std::string>& args,
-    SaveMediaInfoCallback callback) {
-  bat_ledger_->SaveMediaInfo(
-      "twitter",
-      mojo::MapToFlatMap(args),
-      base::BindOnce(&RewardsServiceImpl::OnTwitterPublisherInfoSaved,
-                     AsWeakPtr(),
-                     std::move(callback)));
-}
-
-void RewardsServiceImpl::OnRedditPublisherInfoSaved(
+void RewardsServiceImpl::OnMediaInlineInfoSaved(
     SaveMediaInfoCallback callback,
     int32_t result,
     ledger::PublisherInfoPtr publisher) {
@@ -2265,13 +2233,14 @@ void RewardsServiceImpl::OnRedditPublisherInfoSaved(
   std::move(callback).Run(std::move(site));
 }
 
-void RewardsServiceImpl::SaveRedditPublisherInfo(
+void RewardsServiceImpl::SaveInlineMediaInfo(
+    const std::string& media_type,
     const std::map<std::string, std::string>& args,
     SaveMediaInfoCallback callback) {
   bat_ledger_->SaveMediaInfo(
-      "reddit",
+      media_type,
       mojo::MapToFlatMap(args),
-      base::BindOnce(&RewardsServiceImpl::OnRedditPublisherInfoSaved,
+      base::BindOnce(&RewardsServiceImpl::OnMediaInlineInfoSaved,
                     AsWeakPtr(),
                     std::move(callback)));
 }

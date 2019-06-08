@@ -106,10 +106,11 @@ BraveRewardsTipTwitterUserFunction::Run() {
   if (rewards_service) {
     AddRef();
     std::map<std::string, std::string> args;
-    args["user_id"] = params->tweet_meta_data.user_id;
-    args["name"] = params->tweet_meta_data.name;
-    args["screen_name"] = params->tweet_meta_data.screen_name;
-    rewards_service->SaveTwitterPublisherInfo(
+    args["user_id"] = params->media_meta_data.user_id;
+    args["twitter_name"] = params->media_meta_data.twitter_name;
+    args["screen_name"] = params->media_meta_data.screen_name;
+    rewards_service->SaveInlineMediaInfo(
+        params->media_meta_data.media_type,
         args,
         base::Bind(&BraveRewardsTipTwitterUserFunction::
                    OnTwitterPublisherInfoSaved,
@@ -143,10 +144,11 @@ ExtensionFunction::ResponseAction BraveRewardsTipRedditUserFunction::Run() {
   if (rewards_service) {
     AddRef();
     std::map<std::string, std::string> args;
-    args["user_name"] = params->reddit_meta_data.user_name;
-    args["post_text"] = params->reddit_meta_data.post_text;
-    args["post_rel_date"] = params->reddit_meta_data.post_rel_date;
-    rewards_service->SaveRedditPublisherInfo(
+    args["user_name"] = params->media_meta_data.user_name;
+    args["post_text"] = params->media_meta_data.post_text;
+    args["post_rel_date"] = params->media_meta_data.post_rel_date;
+    rewards_service->SaveInlineMediaInfo(
+        params->media_meta_data.media_type,
         args,
         base::Bind(
             &BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved,
@@ -184,17 +186,20 @@ void BraveRewardsTipTwitterUserFunction::OnTwitterPublisherInfoSaved(
   params_dict->SetString("publisherKey", publisher_info->id);
   params_dict->SetString("url", publisher_info->url);
 
-  auto tweet_meta_data_dict = std::make_unique<base::DictionaryValue>();
-  tweet_meta_data_dict->SetString("name", publisher_info->name);
-  tweet_meta_data_dict->SetString("screenName",
-                                  params->tweet_meta_data.screen_name);
-  tweet_meta_data_dict->SetString("userId", params->tweet_meta_data.user_id);
-  tweet_meta_data_dict->SetString("tweetId", params->tweet_meta_data.tweet_id);
-  tweet_meta_data_dict->SetInteger("tweetTimestamp",
-                                   params->tweet_meta_data.tweet_timestamp);
-  tweet_meta_data_dict->SetString("tweetText",
-                                  params->tweet_meta_data.tweet_text);
-  params_dict->SetDictionary("tweetMetaData", std::move(tweet_meta_data_dict));
+  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
+  media_meta_data_dict.SetStringKey("twitter_name", publisher_info->name);
+  media_meta_data_dict.SetStringKey("mediaType",
+                                  params->media_meta_data.media_type);
+  media_meta_data_dict.SetStringKey("screenName",
+                                  params->media_meta_data.screen_name);
+  media_meta_data_dict.SetStringKey("userId", params->media_meta_data.user_id);
+  media_meta_data_dict.SetStringKey("tweetId",
+                                  params->media_meta_data.tweet_id);
+  media_meta_data_dict.SetDoubleKey("tweetTimestamp",
+                                  params->media_meta_data.tweet_timestamp);
+  media_meta_data_dict.SetStringKey("tweetText",
+                                  params->media_meta_data.tweet_text);
+  params_dict->SetPath("mediaMetaData", std::move(media_meta_data_dict));
 
   ::brave_rewards::OpenTipDialog(contents, std::move(params_dict));
 
@@ -213,31 +218,30 @@ void BraveRewardsTipRedditUserFunction::OnRedditPublisherInfoSaved(
 
   content::WebContents* contents = nullptr;
   if (!ExtensionTabUtil::GetTabById(
-          params->tab_id,
-          Profile::FromBrowserContext(browser_context()),
-          false,
-          nullptr,
-          nullptr,
-          &contents,
-          nullptr)) {
-      return;
+        params->tab_id,
+        Profile::FromBrowserContext(browser_context()),
+        false,
+        nullptr,
+        nullptr,
+        &contents,
+        nullptr)) {
+    return;
   }
 
-  std::unique_ptr<base::DictionaryValue> params_dict =
-      std::make_unique<base::DictionaryValue>();
-  params_dict->SetStringKey("publisherKey", publisher_info->id);
-  params_dict->SetStringKey("url", publisher_info->url);
+  auto params_dict = std::make_unique<base::DictionaryValue>();
+  params_dict->SetString("publisherKey", publisher_info->id);
+  params_dict->SetString("url", publisher_info->url);
 
-  base::Value reddit_meta_data_dict(base::Value::Type::DICTIONARY);
-  reddit_meta_data_dict.SetStringKey("name", publisher_info->name);
-  reddit_meta_data_dict.SetStringKey(
-      "userName", params->reddit_meta_data.user_name);
-  reddit_meta_data_dict.SetStringKey(
-      "postText", params->reddit_meta_data.post_text);
-  reddit_meta_data_dict.SetStringKey(
-      "postRelDate", params->reddit_meta_data.post_rel_date);
-  params_dict->SetPath(
-        "redditMetaData", std::move(reddit_meta_data_dict));
+  base::Value media_meta_data_dict(base::Value::Type::DICTIONARY);
+  media_meta_data_dict.SetStringKey("mediaType",
+                                  params->media_meta_data.media_type);
+  media_meta_data_dict.SetStringKey("userName",
+                                  params->media_meta_data.user_name);
+  media_meta_data_dict.SetStringKey("postText",
+                                  params->media_meta_data.post_text);
+  media_meta_data_dict.SetStringKey("postRelDate",
+                                  params->media_meta_data.post_rel_date);
+  params_dict->SetPath("mediaMetaData", std::move(media_meta_data_dict));
 
   ::brave_rewards::OpenTipDialog(
       contents, std::move(params_dict));
