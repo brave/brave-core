@@ -16,6 +16,7 @@
 #include "build/build_config.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/common/content_client.h"
 #include "content/public/common/content_features.h"
 #include "content/public/common/url_constants.h"
 #include "ui/base/layout.h"
@@ -34,11 +35,7 @@ using namespace content;
 
 namespace {
 
-struct IdrGzipped {
-  int idr;
-  bool gzipped;
-};
-using ResourcesMap = std::unordered_map<std::string, IdrGzipped>;
+using ResourcesMap = std::unordered_map<std::string, int>;
 
 const std::map<std::string, std::string> CreatePathPrefixAliasesMap() {
   // Map of GRD-relative path prefixes to incoming request path, e.g.
@@ -52,10 +49,8 @@ const std::map<std::string, std::string> CreatePathPrefixAliasesMap() {
 
 void AddResource(const std::string& path,
                  int resource_id,
-                 bool gzipped,
                  ResourcesMap* resources_map) {
-  IdrGzipped idr_gzipped = {resource_id, gzipped};
-  if (!resources_map->insert(std::make_pair(path, idr_gzipped)).second)
+  if (!resources_map->insert(std::make_pair(path, resource_id)).second)
     NOTREACHED() << "Redefinition of '" << path << "'";
 }
 
@@ -66,14 +61,14 @@ void AddResourcesToMap(ResourcesMap* resources_map) {
   for (size_t i = 0; i < kBraveWebuiResourcesSize; ++i) {
     const auto& resource = kBraveWebuiResources[i];
 
-    AddResource(resource.name, resource.value, resource.gzipped, resources_map);
+    AddResource(resource.name, resource.value, resources_map);
 
     for (auto it = aliases.begin(); it != aliases.end(); ++it) {
       if (base::StartsWith(resource.name, it->first,
                            base::CompareCase::SENSITIVE)) {
         std::string resource_name(resource.name);
         AddResource(it->second + resource_name.substr(it->first.length()),
-                    resource.value, resource.gzipped, resources_map);
+                    resource.value, resources_map);
       }
     }
   }
@@ -94,7 +89,7 @@ const ResourcesMap& GetResourcesMap() {
 int GetIdrForPath(const std::string& path) {
   const ResourcesMap& resources_map = GetResourcesMap();
   auto it = resources_map.find(path);
-  return it != resources_map.end() ? it->second.idr : -1;
+  return it != resources_map.end() ? it->second : -1;
 }
 
 }  // namespace
@@ -200,9 +195,10 @@ BraveSharedResourcesDataSource::GetAccessControlAllowOriginForOrigin(
 }
 
 bool BraveSharedResourcesDataSource::IsGzipped(const std::string& path) const {
-  auto it = GetResourcesMap().find(path);
-  DCHECK(it != GetResourcesMap().end()) << "missing shared resource: " << path;
-  return it != GetResourcesMap().end() ? it->second.gzipped : false;
+  // Cannot access GetContentClient() from here as that is //content/public
+  // only. Therefore cannot access ContentClient::IsDataResourceGzipped, so go
+  // to the bundle directly.
+  return ui::ResourceBundle::GetSharedInstance().IsGzipped(GetIdrForPath(path));
 }
 
 }  // namespace content
