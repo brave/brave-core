@@ -65,12 +65,12 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     last_shown_tab_id_(-1),
     last_pub_load_timer_id_(0u),
     last_grant_check_timer_id_(0u) {
-  // Ensure ThreadPool is initialized before creating the task runner for
-  // ios.
-  if (!base::ThreadPool::GetInstance()) {
-    base::ThreadPool::CreateAndStartWithDefaultParams("bat_ledger");
+  // Ensure ThreadPoolInstance is initialized before creating the task runner
+  // for ios.
+  if (!base::ThreadPoolInstance::Get()) {
+    base::ThreadPoolInstance::CreateAndStartWithDefaultParams("bat_ledger");
 
-    DCHECK(base::ThreadPool::GetInstance());
+    DCHECK(base::ThreadPoolInstance::Get());
     initialized_task_scheduler_ = true;
   }
 
@@ -81,8 +81,8 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
 
 LedgerImpl::~LedgerImpl() {
   if (initialized_task_scheduler_) {
-    DCHECK(base::ThreadPool::GetInstance());
-    base::ThreadPool::GetInstance()->Shutdown();
+    DCHECK(base::ThreadPoolInstance::Get());
+    base::ThreadPoolInstance::Get()->Shutdown();
   }
 }
 
