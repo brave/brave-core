@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..5a9922074263a45fe3adf489c3fbf51d8407b08e 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..11e36aa7936324569b51171234008feacf373474 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -310,6 +310,11 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
@@ -25,7 +25,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..5a9922074263a45fe3adf489c3fbf51d
  }
  
  Document::~Document() {
-@@ -778,8 +787,26 @@ Document::~Document() {
+@@ -778,8 +787,33 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -39,12 +39,19 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..5a9922074263a45fe3adf489c3fbf51d
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +brave_page_graph::PageGraph* Document::GetPageGraph() {
-+  if (page_graph_ == nullptr &&
-+      IsHTMLDocument() &&
-+      Url().ProtocolIsInHTTPFamily()) {
-+    page_graph_ = new brave_page_graph::PageGraph();
-+    GetIsolate()->SetPageGraph(page_graph_);
++  if (page_graph_ != nullptr) {
++    return page_graph_;
 +  }
++
++  const Document& top_doc = TopDocument();
++
++  if (top_doc.IsHTMLDocument() == false ||
++      top_doc.Url().ProtocolIsInHTTPFamily() == false) {
++    return nullptr;
++  }
++
++  page_graph_ = new brave_page_graph::PageGraph();
++  GetIsolate()->SetPageGraph(page_graph_);
 +  return page_graph_;
 +}
 +#endif

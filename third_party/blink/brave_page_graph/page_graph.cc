@@ -18,6 +18,9 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+
+#include "third_party/blink/renderer/core/dom/document.h"
+
 #include "brave/third_party/blink/brave_page_graph/logging.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_set.h"
@@ -218,6 +221,13 @@ void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
 void PageGraph::RegisterHTMLElementNodeRemoved(const DOMNodeId node_id) {
   PG_LOG("RegisterHTMLElementNodeRemoved) node id: " + to_string(node_id));
 
+  if (element_nodes_.count(node_id) == 0) {
+    string local_node_name(blink::DOMNodeIds::NodeForId(node_id)->nodeName().Utf8().data());
+    PG_LOG("looks like we're missing: " + local_node_name);
+    string local_url(blink::DOMNodeIds::NodeForId(node_id)->GetDocument().Url().GetString().Utf8().data());
+    PG_LOG("We're in frame: " + local_url);
+    return;
+  }
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   NodeHTMLElement* const removed_node = element_nodes_.at(node_id);
 
