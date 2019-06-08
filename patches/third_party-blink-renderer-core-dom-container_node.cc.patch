@@ -56,19 +56,22 @@ index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b5
      // As an optimization we don't notify leaf nodes when when inserting
      // into detached subtrees that are not in a shadow tree.
      if (!isConnected() && !IsInShadowTree() && !node.IsContainerNode())
-@@ -952,6 +992,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
+@@ -952,6 +992,22 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
      // As an optimization we skip notifying Text nodes and other leaf nodes
      // of removal when they're not in the Document tree and not in a shadow root
      // since the virtual call to removedFrom is not needed.
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+    if (GetDocument().GetPageGraph() != nullptr) {
-+      const NodeType node_type = node.getNodeType();
-+      if (node_type == kElementNode || node_type == kDocumentFragmentNode) {
-+        GetDocument().GetPageGraph()->RegisterHTMLElementNodeRemoved(
-+          DOMNodeIds::IdForNode(&node));
-+      } else {
-+        GetDocument().GetPageGraph()->RegisterHTMLTextNodeRemoved(
-+          DOMNodeIds::IdForNode(&node));
++    {
++      ::brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
++      if (page_graph != nullptr) {
++        const NodeType node_type = node.getNodeType();
++        const DOMNodeId node_id = DOMNodeIds::IdForNode(&node);
++        LOG_ASSERT(GetDocument() == node.GetDocument());
++        if (node_type == kElementNode || node_type == kDocumentFragmentNode) {
++          page_graph->RegisterHTMLElementNodeRemoved(node_id);
++        } else {
++          page_graph->RegisterHTMLTextNodeRemoved(node_id);
++        }
 +      }
 +    }
 +#endif

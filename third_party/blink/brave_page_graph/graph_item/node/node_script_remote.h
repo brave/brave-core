@@ -7,42 +7,30 @@
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_NODE_NODE_SCRIPT_H_
 
 #include <string>
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_actor.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
 
-class EdgeExecute;
+class EdgeImport;
+class NodeScript;
 class PageGraph;
 
-class NodeScript : public NodeActor {
+class NodeScriptRemote : public NodeScript {
 friend class PageGraph;
  public:
-  NodeScript() = delete;
-  ~NodeScript() override;
+  NodeScriptRemote() = delete;
+  ~NodeScriptRemote() override;
   ItemName GetItemName() const override;
-  ScriptId GetScriptId() const;
-  ScriptType GetScriptType() const;
-  bool IsScript() const override;
-  bool IsInline() const;
-  std::string GetUrl() const;
 
-  void AddInEdge(const EdgeExecute* const edge);
   void AddInEdge(const Edge* const edge) = delete;
-  using NodeActor::AddOutEdge;
+  void AddInEdge(const EdgeImport* const edge) override;
+  using NodeScript::AddOutEdge;
 
  protected:
-  NodeScript(PageGraph* const graph, const ScriptId script_id,
-    const ScriptType type);
-  NodeScript(PageGraph* const graph, const ScriptId script_id,
-    const ScriptType type, const std::string& url);
+  NodeScriptRemote(PageGraph* const graph, const NodeScript* const script_node);
   ItemDesc GetDescBody() const override;
   GraphMLXMLList GraphMLAttributes() const override;
-
-  const ScriptId script_id_;
-  const ScriptType type_;
-  const std::string url_;
-  const bool is_inline_;
 };
 
 }  // namespace brave_page_graph
