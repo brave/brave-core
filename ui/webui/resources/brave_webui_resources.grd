@@ -5,8 +5,8 @@
       <emit emit_type='prepend'></emit>
     </output>
     <output filename="grit/brave_webui_resources_map.cc"
-            type="gzipped_resource_file_map_source" />
-    <output filename="grit/brave_webui_resources_map.h" type="gzipped_resource_map_header" />
+            type="resource_file_map_source" />
+    <output filename="grit/brave_webui_resources_map.h" type="resource_map_header" />
     <output filename="brave_webui_resources.pak" type="data_package" />
   </outputs>
   <release seq="1">
