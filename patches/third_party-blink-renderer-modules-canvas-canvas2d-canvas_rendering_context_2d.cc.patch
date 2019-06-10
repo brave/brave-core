@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
-index 904f5dd231dec422684528e8f8bc2b5e7f6e348e..bebb0065e02265ce950a24aacdf85b2f91ba16aa 100644
+index 904f5dd231dec422684528e8f8bc2b5e7f6e348e..ea4d3f55e94f0f448605b3a3bb874c2d178621b4 100644
 --- a/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 +++ b/third_party/blink/renderer/modules/canvas/canvas2d/canvas_rendering_context_2d.cc
 @@ -33,6 +33,7 @@
@@ -15,7 +15,7 @@ index 904f5dd231dec422684528e8f8bc2b5e7f6e348e..bebb0065e02265ce950a24aacdf85b2f
      return MakeGarbageCollected<TextMetrics>();
  
 +  if (!AllowFingerprinting(canvas()->GetDocument().GetFrame()))
-+    return TextMetrics::Create();
++    return MakeGarbageCollected<TextMetrics>();
 +
    canvas()->GetDocument().UpdateStyleAndLayoutTreeForNode(canvas());
  
