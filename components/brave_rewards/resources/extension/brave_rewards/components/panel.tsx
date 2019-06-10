@@ -570,7 +570,7 @@ export class Panel extends React.Component<Props, State> {
               showUnVerified={!publisher.verified}
               acEnabled={enabledAC}
               donationAmounts={tipAmounts}
-              moreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
+              moreLink={'https://brave.com/faq/#unclaimed-funds'}
               onRefreshPublisher={this.refreshPublisher}
               refreshingPublisher={this.state.refreshingPublisher}
               publisherRefreshed={this.state.publisherRefreshed}
@@ -580,7 +580,7 @@ export class Panel extends React.Component<Props, State> {
           <WalletSummary
             compact={true}
             reservedAmount={pendingTotal}
-            reservedMoreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
+            reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
             {...this.getWalletSummary()}
           />
         </WalletSummarySlider>
