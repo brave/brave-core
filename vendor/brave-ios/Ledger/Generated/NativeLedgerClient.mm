@@ -31,9 +31,6 @@ void NativeLedgerClient::GetActivityInfoList(uint32_t start, uint32_t limit, led
 void NativeLedgerClient::GetCountryCodes(const std::vector<std::string> & countries, ledger::GetCountryCodesCallback callback) {
   [bridge_ getCountryCodes:countries callback:callback];
 }
-void NativeLedgerClient::GetGrantCaptcha(const std::string & promotion_id, const std::string & promotion_type) {
-  [bridge_ getGrantCaptcha:promotion_id promotionType:promotion_type];
-}
 void NativeLedgerClient::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
   [bridge_ getOneTimeTips:callback];
 }

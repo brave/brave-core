@@ -16,7 +16,6 @@
 - (std::string)generateGUID;
 - (void)getActivityInfoList:(uint32_t)start limit:(uint32_t)limit filter:(ledger::ActivityInfoFilter)filter callback:(ledger::PublisherInfoListCallback)callback;
 - (void)getCountryCodes:(const std::vector<std::string> &)countries callback:(ledger::GetCountryCodesCallback)callback;
-- (void)getGrantCaptcha:(const std::string &)promotion_id promotionType:(const std::string &)promotion_type;
 - (void)getOneTimeTips:(ledger::PublisherInfoListCallback)callback;
 - (void)getPendingContributions:(const ledger::PendingContributionInfoListCallback &)callback;
 - (void)getPendingContributionsTotal:(const ledger::PendingContributionsTotalCallback &)callback;

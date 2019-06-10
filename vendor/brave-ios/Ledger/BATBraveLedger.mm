@@ -523,8 +523,11 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
     completion([NSString stringWithUTF8String:image.c_str()],
                [NSString stringWithUTF8String:hint.c_str()]);
   };
-  ledger->GetGrantCaptcha(std::string(promoID.UTF8String),
-                          std::string(promotionType.UTF8String));
+  std::vector<std::string> headers;
+  headers.push_back("brave-product:brave-core");
+  headers.push_back("promotion-id:" + std::string(promoID.UTF8String));
+  headers.push_back("promotion-type:" + std::string(promotionType.UTF8String));
+  ledger->GetGrantCaptcha(headers);
 }
 
 - (void)onGrantCaptcha:(const std::string &)image hint:(const std::string &)hint
@@ -532,11 +535,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   if (self.grantCaptchaBlock) {
     self.grantCaptchaBlock(image, hint);
   }
-}
-
-- (void)getGrantCaptcha:(const std::string &)promotion_id promotionType:(const std::string &)promotion_type
-{
-  ledger->GetGrantCaptcha(promotion_id, promotion_type);
 }
 
 - (void)fetchGrants:(const std::string &)lang paymentId:(const std::string &)paymentId
