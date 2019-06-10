@@ -550,15 +550,6 @@ void BatLedgerClientMojoProxy::FetchGrants(const std::string& lang,
   bat_ledger_client_->FetchGrants(lang, paymentId);
 }
 
-void BatLedgerClientMojoProxy::GetGrantCaptcha(
-    const std::string& promotion_id,
-    const std::string& promotion_type) {
-  if (!Connected())
-    return;
-
-  bat_ledger_client_->GetGrantCaptcha(promotion_id, promotion_type);
-}
-
 std::string BatLedgerClientMojoProxy::URIEncode(const std::string& value) {
   if (!Connected())
     return "";

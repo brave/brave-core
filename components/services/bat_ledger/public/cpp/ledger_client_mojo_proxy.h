@@ -80,9 +80,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::string& publisher_id) override;
   void FetchGrants(const std::string& lang,
       const std::string& payment_id) override;
-  void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) override;
 
   void URIEncode(const std::string& value,
       URIEncodeCallback callback) override;

@@ -737,9 +737,8 @@ void LedgerImpl::OnGrant(ledger::Result result,
 }
 
 void LedgerImpl::GetGrantCaptcha(
-    const std::string& promotion_id,
-    const std::string& promotion_type) const {
-  bat_client_->getGrantCaptcha(promotion_id, promotion_type);
+    const std::vector<std::string>& headers) const {
+  bat_client_->getGrantCaptcha(headers);
 }
 
 void LedgerImpl::OnGrantCaptcha(const std::string& image,
