@@ -13,6 +13,7 @@
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/post_task.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/browser/brave_stats_updater_util.h"
 #include "brave/browser/version_info.h"
 #include "brave/common/pref_names.h"
@@ -180,6 +181,7 @@ void BraveP3AService::Init() {
 
 std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
                                        uint64_t value) const {
+  TRACE_EVENT0("brave_p3a", "SerializeMessage");
   brave_pyxis::PyxisMessage message;
   // TODO(iefremov): Maybe we should store it in logs and pass here?
   // We cannot directly query |base::StatisticsRecorder::FindHistogram| because

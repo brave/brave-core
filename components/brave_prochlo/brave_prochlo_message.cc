@@ -9,6 +9,7 @@
 #include "base/logging.h"
 #include "base/stl_util.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/trace_event/trace_event.h"
 #include "brave/components/brave_prochlo/brave_prochlo_crypto.h"
 #include "brave/components/brave_prochlo/prochlo_data.h"
 #include "brave/components/brave_prochlo/prochlo_message.pb.h"
@@ -39,6 +40,7 @@ bool MakeProchlomation(uint64_t metric,
   DCHECK(data);
   DCHECK(crowd_id);
   DCHECK(shuffler_item);
+  TRACE_EVENT0("brave_p3a", "MakeProchlomation");
 
   BraveProchloCrypto crypto;
 
@@ -104,6 +106,7 @@ void GenerateProchloMessage(uint64_t metric_hash,
                             uint64_t metric_value,
                             const MessageMetainfo& meta,
                             brave_pyxis::PyxisMessage* pyxis_message) {
+  TRACE_EVENT0("brave_p3a", "GenerateProchloMessage");
   ShufflerItem item;
   uint8_t data[kProchlomationDataLength] = {0};
   uint8_t crowd_id[kCrowdIdLength] = {0};
