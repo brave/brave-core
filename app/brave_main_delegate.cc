@@ -141,7 +141,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
       extensions_features::kNewExtensionUpdaterService.name,
 #endif
-      features::kDesktopPWAWindowing.name,
       omnibox::kSimplifyHttpsIndicator.name,
   };
 
