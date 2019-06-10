@@ -23,7 +23,6 @@ private:
   std::string GenerateGUID() const override;
   void GetActivityInfoList(uint32_t start, uint32_t limit, ledger::ActivityInfoFilter filter, ledger::PublisherInfoListCallback callback) override;
   void GetCountryCodes(const std::vector<std::string> & countries, ledger::GetCountryCodesCallback callback) override;
-  void GetGrantCaptcha(const std::string & promotion_id, const std::string & promotion_type) override;
   void GetOneTimeTips(ledger::PublisherInfoListCallback callback) override;
   void GetPendingContributions(const ledger::PendingContributionInfoListCallback & callback) override;
   void GetPendingContributionsTotal(const ledger::PendingContributionsTotalCallback & callback) override;
