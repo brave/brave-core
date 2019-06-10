@@ -60,7 +60,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, EnabledFeatures) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
     &extensions_features::kNewExtensionUpdaterService,
 #endif
-    &features::kDesktopPWAWindowing,
     &omnibox::kSimplifyHttpsIndicator,
   };
 
