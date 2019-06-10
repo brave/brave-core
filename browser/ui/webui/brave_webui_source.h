@@ -10,8 +10,9 @@
 namespace content {
 class WebUIDataSource;
 class WebUI;
-}
+}  // namespace content
 
-void CustomizeWebUIHTMLSource(const std::string &name, content::WebUIDataSource* source);
+void CustomizeWebUIHTMLSource(const std::string& name,
+                              content::WebUIDataSource* source);
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_WEBUI_SOURCE_H_

@@ -13,21 +13,21 @@
 #include "chrome/common/importer/importer_data_types.h"
 
 bool BraveImporterCanImport(const base::FilePath& profile,
-                             uint16_t* services_supported) {
+                            uint16_t* services_supported) {
   DCHECK(services_supported);
   *services_supported = importer::NONE;
 
-  base::FilePath session_store =
-    profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("session-store-1")));
-  base::FilePath passwords =
-    profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
+  base::FilePath session_store = profile.Append(
+      base::FilePath::StringType(FILE_PATH_LITERAL("session-store-1")));
+  base::FilePath passwords = profile.Append(
+      base::FilePath::StringType(FILE_PATH_LITERAL("Login Data")));
   base::FilePath cookies =
-    profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("Cookies")));
-  base::FilePath ledger_state =
-    profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("ledger-state.json")));
+      profile.Append(base::FilePath::StringType(FILE_PATH_LITERAL("Cookies")));
+  base::FilePath ledger_state = profile.Append(
+      base::FilePath::StringType(FILE_PATH_LITERAL("ledger-state.json")));
 
   if (base::PathExists(session_store))
-    *services_supported |= importer::HISTORY |  importer::FAVORITES |
+    *services_supported |= importer::HISTORY | importer::FAVORITES |
                            importer::STATS | importer::WINDOWS;
   if (base::PathExists(passwords))
     *services_supported |= importer::PASSWORDS;

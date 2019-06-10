@@ -10,7 +10,8 @@ interface ResolveInfo {
 /*
  * Shimming node's dns.lookup API using chrome.dns.resolve.
  * @param {string} hostname: the hostname to be resolved
- * @param {function} cb: a callback function for dns.lookup with error and ip arguments
+ * @param {function} cb: a callback function for dns.lookup with error and ip
+ *     arguments
  */
 export const lookup = (hostname: string, cb: any) => {
   chrome.dns.resolve(hostname, (resolveInfo: ResolveInfo) => {

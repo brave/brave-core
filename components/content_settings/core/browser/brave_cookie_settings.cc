@@ -39,8 +39,8 @@ void BraveCookieSettings::GetCookieSetting(
     const GURL& first_party_url,
     content_settings::SettingSource* source,
     ContentSetting* cookie_setting) const {
-  GetCookieSetting(url, first_party_url, first_party_url, source,
-                   cookie_setting);
+  GetCookieSetting(
+      url, first_party_url, first_party_url, source, cookie_setting);
 }
 
 void BraveCookieSettings::GetCookieSetting(
@@ -68,8 +68,8 @@ void BraveCookieSettings::GetCookieSetting(
   }
 #endif
 
-  CookieSettings::GetCookieSetting(url, first_party_url, source,
-                                   cookie_setting);
+  CookieSettings::GetCookieSetting(
+      url, first_party_url, source, cookie_setting);
   if (*cookie_setting == CONTENT_SETTING_BLOCK) {
     return;
   }
@@ -80,15 +80,21 @@ void BraveCookieSettings::GetCookieSetting(
 
   ContentSetting brave_shields_setting =
       host_content_settings_map_->GetContentSetting(
-          primary_url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+          primary_url,
+          GURL(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
           brave_shields::kBraveShields);
   ContentSetting brave_1p_setting =
       host_content_settings_map_->GetContentSetting(
-          primary_url, GURL("https://firstParty/"),
-          CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
+          primary_url,
+          GURL("https://firstParty/"),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kCookies);
   ContentSetting brave_3p_setting =
       host_content_settings_map_->GetContentSetting(
-          primary_url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+          primary_url,
+          GURL(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
           brave_shields::kCookies);
 
   bool allow_brave_shields = brave_shields_setting == CONTENT_SETTING_ALLOW ||
@@ -96,8 +102,12 @@ void BraveCookieSettings::GetCookieSetting(
   bool allow_1p_cookies = brave_1p_setting == CONTENT_SETTING_ALLOW ||
                           brave_1p_setting == CONTENT_SETTING_DEFAULT;
   bool allow_3p_cookies = brave_3p_setting == CONTENT_SETTING_ALLOW;
-  if (ShouldBlockCookie(allow_brave_shields, allow_1p_cookies, allow_3p_cookies,
-                        first_party_url, url, allow_google_auth_)) {
+  if (ShouldBlockCookie(allow_brave_shields,
+                        allow_1p_cookies,
+                        allow_3p_cookies,
+                        first_party_url,
+                        url,
+                        allow_google_auth_)) {
     *cookie_setting = CONTENT_SETTING_BLOCK;
   }
 }

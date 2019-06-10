@@ -72,9 +72,14 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   TemplateURL::OwnedTemplateURLVector template_urls;
   int new_resource_keyword_version = 0;
 
-  GetSearchProvidersUsingKeywordResult(result, nullptr, &prefs_, &template_urls,
-                                       default_turl.get(), SearchTermsData(),
-                                       &new_resource_keyword_version, nullptr);
+  GetSearchProvidersUsingKeywordResult(result,
+                                       nullptr,
+                                       &prefs_,
+                                       &template_urls,
+                                       default_turl.get(),
+                                       SearchTermsData(),
+                                       &new_resource_keyword_version,
+                                       nullptr);
 
   // Verify count.
   EXPECT_EQ(local_turls.size(), template_urls.size());
@@ -95,9 +100,14 @@ TEST_F(BraveTemplateURLServiceUtilTest, GetSearchProvidersUsingKeywordResult) {
   // Check Germany.
   prefs_.SetInteger(kCountryIDAtInstall, 'D' << 8 | 'E');
 
-  GetSearchProvidersUsingKeywordResult(result, nullptr, &prefs_, &template_urls,
-                                       default_turl.get(), SearchTermsData(),
-                                       &new_resource_keyword_version, nullptr);
+  GetSearchProvidersUsingKeywordResult(result,
+                                       nullptr,
+                                       &prefs_,
+                                       &template_urls,
+                                       default_turl.get(),
+                                       SearchTermsData(),
+                                       &new_resource_keyword_version,
+                                       nullptr);
 
   // Verify count.
   EXPECT_EQ(local_turls.size(), template_urls.size());

@@ -5,5 +5,6 @@
 #import "BATPendingContribution.h"
 
 @interface BATPendingContribution (Private)
-- (instancetype)initWithPendingContribution:(const ledger::PendingContribution&)obj;
+- (instancetype)initWithPendingContribution:
+    (const ledger::PendingContribution&)obj;
 @end

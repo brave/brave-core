@@ -37,11 +37,11 @@ SOCKS5ClientSocketAuth::SOCKS5ClientSocketAuth(
     const HostPortPair& destination,
     const NetworkTrafficAnnotationTag& traffic_annotation,
     const HostPortPair& proxy_host_port)
-    : SOCKS5ClientSocket(std::move(transport_socket), destination,
+    : SOCKS5ClientSocket(std::move(transport_socket),
+                         destination,
                          traffic_annotation),
       proxy_host_port_(proxy_host_port),
-      next_state_(STATE_INIT_WRITE) {
-}
+      next_state_(STATE_INIT_WRITE) {}
 
 SOCKS5ClientSocketAuth::~SOCKS5ClientSocketAuth() = default;
 
@@ -102,8 +102,8 @@ int SOCKS5ClientSocketAuth::Authenticate(
                buffer_left_);
         next_state_ = STATE_WRITE_COMPLETE;
         net_log.BeginEvent(NetLogEventType::SOCKS5_AUTH_WRITE);
-        rv = transport_socket_->Write(iobuf_.get(), buffer_left_, callback,
-            traffic_annotation_);
+        rv = transport_socket_->Write(
+            iobuf_.get(), buffer_left_, callback, traffic_annotation_);
         break;
 
       case STATE_WRITE_COMPLETE:

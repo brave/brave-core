@@ -10,9 +10,9 @@
 
 namespace brave_sync {
 
-  std::vector<int> OrderToIntVect(const std::string& s);
-  bool CompareOrder(const std::string& left, const std::string& right);
+std::vector<int> OrderToIntVect(const std::string& s);
+bool CompareOrder(const std::string& left, const std::string& right);
 
-} // namespace brave_sync
+}  // namespace brave_sync
 
-#endif // BRAVE_COMPONENTS_BRAVE_SYNC_BOOKMARK_ORDER_UTIL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BOOKMARK_ORDER_UTIL_H_

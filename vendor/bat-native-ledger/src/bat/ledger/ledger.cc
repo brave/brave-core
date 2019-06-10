@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/bat_get_media.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
-#include "bat/ledger/ledger.h"
 #include "rapidjson/document.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
@@ -19,35 +19,34 @@ bool is_testing = false;
 int reconcile_time = 0;  // minutes
 bool short_retries = false;
 
-VisitData::VisitData():
-    tab_id(-1) {}
+VisitData::VisitData() : tab_id(-1) {}
 
 VisitData::VisitData(const std::string& _tld,
-            const std::string& _domain,
-            const std::string& _path,
-            uint32_t _tab_id,
-            const std::string& _name,
-            const std::string& _url,
-            const std::string& _provider,
-            const std::string& _favicon_url) :
-    tld(_tld),
-    domain(_domain),
-    path(_path),
-    tab_id(_tab_id),
-    name(_name),
-    url(_url),
-    provider(_provider),
-    favicon_url(_favicon_url) {}
+                     const std::string& _domain,
+                     const std::string& _path,
+                     uint32_t _tab_id,
+                     const std::string& _name,
+                     const std::string& _url,
+                     const std::string& _provider,
+                     const std::string& _favicon_url)
+    : tld(_tld),
+      domain(_domain),
+      path(_path),
+      tab_id(_tab_id),
+      name(_name),
+      url(_url),
+      provider(_provider),
+      favicon_url(_favicon_url) {}
 
-VisitData::VisitData(const VisitData& data) :
-    tld(data.tld),
-    domain(data.domain),
-    path(data.path),
-    tab_id(data.tab_id),
-    name(data.name),
-    url(data.url),
-    provider(data.provider),
-    favicon_url(data.favicon_url) {}
+VisitData::VisitData(const VisitData& data)
+    : tld(data.tld),
+      domain(data.domain),
+      path(data.path),
+      tab_id(data.tab_id),
+      name(data.name),
+      url(data.url),
+      provider(data.provider),
+      favicon_url(data.favicon_url) {}
 
 VisitData::~VisitData() {}
 
@@ -64,12 +63,11 @@ bool VisitData::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
   if (!error) {
-    error = !(d.HasMember("tld") && d["tld"].IsString() &&
-        d.HasMember("domain") && d["domain"].IsString() &&
-        d.HasMember("path") && d["path"].IsString() &&
-        d.HasMember("tab_id") && d["tab_id"].IsUint() &&
-        d.HasMember("name") && d["name"].IsString() &&
-        d.HasMember("url") && d["url"].IsString() &&
+    error = !(
+        d.HasMember("tld") && d["tld"].IsString() && d.HasMember("domain") &&
+        d["domain"].IsString() && d.HasMember("path") && d["path"].IsString() &&
+        d.HasMember("tab_id") && d["tab_id"].IsUint() && d.HasMember("name") &&
+        d["name"].IsString() && d.HasMember("url") && d["url"].IsString() &&
         d.HasMember("provider") && d["provider"].IsString() &&
         d.HasMember("favicon_url") && d["favicon_url"].IsString());
   }
@@ -88,24 +86,23 @@ bool VisitData::loadFromJson(const std::string& json) {
   return !error;
 }
 
+ActivityInfoFilter::ActivityInfoFilter()
+    : excluded(EXCLUDE_FILTER::FILTER_DEFAULT),
+      percent(0),
+      min_duration(0),
+      reconcile_stamp(0),
+      non_verified(true),
+      min_visits(0u) {}
 
-ActivityInfoFilter::ActivityInfoFilter() :
-    excluded(EXCLUDE_FILTER::FILTER_DEFAULT),
-    percent(0),
-    min_duration(0),
-    reconcile_stamp(0),
-    non_verified(true),
-    min_visits(0u) {}
-
-ActivityInfoFilter::ActivityInfoFilter(const ActivityInfoFilter& filter) :
-    id(filter.id),
-    excluded(filter.excluded),
-    percent(filter.percent),
-    order_by(filter.order_by),
-    min_duration(filter.min_duration),
-    reconcile_stamp(filter.reconcile_stamp),
-    non_verified(filter.non_verified),
-    min_visits(filter.min_visits) {}
+ActivityInfoFilter::ActivityInfoFilter(const ActivityInfoFilter& filter)
+    : id(filter.id),
+      excluded(filter.excluded),
+      percent(filter.percent),
+      order_by(filter.order_by),
+      min_duration(filter.min_duration),
+      reconcile_stamp(filter.reconcile_stamp),
+      non_verified(filter.non_verified),
+      min_visits(filter.min_visits) {}
 
 ActivityInfoFilter::~ActivityInfoFilter() {}
 
@@ -122,13 +119,14 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
   if (!error) {
-    error = !(d.HasMember("id") && d["id"].IsString() &&
-        d.HasMember("excluded") && d["excluded"].IsInt() &&
-        d.HasMember("percent") && d["percent"].IsUint() &&
-        d.HasMember("order_by") && d["order_by"].IsObject() &&
-        d.HasMember("min_duration") && d["min_duration"].IsUint64() &&
-        d.HasMember("reconcile_stamp") && d["reconcile_stamp"].IsUint64() &&
-        d.HasMember("non_verified") && d["non_verified"].IsBool());
+    error =
+        !(d.HasMember("id") && d["id"].IsString() && d.HasMember("excluded") &&
+          d["excluded"].IsInt() && d.HasMember("percent") &&
+          d["percent"].IsUint() && d.HasMember("order_by") &&
+          d["order_by"].IsObject() && d.HasMember("min_duration") &&
+          d["min_duration"].IsUint64() && d.HasMember("reconcile_stamp") &&
+          d["reconcile_stamp"].IsUint64() && d.HasMember("non_verified") &&
+          d["non_verified"].IsBool());
   }
 
   if (!error) {
@@ -140,8 +138,7 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
     non_verified = d["non_verified"].GetBool();
 
     for (const auto& i : d["order_by"].GetObject()) {
-      order_by.push_back(std::make_pair(i.name.GetString(),
-            i.value.GetBool()));
+      order_by.push_back(std::make_pair(i.name.GetString(), i.value.GetBool()));
     }
 
     if (d.HasMember("min_visits") && d["min_visits"].IsUint()) {
@@ -156,17 +153,17 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
 
 PublisherBanner::PublisherBanner() {}
 
-PublisherBanner::PublisherBanner(const PublisherBanner& info) :
-    publisher_key(info.publisher_key),
-    title(info.title),
-    name(info.name),
-    description(info.description),
-    background(info.background),
-    logo(info.logo),
-    amounts(info.amounts),
-    provider(info.provider),
-    social(info.social),
-    verified(info.verified) {}
+PublisherBanner::PublisherBanner(const PublisherBanner& info)
+    : publisher_key(info.publisher_key),
+      title(info.title),
+      name(info.name),
+      description(info.description),
+      background(info.background),
+      logo(info.logo),
+      amounts(info.amounts),
+      provider(info.provider),
+      social(info.social),
+      verified(info.verified) {}
 
 PublisherBanner::~PublisherBanner() {}
 
@@ -184,14 +181,14 @@ bool PublisherBanner::loadFromJson(const std::string& json) {
 
   if (!error) {
     error = !(d.HasMember("publisher_key") && d["publisher_key"].IsString() &&
-        d.HasMember("title") && d["title"].IsString() &&
-        d.HasMember("name") && d["name"].IsString() &&
-        d.HasMember("description") && d["description"].IsString() &&
-        d.HasMember("background") && d["name"].IsString() &&
-        d.HasMember("logo") && d["logo"].IsString() &&
-        d.HasMember("amounts") && d["amounts"].IsArray() &&
-        d.HasMember("social") && d["social"].IsObject() &&
-        d.HasMember("verified") && d["verified"].IsBool());
+              d.HasMember("title") && d["title"].IsString() &&
+              d.HasMember("name") && d["name"].IsString() &&
+              d.HasMember("description") && d["description"].IsString() &&
+              d.HasMember("background") && d["name"].IsString() &&
+              d.HasMember("logo") && d["logo"].IsString() &&
+              d.HasMember("amounts") && d["amounts"].IsArray() &&
+              d.HasMember("social") && d["social"].IsObject() &&
+              d.HasMember("verified") && d["verified"].IsBool());
   }
 
   if (!error) {
@@ -208,8 +205,7 @@ bool PublisherBanner::loadFromJson(const std::string& json) {
     }
 
     for (const auto& i : d["social"].GetObject()) {
-      social.insert(std::make_pair(i.name.GetString(),
-            i.value.GetString()));
+      social.insert(std::make_pair(i.name.GetString(), i.value.GetString()));
     }
 
     if (d.HasMember("provider")) {
@@ -222,13 +218,10 @@ bool PublisherBanner::loadFromJson(const std::string& json) {
 
 TwitchEventInfo::TwitchEventInfo() {}
 
-TwitchEventInfo::TwitchEventInfo(const TwitchEventInfo& info):
-  event_(info.event_),
-  time_(info.time_),
-  status_(info.status_) {}
+TwitchEventInfo::TwitchEventInfo(const TwitchEventInfo& info)
+    : event_(info.event_), time_(info.time_), status_(info.status_) {}
 
 TwitchEventInfo::~TwitchEventInfo() {}
-
 
 // static
 ledger::Ledger* Ledger::CreateInstance(LedgerClient* client) {
@@ -237,7 +230,7 @@ ledger::Ledger* Ledger::CreateInstance(LedgerClient* client) {
 
 WalletInfo::WalletInfo() : balance_(0), fee_amount_(0), parameters_days_(0) {}
 WalletInfo::~WalletInfo() {}
-WalletInfo::WalletInfo(const ledger::WalletInfo &info) {
+WalletInfo::WalletInfo(const ledger::WalletInfo& info) {
   altcurrency_ = info.altcurrency_;
   probi_ = info.probi_;
   balance_ = info.balance_;
@@ -262,7 +255,8 @@ bool WalletInfo::loadFromJson(const std::string& json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
   if (!error) {
-    error = !(d.HasMember("altcurrency_") && d["altcurrency_"].IsString() &&
+    error = !(
+        d.HasMember("altcurrency_") && d["altcurrency_"].IsString() &&
         d.HasMember("probi_") && d["probi_"].IsString() &&
         d.HasMember("balance_") && d["balance_"].IsDouble() &&
         d.HasMember("fee_amount_") && d["fee_amount_"].IsDouble() &&
@@ -282,8 +276,8 @@ bool WalletInfo::loadFromJson(const std::string& json) {
     parameters_days_ = d["parameters_days_"].GetUint();
 
     for (const auto& rate : d["rates_"].GetObject()) {
-      rates_.insert(std::make_pair(rate.name.GetString(),
-            rate.value.GetDouble()));
+      rates_.insert(
+          std::make_pair(rate.name.GetString(), rate.value.GetDouble()));
     }
 
     for (const auto& parameters_choice : d["parameters_choices_"].GetArray()) {
@@ -310,7 +304,7 @@ bool WalletInfo::loadFromJson(const std::string& json) {
 
 Grant::Grant() {}
 Grant::~Grant() {}
-Grant::Grant(const ledger::Grant &properties) {
+Grant::Grant(const ledger::Grant& properties) {
   promotionId = properties.promotionId;
   expiryTime = properties.expiryTime;
   probi = properties.probi;
@@ -333,9 +327,9 @@ bool Grant::loadFromJson(const std::string& json) {
 
   if (!error) {
     error = !(d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
-        d.HasMember("probi") && d["probi"].IsString() &&
-        d.HasMember("promotionId") && d["promotionId"].IsString() &&
-        d.HasMember("expiryTime") && d["expiryTime"].IsUint64());
+              d.HasMember("probi") && d["probi"].IsString() &&
+              d.HasMember("promotionId") && d["promotionId"].IsString() &&
+              d.HasMember("expiryTime") && d["expiryTime"].IsUint64());
   }
 
   if (!error) {
@@ -356,15 +350,15 @@ bool Grant::loadFromJson(const std::string& json) {
   return !error;
 }
 
-BalanceReportInfo::BalanceReportInfo():
-  opening_balance_("0"),
-  closing_balance_("0"),
-  grants_("0"),
-  earning_from_ads_("0"),
-  auto_contribute_("0"),
-  recurring_donation_("0"),
-  one_time_donation_("0"),
-  total_("0") {}
+BalanceReportInfo::BalanceReportInfo()
+    : opening_balance_("0"),
+      closing_balance_("0"),
+      grants_("0"),
+      earning_from_ads_("0"),
+      auto_contribute_("0"),
+      recurring_donation_("0"),
+      one_time_donation_("0"),
+      total_("0") {}
 
 BalanceReportInfo::BalanceReportInfo(const BalanceReportInfo& state) {
   opening_balance_ = state.opening_balance_;
@@ -399,14 +393,13 @@ bool BalanceReportInfo::loadFromJson(const std::string& json) {
         d.HasMember("closing_balance_") && d["closing_balance_"].IsString() &&
         d.HasMember("deposits_") && d["deposits_"].IsString() &&
         d.HasMember("grants_") && d["grants_"].IsString() &&
-        d.HasMember("earning_from_ads_") &&
-        d["earning_from_ads_"].IsString() &&
+        d.HasMember("earning_from_ads_") && d["earning_from_ads_"].IsString() &&
         d.HasMember("auto_contribute_") && d["auto_contribute_"].IsString() &&
         d.HasMember("recurring_donation_") &&
         d["recurring_donation_"].IsString() &&
         d.HasMember("one_time_donation_") &&
-        d["one_time_donation_"].IsString() &&
-        d.HasMember("total_") && d["total_"].IsString());
+        d["one_time_donation_"].IsString() && d.HasMember("total_") &&
+        d["total_"].IsString());
   }
 
   if (!error) {
@@ -425,14 +418,14 @@ bool BalanceReportInfo::loadFromJson(const std::string& json) {
 }
 
 AutoContributeProps::AutoContributeProps()
-  : enabled_contribute(false),
-    contribution_min_time(0),
-    contribution_min_visits(0),
-    contribution_non_verified(false),
-    contribution_videos(false),
-    reconcile_stamp(0) { }
+    : enabled_contribute(false),
+      contribution_min_time(0),
+      contribution_min_visits(0),
+      contribution_non_verified(false),
+      contribution_videos(false),
+      reconcile_stamp(0) {}
 
-AutoContributeProps::~AutoContributeProps() { }
+AutoContributeProps::~AutoContributeProps() {}
 
 const std::string AutoContributeProps::ToJson() const {
   std::string json;
@@ -448,8 +441,8 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
   bool error = d.HasParseError();
 
   if (!error) {
-    error = !(d.HasMember("enabled_contribute") &&
-        d["enabled_contribute"].IsBool() &&
+    error = !(
+        d.HasMember("enabled_contribute") && d["enabled_contribute"].IsBool() &&
         d.HasMember("contribution_min_time") &&
         d["contribution_min_time"].IsUint64() &&
         d.HasMember("contribution_min_visits") &&
@@ -457,8 +450,8 @@ bool AutoContributeProps::loadFromJson(const std::string& json) {
         d.HasMember("contribution_non_verified") &&
         d["contribution_non_verified"].IsBool() &&
         d.HasMember("contribution_videos") &&
-        d["contribution_videos"].IsBool() &&
-        d.HasMember("reconcile_stamp") && d["reconcile_stamp"].IsUint64());
+        d["contribution_videos"].IsBool() && d.HasMember("reconcile_stamp") &&
+        d["reconcile_stamp"].IsUint64());
   }
 
   if (!error) {
@@ -497,11 +490,10 @@ bool ReconcileInfo::loadFromJson(const std::string& json) {
   bool error = d.HasParseError();
 
   if (false == error) {
-    error =
-        !(d.HasMember("viewingId") && d["viewingId"].IsString() &&
-          d.HasMember("amount") && d["amount"].IsString() &&
-          d.HasMember("retry_step") && d["retry_step"].IsInt() &&
-          d.HasMember("retry_level") && d["retry_level"].IsInt());
+    error = !(d.HasMember("viewingId") && d["viewingId"].IsString() &&
+              d.HasMember("amount") && d["amount"].IsString() &&
+              d.HasMember("retry_step") && d["retry_step"].IsInt() &&
+              d.HasMember("retry_level") && d["retry_level"].IsInt());
   }
 
   if (false == error) {
@@ -571,9 +563,7 @@ bool Ledger::IsMediaLink(const std::string& url,
                          const std::string& first_party_url,
                          const std::string& referrer) {
   const std::string type = braveledger_bat_get_media::BatGetMedia::GetLinkType(
-      url,
-      first_party_url,
-      referrer);
+      url, first_party_url, referrer);
 
   return type == TWITCH_MEDIA_TYPE;
 }

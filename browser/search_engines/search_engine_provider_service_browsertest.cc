@@ -106,7 +106,6 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().short_name(),
             incognito_service->GetDefaultSearchProvider()->data().short_name());
 
-
   // Check private search engine uses normal mode search engine.
   TemplateURLData test_data = CreateTestSearchEngine();
   std::unique_ptr<TemplateURL> test_url(new TemplateURL(test_data));
@@ -139,11 +138,12 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
 
   auto* service = TemplateURLServiceFactory::GetForProfile(tor_profile);
 
-  int default_provider_id = brave::IsRegionForQwant(tor_profile) ?
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT :
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
+  int default_provider_id =
+      brave::IsRegionForQwant(tor_profile)
+          ? TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT
+          : TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
 
-  //Check tor profile's search provider is set to ddg.
+  // Check tor profile's search provider is set to ddg.
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
             default_provider_id);
 
@@ -197,7 +197,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   int provider_id =
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
 
-  //Check guest profile's search provider is set to ddg.
+  // Check guest profile's search provider is set to ddg.
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
             provider_id);
 

@@ -36,16 +36,19 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getFingerprintingControlType",
-      base::BindRepeating(&DefaultBraveShieldsHandler::GetFingerprintingControlType,
-                          base::Unretained(this)));
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::GetFingerprintingControlType,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setFingerprintingControlType",
-      base::BindRepeating(&DefaultBraveShieldsHandler::SetFingerprintingControlType,
-                          base::Unretained(this)));
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::SetFingerprintingControlType,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setHTTPSEverywhereControlType",
-      base::BindRepeating(&DefaultBraveShieldsHandler::SetHTTPSEverywhereControlType,
-                          base::Unretained(this)));
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::SetHTTPSEverywhereControlType,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "setNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
@@ -72,32 +75,39 @@ void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue* args) {
   std::string value;
   args->GetString(0, &value);
 
-  HostContentSettingsMapFactory::GetForProfile(profile_)->
-      SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(),
-        ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS,
-        brave_shields::kAds,
-        value == "allow" ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
-  HostContentSettingsMapFactory::GetForProfile(profile_)->
-      SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(),
-        ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS,
-        brave_shields::kTrackers,
-        value == "allow" ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
+  HostContentSettingsMapFactory::GetForProfile(profile_)
+      ->SetContentSettingCustomScope(
+          ContentSettingsPattern::Wildcard(),
+          ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kAds,
+          value == "allow" ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
+  HostContentSettingsMapFactory::GetForProfile(profile_)
+      ->SetContentSettingCustomScope(
+          ContentSettingsPattern::Wildcard(),
+          ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kTrackers,
+          value == "allow" ? CONTENT_SETTING_ALLOW : CONTENT_SETTING_BLOCK);
 }
 
-void DefaultBraveShieldsHandler::GetCookieControlType(const base::ListValue* args) {
+void DefaultBraveShieldsHandler::GetCookieControlType(
+    const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
 
   ContentSetting setting =
       HostContentSettingsMapFactory::GetForProfile(profile_)->GetContentSetting(
-          GURL(), GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
+          GURL(),
+          GURL(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kCookies);
   ContentSetting fp_setting =
       HostContentSettingsMapFactory::GetForProfile(profile_)->GetContentSetting(
-          GURL(), GURL("https://firstParty/"), CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
+          GURL(),
+          GURL("https://firstParty/"),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kCookies);
 
   std::string value = "block";
   if (setting == CONTENT_SETTING_ALLOW) {
@@ -107,12 +117,11 @@ void DefaultBraveShieldsHandler::GetCookieControlType(const base::ListValue* arg
   }
 
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args->GetList()[0].Clone(),
-      base::Value(value));
+  ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(value));
 }
 
-void DefaultBraveShieldsHandler::SetCookieControlType(const base::ListValue* args) {
+void DefaultBraveShieldsHandler::SetCookieControlType(
+    const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
   std::string value;
@@ -141,16 +150,23 @@ void DefaultBraveShieldsHandler::SetCookieControlType(const base::ListValue* arg
       value == "block" ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
 }
 
-void DefaultBraveShieldsHandler::GetFingerprintingControlType(const base::ListValue* args) {
+void DefaultBraveShieldsHandler::GetFingerprintingControlType(
+    const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
 
   ContentSetting setting =
       HostContentSettingsMapFactory::GetForProfile(profile_)->GetContentSetting(
-          GURL(), GURL(), CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting);
+          GURL(),
+          GURL(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kFingerprinting);
   ContentSetting fp_setting =
       HostContentSettingsMapFactory::GetForProfile(profile_)->GetContentSetting(
-          GURL(), GURL("https://firstParty/"), CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kFingerprinting);
+          GURL(),
+          GURL("https://firstParty/"),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kFingerprinting);
 
   std::string value;
   if (setting != fp_setting || setting == CONTENT_SETTING_DEFAULT) {
@@ -160,12 +176,11 @@ void DefaultBraveShieldsHandler::GetFingerprintingControlType(const base::ListVa
   }
 
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args->GetList()[0].Clone(),
-      base::Value(value));
+  ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(value));
 }
 
-void DefaultBraveShieldsHandler::SetFingerprintingControlType(const base::ListValue* args) {
+void DefaultBraveShieldsHandler::SetFingerprintingControlType(
+    const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
   std::string value;
@@ -187,32 +202,34 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(const base::ListVa
       value == "block" ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
 }
 
-void DefaultBraveShieldsHandler::SetHTTPSEverywhereControlType(const base::ListValue* args) {
+void DefaultBraveShieldsHandler::SetHTTPSEverywhereControlType(
+    const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
   bool value;
   args->GetBoolean(0, &value);
 
-  HostContentSettingsMapFactory::GetForProfile(profile_)->
-      SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(),
-        ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS,
-        brave_shields::kHTTPUpgradableResources,
-        value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+  HostContentSettingsMapFactory::GetForProfile(profile_)
+      ->SetContentSettingCustomScope(
+          ContentSettingsPattern::Wildcard(),
+          ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kHTTPUpgradableResources,
+          value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
 }
 
-void DefaultBraveShieldsHandler::SetNoScriptControlType(const base::ListValue* args) {
+void DefaultBraveShieldsHandler::SetNoScriptControlType(
+    const base::ListValue* args) {
   CHECK_EQ(args->GetSize(), 1U);
   CHECK(profile_);
   bool value;
   args->GetBoolean(0, &value);
 
-  HostContentSettingsMapFactory::GetForProfile(profile_)->
-      SetContentSettingCustomScope(
-        ContentSettingsPattern::Wildcard(),
-        ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_JAVASCRIPT,
-        "",
-        value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+  HostContentSettingsMapFactory::GetForProfile(profile_)
+      ->SetContentSettingCustomScope(
+          ContentSettingsPattern::Wildcard(),
+          ContentSettingsPattern::Wildcard(),
+          CONTENT_SETTINGS_TYPE_JAVASCRIPT,
+          "",
+          value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
 }

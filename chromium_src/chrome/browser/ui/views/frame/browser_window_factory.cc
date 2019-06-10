@@ -1,5 +1,5 @@
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 
 // For now, BraveBrowserFrame only needs to run on !linux
 // and build complains of unused variables if we include it.

@@ -10,12 +10,9 @@
 #include "ui/views/widget/native_widget.h"
 
 BraveBrowserFrame::BraveBrowserFrame(BrowserView* browser_view)
-    : BrowserFrame(browser_view),
-      browser_view_(browser_view) {
-}
+    : BrowserFrame(browser_view), browser_view_(browser_view) {}
 
-BraveBrowserFrame::~BraveBrowserFrame() {
-}
+BraveBrowserFrame::~BraveBrowserFrame() {}
 
 const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
   // Gets the platform-specific override for NativeTheme,
@@ -24,8 +21,8 @@ const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
   // TODO: Have platform-specific version of dark theme too.
 #if defined(OS_WIN) || defined(OS_MACOSX) || defined(OS_CHROMEOS)
   BraveThemeType active_builtin_theme =
-            BraveThemeService::GetActiveBraveThemeType(
-                              browser_view_->browser()->profile());
+      BraveThemeService::GetActiveBraveThemeType(
+          browser_view_->browser()->profile());
   if (active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
       browser_view_->browser()->profile()->GetProfileType() ==
           Profile::INCOGNITO_PROFILE ||

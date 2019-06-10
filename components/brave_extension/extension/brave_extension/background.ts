@@ -5,9 +5,9 @@
 import * as bluebird from 'bluebird'
 global.Promise = bluebird
 
-function promisifier (method: any) {
+function promisifier(method: any) {
   // return a function
-  return function promisified (...args: string[]) {
+  return function promisified(...args: string[]) {
     // which returns a promise
     return new Promise((resolve: any) => {
       args.push(resolve)
@@ -16,24 +16,15 @@ function promisifier (method: any) {
   }
 }
 
-function promisifyAll (obj: object, list: string[]) {
-  list.forEach(api => bluebird.promisifyAll(obj[api], { promisifier }))
+function promisifyAll(obj: object, list: string[]) {
+  list.forEach(api => bluebird.promisifyAll(obj[api], {promisifier}))
 }
 
 // let chrome extension api support Promise
-promisifyAll(chrome, [
-  'browserAction',
-  'tabs',
-  'windows'
-])
-promisifyAll(chrome.storage, [
-  'local'
-])
+promisifyAll(chrome, ['browserAction', 'tabs', 'windows'])
+promisifyAll(chrome.storage, ['local'])
 
-promisifyAll(chrome.braveShields, [
-  'javascript',
-  'plugins'
-])
+promisifyAll(chrome.braveShields, ['javascript', 'plugins'])
 
 require('./background/api')
 require('./background/events')

@@ -20,11 +20,9 @@
 BraveAutocompleteSchemeClassifier::BraveAutocompleteSchemeClassifier(
     Profile* profile)
     : ChromeAutocompleteSchemeClassifier(profile->GetOriginalProfile()),
-      profile_(profile->GetOriginalProfile()) {
-}
+      profile_(profile->GetOriginalProfile()) {}
 
-BraveAutocompleteSchemeClassifier::~BraveAutocompleteSchemeClassifier() {
-}
+BraveAutocompleteSchemeClassifier::~BraveAutocompleteSchemeClassifier() {}
 
 // Without this override, typing in brave:// URLs will search Google
 metrics::OmniboxInputType

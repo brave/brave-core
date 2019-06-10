@@ -5,23 +5,25 @@
 import * as types from '../constants/cosmeticFilterTypes'
 import * as actions from '../types/actions/cosmeticFilterActions'
 
-export const siteCosmeticFilterAdded: actions.SiteCosmeticFilterAdded = (origin: string, cssfilter: string) => {
-  return {
-    type: types.SITE_COSMETIC_FILTER_ADDED,
-    origin,
-    cssfilter
-  }
-}
+export const siteCosmeticFilterAdded: actions.SiteCosmeticFilterAdded =
+    (origin: string,
+     cssfilter: string) => {
+      return {
+        type: types.SITE_COSMETIC_FILTER_ADDED, origin, cssfilter
+      }
+    }
 
-export const siteCosmeticFilterRemoved: actions.SiteCosmeticFilterRemoved = (origin: string) => {
-  return {
-    type: types.SITE_COSMETIC_FILTER_REMOVED,
-    origin
-  }
-}
+                           export const siteCosmeticFilterRemoved:
+                               actions.SiteCosmeticFilterRemoved =
+        (origin: string) => {
+          return {
+            type: types.SITE_COSMETIC_FILTER_REMOVED, origin
+          }
+        }
 
-export const allCosmeticFiltersRemoved: actions.AllCosmeticFiltersRemoved = () => {
-  return {
-    type: types.ALL_COSMETIC_FILTERS_REMOVED
-  }
-}
+                            export const allCosmeticFiltersRemoved:
+                                actions.AllCosmeticFiltersRemoved = () => {
+          return {
+            type: types.ALL_COSMETIC_FILTERS_REMOVED
+          }
+        }

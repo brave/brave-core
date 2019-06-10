@@ -16,8 +16,7 @@ class BraveAutocompleteProviderClientUnitTest : public testing::Test {
  public:
   void SetUp() override {
     profile_ = std::make_unique<TestingProfile>();
-    client_ =
-        std::make_unique<BraveAutocompleteProviderClient>(profile_.get());
+    client_ = std::make_unique<BraveAutocompleteProviderClient>(profile_.get());
   }
 
   bool BuiltinExists(const base::string16& builtin) {
@@ -34,6 +33,7 @@ class BraveAutocompleteProviderClientUnitTest : public testing::Test {
 
 TEST_F(BraveAutocompleteProviderClientUnitTest,
        SyncURLSuggestedNotSyncInternal) {
-  ASSERT_FALSE(BuiltinExists(base::ASCIIToUTF16(chrome::kChromeUISyncInternalsHost)));
+  ASSERT_FALSE(
+      BuiltinExists(base::ASCIIToUTF16(chrome::kChromeUISyncInternalsHost)));
   ASSERT_TRUE(BuiltinExists(base::ASCIIToUTF16(kBraveUISyncHost)));
 }

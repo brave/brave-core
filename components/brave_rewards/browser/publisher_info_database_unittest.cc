@@ -14,15 +14,15 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
-#include "base/strings/string_util.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/brave_paths.h"
 #include "sql/database.h"
 #include "sql/statement.h"
-#include "third_party/sqlite/sqlite3.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/sqlite/sqlite3.h"
 
 // npm run test -- brave_unit_tests --filter=PublisherInfoDatabaseTest.*
 
@@ -30,17 +30,13 @@ namespace brave_rewards {
 
 class PublisherInfoDatabaseTest : public ::testing::Test {
  protected:
-  PublisherInfoDatabaseTest() {
-  }
+  PublisherInfoDatabaseTest() {}
 
-  ~PublisherInfoDatabaseTest() override {
-  }
+  ~PublisherInfoDatabaseTest() override {}
 
   void PreparePendingContributions();
 
-  sql::Database& GetDB() {
-    return publisher_info_database_->GetDB();
-  }
+  sql::Database& GetDB() { return publisher_info_database_->GetDB(); }
 
   void CreateTempDatabase(base::ScopedTempDir* temp_dir,
                           base::FilePath* db_file) {
@@ -57,8 +53,8 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
                                base::FilePath* db_file,
                                int start_version,
                                int end_version) {
-    const std::string file_name = "publisher_info_db_v" +
-        std::to_string(start_version);
+    const std::string file_name =
+        "publisher_info_db_v" + std::to_string(start_version);
     ASSERT_TRUE(temp_dir->CreateUniqueTempDir());
     *db_file = temp_dir->GetPath().AppendASCII(file_name);
 
@@ -78,7 +74,7 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
     ASSERT_TRUE(base::PathExists(*db_file));
 
     publisher_info_database_ =
-    std::make_unique<PublisherInfoDatabase>(*db_file);
+        std::make_unique<PublisherInfoDatabase>(*db_file);
 
     publisher_info_database_->SetTestingCurrentVersion(end_version);
     ASSERT_NE(publisher_info_database_, nullptr);
@@ -97,9 +93,7 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
 
   std::string GetSchemaString(int version) {
     const std::string file_name =
-        "publisher_info_schema_v" +
-        std::to_string(version) +
-        ".txt";
+        "publisher_info_schema_v" + std::to_string(version) + ".txt";
 
     // Get expected schema for this version
     base::FilePath path;
@@ -111,27 +105,24 @@ class PublisherInfoDatabaseTest : public ::testing::Test {
     std::string data;
     base::ReadFileToString(path, &data);
 
-    #if defined(OS_WIN)
-      // Test data files may or may not have line endings converted to CRLF by
-      // git checkout on Windows (depending on git autocrlf setting). Remove
-      // CRLFs if they are there and replace with just LF, otherwise leave the
-      // input data as is.
-      auto split = base::SplitStringUsingSubstr(
-          data,
-          "\r\n",
-          base::KEEP_WHITESPACE,
-          base::SPLIT_WANT_NONEMPTY);
+#if defined(OS_WIN)
+    // Test data files may or may not have line endings converted to CRLF by
+    // git checkout on Windows (depending on git autocrlf setting). Remove
+    // CRLFs if they are there and replace with just LF, otherwise leave the
+    // input data as is.
+    auto split = base::SplitStringUsingSubstr(
+        data, "\r\n", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
-      if (split.size() > 1) {
-        data = base::JoinString(split, "\n") + "\n";
-      } else if (split.size() == 1) {
-        bool ends_with_newline = (data.at(data.size() - 1) == '\n');
-        data = split[0];
-        if (ends_with_newline && data.at(data.size() - 1) != '\n') {
-          data += "\n";
-        }
+    if (split.size() > 1) {
+      data = base::JoinString(split, "\n") + "\n";
+    } else if (split.size() == 1) {
+      bool ends_with_newline = (data.at(data.size() - 1) == '\n');
+      data = split[0];
+      if (ends_with_newline && data.at(data.size() - 1) != '\n') {
+        data += "\n";
       }
-    #endif
+    }
+#endif
 
     return data;
   }
@@ -181,7 +172,6 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   base::FilePath db_file;
   CreateTempDatabase(&temp_dir, &db_file);
 
-
   const std::string fav_icon = "1";
 
   ledger::PublisherInfo info;
@@ -206,7 +196,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   EXPECT_EQ(info_sql.ColumnString(0), info.id);
   EXPECT_EQ(info_sql.ColumnBool(1), info.verified);
   EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(2)),
-      info.excluded);
+            info.excluded);
   EXPECT_EQ(info_sql.ColumnString(3), info.name);
   EXPECT_EQ(info_sql.ColumnString(4), info.favicon_url);
   EXPECT_EQ(info_sql.ColumnString(5), info.url);
@@ -235,7 +225,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   EXPECT_EQ(info_sql_1.ColumnString(0), info.id);
   EXPECT_EQ(info_sql_1.ColumnBool(1), info.verified);
   EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql_1.ColumnInt(2)),
-      info.excluded);
+            info.excluded);
   EXPECT_EQ(info_sql_1.ColumnString(3), info.name);
   EXPECT_EQ(info_sql_1.ColumnString(4), info.favicon_url);
   EXPECT_EQ(info_sql_1.ColumnString(5), info.url);
@@ -339,7 +329,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
   EXPECT_EQ(info_sql_0.ColumnString(0), info.id);
   EXPECT_EQ(info_sql_0.ColumnBool(1), info.verified);
   EXPECT_EQ(static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql_0.ColumnInt(2)),
-      info.excluded);
+            info.excluded);
   EXPECT_EQ(info_sql_0.ColumnString(3), info.name);
   EXPECT_EQ(info_sql_0.ColumnString(4), info.favicon_url);
   EXPECT_EQ(info_sql_0.ColumnString(5), info.url);
@@ -393,12 +383,10 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateMediaPublisherInfo) {
   std::string media_key = "key";
 
   bool success = publisher_info_database_->InsertOrUpdateMediaPublisherInfo(
-      media_key,
-      publisher_id);
+      media_key, publisher_id);
   EXPECT_TRUE(success);
 
-  std::string query =
-      "SELECT * FROM media_publisher_info WHERE media_key=?";
+  std::string query = "SELECT * FROM media_publisher_info WHERE media_key=?";
   sql::Statement info_sql(GetDB().GetUniqueStatement(query.c_str()));
 
   info_sql.BindString(0, media_key);
@@ -414,8 +402,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateMediaPublisherInfo) {
   publisher_id = "id_new";
 
   success = publisher_info_database_->InsertOrUpdateMediaPublisherInfo(
-      media_key,
-      publisher_id);
+      media_key, publisher_id);
   EXPECT_TRUE(success);
 
   query = "SELECT * FROM media_publisher_info WHERE media_key=?";
@@ -432,9 +419,8 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateMediaPublisherInfo) {
    * Publisher key is missing
    */
   media_key = "missing";
-  success = publisher_info_database_->InsertOrUpdateMediaPublisherInfo(
-      media_key,
-      "");
+  success =
+      publisher_info_database_->InsertOrUpdateMediaPublisherInfo(media_key, "");
   EXPECT_FALSE(success);
 
   query = "SELECT * FROM media_publisher_info WHERE media_key=?";
@@ -449,8 +435,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateMediaPublisherInfo) {
    */
   publisher_id = "new_stuff";
   success = publisher_info_database_->InsertOrUpdateMediaPublisherInfo(
-      "",
-      publisher_id);
+      "", publisher_id);
   EXPECT_FALSE(success);
 
   query = "SELECT * FROM media_publisher_info WHERE publisher_id=?";
@@ -474,8 +459,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringTip) {
   info.amount = 20;
   info.added_date = base::Time::Now().ToJsTime();
 
-  bool success = publisher_info_database_->InsertOrUpdateRecurringTip(
-      info);
+  bool success = publisher_info_database_->InsertOrUpdateRecurringTip(info);
   EXPECT_TRUE(success);
 
   std::string query = "SELECT * FROM recurring_donation WHERE publisher_id=?";
@@ -497,7 +481,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateRecurringTip) {
   success = publisher_info_database_->InsertOrUpdateRecurringTip(info);
   EXPECT_TRUE(success);
 
-  query ="SELECT * FROM recurring_donation WHERE publisher_id=?";
+  query = "SELECT * FROM recurring_donation WHERE publisher_id=?";
   sql::Statement info_sql_1(GetDB().GetUniqueStatement(query.c_str()));
 
   info_sql_1.BindString(0, info.publisher_key);
@@ -637,13 +621,12 @@ TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
   contribution2->viewing_id = "aafsofdfsdnf23r23rn";
   contribution2->category = ledger::REWARDS_CATEGORY::ONE_TIME_TIP;
 
-
   ledger::PendingContributionList list;
   list.push_back(contribution1->Clone());
   list.push_back(contribution2->Clone());
 
-  bool success = publisher_info_database_->InsertPendingContribution(
-      std::move(list));
+  bool success =
+      publisher_info_database_->InsertPendingContribution(std::move(list));
   EXPECT_TRUE(success);
 
   std::string query = "SELECT * FROM pending_contribution";
@@ -658,7 +641,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
   EXPECT_GE(info_sql.ColumnInt64(2), 20);
   EXPECT_EQ(info_sql.ColumnString(3), contribution1->viewing_id);
   EXPECT_EQ(static_cast<ledger::REWARDS_CATEGORY>(info_sql.ColumnInt(4)),
-      contribution1->category);
+            contribution1->category);
 
   // Second contribution
   EXPECT_TRUE(info_sql.Step());
@@ -667,7 +650,7 @@ TEST_F(PublisherInfoDatabaseTest, InsertPendingContribution) {
   EXPECT_GE(info_sql.ColumnInt64(2), 0);
   EXPECT_EQ(info_sql.ColumnString(3), contribution2->viewing_id);
   EXPECT_EQ(static_cast<ledger::REWARDS_CATEGORY>(info_sql.ColumnInt(4)),
-      contribution2->category);
+            contribution2->category);
 }
 
 TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
@@ -742,15 +725,13 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
 
   /**
    * Get publisher with min_duration
-  */
+   */
   ledger::PublisherInfoList list_1;
   ledger::ActivityInfoFilter filter_1;
   filter_1.min_duration = 50;
   filter_1.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
-                                                        0,
-                                                        filter_1,
-                                                        &list_1));
+  EXPECT_TRUE(
+      publisher_info_database_->GetActivityList(0, 0, filter_1, &list_1));
   EXPECT_EQ(static_cast<int>(list_1.size()), 2);
 
   EXPECT_EQ(list_1.at(0)->id, "publisher_2");
@@ -758,15 +739,13 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
 
   /**
    * Get verified publishers
-  */
+   */
   ledger::PublisherInfoList list_2;
   ledger::ActivityInfoFilter filter_2;
   filter_2.non_verified = false;
   filter_2.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
-                                                        0,
-                                                        filter_2,
-                                                        &list_2));
+  EXPECT_TRUE(
+      publisher_info_database_->GetActivityList(0, 0, filter_2, &list_2));
   EXPECT_EQ(static_cast<int>(list_2.size()), 2);
 
   EXPECT_EQ(list_2.at(0)->id, "publisher_3");
@@ -774,14 +753,12 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
 
   /**
    * Get all publishers that are not excluded
-  */
+   */
   ledger::PublisherInfoList list_3;
   ledger::ActivityInfoFilter filter_3;
   filter_3.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
-                                                        0,
-                                                        filter_3,
-                                                        &list_3));
+  EXPECT_TRUE(
+      publisher_info_database_->GetActivityList(0, 0, filter_3, &list_3));
   EXPECT_EQ(static_cast<int>(list_3.size()), 5);
 
   EXPECT_EQ(list_3.at(0)->id, "publisher_1");
@@ -792,21 +769,18 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
 
   /**
    * Get publisher with min_visits
-  */
+   */
   ledger::PublisherInfoList list_4;
   ledger::ActivityInfoFilter filter_4;
   filter_4.min_visits = 5;
   filter_4.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
-                                                        0,
-                                                        filter_4,
-                                                        &list_4));
+  EXPECT_TRUE(
+      publisher_info_database_->GetActivityList(0, 0, filter_4, &list_4));
   EXPECT_EQ(static_cast<int>(list_4.size()), 2);
 
   EXPECT_EQ(list_4.at(0)->id, "publisher_5");
   EXPECT_EQ(list_4.at(1)->id, "publisher_6");
 }
-
 
 TEST_F(PublisherInfoDatabaseTest, Migrationv3tov4) {
   base::ScopedTempDir temp_dir;
@@ -1035,8 +1009,7 @@ void PublisherInfoDatabaseTest::PreparePendingContributions() {
   list.push_back(std::move(contribution3));
   list.push_back(std::move(contribution4));
 
-  success = publisher_info_database_->InsertPendingContribution(
-      list);
+  success = publisher_info_database_->InsertPendingContribution(list);
   EXPECT_TRUE(success);
   EXPECT_EQ(CountTableRows("pending_contribution"), 4);
 }
@@ -1050,7 +1023,7 @@ TEST_F(PublisherInfoDatabaseTest, GetPendingContributions) {
 
   /**
    * Good path
-  */
+   */
   ledger::PendingContributionInfoList select_list;
   publisher_info_database_->GetPendingContributions(&select_list);
   EXPECT_EQ(static_cast<int>(select_list.size()), 4);
@@ -1072,14 +1045,12 @@ TEST_F(PublisherInfoDatabaseTest, RemovePendingContributions) {
 
   /**
    * Good path
-  */
+   */
   ledger::PendingContributionInfoList select_list;
   publisher_info_database_->GetPendingContributions(&select_list);
   EXPECT_EQ(select_list.at(0)->publisher_key, "key1");
   bool success = publisher_info_database_->RemovePendingContributions(
-      "key1",
-      "fsodfsdnf23r23rn",
-      select_list.at(0)->added_date);
+      "key1", "fsodfsdnf23r23rn", select_list.at(0)->added_date);
   EXPECT_TRUE(success);
 
   ledger::PendingContributionInfoList list;
@@ -1092,15 +1063,12 @@ TEST_F(PublisherInfoDatabaseTest, RemovePendingContributions) {
 
   /**
    * Trying to delete not existing row
-  */
+   */
   success = publisher_info_database_->RemovePendingContributions(
-      "key0",
-      "viewing_id",
-      10);
+      "key0", "viewing_id", 10);
   EXPECT_TRUE(success);
   EXPECT_EQ(CountTableRows("pending_contribution"), 3);
 }
-
 
 TEST_F(PublisherInfoDatabaseTest, RemoveAllPendingContributions) {
   base::ScopedTempDir temp_dir;
@@ -1111,7 +1079,7 @@ TEST_F(PublisherInfoDatabaseTest, RemoveAllPendingContributions) {
 
   /**
    * Good path
-  */
+   */
   bool success = publisher_info_database_->RemoveAllPendingContributions();
   EXPECT_TRUE(success);
   EXPECT_EQ(CountTableRows("pending_contribution"), 0);

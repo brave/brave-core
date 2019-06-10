@@ -22,8 +22,7 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service)
     : BraveStatsUpdaterParams(pref_service,
                               GetCurrentDateAsYMD(),
                               GetCurrentISOWeekNumber(),
-                              GetCurrentMonth()) {
-}
+                              GetCurrentMonth()) {}
 
 BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service,
                                                  const std::string& ymd,
@@ -33,8 +32,7 @@ BraveStatsUpdaterParams::BraveStatsUpdaterParams(PrefService* pref_service,
   LoadPrefs();
 }
 
-BraveStatsUpdaterParams::~BraveStatsUpdaterParams() {
-}
+BraveStatsUpdaterParams::~BraveStatsUpdaterParams() {}
 
 std::string BraveStatsUpdaterParams::GetDailyParam() const {
   return BooleanToString(
@@ -46,8 +44,7 @@ std::string BraveStatsUpdaterParams::GetWeeklyParam() const {
 }
 
 std::string BraveStatsUpdaterParams::GetMonthlyParam() const {
-  return BooleanToString(last_check_month_ == 0 ||
-                         month_ != last_check_month_);
+  return BooleanToString(last_check_month_ == 0 || month_ != last_check_month_);
 }
 
 std::string BraveStatsUpdaterParams::GetFirstCheckMadeParam() const {

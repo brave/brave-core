@@ -8,22 +8,22 @@
 #include <string>
 
 namespace brave_rewards {
-  struct BalanceReport {
-    BalanceReport();
-    ~BalanceReport();
-    BalanceReport(const BalanceReport& properties);
+struct BalanceReport {
+  BalanceReport();
+  ~BalanceReport();
+  BalanceReport(const BalanceReport& properties);
 
-    std::string opening_balance = "0";
-    std::string closing_balance = "0";
-    std::string deposits = "0";
-    std::string grants = "0";
-    std::string earning_from_ads = "0";
-    std::string auto_contribute = "0";
-    std::string recurring_donation = "0";
-    std::string one_time_donation = "0";
-    std::string total = "0";
-  };
+  std::string opening_balance = "0";
+  std::string closing_balance = "0";
+  std::string deposits = "0";
+  std::string grants = "0";
+  std::string earning_from_ads = "0";
+  std::string auto_contribute = "0";
+  std::string recurring_donation = "0";
+  std::string one_time_donation = "0";
+  std::string total = "0";
+};
 
 }  // namespace brave_rewards
 
-#endif //BRAVE_BROWSER_PAYMENTS_BALANCE_REPORT_
+#endif  // BRAVE_BROWSER_PAYMENTS_BALANCE_REPORT_

@@ -5,8 +5,8 @@
 #include "brave/browser/importer/chrome_profile_lock.h"
 
 #if defined(OS_POSIX)
-#include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/types.h>
 #include <unistd.h>
 #endif
 
@@ -27,17 +27,17 @@ const char kLockFile[] = "lockfile";
 
 class ChromeProfileLockTest : public testing::Test {
  public:
-   ChromeProfileLockTest ()
-     : test_browser_thread_bundle_(
-         content::TestBrowserThreadBundle::REAL_IO_THREAD) {}
+  ChromeProfileLockTest()
+      : test_browser_thread_bundle_(
+            content::TestBrowserThreadBundle::REAL_IO_THREAD) {}
+
  protected:
   void SetUp() override {
     testing::Test::SetUp();
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     user_data_path_ = temp_dir_.GetPath();
 #if defined(OS_POSIX)
-    lock_file_path_ =
-      user_data_path_.Append(chrome::kSingletonLockFilename);
+    lock_file_path_ = user_data_path_.Append(chrome::kSingletonLockFilename);
 #elif defined(OS_WIN)
     lock_file_path_ = user_data_path_.AppendASCII(kLockFile);
 #else

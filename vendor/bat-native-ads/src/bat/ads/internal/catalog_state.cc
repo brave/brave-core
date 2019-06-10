@@ -9,26 +9,25 @@
 
 namespace ads {
 
-CatalogState::CatalogState() :
-    catalog_id(""),
-    version(0),
-    ping(0),
-    campaigns({}),
-    issuers(IssuersInfo()) {}
+CatalogState::CatalogState()
+    : catalog_id(""),
+      version(0),
+      ping(0),
+      campaigns({}),
+      issuers(IssuersInfo()) {}
 
-CatalogState::CatalogState(const CatalogState& state) :
-    catalog_id(state.catalog_id),
-    version(state.version),
-    ping(state.ping),
-    campaigns(state.campaigns),
-    issuers(state.issuers) {}
+CatalogState::CatalogState(const CatalogState& state)
+    : catalog_id(state.catalog_id),
+      version(state.version),
+      ping(state.ping),
+      campaigns(state.campaigns),
+      issuers(state.issuers) {}
 
 CatalogState::~CatalogState() = default;
 
-Result CatalogState::FromJson(
-    const std::string& json,
-    const std::string& json_schema,
-    std::string* error_description) {
+Result CatalogState::FromJson(const std::string& json,
+                              const std::string& json_schema,
+                              std::string* error_description) {
   rapidjson::Document catalog;
   catalog.Parse(json.c_str());
 
@@ -90,8 +89,10 @@ Result CatalogState::FromJson(
       std::string execution = creative_set["execution"].GetString();
       if (execution != "per_click") {
         if (error_description != nullptr) {
-          *error_description = "Catalog invalid: creativeSet has unknown "
-              "execution: " + execution;
+          *error_description =
+              "Catalog invalid: creativeSet has unknown "
+              "execution: " +
+              execution;
         }
 
         return FAILED;
@@ -106,8 +107,10 @@ Result CatalogState::FromJson(
       auto segments = creative_set["segments"].GetArray();
       if (segments.Size() == 0) {
         if (error_description != nullptr) {
-          *error_description = "Catalog invalid: No segments for creativeSet "
-              "with creativeSetId: " + creative_set_info.creative_set_id;
+          *error_description =
+              "Catalog invalid: No segments for creativeSet "
+              "with creativeSetId: " +
+              creative_set_info.creative_set_id;
         }
 
         return FAILED;
@@ -137,8 +140,9 @@ Result CatalogState::FromJson(
         std::string name = type["name"].GetString();
         if (name != "notification") {
           if (error_description != nullptr) {
-            *error_description = "Catalog invalid: Invalid creative type: "
-                + name + " for creativeInstanceId: " +
+            *error_description =
+                "Catalog invalid: Invalid creative type: " + name +
+                " for creativeInstanceId: " +
                 creative_info.creative_instance_id;
           }
 

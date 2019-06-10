@@ -20,8 +20,8 @@ base::FilePath GetTestFirefoxProfileDir(const std::string& profile) {
   base::FilePath test_dir;
   base::PathService::Get(brave::DIR_TEST_DATA, &test_dir);
 
-  return test_dir.AppendASCII("import").AppendASCII("firefox")
-      .AppendASCII(profile);
+  return test_dir.AppendASCII("import").AppendASCII("firefox").AppendASCII(
+      profile);
 }
 
 class FirefoxImporterTest : public ::testing::Test {
@@ -29,7 +29,8 @@ class FirefoxImporterTest : public ::testing::Test {
   void SetUpFirefoxProfile() {
     // Creates a new profile in a new subdirectory in the temp directory.
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath test_path = temp_dir_.GetPath().AppendASCII("FirefoxImporterTest");
+    base::FilePath test_path =
+        temp_dir_.GetPath().AppendASCII("FirefoxImporterTest");
     base::DeleteFile(test_path, true);
     base::CreateDirectory(test_path);
     profile_dir_ = test_path.AppendASCII("profile");

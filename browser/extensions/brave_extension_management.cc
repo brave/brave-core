@@ -9,11 +9,11 @@
 
 #include "base/command_line.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/extensions/brave_extension_provider.h"
+#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
-#include "brave/browser/extensions/brave_extension_provider.h"
-#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
@@ -24,17 +24,14 @@
 namespace extensions {
 
 BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
-    : ExtensionManagement(profile),
-      extension_registry_observer_(this) {
-  extension_registry_observer_.Add(ExtensionRegistry::Get(
-        static_cast<content::BrowserContext*>(profile)));
-  providers_.push_back(
-      std::make_unique<BraveExtensionProvider>());
+    : ExtensionManagement(profile), extension_registry_observer_(this) {
+  extension_registry_observer_.Add(
+      ExtensionRegistry::Get(static_cast<content::BrowserContext*>(profile)));
+  providers_.push_back(std::make_unique<BraveExtensionProvider>());
   RegisterBraveExtensions();
 }
 
-BraveExtensionManagement::~BraveExtensionManagement() {
-}
+BraveExtensionManagement::~BraveExtensionManagement() {}
 
 void BraveExtensionManagement::RegisterBraveExtensions() {
   const base::CommandLine& command_line =

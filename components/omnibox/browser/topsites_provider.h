@@ -34,9 +34,9 @@ class TopSitesProvider : public AutocompleteProvider {
                 const ACMatchClassifications& styles);
 
   static ACMatchClassifications StylesForSingleMatch(
-      const std::string &input_text,
-      const std::string &site,
-      const size_t &foundPos);
+      const std::string& input_text,
+      const std::string& site,
+      const size_t& foundPos);
 
   DISALLOW_COPY_AND_ASSIGN(TopSitesProvider);
 };

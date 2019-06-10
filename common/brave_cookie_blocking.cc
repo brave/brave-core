@@ -5,14 +5,16 @@
 
 #include "brave/common/brave_cookie_blocking.h"
 
+#include "brave/common/shield_exceptions.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
-#include "brave/common/shield_exceptions.h"
 
-bool ShouldBlockCookie(bool allow_brave_shields, bool allow_1p_cookies,
-    bool allow_3p_cookies, const GURL& primary_url, const GURL& url,
-    bool allow_google_auth) {
-
+bool ShouldBlockCookie(bool allow_brave_shields,
+                       bool allow_1p_cookies,
+                       bool allow_3p_cookies,
+                       const GURL& primary_url,
+                       const GURL& url,
+                       bool allow_google_auth) {
   if (primary_url.SchemeIs("chrome-extension")) {
     return false;
   }
@@ -32,12 +34,14 @@ bool ShouldBlockCookie(bool allow_brave_shields, bool allow_1p_cookies,
   }
 
   // If it is whitelisted, we shouldn't block
-  if (brave::IsWhitelistedCookieException(primary_url, url,
-        allow_google_auth)) {
+  if (brave::IsWhitelistedCookieException(
+          primary_url, url, allow_google_auth)) {
     return false;
   }
 
   // Same TLD+1 whouldn't set the referrer
-  return !SameDomainOrHost(url, primary_url,
+  return !SameDomainOrHost(
+      url,
+      primary_url,
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 }

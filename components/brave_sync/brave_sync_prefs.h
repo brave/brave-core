@@ -6,8 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_PREFS_H_
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "base/macros.h"
 
@@ -82,9 +82,9 @@ class Prefs {
   bool GetSyncHistoryEnabled() const;
   void SetSyncHistoryEnabled(const bool sync_history_enabled);
 
-  void SetLatestRecordTime(const base::Time &time);
+  void SetLatestRecordTime(const base::Time& time);
   base::Time GetLatestRecordTime();
-  void SetLastFetchTime(const base::Time &time);
+  void SetLastFetchTime(const base::Time& time);
   base::Time GetLastFetchTime();
 
   std::unique_ptr<SyncDevices> GetSyncDevices();

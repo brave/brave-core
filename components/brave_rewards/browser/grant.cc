@@ -11,7 +11,7 @@ Grant::Grant() : expiryTime(0) {}
 
 Grant::~Grant() {}
 
-Grant::Grant(const Grant &properties) {
+Grant::Grant(const Grant& properties) {
   altcurrency = properties.altcurrency;
   probi = properties.probi;
   promotionId = properties.promotionId;

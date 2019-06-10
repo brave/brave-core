@@ -9,9 +9,8 @@
 
 namespace brave_rewards {
 
-int OnBeforeURLRequest(
-    const brave::ResponseCallback& next_callback,
-    std::shared_ptr<brave::BraveRequestInfo> ctx);
+int OnBeforeURLRequest(const brave::ResponseCallback& next_callback,
+                       std::shared_ptr<brave::BraveRequestInfo> ctx);
 
 }  // namespace brave_rewards
 

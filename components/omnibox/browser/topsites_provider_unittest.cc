@@ -11,15 +11,14 @@
 
 class TopSitesProviderTest : public testing::Test {
  public:
-  TopSitesProviderTest() : provider_(new TopSitesProvider(&client_)) {
-  }
+  TopSitesProviderTest() : provider_(new TopSitesProvider(&client_)) {}
 
   AutocompleteInput CreateAutocompleteInput(base::StringPiece text) {
     AutocompleteInput input(base::UTF8ToUTF16(text),
                             metrics::OmniboxEventProto::OTHER,
                             classifier_);
     return input;
- }
+  }
 
  protected:
   TestSchemeClassifier classifier_;

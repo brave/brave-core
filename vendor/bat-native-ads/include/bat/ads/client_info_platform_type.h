@@ -8,14 +8,7 @@
 
 namespace ads {
 
-enum ClientInfoPlatformType {
-  UNKNOWN,
-  WINDOWS,
-  MACOS,
-  IOS,
-  ANDROID_OS,
-  LINUX
-};
+enum ClientInfoPlatformType { UNKNOWN, WINDOWS, MACOS, IOS, ANDROID_OS, LINUX };
 
 }  // namespace ads
 

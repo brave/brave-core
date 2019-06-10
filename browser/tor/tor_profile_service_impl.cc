@@ -24,8 +24,8 @@ using content::BrowserThread;
 
 namespace tor {
 
-TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile) :
-    profile_(profile) {
+TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
+    : profile_(profile) {
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
   tor_launcher_factory_->AddObserver(this);
 }
@@ -54,7 +54,7 @@ void TorProfileServiceImpl::SetNewTorCircuitOnIOThread(
   if (tor_config.empty())
     return;
   auto* proxy_resolution_service =
-    getter->GetURLRequestContext()->proxy_resolution_service();
+      getter->GetURLRequestContext()->proxy_resolution_service();
   DCHECK(proxy_resolution_service);
   TorProxyConfigService::TorSetProxy(proxy_resolution_service,
                                      tor_config.proxy_string(),
@@ -69,19 +69,20 @@ void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
   if (isolation_key.empty())
     return;
   auto* storage_partition =
-    BrowserContext::GetStoragePartitionForSite(profile_, request_url, false);
+      BrowserContext::GetStoragePartitionForSite(profile_, request_url, false);
 
   net::URLRequestContextGetter* url_request_context_getter =
-    storage_partition->GetURLRequestContext();
+      storage_partition->GetURLRequestContext();
   DCHECK(url_request_context_getter);
 
   base::PostTaskWithTraitsAndReply(
-      FROM_HERE, {BrowserThread::IO},
+      FROM_HERE,
+      {BrowserThread::IO},
       base::Bind(&TorProfileServiceImpl::SetNewTorCircuitOnIOThread,
                  base::Unretained(this),
                  base::WrapRefCounted(url_request_context_getter),
                  isolation_key),
-    callback);
+      callback);
 }
 
 const TorConfig& TorProfileServiceImpl::GetTorConfig() {
@@ -106,10 +107,14 @@ int TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
     LOG(ERROR) << "Tor not configured -- blocking connection";
     return net::ERR_SOCKS_CONNECTION_FAILED;
   }
-  base::PostTaskWithTraits(FROM_HERE, {BrowserThread::IO},
-      base::Bind(&TorProxyConfigService::TorSetProxy,
-      service, tor_config.proxy_string(),
-      isolation_key, &tor_proxy_map_, new_circuit));
+  base::PostTaskWithTraits(FROM_HERE,
+                           {BrowserThread::IO},
+                           base::Bind(&TorProxyConfigService::TorSetProxy,
+                                      service,
+                                      tor_config.proxy_string(),
+                                      isolation_key,
+                                      &tor_proxy_map_,
+                                      new_circuit));
   return net::OK;
 }
 
@@ -131,6 +136,5 @@ void TorProfileServiceImpl::NotifyTorLaunched(bool result, int64_t pid) {
   for (auto& observer : observers_)
     observer.OnTorLaunched(result, pid);
 }
-
 
 }  // namespace tor

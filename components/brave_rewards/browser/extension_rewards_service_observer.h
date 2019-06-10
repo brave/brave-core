@@ -52,11 +52,10 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   // RewardsServicePrivateObserver implementation
   void OnGetCurrentBalanceReport(RewardsService* rewards_service,
                                  const BalanceReport& balance_report) override;
-  void OnPanelPublisherInfo(
-      RewardsService* rewards_service,
-      int error_code,
-      const ledger::PublisherInfo* info,
-      uint64_t windowId) override;
+  void OnPanelPublisherInfo(RewardsService* rewards_service,
+                            int error_code,
+                            const ledger::PublisherInfo* info,
+                            uint64_t windowId) override;
   void OnGrant(RewardsService* rewards_service,
                unsigned int result,
                brave_rewards::Grant grant) override;

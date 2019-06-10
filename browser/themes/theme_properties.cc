@@ -26,7 +26,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveLightUi(int id) {
     // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
     case ThemeProperties::COLOR_BACKGROUND_TAB_INACTIVE:
-      return color_utils::HSLShift(kLightFrame, { -1, -1, 0.6 });
+      return color_utils::HSLShift(kLightFrame, {-1, -1, 0.6});
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
@@ -62,7 +62,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForBraveDarkUi(int id) {
     // except active tab
     case ThemeProperties::COLOR_FRAME_INACTIVE:
     case ThemeProperties::COLOR_BACKGROUND_TAB_INACTIVE:
-      return color_utils::HSLShift(kDarkFrame, { -1, -1, 0.6 });
+      return color_utils::HSLShift(kDarkFrame, {-1, -1, 0.6});
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
@@ -103,7 +103,7 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
     case ThemeProperties::COLOR_FRAME_INACTIVE:
     case ThemeProperties::COLOR_FRAME_INCOGNITO_INACTIVE:
     case ThemeProperties::COLOR_BACKGROUND_TAB_INCOGNITO_INACTIVE:
-      return color_utils::HSLShift(kPrivateFrame, { -1, -1, 0.55 });
+      return color_utils::HSLShift(kPrivateFrame, {-1, -1, 0.55});
     // Active tab and also the URL toolbar
     // Parts of this color show up as you hover over innactive tabs too
     case ThemeProperties::COLOR_TOOLBAR:
@@ -129,8 +129,9 @@ base::Optional<SkColor> MaybeGetDefaultColorForPrivateUi(int id) {
 }  // namespace
 
 // Returns a |nullopt| if the UI color is not handled by Brave.
-base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id, bool incognito,
-    BraveThemeType theme) {
+base::Optional<SkColor> MaybeGetDefaultColorForBraveUi(int id,
+                                                       bool incognito,
+                                                       BraveThemeType theme) {
   // Consistent (and stable) values across all themes
   switch (id) {
     case ThemeProperties::COLOR_TAB_THROBBER_SPINNING:

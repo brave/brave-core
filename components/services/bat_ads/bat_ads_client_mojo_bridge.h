@@ -44,28 +44,21 @@ class BatAdsClientMojoBridge : public ads::AdsClient {
   void Save(const std::string& name,
             const std::string& value,
             ads::OnSaveCallback callback) override;
-  void Load(const std::string& name,
-            ads::OnLoadCallback callback) override;
-  void SaveBundleState(
-      std::unique_ptr<ads::BundleState> bundle_state,
-      ads::OnSaveCallback callback) override;
+  void Load(const std::string& name, ads::OnLoadCallback callback) override;
+  void SaveBundleState(std::unique_ptr<ads::BundleState> bundle_state,
+                       ads::OnSaveCallback callback) override;
   const std::string LoadJsonSchema(const std::string& name) override;
-  void Reset(const std::string& name,
-             ads::OnResetCallback callback) override;
-  void GetAds(
-      const std::string& category,
-      ads::OnGetAdsCallback callback) override;
+  void Reset(const std::string& name, ads::OnResetCallback callback) override;
+  void GetAds(const std::string& category,
+              ads::OnGetAdsCallback callback) override;
   void LoadSampleBundle(ads::OnLoadSampleBundleCallback callback) override;
   void EventLog(const std::string& json) override;
-  std::unique_ptr<ads::LogStream> Log(
-      const char* file,
-      int line,
-      const ads::LogLevel log_level) const override;
+  std::unique_ptr<ads::LogStream>
+  Log(const char* file, int line, const ads::LogLevel log_level) const override;
   void SetIdleThreshold(const int threshold) override;
   bool IsNotificationsAvailable() const override;
-  void LoadUserModelForLocale(
-      const std::string& locale,
-      ads::OnLoadCallback callback) const override;
+  void LoadUserModelForLocale(const std::string& locale,
+                              ads::OnLoadCallback callback) const override;
   bool IsNetworkConnectionAvailable() override;
 
  private:

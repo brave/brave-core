@@ -1,7 +1,6 @@
 declare namespace RewardsTip {
   interface State {
-    publishers: Record<string, Publisher>
-    walletInfo: WalletProperties
+    publishers: Record<string, Publisher>walletInfo: WalletProperties
     finished: boolean
     error: boolean
     currentTipAmount?: string
@@ -11,7 +10,7 @@ declare namespace RewardsTip {
   }
 
   interface ApplicationState {
-    rewardsDonateData: State | undefined  // TODO(nejczdovc): migrate to tips
+    rewardsDonateData: State|undefined  // TODO(nejczdovc): migrate to tips
   }
 
   interface ComponentProps {
@@ -26,10 +25,8 @@ declare namespace RewardsTip {
     description: string
     background: string
     logo: string
-    amounts: number[],
-    provider: string
-    social: Record<string, string>
-    verified: boolean
+    amounts: number[], provider: string
+    social: Record<string, string>verified: boolean
   }
 
   interface TweetMetaData {
@@ -46,8 +43,7 @@ declare namespace RewardsTip {
     choices: number[]
     probi: string
     range?: number[]
-    rates?: Record<string, number>
-    grants?: Grant[]
+    rates?: Record<string, number>grants?: Grant[]
   }
 
   export interface Grant {
@@ -57,7 +53,7 @@ declare namespace RewardsTip {
     expiryTime: number
     captcha?: string
     hint?: string
-    status?: 'wrongPosition' | 'serverError' | number | null
+    status?: 'wrongPosition'|'serverError'|number|null
   }
 
   export interface RecurringTips {

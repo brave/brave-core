@@ -5,19 +5,17 @@
 
 namespace brave_rewards {
 
-  ContributionInfo::ContributionInfo() :
-      date(0) {
-  }
+ContributionInfo::ContributionInfo() : date(0) {}
 
-  ContributionInfo::~ContributionInfo() { }
+ContributionInfo::~ContributionInfo() {}
 
-  ContributionInfo::ContributionInfo(const ContributionInfo &data) {
-    probi = data.probi;
-    month = data.month;
-    year = data.year;
-    category = data.category;
-    date = data.date;
-    publisher_key = data.publisher_key;
-  }
+ContributionInfo::ContributionInfo(const ContributionInfo& data) {
+  probi = data.probi;
+  month = data.month;
+  year = data.year;
+  category = data.category;
+  date = data.date;
+  publisher_key = data.publisher_key;
+}
 
 }  // namespace brave_rewards

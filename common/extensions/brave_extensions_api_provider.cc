@@ -37,8 +37,7 @@ void BraveExtensionsAPIProvider::AddAPIJSONSources(
   json_source->LoadJSON(IDR_BRAVE_EXTENSION_API_FEATURES);
 }
 
-bool BraveExtensionsAPIProvider::IsAPISchemaGenerated(
-    const std::string& name) {
+bool BraveExtensionsAPIProvider::IsAPISchemaGenerated(const std::string& name) {
   return api::BraveGeneratedSchemas::IsGenerated(name);
 }
 

@@ -10,10 +10,10 @@
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources_map.h"
+#include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/browser/ui/webui/settings/default_brave_shields_handler.h"
-#include "brave/browser/ui/webui/navigation_bar_data_provider.h"
 #include "brave/browser/version_info.h"
 #include "brave/common/brave_switches.h"
 #include "chrome/browser/profiles/profile.h"
@@ -28,7 +28,7 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
                                  const std::string& host)
     : SettingsUI(web_ui) {
   web_ui->AddMessageHandler(
-    std::make_unique<settings::MetricsReportingHandler>());
+      std::make_unique<settings::MetricsReportingHandler>());
   web_ui->AddMessageHandler(std::make_unique<BravePrivacyHandler>());
   web_ui->AddMessageHandler(std::make_unique<DefaultBraveShieldsHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveDefaultExtensionsHandler>());
@@ -38,8 +38,7 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
 #endif
 }
 
-BraveSettingsUI::~BraveSettingsUI() {
-}
+BraveSettingsUI::~BraveSettingsUI() {}
 
 // static
 void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
@@ -53,7 +52,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
       *base::CommandLine::ForCurrentProcess();
   html_source->AddBoolean("isSyncDisabled",
                           command_line.HasSwitch(switches::kDisableBraveSync));
-  html_source->AddString("braveProductVersion",
-    version_info::GetBraveVersionWithoutChromiumMajorVersion());
+  html_source->AddString(
+      "braveProductVersion",
+      version_info::GetBraveVersionWithoutChromiumMajorVersion());
   NavigationBarDataProvider::Initialize(html_source);
 }

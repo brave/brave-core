@@ -7,11 +7,9 @@
 
 namespace ads {
 
-BlurInfo::BlurInfo() :
-    tab_id(-1) {}
+BlurInfo::BlurInfo() : tab_id(-1) {}
 
-BlurInfo::BlurInfo(const BlurInfo& info) :
-    tab_id(info.tab_id) {}
+BlurInfo::BlurInfo(const BlurInfo& info) : tab_id(info.tab_id) {}
 
 BlurInfo::~BlurInfo() {}
 

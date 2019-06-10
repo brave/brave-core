@@ -12,12 +12,11 @@
 
 namespace net {
 
-NET_EXPORT bool ParseAuthHostAndPort(
-    base::StringPiece input,
-    std::string* username,
-    std::string* password,
-    std::string* host,
-    int* port);
+NET_EXPORT bool ParseAuthHostAndPort(base::StringPiece input,
+                                     std::string* username,
+                                     std::string* password,
+                                     std::string* host,
+                                     int* port);
 
 }
 

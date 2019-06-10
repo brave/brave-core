@@ -23,26 +23,25 @@
 
 FORWARD_DECLARE_TEST(BraveBookmarkChangeProcessorTest, IgnoreRapidCreateDelete);
 FORWARD_DECLARE_TEST(BraveBookmarkChangeProcessorTest,
-    MigrateOrdersForPermanentNodes);
+                     MigrateOrdersForPermanentNodes);
 
 class BraveBookmarkChangeProcessorTest;
 
 namespace brave_sync {
 
 class BookmarkChangeProcessor : public ChangeProcessor,
-                                       bookmarks::BookmarkModelObserver  {
+                                bookmarks::BookmarkModelObserver {
  public:
-  static BookmarkChangeProcessor* Create(
-      Profile* profile,
-      BraveSyncClient* sync_client,
-      prefs::Prefs* sync_prefs);
+  static BookmarkChangeProcessor* Create(Profile* profile,
+                                         BraveSyncClient* sync_client,
+                                         prefs::Prefs* sync_prefs);
   ~BookmarkChangeProcessor() override;
 
   // ChangeProcessor implementation
   void Start() override;
   void Stop() override;
   void Reset(bool clear_meta_info) override;
-  void ApplyChangesFromSyncModel(const RecordsList &records) override;
+  void ApplyChangesFromSyncModel(const RecordsList& records) override;
   void GetAllSyncData(
       const std::vector<std::unique_ptr<jslib::SyncRecord>>& records,
       SyncRecordAndExistingList* records_and_existing_objects) override;
@@ -54,9 +53,9 @@ class BookmarkChangeProcessor : public ChangeProcessor,
  private:
   friend class ::BraveBookmarkChangeProcessorTest;
   FRIEND_TEST_ALL_PREFIXES(::BraveBookmarkChangeProcessorTest,
-                                                       IgnoreRapidCreateDelete);
+                           IgnoreRapidCreateDelete);
   FRIEND_TEST_ALL_PREFIXES(::BraveBookmarkChangeProcessorTest,
-                                                MigrateOrdersForPermanentNodes);
+                           MigrateOrdersForPermanentNodes);
 
   BookmarkChangeProcessor(Profile* profile,
                           BraveSyncClient* sync_client,
@@ -120,9 +119,9 @@ class BookmarkChangeProcessor : public ChangeProcessor,
   int GetPermanentNodeIndex(const bookmarks::BookmarkNode* node) const;
   static int FindMigrateSubOrderLength(const std::string& order);
 
-  BraveSyncClient* sync_client_;  // not owned
-  prefs::Prefs* sync_prefs_;  // not owned
-  Profile* profile_;  // not owned
+  BraveSyncClient* sync_client_;              // not owned
+  prefs::Prefs* sync_prefs_;                  // not owned
+  Profile* profile_;                          // not owned
   bookmarks::BookmarkModel* bookmark_model_;  // not owned
 
   bookmarks::BookmarkNode* deleted_node_root_;

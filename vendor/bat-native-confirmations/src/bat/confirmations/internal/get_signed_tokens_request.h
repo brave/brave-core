@@ -18,9 +18,8 @@ class GetSignedTokensRequest {
   GetSignedTokensRequest();
   ~GetSignedTokensRequest();
 
-  std::string BuildUrl(
-      const WalletInfo& wallet_info,
-      const std::string& nonce) const;
+  std::string BuildUrl(const WalletInfo& wallet_info,
+                       const std::string& nonce) const;
 
   URLRequestMethod GetMethod() const;
 };

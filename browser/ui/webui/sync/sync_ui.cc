@@ -9,10 +9,10 @@
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
-#include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "brave/components/brave_sync/grit/brave_sync_generated_map.h"
-#include "brave/components/brave_sync/sync_devices.h"
+#include "brave/components/brave_sync/grit/brave_sync_resources.h"
 #include "brave/components/brave_sync/settings.h"
+#include "brave/components/brave_sync/sync_devices.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_thread.h"
@@ -48,8 +48,8 @@ class SyncUIDOMHandler : public WebUIMessageHandler,
 
   void OnSyncSetupError(brave_sync::BraveSyncService* sync_service,
                         const std::string& error) override;
-  void OnSyncStateChanged(brave_sync::BraveSyncService *sync_service) override;
-  void OnHaveSyncWords(brave_sync::BraveSyncService *sync_service,
+  void OnSyncStateChanged(brave_sync::BraveSyncService* sync_service) override;
+  void OnHaveSyncWords(brave_sync::BraveSyncService* sync_service,
                        const std::string& sync_words) override;
 
   // this should grab actual data from controller and update the page
@@ -57,10 +57,10 @@ class SyncUIDOMHandler : public WebUIMessageHandler,
 
   // Move to observer
   void GetSettingsAndDevicesComplete(
-    std::unique_ptr<brave_sync::Settings> settings,
-    std::unique_ptr<brave_sync::SyncDevices> devices);
+      std::unique_ptr<brave_sync::Settings> settings,
+      std::unique_ptr<brave_sync::SyncDevices> devices);
 
-  brave_sync::BraveSyncService *sync_service_ = nullptr;  // NOT OWNED
+  brave_sync::BraveSyncService* sync_service_ = nullptr;  // NOT OWNED
 
   base::WeakPtrFactory<SyncUIDOMHandler> weak_ptr_factory_;
 
@@ -75,45 +75,48 @@ SyncUIDOMHandler::~SyncUIDOMHandler() {
 }
 
 void SyncUIDOMHandler::RegisterMessages() {
-  this->web_ui()->RegisterMessageCallback("setupSyncHaveCode",
-     base::Bind(&SyncUIDOMHandler::SetupSyncHaveCode,
-                base::Unretained(this)));
+  this->web_ui()->RegisterMessageCallback(
+      "setupSyncHaveCode",
+      base::Bind(&SyncUIDOMHandler::SetupSyncHaveCode, base::Unretained(this)));
 
-  this->web_ui()->RegisterMessageCallback("setupSyncNewToSync",
-     base::Bind(&SyncUIDOMHandler::SetupSyncNewToSync,
-                base::Unretained(this)));
+  this->web_ui()->RegisterMessageCallback(
+      "setupSyncNewToSync",
+      base::Bind(&SyncUIDOMHandler::SetupSyncNewToSync,
+                 base::Unretained(this)));
 
-  this->web_ui()->RegisterMessageCallback("pageLoaded",
-     base::Bind(&SyncUIDOMHandler::PageLoaded,
-                base::Unretained(this)));
+  this->web_ui()->RegisterMessageCallback(
+      "pageLoaded",
+      base::Bind(&SyncUIDOMHandler::PageLoaded, base::Unretained(this)));
 
-  this->web_ui()->RegisterMessageCallback("needSyncWords",
-     base::Bind(&SyncUIDOMHandler::NeedSyncWords,
-                base::Unretained(this)));
+  this->web_ui()->RegisterMessageCallback(
+      "needSyncWords",
+      base::Bind(&SyncUIDOMHandler::NeedSyncWords, base::Unretained(this)));
 
-  this->web_ui()->RegisterMessageCallback("needSyncQRcode",
-     base::Bind(&SyncUIDOMHandler::NeedSyncQRcode,
-                base::Unretained(this)));
+  this->web_ui()->RegisterMessageCallback(
+      "needSyncQRcode",
+      base::Bind(&SyncUIDOMHandler::NeedSyncQRcode, base::Unretained(this)));
 
-  this->web_ui()->RegisterMessageCallback("syncBookmarks",
-     base::Bind(&SyncUIDOMHandler::SyncBookmarks,
-                base::Unretained(this)));
+  this->web_ui()->RegisterMessageCallback(
+      "syncBookmarks",
+      base::Bind(&SyncUIDOMHandler::SyncBookmarks, base::Unretained(this)));
 
-  this->web_ui()->RegisterMessageCallback("syncBrowsingHistory",
-     base::Bind(&SyncUIDOMHandler::SyncBrowsingHistory,
-                base::Unretained(this)));
+  this->web_ui()->RegisterMessageCallback(
+      "syncBrowsingHistory",
+      base::Bind(&SyncUIDOMHandler::SyncBrowsingHistory,
+                 base::Unretained(this)));
 
-  this->web_ui()->RegisterMessageCallback("syncSavedSiteSettings",
-     base::Bind(&SyncUIDOMHandler::SyncSavedSiteSettings,
-                base::Unretained(this)));
+  this->web_ui()->RegisterMessageCallback(
+      "syncSavedSiteSettings",
+      base::Bind(&SyncUIDOMHandler::SyncSavedSiteSettings,
+                 base::Unretained(this)));
 
-  this->web_ui()->RegisterMessageCallback("deleteDevice",
-     base::Bind(&SyncUIDOMHandler::DeleteDevice,
-                base::Unretained(this)));
+  this->web_ui()->RegisterMessageCallback(
+      "deleteDevice",
+      base::Bind(&SyncUIDOMHandler::DeleteDevice, base::Unretained(this)));
 
-  this->web_ui()->RegisterMessageCallback("resetSync",
-     base::Bind(&SyncUIDOMHandler::ResetSync,
-                base::Unretained(this)));
+  this->web_ui()->RegisterMessageCallback(
+      "resetSync",
+      base::Bind(&SyncUIDOMHandler::ResetSync, base::Unretained(this)));
 }
 
 void SyncUIDOMHandler::Init() {
@@ -156,8 +159,8 @@ void SyncUIDOMHandler::NeedSyncWords(const base::ListValue* args) {
 void SyncUIDOMHandler::NeedSyncQRcode(const base::ListValue* args) {
   DCHECK(sync_service_);
   std::string seed = sync_service_->GetSeed();
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "sync_ui_exports.haveSeedForQrCode", base::Value(seed));
+  web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.haveSeedForQrCode",
+                                         base::Value(seed));
 }
 
 void SyncUIDOMHandler::SyncBookmarks(const base::ListValue* args) {
@@ -209,25 +212,24 @@ void SyncUIDOMHandler::ResetSync(const base::ListValue* args) {
 void SyncUIDOMHandler::OnSyncSetupError(
     brave_sync::BraveSyncService* sync_service,
     const std::string& error) {
-
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "sync_ui_exports.syncSetupError", base::Value(error));
+  web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.syncSetupError",
+                                         base::Value(error));
 }
 
 void SyncUIDOMHandler::OnSyncStateChanged(
-    brave_sync::BraveSyncService *sync_service) {
+    brave_sync::BraveSyncService* sync_service) {
   LoadSyncSettingsView();
 }
 
 void SyncUIDOMHandler::LoadSyncSettingsView() {
   sync_service_->GetSettingsAndDevices(
       base::Bind(&SyncUIDOMHandler::GetSettingsAndDevicesComplete,
-          weak_ptr_factory_.GetWeakPtr()));
+                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 void SyncUIDOMHandler::GetSettingsAndDevicesComplete(
-  std::unique_ptr<brave_sync::Settings> settings,
-  std::unique_ptr<brave_sync::SyncDevices> devices) {
+    std::unique_ptr<brave_sync::Settings> settings,
+    std::unique_ptr<brave_sync::SyncDevices> devices) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   std::unique_ptr<base::Value> bv_devices = devices->ToValueArrOnly();
@@ -238,25 +240,26 @@ void SyncUIDOMHandler::GetSettingsAndDevicesComplete(
 }
 
 void SyncUIDOMHandler::OnHaveSyncWords(
-    brave_sync::BraveSyncService *sync_service,
+    brave_sync::BraveSyncService* sync_service,
     const std::string& sync_words) {
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "sync_ui_exports.haveSyncWords", base::Value(sync_words));
+  web_ui()->CallJavascriptFunctionUnsafe("sync_ui_exports.haveSyncWords",
+                                         base::Value(sync_words));
 }
 
-} // namespace
+}  // namespace
 
 SyncUI::SyncUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name,
+    : BasicUI(web_ui,
+              name,
               kBraveSyncGenerated,
               kBraveSyncGeneratedSize,
-              Profile::FromWebUI(web_ui)->IsOffTheRecord() ?
-                  IDR_BRAVE_SYNC_DISABLED_HTML : IDR_BRAVE_SYNC_HTML) {
+              Profile::FromWebUI(web_ui)->IsOffTheRecord()
+                  ? IDR_BRAVE_SYNC_DISABLED_HTML
+                  : IDR_BRAVE_SYNC_HTML) {
   auto handler_owner = std::make_unique<SyncUIDOMHandler>();
   SyncUIDOMHandler* handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));
   handler->Init();
 }
 
-SyncUI::~SyncUI() {
-}
+SyncUI::~SyncUI() {}

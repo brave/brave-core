@@ -1,6 +1,6 @@
 //
 //  PendingContribution+CoreDataProperties.m
-//  
+//
 //
 //  Created by Kyle Hickinson on 2019-05-24.
 //
@@ -11,8 +11,8 @@
 
 @implementation PendingContribution (CoreDataProperties)
 
-+ (NSFetchRequest<PendingContribution *> *)fetchRequest {
-	return [NSFetchRequest fetchRequestWithEntityName:@"PendingContribution"];
++ (NSFetchRequest<PendingContribution*>*)fetchRequest {
+  return [NSFetchRequest fetchRequestWithEntityName:@"PendingContribution"];
 }
 
 @dynamic addedDate;

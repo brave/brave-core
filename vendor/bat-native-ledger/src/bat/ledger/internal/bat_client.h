@@ -6,9 +6,9 @@
 #ifndef BRAVELEDGER_BAT_CLIENT_H_
 #define BRAVELEDGER_BAT_CLIENT_H_
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/ledger.h"
@@ -53,9 +53,8 @@ class BatClient {
   void setGrant(const std::string& captchaResponse,
                 const std::string& promotionId);
 
-  void getGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type);
+  void getGrantCaptcha(const std::string& promotion_id,
+                       const std::string& promotion_type);
 
   void GetWalletProperties(ledger::OnWalletPropertiesCallback callback);
 
@@ -72,7 +71,7 @@ class BatClient {
   void CreateWalletIfNecessary();
 
   ledger::WalletInfo WalletPropertiesToWalletInfo(
-    const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
+      const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
 
  private:
   void getGrantCaptchaCallback(
@@ -80,26 +79,23 @@ class BatClient {
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
-  void getGrantsCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+  void getGrantsCallback(int response_status_code,
+                         const std::string& response,
+                         const std::map<std::string, std::string>& headers);
 
-  void setGrantCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+  void setGrantCallback(int response_status_code,
+                        const std::string& response,
+                        const std::map<std::string, std::string>& headers);
 
   void recoverWalletPublicKeyCallback(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
-  void recoverWalletCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      const std::string& paymentId);
+  void recoverWalletCallback(int response_status_code,
+                             const std::string& response,
+                             const std::map<std::string, std::string>& headers,
+                             const std::string& paymentId);
 
   std::string getAnonizeProof(const std::string& registrarVK,
                               const std::string& id,

@@ -87,8 +87,8 @@ const base::FilePath::CharType kBrowserProcessExecutablePathChromium[] =
 const base::FilePath::CharType kBrowserProcessExecutablePath[] =
     FPL(PRODUCT_STRING ".app/Contents/MacOS/" PRODUCT_STRING);
 const base::FilePath::CharType kHelperProcessExecutablePathChromium[] =
-    FPL(CHROMIUM_PRODUCT_STRING " Helper.app/Contents/MacOS/"
-        CHROMIUM_PRODUCT_STRING " Helper");
+    FPL(CHROMIUM_PRODUCT_STRING
+        " Helper.app/Contents/MacOS/" CHROMIUM_PRODUCT_STRING " Helper");
 const base::FilePath::CharType kHelperProcessExecutablePath[] =
     FPL(PRODUCT_STRING " Helper.app/Contents/MacOS/" PRODUCT_STRING " Helper");
 #elif defined(OS_ANDROID)
@@ -120,8 +120,8 @@ const base::FilePath::CharType kStatusTrayWindowClass[] =
     FPL("Chrome_StatusTrayWindow");
 #endif  // defined(OS_WIN)
 
-const char    kInitialProfile[] = "Default";
-const char    kMultiProfileDirPrefix[] = "Profile ";
+const char kInitialProfile[] = "Default";
+const char kMultiProfileDirPrefix[] = "Profile ";
 const base::FilePath::CharType kGuestProfileDir[] = FPL("Guest Profile");
 const base::FilePath::CharType kSystemProfileDir[] = FPL("System Profile");
 

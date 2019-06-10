@@ -49,8 +49,12 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
 
 TEST_F(BraveBookmarkContextMenuControllerTest,
        DontShowAppsShortcutContextMenuInBookmarksBar) {
-  BookmarkContextMenuController controller(NULL, NULL, NULL, profile_.get(),
-                                           NULL, model_->bookmark_bar_node(),
+  BookmarkContextMenuController controller(NULL,
+                                           NULL,
+                                           NULL,
+                                           profile_.get(),
+                                           NULL,
+                                           model_->bookmark_bar_node(),
                                            std::vector<const BookmarkNode*>());
 
   // Show apps command is not present by default.
@@ -79,7 +83,7 @@ TEST_F(BraveBookmarkContextMenuControllerTest,
   // And enabling the shortcut by user doesn't cause the command to be added.
   prefs->RemoveManagedPref(bookmarks::prefs::kShowAppsShortcutInBookmarkBar);
   prefs->SetUserPref(bookmarks::prefs::kShowAppsShortcutInBookmarkBar,
-                 std::make_unique<base::Value>(true));
+                     std::make_unique<base::Value>(true));
   EXPECT_EQ(controller.menu_model()->GetIndexOfCommandId(
                 IDC_BOOKMARK_BAR_SHOW_APPS_SHORTCUT),
             -1);

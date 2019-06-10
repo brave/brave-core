@@ -13,8 +13,7 @@ namespace {
 // Refered IsLitePageRedirectPreviewDomain() to make sample lite page url.
 GURL GetSampleLitePageUrl() {
   return net::AppendQueryParameter(
-      previews::params::GetLitePagePreviewsDomainURL(),
-      "u", "1234");
+      previews::params::GetLitePagePreviewsDomainURL(), "u", "1234");
 }
 }  // namespace
 

@@ -3,19 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <utility>
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/brave_sync/brave_sync_service_factory.h"
+#include "brave/components/brave_sync/brave_sync_service_impl.h"
+#include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/client/bookmark_change_processor.h"
 #include "brave/components/brave_sync/client/brave_sync_client_impl.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
-#include "brave/components/brave_sync/brave_sync_service_impl.h"
-#include "brave/components/brave_sync/brave_sync_service_factory.h"
-#include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "brave/components/brave_sync/test_util.h"
@@ -65,19 +65,20 @@ using bookmarks::BookmarkClient;
 using bookmarks::BookmarkModel;
 using bookmarks::BookmarkNode;
 
-using brave_sync::jslib::SyncRecord;
 using brave_sync::MockBraveSyncClient;
 using brave_sync::RecordsList;
 using brave_sync::SimpleBookmarkSyncRecord;
 using brave_sync::SimpleFolderSyncRecord;
+using brave_sync::jslib::SyncRecord;
 
-MATCHER_P2(ContainsRecord, action, location,
-    "contains sync record with params") {
+MATCHER_P2(ContainsRecord,
+           action,
+           location,
+           "contains sync record with params") {
   for (const auto& record : arg) {
     if (record->has_bookmark()) {
       const auto& bookmark = record->GetBookmark();
-      if (record->action == action &&
-          bookmark.site.location == location) {
+      if (record->action == action && bookmark.site.location == location) {
         return true;
       }
     }
@@ -85,13 +86,15 @@ MATCHER_P2(ContainsRecord, action, location,
   return false;
 }
 
-MATCHER_P(RecordsNumber, expected_number,
-    "contains specified sync record number") {
+MATCHER_P(RecordsNumber,
+          expected_number,
+          "contains specified sync record number") {
   return static_cast<int>(arg.size()) == static_cast<int>(expected_number);
 }
 
-MATCHER_P(AllRecordsHaveAction, expected_action,
-    "all records have expected action") {
+MATCHER_P(AllRecordsHaveAction,
+          expected_action,
+          "all records have expected action") {
   if (arg.empty()) {
     return false;
   }
@@ -119,8 +122,8 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
     sync_client_.reset(new MockBraveSyncClient());
 
     BookmarkModelFactory::GetInstance()->SetTestingFactory(
-       profile_.get(),
-       base::BindRepeating(&brave_sync::BuildFakeBookmarkModelForTests));
+        profile_.get(),
+        base::BindRepeating(&brave_sync::BuildFakeBookmarkModelForTests));
 
     model_ = BookmarkModelFactory::GetForBrowserContext(
         Profile::FromBrowserContext(profile_.get()));
@@ -128,9 +131,7 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
     sync_prefs_.reset(new brave_sync::prefs::Prefs(profile_->GetPrefs()));
 
     change_processor_.reset(brave_sync::BookmarkChangeProcessor::Create(
-        profile_.get(),
-        sync_client(),
-        sync_prefs_.get() ));
+        profile_.get(), sync_client(), sync_prefs_.get()));
 
     EXPECT_NE(sync_client(), nullptr);
     EXPECT_NE(bookmark_client(), nullptr);
@@ -153,19 +154,20 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
   }
   const bookmarks::BookmarkPermanentNode* GetDeletedNodeRoot() {
     return static_cast<const bookmarks::BookmarkPermanentNode*>(
-              change_processor_->GetDeletedNodeRoot());
+        change_processor_->GetDeletedNodeRoot());
   }
   const bookmarks::BookmarkPermanentNode* GetPendingNodeRoot() {
     return static_cast<const bookmarks::BookmarkPermanentNode*>(
-              change_processor_->GetPendingNodeRoot());
+        change_processor_->GetPendingNodeRoot());
   }
 
   void BookmarkAddedImpl();
   void BookmarkCreatedFromSyncImpl();
   bool HasAnySyncMetaInfo(const BookmarkNode* node);
-  void AddSimpleHierarchy(
-      const BookmarkNode** folder1, const BookmarkNode** node_a,
-      const BookmarkNode** node_b, const BookmarkNode** node_c);
+  void AddSimpleHierarchy(const BookmarkNode** folder1,
+                          const BookmarkNode** node_a,
+                          const BookmarkNode** node_b,
+                          const BookmarkNode** node_c);
 
  private:
   // Need this as a very first member to run tests in UI thread
@@ -183,7 +185,8 @@ class BraveBookmarkChangeProcessorTest : public testing::Test {
 
 TEST_F(BraveBookmarkChangeProcessorTest, StartObserver) {
   // The mark of observer processed: metainfo "last_updated_time" is set
-  const auto* node_a = model()->AddURL(model()->other_node(), 0,
+  const auto* node_a = model()->AddURL(model()->other_node(),
+                                       0,
                                        base::ASCIIToUTF16("A.com - title"),
                                        GURL("https://a.com/"));
   model()->SetTitle(node_a, base::ASCIIToUTF16("A.com - title - upated"));
@@ -193,7 +196,8 @@ TEST_F(BraveBookmarkChangeProcessorTest, StartObserver) {
 
   change_processor()->Start();
 
-  const auto* node_b = model()->AddURL(model()->other_node(), 0,
+  const auto* node_b = model()->AddURL(model()->other_node(),
+                                       0,
                                        base::ASCIIToUTF16("B.com - title"),
                                        GURL("https://b.com/"));
   model()->SetTitle(node_b, base::ASCIIToUTF16("B.com - title - upated"));
@@ -205,7 +209,8 @@ TEST_F(BraveBookmarkChangeProcessorTest, StartObserver) {
 TEST_F(BraveBookmarkChangeProcessorTest, StopObserver) {
   // The mark of observer processed: metainfo "last_updated_time" is set
   change_processor()->Start();
-  const auto* node_a = model()->AddURL(model()->other_node(), 0,
+  const auto* node_a = model()->AddURL(model()->other_node(),
+                                       0,
                                        base::ASCIIToUTF16("A.com - title"),
                                        GURL("https://a.com/"));
   model()->SetTitle(node_a, base::ASCIIToUTF16("A.com - title - upated"));
@@ -215,7 +220,8 @@ TEST_F(BraveBookmarkChangeProcessorTest, StopObserver) {
 
   change_processor()->Stop();
 
-  const auto* node_b = model()->AddURL(model()->other_node(), 0,
+  const auto* node_b = model()->AddURL(model()->other_node(),
+                                       0,
                                        base::ASCIIToUTF16("B.com - title"),
                                        GURL("https://b.com/"));
   model()->SetTitle(node_b, base::ASCIIToUTF16("B.com - title - upated"));
@@ -225,10 +231,14 @@ TEST_F(BraveBookmarkChangeProcessorTest, StopObserver) {
 }
 
 bool BraveBookmarkChangeProcessorTest::HasAnySyncMetaInfo(
-                                                    const BookmarkNode* node) {
+    const BookmarkNode* node) {
   DCHECK(node);
-  const std::vector<std::string> keys = {"object_id", "order", "sync_timestamp",
-      "last_send_time", "last_updated_time", "parent_object_id"};
+  const std::vector<std::string> keys = {"object_id",
+                                         "order",
+                                         "sync_timestamp",
+                                         "last_send_time",
+                                         "last_updated_time",
+                                         "parent_object_id"};
   for (const auto& key : keys) {
     std::string value;
     if (node->GetMetaInfo(key, &value) && !value.empty()) {
@@ -239,22 +249,21 @@ bool BraveBookmarkChangeProcessorTest::HasAnySyncMetaInfo(
 }
 
 void BraveBookmarkChangeProcessorTest::AddSimpleHierarchy(
-    const BookmarkNode** folder1, const BookmarkNode** node_a,
-    const BookmarkNode** node_b, const BookmarkNode** node_c) {
-  *folder1 = model()->AddFolder(model()->other_node(), 0,
-                               base::ASCIIToUTF16("Folder1"));
+    const BookmarkNode** folder1,
+    const BookmarkNode** node_a,
+    const BookmarkNode** node_b,
+    const BookmarkNode** node_c) {
+  *folder1 = model()->AddFolder(
+      model()->other_node(), 0, base::ASCIIToUTF16("Folder1"));
 
-  *node_a = model()->AddURL(*folder1, 0,
-                           base::ASCIIToUTF16("A.com - title"),
-                           GURL("https://a.com/"));
+  *node_a = model()->AddURL(
+      *folder1, 0, base::ASCIIToUTF16("A.com - title"), GURL("https://a.com/"));
 
-  *node_b = model()->AddURL(*folder1, 1,
-                           base::ASCIIToUTF16("B.com - title"),
-                           GURL("https://b.com/"));
+  *node_b = model()->AddURL(
+      *folder1, 1, base::ASCIIToUTF16("B.com - title"), GURL("https://b.com/"));
 
-  *node_c = model()->AddURL(*folder1, 2,
-                           base::ASCIIToUTF16("C.com - title"),
-                           GURL("https://c.com/"));
+  *node_c = model()->AddURL(
+      *folder1, 2, base::ASCIIToUTF16("C.com - title"), GURL("https://c.com/"));
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, ResetClearMeta) {
@@ -277,10 +286,12 @@ TEST_F(BraveBookmarkChangeProcessorTest, ResetClearMeta) {
   EXPECT_TRUE(HasAnySyncMetaInfo(node_b));
   EXPECT_TRUE(HasAnySyncMetaInfo(node_c));
 
-  model()->AddURL(GetDeletedNodeRoot(), 0,
+  model()->AddURL(GetDeletedNodeRoot(),
+                  0,
                   base::ASCIIToUTF16("A.com - title"),
                   GURL("https://a.com/"));
-  model()->AddURL(GetPendingNodeRoot(), 0,
+  model()->AddURL(GetPendingNodeRoot(),
+                  0,
                   base::ASCIIToUTF16("A.com - title"),
                   GURL("https://a.com/"));
   EXPECT_FALSE(GetDeletedNodeRoot()->empty());
@@ -316,10 +327,12 @@ TEST_F(BraveBookmarkChangeProcessorTest, ResetPreserveMeta) {
   EXPECT_TRUE(HasAnySyncMetaInfo(node_b));
   EXPECT_TRUE(HasAnySyncMetaInfo(node_c));
 
-  model()->AddURL(GetDeletedNodeRoot(), 0,
+  model()->AddURL(GetDeletedNodeRoot(),
+                  0,
                   base::ASCIIToUTF16("A.com - title"),
                   GURL("https://a.com/"));
-  model()->AddURL(GetPendingNodeRoot(), 0,
+  model()->AddURL(GetPendingNodeRoot(),
+                  0,
                   base::ASCIIToUTF16("A.com - title"),
                   GURL("https://a.com/"));
   EXPECT_FALSE(GetDeletedNodeRoot()->empty());
@@ -335,7 +348,6 @@ TEST_F(BraveBookmarkChangeProcessorTest, ResetPreserveMeta) {
   EXPECT_TRUE(GetPendingNodeRoot()->empty());
 }
 
-
 TEST_F(BraveBookmarkChangeProcessorTest, DISABLED_InitialSync) {
   // BookmarkChangeProcessor::InitialSync does not do anything now
   // All work for obtaining order is done in background.js
@@ -344,13 +356,15 @@ TEST_F(BraveBookmarkChangeProcessorTest, DISABLED_InitialSync) {
 void BraveBookmarkChangeProcessorTest::BookmarkAddedImpl() {
   change_processor()->Start();
 
-  bookmarks::AddIfNotBookmarked(model(),
-                                 GURL("https://a.com/"),
-                                 base::ASCIIToUTF16("A.com - title"));
+  bookmarks::AddIfNotBookmarked(
+      model(), GURL("https://a.com/"), base::ASCIIToUTF16("A.com - title"));
 
   using brave_sync::jslib::SyncRecord;
-  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
-      ContainsRecord(SyncRecord::Action::A_CREATE, "https://a.com/"))).Times(1);
+  EXPECT_CALL(*sync_client(),
+              SendSyncRecords("BOOKMARKS",
+                              ContainsRecord(SyncRecord::Action::A_CREATE,
+                                             "https://a.com/")))
+      .Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 }
@@ -369,8 +383,11 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkDeleted) {
   bookmarks::GetMostRecentlyAddedEntries(model(), 1, &nodes);
   ASSERT_EQ(nodes.size(), 1u);
   ASSERT_NE(nodes.at(0), nullptr);
-  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
-      ContainsRecord(SyncRecord::Action::A_DELETE, "https://a.com/"))).Times(1);
+  EXPECT_CALL(*sync_client(),
+              SendSyncRecords("BOOKMARKS",
+                              ContainsRecord(SyncRecord::Action::A_DELETE,
+                                             "https://a.com/")))
+      .Times(1);
   model()->Remove(nodes.at(0));
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
@@ -387,9 +404,11 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkModified) {
   bookmarks::GetMostRecentlyAddedEntries(model(), 1, &nodes);
   ASSERT_EQ(nodes.size(), 1u);
   ASSERT_NE(nodes.at(0), nullptr);
-  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
-      ContainsRecord(SyncRecord::Action::A_UPDATE,
-          "https://a-m.com/"))).Times(1);
+  EXPECT_CALL(*sync_client(),
+              SendSyncRecords("BOOKMARKS",
+                              ContainsRecord(SyncRecord::Action::A_UPDATE,
+                                             "https://a-m.com/")))
+      .Times(1);
   model()->SetURL(nodes.at(0), GURL("https://a-m.com/"));
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
@@ -429,11 +448,13 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkMovedInFolder) {
   intex_c = folder1->GetIndexOf(node_c);
   EXPECT_EQ(intex_c, 2);
 
-
   // Sould see at least one syncRecord Modified
   using brave_sync::jslib::SyncRecord;
-  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
-      AllRecordsHaveAction(SyncRecord::Action::A_UPDATE))).Times(1);
+  EXPECT_CALL(
+      *sync_client(),
+      SendSyncRecords("BOOKMARKS",
+                      AllRecordsHaveAction(SyncRecord::Action::A_UPDATE)))
+      .Times(1);
   // BookmarkNodeMoved does not reset "last_send_time" so SendUnsynced
   // ignores order change untill unsynced_send_interval passes,
   // so here below unsynced_send_interval is 0
@@ -452,22 +473,20 @@ TEST_F(BraveBookmarkChangeProcessorTest, DISABLED_MoveNodesBetweenDirs) {
 
   change_processor()->Start();
 
-  const auto* folder1 = model()->AddFolder(model()->other_node(), 0,
-                                           base::ASCIIToUTF16("Folder1"));
+  const auto* folder1 = model()->AddFolder(
+      model()->other_node(), 0, base::ASCIIToUTF16("Folder1"));
 
-  [[maybe_unused]] const auto* node_a = model()->AddURL(folder1, 0,
-                                       base::ASCIIToUTF16("A.com - title"),
-                                       GURL("https://a.com/"));
+  [[maybe_unused]] const auto* node_a = model()->AddURL(
+      folder1, 0, base::ASCIIToUTF16("A.com - title"), GURL("https://a.com/"));
 
-  const auto* folder2 = model()->AddFolder(model()->other_node(), 1,
-                                           base::ASCIIToUTF16("Folder2"));
-  [[maybe_unused]] const auto* node_b = model()->AddURL(folder2, 0,
-                                        base::ASCIIToUTF16("B.com - title"),
-                                        GURL("https://b.com/"));
+  const auto* folder2 = model()->AddFolder(
+      model()->other_node(), 1, base::ASCIIToUTF16("Folder2"));
+  [[maybe_unused]] const auto* node_b = model()->AddURL(
+      folder2, 0, base::ASCIIToUTF16("B.com - title"), GURL("https://b.com/"));
 
   // Send all created objects
-  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
-      RecordsNumber(4))).Times(1);
+  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", RecordsNumber(4)))
+      .Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 }
@@ -489,8 +508,8 @@ TEST_F(BraveBookmarkChangeProcessorTest, DeleteFolderWithNodes) {
   const BookmarkNode* node_c;
   AddSimpleHierarchy(&folder1, &node_a, &node_b, &node_c);
 
-  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS",
-      RecordsNumber(4))).Times(1);
+  EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", RecordsNumber(4)))
+      .Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
 
@@ -511,18 +530,18 @@ void BraveBookmarkChangeProcessorTest::BookmarkCreatedFromSyncImpl() {
   const char* record_a_object_id =
       "121, 194, 37, 61, 199, 11, 166, 234, "
       "214, 197, 45, 215, 241, 206, 219, 130";
-  records.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      record_a_object_id,
-      "https://a.com/",
-      "A.com - title",
-      "1.1.1.1", ""));
-  records.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://b.com/",
-      "B.com - title",
-      "1.1.1.2", ""));
+  records.push_back(SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                             record_a_object_id,
+                                             "https://a.com/",
+                                             "A.com - title",
+                                             "1.1.1.1",
+                                             ""));
+  records.push_back(SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                             "",
+                                             "https://b.com/",
+                                             "B.com - title",
+                                             "1.1.1.2",
+                                             ""));
 
   change_processor()->ApplyChangesFromSyncModel(records);
 
@@ -549,8 +568,8 @@ void BraveBookmarkChangeProcessorTest::BookmarkCreatedFromSyncImpl() {
 
   EXPECT_LT(index_a, index_b);
 
-  EXPECT_TRUE(profile_->GetPrefs()->GetBoolean(
-                                      bookmarks::prefs::kShowBookmarkBar));
+  EXPECT_TRUE(
+      profile_->GetPrefs()->GetBoolean(bookmarks::prefs::kShowBookmarkBar));
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, BookmarkCreatedFromSync) {
@@ -561,13 +580,14 @@ TEST_F(BraveBookmarkChangeProcessorTest, BookmarkRemovedFromSync) {
   BookmarkCreatedFromSyncImpl();
 
   RecordsList records;
-  records.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_DELETE,
-      "121, 194, 37, 61, 199, 11, 166, 234, "
-          "214, 197, 45, 215, 241, 206, 219, 130",
-      "https://a.com/",
-      "A.com - title",
-      "1.1.1.1", ""));
+  records.push_back(
+      SimpleBookmarkSyncRecord(SyncRecord::Action::A_DELETE,
+                               "121, 194, 37, 61, 199, 11, 166, 234, "
+                               "214, 197, 45, 215, 241, 206, 219, 130",
+                               "https://a.com/",
+                               "A.com - title",
+                               "1.1.1.1",
+                               ""));
 
   change_processor()->ApplyChangesFromSyncModel(records);
   std::vector<const BookmarkNode*> nodes_a;
@@ -595,40 +615,35 @@ TEST_F(BraveBookmarkChangeProcessorTest, NestedFoldersCreatedFromSync) {
 
   RecordsList records;
   records.push_back(SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder1",
-      "1.1.1.1",
-      "", true, ""));
+      SyncRecord::Action::A_CREATE, "Folder1", "1.1.1.1", "", true, ""));
 
-  records.push_back(SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder2",
-      "1.1.1.1.1",
-      records.at(0)->objectId,
-      true, ""));
+  records.push_back(SimpleFolderSyncRecord(SyncRecord::Action::A_CREATE,
+                                           "Folder2",
+                                           "1.1.1.1.1",
+                                           records.at(0)->objectId,
+                                           true,
+                                           ""));
 
-  records.push_back(SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder3",
-      "1.1.1.1.1.1",
-      records.at(1)->objectId,
-      true, ""));
+  records.push_back(SimpleFolderSyncRecord(SyncRecord::Action::A_CREATE,
+                                           "Folder3",
+                                           "1.1.1.1.1.1",
+                                           records.at(1)->objectId,
+                                           true,
+                                           ""));
 
-  records.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://a.com/",
-      "A.com - title",
-      "1.1.1.1.1.1.1",
-      records.at(2)->objectId));
+  records.push_back(SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                             "",
+                                             "https://a.com/",
+                                             "A.com - title",
+                                             "1.1.1.1.1.1.1",
+                                             records.at(2)->objectId));
 
-  records.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://b.com/",
-      "B.com - title",
-      "1.1.1.1.1.1.2",
-      records.at(2)->objectId));
+  records.push_back(SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                             "",
+                                             "https://b.com/",
+                                             "B.com - title",
+                                             "1.1.1.1.1.1.2",
+                                             records.at(2)->objectId));
 
   change_processor()->ApplyChangesFromSyncModel(records);
 
@@ -663,10 +678,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
 
   RecordsList records;
   records.push_back(SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder1",
-      "1.1.1",
-      "", false, ""));
+      SyncRecord::Action::A_CREATE, "Folder1", "1.1.1", "", false, ""));
 
   ASSERT_EQ(model()->bookmark_bar_node()->child_count(), 0);
   change_processor()->ApplyChangesFromSyncModel(records);
@@ -676,10 +688,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
 
   records.clear();
   records.push_back(SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder2",
-      "2.1.1",
-      "", false, ""));
+      SyncRecord::Action::A_CREATE, "Folder2", "2.1.1", "", false, ""));
   ASSERT_EQ(model()->mobile_node()->child_count(), 0);
   change_processor()->ApplyChangesFromSyncModel(records);
   ASSERT_EQ(model()->mobile_node()->child_count(), 0);
@@ -689,10 +698,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChildrenOfPermanentNodesFromSync) {
 
   records.clear();
   records.push_back(SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder3",
-      "1.1.1",
-      "", true, ""));
+      SyncRecord::Action::A_CREATE, "Folder3", "1.1.1", "", true, ""));
   ASSERT_EQ(model()->other_node()->child_count(), 0);
   change_processor()->ApplyChangesFromSyncModel(records);
   ASSERT_EQ(model()->other_node()->child_count(), 1);
@@ -717,10 +723,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, Utf8FromSync) {
 
   RecordsList records;
   records.push_back(SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      title_utf8,
-      "1.1.1",
-      "", false, ""));
+      SyncRecord::Action::A_CREATE, title_utf8, "1.1.1", "", false, ""));
 
   ASSERT_EQ(model()->bookmark_bar_node()->child_count(), 0);
   change_processor()->ApplyChangesFromSyncModel(records);
@@ -735,18 +738,18 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChangeOrderUnderSameParentFromSync) {
   const char* record_a_object_id =
       "121, 194, 37, 61, 199, 11, 166, 234, "
       "214, 197, 45, 215, 241, 206, 219, 130";
-  records.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_UPDATE,
-      record_a_object_id,
-      "https://a.com/",
-      "A.com - title",
-      "1.1.1.2", ""));
-  records.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_UPDATE,
-      "",
-      "https://b.com/",
-      "B.com - title",
-      "1.1.1.1", ""));
+  records.push_back(SimpleBookmarkSyncRecord(SyncRecord::Action::A_UPDATE,
+                                             record_a_object_id,
+                                             "https://a.com/",
+                                             "A.com - title",
+                                             "1.1.1.2",
+                                             ""));
+  records.push_back(SimpleBookmarkSyncRecord(SyncRecord::Action::A_UPDATE,
+                                             "",
+                                             "https://b.com/",
+                                             "B.com - title",
+                                             "1.1.1.1",
+                                             ""));
 
   change_processor()->ApplyChangesFromSyncModel(records);
 
@@ -785,11 +788,12 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChangeOrderUnderSameParentFromSync) {
   DCHECK(left->has_bookmark());
   DCHECK(right->has_bookmark());
 
-  #define FAIL_IF_FIELD_NOT_EQUAL(FIELD_NAME)       \
-  if (left->FIELD_NAME != right->FIELD_NAME) {    \
-    return ::testing::AssertionFailure() << left_expr << " and " << right_expr \
-        << " are not equal by " << #FIELD_NAME << " field ("               \
-        << left->FIELD_NAME << " vs " << right->FIELD_NAME << ")";    \
+#define FAIL_IF_FIELD_NOT_EQUAL(FIELD_NAME)                              \
+  if (left->FIELD_NAME != right->FIELD_NAME) {                           \
+    return ::testing::AssertionFailure()                                 \
+           << left_expr << " and " << right_expr << " are not equal by " \
+           << #FIELD_NAME << " field (" << left->FIELD_NAME << " vs "    \
+           << right->FIELD_NAME << ")";                                  \
   }
 
   // Ignore action and device_id
@@ -799,7 +803,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ChangeOrderUnderSameParentFromSync) {
   FAIL_IF_FIELD_NOT_EQUAL(GetBookmark().isFolder);
   FAIL_IF_FIELD_NOT_EQUAL(GetBookmark().parentFolderObjectId);
   FAIL_IF_FIELD_NOT_EQUAL(GetBookmark().order);
-  #undef FAIL_IF_FIELD_NOT_EQUAL
+#undef FAIL_IF_FIELD_NOT_EQUAL
 
   return ::testing::AssertionSuccess();
 }
@@ -816,80 +820,88 @@ TEST_F(BraveBookmarkChangeProcessorTest, GetAllSyncData) {
   const char* record_a_object_id =
       "111, 111, 37, 61, 199, 11, 166, 234, "
       "214, 197, 45, 215, 241, 206, 219, 130";
-  records.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      record_a_object_id,
-      "https://a.com/",
-      "A.com - title",
-      "1.1.1.1", ""));
+  records.push_back(SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                             record_a_object_id,
+                                             "https://a.com/",
+                                             "A.com - title",
+                                             "1.1.1.1",
+                                             ""));
   const char* record_b_object_id =
       "222, 222, 37, 61, 199, 11, 166, 234, "
       "214, 197, 45, 215, 241, 206, 219, 130";
-  records.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      record_b_object_id,
-      "https://b.com/",
-      "B.com - title",
-      "1.1.1.2", ""));
+  records.push_back(SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                             record_b_object_id,
+                                             "https://b.com/",
+                                             "B.com - title",
+                                             "1.1.1.2",
+                                             ""));
   const char* record_c_object_id =
       "33, 33, 37, 61, 199, 11, 166, 234, "
       "214, 197, 45, 215, 241, 206, 219, 130";
-  records.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      record_c_object_id,
-      "https://c.com/",
-      "C.com - title",
-      "1.1.1.3", ""));
+  records.push_back(SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                             record_c_object_id,
+                                             "https://c.com/",
+                                             "C.com - title",
+                                             "1.1.1.3",
+                                             ""));
 
   change_processor()->ApplyChangesFromSyncModel(records);
 
   RecordsList records_to_resolve;
 
-  records_to_resolve.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_UPDATE,
-      record_b_object_id,
-      "https://b.com/",
-      "B.com - title - modified",
-      "1.1.1.2", ""));
+  records_to_resolve.push_back(
+      SimpleBookmarkSyncRecord(SyncRecord::Action::A_UPDATE,
+                               record_b_object_id,
+                               "https://b.com/",
+                               "B.com - title - modified",
+                               "1.1.1.2",
+                               ""));
 
-  records_to_resolve.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_DELETE,
-      record_c_object_id,
-      "https://c.com/",
-      "C.com - title",
-      "1.1.1.3", ""));
+  records_to_resolve.push_back(
+      SimpleBookmarkSyncRecord(SyncRecord::Action::A_DELETE,
+                               record_c_object_id,
+                               "https://c.com/",
+                               "C.com - title",
+                               "1.1.1.3",
+                               ""));
 
   const char* record_d_object_id =
       "44, 44, 37, 61, 199, 11, 166, 234, "
       "214, 197, 45, 215, 241, 206, 219, 130";
-  records_to_resolve.push_back(SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      record_d_object_id,
-      "https://d.com/",
-      "D.com - title",
-      "1.1.1.4", ""));
+  records_to_resolve.push_back(
+      SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                               record_d_object_id,
+                               "https://d.com/",
+                               "D.com - title",
+                               "1.1.1.4",
+                               ""));
 
   brave_sync::SyncRecordAndExistingList records_and_existing_objects;
   change_processor()->GetAllSyncData(records_to_resolve,
-                                                &records_and_existing_objects);
+                                     &records_and_existing_objects);
   ASSERT_EQ(records_and_existing_objects.size(), 3u);
 
   const auto& pair_at_0 = records_and_existing_objects.at(0);
 
   EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
-      records_to_resolve.at(0).get(), pair_at_0->first.get());
+                      records_to_resolve.at(0).get(),
+                      pair_at_0->first.get());
   EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
-       records.at(1).get(), pair_at_0->second.get());
+                      records.at(1).get(),
+                      pair_at_0->second.get());
 
   const auto& pair_at_1 = records_and_existing_objects.at(1);
   EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
-      records_to_resolve.at(1).get(), pair_at_1->first.get());
+                      records_to_resolve.at(1).get(),
+                      pair_at_1->first.get());
   EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
-       records.at(2).get(), pair_at_1->second.get());
+                      records.at(2).get(),
+                      pair_at_1->second.get());
 
   const auto& pair_at_2 = records_and_existing_objects.at(2);
   EXPECT_PRED_FORMAT2(AssertSyncRecordsBookmarkEqual,
-      records_to_resolve.at(2).get(), pair_at_2->first.get());
+                      records_to_resolve.at(2).get(),
+                      pair_at_2->first.get());
   EXPECT_EQ(pair_at_2->second.get(), nullptr);
 }
 
@@ -905,18 +917,14 @@ TEST_F(BraveBookmarkChangeProcessorTest, TitleCustomTitle) {
 
   RecordsList records;
   records.push_back(SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder1",
-      "1.1.1.1",
-      "", true, ""));
+      SyncRecord::Action::A_CREATE, "Folder1", "1.1.1.1", "", true, ""));
 
-  records.push_back(SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "1.1.1.1.1",
-      records.at(0)->objectId,
-      true,
-      "Folder2"));
+  records.push_back(SimpleFolderSyncRecord(SyncRecord::Action::A_CREATE,
+                                           "",
+                                           "1.1.1.1.1",
+                                           records.at(0)->objectId,
+                                           true,
+                                           "Folder2"));
 
   change_processor()->ApplyChangesFromSyncModel(records);
 
@@ -932,13 +940,12 @@ TEST_F(BraveBookmarkChangeProcessorTest, TitleCustomTitle) {
 
 TEST_F(BraveBookmarkChangeProcessorTest, BookmarkFromMobileGoesToToolbar) {
   change_processor()->Start();
-  auto a_record = SimpleBookmarkSyncRecord(
-    SyncRecord::Action::A_CREATE,
-    "",
-    "https://a.com/",
-    "A.com - title",
-    "2.1.1",
-    "");
+  auto a_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                           "",
+                                           "https://a.com/",
+                                           "A.com - title",
+                                           "2.1.1",
+                                           "");
   RecordsList records;
   records.push_back(std::move(a_record));
   change_processor()->ApplyChangesFromSyncModel(records);
@@ -963,26 +970,21 @@ TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolder) {
   change_processor()->Start();
 
   auto folder1_record = SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder1",
-      "1.1.1.1.1.1",
-      "", true, "");
+      SyncRecord::Action::A_CREATE, "Folder1", "1.1.1.1.1.1", "", true, "");
 
-  auto a_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://a.com/",
-      "A.com - title",
-      "1.1.1.1.1.1.1",
-      folder1_record->objectId);
+  auto a_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                           "",
+                                           "https://a.com/",
+                                           "A.com - title",
+                                           "1.1.1.1.1.1.1",
+                                           folder1_record->objectId);
 
-  auto b_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://b.com/",
-      "B.com - title",
-      "1.1.1.1.1.1.2",
-      folder1_record->objectId);
+  auto b_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                           "",
+                                           "https://b.com/",
+                                           "B.com - title",
+                                           "1.1.1.1.1.1.2",
+                                           folder1_record->objectId);
 
   RecordsList records;
   records.push_back(std::move(a_record));
@@ -992,9 +994,9 @@ TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolder) {
 
   // Verify the model, for now we should not find anything
   EXPECT_EQ(model()->GetMostRecentlyAddedUserNodeForURL(GURL("https://a.com/")),
-      nullptr);
+            nullptr);
   EXPECT_EQ(model()->GetMostRecentlyAddedUserNodeForURL(GURL("https://b.com/")),
-      nullptr);
+            nullptr);
 
   RecordsList records2;
   records2.push_back(std::move(folder1_record));
@@ -1031,40 +1033,35 @@ TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolderAgressive) {
   change_processor()->Start();
 
   auto folder1_record = SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder1",
-      "1.1.1.1",
-      "", true, "");
+      SyncRecord::Action::A_CREATE, "Folder1", "1.1.1.1", "", true, "");
 
-  auto folder2_record = SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder2",
-      "1.1.1.1.1",
-      folder1_record->objectId,
-      true, "");
+  auto folder2_record = SimpleFolderSyncRecord(SyncRecord::Action::A_CREATE,
+                                               "Folder2",
+                                               "1.1.1.1.1",
+                                               folder1_record->objectId,
+                                               true,
+                                               "");
 
-  auto folder3_record = SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder3",
-      "1.1.1.1.1.1",
-      folder2_record->objectId,
-      true, "");
+  auto folder3_record = SimpleFolderSyncRecord(SyncRecord::Action::A_CREATE,
+                                               "Folder3",
+                                               "1.1.1.1.1.1",
+                                               folder2_record->objectId,
+                                               true,
+                                               "");
 
-  auto a_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://a.com/",
-      "A.com - title",
-      "1.1.1.1.1.1.1",
-      folder3_record->objectId);
+  auto a_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                           "",
+                                           "https://a.com/",
+                                           "A.com - title",
+                                           "1.1.1.1.1.1.1",
+                                           folder3_record->objectId);
 
-  auto b_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://b.com/",
-      "B.com - title",
-      "1.1.1.1.1.1.2",
-      folder3_record->objectId);
+  auto b_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                           "",
+                                           "https://b.com/",
+                                           "B.com - title",
+                                           "1.1.1.1.1.1.2",
+                                           folder3_record->objectId);
 
   // Send in a backwards order
   {
@@ -1136,7 +1133,7 @@ TEST_F(BraveBookmarkChangeProcessorTest, ItemAheadOfFolderAgressive) {
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest,
-    ItemAheadOfFolderRequireStrictSorting) {
+       ItemAheadOfFolderRequireStrictSorting) {
   // Send these:
   // Other
   // +--0-1.com              1.1.1.1
@@ -1161,92 +1158,80 @@ TEST_F(BraveBookmarkChangeProcessorTest,
   change_processor()->Start();
 
   auto folder1_record = SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder1",
-      "1.1.1.2",
-      "", true, "");
+      SyncRecord::Action::A_CREATE, "Folder1", "1.1.1.2", "", true, "");
 
-  auto folder2_record = SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder2",
-      "1.1.1.2.2",
-      folder1_record->objectId,
-      true, "");
+  auto folder2_record = SimpleFolderSyncRecord(SyncRecord::Action::A_CREATE,
+                                               "Folder2",
+                                               "1.1.1.2.2",
+                                               folder1_record->objectId,
+                                               true,
+                                               "");
 
-  auto folder3_record = SimpleFolderSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "Folder3",
-      "1.1.1.2.2.2",
-      folder2_record->objectId,
-      true, "");
+  auto folder3_record = SimpleFolderSyncRecord(SyncRecord::Action::A_CREATE,
+                                               "Folder3",
+                                               "1.1.1.2.2.2",
+                                               folder2_record->objectId,
+                                               true,
+                                               "");
 
-  auto _0_1_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://0-1.com/",
-      "0-1.com - title",
-      "1.1.1.1",
-      "");
-  auto _0_2_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://0-2.com/",
-      "0-2.com - title",
-      "1.1.1.3",
-      "");
+  auto _0_1_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                              "",
+                                              "https://0-1.com/",
+                                              "0-1.com - title",
+                                              "1.1.1.1",
+                                              "");
+  auto _0_2_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                              "",
+                                              "https://0-2.com/",
+                                              "0-2.com - title",
+                                              "1.1.1.3",
+                                              "");
 
-  auto _1_1_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://1-1.com/",
-      "1-1.com - title",
-      "1.1.1.2.1",
-      folder1_record->objectId);
-  auto _1_2_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://1-2.com/",
-      "1-2.com - title",
-      "1.1.1.2.3",
-      folder1_record->objectId);
+  auto _1_1_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                              "",
+                                              "https://1-1.com/",
+                                              "1-1.com - title",
+                                              "1.1.1.2.1",
+                                              folder1_record->objectId);
+  auto _1_2_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                              "",
+                                              "https://1-2.com/",
+                                              "1-2.com - title",
+                                              "1.1.1.2.3",
+                                              folder1_record->objectId);
 
-  auto _2_1_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://2-1.com/",
-      "2-1.com - title",
-      "1.1.1.2.2.1",
-      folder2_record->objectId);
-  auto _2_2_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://2-2.com/",
-      "2-2.com - title",
-      "1.1.1.2.2.3",
-      folder2_record->objectId);
-  auto _2_3_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://2-3.com/",
-      "2-3.com - title",
-      "1.1.1.2.2.4",
-      folder2_record->objectId);
+  auto _2_1_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                              "",
+                                              "https://2-1.com/",
+                                              "2-1.com - title",
+                                              "1.1.1.2.2.1",
+                                              folder2_record->objectId);
+  auto _2_2_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                              "",
+                                              "https://2-2.com/",
+                                              "2-2.com - title",
+                                              "1.1.1.2.2.3",
+                                              folder2_record->objectId);
+  auto _2_3_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                              "",
+                                              "https://2-3.com/",
+                                              "2-3.com - title",
+                                              "1.1.1.2.2.4",
+                                              folder2_record->objectId);
 
-  auto a_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://a.com/",
-      "A.com - title",
-      "1.1.1.1.1.1.1",
-      folder3_record->objectId);
+  auto a_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                           "",
+                                           "https://a.com/",
+                                           "A.com - title",
+                                           "1.1.1.1.1.1.1",
+                                           folder3_record->objectId);
 
-  auto b_record = SimpleBookmarkSyncRecord(
-      SyncRecord::Action::A_CREATE,
-      "",
-      "https://b.com/",
-      "B.com - title",
-      "1.1.1.1.1.1.2",
-      folder3_record->objectId);
+  auto b_record = SimpleBookmarkSyncRecord(SyncRecord::Action::A_CREATE,
+                                           "",
+                                           "https://b.com/",
+                                           "B.com - title",
+                                           "1.1.1.1.1.1.2",
+                                           folder3_record->objectId);
 
   // Send in an order
   {
@@ -1315,9 +1300,10 @@ TEST_F(BraveBookmarkChangeProcessorTest,
 TEST_F(BraveBookmarkChangeProcessorTest, IgnoreRapidCreateDelete) {
   change_processor()->Start();
 
-  const auto* node_a = model()->AddURL(model()->other_node(), 0,
-                           base::ASCIIToUTF16("A.com - title"),
-                           GURL("https://a.com/"));
+  const auto* node_a = model()->AddURL(model()->other_node(),
+                                       0,
+                                       base::ASCIIToUTF16("A.com - title"),
+                                       GURL("https://a.com/"));
   model()->Remove(node_a);
 
   EXPECT_EQ(change_processor()->GetDeletedNodeRoot()->child_count(), 0);
@@ -1330,9 +1316,10 @@ TEST_F(BraveBookmarkChangeProcessorTest, IgnoreRapidCreateDelete) {
 TEST_F(BraveBookmarkChangeProcessorTest, IgnoreMetadataSet) {
   change_processor()->Start();
 
-  const auto* node_a = model()->AddURL(model()->other_node(), 0,
-                           base::ASCIIToUTF16("A.com - title"),
-                           GURL("https://a.com/"));
+  const auto* node_a = model()->AddURL(model()->other_node(),
+                                       0,
+                                       base::ASCIIToUTF16("A.com - title"),
+                                       GURL("https://a.com/"));
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
   change_processor()->SendUnsynced(base::TimeDelta::FromMinutes(10));
@@ -1344,10 +1331,11 @@ TEST_F(BraveBookmarkChangeProcessorTest, IgnoreMetadataSet) {
 }
 
 TEST_F(BraveBookmarkChangeProcessorTest, MigrateOrdersForPermanentNodes) {
-  EXPECT_EQ(change_processor()->GetPermanentNodeIndex(
-      model()->bookmark_bar_node()), 1);
-  EXPECT_EQ(change_processor()->GetPermanentNodeIndex(
-      model()->other_node()), 2);
+  EXPECT_EQ(
+      change_processor()->GetPermanentNodeIndex(model()->bookmark_bar_node()),
+      1);
+  EXPECT_EQ(change_processor()->GetPermanentNodeIndex(model()->other_node()),
+            2);
 
   using brave_sync::BookmarkChangeProcessor;
   EXPECT_EQ(BookmarkChangeProcessor::FindMigrateSubOrderLength("1.0.0.1"), 5);
@@ -1362,17 +1350,19 @@ TEST_F(BraveBookmarkChangeProcessorTest, MigrateOrdersForPermanentNodes) {
 
   EXPECT_EQ(sync_prefs()->GetMigratedBookmarksVersion(), 0);
 
-  const auto* node_OB = model()->AddURL(model()->other_node(), 0,
-      base::ASCIIToUTF16("OB item - title"),
-      GURL("https://ob_item.com/"));
-  const_cast<bookmarks::BookmarkNode*>(node_OB)->SetMetaInfo(
-      "order", "1.0.0.1");
+  const auto* node_OB = model()->AddURL(model()->other_node(),
+                                        0,
+                                        base::ASCIIToUTF16("OB item - title"),
+                                        GURL("https://ob_item.com/"));
+  const_cast<bookmarks::BookmarkNode*>(node_OB)->SetMetaInfo("order",
+                                                             "1.0.0.1");
 
-  const auto* node_BB = model()->AddURL(model()->bookmark_bar_node(), 0,
-      base::ASCIIToUTF16("BB item - title"),
-      GURL("https://bb_item.com/"));
-  const_cast<bookmarks::BookmarkNode*>(node_BB)->SetMetaInfo(
-      "order", "1.0.0.1");
+  const auto* node_BB = model()->AddURL(model()->bookmark_bar_node(),
+                                        0,
+                                        base::ASCIIToUTF16("BB item - title"),
+                                        GURL("https://bb_item.com/"));
+  const_cast<bookmarks::BookmarkNode*>(node_BB)->SetMetaInfo("order",
+                                                             "1.0.0.1");
 
   EXPECT_CALL(*sync_client(), SendSyncRecords("BOOKMARKS", _)).Times(1);
   EXPECT_CALL(*sync_client(), ClearOrderMap()).Times(1);

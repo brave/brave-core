@@ -15,7 +15,8 @@
 
 using extensions::ExtensionBrowserTest;
 
-const std::string kTorClientUpdaterComponentTestId("ngicbhhaldfdgmjhilmnleppfpmkgbbk");
+const std::string kTorClientUpdaterComponentTestId(
+    "ngicbhhaldfdgmjhilmnleppfpmkgbbk");
 const std::string kTorClientUpdaterComponentTestBase64PublicKey =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAncFKJWCX6RqCRYOR0t5a"
     "js7HWIVP3Ne272HZs3MqiaNvo9IikbPd4JnUMeQjLhkXTwxg6Up9Tmrgo3M8T91D"
@@ -26,7 +27,7 @@ const std::string kTorClientUpdaterComponentTestBase64PublicKey =
     "QQIDAQAB";
 
 class BraveTorClientUpdaterTest : public ExtensionBrowserTest {
-public:
+ public:
   BraveTorClientUpdaterTest() {}
 
   void SetUp() override {
@@ -94,9 +95,8 @@ public:
   }
 
   void WaitForTorClientUpdaterThread() {
-    scoped_refptr<base::ThreadTestHelper> io_helper(
-        new base::ThreadTestHelper(
-            g_brave_browser_process->tor_client_updater()->GetTaskRunner()));
+    scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
+        g_brave_browser_process->tor_client_updater()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 };

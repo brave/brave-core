@@ -2,14 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as types from '../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import * as actions from '../../../brave_extension/extension/brave_extension/actions/shieldsPanelActions'
-import { ShieldDetails, BlockDetails } from '../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
-import {
-  BlockOptions,
-  BlockFPOptions,
-  BlockCookiesOptions
-} from '../../types/other/blockTypes'
+import * as types from '../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
+import {BlockDetails, ShieldDetails} from '../../../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
+import {BlockCookiesOptions, BlockFPOptions, BlockOptions} from '../../types/other/blockTypes'
 
 describe('shieldsPanelActions', () => {
   it('shieldsPanelDataUpdated', () => {
@@ -54,17 +50,16 @@ describe('shieldsPanelActions', () => {
     })
   })
 
-  it('resourceBlocked action', () => {
-    const details: BlockDetails = {
-      blockType: 'ads',
-      tabId: 2,
-      subresource: 'https://www.brave.com/test'
-    }
-    expect(actions.resourceBlocked(details)).toEqual({
-      type: types.RESOURCE_BLOCKED,
-      details
+    it('resourceBlocked action', () => {
+      const
+      details:
+          BlockDetails = {
+            blockType: 'ads',
+            tabId: 2,
+            subresource: 'https://www.brave.com/test'
+          } expect(actions.resourceBlocked(details))
+                             .toEqual({type: types.RESOURCE_BLOCKED, details})
     })
-  })
 
   it('blockAdsTrackers action', () => {
     const setting: BlockOptions = 'allow'

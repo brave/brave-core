@@ -8,7 +8,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSURL (Extensions)
 
-@property (nonatomic, nullable, readonly) NSString *bat_normalizedHost;
+@property(nonatomic, nullable, readonly) NSString* bat_normalizedHost;
 
 @end
 

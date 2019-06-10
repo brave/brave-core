@@ -8,7 +8,8 @@
 BraveContentRendererClient::BraveContentRendererClient()
     : ChromeContentRendererClient() {}
 
-void BraveContentRendererClient::SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {
+void BraveContentRendererClient::
+    SetRuntimeFeaturesDefaultsBeforeBlinkInitialization() {
   blink::WebRuntimeFeatures::EnableWebUsb(false);
   blink::WebRuntimeFeatures::EnableSharedArrayBuffer(false);
 }

@@ -19,13 +19,12 @@ content::WebUIDataSource* CreateBasicUIHTMLSource(
     const GzippedGritResourceMap* resource_map,
     size_t resource_map_size,
     int html_resource_id) {
-  content::WebUIDataSource* source =
-      content::WebUIDataSource::Create(name);
+  content::WebUIDataSource* source = content::WebUIDataSource::Create(name);
   source->SetJsonPath("strings.js");
   source->SetDefaultResource(html_resource_id);
   // Add generated resource paths
   for (size_t i = 0; i < resource_map_size; ++i) {
-    source->AddResourcePath(resource_map[i].name,  resource_map[i].value);
+    source->AddResourcePath(resource_map[i].name, resource_map[i].value);
   }
   CustomizeWebUIHTMLSource(name, source);
   return source;
@@ -39,15 +38,11 @@ class BasicUI::BasicUIWebContentsObserver
     : public content::WebContentsObserver {
  public:
   BasicUIWebContentsObserver(BasicUI* host, content::WebContents* web_contents)
-      : WebContentsObserver(web_contents),
-        host_(host) {
-  }
+      : WebContentsObserver(web_contents), host_(host) {}
   ~BasicUIWebContentsObserver() override {}
 
   // content::WebContentsObserver overrides:
-  void RenderViewReady() override {
-    host_->UpdateWebUIProperties();
-  }
+  void RenderViewReady() override { host_->UpdateWebUIProperties(); }
 
  private:
   BasicUI* host_;
@@ -64,13 +59,12 @@ BasicUI::BasicUI(content::WebUI* web_ui,
   observer_.reset(
       new BasicUIWebContentsObserver(this, web_ui->GetWebContents()));
   Profile* profile = Profile::FromWebUI(web_ui);
-  content::WebUIDataSource* source = CreateBasicUIHTMLSource(profile, name,
-      resource_map, resource_map_size, html_resource_id);
+  content::WebUIDataSource* source = CreateBasicUIHTMLSource(
+      profile, name, resource_map, resource_map_size, html_resource_id);
   content::WebUIDataSource::Add(profile, source);
 }
 
-BasicUI::~BasicUI() {
-}
+BasicUI::~BasicUI() {}
 
 content::RenderViewHost* BasicUI::GetRenderViewHost() {
   auto* web_contents = web_ui()->GetWebContents();

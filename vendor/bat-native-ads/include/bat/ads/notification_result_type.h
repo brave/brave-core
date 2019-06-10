@@ -8,11 +8,7 @@
 
 namespace ads {
 
-enum class NotificationResultInfoResultType {
-  CLICKED,
-  DISMISSED,
-  TIMEOUT
-};
+enum class NotificationResultInfoResultType { CLICKED, DISMISSED, TIMEOUT };
 
 }  // namespace ads
 

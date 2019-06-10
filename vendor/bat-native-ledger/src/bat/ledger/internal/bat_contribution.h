@@ -12,8 +12,8 @@
 #include <vector>
 
 #include "base/gtest_prod_util.h"
-#include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/ledger.h"
 
 // Contribution has two big phases. PHASE 1 is starting the contribution,
 // getting surveyors and transferring BAT from the wallet.
@@ -40,7 +40,6 @@
 // 6 hours
 // 24 hours
 // repeat 24 hours interval
-
 
 // Contribution process
 
@@ -83,29 +82,25 @@ class LedgerImpl;
 
 namespace braveledger_bat_contribution {
 
-static const uint64_t phase_one_timers[] = {
-    1 * 60 * 60,  // 1h
-    2 * 60 * 60,  // 2h
-    12 * 60 * 60,  // 12h
-    24 * 60 * 60,  // 24h
-    48 * 60 * 60};  // 48h
+static const uint64_t phase_one_timers[] = {1 * 60 * 60,    // 1h
+                                            2 * 60 * 60,    // 2h
+                                            12 * 60 * 60,   // 12h
+                                            24 * 60 * 60,   // 24h
+                                            48 * 60 * 60};  // 48h
 
-static const uint64_t phase_two_timers[] = {
-    1 * 60 * 60,  // 1h
-    6 * 60 * 60,  // 6h
-    24 * 60 * 60};  // 24h
+static const uint64_t phase_two_timers[] = {1 * 60 * 60,    // 1h
+                                            6 * 60 * 60,    // 6h
+                                            24 * 60 * 60};  // 24h
 
-static const uint64_t phase_one_debug_timers[] = {
-    0.5 * 60,  // 30sec
-    1 * 60,  //  1min
-    2 * 60,  //  2min
-    3 * 60,  // 3min
-    4 * 60};  // 4min
+static const uint64_t phase_one_debug_timers[] = {0.5 * 60,  // 30sec
+                                                  1 * 60,    //  1min
+                                                  2 * 60,    //  2min
+                                                  3 * 60,    // 3min
+                                                  4 * 60};   // 4min
 
-static const uint64_t phase_two_debug_timers[] = {
-    1 * 60,  // 1min
-    2 * 60,  //  2min
-    3 * 60};  // 3min
+static const uint64_t phase_two_debug_timers[] = {1 * 60,   // 1min
+                                                  2 * 60,   //  2min
+                                                  3 * 60};  // 3min
 
 class BatContribution {
  public:
@@ -117,21 +112,19 @@ class BatContribution {
 
   // Initial point for contribution
   // In this step we get balance from the server
-  void InitReconcile(
-      const std::string &viewing_id,
-      const ledger::REWARDS_CATEGORY category,
-      const braveledger_bat_helper::PublisherList& list,
-      const braveledger_bat_helper::Directions& directions = {},
-      double budget = 0);
+  void InitReconcile(const std::string& viewing_id,
+                     const ledger::REWARDS_CATEGORY category,
+                     const braveledger_bat_helper::PublisherList& list,
+                     const braveledger_bat_helper::Directions& directions = {},
+                     double budget = 0);
 
   // We determinate which contribution we want to do and do appropriate actions
-  void StartReconcile(
-      const std::string &viewing_id,
-      const ledger::REWARDS_CATEGORY category,
-      const braveledger_bat_helper::PublisherList& list,
-      const braveledger_bat_helper::Directions& directions,
-      double budget,
-      double balance);
+  void StartReconcile(const std::string& viewing_id,
+                      const ledger::REWARDS_CATEGORY category,
+                      const braveledger_bat_helper::PublisherList& list,
+                      const braveledger_bat_helper::Directions& directions,
+                      double budget,
+                      double balance);
 
   // Called when timer is triggered
   void OnTimer(uint32_t timer_id);
@@ -148,7 +141,7 @@ class BatContribution {
                                   int year,
                                   uint32_t date);
   void HasSufficientBalance(
-    ledger::HasSufficientBalanceToReconcileCallback callback);
+      ledger::HasSufficientBalanceToReconcileCallback callback);
 
   // Triggers contribution process for auto contribute table
   void StartAutoContribute();
@@ -195,7 +188,7 @@ class BatContribution {
       const ledger::Result result,
       std::unique_ptr<ledger::WalletInfo> info);
 
-  void Reconcile(const std::string &viewing_id);
+  void Reconcile(const std::string& viewing_id);
 
   void ReconcileCallback(const std::string& viewing_id,
                          int response_status_code,
@@ -248,8 +241,8 @@ class BatContribution {
                             const braveledger_bat_helper::PublisherList& list);
 
   void GetTipsWinners(const unsigned int ballots,
-                          const std::string& viewing_id,
-                          const braveledger_bat_helper::PublisherList& list);
+                      const std::string& viewing_id,
+                      const braveledger_bat_helper::PublisherList& list);
 
   void VotePublishers(const braveledger_bat_helper::Winners& winners,
                       const std::string& viewing_id);
@@ -259,14 +252,12 @@ class BatContribution {
 
   void PrepareBallots();
 
-  void PrepareBatch(
-      const braveledger_bat_helper::BALLOT_ST& ballot,
-      const braveledger_bat_helper::TRANSACTION_ST& transaction);
+  void PrepareBatch(const braveledger_bat_helper::BALLOT_ST& ballot,
+                    const braveledger_bat_helper::TRANSACTION_ST& transaction);
 
-  void PrepareBatchCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+  void PrepareBatchCallback(int response_status_code,
+                            const std::string& response,
+                            const std::map<std::string, std::string>& headers);
 
   void Proof();
 
@@ -280,18 +271,16 @@ class BatContribution {
 
   void VoteBatch();
 
-  void VoteBatchCallback(
-      const std::string& publisher,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+  void VoteBatchCallback(const std::string& publisher,
+                         int response_status_code,
+                         const std::string& response,
+                         const std::map<std::string, std::string>& headers);
 
   void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
 
-  void AddRetry(
-    ledger::ContributionRetry step,
-    const std::string& viewing_id,
-    braveledger_bat_helper::CURRENT_RECONCILE reconcile = {});
+  void AddRetry(ledger::ContributionRetry step,
+                const std::string& viewing_id,
+                braveledger_bat_helper::CURRENT_RECONCILE reconcile = {});
 
   uint64_t GetRetryTimer(ledger::ContributionRetry step,
                          const std::string& viewing_id,

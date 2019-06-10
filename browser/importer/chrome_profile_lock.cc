@@ -10,10 +10,10 @@
 #include "base/threading/thread_restrictions.h"
 #include "chrome/browser/process_singleton.h"
 
-ChromeProfileLock::ChromeProfileLock(
-    const base::FilePath& user_data_dir)
+ChromeProfileLock::ChromeProfileLock(const base::FilePath& user_data_dir)
     : lock_acquired_(false),
-      process_singleton_(new ProcessSingleton(user_data_dir,
+      process_singleton_(new ProcessSingleton(
+          user_data_dir,
           base::Bind(&ChromeProfileLock::NotificationCallback,
                      base::Unretained(this)))),
       user_data_dir_(user_data_dir) {}
@@ -34,7 +34,8 @@ void ChromeProfileLock::Unlock() {
   if (!HasAcquired())
     return;
   process_singleton_->Cleanup();
-  process_singleton_.reset(new ProcessSingleton(user_data_dir_,
+  process_singleton_.reset(
+      new ProcessSingleton(user_data_dir_,
                            base::Bind(&ChromeProfileLock::NotificationCallback,
                                       base::Unretained(this))));
   lock_acquired_ = false;

@@ -5,6 +5,6 @@
 #include "brave/components/omnibox/browser/constants.h"
 
 namespace brave_toolbar {
-  const char kOriginalInternalUIScheme[] = "chrome";
-  const char kInternalUIScheme[] = "brave";
-}
+const char kOriginalInternalUIScheme[] = "chrome";
+const char kInternalUIScheme[] = "brave";
+}  // namespace brave_toolbar

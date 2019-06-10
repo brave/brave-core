@@ -14,7 +14,7 @@ LocaleHelperLinux::LocaleHelperLinux() = default;
 LocaleHelperLinux::~LocaleHelperLinux() = default;
 
 std::string LocaleHelperLinux::GetLocale() const {
-  char const *language = nullptr;
+  char const* language = nullptr;
 
   if (!language || !*language) {
     language = std::getenv("LC_CTYPE");

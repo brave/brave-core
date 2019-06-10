@@ -15,10 +15,8 @@ namespace bat_ads {
 
 namespace {
 
-void OnBatAdsServiceRequest(
-    service_manager::ServiceKeepalive* keepalive,
-    bat_ads::mojom::BatAdsServiceRequest request) {
-
+void OnBatAdsServiceRequest(service_manager::ServiceKeepalive* keepalive,
+                            bat_ads::mojom::BatAdsServiceRequest request) {
   mojo::MakeStrongBinding(
       std::make_unique<bat_ads::BatAdsServiceImpl>(keepalive->CreateRef()),
       std::move(request));
@@ -26,10 +24,9 @@ void OnBatAdsServiceRequest(
 
 }  // namespace
 
-BatAdsApp::BatAdsApp(service_manager::mojom::ServiceRequest request) :
-    service_binding_(this, std::move(request)),
-    service_keepalive_(&service_binding_, base::TimeDelta()) {
-}
+BatAdsApp::BatAdsApp(service_manager::mojom::ServiceRequest request)
+    : service_binding_(this, std::move(request)),
+      service_keepalive_(&service_binding_, base::TimeDelta()) {}
 
 BatAdsApp::~BatAdsApp() {}
 

@@ -18,19 +18,15 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-MediaYouTube::MediaYouTube(bat_ledger::LedgerImpl* ledger):
-  ledger_(ledger) {
-}
+MediaYouTube::MediaYouTube(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {}
 
-MediaYouTube::~MediaYouTube() {
-}
+MediaYouTube::~MediaYouTube() {}
 
 // static
 std::string MediaYouTube::GetMediaIdFromParts(
     const std::map<std::string, std::string>& parts) {
   std::string result;
-  std::map<std::string, std::string>::const_iterator iter =
-        parts.find("docid");
+  std::map<std::string, std::string>::const_iterator iter = parts.find("docid");
   if (iter != parts.end()) {
     result = iter->second;
   }
@@ -46,12 +42,10 @@ uint64_t MediaYouTube::GetMediaDurationFromParts(
   std::map<std::string, std::string>::const_iterator iter_st = data.find("st");
   std::map<std::string, std::string>::const_iterator iter_et = data.find("et");
   if (iter_st != data.end() && iter_et != data.end()) {
-    std::vector<std::string> start_time = braveledger_bat_helper::split(
-        iter_st->second,
-        ',');
-    std::vector<std::string> end_time = braveledger_bat_helper::split(
-        iter_et->second,
-        ',');
+    std::vector<std::string> start_time =
+        braveledger_bat_helper::split(iter_st->second, ',');
+    std::vector<std::string> end_time =
+        braveledger_bat_helper::split(iter_et->second, ',');
     if (start_time.size() != end_time.size()) {
       return 0;
     }
@@ -93,13 +87,11 @@ std::string MediaYouTube::GetChannelUrl(const std::string& publisher_key) {
 // static
 std::string MediaYouTube::GetFavIconUrl(const std::string& data) {
   std::string favicon_url = braveledger_media::ExtractData(
-      data,
-      "\"avatar\":{\"thumbnails\":[{\"url\":\"", "\"");
+      data, "\"avatar\":{\"thumbnails\":[{\"url\":\"", "\"");
 
   if (favicon_url.empty()) {
     favicon_url = braveledger_media::ExtractData(
-      data,
-      "\"width\":88,\"height\":88},{\"url\":\"", "\"");
+        data, "\"width\":88,\"height\":88},{\"url\":\"", "\"");
   }
 
   return favicon_url;
@@ -110,8 +102,7 @@ std::string MediaYouTube::GetChannelId(const std::string& data) {
   std::string id = braveledger_media::ExtractData(data, "\"ucid\":\"", "\"");
   if (id.empty()) {
     id = braveledger_media::ExtractData(
-        data,
-        "HeaderRenderer\":{\"channelId\":\"", "\"");
+        data, "HeaderRenderer\":{\"channelId\":\"", "\"");
   }
 
   if (id.empty()) {
@@ -123,9 +114,7 @@ std::string MediaYouTube::GetChannelId(const std::string& data) {
 
   if (id.empty()) {
     id = braveledger_media::ExtractData(
-      data,
-      "browseEndpoint\":{\"browseId\":\"",
-      "\"");
+        data, "browseEndpoint\":{\"browseId\":\"", "\"");
   }
 
   return id;
@@ -134,11 +123,10 @@ std::string MediaYouTube::GetChannelId(const std::string& data) {
 // static
 std::string MediaYouTube::GetPublisherName(const std::string& data) {
   std::string publisher_name;
-  std::string publisher_json_name = braveledger_media::ExtractData(
-      data,
-      "\"author\":\"", "\"");
-  std::string publisher_json = "{\"brave_publisher\":\"" +
-      publisher_json_name + "\"}";
+  std::string publisher_json_name =
+      braveledger_media::ExtractData(data, "\"author\":\"", "\"");
+  std::string publisher_json =
+      "{\"brave_publisher\":\"" + publisher_json_name + "\"}";
   // scraped data could come in with JSON code points added.
   // Make to JSON object above so we can decode.
   braveledger_bat_helper::getJSONValue(
@@ -165,14 +153,14 @@ std::string MediaYouTube::GetLinkType(const std::string& url) {
 std::string MediaYouTube::GetMediaIdFromUrl(
     const ledger::VisitData& visit_data) {
   std::vector<std::string> first_split =
-    braveledger_bat_helper::split(visit_data.url, '?');
+      braveledger_bat_helper::split(visit_data.url, '?');
 
   if (first_split.size() < 2) {
     return std::string();
   }
 
   std::vector<std::string> and_split =
-    braveledger_bat_helper::split(first_split[1], '&');
+      braveledger_bat_helper::split(first_split[1], '&');
 
   for (const auto& item : and_split) {
     std::vector<std::string> m_url = braveledger_bat_helper::split(item, '=');
@@ -192,10 +180,10 @@ std::string MediaYouTube::GetMediaIdFromUrl(
 // static
 std::string MediaYouTube::GetNameFromChannel(const std::string& data) {
   std::string publisher_name;
-  const std::string publisher_json_name = braveledger_media::ExtractData(data,
-      "channelMetadataRenderer\":{\"title\":\"", "\"");
-  const std::string publisher_json = "{\"brave_publisher\":\"" +
-      publisher_json_name + "\"}";
+  const std::string publisher_json_name = braveledger_media::ExtractData(
+      data, "channelMetadataRenderer\":{\"title\":\"", "\"");
+  const std::string publisher_json =
+      "{\"brave_publisher\":\"" + publisher_json_name + "\"}";
   // scraped data could come in with JSON code points added.
   // Make to JSON object above so we can decode.
   braveledger_bat_helper::getJSONValue(
@@ -204,14 +192,13 @@ std::string MediaYouTube::GetNameFromChannel(const std::string& data) {
 }
 
 // static
-std::string MediaYouTube::GetPublisherKeyFromUrl(
-    const std::string& path) {
+std::string MediaYouTube::GetPublisherKeyFromUrl(const std::string& path) {
   if (path.empty()) {
     return std::string();
   }
 
-  const std::string id = braveledger_media::ExtractData(path + "/",
-      "/channel/", "/");
+  const std::string id =
+      braveledger_media::ExtractData(path + "/", "/channel/", "/");
 
   if (id.empty()) {
     return std::string();
@@ -225,8 +212,8 @@ std::string MediaYouTube::GetPublisherKeyFromUrl(
 // static
 std::string MediaYouTube::GetChannelIdFromCustomPathPage(
     const std::string& data) {
-  return braveledger_media::ExtractData(data,
-      "{\"key\":\"browse_id\",\"value\":\"", "\"");
+  return braveledger_media::ExtractData(
+      data, "{\"key\":\"browse_id\",\"value\":\"", "\"");
 }
 
 // static
@@ -243,26 +230,24 @@ std::string MediaYouTube::GetBasicPath(const std::string& path) {
 
 // static
 bool MediaYouTube::IsPredefinedPath(const std::string& path) {
-  std::vector<std::string> paths({
-      "/feed",
-      "/channel",
-      "/user",
-      "/watch",
-      "/account",
-      "/gaming",
-      "/playlist",
-      "/premium",
-      "/reporthistory",
-      "/pair",
-      "/account_notifications",
-      "/account_playback",
-      "/account_privacy",
-      "/account_sharing",
-      "/account_billing",
-      "/account_advanced",
-      "/subscription_manager",
-      "/oops"
-    });
+  std::vector<std::string> paths({"/feed",
+                                  "/channel",
+                                  "/user",
+                                  "/watch",
+                                  "/account",
+                                  "/gaming",
+                                  "/playlist",
+                                  "/premium",
+                                  "/reporthistory",
+                                  "/pair",
+                                  "/account_notifications",
+                                  "/account_playback",
+                                  "/account_privacy",
+                                  "/account_sharing",
+                                  "/account_billing",
+                                  "/account_advanced",
+                                  "/subscription_manager",
+                                  "/oops"});
 
   // make sure we are ignoring actual YT paths and not
   // a custom path that might start with a YT path
@@ -286,8 +271,8 @@ std::string MediaYouTube::GetUserFromUrl(const std::string& path) {
     return std::string();
   }
 
-  const std::string id = braveledger_media::ExtractData(path + "/",
-      "/user/", "/");
+  const std::string id =
+      braveledger_media::ExtractData(path + "/", "/user/", "/");
 
   if (id.empty()) {
     return std::string();
@@ -312,11 +297,9 @@ void MediaYouTube::OnMediaActivityError(const ledger::VisitData& visit_data,
 
     ledger_->GetPublisherActivityFromUrl(window_id, new_data, std::string());
   } else {
-      BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Media activity error for "
-        << YOUTUBE_MEDIA_TYPE << " (name: "
-        << name << ", url: "
-        << visit_data.url << ")";
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Media activity error for " << YOUTUBE_MEDIA_TYPE
+        << " (name: " << name << ", url: " << visit_data.url << ")";
   }
 }
 
@@ -327,23 +310,23 @@ void MediaYouTube::ProcessMedia(const std::map<std::string, std::string>& parts,
     return;
   }
 
-  std::string media_key = braveledger_media::GetMediaKey(media_id,
-                                                         YOUTUBE_MEDIA_TYPE);
+  std::string media_key =
+      braveledger_media::GetMediaKey(media_id, YOUTUBE_MEDIA_TYPE);
   uint64_t duration = GetMediaDurationFromParts(parts, media_key);
 
   BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media key: " << media_key;
   BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media duration: " << duration;
 
   ledger_->GetMediaPublisherInfo(media_key,
-      std::bind(&MediaYouTube::OnMediaPublisherInfo,
-                this,
-                media_id,
-                media_key,
-                duration,
-                visit_data,
-                0,
-                _1,
-                _2));
+                                 std::bind(&MediaYouTube::OnMediaPublisherInfo,
+                                           this,
+                                           media_id,
+                                           media_key,
+                                           duration,
+                                           visit_data,
+                                           0,
+                                           _1,
+                                           _2));
 }
 
 void MediaYouTube::ProcessActivityFromUrl(uint64_t window_id,
@@ -376,9 +359,8 @@ void MediaYouTube::ProcessActivityFromUrl(uint64_t window_id,
   OnMediaActivityError(visit_data, window_id);
 }
 
-void MediaYouTube::OnSaveMediaVisit(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
+void MediaYouTube::OnSaveMediaVisit(ledger::Result result,
+                                    ledger::PublisherInfoPtr info) {
   // TODO(nejczdovc): handle if needed
 }
 
@@ -393,27 +375,25 @@ void MediaYouTube::OnMediaPublisherInfo(
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-      << "Failed to get publisher info";
+        << "Failed to get publisher info";
     return;
   }
 
   if (!publisher_info) {
     std::string media_url = GetVideoUrl(media_id);
-    auto callback = std::bind(
-        &MediaYouTube::OnEmbedResponse,
-        this,
-        duration,
-        media_key,
-        media_url,
-        visit_data,
-        window_id,
-        _1,
-        _2,
-        _3);
+    auto callback = std::bind(&MediaYouTube::OnEmbedResponse,
+                              this,
+                              duration,
+                              media_key,
+                              media_url,
+                              visit_data,
+                              window_id,
+                              _1,
+                              _2,
+                              _3);
 
     const std::string url = (std::string)YOUTUBE_PROVIDER_URL +
-        "?format=json&url=" +
-        ledger_->URIEncode(media_url);
+                            "?format=json&url=" + ledger_->URIEncode(media_url);
 
     FetchDataFromUrl(url, callback);
   } else {
@@ -424,16 +404,10 @@ void MediaYouTube::OnMediaPublisherInfo(
     updated_visit_data.favicon_url = publisher_info->favicon_url;
     std::string id = publisher_info->id;
 
-    auto callback = std::bind(&MediaYouTube::OnSaveMediaVisit,
-                              this,
-                              _1,
-                              _2);
+    auto callback = std::bind(&MediaYouTube::OnSaveMediaVisit, this, _1, _2);
 
-    ledger_->SaveMediaVisit(id,
-                            updated_visit_data,
-                            duration,
-                            window_id,
-                            callback);
+    ledger_->SaveMediaVisit(
+        id, updated_visit_data, duration, window_id, callback);
   }
 }
 
@@ -452,17 +426,17 @@ void MediaYouTube::OnEmbedResponse(
     // embedding disabled, need to scrape
     if (response_status_code == net::HTTP_UNAUTHORIZED) {
       FetchDataFromUrl(visit_data.url,
-          std::bind(&MediaYouTube::OnPublisherPage,
-                    this,
-                    duration,
-                    media_key,
-                    std::string(),
-                    std::string(),
-                    visit_data,
-                    window_id,
-                    _1,
-                    _2,
-                    _3));
+                       std::bind(&MediaYouTube::OnPublisherPage,
+                                 this,
+                                 duration,
+                                 media_key,
+                                 std::string(),
+                                 std::string(),
+                                 visit_data,
+                                 window_id,
+                                 _1,
+                                 _2,
+                                 _3));
     }
     return;
   }
@@ -470,9 +444,8 @@ void MediaYouTube::OnEmbedResponse(
   std::string publisher_url;
   braveledger_bat_helper::getJSONValue("author_url", response, &publisher_url);
   std::string publisher_name;
-  braveledger_bat_helper::getJSONValue("author_name",
-                                       response,
-                                       &publisher_name);
+  braveledger_bat_helper::getJSONValue(
+      "author_name", response, &publisher_name);
 
   auto callback = std::bind(&MediaYouTube::OnPublisherPage,
                             this,
@@ -537,8 +510,8 @@ void MediaYouTube::SavePublisherInfo(const uint64_t duration,
                                      const std::string& channel_id) {
   std::string url;
   if (channel_id.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Channel id is missing for: " << media_key;
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Channel id is missing for: " << media_key;
     return;
   }
 
@@ -546,8 +519,8 @@ void MediaYouTube::SavePublisherInfo(const uint64_t duration,
   url = publisher_url + "/videos";
 
   if (publisher_id.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Publisher id is missing for: " << media_key;
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Publisher id is missing for: " << media_key;
     return;
   }
 
@@ -561,16 +534,10 @@ void MediaYouTube::SavePublisherInfo(const uint64_t duration,
   updated_visit_data.name = publisher_name;
   updated_visit_data.url = url;
 
-  auto callback = std::bind(&MediaYouTube::OnSaveMediaVisit,
-                            this,
-                            _1,
-                            _2);
+  auto callback = std::bind(&MediaYouTube::OnSaveMediaVisit, this, _1, _2);
 
-  ledger_->SaveMediaVisit(publisher_id,
-                          updated_visit_data,
-                          duration,
-                          window_id,
-                          callback);
+  ledger_->SaveMediaVisit(
+      publisher_id, updated_visit_data, duration, window_id, callback);
   if (!media_key.empty()) {
     ledger_->SetMediaPublisherInfo(media_key, publisher_id);
   }
@@ -590,8 +557,8 @@ void MediaYouTube::FetchDataFromUrl(
 void MediaYouTube::WatchPath(uint64_t window_id,
                              const ledger::VisitData& visit_data) {
   std::string media_id = GetMediaIdFromUrl(visit_data);
-  std::string media_key = braveledger_media::GetMediaKey(media_id,
-                                                         YOUTUBE_MEDIA_TYPE);
+  std::string media_key =
+      braveledger_media::GetMediaKey(media_id, YOUTUBE_MEDIA_TYPE);
 
   if (!media_key.empty() || !media_id.empty()) {
     ledger_->GetMediaPublisherInfo(
@@ -609,13 +576,12 @@ void MediaYouTube::WatchPath(uint64_t window_id,
   }
 }
 
-void MediaYouTube::OnMediaPublisherActivity(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info,
-    uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    const std::string& media_key,
-    const std::string& media_id) {
+void MediaYouTube::OnMediaPublisherActivity(ledger::Result result,
+                                            ledger::PublisherInfoPtr info,
+                                            uint64_t window_id,
+                                            const ledger::VisitData& visit_data,
+                                            const std::string& media_key,
+                                            const std::string& media_id) {
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
@@ -623,51 +589,41 @@ void MediaYouTube::OnMediaPublisherActivity(
   }
 
   if (!info || result == ledger::Result::NOT_FOUND) {
-    OnMediaPublisherInfo(media_id,
-                         media_key,
-                         0,
-                         visit_data,
-                         window_id,
-                         result,
-                         std::move(info));
+    OnMediaPublisherInfo(
+        media_id, media_key, 0, visit_data, window_id, result, std::move(info));
   } else {
-    GetPublisherPanleInfo(window_id,
-                          visit_data,
-                          info->id,
-                          false);
+    GetPublisherPanleInfo(window_id, visit_data, info->id, false);
   }
 }
 
-void MediaYouTube::GetPublisherPanleInfo(
-    uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    const std::string& publisher_key,
-    bool is_custom_path) {
-  auto filter = ledger_->CreateActivityFilter(
-    publisher_key,
-    ledger::EXCLUDE_FILTER::FILTER_ALL,
-    false,
-    ledger_->GetReconcileStamp(),
-    true,
-    false);
+void MediaYouTube::GetPublisherPanleInfo(uint64_t window_id,
+                                         const ledger::VisitData& visit_data,
+                                         const std::string& publisher_key,
+                                         bool is_custom_path) {
+  auto filter =
+      ledger_->CreateActivityFilter(publisher_key,
+                                    ledger::EXCLUDE_FILTER::FILTER_ALL,
+                                    false,
+                                    ledger_->GetReconcileStamp(),
+                                    true,
+                                    false);
   ledger_->GetPanelPublisherInfo(filter,
-    std::bind(&MediaYouTube::OnPublisherPanleInfo,
-              this,
-              window_id,
-              visit_data,
-              publisher_key,
-              is_custom_path,
-              _1,
-              _2));
+                                 std::bind(&MediaYouTube::OnPublisherPanleInfo,
+                                           this,
+                                           window_id,
+                                           visit_data,
+                                           publisher_key,
+                                           is_custom_path,
+                                           _1,
+                                           _2));
 }
 
-void MediaYouTube::OnPublisherPanleInfo(
-    uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    const std::string& publisher_key,
-    bool is_custom_path,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
+void MediaYouTube::OnPublisherPanleInfo(uint64_t window_id,
+                                        const ledger::VisitData& visit_data,
+                                        const std::string& publisher_key,
+                                        bool is_custom_path,
+                                        ledger::Result result,
+                                        ledger::PublisherInfoPtr info) {
   if (!info || result == ledger::Result::NOT_FOUND) {
     FetchDataFromUrl(visit_data.url,
                      std::bind(&MediaYouTube::GetChannelHeadlineVideo,
@@ -716,10 +672,8 @@ void MediaYouTube::GetChannelHeadlineVideo(
     std::string channel_id = GetChannelIdFromCustomPathPage(response);
     ledger::VisitData new_visit_data(visit_data);
     new_visit_data.path = "/channel/" + channel_id;
-    GetPublisherPanleInfo(window_id,
-                          new_visit_data,
-                          GetPublisherKey(channel_id),
-                          true);
+    GetPublisherPanleInfo(
+        window_id, new_visit_data, GetPublisherKey(channel_id), true);
   } else {
     OnMediaActivityError(visit_data, window_id);
   }
@@ -730,10 +684,7 @@ void MediaYouTube::ChannelPath(uint64_t window_id,
   std::string key = GetPublisherKeyFromUrl(visit_data.path);
   if (!key.empty()) {
     std::string publisher_key = GetPublisherKey(key);
-    GetPublisherPanleInfo(window_id,
-                          visit_data,
-                          publisher_key,
-                          false);
+    GetPublisherPanleInfo(window_id, visit_data, publisher_key, false);
   } else {
     OnMediaActivityError(visit_data, window_id);
   }
@@ -759,13 +710,12 @@ void MediaYouTube::UserPath(uint64_t window_id,
                                            _2));
 }
 
-void MediaYouTube::OnUserActivity(
-    uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    const std::string& media_key,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
-  if (result != ledger::Result::LEDGER_OK  &&
+void MediaYouTube::OnUserActivity(uint64_t window_id,
+                                  const ledger::VisitData& visit_data,
+                                  const std::string& media_key,
+                                  ledger::Result result,
+                                  ledger::PublisherInfoPtr info) {
+  if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
     return;
@@ -783,10 +733,7 @@ void MediaYouTube::OnUserActivity(
                                _3));
 
   } else {
-    GetPublisherPanleInfo(window_id,
-                          visit_data,
-                          info->id,
-                          false);
+    GetPublisherPanleInfo(window_id, visit_data, info->id, false);
   }
 }
 
@@ -816,6 +763,5 @@ void MediaYouTube::OnChannelIdForUser(
     OnMediaActivityError(visit_data, window_id);
   }
 }
-
 
 }  // namespace braveledger_media

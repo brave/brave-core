@@ -7,13 +7,10 @@
 
 namespace confirmations {
 
-WalletInfo::WalletInfo() :
-    payment_id(""),
-    public_key("") {}
+WalletInfo::WalletInfo() : payment_id(""), public_key("") {}
 
-WalletInfo::WalletInfo(const WalletInfo& info) :
-    payment_id(info.payment_id),
-    public_key(info.public_key) {}
+WalletInfo::WalletInfo(const WalletInfo& info)
+    : payment_id(info.payment_id), public_key(info.public_key) {}
 
 WalletInfo::~WalletInfo() = default;
 

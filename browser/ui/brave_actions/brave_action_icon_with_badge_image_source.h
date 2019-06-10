@@ -8,23 +8,24 @@
 #include "chrome/browser/ui/extensions/icon_with_badge_image_source.h"
 
 namespace gfx {
-  class Canvas;
-  class Rect;
-}
+class Canvas;
+class Rect;
+}  // namespace gfx
 
 // The purpose of this subclass is to:
 // - Paint the BraveAction badge in a custom location and with a different size
 //   to regular BrowserAction extensions.
 class BraveActionIconWithBadgeImageSource : public IconWithBadgeImageSource {
-  public:
-    using IconWithBadgeImageSource::IconWithBadgeImageSource;
-  private:
-    base::Optional<int> GetCustomGraphicSize() override;
-    base::Optional<int> GetCustomGraphicXOffset() override;
-    base::Optional<int> GetCustomGraphicYOffset() override;
-    void PaintBadge(gfx::Canvas* canvas) override;
-    gfx::Rect GetIconAreaRect() const override;
-    DISALLOW_COPY_AND_ASSIGN(BraveActionIconWithBadgeImageSource);
+ public:
+  using IconWithBadgeImageSource::IconWithBadgeImageSource;
+
+ private:
+  base::Optional<int> GetCustomGraphicSize() override;
+  base::Optional<int> GetCustomGraphicXOffset() override;
+  base::Optional<int> GetCustomGraphicYOffset() override;
+  void PaintBadge(gfx::Canvas* canvas) override;
+  gfx::Rect GetIconAreaRect() const override;
+  DISALLOW_COPY_AND_ASSIGN(BraveActionIconWithBadgeImageSource);
 };
 
 #endif

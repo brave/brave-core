@@ -11,26 +11,23 @@ module.exports = (env, argv) => ({
   resolve: {
     extensions: ['.js', '.tsx', '.ts', '.json'],
     alias: {
-      'bittorrent-tracker': path.resolve(__dirname, '../../node_modules/bittorrent-tracker'),
+      'bittorrent-tracker':
+          path.resolve(__dirname, '../../node_modules/bittorrent-tracker'),
       'brave-ui': path.resolve(__dirname, '../../node_modules/brave-ui/src'),
       'dgram': 'chrome-dgram',
       'dns': path.resolve(__dirname, '../common/dns.ts'),
       'net': 'chrome-net',
-      'torrent-discovery': path.resolve(__dirname, '../../node_modules/torrent-discovery')
+      'torrent-discovery':
+          path.resolve(__dirname, '../../node_modules/torrent-discovery')
     }
   },
-  plugins: [
-    new GenerateDepfilePlugin({
-      depfilePath: process.env.DEPFILE_PATH,
-      depfileSourceName: process.env.DEPFILE_SOURCE_NAME
-    })
-  ],
+  plugins: [new GenerateDepfilePlugin({
+    depfilePath: process.env.DEPFILE_PATH,
+    depfileSourceName: process.env.DEPFILE_SOURCE_NAME
+  })],
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        loader: 'awesome-typescript-loader'
-      },
+      {test: /\.tsx?$/, loader: 'awesome-typescript-loader'},
       {
         test: /\.css$/,
         loader: ['style-loader', 'css-loader'],
@@ -43,9 +40,8 @@ module.exports = (env, argv) => ({
       {
         test: /\.(ttf|eot|ico|svg|png|jpg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
         loader: 'file-loader'
-      }]
+      }
+    ]
   },
-  node: {
-    fs: 'empty'
-  }
+  node: {fs: 'empty'}
 })

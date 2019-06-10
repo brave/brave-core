@@ -29,8 +29,8 @@ void BraveDarkModeObserver::Start() {
 
 void BraveDarkModeObserver::ResetThemeObserver() {
   auto* current_native_theme = theme_->SystemDarkModeEnabled()
-      ? ui::NativeThemeDarkAura::instance()
-      : ui::NativeTheme::GetInstanceForNativeUi();
+                                   ? ui::NativeThemeDarkAura::instance()
+                                   : ui::NativeTheme::GetInstanceForNativeUi();
   current_native_theme_for_testing_ = current_native_theme;
 
   if (!theme_observer_.IsObserving(current_native_theme)) {
@@ -38,4 +38,3 @@ void BraveDarkModeObserver::ResetThemeObserver() {
     theme_observer_.Add(current_native_theme);
   }
 }
-

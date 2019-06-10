@@ -4,11 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "bat/confirmations/internal/payout_tokens.h"
-#include "bat/confirmations/internal/static_values.h"
-#include "bat/confirmations/internal/logging.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
-#include "bat/confirmations/internal/unblinded_tokens.h"
+#include "bat/confirmations/internal/logging.h"
 #include "bat/confirmations/internal/redeem_payment_tokens_request.h"
+#include "bat/confirmations/internal/static_values.h"
+#include "bat/confirmations/internal/unblinded_tokens.h"
 #include "brave_base/random.h"
 
 using std::placeholders::_1;
@@ -17,15 +17,14 @@ using std::placeholders::_3;
 
 namespace confirmations {
 
-PayoutTokens::PayoutTokens(
-    ConfirmationsImpl* confirmations,
-    ConfirmationsClient* confirmations_client,
-    UnblindedTokens* unblinded_payment_tokens) :
-    next_retry_start_timer_in_(0),
-    backoff_count_(0),
-    confirmations_(confirmations),
-    confirmations_client_(confirmations_client),
-    unblinded_payment_tokens_(unblinded_payment_tokens) {
+PayoutTokens::PayoutTokens(ConfirmationsImpl* confirmations,
+                           ConfirmationsClient* confirmations_client,
+                           UnblindedTokens* unblinded_payment_tokens)
+    : next_retry_start_timer_in_(0),
+      backoff_count_(0),
+      confirmations_(confirmations),
+      confirmations_client_(confirmations_client),
+      unblinded_payment_tokens_(unblinded_payment_tokens) {
   BLOG(INFO) << "Initializing payout tokens";
 }
 
@@ -39,7 +38,7 @@ void PayoutTokens::Payout(const WalletInfo& wallet_info) {
 
   BLOG(INFO) << "Payout";
 
-  backoff_count_ = 0;           // reset exponential backoff
+  backoff_count_ = 0;  // reset exponential backoff
 
   wallet_info_ = WalletInfo(wallet_info);
 
@@ -83,11 +82,11 @@ void PayoutTokens::RedeemPaymentTokens() {
   auto content_type = request.GetContentType();
   BLOG(INFO) << "  Content_type: " << content_type;
 
-  auto callback = std::bind(&PayoutTokens::OnRedeemPaymentTokens,
-      this, url, _1, _2, _3);
+  auto callback =
+      std::bind(&PayoutTokens::OnRedeemPaymentTokens, this, url, _1, _2, _3);
 
-  confirmations_client_->LoadURL(url, headers, body, content_type, method,
-      callback);
+  confirmations_client_->LoadURL(
+      url, headers, body, content_type, method, callback);
 }
 
 void PayoutTokens::OnRedeemPaymentTokens(

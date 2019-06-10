@@ -7,8 +7,8 @@
 #define BAT_ADS_INTERNAL_BUNDLE_H_
 
 #include <stdint.h>
-#include <string>
 #include <memory>
+#include <string>
 
 #include "bat/ads/ads_client.h"
 
@@ -38,26 +38,24 @@ class Bundle {
   std::unique_ptr<BundleState> GenerateFromCatalog(const Catalog& catalog);
 
   void SaveState();
-  void OnStateSaved(
-      const std::string& catalog_id,
-      const uint64_t& catalog_version,
-      const uint64_t& catalog_ping,
-      const uint64_t& catalog_last_updated_timestamp_in_seconds,
-      const Result result);
+  void OnStateSaved(const std::string& catalog_id,
+                    const uint64_t& catalog_version,
+                    const uint64_t& catalog_ping,
+                    const uint64_t& catalog_last_updated_timestamp_in_seconds,
+                    const Result result);
 
-  void OnStateReset(
-      const std::string& catalog_id,
-      const uint64_t& catalog_version,
-      const uint64_t& catalog_ping,
-      const uint64_t& catalog_last_updated_timestamp_in_seconds,
-      const Result result);
+  void OnStateReset(const std::string& catalog_id,
+                    const uint64_t& catalog_version,
+                    const uint64_t& catalog_ping,
+                    const uint64_t& catalog_last_updated_timestamp_in_seconds,
+                    const Result result);
 
   std::string catalog_id_;
   uint64_t catalog_version_;
   uint64_t catalog_ping_;
   uint64_t catalog_last_updated_timestamp_in_seconds_;
 
-  AdsImpl* ads_;  // NOT OWNED
+  AdsImpl* ads_;           // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED
 };
 

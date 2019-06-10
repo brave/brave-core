@@ -19,7 +19,7 @@ std::string LocaleHelperWin::GetLocale() const {
     return kDefaultLocale;
   }
 
-  std::unique_ptr<wchar_t[]>locale_name(new wchar_t[size]);
+  std::unique_ptr<wchar_t[]> locale_name(new wchar_t[size]);
   if (!locale_name.get()) {
     return kDefaultLocale;
   }
@@ -29,7 +29,7 @@ std::string LocaleHelperWin::GetLocale() const {
     return kDefaultLocale;
   }
 
-  std::unique_ptr<char[]>locale(new char[size]);
+  std::unique_ptr<char[]> locale(new char[size]);
   if (!locale.get()) {
     return kDefaultLocale;
   }

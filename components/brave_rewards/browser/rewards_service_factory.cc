@@ -48,8 +48,7 @@ namespace brave_rewards {
 RewardsService* testing_service_;
 
 // static
-RewardsService* RewardsServiceFactory::GetForProfile(
-    Profile* profile) {
+RewardsService* RewardsServiceFactory::GetForProfile(Profile* profile) {
   if (profile->IsOffTheRecord())
     return NULL;
 
@@ -75,13 +74,13 @@ RewardsServiceFactory::RewardsServiceFactory()
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  registrar_.Add(this, chrome::NOTIFICATION_PROFILE_CREATED,
+  registrar_.Add(this,
+                 chrome::NOTIFICATION_PROFILE_CREATED,
                  content::NotificationService::AllSources());
 #endif
 }
 
-RewardsServiceFactory::~RewardsServiceFactory() {
-}
+RewardsServiceFactory::~RewardsServiceFactory() {}
 
 KeyedService* RewardsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

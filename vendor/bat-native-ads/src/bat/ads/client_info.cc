@@ -9,11 +9,9 @@
 
 namespace ads {
 
-ClientInfo::ClientInfo() :
-    platform(ClientInfoPlatformType::UNKNOWN) {}
+ClientInfo::ClientInfo() : platform(ClientInfoPlatformType::UNKNOWN) {}
 
-ClientInfo::ClientInfo(const ClientInfo& info) :
-    platform(info.platform) {}
+ClientInfo::ClientInfo(const ClientInfo& info) : platform(info.platform) {}
 
 ClientInfo::~ClientInfo() = default;
 
@@ -23,9 +21,8 @@ const std::string ClientInfo::ToJson() const {
   return json;
 }
 
-Result ClientInfo::FromJson(
-    const std::string& json,
-    std::string* error_description) {
+Result ClientInfo::FromJson(const std::string& json,
+                            std::string* error_description) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 
@@ -38,8 +35,8 @@ Result ClientInfo::FromJson(
   }
 
   if (document.HasMember("platform")) {
-    platform = static_cast<ClientInfoPlatformType>
-        (document["platform"].GetInt());
+    platform =
+        static_cast<ClientInfoPlatformType>(document["platform"].GetInt());
   }
 
   return SUCCESS;

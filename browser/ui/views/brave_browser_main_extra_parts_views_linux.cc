@@ -9,12 +9,12 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/libgtkui/gtk_ui.h"
-#include "chrome/browser/ui/views/theme_profile_key.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/theme_profile_key.h"
 #include "chrome/common/pref_names.h"
-#include "ui/views/linux_ui/linux_ui.h"
 #include "ui/native_theme/native_theme_aura.h"
 #include "ui/native_theme/native_theme_dark_aura.h"
+#include "ui/views/linux_ui/linux_ui.h"
 
 namespace {
 
@@ -30,20 +30,19 @@ ui::NativeTheme* GetNativeThemeForWindow(aura::Window* window) {
 
   // Use the appropriate native theme for the color mode pref
   BraveThemeType active_builtin_theme =
-                            BraveThemeService::GetActiveBraveThemeType(profile);
-  const bool dark_mode = (
-      active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
-      profile->GetProfileType() == Profile::INCOGNITO_PROFILE ||
-      profile->IsTorProfile());
-  if (dark_mode &&
-      BrowserView::GetBrowserViewForNativeWindow(window)) {
+      BraveThemeService::GetActiveBraveThemeType(profile);
+  const bool dark_mode =
+      (active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
+       profile->GetProfileType() == Profile::INCOGNITO_PROFILE ||
+       profile->IsTorProfile());
+  if (dark_mode && BrowserView::GetBrowserViewForNativeWindow(window)) {
     return ui::NativeThemeDarkAura::instance();
   }
 
   return ui::NativeTheme::GetInstanceForNativeUi();
 }
 
-}
+}  // namespace
 
 void BraveBrowserMainExtraPartsViewsLinux::PreEarlyInitialization() {
   views::LinuxUI* gtk_ui = BuildGtkUi();

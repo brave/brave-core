@@ -64,9 +64,11 @@ std::string GetTagFromPrefName(const std::string& pref_name) {
 
 base::flat_set<base::StringPiece>* TrackableSecurityHeaders() {
   static base::NoDestructor<base::flat_set<base::StringPiece>>
-      kTrackableSecurityHeaders(base::flat_set<base::StringPiece>{
-          "Strict-Transport-Security", "Expect-CT", "Public-Key-Pins",
-          "Public-Key-Pins-Report-Only"});
+      kTrackableSecurityHeaders(
+          base::flat_set<base::StringPiece>{"Strict-Transport-Security",
+                                            "Expect-CT",
+                                            "Public-Key-Pins",
+                                            "Public-Key-Pins-Report-Only"});
   return kTrackableSecurityHeaders.get();
 }
 
@@ -83,7 +85,8 @@ void RemoveTrackableSecurityHeadersForThirdParty(
   auto request_url = request->url();
 
   if (net::registry_controlled_domains::SameDomainOrHost(
-          request_url, top_frame_origin,
+          request_url,
+          top_frame_origin,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     return;
   }
@@ -99,11 +102,11 @@ void RemoveTrackableSecurityHeadersForThirdParty(
 
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router)
-    : ChromeNetworkDelegate(event_router),
-      allow_google_auth_(true) {
+    : ChromeNetworkDelegate(event_router), allow_google_auth_(true) {
   // Initialize the preference change registrar.
   base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::UI},
+      FROM_HERE,
+      {BrowserThread::UI},
       base::Bind(&BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI,
                  base::Unretained(this)));
 }
@@ -118,19 +121,23 @@ void BraveNetworkDelegateBase::InitPrefChangeRegistrarOnUI() {
   user_pref_change_registrar_->Add(
       kGoogleLoginControlType,
       base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
-                          base::Unretained(this), kGoogleLoginControlType));
+                          base::Unretained(this),
+                          kGoogleLoginControlType));
   user_pref_change_registrar_->Add(
       kFBEmbedControlType,
       base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
-                          base::Unretained(this), kFBEmbedControlType));
+                          base::Unretained(this),
+                          kFBEmbedControlType));
   user_pref_change_registrar_->Add(
       kTwitterEmbedControlType,
       base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
-                          base::Unretained(this), kTwitterEmbedControlType));
+                          base::Unretained(this),
+                          kTwitterEmbedControlType));
   user_pref_change_registrar_->Add(
       kLinkedInEmbedControlType,
       base::BindRepeating(&BraveNetworkDelegateBase::OnPreferenceChanged,
-                          base::Unretained(this), kLinkedInEmbedControlType));
+                          base::Unretained(this),
+                          kLinkedInEmbedControlType));
   UpdateAdBlockFromPref(kFBEmbedControlType);
   UpdateAdBlockFromPref(kTwitterEmbedControlType);
   UpdateAdBlockFromPref(kLinkedInEmbedControlType);
@@ -182,8 +189,11 @@ int BraveNetworkDelegateBase::OnHeadersReceived(
 
   if (headers_received_callbacks_.empty() || !request) {
     return ChromeNetworkDelegate::OnHeadersReceived(
-        request, std::move(callback), original_response_headers,
-        override_response_headers, allowed_unsafe_redirect_url);
+        request,
+        std::move(callback),
+        original_response_headers,
+        override_response_headers,
+        allowed_unsafe_redirect_url);
   }
 
   std::shared_ptr<brave::BraveRequestInfo> ctx(new brave::BraveRequestInfo());
@@ -199,9 +209,12 @@ int BraveNetworkDelegateBase::OnHeadersReceived(
   // return net::ERR_IO_PENDING here, callbacks need to be run later than this
   // to set awaiting_callback_ back to false.
   base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
+      FROM_HERE,
+      {BrowserThread::IO},
       base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
-                 base::Unretained(this), request, ctx));
+                 base::Unretained(this),
+                 request,
+                 ctx));
   return net::ERR_IO_PENDING;
 }
 
@@ -221,11 +234,16 @@ bool BraveNetworkDelegateBase::OnCanGetCookies(
 
   base::RepeatingCallback<content::WebContents*(void)> wc_getter =
       base::BindRepeating(&GetWebContentsFromProcessAndFrameId,
-                          ctx->render_process_id, ctx->render_frame_id);
+                          ctx->render_process_id,
+                          ctx->render_frame_id);
   base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::UI},
-      base::BindOnce(&TabSpecificContentSettings::CookiesRead, wc_getter,
-                     request.url(), request.site_for_cookies(), cookie_list,
+      FROM_HERE,
+      {BrowserThread::UI},
+      base::BindOnce(&TabSpecificContentSettings::CookiesRead,
+                     wc_getter,
+                     request.url(),
+                     request.site_for_cookies(),
+                     cookie_list,
                      !allow));
 
   return allow;
@@ -249,11 +267,16 @@ bool BraveNetworkDelegateBase::OnCanSetCookie(
 
   base::RepeatingCallback<content::WebContents*(void)> wc_getter =
       base::BindRepeating(&GetWebContentsFromProcessAndFrameId,
-                          ctx->render_process_id, ctx->render_frame_id);
+                          ctx->render_process_id,
+                          ctx->render_frame_id);
   base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::UI},
-      base::BindOnce(&TabSpecificContentSettings::CookieChanged, wc_getter,
-                     request.url(), request.site_for_cookies(), cookie,
+      FROM_HERE,
+      {BrowserThread::UI},
+      base::BindOnce(&TabSpecificContentSettings::CookieChanged,
+                     wc_getter,
+                     request.url(),
+                     request.site_for_cookies(),
+                     cookie,
                      !allow));
 
   return allow;
@@ -290,7 +313,9 @@ void BraveNetworkDelegateBase::RunNextCallback(
           before_url_request_callbacks_[ctx->next_url_request_index++];
       brave::ResponseCallback next_callback =
           base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
-                     base::Unretained(this), request, ctx);
+                     base::Unretained(this),
+                     request,
+                     ctx);
       rv = callback.Run(next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
@@ -306,7 +331,9 @@ void BraveNetworkDelegateBase::RunNextCallback(
           before_start_transaction_callbacks_[ctx->next_url_request_index++];
       brave::ResponseCallback next_callback =
           base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
-                     base::Unretained(this), request, ctx);
+                     base::Unretained(this),
+                     request,
+                     ctx);
       rv = callback.Run(request, ctx->headers, next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
@@ -321,10 +348,15 @@ void BraveNetworkDelegateBase::RunNextCallback(
           headers_received_callbacks_[ctx->next_url_request_index++];
       brave::ResponseCallback next_callback =
           base::Bind(&BraveNetworkDelegateBase::RunNextCallback,
-                     base::Unretained(this), request, ctx);
-      rv = callback.Run(request, ctx->original_response_headers,
+                     base::Unretained(this),
+                     request,
+                     ctx);
+      rv = callback.Run(request,
+                        ctx->original_response_headers,
                         ctx->override_response_headers,
-                        ctx->allowed_unsafe_redirect_url, next_callback, ctx);
+                        ctx->allowed_unsafe_redirect_url,
+                        next_callback,
+                        ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
       }
@@ -341,7 +373,8 @@ void BraveNetworkDelegateBase::RunNextCallback(
 
   net::CompletionOnceCallback wrapped_callback =
       base::BindOnce(&BraveNetworkDelegateBase::RunCallbackForRequestIdentifier,
-                     base::Unretained(this), ctx->request_identifier);
+                     base::Unretained(this),
+                     ctx->request_identifier);
 
   if (ctx->event_type == brave::kOnBeforeRequest) {
     if (!ctx->new_url_spec.empty() &&
@@ -355,7 +388,7 @@ void BraveNetworkDelegateBase::RunNextCallback(
       // network stack.
       if (ctx->cancel_request_explicitly) {
         RunCallbackForRequestIdentifier(ctx->request_identifier,
-            net::ERR_ABORTED);
+                                        net::ERR_ABORTED);
         return;
       }
       request->SetExtraRequestHeaderByName("X-Brave-Block", "", true);
@@ -367,8 +400,11 @@ void BraveNetworkDelegateBase::RunNextCallback(
         request, std::move(wrapped_callback), ctx->headers);
   } else if (ctx->event_type == brave::kOnHeadersReceived) {
     rv = ChromeNetworkDelegate::OnHeadersReceived(
-        request, std::move(wrapped_callback), ctx->original_response_headers,
-        ctx->override_response_headers, ctx->allowed_unsafe_redirect_url);
+        request,
+        std::move(wrapped_callback),
+        ctx->original_response_headers,
+        ctx->override_response_headers,
+        ctx->allowed_unsafe_redirect_url);
   }
 
   // ChromeNetworkDelegate returns net::ERR_IO_PENDING if an extension is

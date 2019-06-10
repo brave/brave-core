@@ -7,35 +7,27 @@
 #define BAT_ADS_ADS_CLIENT_H_
 
 #include <stdint.h>
+#include <functional>
+#include <map>
+#include <memory>
+#include <ostream>
+#include <sstream>
 #include <string>
 #include <vector>
-#include <map>
-#include <sstream>
-#include <ostream>
-#include <memory>
-#include <functional>
 
 #include "bat/ads/ad_info.h"
-#include "bat/ads/issuers_info.h"
 #include "bat/ads/bundle_state.h"
 #include "bat/ads/client_info.h"
 #include "bat/ads/export.h"
+#include "bat/ads/issuers_info.h"
 #include "bat/ads/notification_info.h"
 #include "bat/ads/result.h"
 
 namespace ads {
 
-enum LogLevel {
-  LOG_ERROR = 1,
-  LOG_WARNING,
-  LOG_INFO
-};
+enum LogLevel { LOG_ERROR = 1, LOG_WARNING, LOG_INFO };
 
-enum URLRequestMethod {
-  GET = 0,
-  PUT = 1,
-  POST = 2
-};
+enum URLRequestMethod { GET = 0, PUT = 1, POST = 2 };
 
 class ADS_EXPORT LogStream {
  public:
@@ -48,14 +40,16 @@ using OnLoadCallback = std::function<void(const Result, const std::string&)>;
 
 using OnResetCallback = std::function<void(const Result)>;
 
-using OnGetAdsCallback = std::function<void(const Result, const std::string&,
-    const std::vector<AdInfo>&)>;
+using OnGetAdsCallback = std::function<
+    void(const Result, const std::string&, const std::vector<AdInfo>&)>;
 
-using OnLoadSampleBundleCallback = std::function<void(const Result,
-    const std::string&)>;
+using OnLoadSampleBundleCallback =
+    std::function<void(const Result, const std::string&)>;
 
-using URLRequestCallback = std::function<void(const int, const std::string&,
-    const std::map<std::string, std::string>& headers)>;
+using URLRequestCallback =
+    std::function<void(const int,
+                       const std::string&,
+                       const std::map<std::string, std::string>& headers)>;
 
 class ADS_EXPORT AdsClient {
  public:
@@ -89,9 +83,8 @@ class ADS_EXPORT AdsClient {
   // Should load the User Model for the specified locale, user models are a
   // dependency of the application and should be bundled accordingly, the
   // following file structure could be used:
-  virtual void LoadUserModelForLocale(
-      const std::string& locale,
-      OnLoadCallback callback) const = 0;
+  virtual void LoadUserModelForLocale(const std::string& locale,
+                                      OnLoadCallback callback) const = 0;
 
   // Should generate return a v4 UUID
   virtual const std::string GenerateUUID() const = 0;
@@ -122,24 +115,21 @@ class ADS_EXPORT AdsClient {
   virtual void KillTimer(uint32_t timer_id) = 0;
 
   // Should start a URL request
-  virtual void URLRequest(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      const URLRequestMethod method,
-      URLRequestCallback callback) = 0;
+  virtual void URLRequest(const std::string& url,
+                          const std::vector<std::string>& headers,
+                          const std::string& content,
+                          const std::string& content_type,
+                          const URLRequestMethod method,
+                          URLRequestCallback callback) = 0;
 
   // Should save a value to persistent storage
-  virtual void Save(
-      const std::string& name,
-      const std::string& value,
-      OnSaveCallback callback) = 0;
+  virtual void Save(const std::string& name,
+                    const std::string& value,
+                    OnSaveCallback callback) = 0;
 
   // Should save the bundle state to persistent storage
-  virtual void SaveBundleState(
-      std::unique_ptr<BundleState> state,
-      OnSaveCallback callback) = 0;
+  virtual void SaveBundleState(std::unique_ptr<BundleState> state,
+                               OnSaveCallback callback) = 0;
 
   // Should load a value from persistent storage
   virtual void Load(const std::string& name, OnLoadCallback callback) = 0;
@@ -157,9 +147,8 @@ class ADS_EXPORT AdsClient {
 
   // Should get ads for the specified category from the previously persisted
   // bundle state
-  virtual void GetAds(
-      const std::string& category,
-      OnGetAdsCallback callback) = 0;
+  virtual void GetAds(const std::string& category,
+                      OnGetAdsCallback callback) = 0;
 
   // Should log an event to persistent storage however as events may be queued
   // they need an event name and timestamp adding as follows, replacing ... with
@@ -173,10 +162,9 @@ class ADS_EXPORT AdsClient {
   virtual void EventLog(const std::string& json) = 0;
 
   // Should log diagnostic information
-  virtual std::unique_ptr<LogStream> Log(
-      const char* file,
-      const int line,
-      const LogLevel log_level) const = 0;
+  virtual std::unique_ptr<LogStream> Log(const char* file,
+                                         const int line,
+                                         const LogLevel log_level) const = 0;
 };
 
 }  // namespace ads

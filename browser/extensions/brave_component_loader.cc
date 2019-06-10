@@ -32,11 +32,9 @@ BraveComponentLoader::BraveComponentLoader(
     Profile* profile)
     : ComponentLoader(extension_service, profile_prefs, local_state, profile),
       profile_(profile),
-      profile_prefs_(profile_prefs) {
-}
+      profile_prefs_(profile_prefs) {}
 
-BraveComponentLoader::~BraveComponentLoader() {
-}
+BraveComponentLoader::~BraveComponentLoader() {}
 
 void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
   // TODO(bridiver) - I don't think this is correct
@@ -44,25 +42,30 @@ void BraveComponentLoader::OnComponentRegistered(std::string extension_id) {
 }
 
 void BraveComponentLoader::OnComponentReady(std::string extension_id,
-    bool allow_file_access,
-    const base::FilePath& install_dir,
-    const std::string& manifest) {
+                                            bool allow_file_access,
+                                            const base::FilePath& install_dir,
+                                            const std::string& manifest) {
   Add(manifest, install_dir);
   if (allow_file_access) {
-    ExtensionPrefs::Get((content::BrowserContext *)profile_)->
-        SetAllowFileAccess(extension_id, true);
+    ExtensionPrefs::Get((content::BrowserContext*)profile_)
+        ->SetAllowFileAccess(extension_id, true);
   }
 }
 
 void BraveComponentLoader::AddExtension(const std::string& extension_id,
-    const std::string& name, const std::string& public_key) {
-  brave::RegisterComponent(g_browser_process->component_updater(),
-    name,
-    public_key,
-    base::Bind(&BraveComponentLoader::OnComponentRegistered,
-        base::Unretained(this), extension_id),
-    base::Bind(&BraveComponentLoader::OnComponentReady,
-        base::Unretained(this), extension_id, true));
+                                        const std::string& name,
+                                        const std::string& public_key) {
+  brave::RegisterComponent(
+      g_browser_process->component_updater(),
+      name,
+      public_key,
+      base::Bind(&BraveComponentLoader::OnComponentRegistered,
+                 base::Unretained(this),
+                 extension_id),
+      base::Bind(&BraveComponentLoader::OnComponentReady,
+                 base::Unretained(this),
+                 extension_id,
+                 true));
 }
 
 void BraveComponentLoader::AddHangoutServicesExtension() {
@@ -100,10 +103,10 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
 
   if (!command_line.HasSwitch(switches::kDisableWebTorrentExtension) &&
       (!profile_prefs_->FindPreference(kWebTorrentEnabled) ||
-      profile_prefs_->GetBoolean(kWebTorrentEnabled))) {
+       profile_prefs_->GetBoolean(kWebTorrentEnabled))) {
     base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
     brave_webtorrent_path =
-      brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
+        brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
     Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
   }
 }

@@ -35,7 +35,8 @@ bool IsUpdaterURL(const GURL& gurl) {
            URLPattern::SCHEME_HTTPS,
            std::string(extension_urls::kChromeWebstoreUpdateURL) + "*")});
   return std::any_of(
-      updater_patterns.begin(), updater_patterns.end(),
+      updater_patterns.begin(),
+      updater_patterns.end(),
       [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
 #endif

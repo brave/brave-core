@@ -13,11 +13,10 @@ class BraveExternalProcessImporterHost : public ExternalProcessImporterHost {
  public:
   BraveExternalProcessImporterHost();
 
-  void StartImportSettings(
-      const importer::SourceProfile& source_profile,
-      Profile* target_profile,
-      uint16_t items,
-      ProfileWriter* writer) override;
+  void StartImportSettings(const importer::SourceProfile& source_profile,
+                           Profile* target_profile,
+                           uint16_t items,
+                           ProfileWriter* writer) override;
 
  private:
   ~BraveExternalProcessImporterHost() override;

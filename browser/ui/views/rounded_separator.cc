@@ -53,7 +53,6 @@ void RoundedSeparator::OnPaint(gfx::Canvas* canvas) {
   // The separator fills its bounds, but avoid filling partial pixels.
   gfx::Rect aligned = gfx::ScaleToEnclosedRect(GetContentsBounds(), dsf, dsf);
 
-
   // At least 1 pixel should be drawn to make the separator visible.
   aligned.set_width(std::max(1, aligned.width()));
   aligned.set_height(std::max(1, aligned.height()));

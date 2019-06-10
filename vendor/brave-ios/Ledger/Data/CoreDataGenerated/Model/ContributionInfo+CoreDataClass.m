@@ -1,6 +1,6 @@
 //
 //  ContributionInfo+CoreDataClass.m
-//  
+//
 //
 //  Created by Kyle Hickinson on 2019-05-24.
 //

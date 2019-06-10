@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global chrome */
 
+import {types} from '../../../../brave_rewards/resources/ui/constants/rewards_types'
 import reducers from '../../../../brave_rewards/resources/ui/reducers/index'
-import { types } from '../../../../brave_rewards/resources/ui/constants/rewards_types'
-import { defaultState } from '../../../../brave_rewards/resources/ui/storage'
+import {defaultState} from '../../../../brave_rewards/resources/ui/storage'
 
 describe('publishers reducer', () => {
   describe('ON_EXCLUDED_LIST', () => {
@@ -26,17 +26,15 @@ describe('publishers reducer', () => {
         }
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.excludedList = [
-        {
-          id: 'foo.com',
-          verified: false,
-          url: 'https://foo.com',
-          name: 'Foo Bar',
-          provider: '',
-          favicon: ''
-        }
-      ]
+const expectedState:
+    Rewards.State = {...defaultState} expectedState.excludedList = [{
+  id: 'foo.com',
+  verified: false,
+  url: 'https://foo.com',
+  name: 'Foo Bar',
+  provider: '',
+  favicon: ''
+}]
 
       expect(assertion).toEqual({
         rewardsData: expectedState
@@ -61,17 +59,15 @@ describe('publishers reducer', () => {
         payload: {}
       })
 
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.excludedList = [
-        {
-          id: 'foo.com',
-          verified: false,
-          url: 'https://foo.com',
-          name: 'Foo Bar',
-          provider: '',
-          favicon: ''
-        }
-      ]
+    const expectedState:
+        Rewards.State = {...defaultState} expectedState.excludedList = [{
+      id: 'foo.com',
+      verified: false,
+      url: 'https://foo.com',
+      name: 'Foo Bar',
+      provider: '',
+      favicon: ''
+    }]
 
       expect(assertion).toEqual({
         rewardsData: expectedState

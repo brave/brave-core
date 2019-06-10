@@ -22,8 +22,9 @@ namespace {
 
 using namespace bookmarks;
 
-void AddPermanentNode(BookmarkPermanentNodeList* extra_nodes, int64_t id,
-      const std::string& title) {
+void AddPermanentNode(BookmarkPermanentNodeList* extra_nodes,
+                      int64_t id,
+                      const std::string& title) {
   auto node = std::make_unique<brave_sync::BraveBookmarkPermanentNode>(id);
   node->set_type(bookmarks::BookmarkNode::FOLDER);
   node->set_visible(false);
@@ -71,18 +72,18 @@ std::unique_ptr<KeyedService> BuildFakeBookmarkModelForTests(
   return model;
 }
 
-SyncRecordPtr SimpleBookmarkSyncRecord(
-    const int action,
-    const std::string& object_id,
-    const std::string& location,
-    const std::string& title,
-    const std::string& order,
-    const std::string& parent_object_id) {
+SyncRecordPtr SimpleBookmarkSyncRecord(const int action,
+                                       const std::string& object_id,
+                                       const std::string& location,
+                                       const std::string& title,
+                                       const std::string& order,
+                                       const std::string& parent_object_id) {
   auto record = std::make_unique<brave_sync::jslib::SyncRecord>();
-  record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
-    brave_sync::jslib::SyncRecord::Action::A_MIN,
-    brave_sync::jslib::SyncRecord::Action::A_MAX,
-    brave_sync::jslib::SyncRecord::Action::A_INVALID);
+  record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(
+      action,
+      brave_sync::jslib::SyncRecord::Action::A_MIN,
+      brave_sync::jslib::SyncRecord::Action::A_MAX,
+      brave_sync::jslib::SyncRecord::Action::A_INVALID);
 
   record->deviceId = "3";
   record->objectId = object_id.empty() ? tools::GenerateObjectId() : object_id;
@@ -106,18 +107,18 @@ SyncRecordPtr SimpleBookmarkSyncRecord(
   return record;
 }
 
-SyncRecordPtr SimpleFolderSyncRecord(
-    const int action,
-    const std::string& title,
-    const std::string& order,
-    const std::string& parent_object_id,
-    const bool hide_in_toolbar,
-    const std::string& custom_title) {
+SyncRecordPtr SimpleFolderSyncRecord(const int action,
+                                     const std::string& title,
+                                     const std::string& order,
+                                     const std::string& parent_object_id,
+                                     const bool hide_in_toolbar,
+                                     const std::string& custom_title) {
   auto record = std::make_unique<brave_sync::jslib::SyncRecord>();
-  record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
-    brave_sync::jslib::SyncRecord::Action::A_MIN,
-    brave_sync::jslib::SyncRecord::Action::A_MAX,
-    brave_sync::jslib::SyncRecord::Action::A_INVALID);
+  record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(
+      action,
+      brave_sync::jslib::SyncRecord::Action::A_MIN,
+      brave_sync::jslib::SyncRecord::Action::A_MAX,
+      brave_sync::jslib::SyncRecord::Action::A_INVALID);
 
   record->deviceId = "3";
   record->objectId = tools::GenerateObjectId();
@@ -140,15 +141,15 @@ SyncRecordPtr SimpleFolderSyncRecord(
   return record;
 }
 
-SyncRecordPtr SimpleDeviceRecord(
-    const int action,
-    const std::string& device_id,
-    const std::string& name) {
+SyncRecordPtr SimpleDeviceRecord(const int action,
+                                 const std::string& device_id,
+                                 const std::string& name) {
   auto record = std::make_unique<brave_sync::jslib::SyncRecord>();
-  record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(action,
-    brave_sync::jslib::SyncRecord::Action::A_MIN,
-    brave_sync::jslib::SyncRecord::Action::A_MAX,
-    brave_sync::jslib::SyncRecord::Action::A_INVALID);
+  record->action = ConvertEnum<brave_sync::jslib::SyncRecord::Action>(
+      action,
+      brave_sync::jslib::SyncRecord::Action::A_MIN,
+      brave_sync::jslib::SyncRecord::Action::A_MAX,
+      brave_sync::jslib::SyncRecord::Action::A_INVALID);
   record->deviceId = device_id;
   record->objectId = tools::GenerateObjectId();
   record->objectData = "device";
@@ -161,4 +162,4 @@ SyncRecordPtr SimpleDeviceRecord(
   return record;
 }
 
-}  // namespace
+}  // namespace brave_sync

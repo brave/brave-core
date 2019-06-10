@@ -10,7 +10,8 @@
 std::string LoadLocalState(
     ChromeFeatureListCreator* chrome_feature_list_creator,
     bool is_running_tests) {
-  std::string ret = LoadLocalState_ChromiumImpl(chrome_feature_list_creator, is_running_tests);
+  std::string ret = LoadLocalState_ChromiumImpl(chrome_feature_list_creator,
+                                                is_running_tests);
   brave::InitializeResourceBundle();
   return ret;
 }

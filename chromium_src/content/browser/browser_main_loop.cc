@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Build with content library.
-#include "brave/browser/brave_browser_main_loop.h"
 #include "brave/browser/brave_browser_main_loop.cc"  // NOLINT
+#include "brave/browser/brave_browser_main_loop.h"
 
 #include "../../../content/browser/browser_main_loop.cc"  // NOLINT

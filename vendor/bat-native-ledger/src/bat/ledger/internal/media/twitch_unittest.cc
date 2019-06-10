@@ -13,8 +13,7 @@
 
 namespace braveledger_media {
 
-class MediaTwitchTest : public testing::Test {
-};
+class MediaTwitchTest : public testing::Test {};
 
 const char profile_html[] =
     "<div class=\"tw-align-items-center tw-flex tw-flex-nowrap "
@@ -58,87 +57,71 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
   ASSERT_TRUE(media_id.empty());
 
   // event is not on the list
-  result = MediaTwitch::GetMediaIdFromParts({
-    {"event", "test"},
-    {"properties", ""}
-  });
+  result =
+      MediaTwitch::GetMediaIdFromParts({{"event", "test"}, {"properties", ""}});
   media_id = result.first;
   user_id = result.second;
   EXPECT_TRUE(user_id.empty());
   ASSERT_TRUE(media_id.empty());
 
   // properties are missing
-  result = MediaTwitch::GetMediaIdFromParts({
-    {"event", "minute-watched"}
-  });
+  result = MediaTwitch::GetMediaIdFromParts({{"event", "minute-watched"}});
   media_id = result.first;
   user_id = result.second;
   EXPECT_TRUE(user_id.empty());
   ASSERT_TRUE(media_id.empty());
 
   // channel is missing
-  result = MediaTwitch::GetMediaIdFromParts({
-    {"event", "minute-watched"},
-    {"properties", ""}
-  });
+  result = MediaTwitch::GetMediaIdFromParts(
+      {{"event", "minute-watched"}, {"properties", ""}});
   media_id = result.first;
   user_id = result.second;
   EXPECT_TRUE(user_id.empty());
   ASSERT_TRUE(media_id.empty());
 
   // channel is provided
-  result = MediaTwitch::GetMediaIdFromParts({
-    {"event", "minute-watched"},
-    {"properties", ""},
-    {"channel", "dakotaz"}
-  });
+  result = MediaTwitch::GetMediaIdFromParts({{"event", "minute-watched"},
+                                             {"properties", ""},
+                                             {"channel", "dakotaz"}});
   media_id = result.first;
   user_id = result.second;
   EXPECT_EQ(user_id, "dakotaz");
   ASSERT_EQ(media_id, "dakotaz");
 
   // vod is missing leading v
-  result = MediaTwitch::GetMediaIdFromParts({
-    {"event", "minute-watched"},
-    {"properties", ""},
-    {"channel", "dakotaz"},
-    {"vod", "123312312"}
-  });
+  result = MediaTwitch::GetMediaIdFromParts({{"event", "minute-watched"},
+                                             {"properties", ""},
+                                             {"channel", "dakotaz"},
+                                             {"vod", "123312312"}});
   media_id = result.first;
   user_id = result.second;
   EXPECT_EQ(user_id, "dakotaz");
   ASSERT_EQ(media_id, "dakotaz");
 
   // vod is provided
-  result = MediaTwitch::GetMediaIdFromParts({
-    {"event", "minute-watched"},
-    {"properties", ""},
-    {"channel", "dakotaz"},
-    {"vod", "v123312312"}
-  });
+  result = MediaTwitch::GetMediaIdFromParts({{"event", "minute-watched"},
+                                             {"properties", ""},
+                                             {"channel", "dakotaz"},
+                                             {"vod", "v123312312"}});
   media_id = result.first;
   user_id = result.second;
   EXPECT_EQ(user_id, "dakotaz");
   ASSERT_EQ(media_id, "dakotaz_vod_123312312");
 
   // live stream username has '_'
-  result = MediaTwitch::GetMediaIdFromParts({
-    {"event", "minute-watched"},
-    {"properties", ""},
-    {"channel", "anatomyz_2"}
-  });
+  result = MediaTwitch::GetMediaIdFromParts({{"event", "minute-watched"},
+                                             {"properties", ""},
+                                             {"channel", "anatomyz_2"}});
   media_id = result.first;
   user_id = result.second;
   EXPECT_EQ(user_id, "anatomyz_2");
   ASSERT_EQ(media_id, "anatomyz_2");
 
   // vod has '_'
-  result = MediaTwitch::GetMediaIdFromParts({
-    {"event", "minute-watched"},
-    {"properties", ""},
-    {"channel", "anatomyz_2"},
-    {"vod", "v123312312"}
-  });
+  result = MediaTwitch::GetMediaIdFromParts({{"event", "minute-watched"},
+                                             {"properties", ""},
+                                             {"channel", "anatomyz_2"},
+                                             {"vod", "v123312312"}});
   media_id = result.first;
   user_id = result.second;
   EXPECT_EQ(user_id, "anatomyz_2");
@@ -190,13 +173,12 @@ TEST(MediaTwitchTest, GetTwitchStatus) {
   ASSERT_EQ(result, "playing");
 }
 
-TEST(MediaTwitchTest, GetLinkType ) {
+TEST(MediaTwitchTest, GetLinkType) {
   const std::string url("https://k8923479-sub.cdn.ttvnw.net/v1/segment/");
 
   // url is not correct
-  std::string result = MediaTwitch::GetLinkType("https://brave.com",
-                                                "https://www.twitch.tv",
-                                                "");
+  std::string result = MediaTwitch::GetLinkType(
+      "https://brave.com", "https://www.twitch.tv", "");
   ASSERT_EQ(result, "");
 
   // first party is off
@@ -212,9 +194,8 @@ TEST(MediaTwitchTest, GetLinkType ) {
   ASSERT_EQ(result, "twitch");
 
   // player page
-  result = MediaTwitch::GetLinkType(url,
-                                    "https://brave.com/",
-                                    "https://player.twitch.tv/");
+  result = MediaTwitch::GetLinkType(
+      url, "https://brave.com/", "https://player.twitch.tv/");
   ASSERT_EQ(result, "twitch");
 }
 
@@ -229,8 +210,7 @@ TEST(MediaTwitchTest, GetMediaKeyFromUrl) {
 
   // get vod id
   result = MediaTwitch::GetMediaKeyFromUrl(
-      "dakotaz",
-      "https://www.twitch.tv/videos/411403500");
+      "dakotaz", "https://www.twitch.tv/videos/411403500");
   ASSERT_EQ(result, "twitch_dakotaz_vod_411403500");
 
   // regular id
@@ -270,32 +250,26 @@ TEST(MediaTwitchTest, GetFaviconUrl) {
   // all ok
   result = MediaTwitch::GetFaviconUrl(profile_html, "dakotaz");
   ASSERT_EQ(result,
-      "https://static-cdn.jtvnw.net/jtv_user_pictures/473aea0f-a724-498"
-      "f-b7f1-e344f806ba8a-profile_image-70x70.png");
+            "https://static-cdn.jtvnw.net/jtv_user_pictures/473aea0f-a724-498"
+            "f-b7f1-e344f806ba8a-profile_image-70x70.png");
 }
 
 TEST(MediaTwitchTest, UpdatePublisherData) {
   // blob is not correct
   std::string name;
   std::string favicon_url;
-  MediaTwitch::UpdatePublisherData(
-      &name,
-      &favicon_url,
-      "dfsfsdfsdfds");
+  MediaTwitch::UpdatePublisherData(&name, &favicon_url, "dfsfsdfsdfds");
 
   ASSERT_EQ(name, "");
   ASSERT_EQ(favicon_url, "");
 
   // all ok
-  MediaTwitch::UpdatePublisherData(
-      &name,
-      &favicon_url,
-      profile_html);
+  MediaTwitch::UpdatePublisherData(&name, &favicon_url, profile_html);
 
   ASSERT_EQ(name, "dakotaz");
   ASSERT_EQ(favicon_url,
-      "https://static-cdn.jtvnw.net/jtv_user_pictures/473aea0f-a724-498"
-      "f-b7f1-e344f806ba8a-profile_image-70x70.png");
+            "https://static-cdn.jtvnw.net/jtv_user_pictures/473aea0f-a724-498"
+            "f-b7f1-e344f806ba8a-profile_image-70x70.png");
 }
 
 }  // namespace braveledger_media

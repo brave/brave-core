@@ -1,45 +1,48 @@
-export const addSiteCosmeticFilter = async (origin: string, cssfilter: string) => {
+export const addSiteCosmeticFilter =
+    async (origin: string, cssfilter: string) => {
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     let storeList = Object.assign({}, storeData.cosmeticFilterList)
-    if (storeList[origin] === undefined || storeList[origin].length === 0) { // nothing in filter list for origin
+    if (storeList[origin] === undefined ||
+        storeList[origin].length === 0) {  // nothing in filter list for origin
       storeList[origin] = [cssfilter]
-    } else { // add entry
-      storeList[origin].push(cssfilter)
     }
-    chrome.storage.local.set({ 'cosmeticFilterList': storeList })
+    else {// add entry
+          storeList[origin].push(cssfilter)} chrome.storage.local.set({
+      'cosmeticFilterList': storeList
+    })
   })
 }
 
-export const removeSiteFilter = (origin: string) => {
+export const removeSiteFilter =
+    (origin: string) => {
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     let storeList = Object.assign({}, storeData.cosmeticFilterList)
     delete storeList[origin]
     chrome.storage.local.set({ 'cosmeticFilterList': storeList })
   })
-}
-
-export const applySiteFilters = (hostname: string) => {
-  chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
-    if (!storeData.cosmeticFilterList) {
-      if (process.env.NODE_ENV === 'shields_development') {
-        console.log('applySiteFilters: no cosmetic filter store yet')
-      }
-      return
     }
-    if (storeData.cosmeticFilterList[hostname] !== undefined) {
-      storeData.cosmeticFilterList[hostname].map((rule: string) => {
-        if (process.env.NODE_ENV === 'shields_development') {
-          console.log('applying rule', rule)
+
+export const applySiteFilters =
+    (hostname: string) => {
+      chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
+        if (!storeData.cosmeticFilterList) {
+          if (process.env.NODE_ENV === 'shields_development') {
+            console.log('applySiteFilters: no cosmetic filter store yet')
+          }
+          return
         }
-        chrome.tabs.insertCSS({
-          code: `${rule} {display: none;}`,
-          runAt: 'document_start'
-        })
+        if (storeData.cosmeticFilterList[hostname] !== undefined) {
+          storeData.cosmeticFilterList[hostname].map((rule: string) => {
+            if (process.env.NODE_ENV === 'shields_development') {
+              console.log('applying rule', rule)
+            }
+            chrome.tabs.insertCSS(
+                {code: `${rule} {display: none;}`, runAt: 'document_start'})
+          })
+        }
       })
     }
-  })
-}
 
 export const removeAllFilters = () => {
-  chrome.storage.local.set({ 'cosmeticFilterList': {} })
+  chrome.storage.local.set({'cosmeticFilterList': {}})
 }

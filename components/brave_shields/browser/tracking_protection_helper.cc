@@ -28,8 +28,8 @@ void SetStartingSiteForRenderFrame(GURL starting_site,
                                    int render_frame_id) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   g_brave_browser_process->tracking_protection_service()
-      ->SetStartingSiteForRenderFrame(starting_site, render_process_id,
-                                      render_frame_id);
+      ->SetStartingSiteForRenderFrame(
+          starting_site, render_process_id, render_frame_id);
 }
 
 void DeleteRenderFrameKey(int render_process_id, int render_frame_id) {
@@ -44,7 +44,9 @@ void ModifyRenderFrameKey(int old_render_process_id,
                           int new_render_frame_id) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   g_brave_browser_process->tracking_protection_service()->ModifyRenderFrameKey(
-      old_render_process_id, old_render_frame_id, new_render_process_id,
+      old_render_process_id,
+      old_render_frame_id,
+      new_render_process_id,
       new_render_frame_id);
 }
 
@@ -72,17 +74,20 @@ void TrackingProtectionHelper::ReadyToCommitNavigation(
     // Here we post to the IO thread to avoid locks in
     // tracking_protection_service to avoid race conditions when accessing the
     // starting_site map during navigations and accessing storage access apis
-    base::PostTaskWithTraits(
-        FROM_HERE, {BrowserThread::IO},
-        base::BindOnce(&SetStartingSiteForRenderFrame, handle->GetURL(),
-                       rfh->GetProcess()->GetID(), rfh->GetRoutingID()));
+    base::PostTaskWithTraits(FROM_HERE,
+                             {BrowserThread::IO},
+                             base::BindOnce(&SetStartingSiteForRenderFrame,
+                                            handle->GetURL(),
+                                            rfh->GetProcess()->GetID(),
+                                            rfh->GetRoutingID()));
   }
 }
 
 void TrackingProtectionHelper::RenderFrameDeleted(
     RenderFrameHost* render_frame_host) {
   base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
+      FROM_HERE,
+      {BrowserThread::IO},
       base::BindOnce(&DeleteRenderFrameKey,
                      render_frame_host->GetProcess()->GetID(),
                      render_frame_host->GetRoutingID()));
@@ -94,11 +99,13 @@ void TrackingProtectionHelper::RenderFrameHostChanged(
   if (!old_host || old_host->GetParent() || new_host->GetParent()) {
     return;
   }
-  base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
-      base::BindOnce(&ModifyRenderFrameKey, old_host->GetProcess()->GetID(),
-                     old_host->GetRoutingID(), new_host->GetProcess()->GetID(),
-                     new_host->GetRoutingID()));
+  base::PostTaskWithTraits(FROM_HERE,
+                           {BrowserThread::IO},
+                           base::BindOnce(&ModifyRenderFrameKey,
+                                          old_host->GetProcess()->GetID(),
+                                          old_host->GetRoutingID(),
+                                          new_host->GetProcess()->GetID(),
+                                          new_host->GetRoutingID()));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(TrackingProtectionHelper)

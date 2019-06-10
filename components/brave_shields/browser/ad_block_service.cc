@@ -26,8 +26,7 @@
 
 namespace brave_shields {
 
-std::string AdBlockService::g_ad_block_component_id_(
-    kAdBlockComponentId);
+std::string AdBlockService::g_ad_block_component_id_(kAdBlockComponentId);
 std::string AdBlockService::g_ad_block_component_base64_public_key_(
     kAdBlockComponentBase64PublicKey);
 std::string AdBlockService::g_ad_block_dat_file_version_(
@@ -35,11 +34,9 @@ std::string AdBlockService::g_ad_block_dat_file_version_(
 
 AdBlockService::AdBlockService(
     brave_component_updater::BraveComponent::Delegate* delegate)
-    : AdBlockBaseService(delegate) {
-}
+    : AdBlockBaseService(delegate) {}
 
-AdBlockService::~AdBlockService() {
-}
+AdBlockService::~AdBlockService() {}
 
 bool AdBlockService::Init() {
   if (!AdBlockBaseService::Init())
@@ -70,7 +67,7 @@ void AdBlockService::SetComponentIdAndBase64PublicKeyForTest(
 
 // static
 void AdBlockService::SetDATFileVersionForTest(
-  const std::string& dat_file_version) {
+    const std::string& dat_file_version) {
   g_ad_block_dat_file_version_ = dat_file_version;
 }
 

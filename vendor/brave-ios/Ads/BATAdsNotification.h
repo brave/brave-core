@@ -16,13 +16,13 @@ typedef NS_ENUM(NSInteger, BATAdsConfirmationType) {
 
 NS_SWIFT_NAME(AdsNotification)
 @interface BATAdsNotification : NSObject
-@property (nonatomic, readonly, copy) NSString *creativeSetID;
-@property (nonatomic, readonly, copy) NSString *category;
-@property (nonatomic, readonly, copy) NSString *advertiser;
-@property (nonatomic, readonly, copy) NSString *text;
-@property (nonatomic, readonly, copy) NSURL *url;
-@property (nonatomic, readonly, copy) NSString *uuid;
-@property (nonatomic, readonly) BATAdsConfirmationType confirmationType;
+@property(nonatomic, readonly, copy) NSString* creativeSetID;
+@property(nonatomic, readonly, copy) NSString* category;
+@property(nonatomic, readonly, copy) NSString* advertiser;
+@property(nonatomic, readonly, copy) NSString* text;
+@property(nonatomic, readonly, copy) NSURL* url;
+@property(nonatomic, readonly, copy) NSString* uuid;
+@property(nonatomic, readonly) BATAdsConfirmationType confirmationType;
 @end
 
 NS_ASSUME_NONNULL_END

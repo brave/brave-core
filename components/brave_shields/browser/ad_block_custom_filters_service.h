@@ -38,8 +38,8 @@ class AdBlockCustomFiltersService : public AdBlockBaseService {
 };
 
 // Creates the AdBlockCustomFiltersService
-std::unique_ptr<AdBlockCustomFiltersService>
-AdBlockCustomFiltersServiceFactory(BraveComponent::Delegate* delegate);
+std::unique_ptr<AdBlockCustomFiltersService> AdBlockCustomFiltersServiceFactory(
+    BraveComponent::Delegate* delegate);
 
 }  // namespace brave_shields
 

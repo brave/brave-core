@@ -2,27 +2,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const getTorrentState = (state: TorrentsState, tabId: number) => {
-  return state.torrentStateMap[tabId]
-}
+export const getTorrentState =
+    (state: TorrentsState, tabId: number) => {
+      return state.torrentStateMap[tabId]
+    }
 
-export const getTorrentObj = (state: TorrentsState, tabId: number) => {
-  let torrent
+export const getTorrentObj =
+    (state: TorrentsState, tabId: number) => {
+      let torrent
 
-  const torrentState = getTorrentState(state, tabId)
-  if (torrentState && torrentState.infoHash) {
-    torrent = state.torrentObjMap[torrentState.infoHash]
-  }
+      const torrentState = getTorrentState(state, tabId)
+      if (torrentState && torrentState.infoHash) {
+        torrent = state.torrentObjMap[torrentState.infoHash]
+      }
 
-  return torrent
-}
+      return torrent
+    }
 
 export interface ApplicationState {
   torrentsData: TorrentsState
 }
 
 export interface ActiveTabIds {
-  [key: number]: number // windowId as key
+  [key: number]: number  // windowId as key
 }
 
 export interface TorrentsState {
@@ -33,11 +35,11 @@ export interface TorrentsState {
 }
 
 export interface TorrentStateMap {
-  [key: number]: TorrentState // tabId as key
+  [key: number]: TorrentState  // tabId as key
 }
 
 export interface TorrentObjMap {
-  [key: string]: TorrentObj // infoHash as key
+  [key: string]: TorrentObj  // infoHash as key
 }
 
 export interface File {
@@ -48,10 +50,10 @@ export interface File {
 export interface TorrentState {
   tabId: number
   torrentId: string
-  name?: string | string[]
+  name?: string|string[]
   infoHash?: string
   errorMsg?: string
-  ix?: number | number[]
+  ix?: number|number[]
 }
 
 export interface TorrentObj {

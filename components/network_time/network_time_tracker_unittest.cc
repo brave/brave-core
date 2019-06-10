@@ -28,26 +28,27 @@ class NetworkTimeTrackerTest : public ::testing::Test {
   ~NetworkTimeTrackerTest() override {}
 
   NetworkTimeTrackerTest()
-    : task_environment_(
-          base::test::ScopedTaskEnvironment::MainThreadType::IO),
-      clock_(new base::SimpleTestClock),
-      tick_clock_(new base::SimpleTestTickClock),
-      test_shared_loader_factory_(
-          base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-              &test_url_loader_factory_)) {
+      : task_environment_(
+            base::test::ScopedTaskEnvironment::MainThreadType::IO),
+        clock_(new base::SimpleTestClock),
+        tick_clock_(new base::SimpleTestTickClock),
+        test_shared_loader_factory_(
+            base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+                &test_url_loader_factory_)) {
     NetworkTimeTracker::RegisterPrefs(pref_service_.registry());
     tracker_.reset(new NetworkTimeTracker(
-                       std::unique_ptr<base::Clock>(clock_),
-                       std::unique_ptr<const base::TickClock>(tick_clock_), &pref_service_,
-                       shared_url_loader_factory()));
+        std::unique_ptr<base::Clock>(clock_),
+        std::unique_ptr<const base::TickClock>(tick_clock_),
+        &pref_service_,
+        shared_url_loader_factory()));
   }
 
-protected:
+ protected:
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory() {
-      return test_shared_loader_factory_;
+    return test_shared_loader_factory_;
   }
   network::TestURLLoaderFactory* test_url_loader_factory() {
-      return &test_url_loader_factory_;
+    return &test_url_loader_factory_;
   }
 
   base::test::ScopedTaskEnvironment task_environment_;
@@ -67,8 +68,8 @@ TEST_F(NetworkTimeTrackerTest, NoFetch) {
   bool network_access_occurred = false;
   test_url_loader_factory()->SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-                                     network_access_occurred = true;
-                                 }));
+        network_access_occurred = true;
+      }));
   tracker_->QueryTimeServiceForTesting();
   EXPECT_FALSE(network_access_occurred);
 }

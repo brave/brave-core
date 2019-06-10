@@ -7,4 +7,3 @@
 namespace content {
 const char kBraveUIScheme[] = "brave";
 }
-

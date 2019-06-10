@@ -6,17 +6,17 @@
 #ifndef BAT_CONFIRMATIONS_INTERNAL_REFILL_TOKENS_H_
 #define BAT_CONFIRMATIONS_INTERNAL_REFILL_TOKENS_H_
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/wallet_info.h"
 
 #include "wrapper.hpp"
 
-using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::BlindedToken;
+using challenge_bypass_ristretto::Token;
 
 namespace confirmations {
 
@@ -25,10 +25,9 @@ class UnblindedTokens;
 
 class RefillTokens {
  public:
-  RefillTokens(
-      ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client,
-      UnblindedTokens* unblinded_tokens);
+  RefillTokens(ConfirmationsImpl* confirmations,
+               ConfirmationsClient* confirmations_client,
+               UnblindedTokens* unblinded_tokens);
 
   ~RefillTokens();
 
@@ -49,27 +48,25 @@ class RefillTokens {
   std::vector<BlindedToken> blinded_tokens_;
 
   void RequestSignedTokens();
-  void OnRequestSignedTokens(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+  void OnRequestSignedTokens(const std::string& url,
+                             const int response_status_code,
+                             const std::string& response,
+                             const std::map<std::string, std::string>& headers);
 
   void GetSignedTokens();
-  void OnGetSignedTokens(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+  void OnGetSignedTokens(const std::string& url,
+                         const int response_status_code,
+                         const std::string& response,
+                         const std::map<std::string, std::string>& headers);
 
   bool ShouldRefillTokens() const;
   int CalculateAmountOfTokensToRefill() const;
 
   void GenerateAndBlindTokens(const int count);
 
-  ConfirmationsImpl* confirmations_;  // NOT OWNED
+  ConfirmationsImpl* confirmations_;           // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
-  UnblindedTokens* unblinded_tokens_;  // NOT OWNED
+  UnblindedTokens* unblinded_tokens_;          // NOT OWNED
 };
 
 }  // namespace confirmations

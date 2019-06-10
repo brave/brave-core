@@ -81,8 +81,8 @@ bool SearchEngineProviderServiceFactory::ServiceIsNULLWhileTesting() const {
   return true;
 }
 
-bool
-SearchEngineProviderServiceFactory::ServiceIsCreatedWithBrowserContext() const {
+bool SearchEngineProviderServiceFactory::ServiceIsCreatedWithBrowserContext()
+    const {
   // Service should be initialized when profile is created to set proper
   // provider to TemplateURLService.
   return true;

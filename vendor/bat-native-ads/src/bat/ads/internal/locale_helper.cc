@@ -9,14 +9,14 @@
 #include "bat/ads/internal/locale_helper.h"
 #include "bat/ads/internal/static_values.h"
 
-#include "base/strings/string_util.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 
 namespace helper {
 
 const std::string Locale::GetLanguageCode(const std::string& locale) {
-  std::vector<std::string> locale_components = base::SplitString(locale, "_",
-      base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  std::vector<std::string> locale_components = base::SplitString(
+      locale, "_", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   if (locale_components.size() == 0) {
     return ads::kDefaultLanguageCode;
@@ -27,8 +27,8 @@ const std::string Locale::GetLanguageCode(const std::string& locale) {
 }
 
 const std::string Locale::GetCountryCode(const std::string& locale) {
-  std::vector<std::string> locale_components = base::SplitString(locale, ".",
-      base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  std::vector<std::string> locale_components = base::SplitString(
+      locale, ".", base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
 
   if (locale_components.size() == 0) {
     return ads::kDefaultCountryCode;

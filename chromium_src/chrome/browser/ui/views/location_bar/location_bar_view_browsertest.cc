@@ -41,7 +41,8 @@ class SecurityIndicatorTest : public InProcessBrowserTest {
   void SetUpInterceptor(net::CertStatus cert_status) {
     url_loader_interceptor_ = std::make_unique<content::URLLoaderInterceptor>(
         base::BindRepeating(&SecurityIndicatorTest::InterceptURLLoad,
-                            base::Unretained(this), cert_status));
+                            base::Unretained(this),
+                            cert_status));
   }
 
   void ResetInterceptor() { url_loader_interceptor_.reset(); }
@@ -87,8 +88,11 @@ IN_PROC_BROWSER_TEST_F(SecurityIndicatorTest, CheckIndicatorText) {
     bool should_show_text;
     base::string16 indicator_text;
   } cases[]{// Default
-            {kMockSecureURL, net::CERT_STATUS_IS_EV, security_state::EV_SECURE,
-             false, kEmptyString},
+            {kMockSecureURL,
+             net::CERT_STATUS_IS_EV,
+             security_state::EV_SECURE,
+             false,
+             kEmptyString},
             {kMockSecureURL, 0, security_state::SECURE, false, kEmptyString},
             {kMockNonsecureURL, 0, security_state::NONE, false, kEmptyString}};
 

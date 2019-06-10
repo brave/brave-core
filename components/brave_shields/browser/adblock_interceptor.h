@@ -21,6 +21,7 @@ class AdBlockInterceptor : public net::URLRequestInterceptor {
   net::URLRequestJob* MaybeInterceptRequest(
       net::URLRequest* request,
       net::NetworkDelegate* network_delegate) const override;
+
  private:
   DISALLOW_COPY_AND_ASSIGN(AdBlockInterceptor);
 };

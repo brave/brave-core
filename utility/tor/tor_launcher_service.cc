@@ -7,18 +7,16 @@
 
 #include <utility>
 
-#include "build/build_config.h"
 #include "brave/utility/tor/tor_launcher_impl.h"
+#include "build/build_config.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
 
 namespace tor {
 
 namespace {
 
-void OnTorLauncherRequest(
-    service_manager::ServiceKeepalive* keepalive,
-    tor::mojom::TorLauncherRequest request) {
-
+void OnTorLauncherRequest(service_manager::ServiceKeepalive* keepalive,
+                          tor::mojom::TorLauncherRequest request) {
   mojo::MakeStrongBinding(
       std::make_unique<tor::TorLauncherImpl>(keepalive->CreateRef()),
       std::move(request));
@@ -27,10 +25,9 @@ void OnTorLauncherRequest(
 }  // namespace
 
 TorLauncherService::TorLauncherService(
-        service_manager::mojom::ServiceRequest request) :
-    service_binding_(this, std::move(request)),
-    service_keepalive_(&service_binding_, base::TimeDelta()) {
-}
+    service_manager::mojom::ServiceRequest request)
+    : service_binding_(this, std::move(request)),
+      service_keepalive_(&service_binding_, base::TimeDelta()) {}
 
 TorLauncherService::~TorLauncherService() {}
 

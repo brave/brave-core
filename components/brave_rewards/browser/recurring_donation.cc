@@ -5,17 +5,14 @@
 
 namespace brave_rewards {
 
-  RecurringDonation::RecurringDonation() :
-    amount(0),
-    added_date(0) {
-  }
+RecurringDonation::RecurringDonation() : amount(0), added_date(0) {}
 
-  RecurringDonation::~RecurringDonation() { }
+RecurringDonation::~RecurringDonation() {}
 
-  RecurringDonation::RecurringDonation(const RecurringDonation &data) {
-    publisher_key = data.publisher_key;
-    amount = data.amount;
-    added_date = data.added_date;
-  }
+RecurringDonation::RecurringDonation(const RecurringDonation& data) {
+  publisher_key = data.publisher_key;
+  amount = data.amount;
+  added_date = data.added_date;
+}
 
 }  // namespace brave_rewards

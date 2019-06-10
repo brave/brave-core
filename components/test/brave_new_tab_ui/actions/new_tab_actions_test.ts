@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { types } from '../../../brave_new_tab_ui/constants/new_tab_types'
 import * as actions from '../../../brave_new_tab_ui/actions/new_tab_actions'
+import {types} from '../../../brave_new_tab_ui/constants/new_tab_types'
 
 describe('newTabActions', () => {
   it('topSitesDataUpdated', () => {
@@ -72,8 +72,8 @@ describe('newTabActions', () => {
   })
   it('siteDragged', () => {
     const fromUrl: string = 'https://brave.com'
-    const toUrl: string = 'https://wikipedia.org'
-    const dragRight: boolean = true
+  const toUrl: string = 'https://wikipedia.org'
+  const dragRight: boolean = true
     expect(actions.siteDragged(fromUrl, toUrl, dragRight)).toEqual({
       meta: undefined,
       type: types.NEW_TAB_SITE_DRAGGED,
@@ -82,19 +82,18 @@ describe('newTabActions', () => {
   })
   it('siteDragEnd', () => {
     const url: string = 'https://brave.com'
-    const didDrop: boolean = false
+  const didDrop: boolean = false
     expect(actions.siteDragEnd(url, didDrop)).toEqual({
       meta: undefined,
       type: types.NEW_TAB_SITE_DRAG_END,
       payload: { url, didDrop }
     })
   })
-  it('onHideSiteRemovalNotification', () => {
-    expect(actions.onHideSiteRemovalNotification()).toEqual({
-      meta: undefined,
-      type: types.NEW_TAB_HIDE_SITE_REMOVAL_NOTIFICATION
-    })
-  })
+    it('onHideSiteRemovalNotification',
+       () => {expect(actions.onHideSiteRemovalNotification()).toEqual({
+         meta: undefined,
+         type: types.NEW_TAB_HIDE_SITE_REMOVAL_NOTIFICATION
+       })})
   it('bookmarkInfoAvailable', () => {
     const queryUrl: string = 'https://brave.com'
     const bookmarkTreeNode = {
@@ -130,12 +129,10 @@ describe('newTabActions', () => {
       payload: { gridSites }
     })
   })
-  it('statsUpdated', () => {
-    expect(actions.statsUpdated()).toEqual({
-      meta: undefined,
-      type: types.NEW_TAB_STATS_UPDATED
-    })
-  })
+    it('statsUpdated', () => {expect(actions.statsUpdated()).toEqual({
+                         meta: undefined,
+                         type: types.NEW_TAB_STATS_UPDATED
+                       })})
   it('changePrivateSearchEngine', () => {
     const shouldUse: boolean = true
     expect(actions.changePrivateSearchEngine(shouldUse)).toEqual({

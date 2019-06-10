@@ -11,8 +11,8 @@
 #include <string>
 
 #include "base/gtest_prod_util.h"
-#include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/media/helper.h"
+#include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -71,38 +71,34 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
   void OnMediaActivityError(const ledger::VisitData& visit_data,
                             uint64_t window_id);
 
-  void OnSaveMediaVisit(ledger::Result result,
-                        ledger::PublisherInfoPtr info);
+  void OnSaveMediaVisit(ledger::Result result, ledger::PublisherInfoPtr info);
 
-  void OnMediaPublisherInfo(
-    const std::string& media_id,
-    const std::string& media_key,
-    const uint64_t duration,
-    const ledger::VisitData& visit_data,
-    uint64_t window_id,
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info);
+  void OnMediaPublisherInfo(const std::string& media_id,
+                            const std::string& media_key,
+                            const uint64_t duration,
+                            const ledger::VisitData& visit_data,
+                            uint64_t window_id,
+                            ledger::Result result,
+                            ledger::PublisherInfoPtr publisher_info);
 
-  void OnEmbedResponse(
-    const uint64_t duration,
-    const std::string& media_key,
-    const std::string& media_url,
-    const ledger::VisitData& visit_data,
-    const uint64_t window_id,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
+  void OnEmbedResponse(const uint64_t duration,
+                       const std::string& media_key,
+                       const std::string& media_url,
+                       const ledger::VisitData& visit_data,
+                       const uint64_t window_id,
+                       int response_status_code,
+                       const std::string& response,
+                       const std::map<std::string, std::string>& headers);
 
-  void OnPublisherPage(
-    const uint64_t duration,
-    const std::string& media_key,
-    std::string publisher_url,
-    std::string publisher_name,
-    const ledger::VisitData& visit_data,
-    const uint64_t window_id,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
+  void OnPublisherPage(const uint64_t duration,
+                       const std::string& media_key,
+                       std::string publisher_url,
+                       std::string publisher_name,
+                       const ledger::VisitData& visit_data,
+                       const uint64_t window_id,
+                       int response_status_code,
+                       const std::string& response,
+                       const std::map<std::string, std::string>& headers);
 
   void SavePublisherInfo(const uint64_t duration,
                          const std::string& media_key,
@@ -116,8 +112,7 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
   void FetchDataFromUrl(const std::string& url,
                         braveledger_media::FetchDataFromUrlCallback callback);
 
-  void WatchPath(uint64_t window_id,
-                 const ledger::VisitData& visit_data);
+  void WatchPath(uint64_t window_id, const ledger::VisitData& visit_data);
 
   void OnMediaPublisherActivity(ledger::Result result,
                                 ledger::PublisherInfoPtr info,
@@ -139,18 +134,16 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
                             ledger::PublisherInfoPtr info);
 
   void GetChannelHeadlineVideo(
-    uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    bool is_custom_path,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
+      uint64_t window_id,
+      const ledger::VisitData& visit_data,
+      bool is_custom_path,
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
 
-  void ChannelPath(uint64_t window_id,
-                   const ledger::VisitData& visit_data);
+  void ChannelPath(uint64_t window_id, const ledger::VisitData& visit_data);
 
-  void UserPath(uint64_t windowId,
-                const ledger::VisitData& visit_data);
+  void UserPath(uint64_t windowId, const ledger::VisitData& visit_data);
 
   void OnUserActivity(uint64_t window_id,
                       const ledger::VisitData& visit_data,
@@ -158,13 +151,12 @@ class MediaYouTube : public ledger::LedgerCallbackHandler {
                       ledger::Result result,
                       ledger::PublisherInfoPtr info);
 
-  void OnChannelIdForUser(
-    uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    const std::string& media_key,
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers);
+  void OnChannelIdForUser(uint64_t window_id,
+                          const ledger::VisitData& visit_data,
+                          const std::string& media_key,
+                          int response_status_code,
+                          const std::string& response,
+                          const std::map<std::string, std::string>& headers);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 

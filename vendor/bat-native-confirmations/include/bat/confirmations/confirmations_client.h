@@ -6,9 +6,9 @@
 #ifndef BAT_CONFIRMATIONS_CONFIRMATIONS_CLIENT_H_
 #define BAT_CONFIRMATIONS_CONFIRMATIONS_CLIENT_H_
 
-#include "bat/ledger/ledger_client.h"
 #include "bat/confirmations/export.h"
 #include "bat/confirmations/wallet_info.h"
+#include "bat/ledger/ledger_client.h"
 
 namespace confirmations {
 

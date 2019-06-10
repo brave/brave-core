@@ -18,10 +18,9 @@
 
 namespace helper {
 
-std::string Security::Sign(
-    const std::map<std::string, std::string>& headers,
-    const std::string& key_id,
-    const std::vector<uint8_t>& public_key) {
+std::string Security::Sign(const std::map<std::string, std::string>& headers,
+                           const std::string& key_id,
+                           const std::vector<uint8_t>& public_key) {
   DCHECK_NE(headers.size(), 0UL);
   DCHECK(!key_id.empty());
   DCHECK_NE(public_key.size(), 0UL);
@@ -43,21 +42,25 @@ std::string Security::Sign(
   }
 
   std::vector<uint8_t> signed_message(crypto_sign_BYTES +
-      concatenated_message.length());
+                                      concatenated_message.length());
 
   // Resolving the following linter error breaks the build on Windows
   unsigned long long signed_message_size = 0;  // NOLINT
-  crypto_sign(&signed_message.front(), &signed_message_size,
+  crypto_sign(
+      &signed_message.front(),
+      &signed_message_size,
       reinterpret_cast<const unsigned char*>(concatenated_message.c_str()),
-      concatenated_message.length(), &public_key.front());
+      concatenated_message.length(),
+      &public_key.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);
-  std::copy(signed_message.begin(), signed_message.begin() +
-      crypto_sign_BYTES, signature.begin());
+  std::copy(signed_message.begin(),
+            signed_message.begin() + crypto_sign_BYTES,
+            signature.begin());
 
   return "keyId=\"" + key_id + "\",algorithm=\"" + crypto_sign_PRIMITIVE +
-      "\",headers=\"" + concatenated_header + "\",signature=\"" +
-      GetBase64(signature) + "\"";
+         "\",headers=\"" + concatenated_header + "\",signature=\"" +
+         GetBase64(signature) + "\"";
 }
 
 std::vector<Token> Security::GenerateTokens(const int count) {

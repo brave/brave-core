@@ -82,7 +82,8 @@ gfx::Image BraveActionViewController::GetIcon(
 
 std::unique_ptr<BraveActionIconWithBadgeImageSource>
 BraveActionViewController::GetIconImageSource(
-  content::WebContents* web_contents, const gfx::Size& size) {
+    content::WebContents* web_contents,
+    const gfx::Size& size) {
   int tab_id = SessionTabHelper::IdForTab(web_contents).id();
   // generate icon
   std::unique_ptr<BraveActionIconWithBadgeImageSource> image_source(
@@ -93,9 +94,9 @@ BraveActionViewController::GetIconImageSource(
   std::string badge_text = extension_action()->GetBadgeText(tab_id);
   if (!badge_text.empty()) {
     badge.reset(new IconWithBadgeImageSource::Badge(
-            badge_text,
-            extension_action()->GetBadgeTextColor(tab_id),
-            extension_action()->GetBadgeBackgroundColor(tab_id)));
+        badge_text,
+        extension_action()->GetBadgeTextColor(tab_id),
+        extension_action()->GetBadgeBackgroundColor(tab_id)));
   }
   image_source->SetBadge(std::move(badge));
   // state

@@ -39,27 +39,27 @@ Polymer({
 
   listeners: {'settings-boolean-control-change': 'updateModified_'},
 
-  setCounter: function (counter, text) {
+  setCounter: function(counter, text) {
     this.set('counters.' + counter, text);
   },
 
-  getChangedSettings: function () {
+  getChangedSettings: function() {
     let changed = [];
     const boxes = this.$.checkboxes.querySelectorAll('settings-checkbox');
     boxes.forEach((checkbox) => {
       if (checkbox.checked != this.get(checkbox.pref.key, this.prefs).value) {
-        changed.push({key:checkbox.pref.key, value:checkbox.checked});
+        changed.push({key: checkbox.pref.key, value: checkbox.checked});
       }
     });
     return changed;
   },
 
-  siteSettingsLabel_: function (siteSettings, contentSettings) {
+  siteSettingsLabel_: function(siteSettings, contentSettings) {
     return loadTimeData.getBoolean('enableSiteSettings') ? siteSettings :
                                                            contentSettings;
   },
 
-  updateModified_: function (checkbox) {
+  updateModified_: function(checkbox) {
     let modified = false;
     const boxes = this.$.checkboxes.querySelectorAll('settings-checkbox');
     for (let checkbox of boxes) {

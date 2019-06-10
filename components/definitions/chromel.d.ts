@@ -2,99 +2,179 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-declare namespace chrome {
-  function getVariableValue (variable: string): string
+declare namespace chrome{function getVariableValue(variable: string): string
   function setVariableValue (variable: string, value: any): void
   function send (stat: string, args?: any[]): void
 }
 
 declare namespace chrome.dns {
-  function resolve (hostname: string, callback: any): void
+  function resolve(hostname: string, callback: any): void
 }
 
 declare namespace chrome.braveRewards {
-  const createWallet: () => {}
-  const tipSite: (tabId: number, publisherKey: string) => {}
-  const tipTwitterUser: (tabId: number, tweetMetaData: RewardsTip.TweetMetaData) => {}
-  const getPublisherData: (windowId: number, url: string, faviconUrl: string, publisherBlob: string | undefined) => {}
-  const getWalletProperties: () => {}
-  const getCurrentReport: () => {}
-  const onWalletInitialized: {
-    addListener: (callback: (result: RewardsExtension.Result) => void) => void
-  }
-  const onPublisherData: {
-    addListener: (callback: (windowId: number, publisher: RewardsExtension.Publisher) => void) => void
-  }
-  const onWalletProperties: {
-    addListener: (callback: (properties: RewardsExtension.WalletProperties) => void) => void
-  }
-  const onCurrentReport: {
-    addListener: (callback: (properties: RewardsExtension.Report) => void) => void
-  }
-  const onGrant: {
-    addListener: (callback: (properties: RewardsExtension.GrantResponse) => void) => void
-  }
-  const onGrantFinish: {
-    addListener: (callback: (properties: RewardsExtension.GrantFinish) => void) => void
-  }
-  const onGrantCaptcha: {
-    addListener: (callback: (properties: RewardsExtension.Captcha) => void) => void
-  }
-  const includeInAutoContribution: (publisherKey: string, exclude: boolean) => {}
-  const getGrants: () => {}
-  const getGrantCaptcha: (promotionId: string, type: string) => {}
-  const solveGrantCaptcha: (solution: string, promotionId: string) => {}
-  const getPendingContributionsTotal: (callback: (amount: number) => void) => {}
-  const getNonVerifiedSettings: (callback: (nonVerified: boolean) => void) => {}
-  const onEnabledMain: {
-    addListener: (callback: (enabledMain: boolean) => void) => void
-  }
-  const getRewardsMainEnabled: (callback: (enabled: boolean) => void) => {}
-  const saveAdsSetting: (key: string, value: string) => {}
-  const onPendingContributionSaved: {
-    addListener: (callback: (result: number) => void) => void
-  }
-  const getACEnabled: (callback: (enabled: boolean) => void) => {}
-  const onPublisherListNormalized: {
-    addListener: (callback: (properties: RewardsExtension.PublisherNormalized[]) => void) => void
-  }
-  const onExcludedSitesChanged: {
-    addListener: (callback: (properties: RewardsExtension.ExcludedSitesChanged) => void) => void
-  }
-  const saveSetting: (key: string, value: string) => {}
-  const getRecurringTips: (callback: (tips: RewardsExtension.RecurringTips) => void) => {}
-  const saveRecurringTip: (publisherKey: string, newAmount: string) => {}
-  const removeRecurringTip: (publisherKey: string) => {}
-  const getPublisherBanner: (publisherKey: string, callback: (banner: RewardsExtension.PublisherBanner) => void) => {}
-  const onRecurringTipSaved: {
-    addListener: (callback: (success: boolean) => void) => void
-  }
-  const onRecurringTipRemoved: {
-    addListener: (callback: (success: boolean) => void) => void
-  }
-  const refreshPublisher: (publisherKey: string, callback: (enabled: boolean, publisherKey: string) => void) => {}
-  const getAllNotifications: (callback: (list: RewardsExtension.Notification[]) => void) => {}
-  const getInlineTipSetting: (key: string, callback: (enabled: boolean) => void) => {}
+  const createWallet: () => {} const tipSite:
+      (tabId: number, publisherKey: string) => {} const tipTwitterUser: (
+          tabId: number,
+          tweetMetaData: RewardsTip.TweetMetaData) => {} const getPublisherData:
+          (windowId: number,
+           url: string,
+           faviconUrl: string,
+           publisherBlob: string|undefined) => {
+          } const getWalletProperties: () => {} const getCurrentReport:
+              () => {} const onWalletInitialized: {
+                addListener: (
+                    callback: (result: RewardsExtension.Result) => void) => void
+              } const onPublisherData: {
+                addListener:
+                    (callback: (
+                         windowId: number,
+                         publisher: RewardsExtension.Publisher) => void) => void
+              } const onWalletProperties: {
+                addListener: (
+                    callback: (properties: RewardsExtension.WalletProperties) =>
+                        void) => void
+              } const onCurrentReport: {
+                addListener:
+                    (callback: (properties: RewardsExtension.Report) => void) =>
+                        void
+              } const onGrant: {
+                addListener:
+                    (callback: (properties: RewardsExtension.GrantResponse) =>
+                         void) => void
+              } const onGrantFinish: {
+                addListener:
+                    (callback: (properties: RewardsExtension.GrantFinish) =>
+                         void) => void
+              } const onGrantCaptcha:
+                  {
+                    addListener:
+                        (callback: (properties: RewardsExtension.Captcha) =>
+                             void) => void
+                  } const includeInAutoContribution:
+                      (publisherKey: string,
+                       exclude: boolean) => {} const getGrants:
+                          () => {} const getGrantCaptcha: (
+                              promotionId: string,
+                              type: string) => {} const solveGrantCaptcha:
+                              (solution: string, promotionId: string) => {
+                              } const getPendingContributionsTotal:
+                                  (callback: (amount: number) =>
+                                       void) => {} const getNonVerifiedSettings:
+                                      (callback: (nonVerified: boolean) =>
+                                           void) => {} const onEnabledMain: {
+                                        addListener:
+                                            (callback: (enabledMain: boolean) =>
+                                                 void) => void
+                                      } const getRewardsMainEnabled:
+                                          (callback: (enabled: boolean) =>
+                                               void) => {} const saveAdsSetting:
+                                              (key: string, value: string) => {
+                                              } const onPendingContributionSaved: {
+                                                addListener: (
+                                                    callback: (result:
+                                                                   number) =>
+                                                        void) => void
+                                              } const getACEnabled:
+                                                  (
+                                                      callback: (enabled:
+                                                                     boolean) =>
+                                                          void) => {
+                                                  } const onPublisherListNormalized: {
+                                                    addListener: (
+                                                        callback: (
+                                                            properties:
+                                                                RewardsExtension
+                                                                    .PublisherNormalized
+                                                                        []) =>
+                                                            void) => void
+                                                  } const onExcludedSitesChanged: {
+                                                    addListener: (
+                                                        callback:
+                                                            (properties: RewardsExtension
+                                                                 .ExcludedSitesChanged) =>
+                                                                void) => void
+                                                  } const saveSetting:
+                                                      (key: string,
+                                                       value: string) => {
+                                                      } const getRecurringTips:
+                                                          (callback: (
+                                                               tips: RewardsExtension
+                                                                   .RecurringTips) =>
+                                                               void) => {
+                                                          } const saveRecurringTip:
+                                                              (publisherKey:
+                                                                   string,
+                                                               newAmount:
+                                                                   string) => {
+                                                              } const removeRecurringTip:
+                                                                  (publisherKey:
+                                                                       string) => {
+                                                                  } const getPublisherBanner:
+                                                                      (publisherKey:
+                                                                           string,
+                                                                       callback: (
+                                                                           banner: RewardsExtension
+                                                                               .PublisherBanner) =>
+                                                                           void) => {
+                                                                      } const onRecurringTipSaved: {
+                                                                        addListener: (
+                                                                            callback: (
+                                                                                success:
+                                                                                    boolean) =>
+                                                                                void) =>
+                                                                            void
+                                                                      } const onRecurringTipRemoved: {
+                                                                        addListener: (
+                                                                            callback: (
+                                                                                success:
+                                                                                    boolean) =>
+                                                                                void) =>
+                                                                            void
+                                                                      } const refreshPublisher:
+                                                                          (publisherKey:
+                                                                               string,
+                                                                           callback: (
+                                                                               enabled:
+                                                                                   boolean,
+                                                                               publisherKey:
+                                                                                   string) =>
+                                                                               void) => {
+                                                                          } const getAllNotifications:
+                                                                              (callback: (
+                                                                                   list: RewardsExtension
+                                                                                       .Notification
+                                                                                           []) =>
+                                                                                   void) => {
+                                                                              } const getInlineTipSetting:
+                                                                                  (key:
+                                                                                       string,
+                                                                                   callback: (
+                                                                                       enabled:
+                                                                                           boolean) =>
+                                                                                       void) => {
+                                                                                  }
 }
 
 declare namespace chrome.rewardsNotifications {
-  const addNotification: (type: number, args: string[], id: string) => {}
-  const deleteNotification: (id: string) => {}
-  const deleteAllNotifications: () => {}
-  const getNotification: (id: string) => {}
+  const addNotification:
+      (type: number, args: string[], id: string) => {} const deleteNotification:
+          (id: string) => {} const deleteAllNotifications:
+              () => {} const getNotification: (id: string) => {}
 
   const onNotificationAdded: {
-    addListener: (callback: (id: string, type: number, timestamp: number, args: string[]) => void) => void
-  }
-  const onNotificationDeleted: {
-    addListener: (callback: (id: string, type: number, timestamp: number) => void) => void
-  }
-  const onAllNotificationsDeleted: {
-    addListener: (callback: () => void) => void
-  }
-  const onGetNotification: {
-    addListener: (callback: (id: string, type: number, timestamp: number) => void) => void
-  }
+    addListener:
+        (callback:
+             (id: string, type: number, timestamp: number, args: string[]) =>
+                 void) => void
+  } const onNotificationDeleted: {
+    addListener: (
+        callback: (id: string, type: number, timestamp: number) => void) => void
+  } const onAllNotificationsDeleted:
+      {addListener: (callback: () => void) => void} const onGetNotification: {
+        addListener:
+            (callback: (id: string, type: number, timestamp: number) => void) =>
+                void
+      }
 }
 
 type BlockTypes = 'ads' | 'trackers' | 'httpUpgradableResources' | 'javascript' | 'fingerprinting'
@@ -131,10 +211,9 @@ declare namespace chrome.braveShields {
 }
 
 declare namespace chrome.braveTheme {
-  type ThemeType = 'Light' | 'Dark'
-  type ThemeTypeCallback = (themeType: ThemeType) => void
-  const getBraveThemeType: (themeType: ThemeTypeCallback) => void
-  const onBraveThemeTypeChanged: {
-    addListener: (callback: ThemeTypeCallback) => void
-  }
+  type ThemeType = 'Light'|'Dark'
+  type ThemeTypeCallback = (themeType: ThemeType) =>
+      void const getBraveThemeType: (themeType: ThemeTypeCallback) =>
+          void const onBraveThemeTypeChanged:
+              {addListener: (callback: ThemeTypeCallback) => void}
 }

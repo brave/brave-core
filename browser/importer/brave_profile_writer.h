@@ -12,10 +12,10 @@
 
 #include "base/macros.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/common/importer/brave_ledger.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "chrome/browser/importer/profile_writer.h"
 #include "net/cookies/canonical_cookie.h"
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
-#include "brave/common/importer/brave_ledger.h"
 
 struct BraveStats;
 struct BraveReferral;
@@ -24,7 +24,7 @@ struct ImportedWindowState;
 
 class BraveProfileWriter : public ProfileWriter,
                            public brave_rewards::RewardsServiceObserver,
-                           public base::SupportsWeakPtr<BraveProfileWriter>{
+                           public base::SupportsWeakPtr<BraveProfileWriter> {
  public:
   explicit BraveProfileWriter(Profile* profile);
 

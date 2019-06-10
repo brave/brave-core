@@ -26,8 +26,12 @@ class BraveProfileChooserViewTest : public InProcessBrowserTest {
         browser_view->toolbar()->GetAvatarToolbarButton();
     DCHECK(button);
 
-    ui::MouseEvent e(ui::ET_MOUSE_PRESSED, gfx::Point(), gfx::Point(),
-                     ui::EventTimeForNow(), ui::EF_LEFT_MOUSE_BUTTON, 0);
+    ui::MouseEvent e(ui::ET_MOUSE_PRESSED,
+                     gfx::Point(),
+                     gfx::Point(),
+                     ui::EventTimeForNow(),
+                     ui::EF_LEFT_MOUSE_BUTTON,
+                     0);
     button->OnMousePressed(e);
   }
 

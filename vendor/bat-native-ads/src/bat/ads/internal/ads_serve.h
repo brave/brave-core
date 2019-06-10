@@ -7,9 +7,9 @@
 #define BAT_ADS_INTERNAL_ADS_SERVE_H_
 
 #include <stdint.h>
-#include <string>
 #include <map>
 #include <memory>
+#include <string>
 
 #include "bat/ads/ads_client.h"
 
@@ -22,10 +22,7 @@ class Bundle;
 
 class AdsServe {
  public:
-  AdsServe(
-      AdsImpl* ads,
-      AdsClient* ads_client,
-      Bundle* bundle);
+  AdsServe(AdsImpl* ads, AdsClient* ads_client, Bundle* bundle);
 
   ~AdsServe();
 
@@ -41,11 +38,10 @@ class AdsServe {
 
   uint64_t next_catalog_check_timestamp_in_seconds;
 
-  void OnCatalogDownloaded(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+  void OnCatalogDownloaded(const std::string& url,
+                           const int response_status_code,
+                           const std::string& response,
+                           const std::map<std::string, std::string>& headers);
   bool ProcessCatalog(const std::string& json);
   void OnCatalogSaved(const Result result);
 
@@ -56,9 +52,9 @@ class AdsServe {
   void ResetCatalog();
   void OnCatalogReset(const Result result);
 
-  AdsImpl* ads_;  // NOT OWNED
+  AdsImpl* ads_;           // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED
-  Bundle* bundle_;  // NOT OWNED
+  Bundle* bundle_;         // NOT OWNED
 };
 
 }  // namespace ads

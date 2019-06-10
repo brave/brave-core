@@ -21,9 +21,8 @@ struct ADS_EXPORT IssuersInfo {
   ~IssuersInfo();
 
   const std::string ToJson() const;
-  Result FromJson(
-      const std::string& json,
-      std::string* error_description = nullptr);
+  Result FromJson(const std::string& json,
+                  std::string* error_description = nullptr);
 
   std::string public_key;
   std::vector<IssuerInfo> issuers;

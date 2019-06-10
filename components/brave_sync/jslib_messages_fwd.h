@@ -15,7 +15,7 @@ namespace brave_sync {
 namespace jslib {
 class SyncRecord;
 }
-}
+}  // namespace brave_sync
 #endif
 
 namespace brave_sync {

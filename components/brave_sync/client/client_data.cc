@@ -7,9 +7,7 @@
 namespace brave_sync {
 namespace client_data {
 
-Config::Config() : debug(false) {
-}
+Config::Config() : debug(false) {}
 
-
-} // namespace client_data
-} // namespace brave_sync
+}  // namespace client_data
+}  // namespace brave_sync

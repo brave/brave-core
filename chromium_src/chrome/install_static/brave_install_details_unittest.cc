@@ -57,8 +57,9 @@ class FakeInstallDetails : public InstallDetails {
 TEST(InstallDetailsTest, GetClientStateKeyPath) {
   FakeInstallDetails details;
   if (kUseGoogleUpdateIntegration) {
-    EXPECT_THAT(details.GetClientStateKeyPath(),
-                StrEq(L"Software\\BraveSoftware\\Update\\ClientState\\testguid"));
+    EXPECT_THAT(
+        details.GetClientStateKeyPath(),
+        StrEq(L"Software\\BraveSoftware\\Update\\ClientState\\testguid"));
   } else {
     EXPECT_THAT(details.GetClientStateKeyPath(),
                 StrEq(std::wstring(L"Software\\").append(kProductPathName)));

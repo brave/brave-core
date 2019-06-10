@@ -7,11 +7,11 @@
 #define BAT_ADS_INTERNAL_CLIENT_H_
 
 #include <stdint.h>
+#include <deque>
+#include <map>
+#include <memory>
 #include <string>
 #include <vector>
-#include <map>
-#include <deque>
-#include <memory>
 
 #include "bat/ads/ads_client.h"
 
@@ -54,17 +54,14 @@ class Client {
   const std::vector<std::string> GetLocales();
   void SetLastPageClassification(const std::string& classification);
   const std::string GetLastPageClassification();
-  void AppendPageScoreToPageScoreHistory(
-      const std::vector<double>& page_score);
+  void AppendPageScoreToPageScoreHistory(const std::vector<double>& page_score);
   const std::deque<std::vector<double>> GetPageScoreHistory();
   void AppendCurrentTimeToCreativeSetHistory(
       const std::string& creative_set_id);
-  const std::map<std::string, std::deque<uint64_t>>
-      GetCreativeSetHistory() const;
-  void AppendCurrentTimeToCampaignHistory(
-      const std::string& campaign_id);
-  const std::map<std::string, std::deque<uint64_t>>
-      GetCampaignHistory() const;
+  const std::map<std::string, std::deque<uint64_t>> GetCreativeSetHistory()
+      const;
+  void AppendCurrentTimeToCampaignHistory(const std::string& campaign_id);
+  const std::map<std::string, std::deque<uint64_t>> GetCampaignHistory() const;
 
   void RemoveAllHistory();
 
@@ -78,7 +75,7 @@ class Client {
 
   bool FromJson(const std::string& json);
 
-  AdsImpl* ads_;  // NOT OWNED
+  AdsImpl* ads_;           // NOT OWNED
   AdsClient* ads_client_;  // NOT OWNED
 
   std::unique_ptr<ClientState> client_state_;

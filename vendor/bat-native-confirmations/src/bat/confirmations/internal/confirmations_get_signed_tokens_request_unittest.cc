@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "bat/confirmations/wallet_info.h"
 
@@ -25,11 +25,11 @@ class ConfirmationsGetSignedTokensRequestTest : public ::testing::Test {
 
   std::unique_ptr<GetSignedTokensRequest> request_;
 
-  ConfirmationsGetSignedTokensRequestTest() :
-      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
-      confirmations_(std::make_unique<ConfirmationsImpl>(
-          mock_confirmations_client_.get())),
-      request_(std::make_unique<GetSignedTokensRequest>()) {
+  ConfirmationsGetSignedTokensRequestTest()
+      : mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+        confirmations_(std::make_unique<ConfirmationsImpl>(
+            mock_confirmations_client_.get())),
+        request_(std::make_unique<GetSignedTokensRequest>()) {
     // You can do set-up work for each test here
   }
 
@@ -58,7 +58,9 @@ TEST_F(ConfirmationsGetSignedTokensRequestTest, BuildUrl) {
   // Arrange
   WalletInfo wallet_info;
   wallet_info.payment_id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
-  wallet_info.public_key = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
+  wallet_info.public_key =
+      "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea008"
+      "5cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
 
   std::string nonce = "716c3381-66e6-46e4-962f-15d01455b5b9";
 
@@ -66,7 +68,10 @@ TEST_F(ConfirmationsGetSignedTokensRequestTest, BuildUrl) {
   auto url = request_->BuildUrl(wallet_info, nonce);
 
   // Assert
-  std::string expected_url = "https://ads-serve.bravesoftware.com/v1/confirmation/token/d4ed0af0-bfa9-464b-abd7-67b29d891b8b?nonce=716c3381-66e6-46e4-962f-15d01455b5b9";  // NOLINT
+  std::string expected_url =
+      "https://ads-serve.bravesoftware.com/v1/confirmation/token/"
+      "d4ed0af0-bfa9-464b-abd7-67b29d891b8b?nonce=716c3381-66e6-46e4-962f-"
+      "15d01455b5b9";  // NOLINT
   EXPECT_EQ(expected_url, url);
 }
 

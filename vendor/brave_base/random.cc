@@ -88,11 +88,11 @@ double StdExponential(uint64_t s, double p0) {
 }
 
 double Exponential(uint64_t s, double p0, double rate) {
-  return StdExponential(s, p0)/rate;
+  return StdExponential(s, p0) / rate;
 }
 
 uint64_t Geometric(uint64_t s, double p0, double period) {
-  return floor(StdExponential(s, p0)*period);
+  return floor(StdExponential(s, p0) * period);
 }
 
 // If e has geometric distribution and u has uniform distribution,

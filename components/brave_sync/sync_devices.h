@@ -5,24 +5,24 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_DEVICES_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_DEVICES_H_
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
 namespace base {
-  class Value;
-} // namespace base
+class Value;
+}  // namespace base
 
 namespace brave_sync {
 
 class SyncDevice {
-public:
+ public:
   SyncDevice();
   SyncDevice(const SyncDevice& other);
   SyncDevice(const std::string& name,
-    const std::string& object_id,
-    const std::string& device_id,
-    const double last_active_ts);
+             const std::string& object_id,
+             const std::string& device_id,
+             const double last_active_ts);
   SyncDevice& operator=(const SyncDevice&) &;
   ~SyncDevice();
 
@@ -35,22 +35,22 @@ public:
 };
 
 class SyncDevices {
-public:
-   SyncDevices();
-   ~SyncDevices();
-   std::vector<SyncDevice> devices_;
-   std::unique_ptr<base::Value> ToValue() const;
-   std::unique_ptr<base::Value> ToValueArrOnly() const;
-   std::string ToJson() const;
-   size_t size() const { return devices_.size(); }
-   void FromJson(const std::string &str_json);
-   void Merge(const SyncDevice& device, int action, bool* actually_merged);
+ public:
+  SyncDevices();
+  ~SyncDevices();
+  std::vector<SyncDevice> devices_;
+  std::unique_ptr<base::Value> ToValue() const;
+  std::unique_ptr<base::Value> ToValueArrOnly() const;
+  std::string ToJson() const;
+  size_t size() const { return devices_.size(); }
+  void FromJson(const std::string& str_json);
+  void Merge(const SyncDevice& device, int action, bool* actually_merged);
 
-   const SyncDevice* GetByDeviceId(const std::string& device_id);
-   SyncDevice* GetByObjectId(const std::string& object_id);
-   void DeleteByObjectId(const std::string& object_id);
+  const SyncDevice* GetByDeviceId(const std::string& device_id);
+  SyncDevice* GetByObjectId(const std::string& object_id);
+  void DeleteByObjectId(const std::string& object_id);
 };
 
-} // namespace brave_sync
+}  // namespace brave_sync
 
-#endif //BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_DEVICES_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_DEVICES_H_

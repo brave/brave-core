@@ -9,6 +9,6 @@ namespace brave {
 
 void EnsureBrowserContextKeyedServiceFactoriesBuilt();
 
-}  // namespace apps
+}  // namespace brave
 
 #endif  // BRAVE_BROWSER_CONTEXT_KEYED_SERVICE_FACTORIES_H_

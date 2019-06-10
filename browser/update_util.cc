@@ -18,4 +18,4 @@ bool UpdateEnabled() {
 #endif
 }
 
-}  //namespace brave
+}  // namespace brave

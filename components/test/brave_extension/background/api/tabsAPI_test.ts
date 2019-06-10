@@ -7,19 +7,16 @@ import * as tabsAPI from '../../../../brave_extension/extension/brave_extension/
 describe('tabs API', () => {
   describe('createTab', () => {
     let spy: jest.SpyInstance
-    const createProperties = { url: 'https://www.brave.com' }
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.tabs, 'create')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+const createProperties = {
+  url: 'https://www.brave.com'
+} beforeEach(() => {spy = jest.spyOn(chrome.tabs, 'create')})
+afterEach(() => {spy.mockRestore()})
     it('calls chrome.tabs.create with the createProperties', (cb) => {
       expect.assertions(2)
       tabsAPI.createTab(createProperties)
         .then(() => {
           expect(spy).toBeCalledTimes(1)
-          expect(spy.mock.calls[0][0]).toEqual(createProperties)
+      expect(spy.mock.calls[0][0]).toEqual(createProperties)
           cb()
         })
         .catch((e: Error) => {
@@ -29,21 +26,17 @@ describe('tabs API', () => {
   })
   describe('reloadTab', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.tabs, 'reload')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.tabs, 'reload')})
+  afterEach(() => {spy.mockRestore()})
     it('calls chrome.tabs.reload without bypassing the cache', (cb) => {
       const tabId = 42
-      const bypassCache = false
-      expect.assertions(3)
+    const bypassCache = false
+    expect.assertions(3)
       tabsAPI.reloadTab(tabId, bypassCache)
         .then(() => {
           expect(spy).toBeCalledTimes(1)
-          expect(spy.mock.calls[0][0]).toBe(tabId)
-          expect(spy.mock.calls[0][1]).toEqual({ bypassCache })
+      expect(spy.mock.calls[0][0]).toBe(tabId)
+      expect(spy.mock.calls[0][1]).toEqual({bypassCache})
           cb()
         })
         .catch((e: Error) => {
@@ -52,13 +45,13 @@ describe('tabs API', () => {
     })
     it('calls chrome.tabs.reload with bypassing the cache', (cb) => {
       const tabId = 42
-      const bypassCache = true
-      expect.assertions(3)
+    const bypassCache = true
+    expect.assertions(3)
       tabsAPI.reloadTab(tabId, bypassCache)
         .then(() => {
           expect(spy).toBeCalledTimes(1)
-          expect(spy.mock.calls[0][0]).toBe(tabId)
-          expect(spy.mock.calls[0][1]).toEqual({ bypassCache })
+      expect(spy.mock.calls[0][0]).toBe(tabId)
+      expect(spy.mock.calls[0][1]).toEqual({bypassCache})
           cb()
         })
         .catch((e: Error) => {

@@ -22,8 +22,7 @@ namespace {
 bool IsWidevineCdmFile(const base::FilePath& file_path) {
   CHECK(!file_path.IsAbsolute());
   return base::FilePath::CompareEqualIgnoreCase(
-      file_path.value(),
-      base::GetNativeLibraryName(kWidevineCdmLibraryName));
+      file_path.value(), base::GetNativeLibraryName(kWidevineCdmLibraryName));
 }
 
 base::Optional<base::FilePath> GetTempDirForUnzip() {
@@ -37,18 +36,15 @@ base::Optional<base::FilePath> GetTempDirForUnzip() {
 }  // namespace
 
 // static
-scoped_refptr<BraveWidevineBundleUnzipper>
-BraveWidevineBundleUnzipper::Create(
+scoped_refptr<BraveWidevineBundleUnzipper> BraveWidevineBundleUnzipper::Create(
     service_manager::Connector* connector,
     scoped_refptr<base::SequencedTaskRunner> file_task_runner,
     DoneCallback done_callback) {
   DCHECK(connector);
   DCHECK(file_task_runner);
   DCHECK(done_callback);
-  return base::WrapRefCounted(
-      new BraveWidevineBundleUnzipper(connector,
-                                      file_task_runner,
-                                      std::move(done_callback)));
+  return base::WrapRefCounted(new BraveWidevineBundleUnzipper(
+      connector, file_task_runner, std::move(done_callback)));
 }
 
 void BraveWidevineBundleUnzipper::LoadFromZipFileInDir(
@@ -87,7 +83,9 @@ void BraveWidevineBundleUnzipper::OnGetTempDirForUnzip(
   DVLOG(1) << __func__ << ": temp unzip dir: " << temp_unzip_dir_;
 
   unzip::UnzipWithFilter(
-      connector_->Clone(), zipped_bundle_file_, *temp_unzip_dir,
+      connector_->Clone(),
+      zipped_bundle_file_,
+      *temp_unzip_dir,
       base::BindRepeating(&IsWidevineCdmFile),
       base::BindOnce(&BraveWidevineBundleUnzipper::OnUnzippedInTempDir, this));
 }
@@ -139,8 +137,6 @@ BraveWidevineBundleUnzipper::BraveWidevineBundleUnzipper(
     DoneCallback done_callback)
     : connector_(connector),
       file_task_runner_(file_task_runner),
-      done_callback_(std::move(done_callback)) {
-}
+      done_callback_(std::move(done_callback)) {}
 
-BraveWidevineBundleUnzipper::~BraveWidevineBundleUnzipper() {
-}
+BraveWidevineBundleUnzipper::~BraveWidevineBundleUnzipper() {}

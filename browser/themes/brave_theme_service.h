@@ -51,8 +51,7 @@ class BraveThemeService : public ThemeService {
 
  private:
   friend class BraveThemeServiceTestWithoutSystemTheme;
-  FRIEND_TEST_ALL_PREFIXES(BraveThemeEventRouterBrowserTest,
-                           ThemeChangeTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveThemeEventRouterBrowserTest, ThemeChangeTest);
   FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, GetBraveThemeListTest);
   FRIEND_TEST_ALL_PREFIXES(BraveThemeServiceTest, SystemThemeChangeTest);
 

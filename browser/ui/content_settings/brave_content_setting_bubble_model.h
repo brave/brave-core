@@ -4,10 +4,12 @@
 
 #include "chrome/browser/ui/content_settings/content_setting_bubble_model.h"
 
-class BraveContentSettingPluginBubbleModel : public ContentSettingSimpleBubbleModel {
+class BraveContentSettingPluginBubbleModel
+    : public ContentSettingSimpleBubbleModel {
  public:
   BraveContentSettingPluginBubbleModel(Delegate* delegate,
-      content::WebContents* web_contents);
+                                       content::WebContents* web_contents);
+
  private:
   void OnLearnMoreClicked() override;
   void OnCustomLinkClicked() override;

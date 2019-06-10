@@ -7,8 +7,8 @@
 #define BAT_ADS_INTERNAL_CATALOG_H_
 
 #include <stdint.h>
-#include <string>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "bat/ads/ads_client.h"

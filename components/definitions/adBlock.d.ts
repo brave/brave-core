@@ -1,11 +1,10 @@
 declare namespace AdBlock {
   export interface ApplicationState {
-    adblockData: State | undefined
+    adblockData: State|undefined
   }
 
   export interface State {
-    settings: {
-      customFilters: string
+    settings: {customFilters: string
       regionalLists: FilterList[]
     },
     stats: {

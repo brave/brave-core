@@ -12,16 +12,13 @@
 
 namespace {
 
-class BraveHTTPSENetworkDelegateHelperTest: public testing::Test {
+class BraveHTTPSENetworkDelegateHelperTest : public testing::Test {
  public:
   BraveHTTPSENetworkDelegateHelperTest()
       : thread_bundle_(content::TestBrowserThreadBundle::IO_MAINLOOP),
-        context_(new net::TestURLRequestContext(true)) {
-  }
+        context_(new net::TestURLRequestContext(true)) {}
   ~BraveHTTPSENetworkDelegateHelperTest() override {}
-  void SetUp() override {
-    context_->Init();
-  }
+  void SetUp() override { context_->Init(); }
   net::TestURLRequestContext* context() { return context_.get(); }
 
  private:
@@ -29,21 +26,18 @@ class BraveHTTPSENetworkDelegateHelperTest: public testing::Test {
   std::unique_ptr<net::TestURLRequestContext> context_;
 };
 
-
 TEST_F(BraveHTTPSENetworkDelegateHelperTest, AlreadySetNewURLNoOp) {
   net::TestDelegate test_delegate;
   GURL url("http://bradhatesprimes.brave.com/composite_numbers_ftw");
-  std::unique_ptr<net::URLRequest> request =
-      context()->CreateRequest(url, net::IDLE, &test_delegate,
-                               TRAFFIC_ANNOTATION_FOR_TESTS);
-  std::shared_ptr<brave::BraveRequestInfo>
-      brave_request_info(new brave::BraveRequestInfo());
+  std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
+      url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+  std::shared_ptr<brave::BraveRequestInfo> brave_request_info(
+      new brave::BraveRequestInfo());
   request->set_site_for_cookies(
       GURL("http://brad.brave.com/hide_all_primes_in_ui/composites_forever"));
   brave_request_info->new_url_spec = "data:image/png;base64,iVB";
   brave::ResponseCallback callback;
-  int ret =
-    OnBeforeURLRequest_HttpsePreFileWork(callback, brave_request_info);
+  int ret = OnBeforeURLRequest_HttpsePreFileWork(callback, brave_request_info);
   EXPECT_EQ(brave_request_info->new_url_spec, brave_request_info->new_url_spec);
   EXPECT_EQ(ret, net::OK);
 }

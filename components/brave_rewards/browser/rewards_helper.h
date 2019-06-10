@@ -22,8 +22,8 @@ namespace brave_rewards {
 class RewardsService;
 
 class RewardsHelper : public content::WebContentsObserver,
-                       public BrowserListObserver,
-                       public content::WebContentsUserData<RewardsHelper> {
+                      public BrowserListObserver,
+                      public content::WebContentsUserData<RewardsHelper> {
  public:
   explicit RewardsHelper(content::WebContents*);
   ~RewardsHelper() override;

@@ -7,9 +7,9 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/ui/brave_browser_content_setting_bubble_model_delegate.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "brave/grit/brave_generated_resources.h"
 #include "chrome/grit/generated_resources.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
@@ -17,10 +17,10 @@
 #include "components/url_formatter/elide_url.h"
 #include "ui/base/l10n/l10n_util.h"
 
+using content_settings::SETTING_SOURCE_NONE;
+using content_settings::SETTING_SOURCE_USER;
 using content_settings::SettingInfo;
 using content_settings::SettingSource;
-using content_settings::SETTING_SOURCE_USER;
-using content_settings::SETTING_SOURCE_NONE;
 
 BraveAutoplayContentSettingBubbleModel::BraveAutoplayContentSettingBubbleModel(
     Delegate* delegate,
@@ -33,7 +33,8 @@ BraveAutoplayContentSettingBubbleModel::BraveAutoplayContentSettingBubbleModel(
   SetRadioGroup();
 }
 
-BraveAutoplayContentSettingBubbleModel::~BraveAutoplayContentSettingBubbleModel() {}
+BraveAutoplayContentSettingBubbleModel::
+    ~BraveAutoplayContentSettingBubbleModel() {}
 
 void BraveAutoplayContentSettingBubbleModel::CommitChanges() {
   if (settings_changed()) {
@@ -66,9 +67,9 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
   RadioGroup radio_group;
   radio_group.url = url;
   base::string16 radio_allow_label =
-    l10n_util::GetStringFUTF16(IDS_BLOCKED_AUTOPLAY_UNBLOCK, display_host);
+      l10n_util::GetStringFUTF16(IDS_BLOCKED_AUTOPLAY_UNBLOCK, display_host);
   base::string16 radio_block_label =
-    l10n_util::GetStringUTF16(IDS_BLOCKED_AUTOPLAY_NO_ACTION);
+      l10n_util::GetStringUTF16(IDS_BLOCKED_AUTOPLAY_NO_ACTION);
   radio_group.radio_items.push_back(radio_allow_label);
   radio_group.radio_items.push_back(radio_block_label);
 
@@ -77,9 +78,9 @@ void BraveAutoplayContentSettingBubbleModel::SetRadioGroup() {
 
   SettingInfo info;
   HostContentSettingsMap* map =
-    HostContentSettingsMapFactory::GetForProfile(GetProfile());
+      HostContentSettingsMapFactory::GetForProfile(GetProfile());
   std::unique_ptr<base::Value> value =
-    map->GetWebsiteSetting(url, url, content_type(), std::string(), &info);
+      map->GetWebsiteSetting(url, url, content_type(), std::string(), &info);
   setting = content_settings::ValueToContentSetting(value.get());
   setting_source = info.source;
 
@@ -105,5 +106,6 @@ void BraveAutoplayContentSettingBubbleModel::SetNarrowestContentSetting(
   auto* map = HostContentSettingsMapFactory::GetForProfile(GetProfile());
   map->SetNarrowestContentSetting(bubble_content().radio_group.url,
                                   bubble_content().radio_group.url,
-                                  content_type(), setting);
+                                  content_type(),
+                                  setting);
 }

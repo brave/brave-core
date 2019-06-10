@@ -8,11 +8,9 @@
  * @return a promise which resolves when the tab is created.
  */
 export const createTab = (createProperties: chrome.tabs.CreateProperties) =>
-  new Promise<chrome.tabs.Tab>((resolve) => {
-    chrome.tabs.create(createProperties, (tab) => {
-      resolve(tab)
-    })
-  })
+    new Promise<chrome.tabs.Tab>(
+        (resolve) => {
+            chrome.tabs.create(createProperties, (tab) => {resolve(tab)})})
 
 /**
  * Reloads the specified tab
@@ -21,8 +19,6 @@ export const createTab = (createProperties: chrome.tabs.CreateProperties) =>
  * @return a promise which resolves when the tab is reloaded.
  */
 export const reloadTab = (tabId: number, bypassCache: boolean) =>
-  new Promise<void>((resolve) => {
-    chrome.tabs.reload(tabId, { bypassCache }, () => {
-      resolve()
-    })
-  })
+    new Promise<void>(
+        (resolve) => {
+            chrome.tabs.reload(tabId, {bypassCache}, () => {resolve()})})

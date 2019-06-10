@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Utils
-import { debounce } from '../../common/debounce'
+import {debounce} from '../../common/debounce'
 
 const keyName = 'sync-data_t'
 
@@ -20,23 +20,24 @@ export const defaultState = {
   error: undefined
 }
 
-const cleanData = (state: Sync.State) => {
-  state = { ...state }
-  return state
-}
-
-export const load = (): Sync.State => {
-  const data = window.localStorage.getItem(keyName)
-  let state = defaultState
-  if (data) {
-    try {
-      state = JSON.parse(data)
-    } catch (e) {
-      console.error('Could not parse **sync** local storage data: ', e)
+const cleanData =
+    (state: Sync.State) => {
+      state = {...state} return state
     }
-  }
-  return cleanData(state)
-}
+
+export const load =
+    (): Sync.State => {
+      const data = window.localStorage.getItem(keyName)
+      let state = defaultState
+      if (data) {
+        try {
+          state = JSON.parse(data)
+        } catch (e) {
+          console.error('Could not parse **sync** local storage data: ', e)
+        }
+      }
+      return cleanData(state)
+    }
 
 export const debouncedSave = debounce((data: Sync.State) => {
   if (data) {

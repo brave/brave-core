@@ -6,8 +6,8 @@
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
 
 #include "brave/browser/themes/brave_theme_service.h"
-#include "chrome/browser/profiles/profile.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/omnibox/omnibox_theme.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
@@ -63,8 +63,8 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
   gfx::Size min_size = LocationBarView::CalculatePreferredSize();
   if (brave_actions_ && brave_actions_->visible()) {
     const int brave_actions_min = brave_actions_->GetMinimumSize().width();
-    const int extra_width = brave_actions_min +
-                              GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
+    const int extra_width =
+        brave_actions_min + GetLayoutConstant(LOCATION_BAR_ELEMENT_PADDING);
     min_size.Enlarge(extra_width, 0);
   }
   return min_size;
@@ -90,7 +90,6 @@ OmniboxTint BraveLocationBarView::GetTint() {
       return OmniboxTint::LIGHT;
   }
 }
-
 
 void BraveLocationBarView::OnThemeChanged() {
   LocationBarView::OnThemeChanged();
@@ -123,4 +122,3 @@ BraveLocationBarView::GetContentSettingsImageViewForTesting(size_t idx) {
 void LocationBarView::Layout() {
   Layout(nullptr);
 }
-

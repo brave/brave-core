@@ -32,9 +32,7 @@ class ChromeMetadataSourceTest : public testing::Test {
     impl.Get(kFakeUrl, *callback);
   }
 
-  void OnDownloaded(bool success,
-                    const std::string& url,
-                    std::string* data) {
+  void OnDownloaded(bool success, const std::string& url, std::string* data) {
     EXPECT_FALSE(success);
   }
 
@@ -49,9 +47,9 @@ TEST_F(ChromeMetadataSourceTest, NoFetch) {
   base::RunLoop loop;
   test_url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-                                     network_access_occurred = true;
-                                     loop.Quit();
-                                 }));
+        network_access_occurred = true;
+        loop.Quit();
+      }));
   Get();
   loop.RunUntilIdle();
   EXPECT_FALSE(network_access_occurred);

@@ -28,6 +28,7 @@ class TorLauncherFactory {
 
   void AddObserver(tor::TorProfileServiceImpl* serice);
   void RemoveObserver(tor::TorProfileServiceImpl* service);
+
  private:
   friend struct base::DefaultSingletonTraits<TorLauncherFactory>;
 

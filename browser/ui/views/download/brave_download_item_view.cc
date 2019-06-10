@@ -36,7 +36,7 @@ constexpr SkColor kDownloadUnlockIconColor = SkColorSetRGB(0xC6, 0x36, 0x26);
 // Decrement of lock icon height from font baseline
 constexpr int kDownloadUnlockIconHeightDecr = 1;
 
-} // namespace
+}  // namespace
 
 BraveDownloadItemView::BraveDownloadItemView(
     DownloadUIModel::DownloadUIModelPtr download,
@@ -60,8 +60,8 @@ gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
   gfx::Size size = DownloadItemView::CalculatePreferredSize();
   // Calculate the height accounting for the extra line.
   int child_height = font_list_.GetHeight() + kBraveVerticalTextPadding +
-                     origin_url_font_list_.GetHeight() + kBraveVerticalTextPadding +
-                     status_font_list_.GetHeight();
+                     origin_url_font_list_.GetHeight() +
+                     kBraveVerticalTextPadding + status_font_list_.GetHeight();
   if (IsShowingWarningDialog()) {
     child_height =
         std::max({child_height, GetButtonSize().height(), kWarningIconSize});
@@ -96,9 +96,10 @@ void BraveDownloadItemView::OnDownloadUpdated() {
     // as well.
     bool needs_repaint = false;
     bool new_is_secure = false;
-    base::string16 new_origin_url = brave_model_.GetOriginURLText(new_is_secure);
+    base::string16 new_origin_url =
+        brave_model_.GetOriginURLText(new_is_secure);
     if (new_origin_url != origin_url_text_ ||
-      new_is_secure != is_origin_url_secure_) {
+        new_is_secure != is_origin_url_secure_) {
       origin_url_text_ = new_origin_url;
       is_origin_url_secure_ = new_is_secure;
       needs_repaint = true;
@@ -113,7 +114,8 @@ void BraveDownloadItemView::OnDownloadUpdated() {
   }
 
   // Update tooltip.
-  base::string16 new_tip = brave_model_.GetTooltipText(font_list_, kTooltipMaxWidth);
+  base::string16 new_tip =
+      brave_model_.GetTooltipText(font_list_, kTooltipMaxWidth);
   if (new_tip != tooltip_text_) {
     tooltip_text_ = new_tip;
     TooltipTextChanged();
@@ -155,8 +157,12 @@ void BraveDownloadItemView::DrawStatusText(gfx::Canvas* canvas) {
       kStartPadding + DownloadShelf::kProgressIndicatorSize +
           kProgressTextPadding,
       kTextWidth);
-  canvas->DrawStringRect(status_text_, status_font_list_, GetDimmedTextColor(),
-                         gfx::Rect(mirrored_x, GetYForStatusText(), kTextWidth,
+  canvas->DrawStringRect(status_text_,
+                         status_font_list_,
+                         GetDimmedTextColor(),
+                         gfx::Rect(mirrored_x,
+                                   GetYForStatusText(),
+                                   kTextWidth,
                                    status_font_list_.GetHeight()));
 }
 
@@ -167,7 +173,7 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
   int x = kStartPadding + DownloadShelf::kProgressIndicatorSize +
           kProgressTextPadding;
   int text_width = kTextWidth;
- 
+
   if (!is_origin_url_secure_) {
     DrawLockIcon(canvas);
     int dx = origin_url_font_list_.GetBaseline() + kOriginURLIconRightPadding;
@@ -179,10 +185,13 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
       origin_url_text_, origin_url_font_list_, text_width, gfx::ELIDE_TAIL);
   int mirrored_x = GetMirroredXWithWidthInView(x, text_width);
 
-  canvas->DrawStringRect(
-      originURL, origin_url_font_list_, GetDimmedTextColor(),
-      gfx::Rect(mirrored_x, GetYForOriginURLText(), text_width,
-                origin_url_font_list_.GetHeight()));
+  canvas->DrawStringRect(originURL,
+                         origin_url_font_list_,
+                         GetDimmedTextColor(),
+                         gfx::Rect(mirrored_x,
+                                   GetYForOriginURLText(),
+                                   text_width,
+                                   origin_url_font_list_.GetHeight()));
 }
 
 void BraveDownloadItemView::DrawLockIcon(gfx::Canvas* canvas) {
@@ -202,8 +211,8 @@ void BraveDownloadItemView::DrawLockIcon(gfx::Canvas* canvas) {
 
 // Get lock icon from vector icons.
 gfx::ImageSkia BraveDownloadItemView::GetLockIcon(int height) {
-  return gfx::CreateVectorIcon(kDownloadUnlockIcon, height,
-    kDownloadUnlockIconColor);
+  return gfx::CreateVectorIcon(
+      kDownloadUnlockIcon, height, kDownloadUnlockIconColor);
 }
 
 // Update accessible name with origin URL.
@@ -215,8 +224,8 @@ void BraveDownloadItemView::UpdateAccessibleName() {
   if (!origin_url_text_.empty()) {
     base::string16 extra;
     if (!is_origin_url_secure_)
-      extra += base::char16(' ')
-                   + l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE);
+      extra += base::char16(' ') +
+               l10n_util::GetStringUTF16(IDS_NOT_SECURE_VERBOSE_STATE);
     extra += base::char16(' ') + origin_url_text_;
 
     accessible_name_ += extra;

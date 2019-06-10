@@ -3,10 +3,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import reducers from '../../../../brave_webtorrent/extension/background/reducers/index'
-import { applicationState } from '../../testData'
+import {applicationState} from '../../testData'
 
 // this import seems to trigger createStore and get an undefined reducer
-jest.mock('../../../../brave_webtorrent/extension/background/events/torrentEvents')
+jest.mock(
+    '../../../../brave_webtorrent/extension/background/events/torrentEvents')
 
 describe('webtorrent reducers test', () => {
   it('reducers are a combined reducer function', () => {
@@ -14,7 +15,8 @@ describe('webtorrent reducers test', () => {
   })
 
   it('reducers passed with an unknown action returns the same input', () => {
-    const unknownAction = { type: 'unknown' }
+    const unknownAction = {
+  type: 'unknown' }
     const state = { ...applicationState }
     expect(reducers(state, unknownAction)).toBe(state)
   })

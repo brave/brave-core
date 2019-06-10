@@ -9,11 +9,9 @@
 
 namespace brave_rewards {
 
-RewardsNotificationService::RewardsNotificationService() {
-}
+RewardsNotificationService::RewardsNotificationService() {}
 
-RewardsNotificationService::~RewardsNotificationService() {
-}
+RewardsNotificationService::~RewardsNotificationService() {}
 
 RewardsNotificationService::RewardsNotification::RewardsNotification() {}
 
@@ -25,10 +23,7 @@ RewardsNotificationService::RewardsNotification::RewardsNotification(
     RewardsNotificationService::RewardsNotificationType type,
     RewardsNotificationService::RewardsNotificationTimestamp timestamp,
     RewardsNotificationService::RewardsNotificationArgs args)
-    : id_(id),
-      type_(type),
-      timestamp_(timestamp),
-      args_(args) {}
+    : id_(id), type_(type), timestamp_(timestamp), args_(args) {}
 
 RewardsNotificationService::RewardsNotification::~RewardsNotification() {}
 

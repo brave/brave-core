@@ -68,8 +68,8 @@ std::string BuildReferralEndpoint(const std::string& path) {
   env->GetVar("BRAVE_REFERRALS_SERVER", &referral_server);
   if (referral_server.empty())
     referral_server = kBraveReferralsServer;
-  return base::StringPrintf("https://%s%s", referral_server.c_str(),
-                            path.c_str());
+  return base::StringPrintf(
+      "https://%s%s", referral_server.c_str(), path.c_str());
 }
 
 }  // namespace
@@ -81,11 +81,9 @@ BraveReferralsService::BraveReferralsService(PrefService* pref_service)
       task_runner_(
           base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})),
       pref_service_(pref_service),
-      weak_factory_(this) {
-}
+      weak_factory_(this) {}
 
-BraveReferralsService::~BraveReferralsService() {
-}
+BraveReferralsService::~BraveReferralsService() {}
 
 void BraveReferralsService::Start() {
   if (initialized_)
@@ -156,9 +154,12 @@ void BraveReferralsService::OnReferralInitLoadComplete(
     GURL gurl(offer_page_url->GetString());
     chrome::ScopedTabbedBrowserDisplayer browser_displayer(
         ProfileManager::GetLastUsedProfile());
-              content::OpenURLParams open_url_params(gurl, content::Referrer(),
+    content::OpenURLParams open_url_params(
+        gurl,
+        content::Referrer(),
         WindowOpenDisposition::NEW_FOREGROUND_TAB,
-        ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
+        ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
+        false);
     browser_displayer.browser()->OpenURL(open_url_params);
   }
 
@@ -220,13 +221,15 @@ void BraveReferralsService::GetFirstRunTime() {
 
   // Delete the promo code preference, if appropriate.
   base::PostTaskWithTraits(
-      FROM_HERE, {content::BrowserThread::UI},
+      FROM_HERE,
+      {content::BrowserThread::UI},
       base::BindOnce(&BraveReferralsService::MaybeDeletePromoCodePref,
                      base::Unretained(this)));
 
   // Check for referral finalization, if appropriate.
   base::PostTaskWithTraits(
-      FROM_HERE, {content::BrowserThread::UI},
+      FROM_HERE,
+      {content::BrowserThread::UI},
       base::BindOnce(&BraveReferralsService::MaybeCheckForReferralFinalization,
                      base::Unretained(this)));
 }
@@ -402,7 +405,7 @@ void BraveReferralsService::InitReferral() {
 void BraveReferralsService::CheckForReferralFinalization() {
   net::NetworkTrafficAnnotationTag traffic_annotation =
       net::DefineNetworkTrafficAnnotation("brave_referral_finalization_checker",
-        R"(
+                                          R"(
         semantics {
           sender:
             "Brave Referrals Service"

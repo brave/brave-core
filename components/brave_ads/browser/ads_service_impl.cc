@@ -15,22 +15,22 @@
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/sequenced_task_runner.h"
-#include "base/task_runner_util.h"
 #include "base/task/post_task.h"
+#include "base/task_runner_util.h"
 #include "base/time/time.h"
 #include "bat/ads/ads.h"
 #include "bat/ads/notification_info.h"
 #include "bat/ads/notification_result_type.h"
 #include "bat/ads/resources/grit/bat_ads_resources.h"
 #include "brave/components/brave_ads/browser/ad_notification.h"
-#include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_ads/browser/bundle_state_database.h"
+#include "brave/components/brave_ads/browser/locale_helper.h"
 #include "brave/components/brave_ads/common/pref_names.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_ads/common/switches.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_notification_service.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/services/bat_ads/public/cpp/ads_client_mojo_bridge.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #include "chrome/browser/browser_process.h"
@@ -69,17 +69,14 @@ namespace brave_ads {
 
 namespace {
 
-const char kRewardsNotificationAdsLaunch[] =
-    "rewards_notification_ads_launch";
+const char kRewardsNotificationAdsLaunch[] = "rewards_notification_ads_launch";
 
 }
 static const unsigned int kRetriesCountOnNetworkChange = 1;
 
 class LogStreamImpl : public ads::LogStream {
  public:
-  LogStreamImpl(const char* file,
-                int line,
-                const ads::LogLevel log_level) {
+  LogStreamImpl(const char* file, int line, const ads::LogLevel log_level) {
     switch (log_level) {
       case ads::LogLevel::LOG_INFO:
         log_message_ = std::make_unique<logging::LogMessage>(
@@ -95,9 +92,7 @@ class LogStreamImpl : public ads::LogStream {
     }
   }
 
-  std::ostream& stream() override {
-    return log_message_->stream();
-  }
+  std::ostream& stream() override { return log_message_->stream(); }
 
  private:
   std::unique_ptr<logging::LogMessage> log_message_;
@@ -107,14 +102,13 @@ class LogStreamImpl : public ads::LogStream {
 
 class AdsNotificationHandler : public NotificationHandler {
  public:
-  explicit AdsNotificationHandler(AdsServiceImpl* ads_service) :
-      ads_service_(ads_service->AsWeakPtr()) {}
+  explicit AdsNotificationHandler(AdsServiceImpl* ads_service)
+      : ads_service_(ads_service->AsWeakPtr()) {}
 
   ~AdsNotificationHandler() override {}
 
   // NotificationHandler implementation.
-  void OnShow(Profile* profile,
-              const std::string& notification_id) override {
+  void OnShow(Profile* profile, const std::string& notification_id) override {
     if (ads_service_)
       ads_service_->OnShow(profile, notification_id);
   }
@@ -129,9 +123,11 @@ class AdsNotificationHandler : public NotificationHandler {
       return;
     }
 
-    ads_service_->OnClose(
-        profile, origin, notification_id, by_user,
-        std::move(completed_closure));
+    ads_service_->OnClose(profile,
+                          origin,
+                          notification_id,
+                          by_user,
+                          std::move(completed_closure));
   }
 
   void OnClick(Profile* profile,
@@ -145,9 +141,7 @@ class AdsNotificationHandler : public NotificationHandler {
     }
   }
 
-  void DisableNotifications(Profile* profile,
-                            const GURL& origin) override {}
-
+  void DisableNotifications(Profile* profile, const GURL& origin) override {}
 
   void OpenSettings(Profile* profile, const GURL& origin) override {
     if (ads_service_)
@@ -168,8 +162,8 @@ int32_t ToMojomNotificationResultInfoResultType(
 }
 
 static std::map<std::string, int> g_schema_resource_ids = {
-  {ads::_catalog_schema_name, IDR_ADS_CATALOG_SCHEMA},
-  {ads::_bundle_schema_name, IDR_ADS_BUNDLE_SCHEMA},
+    {ads::_catalog_schema_name, IDR_ADS_CATALOG_SCHEMA},
+    {ads::_bundle_schema_name, IDR_ADS_BUNDLE_SCHEMA},
 };
 
 int GetSchemaResourceId(const std::string& name) {
@@ -181,9 +175,9 @@ int GetSchemaResourceId(const std::string& name) {
 }
 
 static std::map<std::string, int> g_user_model_resource_ids = {
-  {"de", IDR_ADS_USER_MODEL_DE},
-  {"fr", IDR_ADS_USER_MODEL_FR},
-  {"en", IDR_ADS_USER_MODEL_EN},
+    {"de", IDR_ADS_USER_MODEL_DE},
+    {"fr", IDR_ADS_USER_MODEL_FR},
+    {"en", IDR_ADS_USER_MODEL_EN},
 };
 
 int GetUserModelResourceId(const std::string& locale) {
@@ -194,8 +188,7 @@ int GetUserModelResourceId(const std::string& locale) {
   return 0;
 }
 
-std::string URLMethodToRequestType(
-    ads::URLRequestMethod method) {
+std::string URLMethodToRequestType(ads::URLRequestMethod method) {
   switch (method) {
     case ads::URLRequestMethod::GET:
       return "GET";
@@ -223,8 +216,7 @@ void PostWriteCallback(
   reply_task_runner->PostTask(FROM_HERE, base::Bind(callback, success));
 }
 
-std::string LoadOnFileTaskRunner(
-    const base::FilePath& path) {
+std::string LoadOnFileTaskRunner(const base::FilePath& path) {
   std::string data;
   bool success = base::ReadFileToString(path, &data);
 
@@ -248,8 +240,7 @@ std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
   return ads;
 }
 
-bool ResetOnFileTaskRunner(
-    const base::FilePath& path) {
+bool ResetOnFileTaskRunner(const base::FilePath& path) {
   return base::DeleteFile(path, false);
 }
 
@@ -290,7 +281,8 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 AdsServiceImpl::AdsServiceImpl(Profile* profile)
     : profile_(profile),
       file_task_runner_(base::CreateSequencedTaskRunnerWithTraits(
-          {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+          {base::MayBlock(),
+           base::TaskPriority::BEST_EFFORT,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       base_path_(profile_->GetPath().AppendASCII("ads_service")),
       next_timer_id_(0),
@@ -308,22 +300,19 @@ AdsServiceImpl::AdsServiceImpl(Profile* profile)
       bat_ads_client_binding_(new bat_ads::AdsClientMojoBridge(this)) {
   DCHECK(!profile_->IsOffTheRecord());
 
-  file_task_runner_->PostTask(FROM_HERE,
-      base::BindOnce(&EnsureBaseDirectoryExists, base_path_));
+  file_task_runner_->PostTask(
+      FROM_HERE, base::BindOnce(&EnsureBaseDirectoryExists, base_path_));
 
   profile_pref_change_registrar_.Init(profile_->GetPrefs());
   profile_pref_change_registrar_.Add(
       prefs::kBraveAdsEnabled,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged,
-                 base::Unretained(this)));
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
   profile_pref_change_registrar_.Add(
       brave_rewards::prefs::kBraveRewardsEnabled,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged,
-                 base::Unretained(this)));
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
   profile_pref_change_registrar_.Add(
       prefs::kBraveAdsIdleThreshold,
-      base::Bind(&AdsServiceImpl::OnPrefsChanged,
-                 base::Unretained(this)));
+      base::Bind(&AdsServiceImpl::OnPrefsChanged, base::Unretained(this)));
 
   MigratePrefs();
 
@@ -361,14 +350,14 @@ void AdsServiceImpl::MaybeStart(bool should_restart) {
     return;
   }
 
-  bat_ads_service_->IsSupportedRegion(GetAdsLocale(),
-      base::BindOnce(&AdsServiceImpl::OnMaybeStartForRegion,
-          AsWeakPtr(), should_restart));
+  bat_ads_service_->IsSupportedRegion(
+      GetAdsLocale(),
+      base::BindOnce(
+          &AdsServiceImpl::OnMaybeStartForRegion, AsWeakPtr(), should_restart));
 }
 
-void AdsServiceImpl::OnMaybeStartForRegion(
-    bool should_restart,
-    bool is_supported_region) {
+void AdsServiceImpl::OnMaybeStartForRegion(bool should_restart,
+                                           bool is_supported_region) {
   is_supported_region_ = is_supported_region;
 
   if (!is_supported_region_) {
@@ -382,7 +371,8 @@ void AdsServiceImpl::OnMaybeStartForRegion(
 
   if (IsAdsEnabled()) {
     if (should_restart) {
-      base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(FROM_HERE,
+      base::ThreadTaskRunnerHandle::Get()->PostDelayedTask(
+          FROM_HERE,
           base::BindOnce(&AdsServiceImpl::Start, AsWeakPtr()),
           base::TimeDelta::FromSeconds(1));
     } else {
@@ -403,8 +393,8 @@ bool AdsServiceImpl::StartService() {
   if (!connection)
     return false;
 
-  connection->GetConnector()->BindInterface(
-      bat_ads::mojom::kServiceName, &bat_ads_service_);
+  connection->GetConnector()->BindInterface(bat_ads::mojom::kServiceName,
+                                            &bat_ads_service_);
 
   bat_ads_service_.set_connection_error_handler(
       base::Bind(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));
@@ -448,23 +438,23 @@ void AdsServiceImpl::Start() {
   bat_ads::mojom::BatAdsClientAssociatedPtrInfo client_ptr_info;
   bat_ads_client_binding_.Bind(mojo::MakeRequest(&client_ptr_info));
 
-  bat_ads_service_->Create(std::move(client_ptr_info), MakeRequest(&bat_ads_),
+  bat_ads_service_->Create(
+      std::move(client_ptr_info),
+      MakeRequest(&bat_ads_),
       base::BindOnce(&AdsServiceImpl::OnCreate, AsWeakPtr()));
 }
 
 void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
-  #if defined(OS_LINUX)
-    auto ads_enabled = true;
-  #else
-    auto ads_enabled =
-        profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
-  #endif
+#if defined(OS_LINUX)
+  auto ads_enabled = true;
+#else
+  auto ads_enabled = profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
+#endif
 
-  auto prefs_migrated_from_62 = profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveAdsPrefsMigratedFrom62);
+  auto prefs_migrated_from_62 =
+      profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsPrefsMigratedFrom62);
 
-  if (!ads_enabled ||
-      !prefs_migrated_from_62 ||
+  if (!ads_enabled || !prefs_migrated_from_62 ||
       !ShouldShowFirstLaunchNotification() ||
       !profile_->GetPrefs()->GetBoolean(
           brave_rewards::prefs::kBraveRewardsEnabled)) {
@@ -472,10 +462,10 @@ void AdsServiceImpl::MaybeShowFirstLaunchNotification() {
     return;
   }
 
-  auto now = static_cast<uint64_t>(
-      (base::Time::Now() - base::Time()).InSeconds());
-  profile_->GetPrefs()->SetUint64(
-      prefs::kBraveAdsLaunchNotificationTimestamp, now);
+  auto now =
+      static_cast<uint64_t>((base::Time::Now() - base::Time()).InSeconds());
+  profile_->GetPrefs()->SetUint64(prefs::kBraveAdsLaunchNotificationTimestamp,
+                                  now);
 
   ShowFirstLaunchNotification();
 
@@ -498,7 +488,7 @@ void AdsServiceImpl::RemoveFirstLaunchNotification() {
       kRewardsNotificationAdsLaunch);
 
   profile_->GetPrefs()->SetBoolean(
-    prefs::kBraveAdsHasRemovedFirstLaunchNotification, true);
+      prefs::kBraveAdsHasRemovedFirstLaunchNotification, true);
 }
 
 void AdsServiceImpl::ShowFirstLaunchNotification() {
@@ -511,16 +501,16 @@ void AdsServiceImpl::ShowFirstLaunchNotification() {
   RewardsNotificationService::RewardsNotificationArgs args;
   rewards_notification_service->AddNotification(
       RewardsNotificationService::REWARDS_NOTIFICATION_ADS_LAUNCH,
-      args, kRewardsNotificationAdsLaunch);
+      args,
+      kRewardsNotificationAdsLaunch);
 
   profile_->GetPrefs()->SetBoolean(
-    prefs::kBraveAdShouldShowFirstLaunchNotification, false);
+      prefs::kBraveAdShouldShowFirstLaunchNotification, false);
 }
 
 void AdsServiceImpl::MaybeStartFirstLaunchNotificationTimer() {
-  bool has_removed_notification =
-      profile_->GetPrefs()->GetBoolean(
-          prefs::kBraveAdsHasRemovedFirstLaunchNotification);
+  bool has_removed_notification = profile_->GetPrefs()->GetBoolean(
+      prefs::kBraveAdsHasRemovedFirstLaunchNotification);
 
   if (has_removed_notification) {
     return;
@@ -543,21 +533,21 @@ void AdsServiceImpl::StartFirstLaunchNotificationTimer() {
   uint32_t timer_id = next_timer_id();
   ads_launch_id_ = timer_id;
   timers_[timer_id] = std::make_unique<base::OneShotTimer>();
-  timers_[timer_id]->Start(FROM_HERE,
+  timers_[timer_id]->Start(
+      FROM_HERE,
       timer_offset,
       base::BindOnce(&AdsServiceImpl::OnFirstLaunchNotificationTimedOut,
-          AsWeakPtr(),
-          timer_id));
+                     AsWeakPtr(),
+                     timer_id));
 }
 
 uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimeout() {
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
-  auto timeout_in_seconds =
-      command_line.HasSwitch(switches::kDebug)
-      ? (5 * base::Time::kSecondsPerMinute)
-      : (base::Time::kMicrosecondsPerWeek /
-         base::Time::kMicrosecondsPerSecond);
+  auto timeout_in_seconds = command_line.HasSwitch(switches::kDebug)
+                                ? (5 * base::Time::kSecondsPerMinute)
+                                : (base::Time::kMicrosecondsPerWeek /
+                                   base::Time::kMicrosecondsPerSecond);
   return timeout_in_seconds;
 }
 
@@ -567,11 +557,11 @@ uint64_t AdsServiceImpl::GetFirstLaunchNotificationTimerOffset() {
   auto timestamp_in_seconds = profile_->GetPrefs()->GetUint64(
       prefs::kBraveAdsLaunchNotificationTimestamp);
 
-  auto now_in_seconds = static_cast<uint64_t>(
-      (base::Time::Now() - base::Time()).InSeconds());
+  auto now_in_seconds =
+      static_cast<uint64_t>((base::Time::Now() - base::Time()).InSeconds());
 
-  auto timer_offset = (timestamp_in_seconds +
-      timeout_in_seconds) - now_in_seconds;
+  auto timer_offset =
+      (timestamp_in_seconds + timeout_in_seconds) - now_in_seconds;
 
   return timer_offset;
 }
@@ -582,8 +572,8 @@ bool AdsServiceImpl::HasFirstLaunchNotificationExpired() {
   auto timestamp_in_seconds = profile_->GetPrefs()->GetUint64(
       prefs::kBraveAdsLaunchNotificationTimestamp);
 
-  auto now_in_seconds = static_cast<uint64_t>(
-      (base::Time::Now() - base::Time()).InSeconds());
+  auto now_in_seconds =
+      static_cast<uint64_t>((base::Time::Now() - base::Time()).InSeconds());
 
   if (now_in_seconds < (timestamp_in_seconds + timeout_in_seconds)) {
     return false;
@@ -646,7 +636,8 @@ void AdsServiceImpl::Shutdown() {
   bat_ads_client_binding_.Close();
 
   for (NotificationInfoMap::iterator it = notification_ids_.begin();
-      it != notification_ids_.end(); ++it) {
+       it != notification_ids_.end();
+       ++it) {
     const std::string notification_id = it->first;
     display_service_->Close(NotificationHandler::Type::BRAVE_ADS,
                             notification_id);
@@ -661,7 +652,7 @@ void AdsServiceImpl::MigratePrefs() const {
   if (!MigratePrefs(source_version, dest_version, true)) {
     // Migration dry-run failed, so do not migrate preferences
     LOG(ERROR) << "Failed to migrate Ads preferences from version "
-        << source_version << " to " << dest_version;
+               << source_version << " to " << dest_version;
 
     return;
   }
@@ -669,10 +660,9 @@ void AdsServiceImpl::MigratePrefs() const {
   MigratePrefs(source_version, dest_version);
 }
 
-bool AdsServiceImpl::MigratePrefs(
-    const int source_version,
-    const int dest_version,
-    const bool is_dry_run) const {
+bool AdsServiceImpl::MigratePrefs(const int source_version,
+                                  const int dest_version,
+                                  const bool is_dry_run) const {
   DCHECK(source_version <= dest_version) << "Invalid migration path";
 
   if (source_version == dest_version) {
@@ -690,10 +680,8 @@ bool AdsServiceImpl::MigratePrefs(
   //   {{3, 4}, &AdsServiceImpl::MigratePrefsVersion3To4}
 
   static std::map<std::pair<int, int>, void (AdsServiceImpl::*)() const>
-      mappings {
-    // {{from version, to version}, function}
-    {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2}
-  };
+      mappings{// {{from version, to version}, function}
+               {{1, 2}, &AdsServiceImpl::MigratePrefsVersion1To2}};
 
   // Cycle through migration paths, i.e. if upgrading from version 2 to 5 we
   // should migrate version 2 to 3, then 3 to 4 and finally version 4 to 5
@@ -711,12 +699,12 @@ bool AdsServiceImpl::MigratePrefs(
 
     if (!is_dry_run) {
       LOG(INFO) << "Migrating Ads preferences from mapping version "
-          << from_version << " to " << to_version;
+                << from_version << " to " << to_version;
 
       (this->*(mapping->second))();
 
       profile_->GetPrefs()->SetInteger(prefs::kBraveAdsPrefsVersion,
-          to_version);
+                                       to_version);
     }
 
     from_version++;
@@ -727,7 +715,7 @@ bool AdsServiceImpl::MigratePrefs(
 
   if (!is_dry_run) {
     LOG(INFO) << "Successfully migrated Ads preferences from version "
-        << source_version << " to " << dest_version;
+              << source_version << " to " << dest_version;
   }
 
   return true;
@@ -739,11 +727,11 @@ void AdsServiceImpl::MigratePrefsVersion1To2() const {
   // Unlike Muon, Ads per day are not configurable in the UI so we can safely
   // migrate to the new value
 
-  #if defined(OS_ANDROID)
-    profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerDay, 12);
-  #else
-    profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerDay, 20);
-  #endif
+#if defined(OS_ANDROID)
+  profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerDay, 12);
+#else
+  profile_->GetPrefs()->SetUint64(prefs::kBraveAdsPerDay, 20);
+#endif
 }
 
 int AdsServiceImpl::GetPrefsVersion() const {
@@ -768,21 +756,19 @@ bool AdsServiceImpl::IsSupportedRegion() const {
 }
 
 bool AdsServiceImpl::IsAdsEnabled() const {
-  auto ads_enabled = profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveAdsEnabled);
+  auto ads_enabled = profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabled);
 
-  auto prefs_migrated_from_62 = profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveAdsPrefsMigratedFrom62);
+  auto prefs_migrated_from_62 =
+      profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsPrefsMigratedFrom62);
 
   if (ads_enabled && prefs_migrated_from_62) {
     // Disable Ads by default when upgrading from 0.62.x to 0.63.x
     ads_enabled = false;
 
-    profile_->GetPrefs()->SetBoolean(
-        prefs::kBraveAdsEnabled, ads_enabled);
+    profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, ads_enabled);
 
-    profile_->GetPrefs()->SetBoolean(
-        prefs::kBraveAdsPrefsMigratedFrom62, false);
+    profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsPrefsMigratedFrom62,
+                                     false);
   }
 
   auto rewards_enabled = profile_->GetPrefs()->GetBoolean(
@@ -793,8 +779,8 @@ bool AdsServiceImpl::IsAdsEnabled() const {
 
 void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
   if (is_enabled) {
-    profile_->GetPrefs()->SetBoolean(
-        prefs::kBraveAdsPrefsMigratedFrom62, false);
+    profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsPrefsMigratedFrom62,
+                                     false);
 
     RemoveFirstLaunchNotification();
   }
@@ -803,8 +789,7 @@ void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
 }
 
 void AdsServiceImpl::MigrateAdsEnabled(const bool is_enabled) {
-  if (profile_->GetPrefs()->GetBoolean(
-      prefs::kBraveAdsEnabledMigrated)) {
+  if (profile_->GetPrefs()->GetBoolean(prefs::kBraveAdsEnabledMigrated)) {
     return;
   }
 
@@ -835,10 +820,8 @@ void AdsServiceImpl::TabUpdated(SessionID tab_id,
   if (!connected())
     return;
 
-  bat_ads_->TabUpdated(tab_id.id(),
-                   url.spec(),
-                   is_active,
-                   profile_->IsOffTheRecord());
+  bat_ads_->TabUpdated(
+      tab_id.id(), url.spec(), is_active, profile_->IsOffTheRecord());
 }
 
 void AdsServiceImpl::TabClosed(SessionID tab_id) {
@@ -916,22 +899,23 @@ void AdsServiceImpl::OnMediaStop(SessionID tab_id) {
 void AdsServiceImpl::ShowNotification(
     std::unique_ptr<ads::NotificationInfo> info) {
   std::string notification_id;
-  auto notification =
-      CreateAdNotification(*info, &notification_id);
+  auto notification = CreateAdNotification(*info, &notification_id);
 
   notification_ids_[notification_id] = std::move(info);
 
-  display_service_->Display(NotificationHandler::Type::BRAVE_ADS, *notification,
+  display_service_->Display(NotificationHandler::Type::BRAVE_ADS,
+                            *notification,
                             /*metadata=*/nullptr);
 
   uint32_t timer_id = next_timer_id();
 
   timers_[timer_id] = std::make_unique<base::OneShotTimer>();
   timers_[timer_id]->Start(FROM_HERE,
-      base::TimeDelta::FromSeconds(120),
-      base::BindOnce(
-          &AdsServiceImpl::NotificationTimedOut, AsWeakPtr(),
-              timer_id, notification_id));
+                           base::TimeDelta::FromSeconds(120),
+                           base::BindOnce(&AdsServiceImpl::NotificationTimedOut,
+                                          AsWeakPtr(),
+                                          timer_id,
+                                          notification_id));
 }
 
 void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
@@ -955,27 +939,28 @@ void AdsServiceImpl::NotificationTimedOut(uint32_t timer_id,
 void AdsServiceImpl::Save(const std::string& name,
                           const std::string& value,
                           ads::OnSaveCallback callback) {
-  base::ImportantFileWriter writer(
-      base_path_.AppendASCII(name), file_task_runner_);
+  base::ImportantFileWriter writer(base_path_.AppendASCII(name),
+                                   file_task_runner_);
 
   writer.RegisterOnNextWriteCallbacks(
       base::Closure(),
       base::Bind(
-        &PostWriteCallback,
-        base::Bind(&AdsServiceImpl::OnSaved, AsWeakPtr(),
-            std::move(callback)),
-        base::SequencedTaskRunnerHandle::Get()));
+          &PostWriteCallback,
+          base::Bind(
+              &AdsServiceImpl::OnSaved, AsWeakPtr(), std::move(callback)),
+          base::SequencedTaskRunnerHandle::Get()));
 
   writer.WriteNow(std::make_unique<std::string>(value));
 }
 
 void AdsServiceImpl::Load(const std::string& name,
                           ads::OnLoadCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
       base::BindOnce(&LoadOnFileTaskRunner, base_path_.AppendASCII(name)),
-      base::BindOnce(&AdsServiceImpl::OnLoaded,
-                     AsWeakPtr(),
-                     std::move(callback)));
+      base::BindOnce(
+          &AdsServiceImpl::OnLoaded, AsWeakPtr(), std::move(callback)));
 }
 
 const std::string AdsServiceImpl::LoadJsonSchema(const std::string& name) {
@@ -991,13 +976,14 @@ const std::string AdsServiceImpl::LoadJsonSchema(const std::string& name) {
 void AdsServiceImpl::SaveBundleState(
     std::unique_ptr<ads::BundleState> bundle_state,
     ads::OnSaveCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
       base::BindOnce(&SaveBundleStateOnFileTaskRunner,
-                    base::Passed(std::move(bundle_state)),
-                    bundle_state_backend_.get()),
-      base::BindOnce(&AdsServiceImpl::OnSaveBundleState,
-                     AsWeakPtr(),
-                     callback));
+                     base::Passed(std::move(bundle_state)),
+                     bundle_state_backend_.get()),
+      base::BindOnce(
+          &AdsServiceImpl::OnSaveBundleState, AsWeakPtr(), callback));
 }
 
 void AdsServiceImpl::OnSaveBundleState(const ads::OnSaveCallback& callback,
@@ -1006,9 +992,8 @@ void AdsServiceImpl::OnSaveBundleState(const ads::OnSaveCallback& callback,
     callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
 }
 
-void AdsServiceImpl::OnLoaded(
-    const ads::OnLoadCallback& callback,
-    const std::string& value) {
+void AdsServiceImpl::OnLoaded(const ads::OnLoadCallback& callback,
+                              const std::string& value) {
   if (!connected())
     return;
 
@@ -1018,20 +1003,20 @@ void AdsServiceImpl::OnLoaded(
     callback(ads::Result::SUCCESS, value);
 }
 
-void AdsServiceImpl::OnSaved(
-    const ads::OnSaveCallback& callback,
-    bool success) {
+void AdsServiceImpl::OnSaved(const ads::OnSaveCallback& callback,
+                             bool success) {
   if (connected())
     callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
 }
 
 void AdsServiceImpl::Reset(const std::string& name,
                            ads::OnResetCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
       base::BindOnce(&ResetOnFileTaskRunner, base_path_.AppendASCII(name)),
-      base::BindOnce(&AdsServiceImpl::OnReset,
-                     AsWeakPtr(),
-                     std::move(callback)));
+      base::BindOnce(
+          &AdsServiceImpl::OnReset, AsWeakPtr(), std::move(callback)));
 }
 
 void AdsServiceImpl::OnReset(const ads::OnResetCallback& callback,
@@ -1040,29 +1025,28 @@ void AdsServiceImpl::OnReset(const ads::OnResetCallback& callback,
     callback(success ? ads::Result::SUCCESS : ads::Result::FAILED);
 }
 
-void AdsServiceImpl::GetAds(
-      const std::string& category,
-      ads::OnGetAdsCallback callback) {
-  base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
+void AdsServiceImpl::GetAds(const std::string& category,
+                            ads::OnGetAdsCallback callback) {
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(),
+      FROM_HERE,
       base::BindOnce(&GetAdsForCategoryOnFileTaskRunner,
-                    category,
-                    bundle_state_backend_.get()),
+                     category,
+                     bundle_state_backend_.get()),
       base::BindOnce(&AdsServiceImpl::OnGetAdsForCategory,
                      AsWeakPtr(),
                      std::move(callback),
                      category));
 }
 
-void AdsServiceImpl::OnGetAdsForCategory(
-    const ads::OnGetAdsCallback& callback,
-    const std::string& category,
-    const std::vector<ads::AdInfo>& ads) {
+void AdsServiceImpl::OnGetAdsForCategory(const ads::OnGetAdsCallback& callback,
+                                         const std::string& category,
+                                         const std::vector<ads::AdInfo>& ads) {
   if (!connected())
     return;
 
-  callback(ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS,
-      category,
-      ads);
+  callback(
+      ads.empty() ? ads::Result::FAILED : ads::Result::SUCCESS, category, ads);
 }
 
 void AdsServiceImpl::LoadSampleBundle(
@@ -1096,14 +1080,14 @@ void AdsServiceImpl::OnClose(Profile* profile,
                              bool by_user,
                              base::OnceClosure completed_closure) {
   if (notification_ids_.find(notification_id) != notification_ids_.end()) {
-    auto notification_info = base::WrapUnique(
-        notification_ids_[notification_id].release());
+    auto notification_info =
+        base::WrapUnique(notification_ids_[notification_id].release());
     notification_ids_.erase(notification_id);
 
     if (connected()) {
       auto result_type = by_user
-          ? ads::NotificationResultInfoResultType::DISMISSED
-          : ads::NotificationResultInfoResultType::TIMEOUT;
+                             ? ads::NotificationResultInfoResultType::DISMISSED
+                             : ads::NotificationResultInfoResultType::TIMEOUT;
       bat_ads_->GenerateAdReportingNotificationResultEvent(
           notification_info->ToJson(),
           ToMojomNotificationResultInfoResultType(result_type));
@@ -1123,8 +1107,8 @@ void AdsServiceImpl::OpenSettings(Profile* profile,
   if (notification_ids_.find(notification_id) == notification_ids_.end())
     return;
 
-  auto notification_info = base::WrapUnique(
-      notification_ids_[notification_id].release());
+  auto notification_info =
+      base::WrapUnique(notification_ids_[notification_id].release());
   notification_ids_.erase(notification_id);
 
   if (should_close)
@@ -1185,9 +1169,9 @@ const std::vector<std::string> AdsServiceImpl::GetLocales() const {
   std::vector<std::string> locales;
 
   for (std::map<std::string, int>::iterator it =
-          g_user_model_resource_ids.begin();
-        it != g_user_model_resource_ids.end();
-        ++it) {
+           g_user_model_resource_ids.begin();
+       it != g_user_model_resource_ids.end();
+       ++it) {
     locales.push_back(it->first);
   }
 
@@ -1198,13 +1182,12 @@ const std::string AdsServiceImpl::GetAdsLocale() const {
   return LocaleHelper::GetInstance()->GetLocale();
 }
 
-void AdsServiceImpl::URLRequest(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& content_type,
-      ads::URLRequestMethod method,
-      ads::URLRequestCallback callback) {
+void AdsServiceImpl::URLRequest(const std::string& url,
+                                const std::vector<std::string>& headers,
+                                const std::string& content,
+                                const std::string& content_type,
+                                ads::URLRequestMethod method,
+                                ads::URLRequestCallback callback) {
   auto request = std::make_unique<network::ResourceRequest>();
   request->url = GURL(url);
   request->method = URLMethodToRequestType(method);
@@ -1213,18 +1196,20 @@ void AdsServiceImpl::URLRequest(
     request->headers.AddHeaderFromString(headers[i]);
 
   network::SimpleURLLoader* loader =
-      network::SimpleURLLoader::Create(
-          std::move(request),
-          GetNetworkTrafficAnnotationTag()).release();
+      network::SimpleURLLoader::Create(std::move(request),
+                                       GetNetworkTrafficAnnotationTag())
+          .release();
   url_loaders_.insert(loader);
-  loader->SetRetryOptions(kRetriesCountOnNetworkChange,
+  loader->SetRetryOptions(
+      kRetriesCountOnNetworkChange,
       network::SimpleURLLoader::RetryMode::RETRY_ON_NETWORK_CHANGE);
   if (!content.empty())
     loader->AttachStringForUpload(content, content_type);
 
   loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       content::BrowserContext::GetDefaultStoragePartition(profile_)
-          ->GetURLLoaderFactoryForBrowserProcess().get(),
+          ->GetURLLoaderFactoryForBrowserProcess()
+          .get(),
       base::BindOnce(&AdsServiceImpl::OnURLLoaderComplete,
                      base::Unretained(this),
                      loader,
@@ -1260,9 +1245,8 @@ void AdsServiceImpl::OnURLLoaderComplete(
   }
 
   if (connected()) {
-    callback(response_code,
-             response_body ? *response_body : std::string(),
-             headers);
+    callback(
+        response_code, response_body ? *response_body : std::string(), headers);
   }
 }
 
@@ -1294,7 +1278,8 @@ uint32_t AdsServiceImpl::SetTimer(const uint64_t time_offset) {
   uint32_t timer_id = next_timer_id();
 
   timers_[timer_id] = std::make_unique<base::OneShotTimer>();
-  timers_[timer_id]->Start(FROM_HERE,
+  timers_[timer_id]->Start(
+      FROM_HERE,
       base::TimeDelta::FromSeconds(time_offset),
       base::BindOnce(&AdsServiceImpl::OnTimer, AsWeakPtr(), timer_id));
 

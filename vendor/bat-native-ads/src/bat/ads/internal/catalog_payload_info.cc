@@ -7,15 +7,10 @@
 
 namespace ads {
 
-PayloadInfo::PayloadInfo() :
-    body(""),
-    title(""),
-    target_url("") {}
+PayloadInfo::PayloadInfo() : body(""), title(""), target_url("") {}
 
-PayloadInfo::PayloadInfo(const PayloadInfo& info) :
-    body(info.body),
-    title(info.title),
-    target_url(info.target_url) {}
+PayloadInfo::PayloadInfo(const PayloadInfo& info)
+    : body(info.body), title(info.title), target_url(info.target_url) {}
 
 PayloadInfo::~PayloadInfo() {}
 

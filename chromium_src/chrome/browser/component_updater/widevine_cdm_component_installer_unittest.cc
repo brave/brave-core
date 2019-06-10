@@ -5,8 +5,8 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
-// This test looks a bit strange but it will protect us against if Chromium changes
-// the build flags for Widevine.
+// This test looks a bit strange but it will protect us against if Chromium
+// changes the build flags for Widevine.
 TEST(WidevineBuildFlag, MustBeEnabledForNonLinux) {
   ASSERT_TRUE(
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)

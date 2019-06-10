@@ -8,19 +8,19 @@
 #include <string>
 
 namespace brave_rewards {
-  struct ContributionInfo {
-    ContributionInfo();
-    ~ContributionInfo();
-    ContributionInfo(const ContributionInfo& properties);
+struct ContributionInfo {
+  ContributionInfo();
+  ~ContributionInfo();
+  ContributionInfo(const ContributionInfo& properties);
 
-    std::string probi;
-    int month;
-    int year;
-    int category;
-    uint32_t date = 0;
-    std::string publisher_key;
-  };
+  std::string probi;
+  int month;
+  int year;
+  int category;
+  uint32_t date = 0;
+  std::string publisher_key;
+};
 
 }  // namespace brave_rewards
 
-#endif //BRAVE_BROWSER_PAYMENTS_CONTRIBUTION_INFO_
+#endif  // BRAVE_BROWSER_PAYMENTS_CONTRIBUTION_INFO_

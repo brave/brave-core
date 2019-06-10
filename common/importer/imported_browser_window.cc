@@ -5,13 +5,16 @@
 #include "brave/common/importer/imported_browser_window.h"
 
 ImportedBrowserTab::ImportedBrowserTab() {}
-ImportedBrowserTab::ImportedBrowserTab(const ImportedBrowserTab& other) = default;
+ImportedBrowserTab::ImportedBrowserTab(const ImportedBrowserTab& other) =
+    default;
 ImportedBrowserTab::~ImportedBrowserTab() {}
 
 ImportedBrowserWindow::ImportedBrowserWindow() {}
-ImportedBrowserWindow::ImportedBrowserWindow(const ImportedBrowserWindow& other) = default;
+ImportedBrowserWindow::ImportedBrowserWindow(
+    const ImportedBrowserWindow& other) = default;
 ImportedBrowserWindow::~ImportedBrowserWindow() {}
 
 ImportedWindowState::ImportedWindowState() {}
-ImportedWindowState::ImportedWindowState(const ImportedWindowState& other) = default;
+ImportedWindowState::ImportedWindowState(const ImportedWindowState& other) =
+    default;
 ImportedWindowState::~ImportedWindowState() {}

@@ -6,13 +6,13 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_H_
 #define BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_H_
 
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
-#include "components/keyed_service/core/keyed_service.h"
 #include "brave/components/brave_sync/client/client_data.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
+#include "components/keyed_service/core/keyed_service.h"
 
 namespace base {
 class Time;
@@ -28,23 +28,24 @@ class SyncMessageHandler {
   virtual void BackgroundSyncStopped(bool shutdown) = 0;
 
   // SYNC_DEBUG
-  virtual void OnSyncDebug(const std::string &message) = 0;
+  virtual void OnSyncDebug(const std::string& message) = 0;
   // SYNC_SETUP_ERROR
-  virtual void OnSyncSetupError(const std::string &error) = 0;
+  virtual void OnSyncSetupError(const std::string& error) = 0;
   // GET_INIT_DATA
-  virtual void OnGetInitData(const std::string &sync_version) = 0;
+  virtual void OnGetInitData(const std::string& sync_version) = 0;
   // SAVE_INIT_DATA
   virtual void OnSaveInitData(const Uint8Array& seed,
                               const Uint8Array& device_id) = 0;
   // SYNC_READY
   virtual void OnSyncReady() = 0;
   // GET_EXISTING_OBJECTS
-  virtual void OnGetExistingObjects(const std::string &category_name,
-      std::unique_ptr<RecordsList> records,
-      const base::Time &last_record_time_stamp, const bool is_truncated) = 0;
+  virtual void OnGetExistingObjects(const std::string& category_name,
+                                    std::unique_ptr<RecordsList> records,
+                                    const base::Time& last_record_time_stamp,
+                                    const bool is_truncated) = 0;
   // RESOLVED_SYNC_RECORDS
-  virtual void OnResolvedSyncRecords(const std::string &category_name,
-    std::unique_ptr<RecordsList> records) = 0;
+  virtual void OnResolvedSyncRecords(const std::string& category_name,
+                                     std::unique_ptr<RecordsList> records) = 0;
   // DELETED_SYNC_USER
   virtual void OnDeletedSyncUser() = 0;
   // DELETE_SYNC_SITE_SETTINGS
@@ -58,8 +59,7 @@ class SyncMessageHandler {
 
 class BraveSyncClient {
  public:
-  static BraveSyncClient* Create(SyncMessageHandler* handler,
-                                 Profile* profile);
+  static BraveSyncClient* Create(SyncMessageHandler* handler, Profile* profile);
   virtual ~BraveSyncClient() = default;
 
   // BraveSync to Browser messages
@@ -70,20 +70,20 @@ class BraveSyncClient {
                                const client_data::Config& config,
                                const std::string& sync_words) = 0;
   virtual void SendFetchSyncRecords(
-      const std::vector<std::string> &category_names,
-      const base::Time &startAt,
+      const std::vector<std::string>& category_names,
+      const base::Time& startAt,
       const int max_records) = 0;
   virtual void SendFetchSyncDevices() = 0;
   virtual void SendResolveSyncRecords(
-      const std::string &category_name,
+      const std::string& category_name,
       std::unique_ptr<SyncRecordAndExistingList> list) = 0;
-  virtual void SendSyncRecords(const std::string &category_name,
-    const RecordsList &records) = 0;
+  virtual void SendSyncRecords(const std::string& category_name,
+                               const RecordsList& records) = 0;
   virtual void SendDeleteSyncUser() = 0;
-  virtual void SendDeleteSyncCategory(const std::string &category_name) = 0;
-  virtual void SendGetBookmarksBaseOrder(const std::string &device_id,
-                                         const std::string &platform) = 0;
-  virtual void NeedSyncWords(const std::string &seed) = 0;
+  virtual void SendDeleteSyncCategory(const std::string& category_name) = 0;
+  virtual void SendGetBookmarksBaseOrder(const std::string& device_id,
+                                         const std::string& platform) = 0;
+  virtual void NeedSyncWords(const std::string& seed) = 0;
 
   virtual void OnExtensionInitialized() = 0;
 
@@ -92,6 +92,6 @@ class BraveSyncClient {
   virtual void ClearOrderMap() = 0;
 };
 
-}   // namespace brave_sync
+}  // namespace brave_sync
 
-#endif    // BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_BRAVE_SYNC_CLIENT_H_

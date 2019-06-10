@@ -131,18 +131,18 @@ void BrowsingDataRemovalWatcher::ClearBrowsingDataForLoadedProfiles(
       continue;
     int remove_mask;
     int origin_mask;
-    if (!GetClearBrowsingDataOnExitSettings(profile, &remove_mask,
-                                            &origin_mask))
+    if (!GetClearBrowsingDataOnExitSettings(
+            profile, &remove_mask, &origin_mask))
       continue;
     ++num_profiles_to_clear_;
     content::BrowsingDataRemover* remover =
         content::BrowserContext::GetBrowsingDataRemover(profile);
     observer_.Add(remover);
     if (testing_callback)
-      testing_callback->BeforeClearOnExitRemoveData(remover, remove_mask,
-                                                    origin_mask);
-    remover->RemoveAndReply(base::Time(), base::Time::Max(), remove_mask,
-                            origin_mask, this);
+      testing_callback->BeforeClearOnExitRemoveData(
+          remover, remove_mask, origin_mask);
+    remover->RemoveAndReply(
+        base::Time(), base::Time::Max(), remove_mask, origin_mask, this);
   }
 
   Wait();

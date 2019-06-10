@@ -3,29 +3,30 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Utils
-import { debounce } from '../common/debounce'
+import {debounce} from '../common/debounce'
 
 const keyName = 'welcome-data'
 
 export const defaultState = {}
 
-const cleanData = (state: Welcome.State) => {
-  state = { ...state }
-  return state
-}
-
-export const load = (): Welcome.State => {
-  const data = window.localStorage.getItem(keyName)
-  let state = defaultState
-  if (data) {
-    try {
-      state = JSON.parse(data)
-    } catch (e) {
-      console.error('Could not parse local storage data: ', e)
+const cleanData =
+    (state: Welcome.State) => {
+      state = {...state} return state
     }
-  }
-  return cleanData(state)
-}
+
+export const load =
+    (): Welcome.State => {
+      const data = window.localStorage.getItem(keyName)
+      let state = defaultState
+      if (data) {
+        try {
+          state = JSON.parse(data)
+        } catch (e) {
+          console.error('Could not parse local storage data: ', e)
+        }
+      }
+      return cleanData(state)
+    }
 
 export const debouncedSave = debounce((data: Welcome.State) => {
   if (data) {

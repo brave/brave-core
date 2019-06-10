@@ -51,10 +51,9 @@ const BravePrepopulatedEngineID kDefaultEngineID =
 const std::map<int, BravePrepopulatedEngineID>
     default_engine_by_country_id_map = {
         {country_codes::CountryCharsToCountryID('D', 'E'),
-          PREPOPULATED_ENGINE_ID_QWANT},
+         PREPOPULATED_ENGINE_ID_QWANT},
         {country_codes::CountryCharsToCountryID('F', 'R'),
-          PREPOPULATED_ENGINE_ID_QWANT}
-};
+         PREPOPULATED_ENGINE_ID_QWANT}};
 
 // Default order in which engines will appear in the UI.
 const BravePrepopulatedEngineID brave_engines_default[] = {
@@ -153,8 +152,11 @@ GetBravePrepopulatedEnginesForCountryID(
   // Build a vector PrepopulatedEngines from BravePrepopulatedEngineIDs and
   // also get the default engine index
   std::vector<const PrepopulatedEngine*> engines =
-      GetEnginesFromEngineIDs(brave_engines, num_brave_engines, country_id,
-                              default_id, default_search_provider_index);
+      GetEnginesFromEngineIDs(brave_engines,
+                              num_brave_engines,
+                              country_id,
+                              default_id,
+                              default_search_provider_index);
   DCHECK(engines.size() == num_brave_engines);
 
   std::vector<std::unique_ptr<TemplateURLData>> t_urls;

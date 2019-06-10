@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/task/post_task.h"
 #include "base/path_service.h"
+#include "base/task/post_task.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/brave_paths.h"
@@ -18,7 +18,8 @@
 
 using extensions::ExtensionBrowserTest;
 
-const std::string kHTTPSEverywhereComponentTestId("bhlmpjhncoojbkemjkeppfahkglffilp");
+const std::string kHTTPSEverywhereComponentTestId(
+    "bhlmpjhncoojbkemjkeppfahkglffilp");
 
 const std::string kHTTPSEverywhereComponentTestBase64PublicKey =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3tAm7HooTNVGQ9cm7Yuc"
@@ -30,7 +31,7 @@ const std::string kHTTPSEverywhereComponentTestBase64PublicKey =
     "3wIDAQAB";
 
 class HTTPSEverywhereServiceTest : public ExtensionBrowserTest {
-public:
+ public:
   HTTPSEverywhereServiceTest() {}
 
   void SetUp() override {
@@ -41,7 +42,9 @@ public:
 
   void SetUpOnMainThread() override {
     ExtensionBrowserTest::SetUpOnMainThread();
-    base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::IO},
+    base::PostTaskWithTraits(
+        FROM_HERE,
+        {content::BrowserThread::IO},
         base::BindOnce(&chrome_browser_net::SetUrlRequestMocksEnabled, true));
     host_resolver()->AddRule("*", "127.0.0.1");
   }
@@ -50,7 +53,7 @@ public:
     ExtensionBrowserTest::PreRunTestOnMainThread();
     WaitForHTTPSEverywhereServiceThread();
     ASSERT_TRUE(
-      g_brave_browser_process->https_everywhere_service()->IsInitialized());
+        g_brave_browser_process->https_everywhere_service()->IsInitialized());
   }
 
   void InitEmbeddedTestServer() {
@@ -90,9 +93,8 @@ public:
   }
 
   void WaitForHTTPSEverywhereServiceThread() {
-    scoped_refptr<base::ThreadTestHelper> io_helper(
-        new base::ThreadTestHelper(
-            g_brave_browser_process->https_everywhere_service()->GetTaskRunner()));
+    scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
+        g_brave_browser_process->https_everywhere_service()->GetTaskRunner()));
     ASSERT_TRUE(io_helper->Run());
   }
 };
@@ -103,7 +105,8 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSite) {
 
   GURL url = embedded_test_server()->GetURL("www.digg.com", "/");
   ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_EQ(GURL("https://www.digg.com/"), contents->GetLastCommittedURL());
 }
 
@@ -113,7 +116,8 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, NoRedirectsNotKnownSite) {
 
   GURL url = embedded_test_server()->GetURL("www.brianbondy.com", "/");
   ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
 
   GURL::Replacements clear_port;
   clear_port.ClearPort();
@@ -131,9 +135,12 @@ IN_PROC_BROWSER_TEST_F(HTTPSEverywhereServiceTest, RedirectsKnownSiteInIframe) {
 
   GURL iframe_url = embedded_test_server()->GetURL("www.digg.com", "/");
   const char kIframeID[] = "test";
-  content::WebContents* contents =  browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_TRUE(NavigateIframeToURL(contents, kIframeID, iframe_url));
-  content::RenderFrameHost* iframe_contents = ChildFrameAt(contents->GetMainFrame(), 0);
+  content::RenderFrameHost* iframe_contents =
+      ChildFrameAt(contents->GetMainFrame(), 0);
   WaitForLoadStop(contents);
-  EXPECT_EQ(GURL("https://www.digg.com/"), iframe_contents->GetLastCommittedURL());
+  EXPECT_EQ(GURL("https://www.digg.com/"),
+            iframe_contents->GetLastCommittedURL());
 }

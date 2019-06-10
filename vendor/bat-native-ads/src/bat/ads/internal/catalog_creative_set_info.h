@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/internal/catalog_segment_info.h"
 #include "bat/ads/internal/catalog_creative_info.h"
+#include "bat/ads/internal/catalog_segment_info.h"
 
 namespace ads {
 

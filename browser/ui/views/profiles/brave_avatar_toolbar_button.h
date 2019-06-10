@@ -8,11 +8,12 @@
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
 
 class BraveAvatarToolbarButton : public AvatarToolbarButton {
-  public:
-    using AvatarToolbarButton::AvatarToolbarButton;
-  private:
-    gfx::ImageSkia GetAvatarIcon() const override;
-    DISALLOW_COPY_AND_ASSIGN(BraveAvatarToolbarButton);
+ public:
+  using AvatarToolbarButton::AvatarToolbarButton;
+
+ private:
+  gfx::ImageSkia GetAvatarIcon() const override;
+  DISALLOW_COPY_AND_ASSIGN(BraveAvatarToolbarButton);
 };
 
 #endif

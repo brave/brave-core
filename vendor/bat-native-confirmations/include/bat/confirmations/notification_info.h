@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "bat/confirmations/export.h"
 #include "bat/confirmations/confirmation_type.h"
+#include "bat/confirmations/export.h"
 
 namespace confirmations {
 

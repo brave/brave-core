@@ -15,7 +15,7 @@ namespace brave {
 enum {
   PATH_START = 12000,
 
-  DIR_TEST_DATA,                // Directory where unit test data resides.
+  DIR_TEST_DATA,  // Directory where unit test data resides.
   PATH_END
 };
 

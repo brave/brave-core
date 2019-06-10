@@ -12,11 +12,11 @@
 #include "ui/gfx/skia_util.h"
 
 namespace {
-  // Returns the size of the button without any margin
-  gfx::Size GetButtonSize() {
-    return gfx::Size(20, 20);
-  }
+// Returns the size of the button without any margin
+gfx::Size GetButtonSize() {
+  return gfx::Size(20, 20);
 }
+}  // namespace
 
 // static
 const gfx::Size BraveNewTabButton::kButtonSize{20, 20};
@@ -30,8 +30,8 @@ gfx::Size BraveNewTabButton::CalculatePreferredSize() const {
 }
 
 SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
-                                      float scale,
-                                      bool extend_to_top) const {
+                                        float scale,
+                                        bool extend_to_top) const {
   // Overriden to use Brave's non-circular shape
   gfx::PointF scaled_origin(origin);
   scaled_origin.Scale(scale);
@@ -39,10 +39,11 @@ SkPath BraveNewTabButton::GetBorderPath(const gfx::Point& origin,
 
   SkPath path;
   const gfx::Rect contents_bounds = GetContentsBounds();
-  const gfx::Rect path_rect(scaled_origin.x(),
-              extend_to_top ? 0 : scaled_origin.y(),
-              contents_bounds.width() * scale,
-              scaled_origin.y() + contents_bounds.height() * scale);
+  const gfx::Rect path_rect(
+      scaled_origin.x(),
+      extend_to_top ? 0 : scaled_origin.y(),
+      contents_bounds.width() * scale,
+      scaled_origin.y() + contents_bounds.height() * scale);
   path.addRoundRect(RectToSkRect(path_rect), radius, radius);
   path.close();
   return path;

@@ -13,8 +13,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/profiles/profiles_state.h"
 #include "chrome/browser/profiles/profile_window.h"
+#include "chrome/browser/profiles/profiles_state.h"
 #include "chrome/browser/ui/views/hover_button.h"
 #include "chrome/browser/ui/views/profiles/badged_profile_photo.h"
 #include "chrome/grit/generated_resources.h"
@@ -44,7 +44,8 @@ void BraveProfileChooserView::AddTorButton(
     ProfileMenuViewBase::MenuItems* menu_items) {
   if (!browser()->profile()->IsTorProfile() &&
       !g_brave_browser_process->tor_client_updater()
-        ->GetExecutablePath().empty()) {
+           ->GetExecutablePath()
+           .empty()) {
     std::unique_ptr<HoverButton> tor_profile_button =
         std::make_unique<HoverButton>(
             this,

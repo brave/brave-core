@@ -17,7 +17,8 @@ cr.define('settings', function() {
   class BraveAppearanceBrowserProxyImpl {
     /** @override */
     getBraveThemeList() {
-      return new Promise(resolve => chrome.braveTheme.getBraveThemeList(resolve))
+      return new Promise(
+          resolve => chrome.braveTheme.getBraveThemeList(resolve))
     }
   }
 

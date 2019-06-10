@@ -21,35 +21,35 @@ bool IsTranslateScriptRequest(const GURL& gurl) {
   static std::vector<URLPattern> translate_patterns({
       URLPattern(URLPattern::SCHEME_HTTPS, kTranslateElementMainJSPattern),
       URLPattern(URLPattern::SCHEME_HTTPS, kTranslateMainJSPattern),
-      });
-  return std::any_of(translate_patterns.begin(), translate_patterns.end(),
-      [&gurl](URLPattern pattern) {
-      return pattern.MatchesURL(gurl);
-      });
+  });
+  return std::any_of(
+      translate_patterns.begin(),
+      translate_patterns.end(),
+      [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
 
 bool IsTranslateResourceRequest(const GURL& gurl) {
   static std::vector<URLPattern> translate_patterns({
       URLPattern(URLPattern::SCHEME_HTTPS, kTranslateElementMainCSSPattern),
       URLPattern(URLPattern::SCHEME_HTTPS, kTranslateBrandingPNGPattern),
-      });
-  return std::any_of(translate_patterns.begin(), translate_patterns.end(),
-      [&gurl](URLPattern pattern) {
-      return pattern.MatchesURL(gurl);
-      });
+  });
+  return std::any_of(
+      translate_patterns.begin(),
+      translate_patterns.end(),
+      [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
 
 bool IsTranslateRequest(const GURL& gurl) {
   static URLPattern translate_pattern =
-    URLPattern(URLPattern::SCHEME_HTTPS, kTranslateRequestPattern);
+      URLPattern(URLPattern::SCHEME_HTTPS, kTranslateRequestPattern);
   return translate_pattern.MatchesURL(gurl);
 }
 
 bool IsTranslateGen204Request(const GURL& gurl) {
-  static URLPattern pattern = URLPattern(URLPattern::SCHEME_HTTPS,
-      kTranslateGen204Pattern);
+  static URLPattern pattern =
+      URLPattern(URLPattern::SCHEME_HTTPS, kTranslateGen204Pattern);
   bool is_te_lib =
-    gurl.spec().find(kTranslateElementLibQuery) != std::string::npos;
+      gurl.spec().find(kTranslateElementLibQuery) != std::string::npos;
 
   return is_te_lib && pattern.MatchesURL(gurl);
 }
@@ -70,7 +70,7 @@ int OnBeforeURLRequest_TranslateRedirectWork(
   if (IsTranslateResourceRequest(ctx->request_url)) {
     replacements.SetPathStr(ctx->request_url.path_piece());
     ctx->new_url_spec =
-      GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
+        GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
     return net::OK;
   }
 
@@ -85,14 +85,14 @@ int OnBeforeURLRequest_TranslateRedirectWork(
     replacements.SetQueryStr(ctx->request_url.query_piece());
     replacements.SetPathStr(ctx->request_url.path_piece());
     ctx->new_url_spec =
-      GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
+        GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
     return net::OK;
   }
 
   if (IsTranslateRequest(ctx->request_url)) {
     replacements.SetQueryStr(ctx->request_url.query_piece());
     ctx->new_url_spec =
-      GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
+        GURL(kBraveTranslateEndpoint).ReplaceComponents(replacements).spec();
     return net::OK;
   }
 

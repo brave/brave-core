@@ -52,16 +52,16 @@ namespace prefs {
 class Prefs;
 }  // namespace prefs
 
-using SendDeviceSyncRecordCallback = base::OnceCallback<void(const int,
-                                                           const std::string&,
-                                                           const std::string&,
-                                                           const std::string&)>;
+using SendDeviceSyncRecordCallback =
+    base::OnceCallback<void(const int,
+                            const std::string&,
+                            const std::string&,
+                            const std::string&)>;
 
-class BraveSyncServiceImpl
-    : public BraveSyncService,
-      public SyncMessageHandler {
+class BraveSyncServiceImpl : public BraveSyncService,
+                             public SyncMessageHandler {
  public:
-  explicit BraveSyncServiceImpl(Profile *profile);
+  explicit BraveSyncServiceImpl(Profile* profile);
   ~BraveSyncServiceImpl() override;
 
   // KeyedService overrides
@@ -69,7 +69,7 @@ class BraveSyncServiceImpl
 
   // BraveSyncService messages from UI
   void OnSetupSyncHaveCode(const std::string& sync_words,
-    const std::string& device_name) override;
+                           const std::string& device_name) override;
   void OnSetupSyncNewToSync(const std::string& device_name) override;
   void OnDeleteDevice(const std::string& device_id) override;
   void OnResetSync() override;
@@ -120,52 +120,51 @@ class BraveSyncServiceImpl
                       const Uint8Array& device_id) override;
   void OnSyncReady() override;
   void OnGetExistingObjects(const std::string& category_name,
-    std::unique_ptr<RecordsList> records,
-    const base::Time &last_record_time_stamp,
-    const bool is_truncated) override;
+                            std::unique_ptr<RecordsList> records,
+                            const base::Time& last_record_time_stamp,
+                            const bool is_truncated) override;
   void OnResolvedSyncRecords(const std::string& category_name,
-    std::unique_ptr<RecordsList> records) override;
+                             std::unique_ptr<RecordsList> records) override;
   void OnDeletedSyncUser() override;
   void OnDeleteSyncSiteSettings() override;
   void OnSaveBookmarksBaseOrder(const std::string& order) override;
   void OnSaveBookmarkOrder(const std::string& object_id,
-                                const std::string& order) override;
+                           const std::string& order) override;
   void OnSyncWordsPrepared(const std::string& words) override;
 
-  void OnResolvedHistorySites(const RecordsList &records);
-  void OnResolvedPreferences(const RecordsList &records);
+  void OnResolvedHistorySites(const RecordsList& records);
+  void OnResolvedPreferences(const RecordsList& records);
   std::unique_ptr<SyncRecordAndExistingList> PrepareResolvedPreferences(
-    const RecordsList& records);
+      const RecordsList& records);
 
   void OnSyncPrefsChanged(const std::string& pref);
 
   // Other private methods
   void RequestSyncData();
-  void FetchSyncRecords(const bool bookmarks, const bool history,
-    const bool preferences, int max_records);
+  void FetchSyncRecords(const bool bookmarks,
+                        const bool history,
+                        const bool preferences,
+                        int max_records);
 
   void SendCreateDevice();
-  void SendDeviceSyncRecord(
-      const int action,
-      const std::string& device_name,
-      const std::string& device_id,
-      const std::string& object_id);
+  void SendDeviceSyncRecord(const int action,
+                            const std::string& device_name,
+                            const std::string& device_id,
+                            const std::string& object_id);
 
-  void SetUpdateDeleteDeviceName_Ext(
-    const std::string& action,
-    const std::string& deviceName,
-    const std::string& deviceId,
-    const std::string& objectId);
+  void SetUpdateDeleteDeviceName_Ext(const std::string& action,
+                                     const std::string& deviceName,
+                                     const std::string& deviceId,
+                                     const std::string& objectId);
 
   void StartLoop();
   void StopLoop();
   void LoopProc();
   void LoopProcThreadAligned();
 
-  void GetExistingHistoryObjects(
-    const RecordsList &records,
-    const base::Time &last_record_time_stamp,
-    const bool is_truncated);
+  void GetExistingHistoryObjects(const RecordsList& records,
+                                 const base::Time& last_record_time_stamp,
+                                 const bool is_truncated);
 
   void NotifyLogMessage(const std::string& message);
   void NotifySyncSetupError(const std::string& error);

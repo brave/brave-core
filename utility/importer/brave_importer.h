@@ -41,19 +41,18 @@ class BraveImporter : public ChromeImporter {
   void ImportRequiredItems();
   void ImportSettings();
 
-  base::Optional<base::Value> ParseBraveStateFile(
-    const std::string& filename);
+  base::Optional<base::Value> ParseBraveStateFile(const std::string& filename);
 
   void ParseBookmarks(std::vector<ImportedBookmarkEntry>* bookmarks);
   void RecursiveReadBookmarksFolder(
-    const base::string16 name,
-    const std::string key,
-    std::vector<base::string16> path,
-    const bool in_toolbar,
-    base::Value* bookmark_folders_dict,
-    base::Value* bookmarks_dict,
-    base::Value* bookmark_order_dict,
-    std::vector<ImportedBookmarkEntry>* bookmarks);
+      const base::string16 name,
+      const std::string key,
+      std::vector<base::string16> path,
+      const bool in_toolbar,
+      base::Value* bookmark_folders_dict,
+      base::Value* bookmarks_dict,
+      base::Value* bookmark_order_dict,
+      std::vector<ImportedBookmarkEntry>* bookmarks);
 
   DISALLOW_COPY_AND_ASSIGN(BraveImporter);
 };

@@ -25,9 +25,9 @@ enum InstallConstantIndex {
   BETA_INDEX,
   DEV_INDEX,
   NIGHTLY_INDEX,
- #else
+#else
   DEVELOPER_INDEX,
- #endif
+#endif
   NUM_INSTALL_MODES,
 };
 

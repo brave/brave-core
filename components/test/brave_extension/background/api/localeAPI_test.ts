@@ -7,16 +7,12 @@ import * as localeAPI from '../../../../brave_extension/extension/brave_extensio
 describe('locale API', () => {
   describe('getMessage', () => {
     let spy: jest.SpyInstance
-    const message = 'NESPRESS YOURSELF'
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.i18n, 'getMessage')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+const message = 'NESPRESS YOURSELF'
+beforeEach(() => {spy = jest.spyOn(chrome.i18n, 'getMessage')})
+afterEach(() => {spy.mockRestore()})
     it('calls chrome.i18n.getMessage with the message', () => {
       localeAPI.getLocale(message)
-      expect(spy).toBeCalledTimes(1)
+    expect(spy).toBeCalledTimes(1)
       expect(spy.mock.calls[0][0]).toBe(message)
     })
   })

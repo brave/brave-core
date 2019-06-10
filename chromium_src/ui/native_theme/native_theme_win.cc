@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "ui/native_theme/native_theme_dark_aura.h"
 #include "ui/native_theme/native_theme_win.h"
+#include "ui/native_theme/native_theme_dark_aura.h"
 
 namespace {
 
@@ -35,11 +35,9 @@ bool GetSystemDarkModeEnabledOverrides() {
 
 namespace ui {
 
-void SetOverrideSystemDarkMode(bool override,
-                               bool enable_dark_mode) {
+void SetOverrideSystemDarkMode(bool override, bool enable_dark_mode) {
   system_dark_mode_overridden = override;
   dark_mode_enabled = enable_dark_mode;
 }
 
 }  // namespace ui
-

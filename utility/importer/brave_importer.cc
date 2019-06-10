@@ -19,8 +19,8 @@
 #include "base/values.h"
 
 #include "brave/common/importer/brave_ledger.h"
-#include "brave/common/importer/brave_stats.h"
 #include "brave/common/importer/brave_referral.h"
+#include "brave/common/importer/brave_stats.h"
 #include "brave/common/importer/imported_browser_window.h"
 #include "chrome/common/importer/importer_bridge.h"
 #include "chrome/grit/generated_resources.h"
@@ -54,14 +54,13 @@
 
 using base::Time;
 
-BraveImporter::BraveImporter() {
-}
+BraveImporter::BraveImporter() {}
 
-BraveImporter::~BraveImporter() {
-}
+BraveImporter::~BraveImporter() {}
 
 void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
-    uint16_t items, ImporterBridge* bridge) {
+                                uint16_t items,
+                                ImporterBridge* bridge) {
   bridge_ = bridge;
   source_path_ = source_profile.source_path;
 
@@ -129,14 +128,13 @@ void BraveImporter::ImportRequiredItems() {
 }
 
 void BraveImporter::ImportHistory() {
-  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
-      "session-store-1");
+  base::Optional<base::Value> session_store_json =
+      ParseBraveStateFile("session-store-1");
   if (!session_store_json)
     return;
 
-  const base::Value* history_sites =
-      session_store_json->FindKeyOfType("historySites",
-                                        base::Value::Type::DICTIONARY);
+  const base::Value* history_sites = session_store_json->FindKeyOfType(
+      "historySites", base::Value::Type::DICTIONARY);
   if (!history_sites)
     return;
 
@@ -147,17 +145,13 @@ void BraveImporter::ImportHistory() {
       continue;
 
     const base::Value* location =
-        value.FindKeyOfType("location",
-                            base::Value::Type::STRING);
+        value.FindKeyOfType("location", base::Value::Type::STRING);
     const base::Value* title =
-        value.FindKeyOfType("title",
-                            base::Value::Type::STRING);
+        value.FindKeyOfType("title", base::Value::Type::STRING);
     const base::Value* lastAccessedTime =
-        value.FindKeyOfType("lastAccessedTime",
-                            base::Value::Type::DOUBLE);
+        value.FindKeyOfType("lastAccessedTime", base::Value::Type::DOUBLE);
     const base::Value* count =
-        value.FindKeyOfType("count",
-                            base::Value::Type::INTEGER);
+        value.FindKeyOfType("count", base::Value::Type::INTEGER);
     if (!(location && title && lastAccessedTime && count))
       continue;
 
@@ -181,20 +175,17 @@ void BraveImporter::ImportHistory() {
 
 void BraveImporter::ParseBookmarks(
     std::vector<ImportedBookmarkEntry>* bookmarks) {
-  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
-      "session-store-1");
+  base::Optional<base::Value> session_store_json =
+      ParseBraveStateFile("session-store-1");
   if (!session_store_json)
     return;
 
-  base::Value* bookmark_folders_dict =
-    session_store_json->FindKeyOfType("bookmarkFolders",
-                                      base::Value::Type::DICTIONARY);
-  base::Value* bookmarks_dict =
-    session_store_json->FindKeyOfType("bookmarks",
-                                      base::Value::Type::DICTIONARY);
-  base::Value* bookmark_order_dict =
-    session_store_json->FindPathOfType({"cache", "bookmarkOrder"},
-    base::Value::Type::DICTIONARY);
+  base::Value* bookmark_folders_dict = session_store_json->FindKeyOfType(
+      "bookmarkFolders", base::Value::Type::DICTIONARY);
+  base::Value* bookmarks_dict = session_store_json->FindKeyOfType(
+      "bookmarks", base::Value::Type::DICTIONARY);
+  base::Value* bookmark_order_dict = session_store_json->FindPathOfType(
+      {"cache", "bookmarkOrder"}, base::Value::Type::DICTIONARY);
   if (!(bookmark_folders_dict && bookmarks_dict && bookmark_order_dict))
     return;
 
@@ -221,27 +212,27 @@ void BraveImporter::ParseBookmarks(
 }
 
 void BraveImporter::RecursiveReadBookmarksFolder(
-  const base::string16 name,
-  const std::string key,
-  std::vector<base::string16> path,
-  const bool in_toolbar,
-  base::Value* bookmark_folders_dict,
-  base::Value* bookmarks_dict,
-  base::Value* bookmark_order_dict,
-  std::vector<ImportedBookmarkEntry>* bookmarks) {
+    const base::string16 name,
+    const std::string key,
+    std::vector<base::string16> path,
+    const bool in_toolbar,
+    base::Value* bookmark_folders_dict,
+    base::Value* bookmarks_dict,
+    base::Value* bookmark_order_dict,
+    std::vector<ImportedBookmarkEntry>* bookmarks) {
   // Add the name of the current folder to the path
   path.push_back(name);
 
   base::Value* bookmark_order =
-    bookmark_order_dict->FindKeyOfType(key, base::Value::Type::LIST);
+      bookmark_order_dict->FindKeyOfType(key, base::Value::Type::LIST);
   if (!bookmark_order)
     return;
 
   for (auto& entry : bookmark_order->GetList()) {
-    base::Value* typeValue = entry.FindKeyOfType("type",
-        base::Value::Type::STRING);
-    base::Value* keyValue = entry.FindKeyOfType("key",
-        base::Value::Type::STRING);
+    base::Value* typeValue =
+        entry.FindKeyOfType("type", base::Value::Type::STRING);
+    base::Value* keyValue =
+        entry.FindKeyOfType("key", base::Value::Type::STRING);
     if (!(typeValue && keyValue))
       continue;
 
@@ -249,14 +240,13 @@ void BraveImporter::RecursiveReadBookmarksFolder(
     auto key = keyValue->GetString();
 
     if (type == "bookmark-folder") {
-      base::Value* bookmark_folder =
-        bookmark_folders_dict->FindKeyOfType(key,
-          base::Value::Type::DICTIONARY);
+      base::Value* bookmark_folder = bookmark_folders_dict->FindKeyOfType(
+          key, base::Value::Type::DICTIONARY);
       if (!bookmark_folder)
         continue;
 
-      base::Value* titleValue = bookmark_folder->FindKeyOfType("title",
-          base::Value::Type::STRING);
+      base::Value* titleValue =
+          bookmark_folder->FindKeyOfType("title", base::Value::Type::STRING);
       if (!titleValue)
         continue;
 
@@ -265,7 +255,7 @@ void BraveImporter::RecursiveReadBookmarksFolder(
       // Empty folders don't have a corresponding entry in bookmark_order_dict,
       // which provides an easy way to test whether a folder is empty.
       base::Value* bookmark_order_entry =
-        bookmark_order_dict->FindKeyOfType(key, base::Value::Type::LIST);
+          bookmark_order_dict->FindKeyOfType(key, base::Value::Type::LIST);
 
       if (bookmark_order_entry) {
         // Recurse into non-empty folder.
@@ -279,7 +269,7 @@ void BraveImporter::RecursiveReadBookmarksFolder(
                                      bookmarks);
       } else {
         // Add ImportedBookmarkEntry for empty folder.
-         ImportedBookmarkEntry imported_bookmark_folder;
+        ImportedBookmarkEntry imported_bookmark_folder;
         imported_bookmark_folder.is_folder = true;
         imported_bookmark_folder.in_toolbar = in_toolbar;
         imported_bookmark_folder.url = GURL();
@@ -291,14 +281,14 @@ void BraveImporter::RecursiveReadBookmarksFolder(
       }
     } else if (type == "bookmark") {
       base::Value* bookmark =
-        bookmarks_dict->FindKeyOfType(key, base::Value::Type::DICTIONARY);
+          bookmarks_dict->FindKeyOfType(key, base::Value::Type::DICTIONARY);
       if (!bookmark)
         continue;
 
-      base::Value* titleValue = bookmark->FindKeyOfType("title",
-          base::Value::Type::STRING);
-      base::Value* locationValue = bookmark->FindKeyOfType("location",
-          base::Value::Type::STRING);
+      base::Value* titleValue =
+          bookmark->FindKeyOfType("title", base::Value::Type::STRING);
+      base::Value* locationValue =
+          bookmark->FindKeyOfType("location", base::Value::Type::STRING);
       if (!(titleValue && locationValue))
         continue;
 
@@ -324,7 +314,7 @@ void BraveImporter::ImportBookmarks() {
 
   if (!bookmarks.empty() && !cancelled()) {
     const base::string16& first_folder_name =
-      bridge_->GetLocalizedString(IDS_BOOKMARK_GROUP_FROM_BRAVE);
+        bridge_->GetLocalizedString(IDS_BOOKMARK_GROUP_FROM_BRAVE);
     bridge_->AddBookmarks(bookmarks, first_folder_name);
   }
 }
@@ -339,7 +329,7 @@ base::Optional<base::Value> BraveImporter::ParseBraveStateFile(
   }
 
   base::Optional<base::Value> session_store_json =
-    base::JSONReader::Read(session_store_content);
+      base::JSONReader::Read(session_store_content);
   if (!session_store_json) {
     LOG(ERROR) << "Could not parse JSON from file: " << session_store_path;
   }
@@ -348,20 +338,17 @@ base::Optional<base::Value> BraveImporter::ParseBraveStateFile(
 }
 
 void BraveImporter::ImportStats() {
-  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
-      "session-store-1");
+  base::Optional<base::Value> session_store_json =
+      ParseBraveStateFile("session-store-1");
   if (!session_store_json)
     return;
 
-  base::Value* adblock_count =
-    session_store_json->FindPathOfType({"adblock", "count"},
-                                       base::Value::Type::INTEGER);
-  base::Value* trackingProtection_count =
-    session_store_json->FindPathOfType({"trackingProtection", "count"},
-                                       base::Value::Type::INTEGER);
-  base::Value* httpsEverywhere_count =
-    session_store_json->FindPathOfType({"httpsEverywhere", "count"},
-                                       base::Value::Type::INTEGER);
+  base::Value* adblock_count = session_store_json->FindPathOfType(
+      {"adblock", "count"}, base::Value::Type::INTEGER);
+  base::Value* trackingProtection_count = session_store_json->FindPathOfType(
+      {"trackingProtection", "count"}, base::Value::Type::INTEGER);
+  base::Value* httpsEverywhere_count = session_store_json->FindPathOfType(
+      {"httpsEverywhere", "count"}, base::Value::Type::INTEGER);
 
   BraveStats stats;
   if (adblock_count) {
@@ -378,11 +365,10 @@ void BraveImporter::ImportStats() {
 }
 
 bool ParseWalletPassphrase(BraveLedger* ledger,
-  const base::Value& session_store_json) {
+                           const base::Value& session_store_json) {
   const base::Value* wallet_passphrase_value =
-    session_store_json.FindPathOfType(
-      {"ledger", "info", "passphrase"},
-      base::Value::Type::STRING);
+      session_store_json.FindPathOfType({"ledger", "info", "passphrase"},
+                                        base::Value::Type::STRING);
   if (!wallet_passphrase_value) {
     LOG(ERROR) << "Wallet passphrase not found in session-store-1";
     return false;
@@ -393,7 +379,8 @@ bool ParseWalletPassphrase(BraveLedger* ledger,
 }
 
 bool TryFindBoolKey(const base::Value* dict,
-  const std::string key, bool& value_to_set) {  // NOLINT
+                    const std::string key,
+                    bool& value_to_set) {  // NOLINT
   auto* value_read = dict->FindKeyOfType(key, base::Value::Type::BOOLEAN);
   if (value_read) {
     value_to_set = value_read->GetBool();
@@ -403,7 +390,8 @@ bool TryFindBoolKey(const base::Value* dict,
 }
 
 bool TryFindStringKey(const base::Value* dict,
-  const std::string key, std::string& value_to_set) {  // NOLINT
+                      const std::string key,
+                      std::string& value_to_set) {  // NOLINT
   auto* value_read = dict->FindKeyOfType(key, base::Value::Type::STRING);
   if (value_read) {
     value_to_set = value_read->GetString();
@@ -412,8 +400,9 @@ bool TryFindStringKey(const base::Value* dict,
   return false;
 }
 
-bool TryFindIntKey(const base::Value* dict, const std::string key,
-  int& value_to_set) {  // NOLINT
+bool TryFindIntKey(const base::Value* dict,
+                   const std::string key,
+                   int& value_to_set) {  // NOLINT
   auto* value_read = dict->FindKeyOfType(key, base::Value::Type::INTEGER);
   if (value_read) {
     value_to_set = value_read->GetInt();
@@ -423,7 +412,8 @@ bool TryFindIntKey(const base::Value* dict, const std::string key,
 }
 
 bool TryFindUInt64Key(const base::Value* dict,
-    const std::string key, uint64_t& value_to_set) {  // NOLINT
+                      const std::string key,
+                      uint64_t& value_to_set) {  // NOLINT
   auto* value_read = dict->FindKeyOfType(key, base::Value::Type::DOUBLE);
   if (value_read) {
     value_to_set = (uint64_t)value_read->GetDouble();
@@ -433,10 +423,9 @@ bool TryFindUInt64Key(const base::Value* dict,
 }
 
 bool ParsePaymentsPreferences(BraveLedger* ledger,
-  const base::Value& session_store_json) {
+                              const base::Value& session_store_json) {
   const base::Value* settings = session_store_json.FindKeyOfType(
-    "settings",
-    base::Value::Type::DICTIONARY);
+      "settings", base::Value::Type::DICTIONARY);
   if (!settings) {
     LOG(ERROR) << "No entry \"settings\" found in session-store-1";
     return false;
@@ -451,13 +440,15 @@ bool ParsePaymentsPreferences(BraveLedger* ledger,
     payments->enabled = false;
   }
 
-  if (!TryFindBoolKey(settings, "payments.allow-non-verified-publishers",
-    payments->allow_non_verified)) {
+  if (!TryFindBoolKey(settings,
+                      "payments.allow-non-verified-publishers",
+                      payments->allow_non_verified)) {
     payments->allow_non_verified = true;
   }
 
-  if (!TryFindBoolKey(settings, "payments.allow-media-publishers",
-    payments->allow_media_publishers)) {
+  if (!TryFindBoolKey(settings,
+                      "payments.allow-media-publishers",
+                      payments->allow_media_publishers)) {
     payments->allow_media_publishers = true;
   }
 
@@ -466,14 +457,15 @@ bool ParsePaymentsPreferences(BraveLedger* ledger,
   const int default_monthly_contribution = 20;
   std::string contribution_amount = "";
   payments->contribution_amount = -1;
-  TryFindStringKey(settings, "payments.contribution-amount",
-    contribution_amount);
+  TryFindStringKey(
+      settings, "payments.contribution-amount", contribution_amount);
   if (!contribution_amount.empty()) {
     if (!base::StringToDouble(contribution_amount,
-      &payments->contribution_amount)) {
-      LOG(ERROR) << "StringToDouble failed when converting "
-        << "\"settings.payments.contribution-amount\"; unable to convert "
-        << "value \"" << contribution_amount << "\"; defaulting value.";
+                              &payments->contribution_amount)) {
+      LOG(ERROR)
+          << "StringToDouble failed when converting "
+          << "\"settings.payments.contribution-amount\"; unable to convert "
+          << "value \"" << contribution_amount << "\"; defaulting value.";
     }
   }
 
@@ -482,7 +474,7 @@ bool ParsePaymentsPreferences(BraveLedger* ledger,
   // be present in the session-store-1. This was intended so that we can change
   // the default amount. Once user changes it, value was then locked in.
   if (payments->contribution_amount < 1 ||
-    payments->contribution_amount > 500) {
+      payments->contribution_amount > 500) {
     payments->contribution_amount = default_monthly_contribution;
   }
 
@@ -492,13 +484,12 @@ bool ParsePaymentsPreferences(BraveLedger* ledger,
   if (!minimum_visits.empty()) {
     if (!base::StringToUint(minimum_visits, &payments->min_visits)) {
       LOG(ERROR) << "StringToUint failed when converting "
-        << "\"settings.payments.minimum-visits\"; unable to convert "
-        << "value \"" << minimum_visits << "\"; defaulting value.";
+                 << "\"settings.payments.minimum-visits\"; unable to convert "
+                 << "value \"" << minimum_visits << "\"; defaulting value.";
     }
   }
 
-  if (payments->min_visits != 1 &&
-      payments->min_visits != 5 &&
+  if (payments->min_visits != 1 && payments->min_visits != 5 &&
       payments->min_visits != 10) {
     payments->min_visits = 1u;
   }
@@ -508,9 +499,10 @@ bool ParsePaymentsPreferences(BraveLedger* ledger,
   TryFindStringKey(settings, "payments.minimum-visit-time", minumum_visit_time);
   if (!minumum_visit_time.empty()) {
     if (!base::StringToUint64(minumum_visit_time, &payments->min_visit_time)) {
-      LOG(ERROR) << "StringToUint64 failed when converting "
-        << "\"settings.payments.minimum-visit-time\"; unable to convert "
-        << "value \"" << minumum_visit_time << "\"; defaulting value.";
+      LOG(ERROR)
+          << "StringToUint64 failed when converting "
+          << "\"settings.payments.minimum-visit-time\"; unable to convert "
+          << "value \"" << minumum_visit_time << "\"; defaulting value.";
     }
   }
   switch (payments->min_visit_time) {
@@ -531,10 +523,9 @@ bool ParsePaymentsPreferences(BraveLedger* ledger,
 }
 
 bool ParseExcludedSites(BraveLedger* ledger,
-  const base::Value& session_store_json) {
+                        const base::Value& session_store_json) {
   const base::Value* site_settings = session_store_json.FindKeyOfType(
-    "siteSettings",
-    base::Value::Type::DICTIONARY);
+      "siteSettings", base::Value::Type::DICTIONARY);
   if (!site_settings) {
     LOG(ERROR) << "No entry \"siteSettings\" found in session-store-1";
     return false;
@@ -557,7 +548,7 @@ bool ParseExcludedSites(BraveLedger* ledger,
         size_t protocol_index = host_pattern.find("//");
         if (protocol_index != std::string::npos) {
           ledger->excluded_publishers.push_back(
-            host_pattern.substr(protocol_index + 2));
+              host_pattern.substr(protocol_index + 2));
         }
       }
     }
@@ -567,21 +558,21 @@ bool ParseExcludedSites(BraveLedger* ledger,
 }
 
 // implemented in C++20
-bool ends_with(const std::string &input, const std::string &test) {
+bool ends_with(const std::string& input, const std::string& test) {
   if (input.length() >= test.length()) {
-    return (0 == input.compare (input.length() - test.length(), test.length(),
-          test));
+    return (0 ==
+            input.compare(input.length() - test.length(), test.length(), test));
   }
   return false;
 }
 
 bool ParsePinnedSites(BraveLedger* ledger,
-  const base::Value& session_store_json) {
+                      const base::Value& session_store_json) {
   const base::Value* publishers = session_store_json.FindPathOfType(
       {"ledger", "about", "synopsis"}, base::Value::Type::LIST);
   if (!publishers) {
     LOG(ERROR)
-      << "\"ledger\".\"about\".\"synopsis\" not found in session-store-1";
+        << "\"ledger\".\"about\".\"synopsis\" not found in session-store-1";
     return false;
   }
 
@@ -624,10 +615,10 @@ bool ParsePinnedSites(BraveLedger* ledger,
 }
 
 bool BraveImporter::ImportLedger() {
-  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
-      "session-store-1");
-  base::Optional<base::Value> ledger_state_json = ParseBraveStateFile(
-      "ledger-state.json");
+  base::Optional<base::Value> session_store_json =
+      ParseBraveStateFile("session-store-1");
+  base::Optional<base::Value> ledger_state_json =
+      ParseBraveStateFile("ledger-state.json");
   if (!(session_store_json && ledger_state_json)) {
     return false;
   }
@@ -668,15 +659,14 @@ bool BraveImporter::ImportLedger() {
 }
 
 void BraveImporter::ImportReferral() {
-  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
-      "session-store-1");
+  base::Optional<base::Value> session_store_json =
+      ParseBraveStateFile("session-store-1");
   if (!session_store_json) {
     return;
   }
 
   const base::Value* updates = session_store_json->FindKeyOfType(
-      "updates",
-      base::Value::Type::DICTIONARY);
+      "updates", base::Value::Type::DICTIONARY);
   if (!updates) {
     LOG(ERROR) << "No entry \"updates\" found in session-store-1";
     return;
@@ -697,13 +687,13 @@ void BraveImporter::ImportReferral() {
     referral.download_id = "";
   }
 
-  if (!TryFindUInt64Key(updates, "referralTimestamp",
-        referral.finalize_timestamp)) {
+  if (!TryFindUInt64Key(
+          updates, "referralTimestamp", referral.finalize_timestamp)) {
     referral.finalize_timestamp = 0;
   }
 
-  if (!TryFindStringKey(updates, "weekOfInstallation",
-        referral.week_of_installation)) {
+  if (!TryFindStringKey(
+          updates, "weekOfInstallation", referral.week_of_installation)) {
     referral.week_of_installation = "";
   }
 
@@ -727,10 +717,8 @@ std::vector<ImportedBrowserTab> ParseTabs(const base::Value* frames) {
   std::vector<ImportedBrowserTab> tabs;
 
   for (const auto& frame : frames->GetList()) {
-    auto* key = frame.FindKeyOfType("key",
-        base::Value::Type::INTEGER);
-    auto* location = frame.FindKeyOfType("location",
-        base::Value::Type::STRING);
+    auto* key = frame.FindKeyOfType("key", base::Value::Type::INTEGER);
+    auto* location = frame.FindKeyOfType("location", base::Value::Type::STRING);
 
     if (!(key && location))
       continue;
@@ -756,31 +744,26 @@ std::vector<ImportedBrowserWindow> ParseWindows(
   for (const auto& entry : perWindowState->GetList()) {
     ImportedBrowserWindow window;
 
-    auto* windowInfo = entry.FindKeyOfType("windowInfo",
-        base::Value::Type::DICTIONARY);
-    auto* activeFrameKey = entry.FindKeyOfType("activeFrameKey",
-        base::Value::Type::INTEGER);
-    auto* frames = entry.FindKeyOfType("frames",
-        base::Value::Type::LIST);
+    auto* windowInfo =
+        entry.FindKeyOfType("windowInfo", base::Value::Type::DICTIONARY);
+    auto* activeFrameKey =
+        entry.FindKeyOfType("activeFrameKey", base::Value::Type::INTEGER);
+    auto* frames = entry.FindKeyOfType("frames", base::Value::Type::LIST);
 
     if (!(frames && activeFrameKey && windowInfo))
       continue;
 
     // Window info
-    auto* top = windowInfo->FindKeyOfType("top",
-        base::Value::Type::INTEGER);
-    auto* left = windowInfo->FindKeyOfType("left",
-        base::Value::Type::INTEGER);
-    auto* width = windowInfo->FindKeyOfType("width",
-        base::Value::Type::INTEGER);
-    auto* height = windowInfo->FindKeyOfType("height",
-        base::Value::Type::INTEGER);
-    auto* focused = windowInfo->FindKeyOfType("focused",
-        base::Value::Type::BOOLEAN);
-    auto* type = windowInfo->FindKeyOfType("type",
-        base::Value::Type::STRING);
-    auto* state = windowInfo->FindKeyOfType("state",
-        base::Value::Type::STRING);
+    auto* top = windowInfo->FindKeyOfType("top", base::Value::Type::INTEGER);
+    auto* left = windowInfo->FindKeyOfType("left", base::Value::Type::INTEGER);
+    auto* width =
+        windowInfo->FindKeyOfType("width", base::Value::Type::INTEGER);
+    auto* height =
+        windowInfo->FindKeyOfType("height", base::Value::Type::INTEGER);
+    auto* focused =
+        windowInfo->FindKeyOfType("focused", base::Value::Type::BOOLEAN);
+    auto* type = windowInfo->FindKeyOfType("type", base::Value::Type::STRING);
+    auto* state = windowInfo->FindKeyOfType("state", base::Value::Type::STRING);
 
     if (!(top && left && width && height && focused && type && state)) {
       LOG(WARNING) << "windowInfo failed validation, skipping window";
@@ -822,11 +805,9 @@ std::vector<ImportedBrowserTab> ParsePinnedTabs(
       continue;
 
     const base::Value* location =
-        value.FindKeyOfType("location",
-                            base::Value::Type::STRING);
+        value.FindKeyOfType("location", base::Value::Type::STRING);
     const base::Value* order =
-        value.FindKeyOfType("order",
-                            base::Value::Type::INTEGER);
+        value.FindKeyOfType("order", base::Value::Type::INTEGER);
 
     if (!(location && order))
       continue;
@@ -844,24 +825,23 @@ std::vector<ImportedBrowserTab> ParsePinnedTabs(
 
   // Sort pinned tabs by key, which corresponds to a 0-indexed ordering from
   // left to right.
-  std::sort(std::begin(pinnedTabs), std::end(pinnedTabs),
-      [](auto a, auto b) { return a.key < b.key; });
+  std::sort(std::begin(pinnedTabs), std::end(pinnedTabs), [](auto a, auto b) {
+    return a.key < b.key;
+  });
 
   return pinnedTabs;
 }
 
 void BraveImporter::ImportWindows() {
-  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
-      "session-store-1");
+  base::Optional<base::Value> session_store_json =
+      ParseBraveStateFile("session-store-1");
   if (!session_store_json)
     return;
 
-  base::Value* perWindowState =
-    session_store_json->FindKeyOfType("perWindowState",
-                                      base::Value::Type::LIST);
-  base::Value* pinnedSites =
-    session_store_json->FindKeyOfType("pinnedSites",
-                                      base::Value::Type::DICTIONARY);
+  base::Value* perWindowState = session_store_json->FindKeyOfType(
+      "perWindowState", base::Value::Type::LIST);
+  base::Value* pinnedSites = session_store_json->FindKeyOfType(
+      "pinnedSites", base::Value::Type::DICTIONARY);
   if (!(perWindowState && pinnedSites)) {
     LOG(ERROR) << "perWindowState and/or pinnedSites not found";
     return;
@@ -883,15 +863,14 @@ void BraveImporter::ImportWindows() {
 }
 
 void BraveImporter::ImportSettings() {
-  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
-      "session-store-1");
+  base::Optional<base::Value> session_store_json =
+      ParseBraveStateFile("session-store-1");
   if (!session_store_json) {
     return;
   }
 
   const base::Value* settings = session_store_json->FindKeyOfType(
-      "settings",
-      base::Value::Type::DICTIONARY);
+      "settings", base::Value::Type::DICTIONARY);
   if (!settings) {
     LOG(ERROR) << "No entry \"settings\" found in session-store-1";
     return;
@@ -900,17 +879,19 @@ void BraveImporter::ImportSettings() {
   SessionStoreSettings user_settings;
 
   // Search related settings
-  TryFindStringKey(settings, "search.default-search-engine",
-      user_settings.default_search_engine);
+  TryFindStringKey(settings,
+                   "search.default-search-engine",
+                   user_settings.default_search_engine);
 
-  if (!TryFindBoolKey(settings, "search.use-alternate-private-search-engine",
-      user_settings.use_alternate_private_search_engine)) {
+  if (!TryFindBoolKey(settings,
+                      "search.use-alternate-private-search-engine",
+                      user_settings.use_alternate_private_search_engine)) {
     user_settings.use_alternate_private_search_engine = false;
   }
 
   if (!TryFindBoolKey(settings,
-        "search.use-alternate-private-search-engine-tor",
-      user_settings.use_alternate_private_search_engine_tor)) {
+                      "search.use-alternate-private-search-engine-tor",
+                      user_settings.use_alternate_private_search_engine_tor)) {
     user_settings.use_alternate_private_search_engine_tor = true;
   }
 

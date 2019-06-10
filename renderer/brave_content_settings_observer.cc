@@ -17,8 +17,8 @@
 #include "components/content_settings/core/common/content_settings_utils.h"
 #include "content/public/renderer/render_frame.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
-#include "third_party/blink/public/mojom/permissions/permission.mojom-blink.h"
 #include "third_party/blink/public/mojom/permissions/permission.mojom-blink-forward.h"
+#include "third_party/blink/public/mojom/permissions/permission.mojom-blink.h"
 #include "third_party/blink/public/platform/web_url.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -28,11 +28,9 @@ BraveContentSettingsObserver::BraveContentSettingsObserver(
     content::RenderFrame* render_frame,
     bool should_whitelist,
     service_manager::BinderRegistry* registry)
-    : ContentSettingsObserver(render_frame, should_whitelist, registry) {
-}
+    : ContentSettingsObserver(render_frame, should_whitelist, registry) {}
 
-BraveContentSettingsObserver::~BraveContentSettingsObserver() {
-}
+BraveContentSettingsObserver::~BraveContentSettingsObserver() {}
 
 bool BraveContentSettingsObserver::OnMessageReceived(
     const IPC::Message& message) {
@@ -42,7 +40,8 @@ bool BraveContentSettingsObserver::OnMessageReceived(
     IPC_MESSAGE_UNHANDLED(handled = false)
   IPC_END_MESSAGE_MAP()
 
-  if (handled) return true;
+  if (handled)
+    return true;
   return ContentSettingsObserver::OnMessageReceived(message);
 }
 
@@ -52,21 +51,22 @@ void BraveContentSettingsObserver::OnAllowScriptsOnce(
 }
 
 void BraveContentSettingsObserver::DidCommitProvisionalLoad(
-    bool is_same_document_navigation, ui::PageTransition transition) {
+    bool is_same_document_navigation,
+    ui::PageTransition transition) {
   if (!is_same_document_navigation) {
     temporarily_allowed_scripts_ =
-      std::move(preloaded_temporarily_allowed_scripts_);
+        std::move(preloaded_temporarily_allowed_scripts_);
   }
 
-  ContentSettingsObserver::DidCommitProvisionalLoad(
-      is_same_document_navigation, transition);
+  ContentSettingsObserver::DidCommitProvisionalLoad(is_same_document_navigation,
+                                                    transition);
 }
 
 bool BraveContentSettingsObserver::IsScriptTemporilyAllowed(
     const GURL& script_url) {
   // check if scripts from this origin are temporily allowed or not
   return base::ContainsKey(temporarily_allowed_scripts_,
-      script_url.GetOrigin().spec());
+                           script_url.GetOrigin().spec());
 }
 
 void BraveContentSettingsObserver::BraveSpecificDidBlockJavaScript(
@@ -74,8 +74,7 @@ void BraveContentSettingsObserver::BraveSpecificDidBlockJavaScript(
   Send(new BraveViewHostMsg_JavaScriptBlocked(routing_id(), details));
 }
 
-bool BraveContentSettingsObserver::AllowScript(
-    bool enabled_per_settings) {
+bool BraveContentSettingsObserver::AllowScript(bool enabled_per_settings) {
   // clear cached url for other flow like directly calling `DidNotAllowScript`
   // without calling `AllowScriptFromSource` first
   blocked_script_url_ = GURL::EmptyGURL();
@@ -85,9 +84,8 @@ bool BraveContentSettingsObserver::AllowScript(
       url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
 
   bool allow = ContentSettingsObserver::AllowScript(enabled_per_settings);
-  allow = allow ||
-    IsBraveShieldsDown(frame, secondary_url) ||
-    IsScriptTemporilyAllowed(secondary_url);
+  allow = allow || IsBraveShieldsDown(frame, secondary_url) ||
+          IsScriptTemporilyAllowed(secondary_url);
 
   return allow;
 }
@@ -95,7 +93,7 @@ bool BraveContentSettingsObserver::AllowScript(
 void BraveContentSettingsObserver::DidNotAllowScript() {
   if (!blocked_script_url_.is_empty()) {
     BraveSpecificDidBlockJavaScript(
-      base::UTF8ToUTF16(blocked_script_url_.spec()));
+        base::UTF8ToUTF16(blocked_script_url_.spec()));
     blocked_script_url_ = GURL::EmptyGURL();
   }
   ContentSettingsObserver::DidNotAllowScript();
@@ -115,10 +113,9 @@ bool BraveContentSettingsObserver::AllowScriptFromSource(
       blink::WebSecurityOrigin::Create(script_url),
       render_frame()->GetWebFrame()->GetDocument().Url());
 
-  allow = allow ||
-    should_white_list ||
-    IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url) ||
-    IsScriptTemporilyAllowed(secondary_url);
+  allow = allow || should_white_list ||
+          IsBraveShieldsDown(render_frame()->GetWebFrame(), secondary_url) ||
+          IsScriptTemporilyAllowed(secondary_url);
 
   if (!allow) {
     blocked_script_url_ = secondary_url;
@@ -149,7 +146,6 @@ ContentSetting BraveContentSettingsObserver::GetFPContentSettingFromRules(
     const ContentSettingsForOneType& rules,
     const blink::WebFrame* frame,
     const GURL& secondary_url) {
-
   if (rules.size() == 0)
     return CONTENT_SETTING_DEFAULT;
 
@@ -206,14 +202,15 @@ bool BraveContentSettingsObserver::AllowFingerprinting(
   }
   ContentSettingsForOneType rules;
   if (content_setting_rules_) {
-      rules = content_setting_rules_->fingerprinting_rules;
+    rules = content_setting_rules_->fingerprinting_rules;
   }
   ContentSettingPatternSource default_rule = ContentSettingPatternSource(
       ContentSettingsPattern::Wildcard(),
       ContentSettingsPattern::FromString("https://firstParty/*"),
       base::Value::FromUniquePtrValue(
           content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
-      std::string(), false);
+      std::string(),
+      false);
   rules.push_back(default_rule);
   ContentSetting setting =
       GetFPContentSettingFromRules(rules, frame, secondary_url);
@@ -245,7 +242,7 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
       url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL();
   for (const auto& rule : content_setting_rules_->autoplay_rules) {
     if (rule.primary_pattern == ContentSettingsPattern::Wildcard())
-        continue;
+      continue;
     if (rule.primary_pattern.Matches(primary_url) &&
         (rule.secondary_pattern == ContentSettingsPattern::Wildcard() ||
          rule.secondary_pattern.Matches(secondary_url))) {
@@ -256,8 +253,8 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
 
   blink::mojom::blink::PermissionServicePtr permission_service;
 
-  render_frame()->GetRemoteInterfaces()
-    ->GetInterface(mojo::MakeRequest(&permission_service));
+  render_frame()->GetRemoteInterfaces()->GetInterface(
+      mojo::MakeRequest(&permission_service));
 
   if (permission_service.get()) {
     // Check (synchronously) whether we already have permission to autoplay.
@@ -268,8 +265,8 @@ bool BraveContentSettingsObserver::AllowAutoplay(bool default_value) {
     has_permission_descriptor->name =
         blink::mojom::blink::PermissionName::AUTOPLAY;
     blink::mojom::blink::PermissionStatus status;
-    if (permission_service->HasPermission(
-            std::move(has_permission_descriptor), &status)) {
+    if (permission_service->HasPermission(std::move(has_permission_descriptor),
+                                          &status)) {
       allow = status == blink::mojom::blink::PermissionStatus::GRANTED;
       if (!allow) {
         // Request permission (asynchronously) but exit this function without

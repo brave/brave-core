@@ -8,12 +8,14 @@
 #include "chrome/browser/ui/views/chrome_browser_main_extra_parts_views_linux.h"
 
 class BraveBrowserMainExtraPartsViewsLinux
-                                : public ChromeBrowserMainExtraPartsViewsLinux {
-  public:
-    using ChromeBrowserMainExtraPartsViewsLinux::ChromeBrowserMainExtraPartsViewsLinux;
-    void PreEarlyInitialization() override;
-  private:
-    DISALLOW_COPY_AND_ASSIGN(BraveBrowserMainExtraPartsViewsLinux);
+    : public ChromeBrowserMainExtraPartsViewsLinux {
+ public:
+  using ChromeBrowserMainExtraPartsViewsLinux::
+      ChromeBrowserMainExtraPartsViewsLinux;
+  void PreEarlyInitialization() override;
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BraveBrowserMainExtraPartsViewsLinux);
 };
 
 #endif

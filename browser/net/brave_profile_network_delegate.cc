@@ -7,9 +7,9 @@
 
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
 #include "brave/browser/net/brave_common_static_redirect_network_delegate_helper.h"
-#include "brave/browser/net/cookie_network_delegate_helper.h"
 #include "brave/browser/net/brave_httpse_network_delegate_helper.h"
 #include "brave/browser/net/brave_site_hacks_network_delegate_helper.h"
+#include "brave/browser/net/cookie_network_delegate_helper.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
 #include "brave/common/pref_names.h"
@@ -35,23 +35,19 @@
 #endif
 
 BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
-    extensions::EventRouterForwarder* event_router) :
-    BraveNetworkDelegateBase(event_router) {
-  brave::OnBeforeURLRequestCallback
-  callback =
+    extensions::EventRouterForwarder* event_router)
+    : BraveNetworkDelegateBase(event_router) {
+  brave::OnBeforeURLRequestCallback callback =
       base::Bind(brave::OnBeforeURLRequest_SiteHacksWork);
   before_url_request_callbacks_.push_back(callback);
 
-  callback =
-      base::Bind(brave::OnBeforeURLRequest_AdBlockTPPreWork);
+  callback = base::Bind(brave::OnBeforeURLRequest_AdBlockTPPreWork);
   before_url_request_callbacks_.push_back(callback);
 
-  callback =
-      base::Bind(brave::OnBeforeURLRequest_HttpsePreFileWork);
+  callback = base::Bind(brave::OnBeforeURLRequest_HttpsePreFileWork);
   before_url_request_callbacks_.push_back(callback);
 
-  callback =
-      base::Bind(brave::OnBeforeURLRequest_CommonStaticRedirectWork);
+  callback = base::Bind(brave::OnBeforeURLRequest_CommonStaticRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -65,8 +61,8 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
-  callback = base::BindRepeating(
-      brave::OnBeforeURLRequest_TranslateRedirectWork);
+  callback =
+      base::BindRepeating(brave::OnBeforeURLRequest_TranslateRedirectWork);
   before_url_request_callbacks_.push_back(callback);
 #endif
 
@@ -76,8 +72,7 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
 
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   brave::OnHeadersReceivedCallback headers_received_callback =
-      base::Bind(
-          webtorrent::OnHeadersReceived_TorrentRedirectWork);
+      base::Bind(webtorrent::OnHeadersReceived_TorrentRedirectWork);
   headers_received_callbacks_.push_back(headers_received_callback);
 #endif
 
@@ -90,5 +85,4 @@ BraveProfileNetworkDelegate::BraveProfileNetworkDelegate(
   can_set_cookies_callbacks_.push_back(set_cookies_callback);
 }
 
-BraveProfileNetworkDelegate::~BraveProfileNetworkDelegate() {
-}
+BraveProfileNetworkDelegate::~BraveProfileNetworkDelegate() {}

@@ -15,7 +15,8 @@ struct BraveStats;
 struct BraveLedger;
 struct ImportedWindowState;
 
-class BraveExternalProcessImporterClient : public ExternalProcessImporterClient {
+class BraveExternalProcessImporterClient
+    : public ExternalProcessImporterClient {
  public:
   BraveExternalProcessImporterClient(
       base::WeakPtr<ExternalProcessImporterHost> importer_host,
@@ -26,18 +27,13 @@ class BraveExternalProcessImporterClient : public ExternalProcessImporterClient 
   // Called by the ExternalProcessImporterHost on import cancel.
   void Cancel();
 
-  void OnCookiesImportStart(
-      uint32_t total_cookies_count) override;
+  void OnCookiesImportStart(uint32_t total_cookies_count) override;
   void OnCookiesImportGroup(
       const std::vector<net::CanonicalCookie>& cookies_group) override;
-  void OnStatsImportReady(
-       const BraveStats& stats) override;
-  void OnLedgerImportReady(
-       const BraveLedger& ledger) override;
-  void OnReferralImportReady(
-       const BraveReferral& referral) override;
-  void OnWindowsImportReady(
-       const ImportedWindowState& windowState) override;
+  void OnStatsImportReady(const BraveStats& stats) override;
+  void OnLedgerImportReady(const BraveLedger& ledger) override;
+  void OnReferralImportReady(const BraveReferral& referral) override;
+  void OnWindowsImportReady(const ImportedWindowState& windowState) override;
   void OnSettingsImportReady(const SessionStoreSettings& settings) override;
 
  private:

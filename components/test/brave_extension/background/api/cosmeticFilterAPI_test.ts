@@ -9,9 +9,9 @@ import * as cosmeticFilterAPI from '../../../../brave_extension/extension/brave_
 describe('cosmeticFilterTestSuite', () => {
   describe('addSiteCosmeticFilter', () => {
     const url = 'https://www.brave.com'
-    const filter = '#cssFilter'
-    let getStorageStub: any
-    let setStorageStub: any
+const filter = '#cssFilter'
+let getStorageStub: any
+let setStorageStub: any
     beforeAll(() => {
       getStorageStub = sinon.stub(chrome.storage.local, 'get')
       setStorageStub = sinon.stub(chrome.storage.local, 'set')
@@ -31,18 +31,14 @@ describe('cosmeticFilterTestSuite', () => {
           'hostname': ['samplefilter']
         }
       })
-      cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
-        .catch(() => {
-          expect(true).toBe(false)
-        })
+    cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
+        .catch(() => {expect(true).toBe(false)})
       expect(setStorageStub.getCall(0).args.length).toBe(1)
     })
     it('passes the correct arguments to chrome.storage.local.set when storage is empty', () => {
       getStorageStub.yields({})
-      cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
-        .catch(() => {
-          expect(true).toBe(false)
-        })
+    cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
+        .catch(() => {expect(true).toBe(false)})
       expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {
           'https://www.brave.com': ['#cssFilter']
@@ -51,10 +47,8 @@ describe('cosmeticFilterTestSuite', () => {
     })
     it('passes the correct arguments to chrome.storage.local.set when storage is undefined', () => {
       getStorageStub.yields(undefined)
-      cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
-        .catch(() => {
-          expect(true).toBe(false)
-        })
+    cosmeticFilterAPI.addSiteCosmeticFilter(url, filter)
+        .catch(() => {expect(true).toBe(false)})
       expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {
           'https://www.brave.com': ['#cssFilter']
@@ -67,10 +61,8 @@ describe('cosmeticFilterTestSuite', () => {
           'hostname': ['samplefilter']
         }
       })
-      cosmeticFilterAPI.addSiteCosmeticFilter('hostname', 'samplefilter2')
-        .catch(() => {
-          expect(true).toBe(false)
-        })
+    cosmeticFilterAPI.addSiteCosmeticFilter('hostname', 'samplefilter2')
+        .catch(() => {expect(true).toBe(false)})
       expect(setStorageStub.getCall(0).args[0]).toEqual({
         'cosmeticFilterList': {
           'hostname': ['samplefilter', 'samplefilter2']
@@ -80,9 +72,9 @@ describe('cosmeticFilterTestSuite', () => {
   })
   describe('removeSiteFilter', () => {
     const url = 'https://www.brave.com'
-    const filter = '#cssFilter'
-    let getStorageStub: any
-    let setStorageStub: any
+  const filter = '#cssFilter'
+  let getStorageStub: any
+  let setStorageStub: any
 
     beforeAll(() => {
       getStorageStub = sinon.stub(chrome.storage.local, 'get')
@@ -103,7 +95,7 @@ describe('cosmeticFilterTestSuite', () => {
           url: filter
         }
       })
-      cosmeticFilterAPI.removeSiteFilter(url)
+    cosmeticFilterAPI.removeSiteFilter(url)
       expect(setStorageStub.getCall(0).args.length).toBe(1)
     })
     it('removes the correct filter', () => {
@@ -113,7 +105,7 @@ describe('cosmeticFilterTestSuite', () => {
           'https://notbrave.com': ['notACSSFilter']
         }
       })
-      cosmeticFilterAPI.removeSiteFilter(url)
+    cosmeticFilterAPI.removeSiteFilter(url)
       expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {
           'https://notbrave.com': ['notACSSFilter']
@@ -122,14 +114,14 @@ describe('cosmeticFilterTestSuite', () => {
     })
     it('handles empty storage', () => {
       getStorageStub.yields({})
-      cosmeticFilterAPI.removeSiteFilter(url)
+    cosmeticFilterAPI.removeSiteFilter(url)
       expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {}
       })
     })
     it('handles undefined storage', () => {
       getStorageStub.yields(undefined)
-      cosmeticFilterAPI.removeSiteFilter(url)
+    cosmeticFilterAPI.removeSiteFilter(url)
       expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {}
       })
@@ -140,7 +132,7 @@ describe('cosmeticFilterTestSuite', () => {
           url: filter
         }
       })
-      cosmeticFilterAPI.removeSiteFilter('urlNotInStorage')
+    cosmeticFilterAPI.removeSiteFilter('urlNotInStorage')
       expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {
           url: filter
@@ -150,7 +142,7 @@ describe('cosmeticFilterTestSuite', () => {
   })
   describe('removeAllFilters', () => {
     let getStorageStub: any
-    let setStorageStub: any
+  let setStorageStub: any
     beforeAll(() => {
       getStorageStub = sinon.stub(chrome.storage.local, 'get')
       setStorageStub = sinon.stub(chrome.storage.local, 'set')
@@ -171,7 +163,7 @@ describe('cosmeticFilterTestSuite', () => {
           'hostname': 'isNotEmpty'
         }
       })
-      cosmeticFilterAPI.removeAllFilters()
+    cosmeticFilterAPI.removeAllFilters()
       expect(setStorageStub.getCall(0).args[0]).toEqual({
         cosmeticFilterList: {}
       })
@@ -179,25 +171,25 @@ describe('cosmeticFilterTestSuite', () => {
   })
   describe('applySiteFilters', () => {
     const filter = '#cssFilter'
-    const filter2 = '#cssFilter2'
+  const filter2 = '#cssFilter2'
 
-    let getStorageStub: any
-    let setStorageStub: any
-    let insertCSSStub: any
+  let getStorageStub: any
+  let setStorageStub: any
+  let insertCSSStub: any
 
     beforeAll(() => {
       getStorageStub = sinon.stub(chrome.storage.local, 'get')
-      setStorageStub = sinon.stub(chrome.storage.local, 'set')
+    setStorageStub = sinon.stub(chrome.storage.local, 'set')
       insertCSSStub = sinon.stub(chrome.tabs, 'insertCSS')
     })
     afterAll(() => {
       getStorageStub.restore()
-      setStorageStub.restore()
+    setStorageStub.restore()
       insertCSSStub.restore()
     })
     beforeEach(() => {
       getStorageStub.resetHistory()
-      setStorageStub.resetHistory()
+    setStorageStub.resetHistory()
       insertCSSStub.resetHistory()
     })
     it('applies the correct filter', () => {
@@ -206,7 +198,7 @@ describe('cosmeticFilterTestSuite', () => {
           'brave.com': [filter]
         }
       })
-      cosmeticFilterAPI.applySiteFilters('brave.com')
+    cosmeticFilterAPI.applySiteFilters('brave.com')
       expect(insertCSSStub.getCall(0).args[0]).toEqual({
         code: `${ filter } {display: none;}`,
         runAt: 'document_start'
@@ -218,23 +210,22 @@ describe('cosmeticFilterTestSuite', () => {
           'brave.com': [filter, filter2]
         }
       })
-      cosmeticFilterAPI.applySiteFilters('brave.com')
-      expect(insertCSSStub.getCall(0).args[0]).toEqual({
-        code: `${ filter } {display: none;}`,
-        runAt: 'document_start'
-      })
+    cosmeticFilterAPI.applySiteFilters('brave.com')
+    expect(insertCSSStub.getCall(0).args[0])
+        .toEqual({code: `${filter} {display: none;}`, runAt: 'document_start'})
       expect(insertCSSStub.getCall(1).args[0]).toEqual({
         code: `${ filter2 } {display: none;}`,
         runAt: 'document_start'
       })
 
     })
-    // chrome.local.storage.get() always returns an empty object if nothing exists
+      // chrome.local.storage.get() always returns an empty object if nothing
+      // exists
     it('doesn\'t apply filters if storage for host is implicitly undefined', () => {
       getStorageStub.yields({
         cosmeticFilterList: {}
       })
-      cosmeticFilterAPI.applySiteFilters('brave.com')
+    cosmeticFilterAPI.applySiteFilters('brave.com')
       expect(insertCSSStub.called).toBe(false)
     })
     it('doesn\'t apply filters if storage is explicitly undefined', () => {
@@ -243,7 +234,7 @@ describe('cosmeticFilterTestSuite', () => {
           'brave.com': undefined
         }
       })
-      cosmeticFilterAPI.applySiteFilters('brave.com')
+    cosmeticFilterAPI.applySiteFilters('brave.com')
       expect(insertCSSStub.called).toBe(false)
     })
   })

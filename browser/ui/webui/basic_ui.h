@@ -18,7 +18,7 @@ namespace content {
 class RenderViewHost;
 class WebUIDataSource;
 class WebUI;
-}
+}  // namespace content
 
 class Profile;
 

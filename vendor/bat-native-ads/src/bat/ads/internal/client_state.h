@@ -7,10 +7,10 @@
 #define BAT_ADS_INTERNAL_CLIENT_STATE_H_
 
 #include <stdint.h>
+#include <deque>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
-#include <deque>
 
 #include "bat/ads/result.h"
 
@@ -22,9 +22,8 @@ struct ClientState {
   ~ClientState();
 
   const std::string ToJson();
-  Result FromJson(
-      const std::string& json,
-      std::string* error_description = nullptr);
+  Result FromJson(const std::string& json,
+                  std::string* error_description = nullptr);
 
   std::deque<uint64_t> ads_shown_history;
   std::string ad_uuid;

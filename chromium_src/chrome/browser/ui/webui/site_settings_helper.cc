@@ -1,6 +1,8 @@
 #define HasRegisteredGroupName HasRegisteredGroupName_ChromiumImpl
-#define ContentSettingsTypeFromGroupName ContentSettingsTypeFromGroupName_ChromiumImpl
-#define ContentSettingsTypeToGroupName ContentSettingsTypeToGroupName_ChromiumImpl
+#define ContentSettingsTypeFromGroupName \
+  ContentSettingsTypeFromGroupName_ChromiumImpl
+#define ContentSettingsTypeToGroupName \
+  ContentSettingsTypeToGroupName_ChromiumImpl
 #include "../../../../../../chrome/browser/ui/webui/site_settings_helper.cc"
 #undef ContentSettingsTypeToGroupName
 #undef ContentSettingsTypeFromGroupName
@@ -26,4 +28,4 @@ std::string ContentSettingsTypeToGroupName(ContentSettingsType type) {
   return ContentSettingsTypeToGroupName_ChromiumImpl(type);
 }
 
-} // namespace site_settings
+}  // namespace site_settings

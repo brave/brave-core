@@ -24,9 +24,8 @@ using ResponseCallback = base::Callback<void()>;
 }  // namespace brave
 
 namespace brave_rewards {
-  int OnBeforeURLRequest(
-      const brave::ResponseCallback& next_callback,
-      std::shared_ptr<brave::BraveRequestInfo> ctx);
+int OnBeforeURLRequest(const brave::ResponseCallback& next_callback,
+                       std::shared_ptr<brave::BraveRequestInfo> ctx);
 }  // namespace brave_rewards
 
 namespace brave {
@@ -40,12 +39,7 @@ enum BraveNetworkDelegateEventType {
   kUnknownEventType
 };
 
-enum BlockedBy {
-  kNotBlocked ,
-  kAdBlocked,
-  kTrackerBlocked,
-  kOtherBlocked
-};
+enum BlockedBy { kNotBlocked, kAdBlocked, kTrackerBlocked, kOtherBlocked };
 
 struct BraveRequestInfo {
   BraveRequestInfo();
@@ -80,7 +74,7 @@ struct BraveRequestInfo {
   content::ResourceType resource_type = kInvalidResourceType;
 
   static void FillCTXFromRequest(const net::URLRequest* request,
-    std::shared_ptr<brave::BraveRequestInfo> ctx);
+                                 std::shared_ptr<brave::BraveRequestInfo> ctx);
 
  private:
   // Please don't add any more friends here if it can be avoided.
@@ -91,9 +85,8 @@ struct BraveRequestInfo {
   friend int brave_rewards::OnBeforeURLRequest(
       const brave::ResponseCallback& next_callback,
       std::shared_ptr<brave::BraveRequestInfo> ctx);
-  friend int OnBeforeURLRequest_TorWork(
-      const ResponseCallback& next_callback,
-      std::shared_ptr<BraveRequestInfo> ctx);
+  friend int OnBeforeURLRequest_TorWork(const ResponseCallback& next_callback,
+                                        std::shared_ptr<BraveRequestInfo> ctx);
   friend class ::BraveNetworkDelegateBase;
 
   // Don't use this directly after any dispatch
@@ -107,25 +100,24 @@ struct BraveRequestInfo {
 // ResponseListener
 using OnBeforeURLRequestCallback =
     base::Callback<int(const ResponseCallback& next_callback,
-        std::shared_ptr<BraveRequestInfo> ctx)>;
+                       std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnBeforeStartTransactionCallback =
     base::Callback<int(net::URLRequest* request,
-        net::HttpRequestHeaders* headers,
-        const ResponseCallback& next_callback,
-        std::shared_ptr<BraveRequestInfo> ctx)>;
-using OnHeadersReceivedCallback =
-    base::Callback<int(net::URLRequest* request,
-        const net::HttpResponseHeaders* original_response_headers,
-        scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
-        GURL* allowed_unsafe_redirect_url,
-        const ResponseCallback& next_callback,
-        std::shared_ptr<BraveRequestInfo> ctx)>;
+                       net::HttpRequestHeaders* headers,
+                       const ResponseCallback& next_callback,
+                       std::shared_ptr<BraveRequestInfo> ctx)>;
+using OnHeadersReceivedCallback = base::Callback<int(
+    net::URLRequest* request,
+    const net::HttpResponseHeaders* original_response_headers,
+    scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
+    GURL* allowed_unsafe_redirect_url,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnCanGetCookiesCallback =
     base::Callback<bool(std::shared_ptr<BraveRequestInfo> ctx)>;
 using OnCanSetCookiesCallback =
     base::Callback<bool(std::shared_ptr<BraveRequestInfo> ctx)>;
 
 }  // namespace brave
-
 
 #endif  // BRAVE_BROWSER_NET_URL_CONTEXT_H_

@@ -33,8 +33,7 @@ namespace {
 class AutoplayPermissionContextTest : public AutoplayPermissionContext {
  public:
   explicit AutoplayPermissionContextTest(Profile* profile)
-      : AutoplayPermissionContext(profile),
-        no_tab_reloaded_(false) {}
+      : AutoplayPermissionContext(profile), no_tab_reloaded_(false) {}
 
   ~AutoplayPermissionContextTest() override {}
 
@@ -47,8 +46,8 @@ class AutoplayPermissionContextTest : public AutoplayPermissionContext {
                            const BrowserPermissionCallback& callback,
                            bool persist,
                            ContentSetting content_setting) override {
-  if (!(persist && content_setting == CONTENT_SETTING_ALLOW))
-    no_tab_reloaded_ = true;
+    if (!(persist && content_setting == CONTENT_SETTING_ALLOW))
+      no_tab_reloaded_ = true;
   }
 
  private:
@@ -68,17 +67,14 @@ class AutoplayPermissionContextTests : public ChromeRenderViewHostTestHarness {
     PermissionRequestManager::CreateForWebContents(web_contents());
   }
 
-  void TearDown() override {
-    ChromeRenderViewHostTestHarness::TearDown();
-  }
+  void TearDown() override { ChromeRenderViewHostTestHarness::TearDown(); }
 
   content::BrowserContext* CreateBrowserContext() override {
     TestingProfile::Builder builder;
     auto prefs =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
     RegisterUserProfilePrefs(prefs->registry());
-    prefs->registry()->
-      RegisterBooleanPref(kGoogleLoginControlType, true);
+    prefs->registry()->RegisterBooleanPref(kGoogleLoginControlType, true);
     builder.SetPrefService(std::move(prefs));
     return builder.Build().release();
   }
@@ -96,30 +92,33 @@ TEST_F(AutoplayPermissionContextTests, TestInsecureQueryingUrl) {
   // Check that there is no saved content settings.
   EXPECT_EQ(CONTENT_SETTING_BLOCK,
             HostContentSettingsMapFactory::GetForProfile(profile())
-                ->GetContentSetting(
-                    insecure_url.GetOrigin(), insecure_url.GetOrigin(),
-                    CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string()));
-  EXPECT_EQ(
-      CONTENT_SETTING_BLOCK,
-      HostContentSettingsMapFactory::GetForProfile(profile())
-          ->GetContentSetting(secure_url.GetOrigin(), insecure_url.GetOrigin(),
-                              CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string()));
-  EXPECT_EQ(
-      CONTENT_SETTING_BLOCK,
-      HostContentSettingsMapFactory::GetForProfile(profile())
-          ->GetContentSetting(insecure_url.GetOrigin(), secure_url.GetOrigin(),
-                              CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string()));
+                ->GetContentSetting(insecure_url.GetOrigin(),
+                                    insecure_url.GetOrigin(),
+                                    CONTENT_SETTINGS_TYPE_AUTOPLAY,
+                                    std::string()));
+  EXPECT_EQ(CONTENT_SETTING_BLOCK,
+            HostContentSettingsMapFactory::GetForProfile(profile())
+                ->GetContentSetting(secure_url.GetOrigin(),
+                                    insecure_url.GetOrigin(),
+                                    CONTENT_SETTINGS_TYPE_AUTOPLAY,
+                                    std::string()));
+  EXPECT_EQ(CONTENT_SETTING_BLOCK,
+            HostContentSettingsMapFactory::GetForProfile(profile())
+                ->GetContentSetting(insecure_url.GetOrigin(),
+                                    secure_url.GetOrigin(),
+                                    CONTENT_SETTINGS_TYPE_AUTOPLAY,
+                                    std::string()));
 
   EXPECT_EQ(CONTENT_SETTING_BLOCK,
             permission_context
-                .GetPermissionStatus(nullptr /* render_frame_host */,
-                                     insecure_url, insecure_url)
+                .GetPermissionStatus(
+                    nullptr /* render_frame_host */, insecure_url, insecure_url)
                 .content_setting);
 
   EXPECT_EQ(CONTENT_SETTING_BLOCK,
             permission_context
-                .GetPermissionStatus(nullptr /* render_frame_host */,
-                                     insecure_url, secure_url)
+                .GetPermissionStatus(
+                    nullptr /* render_frame_host */, insecure_url, secure_url)
                 .content_setting);
 }
 
@@ -132,22 +131,27 @@ TEST_F(AutoplayPermissionContextTests, TestNonAutoRefresh) {
 
   const PermissionRequestID id(
       web_contents()->GetMainFrame()->GetProcess()->GetID(),
-      web_contents()->GetMainFrame()->GetRoutingID(), -1);
+      web_contents()->GetMainFrame()->GetRoutingID(),
+      -1);
 
   // non persist allow
-  HostContentSettingsMapFactory::GetForProfile(profile())->
-    SetContentSettingDefaultScope(url.GetOrigin(), url.GetOrigin(),
-                                  CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string(),
-                                  CONTENT_SETTING_ALLOW);
+  HostContentSettingsMapFactory::GetForProfile(profile())
+      ->SetContentSettingDefaultScope(url.GetOrigin(),
+                                      url.GetOrigin(),
+                                      CONTENT_SETTINGS_TYPE_AUTOPLAY,
+                                      std::string(),
+                                      CONTENT_SETTING_ALLOW);
   permission_context.RequestPermission(
       web_contents(), id, url, true, base::DoNothing());
   EXPECT_TRUE(permission_context.no_tab_reloaded());
 
   // non persist block
-  HostContentSettingsMapFactory::GetForProfile(profile())->
-    SetContentSettingDefaultScope(url.GetOrigin(), url.GetOrigin(),
-                                  CONTENT_SETTINGS_TYPE_AUTOPLAY, std::string(),
-                                  CONTENT_SETTING_BLOCK);
+  HostContentSettingsMapFactory::GetForProfile(profile())
+      ->SetContentSettingDefaultScope(url.GetOrigin(),
+                                      url.GetOrigin(),
+                                      CONTENT_SETTINGS_TYPE_AUTOPLAY,
+                                      std::string(),
+                                      CONTENT_SETTING_BLOCK);
   permission_context.RequestPermission(
       web_contents(), id, url, true, base::DoNothing());
   EXPECT_TRUE(permission_context.no_tab_reloaded());

@@ -24,16 +24,14 @@ class BraveExtensionManagement : public ExtensionManagement,
   void RegisterBraveExtensions();
 
   // ExtensionRegistryObserver implementation.
-  void OnExtensionLoaded(
-      content::BrowserContext* browser_context,
-      const Extension* extension) override;
-  void OnExtensionUnloaded(
-      content::BrowserContext* browser_context,
-      const Extension* extension,
-      UnloadedExtensionReason reason) override;
+  void OnExtensionLoaded(content::BrowserContext* browser_context,
+                         const Extension* extension) override;
+  void OnExtensionUnloaded(content::BrowserContext* browser_context,
+                           const Extension* extension,
+                           UnloadedExtensionReason reason) override;
 
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
-    extension_registry_observer_;
+      extension_registry_observer_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveExtensionManagement);
 };

@@ -2,12 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-export const isHttpOrHttps = (url?: string) => {
-  if (!url) {
-    return false
-  }
-  return /^https?:/i.test(url)
-}
+export const isHttpOrHttps =
+    (url?: string) => {
+      if (!url) {
+        return false
+      }
+      return /^https?:/i.test(url)
+    }
 
 /**
  * Obtains a letter / char that represents the current site
@@ -19,7 +20,7 @@ export const getCharForSite = (site: NewTab.Site) => {
     try {
       name = new window.URL(site.url || '').hostname
     } catch (e) {
-      console.warn('getCharForSite', { url: site.url || '' })
+      console.warn('getCharForSite', {url: site.url || ''})
     }
   }
   name = site.title || name || '?'

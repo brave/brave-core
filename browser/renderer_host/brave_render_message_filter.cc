@@ -48,8 +48,12 @@ void BraveRenderMessageFilter::ShouldStoreState(int render_frame_id,
           .GetOrigin();
   *allowed =
       g_brave_browser_process->tracking_protection_service()->ShouldStoreState(
-          cookie_settings_.get(), host_content_settings_map_,
-          render_process_id_, render_frame_id, origin_url, top_origin_url,
+          cookie_settings_.get(),
+          host_content_settings_map_,
+          render_process_id_,
+          render_frame_id,
+          origin_url,
+          top_origin_url,
           tab_origin);
 }
 
@@ -59,8 +63,8 @@ void BraveRenderMessageFilter::OnAllowDatabase(int render_frame_id,
                                                bool* allowed) {
   ShouldStoreState(render_frame_id, origin_url, top_origin_url, allowed);
   if (*allowed) {
-    ChromeRenderMessageFilter::OnAllowDatabase(render_frame_id, origin_url,
-                                               top_origin_url, allowed);
+    ChromeRenderMessageFilter::OnAllowDatabase(
+        render_frame_id, origin_url, top_origin_url, allowed);
   }
 }
 
@@ -82,7 +86,7 @@ void BraveRenderMessageFilter::OnAllowIndexedDB(int render_frame_id,
                                                 bool* allowed) {
   ShouldStoreState(render_frame_id, origin_url, top_origin_url, allowed);
   if (*allowed) {
-    ChromeRenderMessageFilter::OnAllowIndexedDB(render_frame_id, origin_url,
-                                                top_origin_url, allowed);
+    ChromeRenderMessageFilter::OnAllowIndexedDB(
+        render_frame_id, origin_url, top_origin_url, allowed);
   }
 }

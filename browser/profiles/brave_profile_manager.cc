@@ -41,7 +41,7 @@
 using content::BrowserThread;
 
 BraveProfileManager::BraveProfileManager(const base::FilePath& user_data_dir)
-  : ProfileManager(user_data_dir) {}
+    : ProfileManager(user_data_dir) {}
 
 // static
 base::FilePath BraveProfileManager::GetTorProfilePath() {
@@ -58,9 +58,9 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   PrefService* pref_service = profile->GetPrefs();
   pref_service->SetInteger(prefs::kProfileAvatarIndex, 0);
   pref_service->SetBoolean(prefs::kProfileUsingDefaultName, false);
-  pref_service
-    ->SetString(prefs::kProfileName,
-                l10n_util::GetStringUTF8(IDS_PROFILES_TOR_PROFILE_NAME));
+  pref_service->SetString(
+      prefs::kProfileName,
+      l10n_util::GetStringUTF8(IDS_PROFILES_TOR_PROFILE_NAME));
   pref_service->SetBoolean(tor::prefs::kProfileUsingTor, true);
   pref_service->SetString(prefs::kWebRTCIPHandlingPolicy,
                           content::kWebRTCIPHandlingDisableNonProxiedUdp);
@@ -81,7 +81,7 @@ std::string BraveProfileManager::GetLastUsedProfileName() {
   const std::string last_used_profile_name =
       local_state->GetString(prefs::kProfileLastUsed);
   if (last_used_profile_name ==
-          base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe())
+      base::FilePath(tor::kTorProfileDir).AsUTF8Unsafe())
     return chrome::kInitialProfile;
   return ProfileManager::GetLastUsedProfileName();
 }
@@ -91,17 +91,17 @@ Profile* BraveProfileManager::CreateProfileHelper(const base::FilePath& path) {
   SCOPED_UMA_HISTOGRAM_TIMER("Profile.CreateProfileHelperTime");
   Profile* profile = ProfileManager::CreateProfileHelper(path);
   if (path == GetTorProfilePath()) {
-     LaunchTorProcess(profile);
+    LaunchTorProcess(profile);
   }
   return profile;
 }
 
-Profile*
-BraveProfileManager::CreateProfileAsyncHelper(const base::FilePath& path,
-                                              Delegate* delegate) {
+Profile* BraveProfileManager::CreateProfileAsyncHelper(
+    const base::FilePath& path,
+    Delegate* delegate) {
   Profile* profile = ProfileManager::CreateProfileAsyncHelper(path, delegate);
   if (path == GetTorProfilePath()) {
-     LaunchTorProcess(profile);
+    LaunchTorProcess(profile);
   }
   return profile;
 }
@@ -114,7 +114,8 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   brave_sync::BraveSyncServiceFactory::GetForProfile(profile);
   brave_ads::AdsServiceFactory::GetForProfile(profile);
   brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-  content::URLDataSource::Add(profile,
+  content::URLDataSource::Add(
+      profile,
       std::make_unique<brave_content::BraveSharedResourcesDataSource>());
 }
 
@@ -123,12 +124,12 @@ void BraveProfileManager::LaunchTorProcess(Profile* profile) {
   // call LaunchTor()
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService* tor_profile_service =
-    TorProfileServiceFactory::GetForProfile(profile);
+      TorProfileServiceFactory::GetForProfile(profile);
   if (tor_profile_service->GetTorPid() < 0) {
     base::FilePath path =
-      g_brave_browser_process->tor_client_updater()->GetExecutablePath();
-    std::string proxy =
-      g_browser_process->local_state()->GetString(tor::prefs::kTorProxyString);
+        g_brave_browser_process->tor_client_updater()->GetExecutablePath();
+    std::string proxy = g_browser_process->local_state()->GetString(
+        tor::prefs::kTorProxyString);
     tor::TorConfig config(path, proxy);
     tor_profile_service->LaunchTor(config);
   }

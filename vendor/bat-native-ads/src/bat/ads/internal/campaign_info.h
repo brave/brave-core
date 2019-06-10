@@ -9,8 +9,8 @@
 #include <string>
 #include <vector>
 
-#include "bat/ads/internal/catalog_geo_target_info.h"
 #include "bat/ads/internal/catalog_creative_set_info.h"
+#include "bat/ads/internal/catalog_geo_target_info.h"
 
 namespace ads {
 

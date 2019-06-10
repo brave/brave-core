@@ -7,12 +7,9 @@
 
 namespace brave_rewards {
 
-PendingContributionInfo::PendingContributionInfo() :
-  amount(0),
-  added_date(0) {
-}
+PendingContributionInfo::PendingContributionInfo() : amount(0), added_date(0) {}
 
-PendingContributionInfo::~PendingContributionInfo() { }
+PendingContributionInfo::~PendingContributionInfo() {}
 
 PendingContributionInfo::PendingContributionInfo(
     const PendingContributionInfo& data) {

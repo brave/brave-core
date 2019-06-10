@@ -16,9 +16,8 @@ GetSignedTokensRequest::~GetSignedTokensRequest() = default;
 
 // GET /v1/confirmation/token/{payment_id}?nonce={nonce}
 
-std::string GetSignedTokensRequest::BuildUrl(
-    const WalletInfo& wallet_info,
-    const std::string& nonce) const {
+std::string GetSignedTokensRequest::BuildUrl(const WalletInfo& wallet_info,
+                                             const std::string& nonce) const {
   DCHECK(!wallet_info.payment_id.empty());
   DCHECK(!nonce.empty());
 

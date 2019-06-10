@@ -6,9 +6,11 @@
 
 namespace {
 
-class BraveBrowserMainExtraPartsProfiles : public ChromeBrowserMainExtraPartsProfiles {
+class BraveBrowserMainExtraPartsProfiles
+    : public ChromeBrowserMainExtraPartsProfiles {
  public:
-  BraveBrowserMainExtraPartsProfiles() : ChromeBrowserMainExtraPartsProfiles() {}
+  BraveBrowserMainExtraPartsProfiles()
+      : ChromeBrowserMainExtraPartsProfiles() {}
 
   void PreProfileInit() override {
     ChromeBrowserMainExtraPartsProfiles::PreProfileInit();

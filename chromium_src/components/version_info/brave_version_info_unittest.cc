@@ -6,8 +6,8 @@
 
 #include "testing/gtest/include/gtest/gtest.h"
 
-using version_info::GetChannelString;
 using version_info::Channel;
+using version_info::GetChannelString;
 
 // We use |nightly| instead of |canary|.
 TEST(BraveVersionInfoTest, ChannelStringTest) {

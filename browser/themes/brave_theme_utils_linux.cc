@@ -10,5 +10,4 @@ bool SystemThemeSupportDarkMode() {
   return false;
 }
 
-void SetSystemTheme(BraveThemeType type) {
-}
+void SetSystemTheme(BraveThemeType type) {}

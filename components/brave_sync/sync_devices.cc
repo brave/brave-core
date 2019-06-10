@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/json/json_writer.h"
 #include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/logging.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -16,21 +16,18 @@
 
 namespace brave_sync {
 
-SyncDevice::SyncDevice() :
-  last_active_ts_(0) {
-}
+SyncDevice::SyncDevice() : last_active_ts_(0) {}
 
 SyncDevice::SyncDevice(const SyncDevice& other) = default;
 
 SyncDevice::SyncDevice(const std::string& name,
-  const std::string& object_id,
-  const std::string& device_id,
-  const double last_active_ts) :
-  name_(name),
-  object_id_(object_id),
-  device_id_(device_id),
-  last_active_ts_(last_active_ts) {
-}
+                       const std::string& object_id,
+                       const std::string& device_id,
+                       const double last_active_ts)
+    : name_(name),
+      object_id_(object_id),
+      device_id_(device_id),
+      last_active_ts_(last_active_ts) {}
 
 SyncDevice& SyncDevice::operator=(const SyncDevice&) & = default;
 
@@ -54,10 +51,7 @@ SyncDevices::~SyncDevices() = default;
 std::string SyncDevices::ToJson() const {
   // devices_ => base::Value => json
   std::string json;
-  bool result = base::JSONWriter::WriteWithOptions(
-    *this->ToValue(),
-    0,
-    &json);
+  bool result = base::JSONWriter::WriteWithOptions(*this->ToValue(), 0, &json);
 
   DCHECK(result);
   return json;
@@ -68,7 +62,7 @@ std::unique_ptr<base::Value> SyncDevices::ToValue() const {
       std::make_unique<base::Value>(base::Value::Type::DICTIONARY);
 
   auto arr_devices = std::make_unique<base::Value>(base::Value::Type::LIST);
-  for (const SyncDevice &device : devices_) {
+  for (const SyncDevice& device : devices_) {
     arr_devices->GetList().push_back(std::move(*device.ToValue()));
   }
 
@@ -79,7 +73,7 @@ std::unique_ptr<base::Value> SyncDevices::ToValue() const {
 
 std::unique_ptr<base::Value> SyncDevices::ToValueArrOnly() const {
   auto arr_devices = std::make_unique<base::Value>(base::Value::Type::LIST);
-  for (const SyncDevice &device : devices_) {
+  for (const SyncDevice& device : devices_) {
     arr_devices->GetList().push_back(std::move(*device.ToValue()));
   }
 
@@ -106,23 +100,19 @@ void SyncDevices::FromJson(const std::string& str_json) {
   devices_.clear();
   const base::Value* pv_arr = records_v->FindKey("devices");
   CHECK(pv_arr->is_list());
-  for (const base::Value &val : pv_arr->GetList()) {
+  for (const base::Value& val : pv_arr->GetList()) {
     std::string name = val.FindKey("name")->GetString();
     std::string object_id = val.FindKey("object_id")->GetString();
     std::string device_id = val.FindKey("device_id")->GetString();
     double last_active = 0;
-    const base::Value *v_last_active = val.FindKey("last_active");
+    const base::Value* v_last_active = val.FindKey("last_active");
     if (v_last_active->is_double()) {
       last_active = v_last_active->GetDouble();
     } else {
       LOG(WARNING) << "SyncDevices::FromJson: last_active is not a double";
     }
 
-    devices_.push_back(SyncDevice(
-      name,
-      object_id,
-      device_id,
-      last_active) );
+    devices_.push_back(SyncDevice(name, object_id, device_id, last_active));
   }
 }
 
@@ -130,11 +120,12 @@ void SyncDevices::Merge(const SyncDevice& device,
                         int action,
                         bool* actually_merged) {
   *actually_merged = false;
-  auto existing_it = std::find_if(std::begin(devices_),
-                                  std::end(devices_),
-      [device](const SyncDevice &cur_dev) {
-        return cur_dev.object_id_ == device.object_id_;
-      });
+  auto existing_it =
+      std::find_if(std::begin(devices_),
+                   std::end(devices_),
+                   [device](const SyncDevice& cur_dev) {
+                     return cur_dev.object_id_ == device.object_id_;
+                   });
 
   switch (action) {
     case jslib_const::kActionCreate: {
@@ -166,7 +157,7 @@ void SyncDevices::Merge(const SyncDevice& device,
   }
 }
 
-SyncDevice* SyncDevices::GetByObjectId(const std::string &object_id) {
+SyncDevice* SyncDevices::GetByObjectId(const std::string& object_id) {
   for (auto& device : devices_) {
     if (device.object_id_ == object_id) {
       return &device;
@@ -176,7 +167,7 @@ SyncDevice* SyncDevices::GetByObjectId(const std::string &object_id) {
   return nullptr;
 }
 
-const SyncDevice* SyncDevices::GetByDeviceId(const std::string &device_id) {
+const SyncDevice* SyncDevices::GetByDeviceId(const std::string& device_id) {
   for (const auto& device : devices_) {
     if (device.device_id_ == device_id) {
       return &device;
@@ -186,13 +177,12 @@ const SyncDevice* SyncDevices::GetByDeviceId(const std::string &device_id) {
   return nullptr;
 }
 
-void SyncDevices::DeleteByObjectId(const std::string &object_id) {
-  auto existing_it =
-      std::find_if(std::begin(devices_),
-                    std::end(devices_),
-                    [object_id](const SyncDevice &dev) {
-                      return dev.object_id_ == object_id;
-                    });
+void SyncDevices::DeleteByObjectId(const std::string& object_id) {
+  auto existing_it = std::find_if(std::begin(devices_),
+                                  std::end(devices_),
+                                  [object_id](const SyncDevice& dev) {
+                                    return dev.object_id_ == object_id;
+                                  });
 
   if (existing_it != std::end(devices_)) {
     devices_.erase(existing_it);

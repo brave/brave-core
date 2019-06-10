@@ -7,8 +7,8 @@
 
 #include "base/strings/utf_string_conversions.h"
 
-BraveLocationBarModelDelegate::BraveLocationBarModelDelegate(
-    Browser* browser) : BrowserLocationBarModelDelegate(browser) {}
+BraveLocationBarModelDelegate::BraveLocationBarModelDelegate(Browser* browser)
+    : BrowserLocationBarModelDelegate(browser) {}
 
 BraveLocationBarModelDelegate::~BraveLocationBarModelDelegate() {}
 
@@ -21,11 +21,10 @@ BraveLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
           url, formatted_url);
 
   if (url.SchemeIs("chrome")) {
-    base::ReplaceFirstSubstringAfterOffset(
-        &new_formatted_url,
-        0,
-        base::UTF8ToUTF16("chrome://"),
-        base::UTF8ToUTF16("brave://"));
+    base::ReplaceFirstSubstringAfterOffset(&new_formatted_url,
+                                           0,
+                                           base::UTF8ToUTF16("chrome://"),
+                                           base::UTF8ToUTF16("brave://"));
   }
 
   return new_formatted_url;

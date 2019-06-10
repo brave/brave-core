@@ -7,11 +7,11 @@
 
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 
 BraveAppMenuModel::BraveAppMenuModel(
     ui::AcceleratorProvider* provider,
@@ -32,40 +32,35 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   // Sync & Rewards pages are redirected to normal window when it is loaded in
   // private window. So, only hide them in guest(tor) window.
   if (!browser_->profile()->IsGuestSession()) {
-    InsertItemWithStringIdAt(
-        GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
-        IDC_SHOW_BRAVE_REWARDS,
-        IDS_SHOW_BRAVE_REWARDS);
-    #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-      InsertItemWithStringIdAt(
-          GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
-          IDC_SHOW_BRAVE_WALLET,
-          IDS_SHOW_BRAVE_WALLET);
-    #endif
+    InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
+                             IDC_SHOW_BRAVE_REWARDS,
+                             IDS_SHOW_BRAVE_REWARDS);
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+    InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
+                             IDC_SHOW_BRAVE_WALLET,
+                             IDS_SHOW_BRAVE_WALLET);
+#endif
     if (brave_sync::BraveSyncService::is_enabled()) {
       InsertItemWithStringIdAt(
-          #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-            GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET),
-          #else
-            GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
-          #endif
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+          GetIndexOfCommandId(IDC_SHOW_BRAVE_WALLET),
+#else
+          GetIndexOfCommandId(IDC_SHOW_BRAVE_REWARDS),
+#endif
           IDC_SHOW_BRAVE_SYNC,
           IDS_SHOW_BRAVE_SYNC);
     }
   }
-  InsertItemWithStringIdAt(
-      GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
-      IDC_SHOW_BRAVE_ADBLOCK,
-      IDS_SHOW_BRAVE_ADBLOCK);
+  InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_SHOW_DOWNLOADS),
+                           IDC_SHOW_BRAVE_ADBLOCK,
+                           IDS_SHOW_BRAVE_ADBLOCK);
   if (browser_->profile()->IsTorProfile()) {
-    InsertItemWithStringIdAt(
-        GetIndexOfCommandId(IDC_NEW_WINDOW),
-        IDC_NEW_TOR_IDENTITY,
-        IDS_NEW_TOR_IDENTITY);
+    InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_NEW_WINDOW),
+                             IDC_NEW_TOR_IDENTITY,
+                             IDS_NEW_TOR_IDENTITY);
   } else {
-    InsertItemWithStringIdAt(
-        GetIndexOfCommandId(IDC_NEW_INCOGNITO_WINDOW) + 1,
-        IDC_NEW_OFFTHERECORD_WINDOW_TOR,
-        IDS_NEW_OFFTHERECORD_WINDOW_TOR);
+    InsertItemWithStringIdAt(GetIndexOfCommandId(IDC_NEW_INCOGNITO_WINDOW) + 1,
+                             IDC_NEW_OFFTHERECORD_WINDOW_TOR,
+                             IDS_NEW_OFFTHERECORD_WINDOW_TOR);
   }
 }

@@ -7,9 +7,9 @@
 #define BAT_ADS_INTERNAL_CATALOG_STATE_H_
 
 #include <stdint.h>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "bat/ads/issuers_info.h"
 
@@ -23,10 +23,9 @@ struct CatalogState {
   explicit CatalogState(const CatalogState& state);
   ~CatalogState();
 
-  Result FromJson(
-      const std::string& json,
-      const std::string& json_schema,
-      std::string* error_description = nullptr);
+  Result FromJson(const std::string& json,
+                  const std::string& json_schema,
+                  std::string* error_description = nullptr);
 
   std::string catalog_id;
   uint64_t version;

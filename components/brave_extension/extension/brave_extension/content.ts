@@ -1,7 +1,6 @@
-const unique = require('unique-selector').default
-let target: EventTarget | null
+const unique = require('unique-selector').default let target: EventTarget|null
 
-function getCurrentURL () {
+function getCurrentURL() {
   return window.location.hostname
 }
 
@@ -15,11 +14,11 @@ document.addEventListener('contextmenu', (event) => {
   })
 }, true)
 
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  const action = typeof msg === 'string' ? msg : msg.type
-  switch (action) {
-    case 'getTargetSelector': {
-      sendResponse(unique(target))
+  chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+    const action = typeof msg === 'string' ? msg : msg.type
+    switch (action) {
+      case 'getTargetSelector': {
+        sendResponse(unique(target))
+      }
     }
-  }
-})
+  })

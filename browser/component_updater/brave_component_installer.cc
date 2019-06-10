@@ -31,11 +31,9 @@ using InstallError = update_client::InstallError;
 }  // namespace
 
 namespace {
-bool RewriteManifestFile(
-    const base::FilePath& extension_root,
-    const base::DictionaryValue& manifest,
-    const std::string &public_key) {
-
+bool RewriteManifestFile(const base::FilePath& extension_root,
+                         const base::DictionaryValue& manifest,
+                         const std::string& public_key) {
   // Add the public key
   DCHECK(!public_key.empty());
 
@@ -50,7 +48,7 @@ bool RewriteManifestFile(
   }
 
   base::FilePath manifest_path =
-    extension_root.Append(FILE_PATH_LITERAL("manifest.json"));
+      extension_root.Append(FILE_PATH_LITERAL("manifest.json"));
   int size = base::checked_cast<int>(manifest_json.size());
   if (base::WriteFile(manifest_path, manifest_json.data(), size) != size) {
     return false;
@@ -59,7 +57,7 @@ bool RewriteManifestFile(
 }
 
 std::string GetManifestString(std::unique_ptr<base::DictionaryValue> manifest,
-    const std::string &public_key) {
+                              const std::string& public_key) {
   manifest->SetString("key", public_key);
 
   std::string manifest_json;
@@ -70,7 +68,6 @@ std::string GetManifestString(std::unique_ptr<base::DictionaryValue> manifest,
   }
   return manifest_json;
 }
-
 
 }  // namespace
 
@@ -101,8 +98,8 @@ bool BraveComponentInstallerPolicy::VerifyInstallation(
       install_dir.Append(FILE_PATH_LITERAL("manifest.json")));
 }
 
-bool BraveComponentInstallerPolicy::
-SupportsGroupPolicyEnabledComponentUpdates() const {
+bool BraveComponentInstallerPolicy::SupportsGroupPolicyEnabledComponentUpdates()
+    const {
   return false;
 }
 
@@ -112,13 +109,12 @@ bool BraveComponentInstallerPolicy::RequiresNetworkEncryption() const {
 
 update_client::CrxInstaller::Result
 BraveComponentInstallerPolicy::OnCustomInstall(
-  const base::DictionaryValue& manifest,
-  const base::FilePath& install_dir) {
+    const base::DictionaryValue& manifest,
+    const base::FilePath& install_dir) {
   return Result(InstallError::NONE);
 }
 
-void BraveComponentInstallerPolicy::OnCustomUninstall() {
-}
+void BraveComponentInstallerPolicy::OnCustomUninstall() {}
 
 void BraveComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
@@ -131,9 +127,9 @@ void BraveComponentInstallerPolicy::ComponentReady(
   // to Install could result in a crash here. See
   // https://github.com/brave/brave-browser/issues/4624
   if (!ready_callback_.is_null()) {
-    std::move(ready_callback_).Run(
-          install_dir,
-          GetManifestString(std::move(manifest), base64_public_key_));
+    std::move(ready_callback_)
+        .Run(install_dir,
+             GetManifestString(std::move(manifest), base64_public_key_));
   }
 }
 
@@ -163,12 +159,11 @@ BraveComponentInstallerPolicy::GetInstallerAttributes() const {
   return update_client::InstallerAttributes();
 }
 
-void RegisterComponent(
-    component_updater::ComponentUpdateService* cus,
-    const std::string& name,
-    const std::string& base64_public_key,
-    base::OnceClosure registered_callback,
-    BraveComponent::ReadyCallback ready_callback) {
+void RegisterComponent(component_updater::ComponentUpdateService* cus,
+                       const std::string& name,
+                       const std::string& base64_public_key,
+                       base::OnceClosure registered_callback,
+                       BraveComponent::ReadyCallback ready_callback) {
   auto installer = base::MakeRefCounted<component_updater::ComponentInstaller>(
       std::make_unique<BraveComponentInstallerPolicy>(
           name, base64_public_key, std::move(ready_callback)));

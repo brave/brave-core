@@ -11,8 +11,10 @@ BraveExternalProcessImporterClient::BraveExternalProcessImporterClient(
     const importer::SourceProfile& source_profile,
     uint16_t items,
     BraveInProcessImporterBridge* bridge)
-    : ExternalProcessImporterClient(
-          importer_host, source_profile, items, bridge),
+    : ExternalProcessImporterClient(importer_host,
+                                    source_profile,
+                                    items,
+                                    bridge),
       total_cookies_count_(0),
       bridge_(bridge),
       cancelled_(false) {}
@@ -39,8 +41,7 @@ void BraveExternalProcessImporterClient::OnCookiesImportGroup(
   if (cancelled_)
     return;
 
-  cookies_.insert(cookies_.end(), cookies_group.begin(),
-                  cookies_group.end());
+  cookies_.insert(cookies_.end(), cookies_group.begin(), cookies_group.end());
   if (cookies_.size() >= total_cookies_count_)
     bridge_->SetCookies(cookies_);
 }

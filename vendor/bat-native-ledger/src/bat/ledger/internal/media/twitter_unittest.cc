@@ -10,8 +10,7 @@
 
 namespace braveledger_media {
 
-class MediaTwitterTest : public testing::Test {
-};
+class MediaTwitterTest : public testing::Test {};
 
 TEST(MediaTwitterTest, GetProfileURL) {
   // screen_name is empty
@@ -89,18 +88,15 @@ TEST(MediaTwitterTest, GetUserNameFromUrl) {
   ASSERT_EQ(result, "");
 
   // empty path
-  result = braveledger_media::MediaTwitter::
-      GetUserNameFromUrl("/");
+  result = braveledger_media::MediaTwitter::GetUserNameFromUrl("/");
   ASSERT_EQ(result, "");
 
   // simple path
-  result = braveledger_media::MediaTwitter::
-      GetUserNameFromUrl("/emerick");
+  result = braveledger_media::MediaTwitter::GetUserNameFromUrl("/emerick");
   ASSERT_EQ(result, "emerick");
 
   // long path
-  result = braveledger_media::MediaTwitter::
-      GetUserNameFromUrl("/emerick/news");
+  result = braveledger_media::MediaTwitter::GetUserNameFromUrl("/emerick/news");
   ASSERT_EQ(result, "emerick");
 }
 
@@ -110,34 +106,28 @@ TEST(MediaTwitterTest, IsExcludedPath) {
   ASSERT_EQ(result, true);
 
   // path is simple excluded link
-  result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/home");
+  result = braveledger_media::MediaTwitter::IsExcludedPath("/home");
   ASSERT_EQ(result, true);
 
   // path is simple excluded link with trailing /
-  result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/home/");
+  result = braveledger_media::MediaTwitter::IsExcludedPath("/home/");
   ASSERT_EQ(result, true);
   ASSERT_EQ(result, true);
 
   // path is complex excluded link
-  result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/i/");
+  result = braveledger_media::MediaTwitter::IsExcludedPath("/i/");
   ASSERT_EQ(result, true);
 
   // path is complex excluded link two levels
-  result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/i/settings");
+  result = braveledger_media::MediaTwitter::IsExcludedPath("/i/settings");
   ASSERT_EQ(result, true);
 
   // path is random link
-  result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/asdfs/asdfasdf/");
+  result = braveledger_media::MediaTwitter::IsExcludedPath("/asdfs/asdfasdf/");
   ASSERT_EQ(result, false);
 
   // path is not excluded link
-  result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/emerick");
+  result = braveledger_media::MediaTwitter::IsExcludedPath("/emerick");
   ASSERT_EQ(result, false);
 }
 
@@ -156,40 +146,36 @@ TEST(MediaTwitterTest, GetUserId) {
   ASSERT_EQ(result, "");
 
   // html is not correct
-  result =
-      braveledger_media::MediaTwitter::GetUserId("<div>Hi</div>");
+  result = braveledger_media::MediaTwitter::GetUserId("<div>Hi</div>");
   ASSERT_EQ(result, "");
 
   // support for current Twitter
-  result =
-      braveledger_media::MediaTwitter::GetUserId(profile_old);
+  result = braveledger_media::MediaTwitter::GetUserId(profile_old);
   ASSERT_EQ(result, "123");
 
   // support for new Twitter
-  result =
-      braveledger_media::MediaTwitter::GetUserId(profile_new);
+  result = braveledger_media::MediaTwitter::GetUserId(profile_new);
   ASSERT_EQ(result, "123");
 }
 
 TEST(MediaTwitterTest, GetPublisherName) {
   // response is empty
-  std::string result =
-      braveledger_media::MediaTwitter::GetPublisherName("");
+  std::string result = braveledger_media::MediaTwitter::GetPublisherName("");
   ASSERT_EQ(result, "");
 
   // without twitter
-  result = braveledger_media::MediaTwitter::
-      GetPublisherName("<title>Hi</title>");
+  result =
+      braveledger_media::MediaTwitter::GetPublisherName("<title>Hi</title>");
   ASSERT_EQ(result, "Hi");
 
   // current twitter
-  result = braveledger_media::MediaTwitter::
-      GetPublisherName("<title>Name (@emerick) / Twitter</title>");
+  result = braveledger_media::MediaTwitter::GetPublisherName(
+      "<title>Name (@emerick) / Twitter</title>");
   ASSERT_EQ(result, "Name");
 
   // new twitter
-  result = braveledger_media::MediaTwitter::
-      GetPublisherName("<title>My Name (@emerick) | Twitter</title>");
+  result = braveledger_media::MediaTwitter::GetPublisherName(
+      "<title>My Name (@emerick) | Twitter</title>");
   ASSERT_EQ(result, "My Name");
 }
 

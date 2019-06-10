@@ -44,8 +44,8 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
         incognito ? browser()->profile()->GetOffTheRecordProfile()
                   : browser()->profile()));
     std::unique_ptr<BraveSpellingOptionsSubMenuObserver> observer =
-        std::make_unique<BraveSpellingOptionsSubMenuObserver>(menu_.get(),
-                                                              menu_.get(), 1);
+        std::make_unique<BraveSpellingOptionsSubMenuObserver>(
+            menu_.get(), menu_.get(), 1);
     observer->SetGtestMode(gtest_mode);
     observer_ = std::move(observer);
     menu_->SetObserver(observer_.get());
@@ -57,9 +57,7 @@ class BraveSpellingOptionsSubMenuObserverTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUpOnMainThread();
   }
 
-  void TearDownOnMainThread() override {
-    Clear();
-  }
+  void TearDownOnMainThread() override { Clear(); }
 
   void InitMenu(bool enable_spellcheck,
                 const std::string& accept_languages,

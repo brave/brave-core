@@ -15,47 +15,48 @@
 namespace brave {
 
 bool IsBlockedResource(const GURL& gurl) {
-  static std::vector<URLPattern> blocked_patterns({
-      URLPattern(URLPattern::SCHEME_ALL, "https://pdfjs.robwu.nl/*")
-  });
-  return std::any_of(blocked_patterns.begin(), blocked_patterns.end(),
-                     [&gurl](URLPattern pattern){
-                       return pattern.MatchesURL(gurl);
-                     });
+  static std::vector<URLPattern> blocked_patterns(
+      {URLPattern(URLPattern::SCHEME_ALL, "https://pdfjs.robwu.nl/*")});
+  return std::any_of(
+      blocked_patterns.begin(),
+      blocked_patterns.end(),
+      [&gurl](URLPattern pattern) { return pattern.MatchesURL(gurl); });
 }
 
 bool IsWhitelistedCookieException(const GURL& firstPartyOrigin,
-    const GURL& subresourceUrl, bool allow_google_auth) {
+                                  const GURL& subresourceUrl,
+                                  bool allow_google_auth) {
   // Note that there's already an exception for TLD+1, so don't add those here.
   // Check with the security team before adding exceptions.
 
   // 1st-party-INdependent whitelist
   std::vector<URLPattern> fpi_whitelist_patterns = {};
   if (allow_google_auth) {
-    fpi_whitelist_patterns.push_back(URLPattern(URLPattern::SCHEME_ALL,
-        "https://accounts.google.com/o/oauth2/*"));
+    fpi_whitelist_patterns.push_back(URLPattern(
+        URLPattern::SCHEME_ALL, "https://accounts.google.com/o/oauth2/*"));
   }
   bool any_match = std::any_of(fpi_whitelist_patterns.begin(),
-      fpi_whitelist_patterns.end(),
-      [&subresourceUrl](const URLPattern& pattern) {
-        return pattern.MatchesURL(subresourceUrl);
-      });
+                               fpi_whitelist_patterns.end(),
+                               [&subresourceUrl](const URLPattern& pattern) {
+                                 return pattern.MatchesURL(subresourceUrl);
+                               });
   if (any_match) {
     return true;
   }
 
   // 1st-party-dependent whitelist
-  static std::map<GURL, std::vector<URLPattern> > whitelist_patterns = {};
-  std::map<GURL, std::vector<URLPattern> >::iterator i =
+  static std::map<GURL, std::vector<URLPattern>> whitelist_patterns = {};
+  std::map<GURL, std::vector<URLPattern>>::iterator i =
       whitelist_patterns.find(firstPartyOrigin);
   if (i == whitelist_patterns.end()) {
     return false;
   }
-  std::vector<URLPattern> &exceptions = i->second;
-  return std::any_of(exceptions.begin(), exceptions.end(),
-      [&subresourceUrl](const URLPattern& pattern) {
-        return pattern.MatchesURL(subresourceUrl);
-      });
+  std::vector<URLPattern>& exceptions = i->second;
+  return std::any_of(exceptions.begin(),
+                     exceptions.end(),
+                     [&subresourceUrl](const URLPattern& pattern) {
+                       return pattern.MatchesURL(subresourceUrl);
+                     });
 }
 
 }  // namespace brave

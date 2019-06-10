@@ -6,23 +6,22 @@
 #ifndef BAT_CONFIRMATIONS_INTERNAL_SECURITY_HELPER_H_
 #define BAT_CONFIRMATIONS_INTERNAL_SECURITY_HELPER_H_
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include "wrapper.hpp"
 
-using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::BlindedToken;
+using challenge_bypass_ristretto::Token;
 
 namespace helper {
 
 class Security {
  public:
-  static std::string Sign(
-      const std::map<std::string, std::string>& headers,
-      const std::string& key_id,
-      const std::vector<uint8_t>& public_key);
+  static std::string Sign(const std::map<std::string, std::string>& headers,
+                          const std::string& key_id,
+                          const std::vector<uint8_t>& public_key);
 
   static std::vector<Token> GenerateTokens(const int count);
 

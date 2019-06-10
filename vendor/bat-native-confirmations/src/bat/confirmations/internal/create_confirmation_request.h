@@ -9,9 +9,9 @@
 #include <string>
 #include <vector>
 
+#include "bat/confirmations/confirmation_type.h"
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/internal/token_info.h"
-#include "bat/confirmations/confirmation_type.h"
 
 #include "wrapper.hpp"  // NOLINT
 
@@ -24,14 +24,12 @@ class CreateConfirmationRequest {
   CreateConfirmationRequest();
   ~CreateConfirmationRequest();
 
-  std::string BuildUrl(
-    const std::string& confirmation_id,
-    const std::string& credential) const;
+  std::string BuildUrl(const std::string& confirmation_id,
+                       const std::string& credential) const;
 
   URLRequestMethod GetMethod() const;
 
-  std::string BuildBody(
-      const std::string& payload) const;
+  std::string BuildBody(const std::string& payload) const;
 
   std::vector<std::string> BuildHeaders() const;
   std::string GetAcceptHeaderValue() const;
@@ -43,9 +41,8 @@ class CreateConfirmationRequest {
       const BlindedToken& token,
       const ConfirmationType confirmation_type) const;
 
-  std::string CreateCredential(
-      const TokenInfo& token_info,
-      const std::string& payload) const;
+  std::string CreateCredential(const TokenInfo& token_info,
+                               const std::string& payload) const;
 };
 
 }  // namespace confirmations

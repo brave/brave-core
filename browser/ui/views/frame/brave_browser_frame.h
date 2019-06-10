@@ -10,16 +10,16 @@
 class BrowserView;
 
 class BraveBrowserFrame : public BrowserFrame {
-  public:
-    explicit BraveBrowserFrame(BrowserView* browser_view);
-    ~BraveBrowserFrame() override;
-    const ui::NativeTheme* GetNativeTheme() const override;
+ public:
+  explicit BraveBrowserFrame(BrowserView* browser_view);
+  ~BraveBrowserFrame() override;
+  const ui::NativeTheme* GetNativeTheme() const override;
 
-  private:
-    // The BrowserView is our ClientView. This is a pointer to it.
-    BrowserView* browser_view_;
+ private:
+  // The BrowserView is our ClientView. This is a pointer to it.
+  BrowserView* browser_view_;
 
-    DISALLOW_COPY_AND_ASSIGN(BraveBrowserFrame);
+  DISALLOW_COPY_AND_ASSIGN(BraveBrowserFrame);
 };
 
 #endif

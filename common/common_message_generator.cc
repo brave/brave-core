@@ -8,8 +8,8 @@
 #include "brave/common/common_message_generator.h"
 
 // Generate constructors.
-#include "ipc/struct_constructor_macros.h"
 #include "brave/common/common_message_generator.h"
+#include "ipc/struct_constructor_macros.h"
 
 // Generate param traits write methods.
 #include "ipc/param_traits_write_macros.h"
@@ -28,4 +28,3 @@ namespace IPC {
 namespace IPC {
 #include "brave/common/common_message_generator.h"
 }  // namespace IPC
-

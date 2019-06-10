@@ -12,15 +12,21 @@
 namespace brave {
 
 bool OnCanGetCookiesForBraveShields(std::shared_ptr<BraveRequestInfo> ctx) {
-  return !ShouldBlockCookie(ctx->allow_brave_shields, ctx->allow_1p_cookies,
-    ctx->allow_3p_cookies, ctx->tab_origin, ctx->request_url,
-    ctx->allow_google_auth);
+  return !ShouldBlockCookie(ctx->allow_brave_shields,
+                            ctx->allow_1p_cookies,
+                            ctx->allow_3p_cookies,
+                            ctx->tab_origin,
+                            ctx->request_url,
+                            ctx->allow_google_auth);
 }
 
 bool OnCanSetCookiesForBraveShields(std::shared_ptr<BraveRequestInfo> ctx) {
-  return !ShouldBlockCookie(ctx->allow_brave_shields, ctx->allow_1p_cookies,
-    ctx->allow_3p_cookies, ctx->tab_origin, ctx->request_url,
-    ctx->allow_google_auth);
+  return !ShouldBlockCookie(ctx->allow_brave_shields,
+                            ctx->allow_1p_cookies,
+                            ctx->allow_3p_cookies,
+                            ctx->tab_origin,
+                            ctx->request_url,
+                            ctx->allow_google_auth);
 }
 
 }  // namespace brave

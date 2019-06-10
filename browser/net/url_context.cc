@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-
 #include "brave/browser/net/url_context.h"
 
 #include <memory>
@@ -20,13 +19,12 @@
 
 namespace brave {
 
-BraveRequestInfo::BraveRequestInfo() {
-}
+BraveRequestInfo::BraveRequestInfo() {}
 
-BraveRequestInfo::~BraveRequestInfo() {
-}
+BraveRequestInfo::~BraveRequestInfo() {}
 
-void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
+void BraveRequestInfo::FillCTXFromRequest(
+    const net::URLRequest* request,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
   ctx->request_identifier = request->identifier();
   ctx->request_url = request->url();
@@ -47,28 +45,45 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
     // We can not always use site_for_cookies since it can be empty in certain
     // cases. See the comments in url_request.h
     ctx->tab_url = brave_shields::BraveShieldsWebContentsObserver::
-        GetTabURLFromRenderFrameInfo(ctx->render_process_id,
-                                     ctx->render_frame_id,
-                                     ctx->frame_tree_node_id).GetOrigin();
+                       GetTabURLFromRenderFrameInfo(ctx->render_process_id,
+                                                    ctx->render_frame_id,
+                                                    ctx->frame_tree_node_id)
+                           .GetOrigin();
   }
   ctx->tab_origin = ctx->tab_url.GetOrigin();
-  ctx->allow_brave_shields = brave_shields::IsAllowContentSettingFromIO(
-      request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields) &&
-    !request->site_for_cookies().SchemeIs(kChromeExtensionScheme);
-  ctx->allow_ads = brave_shields::IsAllowContentSettingFromIO(
-      request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kAds);
+  ctx->allow_brave_shields =
+      brave_shields::IsAllowContentSettingFromIO(
+          request,
+          ctx->tab_origin,
+          ctx->tab_origin,
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kBraveShields) &&
+      !request->site_for_cookies().SchemeIs(kChromeExtensionScheme);
+  ctx->allow_ads =
+      brave_shields::IsAllowContentSettingFromIO(request,
+                                                 ctx->tab_origin,
+                                                 ctx->tab_origin,
+                                                 CONTENT_SETTINGS_TYPE_PLUGINS,
+                                                 brave_shields::kAds);
   ctx->allow_http_upgradable_resource =
-      brave_shields::IsAllowContentSettingFromIO(request, ctx->tab_origin,
-          ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kHTTPUpgradableResources);
-  ctx->allow_1p_cookies = brave_shields::IsAllowContentSettingFromIO(
-      request, ctx->tab_origin, GURL("https://firstParty/"),
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
-  ctx->allow_3p_cookies = brave_shields::IsAllowContentSettingFromIO(
-      request, ctx->tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kCookies);
+      brave_shields::IsAllowContentSettingFromIO(
+          request,
+          ctx->tab_origin,
+          ctx->tab_origin,
+          CONTENT_SETTINGS_TYPE_PLUGINS,
+          brave_shields::kHTTPUpgradableResources);
+  ctx->allow_1p_cookies =
+      brave_shields::IsAllowContentSettingFromIO(request,
+                                                 ctx->tab_origin,
+                                                 GURL("https://firstParty/"),
+                                                 CONTENT_SETTINGS_TYPE_PLUGINS,
+                                                 brave_shields::kCookies);
+  ctx->allow_3p_cookies =
+      brave_shields::IsAllowContentSettingFromIO(request,
+                                                 ctx->tab_origin,
+                                                 GURL(),
+                                                 CONTENT_SETTINGS_TYPE_PLUGINS,
+                                                 brave_shields::kCookies);
   ctx->request = request;
 }
 

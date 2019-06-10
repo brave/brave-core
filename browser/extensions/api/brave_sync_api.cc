@@ -10,12 +10,12 @@
 #include <vector>
 
 #include "brave/common/extensions/api/brave_sync.h"
-#include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_factory.h"
+#include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
-#include "brave/components/brave_sync/values_conv.h"
 #include "brave/components/brave_sync/jslib_messages.h"
+#include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/profiles/profile.h"
 
 using ::brave_sync::BraveSyncService;
@@ -105,10 +105,10 @@ ExtensionFunction::ResponseAction BraveSyncGetExistingObjectsFunction::Run() {
   BraveSyncService* sync_service = GetBraveSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->GetSyncClient()->sync_message_handler()->OnGetExistingObjects(
-    params->category_name,
-    std::move(records),
-    base::Time::FromJsTime(params->last_record_timestamp),
-    params->is_truncated);
+      params->category_name,
+      std::move(records),
+      base::Time::FromJsTime(params->last_record_timestamp),
+      params->is_truncated);
 
   return RespondNow(NoArguments());
 }
@@ -124,8 +124,7 @@ ExtensionFunction::ResponseAction BraveSyncResolvedSyncRecordsFunction::Run() {
   BraveSyncService* sync_service = GetBraveSyncService(browser_context());
   DCHECK(sync_service);
   sync_service->GetSyncClient()->sync_message_handler()->OnResolvedSyncRecords(
-    params->category_name,
-    std::move(records));
+      params->category_name, std::move(records));
 
   return RespondNow(NoArguments());
 }
@@ -138,8 +137,9 @@ BraveSyncSaveBookmarksBaseOrderFunction::Run() {
 
   BraveSyncService* sync_service = GetBraveSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->GetSyncClient()->sync_message_handler()
-    ->OnSaveBookmarksBaseOrder(params->order);
+  sync_service->GetSyncClient()
+      ->sync_message_handler()
+      ->OnSaveBookmarksBaseOrder(params->order);
 
   return RespondNow(NoArguments());
 }
@@ -164,8 +164,8 @@ ExtensionFunction::ResponseAction BraveSyncSyncWordsPreparedFunction::Run() {
 
   BraveSyncService* sync_service = GetBraveSyncService(browser_context());
   DCHECK(sync_service);
-  sync_service->GetSyncClient()->sync_message_handler()
-    ->OnSyncWordsPrepared(params->words);
+  sync_service->GetSyncClient()->sync_message_handler()->OnSyncWordsPrepared(
+      params->words);
 
   return RespondNow(NoArguments());
 }

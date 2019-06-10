@@ -12,15 +12,15 @@
 
 base::FilePath GetChromeUserDataFolder() {
   base::FilePath result = base::mac::GetUserLibraryPath();
- return result.Append("Application Support/Google/Chrome");
+  return result.Append("Application Support/Google/Chrome");
 }
 
 base::FilePath GetCanaryUserDataFolder() {
   base::FilePath result = base::mac::GetUserLibraryPath();
- return result.Append("Application Support/Google/Chrome Canary");
+  return result.Append("Application Support/Google/Chrome Canary");
 }
 
 base::FilePath GetChromiumUserDataFolder() {
   base::FilePath result = base::mac::GetUserLibraryPath();
- return result.Append("Application Support/Chromium");
+  return result.Append("Application Support/Chromium");
 }

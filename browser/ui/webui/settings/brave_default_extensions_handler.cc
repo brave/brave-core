@@ -23,11 +23,9 @@
 #include "extensions/browser/extension_system.h"
 
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
-  : weak_ptr_factory_(this) {
-}
+    : weak_ptr_factory_(this) {}
 
-BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() {
-}
+BraveDefaultExtensionsHandler::~BraveDefaultExtensionsHandler() {}
 
 void BraveDefaultExtensionsHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
@@ -42,8 +40,8 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "setIPFSCompanionEnabled",
       base::BindRepeating(
-        &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
-        base::Unretained(this)));
+          &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
+          base::Unretained(this)));
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
@@ -54,19 +52,20 @@ void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(
   args->GetBoolean(0, &enabled);
 
   extensions::ExtensionService* service =
-    extensions::ExtensionSystem::Get(profile_)->extension_service();
+      extensions::ExtensionSystem::Get(profile_)->extension_service();
   extensions::ComponentLoader* loader = service->component_loader();
 
   if (enabled) {
     if (!loader->Exists(brave_webtorrent_extension_id)) {
       base::FilePath brave_webtorrent_path(FILE_PATH_LITERAL(""));
       brave_webtorrent_path =
-        brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
+          brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
       loader->Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
     }
     service->EnableExtension(brave_webtorrent_extension_id);
   } else {
-    service->DisableExtension(brave_webtorrent_extension_id,
+    service->DisableExtension(
+        brave_webtorrent_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
   }
 }
@@ -79,32 +78,33 @@ void BraveDefaultExtensionsHandler::SetHangoutsEnabled(
   args->GetBoolean(0, &enabled);
 
   extensions::ExtensionService* service =
-    extensions::ExtensionSystem::Get(profile_)->extension_service();
+      extensions::ExtensionSystem::Get(profile_)->extension_service();
 
   if (enabled) {
     extensions::ComponentLoader* loader = service->component_loader();
     if (!loader->Exists(hangouts_extension_id)) {
-      static_cast<extensions::BraveComponentLoader*>(loader)->
-          ForceAddHangoutServicesExtension();
+      static_cast<extensions::BraveComponentLoader*>(loader)
+          ->ForceAddHangoutServicesExtension();
     }
     service->EnableExtension(hangouts_extension_id);
   } else {
-    service->DisableExtension(hangouts_extension_id,
+    service->DisableExtension(
+        hangouts_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_BLOCKED_BY_POLICY);
   }
 }
 
 bool BraveDefaultExtensionsHandler::IsExtensionInstalled(
     const std::string& extension_id) const {
-  extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(
-        static_cast<content::BrowserContext*>(profile_));
+  extensions::ExtensionRegistry* registry = extensions::ExtensionRegistry::Get(
+      static_cast<content::BrowserContext*>(profile_));
   return registry && registry->GetInstalledExtension(extension_id);
 }
 
 void BraveDefaultExtensionsHandler::OnInstallResult(
     const std::string& pref_name,
-    bool success, const std::string& error,
+    bool success,
+    const std::string& error,
     extensions::webstore_install::Result result) {
   if (result != extensions::webstore_install::Result::SUCCESS &&
       result != extensions::webstore_install::Result::LAUNCH_IN_PROGRESS) {
@@ -120,19 +120,22 @@ void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
   args->GetBoolean(0, &enabled);
 
   extensions::ExtensionService* service =
-  extensions::ExtensionSystem::Get(profile_)->extension_service();
+      extensions::ExtensionSystem::Get(profile_)->extension_service();
   if (enabled) {
     if (!IsExtensionInstalled(ipfs_companion_extension_id)) {
       scoped_refptr<extensions::WebstoreInstallWithPrompt> installer =
-        new extensions::WebstoreInstallWithPrompt(
-            ipfs_companion_extension_id, profile_,
-            base::BindOnce(&BraveDefaultExtensionsHandler::OnInstallResult,
-              weak_ptr_factory_.GetWeakPtr(), kIPFSCompanionEnabled));
+          new extensions::WebstoreInstallWithPrompt(
+              ipfs_companion_extension_id,
+              profile_,
+              base::BindOnce(&BraveDefaultExtensionsHandler::OnInstallResult,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             kIPFSCompanionEnabled));
       installer->BeginInstall();
     }
     service->EnableExtension(ipfs_companion_extension_id);
   } else {
-    service->DisableExtension(ipfs_companion_extension_id,
+    service->DisableExtension(
+        ipfs_companion_extension_id,
         extensions::disable_reason::DisableReason::DISABLE_USER_ACTION);
   }
 }

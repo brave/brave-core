@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global chrome */
 
-import adblockReducer from '../../../brave_adblock_ui/reducers/adblock_reducer'
 import * as actions from '../../../brave_adblock_ui/actions/adblock_actions'
-import { types } from '../../../brave_adblock_ui/constants/adblock_types'
+import {types} from '../../../brave_adblock_ui/constants/adblock_types'
+import adblockReducer from '../../../brave_adblock_ui/reducers/adblock_reducer'
 
 describe('adblockReducer', () => {
   it('should handle initial state', () => {

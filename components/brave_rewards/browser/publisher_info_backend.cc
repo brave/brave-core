@@ -17,8 +17,8 @@
 
 namespace brave_rewards {
 
-PublisherInfoBackend::PublisherInfoBackend(const base::FilePath& path) :
-    path_(path) {
+PublisherInfoBackend::PublisherInfoBackend(const base::FilePath& path)
+    : path_(path) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
@@ -41,8 +41,7 @@ bool PublisherInfoBackend::Put(const std::string& key,
   return false;
 }
 
-bool PublisherInfoBackend::Get(const std::string& lookup,
-                               std::string* value) {
+bool PublisherInfoBackend::Get(const std::string& lookup, std::string* value) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   bool initialized = EnsureInitialized();
   DCHECK(initialized);
@@ -59,8 +58,9 @@ bool PublisherInfoBackend::Get(const std::string& lookup,
 }
 
 bool PublisherInfoBackend::Search(const std::vector<std::string>& prefixes,
-              uint32_t start, uint32_t limit,
-              std::vector<std::string>& results) {
+                                  uint32_t start,
+                                  uint32_t limit,
+                                  std::vector<std::string>& results) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   bool initialized = EnsureInitialized();
   DCHECK(initialized);
@@ -73,13 +73,11 @@ bool PublisherInfoBackend::Search(const std::vector<std::string>& prefixes,
 
   uint32_t count = 0;
   uint32_t position = 0;
-  for (std::vector<std::string>::const_iterator prefix =
-        prefixes.begin(); prefix != prefixes.end(); ++prefix) {
-
+  for (std::vector<std::string>::const_iterator prefix = prefixes.begin();
+       prefix != prefixes.end();
+       ++prefix) {
     auto slice = leveldb::Slice(*prefix);
-    for (db_it->Seek(slice);
-          count < limit && db_it->Valid();
-          db_it->Next()) {
+    for (db_it->Seek(slice); count < limit && db_it->Valid(); db_it->Next()) {
       if (!db_it->value().starts_with(slice)) {
         db_it->SeekToLast();
         continue;
@@ -144,8 +142,7 @@ bool PublisherInfoBackend::EnsureInitialized() {
     CHECK(db_);
     return true;
   }
-  LOG(WARNING) << "Unable to open " << path << ": "
-               << status.ToString();
+  LOG(WARNING) << "Unable to open " << path << ": " << status.ToString();
   return false;
 }
 

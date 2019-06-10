@@ -6,9 +6,9 @@
 
 #include <set>
 
-#include "brave/browser/tor/tor_profile_service_impl.h"
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/browser/tor/buildflags.h"
+#include "brave/browser/tor/tor_profile_service_impl.h"
 #include "brave/common/tor/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -35,12 +35,13 @@ TorProfileServiceFactory::TorProfileServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "TorProfileService",
           BrowserContextDependencyManager::GetInstance()) {
-      g_profile_set.clear();
+  g_profile_set.clear();
 }
 
-//static
+// static
 void TorProfileServiceFactory::SetTorNavigationUIData(
-    Profile* profile, BraveNavigationUIData* data) {
+    Profile* profile,
+    BraveNavigationUIData* data) {
   if (!profile->IsTorProfile())
     return;
   data->SetTorProfileService(GetForProfile(profile));
@@ -79,8 +80,8 @@ void TorProfileServiceFactory::BrowserContextShutdown(
 #if BUILDFLAG(ENABLE_TOR)
   if (g_profile_set.size() == 1) {
     auto* service = static_cast<tor::TorProfileServiceImpl*>(
-      TorProfileServiceFactory::GetForProfile(
-        Profile::FromBrowserContext(context)));
+        TorProfileServiceFactory::GetForProfile(
+            Profile::FromBrowserContext(context)));
     service->KillTor();
   }
 #endif

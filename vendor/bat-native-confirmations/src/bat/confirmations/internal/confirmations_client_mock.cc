@@ -7,10 +7,9 @@
 
 namespace confirmations {
 
-MockLogStreamImpl::MockLogStreamImpl(
-    const char* file,
-    const int line,
-    const ledger::LogLevel log_level) {
+MockLogStreamImpl::MockLogStreamImpl(const char* file,
+                                     const int line,
+                                     const ledger::LogLevel log_level) {
   (void)file;
   (void)line;
   (void)log_level;
@@ -20,10 +19,9 @@ std::ostream& MockLogStreamImpl::stream() {
   return std::cout;
 }
 
-MockVerboseLogStreamImpl::MockVerboseLogStreamImpl(
-    const char* file,
-    int line,
-    int vlog_level) {
+MockVerboseLogStreamImpl::MockVerboseLogStreamImpl(const char* file,
+                                                   int line,
+                                                   int vlog_level) {
   (void)file;
   (void)line;
   (void)vlog_level;

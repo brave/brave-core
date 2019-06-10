@@ -14,7 +14,7 @@ TEST_F(FieldTrialsTest, FieldTrialsTestingEnabled) {
 #if BUILDFLAG(FIELDTRIAL_TESTING_ENABLED)
   enabled = true
 #endif  // BUILDFLAG(FIELDTRIAL_TESTING_ENABLED)
-  EXPECT_FALSE(enabled);
+      EXPECT_FALSE(enabled);
 }
 
 }  // namespace

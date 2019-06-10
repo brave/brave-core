@@ -11,13 +11,9 @@
 
 // static
 void NavigationBarDataProvider::Initialize(content::WebUIDataSource* source) {
-  source->AddLocalizedString(
-    "brToolbarSettingsTitle", IDS_SETTINGS_SETTINGS);
-  source->AddLocalizedString(
-    "brToolbarBookmarksTitle", IDS_BOOKMARK_MANAGER_TITLE);
-  source->AddLocalizedString(
-    "brToolbarDownloadsTitle", IDS_DOWNLOAD_TITLE);
-  source->AddLocalizedString(
-    "brToolbarHistoryTitle", IDS_HISTORY_TITLE);
+  source->AddLocalizedString("brToolbarSettingsTitle", IDS_SETTINGS_SETTINGS);
+  source->AddLocalizedString("brToolbarBookmarksTitle",
+                             IDS_BOOKMARK_MANAGER_TITLE);
+  source->AddLocalizedString("brToolbarDownloadsTitle", IDS_DOWNLOAD_TITLE);
+  source->AddLocalizedString("brToolbarHistoryTitle", IDS_HISTORY_TITLE);
 }
-

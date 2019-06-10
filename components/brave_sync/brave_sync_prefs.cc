@@ -26,8 +26,8 @@ const char kSyncLatestRecordTime[] = "brave_sync.latest_record_time";
 const char kSyncLastFetchTime[] = "brave_sync.last_fetch_time";
 const char kSyncDeviceList[] = "brave_sync.device_list";
 const char kSyncApiVersion[] = "brave_sync.api_version";
-const char kSyncMigrateBookmarksVersion[]
-                                       = "brave_sync.migrate_bookmarks_version";
+const char kSyncMigrateBookmarksVersion[] =
+    "brave_sync.migrate_bookmarks_version";
 
 Prefs::Prefs(PrefService* pref_service) : pref_service_(pref_service) {}
 
@@ -74,7 +74,7 @@ void Prefs::SetBookmarksBaseOrder(const std::string& order) {
 
 bool Prefs::GetSyncEnabled() const {
   return BraveSyncService::is_enabled() &&
-    pref_service_->GetBoolean(kSyncEnabled);
+         pref_service_->GetBoolean(kSyncEnabled);
 }
 
 void Prefs::SetSyncEnabled(const bool sync_this_device) {
@@ -94,8 +94,8 @@ bool Prefs::GetSyncSiteSettingsEnabled() const {
 }
 
 void Prefs::SetSyncSiteSettingsEnabled(const bool sync_site_settings_enabled) {
-  pref_service_->SetBoolean(
-      kSyncSiteSettingsEnabled, sync_site_settings_enabled);
+  pref_service_->SetBoolean(kSyncSiteSettingsEnabled,
+                            sync_site_settings_enabled);
 }
 
 bool Prefs::GetSyncHistoryEnabled() const {
@@ -122,7 +122,7 @@ std::unique_ptr<brave_sync::Settings> Prefs::GetBraveSyncSettings() const {
   return settings;
 }
 
-void Prefs::SetLatestRecordTime(const base::Time &time) {
+void Prefs::SetLatestRecordTime(const base::Time& time) {
   pref_service_->SetTime(kSyncLatestRecordTime, time);
 }
 
@@ -130,7 +130,7 @@ base::Time Prefs::GetLatestRecordTime() {
   return pref_service_->GetTime(kSyncLatestRecordTime);
 }
 
-void Prefs::SetLastFetchTime(const base::Time &time) {
+void Prefs::SetLastFetchTime(const base::Time& time) {
   pref_service_->SetTime(kSyncLastFetchTime, time);
 }
 

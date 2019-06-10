@@ -1,6 +1,6 @@
 //
 //  PublisherInfo+CoreDataProperties.m
-//  
+//
 //
 //  Created by Kyle Hickinson on 2019-05-24.
 //
@@ -11,8 +11,8 @@
 
 @implementation PublisherInfo (CoreDataProperties)
 
-+ (NSFetchRequest<PublisherInfo *> *)fetchRequest {
-	return [NSFetchRequest fetchRequestWithEntityName:@"PublisherInfo"];
++ (NSFetchRequest<PublisherInfo*>*)fetchRequest {
+  return [NSFetchRequest fetchRequestWithEntityName:@"PublisherInfo"];
 }
 
 @dynamic excluded;

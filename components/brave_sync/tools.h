@@ -7,8 +7,8 @@
 #include <string>
 
 namespace base {
-  class Time;
-} // namespace base
+class Time;
+}  // namespace base
 
 namespace brave_sync {
 
@@ -17,10 +17,10 @@ namespace tools {
 std::string GenerateObjectId();
 std::string GetPlatformName();
 
-bool IsTimeEmpty(const base::Time &time);
+bool IsTimeEmpty(const base::Time& time);
 
-} // namespace tools
+}  // namespace tools
 
-} // namespace brave_sync
+}  // namespace brave_sync
 
-#endif // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_TOOLS_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_TOOLS_H_

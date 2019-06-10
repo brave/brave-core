@@ -21,14 +21,10 @@ class BraveMockImporterBridge : public MockImporterBridge {
  public:
   BraveMockImporterBridge();
 
-  MOCK_METHOD1(SetCookies,
-               void(const std::vector<net::CanonicalCookie>&));
-  MOCK_METHOD1(UpdateStats,
-               void(const BraveStats&));
-  MOCK_METHOD1(UpdateLedger,
-               void(const BraveLedger&));
-  MOCK_METHOD1(UpdateWindows,
-               void(const ImportedWindowState&));
+  MOCK_METHOD1(SetCookies, void(const std::vector<net::CanonicalCookie>&));
+  MOCK_METHOD1(UpdateStats, void(const BraveStats&));
+  MOCK_METHOD1(UpdateLedger, void(const BraveLedger&));
+  MOCK_METHOD1(UpdateWindows, void(const ImportedWindowState&));
 
  private:
   ~BraveMockImporterBridge() override;

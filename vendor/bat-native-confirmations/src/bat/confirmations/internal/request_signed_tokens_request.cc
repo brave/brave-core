@@ -5,13 +5,13 @@
 
 #include <utility>
 
-#include "bat/confirmations/internal/request_signed_tokens_request.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
-#include "bat/confirmations/internal/string_helper.h"
+#include "bat/confirmations/internal/request_signed_tokens_request.h"
 #include "bat/confirmations/internal/security_helper.h"
+#include "bat/confirmations/internal/string_helper.h"
 
-#include "base/logging.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/values.h"
 
 namespace confirmations {
@@ -68,11 +68,7 @@ std::vector<std::string> RequestSignedTokensRequest::BuildHeaders(
   std::string accept_header = "accept: ";
   accept_header += GetAcceptHeaderValue();
 
-  return {
-    digest_header,
-    signature_header,
-    accept_header
-  };
+  return {digest_header, signature_header, accept_header};
 }
 
 std::string RequestSignedTokensRequest::BuildDigestHeaderValue(
@@ -94,8 +90,8 @@ std::string RequestSignedTokensRequest::BuildSignatureHeaderValue(
 
   auto public_key = helper::String::decode_hex(wallet_info.public_key);
 
-  return helper::Security::Sign({{"digest", digest_header_value}}, "primary",
-      public_key);
+  return helper::Security::Sign(
+      {{"digest", digest_header_value}}, "primary", public_key);
 }
 
 std::string RequestSignedTokensRequest::GetAcceptHeaderValue() const {

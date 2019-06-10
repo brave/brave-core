@@ -1,16 +1,15 @@
 declare namespace RewardsInternals {
   export interface ApplicationState {
-    rewardsInternalsData: State | undefined
+    rewardsInternalsData: State|undefined
   }
 
   export interface State {
     isRewardsEnabled: boolean
-    info: {
-      isKeyInfoSeedValid: boolean
-      walletPaymentId: string
-      currentReconciles: CurrentReconcile[]
-      personaId: string
-      userId: string
+    info: {isKeyInfoSeedValid: boolean
+    walletPaymentId: string
+    currentReconciles: CurrentReconcile[]
+    personaId: string
+    userId: string
       bootStamp: number
     }
   }

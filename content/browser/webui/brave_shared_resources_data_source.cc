@@ -13,6 +13,8 @@
 #include "base/strings/string_piece.h"
 #include "base/strings/string_util.h"
 #include "base/task/post_task.h"
+#include "brave/ui/webui/resources/grit/brave_webui_resources.h"
+#include "brave/ui/webui/resources/grit/brave_webui_resources_map.h"
 #include "build/build_config.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -21,8 +23,6 @@
 #include "ui/base/layout.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "ui/base/webui/web_ui_util.h"
-#include "brave/ui/webui/resources/grit/brave_webui_resources.h"
-#include "brave/ui/webui/resources/grit/brave_webui_resources_map.h"
 
 #if defined(OS_WIN)
 #include "base/strings/utf_string_conversions.h"
@@ -46,7 +46,7 @@ const std::map<std::string, std::string> CreatePathPrefixAliasesMap() {
   // GRD:../../resources/web/blah/X.
   // See chromium's SharedResourcesDataSource for an example
   // Format is {"../../somewhere/in/src/tree/", "request/path" }
-  std::map<std::string, std::string> aliases = { };
+  std::map<std::string, std::string> aliases = {};
   return aliases;
 }
 
@@ -69,11 +69,13 @@ void AddResourcesToMap(ResourcesMap* resources_map) {
     AddResource(resource.name, resource.value, resource.gzipped, resources_map);
 
     for (auto it = aliases.begin(); it != aliases.end(); ++it) {
-      if (base::StartsWith(resource.name, it->first,
-                           base::CompareCase::SENSITIVE)) {
+      if (base::StartsWith(
+              resource.name, it->first, base::CompareCase::SENSITIVE)) {
         std::string resource_name(resource.name);
         AddResource(it->second + resource_name.substr(it->first.length()),
-                    resource.value, resource.gzipped, resources_map);
+                    resource.value,
+                    resource.gzipped,
+                    resources_map);
       }
     }
   }
@@ -99,11 +101,9 @@ int GetIdrForPath(const std::string& path) {
 
 }  // namespace
 
-BraveSharedResourcesDataSource::BraveSharedResourcesDataSource() {
-}
+BraveSharedResourcesDataSource::BraveSharedResourcesDataSource() {}
 
-BraveSharedResourcesDataSource::~BraveSharedResourcesDataSource() {
-}
+BraveSharedResourcesDataSource::~BraveSharedResourcesDataSource() {}
 
 std::string BraveSharedResourcesDataSource::GetSource() const {
   return "brave-resources";
@@ -117,11 +117,10 @@ void BraveSharedResourcesDataSource::StartDataRequest(
   DCHECK_NE(-1, idr) << " path: " << path;
   scoped_refptr<base::RefCountedMemory> bytes;
 
-  // Cannot access GetContentClient() from here as that is //content/public only.
-  // Therefore cannot access ContentClient::GetDataResourceBytes,
-  // so go to the bundle directly.
-  // This will work for all content clients apart from in a test environment,
-  // where this shoudl be mocked.
+  // Cannot access GetContentClient() from here as that is //content/public
+  // only. Therefore cannot access ContentClient::GetDataResourceBytes, so go to
+  // the bundle directly. This will work for all content clients apart from in a
+  // test environment, where this shoudl be mocked.
   bytes = ui::ResourceBundle::GetSharedInstance().LoadDataResourceBytes(idr);
   callback.Run(bytes.get());
 }
@@ -173,7 +172,8 @@ std::string BraveSharedResourcesDataSource::GetMimeType(
   return "text/plain";
 }
 
-bool BraveSharedResourcesDataSource::ShouldServeMimeTypeAsContentTypeHeader() const {
+bool BraveSharedResourcesDataSource::ShouldServeMimeTypeAsContentTypeHeader()
+    const {
   return true;
 }
 
@@ -192,8 +192,8 @@ BraveSharedResourcesDataSource::GetAccessControlAllowOriginForOrigin(
   // back.
   std::string allowed_origin_prefix = kChromeUIScheme;
   allowed_origin_prefix += "://";
-  if (!base::StartsWith(origin, allowed_origin_prefix,
-                        base::CompareCase::SENSITIVE)) {
+  if (!base::StartsWith(
+          origin, allowed_origin_prefix, base::CompareCase::SENSITIVE)) {
     return "null";
   }
   return origin;
@@ -205,4 +205,4 @@ bool BraveSharedResourcesDataSource::IsGzipped(const std::string& path) const {
   return it != GetResourcesMap().end() ? it->second.gzipped : false;
 }
 
-}  // namespace content
+}  // namespace brave_content

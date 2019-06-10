@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "bat/confirmations/wallet_info.h"
 
@@ -26,11 +26,11 @@ class ConfirmationsCreateConfirmationRequestTest : public ::testing::Test {
 
   std::unique_ptr<CreateConfirmationRequest> request_;
 
-  ConfirmationsCreateConfirmationRequestTest() :
-      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
-      confirmations_(std::make_unique<ConfirmationsImpl>(
-          mock_confirmations_client_.get())),
-      request_(std::make_unique<CreateConfirmationRequest>()) {
+  ConfirmationsCreateConfirmationRequestTest()
+      : mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+        confirmations_(std::make_unique<ConfirmationsImpl>(
+            mock_confirmations_client_.get())),
+        request_(std::make_unique<CreateConfirmationRequest>()) {
     // You can do set-up work for each test here
   }
 
@@ -58,13 +58,31 @@ class ConfirmationsCreateConfirmationRequestTest : public ::testing::Test {
 TEST_F(ConfirmationsCreateConfirmationRequestTest, BuildUrl) {
   // Arrange
   std::string confirmation_id = "d990ed8d-d739-49fb-811b-c2e02158fb60";
-  std::string credential = "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=";  // NOLINT
+  std::string credential =
+      "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRI"
+      "NXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwi"
+      "OlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6"
+      "e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMv"
+      "UmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lE"
+      "bTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01x"
+      "LzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdD"
+      "dz09In0=";  // NOLINT
 
   // Act
   auto url = request_->BuildUrl(confirmation_id, credential);
 
   // Assert
-  std::string expected_url = "https://ads-serve.bravesoftware.com/v1/confirmation/d990ed8d-d739-49fb-811b-c2e02158fb60/eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=";  // NOLINT
+  std::string expected_url =
+      "https://ads-serve.bravesoftware.com/v1/confirmation/"
+      "d990ed8d-d739-49fb-811b-c2e02158fb60/"
+      "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRI"
+      "NXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwi"
+      "OlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6"
+      "e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMv"
+      "UmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lE"
+      "bTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01x"
+      "LzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdD"
+      "dz09In0=";  // NOLINT
   EXPECT_EQ(expected_url, url);
 }
 
@@ -86,14 +104,15 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, BuildBody_Viewed) {
       "PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=";
   auto blinded_token = BlindedToken::decode_base64(blinded_token_base64);
 
-  auto payload = request_->CreateConfirmationRequestDTO(creative_instance_id,
-      blinded_token, ConfirmationType::VIEW);
+  auto payload = request_->CreateConfirmationRequestDTO(
+      creative_instance_id, blinded_token, ConfirmationType::VIEW);
 
   // Act
   auto body = request_->BuildBody(payload);
 
   // Assert
-  std::string expected_body = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";  // NOLINT
+  std::string expected_body =
+      R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";  // NOLINT
   EXPECT_EQ(expected_body, body);
 }
 
@@ -128,9 +147,8 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, GetContentType) {
   EXPECT_EQ(content_type, "application/json");
 }
 
-TEST_F(
-    ConfirmationsCreateConfirmationRequestTest,
-    CreateConfirmationRequestDTO_Viewed) {
+TEST_F(ConfirmationsCreateConfirmationRequestTest,
+       CreateConfirmationRequestDTO_Viewed) {
   // Arrange
   std::string creative_instance_id = "546fe7b0-5047-4f28-a11c-81f14edcf0f6";
 
@@ -139,17 +157,21 @@ TEST_F(
   auto blinded_token = BlindedToken::decode_base64(blinded_token_base64);
 
   // Act
-  auto payload = request_->CreateConfirmationRequestDTO(creative_instance_id,
-      blinded_token, ConfirmationType::VIEW);
+  auto payload = request_->CreateConfirmationRequestDTO(
+      creative_instance_id, blinded_token, ConfirmationType::VIEW);
 
   // Assert
-  std::string expected_payload = R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";  // NOLINT
+  std::string expected_payload =
+      R"({"blindedPaymentToken":"PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=","creativeInstanceId":"546fe7b0-5047-4f28-a11c-81f14edcf0f6","payload":{},"type":"view"})";  // NOLINT
   EXPECT_EQ(expected_payload, payload);
 }
 
 TEST_F(ConfirmationsCreateConfirmationRequestTest, CreateCredential_Viewed) {
   // Arrange
-  std::string unblinded_token_base64 = "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/+bwYRrpVH5YwNSDEydVx8S4r+BYVY";  // NOLINT
+  std::string unblinded_token_base64 =
+      "PLowz2WF2eGD5zfwZjk9p76HXBLDKMq/3EAZHeG/"
+      "fE2XGQ48jyte+Ve50ZlasOuYL5mwA8CU2aFMlJrt3DDgC3B1+VD/uyHPfa/"
+      "+bwYRrpVH5YwNSDEydVx8S4r+BYVY";  // NOLINT
 
   TokenInfo token_info;
   token_info.unblinded_token =
@@ -162,14 +184,22 @@ TEST_F(ConfirmationsCreateConfirmationRequestTest, CreateCredential_Viewed) {
       "PI3lFqpGVFKz4TH5yEwXI3R/QntmTpUgeBaK+STiBx8=";
   auto blinded_token = BlindedToken::decode_base64(blinded_token_base64);
 
-  auto payload = request_->CreateConfirmationRequestDTO(creative_instance_id,
-      blinded_token, ConfirmationType::VIEW);
+  auto payload = request_->CreateConfirmationRequestDTO(
+      creative_instance_id, blinded_token, ConfirmationType::VIEW);
 
   // Act
   auto credential = request_->CreateCredential(token_info, payload);
 
   // Assert
-  std::string expected_credential = "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRINXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwiOlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMvUmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lEbTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01xLzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdDdz09In0=";  // NOLINT
+  std::string expected_credential =
+      "eyJwYXlsb2FkIjoie1wiYmxpbmRlZFBheW1lbnRUb2tlblwiOlwiUEkzbEZxcEdWRkt6NFRI"
+      "NXlFd1hJM1IvUW50bVRwVWdlQmFLK1NUaUJ4OD1cIixcImNyZWF0aXZlSW5zdGFuY2VJZFwi"
+      "OlwiNTQ2ZmU3YjAtNTA0Ny00ZjI4LWExMWMtODFmMTRlZGNmMGY2XCIsXCJwYXlsb2FkXCI6"
+      "e30sXCJ0eXBlXCI6XCJ2aWV3XCJ9Iiwic2lnbmF0dXJlIjoibGRWYWxyb2hqNWFIWW1FdWMv"
+      "UmpIYTAweFdMdFJWY0hGMS9XWnl4ZGJYMnhkQ1ByMFgyMVg3cWtKVUxRdUw4U2JWWHJUT3lE"
+      "bTJJNkFrT0R0SHYxR2c9PSIsInQiOiJQTG93ejJXRjJlR0Q1emZ3WmprOXA3NkhYQkxES01x"
+      "LzNFQVpIZUcvZkUyWEdRNDhqeXRlK1ZlNTBabGFzT3VZTDVtd0E4Q1UyYUZNbEpydDNERGdD"
+      "dz09In0=";  // NOLINT
   EXPECT_EQ(expected_credential, credential);
 }
 

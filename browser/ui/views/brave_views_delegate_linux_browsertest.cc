@@ -10,13 +10,14 @@
 
 using BraveViewsDelegateViewLinuxBrowserTest = InProcessBrowserTest;
 
-IN_PROC_BROWSER_TEST_F(BraveViewsDelegateViewLinuxBrowserTest, GetDefaultWindowIconTest) {
-  // In test, our BraveViewsDelegateLinux isn't set because ChromeViewsDelegate is set
-  // at the very early state by AccessibilityChecker(subclass of ChromeViewsDelegate)
-  // in ctor of InProcessBrowserTest. Introduced in v68.
-  // To have a test, explicitly set views delegate by initializing here.
-  // This is only effective in release mode because initializing views delegate twice isn't
-  // allowed by dcheck.
+IN_PROC_BROWSER_TEST_F(BraveViewsDelegateViewLinuxBrowserTest,
+                       GetDefaultWindowIconTest) {
+  // In test, our BraveViewsDelegateLinux isn't set because ChromeViewsDelegate
+  // is set at the very early state by AccessibilityChecker(subclass of
+  // ChromeViewsDelegate) in ctor of InProcessBrowserTest. Introduced in v68. To
+  // have a test, explicitly set views delegate by initializing here. This is
+  // only effective in release mode because initializing views delegate twice
+  // isn't allowed by dcheck.
   BraveViewsDelegateLinux brave_views_delegate;
 
   auto env = base::Environment::Create();
@@ -45,4 +46,3 @@ IN_PROC_BROWSER_TEST_F(BraveViewsDelegateViewLinuxBrowserTest, GetDefaultWindowI
             views_delegate->GetDefaultWindowIcon()->bitmap());
 #endif
 }
-

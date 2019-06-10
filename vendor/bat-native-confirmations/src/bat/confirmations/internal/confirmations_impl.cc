@@ -9,12 +9,12 @@
 
 #include "bat/confirmations/internal/confirmations_impl.h"
 #include "bat/confirmations/internal/logging.h"
-#include "bat/confirmations/internal/static_values.h"
-#include "bat/confirmations/internal/refill_tokens.h"
-#include "bat/confirmations/internal/redeem_token.h"
 #include "bat/confirmations/internal/payout_tokens.h"
-#include "bat/confirmations/internal/unblinded_tokens.h"
+#include "bat/confirmations/internal/redeem_token.h"
+#include "bat/confirmations/internal/refill_tokens.h"
+#include "bat/confirmations/internal/static_values.h"
 #include "bat/confirmations/internal/time.h"
+#include "bat/confirmations/internal/unblinded_tokens.h"
 
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
@@ -28,24 +28,28 @@ using std::placeholders::_2;
 
 namespace confirmations {
 
-ConfirmationsImpl::ConfirmationsImpl(
-    ConfirmationsClient* confirmations_client) :
-    is_initialized_(false),
-    retry_failed_confirmations_timer_id_(0),
-    unblinded_tokens_(std::make_unique<UnblindedTokens>(this)),
-    unblinded_payment_tokens_(std::make_unique<UnblindedTokens>(this)),
-    retry_getting_signed_tokens_timer_id_(0),
-    refill_tokens_(std::make_unique<RefillTokens>(
-        this, confirmations_client, unblinded_tokens_.get())),
-    redeem_token_(std::make_unique<RedeemToken>(this, confirmations_client,
-        unblinded_tokens_.get(), unblinded_payment_tokens_.get())),
-    payout_redeemed_tokens_timer_id_(0),
-    payout_tokens_(std::make_unique<PayoutTokens>(this, confirmations_client,
-        unblinded_payment_tokens_.get())),
-    next_token_redemption_date_in_seconds_(0),
-    state_has_loaded_(false),
-    confirmations_client_(confirmations_client) {
-}
+ConfirmationsImpl::ConfirmationsImpl(ConfirmationsClient* confirmations_client)
+    : is_initialized_(false),
+      retry_failed_confirmations_timer_id_(0),
+      unblinded_tokens_(std::make_unique<UnblindedTokens>(this)),
+      unblinded_payment_tokens_(std::make_unique<UnblindedTokens>(this)),
+      retry_getting_signed_tokens_timer_id_(0),
+      refill_tokens_(std::make_unique<RefillTokens>(this,
+                                                    confirmations_client,
+                                                    unblinded_tokens_.get())),
+      redeem_token_(
+          std::make_unique<RedeemToken>(this,
+                                        confirmations_client,
+                                        unblinded_tokens_.get(),
+                                        unblinded_payment_tokens_.get())),
+      payout_redeemed_tokens_timer_id_(0),
+      payout_tokens_(
+          std::make_unique<PayoutTokens>(this,
+                                         confirmations_client,
+                                         unblinded_payment_tokens_.get())),
+      next_token_redemption_date_in_seconds_(0),
+      state_has_loaded_(false),
+      confirmations_client_(confirmations_client) {}
 
 ConfirmationsImpl::~ConfirmationsImpl() {
   BLOG(INFO) << "Deinitializing Confirmations";
@@ -72,8 +76,7 @@ void ConfirmationsImpl::CheckReady() {
     return;
   }
 
-  if (!state_has_loaded_ ||
-      !wallet_info_.IsValid() ||
+  if (!state_has_loaded_ || !wallet_info_.IsValid() ||
       catalog_issuers_.empty()) {
     return;
   }
@@ -103,8 +106,9 @@ std::string ConfirmationsImpl::ToJSON() const {
   dictionary.SetKey("catalog_issuers", base::Value(std::move(catalog_issuers)));
 
   // Next token redemption date
-  dictionary.SetKey("next_token_redemption_date_in_seconds", base::Value(
-      std::to_string(next_token_redemption_date_in_seconds_)));
+  dictionary.SetKey(
+      "next_token_redemption_date_in_seconds",
+      base::Value(std::to_string(next_token_redemption_date_in_seconds_)));
 
   // Confirmations
   auto confirmations = GetConfirmationsAsDictionary(confirmations_);
@@ -113,18 +117,18 @@ std::string ConfirmationsImpl::ToJSON() const {
   // Transaction history
   auto transaction_history =
       GetTransactionHistoryAsDictionary(transaction_history_);
-  dictionary.SetKey("transaction_history", base::Value(
-      std::move(transaction_history)));
+  dictionary.SetKey("transaction_history",
+                    base::Value(std::move(transaction_history)));
 
   // Unblinded tokens
   auto unblinded_tokens = unblinded_tokens_->GetTokensAsList();
-  dictionary.SetKey("unblinded_tokens", base::Value(
-      std::move(unblinded_tokens)));
+  dictionary.SetKey("unblinded_tokens",
+                    base::Value(std::move(unblinded_tokens)));
 
   // Unblinded payment tokens
   auto unblinded_payment_tokens = unblinded_payment_tokens_->GetTokensAsList();
-  dictionary.SetKey("unblinded_payment_tokens", base::Value(
-      std::move(unblinded_payment_tokens)));
+  dictionary.SetKey("unblinded_payment_tokens",
+                    base::Value(std::move(unblinded_payment_tokens)));
 
   // Write to JSON
   std::string json;
@@ -164,8 +168,8 @@ base::Value ConfirmationsImpl::GetConfirmationsAsDictionary(
 
     confirmation_dictionary.SetKey("id", base::Value(confirmation.id));
 
-    confirmation_dictionary.SetKey("creative_instance_id",
-        base::Value(confirmation.creative_instance_id));
+    confirmation_dictionary.SetKey(
+        "creative_instance_id", base::Value(confirmation.creative_instance_id));
 
     std::string type = std::string(confirmation.type);
     confirmation_dictionary.SetKey("type", base::Value(type));
@@ -174,23 +178,23 @@ base::Value ConfirmationsImpl::GetConfirmationsAsDictionary(
     auto unblinded_token_base64 =
         confirmation.token_info.unblinded_token.encode_base64();
     token_info_dictionary.SetKey("unblinded_token",
-        base::Value(unblinded_token_base64));
+                                 base::Value(unblinded_token_base64));
     auto public_key = confirmation.token_info.public_key;
     token_info_dictionary.SetKey("public_key", base::Value(public_key));
-    confirmation_dictionary.SetKey("token_info",
-        base::Value(std::move(token_info_dictionary)));
+    confirmation_dictionary.SetKey(
+        "token_info", base::Value(std::move(token_info_dictionary)));
 
     auto payment_token_base64 = confirmation.payment_token.encode_base64();
     confirmation_dictionary.SetKey("payment_token",
-        base::Value(payment_token_base64));
+                                   base::Value(payment_token_base64));
 
     auto blinded_payment_token_base64 =
         confirmation.blinded_payment_token.encode_base64();
     confirmation_dictionary.SetKey("blinded_payment_token",
-        base::Value(blinded_payment_token_base64));
+                                   base::Value(blinded_payment_token_base64));
 
     confirmation_dictionary.SetKey("credential",
-        base::Value(confirmation.credential));
+                                   base::Value(confirmation.credential));
 
     list.GetList().push_back(std::move(confirmation_dictionary));
   }
@@ -208,14 +212,16 @@ base::Value ConfirmationsImpl::GetTransactionHistoryAsDictionary(
   for (const auto& transaction : transaction_history) {
     base::Value transaction_dictionary(base::Value::Type::DICTIONARY);
 
-    transaction_dictionary.SetKey("timestamp_in_seconds",
+    transaction_dictionary.SetKey(
+        "timestamp_in_seconds",
         base::Value(std::to_string(transaction.timestamp_in_seconds)));
 
-    transaction_dictionary.SetKey("estimated_redemption_value",
+    transaction_dictionary.SetKey(
+        "estimated_redemption_value",
         base::Value(transaction.estimated_redemption_value));
 
     transaction_dictionary.SetKey("confirmation_type",
-        base::Value(transaction.confirmation_type));
+                                  base::Value(transaction.confirmation_type));
 
     list.GetList().push_back(std::move(transaction_dictionary));
   }
@@ -261,8 +267,8 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
   }
 
   if (!GetUnblindedPaymentTokensFromJSON(dictionary)) {
-    BLOG(WARNING) <<
-        "Failed to get unblinded payment tokens from JSON: " << json;
+    BLOG(WARNING) << "Failed to get unblinded payment tokens from JSON: "
+                  << json;
   }
 
   return true;
@@ -282,8 +288,8 @@ bool ConfirmationsImpl::GetCatalogIssuersFromJSON(
 
   std::string public_key;
   std::map<std::string, std::string> catalog_issuers;
-  if (!GetCatalogIssuersFromDictionary(catalog_issuers_dictionary, &public_key,
-      &catalog_issuers)) {
+  if (!GetCatalogIssuersFromDictionary(
+          catalog_issuers_dictionary, &public_key, &catalog_issuers)) {
     return false;
   }
 
@@ -364,14 +370,13 @@ bool ConfirmationsImpl::GetConfirmationsFromJSON(
   }
 
   base::DictionaryValue* confirmations_dictionary;
-  if (!confirmations_value->GetAsDictionary(
-        &confirmations_dictionary)) {
+  if (!confirmations_value->GetAsDictionary(&confirmations_dictionary)) {
     return false;
   }
 
   std::vector<ConfirmationInfo> confirmations;
   if (!GetConfirmationsFromDictionary(confirmations_dictionary,
-      &confirmations)) {
+                                      &confirmations)) {
     return false;
   }
 
@@ -529,13 +534,13 @@ bool ConfirmationsImpl::GetTransactionHistoryFromJSON(
 
   base::DictionaryValue* transaction_history_dictionary;
   if (!transaction_history_value->GetAsDictionary(
-        &transaction_history_dictionary)) {
+          &transaction_history_dictionary)) {
     return false;
   }
 
   std::vector<TransactionInfo> transaction_history;
   if (!GetTransactionHistoryFromDictionary(transaction_history_dictionary,
-      &transaction_history)) {
+                                           &transaction_history)) {
     return false;
   }
 
@@ -632,8 +637,7 @@ bool ConfirmationsImpl::GetUnblindedPaymentTokensFromJSON(
   base::ListValue unblinded_payment_token_values(
       unblinded_payment_tokens_value->GetList());
 
-  unblinded_payment_tokens_->SetTokensFromList(
-      unblinded_payment_token_values);
+  unblinded_payment_tokens_->SetTokensFromList(unblinded_payment_token_values);
 
   return true;
 }
@@ -666,23 +670,22 @@ void ConfirmationsImpl::LoadState() {
   confirmations_client_->LoadState(_confirmations_name, callback);
 }
 
-void ConfirmationsImpl::OnStateLoaded(
-    const Result result,
-    const std::string& json) {
+void ConfirmationsImpl::OnStateLoaded(const Result result,
+                                      const std::string& json) {
   state_has_loaded_ = true;
 
   auto confirmations_json = json;
 
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to load confirmations state, resetting to default"
-        << " values";
+                << " values";
 
     confirmations_json = ToJSON();
   }
 
   if (!FromJSON(confirmations_json)) {
     BLOG(ERROR) << "Failed to parse confirmations state: "
-        << confirmations_json;
+                << confirmations_json;
     return;
   }
 
@@ -770,18 +773,19 @@ void ConfirmationsImpl::RemoveConfirmationFromQueue(
     const ConfirmationInfo& confirmation_info) {
   auto id = confirmation_info.id;
 
-  auto it = std::find_if(confirmations_.begin(), confirmations_.end(),
-      [=](const ConfirmationInfo& info) {
-        return (info.id == id);
-      });
+  auto it = std::find_if(
+      confirmations_.begin(),
+      confirmations_.end(),
+      [=](const ConfirmationInfo& info) { return (info.id == id); });
 
   if (it == confirmations_.end()) {
     return;
   }
 
   BLOG(INFO) << "Removed " << confirmation_info.creative_instance_id
-      << " creative instance id for " << std::string(confirmation_info.type)
-      << " from the confirmation queue";
+             << " creative instance id for "
+             << std::string(confirmation_info.type)
+             << " from the confirmation queue";
 
   confirmations_.erase(it);
 
@@ -825,15 +829,15 @@ void ConfirmationsImpl::GetTransactionHistoryForThisCycle(
 
   auto to_timestamp_in_seconds = Time::NowInSeconds();
 
-  auto transactions = GetTransactionHistory(from_timestamp_in_seconds,
-      to_timestamp_in_seconds);
+  auto transactions =
+      GetTransactionHistory(from_timestamp_in_seconds, to_timestamp_in_seconds);
 
   auto unredeemed_transactions_for_previous_cycles =
       GetUnredeemedTransactionsForPreviousCycles(from_timestamp_in_seconds);
 
   transactions.insert(transactions.end(),
-      unredeemed_transactions_for_previous_cycles.begin(),
-      unredeemed_transactions_for_previous_cycles.end());
+                      unredeemed_transactions_for_previous_cycles.begin(),
+                      unredeemed_transactions_for_previous_cycles.end());
 
   transactions_info->transactions = transactions;
 
@@ -845,11 +849,13 @@ std::vector<TransactionInfo> ConfirmationsImpl::GetTransactionHistory(
     const uint64_t to_timestamp_in_seconds) {
   std::vector<TransactionInfo> transactions(transaction_history_.size());
 
-  auto it = std::copy_if(transaction_history_.begin(),
-      transaction_history_.end(), transactions.begin(),
+  auto it = std::copy_if(
+      transaction_history_.begin(),
+      transaction_history_.end(),
+      transactions.begin(),
       [=](TransactionInfo& info) {
         return info.timestamp_in_seconds >= from_timestamp_in_seconds &&
-            info.timestamp_in_seconds <= to_timestamp_in_seconds;
+               info.timestamp_in_seconds <= to_timestamp_in_seconds;
       });
 
   transactions.resize(std::distance(transactions.begin(), it));
@@ -867,8 +873,9 @@ ConfirmationsImpl::GetUnredeemedTransactionsForPreviousCycles(
   }
 
   // Unredeemed transactions are always at the end of the history
-  std::vector<TransactionInfo> transactions(transaction_history_.end()
-      - unredeemed_transactions_count, transaction_history_.end());
+  std::vector<TransactionInfo> transactions(
+      transaction_history_.end() - unredeemed_transactions_count,
+      transaction_history_.end());
 
   // Filter transactions which occurred for previous cycles
   std::vector<TransactionInfo> transactions_for_previous_cycles;
@@ -893,7 +900,7 @@ double ConfirmationsImpl::GetEstimatedRedemptionValue(
     auto name = it->second;
     if (!re2::RE2::Replace(&name, "BAT", "")) {
       BLOG(ERROR) << "Could not estimate redemption value due to catalog"
-          << " issuer name missing BAT";
+                  << " issuer name missing BAT";
     }
 
     estimated_redemption_value = stod(name);
@@ -932,12 +939,11 @@ void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
 
 bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
   BLOG(INFO) << "OnTimer:" << std::endl
-      << "  timer_id: "
-      << timer_id << std::endl
-      << "  retry_getting_signed_tokens_timer_id_: "
-      << retry_getting_signed_tokens_timer_id_ << std::endl
-      << "  payout_redeemed_tokens_timer_id_: "
-      << payout_redeemed_tokens_timer_id_;
+             << "  timer_id: " << timer_id << std::endl
+             << "  retry_getting_signed_tokens_timer_id_: "
+             << retry_getting_signed_tokens_timer_id_ << std::endl
+             << "  payout_redeemed_tokens_timer_id_: "
+             << payout_redeemed_tokens_timer_id_;
 
   if (timer_id == retry_getting_signed_tokens_timer_id_) {
     RetryGettingRefillSignedTokens();
@@ -982,8 +988,7 @@ void ConfirmationsImpl::UpdateNextTokenRedemptionDate() {
   next_token_redemption_date_in_seconds_ = Time::NowInSeconds();
 
   if (!_is_debug) {
-    next_token_redemption_date_in_seconds_ +=
-        kNextTokenRedemptionAfterSeconds;
+    next_token_redemption_date_in_seconds_ += kNextTokenRedemptionAfterSeconds;
   } else {
     next_token_redemption_date_in_seconds_ +=
         kDebugNextTokenRedemptionAfterSeconds;
@@ -1002,16 +1007,16 @@ void ConfirmationsImpl::StartRetryingFailedConfirmations(
   StopRetryingFailedConfirmations();
 
   confirmations_client_->SetTimer(start_timer_in,
-      &retry_failed_confirmations_timer_id_);
+                                  &retry_failed_confirmations_timer_id_);
   if (retry_failed_confirmations_timer_id_ == 0) {
     BLOG(ERROR) << "Failed to start retrying failed confirmations "
-        << "due to an invalid timer";
+                << "due to an invalid timer";
 
     return;
   }
 
   BLOG(INFO) << "Start retrying failed confirmations in " << start_timer_in
-      << " seconds";
+             << " seconds";
 }
 
 void ConfirmationsImpl::RetryFailedConfirmations() const {
@@ -1048,7 +1053,7 @@ void ConfirmationsImpl::StartPayingOutRedeemedTokens(
   StopPayingOutRedeemedTokens();
 
   confirmations_client_->SetTimer(start_timer_in,
-      &payout_redeemed_tokens_timer_id_);
+                                  &payout_redeemed_tokens_timer_id_);
   if (payout_redeemed_tokens_timer_id_ == 0) {
     BLOG(ERROR)
         << "Failed to start paying out redeemed tokens due to an invalid timer";
@@ -1056,7 +1061,7 @@ void ConfirmationsImpl::StartPayingOutRedeemedTokens(
   }
 
   BLOG(INFO) << "Start paying out redeemed tokens in " << start_timer_in
-      << " seconds";
+             << " seconds";
 }
 
 void ConfirmationsImpl::PayoutRedeemedTokens() const {
@@ -1087,7 +1092,7 @@ void ConfirmationsImpl::StartRetryingToGetRefillSignedTokens(
   StopRetryingToGetRefillSignedTokens();
 
   confirmations_client_->SetTimer(start_timer_in,
-      &retry_getting_signed_tokens_timer_id_);
+                                  &retry_getting_signed_tokens_timer_id_);
   if (retry_getting_signed_tokens_timer_id_ == 0) {
     BLOG(ERROR)
         << "Failed to start getting signed tokens due to an invalid timer";
@@ -1096,7 +1101,7 @@ void ConfirmationsImpl::StartRetryingToGetRefillSignedTokens(
   }
 
   BLOG(INFO) << "Start getting signed tokens in " << start_timer_in
-      << " seconds";
+             << " seconds";
 }
 
 void ConfirmationsImpl::RetryGettingRefillSignedTokens() const {

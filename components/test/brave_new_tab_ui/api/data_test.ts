@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as dataFetchAPI from '../../../brave_new_tab_ui/api/dataFetch'
 import * as actions from '../../../brave_new_tab_ui/actions/new_tab_actions'
-import { types } from '../../../brave_new_tab_ui/constants/new_tab_types'
+import * as dataFetchAPI from '../../../brave_new_tab_ui/api/dataFetch'
+import {types} from '../../../brave_new_tab_ui/constants/new_tab_types'
 
 describe('new tab data api tests', () => {
   describe('getActions', () => {
@@ -24,12 +24,8 @@ describe('new tab data api tests', () => {
 
   describe('fetchTopSites', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.topSites, 'get')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.topSites, 'get')})
+  afterEach(() => {spy.mockRestore()})
     it('calls chrome.topSites.get', () => {
       dataFetchAPI.fetchTopSites()
       expect(spy).toBeCalled()

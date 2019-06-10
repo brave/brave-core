@@ -11,19 +11,16 @@ using BraveResourcesBrowserTest = InProcessBrowserTest;
 
 // Check brave's theme resources pacakges are properly added.
 IN_PROC_BROWSER_TEST_F(BraveResourcesBrowserTest, ResourceExistanceTest) {
-  gfx::Image test_image =
-      ui::ResourceBundle::GetSharedInstance().GetImageNamed(
-          IDR_PRODUCT_LOGO_32_DEV);
+  gfx::Image test_image = ui::ResourceBundle::GetSharedInstance().GetImageNamed(
+      IDR_PRODUCT_LOGO_32_DEV);
   EXPECT_FALSE(test_image.IsEmpty());
 
 #if defined(OS_LINUX)
-  test_image =
-      ui::ResourceBundle::GetSharedInstance().GetImageNamed(
-          IDR_PRODUCT_LOGO_128_BETA);
+  test_image = ui::ResourceBundle::GetSharedInstance().GetImageNamed(
+      IDR_PRODUCT_LOGO_128_BETA);
   EXPECT_FALSE(test_image.IsEmpty());
-  test_image =
-      ui::ResourceBundle::GetSharedInstance().GetImageNamed(
-          IDR_PRODUCT_LOGO_128_DEV);
+  test_image = ui::ResourceBundle::GetSharedInstance().GetImageNamed(
+      IDR_PRODUCT_LOGO_128_DEV);
   EXPECT_FALSE(test_image.IsEmpty());
 #endif
 }

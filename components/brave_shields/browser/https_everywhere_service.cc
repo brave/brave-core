@@ -25,8 +25,8 @@
 
 #define DAT_FILE "httpse.leveldb.zip"
 #define DAT_FILE_VERSION "6.0"
-#define HTTPSE_URLS_REDIRECTS_COUNT_QUEUE   1
-#define HTTPSE_URL_MAX_REDIRECTS_COUNT      5
+#define HTTPSE_URLS_REDIRECTS_COUNT_QUEUE 1
+#define HTTPSE_URL_MAX_REDIRECTS_COUNT 5
 
 namespace {
 
@@ -65,7 +65,7 @@ std::vector<std::string> ExpandDomainForLookup(const std::string& domain) {
   }
   return resultDomains;
 }
-std::string leveldbGet(leveldb::DB* db, const std::string &key) {
+std::string leveldbGet(leveldb::DB* db, const std::string& key) {
   if (!db) {
     return "";
   }
@@ -94,13 +94,12 @@ bool HTTPSEverywhereService::g_ignore_port_for_test_(false);
 std::string HTTPSEverywhereService::g_https_everywhere_component_id_(
     kHTTPSEverywhereComponentId);
 std::string
-HTTPSEverywhereService::g_https_everywhere_component_base64_public_key_(
-    kHTTPSEverywhereComponentBase64PublicKey);
+    HTTPSEverywhereService::g_https_everywhere_component_base64_public_key_(
+        kHTTPSEverywhereComponentBase64PublicKey);
 
 HTTPSEverywhereService::HTTPSEverywhereService(
     BraveComponent::Delegate* delegate)
-    : BaseBraveShieldsService(delegate),
-      level_db_(nullptr) {
+    : BaseBraveShieldsService(delegate), level_db_(nullptr) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
@@ -111,8 +110,7 @@ HTTPSEverywhereService::~HTTPSEverywhereService() {
 void HTTPSEverywhereService::Cleanup() {
   GetTaskRunner()->PostTask(
       FROM_HERE,
-      base::Bind(&HTTPSEverywhereService::CloseDatabase,
-                 AsWeakPtr()));
+      base::Bind(&HTTPSEverywhereService::CloseDatabase, AsWeakPtr()));
 }
 
 bool HTTPSEverywhereService::Init() {
@@ -137,10 +135,8 @@ void HTTPSEverywhereService::InitDB(const base::FilePath& install_dir) {
   CloseDatabase();
 
   leveldb::Options options;
-  leveldb::Status status =
-      leveldb::DB::Open(options,
-                        unzipped_level_db_path.AsUTF8Unsafe(),
-                        &level_db_);
+  leveldb::Status status = leveldb::DB::Open(
+      options, unzipped_level_db_path.AsUTF8Unsafe(), &level_db_);
   if (!status.ok() || !level_db_) {
     level_db_ = nullptr;
     LOG(ERROR) << "Level db open error "
@@ -151,21 +147,17 @@ void HTTPSEverywhereService::InitDB(const base::FilePath& install_dir) {
   }
 }
 
-void HTTPSEverywhereService::OnComponentReady(
-    const std::string& component_id,
-    const base::FilePath& install_dir,
-    const std::string& manifest) {
+void HTTPSEverywhereService::OnComponentReady(const std::string& component_id,
+                                              const base::FilePath& install_dir,
+                                              const std::string& manifest) {
   GetTaskRunner()->PostTask(
       FROM_HERE,
-      base::Bind(&HTTPSEverywhereService::InitDB,
-                 AsWeakPtr(),
-                 install_dir));
+      base::Bind(&HTTPSEverywhereService::InitDB, AsWeakPtr(), install_dir));
 }
 
-bool HTTPSEverywhereService::GetHTTPSURL(
-    const GURL* url,
-    const uint64_t& request_identifier,
-    std::string* new_url) {
+bool HTTPSEverywhereService::GetHTTPSURL(const GURL* url,
+                                         const uint64_t& request_identifier,
+                                         std::string* new_url) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!url->is_valid())
@@ -233,9 +225,9 @@ bool HTTPSEverywhereService::ShouldHTTPSERedirect(
   base::AutoLock auto_lock(httpse_get_urls_redirects_count_mutex_);
   for (size_t i = 0; i < httpse_urls_redirects_count_.size(); i++) {
     if (request_identifier ==
-        httpse_urls_redirects_count_[i].request_identifier_ &&
+            httpse_urls_redirects_count_[i].request_identifier_ &&
         httpse_urls_redirects_count_[i].redirects_ >=
-        HTTPSE_URL_MAX_REDIRECTS_COUNT - 1) {
+            HTTPSE_URL_MAX_REDIRECTS_COUNT - 1) {
       return false;
     }
   }
@@ -258,15 +250,14 @@ void HTTPSEverywhereService::AddHTTPSEUrlToRedirectList(
     }
   }
   if (!hostFound) {
-      // The host is new, adding it to the redirects list
-      if (httpse_urls_redirects_count_.size() >=
-          HTTPSE_URLS_REDIRECTS_COUNT_QUEUE) {
-          // The queue is full, erase the first element
-          httpse_urls_redirects_count_.erase(
-              httpse_urls_redirects_count_.begin());
-      }
-      httpse_urls_redirects_count_.push_back(
-          HTTPSE_REDIRECTS_COUNT_ST(request_identifier, 1));
+    // The host is new, adding it to the redirects list
+    if (httpse_urls_redirects_count_.size() >=
+        HTTPSE_URLS_REDIRECTS_COUNT_QUEUE) {
+      // The queue is full, erase the first element
+      httpse_urls_redirects_count_.erase(httpse_urls_redirects_count_.begin());
+    }
+    httpse_urls_redirects_count_.push_back(
+        HTTPSE_REDIRECTS_COUNT_ST(request_identifier, 1));
   }
 }
 
@@ -353,8 +344,7 @@ std::string HTTPSEverywhereService::ApplyHTTPSRule(
         continue;
       }
       std::string from, to;
-      if (!from_value->GetAsString(&from) ||
-          !to_value->GetAsString(&to)) {
+      if (!from_value->GetAsString(&from) || !to_value->GetAsString(&to)) {
         continue;
       }
 

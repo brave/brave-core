@@ -10,8 +10,8 @@
 
 #include "bat/ads/ads_client.h"
 #include "bat/ads/export.h"
-#include "bat/ads/notification_result_type.h"
 #include "bat/ads/notification_info.h"
+#include "bat/ads/notification_result_type.h"
 
 namespace ads {
 
@@ -67,11 +67,10 @@ class ADS_EXPORT Ads {
   virtual void OnMediaStopped(const int32_t tab_id) = 0;
 
   // Should be called to record user activity on a browser tab
-  virtual void TabUpdated(
-      const int32_t tab_id,
-      const std::string& url,
-      const bool is_active,
-      const bool is_incognito) = 0;
+  virtual void TabUpdated(const int32_t tab_id,
+                          const std::string& url,
+                          const bool is_active,
+                          const bool is_incognito) = 0;
 
   // Should be called to record when a browser tab is closed
   virtual void TabClosed(const int32_t tab_id) = 0;
@@ -88,9 +87,8 @@ class ADS_EXPORT Ads {
 
   // Should be called when a page has loaded in the current browser tab, and the
   // HTML is available for analysis
-  virtual void ClassifyPage(
-      const std::string& url,
-      const std::string& html) = 0;
+  virtual void ClassifyPage(const std::string& url,
+                            const std::string& html) = 0;
 
   // Should be called when the user invokes "Show Sample Ad" on the Client; a
   // Notification is then sent to the Client for processing

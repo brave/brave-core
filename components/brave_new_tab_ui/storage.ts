@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as backgroundAPI from './api/background'
-
 // Utils
-import { debounce } from '../common/debounce'
+import {debounce} from '../common/debounce'
+
+import * as backgroundAPI from './api/background'
 
 const keyName = 'new-tab-data'
 
@@ -29,36 +29,44 @@ const defaultState: NewTab.State = {
   }
 }
 
-export const getLoadTimeData = (state: NewTab.State) => {
-  state = { ...state }
-  state.stats = defaultState.stats
-  ;['adsBlockedStat', 'trackersBlockedStat', 'javascriptBlockedStat',
-    'httpsUpgradesStat', 'fingerprintingBlockedStat'].forEach((stat) => {
-      state.stats[stat] = parseInt(chrome.getVariableValue(stat), 10) || 0
-    })
-  state.useAlternativePrivateSearchEngine = chrome.getVariableValue('useAlternativePrivateSearchEngine') === 'true'
-  return state
-}
-
-const cleanData = (state: NewTab.State): NewTab.State => {
-  state = { ...state }
-  state.backgroundImage = backgroundAPI.randomBackgroundImage()
-  state = getLoadTimeData(state)
-  return state
-}
-
-export const load = (): NewTab.State => {
-  const data = window.localStorage.getItem(keyName)
-  let state = defaultState
-  if (data) {
-    try {
-      state = JSON.parse(data)
-    } catch (e) {
-      console.error('Could not parse local storage data: ', e)
+export const getLoadTimeData =
+    (state: NewTab.State) => {
+      state = {...state} state.stats = defaultState.stats;
+      ['adsBlockedStat',
+       'trackersBlockedStat',
+       'javascriptBlockedStat',
+       'httpsUpgradesStat',
+       'fingerprintingBlockedStat']
+          .forEach(
+              (stat) => {state.stats[stat] =
+                             parseInt(chrome.getVariableValue(stat), 10) || 0})
+      state.useAlternativePrivateSearchEngine =
+          chrome.getVariableValue('useAlternativePrivateSearchEngine') ===
+          'true'
+      return state
     }
-  }
-  return cleanData(state)
-}
+
+const cleanData =
+    (state: NewTab.State): NewTab.State => {
+      state = {...state} state.backgroundImage =
+          backgroundAPI.randomBackgroundImage()
+      state = getLoadTimeData(state)
+      return state
+    }
+
+export const load =
+    (): NewTab.State => {
+      const data = window.localStorage.getItem(keyName)
+      let state = defaultState
+      if (data) {
+        try {
+          state = JSON.parse(data)
+        } catch (e) {
+          console.error('Could not parse local storage data: ', e)
+        }
+      }
+      return cleanData(state)
+    }
 
 export const debouncedSave = debounce<NewTab.State>((data: NewTab.State) => {
   if (data) {

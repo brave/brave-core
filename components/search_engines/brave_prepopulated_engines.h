@@ -29,22 +29,22 @@ enum BravePrepopulatedEngineID : unsigned int {
   PREPOPULATED_ENGINE_ID_BING = 3,
   // These engine IDs are not defined in Chromium
   BRAVE_PREPOPULATED_ENGINES_START = 500,
-  PREPOPULATED_ENGINE_ID_AMAZON = 500,     // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_AMAZON = 500,  // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_DUCKDUCKGO,
-  PREPOPULATED_ENGINE_ID_ECOSIA,           // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_FINDX,            // No longer exists (11/2018).
-  PREPOPULATED_ENGINE_ID_GITHUB,           // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_INFOGALACTIC,     // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_MDNWEBDOCS,       // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_ECOSIA,        // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_FINDX,         // No longer exists (11/2018).
+  PREPOPULATED_ENGINE_ID_GITHUB,        // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_INFOGALACTIC,  // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_MDNWEBDOCS,    // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_QWANT,
   PREPOPULATED_ENGINE_ID_SEARX,            // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_SEMANTICSCHOLAR,  // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_STACKOVERFLOW,    // No longer in defaults (2/2019).
   PREPOPULATED_ENGINE_ID_STARTPAGE,
-  PREPOPULATED_ENGINE_ID_TWITTER,          // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_WIKIPEDIA,        // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_WOLFRAMALPHA,     // No longer in defaults (2/2019).
-  PREPOPULATED_ENGINE_ID_YOUTUBE,          // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_TWITTER,       // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_WIKIPEDIA,     // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_WOLFRAMALPHA,  // No longer in defaults (2/2019).
+  PREPOPULATED_ENGINE_ID_YOUTUBE,       // No longer in defaults (2/2019).
 };
 
 extern const PrepopulatedEngine duckduckgo;

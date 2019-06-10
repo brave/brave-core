@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import reducers from '../../../brave_welcome_ui/reducers/index'
-import { newTabInitialState } from '../../testData'
+import {newTabInitialState} from '../../testData'
 
 describe('new tab reducers test', () => {
   it('reducers are a combined reducer function', () => {
@@ -12,7 +12,7 @@ describe('new tab reducers test', () => {
 
   it('reducers passed with an unknown action returns the same input', () => {
     const unknownAction = {
-      type: 'KING OF THE NORTH'
+  type: 'KING OF THE NORTH'
     }
 
     const state = { ...newTabInitialState }

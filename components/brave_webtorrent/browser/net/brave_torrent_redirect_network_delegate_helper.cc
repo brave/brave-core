@@ -11,8 +11,8 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
-#include "brave/common/network_constants.h"
 #include "brave/common/extensions/extension_constants.h"
+#include "brave/common/network_constants.h"
 #include "chrome/browser/profiles/profile_io_data.h"
 #include "content/public/browser/resource_request_info.h"
 #include "extensions/browser/info_map.h"
@@ -30,10 +30,12 @@ bool FileNameMatched(const net::HttpResponseHeaders* headers) {
   }
 
   net::HttpContentDisposition cd_headers(disposition, std::string());
-  if (base::EndsWith(cd_headers.filename(), ".torrent",
-        base::CompareCase::INSENSITIVE_ASCII) ||
-      base::EndsWith(cd_headers.filename(), ".torrent\"",
-        base::CompareCase::INSENSITIVE_ASCII)) {
+  if (base::EndsWith(cd_headers.filename(),
+                     ".torrent",
+                     base::CompareCase::INSENSITIVE_ASCII) ||
+      base::EndsWith(cd_headers.filename(),
+                     ".torrent\"",
+                     base::CompareCase::INSENSITIVE_ASCII)) {
     return true;
   }
 
@@ -41,12 +43,12 @@ bool FileNameMatched(const net::HttpResponseHeaders* headers) {
 }
 
 bool URLMatched(net::URLRequest* request) {
-  return base::EndsWith(request->url().spec(), ".torrent",
-      base::CompareCase::INSENSITIVE_ASCII);
+  return base::EndsWith(
+      request->url().spec(), ".torrent", base::CompareCase::INSENSITIVE_ASCII);
 }
 
 bool IsTorrentFile(net::URLRequest* request,
-    const net::HttpResponseHeaders* headers) {
+                   const net::HttpResponseHeaders* headers) {
   std::string mimeType;
   if (!headers->GetMimeType(&mimeType)) {
     return false;
@@ -66,21 +68,23 @@ bool IsTorrentFile(net::URLRequest* request,
 
 bool IsWebtorrentInitiated(net::URLRequest* request) {
   return request->initiator().has_value() &&
-    request->initiator()->GetURL().spec() ==
-      base::StrCat({extensions::kExtensionScheme, "://",
-      brave_webtorrent_extension_id, "/"});
+         request->initiator()->GetURL().spec() ==
+             base::StrCat({extensions::kExtensionScheme,
+                           "://",
+                           brave_webtorrent_extension_id,
+                           "/"});
 }
 
 bool IsTorProfile(net::URLRequest* request) {
   content::ResourceRequestInfo* resource_info =
-    content::ResourceRequestInfo::ForRequest(request);
+      content::ResourceRequestInfo::ForRequest(request);
   if (!resource_info) {
     return false;
   }
 
   const BraveNavigationUIData* ui_data =
-    static_cast<const BraveNavigationUIData*>(
-        resource_info->GetNavigationUIData());
+      static_cast<const BraveNavigationUIData*>(
+          resource_info->GetNavigationUIData());
   if (!ui_data) {
     return false;
   }
@@ -90,13 +94,13 @@ bool IsTorProfile(net::URLRequest* request) {
 
 bool IsWebTorrentDisabled(net::URLRequest* request) {
   content::ResourceRequestInfo* resource_info =
-    content::ResourceRequestInfo::ForRequest(request);
+      content::ResourceRequestInfo::ForRequest(request);
   if (!resource_info || !resource_info->GetContext()) {
     return false;
   }
 
   const ProfileIOData* io_data =
-    ProfileIOData::FromResourceContext(resource_info->GetContext());
+      ProfileIOData::FromResourceContext(resource_info->GetContext());
   if (!io_data) {
     return false;
   }
@@ -107,7 +111,7 @@ bool IsWebTorrentDisabled(net::URLRequest* request) {
   }
 
   return !infoMap->extensions().Contains(brave_webtorrent_extension_id) ||
-    infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
+         infoMap->disabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
 }  // namespace
@@ -121,9 +125,7 @@ int OnHeadersReceived_TorrentRedirectWork(
     GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-
-  if (!request || !original_response_headers ||
-      IsTorProfile(request) ||
+  if (!request || !original_response_headers || IsTorProfile(request) ||
       IsWebTorrentDisabled(request) ||
       IsWebtorrentInitiated(request) ||  // download .torrent, do not redirect
       !IsTorrentFile(request, original_response_headers)) {
@@ -131,17 +133,16 @@ int OnHeadersReceived_TorrentRedirectWork(
   }
 
   *override_response_headers =
-    new net::HttpResponseHeaders(original_response_headers->raw_headers());
+      new net::HttpResponseHeaders(original_response_headers->raw_headers());
   (*override_response_headers)
       ->ReplaceStatusLine("HTTP/1.1 307 Temporary Redirect");
   (*override_response_headers)->RemoveHeader("Location");
-  GURL url(
-      base::StrCat({extensions::kExtensionScheme, "://",
-      brave_webtorrent_extension_id,
-      "/extension/brave_webtorrent.html?",
-      request->url().spec()}));
-  (*override_response_headers)->AddHeader(
-      "Location: " + url.spec());
+  GURL url(base::StrCat({extensions::kExtensionScheme,
+                         "://",
+                         brave_webtorrent_extension_id,
+                         "/extension/brave_webtorrent.html?",
+                         request->url().spec()}));
+  (*override_response_headers)->AddHeader("Location: " + url.spec());
   *allowed_unsafe_redirect_url = url;
   return net::OK;
 }

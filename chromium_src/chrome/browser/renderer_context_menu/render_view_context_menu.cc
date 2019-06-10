@@ -30,11 +30,9 @@
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost* render_frame_host,
     const content::ContextMenuParams& params)
-  : RenderViewContextMenu_Chromium(render_frame_host, params) {
-}
+    : RenderViewContextMenu_Chromium(render_frame_host, params) {}
 
-void RenderViewContextMenu_Chromium::AppendBraveLinkItems() {
-}
+void RenderViewContextMenu_Chromium::AppendBraveLinkItems() {}
 
 void BraveRenderViewContextMenu::AppendBraveLinkItems() {
   if (!params_.link_url.is_empty()) {
@@ -67,11 +65,11 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
-      profiles::SwitchToTorProfile(
-          base::Bind(
-              OnProfileCreated, params_.link_url,
-              content::Referrer(GURL(),
-                                network::mojom::ReferrerPolicy::kStrictOrigin)));
+      profiles::SwitchToTorProfile(base::Bind(
+          OnProfileCreated,
+          params_.link_url,
+          content::Referrer(GURL(),
+                            network::mojom::ReferrerPolicy::kStrictOrigin)));
       break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);

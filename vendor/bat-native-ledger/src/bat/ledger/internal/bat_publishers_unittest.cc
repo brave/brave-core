@@ -15,8 +15,7 @@ namespace braveledger_bat_publishers {
 
 class BatPublishersTest : public testing::Test {
  protected:
-  void CreatePublisherInfoList(
-      ledger::PublisherInfoList* list) {
+  void CreatePublisherInfoList(ledger::PublisherInfoList* list) {
     double prev_score;
     for (int ix = 0; ix < 50; ix++) {
       ledger::PublisherInfoPtr info = ledger::PublisherInfo::New();
@@ -124,26 +123,21 @@ TEST_F(BatPublishersTest, synopsisNormalizerInternal) {
   ledger::PublisherInfoList new_list;
   ledger::PublisherInfoList list;
   CreatePublisherInfoList(&list);
-  bat_publishers->synopsisNormalizerInternal(
-      &new_list, &list, 0);
+  bat_publishers->synopsisNormalizerInternal(&new_list, &list, 0);
 
   // simulate exclude and re-normalize
   new_list.erase(new_list.begin() + 3);
   ledger::PublisherInfoList new_list2;
-  bat_publishers->synopsisNormalizerInternal(
-      &new_list2, &new_list, 0);
+  bat_publishers->synopsisNormalizerInternal(&new_list2, &new_list, 0);
   new_list2.erase(new_list2.begin() + 4);
   ledger::PublisherInfoList new_list3;
-  bat_publishers->synopsisNormalizerInternal(
-      &new_list3, &new_list2, 0);
+  bat_publishers->synopsisNormalizerInternal(&new_list3, &new_list2, 0);
   new_list3.erase(new_list3.begin() + 5);
   ledger::PublisherInfoList new_list4;
-  bat_publishers->synopsisNormalizerInternal(
-      &new_list4, &new_list3, 0);
+  bat_publishers->synopsisNormalizerInternal(&new_list4, &new_list3, 0);
   new_list4.erase(new_list4.begin() + 6);
   ledger::PublisherInfoList new_list5;
-  bat_publishers->synopsisNormalizerInternal(
-      &new_list5, &new_list4, 0);
+  bat_publishers->synopsisNormalizerInternal(&new_list5, &new_list4, 0);
   for (const auto& element : new_list5) {
     ASSERT_GE((int32_t)element->percent, 0);
     ASSERT_LE((int32_t)element->percent, 100);

@@ -10,12 +10,12 @@
 #include "brave/browser/ui/webui/basic_ui.h"
 
 class SyncUI : public BasicUI {
-public:
- SyncUI(content::WebUI* web_ui, const std::string& host);
- ~SyncUI() override;
+ public:
+  SyncUI(content::WebUI* web_ui, const std::string& host);
+  ~SyncUI() override;
 
-private:
+ private:
   DISALLOW_COPY_AND_ASSIGN(SyncUI);
 };
 
-#endif //BRAVE_BROWSER_UI_WEBUI_SYNC_I_SYNC_UI_H_
+#endif  // BRAVE_BROWSER_UI_WEBUI_SYNC_I_SYNC_UI_H_

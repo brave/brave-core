@@ -23,23 +23,24 @@ class MenuModel;
 // - Remove the context menu from the button since we do not allow uninstall
 class BraveActionViewController : public ExtensionActionViewController {
  public:
-    using ExtensionActionViewController::ExtensionActionViewController;
-    bool IsEnabled(content::WebContents* web_contents) const override;
-    gfx::Image GetIcon(content::WebContents* web_contents,
-                       const gfx::Size& size) override;
-    bool DisabledClickOpensMenu() const override;
-    ui::MenuModel* GetContextMenu() override;
+  using ExtensionActionViewController::ExtensionActionViewController;
+  bool IsEnabled(content::WebContents* web_contents) const override;
+  gfx::Image GetIcon(content::WebContents* web_contents,
+                     const gfx::Size& size) override;
+  bool DisabledClickOpensMenu() const override;
+  ui::MenuModel* GetContextMenu() override;
+
  private:
-    ExtensionActionViewController* GetPreferredPopupViewController() override;
-    bool TriggerPopupWithUrl(PopupShowAction show_action,
+  ExtensionActionViewController* GetPreferredPopupViewController() override;
+  bool TriggerPopupWithUrl(PopupShowAction show_action,
                            const GURL& popup_url,
                            bool grant_tab_permissions) override;
-    void OnPopupClosed() override;
-    // Returns the image source for the icon.
-    std::unique_ptr<BraveActionIconWithBadgeImageSource> GetIconImageSource(
-        content::WebContents* web_contents,
-        const gfx::Size& size);
-    DISALLOW_COPY_AND_ASSIGN(BraveActionViewController);
+  void OnPopupClosed() override;
+  // Returns the image source for the icon.
+  std::unique_ptr<BraveActionIconWithBadgeImageSource> GetIconImageSource(
+      content::WebContents* web_contents,
+      const gfx::Size& size);
+  DISALLOW_COPY_AND_ASSIGN(BraveActionViewController);
 };
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_ACTIONS_BRAVE_ACTION_VIEW_CONTROLLER_H_

@@ -12,17 +12,15 @@
 namespace syncer {
 namespace {
 
-class PushClientChannelTest
-    : public ::testing::Test,
-      public SyncNetworkChannel::Observer {
+class PushClientChannelTest : public ::testing::Test,
+                              public SyncNetworkChannel::Observer {
  protected:
   PushClientChannelTest()
       : fake_push_client_(new notifier::FakePushClient()),
         push_client_channel_(base::WrapUnique(fake_push_client_)) {
     push_client_channel_.AddObserver(this);
-    push_client_channel_.SetMessageReceiver(
-        invalidation::NewPermanentCallback(
-            this, &PushClientChannelTest::OnIncomingMessage));
+    push_client_channel_.SetMessageReceiver(invalidation::NewPermanentCallback(
+        this, &PushClientChannelTest::OnIncomingMessage));
     push_client_channel_.SetSystemResources(nullptr);
   }
 
@@ -35,9 +33,7 @@ class PushClientChannelTest
     NOTREACHED();
   }
 
-  void OnIncomingMessage(std::string incoming_message) {
-    NOTREACHED();
-  }
+  void OnIncomingMessage(std::string incoming_message) { NOTREACHED(); }
 
   notifier::FakePushClient* fake_push_client_;
   PushClientChannel push_client_channel_;
@@ -50,10 +46,9 @@ const int64_t kSchedulingHash = 100;
 // Simulate an incoming notification. Nothing should happen because
 // the channel should not be listening.
 TEST_F(PushClientChannelTest, OnIncomingMessage) {
-   notifier::Notification notification;
-  notification.data =
-      PushClientChannel::EncodeMessageForTest(
-          kMessage, kServiceContext, kSchedulingHash);
+  notifier::Notification notification;
+  notification.data = PushClientChannel::EncodeMessageForTest(
+      kMessage, kServiceContext, kSchedulingHash);
   fake_push_client_->SimulateIncomingNotification(notification);
 }
 

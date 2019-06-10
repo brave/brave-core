@@ -46,12 +46,16 @@ class BraveNetworkDelegateBrowserTest : public InProcessBrowserTest {
 
   void AllowCookies() {
     content_settings()->SetContentSettingCustomScope(
-        top_level_page_pattern_, ContentSettingsPattern::Wildcard(),
-        CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies,
+        top_level_page_pattern_,
+        ContentSettingsPattern::Wildcard(),
+        CONTENT_SETTINGS_TYPE_PLUGINS,
+        brave_shields::kCookies,
         CONTENT_SETTING_ALLOW);
     content_settings()->SetContentSettingCustomScope(
-        top_level_page_pattern_, first_party_pattern_,
-        CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies,
+        top_level_page_pattern_,
+        first_party_pattern_,
+        CONTENT_SETTINGS_TYPE_PLUGINS,
+        brave_shields::kCookies,
         CONTENT_SETTING_ALLOW);
   }
 

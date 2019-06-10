@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as backgroundAPI from '../../../brave_new_tab_ui/api/background'
-import { images as backgrounds } from '../../../brave_new_tab_ui/data/backgrounds'
+import {images as backgrounds} from '../../../brave_new_tab_ui/data/backgrounds'
 
 describe('new tab background api tests', () => {
   describe('randomBackgroundImage', () => {

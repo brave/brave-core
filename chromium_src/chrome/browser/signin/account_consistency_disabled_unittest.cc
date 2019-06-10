@@ -39,16 +39,19 @@ TEST(AccountConsistencyDisabledTest, NewProfile) {
 
     std::unique_ptr<sync_preferences::TestingPrefServiceSyncable> pref_service =
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>(
-            new TestingPrefStore(), new TestingPrefStore(), user_prefs,
-            new TestingPrefStore(), new user_prefs::PrefRegistrySyncable(),
+            new TestingPrefStore(),
+            new TestingPrefStore(),
+            user_prefs,
+            new TestingPrefStore(),
+            new user_prefs::PrefRegistrySyncable(),
             new PrefNotifierImpl());
     RegisterUserProfilePrefs(pref_service->registry());
     profile_builder.SetPrefService(std::move(pref_service));
   }
   std::unique_ptr<TestingProfile> profile = profile_builder.Build();
   ASSERT_TRUE(profile->IsNewProfile());
-  EXPECT_FALSE(AccountConsistencyModeManager::IsDiceEnabledForProfile(
-        profile.get()));
+  EXPECT_FALSE(
+      AccountConsistencyModeManager::IsDiceEnabledForProfile(profile.get()));
 }
 
 TEST(AccountConsistencyDisabledTest, DiceFixAuthErrorsForAllProfiles) {

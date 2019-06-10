@@ -28,4 +28,3 @@ LocalDataFilesService* LocalDataFilesObserver::local_data_files_service() {
 }
 
 }  // namespace brave_component_updater
-

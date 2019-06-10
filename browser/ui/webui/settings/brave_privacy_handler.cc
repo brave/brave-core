@@ -8,11 +8,11 @@
 
 #include "base/bind.h"
 #include "base/values.h"
-#include "chrome/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "content/public/common/webrtc_ip_handling_policy.h"
 #include "content/public/browser/web_ui.h"
+#include "content/public/common/webrtc_ip_handling_policy.h"
 
 void BravePrivacyHandler::RegisterMessages() {
   profile_ = Profile::FromWebUI(web_ui());
@@ -41,10 +41,8 @@ void BravePrivacyHandler::GetWebRTCPolicy(const base::ListValue* args) {
   CHECK(profile_);
 
   std::string policy =
-    profile_->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy);
+      profile_->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy);
 
   AllowJavascript();
-  ResolveJavascriptCallback(
-      args->GetList()[0].Clone(),
-      base::Value(policy));
+  ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(policy));
 }

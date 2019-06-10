@@ -16,20 +16,25 @@
 
 namespace extensions {
 
-BraveExtensionService::BraveExtensionService(Profile* profile,
+BraveExtensionService::BraveExtensionService(
+    Profile* profile,
     const base::CommandLine* command_line,
     const base::FilePath& install_directory,
     ExtensionPrefs* extension_prefs,
     Blacklist* blacklist,
     bool autoupdate_enabled,
     bool extensions_enabled,
-    base::OneShotEvent* ready) :
-    ExtensionService(profile, command_line, install_directory, extension_prefs,
-        blacklist, autoupdate_enabled, extensions_enabled, ready) {
-}
+    base::OneShotEvent* ready)
+    : ExtensionService(profile,
+                       command_line,
+                       install_directory,
+                       extension_prefs,
+                       blacklist,
+                       autoupdate_enabled,
+                       extensions_enabled,
+                       ready) {}
 
-BraveExtensionService::~BraveExtensionService() {
-}
+BraveExtensionService::~BraveExtensionService() {}
 
 void BraveExtensionService::AddComponentExtension(const Extension* extension) {
   ExtensionService::AddComponentExtension(extension);
@@ -57,7 +62,8 @@ void BraveExtensionService::AddComponentExtension(const Extension* extension) {
   // ContentSettingsStore::GetValueMap always returns nullptr. I don't think
   // Chromium is affected by this simply because they don't use content settings
   // from default component extensions.
-  extension_prefs_->OnExtensionInstalled(extension, Extension::ENABLED,
+  extension_prefs_->OnExtensionInstalled(extension,
+                                         Extension::ENABLED,
                                          syncer::StringOrdinal(),
                                          extensions::kInstallFlagNone,
                                          std::string(),

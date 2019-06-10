@@ -17,17 +17,12 @@
 // GetChannelByName is only supported on MacOS.
 TEST(BraveChannelInfoTest, ChannelByNameTest) {
 #if defined(OFFICIAL_BUILD)
-  EXPECT_EQ(version_info::Channel::STABLE,
-            chrome::GetChannelByName(""));
-  EXPECT_EQ(version_info::Channel::BETA,
-            chrome::GetChannelByName("beta"));
-  EXPECT_EQ(version_info::Channel::DEV,
-            chrome::GetChannelByName("dev"));
-  EXPECT_EQ(version_info::Channel::CANARY,
-            chrome::GetChannelByName("nightly"));
+  EXPECT_EQ(version_info::Channel::STABLE, chrome::GetChannelByName(""));
+  EXPECT_EQ(version_info::Channel::BETA, chrome::GetChannelByName("beta"));
+  EXPECT_EQ(version_info::Channel::DEV, chrome::GetChannelByName("dev"));
+  EXPECT_EQ(version_info::Channel::CANARY, chrome::GetChannelByName("nightly"));
 #else
-  EXPECT_EQ(version_info::Channel::UNKNOWN,
-            chrome::GetChannelByName(""));
+  EXPECT_EQ(version_info::Channel::UNKNOWN, chrome::GetChannelByName(""));
 #endif
 }
 #endif  // OS_MACOSX
@@ -73,7 +68,7 @@ TEST(BraveChannelInfoTest, DefaultUserDataDirectoryAndChannelTest) {
   EXPECT_EQ("Brave-Browser-Nightly", path.BaseName().AsUTF8Unsafe());
   EXPECT_EQ(version_info::Channel::CANARY, chrome::GetChannel());
   EXPECT_EQ(BRAVE_LINUX_CHANNEL_NIGHTLY, chrome::GetChannelName());
-#else  // OFFICIAL_BUILD
+#else   // OFFICIAL_BUILD
   EXPECT_TRUE(chrome::GetDefaultUserDataDirectory(&path));
   EXPECT_EQ("Brave-Browser-Development", path.BaseName().AsUTF8Unsafe());
   EXPECT_EQ(version_info::Channel::UNKNOWN, chrome::GetChannel());

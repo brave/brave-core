@@ -7,28 +7,25 @@
 
 #include <string>
 
-#include "base/logging.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/logging.h"
 
 namespace brave_component_updater {
 
 void GetDATFileData(const base::FilePath& file_path,
                     DATFileDataBuffer* buffer) {
   int64_t size = 0;
-  if (!base::PathExists(file_path) ||
-      !base::GetFileSize(file_path, &size) ||
+  if (!base::PathExists(file_path) || !base::GetFileSize(file_path, &size) ||
       0 == size) {
     LOG(ERROR) << "GetDATFileData: "
-               << "the dat file is not found or corrupted "
-               << file_path;
+               << "the dat file is not found or corrupted " << file_path;
     return;
   }
 
   buffer->resize(size);
-  if (size != base::ReadFile(file_path,
-                             reinterpret_cast<char*>(&buffer->front()),
-                             size)) {
+  if (size != base::ReadFile(
+                  file_path, reinterpret_cast<char*>(&buffer->front()), size)) {
     LOG(ERROR) << "GetDATFileData: cannot "
                << "read dat file " << file_path;
   }

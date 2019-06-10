@@ -10,19 +10,17 @@
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "brave/common/tor/pref_names.h"
 #include "chrome/common/channel_info.h"
-#include "components/prefs/pref_registry_simple.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/version_info/channel.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/origin.h"
 
 namespace tor {
 
-TorProfileService::TorProfileService() {
-}
+TorProfileService::TorProfileService() {}
 
-TorProfileService::~TorProfileService() {
-}
+TorProfileService::~TorProfileService() {}
 
 // static
 void TorProfileService::RegisterProfilePrefs(

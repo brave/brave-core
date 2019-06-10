@@ -22,7 +22,7 @@ class BraveCrashpadClient {
   bool SetHandlerIPCPipe(const std::wstring& ipc_pipe);
 };
 
-} // namespace crashpad
+}  // namespace crashpad
 
 namespace crash_reporter {
 
@@ -33,7 +33,7 @@ crashpad::BraveCrashpadClient& GetBraveCrashpadClient() {
   return *client;
 }
 
-} // namespace crash_reporter
+}  // namespace crash_reporter
 
 #define COMPONENTS_CRASH_CONTENT_APP_CRASHPAD_H_
 #define GetCrashpadClient GetBraveCrashpadClient
@@ -56,9 +56,14 @@ bool BraveCrashpadClient::StartHandler(
     bool restartable,
     bool asynchronous_start) {
   return crash_reporter::GetCrashpadClient().StartHandler(
-      handler, database, metrics_dir,
-      "https://laptop-updates.brave.com/1/bc-crashes", annotations, arguments,
-      restartable, asynchronous_start);
+      handler,
+      database,
+      metrics_dir,
+      "https://laptop-updates.brave.com/1/bc-crashes",
+      annotations,
+      arguments,
+      restartable,
+      asynchronous_start);
 }
 
 std::wstring BraveCrashpadClient::GetHandlerIPCPipe() const {
@@ -69,4 +74,4 @@ bool BraveCrashpadClient::SetHandlerIPCPipe(const std::wstring& ipc_pipe) {
   return crash_reporter::GetCrashpadClient().SetHandlerIPCPipe(ipc_pipe);
 }
 
-} // namespace crashpad
+}  // namespace crashpad

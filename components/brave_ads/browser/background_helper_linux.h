@@ -14,10 +14,10 @@
 
 namespace brave_ads {
 
-class BackgroundHelperLinux :
-    public BackgroundHelper,
-    public base::SupportsWeakPtr<BackgroundHelperLinux>,
-    public BrowserListObserver {
+class BackgroundHelperLinux
+    : public BackgroundHelper,
+      public base::SupportsWeakPtr<BackgroundHelperLinux>,
+      public BrowserListObserver {
  public:
   BackgroundHelperLinux();
   ~BackgroundHelperLinux() override;

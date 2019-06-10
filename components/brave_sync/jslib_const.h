@@ -31,8 +31,8 @@ extern const char SyncRecordType_BOOKMARKS[];
 extern const char SyncRecordType_HISTORY[];
 extern const char SyncRecordType_PREFERENCES[];
 
-} // jslib_const
+}  // namespace jslib_const
 
-} // namespace brave_sync
+}  // namespace brave_sync
 
-#endif //BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_JSLIB_CONST_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_JSLIB_CONST_H_

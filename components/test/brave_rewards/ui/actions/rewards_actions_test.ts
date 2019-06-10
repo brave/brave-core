@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { types } from '../../../../brave_rewards/resources/ui/constants/rewards_types'
 import * as actions from '../../../../brave_rewards/resources/ui/actions/rewards_actions'
+import {types} from '../../../../brave_rewards/resources/ui/constants/rewards_types'
 
 describe('rewards_actions', () => {
   it('createWallet', () => {
@@ -14,21 +14,18 @@ describe('rewards_actions', () => {
     })
   })
 
-  it('onWalletCreated', () => {
-    expect(actions.onWalletCreated()).toEqual({
-      type: types.WALLET_CREATED,
-      meta: undefined,
-      payload: undefined
-    })
-  })
+it('onWalletCreated', () => {expect(actions.onWalletCreated()).toEqual({
+                        type: types.WALLET_CREATED,
+                        meta: undefined,
+                        payload: undefined
+                      })})
 
-  it('onWalletCreateFailed', () => {
-    expect(actions.onWalletCreateFailed()).toEqual({
-      type: types.WALLET_CREATE_FAILED,
-      meta: undefined,
-      payload: undefined
-    })
-  })
+it('onWalletCreateFailed',
+   () => {expect(actions.onWalletCreateFailed()).toEqual({
+     type: types.WALLET_CREATE_FAILED,
+     meta: undefined,
+     payload: undefined
+   })})
 
   it('onSettingSave', () => {
     expect(actions.onSettingSave('key', 'value')).toEqual({

@@ -5,22 +5,21 @@
 
 #include "bat/ads/internal/client.h"
 #include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/time_helper.h"
-#include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/static_values.h"
+#include "bat/ads/internal/time_helper.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 
 namespace ads {
 
-Client::Client(AdsImpl* ads, AdsClient* ads_client) :
-    is_initialized_(false),
-    state_has_loaded_(false),
-    ads_(ads),
-    ads_client_(ads_client),
-    client_state_(new ClientState()) {
-}
+Client::Client(AdsImpl* ads, AdsClient* ads_client)
+    : is_initialized_(false),
+      state_has_loaded_(false),
+      ads_(ads),
+      ads_client_(ads_client),
+      client_state_(new ClientState()) {}
 
 Client::~Client() = default;
 
@@ -65,9 +64,7 @@ void Client::UpdateAdUUID() {
   SaveState();
 }
 
-void Client::UpdateAdsUUIDSeen(
-    const std::string& uuid,
-    const uint64_t value) {
+void Client::UpdateAdsUUIDSeen(const std::string& uuid, const uint64_t value) {
   client_state_->ads_uuid_seen.insert({uuid, value});
 
   SaveState();
@@ -77,8 +74,7 @@ const std::map<std::string, uint64_t> Client::GetAdsUUIDSeen() {
   return client_state_->ads_uuid_seen;
 }
 
-void Client::ResetAdsUUIDSeen(
-    const std::vector<AdInfo>& ads) {
+void Client::ResetAdsUUIDSeen(const std::vector<AdInfo>& ads) {
   BLOG(INFO) << "Resetting seen Ads";
 
   for (const auto& ad : ads) {
@@ -101,9 +97,7 @@ bool Client::GetAvailable() const {
   return client_state_->available;
 }
 
-void Client::FlagShoppingState(
-    const std::string& url,
-    const uint64_t score) {
+void Client::FlagShoppingState(const std::string& url, const uint64_t score) {
   client_state_->shop_activity = true;
   client_state_->shop_url = url;
   client_state_->score = score;
@@ -122,9 +116,7 @@ bool Client::GetShoppingState() {
   return client_state_->shop_activity;
 }
 
-void Client::FlagSearchState(
-    const std::string& url,
-    const uint64_t score) {
+void Client::FlagSearchState(const std::string& url, const uint64_t score) {
   client_state_->search_activity = true;
   client_state_->search_url = url;
   client_state_->score = score;
@@ -184,8 +176,7 @@ const std::vector<std::string> Client::GetLocales() {
   return client_state_->locales;
 }
 
-void Client::SetLastPageClassification(
-    const std::string& classification) {
+void Client::SetLastPageClassification(const std::string& classification) {
   client_state_->last_page_classification = classification;
 
   SaveState();
@@ -218,14 +209,14 @@ void Client::AppendCurrentTimeToCreativeSetHistory(
   }
 
   auto now_in_seconds = helper::Time::NowInSeconds();
-  client_state_->creative_set_history.at(
-      creative_set_id).push_back(now_in_seconds);
+  client_state_->creative_set_history.at(creative_set_id)
+      .push_back(now_in_seconds);
 
   SaveState();
 }
 
 const std::map<std::string, std::deque<uint64_t>>
-    Client::GetCreativeSetHistory() const {
+Client::GetCreativeSetHistory() const {
   return client_state_->creative_set_history;
 }
 
@@ -242,8 +233,8 @@ void Client::AppendCurrentTimeToCampaignHistory(
   SaveState();
 }
 
-const std::map<std::string, std::deque<uint64_t>>
-    Client::GetCampaignHistory() const {
+const std::map<std::string, std::deque<uint64_t>> Client::GetCampaignHistory()
+    const {
   return client_state_->campaign_history;
 }
 
@@ -293,8 +284,8 @@ bool Client::FromJson(const std::string& json) {
   std::string error_description;
   auto result = LoadFromJson(&state, json, &error_description);
   if (result != SUCCESS) {
-    BLOG(ERROR) << "Failed to parse client JSON (" << error_description <<
-        "): " << json;
+    BLOG(ERROR) << "Failed to parse client JSON (" << error_description
+                << "): " << json;
 
     return false;
   }

@@ -18,8 +18,8 @@ class SearchEngineProviderServiceFactory
   static SearchEngineProviderServiceFactory* GetInstance();
 
  private:
-  friend
-      struct base::DefaultSingletonTraits<SearchEngineProviderServiceFactory>;
+  friend struct base::DefaultSingletonTraits<
+      SearchEngineProviderServiceFactory>;
   SearchEngineProviderServiceFactory();
   ~SearchEngineProviderServiceFactory() override;
 

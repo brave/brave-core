@@ -8,7 +8,6 @@
 
 #include "brave/browser/tor/tor_profile_service.h"
 
-
 namespace tor {
 
 class MockTorProfileServiceImpl : public TorProfileService {

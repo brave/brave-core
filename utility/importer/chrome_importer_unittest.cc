@@ -9,8 +9,8 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/path_service.h"
+#include "base/strings/utf_string_conversions.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_data_types.h"
@@ -32,8 +32,8 @@ base::FilePath GetTestChromeProfileDir(const std::string& profile) {
   base::FilePath test_dir;
   base::PathService::Get(brave::DIR_TEST_DATA, &test_dir);
 
-  return test_dir.AppendASCII("import").AppendASCII("chrome")
-      .AppendASCII(profile);
+  return test_dir.AppendASCII("import").AppendASCII("chrome").AppendASCII(
+      profile);
 }
 
 class ChromeImporterTest : public ::testing::Test {
@@ -41,7 +41,8 @@ class ChromeImporterTest : public ::testing::Test {
   void SetUpChromeProfile() {
     // Creates a new profile in a new subdirectory in the temp directory.
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath test_path = temp_dir_.GetPath().AppendASCII("ChromeImporterTest");
+    base::FilePath test_path =
+        temp_dir_.GetPath().AppendASCII("ChromeImporterTest");
     base::DeleteFile(test_path, true);
     base::CreateDirectory(test_path);
     profile_dir_ = test_path.AppendASCII("profile");
@@ -134,7 +135,8 @@ TEST_F(ChromeImporterTest, ImportFavicons) {
             favicons[3].favicon_url.spec());
 }
 
-// The mock keychain only works on macOS, so only run this test on macOS (for now)
+// The mock keychain only works on macOS, so only run this test on macOS (for
+// now)
 #if defined(OS_MACOSX)
 TEST_F(ChromeImporterTest, ImportPasswords) {
   // Use mock keychain on mac to prevent blocking permissions dialogs.
@@ -154,16 +156,14 @@ TEST_F(ChromeImporterTest, ImportPasswords) {
   importer_->StartImport(profile_, importer::PASSWORDS, bridge_.get());
 
   EXPECT_FALSE(autofillable_login.blacklisted_by_user);
-  EXPECT_EQ("http://127.0.0.1:8080/",
-            autofillable_login.signon_realm);
+  EXPECT_EQ("http://127.0.0.1:8080/", autofillable_login.signon_realm);
   EXPECT_EQ("test-autofillable-login",
             UTF16ToASCII(autofillable_login.username_value));
   EXPECT_EQ("autofillable-login-password",
             UTF16ToASCII(autofillable_login.password_value));
 
   EXPECT_TRUE(blacklisted_login.blacklisted_by_user);
-  EXPECT_EQ("http://127.0.0.1:8081/",
-            blacklisted_login.signon_realm);
+  EXPECT_EQ("http://127.0.0.1:8081/", blacklisted_login.signon_realm);
   EXPECT_EQ("", UTF16ToASCII(blacklisted_login.username_value));
   EXPECT_EQ("", UTF16ToASCII(blacklisted_login.password_value));
 

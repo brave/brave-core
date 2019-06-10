@@ -10,8 +10,8 @@
 #include <memory>
 #include <string>
 
-#include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/bat_helper.h"
+#include "bat/ledger/ledger.h"
 
 namespace bat_ledger {
 class LedgerImpl;
@@ -26,9 +26,8 @@ class BatState {
 
   bool LoadState(const std::string& data);
 
-  void AddReconcile(
-      const std::string& viewing_id,
-      const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
+  void AddReconcile(const std::string& viewing_id,
+                    const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
 
   bool UpdateReconcile(
       const braveledger_bat_helper::CURRENT_RECONCILE& reconcile);
@@ -102,8 +101,8 @@ class BatState {
 
   void SetWalletInfo(const braveledger_bat_helper::WALLET_INFO_ST& info);
 
-  const braveledger_bat_helper::WALLET_PROPERTIES_ST&
-  GetWalletProperties() const;
+  const braveledger_bat_helper::WALLET_PROPERTIES_ST& GetWalletProperties()
+      const;
 
   void SetWalletProperties(
       braveledger_bat_helper::WALLET_PROPERTIES_ST* properties);

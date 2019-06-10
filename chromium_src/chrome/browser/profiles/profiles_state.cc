@@ -1,7 +1,8 @@
-#include "brave/browser/profiles/brave_profile_manager.h"
 #include "chrome/browser/profiles/profiles_state.h"
+#include "brave/browser/profiles/brave_profile_manager.h"
 #include "ui/gfx/text_elider.h"
-#define SetActiveProfileToGuestIfLocked SetActiveProfileToGuestIfLocked_ChromiumImpl
+#define SetActiveProfileToGuestIfLocked \
+  SetActiveProfileToGuestIfLocked_ChromiumImpl
 #define GetAvatarButtonTextForProfile GetAvatarButtonTextForProfile_ChromiumImpl
 #define GetAvatarNameForProfile GetAvatarNameForProfile_ChromiumImpl
 #include "../../../../../../chrome/browser/profiles/profiles_state.cc"
@@ -22,9 +23,8 @@ base::string16 GetAvatarNameForProfile(const base::FilePath& profile_path) {
 base::string16 GetAvatarButtonTextForProfile(Profile* profile) {
   const int kMaxCharactersToDisplay = 15;
   base::string16 name = GetAvatarNameForProfile(profile->GetPath());
-  name = gfx::TruncateString(name,
-                             kMaxCharactersToDisplay,
-                             gfx::CHARACTER_BREAK);
+  name =
+      gfx::TruncateString(name, kMaxCharactersToDisplay, gfx::CHARACTER_BREAK);
   if (profile->IsLegacySupervised()) {
     name = l10n_util::GetStringFUTF16(
         IDS_LEGACY_SUPERVISED_USER_NEW_AVATAR_LABEL, name);

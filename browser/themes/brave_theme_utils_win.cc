@@ -16,13 +16,11 @@ bool SystemThemeSupportDarkMode() {
   // can break in future Windows versions.
   base::win::RegKey hkcu_themes_regkey;
   bool key_open_succeeded =
-      hkcu_themes_regkey.Open(
-          HKEY_CURRENT_USER,
-          L"Software\\Microsoft\\Windows\\CurrentVersion\\"
-          L"Themes\\Personalize",
-          KEY_READ | KEY_NOTIFY) == ERROR_SUCCESS;
+      hkcu_themes_regkey.Open(HKEY_CURRENT_USER,
+                              L"Software\\Microsoft\\Windows\\CurrentVersion\\"
+                              L"Themes\\Personalize",
+                              KEY_READ | KEY_NOTIFY) == ERROR_SUCCESS;
   return key_open_succeeded;
 }
 
-void SetSystemTheme(BraveThemeType type) {
-}
+void SetSystemTheme(BraveThemeType type) {}

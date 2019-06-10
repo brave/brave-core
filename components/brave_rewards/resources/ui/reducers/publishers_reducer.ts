@@ -2,30 +2,27 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { Reducer } from 'redux'
+import {Reducer} from 'redux'
 
 // Constant
-import { types } from '../constants/rewards_types'
+import {types} from '../constants/rewards_types'
 
-const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
-  switch (action.type) {
-    case types.ON_CONTRIBUTE_LIST:
-      state = { ...state }
-      if (state.contributeLoad) {
-        state.firstLoad = false
-      } else {
-        state.contributeLoad = true
-      }
+const publishersReducer: Reducer<Rewards.State|undefined> =
+    (state: Rewards.State, action) => {
+      switch (action.type) {
+        case types.ON_CONTRIBUTE_LIST:
+          state = {...state} if (state.contributeLoad) {
+            state.firstLoad = false
+          }
+          else {state.contributeLoad = true}
 
-      state.autoContributeList = action.payload.list
-      break
-    case types.ON_EXCLUDED_LIST: {
-      if (!action.payload.list) {
-        break
-      }
+          state.autoContributeList = action.payload.list
+          break case types.ON_EXCLUDED_LIST:
+              {if (!action.payload.list) {
+                break
+              }
 
-      state = { ...state }
-      state.excludedList = action.payload.list
+               state = {...state} state.excludedList = action.payload.list
       break
     }
     case types.ON_EXCLUDE_PUBLISHER: {
@@ -49,41 +46,30 @@ const publishersReducer: Reducer<Rewards.State | undefined> = (state: Rewards.St
     case types.ON_RESTORE_PUBLISHERS:
       state = { ...state }
       chrome.send('brave_rewards.restorePublishers', [])
-      break
-    case types.ON_RECURRING_TIPS:
-      state = { ...state }
-      if (state.recurringLoad) {
+      break case types.ON_RECURRING_TIPS:
+          state = {...state} if (state.recurringLoad) {
         state.firstLoad = false
-      } else {
-        state.recurringLoad = true
       }
-      state.recurringList = action.payload.list
-      break
-    case types.REMOVE_RECURRING_TIP:
-      if (!action.payload.publisherKey) {
+      else {state.recurringLoad = true} state.recurringList =
+          action.payload.list
+      break case types.REMOVE_RECURRING_TIP: if (!action.payload.publisherKey) {
         break
       }
-      chrome.send('brave_rewards.removeRecurringTip', [action.payload.publisherKey])
-      break
-    case types.ON_CURRENT_TIPS:
-      state = { ...state }
-      if (state.tipsLoad) {
+      chrome.send(
+          'brave_rewards.removeRecurringTip', [action.payload.publisherKey])
+      break case types.ON_CURRENT_TIPS: state = {...state} if (state.tipsLoad) {
         state.firstLoad = false
-      } else {
-        state.tipsLoad = true
       }
-      state.tipsList = action.payload.list
+      else {state.tipsLoad = true} state.tipsList = action.payload.list
+      break case types.ON_RECURRING_TIP_SAVED:
+          case types.ON_RECURRING_TIP_REMOVED:
+              chrome.send('brave_rewards.getRecurringTips')
+      break case types.GET_EXCLUDED_SITES:
+          chrome.send('brave_rewards.getExcludedSites')
       break
-    case types.ON_RECURRING_TIP_SAVED:
-    case types.ON_RECURRING_TIP_REMOVED:
-      chrome.send('brave_rewards.getRecurringTips')
-      break
-    case types.GET_EXCLUDED_SITES:
-      chrome.send('brave_rewards.getExcludedSites')
-      break
-  }
+      }
 
-  return state
-}
+      return state
+    }
 
 export default publishersReducer

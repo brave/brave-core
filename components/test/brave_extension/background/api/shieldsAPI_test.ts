@@ -4,9 +4,9 @@
 
 import actions from '../../../../brave_extension/extension/brave_extension/background/actions/shieldsPanelActions'
 import * as shieldsAPI from '../../../../brave_extension/extension/brave_extension/background/api/shieldsAPI'
-import { activeTabData } from '../../../testData'
 // import { Tab as TabType } from '../../../types/state/shieldsPannelState'
 import * as resourceIdentifiers from '../../../../brave_extension/extension/brave_extension/constants/resourceIdentifiers'
+import {activeTabData} from '../../../testData'
 
 describe('Shields API', () => {
   describe('getShieldSettingsForTabData', () => {
@@ -124,17 +124,13 @@ describe('Shields API', () => {
 
   describe('getTabData', () => {
     let spy: jest.SpyInstance
-    const tabId = 2
-    beforeAll(() => {
-      spy = jest.spyOn(chrome.tabs, 'getAsync')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  const tabId = 2
+  beforeAll(() => {spy = jest.spyOn(chrome.tabs, 'getAsync')})
+  afterEach(() => {spy.mockRestore()})
 
     it('calls chrome.tabs.getAsync for the active tab', () => {
       expect.assertions(1)
-      shieldsAPI.getTabData(tabId)
+    shieldsAPI.getTabData(tabId)
       expect(spy).toBeCalledWith(tabId)
     })
 
@@ -153,13 +149,9 @@ describe('Shields API', () => {
 
   describe('requestShieldPanelData', () => {
     let spy: jest.SpyInstance
-    const tabId = 2
-    beforeEach(() => {
-      spy = jest.spyOn(actions, 'shieldsPanelDataUpdated')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  const tabId = 2
+  beforeEach(() => {spy = jest.spyOn(actions, 'shieldsPanelDataUpdated')})
+  afterEach(() => {spy.mockRestore()})
     it('resolves and calls requestShieldPanelData', (cb) => {
       const tab = {
         url: 'https://www.brave.com/test',
@@ -179,7 +171,7 @@ describe('Shields API', () => {
       shieldsAPI.requestShieldPanelData(tabId)
         .then(() => {
           expect(spy).toBeCalledTimes(1)
-          expect(spy.mock.calls[0][0]).toEqual(tab)
+      expect(spy.mock.calls[0][0]).toEqual(tab)
           cb()
         })
         .catch((e: Error) => {
@@ -190,19 +182,15 @@ describe('Shields API', () => {
 
   describe('setAllowAds', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')})
+  afterEach(() => {spy.mockRestore()})
     it('calls chrome.braveShields.plugins with the correct args', () => {
       shieldsAPI.setAllowAds('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
         })
-      const arg0 = spy.mock.calls[0][0]
-      expect.assertions(1)
+    const arg0 = spy.mock.calls[0][0]
+    expect.assertions(1)
       expect(arg0).toEqual({
         primaryPattern: 'https://www.brave.com/*',
         resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_ADS },
@@ -215,7 +203,7 @@ describe('Shields API', () => {
         .catch(() => {
           expect(true).toBe(false)
         })
-      expect.assertions(1)
+    expect.assertions(1)
       expect(spy.mock.calls[0].length).toBe(1)
     })
     it('resolves the returned promise', (cb) => {
@@ -229,19 +217,15 @@ describe('Shields API', () => {
 
   describe('setAllowTrackers', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')})
+  afterEach(() => {spy.mockRestore()})
     it('calls chrome.braveShields.plugins with the correct args', () => {
       shieldsAPI.setAllowTrackers('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
         })
-      const arg0 = spy.mock.calls[0][0]
-      expect.assertions(1)
+    const arg0 = spy.mock.calls[0][0]
+    expect.assertions(1)
       expect(arg0).toEqual({
         primaryPattern: 'https://www.brave.com/*',
         resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_TRACKERS },
@@ -254,7 +238,7 @@ describe('Shields API', () => {
         .catch(() => {
           expect(true).toBe(false)
         })
-      expect.assertions(1)
+    expect.assertions(1)
       expect(spy.mock.calls[0].length).toBe(1)
     })
     it('resolves the returned promise', (cb) => {
@@ -268,19 +252,15 @@ describe('Shields API', () => {
 
   describe('setAllowHTTPUpgradableResource', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')})
+  afterEach(() => {spy.mockRestore()})
     it('calls chrome.braveShields.plugins with the correct args', () => {
       shieldsAPI.setAllowHTTPUpgradableResources('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
         })
-      const arg0 = spy.mock.calls[0][0]
-      expect.assertions(1)
+    const arg0 = spy.mock.calls[0][0]
+    expect.assertions(1)
       expect(arg0).toEqual({
         primaryPattern: '*://www.brave.com/*',
         resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES },
@@ -293,7 +273,7 @@ describe('Shields API', () => {
         .catch(() => {
           expect(true).toBe(false)
         })
-      expect.assertions(1)
+    expect.assertions(1)
       expect(spy.mock.calls[0].length).toBe(1)
     })
     it('resolves the returned promise', (cb) => {
@@ -307,20 +287,17 @@ describe('Shields API', () => {
 
   describe('setAllowJavaScript', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.javascript, 'setAsync')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(
+      () => {spy = jest.spyOn(chrome.braveShields.javascript, 'setAsync')})
+  afterEach(() => {spy.mockRestore()})
 
     it('calls chrome.braveShields.plugins with the correct args', () => {
       shieldsAPI.setAllowJavaScript('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
         })
-      const arg0 = spy.mock.calls[0][0]
-      expect.assertions(1)
+    const arg0 = spy.mock.calls[0][0]
+    expect.assertions(1)
       expect(arg0).toEqual({
         primaryPattern: 'https://www.brave.com/*',
         setting: 'block',
@@ -333,7 +310,7 @@ describe('Shields API', () => {
         .catch(() => {
           expect(true).toBe(false)
         })
-      expect.assertions(1)
+    expect.assertions(1)
       expect(spy.mock.calls[0].length).toBe(1)
     })
 
@@ -348,26 +325,23 @@ describe('Shields API', () => {
 
   describe('setAllowFingerprinting', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')})
+  afterEach(() => {spy.mockRestore()})
     it('calls chrome.braveShields.plugins with the correct args', () => {
       shieldsAPI.setAllowFingerprinting('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
         })
-      const arg0 = spy.mock.calls[0][0]
-      expect.assertions(2)
-      expect(arg0).toEqual({
-        primaryPattern: 'https://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING },
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-      const arg1 = spy.mock.calls[1][0]
+    const arg0 = spy.mock.calls[0][0]
+    expect.assertions(2)
+    expect(arg0).toEqual({
+      primaryPattern: 'https://www.brave.com/*',
+      resourceIdentifier:
+          {id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING},
+      setting: 'block',
+      scope: 'incognito_session_only'
+    })
+    const arg1 = spy.mock.calls[1][0]
       expect(arg1).toEqual({
         primaryPattern: 'https://www.brave.com/*',
         secondaryPattern: 'https://firstParty/*',
@@ -381,14 +355,14 @@ describe('Shields API', () => {
         .catch(() => {
           expect(true).toBe(false)
         })
-      expect.assertions(2)
-      expect(spy.mock.calls[0].length).toBe(1)
+    expect.assertions(2)
+    expect(spy.mock.calls[0].length).toBe(1)
       expect(spy.mock.calls[1].length).toBe(1)
     })
     it('resolves the returned promise', (cb) => {
       shieldsAPI.setAllowFingerprinting('https://www.brave.com', 'block')
         .then(function () {
-          cb()
+  cb()
         })
         .catch((e: Error) => {
           console.error(e.toString())
@@ -398,33 +372,30 @@ describe('Shields API', () => {
 
   describe('setAllowCookies', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.braveShields.plugins, 'setAsync')})
+  afterEach(() => {spy.mockRestore()})
     it('calls chrome.braveShields.plugins with the correct args', () => {
       shieldsAPI.setAllowCookies('https://www.brave.com', 'block')
         .catch(() => {
           expect(true).toBe(false)
         })
-      const arg0 = spy.mock.calls[0][0]
-      expect.assertions(3)
-      expect(arg0).toEqual({
-        primaryPattern: 'https://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_REFERRERS },
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-      const arg1 = spy.mock.calls[1][0]
-      expect(arg1).toEqual({
-        primaryPattern: 'https://www.brave.com/*',
-        resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES },
-        setting: 'block',
-        scope: 'incognito_session_only'
-      })
-      const arg2 = spy.mock.calls[2][0]
+    const arg0 = spy.mock.calls[0][0]
+    expect.assertions(3)
+    expect(arg0).toEqual({
+      primaryPattern: 'https://www.brave.com/*',
+      resourceIdentifier:
+          {id: resourceIdentifiers.RESOURCE_IDENTIFIER_REFERRERS},
+      setting: 'block',
+      scope: 'incognito_session_only'
+    })
+    const arg1 = spy.mock.calls[1][0]
+    expect(arg1).toEqual({
+      primaryPattern: 'https://www.brave.com/*',
+      resourceIdentifier: {id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES},
+      setting: 'block',
+      scope: 'incognito_session_only'
+    })
+    const arg2 = spy.mock.calls[2][0]
       expect(arg2).toEqual({
         primaryPattern: 'https://www.brave.com/*',
         secondaryPattern: 'https://firstParty/*',
@@ -438,8 +409,8 @@ describe('Shields API', () => {
         .catch(() => {
           expect(true).toBe(false)
         })
-      expect.assertions(2)
-      expect(spy.mock.calls[0].length).toBe(1)
+    expect.assertions(2)
+    expect(spy.mock.calls[0].length).toBe(1)
       expect(spy.mock.calls[1].length).toBe(1)
     })
     it('resolves the returned promise', (cb) => {
@@ -464,21 +435,17 @@ describe('Shields API', () => {
 
   describe('setAllowScriptOriginsOnce', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.braveShields, 'allowScriptsOnce')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.braveShields, 'allowScriptsOnce')})
+  afterEach(() => {spy.mockRestore()})
     it('calls chrome.braveShields.allowScriptsOnce with the correct args', () => {
       shieldsAPI.setAllowScriptOriginsOnce(['https://a.com/', 'https://b.com/'], 2)
         .catch(() => {
           expect(true).toBe(false)
         })
-      const arg0 = spy.mock.calls[0][0]
-      expect.assertions(2)
-      expect(arg0).toEqual(['https://a.com/', 'https://b.com/'])
-      const arg1 = spy.mock.calls[0][1]
+    const arg0 = spy.mock.calls[0][0]
+    expect.assertions(2)
+    expect(arg0).toEqual(['https://a.com/', 'https://b.com/'])
+    const arg1 = spy.mock.calls[0][1]
       expect(arg1).toBe(2)
     })
     it('passes 3 args to chrome.braveShields.allowScriptsOnce', () => {
@@ -486,7 +453,7 @@ describe('Shields API', () => {
         .catch(() => {
           expect(true).toBe(false)
         })
-      expect.assertions(1)
+    expect.assertions(1)
       expect(spy.mock.calls[0].length).toBe(3) // include callback
     })
     it('resolves the returned promise', (cb) => {

@@ -7,11 +7,9 @@
 
 namespace ads {
 
-DestroyInfo::DestroyInfo() :
-    tab_id(-1) {}
+DestroyInfo::DestroyInfo() : tab_id(-1) {}
 
-DestroyInfo::DestroyInfo(const DestroyInfo& info) :
-    tab_id(info.tab_id) {}
+DestroyInfo::DestroyInfo(const DestroyInfo& info) : tab_id(info.tab_id) {}
 
 DestroyInfo::~DestroyInfo() {}
 

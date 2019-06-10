@@ -54,9 +54,7 @@
 
 @end  // @implementation KeystoneObserver
 
-
-VersionUpdater* VersionUpdater::Create(
-    content::WebContents* web_contents) {
+VersionUpdater* VersionUpdater::Create(content::WebContents* web_contents) {
   return new VersionUpdaterMac;
 }
 
@@ -65,8 +63,7 @@ VersionUpdaterMac::VersionUpdaterMac()
   show_promote_button_ = false;
 }
 
-VersionUpdaterMac::~VersionUpdaterMac() {
-}
+VersionUpdaterMac::~VersionUpdaterMac() {}
 
 void VersionUpdaterMac::CheckForUpdate(
     const StatusCallback& status_callback,
@@ -101,8 +98,7 @@ void VersionUpdaterMac::CheckForUpdate(
       // status indicating the result of the check.
     }
   } else {
-    status_callback.Run(DISABLED, 0, false, std::string(), 0,
-                        base::string16());
+    status_callback.Run(DISABLED, 0, false, std::string(), 0, base::string16());
   }
 }
 
@@ -111,11 +107,11 @@ void VersionUpdaterMac::PromoteUpdater() const {
 }
 
 void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
-  AutoupdateStatus sparkle_status = static_cast<AutoupdateStatus>(
-      [base::mac::ObjCCastStrict<NSNumber>(
+  AutoupdateStatus sparkle_status =
+      static_cast<AutoupdateStatus>([base::mac::ObjCCastStrict<NSNumber>(
           [dictionary objectForKey:kBraveAutoupdateStatusStatus]) intValue]);
-  std::string error_messages = base::SysNSStringToUTF8(
-      base::mac::ObjCCastStrict<NSString>(
+  std::string error_messages =
+      base::SysNSStringToUTF8(base::mac::ObjCCastStrict<NSString>(
           [dictionary objectForKey:kBraveAutoupdateStatusErrorMessages]));
 
   base::string16 message;
@@ -155,8 +151,8 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
     case kAutoupdateCheckFailed:
     case kAutoupdateInstallFailed:
       status = FAILED;
-      message = l10n_util::GetStringFUTF16Int(IDS_UPGRADE_ERROR,
-                                              sparkle_status);
+      message =
+          l10n_util::GetStringFUTF16Int(IDS_UPGRADE_ERROR, sparkle_status);
       break;
 
     default:
@@ -186,7 +182,6 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
   if (!status_callback_.is_null())
     status_callback_.Run(status, 0, false, std::string(), 0, message);
 }
-
 
 void VersionUpdaterMac::UpdateShowPromoteButton() {
   NOTIMPLEMENTED();

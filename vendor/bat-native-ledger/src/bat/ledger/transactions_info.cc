@@ -3,18 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/transactions_info.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/values.h"
-#include "bat/ledger/transactions_info.h"
 
 namespace ledger {
 
-TransactionsInfo::TransactionsInfo() :
-    transactions({}) {}
+TransactionsInfo::TransactionsInfo() : transactions({}) {}
 
-TransactionsInfo::TransactionsInfo(const TransactionsInfo& info) :
-    transactions(info.transactions) {}
+TransactionsInfo::TransactionsInfo(const TransactionsInfo& info)
+    : transactions(info.transactions) {}
 
 TransactionsInfo::~TransactionsInfo() = default;
 
@@ -25,14 +24,16 @@ const std::string TransactionsInfo::ToJson() const {
   for (const auto& transaction : transactions) {
     base::Value transaction_dictionary(base::Value::Type::DICTIONARY);
 
-    transaction_dictionary.SetKey("timestamp_in_seconds",
+    transaction_dictionary.SetKey(
+        "timestamp_in_seconds",
         base::Value(std::to_string(transaction.timestamp_in_seconds)));
 
-    transaction_dictionary.SetKey("estimated_redemption_value",
+    transaction_dictionary.SetKey(
+        "estimated_redemption_value",
         base::Value(transaction.estimated_redemption_value));
 
     transaction_dictionary.SetKey("confirmation_type",
-        base::Value(transaction.confirmation_type));
+                                  base::Value(transaction.confirmation_type));
 
     list.GetList().push_back(std::move(transaction_dictionary));
   }
@@ -46,10 +47,8 @@ const std::string TransactionsInfo::ToJson() const {
   return json;
 }
 
-bool TransactionsInfo::FromJson(
-    const std::string& json) {
-  base::Optional<base::Value> dictionary =
-    base::JSONReader::Read(json);
+bool TransactionsInfo::FromJson(const std::string& json) {
+  base::Optional<base::Value> dictionary = base::JSONReader::Read(json);
   if (!dictionary || !dictionary->is_dict()) {
     return false;
   }

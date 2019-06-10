@@ -21,8 +21,9 @@ class BraveSyncServiceObserver;
 class Settings;
 class SyncDevices;
 
-bookmarks::BookmarkPermanentNodeList
-LoadExtraNodes(bookmarks::LoadExtraCallback callback, int64_t* next_node_id);
+bookmarks::BookmarkPermanentNodeList LoadExtraNodes(
+    bookmarks::LoadExtraCallback callback,
+    int64_t* next_node_id);
 bool IsSyncManagedNode(const bookmarks::BookmarkPermanentNode* node);
 
 class BraveSyncService : public KeyedService {
@@ -34,9 +35,8 @@ class BraveSyncService : public KeyedService {
                               std::unique_ptr<brave_sync::SyncDevices>)>
       GetSettingsAndDevicesCallback;
 
-  virtual void OnSetupSyncHaveCode(
-      const std::string& sync_words,
-      const std::string& device_name) = 0;
+  virtual void OnSetupSyncHaveCode(const std::string& sync_words,
+                                   const std::string& device_name) = 0;
   virtual void OnSetupSyncNewToSync(const std::string& device_name) = 0;
   virtual void OnDeleteDevice(const std::string& device_id) = 0;
   virtual void OnResetSync() = 0;
@@ -60,7 +60,6 @@ class BraveSyncService : public KeyedService {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   virtual BraveSyncClient* GetSyncClient() = 0;
 #endif
-
 
  protected:
   base::ObserverList<BraveSyncServiceObserver> observers_;

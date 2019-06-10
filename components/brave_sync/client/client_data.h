@@ -10,11 +10,11 @@
 namespace brave_sync {
 namespace client_data {
 
-//typedef std::vector<unsigned char> Uint8Array;
-//using Uint8Array = std::vector<unsigned char>;
+// typedef std::vector<unsigned char> Uint8Array;
+// using Uint8Array = std::vector<unsigned char>;
 
 class Config {
-public:
+ public:
   Config();
   // version of API
   std::string api_version;
@@ -24,7 +24,7 @@ public:
   bool debug;
 };
 
-} // namespace client_data
-} // namespace brave_sync
+}  // namespace client_data
+}  // namespace brave_sync
 
-#endif // BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_CLIENT_DATA_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_CLIENT_CLIENT_DATA_H_

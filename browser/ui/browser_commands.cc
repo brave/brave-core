@@ -36,15 +36,14 @@ void NewTorIdentity(Browser* browser) {
   Profile* profile = browser->profile();
   DCHECK(profile);
   tor::TorProfileService* service =
-    TorProfileServiceFactory::GetForProfile(profile);
+      TorProfileServiceFactory::GetForProfile(profile);
   DCHECK(service);
-  WebContents* current_tab =
-    browser->tab_strip_model()->GetActiveWebContents();
+  WebContents* current_tab = browser->tab_strip_model()->GetActiveWebContents();
   if (!current_tab)
     return;
   const GURL current_url = current_tab->GetURL();
-  service->SetNewTorCircuit(current_url, base::Bind(&NewTorIdentityCallback,
-                                                    current_tab));
+  service->SetNewTorCircuit(current_url,
+                            base::Bind(&NewTorIdentityCallback, current_tab));
 }
 
 }  // namespace brave

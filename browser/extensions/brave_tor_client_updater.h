@@ -46,8 +46,8 @@ class BraveTorClientUpdater : public BraveComponent {
 
  protected:
   void OnComponentReady(const std::string& component_id,
-      const base::FilePath& install_dir,
-      const std::string& manifest) override;
+                        const base::FilePath& install_dir,
+                        const std::string& manifest) override;
 
  private:
   friend class ::BraveTorClientUpdaterTest;
@@ -66,8 +66,8 @@ class BraveTorClientUpdater : public BraveComponent {
 };
 
 // Creates the BraveTorClientUpdater
-std::unique_ptr<BraveTorClientUpdater>
-BraveTorClientUpdaterFactory(BraveComponent::Delegate* delegate);
+std::unique_ptr<BraveTorClientUpdater> BraveTorClientUpdaterFactory(
+    BraveComponent::Delegate* delegate);
 
 }  // namespace extensions
 

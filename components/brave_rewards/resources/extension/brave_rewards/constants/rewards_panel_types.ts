@@ -24,7 +24,8 @@ export const enum types {
   ON_GRANT_RESET = '@@rewards_panel/ON_GRANT_RESET',
   ON_GRANT_DELETE = '@@rewards_panel/ON_GRANT_DELETE',
   ON_GRANT_FINISH = '@@rewards_panel/ON_GRANT_FINISH',
-  ON_PENDING_CONTRIBUTIONS_TOTAL = '@@rewards_panel/ON_PENDING_CONTRIBUTIONS_TOTAL',
+  ON_PENDING_CONTRIBUTIONS_TOTAL =
+      '@@rewards_panel/ON_PENDING_CONTRIBUTIONS_TOTAL',
   ON_ENABLED_MAIN = '@@rewards_panel/ON_ENABLED_MAIN',
   ON_ENABLED_AC = '@@rewards_panel/ON_ENABLED_AC',
   ON_PUBLISHER_LIST_NORMALIZED = '@@rewards_panel/ON_PUBLISHER_LIST_NORMALIZED',
@@ -34,7 +35,8 @@ export const enum types {
   REMOVE_RECURRING_TIP = '@@rewards_panel/REMOVE_RECURRING_TIP',
   ON_RECURRING_TIPS = '@@rewards_panel/ON_RECURRING_TIPS',
   ON_PUBLISHER_BANNER = '@@rewards_panel/ON_PUBLISHER_BANNER',
-  ON_PUBLISHER_STATUS_REFRESHED = '@@rewards_panel/ON_PUBLISHER_STATUS_REFRESHED',
+  ON_PUBLISHER_STATUS_REFRESHED =
+      '@@rewards_panel/ON_PUBLISHER_STATUS_REFRESHED',
   ON_ALL_NOTIFICATIONS = '@@rewards_panel/ON_ALL_NOTIFICATIONS',
   ON_INIT = '@@rewards_panel/ON_INIT'
 }

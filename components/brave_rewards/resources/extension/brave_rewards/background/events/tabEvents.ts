@@ -9,6 +9,6 @@ chrome.tabs.onUpdated.addListener((tabId: number, changeInfo: chrome.tabs.TabCha
   rewardsPanelActions.onTabRetrieved(tab, '', activeTabIsLoadingTriggered)
 })
 
-chrome.tabs.onActivated.addListener((activeInfo: chrome.tabs.TabActiveInfo) => {
-  rewardsPanelActions.onTabId(activeInfo.tabId)
-})
+  chrome.tabs.onActivated.addListener(
+      (activeInfo: chrome.tabs.TabActiveInfo) => {
+          rewardsPanelActions.onTabId(activeInfo.tabId)})

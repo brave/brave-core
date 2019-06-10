@@ -10,8 +10,8 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/path_service.h"
+#include "base/strings/utf_string_conversions.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/importer/imported_bookmark_entry.h"
 #include "chrome/common/importer/importer_data_types.h"
@@ -33,7 +33,8 @@ base::FilePath GetTestBraveProfileDir(const std::string& profile) {
   base::FilePath test_dir;
   base::PathService::Get(brave::DIR_TEST_DATA, &test_dir);
 
-  return test_dir.AppendASCII("import").AppendASCII("brave-browser-laptop")
+  return test_dir.AppendASCII("import")
+      .AppendASCII("brave-browser-laptop")
       .AppendASCII(profile);
 }
 
@@ -42,7 +43,8 @@ class BraveImporterTest : public ::testing::Test {
   void SetUpBraveProfile() {
     // Creates a new profile in a new subdirectory in the temp directory.
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    base::FilePath test_path = temp_dir_.GetPath().AppendASCII("BraveImporterTest");
+    base::FilePath test_path =
+        temp_dir_.GetPath().AppendASCII("BraveImporterTest");
     base::DeleteFile(test_path, true);
     base::CreateDirectory(test_path);
     profile_dir_ = test_path.AppendASCII("profile");
@@ -83,20 +85,17 @@ TEST_F(BraveImporterTest, ImportHistory) {
 
   // Order of imported history entries matches the order of keys in historySites
   EXPECT_EQ(history[0].url.spec(),
-      "http://127.0.0.1:8080/trigger_password_save_prompt.html");
+            "http://127.0.0.1:8080/trigger_password_save_prompt.html");
   EXPECT_EQ(history[0].title,
-      ASCIIToUTF16("127.0.0.1:8080/trigger_password_save_prompt.html"));
-  EXPECT_EQ(history[0].last_visit,
-      base::Time::FromJsTime(1528742510286));
+            ASCIIToUTF16("127.0.0.1:8080/trigger_password_save_prompt.html"));
+  EXPECT_EQ(history[0].last_visit, base::Time::FromJsTime(1528742510286));
   EXPECT_EQ(history[0].hidden, false);
   EXPECT_EQ(history[0].typed_count, 0);
 
   EXPECT_EQ(history[9].url.spec(),
-      "https://www.google.com/search?q=year%202048%20bug");
-  EXPECT_EQ(history[9].title,
-      ASCIIToUTF16("year 2048 bug - Google Search"));
-  EXPECT_EQ(history[9].last_visit,
-      base::Time::FromJsTime(1528745695067));
+            "https://www.google.com/search?q=year%202048%20bug");
+  EXPECT_EQ(history[9].title, ASCIIToUTF16("year 2048 bug - Google Search"));
+  EXPECT_EQ(history[9].last_visit, base::Time::FromJsTime(1528745695067));
   EXPECT_EQ(history[9].hidden, false);
   EXPECT_EQ(history[9].typed_count, 0);
 }
@@ -130,9 +129,10 @@ TEST_F(BraveImporterTest, ImportBookmarks) {
   EXPECT_TRUE(bookmarks[1].in_toolbar);
   EXPECT_FALSE(bookmarks[1].is_folder);
 
-  EXPECT_EQ(ASCIIToUTF16(
-    "Secure, Fast & Private Web Browser with Adblocker | Brave Browser"),
-    bookmarks[2].title);
+  EXPECT_EQ(
+      ASCIIToUTF16(
+          "Secure, Fast & Private Web Browser with Adblocker | Brave Browser"),
+      bookmarks[2].title);
   EXPECT_EQ("https://brave.com/", bookmarks[2].url.spec());
   EXPECT_EQ(1u, bookmarks[2].path.size());
   EXPECT_EQ(ASCIIToUTF16("Bookmarks Toolbar"), bookmarks[2].path[0]);
@@ -147,24 +147,26 @@ TEST_F(BraveImporterTest, ImportBookmarks) {
   EXPECT_TRUE(bookmarks[3].is_folder);
 
   EXPECT_EQ(ASCIIToUTF16(
-    "Blog About Privacy, Adblocks & Best Browsers | Brave Browser"),
-    bookmarks[4].title);
+                "Blog About Privacy, Adblocks & Best Browsers | Brave Browser"),
+            bookmarks[4].title);
   EXPECT_EQ(2u, bookmarks[4].path.size());
   EXPECT_EQ(ASCIIToUTF16("Other Bookmarks"), bookmarks[4].path[0]);
   EXPECT_EQ(ASCIIToUTF16("Nested Folder 1"), bookmarks[4].path[1]);
   EXPECT_FALSE(bookmarks[4].in_toolbar);
   EXPECT_FALSE(bookmarks[4].is_folder);
 
-  EXPECT_EQ(ASCIIToUTF16(
-    "Make Money as a Publisher with Brave Payments | Brave Browser"),
-    bookmarks[5].title);
+  EXPECT_EQ(
+      ASCIIToUTF16(
+          "Make Money as a Publisher with Brave Payments | Brave Browser"),
+      bookmarks[5].title);
   EXPECT_EQ(1u, bookmarks[5].path.size());
   EXPECT_EQ(ASCIIToUTF16("Other Bookmarks"), bookmarks[5].path[0]);
   EXPECT_FALSE(bookmarks[5].in_toolbar);
   EXPECT_FALSE(bookmarks[5].is_folder);
 }
 
-// The mock keychain only works on macOS, so only run this test on macOS (for now)
+// The mock keychain only works on macOS, so only run this test on macOS (for
+// now)
 #if defined(OS_MACOSX)
 TEST_F(BraveImporterTest, ImportPasswords) {
   // Use mock keychain on mac to prevent blocking permissions dialogs.
@@ -184,16 +186,12 @@ TEST_F(BraveImporterTest, ImportPasswords) {
   importer_->StartImport(profile_, importer::PASSWORDS, bridge_.get());
 
   EXPECT_FALSE(autofillable_login.blacklisted_by_user);
-  EXPECT_EQ("http://127.0.0.1:8080/",
-            autofillable_login.signon_realm);
-  EXPECT_EQ("test_username",
-            UTF16ToASCII(autofillable_login.username_value));
-  EXPECT_EQ("test_password",
-            UTF16ToASCII(autofillable_login.password_value));
+  EXPECT_EQ("http://127.0.0.1:8080/", autofillable_login.signon_realm);
+  EXPECT_EQ("test_username", UTF16ToASCII(autofillable_login.username_value));
+  EXPECT_EQ("test_password", UTF16ToASCII(autofillable_login.password_value));
 
   EXPECT_TRUE(blacklisted_login.blacklisted_by_user);
-  EXPECT_EQ("http://127.0.0.1:8081/",
-            blacklisted_login.signon_realm);
+  EXPECT_EQ("http://127.0.0.1:8081/", blacklisted_login.signon_realm);
   EXPECT_EQ("", UTF16ToASCII(blacklisted_login.username_value));
   EXPECT_EQ("", UTF16ToASCII(blacklisted_login.password_value));
 
@@ -228,8 +226,7 @@ TEST_F(BraveImporterTest, ImportStats) {
 
   EXPECT_CALL(*bridge_, NotifyStarted());
   EXPECT_CALL(*bridge_, NotifyItemStarted(importer::STATS));
-  EXPECT_CALL(*bridge_, UpdateStats(_))
-      .WillOnce(::testing::SaveArg<0>(&stats));
+  EXPECT_CALL(*bridge_, UpdateStats(_)).WillOnce(::testing::SaveArg<0>(&stats));
   EXPECT_CALL(*bridge_, NotifyItemEnded(importer::STATS));
   EXPECT_CALL(*bridge_, NotifyEnded());
 

@@ -11,9 +11,9 @@ struct BraveStats {
   int httpsEverywhere_count;
 
   BraveStats()
-    : adblock_count(0),
-      trackingProtection_count(0),
-      httpsEverywhere_count(0) {}
+      : adblock_count(0),
+        trackingProtection_count(0),
+        httpsEverywhere_count(0) {}
 };
 
 #endif  // BRAVE_COMMON_IMPORTER_BRAVE_STATS_H_

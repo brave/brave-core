@@ -5,8 +5,7 @@
 #include "google_apis/google_api_keys.h"
 
 namespace google_apis {
-const char kBraveAPIKeysDevelopersHowToURL[] =
-    "https://community.brave.com";
+const char kBraveAPIKeysDevelopersHowToURL[] = "https://community.brave.com";
 }  // namespace google_apis
 
 #define kAPIKeysDevelopersHowToURL kBraveAPIKeysDevelopersHowToURL

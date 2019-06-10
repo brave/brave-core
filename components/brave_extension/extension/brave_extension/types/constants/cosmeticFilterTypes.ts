@@ -4,7 +4,9 @@
 
 import * as types from '../../constants/cosmeticFilterTypes'
 
-export type SITE_COSMETIC_FILTER_REMOVED = typeof types.SITE_COSMETIC_FILTER_REMOVED
+export type SITE_COSMETIC_FILTER_REMOVED =
+    typeof types.SITE_COSMETIC_FILTER_REMOVED
 export type SITE_COSMETIC_FILTER_ADDED = typeof types.SITE_COSMETIC_FILTER_ADDED
 export type LOGGED_STORAGE = typeof types.LOGGED_STORAGE
-export type ALL_COSMETIC_FILTERS_REMOVED = typeof types.ALL_COSMETIC_FILTERS_REMOVED
+export type ALL_COSMETIC_FILTERS_REMOVED =
+    typeof types.ALL_COSMETIC_FILTERS_REMOVED

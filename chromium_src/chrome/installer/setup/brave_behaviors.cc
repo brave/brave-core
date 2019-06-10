@@ -16,4 +16,4 @@ void DoPostUninstallOperations(const base::Version& version,
   // Brave browser doesn't launch uninstall survey page.
 }
 
-}
+}  // namespace installer

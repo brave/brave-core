@@ -15,9 +15,18 @@ Polymer({
       value: function() {
         return [
           {value: 'default', name: loadTimeData.getString('webRTCDefault')},
-          {value: 'default_public_and_private_interfaces', name: loadTimeData.getString('defaultPublicAndPrivateInterfaces')},
-          {value: 'default_public_interface_only', name: loadTimeData.getString('defaultPublicInterfaceOnly')},
-          {value: 'disable_non_proxied_udp', name: loadTimeData.getString('disableNonProxiedUdp')}
+          {
+            value: 'default_public_and_private_interfaces',
+            name: loadTimeData.getString('defaultPublicAndPrivateInterfaces')
+          },
+          {
+            value: 'default_public_interface_only',
+            name: loadTimeData.getString('defaultPublicInterfaceOnly')
+          },
+          {
+            value: 'disable_non_proxied_udp',
+            name: loadTimeData.getString('disableNonProxiedUdp')
+          }
         ]
       },
     },
@@ -35,10 +44,12 @@ Polymer({
 
   /** @override */
   ready: function() {
-    this.onWebRTCPolicyChange_ = this.onWebRTCPolicyChange_.bind(this)
-    this.browserProxy_.getWebRTCPolicy().then(policy => {
-      this.webRTCPolicy_ = policy;
-    });
+    this.onWebRTCPolicyChange_ =
+        this.onWebRTCPolicyChange_.bind(this) this.browserProxy_
+            .getWebRTCPolicy()
+            .then(policy => {
+              this.webRTCPolicy_ = policy;
+            });
   },
 
   /**

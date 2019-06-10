@@ -4,7 +4,8 @@
 
 export const RESOURCE_IDENTIFIER_ADS = 'ads'
 export const RESOURCE_IDENTIFIER_TRACKERS = 'trackers'
-export const RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES = 'httpUpgradableResources'
+export const RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES =
+    'httpUpgradableResources'
 export const RESOURCE_IDENTIFIER_BRAVE_SHIELDS = 'braveShields'
 export const RESOURCE_IDENTIFIER_FINGERPRINTING = 'fingerprinting'
 export const RESOURCE_IDENTIFIER_COOKIES = 'cookies'

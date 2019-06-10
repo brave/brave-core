@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as types from '../../../brave_extension/extension/brave_extension/constants/windowTypes'
 import * as actions from '../../../brave_extension/extension/brave_extension/actions/windowActions'
+import * as types from '../../../brave_extension/extension/brave_extension/constants/windowTypes'
 
 describe('windowActions', () => {
   it('windowFocusChanged', () => {
@@ -15,20 +15,19 @@ describe('windowActions', () => {
     })
   })
 
-  it('windowCreated', () => {
-    const win: chrome.windows.Window = {
-      id: 1,
-      state: 'normal',
-      focused: true,
-      alwaysOnTop: false,
-      incognito: false,
-      type: 'normal'
-    }
-    expect(actions.windowCreated(win)).toEqual({
-      type: types.WINDOW_CREATED,
-      window: win
+    it('windowCreated', () => {
+      const win: chrome.windows.Window = {
+        id: 1,
+        state: 'normal',
+        focused: true,
+        alwaysOnTop: false,
+        incognito: false,
+        type: 'normal'
+      } expect(actions.windowCreated(win)).toEqual({
+        type: types.WINDOW_CREATED,
+        window: win
+      })
     })
-  })
 
   it('windowRemoved', () => {
     const windowId = 1

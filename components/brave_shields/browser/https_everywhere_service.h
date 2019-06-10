@@ -33,18 +33,16 @@ extern const char kHTTPSEverywhereComponentBase64PublicKey[];
 
 struct HTTPSE_REDIRECTS_COUNT_ST {
  public:
-  HTTPSE_REDIRECTS_COUNT_ST(uint64_t request_identifier,
-                            unsigned int redirects):
-    request_identifier_(request_identifier),
-    redirects_(redirects) {
-  }
+  HTTPSE_REDIRECTS_COUNT_ST(uint64_t request_identifier, unsigned int redirects)
+      : request_identifier_(request_identifier), redirects_(redirects) {}
 
   uint64_t request_identifier_;
   unsigned int redirects_;
 };
 
-class HTTPSEverywhereService : public BaseBraveShieldsService,
-                         public base::SupportsWeakPtr<HTTPSEverywhereService> {
+class HTTPSEverywhereService
+    : public BaseBraveShieldsService,
+      public base::SupportsWeakPtr<HTTPSEverywhereService> {
  public:
   explicit HTTPSEverywhereService(BraveComponent::Delegate* delegate);
   ~HTTPSEverywhereService() override;
@@ -59,13 +57,13 @@ class HTTPSEverywhereService : public BaseBraveShieldsService,
   bool Init() override;
   void Cleanup() override;
   void OnComponentReady(const std::string& component_id,
-      const base::FilePath& install_dir,
-      const std::string& manifest) override;
+                        const base::FilePath& install_dir,
+                        const std::string& manifest) override;
 
   void AddHTTPSEUrlToRedirectList(const uint64_t& request_id);
   bool ShouldHTTPSERedirect(const uint64_t& request_id);
   std::string ApplyHTTPSRule(const std::string& originalUrl,
-      const std::string& rule);
+                             const std::string& rule);
   std::string CorrecttoRuleToRE2Engine(const std::string& to);
 
  private:

@@ -5,28 +5,28 @@
 #ifndef BRAVE_BROWSER_PUBLISHER_BANNER_
 #define BRAVE_BROWSER_PUBLISHER_BANNER_
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 namespace brave_rewards {
-  struct PublisherBanner {
-    PublisherBanner();
-    ~PublisherBanner();
-    PublisherBanner(const PublisherBanner& properties);
+struct PublisherBanner {
+  PublisherBanner();
+  ~PublisherBanner();
+  PublisherBanner(const PublisherBanner& properties);
 
-    std::string publisher_key;
-    std::string title;
-    std::string name;
-    std::string description;
-    std::string background;
-    std::string logo;
-    std::vector<int> amounts;
-    std::string provider;
-    std::map<std::string, std::string> social;
-    bool verified;
-  };
+  std::string publisher_key;
+  std::string title;
+  std::string name;
+  std::string description;
+  std::string background;
+  std::string logo;
+  std::vector<int> amounts;
+  std::string provider;
+  std::map<std::string, std::string> social;
+  bool verified;
+};
 
 }  // namespace brave_rewards
 
-#endif //BRAVE_BROWSER_PUBLISHER_BANNER_
+#endif  // BRAVE_BROWSER_PUBLISHER_BANNER_

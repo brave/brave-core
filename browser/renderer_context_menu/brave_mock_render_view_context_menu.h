@@ -43,7 +43,7 @@ class BraveMockRenderViewContextMenu : public ui::SimpleMenuModel::Delegate,
     bool checked;
     bool hidden;
     base::string16 title;
-    bool is_submenu;  // This item lives in a submenu.
+    bool is_submenu;   // This item lives in a submenu.
     bool has_submenu;  // This item is a submenu.
   };
 

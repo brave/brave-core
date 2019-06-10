@@ -13,11 +13,9 @@
 namespace brave_component_updater {
 
 BraveComponent::BraveComponent(Delegate* delegate)
-    : delegate_(delegate),
-      weak_factory_(this) {}
+    : delegate_(delegate), weak_factory_(this) {}
 
-BraveComponent::~BraveComponent() {
-}
+BraveComponent::~BraveComponent() {}
 
 void BraveComponent::Register(const std::string& component_name,
                               const std::string& component_id,
@@ -26,14 +24,11 @@ void BraveComponent::Register(const std::string& component_name,
   component_id_ = component_id;
   component_base64_public_key_ = component_base64_public_key;
 
-  auto registered_callback =
-      base::BindOnce(&BraveComponent::OnComponentRegistered,
-                     delegate_,
-                     component_id);
-  auto ready_callback =
-      base::BindOnce(&BraveComponent::OnComponentReady,
-                     weak_factory_.GetWeakPtr(),
-                     component_id);
+  auto registered_callback = base::BindOnce(
+      &BraveComponent::OnComponentRegistered, delegate_, component_id);
+  auto ready_callback = base::BindOnce(&BraveComponent::OnComponentReady,
+                                       weak_factory_.GetWeakPtr(),
+                                       component_id);
 
   delegate_->Register(component_name_,
                       component_base64_public_key_,
@@ -49,15 +44,13 @@ scoped_refptr<base::SequencedTaskRunner> BraveComponent::GetTaskRunner() {
   return delegate_->GetTaskRunner();
 }
 
-void BraveComponent::OnComponentReady(
-    const std::string& component_id,
-    const base::FilePath& install_dir,
-    const std::string& manifest) {}
+void BraveComponent::OnComponentReady(const std::string& component_id,
+                                      const base::FilePath& install_dir,
+                                      const std::string& manifest) {}
 
 // static
-void BraveComponent::OnComponentRegistered(
-    Delegate* delegate,
-    const std::string& component_id) {
+void BraveComponent::OnComponentRegistered(Delegate* delegate,
+                                           const std::string& component_id) {
   delegate->OnDemandUpdate(component_id);
 }
 

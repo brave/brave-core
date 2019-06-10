@@ -7,8 +7,7 @@
 
 namespace brave_rewards {
 
-ReconcileInfo::ReconcileInfo()
-  : retry_step_(STEP_NO), retry_level_(0) {}
+ReconcileInfo::ReconcileInfo() : retry_step_(STEP_NO), retry_level_(0) {}
 
 ReconcileInfo::~ReconcileInfo() {}
 

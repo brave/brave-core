@@ -7,17 +7,17 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_BUNDLE_STATE_DATABASE_H_
 
 #include <stddef.h>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>
 
-#include "bat/ads/ad_info.h"
-#include "bat/ads/bundle_state.h"
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/macros.h"
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
+#include "bat/ads/ad_info.h"
+#include "bat/ads/bundle_state.h"
 #include "build/build_config.h"
 #include "sql/database.h"
 #include "sql/init_status.h"
@@ -37,9 +37,8 @@ class BundleStateDatabase {
   }
 
   bool SaveBundleState(const ads::BundleState& bundle_state);
-  bool GetAdsForCategory(
-      const std::string& category,
-      std::vector<ads::AdInfo>* ads);
+  bool GetAdsForCategory(const std::string& category,
+                         std::vector<ads::AdInfo>* ads);
 
   // Returns the current version of the publisher info database
   static int GetCurrentVersion();
@@ -66,9 +65,8 @@ class BundleStateDatabase {
 
   bool InsertOrUpdateCategory(const std::string& category);
   bool InsertOrUpdateAdInfo(const ads::AdInfo& info);
-  bool InsertOrUpdateAdInfoCategory(
-      const ads::AdInfo& ad_info,
-      const std::string& category);
+  bool InsertOrUpdateAdInfoCategory(const ads::AdInfo& ad_info,
+                                    const std::string& category);
 
   sql::Database& GetDB();
   sql::MetaTable& GetMetaTable();

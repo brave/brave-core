@@ -4,12 +4,16 @@
 
 import actions from '../actions/webNavigationActions'
 
-chrome.webNavigation.onBeforeNavigate.addListener(function ({ tabId, url, frameId }: chrome.webNavigation.WebNavigationParentedCallbackDetails) {
+chrome.webNavigation.onBeforeNavigate.addListener(function(
+    {tabId, url, frameId}:
+        chrome.webNavigation.WebNavigationParentedCallbackDetails) {
   const isMainFrame: boolean = frameId === 0
   actions.onBeforeNavigate(tabId, url, isMainFrame)
 })
 
-chrome.webNavigation.onCommitted.addListener(function ({ tabId, url, frameId }: chrome.webNavigation.WebNavigationTransitionCallbackDetails) {
+chrome.webNavigation.onCommitted.addListener(function(
+    {tabId, url, frameId}:
+        chrome.webNavigation.WebNavigationTransitionCallbackDetails) {
   const isMainFrame: boolean = frameId === 0
   actions.onCommitted(tabId, url, isMainFrame)
 })

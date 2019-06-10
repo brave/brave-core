@@ -25,8 +25,7 @@ namespace {
 // The handler for Javascript messages for the chrome://welcome page
 class WelcomeDOMHandler : public WebUIMessageHandler {
  public:
-  WelcomeDOMHandler() {
-  }
+  WelcomeDOMHandler() {}
   ~WelcomeDOMHandler() override {}
 
   void Init();
@@ -46,24 +45,27 @@ Browser* WelcomeDOMHandler::GetBrowser() {
 }
 
 void WelcomeDOMHandler::RegisterMessages() {
-  web_ui()->RegisterMessageCallback("importNowRequested",
+  web_ui()->RegisterMessageCallback(
+      "importNowRequested",
       base::BindRepeating(&WelcomeDOMHandler::HandleImportNowRequested,
                           base::Unretained(this)));
 }
 
-void WelcomeDOMHandler::Init() {
-}
+void WelcomeDOMHandler::Init() {}
 
 void WelcomeDOMHandler::HandleImportNowRequested(const base::ListValue* args) {
-  chrome::ShowSettingsSubPageInTabbedBrowser(GetBrowser(), chrome::kImportDataSubPage);
+  chrome::ShowSettingsSubPageInTabbedBrowser(GetBrowser(),
+                                             chrome::kImportDataSubPage);
 }
 
 }  // namespace
 
 BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kBraveWelcomeGenerated,
-        kBraveWelcomeGeneratedSize, IDR_BRAVE_WELCOME_HTML) {
-
+    : BasicUI(web_ui,
+              name,
+              kBraveWelcomeGenerated,
+              kBraveWelcomeGeneratedSize,
+              IDR_BRAVE_WELCOME_HTML) {
   auto handler_owner = std::make_unique<WelcomeDOMHandler>();
   WelcomeDOMHandler* handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));
@@ -72,10 +74,8 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 #if defined(OS_WIN)
   g_brave_browser_process->local_state()->SetBoolean(
-      prefs::kHasSeenWin10PromoPage,
-      true);
+      prefs::kHasSeenWin10PromoPage, true);
 #endif
 }
 
-BraveWelcomeUI::~BraveWelcomeUI() {
-}
+BraveWelcomeUI::~BraveWelcomeUI() {}

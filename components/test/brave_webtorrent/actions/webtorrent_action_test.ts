@@ -2,9 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { types } from '../../../brave_webtorrent/extension/constants/webtorrent_types'
+import {Torrent} from 'webtorrent'
+
 import * as actions from '../../../brave_webtorrent/extension/actions/webtorrent_actions'
-import { Torrent } from 'webtorrent'
+import {types} from '../../../brave_webtorrent/extension/constants/webtorrent_types'
 
 const torrent: Torrent = {
   infoHash: 'infoHash',
@@ -59,13 +60,11 @@ describe('webtorrent_actions', () => {
     })
   })
 
-  it('infoUpdated', () => {
-    expect(actions.infoUpdated(torrent)).toEqual({
-      type: types.WEBTORRENT_INFO_UPDATED,
-      meta: undefined,
-      payload: { torrent }
-    })
-  })
+it('infoUpdated', () => {expect(actions.infoUpdated(torrent)).toEqual({
+                    type: types.WEBTORRENT_INFO_UPDATED,
+                    meta: undefined,
+                    payload: {torrent}
+                  })})
 
   it('serverUpdated', () => {
     const serverURL = 'https://localhost:12345'
@@ -78,7 +77,7 @@ describe('webtorrent_actions', () => {
 
   it('startTorrent', () => {
     const torrentId = 'id'
-    const tabId = 1
+  const tabId = 1
     expect(actions.startTorrent(torrentId, tabId)).toEqual({
       type: types.WEBTORRENT_START_TORRENT,
       meta: undefined,

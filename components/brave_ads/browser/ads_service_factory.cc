@@ -8,8 +8,8 @@
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 
 #include "base/time/time.h"
-#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
+#include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/common/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -19,9 +19,9 @@
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
 #include "brave/components/brave_ads/browser/ads_service_impl.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "chrome/browser/dom_distiller/dom_distiller_service_factory.h"
 #include "chrome/browser/notifications/notification_display_service_factory.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #endif
 
 class PrefStore;
@@ -29,8 +29,7 @@ class PrefStore;
 namespace brave_ads {
 
 // static
-AdsService* AdsServiceFactory::GetForProfile(
-    Profile* profile) {
+AdsService* AdsServiceFactory::GetForProfile(Profile* profile) {
   if (profile->IsOffTheRecord())
     return NULL;
 
@@ -54,8 +53,7 @@ AdsServiceFactory::AdsServiceFactory()
 #endif
 }
 
-AdsServiceFactory::~AdsServiceFactory() {
-}
+AdsServiceFactory::~AdsServiceFactory() {}
 
 KeyedService* AdsServiceFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {
@@ -89,10 +87,10 @@ void AdsServiceFactory::RegisterProfilePrefs(
     // prefs::kBraveAdsPrefsVersion should default to 1 for legacy installations
     // so that preferences are migrated from version 1 to the current version
     registry->RegisterIntegerPref(prefs::kBraveAdsPrefsVersion,
-        prefs::kBraveAdsPrefsDefaultVersion);
+                                  prefs::kBraveAdsPrefsDefaultVersion);
   } else {
     registry->RegisterIntegerPref(prefs::kBraveAdsPrefsVersion,
-        prefs::kBraveAdsPrefsCurrentVersion);
+                                  prefs::kBraveAdsPrefsCurrentVersion);
   }
 
   registry->RegisterBooleanPref(prefs::kBraveAdsEnabled, false);
@@ -100,24 +98,22 @@ void AdsServiceFactory::RegisterProfilePrefs(
 
   registry->RegisterUint64Pref(prefs::kBraveAdsPerHour, 2);
 
-  #if defined(OS_ANDROID)
-    registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 12);
-  #else
-    registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 20);
-  #endif
+#if defined(OS_ANDROID)
+  registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 12);
+#else
+  registry->RegisterUint64Pref(prefs::kBraveAdsPerDay, 20);
+#endif
 
   registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 15);
   registry->RegisterBooleanPref(
-      prefs::kBraveAdShouldShowFirstLaunchNotification,
-      true);
+      prefs::kBraveAdShouldShowFirstLaunchNotification, true);
   registry->RegisterBooleanPref(
-      prefs::kBraveAdsHasRemovedFirstLaunchNotification,
-      false);
+      prefs::kBraveAdsHasRemovedFirstLaunchNotification, false);
 
-  auto now = static_cast<uint64_t>(
-      (base::Time::Now() - base::Time()).InSeconds());
-  registry->RegisterUint64Pref(
-      prefs::kBraveAdsLaunchNotificationTimestamp, now);
+  auto now =
+      static_cast<uint64_t>((base::Time::Now() - base::Time()).InSeconds());
+  registry->RegisterUint64Pref(prefs::kBraveAdsLaunchNotificationTimestamp,
+                               now);
 
   if (should_migrate_prefs_from_62) {
     registry->RegisterBooleanPref(prefs::kBraveAdsPrefsMigratedFrom62, true);

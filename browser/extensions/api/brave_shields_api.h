@@ -20,8 +20,7 @@ class BraveShieldsAllowScriptsOnceFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveShieldsContentSettingGetFunction
-    : public UIThreadExtensionFunction {
+class BraveShieldsContentSettingGetFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.get", UNKNOWN)
 
@@ -32,8 +31,7 @@ class BraveShieldsContentSettingGetFunction
   ResponseAction Run() override;
 };
 
-class BraveShieldsContentSettingSetFunction
-    : public UIThreadExtensionFunction {
+class BraveShieldsContentSettingSetFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveShields.set", UNKNOWN)
 

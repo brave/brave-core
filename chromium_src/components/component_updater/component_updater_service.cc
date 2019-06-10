@@ -28,10 +28,12 @@ std::unique_ptr<ComponentUpdateService> ComponentUpdateServiceFactory(
   DCHECK(config);
   DCHECK(scheduler);
   auto update_client = base::MakeRefCounted<UpdateClientImpl>(
-      config, base::MakeRefCounted<PingManager>(config), &UpdateChecker::Create,
+      config,
+      base::MakeRefCounted<PingManager>(config),
+      &UpdateChecker::Create,
       &CrxDownloader::Create);
-  return std::make_unique<BraveCrxUpdateService>(config, std::move(scheduler),
-                                                 std::move(update_client));
+  return std::make_unique<BraveCrxUpdateService>(
+      config, std::move(scheduler), std::move(update_client));
 }
 
 }  // namespace component_updater

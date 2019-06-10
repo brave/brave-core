@@ -6,13 +6,13 @@
 #ifndef BRAVELEDGER_BAT_HELPER_H_
 #define BRAVELEDGER_BAT_HELPER_H_
 
+#include <functional>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
-#include <functional>
 
-#include "bat/ledger/ledger.h"
 #include "bat/ledger/internal/static_values.h"
+#include "bat/ledger/ledger.h"
 
 namespace braveledger_bat_helper {
 bool isProbiValid(const std::string& number);
@@ -59,7 +59,7 @@ struct WALLET_INFO_ST {
   ~WALLET_INFO_ST();
 
   // load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string paymentId_;
   std::string addressBAT_;
@@ -75,7 +75,7 @@ struct TRANSACTION_BALLOT_ST {
   ~TRANSACTION_BALLOT_ST();
 
   // load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string publisher_;
   unsigned int offset_ = 0u;
@@ -87,7 +87,7 @@ struct TRANSACTION_ST {
   ~TRANSACTION_ST();
 
   // load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string viewingId_;
   std::string surveyorId_;
@@ -113,7 +113,7 @@ struct BALLOT_ST {
   ~BALLOT_ST();
 
   // Load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string viewingId_;
   std::string surveyorId_;
@@ -130,7 +130,7 @@ struct BATCH_VOTES_INFO_ST {
   ~BATCH_VOTES_INFO_ST();
 
   // Load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string surveyorId_;
   std::string proof_;
@@ -142,7 +142,7 @@ struct BATCH_VOTES_ST {
   ~BATCH_VOTES_ST();
 
   // Load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string publisher_;
   std::vector<BATCH_VOTES_INFO_ST> batchVotesInfo_;
@@ -154,7 +154,7 @@ struct GRANT {
   ~GRANT();
 
   // load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string altcurrency;
   std::string probi;
@@ -169,7 +169,7 @@ struct GRANT_RESPONSE {
   ~GRANT_RESPONSE();
 
   // load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string promotionId;
   uint64_t minimumReconcileTimestamp;
@@ -183,7 +183,7 @@ struct WALLET_PROPERTIES_ST {
   WALLET_PROPERTIES_ST(const WALLET_PROPERTIES_ST& properties);
 
   // load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string altcurrency_;
   std::string probi_;
@@ -201,7 +201,7 @@ struct REPORT_BALANCE_ST {
   REPORT_BALANCE_ST(const REPORT_BALANCE_ST&);
   ~REPORT_BALANCE_ST();
 
-  bool loadFromJson(const std::string &json);
+  bool loadFromJson(const std::string& json);
 
   std::string opening_balance_ = "0";
   std::string closing_balance_ = "0";
@@ -220,7 +220,7 @@ struct PUBLISHER_STATE_ST {
   ~PUBLISHER_STATE_ST();
 
   // load from json string
-  bool loadFromJson(const std::string &json);
+  bool loadFromJson(const std::string& json);
 
   uint64_t min_publisher_duration_ =
       braveledger_ledger::_default_min_publisher_duration;  // In seconds
@@ -240,7 +240,7 @@ struct PUBLISHER_ST {
   bool operator<(const PUBLISHER_ST& rhs) const;
 
   // load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string id_;
   uint64_t duration_ = 0u;
@@ -273,7 +273,7 @@ struct SURVEYOR_ST {
   ~SURVEYOR_ST();
 
   // load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string signature_;
   std::string surveyorId_;
@@ -289,7 +289,7 @@ struct RECONCILE_DIRECTION {
                       const std::string& currency);
   ~RECONCILE_DIRECTION();
 
-  bool loadFromJson(const std::string &json);
+  bool loadFromJson(const std::string& json);
 
   std::string publisher_key_;
   int amount_;
@@ -305,7 +305,7 @@ struct CURRENT_RECONCILE {
   ~CURRENT_RECONCILE();
 
   // load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string viewingId_;
   std::string anonizeViewingId_;
@@ -339,7 +339,7 @@ struct CLIENT_STATE_ST {
   ~CLIENT_STATE_ST();
 
   // Load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   WALLET_INFO_ST walletInfo_;
   WALLET_PROPERTIES_ST walletProperties_;
@@ -374,7 +374,7 @@ struct GRANTS_PROPERTIES_ST {
   GRANTS_PROPERTIES_ST(const GRANTS_PROPERTIES_ST& properties);
 
   //  load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
   std::vector<GRANT_RESPONSE> grants_;
 };
 
@@ -396,7 +396,7 @@ struct MEDIA_PUBLISHER_INFO {
   ~MEDIA_PUBLISHER_INFO();
 
   // load from json string
-  bool loadFromJson(const std::string & json);
+  bool loadFromJson(const std::string& json);
 
   std::string publisherName_;
   std::string publisherURL_;
@@ -416,12 +416,7 @@ struct BATCH_PROOF {
 
 typedef std::vector<braveledger_bat_helper::BATCH_PROOF> BatchProofs;
 
-enum class SERVER_TYPES {
-  LEDGER,
-  BALANCE,
-  PUBLISHER,
-  PUBLISHER_DISTRO
-};
+enum class SERVER_TYPES { LEDGER, BALANCE, PUBLISHER, PUBLISHER_DISTRO };
 
 struct SERVER_LIST_BANNER {
   SERVER_LIST_BANNER();
@@ -537,16 +532,14 @@ bool ignore_for_testing();
 
 void set_ignore_for_testing(bool ignore);
 
-uint8_t niceware_mnemonic_to_bytes(
-    const std::string& w,
-    std::vector<uint8_t>* bytes_out,
-    size_t* written,
-    std::vector<std::string> wordDictionary);
+uint8_t niceware_mnemonic_to_bytes(const std::string& w,
+                                   std::vector<uint8_t>* bytes_out,
+                                   size_t* written,
+                                   std::vector<std::string> wordDictionary);
 
-bool HasSameDomainAndPath(
-    const std::string& url,
-    const std::string& to_match,
-    const std::string& path);
+bool HasSameDomainAndPath(const std::string& url,
+                          const std::string& to_match,
+                          const std::string& path);
 
 }  // namespace braveledger_bat_helper
 

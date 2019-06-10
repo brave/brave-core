@@ -5,8 +5,8 @@
 
 #include "brave/browser/profiles/brave_profile_manager.h"
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
@@ -48,12 +48,11 @@ class BraveProfileManagerTest : public testing::Test {
    public:
     MOCK_METHOD0(DidLaunchTorProcess, void());
     MOCK_METHOD2(OnProfileCreated,
-        void(Profile* profile, Profile::CreateStatus status));
+                 void(Profile* profile, Profile::CreateStatus status));
   };
 
   BraveProfileManagerTest()
-      : local_state_(TestingBrowserProcess::GetGlobal()) {
-  }
+      : local_state_(TestingBrowserProcess::GetGlobal()) {}
 
   void SetUp() override {
     // Create a new temporary directory, and store the path
@@ -135,13 +134,12 @@ TEST_F(BraveProfileManagerTest, InitProfileUserPrefs) {
       profile->GetPrefs()->GetInteger(prefs::kProfileAvatarIndex);
   EXPECT_EQ(avatar_index, size_t(0));
   EXPECT_FALSE(
-    profile->GetPrefs()->GetBoolean(prefs::kProfileUsingDefaultName));
+      profile->GetPrefs()->GetBoolean(prefs::kProfileUsingDefaultName));
   EXPECT_TRUE(profile->GetPrefs()->GetBoolean(tor::prefs::kProfileUsingTor));
 
   // Check WebRTC IP handling policy.
-  EXPECT_EQ(
-    profile->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy),
-    content::kWebRTCIPHandlingDisableNonProxiedUdp);
+  EXPECT_EQ(profile->GetPrefs()->GetString(prefs::kWebRTCIPHandlingPolicy),
+            content::kWebRTCIPHandlingDisableNonProxiedUdp);
 
   // Check SafeBrowsing status
   EXPECT_FALSE(profile->GetPrefs()->GetBoolean(prefs::kSafeBrowsingEnabled));
@@ -181,8 +179,8 @@ TEST_F(BraveProfileManagerTest, CreateProfilesAsync) {
   const std::string profile_name2 = "Tor Profile";
 
   MockObserver mock_observer;
-  EXPECT_CALL(mock_observer, OnProfileCreated(
-      testing::NotNull(), NotFail())).Times(testing::AtLeast(3));
+  EXPECT_CALL(mock_observer, OnProfileCreated(testing::NotNull(), NotFail()))
+      .Times(testing::AtLeast(3));
   EXPECT_CALL(mock_observer, DidLaunchTorProcess()).Times(1);
 
   ProfileManager* profile_manager = g_browser_process->profile_manager();
@@ -192,4 +190,3 @@ TEST_F(BraveProfileManagerTest, CreateProfilesAsync) {
 
   content::RunAllTasksUntilIdle();
 }
-

@@ -7,4 +7,5 @@
  * Only the property names with truthy values are included.
  */
 // TODO remove NZ
-export const cx = (obj: Record<string, boolean>) => Object.keys(obj).filter((prop) => obj[prop]).join(' ')
+export const cx = (obj: Record<string, boolean>) =>
+    Object.keys(obj).filter((prop) => obj[prop]).join(' ')

@@ -6,8 +6,7 @@
 
 @implementation BATPublisherInfo (PrivateCpp)
 
-- (ledger::PublisherInfoPtr)cppObj
-{
+- (ledger::PublisherInfoPtr)cppObj {
   ledger::PublisherInfoPtr info;
   info->id = std::string(self.id.UTF8String);
   info->duration = self.duration;

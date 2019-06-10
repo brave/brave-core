@@ -7,13 +7,13 @@
 #define BAT_CONFIRMATIONS_CONFIRMATIONS_H_
 
 #include <stdint.h>
-#include <vector>
 #include <memory>
+#include <vector>
 
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/export.h"
-#include "bat/confirmations/notification_info.h"
 #include "bat/confirmations/issuers_info.h"
+#include "bat/confirmations/notification_info.h"
 #include "bat/confirmations/wallet_info.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/transactions_info.h"

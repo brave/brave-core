@@ -4,7 +4,7 @@
 
 namespace brave_actions {
 
-  const int kBraveActionGraphicSize = 18;
-  const int kBraveActionRightMargin = 2;
+const int kBraveActionGraphicSize = 18;
+const int kBraveActionRightMargin = 2;
 
-}
+}  // namespace brave_actions

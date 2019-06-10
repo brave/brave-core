@@ -27,14 +27,14 @@
 namespace brave {
 
 void AutoImportMuon() {
-  base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
+  base::CommandLine& command_line = *base::CommandLine::ForCurrentProcess();
   if (!command_line.HasSwitch(switches::kUpgradeFromMuon))
     return;
 
   PrefService* local_state = g_browser_process->local_state();
   if (local_state->GetBoolean(kMigratedMuonProfile)) {
-    LOG(WARNING) << "Muon profile already migrated, ignoring --upgrade-from-muon";
+    LOG(WARNING)
+        << "Muon profile already migrated, ignoring --upgrade-from-muon";
     return;
   }
 
@@ -42,10 +42,9 @@ void AutoImportMuon() {
 
   base::RunLoop run_loop;
   auto importer_list = std::make_unique<ImporterList>();
-  importer_list->DetectSourceProfiles(
-      g_browser_process->GetApplicationLocale(),
-      false,  // include_interactive_profiles
-      run_loop.QuitClosure());
+  importer_list->DetectSourceProfiles(g_browser_process->GetApplicationLocale(),
+                                      false,  // include_interactive_profiles
+                                      run_loop.QuitClosure());
   run_loop.Run();
 
   bool brave_profile_found = false;

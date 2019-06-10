@@ -325,14 +325,13 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest, RedirectTranslate) {
   brave::ResponseCallback callback;
   GURL expected_url(kBraveTranslateServer + path_string + query_string);
 
-  int ret = OnBeforeURLRequest_StaticRedirectWork(callback,
-      before_url_context);
+  int ret = OnBeforeURLRequest_StaticRedirectWork(callback, before_url_context);
   EXPECT_EQ(before_url_context->new_url_spec, expected_url);
   EXPECT_EQ(ret, net::OK);
 }
 
 TEST_F(BraveStaticRedirectNetworkDelegateHelperTest,
-    RedirectTranslateLanguage) {
+       RedirectTranslateLanguage) {
   net::TestDelegate test_delegate;
   GURL url(
       "https://translate.googleapis.com/translate_a/l?"
@@ -347,8 +346,7 @@ TEST_F(BraveStaticRedirectNetworkDelegateHelperTest,
   brave::ResponseCallback callback;
   GURL expected_url(kBraveTranslateLanguageEndpoint);
 
-  int ret = OnBeforeURLRequest_StaticRedirectWork(callback,
-      before_url_context);
+  int ret = OnBeforeURLRequest_StaticRedirectWork(callback, before_url_context);
   EXPECT_EQ(before_url_context->new_url_spec, expected_url);
   EXPECT_EQ(ret, net::OK);
 }

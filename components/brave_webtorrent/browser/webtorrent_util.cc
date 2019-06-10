@@ -12,12 +12,11 @@ namespace webtorrent {
 
 bool IsWebtorrentEnabled(content::BrowserContext* browser_context) {
   bool isTorProfile =
-    Profile::FromBrowserContext(browser_context)->IsTorProfile();
+      Profile::FromBrowserContext(browser_context)->IsTorProfile();
   extensions::ExtensionRegistry* registry =
-    extensions::ExtensionRegistry::Get(browser_context);
+      extensions::ExtensionRegistry::Get(browser_context);
   return !isTorProfile &&
-    registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
+         registry->enabled_extensions().Contains(brave_webtorrent_extension_id);
 }
 
-}  // webtorrent
-
+}  // namespace webtorrent

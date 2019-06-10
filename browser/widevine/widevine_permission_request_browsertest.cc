@@ -48,8 +48,7 @@ class TestObserver : public PermissionRequestManager::Observer {
 };
 }  // namespace
 
-class WidevinePermissionRequestBrowserTest
-    : public InProcessBrowserTest {
+class WidevinePermissionRequestBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -104,21 +103,18 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, VisibilityTest) {
 
 // Check extra text is added.
 IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
-  auto* permission_request_manager =
-      GetPermissionRequestManager();
+  auto* permission_request_manager = GetPermissionRequestManager();
   EXPECT_FALSE(permission_request_manager->IsBubbleVisible());
   GetBraveDrmTabHelper()->OnWidevineKeySystemAccessRequest();
   content::RunAllTasksUntilIdle();
   EXPECT_TRUE(permission_request_manager->IsBubbleVisible());
 
-  gfx::NativeWindow window =
-      permission_request_manager->GetBubbleWindow();
+  gfx::NativeWindow window = permission_request_manager->GetBubbleWindow();
   auto* widget = views::Widget::GetWidgetForNativeWindow(window);
   DCHECK(widget);
 
   auto* delegate_view =
-      static_cast<views::BubbleDialogDelegateView*>(
-          widget->widget_delegate());
+      static_cast<views::BubbleDialogDelegateView*>(widget->widget_delegate());
   DCHECK(delegate_view);
   // Original PermissionsBubbleDialogDelegateView has one child.
   // It's label that includes icon and fragment test.
@@ -205,9 +201,8 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
   }
 
   void SetUpDefaultCommandLine(base::CommandLine* command_line) override {
-    command_line->AppendSwitchASCII(
-        "enable-blink-features",
-        "EncryptedMediaEncryptionSchemeQuery");
+    command_line->AppendSwitchASCII("enable-blink-features",
+                                    "EncryptedMediaEncryptionSchemeQuery");
   }
 
   content::WebContents* active_contents() {
@@ -218,9 +213,7 @@ class ScriptTriggerWidevinePermissionRequestBrowserTest
     return PermissionRequestManager::FromWebContents(active_contents());
   }
 
-  bool IsPermissionBubbleShown() {
-    return observer.bubble_added_;
-  }
+  bool IsPermissionBubbleShown() { return observer.bubble_added_; }
 
   void ResetBubbleState() {
     observer.bubble_added_ = false;
@@ -252,8 +245,8 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   const std::string drm_js =
       "var config = [{initDataTypes: ['cenc']}];"
       "navigator.requestMediaKeySystemAccess($1, config);";
-  const std::string widevine_js = content::JsReplace(drm_js,
-                                                     "com.widevine.alpha");
+  const std::string widevine_js =
+      content::JsReplace(drm_js, "com.widevine.alpha");
 
   EXPECT_TRUE(content::ExecuteScript(active_contents(), widevine_js));
   content::RunAllTasksUntilIdle();
@@ -276,9 +269,8 @@ IN_PROC_BROWSER_TEST_F(ScriptTriggerWidevinePermissionRequestBrowserTest,
   ResetBubbleState();
 
   // Check that non-widevine DRM is ignored.
-  EXPECT_TRUE(
-      content::ExecuteScript(active_contents(),
-                             content::JsReplace(drm_js, "org.w3.clearkey")));
+  EXPECT_TRUE(content::ExecuteScript(
+      active_contents(), content::JsReplace(drm_js, "org.w3.clearkey")));
   content::RunAllTasksUntilIdle();
   EXPECT_FALSE(IsPermissionBubbleShown());
   ResetBubbleState();

@@ -7,8 +7,8 @@
 #include "base/logging.h"
 #include "base/test/launcher/unit_test_launcher.h"
 #include "base/test/test_io_thread.h"
-#include "build/build_config.h"
 #include "brave/test/base/brave_unit_test_suite.h"
+#include "build/build_config.h"
 #include "content/public/test/unittest_test_suite.h"
 #include "mojo/core/embedder/scoped_ipc_support.h"
 
@@ -16,7 +16,7 @@
 #include "chrome/install_static/test/scoped_install_details.h"
 #endif
 
-int main(int argc, char **argv) {
+int main(int argc, char** argv) {
   content::UnitTestTestSuite test_suite(new BraveUnitTestSuite(argc, argv));
 
   base::TestIOThread test_io_thread(base::TestIOThread::kAutoStart);
@@ -28,7 +28,8 @@ int main(int argc, char **argv) {
   install_static::ScopedInstallDetails scoped_install_details;
 #endif
 
-  return base::LaunchUnitTests(
-      argc, argv, base::Bind(&content::UnitTestTestSuite::Run,
-                             base::Unretained(&test_suite)));
+  return base::LaunchUnitTests(argc,
+                               argv,
+                               base::Bind(&content::UnitTestTestSuite::Run,
+                                          base::Unretained(&test_suite)));
 }

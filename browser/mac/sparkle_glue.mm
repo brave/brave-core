@@ -4,9 +4,9 @@
 
 #import "brave/browser/mac/sparkle_glue.h"
 
-#include <string>
 #include <sys/mount.h>
 #include <sys/stat.h>
+#include <string>
 
 #include "base/mac/bundle_locations.h"
 #include "base/mac/foundation_util.h"
@@ -29,15 +29,14 @@ NSString* GetVersionFromAppcastItem(id item) {
 std::string GetDescriptionFromAppcastItem(id item) {
   NSString* description =
       [NSString stringWithFormat:@"AppcastItem(Date: %@, Version: %@)",
-          [item performSelector:@selector(dateString)],
-          GetVersionFromAppcastItem(item)];
+                                 [item performSelector:@selector(dateString)],
+                                 GetVersionFromAppcastItem(item)];
   return [description UTF8String];
 }
 
 // Adaptor for scheduling an Objective-C method call in TaskScheduler.
 class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
  public:
-
   // Call |sel| on |target| with |arg| in a WorkerPool thread.
   // |target| and |arg| are retained, |arg| may be |nil|.
   static void PostPerform(id target, SEL sel, id arg) {
@@ -46,25 +45,21 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
     scoped_refptr<PerformBridge> op = new PerformBridge(target, sel, arg);
     base::PostTaskWithTraits(FROM_HERE,
-                             {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+                             {base::MayBlock(),
+                              base::TaskPriority::BEST_EFFORT,
                               base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
                              base::Bind(&PerformBridge::Run, op.get()));
   }
 
   // Convenience for the no-argument case.
-  static void PostPerform(id target, SEL sel) {
-    PostPerform(target, sel, nil);
-  }
+  static void PostPerform(id target, SEL sel) { PostPerform(target, sel, nil); }
 
  private:
   // Allow RefCountedThreadSafe<> to delete.
   friend class base::RefCountedThreadSafe<PerformBridge>;
 
   PerformBridge(id target, SEL sel, id arg)
-      : target_([target retain]),
-        sel_(sel),
-        arg_([arg retain]) {
-  }
+      : target_([target retain]), sel_(sel), arg_([arg retain]) {}
 
   ~PerformBridge() {}
 
@@ -81,13 +76,13 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
 }  // namespace
 
-NSString* const kBraveAutoupdateStatusNotification = @"AutoupdateStatusNotification";
+NSString* const kBraveAutoupdateStatusNotification =
+    @"AutoupdateStatusNotification";
 NSString* const kBraveAutoupdateStatusStatus = @"status";
 NSString* const kBraveAutoupdateStatusVersion = @"version";
 NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
 
-@implementation SparkleGlue
-{
+@implementation SparkleGlue {
   SUUpdater* su_updater_;
 
   BOOL registered_;
@@ -149,9 +144,8 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
 
   DCHECK(!su_updater_);
 
-  NSString* sparkle_path =
-      [[base::mac::FrameworkBundle() privateFrameworksPath]
-          stringByAppendingPathComponent:@"Sparkle.framework"];
+  NSString* sparkle_path = [[base::mac::FrameworkBundle() privateFrameworksPath]
+      stringByAppendingPathComponent:@"Sparkle.framework"];
   DCHECK(sparkle_path);
 
   NSBundle* sparkle_bundle = [NSBundle bundleWithPath:sparkle_path];
@@ -193,7 +187,7 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
   // NSBundle ought to have a way to access this path directly, but it
   // doesn't.
   return [[appPath_ stringByAppendingPathComponent:@"Contents"]
-             stringByAppendingPathComponent:@"Info.plist"];
+      stringByAppendingPathComponent:@"Info.plist"];
 }
 
 // Returns the version of the currently-installed application on disk.
@@ -276,8 +270,8 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
   NSDictionary* infoDictionary = [self infoDictionary];
 
   NSString* appPath = [appBundle bundlePath];
-  NSString* url = base::mac::ObjCCast<NSString>(
-      [infoDictionary objectForKey:@"SUFeedURL"]);
+  NSString* url =
+      base::mac::ObjCCast<NSString>([infoDictionary objectForKey:@"SUFeedURL"]);
 
   if (!appPath || !url) {
     // If parameters required for sparkle are missing, don't use it.
@@ -311,8 +305,7 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
 
 - (BOOL)asyncOperationPending {
   AutoupdateStatus status = [self recentStatus];
-  return status == kAutoupdateRegistering ||
-         status == kAutoupdateChecking ||
+  return status == kAutoupdateRegistering || status == kAutoupdateChecking ||
          status == kAutoupdateInstalling;
 }
 
@@ -373,7 +366,7 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
 
 - (void)updater:(id)updater didFindValidUpdate:(id)item {
   VLOG(0) << "brave update: did find valid update with " +
-             GetDescriptionFromAppcastItem(item);
+                 GetDescriptionFromAppcastItem(item);
 
   // Caching update candidate version.
   // See the comments of |currentlyInstalledVersion|.
@@ -392,20 +385,18 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
 
 - (void)updater:(id)updater
     willDownloadUpdate:(id)item
-           withRequest:(NSMutableURLRequest *)request {
+           withRequest:(NSMutableURLRequest*)request {
   VLOG(0) << "brave update: willDownloadUpdate with " +
-             GetDescriptionFromAppcastItem(item);
-  [self updateStatus:kAutoupdateInstalling
-             version:nil
-               error:nil];
+                 GetDescriptionFromAppcastItem(item);
+  [self updateStatus:kAutoupdateInstalling version:nil error:nil];
 }
 
 - (void)updater:(id)updater
     failedToDownloadUpdate:(id)item
-                     error:(NSError *)error {
+                     error:(NSError*)error {
   VLOG(0) << "brave update: failed to download update with " +
-             GetDescriptionFromAppcastItem(item) +
-             " with error - " + [[error description] UTF8String];
+                 GetDescriptionFromAppcastItem(item) + " with error - " +
+                 [[error description] UTF8String];
   [self updateStatus:kAutoupdateInstallFailed
              version:nil
                error:[error localizedDescription]];
@@ -413,33 +404,29 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
 
 - (void)userDidCancelDownload:(id)updater {
   VLOG(0) << "brave update: user did cancel download";
-  [self updateStatus:kAutoupdateInstallFailed
-               version:nil
-                 error:nil];
+  [self updateStatus:kAutoupdateInstallFailed version:nil error:nil];
 }
 
 - (void)updater:(id)updater willInstallUpdate:(id)item {
   VLOG(0) << "brave update: will install update with " +
-             GetDescriptionFromAppcastItem(item);
-  [self updateStatus:kAutoupdateInstalling
-             version:nil
-               error:nil];
+                 GetDescriptionFromAppcastItem(item);
+  [self updateStatus:kAutoupdateInstalling version:nil error:nil];
 }
 
 - (void)updater:(id)updater
-    willInstallUpdateOnQuit:(id)item
-    immediateInstallationInvocation:(NSInvocation *)invocation {
+            willInstallUpdateOnQuit:(id)item
+    immediateInstallationInvocation:(NSInvocation*)invocation {
   VLOG(0) << "brave update: will install update on quit with " +
-             GetDescriptionFromAppcastItem(item);
+                 GetDescriptionFromAppcastItem(item);
 
   updateSuccessfullyInstalled_ = YES;
 
   [self determineUpdateStatusAsync];
 }
 
-- (void)updater:(id)updater didAbortWithError:(NSError *)error {
+- (void)updater:(id)updater didAbortWithError:(NSError*)error {
   VLOG(0) << "brave update: did abort with error: " +
-             base::SysNSStringToUTF8([error localizedDescription]);
+                 base::SysNSStringToUTF8([error localizedDescription]);
   /* Error code. See SUErrors.h
     // Appcast phase errors.
     SUAppcastParseError = 1000,
@@ -481,9 +468,7 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
   else
     status = kAutoupdateInstallFailed;
 
-  [self updateStatus:status
-             version:nil
-               error:[error localizedDescription]];
+  [self updateStatus:status version:nil error:[error localizedDescription]];
 }
 @end
 

@@ -3,7 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define IsAppsShortcutEnabled IsAppsShortcutEnabled_Unused
-#define ShouldShowAppsShortcutInBookmarkBar ShouldShowAppsShortcutInBookmarkBar_Unused
+#define ShouldShowAppsShortcutInBookmarkBar \
+  ShouldShowAppsShortcutInBookmarkBar_Unused
 #include "../../../../../chrome/browser/ui/bookmarks/bookmark_utils.cc"
 #undef IsAppsShortcutEnabled
 #undef ShouldShowAppsShortcutInBookmarkBar
@@ -18,4 +19,4 @@ bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
   return false;
 }
 
-} // namespace chrome
+}  // namespace chrome

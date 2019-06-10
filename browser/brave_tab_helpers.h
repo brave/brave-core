@@ -16,4 +16,3 @@ void AttachTabHelpers(content::WebContents* web_contents);
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_BRAVE_TAB_HELPERS_H_
-

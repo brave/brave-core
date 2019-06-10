@@ -7,15 +7,13 @@ import * as browserActionAPI from '../../../../brave_extension/extension/brave_e
 describe('BrowserAction API', () => {
   describe('setBadgeText', () => {
     let spy: jest.SpyInstance
-    const text = '42'
-    const tabId = 1337
+const text = '42'
+const tabId = 1337
     beforeEach(() => {
       spy = jest.spyOn(chrome.browserAction, 'setBadgeText')
       browserActionAPI.setBadgeText(tabId, text)
     })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+      afterEach(() => {spy.mockRestore()})
     it('calls chrome.browserAction.setBadgeText with the text', () => {
       expect(spy).toHaveBeenCalled()
       expect(spy.mock.calls[0][0]).toEqual({
@@ -26,42 +24,42 @@ describe('BrowserAction API', () => {
   })
   describe('setIcon', () => {
     let setIconSpy: jest.SpyInstance
-    let disableSpy: jest.SpyInstance
-    let enableSpy: jest.SpyInstance
-    let url = 'https://brave.com'
-    const tabId = 1
-    let shieldsEnabled = true
+  let disableSpy: jest.SpyInstance
+  let enableSpy: jest.SpyInstance
+  let url = 'https://brave.com'
+  const tabId = 1
+  let shieldsEnabled = true
     beforeEach(() => {
       setIconSpy = jest.spyOn(chrome.browserAction, 'setIcon')
-      disableSpy = jest.spyOn(chrome.browserAction, 'disable')
+    disableSpy = jest.spyOn(chrome.browserAction, 'disable')
       enableSpy = jest.spyOn(chrome.browserAction, 'enable')
     })
     afterEach(() => {
       setIconSpy.mockRestore()
-      disableSpy.mockRestore()
+    disableSpy.mockRestore()
       enableSpy.mockRestore()
     })
 
     it('sets enabled when protocol is http', () => {
       url = 'http://not-very-awesome-http-page.com'
-      browserActionAPI.setIcon(url, tabId, shieldsEnabled)
+    browserActionAPI.setIcon(url, tabId, shieldsEnabled)
       expect(enableSpy.mock.calls[0][0]).toBe(tabId)
     })
     it('sets the enabled icon when protocol is https', () => {
       url = 'https://very-awesome-https-page.com'
-      browserActionAPI.setIcon(url, tabId, shieldsEnabled)
+    browserActionAPI.setIcon(url, tabId, shieldsEnabled)
       expect(enableSpy.mock.calls[0][0]).toBe(tabId)
     })
     it('sets the disabled icon when the protocol is neither https nor http', () => {
       url = 'brave://welcome'
-      browserActionAPI.setIcon(url, tabId, shieldsEnabled)
+    browserActionAPI.setIcon(url, tabId, shieldsEnabled)
       expect(disableSpy.mock.calls[0][0]).toBe(tabId)
     })
     it('sets the disabled icon when the protocol is http and shield is off', () => {
       url = 'http://not-very-awesome-http-page.com'
-      shieldsEnabled = false
-      browserActionAPI.setIcon(url, tabId, shieldsEnabled)
-      expect(enableSpy.mock.calls[0][0]).toBe(tabId)
+    shieldsEnabled = false
+    browserActionAPI.setIcon(url, tabId, shieldsEnabled)
+    expect(enableSpy.mock.calls[0][0]).toBe(tabId)
       expect(setIconSpy.mock.calls[0][0]).toEqual({
         path: browserActionAPI.shieldsOffIcon,
         tabId
@@ -69,9 +67,9 @@ describe('BrowserAction API', () => {
     })
     it('sets the disabled icon when the protocol is https and shield is off', () => {
       url = 'https://very-awesome-https-page.com'
-      shieldsEnabled = false
-      browserActionAPI.setIcon(url, tabId, shieldsEnabled)
-      expect(enableSpy.mock.calls[0][0]).toBe(tabId)
+    shieldsEnabled = false
+    browserActionAPI.setIcon(url, tabId, shieldsEnabled)
+    expect(enableSpy.mock.calls[0][0]).toBe(tabId)
       expect(setIconSpy.mock.calls[0][0]).toEqual({
         path: browserActionAPI.shieldsOffIcon,
         tabId

@@ -8,8 +8,8 @@
 
 #include <string>
 
-#include "bat/ads/internal/catalog_type_info.h"
 #include "bat/ads/internal/catalog_payload_info.h"
+#include "bat/ads/internal/catalog_type_info.h"
 
 namespace ads {
 

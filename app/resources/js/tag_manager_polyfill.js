@@ -1,1 +1,6 @@
-(function() { var noopfn = function() { ; }; window.ga = window.ga || noopfn; })();
+(function() {
+var noopfn = function() {
+  ;
+};
+window.ga = window.ga || noopfn;
+})();

@@ -16,9 +16,9 @@ namespace brave_sync {
 struct SyncRecord;
 struct Config;
 struct RecordAndExistingObject;
-} // namespace brave_sync
-} // namespace api
-} // namespace extensions
+}  // namespace brave_sync
+}  // namespace api
+}  // namespace extensions
 
 using extensions::api::brave_sync::RecordAndExistingObject;
 
@@ -33,21 +33,20 @@ class BraveSyncEventRouter {
   BraveSyncEventRouter(Profile* profile);
   ~BraveSyncEventRouter();
 
-  void GotInitData(
-    const brave_sync::Uint8Array& seed,
-    const brave_sync::Uint8Array& device_id,
-    const extensions::api::brave_sync::Config& config,
-    const std::string& sync_words);
+  void GotInitData(const brave_sync::Uint8Array& seed,
+                   const brave_sync::Uint8Array& device_id,
+                   const extensions::api::brave_sync::Config& config,
+                   const std::string& sync_words);
 
-  void FetchSyncRecords(
-    const std::vector<std::string>& category_names,
-    const base::Time& startAt,
-    const int max_records);
+  void FetchSyncRecords(const std::vector<std::string>& category_names,
+                        const base::Time& startAt,
+                        const int max_records);
 
   void FetchSyncDevices();
 
-  void ResolveSyncRecords(const std::string &category_name,
-    const std::vector<RecordAndExistingObject>& records_and_existing_objects);
+  void ResolveSyncRecords(
+      const std::string& category_name,
+      const std::vector<RecordAndExistingObject>& records_and_existing_objects);
 
   void SendSyncRecords(const std::string& category_name,
                        const std::vector<api::brave_sync::SyncRecord>& records);
@@ -61,10 +60,10 @@ class BraveSyncEventRouter {
 
   void LoadClient();
 
-private:
+ private:
   EventRouter* event_router_;
 };
 
-} // namespace extensions
+}  // namespace extensions
 
-#endif // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_EVENT_ROUTER_H_
+#endif  // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_EVENT_ROUTER_H_

@@ -15,6 +15,7 @@ class TorProfileServiceTest : public testing::Test {
  public:
   TorProfileServiceTest() {}
   ~TorProfileServiceTest() override {}
+
  private:
   DISALLOW_COPY_AND_ASSIGN(TorProfileServiceTest);
 };
@@ -24,21 +25,66 @@ TEST_F(TorProfileServiceTest, CircuitIsolationKey) {
     GURL url;
     std::string key;
   } cases[] = {
-    { GURL("https://1.1.1.1/"), "1.1.1.1", },
-    { GURL("https://1.1.1.1:53/"), "1.1.1.1", },
-    { GURL("https://127.0.0.1/"), "127.0.0.1", },
-    { GURL("https://127.0.0.53/"), "127.0.0.53", },
-    { GURL("https://8.8.8.8/"), "8.8.8.8", },
-    { GURL("https://8.8.8.8:80/"), "8.8.8.8", },
-    { GURL("https://[::1]/"), "[::1]", },
-    { GURL("https://check.torproject.org/"), "torproject.org", },
-    { GURL("https://check.torproject.org/x"), "torproject.org", },
-    { GURL("https://check.torproject.org/x?y"), "torproject.org", },
-    { GURL("https://check.torproject.org/x?y#z"), "torproject.org", },
-    { GURL("https://localhost/"), "localhost", },
-    { GURL("https://localhost:8888/"), "localhost", },
-    { GURL("https://user:pass@localhost:8888/"), "localhost", },
-    { GURL("https://www.bbc.co.uk/"), "bbc.co.uk", },
+      {
+          GURL("https://1.1.1.1/"),
+          "1.1.1.1",
+      },
+      {
+          GURL("https://1.1.1.1:53/"),
+          "1.1.1.1",
+      },
+      {
+          GURL("https://127.0.0.1/"),
+          "127.0.0.1",
+      },
+      {
+          GURL("https://127.0.0.53/"),
+          "127.0.0.53",
+      },
+      {
+          GURL("https://8.8.8.8/"),
+          "8.8.8.8",
+      },
+      {
+          GURL("https://8.8.8.8:80/"),
+          "8.8.8.8",
+      },
+      {
+          GURL("https://[::1]/"),
+          "[::1]",
+      },
+      {
+          GURL("https://check.torproject.org/"),
+          "torproject.org",
+      },
+      {
+          GURL("https://check.torproject.org/x"),
+          "torproject.org",
+      },
+      {
+          GURL("https://check.torproject.org/x?y"),
+          "torproject.org",
+      },
+      {
+          GURL("https://check.torproject.org/x?y#z"),
+          "torproject.org",
+      },
+      {
+          GURL("https://localhost/"),
+          "localhost",
+      },
+      {
+          GURL("https://localhost:8888/"),
+          "localhost",
+      },
+      {
+          GURL("https://user:pass@localhost:8888/"),
+          "localhost",
+      },
+      {
+          GURL("https://www.bbc.co.uk/"),
+          "bbc.co.uk",
+      },
   };
 
   for (auto& c : cases) {

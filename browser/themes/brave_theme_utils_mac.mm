@@ -23,9 +23,9 @@ void SetSystemTheme(BraveThemeType type) {
   }
 
   if (@available(macOS 10.14, *)) {
-    NSAppearanceName new_appearance_name =
-        type == BRAVE_THEME_TYPE_DARK ? NSAppearanceNameDarkAqua
-                                      : NSAppearanceNameAqua;
+    NSAppearanceName new_appearance_name = type == BRAVE_THEME_TYPE_DARK
+                                               ? NSAppearanceNameDarkAqua
+                                               : NSAppearanceNameAqua;
     [NSApp setAppearance:[NSAppearance appearanceNamed:new_appearance_name]];
   }
 }

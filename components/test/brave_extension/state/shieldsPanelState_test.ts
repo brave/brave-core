@@ -3,9 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as deepFreeze from 'deep-freeze-node'
-import * as shieldsPanelState from '../../../brave_extension/extension/brave_extension/state/shieldsPanelState'
+
 import * as shieldsAPI from '../../../brave_extension/extension/brave_extension/background/api/shieldsAPI'
-import { State } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
+import * as shieldsPanelState from '../../../brave_extension/extension/brave_extension/state/shieldsPanelState'
+import {State} from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
 
 const state: State = deepFreeze({
   currentWindowId: 1,
@@ -19,17 +20,10 @@ const state: State = deepFreeze({
       fingerprinting: 'block',
       cookies: 'block'
     },
-    3: {
-      id: 3
-    },
-    4: {
-      id: 4
-    }
+    3: {id: 3},
+    4: {id: 4}
   },
-  windows: {
-    1: 2,
-    2: 3
-  }
+  windows: {1: 2, 2: 3}
 })
 
 describe('shieldsPanelState test', () => {
@@ -38,19 +32,18 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.getActiveTabId(state)).toEqual(2)
     })
   })
-  describe('getActiveTabData', () => {
-    it('', () => {
-      expect(shieldsPanelState.getActiveTabData(state)).toEqual({
-        id: 2,
-        ads: 'block',
-        trackers: 'block',
-        httpUpgradableResources: 'block',
-        javascript: 'block',
-        fingerprinting: 'block',
-        cookies: 'block'
-      })
-    })
-  })
+describe(
+    'getActiveTabData',
+    () => {it(
+        '', () => {expect(shieldsPanelState.getActiveTabData(state)).toEqual({
+              id: 2,
+              ads: 'block',
+              trackers: 'block',
+              httpUpgradableResources: 'block',
+              javascript: 'block',
+              fingerprinting: 'block',
+              cookies: 'block'
+            })})})
   describe('isShieldsActive', () => {
     it('returns false if tab id can not be found', () => {
       const assertion = shieldsPanelState.isShieldsActive(state, 123123123123)
@@ -67,7 +60,7 @@ describe('shieldsPanelState test', () => {
           }
         }
       })
-      const assertion = shieldsPanelState.isShieldsActive(newState, 2)
+    const assertion = shieldsPanelState.isShieldsActive(newState, 2)
       expect(assertion).toBe(false)
     })
     it('returns true if braveShields is not set to block', () => {
@@ -81,7 +74,7 @@ describe('shieldsPanelState test', () => {
           }
         }
       })
-      const assertion = shieldsPanelState.isShieldsActive(newState, 2)
+    const assertion = shieldsPanelState.isShieldsActive(newState, 2)
       expect(assertion).toBe(true)
     })
   })
@@ -191,34 +184,28 @@ describe('shieldsPanelState test', () => {
       })
     })
   })
-  describe('updateFocusedWindow', () => {
-    it('updates the currentWindowId', () => {
-      expect(shieldsPanelState.updateFocusedWindow(state, 2)).toEqual({
-        currentWindowId: 2,
-        tabs: {
-          2: {
-            id: 2,
-            ads: 'block',
-            trackers: 'block',
-            httpUpgradableResources: 'block',
-            javascript: 'block',
-            fingerprinting: 'block',
-            cookies: 'block'
-          },
-          3: {
-            id: 3
-          },
-          4: {
-            id: 4
-          }
-        },
-        windows: {
-          1: 2,
-          2: 3
-        }
-      })
-    })
-  })
+    describe(
+        'updateFocusedWindow',
+        () => {
+            it('updates the currentWindowId',
+               () => {expect(shieldsPanelState.updateFocusedWindow(state, 2))
+                          .toEqual({
+                            currentWindowId: 2,
+                            tabs: {
+                              2: {
+                                id: 2,
+                                ads: 'block',
+                                trackers: 'block',
+                                httpUpgradableResources: 'block',
+                                javascript: 'block',
+                                fingerprinting: 'block',
+                                cookies: 'block'
+                              },
+                              3: {id: 3},
+                              4: {id: 4}
+                            },
+                            windows: {1: 2, 2: 3}
+                          })})})
   describe('updateTabShieldsData', () => {
     it('updates the correct tabId data', () => {
       this.tabId = 2
@@ -271,96 +258,94 @@ describe('shieldsPanelState test', () => {
   describe('resetBlockingStats', () => {
     it('sets the specified stats back to 0 for the active tab', () => {
       this.tabId = 2
-      const stateWithStats: State = {
-        currentWindowId: 1,
-        tabs: {
-          2: {
-            id: 2,
-            ads: 'block',
-            trackers: 'block',
-            httpUpgradableResources: 'block',
-            javascript: 'block',
-            fingerprinting: 'block',
-            cookies: 'block',
-            adsBlocked: 3,
-            trackersBlocked: 4444,
-            httpsRedirected: 5,
-            javascriptBlocked: 5,
-            fingerprintingBlocked: 5,
-            controlsOpen: true,
-            hostname: 'https://brave.com',
-            origin: 'https://brave.com',
-            braveShields: 'block',
-            url: 'https://brave.com',
-            noScriptInfo: {},
-            adsBlockedResources: [],
-            trackersBlockedResources: [],
-            httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
-            fingerprintingBlockedResources: []
-          },
-          3: {
-            ads: 'block',
-            adsBlocked: 0,
-            controlsOpen: true,
-            hostname: 'https://brave.com',
-            httpUpgradableResources: 'block',
-            httpsRedirected: 0,
-            id: 3,
-            javascript: 'block',
-            javascriptBlocked: 0,
-            origin: 'https://brave.com',
-            braveShields: 'block',
-            trackers: 'block',
-            trackersBlocked: 0,
-            fingerprinting: 'block',
-            cookies: 'block',
-            fingerprintingBlocked: 0,
-            url: 'https://brave.com',
-            noScriptInfo: {},
-            adsBlockedResources: [],
-            trackersBlockedResources: [],
-            httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
-            fingerprintingBlockedResources: []
-          },
-          4: {
-            ads: 'block',
-            adsBlocked: 0,
-            controlsOpen: true,
-            hostname: 'https://brave.com',
-            httpUpgradableResources: 'block',
-            httpsRedirected: 0,
-            id: 4,
-            javascript: 'block',
-            javascriptBlocked: 0,
-            origin: 'https://brave.com',
-            braveShields: 'block',
-            trackers: 'block',
-            trackersBlocked: 0,
-            fingerprinting: 'block',
-            cookies: 'block',
-            fingerprintingBlocked: 0,
-            url: 'https://brave.com',
-            noScriptInfo: {},
-            adsBlockedResources: [],
-            trackersBlockedResources: [],
-            httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
-            fingerprintingBlockedResources: []
-          }
-        },
-        windows: {
-          1: 2,
-          2: 3
-        }
+  const stateWithStats: State =
+  {
+    currentWindowId: 1, tabs: {
+      2: {
+        id: 2,
+        ads: 'block',
+        trackers: 'block',
+        httpUpgradableResources: 'block',
+        javascript: 'block',
+        fingerprinting: 'block',
+        cookies: 'block',
+        adsBlocked: 3,
+        trackersBlocked: 4444,
+        httpsRedirected: 5,
+        javascriptBlocked: 5,
+        fingerprintingBlocked: 5,
+        controlsOpen: true,
+        hostname: 'https://brave.com',
+        origin: 'https://brave.com',
+        braveShields: 'block',
+        url: 'https://brave.com',
+        noScriptInfo: {},
+        adsBlockedResources: [],
+        trackersBlockedResources: [],
+        httpsRedirectedResources: [],
+        javascriptBlockedResources: [],
+        fingerprintingBlockedResources: []
+      },
+      3: {
+        ads: 'block',
+        adsBlocked: 0,
+        controlsOpen: true,
+        hostname: 'https://brave.com',
+        httpUpgradableResources: 'block',
+        httpsRedirected: 0,
+        id: 3,
+        javascript: 'block',
+        javascriptBlocked: 0,
+        origin: 'https://brave.com',
+        braveShields: 'block',
+        trackers: 'block',
+        trackersBlocked: 0,
+        fingerprinting: 'block',
+        cookies: 'block',
+        fingerprintingBlocked: 0,
+        url: 'https://brave.com',
+        noScriptInfo: {},
+        adsBlockedResources: [],
+        trackersBlockedResources: [],
+        httpsRedirectedResources: [],
+        javascriptBlockedResources: [],
+        fingerprintingBlockedResources: []
+      },
+      4: {
+        ads: 'block',
+        adsBlocked: 0,
+        controlsOpen: true,
+        hostname: 'https://brave.com',
+        httpUpgradableResources: 'block',
+        httpsRedirected: 0,
+        id: 4,
+        javascript: 'block',
+        javascriptBlocked: 0,
+        origin: 'https://brave.com',
+        braveShields: 'block',
+        trackers: 'block',
+        trackersBlocked: 0,
+        fingerprinting: 'block',
+        cookies: 'block',
+        fingerprintingBlocked: 0,
+        url: 'https://brave.com',
+        noScriptInfo: {},
+        adsBlockedResources: [],
+        trackersBlockedResources: [],
+        httpsRedirectedResources: [],
+        javascriptBlockedResources: [],
+        fingerprintingBlockedResources: []
       }
+    },
+        windows: {1: 2, 2: 3}
+  }
 
-      stateWithStats.tabs[this.tabId].adsBlocked = 3
-      stateWithStats.tabs[this.tabId].trackersBlocked = 4
-      stateWithStats.tabs[this.tabId].httpsRedirected = 5
-      stateWithStats.tabs[this.tabId].javascriptBlocked = 6
-      stateWithStats.tabs[this.tabId].fingerprintingBlocked = 7
+  stateWithStats.tabs[this.tabId]
+      .adsBlocked = 3
+  stateWithStats.tabs[this.tabId].trackersBlocked = 4
+  stateWithStats.tabs[this.tabId].httpsRedirected = 5
+  stateWithStats.tabs[this.tabId].javascriptBlocked = 6
+  stateWithStats.tabs[this.tabId].fingerprintingBlocked = 7
       expect(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId)).toEqual({
         currentWindowId: 1,
         tabs: {
@@ -449,88 +434,84 @@ describe('shieldsPanelState test', () => {
     it('sets the specified stats back to 0 for the a non active tab', () => {
       this.tabId = 4
       const stateWithStats: State = {
-        currentWindowId: 1,
-        tabs: {
-          2: {
-            ads: 'block',
-            adsBlocked: 0,
-            controlsOpen: true,
-            hostname: 'https://brave.com',
-            httpUpgradableResources: 'block',
-            httpsRedirected: 0,
-            id: 2,
-            javascript: 'block',
-            javascriptBlocked: 0,
-            origin: 'https://brave.com',
-            braveShields: 'block',
-            trackers: 'block',
-            trackersBlocked: 0,
-            fingerprinting: 'block',
-            cookies: 'block',
-            fingerprintingBlocked: 0,
-            url: 'https://brave.com',
-            noScriptInfo: {},
-            adsBlockedResources: [],
-            trackersBlockedResources: [],
-            httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
-            fingerprintingBlockedResources: []
-          },
-          3: {
-            ads: 'block',
-            adsBlocked: 0,
-            controlsOpen: true,
-            hostname: 'https://brave.com',
-            httpUpgradableResources: 'block',
-            httpsRedirected: 0,
-            id: 3,
-            javascript: 'block',
-            javascriptBlocked: 0,
-            origin: 'https://brave.com',
-            braveShields: 'block',
-            trackers: 'block',
-            trackersBlocked: 0,
-            fingerprinting: 'block',
-            cookies: 'block',
-            fingerprintingBlocked: 0,
-            url: 'https://brave.com',
-            noScriptInfo: {},
-            adsBlockedResources: [],
-            trackersBlockedResources: [],
-            httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
-            fingerprintingBlockedResources: []
-          },
-          4: {
-            ads: 'block',
-            adsBlocked: 3,
-            controlsOpen: true,
-            hostname: 'https://brave.com',
-            httpUpgradableResources: 'block',
-            httpsRedirected: 5,
-            id: 4,
-            javascript: 'block',
-            javascriptBlocked: 5,
-            origin: 'https://brave.com',
-            braveShields: 'block',
-            trackers: 'block',
-            trackersBlocked: 4444,
-            fingerprinting: 'block',
-            cookies: 'block',
-            fingerprintingBlocked: 5,
-            url: 'https://brave.com',
-            noScriptInfo: {},
-            adsBlockedResources: [],
-            trackersBlockedResources: [],
-            httpsRedirectedResources: [],
-            javascriptBlockedResources: [],
-            fingerprintingBlockedResources: []
-          }
-        },
-        windows: {
-          1: 2,
-          2: 3
-        }
+  currentWindowId: 1, tabs: {
+    2: {
+      ads: 'block',
+      adsBlocked: 0,
+      controlsOpen: true,
+      hostname: 'https://brave.com',
+      httpUpgradableResources: 'block',
+      httpsRedirected: 0,
+      id: 2,
+      javascript: 'block',
+      javascriptBlocked: 0,
+      origin: 'https://brave.com',
+      braveShields: 'block',
+      trackers: 'block',
+      trackersBlocked: 0,
+      fingerprinting: 'block',
+      cookies: 'block',
+      fingerprintingBlocked: 0,
+      url: 'https://brave.com',
+      noScriptInfo: {},
+      adsBlockedResources: [],
+      trackersBlockedResources: [],
+      httpsRedirectedResources: [],
+      javascriptBlockedResources: [],
+      fingerprintingBlockedResources: []
+    },
+    3: {
+      ads: 'block',
+      adsBlocked: 0,
+      controlsOpen: true,
+      hostname: 'https://brave.com',
+      httpUpgradableResources: 'block',
+      httpsRedirected: 0,
+      id: 3,
+      javascript: 'block',
+      javascriptBlocked: 0,
+      origin: 'https://brave.com',
+      braveShields: 'block',
+      trackers: 'block',
+      trackersBlocked: 0,
+      fingerprinting: 'block',
+      cookies: 'block',
+      fingerprintingBlocked: 0,
+      url: 'https://brave.com',
+      noScriptInfo: {},
+      adsBlockedResources: [],
+      trackersBlockedResources: [],
+      httpsRedirectedResources: [],
+      javascriptBlockedResources: [],
+      fingerprintingBlockedResources: []
+    },
+    4: {
+      ads: 'block',
+      adsBlocked: 3,
+      controlsOpen: true,
+      hostname: 'https://brave.com',
+      httpUpgradableResources: 'block',
+      httpsRedirected: 5,
+      id: 4,
+      javascript: 'block',
+      javascriptBlocked: 5,
+      origin: 'https://brave.com',
+      braveShields: 'block',
+      trackers: 'block',
+      trackersBlocked: 4444,
+      fingerprinting: 'block',
+      cookies: 'block',
+      fingerprintingBlocked: 5,
+      url: 'https://brave.com',
+      noScriptInfo: {},
+      adsBlockedResources: [],
+      trackersBlockedResources: [],
+      httpsRedirectedResources: [],
+      javascriptBlockedResources: [],
+      fingerprintingBlockedResources: []
+    }
+  },
+      windows: {1: 2, 2: 3}
       }
 
       expect(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId)).toEqual({
@@ -739,69 +720,65 @@ describe('shieldsPanelState test', () => {
   })
   describe('resetNoScriptInfo', () => {
     const stateWithAllowedScriptOrigins: State = {
-      currentWindowId: 1,
-      tabs: {
-        2: {
-          id: 2,
-          ads: 'block',
-          adsBlocked: 0,
-          controlsOpen: true,
-          hostname: 'https://brave.com',
-          httpUpgradableResources: 'block',
-          httpsRedirected: 0,
-          javascript: 'block',
-          javascriptBlocked: 0,
-          origin: 'https://brave.com',
-          braveShields: 'block',
-          trackers: 'block',
-          trackersBlocked: 0,
-          fingerprinting: 'block',
-          cookies: 'block',
-          fingerprintingBlocked: 0,
-          url: 'https://brave.com',
-          noScriptInfo: {
-            'https://a.com': { actuallyBlocked: true, willBlock: true },
-            'https://b.com': { actuallyBlocked: true, willBlock: false }
-          },
-          adsBlockedResources: [],
-          trackersBlockedResources: [],
-          httpsRedirectedResources: [],
-          javascriptBlockedResources: [],
-          fingerprintingBlockedResources: []
-        },
-        3: {
-          id: 3,
-          ads: 'block',
-          adsBlocked: 0,
-          controlsOpen: true,
-          hostname: 'https://brave.com',
-          httpUpgradableResources: 'block',
-          httpsRedirected: 0,
-          javascript: 'block',
-          javascriptBlocked: 0,
-          origin: 'https://brave.com',
-          braveShields: 'block',
-          trackers: 'block',
-          trackersBlocked: 0,
-          fingerprinting: 'block',
-          cookies: 'block',
-          fingerprintingBlocked: 0,
-          url: 'https://brave.com',
-          noScriptInfo: {
-            'https://a.com': { actuallyBlocked: true, willBlock: true },
-            'https://b.com': { actuallyBlocked: false, willBlock: false }
-          },
-          adsBlockedResources: [],
-          trackersBlockedResources: [],
-          httpsRedirectedResources: [],
-          javascriptBlockedResources: [],
-          fingerprintingBlockedResources: []
-        }
+  currentWindowId: 1, tabs: {
+    2: {
+      id: 2,
+      ads: 'block',
+      adsBlocked: 0,
+      controlsOpen: true,
+      hostname: 'https://brave.com',
+      httpUpgradableResources: 'block',
+      httpsRedirected: 0,
+      javascript: 'block',
+      javascriptBlocked: 0,
+      origin: 'https://brave.com',
+      braveShields: 'block',
+      trackers: 'block',
+      trackersBlocked: 0,
+      fingerprinting: 'block',
+      cookies: 'block',
+      fingerprintingBlocked: 0,
+      url: 'https://brave.com',
+      noScriptInfo: {
+        'https://a.com': {actuallyBlocked: true, willBlock: true},
+        'https://b.com': {actuallyBlocked: true, willBlock: false}
       },
-      windows: {
-        1: 2,
-        2: 3
-      }
+      adsBlockedResources: [],
+      trackersBlockedResources: [],
+      httpsRedirectedResources: [],
+      javascriptBlockedResources: [],
+      fingerprintingBlockedResources: []
+    },
+    3: {
+      id: 3,
+      ads: 'block',
+      adsBlocked: 0,
+      controlsOpen: true,
+      hostname: 'https://brave.com',
+      httpUpgradableResources: 'block',
+      httpsRedirected: 0,
+      javascript: 'block',
+      javascriptBlocked: 0,
+      origin: 'https://brave.com',
+      braveShields: 'block',
+      trackers: 'block',
+      trackersBlocked: 0,
+      fingerprinting: 'block',
+      cookies: 'block',
+      fingerprintingBlocked: 0,
+      url: 'https://brave.com',
+      noScriptInfo: {
+        'https://a.com': {actuallyBlocked: true, willBlock: true},
+        'https://b.com': {actuallyBlocked: false, willBlock: false}
+      },
+      adsBlockedResources: [],
+      trackersBlockedResources: [],
+      httpsRedirectedResources: [],
+      javascriptBlockedResources: [],
+      fingerprintingBlockedResources: []
+    }
+  },
+      windows: {1: 2, 2: 3}
     }
     it('reset noScriptInfo for a specific tab without navigating away', () => {
       this.tabId = 2
@@ -940,15 +917,11 @@ describe('shieldsPanelState test', () => {
   })
   describe('updateShieldsIconBadgeText', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.browserAction, 'setBadgeText')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.browserAction, 'setBadgeText')})
+  afterEach(() => {spy.mockRestore()})
     it('calls setBadgeText if tab exists', () => {
       shieldsPanelState.updateShieldsIconBadgeText(state)
-      expect(spy).toHaveBeenCalled()
+    expect(spy).toHaveBeenCalled()
       expect(spy.mock.calls[0][0]).toEqual({ tabId: 2, text: '' })
     })
     it('does not call setBadgeText if tab does not exist', () => {
@@ -957,21 +930,17 @@ describe('shieldsPanelState test', () => {
         tabs: {},
         windows: { 1: 2 }
       })
-      shieldsPanelState.updateShieldsIconBadgeText(newState)
+    shieldsPanelState.updateShieldsIconBadgeText(newState)
       expect(spy).not.toHaveBeenCalled()
     })
   })
   describe('updateShieldsIconImage', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.browserAction, 'setIcon')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.browserAction, 'setIcon')})
+  afterEach(() => {spy.mockRestore()})
     it('calls setIcon if tab exists', () => {
       shieldsPanelState.updateShieldsIconImage(state)
-      expect(spy).toHaveBeenCalled()
+    expect(spy).toHaveBeenCalled()
       expect(spy.mock.calls[0][0]).toEqual({
         tabId: 2,
         path: {
@@ -987,13 +956,13 @@ describe('shieldsPanelState test', () => {
         tabs: {},
         windows: { 1: 2 }
       })
-      shieldsPanelState.updateShieldsIconImage(newState)
+    shieldsPanelState.updateShieldsIconImage(newState)
       expect(spy).not.toHaveBeenCalled()
     })
   })
   describe('updateShieldsIcon', () => {
     let updateShieldsIconBadgeTextSpy: jest.SpyInstance
-    let updateShieldsIconImageSpy: jest.SpyInstance
+  let updateShieldsIconImageSpy: jest.SpyInstance
     beforeEach(() => {
       updateShieldsIconBadgeTextSpy = jest.spyOn(chrome.browserAction, 'setIcon')
       updateShieldsIconImageSpy = jest.spyOn(chrome.browserAction, 'setIcon')
@@ -1004,7 +973,7 @@ describe('shieldsPanelState test', () => {
     })
     it('calls updateShieldsIconBadgeText', () => {
       shieldsPanelState.updateShieldsIcon(state)
-      expect(updateShieldsIconBadgeTextSpy).toHaveBeenCalled()
+    expect(updateShieldsIconBadgeTextSpy).toHaveBeenCalled()
       expect(updateShieldsIconBadgeTextSpy.mock.calls[0][0]).toEqual({
         path: {
           '18': 'assets/img/shields-on.png',
@@ -1016,7 +985,7 @@ describe('shieldsPanelState test', () => {
     })
     it('calls updateShieldsIconImage', () => {
       shieldsPanelState.updateShieldsIconImage(state)
-      expect(updateShieldsIconImageSpy).toHaveBeenCalled()
+    expect(updateShieldsIconImageSpy).toHaveBeenCalled()
       expect(updateShieldsIconImageSpy.mock.calls[0][0]).toEqual({
         path: {
           '18': 'assets/img/shields-on.png',
@@ -1029,16 +998,16 @@ describe('shieldsPanelState test', () => {
   })
   describe('focusedWindowChanged', () => {
     let requestShieldPanelDataSpy: jest.SpyInstance
-    let updateShieldsIconSpy: jest.SpyInstance
-    let consoleWarnSpy: jest.SpyInstance
+  let updateShieldsIconSpy: jest.SpyInstance
+  let consoleWarnSpy: jest.SpyInstance
     beforeEach(() => {
       requestShieldPanelDataSpy = jest.spyOn(shieldsAPI, 'requestShieldPanelData')
-      updateShieldsIconSpy = jest.spyOn(shieldsPanelState, 'updateShieldsIcon')
+    updateShieldsIconSpy = jest.spyOn(shieldsPanelState, 'updateShieldsIcon')
       consoleWarnSpy = jest.spyOn(global.console, 'warn')
     })
     afterEach(() => {
       requestShieldPanelDataSpy.mockRestore()
-      updateShieldsIconSpy.mockRestore()
+    updateShieldsIconSpy.mockRestore()
       consoleWarnSpy.mockRestore()
     })
     it('does not modify state if windowId equals -1', () => {
@@ -1047,17 +1016,18 @@ describe('shieldsPanelState test', () => {
     })
     it('updates focused window', () => {
       const focusedWindow = 1337
-      const assertion = shieldsPanelState.focusedWindowChanged(state, focusedWindow)
+    const assertion =
+        shieldsPanelState.focusedWindowChanged(state, focusedWindow)
       expect(assertion.currentWindowId).toBe(focusedWindow)
     })
     it('calls requestShieldPanelData if active tab id is defined', () => {
       shieldsPanelState.focusedWindowChanged(state, 1)
-      expect(requestShieldPanelDataSpy).toHaveBeenCalled()
+    expect(requestShieldPanelDataSpy).toHaveBeenCalled()
       expect(requestShieldPanelDataSpy.mock.calls[0][0]).toEqual(2)
     })
     it('calls updateShieldsIcon if active tab id is defined', () => {
       shieldsPanelState.focusedWindowChanged(state, 1)
-      expect(updateShieldsIconSpy).toHaveBeenCalled()
+    expect(updateShieldsIconSpy).toHaveBeenCalled()
       expect(updateShieldsIconSpy.mock.calls[0][0]).toEqual(state)
     })
     it('calls a console warning when active tab id is not defined', () => {
@@ -1067,27 +1037,19 @@ describe('shieldsPanelState test', () => {
   })
   describe('requestDataAndUpdateActiveTab', () => {
     let requestShieldPanelDataSpy: jest.SpyInstance
-    beforeEach(() => {
-      requestShieldPanelDataSpy = jest.spyOn(shieldsPanelState, 'updateActiveTab')
-    })
-    afterEach(() => {
-      requestShieldPanelDataSpy.mockRestore()
-    })
+  beforeEach(
+      () => {requestShieldPanelDataSpy =
+                 jest.spyOn(shieldsPanelState, 'updateActiveTab')})
+  afterEach(() => {requestShieldPanelDataSpy.mockRestore()})
     it('calls requestShieldPanelData', () => {
       shieldsPanelState.requestDataAndUpdateActiveTab(state, state.windows['1'], state.tabs['2'])
-      expect(requestShieldPanelDataSpy).toHaveBeenCalled()
+    expect(requestShieldPanelDataSpy).toHaveBeenCalled()
       expect(requestShieldPanelDataSpy.mock.calls[0][0]).toEqual(state)
     })
     it('updates active tab', () => {
       const newState = {
-        ...state,
-        tabs: {
-          ...state.tabs,
-          2: {
-            ...state.tabs[2],
-            NEW_UPDATED_PROPERTY: {}
-          }
-        }
+  ...state,
+      tabs: {...state.tabs, 2: {...state.tabs[2], NEW_UPDATED_PROPERTY: {}}}
       }
       const assertion = shieldsPanelState
         .requestDataAndUpdateActiveTab(newState, 1, 2)

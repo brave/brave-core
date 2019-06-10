@@ -5,9 +5,9 @@
 
 class BraveGoogleKeysInfoBarDelegate {
  public:
-   static void Create(InfoBarService* infobar_service) {
-     // lulz
-   }
+  static void Create(InfoBarService* infobar_service) {
+    // lulz
+  }
 };
 
 #include "../../../../../../chrome/browser/ui/startup/startup_browser_creator_impl.cc"

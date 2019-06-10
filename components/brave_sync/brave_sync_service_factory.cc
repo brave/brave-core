@@ -42,8 +42,8 @@ BraveSyncServiceFactory* BraveSyncServiceFactory::GetInstance() {
 
 BraveSyncServiceFactory::BraveSyncServiceFactory()
     : BrowserContextKeyedServiceFactory(
-        "BraveSyncService",
-        BrowserContextDependencyManager::GetInstance()) {
+          "BraveSyncService",
+          BrowserContextDependencyManager::GetInstance()) {
   DependsOn(BookmarkModelFactory::GetInstance());
 }
 

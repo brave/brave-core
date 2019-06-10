@@ -125,18 +125,22 @@ void AdBlockBaseService::Cleanup() {
 }
 
 bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
-    content::ResourceType resource_type, const std::string& tab_host,
-    bool* did_match_exception, bool* cancel_request_explicitly) {
+                                            content::ResourceType resource_type,
+                                            const std::string& tab_host,
+                                            bool* did_match_exception,
+                                            bool* cancel_request_explicitly) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   FilterOption current_option = ResourceTypeToFilterOption(resource_type);
 
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
   // a URL or origin and not a string to a host name.
-  if (SameDomainOrHost(url, url::Origin::CreateFromNormalizedTuple(
-        "https", tab_host.c_str(), 80), INCLUDE_PRIVATE_REGISTRIES)) {
-    current_option = static_cast<FilterOption>(
-        current_option | FONotThirdParty);
+  if (SameDomainOrHost(
+          url,
+          url::Origin::CreateFromNormalizedTuple("https", tab_host.c_str(), 80),
+          INCLUDE_PRIVATE_REGISTRIES)) {
+    current_option =
+        static_cast<FilterOption>(current_option | FONotThirdParty);
   } else {
     current_option = static_cast<FilterOption>(current_option | FOThirdParty);
   }
@@ -144,8 +148,10 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
   Filter* matching_filter = nullptr;
   Filter* matching_exception_filter = nullptr;
   if (ad_block_client_->matches(url.spec().c_str(),
-        current_option, tab_host.c_str(), &matching_filter,
-        &matching_exception_filter)) {
+                                current_option,
+                                tab_host.c_str(),
+                                &matching_filter,
+                                &matching_exception_filter)) {
     if (matching_filter && cancel_request_explicitly &&
         (matching_filter->filterOption & FOExplicitCancel)) {
       *cancel_request_explicitly = true;
@@ -168,15 +174,16 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
 
 void AdBlockBaseService::EnableTag(const std::string& tag, bool enabled) {
   base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
+      FROM_HERE,
+      {BrowserThread::IO},
       base::BindOnce(&AdBlockBaseService::EnableTagOnIOThread,
                      weak_factory_io_thread_.GetWeakPtr(),
                      tag,
                      enabled));
 }
 
-void AdBlockBaseService::EnableTagOnIOThread(
-    const std::string& tag, bool enabled) {
+void AdBlockBaseService::EnableTagOnIOThread(const std::string& tag,
+                                             bool enabled) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   if (enabled) {
     ad_block_client_->addTag(tag);
@@ -189,9 +196,8 @@ void AdBlockBaseService::GetDATFileData(const base::FilePath& dat_file_path) {
   base::PostTaskAndReplyWithResult(
       GetTaskRunner().get(),
       FROM_HERE,
-      base::BindOnce(
-          &brave_component_updater::LoadDATFileData<AdBlockClient>,
-          dat_file_path),
+      base::BindOnce(&brave_component_updater::LoadDATFileData<AdBlockClient>,
+                     dat_file_path),
       base::BindOnce(&AdBlockBaseService::OnGetDATFileData,
                      weak_factory_.GetWeakPtr()));
 }
@@ -207,7 +213,8 @@ void AdBlockBaseService::OnGetDATFileData(GetDATFileDataResult result) {
   }
 
   base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
+      FROM_HERE,
+      {BrowserThread::IO},
       base::BindOnce(&AdBlockBaseService::UpdateAdBlockClient,
                      weak_factory_io_thread_.GetWeakPtr(),
                      std::move(result.first),
@@ -221,7 +228,6 @@ void AdBlockBaseService::UpdateAdBlockClient(
   ad_block_client_ = std::move(ad_block_client);
   buffer_ = std::move(buffer);
 }
-
 
 bool AdBlockBaseService::Init() {
   return true;

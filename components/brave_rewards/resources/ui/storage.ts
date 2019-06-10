@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Utils
-import { debounce } from '../../../common/debounce'
+import {debounce} from '../../../common/debounce'
 
 const keyName = 'rewards-data'
 
@@ -59,27 +59,26 @@ export const defaultState: Rewards.State = {
   pendingContributionTotal: 0,
   grants: [],
   currentGrant: undefined,
-  inlineTip: {
-    twitter: true
-  },
+  inlineTip: {twitter: true},
   pendingContributions: [],
   excludedList: []
 }
 
 const cleanData = (state: Rewards.State) => state
 
-export const load = (): Rewards.State => {
-  const data = window.localStorage.getItem(keyName)
-  let state: Rewards.State = defaultState
-  if (data) {
-    try {
-      state = JSON.parse(data)
-    } catch (e) {
-      console.error('Could not parse local storage data: ', e)
+export const load =
+    (): Rewards.State => {
+      const data = window.localStorage.getItem(keyName)
+      let state: Rewards.State = defaultState
+      if (data) {
+        try {
+          state = JSON.parse(data)
+        } catch (e) {
+          console.error('Could not parse local storage data: ', e)
+        }
+      }
+      return cleanData(state)
     }
-  }
-  return cleanData(state)
-}
 
 export const debouncedSave = debounce((data: Rewards.State) => {
   if (data) {

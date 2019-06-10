@@ -7,15 +7,12 @@
 
 namespace ads {
 
-LoadInfo::LoadInfo() :
-    tab_id(-1),
-    tab_url(""),
-    tab_classification("") {}
+LoadInfo::LoadInfo() : tab_id(-1), tab_url(""), tab_classification("") {}
 
-LoadInfo::LoadInfo(const LoadInfo& info) :
-    tab_id(info.tab_id),
-    tab_url(info.tab_url),
-    tab_classification(info.tab_classification) {}
+LoadInfo::LoadInfo(const LoadInfo& info)
+    : tab_id(info.tab_id),
+      tab_url(info.tab_url),
+      tab_classification(info.tab_classification) {}
 
 LoadInfo::~LoadInfo() {}
 

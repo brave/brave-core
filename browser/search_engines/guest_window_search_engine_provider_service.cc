@@ -26,7 +26,7 @@ GuestWindowSearchEngineProviderService::GuestWindowSearchEngineProviderService(
 }
 
 GuestWindowSearchEngineProviderService::
-~GuestWindowSearchEngineProviderService() {
+    ~GuestWindowSearchEngineProviderService() {
   otr_template_url_service_->RemoveObserver(this);
 }
 
@@ -40,8 +40,9 @@ void GuestWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
   // when user changes from ddg to different search engine provider
   // (or vice versa) from settings ui.
   const bool is_ddg_is_set =
-      otr_template_url_service_->GetDefaultSearchProvider()->
-          data().prepopulate_id ==
+      otr_template_url_service_->GetDefaultSearchProvider()
+          ->data()
+          .prepopulate_id ==
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
 
   if (UseAlternativeSearchEngineProvider() || is_ddg_is_set)
@@ -49,7 +50,7 @@ void GuestWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
 }
 
 void GuestWindowSearchEngineProviderService::
-OnUseAlternativeSearchEngineProviderChanged() {
+    OnUseAlternativeSearchEngineProviderChanged() {
   // When this call is from setting's change, we don't need to set provider
   // again.
   if (ignore_template_url_service_changing_)

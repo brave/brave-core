@@ -15,12 +15,12 @@
 #include "base/files/file_util.h"
 #include "bat/ledger/media_publisher_info.h"
 #include "bat/ledger/pending_contribution.h"
+#include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/recurring_donation.h"
 #include "build/build_config.h"
 #include "sql/meta_table.h"
 #include "sql/statement.h"
 #include "sql/transaction.h"
-#include "brave/components/brave_rewards/browser/content_site.h"
-#include "brave/components/brave_rewards/browser/recurring_donation.h"
 
 namespace brave_rewards {
 
@@ -31,15 +31,12 @@ const int kCompatibleVersionNumber = 1;
 
 }  // namespace
 
-PublisherInfoDatabase::PublisherInfoDatabase(const base::FilePath& db_path) :
-    db_path_(db_path),
-    initialized_(false),
-    testing_current_version_(-1) {
+PublisherInfoDatabase::PublisherInfoDatabase(const base::FilePath& db_path)
+    : db_path_(db_path), initialized_(false), testing_current_version_(-1) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
-PublisherInfoDatabase::~PublisherInfoDatabase() {
-}
+PublisherInfoDatabase::~PublisherInfoDatabase() {}
 
 bool PublisherInfoDatabase::Init() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -62,12 +59,9 @@ bool PublisherInfoDatabase::Init() {
     return false;
   }
 
-  if (!CreatePublisherInfoTable() ||
-      !CreateContributionInfoTable() ||
-      !CreateActivityInfoTable() ||
-      !CreateMediaPublisherInfoTable() ||
-      !CreateRecurringTipsTable() ||
-      !CreatePendingContributionsTable()) {
+  if (!CreatePublisherInfoTable() || !CreateContributionInfoTable() ||
+      !CreateActivityInfoTable() || !CreateMediaPublisherInfoTable() ||
+      !CreateRecurringTipsTable() || !CreatePendingContributionsTable()) {
     return false;
   }
 
@@ -86,9 +80,8 @@ bool PublisherInfoDatabase::Init() {
     return false;
   }
 
-  memory_pressure_listener_.reset(new base::MemoryPressureListener(
-      base::Bind(&PublisherInfoDatabase::OnMemoryPressure,
-      base::Unretained(this))));
+  memory_pressure_listener_.reset(new base::MemoryPressureListener(base::Bind(
+      &PublisherInfoDatabase::OnMemoryPressure, base::Unretained(this))));
 
   initialized_ = true;
   return initialized_;
@@ -146,11 +139,12 @@ bool PublisherInfoDatabase::InsertContributionInfo(
     return false;
   }
 
-  sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT INTO contribution_info "
-      "(publisher_id, probi, date, "
-      "category, month, year) "
-      "VALUES (?, ?, ?, ?, ?, ?)"));
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                 "INSERT INTO contribution_info "
+                                 "(publisher_id, probi, date, "
+                                 "category, month, year) "
+                                 "VALUES (?, ?, ?, ?, ?, ?)"));
 
   statement.BindString(0, info.publisher_key);
   statement.BindString(1, info.probi);
@@ -272,9 +266,9 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   std::string favicon = info.favicon_url;
   if (!favicon.empty()) {
     sql::Statement favicon_statement(
-      GetDB().GetCachedStatement(SQL_FROM_HERE,
-                                 "UPDATE publisher_info SET favIcon = ? "
-                                 "WHERE publisher_id = ?"));
+        GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                   "UPDATE publisher_info SET favIcon = ? "
+                                   "WHERE publisher_id = ?"));
 
     if (favicon == ledger::_clear_favicon) {
       favicon.clear();
@@ -289,8 +283,8 @@ bool PublisherInfoDatabase::InsertOrUpdatePublisherInfo(
   return transaction.Commit();
 }
 
-ledger::PublisherInfoPtr
-PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
+ledger::PublisherInfoPtr PublisherInfoDatabase::GetPublisherInfo(
+    const std::string& publisher_key) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -314,8 +308,8 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
     info->favicon_url = info_sql.ColumnString(3);
     info->provider = info_sql.ColumnString(4);
     info->verified = info_sql.ColumnBool(5);
-    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
-        info_sql.ColumnInt(6));
+    info->excluded =
+        static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(6));
 
     return info;
   }
@@ -323,8 +317,7 @@ PublisherInfoDatabase::GetPublisherInfo(const std::string& publisher_key) {
   return nullptr;
 }
 
-ledger::PublisherInfoPtr
-PublisherInfoDatabase::GetPanelPublisher(
+ledger::PublisherInfoPtr PublisherInfoDatabase::GetPanelPublisher(
     const ledger::ActivityInfoFilter& filter) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -356,8 +349,8 @@ PublisherInfoDatabase::GetPanelPublisher(
     info->favicon_url = info_sql.ColumnString(3);
     info->provider = info_sql.ColumnString(4);
     info->verified = info_sql.ColumnBool(5);
-    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
-        info_sql.ColumnInt(6));
+    info->excluded =
+        static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(6));
     info->percent = info_sql.ColumnInt(7);
 
     return info;
@@ -379,10 +372,8 @@ bool PublisherInfoDatabase::RestorePublishers() {
   sql::Statement restore_q(db_.GetUniqueStatement(
       "UPDATE publisher_info SET excluded=? WHERE excluded=?"));
 
-  restore_q.BindInt(0, static_cast<int>(
-      ledger::PUBLISHER_EXCLUDE::DEFAULT));
-  restore_q.BindInt(1, static_cast<int>(
-      ledger::PUBLISHER_EXCLUDE::EXCLUDED));
+  restore_q.BindInt(0, static_cast<int>(ledger::PUBLISHER_EXCLUDE::DEFAULT));
+  restore_q.BindInt(1, static_cast<int>(ledger::PUBLISHER_EXCLUDE::EXCLUDED));
 
   return restore_q.Run();
 }
@@ -446,11 +437,11 @@ bool PublisherInfoDatabase::InsertOrUpdateActivityInfo(
   }
 
   sql::Statement activity_info_insert(
-    GetDB().GetCachedStatement(SQL_FROM_HERE,
-        "INSERT OR REPLACE INTO activity_info "
-        "(publisher_id, duration, score, percent, "
-        "weight, reconcile_stamp, visits) "
-        "VALUES (?, ?, ?, ?, ?, ?, ?)"));
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                 "INSERT OR REPLACE INTO activity_info "
+                                 "(publisher_id, duration, score, percent, "
+                                 "weight, reconcile_stamp, visits) "
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?)"));
 
   activity_info_insert.BindString(0, info.id);
   activity_info_insert.BindInt64(1, static_cast<int>(info.duration));
@@ -505,14 +496,15 @@ bool PublisherInfoDatabase::GetActivityList(
     return false;
   }
 
-  std::string query = "SELECT ai.publisher_id, ai.duration, ai.score, "
-                      "ai.percent, ai.weight, pi.verified, pi.excluded, "
-                      "pi.name, pi.url, pi.provider, "
-                      "pi.favIcon, ai.reconcile_stamp, ai.visits "
-                      "FROM activity_info AS ai "
-                      "INNER JOIN publisher_info AS pi "
-                      "ON ai.publisher_id = pi.publisher_id "
-                      "WHERE 1 = 1";
+  std::string query =
+      "SELECT ai.publisher_id, ai.duration, ai.score, "
+      "ai.percent, ai.weight, pi.verified, pi.excluded, "
+      "pi.name, pi.url, pi.provider, "
+      "pi.favIcon, ai.reconcile_stamp, ai.visits "
+      "FROM activity_info AS ai "
+      "INNER JOIN publisher_info AS pi "
+      "ON ai.publisher_id = pi.publisher_id "
+      "WHERE 1 = 1";
 
   if (!filter.id.empty()) {
     query += " AND ai.publisher_id = ?";
@@ -527,13 +519,11 @@ bool PublisherInfoDatabase::GetActivityList(
   }
 
   if (filter.excluded != ledger::EXCLUDE_FILTER::FILTER_ALL &&
-      filter.excluded !=
-        ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
+      filter.excluded != ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded = ?";
   }
 
-  if (filter.excluded ==
-    ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
+  if (filter.excluded == ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
     query += " AND pi.excluded != ?";
   }
 
@@ -578,13 +568,11 @@ bool PublisherInfoDatabase::GetActivityList(
   }
 
   if (filter.excluded != ledger::EXCLUDE_FILTER::FILTER_ALL &&
-      filter.excluded !=
-      ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
+      filter.excluded != ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
     info_sql.BindInt(column++, filter.excluded);
   }
 
-  if (filter.excluded ==
-      ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
+  if (filter.excluded == ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED) {
     info_sql.BindInt(column++, ledger::PUBLISHER_EXCLUDE::EXCLUDED);
   }
 
@@ -604,8 +592,8 @@ bool PublisherInfoDatabase::GetActivityList(
     info->percent = info_sql.ColumnInt64(3);
     info->weight = info_sql.ColumnDouble(4);
     info->verified = info_sql.ColumnBool(5);
-    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
-        info_sql.ColumnInt(6));
+    info->excluded =
+        static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(6));
     info->name = info_sql.ColumnString(7);
     info->url = info_sql.ColumnString(8);
     info->provider = info_sql.ColumnString(9);
@@ -619,9 +607,8 @@ bool PublisherInfoDatabase::GetActivityList(
   return true;
 }
 
-bool PublisherInfoDatabase::DeleteActivityInfo(
-    const std::string& publisher_key,
-    uint64_t reconcile_stamp) {
+bool PublisherInfoDatabase::DeleteActivityInfo(const std::string& publisher_key,
+                                               uint64_t reconcile_stamp) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -631,10 +618,10 @@ bool PublisherInfoDatabase::DeleteActivityInfo(
     return false;
   }
 
-  sql::Statement statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE,
-      "DELETE FROM activity_info WHERE "
-      "publisher_id = ? AND reconcile_stamp = ?"));
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                 "DELETE FROM activity_info WHERE "
+                                 "publisher_id = ? AND reconcile_stamp = ?"));
 
   statement.BindString(0, publisher_key);
   statement.BindInt64(1, reconcile_stamp);
@@ -671,7 +658,8 @@ bool PublisherInfoDatabase::CreateMediaPublisherInfoTable() {
 }
 
 bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
-    const std::string& media_key, const std::string& publisher_id) {
+    const std::string& media_key,
+    const std::string& publisher_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -681,11 +669,11 @@ bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
     return false;
   }
 
-  sql::Statement statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE,
-      "INSERT OR REPLACE INTO media_publisher_info "
-      "(media_key, publisher_id) "
-      "VALUES (?, ?)"));
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                 "INSERT OR REPLACE INTO media_publisher_info "
+                                 "(media_key, publisher_id) "
+                                 "VALUES (?, ?)"));
 
   statement.BindString(0, media_key);
   statement.BindString(1, publisher_id);
@@ -693,8 +681,8 @@ bool PublisherInfoDatabase::InsertOrUpdateMediaPublisherInfo(
   return statement.Run();
 }
 
-ledger::PublisherInfoPtr
-PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
+ledger::PublisherInfoPtr PublisherInfoDatabase::GetMediaPublisherInfo(
+    const std::string& media_key) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -721,8 +709,8 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
     info->favicon_url = info_sql.ColumnString(3);
     info->provider = info_sql.ColumnString(4);
     info->verified = info_sql.ColumnBool(5);
-    info->excluded = static_cast<ledger::PUBLISHER_EXCLUDE>(
-        info_sql.ColumnInt(6));
+    info->excluded =
+        static_cast<ledger::PUBLISHER_EXCLUDE>(info_sql.ColumnInt(6));
 
     return info;
   }
@@ -730,8 +718,7 @@ PublisherInfoDatabase::GetMediaPublisherInfo(const std::string& media_key) {
   return nullptr;
 }
 
-bool PublisherInfoDatabase::GetExcludedList(
-    ledger::PublisherInfoList* list) {
+bool PublisherInfoDatabase::GetExcludedList(ledger::PublisherInfoList* list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   CHECK(list);
@@ -814,11 +801,11 @@ bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
     return false;
   }
 
-  sql::Statement statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE,
-      "INSERT OR REPLACE INTO recurring_donation "
-      "(publisher_id, amount, added_date) "
-      "VALUES (?, ?, ?)"));
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                 "INSERT OR REPLACE INTO recurring_donation "
+                                 "(publisher_id, amount, added_date) "
+                                 "VALUES (?, ?, ?)"));
 
   statement.BindString(0, info.publisher_key);
   statement.BindDouble(1, info.amount);
@@ -827,8 +814,7 @@ bool PublisherInfoDatabase::InsertOrUpdateRecurringTip(
   return statement.Run();
 }
 
-void PublisherInfoDatabase::GetRecurringTips(
-    ledger::PublisherInfoList* list) {
+void PublisherInfoDatabase::GetRecurringTips(ledger::PublisherInfoList* list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -871,8 +857,7 @@ bool PublisherInfoDatabase::RemoveRecurringTip(
   }
 
   sql::Statement statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE,
-      "DELETE FROM recurring_donation WHERE publisher_id = ?"));
+      SQL_FROM_HERE, "DELETE FROM recurring_donation WHERE publisher_id = ?"));
 
   statement.BindString(0, publisher_key);
 
@@ -917,8 +902,8 @@ bool PublisherInfoDatabase::CreatePendingContributionsIndex() {
       "ON pending_contribution (publisher_id)");
 }
 
-bool PublisherInfoDatabase::InsertPendingContribution
-(const ledger::PendingContributionList& list) {
+bool PublisherInfoDatabase::InsertPendingContribution(
+    const ledger::PendingContributionList& list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -937,10 +922,11 @@ bool PublisherInfoDatabase::InsertPendingContribution
   }
 
   for (const auto& item : list) {
-    sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "INSERT INTO pending_contribution "
-      "(publisher_id, amount, added_date, viewing_id, category) "
-      "VALUES (?, ?, ?, ?, ?)"));
+    sql::Statement statement(GetDB().GetCachedStatement(
+        SQL_FROM_HERE,
+        "INSERT INTO pending_contribution "
+        "(publisher_id, amount, added_date, viewing_id, category) "
+        "VALUES (?, ?, ?, ?, ?)"));
 
     statement.BindString(0, item->publisher_key);
     statement.BindDouble(1, item->amount);
@@ -1047,8 +1033,7 @@ bool PublisherInfoDatabase::RemoveAllPendingContributions() {
   }
 
   sql::Statement statement(GetDB().GetCachedStatement(
-      SQL_FROM_HERE,
-      "DELETE FROM pending_contribution"));
+      SQL_FROM_HERE, "DELETE FROM pending_contribution"));
 
   return statement.Run();
 }
@@ -1071,8 +1056,8 @@ void PublisherInfoDatabase::Vacuum() {
   if (!initialized_)
     return;
 
-  DCHECK_EQ(0, db_.transaction_nesting()) <<
-      "Can not have a transaction when vacuuming.";
+  DCHECK_EQ(0, db_.transaction_nesting())
+      << "Can not have a transaction when vacuuming.";
   ignore_result(db_.Execute("VACUUM"));
 }
 
@@ -1082,8 +1067,9 @@ void PublisherInfoDatabase::OnMemoryPressure(
   db_.TrimMemory();
 }
 
-std::string PublisherInfoDatabase::GetDiagnosticInfo(int extended_error,
-                                               sql::Statement* statement) {
+std::string PublisherInfoDatabase::GetDiagnosticInfo(
+    int extended_error,
+    sql::Statement* statement) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   DCHECK(initialized_);
@@ -1156,8 +1142,8 @@ bool PublisherInfoDatabase::MigrateV1toV2() {
   }
 
   if (!GetDB().Execute(
-      "CREATE INDEX IF NOT EXISTS contribution_info_publisher_id_index "
-      "ON contribution_info (publisher_id)")) {
+          "CREATE INDEX IF NOT EXISTS contribution_info_publisher_id_index "
+          "ON contribution_info (publisher_id)")) {
     return false;
   }
 
@@ -1271,23 +1257,27 @@ bool PublisherInfoDatabase::MigrateV3toV4() {
     }
 
     if (!GetDB().Execute(
-      "CREATE INDEX IF NOT EXISTS activity_info_publisher_id_index "
-      "ON activity_info (publisher_id)")) {
+            "CREATE INDEX IF NOT EXISTS activity_info_publisher_id_index "
+            "ON activity_info (publisher_id)")) {
       return false;
     }
 
-    std::string columns = "publisher_id, "
-                          "duration, "
-                          "score, "
-                          "percent, "
-                          "weight, "
-                          "month, "
-                          "year, "
-                          "reconcile_stamp";
+    std::string columns =
+        "publisher_id, "
+        "duration, "
+        "score, "
+        "percent, "
+        "weight, "
+        "month, "
+        "year, "
+        "reconcile_stamp";
 
     sql = "PRAGMA foreign_keys=off;";
-    sql.append("INSERT INTO activity_info (" + columns + ") "
-               "SELECT " + columns + " "
+    sql.append("INSERT INTO activity_info (" + columns +
+               ") "
+               "SELECT " +
+               columns +
+               " "
                "FROM activity_info_old;");
     sql.append("UPDATE activity_info SET visits=5;");
     sql.append("DROP TABLE activity_info_old;");
@@ -1311,10 +1301,11 @@ bool PublisherInfoDatabase::MigrateV4toV5() {
       "WHERE visits = 0"));
 
   while (info_sql.Step()) {
-    sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "UPDATE activity_info SET visits = 1 "
-      "WHERE publisher_id = ? AND month = ? AND "
-      "year = ? AND reconcile_stamp = ?"));
+    sql::Statement statement(
+        GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                   "UPDATE activity_info SET visits = 1 "
+                                   "WHERE publisher_id = ? AND month = ? AND "
+                                   "year = ? AND reconcile_stamp = ?"));
 
     statement.BindString(0, info_sql.ColumnString(0));
     statement.BindInt(1, info_sql.ColumnInt(1));
@@ -1367,30 +1358,35 @@ bool PublisherInfoDatabase::MigrateV5toV6() {
     }
 
     if (!GetDB().Execute(
-      "CREATE INDEX IF NOT EXISTS activity_info_publisher_id_index "
-      "ON activity_info (publisher_id)")) {
+            "CREATE INDEX IF NOT EXISTS activity_info_publisher_id_index "
+            "ON activity_info (publisher_id)")) {
       return false;
     }
 
-    const std::string columns_insert = "publisher_id, "
-                                       "duration, "
-                                       "visits, "
-                                       "score, "
-                                       "percent, "
-                                       "weight, "
-                                       "reconcile_stamp";
+    const std::string columns_insert =
+        "publisher_id, "
+        "duration, "
+        "visits, "
+        "score, "
+        "percent, "
+        "weight, "
+        "reconcile_stamp";
 
-    const std::string columns_select = "publisher_id, "
-                                       "sum(duration) as duration, "
-                                       "sum(visits) as visits, "
-                                       "sum(score) as score, "
-                                       "sum(percent) as percent, "
-                                       "sum(weight) as weight, "
-                                       "reconcile_stamp";
+    const std::string columns_select =
+        "publisher_id, "
+        "sum(duration) as duration, "
+        "sum(visits) as visits, "
+        "sum(score) as score, "
+        "sum(percent) as percent, "
+        "sum(weight) as weight, "
+        "reconcile_stamp";
 
     sql = "PRAGMA foreign_keys=off;";
-    sql.append("INSERT INTO activity_info (" + columns_insert + ") "
-               "SELECT " + columns_select + " "
+    sql.append("INSERT INTO activity_info (" + columns_insert +
+               ") "
+               "SELECT " +
+               columns_select +
+               " "
                "FROM activity_info_old "
                "GROUP BY publisher_id, reconcile_stamp;");
     sql.append("DROP TABLE activity_info_old;");

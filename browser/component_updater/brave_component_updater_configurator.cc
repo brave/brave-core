@@ -76,7 +76,7 @@ class BraveConfigurator : public update_client::Configurator {
   std::vector<uint8_t> GetRunActionKeyHash() const override;
   std::string GetAppGuid() const override;
   std::unique_ptr<update_client::ProtocolHandlerFactory>
-      GetProtocolHandlerFactory() const override;
+  GetProtocolHandlerFactory() const override;
   update_client::RecoveryCRXElevator GetRecoveryCRXElevator() const override;
 
  private:
@@ -94,11 +94,10 @@ class BraveConfigurator : public update_client::Configurator {
 // Allows the component updater to use non-encrypted communication with the
 // update backend. The security of the update checks is enforced using
 // a custom message signing protocol and it does not depend on using HTTPS.
-BraveConfigurator::BraveConfigurator(
-    const base::CommandLine* cmdline,
-    PrefService* pref_service)
+BraveConfigurator::BraveConfigurator(const base::CommandLine* cmdline,
+                                     PrefService* pref_service)
     : configurator_impl_(ComponentUpdaterCommandLineConfigPolicy(cmdline),
-        false),
+                         false),
       pref_service_(pref_service) {
   DCHECK(pref_service_);
 }
@@ -151,8 +150,8 @@ std::string BraveConfigurator::GetOSLongName() const {
   return configurator_impl_.GetOSLongName();
 }
 
-base::flat_map<std::string, std::string>
-BraveConfigurator::ExtraRequestParams() const {
+base::flat_map<std::string, std::string> BraveConfigurator::ExtraRequestParams()
+    const {
   return configurator_impl_.ExtraRequestParams();
 }
 
@@ -255,9 +254,8 @@ void RegisterPrefsForBraveComponentUpdaterConfigurator(
 }
 
 scoped_refptr<update_client::Configurator>
-MakeBraveComponentUpdaterConfigurator(
-    const base::CommandLine* cmdline,
-    PrefService* pref_service) {
+MakeBraveComponentUpdaterConfigurator(const base::CommandLine* cmdline,
+                                      PrefService* pref_service) {
   return base::MakeRefCounted<BraveConfigurator>(cmdline, pref_service);
 }
 

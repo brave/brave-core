@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Utils
-import { debounce } from '../../../../../common/debounce'
+import {debounce} from '../../../../../common/debounce'
 
 const keyName = 'rewards-panel-data'
 
@@ -13,12 +13,7 @@ export const defaultState: RewardsExtension.State = {
   walletCreating: false,
   walletCreateFailed: false,
   publishers: {},
-  walletProperties: {
-    balance: 0,
-    probi: '0',
-    grants: [],
-    rates: {}
-  },
+  walletProperties: {balance: 0, probi: '0', grants: [], rates: {}},
   report: {
     ads: '0',
     closing: '0',
@@ -41,24 +36,24 @@ export const defaultState: RewardsExtension.State = {
   tipAmounts: {}
 }
 
-const cleanData = (state: RewardsExtension.State) => {
-  state = { ...state }
-  state.publishers = {}
-  return state
-}
-
-export const load = (): RewardsExtension.State => {
-  const data = window.localStorage.getItem(keyName)
-  let state: RewardsExtension.State = defaultState
-  if (data) {
-    try {
-      state = JSON.parse(data)
-    } catch (e) {
-      console.error('Could not parse local storage data: ', e)
+const cleanData =
+    (state: RewardsExtension.State) => {
+      state = {...state} state.publishers = {} return state
     }
-  }
-  return cleanData(state)
-}
+
+export const load =
+    (): RewardsExtension.State => {
+      const data = window.localStorage.getItem(keyName)
+      let state: RewardsExtension.State = defaultState
+      if (data) {
+        try {
+          state = JSON.parse(data)
+        } catch (e) {
+          console.error('Could not parse local storage data: ', e)
+        }
+      }
+      return cleanData(state)
+    }
 
 export const debouncedSave = debounce((data: RewardsExtension.State) => {
   if (data) {

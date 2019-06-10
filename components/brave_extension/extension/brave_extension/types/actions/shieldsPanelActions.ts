@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as types from '../constants/shieldsPanelTypes'
-import { BlockTypes, BlockOptions, BlockFPOptions, BlockJSOptions, BlockCookiesOptions } from '../other/blockTypes'
+import {BlockCookiesOptions, BlockFPOptions, BlockJSOptions, BlockOptions, BlockTypes} from '../other/blockTypes'
 
 export interface ShieldDetails {
   id: number
@@ -87,8 +87,7 @@ export interface ControlsToggled {
 }
 
 interface HttpsEverywhereToggledReturn {
-  type: types.HTTPS_EVERYWHERE_TOGGLED,
-  setting: BlockOptions
+  type: types.HTTPS_EVERYWHERE_TOGGLED, setting: BlockOptions
 }
 
 export interface HttpsEverywhereToggled {
@@ -96,8 +95,7 @@ export interface HttpsEverywhereToggled {
 }
 
 interface BlockJavaScriptReturn {
-  type: types.JAVASCRIPT_TOGGLED,
-  setting: BlockJSOptions
+  type: types.JAVASCRIPT_TOGGLED, setting: BlockJSOptions
 }
 
 export interface BlockJavaScript {
@@ -105,8 +103,7 @@ export interface BlockJavaScript {
 }
 
 interface AllowScriptOriginsOnceReturn {
-  type: types.ALLOW_SCRIPT_ORIGINS_ONCE,
-  origins: string[]
+  type: types.ALLOW_SCRIPT_ORIGINS_ONCE, origins: string[]
 }
 
 export interface AllowScriptOriginsOnce {
@@ -114,8 +111,7 @@ export interface AllowScriptOriginsOnce {
 }
 
 interface ChangeNoScriptSettingsReturn {
-  type: types.CHANGE_NO_SCRIPT_SETTINGS,
-  origin: string
+  type: types.CHANGE_NO_SCRIPT_SETTINGS, origin: string
 }
 
 export interface ChangeNoScriptSettings {
@@ -123,24 +119,15 @@ export interface ChangeNoScriptSettings {
 }
 
 interface ChangeAllNoScriptSettingsReturn {
-  type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS,
-  shouldBlock: boolean
+  type: types.CHANGE_ALL_NO_SCRIPT_SETTINGS, shouldBlock: boolean
 }
 
 export interface ChangeAllNoScriptSettings {
   (shouldBlock: boolean): ChangeAllNoScriptSettingsReturn
 }
 
-export type shieldPanelActions =
-  ShieldsPanelDataUpdatedReturn |
-  ShieldsToggledReturn |
-  ResourceBlockedReturn |
-  BlockAdsTrackersReturn |
-  ControlsToggledReturn |
-  HttpsEverywhereToggledReturn |
-  BlockJavaScriptReturn |
-  BlockFingerprintingReturn |
-  BlockCookiesReturn |
-  AllowScriptOriginsOnceReturn |
-  ChangeNoScriptSettingsReturn |
-  ChangeAllNoScriptSettingsReturn
+export type shieldPanelActions = ShieldsPanelDataUpdatedReturn|
+    ShieldsToggledReturn|ResourceBlockedReturn|BlockAdsTrackersReturn|
+    ControlsToggledReturn|HttpsEverywhereToggledReturn|BlockJavaScriptReturn|
+    BlockFingerprintingReturn|BlockCookiesReturn|AllowScriptOriginsOnceReturn|
+    ChangeNoScriptSettingsReturn|ChangeAllNoScriptSettingsReturn

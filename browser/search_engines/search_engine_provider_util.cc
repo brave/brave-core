@@ -7,8 +7,8 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
 #include "components/pref_registry/pref_registry_syncable.h"
+#include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_prepopulate_data.h"
 
@@ -30,8 +30,9 @@ void ToggleUseAlternativeSearchEngineProvider(Profile* profile) {
 
 bool IsRegionForQwant(Profile* profile) {
   return TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
-      profile->GetPrefs())->prepopulate_id ==
-      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
+             profile->GetPrefs())
+             ->prepopulate_id ==
+         TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
 }
 
 }  // namespace brave

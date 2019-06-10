@@ -16,8 +16,8 @@
 #include "chrome/browser/ui/bookmarks/bookmark_bubble_sign_in_delegate.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
-#include "components/prefs/pref_service.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
+#include "components/prefs/pref_service.h"
 
 namespace {
 constexpr int kLocationBarMaxWidth = 1080;
@@ -39,11 +39,11 @@ gfx::Insets CalcLocationBarMargin(int toolbar_width,
                                   int location_bar_x) {
   // Apply the target margin, adjusting for min and max width of LocationBar
   // Make sure any margin doesn't shrink the LocationBar beyond minimum width
-  int location_bar_max_margin_h = (
-      available_location_bar_width - location_bar_min_width) / 2;
+  int location_bar_max_margin_h =
+      (available_location_bar_width - location_bar_min_width) / 2;
   int location_bar_margin_h =
-      std::min(static_cast<int>(
-                   toolbar_width * GetLocationBarMarginHPercent(toolbar_width)),
+      std::min(static_cast<int>(toolbar_width *
+                                GetLocationBarMarginHPercent(toolbar_width)),
                location_bar_max_margin_h);
   int location_bar_width =
       available_location_bar_width - (location_bar_margin_h * 2);
@@ -62,24 +62,24 @@ gfx::Insets CalcLocationBarMargin(int toolbar_width,
   // Can't shim more than we have space for, so restrict to margin size
   // or in the case of moving-right, 25% of the space since we want to avoid
   // touching browser actions where possible
-  location_bar_center_offset = (location_bar_center_offset > 0)
-      ? std::min(location_bar_margin_h, location_bar_center_offset)
-      : std::max(static_cast<int>(-location_bar_margin_h * .25),
-                 location_bar_center_offset);
+  location_bar_center_offset =
+      (location_bar_center_offset > 0)
+          ? std::min(location_bar_margin_h, location_bar_center_offset)
+          : std::max(static_cast<int>(-location_bar_margin_h * .25),
+                     location_bar_center_offset);
 
   // // Apply offset to margin
   const int location_bar_margin_l =
       location_bar_margin_h - location_bar_center_offset;
   const int location_bar_margin_r =
       location_bar_margin_h + location_bar_center_offset;
-  return { 0, location_bar_margin_l, 0, location_bar_margin_r };
+  return {0, location_bar_margin_l, 0, location_bar_margin_r};
 }
 
 }  // namespace
 
 BraveToolbarView::BraveToolbarView(Browser* browser, BrowserView* browser_view)
-    : ToolbarView(browser, browser_view) {
-}
+    : ToolbarView(browser, browser_view) {}
 
 BraveToolbarView::~BraveToolbarView() {}
 
@@ -92,18 +92,20 @@ void BraveToolbarView::Init() {
 
   // track changes in bookmarks enabled setting
   edit_bookmarks_enabled_.Init(
-      bookmarks::prefs::kEditBookmarksEnabled, browser()->profile()->GetPrefs(),
+      bookmarks::prefs::kEditBookmarksEnabled,
+      browser()->profile()->GetPrefs(),
       base::Bind(&BraveToolbarView::OnEditBookmarksEnabledChanged,
                  base::Unretained(this)));
   // track changes in wide locationbar setting
   location_bar_is_wide_.Init(
-      kLocationBarIsWide, browser()->profile()->GetPrefs(),
+      kLocationBarIsWide,
+      browser()->profile()->GetPrefs(),
       base::Bind(&BraveToolbarView::OnLocationBarIsWideChanged,
                  base::Unretained(this)));
 
   bookmark_ = new BookmarkButton(this);
-  bookmark_->set_triggerable_event_flags(
-      ui::EF_LEFT_MOUSE_BUTTON | ui::EF_MIDDLE_MOUSE_BUTTON);
+  bookmark_->set_triggerable_event_flags(ui::EF_LEFT_MOUSE_BUTTON |
+                                         ui::EF_MIDDLE_MOUSE_BUTTON);
   bookmark_->Init();
 
   DCHECK(location_bar_);
@@ -144,10 +146,16 @@ void BraveToolbarView::ShowBookmarkBubble(
 
   std::unique_ptr<BubbleSyncPromoDelegate> delegate;
   delegate.reset(new BookmarkBubbleSignInDelegate(browser()));
-  views::Widget* bubble_widget = BookmarkBubbleView::ShowBubble(
-      anchor_view, bookmark_, gfx::Rect(), nullptr,
-      observer, std::move(delegate), browser_->profile(),
-      url, already_bookmarked);
+  views::Widget* bubble_widget =
+      BookmarkBubbleView::ShowBubble(anchor_view,
+                                     bookmark_,
+                                     gfx::Rect(),
+                                     nullptr,
+                                     observer,
+                                     std::move(delegate),
+                                     browser_->profile(),
+                                     url,
+                                     already_bookmarked);
 
   if (bubble_widget && bookmark_)
     bookmark_->OnBubbleWidgetCreated(bubble_widget);

@@ -28,13 +28,14 @@ std::unique_ptr<message_center::Notification> CreateAdNotification(
   base::string16 advertiser;
   if (base::IsStringUTF8(notification_info.advertiser)) {
     base::UTF8ToUTF16(notification_info.advertiser.c_str(),
-                      notification_info.advertiser.length(), &advertiser);
+                      notification_info.advertiser.length(),
+                      &advertiser);
   }
 
   base::string16 text;
   if (base::IsStringUTF8(notification_info.text)) {
-    base::UTF8ToUTF16(notification_info.text.c_str(),
-                      notification_info.text.length(), &text);
+    base::UTF8ToUTF16(
+        notification_info.text.c_str(), notification_info.text.length(), &text);
   }
 
   // hack to prevent origin from showing in the notification

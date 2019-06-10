@@ -16,12 +16,12 @@ export const setActions = (newActions: any) => actions = newActions
 export const generateQRCodeImageSource = (seed: string) => {
   const intArr = seed.split(',').map(Number)
 
-  const toHexString = (intArr: ArrayLike<number>) => {
-    return Array
-    .from(new Uint8Array(intArr))
-    .map(b => b.toString(16).padStart(2, '0'))
-    .join('')
-  }
+  const toHexString =
+      (intArr: ArrayLike<number>) => {
+        return Array.from(new Uint8Array(intArr))
+            .map(b => b.toString(16).padStart(2, '0'))
+            .join('')
+      }
 
   const hexString = toHexString(intArr)
   const image = qr.image(hexString)

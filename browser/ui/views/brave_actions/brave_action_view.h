@@ -8,7 +8,7 @@
 #include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 
 namespace gfx {
-  class Rect;
+class Rect;
 }
 
 // Subclasses ToolbarActionViewc so that the notification badge can be painted

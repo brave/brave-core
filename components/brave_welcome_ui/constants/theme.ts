@@ -4,11 +4,10 @@
 
 import * as CSS from 'csstype'
 
-interface Content {
-  display: CSS.DisplayProperty
-  flexDirection: CSS.FlexDirectionProperty
-  justifyContent: CSS.JustifyContentProperty
-  alignItems: CSS.AlignItemsProperty
+    interface Content {display: CSS.DisplayProperty
+flexDirection: CSS.FlexDirectionProperty
+justifyContent: CSS.JustifyContentProperty
+alignItems: CSS.AlignItemsProperty
   flex: CSS.FlexProperty<1>
   marginBottom: CSS.MarginBottomProperty<1>
 }

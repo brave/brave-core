@@ -60,22 +60,24 @@ class BraveCrashpadClient {
 
 #endif  // defined(OS_ANDROID)
 
-  bool StartHandlerAtCrash(const base::FilePath& handler,
-                           const base::FilePath& database,
-                           const base::FilePath& metrics_dir,
-                           const std::string& url,
-                           const std::map<std::string, std::string>& annotations,
-                           const std::vector<std::string>& arguments);
-  static bool StartHandlerForClient(const base::FilePath& handler,
-                                    const base::FilePath& database,
-                                    const base::FilePath& metrics_dir,
-                                    const std::string& url,
-                                    const std::map<std::string, std::string>& annotations,
-                                    const std::vector<std::string>& arguments,
-                                    int socket);
+  bool StartHandlerAtCrash(
+      const base::FilePath& handler,
+      const base::FilePath& database,
+      const base::FilePath& metrics_dir,
+      const std::string& url,
+      const std::map<std::string, std::string>& annotations,
+      const std::vector<std::string>& arguments);
+  static bool StartHandlerForClient(
+      const base::FilePath& handler,
+      const base::FilePath& database,
+      const base::FilePath& metrics_dir,
+      const std::string& url,
+      const std::map<std::string, std::string>& annotations,
+      const std::vector<std::string>& arguments,
+      int socket);
 };
 
-} // namespace crashpad
+}  // namespace crashpad
 
 namespace crash_reporter {
 
@@ -85,7 +87,7 @@ crashpad::BraveCrashpadClient& GetBraveCrashpadClient() {
   return *client;
 }
 
-} // namespace crash_reporter
+}  // namespace crash_reporter
 
 #define COMPONENTS_CRASH_CONTENT_APP_CRASHPAD_H_
 #define GetCrashpadClient GetBraveCrashpadClient
@@ -109,9 +111,13 @@ bool BraveCrashpadClient::StartJavaHandlerAtCrash(
     const std::string& url,
     const std::map<std::string, std::string>& annotations,
     const std::vector<std::string>& arguments) {
-  return CrashpadClient::StartJavaHandlerAtCrash(
-      class_name, env, database, metrics_dir,
-      brave_crash_url, annotations, arguments);
+  return CrashpadClient::StartJavaHandlerAtCrash(class_name,
+                                                 env,
+                                                 database,
+                                                 metrics_dir,
+                                                 brave_crash_url,
+                                                 annotations,
+                                                 arguments);
 }
 
 // static
@@ -124,9 +130,14 @@ bool BraveCrashpadClient::StartJavaHandlerForClient(
     const std::map<std::string, std::string>& annotations,
     const std::vector<std::string>& arguments,
     int socket) {
-  return CrashpadClient::StartJavaHandlerForClient(
-      class_name, env, database, metrics_dir, brave_crash_url,
-      annotations, arguments, socket);
+  return CrashpadClient::StartJavaHandlerForClient(class_name,
+                                                   env,
+                                                   database,
+                                                   metrics_dir,
+                                                   brave_crash_url,
+                                                   annotations,
+                                                   arguments,
+                                                   socket);
 }
 
 // static
@@ -140,9 +151,15 @@ bool BraveCrashpadClient::StartHandlerWithLinkerAtCrash(
     const std::string& url,
     const std::map<std::string, std::string>& annotations,
     const std::vector<std::string>& arguments) {
-  return CrashpadClient::StartHandlerWithLinkerAtCrash(
-      handler_trampoline, handler_library, is_64_bit, env, database,
-      metrics_dir, brave_crash_url, annotations, arguments);
+  return CrashpadClient::StartHandlerWithLinkerAtCrash(handler_trampoline,
+                                                       handler_library,
+                                                       is_64_bit,
+                                                       env,
+                                                       database,
+                                                       metrics_dir,
+                                                       brave_crash_url,
+                                                       annotations,
+                                                       arguments);
 }
 
 // static
@@ -157,9 +174,16 @@ bool BraveCrashpadClient::StartHandlerWithLinkerForClient(
     const std::map<std::string, std::string>& annotations,
     const std::vector<std::string>& arguments,
     int socket) {
-  return CrashpadClient::StartHandlerWithLinkerForClient(
-      handler_trampoline, handler_library, is_64_bit, env, database,
-      metrics_dir, brave_crash_url, annotations, arguments, socket);
+  return CrashpadClient::StartHandlerWithLinkerForClient(handler_trampoline,
+                                                         handler_library,
+                                                         is_64_bit,
+                                                         env,
+                                                         database,
+                                                         metrics_dir,
+                                                         brave_crash_url,
+                                                         annotations,
+                                                         arguments,
+                                                         socket);
 }
 
 #endif  // defined(OS_ANDROID)
@@ -172,8 +196,7 @@ bool BraveCrashpadClient::StartHandlerAtCrash(
     const std::map<std::string, std::string>& annotations,
     const std::vector<std::string>& arguments) {
   return crash_reporter::GetCrashpadClient().StartHandlerAtCrash(
-      handler, database, metrics_dir,
-      brave_crash_url, annotations, arguments);
+      handler, database, metrics_dir, brave_crash_url, annotations, arguments);
 }
 
 // static
@@ -186,8 +209,13 @@ bool BraveCrashpadClient::StartHandlerForClient(
     const std::vector<std::string>& arguments,
     int socket) {
   return crash_reporter::GetCrashpadClient().StartHandlerForClient(
-    handler, database, metrics_dir, brave_crash_url,
-    annotations, arguments, socket);
+      handler,
+      database,
+      metrics_dir,
+      brave_crash_url,
+      annotations,
+      arguments,
+      socket);
 }
 
-} // namespace crashpad
+}  // namespace crashpad

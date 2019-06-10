@@ -6,12 +6,11 @@
 
 namespace brave_sync {
 
-Settings::Settings() :
-  sync_this_device_(false),
-  sync_bookmarks_(false),
-  sync_settings_(false),
-  sync_history_(false),
-  sync_configured_(false) {
-}
+Settings::Settings()
+    : sync_this_device_(false),
+      sync_bookmarks_(false),
+      sync_settings_(false),
+      sync_history_(false),
+      sync_configured_(false) {}
 
-} // namespace brave_sync
+}  // namespace brave_sync

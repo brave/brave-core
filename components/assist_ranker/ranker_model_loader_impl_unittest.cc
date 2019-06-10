@@ -89,7 +89,9 @@ bool RankerModelLoaderImplTest::DoLoaderTest(const base::FilePath& model_path,
                  base::Unretained(this)),
       base::Bind(&RankerModelLoaderImplTest::OnModelAvailable,
                  base::Unretained(this)),
-      test_shared_loader_factory_, model_path, model_url,
+      test_shared_loader_factory_,
+      model_path,
+      model_url,
       "RankerModelLoaderImplTest");
   loader->NotifyOfRankerActivity();
   scoped_task_environment_.RunUntilIdle();
@@ -144,9 +146,9 @@ void RankerModelLoaderImplTest::OnModelAvailable(
 TEST_F(RankerModelLoaderImplTest, LoadRemoteRankerNoFetch) {
   bool network_access_occurred = false;
   test_loader_factory_.SetInterceptor(
-    base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-                                   network_access_occurred = true;
-                               }));
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        network_access_occurred = true;
+      }));
   ASSERT_TRUE(DoLoaderTest(base::FilePath(), remote_model_url_));
   EXPECT_FALSE(network_access_occurred);
 }

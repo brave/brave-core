@@ -13,11 +13,10 @@ namespace ads {
 struct SearchProviderInfo {
  public:
   SearchProviderInfo();
-  SearchProviderInfo(
-      const std::string& name,
-      const std::string& hostname,
-      const std::string& search_template,
-      bool is_always_classed_as_a_search);
+  SearchProviderInfo(const std::string& name,
+                     const std::string& hostname,
+                     const std::string& search_template,
+                     bool is_always_classed_as_a_search);
   SearchProviderInfo(const SearchProviderInfo& info);
   ~SearchProviderInfo();
 

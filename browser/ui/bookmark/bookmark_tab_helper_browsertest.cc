@@ -41,8 +41,8 @@ bool IsNTP(content::WebContents* web_contents) {
 IN_PROC_BROWSER_TEST_F(BookmarkTabHelperBrowserTest,
                        BookmarkBarOnNTPToggleTest) {
   auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
-  EXPECT_TRUE(content::NavigateToURL(contents,
-                                     GURL(chrome::kChromeUINewTabURL)));
+  EXPECT_TRUE(
+      content::NavigateToURL(contents, GURL(chrome::kChromeUINewTabURL)));
   EXPECT_TRUE(IsNTP(contents));
   chrome::ToggleBookmarkBar(browser());
   EXPECT_EQ(BookmarkBar::SHOW, browser()->bookmark_bar_state());

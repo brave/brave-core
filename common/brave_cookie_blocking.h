@@ -8,8 +8,11 @@
 
 class GURL;
 
-bool ShouldBlockCookie(bool allow_brave_shields, bool allow_1p_cookies,
-    bool allow_3p_cookies, const GURL& primary_url, const GURL& url,
-    bool allow_google_auth);
+bool ShouldBlockCookie(bool allow_brave_shields,
+                       bool allow_1p_cookies,
+                       bool allow_3p_cookies,
+                       const GURL& primary_url,
+                       const GURL& url,
+                       bool allow_google_auth);
 
 #endif  // BRAVE_COMMON_BRAVE_COOKIE_BLOCKING_H_

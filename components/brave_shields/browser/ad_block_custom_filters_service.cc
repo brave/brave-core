@@ -18,11 +18,10 @@ using brave_component_updater::BraveComponent;
 namespace brave_shields {
 
 AdBlockCustomFiltersService::AdBlockCustomFiltersService(
-    BraveComponent::Delegate* delegate) : AdBlockBaseService(delegate) {
-}
+    BraveComponent::Delegate* delegate)
+    : AdBlockBaseService(delegate) {}
 
-AdBlockCustomFiltersService::~AdBlockCustomFiltersService() {
-}
+AdBlockCustomFiltersService::~AdBlockCustomFiltersService() {}
 
 bool AdBlockCustomFiltersService::Init() {
   return UpdateCustomFilters(GetCustomFilters());
@@ -48,7 +47,8 @@ bool AdBlockCustomFiltersService::UpdateCustomFilters(
       FROM_HERE,
       base::BindOnce(
           &AdBlockCustomFiltersService::UpdateCustomFiltersOnFileTaskRunner,
-          base::Unretained(this), custom_filters));
+          base::Unretained(this),
+          custom_filters));
 
   return true;
 }
@@ -63,8 +63,8 @@ void AdBlockCustomFiltersService::UpdateCustomFiltersOnFileTaskRunner(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<AdBlockCustomFiltersService>
-AdBlockCustomFiltersServiceFactory(BraveComponent::Delegate* delegate) {
+std::unique_ptr<AdBlockCustomFiltersService> AdBlockCustomFiltersServiceFactory(
+    BraveComponent::Delegate* delegate) {
   return std::make_unique<AdBlockCustomFiltersService>(delegate);
 }
 

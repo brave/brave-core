@@ -10,15 +10,18 @@ namespace prefs {
 const char kBraveRewardsEnabled[] = "brave.rewards.enabled";
 const char kBraveRewardsEnabledMigrated[] = "brave.rewards.enabled_migrated";
 const char kRewardsNotifications[] = "brave.rewards.notifications";
-const char kRewardsNotificationTimerInterval[] = "brave.rewards.notification_timer_interval";
+const char kRewardsNotificationTimerInterval[] =
+    "brave.rewards.notification_timer_interval";
 const char kRewardsBackupNotificationFrequency[] =
     "brave.rewards.backup_notification_frequency";
 const char kRewardsBackupNotificationInterval[] =
     "brave.rewards.backup_notification_interval";
 const char kRewardsBackupSucceeded[] = "brave.rewards.backup_succeeded";
 const char kRewardsUserHasFunded[] = "brave.rewards.user_has_funded";
-const char kRewardsAddFundsNotification[] = "brave.rewards.add_funds_notification";
-const char kRewardsNotificationStartupDelay[] = "brave.rewards.notification_startup_delay";
+const char kRewardsAddFundsNotification[] =
+    "brave.rewards.add_funds_notification";
+const char kRewardsNotificationStartupDelay[] =
+    "brave.rewards.notification_startup_delay";
 
 }  // namespace prefs
 }  // namespace brave_rewards

@@ -20,7 +20,7 @@ class PrefService;
 namespace base {
 class OneShotTimer;
 class RepeatingTimer;
-}
+}  // namespace base
 
 namespace net {
 class HttpResponseHeaders;

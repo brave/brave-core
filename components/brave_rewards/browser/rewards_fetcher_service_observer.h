@@ -12,25 +12,25 @@
 #include "url/gurl.h"
 
 namespace brave_rewards {
-  using OnImageChangedCallback = base::Callback<void(
-        const std::string& favicon_key_,
-        const GURL& url,
-        const BitmapFetcherService::RequestId& request_id,
-        const SkBitmap &answers_image)>;
+using OnImageChangedCallback =
+    base::Callback<void(const std::string& favicon_key_,
+                        const GURL& url,
+                        const BitmapFetcherService::RequestId& request_id,
+                        const SkBitmap& answers_image)>;
 
 class RewardsFetcherServiceObserver : public BitmapFetcherService::Observer {
-  public:
-    RewardsFetcherServiceObserver(const std::string& favicon_key,
-                                  const GURL& url,
-                                  const OnImageChangedCallback& callback);
-    ~RewardsFetcherServiceObserver() override;
-    void OnImageChanged(BitmapFetcherService::RequestId request_id,
-                        const SkBitmap& answers_image) override;
+ public:
+  RewardsFetcherServiceObserver(const std::string& favicon_key,
+                                const GURL& url,
+                                const OnImageChangedCallback& callback);
+  ~RewardsFetcherServiceObserver() override;
+  void OnImageChanged(BitmapFetcherService::RequestId request_id,
+                      const SkBitmap& answers_image) override;
 
-  protected:
-    std::string favicon_key_;
-    GURL url_;
-    OnImageChangedCallback callback_;
+ protected:
+  std::string favicon_key_;
+  GURL url_;
+  OnImageChangedCallback callback_;
 };
 
 }  // namespace brave_rewards

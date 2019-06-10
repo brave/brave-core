@@ -23,14 +23,14 @@ IN_PROC_BROWSER_TEST_F(BraveAutoplayBlockedImageModelTest, CreateBubbleModel) {
 
   auto model = std::make_unique<BraveAutoplayBlockedImageModel>();
   std::unique_ptr<ContentSettingBubbleModel> bubble(
-    model->CreateBubbleModel(nullptr, web_contents));
+      model->CreateBubbleModel(nullptr, web_contents));
 
   ContentSettingSimpleBubbleModel* simple_bubble =
-    bubble->AsSimpleBubbleModel();
+      bubble->AsSimpleBubbleModel();
   ASSERT_TRUE(simple_bubble);
-  EXPECT_EQ(static_cast<ContentSettingSimpleImageModel*>(model.get())
-            ->content_type(),
-            simple_bubble->content_type());
+  EXPECT_EQ(
+      static_cast<ContentSettingSimpleImageModel*>(model.get())->content_type(),
+      simple_bubble->content_type());
   EXPECT_EQ(ImageType::PLUGINS, model->image_type());
   EXPECT_EQ(CONTENT_SETTINGS_TYPE_AUTOPLAY, model->content_type());
 }

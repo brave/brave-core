@@ -22,19 +22,20 @@
 
 #if defined(OS_LINUX)
 #include "brave/browser/ui/views/brave_browser_main_extra_parts_views_linux.h"
-#define ChromeBrowserMainExtraPartsViewsLinux BraveBrowserMainExtraPartsViewsLinux // NOLINT
+#define ChromeBrowserMainExtraPartsViewsLinux \
+  BraveBrowserMainExtraPartsViewsLinux  // NOLINT
 #endif
 
 #define HandleNewTabURLRewrite HandleNewTabURLRewrite_ChromiumImpl
 #define HandleNewTabURLReverseRewrite HandleNewTabURLReverseRewrite_ChromiumImpl
 
 namespace search {
-  bool HandleNewTabURLRewrite(GURL * url, content::BrowserContext * bc) {
-    return false;
-  }
-  bool HandleNewTabURLReverseRewrite(GURL * url, content::BrowserContext * bc) {
-    return false;
-  }
+bool HandleNewTabURLRewrite(GURL* url, content::BrowserContext* bc) {
+  return false;
+}
+bool HandleNewTabURLReverseRewrite(GURL* url, content::BrowserContext* bc) {
+  return false;
+}
 }  // namespace search
 
 #include "../../../../chrome/browser/chrome_content_browser_client.cc"  // NOLINT

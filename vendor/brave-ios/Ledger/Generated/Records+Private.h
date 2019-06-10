@@ -7,9 +7,9 @@
 #import <Foundation/Foundation.h>
 #import "Records.h"
 
-#include "bat/ledger/export.h"
 #include "bat/ledger/auto_contribute_props.h"
 #include "bat/ledger/balance_report_info.h"
+#include "bat/ledger/export.h"
 #include "bat/ledger/grant.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
@@ -24,7 +24,8 @@
 #include "bat/ledger/wallet_info.h"
 
 @interface BATAutoContributeProps (Private)
-- (instancetype)initWithAutoContributeProps:(const ledger::AutoContributeProps&)obj;
+- (instancetype)initWithAutoContributeProps:
+    (const ledger::AutoContributeProps&)obj;
 @end
 
 @interface BATBalanceReportInfo (Private)
@@ -48,7 +49,8 @@
 @end
 
 @interface BATRewardsInternalsInfo (Private)
-- (instancetype)initWithRewardsInternalsInfo:(const ledger::RewardsInternalsInfo&)obj;
+- (instancetype)initWithRewardsInternalsInfo:
+    (const ledger::RewardsInternalsInfo&)obj;
 @end
 
 @interface BATTransactionInfo (Private)

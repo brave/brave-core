@@ -11,4 +11,3 @@ chrome.test.runTests([
     }
   },
 ]);
-

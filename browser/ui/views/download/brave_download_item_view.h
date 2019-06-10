@@ -13,7 +13,8 @@
 class BraveDownloadItemView : public DownloadItemView {
  public:
   BraveDownloadItemView(DownloadUIModel::DownloadUIModelPtr download,
-      DownloadShelfView* parent, views::View* accessible_alert);
+                        DownloadShelfView* parent,
+                        views::View* accessible_alert);
   ~BraveDownloadItemView() override;
 
   // views::View:

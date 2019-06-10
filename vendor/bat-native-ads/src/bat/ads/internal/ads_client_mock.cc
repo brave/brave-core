@@ -7,10 +7,9 @@
 
 namespace ads {
 
-MockLogStreamImpl::MockLogStreamImpl(
-    const char* file,
-    const int line,
-    const LogLevel log_level) {
+MockLogStreamImpl::MockLogStreamImpl(const char* file,
+                                     const int line,
+                                     const LogLevel log_level) {
   (void)file;
   (void)line;
   (void)log_level;
@@ -24,10 +23,9 @@ MockAdsClient::MockAdsClient() = default;
 
 MockAdsClient::~MockAdsClient() = default;
 
-std::unique_ptr<LogStream> MockAdsClient::Log(
-    const char* file,
-    int line,
-    const LogLevel log_level) const {
+std::unique_ptr<LogStream> MockAdsClient::Log(const char* file,
+                                              int line,
+                                              const LogLevel log_level) const {
   return std::make_unique<MockLogStreamImpl>(file, line, log_level);
 }
 

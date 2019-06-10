@@ -19,8 +19,7 @@
 
 namespace {
 
-class BraveTranslateRedirectNetworkDelegateHelperTest
-    : public testing::Test {
+class BraveTranslateRedirectNetworkDelegateHelperTest : public testing::Test {
  public:
   BraveTranslateRedirectNetworkDelegateHelperTest()
       : thread_bundle_(content::TestBrowserThreadBundle::IO_MAINLOOP),
@@ -35,74 +34,75 @@ class BraveTranslateRedirectNetworkDelegateHelperTest
 };
 
 TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
-    RedirectTranslateScriptRequestInitiateByGTranslate) {
+       RedirectTranslateScriptRequestInitiateByGTranslate) {
   std::string translate_host("https://translate.googleapis.com");
-  std::vector<std::string> paths({
-      "/element/TE_20181015_01/e/js/element/element_main.js",
-      "/translate_static/js/element/main.js"
-  });
-  std::for_each(paths.begin(), paths.end(),
+  std::vector<std::string> paths(
+      {"/element/TE_20181015_01/e/js/element/element_main.js",
+       "/translate_static/js/element/main.js"});
+  std::for_each(
+      paths.begin(),
+      paths.end(),
       [this, &translate_host](std::string path_string) {
-    net::TestDelegate test_delegate;
-    GURL url(translate_host + path_string);
+        net::TestDelegate test_delegate;
+        GURL url(translate_host + path_string);
 
-    std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-        url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
-    request->set_initiator(url::Origin::Create(GURL(kTranslateInitiatorURL)));
+        std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
+            url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+        request->set_initiator(
+            url::Origin::Create(GURL(kTranslateInitiatorURL)));
 
-    std::shared_ptr<brave::BraveRequestInfo> before_url_context(
-        new brave::BraveRequestInfo());
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-        before_url_context);
-    brave::ResponseCallback callback;
+        std::shared_ptr<brave::BraveRequestInfo> before_url_context(
+            new brave::BraveRequestInfo());
+        brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                                    before_url_context);
+        brave::ResponseCallback callback;
 
-    GURL expected_url(kBraveTranslateServer + path_string);
-    int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,
-        before_url_context);
-    EXPECT_EQ(before_url_context->new_url_spec, expected_url);
-    EXPECT_EQ(ret, net::OK);
-  });
+        GURL expected_url(kBraveTranslateServer + path_string);
+        int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,
+                                                           before_url_context);
+        EXPECT_EQ(before_url_context->new_url_spec, expected_url);
+        EXPECT_EQ(ret, net::OK);
+      });
 }
 
 TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
-    NoRedirectTranslateScriptRequestNotInitiateByGTranslate) {
+       NoRedirectTranslateScriptRequestNotInitiateByGTranslate) {
   std::string translate_host("https://translate.googleapis.com");
-  std::vector<std::string> paths({
-      "/element/TE_20181015_01/e/js/element/element_main.js",
-      "/translate_static/js/element/main.js"
-  });
-  std::for_each(paths.begin(), paths.end(),
+  std::vector<std::string> paths(
+      {"/element/TE_20181015_01/e/js/element/element_main.js",
+       "/translate_static/js/element/main.js"});
+  std::for_each(
+      paths.begin(),
+      paths.end(),
       [this, &translate_host](std::string path_string) {
-    net::TestDelegate test_delegate;
+        net::TestDelegate test_delegate;
 
-    GURL url(translate_host + path_string);
-    std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
-        url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
+        GURL url(translate_host + path_string);
+        std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
+            url, net::IDLE, &test_delegate, TRAFFIC_ANNOTATION_FOR_TESTS);
 
-    std::shared_ptr<brave::BraveRequestInfo> before_url_context(
-        new brave::BraveRequestInfo());
-    brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-        before_url_context);
-    brave::ResponseCallback callback;
+        std::shared_ptr<brave::BraveRequestInfo> before_url_context(
+            new brave::BraveRequestInfo());
+        brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
+                                                    before_url_context);
+        brave::ResponseCallback callback;
 
-    int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,
-        before_url_context);
-    EXPECT_EQ(before_url_context->new_url_spec, "");
-    EXPECT_EQ(ret, net::OK);
-  });
+        int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,
+                                                           before_url_context);
+        EXPECT_EQ(before_url_context->new_url_spec, "");
+        EXPECT_EQ(ret, net::OK);
+      });
 }
 
 TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
-    RedirectTranslateResourceRequest) {
+       RedirectTranslateResourceRequest) {
   std::string translate_host("https://translate.googleapis.com");
   std::string gstatic_host("https://www.gstatic.com");
-  std::vector<GURL> urls({
-      GURL(translate_host + "/translate_static/css/translateelement.css"),
-      GURL(gstatic_host + "/images/branding/product/1x/translate_24dp.png"),
-      GURL(gstatic_host + "/images/branding/product/2x/translate_24dp.png")
-  });
-  std::for_each(urls.begin(), urls.end(),
-      [this](GURL url) {
+  std::vector<GURL> urls(
+      {GURL(translate_host + "/translate_static/css/translateelement.css"),
+       GURL(gstatic_host + "/images/branding/product/1x/translate_24dp.png"),
+       GURL(gstatic_host + "/images/branding/product/2x/translate_24dp.png")});
+  std::for_each(urls.begin(), urls.end(), [this](GURL url) {
     net::TestDelegate test_delegate;
 
     std::unique_ptr<net::URLRequest> request = context()->CreateRequest(
@@ -111,19 +111,19 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
     std::shared_ptr<brave::BraveRequestInfo> before_url_context(
         new brave::BraveRequestInfo());
     brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-        before_url_context);
+                                                before_url_context);
     brave::ResponseCallback callback;
 
     GURL expected_url(kBraveTranslateServer + url.path());
-    int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,
-        before_url_context);
+    int ret =
+        OnBeforeURLRequest_TranslateRedirectWork(callback, before_url_context);
     EXPECT_EQ(before_url_context->new_url_spec, expected_url);
     EXPECT_EQ(ret, net::OK);
   });
 }
 
 TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
-    RedirectTranslateRequestInitiateByGTranslate) {
+       RedirectTranslateRequestInitiateByGTranslate) {
   net::TestDelegate test_delegate;
   GURL url(
       "https://translate.googleapis.com/translate_a/t?"
@@ -138,18 +138,18 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
   std::shared_ptr<brave::BraveRequestInfo> before_url_context(
       new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-      before_url_context);
+                                              before_url_context);
   brave::ResponseCallback callback;
 
   GURL expected_url(kBraveTranslateEndpoint + std::string("?") + url.query());
-  int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,
-      before_url_context);
+  int ret =
+      OnBeforeURLRequest_TranslateRedirectWork(callback, before_url_context);
   EXPECT_EQ(before_url_context->new_url_spec, expected_url);
   EXPECT_EQ(ret, net::OK);
 }
 
 TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
-    NoRedirectTranslateRequestNotInitiateByGTranslate) {
+       NoRedirectTranslateRequestNotInitiateByGTranslate) {
   net::TestDelegate test_delegate;
   GURL url(
       "https://translate.googleapis.com/translate_a/t?"
@@ -163,18 +163,18 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
   std::shared_ptr<brave::BraveRequestInfo> before_url_context(
       new brave::BraveRequestInfo());
   brave::BraveRequestInfo::FillCTXFromRequest(request.get(),
-      before_url_context);
+                                              before_url_context);
   brave::ResponseCallback callback;
 
   GURL expected_url(kBraveTranslateServer + url.path());
-  int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,
-      before_url_context);
+  int ret =
+      OnBeforeURLRequest_TranslateRedirectWork(callback, before_url_context);
   EXPECT_EQ(before_url_context->new_url_spec, "");
   EXPECT_EQ(ret, net::OK);
 }
 
 TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
-    AbortTranslateGen204RequestFromTELib) {
+       AbortTranslateGen204RequestFromTELib) {
   net::TestDelegate test_delegate;
 
   GURL url(
@@ -190,15 +190,15 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
                                               before_url_context);
   brave::ResponseCallback callback;
 
-  int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,
-      before_url_context);
+  int ret =
+      OnBeforeURLRequest_TranslateRedirectWork(callback, before_url_context);
 
   EXPECT_EQ(before_url_context->new_url_spec, "");
   EXPECT_EQ(ret, net::ERR_ABORTED);
 }
 
 TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
-  NoAbortTranslateGen204RequestNotFromTELib) {
+       NoAbortTranslateGen204RequestNotFromTELib) {
   net::TestDelegate test_delegate;
 
   GURL url(
@@ -214,8 +214,8 @@ TEST_F(BraveTranslateRedirectNetworkDelegateHelperTest,
                                               before_url_context);
   brave::ResponseCallback callback;
 
-  int ret = OnBeforeURLRequest_TranslateRedirectWork(callback,
-      before_url_context);
+  int ret =
+      OnBeforeURLRequest_TranslateRedirectWork(callback, before_url_context);
   EXPECT_EQ(before_url_context->new_url_spec, "");
   EXPECT_EQ(ret, net::OK);
 }

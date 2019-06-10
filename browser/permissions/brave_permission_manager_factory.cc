@@ -6,12 +6,11 @@
 
 #include "brave/browser/permissions/brave_permission_manager.h"
 #include "chrome/browser/permissions/permission_manager.h"
-#include "chrome/browser/permissions/permission_manager.h"
 #include "chrome/browser/profiles/profile.h"
 
 // static
-PermissionManager*
-BravePermissionManagerFactory::GetForProfile(Profile* profile) {
+PermissionManager* BravePermissionManagerFactory::GetForProfile(
+    Profile* profile) {
   return static_cast<PermissionManager*>(
       GetInstance()->GetServiceForBrowserContext(profile, true));
 }
@@ -22,11 +21,9 @@ BravePermissionManagerFactory* BravePermissionManagerFactory::GetInstance() {
 }
 
 BravePermissionManagerFactory::BravePermissionManagerFactory()
-    : PermissionManagerFactory() {
-}
+    : PermissionManagerFactory() {}
 
-BravePermissionManagerFactory::~BravePermissionManagerFactory() {
-}
+BravePermissionManagerFactory::~BravePermissionManagerFactory() {}
 
 KeyedService* BravePermissionManagerFactory::BuildServiceInstanceFor(
     content::BrowserContext* context) const {

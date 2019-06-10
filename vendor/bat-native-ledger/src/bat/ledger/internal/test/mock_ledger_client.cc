@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/internal/test/mock_ledger_client.h"
 #include "bat/ledger/ledger.h"
@@ -13,12 +13,10 @@ namespace bat_ledger {
 
 static uint64_t next_id = 1;
 
-MockLedgerClient::MockLedgerClient() :
-    ledger_(ledger::Ledger::CreateInstance(this)) {
-}
+MockLedgerClient::MockLedgerClient()
+    : ledger_(ledger::Ledger::CreateInstance(this)) {}
 
-MockLedgerClient::~MockLedgerClient() {
-}
+MockLedgerClient::~MockLedgerClient() {}
 
 void MockLedgerClient::CreateWallet() {
   ledger_->CreateWallet();
@@ -32,12 +30,10 @@ void MockLedgerClient::Shutdown() {
   ledger_.reset();
 }
 
-void MockLedgerClient::OnWalletInitialized(ledger::Result result) {
-}
+void MockLedgerClient::OnWalletInitialized(ledger::Result result) {}
 
 void MockLedgerClient::OnReconcileComplete(ledger::Result result,
-                                           const std::string& viewing_id) {
-}
+                                           const std::string& viewing_id) {}
 
 void MockLedgerClient::LoadLedgerState(ledger::LedgerCallbackHandler* handler) {
   handler->OnLedgerStateLoaded(ledger::Result::OK, ledger_state_);

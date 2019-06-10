@@ -9,19 +9,18 @@
 namespace mojo {
 
 // static
-bool StructTraits<tor::mojom::TorConfigDataView,
-                  tor::TorConfig>::
-    Read(tor::mojom::TorConfigDataView in,
-         tor::TorConfig* out) {
-    base::FilePath binary_path;
-    std::string proxy_string;
-    if (!in.ReadBinaryPath(&binary_path) || !in.ReadProxyString(&proxy_string))
-      return false;
+bool StructTraits<tor::mojom::TorConfigDataView, tor::TorConfig>::Read(
+    tor::mojom::TorConfigDataView in,
+    tor::TorConfig* out) {
+  base::FilePath binary_path;
+  std::string proxy_string;
+  if (!in.ReadBinaryPath(&binary_path) || !in.ReadProxyString(&proxy_string))
+    return false;
 
-    *out = tor::TorConfig(binary_path, proxy_string);
-    if (out->empty())
-      return false;
-    return true;
+  *out = tor::TorConfig(binary_path, proxy_string);
+  if (out->empty())
+    return false;
+  return true;
 }
 
 }  // namespace mojo

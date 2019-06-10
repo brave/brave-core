@@ -11,26 +11,23 @@
 const char kBraveCommunitySupportUrl[] = "https://community.brave.com/";
 
 BraveBrowserContentSettingBubbleModelDelegate::
-BraveBrowserContentSettingBubbleModelDelegate(Browser* browser) :
-    BrowserContentSettingBubbleModelDelegate(browser),
-    browser_(browser) {
-}
+    BraveBrowserContentSettingBubbleModelDelegate(Browser* browser)
+    : BrowserContentSettingBubbleModelDelegate(browser), browser_(browser) {}
 
 BraveBrowserContentSettingBubbleModelDelegate::
-~BraveBrowserContentSettingBubbleModelDelegate() {
-}
+    ~BraveBrowserContentSettingBubbleModelDelegate() {}
 
-void
-BraveBrowserContentSettingBubbleModelDelegate::ShowWidevineLearnMorePage() {
+void BraveBrowserContentSettingBubbleModelDelegate::
+    ShowWidevineLearnMorePage() {
   GURL learn_more_url = GURL(kWidevineTOS);
-  chrome::AddSelectedTabWithURL(browser_, learn_more_url,
-                                ui::PAGE_TRANSITION_LINK);
+  chrome::AddSelectedTabWithURL(
+      browser_, learn_more_url, ui::PAGE_TRANSITION_LINK);
 }
 
 void BraveBrowserContentSettingBubbleModelDelegate::ShowLearnMorePage(
     ContentSettingsType type) {
   // TODO: Use specific support pages for each content setting type
   GURL learn_more_url(kBraveCommunitySupportUrl);
-  chrome::AddSelectedTabWithURL(browser_, learn_more_url,
-                                ui::PAGE_TRANSITION_LINK);
+  chrome::AddSelectedTabWithURL(
+      browser_, learn_more_url, ui::PAGE_TRANSITION_LINK);
 }

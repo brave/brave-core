@@ -1,4 +1,5 @@
-#define SetRuntimeFeaturesDefaultsAndUpdateFromArgs SetRuntimeFeaturesDefaultsAndUpdateFromArgs_ChromiumImpl
+#define SetRuntimeFeaturesDefaultsAndUpdateFromArgs \
+  SetRuntimeFeaturesDefaultsAndUpdateFromArgs_ChromiumImpl
 #include "../../../../content/child/runtime_features.cc"
 #undef SetRuntimeFeaturesDefaultsAndUpdateFromArgs
 
@@ -9,4 +10,4 @@ void SetRuntimeFeaturesDefaultsAndUpdateFromArgs(
   SetRuntimeFeaturesDefaultsAndUpdateFromArgs_ChromiumImpl(command_line);
 }
 
-} // namespace content
+}  // namespace content

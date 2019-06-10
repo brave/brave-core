@@ -13,49 +13,49 @@
 
 class BookmarkButton : public ToolbarButton {
  public:
-    explicit BookmarkButton(views::ButtonListener* listener);
-    ~BookmarkButton() override;
+  explicit BookmarkButton(views::ButtonListener* listener);
+  ~BookmarkButton() override;
 
-    void SetToggled(bool on);
+  void SetToggled(bool on);
 
-    // Invoked when a bubble for this icon is created. The Button
-    // changes highlights based on this widget's visibility.
-    void OnBubbleWidgetCreated(views::Widget* bubble_widget);
+  // Invoked when a bubble for this icon is created. The Button
+  // changes highlights based on this widget's visibility.
+  void OnBubbleWidgetCreated(views::Widget* bubble_widget);
 
-    // ToolbarButton:
-    base::string16 GetTooltipText(const gfx::Point& p) const override;
-    const char* GetClassName() const override;
-    void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
+  // ToolbarButton:
+  base::string16 GetTooltipText(const gfx::Point& p) const override;
+  const char* GetClassName() const override;
+  void GetAccessibleNodeData(ui::AXNodeData* node_data) override;
 
-    // View:
-    void OnThemeChanged() override;
+  // View:
+  void OnThemeChanged() override;
 
  private:
-    bool active_ = false;
-    // Highlights the ink drop for the icon, used when the corresponding widget
-    // is visible.
-    void SetHighlighted(bool bubble_visible);
+  bool active_ = false;
+  // Highlights the ink drop for the icon, used when the corresponding widget
+  // is visible.
+  void SetHighlighted(bool bubble_visible);
 
-    class WidgetObserver : public views::WidgetObserver {
-     public:
-        explicit WidgetObserver(BookmarkButton* parent);
-        ~WidgetObserver() override;
+  class WidgetObserver : public views::WidgetObserver {
+   public:
+    explicit WidgetObserver(BookmarkButton* parent);
+    ~WidgetObserver() override;
 
-        void SetWidget(views::Widget* widget);
+    void SetWidget(views::Widget* widget);
 
-     private:
-        // views::WidgetObserver:
-        void OnWidgetDestroying(views::Widget* widget) override;
-        void OnWidgetVisibilityChanged(views::Widget* widget,
-                                      bool visible) override;
+   private:
+    // views::WidgetObserver:
+    void OnWidgetDestroying(views::Widget* widget) override;
+    void OnWidgetVisibilityChanged(views::Widget* widget,
+                                   bool visible) override;
 
-        BookmarkButton* const parent_;
-        ScopedObserver<views::Widget, views::WidgetObserver> scoped_observer_;
-        DISALLOW_COPY_AND_ASSIGN(WidgetObserver);
-    };
-    WidgetObserver widget_observer_;
+    BookmarkButton* const parent_;
+    ScopedObserver<views::Widget, views::WidgetObserver> scoped_observer_;
+    DISALLOW_COPY_AND_ASSIGN(WidgetObserver);
+  };
+  WidgetObserver widget_observer_;
 
-    DISALLOW_COPY_AND_ASSIGN(BookmarkButton);
+  DISALLOW_COPY_AND_ASSIGN(BookmarkButton);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BOOKMARK_BUTTON_H_

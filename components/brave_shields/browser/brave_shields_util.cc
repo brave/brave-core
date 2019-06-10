@@ -64,16 +64,19 @@ bool IsAllowContentSetting(HostContentSettingsMap* content_settings,
                            const std::string& resource_identifier) {
   DCHECK(content_settings);
   content_settings::SettingInfo setting_info;
-  std::unique_ptr<base::Value> value = content_settings->GetWebsiteSetting(
-      primary_url, secondary_url, setting_type, resource_identifier,
-      &setting_info);
+  std::unique_ptr<base::Value> value =
+      content_settings->GetWebsiteSetting(primary_url,
+                                          secondary_url,
+                                          setting_type,
+                                          resource_identifier,
+                                          &setting_info);
   ContentSetting setting = content_settings::ValueToContentSetting(value.get());
 
   // TODO(bbondy): Add a static RegisterUserPrefs method for shields and use
   // prefs instead of simply returning true / false below.
   if (setting == CONTENT_SETTING_DEFAULT) {
-    return GetDefaultFromResourceIdentifier(resource_identifier, primary_url,
-                                            secondary_url);
+    return GetDefaultFromResourceIdentifier(
+        resource_identifier, primary_url, secondary_url);
   }
   return setting == CONTENT_SETTING_ALLOW;
 }
@@ -88,13 +91,13 @@ bool IsAllowContentSettingFromIO(const net::URLRequest* request,
   content::ResourceRequestInfo* resource_info =
       content::ResourceRequestInfo::ForRequest(request);
   if (!resource_info) {
-    return GetDefaultFromResourceIdentifier(resource_identifier, primary_url,
-                                            secondary_url);
+    return GetDefaultFromResourceIdentifier(
+        resource_identifier, primary_url, secondary_url);
   }
   ProfileIOData* io_data =
       ProfileIOData::FromResourceContext(resource_info->GetContext());
-  return IsAllowContentSettingWithIOData(io_data, primary_url, secondary_url,
-                                         setting_type, resource_identifier);
+  return IsAllowContentSettingWithIOData(
+      io_data, primary_url, secondary_url, setting_type, resource_identifier);
 }
 
 bool IsAllowContentSettingsForProfile(Profile* profile,
@@ -105,8 +108,11 @@ bool IsAllowContentSettingsForProfile(Profile* profile,
   DCHECK_CURRENTLY_ON(BrowserThread::UI);
   DCHECK(profile);
   return IsAllowContentSetting(
-      HostContentSettingsMapFactory::GetForProfile(profile), primary_url,
-      secondary_url, setting_type, resource_identifier);
+      HostContentSettingsMapFactory::GetForProfile(profile),
+      primary_url,
+      secondary_url,
+      setting_type,
+      resource_identifier);
 }
 
 bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
@@ -115,11 +121,13 @@ bool IsAllowContentSettingWithIOData(ProfileIOData* io_data,
                                      ContentSettingsType setting_type,
                                      const std::string& resource_identifier) {
   if (!io_data) {
-    return GetDefaultFromResourceIdentifier(resource_identifier, primary_url,
-                                            secondary_url);
+    return GetDefaultFromResourceIdentifier(
+        resource_identifier, primary_url, secondary_url);
   }
   return IsAllowContentSetting(io_data->GetHostContentSettingsMap(),
-                               primary_url, secondary_url, setting_type,
+                               primary_url,
+                               secondary_url,
+                               setting_type,
                                resource_identifier);
 }
 
@@ -155,10 +163,14 @@ void DispatchBlockedEventFromIO(const GURL& request_url,
                                 const std::string& block_type) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::UI},
+      FROM_HERE,
+      {BrowserThread::UI},
       base::BindOnce(&BraveShieldsWebContentsObserver::DispatchBlockedEvent,
-                     block_type, request_url.spec(), render_process_id,
-                     render_frame_id, frame_tree_node_id));
+                     block_type,
+                     request_url.spec(),
+                     render_process_id,
+                     render_frame_id,
+                     frame_tree_node_id));
 }
 
 bool ShouldSetReferrer(bool allow_referrers,
@@ -173,12 +185,13 @@ bool ShouldSetReferrer(bool allow_referrers,
       original_referrer.is_empty() ||
       // Same TLD+1 whouldn't set the referrer
       SameDomainOrHost(
-          target_url, original_referrer,
+          target_url,
+          original_referrer,
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES) ||
       // Whitelisted referrers shoud never set the referrer
       (g_brave_browser_process &&
        g_brave_browser_process->referrer_whitelist_service()->IsWhitelisted(
-         tab_origin, target_url.GetOrigin()))) {
+           tab_origin, target_url.GetOrigin()))) {
     return false;
   }
   *output_referrer = Referrer::SanitizeForRequest(

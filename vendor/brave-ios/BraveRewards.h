@@ -16,10 +16,10 @@ FOUNDATION_EXPORT const unsigned char BraveRewardsVersionString[];
 #import <BraveRewards/BATAdsNotification.h>
 
 // Ledger
-#import <BraveRewards/Enums.h>
-#import <BraveRewards/Records.h>
 #import <BraveRewards/BATPublisherInfo.h>
 #import <BraveRewards/BATRewardsNotification.h>
+#import <BraveRewards/Enums.h>
+#import <BraveRewards/Records.h>
 
 // Ledger custom models
 #import <BraveRewards/BATActivityInfoFilter.h>

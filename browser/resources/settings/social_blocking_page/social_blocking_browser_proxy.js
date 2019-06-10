@@ -4,19 +4,14 @@
 
 cr.define('settings', function() {
   /** @interface */
-  class SocialBlockingBrowserProxy {
-  }
+  class SocialBlockingBrowserProxy {}
 
   /**
    * @implements {settings.SocialBlockingBrowserProxy}
    */
-  class SocialBlockingBrowserProxyImpl {
-  }
+  class SocialBlockingBrowserProxyImpl {}
 
   cr.addSingletonGetter(SocialBlockingBrowserProxyImpl);
 
-  return {
-    SocialBlockingBrowserProxy,
-    SocialBlockingBrowserProxyImpl
-  };
+  return {SocialBlockingBrowserProxy, SocialBlockingBrowserProxyImpl};
 });

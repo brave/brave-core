@@ -6,11 +6,10 @@
 
 @implementation BATRewardsNotification
 
-- (instancetype)initWithID:(NSString *)notificationID
+- (instancetype)initWithID:(NSString*)notificationID
                  dateAdded:(NSTimeInterval)dateAdded
                       kind:(BATRewardsNotificationKind)kind
-                  userInfo:(NSDictionary *)userInfo
-{
+                  userInfo:(NSDictionary*)userInfo {
   if ((self = [super init])) {
     self.id = notificationID;
     self.dateAdded = dateAdded;
@@ -21,25 +20,24 @@
   return self;
 }
 
-+ (BOOL)supportsSecureCoding
-{
++ (BOOL)supportsSecureCoding {
   return YES;
 }
 
-- (instancetype)initWithCoder:(NSCoder *)aDecoder
-{
+- (instancetype)initWithCoder:(NSCoder*)aDecoder {
   if ((self = [super init])) {
     self.id = [aDecoder decodeObjectOfClass:NSString.class forKey:@"id"];
     self.dateAdded = [aDecoder decodeDoubleForKey:@"dateAdded"];
-    self.kind = (BATRewardsNotificationKind)[aDecoder decodeIntegerForKey:@"kind"];
-    self.userInfo = [aDecoder decodeObjectOfClass:NSDictionary.class forKey:@"userInfo"];
+    self.kind =
+        (BATRewardsNotificationKind)[aDecoder decodeIntegerForKey:@"kind"];
+    self.userInfo =
+        [aDecoder decodeObjectOfClass:NSDictionary.class forKey:@"userInfo"];
     self.displayed = [aDecoder decodeBoolForKey:@"displayed"];
   }
   return self;
 }
 
-- (void)encodeWithCoder:(NSCoder *)aCoder
-{
+- (void)encodeWithCoder:(NSCoder*)aCoder {
   [aCoder encodeObject:self.id forKey:@"id"];
   [aCoder encodeDouble:self.dateAdded forKey:@"dateAdded"];
   [aCoder encodeInteger:self.kind forKey:@"kind"];

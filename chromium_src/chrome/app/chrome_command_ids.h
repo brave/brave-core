@@ -5,7 +5,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_APP_CHROME_COMMAND_IDS_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_APP_CHROME_COMMAND_IDS_H_
 
-#include "brave/app/brave_command_ids.h"
 #include "../../../../chrome/app/chrome_command_ids.h"
+#include "brave/app/brave_command_ids.h"
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_APP_CHROME_COMMAND_IDS_H_

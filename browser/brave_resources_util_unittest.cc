@@ -23,11 +23,11 @@ TEST(BraveResourcesUtil, CheckIds) {
     const char* name;
     int id;
   } kCases[] = {
-    // IDRs from brave/app/theme/brave_theme_resources.grd should be valid.
-    {"IDR_PRODUCT_LOGO_32_BETA", IDR_PRODUCT_LOGO_32_BETA},
-    {"IDR_PRODUCT_LOGO_32_DEV", IDR_PRODUCT_LOGO_32_DEV},
-    {"IDR_PRODUCT_LOGO_32_CANARY", IDR_PRODUCT_LOGO_32_CANARY},
-    {"IDR_PRODUCT_LOGO_32_DEVELOPMENT", IDR_PRODUCT_LOGO_32_DEVELOPMENT},
+      // IDRs from brave/app/theme/brave_theme_resources.grd should be valid.
+      {"IDR_PRODUCT_LOGO_32_BETA", IDR_PRODUCT_LOGO_32_BETA},
+      {"IDR_PRODUCT_LOGO_32_DEV", IDR_PRODUCT_LOGO_32_DEV},
+      {"IDR_PRODUCT_LOGO_32_CANARY", IDR_PRODUCT_LOGO_32_CANARY},
+      {"IDR_PRODUCT_LOGO_32_DEVELOPMENT", IDR_PRODUCT_LOGO_32_DEVELOPMENT},
   };
 
   for (size_t i = 0; i < base::size(kCases); ++i)
@@ -47,22 +47,22 @@ TEST(BraveResourcesWinTest, CheckStringsForInstaller) {
   EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_SXS_SHORTCUT_NAME).empty());
   EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_SHORTCUT_NAME_BETA).empty());
   EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_SHORTCUT_NAME_DEV).empty());
-  EXPECT_FALSE(l10n_util::GetStringUTF16(
-        IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA).empty());
-  EXPECT_FALSE(l10n_util::GetStringUTF16(
-        IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV).empty());
-  EXPECT_FALSE(l10n_util::GetStringUTF16(
-        IDS_INBOUND_MDNS_RULE_NAME_BETA).empty());
-  EXPECT_FALSE(l10n_util::GetStringUTF16(
-        IDS_INBOUND_MDNS_RULE_NAME_CANARY).empty());
+  EXPECT_FALSE(
+      l10n_util::GetStringUTF16(IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA).empty());
+  EXPECT_FALSE(
+      l10n_util::GetStringUTF16(IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV).empty());
+  EXPECT_FALSE(
+      l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_NAME_BETA).empty());
+  EXPECT_FALSE(
+      l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_NAME_CANARY).empty());
   EXPECT_FALSE(
       l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_NAME_DEV).empty());
+  EXPECT_FALSE(l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA)
+                   .empty());
   EXPECT_FALSE(
-      l10n_util::GetStringUTF16(
-        IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA).empty());
-  EXPECT_FALSE(l10n_util::GetStringUTF16(
-        IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY).empty());
-  EXPECT_FALSE(l10n_util::GetStringUTF16(
-        IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV).empty());
+      l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY)
+          .empty());
+  EXPECT_FALSE(
+      l10n_util::GetStringUTF16(IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV).empty());
 }
 #endif

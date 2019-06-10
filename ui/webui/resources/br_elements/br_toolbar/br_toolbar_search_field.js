@@ -53,13 +53,12 @@ Polymer({
   },
 
   showAndFocus: function() {
-    this.showingSearch = true
-    this.focus_()
+    this.showingSearch = true this.focus_()
   },
 
   onSearchTermInput: function() {
-    CrSearchFieldBehavior.onSearchTermInput.call(this)
-    this.showingSearch = this.hasSearchText || this.isSearchFocused()
+    CrSearchFieldBehavior.onSearchTermInput.call(this) this.showingSearch =
+        this.hasSearchText || this.isSearchFocused()
   },
 
   /** @private */
@@ -102,10 +101,8 @@ Polymer({
 
   /** @private */
   onInputBlur_: function() {
-    this.isBlurring_ = true
-    this.searchFocused_ = false
-    if (!this.hasSearchText)
-      this.showingSearch = false
+    this.isBlurring_ = true this.searchFocused_ = false
+    if (!this.hasSearchText) this.showingSearch = false
   },
 
   /** @private */
@@ -127,8 +124,7 @@ Polymer({
    * @private
    */
   clearSearch_: function(e) {
-    this.setValue('')
-    this.focus_()
+    this.setValue('') this.focus_()
   },
 
   showingSearchInputClicked_: function() {
@@ -136,7 +132,7 @@ Polymer({
   },
 
   labelMouseDown_: function(e) {
-    e.preventDefault(); // prevents input blur
+    e.preventDefault();  // prevents input blur
   },
 
   /**
@@ -145,23 +141,21 @@ Polymer({
    * @private
    */
   showingSearchChanged_: function(current, previous) {
-    const wasBlurring = this.isBlurring_
-    this.isBlurring_ = false
+    const wasBlurring = this.isBlurring_ this.isBlurring_ = false
 
     // Prevent unnecessary 'search-changed' event from firing on startup.
     if (previous == undefined)
-      return
+    return
 
-    // Prevent unneccessary re-enable when bluring from input to toggle
-    if (wasBlurring && !this.hasSearchText)
-      return
+        // Prevent unneccessary re-enable when bluring from input to toggle
+        if (wasBlurring && !this.hasSearchText)
+    return
 
-    if (current) {
+        if (current) {
       this.focus_()
       return
     }
 
-    this.setValue('')
-    this.getSearchInput().blur()
+    this.setValue('') this.getSearchInput().blur()
   },
 })

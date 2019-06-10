@@ -69,11 +69,12 @@ BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
 
   brave_stats_updater_ = brave::BraveStatsUpdaterFactory(local_state());
   base::SequencedTaskRunnerHandle::Get()->PostTask(
-      FROM_HERE, base::BindOnce(
-                     [](brave::BraveStatsUpdater* stats_updater) {
-                       stats_updater->Start();
-                     },
-                     base::Unretained(brave_stats_updater_.get())));
+      FROM_HERE,
+      base::BindOnce(
+          [](brave::BraveStatsUpdater* stats_updater) {
+            stats_updater->Start();
+          },
+          base::Unretained(brave_stats_updater_.get())));
 }
 
 brave_component_updater::BraveComponent::Delegate*
@@ -138,8 +139,7 @@ ProfileManager* BraveBrowserProcessImpl::profile_manager() {
   return profile_manager_.get();
 }
 
-brave_shields::AdBlockService*
-BraveBrowserProcessImpl::ad_block_service() {
+brave_shields::AdBlockService* BraveBrowserProcessImpl::ad_block_service() {
   if (ad_block_service_)
     return ad_block_service_.get();
 
@@ -162,7 +162,7 @@ BraveBrowserProcessImpl::ad_block_regional_service_manager() {
   if (!ad_block_regional_service_manager_)
     ad_block_regional_service_manager_ =
         brave_shields::AdBlockRegionalServiceManagerFactory(
-              brave_component_updater_delegate());
+            brave_component_updater_delegate());
   return ad_block_regional_service_manager_.get();
 }
 
@@ -192,8 +192,8 @@ brave_shields::ReferrerWhitelistService*
 BraveBrowserProcessImpl::referrer_whitelist_service() {
   if (!referrer_whitelist_service_) {
     referrer_whitelist_service_ =
-      brave_shields::ReferrerWhitelistServiceFactory(
-          local_data_files_service());
+        brave_shields::ReferrerWhitelistServiceFactory(
+            local_data_files_service());
   }
   return referrer_whitelist_service_.get();
 }
@@ -211,9 +211,8 @@ BraveBrowserProcessImpl::tracking_protection_service() {
 brave_shields::HTTPSEverywhereService*
 BraveBrowserProcessImpl::https_everywhere_service() {
   if (!https_everywhere_service_)
-    https_everywhere_service_ =
-        brave_shields::HTTPSEverywhereServiceFactory(
-            brave_component_updater_delegate());
+    https_everywhere_service_ = brave_shields::HTTPSEverywhereServiceFactory(
+        brave_component_updater_delegate());
   return https_everywhere_service_.get();
 }
 

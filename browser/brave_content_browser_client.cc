@@ -153,30 +153,46 @@ bool BraveContentBrowserClient::AllowAccessCookie(
           render_process_id, render_frame_id, -1)
           .GetOrigin();
   ProfileIOData* io_data = ProfileIOData::FromResourceContext(context);
-  bool allow_brave_shields =
-      brave_shields::IsAllowContentSettingWithIOData(
-          io_data, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-          brave_shields::kBraveShields) &&
+  bool allow_brave_shields = brave_shields::IsAllowContentSettingWithIOData(
+                                 io_data,
+                                 tab_origin,
+                                 tab_origin,
+                                 CONTENT_SETTINGS_TYPE_PLUGINS,
+                                 brave_shields::kBraveShields) &&
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-      !first_party.SchemeIs(kChromeExtensionScheme);
+                             !first_party.SchemeIs(kChromeExtensionScheme);
 #else
-      true;
+                             true;
 #endif
   bool allow_1p_cookies = brave_shields::IsAllowContentSettingWithIOData(
-      io_data, tab_origin, GURL("https://firstParty/"),
-      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
+      io_data,
+      tab_origin,
+      GURL("https://firstParty/"),
+      CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kCookies);
   bool allow_3p_cookies = brave_shields::IsAllowContentSettingWithIOData(
-      io_data, tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+      io_data,
+      tab_origin,
+      GURL(),
+      CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kCookies);
   content_settings::BraveCookieSettings* cookie_settings =
       (content_settings::BraveCookieSettings*)io_data->GetCookieSettings();
   bool allow =
-      !ShouldBlockCookie(allow_brave_shields, allow_1p_cookies,
-                         allow_3p_cookies, first_party, url,
+      !ShouldBlockCookie(allow_brave_shields,
+                         allow_1p_cookies,
+                         allow_3p_cookies,
+                         first_party,
+                         url,
                          cookie_settings->GetAllowGoogleAuth()) &&
       g_brave_browser_process->tracking_protection_service()->ShouldStoreState(
-          cookie_settings, io_data->GetHostContentSettingsMap(),
-          render_process_id, render_frame_id, url, first_party, tab_origin);
+          cookie_settings,
+          io_data->GetHostContentSettingsMap(),
+          render_process_id,
+          render_frame_id,
+          url,
+          first_party,
+          tab_origin);
   return allow;
 }
 
@@ -188,10 +204,14 @@ bool BraveContentBrowserClient::AllowGetCookie(
     int render_process_id,
     int render_frame_id) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
-                                 render_frame_id);
-  OnCookiesRead(render_process_id, render_frame_id, url, first_party,
-                cookie_list, !allow);
+  bool allow = AllowAccessCookie(
+      url, first_party, context, render_process_id, render_frame_id);
+  OnCookiesRead(render_process_id,
+                render_frame_id,
+                url,
+                first_party,
+                cookie_list,
+                !allow);
 
   return allow;
 }
@@ -204,10 +224,10 @@ bool BraveContentBrowserClient::AllowSetCookie(
     int render_process_id,
     int render_frame_id) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  bool allow = AllowAccessCookie(url, first_party, context, render_process_id,
-                                 render_frame_id);
-  OnCookieChange(render_process_id, render_frame_id, url, first_party, cookie,
-                 !allow);
+  bool allow = AllowAccessCookie(
+      url, first_party, context, render_process_id, render_frame_id);
+  OnCookieChange(
+      render_process_id, render_frame_id, url, first_party, cookie, !allow);
   return allow;
 }
 
@@ -232,16 +252,23 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     network::mojom::URLLoaderFactoryRequest* factory_request,
     network::mojom::URLLoaderFactory*& out_factory) {  // NOLINT
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
-  if (webtorrent::HandleMagnetProtocol(url, web_contents_getter,
-                                       page_transition, has_user_gesture)) {
+  if (webtorrent::HandleMagnetProtocol(
+          url, web_contents_getter, page_transition, has_user_gesture)) {
     return true;
   }
 #endif
 
-  return ChromeContentBrowserClient::HandleExternalProtocol(
-      url, web_contents_getter, child_id, navigation_data, is_main_frame,
-      page_transition, has_user_gesture, method, headers, factory_request,
-      out_factory);
+  return ChromeContentBrowserClient::HandleExternalProtocol(url,
+                                                            web_contents_getter,
+                                                            child_id,
+                                                            navigation_data,
+                                                            is_main_frame,
+                                                            page_transition,
+                                                            has_user_gesture,
+                                                            method,
+                                                            headers,
+                                                            factory_request,
+                                                            out_factory);
 }
 
 void BraveContentBrowserClient::RegisterOutOfProcessServices(
@@ -318,10 +345,16 @@ void BraveContentBrowserClient::MaybeHideReferrer(
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   const bool allow_referrers = brave_shields::IsAllowContentSettingsForProfile(
-      profile, document_url, document_url, CONTENT_SETTINGS_TYPE_PLUGINS,
+      profile,
+      document_url,
+      document_url,
+      CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferrers);
   const bool shields_up = brave_shields::IsAllowContentSettingsForProfile(
-      profile, document_url, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+      profile,
+      document_url,
+      GURL(),
+      CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kBraveShields);
   // Top-level navigations get empty referrers (brave/brave-browser#3422).
   GURL replacement_referrer_url;
@@ -329,9 +362,14 @@ void BraveContentBrowserClient::MaybeHideReferrer(
     // But iframe navigations get spoofed instead (brave/brave-browser#3988).
     replacement_referrer_url = request_url.GetOrigin();
   }
-  brave_shields::ShouldSetReferrer(
-      allow_referrers, shields_up, referrer->url, document_url, request_url,
-      replacement_referrer_url, referrer->policy, referrer);
+  brave_shields::ShouldSetReferrer(allow_referrers,
+                                   shields_up,
+                                   referrer->url,
+                                   document_url,
+                                   request_url,
+                                   replacement_referrer_url,
+                                   referrer->policy,
+                                   referrer);
 }
 
 GURL BraveContentBrowserClient::GetEffectiveURL(

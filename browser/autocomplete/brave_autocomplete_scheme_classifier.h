@@ -7,7 +7,8 @@
 
 #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
 
-class BraveAutocompleteSchemeClassifier : public ChromeAutocompleteSchemeClassifier {
+class BraveAutocompleteSchemeClassifier
+    : public ChromeAutocompleteSchemeClassifier {
  public:
   explicit BraveAutocompleteSchemeClassifier(Profile* profile);
   ~BraveAutocompleteSchemeClassifier() override;
@@ -22,4 +23,3 @@ class BraveAutocompleteSchemeClassifier : public ChromeAutocompleteSchemeClassif
 };
 
 #endif  // BRAVE_BROWSER_AUTOCOMPLETE_BRAVE_AUTOCOMPLETE_SCHEME_CLASSIFIER_H_
-

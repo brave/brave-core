@@ -5,7 +5,6 @@
 
 #include "brave/common/shield_exceptions.h"
 
-
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
 
 namespace {
@@ -15,12 +14,18 @@ using brave::IsWhitelistedCookieException;
 
 TEST_F(BraveShieldsExceptionsTest, IsWhitelistedCookieException) {
   // Cookie exceptions for Google auth domains
-  EXPECT_TRUE(IsWhitelistedCookieException(GURL("https://www.airbnb.com/"),
-      GURL("https://accounts.google.com/o/oauth2/iframe"), true));
-  EXPECT_FALSE(IsWhitelistedCookieException(GURL("https://www.mozilla.org/"),
-      GURL("https://www.googletagmanager.com/gtm.js"), true));
-  EXPECT_FALSE(IsWhitelistedCookieException(GURL("https://www.airbnb.com/"),
-      GURL("https://accounts.google.com/o/oauth2/iframe"), false));
+  EXPECT_TRUE(IsWhitelistedCookieException(
+      GURL("https://www.airbnb.com/"),
+      GURL("https://accounts.google.com/o/oauth2/iframe"),
+      true));
+  EXPECT_FALSE(IsWhitelistedCookieException(
+      GURL("https://www.mozilla.org/"),
+      GURL("https://www.googletagmanager.com/gtm.js"),
+      true));
+  EXPECT_FALSE(IsWhitelistedCookieException(
+      GURL("https://www.airbnb.com/"),
+      GURL("https://accounts.google.com/o/oauth2/iframe"),
+      false));
 }
 
 }  // namespace

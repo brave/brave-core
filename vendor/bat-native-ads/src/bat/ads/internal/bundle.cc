@@ -3,35 +3,34 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <vector>
 #include <map>
 #include <utility>
+#include <vector>
 
 #include "bat/ads/bundle_state.h"
 
 #include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/catalog.h"
 #include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/time_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/static_values.h"
+#include "bat/ads/internal/time_helper.h"
 
-#include "base/strings/string_util.h"
 #include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
 #include "base/time/time.h"
 
 using std::placeholders::_1;
 
 namespace ads {
 
-Bundle::Bundle(AdsImpl* ads, AdsClient* ads_client) :
-    catalog_id_(""),
-    catalog_version_(0),
-    catalog_ping_(0),
-    catalog_last_updated_timestamp_in_seconds_(0),
-    ads_(ads),
-    ads_client_(ads_client) {
-}
+Bundle::Bundle(AdsImpl* ads, AdsClient* ads_client)
+    : catalog_id_(""),
+      catalog_version_(0),
+      catalog_ping_(0),
+      catalog_last_updated_timestamp_in_seconds_(0),
+      ads_(ads),
+      ads_client_(ads_client) {}
 
 Bundle::~Bundle() = default;
 
@@ -43,10 +42,14 @@ bool Bundle::UpdateFromCatalog(const Catalog& catalog) {
     return false;
   }
 
-  auto callback = std::bind(&Bundle::OnStateSaved,
-      this, bundle_state->catalog_id, bundle_state->catalog_version,
-      bundle_state->catalog_ping,
-      bundle_state->catalog_last_updated_timestamp_in_seconds, _1);
+  auto callback =
+      std::bind(&Bundle::OnStateSaved,
+                this,
+                bundle_state->catalog_id,
+                bundle_state->catalog_version,
+                bundle_state->catalog_ping,
+                bundle_state->catalog_last_updated_timestamp_in_seconds,
+                _1);
   ads_client_->SaveBundleState(std::move(bundle_state), callback);
 
   // TODO(Terry Mancey): Implement Log (#44)
@@ -60,10 +63,14 @@ bool Bundle::UpdateFromCatalog(const Catalog& catalog) {
 void Bundle::Reset() {
   auto bundle_state = std::make_unique<BundleState>();
 
-  auto callback = std::bind(&Bundle::OnStateReset,
-      this, bundle_state->catalog_id, bundle_state->catalog_version,
-      bundle_state->catalog_ping,
-      bundle_state->catalog_last_updated_timestamp_in_seconds, _1);
+  auto callback =
+      std::bind(&Bundle::OnStateReset,
+                this,
+                bundle_state->catalog_id,
+                bundle_state->catalog_version,
+                bundle_state->catalog_ping,
+                bundle_state->catalog_last_updated_timestamp_in_seconds,
+                _1);
   ads_client_->SaveBundleState(std::move(bundle_state), callback);
 }
 
@@ -108,8 +115,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
     for (const auto& geo_target : campaign.geo_targets) {
       std::string code = geo_target.code;
 
-      if (std::find(regions.begin(), regions.end(), code)
-          != regions.end()) {
+      if (std::find(regions.begin(), regions.end(), code) != regions.end()) {
         continue;
       }
 
@@ -141,12 +147,14 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
           auto segment_name = base::ToLowerASCII(segment.name);
 
           std::vector<std::string> segment_name_hierarchy =
-              base::SplitString(segment_name, "-", base::KEEP_WHITESPACE,
-              base::SPLIT_WANT_NONEMPTY);
+              base::SplitString(segment_name,
+                                "-",
+                                base::KEEP_WHITESPACE,
+                                base::SPLIT_WANT_NONEMPTY);
 
           if (segment_name_hierarchy.empty()) {
             BLOG(WARNING) << "creativeSet id " << creative_set.creative_set_id
-                << " has an invalid segment name";
+                          << " has an invalid segment name";
 
             continue;
           }
@@ -170,7 +178,7 @@ std::unique_ptr<BundleState> Bundle::GenerateFromCatalog(
 
       if (entries == 0) {
         BLOG(WARNING) << "creativeSet id " << creative_set.creative_set_id
-            << " has an invalid creative";
+                      << " has an invalid creative";
 
         continue;
       }

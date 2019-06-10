@@ -2,80 +2,63 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { Reducer } from 'redux'
+import {Reducer} from 'redux'
 
 // Constant
-import { types } from '../constants/rewards_types'
-import { generateQR } from '../utils'
+import {types} from '../constants/rewards_types'
+import {generateQR} from '../utils'
 
-const createWallet = (state: Rewards.State) => {
-  state.walletCreated = true
-  state.enabledMain = true
-  state.enabledAds = true
-  state.enabledContribute = true
-  state.createdTimestamp = new Date().getTime()
+const createWallet =
+    (state: Rewards.State) => {
+      state.walletCreated = true
+      state.enabledMain = true
+      state.enabledAds = true
+      state.enabledContribute = true
+      state.createdTimestamp = new Date().getTime()
 
-  chrome.send('brave_rewards.getReconcileStamp')
-  chrome.send('brave_rewards.getAddresses')
+      chrome.send('brave_rewards.getReconcileStamp')
+      chrome.send('brave_rewards.getAddresses')
 
-  return state
-}
-
-const saveAddresses = (state: Rewards.State, addresses: Record<Rewards.AddressesType, string>) => {
-  if (!addresses) {
-    return state
-  }
-
-  state = { ...state }
-  state.addresses = {
-    BAT: {
-      address: addresses.BAT,
-      qr: null
-    },
-    BTC: {
-      address: addresses.BTC,
-      qr: null
-    },
-    ETH: {
-      address: addresses.ETH,
-      qr: null
-    },
-    LTC: {
-      address: addresses.LTC,
-      qr: null
+      return state
     }
-  }
 
-  generateQR(addresses)
+const saveAddresses =
+    (state: Rewards.State,
+     addresses: Record<Rewards.AddressesType, string>) => {
+      if (!addresses) {
+        return state
+      }
 
-  return state
-}
+      state = {...state} state.addresses = {
+        BAT: {address: addresses.BAT, qr: null},
+        BTC: {address: addresses.BTC, qr: null},
+        ETH: {address: addresses.ETH, qr: null},
+        LTC: {address: addresses.LTC, qr: null}
+      }
 
-const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
-  switch (action.type) {
-    case types.CREATE_WALLET:
-      state = { ...state }
-      state.walletCreateFailed = false
-      state.walletCreated = false
-      chrome.send('brave_rewards.createWalletRequested')
-      break
-    case types.WALLET_CREATED:
-      state = { ...state }
-      state = createWallet(state)
-      chrome.send('brave_rewards.saveAdsSetting', ['adsEnabled', 'true'])
-      break
-    case types.WALLET_CREATE_FAILED:
-      state = { ...state }
-      state.walletCreateFailed = true
-      break
-    case types.GET_WALLET_PROPERTIES:
-      chrome.send('brave_rewards.getWalletProperties')
-      break
-    case types.ON_WALLET_PROPERTIES: {
-      state = { ...state }
-      let ui = state.ui
+      generateQR(addresses)
 
-      // TODO NZ check why enum can't be used inside Rewards namespace
+      return state
+    }
+
+const walletReducer: Reducer<Rewards.State|undefined> =
+    (state: Rewards.State, action) => {
+      switch (action.type) {
+        case types.CREATE_WALLET:
+          state = {...state} state.walletCreateFailed = false
+          state.walletCreated = false
+          chrome.send('brave_rewards.createWalletRequested')
+          break case types.WALLET_CREATED: state = {...state} state =
+              createWallet(state)
+          chrome.send('brave_rewards.saveAdsSetting', ['adsEnabled', 'true'])
+          break case types.WALLET_CREATE_FAILED:
+              state = {...state} state.walletCreateFailed = true
+          break case types.GET_WALLET_PROPERTIES:
+              chrome.send('brave_rewards.getWalletProperties')
+          break case types.ON_WALLET_PROPERTIES: {state = {...state} let ui =
+                                                      state.ui
+
+          // TODO NZ check why enum can't be used inside Rewards namespace
       if (action.payload.properties.status === 1) {
         ui.walletServerProblem = true
       } else if (action.payload.properties.status === 17) {
@@ -86,29 +69,24 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         ui.walletServerProblem = false
         ui.walletCorrupted = false
 
-        if (ui.emptyWallet && state.walletInfo && state.walletInfo.balance > 0) {
+        if (ui.emptyWallet && state.walletInfo &&
+            state.walletInfo.balance > 0) {
           ui.emptyWallet = false
         }
       }
 
       state = {
-        ...state,
-        ui
+        ...state, ui
       }
       break
     }
     case types.GET_WALLLET_PASSPHRASE:
       chrome.send('brave_rewards.getWalletPassphrase')
-      break
-    case types.ON_WALLLET_PASSPHRASE:
-      const value = action.payload.pass
+      break case types.ON_WALLLET_PASSPHRASE: const value = action.payload.pass
       if (value && value.length > 0) {
-        state = { ...state }
-        state.recoveryKey = value
+        state = {...state} state.recoveryKey = value
       }
-      break
-    case types.RECOVER_WALLET: {
-      let key = action.payload.key
+      break case types.RECOVER_WALLET: {let key = action.payload.key
       key = key.trim()
 
       if (!key || key.length === 0) {
@@ -127,7 +105,8 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       break
     }
     case types.ON_RECOVER_WALLET_DATA: {
-      state = { ...state }
+      state = {
+        ...state }
       const result = action.payload.properties.result
       const balance = action.payload.properties.balance
       const grants = action.payload.properties.grants
@@ -148,9 +127,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
 
       state = {
-        ...state,
-        ui,
-        walletInfo
+        ...state, ui, walletInfo
       }
       break
     }
@@ -161,8 +138,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       ui.addressCheck = true
 
       state = {
-        ...state,
-        ui
+        ...state, ui
       }
       break
     }
@@ -172,18 +148,19 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         break
       }
 
-      state = { ...state }
-      const addresses = state.addresses
+      state = {
+        ...state
+      } const addresses = state.addresses
 
       if (!addresses || !addresses[type] || !addresses[type].address) {
         break
       }
 
-      addresses[type].qr = action.payload.image
+      addresses[type]
+          .qr = action.payload.image
 
       state = {
-        ...state,
-        addresses
+        ...state, addresses
       }
       break
     }
@@ -229,10 +206,10 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.ON_PENDING_CONTRIBUTIONS: {
       state = { ...state }
       state.pendingContributions = action.payload.list
-      const total = state.pendingContributions
-        .reduce((accumulator: number, item: Rewards.PendingContribution) => {
-          return accumulator + item.amount
-        }, 0)
+      const total = state.pendingContributions.reduce(
+          (accumulator: number, item: Rewards.PendingContribution) => {
+              return accumulator + item.amount},
+          0)
       state.pendingContributionTotal = total
       break
     }
@@ -257,8 +234,7 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       ui.paymentIdCheck = true
 
       state = {
-        ...state,
-        ui
+        ...state, ui
       }
       break
     }
@@ -266,9 +242,9 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       chrome.send('brave_rewards.removeAllPendingContribution')
       break
     }
-  }
+      }
 
-  return state
-}
+      return state
+    }
 
 export default walletReducer

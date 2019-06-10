@@ -20,24 +20,21 @@ TorLauncherFactory* TorLauncherFactory::GetInstance() {
   return base::Singleton<TorLauncherFactory>::get();
 }
 
-TorLauncherFactory::TorLauncherFactory()
-    : tor_pid_(-1) {
+TorLauncherFactory::TorLauncherFactory() : tor_pid_(-1) {
   if (g_prevent_tor_launch_for_tests) {
     VLOG(1) << "Skipping the tor process launch in tests.";
     return;
   }
 
-  content::ServiceManagerConnection::GetForProcess()->GetConnector()
-    ->BindInterface(tor::mojom::kTorLauncherServiceName,
-                    &tor_launcher_);
+  content::ServiceManagerConnection::GetForProcess()
+      ->GetConnector()
+      ->BindInterface(tor::mojom::kTorLauncherServiceName, &tor_launcher_);
 
-  tor_launcher_.set_connection_error_handler(
-    base::BindOnce(&TorLauncherFactory::OnTorLauncherCrashed,
-                   base::Unretained(this)));
+  tor_launcher_.set_connection_error_handler(base::BindOnce(
+      &TorLauncherFactory::OnTorLauncherCrashed, base::Unretained(this)));
 
-  tor_launcher_->SetCrashHandler(base::Bind(
-                        &TorLauncherFactory::OnTorCrashed,
-                        base::Unretained(this)));
+  tor_launcher_->SetCrashHandler(
+      base::Bind(&TorLauncherFactory::OnTorCrashed, base::Unretained(this)));
 }
 
 TorLauncherFactory::~TorLauncherFactory() {}
@@ -64,9 +61,9 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
     LOG(WARNING) << "config is empty";
     return;
   }
-  tor_launcher_->Launch(config_,
-                        base::Bind(&TorLauncherFactory::OnTorLaunched,
-                                   base::Unretained(this)));
+  tor_launcher_->Launch(
+      config_,
+      base::Bind(&TorLauncherFactory::OnTorLaunched, base::Unretained(this)));
 }
 
 void TorLauncherFactory::ReLaunchTorProcess(const tor::TorConfig& config) {
@@ -85,9 +82,9 @@ void TorLauncherFactory::ReLaunchTorProcess(const tor::TorConfig& config) {
     LOG(WARNING) << "config is empty.";
     return;
   }
-  tor_launcher_->ReLaunch(config_,
-                        base::Bind(&TorLauncherFactory::OnTorLaunched,
-                                   base::Unretained(this)));
+  tor_launcher_->ReLaunch(
+      config_,
+      base::Bind(&TorLauncherFactory::OnTorLaunched, base::Unretained(this)));
 }
 
 void TorLauncherFactory::KillTorProcess() {
@@ -118,7 +115,7 @@ void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
   if (result)
     tor_pid_ = pid;
   else
-    LOG(ERROR) << "Tor Launching Failed(" << pid <<")";
+    LOG(ERROR) << "Tor Launching Failed(" << pid << ")";
   for (auto& observer : observers_)
     observer.NotifyTorLaunched(result, pid);
 }

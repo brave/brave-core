@@ -14,12 +14,11 @@ using std::placeholders::_3;
 
 namespace braveledger_bat_get_media {
 
-BatGetMedia::BatGetMedia(bat_ledger::LedgerImpl* ledger):
-  ledger_(ledger),
-  media_youtube_(new braveledger_media::MediaYouTube(ledger)),
-  media_twitch_(new braveledger_media::MediaTwitch(ledger)),
-  media_twitter_(new braveledger_media::MediaTwitter(ledger)) {
-}
+BatGetMedia::BatGetMedia(bat_ledger::LedgerImpl* ledger)
+    : ledger_(ledger),
+      media_youtube_(new braveledger_media::MediaYouTube(ledger)),
+      media_twitch_(new braveledger_media::MediaTwitch(ledger)),
+      media_twitter_(new braveledger_media::MediaTwitter(ledger)) {}
 
 BatGetMedia::~BatGetMedia() {}
 
@@ -30,9 +29,8 @@ std::string BatGetMedia::GetLinkType(const std::string& url,
   type = braveledger_media::MediaYouTube::GetLinkType(url);
 
   if (type.empty()) {
-    type = braveledger_media::MediaTwitch::GetLinkType(url,
-                                                       first_party_url,
-                                                       referrer);
+    type = braveledger_media::MediaTwitch::GetLinkType(
+        url, first_party_url, referrer);
   }
 
   return type;
@@ -56,20 +54,17 @@ void BatGetMedia::ProcessMedia(const std::map<std::string, std::string>& parts,
   }
 }
 
-void BatGetMedia::GetMediaActivityFromUrl(
-    uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    const std::string& type,
-    const std::string& publisher_blob) {
+void BatGetMedia::GetMediaActivityFromUrl(uint64_t window_id,
+                                          const ledger::VisitData& visit_data,
+                                          const std::string& type,
+                                          const std::string& publisher_blob) {
   if (type == YOUTUBE_MEDIA_TYPE) {
     media_youtube_->ProcessActivityFromUrl(window_id, visit_data);
   } else if (type == TWITCH_MEDIA_TYPE) {
-    media_twitch_->ProcessActivityFromUrl(window_id,
-                                          visit_data,
-                                          publisher_blob);
+    media_twitch_->ProcessActivityFromUrl(
+        window_id, visit_data, publisher_blob);
   } else if (type == TWITTER_MEDIA_TYPE) {
-    media_twitter_->ProcessActivityFromUrl(window_id,
-                                           visit_data);
+    media_twitter_->ProcessActivityFromUrl(window_id, visit_data);
   } else {
     OnMediaActivityError(visit_data, type, window_id);
   }
@@ -97,11 +92,9 @@ void BatGetMedia::OnMediaActivityError(const ledger::VisitData& visit_data,
 
     ledger_->GetPublisherActivityFromUrl(window_id, new_data, std::string());
   } else {
-      BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Media activity error for "
-        << type << " (name: "
-        << name << ", url: "
-        << visit_data.url << ")";
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Media activity error for " << type << " (name: " << name
+        << ", url: " << visit_data.url << ")";
   }
 }
 

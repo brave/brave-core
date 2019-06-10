@@ -1,6 +1,6 @@
 //
 //  ContributionInfo+CoreDataProperties.m
-//  
+//
 //
 //  Created by Kyle Hickinson on 2019-05-24.
 //
@@ -11,8 +11,8 @@
 
 @implementation ContributionInfo (CoreDataProperties)
 
-+ (NSFetchRequest<ContributionInfo *> *)fetchRequest {
-	return [NSFetchRequest fetchRequestWithEntityName:@"ContributionInfo"];
++ (NSFetchRequest<ContributionInfo*>*)fetchRequest {
+  return [NSFetchRequest fetchRequestWithEntityName:@"ContributionInfo"];
 }
 
 @dynamic category;

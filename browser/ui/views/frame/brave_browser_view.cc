@@ -12,7 +12,7 @@
 #endif
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
-  BookmarkButton* button = ((BraveToolbarView *)toolbar())->bookmark_button();
+  BookmarkButton* button = ((BraveToolbarView*)toolbar())->bookmark_button();
   if (button)
     button->SetToggled(is_starred);
 }

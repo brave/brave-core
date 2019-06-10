@@ -48,7 +48,7 @@ class RapporLogUploaderTest : public testing::Test {
     return &test_url_loader_factory_;
   }
 
-private:
+ private:
   // Required for base::ThreadTaskRunnerHandle::Get().
   base::test::ScopedTaskEnvironment scoped_task_environment_;
   network::TestURLLoaderFactory test_url_loader_factory_;
@@ -61,8 +61,8 @@ TEST_F(RapporLogUploaderTest, NoFetch) {
   bool network_access_occurred = false;
   test_url_loader_factory()->SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-                                     network_access_occurred = true;
-                                 }));
+        network_access_occurred = true;
+      }));
   TestLogUploader uploader(shared_url_loader_factory());
 
   uploader.QueueLog("log1");

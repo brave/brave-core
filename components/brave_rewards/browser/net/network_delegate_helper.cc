@@ -13,8 +13,8 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/resource_request_info.h"
-#include "content/public/browser/websocket_handshake_request_info.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/websocket_handshake_request_info.h"
 #include "net/base/upload_bytes_element_reader.h"
 #include "net/base/upload_data_stream.h"
 #include "net/url_request/url_request.h"
@@ -68,7 +68,7 @@ void GetRenderFrameInfo(const net::URLRequest* request,
   if (!content::ResourceRequestInfo::GetRenderFrameForRequest(
           request, render_process_id, render_frame_id)) {
     const content::WebSocketHandshakeRequestInfo* websocket_info =
-      content::WebSocketHandshakeRequestInfo::ForRequest(request);
+        content::WebSocketHandshakeRequestInfo::ForRequest(request);
     if (websocket_info) {
       *render_frame_id = websocket_info->GetRenderFrameId();
       *render_process_id = websocket_info->GetChildId();
@@ -76,10 +76,9 @@ void GetRenderFrameInfo(const net::URLRequest* request,
   }
 }
 
-content::WebContents* GetWebContents(
-    int render_process_id,
-    int render_frame_id,
-    int frame_tree_node_id) {
+content::WebContents* GetWebContents(int render_process_id,
+                                     int render_frame_id,
+                                     int frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   content::WebContents* web_contents =
       content::WebContents::FromFrameTreeNodeId(frame_tree_node_id);
@@ -89,24 +88,21 @@ content::WebContents* GetWebContents(
     if (!rfh) {
       return nullptr;
     }
-    web_contents =
-        content::WebContents::FromRenderFrameHost(rfh);
+    web_contents = content::WebContents::FromRenderFrameHost(rfh);
   }
   return web_contents;
 }
 
-void DispatchOnUI(
-    const std::string post_data,
-    const GURL url,
-    const GURL first_party_url,
-    const std::string referrer,
-    int render_process_id,
-    int render_frame_id,
-    int frame_tree_node_id) {
+void DispatchOnUI(const std::string post_data,
+                  const GURL url,
+                  const GURL first_party_url,
+                  const std::string referrer,
+                  int render_process_id,
+                  int render_frame_id,
+                  int frame_tree_node_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  auto* web_contents = GetWebContents(render_process_id,
-                                      render_frame_id,
-                                      frame_tree_node_id);
+  auto* web_contents =
+      GetWebContents(render_process_id, render_frame_id, frame_tree_node_id);
   if (!web_contents)
     return;
 
@@ -118,15 +114,16 @@ void DispatchOnUI(
       Profile::FromBrowserContext(web_contents->GetBrowserContext()));
   if (rewards_service)
     rewards_service->OnPostData(tab_helper->session_id(),
-                                url, first_party_url,
-                                GURL(referrer), post_data);
+                                url,
+                                first_party_url,
+                                GURL(referrer),
+                                post_data);
 }
 
 }  // namespace
 
-int OnBeforeURLRequest(
-  const brave::ResponseCallback& next_callback,
-  std::shared_ptr<brave::BraveRequestInfo> ctx) {
+int OnBeforeURLRequest(const brave::ResponseCallback& next_callback,
+                       std::shared_ptr<brave::BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
 
   if (IsMediaLink(ctx->request_url,
@@ -135,13 +132,20 @@ int OnBeforeURLRequest(
     std::string post_data;
     if (GetPostData(ctx->request, &post_data)) {
       int render_process_id, render_frame_id, frame_tree_node_id;
-      GetRenderFrameInfo(ctx->request, &render_frame_id, &render_process_id,
-          &frame_tree_node_id);
-      base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
-          base::BindOnce(&DispatchOnUI,
-              post_data,
-              ctx->request_url, ctx->request->site_for_cookies(), ctx->request->referrer(),
-              render_process_id, render_frame_id, frame_tree_node_id));
+      GetRenderFrameInfo(ctx->request,
+                         &render_frame_id,
+                         &render_process_id,
+                         &frame_tree_node_id);
+      base::PostTaskWithTraits(FROM_HERE,
+                               {content::BrowserThread::UI},
+                               base::BindOnce(&DispatchOnUI,
+                                              post_data,
+                                              ctx->request_url,
+                                              ctx->request->site_for_cookies(),
+                                              ctx->request->referrer(),
+                                              render_process_id,
+                                              render_frame_id,
+                                              frame_tree_node_id));
     }
   }
 
@@ -149,6 +153,3 @@ int OnBeforeURLRequest(
 }
 
 }  // namespace brave_rewards
-
-
-

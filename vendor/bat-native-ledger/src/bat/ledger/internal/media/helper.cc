@@ -16,9 +16,8 @@ std::string GetMediaKey(const std::string& mediaId, const std::string& type) {
   return type + "_" + mediaId;
 }
 
-void GetTwitchParts(
-    const std::string& query,
-    std::vector<std::map<std::string, std::string>>* parts) {
+void GetTwitchParts(const std::string& query,
+                    std::vector<std::map<std::string, std::string>>* parts) {
   size_t pos = query.find("data=");
 
   if (std::string::npos == pos || query.length() <= 5) {
@@ -31,8 +30,7 @@ void GetTwitchParts(
   if (succeded) {
     decoded.push_back((uint8_t)'\0');
     braveledger_bat_helper::getJSONTwitchProperties(
-        reinterpret_cast<char*>(&decoded.front()),
-        parts);
+        reinterpret_cast<char*>(&decoded.front()), parts);
   }
 }
 

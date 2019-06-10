@@ -19,19 +19,19 @@ namespace content_settings {
 // EphemeralProvider ignore shields type and this class handles.
 class BravePrefProvider : public PrefProvider {
  public:
-  BravePrefProvider(
-      PrefService* prefs, bool incognito, bool store_last_modified);
+  BravePrefProvider(PrefService* prefs,
+                    bool incognito,
+                    bool store_last_modified);
   ~BravePrefProvider() override {}
 
  private:
   // content_settings::PrefProvider overrides:
   void ShutdownOnUIThread() override;
-  bool SetWebsiteSetting(
-      const ContentSettingsPattern& primary_pattern,
-      const ContentSettingsPattern& secondary_pattern,
-      ContentSettingsType content_type,
-      const ResourceIdentifier& resource_identifier,
-      base::Value* value) override;
+  bool SetWebsiteSetting(const ContentSettingsPattern& primary_pattern,
+                         const ContentSettingsPattern& secondary_pattern,
+                         ContentSettingsType content_type,
+                         const ResourceIdentifier& resource_identifier,
+                         base::Value* value) override;
 
   // PrefProvider::pref_change_registrar_ alreay has plugin type.
   PrefChangeRegistrar brave_pref_change_registrar_;

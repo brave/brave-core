@@ -13,7 +13,8 @@ base::Optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
   // const bool hybrid = mode == ui::MaterialDesignController::MATERIAL_HYBRID;
   // const bool touch_optimized_material =
   //     ui::MaterialDesignController::touch_ui();
-  // const bool newer_material = ui::MaterialDesignController::IsNewerMaterialUi();
+  // const bool newer_material =
+  // ui::MaterialDesignController::IsNewerMaterialUi();
   switch (constant) {
     case LOCATION_BAR_BUBBLE_CORNER_RADIUS:
       // Note: this is likely to be moved in to views/layout_provider.h

@@ -2,113 +2,108 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { Reducer } from 'redux'
+import {Reducer} from 'redux'
 
 // Constant
 // Temporary (ryanml)
-import { types } from '../constants/rewards_types'
+import {types} from '../constants/rewards_types'
 
-const getGrant = (id?: string, grants?: Rewards.Grant[]) => {
-  if (!id || !grants) {
-    return null
-  }
+const getGrant =
+    (id?: string, grants?: Rewards.Grant[]) => {
+      if (!id || !grants) {
+        return null
+      }
 
-  return grants.find((grant: Rewards.Grant) => {
-    return (grant.promotionId === id)
-  })
-}
-
-const updateGrant = (newGrant: Rewards.Grant, grants: Rewards.Grant[]) => {
-  return grants.map((grant: Rewards.Grant) => {
-    if (newGrant.promotionId === grant.promotionId) {
-      return Object.assign(grant, newGrant)
+      return grants.find(
+          (grant: Rewards.Grant) => {return (grant.promotionId === id)})
     }
-    return grant
-  })
-}
 
-const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
-  switch (action.type) {
-    case types.GET_GRANTS:
-      chrome.send('brave_rewards.getGrants', ['', ''])
-      break
-    case types.ON_GRANT:
-      state = { ...state }
-      if (action.payload.properties.status === 1) {
-        break
-      }
+const updateGrant =
+    (newGrant: Rewards.Grant, grants: Rewards.Grant[]) => {
+      return grants.map((grant: Rewards.Grant) => {
+        if (newGrant.promotionId === grant.promotionId) {
+          return Object.assign(grant, newGrant)
+        }
+        return grant
+      })
+    }
 
-      if (!state.grants) {
-        state.grants = []
-      }
-
-      const promotionId = action.payload.properties.promotionId
-
-      if (!getGrant(promotionId, state.grants)) {
-        state.grants.push({
-          promotionId: promotionId,
-          expiryTime: 0,
-          probi: '',
-          type: action.payload.properties.type
-        })
-      }
-
-      state = {
-        ...state,
-        grants: state.grants
-      }
-
-      break
-    case types.GET_GRANT_CAPTCHA:
-      if (!state.grants) {
-        break
-      }
-
-      const currentGrant = getGrant(action.payload.promotionId, state.grants)
-
-      if (!currentGrant) {
-        break
-      }
-
-      state.currentGrant = currentGrant
-      if (currentGrant.promotionId && currentGrant.type) {
-        chrome.send('brave_rewards.getGrantCaptcha', [currentGrant.promotionId, currentGrant.type])
-      }
-      break
-    case types.ON_GRANT_CAPTCHA: {
-      if (state.currentGrant && state.grants) {
-        const props = action.payload.captcha
-        let hint = props.hint
-        let captcha = `data:image/jpeg;base64,${props.image}`
-
-        const grants = state.grants.map((item: Rewards.Grant) => {
-          let newGrant = item
-          let promotionId = state.currentGrant && state.currentGrant.promotionId
-
-          if (promotionId === item.promotionId) {
-            newGrant = item
-            newGrant.captcha = captcha
-            newGrant.hint = hint
+const grantReducer: Reducer<Rewards.State|undefined> =
+    (state: Rewards.State, action) => {
+      switch (action.type) {
+        case types.GET_GRANTS:
+          chrome.send('brave_rewards.getGrants', ['', ''])
+          break case types.ON_GRANT:
+              state = {...state} if (action.payload.properties.status === 1) {
+            break
           }
 
-          return newGrant
-        })
+          if (!state.grants) {
+            state.grants = []
+          }
 
-        state = {
-          ...state,
-          grants
-        }
-      }
-      break
-    }
-    case types.SOLVE_GRANT_CAPTCHA: {
-      const promotionId = state.currentGrant && state.currentGrant.promotionId
+          const promotionId = action.payload.properties.promotionId
+
+          if (!getGrant(promotionId, state.grants)) {
+            state.grants.push({
+              promotionId: promotionId,
+              expiryTime: 0,
+              probi: '',
+              type: action.payload.properties.type
+            })
+          }
+
+          state = {...state, grants: state.grants}
+
+                  break case types.GET_GRANT_CAPTCHA: if (!state.grants) {
+            break
+          }
+
+          const currentGrant =
+              getGrant(action.payload.promotionId, state.grants)
+
+          if (!currentGrant) {
+            break
+          }
+
+          state.currentGrant = currentGrant
+          if (currentGrant.promotionId && currentGrant.type) {
+            chrome.send(
+                'brave_rewards.getGrantCaptcha',
+                [currentGrant.promotionId, currentGrant.type])
+          }
+          break case types
+              .ON_GRANT_CAPTCHA: {
+                if (state.currentGrant && state.grants) {
+                  const props = action.payload.captcha
+                  let hint = props.hint
+                  let captcha = `data:image/jpeg;base64,${props.image}`
+
+                  const grants = state.grants.map((item: Rewards.Grant) => {
+                    let newGrant = item
+                    let promotionId =
+                        state.currentGrant && state.currentGrant.promotionId
+
+                    if (promotionId === item.promotionId) {
+                      newGrant = item
+                      newGrant.captcha = captcha
+                      newGrant.hint = hint
+                    }
+
+                    return newGrant
+                  })
+
+                  state = {...state, grants }
+                } break
+              } case types.SOLVE_GRANT_CAPTCHA:
+                  {const promotionId =
+                       state.currentGrant && state.currentGrant.promotionId
 
       if (promotionId && action.payload.x && action.payload.y) {
-        chrome.send('brave_rewards.solveGrantCaptcha', [JSON.stringify({
-          x: action.payload.x,
-          y: action.payload.y
-        }), promotionId])
+        chrome.send('brave_rewards.solveGrantCaptcha', [
+          JSON.stringify({x: action.payload.x, y: action.payload.y}),
+          promotionId
+        ])
       }
       break
     }
@@ -119,10 +114,8 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
         const grants = state.grants.map((item: Rewards.Grant) => {
           if (currentGrant.promotionId === item.promotionId) {
             return {
-              promotionId: currentGrant.promotionId,
-              probi: '',
-              expiryTime: 0,
-              type: currentGrant.type
+              promotionId: currentGrant.promotionId, probi: '', expiryTime: 0,
+                  type: currentGrant.type
             }
           }
           return item
@@ -130,11 +123,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
 
         currentGrant = undefined
 
-        state = {
-          ...state,
-          grants,
-          currentGrant
-        }
+        state = {...state, grants, currentGrant }
       }
       break
     }
@@ -154,10 +143,7 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
           currentGrant = undefined
         }
 
-        state = {
-          ...state,
-          currentGrant
-        }
+        state = {...state, currentGrant }
       }
       break
     }
@@ -181,43 +167,31 @@ const grantReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, 
           newGrant.status = null
           ui.emptyWallet = false
 
-          state = {
-            ...state,
-            ui
-          }
+          state = {...state, ui}
 
-          chrome.send('brave_rewards.getWalletProperties', [])
-          break
-        case 6:
-          newGrant.status = 'wrongPosition'
+                  chrome.send('brave_rewards.getWalletProperties', [])
+          break case 6: newGrant.status = 'wrongPosition'
           if (state.currentGrant.promotionId && state.currentGrant.type) {
-            chrome.send('brave_rewards.getGrantCaptcha', [state.currentGrant.promotionId, state.currentGrant.type])
+            chrome.send(
+                'brave_rewards.getGrantCaptcha',
+                [state.currentGrant.promotionId, state.currentGrant.type])
           }
-          break
-        case 13:
-          newGrant.status = 'grantGone'
-          break
-        case 18:
-          newGrant.status = 'grantAlreadyClaimed'
-          break
-        default:
-          newGrant.status = 'generalError'
+          break case 13: newGrant.status = 'grantGone'
+          break case 18: newGrant.status = 'grantAlreadyClaimed'
+          break default: newGrant.status = 'generalError'
           break
       }
 
       if (state.grants) {
         const grants = updateGrant(newGrant, state.grants)
 
-        state = {
-          ...state,
-          grants
-        }
+        state = {...state, grants }
       }
 
       break
     }
-  }
-  return state
-}
+      }
+      return state
+    }
 
 export default grantReducer

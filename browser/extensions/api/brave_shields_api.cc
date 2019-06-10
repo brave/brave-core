@@ -55,8 +55,7 @@ bool RemoveContentType(base::ListValue* args,
 namespace extensions {
 namespace api {
 
-BraveShieldsAllowScriptsOnceFunction::~BraveShieldsAllowScriptsOnceFunction() {
-}
+BraveShieldsAllowScriptsOnceFunction::~BraveShieldsAllowScriptsOnceFunction() {}
 
 ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
   std::unique_ptr<brave_shields::AllowScriptsOnce::Params> params(
@@ -66,24 +65,23 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
   // Get web contents for this tab
   content::WebContents* contents = nullptr;
   if (!ExtensionTabUtil::GetTabById(
-        params->tab_id,
-        Profile::FromBrowserContext(browser_context()),
-        include_incognito_information(),
-        nullptr,
-        nullptr,
-        &contents,
-        nullptr)) {
+          params->tab_id,
+          Profile::FromBrowserContext(browser_context()),
+          include_incognito_information(),
+          nullptr,
+          nullptr,
+          &contents,
+          nullptr)) {
     return RespondNow(Error(tabs_constants::kTabNotFoundError,
                             base::NumberToString(params->tab_id)));
   }
 
-  BraveShieldsWebContentsObserver::FromWebContents(
-      contents)->AllowScriptsOnce(params->origins, contents);
+  BraveShieldsWebContentsObserver::FromWebContents(contents)->AllowScriptsOnce(
+      params->origins, contents);
   return RespondNow(NoArguments());
 }
 
-ExtensionFunction::ResponseAction
-BraveShieldsContentSettingGetFunction::Run() {
+ExtensionFunction::ResponseAction BraveShieldsContentSettingGetFunction::Run() {
   ContentSettingsType content_type;
   EXTENSION_FUNCTION_VALIDATE(RemoveContentType(args_.get(), &content_type));
 
@@ -143,8 +141,7 @@ BraveShieldsContentSettingGetFunction::Run() {
   return RespondNow(OneArgument(std::move(result)));
 }
 
-ExtensionFunction::ResponseAction
-BraveShieldsContentSettingSetFunction::Run() {
+ExtensionFunction::ResponseAction BraveShieldsContentSettingSetFunction::Run() {
   ContentSettingsType content_type;
   EXTENSION_FUNCTION_VALIDATE(RemoveContentType(args_.get(), &content_type));
 
@@ -173,8 +170,7 @@ BraveShieldsContentSettingSetFunction::Run() {
           params->details.primary_pattern, &primary_error);
   if (!primary_pattern.IsValid())
     return RespondNow(Error(primary_error));
-  ContentSettingsPattern secondary_pattern =
-      ContentSettingsPattern::Wildcard();
+  ContentSettingsPattern secondary_pattern = ContentSettingsPattern::Wildcard();
   if (params->details.secondary_pattern.get()) {
     std::string secondary_error;
     secondary_pattern = content_settings_helpers::ParseExtensionPattern(
@@ -185,8 +181,7 @@ BraveShieldsContentSettingSetFunction::Run() {
 
   ExtensionPrefsScope scope = kExtensionPrefsScopeRegular;
   bool incognito = false;
-  if (params->details.scope ==
-      brave_shields::SCOPE_INCOGNITO_SESSION_ONLY) {
+  if (params->details.scope == brave_shields::SCOPE_INCOGNITO_SESSION_ONLY) {
     scope = kExtensionPrefsScopeIncognitoSessionOnly;
     incognito = true;
   }
@@ -244,9 +239,11 @@ BraveShieldsContentSettingSetFunction::Run() {
     map->SetContentSettingDefaultScope(
         primary_url, primary_url, content_type, resource_identifier, setting);
   } else {
-    map->SetContentSettingCustomScope(
-        primary_pattern, secondary_pattern,
-        content_type, resource_identifier, setting);
+    map->SetContentSettingCustomScope(primary_pattern,
+                                      secondary_pattern,
+                                      content_type,
+                                      resource_identifier,
+                                      setting);
   }
 
   // Delete previous settings set by brave extension in extension's
@@ -254,7 +251,8 @@ BraveShieldsContentSettingSetFunction::Run() {
   scoped_refptr<ContentSettingsStore> store =
       ContentSettingsService::Get(browser_context())->content_settings_store();
   store->SetExtensionContentSetting(brave_extension_id,
-                                    primary_pattern, secondary_pattern,
+                                    primary_pattern,
+                                    secondary_pattern,
                                     content_type,
                                     resource_identifier,
                                     CONTENT_SETTING_DEFAULT,

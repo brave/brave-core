@@ -4,34 +4,16 @@
 
 import * as types from '../constants/cosmeticFilterTypes'
 
-interface SiteCosmeticFilterAddedReturn {
-  type: types.SITE_COSMETIC_FILTER_ADDED,
-  origin: string,
-  cssfilter: string
-}
+    interface SiteCosmeticFilterAddedReturn {type: types.SITE_COSMETIC_FILTER_ADDED, origin: string, cssfilter: string}
 
-export interface SiteCosmeticFilterAdded {
-  (origin: string, cssfilter: string): SiteCosmeticFilterAddedReturn
-}
+    export interface SiteCosmeticFilterAdded {(origin: string, cssfilter: string): SiteCosmeticFilterAddedReturn}
 
-interface SiteCosmeticFilterRemovedReturn {
-  type: types.SITE_COSMETIC_FILTER_REMOVED,
-  origin: string
-}
+    interface SiteCosmeticFilterRemovedReturn {type: types.SITE_COSMETIC_FILTER_REMOVED, origin: string}
 
-export interface SiteCosmeticFilterRemoved {
-  (origin: string): SiteCosmeticFilterRemovedReturn
-}
+    export interface SiteCosmeticFilterRemoved {(origin: string): SiteCosmeticFilterRemovedReturn}
 
-interface AllCosmeticFiltersRemovedReturn {
-  type: types.ALL_COSMETIC_FILTERS_REMOVED
-}
+    interface AllCosmeticFiltersRemovedReturn {type: types.ALL_COSMETIC_FILTERS_REMOVED}
 
-export interface AllCosmeticFiltersRemoved {
-  (): AllCosmeticFiltersRemovedReturn
-}
+    export interface AllCosmeticFiltersRemoved {(): AllCosmeticFiltersRemovedReturn}
 
-export type cosmeticFilterActions =
-  SiteCosmeticFilterRemovedReturn |
-  SiteCosmeticFilterAddedReturn |
-  AllCosmeticFiltersRemovedReturn
+    export type cosmeticFilterActions = SiteCosmeticFilterRemovedReturn | SiteCosmeticFilterAddedReturn | AllCosmeticFiltersRemovedReturn

@@ -9,12 +9,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_SWIFT_NAME(PendingContribution)
 @interface BATPendingContribution : NSObject
-@property (nonatomic) NSString * publisherKey;
-@property (nonatomic) double amount;
-@property (nonatomic) unsigned long long addedDate;
-@property (nonatomic) NSString * viewingId;
-@property (nonatomic) BATRewardsCategory category;
+@property(nonatomic) NSString* publisherKey;
+@property(nonatomic) double amount;
+@property(nonatomic) unsigned long long addedDate;
+@property(nonatomic) NSString* viewingId;
+@property(nonatomic) BATRewardsCategory category;
 @end
-
 
 NS_ASSUME_NONNULL_END

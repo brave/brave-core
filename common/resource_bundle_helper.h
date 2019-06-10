@@ -10,7 +10,6 @@ namespace brave {
 void InitializeResourceBundle();
 bool SubprocessNeedsResourceBundle();
 
-}
+}  // namespace brave
 
 #endif  // BRAVE_COMMON_RESOURCE_BUNDLE_HELPER_H_
-

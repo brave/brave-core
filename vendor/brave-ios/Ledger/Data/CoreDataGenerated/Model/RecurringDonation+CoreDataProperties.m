@@ -1,6 +1,6 @@
 //
 //  RecurringDonation+CoreDataProperties.m
-//  
+//
 //
 //  Created by Kyle Hickinson on 2019-05-24.
 //
@@ -11,8 +11,8 @@
 
 @implementation RecurringDonation (CoreDataProperties)
 
-+ (NSFetchRequest<RecurringDonation *> *)fetchRequest {
-	return [NSFetchRequest fetchRequestWithEntityName:@"RecurringDonation"];
++ (NSFetchRequest<RecurringDonation*>*)fetchRequest {
+  return [NSFetchRequest fetchRequestWithEntityName:@"RecurringDonation"];
 }
 
 @dynamic addedDate;

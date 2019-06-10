@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "bat/confirmations/internal/confirmations_client_mock.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
@@ -23,11 +23,11 @@ class ConfirmationsFetchPaymentTokenRequestTest : public ::testing::Test {
 
   std::unique_ptr<FetchPaymentTokenRequest> request_;
 
-  ConfirmationsFetchPaymentTokenRequestTest() :
-      mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
-      confirmations_(std::make_unique<ConfirmationsImpl>(
-          mock_confirmations_client_.get())),
-      request_(std::make_unique<FetchPaymentTokenRequest>()) {
+  ConfirmationsFetchPaymentTokenRequestTest()
+      : mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
+        confirmations_(std::make_unique<ConfirmationsImpl>(
+            mock_confirmations_client_.get())),
+        request_(std::make_unique<FetchPaymentTokenRequest>()) {
     // You can do set-up work for each test here
   }
 
@@ -60,7 +60,9 @@ TEST_F(ConfirmationsFetchPaymentTokenRequestTest, BuildUrl) {
   auto url = request_->BuildUrl(confirmation_id);
 
   // Assert
-  std::string expected_url = "https://ads-serve.bravesoftware.com/v1/confirmation/546fe7b0-5047-4f28-a11c-81f14edcf0f6/paymentToken";  // NOLINT
+  std::string expected_url =
+      "https://ads-serve.bravesoftware.com/v1/confirmation/"
+      "546fe7b0-5047-4f28-a11c-81f14edcf0f6/paymentToken";  // NOLINT
   EXPECT_EQ(expected_url, url);
 }
 

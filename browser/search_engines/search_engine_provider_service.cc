@@ -14,12 +14,10 @@
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 
-SearchEngineProviderService::SearchEngineProviderService(
-    Profile* otr_profile)
+SearchEngineProviderService::SearchEngineProviderService(Profile* otr_profile)
     : otr_profile_(otr_profile),
-      original_template_url_service_(
-          TemplateURLServiceFactory::GetForProfile(
-              otr_profile_->GetOriginalProfile())),
+      original_template_url_service_(TemplateURLServiceFactory::GetForProfile(
+          otr_profile_->GetOriginalProfile())),
       otr_template_url_service_(
           TemplateURLServiceFactory::GetForProfile(otr_profile_)) {
   use_alternative_search_engine_provider_.Init(
@@ -34,8 +32,7 @@ SearchEngineProviderService::SearchEngineProviderService(
   alternative_search_engine_url_.reset(new TemplateURL(*data));
 }
 
-SearchEngineProviderService::~SearchEngineProviderService() {
-}
+SearchEngineProviderService::~SearchEngineProviderService() {}
 
 void SearchEngineProviderService::OnPreferenceChanged(
     const std::string& pref_name) {
@@ -45,8 +42,7 @@ void SearchEngineProviderService::OnPreferenceChanged(
   OnUseAlternativeSearchEngineProviderChanged();
 }
 
-bool
-SearchEngineProviderService::UseAlternativeSearchEngineProvider() const {
+bool SearchEngineProviderService::UseAlternativeSearchEngineProvider() const {
   return use_alternative_search_engine_provider_.GetValue();
 }
 
@@ -58,6 +54,5 @@ void SearchEngineProviderService::ChangeToAlternativeSearchEngineProvider() {
 void SearchEngineProviderService::ChangeToNormalWindowSearchEngineProvider() {
   TemplateURL normal_url(
       original_template_url_service_->GetDefaultSearchProvider()->data());
-  otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
-      &normal_url);
+  otr_template_url_service_->SetUserSelectedDefaultSearchProvider(&normal_url);
 }

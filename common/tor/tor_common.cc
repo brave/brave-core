@@ -16,34 +16,33 @@ namespace tor {
 TorConfig::TorConfig() {}
 
 TorConfig::TorConfig(base::FilePath& binary_path, std::string& proxy_string)
-  : binary_path_(binary_path),
-    proxy_string_(proxy_string) {
+    : binary_path_(binary_path), proxy_string_(proxy_string) {
   if (proxy_string.length()) {
     url::Parsed url;
     url::ParseStandardURL(
-      proxy_string.c_str(),
-      std::min(proxy_string.size(),
-               static_cast<size_t>(std::numeric_limits<int>::max())),
-      &url);
+        proxy_string.c_str(),
+        std::min(proxy_string.size(),
+                 static_cast<size_t>(std::numeric_limits<int>::max())),
+        &url);
     if (url.host.is_valid()) {
       proxy_host_ =
-        std::string(proxy_string.begin() + url.host.begin,
-                    proxy_string.begin() + url.host.begin + url.host.len);
+          std::string(proxy_string.begin() + url.host.begin,
+                      proxy_string.begin() + url.host.begin + url.host.len);
     }
     if (url.port.is_valid()) {
       proxy_port_ =
-        std::string(proxy_string.begin() + url.port.begin,
-                    proxy_string.begin() + url.port.begin + url.port.len);
+          std::string(proxy_string.begin() + url.port.begin,
+                      proxy_string.begin() + url.port.begin + url.port.len);
     }
   }
 
   base::FilePath user_data_dir;
   base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
-  DCHECK (!user_data_dir.empty());
+  DCHECK(!user_data_dir.empty());
   tor_data_path_ = user_data_dir.Append(FILE_PATH_LITERAL("tor"))
-    .Append(FILE_PATH_LITERAL("data"));
+                       .Append(FILE_PATH_LITERAL("data"));
   tor_watch_path_ = user_data_dir.Append(FILE_PATH_LITERAL("tor"))
-    .Append(FILE_PATH_LITERAL("watch"));
+                        .Append(FILE_PATH_LITERAL("watch"));
 }
 
 TorConfig::TorConfig(const TorConfig& that) = default;

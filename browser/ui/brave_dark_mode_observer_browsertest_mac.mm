@@ -39,13 +39,11 @@ IN_PROC_BROWSER_TEST_F(BraveDarkModeObserverTest,
 
     // Initially set to light.
     SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
-    EXPECT_EQ(
-        ui::NativeTheme::GetInstanceForNativeUi(),
-        BraveDarkModeObserver::current_native_theme_for_testing_);
+    EXPECT_EQ(ui::NativeTheme::GetInstanceForNativeUi(),
+              BraveDarkModeObserver::current_native_theme_for_testing_);
 
     SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
-    EXPECT_EQ(
-        ui::NativeThemeDarkAura::instance(),
-        BraveDarkModeObserver::current_native_theme_for_testing_);
+    EXPECT_EQ(ui::NativeThemeDarkAura::instance(),
+              BraveDarkModeObserver::current_native_theme_for_testing_);
   }
 }

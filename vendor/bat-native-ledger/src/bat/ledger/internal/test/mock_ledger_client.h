@@ -6,15 +6,15 @@
 #ifndef BAT_LEDGER_MOCK_LEDGER_CLIENT_
 #define BAT_LEDGER_MOCK_LEDGER_CLIENT_
 
-#include <vector>
 #include <string>
+#include <vector>
 
 #include "bat/ledger/ledger_client.h"
 
 namespace ledger {
 class Ledger;
 class LedgerCallbackHandler;
-}
+}  // namespace ledger
 
 namespace bat_ledger {
 

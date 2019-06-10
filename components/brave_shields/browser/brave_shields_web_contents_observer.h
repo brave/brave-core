@@ -12,8 +12,8 @@
 #include <vector>
 
 #include "base/macros.h"
-#include "base/synchronization/lock.h"
 #include "base/strings/string16.h"
+#include "base/synchronization/lock.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -25,8 +25,9 @@ class PrefRegistrySimple;
 
 namespace brave_shields {
 
-class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
-    public content::WebContentsUserData<BraveShieldsWebContentsObserver> {
+class BraveShieldsWebContentsObserver
+    : public content::WebContentsObserver,
+      public content::WebContentsUserData<BraveShieldsWebContentsObserver> {
  public:
   explicit BraveShieldsWebContentsObserver(content::WebContents*);
   ~BraveShieldsWebContentsObserver() override;
@@ -36,11 +37,11 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
       const std::string& block_type,
       const std::string& subresource,
       content::WebContents* web_contents);
-  static void DispatchBlockedEvent(
-      std::string block_type,
-      std::string subresource,
-      int render_process_id,
-      int render_frame_id, int frame_tree_node_id);
+  static void DispatchBlockedEvent(std::string block_type,
+                                   std::string subresource,
+                                   int render_process_id,
+                                   int render_frame_id,
+                                   int frame_tree_node_id);
   static GURL GetTabURLFromRenderFrameInfo(int render_process_id,
                                            int render_frame_id,
                                            int render_frame_tree_node_id);
@@ -50,7 +51,7 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
   void AddBlockedSubresource(const std::string& subresource);
 
  protected:
-    // A set of identifiers that uniquely identifies a RenderFrame.
+  // A set of identifiers that uniquely identifies a RenderFrame.
   struct RenderFrameIdKey {
     RenderFrameIdKey();
     RenderFrameIdKey(int render_process_id, int frame_routing_id);
@@ -77,7 +78,7 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
 
   // Invoked if an IPC message is coming from a specific RenderFrameHost.
   bool OnMessageReceived(const IPC::Message& message,
-      content::RenderFrameHost* render_frame_host) override;
+                         content::RenderFrameHost* render_frame_host) override;
   void OnJavaScriptBlockedWithDetail(
       content::RenderFrameHost* render_frame_host,
       const base::string16& details);

@@ -12,11 +12,10 @@
 using BraveFeaturesBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveFeaturesBrowserTest, AutoFillServerCommunication) {
-  EXPECT_FALSE(
-    base::FeatureList::IsEnabled(
+  EXPECT_FALSE(base::FeatureList::IsEnabled(
       autofill::features::kAutofillServerCommunication));
   EXPECT_FALSE(
-    base::FeatureList::IsEnabled(features::kAudioServiceOutOfProcess));
+      base::FeatureList::IsEnabled(features::kAudioServiceOutOfProcess));
 }
 
 IN_PROC_BROWSER_TEST_F(BraveFeaturesBrowserTest, UnifiedConsent) {

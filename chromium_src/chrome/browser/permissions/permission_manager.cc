@@ -7,7 +7,8 @@ using content::PermissionType;
 
 namespace {
 
-ContentSettingsType PermissionTypeToContentSetting_ChromiumImpl(PermissionType permission);
+ContentSettingsType PermissionTypeToContentSetting_ChromiumImpl(
+    PermissionType permission);
 
 ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
   if (permission == PermissionType::AUTOPLAY)
@@ -15,7 +16,7 @@ ContentSettingsType PermissionTypeToContentSetting(PermissionType permission) {
   return PermissionTypeToContentSetting_ChromiumImpl(permission);
 }
 
-} // namespace
+}  // namespace
 
 #define GeolocationPermissionContext BraveGeolocationPermissionContext
 #define PermissionManagerFactory BravePermissionManagerFactory

@@ -22,8 +22,8 @@ using namespace content;
 namespace {
 class ObserverLogger : public RenderProcessHostObserver {
  public:
-  explicit ObserverLogger(RenderProcessHost* observed_host) :
-      observed_host_(observed_host) {
+  explicit ObserverLogger(RenderProcessHost* observed_host)
+      : observed_host_(observed_host) {
     observed_host->AddObserver(this);
   }
 
@@ -43,8 +43,7 @@ class BraveNewTabUIBrowserTest : public extensions::ExtensionFunctionalTest {
  public:
   void GoBack(WebContents* web_contents) {
     WindowedNotificationObserver load_stop_observer(
-        NOTIFICATION_LOAD_STOP,
-        NotificationService::AllSources());
+        NOTIFICATION_LOAD_STOP, NotificationService::AllSources());
     web_contents->GetController().GoBack();
     load_stop_observer.Wait();
   }
@@ -90,7 +89,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, NewTabPageLocationOverride) {
   base::FilePath test_data_dir;
   GetTestDataDir(&test_data_dir);
   InstallExtensionSilently(extension_service(),
-      test_data_dir.AppendASCII("new_tab_override.crx"));
+                           test_data_dir.AppendASCII("new_tab_override.crx"));
 
   auto* contents = browser()->tab_strip_model()->GetActiveWebContents();
   GURL new_tab_url(chrome::kChromeUINewTabURL);

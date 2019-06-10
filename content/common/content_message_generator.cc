@@ -4,8 +4,8 @@
 #include "brave/content/common/content_message_generator.h"
 
 // Generate constructors.
-#include "ipc/struct_constructor_macros.h"
 #include "brave/content/common/content_message_generator.h"
+#include "ipc/struct_constructor_macros.h"
 
 // Generate param traits write methods.
 #include "ipc/param_traits_write_macros.h"

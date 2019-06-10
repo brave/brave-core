@@ -8,10 +8,7 @@
 
 namespace ads {
 
-enum Result {
-  SUCCESS,
-  FAILED
-};
+enum Result { SUCCESS, FAILED };
 
 }  // namespace ads
 

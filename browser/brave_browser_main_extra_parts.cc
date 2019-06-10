@@ -12,11 +12,9 @@
 #include "brave/browser/widevine/brave_widevine_bundle_manager.h"
 #endif
 
-BraveBrowserMainExtraParts::BraveBrowserMainExtraParts() {
-}
+BraveBrowserMainExtraParts::BraveBrowserMainExtraParts() {}
 
-BraveBrowserMainExtraParts::~BraveBrowserMainExtraParts() {
-}
+BraveBrowserMainExtraParts::~BraveBrowserMainExtraParts() {}
 
 void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
 #if !defined(OS_ANDROID)

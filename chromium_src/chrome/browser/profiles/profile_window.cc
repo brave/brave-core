@@ -12,9 +12,14 @@ void SwitchToTorProfile(ProfileManager::CreateCallback callback) {
   //                                  g_browser_process->profile_manager(),
   //                                  path);
   g_browser_process->profile_manager()->CreateProfileAsync(
-      path, base::Bind(&profiles::OpenBrowserWindowForProfile,
-                       callback, false, false, false),
-      base::string16(), std::string());
+      path,
+      base::Bind(&profiles::OpenBrowserWindowForProfile,
+                 callback,
+                 false,
+                 false,
+                 false),
+      base::string16(),
+      std::string());
 }
 #endif
 
@@ -25,8 +30,10 @@ void CloseTorProfileWindows() {
 
   if (profile) {
     BrowserList::CloseAllBrowsersWithProfile(
-        profile, base::Bind(&ProfileBrowserCloseSuccess),
-        BrowserList::CloseCallback(), false);
+        profile,
+        base::Bind(&ProfileBrowserCloseSuccess),
+        BrowserList::CloseCallback(),
+        false);
   }
 }
 

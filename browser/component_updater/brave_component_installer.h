@@ -24,10 +24,11 @@ using brave_component_updater::BraveComponent;
 
 namespace brave {
 
-class BraveComponentInstallerPolicy :
-    public component_updater::ComponentInstallerPolicy {
+class BraveComponentInstallerPolicy
+    : public component_updater::ComponentInstallerPolicy {
  public:
-  explicit BraveComponentInstallerPolicy(const std::string& name,
+  explicit BraveComponentInstallerPolicy(
+      const std::string& name,
       const std::string& base64_public_key,
       BraveComponent::ReadyCallback ready_callback);
 
@@ -36,17 +37,16 @@ class BraveComponentInstallerPolicy :
  private:
   // The following methods override ComponentInstallerPolicy
   bool VerifyInstallation(const base::DictionaryValue& manifest,
-      const base::FilePath& install_dir) const override;
+                          const base::FilePath& install_dir) const override;
   bool SupportsGroupPolicyEnabledComponentUpdates() const override;
   bool RequiresNetworkEncryption() const override;
   update_client::CrxInstaller::Result OnCustomInstall(
       const base::DictionaryValue& manifest,
       const base::FilePath& install_dir) override;
   void OnCustomUninstall() override;
-  void ComponentReady(
-      const base::Version& version,
-      const base::FilePath& install_dir,
-      std::unique_ptr<base::DictionaryValue> manifest) override;
+  void ComponentReady(const base::Version& version,
+                      const base::FilePath& install_dir,
+                      std::unique_ptr<base::DictionaryValue> manifest) override;
   base::FilePath GetRelativeInstallDir() const override;
   void GetHash(std::vector<uint8_t>* hash) const override;
   std::string GetName() const override;
@@ -62,10 +62,10 @@ class BraveComponentInstallerPolicy :
 };
 
 void RegisterComponent(component_updater::ComponentUpdateService* cus,
-    const std::string& name,
-    const std::string& base64_public_key,
-    base::OnceClosure registered_callback,
-    BraveComponent::ReadyCallback ready_callback);
+                       const std::string& name,
+                       const std::string& base64_public_key,
+                       base::OnceClosure registered_callback,
+                       BraveComponent::ReadyCallback ready_callback);
 
 }  // namespace brave
 

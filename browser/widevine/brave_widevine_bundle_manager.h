@@ -23,7 +23,7 @@ class GURL;
 namespace base {
 class FilePath;
 class SequencedTaskRunner;
-}
+}  // namespace base
 
 namespace user_prefs {
 class PrefRegistrySyncable;

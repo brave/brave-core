@@ -5,14 +5,23 @@
 import * as types from '../constants/windowTypes'
 import * as actions from '../types/actions/windowActions'
 
-export const windowFocusChanged: actions.WindowFocusChanged = (windowId) => {
-  return { type: types.WINDOW_FOCUS_CHANGED, windowId }
-}
+export const windowFocusChanged: actions.WindowFocusChanged =
+    (windowId) => {
+      return {
+        type: types.WINDOW_FOCUS_CHANGED, windowId
+      }
+    }
 
-export const windowCreated: actions.WindowCreated = (window) => {
-  return { type: types.WINDOW_CREATED, window }
-}
+                  export const windowCreated: actions.WindowCreated =
+        (window) => {
+          return {
+            type: types.WINDOW_CREATED, window
+          }
+        }
 
-export const windowRemoved: actions.WindowRemoved = (windowId) => {
-  return { type: types.WINDOW_REMOVED, windowId }
-}
+                    export const windowRemoved: actions.WindowRemoved =
+            (windowId) => {
+              return {
+                type: types.WINDOW_REMOVED, windowId
+              }
+            }

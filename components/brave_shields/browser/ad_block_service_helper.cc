@@ -15,7 +15,8 @@ std::vector<FilterList>::const_iterator FindAdBlockFilterListByUUID(
     const std::vector<FilterList>& region_lists,
     const std::string& uuid) {
   std::string uuid_uppercase = base::ToUpperASCII(uuid);
-  return std::find_if(region_lists.begin(), region_lists.end(),
+  return std::find_if(region_lists.begin(),
+                      region_lists.end(),
                       [&uuid_uppercase](const FilterList& filter_list) {
                         return filter_list.uuid == uuid_uppercase;
                       });
@@ -32,14 +33,16 @@ std::vector<FilterList>::const_iterator FindAdBlockFilterListByLocale(
     adjusted_locale = locale.substr(0, loc);
   }
   adjusted_locale = base::ToLowerASCII(adjusted_locale);
-  return std::find_if(
-      region_lists.begin(), region_lists.end(),
-      [&adjusted_locale](const FilterList& filter_list) {
-        return std::find_if(filter_list.langs.begin(), filter_list.langs.end(),
-                            [adjusted_locale](const std::string& lang) {
-                              return lang == adjusted_locale;
-                            }) != filter_list.langs.end();
-      });
+  return std::find_if(region_lists.begin(),
+                      region_lists.end(),
+                      [&adjusted_locale](const FilterList& filter_list) {
+                        return std::find_if(
+                                   filter_list.langs.begin(),
+                                   filter_list.langs.end(),
+                                   [adjusted_locale](const std::string& lang) {
+                                     return lang == adjusted_locale;
+                                   }) != filter_list.langs.end();
+                      });
 }
 
 }  // namespace brave_shields

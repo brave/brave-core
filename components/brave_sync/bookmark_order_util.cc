@@ -10,11 +10,11 @@
 namespace brave_sync {
 
 std::vector<int> OrderToIntVect(const std::string& s) {
-  std::vector<std::string> vec_s = SplitString(
-      s,
-      ".",
-      base::WhitespaceHandling::TRIM_WHITESPACE,
-      base::SplitResult::SPLIT_WANT_NONEMPTY);
+  std::vector<std::string> vec_s =
+      SplitString(s,
+                  ".",
+                  base::WhitespaceHandling::TRIM_WHITESPACE,
+                  base::SplitResult::SPLIT_WANT_NONEMPTY);
   std::vector<int> vec_int;
   vec_int.reserve(vec_s.size());
   for (size_t i = 0; i < vec_s.size(); ++i) {
@@ -33,8 +33,8 @@ bool CompareOrder(const std::string& left, const std::string& right) {
   std::vector<int> vec_left = OrderToIntVect(left);
   std::vector<int> vec_right = OrderToIntVect(right);
 
-  return std::lexicographical_compare(vec_left.begin(), vec_left.end(),
-    vec_right.begin(), vec_right.end());
+  return std::lexicographical_compare(
+      vec_left.begin(), vec_left.end(), vec_right.begin(), vec_right.end());
 }
 
-} // namespace brave_sync
+}  // namespace brave_sync

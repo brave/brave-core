@@ -36,14 +36,19 @@ class TestClient : public content::TestContentClient {
     // instance.
     cdms->clear();
 
-    if (empty_cdms_) return;
+    if (empty_cdms_)
+      return;
 
     content::CdmCapability capability;
     capability.encryption_schemes.insert(media::EncryptionMode::kCenc);
-    cdms->push_back(
-        content::CdmInfo(std::string(), base::Token(), base::Version(),
-                         base::FilePath(), std::string(),
-                         capability, kWidevineKeySystem, false));
+    cdms->push_back(content::CdmInfo(std::string(),
+                                     base::Token(),
+                                     base::Version(),
+                                     base::FilePath(),
+                                     std::string(),
+                                     capability,
+                                     kWidevineKeySystem,
+                                     false));
   }
 
   void set_empty_cdms(bool empty) { empty_cdms_ = empty; }
@@ -54,8 +59,7 @@ class TestClient : public content::TestContentClient {
 class BraveWidevineBundleManagerTest : public testing::Test {
  public:
   BraveWidevineBundleManagerTest()
-      : testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {
-  }
+      : testing_profile_manager_(TestingBrowserProcess::GetGlobal()) {}
   ~BraveWidevineBundleManagerTest() override {}
 
  protected:

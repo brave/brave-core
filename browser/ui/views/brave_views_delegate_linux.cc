@@ -34,4 +34,3 @@ gfx::ImageSkia* BraveViewsDelegateLinux::GetDefaultWindowIcon() const {
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
   return rb.GetImageSkiaNamed(GetWindowIconResourceId());
 }
-

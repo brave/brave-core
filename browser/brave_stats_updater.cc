@@ -58,16 +58,18 @@ std::string GetPlatformIdentifier() {
 GURL GetUpdateURL(const GURL& base_update_url,
                   const brave::BraveStatsUpdaterParams& stats_updater_params) {
   GURL update_url(base_update_url);
-  update_url = net::AppendQueryParameter(update_url, "platform",
-                                         GetPlatformIdentifier());
+  update_url = net::AppendQueryParameter(
+      update_url, "platform", GetPlatformIdentifier());
   update_url =
       net::AppendQueryParameter(update_url, "channel", GetChannelName());
-  update_url = net::AppendQueryParameter(update_url, "version",
-                    version_info::GetBraveVersionWithoutChromiumMajorVersion());
-  update_url = net::AppendQueryParameter(update_url, "daily",
-                                         stats_updater_params.GetDailyParam());
-  update_url = net::AppendQueryParameter(update_url, "weekly",
-                                         stats_updater_params.GetWeeklyParam());
+  update_url = net::AppendQueryParameter(
+      update_url,
+      "version",
+      version_info::GetBraveVersionWithoutChromiumMajorVersion());
+  update_url = net::AppendQueryParameter(
+      update_url, "daily", stats_updater_params.GetDailyParam());
+  update_url = net::AppendQueryParameter(
+      update_url, "weekly", stats_updater_params.GetWeeklyParam());
   update_url = net::AppendQueryParameter(
       update_url, "monthly", stats_updater_params.GetMonthlyParam());
   update_url = net::AppendQueryParameter(
@@ -79,7 +81,7 @@ GURL GetUpdateURL(const GURL& base_update_url,
   return update_url;
 }
 
-}
+}  // namespace
 
 namespace brave {
 
@@ -87,11 +89,9 @@ GURL BraveStatsUpdater::g_base_update_url_(
     "https://laptop-updates.brave.com/1/usage/brave-core");
 
 BraveStatsUpdater::BraveStatsUpdater(PrefService* pref_service)
-  : pref_service_(pref_service) {
-}
+    : pref_service_(pref_service) {}
 
-BraveStatsUpdater::~BraveStatsUpdater() {
-}
+BraveStatsUpdater::~BraveStatsUpdater() {}
 
 void BraveStatsUpdater::Start() {
   // Startup timer, only initiated once we've checked for a promo
@@ -118,7 +118,8 @@ void BraveStatsUpdater::Start() {
   server_ping_periodic_timer_ = std::make_unique<base::RepeatingTimer>();
   server_ping_periodic_timer_->Start(
       FROM_HERE,
-      base::TimeDelta::FromSeconds(kUpdateServerPeriodicPingFrequency), this,
+      base::TimeDelta::FromSeconds(kUpdateServerPeriodicPingFrequency),
+      this,
       &BraveStatsUpdater::OnServerPingTimerFired);
   DCHECK(server_ping_periodic_timer_->IsRunning());
 }
@@ -178,8 +179,10 @@ void BraveStatsUpdater::OnReferralCheckedForPromoCodeFileChanged() {
 
 void BraveStatsUpdater::StartServerPingStartupTimer() {
   server_ping_startup_timer_->Start(
-      FROM_HERE, base::TimeDelta::FromSeconds(kUpdateServerStartupPingDelay),
-      this, &BraveStatsUpdater::OnServerPingTimerFired);
+      FROM_HERE,
+      base::TimeDelta::FromSeconds(kUpdateServerStartupPingDelay),
+      this,
+      &BraveStatsUpdater::OnServerPingTimerFired);
   DCHECK(server_ping_startup_timer_->IsRunning());
 }
 
@@ -205,8 +208,10 @@ void BraveStatsUpdater::SendServerPing() {
             "Not implemented."
         })");
   auto resource_request = std::make_unique<network::ResourceRequest>();
-  auto stats_updater_params = std::make_unique<brave::BraveStatsUpdaterParams>(pref_service_);
-  resource_request->url = GetUpdateURL(g_base_update_url_, *stats_updater_params);
+  auto stats_updater_params =
+      std::make_unique<brave::BraveStatsUpdaterParams>(pref_service_);
+  resource_request->url =
+      GetUpdateURL(g_base_update_url_, *stats_updater_params);
   resource_request->load_flags =
       net::LOAD_DO_NOT_SEND_COOKIES | net::LOAD_DO_NOT_SAVE_COOKIES |
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE |
@@ -219,7 +224,8 @@ void BraveStatsUpdater::SendServerPing() {
   simple_url_loader_->DownloadHeadersOnly(
       loader_factory,
       base::BindOnce(&BraveStatsUpdater::OnSimpleLoaderComplete,
-                     base::Unretained(this), std::move(stats_updater_params)));
+                     base::Unretained(this),
+                     std::move(stats_updater_params)));
 }
 
 // static
@@ -229,7 +235,8 @@ void BraveStatsUpdater::SetBaseUpdateURLForTest(const GURL& base_update_url) {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory(PrefService* pref_service) {
+std::unique_ptr<BraveStatsUpdater> BraveStatsUpdaterFactory(
+    PrefService* pref_service) {
   return std::make_unique<BraveStatsUpdater>(pref_service);
 }
 

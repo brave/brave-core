@@ -10,10 +10,10 @@
 #include <memory>
 #include <string>
 
-#include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
-#include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/extensions/api/extension_action/extension_action_api.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/toolbar/toolbar_action_view_controller.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_action_view.h"
 #include "components/prefs/pref_member.h"
 #include "extensions/common/extension.h"
 #include "ui/views/view.h"
@@ -25,15 +25,15 @@ namespace extensions {
 class ExtensionActionManager;
 class ExtensionRegistry;
 class ExtensionRegistryObserver;
-}
+}  // namespace extensions
 
 // This View contains all the built-in BraveActions such as Shields and Payments
 // TODO(petemill): consider splitting to separate model, like
 // ToolbarActionsModel and ToolbarActionsBar
 class BraveActionsContainer : public views::View,
-                             public extensions::ExtensionActionAPI::Observer,
-                             public extensions::ExtensionRegistryObserver,
-                             public ToolbarActionView::Delegate {
+                              public extensions::ExtensionActionAPI::Observer,
+                              public extensions::ExtensionRegistryObserver,
+                              public ToolbarActionView::Delegate {
  public:
   BraveActionsContainer(Browser* browser, Profile* profile);
   ~BraveActionsContainer() override;

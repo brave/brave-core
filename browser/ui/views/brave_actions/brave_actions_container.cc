@@ -56,8 +56,9 @@ BraveActionsContainer::BraveActionsContainer(Browser* browser, Profile* profile)
       weak_ptr_factory_(this) {
   // Handle when the extension system is ready
   extensions::ExtensionSystem::Get(profile)->ready().Post(
-      FROM_HERE, base::Bind(&BraveActionsContainer::OnExtensionSystemReady,
-                            weak_ptr_factory_.GetWeakPtr()));
+      FROM_HERE,
+      base::Bind(&BraveActionsContainer::OnExtensionSystemReady,
+                 weak_ptr_factory_.GetWeakPtr()));
 }
 
 BraveActionsContainer::~BraveActionsContainer() {
@@ -66,10 +67,10 @@ BraveActionsContainer::~BraveActionsContainer() {
 
 void BraveActionsContainer::Init() {
   // automatic layout
-  auto vertical_container_layout = std::make_unique<views::BoxLayout>(
-                                                views::BoxLayout::kHorizontal);
+  auto vertical_container_layout =
+      std::make_unique<views::BoxLayout>(views::BoxLayout::kHorizontal);
   vertical_container_layout->set_main_axis_alignment(
-                                  views::BoxLayout::MAIN_AXIS_ALIGNMENT_CENTER);
+      views::BoxLayout::MAIN_AXIS_ALIGNMENT_CENTER);
   vertical_container_layout->set_cross_axis_alignment(
       views::BoxLayout::CROSS_AXIS_ALIGNMENT_CENTER);
   SetLayoutManager(std::move(vertical_container_layout));
@@ -80,9 +81,9 @@ void BraveActionsContainer::Init() {
   brave_button_separator_->SetColor(SkColorSetRGB(0xb2, 0xb5, 0xb7));
   constexpr int kSeparatorRightMargin = 2;
   constexpr int kSeparatorWidth = 1;
-  brave_button_separator_->SetPreferredSize(gfx::Size(
-                                    kSeparatorWidth + kSeparatorRightMargin,
-                                    GetLayoutConstant(LOCATION_BAR_ICON_SIZE)));
+  brave_button_separator_->SetPreferredSize(
+      gfx::Size(kSeparatorWidth + kSeparatorRightMargin,
+                GetLayoutConstant(LOCATION_BAR_ICON_SIZE)));
   // separator right margin
   brave_button_separator_->SetBorder(
       views::CreateEmptyBorder(0, 0, 0, kSeparatorRightMargin));
@@ -100,7 +101,8 @@ void BraveActionsContainer::Init() {
       base::Bind(&BraveActionsContainer::OnBraveRewardsPreferencesChanged,
                  base::Unretained(this)));
   hide_brave_rewards_button_.Init(
-      kHideBraveRewardsButton, browser_->profile()->GetPrefs(),
+      kHideBraveRewardsButton,
+      browser_->profile()->GetPrefs(),
       base::Bind(&BraveActionsContainer::OnBraveRewardsPreferencesChanged,
                  base::Unretained(this)));
 }
@@ -138,9 +140,11 @@ void BraveActionsContainer::AddAction(const extensions::Extension* extension,
     // If we do require notifications when popups are open or closed,
     // then we should inherit and pass |this| through.
     actions_[id].view_controller_ = std::make_unique<BraveActionViewController>(
-        extension, browser_,
-        extension_action_manager_->GetExtensionAction(*extension), nullptr,
-        /*in_overflow_mode*/false);
+        extension,
+        browser_,
+        extension_action_manager_->GetExtensionAction(*extension),
+        nullptr,
+        /*in_overflow_mode*/ false);
     // The button view
     actions_[id].view_ = std::make_unique<BraveActionView>(
         actions_[id].view_controller_.get(), this);
@@ -172,8 +176,8 @@ void BraveActionsContainer::AddAction(const std::string& id, int pos) {
 
 void BraveActionsContainer::RemoveAction(const std::string& id) {
   DCHECK(IsContainerAction(id));
-  VLOG(1) << "RemoveAction (" << id << "), was loaded: "
-          << static_cast<bool>(actions_[id].view_);
+  VLOG(1) << "RemoveAction (" << id
+          << "), was loaded: " << static_cast<bool>(actions_[id].view_);
   // This will reset references and automatically remove the child from the
   // parent (us)
   actions_[id].Reset();
@@ -191,7 +195,7 @@ void BraveActionsContainer::ShowAction(const std::string& id, bool show) {
 // Checks if action for the given |id| has been added
 bool BraveActionsContainer::IsActionShown(const std::string& id) const {
   DCHECK(IsContainerAction(id));
-  return(actions_.at(id).view_ != nullptr);
+  return (actions_.at(id).view_ != nullptr);
 }
 
 void BraveActionsContainer::UpdateActionState(const std::string& id) {
@@ -228,8 +232,7 @@ bool BraveActionsContainer::ShownInsideMenu() const {
   return false;
 }
 
-void BraveActionsContainer::OnToolbarActionViewDragDone() {
-}
+void BraveActionsContainer::OnToolbarActionViewDragDone() {}
 
 views::MenuButton* BraveActionsContainer::GetOverflowReferenceView() {
   // Our action views should always be visible,
@@ -247,19 +250,19 @@ gfx::Size BraveActionsContainer::GetToolbarActionSize() {
 }
 
 void BraveActionsContainer::WriteDragDataForView(View* sender,
-                                                   const gfx::Point& press_pt,
-                                                   OSExchangeData* data) {
+                                                 const gfx::Point& press_pt,
+                                                 OSExchangeData* data) {
   // Not supporting drag for action buttons inside this container
 }
 
 int BraveActionsContainer::GetDragOperationsForView(View* sender,
-                                                      const gfx::Point& p) {
+                                                    const gfx::Point& p) {
   return ui::DragDropTypes::DRAG_NONE;
 }
 
 bool BraveActionsContainer::CanStartDragForView(View* sender,
-                                                  const gfx::Point& press_pt,
-                                                  const gfx::Point& p) {
+                                                const gfx::Point& press_pt,
+                                                const gfx::Point& p) {
   return false;
 }
 // end ToolbarActionView::Delegate members
@@ -270,7 +273,7 @@ void BraveActionsContainer::OnExtensionSystemReady() {
   extension_action_observer_.Add(extension_action_api_);
   // Check if brave extension already loaded
   const extensions::Extension* extension =
-          extension_registry_->enabled_extensions().GetByID(brave_extension_id);
+      extension_registry_->enabled_extensions().GetByID(brave_extension_id);
   if (extension)
     AddAction(extension);
   // Check if brave rewards extension already loaded

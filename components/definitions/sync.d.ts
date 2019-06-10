@@ -1,6 +1,6 @@
 declare namespace Sync {
   export interface ApplicationState {
-    syncData: State | undefined
+    syncData: State|undefined
   }
 
   export interface SettingsFromBackEnd {
@@ -23,12 +23,8 @@ declare namespace Sync {
     lastActive: number
   }
 
-export type SetupErrorType =
-  'ERR_SYNC_MISSING_WORDS' |
-  'ERR_SYNC_WRONG_WORDS' |
-  'ERR_SYNC_INIT_FAILED' |
-  'ERR_SYNC_REQUIRES_CORRECT_TIME' |
-  undefined
+  export type SetupErrorType = 'ERR_SYNC_MISSING_WORDS'|'ERR_SYNC_WRONG_WORDS'|
+      'ERR_SYNC_INIT_FAILED'|'ERR_SYNC_REQUIRES_CORRECT_TIME'|undefined
 
   export interface State {
     thisDeviceName: string

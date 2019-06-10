@@ -22,31 +22,33 @@
 
 using namespace brave_actions;
 
-base::Optional<int> BraveActionIconWithBadgeImageSource::GetCustomGraphicSize() {
+base::Optional<int>
+BraveActionIconWithBadgeImageSource::GetCustomGraphicSize() {
   return kBraveActionGraphicSize;
 }
 
-base::Optional<int> BraveActionIconWithBadgeImageSource::GetCustomGraphicXOffset() {
+base::Optional<int>
+BraveActionIconWithBadgeImageSource::GetCustomGraphicXOffset() {
   return std::floor(
-    (size().width() - kBraveActionRightMargin - kBraveActionGraphicSize) / 2.0
-  );
+      (size().width() - kBraveActionRightMargin - kBraveActionGraphicSize) /
+      2.0);
 }
 
-base::Optional<int> BraveActionIconWithBadgeImageSource::GetCustomGraphicYOffset() {
-  return std::floor(
-    (size().height() - kBraveActionGraphicSize) / 2.0
-  );
+base::Optional<int>
+BraveActionIconWithBadgeImageSource::GetCustomGraphicYOffset() {
+  return std::floor((size().height() - kBraveActionGraphicSize) / 2.0);
 }
 
 void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
-    if (!badge_ || badge_->text.empty())
+  if (!badge_ || badge_->text.empty())
     return;
 
   SkColor text_color = SkColorGetA(badge_->text_color) == SK_AlphaTRANSPARENT
                            ? SK_ColorWHITE
                            : badge_->text_color;
 
-  SkColor background_color = SkColorSetA(badge_->background_color, SK_AlphaOPAQUE);
+  SkColor background_color =
+      SkColorSetA(badge_->background_color, SK_AlphaOPAQUE);
 
   // Always use same height to avoid jumping up and down with different
   // characters which will differ slightly,
@@ -67,9 +69,12 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
   // Calculate best font size to fit maximum Width and constant Height
   int text_height = 0;
   int text_width = 0;
-  gfx::Canvas::SizeStringInt(utf16_text, base_font, &text_width,
+  gfx::Canvas::SizeStringInt(utf16_text,
+                             base_font,
+                             &text_width,
                              &text_height,
-                             0, gfx::Canvas::NO_ELLIPSIS);
+                             0,
+                             gfx::Canvas::NO_ELLIPSIS);
   // Leaving extremely verbose log lines commented in case we want to change
   // any sizes in this algorithm, these logs are helpful.
   // LOG(ERROR) << "BraveAction badge text size initial, "
@@ -81,7 +86,7 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
     // Too wide
     // Reduce the padding
     h_padding -= 1;
-    text_max_width += 2; // 2 * padding delta
+    text_max_width += 2;  // 2 * padding delta
     // If still cannot squeeze it in, reduce font size
     if (text_width > text_max_width) {
       // Reduce font size until we find the first one that fits within the width
@@ -89,11 +94,15 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
       //  |max_decrement_attempts| accordingly
       int max_decrement_attempts = base_font.GetFontSize() - 1;
       for (int i = 0; i < max_decrement_attempts; ++i) {
-        base_font =
-            base_font.Derive(-1, 0, gfx::Font::Weight::NORMAL);
-        gfx::Canvas::SizeStringInt(utf16_text, base_font, &text_width, &text_height, 0,
-                                  gfx::Canvas::NO_ELLIPSIS);
-        // LOG(ERROR) << "reducing to font size - w:" << text_width << " h:" << text_height;
+        base_font = base_font.Derive(-1, 0, gfx::Font::Weight::NORMAL);
+        gfx::Canvas::SizeStringInt(utf16_text,
+                                   base_font,
+                                   &text_width,
+                                   &text_height,
+                                   0,
+                                   gfx::Canvas::NO_ELLIPSIS);
+        // LOG(ERROR) << "reducing to font size - w:" << text_width << " h:" <<
+        // text_height;
         if (text_width <= text_max_width)
           break;
       }
@@ -108,8 +117,8 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
       int h = 0;
       gfx::FontList bigger_font =
           base_font.Derive(1, 0, gfx::Font::Weight::NORMAL);
-      gfx::Canvas::SizeStringInt(utf16_text, bigger_font, &w, &h, 0,
-                                gfx::Canvas::NO_ELLIPSIS);
+      gfx::Canvas::SizeStringInt(
+          utf16_text, bigger_font, &w, &h, 0, gfx::Canvas::NO_ELLIPSIS);
       if (h > kTextHeightTarget || w > text_max_width)
         break;
       base_font = bigger_font;
@@ -136,8 +145,10 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
   // Calculate the badge background rect. It is anchored to a specific position
   const int badge_offset_x = icon_area.width() - kBadgeMaxWidth;
   const int badge_offset_y = kVMarginTop;
-  gfx::Rect rect(icon_area.x() + badge_offset_x, icon_area.y() + badge_offset_y,
-                 badge_width, kBadgeHeight);
+  gfx::Rect rect(icon_area.x() + badge_offset_x,
+                 icon_area.y() + badge_offset_y,
+                 badge_width,
+                 kBadgeHeight);
   cc::PaintFlags rect_flags;
   rect_flags.setStyle(cc::PaintFlags::kFill_Style);
   rect_flags.setAntiAlias(true);
@@ -153,8 +164,8 @@ void BraveActionIconWithBadgeImageSource::PaintBadge(gfx::Canvas* canvas) {
   // l, t, r, b
   rect.Inset(0, kVerticalPadding, 0, kVerticalPadding);
   // Draw string with ellipsis if it does not fit
-  canvas->DrawStringRectWithFlags(utf16_text, base_font, text_color, rect,
-                                  gfx::Canvas::TEXT_ALIGN_CENTER);
+  canvas->DrawStringRectWithFlags(
+      utf16_text, base_font, text_color, rect, gfx::Canvas::TEXT_ALIGN_CENTER);
 }
 
 gfx::Rect BraveActionIconWithBadgeImageSource::GetIconAreaRect() const {

@@ -137,7 +137,8 @@ void Http200OkJob::GetResponseInfo(net::HttpResponseInfo* info) {
   std::string raw_headers =
       "HTTP/1.1 200 OK\r\n"
       "Access-Control-Allow-Origin: *\r\n"
-      "Content-Type: " + mime_type_ + "\r\n";
+      "Content-Type: " +
+      mime_type_ + "\r\n";
   new_info.headers =
       new net::HttpResponseHeaders(net::HttpUtil::AssembleRawHeaders(
           raw_headers.c_str(), raw_headers.size()));

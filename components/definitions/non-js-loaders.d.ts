@@ -1,5 +1,4 @@
-declare module '*.svg' {
-  const url: any
+declare module '*.svg' {const url: any
   export default url
 }
 declare module '*.png' {
@@ -19,6 +18,6 @@ declare module '*.woff2' {
   export default url
 }
 declare module '*.css' {
-  const url: any
-  export default url
-}
+    const url: any
+    export default url
+  }

@@ -3,7 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #define GetChannelString GetChannelString_ChromiumImpl
-#define GetProductNameAndVersionForUserAgent GetProductNameAndVersionForUserAgent_Unused
+#define GetProductNameAndVersionForUserAgent \
+  GetProductNameAndVersionForUserAgent_Unused
 #include "../../../../components/version_info/version_info.cc"
 #undef GetChannelString
 #undef GetProductNameAndVersionForUserAgent

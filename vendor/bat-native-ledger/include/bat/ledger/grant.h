@@ -6,8 +6,8 @@
 #ifndef BAT_LEDGER_GRANT_HANDLER_
 #define BAT_LEDGER_GRANT_HANDLER_
 
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 
 #include "bat/ledger/export.h"

@@ -59,9 +59,8 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
   void GetRecurringTips(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
   void OnReconcileStamp(uint64_t reconcile_stamp);
-  void OnGetRecurringTips(
-      std::unique_ptr<brave_rewards::ContentSiteList> list);
-  void TweetTip(const base::ListValue *args);
+  void OnGetRecurringTips(std::unique_ptr<brave_rewards::ContentSiteList> list);
+  void TweetTip(const base::ListValue* args);
 
   void OnPublisherBanner(
       std::unique_ptr<brave_rewards::PublisherBanner> banner);
@@ -69,11 +68,10 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
   void OnTwitterShareURL(const std::string& url);
 
   // RewardsServiceObserver implementation
-  void OnWalletProperties(
-      brave_rewards::RewardsService* rewards_service,
-      int error_code,
-      std::unique_ptr<brave_rewards::WalletProperties> wallet_properties)
-      override;
+  void OnWalletProperties(brave_rewards::RewardsService* rewards_service,
+                          int error_code,
+                          std::unique_ptr<brave_rewards::WalletProperties>
+                              wallet_properties) override;
 
   void OnRecurringTipSaved(brave_rewards::RewardsService* rewards_service,
                            bool success) override;
@@ -113,8 +111,8 @@ void RewardsTipDOMHandler::RegisterMessages() {
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_tip.onTip",
-       base::BindRepeating(&RewardsTipDOMHandler::OnTip,
-                           base::Unretained(this)));
+      base::BindRepeating(&RewardsTipDOMHandler::OnTip,
+                          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards_tip.getRecurringTips",
       base::BindRepeating(&RewardsTipDOMHandler::GetRecurringTips,
@@ -129,8 +127,7 @@ void RewardsTipDOMHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
-void RewardsTipDOMHandler::GetPublisherTipData(
-    const base::ListValue* args) {
+void RewardsTipDOMHandler::GetPublisherTipData(const base::ListValue* args) {
   CHECK_EQ(1U, args->GetSize());
   const std::string publisher_key = args->GetList()[0].GetString();
   rewards_service_->GetPublisherBanner(
@@ -150,7 +147,6 @@ void RewardsTipDOMHandler::OnWalletProperties(
     brave_rewards::RewardsService* rewards_service,
     int error_code,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
-
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
@@ -194,8 +190,8 @@ void RewardsTipDOMHandler::OnWalletProperties(
 
   result.SetDictionary("wallet", std::move(walletInfo));
 
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.walletProperties", result);
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_tip.walletProperties",
+                                         result);
 }
 
 void RewardsTipDOMHandler::OnTip(const base::ListValue* args) {
@@ -217,12 +213,10 @@ void RewardsTipDOMHandler::OnTip(const base::ListValue* args) {
   rewards_service_->OnTip(publisher_key, amount, recurring);
 }
 
-void RewardsTipDOMHandler::GetRecurringTips(
-    const base::ListValue *args) {
+void RewardsTipDOMHandler::GetRecurringTips(const base::ListValue* args) {
   if (rewards_service_) {
     rewards_service_->GetRecurringTipsUI(base::BindOnce(
-          &RewardsTipDOMHandler::OnGetRecurringTips,
-          weak_factory_.GetWeakPtr()));
+        &RewardsTipDOMHandler::OnGetRecurringTips, weak_factory_.GetWeakPtr()));
   }
 }
 
@@ -243,14 +237,14 @@ void RewardsTipDOMHandler::OnGetRecurringTips(
     }
   }
 
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.recurringTips", *publishers);
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_tip.recurringTips",
+                                         *publishers);
 }
 
 void RewardsTipDOMHandler::OnPublisherBanner(
     std::unique_ptr<brave_rewards::PublisherBanner> banner) {
   if (!web_ui()->CanCallJavascript()) {
-     return;
+    return;
   }
 
   base::DictionaryValue result;
@@ -277,8 +271,8 @@ void RewardsTipDOMHandler::OnPublisherBanner(
     result.SetDictionary("social", std::move(social));
   }
 
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.publisherBanner", result);
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_tip.publisherBanner",
+                                         result);
 }
 
 }  // namespace
@@ -290,45 +284,44 @@ BraveTipUI::BraveTipUI(content::WebUI* web_ui, const std::string& name)
   if (profile->IsOffTheRecord()) {
     return;
   }
-  content::WebUIDataSource* data_source = CreateBasicUIHTMLSource(profile,
-                                              name,
-                                              kBraveTipGenerated,
-                                              kBraveTipGeneratedSize,
-                                              IDR_BRAVE_TIP_HTML);
+  content::WebUIDataSource* data_source =
+      CreateBasicUIHTMLSource(profile,
+                              name,
+                              kBraveTipGenerated,
+                              kBraveTipGeneratedSize,
+                              IDR_BRAVE_TIP_HTML);
   content::WebUIDataSource::Add(profile, data_source);
 
   auto handler_owner = std::make_unique<RewardsTipDOMHandler>();
-  RewardsTipDOMHandler * handler = handler_owner.get();
+  RewardsTipDOMHandler* handler = handler_owner.get();
   web_ui->AddMessageHandler(std::move(handler_owner));
   handler->Init();
 }
 
-BraveTipUI::~BraveTipUI() {
-}
+BraveTipUI::~BraveTipUI() {}
 
-void RewardsTipDOMHandler::GetReconcileStamp(const base::ListValue *args) {
+void RewardsTipDOMHandler::GetReconcileStamp(const base::ListValue* args) {
   if (rewards_service_) {
     rewards_service_->GetReconcileStamp(base::Bind(
-          &RewardsTipDOMHandler::OnReconcileStamp,
-          weak_factory_.GetWeakPtr()));
+        &RewardsTipDOMHandler::OnReconcileStamp, weak_factory_.GetWeakPtr()));
   }
 }
 
 void RewardsTipDOMHandler::OnReconcileStamp(uint64_t reconcile_stamp) {
   if (!web_ui()->CanCallJavascript()) {
-     return;
+    return;
   }
 
   const std::string stamp = std::to_string(reconcile_stamp);
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_tip.reconcileStamp",
-      base::Value(stamp));
+                                         base::Value(stamp));
 }
 
 void RewardsTipDOMHandler::OnRecurringTipRemoved(
     brave_rewards::RewardsService* rewards_service,
     bool success) {
   if (!web_ui()->CanCallJavascript()) {
-     return;
+    return;
   }
 
   web_ui()->CallJavascriptFunctionUnsafe(
@@ -339,14 +332,14 @@ void RewardsTipDOMHandler::OnRecurringTipSaved(
     brave_rewards::RewardsService* rewards_service,
     bool success) {
   if (!web_ui()->CanCallJavascript()) {
-     return;
+    return;
   }
 
-  web_ui()->CallJavascriptFunctionUnsafe(
-      "brave_rewards_tip.recurringTipSaved", base::Value(success));
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_tip.recurringTipSaved",
+                                         base::Value(success));
 }
 
-void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
+void RewardsTipDOMHandler::TweetTip(const base::ListValue* args) {
   DCHECK_EQ(args->GetSize(), 2U);
 
   if (!rewards_service_)
@@ -371,7 +364,8 @@ void RewardsTipDOMHandler::TweetTip(const base::ListValue *args) {
   share_url_args["name"] = name.erase(0, 1);
   share_url_args["tweet_id"] = tweet_id;
   rewards_service_->GetShareURL(
-      "twitter", share_url_args,
+      "twitter",
+      share_url_args,
       base::BindOnce(&RewardsTipDOMHandler::OnTwitterShareURL,
                      base::Unretained(this)));
 }
@@ -385,7 +379,10 @@ void RewardsTipDOMHandler::OnTwitterShareURL(const std::string& url) {
   chrome::ScopedTabbedBrowserDisplayer browser_displayer(
       Profile::FromWebUI(web_ui()));
   content::OpenURLParams open_url_params(
-      gurl, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
+      gurl,
+      content::Referrer(),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
+      false);
   browser_displayer.browser()->OpenURL(open_url_params);
 }

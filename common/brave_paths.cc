@@ -55,10 +55,8 @@ void OverridePath() {
     widevine_cdm_path =
         widevine_cdm_path.AppendASCII(kWidevineCdmBaseDirectory)
             .AppendASCII(base::GetNativeLibraryName(kWidevineCdmLibraryName));
-    base::PathService::OverrideAndCreateIfNeeded(chrome::FILE_WIDEVINE_CDM,
-                                                 widevine_cdm_path,
-                                                 true,
-                                                 false);
+    base::PathService::OverrideAndCreateIfNeeded(
+        chrome::FILE_WIDEVINE_CDM, widevine_cdm_path, true, false);
   }
 #endif
 }

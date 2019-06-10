@@ -7,13 +7,10 @@
 
 namespace ads {
 
-GeoTargetInfo::GeoTargetInfo() :
-    code(""),
-    name("") {}
+GeoTargetInfo::GeoTargetInfo() : code(""), name("") {}
 
-GeoTargetInfo::GeoTargetInfo(const GeoTargetInfo& info) :
-    code(info.code),
-    name(info.name) {}
+GeoTargetInfo::GeoTargetInfo(const GeoTargetInfo& info)
+    : code(info.code), name(info.name) {}
 
 GeoTargetInfo::~GeoTargetInfo() {}
 

@@ -17,8 +17,7 @@ class FetchPaymentTokenRequest {
   FetchPaymentTokenRequest();
   ~FetchPaymentTokenRequest();
 
-  std::string BuildUrl(
-      const std::string& confirmation_id) const;
+  std::string BuildUrl(const std::string& confirmation_id) const;
 
   URLRequestMethod GetMethod() const;
 };

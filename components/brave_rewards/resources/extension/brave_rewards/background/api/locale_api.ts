@@ -6,123 +6,126 @@
  * Gets the locale message specified in messages.json
  * @param {string} message - The locale string
  */
-export const getMessage = (message: string, substitutions?: string[]): string => {
-  if (chrome.i18n) {
-    let translated = chrome.i18n.getMessage(message, substitutions)
+export const getMessage = (message: string, substitutions?: string[]):
+    string => {
+      if (chrome.i18n) {
+        let translated = chrome.i18n.getMessage(message, substitutions)
 
-    if (translated) {
-      return translated
-    } else {
-      return `i18n: ${message}`
+        if (translated) {
+          return translated
+        }
+        else {
+          return `i18n: ${message}`
+        }
+      }
+
+      return `i18n missing: ${message}`
     }
-  }
-
-  return `i18n missing: ${message}`
-}
 
 export const getUIMessages = (): Record<string, string> => {
-  const strings = [
-    'and',
-    'backupNow',
-    'backupWalletNotification',
-    'backupWalletTitle',
-    'bat',
-    'braveAdsLaunchTitle',
-    'braveAdsLaunchMsg',
-    'braveAdsTitle',
-    'braveContributeTitle',
-    'braveRewards',
-    'braveRewardsCreatingText',
-    'braveRewardsSubTitle',
-    'captchaDrag',
-    'captchaLuckyDay',
-    'captchaOnTheWay',
-    'captchaProveHuman',
-    'captchaTarget',
-    'captchaMissedTarget',
-    'claim',
-    'contributionTips',
-    'disabledPanelTextTwo',
-    'donateMonthly',
-    'donateNow',
-    'earningsAds',
-    'enableRewards',
-    'enableTips',
-    'expiresOn',
-    'for',
-    'grantExpire',
-    'grantAlreadyClaimedText',
-    'grantGeneralErrorButton',
-    'grantGeneralErrorText',
-    'grantGeneralErrorTitle',
-    'grantGoneButton',
-    'grantGoneText',
-    'grantGoneTitle',
-    'grants',
-    'includeInAuto',
-    'insufficientFunds',
-    'insufficientFundsNotification',
-    'monthApr',
-    'monthAug',
-    'monthDec',
-    'monthFeb',
-    'monthJan',
-    'monthJul',
-    'monthJun',
-    'monthMar',
-    'monthMay',
-    'monthNov',
-    'monthOct',
-    'monthSep',
-    'newTokenGrant',
-    'off',
-    'ok',
-    'on',
-    'oneTimeDonation',
-    'privacyPolicy',
-    'recurringDonations',
-    'reservedAmountText',
-    'reservedMoreLink',
-    'rewardsContribute',
-    'rewardsContributeAttentionScore',
-    'rewardsSummary',
-    'serviceText',
-    'serviceTextPanelWelcome',
-    'termsOfService',
-    'tipsProcessedNotification',
-    'tokenGrant',
-    'tokenGrantClaimed',
-    'unVerifiedCheck',
-    'turnOnAds',
-    'unVerifiedPublisher',
-    'unVerifiedText',
-    'unVerifiedTextMore',
-    'verifiedPublisher',
-    'adsEarnings',
-    'welcomeButtonTextOne',
-    'welcomeButtonTextTwo',
-    'welcomeDescOne',
-    'welcomeDescTwo',
-    'walletFailedButton',
-    'walletFailedTitle',
-    'welcomeBack',
-    'welcomeFooterTextOne',
-    'welcomeFooterTextTwo',
-    'welcomeHeaderOne',
-    'welcomeHeaderTwo',
-    'yourWallet',
-    'noActivity',
-    'disabledPanelOff',
-    'disabledPanelSettings',
-    'disabledPanelText',
-    'disabledPanelTitle'
-  ]
+  const strings =
+      [
+        'and',
+        'backupNow',
+        'backupWalletNotification',
+        'backupWalletTitle',
+        'bat',
+        'braveAdsLaunchTitle',
+        'braveAdsLaunchMsg',
+        'braveAdsTitle',
+        'braveContributeTitle',
+        'braveRewards',
+        'braveRewardsCreatingText',
+        'braveRewardsSubTitle',
+        'captchaDrag',
+        'captchaLuckyDay',
+        'captchaOnTheWay',
+        'captchaProveHuman',
+        'captchaTarget',
+        'captchaMissedTarget',
+        'claim',
+        'contributionTips',
+        'disabledPanelTextTwo',
+        'donateMonthly',
+        'donateNow',
+        'earningsAds',
+        'enableRewards',
+        'enableTips',
+        'expiresOn',
+        'for',
+        'grantExpire',
+        'grantAlreadyClaimedText',
+        'grantGeneralErrorButton',
+        'grantGeneralErrorText',
+        'grantGeneralErrorTitle',
+        'grantGoneButton',
+        'grantGoneText',
+        'grantGoneTitle',
+        'grants',
+        'includeInAuto',
+        'insufficientFunds',
+        'insufficientFundsNotification',
+        'monthApr',
+        'monthAug',
+        'monthDec',
+        'monthFeb',
+        'monthJan',
+        'monthJul',
+        'monthJun',
+        'monthMar',
+        'monthMay',
+        'monthNov',
+        'monthOct',
+        'monthSep',
+        'newTokenGrant',
+        'off',
+        'ok',
+        'on',
+        'oneTimeDonation',
+        'privacyPolicy',
+        'recurringDonations',
+        'reservedAmountText',
+        'reservedMoreLink',
+        'rewardsContribute',
+        'rewardsContributeAttentionScore',
+        'rewardsSummary',
+        'serviceText',
+        'serviceTextPanelWelcome',
+        'termsOfService',
+        'tipsProcessedNotification',
+        'tokenGrant',
+        'tokenGrantClaimed',
+        'unVerifiedCheck',
+        'turnOnAds',
+        'unVerifiedPublisher',
+        'unVerifiedText',
+        'unVerifiedTextMore',
+        'verifiedPublisher',
+        'adsEarnings',
+        'welcomeButtonTextOne',
+        'welcomeButtonTextTwo',
+        'welcomeDescOne',
+        'welcomeDescTwo',
+        'walletFailedButton',
+        'walletFailedTitle',
+        'welcomeBack',
+        'welcomeFooterTextOne',
+        'welcomeFooterTextTwo',
+        'welcomeHeaderOne',
+        'welcomeHeaderTwo',
+        'yourWallet',
+        'noActivity',
+        'disabledPanelOff',
+        'disabledPanelSettings',
+        'disabledPanelText',
+        'disabledPanelTitle'
+      ]
 
-  let translations = {}
+      let translations = {}
 
-  strings.forEach((key: string) => {
-    translations[key] = getMessage(key)
-  })
+                         strings.forEach(
+                             (key: string) => {translations[key] =
+                                                   getMessage(key)})
 
   return translations
 }

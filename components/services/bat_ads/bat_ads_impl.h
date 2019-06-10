@@ -27,8 +27,7 @@ class BatAdsImpl : public mojom::BatAds {
 
   // Overridden from mojom::BatAds:
   void Initialize(InitializeCallback callback) override;
-  void ClassifyPage(const std::string& url,
-                    const std::string& page) override;
+  void ClassifyPage(const std::string& url, const std::string& page) override;
   void TabClosed(int32_t tab_id) override;
   void OnTimer(uint32_t timer_id) override;
   void OnUnIdle() override;

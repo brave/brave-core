@@ -6,19 +6,19 @@
 #ifndef BAT_CONFIRMATIONS_INTERNAL_REDEEM_TOKEN_H_
 #define BAT_CONFIRMATIONS_INTERNAL_REDEEM_TOKEN_H_
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
-#include "bat/confirmations/confirmations_client.h"
-#include "bat/confirmations/internal/token_info.h"
-#include "bat/confirmations/internal/confirmation_info.h"
 #include "bat/confirmations/confirmation_type.h"
+#include "bat/confirmations/confirmations_client.h"
+#include "bat/confirmations/internal/confirmation_info.h"
+#include "bat/confirmations/internal/token_info.h"
 
 #include "wrapper.hpp"  // NOLINT
 
-using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::BlindedToken;
+using challenge_bypass_ristretto::Token;
 
 namespace confirmations {
 
@@ -27,54 +27,45 @@ class UnblindedTokens;
 
 class RedeemToken {
  public:
-  RedeemToken(
-      ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client,
-      UnblindedTokens* unblinded_tokens,
-      UnblindedTokens* unblinded_payment_tokens);
+  RedeemToken(ConfirmationsImpl* confirmations,
+              ConfirmationsClient* confirmations_client,
+              UnblindedTokens* unblinded_tokens,
+              UnblindedTokens* unblinded_payment_tokens);
 
   ~RedeemToken();
 
-  void Redeem(
-      const std::string& creative_instance_id,
-      const ConfirmationType confirmation_type);
-  void Redeem(
-    const ConfirmationInfo& confirmation_info);
+  void Redeem(const std::string& creative_instance_id,
+              const ConfirmationType confirmation_type);
+  void Redeem(const ConfirmationInfo& confirmation_info);
 
  private:
-  void CreateConfirmation(
-      const ConfirmationInfo& confirmation_info);
-  void CreateConfirmation(
-      const std::string& creative_instance_id,
-      const TokenInfo& token_info,
-      const ConfirmationType confirmation_type);
-  void OnCreateConfirmation(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      const ConfirmationInfo& confirmation_info);
+  void CreateConfirmation(const ConfirmationInfo& confirmation_info);
+  void CreateConfirmation(const std::string& creative_instance_id,
+                          const TokenInfo& token_info,
+                          const ConfirmationType confirmation_type);
+  void OnCreateConfirmation(const std::string& url,
+                            const int response_status_code,
+                            const std::string& response,
+                            const std::map<std::string, std::string>& headers,
+                            const ConfirmationInfo& confirmation_info);
 
-  void FetchPaymentToken(
-      const ConfirmationInfo& confirmation_info);
-  void OnFetchPaymentToken(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      const ConfirmationInfo& confirmation_info);
+  void FetchPaymentToken(const ConfirmationInfo& confirmation_info);
+  void OnFetchPaymentToken(const std::string& url,
+                           const int response_status_code,
+                           const std::string& response,
+                           const std::map<std::string, std::string>& headers,
+                           const ConfirmationInfo& confirmation_info);
 
-  void OnRedeem(
-      const Result result,
-      const ConfirmationInfo& confirmation_info,
-      const bool should_retry = true);
+  void OnRedeem(const Result result,
+                const ConfirmationInfo& confirmation_info,
+                const bool should_retry = true);
 
   void ScheduleNextRetryForFailedConfirmations() const;
   uint64_t CalculateTimerForNextRetryForFailedConfirmations() const;
 
-  ConfirmationsImpl* confirmations_;  // NOT OWNED
+  ConfirmationsImpl* confirmations_;           // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
-  UnblindedTokens* unblinded_tokens_;  // NOT OWNED
+  UnblindedTokens* unblinded_tokens_;          // NOT OWNED
   UnblindedTokens* unblinded_payment_tokens_;  // NOT OWNED
 };
 

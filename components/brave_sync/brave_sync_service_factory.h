@@ -41,6 +41,6 @@ class BraveSyncServiceFactory : public BrowserContextKeyedServiceFactory {
   DISALLOW_COPY_AND_ASSIGN(BraveSyncServiceFactory);
 };
 
-} // namespace brave_sync
+}  // namespace brave_sync
 
-#endif // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_FACTORY_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_FACTORY_H_

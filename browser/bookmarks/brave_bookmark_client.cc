@@ -25,7 +25,7 @@ BraveBookmarkClient::BraveBookmarkClient(
 bookmarks::LoadExtraCallback BraveBookmarkClient::GetLoadExtraNodesCallback() {
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
   return base::BindOnce(&brave_sync::LoadExtraNodes,
-      ChromeBookmarkClient::GetLoadExtraNodesCallback());
+                        ChromeBookmarkClient::GetLoadExtraNodesCallback());
 #endif
   return ChromeBookmarkClient::GetLoadExtraNodesCallback();
 }

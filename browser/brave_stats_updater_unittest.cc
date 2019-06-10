@@ -25,10 +25,9 @@ const int kLastMonth = 5;
 const int kThisMonth = 6;
 const int kNextMonth = 7;
 
-class BraveStatsUpdaterTest: public testing::Test {
+class BraveStatsUpdaterTest : public testing::Test {
  public:
-  BraveStatsUpdaterTest() {
-  }
+  BraveStatsUpdaterTest() {}
   ~BraveStatsUpdaterTest() override {}
 
   void SetUp() override {
@@ -46,7 +45,6 @@ class BraveStatsUpdaterTest: public testing::Test {
  private:
   TestingPrefServiceSimple testing_local_state_;
 };
-
 
 TEST_F(BraveStatsUpdaterTest, IsDailyUpdateNeededLastCheckedYesterday) {
   GetLocalState()->SetString(kLastCheckYMD, kYesterday);

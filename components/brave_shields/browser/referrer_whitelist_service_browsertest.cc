@@ -43,8 +43,8 @@ class ReferrerWhitelistServiceTest : public ExtensionBrowserTest {
   void PreRunTestOnMainThread() override {
     ExtensionBrowserTest::PreRunTestOnMainThread();
     WaitForReferrerWhitelistServiceThread();
-    ASSERT_TRUE(g_brave_browser_process->local_data_files_service()->
-                IsInitialized());
+    ASSERT_TRUE(
+        g_brave_browser_process->local_data_files_service()->IsInitialized());
   }
 
   void InitService() {
@@ -62,14 +62,13 @@ class ReferrerWhitelistServiceTest : public ExtensionBrowserTest {
   bool InstallReferrerWhitelistExtension() {
     base::FilePath test_data_dir;
     GetTestDataDir(&test_data_dir);
-    const extensions::Extension* mock_extension =
-        InstallExtension(test_data_dir.AppendASCII("referrer-whitelist-data"),
-                         1);
+    const extensions::Extension* mock_extension = InstallExtension(
+        test_data_dir.AppendASCII("referrer-whitelist-data"), 1);
     if (!mock_extension)
       return false;
 
     g_brave_browser_process->referrer_whitelist_service()->OnComponentReady(
-      mock_extension->id(), mock_extension->path(), "");
+        mock_extension->id(), mock_extension->path(), "");
     WaitForReferrerWhitelistServiceThread();
 
     return true;
@@ -86,64 +85,66 @@ class ReferrerWhitelistServiceTest : public ExtensionBrowserTest {
     base::RunLoop().RunUntilIdle();
   }
 
-  bool IsWhitelistedReferrer(
-    const GURL& firstPartyOrigin, const GURL& subresourceUrl) {
-    return g_brave_browser_process->referrer_whitelist_service()->
-      IsWhitelisted(firstPartyOrigin, subresourceUrl);
+  bool IsWhitelistedReferrer(const GURL& firstPartyOrigin,
+                             const GURL& subresourceUrl) {
+    return g_brave_browser_process->referrer_whitelist_service()->IsWhitelisted(
+        firstPartyOrigin, subresourceUrl);
   }
 
   int GetWhitelistSize() {
-    return g_brave_browser_process->referrer_whitelist_service()->
-      referrer_whitelist_.size();
+    return g_brave_browser_process->referrer_whitelist_service()
+        ->referrer_whitelist_.size();
   }
 
   void ClearWhitelist() {
-    g_brave_browser_process->referrer_whitelist_service()->
-      referrer_whitelist_.clear();
+    g_brave_browser_process->referrer_whitelist_service()
+        ->referrer_whitelist_.clear();
   }
 };
 
 IN_PROC_BROWSER_TEST_F(ReferrerWhitelistServiceTest, IsWhitelistedReferrer) {
   ASSERT_TRUE(InstallReferrerWhitelistExtension());
   // *.fbcdn.net not allowed on some other URL
-  EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://test.com"),
-        GURL("https://video-zyz1-9.xy.fbcdn.net")));
+  EXPECT_FALSE(IsWhitelistedReferrer(
+      GURL("https://test.com"), GURL("https://video-zyz1-9.xy.fbcdn.net")));
   // *.fbcdn.net allowed on Facebook
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.facebook.com"),
-        GURL("https://video-zyz1-9.xy.fbcdn.net")));
+                                    GURL("https://video-zyz1-9.xy.fbcdn.net")));
   // Facebook doesn't allow just anything
   EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://www.facebook.com"),
-        GURL("https://test.com")));
+                                     GURL("https://test.com")));
   // Allowed for reddit.com
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.reddit.com/"),
-        GURL("https://www.redditmedia.com/97")));
+                                    GURL("https://www.redditmedia.com/97")));
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.reddit.com/"),
-        GURL("https://cdn.embedly.com/157")));
+                                    GURL("https://cdn.embedly.com/157")));
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.reddit.com/"),
-        GURL("https://imgur.com/179")));
+                                    GURL("https://imgur.com/179")));
   // Not allowed for reddit.com
   EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://www.reddit.com"),
-        GURL("https://test.com")));
+                                     GURL("https://test.com")));
   // Not allowed imgur on another domain
   EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://www.test.com"),
-        GURL("https://imgur.com/173")));
+                                     GURL("https://imgur.com/173")));
   // Fonts allowed anywhere
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.test.com"),
-      GURL("https://use.typekit.net/193")));
+                                    GURL("https://use.typekit.net/193")));
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://www.test.com"),
-      GURL("https://cloud.typography.com/199")));
+                                    GURL("https://cloud.typography.com/199")));
   // geetest allowed everywhere
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://binance.com"),
-      GURL("https://api.geetest.com/ajax.php?")));
+                                    GURL("https://api.geetest.com/ajax.php?")));
   EXPECT_TRUE(IsWhitelistedReferrer(GURL("http://binance.com"),
-      GURL("https://api.geetest.com/")));
+                                    GURL("https://api.geetest.com/")));
   // not allowed with a different scheme
   EXPECT_FALSE(IsWhitelistedReferrer(GURL("http://binance.com"),
-      GURL("http://api.geetest.com/")));
+                                     GURL("http://api.geetest.com/")));
   // Google Accounts only allows a specific hostname
-  EXPECT_TRUE(IsWhitelistedReferrer(GURL("https://accounts.google.com"),
+  EXPECT_TRUE(IsWhitelistedReferrer(
+      GURL("https://accounts.google.com"),
       GURL("https://content.googleapis.com/cryptauth/v1/authzen/awaittx")));
-  EXPECT_FALSE(IsWhitelistedReferrer(GURL("https://accounts.google.com"),
+  EXPECT_FALSE(IsWhitelistedReferrer(
+      GURL("https://accounts.google.com"),
       GURL("https://ajax.googleapis.com/ajax/libs/d3js/5.7.0/d3.min.js")));
 }
 

@@ -10,17 +10,19 @@ namespace {
 
 const base::TimeDelta kMaxClientSideExpiration = base::TimeDelta::FromDays(7);
 const base::TimeDelta kMaxServerSideExpiration =
-    base::TimeDelta::FromDays(30*6);  // 6 months
+    base::TimeDelta::FromDays(30 * 6);  // 6 months
 
 base::Time BraveCanonExpiration(const net::ParsedCookie& pc,
                                 const base::Time& current,
                                 const base::Time& server_time,
                                 const bool is_from_http) {
-  const base::Time max_expiration = current +
+  const base::Time max_expiration =
+      current +
       (is_from_http ? kMaxServerSideExpiration : kMaxClientSideExpiration);
 
-  return std::min(net::CanonicalCookie::CanonExpiration(pc, current, server_time),
-                  max_expiration);
+  return std::min(
+      net::CanonicalCookie::CanonExpiration(pc, current, server_time),
+      max_expiration);
 }
 
 }  // namespace

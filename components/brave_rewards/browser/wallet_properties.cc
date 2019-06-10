@@ -5,21 +5,18 @@
 
 namespace brave_rewards {
 
-  WalletProperties::WalletProperties() :
-      balance(0.0),
-      parameters_days(0) {
-  }
+WalletProperties::WalletProperties() : balance(0.0), parameters_days(0) {}
 
-  WalletProperties::~WalletProperties() { }
+WalletProperties::~WalletProperties() {}
 
-  WalletProperties::WalletProperties(const WalletProperties &properties) {
-    probi = properties.probi;
-    balance = properties.balance;
-    rates = properties.rates;
-    parameters_choices = properties.parameters_choices;
-    parameters_range = properties.parameters_range;
-    parameters_days = properties.parameters_days;
-    grants = properties.grants;
-  }
+WalletProperties::WalletProperties(const WalletProperties& properties) {
+  probi = properties.probi;
+  balance = properties.balance;
+  rates = properties.rates;
+  parameters_choices = properties.parameters_choices;
+  parameters_range = properties.parameters_range;
+  parameters_days = properties.parameters_days;
+  grants = properties.grants;
+}
 
 }  // namespace brave_rewards

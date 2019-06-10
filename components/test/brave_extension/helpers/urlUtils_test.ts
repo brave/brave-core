@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { isHttpOrHttps, hasPortNumber } from '../../../brave_extension/extension/brave_extension/helpers/urlUtils'
+import {hasPortNumber, isHttpOrHttps} from '../../../brave_extension/extension/brave_extension/helpers/urlUtils'
 
 describe('urlUtils test', () => {
   describe('isHttpOrHttps', () => {
@@ -46,7 +46,7 @@ describe('urlUtils test', () => {
     })
     it('port number if # is not existed in front of :XXXX', () => {
       const url = 'http://brianbondy.com:8080'
-      expect(hasPortNumber(url)).toBe(true)
+    expect(hasPortNumber(url)).toBe(true)
       expect(isHttpOrHttps(url)).toBe(true)
     })
   })

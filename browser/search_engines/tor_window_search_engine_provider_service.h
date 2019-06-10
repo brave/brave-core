@@ -12,9 +12,8 @@
 // The purpose of this service for tor is making user changed search engine
 // provider persist across the sessions.
 // Also, BraveProfileManager::SetNonPersonalProfilePrefs() overrides for it.
-class TorWindowSearchEngineProviderService
-    : public SearchEngineProviderService,
-      public TemplateURLServiceObserver {
+class TorWindowSearchEngineProviderService : public SearchEngineProviderService,
+                                             public TemplateURLServiceObserver {
  public:
   explicit TorWindowSearchEngineProviderService(Profile* otr_profile);
   ~TorWindowSearchEngineProviderService() override;

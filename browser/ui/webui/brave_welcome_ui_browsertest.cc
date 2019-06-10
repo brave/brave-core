@@ -22,12 +22,12 @@
 namespace {
 Browser* OpenNewBrowser(Profile* profile) {
   base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
-  StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
-                                    chrome::startup::IS_FIRST_RUN);
+  StartupBrowserCreatorImpl creator(
+      base::FilePath(), dummy, chrome::startup::IS_FIRST_RUN);
   creator.Launch(profile, std::vector<GURL>(), false);
   return chrome::FindBrowserWithProfile(profile);
 }
-}
+}  // namespace
 
 using BraveWelcomeUIBrowserTest = InProcessBrowserTest;
 
@@ -41,9 +41,12 @@ IN_PROC_BROWSER_TEST_F(BraveWelcomeUIBrowserTest, PRE_StartupURLTest) {
   content::TestNavigationObserver observer(web_contents, 1);
   observer.Wait();
   EXPECT_STREQ("chrome://welcome/",
-            tab_strip->GetWebContentsAt(0)
-                ->GetController().GetLastCommittedEntry()
-                    ->GetVirtualURL().possibly_invalid_spec().c_str());
+               tab_strip->GetWebContentsAt(0)
+                   ->GetController()
+                   .GetLastCommittedEntry()
+                   ->GetVirtualURL()
+                   .possibly_invalid_spec()
+                   .c_str());
 }
 
 // Check wheter startup url is not welcome ui at second run.

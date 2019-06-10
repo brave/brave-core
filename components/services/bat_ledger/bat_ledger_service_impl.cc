@@ -17,25 +17,22 @@ bool testing() {
   return ledger::is_testing;
 }
 
-}
+}  // namespace
 
 namespace bat_ledger {
 
 BatLedgerServiceImpl::BatLedgerServiceImpl(
     std::unique_ptr<service_manager::ServiceContextRef> service_ref)
-  : service_ref_(std::move(service_ref)),
-    initialized_(false) {
-}
+    : service_ref_(std::move(service_ref)), initialized_(false) {}
 
-BatLedgerServiceImpl::~BatLedgerServiceImpl() {
-}
+BatLedgerServiceImpl::~BatLedgerServiceImpl() {}
 
 void BatLedgerServiceImpl::Create(
     mojom::BatLedgerClientAssociatedPtrInfo client_info,
     mojom::BatLedgerAssociatedRequest bat_ledger) {
   mojo::MakeStrongAssociatedBinding(
       std::make_unique<BatLedgerImpl>(std::move(client_info)),
-                                      std::move(bat_ledger));
+      std::move(bat_ledger));
   initialized_ = true;
 }
 

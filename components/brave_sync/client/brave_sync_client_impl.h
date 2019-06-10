@@ -5,11 +5,11 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_IMPL_H
 #define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_IMPL_H
 
-#include "brave/components/brave_sync/client/brave_sync_client.h"
+#include "base/gtest_prod_util.h"
 #include "base/macros.h"
 #include "base/scoped_observer.h"
+#include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "extensions/browser/extension_registry_observer.h"
-#include "base/gtest_prod_util.h"
 
 class BraveSyncServiceTest;
 class Profile;
@@ -21,7 +21,7 @@ class BraveSyncEventRouter;
 namespace brave_sync {
 
 namespace prefs {
-  class Prefs;
+class Prefs;
 }
 
 using extensions::Extension;
@@ -40,17 +40,19 @@ class BraveSyncClientImpl : public BraveSyncClient,
   SyncMessageHandler* sync_message_handler() override;
 
   // Browser to BraveSync messages
-  void SendGotInitData(const Uint8Array& seed, const Uint8Array& device_id,
-    const client_data::Config& config, const std::string& sync_words) override;
-  void SendFetchSyncRecords(
-    const std::vector<std::string> &category_names, const base::Time &startAt,
-    const int max_records) override;
-  void SendFetchSyncDevices() override ;
+  void SendGotInitData(const Uint8Array& seed,
+                       const Uint8Array& device_id,
+                       const client_data::Config& config,
+                       const std::string& sync_words) override;
+  void SendFetchSyncRecords(const std::vector<std::string>& category_names,
+                            const base::Time& startAt,
+                            const int max_records) override;
+  void SendFetchSyncDevices() override;
   void SendResolveSyncRecords(
       const std::string& category_name,
       std::unique_ptr<SyncRecordAndExistingList> records) override;
   void SendSyncRecords(const std::string& category_name,
-    const RecordsList &records) override;
+                       const RecordsList& records) override;
   void SendDeleteSyncUser() override;
   void SendDeleteSyncCategory(const std::string& category_name) override;
   void SendGetBookmarksBaseOrder(const std::string& device_id,
@@ -81,18 +83,18 @@ class BraveSyncClientImpl : public BraveSyncClient,
   void ClearOrderMap() override;
 
   SyncMessageHandler* handler_;  // not owned
-  Profile* profile_;  // not owned
+  Profile* profile_;             // not owned
   std::unique_ptr<brave_sync::prefs::Prefs> sync_prefs_;
   bool extension_loaded_;
 
   std::unique_ptr<extensions::BraveSyncEventRouter> brave_sync_event_router_;
 
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
-    extension_registry_observer_;
+      extension_registry_observer_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveSyncClientImpl);
 };
 
-} // namespace brave_sync
+}  // namespace brave_sync
 
-#endif // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_IMPL_H
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_CLIENT_IMPL_H

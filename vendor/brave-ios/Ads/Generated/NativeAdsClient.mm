@@ -8,7 +8,8 @@
 #import "NativeAdsClientBridge.h"
 
 // Constructor & Destructor
-NativeAdsClient::NativeAdsClient(id<NativeAdsClientBridge> bridge) : bridge_(bridge) { }
+NativeAdsClient::NativeAdsClient(id<NativeAdsClientBridge> bridge)
+    : bridge_(bridge) {}
 NativeAdsClient::~NativeAdsClient() {
   bridge_ = nil;
 }
@@ -16,13 +17,14 @@ NativeAdsClient::~NativeAdsClient() {
 void NativeAdsClient::ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) {
   [bridge_ confirmAd:std::move(info)];
 }
-void NativeAdsClient::EventLog(const std::string & json) {
+void NativeAdsClient::EventLog(const std::string& json) {
   [bridge_ eventLog:json];
 }
 const std::string NativeAdsClient::GenerateUUID() const {
   return [bridge_ generateUUID];
 }
-void NativeAdsClient::GetAds(const std::string & category, ads::OnGetAdsCallback callback) {
+void NativeAdsClient::GetAds(const std::string& category,
+                             ads::OnGetAdsCallback callback) {
   [bridge_ getAds:category callback:callback];
 }
 const std::string NativeAdsClient::GetAdsLocale() const {
@@ -34,7 +36,7 @@ uint64_t NativeAdsClient::GetAdsPerDay() const {
 uint64_t NativeAdsClient::GetAdsPerHour() const {
   return [bridge_ getAdsPerHour];
 }
-void NativeAdsClient::GetClientInfo(ads::ClientInfo * info) const {
+void NativeAdsClient::GetClientInfo(ads::ClientInfo* info) const {
   [bridge_ getClientInfo:info];
 }
 const std::vector<std::string> NativeAdsClient::GetLocales() const {
@@ -55,31 +57,43 @@ bool NativeAdsClient::IsNotificationsAvailable() const {
 void NativeAdsClient::KillTimer(uint32_t timer_id) {
   [bridge_ killTimer:timer_id];
 }
-void NativeAdsClient::Load(const std::string & name, ads::OnLoadCallback callback) {
+void NativeAdsClient::Load(const std::string& name,
+                           ads::OnLoadCallback callback) {
   [bridge_ load:name callback:callback];
 }
-const std::string NativeAdsClient::LoadJsonSchema(const std::string & name) {
+const std::string NativeAdsClient::LoadJsonSchema(const std::string& name) {
   return [bridge_ loadJsonSchema:name];
 }
-void NativeAdsClient::LoadSampleBundle(ads::OnLoadSampleBundleCallback callback) {
+void NativeAdsClient::LoadSampleBundle(
+    ads::OnLoadSampleBundleCallback callback) {
   [bridge_ loadSampleBundle:callback];
 }
-void NativeAdsClient::LoadUserModelForLocale(const std::string & locale, ads::OnLoadCallback callback) const {
+void NativeAdsClient::LoadUserModelForLocale(
+    const std::string& locale,
+    ads::OnLoadCallback callback) const {
   [bridge_ loadUserModelForLocale:locale callback:callback];
 }
-std::unique_ptr<ads::LogStream> NativeAdsClient::Log(const char * file, const int line, const ads::LogLevel log_level) const {
+std::unique_ptr<ads::LogStream> NativeAdsClient::Log(
+    const char* file,
+    const int line,
+    const ads::LogLevel log_level) const {
   return [bridge_ log:file line:line logLevel:log_level];
 }
-void NativeAdsClient::Reset(const std::string & name, ads::OnResetCallback callback) {
+void NativeAdsClient::Reset(const std::string& name,
+                            ads::OnResetCallback callback) {
   [bridge_ reset:name callback:callback];
 }
-void NativeAdsClient::Save(const std::string & name, const std::string & value, ads::OnSaveCallback callback) {
+void NativeAdsClient::Save(const std::string& name,
+                           const std::string& value,
+                           ads::OnSaveCallback callback) {
   [bridge_ save:name value:value callback:callback];
 }
-void NativeAdsClient::SaveBundleState(std::unique_ptr<ads::BundleState> state, ads::OnSaveCallback callback) {
+void NativeAdsClient::SaveBundleState(std::unique_ptr<ads::BundleState> state,
+                                      ads::OnSaveCallback callback) {
   [bridge_ saveBundleState:std::move(state) callback:callback];
 }
-void NativeAdsClient::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
+void NativeAdsClient::SetCatalogIssuers(
+    std::unique_ptr<ads::IssuersInfo> info) {
   [bridge_ setCatalogIssuers:std::move(info)];
 }
 void NativeAdsClient::SetIdleThreshold(const int threshold) {
@@ -88,9 +102,20 @@ void NativeAdsClient::SetIdleThreshold(const int threshold) {
 uint32_t NativeAdsClient::SetTimer(const uint64_t time_offset) {
   return [bridge_ setTimer:time_offset];
 }
-void NativeAdsClient::ShowNotification(std::unique_ptr<ads::NotificationInfo> info) {
+void NativeAdsClient::ShowNotification(
+    std::unique_ptr<ads::NotificationInfo> info) {
   [bridge_ showNotification:std::move(info)];
 }
-void NativeAdsClient::URLRequest(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & content_type, const ads::URLRequestMethod method, ads::URLRequestCallback callback) {
-  [bridge_ URLRequest:url headers:headers content:content contentType:content_type method:method callback:callback];
+void NativeAdsClient::URLRequest(const std::string& url,
+                                 const std::vector<std::string>& headers,
+                                 const std::string& content,
+                                 const std::string& content_type,
+                                 const ads::URLRequestMethod method,
+                                 ads::URLRequestCallback callback) {
+  [bridge_ URLRequest:url
+              headers:headers
+              content:content
+          contentType:content_type
+               method:method
+             callback:callback];
 }

@@ -18,9 +18,7 @@
 namespace extensions {
 
 BraveThemeEventRouter::BraveThemeEventRouter(Profile* profile)
-    : profile_(profile),
-      using_dark_(IsDarkModeEnabled()),
-      observer_(this) {
+    : profile_(profile), using_dark_(IsDarkModeEnabled()), observer_(this) {
   ResetThemeObserver();
 }
 
@@ -41,9 +39,8 @@ void BraveThemeEventRouter::OnNativeThemeUpdated(
 
 void BraveThemeEventRouter::Notify() {
   EventRouter* event_router = EventRouter::Get(profile_);
-  const std::string theme_type =
-      BraveThemeService::GetStringFromBraveThemeType(
-          BraveThemeService::GetActiveBraveThemeType(profile_));
+  const std::string theme_type = BraveThemeService::GetStringFromBraveThemeType(
+      BraveThemeService::GetActiveBraveThemeType(profile_));
 
   auto event = std::make_unique<extensions::Event>(
       extensions::events::BRAVE_ON_BRAVE_THEME_TYPE_CHANGED,
@@ -56,13 +53,13 @@ void BraveThemeEventRouter::Notify() {
 
 bool BraveThemeEventRouter::IsDarkModeEnabled() const {
   return BraveThemeService::GetActiveBraveThemeType(profile_) ==
-      BRAVE_THEME_TYPE_DARK;
+         BRAVE_THEME_TYPE_DARK;
 }
 
 void BraveThemeEventRouter::ResetThemeObserver() {
-  auto* current_native_theme =
-      IsDarkModeEnabled() ? ui::NativeThemeDarkAura::instance()
-                          : ui::NativeTheme::GetInstanceForNativeUi();
+  auto* current_native_theme = IsDarkModeEnabled()
+                                   ? ui::NativeThemeDarkAura::instance()
+                                   : ui::NativeTheme::GetInstanceForNativeUi();
   if (!observer_.IsObserving(current_native_theme)) {
     observer_.RemoveAll();
     observer_.Add(current_native_theme);

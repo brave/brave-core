@@ -10,8 +10,8 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/pref_names.h"
-#include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/net/url_request_mock_util.h"
@@ -79,7 +79,8 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
   void SetUpOnMainThread() override {
     ExtensionBrowserTest::SetUpOnMainThread();
     base::PostTaskWithTraits(
-        FROM_HERE, {BrowserThread::IO},
+        FROM_HERE,
+        {BrowserThread::IO},
         base::BindOnce(&chrome_browser_net::SetUrlRequestMocksEnabled, true));
     host_resolver()->AddRule("*", "127.0.0.1");
   }
@@ -123,7 +124,8 @@ class TrackingProtectionServiceTest : public ExtensionBrowserTest {
 
     g_brave_browser_process->tracking_protection_service()->OnComponentReady(
         tracking_protection_extension->id(),
-        tracking_protection_extension->path(), "");
+        tracking_protection_extension->path(),
+        "");
     WaitForTrackingProtectionServiceThread();
 
     return true;
@@ -160,7 +162,8 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest,
 
   bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, base::StringPrintf(kTrackingScript, test_url.spec().c_str()),
+      contents,
+      base::StringPrintf(kTrackingScript, test_url.spec().c_str()),
       &img_loaded));
   EXPECT_TRUE(img_loaded);
 
@@ -187,7 +190,8 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest,
 
   bool img_loaded;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, base::StringPrintf(kTrackingScript, test_url.spec().c_str()),
+      contents,
+      base::StringPrintf(kTrackingScript, test_url.spec().c_str()),
       &img_loaded));
   EXPECT_FALSE(img_loaded);
 
@@ -218,7 +222,8 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingBlocked) {
 
   bool cookie_blocked;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, "window.domAutomationController.send(!IsCookieAvailable())",
+      contents,
+      "window.domAutomationController.send(!IsCookieAvailable())",
       &cookie_blocked));
   EXPECT_TRUE(cookie_blocked);
 
@@ -240,13 +245,15 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingBlocked) {
 
   bool db_blocked;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, "window.domAutomationController.send(!IsDBAvailable())",
+      contents,
+      "window.domAutomationController.send(!IsDBAvailable())",
       &db_blocked));
   EXPECT_TRUE(db_blocked);
 
   bool indexeddb_blocked;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, "window.domAutomationController.send(!IsIndexedDBAvailable())",
+      contents,
+      "window.domAutomationController.send(!IsIndexedDBAvailable())",
       &indexeddb_blocked));
   EXPECT_TRUE(indexeddb_blocked);
 }
@@ -272,7 +279,8 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingAllowed) {
 
   bool cookie_allowed;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, "window.domAutomationController.send(IsCookieAvailable())",
+      contents,
+      "window.domAutomationController.send(IsCookieAvailable())",
       &cookie_allowed));
   EXPECT_TRUE(cookie_allowed);
 
@@ -294,13 +302,15 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, StorageTrackingAllowed) {
 
   bool db_allowed;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, "window.domAutomationController.send(IsDBAvailable())",
+      contents,
+      "window.domAutomationController.send(IsDBAvailable())",
       &db_allowed));
   EXPECT_TRUE(db_allowed);
 
   bool indexeddb_allowed;
   ASSERT_TRUE(ExecuteScriptAndExtractBool(
-      contents, "window.domAutomationController.send(IsIndexedDBAvailable())",
+      contents,
+      "window.domAutomationController.send(IsIndexedDBAvailable())",
       &indexeddb_allowed));
 }
 
@@ -337,9 +347,10 @@ IN_PROC_BROWSER_TEST_F(TrackingProtectionServiceTest, CancelledNavigation) {
           tracking_url.spec().c_str())));
 
   // Cancel Navigation
-  ASSERT_TRUE(ExecuteScript(
-      contents, base::StringPrintf(
-                    "window.domAutomationController.send(window.stop())")));
+  ASSERT_TRUE(
+      ExecuteScript(contents,
+                    base::StringPrintf(
+                        "window.domAutomationController.send(window.stop())")));
 
   // If the starting site is updated to the tracking site, then cookies
   // will be allowed

@@ -43,8 +43,7 @@ TrackingProtectionService::TrackingProtectionService(
     : LocalDataFilesObserver(local_data_files_service),
       tracking_protection_client_(new CTPParser()),
       weak_factory_(this),
-      weak_factory_io_thread_(this) {
-}
+      weak_factory_io_thread_(this) {}
 
 TrackingProtectionService::~TrackingProtectionService() {
   BrowserThread::DeleteSoon(
@@ -145,7 +144,9 @@ bool TrackingProtectionService::ShouldStoreState(HostContentSettingsMap* map,
   const bool allow_brave_shields =
       starting_site.is_empty()
           ? false
-          : IsAllowContentSetting(map, starting_site, GURL(),
+          : IsAllowContentSetting(map,
+                                  starting_site,
+                                  GURL(),
                                   CONTENT_SETTINGS_TYPE_PLUGINS,
                                   brave_shields::kBraveShields);
 
@@ -156,7 +157,9 @@ bool TrackingProtectionService::ShouldStoreState(HostContentSettingsMap* map,
   const bool allow_trackers =
       starting_site.is_empty()
           ? true
-          : IsAllowContentSetting(map, starting_site, GURL(),
+          : IsAllowContentSetting(map,
+                                  starting_site,
+                                  GURL(),
                                   CONTENT_SETTINGS_TYPE_PLUGINS,
                                   brave_shields::kTrackers);
 
@@ -177,7 +180,9 @@ void TrackingProtectionService::OnGetSTPDATFileData(std::string contents) {
 
   std::vector<std::string> storage_trackers =
       base::SplitString(base::StringPiece(contents.data(), contents.size()),
-                        ",", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+                        ",",
+                        base::TRIM_WHITESPACE,
+                        base::SPLIT_WANT_NONEMPTY);
 
   if (storage_trackers.empty()) {
     LOG(ERROR) << "No first party trackers found";
@@ -185,7 +190,8 @@ void TrackingProtectionService::OnGetSTPDATFileData(std::string contents) {
   }
 
   base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
+      FROM_HERE,
+      {BrowserThread::IO},
       base::BindOnce(
           &TrackingProtectionService::UpdateFirstPartyStorageTrackers,
           weak_factory_io_thread_.GetWeakPtr(),
@@ -208,8 +214,8 @@ bool TrackingProtectionService::ShouldStoreState(BraveCookieSettings* settings,
                                                  const GURL& first_party_url,
                                                  const GURL& tab_url) const {
 #if BUILDFLAG(BRAVE_STP_ENABLED)
-  const bool allow = ShouldStoreState(map, render_process_id, render_frame_id,
-                                      url, first_party_url);
+  const bool allow = ShouldStoreState(
+      map, render_process_id, render_frame_id, url, first_party_url);
   if (!allow) {
     return allow;
   }
@@ -266,7 +272,8 @@ void TrackingProtectionService::OnGetDATFileData(GetDATFileDataResult result) {
   }
 
   base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
+      FROM_HERE,
+      {BrowserThread::IO},
       base::BindOnce(&TrackingProtectionService::UpdateTrackingProtectionClient,
                      weak_factory_io_thread_.GetWeakPtr(),
                      std::move(result.first),
@@ -285,9 +292,9 @@ void TrackingProtectionService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  base::FilePath navigation_tracking_protection_path = install_dir
-      .AppendASCII(kDatFileVersion)
-      .AppendASCII(kNavigationTrackersFile);
+  base::FilePath navigation_tracking_protection_path =
+      install_dir.AppendASCII(kDatFileVersion)
+          .AppendASCII(kNavigationTrackersFile);
 
   base::PostTaskAndReplyWithResult(
       local_data_files_service()->GetTaskRunner().get(),
@@ -301,9 +308,9 @@ void TrackingProtectionService::OnComponentReady(
   if (!TrackingProtectionHelper::IsSmartTrackingProtectionEnabled()) {
     return;
   }
-  base::FilePath storage_tracking_protection_path = install_dir
-      .AppendASCII(kDatFileVersion)
-      .AppendASCII(kStorageTrackersFile);
+  base::FilePath storage_tracking_protection_path =
+      install_dir.AppendASCII(kDatFileVersion)
+          .AppendASCII(kStorageTrackersFile);
 
   base::PostTaskAndReplyWithResult(
       local_data_files_service()->GetTaskRunner().get(),
@@ -354,7 +361,7 @@ std::vector<std::string> TrackingProtectionService::GetThirdPartyHosts(
     if (0 != strThirdPartyHosts.length()) {
       hosts.push_back(strThirdPartyHosts);
     }
-    delete []thirdPartyHosts;
+    delete[] thirdPartyHosts;
   }
 
   {

@@ -31,19 +31,21 @@ void MockTorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
   config_ = config;
 }
 
-
-void MockTorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
-                                             const base::Closure& callback) {}
+void MockTorProfileServiceImpl::SetNewTorCircuit(
+    const GURL& request_url,
+    const base::Closure& callback) {}
 
 const TorConfig& MockTorProfileServiceImpl::GetTorConfig() {
   return config_;
 }
 
-int64_t MockTorProfileServiceImpl::GetTorPid() { return -1; }
+int64_t MockTorProfileServiceImpl::GetTorPid() {
+  return -1;
+}
 
-int MockTorProfileServiceImpl::SetProxy(
-    net::ProxyResolutionService* service, const GURL& request_url,
-    bool new_circuit) {
+int MockTorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
+                                        const GURL& request_url,
+                                        bool new_circuit) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   DCHECK(request_url.SchemeIsHTTPOrHTTPS());
   std::string isolation_key = CircuitIsolationKey(request_url);
@@ -54,8 +56,8 @@ int MockTorProfileServiceImpl::SetProxy(
     LOG(ERROR) << "Tor not configured -- blocking connection";
     return net::ERR_SOCKS_CONNECTION_FAILED;
   }
-  TorProxyConfigService::TorSetProxy(service, config_.proxy_string(),
-                                     isolation_key, nullptr, new_circuit);
+  TorProxyConfigService::TorSetProxy(
+      service, config_.proxy_string(), isolation_key, nullptr, new_circuit);
   return net::OK;
 }
 

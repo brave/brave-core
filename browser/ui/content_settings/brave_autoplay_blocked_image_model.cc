@@ -4,9 +4,9 @@
 
 #include "brave/browser/ui/content_settings/brave_autoplay_blocked_image_model.h"
 
+#include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/content_settings/brave_autoplay_content_setting_bubble_model.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "brave/app/vector_icons/vector_icons.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -18,7 +18,8 @@ BraveAutoplayBlockedImageModel::BraveAutoplayBlockedImageModel()
     : ContentSettingSimpleImageModel(ImageType::PLUGINS,
                                      CONTENT_SETTINGS_TYPE_AUTOPLAY) {}
 
-bool BraveAutoplayBlockedImageModel::UpdateAndGetVisibility(WebContents* web_contents) {
+bool BraveAutoplayBlockedImageModel::UpdateAndGetVisibility(
+    WebContents* web_contents) {
   if (!web_contents)
     return false;
 
@@ -38,7 +39,9 @@ bool BraveAutoplayBlockedImageModel::UpdateAndGetVisibility(WebContents* web_con
 }
 
 std::unique_ptr<ContentSettingBubbleModel>
-BraveAutoplayBlockedImageModel::CreateBubbleModelImpl(ContentSettingBubbleModel::Delegate* delegate,
-      content::WebContents* web_contents) {
-  return std::make_unique<BraveAutoplayContentSettingBubbleModel>(delegate, web_contents);
+BraveAutoplayBlockedImageModel::CreateBubbleModelImpl(
+    ContentSettingBubbleModel::Delegate* delegate,
+    content::WebContents* web_contents) {
+  return std::make_unique<BraveAutoplayContentSettingBubbleModel>(delegate,
+                                                                  web_contents);
 }

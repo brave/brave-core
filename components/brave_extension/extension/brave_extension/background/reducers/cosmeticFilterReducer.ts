@@ -2,48 +2,46 @@
 //  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
 //  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import * as cosmeticFilterTypes from '../../constants/cosmeticFilterTypes'
 import * as shieldsPanelTypes from '../../constants/shieldsPanelTypes'
-import * as windowTypes from '../../constants/windowTypes'
 import * as tabTypes from '../../constants/tabTypes'
 import * as webNavigationTypes from '../../constants/webNavigationTypes'
-import {
-  setAllowBraveShields,
-  requestShieldPanelData
-} from '../api/shieldsAPI'
-import { reloadTab } from '../api/tabsAPI'
+import * as windowTypes from '../../constants/windowTypes'
 import * as shieldsPanelState from '../../state/shieldsPanelState'
-import { State } from '../../types/state/shieldsPannelState'
-import { Actions } from '../../types/actions/index'
-import * as cosmeticFilterTypes from '../../constants/cosmeticFilterTypes'
-import {
-  removeSiteFilter,
-  addSiteCosmeticFilter,
-  applySiteFilters,
-  removeAllFilters
-} from '../api/cosmeticFilterAPI'
+import {Actions} from '../../types/actions/index'
+import {State} from '../../types/state/shieldsPannelState'
+import {addSiteCosmeticFilter, applySiteFilters, removeAllFilters, removeSiteFilter} from '../api/cosmeticFilterAPI'
+import {requestShieldPanelData, setAllowBraveShields} from '../api/shieldsAPI'
+import {reloadTab} from '../api/tabsAPI'
 
-const focusedWindowChanged = (state: State, windowId: number): State => {
-  if (windowId !== -1) {
-    state = shieldsPanelState.updateFocusedWindow(state, windowId)
-    if (shieldsPanelState.getActiveTabId(state)) {
-      requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
-    } else {
-      console.warn('no tab id so cannot request shield data from window focus change!')
+const focusedWindowChanged = (state: State, windowId: number):
+    State => {
+      if (windowId !== -1) {
+        state = shieldsPanelState.updateFocusedWindow(state, windowId)
+        if (shieldsPanelState.getActiveTabId(state)) {
+          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+        }
+        else {
+          console.warn(
+              'no tab id so cannot request shield data from window focus change!')
+        }
+      }
+      return state
     }
-  }
-  return state
-}
 
-const updateActiveTab = (state: State, windowId: number, tabId: number): State => {
-  requestShieldPanelData(tabId)
-  return shieldsPanelState.updateActiveTab(state, windowId, tabId)
-}
+const updateActiveTab = (state: State, windowId: number, tabId: number):
+    State => {
+      requestShieldPanelData(tabId)
+      return shieldsPanelState.updateActiveTab(state, windowId, tabId)
+    }
 
-export default function cosmeticFilterReducer (state: State = {
-  tabs: {},
-  windows: {},
-  currentWindowId: -1 },
-  action: Actions) {
+export default function cosmeticFilterReducer(
+    state: State = {
+      tabs: {},
+      windows: {},
+      currentWindowId: -1
+    },
+    action: Actions) {
   switch (action.type) {
     case webNavigationTypes.ON_COMMITTED: {
       const tabData = shieldsPanelState.getActiveTabData(state)
@@ -54,7 +52,8 @@ export default function cosmeticFilterReducer (state: State = {
       if (action.isMainFrame) {
         state = shieldsPanelState.resetBlockingStats(state, action.tabId)
         state = shieldsPanelState.resetBlockingResources(state, action.tabId)
-        state = shieldsPanelState.resetNoScriptInfo(state, action.tabId, new window.URL(action.url).origin)
+        state = shieldsPanelState.resetNoScriptInfo(
+            state, action.tabId, new window.URL(action.url).origin)
       }
       applySiteFilters(tabData.hostname)
       break
@@ -98,7 +97,8 @@ export default function cosmeticFilterReducer (state: State = {
       break
     }
     case shieldsPanelTypes.SHIELDS_PANEL_DATA_UPDATED: {
-      state = shieldsPanelState.updateTabShieldsData(state, action.details.id, action.details)
+      state = shieldsPanelState.updateTabShieldsData(
+          state, action.details.id, action.details)
       break
     }
     case shieldsPanelTypes.SHIELDS_TOGGLED: {
@@ -118,9 +118,9 @@ export default function cosmeticFilterReducer (state: State = {
         .catch((e: any) => {
           console.error('Could not set shields', e)
         })
-      state = shieldsPanelState
-        .updateTabShieldsData(state, tabId, { braveShields: action.setting })
-      break
+          state = shieldsPanelState.updateTabShieldsData(
+              state, tabId, {braveShields: action.setting})
+          break
     }
     case cosmeticFilterTypes.SITE_COSMETIC_FILTER_REMOVED: {
       let url = action.origin
@@ -133,9 +133,7 @@ export default function cosmeticFilterReducer (state: State = {
     }
     case cosmeticFilterTypes.SITE_COSMETIC_FILTER_ADDED: {
       addSiteCosmeticFilter(action.origin, action.cssfilter)
-      .catch((e) => {
-        console.error('Could not add filter:', e)
-      })
+          .catch((e) => {console.error('Could not add filter:', e)})
       break
     }
   }

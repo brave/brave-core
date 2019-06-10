@@ -4,9 +4,8 @@ declare namespace RewardsExtension {
     currentNotification?: string
     enabledAC: boolean
     enabledMain: boolean
-    notifications: Record<string, Notification>
-    publishers: Record<string, Publisher>
-    report: Report
+    notifications: Record<string, Notification>publishers:
+        Record<string, Publisher>report: Report
     grants?: GrantInfo[]
     pendingContributionTotal: number
     walletCorrupted: boolean
@@ -19,7 +18,7 @@ declare namespace RewardsExtension {
   }
 
   interface ApplicationState {
-    rewardsPanelData: State | undefined
+    rewardsPanelData: State|undefined
   }
 
   interface ComponentProps {
@@ -47,7 +46,8 @@ declare namespace RewardsExtension {
     type: string
   }
 
-  export type GrantStatus = 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
+  export type GrantStatus = 'wrongPosition'|'grantGone'|'generalError'|
+      'grantAlreadyClaimed'|number|null
 
   export interface GrantInfo {
     promotionId?: string
@@ -67,9 +67,7 @@ declare namespace RewardsExtension {
   }
 
   export interface GrantFinish {
-    result: Result,
-    statusCode: number,
-    expiryTime: number
+    result: Result, statusCode: number, expiryTime: number
   }
 
   export const enum Result {
@@ -98,8 +96,7 @@ declare namespace RewardsExtension {
   export interface WalletProperties {
     balance: number
     probi: string
-    rates: Record<string, number>
-    grants?: Grant[]
+    rates: Record<string, number>grants?: Grant[]
   }
 
   export interface Report {
@@ -143,9 +140,7 @@ declare namespace RewardsExtension {
     description: string
     background: string
     logo: string
-    amounts: number[],
-    provider: string
-    social: Record<string, string>
-    verified: boolean
+    amounts: number[], provider: string
+    social: Record<string, string>verified: boolean
   }
 }

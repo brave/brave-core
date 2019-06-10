@@ -14,7 +14,7 @@ LocaleHelperMac::LocaleHelperMac() = default;
 LocaleHelperMac::~LocaleHelperMac() = default;
 
 std::string LocaleHelperMac::GetLocale() const {
-  NSString *locale = [[NSLocale preferredLanguages] firstObject];
+  NSString* locale = [[NSLocale preferredLanguages] firstObject];
   return std::string([locale UTF8String]);
 }
 

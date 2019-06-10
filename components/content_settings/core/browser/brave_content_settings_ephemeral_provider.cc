@@ -24,7 +24,7 @@ bool IsShieldsResourceID(
   }
 }
 
-}
+}  // namespace
 
 namespace content_settings {
 
@@ -43,9 +43,11 @@ bool BraveEphemeralProvider::SetWebsiteSetting(
   // Only flash plugin setting can be reached here.
   DCHECK(resource_identifier.empty());
 
-  return EphemeralProvider::SetWebsiteSetting(
-      primary_pattern, secondary_pattern,
-      content_type, resource_identifier, in_value);
+  return EphemeralProvider::SetWebsiteSetting(primary_pattern,
+                                              secondary_pattern,
+                                              content_type,
+                                              resource_identifier,
+                                              in_value);
 }
 
 }  // namespace content_settings

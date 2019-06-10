@@ -29,8 +29,11 @@ bool ParseAuthHostAndPort(base::StringPiece input,
   url::Component hostname_component;
   url::Component port_component;
 
-  url::ParseAuthority(input.data(), auth_component, &username_component,
-                      &password_component, &hostname_component,
+  url::ParseAuthority(input.data(),
+                      auth_component,
+                      &username_component,
+                      &password_component,
+                      &hostname_component,
                       &port_component);
 
   if (!hostname_component.is_nonempty())
@@ -55,8 +58,8 @@ bool ParseAuthHostAndPort(base::StringPiece input,
   // invalid. If it is an IPv6 literal then strip the brackets.
   if (hostname_component.len > 0 && input[hostname_component.begin] == '[') {
     if (input[hostname_component.end() - 1] == ']' &&
-        url::IPv6AddressToNumber(input.data(), hostname_component,
-                                 tmp_ipv6_addr)) {
+        url::IPv6AddressToNumber(
+            input.data(), hostname_component, tmp_ipv6_addr)) {
       // Strip the brackets.
       hostname_component.begin++;
       hostname_component.len -= 2;
@@ -80,4 +83,4 @@ bool ParseAuthHostAndPort(base::StringPiece input,
   return true;  // Success.
 }
 
-}
+}  // namespace net

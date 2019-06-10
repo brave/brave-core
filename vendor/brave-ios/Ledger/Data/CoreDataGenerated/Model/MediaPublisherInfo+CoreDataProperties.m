@@ -1,6 +1,6 @@
 //
 //  MediaPublisherInfo+CoreDataProperties.m
-//  
+//
 //
 //  Created by Kyle Hickinson on 2019-05-24.
 //
@@ -11,8 +11,8 @@
 
 @implementation MediaPublisherInfo (CoreDataProperties)
 
-+ (NSFetchRequest<MediaPublisherInfo *> *)fetchRequest {
-	return [NSFetchRequest fetchRequestWithEntityName:@"MediaPublisherInfo"];
++ (NSFetchRequest<MediaPublisherInfo*>*)fetchRequest {
+  return [NSFetchRequest fetchRequestWithEntityName:@"MediaPublisherInfo"];
 }
 
 @dynamic mediaKey;

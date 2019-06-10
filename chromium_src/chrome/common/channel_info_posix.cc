@@ -22,4 +22,3 @@ version_info::Channel GetChannel() {
 }
 
 }  // namespace chrome
-

@@ -8,14 +8,13 @@
 #include "bat/ads/internal/catalog.h"
 #include "bat/ads/internal/catalog_state.h"
 #include "bat/ads/internal/json_helper.h"
-#include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/static_values.h"
 
 namespace ads {
 
-Catalog::Catalog(AdsClient* ads_client) :
-    ads_client_(ads_client),
-    catalog_state_(nullptr) {}
+Catalog::Catalog(AdsClient* ads_client)
+    : ads_client_(ads_client), catalog_state_(nullptr) {}
 
 Catalog::~Catalog() {}
 
@@ -23,11 +22,11 @@ bool Catalog::FromJson(const std::string& json) {
   auto catalog_state = std::make_unique<CatalogState>();
   auto json_schema = ads_client_->LoadJsonSchema(_catalog_schema_name);
   std::string error_description;
-  auto result = LoadFromJson(catalog_state.get(), json, json_schema,
-      &error_description);
+  auto result =
+      LoadFromJson(catalog_state.get(), json, json_schema, &error_description);
   if (result != SUCCESS) {
     BLOG(ERROR) << "Failed to to load catalog JSON (" << error_description
-        << "): " << json;
+                << "): " << json;
 
     return false;
   }

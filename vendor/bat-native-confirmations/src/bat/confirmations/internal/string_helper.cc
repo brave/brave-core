@@ -15,9 +15,9 @@ std::vector<uint8_t> String::decode_hex(const std::string& hexadecimal) {
   std::vector<uint8_t> bytes;
 
   for (size_t i = 0; i < hexadecimal.length(); i += 2) {
-      std::string hexidecimal_byte = hexadecimal.substr(i, 2);
-      uint8_t decimal = std::strtol(hexidecimal_byte.c_str(), 0, 16);
-      bytes.push_back(decimal);
+    std::string hexidecimal_byte = hexadecimal.substr(i, 2);
+    uint8_t decimal = std::strtol(hexidecimal_byte.c_str(), 0, 16);
+    bytes.push_back(decimal);
   }
 
   return bytes;

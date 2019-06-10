@@ -30,8 +30,9 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
 
   bool IsExtensionInstalled(const std::string& extension_id) const;
   void OnInstallResult(const std::string& pref_name,
-      bool success, const std::string& error,
-      extensions::webstore_install::Result result);
+                       bool success,
+                       const std::string& error,
+                       extensions::webstore_install::Result result);
 
   Profile* profile_ = nullptr;
   base::WeakPtrFactory<BraveDefaultExtensionsHandler> weak_ptr_factory_;

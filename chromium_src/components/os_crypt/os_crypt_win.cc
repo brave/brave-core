@@ -5,8 +5,10 @@
 const char kDisableEncryptionWin[] = "disable-encryption-win";
 
 namespace {
-bool IsEncryptionDisabled(const std::string& input_text, std::string* output_text) {
-  if (base::CommandLine::ForCurrentProcess()->HasSwitch(kDisableEncryptionWin)) {
+bool IsEncryptionDisabled(const std::string& input_text,
+                          std::string* output_text) {
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          kDisableEncryptionWin)) {
     *output_text = input_text;
     return true;
   }

@@ -96,11 +96,12 @@ bool BraveCrxUpdateService::CheckForUpdates(
           base::BindOnce(&CrxUpdateService::GetCrxComponents,
                          base::Unretained(this)),
           false,
-          base::BindOnce(
-              &CrxUpdateService::OnUpdateComplete, base::Unretained(this),
-              (id == secure_ids.back()) ? std::move(on_finished_callback)
-                                        : Callback(),
-              base::TimeTicks::Now()));
+          base::BindOnce(&CrxUpdateService::OnUpdateComplete,
+                         base::Unretained(this),
+                         (id == secure_ids.back())
+                             ? std::move(on_finished_callback)
+                             : Callback(),
+                         base::TimeTicks::Now()));
     }
   }
 

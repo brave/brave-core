@@ -5,26 +5,23 @@
 import * as types from '../constants/tabTypes'
 import * as actions from '../types/actions/tabActions'
 
-export const activeTabChanged: actions.ActiveTabChanged = (windowId, tabId) => {
-  return {
-    type: types.ACTIVE_TAB_CHANGED,
-    windowId,
-    tabId
-  }
-}
+export const activeTabChanged: actions.ActiveTabChanged =
+    (windowId, tabId) => {
+      return {
+        type: types.ACTIVE_TAB_CHANGED, windowId, tabId
+      }
+    }
 
-export const tabCreated: actions.TabCreated = (tab) => {
-  return {
-    type: types.TAB_CREATED,
-    tab
-  }
-}
+                         export const tabCreated: actions.TabCreated =
+        (tab) => {
+          return {
+            type: types.TAB_CREATED, tab
+          }
+        }
 
-export const tabDataChanged: actions.TabDataChanged = (tabId, changeInfo, tab) => {
-  return {
-    type: types.TAB_DATA_CHANGED,
-    tabId,
-    changeInfo,
-    tab
-  }
-}
+                 export const tabDataChanged: actions.TabDataChanged =
+            (tabId, changeInfo, tab) => {
+              return {
+                type: types.TAB_DATA_CHANGED, tabId, changeInfo, tab
+              }
+            }

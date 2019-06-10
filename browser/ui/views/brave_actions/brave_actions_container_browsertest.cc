@@ -33,13 +33,10 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
   BraveActionsContainerTest() = default;
   ~BraveActionsContainerTest() override = default;
 
-  void SetUpOnMainThread() override {
-    Init(browser());
-  }
+  void SetUpOnMainThread() override { Init(browser()); }
 
   void Init(Browser* browser) {
-    BrowserView* browser_view =
-        BrowserView::GetBrowserViewForBrowser(browser);
+    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
     ASSERT_NE(browser_view, nullptr);
     BraveLocationBarView* brave_location_bar_view =
         static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
@@ -96,7 +93,7 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
                        BraveRewardsActionHiddenInGuestSession) {
-    // By default the action should be shown.
+  // By default the action should be shown.
   EXPECT_FALSE(prefs_->GetBoolean(brave_rewards::prefs::kBraveRewardsEnabled));
   EXPECT_FALSE(prefs_->GetBoolean(kHideBraveRewardsButton));
   CheckBraveRewardsActionShown(true);
@@ -117,7 +114,7 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
   // The BrowsingDataRemover needs a loaded TemplateUrlService or else it hangs
   // on to a CallbackList::Subscription forever.
   search_test_utils::WaitForTemplateURLServiceToLoad(
-        TemplateURLServiceFactory::GetForProfile(guest));
+      TemplateURLServiceFactory::GetForProfile(guest));
 
   // Access the browser with the Guest profile and re-init test for it.
   Browser* browser = chrome::FindAnyBrowser(guest, true);

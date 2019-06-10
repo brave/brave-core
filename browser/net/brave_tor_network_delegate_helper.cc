@@ -20,20 +20,19 @@ using content::ResourceRequestInfo;
 
 namespace brave {
 
-int OnBeforeURLRequest_TorWork(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
+int OnBeforeURLRequest_TorWork(const ResponseCallback& next_callback,
+                               std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
 
   ResourceRequestInfo* resource_info =
-    ResourceRequestInfo::ForRequest(ctx->request);
+      ResourceRequestInfo::ForRequest(ctx->request);
   if (!resource_info) {
     return net::OK;
   }
 
   const BraveNavigationUIData* ui_data =
-    static_cast<const BraveNavigationUIData*>(
-        resource_info->GetNavigationUIData());
+      static_cast<const BraveNavigationUIData*>(
+          resource_info->GetNavigationUIData());
   if (!ui_data) {
     return net::OK;
   }

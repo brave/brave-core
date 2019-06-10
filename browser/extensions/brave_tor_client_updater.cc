@@ -62,19 +62,17 @@ BraveTorClientUpdater::BraveTorClientUpdater(BraveComponent::Delegate* delegate)
     : BraveComponent(delegate),
       task_runner_(
           base::CreateSequencedTaskRunnerWithTraits({base::MayBlock()})),
-      registered_(false) {
-}
+      registered_(false) {}
 
-BraveTorClientUpdater::~BraveTorClientUpdater() {
-}
+BraveTorClientUpdater::~BraveTorClientUpdater() {}
 
 void BraveTorClientUpdater::Register() {
   if (registered_)
     return;
 
   BraveComponent::Register(kTorClientComponentName,
-                               g_tor_client_component_id_,
-                               g_tor_client_component_base64_public_key_);
+                           g_tor_client_component_id_,
+                           g_tor_client_component_base64_public_key_);
   registered_ = true;
 }
 
@@ -85,7 +83,8 @@ base::FilePath BraveTorClientUpdater::GetExecutablePath() const {
 void BraveTorClientUpdater::InitExecutablePath(
     const base::FilePath& install_dir) {
   base::FilePath executable_path;
-  base::FileEnumerator traversal(install_dir, false,
+  base::FileEnumerator traversal(install_dir,
+                                 false,
                                  base::FileEnumerator::FILES,
                                  FILE_PATH_LITERAL("tor-*"));
   for (base::FilePath current = traversal.Next(); !current.empty();
@@ -118,13 +117,14 @@ void BraveTorClientUpdater::InitExecutablePath(
   executable_path_ = executable_path;
 }
 
-void BraveTorClientUpdater::OnComponentReady(
-    const std::string& component_id,
-    const base::FilePath& install_dir,
-    const std::string& manifest) {
+void BraveTorClientUpdater::OnComponentReady(const std::string& component_id,
+                                             const base::FilePath& install_dir,
+                                             const std::string& manifest) {
   GetTaskRunner()->PostTask(
-      FROM_HERE, base::Bind(&BraveTorClientUpdater::InitExecutablePath,
-                            base::Unretained(this), install_dir));
+      FROM_HERE,
+      base::Bind(&BraveTorClientUpdater::InitExecutablePath,
+                 base::Unretained(this),
+                 install_dir));
 }
 
 // static
@@ -138,8 +138,8 @@ void BraveTorClientUpdater::SetComponentIdAndBase64PublicKeyForTest(
 ///////////////////////////////////////////////////////////////////////////////
 
 // The Brave Tor client extension factory.
-std::unique_ptr<BraveTorClientUpdater>
-BraveTorClientUpdaterFactory(BraveComponent::Delegate* delegate) {
+std::unique_ptr<BraveTorClientUpdater> BraveTorClientUpdaterFactory(
+    BraveComponent::Delegate* delegate) {
   return std::make_unique<BraveTorClientUpdater>(delegate);
 }
 

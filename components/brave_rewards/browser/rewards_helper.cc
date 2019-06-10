@@ -15,10 +15,10 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
-#include "content/public/common/resource_load_info.mojom.h"
-#include "content/public/common/resource_type.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "content/public/common/resource_load_info.mojom.h"
+#include "content/public/common/resource_type.h"
 
 using content::ResourceType;
 
@@ -33,8 +33,8 @@ RewardsHelper::RewardsHelper(content::WebContents* web_contents)
     return;
 
   BrowserList::AddObserver(this);
-  Profile* profile = Profile::FromBrowserContext(
-      web_contents->GetBrowserContext());
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
   rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
 }
 
@@ -42,21 +42,17 @@ RewardsHelper::~RewardsHelper() {
   BrowserList::RemoveObserver(this);
 }
 
-void RewardsHelper::DidFinishLoad(
-    content::RenderFrameHost* render_frame_host,
-    const GURL& validated_url) {
+void RewardsHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
+                                  const GURL& validated_url) {
   if (!rewards_service_ || render_frame_host->GetParent())
     return;
 
   rewards_service_->OnLoad(tab_id_, validated_url);
 }
 
-void RewardsHelper::DidFinishNavigation(
-    content::NavigationHandle* handle) {
-  if (!rewards_service_ ||
-      !handle->IsInMainFrame() ||
-      !handle->HasCommitted() ||
-      handle->IsDownload())
+void RewardsHelper::DidFinishNavigation(content::NavigationHandle* handle) {
+  if (!rewards_service_ || !handle->IsInMainFrame() ||
+      !handle->HasCommitted() || handle->IsDownload())
     return;
 
   rewards_service_->OnUnload(tab_id_);
@@ -73,11 +69,10 @@ void RewardsHelper::ResourceLoadComplete(
       resource_load_info.resource_type == content::ResourceType::kXhr ||
       resource_load_info.resource_type == content::ResourceType::kImage ||
       resource_load_info.resource_type == content::ResourceType::kScript) {
-    rewards_service_->OnXHRLoad(
-        tab_id_,
-        GURL(resource_load_info.url),
-        web_contents()->GetURL(),
-        resource_load_info.referrer);
+    rewards_service_->OnXHRLoad(tab_id_,
+                                GURL(resource_load_info.url),
+                                web_contents()->GetURL(),
+                                resource_load_info.referrer);
   }
 }
 

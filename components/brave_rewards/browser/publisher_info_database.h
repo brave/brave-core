@@ -6,17 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_INFO_DATABASE_H_
 #define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_PUBLISHER_INFO_DATABASE_H_
 
+#include <stddef.h>  // NOLINT
 #include <memory>
 #include <string>
-#include <stddef.h>  // NOLINT
 
 #include "base/compiler_specific.h"
 #include "base/files/file_path.h"
 #include "base/macros.h"
 #include "base/memory/memory_pressure_listener.h"
 #include "base/sequence_checker.h"
-#include "bat/ledger/publisher_info.h"
 #include "bat/ledger/pending_contribution.h"
+#include "bat/ledger/publisher_info.h"
 #include "brave/components/brave_rewards/browser/contribution_info.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/recurring_donation.h"
@@ -46,11 +46,10 @@ class PublisherInfoDatabase {
 
   bool InsertOrUpdatePublisherInfo(const ledger::PublisherInfo& info);
 
-  ledger::PublisherInfoPtr GetPublisherInfo(
-     const std::string& media_key);
+  ledger::PublisherInfoPtr GetPublisherInfo(const std::string& media_key);
 
   ledger::PublisherInfoPtr GetPanelPublisher(
-     const ledger::ActivityInfoFilter& filter);
+      const ledger::ActivityInfoFilter& filter);
 
   bool RestorePublishers();
 
@@ -68,11 +67,9 @@ class PublisherInfoDatabase {
   bool InsertOrUpdateMediaPublisherInfo(const std::string& media_key,
                                         const std::string& publisher_id);
 
-  ledger::PublisherInfoPtr GetMediaPublisherInfo(
-      const std::string& media_key);
+  ledger::PublisherInfoPtr GetMediaPublisherInfo(const std::string& media_key);
 
-  bool InsertOrUpdateRecurringTip(
-      const brave_rewards::RecurringDonation& info);
+  bool InsertOrUpdateRecurringTip(const brave_rewards::RecurringDonation& info);
 
   void GetRecurringTips(ledger::PublisherInfoList* list);
 
@@ -82,8 +79,7 @@ class PublisherInfoDatabase {
 
   double GetReservedAmount();
 
-  void GetPendingContributions(
-      ledger::PendingContributionInfoList* list);
+  void GetPendingContributions(ledger::PendingContributionInfoList* list);
 
   bool RemovePendingContributions(const std::string& publisher_key,
                                   const std::string& viewing_id,
@@ -135,7 +131,7 @@ class PublisherInfoDatabase {
   bool CreatePendingContributionsIndex();
 
   void OnMemoryPressure(
-    base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
+      base::MemoryPressureListener::MemoryPressureLevel memory_pressure_level);
 
   sql::MetaTable& GetMetaTable();
 

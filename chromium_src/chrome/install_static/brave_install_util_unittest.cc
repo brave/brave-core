@@ -161,8 +161,8 @@ TEST(InstallStaticTest, SpacesAndQuotesInCommandLineArguments) {
   EXPECT_EQ(L"C:\\with space\\b.exe", tokenized[0]);
   EXPECT_EQ(L"--stuff=d:\\stuff and things", tokenized[1]);
 
-  tokenized = TokenizeCommandLineToArray(
-      L"\"C:\\with space\\b.exe\" \\\\\\\"\"");
+  tokenized =
+      TokenizeCommandLineToArray(L"\"C:\\with space\\b.exe\" \\\\\\\"\"");
   EXPECT_EQ(2u, tokenized.size());
   EXPECT_EQ(L"C:\\with space\\b.exe", tokenized[0]);
   EXPECT_EQ(L"\\\"", tokenized[1]);
@@ -184,14 +184,12 @@ TEST(InstallStaticTest, SpacesAndQuotesOldNewThing) {
   EXPECT_EQ(L"program.exe", tokenized[0]);
   EXPECT_EQ(L"C:\\Hello there.txt", tokenized[1]);
 
-  tokenized =
-      TokenizeCommandLineToArray(L"program.exe \"hello\\\"there\"");
+  tokenized = TokenizeCommandLineToArray(L"program.exe \"hello\\\"there\"");
   ASSERT_EQ(2u, tokenized.size());
   EXPECT_EQ(L"program.exe", tokenized[0]);
   EXPECT_EQ(L"hello\"there", tokenized[1]);
 
-  tokenized =
-      TokenizeCommandLineToArray(L"program.exe \"hello\\\\\"");
+  tokenized = TokenizeCommandLineToArray(L"program.exe \"hello\\\\\"");
   ASSERT_EQ(2u, tokenized.size());
   EXPECT_EQ(L"program.exe", tokenized[0]);
   EXPECT_EQ(L"hello\\", tokenized[1]);
@@ -299,7 +297,8 @@ class InstallStaticUtilTest
   void SetUsageStat(DWORD value, bool medium) {
     ASSERT_TRUE(!medium || system_level_);
     ASSERT_EQ(ERROR_SUCCESS,
-              base::win::RegKey(root_key_, GetUsageStatsKeyPath(medium).c_str(),
+              base::win::RegKey(root_key_,
+                                GetUsageStatsKeyPath(medium).c_str(),
                                 KEY_SET_VALUE | KEY_WOW64_32KEY)
                   .WriteValue(L"usagestats", value));
   }
@@ -449,7 +448,10 @@ TEST_P(InstallStaticUtilTest, GetBaseAppId) {
 #if defined(OFFICIAL_BUILD)
   // The base app ids for the brand's install modes; parallel to kInstallModes.
   static constexpr const wchar_t* kBaseAppIds[] = {
-      L"Brave", L"BraveBeta", L"BraveDev", L"BraveNightly",
+      L"Brave",
+      L"BraveBeta",
+      L"BraveDev",
+      L"BraveNightly",
   };
 #else
   // The base app ids for the brand's install modes; parallel to kInstallModes.
@@ -467,26 +469,29 @@ TEST_P(InstallStaticUtilTest, GetToastActivatorClsid) {
   // The toast activator CLSIDs for the brand's install modes; parallel to
   // kInstallModes.
   static constexpr CLSID kToastActivatorClsids[] = {
-      { 0x6c9646d,
-        0x2807,
-        0x44c0,
-        { 0x97, 0xd2, 0x6d, 0xa0, 0xdb, 0x62, 0x3d,
-          0xb4 } },  // Brave-Browser.
-      { 0x9560028d,
-        0xcca,
-        0x49f0,
-        { 0x8d, 0x47, 0xef, 0x22, 0xbb, 0xc4, 0xb,
-          0xa7 } },  // Brave-Browser-Beta.
-      { 0x20b22981,
-        0xf63a,
-        0x47a6,
-        { 0xa5, 0x47, 0x69, 0x1c, 0xc9, 0x4c, 0xae,
-          0xe0 } },  // Brave-Browser-Dev.
-      { 0xf2edbc59,
-        0x7217,
-        0x4da5,
-        { 0xa2, 0x59, 0x3, 0x2, 0xda, 0x6a, 0x0,
-          0xe1 } },  // Brave-Browser-Nightly.
+      {0x6c9646d,
+       0x2807,
+       0x44c0,
+       {0x97, 0xd2, 0x6d, 0xa0, 0xdb, 0x62, 0x3d, 0xb4}},  // Brave-Browser.
+      {0x9560028d,
+       0xcca,
+       0x49f0,
+       {0x8d, 0x47, 0xef, 0x22, 0xbb, 0xc4, 0xb, 0xa7}},  // Brave-Browser-Beta.
+      {0x20b22981,
+       0xf63a,
+       0x47a6,
+       {0xa5, 0x47, 0x69, 0x1c, 0xc9, 0x4c, 0xae, 0xe0}},  // Brave-Browser-Dev.
+      {0xf2edbc59,
+       0x7217,
+       0x4da5,
+       {0xa2,
+        0x59,
+        0x3,
+        0x2,
+        0xda,
+        0x6a,
+        0x0,
+        0xe1}},  // Brave-Browser-Nightly.
   };
 
   // The string representation of the CLSIDs above.
@@ -500,11 +505,17 @@ TEST_P(InstallStaticUtilTest, GetToastActivatorClsid) {
   // The toast activator CLSIDs for the brand's install modes; parallel to
   // kInstallModes.
   static constexpr CLSID kToastActivatorClsids[] = {
-      { 0xeb41c6e8,
-        0xba35,
-        0x4c06,
-        { 0x96, 0xe8, 0x6f, 0x30, 0xf1, 0x8c, 0xa5,
-          0x5c } },  // Brave-Browser-Development.
+      {0xeb41c6e8,
+       0xba35,
+       0x4c06,
+       {0x96,
+        0xe8,
+        0x6f,
+        0x30,
+        0xf1,
+        0x8c,
+        0xa5,
+        0x5c}},  // Brave-Browser-Development.
   };
 
   // The string representation of the CLSIDs above.
@@ -601,7 +612,7 @@ TEST_P(InstallStaticUtilTest, GetChromeChannel) {
 #else
   // Parallel to kInstallModes.
   static constexpr version_info::Channel kChannels[] = {
-    version_info::Channel::UNKNOWN,
+      version_info::Channel::UNKNOWN,
   };
 #endif
   EXPECT_EQ(kChannels[std::get<0>(GetParam())], GetChromeChannel());

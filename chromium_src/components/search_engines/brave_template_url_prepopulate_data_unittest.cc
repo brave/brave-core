@@ -50,7 +50,8 @@ const std::unordered_set<std::wstring> kOverriddenEnginesNames = {L"DuckDuckGo",
 std::vector<const PrepopulatedEngine*> GetAllPrepopulatedEngines() {
   std::vector<const PrepopulatedEngine*> engines =
       TemplateURLPrepopulateData::GetAllPrepopulatedEngines();
-  engines.insert(engines.end(), std::begin(kBraveAddedEngines),
+  engines.insert(engines.end(),
+                 std::begin(kBraveAddedEngines),
                  std::end(kBraveAddedEngines));
   return engines;
 }
@@ -97,11 +98,7 @@ TEST_F(BraveTemplateURLPrepopulateDataTest, OverriddenEngines) {
 // doesn't contain entries with duplicate ids.
 TEST_F(BraveTemplateURLPrepopulateDataTest, UniqueIDs) {
   const int kCountryIds[] = {
-    'D' << 8 | 'E',
-    'F' << 8 | 'R',
-    'U' << 8 | 'S',
-    -1
-  };
+      'D' << 8 | 'E', 'F' << 8 | 'R', 'U' << 8 | 'S', -1};
 
   for (size_t i = 0; i < base::size(kCountryIds); ++i) {
     prefs_.SetInteger(kCountryIDAtInstall, kCountryIds[i]);

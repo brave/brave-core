@@ -14,8 +14,7 @@ bool GetDefaultUserDataDirectory(base::FilePath* result) {
   std::unique_ptr<base::Environment> env(base::Environment::Create());
   base::FilePath config_dir;
   std::string chrome_config_home_str;
-  config_dir =
-      GetXDGDirectory(env.get(), kXdgConfigHomeEnvVar, kDotConfigDir);
+  config_dir = GetXDGDirectory(env.get(), kXdgConfigHomeEnvVar, kDotConfigDir);
 
   std::string data_dir_suffix;
   brave::GetChannelImpl(nullptr, &data_dir_suffix);

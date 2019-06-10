@@ -10,8 +10,8 @@
 #include "base/command_line.h"
 #include "base/strings/string_util.h"
 #include "brave/browser/extensions/brave_theme_event_router.h"
-#include "brave/browser/themes/theme_properties.h"
 #include "brave/browser/themes/brave_theme_utils.h"
+#include "brave/browser/themes/theme_properties.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -66,9 +66,8 @@ base::Value BraveThemeService::GetBraveThemeList() {
 
   if (SystemThemeModeEnabled()) {
     base::Value system_type(base::Value::Type::DICTIONARY);
-    system_type.SetKey(
-        "value",
-        base::Value(BraveThemeType::BRAVE_THEME_TYPE_DEFAULT));
+    system_type.SetKey("value",
+                       base::Value(BraveThemeType::BRAVE_THEME_TYPE_DEFAULT));
     system_type.SetKey(
         "name",
         base::Value(l10n_util::GetStringUTF16(IDS_BRAVE_THEME_TYPE_SYSTEM)));
@@ -109,8 +108,7 @@ void BraveThemeService::RegisterProfilePrefs(
 }
 
 // static
-BraveThemeType BraveThemeService::GetActiveBraveThemeType(
-    Profile* profile) {
+BraveThemeType BraveThemeService::GetActiveBraveThemeType(Profile* profile) {
   // allow override via cli flag
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
@@ -129,9 +127,9 @@ BraveThemeType BraveThemeService::GetActiveBraveThemeType(
       profile->GetPrefs()->GetInteger(kBraveThemeType));
   if (type == BraveThemeType::BRAVE_THEME_TYPE_DEFAULT) {
     DCHECK(SystemThemeModeEnabled());
-    return ui::NativeTheme::GetInstanceForNativeUi()->
-         SystemDarkModeEnabled() ? BraveThemeType::BRAVE_THEME_TYPE_DARK
-                                 : BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
+    return ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled()
+               ? BraveThemeType::BRAVE_THEME_TYPE_DARK
+               : BraveThemeType::BRAVE_THEME_TYPE_LIGHT;
   }
   return type;
 }
@@ -166,10 +164,10 @@ void BraveThemeService::Init(Profile* profile) {
     }
 
     brave_theme_type_pref_.Init(
-      kBraveThemeType,
-      profile->GetPrefs(),
-      base::Bind(&BraveThemeService::OnPreferenceChanged,
-                 base::Unretained(this)));
+        kBraveThemeType,
+        profile->GetPrefs(),
+        base::Bind(&BraveThemeService::OnPreferenceChanged,
+                   base::Unretained(this)));
 
     brave_theme_event_router_.reset(
         new extensions::BraveThemeEventRouter(profile));
@@ -186,7 +184,7 @@ SkColor BraveThemeService::GetDefaultColor(int id, bool incognito) const {
   const base::Optional<SkColor> braveColor =
       MaybeGetDefaultColorForBraveUi(id, incognito, theme);
   if (braveColor)
-      return braveColor.value();
+    return braveColor.value();
   // make sure we fallback to chrome's dark theme (incognito) for our dark theme
   if (theme == BraveThemeType::BRAVE_THEME_TYPE_DARK)
     incognito = true;
@@ -237,8 +235,7 @@ void BraveThemeService::OverrideDefaultThemeIfNeeded(Profile* profile) {
   if (!SystemThemeModeEnabled() &&
       profile->GetPrefs()->GetInteger(kBraveThemeType) ==
           BraveThemeType::BRAVE_THEME_TYPE_DEFAULT) {
-    profile->GetPrefs()->SetBoolean(kUseOverriddenBraveThemeType,
-                                    true);
+    profile->GetPrefs()->SetBoolean(kUseOverriddenBraveThemeType, true);
     profile->GetPrefs()->SetInteger(kBraveThemeType,
                                     GetThemeTypeBasedOnChannel());
   }
@@ -277,7 +274,7 @@ bool BraveThemeService::SystemThemeModeEnabled() {
     return false;
 
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-      switches::kForceDarkMode))
+          switches::kForceDarkMode))
     return true;
 
   return SystemThemeSupportDarkMode();

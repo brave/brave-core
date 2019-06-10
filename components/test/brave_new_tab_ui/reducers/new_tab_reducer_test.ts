@@ -2,32 +2,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
- // Constants
-import { types } from '../../../brave_new_tab_ui/constants/new_tab_types'
-
-// Reducer
-import newTabReducer from '../../../brave_new_tab_ui/reducers/new_tab_reducer'
-
+// Constants
 // Actions
 import * as actions from '../../../brave_new_tab_ui/actions/new_tab_actions'
-
-// State
-import { newTabInitialState } from '../../testData'
-
-// API
-import * as gridAPI from '../../../brave_new_tab_ui/api/topSites/grid'
 import * as bookmarksAPI from '../../../brave_new_tab_ui/api/topSites/bookmarks'
 import * as dndAPI from '../../../brave_new_tab_ui/api/topSites/dnd'
+// API
+import * as gridAPI from '../../../brave_new_tab_ui/api/topSites/grid'
+import {types} from '../../../brave_new_tab_ui/constants/new_tab_types'
+// Reducer
+import newTabReducer from '../../../brave_new_tab_ui/reducers/new_tab_reducer'
 import * as storage from '../../../brave_new_tab_ui/storage'
+// State
+import {newTabInitialState} from '../../testData'
 
 const initialState = newTabInitialState.newTabData
 
 describe('newTabReducer', () => {
   const url: string = 'http://brave.com/'
-  const topSites: Partial<NewTab.Sites> = [{ url }]
-  const pinnedTopSites: Partial<NewTab.Sites> = topSites
+const topSites: Partial<NewTab.Sites> =
+    [{url}] const pinnedTopSites: Partial<NewTab.Sites> = topSites
   const ignoredTopSites: Partial<NewTab.Sites> = [{ url: 'https://github.com' }]
-  const bookmarks: Partial<NewTab.Bookmark> = { [url]: { id: 'bookmark_id' } }
+  const bookmarks: Partial<NewTab.Bookmark> = {
+  [url]: {id: 'bookmark_id'} }
   const fakeState = {
     ...initialState,
     topSites,
@@ -38,26 +35,18 @@ describe('newTabReducer', () => {
 
   describe('initial state', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(storage, 'load')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(storage, 'load')})
+  afterEach(() => {spy.mockRestore()})
     it('calls storage.load() when initial state is undefined', () => {
       newTabReducer(undefined, actions.statsUpdated())
-      expect(spy).toBeCalled()
+    expect(spy).toBeCalled()
       expect(spy.mock.calls[0][1]).toBe(undefined)
     })
   })
   describe('BOOKMARK_ADDED', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.bookmarks, 'create')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.bookmarks, 'create')})
+  afterEach(() => {spy.mockRestore()})
 
     it('calls chrome.bookmarks.create if topSites url match payload url', () => {
       newTabReducer(fakeState, {
@@ -76,12 +65,8 @@ describe('newTabReducer', () => {
   })
   describe('BOOKMARK_REMOVED', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome.bookmarks, 'remove')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome.bookmarks, 'remove')})
+  afterEach(() => {spy.mockRestore()})
 
     it('calls chrome.bookmarks.remove if bookmarkInfo exists', () => {
       newTabReducer(fakeState, {
@@ -91,7 +76,8 @@ describe('newTabReducer', () => {
       expect(spy).toBeCalled()
     })
     it('does not call chrome.bookmarks.remove if bookmarkInfo is undefined', () => {
-      const newTabInitialStateWithoutBookmarks = { ...initialState, bookmarks: {} }
+      const newTabInitialStateWithoutBookmarks = {
+  ...initialState, bookmarks: {} }
       newTabReducer(newTabInitialStateWithoutBookmarks, {
         type: types.BOOKMARK_REMOVED,
         payload: { url }
@@ -101,29 +87,19 @@ describe('newTabReducer', () => {
   })
   describe('NEW_TAB_TOP_SITES_DATA_UPDATED', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(gridAPI, 'calculateGridSites')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(gridAPI, 'calculateGridSites')})
+  afterEach(() => {spy.mockRestore()})
     it('calls gridAPI.calculateGridSites', () => {
       const url: string = 'https://brave.com'
-      newTabReducer(fakeState, {
-        type: types.NEW_TAB_TOP_SITES_DATA_UPDATED,
-        payload: { url }
-      })
+    newTabReducer(
+        fakeState, {type: types.NEW_TAB_TOP_SITES_DATA_UPDATED, payload: {url}})
       expect(spy).toBeCalled()
     })
   })
   describe('NEW_TAB_SITE_PINNED', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(gridAPI, 'calculateGridSites')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(gridAPI, 'calculateGridSites')})
+  afterEach(() => {spy.mockRestore()})
     it('calls gridAPI.calculateGridSites', () => {
       newTabReducer(fakeState, {
         type: types.NEW_TAB_SITE_PINNED,
@@ -134,12 +110,8 @@ describe('newTabReducer', () => {
   })
   describe('NEW_TAB_SITE_UNPINNED', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(gridAPI, 'calculateGridSites')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(gridAPI, 'calculateGridSites')})
+  afterEach(() => {spy.mockRestore()})
     it('calls gridAPI.calculateGridSites', () => {
       newTabReducer(fakeState, {
         type: types.NEW_TAB_SITE_UNPINNED,
@@ -150,12 +122,8 @@ describe('newTabReducer', () => {
   })
   describe('NEW_TAB_SITE_IGNORED', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(gridAPI, 'calculateGridSites')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(gridAPI, 'calculateGridSites')})
+  afterEach(() => {spy.mockRestore()})
     it('calls gridAPI.calculateGridSites', () => {
       newTabReducer(fakeState, {
         type: types.NEW_TAB_SITE_IGNORED,
@@ -166,12 +134,8 @@ describe('newTabReducer', () => {
   })
   describe('NEW_TAB_UNDO_SITE_IGNORED', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(gridAPI, 'calculateGridSites')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(gridAPI, 'calculateGridSites')})
+  afterEach(() => {spy.mockRestore()})
     it('calls gridAPI.calculateGridSites', () => {
       newTabReducer(fakeState, {
         type: types.NEW_TAB_UNDO_SITE_IGNORED,
@@ -182,12 +146,8 @@ describe('newTabReducer', () => {
   })
   describe('NEW_TAB_UNDO_ALL_SITE_IGNORED', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(gridAPI, 'calculateGridSites')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(gridAPI, 'calculateGridSites')})
+  afterEach(() => {spy.mockRestore()})
     it('calls gridAPI.calculateGridSites', () => {
       newTabReducer(fakeState, {
         type: types.NEW_TAB_UNDO_ALL_SITE_IGNORED
@@ -208,12 +168,8 @@ describe('newTabReducer', () => {
   })
   describe('NEW_TAB_SITE_DRAGGED', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(dndAPI, 'onDraggedSite')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(dndAPI, 'onDraggedSite')})
+  afterEach(() => {spy.mockRestore()})
     it('calls dndAPI.onDraggedSite', () => {
       newTabReducer(fakeState, {
         type: types.NEW_TAB_SITE_DRAGGED,
@@ -227,12 +183,8 @@ describe('newTabReducer', () => {
   })
   describe('NEW_TAB_SITE_DRAG_END', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(dndAPI, 'onDragEnd')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(dndAPI, 'onDragEnd')})
+  afterEach(() => {spy.mockRestore()})
     it('calls dndAPI.onDragEnd', () => {
       newTabReducer(fakeState, {
         type: types.NEW_TAB_SITE_DRAG_END
@@ -242,40 +194,32 @@ describe('newTabReducer', () => {
   })
   describe('NEW_TAB_BOOKMARK_INFO_AVAILABLE', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(bookmarksAPI, 'updateBookmarkInfo')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(bookmarksAPI, 'updateBookmarkInfo')})
+  afterEach(() => {spy.mockRestore()})
     it('calls bookmarksAPI.updateBookmarkInfo', () => {
       const queryUrl: string = 'https://brave.com'
-      const bookmarkTreeNode = {
-        dateAdded: 1557899510259,
-        id: '7',
-        index: 0,
-        parentId: '2',
-        title: 'Secure, Fast & Private Web Browser with Adblocker | Brave Browser',
-        url: 'http://brave.com/'
-      }
-      newTabReducer(fakeState, {
-        type: types.NEW_TAB_BOOKMARK_INFO_AVAILABLE,
-        payload: {
-          queryUrl,
-          bookmarkTreeNode
-        }
-      })
+    const bookmarkTreeNode = {
+      dateAdded: 1557899510259,
+      id: '7',
+      index: 0,
+      parentId: '2',
+      title:
+          'Secure, Fast & Private Web Browser with Adblocker | Brave Browser',
+      url: 'http://brave.com/'
+    } newTabReducer(fakeState, {
+      type: types.NEW_TAB_BOOKMARK_INFO_AVAILABLE,
+      payload: {queryUrl, bookmarkTreeNode}
+    })
       expect(spy).toBeCalled()
     })
   })
   describe('NEW_TAB_GRID_SITES_UPDATED', () => {
     it('sets gridSites into gridSites state', () => {
       const url: string = 'http://brave.com/'
-      const gridSites: Partial<NewTab.Sites> = [{ url }]
-      const assertion = newTabReducer(fakeState, {
-        type: types.NEW_TAB_GRID_SITES_UPDATED,
-        payload: { gridSites }
-      })
+  const gridSites: Partial<NewTab.Sites> = [{url}] const assertion =
+      newTabReducer(
+          fakeState,
+          {type: types.NEW_TAB_GRID_SITES_UPDATED, payload: {gridSites}})
       expect(assertion).toEqual({
         ...fakeState,
         gridSites: [ { url: 'http://brave.com/' } ]
@@ -284,12 +228,8 @@ describe('newTabReducer', () => {
   })
   describe('NEW_TAB_STATS_UPDATED', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(storage, 'getLoadTimeData')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(storage, 'getLoadTimeData')})
+  afterEach(() => {spy.mockRestore()})
     it('calls storage.getLoadTimeData', () => {
       newTabReducer(fakeState, {
         type: types.NEW_TAB_STATS_UPDATED
@@ -299,12 +239,8 @@ describe('newTabReducer', () => {
   })
   describe('NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(chrome, 'send')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+  beforeEach(() => {spy = jest.spyOn(chrome, 'send')})
+  afterEach(() => {spy.mockRestore()})
     it('calls chrome.send', () => {
       newTabReducer(fakeState, {
         type: types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE,
@@ -314,10 +250,10 @@ describe('newTabReducer', () => {
     })
     it('set useAlternativePrivateSearchEngine value based on shouldUse', () => {
       const payloadValue = true
-      const assertion = newTabReducer(fakeState, {
-        type: types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE,
-        payload: { shouldUse: payloadValue }
-      })
+    const assertion = newTabReducer(fakeState, {
+      type: types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE,
+      payload: {shouldUse: payloadValue}
+    })
       expect(assertion).toEqual({
         ...fakeState,
         useAlternativePrivateSearchEngine: payloadValue

@@ -2,14 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { ActiveTabIds, ApplicationState, TorrentObj, TorrentState, TorrentStateMap, TorrentObjMap, TorrentsState } from '../../brave_webtorrent/extension/constants/webtorrentState'
+import {ActiveTabIds, ApplicationState, TorrentObj, TorrentObjMap, TorrentsState, TorrentState, TorrentStateMap} from '../../brave_webtorrent/extension/constants/webtorrentState'
 
 export const currentWindowId: number = 0
 
-export const activeTabIds: ActiveTabIds = { 0: 0, 1: 1 }
+export const activeTabIds: ActiveTabIds = {
+  0: 0,
+  1: 1
+}
 
 export const torrentState: TorrentState = {
-  tabId: 0, torrentId: 'testTorrentId'
+  tabId: 0,
+  torrentId: 'testTorrentId'
 }
 
 export const torrentObj: TorrentObj = {

@@ -13,8 +13,8 @@
 
 #include "wrapper.hpp"  // NOLINT
 
-using challenge_bypass_ristretto::Token;
 using challenge_bypass_ristretto::BlindedToken;
+using challenge_bypass_ristretto::Token;
 
 namespace confirmations {
 

@@ -4,14 +4,11 @@
 
 import windowActions from '../actions/windowActions'
 
-chrome.windows.onFocusChanged.addListener((windowId: number) => {
-  windowActions.windowFocusChanged(windowId)
-})
+chrome.windows.onFocusChanged.addListener(
+    (windowId: number) => {windowActions.windowFocusChanged(windowId)})
 
-chrome.windows.onCreated.addListener((window: chrome.windows.Window) => {
-  windowActions.windowCreated(window)
-})
+chrome.windows.onCreated.addListener(
+    (window: chrome.windows.Window) => {windowActions.windowCreated(window)})
 
-chrome.windows.onRemoved.addListener((windowId: number) => {
-  windowActions.windowRemoved(windowId)
-})
+chrome.windows.onRemoved.addListener(
+    (windowId: number) => {windowActions.windowRemoved(windowId)})

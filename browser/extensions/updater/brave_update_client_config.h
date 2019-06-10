@@ -23,7 +23,7 @@ namespace update_client {
 class ActivityDataService;
 class NetworkFetcherFactory;
 class ProtocolHandlerFactory;
-}
+}  // namespace update_client
 
 namespace extensions {
 

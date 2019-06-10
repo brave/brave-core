@@ -45,37 +45,44 @@ class NewTabDOMHandler : public content::WebUIMessageHandler {
 }  // namespace
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
-    : BasicUI(web_ui, name, kBraveNewTabGenerated,
-        kBraveNewTabGeneratedSize, IDR_BRAVE_NEW_TAB_HTML) {
+    : BasicUI(web_ui,
+              name,
+              kBraveNewTabGenerated,
+              kBraveNewTabGeneratedSize,
+              IDR_BRAVE_NEW_TAB_HTML) {
   Profile* profile = Profile::FromWebUI(web_ui);
   PrefService* prefs = profile->GetPrefs();
   pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
   pref_change_registrar_->Init(prefs);
-  pref_change_registrar_->Add(kAdsBlocked,
-    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
-  pref_change_registrar_->Add(kTrackersBlocked,
-    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
-  pref_change_registrar_->Add(kHttpsUpgrades,
-    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
-  pref_change_registrar_->Add(kUseAlternativeSearchEngineProvider,
-    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
-  pref_change_registrar_->Add(kAlternativeSearchEngineProviderInTor,
-    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
+  pref_change_registrar_->Add(
+      kAdsBlocked,
+      base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
+  pref_change_registrar_->Add(
+      kTrackersBlocked,
+      base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
+  pref_change_registrar_->Add(
+      kHttpsUpgrades,
+      base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
+  pref_change_registrar_->Add(
+      kUseAlternativeSearchEngineProvider,
+      base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
+  pref_change_registrar_->Add(
+      kAlternativeSearchEngineProviderInTor,
+      base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
 
   web_ui->AddMessageHandler(std::make_unique<NewTabDOMHandler>());
 }
 
-BraveNewTabUI::~BraveNewTabUI() {
-}
+BraveNewTabUI::~BraveNewTabUI() {}
 
-void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* render_view_host) {
+void BraveNewTabUI::CustomizeNewTabWebUIProperties(
+    content::RenderViewHost* render_view_host) {
   DCHECK(IsSafeToSetWebUIProperties());
   Profile* profile = Profile::FromWebUI(web_ui());
   PrefService* prefs = profile->GetPrefs();
   if (render_view_host) {
     render_view_host->SetWebUIProperty(
-        "adsBlockedStat",
-        std::to_string(prefs->GetUint64(kAdsBlocked)));
+        "adsBlockedStat", std::to_string(prefs->GetUint64(kAdsBlocked)));
     render_view_host->SetWebUIProperty(
         "trackersBlockedStat",
         std::to_string(prefs->GetUint64(kTrackersBlocked)));
@@ -83,8 +90,7 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* rend
         "javascriptBlockedStat",
         std::to_string(prefs->GetUint64(kJavascriptBlocked)));
     render_view_host->SetWebUIProperty(
-        "httpsUpgradesStat",
-        std::to_string(prefs->GetUint64(kHttpsUpgrades)));
+        "httpsUpgradesStat", std::to_string(prefs->GetUint64(kHttpsUpgrades)));
     render_view_host->SetWebUIProperty(
         "fingerprintingBlockedStat",
         std::to_string(prefs->GetUint64(kFingerprintingBlocked)));

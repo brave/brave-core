@@ -90,18 +90,18 @@ TEST_F(BraveDownloadItemModelTest, GetOriginUrlText) {
     // Expected is_secure.
     bool expected_is_secure;
   } kTestCases[] = {
-    // Not secure.
-    {"http://example.com/foo.bar", "http://example.com", false},
-    // Secure.
-    {"https://example.com:5678/foo.bar", "https://example.com:5678", true},
-    // File, secure.
-    {"file:///c:/foo/bar/foo.bar", "file:///", true},
-    // about:, secure.
-    {"about:about", "about:about", true},
-    // invalid, not secure.
-    {"foo.bar.baz", "", false},
-    // empty, not secure.
-    {"", "", false},
+      // Not secure.
+      {"http://example.com/foo.bar", "http://example.com", false},
+      // Secure.
+      {"https://example.com:5678/foo.bar", "https://example.com:5678", true},
+      // File, secure.
+      {"file:///c:/foo/bar/foo.bar", "file:///", true},
+      // about:, secure.
+      {"about:about", "about:about", true},
+      // invalid, not secure.
+      {"foo.bar.baz", "", false},
+      // empty, not secure.
+      {"", "", false},
   };
 
   SetupDownloadItemDefaults();
@@ -126,8 +126,8 @@ TEST_F(BraveDownloadItemModelTest, GetTooltipText) {
     // Expected tooltip text.
     const char* expected_tooltip;
   } kTestCases[] = {
-    {"http://example.com/foo.bar", "foo.bar\nnot secure http://example.com"},
-    {"https://example.com:5678/foo.bar", "foo.bar\nhttps://example.com:5678"},
+      {"http://example.com/foo.bar", "foo.bar\nnot secure http://example.com"},
+      {"https://example.com:5678/foo.bar", "foo.bar\nhttps://example.com:5678"},
   };
 
   const int kTooltipWidth = 1000;
@@ -140,9 +140,9 @@ TEST_F(BraveDownloadItemModelTest, GetTooltipText) {
     const TestCase& test_case = kTestCases[i];
     EXPECT_CALL(item(), GetURL())
         .WillRepeatedly(ReturnRefOfCopy(GURL(test_case.url)));
-    EXPECT_TRUE(base::LowerCaseEqualsASCII(base::UTF16ToUTF8(
-      model().GetTooltipText(font_list, kTooltipWidth)),
-      test_case.expected_tooltip));
+    EXPECT_TRUE(base::LowerCaseEqualsASCII(
+        base::UTF16ToUTF8(model().GetTooltipText(font_list, kTooltipWidth)),
+        test_case.expected_tooltip));
     Mock::VerifyAndClearExpectations(&item());
   }
 }

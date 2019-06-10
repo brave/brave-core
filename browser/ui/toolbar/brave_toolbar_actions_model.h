@@ -15,11 +15,12 @@ class Extension;
 // - Hide the Brave 'extension' item from the |ToolbarActionsBar|, since it is
 //   displayed in the |BraveActionsContainer|
 class BraveToolbarActionsModel : public ToolbarActionsModel {
-  public:
-    using ToolbarActionsModel::ToolbarActionsModel;
-    bool ShouldAddExtension(const extensions::Extension* extension) override;
-  private:
-    DISALLOW_COPY_AND_ASSIGN(BraveToolbarActionsModel);
+ public:
+  using ToolbarActionsModel::ToolbarActionsModel;
+  bool ShouldAddExtension(const extensions::Extension* extension) override;
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(BraveToolbarActionsModel);
 };
 
 #endif

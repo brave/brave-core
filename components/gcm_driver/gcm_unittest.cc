@@ -99,11 +99,9 @@ FakeMCSClient::FakeMCSClient(base::Clock* clock,
     : MCSClient("", clock, connection_factory, gcm_store, recorder),
       last_android_id_(0u),
       last_security_token_(0u),
-      last_message_tag_(kNumProtoTypes) {
-}
+      last_message_tag_(kNumProtoTypes) {}
 
-FakeMCSClient::~FakeMCSClient() {
-}
+FakeMCSClient::~FakeMCSClient() {}
 
 void FakeMCSClient::Login(uint64_t android_id, uint64_t security_token) {
   last_android_id_ = android_id;
@@ -138,11 +136,9 @@ class AutoAdvancingTestClock : public base::Clock {
 
 AutoAdvancingTestClock::AutoAdvancingTestClock(
     base::TimeDelta auto_increment_time_delta)
-    : call_count_(0), auto_increment_time_delta_(auto_increment_time_delta) {
-}
+    : call_count_(0), auto_increment_time_delta_(auto_increment_time_delta) {}
 
-AutoAdvancingTestClock::~AutoAdvancingTestClock() {
-}
+AutoAdvancingTestClock::~AutoAdvancingTestClock() {}
 
 base::Time AutoAdvancingTestClock::Now() const {
   call_count_++;
@@ -204,7 +200,7 @@ FakeGCMInternalsBuilder::BuildConnectionFactory(
     const net::BackoffEntry::Policy& backoff_policy,
     base::RepeatingCallback<
         void(network::mojom::ProxyResolvingSocketFactoryRequest)>
-            get_socket_factory_callback,
+        get_socket_factory_callback,
     GCMStatsRecorder* recorder,
     network::NetworkConnectionTracker* network_connection_tracker) {
   return base::WrapUnique<ConnectionFactory>(new FakeConnectionFactory());
@@ -212,8 +208,7 @@ FakeGCMInternalsBuilder::BuildConnectionFactory(
 
 }  // namespace
 
-class GCMClientImplTest : public testing::Test,
-                          public GCMClient::Delegate {
+class GCMClientImplTest : public testing::Test, public GCMClient::Delegate {
  public:
   GCMClientImplTest();
   ~GCMClientImplTest() override;
@@ -244,7 +239,7 @@ class GCMClientImplTest : public testing::Test,
                       GCMClient::Result result) override {}
   void OnMessageReceived(const std::string& registration_id,
                          const IncomingMessage& message) override {}
-    void OnMessagesDeleted(const std::string& app_id) override {}
+  void OnMessagesDeleted(const std::string& app_id) override {}
   void OnMessageSendError(
       const std::string& app_id,
       const gcm::GCMClient::SendErrorDetails& send_error_details) override {}
@@ -258,9 +253,7 @@ class GCMClientImplTest : public testing::Test,
   void OnStoreReset() override {}
 
   GCMClientImpl* gcm_client() const { return gcm_client_.get(); }
-  GCMClientImpl::State gcm_client_state() const {
-    return gcm_client_->state_;
-  }
+  GCMClientImpl::State gcm_client_state() const { return gcm_client_->state_; }
   FakeMCSClient* mcs_client() const {
     return reinterpret_cast<FakeMCSClient*>(gcm_client_->mcs_client_.get());
   }
@@ -326,9 +319,7 @@ class GCMClientImplTest : public testing::Test,
   network::TestURLLoaderFactory* url_loader_factory() {
     return &test_url_loader_factory_;
   }
-  base::TestMockTimeTaskRunner* task_runner() {
-    return task_runner_.get();
-  }
+  base::TestMockTimeTaskRunner* task_runner() { return task_runner_.get(); }
 
  private:
   // Must be declared first so that it is destroyed last. Injected to
@@ -377,8 +368,7 @@ void GCMClientImplTest::SetUp() {
   StartGCMClient();
 }
 
-void GCMClientImplTest::TearDown() {
-}
+void GCMClientImplTest::TearDown() {}
 
 void GCMClientImplTest::PumpLoopUntilIdle() {
   task_runner_->RunUntilIdle();
@@ -401,8 +391,10 @@ void GCMClientImplTest::CompleteRegistration(
   // this should return false because registration was blocked, so there is
   // no pending request
   EXPECT_FALSE(url_loader_factory()->SimulateResponseForPendingRequest(
-      GURL(kRegisterUrl), network::URLLoaderCompletionStatus(net::OK),
-      network::CreateResourceResponseHead(net::HTTP_OK), response));
+      GURL(kRegisterUrl),
+      network::URLLoaderCompletionStatus(net::OK),
+      network::CreateResourceResponseHead(net::HTTP_OK),
+      response));
 
   // Give a chance for GCMStoreImpl::Backend to finish persisting data.
   PumpLoopUntilIdle();
@@ -430,11 +422,15 @@ void GCMClientImplTest::InitializeGCMClient() {
   chrome_build_info.version = kChromeVersion;
   chrome_build_info.product_category_for_subtypes = kProductCategoryForSubtypes;
   gcm_client_->Initialize(
-      chrome_build_info, gcm_store_path(), task_runner_, base::DoNothing(),
+      chrome_build_info,
+      gcm_store_path(),
+      task_runner_,
+      base::DoNothing(),
       base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
           &test_url_loader_factory_),
       network::TestNetworkConnectionTracker::GetInstance(),
-      base::WrapUnique<Encryptor>(new FakeEncryptor), this);
+      base::WrapUnique<Encryptor>(new FakeEncryptor),
+      this);
 }
 
 void GCMClientImplTest::StartGCMClient() {

@@ -7,8 +7,8 @@
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/testing_pref_service.h"
@@ -67,8 +67,8 @@ class BraveStatsUpdaterBrowserTest : public InProcessBrowserTest {
 
     const base::FilePath promo_code_file =
         user_data_dir.AppendASCII("promoCode");
-    return base::WriteFile(promo_code_file, referral_code.c_str(),
-                           referral_code.size());
+    return base::WriteFile(
+        promo_code_file, referral_code.c_str(), referral_code.size());
   }
 
   void OnStatsUpdated(const std::string& update_url) {

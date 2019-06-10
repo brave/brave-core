@@ -23,8 +23,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, DownloadPromptDefault) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
-  EXPECT_FALSE(
-      browser()->profile()->GetPrefs()->GetBoolean(kWidevineOptedIn));
+  EXPECT_FALSE(browser()->profile()->GetPrefs()->GetBoolean(kWidevineOptedIn));
   EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(
       kHTTPSEVerywhereControlType));
   EXPECT_FALSE(
@@ -37,10 +36,8 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
       browser()->profile()->GetPrefs()->GetBoolean(kTwitterEmbedControlType));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kLinkedInEmbedControlType));
-  EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
-  EXPECT_TRUE(
-      browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kWebTorrentEnabled));
+  EXPECT_TRUE(browser()->profile()->GetPrefs()->GetBoolean(kHangoutsEnabled));
   EXPECT_FALSE(
       browser()->profile()->GetPrefs()->GetBoolean(kHideBraveRewardsButton));
   EXPECT_FALSE(

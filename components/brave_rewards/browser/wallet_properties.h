@@ -5,27 +5,27 @@
 #ifndef BRAVE_BROWSER_PAYMENTS_WALLET_PROPERTIES_
 #define BRAVE_BROWSER_PAYMENTS_WALLET_PROPERTIES_
 
-#include <string>
 #include <map>
+#include <string>
 #include <vector>
 #include "brave/components/brave_rewards/browser/grant.h"
 
 namespace brave_rewards {
-  struct WalletProperties {
-    WalletProperties();
-    ~WalletProperties();
-    WalletProperties(const WalletProperties& properties);
+struct WalletProperties {
+  WalletProperties();
+  ~WalletProperties();
+  WalletProperties(const WalletProperties& properties);
 
-    std::string probi;
-    double balance;
-    double monthly_amount;
-    std::map<std::string, double> rates;
-    std::vector<double> parameters_choices;
-    std::vector<double> parameters_range;
-    unsigned int parameters_days;
-    std::vector<Grant> grants;
-  };
+  std::string probi;
+  double balance;
+  double monthly_amount;
+  std::map<std::string, double> rates;
+  std::vector<double> parameters_choices;
+  std::vector<double> parameters_range;
+  unsigned int parameters_days;
+  std::vector<Grant> grants;
+};
 
 }  // namespace brave_rewards
 
-#endif //BRAVE_BROWSER_PAYMENTS_WALLET_PROPERTIES_
+#endif  // BRAVE_BROWSER_PAYMENTS_WALLET_PROPERTIES_

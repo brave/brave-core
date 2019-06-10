@@ -31,5 +31,4 @@ class GuestWindowSearchEngineProviderService
   DISALLOW_COPY_AND_ASSIGN(GuestWindowSearchEngineProviderService);
 };
 
-
 #endif  // BRAVE_BROWSER_SEARCH_ENGINES_GUEST_WINDOW_SEARCH_ENGINE_PROVIDER_SERVICE_H_

@@ -15,13 +15,13 @@
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
-#include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
+#include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service.h"
 #include "build/build_config.h"
-#include "components/sessions/core/session_id.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "components/sessions/core/session_id.h"
 #include "url/gurl.h"
 
 class PrefRegistrySimple;
@@ -30,7 +30,7 @@ class Profile;
 namespace ads {
 struct IssuersInfo;
 struct NotificationInfo;
-}
+}  // namespace ads
 
 namespace content {
 class NavigationHandle;
@@ -47,15 +47,15 @@ class RewardsServiceObserver;
 
 using GetContentSiteListCallback =
     base::Callback<void(std::unique_ptr<ContentSiteList>,
-        uint32_t /* next_record */)>;
+                        uint32_t /* next_record */)>;
 using GetAllBalanceReportsCallback = base::Callback<void(
     const std::map<std::string, brave_rewards::BalanceReport>&)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetContributionAmountCallback = base::Callback<void(double)>;
-using GetAddressesCallback = base::Callback<void(
-    const std::map<std::string, std::string>&)>;
-using GetAutoContributePropsCallback = base::Callback<void(
-    std::unique_ptr<brave_rewards::AutoContributeProps>)>;
+using GetAddressesCallback =
+    base::Callback<void(const std::map<std::string, std::string>&)>;
+using GetAutoContributePropsCallback =
+    base::Callback<void(std::unique_ptr<brave_rewards::AutoContributeProps>)>;
 using GetPublisherMinVisitTimeCallback = base::Callback<void(uint64_t)>;
 using GetPublisherMinVisitsCallback = base::Callback<void(uint32_t)>;
 using GetPublisherAllowNonVerifiedCallback = base::Callback<void(bool)>;
@@ -69,10 +69,10 @@ using GetTransactionHistoryForThisCycleCallback =
     base::Callback<void(int, double)>;
 using GetRewardsInternalsInfoCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
-using GetRecurringTipsCallback = base::OnceCallback<void(
-    std::unique_ptr<brave_rewards::ContentSiteList>)>;
-using GetOneTimeTipsCallback = base::OnceCallback<void(
-    std::unique_ptr<brave_rewards::ContentSiteList>)>;
+using GetRecurringTipsCallback =
+    base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSiteList>)>;
+using GetOneTimeTipsCallback =
+    base::OnceCallback<void(std::unique_ptr<brave_rewards::ContentSiteList>)>;
 using GetPublisherBannerCallback =
     base::OnceCallback<void(std::unique_ptr<brave_rewards::PublisherBanner>)>;
 using RefreshPublisherCallback =
@@ -103,9 +103,8 @@ class RewardsService : public KeyedService {
       const GetContentSiteListCallback& callback) = 0;
   virtual void FetchGrants(const std::string& lang,
                            const std::string& paymentId) = 0;
-  virtual void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) = 0;
+  virtual void GetGrantCaptcha(const std::string& promotion_id,
+                               const std::string& promotion_type) = 0;
   virtual void SolveGrantCaptcha(const std::string& solution,
                                  const std::string& promotionId) const = 0;
   virtual void GetWalletPassphrase(
@@ -130,8 +129,7 @@ class RewardsService : public KeyedService {
                           const GURL& referrer,
                           const std::string& post_data) = 0;
 
-  virtual void GetReconcileStamp(
-      const GetReconcileStampCallback& callback) = 0;
+  virtual void GetReconcileStamp(const GetReconcileStampCallback& callback) = 0;
   virtual void GetAddresses(const GetAddressesCallback& callback) = 0;
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
   virtual void GetPublisherMinVisitTime(
@@ -148,8 +146,7 @@ class RewardsService : public KeyedService {
   virtual void SetPublisherAllowVideos(bool allow) const = 0;
   virtual void SetContributionAmount(double amount) const = 0;
   virtual void SetUserChangedContribution() const = 0;
-  virtual void GetAutoContribute(
-      GetAutoContributeCallback callback) = 0;
+  virtual void GetAutoContribute(GetAutoContributeCallback callback) = 0;
   virtual void SetAutoContribute(bool enabled) const = 0;
   virtual void SetTimer(uint64_t time_offset, uint32_t* timer_id) = 0;
   virtual void GetAllBalanceReports(
@@ -168,23 +165,24 @@ class RewardsService : public KeyedService {
   virtual void OnTip(const std::string& publisher_key,
                      int amount,
                      bool recurring) = 0;
-  virtual void OnTip(const std::string& publisher_key, int amount,
-      bool recurring, std::unique_ptr<brave_rewards::ContentSite> site) = 0;
+  virtual void OnTip(const std::string& publisher_key,
+                     int amount,
+                     bool recurring,
+                     std::unique_ptr<brave_rewards::ContentSite> site) = 0;
   virtual void RemoveRecurringTip(const std::string& publisher_key) = 0;
   virtual void GetRecurringTipsUI(GetRecurringTipsCallback callback) = 0;
   virtual void GetOneTimeTipsUI(GetOneTimeTipsCallback callback) = 0;
-  virtual void SetContributionAutoInclude(
-      const std::string& publisher_key,
-      bool exclude) = 0;
+  virtual void SetContributionAutoInclude(const std::string& publisher_key,
+                                          bool exclude) = 0;
   virtual RewardsNotificationService* GetNotificationService() const = 0;
   virtual bool CheckImported() = 0;
   virtual void SetBackupCompleted() = 0;
   virtual void GetAutoContributeProps(
-    const GetAutoContributePropsCallback& callback) = 0;
+      const GetAutoContributePropsCallback& callback) = 0;
   virtual void GetPendingContributionsTotalUI(
-    const GetPendingContributionsTotalCallback& callback) = 0;
+      const GetPendingContributionsTotalCallback& callback) = 0;
   virtual void GetRewardsMainEnabled(
-    const GetRewardsMainEnabledCallback& callback) const = 0;
+      const GetRewardsMainEnabledCallback& callback) const = 0;
   // TODO(Terry Mancey): remove this hack when ads is moved to the same process
   // as ledger
   virtual void SetCatalogIssuers(const std::string& json) = 0;
@@ -197,16 +195,15 @@ class RewardsService : public KeyedService {
   virtual void GetTransactionHistoryForThisCycle(
       GetTransactionHistoryForThisCycleCallback callback) = 0;
 
-  virtual void RefreshPublisher(
-      const std::string& publisher_key,
-      RefreshPublisherCallback callback) = 0;
+  virtual void RefreshPublisher(const std::string& publisher_key,
+                                RefreshPublisherCallback callback) = 0;
 
   virtual void GetPendingContributionsUI(
-    GetPendingContributionsCallback callback) = 0;
+      GetPendingContributionsCallback callback) = 0;
 
   virtual void RemovePendingContributionUI(const std::string& publisher_key,
-                                         const std::string& viewing_id,
-                                         uint64_t added_date) = 0;
+                                           const std::string& viewing_id,
+                                           uint64_t added_date) = 0;
   virtual void RemoveAllPendingContributionsUI() = 0;
 
   void AddObserver(RewardsServiceObserver* observer);
@@ -226,14 +223,12 @@ class RewardsService : public KeyedService {
 
   virtual void SetInlineTipSetting(const std::string& key, bool enabled) = 0;
 
-  virtual void GetInlineTipSetting(
-      const std::string& key,
-      GetInlineTipSettingCallback callback) = 0;
+  virtual void GetInlineTipSetting(const std::string& key,
+                                   GetInlineTipSettingCallback callback) = 0;
 
-  virtual void GetShareURL(
-      const std::string& type,
-      const std::map<std::string, std::string>& args,
-      GetShareURLCallback callback) = 0;
+  virtual void GetShareURL(const std::string& type,
+                           const std::map<std::string, std::string>& args,
+                           GetShareURLCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

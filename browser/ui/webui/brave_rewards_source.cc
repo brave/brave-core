@@ -54,8 +54,7 @@ scoped_refptr<base::RefCountedMemory> BitmapToMemory(const SkBitmap* image) {
 BraveRewardsSource::BraveRewardsSource(Profile* profile)
     : profile_(profile->GetOriginalProfile()) {}
 
-BraveRewardsSource::~BraveRewardsSource() {
-}
+BraveRewardsSource::~BraveRewardsSource() {}
 
 std::string BraveRewardsSource::GetSource() const {
   return "rewards-image";
@@ -82,7 +81,8 @@ void BraveRewardsSource::StartDataRequest(
       BitmapFetcherServiceFactory::GetForBrowserContext(profile_);
   if (image_service) {
     net::NetworkTrafficAnnotationTag traffic_annotation =
-        net::DefineNetworkTrafficAnnotation("brave_rewards_resource_fetcher", R"(
+        net::DefineNetworkTrafficAnnotation("brave_rewards_resource_fetcher",
+                                            R"(
         semantics {
           sender:
             "Brave Rewards resource fetcher"
@@ -107,7 +107,8 @@ void BraveRewardsSource::StartDataRequest(
         new RewardsResourceFetcherObserver(
             url,
             base::BindRepeating(&BraveRewardsSource::OnBitmapFetched,
-                                base::Unretained(this), got_data_callback)),
+                                base::Unretained(this),
+                                got_data_callback)),
         traffic_annotation));
   }
 }
@@ -132,8 +133,8 @@ bool BraveRewardsSource::ShouldServiceRequest(
     const GURL& url,
     content::ResourceContext* resource_context,
     int render_process_id) const {
-  return URLDataSource::ShouldServiceRequest(url, resource_context,
-                                             render_process_id);
+  return URLDataSource::ShouldServiceRequest(
+      url, resource_context, render_process_id);
 }
 
 void BraveRewardsSource::OnBitmapFetched(

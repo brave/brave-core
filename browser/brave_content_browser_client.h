@@ -59,8 +59,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const url::Origin& requesting_origin,
       const url::Origin& embedding_origin) override;
 
-  void RegisterOutOfProcessServices(
-      OutOfProcessServiceMap* services) override;
+  void RegisterOutOfProcessServices(OutOfProcessServiceMap* services) override;
 
   base::Optional<service_manager::Manifest> GetServiceManifestOverlay(
       base::StringPiece name) override;
@@ -81,9 +80,11 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                        const GURL& url) override;
 
  private:
-  bool AllowAccessCookie(const GURL& url, const GURL& first_party,
-      content::ResourceContext* context, int render_process_id,
-      int render_frame_id);
+  bool AllowAccessCookie(const GURL& url,
+                         const GURL& first_party,
+                         content::ResourceContext* context,
+                         int render_process_id,
+                         int render_frame_id);
   void OnAllowGoogleAuthChanged();
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>

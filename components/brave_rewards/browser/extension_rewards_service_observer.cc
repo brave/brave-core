@@ -5,26 +5,24 @@
 
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
 
-#include <utility>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/base64.h"
+#include "bat/ledger/ledger_callback_handler.h"
 #include "brave/common/extensions/api/brave_rewards.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/event_router.h"
-#include "bat/ledger/ledger_callback_handler.h"
 
 namespace brave_rewards {
 
 ExtensionRewardsServiceObserver::ExtensionRewardsServiceObserver(
     Profile* profile)
-    : profile_(profile) {
-}
+    : profile_(profile) {}
 
-ExtensionRewardsServiceObserver::~ExtensionRewardsServiceObserver() {
-}
+ExtensionRewardsServiceObserver::~ExtensionRewardsServiceObserver() {}
 
 void ExtensionRewardsServiceObserver::OnWalletInitialized(
     RewardsService* rewards_service,
@@ -34,8 +32,8 @@ void ExtensionRewardsServiceObserver::OnWalletInitialized(
   // Don't report back if there is no ledger file
   if (event_router && result != ledger::Result::NO_LEDGER_STATE) {
     std::unique_ptr<base::ListValue> args(
-        extensions::api::brave_rewards::OnWalletInitialized::Create(
-          result).release());
+        extensions::api::brave_rewards::OnWalletInitialized::Create(result)
+            .release());
 
     std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_START,
@@ -49,12 +47,11 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
     RewardsService* rewards_service,
     int error_code,
     std::unique_ptr<brave_rewards::WalletProperties> wallet_properties) {
-  auto* event_router =
-      extensions::EventRouter::Get(profile_);
+  auto* event_router = extensions::EventRouter::Get(profile_);
   if (error_code == 17) {  // ledger::Result::CORRUPT_WALLET
     std::unique_ptr<base::ListValue> args(
-        extensions::api::brave_rewards::OnWalletInitialized::Create(
-          error_code).release());
+        extensions::api::brave_rewards::OnWalletInitialized::Create(error_code)
+            .release());
     std::unique_ptr<extensions::Event> event(new extensions::Event(
         extensions::events::BRAVE_START,
         extensions::api::brave_rewards::OnWalletInitialized::kEventName,
@@ -71,11 +68,11 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
     properties.rates.usd = wallet_properties->rates["USD"];
     properties.rates.eur = wallet_properties->rates["EUR"];
 
-    for (size_t i = 0; i < wallet_properties->grants.size(); i ++) {
+    for (size_t i = 0; i < wallet_properties->grants.size(); i++) {
       properties.grants.push_back(
           extensions::api::brave_rewards::OnWalletProperties::Properties::
               GrantsType());
-      auto& grant = properties.grants[properties.grants.size() -1];
+      auto& grant = properties.grants[properties.grants.size() - 1];
 
       grant.altcurrency = wallet_properties->grants[i].altcurrency;
       grant.probi = wallet_properties->grants[i].probi;
@@ -155,10 +152,9 @@ void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsServiceObserver::OnGrant(
-    RewardsService* rewards_service,
-    unsigned int result,
-    brave_rewards::Grant grant) {
+void ExtensionRewardsServiceObserver::OnGrant(RewardsService* rewards_service,
+                                              unsigned int result,
+                                              brave_rewards::Grant grant) {
   auto* event_router = extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
@@ -170,12 +166,11 @@ void ExtensionRewardsServiceObserver::OnGrant(
   newGrant.SetString("promotionId", grant.promotionId);
 
   std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnGrant::Create(newGrant)
-          .release());
-  std::unique_ptr<extensions::Event> event(new extensions::Event(
-      extensions::events::BRAVE_START,
-      extensions::api::brave_rewards::OnGrant::kEventName,
-      std::move(args)));
+      extensions::api::brave_rewards::OnGrant::Create(newGrant).release());
+  std::unique_ptr<extensions::Event> event(
+      new extensions::Event(extensions::events::BRAVE_START,
+                            extensions::api::brave_rewards::OnGrant::kEventName,
+                            std::move(args)));
   event_router->BroadcastEvent(std::move(event));
 }
 
@@ -239,7 +234,8 @@ void ExtensionRewardsServiceObserver::OnRewardsMainEnabled(
 
   std::unique_ptr<base::ListValue> args(
       extensions::api::brave_rewards::OnEnabledMain::Create(
-          rewards_main_enabled).release());
+          rewards_main_enabled)
+          .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnEnabledMain::kEventName,
@@ -273,15 +269,15 @@ void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
     return;
   }
 
-  std::vector<extensions::api::brave_rewards::OnPublisherListNormalized::
-        PublishersType> publishers;
+  std::vector<
+      extensions::api::brave_rewards::OnPublisherListNormalized::PublishersType>
+      publishers;
 
-  for (size_t i = 0; i < list.size(); i ++) {
-    publishers.push_back(
-        extensions::api::brave_rewards::OnPublisherListNormalized::
-        PublishersType());
+  for (size_t i = 0; i < list.size(); i++) {
+    publishers.push_back(extensions::api::brave_rewards::
+                             OnPublisherListNormalized::PublishersType());
 
-    auto& publisher = publishers[publishers.size() -1];
+    auto& publisher = publishers[publishers.size() - 1];
 
     publisher.publisher_key = list[i].id;
     publisher.percentage = list[i].percentage;
@@ -289,8 +285,8 @@ void ExtensionRewardsServiceObserver::OnPublisherListNormalized(
   }
 
   std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::
-      OnPublisherListNormalized::Create(publishers)
+      extensions::api::brave_rewards::OnPublisherListNormalized::Create(
+          publishers)
           .release());
 
   std::unique_ptr<extensions::Event> event(new extensions::Event(
@@ -332,8 +328,8 @@ void ExtensionRewardsServiceObserver::OnRecurringTipSaved(
   }
 
   std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnRecurringTipSaved::Create(
-          success).release());
+      extensions::api::brave_rewards::OnRecurringTipSaved::Create(success)
+          .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnRecurringTipSaved::kEventName,
@@ -350,8 +346,8 @@ void ExtensionRewardsServiceObserver::OnRecurringTipRemoved(
   }
 
   std::unique_ptr<base::ListValue> args(
-      extensions::api::brave_rewards::OnRecurringTipRemoved::Create(
-          success).release());
+      extensions::api::brave_rewards::OnRecurringTipRemoved::Create(success)
+          .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnRecurringTipRemoved::kEventName,
@@ -370,7 +366,8 @@ void ExtensionRewardsServiceObserver::OnPendingContributionRemoved(
 
   std::unique_ptr<base::ListValue> args(
       extensions::api::brave_rewards::OnPendingContributionRemoved::Create(
-          result).release());
+          result)
+          .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnPendingContributionRemoved::kEventName,

@@ -12,7 +12,6 @@
 #include "base/lazy_instance.h"
 #include "base/path_service.h"
 #include "base/time/time.h"
-#include "build/build_config.h"
 #include "brave/app/brave_command_line_helper.h"
 #include "brave/browser/brave_content_browser_client.h"
 #include "brave/browser/translate/buildflags/buildflags.h"
@@ -21,6 +20,7 @@
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/renderer/brave_content_renderer_client.h"
 #include "brave/utility/brave_content_utility_client.h"
+#include "build/build_config.h"
 #include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_paths_internal.h"
@@ -55,16 +55,14 @@ base::LazyInstance<BraveContentBrowserClient>::DestructorAtExit
     g_brave_content_browser_client = LAZY_INSTANCE_INITIALIZER;
 #endif
 
-BraveMainDelegate::BraveMainDelegate()
-    : ChromeMainDelegate() {}
+BraveMainDelegate::BraveMainDelegate() : ChromeMainDelegate() {}
 
 BraveMainDelegate::BraveMainDelegate(base::TimeTicks exe_entry_point_ticks)
     : ChromeMainDelegate(exe_entry_point_ticks) {}
 
 BraveMainDelegate::~BraveMainDelegate() {}
 
-content::ContentBrowserClient*
-BraveMainDelegate::CreateContentBrowserClient() {
+content::ContentBrowserClient* BraveMainDelegate::CreateContentBrowserClient() {
 #if defined(CHROME_MULTIPLE_DLL_CHILD)
   return NULL;
 #else
@@ -87,8 +85,7 @@ BraveMainDelegate::CreateContentRendererClient() {
 #endif
 }
 
-content::ContentUtilityClient*
-BraveMainDelegate::CreateContentUtilityClient() {
+content::ContentUtilityClient* BraveMainDelegate::CreateContentUtilityClient() {
 #if defined(CHROME_MULTIPLE_DLL_BROWSER)
   return NULL;
 #else
@@ -106,19 +103,20 @@ void BraveMainDelegate::PreSandboxStartup() {
 #if defined(OS_MACOSX)
   base::PathService::Get(base::DIR_APP_DATA, &chrome_user_data_dir);
   chrome_user_data_dir = chrome_user_data_dir.Append("Google/Chrome");
-  native_messaging_dir = base::FilePath(FILE_PATH_LITERAL(
-      "/Library/Google/Chrome/NativeMessagingHosts"));
+  native_messaging_dir = base::FilePath(
+      FILE_PATH_LITERAL("/Library/Google/Chrome/NativeMessagingHosts"));
 #else
   chrome::GetDefaultUserDataDirectory(&chrome_user_data_dir);
-  native_messaging_dir = base::FilePath(FILE_PATH_LITERAL(
-      "/etc/opt/chrome/native-messaging-hosts"));
+  native_messaging_dir = base::FilePath(
+      FILE_PATH_LITERAL("/etc/opt/chrome/native-messaging-hosts"));
 #endif  // defined(OS_MACOSX)
   base::PathService::OverrideAndCreateIfNeeded(
       chrome::DIR_USER_NATIVE_MESSAGING,
       chrome_user_data_dir.Append(FILE_PATH_LITERAL("NativeMessagingHosts")),
-      false, true);
-  base::PathService::OverrideAndCreateIfNeeded(chrome::DIR_NATIVE_MESSAGING,
-      native_messaging_dir, false, true);
+      false,
+      true);
+  base::PathService::OverrideAndCreateIfNeeded(
+      chrome::DIR_NATIVE_MESSAGING, native_messaging_dir, false, true);
 #endif  // defined(OS_LINUX) || defined(OS_MACOSX)
   if (brave::SubprocessNeedsResourceBundle()) {
     brave::InitializeResourceBundle();
@@ -133,26 +131,27 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
   command_line.AppendSwitch(switches::kNoPings);
-  command_line.AppendSwitchASCII(switches::kExtensionsInstallVerification,
+  command_line.AppendSwitchASCII(
+      switches::kExtensionsInstallVerification,
       switches::kExtensionContentVerificationEnforceStrict);
 
   // Enabled features.
   const std::unordered_set<const char*> enabled_features = {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-      extensions_features::kNewExtensionUpdaterService.name,
+    extensions_features::kNewExtensionUpdaterService.name,
 #endif
-      features::kDesktopPWAWindowing.name,
-      omnibox::kSimplifyHttpsIndicator.name,
+    features::kDesktopPWAWindowing.name,
+    omnibox::kSimplifyHttpsIndicator.name,
   };
 
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
-      autofill::features::kAutofillSaveCardSignInAfterLocalSave.name,
-      autofill::features::kAutofillServerCommunication.name,
-      network::features::kNetworkService.name,
-      unified_consent::kUnifiedConsent.name,
+    autofill::features::kAutofillSaveCardSignInAfterLocalSave.name,
+    autofill::features::kAutofillServerCommunication.name,
+    network::features::kNetworkService.name,
+    unified_consent::kUnifiedConsent.name,
 #if !defined(CHROME_MULTIPLE_DLL_CHILD) && !BUILDFLAG(ENABLE_BRAVE_TRANSLATE)
-      translate::kTranslateUI.name,  // only available in browser process
+    translate::kTranslateUI.name,  // only available in browser process
 #endif
   };
   command_line.AppendFeatures(enabled_features, disabled_features);

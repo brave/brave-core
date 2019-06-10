@@ -12,19 +12,16 @@
 
 namespace braveledger_bat_state {
 
-BatState::BatState(bat_ledger::LedgerImpl* ledger) :
-      ledger_(ledger),
-      state_(new braveledger_bat_helper::CLIENT_STATE_ST()) {
-}
+BatState::BatState(bat_ledger::LedgerImpl* ledger)
+    : ledger_(ledger), state_(new braveledger_bat_helper::CLIENT_STATE_ST()) {}
 
-BatState::~BatState() {
-}
+BatState::~BatState() {}
 
 bool BatState::LoadState(const std::string& data) {
   braveledger_bat_helper::CLIENT_STATE_ST state;
   if (!braveledger_bat_helper::loadFromJson(&state, data.c_str())) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Failed to load client state: " << data;
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Failed to load client state: " << data;
     return false;
   }
 
@@ -57,8 +54,9 @@ void BatState::SaveState() {
   ledger_->SaveLedgerState(data);
 }
 
-void BatState::AddReconcile(const std::string& viewing_id,
-      const braveledger_bat_helper::CURRENT_RECONCILE& reconcile) {
+void BatState::AddReconcile(
+    const std::string& viewing_id,
+    const braveledger_bat_helper::CURRENT_RECONCILE& reconcile) {
   state_->current_reconciles_.insert(std::make_pair(viewing_id, reconcile));
   SaveState();
 }
@@ -77,8 +75,8 @@ bool BatState::UpdateReconcile(
 braveledger_bat_helper::CURRENT_RECONCILE BatState::GetReconcileById(
     const std::string& viewingId) const {
   if (state_->current_reconciles_.count(viewingId) == 0) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Could not find any reconcile tasks with the id " << viewingId;
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Could not find any reconcile tasks with the id " << viewingId;
     return braveledger_bat_helper::CURRENT_RECONCILE();
   }
 
@@ -171,11 +169,11 @@ uint64_t BatState::GetReconcileStamp() const {
 
 void BatState::ResetReconcileStamp() {
   if (ledger::reconcile_time > 0) {
-    state_->reconcileStamp_ = braveledger_bat_helper::currentTime() +
-                                ledger::reconcile_time * 60;
+    state_->reconcileStamp_ =
+        braveledger_bat_helper::currentTime() + ledger::reconcile_time * 60;
   } else {
     state_->reconcileStamp_ = braveledger_bat_helper::currentTime() +
-                                braveledger_ledger::_reconcile_default_interval;
+                              braveledger_ledger::_reconcile_default_interval;
   }
   SaveState();
 }
@@ -330,7 +328,7 @@ const std::string& BatState::GetCurrency() const {
   return state_->fee_currency_;
 }
 
-void BatState::SetCurrency(const std::string &currency) {
+void BatState::SetCurrency(const std::string& currency) {
   state_->fee_currency_ = currency;
   SaveState();
 }
@@ -348,7 +346,7 @@ const std::string& BatState::GetMasterUserToken() const {
   return state_->masterUserToken_;
 }
 
-void BatState::SetMasterUserToken(const std::string &token) {
+void BatState::SetMasterUserToken(const std::string& token) {
   state_->masterUserToken_ = token;
   SaveState();
 }

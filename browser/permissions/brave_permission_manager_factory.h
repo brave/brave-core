@@ -25,4 +25,4 @@ class BravePermissionManagerFactory : public PermissionManagerFactory {
   DISALLOW_COPY_AND_ASSIGN(BravePermissionManagerFactory);
 };
 
-#endif // BRAVE_BROWSER_PERMISSION_BRAVE_PERMISSION_MANAGER_FACTORR_H_
+#endif  // BRAVE_BROWSER_PERMISSION_BRAVE_PERMISSION_MANAGER_FACTORR_H_

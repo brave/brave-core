@@ -4,28 +4,12 @@
 
 import * as types from '../constants/webNavigationTypes'
 
-interface OnBeforeNavigateReturn {
-  type: types.ON_BEFORE_NAVIGATION,
-  tabId: number,
-  url: string,
-  isMainFrame: boolean
-}
+    interface OnBeforeNavigateReturn {type: types.ON_BEFORE_NAVIGATION, tabId: number, url: string, isMainFrame: boolean}
 
-export interface OnBeforeNavigate {
-  (tabId: number, url: string, isMainFrame: boolean): OnBeforeNavigateReturn
-}
+    export interface OnBeforeNavigate {(tabId: number, url: string, isMainFrame: boolean): OnBeforeNavigateReturn}
 
-interface OnCommittedReturn {
-  type: types.ON_COMMITTED,
-  tabId: number,
-  url: string,
-  isMainFrame: boolean
-}
+    interface OnCommittedReturn {type: types.ON_COMMITTED, tabId: number, url: string, isMainFrame: boolean}
 
-export interface OnCommitted {
-  (tabId: number, url: string, isMainFrame: boolean): OnCommittedReturn
-}
+    export interface OnCommitted {(tabId: number, url: string, isMainFrame: boolean): OnCommittedReturn}
 
-export type webNavigationActions =
-  OnBeforeNavigateReturn |
-  OnCommittedReturn
+    export type webNavigationActions = OnBeforeNavigateReturn | OnCommittedReturn

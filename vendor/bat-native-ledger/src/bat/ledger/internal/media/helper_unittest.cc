@@ -15,8 +15,7 @@
 
 namespace braveledger_media {
 
-class MediaHelperTest : public testing::Test {
-};
+class MediaHelperTest : public testing::Test {};
 
 TEST(MediaHelperTest, GetMediaKey) {
   // provider is missing
@@ -101,13 +100,11 @@ TEST(MediaHelperTest, GetTwitchParts) {
       "lLCJwbGF5ZXIiOiJzaXRlIiwiZW5jcnlwdGVkIjpmYWxzZSwidGltZSI6MTU1NTMxNjQ0NS4"
       "0Mzd9fV0=";
 
-  const std::vector<std::map<std::string, std::string>> result =
-      {{
-        {"channel", "dakotaz"},
-        {"event", "minute-watched"},
-        {"properties", ""},
-        {"time", "1555316445.437000"}
-      }};
+  const std::vector<std::map<std::string, std::string>> result = {
+      {{"channel", "dakotaz"},
+       {"event", "minute-watched"},
+       {"properties", ""},
+       {"time", "1555316445.437000"}}};
 
   // all ok
   braveledger_media::GetTwitchParts(post_data, &twitch_parts);
@@ -116,7 +113,7 @@ TEST(MediaHelperTest, GetTwitchParts) {
 }
 
 TEST(MediaHelperTest, ExtractData) {
-//  // string empty
+  //  // string empty
   std::string result = braveledger_media::ExtractData("", "/", "!");
   ASSERT_EQ(result, "");
 

@@ -10,46 +10,32 @@ type loadTimeData = {
 
 declare global {
   interface Window {
-    loadTimeData: loadTimeData
-    cr: {
-      define: (name: string, init: () => void) => void
-    }
-    i18nTemplate: {
-      process: (document: Document, translations: loadTimeData) => void
-    }
-    brave_adblock: {
-      initialize: () => void
-    }
-    brave_new_tab: {
-      initialize: () => void
-      statsUpdated: () => void
-    }
-    brave_rewards: {
-      initialize: () => void
-      walletCreated: chrome.events.Event<() => void>
-      walletCreateFailed: chrome.events.Event<() => void>
-      walletProperties: chrome.events.Event<(properties: {status: number, wallet: Rewards.WalletProperties}) => void>
-      grant: chrome.events.Event<(properties: Rewards.Grant) => void>
-      grantCaptcha: chrome.events.Event<(image: string) => void>
-      walletPassphrase: chrome.events.Event<(pass: string) => void>
-      recoverWalletData: chrome.events.Event<(properties: Rewards.RecoverWallet) => void>
-      grantFinish: chrome.events.Event<(properties: Rewards.GrantFinish) => void>
-      reconcileStamp: chrome.events.Event<(stamp: number) => void>
-      addresses: chrome.events.Event<(addresses: Record<string, string>) => void>
-      contributeList: chrome.events.Event<(list: Rewards.Publisher[]) => void>
-      balanceReports: chrome.events.Event<(reports: Record<string, Rewards.Report>) => void>
-    }
-    brave_welcome: {
-      initialize: () => void
-    }
-    brave_rewards_tip: {
-      initialize: () => void
-    }
-    brave_rewards_internals: {
-      initialize: () => void
-    }
-    sync_ui_exports: {
-      initialize: () => void
-    }
+  loadTimeData: loadTimeData
+  cr: {define: (name: string, init: () => void) => void} i18nTemplate: {
+    process: (document: Document, translations: loadTimeData) => void
+  } brave_adblock: {initialize: () => void} brave_new_tab: {
+    initialize: () => void
+    statsUpdated: () => void
+  } brave_rewards: {
+    initialize: () => void
+    walletCreated: chrome.events.Event<() => void>
+    walletCreateFailed: chrome.events.Event<() => void>
+    walletProperties: chrome.events.Event<
+        (properties: {status: number, wallet: Rewards.WalletProperties}) =>
+            void>
+    grant: chrome.events.Event<(properties: Rewards.Grant) => void>
+    grantCaptcha: chrome.events.Event<(image: string) => void>
+    walletPassphrase: chrome.events.Event<(pass: string) => void>
+    recoverWalletData:
+        chrome.events.Event<(properties: Rewards.RecoverWallet) => void>
+    grantFinish: chrome.events.Event<(properties: Rewards.GrantFinish) => void>
+    reconcileStamp: chrome.events.Event<(stamp: number) => void>
+    addresses: chrome.events.Event<(addresses: Record<string, string>) => void>
+    contributeList: chrome.events.Event<(list: Rewards.Publisher[]) => void>
+    balanceReports:
+        chrome.events.Event<(reports: Record<string, Rewards.Report>) => void>
+  } brave_welcome: {initialize: () => void} brave_rewards_tip:
+      {initialize: () => void} brave_rewards_internals:
+          {initialize: () => void} sync_ui_exports: {initialize: () => void}
   }
 }

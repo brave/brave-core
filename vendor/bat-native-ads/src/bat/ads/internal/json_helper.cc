@@ -7,9 +7,8 @@
 
 namespace helper {
 
-ads::Result JSON::Validate(
-    rapidjson::Document* document,
-    const std::string& json_schema) {
+ads::Result JSON::Validate(rapidjson::Document* document,
+                           const std::string& json_schema) {
   if (!document) {
     return ads::Result::FAILED;
   }

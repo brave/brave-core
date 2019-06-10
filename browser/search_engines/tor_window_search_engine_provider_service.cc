@@ -11,8 +11,8 @@
 #include "components/search_engines/template_url_prepopulate_data.h"
 #include "components/search_engines/template_url_service.h"
 
-TorWindowSearchEngineProviderService::
-TorWindowSearchEngineProviderService(Profile* otr_profile)
+TorWindowSearchEngineProviderService::TorWindowSearchEngineProviderService(
+    Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
   DCHECK(otr_profile->IsTorProfile());
   DCHECK_EQ(otr_profile->GetProfileType(), Profile::GUEST_PROFILE);
@@ -23,9 +23,8 @@ TorWindowSearchEngineProviderService(Profile* otr_profile)
 
   // Configure previously used provider because effective tor profile is
   // off the recored profile.
-  auto provider_data =
-      TemplateURLPrepopulateData::GetPrepopulatedEngine(
-          otr_profile->GetPrefs(), GetInitialSearchEngineProvider());
+  auto provider_data = TemplateURLPrepopulateData::GetPrepopulatedEngine(
+      otr_profile->GetPrefs(), GetInitialSearchEngineProvider());
   TemplateURL provider_url(*provider_data);
   otr_template_url_service_->SetUserSelectedDefaultSearchProvider(
       &provider_url);
@@ -35,33 +34,35 @@ TorWindowSearchEngineProviderService(Profile* otr_profile)
   otr_template_url_service_->AddObserver(this);
 }
 
-TorWindowSearchEngineProviderService::
-~TorWindowSearchEngineProviderService() {
+TorWindowSearchEngineProviderService::~TorWindowSearchEngineProviderService() {
   otr_template_url_service_->RemoveObserver(this);
 }
 
 void TorWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
   alternative_search_engine_provider_in_tor_.SetValue(
-     otr_template_url_service_->GetDefaultSearchProvider()->
-         data().prepopulate_id);
+      otr_template_url_service_->GetDefaultSearchProvider()
+          ->data()
+          .prepopulate_id);
 }
 
-int TorWindowSearchEngineProviderService::
-GetInitialSearchEngineProvider() const {
+int TorWindowSearchEngineProviderService::GetInitialSearchEngineProvider()
+    const {
   int initial_id = alternative_search_engine_provider_in_tor_.GetValue();
 
   bool region_for_qwant =
       TemplateURLPrepopulateData::GetPrepopulatedDefaultSearch(
-          otr_profile_->GetPrefs())->prepopulate_id ==
-          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
+          otr_profile_->GetPrefs())
+          ->prepopulate_id ==
+      TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
 
   // If this is first run, |initial_id| is invalid. Then, use qwant or ddg
   // depends on default prepopulate data.
   if (initial_id ==
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID) {
-    initial_id = region_for_qwant ?
-        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT :
-        TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
+    initial_id =
+        region_for_qwant
+            ? TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT
+            : TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
   }
 
   return initial_id;

@@ -4,7 +4,8 @@
 
 cr.define('settings', function() {
   // use value defined in page_visibility.js in guest mode
-  if (loadTimeData.getBoolean('isGuest')) return;
+  if (loadTimeData.getBoolean('isGuest'))
+    return;
 
   // We need to specify values for every attribute in pageVisibility instead of
   // only overriding specific attributes here because chromium does not
@@ -37,34 +38,35 @@ cr.define('settings', function() {
     }
   }
 
-  const defaultSections = [
-    'extensions',
-    'getStarted',
-    'shields',
-  ]
+  const defaultSections =
+      [
+        'extensions',
+        'getStarted',
+        'shields',
+      ]
 
-  const hiddenSections = [
-    'a11y',
-    'people',
-    'defaultBrowser'
-  ]
+      const hiddenSections = ['a11y', 'people', 'defaultBrowser']
 
-  const handler = {
-    get: function(obj, prop) {
-      if (prop === 'appearance') return new Proxy({}, appearanceHandler);
-      if (prop === 'socialBlocking') return new Proxy({}, socialBlockingHandler);
-      if (prop === 'braveSync') {
-        if (loadTimeData.getBoolean('isSyncDisabled'))
-          return false;
-        return true;
-      }
-      if (prop === 'privacy') return new Proxy({}, privacyHandler)
-      if (defaultSections.includes(prop)) return new Proxy({}, defaultHandler)
-      return hiddenSections.includes(prop) ? false : true;
-    }
-  };
+      const handler = {
+        get: function(obj, prop) {
+          if (prop === 'appearance')
+            return new Proxy({}, appearanceHandler);
+          if (prop === 'socialBlocking')
+            return new Proxy({}, socialBlockingHandler);
+          if (prop === 'braveSync') {
+            if (loadTimeData.getBoolean('isSyncDisabled'))
+              return false;
+            return true;
+          }
+          if (prop === 'privacy')
+            return new Proxy({}, privacyHandler)
+            if (defaultSections.includes(prop)) return new Proxy(
+                {}, defaultHandler)
+            return hiddenSections.includes(prop) ? false : true;
+        }
+      };
 
   let proxy = new Proxy({}, handler);
 
-  return { pageVisibility: proxy };
+  return {pageVisibility: proxy};
 });

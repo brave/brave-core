@@ -25,11 +25,9 @@ using base::Time;
 
 namespace brave {
 
-FirefoxImporter::FirefoxImporter() {
-}
+FirefoxImporter::FirefoxImporter() {}
 
-FirefoxImporter::~FirefoxImporter() {
-}
+FirefoxImporter::~FirefoxImporter() {}
 
 void FirefoxImporter::StartImport(const importer::SourceProfile& source_profile,
                                   uint16_t items,
@@ -82,20 +80,20 @@ void FirefoxImporter::ImportCookies() {
     const Time expiry = Time::FromDoubleT(s.ColumnInt64(5));
     const Time last_accessed = Time::FromDoubleT(s.ColumnInt64(6) / 1000000);
     const Time creation = Time::FromDoubleT(s.ColumnInt64(7) / 1000000);
-    
+
     auto cookie = net::CanonicalCookie(
-        s.ColumnString(1),  // name
-        s.ColumnString(2),  // value
-        domain,  // domain
-        s.ColumnString(4),  // path
-        creation,  // creation
-        expiry,  // expiration
-        last_accessed,  // last_access
-        s.ColumnBool(8),  // secure
-        s.ColumnBool(9),  // http_only
+        s.ColumnString(1),                                  // name
+        s.ColumnString(2),                                  // value
+        domain,                                             // domain
+        s.ColumnString(4),                                  // path
+        creation,                                           // creation
+        expiry,                                             // expiration
+        last_accessed,                                      // last_access
+        s.ColumnBool(8),                                    // secure
+        s.ColumnBool(9),                                    // http_only
         static_cast<net::CookieSameSite>(s.ColumnInt(10)),  // samesite
-        net::COOKIE_PRIORITY_DEFAULT  // priority
-        );
+        net::COOKIE_PRIORITY_DEFAULT                        // priority
+    );
     if (cookie.IsCanonical()) {
       cookies.push_back(cookie);
     }

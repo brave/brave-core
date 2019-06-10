@@ -22,10 +22,10 @@
 #include "components/update_client/unzip/unzip_impl.h"
 #include "components/update_client/unzipper.h"
 #include "components/update_client/update_query_params.h"
-#include "content/public/common/service_manager_connection.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/common/service_manager_connection.h"
 #include "extensions/browser/extension_prefs.h"
 #include "services/service_manager/public/cpp/connector.h"
 
@@ -142,7 +142,8 @@ base::Version BraveUpdateClientConfig::GetBrowserVersion() const {
 }
 
 std::string BraveUpdateClientConfig::GetChannel() const {
-  return std::string("stable");;
+  return std::string("stable");
+  ;
 }
 
 std::string BraveUpdateClientConfig::GetBrand() const {

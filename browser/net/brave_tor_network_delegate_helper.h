@@ -11,9 +11,8 @@ struct BraveRequestInfo;
 
 namespace brave {
 
-int OnBeforeURLRequest_TorWork(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx);
+int OnBeforeURLRequest_TorWork(const ResponseCallback& next_callback,
+                               std::shared_ptr<BraveRequestInfo> ctx);
 
 }  // namespace brave
 

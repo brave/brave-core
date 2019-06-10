@@ -3,38 +3,36 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global window */
 
-import { Reducer } from 'redux'
+import {Reducer} from 'redux'
 
 // Constants
-import { types } from '../constants/welcome_types'
+import {types} from '../constants/welcome_types'
 
 // Utils
 import * as storage from '../storage'
 
-const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State | undefined, action: any) => {
-  if (state === undefined) {
-    state = storage.load()
-  }
+const welcomeReducer: Reducer<Welcome.State|undefined> =
+    (state: Welcome.State|undefined, action: any) => {
+      if (state === undefined) {
+        state = storage.load()
+      }
 
-  const payload = action.payload
-  const startingState = state
-  switch (action.type) {
-    case types.IMPORT_NOW_REQUESTED:
-      chrome.send('importNowRequested', [])
-      break
-    case types.GO_TO_TAB_REQUESTED:
-      window.open(payload.url, payload.target)
-      break
-    case types.CLOSE_TAB_REQUESTED:
-      window.close()
-      break
-  }
+      const payload = action.payload
+      const startingState = state
+      switch (action.type) {
+        case types.IMPORT_NOW_REQUESTED:
+          chrome.send('importNowRequested', [])
+          break case types.GO_TO_TAB_REQUESTED: window.open(
+              payload.url, payload.target)
+          break case types.CLOSE_TAB_REQUESTED: window.close()
+          break
+      }
 
-  if (state !== startingState) {
-    storage.debouncedSave(state)
-  }
+      if (state !== startingState) {
+        storage.debouncedSave(state)
+      }
 
-  return state
-}
+      return state
+    }
 
 export default welcomeReducer

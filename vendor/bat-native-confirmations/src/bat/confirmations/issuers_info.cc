@@ -7,13 +7,10 @@
 
 namespace confirmations {
 
-IssuersInfo::IssuersInfo() :
-    public_key(""),
-    issuers({}) {}
+IssuersInfo::IssuersInfo() : public_key(""), issuers({}) {}
 
-IssuersInfo::IssuersInfo(const IssuersInfo& info) :
-    public_key(info.public_key),
-    issuers(info.issuers) {}
+IssuersInfo::IssuersInfo(const IssuersInfo& info)
+    : public_key(info.public_key), issuers(info.issuers) {}
 
 IssuersInfo::~IssuersInfo() = default;
 

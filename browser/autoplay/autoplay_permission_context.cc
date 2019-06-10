@@ -14,10 +14,9 @@
 #include "third_party/blink/public/mojom/feature_policy/feature_policy.mojom.h"
 
 AutoplayPermissionContext::AutoplayPermissionContext(Profile* profile)
-    : PermissionContextBase(
-          profile,
-          CONTENT_SETTINGS_TYPE_AUTOPLAY,
-          blink::mojom::FeaturePolicyFeature::kAutoplay) {}
+    : PermissionContextBase(profile,
+                            CONTENT_SETTINGS_TYPE_AUTOPLAY,
+                            blink::mojom::FeaturePolicyFeature::kAutoplay) {}
 
 AutoplayPermissionContext::~AutoplayPermissionContext() = default;
 
@@ -27,16 +26,15 @@ ContentSetting AutoplayPermissionContext::GetPermissionStatusInternal(
     const GURL& embedding_origin) const {
   if (g_brave_browser_process &&
       g_brave_browser_process->autoplay_whitelist_service()
-      ->ShouldAllowAutoplay(requesting_origin))
+          ->ShouldAllowAutoplay(requesting_origin))
     return CONTENT_SETTING_ALLOW;
   return PermissionContextBase::GetPermissionStatusInternal(
-    render_frame_host, requesting_origin, embedding_origin);
+      render_frame_host, requesting_origin, embedding_origin);
 }
 
-void AutoplayPermissionContext::UpdateTabContext(
-    const PermissionRequestID& id,
-    const GURL& requesting_frame,
-    bool allowed) {
+void AutoplayPermissionContext::UpdateTabContext(const PermissionRequestID& id,
+                                                 const GURL& requesting_frame,
+                                                 bool allowed) {
   TabSpecificContentSettings* content_settings =
       TabSpecificContentSettings::GetForFrame(id.render_process_id(),
                                               id.render_frame_id());
@@ -55,16 +53,19 @@ void AutoplayPermissionContext::NotifyPermissionSet(
     const BrowserPermissionCallback& callback,
     bool persist,
     ContentSetting content_setting) {
-  PermissionContextBase::NotifyPermissionSet(id, requesting_origin,
-                                             embedding_origin, callback,
-                                             persist, content_setting);
+  PermissionContextBase::NotifyPermissionSet(id,
+                                             requesting_origin,
+                                             embedding_origin,
+                                             callback,
+                                             persist,
+                                             content_setting);
   // Ask -> Allow
   if (persist && content_setting == CONTENT_SETTING_ALLOW) {
     content::WebContents* web_contents =
-      content::WebContents::FromRenderFrameHost(
-        content::RenderFrameHost::FromID(id.render_process_id(),
-                                         id.render_frame_id()));
-     web_contents->GetController().Reload(content::ReloadType::NORMAL, false);
+        content::WebContents::FromRenderFrameHost(
+            content::RenderFrameHost::FromID(id.render_process_id(),
+                                             id.render_frame_id()));
+    web_contents->GetController().Reload(content::ReloadType::NORMAL, false);
   }
 }
 

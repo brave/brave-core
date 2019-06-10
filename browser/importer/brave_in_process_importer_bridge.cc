@@ -7,10 +7,9 @@
 
 BraveInProcessImporterBridge::BraveInProcessImporterBridge(
     ProfileWriter* writer,
-    base::WeakPtr<ExternalProcessImporterHost> host) :
-  InProcessImporterBridge(writer, host),
-  writer_(static_cast<BraveProfileWriter*>(writer)) {
-}
+    base::WeakPtr<ExternalProcessImporterHost> host)
+    : InProcessImporterBridge(writer, host),
+      writer_(static_cast<BraveProfileWriter*>(writer)) {}
 
 void BraveInProcessImporterBridge::SetCookies(
     const std::vector<net::CanonicalCookie>& cookies) {
@@ -21,33 +20,34 @@ void BraveInProcessImporterBridge::UpdateStats(const BraveStats& stats) {
   writer_->UpdateStats(stats);
 }
 
-void BraveInProcessImporterBridge::UpdateLedger(
-    const BraveLedger& ledger) {
+void BraveInProcessImporterBridge::UpdateLedger(const BraveLedger& ledger) {
   writer_->SetBridge(this);
   writer_->UpdateLedger(ledger);
 }
 
-void BraveInProcessImporterBridge::FinishLedgerImport () {
+void BraveInProcessImporterBridge::FinishLedgerImport() {
   NotifyItemEnded(importer::LEDGER);
   NotifyEnded();
 }
 
-void BraveInProcessImporterBridge::Cancel () {
+void BraveInProcessImporterBridge::Cancel() {
   host_->Cancel();
 }
 
-void BraveInProcessImporterBridge::UpdateReferral(const BraveReferral& referral) {
+void BraveInProcessImporterBridge::UpdateReferral(
+    const BraveReferral& referral) {
   writer_->UpdateReferral(referral);
 }
 
 void BraveInProcessImporterBridge::UpdateWindows(
     const ImportedWindowState& windowState) {
-  // TODO: Can we just restore windows/tabs here? Do we even need to do anything with the ProfileWriter?
+  // TODO: Can we just restore windows/tabs here? Do we even need to do anything
+  // with the ProfileWriter?
   writer_->UpdateWindows(windowState);
 }
 
 void BraveInProcessImporterBridge::UpdateSettings(
-      const SessionStoreSettings& settings) {
+    const SessionStoreSettings& settings) {
   writer_->UpdateSettings(settings);
 }
 

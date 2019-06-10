@@ -11,8 +11,10 @@
 #include <string>
 #include <utility>
 
-#include "brave/common/importer/brave_stats.h"
+#include "brave/browser/importer/brave_in_process_importer_bridge.h"
+#include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/common/importer/brave_referral.h"
+#include "brave/common/importer/brave_stats.h"
 #include "brave/common/importer/imported_browser_window.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
@@ -21,13 +23,11 @@
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/utility/importer/brave_importer.h"
-#include "brave/browser/importer/brave_in_process_importer_bridge.h"
-#include "brave/browser/search_engines/search_engine_provider_util.h"
 
 #include "base/files/file_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/time/time.h"
 #include "base/task/post_task.h"
+#include "base/time/time.h"
 
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -39,11 +39,11 @@
 #include "chrome/browser/ui/browser_tabrestore.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "components/prefs/pref_service.h"
+#include "components/search_engines/template_url_data_util.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/storage_partition.h"
-#include "components/prefs/pref_service.h"
-#include "components/search_engines/template_url_data_util.h"
 #include "net/cookies/canonical_cookie.h"
 #include "net/cookies/cookie_constants.h"
 #include "net/cookies/cookie_options.h"
@@ -54,11 +54,11 @@
 
 BraveProfileWriter::BraveProfileWriter(Profile* profile)
     : ProfileWriter(profile),
-      task_runner_(base::CreateSequencedTaskRunnerWithTraits({
-          base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      consider_for_backup_(false) {
-}
+      task_runner_(base::CreateSequencedTaskRunnerWithTraits(
+          {base::MayBlock(),
+           base::TaskPriority::BEST_EFFORT,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
+      consider_for_backup_(false) {}
 
 BraveProfileWriter::~BraveProfileWriter() {
   DCHECK(!IsInObserverList());
@@ -94,7 +94,7 @@ void BraveProfileWriter::UpdateStats(const BraveStats& stats) {
   // stats; intended to prevent incorrectly updating the stats multiple
   // times from multiple imports.
   if (ads_blocked < uint64_t{stats.adblock_count}) {
-      prefs->SetUint64(kAdsBlocked, ads_blocked + stats.adblock_count);
+    prefs->SetUint64(kAdsBlocked, ads_blocked + stats.adblock_count);
   }
   if (trackers_blocked < uint64_t{stats.trackingProtection_count}) {
     prefs->SetUint64(kTrackersBlocked,
@@ -110,12 +110,13 @@ void BraveProfileWriter::SetBridge(BraveInProcessImporterBridge* bridge) {
 }
 
 void BraveProfileWriter::OnWalletInitialized(
-    brave_rewards::RewardsService* rewards_service, uint32_t result) {
+    brave_rewards::RewardsService* rewards_service,
+    uint32_t result) {
   if (result != 0 && result != 12) {  // 12: ledger::Result::WALLET_CREATED
     // Cancel the import if wallet creation failed
     std::ostringstream msg;
     msg << "An error occurred while trying to create a "
-      << "wallet to restore into (result=" << result << ")";
+        << "wallet to restore into (result=" << result << ")";
     CancelWalletImport(msg.str());
     return;
   }
@@ -128,20 +129,19 @@ void BraveProfileWriter::BackupWallet() {
   const base::FilePath profile_default_directory = profile_->GetPath();
   std::ostringstream backup_filename;
   backup_filename << "ledger_import_backup_"
-                  << base::NumberToString(static_cast<uint64_t>(
-                         base::Time::Now().ToJsTime()));
+                  << base::NumberToString(
+                         static_cast<uint64_t>(base::Time::Now().ToJsTime()));
 
   LOG(INFO) << "Making backup of current \"ledger_state\" as "
-    << "\"" << backup_filename.str() << "\"";
+            << "\"" << backup_filename.str() << "\"";
 
   base::PostTaskAndReplyWithResult(
-    task_runner_.get(),
-    FROM_HERE,
-    base::Bind(&base::CopyFile,
-      profile_default_directory.AppendASCII("ledger_state"),
-      profile_default_directory.AppendASCII(backup_filename.str())),
-    base::Bind(&BraveProfileWriter::OnWalletBackupComplete,
-      this));
+      task_runner_.get(),
+      FROM_HERE,
+      base::Bind(&base::CopyFile,
+                 profile_default_directory.AppendASCII("ledger_state"),
+                 profile_default_directory.AppendASCII(backup_filename.str())),
+      base::Bind(&BraveProfileWriter::OnWalletBackupComplete, this));
 }
 
 void BraveProfileWriter::OnWalletBackupComplete(bool result) {
@@ -155,15 +155,15 @@ void BraveProfileWriter::OnWalletBackupComplete(bool result) {
 }
 
 void BraveProfileWriter::OnWalletProperties(
-  brave_rewards::RewardsService* rewards_service,
-  int error_code,
-  std::unique_ptr<brave_rewards::WalletProperties> properties) {
+    brave_rewards::RewardsService* rewards_service,
+    int error_code,
+    std::unique_ptr<brave_rewards::WalletProperties> properties) {
   if (error_code) {
     // Cancel the import if wallet properties failed
     // (ex: creation failed, wallet is corrupt, etc)
     std::ostringstream msg;
     msg << "An error occurred getting wallet properties "
-      << "(error_code=" << error_code << ")";
+        << "(error_code=" << error_code << ")";
     CancelWalletImport(msg.str());
     return;
   }
@@ -184,8 +184,8 @@ void BraveProfileWriter::OnWalletProperties(
     if (properties->balance > 0) {
       std::ostringstream msg;
       msg << "Brave Rewards wallet existed before import and "
-        << "has a balance of " << properties->balance << "; skipping "
-        << "Brave Payments import.";
+          << "has a balance of " << properties->balance << "; skipping "
+          << "Brave Payments import.";
       CancelWalletImport(msg.str());
       return;
     } else {
@@ -207,7 +207,7 @@ void BraveProfileWriter::OnRecoverWallet(
     // Cancel the import if wallet restore failed
     std::ostringstream msg;
     msg << "An error occurred while trying to restore "
-      << "the wallet (result=" << result << ")";
+        << "the wallet (result=" << result << ")";
     CancelWalletImport(msg.str());
     return;
   }
@@ -235,8 +235,8 @@ void BraveProfileWriter::CancelWalletImport(std::string msg) {
   bridge_ptr_->FinishLedgerImport();
 }
 
-void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
-  rewards_service) {
+void BraveProfileWriter::SetWalletProperties(
+    brave_rewards::RewardsService* rewards_service) {
   // Set the preferences read from session-store-1
   auto* payments = &ledger_.settings.payments;
   rewards_service->SetPublisherAllowVideos(payments->allow_media_publishers);
@@ -272,10 +272,8 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
       site->provider = publisher.provider;
 
       // Add `recurring_donation` entry
-      rewards_service->OnTip(publisher.key,
-                                amount_in_bat,
-                                true,
-                                std::move(site));
+      rewards_service->OnTip(
+          publisher.key, amount_in_bat, true, std::move(site));
     }
   }
 
@@ -288,12 +286,13 @@ void BraveProfileWriter::SetWalletProperties(brave_rewards::RewardsService*
     new_contribution_amount_ -= sum_of_monthly_tips;
     // If left over budget is too low, turn off auto-contribute
     if (new_contribution_amount_ < minimum_monthly_contribution) {
-      LOG(INFO) << "Setting auto-contribute to false.\n"
-        << "Recurring contributions take up " << sum_of_monthly_tips
-        << " of the monthly " << payments->contribution_amount
-        << " budget.\nThis leaves " << new_contribution_amount_
-        << " which is less than the minimum monthly auto-contribute amount ("
-        << minimum_monthly_contribution << ").";
+      LOG(INFO)
+          << "Setting auto-contribute to false.\n"
+          << "Recurring contributions take up " << sum_of_monthly_tips
+          << " of the monthly " << payments->contribution_amount
+          << " budget.\nThis leaves " << new_contribution_amount_
+          << " which is less than the minimum monthly auto-contribute amount ("
+          << minimum_monthly_contribution << ").";
       auto_contribute_enabled = false;
       new_contribution_amount_ = minimum_monthly_contribution;
     }
@@ -341,14 +340,14 @@ void BraveProfileWriter::UpdateReferral(const BraveReferral& referral) {
 
   if (!referral.week_of_installation.empty()) {
     LOG(INFO) << "Setting kWeekOfInstallation to "
-      << "\"" << referral.week_of_installation << "\"";
+              << "\"" << referral.week_of_installation << "\"";
     local_state->SetString(kWeekOfInstallation, referral.week_of_installation);
   }
 
   if (!referral.promo_code.empty() &&
-    referral.promo_code.compare("none") != 0) {
+      referral.promo_code.compare("none") != 0) {
     LOG(INFO) << "Setting kReferralPromoCode to "
-      << "\"" << referral.promo_code << "\"";
+              << "\"" << referral.promo_code << "\"";
     local_state->SetString(kReferralPromoCode, referral.promo_code);
   } else {
     local_state->ClearPref(kReferralPromoCode);
@@ -356,7 +355,7 @@ void BraveProfileWriter::UpdateReferral(const BraveReferral& referral) {
 
   if (!referral.download_id.empty()) {
     LOG(INFO) << "Setting kReferralDownloadID to "
-      << "\"" << referral.download_id << "\"";
+              << "\"" << referral.download_id << "\"";
     local_state->SetString(kReferralDownloadID, referral.download_id);
   } else {
     local_state->ClearPref(kReferralDownloadID);
@@ -364,21 +363,20 @@ void BraveProfileWriter::UpdateReferral(const BraveReferral& referral) {
 
   if (referral.finalize_timestamp > 0) {
     LOG(INFO) << "Setting kReferralTimestamp to "
-      << "\"" << referral.finalize_timestamp << "\"";
+              << "\"" << referral.finalize_timestamp << "\"";
     local_state->SetTime(kReferralTimestamp,
-      base::Time::FromJsTime(referral.finalize_timestamp));
+                         base::Time::FromJsTime(referral.finalize_timestamp));
   } else {
     local_state->ClearPref(kReferralTimestamp);
   }
 }
 
-Browser* OpenImportedBrowserWindow(
-    const ImportedBrowserWindow& window,
-    Profile* profile) {
+Browser* OpenImportedBrowserWindow(const ImportedBrowserWindow& window,
+                                   Profile* profile) {
   Browser::CreateParams params(Browser::TYPE_TABBED, profile, false);
 
-  params.initial_bounds = gfx::Rect(window.top, window.left,
-      window.width, window.height);
+  params.initial_bounds =
+      gfx::Rect(window.top, window.left, window.width, window.height);
 
   ui::WindowShowState show_state = ui::SHOW_STATE_DEFAULT;
   if (window.state == "normal") {
@@ -396,8 +394,8 @@ Browser* OpenImportedBrowserWindow(
 }
 
 void OpenImportedBrowserTabs(Browser* browser,
-    const std::vector<ImportedBrowserTab>& tabs,
-    bool pinned) {
+                             const std::vector<ImportedBrowserTab>& tabs,
+                             bool pinned) {
   for (const auto tab : tabs) {
     std::vector<sessions::SerializedNavigationEntry> e;
     sessions::SerializedNavigationEntry entry;
@@ -406,11 +404,18 @@ void OpenImportedBrowserTabs(Browser* browser,
     entry.set_is_restored(true);
     e.push_back(entry);
 
-    chrome::AddRestoredTab(
-        browser, e, browser->tab_strip_model()->count(), 0,
-        "", false, pinned, true,
-        base::TimeTicks::UnixEpoch(), nullptr,
-        "", true /* from_session_restore */);
+    chrome::AddRestoredTab(browser,
+                           e,
+                           browser->tab_strip_model()->count(),
+                           0,
+                           "",
+                           false,
+                           pinned,
+                           true,
+                           base::TimeTicks::UnixEpoch(),
+                           nullptr,
+                           "",
+                           true /* from_session_restore */);
   }
 }
 
@@ -439,12 +444,11 @@ void ShowBrowser(Browser* browser, int selected_tab_index) {
 }
 
 void PrependPinnedTabs(Browser* browser,
-    const std::vector<ImportedBrowserTab>& tabs) {
+                       const std::vector<ImportedBrowserTab>& tabs) {
   OpenImportedBrowserTabs(browser, tabs, true);
 }
 
-void BraveProfileWriter::UpdateWindows(
-    const ImportedWindowState& windowState) {
+void BraveProfileWriter::UpdateWindows(const ImportedWindowState& windowState) {
   Browser* active = chrome::FindBrowserWithActiveWindow();
   Browser* first = nullptr;
 
@@ -464,20 +468,19 @@ void BraveProfileWriter::UpdateWindows(
     active->window()->Show();
 }
 
-
 // NOTE: the strings used as keys match the values found in Muon:
 // browser-laptop/js/data/searchProviders.js
 // Providers that aren't in this map are no longer prepopulated (Amazon,
 // Ecosia, GitHub, etc.) and the current default provider won't be changed.
 const std::map<std::string,
-        const TemplateURLPrepopulateData::PrepopulatedEngine>
+               const TemplateURLPrepopulateData::PrepopulatedEngine>
     importable_engines = {
-      {"Bing", TemplateURLPrepopulateData::bing},
-      {"DuckDuckGo", TemplateURLPrepopulateData::duckduckgo},
-      {"Google", TemplateURLPrepopulateData::google},
-      {"Qwant", TemplateURLPrepopulateData::qwant},
-      {"StartPage", TemplateURLPrepopulateData::startpage},
-    };
+        {"Bing", TemplateURLPrepopulateData::bing},
+        {"DuckDuckGo", TemplateURLPrepopulateData::duckduckgo},
+        {"Google", TemplateURLPrepopulateData::google},
+        {"Qwant", TemplateURLPrepopulateData::qwant},
+        {"StartPage", TemplateURLPrepopulateData::startpage},
+};
 
 void BraveProfileWriter::UpdateSettings(const SessionStoreSettings& settings) {
   int default_search_engine_id =
@@ -494,7 +497,7 @@ void BraveProfileWriter::UpdateSettings(const SessionStoreSettings& settings) {
           TemplateURLDataFromPrepopulatedEngine(engine);
       default_search_engine_id = engine.id;
       LOG(INFO) << "Setting default search engine to "
-          << settings.default_search_engine;
+                << settings.default_search_engine;
       TemplateURL provider_url(*template_data);
       url_service->SetUserSelectedDefaultSearchProvider(&provider_url);
     }
@@ -504,18 +507,19 @@ void BraveProfileWriter::UpdateSettings(const SessionStoreSettings& settings) {
   PrefService* prefs = profile_->GetPrefs();
   if (prefs) {
     prefs->SetBoolean(kUseAlternativeSearchEngineProvider,
-        settings.use_alternate_private_search_engine);
+                      settings.use_alternate_private_search_engine);
 
     // Provider for Tor tabs
     if (settings.use_alternate_private_search_engine_tor) {
       // if enabled, set as a default. This gets resolved to either
       // DDG or Qwant in TorWindowSearchEngineProviderService
-      prefs->SetInteger(kAlternativeSearchEngineProviderInTor,
-           TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
+      prefs->SetInteger(
+          kAlternativeSearchEngineProviderInTor,
+          TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_INVALID);
     } else {
       // if disabled, set to same as regular search engine
       prefs->SetInteger(kAlternativeSearchEngineProviderInTor,
-          default_search_engine_id);
+                        default_search_engine_id);
     }
   }
 }

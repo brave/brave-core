@@ -34,9 +34,9 @@ base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
   DCHECK(scale_factor == ui::SCALE_FACTOR_100P ||
          scale_factor == ui::SCALE_FACTOR_200P);
 
-  const char* pak_file =
-      (scale_factor == ui::SCALE_FACTOR_100P) ? "brave_100_percent.pak"
-                                              : "brave_200_percent.pak";
+  const char* pak_file = (scale_factor == ui::SCALE_FACTOR_100P)
+                             ? "brave_100_percent.pak"
+                             : "brave_200_percent.pak";
 #if defined(OS_MACOSX)
   base::ScopedCFTypeRef<CFStringRef> pak_file_mac(
       base::SysUTF8ToCFStringRef(pak_file));
@@ -49,7 +49,7 @@ base::FilePath GetScaledResourcesPakFilePath(ui::ScaleFactor scale_factor) {
 #endif  // OS_MACOSX
 }
 
-}
+}  // namespace
 
 namespace brave {
 
@@ -77,8 +77,8 @@ bool SubprocessNeedsResourceBundle() {
       process_type == service_manager::switches::kZygoteProcess ||
 #endif
 #if defined(OS_MACOSX)
-      // Mac needs them too for scrollbar related images and for sandbox
-      // profiles.
+  // Mac needs them too for scrollbar related images and for sandbox
+  // profiles.
 #if !defined(DISABLE_NACL)
       process_type == switches::kNaClLoaderProcess ||
 #endif
@@ -90,4 +90,4 @@ bool SubprocessNeedsResourceBundle() {
       process_type == switches::kUtilityProcess;
 }
 
-}
+}  // namespace brave

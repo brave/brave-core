@@ -41,8 +41,8 @@ AdsTabHelper::AdsTabHelper(content::WebContents* web_contents)
   if (!tab_id_.is_valid())
     return;
 
-  Profile* profile = Profile::FromBrowserContext(
-      web_contents->GetBrowserContext());
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
   ads_service_ = AdsServiceFactory::GetForProfile(profile);
 
 #if !defined(OS_ANDROID)
@@ -62,8 +62,8 @@ void AdsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   if (navigation_handle->IsInMainFrame() &&
       navigation_handle->GetResponseHeaders()) {
-    if (navigation_handle->GetResponseHeaders()->HasHeaderValue(
-            "cache-control", "no-store")) {
+    if (navigation_handle->GetResponseHeaders()->HasHeaderValue("cache-control",
+                                                                "no-store")) {
       run_distiller_ = false;
     } else {
       bool was_restored =
@@ -103,9 +103,9 @@ void AdsTabHelper::DocumentOnLoadCompletedInMainFrame() {
       web_contents()->GetLastCommittedURL(),
       options,
       base::Bind(&AdsTabHelper::OnWebContentsDistillationDone,
-          weak_factory_.GetWeakPtr(),
-          web_contents()->GetLastCommittedURL(),
-          base::Passed(std::move(distiller_page))));
+                 weak_factory_.GetWeakPtr(),
+                 web_contents()->GetLastCommittedURL(),
+                 base::Passed(std::move(distiller_page))));
 }
 
 void AdsTabHelper::OnWebContentsDistillationDone(
@@ -113,11 +113,10 @@ void AdsTabHelper::OnWebContentsDistillationDone(
     std::unique_ptr<dom_distiller::DistillerPage> distiller_page,
     std::unique_ptr<dom_distiller::proto::DomDistillerResult> distiller_result,
     bool distillation_successful) {
-  if (!ads_service_ )
+  if (!ads_service_)
     return;
 
-  if (distillation_successful &&
-      distiller_result->has_distilled_content() &&
+  if (distillation_successful && distiller_result->has_distilled_content() &&
       distiller_result->has_markup_info() &&
       distiller_result->distilled_content().has_html()) {
     ads_service_->ClassifyPage(url.spec(),
@@ -127,9 +126,8 @@ void AdsTabHelper::OnWebContentsDistillationDone(
   }
 }
 
-void AdsTabHelper::DidFinishLoad(
-    content::RenderFrameHost* render_frame_host,
-    const GURL& validated_url) {
+void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
+                                 const GURL& validated_url) {
   if (render_frame_host->GetParent())
     return;
 
@@ -145,14 +143,11 @@ void AdsTabHelper::TabUpdated() {
     return;
 
   ads_service_->TabUpdated(
-      tab_id_,
-      web_contents()->GetURL(),
-      is_active_ && is_browser_active_);
+      tab_id_, web_contents()->GetURL(), is_active_ && is_browser_active_);
 }
 
-void AdsTabHelper::MediaStartedPlaying(
-    const MediaPlayerInfo& video_type,
-    const content::MediaPlayerId& id) {
+void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
+                                       const content::MediaPlayerId& id) {
   if (ads_service_)
     ads_service_->OnMediaStart(tab_id_);
 }

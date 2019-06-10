@@ -15,7 +15,7 @@
 namespace base {
 class DictionaryValue;
 class ListValue;
-}
+}  // namespace base
 
 namespace gin {
 class Arguments;
@@ -51,10 +51,10 @@ class BraveShieldsContentSetting final
 
  private:
   BraveShieldsContentSetting(APIRequestHandler* request_handler,
-                 const APITypeReferenceMap* type_refs,
-                 const BindingAccessChecker* access_checker,
-                 const std::string& pref_name,
-                 const base::DictionaryValue& argument_spec);
+                             const APITypeReferenceMap* type_refs,
+                             const BindingAccessChecker* access_checker,
+                             const std::string& pref_name,
+                             const base::DictionaryValue& argument_spec);
 
   // JS function handlers:
   void Get(gin::Arguments* arguments);

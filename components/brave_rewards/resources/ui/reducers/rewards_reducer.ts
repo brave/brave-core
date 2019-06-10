@@ -2,61 +2,55 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { Reducer } from 'redux'
+import {Reducer} from 'redux'
 
 // Constant
-import { types } from '../constants/rewards_types'
-import { defaultState } from '../storage'
+import {types} from '../constants/rewards_types'
+import {defaultState} from '../storage'
 
-const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State, action) => {
-  switch (action.type) {
-    case types.INIT_AUTOCONTRIBUTE_SETTINGS: {
-      state = { ...state }
-      let properties = action.payload.properties
-      let ui = state.ui
+const rewardsReducer: Reducer<Rewards.State|undefined> =
+    (state: Rewards.State, action) => {
+      switch (action.type) {
+        case types.INIT_AUTOCONTRIBUTE_SETTINGS: {
+          state = {...state} let properties = action.payload.properties
+          let ui = state.ui
 
-      if (!properties || Object.keys(properties).length === 0) {
-        break
-      }
+          if (!properties || Object.keys(properties).length === 0) {
+            break
+          }
 
-      const isEmpty = !ui || ui.emptyWallet
+          const isEmpty = !ui || ui.emptyWallet
 
-      Object.keys(properties).map((property: string) => {
-        if (properties[property] !== undefined && properties[property] !== 'ui') {
-          state[property] = properties[property]
-        } else if (properties[property] === 'ui') {
-          ui = Object.assign(ui, properties[property])
+          Object.keys(properties).map((property: string) => {
+            if (properties[property] !== undefined &&
+                properties[property] !== 'ui') {
+              state[property] = properties[property]
+            } else if (properties[property] === 'ui') {
+              ui = Object.assign(ui, properties[property])
+            }
+          })
+
+          if (!isEmpty) {
+            ui.emptyWallet = false
+          }
+
+          state = {...state, ui}
+
+          break
         }
-      })
-
-      if (!isEmpty) {
-        ui.emptyWallet = false
-      }
-
+        case types.ON_SETTING_SAVE:
+          state = {...state} const key = action.payload.key
+          const value = action.payload.value
+          if (key) {
+            state[key] = value
+            chrome.send('brave_rewards.saveSetting', [key, value.toString()])
+          }
+          break case types.ON_MODAL_BACKUP_CLOSE: {state = {...state} let ui =
+                                                       state.ui
+          ui.walletRecoverySuccess = null
+          ui.modalBackup = false
       state = {
-        ...state,
-        ui
-      }
-
-      break
-    }
-    case types.ON_SETTING_SAVE:
-      state = { ...state }
-      const key = action.payload.key
-      const value = action.payload.value
-      if (key) {
-        state[key] = value
-        chrome.send('brave_rewards.saveSetting', [key, value.toString()])
-      }
-      break
-    case types.ON_MODAL_BACKUP_CLOSE: {
-      state = { ...state }
-      let ui = state.ui
-      ui.walletRecoverySuccess = null
-      ui.modalBackup = false
-      state = {
-        ...state,
-        ui
+        ...state, ui
       }
       break
     }
@@ -64,8 +58,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       let ui = state.ui
       ui.modalBackup = true
       state = {
-        ...state,
-        ui
+        ...state, ui
       }
       break
     }
@@ -77,8 +70,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       ui[action.payload.property] = null
       state = {
-        ...state,
-        ui
+        ...state, ui
       }
       break
     }
@@ -104,8 +96,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       let ui = state.ui
       ui.walletImported = action.payload.imported
       state = {
-        ...state,
-        ui
+        ...state, ui
       }
       break
     }
@@ -118,7 +109,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
-      state = { ...state }
+      state = {
+        ...state }
 
       if (!state.adsData) {
         state.adsData = defaultState.adsData
@@ -131,7 +123,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_ADS_SETTING_SAVE: {
-      state = { ...state }
+      state = {
+        ...state }
       const key = action.payload.key
       const value = action.payload.value
       if (key) {
@@ -159,7 +152,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
-      state = { ...state }
+      state = {
+        ...state }
 
       if (!state.adsData) {
         state.adsData = defaultState.adsData
@@ -184,9 +178,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     }
     case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
       if (!state.inlineTip) {
-        state.inlineTip = {
-          twitter: true
-        }
+        state.inlineTip = { twitter: true }
       }
 
       const key = action.payload.key
@@ -202,15 +194,14 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       chrome.send('brave_rewards.setInlineTipSetting', [key, value.toString()])
 
       state = {
-        ...state,
-        inlineTip
+        ...state, inlineTip
       }
 
       break
     }
-  }
+      }
 
-  return state
-}
+      return state
+    }
 
 export default rewardsReducer

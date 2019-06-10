@@ -17,7 +17,7 @@
 #define ADS_LOG_ERROR \
   ads_client_->Log(__FILE__, __LINE__, ::ads::LogLevel::LOG_ERROR)
 
-#define BLOG(severity) ADS_LOG_ ## severity->stream()
+#define BLOG(severity) ADS_LOG_##severity->stream()
 
 #if defined(ERROR)
 #define LOG_0 ADS_LOG_ERROR

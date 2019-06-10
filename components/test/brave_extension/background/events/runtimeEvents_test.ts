@@ -3,8 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import '../../../../brave_extension/extension/brave_extension/background/events/runtimeEvents'
-import windowActions from '../../../../brave_extension/extension/brave_extension/background/actions/windowActions'
+
 import tabActions from '../../../../brave_extension/extension/brave_extension/background/actions/tabActions'
+import windowActions from '../../../../brave_extension/extension/brave_extension/background/actions/windowActions'
 import { ChromeEvent } from '../../../testData'
 
 interface InputWindows {
@@ -41,34 +42,35 @@ describe('runtimeEvents events', () => {
     const p = new Promise((resolve, reject) => {
       deferred = resolve
     })
-    let windowCreatedSpy: jest.SpyInstance
-    let tabCreatedSpy: jest.SpyInstance
-    let windowGetAllSpy: jest.SpyInstance
+
+let windowCreatedSpy: jest.SpyInstance
+let tabCreatedSpy: jest.SpyInstance
+let windowGetAllSpy: jest.SpyInstance
     beforeEach((cb) => {
       windowCreatedSpy = jest.spyOn(windowActions, 'windowCreated')
-      tabCreatedSpy = jest.spyOn(tabActions, 'tabCreated')
+    tabCreatedSpy = jest.spyOn(tabActions, 'tabCreated')
       windowGetAllSpy = jest.spyOn(chrome.windows, 'getAllAsync').mockImplementation(() => {
         deferred(inputWindows)
         return p
       })
 
-      const event: RuntimeEvent = chrome.runtime.onStartup as RuntimeEvent
-      event.addListener(cb)
+        const event: RuntimeEvent = chrome.runtime.onStartup as RuntimeEvent
+        event.addListener(cb)
       event.emit()
     })
     afterEach(() => {
       windowCreatedSpy.mockRestore()
-      tabCreatedSpy.mockRestore()
+    tabCreatedSpy.mockRestore()
       windowGetAllSpy.mockRestore()
     })
     it('calls windowActions.windowCreated for each window', (cb) => {
       expect.assertions(5)
       p.then((inputWindows) => {
         expect(windowCreatedSpy.mock.calls.length).toBe(2)
-        expect(windowCreatedSpy.mock.calls[0].length).toBe(1)
-        expect(windowCreatedSpy.mock.calls[0][0]).toBe(inputWindows[0])
-        expect(windowCreatedSpy.mock.calls[1].length).toBe(1)
-        expect(windowCreatedSpy.mock.calls[1][0]).toBe(inputWindows[1])
+      expect(windowCreatedSpy.mock.calls[0].length).toBe(1)
+      expect(windowCreatedSpy.mock.calls[0][0]).toBe(inputWindows[0])
+      expect(windowCreatedSpy.mock.calls[1].length).toBe(1)
+      expect(windowCreatedSpy.mock.calls[1][0]).toBe(inputWindows[1])
         cb()
       }).catch(() => {
         expect(true).toBe(false)
@@ -78,11 +80,11 @@ describe('runtimeEvents events', () => {
       expect.assertions(6)
       p.then((inputWindows) => {
         expect(tabCreatedSpy.mock.calls.length).toBe(3)
-        expect(tabCreatedSpy.mock.calls[0].length).toBe(1)
-        expect(tabCreatedSpy.mock.calls[0][0]).toBe(inputWindows[0].tabs[0])
-        expect(tabCreatedSpy.mock.calls[1][0]).toBe(inputWindows[0].tabs[1])
-        expect(tabCreatedSpy.mock.calls[2].length).toBe(1)
-        expect(tabCreatedSpy.mock.calls[2][0]).toBe(inputWindows[1].tabs[0])
+      expect(tabCreatedSpy.mock.calls[0].length).toBe(1)
+      expect(tabCreatedSpy.mock.calls[0][0]).toBe(inputWindows[0].tabs[0])
+      expect(tabCreatedSpy.mock.calls[1][0]).toBe(inputWindows[0].tabs[1])
+      expect(tabCreatedSpy.mock.calls[2].length).toBe(1)
+      expect(tabCreatedSpy.mock.calls[2][0]).toBe(inputWindows[1].tabs[0])
         cb()
       }).catch(() => {
         expect(true).toBe(false)

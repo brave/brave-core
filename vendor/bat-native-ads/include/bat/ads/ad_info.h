@@ -20,9 +20,8 @@ struct ADS_EXPORT AdInfo {
   ~AdInfo();
 
   const std::string ToJson() const;
-  Result FromJson(
-      const std::string& json,
-      std::string* error_description = nullptr);
+  Result FromJson(const std::string& json,
+                  std::string* error_description = nullptr);
 
   std::string creative_set_id;
   std::string campaign_id;

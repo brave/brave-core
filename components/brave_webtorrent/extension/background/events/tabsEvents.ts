@@ -4,18 +4,18 @@
 
 import tabActions from '../actions/tabActions'
 
-chrome.tabs.onCreated.addListener((tab: chrome.tabs.Tab) => {
-  tabActions.tabCreated(tab)
-})
+chrome.tabs.onCreated.addListener(
+    (tab: chrome.tabs.Tab) => {tabActions.tabCreated(tab)})
 
-chrome.tabs.onUpdated.addListener((tabId: number, changeInfo: chrome.tabs.TabChangeInfo, tab: chrome.tabs.Tab) => {
-  tabActions.tabUpdated(tabId, changeInfo, tab)
-})
+chrome.tabs.onUpdated.addListener(
+    (tabId: number,
+     changeInfo: chrome.tabs.TabChangeInfo,
+     tab: chrome.tabs.Tab) => {tabActions.tabUpdated(tabId, changeInfo, tab)})
 
-chrome.tabs.onRemoved.addListener((tabId: number, removeInfo: chrome.tabs.TabRemoveInfo) => {
-  tabActions.tabRemoved(tabId)
-})
+chrome.tabs.onRemoved.addListener(
+    (tabId: number,
+     removeInfo: chrome.tabs.TabRemoveInfo) => {tabActions.tabRemoved(tabId)})
 
-chrome.tabs.onActivated.addListener((activeInfo: chrome.tabs.TabActiveInfo) => {
-  tabActions.activeTabChanged(activeInfo.tabId, activeInfo.windowId)
-})
+chrome.tabs.onActivated.addListener(
+    (activeInfo: chrome.tabs.TabActiveInfo) => {
+        tabActions.activeTabChanged(activeInfo.tabId, activeInfo.windowId)})

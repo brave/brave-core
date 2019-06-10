@@ -33,7 +33,8 @@ void BraveRecordPermissionAction(ContentSettingsType permission,
                                  PermissionAction action) {
   switch (permission) {
     case CONTENT_SETTINGS_TYPE_AUTOPLAY:
-      PERMISSION_ACTION_UMA(secure_origin, "Permissions.Action.Autoplay",
+      PERMISSION_ACTION_UMA(secure_origin,
+                            "Permissions.Action.Autoplay",
                             "Permissions.Action.SecureOrigin.Autoplay",
                             "Permissions.Action.InsecureOrigin.Autoplay",
                             action);

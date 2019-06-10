@@ -10,7 +10,7 @@
 namespace brave_sync {
 
 class Settings {
-public:
+ public:
   Settings();
   std::string this_device_name_;
   std::string this_device_id_;
@@ -24,6 +24,6 @@ public:
   bool sync_configured_;
 };
 
-} // namespace brave_sync
+}  // namespace brave_sync
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SETTINGS_H_

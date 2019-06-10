@@ -38,7 +38,7 @@ constexpr int kDialogMaxHeight = 700;
 class TipDialogDelegate : public ui::WebDialogDelegate {
  public:
   explicit TipDialogDelegate(WebContents* initiator,
-      std::unique_ptr<base::DictionaryValue> params);
+                             std::unique_ptr<base::DictionaryValue> params);
   ~TipDialogDelegate() override;
 
   ui::ModalType GetDialogModalType() const override;
@@ -59,13 +59,12 @@ class TipDialogDelegate : public ui::WebDialogDelegate {
   DISALLOW_COPY_AND_ASSIGN(TipDialogDelegate);
 };
 
-TipDialogDelegate::TipDialogDelegate(WebContents* initiator,
+TipDialogDelegate::TipDialogDelegate(
+    WebContents* initiator,
     std::unique_ptr<base::DictionaryValue> params)
-  : initiator_(initiator), params_(std::move(params)) {
-}
+    : initiator_(initiator), params_(std::move(params)) {}
 
-TipDialogDelegate::~TipDialogDelegate() {
-}
+TipDialogDelegate::~TipDialogDelegate() {}
 
 ui::ModalType TipDialogDelegate::GetDialogModalType() const {
   // Not used, returning dummy value.
@@ -116,12 +115,10 @@ std::string TipDialogDelegate::GetDialogArgs() const {
   return json;
 }
 
-void TipDialogDelegate::OnDialogClosed(
-    const std::string& /* json_retval */) {
-}
+void TipDialogDelegate::OnDialogClosed(const std::string& /* json_retval */) {}
 
 void TipDialogDelegate::OnCloseContents(WebContents* /* source */,
-                                                 bool* out_close_dialog) {
+                                        bool* out_close_dialog) {
   *out_close_dialog = true;
 }
 
@@ -136,7 +133,7 @@ namespace brave_rewards {
 void OpenTipDialog(WebContents* initiator,
                    std::unique_ptr<base::DictionaryValue> params) {
   content::WebContents* outermost_web_contents =
-    guest_view::GuestViewBase::GetTopLevelWebContents(initiator);
+      guest_view::GuestViewBase::GetTopLevelWebContents(initiator);
   gfx::Size host_size = outermost_web_contents->GetContainerBounds().size();
   const int width = host_size.width() - kDialogMargin;
   gfx::Size min_size(width, kDialogMinHeight);
@@ -146,7 +143,9 @@ void OpenTipDialog(WebContents* initiator,
   ShowConstrainedWebDialogWithAutoResize(
       initiator->GetBrowserContext(),
       std::make_unique<TipDialogDelegate>(initiator, std::move(params)),
-      initiator, min_size, max_size);
+      initiator,
+      min_size,
+      max_size);
 }
 
 }  // namespace brave_rewards

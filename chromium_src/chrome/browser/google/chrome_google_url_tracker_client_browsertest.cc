@@ -9,7 +9,8 @@
 
 using BraveGoogleURLTrackerClientTest = InProcessBrowserTest;
 
-IN_PROC_BROWSER_TEST_F(BraveGoogleURLTrackerClientTest, DisablesGoogleURLTrackerClient) {
+IN_PROC_BROWSER_TEST_F(BraveGoogleURLTrackerClientTest,
+                       DisablesGoogleURLTrackerClient) {
   EXPECT_TRUE(base::CommandLine::ForCurrentProcess()->HasSwitch(
       switches::kDisableChromeGoogleURLTrackingClient));
 

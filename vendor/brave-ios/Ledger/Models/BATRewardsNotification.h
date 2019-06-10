@@ -15,22 +15,22 @@ typedef NS_ENUM(NSInteger, BATRewardsNotificationKind) {
   BATRewardsNotificationKindInsufficientFunds,
   BATRewardsNotificationKindBackupWallet,
   BATRewardsNotificationKindTipsProcessed,
-  BATRewardsNotificationKindAdsLaunch // Unused
+  BATRewardsNotificationKindAdsLaunch  // Unused
 } NS_SWIFT_NAME(RewardsNotification.Kind);
 
 NS_SWIFT_NAME(RewardsNotification)
 @interface BATRewardsNotification : NSObject <NSSecureCoding>
 
-@property (nonatomic, copy) NSString *id;
-@property (nonatomic) NSTimeInterval dateAdded;
-@property (nonatomic) BATRewardsNotificationKind kind;
-@property (nonatomic, copy) NSDictionary *userInfo;
-@property (nonatomic) BOOL displayed;
+@property(nonatomic, copy) NSString* id;
+@property(nonatomic) NSTimeInterval dateAdded;
+@property(nonatomic) BATRewardsNotificationKind kind;
+@property(nonatomic, copy) NSDictionary* userInfo;
+@property(nonatomic) BOOL displayed;
 
-- (instancetype)initWithID:(NSString *)notificationID
+- (instancetype)initWithID:(NSString*)notificationID
                  dateAdded:(NSTimeInterval)dateAdded
                       kind:(BATRewardsNotificationKind)kind
-                  userInfo:(nullable NSDictionary *)userInfo;
+                  userInfo:(nullable NSDictionary*)userInfo;
 
 @end
 

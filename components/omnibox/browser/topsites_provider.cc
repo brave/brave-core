@@ -17,13 +17,11 @@
 // Search Secondary Provider (suggestion)                              |  100++
 const int TopSitesProvider::kRelevance = 100;
 
-
 TopSitesProvider::TopSitesProvider(AutocompleteProviderClient* client)
-    : AutocompleteProvider(AutocompleteProvider::TYPE_SEARCH) {
-}
+    : AutocompleteProvider(AutocompleteProvider::TYPE_SEARCH) {}
 
 void TopSitesProvider::Start(const AutocompleteInput& input,
-                            bool minimal_changes) {
+                             bool minimal_changes) {
   matches_.clear();
   if (input.from_omnibox_focus() ||
       (input.type() == metrics::OmniboxInputType::INVALID) ||
@@ -34,12 +32,13 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
       base::ToLowerASCII(base::UTF16ToUTF8(input.text()));
 
   for (std::vector<std::string>::const_iterator i = top_sites_.begin();
-    (i != top_sites_.end()) && (matches_.size() < kMaxMatches); ++i) {
-
-    const std::string &current_site = *i;
+       (i != top_sites_.end()) && (matches_.size() < kMaxMatches);
+       ++i) {
+    const std::string& current_site = *i;
     size_t foundPos = current_site.find(input_text);
     if (std::string::npos != foundPos) {
-      ACMatchClassifications styles = StylesForSingleMatch(input_text, current_site, foundPos);
+      ACMatchClassifications styles =
+          StylesForSingleMatch(input_text, current_site, foundPos);
       AddMatch(base::ASCIIToUTF16(current_site), styles);
     }
   }
@@ -58,32 +57,36 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
 
 TopSitesProvider::~TopSitesProvider() {}
 
-//static
+// static
 ACMatchClassifications TopSitesProvider::StylesForSingleMatch(
-    const std::string &input_text,
-    const std::string &site,
-    const size_t &foundPos) {
+    const std::string& input_text,
+    const std::string& site,
+    const size_t& foundPos) {
   ACMatchClassifications styles;
   if (foundPos == 0) {
-    styles.push_back(ACMatchClassification(0, ACMatchClassification::URL|ACMatchClassification::MATCH));
+    styles.push_back(ACMatchClassification(
+        0, ACMatchClassification::URL | ACMatchClassification::MATCH));
     if (site.length() > input_text.length()) {
-      styles.push_back(ACMatchClassification(input_text.length(), ACMatchClassification::URL));
+      styles.push_back(ACMatchClassification(input_text.length(),
+                                             ACMatchClassification::URL));
     }
   } else {
     styles.push_back(ACMatchClassification(0, ACMatchClassification::URL));
-    styles.push_back(ACMatchClassification(foundPos, ACMatchClassification::URL|ACMatchClassification::MATCH));
+    styles.push_back(ACMatchClassification(
+        foundPos, ACMatchClassification::URL | ACMatchClassification::MATCH));
     if (site.length() > foundPos + input_text.length()) {
-      styles.push_back(ACMatchClassification(foundPos + input_text.length(), 0));
+      styles.push_back(
+          ACMatchClassification(foundPos + input_text.length(), 0));
     }
   }
   return styles;
 }
 
 void TopSitesProvider::AddMatch(const base::string16& match_string,
-                               const ACMatchClassifications& styles) {
+                                const ACMatchClassifications& styles) {
   static const base::string16 kScheme = base::ASCIIToUTF16("https://");
-  AutocompleteMatch match(this, kRelevance, false,
-                          AutocompleteMatchType::NAVSUGGEST);
+  AutocompleteMatch match(
+      this, kRelevance, false, AutocompleteMatchType::NAVSUGGEST);
   match.fill_into_edit = match_string;
   match.destination_url = GURL(kScheme + match_string);
   match.contents = match_string;

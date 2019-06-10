@@ -16,8 +16,8 @@
 #include "base/files/file_path.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/brave_shields/browser/base_brave_shields_service.h"
 #include "content/public/common/resource_type.h"
 
 class AdBlockClient;
@@ -37,9 +37,11 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   explicit AdBlockBaseService(BraveComponent::Delegate* delegate);
   ~AdBlockBaseService() override;
 
-  bool ShouldStartRequest(const GURL &url, content::ResourceType resource_type,
-    const std::string& tab_host, bool* did_match_exception,
-    bool* cancel_request_explicitly) override;
+  bool ShouldStartRequest(const GURL& url,
+                          content::ResourceType resource_type,
+                          const std::string& tab_host,
+                          bool* did_match_exception,
+                          bool* cancel_request_explicitly) override;
   void EnableTag(const std::string& tag, bool enabled);
 
  protected:
@@ -55,9 +57,8 @@ class AdBlockBaseService : public BaseBraveShieldsService {
   std::unique_ptr<AdBlockClient> ad_block_client_;
 
  private:
-  void UpdateAdBlockClient(
-      std::unique_ptr<AdBlockClient> ad_block_client,
-      brave_component_updater::DATFileDataBuffer buffer);
+  void UpdateAdBlockClient(std::unique_ptr<AdBlockClient> ad_block_client,
+                           brave_component_updater::DATFileDataBuffer buffer);
   void OnGetDATFileData(GetDATFileDataResult result);
   void EnableTagOnIOThread(const std::string& tag, bool enabled);
   void OnPreferenceChanges(const std::string& pref_name);

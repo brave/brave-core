@@ -5,10 +5,10 @@
 
 #include "base/logging.h"
 #include "base/time/time.h"
-#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/rewards_notification_service_impl.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 
 #if !BUILDFLAG(BRAVE_REWARDS_ENABLED)
@@ -25,11 +25,9 @@ bool IsMediaLink(const GURL& url,
 }
 #endif
 
-RewardsService::RewardsService() {
-}
+RewardsService::RewardsService() {}
 
-RewardsService::~RewardsService() {
-}
+RewardsService::~RewardsService() {}
 
 void RewardsService::AddObserver(RewardsServiceObserver* observer) {
   observers_.AddObserver(observer);

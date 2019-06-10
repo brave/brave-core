@@ -23,22 +23,17 @@ class RequestSignedTokensRequest {
   RequestSignedTokensRequest();
   ~RequestSignedTokensRequest();
 
-  std::string BuildUrl(
-      const WalletInfo& wallet_info) const;
+  std::string BuildUrl(const WalletInfo& wallet_info) const;
 
   URLRequestMethod GetMethod() const;
 
-  std::string BuildBody(
-      const std::vector<BlindedToken>& tokens) const;
+  std::string BuildBody(const std::vector<BlindedToken>& tokens) const;
 
-  std::vector<std::string> BuildHeaders(
-      const std::string& body,
-      const WalletInfo& wallet_info) const;
-  std::string BuildDigestHeaderValue(
-      const std::string& body) const;
-  std::string BuildSignatureHeaderValue(
-      const std::string& body,
-      const WalletInfo& wallet_info) const;
+  std::vector<std::string> BuildHeaders(const std::string& body,
+                                        const WalletInfo& wallet_info) const;
+  std::string BuildDigestHeaderValue(const std::string& body) const;
+  std::string BuildSignatureHeaderValue(const std::string& body,
+                                        const WalletInfo& wallet_info) const;
   std::string GetAcceptHeaderValue() const;
 
   std::string GetContentType() const;

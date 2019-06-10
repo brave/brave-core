@@ -6,10 +6,10 @@
 #ifndef BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_
 
+#include "brave/third_party/blink/public/platform/brave_drm.mojom.h"
 #include "content/public/browser/web_contents_binding_set.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "brave/third_party/blink/public/platform/brave_drm.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 // Reacts to DRM content detected on the renderer side.

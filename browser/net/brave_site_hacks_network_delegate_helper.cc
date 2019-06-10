@@ -37,18 +37,30 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx,
   if (tab_origin.SchemeIs(kChromeExtensionScheme)) {
     return false;
   }
-  bool allow_referrers = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kReferrers);
-  bool shields_up = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields);
+  bool allow_referrers =
+      brave_shields::IsAllowContentSettingFromIO(request,
+                                                 tab_origin,
+                                                 tab_origin,
+                                                 CONTENT_SETTINGS_TYPE_PLUGINS,
+                                                 brave_shields::kReferrers);
+  bool shields_up =
+      brave_shields::IsAllowContentSettingFromIO(request,
+                                                 tab_origin,
+                                                 GURL(),
+                                                 CONTENT_SETTINGS_TYPE_PLUGINS,
+                                                 brave_shields::kBraveShields);
   const std::string original_referrer = request->referrer();
   Referrer new_referrer;
-  if (brave_shields::ShouldSetReferrer(allow_referrers, shields_up,
-          GURL(original_referrer), tab_origin, request->url(), target_origin,
+  if (brave_shields::ShouldSetReferrer(
+          allow_referrers,
+          shields_up,
+          GURL(original_referrer),
+          tab_origin,
+          request->url(),
+          target_origin,
           Referrer::NetReferrerPolicyToBlinkReferrerPolicy(
-              request->referrer_policy()), &new_referrer)) {
+              request->referrer_policy()),
+          &new_referrer)) {
     request->SetReferrer(new_referrer.url.spec());
     return true;
   }
@@ -57,15 +69,16 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx,
 
 }  // namespace
 
-int OnBeforeURLRequest_SiteHacksWork(
-    const ResponseCallback& next_callback,
-    std::shared_ptr<BraveRequestInfo> ctx) {
+int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
+                                     std::shared_ptr<BraveRequestInfo> ctx) {
   ApplyPotentialReferrerBlock(ctx, const_cast<net::URLRequest*>(ctx->request));
   return net::OK;
 }
 
-void CheckForCookieOverride(const GURL& url, const URLPattern& pattern,
-    net::HttpRequestHeaders* headers, const std::string& extra_cookies) {
+void CheckForCookieOverride(const GURL& url,
+                            const URLPattern& pattern,
+                            net::HttpRequestHeaders* headers,
+                            const std::string& extra_cookies) {
   if (pattern.MatchesURL(url)) {
     std::string cookies;
     if (headers->GetHeader(kCookieHeader, &cookies)) {
@@ -77,7 +90,7 @@ void CheckForCookieOverride(const GURL& url, const URLPattern& pattern,
 }
 
 bool IsBlockTwitterSiteHack(net::URLRequest* request,
-    net::HttpRequestHeaders* headers) {
+                            net::HttpRequestHeaders* headers) {
   URLPattern redirectURLPattern(URLPattern::SCHEME_ALL, kTwitterRedirectURL);
   URLPattern referrerPattern(URLPattern::SCHEME_ALL, kTwitterReferrer);
   if (redirectURLPattern.MatchesURL(request->url())) {
@@ -90,13 +103,15 @@ bool IsBlockTwitterSiteHack(net::URLRequest* request,
   return false;
 }
 
-int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
-        net::HttpRequestHeaders* headers,
-        const ResponseCallback& next_callback,
-        std::shared_ptr<BraveRequestInfo> ctx) {
+int OnBeforeStartTransaction_SiteHacksWork(
+    net::URLRequest* request,
+    net::HttpRequestHeaders* headers,
+    const ResponseCallback& next_callback,
+    std::shared_ptr<BraveRequestInfo> ctx) {
   CheckForCookieOverride(request->url(),
-      URLPattern(URLPattern::SCHEME_ALL, kForbesPattern), headers,
-      kForbesExtraCookies);
+                         URLPattern(URLPattern::SCHEME_ALL, kForbesPattern),
+                         headers,
+                         kForbesExtraCookies);
   if (IsBlockTwitterSiteHack(request, headers)) {
     return net::ERR_ABORTED;
   }

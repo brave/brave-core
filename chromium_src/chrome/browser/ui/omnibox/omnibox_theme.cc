@@ -33,9 +33,9 @@ OmniboxTint BraveTintToChromiumTint(OmniboxTint brave_tint) {
 }
 
 constexpr SkColor DarkPrivateLight(OmniboxTint tint,
-                    SkColor dark,
-                    SkColor priv,
-                    SkColor light) {
+                                   SkColor dark,
+                                   SkColor priv,
+                                   SkColor light) {
   switch (tint) {
     case OmniboxTint::DARK:
       return dark;
@@ -64,36 +64,34 @@ SkColor GetOmniboxColor(OmniboxPart part,
   switch (part) {
     case OmniboxPart::LOCATION_BAR_BACKGROUND: {
       const bool hovered = state == OmniboxPartState::HOVERED;
-      return dark ? (hovered ? SkColorSetRGB(0x44, 0x44, 0x44)
-                             : SkColorSetRGB(0x22, 0x22, 0x22))
-                  : (priv ? color_utils::HSLShift(
-                                kPrivateLocationBarBackground, {
-                                  -1,
-                                  -1,
-                                  hovered ? 0.54 : 0.52 })
-                          : (hovered ? color_utils::AlphaBlend(SK_ColorWHITE,
-                                              SkColorSetRGB(0xf3, 0xf3, 0xf3),
-                                              0.7f)
-                                      : SK_ColorWHITE));
+      return dark
+                 ? (hovered ? SkColorSetRGB(0x44, 0x44, 0x44)
+                            : SkColorSetRGB(0x22, 0x22, 0x22))
+                 : (priv
+                        ? color_utils::HSLShift(kPrivateLocationBarBackground,
+                                                {-1, -1, hovered ? 0.54 : 0.52})
+                        : (hovered ? color_utils::AlphaBlend(
+                                         SK_ColorWHITE,
+                                         SkColorSetRGB(0xf3, 0xf3, 0xf3),
+                                         0.7f)
+                                   : SK_ColorWHITE));
     }
     case OmniboxPart::LOCATION_BAR_TEXT_DEFAULT:
     case OmniboxPart::RESULTS_TEXT_DEFAULT: {
       return (dark || priv) ? SkColorSetRGB(0xff, 0xff, 0xff)
-                          : SkColorSetRGB(0x42, 0x42, 0x42);
+                            : SkColorSetRGB(0x42, 0x42, 0x42);
     }
     case OmniboxPart::RESULTS_BACKGROUND:
       return color_utils::BlendTowardMaxContrast(
-          DarkPrivateLight(tint,
-            high_contrast ? gfx::kGoogleGrey900 : gfx::kGoogleGrey800,
-            color_utils::HSLShift(kPrivateLocationBarBackground, {
-                                    -1,
-                                    -1,
-                                    high_contrast ? 0.45
-                                                  : 0.56 }),
-            SK_ColorWHITE),
+          DarkPrivateLight(
+              tint,
+              high_contrast ? gfx::kGoogleGrey900 : gfx::kGoogleGrey800,
+              color_utils::HSLShift(kPrivateLocationBarBackground,
+                                    {-1, -1, high_contrast ? 0.45 : 0.56}),
+              SK_ColorWHITE),
           gfx::ToRoundedInt(GetOmniboxStateOpacity(state) * 0xff));
     default:
-        break;
+      break;
   }
 
   // All other values, call original function

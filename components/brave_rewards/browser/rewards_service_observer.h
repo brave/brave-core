@@ -25,42 +25,34 @@ class RewardsServiceObserver : public base::CheckedObserver {
  public:
   ~RewardsServiceObserver() override {}
 
-  virtual void OnWalletInitialized(
-      RewardsService* rewards_service,
-      uint32_t error_code) {}
+  virtual void OnWalletInitialized(RewardsService* rewards_service,
+                                   uint32_t error_code) {}
   virtual void OnWalletProperties(
       RewardsService* rewards_service,
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> properties) {}
-  virtual void OnGrant(
-      RewardsService* rewards_service,
-      unsigned int error_code,
-      brave_rewards::Grant properties) {}
-  virtual void OnGrantCaptcha(
-      RewardsService* rewards_service,
-      std::string image,
-      std::string hint) {}
-  virtual void OnRecoverWallet(
-      RewardsService* rewards_service,
-      unsigned int result,
-      double balance,
-      std::vector<brave_rewards::Grant> grants) {}
-  virtual void OnGrantFinish(
-      RewardsService* rewards_service,
-      unsigned int result,
-      brave_rewards::Grant grant) {}
-  virtual void OnContentSiteUpdated(
-      RewardsService* rewards_service) {}
-  virtual void OnExcludedSitesChanged(
-      RewardsService* rewards_service,
-      std::string publisher_id,
-      bool excluded) {}
-  virtual void OnReconcileComplete(
-      RewardsService* rewards_service,
-      unsigned int result,
-      const std::string& viewing_id,
-      const std::string& category,
-      const std::string& probi) {}
+  virtual void OnGrant(RewardsService* rewards_service,
+                       unsigned int error_code,
+                       brave_rewards::Grant properties) {}
+  virtual void OnGrantCaptcha(RewardsService* rewards_service,
+                              std::string image,
+                              std::string hint) {}
+  virtual void OnRecoverWallet(RewardsService* rewards_service,
+                               unsigned int result,
+                               double balance,
+                               std::vector<brave_rewards::Grant> grants) {}
+  virtual void OnGrantFinish(RewardsService* rewards_service,
+                             unsigned int result,
+                             brave_rewards::Grant grant) {}
+  virtual void OnContentSiteUpdated(RewardsService* rewards_service) {}
+  virtual void OnExcludedSitesChanged(RewardsService* rewards_service,
+                                      std::string publisher_id,
+                                      bool excluded) {}
+  virtual void OnReconcileComplete(RewardsService* rewards_service,
+                                   unsigned int result,
+                                   const std::string& viewing_id,
+                                   const std::string& category,
+                                   const std::string& probi) {}
   virtual void OnRewardsMainEnabled(
       brave_rewards::RewardsService* rewards_service,
       bool rewards_main_enabled) {}

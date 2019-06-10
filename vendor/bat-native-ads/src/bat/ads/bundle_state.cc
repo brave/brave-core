@@ -10,20 +10,20 @@
 
 namespace ads {
 
-BundleState::BundleState() :
-    catalog_id(""),
-    catalog_version(0),
-    catalog_ping(0),
-    catalog_last_updated_timestamp_in_seconds(0),
-    categories({}) {}
+BundleState::BundleState()
+    : catalog_id(""),
+      catalog_version(0),
+      catalog_ping(0),
+      catalog_last_updated_timestamp_in_seconds(0),
+      categories({}) {}
 
-BundleState::BundleState(const BundleState& state):
-    catalog_id(state.catalog_id),
-    catalog_version(state.catalog_version),
-    catalog_ping(state.catalog_ping),
-    catalog_last_updated_timestamp_in_seconds(
-        state.catalog_last_updated_timestamp_in_seconds),
-    categories(state.categories) {}
+BundleState::BundleState(const BundleState& state)
+    : catalog_id(state.catalog_id),
+      catalog_version(state.catalog_version),
+      catalog_ping(state.catalog_ping),
+      catalog_last_updated_timestamp_in_seconds(
+          state.catalog_last_updated_timestamp_in_seconds),
+      categories(state.categories) {}
 
 BundleState::~BundleState() = default;
 
@@ -33,10 +33,9 @@ const std::string BundleState::ToJson() const {
   return json;
 }
 
-Result BundleState::FromJson(
-    const std::string& json,
-    const std::string& json_schema,
-    std::string* error_description) {
+Result BundleState::FromJson(const std::string& json,
+                             const std::string& json_schema,
+                             std::string* error_description) {
   rapidjson::Document bundle;
   bundle.Parse(json.c_str());
 
@@ -95,7 +94,7 @@ Result BundleState::FromJson(
         ad_info.advertiser = info["advertiser"].GetString();
         ad_info.notification_text = info["notificationText"].GetString();
         ad_info.notification_url =
-          helper::Uri::GetUri(info["notificationURL"].GetString());
+            helper::Uri::GetUri(info["notificationURL"].GetString());
         ad_info.uuid = info["uuid"].GetString();
 
         if (new_categories.find(category.name.GetString()) ==

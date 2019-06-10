@@ -24,19 +24,20 @@
 
 const service_manager::Manifest&
 GetBraveContentPackagedServiceOverlayManifest() {
-  static base::NoDestructor<service_manager::Manifest> manifests{
-      service_manager::ManifestBuilder()
-          .WithServiceName("content_packaged_services")
-          .WithDisplayName("Brave Packaged Services")
+  static base::NoDestructor<service_manager::Manifest> manifests {
+    service_manager::ManifestBuilder()
+        .WithServiceName("content_packaged_services")
+        .WithDisplayName("Brave Packaged Services")
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-          .PackageService(bat_ledger::GetManifest())
+        .PackageService(bat_ledger::GetManifest())
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-          .PackageService(bat_ads::GetManifest())
+        .PackageService(bat_ads::GetManifest())
 #endif
 #endif
 #if BUILDFLAG(ENABLE_TOR)
-          .PackageService(tor::GetTorLauncherManifest())
+        .PackageService(tor::GetTorLauncherManifest())
 #endif
-          .Build()};
+        .Build()
+  };
   return *manifests;
 }

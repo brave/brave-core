@@ -27,19 +27,18 @@ ReferrerWhitelistService::ReferrerWhitelistService(
     LocalDataFilesService* local_data_files_service)
     : LocalDataFilesObserver(local_data_files_service),
       weak_factory_(this),
-      weak_factory_io_thread_(this) {
-}
+      weak_factory_io_thread_(this) {}
 
-ReferrerWhitelistService::~ReferrerWhitelistService() {
-}
+ReferrerWhitelistService::~ReferrerWhitelistService() {}
 
 ReferrerWhitelistService::ReferrerWhitelist::ReferrerWhitelist() = default;
 ReferrerWhitelistService::ReferrerWhitelist::ReferrerWhitelist(
-  const ReferrerWhitelist& other) = default;
+    const ReferrerWhitelist& other) = default;
 ReferrerWhitelistService::ReferrerWhitelist::~ReferrerWhitelist() = default;
 
 bool ReferrerWhitelistService::IsWhitelisted(
-    const GURL& first_party_origin, const GURL& subresource_url) const {
+    const GURL& first_party_origin,
+    const GURL& subresource_url) const {
   if (BrowserThread::CurrentlyOn(BrowserThread::IO)) {
     return IsWhitelisted(
         referrer_whitelist_io_thread_, first_party_origin, subresource_url);
@@ -88,19 +87,20 @@ void ReferrerWhitelistService::OnDATFileDataReady(std::string contents) {
     for (const auto& it : origins_dict->DictItems()) {
       ReferrerWhitelist rw;
       rw.first_party_pattern = URLPattern(
-        URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS, it.first);
+          URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, it.first);
       URLPatternList subresource_pattern_list;
       for (base::Value& subresource_value : it.second.GetList()) {
-        rw.subresource_pattern_list.push_back(URLPattern(
-          URLPattern::SCHEME_HTTP|URLPattern::SCHEME_HTTPS,
-          subresource_value.GetString()));
+        rw.subresource_pattern_list.push_back(
+            URLPattern(URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS,
+                       subresource_value.GetString()));
       }
       referrer_whitelist_.push_back(rw);
     }
   }
 
   base::PostTaskWithTraits(
-      FROM_HERE, {BrowserThread::IO},
+      FROM_HERE,
+      {BrowserThread::IO},
       base::BindOnce(&ReferrerWhitelistService::OnDATFileDataReadyOnIOThread,
                      weak_factory_io_thread_.GetWeakPtr(),
                      referrer_whitelist_));
@@ -116,9 +116,9 @@ void ReferrerWhitelistService::OnComponentReady(
     const std::string& component_id,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  base::FilePath dat_file_path = install_dir
-      .AppendASCII(REFERRER_DAT_FILE_VERSION)
-      .AppendASCII(REFERRER_DAT_FILE);
+  base::FilePath dat_file_path =
+      install_dir.AppendASCII(REFERRER_DAT_FILE_VERSION)
+          .AppendASCII(REFERRER_DAT_FILE);
 
   base::PostTaskAndReplyWithResult(
       local_data_files_service()->GetTaskRunner().get(),

@@ -11,6 +11,7 @@ class BraveViewsDelegateLinux : public ChromeViewsDelegate {
  public:
   BraveViewsDelegateLinux() = default;
   ~BraveViewsDelegateLinux() override = default;
+
  private:
   // ChromeViewsDelegate overrides:
   gfx::ImageSkia* GetDefaultWindowIcon() const override;

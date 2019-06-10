@@ -15,16 +15,17 @@
 #include "ui/base/l10n/l10n_util.h"
 
 BraveContentSettingPluginBubbleModel::BraveContentSettingPluginBubbleModel(
-    Delegate* delegate, content::WebContents* web_contents)
-    : ContentSettingSimpleBubbleModel(delegate, web_contents,
-        CONTENT_SETTINGS_TYPE_PLUGINS) {
+    Delegate* delegate,
+    content::WebContents* web_contents)
+    : ContentSettingSimpleBubbleModel(delegate,
+                                      web_contents,
+                                      CONTENT_SETTINGS_TYPE_PLUGINS) {
   content_settings::SettingInfo info;
   HostContentSettingsMap* map =
       HostContentSettingsMapFactory::GetForProfile(GetProfile());
   GURL url = web_contents->GetURL();
-  std::unique_ptr<base::Value> value =
-      map->GetWebsiteSetting(url, url, CONTENT_SETTINGS_TYPE_PLUGINS,
-          std::string(), &info);
+  std::unique_ptr<base::Value> value = map->GetWebsiteSetting(
+      url, url, CONTENT_SETTINGS_TYPE_PLUGINS, std::string(), &info);
 
   set_show_learn_more(true);
 
@@ -40,9 +41,8 @@ BraveContentSettingPluginBubbleModel::BraveContentSettingPluginBubbleModel(
 
   set_custom_link(l10n_util::GetStringUTF16(IDS_BLOCKED_PLUGINS_LOAD_ALL));
   set_custom_link_enabled(
-      web_contents &&
-      TabSpecificContentSettings::FromWebContents(web_contents)
-          ->load_plugins_link_enabled());
+      web_contents && TabSpecificContentSettings::FromWebContents(web_contents)
+                          ->load_plugins_link_enabled());
 }
 
 void BraveContentSettingPluginBubbleModel::OnLearnMoreClicked() {
@@ -62,13 +62,12 @@ void BraveContentSettingPluginBubbleModel::RunPluginsOnPage() {
 
   HostContentSettingsMap* map =
       HostContentSettingsMapFactory::GetForProfile(GetProfile());
-  map->SetContentSettingDefaultScope(
-      web_contents()->GetURL(),
-      GURL(),
-      CONTENT_SETTINGS_TYPE_PLUGINS,
-      std::string(),
-      CONTENT_SETTING_DETECT_IMPORTANT_CONTENT);
+  map->SetContentSettingDefaultScope(web_contents()->GetURL(),
+                                     GURL(),
+                                     CONTENT_SETTINGS_TYPE_PLUGINS,
+                                     std::string(),
+                                     CONTENT_SETTING_DETECT_IMPORTANT_CONTENT);
 
   ChromeSubresourceFilterClient::FromWebContents(web_contents())
-        ->OnReloadRequested();
+      ->OnReloadRequested();
 }

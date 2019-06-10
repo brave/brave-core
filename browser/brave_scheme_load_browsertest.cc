@@ -77,8 +77,9 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     browser()->tab_strip_model()->RemoveObserver(this);
 
     EXPECT_STREQ(url.c_str(),
-                 base::UTF16ToUTF8(browser()->location_bar_model()
-                      ->GetFormattedFullURL()).c_str());
+                 base::UTF16ToUTF8(
+                     browser()->location_bar_model()->GetFormattedFullURL())
+                     .c_str());
     // EXPECT_EQ(url, active_contents()->GetVisibleURL());
     EXPECT_EQ(2, browser()->tab_strip_model()->count());
     // Private window stays as initial state.
@@ -168,8 +169,8 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 // Test whether brave page is not loaded from chrome page.
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        NotAllowedToBraveFromChrome) {
-  NavigateToURLBlockUntilNavigationsComplete(active_contents(),
-                                             GURL("chrome://version"), 1);
+  NavigateToURLBlockUntilNavigationsComplete(
+      active_contents(), GURL("chrome://version"), 1);
 
   content::ConsoleObserverDelegate console_delegate(
       active_contents(), "Not allowed to load local resource:*");
@@ -223,10 +224,11 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest, CrashURLTest) {
   content::WindowedNotificationObserver observer(
       content::NOTIFICATION_WEB_CONTENTS_DISCONNECTED,
       content::NotificationService::AllSources());
-  browser()->OpenURL(
-      content::OpenURLParams(GURL("brave://crash/"), content::Referrer(),
-                             WindowOpenDisposition::CURRENT_TAB,
-                             ui::PAGE_TRANSITION_TYPED, false));
+  browser()->OpenURL(content::OpenURLParams(GURL("brave://crash/"),
+                                            content::Referrer(),
+                                            WindowOpenDisposition::CURRENT_TAB,
+                                            ui::PAGE_TRANSITION_TYPED,
+                                            false));
   observer.Wait();
 }
 

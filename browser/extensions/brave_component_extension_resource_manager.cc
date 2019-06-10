@@ -10,8 +10,8 @@
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/grit/brave_sync_generated_map.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources_map.h"
-#include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources_map.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_generated_map.h"
+#include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources_map.h"
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources_map.h"
@@ -21,41 +21,30 @@
 namespace extensions {
 
 BraveComponentExtensionResourceManager::
-BraveComponentExtensionResourceManager() {
-  AddComponentResourceEntries(
-      kBraveExtension,
-      kBraveExtensionSize);
+    BraveComponentExtensionResourceManager() {
+  AddComponentResourceEntries(kBraveExtension, kBraveExtensionSize);
 
-  AddComponentResourceEntries(
-      kBraveExtensionGenerated,
-      kBraveExtensionGeneratedSize);
+  AddComponentResourceEntries(kBraveExtensionGenerated,
+                              kBraveExtensionGeneratedSize);
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  AddComponentResourceEntries(
-      kBraveRewardsExtensionResources,
-      kBraveRewardsExtensionResourcesSize);
+  AddComponentResourceEntries(kBraveRewardsExtensionResources,
+                              kBraveRewardsExtensionResourcesSize);
 
-  AddComponentResourceEntries(
-      kBraveRewardsPanelGenerated,
-      kBraveRewardsPanelGeneratedSize);
+  AddComponentResourceEntries(kBraveRewardsPanelGenerated,
+                              kBraveRewardsPanelGeneratedSize);
 #endif
-  AddComponentResourceEntries(
-      kBraveSyncResources,
-      kBraveSyncResourcesSize);
+  AddComponentResourceEntries(kBraveSyncResources, kBraveSyncResourcesSize);
 
-  AddComponentResourceEntries(
-      kBraveSyncGenerated,
-      kBraveSyncGeneratedSize);
+  AddComponentResourceEntries(kBraveSyncGenerated, kBraveSyncGeneratedSize);
 
-  AddComponentResourceEntries(
-      kBraveWebtorrentResources,
-      kBraveWebtorrentResourcesSize);
+  AddComponentResourceEntries(kBraveWebtorrentResources,
+                              kBraveWebtorrentResourcesSize);
 
-  AddComponentResourceEntries(
-      kBraveWebtorrentGenerated,
-      kBraveWebtorrentGeneratedSize);
+  AddComponentResourceEntries(kBraveWebtorrentGenerated,
+                              kBraveWebtorrentGeneratedSize);
 }
 
 BraveComponentExtensionResourceManager::
-~BraveComponentExtensionResourceManager() {}
+    ~BraveComponentExtensionResourceManager() {}
 
 }  // namespace extensions

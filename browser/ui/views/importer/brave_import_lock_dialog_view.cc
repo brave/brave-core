@@ -21,8 +21,8 @@
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
 #include "chrome/grit/locale_settings.h"
-#include "ui/base/l10n/l10n_util.h"
 #include "ui/base/buildflags.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "ui/views/border.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/layout/fill_layout.h"
@@ -46,25 +46,24 @@ void ImportLockDialogView::Show(gfx::NativeWindow parent,
                                 ::importer::SourceProfile source_profile,
                                 const base::Callback<void(bool)>& callback) {
   views::DialogDelegate::CreateDialogWidget(
-      new ImportLockDialogView(source_profile, callback), NULL, NULL)->Show();
+      new ImportLockDialogView(source_profile, callback), NULL, NULL)
+      ->Show();
   base::RecordAction(UserMetricsAction("ImportLockDialogView_Shown"));
 }
 
 ImportLockDialogView::ImportLockDialogView(
     ::importer::SourceProfile source_profile,
     const base::Callback<void(bool)>& callback)
-  : source_profile_(source_profile),
-    callback_(callback) {
+    : source_profile_(source_profile), callback_(callback) {
   SetLayoutManager(std::make_unique<views::FillLayout>());
 
   views::Label* description_label;
   if (source_profile_.importer_type == ::importer::TYPE_CHROME) {
-    description_label =
-      new views::Label(l10n_util::GetStringUTF16(
-            IDS_CHROME_IMPORTER_LOCK_TEXT));
+    description_label = new views::Label(
+        l10n_util::GetStringUTF16(IDS_CHROME_IMPORTER_LOCK_TEXT));
   } else {  // if (source_profile_.importer_type == ::importer::TYPE_BRAVE)
-    description_label =
-      new views::Label(l10n_util::GetStringUTF16(IDS_BRAVE_IMPORTER_LOCK_TEXT));
+    description_label = new views::Label(
+        l10n_util::GetStringUTF16(IDS_BRAVE_IMPORTER_LOCK_TEXT));
   }
   description_label->SetBorder(views::CreateEmptyBorder(
       ChromeLayoutProvider::Get()->GetDialogInsetsForContentType(views::TEXT,
@@ -75,8 +74,7 @@ ImportLockDialogView::ImportLockDialogView(
   chrome::RecordDialogCreation(chrome::DialogIdentifier::IMPORT_LOCK);
 }
 
-ImportLockDialogView::~ImportLockDialogView() {
-}
+ImportLockDialogView::~ImportLockDialogView() {}
 
 gfx::Size ImportLockDialogView::CalculatePreferredSize() const {
   const int width = ChromeLayoutProvider::Get()->GetDistanceMetric(

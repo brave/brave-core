@@ -20,6 +20,6 @@ class BraveSyncServiceObserver : public base::CheckedObserver {
                                const std::string& sync_words) {}
 };
 
-} // namespace brave_sync
+}  // namespace brave_sync
 
-#endif // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_OBSERVER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_SYNC_SERVICE_OBSERVER_H_

@@ -161,5 +161,4 @@ BraveRewardsInternalsUI::BraveRewardsInternalsUI(content::WebUI* web_ui,
   handler->Init();
 }
 
-BraveRewardsInternalsUI::~BraveRewardsInternalsUI() {
-}
+BraveRewardsInternalsUI::~BraveRewardsInternalsUI() {}

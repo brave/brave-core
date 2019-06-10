@@ -13,13 +13,12 @@ namespace brave_component_updater {
 
 std::string LocalDataFilesService::g_local_data_files_component_id_(
     kLocalDataFilesComponentId);
-std::string LocalDataFilesService::
-g_local_data_files_component_base64_public_key_(
-    kLocalDataFilesComponentBase64PublicKey);
+std::string
+    LocalDataFilesService::g_local_data_files_component_base64_public_key_(
+        kLocalDataFilesComponentBase64PublicKey);
 
 LocalDataFilesService::LocalDataFilesService(BraveComponent::Delegate* delegate)
-  : BraveComponent(delegate),
-    initialized_(false) {}
+    : BraveComponent(delegate), initialized_(false) {}
 
 LocalDataFilesService::~LocalDataFilesService() {
   for (auto& observer : observers_)
@@ -36,10 +35,9 @@ bool LocalDataFilesService::Start() {
   return true;
 }
 
-void LocalDataFilesService::OnComponentReady(
-    const std::string& component_id,
-    const base::FilePath& install_dir,
-    const std::string& manifest) {
+void LocalDataFilesService::OnComponentReady(const std::string& component_id,
+                                             const base::FilePath& install_dir,
+                                             const std::string& manifest) {
   for (auto& observer : observers_)
     observer.OnComponentReady(component_id, install_dir, manifest);
 }
@@ -62,8 +60,8 @@ void LocalDataFilesService::SetComponentIdAndBase64PublicKeyForTest(
 
 ///////////////////////////////////////////////////////////////////////////////
 
-std::unique_ptr<LocalDataFilesService>
-LocalDataFilesServiceFactory(BraveComponent::Delegate* delegate) {
+std::unique_ptr<LocalDataFilesService> LocalDataFilesServiceFactory(
+    BraveComponent::Delegate* delegate) {
   return std::make_unique<LocalDataFilesService>(delegate);
 }
 

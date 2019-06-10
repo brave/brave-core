@@ -7,4 +7,3 @@
 #define ChromeAutocompleteProviderClient BraveAutocompleteProviderClient
 #include "../../../../../../chrome/browser/ui/omnibox/chrome_omnibox_client.cc"
 #undef ChromeAutocompleteProviderClient
-

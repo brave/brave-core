@@ -6,7 +6,7 @@
 #include "components/translate/core/browser/translate_manager.h"
 
 #define HasAPIKeyConfigured BraveHasAPIKeyConfigured
-#include "../../../../../../components/translate/core/browser/translate_manager.cc" // NOLINT
+#include "../../../../../../components/translate/core/browser/translate_manager.cc"  // NOLINT
 #undef HasAPIKeyConfigured
 
 namespace google_apis {

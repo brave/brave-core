@@ -28,21 +28,19 @@
 
 namespace brave_shields {
 
-std::string AdBlockRegionalService::g_ad_block_regional_component_id_;  // NOLINT
 std::string
-    AdBlockRegionalService::g_ad_block_regional_component_base64_public_key_;  // NOLINT
+    AdBlockRegionalService::g_ad_block_regional_component_id_;  // NOLINT
+std::string AdBlockRegionalService::
+    g_ad_block_regional_component_base64_public_key_;  // NOLINT
 std::string AdBlockRegionalService::g_ad_block_regional_dat_file_version_(
     base::NumberToString(DATA_FILE_VERSION));
 
 AdBlockRegionalService::AdBlockRegionalService(
     const std::string& uuid,
     brave_component_updater::BraveComponent::Delegate* delegate)
-    : AdBlockBaseService(delegate),
-      uuid_(uuid) {
-}
+    : AdBlockBaseService(delegate), uuid_(uuid) {}
 
-AdBlockRegionalService::~AdBlockRegionalService() {
-}
+AdBlockRegionalService::~AdBlockRegionalService() {}
 
 bool AdBlockRegionalService::Init() {
   AdBlockBaseService::Init();
@@ -63,10 +61,9 @@ bool AdBlockRegionalService::Init() {
   return true;
 }
 
-void AdBlockRegionalService::OnComponentReady(
-    const std::string& component_id,
-    const base::FilePath& install_dir,
-    const std::string& manifest) {
+void AdBlockRegionalService::OnComponentReady(const std::string& component_id,
+                                              const base::FilePath& install_dir,
+                                              const std::string& manifest) {
   base::FilePath dat_file_path =
       install_dir.AppendASCII(g_ad_block_regional_dat_file_version_)
           .AppendASCII(uuid_)
@@ -85,7 +82,7 @@ void AdBlockRegionalService::SetComponentIdAndBase64PublicKeyForTest(
 
 // static
 void AdBlockRegionalService::SetDATFileVersionForTest(
-  const std::string& dat_file_version) {
+    const std::string& dat_file_version) {
   g_ad_block_regional_dat_file_version_ = dat_file_version;
 }
 

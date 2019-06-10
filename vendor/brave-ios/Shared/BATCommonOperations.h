@@ -4,21 +4,23 @@
 
 #import <Foundation/Foundation.h>
 
-#import <string>
 #import <map>
+#import <string>
 
 NS_ASSUME_NONNULL_BEGIN
 
-/// A standard network completion block. Matches the native-ads/native-rewards signature, but
-/// each library uses their own typedef from their namespaces
-typedef void (^BATNetworkCompletionBlock)(int statusCode,
-                                          const std::string& response,
-                                          const std::map<std::string, std::string>& headers);
+/// A standard network completion block. Matches the native-ads/native-rewards
+/// signature, but each library uses their own typedef from their namespaces
+typedef void (^BATNetworkCompletionBlock)(
+    int statusCode,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers);
 
 /// A set of common operations that accept and return C++ types
 @interface BATCommonOperations : NSObject
 
-- (instancetype)initWithStoragePath:(nullable NSString *)storagePath NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithStoragePath:(nullable NSString*)storagePath
+    NS_DESIGNATED_INITIALIZER;
 
 #pragma mark -
 
@@ -27,9 +29,10 @@ typedef void (^BATNetworkCompletionBlock)(int statusCode,
 
 #pragma mark - Timers
 
-/// Creates a timer that will fire after `offset`. When the timer fires `timerFired` is executed with the timer ID
-/// returned
-- (uint32_t)createTimerWithOffset:(uint64_t)offset timerFired:(void (^)(uint32_t))timerFired;
+/// Creates a timer that will fire after `offset`. When the timer fires
+/// `timerFired` is executed with the timer ID returned
+- (uint32_t)createTimerWithOffset:(uint64_t)offset
+                       timerFired:(void (^)(uint32_t))timerFired;
 
 /// Invalidates and removes the timer with the given timer ID
 - (void)removeTimerWithID:(uint32_t)timerID;

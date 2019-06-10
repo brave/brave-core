@@ -27,20 +27,19 @@ namespace brave_shields {
 
 AdBlockRegionalServiceManager::AdBlockRegionalServiceManager(
     brave_component_updater::BraveComponent::Delegate* delegate)
-    : delegate_(delegate),
-      initialized_(false) {
+    : delegate_(delegate), initialized_(false) {
   if (Init()) {
     initialized_ = true;
   }
 }
 
-AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {
-}
+AdBlockRegionalServiceManager::~AdBlockRegionalServiceManager() {}
 
 bool AdBlockRegionalServiceManager::Init() {
   DCHECK(!initialized_);
   base::PostTaskWithTraits(
-      FROM_HERE, {content::BrowserThread::UI},
+      FROM_HERE,
+      {content::BrowserThread::UI},
       base::BindOnce(&AdBlockRegionalServiceManager::StartRegionalServices,
                      base::Unretained(this)));
   return true;
@@ -70,7 +69,8 @@ void AdBlockRegionalServiceManager::StartRegionalServices() {
   const base::DictionaryValue* regional_filters_dict =
       local_state->GetDictionary(kAdBlockRegionalFilters);
   for (base::DictionaryValue::Iterator it(*regional_filters_dict);
-       !it.IsAtEnd(); it.Advance()) {
+       !it.IsAtEnd();
+       it.Advance()) {
     const std::string uuid = it.key();
     bool enabled = false;
     const base::DictionaryValue* regional_filter_dict = nullptr;
@@ -129,7 +129,10 @@ bool AdBlockRegionalServiceManager::ShouldStartRequest(
   base::AutoLock lock(regional_services_lock_);
   for (const auto& regional_service : regional_services_) {
     if (!regional_service.second->ShouldStartRequest(
-            url, resource_type, tab_host, matching_exception_filter,
+            url,
+            resource_type,
+            tab_host,
+            matching_exception_filter,
             cancel_request_explicitly)) {
       return false;
     }
@@ -174,9 +177,12 @@ void AdBlockRegionalServiceManager::EnableFilterList(const std::string& uuid,
   // Update preferences to reflect enabled/disabled state of specified
   // filter list
   base::PostTaskWithTraits(
-      FROM_HERE, {content::BrowserThread::UI},
+      FROM_HERE,
+      {content::BrowserThread::UI},
       base::BindOnce(&AdBlockRegionalServiceManager::UpdateFilterListPrefs,
-                     base::Unretained(this), uuid, enabled));
+                     base::Unretained(this),
+                     uuid,
+                     enabled));
 }
 
 // static

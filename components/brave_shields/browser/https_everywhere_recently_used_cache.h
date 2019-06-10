@@ -11,7 +11,8 @@
 #include "base/containers/mru_cache.h"
 #include "base/synchronization/lock.h"
 
-template <class T> class HTTPSERecentlyUsedCache {
+template <class T>
+class HTTPSERecentlyUsedCache {
  public:
   explicit HTTPSERecentlyUsedCache(size_t size = 100) : data_(size) {}
 

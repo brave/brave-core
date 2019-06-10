@@ -20,14 +20,12 @@ class RewardsServicePrivateObserver : public base::CheckedObserver {
 
   virtual void OnGetCurrentBalanceReport(RewardsService* rewards_service,
                                          const BalanceReport& balance_report) {}
-  virtual void OnPanelPublisherInfo(
-      RewardsService* rewards_service,
-      int error_code,
-      const ledger::PublisherInfo* info,
-      uint64_t windowId) {}
-  virtual void OnRewardsMainEnabled(
-      RewardsService* rewards_service,
-      bool rewards_main_enabled) {}
+  virtual void OnPanelPublisherInfo(RewardsService* rewards_service,
+                                    int error_code,
+                                    const ledger::PublisherInfo* info,
+                                    uint64_t windowId) {}
+  virtual void OnRewardsMainEnabled(RewardsService* rewards_service,
+                                    bool rewards_main_enabled) {}
 };
 
 }  // namespace brave_rewards

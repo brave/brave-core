@@ -7,10 +7,9 @@ namespace brave_sync {
 
 namespace jslib_const {
 
-const char kBookmarks[]    = "BOOKMARKS";
+const char kBookmarks[] = "BOOKMARKS";
 const char kHistorySites[] = "HISTORY_SITES";
-const char kPreferences[]  = "PREFERENCES";
-
+const char kPreferences[] = "PREFERENCES";
 
 const char DEVICES_NAMES[] = "devicesNames";
 
@@ -18,16 +17,15 @@ const char CREATE_RECORD[] = "0";
 const char UPDATE_RECORD[] = "1";
 const char DELETE_RECORD[] = "2";
 
-const char SyncObjectData_BOOKMARK[]       = "bookmark";
-const char SyncObjectData_HISTORY_SITE[]   = "historySite";
-const char SyncObjectData_SITE_SETTING[]   = "siteSetting";
-const char SyncObjectData_DEVICE[]         = "device";
+const char SyncObjectData_BOOKMARK[] = "bookmark";
+const char SyncObjectData_HISTORY_SITE[] = "historySite";
+const char SyncObjectData_SITE_SETTING[] = "siteSetting";
+const char SyncObjectData_DEVICE[] = "device";
 
 const char SyncRecordType_BOOKMARKS[] = "BOOKMARKS";
 const char SyncRecordType_HISTORY[] = "HISTORY_SITES";
 const char SyncRecordType_PREFERENCES[] = "PREFERENCES";
 
+}  // namespace jslib_const
 
-} // jslib_const
-
-} // namespace brave_sync
+}  // namespace brave_sync

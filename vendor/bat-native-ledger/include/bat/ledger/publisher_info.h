@@ -6,10 +6,10 @@
 #ifndef BAT_LEDGER_PUBLISHER_INFO_HANDLER_
 #define BAT_LEDGER_PUBLISHER_INFO_HANDLER_
 
-#include <string>
-#include <vector>
 #include <map>
+#include <string>
 #include <utility>
+#include <vector>
 
 #include "bat/ledger/export.h"
 #include "bat/ledger/public/interfaces/ledger.mojom.h"
@@ -24,8 +24,8 @@ const char _clear_favicon[] = "clear";
 
 LEDGER_EXPORT enum REWARDS_CATEGORY {
   AUTO_CONTRIBUTE = 1 << 1,  // 2
-  ONE_TIME_TIP = 1 << 3,  // 8
-  RECURRING_TIP = 1 << 4,  // 16
+  ONE_TIME_TIP = 1 << 3,     // 8
+  RECURRING_TIP = 1 << 4,    // 16
   ALL_CATEGORIES = (1 << 5) - 1,
 };
 
@@ -49,7 +49,7 @@ LEDGER_EXPORT enum PUBLISHER_EXCLUDE {
   ALL = -1,
   DEFAULT = 0,  // this tell us that user did not manually changed exclude state
   EXCLUDED = 1,  // user manually changed it to exclude
-  INCLUDED = 2  // user manually changed it to include and is overriding server
+  INCLUDED = 2   // user manually changed it to include and is overriding server
 };
 
 LEDGER_EXPORT enum EXCLUDE_FILTER {
@@ -80,9 +80,8 @@ LEDGER_EXPORT struct ActivityInfoFilter {
 
 LEDGER_EXPORT struct ContributionInfo {
   ContributionInfo() {}
-  ContributionInfo(const double &value_, const uint64_t& date_):
-    value(value_),
-    date(date_) {}
+  ContributionInfo(const double& value_, const uint64_t& date_)
+      : value(value_), date(date_) {}
 
   const std::string ToJson() const;
   bool loadFromJson(const std::string& json);

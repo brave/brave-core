@@ -13,6 +13,6 @@ namespace webtorrent {
 
 bool IsWebtorrentEnabled(content::BrowserContext* browser_context);
 
-}  // webtorrent
+}  // namespace webtorrent
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WEBTORRENT_BROWSER_WEBTORRENT_UTIL_H_

@@ -24,7 +24,9 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
       content_settings_prefs_.insert(std::make_pair(
           info->type(),
           std::make_unique<ContentSettingsPref>(
-              info->type(), prefs_, &brave_pref_change_registrar_,
+              info->type(),
+              prefs_,
+              &brave_pref_change_registrar_,
               info->pref_name(),
               is_incognito_,
               base::Bind(&PrefProvider::Notify, base::Unretained(this)))));
@@ -53,9 +55,11 @@ bool BravePrefProvider::SetWebsiteSetting(
            secondary_pattern == ContentSettingsPattern::Wildcard());
   }
 
-  return PrefProvider::SetWebsiteSetting(
-      primary_pattern, secondary_pattern,
-      content_type, resource_identifier, in_value);
+  return PrefProvider::SetWebsiteSetting(primary_pattern,
+                                         secondary_pattern,
+                                         content_type,
+                                         resource_identifier,
+                                         in_value);
 }
 
 }  // namespace content_settings

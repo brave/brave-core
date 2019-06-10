@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { BlockOptions, BlockTypes, BlockFPOptions, BlockCookiesOptions } from '../other/blockTypes'
-import { NoScriptInfo } from '../other/noScriptInfo'
+import {BlockCookiesOptions, BlockFPOptions, BlockOptions, BlockTypes} from '../other/blockTypes'
+import {NoScriptInfo} from '../other/noScriptInfo'
 
 export interface Tab {
   ads: BlockOptions
@@ -24,11 +24,10 @@ export interface Tab {
   fingerprintingBlocked: number
   cookies: BlockCookiesOptions
   noScriptInfo: NoScriptInfo
-  adsBlockedResources: Array<string>
-  trackersBlockedResources: Array<string>
-  httpsRedirectedResources: Array<string>
-  javascriptBlockedResources: Array<string>
-  fingerprintingBlockedResources: Array<string>
+  adsBlockedResources: Array<string>trackersBlockedResources:
+      Array<string>httpsRedirectedResources:
+          Array<string>javascriptBlockedResources:
+              Array<string>fingerprintingBlockedResources: Array<string>
 }
 
 export interface Tabs {
@@ -50,7 +49,7 @@ export interface GetActiveTabId {
 }
 
 export interface GetActiveTabData {
-  (state: State): Tab | undefined
+  (state: State): Tab|undefined
 }
 
 export interface UpdateActiveTab {
@@ -70,7 +69,8 @@ export interface UpdateTabShieldsData {
 }
 
 export interface UpdateResourceBlocked {
-  (state: State, tabId: number, blockType: BlockTypes, subresource: string): State
+  (state: State, tabId: number, blockType: BlockTypes, subresource: string):
+      State
 }
 
 export interface ResetBlockingStats {

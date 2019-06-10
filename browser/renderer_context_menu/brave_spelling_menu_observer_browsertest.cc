@@ -40,7 +40,7 @@ class BraveSpellingMenuObserverTest : public InProcessBrowserTest {
     observer_.reset(new SpellingMenuObserver(menu_.get()));
     menu_->SetObserver(observer_.get());
     // Uncomment to print the menu to standard output for each test.
-    //menu_->EnablePrintMenu();
+    // menu_->EnablePrintMenu();
   }
 
   void InitMenu(const char* word, const char* suggestion) {
@@ -78,8 +78,7 @@ BraveSpellingMenuObserverTest::~BraveSpellingMenuObserverTest() {}
 }  // namespace
 
 // Tests that right-clicking not add "Ask Brave for suggestions".
-IN_PROC_BROWSER_TEST_F(BraveSpellingMenuObserverTest,
-                       CheckAskBraveNotShown) {
+IN_PROC_BROWSER_TEST_F(BraveSpellingMenuObserverTest, CheckAskBraveNotShown) {
   // Test menu with a misspelled word.
   Reset();
   InitMenu("wiimode", nullptr);

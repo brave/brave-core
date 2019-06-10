@@ -59,42 +59,58 @@ constexpr TestData kTestData[] = {
     {
         L"C:\\Program Files (x86)\\BraveSoftware\\Brave-Browser\\Application"
         L"\\brave.exe",
-        STABLE_INDEX, true, L"",
+        STABLE_INDEX,
+        true,
+        L"",
     },
     {
         L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Browser"
         L"\\Application\\brave.exe",
-        STABLE_INDEX, false, L"",
+        STABLE_INDEX,
+        false,
+        L"",
     },
     {
         L"C:\\Program Files (x86)\\BraveSoftware\\Brave-Browser-Beta"
         L"\\Application\\brave.exe",
-        BETA_INDEX, true, L"beta",
+        BETA_INDEX,
+        true,
+        L"beta",
     },
     {
         L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Browser-Beta"
         L"\\Application\\brave.exe",
-        BETA_INDEX, false, L"beta",
+        BETA_INDEX,
+        false,
+        L"beta",
     },
     {
         L"C:\\Program Files (x86)\\BraveSoftware\\Brave-Browser-Dev"
         L"\\Application\\brave.exe",
-        DEV_INDEX, true, L"dev",
+        DEV_INDEX,
+        true,
+        L"dev",
     },
     {
         L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Browser-Dev"
         L"\\Application\\brave.exe",
-        DEV_INDEX, false, L"dev",
+        DEV_INDEX,
+        false,
+        L"dev",
     },
     {
         L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Browser-Nightly"
         L"\\Application\\brave.exe",
-        NIGHTLY_INDEX, false, L"nightly",
+        NIGHTLY_INDEX,
+        false,
+        L"nightly",
     },
     {
         L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Browser-Nightly"
         L"\\Application\\brave.exe",
-        NIGHTLY_INDEX, false, L"nightly",
+        NIGHTLY_INDEX,
+        false,
+        L"nightly",
     },
 };
 #else   // OFFICIAL_BUILD
@@ -102,12 +118,17 @@ constexpr TestData kTestData[] = {
     {
         L"C:\\Program Files (x86)\\BraveSoftware\\Brave-Browser-Development"
         L"\\Application\\brave.exe",
-        DEVELOPER_INDEX, true, L"",
+        DEVELOPER_INDEX,
+        true,
+        L"",
     },
     {
-        L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Browser-Development"
+        L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Browser-"
+        L"Development"
         L"Application\\brave.exe",
-        DEVELOPER_INDEX, false, L"",
+        DEVELOPER_INDEX,
+        false,
+        L"",
     },
 };
 #endif  // !OFFICIAL_BUILD
@@ -121,8 +142,7 @@ class MakeProductDetailsTest : public testing::TestWithParam<TestData> {
       : test_data_(GetParam()),
         root_key_(test_data_.system_level ? HKEY_LOCAL_MACHINE
                                           : HKEY_CURRENT_USER),
-        nt_root_key_(test_data_.system_level ? nt::HKLM : nt::HKCU) {
-  }
+        nt_root_key_(test_data_.system_level ? nt::HKLM : nt::HKCU) {}
 
   ~MakeProductDetailsTest() {
     nt::SetTestingOverride(nt_root_key_, base::string16());
@@ -138,7 +158,8 @@ class MakeProductDetailsTest : public testing::TestWithParam<TestData> {
   const TestData& test_data() const { return test_data_; }
 
   void SetAp(const wchar_t* value) {
-    ASSERT_THAT(base::win::RegKey(root_key_, GetClientStateKeyPath().c_str(),
+    ASSERT_THAT(base::win::RegKey(root_key_,
+                                  GetClientStateKeyPath().c_str(),
                                   KEY_WOW64_32KEY | KEY_SET_VALUE)
                     .WriteValue(L"ap", value),
                 Eq(ERROR_SUCCESS));

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#define _USE_MATH_DEFINES       // Microsoft, please define M_LN2 in <cmath>
+#define _USE_MATH_DEFINES  // Microsoft, please define M_LN2 in <cmath>
 
 #include <cmath>
 
@@ -15,6 +15,7 @@ class BraveRandomDeterministicTest : public testing::Test {
  public:
   BraveRandomDeterministicTest() {}
   ~BraveRandomDeterministicTest() override {}
+
  private:
   DISALLOW_COPY_AND_ASSIGN(BraveRandomDeterministicTest);
 };
@@ -89,8 +90,8 @@ TEST_F(BraveRandomDeterministicTest, StdExponential) {
   EXPECT_DOUBLE_EQ(HUGE_VAL, StdExponential(0, 4.9406564584124654e-324));
   EXPECT_DOUBLE_EQ(744.4400719213812,
                    StdExponential(0, 9.8813129168249309e-324));
-  EXPECT_DOUBLE_EQ(3*M_LN2, StdExponential(0, 0.25));
-  EXPECT_DOUBLE_EQ(2*M_LN2, StdExponential(0, 0.5));
+  EXPECT_DOUBLE_EQ(3 * M_LN2, StdExponential(0, 0.25));
+  EXPECT_DOUBLE_EQ(2 * M_LN2, StdExponential(0, 0.5));
   EXPECT_DOUBLE_EQ(M_LN2, StdExponential(0, 1));
   EXPECT_DOUBLE_EQ(M_LN2, StdExponential(1, 1));
   EXPECT_DOUBLE_EQ(-log(0.75), StdExponential(1, 0.5));
@@ -110,12 +111,12 @@ TEST_F(BraveRandomDeterministicTest, Exponential) {
   EXPECT_DOUBLE_EQ(HUGE_VAL, Exponential(0, 4.9406564584124654e-324, 0.5));
   EXPECT_DOUBLE_EQ(1488.8801438427624,
                    Exponential(0, 9.8813129168249309e-324, 0.5));
-  EXPECT_DOUBLE_EQ(6*M_LN2, Exponential(0, 0.25, 0.5));
-  EXPECT_DOUBLE_EQ(4*M_LN2, Exponential(0, 0.5, 0.5));
-  EXPECT_DOUBLE_EQ(2*M_LN2, Exponential(0, 1, 0.5));
-  EXPECT_DOUBLE_EQ(2*M_LN2, Exponential(1, 1, 0.5));
-  EXPECT_DOUBLE_EQ(-2*log(0.75), Exponential(1, 0.5, 0.5));
-  EXPECT_DOUBLE_EQ(-2*log(0.875), Exponential(1, 0.25, 0.5));
+  EXPECT_DOUBLE_EQ(6 * M_LN2, Exponential(0, 0.25, 0.5));
+  EXPECT_DOUBLE_EQ(4 * M_LN2, Exponential(0, 0.5, 0.5));
+  EXPECT_DOUBLE_EQ(2 * M_LN2, Exponential(0, 1, 0.5));
+  EXPECT_DOUBLE_EQ(2 * M_LN2, Exponential(1, 1, 0.5));
+  EXPECT_DOUBLE_EQ(-2 * log(0.75), Exponential(1, 0.5, 0.5));
+  EXPECT_DOUBLE_EQ(-2 * log(0.875), Exponential(1, 0.25, 0.5));
   EXPECT_DOUBLE_EQ(9.8813129168249309e-324,
                    Exponential(1, 9.8813129168249309e-324, 0.5));
   EXPECT_DOUBLE_EQ(0, Exponential(1, 4.9406564584124654e-324, 0.5));
@@ -124,12 +125,12 @@ TEST_F(BraveRandomDeterministicTest, Exponential) {
   EXPECT_DOUBLE_EQ(HUGE_VAL, Exponential(0, 4.9406564584124654e-324, 2));
   EXPECT_DOUBLE_EQ(372.2200359606906,
                    Exponential(0, 9.8813129168249309e-324, 2));
-  EXPECT_DOUBLE_EQ(1.5*M_LN2, Exponential(0, 0.25, 2));
+  EXPECT_DOUBLE_EQ(1.5 * M_LN2, Exponential(0, 0.25, 2));
   EXPECT_DOUBLE_EQ(M_LN2, Exponential(0, 0.5, 2));
-  EXPECT_DOUBLE_EQ(0.5*M_LN2, Exponential(0, 1, 2));
-  EXPECT_DOUBLE_EQ(0.5*M_LN2, Exponential(1, 1, 2));
-  EXPECT_DOUBLE_EQ(-0.5*log(0.75), Exponential(1, 0.5, 2));
-  EXPECT_DOUBLE_EQ(-0.5*log(0.875), Exponential(1, 0.25, 2));
+  EXPECT_DOUBLE_EQ(0.5 * M_LN2, Exponential(0, 1, 2));
+  EXPECT_DOUBLE_EQ(0.5 * M_LN2, Exponential(1, 1, 2));
+  EXPECT_DOUBLE_EQ(-0.5 * log(0.75), Exponential(1, 0.5, 2));
+  EXPECT_DOUBLE_EQ(-0.5 * log(0.875), Exponential(1, 0.25, 2));
   EXPECT_DOUBLE_EQ(9.8813129168249309e-324,
                    Exponential(1, 1.9762625833649862e-323, 2));
   EXPECT_DOUBLE_EQ(9.8813129168249309e-324,

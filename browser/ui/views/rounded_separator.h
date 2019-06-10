@@ -11,8 +11,8 @@
 #include "base/optional.h"
 #include "ui/views/view.h"
 
-// The RoundedSeparator class is a view that shows a line used to visually separate
-// other views.
+// The RoundedSeparator class is a view that shows a line used to visually
+// separate other views.
 class RoundedSeparator : public views::View {
  public:
   // The separator's class name.

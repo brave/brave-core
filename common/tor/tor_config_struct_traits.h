@@ -12,8 +12,7 @@
 namespace mojo {
 
 template <>
-struct StructTraits<tor::mojom::TorConfigDataView,
-                    tor::TorConfig> {
+struct StructTraits<tor::mojom::TorConfigDataView, tor::TorConfig> {
   static const base::FilePath& binary_path(const tor::TorConfig& config) {
     return config.binary_path();
   }
@@ -38,9 +37,7 @@ struct StructTraits<tor::mojom::TorConfigDataView,
     return config.tor_watch_path();
   }
 
-  static bool Read(tor::mojom::TorConfigDataView in,
-                   tor::TorConfig* out);
-
+  static bool Read(tor::mojom::TorConfigDataView in, tor::TorConfig* out);
 };
 
 }  // namespace mojo

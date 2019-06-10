@@ -12,13 +12,7 @@ namespace ads {
 
 class ConfirmationType {
  public:
-  enum Value : int {
-    UNKNOWN,
-    CLICK,
-    DISMISS,
-    VIEW,
-    LANDED
-  };
+  enum Value : int { UNKNOWN, CLICK, DISMISS, VIEW, LANDED };
 
   ConfirmationType() = default;
 

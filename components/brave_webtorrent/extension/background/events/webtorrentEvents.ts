@@ -2,10 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { Instance } from 'webtorrent'
+import {Instance} from 'webtorrent'
 
 export const addWebtorrentEvents = (webtorrent: Instance) => {
-  webtorrent.on('error', (e: Error | string) => {
-    console.log('WebTorrent error: ', e)
-  })
+  webtorrent.on(
+      'error', (e: Error|string) => {console.log('WebTorrent error: ', e)})
 }

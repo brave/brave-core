@@ -4,12 +4,13 @@
 
 import * as urlParser from 'url'
 
-export const isHttpOrHttps = (url?: string) => {
-  if (!url) {
-    return false
-  }
-  return /^https?:/i.test(url)
-}
+export const isHttpOrHttps =
+    (url?: string) => {
+      if (!url) {
+        return false
+      }
+      return /^https?:/i.test(url)
+    }
 
 export const hasPortNumber = (url: string) => {
   return typeof urlParser.parse(url).port === 'string'

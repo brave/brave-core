@@ -10,9 +10,10 @@
 // Required to declare kDisableChromeGoogleURLTrackingClient
 #include "brave/common/brave_switches.h"
 
-// The ChromeGooglURLTrackerClient will disable itself when the kDisableBackgroundNetworking
-// switch is set.  Since several other services also disable themeselves when that is set,
-// we rename the switch that is used to something we define.
+// The ChromeGooglURLTrackerClient will disable itself when the
+// kDisableBackgroundNetworking switch is set.  Since several other services
+// also disable themeselves when that is set, we rename the switch that is used
+// to something we define.
 #define kDisableBackgroundNetworking kDisableChromeGoogleURLTrackingClient
 #include "../../../../../chrome/browser/google/chrome_google_url_tracker_client.cc"
 #undef kDisableBackgroundNetworking

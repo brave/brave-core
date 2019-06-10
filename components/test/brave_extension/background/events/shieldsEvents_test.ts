@@ -4,21 +4,17 @@
 
 import '../../../../brave_extension/extension/brave_extension/background/events/shieldsEvents'
 import actions from '../../../../brave_extension/extension/brave_extension/background/actions/shieldsPanelActions'
-import { blockedResource } from '../../../testData'
+import {blockedResource} from '../../../testData'
 
 describe('shieldsEvents events', () => {
   describe('chrome.braveShields.onBlocked listener', () => {
     let spy: jest.SpyInstance
-    beforeEach(() => {
-      spy = jest.spyOn(actions, 'resourceBlocked')
-    })
-    afterEach(() => {
-      spy.mockRestore()
-    })
+beforeEach(() => {spy = jest.spyOn(actions, 'resourceBlocked')})
+afterEach(() => {spy.mockRestore()})
     it('forward details to actions.resourceBlocked', (cb) => {
       chrome.braveShields.onBlocked.addListener((details) => {
         expect(details).toBe(blockedResource)
-        expect(spy).toBeCalledWith(details)
+    expect(spy).toBeCalledWith(details)
         cb()
       })
       chrome.braveShields.onBlocked.emit(blockedResource)

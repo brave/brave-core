@@ -7,16 +7,16 @@
 #define BAT_CONFIRMATIONS_INTERNAL_CONFIRMATIONS_IMPL_H_
 
 #include <stdint.h>
-#include <string>
-#include <vector>
 #include <map>
 #include <memory>
+#include <string>
+#include <vector>
 
 #include "bat/confirmations/confirmations.h"
 #include "bat/confirmations/confirmations_client.h"
-#include "bat/confirmations/notification_info.h"
-#include "bat/confirmations/issuers_info.h"
 #include "bat/confirmations/internal/confirmation_info.h"
+#include "bat/confirmations/issuers_info.h"
+#include "bat/confirmations/notification_info.h"
 
 #include "base/values.h"
 
@@ -60,9 +60,8 @@ class ConfirmationsImpl : public Confirmations {
       const uint64_t to_timestamp_in_seconds);
   std::vector<TransactionInfo> GetUnredeemedTransactionsForPreviousCycles(
       const uint64_t before_timestamp_in_seconds);
-  void AppendTransactionToHistory(
-      const double estimated_redemption_value,
-      const ConfirmationType confirmation_type);
+  void AppendTransactionToHistory(const double estimated_redemption_value,
+                                  const ConfirmationType confirmation_type);
 
   // Scheduled events
   bool OnTimer(const uint32_t timer_id) override;
@@ -151,8 +150,7 @@ class ConfirmationsImpl : public Confirmations {
 
   bool FromJSON(const std::string& json);
 
-  bool GetCatalogIssuersFromJSON(
-      base::DictionaryValue* dictionary);
+  bool GetCatalogIssuersFromJSON(base::DictionaryValue* dictionary);
   bool GetCatalogIssuersFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* public_key,
@@ -161,23 +159,19 @@ class ConfirmationsImpl : public Confirmations {
   bool GetNextTokenRedemptionDateInSecondsFromJSON(
       base::DictionaryValue* dictionary);
 
-  bool GetConfirmationsFromJSON(
-      base::DictionaryValue* dictionary);
+  bool GetConfirmationsFromJSON(base::DictionaryValue* dictionary);
   bool GetConfirmationsFromDictionary(
       base::DictionaryValue* dictionary,
       std::vector<ConfirmationInfo>* confirmations);
 
-  bool GetTransactionHistoryFromJSON(
-      base::DictionaryValue* dictionary);
+  bool GetTransactionHistoryFromJSON(base::DictionaryValue* dictionary);
   bool GetTransactionHistoryFromDictionary(
       base::DictionaryValue* dictionary,
       std::vector<TransactionInfo>* transaction_history);
 
-  bool GetUnblindedTokensFromJSON(
-      base::DictionaryValue* dictionary);
+  bool GetUnblindedTokensFromJSON(base::DictionaryValue* dictionary);
 
-  bool GetUnblindedPaymentTokensFromJSON(
-      base::DictionaryValue* dictionary);
+  bool GetUnblindedPaymentTokensFromJSON(base::DictionaryValue* dictionary);
 
   // Confirmations::Client
   ConfirmationsClient* confirmations_client_;  // NOT OWNED

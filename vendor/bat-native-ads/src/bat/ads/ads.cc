@@ -28,8 +28,8 @@ bool Ads::IsSupportedRegion(const std::string& locale) {
   auto region = helper::Locale::GetCountryCode(locale);
 
   auto supported_regions = {"US", "CA", "DE", "FR", "GB"};
-  if (std::find(supported_regions.begin(), supported_regions.end(), region)
-      == supported_regions.end()) {
+  if (std::find(supported_regions.begin(), supported_regions.end(), region) ==
+      supported_regions.end()) {
     return false;
   }
 

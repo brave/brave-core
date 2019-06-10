@@ -5,15 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import "Records.h"
-#import "Records+Private.h"
 #import "CppTransformations.h"
+#import "Records+Private.h"
 
-#import <vector>
 #import <map>
 #import <string>
+#import <vector>
 
 @implementation BATAutoContributeProps
-- (instancetype)initWithAutoContributeProps:(const ledger::AutoContributeProps&)obj {
+- (instancetype)initWithAutoContributeProps:
+    (const ledger::AutoContributeProps&)obj {
   if ((self = [super init])) {
     self.enabledContribute = obj.enabled_contribute;
     self.contributionMinTime = obj.contribution_min_time;
@@ -27,16 +28,23 @@
 @end
 
 @implementation BATBalanceReportInfo
-- (instancetype)initWithBalanceReportInfo:(const ledger::BalanceReportInfo&)obj {
+- (instancetype)initWithBalanceReportInfo:
+    (const ledger::BalanceReportInfo&)obj {
   if ((self = [super init])) {
-    self.openingBalance = [NSString stringWithUTF8String:obj.opening_balance_.c_str()];
-    self.closingBalance = [NSString stringWithUTF8String:obj.closing_balance_.c_str()];
+    self.openingBalance =
+        [NSString stringWithUTF8String:obj.opening_balance_.c_str()];
+    self.closingBalance =
+        [NSString stringWithUTF8String:obj.closing_balance_.c_str()];
     self.deposits = [NSString stringWithUTF8String:obj.deposits_.c_str()];
     self.grants = [NSString stringWithUTF8String:obj.grants_.c_str()];
-    self.earningFromAds = [NSString stringWithUTF8String:obj.earning_from_ads_.c_str()];
-    self.autoContribute = [NSString stringWithUTF8String:obj.auto_contribute_.c_str()];
-    self.recurringDonation = [NSString stringWithUTF8String:obj.recurring_donation_.c_str()];
-    self.oneTimeDonation = [NSString stringWithUTF8String:obj.one_time_donation_.c_str()];
+    self.earningFromAds =
+        [NSString stringWithUTF8String:obj.earning_from_ads_.c_str()];
+    self.autoContribute =
+        [NSString stringWithUTF8String:obj.auto_contribute_.c_str()];
+    self.recurringDonation =
+        [NSString stringWithUTF8String:obj.recurring_donation_.c_str()];
+    self.oneTimeDonation =
+        [NSString stringWithUTF8String:obj.one_time_donation_.c_str()];
     self.total = [NSString stringWithUTF8String:obj.total_.c_str()];
   }
   return self;
@@ -70,7 +78,8 @@
 @implementation BATPublisherBanner
 - (instancetype)initWithPublisherBanner:(const ledger::PublisherBanner&)obj {
   if ((self = [super init])) {
-    self.publisherKey = [NSString stringWithUTF8String:obj.publisher_key.c_str()];
+    self.publisherKey =
+        [NSString stringWithUTF8String:obj.publisher_key.c_str()];
     self.title = [NSString stringWithUTF8String:obj.title.c_str()];
     self.name = [NSString stringWithUTF8String:obj.name.c_str()];
     self.description = [NSString stringWithUTF8String:obj.description.c_str()];
@@ -98,14 +107,18 @@
 @end
 
 @implementation BATRewardsInternalsInfo
-- (instancetype)initWithRewardsInternalsInfo:(const ledger::RewardsInternalsInfo&)obj {
+- (instancetype)initWithRewardsInternalsInfo:
+    (const ledger::RewardsInternalsInfo&)obj {
   if ((self = [super init])) {
     self.paymentId = [NSString stringWithUTF8String:obj.payment_id.c_str()];
     self.isKeyInfoSeedValid = obj.is_key_info_seed_valid;
     self.personaId = [NSString stringWithUTF8String:obj.persona_id.c_str()];
     self.userId = [NSString stringWithUTF8String:obj.user_id.c_str()];
     self.bootStamp = obj.boot_stamp;
-    self.currentReconciles = NSDictionaryFromMap(obj.current_reconciles, ^BATReconcileInfo *(ledger::ReconcileInfo o){ return [[BATReconcileInfo alloc] initWithReconcileInfo:o]; });
+    self.currentReconciles = NSDictionaryFromMap(
+        obj.current_reconciles, ^BATReconcileInfo*(ledger::ReconcileInfo o) {
+          return [[BATReconcileInfo alloc] initWithReconcileInfo:o];
+        });
   }
   return self;
 }
@@ -116,7 +129,8 @@
   if ((self = [super init])) {
     self.timestampInSeconds = obj.timestamp_in_seconds;
     self.estimatedRedemptionValue = obj.estimated_redemption_value;
-    self.confirmationType = [NSString stringWithUTF8String:obj.confirmation_type.c_str()];
+    self.confirmationType =
+        [NSString stringWithUTF8String:obj.confirmation_type.c_str()];
   }
   return self;
 }
@@ -125,7 +139,11 @@
 @implementation BATTransactionsInfo
 - (instancetype)initWithTransactionsInfo:(const ledger::TransactionsInfo&)obj {
   if ((self = [super init])) {
-    self.transactions = NSArrayFromVector(obj.transactions, ^BATTransactionInfo *(const ledger::TransactionInfo& o){ return [[BATTransactionInfo alloc] initWithTransactionInfo: o]; });
+    self.transactions = NSArrayFromVector(
+        obj.transactions,
+        ^BATTransactionInfo*(const ledger::TransactionInfo& o) {
+          return [[BATTransactionInfo alloc] initWithTransactionInfo:o];
+        });
   }
   return self;
 }
@@ -169,7 +187,10 @@
     self.parametersChoices = NSArrayFromVector(obj.parameters_choices_);
     self.parametersRange = NSArrayFromVector(obj.parameters_range_);
     self.parametersDays = obj.parameters_days_;
-    self.grants = NSArrayFromVector(obj.grants_, ^BATGrant *(const ledger::Grant& o){ return [[BATGrant alloc] initWithGrant: o]; });
+    self.grants =
+        NSArrayFromVector(obj.grants_, ^BATGrant*(const ledger::Grant& o) {
+          return [[BATGrant alloc] initWithGrant:o];
+        });
   }
   return self;
 }

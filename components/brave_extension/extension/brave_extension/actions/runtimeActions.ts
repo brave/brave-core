@@ -4,7 +4,7 @@
 
 import * as types from '../constants/runtimeActionTypes'
 
-export function runtimeDidStartup () {
+export function runtimeDidStartup() {
   return {
     type: types.RUNTIME_DID_STARTUP
   }

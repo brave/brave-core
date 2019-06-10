@@ -5,12 +5,12 @@
 
 #include "bat/confirmations/confirmation_type.h"
 
-#include "bat/confirmations/internal/create_confirmation_request.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
+#include "bat/confirmations/internal/create_confirmation_request.h"
 #include "bat/confirmations/internal/security_helper.h"
 
-#include "base/logging.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/values.h"
 
 namespace confirmations {
@@ -50,9 +50,7 @@ std::vector<std::string> CreateConfirmationRequest::BuildHeaders() const {
   std::string accept_header = "accept: ";
   accept_header += GetAcceptHeaderValue();
 
-  return {
-    accept_header
-  };
+  return {accept_header};
 }
 
 std::string CreateConfirmationRequest::GetAcceptHeaderValue() const {

@@ -6,8 +6,8 @@
 
 #include <set>
 
-#include "brave/browser/tor/mock_tor_profile_service_impl.h"
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
+#include "brave/browser/tor/mock_tor_profile_service_impl.h"
 #include "brave/common/tor/pref_names.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -29,12 +29,12 @@ MockTorProfileServiceFactory* MockTorProfileServiceFactory::GetInstance() {
 MockTorProfileServiceFactory::MockTorProfileServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "MockTorProfileService",
-          BrowserContextDependencyManager::GetInstance()) {
-}
+          BrowserContextDependencyManager::GetInstance()) {}
 
-//static
+// static
 void MockTorProfileServiceFactory::SetTorNavigationUIData(
-    Profile* profile, BraveNavigationUIData* data) {
+    Profile* profile,
+    BraveNavigationUIData* data) {
   if (!profile->IsTorProfile())
     return;
   data->SetTorProfileService(GetForProfile(profile));

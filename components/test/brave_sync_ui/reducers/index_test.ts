@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import reducers from '../../../brave_sync/ui/reducers/index'
-import { syncInitialState } from '../../testData'
+import {syncInitialState} from '../../testData'
 
 describe('sync reducers test', () => {
   it('reducers are a combined reducer function', () => {
@@ -13,7 +13,7 @@ describe('sync reducers test', () => {
 
   it('reducers passed with an unknown action returns the same input', () => {
     const unknownAction = {
-      type: 'BONDY POWER'
+  type: 'BONDY POWER'
     }
 
     const state = { ...syncInitialState }

@@ -3,52 +3,52 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // API
-import * as dataFetchAPI from '../dataFetch'
-import * as bookmarksAPI from './bookmarks'
-import { getCharForSite } from '../../helpers/newTabUtils'
-
 // Utils
-import { debounce } from '../../../common/debounce'
+import {debounce} from '../../../common/debounce'
+import {getCharForSite} from '../../helpers/newTabUtils'
+import * as dataFetchAPI from '../dataFetch'
 
-export const getGridSites = (state: NewTab.State, checkBookmarkInfo?: boolean) => {
-  const sizeToCount = { large: 18, medium: 12, small: 6 }
-  const count = sizeToCount[state.gridLayoutSize || 'small']
-  const defaultChromeUrl = 'https://chrome.google.com/webstore?hl=en'
+import * as bookmarksAPI from './bookmarks'
 
-  // Start with top sites with filtered out ignored sites and pinned sites
-  let gridSites = state.topSites.slice()
-  .filter((site) =>
-    !state.ignoredTopSites.find((ignoredSite) => ignoredSite.url === site.url) &&
-    !state.pinnedTopSites.find((pinnedSite) => pinnedSite.url === site.url) &&
-    site.url !== defaultChromeUrl
-  )
+export const getGridSites =
+    (state: NewTab.State, checkBookmarkInfo?: boolean) => {
+      const sizeToCount = {large: 18, medium: 12, small: 6} const count =
+          sizeToCount[state.gridLayoutSize || 'small'] const defaultChromeUrl =
+              'https://chrome.google.com/webstore?hl=en'
 
-  // Then add in pinned sites at the specified index, these need to be added in the same
-  // order as the index they are.
-  const pinnedTopSites = state.pinnedTopSites
-    .slice()
-    .sort((x, y) => x.index - y.index)
-  pinnedTopSites.forEach((pinnedSite) => {
-    gridSites.splice(pinnedSite.index, 0, pinnedSite)
-  })
+      // Start with top sites with filtered out ignored sites and pinned sites
+      let gridSites = state.topSites.slice().filter(
+          (site) => !state.ignoredTopSites.find(
+                        (ignoredSite) => ignoredSite.url === site.url) &&
+              !state.pinnedTopSites.find(
+                  (pinnedSite) => pinnedSite.url === site.url) &&
+              site.url !== defaultChromeUrl)
 
-  gridSites = gridSites.slice(0, count)
-  gridSites.forEach((gridSite: NewTab.Site) => {
-    gridSite.letter = getCharForSite(gridSite)
-    gridSite.thumb = `chrome://thumb/${gridSite.url}`
-    gridSite.favicon = `chrome://favicon/size/64@1x/${gridSite.url}`
-    gridSite.bookmarked = state.bookmarks[gridSite.url]
+      // Then add in pinned sites at the specified index, these need to be added
+      // in the same order as the index they are.
+      const pinnedTopSites =
+          state.pinnedTopSites.slice().sort((x, y) => x.index - y.index)
+      pinnedTopSites.forEach(
+          (pinnedSite) => {gridSites.splice(pinnedSite.index, 0, pinnedSite)})
 
-    if (checkBookmarkInfo && !gridSite.bookmarked) {
-      bookmarksAPI.fetchBookmarkInfo(gridSite.url)
+      gridSites = gridSites.slice(0, count)
+      gridSites.forEach((gridSite: NewTab.Site) => {
+        gridSite.letter = getCharForSite(gridSite)
+        gridSite.thumb = `chrome://thumb/${gridSite.url}`
+        gridSite.favicon = `chrome://favicon/size/64@1x/${gridSite.url}`
+        gridSite.bookmarked = state.bookmarks[gridSite.url]
+
+                              if (checkBookmarkInfo && !gridSite.bookmarked) {
+          bookmarksAPI.fetchBookmarkInfo(gridSite.url)
+        }
+      })
+      return gridSites
     }
-  })
-  return gridSites
-}
 
 /**
  * Calculates the top sites grid and calls an action with the results
  */
-export const calculateGridSites = debounce((state: NewTab.State) => {
-  dataFetchAPI.getActions().gridSitesUpdated(getGridSites(state, true))
-}, 10)
+export const calculateGridSites = debounce(
+    (state: NewTab.State) => {
+        dataFetchAPI.getActions().gridSitesUpdated(getGridSites(state, true))},
+    10)

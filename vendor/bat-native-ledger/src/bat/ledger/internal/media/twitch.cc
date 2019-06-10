@@ -19,30 +19,25 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-static const std::vector<std::string> _twitch_events = {
-    "buffer-empty",
-    "buffer-refill",
-    "video_end",
-    "minute-watched",
-    "video_pause",
-    "player_click_vod_seek",
-    "video-play",
-    "video_error"};
+static const std::vector<std::string> _twitch_events = {"buffer-empty",
+                                                        "buffer-refill",
+                                                        "video_end",
+                                                        "minute-watched",
+                                                        "video_pause",
+                                                        "player_click_vod_seek",
+                                                        "video-play",
+                                                        "video_error"};
 
-MediaTwitch::MediaTwitch(bat_ledger::LedgerImpl* ledger):
-  ledger_(ledger) {
-}
+MediaTwitch::MediaTwitch(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {}
 
-MediaTwitch::~MediaTwitch() {
-}
+MediaTwitch::~MediaTwitch() {}
 
 // static
 std::pair<std::string, std::string> MediaTwitch::GetMediaIdFromParts(
     const std::map<std::string, std::string>& parts) {
   std::string id;
   std::string user_id;
-  std::map<std::string, std::string>::const_iterator iter =
-        parts.find("event");
+  std::map<std::string, std::string>::const_iterator iter = parts.find("event");
   if (iter != parts.end() && parts.find("properties") != parts.end()) {
     unsigned int size = _twitch_events.size();
     for (size_t i = 0; i < size; i++) {
@@ -82,19 +77,14 @@ std::string MediaTwitch::GetTwitchStatus(
     const ledger::TwitchEventInfo& new_event) {
   std::string status = "playing";
 
-  if (
-    (
-      new_event.event_ == "video_pause" &&
-      old_event.event_ != "video_pause") ||
+  if ((new_event.event_ == "video_pause" &&
+       old_event.event_ != "video_pause") ||
       // User clicked pause (we need to exclude seeking while paused)
-    (
-      new_event.event_ == "video_pause" &&
-      old_event.event_ == "video_pause" &&
-      old_event.status_ == "playing") ||
+      (new_event.event_ == "video_pause" && old_event.event_ == "video_pause" &&
+       old_event.status_ == "playing") ||
       // User clicked pause as soon as he clicked play
-    (
-      new_event.event_ == "player_click_vod_seek" &&
-      old_event.status_ == "paused")
+      (new_event.event_ == "player_click_vod_seek" &&
+       old_event.status_ == "paused")
       // Seeking a video while it is paused
   ) {
     status = "paused";
@@ -136,20 +126,16 @@ uint64_t MediaTwitch::GetTwitchDuration(
   if (old_event.event_ == "video-play") {
     time = currentTime - oldTime - TWITCH_MINIMUM_SECONDS;
   } else if (new_event.event_ == "minute-watched" ||  // Minute watched
-      new_event.event_ == "buffer-empty" ||  // Run out of buffer
-      new_event.event_ == "video_error" ||  // Video has some problems
-      new_event.event_ == "video_end" ||  // Video ended
-      (new_event.event_ == "player_click_vod_seek" &&
-       old_event.status_ == "paused") ||  // Vod seek
-      (
-        new_event.event_ == "video_pause" &&
-        (
-          (
-            old_event.event_ != "video_pause" &&
-            old_event.event_ != "player_click_vod_seek") ||
-          old_event.status_ == "playing")
-      )  // User paused video
-    ) {
+             new_event.event_ == "buffer-empty" ||    // Run out of buffer
+             new_event.event_ == "video_error" ||     // Video has some problems
+             new_event.event_ == "video_end" ||       // Video ended
+             (new_event.event_ == "player_click_vod_seek" &&
+              old_event.status_ == "paused") ||  // Vod seek
+             (new_event.event_ == "video_pause" &&
+              ((old_event.event_ != "video_pause" &&
+                old_event.event_ != "player_click_vod_seek") ||
+               old_event.status_ == "playing"))  // User paused video
+  ) {
     time = currentTime - oldTime;
   }
 
@@ -174,17 +160,13 @@ std::string MediaTwitch::GetLinkType(const std::string& url,
                                      const std::string& first_party_url,
                                      const std::string& referrer) {
   std::string type;
-  bool is_valid_twitch_path =
-      braveledger_bat_helper::HasSameDomainAndPath(
-                                  url, "ttvnw.net", "/v1/segment/");
+  bool is_valid_twitch_path = braveledger_bat_helper::HasSameDomainAndPath(
+      url, "ttvnw.net", "/v1/segment/");
 
-  if (
-    (
-      (first_party_url.find("https://www.twitch.tv/") == 0 ||
+  if (((first_party_url.find("https://www.twitch.tv/") == 0 ||
         first_party_url.find("https://m.twitch.tv/") == 0) ||
-      (referrer.find("https://player.twitch.tv/") == 0)) &&
-    is_valid_twitch_path
-  ) {
+       (referrer.find("https://player.twitch.tv/") == 0)) &&
+      is_valid_twitch_path) {
     type = TWITCH_MEDIA_TYPE;
   }
 
@@ -192,71 +174,72 @@ std::string MediaTwitch::GetLinkType(const std::string& url,
 }
 
 // static
-std::string MediaTwitch::GetMediaIdFromUrl(
-  const std::string& url,
-  const std::string& publisher_blob) {
+std::string MediaTwitch::GetMediaIdFromUrl(const std::string& url,
+                                           const std::string& publisher_blob) {
   std::string mediaId = braveledger_media::ExtractData(url, "twitch.tv/", "/");
 
   if (url.find("twitch.tv/videos/") != std::string::npos) {
-    mediaId = braveledger_media::ExtractData(publisher_blob,
-      "<a class=\"tw-interactive channel-header__user tw-align-items-center "
-      "tw-flex tw-flex-nowrap tw-flex-shrink-0 tw-link "
-      "tw-link--hover-underline-none tw-pd-r-2 tw-pd-y-05\" "
-      "data-target=\"channel-header__channel-link\" "
-      "data-a-target=\"user-channel-header-item\" href=\"/", "\"");
+    mediaId = braveledger_media::ExtractData(
+        publisher_blob,
+        "<a class=\"tw-interactive channel-header__user tw-align-items-center "
+        "tw-flex tw-flex-nowrap tw-flex-shrink-0 tw-link "
+        "tw-link--hover-underline-none tw-pd-r-2 tw-pd-y-05\" "
+        "data-target=\"channel-header__channel-link\" "
+        "data-a-target=\"user-channel-header-item\" href=\"/",
+        "\"");
   }
   return mediaId;
 }
 
 // static
-std::string MediaTwitch::GetMediaKeyFromUrl(
-  const std::string& id,
-  const std::string& url) {
+std::string MediaTwitch::GetMediaKeyFromUrl(const std::string& id,
+                                            const std::string& url) {
   if (id == "twitch" || id.empty()) {
     return std::string();
   }
 
   if (url.find("twitch.tv/videos/") != std::string::npos) {
-    std::string vod_id = braveledger_media::ExtractData(url,
-                                                      "twitch.tv/videos/",
-                                                      "/");
+    std::string vod_id =
+        braveledger_media::ExtractData(url, "twitch.tv/videos/", "/");
     return (std::string)TWITCH_MEDIA_TYPE + "_" + id + "_vod_" + vod_id;
   }
   return (std::string)TWITCH_MEDIA_TYPE + "_" + id;
 }
 
 // static
-void MediaTwitch::UpdatePublisherData(
-    std::string* publisher_name,
-    std::string* publisher_favicon_url,
-    const std::string& publisher_blob) {
+void MediaTwitch::UpdatePublisherData(std::string* publisher_name,
+                                      std::string* publisher_favicon_url,
+                                      const std::string& publisher_blob) {
   *publisher_name = GetPublisherName(publisher_blob);
   *publisher_favicon_url = GetFaviconUrl(publisher_blob, *publisher_name);
 }
 
 // static
-std::string MediaTwitch::GetPublisherName(
-    const std::string& publisher_blob) {
-  return braveledger_media::ExtractData(publisher_blob,
-    "<figure class=\"tw-avatar tw-avatar--size-36\">"
-    "<div class=\"tw-border-radius-medium tw-overflow-hidden\">"
-    "<img class=\"tw-avatar__img tw-image\" alt=\"", "\"");
+std::string MediaTwitch::GetPublisherName(const std::string& publisher_blob) {
+  return braveledger_media::ExtractData(
+      publisher_blob,
+      "<figure class=\"tw-avatar tw-avatar--size-36\">"
+      "<div class=\"tw-border-radius-medium tw-overflow-hidden\">"
+      "<img class=\"tw-avatar__img tw-image\" alt=\"",
+      "\"");
 }
 
 // static
-std::string MediaTwitch::GetFaviconUrl(
-    const std::string& publisher_blob,
-    const std::string& handle) {
+std::string MediaTwitch::GetFaviconUrl(const std::string& publisher_blob,
+                                       const std::string& handle) {
   if (handle.empty()) {
     return std::string();
   }
 
-  return braveledger_media::ExtractData(publisher_blob,
-    "<figure class=\"tw-avatar tw-avatar--size-36\">"
-    "<div class=\"tw-border-radius-medium tw-overflow-hidden\">"
-    "<img class=\"tw-avatar__img tw-image\" alt=\"" + handle + "\" "
-    "src=\"",
-    "\"");
+  return braveledger_media::ExtractData(
+      publisher_blob,
+      "<figure class=\"tw-avatar tw-avatar--size-36\">"
+      "<div class=\"tw-border-radius-medium tw-overflow-hidden\">"
+      "<img class=\"tw-avatar__img tw-image\" alt=\"" +
+          handle +
+          "\" "
+          "src=\"",
+      "\"");
 }
 
 // static
@@ -267,7 +250,6 @@ std::string MediaTwitch::GetPublisherKey(const std::string& key) {
 
   return (std::string)TWITCH_MEDIA_TYPE + "#author:" + key;
 }
-
 
 void MediaTwitch::OnMediaActivityError(const ledger::VisitData& visit_data,
                                        uint64_t window_id) {
@@ -283,11 +265,9 @@ void MediaTwitch::OnMediaActivityError(const ledger::VisitData& visit_data,
 
     ledger_->GetPublisherActivityFromUrl(window_id, new_data, std::string());
   } else {
-      BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-        << "Media activity error for "
-        << TWITCH_MEDIA_TYPE << " (name: "
-        << name << ", url: "
-        << visit_data.url << ")";
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Media activity error for " << TWITCH_MEDIA_TYPE
+        << " (name: " << name << ", url: " << visit_data.url << ")";
   }
 }
 
@@ -300,8 +280,8 @@ void MediaTwitch::ProcessMedia(const std::map<std::string, std::string>& parts,
     return;
   }
 
-  std::string media_key = braveledger_media::GetMediaKey(media_id,
-                                                         TWITCH_MEDIA_TYPE);
+  std::string media_key =
+      braveledger_media::GetMediaKey(media_id, TWITCH_MEDIA_TYPE);
   BLOG(ledger_, ledger::LogLevel::LOG_DEBUG) << "Media key: " << media_key;
 
   ledger::TwitchEventInfo twitch_info;
@@ -316,28 +296,25 @@ void MediaTwitch::ProcessMedia(const std::map<std::string, std::string>& parts,
   }
 
   ledger_->GetMediaPublisherInfo(media_key,
-      std::bind(&MediaTwitch::OnMediaPublisherInfo,
-                this,
-                media_id,
-                media_key,
-                twitch_info,
-                visit_data,
-                0,
-                user_id,
-                _1,
-                _2));
+                                 std::bind(&MediaTwitch::OnMediaPublisherInfo,
+                                           this,
+                                           media_id,
+                                           media_key,
+                                           twitch_info,
+                                           visit_data,
+                                           0,
+                                           user_id,
+                                           _1,
+                                           _2));
 }
 
 void MediaTwitch::ProcessActivityFromUrl(uint64_t window_id,
                                          const ledger::VisitData& visit_data,
                                          const std::string& publisher_blob) {
   if (!publisher_blob.empty()) {
-    std::string media_id = GetMediaIdFromUrl(visit_data.url,
-                                             publisher_blob);
-    std::transform(media_id.begin(),
-                   media_id.end(),
-                   media_id.begin(),
-                   ::tolower);
+    std::string media_id = GetMediaIdFromUrl(visit_data.url, publisher_blob);
+    std::transform(
+        media_id.begin(), media_id.end(), media_id.begin(), ::tolower);
     std::string media_key = GetMediaKeyFromUrl(media_id, visit_data.url);
     if (!media_key.empty() && !media_id.empty()) {
       ledger_->GetMediaPublisherInfo(
@@ -357,15 +334,13 @@ void MediaTwitch::ProcessActivityFromUrl(uint64_t window_id,
   } else {
     ledger::VisitData new_visit_data(visit_data);
     new_visit_data.path = std::string();
-    ledger_->GetPublisherActivityFromUrl(window_id,
-                                         new_visit_data,
-                                         std::string());
+    ledger_->GetPublisherActivityFromUrl(
+        window_id, new_visit_data, std::string());
   }
 }
 
-void MediaTwitch::OnSaveMediaVisit(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
+void MediaTwitch::OnSaveMediaVisit(ledger::Result result,
+                                   ledger::PublisherInfoPtr info) {
   // TODO(nejczdovc): handle if needed
 }
 
@@ -381,7 +356,7 @@ void MediaTwitch::OnMediaPublisherInfo(
   if (result != ledger::Result::LEDGER_OK &&
       result != ledger::Result::NOT_FOUND) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
-      << "Failed to get publisher info";
+        << "Failed to get publisher info";
     return;
   }
 
@@ -438,8 +413,8 @@ void MediaTwitch::OnMediaPublisherInfo(
                                 _2,
                                 _3);
 
-      const std::string url = (std::string)TWITCH_PROVIDER_URL + "?json&url=" +
-          ledger_->URIEncode(oembed_url);
+      const std::string url = (std::string)TWITCH_PROVIDER_URL +
+                              "?json&url=" + ledger_->URIEncode(oembed_url);
 
       FetchDataFromUrl(url, callback);
       return;
@@ -450,16 +425,10 @@ void MediaTwitch::OnMediaPublisherInfo(
     updated_visit_data.name = media_id;
     updated_visit_data.url = GetMediaURL(media_id) + "/videos";
 
-    auto callback = std::bind(&MediaTwitch::OnSaveMediaVisit,
-                              this,
-                              _1,
-                              _2);
+    auto callback = std::bind(&MediaTwitch::OnSaveMediaVisit, this, _1, _2);
 
-    ledger_->SaveMediaVisit(publisher_key,
-                            updated_visit_data,
-                            real_duration,
-                            window_id,
-                            callback);
+    ledger_->SaveMediaVisit(
+        publisher_key, updated_visit_data, real_duration, window_id, callback);
     ledger_->SetMediaPublisherInfo(media_key, publisher_key);
   } else {
     ledger::VisitData updated_visit_data(visit_data);
@@ -482,16 +451,10 @@ void MediaTwitch::OnMediaPublisherInfo(
     twitch_events[media_key] = new_event;
 
     std::string id = publisher_info->id;
-    auto callback = std::bind(&MediaTwitch::OnSaveMediaVisit,
-                              this,
-                              _1,
-                              _2);
+    auto callback = std::bind(&MediaTwitch::OnSaveMediaVisit, this, _1, _2);
 
-    ledger_->SaveMediaVisit(id,
-                            updated_visit_data,
-                            real_duration,
-                            window_id,
-                            callback);
+    ledger_->SaveMediaVisit(
+        id, updated_visit_data, real_duration, window_id, callback);
   }
 }
 
@@ -524,9 +487,8 @@ void MediaTwitch::OnEmbedResponse(
   }
 
   std::string fav_icon;
-  braveledger_bat_helper::getJSONValue("author_thumbnail_url",
-                                       response,
-                                       &fav_icon);
+  braveledger_bat_helper::getJSONValue(
+      "author_thumbnail_url", response, &fav_icon);
   std::string author_name;
   braveledger_bat_helper::getJSONValue("author_name", response, &author_name);
 
@@ -539,53 +501,44 @@ void MediaTwitch::OnEmbedResponse(
     updated_visit_data.favicon_url = fav_icon;
   }
 
-  auto callback = std::bind(&MediaTwitch::OnSaveMediaVisit,
-                            this,
-                            _1,
-                            _2);
+  auto callback = std::bind(&MediaTwitch::OnSaveMediaVisit, this, _1, _2);
 
-  ledger_->SaveMediaVisit(id,
-                          updated_visit_data,
-                          duration,
-                          window_id,
-                          callback);
+  ledger_->SaveMediaVisit(
+      id, updated_visit_data, duration, window_id, callback);
   ledger_->SetMediaPublisherInfo(media_key, id);
 }
 
-void MediaTwitch::OnMediaPublisherActivity(
-    uint64_t window_id,
-    const ledger::VisitData& visit_data,
-    const std::string& media_key,
-    const std::string& media_id,
-    const std::string& publisher_blob,
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
+void MediaTwitch::OnMediaPublisherActivity(uint64_t window_id,
+                                           const ledger::VisitData& visit_data,
+                                           const std::string& media_key,
+                                           const std::string& media_id,
+                                           const std::string& publisher_blob,
+                                           ledger::Result result,
+                                           ledger::PublisherInfoPtr info) {
   if (result != ledger::Result::LEDGER_OK &&
-    result != ledger::Result::NOT_FOUND) {
+      result != ledger::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
 
   if (!info || result == ledger::Result::NOT_FOUND) {
     // first see if we have the publisher a different way (VOD vs. live stream
-    ledger_->GetPublisherInfo(
-        GetPublisherKey(media_id),
-        std::bind(&MediaTwitch::OnPublisherInfo,
-                  this,
-                  window_id,
-                  visit_data,
-                  media_key,
-                  media_id,
-                  publisher_blob,
-                  _1,
-                  _2));
+    ledger_->GetPublisherInfo(GetPublisherKey(media_id),
+                              std::bind(&MediaTwitch::OnPublisherInfo,
+                                        this,
+                                        window_id,
+                                        visit_data,
+                                        media_key,
+                                        media_id,
+                                        publisher_blob,
+                                        _1,
+                                        _2));
   } else {
     if (info->verified && info->favicon_url.empty()) {
       std::string publisher_name;
       std::string publisher_favicon_url;
-      UpdatePublisherData(&publisher_name,
-                          &publisher_favicon_url,
-                          publisher_blob);
+      UpdatePublisherData(
+          &publisher_name, &publisher_favicon_url, publisher_blob);
 
       if (!publisher_favicon_url.empty()) {
         SavePublisherInfo(0,
@@ -604,16 +557,15 @@ void MediaTwitch::OnMediaPublisherActivity(
   }
 }
 
-void MediaTwitch::OnPublisherInfo(
-    uint64_t window_id,
-    const ledger::VisitData visit_data,
-    const std::string& media_key,
-    const std::string& media_id,
-    const std::string& publisher_blob,
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info) {
-  if (result != ledger::Result::LEDGER_OK  &&
-    result != ledger::Result::NOT_FOUND) {
+void MediaTwitch::OnPublisherInfo(uint64_t window_id,
+                                  const ledger::VisitData visit_data,
+                                  const std::string& media_key,
+                                  const std::string& media_id,
+                                  const std::string& publisher_blob,
+                                  ledger::Result result,
+                                  ledger::PublisherInfoPtr publisher_info) {
+  if (result != ledger::Result::LEDGER_OK &&
+      result != ledger::Result::NOT_FOUND) {
     OnMediaActivityError(visit_data, window_id);
     return;
   }
@@ -621,9 +573,8 @@ void MediaTwitch::OnPublisherInfo(
   if (!publisher_info || result == ledger::Result::NOT_FOUND) {
     std::string publisher_name;
     std::string publisher_favicon_url;
-    UpdatePublisherData(&publisher_name,
-                        &publisher_favicon_url,
-                        publisher_blob);
+    UpdatePublisherData(
+        &publisher_name, &publisher_favicon_url, publisher_blob);
 
     SavePublisherInfo(0,
                       media_key,
@@ -634,9 +585,7 @@ void MediaTwitch::OnPublisherInfo(
                       publisher_favicon_url,
                       media_id);
   } else {
-    ledger_->OnPanelPublisherInfo(result,
-                                  std::move(publisher_info),
-                                  window_id);
+    ledger_->OnPanelPublisherInfo(result, std::move(publisher_info), window_id);
   }
 }
 
@@ -649,8 +598,8 @@ void MediaTwitch::SavePublisherInfo(const uint64_t duration,
                                     const std::string& fav_icon,
                                     const std::string& channel_id) {
   if (channel_id.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "author id is missing for: " << media_key;
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "author id is missing for: " << media_key;
     return;
   }
 
@@ -658,8 +607,8 @@ void MediaTwitch::SavePublisherInfo(const uint64_t duration,
   std::string url = publisher_url + "/videos";
 
   if (publisher_id.empty()) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Publisher id is missing for: " << media_key;
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+        << "Publisher id is missing for: " << media_key;
     return;
   }
 
@@ -673,16 +622,10 @@ void MediaTwitch::SavePublisherInfo(const uint64_t duration,
   updated_visit_data.name = publisher_name;
   updated_visit_data.url = url;
 
-  auto callback = std::bind(&MediaTwitch::OnSaveMediaVisit,
-                           this,
-                           _1,
-                           _2);
+  auto callback = std::bind(&MediaTwitch::OnSaveMediaVisit, this, _1, _2);
 
-  ledger_->SaveMediaVisit(publisher_id,
-                          updated_visit_data,
-                          duration,
-                          window_id,
-                          callback);
+  ledger_->SaveMediaVisit(
+      publisher_id, updated_visit_data, duration, window_id, callback);
   if (!media_key.empty()) {
     ledger_->SetMediaPublisherInfo(media_key, publisher_id);
   }

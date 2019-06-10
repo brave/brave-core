@@ -17,15 +17,19 @@ Polymer({
 
   /** @override */
   created: function() {
-    this.browserProxy_ = settings.BraveDefaultExtensionsBrowserProxyImpl.getInstance();
+    this.browserProxy_ =
+        settings.BraveDefaultExtensionsBrowserProxyImpl.getInstance();
   },
 
   /** @override */
   ready: function() {
-    this.onWebTorrentEnabledChange_ = this.onWebTorrentEnabledChange_.bind(this)
-    this.onHangoutsEnabledChange_ = this.onHangoutsEnabledChange_.bind(this)
-    this.onIPFSCompanionEnabledChange_ = this.onIPFSCompanionEnabledChange_.bind(this)
-    this.openExtensionsPage_ = this.openExtensionsPage_.bind(this)
+    this.onWebTorrentEnabledChange_ =
+        this.onWebTorrentEnabledChange_.bind(
+                                           this) this.onHangoutsEnabledChange_ =
+            this.onHangoutsEnabledChange_.bind(this) this
+                .onIPFSCompanionEnabledChange_ =
+                this.onIPFSCompanionEnabledChange_.bind(this) this
+                    .openExtensionsPage_ = this.openExtensionsPage_.bind(this)
   },
 
   onWebTorrentEnabledChange_: function() {
@@ -37,11 +41,12 @@ Polymer({
   },
 
   onIPFSCompanionEnabledChange_: function() {
-    this.browserProxy_.setIPFSCompanionEnabled(this.$.ipfsCompanionEnabled.checked);
+    this.browserProxy_.setIPFSCompanionEnabled(
+        this.$.ipfsCompanionEnabled.checked);
   },
 
   openExtensionsPage_: function() {
-    window.open("chrome://extensions", "_self");
+    window.open('chrome://extensions', '_self');
   },
 });
 })();

@@ -37,8 +37,7 @@ class BraveRewardsTipSiteFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsTipTwitterUserFunction
-    : public UIThreadExtensionFunction {
+class BraveRewardsTipTwitterUserFunction : public UIThreadExtensionFunction {
  public:
   BraveRewardsTipTwitterUserFunction();
   DECLARE_EXTENSION_FUNCTION("braveRewards.tipTwitterUser", UNKNOWN)
@@ -85,8 +84,8 @@ class BraveRewardsGetCurrentReportFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsIncludeInAutoContributionFunction :
-  public UIThreadExtensionFunction {
+class BraveRewardsIncludeInAutoContributionFunction
+    : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.includeInAutoContribution", UNKNOWN)
 
@@ -129,8 +128,8 @@ class BraveRewardsSolveGrantCaptchaFunction : public UIThreadExtensionFunction {
 class BraveRewardsGetPendingContributionsTotalFunction
     : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION(
-      "braveRewards.getPendingContributionsTotal", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPendingContributionsTotal",
+                             UNKNOWN)
 
  protected:
   ~BraveRewardsGetPendingContributionsTotalFunction() override;
@@ -188,8 +187,7 @@ class BraveRewardsSaveSettingFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsSaveRecurringTipFunction :
-  public UIThreadExtensionFunction {
+class BraveRewardsSaveRecurringTipFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.saveRecurringTip", UNKNOWN)
 
@@ -199,8 +197,8 @@ class BraveRewardsSaveRecurringTipFunction :
   ResponseAction Run() override;
 };
 
-class BraveRewardsRemoveRecurringTipFunction :
-  public UIThreadExtensionFunction {
+class BraveRewardsRemoveRecurringTipFunction
+    : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.removeRecurringTip", UNKNOWN)
 
@@ -210,8 +208,7 @@ class BraveRewardsRemoveRecurringTipFunction :
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetRecurringTipsFunction :
-  public UIThreadExtensionFunction {
+class BraveRewardsGetRecurringTipsFunction : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getRecurringTips", UNKNOWN)
 
@@ -221,15 +218,13 @@ class BraveRewardsGetRecurringTipsFunction :
   ResponseAction Run() override;
 
  private:
-    void OnGetRecurringTips(
-        std::unique_ptr<brave_rewards::ContentSiteList> list);
+  void OnGetRecurringTips(std::unique_ptr<brave_rewards::ContentSiteList> list);
 };
 
-class BraveRewardsGetPublisherBannerFunction :
-public UIThreadExtensionFunction {
+class BraveRewardsGetPublisherBannerFunction
+    : public UIThreadExtensionFunction {
  public:
-  DECLARE_EXTENSION_FUNCTION(
-      "braveRewards.getPublisherBanner", UNKNOWN)
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getPublisherBanner", UNKNOWN)
 
  protected:
   ~BraveRewardsGetPublisherBannerFunction() override;
@@ -254,8 +249,8 @@ class BraveRewardsRefreshPublisherFunction : public UIThreadExtensionFunction {
   void OnRefreshPublisher(bool verified, const std::string& publisher_key);
 };
 
-class BraveRewardsGetAllNotificationsFunction :
-    public UIThreadExtensionFunction {
+class BraveRewardsGetAllNotificationsFunction
+    : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getAllNotifications", UNKNOWN)
 
@@ -265,8 +260,8 @@ class BraveRewardsGetAllNotificationsFunction :
   ResponseAction Run() override;
 };
 
-class BraveRewardsGetInlineTipSettingFunction :
-    public UIThreadExtensionFunction {
+class BraveRewardsGetInlineTipSettingFunction
+    : public UIThreadExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getInlineTipSetting", UNKNOWN)
 

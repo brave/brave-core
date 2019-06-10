@@ -19,9 +19,8 @@ bool HasWidevinePermissionRequest(
     const std::vector<PermissionRequest*>& requests) {
   // When widevine permission is requested, |requests| only includes Widevine
   // permission because it is not a candidate for grouping.
-  if (requests.size() == 1 &&
-      requests[0]->GetPermissionRequestType() ==
-          PermissionRequestType::PERMISSION_WIDEVINE)
+  if (requests.size() == 1 && requests[0]->GetPermissionRequestType() ==
+                                  PermissionRequestType::PERMISSION_WIDEVINE)
     return true;
 
   return false;

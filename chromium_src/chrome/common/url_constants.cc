@@ -7,8 +7,7 @@
 
 namespace chrome {
 
-const char kAccessibilityLabelsLearnMoreURL[] =
-    "https://support.brave.com/";
+const char kAccessibilityLabelsLearnMoreURL[] = "https://support.brave.com/";
 
 const char kAutomaticSettingsResetLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
@@ -21,20 +20,15 @@ const char kBluetoothAdapterOffHelpURL[] =
     "https://support.brave.com/";
 #endif
 
-const char kCastCloudServicesHelpURL[] =
-    "https://support.brave.com/";
+const char kCastCloudServicesHelpURL[] = "https://support.brave.com/";
 
-const char kCastNoDestinationFoundURL[] =
-    "https://support.brave.com/";
+const char kCastNoDestinationFoundURL[] = "https://support.brave.com/";
 
-const char kChooserBluetoothOverviewURL[] =
-    "https://support.brave.com/";
+const char kChooserBluetoothOverviewURL[] = "https://support.brave.com/";
 
-const char kChooserUsbOverviewURL[] =
-    "https://support.brave.com/";
+const char kChooserUsbOverviewURL[] = "https://support.brave.com/";
 
-const char kChromeBetaForumURL[] =
-    "https://community.brave.com/c/beta-builds";
+const char kChromeBetaForumURL[] = "https://community.brave.com/c/beta-builds";
 
 const char kChromeHelpViaKeyboardURL[] =
 #if defined(OS_CHROMEOS)
@@ -105,11 +99,11 @@ const char kCloudPrintCertificateErrorLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017880792-How-do-I-print-from-Brave-";
 #elif defined(OS_WIN)
-    "https://support.brave.com/hc/en-us/articles/"
-    "360017880792-How-do-I-print-from-Brave-";
+        "https://support.brave.com/hc/en-us/articles/"
+        "360017880792-How-do-I-print-from-Brave-";
 #else
-    "https://support.brave.com/hc/en-us/articles/"
-    "360017880792-How-do-I-print-from-Brave-";
+        "https://support.brave.com/hc/en-us/articles/"
+        "360017880792-How-do-I-print-from-Brave-";
 #endif
 
 const char kContentSettingsExceptionsLearnMoreURL[] =
@@ -157,8 +151,7 @@ const char kExtensionControlledSettingLearnMoreURL[] =
 
 const char kExtensionInvalidRequestURL[] = "chrome-extension://invalid/";
 
-const char kGoogleAccountActivityControlsURL[] =
-    "https://support.brave.com/";
+const char kGoogleAccountActivityControlsURL[] = "https://support.brave.com/";
 
 const char kGoogleAccountURL[] = "https://support.brave.com/";
 
@@ -172,15 +165,13 @@ const char kLearnMoreReportingURL[] =
 
 const char kLegacySupervisedUserManagementDisplayURL[] =
     "https://support.brave.com/";
-const char kLegacySupervisedUserManagementURL[] =
-    "https://support.brave.com/";
+const char kLegacySupervisedUserManagementURL[] = "https://support.brave.com/";
 
 // TODO(nicolaso): Replace with a p-link once it's ready. b/117655761
 const char kManagedUiLearnMoreUrl[] =
     "https://support.google.com/chromebook/answer/1331549";
 
-const char kMyActivityUrlInClearBrowsingData[] =
-    "https://support.brave.com/";
+const char kMyActivityUrlInClearBrowsingData[] = "https://support.brave.com/";
 
 const char kOmniboxLearnMoreURL[] =
 #if defined(OS_CHROMEOS)
@@ -242,8 +233,7 @@ const char kSettingsSearchHelpURL[] =
     "https://support.brave.com/";
 #endif
 
-const char kSyncAndGoogleServicesLearnMoreURL[] =
-    "https://support.brave.com/";
+const char kSyncAndGoogleServicesLearnMoreURL[] = "https://support.brave.com/";
 
 const char kSyncEncryptionHelpURL[] =
 #if defined(OS_CHROMEOS)
@@ -252,14 +242,11 @@ const char kSyncEncryptionHelpURL[] =
     "https://support.brave.com/";
 #endif
 
-const char kSyncErrorsHelpURL[] =
-    "https://support.brave.com/";
+const char kSyncErrorsHelpURL[] = "https://support.brave.com/";
 
-const char kSyncGoogleDashboardURL[] =
-    "https://support.brave.com/";
+const char kSyncGoogleDashboardURL[] = "https://support.brave.com/";
 
-const char kSyncLearnMoreURL[] =
-    "https://support.brave.com/";
+const char kSyncLearnMoreURL[] = "https://support.brave.com/";
 
 const char kUpgradeHelpCenterBaseURL[] =
     "https://support.brave.com/hc/en-us/articles/"
@@ -276,15 +263,13 @@ const char kEnhancedPlaybackNotificationLearnMoreURL[] =
     "https://community.brave.com";
 #elif defined(OS_ANDROID)
 // Keep in sync with chrome/android/java/strings/android_chrome_strings.grd
-    "https://community.brave.com";
+"https://community.brave.com";
 #endif
 
 #if defined(OS_CHROMEOS)
-const char kAndroidAppsLearnMoreURL[] =
-    "https://community.brave.com";
+const char kAndroidAppsLearnMoreURL[] = "https://community.brave.com";
 
-const char kChromeAccessibilityHelpURL[] =
-    "https://community.brave.com";
+const char kChromeAccessibilityHelpURL[] = "https://community.brave.com";
 
 const char kChromeOSAssetHost[] = "chromeos-asset";
 const char kChromeOSAssetPath[] = "/usr/share/chromeos-assets/";
@@ -292,63 +277,48 @@ const char kChromeOSAssetPath[] = "/usr/share/chromeos-assets/";
 const char kChromeOSCreditsPath[] =
     "/opt/google/chrome/resources/about_os_credits.html";
 
-const char kChromePaletteHelpURL[] =
-    "https://community.brave.com";
+const char kChromePaletteHelpURL[] = "https://community.brave.com";
 
 const char kCrosScheme[] = "cros";
 
-const char kCupsPrintLearnMoreURL[] =
-    "https://community.brave.com";
+const char kCupsPrintLearnMoreURL[] = "https://community.brave.com";
 
-const char kEasyUnlockLearnMoreUrl[] =
-    "https://community.brave.com";
+const char kEasyUnlockLearnMoreUrl[] = "https://community.brave.com";
 
 const char kEULAPathFormat[] = "/usr/share/chromeos-assets/eula/%s/eula.html";
 
 const char kEolNotificationURL[] = "https://community.brave.com";
 
-const char kGoogleNameserversLearnMoreURL[] =
-    "https://community.brave.com";
+const char kGoogleNameserversLearnMoreURL[] = "https://community.brave.com";
 
-const char kInstantTetheringLearnMoreURL[] =
-    "https://community.brave.com";
+const char kInstantTetheringLearnMoreURL[] = "https://community.brave.com";
 
-const char kMultiDeviceLearnMoreURL[] =
-    "https://community.brave.com";
+const char kMultiDeviceLearnMoreURL[] = "https://community.brave.com";
 
-const char kAndroidMessagesLearnMoreURL[] =
-    "https://community.brave.com";
+const char kAndroidMessagesLearnMoreURL[] = "https://community.brave.com";
 
-const char kLanguageSettingsLearnMoreUrl[] =
-    "https://community.brave.com";
+const char kLanguageSettingsLearnMoreUrl[] = "https://community.brave.com";
 
-const char kLearnMoreEnterpriseURL[] =
-    "https://community.brave.com";
+const char kLearnMoreEnterpriseURL[] = "https://community.brave.com";
 
-const char kLinuxAppsLearnMoreURL[] =
-    "https://community.brave.com";
+const char kLinuxAppsLearnMoreURL[] = "https://community.brave.com";
 
 const char kLinuxCreditsPath[] =
     "/opt/google/chrome/resources/linux_credits.html";
 
-const char kNaturalScrollHelpURL[] =
-    "https://community.brave.com";
+const char kNaturalScrollHelpURL[] = "https://community.brave.com";
 
 const char kOemEulaURLPath[] = "oem";
 
-const char kOnlineEulaURLPath[] =
-    "https://community.brave.com";
+const char kOnlineEulaURLPath[] = "https://community.brave.com";
 
-const char kTPMFirmwareUpdateLearnMoreURL[] =
-    "https://community.brave.com";
+const char kTPMFirmwareUpdateLearnMoreURL[] = "https://community.brave.com";
 
-const char kTimeZoneSettingsLearnMoreURL[] =
-    "https://community.brave.com";
+const char kTimeZoneSettingsLearnMoreURL[] = "https://community.brave.com";
 #endif  // defined(OS_CHROMEOS)
 
 #if defined(OS_MACOSX)
-const char kChromeEnterpriseSignInLearnMoreURL[] =
-    "https://support.brave.com/";
+const char kChromeEnterpriseSignInLearnMoreURL[] = "https://support.brave.com/";
 
 const char kMac10_9_ObsoleteURL[] =
     "https://support.brave.com/hc/en-us/articles/"
@@ -360,13 +330,11 @@ const char kChromeCleanerLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017884152-How-do-I-remove-unwanted-ads-pop-ups-malware-";
 
-const char kWindowsXPVistaDeprecationURL[] =
-    "https://support.brave.com/";
+const char kWindowsXPVistaDeprecationURL[] = "https://support.brave.com/";
 #endif
 
 #if BUILDFLAG(ENABLE_ONE_CLICK_SIGNIN)
-const char kChromeSyncLearnMoreURL[] =
-    "https://support.brave.com/";
+const char kChromeSyncLearnMoreURL[] = "https://support.brave.com/";
 #endif  // BUILDFLAG(ENABLE_ONE_CLICK_SIGNIN)
 
 #if BUILDFLAG(ENABLE_PLUGINS)

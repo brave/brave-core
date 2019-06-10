@@ -31,7 +31,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if defined(OS_MACOSX)
   // Turn off super annoying 'Hold to quit'
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,
-      base::Value(false));
+                                base::Value(false));
 #endif
   tor::TorProfileService::RegisterLocalStatePrefs(registry);
 #if !defined(OS_ANDROID)

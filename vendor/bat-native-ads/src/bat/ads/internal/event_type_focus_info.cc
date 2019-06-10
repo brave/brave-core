@@ -7,11 +7,9 @@
 
 namespace ads {
 
-FocusInfo::FocusInfo() :
-    tab_id(-1) {}
+FocusInfo::FocusInfo() : tab_id(-1) {}
 
-FocusInfo::FocusInfo(const FocusInfo& info) :
-    tab_id(info.tab_id) {}
+FocusInfo::FocusInfo(const FocusInfo& info) : tab_id(info.tab_id) {}
 
 FocusInfo::~FocusInfo() {}
 

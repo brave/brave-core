@@ -6,9 +6,9 @@
 #include <utility>
 
 #include "bat/ads/internal/ads_serve.h"
-#include "bat/ads/internal/static_values.h"
 #include "bat/ads/internal/bundle.h"
 #include "bat/ads/internal/logging.h"
+#include "bat/ads/internal/static_values.h"
 
 #include "base/time/time.h"
 #include "brave_base/random.h"
@@ -19,14 +19,14 @@ using std::placeholders::_3;
 
 namespace ads {
 
-AdsServe::AdsServe(AdsImpl* ads, AdsClient* ads_client, Bundle* bundle) :
-    url_(""),
-    next_catalog_check_timestamp_in_seconds(0),
-    next_retry_start_timer_in_(0),
-    catalog_last_updated_(0),
-    ads_(ads),
-    ads_client_(ads_client),
-    bundle_(bundle) {
+AdsServe::AdsServe(AdsImpl* ads, AdsClient* ads_client, Bundle* bundle)
+    : url_(""),
+      next_catalog_check_timestamp_in_seconds(0),
+      next_retry_start_timer_in_(0),
+      catalog_last_updated_(0),
+      ads_(ads),
+      ads_client_(ads_client),
+      bundle_(bundle) {
   BuildUrl();
 }
 
@@ -43,8 +43,8 @@ void AdsServe::BuildUrl() {
 }
 
 void AdsServe::DownloadCatalog() {
-  auto callback = std::bind(&AdsServe::OnCatalogDownloaded,
-      this, url_, _1, _2, _3);
+  auto callback =
+      std::bind(&AdsServe::OnCatalogDownloaded, this, url_, _1, _2, _3);
 
   ads_client_->URLRequest(url_, {}, "", "", URLRequestMethod::GET, callback);
 }
@@ -86,11 +86,12 @@ void AdsServe::OnCatalogDownloaded(
       }
     }
 
-    BLOG(ERROR) << "Failed to download catalog from:"
-        << std::endl << "  url: " << url
-        << std::endl << "  response_status_code: " << response_status_code
-        << std::endl << "  response: " << response
-        << std::endl << "  headers: " << formatted_headers;
+    BLOG(ERROR) << "Failed to download catalog from:" << std::endl
+                << "  url: " << url << std::endl
+                << "  response_status_code: " << response_status_code
+                << std::endl
+                << "  response: " << response << std::endl
+                << "  headers: " << formatted_headers;
 
     should_retry = true;
   }
@@ -157,8 +158,8 @@ bool AdsServe::ProcessCatalog(const std::string& json) {
   // creativeSets: underscore.keys(creativeSets).length
 
   if (!catalog.HasChanged(bundle_->GetCatalogId())) {
-    BLOG(WARNING) << "Catalog id " << catalog.GetId() <<
-        " matches current catalog id " << bundle_->GetCatalogId();
+    BLOG(WARNING) << "Catalog id " << catalog.GetId()
+                  << " matches current catalog id " << bundle_->GetCatalogId();
 
     UpdateNextCatalogCheck();
 

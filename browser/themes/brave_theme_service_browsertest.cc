@@ -6,12 +6,12 @@
 #include "brave/browser/themes/brave_theme_service.h"
 #include "brave/browser/themes/theme_properties.h"
 #include "brave/common/pref_names.h"
-#include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "ui/native_theme/native_theme.h"
@@ -104,16 +104,15 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NativeThemeObserverTest) {
   // Check native theme and dark theme oberver is called once by changing theme
   // to dark and light.
   TestNativeThemeObserver native_theme_observer;
-  EXPECT_CALL(
-      native_theme_observer,
-      OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi())).Times(1);
+  EXPECT_CALL(native_theme_observer,
+              OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi()))
+      .Times(1);
   TestNativeThemeObserver native_dark_theme_observer;
-  EXPECT_CALL(
-      native_dark_theme_observer,
-      OnNativeThemeUpdated(ui::NativeThemeDarkAura::instance())).Times(1);
+  EXPECT_CALL(native_dark_theme_observer,
+              OnNativeThemeUpdated(ui::NativeThemeDarkAura::instance()))
+      .Times(1);
 
-  ui::NativeThemeDarkAura::instance()->AddObserver(
-      &native_dark_theme_observer);
+  ui::NativeThemeDarkAura::instance()->AddObserver(&native_dark_theme_observer);
   ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
       &native_theme_observer);
 

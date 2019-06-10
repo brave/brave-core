@@ -3,8 +3,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 #import "BATPublisherInfo.h"
-#import "Records+Private.h"
 #import "CppTransformations.h"
+#import "Records+Private.h"
 #import "bat/ledger/publisher_info.h"
 
 @implementation BATPublisherInfo
@@ -24,9 +24,10 @@
     self.url = [NSString stringWithUTF8String:obj.url.c_str()];
     self.provider = [NSString stringWithUTF8String:obj.provider.c_str()];
     self.faviconUrl = [NSString stringWithUTF8String:obj.favicon_url.c_str()];
-//    self.contributions = NSArrayFromVector(obj.contributions, ^BATContributionInfo *(const ledger::mojom::ContributionInfoPtr& o){
-//      return [[BATContributionInfo alloc] initWithContributionInfo:*o];
-//    });
+    //    self.contributions = NSArrayFromVector(obj.contributions,
+    //    ^BATContributionInfo *(const ledger::mojom::ContributionInfoPtr& o){
+    //      return [[BATContributionInfo alloc] initWithContributionInfo:*o];
+    //    });
   }
   return self;
 }

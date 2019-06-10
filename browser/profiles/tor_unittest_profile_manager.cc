@@ -27,7 +27,8 @@ Profile* TorUnittestProfileManager::CreateProfileHelper(
 }
 
 Profile* TorUnittestProfileManager::CreateProfileAsyncHelper(
-    const base::FilePath& path, Delegate* delegate) {
+    const base::FilePath& path,
+    Delegate* delegate) {
   // ThreadTaskRunnerHandle::Get() is TestingProfile's "async" IOTaskRunner
   // (ref. TestingProfile::GetIOTaskRunner()).
   base::ThreadTaskRunnerHandle::Get()->PostTask(
@@ -48,8 +49,8 @@ void TorUnittestProfileManager::InitProfileUserPrefs(Profile* profile) {
   }
 }
 
-Profile* TorUnittestProfileManager::CreateTorProfile(
-    const base::FilePath& path, Delegate* delegate) {
+Profile* TorUnittestProfileManager::CreateTorProfile(const base::FilePath& path,
+                                                     Delegate* delegate) {
   TestingProfile::Builder profile_builder;
   sync_preferences::PrefServiceMockFactory factory;
   auto registry = base::MakeRefCounted<user_prefs::PrefRegistrySyncable>();

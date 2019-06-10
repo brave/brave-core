@@ -9,33 +9,33 @@
 
 namespace ads {
 
-AdInfo::AdInfo() :
-    creative_set_id(""),
-    campaign_id(""),
-    start_timestamp(""),
-    end_timestamp(""),
-    daily_cap(0),
-    per_day(0),
-    total_max(0),
-    regions({}),
-    advertiser(""),
-    notification_text(""),
-    notification_url(""),
-    uuid("") {}
+AdInfo::AdInfo()
+    : creative_set_id(""),
+      campaign_id(""),
+      start_timestamp(""),
+      end_timestamp(""),
+      daily_cap(0),
+      per_day(0),
+      total_max(0),
+      regions({}),
+      advertiser(""),
+      notification_text(""),
+      notification_url(""),
+      uuid("") {}
 
-AdInfo::AdInfo(const AdInfo& info) :
-    creative_set_id(info.creative_set_id),
-    campaign_id(info.campaign_id),
-    start_timestamp(info.start_timestamp),
-    end_timestamp(info.end_timestamp),
-    daily_cap(info.daily_cap),
-    per_day(info.per_day),
-    total_max(info.total_max),
-    regions(info.regions),
-    advertiser(info.advertiser),
-    notification_text(info.notification_text),
-    notification_url(info.notification_url),
-    uuid(info.uuid) {}
+AdInfo::AdInfo(const AdInfo& info)
+    : creative_set_id(info.creative_set_id),
+      campaign_id(info.campaign_id),
+      start_timestamp(info.start_timestamp),
+      end_timestamp(info.end_timestamp),
+      daily_cap(info.daily_cap),
+      per_day(info.per_day),
+      total_max(info.total_max),
+      regions(info.regions),
+      advertiser(info.advertiser),
+      notification_text(info.notification_text),
+      notification_url(info.notification_url),
+      uuid(info.uuid) {}
 
 AdInfo::~AdInfo() = default;
 
@@ -45,9 +45,8 @@ const std::string AdInfo::ToJson() const {
   return json;
 }
 
-Result AdInfo::FromJson(
-    const std::string& json,
-    std::string* error_description) {
+Result AdInfo::FromJson(const std::string& json,
+                        std::string* error_description) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 

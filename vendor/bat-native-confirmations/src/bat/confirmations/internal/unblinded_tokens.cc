@@ -3,19 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <utility>
 #include <algorithm>
+#include <utility>
 
-#include "bat/confirmations/internal/unblinded_tokens.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
+#include "bat/confirmations/internal/unblinded_tokens.h"
 
 #include "base/logging.h"
 
 namespace confirmations {
 
-UnblindedTokens::UnblindedTokens(ConfirmationsImpl* confirmations) :
-    confirmations_(confirmations) {
-}
+UnblindedTokens::UnblindedTokens(ConfirmationsImpl* confirmations)
+    : confirmations_(confirmations) {}
 
 UnblindedTokens::~UnblindedTokens() = default;
 
@@ -32,8 +31,8 @@ base::Value UnblindedTokens::GetTokensAsList() {
   base::Value list(base::Value::Type::LIST);
   for (const auto& token : tokens_) {
     base::Value dictionary(base::Value::Type::DICTIONARY);
-    dictionary.SetKey("unblinded_token", base::Value(
-        token.unblinded_token.encode_base64()));
+    dictionary.SetKey("unblinded_token",
+                      base::Value(token.unblinded_token.encode_base64()));
     dictionary.SetKey("public_key", base::Value(token.public_key));
 
     list.GetList().push_back(std::move(dictionary));
@@ -42,8 +41,7 @@ base::Value UnblindedTokens::GetTokensAsList() {
   return list;
 }
 
-void UnblindedTokens::SetTokens(
-    const std::vector<TokenInfo>& tokens) {
+void UnblindedTokens::SetTokens(const std::vector<TokenInfo>& tokens) {
   tokens_ = tokens;
 
   confirmations_->SaveState();
@@ -95,8 +93,7 @@ void UnblindedTokens::SetTokensFromList(const base::Value& list) {
   SetTokens(tokens);
 }
 
-void UnblindedTokens::AddTokens(
-    const std::vector<TokenInfo>& tokens) {
+void UnblindedTokens::AddTokens(const std::vector<TokenInfo>& tokens) {
   for (const auto& token_info : tokens) {
     if (TokenExists(token_info)) {
       continue;
@@ -112,8 +109,8 @@ bool UnblindedTokens::RemoveToken(const TokenInfo& token) {
   auto unblinded_token = token.unblinded_token;
   auto public_key = token.public_key;
 
-  auto it = std::find_if(tokens_.begin(), tokens_.end(),
-      [=](const TokenInfo& info) {
+  auto it =
+      std::find_if(tokens_.begin(), tokens_.end(), [=](const TokenInfo& info) {
         return (info.unblinded_token == unblinded_token);
       });
 
@@ -138,8 +135,8 @@ bool UnblindedTokens::TokenExists(const TokenInfo& token) {
   auto unblinded_token = token.unblinded_token;
   auto public_key = token.public_key;
 
-  auto it = std::find_if(tokens_.begin(), tokens_.end(),
-      [=](const TokenInfo& info) {
+  auto it =
+      std::find_if(tokens_.begin(), tokens_.end(), [=](const TokenInfo& info) {
         return (info.unblinded_token == unblinded_token);
       });
 

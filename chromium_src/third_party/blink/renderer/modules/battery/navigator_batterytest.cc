@@ -14,39 +14,40 @@
 const char kBatteryTest[] = "/battery.html";
 
 class NavigatorGetBatteryDisabledTest : public InProcessBrowserTest {
-  public:
-    void SetUpOnMainThread() override {
-      InProcessBrowserTest::SetUpOnMainThread();
+ public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
 
-      content_client_.reset(new ChromeContentClient);
-      content::SetContentClient(content_client_.get());
-      browser_content_client_.reset(new BraveContentBrowserClient());
-      content::SetBrowserClientForTesting(browser_content_client_.get());
-      content::SetupCrossSiteRedirector(embedded_test_server());
+    content_client_.reset(new ChromeContentClient);
+    content::SetContentClient(content_client_.get());
+    browser_content_client_.reset(new BraveContentBrowserClient());
+    content::SetBrowserClientForTesting(browser_content_client_.get());
+    content::SetupCrossSiteRedirector(embedded_test_server());
 
-      brave::RegisterPathProvider();
-      base::FilePath test_data_dir;
-      base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-      embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
-      ASSERT_TRUE(embedded_test_server()->Start());
-    }
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
 
-    void TearDown() override {
-      browser_content_client_.reset();
-      content_client_.reset();
-    }
+  void TearDown() override {
+    browser_content_client_.reset();
+    content_client_.reset();
+  }
 
-  private:
-    std::unique_ptr<ChromeContentClient> content_client_;
-    std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
-    base::ScopedTempDir temp_user_data_dir_;
+ private:
+  std::unique_ptr<ChromeContentClient> content_client_;
+  std::unique_ptr<BraveContentBrowserClient> browser_content_client_;
+  base::ScopedTempDir temp_user_data_dir_;
 };
 
 IN_PROC_BROWSER_TEST_F(NavigatorGetBatteryDisabledTest, IsDisabled) {
   GURL url = embedded_test_server()->GetURL(kBatteryTest);
   ui_test_utils::NavigateToURL(browser(), url);
-  content::WebContents* contents = browser()->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
   ASSERT_TRUE(content::WaitForLoadStop(contents));
   EXPECT_EQ(url, contents->GetURL());
 

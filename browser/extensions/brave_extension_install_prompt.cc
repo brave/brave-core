@@ -10,18 +10,17 @@
 #include "extensions/common/extension_id.h"
 #include "ui/base/l10n/l10n_util.h"
 
-BravePrompt::BravePrompt(ExtensionInstallPrompt::PromptType type) :
-    ExtensionInstallPrompt::Prompt(type) {
-}
+BravePrompt::BravePrompt(ExtensionInstallPrompt::PromptType type)
+    : ExtensionInstallPrompt::Prompt(type) {}
 
-BravePrompt::~BravePrompt() {
-}
+BravePrompt::~BravePrompt() {}
 
 base::string16 BravePrompt::GetDialogTitle() const {
   if (!extensions::BraveExtensionProvider::IsVetted(extension())) {
     if (type_ == ExtensionInstallPrompt::INSTALL_PROMPT ||
         type_ == ExtensionInstallPrompt::WEBSTORE_WIDGET_PROMPT) {
-      return l10n_util::GetStringFUTF16(IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE,
+      return l10n_util::GetStringFUTF16(
+          IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE,
           base::UTF8ToUTF16(extension_->name()));
     }
   }

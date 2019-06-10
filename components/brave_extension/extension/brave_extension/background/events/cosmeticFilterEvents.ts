@@ -1,16 +1,10 @@
 import cosmeticFilterActions from '../actions/cosmeticFilterActions'
 
-let rule = {
-  host: '',
-  selector: ''
-}
+let rule = {host: '', selector: ''}
 
-// parent menu
-chrome.contextMenus.create({
-  title: 'Brave',
-  id: 'brave',
-  contexts: ['all']
-})
+           // parent menu
+           chrome.contextMenus.create(
+               {title: 'Brave', id: 'brave', contexts: ['all']})
 // block ad child menu
 chrome.contextMenus.create({
   title: 'Block element via selector',
@@ -32,20 +26,27 @@ chrome.contextMenus.create({
 })
 
 // contextMenu listener - when triggered, grab latest selector
-chrome.contextMenus.onClicked.addListener(function (info, tab) {
+chrome.contextMenus.onClicked.addListener(function(info, tab) {
   switch (info.menuItemId) {
     case 'addBlockElement': {
-      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs: any) {
-        chrome.tabs.sendMessage(tabs[0].id, { type: 'getTargetSelector' }, function (response: any) {
-          if (response) {
-            rule.selector = window.prompt('CSS selector to block: ', `${response}`) || ''
-            chrome.tabs.insertCSS({
-              code: `${rule.selector} {display: none;}`
-            })
-            cosmeticFilterActions.siteCosmeticFilterAdded(rule.host, rule.selector)
-          }
-        })
-      })
+      chrome.tabs.query(
+          {active: true, currentWindow: true}, function(tabs: any) {
+            chrome.tabs.sendMessage(
+                tabs[0].id,
+                {type: 'getTargetSelector'},
+                function(response: any) {
+                  if (response) {
+                    rule.selector =
+                        window.prompt(
+                            'CSS selector to block: ', `${response}`) ||
+                        ''
+                    chrome.tabs.insertCSS(
+                        {code: `${rule.selector} {display: none;}`})
+                    cosmeticFilterActions.siteCosmeticFilterAdded(
+                        rule.host, rule.selector)
+                  }
+                })
+          })
       break
     }
     case 'resetSiteFilterSettings': {
@@ -57,7 +58,8 @@ chrome.contextMenus.onClicked.addListener(function (info, tab) {
       break
     }
     default: {
-      console.warn('[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}')
+      console.warn(
+          '[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}')
     }
   }
 })

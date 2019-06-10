@@ -11,8 +11,8 @@ namespace brave {
 std::string GetDateAsYMD(const base::Time& time) {
   base::Time::Exploded exploded;
   time.LocalExplode(&exploded);
-  return base::StringPrintf("%d-%02d-%02d", exploded.year, exploded.month,
-                            exploded.day_of_month);
+  return base::StringPrintf(
+      "%d-%02d-%02d", exploded.year, exploded.month, exploded.day_of_month);
 }
 
 }  // namespace brave

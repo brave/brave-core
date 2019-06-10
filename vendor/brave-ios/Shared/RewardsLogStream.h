@@ -7,20 +7,26 @@
 #import <Foundation/Foundation.h>
 #import <iostream>
 
-#import "bat/ledger/ledger_client.h"
 #import "bat/ads/ads_client.h"
+#import "bat/ledger/ledger_client.h"
 
 class RewardsLogStream : public ledger::LogStream, public ads::LogStream {
-public:
-  RewardsLogStream(const char* file, const int line, const ledger::LogLevel log_level);
-  RewardsLogStream(const char* file, const int line, const ads::LogLevel log_level);
+ public:
+  RewardsLogStream(const char* file,
+                   const int line,
+                   const ledger::LogLevel log_level);
+  RewardsLogStream(const char* file,
+                   const int line,
+                   const ads::LogLevel log_level);
 
   std::ostream& stream() override;
 
-private:
+ private:
   std::string log_message_;
 
-  void constructLogMessageWithPrefix(const std::string& prefix, const char* file, const int line);
+  void constructLogMessageWithPrefix(const std::string& prefix,
+                                     const char* file,
+                                     const int line);
 
   // Not copyable, not assignable
   RewardsLogStream(const RewardsLogStream&) = delete;

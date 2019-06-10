@@ -15,10 +15,12 @@ HostPortPair::HostPortPair(const HostPortPair& host_port) = default;
 
 HostPortPair::HostPortPair(const std::string& username,
                            const std::string& password,
-                           const std::string& in_host, uint16_t in_port)
-    : username_(username), password_(password),
-      host_(in_host), port_(in_port) {
-}
+                           const std::string& in_host,
+                           uint16_t in_port)
+    : username_(username),
+      password_(password),
+      host_(in_host),
+      port_(in_port) {}
 
 std::string HostPortPair::ToString() const {
   std::string ret;

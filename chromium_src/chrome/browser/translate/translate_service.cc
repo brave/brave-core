@@ -14,4 +14,4 @@ bool IsBraveTranslateEnabled() {
 }
 }  // namespace
 
-#include "../../../../../../chrome/browser/translate/translate_service.cc" // NOLINT
+#include "../../../../../../chrome/browser/translate/translate_service.cc"  // NOLINT

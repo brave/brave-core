@@ -16,7 +16,7 @@ std::string GetDevToolsUIThemeValue(Profile* profile) {
   // In devtools' theme, default is translated to light.
   return theme_type == BRAVE_THEME_TYPE_DARK ? "\"dark\"" : "\"default\"";
 }
-}
+}  // namespace
 
 void BraveDevToolsUIBindings::GetPreferences(const DispatchCallback& callback) {
   const base::DictionaryValue* prefs =

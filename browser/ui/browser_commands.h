@@ -14,5 +14,4 @@ void NewTorIdentity(Browser*);
 
 }  // namespace brave
 
-
 #endif  // BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_

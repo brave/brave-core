@@ -3,63 +3,68 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Initial state
-import { defaultState as welcomeData } from '../../components/brave_welcome_ui/storage'
-import { defaultState as rewardsData } from '../../components/brave_rewards/resources/ui/storage'
-import { defaultState as adblockData } from '../../components/brave_adblock_ui/storage'
-import { defaultState as syncData } from '../../components/brave_sync/ui/storage'
-
-// Types
-import { Tab } from '../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
-import { BlockDetails } from '../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
-
 // Helpers
 import * as deepFreeze from 'deep-freeze-node'
+
+import {defaultState as adblockData} from '../../components/brave_adblock_ui/storage'
+import {defaultState as rewardsData} from '../../components/brave_rewards/resources/ui/storage'
+import {defaultState as syncData} from '../../components/brave_sync/ui/storage'
+import {defaultState as welcomeData} from '../../components/brave_welcome_ui/storage'
+import {BlockDetails} from '../brave_extension/extension/brave_extension/types/actions/shieldsPanelActions'
+// Types
+import {Tab} from '../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
 
 export class ChromeEvent {
   listeners: Array<() => void>
 
-  constructor () {
+  constructor() {
     this.listeners = []
   }
 
-  emit (...args: Array<() => void>) {
+  emit(...args: Array<() => void>) {
     this.listeners.forEach((cb: () => void) => cb.apply(null, args))
   }
 
-  addListener (cb: () => void) {
+  addListener(cb: () => void) {
     this.listeners.push(cb)
   }
 }
 
-export const welcomeInitialState: Welcome.ApplicationState = { welcomeData }
+export const welcomeInitialState: Welcome.ApplicationState =
+    {welcomeData}
 
-export const rewardsInitialState: Rewards.ApplicationState = { rewardsData }
+    export const rewardsInitialState:
+        Rewards.ApplicationState = {rewardsData}
 
-export const adblockInitialState: AdBlock.ApplicationState = { adblockData }
+                                   export const adblockInitialState:
+                                       AdBlock.ApplicationState =
+        {adblockData}
 
-export const syncInitialState: Sync.ApplicationState = { syncData }
+        export const syncInitialState:
+            Sync.ApplicationState = {syncData}
 
-export const newTabInitialState: NewTab.ApplicationState = {
-  newTabData: {
-    topSites: [],
-    ignoredTopSites: [],
-    pinnedTopSites: [],
-    gridSites: [],
-    showEmptyPage: false,
-    isIncognito: new ChromeEvent(),
-    useAlternativePrivateSearchEngine: false,
-    isTor: false,
-    isQwant: false,
-    bookmarks: {},
-    stats: {
-      adsBlockedStat: 0,
-      trackersBlockedStat: 0,
-      javascriptBlockedStat: 0,
-      httpsUpgradesStat: 0,
-      fingerprintingBlockedStat: 0
-    }
-  }
-}
+                                    export const newTabInitialState:
+                                        NewTab.ApplicationState = {
+          newTabData: {
+            topSites: [],
+            ignoredTopSites: [],
+            pinnedTopSites: [],
+            gridSites: [],
+            showEmptyPage: false,
+            isIncognito: new ChromeEvent(),
+            useAlternativePrivateSearchEngine: false,
+            isTor: false,
+            isQwant: false,
+            bookmarks: {},
+            stats: {
+              adsBlockedStat: 0,
+              trackersBlockedStat: 0,
+              javascriptBlockedStat: 0,
+              httpsUpgradesStat: 0,
+              fingerprintingBlockedStat: 0
+            }
+          }
+        }
 
 interface CustomTab extends Tab {
   url: string
@@ -99,144 +104,164 @@ export const tabs: Tabs = {
 
 export const activeTabData = tabs[2]
 
-export const blockedResource: BlockDetails = {
-  blockType: 'ads',
-  tabId: 2,
-  subresource: 'https://www.brave.com/test'
-}
+    export const blockedResource: BlockDetails = {
+      blockType: 'ads',
+      tabId: 2,
+      subresource: 'https://www.brave.com/test'
+    }
 
-export const getMockChrome = () => {
-  return {
-    send: () => undefined,
-    getVariableValue: () => undefined,
-    braveRewards: {
-      getPublisherData: (id: number, url: string, favicon: string) => undefined
-    },
-    runtime: {
-      onMessage: new ChromeEvent(),
-      onConnect: new ChromeEvent(),
-      onStartup: new ChromeEvent(),
-      onMessageExternal: new ChromeEvent(),
-      onConnectExternal: new ChromeEvent()
-    },
-    browserAction: {
-      setBadgeBackgroundColor: function (properties: object) {
-        return
-      },
-      setBadgeText: function (textProperties: object) {
-        return
-      },
-      setIcon: function (iconProperties: object) {
-        return
-      },
-      enable: function (tabId?: number) {
-        return
-      },
-      disable: function (tabId?: number) {
-        return
-      }
-    },
-    tabs: {
-      queryAsync: function () {
-        return Promise.resolve([activeTabData])
-      },
-      getAsync: function (tabId: number) {
-        return Promise.resolve(tabs[tabId])
-      },
-      create: function (createProperties: object, cb: () => void) {
-        setImmediate(cb)
-      },
-      reload: function (tabId: number, reloadProperties: object, cb: () => void) {
-        setImmediate(cb)
-      },
-      insertCSS: function (details: jest.SpyInstance) {
-        return
-      },
-      onActivated: new ChromeEvent(),
-      onCreated: new ChromeEvent(),
-      onUpdated: new ChromeEvent()
-    },
-    windows: {
-      onFocusChanged: new ChromeEvent(),
-      onCreated: new ChromeEvent(),
-      onRemoved: new ChromeEvent(),
-      getAllAsync: function () {
-        return new Promise(() => [])
-      }
-    },
-    braveShields: {
-      onBlocked: new ChromeEvent(),
-      allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
-        setImmediate(cb)
-      },
-      plugins: {
-        setAsync: function () {
-          return Promise.resolve()
-        },
-        getAsync: function () {
-          return Promise.resolve({
-            setting: 'block'
-          })
-        }
-      },
-      javascript: {
-        setAsync: function () {
-          return Promise.resolve()
-        },
-        getAsync: function () {
-          return Promise.resolve({
-            setting: 'block'
-          })
-        }
-      }
-    },
-    i18n: {
-      getMessage: function (message: string) {
-        return
-      }
-    },
-    storage: {
-      local: {
-        get: function (url: string) {
-          return
-        },
-        set: function (url: string, cssfilter: string) {
-          return
-        }
-      }
-    },
-    extension: {
-      inIncognitoContext: new ChromeEvent()
-    },
-    topSites: {
-      get: function () {
-        return
-      }
-    },
-    bookmarks: {
-      create: function (bookmark: chrome.bookmarks.BookmarkCreateArg, callback?: (result: chrome.bookmarks.BookmarkTreeNode[]) => void) {
-        return
-      },
-      remove: function (id: string, callback?: Function) {
-        return
-      },
-      search: function (query: string, callback: (results: chrome.bookmarks.BookmarkTreeNode[]) => void) {
-        return
+export const getMockChrome =
+    () => {
+      return {
+        send:
+            () => undefined,
+            getVariableValue: () => undefined, braveRewards: {
+              getPublisherData: (id: number, url: string, favicon: string) =>
+                  undefined
+            },
+            runtime: {
+              onMessage: new ChromeEvent(),
+              onConnect: new ChromeEvent(),
+              onStartup: new ChromeEvent(),
+              onMessageExternal: new ChromeEvent(),
+              onConnectExternal: new ChromeEvent()
+            },
+            browserAction: {
+              setBadgeBackgroundColor:
+                  function(properties: object) {
+                    return
+                  },
+              setBadgeText:
+                  function(textProperties: object) {
+                    return
+                  },
+              setIcon:
+                  function(iconProperties: object) {
+                    return
+                  },
+              enable:
+                  function(tabId?: number) {
+                    return
+                  },
+              disable:
+                  function(tabId?: number) {
+                    return
+                  }
+            },
+            tabs: {
+              queryAsync:
+                  function() {
+                    return Promise.resolve([activeTabData])
+                  },
+              getAsync:
+                  function(tabId: number) {
+                    return Promise.resolve(tabs[tabId])
+                  },
+              create:
+                  function(createProperties: object, cb: () => void) {
+                    setImmediate(cb)
+                  },
+              reload:
+                  function(
+                      tabId: number, reloadProperties: object, cb: () => void) {
+                    setImmediate(cb)
+                  },
+              insertCSS:
+                  function(details: jest.SpyInstance) {
+                    return
+                  },
+              onActivated: new ChromeEvent(),
+              onCreated: new ChromeEvent(),
+              onUpdated: new ChromeEvent()
+            },
+            windows: {
+              onFocusChanged: new ChromeEvent(),
+              onCreated: new ChromeEvent(),
+              onRemoved: new ChromeEvent(),
+              getAllAsync:
+                  function() {
+                    return new Promise(() => [])
+                  }
+            },
+            braveShields: {
+              onBlocked: new ChromeEvent(),
+              allowScriptsOnce:
+                  function(
+                      origins: Array<string>, tabId: number, cb: () => void) {
+                    setImmediate(cb)
+                  },
+              plugins: {
+                setAsync:
+                    function() {
+                      return Promise.resolve()
+                    },
+                getAsync:
+                    function() {
+                      return Promise.resolve({setting: 'block'})
+                    }
+              },
+              javascript: {
+                setAsync:
+                    function() {
+                      return Promise.resolve()
+                    },
+                getAsync:
+                    function() {
+                      return Promise.resolve({setting: 'block'})
+                    }
+              }
+            },
+            i18n: {
+              getMessage:
+                  function(message: string) {
+                    return
+                  }
+            },
+            storage: {
+              local: {
+                get:
+                    function(url: string) {
+                      return
+                    },
+                set:
+                    function(url: string, cssfilter: string) {
+                      return
+                    }
+              }
+            },
+            extension: {inIncognitoContext: new ChromeEvent()}, topSites: {
+              get:
+                  function() {
+                    return
+                  }
+            },
+            bookmarks: {
+              create:
+                  function(
+                      bookmark: chrome.bookmarks.BookmarkCreateArg,
+                      callback?:
+                          (result: chrome.bookmarks.BookmarkTreeNode[]) =>
+                              void) {
+                    return
+                  },
+              remove:
+                  function(id: string, callback?: Function) {
+                    return
+                  },
+              search:
+                  function(
+                      query: string,
+                      callback:
+                          (results: chrome.bookmarks.BookmarkTreeNode[]) =>
+                              void) {
+                    return
+                  }
+            }
       }
     }
-  }
-}
 
 export const initialState = deepFreeze({
-  cosmeticFilter: {
-    currentWindowId: -1,
-    tabs: {},
-    windows: {}
-  },
+  cosmeticFilter: {currentWindowId: -1, tabs: {}, windows: {}},
   runtime: {},
-  shieldsPanel: {
-    currentWindowId: -1,
-    tabs: {},
-    windows: {}
-  }
+  shieldsPanel: {currentWindowId: -1, tabs: {}, windows: {}}
 })

@@ -6,8 +6,8 @@
 #ifndef BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_SERVICES_BAT_ADS_BAT_ADS_SERVICE_IMPL_H_
 
-#include <string>
 #include <memory>
+#include <string>
 
 #include "base/memory/ref_counted.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
@@ -24,26 +24,19 @@ class BatAdsServiceImpl : public mojom::BatAdsService {
   ~BatAdsServiceImpl() override;
 
   // Overridden from BatAdsService:
-  void Create(
-      mojom::BatAdsClientAssociatedPtrInfo client_info,
-      mojom::BatAdsAssociatedRequest bat_ads,
-      CreateCallback callback) override;
+  void Create(mojom::BatAdsClientAssociatedPtrInfo client_info,
+              mojom::BatAdsAssociatedRequest bat_ads,
+              CreateCallback callback) override;
 
-  void SetProduction(
-      const bool is_production,
-      SetProductionCallback callback) override;
+  void SetProduction(const bool is_production,
+                     SetProductionCallback callback) override;
 
-  void SetTesting(
-      const bool is_testing,
-      SetTestingCallback callback) override;
+  void SetTesting(const bool is_testing, SetTestingCallback callback) override;
 
-  void SetDebug(
-      const bool is_debug,
-      SetDebugCallback callback) override;
+  void SetDebug(const bool is_debug, SetDebugCallback callback) override;
 
-  void IsSupportedRegion(
-      const std::string& locale,
-      IsSupportedRegionCallback callback) override;
+  void IsSupportedRegion(const std::string& locale,
+                         IsSupportedRegionCallback callback) override;
 
  private:
   const std::unique_ptr<service_manager::ServiceContextRef> service_ref_;

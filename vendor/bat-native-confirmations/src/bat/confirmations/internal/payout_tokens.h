@@ -7,8 +7,8 @@
 #define BAT_CONFIRMATIONS_INTERNAL_PAYOUT_TOKENS_H_
 
 #include <stdint.h>
-#include <string>
 #include <map>
+#include <string>
 
 #include "bat/confirmations/confirmations_client.h"
 #include "bat/confirmations/wallet_info.h"
@@ -20,10 +20,9 @@ class UnblindedTokens;
 
 class PayoutTokens {
  public:
-  PayoutTokens(
-      ConfirmationsImpl* confirmations,
-      ConfirmationsClient* confirmations_client,
-      UnblindedTokens* unblinded_payment_tokens);
+  PayoutTokens(ConfirmationsImpl* confirmations,
+               ConfirmationsClient* confirmations_client,
+               UnblindedTokens* unblinded_payment_tokens);
 
   ~PayoutTokens();
 
@@ -33,11 +32,10 @@ class PayoutTokens {
   WalletInfo wallet_info_;
 
   void RedeemPaymentTokens();
-  void OnRedeemPaymentTokens(
-      const std::string& url,
-      const int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
+  void OnRedeemPaymentTokens(const std::string& url,
+                             const int response_status_code,
+                             const std::string& response,
+                             const std::map<std::string, std::string>& headers);
 
   void OnPayout(const Result result);
 
@@ -46,7 +44,7 @@ class PayoutTokens {
   unsigned backoff_count_;
   void RetryNextPayout();
 
-  ConfirmationsImpl* confirmations_;  // NOT OWNED
+  ConfirmationsImpl* confirmations_;           // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
   UnblindedTokens* unblinded_payment_tokens_;  // NOT OWNED
 };

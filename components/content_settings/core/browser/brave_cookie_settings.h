@@ -38,11 +38,11 @@ class BraveCookieSettings : public CookieSettings {
                              const GURL& tab_url) const;
 
   bool ShouldStoreState(HostContentSettingsMap* map,
-                             int render_process_id,
-                             int render_frame_id,
-                             const GURL& url,
-                             const GURL& first_party_url,
-                             const GURL& tab_url) const;
+                        int render_process_id,
+                        int render_frame_id,
+                        const GURL& url,
+                        const GURL& first_party_url,
+                        const GURL& tab_url) const;
 
   bool GetAllowGoogleAuth() const { return allow_google_auth_; }
 

@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { types } from '../../../brave_webtorrent/extension/constants/tab_types'
 import * as actions from '../../../brave_webtorrent/extension/actions/tab_actions'
+import {types} from '../../../brave_webtorrent/extension/constants/tab_types'
 
 const tab: chrome.tabs.Tab = {
   id: 1,
@@ -18,7 +18,7 @@ const tab: chrome.tabs.Tab = {
   autoDiscardable: false
 }
 
-const changeInfo: chrome.tabs.TabChangeInfo = {
+                             const changeInfo: chrome.tabs.TabChangeInfo = {
   url: 'https://test.com'
 }
 
@@ -34,21 +34,18 @@ describe('tab_actions', () => {
     })
   })
 
-  it('tabUpdated', () => {
-    expect(actions.tabUpdated(tabId, changeInfo, tab)).toEqual({
-      type: types.TAB_UPDATED,
-      meta: undefined,
-      payload: { tabId, changeInfo, tab }
-    })
-  })
+it('tabUpdated',
+   () => {expect(actions.tabUpdated(tabId, changeInfo, tab)).toEqual({
+     type: types.TAB_UPDATED,
+     meta: undefined,
+     payload: {tabId, changeInfo, tab}
+   })})
 
-  it('tabRemoved', () => {
-    expect(actions.tabRemoved(tabId)).toEqual({
-      type: types.TAB_REMOVED,
-      meta: undefined,
-      payload: { tabId }
-    })
-  })
+it('tabRemoved', () => {expect(actions.tabRemoved(tabId)).toEqual({
+                   type: types.TAB_REMOVED,
+                   meta: undefined,
+                   payload: {tabId}
+                 })})
 
   it('activeTabChanged', () => {
     expect(actions.activeTabChanged(tabId, windowId)).toEqual({

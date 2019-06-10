@@ -33,4 +33,4 @@ std::unique_ptr<Profile> CreateBraveRewardsProfile(const base::FilePath& path) {
   return profile_builder.Build();
 }
 
-}  // namespace
+}  // namespace brave_rewards

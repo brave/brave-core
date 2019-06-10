@@ -1,6 +1,6 @@
 //
 //  ActivityInfo+CoreDataProperties.m
-//  
+//
 //
 //  Created by Kyle Hickinson on 2019-05-24.
 //
@@ -11,8 +11,8 @@
 
 @implementation ActivityInfo (CoreDataProperties)
 
-+ (NSFetchRequest<ActivityInfo *> *)fetchRequest {
-	return [NSFetchRequest fetchRequestWithEntityName:@"ActivityInfo"];
++ (NSFetchRequest<ActivityInfo*>*)fetchRequest {
+  return [NSFetchRequest fetchRequestWithEntityName:@"ActivityInfo"];
 }
 
 @dynamic duration;

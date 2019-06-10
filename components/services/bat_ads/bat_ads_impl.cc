@@ -19,7 +19,7 @@ ads::NotificationResultInfoResultType ToNotificationResultInfoResultType(
   return (ads::NotificationResultInfoResultType)result_type;
 }
 
-}
+}  // namespace
 
 BatAdsImpl::BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info)
     : bat_ads_client_mojo_proxy_(
@@ -34,8 +34,7 @@ void BatAdsImpl::Initialize(InitializeCallback callback) {
   std::move(callback).Run();
 }
 
-void BatAdsImpl::ClassifyPage(const std::string& url,
-                              const std::string& page) {
+void BatAdsImpl::ClassifyPage(const std::string& url, const std::string& page) {
   ads_->ClassifyPage(url, page);
 }
 
@@ -72,9 +71,9 @@ void BatAdsImpl::OnMediaStopped(int32_t tab_id) {
 }
 
 void BatAdsImpl::TabUpdated(int32_t tab_id,
-                const std::string& url,
-                bool is_active,
-                bool is_incognito) {
+                            const std::string& url,
+                            bool is_active,
+                            bool is_incognito) {
   ads_->TabUpdated(tab_id, url, is_active, is_incognito);
 }
 
@@ -93,7 +92,7 @@ void BatAdsImpl::ServeSampleAd() {
 }
 
 void BatAdsImpl::GenerateAdReportingNotificationShownEvent(
-      const std::string& notification_info) {
+    const std::string& notification_info) {
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info) == ads::Result::SUCCESS) {
     ads_->GenerateAdReportingNotificationShownEvent(*info);
@@ -101,13 +100,12 @@ void BatAdsImpl::GenerateAdReportingNotificationShownEvent(
 }
 
 void BatAdsImpl::GenerateAdReportingNotificationResultEvent(
-      const std::string& notification_info,
-      int32_t result_type) {
+    const std::string& notification_info,
+    int32_t result_type) {
   auto info = std::make_unique<ads::NotificationInfo>();
   if (info->FromJson(notification_info) == ads::Result::SUCCESS) {
     ads_->GenerateAdReportingNotificationResultEvent(
-        *info,
-        ToNotificationResultInfoResultType(result_type));
+        *info, ToNotificationResultInfoResultType(result_type));
   }
 }
 

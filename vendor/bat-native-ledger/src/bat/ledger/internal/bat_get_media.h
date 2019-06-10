@@ -6,9 +6,9 @@
 #ifndef BRAVELEDGER_BAT_GET_MEDIA_H_
 #define BRAVELEDGER_BAT_GET_MEDIA_H_
 
-#include <string>
 #include <map>
 #include <memory>
+#include <string>
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/media/twitch.h"
@@ -51,8 +51,8 @@ class BatGetMedia {
 
  private:
   void OnMediaActivityError(const ledger::VisitData& visit_data,
-                          const std::string& type,
-                          uint64_t windowId);
+                            const std::string& type,
+                            uint64_t windowId);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<braveledger_media::MediaYouTube> media_youtube_;

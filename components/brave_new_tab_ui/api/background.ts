@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { images as backgrounds } from '../data/backgrounds'
+import {images as backgrounds} from '../data/backgrounds'
 
 /**
  * Generates a random image for new tab backgrounds

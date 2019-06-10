@@ -7,27 +7,26 @@
 
 namespace ads {
 
-SearchProviderInfo::SearchProviderInfo() :
-    name(""),
-    hostname(""),
-    search_template(""),
-    is_always_classed_as_a_search(false) {}
+SearchProviderInfo::SearchProviderInfo()
+    : name(""),
+      hostname(""),
+      search_template(""),
+      is_always_classed_as_a_search(false) {}
 
-SearchProviderInfo::SearchProviderInfo(
-    const std::string& name,
-    const std::string& hostname,
-    const std::string& search_template,
-    bool is_always_classed_as_a_search) :
-    name(name),
-    hostname(hostname),
-    search_template(search_template),
-    is_always_classed_as_a_search(is_always_classed_as_a_search) {}
+SearchProviderInfo::SearchProviderInfo(const std::string& name,
+                                       const std::string& hostname,
+                                       const std::string& search_template,
+                                       bool is_always_classed_as_a_search)
+    : name(name),
+      hostname(hostname),
+      search_template(search_template),
+      is_always_classed_as_a_search(is_always_classed_as_a_search) {}
 
-SearchProviderInfo::SearchProviderInfo(const SearchProviderInfo& info) :
-    name(info.name),
-    hostname(info.hostname),
-    search_template(info.search_template),
-    is_always_classed_as_a_search(info.is_always_classed_as_a_search) {}
+SearchProviderInfo::SearchProviderInfo(const SearchProviderInfo& info)
+    : name(info.name),
+      hostname(info.hostname),
+      search_template(info.search_template),
+      is_always_classed_as_a_search(info.is_always_classed_as_a_search) {}
 
 SearchProviderInfo::~SearchProviderInfo() {}
 

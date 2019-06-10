@@ -80,8 +80,8 @@ int GetWidevinePermissionRequestTextFrangmentResourceId() {
 }
 
 void RequestWidevinePermission(content::WebContents* web_contents) {
-  PermissionRequestManager::FromWebContents(web_contents)->AddRequest(
-      new WidevinePermissionRequest(web_contents));
+  PermissionRequestManager::FromWebContents(web_contents)
+      ->AddRequest(new WidevinePermissionRequest(web_contents));
 }
 
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT)

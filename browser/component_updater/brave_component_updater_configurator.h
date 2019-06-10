@@ -29,9 +29,8 @@ void RegisterPrefsForBraveComponentUpdaterConfigurator(
     PrefRegistrySimple* registry);
 
 scoped_refptr<update_client::Configurator>
-MakeBraveComponentUpdaterConfigurator(
-    const base::CommandLine* cmdline,
-    PrefService* pref_service);
+MakeBraveComponentUpdaterConfigurator(const base::CommandLine* cmdline,
+                                      PrefService* pref_service);
 
 }  // namespace component_updater
 

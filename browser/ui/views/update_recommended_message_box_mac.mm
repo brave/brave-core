@@ -11,7 +11,8 @@
 void UpdateRecommendedMessageBoxMac::Show(gfx::NativeWindow parent_window) {
   // When the window closes, it will delete itself.
   constrained_window::CreateBrowserModalDialogViews(
-      new UpdateRecommendedMessageBoxMac(), parent_window)->Show();
+      new UpdateRecommendedMessageBoxMac(), parent_window)
+      ->Show();
 }
 
 bool UpdateRecommendedMessageBoxMac::Accept() {

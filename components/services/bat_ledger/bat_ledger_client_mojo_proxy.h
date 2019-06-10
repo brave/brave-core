@@ -20,24 +20,23 @@ class SkBitmap;
 
 namespace bat_ledger {
 
-class BatLedgerClientMojoProxy : public ledger::LedgerClient,
-                      public base::SupportsWeakPtr<BatLedgerClientMojoProxy> {
+class BatLedgerClientMojoProxy
+    : public ledger::LedgerClient,
+      public base::SupportsWeakPtr<BatLedgerClientMojoProxy> {
  public:
-  BatLedgerClientMojoProxy(
-      mojom::BatLedgerClientAssociatedPtrInfo client_info);
+  BatLedgerClientMojoProxy(mojom::BatLedgerClientAssociatedPtrInfo client_info);
   ~BatLedgerClientMojoProxy() override;
 
   std::string GenerateGUID() const override;
   void OnWalletInitialized(ledger::Result result) override;
   void OnWalletProperties(ledger::Result result,
                           std::unique_ptr<ledger::WalletInfo> info) override;
-  void OnGrant(ledger::Result result,
-               const ledger::Grant& grant) override;
+  void OnGrant(ledger::Result result, const ledger::Grant& grant) override;
   void OnGrantCaptcha(const std::string& image,
                       const std::string& hint) override;
   void OnRecoverWallet(ledger::Result result,
-                      double balance,
-                      const std::vector<ledger::Grant>& grants) override;
+                       double balance,
+                       const std::vector<ledger::Grant>& grants) override;
   void OnReconcileComplete(ledger::Result result,
                            const std::string& viewing_id,
                            ledger::REWARDS_CATEGORY category,
@@ -64,11 +63,11 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void LoadPublisherList(ledger::LedgerCallbackHandler* handler) override;
 
   void LoadURL(const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& contentType,
-      const ledger::URL_METHOD method,
-      ledger::LoadURLCallback callback) override;
+               const std::vector<std::string>& headers,
+               const std::string& content,
+               const std::string& contentType,
+               const ledger::URL_METHOD method,
+               ledger::LoadURLCallback callback) override;
 
   void OnExcludedSitesChanged(const std::string& publisher_id,
                               ledger::PUBLISHER_EXCLUDE exclude) override;
@@ -89,25 +88,21 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   std::unique_ptr<ledger::LogStream> Log(const char* file,
                                          int line,
                                          ledger::LogLevel level) const override;
-  std::unique_ptr<ledger::LogStream> VerboseLog(const char* file,
-                                         int line,
-                                         int verbosity_level) const override;
-  void LoadMediaPublisherInfo(
-      const std::string& media_key,
-      ledger::PublisherInfoCallback callback) override;
+  std::unique_ptr<ledger::LogStream>
+  VerboseLog(const char* file, int line, int verbosity_level) const override;
+  void LoadMediaPublisherInfo(const std::string& media_key,
+                              ledger::PublisherInfoCallback callback) override;
   void SaveMediaPublisherInfo(const std::string& media_key,
                               const std::string& publisher_id) override;
 
   void FetchGrants(const std::string& lang,
                    const std::string& payment_id) override;
-  void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) override;
+  void GetGrantCaptcha(const std::string& promotion_id,
+                       const std::string& promotion_type) override;
 
   std::string URIEncode(const std::string& value) override;
 
-  void SavePendingContribution(
-      ledger::PendingContributionList list) override;
+  void SavePendingContribution(ledger::PendingContributionList list) override;
 
   void LoadActivityInfo(ledger::ActivityInfoFilter filter,
                         ledger::PublisherInfoCallback callback) override;
@@ -141,42 +136,44 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const ledger::PendingContributionInfoListCallback& callback) override;
 
   void RemovePendingContribution(
-    const std::string& publisher_key,
-    const std::string& viewing_id,
-    uint64_t added_date,
-    const ledger::RemovePendingContributionCallback& callback) override;
+      const std::string& publisher_key,
+      const std::string& viewing_id,
+      uint64_t added_date,
+      const ledger::RemovePendingContributionCallback& callback) override;
 
   void RemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback) override;
+      const ledger::RemovePendingContributionCallback& callback) override;
 
   void GetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback) override;
+      const ledger::PendingContributionsTotalCallback& callback) override;
 
-  void GetCountryCodes(
-      const std::vector<std::string>& countries,
-      ledger::GetCountryCodesCallback callback) override;
+  void GetCountryCodes(const std::vector<std::string>& countries,
+                       ledger::GetCountryCodesCallback callback) override;
 
  private:
   bool Connected() const;
 
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void OnRemoveRecurring(const std::string& publisher_key,
-      ledger::RecurringRemoveCallback callback) override;
+                         ledger::RecurringRemoveCallback callback) override;
 
   mojom::BatLedgerClientAssociatedPtr bat_ledger_client_;
 
   void OnLoadLedgerState(ledger::LedgerCallbackHandler* handler,
-      int32_t result, const std::string& data);
+                         int32_t result,
+                         const std::string& data);
   void OnLoadPublisherState(ledger::LedgerCallbackHandler* handler,
-      int32_t result, const std::string& data);
+                            int32_t result,
+                            const std::string& data);
   void OnLoadPublisherList(ledger::LedgerCallbackHandler* handler,
-      int32_t result, const std::string& data);
+                           int32_t result,
+                           const std::string& data);
   void OnSaveLedgerState(ledger::LedgerCallbackHandler* handler,
-      int32_t result);
+                         int32_t result);
   void OnSavePublisherState(ledger::LedgerCallbackHandler* handler,
-      int32_t result);
+                            int32_t result);
   void OnSavePublishersList(ledger::LedgerCallbackHandler* handler,
-      int32_t result);
+                            int32_t result);
 
   DISALLOW_COPY_AND_ASSIGN(BatLedgerClientMojoProxy);
 };

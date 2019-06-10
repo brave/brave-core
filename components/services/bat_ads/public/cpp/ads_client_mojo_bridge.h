@@ -19,7 +19,7 @@
 namespace bat_ads {
 
 class AdsClientMojoBridge : public mojom::BatAdsClient,
-                         public base::SupportsWeakPtr<AdsClientMojoBridge> {
+                            public base::SupportsWeakPtr<AdsClientMojoBridge> {
  public:
   explicit AdsClientMojoBridge(ads::AdsClient* ads_client);
   ~AdsClientMojoBridge() override;
@@ -77,8 +77,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   void ConfirmAd(const std::string& notification_info) override;
   void SaveBundleState(const std::string& bundle_state,
                        SaveBundleStateCallback callback) override;
-  void GetAds(const std::string& category,
-              GetAdsCallback callback) override;
+  void GetAds(const std::string& category, GetAdsCallback callback) override;
 
  private:
   // workaround to pass base::OnceCallback into std::bind
@@ -86,8 +85,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   class CallbackHolder {
    public:
     CallbackHolder(base::WeakPtr<AdsClientMojoBridge> client, Callback callback)
-        : client_(client),
-          callback_(std::move(callback)) {}
+        : client_(client), callback_(std::move(callback)) {}
     ~CallbackHolder() = default;
     bool is_valid() { return !!client_.get(); }
     Callback& get() { return callback_; }
@@ -100,8 +98,7 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
   static void OnLoad(CallbackHolder<LoadCallback>* holder,
                      ads::Result result,
                      const std::string& value);
-  static void OnSave(CallbackHolder<SaveCallback>* holder,
-                     ads::Result result);
+  static void OnSave(CallbackHolder<SaveCallback>* holder, ads::Result result);
   static void OnReset(CallbackHolder<ResetCallback>* holder,
                       ads::Result result);
   static void OnLoadUserModelForLocale(
@@ -116,15 +113,12 @@ class AdsClientMojoBridge : public mojom::BatAdsClient,
       CallbackHolder<LoadSampleBundleCallback>* holder,
       ads::Result result,
       const std::string& value);
-  static void OnSaveBundleState(
-      CallbackHolder<SaveBundleStateCallback>* holder,
-      ads::Result result);
-  static void OnGetAds(
-      CallbackHolder<GetAdsCallback>* holder,
-      ads::Result result,
-      const std::string& category,
-      const std::vector<ads::AdInfo>& ad_info);
-
+  static void OnSaveBundleState(CallbackHolder<SaveBundleStateCallback>* holder,
+                                ads::Result result);
+  static void OnGetAds(CallbackHolder<GetAdsCallback>* holder,
+                       ads::Result result,
+                       const std::string& category,
+                       const std::vector<ads::AdInfo>& ad_info);
 
   ads::AdsClient* ads_client_;
 

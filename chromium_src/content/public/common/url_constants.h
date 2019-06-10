@@ -7,4 +7,3 @@
 namespace content {
 CONTENT_EXPORT extern const char kBraveUIScheme[];
 }
-

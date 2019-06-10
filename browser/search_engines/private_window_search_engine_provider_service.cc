@@ -8,7 +8,7 @@
 #include "components/search_engines/template_url_service.h"
 
 PrivateWindowSearchEngineProviderService::
-PrivateWindowSearchEngineProviderService(Profile* otr_profile)
+    PrivateWindowSearchEngineProviderService(Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
   DCHECK_EQ(otr_profile->GetProfileType(), Profile::INCOGNITO_PROFILE);
 
@@ -20,24 +20,22 @@ PrivateWindowSearchEngineProviderService(Profile* otr_profile)
 }
 
 PrivateWindowSearchEngineProviderService::
-~PrivateWindowSearchEngineProviderService() {
+    ~PrivateWindowSearchEngineProviderService() {
   original_template_url_service_->RemoveObserver(this);
 }
 
 void PrivateWindowSearchEngineProviderService::
-OnUseAlternativeSearchEngineProviderChanged() {
+    OnUseAlternativeSearchEngineProviderChanged() {
   ConfigureSearchEngineProvider();
 }
 
-void PrivateWindowSearchEngineProviderService::
-ConfigureSearchEngineProvider() {
+void PrivateWindowSearchEngineProviderService::ConfigureSearchEngineProvider() {
   UseAlternativeSearchEngineProvider()
       ? ChangeToAlternativeSearchEngineProvider()
       : ChangeToNormalWindowSearchEngineProvider();
 }
 
-void
-PrivateWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
+void PrivateWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
   // If private window uses alternative, search provider changing of normal
   // profile should not affect private window's provider.
   if (UseAlternativeSearchEngineProvider())
@@ -47,4 +45,3 @@ PrivateWindowSearchEngineProviderService::OnTemplateURLServiceChanged() {
   // private window's provider.
   ChangeToNormalWindowSearchEngineProvider();
 }
-

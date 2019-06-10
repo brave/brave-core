@@ -12,21 +12,24 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
   },
 
   attached: function() {
-    this.listen(this.$.tabs, 'selected-item-changed',
-        'onSelectedTabChanged_');
-    this.listen(this.$$('#on-exit-tab'), 'clear-data-on-exit-page-change',
+    this.listen(this.$.tabs, 'selected-item-changed', 'onSelectedTabChanged_');
+    this.listen(
+        this.$$('#on-exit-tab'),
+        'clear-data-on-exit-page-change',
         'updateSaveButtonState_');
-    this.listen(this.$$('#saveOnExitSettingsConfirm'), 'click',
-        'saveOnExitSettings_');
+    this.listen(
+        this.$$('#saveOnExitSettingsConfirm'), 'click', 'saveOnExitSettings_');
   },
 
   detached: function() {
-    this.unlisten(this.$.tabs, 'selected-item-changed',
-        'onSelectedTabChanged_');
-    this.unlisten(this.$$('#on-exit-tab'), 'clear-data-on-exit-page-change',
+    this.unlisten(
+        this.$.tabs, 'selected-item-changed', 'onSelectedTabChanged_');
+    this.unlisten(
+        this.$$('#on-exit-tab'),
+        'clear-data-on-exit-page-change',
         'updateSaveButtonState_');
-    this.unlisten(this.$$('#saveOnExitSettingsConfirm'), 'click',
-        'saveOnExitSettings_');
+    this.unlisten(
+        this.$$('#saveOnExitSettingsConfirm'), 'click', 'saveOnExitSettings_');
   },
 
   /**
@@ -38,8 +41,9 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
     let paperTab = document.createElement('paper-tab');
     paperTab.id = 'onExitTabTitle';
     paperTab.innerText = this.i18n('onExitPageTitle');
-    Polymer.dom(this.$.clearBrowsingDataDialog).querySelector(
-        'paper-tabs').appendChild(paperTab);
+    Polymer.dom(this.$.clearBrowsingDataDialog)
+        .querySelector('paper-tabs')
+        .appendChild(paperTab);
     // Append On exit tab page.
     let onExitPage = document.createElement(
         'settings-brave-clear-browsing-data-on-exit-page');
@@ -53,17 +57,17 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
     saveButton.hidden = true;
     saveButton.className = 'action-button';
     saveButton.innerText = this.i18n('save');
-    Polymer.dom(this.$.clearBrowsingDataConfirm).parentNode.appendChild(
-        saveButton);
+    Polymer.dom(this.$.clearBrowsingDataConfirm)
+        .parentNode.appendChild(saveButton);
   },
 
-/**
-  * Updates the text of a browsing data counter corresponding to the given
-  * preference.
-  * @param {string} prefName Browsing data type deletion preference.
-  * @param {string} text The text with which to update the counter
-  * @private
-  */
+  /**
+   * Updates the text of a browsing data counter corresponding to the given
+   * preference.
+   * @param {string} prefName Browsing data type deletion preference.
+   * @param {string} text The text with which to update the counter
+   * @private
+   */
   updateOnExitCountersText: function(prefName, text) {
     // Data type deletion preferences are named "browser.clear_data.<datatype>".
     // Strip the common prefix, i.e. use only "<datatype>".
@@ -75,7 +79,7 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
    * Updates Clear and Save buttons visibility based on the selected tab.
    * @private
    */
-  onSelectedTabChanged_: function () {
+  onSelectedTabChanged_: function() {
     const tab = this.$.tabs.selectedItem;
     if (!tab) {
       return;
@@ -89,7 +93,7 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
    * Updates Save button enabled state based on on-exit-tab's changed state.
    * @private
    */
-  updateSaveButtonState_: function () {
+  updateSaveButtonState_: function() {
     this.$$('#saveOnExitSettingsConfirm').disabled =
         !this.$$('#on-exit-tab').isModified;
   },
@@ -98,7 +102,7 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
    * Saves on exit settings selections.
    * @private
    */
-  saveOnExitSettings_: function () {
+  saveOnExitSettings_: function() {
     const changed = this.$$('#on-exit-tab').getChangedSettings();
     changed.forEach((change) => {
       this.set('prefs.' + change.key + '.value', change.value);
@@ -112,4 +116,4 @@ BraveClearBrowsingDataOnExitBehaviorImpl = {
 
 // Extend I18nBehavior so that we can use i18n.
 BraveClearBrowsingDataOnExitBehavior =
-  [I18nBehavior, BraveClearBrowsingDataOnExitBehaviorImpl]
+    [I18nBehavior, BraveClearBrowsingDataOnExitBehaviorImpl]

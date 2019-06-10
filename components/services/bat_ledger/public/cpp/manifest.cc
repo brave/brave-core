@@ -22,8 +22,7 @@ const service_manager::Manifest& GetManifest() {
                                    InstanceSharingPolicy::kSharedAcrossGroups)
                            .WithSandboxType("none")
                            .Build())
-          .ExposeCapability(
-              "bat_ledger",
+          .ExposeCapability("bat_ledger",
                             service_manager::Manifest::InterfaceList<
                                 mojom::BatLedgerService>())
           .Build()};

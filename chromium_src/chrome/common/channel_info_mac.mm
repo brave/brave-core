@@ -25,8 +25,7 @@ std::string GetChannelName() {
   if (!channel) {
     // For the stable channel, KSChannelID is not set.
     channel = @"";
-  } else if ([channel isEqual:@"beta"] ||
-             [channel isEqual:@"dev"] ||
+  } else if ([channel isEqual:@"beta"] || [channel isEqual:@"dev"] ||
              [channel isEqual:@"nightly"]) {
     // do nothing.
   } else {

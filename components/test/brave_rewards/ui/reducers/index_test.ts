@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import reducers from '../../../../brave_rewards/resources/ui/reducers/index'
-import { rewardsInitialState } from '../../../testData'
+import {rewardsInitialState} from '../../../testData'
 
 describe('rewards reducers test', () => {
   it('reducers are a combined reducer function', () => {
@@ -13,7 +13,7 @@ describe('rewards reducers test', () => {
 
   it('reducers passed with an unknown action returns the same input', () => {
     const unknownAction = {
-      type: 'MR. BONDY IS THE REAL JON SNOW'
+  type: 'MR. BONDY IS THE REAL JON SNOW'
     }
 
     const state = { ...rewardsInitialState }

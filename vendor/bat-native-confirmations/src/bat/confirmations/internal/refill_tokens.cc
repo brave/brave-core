@@ -5,36 +5,35 @@
 
 #include <memory>
 
-#include "bat/confirmations/internal/refill_tokens.h"
-#include "bat/confirmations/internal/static_values.h"
-#include "bat/confirmations/internal/logging.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
-#include "bat/confirmations/internal/security_helper.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
-#include "bat/confirmations/internal/unblinded_tokens.h"
-#include "bat/confirmations/internal/request_signed_tokens_request.h"
 #include "bat/confirmations/internal/get_signed_tokens_request.h"
+#include "bat/confirmations/internal/logging.h"
+#include "bat/confirmations/internal/refill_tokens.h"
+#include "bat/confirmations/internal/request_signed_tokens_request.h"
+#include "bat/confirmations/internal/security_helper.h"
+#include "bat/confirmations/internal/static_values.h"
+#include "bat/confirmations/internal/unblinded_tokens.h"
 
-#include "base/logging.h"
 #include "base/json/json_reader.h"
+#include "base/logging.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-using challenge_bypass_ristretto::SignedToken;
 using challenge_bypass_ristretto::BatchDLEQProof;
 using challenge_bypass_ristretto::PublicKey;
+using challenge_bypass_ristretto::SignedToken;
 
 namespace confirmations {
 
-RefillTokens::RefillTokens(
-    ConfirmationsImpl* confirmations,
-    ConfirmationsClient* confirmations_client,
-    UnblindedTokens* unblinded_tokens) :
-    confirmations_(confirmations),
-    confirmations_client_(confirmations_client),
-    unblinded_tokens_(unblinded_tokens) {
+RefillTokens::RefillTokens(ConfirmationsImpl* confirmations,
+                           ConfirmationsClient* confirmations_client,
+                           UnblindedTokens* unblinded_tokens)
+    : confirmations_(confirmations),
+      confirmations_client_(confirmations_client),
+      unblinded_tokens_(unblinded_tokens) {
   BLOG(INFO) << "Initializing refill tokens";
 }
 
@@ -42,9 +41,8 @@ RefillTokens::~RefillTokens() {
   BLOG(INFO) << "Deinitializing refill tokens";
 }
 
-void RefillTokens::Refill(
-    const WalletInfo& wallet_info,
-    const std::string& public_key) {
+void RefillTokens::Refill(const WalletInfo& wallet_info,
+                          const std::string& public_key) {
   DCHECK(!wallet_info.payment_id.empty());
   DCHECK(!wallet_info.public_key.empty());
   DCHECK(!public_key.empty());
@@ -71,8 +69,9 @@ void RefillTokens::RequestSignedTokens() {
 
   if (!ShouldRefillTokens()) {
     BLOG(INFO) << "No need to refill tokens as we already have "
-        << unblinded_tokens_->Count() << " unblinded tokens which is above the"
-        << " minimum threshold of " << kMinimumUnblindedTokens;
+               << unblinded_tokens_->Count()
+               << " unblinded tokens which is above the"
+               << " minimum threshold of " << kMinimumUnblindedTokens;
     return;
   }
 
@@ -102,11 +101,11 @@ void RefillTokens::RequestSignedTokens() {
   auto content_type = request.GetContentType();
   BLOG(INFO) << "  Content_type: " << content_type;
 
-  auto callback = std::bind(&RefillTokens::OnRequestSignedTokens,
-      this, url, _1, _2, _3);
+  auto callback =
+      std::bind(&RefillTokens::OnRequestSignedTokens, this, url, _1, _2, _3);
 
-  confirmations_client_->LoadURL(url, headers, body, content_type, method,
-      callback);
+  confirmations_client_->LoadURL(
+      url, headers, body, content_type, method, callback);
 }
 
 void RefillTokens::OnRequestSignedTokens(
@@ -166,8 +165,8 @@ void RefillTokens::GetSignedTokens() {
 
   auto method = request.GetMethod();
 
-  auto callback = std::bind(&RefillTokens::OnGetSignedTokens,
-      this, url, _1, _2, _3);
+  auto callback =
+      std::bind(&RefillTokens::OnGetSignedTokens, this, url, _1, _2, _3);
 
   confirmations_client_->LoadURL(url, {}, "", "", method, callback);
 }
@@ -220,7 +219,8 @@ void RefillTokens::OnGetSignedTokens(
   // Validate public key
   if (public_key_base64 != public_key_) {
     BLOG(ERROR) << "Response public_key: " << public_key_value->GetString()
-        << " does not match catalog issuers public key: " << public_key_;
+                << " does not match catalog issuers public key: "
+                << public_key_;
     OnRefill(FAILED);
     return;
   }
@@ -253,8 +253,11 @@ void RefillTokens::OnGetSignedTokens(
   }
 
   // Verify and unblind tokens
-  auto unblinded_tokens = batch_proof.verify_and_unblind(tokens_,
-      blinded_tokens_, signed_tokens, PublicKey::decode_base64(public_key_));
+  auto unblinded_tokens =
+      batch_proof.verify_and_unblind(tokens_,
+                                     blinded_tokens_,
+                                     signed_tokens,
+                                     PublicKey::decode_base64(public_key_));
 
   if (unblinded_tokens.size() == 0) {
     BLOG(ERROR) << "Failed to verify and unblind tokens";
@@ -298,8 +301,8 @@ void RefillTokens::OnGetSignedTokens(
   unblinded_tokens_->AddTokens(tokens);
 
   BLOG(INFO) << "Added " << unblinded_tokens.size()
-      << " unblinded tokens, you now have " << unblinded_tokens_->Count()
-      << " unblinded tokens";
+             << " unblinded tokens, you now have " << unblinded_tokens_->Count()
+             << " unblinded tokens";
 
   OnRefill(SUCCESS);
 }

@@ -11,11 +11,12 @@ class Profile;
 
 using content::WebContents;
 
-class BraveAutoplayContentSettingBubbleModel : public ContentSettingSimpleBubbleModel {
+class BraveAutoplayContentSettingBubbleModel
+    : public ContentSettingSimpleBubbleModel {
  public:
-   BraveAutoplayContentSettingBubbleModel(Delegate* delegate,
-                                          WebContents* web_contents);
-   ~BraveAutoplayContentSettingBubbleModel() override;
+  BraveAutoplayContentSettingBubbleModel(Delegate* delegate,
+                                         WebContents* web_contents);
+  ~BraveAutoplayContentSettingBubbleModel() override;
 
   // ContentSettingSimpleBubbleModel:
   void CommitChanges() override;
@@ -33,4 +34,4 @@ class BraveAutoplayContentSettingBubbleModel : public ContentSettingSimpleBubble
   DISALLOW_COPY_AND_ASSIGN(BraveAutoplayContentSettingBubbleModel);
 };
 
-#endif // BRAVE_BROWSER_UI_CONTENT_SETTINGS_BRAVE_AUTOPLAY_CONTENT_SETTING_BUBBLE_MODEL_H_
+#endif  // BRAVE_BROWSER_UI_CONTENT_SETTINGS_BRAVE_AUTOPLAY_CONTENT_SETTING_BUBBLE_MODEL_H_

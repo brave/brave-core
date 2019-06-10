@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 /* global chrome */
 
+import {types} from '../../../../brave_rewards/resources/ui/constants/rewards_types'
 import reducers from '../../../../brave_rewards/resources/ui/reducers/index'
-import { types } from '../../../../brave_rewards/resources/ui/constants/rewards_types'
-import { defaultState } from '../../../../brave_rewards/resources/ui/storage'
+import {defaultState} from '../../../../brave_rewards/resources/ui/storage'
 
 describe('Grant Reducer', () => {
 
@@ -101,10 +101,7 @@ describe('Grant Reducer', () => {
       })
 
       const currentGrant = {
-        promotionId: 'test-promotion-id-2',
-        expiryTime: 0,
-        probi: '',
-        type: 'ads'
+  promotionId: 'test-promotion-id-2', expiryTime: 0, probi: '', type: 'ads'
       }
       const expectedState: Rewards.State = {
         ...initialState,
@@ -171,48 +168,34 @@ describe('Grant Reducer', () => {
           type: 'ads'
         }
       ]
-      initialState.currentGrant = {
+    initialState.currentGrant =
+    {
+      promotionId: 'test-promotion-id-2', expiryTime: 0, probi: '', type: 'ads'
+    }
+
+    const assertion = reducers({rewardsData: initialState}, {
+      type: types.ON_GRANT_CAPTCHA,
+      payload: {captcha: {image: 'XXX', hint: 'blue'}}
+    })
+
+    const expectedState: Rewards.State = {...defaultState} expectedState
+                                             .currentGrant = {
+      promotionId: 'test-promotion-id-2',
+      expiryTime: 0,
+      probi: '',
+      type: 'ads'
+    } expectedState
+                                                                 .grants = [
+      {promotionId: 'test-promotion-id', expiryTime: 0, probi: '', type: 'ugp'},
+      {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
-        type: 'ads'
+        type: 'ads',
+        captcha: 'data:image/jpeg;base64,XXX',
+        hint: 'blue'
       }
-
-      const assertion = reducers({
-        rewardsData: initialState
-      }, {
-        type: types.ON_GRANT_CAPTCHA,
-        payload: {
-          captcha: {
-            image: 'XXX',
-            hint: 'blue'
-          }
-        }
-      })
-
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = {
-        promotionId: 'test-promotion-id-2',
-        expiryTime: 0,
-        probi: '',
-        type: 'ads'
-      }
-      expectedState.grants = [
-        {
-          promotionId: 'test-promotion-id',
-          expiryTime: 0,
-          probi: '',
-          type: 'ugp'
-        },
-        {
-          promotionId: 'test-promotion-id-2',
-          expiryTime: 0,
-          probi: '',
-          type: 'ads',
-          captcha: 'data:image/jpeg;base64,XXX',
-          hint: 'blue'
-        }
-      ]
+    ]
 
       expect(assertion).toEqual({
         rewardsData: expectedState
@@ -241,36 +224,20 @@ describe('Grant Reducer', () => {
           hint: 'blue'
         }
       ]
-      initialState.currentGrant = {
-        promotionId: 'test-promotion-id-2',
-        expiryTime: 0,
-        probi: '',
-        type: 'ads'
-      }
+  initialState.currentGrant =
+  {
+    promotionId: 'test-promotion-id-2', expiryTime: 0, probi: '', type: 'ads'
+  }
 
-      const assertion = reducers({
-        rewardsData: initialState
-      }, {
-        type: types.ON_GRANT_RESET,
-        payload: {}
-      })
+  const assertion = reducers(
+      {rewardsData: initialState}, {type: types.ON_GRANT_RESET, payload: {}})
 
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = undefined
-      expectedState.grants = [
-        {
-          promotionId: 'test-promotion-id',
-          expiryTime: 0,
-          probi: '',
-          type: 'ugp'
-        },
-        {
-          promotionId: 'test-promotion-id-2',
-          expiryTime: 0,
-          probi: '',
-          type: 'ads'
-        }
-      ]
+  const expectedState:
+      Rewards.State = {...defaultState} expectedState.currentGrant = undefined
+  expectedState.grants = [
+    {promotionId: 'test-promotion-id', expiryTime: 0, probi: '', type: 'ugp'},
+    {promotionId: 'test-promotion-id-2', expiryTime: 0, probi: '', type: 'ads'}
+  ]
 
       expect(assertion).toEqual({
         rewardsData: expectedState
@@ -299,30 +266,19 @@ describe('Grant Reducer', () => {
           hint: 'blue'
         }
       ]
-      initialState.currentGrant = {
-        promotionId: 'test-promotion-id-2',
-        expiryTime: 0,
-        probi: '',
-        type: 'ads'
-      }
+  initialState.currentGrant =
+  {
+    promotionId: 'test-promotion-id-2', expiryTime: 0, probi: '', type: 'ads'
+  }
 
-      const assertion = reducers({
-        rewardsData: initialState
-      }, {
-        type: types.ON_GRANT_DELETE,
-        payload: {}
-      })
+  const assertion = reducers(
+      {rewardsData: initialState}, {type: types.ON_GRANT_DELETE, payload: {}})
 
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = undefined
-      expectedState.grants = [
-        {
-          promotionId: 'test-promotion-id',
-          expiryTime: 0,
-          probi: '',
-          type: 'ugp'
-        }
-      ]
+  const expectedState:
+      Rewards.State = {...defaultState} expectedState.currentGrant = undefined
+  expectedState.grants = [
+    {promotionId: 'test-promotion-id', expiryTime: 0, probi: '', type: 'ugp'}
+  ]
 
       expect(assertion).toEqual({
         rewardsData: expectedState
@@ -342,23 +298,17 @@ describe('Grant Reducer', () => {
           hint: 'blue'
         }
       ]
-      initialState.currentGrant = {
-        promotionId: 'test-promotion-id-2',
-        expiryTime: 0,
-        probi: '',
-        type: 'ads'
-      }
+    initialState.currentGrant =
+    {
+      promotionId: 'test-promotion-id-2', expiryTime: 0, probi: '', type: 'ads'
+    }
 
-      const assertion = reducers({
-        rewardsData: initialState
-      }, {
-        type: types.ON_GRANT_DELETE,
-        payload: {}
-      })
+    const assertion = reducers(
+        {rewardsData: initialState}, {type: types.ON_GRANT_DELETE, payload: {}})
 
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = undefined
-      expectedState.grants = []
+    const expectedState:
+        Rewards.State = {...defaultState} expectedState.currentGrant = undefined
+    expectedState.grants = []
 
       expect(assertion).toEqual({
         rewardsData: expectedState
@@ -405,52 +355,38 @@ describe('Grant Reducer', () => {
           hint: 'blue'
         }
       ]
-      initialState.currentGrant = {
-        promotionId: 'test-promotion-id-2',
-        expiryTime: 0,
-        probi: '',
-        type: 'ads'
-      }
+    initialState.currentGrant =
+    {
+      promotionId: 'test-promotion-id-2', expiryTime: 0, probi: '', type: 'ads'
+    }
 
-      const assertion = reducers({
-        rewardsData: initialState
-      }, {
-        type: types.ON_GRANT_FINISH,
-        payload: {
-          properties: {
-            status: 0,
-            expiryTime: 11,
-            probi: '30.000000',
-            type: 'ads'
-          }
-        }
-      })
-
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = {
-        promotionId: 'test-promotion-id-2',
-        expiryTime: 0,
-        probi: '',
-        type: 'ads'
+    const assertion = reducers({rewardsData: initialState}, {
+      type: types.ON_GRANT_FINISH,
+      payload: {
+        properties: {status: 0, expiryTime: 11, probi: '30.000000', type: 'ads'}
       }
-      expectedState.grants = [
-        {
-          promotionId: 'test-promotion-id',
-          expiryTime: 0,
-          probi: '',
-          type: 'ugp'
-        },
-        {
-          promotionId: 'test-promotion-id-2',
-          expiryTime: 11000,
-          probi: '30.000000',
-          type: 'ads',
-          captcha: 'data:image/jpeg;base64,XXX',
-          hint: 'blue',
-          status: null
-        }
-      ]
-      expectedState.ui.emptyWallet = false
+    })
+
+    const expectedState: Rewards.State = {...defaultState} expectedState
+                                             .currentGrant = {
+      promotionId: 'test-promotion-id-2',
+      expiryTime: 0,
+      probi: '',
+      type: 'ads'
+    } expectedState
+                                                                 .grants = [
+      {promotionId: 'test-promotion-id', expiryTime: 0, probi: '', type: 'ugp'},
+      {
+        promotionId: 'test-promotion-id-2',
+        expiryTime: 11000,
+        probi: '30.000000',
+        type: 'ads',
+        captcha: 'data:image/jpeg;base64,XXX',
+        hint: 'blue',
+        status: null
+      }
+    ]
+    expectedState.ui.emptyWallet = false
 
       expect(assertion).toEqual({
         rewardsData: expectedState
@@ -476,49 +412,35 @@ describe('Grant Reducer', () => {
           hint: 'blue'
         }
       ]
-      initialState.currentGrant = {
+    initialState.currentGrant =
+    {
+      promotionId: 'test-promotion-id-2', expiryTime: 0, probi: '', type: 'ads'
+    }
+
+    const assertion = reducers(
+        {rewardsData: initialState},
+        {type: types.ON_GRANT_FINISH, payload: {properties: {status: 6}}})
+
+    const expectedState: Rewards.State = {...defaultState} expectedState
+                                             .currentGrant = {
+      promotionId: 'test-promotion-id-2',
+      expiryTime: 0,
+      probi: '',
+      type: 'ads'
+    } expectedState
+                                                                 .grants = [
+      {promotionId: 'test-promotion-id', expiryTime: 0, probi: '', type: 'ugp'},
+      {
         promotionId: 'test-promotion-id-2',
         expiryTime: 0,
         probi: '',
-        type: 'ads'
+        type: 'ads',
+        captcha: 'data:image/jpeg;base64,XXX',
+        hint: 'blue',
+        status: 'wrongPosition'
       }
-
-      const assertion = reducers({
-        rewardsData: initialState
-      }, {
-        type: types.ON_GRANT_FINISH,
-        payload: {
-          properties: {
-            status: 6
-          }
-        }
-      })
-
-      const expectedState: Rewards.State = { ...defaultState }
-      expectedState.currentGrant = {
-        promotionId: 'test-promotion-id-2',
-        expiryTime: 0,
-        probi: '',
-        type: 'ads'
-      }
-      expectedState.grants = [
-        {
-          promotionId: 'test-promotion-id',
-          expiryTime: 0,
-          probi: '',
-          type: 'ugp'
-        },
-        {
-          promotionId: 'test-promotion-id-2',
-          expiryTime: 0,
-          probi: '',
-          type: 'ads',
-          captcha: 'data:image/jpeg;base64,XXX',
-          hint: 'blue',
-          status: 'wrongPosition'
-        }
-      ]
-      expectedState.ui.emptyWallet = false
+    ]
+    expectedState.ui.emptyWallet = false
 
       expect(assertion).toEqual({
         rewardsData: expectedState

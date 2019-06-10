@@ -18,9 +18,9 @@ namespace extensions {
 class BraveComponentLoader : public ComponentLoader {
  public:
   BraveComponentLoader(ExtensionServiceInterface* extension_service,
-                  PrefService* prefs,
-                  PrefService* local_state,
-                  Profile* browser_context);
+                       PrefService* prefs,
+                       PrefService* local_state,
+                       Profile* browser_context);
   ~BraveComponentLoader() override;
 
   // Adds the default component extensions. If |skip_session_components|
@@ -30,11 +30,12 @@ class BraveComponentLoader : public ComponentLoader {
   void AddDefaultComponentExtensions(bool skip_session_components) override;
   void OnComponentRegistered(std::string extension_id);
   void OnComponentReady(std::string extension_id,
-    bool allow_file_access,
-    const base::FilePath& install_dir,
-    const std::string& manifest);
+                        bool allow_file_access,
+                        const base::FilePath& install_dir,
+                        const std::string& manifest);
   void AddExtension(const std::string& id,
-      const std::string& name, const std::string& public_key);
+                    const std::string& name,
+                    const std::string& public_key);
   // ForceAddHangoutServicesExtension ignores whether or not a preference for
   // hangouts is set.  If the buildflag is not set, it won't add though.
   void ForceAddHangoutServicesExtension();

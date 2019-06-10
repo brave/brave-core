@@ -1,6 +1,6 @@
 declare namespace Rewards {
   export interface ApplicationState {
-    rewardsData: State | undefined
+    rewardsData: State|undefined
   }
 
   export enum Result {
@@ -26,12 +26,14 @@ declare namespace Rewards {
     RECURRING_TIP = 16
   }
 
-  export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
-  export type Address = { address: string, qr: string | null }
+  export type AddressesType = 'BTC'|'ETH'|'BAT'|'LTC'
+  export type Address = {
+    address: string,
+    qr: string|null
+  }
 
   export interface State {
-    addresses?: Record<AddressesType, Address>
-    adsData: AdsData
+    addresses?: Record<AddressesType, Address>adsData: AdsData
     autoContributeList: Publisher[]
     connectedWallet: boolean
     contributeLoad: boolean
@@ -40,7 +42,7 @@ declare namespace Rewards {
     contributionMonthly: number
     contributionNonVerified: boolean
     contributionVideos: boolean
-    createdTimestamp: number | null
+    createdTimestamp: number|null
     currentGrant?: Grant
     donationAbilityTwitter: boolean
     donationAbilityYT: boolean
@@ -48,11 +50,8 @@ declare namespace Rewards {
     enabledAdsMigrated: boolean
     enabledContribute: boolean
     enabledMain: boolean
-    inlineTip: {
-      twitter: boolean
-    }
-    excludedList: ExcludedPublisher[]
-    firstLoad: boolean | null
+    inlineTip: {twitter: boolean} excludedList: ExcludedPublisher[]
+    firstLoad: boolean|null
     grants?: Grant[]
     pendingContributions: PendingContribution[]
     pendingContributionTotal: number
@@ -60,22 +59,20 @@ declare namespace Rewards {
     recoveryKey: string
     recurringList: Publisher[]
     recurringLoad: boolean
-    reports: Record<string, Report>
-    tipsList: Publisher[]
+    reports: Record<string, Report>tipsList: Publisher[]
     tipsLoad: boolean
-    ui: {
-      addressCheck: boolean
-      emptyWallet: boolean
-      modalBackup: boolean
-      paymentIdCheck: boolean
-      walletRecoverySuccess: boolean | null
-      walletServerProblem: boolean
-      walletCorrupted: boolean
+    ui: {addressCheck: boolean
+    emptyWallet: boolean
+    modalBackup: boolean
+    paymentIdCheck: boolean
+    walletRecoverySuccess: boolean|null
+    walletServerProblem: boolean
+    walletCorrupted: boolean
       walletImported: boolean
     }
     walletCreated: boolean
-    walletCreateFailed: boolean
-    walletInfo: WalletProperties
+      walletCreateFailed: boolean
+      walletInfo: WalletProperties
   }
 
   export interface ComponentProps {
@@ -83,7 +80,8 @@ declare namespace Rewards {
     actions: any
   }
 
-  export type GrantStatus = 'wrongPosition' | 'grantGone' | 'generalError' | 'grantAlreadyClaimed' | number | null
+  export type GrantStatus = 'wrongPosition'|'grantGone'|'generalError'|
+      'grantAlreadyClaimed'|number|null
 
   export interface Grant {
     promotionId?: string
@@ -107,8 +105,7 @@ declare namespace Rewards {
     choices: number[]
     probi: string
     range?: number[]
-    rates?: Record<string, number>
-    grants?: Grant[]
+    rates?: Record<string, number>grants?: Grant[]
   }
 
   export interface RecoverWallet {
@@ -118,16 +115,10 @@ declare namespace Rewards {
   }
 
   export interface GrantFinish {
-    result: Result,
-    statusCode: number,
-    expiryTime: number
+    result: Result, statusCode: number, expiryTime: number
   }
 
-  export enum Status {
-    DEFAULT = 0,
-    EXCLUDED = 1,
-    INCLUDED = 2
-  }
+  export enum Status {DEFAULT = 0, EXCLUDED = 1, INCLUDED = 2}
 
   export interface Publisher {
     publisherKey: string

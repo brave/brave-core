@@ -23,9 +23,9 @@
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/browser/ui/webui/brave_tip_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_internals_ui.h"
 #include "brave/browser/ui/webui/brave_rewards_ui.h"
+#include "brave/browser/ui/webui/brave_tip_ui.h"
 #endif
 
 using content::WebUI;
@@ -39,12 +39,12 @@ typedef WebUIController* (*WebUIFactoryFunction)(WebUI* web_ui,
                                                  const GURL& url);
 
 // Template for defining WebUIFactoryFunction.
-template<class T>
+template <class T>
 WebUIController* NewWebUI(WebUI* web_ui, const GURL& url) {
   return new T(web_ui);
 }
 
-template<>
+template <>
 WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
   auto host = url.host_piece();
   if (host == kBraveUISyncHost && brave_sync::BraveSyncService::is_enabled()) {
@@ -76,8 +76,7 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 // Returns a function that can be used to create the right type of WebUI for a
 // tab, based on its URL. Returns NULL if the URL doesn't have WebUI associated
 // with it.
-WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
-                                             const GURL& url) {
+WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui, const GURL& url) {
   if (url.host_piece() == kAdblockHost ||
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
       url.host_piece() == kRewardsHost ||
@@ -87,7 +86,7 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
       url.host_piece() == kWelcomeHost ||
       url.host_piece() == chrome::kChromeUIWelcomeURL ||
       (url.host_piece() == kBraveUISyncHost &&
-          brave_sync::BraveSyncService::is_enabled()) ||
+       brave_sync::BraveSyncService::is_enabled()) ||
       url.host_piece() == chrome::kChromeUINewTabHost ||
       url.host_piece() == chrome::kChromeUISettingsHost) {
     return &NewWebUI<BasicUI>;
@@ -99,7 +98,8 @@ WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
 }  // namespace
 
 WebUI::TypeID BraveWebUIControllerFactory::GetWebUIType(
-      content::BrowserContext* browser_context, const GURL& url) const {
+    content::BrowserContext* browser_context,
+    const GURL& url) const {
   WebUIFactoryFunction function = GetWebUIFactoryFunction(NULL, url);
   if (function) {
     return reinterpret_cast<WebUI::TypeID>(function);
@@ -111,24 +111,20 @@ std::unique_ptr<WebUIController>
 BraveWebUIControllerFactory::CreateWebUIControllerForURL(
     WebUI* web_ui,
     const GURL& url) const {
-
   WebUIFactoryFunction function = GetWebUIFactoryFunction(web_ui, url);
   if (!function) {
-    return ChromeWebUIControllerFactory::CreateWebUIControllerForURL(
-        web_ui, url);
+    return ChromeWebUIControllerFactory::CreateWebUIControllerForURL(web_ui,
+                                                                     url);
   }
 
   return base::WrapUnique((*function)(web_ui, url));
 }
-
 
 // static
 BraveWebUIControllerFactory* BraveWebUIControllerFactory::GetInstance() {
   return base::Singleton<BraveWebUIControllerFactory>::get();
 }
 
-BraveWebUIControllerFactory::BraveWebUIControllerFactory() {
-}
+BraveWebUIControllerFactory::BraveWebUIControllerFactory() {}
 
-BraveWebUIControllerFactory::~BraveWebUIControllerFactory() {
-}
+BraveWebUIControllerFactory::~BraveWebUIControllerFactory() {}

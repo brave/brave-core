@@ -15,4 +15,4 @@ class BravePermissionManager : public PermissionManager {
   DISALLOW_COPY_AND_ASSIGN(BravePermissionManager);
 };
 
-#endif // BRAVE_BROWSER_PERMISSION_BRAVE_PERMISSION_MANAGER_H_
+#endif  // BRAVE_BROWSER_PERMISSION_BRAVE_PERMISSION_MANAGER_H_

@@ -27,14 +27,12 @@ const int kCompatibleVersionNumber = 2;
 
 }  // namespace
 
-BundleStateDatabase::BundleStateDatabase(const base::FilePath& db_path) :
-    db_path_(db_path),
-    initialized_(false) {
+BundleStateDatabase::BundleStateDatabase(const base::FilePath& db_path)
+    : db_path_(db_path), initialized_(false) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
-BundleStateDatabase::~BundleStateDatabase() {
-}
+BundleStateDatabase::~BundleStateDatabase() {}
 
 bool BundleStateDatabase::Init() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -52,10 +50,8 @@ bool BundleStateDatabase::Init() {
 
   if (!meta_table_.Init(&db_, GetCurrentVersion(), kCompatibleVersionNumber))
     return false;
-  if (!CreateCategoryTable() ||
-      !CreateAdInfoTable() ||
-      !CreateAdInfoCategoryTable() ||
-      !CreateAdInfoCategoryNameIndex())
+  if (!CreateCategoryTable() || !CreateAdInfoTable() ||
+      !CreateAdInfoCategoryTable() || !CreateAdInfoCategoryNameIndex())
     return false;
 
   // Version check.
@@ -66,9 +62,8 @@ bool BundleStateDatabase::Init() {
   if (!committer.Commit())
     return false;
 
-  memory_pressure_listener_.reset(new base::MemoryPressureListener(
-      base::Bind(&BundleStateDatabase::OnMemoryPressure,
-      base::Unretained(this))));
+  memory_pressure_listener_.reset(new base::MemoryPressureListener(base::Bind(
+      &BundleStateDatabase::OnMemoryPressure, base::Unretained(this))));
 
   initialized_ = true;
   return initialized_;
@@ -103,7 +98,6 @@ bool BundleStateDatabase::TruncateCategoryTable() {
       GetDB().GetCachedStatement(SQL_FROM_HERE, "DELETE FROM category"));
   return sql.Run();
 }
-
 
 bool BundleStateDatabase::CreateAdInfoTable() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -183,8 +177,8 @@ bool BundleStateDatabase::TruncateAdInfoCategoryTable() {
   if (!initialized)
     return false;
 
-  sql::Statement sql(GetDB().GetCachedStatement(SQL_FROM_HERE,
-      "DELETE FROM ad_info_category"));
+  sql::Statement sql(GetDB().GetCachedStatement(
+      SQL_FROM_HERE, "DELETE FROM ad_info_category"));
   return sql.Run();
 }
 
@@ -210,8 +204,7 @@ bool BundleStateDatabase::SaveBundleState(
     return false;
 
   // we are completely replacing here so first truncate all the tables
-  if (!TruncateAdInfoCategoryTable() ||
-      !TruncateAdInfoTable() ||
+  if (!TruncateAdInfoCategoryTable() || !TruncateAdInfoTable() ||
       !TruncateCategoryTable()) {
     GetDB().RollbackTransaction();
     return false;
@@ -219,7 +212,9 @@ bool BundleStateDatabase::SaveBundleState(
 
   auto categories = bundle_state.categories;
   for (std::map<std::string, std::vector<ads::AdInfo>>::iterator it =
-      categories.begin();  it != categories.end(); ++it) {
+           categories.begin();
+       it != categories.end();
+       ++it) {
     auto category = it->first;
     if (!InsertOrUpdateCategory(category)) {
       GetDB().RollbackTransaction();
@@ -228,7 +223,8 @@ bool BundleStateDatabase::SaveBundleState(
 
     auto ads = it->second;
     for (std::vector<ads::AdInfo>::iterator ad_it = ads.begin();
-        ad_it != ads.end(); ++ad_it) {
+         ad_it != ads.end();
+         ++ad_it) {
       auto ad_info = *ad_it;
       if (!InsertOrUpdateAdInfo(ad_info) ||
           !InsertOrUpdateAdInfoCategory(ad_info, category)) {
@@ -257,9 +253,9 @@ bool BundleStateDatabase::InsertOrUpdateCategory(const std::string& category) {
 
   sql::Statement ad_info_statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE,
-          "INSERT OR REPLACE INTO category "
-          "(name) "
-          "VALUES (?)"));
+                                 "INSERT OR REPLACE INTO category "
+                                 "(name) "
+                                 "VALUES (?)"));
 
   ad_info_statement.BindString(0, category);
 
@@ -276,13 +272,13 @@ bool BundleStateDatabase::InsertOrUpdateAdInfo(const ads::AdInfo& info) {
     return false;
 
   for (auto it = info.regions.begin(); it != info.regions.end(); ++it) {
-    sql::Statement ad_info_statement(
-        GetDB().GetCachedStatement(SQL_FROM_HERE,
-            "INSERT OR REPLACE INTO ad_info "
-            "(creative_set_id, advertiser, notification_text, "
-            "notification_url, start_timestamp, end_timestamp, uuid, "
-            "campaign_id, daily_cap, per_day, total_max, region) "
-            "VALUES (?, ?, ?, ?, datetime(?), datetime(?), ?, ?, ?, ?, ?, ?)"));
+    sql::Statement ad_info_statement(GetDB().GetCachedStatement(
+        SQL_FROM_HERE,
+        "INSERT OR REPLACE INTO ad_info "
+        "(creative_set_id, advertiser, notification_text, "
+        "notification_url, start_timestamp, end_timestamp, uuid, "
+        "campaign_id, daily_cap, per_day, total_max, region) "
+        "VALUES (?, ?, ?, ?, datetime(?), datetime(?), ?, ?, ?, ?, ?, ?)"));
 
     ad_info_statement.BindString(0, info.creative_set_id);
     ad_info_statement.BindString(1, info.advertiser);
@@ -317,9 +313,9 @@ bool BundleStateDatabase::InsertOrUpdateAdInfoCategory(
 
   sql::Statement ad_info_statement(
       GetDB().GetCachedStatement(SQL_FROM_HERE,
-          "INSERT OR REPLACE INTO ad_info_category "
-          "(ad_info_uuid, category_name) "
-          "VALUES (?, ?)"));
+                                 "INSERT OR REPLACE INTO ad_info_category "
+                                 "(ad_info_uuid, category_name) "
+                                 "VALUES (?, ?)"));
 
   ad_info_statement.BindString(0, ad_info.uuid);
   ad_info_statement.BindString(1, category);
@@ -327,9 +323,8 @@ bool BundleStateDatabase::InsertOrUpdateAdInfoCategory(
   return ad_info_statement.Run();
 }
 
-bool BundleStateDatabase::GetAdsForCategory(
-    const std::string& category,
-    std::vector<ads::AdInfo>* ads) {
+bool BundleStateDatabase::GetAdsForCategory(const std::string& category,
+                                            std::vector<ads::AdInfo>* ads) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   bool initialized = Init();
@@ -338,20 +333,19 @@ bool BundleStateDatabase::GetAdsForCategory(
   if (!initialized)
     return false;
 
-  sql::Statement info_sql(
-      db_.GetUniqueStatement(
-          "SELECT ai.creative_set_id, ai.advertiser, "
-          "ai.notification_text, ai.notification_url, "
-          "ai.start_timestamp, ai.end_timestamp, "
-          "ai.uuid, ai.region, ai.campaign_id, ai.daily_cap, "
-          "ai.per_day, ai.total_max FROM ad_info AS ai "
-          "INNER JOIN ad_info_category AS aic "
-          "ON aic.ad_info_uuid = ai.uuid "
-          "WHERE aic.category_name = ? and "
-          "ai.start_timestamp <= strftime('%Y-%m-%d %H:%M', "
-          "datetime('now','localtime')) and "
-          "ai.end_timestamp >= strftime('%Y-%m-%d %H:%M', "
-          "datetime('now','localtime'));"));
+  sql::Statement info_sql(db_.GetUniqueStatement(
+      "SELECT ai.creative_set_id, ai.advertiser, "
+      "ai.notification_text, ai.notification_url, "
+      "ai.start_timestamp, ai.end_timestamp, "
+      "ai.uuid, ai.region, ai.campaign_id, ai.daily_cap, "
+      "ai.per_day, ai.total_max FROM ad_info AS ai "
+      "INNER JOIN ad_info_category AS aic "
+      "ON aic.ad_info_uuid = ai.uuid "
+      "WHERE aic.category_name = ? and "
+      "ai.start_timestamp <= strftime('%Y-%m-%d %H:%M', "
+      "datetime('now','localtime')) and "
+      "ai.end_timestamp >= strftime('%Y-%m-%d %H:%M', "
+      "datetime('now','localtime'));"));
   info_sql.BindString(0, category);
 
   while (info_sql.Step()) {
@@ -384,8 +378,8 @@ void BundleStateDatabase::Vacuum() {
   if (!initialized_)
     return;
 
-  DCHECK_EQ(0, db_.transaction_nesting()) <<
-      "Can not have a transaction when vacuuming.";
+  DCHECK_EQ(0, db_.transaction_nesting())
+      << "Can not have a transaction when vacuuming.";
   ignore_result(db_.Execute("VACUUM"));
 }
 
@@ -396,7 +390,7 @@ void BundleStateDatabase::OnMemoryPressure(
 }
 
 std::string BundleStateDatabase::GetDiagnosticInfo(int extended_error,
-                                               sql::Statement* statement) {
+                                                   sql::Statement* statement) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   DCHECK(initialized_);

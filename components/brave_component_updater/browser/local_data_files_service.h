@@ -45,8 +45,8 @@ class LocalDataFilesService : public BraveComponent {
 
  protected:
   void OnComponentReady(const std::string& component_id,
-      const base::FilePath& install_dir,
-      const std::string& manifest) override;
+                        const base::FilePath& install_dir,
+                        const std::string& manifest) override;
 
  private:
   static std::string g_local_data_files_component_id_;
@@ -59,8 +59,8 @@ class LocalDataFilesService : public BraveComponent {
 };
 
 // Creates the LocalDataFilesService
-std::unique_ptr<LocalDataFilesService>
-LocalDataFilesServiceFactory(BraveComponent::Delegate* delegate);
+std::unique_ptr<LocalDataFilesService> LocalDataFilesServiceFactory(
+    BraveComponent::Delegate* delegate);
 
 }  // namespace brave_component_updater
 

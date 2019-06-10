@@ -13,10 +13,10 @@
 
 namespace braveledger_media {
 
-using FetchDataFromUrlCallback = std::function<void(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers)>;
+using FetchDataFromUrlCallback =
+    std::function<void(int response_status_code,
+                       const std::string& response,
+                       const std::map<std::string, std::string>& headers)>;
 
 std::string GetMediaKey(const std::string& mediaId, const std::string& type);
 

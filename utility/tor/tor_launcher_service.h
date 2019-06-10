@@ -18,8 +18,7 @@ namespace tor {
 
 class TorLauncherService : public service_manager::Service {
  public:
-  explicit TorLauncherService(
-      service_manager::mojom::ServiceRequest request);
+  explicit TorLauncherService(service_manager::mojom::ServiceRequest request);
   ~TorLauncherService() override;
 
   // Lifescycle events that occur after the service has started to spinup.

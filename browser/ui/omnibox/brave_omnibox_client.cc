@@ -10,13 +10,12 @@
 #include "chrome/browser/ui/omnibox/chrome_omnibox_edit_controller.h"
 
 BraveOmniboxClient::BraveOmniboxClient(OmniboxEditController* controller,
-                                                        Profile* profile)
-      : ChromeOmniboxClient(controller, profile),
-        scheme_classifier_(profile) {}
+                                       Profile* profile)
+    : ChromeOmniboxClient(controller, profile), scheme_classifier_(profile) {}
 
 BraveOmniboxClient::~BraveOmniboxClient() {}
 
-const AutocompleteSchemeClassifier&
-                          BraveOmniboxClient::GetSchemeClassifier() const {
+const AutocompleteSchemeClassifier& BraveOmniboxClient::GetSchemeClassifier()
+    const {
   return scheme_classifier_;
 }

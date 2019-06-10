@@ -7,24 +7,24 @@
 #define BAT_ADS_INTERNAL_ADS_IMPL_H_
 
 #include <stdint.h>
-#include <string>
-#include <map>
-#include <vector>
 #include <deque>
+#include <map>
 #include <memory>
+#include <string>
+#include <vector>
 
-#include "bat/ads/ads.h"
 #include "bat/ads/ad_info.h"
-#include "bat/ads/notification_result_type.h"
+#include "bat/ads/ads.h"
 #include "bat/ads/notification_info.h"
+#include "bat/ads/notification_result_type.h"
 
 #include "bat/ads/internal/ads_serve.h"
+#include "bat/ads/internal/bundle.h"
+#include "bat/ads/internal/client.h"
 #include "bat/ads/internal/event_type_blur_info.h"
 #include "bat/ads/internal/event_type_destroy_info.h"
 #include "bat/ads/internal/event_type_focus_info.h"
 #include "bat/ads/internal/event_type_load_info.h"
-#include "bat/ads/internal/client.h"
-#include "bat/ads/internal/bundle.h"
 
 #include "bat/usermodel/user_model.h"
 
@@ -69,11 +69,10 @@ class AdsImpl : public Ads {
   int32_t last_shown_tab_id_;
   std::string last_shown_tab_url_;
   std::string previous_tab_url_;
-  void TabUpdated(
-      const int32_t tab_id,
-      const std::string& url,
-      const bool is_active,
-      const bool is_incognito) override;
+  void TabUpdated(const int32_t tab_id,
+                  const std::string& url,
+                  const bool is_active,
+                  const bool is_incognito) override;
   void TabClosed(const int32_t tab_id) override;
 
   void RemoveAllHistory() override;
@@ -90,25 +89,21 @@ class AdsImpl : public Ads {
   std::string GetWinningCategory(const std::string& html);
 
   std::map<std::string, std::vector<double>> page_score_cache_;
-  void CachePageScore(
-      const std::string& url,
-      const std::vector<double>& page_score);
+  void CachePageScore(const std::string& url,
+                      const std::vector<double>& page_score);
 
   void TestShoppingData(const std::string& url);
   bool TestSearchState(const std::string& url);
 
   void ServeSampleAd() override;
-  void OnLoadSampleBundle(
-      const Result result,
-      const std::string& json);
+  void OnLoadSampleBundle(const Result result, const std::string& json);
 
   void CheckEasterEgg(const std::string& url);
   void CheckReadyAdServe(const bool forced);
   void ServeAdFromCategory(const std::string& category);
-  void OnGetAds(
-      const Result result,
-      const std::string& category,
-      const std::vector<AdInfo>& ads);
+  void OnGetAds(const Result result,
+                const std::string& category,
+                const std::vector<AdInfo>& ads);
   std::vector<AdInfo> GetUnseenAds(const std::vector<AdInfo>& ads);
   bool IsAdValid(const AdInfo& ad_info);
   NotificationInfo last_shown_notification_info_;

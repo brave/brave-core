@@ -26,8 +26,9 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
     dict->GetString("id", &profile);
     dict->GetString("name", &name);
     base::FilePath path = user_data_folder;
-    if (!ChromeImporterCanImport(path.Append(
-      base::FilePath::StringType(profile.begin(), profile.end())), &items))
+    if (!ChromeImporterCanImport(path.Append(base::FilePath::StringType(
+                                     profile.begin(), profile.end())),
+                                 &items))
       continue;
     importer::SourceProfile chrome;
     std::string importer_name(brand);
@@ -35,8 +36,7 @@ void AddChromeToProfiles(std::vector<importer::SourceProfile>* profiles,
     chrome.importer_name = base::UTF8ToUTF16(importer_name);
     chrome.importer_type = importer::TYPE_CHROME;
     chrome.services_supported = items;
-    chrome.source_path =
-      user_data_folder.Append(
+    chrome.source_path = user_data_folder.Append(
         base::FilePath::StringType(profile.begin(), profile.end()));
     profiles->push_back(chrome);
   }
@@ -50,24 +50,24 @@ void DetectChromeProfiles(std::vector<importer::SourceProfile>* profiles) {
   base::ListValue* chrome_profiles =
       GetChromeSourceProfiles(chrome_user_data_folder);
   const std::string brand_chrome("Chrome ");
-  AddChromeToProfiles(profiles, chrome_profiles, chrome_user_data_folder,
-                      brand_chrome);
+  AddChromeToProfiles(
+      profiles, chrome_profiles, chrome_user_data_folder, brand_chrome);
 
 #if !defined(OS_LINUX)
   const base::FilePath canary_user_data_folder = GetCanaryUserDataFolder();
   base::ListValue* canary_profiles =
       GetChromeSourceProfiles(canary_user_data_folder);
   const std::string brandCanary("Chrome Canary ");
-  AddChromeToProfiles(profiles, canary_profiles, canary_user_data_folder,
-                      brandCanary);
+  AddChromeToProfiles(
+      profiles, canary_profiles, canary_user_data_folder, brandCanary);
 #endif
 
   const base::FilePath chromium_user_data_folder = GetChromiumUserDataFolder();
   base::ListValue* chromium_profiles =
       GetChromeSourceProfiles(chromium_user_data_folder);
   const std::string brandChromium("Chromium ");
-  AddChromeToProfiles(profiles, chromium_profiles, chromium_user_data_folder,
-                      brandChromium);
+  AddChromeToProfiles(
+      profiles, chromium_profiles, chromium_user_data_folder, brandChromium);
 }
 
 void DetectBraveProfiles(std::vector<importer::SourceProfile>* profiles) {
@@ -81,8 +81,7 @@ void DetectBraveProfiles(std::vector<importer::SourceProfile>* profiles) {
     return;
 
   importer::SourceProfile brave;
-  brave.importer_name =
-      l10n_util::GetStringUTF16(IDS_IMPORT_FROM_BRAVE);
+  brave.importer_name = l10n_util::GetStringUTF16(IDS_IMPORT_FROM_BRAVE);
   brave.importer_type = importer::TYPE_BRAVE;
   brave.services_supported = items;
   brave.source_path = brave_user_data_folder;

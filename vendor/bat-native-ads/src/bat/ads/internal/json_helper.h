@@ -12,9 +12,9 @@
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
+#include "rapidjson/schema.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
-#include "rapidjson/schema.h"
 
 namespace ads {
 
@@ -48,19 +48,17 @@ void SaveToJson(const T& t, std::string* json) {
 }
 
 template <typename T>
-Result LoadFromJson(
-    T* t,
-    const std::string& json,
-    std::string* error_description) {
+Result LoadFromJson(T* t,
+                    const std::string& json,
+                    std::string* error_description) {
   return t->FromJson(json, error_description);
 }
 
 template <typename T>
-Result LoadFromJson(
-    T* t,
-    const std::string& json,
-    const std::string& json_schema,
-    std::string* error_description) {
+Result LoadFromJson(T* t,
+                    const std::string& json,
+                    const std::string& json_schema,
+                    std::string* error_description) {
   return t->FromJson(json, json_schema, error_description);
 }
 
@@ -70,9 +68,8 @@ namespace helper {
 
 class JSON {
  public:
-  static ads::Result Validate(
-      rapidjson::Document* document,
-      const std::string& json_schema);
+  static ads::Result Validate(rapidjson::Document* document,
+                              const std::string& json_schema);
 
   static std::string GetLastError(rapidjson::Document* document);
 };

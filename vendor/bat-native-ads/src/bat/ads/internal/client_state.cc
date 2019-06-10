@@ -9,47 +9,47 @@
 
 namespace ads {
 
-ClientState::ClientState() :
-    ads_shown_history({}),
-    ad_uuid(""),
-    ads_uuid_seen({}),
-    available(false),
-    last_search_time(0),
-    last_shop_time(0),
-    last_user_activity(0),
-    last_user_idle_stop_time(0),
-    locale(kDefaultLanguageCode),
-    locales({}),
-    last_page_classification(""),
-    page_score_history({}),
-    creative_set_history({}),
-    campaign_history({}),
-    score(0.0),
-    search_activity(false),
-    search_url(""),
-    shop_activity(false),
-    shop_url("") {}
+ClientState::ClientState()
+    : ads_shown_history({}),
+      ad_uuid(""),
+      ads_uuid_seen({}),
+      available(false),
+      last_search_time(0),
+      last_shop_time(0),
+      last_user_activity(0),
+      last_user_idle_stop_time(0),
+      locale(kDefaultLanguageCode),
+      locales({}),
+      last_page_classification(""),
+      page_score_history({}),
+      creative_set_history({}),
+      campaign_history({}),
+      score(0.0),
+      search_activity(false),
+      search_url(""),
+      shop_activity(false),
+      shop_url("") {}
 
-ClientState::ClientState(const ClientState& state) :
-  ads_shown_history(state.ads_shown_history),
-  ad_uuid(state.ad_uuid),
-  ads_uuid_seen(state.ads_uuid_seen),
-  available(state.available),
-  last_search_time(state.last_search_time),
-  last_shop_time(state.last_shop_time),
-  last_user_activity(state.last_user_activity),
-  last_user_idle_stop_time(state.last_user_idle_stop_time),
-  locale(state.locale),
-  locales(state.locales),
-  last_page_classification(state.last_page_classification),
-  page_score_history(state.page_score_history),
-  creative_set_history(state.creative_set_history),
-  campaign_history(state.campaign_history),
-  score(state.score),
-  search_activity(state.search_activity),
-  search_url(state.search_url),
-  shop_activity(state.shop_activity),
-  shop_url(state.shop_url) {}
+ClientState::ClientState(const ClientState& state)
+    : ads_shown_history(state.ads_shown_history),
+      ad_uuid(state.ad_uuid),
+      ads_uuid_seen(state.ads_uuid_seen),
+      available(state.available),
+      last_search_time(state.last_search_time),
+      last_shop_time(state.last_shop_time),
+      last_user_activity(state.last_user_activity),
+      last_user_idle_stop_time(state.last_user_idle_stop_time),
+      locale(state.locale),
+      locales(state.locales),
+      last_page_classification(state.last_page_classification),
+      page_score_history(state.page_score_history),
+      creative_set_history(state.creative_set_history),
+      campaign_history(state.campaign_history),
+      score(state.score),
+      search_activity(state.search_activity),
+      search_url(state.search_url),
+      shop_activity(state.shop_activity),
+      shop_url(state.shop_url) {}
 
 ClientState::~ClientState() = default;
 
@@ -59,9 +59,8 @@ const std::string ClientState::ToJson() {
   return json;
 }
 
-Result ClientState::FromJson(
-    const std::string& json,
-    std::string* error_description) {
+Result ClientState::FromJson(const std::string& json,
+                             std::string* error_description) {
   rapidjson::Document client;
   client.Parse(json.c_str());
 
@@ -85,8 +84,8 @@ Result ClientState::FromJson(
 
   if (client.HasMember("adsUUIDSeen")) {
     for (const auto& ad_uuid_seen : client["adsUUIDSeen"].GetObject()) {
-      ads_uuid_seen.insert({ad_uuid_seen.name.GetString(),
-          ad_uuid_seen.value.GetInt64()});
+      ads_uuid_seen.insert(
+          {ad_uuid_seen.name.GetString(), ad_uuid_seen.value.GetInt64()});
     }
   }
 

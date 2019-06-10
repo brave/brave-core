@@ -9,7 +9,8 @@
 
 namespace extensions {
 
-class BraveNativeExtensionBindingsSystem : public NativeExtensionBindingsSystem {
+class BraveNativeExtensionBindingsSystem
+    : public NativeExtensionBindingsSystem {
  public:
   explicit BraveNativeExtensionBindingsSystem(
       std::unique_ptr<IPCMessageSender> ipc_message_sender);

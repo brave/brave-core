@@ -18,16 +18,24 @@ void GetSearchProvidersUsingKeywordResult(
     std::set<std::string>* removed_keyword_guids) {
   // Call the original implementation to get template_urls.
   GetSearchProvidersUsingKeywordResult_ChromiumImpl(
-      result, service, prefs, template_urls, default_search_provider,
-      search_terms_data, new_resource_keyword_version, removed_keyword_guids);
+      result,
+      service,
+      prefs,
+      template_urls,
+      default_search_provider,
+      search_terms_data,
+      new_resource_keyword_version,
+      removed_keyword_guids);
   // Resort template_urls in the orider of prepopulated search engines.
   if (template_urls && !template_urls->empty()) {
     std::vector<std::unique_ptr<TemplateURLData>> prepopulated_urls =
         TemplateURLPrepopulateData::GetPrepopulatedEngines(prefs, nullptr);
     for (auto crit = prepopulated_urls.crbegin();
-         crit != prepopulated_urls.crend(); ++crit) {
+         crit != prepopulated_urls.crend();
+         ++crit) {
       auto it = find_if(
-          begin(*template_urls), end(*template_urls),
+          begin(*template_urls),
+          end(*template_urls),
           [&crit](std::unique_ptr<TemplateURL>& t_url1) {
             return (t_url1->prepopulate_id() == (*crit)->prepopulate_id);
           });

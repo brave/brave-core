@@ -11,6 +11,7 @@
 @end
 
 @interface BATActivityInfoFilter (Private)
-- (instancetype)initWithActivityInfoFilter:(const ledger::ActivityInfoFilter&)obj;
+- (instancetype)initWithActivityInfoFilter:
+    (const ledger::ActivityInfoFilter&)obj;
 - (ledger::ActivityInfoFilter)cppObj;
 @end

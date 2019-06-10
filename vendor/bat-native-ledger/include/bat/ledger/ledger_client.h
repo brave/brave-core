@@ -6,13 +6,13 @@
 #ifndef BAT_LEDGER_LEDGER_CLIENT_H_
 #define BAT_LEDGER_LEDGER_CLIENT_H_
 
-#include <functional>
-#include <memory>
-#include <vector>
-#include <sstream>
 #include <fstream>
-#include <string>
+#include <functional>
 #include <map>
+#include <memory>
+#include <sstream>
+#include <string>
+#include <vector>
 
 #include "bat/ledger/balance_report_info.h"
 #include "bat/ledger/export.h"
@@ -39,11 +39,7 @@ LEDGER_EXPORT enum LogLevel {
   LOG_RESPONSE = 6
 };
 
-LEDGER_EXPORT enum URL_METHOD {
-  GET = 0,
-  PUT = 1,
-  POST = 2
-};
+LEDGER_EXPORT enum URL_METHOD { GET = 0, PUT = 1, POST = 2 };
 
 class LEDGER_EXPORT LogStream {
  public:
@@ -51,21 +47,21 @@ class LEDGER_EXPORT LogStream {
   virtual std::ostream& stream() = 0;
 };
 
-using PublisherInfoCallback =
-    std::function<void(Result, PublisherInfoPtr)>;
+using PublisherInfoCallback = std::function<void(Result, PublisherInfoPtr)>;
 // TODO(nejczdovc) we should be providing result back as well
 using PublisherInfoListCallback =
     std::function<void(PublisherInfoList, uint32_t /* next_record */)>;
-using GetNicewareListCallback =
-    std::function<void(Result, const std::string&)>;
+using GetNicewareListCallback = std::function<void(Result, const std::string&)>;
 using RecurringRemoveCallback = std::function<void(Result)>;
 using FetchIconCallback = std::function<void(bool, const std::string&)>;
-using LoadURLCallback = std::function<void(const int, const std::string&,
-    const std::map<std::string, std::string>& headers)>;
+using LoadURLCallback =
+    std::function<void(const int,
+                       const std::string&,
+                       const std::map<std::string, std::string>& headers)>;
 using OnRestoreCallback = std::function<void(bool)>;
 using OnSaveCallback = std::function<void(const ledger::Result)>;
-using OnLoadCallback = std::function<void(const ledger::Result,
-                                          const std::string&)>;
+using OnLoadCallback =
+    std::function<void(const ledger::Result, const std::string&)>;
 using OnResetCallback = std::function<void(const ledger::Result)>;
 using PendingContributionInfoListCallback =
     std::function<void(PendingContributionInfoList)>;
@@ -124,12 +120,13 @@ class LEDGER_EXPORT LedgerClient {
                                       PublisherInfoCallback callback) = 0;
 
   virtual void LoadMediaPublisherInfo(const std::string& media_key,
-                                PublisherInfoCallback callback) = 0;
+                                      PublisherInfoCallback callback) = 0;
 
   virtual void SaveMediaPublisherInfo(const std::string& media_key,
-                                const std::string& publisher_id) = 0;
+                                      const std::string& publisher_id) = 0;
 
-  virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
+  virtual void GetActivityInfoList(uint32_t start,
+                                   uint32_t limit,
                                    ActivityInfoFilter filter,
                                    PublisherInfoListCallback callback) = 0;
 
@@ -138,9 +135,8 @@ class LEDGER_EXPORT LedgerClient {
                            const std::string& paymentId) = 0;
   virtual void OnGrant(ledger::Result result, const ledger::Grant& grant) = 0;
 
-  virtual void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) = 0;
+  virtual void GetGrantCaptcha(const std::string& promotion_id,
+                               const std::string& promotion_type) = 0;
 
   virtual void OnGrantCaptcha(const std::string& image,
                               const std::string& hint) = 0;
@@ -153,8 +149,8 @@ class LEDGER_EXPORT LedgerClient {
                              const ledger::Grant& grant) = 0;
 
   virtual void OnPanelPublisherInfo(Result result,
-                                   ledger::PublisherInfoPtr publisher_info,
-                                   uint64_t windowId) = 0;
+                                    ledger::PublisherInfoPtr publisher_info,
+                                    uint64_t windowId) = 0;
 
   virtual void OnExcludedSitesChanged(const std::string& publisher_id,
                                       ledger::PUBLISHER_EXCLUDE exclude) = 0;
@@ -171,11 +167,9 @@ class LEDGER_EXPORT LedgerClient {
       const std::string& publisher_key,
       const ledger::REWARDS_CATEGORY category) = 0;
 
-  virtual void GetRecurringTips(
-      ledger::PublisherInfoListCallback callback) = 0;
+  virtual void GetRecurringTips(ledger::PublisherInfoListCallback callback) = 0;
 
-  virtual void GetOneTimeTips(
-      ledger::PublisherInfoListCallback callback) = 0;
+  virtual void GetOneTimeTips(ledger::PublisherInfoListCallback callback) = 0;
 
   virtual void OnRemoveRecurring(const std::string& publisher_key,
                                  ledger::RecurringRemoveCallback callback) = 0;
@@ -187,27 +181,23 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
-  virtual void LoadURL(
-      const std::string& url,
-      const std::vector<std::string>& headers,
-      const std::string& content,
-      const std::string& contentType,
-      const ledger::URL_METHOD method,
-      ledger::LoadURLCallback callback) = 0;
+  virtual void LoadURL(const std::string& url,
+                       const std::vector<std::string>& headers,
+                       const std::string& content,
+                       const std::string& contentType,
+                       const ledger::URL_METHOD method,
+                       ledger::LoadURLCallback callback) = 0;
 
   virtual void SavePendingContribution(
       ledger::PendingContributionList list) = 0;
 
   // Logs debug information
-  virtual std::unique_ptr<LogStream> Log(
-      const char* file,
-      int line,
-      const ledger::LogLevel log_level) const = 0;
+  virtual std::unique_ptr<LogStream>
+  Log(const char* file, int line, const ledger::LogLevel log_level) const = 0;
 
-  virtual std::unique_ptr<LogStream> VerboseLog(
-      const char* file,
-      int line,
-      int vlog_level) const = 0;
+  virtual std::unique_ptr<LogStream> VerboseLog(const char* file,
+                                                int line,
+                                                int vlog_level) const = 0;
 
   virtual void OnRestorePublishers(ledger::OnRestoreCallback callback) = 0;
 
@@ -235,14 +225,13 @@ class LEDGER_EXPORT LedgerClient {
       const ledger::RemovePendingContributionCallback& callback) = 0;
 
   virtual void RemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback) = 0;
+      const ledger::RemovePendingContributionCallback& callback) = 0;
 
   virtual void GetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback) = 0;
+      const ledger::PendingContributionsTotalCallback& callback) = 0;
 
-  virtual void GetCountryCodes(
-      const std::vector<std::string>& countries,
-      GetCountryCodesCallback callback) = 0;
+  virtual void GetCountryCodes(const std::vector<std::string>& countries,
+                               GetCountryCodesCallback callback) = 0;
 };
 
 }  // namespace ledger

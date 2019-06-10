@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import reducers from '../../../brave_welcome_ui/reducers/index'
-import { welcomeInitialState } from '../../testData'
+import {welcomeInitialState} from '../../testData'
 
 describe('welcome reducers test', () => {
   it('reducers are a combined reducer function', () => {
@@ -13,7 +13,7 @@ describe('welcome reducers test', () => {
 
   it('reducers passed with an unknown action returns the same input', () => {
     const unknownAction = {
-      type: 'A LANNISTER ALWAYS PAYS HIS BATS'
+  type: 'A LANNISTER ALWAYS PAYS HIS BATS'
     }
 
     const state = { ...welcomeInitialState }

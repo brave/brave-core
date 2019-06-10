@@ -4,13 +4,12 @@
 
 #include "brave/browser/importer/brave_profile_lock.h"
 
-#include "build/build_config.h"
 #include "base/logging.h"
 #include "base/threading/thread_restrictions.h"
+#include "build/build_config.h"
 
-BraveProfileLock::BraveProfileLock(
-    const base::FilePath& user_data_dir)
-  : ChromeProfileLock(user_data_dir) {}
+BraveProfileLock::BraveProfileLock(const base::FilePath& user_data_dir)
+    : ChromeProfileLock(user_data_dir) {}
 
 BraveProfileLock::~BraveProfileLock() {}
 

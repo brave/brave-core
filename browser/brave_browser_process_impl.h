@@ -18,7 +18,7 @@
 namespace brave {
 class BraveReferralsService;
 class BraveStatsUpdater;
-}
+}  // namespace brave
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 class BraveWidevineBundleManager;

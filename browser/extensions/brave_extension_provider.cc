@@ -23,13 +23,14 @@ bool IsBlacklisted(const extensions::Extension* extension) {
   // This is a hardcoded list of extensions to block.
   // Don't add new extensions to this list. Add them to
   // the files managed by the extension whitelist service.
-  static std::vector<std::string> blacklisted_extensions(
-      {// Used for tests, corresponds to
-       // brave/test/data/should-be-blocked-extension.
-       "mlklomjnahgiddgfdgjhibinlfibfffc",
-     });
+  static std::vector<std::string> blacklisted_extensions({
+      // Used for tests, corresponds to
+      // brave/test/data/should-be-blocked-extension.
+      "mlklomjnahgiddgfdgjhibinlfibfffc",
+  });
 
-  if (std::find(blacklisted_extensions.begin(), blacklisted_extensions.end(),
+  if (std::find(blacklisted_extensions.begin(),
+                blacklisted_extensions.end(),
                 extension->id()) != blacklisted_extensions.end())
     return true;
 

@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
- cr.define('settings', function() {
+cr.define('settings', function() {
   /** @interface */
   class DefaultBraveSyncBrowserProxy {}
 
@@ -13,8 +13,5 @@
 
   cr.addSingletonGetter(DefaultBraveSyncBrowserProxyImpl);
 
-  return {
-    DefaultBraveSyncBrowserProxy,
-    DefaultBraveSyncBrowserProxyImpl
-  };
+  return {DefaultBraveSyncBrowserProxy, DefaultBraveSyncBrowserProxyImpl};
 });

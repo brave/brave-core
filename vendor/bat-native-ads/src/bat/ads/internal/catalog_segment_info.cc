@@ -7,13 +7,10 @@
 
 namespace ads {
 
-SegmentInfo::SegmentInfo() :
-    code(""),
-    name("") {}
+SegmentInfo::SegmentInfo() : code(""), name("") {}
 
-SegmentInfo::SegmentInfo(const SegmentInfo& info) :
-    code(info.code),
-    name(info.name) {}
+SegmentInfo::SegmentInfo(const SegmentInfo& info)
+    : code(info.code), name(info.name) {}
 
 SegmentInfo::~SegmentInfo() {}
 

@@ -11,16 +11,14 @@ namespace brave_rewards {
 RewardsFetcherServiceObserver::RewardsFetcherServiceObserver(
     const std::string& favicon_key,
     const GURL& url,
-    const OnImageChangedCallback& callback) :
-  favicon_key_(favicon_key),
-  url_(url),
-  callback_(callback) {
-}
+    const OnImageChangedCallback& callback)
+    : favicon_key_(favicon_key), url_(url), callback_(callback) {}
 
 RewardsFetcherServiceObserver::~RewardsFetcherServiceObserver() {}
 
-void RewardsFetcherServiceObserver::OnImageChanged(BitmapFetcherService::RequestId request_id,
-                                                   const SkBitmap& answers_image) {
+void RewardsFetcherServiceObserver::OnImageChanged(
+    BitmapFetcherService::RequestId request_id,
+    const SkBitmap& answers_image) {
   if (callback_) {
     callback_.Run(favicon_key_, url_, request_id, answers_image);
   }

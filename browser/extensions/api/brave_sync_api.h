@@ -72,14 +72,13 @@ class BraveSyncSyncWordsPreparedFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveSyncExtensionInitializedFunction
-    : public UIThreadExtensionFunction {
+class BraveSyncExtensionInitializedFunction : public UIThreadExtensionFunction {
   ~BraveSyncExtensionInitializedFunction() override {}
   DECLARE_EXTENSION_FUNCTION("braveSync.extensionInitialized", UNKNOWN)
   ResponseAction Run() override;
 };
 
-}   // namespace api
-}   // namespace extensions
+}  // namespace api
+}  // namespace extensions
 
-#endif    // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_API_H_
+#endif  // BRAVE_BROWSER_EXTENSIONS_API_BRAVE_SYNC_API_H_

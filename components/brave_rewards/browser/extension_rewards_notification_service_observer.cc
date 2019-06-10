@@ -16,13 +16,11 @@
 namespace brave_rewards {
 
 ExtensionRewardsNotificationServiceObserver::
-ExtensionRewardsNotificationServiceObserver(Profile* profile)
-    : profile_(profile) {
-}
+    ExtensionRewardsNotificationServiceObserver(Profile* profile)
+    : profile_(profile) {}
 
 ExtensionRewardsNotificationServiceObserver::
-~ExtensionRewardsNotificationServiceObserver() {
-}
+    ~ExtensionRewardsNotificationServiceObserver() {}
 
 void ExtensionRewardsNotificationServiceObserver::OnNotificationAdded(
     RewardsNotificationService* rewards_notification_service,
@@ -36,8 +34,10 @@ void ExtensionRewardsNotificationServiceObserver::OnNotificationAdded(
 
   std::unique_ptr<base::ListValue> args(
       extensions::api::rewards_notifications::OnNotificationAdded::Create(
-          rewards_notification.id_, rewards_notification.type_,
-          rewards_notification.timestamp_, rewards_notification.args_)
+          rewards_notification.id_,
+          rewards_notification.type_,
+          rewards_notification.timestamp_,
+          rewards_notification.args_)
           .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_REWARDS_NOTIFICATION_ADDED,
@@ -58,7 +58,8 @@ void ExtensionRewardsNotificationServiceObserver::OnNotificationDeleted(
 
   std::unique_ptr<base::ListValue> args(
       extensions::api::rewards_notifications::OnNotificationDeleted::Create(
-          rewards_notification.id_, rewards_notification.type_,
+          rewards_notification.id_,
+          rewards_notification.type_,
           rewards_notification.timestamp_)
           .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
@@ -68,18 +69,17 @@ void ExtensionRewardsNotificationServiceObserver::OnNotificationDeleted(
   event_router->BroadcastEvent(std::move(event));
 }
 
-void ExtensionRewardsNotificationServiceObserver::
-    OnAllNotificationsDeleted(
-        RewardsNotificationService* rewards_notification_service) {
+void ExtensionRewardsNotificationServiceObserver::OnAllNotificationsDeleted(
+    RewardsNotificationService* rewards_notification_service) {
   extensions::EventRouter* event_router =
       extensions::EventRouter::Get(profile_);
   if (!event_router) {
     return;
   }
 
-  std::unique_ptr<base::ListValue> args(
-    extensions::api::rewards_notifications::OnAllNotificationsDeleted::Create()
-        .release());
+  std::unique_ptr<base::ListValue> args(extensions::api::rewards_notifications::
+                                            OnAllNotificationsDeleted::Create()
+                                                .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_REWARDS_ALL_NOTIFICATIONS_DELETED,
       extensions::api::rewards_notifications::OnAllNotificationsDeleted::
@@ -100,8 +100,10 @@ void ExtensionRewardsNotificationServiceObserver::OnGetNotification(
 
   std::unique_ptr<base::ListValue> args(
       extensions::api::rewards_notifications::OnGetNotification::Create(
-          rewards_notification.id_, rewards_notification.type_,
-          rewards_notification.timestamp_, rewards_notification.args_)
+          rewards_notification.id_,
+          rewards_notification.type_,
+          rewards_notification.timestamp_,
+          rewards_notification.args_)
           .release());
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_REWARDS_GET_NOTIFICATION,

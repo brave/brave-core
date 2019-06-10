@@ -13,14 +13,14 @@
 #include <string>
 #include <vector>
 
-#include "bat/ledger/export.h"
 #include "bat/ledger/auto_contribute_props.h"
+#include "bat/ledger/export.h"
 #include "bat/ledger/ledger_client.h"
-#include "bat/ledger/publisher_info.h"
 #include "bat/ledger/media_publisher_info.h"
-#include "bat/ledger/transactions_info.h"
-#include "bat/ledger/rewards_internals_info.h"
 #include "bat/ledger/pending_contribution.h"
+#include "bat/ledger/publisher_info.h"
+#include "bat/ledger/rewards_internals_info.h"
+#include "bat/ledger/transactions_info.h"
 
 namespace ledger {
 
@@ -62,10 +62,10 @@ using WalletAddressesCallback =
     std::function<void(std::map<std::string, std::string> addresses)>;
 using GetTransactionHistoryForThisCycleCallback =
     std::function<void(std::unique_ptr<ledger::TransactionsInfo> info)>;
-using OnWalletPropertiesCallback = std::function<void(const ledger::Result,
-                                  std::unique_ptr<ledger::WalletInfo>)>;
-using OnRefreshPublisherCallback =
-    std::function<void(bool)>;
+using OnWalletPropertiesCallback =
+    std::function<void(const ledger::Result,
+                       std::unique_ptr<ledger::WalletInfo>)>;
+using OnRefreshPublisherCallback = std::function<void(bool)>;
 using GetAddressesCallback =
     std::function<void(std::map<std::string, std::string>)>;
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
@@ -114,21 +114,18 @@ class LEDGER_EXPORT Ledger {
 
   virtual void OnMediaStop(uint32_t tab_id, const uint64_t& current_time) = 0;
 
-  virtual void OnXHRLoad(
-      uint32_t tab_id,
-      const std::string& url,
-      const std::map<std::string, std::string>& parts,
-      const std::string& first_party_url,
-      const std::string& referrer,
-      const VisitData& visit_data) = 0;
+  virtual void OnXHRLoad(uint32_t tab_id,
+                         const std::string& url,
+                         const std::map<std::string, std::string>& parts,
+                         const std::string& first_party_url,
+                         const std::string& referrer,
+                         const VisitData& visit_data) = 0;
 
-
-  virtual void OnPostData(
-      const std::string& url,
-      const std::string& first_party_url,
-      const std::string& referrer,
-      const std::string& post_data,
-      const VisitData& visit_data) = 0;
+  virtual void OnPostData(const std::string& url,
+                          const std::string& first_party_url,
+                          const std::string& referrer,
+                          const std::string& post_data,
+                          const VisitData& visit_data) = 0;
 
   virtual void OnTimer(uint32_t timer_id) = 0;
 
@@ -142,17 +139,18 @@ class LEDGER_EXPORT Ledger {
                                 PublisherInfoCallback callback) = 0;
 
   virtual void GetActivityInfo(const ledger::ActivityInfoFilter& filter,
-                                PublisherInfoCallback callback) = 0;
+                               PublisherInfoCallback callback) = 0;
 
   virtual void SetMediaPublisherInfo(const std::string& media_key,
-                                const std::string& publisher_id) = 0;
+                                     const std::string& publisher_id) = 0;
 
   virtual void GetMediaPublisherInfo(const std::string& media_key,
-                                PublisherInfoCallback callback) = 0;
+                                     PublisherInfoCallback callback) = 0;
 
-  virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
-                                    const ledger::ActivityInfoFilter& filter,
-                                    PublisherInfoListCallback callback) = 0;
+  virtual void GetActivityInfoList(uint32_t start,
+                                   uint32_t limit,
+                                   const ledger::ActivityInfoFilter& filter,
+                                   PublisherInfoListCallback callback) = 0;
 
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
 
@@ -170,13 +168,13 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetAutoContribute(bool enabled) = 0;
 
-  virtual void SetBalanceReport(ACTIVITY_MONTH month,
-                              int year,
-                              const ledger::BalanceReportInfo& report_info) = 0;
+  virtual void SetBalanceReport(
+      ACTIVITY_MONTH month,
+      int year,
+      const ledger::BalanceReportInfo& report_info) = 0;
 
-  virtual void GetAddresses(
-      int32_t current_country_code,
-      ledger::GetAddressesCallback callback) = 0;
+  virtual void GetAddresses(int32_t current_country_code,
+                            ledger::GetAddressesCallback callback) = 0;
 
   virtual const std::string& GetBATAddress() const = 0;
 
@@ -211,15 +209,15 @@ class LEDGER_EXPORT Ledger {
   virtual void SolveGrantCaptcha(const std::string& solution,
                                  const std::string& promotionId) const = 0;
 
-  virtual void GetGrantCaptcha(
-      const std::string& promotion_id,
-      const std::string& promotion_type) const = 0;
+  virtual void GetGrantCaptcha(const std::string& promotion_id,
+                               const std::string& promotion_type) const = 0;
 
   virtual std::string GetWalletPassphrase() const = 0;
 
-  virtual bool GetBalanceReport(ACTIVITY_MONTH month,
-                              int year,
-                              ledger::BalanceReportInfo* report_info) const = 0;
+  virtual bool GetBalanceReport(
+      ACTIVITY_MONTH month,
+      int year,
+      ledger::BalanceReportInfo* report_info) const = 0;
 
   virtual std::map<std::string, ledger::BalanceReportInfo>
   GetAllBalanceReports() const = 0;
@@ -246,9 +244,8 @@ class LEDGER_EXPORT Ledger {
                                     ledger::ReportType type,
                                     const std::string& probi) = 0;
 
-  virtual void GetPublisherBanner(
-      const std::string& publisher_id,
-      ledger::PublisherBannerCallback callback) = 0;
+  virtual void GetPublisherBanner(const std::string& publisher_id,
+                                  ledger::PublisherBannerCallback callback) = 0;
 
   virtual void OnReconcileCompleteSuccess(
       const std::string& viewing_id,
@@ -308,10 +305,10 @@ class LEDGER_EXPORT Ledger {
       const ledger::RemovePendingContributionCallback& callback) = 0;
 
   virtual void RemoveAllPendingContributions(
-    const ledger::RemovePendingContributionCallback& callback) = 0;
+      const ledger::RemovePendingContributionCallback& callback) = 0;
 
   virtual void GetPendingContributionsTotal(
-    const ledger::PendingContributionsTotalCallback& callback) = 0;
+      const ledger::PendingContributionsTotalCallback& callback) = 0;
 };
 
 }  // namespace ledger

@@ -9,13 +9,10 @@
 
 namespace ads {
 
-IssuersInfo::IssuersInfo() :
-    public_key(""),
-    issuers({}) {}
+IssuersInfo::IssuersInfo() : public_key(""), issuers({}) {}
 
-IssuersInfo::IssuersInfo(const IssuersInfo& info) :
-    public_key(info.public_key),
-    issuers(info.issuers) {}
+IssuersInfo::IssuersInfo(const IssuersInfo& info)
+    : public_key(info.public_key), issuers(info.issuers) {}
 
 IssuersInfo::~IssuersInfo() = default;
 
@@ -25,9 +22,8 @@ const std::string IssuersInfo::ToJson() const {
   return json;
 }
 
-Result IssuersInfo::FromJson(
-    const std::string& json,
-    std::string* error_description) {
+Result IssuersInfo::FromJson(const std::string& json,
+                             std::string* error_description) {
   rapidjson::Document document;
   document.Parse(json.c_str());
 

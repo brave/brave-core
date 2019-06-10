@@ -11,10 +11,10 @@ namespace helper {
 
 std::string Uri::GetUri(const std::string& url) {
   auto http_scheme = std::string(url::kHttpScheme) +
-      std::string(url::kStandardSchemeSeparator);
+                     std::string(url::kStandardSchemeSeparator);
 
   auto https_scheme = std::string(url::kHttpsScheme) +
-      std::string(url::kStandardSchemeSeparator);
+                      std::string(url::kStandardSchemeSeparator);
 
   if (url.find(http_scheme) != std::string::npos &&
       url.find(https_scheme) != std::string::npos) {

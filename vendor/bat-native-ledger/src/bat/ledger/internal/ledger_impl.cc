@@ -30,12 +30,12 @@
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
-using namespace braveledger_bat_client; //  NOLINT
-using namespace braveledger_bat_publishers; //  NOLINT
-using namespace braveledger_bat_get_media; //  NOLINT
-using namespace braveledger_bat_get_media; //  NOLINT
-using namespace braveledger_bat_state; //  NOLINT
-using namespace braveledger_bat_contribution; //  NOLINT
+using namespace braveledger_bat_client;        //  NOLINT
+using namespace braveledger_bat_publishers;    //  NOLINT
+using namespace braveledger_bat_get_media;     //  NOLINT
+using namespace braveledger_bat_get_media;     //  NOLINT
+using namespace braveledger_bat_state;         //  NOLINT
+using namespace braveledger_bat_contribution;  //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -48,24 +48,24 @@ bool IsPNG(const std::string& data) {
           (data.compare(0, 8, "\x89PNG\x0D\x0A\x1A\x0A") == 0));
 }
 
-}
+}  // namespace
 
 namespace bat_ledger {
 
-LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
-    ledger_client_(client),
-    bat_client_(new BatClient(this)),
-    bat_publishers_(new BatPublishers(this)),
-    bat_get_media_(new BatGetMedia(this)),
-    bat_state_(new BatState(this)),
-    bat_contribution_(new BatContribution(this)),
-    initialized_task_scheduler_(false),
-    initialized_(false),
-    initializing_(false),
-    last_tab_active_time_(0),
-    last_shown_tab_id_(-1),
-    last_pub_load_timer_id_(0u),
-    last_grant_check_timer_id_(0u) {
+LedgerImpl::LedgerImpl(ledger::LedgerClient* client)
+    : ledger_client_(client),
+      bat_client_(new BatClient(this)),
+      bat_publishers_(new BatPublishers(this)),
+      bat_get_media_(new BatGetMedia(this)),
+      bat_state_(new BatState(this)),
+      bat_contribution_(new BatContribution(this)),
+      initialized_task_scheduler_(false),
+      initialized_(false),
+      initializing_(false),
+      last_tab_active_time_(0),
+      last_shown_tab_id_(-1),
+      last_pub_load_timer_id_(0u),
+      last_grant_check_timer_id_(0u) {
   // Ensure ThreadPool is initialized before creating the task runner for
   // ios.
   if (!base::ThreadPool::GetInstance()) {
@@ -75,9 +75,10 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     initialized_task_scheduler_ = true;
   }
 
-  task_runner_ = base::CreateSequencedTaskRunnerWithTraits({
-      base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-      base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+  task_runner_ = base::CreateSequencedTaskRunnerWithTraits(
+      {base::MayBlock(),
+       base::TaskPriority::BEST_EFFORT,
+       base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
 }
 
 LedgerImpl::~LedgerImpl() {
@@ -149,9 +150,8 @@ void LedgerImpl::OnShow(uint32_t tab_id, const uint64_t& current_time) {
   last_shown_tab_id_ = tab_id;
 }
 
-void LedgerImpl::OnSaveVisit(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
+void LedgerImpl::OnSaveVisit(ledger::Result result,
+                             ledger::PublisherInfoPtr info) {
   // TODO(nejczdovc): handle if needed
 }
 
@@ -167,17 +167,13 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
 
   DCHECK(last_tab_active_time_);
 
-  auto callback = std::bind(&LedgerImpl::OnSaveVisit,
-                            this,
-                            _1,
-                            _2);
+  auto callback = std::bind(&LedgerImpl::OnSaveVisit, this, _1, _2);
 
-  bat_publishers_->saveVisit(
-    iter->second.tld,
-    iter->second,
-    current_time - last_tab_active_time_,
-    0,
-    callback);
+  bat_publishers_->saveVisit(iter->second.tld,
+                             iter->second,
+                             current_time - last_tab_active_time_,
+                             0,
+                             callback);
   last_tab_active_time_ = 0;
 }
 
@@ -202,16 +198,14 @@ void LedgerImpl::OnMediaStop(uint32_t tab_id, const uint64_t& current_time) {
   // TODO(anyone)
 }
 
-void LedgerImpl::OnXHRLoad(
-    uint32_t tab_id,
-    const std::string& url,
-    const std::map<std::string, std::string>& parts,
-    const std::string& first_party_url,
-    const std::string& referrer,
-    const ledger::VisitData& visit_data) {
-  std::string type = bat_get_media_->GetLinkType(url,
-                                                 first_party_url,
-                                                 referrer);
+void LedgerImpl::OnXHRLoad(uint32_t tab_id,
+                           const std::string& url,
+                           const std::map<std::string, std::string>& parts,
+                           const std::string& first_party_url,
+                           const std::string& referrer,
+                           const ledger::VisitData& visit_data) {
+  std::string type =
+      bat_get_media_->GetLinkType(url, first_party_url, referrer);
   if (type.empty()) {
     // It is not a media supported type
     return;
@@ -219,17 +213,15 @@ void LedgerImpl::OnXHRLoad(
   bat_get_media_->ProcessMedia(parts, type, visit_data);
 }
 
-void LedgerImpl::OnPostData(
-      const std::string& url,
-      const std::string& first_party_url,
-      const std::string& referrer,
-      const std::string& post_data,
-      const ledger::VisitData& visit_data) {
-  std::string type = bat_get_media_->GetLinkType(url,
-                                                 first_party_url,
-                                                 referrer);
+void LedgerImpl::OnPostData(const std::string& url,
+                            const std::string& first_party_url,
+                            const std::string& referrer,
+                            const std::string& post_data,
+                            const ledger::VisitData& visit_data) {
+  std::string type =
+      bat_get_media_->GetLinkType(url, first_party_url, referrer);
   if (type.empty()) {
-     // It is not a media supported type
+    // It is not a media supported type
     return;
   }
 
@@ -250,10 +242,10 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
                                      const std::string& data) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_state_->LoadState(data)) {
-      BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-        "Successfully loaded but failed to parse ledger state.";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-        "Failed ledger state: " << data;
+      BLOG(this, ledger::LogLevel::LOG_ERROR)
+          << "Successfully loaded but failed to parse ledger state.";
+      BLOG(this, ledger::LogLevel::LOG_DEBUG)
+          << "Failed ledger state: " << data;
 
       OnWalletInitialized(ledger::Result::INVALID_LEDGER_STATE);
     } else {
@@ -266,9 +258,8 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
   } else {
     if (result != ledger::Result::NO_LEDGER_STATE) {
       BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to load ledger state";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-        "Failed ledger state: " <<
-        data;
+      BLOG(this, ledger::LogLevel::LOG_DEBUG)
+          << "Failed ledger state: " << data;
     }
 
     OnWalletInitialized(result);
@@ -299,18 +290,17 @@ void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,
                                         const std::string& data) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_publishers_->loadState(data)) {
-      BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-        "Successfully loaded but failed to parse ledger state.";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-        "Failed publisher state: " << data;
+      BLOG(this, ledger::LogLevel::LOG_ERROR)
+          << "Successfully loaded but failed to parse ledger state.";
+      BLOG(this, ledger::LogLevel::LOG_DEBUG)
+          << "Failed publisher state: " << data;
 
       result = ledger::Result::INVALID_PUBLISHER_STATE;
     }
   } else {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-      "Failed to load publisher state";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-        "Failed publisher state: " << data;
+    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to load publisher state";
+    BLOG(this, ledger::LogLevel::LOG_DEBUG)
+        << "Failed publisher state: " << data;
   }
   if (GetPaymentId().empty() || GetWalletPassphrase().empty()) {
     OnWalletInitialized(ledger::Result::CORRUPTED_WALLET);
@@ -328,7 +318,6 @@ void LedgerImpl::SavePublisherState(const std::string& data,
   ledger_client_->SavePublisherState(data, handler);
 }
 
-
 void LedgerImpl::SavePublishersList(const std::string& data) {
   ledger_client_->SavePublishersList(data, this);
 }
@@ -341,10 +330,10 @@ void LedgerImpl::OnPublisherListLoaded(ledger::Result result,
                                        const std::string& data) {
   if (result == ledger::Result::LEDGER_OK) {
     if (!bat_publishers_->loadPublisherList(data)) {
-      BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-        "Successfully loaded but failed to parse publish list.";
-      BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-        "Failed publisher list: " << data;
+      BLOG(this, ledger::LogLevel::LOG_ERROR)
+          << "Successfully loaded but failed to parse publish list.";
+      BLOG(this, ledger::LogLevel::LOG_DEBUG)
+          << "Failed publisher list: " << data;
       RefreshPublishersList(true);
       return;
     } else {
@@ -353,10 +342,9 @@ void LedgerImpl::OnPublisherListLoaded(ledger::Result result,
       return;
     }
   } else {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-      "Failed to load publisher list";
-    BLOG(this, ledger::LogLevel::LOG_DEBUG) <<
-      "Failed publisher list: " << data;
+    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to load publisher list";
+    BLOG(this, ledger::LogLevel::LOG_DEBUG)
+        << "Failed publisher list: " << data;
   }
 
   RefreshPublishersList(true, true);
@@ -387,21 +375,15 @@ void LedgerImpl::LoadURL(const std::string& url,
                          const std::string& contentType,
                          const ledger::URL_METHOD method,
                          ledger::LoadURLCallback callback) {
-  ledger_client_->LoadURL(url,
-                          headers,
-                          content,
-                          contentType,
-                          method,
-                          callback);
+  ledger_client_->LoadURL(url, headers, content, contentType, method, callback);
 }
 
 std::string LedgerImpl::URIEncode(const std::string& value) {
   return ledger_client_->URIEncode(value);
 }
 
-void LedgerImpl::OnPublisherInfoSavedInternal(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info) {
+void LedgerImpl::OnPublisherInfoSavedInternal(ledger::Result result,
+                                              ledger::PublisherInfoPtr info) {
   bat_publishers_->OnPublisherInfoSaved(result, std::move(info));
 }
 
@@ -412,10 +394,7 @@ void LedgerImpl::SetPublisherInfo(ledger::PublisherInfoPtr info) {
 
   ledger_client_->SavePublisherInfo(
       std::move(info),
-      std::bind(&LedgerImpl::OnPublisherInfoSavedInternal,
-                this,
-                _1,
-                _2));
+      std::bind(&LedgerImpl::OnPublisherInfoSavedInternal, this, _1, _2));
 }
 
 void LedgerImpl::SetActivityInfo(ledger::PublisherInfoPtr info) {
@@ -425,10 +404,7 @@ void LedgerImpl::SetActivityInfo(ledger::PublisherInfoPtr info) {
 
   ledger_client_->SaveActivityInfo(
       std::move(info),
-      std::bind(&LedgerImpl::OnPublisherInfoSavedInternal,
-                this,
-                _1,
-                _2));
+      std::bind(&LedgerImpl::OnPublisherInfoSavedInternal, this, _1, _2));
 }
 
 void LedgerImpl::SetMediaPublisherInfo(const std::string& media_key,
@@ -448,16 +424,12 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
     new_duration = 0;
   }
 
-  bat_publishers_->saveVisit(publisher_id,
-                             visit_data,
-                             new_duration,
-                             window_id,
-                             callback);
+  bat_publishers_->saveVisit(
+      publisher_id, visit_data, new_duration, window_id, callback);
 }
 
-void LedgerImpl::SetPublisherExclude(
-    const std::string& publisher_id,
-    const ledger::PUBLISHER_EXCLUDE& exclude) {
+void LedgerImpl::SetPublisherExclude(const std::string& publisher_id,
+                                     const ledger::PUBLISHER_EXCLUDE& exclude) {
   bat_publishers_->setExclude(publisher_id, exclude);
 }
 
@@ -503,46 +475,28 @@ void LedgerImpl::GetPublisherInfo(const std::string& publisher_key,
                                   ledger::PublisherInfoCallback callback) {
   ledger_client_->LoadPublisherInfo(
       publisher_key,
-      std::bind(&LedgerImpl::ModifyPublisherVerified,
-                this,
-                _1,
-                _2,
-                callback));
+      std::bind(&LedgerImpl::ModifyPublisherVerified, this, _1, _2, callback));
 }
 
 void LedgerImpl::GetActivityInfo(const ledger::ActivityInfoFilter& filter,
                                  ledger::PublisherInfoCallback callback) {
   ledger_client_->LoadActivityInfo(
       filter,
-      std::bind(&LedgerImpl::ModifyPublisherVerified,
-                this,
-                _1,
-                _2,
-                callback));
+      std::bind(&LedgerImpl::ModifyPublisherVerified, this, _1, _2, callback));
 }
 
-void LedgerImpl::GetPanelPublisherInfo(
-    const ledger::ActivityInfoFilter& filter,
-    ledger::PublisherInfoCallback callback) {
+void LedgerImpl::GetPanelPublisherInfo(const ledger::ActivityInfoFilter& filter,
+                                       ledger::PublisherInfoCallback callback) {
   ledger_client_->LoadPanelPublisherInfo(
       filter,
-      std::bind(&LedgerImpl::ModifyPublisherVerified,
-                this,
-                _1,
-                _2,
-                callback));
+      std::bind(&LedgerImpl::ModifyPublisherVerified, this, _1, _2, callback));
 }
 
-void LedgerImpl::GetMediaPublisherInfo(
-    const std::string& media_key,
-    ledger::PublisherInfoCallback callback) {
+void LedgerImpl::GetMediaPublisherInfo(const std::string& media_key,
+                                       ledger::PublisherInfoCallback callback) {
   ledger_client_->LoadMediaPublisherInfo(
       media_key,
-      std::bind(&LedgerImpl::ModifyPublisherVerified,
-                this,
-                _1,
-                _2,
-                callback));
+      std::bind(&LedgerImpl::ModifyPublisherVerified, this, _1, _2, callback));
 }
 
 void LedgerImpl::GetActivityInfoList(
@@ -554,11 +508,8 @@ void LedgerImpl::GetActivityInfoList(
       start,
       limit,
       filter,
-      std::bind(&LedgerImpl::ModifyPublisherListVerified,
-                this,
-                _1,
-                _2,
-                callback));
+      std::bind(
+          &LedgerImpl::ModifyPublisherListVerified, this, _1, _2, callback));
 }
 
 void LedgerImpl::SetRewardsMainEnabled(bool enabled) {
@@ -634,26 +585,25 @@ bool LedgerImpl::GetAutoContribute() const {
   return bat_state_->GetAutoContribute();
 }
 
-void LedgerImpl::GetAddresses(
-    int32_t current_country_code,
-    ledger::GetAddressesCallback callback) {
+void LedgerImpl::GetAddresses(int32_t current_country_code,
+                              ledger::GetAddressesCallback callback) {
   ledger_client_->GetCountryCodes(
       braveledger_ledger::_add_funds_limited_countries,
       std::bind(&LedgerImpl::GetAddressesInternal,
-                             this,
-                             _1,
-                             current_country_code,
-                             callback));
+                this,
+                _1,
+                current_country_code,
+                callback));
 }
 
-void LedgerImpl::GetAddressesInternal(
-    const std::vector<int32_t>& country_codes,
-    int32_t current_country_code,
-    ledger::GetAddressesCallback callback) {
+void LedgerImpl::GetAddressesInternal(const std::vector<int32_t>& country_codes,
+                                      int32_t current_country_code,
+                                      ledger::GetAddressesCallback callback) {
   std::map<std::string, std::string> addresses;
   addresses.emplace("BAT", GetBATAddress());
-  if (std::find(country_codes.begin(), country_codes.end(),
-      current_country_code) == country_codes.end()) {
+  if (std::find(country_codes.begin(),
+                country_codes.end(),
+                current_country_code) == country_codes.end()) {
     addresses.emplace("BTC", GetBTCAddress());
     addresses.emplace("ETH", GetETHAddress());
     addresses.emplace("LTC", GetLTCAddress());
@@ -687,10 +637,7 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
   auto reconcile = GetReconcileById(viewing_id);
 
   ledger_client_->OnReconcileComplete(
-      result,
-      viewing_id,
-      (ledger::REWARDS_CATEGORY)reconcile.category_,
-      probi);
+      result, viewing_id, (ledger::REWARDS_CATEGORY)reconcile.category_, probi);
 }
 
 void LedgerImpl::OnWalletProperties(
@@ -725,13 +672,12 @@ void LedgerImpl::OnGrant(ledger::Result result,
   last_grant_check_timer_id_ = 0;
 
   RefreshGrant(result != ledger::Result::LEDGER_OK &&
-    result != ledger::Result::GRANT_NOT_FOUND);
+               result != ledger::Result::GRANT_NOT_FOUND);
   ledger_client_->OnGrant(result, grant);
 }
 
-void LedgerImpl::GetGrantCaptcha(
-    const std::string& promotion_id,
-    const std::string& promotion_type) const {
+void LedgerImpl::GetGrantCaptcha(const std::string& promotion_id,
+                                 const std::string& promotion_type) const {
   bat_client_->getGrantCaptcha(promotion_id, promotion_type);
 }
 
@@ -758,7 +704,7 @@ void LedgerImpl::OnRecoverWallet(
 
   std::vector<ledger::Grant> ledgerGrants;
 
-  for (size_t i = 0; i < grants.size(); i ++) {
+  for (size_t i = 0; i < grants.size(); i++) {
     ledger::Grant tempGrant;
 
     tempGrant.altcurrency = grants[i].altcurrency;
@@ -772,15 +718,14 @@ void LedgerImpl::OnRecoverWallet(
     bat_publishers_->clearAllBalanceReports();
   }
 
-  ledger_client_->OnRecoverWallet(result ? ledger::Result::LEDGER_ERROR :
-                                          ledger::Result::LEDGER_OK,
-                                  balance,
-                                  ledgerGrants);
+  ledger_client_->OnRecoverWallet(
+      result ? ledger::Result::LEDGER_ERROR : ledger::Result::LEDGER_OK,
+      balance,
+      ledgerGrants);
 }
 
-void LedgerImpl::SolveGrantCaptcha(
-    const std::string& solution,
-    const std::string& promotionId) const {
+void LedgerImpl::SolveGrantCaptcha(const std::string& solution,
+                                   const std::string& promotionId) const {
   bat_client_->setGrant(solution, promotionId);
 }
 
@@ -825,8 +770,8 @@ void LedgerImpl::DoDirectTip(const std::string& publisher_id,
                              int amount,
                              const std::string& currency) {
   if (publisher_id.empty()) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-      "Failed direct donation due to missing publisher id";
+    BLOG(this, ledger::LogLevel::LOG_ERROR)
+        << "Failed direct donation due to missing publisher id";
 
     // TODO(anyone) add error flow
     return;
@@ -849,34 +794,32 @@ void LedgerImpl::DoDirectTip(const std::string& publisher_id,
     return;
   }
 
-  auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(publisher_id,
-                                                               amount,
-                                                               currency);
+  auto direction = braveledger_bat_helper::RECONCILE_DIRECTION(
+      publisher_id, amount, currency);
   auto direction_list =
-      std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
+      std::vector<braveledger_bat_helper::RECONCILE_DIRECTION>{direction};
   braveledger_bat_helper::PublisherList list;
   bat_contribution_->InitReconcile(GenerateGUID(),
-                         ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
-                         list,
-                         direction_list);
+                                   ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
+                                   list,
+                                   direction_list);
 }
 
-void LedgerImpl::DownloadPublisherList(
-    ledger::LoadURLCallback callback) {
+void LedgerImpl::DownloadPublisherList(ledger::LoadURLCallback callback) {
   std::vector<std::string> headers;
   headers.push_back("Accept-Encoding: gzip");
 
   // download the list
   std::string url = braveledger_bat_helper::buildURL(
       GET_PUBLISHERS_LIST_V1,
-      std::string(), braveledger_bat_helper::SERVER_TYPES::PUBLISHER_DISTRO);
-  LoadURL(
-      url,
-      headers,
       std::string(),
-      std::string(),
-      ledger::URL_METHOD::GET,
-      callback);
+      braveledger_bat_helper::SERVER_TYPES::PUBLISHER_DISTRO);
+  LoadURL(url,
+          headers,
+          std::string(),
+          std::string(),
+          ledger::URL_METHOD::GET,
+          callback);
 }
 
 void LedgerImpl::OnTimer(uint32_t timer_id) {
@@ -887,8 +830,7 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
     last_pub_load_timer_id_ = 0;
 
     DownloadPublisherList(
-        std::bind(&LedgerImpl::LoadPublishersListCallback,
-          this, _1, _2, _3));
+        std::bind(&LedgerImpl::LoadPublishersListCallback, this, _1, _2, _3));
 
   } else if (timer_id == last_grant_check_timer_id_) {
     last_grant_check_timer_id_ = 0;
@@ -898,24 +840,14 @@ void LedgerImpl::OnTimer(uint32_t timer_id) {
   bat_contribution_->OnTimer(timer_id);
 }
 
-void LedgerImpl::GetRecurringTips(
-    ledger::PublisherInfoListCallback callback) {
-  ledger_client_->GetRecurringTips(
-      std::bind(&LedgerImpl::ModifyPublisherListVerified,
-                this,
-                _1,
-                _2,
-                callback));
+void LedgerImpl::GetRecurringTips(ledger::PublisherInfoListCallback callback) {
+  ledger_client_->GetRecurringTips(std::bind(
+      &LedgerImpl::ModifyPublisherListVerified, this, _1, _2, callback));
 }
 
-void LedgerImpl::GetOneTimeTips(
-    ledger::PublisherInfoListCallback callback) {
-  ledger_client_->GetOneTimeTips(
-      std::bind(&LedgerImpl::ModifyPublisherListVerified,
-                this,
-                _1,
-                _2,
-                callback));
+void LedgerImpl::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
+  ledger_client_->GetOneTimeTips(std::bind(
+      &LedgerImpl::ModifyPublisherListVerified, this, _1, _2, callback));
 }
 
 void LedgerImpl::LoadPublishersListCallback(
@@ -925,15 +857,14 @@ void LedgerImpl::LoadPublishersListCallback(
   if (response_status_code == net::HTTP_OK && !response.empty()) {
     bat_publishers_->RefreshPublishersList(response);
   } else {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-      "Can't fetch publisher list";
+    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Can't fetch publisher list";
     // error: retry downloading again
     RefreshPublishersList(true);
   }
 }
 
 void LedgerImpl::RefreshPublishersList(bool retryAfterError, bool immediately) {
-  uint64_t start_timer_in{ 0ull };
+  uint64_t start_timer_in{0ull};
 
   if (last_pub_load_timer_id_ != 0) {
     // timer in progress
@@ -941,16 +872,16 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError, bool immediately) {
   }
 
   uint64_t lastLoadTimestamp =
-        bat_publishers_->getLastPublishersListLoadTimestamp();
+      bat_publishers_->getLastPublishersListLoadTimestamp();
 
   if (immediately) {
     start_timer_in = 0ull;
   } else if (retryAfterError) {
     start_timer_in = retryRequestSetup(60, 300);
 
-    BLOG(this, ledger::LogLevel::LOG_WARNING) <<
-      "Failed to refresh publishesr list, will try again in " <<
-      start_timer_in << " seconds.";
+    BLOG(this, ledger::LogLevel::LOG_WARNING)
+        << "Failed to refresh publishesr list, will try again in "
+        << start_timer_in << " seconds.";
   } else {
     uint64_t now = std::time(nullptr);
 
@@ -958,10 +889,10 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError, bool immediately) {
     // (start_timer_in == 0) is expected to call callback function immediately.
 
     // time since last successful download
-    uint64_t  time_since_last_download =
+    uint64_t time_since_last_download =
         (lastLoadTimestamp == 0ull || lastLoadTimestamp > now)
-        ? 0ull
-        : now - lastLoadTimestamp;
+            ? 0ull
+            : now - lastLoadTimestamp;
 
     uint64_t interval = braveledger_ledger::_publishers_list_load_interval;
 
@@ -980,7 +911,7 @@ void LedgerImpl::RefreshPublishersList(bool retryAfterError, bool immediately) {
 }
 
 void LedgerImpl::RefreshGrant(bool retryAfterError) {
-  uint64_t start_timer_in{ 0ull };
+  uint64_t start_timer_in{0ull};
   if (last_grant_check_timer_id_ != 0) {
     return;
   }
@@ -988,20 +919,23 @@ void LedgerImpl::RefreshGrant(bool retryAfterError) {
   if (retryAfterError) {
     start_timer_in = retryRequestSetup(300, 600);
 
-    BLOG(this, ledger::LogLevel::LOG_WARNING) <<
-      "Failed to refresh grant, will try again in " << start_timer_in;
+    BLOG(this, ledger::LogLevel::LOG_WARNING)
+        << "Failed to refresh grant, will try again in " << start_timer_in;
   } else {
     uint64_t now = std::time(nullptr);
     uint64_t last_grant_stamp = bat_state_->GetLastGrantLoadTimestamp();
 
-    uint64_t time_since_last_grant_check = (last_grant_stamp == 0ull ||
-      last_grant_stamp > now) ? 0ull : now - last_grant_stamp;
+    uint64_t time_since_last_grant_check =
+        (last_grant_stamp == 0ull || last_grant_stamp > now)
+            ? 0ull
+            : now - last_grant_stamp;
     if (now == last_grant_stamp) {
       start_timer_in = braveledger_ledger::_grant_load_interval;
     } else if (time_since_last_grant_check > 0 &&
-      time_since_last_grant_check < braveledger_ledger::_grant_load_interval) {
-      start_timer_in =
-        braveledger_ledger::_grant_load_interval - time_since_last_grant_check;
+               time_since_last_grant_check <
+                   braveledger_ledger::_grant_load_interval) {
+      start_timer_in = braveledger_ledger::_grant_load_interval -
+                       time_since_last_grant_check;
     } else {
       start_timer_in = 0ull;
     }
@@ -1014,7 +948,7 @@ uint64_t LedgerImpl::retryRequestSetup(uint64_t min_time, uint64_t max_time) {
   const auto seed = seeder.entropy() ? seeder() : time(nullptr);
   std::mt19937 eng(static_cast<std::mt19937::result_type>(seed));
   DCHECK(max_time > min_time);
-  std::uniform_int_distribution <> dist(min_time, max_time);
+  std::uniform_int_distribution<> dist(min_time, max_time);
   return dist(eng);
 }
 
@@ -1033,26 +967,20 @@ void LedgerImpl::GetPublisherActivityFromUrl(
     const ledger::VisitData& visit_data,
     const std::string& publisher_blob) {
   bat_publishers_->getPublisherActivityFromUrl(
-      windowId,
-      visit_data,
-      publisher_blob);
+      windowId, visit_data, publisher_blob);
 }
 
-void LedgerImpl::GetMediaActivityFromUrl(
-    uint64_t windowId,
-    const ledger::VisitData& visit_data,
-    const std::string& providerType,
-    const std::string& publisher_blob) {
-  bat_get_media_->GetMediaActivityFromUrl(windowId,
-                                          visit_data,
-                                          providerType,
-                                          publisher_blob);
+void LedgerImpl::GetMediaActivityFromUrl(uint64_t windowId,
+                                         const ledger::VisitData& visit_data,
+                                         const std::string& providerType,
+                                         const std::string& publisher_blob) {
+  bat_get_media_->GetMediaActivityFromUrl(
+      windowId, visit_data, providerType, publisher_blob);
 }
 
-void LedgerImpl::OnPanelPublisherInfo(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info,
-    uint64_t windowId) {
+void LedgerImpl::OnPanelPublisherInfo(ledger::Result result,
+                                      ledger::PublisherInfoPtr info,
+                                      uint64_t windowId) {
   ledger_client_->OnPanelPublisherInfo(result, std::move(info), windowId);
 }
 
@@ -1086,26 +1014,18 @@ void LedgerImpl::OnReconcileCompleteSuccess(
     const ledger::ACTIVITY_MONTH month,
     const int year,
     const uint32_t date) {
-  bat_contribution_->OnReconcileCompleteSuccess(viewing_id,
-                                                category,
-                                                probi,
-                                                month,
-                                                year,
-                                                date);
+  bat_contribution_->OnReconcileCompleteSuccess(
+      viewing_id, category, probi, month, year, date);
 }
 
 void LedgerImpl::RemoveRecurringTip(const std::string& publisher_key) {
   ledger_client_->OnRemoveRecurring(
-      publisher_key,
-      std::bind(&LedgerImpl::OnRemovedRecurring,
-                this,
-                _1));
+      publisher_key, std::bind(&LedgerImpl::OnRemovedRecurring, this, _1));
 }
 
 void LedgerImpl::OnRemovedRecurring(ledger::Result result) {
   if (result != ledger::Result::LEDGER_OK) {
-    BLOG(this, ledger::LogLevel::LOG_ERROR) <<
-      "Failed to remove recurring";
+    BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to remove recurring";
 
     // TODO(anyone) add error callback
     return;
@@ -1126,7 +1046,6 @@ ledger::ActivityInfoFilter LedgerImpl::CreateActivityFilter(
                                                non_verified,
                                                min_visits);
 }
-
 
 std::unique_ptr<ledger::LogStream> LedgerImpl::Log(
     const char* file,
@@ -1155,13 +1074,13 @@ void LedgerImpl::LogResponse(
   }
 
   std::string response_data = IsPNG(response) ? "<PNG>" : response;
-  BLOG(this, ledger::LogLevel::LOG_RESPONSE) << std::endl
-    << "[ RESPONSE - " << func_name << " ]" << std::endl
-    << "> time: " << std::time(nullptr) << std::endl
-    << "> result: " << stat << std::endl
-    << "> response: " << response_data << std::endl
-    << formatted_headers
-    << "[ END RESPONSE ]";
+  BLOG(this, ledger::LogLevel::LOG_RESPONSE)
+      << std::endl
+      << "[ RESPONSE - " << func_name << " ]" << std::endl
+      << "> time: " << std::time(nullptr) << std::endl
+      << "> result: " << stat << std::endl
+      << "> response: " << response_data << std::endl
+      << formatted_headers << "[ END RESPONSE ]";
 }
 
 void LedgerImpl::ResetReconcileStamp() {
@@ -1174,8 +1093,8 @@ bool LedgerImpl::UpdateReconcile(
 }
 
 void LedgerImpl::AddReconcile(
-      const std::string& viewing_id,
-      const braveledger_bat_helper::CURRENT_RECONCILE& reconcile) {
+    const std::string& viewing_id,
+    const braveledger_bat_helper::CURRENT_RECONCILE& reconcile) {
   bat_state_->AddReconcile(viewing_id, reconcile);
 }
 
@@ -1227,8 +1146,8 @@ void LedgerImpl::SetPreFlight(const std::string& pre_flight) {
   bat_state_->SetPreFlight(pre_flight);
 }
 
-const braveledger_bat_helper::WALLET_INFO_ST&
-LedgerImpl::GetWalletInfo() const {
+const braveledger_bat_helper::WALLET_INFO_ST& LedgerImpl::GetWalletInfo()
+    const {
   return bat_state_->GetWalletInfo();
 }
 
@@ -1322,8 +1241,8 @@ void LedgerImpl::SetDays(unsigned int days) {
   bat_state_->SetDays(days);
 }
 
-const braveledger_bat_helper::Transactions&
-LedgerImpl::GetTransactions() const {
+const braveledger_bat_helper::Transactions& LedgerImpl::GetTransactions()
+    const {
   return bat_state_->GetTransactions();
 }
 
@@ -1380,19 +1299,14 @@ bool LedgerImpl::ReconcileExists(const std::string& viewingId) {
   return bat_state_->ReconcileExists(viewingId);
 }
 
-void LedgerImpl::SaveContributionInfo(
-    const std::string& probi,
-    const int month,
-    const int year,
-    const uint32_t date,
-    const std::string& publisher_key,
-    const ledger::REWARDS_CATEGORY category) {
-  ledger_client_->SaveContributionInfo(probi,
-                                       month,
-                                       year,
-                                       date,
-                                       publisher_key,
-                                       category);
+void LedgerImpl::SaveContributionInfo(const std::string& probi,
+                                      const int month,
+                                      const int year,
+                                      const uint32_t date,
+                                      const std::string& publisher_key,
+                                      const ledger::REWARDS_CATEGORY category) {
+  ledger_client_->SaveContributionInfo(
+      probi, month, year, date, publisher_key, category);
 }
 
 void LedgerImpl::NormalizeContributeWinners(
@@ -1406,15 +1320,11 @@ void LedgerImpl::SetTimer(uint64_t time_offset, uint32_t* timer_id) const {
   ledger_client_->SetTimer(time_offset, timer_id);
 }
 
-bool LedgerImpl::AddReconcileStep(
-    const std::string& viewing_id,
-    ledger::ContributionRetry step,
-    int level) {
+bool LedgerImpl::AddReconcileStep(const std::string& viewing_id,
+                                  ledger::ContributionRetry step,
+                                  int level) {
   BLOG(this, ledger::LogLevel::LOG_DEBUG)
-    << "Contribution step "
-    << std::to_string(step)
-    << " for "
-    << viewing_id;
+      << "Contribution step " << std::to_string(step) << " for " << viewing_id;
   return bat_state_->AddReconcileStep(viewing_id, step, level);
 }
 
@@ -1432,8 +1342,7 @@ void LedgerImpl::HasSufficientBalanceToReconcile(
   bat_contribution_->HasSufficientBalance(callback);
 }
 
-void LedgerImpl::SaveNormalizedPublisherList(
-    ledger::PublisherInfoList list) {
+void LedgerImpl::SaveNormalizedPublisherList(ledger::PublisherInfoList list) {
   ledger_client_->SaveNormalizedPublisherList(std::move(list));
 }
 
@@ -1511,17 +1420,15 @@ void LedgerImpl::GetTransactionHistoryForThisCycle(
   bat_confirmations_->GetTransactionHistoryForThisCycle(callback);
 }
 
-void LedgerImpl::RefreshPublisher(
-    const std::string& publisher_key,
-    ledger::OnRefreshPublisherCallback callback) {
-  DownloadPublisherList(
-      std::bind(&LedgerImpl::OnRefreshPublisher,
-                this,
-                _1,
-                _2,
-                _3,
-                publisher_key,
-                callback));
+void LedgerImpl::RefreshPublisher(const std::string& publisher_key,
+                                  ledger::OnRefreshPublisherCallback callback) {
+  DownloadPublisherList(std::bind(&LedgerImpl::OnRefreshPublisher,
+                                  this,
+                                  _1,
+                                  _2,
+                                  _3,
+                                  publisher_key,
+                                  callback));
 }
 
 void LedgerImpl::OnRefreshPublisher(
@@ -1531,9 +1438,7 @@ void LedgerImpl::OnRefreshPublisher(
     const std::string& publisher_key,
     ledger::OnRefreshPublisherCallback callback) {
   LoadPublishersListCallback(response_status_code, response, headers);
-  bat_publishers_->RefreshPublisherVerifiedStatus(
-      publisher_key,
-      callback);
+  bat_publishers_->RefreshPublisherVerifiedStatus(publisher_key, callback);
 }
 
 scoped_refptr<base::SequencedTaskRunner> LedgerImpl::GetTaskRunner() {
@@ -1579,10 +1484,7 @@ void LedgerImpl::OnGetPendingContributions(
 void LedgerImpl::GetPendingContributions(
     ledger::PendingContributionInfoListCallback callback) {
   ledger_client_->GetPendingContributions(
-      std::bind(&LedgerImpl::OnGetPendingContributions,
-                this,
-                _1,
-                callback));
+      std::bind(&LedgerImpl::OnGetPendingContributions, this, _1, callback));
 }
 
 void LedgerImpl::RemovePendingContribution(
@@ -1590,10 +1492,8 @@ void LedgerImpl::RemovePendingContribution(
     const std::string& viewing_id,
     uint64_t added_date,
     const ledger::RemovePendingContributionCallback& callback) {
-  ledger_client_->RemovePendingContribution(publisher_key,
-                                            viewing_id,
-                                            added_date,
-                                            callback);
+  ledger_client_->RemovePendingContribution(
+      publisher_key, viewing_id, added_date, callback);
 }
 
 void LedgerImpl::RemoveAllPendingContributions(

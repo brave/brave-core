@@ -25,8 +25,8 @@ void BraveExternalProcessImporterBridge::SetCookies(
   // Debug bounds-check which prevents pushing an iterator beyond its end()
   // (i.e., |it + 2 < s.end()| crashes in debug mode if |i + 1 == s.end()|).
   int cookies_left = cookies.end() - cookies.begin();
-  for (std::vector<net::CanonicalCookie>::const_iterator it =
-           cookies.begin(); it < cookies.end();) {
+  for (std::vector<net::CanonicalCookie>::const_iterator it = cookies.begin();
+       it < cookies.end();) {
     std::vector<net::CanonicalCookie> cookies_group;
     std::vector<net::CanonicalCookie>::const_iterator end_group =
         it + std::min(cookies_left, kNumCookiesToSend);
@@ -39,8 +39,7 @@ void BraveExternalProcessImporterBridge::SetCookies(
   DCHECK_EQ(0, cookies_left);
 }
 
-void BraveExternalProcessImporterBridge::UpdateStats(
-    const BraveStats& stats) {
+void BraveExternalProcessImporterBridge::UpdateStats(const BraveStats& stats) {
   (*observer_)->OnStatsImportReady(stats);
 }
 
@@ -59,16 +58,14 @@ void BraveExternalProcessImporterBridge::UpdateWindows(
   (*observer_)->OnWindowsImportReady(windowState);
 }
 
-
 void BraveExternalProcessImporterBridge::UpdateSettings(
-      const SessionStoreSettings& settings) {
+    const SessionStoreSettings& settings) {
   (*observer_)->OnSettingsImportReady(settings);
 }
-
 
 BraveExternalProcessImporterBridge::BraveExternalProcessImporterBridge(
     const base::flat_map<uint32_t, std::string>& localized_strings,
     scoped_refptr<chrome::mojom::ThreadSafeProfileImportObserverPtr> observer)
-  : ExternalProcessImporterBridge(localized_strings, observer) {}
+    : ExternalProcessImporterBridge(localized_strings, observer) {}
 
 BraveExternalProcessImporterBridge::~BraveExternalProcessImporterBridge() {}

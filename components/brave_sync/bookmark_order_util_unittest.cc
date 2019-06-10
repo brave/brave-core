@@ -9,9 +9,9 @@
 namespace brave_sync {
 
 class BookmarkOrderUtilTest : public testing::Test {
-public:
-protected:
-private:
+ public:
+ protected:
+ private:
 };
 
 TEST_F(BookmarkOrderUtilTest, OrderToIntVect_EmptyString) {
@@ -60,4 +60,4 @@ TEST_F(BookmarkOrderUtilTest, CompareOrder) {
   EXPECT_FALSE(CompareOrder("1.7.0.2", "1.7.0.1"));
 }
 
-} // namespace brave_sync
+}  // namespace brave_sync

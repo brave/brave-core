@@ -6,9 +6,9 @@
 #ifndef BRAVELEDGER_BAT_PUBLISHERS_H_
 #define BRAVELEDGER_BAT_PUBLISHERS_H_
 
-#include <string>
 #include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "base/gtest_prod_util.h"
@@ -83,22 +83,19 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bool getPublisherAllowVideos() const;
 
-  void OnPublisherInfoSaved(
-      ledger::Result result,
-      ledger::PublisherInfoPtr);
+  void OnPublisherInfoSaved(ledger::Result result, ledger::PublisherInfoPtr);
 
   std::string GetBalanceReportName(ledger::ACTIVITY_MONTH month, int year);
 
-  void RefreshPublishersList(const std::string & pubs_list);
+  void RefreshPublishersList(const std::string& pubs_list);
 
   void OnPublishersListSaved(ledger::Result result) override;
 
   bool loadPublisherList(const std::string& data);
 
-  void getPublisherActivityFromUrl(
-      uint64_t windowId,
-      const ledger::VisitData& visit_data,
-      const std::string& publisher_blob);
+  void getPublisherActivityFromUrl(uint64_t windowId,
+                                   const ledger::VisitData& visit_data,
+                                   const std::string& publisher_blob);
 
   void getPublisherBanner(const std::string& publisher_id,
                           ledger::PublisherBannerCallback callback);
@@ -140,14 +137,13 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool isExcluded(const std::string& publisher_id,
                   const ledger::PUBLISHER_EXCLUDE& excluded);
 
-  void saveVisitInternal(
-      std::string publisher_id,
-      ledger::VisitData visit_data,
-      uint64_t duration,
-      uint64_t window_id,
-      const ledger::PublisherInfoCallback callback,
-      ledger::Result result,
-      ledger::PublisherInfoPtr publisher_info);
+  void saveVisitInternal(std::string publisher_id,
+                         ledger::VisitData visit_data,
+                         uint64_t duration,
+                         uint64_t window_id,
+                         const ledger::PublisherInfoCallback callback,
+                         ledger::Result result,
+                         ledger::PublisherInfoPtr publisher_info);
 
   void onFetchFavIcon(const std::string& publisher_key,
                       uint64_t window_id,
@@ -159,10 +155,9 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                                 const std::string& favicon_url,
                                 uint64_t window_id);
 
-  void onSetExcludeInternal(
-    ledger::PUBLISHER_EXCLUDE exclude,
-    ledger::Result result,
-    ledger::PublisherInfoPtr publisher_info);
+  void onSetExcludeInternal(ledger::PUBLISHER_EXCLUDE exclude,
+                            ledger::Result result,
+                            ledger::PublisherInfoPtr publisher_info);
 
   void OnRestorePublishersInternal(bool success);
 
@@ -188,15 +183,13 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   bool isPublisherVisible(
       const braveledger_bat_helper::PUBLISHER_ST& publisher_st);
 
-  void OnSaveVisitInternal(
-    ledger::Result result,
-    ledger::PublisherInfoPtr info);
+  void OnSaveVisitInternal(ledger::Result result,
+                           ledger::PublisherInfoPtr info);
 
-  void OnPanelPublisherInfo(
-      ledger::Result result,
-      ledger::PublisherInfoPtr publisher_info,
-      uint64_t windowId,
-      const ledger::VisitData& visit_data);
+  void OnPanelPublisherInfo(ledger::Result result,
+                            ledger::PublisherInfoPtr publisher_info,
+                            uint64_t windowId,
+                            const ledger::VisitData& visit_data);
 
   void OnExcludedSitesChanged(const std::string& publisher_id,
                               ledger::PUBLISHER_EXCLUDE exclude);

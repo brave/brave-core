@@ -6,8 +6,8 @@
 #define BRAVE_COMPONENTS_TOOLBAR_CONSTANTS_H_
 
 namespace brave_toolbar {
-  extern const char kOriginalInternalUIScheme[];
-  extern const char kInternalUIScheme[];
-}
+extern const char kOriginalInternalUIScheme[];
+extern const char kInternalUIScheme[];
+}  // namespace brave_toolbar
 
 #endif

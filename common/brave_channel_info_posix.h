@@ -15,4 +15,3 @@ version_info::Channel GetChannelImpl(std::string* modifier_out,
 }
 
 #endif  // BRAVE_COMMON_BRAVE_CHANNEL_INFO_POSIX_H_
-
