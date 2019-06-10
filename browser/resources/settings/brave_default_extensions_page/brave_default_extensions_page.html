@@ -3,6 +3,7 @@
 
 <link rel="import" href="chrome://resources/cr_elements/cr_link_row/cr_link_row.html">
 <link rel="import" href="chrome://resources/html/i18n_behavior.html">
+<link rel="import" href="chrome://resources/html/web_ui_listener_behavior.html">
 <link rel="import" href="brave_default_extensions_browser_proxy.html">
 <link rel="import" href="../settings_page/settings_section.html">
 <link rel="import" href="../settings_shared_css.html">
@@ -13,6 +14,53 @@
     <style include="settings-shared iron-flex">
       .settings-row:not(:first-child) {
         border-top: var(--cr-separator-line);
+      }
+
+      #needsRestart {
+        background-color: #fff;
+        bottom: 0;
+        box-shadow: 0 -2px 2px 0 var(--shadow-color);
+        box-sizing: border-box;
+        left: 0;
+        opacity: 1;
+        padding: 16px;
+        position: fixed;
+        transform: translate(0);
+        transition: all 225ms var(--ease-in-out);
+        width: 100%;
+        z-index: 10;
+      }
+
+      :host-context([dark]) #needsRestart {
+        background-color: #161719;
+      }
+
+      #needsRestart .flex:last-child {
+        text-align: right; /* csschecker-disable-line left-right */
+      }
+
+      .flex {
+        align-self: center;
+        flex: 1 1 auto;
+      }
+
+      .flex-container {
+        display: flex;
+        padding: 8px 1em;
+      }
+
+      .restart-notice {
+        font-size: .9375rem;
+        line-height: 1.4;
+      }
+
+      button.primary {
+        background: var(--interactive-color);
+        border: 0;
+        border-radius: 3px;
+        color: white;
+        font-size: .875rem;
+        padding: 14px 38px;
       }
     </style>
     <settings-toggle-button id="webTorrentEnabled"
@@ -34,11 +82,30 @@
         sub-label="$i18n{ipfsCompanionEnabledDesc}"
         on-settings-boolean-control-change="onIPFSCompanionEnabledChange_">
     </settings-toggle-button>
+    <settings-toggle-button id="mediaRouterEnabled"
+        pref="{{prefs.brave.enable_media_router}}"
+        label="Media Router"
+        sub-label="$i18n{mediaRouterEnabledDesc}"
+        on-settings-boolean-control-change="onMediaRouterEnabledChange_">
+    </settings-toggle-button>
     <div class="settings-row" id="manageExtensionsRow">
       <cr-link-row icon-class="icon-external"
         label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">
       </cr-link-row>
     </div>
+  <template is="dom-if" if="{{ showRestartToast }}">
+    <div id="needsRestart">
+        <div class="flex-container">
+          <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
+          <div class="flex">
+            <button id="restartButton" class="primary" tabindex="9" on-click="restartBrowser_">
+            $i18n{relaunchButtonLabel}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
   </template>
   <script src="brave_default_extensions_page.js"></script>
 </dom-module>

@@ -57,3 +57,4 @@ const char kNewTabPageShowBackgroundImage[] =
 const char kNewTabPageShowClock[] = "brave.new_tab_page.show_clock";
 const char kNewTabPageShowTopSites[] = "brave.new_tab_page.show_top_sites";
 const char kNewTabPageShowStats[] = "brave.new_tab_page.show_stats";
+const char kBraveEnabledMediaRouter[] = "brave.enable_media_router";

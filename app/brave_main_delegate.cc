@@ -137,8 +137,14 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kDisableDomainReliability);
   command_line.AppendSwitch(switches::kDisableChromeGoogleURLTrackingClient);
   command_line.AppendSwitch(switches::kNoPings);
-  command_line.AppendSwitchASCII(switches::kExtensionsInstallVerification,
+
+  // Setting these to default values in Chromium to maintain parity
+  // See: ChromeContentVerifierDelegate::GetDefaultMode for ContentVerification
+  // See: GetStatus in install_verifier.cc for InstallVerification
+  command_line.AppendSwitchASCII(switches::kExtensionContentVerification,
       switches::kExtensionContentVerificationEnforceStrict);
+  command_line.AppendSwitchASCII(switches::kExtensionsInstallVerification,
+      "enforce");
 
   // Enabled features.
   const std::unordered_set<const char*> enabled_features = {

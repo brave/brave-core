@@ -13,7 +13,10 @@ extern const char kBraveReferralsHeadersPath[];
 extern const char kBraveReferralsInitPath[];
 extern const char kBraveReferralsActivityPath[];
 extern const char kBraveSafeBrowsingFileCheckProxy[];
+extern const char kBraveRedirectorProxy[];
+extern const char kBraveClients4Proxy[];
 
+extern const char kClients4Prefix[];
 extern const char kCRXDownloadPrefix[];
 extern const char kEmptyDataURI[];
 extern const char kEmptyImageDataURI[];
@@ -30,6 +33,7 @@ extern const char kCRLSetPrefix1[];
 extern const char kCRLSetPrefix2[];
 extern const char kCRLSetPrefix3[];
 extern const char kCRLSetPrefix4[];
+extern const char kChromeCastPrefix[];
 extern const char kTwitterPattern[];
 extern const char kTwitterReferrer[];
 extern const char kTwitterRedirectURL[];
