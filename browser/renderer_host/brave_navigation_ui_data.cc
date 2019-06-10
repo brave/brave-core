@@ -41,8 +41,7 @@ BraveNavigationUIData::CreateForMainFrameNavigation(
   return navigation_ui_data;
 }
 
-std::unique_ptr<content::NavigationUIData> BraveNavigationUIData::Clone()
-    const {
+std::unique_ptr<content::NavigationUIData> BraveNavigationUIData::Clone() {
   content::NavigationUIData* chrome_copy =
       (ChromeNavigationUIData::Clone().release());
   BraveNavigationUIData* copy =
