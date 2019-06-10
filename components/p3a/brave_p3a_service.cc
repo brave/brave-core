@@ -36,8 +36,7 @@ namespace {
 
 constexpr char kLastRotationTimeStampPref[] = "p3a.last_rotation_timestamp";
 
-constexpr char kDefaultUploadServerUrl[] =
-    "https://p3a.brave.com/";
+constexpr char kDefaultUploadServerUrl[] = "https://p3a.brave.com/";
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60 * 60;  // 1 hour.
 
@@ -81,8 +80,8 @@ base::TimeDelta TimeDeltaTillMonday(base::Time time) {
     days_till_monday = 1;
   }
 
-  base::TimeDelta result =
-      base::TimeDelta::FromDays(days_till_monday) - (time - time.LocalMidnight());
+  base::TimeDelta result = base::TimeDelta::FromDays(days_till_monday) -
+                           (time - time.LocalMidnight());
   return result;
 }
 
@@ -155,9 +154,11 @@ void BraveP3AService::Init() {
 
   upload_scheduler_.reset(new BraveP3AScheduler(
       base::Bind(&BraveP3AService::StartScheduledUpload, this),
-      (randomize_upload_interval_ ?
-      base::BindRepeating(GetRandomizedUploadInterval, max_upload_interval_) :
-      base::BindRepeating([](base::TimeDelta x) {return x;}, max_upload_interval_))));
+      (randomize_upload_interval_
+           ? base::BindRepeating(GetRandomizedUploadInterval,
+                                 max_upload_interval_)
+           : base::BindRepeating([](base::TimeDelta x) { return x; },
+                                 max_upload_interval_))));
 
   // Start the engine if we are enabled.
   if (upload_enabled_) {
@@ -220,7 +221,6 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
   }
 }
 
-
 void BraveP3AService::InitPyxisMeta() {
   pyxis_meta_.platform = brave::GetPlatformIdentifier();
   pyxis_meta_.channel = brave::GetChannelName();
@@ -269,7 +269,6 @@ void BraveP3AService::StartScheduledUpload() {
 
 void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
                                          base::HistogramBase::Sample sample) {
-
   std::unique_ptr<base::HistogramSamples> samples =
       base::StatisticsRecorder::FindHistogram(histogram_name)->SnapshotDelta();
   DCHECK(!samples->Iterator()->Done());
@@ -291,7 +290,7 @@ void BraveP3AService::OnHistogramChanged(base::StringPiece histogram_name,
 
 void BraveP3AService::OnHistogramChangedOnUI(base::StringPiece histogram_name,
                                              base::HistogramBase::Sample sample,
-                                              size_t bucket) {
+                                             size_t bucket) {
   VLOG(2) << "BraveP3AService::OnHistogramChanged: histogram_name = "
           << histogram_name << " Sample = " << sample << " bucket = " << bucket;
   if (!initialized_) {
@@ -300,7 +299,6 @@ void BraveP3AService::OnHistogramChangedOnUI(base::StringPiece histogram_name,
     log_store_->UpdateValue(histogram_name.as_string(), bucket);
   }
 }
-
 
 void BraveP3AService::OnLogUploadComplete(int response_code,
                                           int error_code,
