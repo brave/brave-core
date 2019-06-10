@@ -45,6 +45,11 @@ int OnBeforeURLRequest_CommonStaticRedirectWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   GURL::Replacements replacements;
+  static URLPattern googleapis_pattern(
+    URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kGoogleAPIPrefix);
+  static URLPattern chromecast_pattern(
+    URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS, kChromeCastPrefix);
+
   if (IsUpdaterURL(ctx->request_url)) {
     replacements.SetQueryStr(ctx->request_url.query_piece());
     ctx->new_url_spec = GURL(kBraveUpdatesExtensionsEndpoint)
@@ -52,6 +57,21 @@ int OnBeforeURLRequest_CommonStaticRedirectWork(
                             .spec();
     return net::OK;
   }
+
+  if (googleapis_pattern.MatchesHost(ctx->request_url)) {
+    replacements.SetSchemeStr("https");
+    replacements.SetHostStr(kBraveGoogleAPIProxy);
+    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    return net::OK;
+  }
+
+  if (chromecast_pattern.MatchesURL(ctx->request_url)) {
+    replacements.SetSchemeStr("https");
+    replacements.SetHostStr(kBraveRedirectorProxy);
+    ctx->new_url_spec = ctx->request_url.ReplaceComponents(replacements).spec();
+    return net::OK;
+  }
+
   return net::OK;
 }
 

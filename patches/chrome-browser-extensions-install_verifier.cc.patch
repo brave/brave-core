@@ -1,0 +1,27 @@
+diff --git a/chrome/browser/extensions/install_verifier.cc b/chrome/browser/extensions/install_verifier.cc
+index 23b122e8627a262388927734317a1582b73542ff..3eda974b1847d7321cd02e8d48383642a5b5b1a5 100644
+--- a/chrome/browser/extensions/install_verifier.cc
++++ b/chrome/browser/extensions/install_verifier.cc
+@@ -41,6 +41,10 @@ namespace extensions {
+ 
+ namespace {
+ 
++const char kMediaRouterExtensionId[] = {
++    "pkedcjkdefgpdelpbcmbmeomcjbeemfm",  // Stable
++};
++
+ // This should only be set during tests.
+ ScopedInstallVerifierBypassForTest::ForceType* g_bypass_for_test = nullptr;
+ 
+@@ -378,6 +382,11 @@ bool InstallVerifier::MustRemainDisabled(const Extension* extension,
+                                          disable_reason::DisableReason* reason,
+                                          base::string16* error) const {
+   CHECK(extension);
++  // Do not fetch signatures for ChromeCast
++  if (extension->id() == kMediaRouterExtensionId) {
++    return false;
++  }
++
+   if (!CanUseExtensionApis(*extension)) {
+     MustRemainDisabledHistogram(NOT_EXTENSION);
+     return false;
