@@ -6,6 +6,7 @@
 #include "brave/browser/tor/tor_profile_service_impl.h"
 
 #include <string>
+#include <utility>
 
 #include "base/bind.h"
 #include "base/task/post_task.h"
@@ -15,9 +16,8 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
-#include "net/proxy_resolution/proxy_resolution_service.h"
-#include "net/url_request/url_request_context.h"
-#include "net/url_request/url_request_context_getter.h"
+#include "mojo/public/cpp/bindings/interface_request.h"
+#include "services/network/public/mojom/network_context.mojom.h"
 
 using content::BrowserContext;
 using content::BrowserThread;
@@ -25,7 +25,7 @@ using content::BrowserThread;
 namespace tor {
 
 TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile) :
-    profile_(profile) {
+    profile_(profile), binding_(this) {
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
   tor_launcher_factory_->AddObserver(this);
 }
@@ -46,42 +46,44 @@ void TorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
   tor_launcher_factory_->ReLaunchTorProcess(config);
 }
 
-void TorProfileServiceImpl::SetNewTorCircuitOnIOThread(
-    const scoped_refptr<net::URLRequestContextGetter>& getter,
-    std::string host) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  const TorConfig tor_config = tor_launcher_factory_->GetTorConfig();
-  if (tor_config.empty())
-    return;
-  auto* proxy_resolution_service =
-    getter->GetURLRequestContext()->proxy_resolution_service();
-  DCHECK(proxy_resolution_service);
-  TorProxyConfigService::TorSetProxy(proxy_resolution_service,
-                                     tor_config.proxy_string(),
-                                     host,
-                                     &tor_proxy_map_,
-                                     true);
+void TorProfileServiceImpl::OnSetNewTorCircuitComplete(bool success) {
+  if (tor_circuit_callback_)
+      std::move(tor_circuit_callback_).Run(success);
+}
+
+void TorProfileServiceImpl::OnProxyLookupComplete(
+    int32_t net_error,
+    const base::Optional<net::ProxyInfo>& proxy_info) {
+  bool success = proxy_info.has_value() && !proxy_info->is_direct();
+  if (tor_circuit_callback_) {
+    std::move(tor_circuit_callback_).Run(success);
+    binding_.Close();
+  }
 }
 
 void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
-                                             const base::Closure& callback) {
-  std::string isolation_key = CircuitIsolationKey(request_url);
-  if (isolation_key.empty())
-    return;
+                                             NewTorCircuitCallback callback) {
   auto* storage_partition =
     BrowserContext::GetStoragePartitionForSite(profile_, request_url, false);
 
-  net::URLRequestContextGetter* url_request_context_getter =
-    storage_partition->GetURLRequestContext();
-  DCHECK(url_request_context_getter);
+  GURL::Replacements replacements;
+  replacements.SetRef("NewTorCircuit",
+                      url::Component(0, strlen("NewTorCircuit")));
+  GURL url = request_url.ReplaceComponents(replacements);
+  tor_circuit_callback_ = std::move(callback);
 
-  base::PostTaskWithTraitsAndReply(
-      FROM_HERE, {BrowserThread::IO},
-      base::Bind(&TorProfileServiceImpl::SetNewTorCircuitOnIOThread,
-                 base::Unretained(this),
-                 base::WrapRefCounted(url_request_context_getter),
-                 isolation_key),
-    callback);
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  network::mojom::ProxyLookupClientPtr proxy_lookup_client_ptr;
+  binding_.Bind(
+      mojo::MakeRequest(&proxy_lookup_client_ptr),
+      base::CreateSingleThreadTaskRunnerWithTraits(
+          {content::BrowserThread::UI, content::BrowserTaskType::kPreconnect}));
+  binding_.set_connection_error_handler(
+      base::BindOnce(&TorProfileServiceImpl::OnProxyLookupComplete,
+                     base::Unretained(this), net::ERR_ABORTED, base::nullopt));
+  // Force lookup to erase the old circuit
+  storage_partition->GetNetworkContext()->
+    LookUpProxyForURL(url, std::move(proxy_lookup_client_ptr));
 }
 
 const TorConfig& TorProfileServiceImpl::GetTorConfig() {
@@ -90,27 +92,6 @@ const TorConfig& TorProfileServiceImpl::GetTorConfig() {
 
 int64_t TorProfileServiceImpl::GetTorPid() {
   return tor_launcher_factory_->GetTorPid();
-}
-
-int TorProfileServiceImpl::SetProxy(net::ProxyResolutionService* service,
-                                    const GURL& request_url,
-                                    bool new_circuit) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  DCHECK(request_url.SchemeIsHTTPOrHTTPS());
-  const TorConfig tor_config = tor_launcher_factory_->GetTorConfig();
-  std::string isolation_key = CircuitIsolationKey(request_url);
-  if (tor_config.empty()) {
-    // No tor config => we absolutely cannot talk to the network.
-    // This might mean that there was a problem trying to initialize
-    // Tor.
-    LOG(ERROR) << "Tor not configured -- blocking connection";
-    return net::ERR_SOCKS_CONNECTION_FAILED;
-  }
-  base::PostTaskWithTraits(FROM_HERE, {BrowserThread::IO},
-      base::Bind(&TorProxyConfigService::TorSetProxy,
-      service, tor_config.proxy_string(),
-      isolation_key, &tor_proxy_map_, new_circuit));
-  return net::OK;
 }
 
 void TorProfileServiceImpl::KillTor() {

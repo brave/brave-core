@@ -1,0 +1,24 @@
+diff --git a/net/proxy_resolution/proxy_resolution_service.cc b/net/proxy_resolution/proxy_resolution_service.cc
+index 0cb73b2594ab13cfcbf26a37aca4f8a7da6b7b02..16a8c509d9aca9a458b384c4fc98c322ed0113d0 100644
+--- a/net/proxy_resolution/proxy_resolution_service.cc
++++ b/net/proxy_resolution/proxy_resolution_service.cc
+@@ -1181,6 +1181,9 @@ int ProxyResolutionService::ResolveProxy(const GURL& raw_url,
+   if (current_state_ == STATE_NONE)
+     ApplyProxyConfigIfAvailable();
+ 
++  if (IsTorProxy(config_->value()) && raw_url.ref() == "NewTorCircuit")
++    tor_proxy_map_.Erase(ProxyConfigServiceTor::CircuitIsolationKey(raw_url));
++
+   // Sanitize the URL before passing it on to the proxy resolver (i.e. PAC
+   // script). The goal is to remove sensitive data (like embedded user names
+   // and password), and local data (i.e. reference fragment) which does not need
+@@ -1240,6 +1243,9 @@ int ProxyResolutionService::TryToCompleteSynchronously(
+   if (config_->value().HasAutomaticSettings())
+     return ERR_IO_PENDING;  // Must submit the request to the proxy resolver.
+ 
++  if (IsTorProxy(config_->value()))
++    SetTorCircuitIsolation(config_->value(), url, result, &tor_proxy_map_);
++  else
+   // Use the manual proxy settings.
+   config_->value().proxy_rules().Apply(url, result);
+   result->set_traffic_annotation(

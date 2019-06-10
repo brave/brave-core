@@ -26,6 +26,8 @@ class PrefRegistrySimple;
 
 namespace tor {
 
+using NewTorCircuitCallback = base::OnceCallback<void(bool success)>;
+
 class TorLauncherServiceObserver;
 
 class TorProfileService : public KeyedService {
@@ -39,18 +41,12 @@ class TorProfileService : public KeyedService {
   virtual void LaunchTor(const TorConfig&) = 0;
   virtual void ReLaunchTor(const TorConfig&) = 0;
   virtual void SetNewTorCircuit(const GURL& request_url,
-                                const base::Closure&) = 0;
+                                NewTorCircuitCallback) = 0;
   virtual const TorConfig& GetTorConfig() = 0;
   virtual int64_t GetTorPid() = 0;
 
-  virtual int SetProxy(net::ProxyResolutionService*,
-                       const GURL& request_url,
-                       bool new_circuit) = 0;
-
   void AddObserver(TorLauncherServiceObserver* observer);
   void RemoveObserver(TorLauncherServiceObserver* observer);
-
-  static std::string CircuitIsolationKey(const GURL& request_url);
 
  protected:
   base::ObserverList<TorLauncherServiceObserver> observers_;

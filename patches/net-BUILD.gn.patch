@@ -1,0 +1,16 @@
+diff --git a/net/BUILD.gn b/net/BUILD.gn
+index d76f076bbf1b373238525f756857cc0591c627af..bad8a3b5496bcf24e002e3ae2b5e7d7d60848aee 100644
+--- a/net/BUILD.gn
++++ b/net/BUILD.gn
+@@ -1837,6 +1837,11 @@ component("net") {
+       ]
+     }
+ 
++    sources += [
++      "//brave/net/proxy_resolution/proxy_config_service_tor.cc",
++      "//brave/net/proxy_resolution/proxy_config_service_tor.h",
++    ]
++
+     if (!use_kerberos) {
+       sources -= [
+         "http/http_auth_handler_negotiate.cc",

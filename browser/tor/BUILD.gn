@@ -24,10 +24,8 @@ source_set("tor") {
     "//components/keyed_service/content",
     "//components/keyed_service/core",
     # for profile.h
-    "//components/domain_reliability",
     "//content/public/browser",
     "//services/service_manager",
-    "//net",
   ]
 
   public_deps = [
@@ -40,8 +38,6 @@ source_set("tor") {
       "tor_launcher_factory.h",
       "tor_profile_service_impl.cc",
       "tor_profile_service_impl.h",
-      "tor_proxy_config_service.cc",
-      "tor_proxy_config_service.h",
     ]
   }
 }

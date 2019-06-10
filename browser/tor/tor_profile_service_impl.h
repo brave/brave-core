@@ -11,19 +11,24 @@
 #include <string>
 
 #include "base/memory/scoped_refptr.h"
+#include "base/optional.h"
 #include "brave/browser/tor/tor_launcher_factory.h"
-#include "brave/browser/tor/tor_proxy_config_service.h"
+#include "mojo/public/cpp/bindings/binding.h"
+#include "services/network/public/mojom/proxy_lookup_client.mojom.h"
 
 class Profile;
 
-namespace net {
-class URLRequestContextGetter;
+namespace network {
+namespace mojom {
+class NetworkContext;
 }
+}  // namespace network
 
 namespace tor {
 
 class TorProfileServiceImpl : public TorProfileService,
-                              public base::CheckedObserver {
+                              public base::CheckedObserver,
+                              public network::mojom::ProxyLookupClient {
  public:
   explicit TorProfileServiceImpl(Profile* profile);
   ~TorProfileServiceImpl() override;
@@ -34,13 +39,10 @@ class TorProfileServiceImpl : public TorProfileService,
   // TorProfileService:
   void LaunchTor(const TorConfig&) override;
   void ReLaunchTor(const TorConfig&) override;
-  void SetNewTorCircuit(const GURL& request_url, const base::Closure&) override;
+  void SetNewTorCircuit(const GURL& request_url,
+                        NewTorCircuitCallback) override;
   const TorConfig& GetTorConfig() override;
   int64_t GetTorPid() override;
-
-  int SetProxy(net::ProxyResolutionService*,
-               const GURL& request_url,
-               bool new_circuit) override;
 
   void KillTor();
 
@@ -49,13 +51,18 @@ class TorProfileServiceImpl : public TorProfileService,
   void NotifyTorCrashed(int64_t pid);
   void NotifyTorLaunched(bool result, int64_t pid);
 
+  // network::mojom::ProxyLookupClient:
+  void OnProxyLookupComplete(
+      int32_t net_error,
+      const base::Optional<net::ProxyInfo>& proxy_info) override;
+
  private:
-  void SetNewTorCircuitOnIOThread(
-      const scoped_refptr<net::URLRequestContextGetter>&, std::string);
+  void OnSetNewTorCircuitComplete(bool success);
 
   Profile* profile_;  // NOT OWNED
   TorLauncherFactory* tor_launcher_factory_;  // Singleton
-  TorProxyConfigService::TorProxyMap tor_proxy_map_;
+  NewTorCircuitCallback tor_circuit_callback_;
+  mojo::Binding<network::mojom::ProxyLookupClient> binding_;
   DISALLOW_COPY_AND_ASSIGN(TorProfileServiceImpl);
 };
 

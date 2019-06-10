@@ -12,6 +12,7 @@ source_set("tor") {
 
   deps = [
     ":pref_names",
+    ":proxy_string",
     "//base",
     "//chrome/common:constants",
     "//url:url",
@@ -32,5 +33,17 @@ mojom("tor_mojom_bindings") {
   ]
   public_deps = [
     "//mojo/public/mojom/base",
+  ]
+}
+
+source_set("proxy_string") {
+  sources = [
+    "tor_proxy_string_helper.cc",
+    "tor_proxy_string_helper.h",
+  ]
+
+  deps = [
+    "//chrome/common:channel_info",
+    "//components/version_info",
   ]
 }

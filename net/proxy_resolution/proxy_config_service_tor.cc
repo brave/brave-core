@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/tor/tor_proxy_config_service.h"
+#include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 
 #include <algorithm>
 #include <limits>
@@ -15,24 +15,21 @@
 #include "base/values.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
-#include "content/public/browser/browser_thread.h"
 #include "crypto/random.h"
-#include "net/proxy_resolution/proxy_resolution_service.h"
-#include "net/url_request/url_request_context.h"
+#include "net/proxy_resolution/proxy_config_with_annotation.h"
+#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/third_party/mozilla/url_parse.h"
+#include "url/origin.h"
 
-namespace tor {
+namespace net {
 
-using content::BrowserThread;
 const int kTorPasswordLength = 16;
 // Default tor circuit life time is 10 minutes
 constexpr base::TimeDelta kTenMins = base::TimeDelta::FromMinutes(10);
 
 const char kSocksProxy[] = "socks5";
 
-TorProxyConfigService::TorProxyConfigService(
-  const std::string& tor_proxy, const std::string& username,
-  TorProxyMap* tor_proxy_map) {
+ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& tor_proxy) {
     config_.proxy_rules().bypass_rules.AddRulesToSubtractImplicit();
     if (tor_proxy.length()) {
       url::Parsed url;
@@ -52,39 +49,50 @@ TorProxyConfigService::TorProxyConfigService(
       }
       if (scheme_.empty() || host_.empty() || port_.empty())
         return;
-      std::string proxy_url;
-      if (tor_proxy_map && !username.empty()) {
-        std::string password = tor_proxy_map->Get(username);
-        proxy_url = std::string(scheme_ + "://" + username + ":" + password +
-                                "@" + host_ + ":" + port_);
-      } else {
-        proxy_url = std::string(scheme_ + "://" + host_ + ":" + port_);
-      }
+      std::string proxy_url =
+        std::string(scheme_ + "://" + host_ + ":" + port_);
       config_.proxy_rules().ParseFromString(proxy_url);
     }
 }
 
-TorProxyConfigService::~TorProxyConfigService() {}
+ProxyConfigServiceTor::~ProxyConfigServiceTor() {}
 
-// static
-void TorProxyConfigService::TorSetProxy(
-    net::ProxyResolutionService* service,
-    std::string tor_proxy,
-    std::string site_url,
-    TorProxyMap* tor_proxy_map,
-    bool new_password) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  if (!service)
-    return;
-  if (new_password && tor_proxy_map)
-    tor_proxy_map->Erase(site_url);
-  std::unique_ptr<TorProxyConfigService>
-    config(new TorProxyConfigService(tor_proxy, site_url, tor_proxy_map));
-  service->ResetConfigService(std::move(config));
+void ProxyConfigServiceTor::SetUsername(const std::string &username,
+                                        TorProxyMap* map) {
+  if (map && !username.empty()) {
+    DCHECK(!scheme_.empty() && !host_.empty() && !port_.empty());
+    std::string password = map->Get(username);
+    std::string proxy_url = std::string(scheme_ + "://" + username + ":" +
+                                        password + "@" + host_ + ":" + port_);
+    config_.proxy_rules().ParseFromString(proxy_url);
+  }
 }
 
-TorProxyConfigService::ConfigAvailability
-    TorProxyConfigService::GetLatestProxyConfig(
+// static
+std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
+  // https://2019.www.torproject.org/projects/torbrowser/design/#privacy
+  //
+  //    For the purposes of the unlinkability requirements of this
+  //    section as well as the descriptions in the implementation
+  //    section, a URL bar origin means at least the second-level DNS
+  //    name.  For example, for mail.google.com, the origin would be
+  //    google.com.  Implementations MAY, at their option, restrict
+  //    the URL bar origin to be the entire fully qualified domain
+  //    name.
+  //
+  // In particular, we need not isolate by the scheme,
+  // username/password, port, path, or query part of the URL.
+  url::Origin origin = url::Origin::Create(url);
+  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      origin.host(),
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  if (domain.size() == 0)
+    domain = origin.host();
+  return domain;
+}
+
+ProxyConfigServiceTor::ConfigAvailability
+    ProxyConfigServiceTor::GetLatestProxyConfig(
       net::ProxyConfigWithAnnotation* config) {
   if (scheme_ != kSocksProxy || host_.empty() || port_.empty())
     return CONFIG_UNSET;
@@ -92,19 +100,19 @@ TorProxyConfigService::ConfigAvailability
   return CONFIG_VALID;
 }
 
-TorProxyConfigService::TorProxyMap::TorProxyMap() = default;
-TorProxyConfigService::TorProxyMap::~TorProxyMap() {
+ProxyConfigServiceTor::TorProxyMap::TorProxyMap() = default;
+ProxyConfigServiceTor::TorProxyMap::~TorProxyMap() {
   timer_.Stop();
 }
 
 // static
-std::string TorProxyConfigService::TorProxyMap::GenerateNewPassword() {
+std::string ProxyConfigServiceTor::TorProxyMap::GenerateNewPassword() {
   std::vector<uint8_t> password(kTorPasswordLength);
   crypto::RandBytes(password.data(), password.size());
   return base::HexEncode(password.data(), password.size());
 }
 
-std::string TorProxyConfigService::TorProxyMap::Get(
+std::string ProxyConfigServiceTor::TorProxyMap::Get(
     const std::string& username) {
   // Clear any expired entries, in case this one has expired.
   ClearExpiredEntries();
@@ -125,12 +133,12 @@ std::string TorProxyConfigService::TorProxyMap::Get(
   // using Tor for a while.
   timer_.Stop();
   timer_.Start(FROM_HERE, kTenMins, this,
-               &TorProxyConfigService::TorProxyMap::ClearExpiredEntries);
+               &ProxyConfigServiceTor::TorProxyMap::ClearExpiredEntries);
 
   return password;
 }
 
-void TorProxyConfigService::TorProxyMap::Erase(const std::string& username) {
+void ProxyConfigServiceTor::TorProxyMap::Erase(const std::string& username) {
   // Just erase it from the map.  There will remain an entry in the
   // queue, but it is harmless.  If anyone creates a new entry in the
   // map, the old entry in the queue will cease to affect it because
@@ -139,7 +147,7 @@ void TorProxyConfigService::TorProxyMap::Erase(const std::string& username) {
   map_.erase(username);
 }
 
-void TorProxyConfigService::TorProxyMap::ClearExpiredEntries() {
+void ProxyConfigServiceTor::TorProxyMap::ClearExpiredEntries() {
   const base::Time cutoff = base::Time::Now() - kTenMins;
   for (; !queue_.empty(); queue_.pop()) {
     // Check the timestamp.  If it's not older than the cutoff, stop.
@@ -166,4 +174,4 @@ void TorProxyConfigService::TorProxyMap::ClearExpiredEntries() {
   }
 }
 
-}  // namespace tor
+}  // namespace net

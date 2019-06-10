@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_TOR_TOR_PROXY_CONFIG_SERVICE_H_
-#define BRAVE_BROWSER_TOR_TOR_PROXY_CONFIG_SERVICE_H_
+
+#ifndef BRAVE_NET_PROXY_RESOLUTION_PROXY_CONFIG_SERVICE_TOR_H_
+#define BRAVE_NET_PROXY_RESOLUTION_PROXY_CONFIG_SERVICE_TOR_H_
 
 #include <string>
 #include <map>
@@ -23,13 +24,9 @@ class Time;
 }
 
 namespace net {
-class ProxyResolutionService;
-}
-
-namespace tor {
 
 // Implementation of ProxyConfigService that returns a tor specific result.
-class TorProxyConfigService : public net::ProxyConfigService {
+class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
  public:
   // Used to cache <username, password> of proxies
   class TorProxyMap {
@@ -49,17 +46,14 @@ class TorProxyConfigService : public net::ProxyConfigService {
     DISALLOW_COPY_AND_ASSIGN(TorProxyMap);
   };
 
-  explicit TorProxyConfigService(const std::string& tor_proxy,
-                                 const std::string& username,
-                                 TorProxyMap* map);
-  ~TorProxyConfigService() override;
+  explicit ProxyConfigServiceTor(const std::string& tor_proxy);
+  ~ProxyConfigServiceTor() override;
 
-  static void TorSetProxy(
-    net::ProxyResolutionService* service,
-    std::string tor_proxy,
-    std::string site_url,
-    TorProxyMap* tor_proxy_map,
-    bool new_password);
+  void SetUsername(const std::string &username, TorProxyMap* map);
+
+  net::ProxyConfig* config() { return &config_; }
+
+  static std::string CircuitIsolationKey(const GURL& request_url);
 
   // ProxyConfigService methods:
   void AddObserver(Observer* observer) override {}
@@ -75,6 +69,6 @@ class TorProxyConfigService : public net::ProxyConfigService {
   std::string port_;
 };
 
-}  // namespace tor
+}  // namespace net
 
-#endif  // BRAVE_BROWSER_TOR_TOR_PROXY_CONFIG_SERVICE_H_
+#endif  // BRAVE_NET_PROXY_RESOLUTION_PROXY_CONFIG_SERVICE_TOR_H_
