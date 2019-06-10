@@ -182,7 +182,7 @@ class Banner extends React.Component<Props, State> {
         onClose={this.onClose}
         social={this.generateSocialLinks()}
         showUnVerifiedNotice={!verified}
-        learnMoreNotice={'https://brave.com/faq-rewards/#unclaimed-funds'}
+        learnMoreNotice={'https://brave.com/faq/#unclaimed-funds'}
         addFundsLink={this.addFundsLink}
       >
       {

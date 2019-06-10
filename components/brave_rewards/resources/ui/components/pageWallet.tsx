@@ -389,7 +389,7 @@ class PageWallet extends React.Component<Props, State> {
               ? <WalletEmpty />
               : <WalletSummary
                 reservedAmount={pendingTotal}
-                reservedMoreLink={'https://brave.com/faq-rewards/#unclaimed-funds'}
+                reservedMoreLink={'https://brave.com/faq/#unclaimed-funds'}
                 {...this.getWalletSummary()}
               />
             : <WalletOff/>
