@@ -27,7 +27,7 @@ class BraveNavigationUIData : public ChromeNavigationUIData {
       WindowOpenDisposition disposition,
       int64_t data_reduction_proxy_page_id);
 
-  std::unique_ptr<content::NavigationUIData> Clone() const override;
+  std::unique_ptr<content::NavigationUIData> Clone() override;
 
   void SetTorProfileService(TorProfileService*);
   TorProfileService* GetTorProfileService() const;
