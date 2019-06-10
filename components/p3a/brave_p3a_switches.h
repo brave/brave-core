@@ -15,10 +15,9 @@ constexpr char kP3AUploadEnabled[] = "p3a-upload-enabled";
 // Interval between sending two values.
 constexpr char kP3AUploadIntervalSeconds[] = "p3a-upload-interval-seconds";
 
-// The upload interval divided by this value gives us a beginning of an interval
-// within which we pick the actual random delay.
-constexpr char kP3AUploadIntervalRandomizationDivisor[] =
-    "p3a-upload-interval-randomization-divisor";
+// Avoid upload interval randomization.
+constexpr char kP3ADoNotRandomizeUploadInterval[] =
+    "p3a-do-not-randomize-upload-interval";
 
 // Interval between restarting the uploading process for all gathered values.
 constexpr char kP3ARotationIntervalSeconds[] = "p3a-rotation-interval-seconds";

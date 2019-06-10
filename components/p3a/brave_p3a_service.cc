@@ -22,6 +22,7 @@
 #include "brave/components/p3a/brave_p3a_scheduler.h"
 #include "brave/components/p3a/brave_p3a_switches.h"
 #include "brave/components/p3a/brave_p3a_uploader.h"
+#include "brave/vendor/brave_base/random.h"
 #include "chrome/browser/browser_process.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -39,8 +40,6 @@ constexpr char kDefaultUploadServerUrl[] =
     "https://p3a.brave.com/";
 
 constexpr uint64_t kDefaultUploadIntervalSeconds = 60 * 60;  // 1 hour.
-
-constexpr int kDefaultRandomizationDivisor = 2;
 
 // TODO(iefremov): Provide moar histograms!
 // Whitelist for histograms that we collect. Will be replaced with something
@@ -65,19 +64,10 @@ constexpr const char* kCollectedHistograms[] = {
     "Brave.Welcome.InteractionStatus",
 };
 
-base::TimeDelta GetRandomizedUploadInterval(base::TimeDelta max_upload_interval,
-                                            uint32_t randomization_divisor) {
-  if (randomization_divisor == 0 || randomization_divisor == 1) {
-    return max_upload_interval;
-  }
-  const double interval_start =
-      max_upload_interval.InSecondsF() / randomization_divisor;
-  const uint32_t interval =
-      static_cast<uint32_t>(max_upload_interval.InSecondsF() - interval_start);
-  const double randomized_delay =
-      base::RandGenerator(interval) + interval_start;
-
-  return base::TimeDelta::FromSeconds(static_cast<int64_t>(randomized_delay));
+base::TimeDelta GetRandomizedUploadInterval(
+    base::TimeDelta max_upload_interval) {
+  return base::TimeDelta::FromSecondsD(
+      brave_base::random::Geometric(max_upload_interval.InSecondsF()));
 }
 
 base::TimeDelta TimeDeltaTillMonday(base::Time time) {
@@ -125,7 +115,6 @@ void BraveP3AService::Init() {
 
   max_upload_interval_ =
       base::TimeDelta::FromSeconds(kDefaultUploadIntervalSeconds);
-  interval_randomization_divisor_ = kDefaultRandomizationDivisor;
 
   upload_server_url_ = GURL(kDefaultUploadServerUrl);
   MaybeOverrideSettingsFromCommandLine();
@@ -134,8 +123,7 @@ void BraveP3AService::Init() {
   VLOG(2) << "BraveP3AService parameters are:"
           << " upload_enabled_ = " << upload_enabled_
           << ", max_upload_interval_ = " << max_upload_interval_
-          << ", interval_randomization_divisor_ = "
-          << interval_randomization_divisor_
+          << ", randomize_upload_interval_ = " << randomize_upload_interval_
           << ", upload_server_url_ = " << upload_server_url_.spec()
           << ", rotation_interval_ = " << rotation_interval_;
 
@@ -167,8 +155,9 @@ void BraveP3AService::Init() {
 
   upload_scheduler_.reset(new BraveP3AScheduler(
       base::Bind(&BraveP3AService::StartScheduledUpload, this),
-      base::BindRepeating(GetRandomizedUploadInterval, max_upload_interval_,
-                          interval_randomization_divisor_)));
+      (randomize_upload_interval_ ?
+      base::BindRepeating(GetRandomizedUploadInterval, max_upload_interval_) :
+      base::BindRepeating([](base::TimeDelta x) {return x;}, max_upload_interval_))));
 
   // Start the engine if we are enabled.
   if (upload_enabled_) {
@@ -209,14 +198,8 @@ void BraveP3AService::MaybeOverrideSettingsFromCommandLine() {
     }
   }
 
-  if (cmdline->HasSwitch(switches::kP3AUploadIntervalRandomizationDivisor)) {
-    std::string divisor_str =
-        cmdline->GetSwitchValueASCII(
-            switches::kP3AUploadIntervalRandomizationDivisor);
-    uint32_t divisor;
-    if (base::StringToUint(divisor_str, &divisor) && divisor > 0) {
-      interval_randomization_divisor_ = divisor;
-    }
+  if (cmdline->HasSwitch(switches::kP3ADoNotRandomizeUploadInterval)) {
+    randomize_upload_interval_ = false;
   }
 
   if (cmdline->HasSwitch(switches::kP3ARotationIntervalSeconds)) {

@@ -77,9 +77,7 @@ class BraveP3AService : public base::RefCountedThreadSafe<BraveP3AService>,
   bool upload_enabled_ = false;
   // Maximum interval between uploading different values.
   base::TimeDelta max_upload_interval_;
-  // We choose the delay as a random value within [T/D; T), where T is
-  // |max_upload_interval_| and D is the value below.
-  uint32_t interval_randomization_divisor_ = 0;
+  bool randomize_upload_interval_ = true;
   // Interval between rotations, only used for testing from the command line.
   base::TimeDelta rotation_interval_;
   GURL upload_server_url_;
