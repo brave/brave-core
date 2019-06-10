@@ -139,7 +139,7 @@ void BraveToolbarView::ShowBookmarkBubble(
   // or the location bar if there is no bookmark button
   // (i.e. in non-normal display mode).
   views::View* anchor_view = location_bar_;
-  if (bookmark_ && bookmark_->visible())
+  if (bookmark_ && bookmark_->GetVisible())
     anchor_view = bookmark_;
 
   std::unique_ptr<BubbleSyncPromoDelegate> delegate;
@@ -190,7 +190,7 @@ void BraveToolbarView::ResetLocationBarBounds() {
 void BraveToolbarView::ResetBookmarkButtonBounds() {
   DCHECK_EQ(DisplayMode::NORMAL, display_mode_);
 
-  if (!bookmark_ || !bookmark_->visible())
+  if (!bookmark_ || !bookmark_->GetVisible())
     return;
 
   const int button_right_margin = GetLayoutConstant(TOOLBAR_STANDARD_SPACING);

@@ -15,7 +15,7 @@ index 5e8d81a7ddd934ea4abf1e19db93d2ce8e060e2a..aec5ae14ccfd1e7c0de1f33b9fc15844
      }
    };
  
-+  if (right_most && right_most->visible())
++  if (right_most && right_most->GetVisible())
 +    trailing_decorations.AddDecoration(0,
 +                              height(),
 +                              false, 0, 0, right_most);
