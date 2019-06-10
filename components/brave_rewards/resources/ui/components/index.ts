@@ -20,6 +20,7 @@ import InfoCard from './infoCard'
 import List from './list'
 import ListToken from './listToken'
 import MainToggle from './mainToggle'
+import MediaBox from './mediaBox'
 import ModalActivity from './modalActivity'
 import ModalAddFunds from './modalAddFunds'
 import ModalBackupRestore from './modalBackupRestore'
@@ -42,7 +43,6 @@ import Tip from './tip'
 import ToggleTips from './toggleTips'
 import Tokens from './tokens'
 import Tooltip from './tooltip'
-import TweetBox from './tweetBox'
 import WalletEmpty from './walletEmpty'
 import WalletOff from './walletOff'
 import WalletPanel from './walletPanel'
@@ -71,6 +71,7 @@ export {
   List,
   ListToken,
   MainToggle,
+  MediaBox,
   ModalActivity,
   ModalAddFunds,
   ModalBackupRestore,
@@ -93,7 +94,6 @@ export {
   ToggleTips,
   Tokens,
   Tooltip,
-  TweetBox,
   WalletEmpty,
   WalletOff,
   WalletPanel,

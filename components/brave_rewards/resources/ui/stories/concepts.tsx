@@ -15,7 +15,7 @@ import {
   WalletPanelDisabled,
   SiteBanner,
   Tip,
-  TweetBox,
+  MediaBox,
   PanelWelcome,
   WalletPanel,
   WalletSummary,
@@ -81,8 +81,9 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
     />
   ))
   .add('Site Banner', withState({ donationAmounts, currentAmount: '5.0', showBanner: true }, (store) => {
+    const mediaProvider = select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit' }, 'youtube')
     const screenName = text('Screen Name', '')
-    const tweetText = text('Tweet Text', '')
+    const commenttext = text('Post Text', '')
 
     const onDonate = () => {
       console.log('onDonate')
@@ -97,7 +98,11 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
     }
 
     const isTwitterTip = () => {
-      return screenName.length > 0 || tweetText.length > 0
+      return mediaProvider === 'twitter'
+    }
+
+    const isRedditTip = () => {
+      return mediaProvider === 'reddit'
     }
 
     const onClose = () => {
@@ -125,7 +130,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
                 onAmountSelection={onAmountSelection}
                 currentAmount={store.state.currentAmount}
                 onClose={onClose}
-                provider={select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit' }, 'youtube')}
+                provider={mediaProvider}
                 social={[
                   {
                     type: 'twitter',
@@ -148,9 +153,17 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
               >
                 {
                   isTwitterTip()
-                  ? <TweetBox
-                      tweetText={tweetText}
-                      tweetTimestamp={number('Timestamp in seconds', 46420000) || 0}
+                  ? <MediaBox
+                      mediaType={'twitter'}
+                      mediaText={commenttext}
+                      mediaTimestamp={number('Timestamp in seconds', 46420000) || 0}
+                  />
+                  : isRedditTip()
+                  ? <MediaBox
+                      mediaType={'reddit'}
+                      mediaText={commenttext}
+                      mediaTimestamp={0}
+                      mediaTimetext={'3 days ago'}
                   />
                   : null
                 }
