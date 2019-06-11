@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { action } from 'typesafe-actions'
+import { Dispatch } from 'redux'
 
 // Constants
 import { types } from '../constants/welcome_types'
@@ -15,3 +16,26 @@ export const goToTabRequested = (url: string, target: string) => action(types.GO
 })
 
 export const closeTabRequested = () => action(types.CLOSE_TAB_REQUESTED)
+
+export const changeDefaultSearchProvider = (searchProvider: string) => action(types.CHANGE_DEFAULT_SEARCH_PROVIDER, searchProvider)
+
+const getSearchEngineProvidersStarted = () => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_STARTED)
+
+const getSearchEngineProvidersSuccess = (searchProviders: Array<Welcome.SearchEngineEntry>) => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS, searchProviders)
+
+const getSearchEngineProvidersFailure = () => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_FAILURE)
+
+export const getSearchEngineProviders = () => {
+  return (dispatch: Dispatch) => {
+    dispatch(getSearchEngineProvidersStarted())
+
+    // @ts-ignore
+    window.cr.sendWithPromise('getSearchEnginesList')
+      .then((response: Welcome.SearchEngineListResponse) => {
+        dispatch(getSearchEngineProvidersSuccess(response.defaults))
+      })
+      .catch(() => {
+        dispatch(getSearchEngineProvidersFailure())
+      })
+  }
+}

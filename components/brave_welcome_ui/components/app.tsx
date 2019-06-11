@@ -87,6 +87,7 @@ export class WelcomePage extends React.Component<Props, State> {
   }
 
   render () {
+    const { welcomeData, actions } = this.props
     const { currentScreen } = this.state
     return (
       <>
@@ -102,6 +103,8 @@ export class WelcomePage extends React.Component<Props, State> {
                 index={3}
                 currentScreen={this.currentScreen}
                 onClick={this.onClickNext}
+                changeDefaultSearchProvider={actions.changeDefaultSearchProvider}
+                searchProviders={welcomeData.searchProviders}
               />
               <ThemeBox index={4} currentScreen={this.currentScreen} onClick={this.onClickChooseYourTheme} />
               <ShieldsBox index={5} currentScreen={this.currentScreen} />

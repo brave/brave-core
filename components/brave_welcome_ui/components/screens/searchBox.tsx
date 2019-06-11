@@ -19,29 +19,13 @@ interface Props {
   index: number
   currentScreen: number
   onClick: () => void
+  changeDefaultSearchProvider: (searchProvider: string) => void
+  searchProviders: Array<Welcome.SearchEngineEntry>
 }
 
 interface State {
   searchEngineSelected: boolean,
-  searchEngineIndex: number,
   isDefaultSearchGoogle: boolean,
-  searchProviders: Array<SearchEngineEntry>
-}
-
-interface SearchEngineEntry {
-  canBeDefault: boolean,
-  canBeEdited: boolean,
-  canBeRemoved: boolean,
-  default: boolean,
-  displayName: string,
-  iconURL: string,
-  id: number,
-  isOmniboxExtension: boolean,
-  keyword: string,
-  modelIndex: number,
-  name: string,
-  url: string,
-  urlLocked: boolean
 }
 
 export default class SearchEngineBox extends React.PureComponent<Props, State> {
@@ -49,34 +33,39 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
     super(props)
     this.state = {
       searchEngineSelected: false,
-      searchEngineIndex: -1,
-      isDefaultSearchGoogle: true,
-      searchProviders: []
+      isDefaultSearchGoogle: true
     }
 
-    // @ts-ignore
-    window.cr.sendWithPromise('getSearchEnginesList').then(response => {
-      const defaultEntry = response.defaults.find(function (entry: SearchEngineEntry) {
-        return entry.default
-      })
-      this.setState({
-        isDefaultSearchGoogle: defaultEntry.name === 'Google',
-        searchProviders: response.defaults,
-        searchEngineIndex: defaultEntry.modelIndex
-      })
-    })
   }
 
   onChangeDefaultSearchEngine = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const modelIndex = parseInt(event.target.value, 10)
-    chrome.send('setDefaultSearchEngine', [modelIndex])
-    this.setState({ searchEngineSelected: true, searchEngineIndex: modelIndex })
+    if (event.target.value === '') {
+      this.setState({ searchEngineSelected: false })
+      return
+    }
+    this.props.changeDefaultSearchProvider(event.target.value)
+    this.setState({ searchEngineSelected: true })
   }
 
+  getDefaultSearchProvider = (searchEngineEntries: Array<Welcome.SearchEngineEntry>): Welcome.SearchEngineEntry | undefined => {
+    return searchEngineEntries.find(entry => entry.default)
+  }
+
+  getProviderDisplayName = (searchProvider: Welcome.SearchEngineEntry, defaultSearchProvider: Welcome.SearchEngineEntry): string =>
+    searchProvider!.name === defaultSearchProvider.name
+    ? `${searchProvider.name} (${getLocale('default')})`
+    : searchProvider.name
+
+  getBodyText = (searchProviderName: string): string =>
+    searchProviderName! === 'Google'
+      ? `${getLocale('chooseSearchEngine')} ${getLocale('privateExperience')}`
+      : getLocale('chooseSearchEngine')
+
   render () {
-    const { index, currentScreen, onClick } = this.props
-    const { searchEngineSelected, searchEngineIndex, searchProviders, isDefaultSearchGoogle } = this.state
-    const bodyText = isDefaultSearchGoogle ? `${getLocale('chooseSearchEngine')} ${getLocale('privateExperience')}` : getLocale('chooseSearchEngine')
+    const { index, currentScreen, onClick, searchProviders } = this.props
+    const { searchEngineSelected } = this.state
+    const defaultProvider = this.getDefaultSearchProvider(searchProviders)
+    const bodyText = this.getBodyText(defaultProvider!.name)
     return (
       <Content
         zIndex={index}
@@ -89,15 +78,15 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
         <Paragraph>{bodyText}</Paragraph>
           <SelectGrid>
             <SelectBox
-              value={searchEngineIndex.toString()}
               onChange={this.onChangeDefaultSearchEngine}
             >
+              <option key={0} value=''>{getLocale('selectSearchEngine')}</option>
               {searchProviders.map((provider, index) =>
                 <option
                   key={index + 1}
                   value={provider.modelIndex.toString()}
                 >
-                  {provider.name}
+                  {this.getProviderDisplayName(provider, defaultProvider!)}
                 </option>
               )}
             </SelectBox>

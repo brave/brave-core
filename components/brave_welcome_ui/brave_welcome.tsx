@@ -4,6 +4,7 @@
 
 import * as React from 'react'
 import { render } from 'react-dom'
+import { bindActionCreators } from 'redux'
 import { Provider } from 'react-redux'
 
 import Theme from 'brave-ui/theme/brave-default'
@@ -14,11 +15,18 @@ import App from './components/app'
 
 // Utils
 import store from './store'
+import * as welcomeActions from './actions/welcome_actions'
 
 window.cr.define('brave_welcome', function () {
   'use strict'
 
+  function getSearchEngineProviders () {
+    const actions = bindActionCreators(welcomeActions, store.dispatch.bind(store))
+    actions.getSearchEngineProviders()
+  }
+
   function initialize () {
+    getSearchEngineProviders()
     render(
       <Provider store={store}>
         <ThemeProvider theme={Theme}>

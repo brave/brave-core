@@ -29,4 +29,12 @@ describe('welcome_actions', () => {
       payload: undefined
     })
   })
+
+  it('changeDefaultSearchProvider', () => {
+    expect(actions.changeDefaultSearchProvider('DuckDuckGo')).toEqual({
+      type: types.CHANGE_DEFAULT_SEARCH_PROVIDER,
+      meta: undefined,
+      payload: 'DuckDuckGo'
+    })
+  })
 })
