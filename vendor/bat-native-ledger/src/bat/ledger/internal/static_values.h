@@ -68,6 +68,7 @@
 // TODO(samartnik): remove as soon as we move on new safetynet check API
 #define SAFETYNET_ERROR_MESSAGE         \
 "Error profile and integrity must both be true"
+#define SAFETYNET_ERROR_CODE            422
 
 #define YOUTUBE_MEDIA_TYPE              "youtube"
 #define TWITCH_MEDIA_TYPE               "twitch"
