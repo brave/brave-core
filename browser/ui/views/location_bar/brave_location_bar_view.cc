@@ -26,6 +26,10 @@ void BraveLocationBarView::Init() {
   AddChildView(brave_actions_);
   // Call Update again to cause a Layout
   Update(nullptr);
+
+  // Stop slide animation for all content settings views icon.
+  for (auto* content_setting_view : content_setting_views_)
+    content_setting_view->disable_animation();
 }
 
 void BraveLocationBarView::Layout() {
