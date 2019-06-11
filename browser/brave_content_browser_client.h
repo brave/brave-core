@@ -25,7 +25,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   ~BraveContentBrowserClient() override;
 
   // Overridden from ChromeContentBrowserClient:
-  content::BrowserMainParts* CreateBrowserMainParts(
+  std::unique_ptr<content::BrowserMainParts> CreateBrowserMainParts(
       const content::MainFunctionParams& parameters) override;
   void BrowserURLHandlerCreated(content::BrowserURLHandler* handler) override;
   bool AllowGetCookie(const GURL& url,
