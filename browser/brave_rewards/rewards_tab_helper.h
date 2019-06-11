@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_HELPER_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_HELPER_H_
+#ifndef BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_TAB_HELPER_H_
+#define BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_TAB_HELPER_H_
 
 #include <string>
 
 #include "base/macros.h"
+#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser_list_observer.h"
 #include "components/sessions/core/session_id.h"
@@ -21,15 +22,20 @@ namespace brave_rewards {
 
 class RewardsService;
 
-class RewardsHelper : public content::WebContentsObserver,
-                       public BrowserListObserver,
-                       public content::WebContentsUserData<RewardsHelper> {
+class RewardsTabHelper : public RewardsServiceObserver,
+                         public content::WebContentsObserver,
+                         public BrowserListObserver,
+                         public content::WebContentsUserData<RewardsTabHelper> {
  public:
-  explicit RewardsHelper(content::WebContents*);
-  ~RewardsHelper() override;
+  explicit RewardsTabHelper(content::WebContents*);
+  ~RewardsTabHelper() override;
 
  private:
-  friend class content::WebContentsUserData<RewardsHelper>;
+  friend class content::WebContentsUserData<RewardsTabHelper>;
+
+  // RewardsServiceObserver overrides.
+  void OnRewardsMainEnabled(RewardsService* rewards_service,
+                            bool rewards_main_enabled) override;
 
   // content::WebContentsObserver overrides.
   void DidFinishLoad(content::RenderFrameHost* render_frame_host,
@@ -58,9 +64,9 @@ class RewardsHelper : public content::WebContentsObserver,
   RewardsService* rewards_service_;  // NOT OWNED
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
-  DISALLOW_COPY_AND_ASSIGN(RewardsHelper);
+  DISALLOW_COPY_AND_ASSIGN(RewardsTabHelper);
 };
 
 }  // namespace brave_rewards
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_BROWSER_REWARDS_HELPER_H_
+#endif  // BRAVE_BROWSER_BRAVE_REWARDS_REWARDS_TAB_HELPER_H_

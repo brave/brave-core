@@ -6,13 +6,8 @@
 #ifndef BRAVE_BROWSER_GREASELION_GREASELION_TAB_HELPER_H_
 #define BRAVE_BROWSER_GREASELION_GREASELION_TAB_HELPER_H_
 
-#include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-
-namespace brave_rewards {
-class RewardsService;
-}
 
 namespace content {
 class WebContents;
@@ -22,8 +17,7 @@ namespace greaselion {
 
 class GreaselionTabHelper
     : public content::WebContentsObserver,
-      public content::WebContentsUserData<GreaselionTabHelper>,
-      public brave_rewards::RewardsServiceObserver {
+      public content::WebContentsUserData<GreaselionTabHelper> {
  public:
   explicit GreaselionTabHelper(content::WebContents*);
   ~GreaselionTabHelper() override;
@@ -32,10 +26,6 @@ class GreaselionTabHelper
   // content::WebContentsObserver overrides.
   void DocumentLoadedInFrame(
       content::RenderFrameHost* render_frame_host) override;
-
-  // brave_rewards::RewardsServiceObserver overrides.
-  void OnRewardsMainEnabled(brave_rewards::RewardsService* rewards_service,
-                            bool rewards_main_enabled) override;
 
  private:
   friend class content::WebContentsUserData<GreaselionTabHelper>;

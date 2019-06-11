@@ -12,8 +12,6 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/greaselion/greaselion_service_factory.h"
 #include "brave/common/brave_isolated_worlds.h"
-#include "brave/components/brave_rewards/browser/rewards_service.h"
-#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
@@ -27,29 +25,9 @@ using greaselion::GreaselionServiceFactory;
 namespace greaselion {
 
 GreaselionTabHelper::GreaselionTabHelper(content::WebContents* web_contents)
-    : WebContentsObserver(web_contents) {
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  if (profile) {
-    brave_rewards::RewardsService* rewards_service =
-        brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-    if (rewards_service)
-      rewards_service->AddObserver(this);
-  }
-}
+    : WebContentsObserver(web_contents) {}
 
-GreaselionTabHelper::~GreaselionTabHelper() {
-  if (!web_contents())
-    return;
-  Profile* profile =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  if (!profile)
-    return;
-  brave_rewards::RewardsService* rewards_service =
-      brave_rewards::RewardsServiceFactory::GetForProfile(profile);
-  if (rewards_service)
-    rewards_service->RemoveObserver(this);
-}
+GreaselionTabHelper::~GreaselionTabHelper() {}
 
 void GreaselionTabHelper::DocumentLoadedInFrame(
     content::RenderFrameHost* render_frame_host) {
@@ -68,20 +46,6 @@ void GreaselionTabHelper::DocumentLoadedInFrame(
         base::UTF8ToUTF16(script), base::DoNothing(),
         ISOLATED_WORLD_ID_GREASELION);
   }
-}
-
-void GreaselionTabHelper::OnRewardsMainEnabled(
-    brave_rewards::RewardsService* rewards_service,
-    bool rewards_main_enabled) {
-  GreaselionService* greaselion_service =
-      GreaselionServiceFactory::GetForBrowserContext(
-          web_contents()->GetBrowserContext());
-  if (!greaselion_service)
-    return;
-  greaselion_service->SetFeatureEnabled(greaselion::REWARDS,
-                                        rewards_main_enabled);
-  greaselion_service->SetFeatureEnabled(greaselion::TWITTER_TIPS,
-                                        rewards_main_enabled);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(GreaselionTabHelper)

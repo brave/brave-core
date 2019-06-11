@@ -15,7 +15,7 @@
 #if !defined(OS_ANDROID)
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/components/brave_rewards/browser/rewards_helper.h"
+#include "brave/browser/brave_rewards/rewards_tab_helper.h"
 #endif
 #if BUILDFLAG(BRAVE_STP_ENABLED)
 #include "brave/components/brave_shields/browser/tracking_protection_helper.h"
@@ -32,7 +32,7 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  brave_rewards::RewardsHelper::CreateForWebContents(web_contents);
+  brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
 #endif
   // Add tab helpers here unless they are intended for android too
   BraveDrmTabHelper::CreateForWebContents(web_contents);
