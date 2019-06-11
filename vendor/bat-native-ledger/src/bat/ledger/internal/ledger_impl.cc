@@ -19,7 +19,7 @@
 #include "bat/ads/notification_info.h"
 #include "bat/confirmations/confirmations.h"
 #include "bat/ledger/internal/bat_client.h"
-#include "bat/ledger/internal/bat_contribution.h"
+#include "bat/ledger/internal/contribution/main.h"
 #include "bat/ledger/internal/bat_get_media.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_publishers.h"
@@ -35,7 +35,7 @@ using namespace braveledger_bat_publishers; //  NOLINT
 using namespace braveledger_bat_get_media; //  NOLINT
 using namespace braveledger_bat_get_media; //  NOLINT
 using namespace braveledger_bat_state; //  NOLINT
-using namespace braveledger_bat_contribution; //  NOLINT
+using namespace braveledger_contribution; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;

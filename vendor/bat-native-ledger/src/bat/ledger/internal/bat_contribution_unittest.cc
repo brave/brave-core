@@ -8,13 +8,13 @@
 #include <vector>
 
 #include "bat/ledger/internal/logging.h"
-#include "bat/ledger/internal/bat_contribution.h"
+#include "bat/ledger/internal/contribution/main.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BatContributionTest.*
 
-namespace braveledger_bat_contribution {
+namespace braveledger_contribution {
 
 class BatContributionTest : public testing::Test {
  protected:
@@ -172,4 +172,4 @@ TEST_F(BatContributionTest, WillTriggerNotification) {
       100, 4, 100, 5, {1, 5, 10, 20, 50}, 5, 90));
 }
 
-}  // namespace braveledger_bat_contribution
+}  // namespace braveledger_contribution

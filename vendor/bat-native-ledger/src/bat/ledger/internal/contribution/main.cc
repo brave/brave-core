@@ -17,7 +17,7 @@
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
 #include "base/time/time.h"
-#include "bat/ledger/internal/bat_contribution.h"
+#include "bat/ledger/internal/contribution/main.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "net/http/http_status_code.h"
@@ -27,7 +27,7 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_bat_contribution {
+namespace braveledger_contribution {
 
 static bool winners_votes_compare(
     const braveledger_bat_helper::WINNERS_ST& first,
@@ -1966,4 +1966,4 @@ void BatContribution::ContributeUnverifiedPublishers() {
                 _2));
 }
 
-}  // namespace braveledger_bat_contribution
+}  // namespace braveledget_contribution

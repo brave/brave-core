@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_BAT_CONTRIBUTION_H_
-#define BRAVELEDGER_BAT_CONTRIBUTION_H_
+#ifndef BRAVELEDGER_CONTRIBUTION_MAIN_H_
+#define BRAVELEDGER_CONTRIBUTION_MAIN_H_
 
 #include <map>
 #include <memory>
@@ -81,7 +81,7 @@ namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_bat_contribution {
+namespace braveledger_contribution {
 
 static const uint64_t phase_one_timers[] = {
     1 * 60 * 60,  // 1h
@@ -352,5 +352,5 @@ class BatContribution {
   FRIEND_TEST_ALL_PREFIXES(BatContributionTest, GetAmountFromVerifiedRecurring);
 };
 
-}  // namespace braveledger_bat_contribution
-#endif  // BRAVELEDGER_BAT_CONTRIBUTION_H_
+}  // namespace braveledger_contribution
+#endif  // BRAVELEDGER_CONTRIBUTION_MAIN_H_
