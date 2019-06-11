@@ -15,9 +15,7 @@ protocol TabLocationViewDelegate {
     func tabLocationViewDidLongPressLocation(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapReaderMode(_ tabLocationView: TabLocationView)
     func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView)
-    func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView)
-    func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton)
-    func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView)
+    func tabLocationViewDidTapShieldsButton(_ urlBar: TabLocationView)
     
     /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
     @discardableResult func tabLocationViewDidLongPressReaderMode(_ tabLocationView: TabLocationView) -> Bool
@@ -56,18 +54,6 @@ class TabLocationView: UIView {
     var contentIsSecure = false {
         didSet {
             updateLockImageView()
-        }
-    }
-    
-    var loading: Bool = false {
-        didSet {
-            if loading {
-                reloadButton.setImage(#imageLiteral(resourceName: "nav-stop").template, for: .normal)
-                reloadButton.accessibilityLabel = Strings.TabToolbarStopButtonAccessibilityLabel
-            } else {
-                reloadButton.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
-                reloadButton.accessibilityLabel = Strings.TabToolbarReloadButtonAccessibilityLabel
-            }
         }
     }
     
@@ -137,7 +123,7 @@ class TabLocationView: UIView {
     fileprivate lazy var lockImageView: UIImageView = {
         let lockImageView = UIImageView(image: #imageLiteral(resourceName: "lock_verified").template)
         lockImageView.isHidden = true // Hidden by default
-        lockImageView.tintColor = UIColor.Photon.Green50
+        lockImageView.tintColor = #colorLiteral(red: 0.3764705882, green: 0.3843137255, blue: 0.4, alpha: 1)
         lockImageView.isAccessibilityElement = true
         lockImageView.contentMode = .center
         lockImageView.accessibilityLabel = Strings.TabToolbarLockImageAccessibilityLabel
@@ -152,22 +138,22 @@ class TabLocationView: UIView {
         readerModeButton.isAccessibilityElement = true
         readerModeButton.isHidden = true
         readerModeButton.imageView?.contentMode = .scaleAspectFit
-        readerModeButton.contentHorizontalAlignment = .left
+        readerModeButton.contentHorizontalAlignment = .center
         readerModeButton.accessibilityLabel = Strings.TabToolbarReaderViewButtonAccessibilityLabel
         readerModeButton.accessibilityIdentifier = "TabLocationView.readerModeButton"
         readerModeButton.accessibilityCustomActions = [UIAccessibilityCustomAction(name: Strings.TabToolbarReaderViewButtonTitle, target: self, selector: #selector(readerModeCustomAction))]
         return readerModeButton
     }()
     
-    lazy var reloadButton = ToolbarButton().then {
-        $0.accessibilityIdentifier = "TabToolbar.stopReloadButton"
-        $0.accessibilityLabel = Strings.TabToolbarReloadButtonAccessibilityLabel
-        $0.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
-        $0.tintColor = UIColor.Photon.Grey30
-        let longPressGestureStopReloadButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressStopReload(_:)))
-        $0.addGestureRecognizer(longPressGestureStopReloadButton)
-        $0.addTarget(self, action: #selector(didClickStopReload), for: .touchUpInside)
-    }
+    lazy var shieldsButton: ToolbarButton = {
+        let button = ToolbarButton()
+        button.setImage(UIImage(imageLiteralResourceName: "shields-menu-icon"), for: .normal)
+        button.addTarget(self, action: #selector(didClickBraveShieldsButton), for: .touchUpInside)
+        button.imageView?.contentMode = .center
+        button.accessibilityLabel = Strings.Brave_Panel
+        button.accessibilityIdentifier = "urlBar-shieldsButton"
+        return button
+    }()
     
     lazy var separatorLine: UIView = {
         let line = UIView()
@@ -189,40 +175,43 @@ class TabLocationView: UIView {
 
         addGestureRecognizer(longPressRecognizer)
         addGestureRecognizer(tapRecognizer)
+        
+        [readerModeButton, separatorLine, shieldsButton].forEach {
+            $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+            $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        }
+        
+        // Make tappable area bigger than the icon.
+        // This also adds right inset, which when tapped, will open the shields panel.
+        shieldsButton.contentEdgeInsets = UIEdgeInsets(top: 2, left: 4, bottom: 2, right: 13)
+        
+        urlTextField.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
-        let subviews = [lockImageView, urlTextField, readerModeButton, separatorLine, reloadButton]
+        let subviews = [lockImageView, urlTextField, readerModeButton, separatorLine, shieldsButton]
         contentView = UIStackView(arrangedSubviews: subviews)
         contentView.distribution = .fill
         contentView.alignment = .center
         contentView.layoutMargins = UIEdgeInsets(top: 0, left: TabLocationViewUX.Spacing, bottom: 0, right: 0)
         contentView.isLayoutMarginsRelativeArrangement = true
         contentView.insetsLayoutMarginsFromSafeArea = false
+        contentView.spacing = 10
         addSubview(contentView)
 
         contentView.snp.makeConstraints { make in
             make.edges.equalTo(self)
         }
         
-        contentView.setCustomSpacing(TabLocationViewUX.Spacing, after: lockImageView)
-        contentView.setCustomSpacing(TabLocationViewUX.Spacing, after: urlTextField)
-
         lockImageView.snp.makeConstraints { make in
             make.height.equalTo(TabLocationViewUX.ButtonSize)
-        }
-
-        reloadButton.snp.makeConstraints { make in
-            make.width.equalTo(TabLocationViewUX.ButtonSize.height)
-            make.height.equalTo(TabLocationViewUX.ButtonSize.height)
         }
         
         separatorLine.snp.makeConstraints { make in
             make.width.equalTo(1)
             make.height.equalTo(26)
         }
+        
         readerModeButton.snp.makeConstraints { make in
-            // The reader mode button only has the padding on one side.
-            // The buttons "contentHorizontalAlignment" helps make the button still look centered
-            make.size.width.equalTo(TabLocationViewUX.ButtonSize.width - 10)
+            make.size.width.equalTo(TabLocationViewUX.ButtonSize.width)
             make.size.height.equalTo(TabLocationViewUX.ButtonSize.height)
         }
 
@@ -265,23 +254,13 @@ class TabLocationView: UIView {
     @objc func tapLocation(_ recognizer: UITapGestureRecognizer) {
         delegate?.tabLocationViewDidTapLocation(self)
     }
-    
-    @objc func didClickStopReload() {
-        if loading {
-            delegate?.tabLocationViewDidTapStop(self)
-        } else {
-            delegate?.tabLocationViewDidTapReload(self)
-        }
-    }
-    
-    @objc func didLongPressStopReload(_ recognizer: UILongPressGestureRecognizer) {
-        if recognizer.state == .began && !loading {
-            delegate?.tabLocationViewDidLongPressReload(self, from: reloadButton)
-        }
-    }
 
     @objc func readerModeCustomAction() -> Bool {
         return delegate?.tabLocationViewDidLongPressReaderMode(self) ?? false
+    }
+    
+    @objc func didClickBraveShieldsButton() {
+        delegate?.tabLocationViewDidTapShieldsButton(self)
     }
 
     fileprivate func updateTextWithURL() {
@@ -297,6 +276,8 @@ class TabLocationView: UIView {
     }
 }
 
+// MARK: - UIGestureRecognizerDelegate
+
 extension TabLocationView: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         // When long pressing a button make sure the textfield's long press gesture is not triggered
@@ -309,11 +290,12 @@ extension TabLocationView: UIGestureRecognizerDelegate {
     }
 }
 
-@available(iOS 11.0, *)
+// MARK: - UIDragInteractionDelegate
+
 extension TabLocationView: UIDragInteractionDelegate {
     func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
         // Ensure we actually have a URL in the location bar and that the URL is not local.
-        guard let url = self.url, !url.isLocal, let itemProvider = NSItemProvider(contentsOf: url), !reloadButton.isHighlighted else {
+        guard let url = self.url, !url.isLocal, let itemProvider = NSItemProvider(contentsOf: url) else {
             return []
         }
 
@@ -326,6 +308,8 @@ extension TabLocationView: UIDragInteractionDelegate {
     }
 }
 
+// MARK: - AccessibilityActionsSource
+
 extension TabLocationView: AccessibilityActionsSource {
     func accessibilityCustomActionsForView(_ view: UIView) -> [UIAccessibilityCustomAction]? {
         if view === urlTextField {
@@ -334,6 +318,8 @@ extension TabLocationView: AccessibilityActionsSource {
         return nil
     }
 }
+
+// MARK: - Themeable
 
 extension TabLocationView: Themeable {
     func applyTheme(_ theme: Theme) {
@@ -348,70 +334,17 @@ extension TabLocationView: Themeable {
         readerModeButton.selectedTintColor = UIColor.TextField.ReaderModeButtonSelected.colorFor(theme)
         readerModeButton.unselectedTintColor = UIColor.TextField.ReaderModeButtonUnselected.colorFor(theme)
         
-        reloadButton.applyTheme(theme)
         separatorLine.backgroundColor = UIColor.TextField.Separator.colorFor(theme)
     }
 }
+
+// MARK: - TabEventHandler
 
 extension TabLocationView: TabEventHandler {
     func tabDidGainFocus(_ tab: Tab) {
     }
 
     func tabDidChangeContentBlockerStatus(_ tab: Tab) {
-    }
-}
-
-class ReaderModeButton: UIButton {
-    var selectedTintColor: UIColor?
-    var unselectedTintColor: UIColor?
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        adjustsImageWhenHighlighted = false
-        setImage(#imageLiteral(resourceName: "reader").template, for: .normal)
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override var isSelected: Bool {
-        didSet {
-            self.tintColor = (isHighlighted || isSelected) ? selectedTintColor : unselectedTintColor
-        }
-    }
-
-    override open var isHighlighted: Bool {
-        didSet {
-            self.tintColor = (isHighlighted || isSelected) ? selectedTintColor : unselectedTintColor
-        }
-    }
-
-    override var tintColor: UIColor! {
-        didSet {
-            self.imageView?.tintColor = self.tintColor
-        }
-    }
-    
-    var _readerModeState: ReaderModeState = ReaderModeState.unavailable
-    
-    var readerModeState: ReaderModeState {
-        get {
-            return _readerModeState
-        }
-        set (newReaderModeState) {
-            _readerModeState = newReaderModeState
-            switch _readerModeState {
-            case .available:
-                self.isEnabled = true
-                self.isSelected = false
-            case .unavailable:
-                self.isEnabled = false
-                self.isSelected = false
-            case .active:
-                self.isEnabled = true
-                self.isSelected = true
-            }
-        }
     }
 }
 

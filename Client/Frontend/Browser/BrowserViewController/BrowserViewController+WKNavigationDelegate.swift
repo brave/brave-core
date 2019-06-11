@@ -42,7 +42,7 @@ extension BrowserViewController: WKNavigationDelegate {
         // (orange color) as soon as the page has loaded.
         if let url = webView.url {
             if !url.isReaderModeURL {
-                urlBar.updateReaderModeState(ReaderModeState.unavailable)
+                topToolbar.updateReaderModeState(ReaderModeState.unavailable)
                 hideReaderModeBar(animated: false)
             }
         }
@@ -333,7 +333,7 @@ extension BrowserViewController: WKNavigationDelegate {
         if let tab = tabManager[webView] {
             navigateInTab(tab: tab, to: navigation)
             if tab === tabManager.selectedTab {
-                urlBar.updateProgressBar(1.0)
+                topToolbar.updateProgressBar(1.0)
             }
             tabsBar.reloadDataAndRestoreSelectedTab()
         }

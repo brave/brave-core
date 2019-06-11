@@ -61,7 +61,7 @@ private extension TrayToBrowserAnimator {
 
         let finalFrame = calculateExpandedCellFrameFromBVC(bvc)
         bvc.footer.alpha = shouldDisplayFooterForBVC(bvc) ? 1 : 0
-        bvc.urlBar.isTransitioning = true
+        bvc.topToolbar.isTransitioning = true
 
         // Re-calculate the starting transforms for header/footer views in case we switch orientation
         resetTransformsForViews([bvc.header, bvc.readerModeBar, bvc.footer])
@@ -93,7 +93,7 @@ private extension TrayToBrowserAnimator {
             toggleWebViewVisibility(true, usingTabManager: bvc.tabManager)
             bvc.webViewContainerBackdrop.isHidden = false
             bvc.favoritesViewController?.view.isHidden = false
-            bvc.urlBar.isTransitioning = false
+            bvc.topToolbar.isTransitioning = false
             bvc.updateTabsBarVisibility()
             transitionContext.completeTransition(true)
         })
@@ -161,7 +161,7 @@ private extension BrowserToTrayAnimator {
         bvc.statusBarOverlay.isHidden = true
         bvc.toggleSnackBarVisibility(show: false)
         toggleWebViewVisibility(false, usingTabManager: bvc.tabManager)
-        bvc.urlBar.isTransitioning = true
+        bvc.topToolbar.isTransitioning = true
 
         // Since we are hiding the collection view and the snapshot API takes the snapshot after the next screen update,
         // the screenshot ends up being blank unless we set the collection view hidden after the screen update happens.
@@ -188,7 +188,7 @@ private extension BrowserToTrayAnimator {
                 
                 transformHeaderFooterForBVC(bvc, toFrame: finalFrame, container: container)
 
-                bvc.urlBar.updateAlphaForSubviews(0)
+                bvc.topToolbar.updateAlphaForSubviews(0)
                 bvc.footer.alpha = 0
                 tabCollectionViewSnapshot.alpha = 1
 
@@ -205,7 +205,7 @@ private extension BrowserToTrayAnimator {
                 bvc.favoritesViewController?.view.isHidden = false
 
                 resetTransformsForViews([bvc.header, bvc.readerModeBar, bvc.footer])
-                bvc.urlBar.isTransitioning = false
+                bvc.topToolbar.isTransitioning = false
                 transitionContext.completeTransition(true)
             })
         }

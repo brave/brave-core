@@ -7,11 +7,11 @@ import SnapKit
 import Shared
 import BraveShared
 
-class BottomToolbarView: UIView {
+class BottomToolbarView: UIView, ToolbarProtocol {
     weak var tabToolbarDelegate: ToolbarDelegate?
 
     let tabsButton = TabsButton()
-    let forwardButton = ToolbarButton()
+    let reloadButton = ToolbarButton()
     let backButton = ToolbarButton()
     let shareButton = ToolbarButton()
     let addTabButton = ToolbarButton()
@@ -20,9 +20,21 @@ class BottomToolbarView: UIView {
 
     var helper: ToolbarHelper?
     private let contentView = UIStackView()
+    
+    var loading: Bool = false {
+        didSet {
+            if loading {
+                reloadButton.setImage(#imageLiteral(resourceName: "nav-stop").template, for: .normal)
+                reloadButton.accessibilityLabel = Strings.TabToolbarStopButtonAccessibilityLabel
+            } else {
+                reloadButton.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
+                reloadButton.accessibilityLabel = Strings.TabToolbarReloadButtonAccessibilityLabel
+            }
+        }
+    }
 
     fileprivate override init(frame: CGRect) {
-        actionButtons = [backButton, forwardButton, addTabButton, tabsButton, menuButton]
+        actionButtons = [backButton, reloadButton, addTabButton, tabsButton, menuButton]
         super.init(frame: frame)
         setupAccessibility()
 
@@ -45,7 +57,7 @@ class BottomToolbarView: UIView {
 
     private func setupAccessibility() {
         backButton.accessibilityIdentifier = "TabToolbar.backButton"
-        forwardButton.accessibilityIdentifier = "TabToolbar.forwardButton"
+        reloadButton.accessibilityIdentifier = "TabToolbar.reloadButton"
         tabsButton.accessibilityIdentifier = "TabToolbar.tabsButton"
         shareButton.accessibilityIdentifier = "TabToolbar.shareButton"
         addTabButton.accessibilityIdentifier = "TabToolbar.addTabButton"
@@ -98,26 +110,6 @@ class BottomToolbarView: UIView {
         default:
             break
         }
-    }
-}
-
-// MARK: - ToolbarProtocol
-
-extension BottomToolbarView: ToolbarProtocol {
-    func updateBackStatus(_ canGoBack: Bool) {
-        backButton.isEnabled = canGoBack
-    }
-
-    func updateForwardStatus(_ canGoForward: Bool) {
-        forwardButton.isEnabled = canGoForward
-    }
-
-    func updatePageStatus(_ isWebPage: Bool) {
-        shareButton.isEnabled = isWebPage
-    }
-
-    func updateTabCount(_ count: Int) {
-        tabsButton.updateTabCount(count)
     }
 }
 
