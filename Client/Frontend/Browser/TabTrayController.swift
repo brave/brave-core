@@ -527,7 +527,7 @@ class TabTrayController: UIViewController, Themeable {
                 let appDelegate = UIApplication.shared.delegate as? AppDelegate,
                 let bvc = appDelegate.browserViewController {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                    bvc.urlBar.tabLocationViewDidTapLocation(bvc.urlBar.locationView)
+                    bvc.topToolbar.tabLocationViewDidTapLocation(bvc.topToolbar.locationView)
                 }
             }
 

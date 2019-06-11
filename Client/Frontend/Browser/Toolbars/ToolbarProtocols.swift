@@ -5,19 +5,49 @@
 import Foundation
 
 protocol ToolbarProtocol: class {
+    /// A buttons can behave different depending on web load state.
+    /// For example reload button can switch to stop button when a website is loading.
+    var loading: Bool { get set }
+    
     var tabToolbarDelegate: ToolbarDelegate? { get set }
     var tabsButton: TabsButton { get }
-    var forwardButton: ToolbarButton { get }
     var backButton: ToolbarButton { get }
     var shareButton: ToolbarButton { get }
     var addTabButton: ToolbarButton { get }
     var menuButton: ToolbarButton { get }
     var actionButtons: [Themeable & UIButton] { get }
+    var reloadButton: ToolbarButton { get }
+    
+    // Optional buttons
+    var forwardButton: ToolbarButton? { get }
     
     func updateBackStatus(_ canGoBack: Bool)
-    func updateForwardStatus(_ canGoForward: Bool)
     func updatePageStatus(_ isWebPage: Bool)
     func updateTabCount(_ count: Int)
+    
+    // Optional methods
+    func updateForwardStatus(_ canGoForward: Bool)
+}
+
+extension ToolbarProtocol {
+    func updatePageStatus(_ isWebPage: Bool) {
+        shareButton.isEnabled = isWebPage
+        reloadButton.isEnabled = isWebPage
+    }
+    
+    func updateBackStatus(_ canGoBack: Bool) {
+        backButton.isEnabled = canGoBack
+    }
+    
+    func updateForwardStatus(_ canGoForward: Bool) {
+        forwardButton?.isEnabled = canGoForward
+    }
+    
+    func updateTabCount(_ count: Int) {
+        tabsButton.updateTabCount(count)
+    }
+    
+    var forwardButton: ToolbarButton? { return nil }
 }
 
 protocol ToolbarDelegate: class {
@@ -32,4 +62,7 @@ protocol ToolbarDelegate: class {
     func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidLongPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton)
     func tabToolbarDidSwipeToChangeTabs(_ tabToolbar: ToolbarProtocol, direction: UISwipeGestureRecognizer.Direction)
+    func tabToolbarDidPressReload(_ tabToolbar: ToolbarProtocol, button: UIButton)
+    func tabToolbarDidPressStop(_ tabToolbar: ToolbarProtocol, button: UIButton)
+    func tabToolbarDidLongPressReload(_ tabToolbar: ToolbarProtocol, button: UIButton)
 }

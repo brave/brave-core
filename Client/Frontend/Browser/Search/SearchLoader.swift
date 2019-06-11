@@ -24,13 +24,13 @@ typealias SearchLoader = _SearchLoader<AnyObject, AnyObject>
  */
 class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
     fileprivate let profile: Profile
-    fileprivate let urlBar: URLBarView
+    fileprivate let topToolbar: TopToolbarView
     fileprivate let frecentHistory: FrecentHistory
     fileprivate var inProgress: Cancellable?
 
-    init(profile: Profile, urlBar: URLBarView) {
+    init(profile: Profile, topToolbar: TopToolbarView) {
         self.profile = profile
-        self.urlBar = urlBar
+        self.topToolbar = topToolbar
         frecentHistory = profile.history.getFrecentHistory()
 
         super.init()
@@ -77,7 +77,7 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
                 self.load(result)
                 for site in result {
                     if let completion = self.completionForURL(site.url) {
-                        self.urlBar.setAutocompleteSuggestion(completion)
+                        self.topToolbar.setAutocompleteSuggestion(completion)
                         return
                     }
                 }
@@ -85,7 +85,7 @@ class _SearchLoader<UnusedA, UnusedB>: Loader<[Site], SearchViewController> {
                 // If there are no search history matches, try matching one of the Alexa top domains.
                 for domain in self.topDomains {
                     if let completion = self.completionForDomain(domain) {
-                        self.urlBar.setAutocompleteSuggestion(completion)
+                        self.topToolbar.setAutocompleteSuggestion(completion)
                         return
                     }
                 }
