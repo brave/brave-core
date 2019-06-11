@@ -69,16 +69,13 @@ void BatClient::registerPersonaSafetyNetCallback(
   std::string error;
   bool hasResponseError = braveledger_bat_helper::getJSONResponse(
     response, &statusCode, &error);
-  if (hasResponseError && statusCode == 404) {
-    // TODO(samartnik): as per discussion with @evq we decided to use this
-    // quick hack, because we are going to move on new API soon,
-    // where SafetyNet check failure will be explicit
-    std::string message;
-    if (braveledger_bat_helper::getJSONMessage(response, message) &&
-      message == SAFETYNET_ERROR_MESSAGE) {
-      ledger_->OnWalletInitialized(ledger::Result::SAFETYNET_ATTESTATION_FAILED);
-      return;
-    }
+  std::string message;
+  if (statusCode == SAFETYNET_ERROR_CODE || (hasResponseError &&
+      statusCode == net::HTTP_NOT_FOUND &&
+      braveledger_bat_helper::getJSONMessage(response, message) &&
+      message == SAFETYNET_ERROR_MESSAGE)) {
+    ledger_->OnWalletInitialized(ledger::Result::SAFETYNET_ATTESTATION_FAILED);
+    return;
   }
   // We passed safetynet check, so just make regular call
   registerPersona("");
@@ -579,7 +576,8 @@ void BatClient::getGrantsCallback(
   bool hasResponseError = braveledger_bat_helper::getJSONResponse(response,
                                                                   &statusCode,
                                                                   &error);
-  if (hasResponseError && statusCode == net::HTTP_NOT_FOUND) {
+  if (hasResponseError && (statusCode == net::HTTP_NOT_FOUND ||
+      statusCode == SAFETYNET_ERROR_CODE)) {
     ledger_->SetLastGrantLoadTimestamp(time(0));
     ledger_->OnGrant(ledger::Result::GRANT_NOT_FOUND, properties);
     return;
@@ -681,6 +679,8 @@ void BatClient::setGrantCallback(
       ledger_->OnGrantFinish(ledger::Result::GRANT_NOT_FOUND, grant);
     } else if (statusCode == net::HTTP_CONFLICT) {
       ledger_->OnGrantFinish(ledger::Result::GRANT_ALREADY_CLAIMED, grant);
+    } else if (statusCode == SAFETYNET_ERROR_CODE) {
+      ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED, grant);
     } else {
       ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, grant);
     }
@@ -823,7 +823,7 @@ void BatClient::getGrantViaSafetynetCheckCallback(int response_status_code,
                                                   std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     // Attestation failed
     braveledger_bat_helper::GRANT grant;
     ledger_->OnGrantFinish(ledger::Result::SAFETYNET_ATTESTATION_FAILED,
