@@ -35,7 +35,7 @@ PayoutTokens::~PayoutTokens() {
 
 void PayoutTokens::Payout(const WalletInfo& wallet_info) {
   DCHECK(!wallet_info.payment_id.empty());
-  DCHECK(!wallet_info.public_key.empty());
+  DCHECK(!wallet_info.private_key.empty());
 
   BLOG(INFO) << "Payout";
 
