@@ -54,7 +54,7 @@ TEST_F(ConfirmationsStringHelperTest, DecodeHex) {
   // Arrange
   std::string hexadecimal = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
 
-  std::vector<uint8_t> public_key = {
+  std::vector<uint8_t> private_key = {
       0xe9, 0xb1, 0xab, 0x4f, 0x44, 0xd3, 0x9e, 0xb0, 0x43, 0x23, 0x41, 0x1e,
       0xed, 0x0b, 0x5a, 0x2c, 0xee, 0xdf, 0xf0, 0x12, 0x64, 0x47, 0x4f, 0x86,
       0xe2, 0x9c, 0x70, 0x7a, 0x56, 0x61, 0x56, 0x50, 0x33, 0xce, 0xa0, 0x08,
@@ -69,7 +69,7 @@ TEST_F(ConfirmationsStringHelperTest, DecodeHex) {
   // Assert
   unsigned int index = 0;
   for (const auto& byte : bytes) {
-    auto valid_byte = public_key.at(index);
+    auto valid_byte = private_key.at(index);
     if (byte != valid_byte) {
       FAIL();
     }

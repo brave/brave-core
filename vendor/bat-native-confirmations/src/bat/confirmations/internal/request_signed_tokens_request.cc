@@ -88,14 +88,14 @@ std::string RequestSignedTokensRequest::BuildSignatureHeaderValue(
     const std::string& body,
     const WalletInfo& wallet_info) const {
   DCHECK(!body.empty());
-  DCHECK(!wallet_info.public_key.empty());
+  DCHECK(!wallet_info.private_key.empty());
 
   auto digest_header_value = BuildDigestHeaderValue(body);
 
-  auto public_key = helper::String::decode_hex(wallet_info.public_key);
+  auto private_key = helper::String::decode_hex(wallet_info.private_key);
 
   return helper::Security::Sign({{"digest", digest_header_value}}, "primary",
-      public_key);
+      private_key);
 }
 
 std::string RequestSignedTokensRequest::GetAcceptHeaderValue() const {

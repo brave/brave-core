@@ -20,7 +20,7 @@ struct CONFIRMATIONS_EXPORT WalletInfo {
   bool IsValid();
 
   std::string payment_id;
-  std::string public_key;
+  std::string private_key;
 };
 
 }  // namespace confirmations
