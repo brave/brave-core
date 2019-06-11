@@ -229,8 +229,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
     bool is_main_frame,
     ui::PageTransition page_transition,
     bool has_user_gesture,
-    const std::string& method,
-    const net::HttpRequestHeaders& headers,
     network::mojom::URLLoaderFactoryRequest* factory_request,
     network::mojom::URLLoaderFactory*& out_factory) {  // NOLINT
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -242,8 +240,7 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
 
   return ChromeContentBrowserClient::HandleExternalProtocol(
       url, web_contents_getter, child_id, navigation_data, is_main_frame,
-      page_transition, has_user_gesture, method, headers, factory_request,
-      out_factory);
+      page_transition, has_user_gesture, factory_request, out_factory);
 }
 
 void BraveContentBrowserClient::RegisterOutOfProcessServices(
