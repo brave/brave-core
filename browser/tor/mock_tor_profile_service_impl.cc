@@ -7,13 +7,8 @@
 
 #include <string>
 
-#include "brave/browser/tor/tor_proxy_config_service.h"
+#include "base/callback.h"
 #include "brave/common/tor/tor_test_constants.h"
-#include "chrome/browser/profiles/profile.h"
-#include "content/public/browser/browser_thread.h"
-
-using content::BrowserThread;
-using tor::TorProxyConfigService;
 
 namespace tor {
 
@@ -32,31 +27,13 @@ void MockTorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
 }
 
 
-void MockTorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
-                                             const base::Closure& callback) {}
+void MockTorProfileServiceImpl::SetNewTorCircuit(
+    const GURL& request_url, NewTorCircuitCallback callback) {}
 
 const TorConfig& MockTorProfileServiceImpl::GetTorConfig() {
   return config_;
 }
 
 int64_t MockTorProfileServiceImpl::GetTorPid() { return -1; }
-
-int MockTorProfileServiceImpl::SetProxy(
-    net::ProxyResolutionService* service, const GURL& request_url,
-    bool new_circuit) {
-  DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  DCHECK(request_url.SchemeIsHTTPOrHTTPS());
-  std::string isolation_key = CircuitIsolationKey(request_url);
-  if (config_.empty()) {
-    // No tor config => we absolutely cannot talk to the network.
-    // This might mean that there was a problem trying to initialize
-    // Tor.
-    LOG(ERROR) << "Tor not configured -- blocking connection";
-    return net::ERR_SOCKS_CONNECTION_FAILED;
-  }
-  TorProxyConfigService::TorSetProxy(service, config_.proxy_string(),
-                                     isolation_key, nullptr, new_circuit);
-  return net::OK;
-}
 
 }  // namespace tor

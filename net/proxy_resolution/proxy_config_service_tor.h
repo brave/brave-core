@@ -51,8 +51,6 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
 
   void SetUsername(const std::string &username, TorProxyMap* map);
 
-  net::ProxyConfig* config() { return &config_; }
-
   static std::string CircuitIsolationKey(const GURL& request_url);
 
   // ProxyConfigService methods:

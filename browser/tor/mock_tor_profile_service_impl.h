@@ -19,13 +19,10 @@ class MockTorProfileServiceImpl : public TorProfileService {
   // TorProfileService:
   void LaunchTor(const TorConfig&) override;
   void ReLaunchTor(const TorConfig&) override;
-  void SetNewTorCircuit(const GURL& request_url, const base::Closure&) override;
+  void SetNewTorCircuit(const GURL& request_url,
+                        NewTorCircuitCallback) override;
   const TorConfig& GetTorConfig() override;
   int64_t GetTorPid() override;
-
-  int SetProxy(net::ProxyResolutionService*,
-               const GURL& request_url,
-               bool new_circuit) override;
 
  private:
   TorConfig config_;
