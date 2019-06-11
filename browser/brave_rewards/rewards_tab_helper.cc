@@ -40,11 +40,13 @@ RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
   rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
-  rewards_service_->AddObserver(this);
+  if (rewards_service_)
+    rewards_service_->AddObserver(this);
 }
 
 RewardsTabHelper::~RewardsTabHelper() {
-  rewards_service_->RemoveObserver(this);
+  if (rewards_service_)
+    rewards_service_->RemoveObserver(this);
   BrowserList::RemoveObserver(this);
 }
 
