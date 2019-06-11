@@ -12,8 +12,11 @@
 #include "brave/common/network_constants.h"
 #include "components/component_updater/component_updater_url_constants.h"
 #include "extensions/buildflags/buildflags.h"
-#include "extensions/common/extension_urls.h"
 #include "extensions/common/url_pattern.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "extensions/common/extension_urls.h"
+#endif
 
 namespace brave {
 
@@ -26,9 +29,9 @@ bool IsUpdaterURL(const GURL& gurl) {
                   std::string(component_updater::kUpdaterJSONDefaultUrl) + "*"),
        URLPattern(
            URLPattern::SCHEME_HTTP,
-           std::string(component_updater::kUpdaterJSONFallbackUrl) + "*")
+           std::string(component_updater::kUpdaterJSONFallbackUrl) + "*"),
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-       , URLPattern(
+       URLPattern(
            URLPattern::SCHEME_HTTPS,
            std::string(extension_urls::kChromeWebstoreUpdateURL) + "*")
 #endif

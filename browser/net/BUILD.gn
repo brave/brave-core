@@ -42,6 +42,11 @@ source_set("net") {
     deps += [
       "//brave/app:brave_generated_resources_grit",
     ]
+  } else {
+    deps += [
+      "//brave/app/android:common_extensions",
+      "//extensions/buildflags",
+    ]
   }
 
   if (enable_brave_referrals) {
