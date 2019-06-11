@@ -409,37 +409,62 @@ bool AdsServiceImpl::StartService() {
   bat_ads_service_.set_connection_error_handler(
       base::Bind(&AdsServiceImpl::MaybeStart, AsWeakPtr(), true));
 
-  bool is_production = false;
+  UpdateIsProductionFlag();
+  UpdateIsDebugFlag();
+  UpdateIsTestingFlag();
+
+  return true;
+}
+
+#if defined(OS_ANDROID)
+void AdsServiceImpl::UpdateIsProductionFlag() {
+  auto is_production =
+      profile_->GetPrefs()->GetBoolean(prefs::kUseRewardsStagingServer);
+  bat_ads_service_->SetProduction(is_production, base::NullCallback());
+}
+#else
+void AdsServiceImpl::UpdateIsProductionFlag() {
 #if defined(OFFICIAL_BUILD)
-  is_production = true;
+  auto is_production = true;
+#else
+  auto is_production = false;
 #endif
-  bool is_debug = true;
-#if defined(NDEBUG)
-  is_debug = false;
-#endif
-  bool is_testing = false;
 
-  const base::CommandLine& command_line =
-      *base::CommandLine::ForCurrentProcess();
-
+  const auto& command_line = *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kStaging)) {
     is_production = false;
-  }
-  if (command_line.HasSwitch(switches::kProduction)) {
+  } else if (command_line.HasSwitch(switches::kProduction)) {
     is_production = true;
   }
+
+  bat_ads_service_->SetProduction(is_production, base::NullCallback());
+}
+#endif
+
+void AdsServiceImpl::UpdateIsDebugFlag() {
+#if defined(NDEBUG)
+  auto is_debug = false;
+#else
+  auto is_debug = true;
+#endif
+
+  const auto& command_line = *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kDebug)) {
     is_debug = true;
   }
+
+  bat_ads_service_->SetDebug(is_debug, base::NullCallback());
+}
+
+void AdsServiceImpl::UpdateIsTestingFlag() {
+  auto is_testing = false;
+
+  const auto& command_line = *base::CommandLine::ForCurrentProcess();
   if (command_line.HasSwitch(switches::kTesting)) {
     is_testing = true;
   }
 
-  bat_ads_service_->SetProduction(is_production, base::NullCallback());
-  bat_ads_service_->SetDebug(is_debug, base::NullCallback());
   bat_ads_service_->SetTesting(is_testing, base::NullCallback());
-
-  return true;
 }
 
 void AdsServiceImpl::Start() {
