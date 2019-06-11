@@ -8,18 +8,26 @@ import * as React from 'react'
 import { Link, Navigation, IconLink, PhotoName } from 'brave-ui/features/newTab/default'
 
 // Icons
-import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon } from 'brave-ui/components/icons'
+import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon, SettingsIcon } from 'brave-ui/components/icons'
 
 // Helpers
 import { getLocale } from '../../../common/locale'
 
 interface Props {
   backgroundImageInfo: NewTab.Image | undefined
+  onClickSettings: () => void
+  isSettingsMenuOpen: boolean
+  showPhotoInfo: boolean
 }
 
 export default class FooterInfo extends React.Component<Props, {}> {
   render () {
-    const { backgroundImageInfo } = this.props
+    const {
+      backgroundImageInfo,
+      onClickSettings,
+      isSettingsMenuOpen,
+      showPhotoInfo
+    } = this.props
 
     if (!backgroundImageInfo) {
       return null
@@ -28,14 +36,18 @@ export default class FooterInfo extends React.Component<Props, {}> {
     return (
       <>
       <div>
+        {showPhotoInfo &&
         <PhotoName>
           {`${getLocale('photoBy')} `}
           <Link href={backgroundImageInfo.link} rel='noreferrer noopener' target='_blank'>
           {backgroundImageInfo.author}
           </Link>
-        </PhotoName>
+        </PhotoName>}
       </div>
         <Navigation>
+          <IconLink title={getLocale('dashboardSettingsTitle')} onClick={onClickSettings} disabled={isSettingsMenuOpen}>
+            <SettingsIcon />
+          </IconLink>
           <IconLink title={getLocale('preferencesPageTitle')} href='chrome://settings'>
             <SettingsAdvancedIcon />
           </IconLink>

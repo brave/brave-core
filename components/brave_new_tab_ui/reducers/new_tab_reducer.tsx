@@ -145,6 +145,18 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state = { ...state, useAlternativePrivateSearchEngine: payload.shouldUse }
       break
 
+    case types.NEW_TAB_SHOW_SETTINGS_MENU:
+      state = { ...state, showSettings: true }
+      break
+
+    case types.NEW_TAB_CLOSE_SETTINGS_MENU:
+      state = { ...state, showSettings: false }
+      break
+
+    case types.NEW_TAB_TOGGLE_SHOW_BACKGROUND_IMAGE:
+      state = { ...state, showBackgroundImage: !state.showBackgroundImage }
+      break
+
     default:
       break
   }

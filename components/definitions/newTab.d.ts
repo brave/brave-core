@@ -55,5 +55,7 @@ declare namespace NewTab {
     backgroundImage?: Image
     gridLayoutSize?: 'small'
     showSiteRemovalNotification?: boolean
+    showBackgroundImage: boolean
+    showSettings: boolean
   }
 }

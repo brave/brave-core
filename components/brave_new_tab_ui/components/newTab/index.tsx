@@ -17,6 +17,7 @@ import {
 } from 'brave-ui/features/newTab/default'
 
 // Components
+import Settings from './settings'
 import Stats from './stats'
 import Block from './block'
 import FooterInfo from './footerInfo'
@@ -59,6 +60,18 @@ class NewTabPage extends React.Component<Props, {}> {
 
   onIgnoredTopSite (site: NewTab.Site) {
     this.props.actions.siteIgnored(site.url)
+  }
+
+  toggleShowBackgroundImage = () => {
+    this.props.actions.toggleShowBackgroundImage()
+  }
+
+  showSettings = () => {
+    this.props.actions.showSettingsMenu()
+  }
+
+  closeSettings = () => {
+    this.props.actions.closeSettingsMenu()
   }
 
   render () {
@@ -104,8 +117,21 @@ class NewTabPage extends React.Component<Props, {}> {
               }
             </Main>
           </Header>
+          {
+            newTabData.showSettingsMenu &&
+            <Settings
+              onClickOutside={this.closeSettings}
+              toggleShowBackgroundImage={this.toggleShowBackgroundImage}
+              showBackgroundImage={newTabData.showBackgroundImage}
+            />
+          }
           <Footer>
-            <FooterInfo backgroundImageInfo={newTabData.backgroundImage} />
+            <FooterInfo
+              backgroundImageInfo={newTabData.backgroundImage}
+              onClickSettings={this.showSettings}
+              isSettingsMenuOpen={newTabData.showSettingsMenu}
+              showPhotoInfo={newTabData.showBackgroundImage}
+            />
           </Footer>
         </Page>
       </DynamicBackground>
