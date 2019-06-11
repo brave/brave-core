@@ -1189,10 +1189,6 @@ const std::string& LedgerImpl::GetPaymentId() const {
   return bat_state_->GetPaymentId();
 }
 
-void LedgerImpl::SetPaymentId(const std::string& payment_id) {
-  bat_state_->SetPaymentId(payment_id);
-}
-
 const braveledger_bat_helper::Grants& LedgerImpl::GetGrants() const {
   return bat_state_->GetGrants();
 }
