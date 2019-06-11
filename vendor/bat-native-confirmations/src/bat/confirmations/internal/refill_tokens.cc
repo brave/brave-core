@@ -47,7 +47,7 @@ void RefillTokens::Refill(
     const WalletInfo& wallet_info,
     const std::string& public_key) {
   DCHECK(!wallet_info.payment_id.empty());
-  DCHECK(!wallet_info.public_key.empty());
+  DCHECK(!wallet_info.private_key.empty());
   DCHECK(!public_key.empty());
 
   BLOG(INFO) << "Refill";

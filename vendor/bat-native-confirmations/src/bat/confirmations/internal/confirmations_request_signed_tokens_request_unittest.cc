@@ -100,7 +100,7 @@ TEST_F(ConfirmationsRequestSignedTokensRequestTest, BuildUrl) {
   // Arrange
   WalletInfo wallet_info;
   wallet_info.payment_id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
-  wallet_info.public_key = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
+  wallet_info.private_key = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
 
   // Act
   auto url = request_->BuildUrl(wallet_info);
@@ -139,7 +139,7 @@ TEST_F(ConfirmationsRequestSignedTokensRequestTest, HeadersCount) {
 
   WalletInfo wallet_info;
   wallet_info.payment_id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
-  wallet_info.public_key = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
+  wallet_info.private_key = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
 
   // Act
   auto headers = request_->BuildHeaders(body, wallet_info);
@@ -168,7 +168,7 @@ TEST_F(ConfirmationsRequestSignedTokensRequestTest, BuildSignatureHeaderValue) {
 
   WalletInfo wallet_info;
   wallet_info.payment_id = "d4ed0af0-bfa9-464b-abd7-67b29d891b8b";
-  wallet_info.public_key = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
+  wallet_info.private_key = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
 
   // Act
   auto header_value = request_->BuildSignatureHeaderValue(body, wallet_info);

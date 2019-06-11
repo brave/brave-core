@@ -59,7 +59,7 @@ TEST_F(ConfirmationsSecurityHelperTest, Sign) {
 
   std::string key_id = "primary";
 
-  std::vector<uint8_t> public_key = {
+  std::vector<uint8_t> private_key = {
       0xe9, 0xb1, 0xab, 0x4f, 0x44, 0xd3, 0x9e, 0xb0, 0x43, 0x23, 0x41, 0x1e,
       0xed, 0x0b, 0x5a, 0x2c, 0xee, 0xdf, 0xf0, 0x12, 0x64, 0x47, 0x4f, 0x86,
       0xe2, 0x9c, 0x70, 0x7a, 0x56, 0x61, 0x56, 0x50, 0x33, 0xce, 0xa0, 0x08,
@@ -69,7 +69,7 @@ TEST_F(ConfirmationsSecurityHelperTest, Sign) {
   };
 
   // Act
-  auto signature = helper::Security::Sign(headers, key_id, public_key);
+  auto signature = helper::Security::Sign(headers, key_id, private_key);
 
   // Assert
   std::string expected_signature = R"(keyId="primary",algorithm="ed25519",headers="digest",signature="m5CxS9uqI7DbZ5UDo51bcLRP2awqcUSU8tfc4t/ysrH47B8OJUG1roQyi6/pjSZj9VJuj296v77c/lxBlCn2DA==")";  // NOLINT
@@ -84,7 +84,7 @@ TEST_F(ConfirmationsSecurityHelperTest, Sign_InvalidPublicKey) {
 
   std::string key_id = "primary";
 
-  std::vector<uint8_t> public_key = {
+  std::vector<uint8_t> private_key = {
       0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef,
       0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef,
       0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef, 0xde, 0xad, 0xbe, 0xef,
@@ -94,7 +94,7 @@ TEST_F(ConfirmationsSecurityHelperTest, Sign_InvalidPublicKey) {
   };
 
   // Act
-  auto signature = helper::Security::Sign(headers, key_id, public_key);
+  auto signature = helper::Security::Sign(headers, key_id, private_key);
 
   // Assert
   std::string expected_signature = "m5CxS9uqI7DbZ5UDo51bcLRP2awqcUSU8tfc4t/ysrH47B8OJUG1roQyi6/pjSZj9VJuj296v77c/lxBlCn2DA==";  // NOLINT
