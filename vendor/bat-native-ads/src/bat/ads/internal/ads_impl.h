@@ -126,7 +126,7 @@ class AdsImpl : public Ads {
   bool IsCollectingActivity() const;
 
   uint32_t delivering_notifications_timer_id_;
-  void StartDeliveringNotifications(const uint64_t start_timer_in);
+  void StartDeliveringNotifications();
   void DeliverNotification();
   void StopDeliveringNotifications();
   bool IsDeliveringNotifications() const;
