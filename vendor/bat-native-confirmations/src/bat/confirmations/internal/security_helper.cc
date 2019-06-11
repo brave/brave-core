@@ -21,10 +21,10 @@ namespace helper {
 std::string Security::Sign(
     const std::map<std::string, std::string>& headers,
     const std::string& key_id,
-    const std::vector<uint8_t>& public_key) {
+    const std::vector<uint8_t>& private_key) {
   DCHECK_NE(headers.size(), 0UL);
   DCHECK(!key_id.empty());
-  DCHECK_NE(public_key.size(), 0UL);
+  DCHECK_NE(private_key.size(), 0UL);
 
   std::string concatenated_header = "";
   std::string concatenated_message = "";
@@ -49,7 +49,7 @@ std::string Security::Sign(
   unsigned long long signed_message_size = 0;  // NOLINT
   crypto_sign(&signed_message.front(), &signed_message_size,
       reinterpret_cast<const unsigned char*>(concatenated_message.c_str()),
-      concatenated_message.length(), &public_key.front());
+      concatenated_message.length(), &private_key.front());
 
   std::vector<uint8_t> signature(crypto_sign_BYTES);
   std::copy(signed_message.begin(), signed_message.begin() +
