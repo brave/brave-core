@@ -118,6 +118,8 @@ class AdsImpl : public Ads {
       const uint64_t seconds_window,
       const uint64_t allowable_ad_count) const;
   bool IsAllowedToShowAds();
+  bool DoesHistoryRespectMinimumWaitTimeToShowAds();
+  bool DoesHistoryRespectAdsPerDayLimit();
 
   uint32_t collect_activity_timer_id_;
   void StartCollectingActivity(const uint64_t start_timer_in);
