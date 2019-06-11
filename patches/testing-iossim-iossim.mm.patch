@@ -1,19 +1,13 @@
 diff --git a/testing/iossim/iossim.mm b/testing/iossim/iossim.mm
-index 1240c62b115a..aee9c19b2033 100644
+index 1240c62b115a..e3a9bb7855e7 100644
 --- a/testing/iossim/iossim.mm
 +++ b/testing/iossim/iossim.mm
-@@ -113,9 +113,13 @@ - (void)waitUntilExit {
-   NSMutableArray* runtimes =
-       [[simctl_list[@"runtimes"] mutableCopy] autorelease];
+@@ -115,7 +115,7 @@ - (void)waitUntilExit {
    for (NSDictionary* runtime in simctl_list[@"runtimes"]) {
-+    // Xcode 10.1 changed the JSON returned by `simctl list`
-+    bool available = runtime[@"isAvailable"] != nil ?
-+      [runtime[@"isAvailable"] boolValue] :
-+      [runtime[@"availability"] isEqualToString:@"(available)"];
      if (![runtime[@"identifier"]
              hasPrefix:@"com.apple.CoreSimulator.SimRuntime.iOS"] ||
 -        ![runtime[@"availability"] isEqualToString:@"(available)"]) {
-+        !available) {
++        !(runtime[@"isAvailable"] != nil ? [runtime[@"isAvailable"] boolValue] : [runtime[@"availability"] isEqualToString:@"(available)"])) {
        [runtimes removeObject:runtime];
      }
    }
