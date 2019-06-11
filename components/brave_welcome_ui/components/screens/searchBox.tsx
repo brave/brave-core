@@ -6,7 +6,8 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from 'brave-ui/features/welcome'
+import { Content, Title, Paragraph, PrimaryButton, SelectGrid } from 'brave-ui/features/welcome'
+import { SelectBox } from 'brave-ui/features/shields'
 
 // Images
 import { WelcomeSearchImage } from 'brave-ui/features/welcome/images'
@@ -18,11 +19,33 @@ interface Props {
   index: number
   currentScreen: number
   onClick: () => void
+  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
+  isDefaultSearchGoogle: boolean
+  // TODO Pass in search options as an array of data and define specific type definition
+  searchProviders: Array<any>
 }
 
-export default class SearchEngineBox extends React.PureComponent<Props, {}> {
+interface State {
+  searchEngineSelected: boolean
+}
+
+export default class SearchEngineBox extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      searchEngineSelected: false
+    }
+  }
+
+  onChangeDefaultSearchEngine = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ searchEngineSelected: ((event.target.value) !== '') })
+    this.props.onChange(event)
+  }
+
   render () {
-    const { index, currentScreen, onClick } = this.props
+    const { index, currentScreen, onClick, isDefaultSearchGoogle, searchProviders } = this.props
+    const { searchEngineSelected } = this.state
+    const bodyText = isDefaultSearchGoogle ? `${getLocale('chooseSearchEngine')} ${getLocale('privateExperience')}` : getLocale('chooseSearchEngine')
     return (
       <Content
         zIndex={index}
@@ -32,14 +55,28 @@ export default class SearchEngineBox extends React.PureComponent<Props, {}> {
       >
         <WelcomeSearchImage />
         <Title>{getLocale('setDefaultSearchEngine')}</Title>
-        <Paragraph>{getLocale('chooseSearchEngine')}</Paragraph>
-          <PrimaryButton
-            level='primary'
-            type='accent'
-            size='large'
-            text={getLocale('search')}
-            onClick={onClick}
-          />
+        <Paragraph>{bodyText}</Paragraph>
+          <SelectGrid>
+            <SelectBox onChange={this.onChangeDefaultSearchEngine}>
+              <option key={0} value=''>{getLocale('selectSearchEngine')}</option>
+              {searchProviders.map((provider, index) =>
+                <option
+                  key={index + 1}
+                  value={provider.value}
+                >
+                  {provider.name}
+                </option>
+              )}
+            </SelectBox>
+            <PrimaryButton
+              level='primary'
+              type='accent'
+              size='large'
+              text={getLocale('setDefault')}
+              disabled={!searchEngineSelected}
+              onClick={onClick}
+            />
+          </SelectGrid>
       </Content>
     )
   }

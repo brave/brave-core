@@ -28,6 +28,15 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
     case types.CLOSE_TAB_REQUESTED:
       window.close()
       break
+    case types.IMPORT_DEFAULT_SEARCH_PROVIDERS:
+      // CODE TO IMPORT SEARCH DATA HERE UPDATE STATE
+      state = { ...state, defaultSearchProviders: payload }
+      console.log('IMPORT SEARCH DATA')
+      break
+    case types.CHANGE_DEFAULT_SEARCH_PROVIDER:
+      // CODE TO CHANGE DEFAULT DATA WITH PAYLOAD
+      console.log('CHANGE DEFAULT SEARCH PROVIDER')
+      break
   }
 
   if (state !== startingState) {

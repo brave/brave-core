@@ -12,7 +12,9 @@ window.close = jest.fn()
 describe('welcomeReducer', () => {
   it('should handle initial state', () => {
     const assertion = welcomeReducer(undefined, actions.closeTabRequested())
-    expect(assertion).toEqual({})
+    expect(assertion).toEqual({
+      defaultSearchProviders: []
+    })
   })
 
   describe.skip('IMPORT_NOW_REQUESTED', () => {
@@ -38,6 +40,16 @@ describe('welcomeReducer', () => {
         payload: undefined
       })
       expect(window.close).toBeCalled()
+    })
+  })
+
+  describe('IMPORT_DEFAULT_SEARCH_PROVIDERS', () => {
+    it('should update state with new search providers', () => {
+      const newState = welcomeReducer(undefined, actions.importDefaultSearchProviders(['DuckDuckGo', 'Google']))
+      const expected = {
+        defaultSearchProviders: ['DuckDuckGo', 'Google']
+      }
+      expect(newState).toEqual(expected)
     })
   })
 })

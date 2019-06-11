@@ -3,5 +3,9 @@ declare namespace Welcome {
     welcomeData: State | undefined
   }
 
-  export interface State {}
+  export interface State {
+    // TODO explicitly type data when API is known
+    defaultSearchProviders: Array<any>
+  }
+
 }
