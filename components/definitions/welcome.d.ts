@@ -20,7 +20,7 @@ declare namespace Welcome {
   }
 
   export interface SearchEngineListResponse {
-    defaults: Array<Welcome.SearchEngineEntry>
+    defaults: Array<SearchEngineEntry>
     extensions: Array<any>
     others: Array<any>
   }

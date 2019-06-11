@@ -19,11 +19,11 @@ export const closeTabRequested = () => action(types.CLOSE_TAB_REQUESTED)
 
 export const changeDefaultSearchProvider = (searchProvider: string) => action(types.CHANGE_DEFAULT_SEARCH_PROVIDER, searchProvider)
 
-const getSearchEngineProvidersStarted = () => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_STARTED)
+export const getSearchEngineProvidersStarted = () => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_STARTED)
 
-const getSearchEngineProvidersSuccess = (searchProviders: Array<Welcome.SearchEngineEntry>) => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS, searchProviders)
+export const getSearchEngineProvidersSuccess = (searchProviders: Array<Welcome.SearchEngineEntry>) => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS, searchProviders)
 
-const getSearchEngineProvidersFailure = () => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_FAILURE)
+export const getSearchEngineProvidersFailure = () => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_FAILURE)
 
 export const getSearchEngineProviders = () => {
   return (dispatch: Dispatch) => {

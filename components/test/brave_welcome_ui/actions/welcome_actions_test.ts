@@ -31,10 +31,32 @@ describe('welcome_actions', () => {
   })
 
   it('changeDefaultSearchProvider', () => {
-    expect(actions.changeDefaultSearchProvider('DuckDuckGo')).toEqual({
+    expect(actions.changeDefaultSearchProvider(12345)).toEqual({
       type: types.CHANGE_DEFAULT_SEARCH_PROVIDER,
-      meta: undefined,
-      payload: 'DuckDuckGo'
+      payload: 12345
     })
   })
+
+  it('getSearchEngineProvidersStarted', () => {
+    expect(actions.getSearchEngineProvidersStarted()).toEqual({
+      type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_STARTED
+    })
+  })
+
+  it('getSearchEngineProvidersSuccess', () => {
+    const mockPayload = []
+    expect(actions.getSearchEngineProvidersSuccess(mockPayload)).toEqual({
+      type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+      payload: mockPayload
+    })
+  })
+
+  it('getSearchEngineProvidersFailure', () => {
+    expect(actions.getSearchEngineProvidersFailure()).toEqual({
+      type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_FAILURE
+    })
+  })
+
+  // TODO: getSearchEngineProviders can be tested via mocking the entire
+  // store. Would require redux-mock-store as dependency
 })

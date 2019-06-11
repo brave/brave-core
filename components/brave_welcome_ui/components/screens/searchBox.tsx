@@ -15,7 +15,7 @@ import { WelcomeSearchImage } from 'brave-ui/features/welcome/images'
 // Utils
 import { getLocale } from '../../../common/locale'
 
-interface Props {
+export interface Props {
   index: number
   currentScreen: number
   onClick: () => void
@@ -35,7 +35,6 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
       searchEngineSelected: false,
       isDefaultSearchGoogle: true
     }
-
   }
 
   onChangeDefaultSearchEngine = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -52,12 +51,12 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
   }
 
   getProviderDisplayName = (searchProvider: Welcome.SearchEngineEntry, defaultSearchProvider: Welcome.SearchEngineEntry): string =>
-    searchProvider!.name === defaultSearchProvider.name
+    searchProvider.name === defaultSearchProvider.name
     ? `${searchProvider.name} (${getLocale('default')})`
     : searchProvider.name
 
   getBodyText = (searchProviderName: string): string =>
-    searchProviderName! === 'Google'
+    searchProviderName === 'Google'
       ? `${getLocale('chooseSearchEngine')} ${getLocale('privateExperience')}`
       : getLocale('chooseSearchEngine')
 
