@@ -726,6 +726,9 @@ std::vector<AdInfo> AdsImpl::GetUnseenAds(
     }
 
     if (creative_set.size() >= ad.total_max) {
+      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
+          << " has exceeded the totalMax";
+
       continue;
     }
 
@@ -733,6 +736,9 @@ std::vector<AdInfo> AdsImpl::GetUnseenAds(
 
     if (!HistoryRespectsRollingTimeConstraint(
         creative_set, day_window, ad.per_day)) {
+      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
+          << " has exceeded the perDay";
+
       continue;
     }
 
@@ -745,6 +751,9 @@ std::vector<AdInfo> AdsImpl::GetUnseenAds(
 
     if (!HistoryRespectsRollingTimeConstraint(
         campaign, day_window, ad.daily_cap)) {
+      BLOG(WARNING) << "creativeSetId " << ad.creative_set_id
+          << " has exceeded the dailyCap";
+
       continue;
     }
 
@@ -837,6 +846,28 @@ bool AdsImpl::HistoryRespectsRollingTimeConstraint(
 }
 
 bool AdsImpl::IsAllowedToShowAds() {
+  auto does_history_respect_ads_per_day_limit =
+      DoesHistoryRespectAdsPerDayLimit();
+
+  bool does_history_respect_minimum_wait_time;
+  if (!IsMobile()) {
+    does_history_respect_minimum_wait_time =
+        DoesHistoryRespectMinimumWaitTimeToShowAds();
+  } else {
+    does_history_respect_minimum_wait_time = true;
+  }
+
+  BLOG(INFO) << "IsAllowedToShowAds:";
+  BLOG(INFO) << "    does_history_respect_minimum_wait_time: "
+      << does_history_respect_minimum_wait_time;
+  BLOG(INFO) << "    does_history_respect_ads_per_day_limit: "
+      << does_history_respect_ads_per_day_limit;
+
+  return does_history_respect_minimum_wait_time &&
+      does_history_respect_ads_per_day_limit;
+}
+
+bool AdsImpl::DoesHistoryRespectMinimumWaitTimeToShowAds() {
   auto ads_shown_history = client_->GetAdsShownHistory();
 
   auto hour_window = base::Time::kSecondsPerHour;
@@ -844,17 +875,33 @@ bool AdsImpl::IsAllowedToShowAds() {
   auto respects_hour_limit = HistoryRespectsRollingTimeConstraint(
       ads_shown_history, hour_window, hour_allowed);
 
+  auto minimum_wait_time = hour_window / hour_allowed;
+  auto respects_minimum_wait_time = HistoryRespectsRollingTimeConstraint(
+      ads_shown_history, minimum_wait_time, 0);
+
+  BLOG(INFO) << "DoesHistoryRespectMinimumWaitTimeToShowAds:";
+  BLOG(INFO) << "    respects_hour_limit: "
+      << respects_hour_limit;
+  BLOG(INFO) << "    respects_minimum_wait_time: "
+      << respects_minimum_wait_time;
+
+  return respects_hour_limit && respects_minimum_wait_time;
+}
+
+bool AdsImpl::DoesHistoryRespectAdsPerDayLimit() {
+  auto ads_shown_history = client_->GetAdsShownHistory();
+
   auto day_window = base::Time::kSecondsPerHour * base::Time::kHoursPerDay;
   auto day_allowed = ads_client_->GetAdsPerDay();
+
   auto respects_day_limit = HistoryRespectsRollingTimeConstraint(
       ads_shown_history, day_window, day_allowed);
 
-  auto minimum_wait_time = hour_window / hour_allowed;
-  bool respects_minimum_wait_time = HistoryRespectsRollingTimeConstraint(
-      ads_shown_history, minimum_wait_time, 0);
+  BLOG(INFO) << "DoesHistoryRespectAdsPerDayLimit:";
+  BLOG(INFO) << "    respects_day_limit: "
+      << respects_day_limit;
 
-  return respects_hour_limit && respects_day_limit &&
-      respects_minimum_wait_time;
+  return respects_day_limit;
 }
 
 void AdsImpl::StartCollectingActivity(const uint64_t start_timer_in) {
