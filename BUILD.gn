@@ -220,7 +220,6 @@ if (!is_mac && !is_android) {
           deps = [ "//brave/components/brave_rewards/resources/extension:locales_$locale" ]
 
           locale = string_replace(locale, "-", "_")
-          locale = string_replace(locale, "nb", "no")
           sources = [ "$root_out_dir/resources/brave_rewards/_locales/$locale/messages.json" ]
           outputs = [
             "$brave_dist_dir/resources/brave_rewards/_locales/$locale/{{source_file_part}}",
@@ -231,7 +230,6 @@ if (!is_mac && !is_android) {
         deps = [ "//brave/components/brave_extension/extension/brave_extension:locales_$locale" ]
 
         locale = string_replace(locale, "-", "_")
-        locale = string_replace(locale, "nb", "no")
         sources = [ "$root_out_dir/resources/brave_extension/_locales/$locale/messages.json" ]
         outputs = [
           "$brave_dist_dir/resources/brave_extension/_locales/$locale/{{source_file_part}}",
