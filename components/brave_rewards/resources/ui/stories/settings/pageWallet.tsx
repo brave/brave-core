@@ -3,7 +3,6 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { boolean, object, select } from '@storybook/addon-knobs'
 
 // Components
 import { DetailRow as ContributeDetailRow } from '../../../../src/features/rewards/tableContribute'
@@ -17,6 +16,7 @@ import {
   WalletSummary,
   WalletWrapper
 } from '../../../../src/features/rewards'
+import { WalletState } from '../../../../src/features/rewards/walletWrapper'
 import { WalletAddIcon, WalletWithdrawIcon } from '../../../../src/components/icons'
 
 // Assets
@@ -25,6 +25,16 @@ const buzz = require('../../../assets/img/buzz.jpg')
 const ddgo = require('../../../assets/img/ddgo.jpg')
 const guardian = require('../../../assets/img/guardian.jpg')
 const wiki = require('../../../assets/img/wiki.jpg')
+
+export interface Props {
+  grants: {
+    tokens: string,
+    expireDate: string,
+    type: string
+  }[]
+  content: 'empty' | 'summary' | 'off'
+  walletState: WalletState
+}
 
 interface State {
   activeTabId: number
@@ -36,8 +46,8 @@ const doNothing = () => {
   console.log('nothing')
 }
 
-class PageWallet extends React.Component<{}, State> {
-  constructor (props: {}) {
+class PageWallet extends React.Component<Props, State> {
+  constructor (props: Props) {
     super(props)
     this.state = {
       activeTabId: 0,
@@ -232,15 +242,7 @@ class PageWallet extends React.Component<{}, State> {
   }
 
   render () {
-    const content = select(
-      'Content',
-      {
-        empty: 'empty',
-        summary: 'summary',
-        off: 'off'
-      },
-      'empty' as 'empty' | 'summary' | 'off'
-    )
+    const { content, walletState, grants } = this.props
     const self = this
 
     return (
@@ -267,24 +269,8 @@ class PageWallet extends React.Component<{}, State> {
           onActivityClick={doNothing}
           showCopy={true}
           showSecActions={true}
-          grants={object('Claimed grants', [
-            {
-              tokens: '8.0',
-              expireDate: '7/15/2018',
-              type: 'ugp'
-            },
-            {
-              tokens: '10.0',
-              expireDate: '9/10/2018',
-              type: 'ugp'
-            },
-            {
-              tokens: '10.0',
-              expireDate: '10/10/2018',
-              type: 'ads'
-            }
-          ])}
-          connectedWallet={boolean('Connected wallet', false)}
+          grants={grants}
+          walletState={walletState}
         >
           {
             content === 'empty' ? <WalletEmpty /> : null

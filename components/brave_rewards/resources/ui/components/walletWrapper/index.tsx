@@ -35,12 +35,17 @@ import {
   StyledButtonWrapper,
   StyledButton,
   StyledNotificationMessage,
-  StyledPipe
+  StyledPipe,
+  StyledWalletButton,
+  StyledVerifiedButton,
+  StyledVerifiedButtonIcon,
+  StyledVerifiedButtonText,
+  StyledTextIcon
 } from './style'
 import { getLocale } from '../../../helpers'
 import { GrantCaptcha, GrantComplete, GrantError, GrantWrapper } from '../'
 import Alert, { Type as AlertType } from '../alert'
-import { Button } from '../../../components'
+import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
 import {
   CaratDownIcon,
   CaratUpIcon,
@@ -98,6 +103,11 @@ export type NotificationType =
   'pendingContribution' |
   ''
 
+export type WalletState =
+  'unverified' |
+  'verified' |
+  'disconnected'
+
 export interface Notification {
   id: string
   date?: string
@@ -110,7 +120,7 @@ export interface Props {
   balance: string
   converted: string | null
   actions: ActionWallet[]
-  connectedWallet?: boolean
+  walletState?: WalletState
   compact?: boolean
   contentPadding?: boolean
   showCopy?: boolean
@@ -321,6 +331,57 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     )
   }
 
+  generateWalletButton = (walletState: WalletState) => {
+    const buttonProps: Partial<ButtonProps> = {
+      size: 'small',
+      level: 'primary',
+      brand: 'rewards'
+    }
+
+    switch (walletState) {
+      case 'unverified':
+        return (
+          <StyledWalletButton
+            type={'accent'}
+            icon={{
+              image: <StyledTextIcon>!</StyledTextIcon>,
+              position: 'after'
+            }}
+            text={getLocale('walletButtonUnverified')}
+            {...buttonProps}
+          />
+        )
+
+      case 'verified':
+        return (
+          <StyledVerifiedButton >
+            <StyledVerifiedButtonIcon position={'before'}>
+              <UpholdSystemIcon />
+            </StyledVerifiedButtonIcon>
+            <StyledVerifiedButtonText>
+              {getLocale('walletButtonVerified')}
+            </StyledVerifiedButtonText>
+            <StyledVerifiedButtonIcon position={'after'}>
+              <CaratDownIcon />
+            </StyledVerifiedButtonIcon>
+          </StyledVerifiedButton>
+        )
+
+      case 'disconnected':
+        return (
+          <Button
+            text={getLocale('walletButtonDisconnected')}
+            type={'subtle'}
+            icon={{
+              image: <UpholdSystemIcon />,
+              position: 'before'
+            }}
+            {...buttonProps}
+          />
+        )
+    }
+  }
+
   toggleGrantDetails = () => {
     this.setState({ grantDetails: !this.state.grantDetails })
   }
@@ -417,7 +478,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       converted,
       actions,
       showCopy,
-      connectedWallet,
+      walletState,
       compact,
       contentPadding,
       showSecActions,
@@ -442,6 +503,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     if (grant && grant.expiryTime !== 0) {
       date = new Date(grant.expiryTime).toLocaleDateString()
     }
+
+    const walletVerified = walletState && walletState !== 'unverified'
 
     return (
       <>
@@ -488,7 +551,11 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                       </StyledAlertWrapper>
                       : null
                   }
-                  <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
+                  {
+                    walletState
+                      ? this.generateWalletButton(walletState)
+                      : <StyledTitle>{getLocale('yourWallet')}</StyledTitle>
+                  }
                   {
                     showSecActions
                       ? <StyledIconAction onClick={onSettingsClick} data-test-id='settingsButton'>
@@ -553,9 +620,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           </StyledContent>
           {
             showCopy
-              ? <StyledCopy connected={connectedWallet}>
+              ? <StyledCopy connected={walletVerified}>
                 {
-                  connectedWallet
+                  walletVerified
                     ? <>
                       <StyledCopyImage>
                         <UpholdColorIcon />

@@ -314,3 +314,57 @@ export const StyledButton = styled(Button as ComponentType<ButtonProps>)`
 export const StyledPipe = styled<StyledProps, 'span'>('span')`
   font-weight: 300;
 `
+
+export const StyledWalletButton = styled(Button as ComponentType<ButtonProps>)`
+  padding-right: 23px;
+`
+
+export const StyledVerifiedButton = styled<{}, 'button'>('button')`
+  box-sizing: border-box;
+  outline-color: transparent;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  font-family: Poppins, sans-serif;
+  cursor: pointer;
+  user-select: none;
+  font-size: 11px;
+  border-radius: 28px;
+  min-width: 88px;
+  padding: 7px 10px;
+  color: #fff;
+  background: #1bba6a;
+  border: 1px solid ${p => p.theme.color.brandBat};
+  :active:enabled {
+    border-color: ${p => p.theme.color.brandBatActive};
+  }
+`
+
+export const StyledVerifiedButtonText = styled<{}, 'div'>('div')`
+  /* min-height so that we get consistent height with / without an icon */
+  min-height: 14px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  letter-spacing: 0;
+  font-weight: 500;
+  line-height: 1;
+`
+
+export const StyledVerifiedButtonIcon = styled<{position: string}, 'div'>('div')`
+  display: block;
+  line-height: 0;
+  height: 14px;
+  width: 14px;
+  margin: ${(p) => p.position === 'before' ? '0 6px 0 -4px' : '0 -4px 0 6px'};
+`
+
+export const StyledTextIcon = styled<{}, 'div'>('div')`
+  line-height: initial;
+  background: #392dd1;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
+  margin: 0 10px;
+`

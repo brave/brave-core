@@ -9,7 +9,7 @@ import centered from '@storybook/addon-centered'
 
 // Components
 import { WalletSummary, WalletEmpty, WalletOff, WalletPanel, WalletSummarySlider, WalletWrapper } from '../../../src/features/rewards'
-import { AlertWallet, Notification } from '../../../src/features/rewards/walletWrapper'
+import { AlertWallet, Notification, WalletState } from '../../../src/features/rewards/walletWrapper'
 import { WalletAddIcon, WalletImportIcon } from '../../../src/components/icons'
 import { WalletInfoHeader } from '../../../src/features/rewards/mobile'
 
@@ -45,8 +45,7 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
         compact={false}
         contentPadding={false}
         onNotificationClick={onEnableAds}
-        notification={adsLaunchNotification}
-        connectedWallet={boolean('Connected wallet', false)}
+        notification={boolean('Show notification', true) ? adsLaunchNotification : undefined}
         showCopy={boolean('Show Uphold', false)}
         showSecActions={boolean('Show secondary actions', true)}
         balance={text('Balance', '25.0')}
@@ -81,6 +80,11 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
           }
         ] : []}
         alert={showAlert ? alert : undefined}
+        walletState={select('wallet status', {
+          unverified: 'unverified',
+          verified: 'verified',
+          disconnected: 'disconnected'
+        }, 'unverified') as WalletState}
       >
         Some content
       </WalletWrapper>

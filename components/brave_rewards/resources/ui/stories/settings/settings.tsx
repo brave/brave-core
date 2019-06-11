@@ -9,7 +9,7 @@ import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
 import DonationsBox from './donationsBox'
 import Grant from './grant'
-import PageWallet from './pageWallet'
+import PageWallet, { Props as WalletProps } from './pageWallet'
 import { Grid, Column } from '../../../../src/components'
 import { DisabledBox, MainToggle, SettingsPage } from '../../../../src/features/rewards'
 
@@ -17,12 +17,16 @@ import { DisabledBox, MainToggle, SettingsPage } from '../../../../src/features/
 import '../../../assets/fonts/muli.css'
 import '../../../assets/fonts/poppins.css'
 
+export interface Props {
+  walletProps: WalletProps
+}
+
 interface State {
   mainToggle: boolean
 }
 
-class Settings extends React.PureComponent<{}, State> {
-  constructor (props: {}) {
+class Settings extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
     super(props)
     this.state = {
       mainToggle: true
@@ -38,6 +42,7 @@ class Settings extends React.PureComponent<{}, State> {
   }
 
   render () {
+    const { walletProps } = this.props
     return (
       <SettingsPage>
         <Grid columns={3} customStyle={{ gridGap: '24px' }}>
@@ -60,7 +65,7 @@ class Settings extends React.PureComponent<{}, State> {
           <Column size={1} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
             <Grant type={'ugp'} />
             <Grant type={'ads'} amount={'30.0'} />
-            <PageWallet />
+            <PageWallet {...walletProps} />
           </Column>
         </Grid>
       </SettingsPage>

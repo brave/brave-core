@@ -24,7 +24,7 @@ import {
 } from '../../../src/features/rewards'
 import { BatColorIcon, WalletAddIcon } from '../../../src/components/icons'
 import WelcomePage from '../../../src/features/rewards/welcomePage'
-import { Notification } from '../../../src/features/rewards/walletWrapper'
+import { Notification, WalletState } from '../../../src/features/rewards/walletWrapper'
 
 const favicon = require('../../assets/img/brave-favicon.png')
 const siteBgImage = require('../../assets/img/bg_siteBanner.jpg')
@@ -71,7 +71,38 @@ const dummyOptInAction = () => {
 
 storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
   .addDecorator(withKnobs)
-  .add('Settings Page', () => <Settings />)
+  .add('Settings Page', () => {
+    const walletProps = {
+      grants: object('Claimed grants', [
+        {
+          tokens: '8.0',
+          expireDate: '7/15/2018',
+          type: 'ugp'
+        },
+        {
+          tokens: '10.0',
+          expireDate: '9/10/2018',
+          type: 'ugp'
+        },
+        {
+          tokens: '10.0',
+          expireDate: '10/10/2018',
+          type: 'ads'
+        }
+      ]),
+      content: select('Content', {
+        empty: 'empty',
+        summary: 'summary',
+        off: 'off'
+      }, 'empty') as 'empty' | 'summary' | 'off',
+      walletState: select('wallet status', {
+        unverified: 'unverified',
+        verified: 'verified',
+        disconnected: 'disconnected'
+      }, 'unverified') as WalletState
+    }
+    return (<Settings {...{ walletProps }}/>)
+  })
   .add('Welcome Page', () => (
     <WelcomePage
       id={'welcome-page'}
@@ -279,7 +310,6 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             }
           ]}
           showSecActions={false}
-          connectedWallet={boolean('Connected wallet', true)}
           grants={object('Grants', [
             {
               tokens: '8.0',
@@ -402,7 +432,8 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
         <WalletWrapper
           compact={true}
           contentPadding={false}
-          notification={store.state.notification as Notification}
+          notification={boolean('show notification', true) ?
+                        store.state.notification as Notification : undefined}
           gradientTop={getGradientColor()}
           balance={text('Tokens', '30.0')}
           converted={text('Converted', '15.50 USD')}
@@ -420,7 +451,6 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
           ]}
           showCopy={boolean('Show Uphold', false)}
           showSecActions={false}
-          connectedWallet={boolean('Connected wallet', false)}
           grants={object('Grants', [
             {
               tokens: '8.0',
@@ -444,6 +474,11 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
           onSolution={onSolution}
           onFinish={onFinish}
           convertProbiToFixed={convertProbiToFixed}
+          walletState={select('wallet status', {
+            unverified: 'unverified',
+            verified: 'verified',
+            disconnected: 'disconnected'
+          }, 'unverified') as WalletState}
         >
           <WalletSummarySlider
             id={'panel-slider'}

@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { boolean, object } from '@storybook/addon-knobs'
+import { object } from '@storybook/addon-knobs'
 
 import { WalletEmpty, WalletWrapper } from '../../../../src/features/rewards'
 import { StyledWalletClose, StyledWalletOverlay, StyledWalletWrapper } from './style'
@@ -111,7 +111,6 @@ class MobileWalletPanel extends React.Component<Props, State> {
                   type: 'ads'
                 }
               ])}
-              connectedWallet={boolean('Connected wallet', false)}
             >
               <WalletEmpty hideAddFundsText={true} />
             </WalletWrapper>
