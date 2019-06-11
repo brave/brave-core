@@ -1,14 +1,14 @@
 import("//build/config/ios/rules.gni")
 
-ios_xctest_test("brave-rewards-ios-tests") {
+ios_xctest_test("brave_rewards_ios_tests") {
   testonly = true
 
   deps = [
-    "//brave/vendor/brave-ios:brave-rewards-ios-framework+link",
+    "//brave/vendor/brave-ios:brave_rewards_ios_framework+link",
   ]
 
   bundle_deps = [
-    "//brave/vendor/brave-ios:brave-rewards-ios-framework+bundle",
+    "//brave/vendor/brave-ios:brave_rewards_ios_framework+bundle",
   ]
 
   configs += [ "//brave/vendor/brave-ios:internal_config" ]
@@ -20,9 +20,9 @@ ios_xctest_test("brave-rewards-ios-tests") {
 
   sources = [
     "main.mm",
-    "LedgerDatabaseTests.mm",
-    "DictionaryTransformTests.mm",
-    "VectorTransformTests.mm",
-    "TestFoo.mm",
+    "ledger_database_test.mm",
+    "dictionary_transform_test.mm",
+    "vector_transform_test.mm",
+    "test_foo.mm",
   ]
 }

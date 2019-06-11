@@ -23,11 +23,11 @@
 
 @end
 
-@interface LedgerDatabaseTests : XCTestCase
+@interface LedgerDatabaseTest : XCTestCase
 @property (nonatomic, copy, nullable) void (^contextSaveCompletion)();
 @end
 
-@implementation LedgerDatabaseTests
+@implementation LedgerDatabaseTest
 
 - (void)setUp
 {

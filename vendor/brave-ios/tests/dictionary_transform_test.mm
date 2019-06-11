@@ -4,13 +4,13 @@
 
 #import <XCTest/XCTest.h>
 #import "CppTransformations.h"
-#import "TestFoo.h"
+#import "test_foo.h"
 
-@interface DictionaryTransformTests : XCTestCase
+@interface DictionaryTransformTest : XCTestCase
 
 @end
 
-@implementation DictionaryTransformTests
+@implementation DictionaryTransformTest
 
 - (void)testStringPrimitiveMapToDictionary
 {

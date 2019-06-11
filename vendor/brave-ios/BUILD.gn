@@ -34,17 +34,17 @@ config("internal_config") {
 }
 
 group("brave-ios") {
-  public_deps = [ ":brave-rewards-ios-framework" ]
+  public_deps = [ ":brave_rewards_ios_framework" ]
 }
 
-group("brave-ios-tests") {
+group("brave_ios_tests") {
   testonly = true
   public_deps = [
-    "tests:brave-rewards-ios-tests"
+    "tests:brave_rewards_ios_tests"
   ]
 }
 
-ios_framework_bundle("brave-rewards-ios-framework") {
+ios_framework_bundle("brave_rewards_ios_framework") {
   output_name = "BraveRewards"
   output_dir = root_out_dir
 
@@ -145,11 +145,11 @@ bundle_data("coredata") {
   ]
 
   public_deps = [
-    ":compile-coredata"
+    ":compile_coredata"
   ]
 }
 
-action("compile-coredata") {
+action("compile_coredata") {
   script = "lib/compile-model.py"
 
   inputs = [

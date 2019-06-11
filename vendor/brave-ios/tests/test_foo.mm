@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import "TestFoo.h"
+#import "test_foo.h"
 #import "CppTransformations.h"
 
 CppFoo::CppFoo(const CppFoo & foo) : boolean(foo.boolean), integer(foo.integer), stringObject(foo.stringObject), numbers(foo.numbers) { }
