@@ -121,11 +121,14 @@ BraveContentBrowserClient::BraveContentBrowserClient(StartupData* startup_data)
 
 BraveContentBrowserClient::~BraveContentBrowserClient() {}
 
-content::BrowserMainParts* BraveContentBrowserClient::CreateBrowserMainParts(
+std::unique_ptr<content::BrowserMainParts>
+BraveContentBrowserClient::CreateBrowserMainParts(
     const content::MainFunctionParams& parameters) {
-  ChromeBrowserMainParts* main_parts = static_cast<ChromeBrowserMainParts*>(
-      ChromeContentBrowserClient::CreateBrowserMainParts(parameters));
-  main_parts->AddParts(new BraveBrowserMainExtraParts());
+  std::unique_ptr<content::BrowserMainParts> main_parts =
+      ChromeContentBrowserClient::CreateBrowserMainParts(parameters);
+  ChromeBrowserMainParts* chrome_main_parts =
+      static_cast<ChromeBrowserMainParts*>(main_parts.get());
+  chrome_main_parts->AddParts(new BraveBrowserMainExtraParts());
   return main_parts;
 }
 
