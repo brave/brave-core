@@ -136,6 +136,7 @@ class AdsImpl : public Ads {
   void BundleUpdated();
 
   uint32_t sustained_ad_interaction_timer_id_;
+  std::string last_sustaining_ad_url_;
   void StartSustainingAdInteraction(const uint64_t start_timer_in);
   void SustainAdInteractionIfNeeded();
   void SustainAdInteraction();
