@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/webui/brave_welcome_ui.h"
+
+#include <memory>
+#include <string>
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
@@ -11,6 +15,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/chrome_pages.h"
+#include "chrome/browser/ui/webui/settings/search_engines_handler.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "components/grit/brave_components_resources.h"
@@ -28,8 +33,6 @@ class WelcomeDOMHandler : public WebUIMessageHandler {
   WelcomeDOMHandler() {
   }
   ~WelcomeDOMHandler() override {}
-
-  void Init();
 
   // WebUIMessageHandler implementation.
   void RegisterMessages() override;
@@ -51,11 +54,9 @@ void WelcomeDOMHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
-void WelcomeDOMHandler::Init() {
-}
-
 void WelcomeDOMHandler::HandleImportNowRequested(const base::ListValue* args) {
-  chrome::ShowSettingsSubPageInTabbedBrowser(GetBrowser(), chrome::kImportDataSubPage);
+  chrome::ShowSettingsSubPageInTabbedBrowser(GetBrowser(),
+      chrome::kImportDataSubPage);
 }
 
 }  // namespace
@@ -63,12 +64,14 @@ void WelcomeDOMHandler::HandleImportNowRequested(const base::ListValue* args) {
 BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name, kBraveWelcomeGenerated,
         kBraveWelcomeGeneratedSize, IDR_BRAVE_WELCOME_HTML) {
+  web_ui->AddMessageHandler(std::make_unique<WelcomeDOMHandler>());
 
-  auto handler_owner = std::make_unique<WelcomeDOMHandler>();
-  WelcomeDOMHandler* handler = handler_owner.get();
-  web_ui->AddMessageHandler(std::move(handler_owner));
-  handler->Init();
   Profile* profile = Profile::FromWebUI(web_ui);
+
+  // added to allow front end to read/modify default search engine
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::SearchEnginesHandler>(profile));
+
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 #if defined(OS_WIN)
   g_brave_browser_process->local_state()->SetBoolean(

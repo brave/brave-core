@@ -7,9 +7,7 @@ import { debounce } from '../common/debounce'
 
 const keyName = 'welcome-data'
 
-export const defaultState = {
-  defaultSearchProviders: []
-}
+export const defaultState = {}
 
 const cleanData = (state: Welcome.State) => {
   state = { ...state }

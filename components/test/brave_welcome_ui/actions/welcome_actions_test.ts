@@ -22,19 +22,11 @@ describe('welcome_actions', () => {
     })
   })
 
-  it('importDefaultSearchProviders', () => {
-    expect(actions.importDefaultSearchProviders(['DuckDuckGo', 'Google'])).toEqual({
-      type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS,
+  it('closeTabRequested', () => {
+    expect(actions.closeTabRequested()).toEqual({
+      type: types.CLOSE_TAB_REQUESTED,
       meta: undefined,
-      payload: ['DuckDuckGo', 'Google']
-    })
-  })
-
-  it('changeDefaultSearchProvider', () => {
-    expect(actions.changeDefaultSearchProvider('DuckDuckGo')).toEqual({
-      type: types.CHANGE_DEFAULT_SEARCH_PROVIDER,
-      meta: undefined,
-      payload: 'DuckDuckGo'
+      payload: undefined
     })
   })
 })

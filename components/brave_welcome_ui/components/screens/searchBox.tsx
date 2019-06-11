@@ -19,32 +19,63 @@ interface Props {
   index: number
   currentScreen: number
   onClick: () => void
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void
-  isDefaultSearchGoogle: boolean
-  // TODO Pass in search options as an array of data and define specific type definition
-  searchProviders: Array<any>
 }
 
 interface State {
-  searchEngineSelected: boolean
+  searchEngineSelected: boolean,
+  searchEngineIndex: number,
+  isDefaultSearchGoogle: boolean,
+  searchProviders: Array<SearchEngineEntry>
+}
+
+interface SearchEngineEntry {
+  canBeDefault: boolean,
+  canBeEdited: boolean,
+  canBeRemoved: boolean,
+  default: boolean,
+  displayName: string,
+  iconURL: string,
+  id: number,
+  isOmniboxExtension: boolean,
+  keyword: string,
+  modelIndex: number,
+  name: string,
+  url: string,
+  urlLocked: boolean
 }
 
 export default class SearchEngineBox extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      searchEngineSelected: false
+      searchEngineSelected: false,
+      searchEngineIndex: -1,
+      isDefaultSearchGoogle: true,
+      searchProviders: []
     }
+
+    // @ts-ignore
+    window.cr.sendWithPromise('getSearchEnginesList').then(response => {
+      const defaultEntry = response.defaults.find(function (entry: SearchEngineEntry) {
+        return entry.default
+      })
+      this.setState({
+        isDefaultSearchGoogle: defaultEntry.name === 'Google',
+        searchProviders: response.defaults,
+        searchEngineIndex: defaultEntry.modelIndex
+      })
+    })
   }
 
   onChangeDefaultSearchEngine = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    this.setState({ searchEngineSelected: ((event.target.value) !== '') })
-    this.props.onChange(event)
+    const modelIndex = parseInt(event.target.value, 10)
+    chrome.send('setDefaultSearchEngine', [modelIndex])
+    this.setState({ searchEngineSelected: true, searchEngineIndex: modelIndex })
   }
 
   render () {
-    const { index, currentScreen, onClick, isDefaultSearchGoogle, searchProviders } = this.props
-    const { searchEngineSelected } = this.state
+    const { index, currentScreen, onClick } = this.props
+    const { searchEngineSelected, searchEngineIndex, searchProviders, isDefaultSearchGoogle } = this.state
     const bodyText = isDefaultSearchGoogle ? `${getLocale('chooseSearchEngine')} ${getLocale('privateExperience')}` : getLocale('chooseSearchEngine')
     return (
       <Content
@@ -57,12 +88,14 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
         <Title>{getLocale('setDefaultSearchEngine')}</Title>
         <Paragraph>{bodyText}</Paragraph>
           <SelectGrid>
-            <SelectBox onChange={this.onChangeDefaultSearchEngine}>
-              <option key={0} value=''>{getLocale('selectSearchEngine')}</option>
+            <SelectBox
+              value={searchEngineIndex.toString()}
+              onChange={this.onChangeDefaultSearchEngine}
+            >
               {searchProviders.map((provider, index) =>
                 <option
                   key={index + 1}
-                  value={provider.value}
+                  value={provider.modelIndex.toString()}
                 >
                   {provider.name}
                 </option>

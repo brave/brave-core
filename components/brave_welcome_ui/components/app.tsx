@@ -62,10 +62,6 @@ export class WelcomePage extends React.Component<Props, State> {
     this.setState({ currentScreen: this.state.currentScreen + 1 })
   }
 
-  onChangeDefaultSearchEngine = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    this.props.actions.changeDefaultSearchProvider(event.target.value)
-  }
-
   onClickChooseYourTheme = () => {
     this.props.actions.goToTabRequested('chrome://settings/appearance', '_blank')
   }
@@ -91,9 +87,7 @@ export class WelcomePage extends React.Component<Props, State> {
   }
 
   render () {
-    const { defaultSearchProviders } = this.props.welcomeData
     const { currentScreen } = this.state
-
     return (
       <>
         <BackgroundContainer>
@@ -108,9 +102,6 @@ export class WelcomePage extends React.Component<Props, State> {
                 index={3}
                 currentScreen={this.currentScreen}
                 onClick={this.onClickNext}
-                onChange={this.onChangeDefaultSearchEngine}
-                isDefaultSearchGoogle={true}
-                searchProviders={defaultSearchProviders}
               />
               <ThemeBox index={4} currentScreen={this.currentScreen} onClick={this.onClickChooseYourTheme} />
               <ShieldsBox index={5} currentScreen={this.currentScreen} />

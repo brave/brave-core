@@ -15,7 +15,3 @@ export const goToTabRequested = (url: string, target: string) => action(types.GO
 })
 
 export const closeTabRequested = () => action(types.CLOSE_TAB_REQUESTED)
-
-export const importDefaultSearchProviders = (searchProviders: Array<any>) => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS, searchProviders)
-
-export const changeDefaultSearchProvider = (searchProvider: string) => action(types.CHANGE_DEFAULT_SEARCH_PROVIDER, searchProvider)
