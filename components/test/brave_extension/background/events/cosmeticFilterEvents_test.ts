@@ -2,21 +2,8 @@
 * License, v. 2.0. If a copy of the MPL was not distributed with this file,
 * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as sinon from 'sinon'
-// import actions from '../../../../brave_extension/extension/brave_extension/background/actions/cosmeticFilterActions'
-import { ChromeEvent } from '../../../testData'
-// import '../../../../brave_extension/extension/brave_extension/background/events/cosmeticFilterEvents'
-// import { rule, onSelectorReturned } from '../../../../brave_extension/extension/brave_extension/background/events/cosmeticFilterEvents'
 import cosmeticFilterActions from '../../../../brave_extension/extension/brave_extension/background/actions/cosmeticFilterActions'
 import * as cosmeticFilterEvents from '../../../../brave_extension/extension/brave_extension/background/events/cosmeticFilterEvents'
-interface ContextMenuClickedEvent extends chrome.events.Event<(info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) => void> {
-  emit: (info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) => void
-}
-
-// let msg = { baseURI: 'brave.com' }
-// interface ContextMenuClickedEvent extends chrome.events.Event<(info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) => void> {
-//   emit: (info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) => void
-// }
 
 let lastInputText: string
 let lastPromptText: string
@@ -52,8 +39,6 @@ describe('cosmeticFilterEvents events', () => {
       resetSiteFilterSettingsSpy = jest.spyOn(cosmeticFilterActions, 'siteCosmeticFilterRemoved')
       resetAllFilterSettingsSpy = jest.spyOn(cosmeticFilterActions, 'allCosmeticFiltersRemoved')
       chromeTabsSendMessageSpy = jest.spyOn(chrome.tabs, 'sendMessage')
-      // const chromeTabsSendMessageCallback = chromeTabsSendMessageSpy.mock.calls[0][2]
-      // chromeTabsSendMessageCallback()
     })
     afterEach(() => {
       contextMenuOnClickedSpy.mockRestore()
@@ -94,14 +79,11 @@ describe('cosmeticFilterEvents events', () => {
         }
         cosmeticFilterEvents.tabsCallback([myTab])
         expect(1).toBe(1)
-        // expect(chromeTabsSendMessageSpy).toBeCalledWith({ type: 'getTargetSelector' }, cosmeticFilterEvents.onSelectorReturned)
         chrome.tabs.sendMessage(myTab.id, { type: 'getTargetSelector' }, cosmeticFilterEvents.onSelectorReturned)
       })
     })
     describe('resetSiteFilterSettings', function () {
       it('triggers `siteCosmeticFilterRemoved` action', function () {
-        // mock the prompt since JSDOM doesn't implement it
-        // window.prompt = jest.fn()
         const info: chrome.contextMenus.OnClickData = { menuItemId: 'resetSiteFilterSettings', editable: false, pageUrl: 'brave.com' }
         const tab: chrome.tabs.Tab = {
           id: 3,

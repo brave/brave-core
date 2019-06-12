@@ -83,7 +83,7 @@ export function onSelectorReturned (response: any) {
     rule.selector = window.prompt('CSS selector:', `${response}`) || ''
   }
 
-  if (typeof rule.selector === 'string' && rule.selector && rule.selector.length > 0) {
+  if (rule.selector && rule.selector.length > 0) {
     chrome.tabs.insertCSS({
       code: `${rule.selector} {display: none;}`
     })
