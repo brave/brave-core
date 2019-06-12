@@ -45,7 +45,6 @@ source_set("net") {
   } else {
     deps += [
       "//brave/app/android:common_extensions",
-      "//extensions/buildflags",
     ]
   }
 
