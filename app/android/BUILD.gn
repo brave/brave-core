@@ -17,6 +17,7 @@ source_set("common_extensions") {
   deps = [
     "//base",
     "//components/url_pattern_index",
+    "//extensions/buildflags",
     "//extensions/common:common_constants",
     "//url",
   ]
