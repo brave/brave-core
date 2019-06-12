@@ -22,8 +22,8 @@ struct CppFoo {
 @interface TestFoo : NSObject
 @property (nonatomic, assign) BOOL boolean;
 @property (nonatomic, assign) int integer;
-@property (nonatomic, assign) NSString *stringObject;
-@property (nonatomic, assign) NSArray<NSNumber *> *numbers;
+@property (nonatomic, copy) NSString *stringObject;
+@property (nonatomic, copy) NSArray<NSNumber *> *numbers;
 - (instancetype)initWithCppFoo:(const CppFoo&)foo;
 @end
 
