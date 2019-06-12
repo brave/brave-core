@@ -680,13 +680,24 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                         <UpholdColorIcon />
                       </StyledCopyImage>
                       {getLocale('rewardsPanelText1')} <b>Uphold</b>.
-                  </>
+                    </>
                     : <>
                       <StyledCopyImage>
                         <UpholdSystemIcon />
                       </StyledCopyImage>
                       {getLocale('rewardsPanelText2')} <b>Uphold</b>.
-                  </>
+                      {
+                        onVerifyClick
+                          ? <>
+                            {' ('}
+                            <StyledLink onClick={onVerifyClick}>
+                              {getLocale('rewardsPanelTextVerify')}
+                            </StyledLink>
+                            {')'}
+                          </>
+                          : null
+                      }
+                    </>
                 }
               </StyledCopy>
               : null

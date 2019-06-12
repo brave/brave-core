@@ -113,7 +113,7 @@ export const StyledCopy = styled<StyledProps, 'div'>('div')`
   font-size: 12px;
   color: #838391;
   padding: 19px 15px;
-  background: ${p => p.connected ? '#dcdfff' : '#dee2e6'};
+  background: ${p => p.connected ? '#c4f2db' : '#dee2e6'};
   text-align: center;
 `
 
