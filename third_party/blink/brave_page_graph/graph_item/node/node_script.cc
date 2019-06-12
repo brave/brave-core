@@ -31,7 +31,7 @@ NodeScript::NodeScript(PageGraph* const graph, const ScriptId script_id,
       script_id_(script_id),
       type_(type),
       url_(url),
-      is_inline_(true) {}
+      is_inline_(url.empty()) {}
 
 NodeScript::~NodeScript() {}
 

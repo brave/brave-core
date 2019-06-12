@@ -17,8 +17,7 @@ class EdgeNodeCreate;
 class EdgeNodeDelete;
 class EdgeNodeInsert;
 class EdgeNodeRemove;
-class EdgeAttributeDelete;
-class EdgeAttributeSet;
+class EdgeTextChange;
 class PageGraph;
 
 class NodeHTMLText final : public NodeHTML {
@@ -29,10 +28,13 @@ friend class PageGraph;
   ItemName GetItemName() const override;
   const std::string& Text() const;
 
-  using Node::AddInEdge;
+  void AddInEdge(const EdgeNodeCreate* const edge);
   void AddInEdge(const EdgeNodeRemove* const edge);
   void AddInEdge(const EdgeNodeInsert* const edge);
   void AddInEdge(const EdgeNodeDelete* const edge);
+  void AddInEdge(const EdgeTextChange* const edge);
+
+  void AddOutEdge(const Edge* const edge) = delete;
 
  protected:
   NodeHTMLText(PageGraph* const graph, const blink::DOMNodeId node_id,

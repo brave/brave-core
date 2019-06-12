@@ -1,56 +1,95 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..11e36aa7936324569b51171234008feacf373474 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..2332d2bd62ba892ea22301a5c617e1e2df3d7014 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -310,6 +310,11 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+@@ -310,6 +310,12 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
  static WeakDocumentSet& liveDocumentSet();
  #endif
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/modules/service_worker/service_worker_container.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
 +
  namespace blink {
  
  using namespace html_names;
-@@ -768,6 +773,10 @@ Document::Document(const DocumentInit& initializer,
+@@ -768,6 +774,11 @@ Document::Document(const DocumentInit& initializer,
  #ifndef NDEBUG
    liveDocumentSet().insert(this);
  #endif
 +
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  page_graph_ = nullptr;
++  owns_page_graph_ = false;
 +#endif
  }
  
  Document::~Document() {
-@@ -778,8 +787,33 @@ Document::~Document() {
+@@ -778,8 +789,70 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  if (page_graph_ != nullptr) {
++  if (page_graph_ != nullptr &&
++      owns_page_graph_ == true) {
 +    delete page_graph_;
 +    page_graph_ = nullptr;
++    owns_page_graph_ = false;
 +  }
 +#endif
  }
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +brave_page_graph::PageGraph* Document::GetPageGraph() {
++
 +  if (page_graph_ != nullptr) {
 +    return page_graph_;
 +  }
 +
-+  const Document& top_doc = TopDocument();
++  Document& top_doc = TopDocument();
 +
-+  if (top_doc.IsHTMLDocument() == false ||
-+      top_doc.Url().ProtocolIsInHTTPFamily() == false) {
++  // Only instrument HTML documents.  No need to instrument other types
++  // of "documents" chromium can display, like image documents, or extension
++  // background pages.
++  const bool top_doc_is_html = top_doc.IsHTMLDocument();
++  if (top_doc_is_html == false) {
 +    return nullptr;
 +  }
 +
-+  page_graph_ = new brave_page_graph::PageGraph();
++  // Only instrument the top level document, or frames that are local /
++  // in the same process, for now.
++  const bool top_doc_is_frame_local = top_doc.GetFrame() != nullptr;
++  if (top_doc_is_frame_local == false) {
++    return nullptr;
++  }
++
++  // Only instrument pages that were delivered over HTTP, but not odd things
++  // like chrome:// pages, or file://, etc.
++  const bool top_doc_is_http_delivered = top_doc.Url().ProtocolIsInHTTPFamily();
++  if (top_doc_is_http_delivered == false) {
++    return nullptr;
++  }
++
++  // Don't instrument documents that live in worker contexts.  The below
++  // are, not 100% correct tests for this, but should be good enough to
++  // infer in all practical cases.  This may need to be revisited in the future
++  // if we can't accept any incorrectness.
++  auto supplements = Supplementable<Document>::supplements_;
++  const bool current_doc_is_not_service_worker = (
++    supplements.Contains(ServiceWorkerContainer::kSupplementName) ||
++    supplements.Contains(DOMWindowStorageController::kSupplementName));
++  if (current_doc_is_not_service_worker == false) {
++    return nullptr;
++  }
++
++  if (top_doc == this) {
++    page_graph_ = new brave_page_graph::PageGraph(*this);
++    owns_page_graph_ = true;
++  } else {
++    page_graph_ = top_doc.GetPageGraph();
++  }
 +  GetIsolate()->SetPageGraph(page_graph_);
 +  return page_graph_;
 +}

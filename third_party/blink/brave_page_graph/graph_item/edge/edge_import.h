@@ -13,17 +13,19 @@
 namespace brave_page_graph {
 
 class NodeFrame;
-class NodeScript;
+class NodeScriptRemote;
 class PageGraph;
 
 class EdgeImport : public Edge {
 friend class PageGraph;
  public:
-  EdgeImport() = delete;
+  ~EdgeImport() override;
+  ItemName GetItemName() const override;
 
  protected:
   EdgeImport(PageGraph* const graph, NodeFrame* const out_node,
-    NodeScript* const in_node);
+    NodeScriptRemote* const in_node);
+  GraphMLXMLList GraphMLAttributes() const override;
 };
 
 }  // namespace brave_page_graph
