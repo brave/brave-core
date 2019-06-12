@@ -1,17 +1,8 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index ed687fdfb15da8b1c9fad2b04fbfff5131690755..54d226aec1cb83c2230b34fb80e8925c80dd0226 100644
+index ed687fdfb15da8b1c9fad2b04fbfff5131690755..aa20037e76e20dac46cc38c923cb909cf0c0cdd9 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -1810,6 +1810,8 @@ jumbo_split_static_library("browser") {
-     ":resource_prefetch_predictor_proto",
-     "//base:i18n",
-     "//base/allocator:buildflags",
-+    "//brave/components/brave_sync",
-+    "//brave/common",
-     "//cc",
-     "//chrome:extra_resources",
-     "//chrome:resources",
-@@ -2099,6 +2101,7 @@ jumbo_split_static_library("browser") {
+@@ -2099,6 +2099,7 @@ jumbo_split_static_library("browser") {
      "//ui/strings",
      "//ui/surface",
      "//ui/web_dialogs",
