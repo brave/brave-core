@@ -16,6 +16,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "bat/confirmations/confirmations_client.h"
+#include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/logging.h"
 #include "bat/ledger/ledger.h"
@@ -42,7 +43,7 @@ namespace braveledger_bat_state {
 class BatState;
 }
 
-namespace braveledger_bat_contribution {
+namespace braveledger_contribution {
 class BatContribution;
 }
 
@@ -579,7 +580,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
   std::unique_ptr<braveledger_bat_get_media::BatGetMedia> bat_get_media_;
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
-  std::unique_ptr<braveledger_bat_contribution::BatContribution>
+  std::unique_ptr<braveledger_contribution::Contribution>
   bat_contribution_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;

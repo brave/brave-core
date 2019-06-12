@@ -8,15 +8,15 @@
 #include <vector>
 
 #include "bat/ledger/internal/logging.h"
-#include "bat/ledger/internal/bat_contribution.h"
+#include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-// npm run test -- brave_unit_tests --filter=BatContributionTest.*
+// npm run test -- brave_unit_tests --filter=ContributionTest.*
 
-namespace braveledger_bat_contribution {
+namespace braveledger_contribution {
 
-class BatContributionTest : public testing::Test {
+class ContributionTest : public testing::Test {
  protected:
   void GetPublishersForAuto(
       ledger::PublisherInfoList* publisher_info_list,
@@ -60,7 +60,7 @@ class BatContributionTest : public testing::Test {
     GetPublishersForAuto(
         &publisher_info_list_auto, auto_iterations, auto_variations);
     double total_reconcile_amount =
-        BatContribution::GetAmountFromVerifiedAuto(
+        Contribution::GetAmountFromVerifiedAuto(
           publisher_info_list_auto, auto_amount_selected);
     GetPublishersForRecurring(
         &publisher_info_list_recurring,
@@ -68,7 +68,7 @@ class BatContributionTest : public testing::Test {
         recurring_amounts_selected,
         recurring_variation);
     total_reconcile_amount +=
-        BatContribution::GetAmountFromVerifiedRecurring(
+        Contribution::GetAmountFromVerifiedRecurring(
           publisher_info_list_recurring);
     return wallet_balance < total_reconcile_amount &&
         !publisher_info_list_auto.empty() &&
@@ -76,83 +76,83 @@ class BatContributionTest : public testing::Test {
   }
 };
 
-TEST_F(BatContributionTest, GetAmountFromVerifiedAuto) {
+TEST_F(ContributionTest, GetAmountFromVerifiedAuto) {
   ledger::PublisherInfoList publisher_info_list;
 
   // 0 publishers and budget of 0 BAT
   GetPublishersForAuto(&publisher_info_list, 0, 0);
   double amount =
-      BatContribution::GetAmountFromVerifiedAuto(publisher_info_list, 0);
+      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 0);
   EXPECT_EQ(amount, 0);
 
   // 10 publishers total with 5 verified and budget of 30 BAT
   GetPublishersForAuto(&publisher_info_list, 10, 5);
   amount =
-      BatContribution::GetAmountFromVerifiedAuto(publisher_info_list, 30);
+      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 30);
   EXPECT_EQ(amount, 15);
 
   // 20 publishers total with 10 verified and budget of 30 BAT
   publisher_info_list.clear();
   GetPublishersForAuto(&publisher_info_list, 20, 10);
   amount =
-      BatContribution::GetAmountFromVerifiedAuto(publisher_info_list, 30);
+      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 30);
   EXPECT_EQ(amount, 15);
 
   // 50 publishers total with 5 verified and budget of 100 BAT
   publisher_info_list.clear();
   GetPublishersForAuto(&publisher_info_list, 50, 5);
   amount =
-      BatContribution::GetAmountFromVerifiedAuto(publisher_info_list, 100);
+      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 100);
   EXPECT_EQ(amount, 10);
 
   // 100 publishers total with 80 verified and budget of 1478 BAT
   publisher_info_list.clear();
   GetPublishersForAuto(&publisher_info_list, 100, 80);
   amount =
-      BatContribution::GetAmountFromVerifiedAuto(publisher_info_list, 1478);
+      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 1478);
   EXPECT_EQ(amount, 1182.40);
 
   // 100 publishers total with 4 verified and budget of 100 BAT
   publisher_info_list.clear();
   GetPublishersForAuto(&publisher_info_list, 100, 4);
   amount =
-      BatContribution::GetAmountFromVerifiedAuto(publisher_info_list, 100);
+      Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 100);
   EXPECT_EQ(amount, 4);
 }
 
-TEST_F(BatContributionTest, GetAmountFromVerifiedRecurring) {
+TEST_F(ContributionTest, GetAmountFromVerifiedRecurring) {
   ledger::PublisherInfoList publisher_info_list;
   GetPublishersForRecurring(&publisher_info_list, 5, {1, 5, 10}, 2);
   double amount =
-      BatContribution::GetAmountFromVerifiedRecurring(publisher_info_list);
+      Contribution::GetAmountFromVerifiedRecurring(publisher_info_list);
   EXPECT_EQ(amount, 6);
 
   publisher_info_list.clear();
   GetPublishersForRecurring(&publisher_info_list, 7, {1, 5, 10}, 5);
   amount =
-      BatContribution::GetAmountFromVerifiedRecurring(publisher_info_list);
+      Contribution::GetAmountFromVerifiedRecurring(publisher_info_list);
   EXPECT_EQ(amount, 22);
 
   publisher_info_list.clear();
   GetPublishersForRecurring(&publisher_info_list, 10, {5, 10, 20}, 7);
   amount =
-      BatContribution::GetAmountFromVerifiedRecurring(publisher_info_list);
+      Contribution::GetAmountFromVerifiedRecurring(publisher_info_list);
   EXPECT_EQ(amount, 75);
 
   publisher_info_list.clear();
   GetPublishersForRecurring(&publisher_info_list, 10, {10, 20, 50}, 9);
   amount =
-      BatContribution::GetAmountFromVerifiedRecurring(publisher_info_list);
+      Contribution::GetAmountFromVerifiedRecurring(publisher_info_list);
   EXPECT_EQ(amount, 240);
 
   publisher_info_list.clear();
   GetPublishersForRecurring(&publisher_info_list, 5, {1, 5, 10, 20, 50}, 5);
   amount =
-      BatContribution::GetAmountFromVerifiedRecurring(publisher_info_list);
+      Contribution::GetAmountFromVerifiedRecurring(publisher_info_list);
   EXPECT_EQ(amount, 86);
 }
 
-TEST_F(BatContributionTest, WillTriggerNotification) {
+TEST_F(ContributionTest, WillTriggerNotification) {
   // 0 auto, 0 tips, 0 balance
   EXPECT_FALSE(WillTriggerNotification(0, 0, 20, 0, {1, 5, 10}, 0, 0.0));
 
@@ -172,4 +172,4 @@ TEST_F(BatContributionTest, WillTriggerNotification) {
       100, 4, 100, 5, {1, 5, 10, 20, 50}, 5, 90));
 }
 
-}  // namespace braveledger_bat_contribution
+}  // namespace braveledger_contribution

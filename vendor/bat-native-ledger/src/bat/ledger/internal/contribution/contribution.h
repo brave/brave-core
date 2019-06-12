@@ -3,13 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_BAT_CONTRIBUTION_H_
-#define BRAVELEDGER_BAT_CONTRIBUTION_H_
+#ifndef BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_H_
+#define BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_H_
+
+#include <stdint.h>
 
 #include <map>
 #include <memory>
 #include <string>
-#include <vector>
 
 #include "base/gtest_prod_util.h"
 #include "bat/ledger/ledger.h"
@@ -48,7 +49,7 @@
 // 1. InitReconcile
 
 // PHASE 1 (reconcile)
-// 1. StartReconcile
+// 1. Start
 // 2. Reconcile
 // 3. ReconcileCallback
 // 4. CurrentReconcile
@@ -59,7 +60,7 @@
 // 9. RegisterViewingCallback
 // 10. ViewingCredentials
 // 11. ViewingCredentialsCallback
-// 12. OnReconcileComplete
+// 12. Complete
 
 // PHASE 2 (voting)
 // 1. GetReconcileWinners
@@ -81,7 +82,19 @@ namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_bat_contribution {
+namespace braveledger_contribution {
+class PhaseOne;
+}
+
+namespace braveledger_contribution {
+class PhaseTwo;
+}
+
+namespace braveledger_contribution {
+class Unverified;
+}
+
+namespace braveledger_contribution {
 
 static const uint64_t phase_one_timers[] = {
     1 * 60 * 60,  // 1h
@@ -107,11 +120,11 @@ static const uint64_t phase_two_debug_timers[] = {
     2 * 60,  //  2min
     3 * 60};  // 3min
 
-class BatContribution {
+class Contribution {
  public:
-  explicit BatContribution(bat_ledger::LedgerImpl* ledger);
+  explicit Contribution(bat_ledger::LedgerImpl* ledger);
 
-  ~BatContribution();
+  ~Contribution();
 
   void OnStartUp();
 
@@ -123,15 +136,6 @@ class BatContribution {
       const braveledger_bat_helper::PublisherList& list,
       const braveledger_bat_helper::Directions& directions = {},
       double budget = 0);
-
-  // We determinate which contribution we want to do and do appropriate actions
-  void StartReconcile(
-      const std::string &viewing_id,
-      const ledger::REWARDS_CATEGORY category,
-      const braveledger_bat_helper::PublisherList& list,
-      const braveledger_bat_helper::Directions& directions,
-      double budget,
-      double balance);
 
   // Called when timer is triggered
   void OnTimer(uint32_t timer_id);
@@ -150,18 +154,29 @@ class BatContribution {
   void HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback);
 
-  void ContributeUnverifiedPublishers();
-
   // Fetches recurring tips that will be then used for the contribution.
   // This is called from global timer in impl.
   // Can be also called manually
   void StartMonthlyContribution();
 
- private:
-  std::string GetAnonizeProof(const std::string& registrar_VK,
-                              const std::string& id,
-                              std::string* pre_flight);
+  bool ShouldStartAutoContribute();
 
+  void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
+
+  void AddRetry(
+    ledger::ContributionRetry step,
+    const std::string& viewing_id,
+    braveledger_bat_helper::CURRENT_RECONCILE reconcile = {});
+
+  // Resets reconcile stamps
+  void ResetReconcileStamp();
+
+  // Triggers contribution process for auto contribute table
+  void StartAutoContribute();
+
+  void ContributeUnverifiedPublishers();
+
+ private:
   // AUTO CONTRIBUTE: from the list gets only verified publishers and
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListAuto(
@@ -169,7 +184,7 @@ class BatContribution {
       const ledger::PublisherInfoList* all,
       double* budget);
 
-  // RECURRING DONTAIONS: from the list gets only verified publishers and
+  // RECURRING TIPS: from the list gets only verified publishers and
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListRecurring(
       const std::string& viewing_id,
@@ -181,14 +196,6 @@ class BatContribution {
                               ledger::PublisherInfoList list,
                               uint32_t next_record);
 
-  // Resets reconcile stamps
-  void ResetReconcileStamp();
-
-  bool ShouldStartAutoContribute();
-
-  // Triggers contribution process for auto contribute table
-  void StartAutoContribute();
-
   void OnWalletPropertiesForReconcile(
       const std::string& viewing_id,
       const ledger::REWARDS_CATEGORY category,
@@ -197,104 +204,6 @@ class BatContribution {
       double budget,
       const ledger::Result result,
       std::unique_ptr<ledger::WalletInfo> info);
-
-  void Reconcile(const std::string &viewing_id);
-
-  void ReconcileCallback(const std::string& viewing_id,
-                         int response_status_code,
-                         const std::string& response,
-                         const std::map<std::string, std::string>& headers);
-
-  void CurrentReconcile(const std::string& viewing_id);
-
-  void CurrentReconcileCallback(
-      const std::string& viewing_id,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  void ReconcilePayload(const std::string& viewing_id);
-
-  void ReconcilePayloadCallback(
-      const std::string& viewing_id,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  void RegisterViewing(const std::string& viewing_id);
-
-  void RegisterViewingCallback(
-      const std::string& viewing_id,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  void ViewingCredentials(const std::string& viewing_id);
-
-  void ViewingCredentialsCallback(
-      const std::string& viewing_id,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  void OnReconcileComplete(ledger::Result result,
-                           const std::string& viewing_id,
-                           int category,
-                           const std::string& probi = "0");
-
-  unsigned int GetBallotsCount(const std::string& viewing_id);
-
-  void GetReconcileWinners(const std::string& viewing_id);
-
-  void GetContributeWinners(const unsigned int ballots,
-                            const std::string& viewing_id,
-                            const braveledger_bat_helper::PublisherList& list);
-
-  void GetTipsWinners(const unsigned int ballots,
-                          const std::string& viewing_id,
-                          const braveledger_bat_helper::PublisherList& list);
-
-  void VotePublishers(const braveledger_bat_helper::Winners& winners,
-                      const std::string& viewing_id);
-
-  void VotePublisher(const std::string& publisher,
-                     const std::string& viewing_id);
-
-  void PrepareBallots();
-
-  void PrepareBatch(
-      const braveledger_bat_helper::BALLOT_ST& ballot,
-      const braveledger_bat_helper::TRANSACTION_ST& transaction);
-
-  void PrepareBatchCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  void Proof();
-
-  std::vector<std::string> ProofBatch(
-      const braveledger_bat_helper::BatchProofs& batch_proofs);
-  void ProofBatchCallback(
-      const braveledger_bat_helper::BatchProofs& batch_proofs,
-      const std::vector<std::string>& proofs);
-
-  void PrepareVoteBatch();
-
-  void VoteBatch();
-
-  void VoteBatchCallback(
-      const std::string& publisher,
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  void SetTimer(uint32_t* timer_id, uint64_t start_timer_in = 0);
-
-  void AddRetry(
-    ledger::ContributionRetry step,
-    const std::string& viewing_id,
-    braveledger_bat_helper::CURRENT_RECONCILE reconcile = {});
 
   uint64_t GetRetryTimer(ledger::ContributionRetry step,
                          const std::string& viewing_id,
@@ -329,28 +238,18 @@ class BatContribution {
       std::unique_ptr<ledger::WalletInfo> info,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
-  void OnRemovePendingContribution(ledger::Result result);
-
-  void OnContributeUnverifiedPublishers(
-    double balance,
-    const ledger::PendingContributionInfoList& list);
-
-  void OnContributeUnverifiedWallet(
-    ledger::Result result,
-    std::unique_ptr<ledger::WalletInfo> wallet);
-
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  std::unique_ptr<PhaseOne> phase_one_;
+  std::unique_ptr<PhaseTwo> phase_two_;
+  std::unique_ptr<Unverified> unverified_;
   uint32_t last_reconcile_timer_id_;
-  uint32_t last_prepare_vote_batch_timer_id_;
-  uint32_t last_vote_batch_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
-  uint32_t unverified_publishers_timer_id_;
 
   // For testing purposes
-  friend class BatContributionTest;
-  FRIEND_TEST_ALL_PREFIXES(BatContributionTest, GetAmountFromVerifiedAuto);
-  FRIEND_TEST_ALL_PREFIXES(BatContributionTest, GetAmountFromVerifiedRecurring);
+  friend class ContributionTest;
+  FRIEND_TEST_ALL_PREFIXES(ContributionTest, GetAmountFromVerifiedAuto);
+  FRIEND_TEST_ALL_PREFIXES(ContributionTest, GetAmountFromVerifiedRecurring);
 };
 
-}  // namespace braveledger_bat_contribution
-#endif  // BRAVELEDGER_BAT_CONTRIBUTION_H_
+}  // namespace braveledger_contribution
+#endif  // BRAVELEDGER_CONTRIBUTION_CONTRIBUTION_H_
