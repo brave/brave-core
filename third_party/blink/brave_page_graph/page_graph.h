@@ -12,7 +12,12 @@
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/types.h"
 #include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
-#include "brave/third_party/blink/brave_page_graph/script_tracker.h"
+#include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
+#include "brave/third_party/blink/brave_page_graph/scripts/script_in_frame_query_result.h"
+
+namespace blink {
+class Document;
+}
 
 namespace brave_page_graph {
 
@@ -23,12 +28,14 @@ class GraphItem;
 class Node;
 class NodeActor;
 class NodeExtension;
+class NodeFrame;
 class NodeHTML;
 class NodeHTMLElement;
 class NodeHTMLText;
 class NodeParser;
 class NodeResource;
 class NodeScript;
+class NodeScriptRemote;
 class NodeShields;
 class NodeStorageCookieJar;
 class NodeStorageLocalStorage;
@@ -42,8 +49,9 @@ class PageGraph {
 friend GraphItem;
 // Needed so that edges between HTML nodes can find their siblings and parents.
 friend EdgeNodeInsert;
+friend ScriptInFrameQuerier;
  public:
-  PageGraph();
+  PageGraph(blink::Document& document);
   ~PageGraph();
 
   void RegisterHTMLElementNodeCreated(const blink::DOMNodeId node_id,
@@ -130,8 +138,9 @@ friend EdgeNodeInsert;
   void PossiblyWriteRequestsIntoGraph(
     const std::shared_ptr<const TrackedRequestRecord> record);
 
-  DOMNodeIdList NodeIdsForScriptId(const ScriptId script_id) const;
-  ScriptIdList ScriptIdsForNodeId(const blink::DOMNodeId nodeId) const;
+  // Returns the NodeScript object representing this V8 script unit if
+  // the script was compiled in this frame, or nullptr otherwise.
+  const NodeScript* NodeForScriptInFrame(const ScriptId script_id) const;
 
   // Monotonically increasing counter, used so that we can replay the
   // the graph's construction if needed.
@@ -169,6 +178,8 @@ friend EdgeNodeInsert;
   // Index structure for looking up script nodes.
   // This map does not own the references.
   std::map<ScriptId, NodeScript* const> script_nodes_;
+  std::map<ScriptId, NodeScriptRemote* const> remote_script_nodes_;
+  std::map<blink::DOMNodeId, NodeFrame* const> remote_frames_;
   std::map<std::string, NodeScript* const> urls_for_extension_scripts_;
 
   std::atomic<ChildFrameId> current_max_child_frame_id_;
@@ -189,6 +200,8 @@ friend EdgeNodeInsert;
   // Data structure for keeping track of all the in-air requests that
   // have been made, but have not completed.
   RequestTracker request_tracker_;
+
+  blink::Document& document_;
 };
 
 }  // namespace brave_page_graph

@@ -40,7 +40,7 @@ index ae9e7b85a7a30d71b025cd0061fdb5f91c47542b..1b362d0f51f2ebf4b81561d7fea27eca
    Member<Resource> resource_keep_alive_;
 +
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  WeakMember<HTMLScriptElement> script_elm_;
++  Member<HTMLScriptElement> script_elm_;
 +#endif
  };
  
