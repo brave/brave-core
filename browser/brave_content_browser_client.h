@@ -58,11 +58,13 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const url::Origin& requesting_origin,
       const url::Origin& embedding_origin) override;
 
-  void RegisterOutOfProcessServices(
-      OutOfProcessServiceMap* services) override;
-
+  void RunServiceInstance(
+      const service_manager::Identity& identity,
+      mojo::PendingReceiver<service_manager::mojom::Service>* receiver)
+      override;
   base::Optional<service_manager::Manifest> GetServiceManifestOverlay(
       base::StringPiece name) override;
+  std::vector<service_manager::Manifest> GetExtraServiceManifests() override;
 
   void AdjustUtilityServiceProcessCommandLine(
       const service_manager::Identity& identity,
