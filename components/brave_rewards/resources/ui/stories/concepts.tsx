@@ -422,6 +422,8 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       console.log(`New value is: ${event.target.value}`)
     }
 
+    const onVerifyClick = () => console.log('onVerifyClick')
+
     const convertProbiToFixed = (probi: string, places: number = 1) => {
       return '0.0'
     }
@@ -479,6 +481,8 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             verified: 'verified',
             disconnected: 'disconnected'
           }, 'unverified') as WalletState}
+          onVerifyClick={onVerifyClick}
+          username={text('uphold username', 'jennrhim')}
         >
           <WalletSummarySlider
             id={'panel-slider'}

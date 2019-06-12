@@ -40,10 +40,12 @@ import {
   StyledVerifiedButton,
   StyledVerifiedButtonIcon,
   StyledVerifiedButtonText,
-  StyledTextIcon
+  StyledTextIcon,
+  StyledDialogList,
+  StyledLink
 } from './style'
 import { getLocale } from '../../../helpers'
-import { GrantCaptcha, GrantComplete, GrantError, GrantWrapper } from '../'
+import { GrantCaptcha, GrantComplete, GrantError, GrantWrapper, WalletPopup } from '../'
 import Alert, { Type as AlertType } from '../alert'
 import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
 import {
@@ -140,19 +142,24 @@ export interface Props {
   onFinish?: () => void
   onSolution?: (x: number, y: number) => void
   convertProbiToFixed?: (probi: string, place: number) => string
+  onVerifyClick?: () => void
+  goToUphold?: () => void
+  username?: string
 }
 
 export type Step = '' | 'captcha' | 'complete'
 
 interface State {
-  grantDetails: boolean
+  grantDetails: boolean,
+  verificationDetails: boolean
 }
 
 export default class WalletWrapper extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = {
-      grantDetails: false
+      grantDetails: false,
+      verificationDetails: false
     }
   }
 
@@ -335,7 +342,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     const buttonProps: Partial<ButtonProps> = {
       size: 'small',
       level: 'primary',
-      brand: 'rewards'
+      brand: 'rewards',
+      onClick: this.props.onVerifyClick
     }
 
     switch (walletState) {
@@ -354,7 +362,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
 
       case 'verified':
         return (
-          <StyledVerifiedButton >
+          <StyledVerifiedButton
+            onClick={this.toggleVerificationDetails}
+            active={this.state.verificationDetails}
+          >
             <StyledVerifiedButtonIcon position={'before'}>
               <UpholdSystemIcon />
             </StyledVerifiedButtonIcon>
@@ -380,6 +391,39 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           />
         )
     }
+  }
+
+  toggleVerificationDetails = () => {
+    this.setState({ verificationDetails: !this.state.verificationDetails })
+  }
+
+  getVerificationDetails = (
+    username: string,
+    onVerifyClick: () => void,
+    goToUphold?: () => void
+  ) => {
+
+    return (
+      <WalletPopup
+        onClose={this.toggleVerificationDetails}
+        {...{ username }}
+      >
+        {
+          <StyledDialogList>
+            <li>
+              <StyledLink onClick={goToUphold} target={'_blank'}>
+                {getLocale('walletGoToUphold')}
+              </StyledLink>
+            </li>
+            <li>
+              <StyledLink onClick={onVerifyClick}>
+                {getLocale('walletReconnect')}
+              </StyledLink>
+            </li>
+          </StyledDialogList>
+        }
+      </WalletPopup>
+    )
   }
 
   toggleGrantDetails = () => {
@@ -489,7 +533,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       gradientTop,
       notification,
       isMobile,
-      convertProbiToFixed
+      convertProbiToFixed,
+      username,
+      onVerifyClick,
+      goToUphold
     } = this.props
 
     const hasGrants = this.hasGrants(grants)
@@ -535,6 +582,11 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
             {
               !notification
                 ? <>
+                  {
+                    this.state.verificationDetails && username && onVerifyClick
+                      ? this.getVerificationDetails(username, onVerifyClick, goToUphold)
+                      : null
+                  }
                   {
                     alert && alert.node
                       ? <StyledAlertWrapper>

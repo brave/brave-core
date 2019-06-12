@@ -47,6 +47,7 @@ import WalletEmpty from './walletEmpty'
 import WalletOff from './walletOff'
 import WalletPanel from './walletPanel'
 import WalletPanelDisabled from './walletPanelDisabled'
+import WalletPopup from './walletPopup'
 import WalletSummary from './walletSummary'
 import WalletSummarySlider from './walletSummarySlider'
 import WalletWrapper from './walletWrapper'
@@ -98,6 +99,7 @@ export {
   WalletOff,
   WalletPanel,
   WalletPanelDisabled,
+  WalletPopup,
   WalletSummary,
   WalletSummarySlider,
   WalletWrapper,
