@@ -1,21 +1,22 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..2332d2bd62ba892ea22301a5c617e1e2df3d7014 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..1666705ca47a1adce429ccb83625e58da4974378 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -310,6 +310,12 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+@@ -310,6 +310,13 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
  static WeakDocumentSet& liveDocumentSet();
  #endif
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/modules/service_worker/service_worker_container.h"
++#include "third_party/blink/renderer/modules/storage/dom_window_storage_controller.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
 +
  namespace blink {
  
  using namespace html_names;
-@@ -768,6 +774,11 @@ Document::Document(const DocumentInit& initializer,
+@@ -768,6 +775,11 @@ Document::Document(const DocumentInit& initializer,
  #ifndef NDEBUG
    liveDocumentSet().insert(this);
  #endif
@@ -27,7 +28,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..2332d2bd62ba892ea22301a5c617e1e2
  }
  
  Document::~Document() {
-@@ -778,8 +789,70 @@ Document::~Document() {
+@@ -778,8 +790,70 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
