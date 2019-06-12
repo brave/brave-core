@@ -1,23 +1,22 @@
 diff --git a/components/sync/driver/profile_sync_service.h b/components/sync/driver/profile_sync_service.h
-index 3df5ee21f6ec37c5915607ec9196909c62545572..d23a45c2e548e6db6d1d2f6bee0957697dcd2235 100644
+index 3df5ee21f6ec37c5915607ec9196909c62545572..cbd81832b900c3eddfa4791c32bf828ba11df57b 100644
 --- a/components/sync/driver/profile_sync_service.h
 +++ b/components/sync/driver/profile_sync_service.h
-@@ -257,6 +257,14 @@ class ProfileSyncService : public SyncService,
+@@ -257,7 +257,13 @@ class ProfileSyncService : public SyncService,
  
    SyncClient* GetSyncClientForTest();
  
-+ protected:
-+  syncer::SyncClient* GetSyncClient();
-+  syncer::SyncEngine* GetSyncEngine();
 +  virtual void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list);
 +  virtual void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
 +                               base::WaitableEvent* wevent);
 +  virtual bool IsBraveSyncEnabled() const;
 +
   private:
++  friend class brave_sync::BraveProfileSyncService;
    friend class TestProfileSyncService;
  
-@@ -268,6 +276,8 @@ class ProfileSyncService : public SyncService,
+   // Passed as an argument to StopImpl to control whether or not the sync
+@@ -268,6 +274,8 @@ class ProfileSyncService : public SyncService,
      CLEAR_DATA,
    };
  

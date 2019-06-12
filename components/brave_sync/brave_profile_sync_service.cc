@@ -184,12 +184,10 @@ BraveProfileSyncService::BraveProfileSyncService(Profile* profile,
     brave_sync_client_(BraveSyncClient::Create(this, profile)) {
   brave_sync_words_ = std::string();
   brave_sync_prefs_ =
-    std::make_unique<prefs::Prefs>(
-      ProfileSyncService::GetSyncClient()->GetPrefService());
+    std::make_unique<prefs::Prefs>(sync_client_->GetPrefService());
 
   // Moniter syncs prefs required in GetSettingsAndDevices
-  brave_pref_change_registrar_.Init(
-    ProfileSyncService::GetSyncClient()->GetPrefService());
+  brave_pref_change_registrar_.Init(sync_client_->GetPrefService());
   brave_pref_change_registrar_.Add(
       prefs::kSyncEnabled,
       base::Bind(&BraveProfileSyncService::OnBraveSyncPrefsChanged,
@@ -216,8 +214,8 @@ BraveProfileSyncService::BraveProfileSyncService(Profile* profile,
                  base::Unretained(this)));
   // TODO(darkdh): find another way to obtain bookmark model
   // change introduced in 83b9663e3814ef7e53af5009d10033b89955db44
-  model_ = static_cast<ChromeSyncClient*>(
-              ProfileSyncService::GetSyncClient())->GetBookmarkModel();
+  model_ = static_cast<ChromeSyncClient*>(sync_client_.get())
+      ->GetBookmarkModel();
 
   if (!brave_sync_prefs_->GetSeed().empty() &&
       !brave_sync_prefs_->GetThisDeviceName().empty()) {
@@ -482,8 +480,7 @@ void BraveProfileSyncService::OnSyncReady() {
   if (brave_sync_prefs_->GetMigratedBookmarksVersion() < 2)
     SetPermanentNodesOrder(brave_sync_prefs_->GetBookmarksBaseOrder());
 
-  syncer::SyncPrefs sync_prefs(ProfileSyncService::GetSyncClient()
-                                ->GetPrefService());
+  syncer::SyncPrefs sync_prefs(sync_client_->GetPrefService());
   // first time setup sync or migrated from legacy sync
   if (sync_prefs.GetLastSyncedTime().is_null()) {
     ProfileSyncService::GetUserSettings()
@@ -535,8 +532,7 @@ void BraveProfileSyncService::OnResolvedSyncRecords(
   } else if (category_name == kBookmarks) {
     // Send records to syncer
     if (get_record_cb_)
-      ProfileSyncService::GetSyncEngine()->DispatchGetRecordsCallback(
-                                            get_record_cb_, std::move(records));
+      engine_->DispatchGetRecordsCallback(get_record_cb_, std::move(records));
     SignalWaitableEvent();
   } else if (category_name == kHistorySites) {
     NOTIMPLEMENTED();

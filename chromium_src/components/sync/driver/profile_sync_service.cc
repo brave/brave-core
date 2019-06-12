@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "brave/chromium_src/components/sync/driver/profile_sync_service.h"
+
 // For use_transport_only_mode
 #define IsSyncFeatureEnabled IsBraveSyncEnabled
 #include "../../../../components/sync/driver/profile_sync_service.cc"   // NOLINT
@@ -14,16 +16,6 @@
 
 namespace syncer {
 const int64_t kBraveDefaultPollIntervalSeconds = 60;
-
-syncer::SyncClient* ProfileSyncService::GetSyncClient() {
-  DCHECK(sync_client_);
-  return sync_client_.get();
-}
-
-syncer::SyncEngine* ProfileSyncService::GetSyncEngine() {
-  DCHECK(engine_);
-  return engine_.get();
-}
 
 void ProfileSyncService::BraveEngineParamsInit(
     syncer::SyncEngine::InitParams* params) {
