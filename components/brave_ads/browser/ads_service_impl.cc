@@ -418,8 +418,13 @@ bool AdsServiceImpl::StartService() {
 
 #if defined(OS_ANDROID)
 void AdsServiceImpl::UpdateIsProductionFlag() {
-  auto is_production =
-      profile_->GetPrefs()->GetBoolean(prefs::kUseRewardsStagingServer);
+#if defined(OFFICIAL_BUILD)
+  auto is_production = !profile_->GetPrefs()->GetBoolean(
+      brave_rewards::prefs::kUseRewardsStagingServer);
+#else
+  auto is_production = false;
+#endif
+
   bat_ads_service_->SetProduction(is_production, base::NullCallback());
 }
 #else
