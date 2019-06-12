@@ -29,9 +29,11 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
+#include "brave/components/services/bat_ads/public/cpp/manifest.h"
+#include "brave/components/services/bat_ledger/public/cpp/manifest.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
-#include "brave/components/services/brave_content_packaged_service_overlay_manifest.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/utility/tor/public/cpp/manifest.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
@@ -56,10 +58,12 @@ using content::RenderFrameHost;
 using content::WebContents;
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
+#include "brave/components/services/bat_ads/bat_ads_app.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+#include "brave/components/services/bat_ledger/bat_ledger_app.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #endif
 
@@ -74,6 +78,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/common/tor/tor_launcher.mojom.h"
+#include "brave/utility/tor/tor_launcher_service.h"
 #endif
 
 namespace {
@@ -243,23 +249,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
       page_transition, has_user_gesture, factory_request, out_factory);
 }
 
-void BraveContentBrowserClient::RegisterOutOfProcessServices(
-    OutOfProcessServiceMap* services) {
-  ChromeContentBrowserClient::RegisterOutOfProcessServices(services);
-#if BUILDFLAG(ENABLE_TOR)
-  (*services)[tor::mojom::kTorLauncherServiceName] = base::BindRepeating(
-      l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME);
-#endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  (*services)[bat_ads::mojom::kServiceName] =
-      base::BindRepeating(l10n_util::GetStringUTF16, IDS_SERVICE_BAT_ADS);
-#endif
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  (*services)[bat_ledger::mojom::kServiceName] = base::BindRepeating(
-      l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_LEDGER_NAME);
-#endif
-}
-
 std::unique_ptr<content::NavigationUIData>
 BraveContentBrowserClient::GetNavigationUIData(
     content::NavigationHandle* navigation_handle) {
@@ -274,15 +263,58 @@ BraveContentBrowserClient::GetNavigationUIData(
   return std::move(navigation_ui_data);
 }
 
+void BraveContentBrowserClient::RunServiceInstance(
+    const service_manager::Identity& identity,
+    mojo::PendingReceiver<service_manager::mojom::Service>* receiver) {
+  ChromeContentBrowserClient::RunServiceInstance(identity, receiver);
+  const std::string& service_name = identity.name();
+#if BUILDFLAG(ENABLE_TOR)
+  if (service_name == tor::mojom::kTorLauncherServiceName) {
+    service_manager::Service::RunAsyncUntilTermination(
+        std::make_unique<tor::TorLauncherService>(std::move(*receiver)));
+    return;
+  }
+#endif
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+  if (service_name == bat_ads::mojom::kServiceName) {
+    service_manager::Service::RunAsyncUntilTermination(
+        std::make_unique<bat_ads::BatAdsApp>(std::move(*receiver)));
+    return;
+  }
+#endif
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  if (service_name == bat_ledger::mojom::kServiceName) {
+    service_manager::Service::RunAsyncUntilTermination(
+        std::make_unique<bat_ledger::BatLedgerApp>(std::move(*receiver)));
+    return;
+  }
+#endif
+}
+
 base::Optional<service_manager::Manifest>
 BraveContentBrowserClient::GetServiceManifestOverlay(base::StringPiece name) {
   auto manifest = ChromeContentBrowserClient::GetServiceManifestOverlay(name);
   if (name == content::mojom::kBrowserServiceName) {
     manifest->Amend(GetBraveContentBrowserOverlayManifest());
-  } else if (name == content::mojom::kPackagedServicesServiceName) {
-    manifest->Amend(GetBraveContentPackagedServiceOverlayManifest());
   }
   return manifest;
+}
+
+std::vector<service_manager::Manifest>
+BraveContentBrowserClient::GetExtraServiceManifests() {
+  auto manifests = ChromeContentBrowserClient::GetExtraServiceManifests();
+
+#if BUILDFLAG(ENABLE_TOR)
+  manifests.push_back(tor::GetTorLauncherManifest());
+#endif
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+  manifests.push_back(bat_ads::GetManifest());
+#endif
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  manifests.push_back(bat_ledger::GetManifest());
+#endif
+
+  return manifests;
 }
 
 void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
