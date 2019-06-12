@@ -165,9 +165,9 @@ class BraveSyncServiceTest : public testing::Test {
     sync_client_ = new MockBraveSyncClient();
     brave_sync::BraveSyncClientImpl::set_for_testing(sync_client_);
 
-    sync_service_ =
-      ProfileSyncServiceFactory::GetAsBraveProfileSyncServiceForProfile(
-        profile());
+    sync_service_ = static_cast<BraveProfileSyncService*>(
+      ProfileSyncServiceFactory::GetAsProfileSyncServiceForProfile(
+        profile()));
 
     EXPECT_EQ(sync_client_, sync_service_->GetBraveSyncClient());
 

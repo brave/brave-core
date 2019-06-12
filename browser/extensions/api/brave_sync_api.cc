@@ -28,8 +28,9 @@ namespace {
 
 BraveProfileSyncService* GetProfileSyncService(
     BrowserContext* browser_context) {
-  return ProfileSyncServiceFactory::GetAsBraveProfileSyncServiceForProfile(
-      Profile::FromBrowserContext(browser_context));
+  return static_cast<BraveProfileSyncService*>(
+    ProfileSyncServiceFactory::GetAsProfileSyncServiceForProfile(
+      Profile::FromBrowserContext(browser_context)));
 }
 
 }  // namespace
