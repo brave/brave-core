@@ -16,12 +16,15 @@ const service_manager::Manifest& GetManifest() {
       service_manager::ManifestBuilder()
           .WithServiceName(mojom::kServiceName)
           .WithDisplayName("Bat Ledger Service")
-          .WithOptions(service_manager::ManifestOptionsBuilder()
-                           .WithInstanceSharingPolicy(
-                               service_manager::Manifest::
-                                   InstanceSharingPolicy::kSharedAcrossGroups)
-                           .WithSandboxType("none")
-                           .Build())
+          .WithOptions(
+              service_manager::ManifestOptionsBuilder()
+                  .WithInstanceSharingPolicy(
+                      service_manager::Manifest::InstanceSharingPolicy::
+                          kSharedAcrossGroups)
+                  .WithExecutionMode(service_manager::Manifest::ExecutionMode::
+                                         kOutOfProcessBuiltin)
+                  .WithSandboxType("none")
+                  .Build())
           .ExposeCapability(
               "bat_ledger",
                             service_manager::Manifest::InterfaceList<

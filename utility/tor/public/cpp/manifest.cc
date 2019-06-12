@@ -17,8 +17,10 @@ const service_manager::Manifest& GetTorLauncherManifest() {
           .WithServiceName(mojom::kTorLauncherServiceName)
           .WithDisplayName("Tor Launcher")
           .WithOptions(service_manager::ManifestOptionsBuilder()
-                           .WithSandboxType("none")
-                           .Build())
+                  .WithExecutionMode(service_manager::Manifest::ExecutionMode::
+                                         kOutOfProcessBuiltin)
+                  .WithSandboxType("none")
+                  .Build())
           .ExposeCapability(
               "tor_launcher",
               service_manager::Manifest::InterfaceList<mojom::TorLauncher>())
