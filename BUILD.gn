@@ -35,6 +35,15 @@ source_set("adblock_ffi") {
   }
 }
 
+if (adblock_shared_lib_install_name != "") {
+  fix_testing_install_name("test_adblock_install_name") {
+    current_path = adblock_shared_lib_install_name
+    new_path = "@executable_path/" + rebase_path(adblock_lib_path, root_build_dir)
+  }
+} else {
+    group("test_adblock_install_name") {}
+}
+
 cargo_build("adblock") {
   inputs = [
     "Cargo.toml",
