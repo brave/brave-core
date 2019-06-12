@@ -125,8 +125,8 @@ void SyncUIDOMHandler::RegisterMessages() {
 void SyncUIDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
   sync_service_ =
-    static_cast<brave_sync::BraveSyncService*>(
-      ProfileSyncServiceFactory::GetAsBraveProfileSyncServiceForProfile(
+    static_cast<brave_sync::BraveProfileSyncService*>(
+      ProfileSyncServiceFactory::GetAsProfileSyncServiceForProfile(
         profile));
   if (sync_service_)
     sync_service_->AddObserver(this);

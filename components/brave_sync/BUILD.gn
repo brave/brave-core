@@ -69,6 +69,7 @@ source_set("syncer_export") {
   deps = [
     ":jslib_messages",
     ":prefs",
+    "buildflags",
     "//brave/common:switches",
   ]
 }
