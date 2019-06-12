@@ -17,6 +17,7 @@
 
 #include "base/logging.h"
 #include "base/json/json_reader.h"
+#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -125,7 +126,7 @@ void RefillTokens::OnRequestSignedTokens(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != 201) {
+  if (response_status_code != net::HTTP_CREATED) {
     BLOG(ERROR) << "Failed to get blinded tokens";
     OnRefill(FAILED);
     return;
@@ -188,10 +189,11 @@ void RefillTokens::OnGetSignedTokens(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     BLOG(ERROR) << "Failed to get signed tokens";
 
-    if (response_status_code == 202) {  // Tokens are not ready yet
+    if (response_status_code == net::HTTP_ACCEPTED) {
+      // Tokens are not ready yet
       confirmations_->StartRetryingToGetRefillSignedTokens(
           kRetryGettingRefillSignedTokensAfterSeconds);
     }

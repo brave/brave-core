@@ -20,6 +20,7 @@
 #include "base/json/json_reader.h"
 #include "base/values.h"
 #include "brave_base/random.h"
+#include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
 using std::placeholders::_2;
@@ -164,13 +165,14 @@ void RedeemToken::OnCreateConfirmation(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != 201 && response_status_code != 400) {
+  if (response_status_code != net::HTTP_CREATED &&
+      response_status_code != net::HTTP_BAD_REQUEST) {
     BLOG(ERROR) << "Failed to create confirmation";
     OnRedeem(FAILED, confirmation_info);
     return;
   }
 
-  if (response_status_code != 400) {
+  if (response_status_code != net::HTTP_BAD_REQUEST) {
     // Parse JSON response
     base::Optional<base::Value> dictionary = base::JSONReader::Read(response);
     if (!dictionary || !dictionary->is_dict()) {
@@ -240,7 +242,7 @@ void RedeemToken::OnFetchPaymentToken(
     BLOG(INFO) << "    " << header.first << ": " << header.second;
   }
 
-  if (response_status_code != 200) {
+  if (response_status_code != net::HTTP_OK) {
     BLOG(ERROR) << "Failed to fetch payment token";
     OnRedeem(FAILED, confirmation_info);
     return;

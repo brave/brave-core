@@ -805,7 +805,7 @@ BATLedgerBridge(BOOL,
 
 - (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings))completion
 {
-  ledger->GetTransactionHistoryForThisCycle(^(std::unique_ptr<ledger::TransactionsInfo> list) {
+  ledger->GetTransactionHistory(^(std::unique_ptr<ledger::TransactionsInfo> list) {
     if (list == nullptr || list->transactions.empty()) {
       completion(0, 0.0);
     } else {

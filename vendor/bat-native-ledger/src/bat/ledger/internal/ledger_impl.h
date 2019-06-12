@@ -425,8 +425,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
-  void GetTransactionHistoryForThisCycle(
-      ledger::GetTransactionHistoryForThisCycleCallback callback) override;
+  void GetTransactionHistory(
+      ledger::GetTransactionHistoryCallback callback) override;
 
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,

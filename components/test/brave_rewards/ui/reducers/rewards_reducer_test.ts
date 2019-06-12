@@ -97,9 +97,10 @@ describe('rewards reducer', () => {
           adsEnabled: false,
           adsPerHour: 2,
           adsUIEnabled: false,
-          adsNotificationsReceived: 0,
-          adsEstimatedEarnings: 0,
-          adsIsSupported: false
+          adsIsSupported: false,
+          adsEstimatedPendingRewards: 0,
+          adsNextPaymentDate: '',
+          adsAdNotificationsReceivedThisMonth: 0
         }
 
         const expectedState: Rewards.State = { ...defaultState }
@@ -107,9 +108,10 @@ describe('rewards reducer', () => {
           adsEnabled: true,
           adsPerHour: 5,
           adsUIEnabled: true,
-          adsNotificationsReceived: 0,
-          adsEstimatedEarnings: 0,
-          adsIsSupported: true
+          adsIsSupported: true,
+          adsEstimatedPendingRewards: 0,
+          adsNextPaymentDate: '',
+          adsAdNotificationsReceivedThisMonth: 0
         }
 
         const assertion = reducers({
@@ -139,9 +141,10 @@ describe('rewards reducer', () => {
           adsEnabled: false,
           adsPerHour: 2,
           adsUIEnabled: true,
-          adsNotificationsReceived: 0,
-          adsEstimatedEarnings: 0,
-          adsIsSupported: true
+          adsIsSupported: true,
+          adsEstimatedPendingRewards: 0,
+          adsNextPaymentDate: '',
+          adsAdNotificationsReceivedThisMonth: 0
         }
 
         const assertion = reducers({
@@ -171,9 +174,10 @@ describe('rewards reducer', () => {
         adsEnabled: false,
         adsPerHour: 2,
         adsUIEnabled: false,
-        adsNotificationsReceived: 0,
-        adsEstimatedEarnings: 0,
-        adsIsSupported: false
+        adsIsSupported: false,
+        adsEstimatedPendingRewards: 0,
+        adsNextPaymentDate: '',
+        adsAdNotificationsReceivedThisMonth: 0
       }
 
       const expectedState: Rewards.State = {
