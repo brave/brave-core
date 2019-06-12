@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper } from '../../../../src/features/newTab/default/settings'
+import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper } from '../../../../src/features/newTab/default'
 
 import { Toggle } from '../../../../src/features/newTab/toggle'
 

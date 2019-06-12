@@ -54,6 +54,20 @@ export const DynamicBackground = styled<DynamicBackgroundProps, 'div'>('div')`
   animation-fill-mode: forwards;
 `
 
+export const Gradient = styled<{}, 'div'>('div')`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.8),
+    rgba(0, 0, 0, 0) 35%,
+    rgba(0, 0, 0, 0) 80%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  height: 100vh;
+`
+
 export const Link = styled<{}, 'a'>('a')`
   text-decoration: none;
   transition: color 0.15s ease, filter 0.15s ease;

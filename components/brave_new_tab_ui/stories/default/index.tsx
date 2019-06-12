@@ -6,7 +6,7 @@ import * as React from 'react'
 
 // Feature-specific components
 import { Clock } from '../../../../src/features/newTab/default/clock'
-import { Page, Header, Main, Footer, DynamicBackground } from '../../../../src/features/newTab/default'
+import { Page, Header, Main, Footer, DynamicBackground, Gradient } from '../../../../src/features/newTab/default'
 
 import Settings from './settings'
 import TopSitesList from './topSites/topSitesList'
@@ -52,6 +52,7 @@ export default class NewTabPage extends React.PureComponent<{}, State> {
     const { showSettings, showBackgroundImage } = this.state
     return (
       <DynamicBackground showBackgroundImage={showBackgroundImage} background={generateRandomBackgroundData.source}>
+        {showBackgroundImage && <Gradient />}
         <Page>
           <Header>
             <Stats />
