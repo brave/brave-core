@@ -1,0 +1,13 @@
+diff --git a/testing/iossim/iossim.mm b/testing/iossim/iossim.mm
+index 1240c62b115a..e3a9bb7855e7 100644
+--- a/testing/iossim/iossim.mm
++++ b/testing/iossim/iossim.mm
+@@ -115,7 +115,7 @@ - (void)waitUntilExit {
+   for (NSDictionary* runtime in simctl_list[@"runtimes"]) {
+     if (![runtime[@"identifier"]
+             hasPrefix:@"com.apple.CoreSimulator.SimRuntime.iOS"] ||
+-        ![runtime[@"availability"] isEqualToString:@"(available)"]) {
++        !(runtime[@"isAvailable"] != nil ? [runtime[@"isAvailable"] boolValue] : [runtime[@"availability"] isEqualToString:@"(available)"])) {
+       [runtimes removeObject:runtime];
+     }
+   }

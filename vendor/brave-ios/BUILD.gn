@@ -3,14 +3,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-if (is_ios) {
-  import("//build/config/ios/rules.gni")
-}
+import("//build/config/ios/rules.gni")
 
 config("internal_config") {
   visibility = [
     ":*",
     "//brave/test:*",
+    "tests:*",
   ]
 
   cflags = [
@@ -18,6 +17,7 @@ config("internal_config") {
     "-fobjc-abi-version=2",
     "-fobjc-legacy-dispatch",
     "-Wno-objc-property-synthesis",
+    "-Wno-sign-compare",
   ]
   include_dirs = [
     ".",
@@ -29,15 +29,22 @@ config("internal_config") {
     "Ledger/Data/CoreDataGenerated/Model",
     "Ledger/Models",
     "Shared",
-    "objc-gen"
+    "objc-gen",
   ]
 }
 
 group("brave-ios") {
-  public_deps = [ ":brave-rewards-ios-framework" ]
+  public_deps = [ ":brave_rewards_ios_framework" ]
 }
 
-ios_framework_bundle("brave-rewards-ios-framework") {
+group("brave_ios_tests") {
+  testonly = true
+  public_deps = [
+    "tests:brave_rewards_ios_tests"
+  ]
+}
+
+ios_framework_bundle("brave_rewards_ios_framework") {
   output_name = "BraveRewards"
   output_dir = root_out_dir
 
@@ -138,11 +145,11 @@ bundle_data("coredata") {
   ]
 
   public_deps = [
-    ":compile-coredata"
+    ":compile_coredata"
   ]
 }
 
-action("compile-coredata") {
+action("compile_coredata") {
   script = "lib/compile-model.py"
 
   inputs = [
