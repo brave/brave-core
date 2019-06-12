@@ -104,8 +104,16 @@ export const blockedResource: BlockDetails = {
   subresource: 'https://www.brave.com/test'
 }
 
+// see: https://developer.chrome.com/extensions/events
+interface OnMessageEvent extends chrome.events.Event<(message: object, options: any, responseCallback: any) => void> {
+  emit: (message: object) => void
+}
+interface ContextMenuClickedEvent extends chrome.events.Event<(info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) => void> {
+  emit: (info: chrome.contextMenus.OnClickData, tab?: chrome.tabs.Tab) => void
+}
+
 export const getMockChrome = () => {
-  return {
+  let mock = {
     send: () => undefined,
     getVariableValue: () => undefined,
     braveRewards: {
@@ -116,7 +124,14 @@ export const getMockChrome = () => {
       onConnect: new ChromeEvent(),
       onStartup: new ChromeEvent(),
       onMessageExternal: new ChromeEvent(),
-      onConnectExternal: new ChromeEvent()
+      onConnectExternal: new ChromeEvent(),
+      // see: https://developer.chrome.com/apps/runtime#method-sendMessage
+      sendMessage: function (message: object, responseCallback: () => void) {
+        // console.log('BSC]] in mock:5 sendMessage called: ' + JSON.stringify(message))
+        const onMessage = chrome.runtime.onMessage as OnMessageEvent
+        onMessage.emit(message)
+        responseCallback()
+      }
     },
     browserAction: {
       setBadgeBackgroundColor: function (properties: object) {
@@ -150,6 +165,13 @@ export const getMockChrome = () => {
       },
       insertCSS: function (details: jest.SpyInstance) {
         return
+      },
+      query: function (queryInfo: chrome.tabs.QueryInfo, callback: (result: chrome.tabs.Tab[]) => void) {
+        return callback
+      },
+      // chrome.tabs.sendMessage(integer tabId, any message, object options, function responseCallback)
+      sendMessage: function (tabID: Number, message: any, options: object, responseCallback: any) {
+        return responseCallback
       },
       onActivated: new ChromeEvent(),
       onCreated: new ChromeEvent(),
@@ -222,8 +244,45 @@ export const getMockChrome = () => {
       search: function (query: string, callback: (results: chrome.bookmarks.BookmarkTreeNode[]) => void) {
         return
       }
+    },
+    contextMenus: {
+      create: function (data: any) {
+        return Promise.resolve()
+      },
+      onBlocked: new ChromeEvent(),
+      allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
+        setImmediate(cb)
+      },
+      // onClicked: new ChromeEvent()
+      onClicked: {
+        // addListener: function (cb: (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) => void) {
+        addListener: function (cb: (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) => void) {
+          const onClicked = chrome.contextMenus.onClicked as ContextMenuClickedEvent
+          // cb({ menuItemId: 'addBlockElement', editable: false, pageUrl: '' }, { id: 1 })
+          // onClicked.emit()
+          return cb
+          // cb(info2, tab2)
+        }
+        // emit (...args: Array<() => void>) {
+        //   this.listeners.forEach((cb: () => void) => cb.apply(null, args))
+        // }
+      }
+      // function (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab, cb: () => void) {
+      //   const onClicked = chrome.contextMenus.onClicked as ContextMenuClickedEvent
+      //   onClicked.emit(info, tab)
+      //   cb()
+      // }
     }
   }
+  return mock
+}
+export const window = () => {
+  let mock = {
+    prompt: function (text: String) {
+      return text
+    }
+  }
+  return mock
 }
 
 export const initialState = deepFreeze({

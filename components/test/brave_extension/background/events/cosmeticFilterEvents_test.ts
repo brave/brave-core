@@ -102,7 +102,6 @@ describe('cosmeticFilterEvents events', () => {
       it('triggers `siteCosmeticFilterRemoved` action', function () {
         // mock the prompt since JSDOM doesn't implement it
         // window.prompt = jest.fn()
-        // mock parameters
         const info: chrome.contextMenus.OnClickData = { menuItemId: 'resetSiteFilterSettings', editable: false, pageUrl: 'brave.com' }
         const tab: chrome.tabs.Tab = {
           id: 3,
@@ -181,11 +180,6 @@ describe('cosmeticFilterEvents events', () => {
           cosmeticFilterEvents.onSelectorReturned(null)
           expect(insertCssSpy).not.toBeCalled()
         })
-        // it('does NOT call `chrome.tabs.insertCSS` when selector is not a string', function () {
-        //   selectorToReturn = true // NO LINT
-        //   cosmeticFilterEvents.onSelectorReturned(selectorToReturn)
-        //   expect(insertCssSpy).not.toBeCalled()
-        // })
       })
     })
   })

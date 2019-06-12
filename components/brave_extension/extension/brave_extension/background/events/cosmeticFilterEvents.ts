@@ -72,7 +72,7 @@ export function query () {
   })
 }
 
-export function tabsCallback (tabs: [chrome.tabs.Tab]) {
+export function tabsCallback (tabs: any) {
   chrome.tabs.sendMessage(tabs[0].id, { type: 'getTargetSelector' }, onSelectorReturned)
 }
 
