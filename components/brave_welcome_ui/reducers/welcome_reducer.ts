@@ -20,7 +20,7 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
   const startingState = state
   switch (action.type) {
     case types.IMPORT_NOW_REQUESTED:
-      chrome.send('importNowRequested', [])
+      console.log('IMPORT NOW PRESSED')
       break
     case types.GO_TO_TAB_REQUESTED:
       window.open(payload.url, payload.target)
