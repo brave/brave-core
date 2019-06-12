@@ -58,6 +58,9 @@ declare namespace RewardsExtension {
     hint?: string
     status?: GrantStatus
     type?: string
+    finishTitle?: string
+    finishText?: string
+    finishTokenTitle?: string
   }
 
   export interface GrantResponse {

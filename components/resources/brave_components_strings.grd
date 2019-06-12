@@ -329,8 +329,6 @@
       <message name="IDS_BRAVE_UI_BRAVE_VERIFIED" desc="">Brave Verified Publishers</message>
       <message name="IDS_BRAVE_UI_CANCEL" desc="">Cancel</message>
       <message name="IDS_BRAVE_UI_CAPTCHA_DRAG" desc="">Drag the BAT Icon on to the</message>
-      <message name="IDS_BRAVE_UI_CAPTCHA_LUCKY_DAY" desc="">It’s your lucky day!</message>
-      <message name="IDS_BRAVE_UI_CAPTCHA_ON_THE_WAY" desc="">Your token grant is on its way.</message>
       <message name="IDS_BRAVE_UI_CAPTCHA_PROVE_HUMAN" desc="">Prove that you are human!</message>
       <message name="IDS_BRAVE_UI_CAPTCHA_TARGET" desc="">target.</message>
       <message name="IDS_BRAVE_UI_CAPTCHA_MISSED_TARGET" desc="">Hmm… Not Quite. Try Again.</message>
@@ -359,7 +357,7 @@
       <message name="IDS_BRAVE_UI_DO_MONTHLY" desc="">Set monthly tip</message>
       <message name="IDS_BRAVE_UI_DOWNLOAD_PDF" desc="">Download as PDF</message>
       <message name="IDS_BRAVE_UI_EARNINGS_ADS" desc="">Earnings from Ads</message>
-      <message name="IDS_BRAVE_UI_EARNINGS_CLAIM_DEFAULT" desc="">Your earnings from ads are available.</message>
+      <message name="IDS_BRAVE_UI_EARNINGS_CLAIM_DEFAULT" desc="">Your rewards from Ads are here!</message>
       <message name="IDS_BRAVE_UI_ENABLE_TIPS" desc="">Enable Tips</message>
       <message name="IDS_BRAVE_UI_EXCLUDE_SITE" desc="">Exclude this site</message>
       <message name="IDS_BRAVE_UI_EXCLUDED_SITES" desc="">Total number of sites you excluded from Auto-Contribute:</message>
@@ -523,6 +521,13 @@
       <message name="IDS_BRAVE_UI_REWARDS_EXCLUDED_TEXT_2" desc="">sites from Auto-Contribute.</message>
       <message name="IDS_BRAVE_UI_SHOW_ALL" desc="">Show All</message>
       <message name="IDS_BRAVE_UI_SUPPORTED_SITES" desc="">Supported Sites</message>
+
+      <message name="IDS_BRAVE_UI_GRANT_FINISH_TITLE_ADS" desc="Title on final grant screen for Ads">Brave Ads Rewards!</message>
+      <message name="IDS_BRAVE_UI_GRANT_FINISH_TEXT_ADS" desc="Text on final grant screen for UGP">Your rewards grant from Brave Ads is on its way.</message>
+      <message name="IDS_BRAVE_UI_GRANT_FINISH_TOKEN_ADS" desc="Token text on final grant screen for UGP">Your Brave Ads Token Grant</message>
+      <message name="IDS_BRAVE_UI_GRANT_FINISH_TITLE_UGP" desc="Title on final grant screen for UGP">It’s your lucky day!</message>
+      <message name="IDS_BRAVE_UI_GRANT_FINISH_TEXT_UGP" desc="Text on final grant screen for UGP">Your token grant is on its way.</message>
+      <message name="IDS_BRAVE_UI_GRANT_FINISH_TOKEN_UGP" desc="Token text on final grant screen for UGP">Free Token Grant</message>
 
       <!-- WebUI brave sync resources -->
       <!-- WebUI brave sync resources: Shared Content -->
