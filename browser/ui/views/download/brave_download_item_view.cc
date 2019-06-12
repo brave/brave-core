@@ -19,6 +19,7 @@
 #include "ui/gfx/paint_vector_icon.h"
 #include "ui/gfx/text_elider.h"
 #include "ui/gfx/text_utils.h"
+#include "ui/views/controls/label.h"
 
 using download::DownloadItem;
 
@@ -54,6 +55,14 @@ BraveDownloadItemView::BraveDownloadItemView(
 BraveDownloadItemView::~BraveDownloadItemView() {}
 
 // View overrides.
+
+void BraveDownloadItemView::Layout() {
+  DownloadItemView::Layout();
+  // Adjust the position of the status text label.
+  if (!IsShowingWarningDialog()) {
+    status_label_->SetY(GetYForStatusText());
+  }
+}
 
 gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
   // Call base class to get the width.
@@ -147,19 +156,6 @@ int BraveDownloadItemView::GetYForStatusText() const {
 
 // Drawing routines.
 
-void BraveDownloadItemView::DrawStatusText(gfx::Canvas* canvas) {
-  if (status_text_.empty() || IsShowingWarningDialog())
-    return;
-
-  int mirrored_x = GetMirroredXWithWidthInView(
-      kStartPadding + DownloadShelf::kProgressIndicatorSize +
-          kProgressTextPadding,
-      kTextWidth);
-  canvas->DrawStringRect(status_text_, status_font_list_, GetDimmedTextColor(),
-                         gfx::Rect(mirrored_x, GetYForStatusText(), kTextWidth,
-                                   status_font_list_.GetHeight()));
-}
-
 void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
   if (origin_url_text_.empty() || IsShowingWarningDialog())
     return;
@@ -179,8 +175,9 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
       origin_url_text_, origin_url_font_list_, text_width, gfx::ELIDE_TAIL);
   int mirrored_x = GetMirroredXWithWidthInView(x, text_width);
 
+  SkColor dimmed_text_color = SkColorSetA(GetTextColor(), 0xC7);
   canvas->DrawStringRect(
-      originURL, origin_url_font_list_, GetDimmedTextColor(),
+      originURL, origin_url_font_list_, dimmed_text_color,
       gfx::Rect(mirrored_x, GetYForOriginURLText(), text_width,
                 origin_url_font_list_.GetHeight()));
 }
