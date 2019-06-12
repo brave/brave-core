@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/container_node.cc b/third_party/blink/renderer/core/dom/container_node.cc
-index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..dd474828dcbed6046b5a8444fd07f15df4a04532 100644
+index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..0b9022411fd56b6df364824fc3e57bd2e7005eb0 100644
 --- a/third_party/blink/renderer/core/dom/container_node.cc
 +++ b/third_party/blink/renderer/core/dom/container_node.cc
 @@ -61,6 +61,13 @@
@@ -56,22 +56,19 @@ index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..dd474828dcbed6046b5a8444fd07f15d
      // As an optimization we don't notify leaf nodes when when inserting
      // into detached subtrees that are not in a shadow tree.
      if (!isConnected() && !IsInShadowTree() && !node.IsContainerNode())
-@@ -952,6 +992,22 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
+@@ -952,6 +992,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
      // As an optimization we skip notifying Text nodes and other leaf nodes
      // of removal when they're not in the Document tree and not in a shadow root
      // since the virtual call to removedFrom is not needed.
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+    {
-+      ::brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
-+      if (page_graph != nullptr) {
-+        const NodeType node_type = node.getNodeType();
-+        const DOMNodeId node_id = DOMNodeIds::IdForNode(&node);
-+        LOG_ASSERT(GetDocument() == node.GetDocument());
-+        if (node_type == kElementNode || node_type == kDocumentFragmentNode) {
-+          page_graph->RegisterHTMLElementNodeRemoved(node_id);
-+        } else {
-+          page_graph->RegisterHTMLTextNodeRemoved(node_id);
-+        }
++    if (GetDocument().GetPageGraph() != nullptr) {
++      const NodeType node_type = node.getNodeType();
++      if (node_type == kElementNode || node_type == kDocumentFragmentNode) {
++        GetDocument().GetPageGraph()->RegisterHTMLElementNodeRemoved(
++          DOMNodeIds::IdForNode(&node));
++      } else {
++        GetDocument().GetPageGraph()->RegisterHTMLTextNodeRemoved(
++          DOMNodeIds::IdForNode(&node));
 +      }
 +    }
 +#endif

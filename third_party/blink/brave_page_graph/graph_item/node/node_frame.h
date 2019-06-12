@@ -28,7 +28,6 @@ friend class PageGraph;
  protected:
   NodeFrame(PageGraph* const graph, const blink::DOMNodeId node_id,
     const std::string& frame_url);
-  ItemDesc GetDescBody() const override;
   GraphMLXMLList GraphMLAttributes() const override;
 
   const blink::DOMNodeId node_id_;

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script/script_loader.h b/third_party/blink/renderer/core/script/script_loader.h
-index ae9e7b85a7a30d71b025cd0061fdb5f91c47542b..1241bc59d79eb11004533fdac00043c5e54170db 100644
+index ae9e7b85a7a30d71b025cd0061fdb5f91c47542b..ff4f0c8cbf4b5355b2ddc6c3d93d016866dd8ebe 100644
 --- a/third_party/blink/renderer/core/script/script_loader.h
 +++ b/third_party/blink/renderer/core/script/script_loader.h
 @@ -38,6 +38,8 @@
@@ -40,7 +40,7 @@ index ae9e7b85a7a30d71b025cd0061fdb5f91c47542b..1241bc59d79eb11004533fdac00043c5
    Member<Resource> resource_keep_alive_;
 +
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  WeakMember<HTMLScriptElement> script_elm_;
++  Member<HTMLScriptElement> script_elm_;
 +#endif
  };
  

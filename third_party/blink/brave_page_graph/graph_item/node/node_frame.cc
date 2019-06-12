@@ -37,6 +37,8 @@ void NodeFrame::AddOutEdge(const EdgeImport* const edge) {
 
 GraphMLXMLList NodeFrame::GraphMLAttributes() const {
   return {
+    GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
+      ->ToValue("local frame"),
     GraphMLAttrDefForType(kGraphMLAttrDefNodeId)
       ->ToValue(node_id_),
     GraphMLAttrDefForType(kGraphMLAttrDefUrl)
