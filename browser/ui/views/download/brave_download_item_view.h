@@ -17,6 +17,7 @@ class BraveDownloadItemView : public DownloadItemView {
   ~BraveDownloadItemView() override;
 
   // views::View:
+  void Layout() override;
   gfx::Size CalculatePreferredSize() const override;
 
   // download::DownloadItem::Observer:
@@ -33,13 +34,12 @@ class BraveDownloadItemView : public DownloadItemView {
   // Vertical padding between text lines.
   static constexpr int kBraveVerticalTextPadding = 3;
 
-  // These functions calculates the vertical coordinates for each text line.
+  // These functions calculate the vertical coordinates for each text line.
   int GetYForFilenameText() const override;
   int GetYForOriginURLText() const;
   int GetYForStatusText() const;
 
   // Painting of various download item bits.
-  void DrawStatusText(gfx::Canvas* canvas) override;
   void DrawOriginURL(gfx::Canvas* canvas);
   void DrawLockIcon(gfx::Canvas* canvas);
 

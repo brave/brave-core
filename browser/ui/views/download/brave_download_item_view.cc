@@ -55,6 +55,14 @@ BraveDownloadItemView::~BraveDownloadItemView() {}
 
 // View overrides.
 
+void BraveDownloadItemView::Layout() {
+  DownloadItemView::Layout();
+  // Adjust the position of the status text label.
+  if (!IsShowingWarningDialog()) {
+    status_label_->SetY(GetYForStatusText());
+  }
+}
+
 gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
   // Call base class to get the width.
   gfx::Size size = DownloadItemView::CalculatePreferredSize();
@@ -146,19 +154,6 @@ int BraveDownloadItemView::GetYForStatusText() const {
 }
 
 // Drawing routines.
-
-void BraveDownloadItemView::DrawStatusText(gfx::Canvas* canvas) {
-  if (status_text_.empty() || IsShowingWarningDialog())
-    return;
-
-  int mirrored_x = GetMirroredXWithWidthInView(
-      kStartPadding + DownloadShelf::kProgressIndicatorSize +
-          kProgressTextPadding,
-      kTextWidth);
-  canvas->DrawStringRect(status_text_, status_font_list_, GetDimmedTextColor(),
-                         gfx::Rect(mirrored_x, GetYForStatusText(), kTextWidth,
-                                   status_font_list_.GetHeight()));
-}
 
 void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
   if (origin_url_text_.empty() || IsShowingWarningDialog())
