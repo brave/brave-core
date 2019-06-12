@@ -29,9 +29,12 @@
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
+#include "brave/components/services/bat_ads/public/cpp/manifest.h"
+#include "brave/components/services/bat_ledger/public/cpp/manifest.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 #include "brave/components/services/brave_content_packaged_service_overlay_manifest.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/utility/tor/public/cpp/manifest.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
@@ -243,23 +246,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
       page_transition, has_user_gesture, factory_request, out_factory);
 }
 
-void BraveContentBrowserClient::RegisterOutOfProcessServices(
-    OutOfProcessServiceMap* services) {
-  ChromeContentBrowserClient::RegisterOutOfProcessServices(services);
-#if BUILDFLAG(ENABLE_TOR)
-  (*services)[tor::mojom::kTorLauncherServiceName] = base::BindRepeating(
-      l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME);
-#endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  (*services)[bat_ads::mojom::kServiceName] =
-      base::BindRepeating(l10n_util::GetStringUTF16, IDS_SERVICE_BAT_ADS);
-#endif
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  (*services)[bat_ledger::mojom::kServiceName] = base::BindRepeating(
-      l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_LEDGER_NAME);
-#endif
-}
-
 std::unique_ptr<content::NavigationUIData>
 BraveContentBrowserClient::GetNavigationUIData(
     content::NavigationHandle* navigation_handle) {
@@ -283,6 +269,23 @@ BraveContentBrowserClient::GetServiceManifestOverlay(base::StringPiece name) {
     manifest->Amend(GetBraveContentPackagedServiceOverlayManifest());
   }
   return manifest;
+}
+
+std::vector<service_manager::Manifest>
+BraveContentBrowserClient::GetExtraServiceManifests() {
+  auto manifests = ChromeContentBrowserClient::GetExtraServiceManifests();
+
+#if BUILDFLAG(ENABLE_TOR)
+  manifests.push_back(tor::GetTorLauncherManifest());
+#endif
+#if BUILDFLAG(BRAVE_ADS_ENABLED)
+  manifests.push_back(bat_ads::GetManifest());
+#endif
+#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
+  manifests.push_back(bat_ledger::GetManifest());
+#endif
+
+  return manifests;
 }
 
 void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
