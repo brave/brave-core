@@ -27,6 +27,8 @@ declare_args() {
   target_apk_base=""
 
   skip_signing = false
+
+  brave_enable_cdm_host_verification = false
 }
 
 if (base_sparkle_update_url == "") {
