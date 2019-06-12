@@ -65,6 +65,13 @@ source_set("prefs") {
   ]
 }
 
+source_set("syncer_export") {
+  deps = [
+    ":jslib_messages",
+    ":prefs",
+  ]
+}
+
 source_set("core") {
   sources = [
     "bookmark_order_util.cc",
