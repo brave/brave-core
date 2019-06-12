@@ -115,9 +115,7 @@ exports[`Grant complete tests basic tests matches the snapshot 1`] = `
   >
     <div
       className="c2"
-    >
-      MISSING: newTokenGrant
-    </div>
+    />
     <div
       className="c3"
     >

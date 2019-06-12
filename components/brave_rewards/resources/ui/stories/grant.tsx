@@ -62,6 +62,7 @@ storiesOf('Feature Components/Rewards/Grant', module)
           onClose={dummyClick}
           amount={'30.0'}
           date={text('Date', '8/15/2018')}
+          tokenTitle={'Free token grant'}
         />
       </div>
     )

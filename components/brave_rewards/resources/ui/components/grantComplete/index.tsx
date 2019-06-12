@@ -19,18 +19,19 @@ export interface Props {
   testId?: string
   onClose: () => void
   amount: string
-  date: string,
+  date: string
   isMobile?: boolean
+  tokenTitle?: string
 }
 
 export default class GrantComplete extends React.PureComponent<Props, {}> {
   render () {
-    const { id, testId, onClose, amount, date, isMobile } = this.props
+    const { id, testId, onClose, amount, date, isMobile, tokenTitle } = this.props
 
     return (
       <StyledWrapper id={id} data-test-id={testId}>
         <StyledBox>
-          <StyledTitle>{getLocale('newTokenGrant')}</StyledTitle>
+          <StyledTitle>{tokenTitle}</StyledTitle>
           <StyledValue>{amount} BAT</StyledValue>
           {
             date && date.length > 0

@@ -83,6 +83,7 @@ class GrantMobile extends React.Component<Props, State > {
               onClose={this.onComplete}
               amount={'30.0'}
               date={'8/15/2018'}
+              tokenTitle={'Free token grant'}
             />
           </GrantWrapper>
           : null

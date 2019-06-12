@@ -51,7 +51,10 @@ const defaultGrant = {
   probi: '',
   expiryTime: 0,
   captcha: '',
-  hint: ''
+  hint: '',
+  finishTitle: 'It\'s your lucky day!',
+  finishText: 'Your token grant is on its way.',
+  finishTokenTitle: 'Free Token Grant'
 }
 
 const grantNotification = {
@@ -264,17 +267,20 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             {
               tokens: '8.0',
               expireDate: '7/15/2018',
-              type: 'ugp'
+              type: 'ugp',
+              tokenText: 'Free Token Grant'
             },
             {
               tokens: '10.0',
               expireDate: '9/10/2018',
-              type: 'ugp'
+              type: 'ugp',
+              tokenText: 'Free Token Grant'
             },
             {
               tokens: '10.0',
               expireDate: '10/10/2018',
-              type: 'ads'
+              type: 'ads',
+              tokenText: 'Your Brave Ads Token Grant'
             }
           ])}
         >
