@@ -123,7 +123,6 @@ source_set("shield_exceptions") {
   if (is_android) {
     deps += [ 
       "//brave/app/android:common_extensions",
-      "//extensions/buildflags",
     ]
   } else {
     deps += [ "//extensions/common" ]
