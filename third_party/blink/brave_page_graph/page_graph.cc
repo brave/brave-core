@@ -12,14 +12,14 @@
 #include <memory>
 #include <sstream>
 #include <string>
+
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_source_code.h"
+#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
-
-#include "third_party/blink/renderer/core/dom/document.h"
 
 #include "brave/third_party/blink/brave_page_graph/logging.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
@@ -27,6 +27,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_delete.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute_attr.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_import.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_create.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_delete.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_insert.h"
@@ -38,20 +39,25 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_complete.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_actor.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extension.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_frame.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html_element.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html_text.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_parser.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script_remote.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_shields.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_cookiejar.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_localstorage.h"
 #include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/requests/tracked_request.h"
-#include "brave/third_party/blink/brave_page_graph/script_tracker.h"
+#include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
+#include "brave/third_party/blink/brave_page_graph/scripts/script_in_frame_querier.h"
+#include "brave/third_party/blink/brave_page_graph/scripts/script_in_frame_query_result.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
+using ::blink::Document;
 using ::blink::DOMNodeId;
 using ::blink::KURL;
 using ::blink::ScriptSourceCode;
@@ -86,12 +92,13 @@ void write_to_disk(int signal) {
   outfile.close();
 }
 
-PageGraph::PageGraph() :
+PageGraph::PageGraph(Document& document) :
     parser_node_(new NodeParser(this)),
     shields_node_(new NodeShields(this)),
     cookie_jar_node_(new NodeStorageCookieJar(this)),
     local_storage_node_(new NodeStorageLocalStorage(this)),
-    html_root_node_(new NodeHTMLElement(this, kRootNodeId, "(root)")) {
+    html_root_node_(new NodeHTMLElement(this, kRootNodeId, "(root)")),
+    document_(document) {
   PG_LOG("init");
   AddNode(parser_node_);
   AddNode(shields_node_);
@@ -541,15 +548,54 @@ void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {
     PG_LOG("RegisterScriptExecStart) script id: " + to_string(script_id));
     prev_script_id = script_id;
   }
-  if (script_nodes_.count(script_id) != 1) {
-    PG_LOG("SOMETHING WENT BAD: " + to_string(script_id));
-    PG_LOG("I know about these scripts");
-    for (const auto &script_pair : script_nodes_) {
-      PG_LOG(" - " + to_string(script_pair.first));
-    }
-  }
+
   LOG_ASSERT(script_nodes_.count(script_id) == 1);
+  // First check to see if this is a script compiled in this frame.
+  // If so this is easy.
+  if (script_nodes_.count(script_id) == 1) {
+    PushActiveScript(script_id);
+    return;
+  }
+
+  /*
+  // Next see if this could be a script we've already imported from a remote
+  // frame.  If so, also pretty easy...
+  if (remote_script_nodes_.count(script_id) == 1) {
+    PushActiveScript(script_id);
+    return;
+  }
+
+  // Otherwise, this seems to be a script compiled in another frame, but
+  // executing in this frame.  So, query the other frames to
+  // see if we can find it.
+  ScriptInFrameQuerier querier(document_, script_id);
+  ScriptInFrameQueryResult result = querier.Find();
+  LOG_ASSERT(result.IsMatch());
+
+  DOMNodeId frame_node_id = result.GetFrameDOMNodeId();
+  NodeFrame* remote_frame;
+  if (remote_frames_.count(frame_node_id) == 0) {
+    remote_frame = new NodeFrame(this, frame_node_id, result.GetFrameUrl());
+    remote_frames_.emplace(frame_node_id, remote_frame);
+    AddNode(remote_frame);
+  } else {
+    remote_frame = remote_frames_.at(frame_node_id);
+  }
+
+  NodeScriptRemote* remote_script_node = new NodeScriptRemote(this,
+    result.GetScriptNode());
+  AddNode(remote_script_node);
+  remote_script_nodes_.emplace(script_id, remote_script_node);
+
+  const EdgeImport* import_edge = new EdgeImport(this, remote_frame,
+    remote_script_node);
+  AddEdge(import_edge);
+
+  remote_frame->AddOutEdge(import_edge);
+  remote_script_node->AddInEdge(import_edge);
+
   PushActiveScript(script_id);
+  */
 }
 
 void PageGraph::RegisterScriptExecStop(const ScriptId script_id) {
@@ -591,8 +637,15 @@ NodeActor* PageGraph::GetCurrentActingNode() const {
     PG_LOG("GetCurrentActingNode) NodeParser");
     return parser_node_;
   }
-  LOG_ASSERT(script_nodes_.count(current_script_id) == 1);
-  return script_nodes_.at(current_script_id);
+
+  LOG_ASSERT(script_nodes_.count(current_script_id) +
+    remote_script_nodes_.count(current_script_id) == 1);
+
+  if (script_nodes_.count(current_script_id) == 1) {
+    return script_nodes_.at(current_script_id);
+  }
+
+  return remote_script_nodes_.at(current_script_id);
 }
 
 void PageGraph::PossiblyWriteRequestsIntoGraph(
@@ -673,14 +726,11 @@ void PageGraph::AddEdge(const Edge* const edge) {
   graph_items_.push_back(edge);
 }
 
-DOMNodeIdList PageGraph::NodeIdsForScriptId(const ScriptId script_id) const {
-  PG_LOG("NodeIdsForScriptId) script id: " + to_string(script_id));
-  return script_tracker_.GetElmsForScriptId(script_id);
-}
-
-ScriptIdList PageGraph::ScriptIdsForNodeId(const DOMNodeId node_id) const {
-  PG_LOG("ScriptIdsForNodeId) node id: " + to_string(node_id));
-  return script_tracker_.GetScriptIdsForElm(node_id);
+const NodeScript* PageGraph::NodeForScriptInFrame(const ScriptId script_id) const {
+  if (script_nodes_.count(script_id) == 0) {
+    return nullptr;
+  }
+  return script_nodes_.at(script_id);
 }
 
 NodeExtension* PageGraph::GetExtensionNode() {

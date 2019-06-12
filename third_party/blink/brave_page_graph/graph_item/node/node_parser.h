@@ -22,6 +22,8 @@ friend class PageGraph;
   ItemName GetItemName() const override;
   bool IsParser() const override;
 
+  void AddInEdge(const Edge* const edge) = delete;
+
  protected:
   NodeParser(PageGraph* const graph);
   GraphMLXMLList GraphMLAttributes() const override;

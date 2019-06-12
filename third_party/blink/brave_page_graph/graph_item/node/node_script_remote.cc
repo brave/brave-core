@@ -21,11 +21,8 @@ namespace brave_page_graph {
 
 NodeScriptRemote::NodeScriptRemote(PageGraph* const graph,
     const NodeScript* const script_node) :
-      Node(graph),
-      script_id_(script_node->script_id_),
-      type_(script_node->type_),
-      url(script_node->url_),
-      is_inline_(script_node->is_inline_) {}
+      NodeScript(graph, script_node->GetScriptId(),
+        script_node->GetScriptType(), script_node->GetUrl()) {}
 
 NodeScriptRemote::~NodeScriptRemote() {}
 
@@ -33,7 +30,7 @@ ItemName NodeScriptRemote::GetItemName() const {
   return "NodeScriptRemote#" + to_string(id_);
 }
 
-void NodeScriptRemote::AddOutEdge(const EdgeImport* const edge) {
+void NodeScriptRemote::AddInEdge(const EdgeImport* const edge) {
   Node::AddOutEdge(edge);
 }
 

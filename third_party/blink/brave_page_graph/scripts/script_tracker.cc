@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/third_party/blink/brave_page_graph/script_tracker.h"
+#include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
 #include <map>
 #include <vector>
 #include "brave/third_party/blink/brave_page_graph/logging.h"
