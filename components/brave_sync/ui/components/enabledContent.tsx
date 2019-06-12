@@ -24,6 +24,7 @@ import {
   TableGrid,
   TableButtonGrid,
   EnabledContent,
+  SyncCardContent,
   SyncCard
 } from 'brave-ui/features/sync'
 
@@ -257,46 +258,48 @@ export default class SyncEnabledContent extends React.PureComponent<Props, State
               : null
           }
           <SyncCard>
-            <Title level={2}>{getLocale('braveSync')}</Title>
-            <Paragraph>{getLocale('syncChainDevices')}</Paragraph>
-            <SectionBlock>
-              <TableGrid isDeviceTable={true}>
-                <Table header={this.devicesHeader} rows={this.getDevicesRows(syncData.devices)}>
-                  Device list is empty
-                </Table>
-                <TableButtonGrid>
-                  <br />
-                  <Button
-                    level='secondary'
-                    type='accent'
-                    size='medium'
-                    text={getLocale('viewSyncCode')}
-                    onClick={this.onClickViewSyncCodeButton}
-                  />
-                  <Button
-                    level='primary'
-                    type='accent'
-                    size='medium'
-                    text={getLocale('addDevice')}
-                    onClick={this.onClickAddDeviceButton}
-                  />
-                </TableButtonGrid>
-              </TableGrid>
-            </SectionBlock>
-            <Title level={2}>{getLocale('settingsTitle')}</Title>
-            <Paragraph>{getLocale('settingsDescription')}</Paragraph>
-            <SectionBlock>
-              <Table header={this.settingsHeader} rows={this.settingsRows} />
-            </SectionBlock>
-            <SectionBlock>
-              <Button
-                level='primary'
-                type='accent'
-                size='medium'
-                text={getLocale('leaveSyncChain')}
-                onClick={this.onClickResetSyncButton}
-              />
-            </SectionBlock>
+            <SyncCardContent>
+              <Title level={2}>{getLocale('braveSync')}</Title>
+              <Paragraph>{getLocale('syncChainDevices')}</Paragraph>
+              <SectionBlock>
+                <TableGrid isDeviceTable={true}>
+                  <Table header={this.devicesHeader} rows={this.getDevicesRows(syncData.devices)}>
+                    Device list is empty
+                  </Table>
+                  <TableButtonGrid>
+                    <br />
+                    <Button
+                      level='secondary'
+                      type='accent'
+                      size='medium'
+                      text={getLocale('viewSyncCode')}
+                      onClick={this.onClickViewSyncCodeButton}
+                    />
+                    <Button
+                      level='primary'
+                      type='accent'
+                      size='medium'
+                      text={getLocale('addDevice')}
+                      onClick={this.onClickAddDeviceButton}
+                    />
+                  </TableButtonGrid>
+                </TableGrid>
+              </SectionBlock>
+              <Title level={2}>{getLocale('settingsTitle')}</Title>
+              <Paragraph>{getLocale('settingsDescription')}</Paragraph>
+              <SectionBlock>
+                <Table header={this.settingsHeader} rows={this.settingsRows} />
+              </SectionBlock>
+              <SectionBlock>
+                <Button
+                  level='primary'
+                  type='accent'
+                  size='medium'
+                  text={getLocale('leaveSyncChain')}
+                  onClick={this.onClickResetSyncButton}
+                />
+              </SectionBlock>
+            </SyncCardContent>
           </SyncCard>
         </Main>
       </EnabledContent>
