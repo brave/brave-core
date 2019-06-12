@@ -66,6 +66,8 @@ class AdsImpl : public Ads {
   void OnMediaStopped(const int32_t tab_id) override;
   bool IsMediaPlaying() const;
 
+  bool IsDoNotDisturb() const;
+
   int32_t last_shown_tab_id_;
   std::string last_shown_tab_url_;
   std::string previous_tab_url_;
