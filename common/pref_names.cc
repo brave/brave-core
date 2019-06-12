@@ -40,6 +40,7 @@ const char kReferralCheckedForPromoCodeFile[] =
     "brave.referral.checked_for_promo_code_file";
 const char kHTTPSEVerywhereControlType[] = "brave.https_everywhere_default";
 const char kNoScriptControlType[] = "brave.no_script_default";
+const char kAdControlType[] = "brave.ad_default";
 const char kGoogleLoginControlType[] = "brave.google_login_default";
 const char kFBEmbedControlType[] = "brave.fb_embed_default";
 const char kTwitterEmbedControlType[] = "brave.twitter_embed_default";
