@@ -243,23 +243,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
       page_transition, has_user_gesture, factory_request, out_factory);
 }
 
-void BraveContentBrowserClient::RegisterOutOfProcessServices(
-    OutOfProcessServiceMap* services) {
-  ChromeContentBrowserClient::RegisterOutOfProcessServices(services);
-#if BUILDFLAG(ENABLE_TOR)
-  (*services)[tor::mojom::kTorLauncherServiceName] = base::BindRepeating(
-      l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_TOR_LAUNCHER_NAME);
-#endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  (*services)[bat_ads::mojom::kServiceName] =
-      base::BindRepeating(l10n_util::GetStringUTF16, IDS_SERVICE_BAT_ADS);
-#endif
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  (*services)[bat_ledger::mojom::kServiceName] = base::BindRepeating(
-      l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_LEDGER_NAME);
-#endif
-}
-
 std::unique_ptr<content::NavigationUIData>
 BraveContentBrowserClient::GetNavigationUIData(
     content::NavigationHandle* navigation_handle) {

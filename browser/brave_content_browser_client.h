@@ -57,9 +57,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const url::Origin& requesting_origin,
       const url::Origin& embedding_origin) override;
 
-  void RegisterOutOfProcessServices(
-      OutOfProcessServiceMap* services) override;
-
   base::Optional<service_manager::Manifest> GetServiceManifestOverlay(
       base::StringPiece name) override;
 
