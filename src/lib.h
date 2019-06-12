@@ -20,6 +20,8 @@ typedef struct {
   const char *base64_public_key;
 } C_FList;
 
+void engine_add_filter(C_Engine *engine, const char *filter);
+
 /**
  * Adds a tag to the engine for consideration
  */
@@ -56,6 +58,11 @@ bool engine_match(C_Engine *engine,
  * Removes a tag to the engine for consideration
  */
 void engine_remove_tag(C_Engine *engine, const char *tag);
+
+/**
+ * Checks if a tag exists in the engine
+ */
+bool engine_tag_exists(C_Engine *engine, const char *tag);
 
 /**
  * Get the specific default list size

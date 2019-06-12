@@ -37,6 +37,14 @@ const unsigned char ad_banner_with_tag_abc_dat_buffer[] = {
   0xc7, 0xc1, 0xc2, 0x31, 0x73, 0x00, 0x00, 0x00
 };
 
+void Assert(bool value, const std::string& message) {
+  if (!value) {
+    cout << "Failed!" << endl;
+    cout << message << endl;
+  }
+  assert(value);
+}
+
 void Check(bool expected_result,
     bool expected_cancel, bool expected_saved_from_exception,
     const std::string& test_description,
@@ -84,6 +92,21 @@ void TestBasics() {
       "example.com", "example.com", false, "image");
 }
 
+void TestAddingFilters() {
+  Engine engine("");
+  engine.addFilter("-advertisement-icon.");
+  engine.addFilter("-advertisement-management");
+  engine.addFilter("-advertisement.");
+  engine.addFilter("-advertisement/script.");
+  engine.addFilter("@@good-advertisement");
+  Check(true, false, false, "Basic match", engine, "http://example.com/-advertisement-icon.",
+      "example.com", "example.com", false , "image");
+  Check(false, false, false, "Basic not match", engine, "https://brianbondy.com",
+      "brianbondy.com", "example.com", true, "image");
+  Check(false, false, true, "Basic saved from exception", engine, "http://example.com/good-advertisement-icon.",
+      "example.com", "example.com", false, "image");
+}
+
 void TestDeserialization() {
   Engine engine("");
   engine.deserialize(reinterpret_cast<const char*>(ad_banner_dat_buffer),
@@ -118,6 +141,8 @@ void TestTags() {
       "http://example.com/-advertisement-icon.", "example.com", "example.com",
       false, "image");
   engine.addTag("abc");
+  Assert(engine.tagExists("abc"), "abc tag should exist");
+  Assert(!engine.tagExists("abcd"), "abcd should not exist");
   Check(true, false, false, "With needed tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
       "example.com", false, "image");
@@ -186,6 +211,7 @@ void TestRegionalLists() {
 
 int main() {
   TestBasics();
+  TestAddingFilters();
   TestDeserialization();
   TestTags();
   TestExplicitCancel();

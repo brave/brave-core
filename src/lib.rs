@@ -69,6 +69,25 @@ pub unsafe extern "C" fn engine_add_tag(engine: *mut Engine, tag: *const c_char)
     engine.tags_enable(&[tag]);
 }
 
+/// Checks if a tag exists in the engine
+#[no_mangle]
+pub unsafe extern "C" fn engine_tag_exists(engine: *mut Engine, tag: *const c_char
+) -> bool {
+    let tag = CStr::from_ptr(tag).to_str().unwrap();
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    engine.tag_exists(tag)
+}
+
+// Adds a filter rule to the engine
+#[no_mangle]
+pub unsafe extern "C" fn engine_add_filter(engine: *mut Engine, filter: *const c_char) {
+    let filter = CStr::from_ptr(filter).to_str().unwrap();
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    engine.filter_add(filter);
+}
+
 /// Removes a tag to the engine for consideration
 #[no_mangle]
 pub unsafe extern "C" fn engine_remove_tag(engine: *mut Engine, tag: *const c_char) {

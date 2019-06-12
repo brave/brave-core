@@ -48,8 +48,10 @@ class Engine {
       const std::string& resource_type, bool* explicit_cancel,
       bool* saved_from_exception);
   bool deserialize(const char* data, size_t data_size);
+  void addFilter(const std::string& filter);
   void addTag(const std::string& tag);
   void removeTag(const std::string& tag);
+  bool tagExists(const std::string& tag);
   ~Engine();
 
  private:
