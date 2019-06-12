@@ -15,9 +15,6 @@
 #include "components/version_info/channel.h"
 
 void BraveLocationBarView::Init() {
-  // LocationBarView (original) GetTint is called from ctor,
-  // which will not use our overriden function, so call it again here.
-  tint_ = GetTint();
   // base method calls Update and Layout
   LocationBarView::Init();
   // brave action buttons
@@ -74,7 +71,7 @@ gfx::Size BraveLocationBarView::CalculatePreferredSize() const {
   return min_size;
 }
 
-OmniboxTint BraveLocationBarView::GetTint() {
+OmniboxTint BraveLocationBarView::CalculateTint() const {
   // Match the user-selectable brave theme, even if there is a theme extension
   // installed, allowing non-extension-themeable elements to fit in better with
   // a theme extension.
