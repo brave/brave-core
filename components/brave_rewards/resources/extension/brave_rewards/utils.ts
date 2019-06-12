@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import BigNumber from 'bignumber.js'
+import { getMessage } from './background/api/locale_api'
 
 export const convertBalance = (tokens: string, rates: Record<string, number> | undefined, currency: string = 'USD'): string => {
   const tokensNum = parseFloat(tokens)
@@ -48,8 +49,19 @@ export const getGrants = (grants?: RewardsExtension.Grant[]) => {
 }
 
 export const getGrant = (grant?: RewardsExtension.GrantInfo) => {
-  if (grant && grant.type === 'ads') {
+  if (!grant) {
+    return grant
+  }
+
+  grant.finishTitle = getMessage('grantFinishTitleUGP')
+  grant.finishText = getMessage('grantFinishTextUGP')
+  grant.finishTokenTitle = getMessage('grantFinishTokenTitleUGP')
+
+  if (grant.type === 'ads') {
     grant.expiryTime = 0
+    grant.finishTitle = getMessage('grantFinishTitleAds')
+    grant.finishText = getMessage('grantFinishTextAds')
+    grant.finishTokenTitle = getMessage('grantFinishTokenTitleAds')
   }
 
   return grant

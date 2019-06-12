@@ -36,8 +36,6 @@ export const getUIMessages = (): Record<string, string> => {
     'braveRewardsCreatingText',
     'braveRewardsSubTitle',
     'captchaDrag',
-    'captchaLuckyDay',
-    'captchaOnTheWay',
     'captchaProveHuman',
     'captchaTarget',
     'captchaMissedTarget',
