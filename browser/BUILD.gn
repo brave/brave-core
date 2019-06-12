@@ -86,6 +86,7 @@ source_set("browser_process") {
     ":version_info",
     "autoplay",
     "download",
+    "greaselion",
     "net",
     "permissions",
     "profiles",
@@ -105,6 +106,7 @@ source_set("browser_process") {
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_webtorrent/browser/buildflags",
     "//brave/components/content_settings/core/browser",
+    "//brave/components/greaselion/browser",
     "//brave/components/resources",
     "//brave/components/services:brave_content_manifest_overlays",
     "//chrome/common",
@@ -131,6 +133,8 @@ source_set("browser_process") {
 
   if (!is_android) {
     sources += [
+      "brave_rewards/rewards_tab_helper.cc",
+      "brave_rewards/rewards_tab_helper.h",
       "brave_rewards/tip_dialog.cc",
       "brave_rewards/tip_dialog.h",
     ]

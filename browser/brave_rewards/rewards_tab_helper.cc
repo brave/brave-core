@@ -3,10 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_rewards/browser/rewards_helper.h"
+#include "brave/browser/brave_rewards/rewards_tab_helper.h"
 
+#include "brave/browser/greaselion/greaselion_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
+#include "brave/components/greaselion/browser/greaselion_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/session_tab_helper.h"
 #include "chrome/browser/ui/browser.h"
@@ -15,34 +17,40 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
-#include "content/public/common/resource_load_info.mojom.h"
-#include "content/public/common/resource_type.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "content/public/common/resource_load_info.mojom.h"
+#include "content/public/common/resource_type.h"
 
 using content::ResourceType;
+using greaselion::GreaselionService;
+using greaselion::GreaselionServiceFactory;
 
-// DEFINE_WEB_CONTENTS_USER_DATA_KEY(brave_rewards::RewardsHelper);
+// DEFINE_WEB_CONTENTS_USER_DATA_KEY(brave_rewards::RewardsTabHelper);
 
 namespace brave_rewards {
 
-RewardsHelper::RewardsHelper(content::WebContents* web_contents)
+RewardsTabHelper::RewardsTabHelper(content::WebContents* web_contents)
     : WebContentsObserver(web_contents),
       tab_id_(SessionTabHelper::IdForTab(web_contents)) {
   if (!tab_id_.is_valid())
     return;
 
   BrowserList::AddObserver(this);
-  Profile* profile = Profile::FromBrowserContext(
-      web_contents->GetBrowserContext());
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
   rewards_service_ = RewardsServiceFactory::GetForProfile(profile);
+  if (rewards_service_)
+    rewards_service_->AddObserver(this);
 }
 
-RewardsHelper::~RewardsHelper() {
+RewardsTabHelper::~RewardsTabHelper() {
+  if (rewards_service_)
+    rewards_service_->RemoveObserver(this);
   BrowserList::RemoveObserver(this);
 }
 
-void RewardsHelper::DidFinishLoad(
+void RewardsTabHelper::DidFinishLoad(
     content::RenderFrameHost* render_frame_host,
     const GURL& validated_url) {
   if (!rewards_service_ || render_frame_host->GetParent())
@@ -51,18 +59,15 @@ void RewardsHelper::DidFinishLoad(
   rewards_service_->OnLoad(tab_id_, validated_url);
 }
 
-void RewardsHelper::DidFinishNavigation(
-    content::NavigationHandle* handle) {
-  if (!rewards_service_ ||
-      !handle->IsInMainFrame() ||
-      !handle->HasCommitted() ||
-      handle->IsDownload())
+void RewardsTabHelper::DidFinishNavigation(content::NavigationHandle* handle) {
+  if (!rewards_service_ || !handle->IsInMainFrame() ||
+      !handle->HasCommitted() || handle->IsDownload())
     return;
 
   rewards_service_->OnUnload(tab_id_);
 }
 
-void RewardsHelper::ResourceLoadComplete(
+void RewardsTabHelper::ResourceLoadComplete(
     content::RenderFrameHost* render_frame_host,
     const content::GlobalRequestID& request_id,
     const content::mojom::ResourceLoadInfo& resource_load_info) {
@@ -73,26 +78,24 @@ void RewardsHelper::ResourceLoadComplete(
       resource_load_info.resource_type == content::ResourceType::kXhr ||
       resource_load_info.resource_type == content::ResourceType::kImage ||
       resource_load_info.resource_type == content::ResourceType::kScript) {
-    rewards_service_->OnXHRLoad(
-        tab_id_,
-        GURL(resource_load_info.url),
-        web_contents()->GetURL(),
-        resource_load_info.referrer);
+    rewards_service_->OnXHRLoad(tab_id_, GURL(resource_load_info.url),
+                                web_contents()->GetURL(),
+                                resource_load_info.referrer);
   }
 }
 
-void RewardsHelper::DidAttachInterstitialPage() {
+void RewardsTabHelper::DidAttachInterstitialPage() {
   if (rewards_service_)
     rewards_service_->OnUnload(tab_id_);
 }
 
-void RewardsHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
-                                        const content::MediaPlayerId& id) {
+void RewardsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
+                                           const content::MediaPlayerId& id) {
   if (rewards_service_)
     rewards_service_->OnMediaStart(tab_id_);
 }
 
-void RewardsHelper::MediaStoppedPlaying(
+void RewardsTabHelper::MediaStoppedPlaying(
     const MediaPlayerInfo& video_type,
     const content::MediaPlayerId& id,
     WebContentsObserver::MediaStoppedReason reason) {
@@ -100,7 +103,7 @@ void RewardsHelper::MediaStoppedPlaying(
     rewards_service_->OnMediaStop(tab_id_);
 }
 
-void RewardsHelper::OnVisibilityChanged(content::Visibility visibility) {
+void RewardsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
   if (!rewards_service_)
     return;
 
@@ -113,12 +116,12 @@ void RewardsHelper::OnVisibilityChanged(content::Visibility visibility) {
   }
 }
 
-void RewardsHelper::WebContentsDestroyed() {
+void RewardsTabHelper::WebContentsDestroyed() {
   if (rewards_service_)
     rewards_service_->OnUnload(tab_id_);
 }
 
-void RewardsHelper::OnBrowserSetLastActive(Browser* browser) {
+void RewardsTabHelper::OnBrowserSetLastActive(Browser* browser) {
   if (!rewards_service_)
     return;
 
@@ -128,7 +131,7 @@ void RewardsHelper::OnBrowserSetLastActive(Browser* browser) {
   }
 }
 
-void RewardsHelper::OnBrowserNoLongerActive(Browser* browser) {
+void RewardsTabHelper::OnBrowserNoLongerActive(Browser* browser) {
   if (!rewards_service_)
     return;
 
@@ -138,6 +141,19 @@ void RewardsHelper::OnBrowserNoLongerActive(Browser* browser) {
   }
 }
 
-WEB_CONTENTS_USER_DATA_KEY_IMPL(RewardsHelper)
+void RewardsTabHelper::OnRewardsMainEnabled(RewardsService* rewards_service,
+                                            bool rewards_main_enabled) {
+  GreaselionService* greaselion_service =
+      GreaselionServiceFactory::GetForBrowserContext(
+          web_contents()->GetBrowserContext());
+  if (!greaselion_service)
+    return;
+  greaselion_service->SetFeatureEnabled(greaselion::REWARDS,
+                                        rewards_main_enabled);
+  greaselion_service->SetFeatureEnabled(greaselion::TWITTER_TIPS,
+                                        rewards_main_enabled);
+}
+
+WEB_CONTENTS_USER_DATA_KEY_IMPL(RewardsTabHelper)
 
 }  // namespace brave_rewards

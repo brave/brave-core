@@ -88,13 +88,6 @@ source_set("browser") {
       ]
     }
 
-    if (!is_android) {
-      sources += [
-        "rewards_helper.cc",
-        "rewards_helper.h",
-      ]
-    }
-
     deps += [
       "//brave/vendor/bat-native-ledger",
       "//brave/components/resources",
