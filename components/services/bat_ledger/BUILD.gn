@@ -1,5 +1,8 @@
 static_library("lib") {
-  visibility = [ "//brave/utility" ]
+  visibility = [
+    "//brave/browser:browser_process",
+    "//brave/utility",
+  ]
 
   sources = [
     "bat_ledger_app.cc",

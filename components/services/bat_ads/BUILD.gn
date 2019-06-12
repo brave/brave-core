@@ -1,5 +1,9 @@
 static_library("lib") {
-  visibility = [ "//brave/utility", "//chrome/utility" ]
+  visibility = [
+    "//brave/browser:browser_process",
+    "//brave/utility",
+    "//chrome/utility",
+  ]
 
   sources = [
     "bat_ads_app.cc",
