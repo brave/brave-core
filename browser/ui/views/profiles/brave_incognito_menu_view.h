@@ -20,7 +20,7 @@ class BraveIncognitoMenuView : public IncognitoMenuView {
 
   void Reset() override;
 
-  void AddTorButton(ProfileMenuViewBase::MenuItems* menu_items);
+  void AddTorButton();
 
   views::Button* tor_profile_button_;
 
