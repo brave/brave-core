@@ -13,7 +13,7 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_bat_get_media {
+namespace braveledger_media {
 
 BatGetMedia::BatGetMedia(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
@@ -128,4 +128,4 @@ std::string BatGetMedia::GetShareURL(
   return std::string();
 }
 
-}  // namespace braveledger_bat_get_media
+}  // namespace braveledger_media

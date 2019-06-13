@@ -31,8 +31,7 @@
 
 using namespace braveledger_bat_client; //  NOLINT
 using namespace braveledger_bat_publishers; //  NOLINT
-using namespace braveledger_bat_get_media; //  NOLINT
-using namespace braveledger_bat_get_media; //  NOLINT
+using namespace braveledger_media; //  NOLINT
 using namespace braveledger_bat_state; //  NOLINT
 using namespace braveledger_contribution; //  NOLINT
 using std::placeholders::_1;

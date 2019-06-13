@@ -21,7 +21,7 @@ namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_bat_get_media {
+namespace braveledger_media {
 
 class BatGetMedia {
  public:
@@ -62,6 +62,6 @@ class BatGetMedia {
   std::unique_ptr<braveledger_media::MediaReddit> media_reddit_;
 };
 
-}  // namespace braveledger_bat_get_media
+}  // namespace braveledger_media
 
 #endif  // BRAVELEDGER_BAT_GET_MEDIA_H_

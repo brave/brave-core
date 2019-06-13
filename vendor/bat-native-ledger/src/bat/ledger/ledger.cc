@@ -500,7 +500,7 @@ bool RewardsInternalsInfo::loadFromJson(const std::string& json) {
 bool Ledger::IsMediaLink(const std::string& url,
                          const std::string& first_party_url,
                          const std::string& referrer) {
-  const std::string type = braveledger_bat_get_media::BatGetMedia::GetLinkType(
+  const std::string type = braveledger_media::BatGetMedia::GetLinkType(
       url,
       first_party_url,
       referrer);
