@@ -55,5 +55,7 @@ declare global {
     sync_ui_exports: {
       initialize: () => void
     }
+    alreadyInserted: boolean
+    web3: any
   }
 }

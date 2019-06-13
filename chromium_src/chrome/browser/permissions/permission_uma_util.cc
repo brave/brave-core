@@ -19,6 +19,8 @@ std::string GetPermissionRequestString(PermissionRequestType type) {
     return "Autoplay";
   if (type == PermissionRequestType::PERMISSION_WIDEVINE)
     return "Widevine";
+  if (type == PermissionRequestType::PERMISSION_WALLET)
+    return "Wallet";
   return GetPermissionRequestString_ChromiumImpl(type);
 }
 

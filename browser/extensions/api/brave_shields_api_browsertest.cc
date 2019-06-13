@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
+#include "brave/browser/dapp/dapp_utils.h"
 #include "brave/browser/extensions/api/brave_shields_api.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/extensions/extension_constants.h"
@@ -17,12 +18,14 @@
 #include "chrome/browser/extensions/extension_tab_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "brave/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/prefs/pref_service.h"
 #include "extensions/common/extension_builder.h"
 #include "net/dns/mock_host_resolver.h"
 
@@ -319,6 +322,16 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
           GetContentSetting(kBraveURL, kBraveURL, CONTENT_SETTINGS_TYPE_PLUGINS,
                             std::string());
   EXPECT_EQ(setting, CONTENT_SETTING_BLOCK);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, DappDetectionTest) {
+  browser()->profile()->GetPrefs()->SetBoolean(kDappDetectionEnabled, true);
+  EXPECT_TRUE(
+      NavigateToURLUntilLoadStop("a.com", "/dapp.html"));
+
+  base::RunLoop loop;
+  SetQuitClosureForDappDetectionTest(loop.QuitClosure());
+  loop.Run();
 }
 
 }  // namespace extensions

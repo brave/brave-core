@@ -163,6 +163,9 @@
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install and run Widevine
       </message>
+      <message name="IDS_WALLET_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for wallet installation permission request.">
+          Install Crypto Wallets
+      </message>
       <if expr="is_linux">
         <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT_INSTALL" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install Widevine

@@ -131,6 +131,7 @@ declare namespace chrome.braveShields {
   }
 
   const allowScriptsOnce: any
+  const dappAvailable: (tabId: number | undefined) => void
   const javascript: any
   const plugins: any
 }

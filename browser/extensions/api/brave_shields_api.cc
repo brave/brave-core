@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/dapp/dapp_utils.h"
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -79,6 +80,34 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
 
   BraveShieldsWebContentsObserver::FromWebContents(
       contents)->AllowScriptsOnce(params->origins, contents);
+  return RespondNow(NoArguments());
+}
+
+ExtensionFunction::ResponseAction
+BraveShieldsDappAvailableFunction::Run() {
+  std::unique_ptr<brave_shields::DappAvailable::Params> params(
+      brave_shields::DappAvailable::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  if (!DappDetectionEnabled(browser_context()))
+    return RespondNow(NoArguments());
+
+  // Get web contents for this tab
+  content::WebContents* contents = nullptr;
+  if (!ExtensionTabUtil::GetTabById(
+        params->tab_id,
+        Profile::FromBrowserContext(browser_context()),
+        include_incognito_information(),
+        nullptr,
+        nullptr,
+        &contents,
+        nullptr)) {
+    return RespondNow(Error(tabs_constants::kTabNotFoundError,
+                            base::NumberToString(params->tab_id)));
+  }
+
+  RequestWalletInstallationPermission(contents);
+
   return RespondNow(NoArguments());
 }
 

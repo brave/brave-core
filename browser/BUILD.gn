@@ -146,6 +146,10 @@ source_set("browser_process") {
       "brave_rewards/rewards_tab_helper.h",
       "brave_rewards/tip_dialog.cc",
       "brave_rewards/tip_dialog.h",
+      "dapp/dapp_utils.cc",
+      "dapp/dapp_utils.h",
+      "dapp/wallet_installation_permission_request.cc",
+      "dapp/wallet_installation_permission_request.h",
     ]
 
     deps += [
