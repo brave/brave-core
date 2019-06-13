@@ -31,12 +31,10 @@ ui::NativeTheme* GetNativeThemeForWindow(aura::Window* window) {
   // Use the appropriate native theme for the color mode pref
   BraveThemeType active_builtin_theme =
                             BraveThemeService::GetActiveBraveThemeType(profile);
-  const bool dark_mode = (
-      active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
-      profile->GetProfileType() == Profile::INCOGNITO_PROFILE ||
-      profile->IsTorProfile());
-  if (dark_mode &&
-      BrowserView::GetBrowserViewForNativeWindow(window)) {
+  const bool dark_mode =
+      (active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
+       profile->IsIncognitoProfile() || profile->IsTorProfile());
+  if (dark_mode && BrowserView::GetBrowserViewForNativeWindow(window)) {
     return ui::NativeThemeDarkAura::instance();
   }
 
