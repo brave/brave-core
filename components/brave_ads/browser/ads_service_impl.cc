@@ -61,9 +61,6 @@
 #include "ui/message_center/public/cpp/notification.h"
 
 #if defined(OS_ANDROID)
-#include "base/android/jni_android.h"
-#include "base/android/jni_string.h"
-#include "chrome/android/chrome_jni_headers/chrome/jni/BraveAds_jni.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "chrome/browser/android/tab_android.h"
 #include "net/android/network_library.h"
@@ -904,7 +901,14 @@ void AdsServiceImpl::SetIdleThreshold(const int threshold) {
 
 bool AdsServiceImpl::IsNotificationsAvailable() const {
 #if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
+
+#if defined(OS_ANDROID)
+   const NotificationHelper * notification_helper = NotificationHelper::GetInstance();
+   return notification_helper->IsNotificationsAvailable() && notification_helper->IsBraveAdsChannelEnabled();
+#else
   return true;
+#endif
+
 #else
   return false;
 #endif
@@ -1195,13 +1199,7 @@ void AdsServiceImpl::OnClick(Profile* profile,
   nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
 #if defined(OS_ANDROID)
-  JNIEnv* env = base::android::AttachCurrentThread();
-  base::android::ScopedJavaGlobalRef<jobject> java_obj_;
-  java_obj_.Reset(env, Java_BraveAds_create(env, 0).obj());
-  base::android::ScopedJavaLocalRef<jstring> jurl =
-      base::android::ConvertUTF8ToJavaString(
-          env, notification_info->url.c_str());
-  Java_BraveAds_openPageFromNative(env, java_obj_, jurl);
+  NotificationHelper::GetInstance()->OpenPageFromNative(notification_info->url);
 #else
   Navigate(&nav_params);
 #endif
