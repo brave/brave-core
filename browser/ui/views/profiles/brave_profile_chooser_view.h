@@ -24,7 +24,7 @@ class BraveProfileChooserView : public ProfileChooserView {
                             sync_ui_util::AvatarSyncErrorType error,
                             int button_string_id) override;
 
-  void AddTorButton(ProfileMenuViewBase::MenuItems* menu_items);
+  void AddTorButton();
 
   views::Button* tor_profile_button_;
 
