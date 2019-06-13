@@ -78,6 +78,7 @@ class MenuViewController: UITableViewController {
                                               bottom: UX.topBottomInset, right: 0)
         
         tableView.showsVerticalScrollIndicator = false
+        tableView.isScrollEnabled = false
         
         // Hide separator line of the last cell.
         tableView.tableFooterView =
@@ -86,13 +87,17 @@ class MenuViewController: UITableViewController {
         // TODO: Make the background view transparent with alpha 0.6
         // simple setting its alpha doesn't seem to work.
         tableView.backgroundColor = #colorLiteral(red: 0.9529411765, green: 0.9529411765, blue: 0.9647058824, alpha: 1)
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
         
-        let size = CGSize(width: 200, height: tableView.rect(forSection: 0).height + UX.topBottomInset * 2)
-        preferredContentSize = size
+        let size = CGSize(width: 200, height: UIScreen.main.bounds.height)
+        
+        let fit = view.systemLayoutSizeFitting(
+            size,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .defaultHigh
+        )
+        
+        preferredContentSize = CGSize(width: fit.width, height: fit.height + UX.topBottomInset * 2)
+        
     }
     
     // MARK: - Table view data source
@@ -193,6 +198,5 @@ class MenuViewController: UITableViewController {
 // MARK: - PopoverContentComponent
 
 extension MenuViewController: PopoverContentComponent {
-    var isPanToDismissEnabled: Bool { return false }
-
+    var extendEdgeIntoArrow: Bool { return false }
 }

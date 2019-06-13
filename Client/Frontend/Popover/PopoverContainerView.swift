@@ -31,7 +31,7 @@ extension PopoverController {
         /// The arrow direction for this view
         var arrowDirection: ArrowDirection = .up {
             didSet {
-                updateTrianglePath()
+                popoverMaskView.updateTrianglePath(arrowDirection)
                 setNeedsLayout()
                 setNeedsUpdateConstraints()
                 updateConstraintsIfNeeded()
@@ -50,13 +50,17 @@ extension PopoverController {
         /// The view where you will place the content controller's view
         let contentView = UIView().then {
             $0.backgroundColor = PopoverUX.backgroundColor
-            $0.layer.cornerRadius = PopoverUX.cornerRadius
-            $0.clipsToBounds = true
+            $0.layer.shadowColor = PopoverUX.shadowColor.cgColor
+            $0.layer.shadowOffset = PopoverUX.shadowOffset
+            $0.layer.shadowRadius = PopoverUX.shadowRadius
+            $0.layer.shadowOpacity = PopoverUX.shadowOpacity
         }
+        
+        private let popoverMaskView = MaskView()
         
         /// The actual white background view with the arrow. We have two separate views to ensure content placed within
         /// the popover are clipped at the corners
-        private let backgroundView = UIView().then {
+        private let shadowView = UIView().then {
             $0.backgroundColor = PopoverUX.backgroundColor
             $0.layer.cornerRadius = PopoverUX.cornerRadius
             $0.layer.shadowColor = PopoverUX.shadowColor.cgColor
@@ -66,42 +70,19 @@ extension PopoverController {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        private let triangleLayer = CAShapeLayer().then {
-            $0.fillColor = PopoverUX.backgroundColor.cgColor
-            $0.shadowColor = PopoverUX.shadowColor.cgColor
-            $0.shadowOffset = PopoverUX.shadowOffset
-            $0.shadowRadius = PopoverUX.shadowRadius
-            $0.shadowOpacity = PopoverUX.shadowOpacity
-        }
-        
         override init(frame: CGRect) {
             super.init(frame: frame)
             
             backgroundColor = .clear
             
-            addSubview(backgroundView)
+            addSubview(shadowView)
             addSubview(contentView)
-            layer.addSublayer(triangleLayer)
             
-            updateTrianglePath()
+            contentView.mask = popoverMaskView
             
             contentView.snp.makeConstraints { make in
-                make.left.right.equalTo(self)
-                make.top.bottom.equalTo(backgroundView)
+                make.edges.equalTo(self)
             }
-            
-            let backgroundViewTopConstraint = backgroundView.topAnchor.constraint(equalTo: topAnchor)
-            let backgroundViewBottomConstraint = backgroundView.bottomAnchor.constraint(equalTo: bottomAnchor)
-            
-            NSLayoutConstraint.activate([
-                backgroundView.leftAnchor.constraint(equalTo: leftAnchor),
-                backgroundView.rightAnchor.constraint(equalTo: rightAnchor),
-                backgroundViewTopConstraint,
-                backgroundViewBottomConstraint
-            ])
-            
-            self.backgroundViewTopConstraint = backgroundViewTopConstraint
-            self.backgroundViewBottomConstraint = backgroundViewBottomConstraint
             
             setNeedsUpdateConstraints()
         }
@@ -121,30 +102,59 @@ extension PopoverController {
             let clampedArrowXOrigin = min(max(arrowOrigin.x, PopoverUX.cornerRadius + 1), bounds.width - PopoverUX.cornerRadius - 1) - PopoverUX.arrowSize.width / 2.0
             
             CATransaction.setDisableActions(true)
-            triangleLayer.position = CGPoint(x: clampedArrowXOrigin, y: arrowDirection == .down ? bounds.size.height - PopoverUX.arrowSize.height - 1.0 : 1.0)
+            popoverMaskView.updateTrianglePath(arrowDirection)
+            popoverMaskView.triangleLayer.position = CGPoint(x: clampedArrowXOrigin, y: arrowDirection == .down ? bounds.size.height - PopoverUX.arrowSize.height - 1.0 : 1.0)
             CATransaction.setDisableActions(false)
             
-            backgroundView.layer.shadowPath = UIBezierPath(roundedRect: backgroundView.bounds, cornerRadius: PopoverUX.cornerRadius).cgPath
-        }
-        
-        private var backgroundViewTopConstraint: NSLayoutConstraint?
-        private var backgroundViewBottomConstraint: NSLayoutConstraint?
-        
-        override func updateConstraints() {
-            super.updateConstraints()
+            popoverMaskView.frame = bounds
+            
+            popoverMaskView.bodyView.frame = contentView.bounds.with {
+                $0.size.height -= PopoverUX.arrowSize.height
+                
+                if arrowDirection == .up {
+                    $0.origin.y = PopoverUX.arrowSize.height
+                }
+            }
             
             switch arrowDirection {
-            case .down:
-                backgroundViewTopConstraint?.constant = 0.0
-                backgroundViewBottomConstraint?.constant = -PopoverUX.arrowSize.height
-                
             case .up:
-                backgroundViewTopConstraint?.constant = PopoverUX.arrowSize.height
-                backgroundViewBottomConstraint?.constant = 0.0
+                popoverMaskView.bodyView.frame = contentView.bounds.with {
+                    $0.origin.y = PopoverUX.arrowSize.height
+                    $0.size.height -= PopoverUX.arrowSize.height
+                }
+            case .down:
+                popoverMaskView.bodyView.frame = contentView.bounds.with {
+                    $0.size.height -= PopoverUX.arrowSize.height
+                }
             }
+            shadowView.frame = popoverMaskView.bodyView.frame
+            shadowView.layer.shadowPath = UIBezierPath(roundedRect: shadowView.bounds, cornerRadius: PopoverUX.cornerRadius).cgPath
+        }
+    }
+    
+    fileprivate class MaskView: UIView {
+        
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            addSubview(bodyView)
+            layer.addSublayer(triangleLayer)
         }
         
-        private func updateTrianglePath() {
+        @available(*, unavailable)
+        required init(coder: NSCoder) {
+            fatalError()
+        }
+        
+        let triangleLayer = CAShapeLayer().then {
+            $0.fillColor = UIColor.black.cgColor
+        }
+        
+        let bodyView = UIView().then {
+            $0.layer.cornerRadius = PopoverUX.cornerRadius
+            $0.backgroundColor = .black
+        }
+        
+        func updateTrianglePath(_ arrowDirection: ArrowDirection) {
             let arrowSize = PopoverUX.arrowSize
             
             // Also have to apply a mask to the triangle so that the shadow doesn't appear on top of the content
@@ -169,7 +179,6 @@ extension PopoverController {
             path.close()
             
             triangleLayer.path = path.cgPath
-            triangleLayer.mask = shadowMask
         }
     }
 }
