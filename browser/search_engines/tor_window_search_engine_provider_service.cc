@@ -15,7 +15,7 @@ TorWindowSearchEngineProviderService::
 TorWindowSearchEngineProviderService(Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
   DCHECK(otr_profile->IsTorProfile());
-  DCHECK_EQ(otr_profile->GetProfileType(), Profile::GUEST_PROFILE);
+  DCHECK(IsGuestProfile(otr_profile));
 
   alternative_search_engine_provider_in_tor_.Init(
       kAlternativeSearchEngineProviderInTor,

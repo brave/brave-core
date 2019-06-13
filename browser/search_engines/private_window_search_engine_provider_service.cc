@@ -10,7 +10,7 @@
 PrivateWindowSearchEngineProviderService::
 PrivateWindowSearchEngineProviderService(Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
-  DCHECK_EQ(otr_profile->GetProfileType(), Profile::INCOGNITO_PROFILE);
+  DCHECK(otr_profile->IsIncognitoProfile());
 
   // Monitor normal profile's search engine changing because private window
   // should that search engine provider when alternative search engine isn't
