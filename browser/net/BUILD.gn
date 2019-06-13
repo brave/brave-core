@@ -31,6 +31,7 @@ source_set("net") {
 
   deps = [
     "//base",
+    "//brave/app:brave_generated_resources_grit",
     "//brave/browser/safebrowsing",
     "//content/public/browser",
     "//content/public/common",
@@ -38,13 +39,13 @@ source_set("net") {
     "//net",
   ]
 
-  if (!is_android) {
+  if (is_android) {
     deps += [
-      "//brave/app:brave_generated_resources_grit",
+      "//brave/app/android:common_extensions",
     ]
   } else {
     deps += [
-      "//brave/app/android:common_extensions",
+      "//extensions/common",
     ]
   }
 
