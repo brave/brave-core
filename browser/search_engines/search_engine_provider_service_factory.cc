@@ -25,14 +25,13 @@ KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
   // This controller monitor's normal profile's service and apply it's change to
   // otr profile to use same provider.
   // Private profile's setting is shared with normal profile's setting.
-  if (profile->GetProfileType() == Profile::INCOGNITO_PROFILE) {
+  if (profile->IsIncognitoProfile()) {
     return new PrivateWindowSearchEngineProviderService(profile);
   }
 
   // Regardless of qwant region, tor profile needs controller to store
   // previously set search engine provider.
-  if (profile->IsTorProfile() &&
-      profile->GetProfileType() == Profile::GUEST_PROFILE) {
+  if (profile->IsTorProfile() && IsGuestProfile(profile)) {
     return new TorWindowSearchEngineProviderService(profile);
   }
 
@@ -41,7 +40,7 @@ KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
   if (brave::IsRegionForQwant(profile))
     return nullptr;
 
-  if (profile->GetProfileType() == Profile::GUEST_PROFILE) {
+  if (IsGuestProfile(profile)) {
     return new GuestWindowSearchEngineProviderService(profile);
   }
 

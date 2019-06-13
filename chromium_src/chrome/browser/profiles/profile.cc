@@ -15,3 +15,10 @@ bool Profile::IsTorProfile() const {
   return false;
 #endif
 }
+
+bool IsGuestProfile(Profile* profile) {
+  DCHECK(profile);
+  return (profile->HasOffTheRecordProfile() &&
+          profile->GetOffTheRecordProfile() == profile &&
+          profile->GetOriginalProfile()->IsGuestSession());
+}
