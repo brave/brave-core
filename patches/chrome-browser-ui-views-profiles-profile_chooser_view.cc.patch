@@ -6,7 +6,7 @@ index 519d359adef052081e55b2431d18a363cdc12e5a..f7bde017f70536cfda717eaa014c5aab
            l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_GUEST_PROFILE_BUTTON));
      }
    }
-+  static_cast<BraveProfileChooserView*>(this)->AddTorButton(&menu_items);
++  static_cast<BraveProfileChooserView*>(this)->AddTorButton();
  
    base::string16 text = l10n_util::GetStringUTF16(
        is_guest ? IDS_PROFILES_EXIT_GUEST : IDS_PROFILES_MANAGE_USERS_BUTTON);

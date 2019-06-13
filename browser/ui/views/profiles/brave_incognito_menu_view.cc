@@ -34,19 +34,14 @@ void BraveIncognitoMenuView::ButtonPressed(views::Button* sender,
   }
 }
 
-void BraveIncognitoMenuView::AddTorButton(
-    ProfileMenuViewBase::MenuItems* menu_items) {
+void BraveIncognitoMenuView::AddTorButton() {
   if (!browser()->profile()->IsTorProfile() &&
       !g_brave_browser_process->tor_client_updater()
            ->GetExecutablePath()
            .empty()) {
-    std::unique_ptr<HoverButton> tor_profile_button =
-        std::make_unique<HoverButton>(
-            this,
-            gfx::CreateVectorIcon(kLaunchIcon, kIconSize, gfx::kChromeIconGrey),
-            l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON));
-    tor_profile_button_ = tor_profile_button.get();
-    menu_items->push_back(std::move(tor_profile_button));
+    tor_profile_button_ = CreateAndAddButton(
+        gfx::CreateVectorIcon(kLaunchIcon, kIconSize, gfx::kChromeIconGrey),
+        l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON));
   }
 }
 
