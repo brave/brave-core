@@ -34,6 +34,10 @@ ConfirmationsImpl::ConfirmationsImpl(
     retry_failed_confirmations_timer_id_(0),
     unblinded_tokens_(std::make_unique<UnblindedTokens>(this)),
     unblinded_payment_tokens_(std::make_unique<UnblindedTokens>(this)),
+    estimated_pending_rewards_(0.0),
+    next_payment_date_in_seconds_(0),
+    ad_notifications_received_this_month_(0),
+    ads_rewards_(std::make_unique<AdsRewards>(this, confirmations_client)),
     retry_getting_signed_tokens_timer_id_(0),
     refill_tokens_(std::make_unique<RefillTokens>(
         this, confirmations_client, unblinded_tokens_.get())),
@@ -109,6 +113,18 @@ std::string ConfirmationsImpl::ToJSON() const {
   // Confirmations
   auto confirmations = GetConfirmationsAsDictionary(confirmations_);
   dictionary.SetKey("confirmations", base::Value(std::move(confirmations)));
+
+  // Estimated pending rewards
+  dictionary.SetKey("estimated_pending_rewards", base::Value(
+      estimated_pending_rewards_));
+
+  // Next payment date in seconds
+  dictionary.SetKey("next_payment_date_in_seconds", base::Value(
+      std::to_string(next_payment_date_in_seconds_)));
+
+  // Ad notifications received this month
+  dictionary.SetKey("ad_notifications_received_this_month", base::Value(
+      std::to_string(ad_notifications_received_this_month_)));
 
   // Transaction history
   auto transaction_history =
@@ -238,29 +254,45 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
     return false;
   }
 
-  if (!GetCatalogIssuersFromJSON(dictionary)) {
+  if (!ParseCatalogIssuersFromJSON(dictionary)) {
     BLOG(WARNING) << "Failed to get catalog issuers from JSON: " << json;
   }
 
-  if (!GetNextTokenRedemptionDateInSecondsFromJSON(dictionary)) {
+  if (!ParseNextTokenRedemptionDateInSecondsFromJSON(dictionary)) {
     BLOG(WARNING)
         << "Failed to get next token redemption date in seconds from JSON: "
         << json;
   }
 
-  if (!GetConfirmationsFromJSON(dictionary)) {
+  if (!ParseConfirmationsFromJSON(dictionary)) {
     BLOG(WARNING) << "Failed to get confirmations from JSON: " << json;
   }
 
-  if (!GetTransactionHistoryFromJSON(dictionary)) {
+  if (!ParseEstimatedPendingRewardsFromJSON(dictionary)) {
+    BLOG(WARNING)
+        << "Failed to get estimasted pending rewards from JSON: " << json;
+  }
+
+  if (!ParseNextPaymentDateInSecondsFromJSON(dictionary)) {
+    BLOG(WARNING)
+        << "Failed to get next payment date in seconds from JSON: " << json;
+  }
+
+  if (!ParseAdNotificationsReceivedThisMonthFromJSON(dictionary)) {
+    BLOG(WARNING)
+        << "Failed to get ad notifications received this month from JSON: "
+        << json;
+  }
+
+  if (!ParseTransactionHistoryFromJSON(dictionary)) {
     BLOG(WARNING) << "Failed to get transaction history from JSON: " << json;
   }
 
-  if (!GetUnblindedTokensFromJSON(dictionary)) {
+  if (!ParseUnblindedTokensFromJSON(dictionary)) {
     BLOG(WARNING) << "Failed to get unblinded tokens from JSON: " << json;
   }
 
-  if (!GetUnblindedPaymentTokensFromJSON(dictionary)) {
+  if (!ParseUnblindedPaymentTokensFromJSON(dictionary)) {
     BLOG(WARNING) <<
         "Failed to get unblinded payment tokens from JSON: " << json;
   }
@@ -268,8 +300,10 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
   return true;
 }
 
-bool ConfirmationsImpl::GetCatalogIssuersFromJSON(
+bool ConfirmationsImpl::ParseCatalogIssuersFromJSON(
     base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
   auto* catalog_issuers_value = dictionary->FindKey("catalog_issuers");
   if (!catalog_issuers_value) {
     return false;
@@ -342,8 +376,10 @@ bool ConfirmationsImpl::GetCatalogIssuersFromDictionary(
   return true;
 }
 
-bool ConfirmationsImpl::GetNextTokenRedemptionDateInSecondsFromJSON(
+bool ConfirmationsImpl::ParseNextTokenRedemptionDateInSecondsFromJSON(
     base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
   auto* next_token_redemption_date_in_seconds_value =
       dictionary->FindKey("next_token_redemption_date_in_seconds");
   if (!next_token_redemption_date_in_seconds_value) {
@@ -356,8 +392,10 @@ bool ConfirmationsImpl::GetNextTokenRedemptionDateInSecondsFromJSON(
   return true;
 }
 
-bool ConfirmationsImpl::GetConfirmationsFromJSON(
+bool ConfirmationsImpl::ParseConfirmationsFromJSON(
     base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
   auto* confirmations_value = dictionary->FindKey("confirmations");
   if (!confirmations_value) {
     return false;
@@ -520,8 +558,52 @@ bool ConfirmationsImpl::GetConfirmationsFromDictionary(
   return true;
 }
 
-bool ConfirmationsImpl::GetTransactionHistoryFromJSON(
+bool ConfirmationsImpl::ParseEstimatedPendingRewardsFromJSON(
     base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  auto* value = dictionary->FindKey("estimated_pending_rewards");
+  if (!value) {
+    return false;
+  }
+
+  estimated_pending_rewards_ = value->GetDouble();
+
+  return true;
+}
+
+bool ConfirmationsImpl::ParseNextPaymentDateInSecondsFromJSON(
+    base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  auto* value = dictionary->FindKey("next_payment_date_in_seconds");
+  if (!value) {
+    return false;
+  }
+
+  next_payment_date_in_seconds_ = std::stoull(value->GetString());
+
+  return true;
+}
+
+bool ConfirmationsImpl::ParseAdNotificationsReceivedThisMonthFromJSON(
+    base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  auto* value = dictionary->FindKey("ad_notifications_received_this_month");
+  if (!value) {
+    return false;
+  }
+
+  ad_notifications_received_this_month_ = std::stoull(value->GetString());
+
+  return true;
+}
+
+bool ConfirmationsImpl::ParseTransactionHistoryFromJSON(
+    base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
   auto* transaction_history_value = dictionary->FindKey("transaction_history");
   if (!transaction_history_value) {
     return false;
@@ -607,8 +689,10 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
   return true;
 }
 
-bool ConfirmationsImpl::GetUnblindedTokensFromJSON(
+bool ConfirmationsImpl::ParseUnblindedTokensFromJSON(
     base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
   auto* unblinded_tokens_value = dictionary->FindKey("unblinded_tokens");
   if (!unblinded_tokens_value) {
     return false;
@@ -621,8 +705,10 @@ bool ConfirmationsImpl::GetUnblindedTokensFromJSON(
   return true;
 }
 
-bool ConfirmationsImpl::GetUnblindedPaymentTokensFromJSON(
+bool ConfirmationsImpl::ParseUnblindedPaymentTokensFromJSON(
     base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
   auto* unblinded_payment_tokens_value =
       dictionary->FindKey("unblinded_payment_tokens");
   if (!unblinded_payment_tokens_value) {
@@ -683,10 +769,15 @@ void ConfirmationsImpl::OnStateLoaded(
   if (!FromJSON(confirmations_json)) {
     BLOG(ERROR) << "Failed to parse confirmations state: "
         << confirmations_json;
+
+    confirmations_client_->ConfirmationsTransactionHistoryDidChange();
+
     return;
   }
 
   BLOG(INFO) << "Successfully loaded confirmations state";
+
+  confirmations_client_->ConfirmationsTransactionHistoryDidChange();
 
   NotifyAdsIfConfirmationsIsReady();
 
@@ -711,7 +802,11 @@ void ConfirmationsImpl::OnStateReset(const Result result) {
 }
 
 void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
-  if (info->payment_id.empty() || info->private_key.empty()) {
+  if (!info->IsValid()) {
+    return;
+  }
+
+  if (*info == wallet_info_) {
     return;
   }
 
@@ -720,6 +815,10 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
   BLOG(INFO) << "SetWalletInfo:";
   BLOG(INFO) << "  Payment id: " << wallet_info_.payment_id;
   BLOG(INFO) << "  Private key: ********";
+
+  NotifyAdsIfConfirmationsIsReady();
+
+  UpdateAdsRewards();
 
   CheckReady();
 }
@@ -788,56 +887,95 @@ void ConfirmationsImpl::RemoveConfirmationFromQueue(
   SaveState();
 }
 
-uint64_t ConfirmationsImpl::GetEstimatedEarningsStartTimestampInSeconds() {
-  auto now = base::Time::Now();
-  base::Time::Exploded exploded;
-  now.LocalExplode(&exploded);
-
-  if (exploded.day_of_month < 5) {
-    exploded.month--;
-    if (exploded.month < 1) {
-      exploded.month = 12;
-
-      exploded.year--;
-    }
-  }
-
-  exploded.day_of_month = 1;
-
-  exploded.hour = 0;
-  exploded.minute = 0;
-  exploded.second = 0;
-  exploded.millisecond = 0;
-
-  base::Time from_timestamp;
-  auto success = base::Time::FromLocalExploded(exploded, &from_timestamp);
-  DCHECK(success);
-
-  return (from_timestamp - base::Time()).InSeconds();
+void ConfirmationsImpl::UpdateAdsRewards() {
+  ads_rewards_->Fetch(wallet_info_);
 }
 
-void ConfirmationsImpl::GetTransactionHistoryForThisCycle(
-    OnGetTransactionHistoryForThisCycle callback) {
+void ConfirmationsImpl::UpdateAdsRewards(
+    const double estimated_pending_rewards,
+    const uint64_t next_payment_date_in_seconds,
+    const uint64_t ad_notifications_received_this_month) {
+  estimated_pending_rewards_ = estimated_pending_rewards;
+  next_payment_date_in_seconds_ = next_payment_date_in_seconds;
+  ad_notifications_received_this_month_ = ad_notifications_received_this_month;
+
+  SaveState();
+
+  confirmations_client_->ConfirmationsTransactionHistoryDidChange();
+}
+
+void ConfirmationsImpl::GetTransactionHistory(
+    OnGetTransactionHistory callback) {
+  auto unredeemed_transactions = GetUnredeemedTransactions();
+
+  double unredeemed_estimated_pending_rewards =
+      GetEstimatedPendingRewardsForTransactions(unredeemed_transactions);
+
+  uint64_t unredeemed_ad_notifications_received_this_month =
+      GetAdNotificationsReceivedThisMonthForTransactions(
+          unredeemed_transactions);
+
   auto transactions_info = std::make_unique<TransactionsInfo>();
 
-  auto from_timestamp_in_seconds =
-      GetEstimatedEarningsStartTimestampInSeconds();
+  transactions_info->estimated_pending_rewards =
+      estimated_pending_rewards_ + unredeemed_estimated_pending_rewards;
+
+  transactions_info->next_payment_date_in_seconds =
+      next_payment_date_in_seconds_;
+
+  transactions_info->ad_notifications_received_this_month =
+      ad_notifications_received_this_month_ +
+          unredeemed_ad_notifications_received_this_month;
 
   auto to_timestamp_in_seconds = Time::NowInSeconds();
-
-  auto transactions = GetTransactionHistory(from_timestamp_in_seconds,
-      to_timestamp_in_seconds);
-
-  auto unredeemed_transactions_for_previous_cycles =
-      GetUnredeemedTransactionsForPreviousCycles(from_timestamp_in_seconds);
-
-  transactions.insert(transactions.end(),
-      unredeemed_transactions_for_previous_cycles.begin(),
-      unredeemed_transactions_for_previous_cycles.end());
-
+  auto transactions = GetTransactionHistory(0, to_timestamp_in_seconds);
   transactions_info->transactions = transactions;
 
   callback(std::move(transactions_info));
+}
+
+void ConfirmationsImpl::AddUnredeemedTransactionsToPendingRewards() {
+  auto unredeemed_transactions = GetUnredeemedTransactions();
+  AddTransactionsToPendingRewards(unredeemed_transactions);
+}
+
+void ConfirmationsImpl::AddTransactionsToPendingRewards(
+    const std::vector<TransactionInfo>& transactions) {
+  estimated_pending_rewards_ +=
+      GetEstimatedPendingRewardsForTransactions(transactions);
+
+  ad_notifications_received_this_month_ +=
+      GetAdNotificationsReceivedThisMonthForTransactions(transactions);
+
+  confirmations_client_->ConfirmationsTransactionHistoryDidChange();
+}
+
+double ConfirmationsImpl::GetEstimatedPendingRewardsForTransactions(
+    const std::vector<TransactionInfo>& transactions) const {
+  double estimated_pending_rewards = 0.0;
+
+  for (const auto& transaction : transactions) {
+    auto estimated_redemption_value = transaction.estimated_redemption_value;
+    if (estimated_redemption_value > 0.0) {
+      estimated_pending_rewards += estimated_redemption_value;
+    }
+  }
+
+  return estimated_pending_rewards;
+}
+
+uint64_t ConfirmationsImpl::GetAdNotificationsReceivedThisMonthForTransactions(
+    const std::vector<TransactionInfo>& transactions) const {
+  double ad_notifications_received_this_month = 0.0;
+
+  for (const auto& transaction : transactions) {
+    auto estimated_redemption_value = transaction.estimated_redemption_value;
+    if (estimated_redemption_value > 0.0) {
+      ad_notifications_received_this_month++;
+    }
+  }
+
+  return ad_notifications_received_this_month;
 }
 
 std::vector<TransactionInfo> ConfirmationsImpl::GetTransactionHistory(
@@ -857,31 +995,18 @@ std::vector<TransactionInfo> ConfirmationsImpl::GetTransactionHistory(
   return transactions;
 }
 
-std::vector<TransactionInfo>
-ConfirmationsImpl::GetUnredeemedTransactionsForPreviousCycles(
-    const uint64_t before_timestamp_in_seconds) {
-  auto unredeemed_transactions_count = unblinded_payment_tokens_->Count();
-  if (unredeemed_transactions_count == 0) {
+std::vector<TransactionInfo> ConfirmationsImpl::GetUnredeemedTransactions() {
+  auto count = unblinded_payment_tokens_->Count();
+  if (count == 0) {
     // There are no outstanding unblinded payment tokens to redeem
     return {};
   }
 
-  // Unredeemed transactions are always at the end of the history
-  std::vector<TransactionInfo> transactions(transaction_history_.end()
-      - unredeemed_transactions_count, transaction_history_.end());
+  // Unredeemed transactions are always at the end of the transaction history
+  std::vector<TransactionInfo> transactions(transaction_history_.end() - count,
+      transaction_history_.end());
 
-  // Filter transactions which occurred for previous cycles
-  std::vector<TransactionInfo> transactions_for_previous_cycles;
-
-  for (const auto& transaction : transactions) {
-    if (transaction.timestamp_in_seconds >= before_timestamp_in_seconds) {
-      continue;
-    }
-
-    transactions_for_previous_cycles.push_back(transaction);
-  }
-
-  return transactions_for_previous_cycles;
+  return transactions;
 }
 
 double ConfirmationsImpl::GetEstimatedRedemptionValue(
@@ -912,9 +1037,9 @@ void ConfirmationsImpl::AppendTransactionToHistory(
 
   transaction_history_.push_back(info);
 
-  confirmations_client_->ConfirmationsTransactionHistoryDidChange();
-
   SaveState();
+
+  confirmations_client_->ConfirmationsTransactionHistoryDidChange();
 }
 
 void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
@@ -950,7 +1075,7 @@ bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
     return true;
   }
 
-  return false;
+  return ads_rewards_->OnTimer(timer_id);
 }
 
 void ConfirmationsImpl::RefillTokensIfNecessary() const {
@@ -976,6 +1101,10 @@ uint64_t ConfirmationsImpl::CalculateTokenRedemptionTimeInSeconds() {
   start_timer_in += rand_delay;
 
   return start_timer_in;
+}
+
+uint64_t ConfirmationsImpl::GetNextTokenRedemptionDateInSeconds() {
+  return next_token_redemption_date_in_seconds_;
 }
 
 void ConfirmationsImpl::UpdateNextTokenRedemptionDate() {

@@ -1550,44 +1550,29 @@ void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
 
 void RewardsServiceImpl::ConfirmationsTransactionHistoryDidChange() {
     for (auto& observer : observers_)
-    observer.OnTransactionHistoryForThisCycleChanged(this);
+    observer.OnTransactionHistoryChanged(this);
 }
 
-void RewardsServiceImpl::GetTransactionHistoryForThisCycle(
-    GetTransactionHistoryForThisCycleCallback callback) {
+void RewardsServiceImpl::GetTransactionHistory(
+    GetTransactionHistoryCallback callback) {
   if (!Connected()) {
     return;
   }
 
-  bat_ledger_->GetTransactionHistoryForThisCycle(
-      base::BindOnce(&RewardsServiceImpl::OnGetTransactionHistoryForThisCycle,
+  bat_ledger_->GetTransactionHistory(
+      base::BindOnce(&RewardsServiceImpl::OnGetTransactionHistory,
           AsWeakPtr(), std::move(callback)));
 }
 
-void RewardsServiceImpl::OnGetTransactionHistoryForThisCycle(
-    GetTransactionHistoryForThisCycleCallback callback,
+void RewardsServiceImpl::OnGetTransactionHistory(
+    GetTransactionHistoryCallback callback,
     const std::string& transactions) {
-  if (transactions.empty()) {
-    callback.Run(0, 0.0);
-    return;
-  }
-
   ledger::TransactionsInfo info;
   info.FromJson(transactions);
 
-  int ads_notifications_received = 0;
-  double estimated_earnings = 0.0;
-
-  for (const auto& transaction : info.transactions) {
-    if (transaction.estimated_redemption_value == 0.0) {
-      continue;
-    }
-
-    ads_notifications_received++;
-    estimated_earnings += transaction.estimated_redemption_value;
-  }
-
-  callback.Run(ads_notifications_received, estimated_earnings);
+  std::move(callback).Run(info.estimated_pending_rewards,
+      info.next_payment_date_in_seconds,
+      info.ad_notifications_received_this_month);
 }
 
 void RewardsServiceImpl::SaveState(const std::string& name,

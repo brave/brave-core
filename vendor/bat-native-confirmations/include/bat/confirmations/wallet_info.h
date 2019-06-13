@@ -19,6 +19,8 @@ struct CONFIRMATIONS_EXPORT WalletInfo {
 
   bool IsValid();
 
+  bool operator==(const WalletInfo& info) const;
+
   std::string payment_id;
   std::string private_key;
 };
