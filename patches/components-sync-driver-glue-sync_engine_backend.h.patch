@@ -1,24 +1,19 @@
 diff --git a/components/sync/driver/glue/sync_engine_backend.h b/components/sync/driver/glue/sync_engine_backend.h
-index 8cc3e5305b1010e025dbaf8a23c6180813fa9ef8..071673e8b51c234f95042d0ac84283c7a257aaad 100644
+index 8cc3e5305b1010e025dbaf8a23c6180813fa9ef8..8d1d1fd7d4ebadebf74ce295a37d5426fb2ade07 100644
 --- a/components/sync/driver/glue/sync_engine_backend.h
 +++ b/components/sync/driver/glue/sync_engine_backend.h
-@@ -177,11 +177,19 @@ class SyncEngineBackend : public base::RefCountedThreadSafe<SyncEngineBackend>,
+@@ -177,6 +177,14 @@ class SyncEngineBackend : public base::RefCountedThreadSafe<SyncEngineBackend>,
  
    bool HasUnsyncedItemsForTest() const;
  
 +  void DoDispatchGetRecordsCallback(GetRecordsCallback cb,
 +                                    std::unique_ptr<RecordsList> records);
 +
-  private:
-   friend class base::RefCountedThreadSafe<SyncEngineBackend>;
- 
-   ~SyncEngineBackend() override;
- 
 +  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list);
 +  void OnPollSyncCycle(GetRecordsCallback cb,
 +                       base::WaitableEvent* wevent);
 +  void BraveInit(SyncManager::InitArgs* args);
 +
-   // For the olg tango based invalidations method returns true if the
-   // invalidation has version lower than last seen version for this datatype.
-   bool ShouldIgnoreRedundantInvalidation(const Invalidation& invalidation,
+  private:
+   friend class base::RefCountedThreadSafe<SyncEngineBackend>;
+ 

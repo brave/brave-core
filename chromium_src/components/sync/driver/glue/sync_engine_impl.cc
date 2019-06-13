@@ -17,16 +17,14 @@ namespace syncer {
 void SyncEngineImpl::HandleNudgeSyncCycle(
     brave_sync::RecordsListPtr records_list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(nudge_sync_cycle_delegate_function_);
-  nudge_sync_cycle_delegate_function_.Run(std::move(records_list));
+  host_->OnNudgeSyncCycle(std::move(records_list));
 }
 
 void SyncEngineImpl::HandlePollSyncCycle(
     GetRecordsCallback cb,
     base::WaitableEvent* wevent) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK(poll_sync_cycle_delegate_function_);
-  poll_sync_cycle_delegate_function_.Run(cb, wevent);
+  host_->OnPollSyncCycle(cb, wevent);
 }
 
 void SyncEngineImpl::DispatchGetRecordsCallback(
