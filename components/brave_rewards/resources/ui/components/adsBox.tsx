@@ -115,9 +115,10 @@ class AdsBox extends React.Component<Props, State> {
     // Default values from storage.ts
     let adsEnabled = false
     let adsUIEnabled = false
-    let notificationsReceived = 0
-    let estimatedEarnings = '0'
     let adsIsSupported = false
+    let estimatedPendingRewards = '0'
+    let nextPaymentDate = ''
+    let adNotificationsReceivedThisMonth = 0
 
     const {
       adsData,
@@ -129,9 +130,10 @@ class AdsBox extends React.Component<Props, State> {
     if (adsData) {
       adsEnabled = adsData.adsEnabled
       adsUIEnabled = adsData.adsUIEnabled
-      notificationsReceived = adsData.adsNotificationsReceived || 0
-      estimatedEarnings = (adsData.adsEstimatedEarnings || 0).toFixed(2)
       adsIsSupported = adsData.adsIsSupported
+      estimatedPendingRewards = (adsData.adsEstimatedPendingRewards || 0).toFixed(2)
+      nextPaymentDate = adsData.adsNextPaymentDate
+      adNotificationsReceivedThisMonth = adsData.adsAdNotificationsReceivedThisMonth || 0
     }
 
     const enabled = adsEnabled && adsIsSupported
@@ -155,18 +157,18 @@ class AdsBox extends React.Component<Props, State> {
       >
         <List title={getLocale('adsCurrentEarnings')}>
           <Tokens
-            value={estimatedEarnings}
-            converted={utils.convertBalance(estimatedEarnings, walletInfo.rates)}
+            value={estimatedPendingRewards}
+            converted={utils.convertBalance(estimatedPendingRewards, walletInfo.rates)}
           />
         </List>
         <List title={getLocale('adsPaymentDate')}>
           <NextContribution>
-            {'Monthly, 5th'}
+            {nextPaymentDate}
           </NextContribution>
         </List>
         <List title={getLocale('adsNotificationsReceived')}>
           <Tokens
-            value={notificationsReceived.toString()}
+            value={adNotificationsReceivedThisMonth.toString()}
             hideText={true}
           />
         </List>

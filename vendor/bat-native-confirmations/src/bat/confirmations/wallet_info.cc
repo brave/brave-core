@@ -21,4 +21,8 @@ bool WalletInfo::IsValid() {
   return !payment_id.empty() && !private_key.empty();
 }
 
+bool WalletInfo::operator==(const WalletInfo& info) const {
+  return (payment_id == info.payment_id && private_key == info.private_key);
+}
+
 }  // namespace confirmations

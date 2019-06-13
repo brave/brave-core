@@ -17,6 +17,7 @@
 #include "bat/confirmations/notification_info.h"
 #include "bat/confirmations/issuers_info.h"
 #include "bat/confirmations/internal/confirmation_info.h"
+#include "bat/confirmations/internal/ads_rewards.h"
 
 #include "base/values.h"
 
@@ -48,18 +49,28 @@ class ConfirmationsImpl : public Confirmations {
   void RemoveConfirmationFromQueue(const ConfirmationInfo& confirmation_info);
   void StartRetryingFailedConfirmations(const uint64_t start_timer_in);
 
-  // Estimated earnings
-  uint64_t GetEstimatedEarningsStartTimestampInSeconds();
+  // Ads rewards
+  void UpdateAdsRewards() override;
 
-  void GetTransactionHistoryForThisCycle(
-      OnGetTransactionHistoryForThisCycle callback) override;
+  void UpdateAdsRewards(
+      const double estimated_pending_rewards,
+      const uint64_t next_payment_date_in_seconds,
+      const uint64_t ad_notifications_received_this_month);
 
   // Transaction history
+  void GetTransactionHistory(
+      OnGetTransactionHistory callback) override;
+  void AddUnredeemedTransactionsToPendingRewards();
+  void AddTransactionsToPendingRewards(
+      const std::vector<TransactionInfo>& transactions);
+  double GetEstimatedPendingRewardsForTransactions(
+      const std::vector<TransactionInfo>& transactions) const;
+  uint64_t GetAdNotificationsReceivedThisMonthForTransactions(
+      const std::vector<TransactionInfo>& transactions) const;
   std::vector<TransactionInfo> GetTransactionHistory(
       const uint64_t from_timestamp_in_seconds,
       const uint64_t to_timestamp_in_seconds);
-  std::vector<TransactionInfo> GetUnredeemedTransactionsForPreviousCycles(
-      const uint64_t before_timestamp_in_seconds);
+  std::vector<TransactionInfo> GetUnredeemedTransactions();
   void AppendTransactionToHistory(
       const double estimated_redemption_value,
       const ConfirmationType confirmation_type);
@@ -77,6 +88,7 @@ class ConfirmationsImpl : public Confirmations {
   // Payout redeemed tokens
   void UpdateNextTokenRedemptionDate();
   uint64_t CalculateTokenRedemptionTimeInSeconds();
+  uint64_t GetNextTokenRedemptionDateInSeconds();
   void StartPayingOutRedeemedTokens(const uint64_t start_timer_in);
 
   // State
@@ -108,6 +120,12 @@ class ConfirmationsImpl : public Confirmations {
   void NotifyAdsIfConfirmationsIsReady();
 
   std::unique_ptr<UnblindedTokens> unblinded_payment_tokens_;
+
+  // Ads rewards
+  double estimated_pending_rewards_;
+  uint64_t next_payment_date_in_seconds_;
+  uint64_t ad_notifications_received_this_month_;
+  std::unique_ptr<AdsRewards> ads_rewards_;
 
   // Refill tokens
   uint32_t retry_getting_signed_tokens_timer_id_;
@@ -151,32 +169,41 @@ class ConfirmationsImpl : public Confirmations {
 
   bool FromJSON(const std::string& json);
 
-  bool GetCatalogIssuersFromJSON(
+  bool ParseCatalogIssuersFromJSON(
       base::DictionaryValue* dictionary);
   bool GetCatalogIssuersFromDictionary(
       base::DictionaryValue* dictionary,
       std::string* public_key,
       std::map<std::string, std::string>* issuers) const;
 
-  bool GetNextTokenRedemptionDateInSecondsFromJSON(
+  bool ParseNextTokenRedemptionDateInSecondsFromJSON(
       base::DictionaryValue* dictionary);
 
-  bool GetConfirmationsFromJSON(
+  bool ParseConfirmationsFromJSON(
       base::DictionaryValue* dictionary);
   bool GetConfirmationsFromDictionary(
       base::DictionaryValue* dictionary,
       std::vector<ConfirmationInfo>* confirmations);
 
-  bool GetTransactionHistoryFromJSON(
+  bool ParseEstimatedPendingRewardsFromJSON(
+      base::DictionaryValue* dictionary);
+
+  bool ParseNextPaymentDateInSecondsFromJSON(
+      base::DictionaryValue* dictionary);
+
+  bool ParseAdNotificationsReceivedThisMonthFromJSON(
+      base::DictionaryValue* dictionary);
+
+  bool ParseTransactionHistoryFromJSON(
       base::DictionaryValue* dictionary);
   bool GetTransactionHistoryFromDictionary(
       base::DictionaryValue* dictionary,
       std::vector<TransactionInfo>* transaction_history);
 
-  bool GetUnblindedTokensFromJSON(
+  bool ParseUnblindedTokensFromJSON(
       base::DictionaryValue* dictionary);
 
-  bool GetUnblindedPaymentTokensFromJSON(
+  bool ParseUnblindedPaymentTokensFromJSON(
       base::DictionaryValue* dictionary);
 
   // Confirmations::Client

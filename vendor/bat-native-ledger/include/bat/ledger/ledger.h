@@ -60,7 +60,7 @@ using PublisherBannerCallback =
     std::function<void(std::unique_ptr<ledger::PublisherBanner> banner)>;
 using WalletAddressesCallback =
     std::function<void(std::map<std::string, std::string> addresses)>;
-using GetTransactionHistoryForThisCycleCallback =
+using GetTransactionHistoryCallback =
     std::function<void(std::unique_ptr<ledger::TransactionsInfo> info)>;
 using OnWalletPropertiesCallback = std::function<void(const ledger::Result,
                                   std::unique_ptr<ledger::WalletInfo>)>;
@@ -273,8 +273,8 @@ class LEDGER_EXPORT Ledger {
   virtual void SetCatalogIssuers(const std::string& info) = 0;
 
   virtual void ConfirmAd(const std::string& info) = 0;
-  virtual void GetTransactionHistoryForThisCycle(
-      GetTransactionHistoryForThisCycleCallback callback) = 0;
+  virtual void GetTransactionHistory(
+      GetTransactionHistoryCallback callback) = 0;
   virtual void GetRewardsInternalsInfo(ledger::RewardsInternalsInfo* info) = 0;
 
   virtual void GetRecurringTips(ledger::PublisherInfoListCallback callback) = 0;
