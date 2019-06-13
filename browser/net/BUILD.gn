@@ -43,6 +43,10 @@ source_set("net") {
     deps += [
       "//brave/app/android:common_extensions",
     ]
+  } else {
+    deps += [
+      "//extensions/common",
+    ]
   }
 
   if (enable_brave_referrals) {
