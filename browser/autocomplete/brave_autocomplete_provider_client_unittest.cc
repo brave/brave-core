@@ -6,8 +6,10 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/webui_url_constants.h"
+#include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/testing_profile.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/fake_service_worker_context.h"
 #include "content/public/test/test_browser_thread_bundle.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -15,7 +17,7 @@
 class BraveAutocompleteProviderClientUnitTest : public testing::Test {
  public:
   void SetUp() override {
-    profile_ = std::make_unique<TestingProfile>();
+    profile_ = CreateProfile();
     client_ =
         std::make_unique<BraveAutocompleteProviderClient>(profile_.get());
   }
@@ -26,7 +28,16 @@ class BraveAutocompleteProviderClientUnitTest : public testing::Test {
     return it != v.end();
   }
 
- protected:
+ private:
+  std::unique_ptr<TestingProfile> CreateProfile() {
+    TestingProfile::Builder builder;
+    auto prefs =
+        std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
+    RegisterUserProfilePrefs(prefs->registry());
+    builder.SetPrefService(std::move(prefs));
+    return builder.Build();
+  }
+
   content::TestBrowserThreadBundle test_browser_thread_bundle_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<BraveAutocompleteProviderClient> client_;
