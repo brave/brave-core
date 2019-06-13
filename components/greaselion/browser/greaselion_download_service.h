@@ -42,7 +42,8 @@ class GreaselionRule {
   GreaselionRule(base::DictionaryValue* preconditions_value,
                  base::ListValue* urls_value,
                  base::ListValue* scripts_value,
-                 const base::FilePath& root_dir);
+                 const base::FilePath& root_dir,
+                 scoped_refptr<base::SequencedTaskRunner> task_runner);
   ~GreaselionRule();
 
   bool Matches(const GURL& url, GreaselionFeatures state) const;
