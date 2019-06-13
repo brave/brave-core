@@ -28,7 +28,6 @@
 <translation id="3218385319396786393">이 페이지에서는 자동 재생이 차단되었습니다</translation>
 <translation id="4988333904713528597"><ph name="HOST"/>에서 자동 재생 항상 허용하기</translation>
 <translation id="4150684676757176434">계속해서 자동 재생 차단</translation>
-<translation id="7543906827780734027">Brave는 이 연장을 아직 검토하지 않았습니다 - 유언비어일 수도 있습니다. 그래도 "<ph name="EXTENSION_NAME"/>"을/를 추가할까요?</translation>
 <translation id="2044383478723007273">Brave 색상</translation>
 <translation id="6123134130710658846">Brave Rewards 버튼 감추기</translation>
 <translation id="7635711399568194460">Brave Rewards가 비활성화되었을 시 로케이션 바에서 Brave Rewards를 감춥니다</translation>
@@ -48,26 +47,13 @@
 <translation id="4472575034687746823">시작하기</translation>
 <translation id="3400357268283240774">추가 설</translation>
 <translation id="6303294677342628402">보호</translation>
-<translation id="768979911142179781">기본값</translation>
-<translation id="5989930075012659993">기존 사이트당 설정이 유지됩니다.</translation>
 <translation id="9185018653595759199">소셜 미디어 차단</translation>
-<translation id="6894114137169961038">광고 통제</translation>
-<translation id="1096802265930928584">쿠키 통제</translation>
-<translation id="8919235146866304148">지문 정보 보호</translation>
-<translation id="520895744850022668">모든 사이트에서 HTTPS 사용</translation>
-<translation id="5259716416204774556">스크립트 차단</translation>
 <translation id="7498695072878479744">써드파티 사이트에서 Google 로그인 버튼 활성화합니다</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
 <translation id="958971637207126733">LinkedIn 내장 포스트 허용</translation>
-<translation id="6067014455220527258">광고 차단</translation>
-<translation id="6985711843506827936">광고 및 추적 허용</translation>
-<translation id="6132506775968708399">제 3자 쿠키 차단하기</translation>
 <translation id="5657156137487675418">모든 쿠키 허용</translation>
 <translation id="6883611015375728278">모든 쿠키 차단</translation>
-<translation id="1442559343076146186">제 3자 지문 정보 차단하기</translation>
-<translation id="8034285923190068220">지문 정보 허용하기</translation>
-<translation id="4540198958192073185">모든 지문 정보 차단하기</translation>
 <translation id="8942080017911802454">WebRTC IP 취급 정책</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="8798099450830957504">기본값</translation>

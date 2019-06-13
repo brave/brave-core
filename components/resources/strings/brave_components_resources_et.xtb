@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Teenige tokeneid, vaadates Brave'i ilmuvaid reklaame. Reklaamid põhinevad teie eelistustel ja sirvimise ajalool. Teie isikuandmed ega sirvimise ajalugu ei jõua kunagi brauserist väljapoole.</translation>
 <translation id="6112368337882254910">Automaatne panustamine</translation>
 <translation id="1527222983464337010">Automaatne viis toetada väljaandjaid ja sisuloojaid. Määrake igakuine panus ja jätkake oma tavapärast sirvimist. Külastatavad veebisaidid saavad teie panused automaatselt ja see põhineb teie aktiivsusel, mida mõõdab Brave.</translation>
-<translation id="7178655681744815321">Selle tsükli eeldatav tulu</translation>
-<translation id="8157096848242649588">Maksekuupäev</translation>
-<translation id="5208388044986603165">Saadud reklaamteated</translation>
 <translation id="4229016885653790965">Vabandame! Ads ei ole veel teie piirkonnas saadaval.</translation>
 <translation id="654711254769318398">Vaadatud reklaamlehed</translation>
 <translation id="2532127066761785857">Suurim näidatavate reklaamide arv</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Brave'i kinnitatud väljaandjad</translation>
 <translation id="7658239707568436148">Tühista</translation>
 <translation id="7262285991915892790">Lohistage BAT logo järgmisesse kohta:</translation>
-<translation id="2151535059686617995">Täna on teie õnnepäev!</translation>
-<translation id="6255773350565723852">Sinu tokenivõimalus on teel.</translation>
 <translation id="7656781188259414093">siht.</translation>
 <translation id="1555514580945108302">Hmm… pole päris õige. Proovige uuesti.</translation>
 <translation id="13853865024308201">Hangi</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Ootel annetusi pole…</translation>
 <translation id="1963227389609234879">Eemalda kõik</translation>
 <translation id="923467487918828349">Kuva kõik</translation>
+<translation id="2151535059686617995">Täna on teie õnnepäev!</translation>
+<translation id="6255773350565723852">Sinu tokenitoetus on teel.</translation>
 <translation id="1181037720776840403">Eemaldage</translation>
 <translation id="7885157704277298658">Kopeeritud!</translation>
 <translation id="5379640681913450928">Sõnade arv:</translation>

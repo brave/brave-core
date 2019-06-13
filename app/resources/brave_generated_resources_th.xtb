@@ -28,7 +28,6 @@
 <translation id="3218385319396786393">การเล่นอัตโนมัติถูกบล็อกในหน้านี้</translation>
 <translation id="4988333904713528597">ยินยอมให้ทำการเล่นแบบอัตโนมัติบน <ph name="HOST">$1<ex>mail.google.com</ex></ph> เสมอ</translation>
 <translation id="4150684676757176434">ทำการบล็อกการเล่นอัตโนมัติต่อ</translation>
-<translation id="7543906827780734027">Brave ยังไม่ได้ตรวจสอบส่วนขยายนี้เลย - มันอาจมีความประสงค์ร้าย เพิ่ม "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" อยู่ดี?</translation>
 <translation id="2044383478723007273">สี Brave</translation>
 <translation id="6123134130710658846">ซ่อนปุ่ม Brave Rewards</translation>
 <translation id="7635711399568194460">ซ่อนปุ่ม Brave Rewards ในแถบสถานที่ตั้งเมื่อไม่ได้เปิดใช้ Brave Rewards</translation>
@@ -48,26 +47,13 @@
 <translation id="4472575034687746823">เริ่มต้น</translation>
 <translation id="3400357268283240774">การตั้งค่าเพิ่มเติม</translation>
 <translation id="6303294677342628402">ปกป้อง</translation>
-<translation id="768979911142179781">ค่าเริ่มต้น</translation>
-<translation id="5989930075012659993">ระบบจะคงการตั้งค่าต่อเว็บไซต์ในปัจจุบันไว้</translation>
 <translation id="9185018653595759199">การบล็อกโซเชียลมีเดีย</translation>
-<translation id="6894114137169961038">การควบคุมโฆษณา</translation>
-<translation id="1096802265930928584">การควบคุมคุกกี้</translation>
-<translation id="8919235146866304148">การป้องกันการพิมพ์ลายนิ้วมือ</translation>
-<translation id="520895744850022668">HTTPS ทุกที่</translation>
-<translation id="5259716416204774556">การบล็อกสคริปต์</translation>
 <translation id="7498695072878479744">อนุญาตให้ใช้ปุ่มเข้าสู่ระบบผ่าน Google บนเว็บของบุคคลที่สาม</translation>
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
 <translation id="5165042248369837294">อนุญาตให้ทวีตแบบฝังบน Twitter</translation>
 <translation id="958971637207126733">อนุญาตโพสต์แบบฝัง LinkedIn</translation>
-<translation id="6067014455220527258">บล็อกโฆษณา</translation>
-<translation id="6985711843506827936">อนุญาตโฆษณาและการติดตาม</translation>
-<translation id="6132506775968708399">บล็อกคุกกี้จากบุคคลที่ 3</translation>
 <translation id="5657156137487675418">อนุญาตคุกกี้ทั้งหมด</translation>
 <translation id="6883611015375728278">บล็อกคุกกี้ทั้งหมด</translation>
-<translation id="1442559343076146186">บล็อกการพิมพ์ลายนิ้วมือของบุคคลที่ 3</translation>
-<translation id="8034285923190068220">อนุญาตการพิมพ์ลายนิ้วมือ</translation>
-<translation id="4540198958192073185">บล็อกการพิมพ์ลายนิ้วมือทั้งหมด</translation>
 <translation id="8942080017911802454">นโยบายการจัดการ WebRTC IP</translation>
 <translation id="6165508094623778733">เรียนรู้เพิ่มเติม</translation>
 <translation id="8798099450830957504">ค่าเริ่มต้น</translation>

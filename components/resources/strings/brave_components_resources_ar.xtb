@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">اربح الرموز المميزة عن طريق عرض الإعلانات في Brave. تعتمد الإعلانات المقدمة على اهتماماتك، كما هو مستخلص من سلوك التصفح الخاص بك. لا تخرج أي بيانات شخصية أو محفوظات تصفح على الإطلاق من المتصفح الخاص بك.</translation>
 <translation id="6112368337882254910">مساهمة تلقائية</translation>
 <translation id="1527222983464337010">طريقة أوتوماتيكية لدعم الناشرين ومبدعي المحتوى. قم بتعيين دفعة شهرية وتصفح كالمعتاد. تتلقى المواقع التي تزورها مساهماتك تلقائيًا، استنادًا إلى رعايتك وفقًا لقياس Brave.</translation>
-<translation id="7178655681744815321">الأرباح المقدَرة في هذه الدورة</translation>
-<translation id="8157096848242649588">تاريخ الدفع</translation>
-<translation id="5208388044986603165">تم تلقّي إشعارات الإعلان</translation>
 <translation id="4229016885653790965">عذرًا! لم تتم إتاحة الإعلانات في منطقتك بعد.</translation>
 <translation id="654711254769318398">صفحات الإعلانات التي تمت مشاهدتها</translation>
 <translation id="2532127066761785857">الحد الأقصى لعدد الإعلانات المعروضة</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">ناشرون تم التحقق منهم لدى Brave</translation>
 <translation id="7658239707568436148">إلغاء</translation>
 <translation id="7262285991915892790">اسحب أيقونة BAT إلى</translation>
-<translation id="2151535059686617995">إنه يوم سعدك!</translation>
-<translation id="6255773350565723852">هديتك المالية في طريقها إليك.</translation>
 <translation id="7656781188259414093">الهدف.</translation>
 <translation id="1555514580945108302">عذرًا، ولكن هذا غير صحيح. حاول مرة أخرى.</translation>
 <translation id="13853865024308201">الحصول عليها</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">ليست هناك مساهمات معلقة…</translation>
 <translation id="1963227389609234879">إزالة كلمات المرور كلّها</translation>
 <translation id="923467487918828349">إظهار الكل</translation>
+<translation id="2151535059686617995">إنه يوم سعدك!</translation>
+<translation id="6255773350565723852">هديتك المالية في طريقها إليك.</translation>
 <translation id="1181037720776840403">إزالة</translation>
 <translation id="7885157704277298658">تم النسخ.</translation>
 <translation id="5379640681913450928">عدد الكلمات:</translation>

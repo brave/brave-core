@@ -28,7 +28,6 @@
 <translation id="3218385319396786393">このページで自動再生がブロックされました</translation>
 <translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> で自動再生を常に許可する。</translation>
 <translation id="4150684676757176434">自動再生のブロックを継続する</translation>
-<translation id="7543906827780734027">Braveはまだこの拡張機能を再検証しておらず、害が及ぶ可能性があります。それを了承した上で、"<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" を追加しますか？</translation>
 <translation id="2044383478723007273">Braveカラーズ</translation>
 <translation id="6123134130710658846">[Brave Rewards]ボタンを非表示にする</translation>
 <translation id="7635711399568194460">[Brave Rewards]が有効になっていない場合は、ロケーションバーの[Brave Rewards]ボタンを非表示にします</translation>
@@ -48,26 +47,13 @@
 <translation id="4472575034687746823">利用を開始</translation>
 <translation id="3400357268283240774">その他の設定</translation>
 <translation id="6303294677342628402">シールド</translation>
-<translation id="768979911142179781">デフォルト設定</translation>
-<translation id="5989930075012659993">現在のサイトごとの設定は保存されます。</translation>
 <translation id="9185018653595759199">ソーシャルメディアのブロック</translation>
-<translation id="6894114137169961038">広告表示設定</translation>
-<translation id="1096802265930928584">クッキーの設定</translation>
-<translation id="8919235146866304148">指紋保護</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="5259716416204774556">スクリプト・ブロッキング</translation>
 <translation id="7498695072878479744">第三者サイトでGoogleログインボタンを許可する</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
 <translation id="958971637207126733">LinkedIn ポストの埋め込みを許可する</translation>
-<translation id="6067014455220527258">広告のブロック</translation>
-<translation id="6985711843506827936">広告の追跡を許可</translation>
-<translation id="6132506775968708399">第三者によるクッキーをブロックする</translation>
 <translation id="5657156137487675418">すべてのクッキーを許可する</translation>
 <translation id="6883611015375728278">全てのクッキーをブロック</translation>
-<translation id="1442559343076146186">第三者による fingerprinting機能をブロックする</translation>
-<translation id="8034285923190068220">Fingerprinting機能を許可</translation>
-<translation id="4540198958192073185">すべての指紋をブロック</translation>
 <translation id="8942080017911802454">WebRTC IPアドレスの取扱方針</translation>
 <translation id="6165508094623778733">詳細情報</translation>
 <translation id="8798099450830957504">既定</translation>

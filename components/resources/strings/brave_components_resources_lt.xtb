@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Pelnykite žetonų už reklamos peržiūrą „Brave“. Pateikiamos reklamos paremtos jūsų interesais ir susijusios su jūsų naršymo elgesiu. Iš jūsų naršyklės neperduodami jokie asmens duomenys ar naršymo istorija.</translation>
 <translation id="6112368337882254910">Automatinis indėlis</translation>
 <translation id="1527222983464337010">Automatinis būdas, kaip galite paremti leidėjus ir turinio kūrėjus. Nustatykite mėnesinį mokėjimą ir naršykite įprastai. Jūsų lankomoms svetainėms jūsų indėlis bus išmokamas automatiškai pagal „Brave“ išmatuotą jūsų dėmesį.</translation>
-<translation id="7178655681744815321">Planuojamas šio ciklo uždarbis</translation>
-<translation id="8157096848242649588">Mokėjimo data</translation>
-<translation id="5208388044986603165">Gauti pranešimai apie reklamas</translation>
 <translation id="4229016885653790965">Apgailestaujame, tačiau jūsų regione reklamų kol kas nėra.</translation>
 <translation id="654711254769318398">Peržiūrėti reklamų puslapiai</translation>
 <translation id="2532127066761785857">Didžiausias rodomų reklamų skaičius</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">„Brave“ patvirtinti leidėjai</translation>
 <translation id="7658239707568436148">Atšaukti</translation>
 <translation id="7262285991915892790">Nuvilkite BAT piktogramą ant</translation>
-<translation id="2151535059686617995">Tau pasisekė!</translation>
-<translation id="6255773350565723852">Jūsų žetonų išmoka pakeliui.</translation>
 <translation id="7656781188259414093">tikslas.</translation>
 <translation id="1555514580945108302">Hmm... ne visai. Mėgink dar kartą.</translation>
 <translation id="13853865024308201">Prašyti</translation>
@@ -361,6 +356,8 @@
 <translation id="7410549756000115387">Nėra laukiančių indėlių…</translation>
 <translation id="1963227389609234879">Pašalinti viską</translation>
 <translation id="923467487918828349">Rodyti viską</translation>
+<translation id="2151535059686617995">Tau pasisekė!</translation>
+<translation id="6255773350565723852">Jūsų žetonų išmoka pakeliui.</translation>
 <translation id="1181037720776840403">Pašalinti</translation>
 <translation id="7885157704277298658">Nukopijuota!</translation>
 <translation id="5379640681913450928">Žodžių skaičius:</translation>

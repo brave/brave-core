@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Guadagna gettoni visualizzando annunci pubblicitari su Brave. La pubblicità che ti viene proposta è basata sui tuoi interessi dedotti dal tuo comportamento di navigazione. Nessun dato personale o cronologia di navigazione lascia mai il tuo browser.</translation>
 <translation id="6112368337882254910">Auto-contributo</translation>
 <translation id="1527222983464337010">Un modo automatico per sostenere editori e creatori di contenuti. Imposta un pagamento mensile e naviga come faresti normalmente. I siti che visiti ricevono automaticamente i tuoi contributi, in base alla tua attenzione così come misurata da Brave.</translation>
-<translation id="7178655681744815321">Guadagni stimati in questo ciclo</translation>
-<translation id="8157096848242649588">Data di pagamento</translation>
-<translation id="5208388044986603165">Notifiche pubblicitarie ricevute</translation>
 <translation id="4229016885653790965">Siamo spiacenti! Le pubblicità non sono ancora disponibili nella tua regione.</translation>
 <translation id="654711254769318398">Pagine pubblicitarie visualizzate</translation>
 <translation id="2532127066761785857">Numero massimo di pubblicità visualizzate</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Editori Verificati di Brave</translation>
 <translation id="7658239707568436148">Annulla</translation>
 <translation id="7262285991915892790">Trascina l'Icona BAT sul</translation>
-<translation id="2151535059686617995">È il tuo giorno fortunato!</translation>
-<translation id="6255773350565723852">Il tuo contributo di token è in arrivo.</translation>
 <translation id="7656781188259414093">target.</translation>
 <translation id="1555514580945108302">Mmh… Quasi. Prova di nuovo.</translation>
 <translation id="13853865024308201">Riscuoti</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Nessuno contributo in attesa…</translation>
 <translation id="1963227389609234879">Rimuovi tutto</translation>
 <translation id="923467487918828349">Mostra tutte</translation>
+<translation id="2151535059686617995">È il tuo giorno fortunato!</translation>
+<translation id="6255773350565723852">Il tuo contributo di token è in arrivo.</translation>
 <translation id="1181037720776840403">Rimuovi</translation>
 <translation id="7885157704277298658">Copiato!</translation>
 <translation id="5379640681913450928">Conteggio parole:</translation>

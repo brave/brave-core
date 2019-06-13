@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Braveで広告を視聴してトークンを獲得しましょう。ご自身の閲覧状況から推測される関心に基づいて、広告が表示されます。個人データや閲覧履歴は一切ブラウザの外へ出ることはありません。</translation>
 <translation id="6112368337882254910">オートコントリビュート</translation>
 <translation id="1527222983464337010">パブリッシャーやコンテンツ制作者を自動で支援する方法です。毎月の支払いを設定し、いつも通りにウェブ閲覧しましょう。あなたが訪問するサイトはBraveによって計測されたあなたの関心に基づき、あなたからの寄付を自動的に受けとります。</translation>
-<translation id="7178655681744815321">このサイクルでの予定収入</translation>
-<translation id="8157096848242649588">支払い日</translation>
-<translation id="5208388044986603165">受け取った広告通知</translation>
 <translation id="4229016885653790965">申し訳ありません！広告はお住まいの地域ではまだご利用いただけません。</translation>
 <translation id="654711254769318398">表示された広告ページ</translation>
 <translation id="2532127066761785857">表示される広告の最大数</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Braveが検証済みのパブリッシャー</translation>
 <translation id="7658239707568436148">キャンセル</translation>
 <translation id="7262285991915892790">BAT アイコンを次までドラッグする:</translation>
-<translation id="2151535059686617995">今日はあなたのラッキーデー!</translation>
-<translation id="6255773350565723852">あなたのトークン助成金は送金中です。</translation>
 <translation id="7656781188259414093">ターゲット</translation>
 <translation id="1555514580945108302">うーん、少し違います。もう一度試してみてください。</translation>
 <translation id="13853865024308201">取得</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">未承認の支払いはありません...</translation>
 <translation id="1963227389609234879">すべて削除</translation>
 <translation id="923467487918828349">すべてを表示</translation>
+<translation id="2151535059686617995">今日はあなたのラッキーデー!</translation>
+<translation id="6255773350565723852">あなたのトークン助成金は送金中です。</translation>
 <translation id="1181037720776840403">削除</translation>
 <translation id="7885157704277298658">コピーしました！</translation>
 <translation id="5379640681913450928">語数:</translation>

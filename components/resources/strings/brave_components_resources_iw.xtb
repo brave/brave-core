@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">אגרו Tokens על ידי צפייה בפרסומות ב-Brave. הפרסומות המוצגות לכם מבוססות על תחומי העניין שלכם, כפי שנגזרו מהתנהגות הגלישה שלכם. שום מידע אישי או היסטוריית גלישה לעולם לא יוצאים מהדפדפן.</translation>
 <translation id="6112368337882254910">תרומה אוטומטית</translation>
 <translation id="1527222983464337010">דרך אוטומטית לתמוך בבעלי אתרים ויוצרי תוכן. הגדירו תשלום חודשי וגלשו כרגיל. האתרים שבהם אתם מבקרים מקבלים את התרומות שלכם באופן אוטומטי, בהתבסס על תשומת הלב שלכם כפי שהיא נמדדת על ידי Brave.</translation>
-<translation id="7178655681744815321">רווחים משוערים למחזור זה</translation>
-<translation id="8157096848242649588">תאריך תשלום</translation>
-<translation id="5208388044986603165">כל ההודעות התקבלו</translation>
 <translation id="4229016885653790965">סליחה! פרסומות אינן זמינות עדיין באזור שלך.</translation>
 <translation id="654711254769318398">דפי מודעות שנצפו</translation>
 <translation id="2532127066761785857">מספר מרבי של מודעות שהוצגו</translation>
@@ -191,8 +188,6 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="3825698830825612308">Brave Brave מפרסמים מאומתים</translation>
 <translation id="7658239707568436148">ביטול</translation>
 <translation id="7262285991915892790">גרור את סמל ה-BAT אל</translation>
-<translation id="2151535059686617995">זהו יום המזל שלכם!</translation>
-<translation id="6255773350565723852">מענק האסימון שלכם בדרכו אליכם.</translation>
 <translation id="7656781188259414093">יעד.</translation>
 <translation id="1555514580945108302">מממ … לא ממש. נסו שוב.</translation>
 <translation id="13853865024308201">תביעה</translation>
@@ -362,6 +357,8 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="7410549756000115387">אין תרומות ממתינות…</translation>
 <translation id="1963227389609234879">הסר הכל</translation>
 <translation id="923467487918828349">הצג הכל</translation>
+<translation id="2151535059686617995">זהו יום המזל שלכם!</translation>
+<translation id="6255773350565723852">מענק האסימון שלכם בדרכו אליכם.</translation>
 <translation id="1181037720776840403">הסר</translation>
 <translation id="7885157704277298658">הועתק!</translation>
 <translation id="5379640681913450928">ספירת מילים:</translation>

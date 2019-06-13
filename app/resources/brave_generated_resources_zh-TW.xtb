@@ -29,7 +29,6 @@
 <translation id="3218385319396786393">此頁面已禁止自動播放</translation>
 <translation id="4988333904713528597">永遠允許自動播放 <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">繼續阻擋自動撥放</translation>
-<translation id="7543906827780734027">Brave還沒有評論過這個延伸──它可能是惡意的。 仍加"<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ？</translation>
 <translation id="2044383478723007273">Brave 顏色</translation>
 <translation id="2814998458708016836">使用寬網址列</translation>
 <translation id="6123134130710658846">隱藏 Brave Rewards 按鈕</translation>
@@ -50,26 +49,13 @@
 <translation id="4472575034687746823">開始使用</translation>
 <translation id="3400357268283240774">額外設定</translation>
 <translation id="6303294677342628402">防護</translation>
-<translation id="768979911142179781">預設值</translation>
-<translation id="5989930075012659993">您目前每個網站的設定將會被保留。</translation>
 <translation id="9185018653595759199">阻擋社群媒體</translation>
-<translation id="6894114137169961038">控制廣告</translation>
-<translation id="1096802265930928584">控制 Cookie</translation>
-<translation id="8919235146866304148">指紋辨識保護</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="5259716416204774556">阻擋指令稿</translation>
 <translation id="7498695072878479744">允許在第三方網頁上的 Google 登入按鈕</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
 <translation id="958971637207126733">允許 Linkedin 嵌入貼文</translation>
-<translation id="6067014455220527258">阻擋廣告</translation>
-<translation id="6985711843506827936">允許廣告及追蹤</translation>
-<translation id="6132506775968708399">阻擋第三方 cookies</translation>
 <translation id="5657156137487675418">允許所有 cookie</translation>
 <translation id="6883611015375728278">阻擋所有 cookies</translation>
-<translation id="1442559343076146186">阻擋第三方指紋識別</translation>
-<translation id="8034285923190068220">允許指紋識別</translation>
-<translation id="4540198958192073185">阻擋所有指紋識別</translation>
 <translation id="8942080017911802454">WebRTC IP 處理政策</translation>
 <translation id="6165508094623778733">更多資訊</translation>
 <translation id="8798099450830957504">預設</translation>
