@@ -5,7 +5,7 @@ import sys
 
 cert = os.environ.get('CERT')
 signtool_args = (os.environ.get('SIGNTOOL_ARGS') or
-                 'sign /t http://timestamp.verisign.com/scripts/timstamp.dll '
+                 'sign /t http://timestamp.digicert.com /sm '
                  '/fd sha256')
 
 assert (cert or signtool_args), 'One or both of the CERT or SIGNTOOL_ARGS '
