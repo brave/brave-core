@@ -15,6 +15,7 @@ import {
   TableGrid,
   Paragraph,
   SyncCard,
+  SyncCardContent,
   DisabledContent
 } from 'brave-ui/features/sync'
 
@@ -76,27 +77,29 @@ export default class SyncDisabledContent extends React.PureComponent<Props, Stat
               : null
           }
           <SyncCard>
-            <TableGrid>
-              <SyncStartIcon />
-              <div>
-                <Title level={2}>{getLocale('syncTitle')}</Title>
-                <Paragraph>{getLocale('syncDescription')}</Paragraph>
-                <DisabledContentButtonGrid>
-                  <Button
-                    level='primary'
-                    type='accent'
-                    onClick={this.onClickNewSyncChainButton}
-                    text={getLocale('startSyncChain')}
-                  />
-                  <Button
-                    level='secondary'
-                    type='accent'
-                    onClick={this.onClickEnterSyncChainCodeButton}
-                    text={getLocale('enterSyncChainCode')}
-                  />
-                </DisabledContentButtonGrid>
-              </div>
-            </TableGrid>
+            <SyncCardContent>
+              <TableGrid>
+                <SyncStartIcon />
+                <div>
+                  <Title level={2}>{getLocale('syncTitle')}</Title>
+                  <Paragraph>{getLocale('syncDescription')}</Paragraph>
+                  <DisabledContentButtonGrid>
+                    <Button
+                      level='primary'
+                      type='accent'
+                      onClick={this.onClickNewSyncChainButton}
+                      text={getLocale('startSyncChain')}
+                    />
+                    <Button
+                      level='secondary'
+                      type='accent'
+                      onClick={this.onClickEnterSyncChainCodeButton}
+                      text={getLocale('enterSyncChainCode')}
+                    />
+                  </DisabledContentButtonGrid>
+                </div>
+              </TableGrid>
+            </SyncCardContent>
           </SyncCard>
         </Main>
       </DisabledContent>
