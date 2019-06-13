@@ -772,6 +772,7 @@ void LedgerImpl::OnRecoverWallet(
 
     ledgerGrants.push_back(tempGrant);
   }
+
   if (result == ledger::Result::LEDGER_OK) {
     bat_publishers_->clearAllBalanceReports();
   }
@@ -797,6 +798,10 @@ void LedgerImpl::OnGrantFinish(ledger::Result result,
   newGrant.expiryTime = grant.expiryTime;
   newGrant.promotionId = grant.promotionId;
   newGrant.type = grant.type;
+
+  if (grant.type == "ads") {
+    bat_confirmations_->UpdateAdsRewards();
+  }
 
   ledger_client_->OnGrantFinish(result, newGrant);
 }
@@ -1506,9 +1511,9 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
   bat_confirmations_->ConfirmAd(std::move(notification_info));
 }
 
-void LedgerImpl::GetTransactionHistoryForThisCycle(
-    ledger::GetTransactionHistoryForThisCycleCallback callback) {
-  bat_confirmations_->GetTransactionHistoryForThisCycle(callback);
+void LedgerImpl::GetTransactionHistory(
+    ledger::GetTransactionHistoryCallback callback) {
+  bat_confirmations_->GetTransactionHistory(callback);
 }
 
 void LedgerImpl::RefreshPublisher(

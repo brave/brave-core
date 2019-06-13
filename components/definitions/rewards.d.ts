@@ -172,9 +172,10 @@ declare namespace Rewards {
     adsEnabled: boolean
     adsPerHour: number
     adsUIEnabled: boolean
-    adsNotificationsReceived: number
-    adsEstimatedEarnings: number
     adsIsSupported: boolean
+    adsEstimatedPendingRewards: number
+    adsNextPaymentDate: string
+    adsAdNotificationsReceivedThisMonth: number
   }
 
   export enum Category {

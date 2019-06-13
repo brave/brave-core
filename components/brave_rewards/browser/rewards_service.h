@@ -65,8 +65,8 @@ using GetReconcileStampCallback = base::Callback<void(uint64_t)>;
 using IsWalletCreatedCallback = base::Callback<void(bool)>;
 using GetPendingContributionsTotalCallback = base::Callback<void(double)>;
 using GetRewardsMainEnabledCallback = base::Callback<void(bool)>;
-using GetTransactionHistoryForThisCycleCallback =
-    base::Callback<void(int, double)>;
+using GetTransactionHistoryCallback =
+    base::OnceCallback<void(double, uint64_t, uint64_t)>;
 using GetRewardsInternalsInfoCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::RewardsInternalsInfo>)>;
 using GetRecurringTipsCallback = base::OnceCallback<void(
@@ -194,8 +194,8 @@ class RewardsService : public KeyedService {
 
   virtual void GetAddressesForPaymentId(
       const GetAddressesCallback& callback) = 0;
-  virtual void GetTransactionHistoryForThisCycle(
-      GetTransactionHistoryForThisCycleCallback callback) = 0;
+  virtual void GetTransactionHistory(
+      GetTransactionHistoryCallback callback) = 0;
 
   virtual void RefreshPublisher(
       const std::string& publisher_key,

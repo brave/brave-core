@@ -38,7 +38,7 @@ class SettingsPage extends React.Component<Props, {}> {
     this.actions.getContributeList()
     this.actions.getPendingContributions()
     this.actions.getReconcileStamp()
-    this.actions.getTransactionHistoryForThisCycle()
+    this.actions.getTransactionHistory()
     this.actions.getAdsData()
     this.actions.getExcludedSites()
   }
