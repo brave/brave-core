@@ -19,7 +19,7 @@
 #include "bat/ads/notification_info.h"
 #include "bat/confirmations/confirmations.h"
 #include "bat/ledger/internal/bat_client.h"
-#include "bat/ledger/internal/bat_get_media.h"
+#include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_publishers.h"
 #include "bat/ledger/internal/bat_state.h"

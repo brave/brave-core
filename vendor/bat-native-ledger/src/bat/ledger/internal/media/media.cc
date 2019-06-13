@@ -6,7 +6,7 @@
 #include <memory>
 #include <utility>
 
-#include "bat/ledger/internal/bat_get_media.h"
+#include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/ledger_impl.h"
 
 using std::placeholders::_1;
