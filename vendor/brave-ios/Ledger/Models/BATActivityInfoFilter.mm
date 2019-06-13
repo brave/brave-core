@@ -31,6 +31,7 @@
   if ((self = [super init])) {
     self.id = [NSString stringWithUTF8String:obj.id.c_str()];
     self.excluded = (BATExcludeFilter)obj.excluded;
+    self.percent = obj.percent;
     self.orderBy = NSArrayFromVector(obj.order_by, ^BATActivityInfoFilterOrderPair *(const std::pair<std::string, bool>& o){
       return [[BATActivityInfoFilterOrderPair alloc] initWithStringBoolPair:o];
     });
@@ -47,6 +48,7 @@
   ledger::ActivityInfoFilter obj;
   obj.id = self.id != nil ? std::string(self.id.UTF8String) : std::string();
   obj.excluded = (ledger::EXCLUDE_FILTER)self.excluded;
+  obj.percent = self.percent;
   if (self.orderBy) {
     obj.order_by = VectorFromNSArray(self.orderBy, ^std::pair<std::string, bool>(BATActivityInfoFilterOrderPair *o){
       return [o cppObj];
@@ -55,7 +57,7 @@
   obj.min_duration = self.minDuration;
   obj.reconcile_stamp = self.reconcileStamp;
   obj.non_verified = self.nonVerified;
-  obj.min_visits = obj.min_visits;
+  obj.min_visits = self.minVisits;
   return obj;
 }
 
