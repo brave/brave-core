@@ -5,7 +5,7 @@
 #import "BATLedgerDatabase.h"
 
 #import "DataController.h"
-#import "Model+CoreDataModel.h"
+#import "CoreDataModels.h"
 
 @implementation BATLedgerDatabase
 

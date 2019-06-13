@@ -1,5 +1,5 @@
 //
-//  PendingContribution+CoreDataClass.h
+//  Model+CoreDataModel.h
 //  
 //
 //  Created by Kyle Hickinson on 2019-05-24.
@@ -10,12 +10,13 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-NS_ASSUME_NONNULL_BEGIN
+#import "ActivityInfo.h"
+#import "ContributionInfo.h"
+#import "MediaPublisherInfo.h"
+#import "PendingContribution.h"
+#import "PublisherInfo.h"
+#import "RecurringDonation.h"
 
-@interface PendingContribution : NSManagedObject
 
-@end
 
-NS_ASSUME_NONNULL_END
 
-#import "PendingContribution+CoreDataProperties.h"
