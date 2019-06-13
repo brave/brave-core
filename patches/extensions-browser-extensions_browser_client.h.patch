@@ -1,0 +1,14 @@
+diff --git a/extensions/browser/extensions_browser_client.h b/extensions/browser/extensions_browser_client.h
+index 93dce1cad08c1398f6cbdf30999a3959528260a7..2bc0543097bae31fe2405b384ddf5b546e11fe6a 100644
+--- a/extensions/browser/extensions_browser_client.h
++++ b/extensions/browser/extensions_browser_client.h
+@@ -128,7 +128,8 @@ class ExtensionsBrowserClient {
+   // another context, check HasOffTheRecordContext() first.
+   virtual content::BrowserContext* GetOffTheRecordContext(
+       content::BrowserContext* context) = 0;
+-
++  virtual bool HasTorContext(content::BrowserContext* context);
++  virtual content::BrowserContext* GetTorContext(content::BrowserContext* context);
+   // Returns the original "recording" context. This method returns |context| if
+   // |context| is not incognito.
+   virtual content::BrowserContext* GetOriginalContext(
