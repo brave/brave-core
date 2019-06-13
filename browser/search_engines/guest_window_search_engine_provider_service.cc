@@ -15,7 +15,7 @@
 GuestWindowSearchEngineProviderService::GuestWindowSearchEngineProviderService(
     Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
-  DCHECK_EQ(otr_profile->GetProfileType(), Profile::GUEST_PROFILE);
+  DCHECK(otr_profile->IsGuestProfile());
   DCHECK(!otr_profile->IsTorProfile());
   DCHECK(!brave::IsRegionForQwant(otr_profile));
 

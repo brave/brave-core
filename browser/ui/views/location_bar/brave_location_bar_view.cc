@@ -75,8 +75,7 @@ OmniboxTint BraveLocationBarView::CalculateTint() const {
   // Match the user-selectable brave theme, even if there is a theme extension
   // installed, allowing non-extension-themeable elements to fit in better with
   // a theme extension.
-  if (profile()->GetProfileType() == Profile::INCOGNITO_PROFILE ||
-      profile()->IsTorProfile()) {
+  if (profile()->IsIncognitoProfile() || profile()->IsTorProfile()) {
     return OmniboxTint::PRIVATE;  // special extra enum value
   }
   // TODO(petemill): BraveThemeService can have a simpler get dark / light
