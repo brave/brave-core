@@ -22,13 +22,13 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-MediaReddit::MediaReddit(bat_ledger::LedgerImpl* ledger): ledger_(ledger) {
+Reddit::Reddit(bat_ledger::LedgerImpl* ledger): ledger_(ledger) {
 }
 
-MediaReddit::~MediaReddit() {
+Reddit::~Reddit() {
 }
 
-void MediaReddit::ProcessActivityFromUrl(
+void Reddit::ProcessActivityFromUrl(
     uint64_t window_id,
     const ledger::VisitData& visit_data) {
   if (visit_data.path.find("/user/") != std::string::npos) {
@@ -38,7 +38,7 @@ void MediaReddit::ProcessActivityFromUrl(
   OnMediaActivityError(visit_data, window_id);
 }
 
-void MediaReddit::OnMediaActivityError(
+void Reddit::OnMediaActivityError(
     const ledger::VisitData& visit_data,
     uint64_t window_id) {
 
@@ -52,7 +52,7 @@ void MediaReddit::OnMediaActivityError(
       window_id, ledger::VisitData::New(new_visit_data), std::string());
 }
 
-void MediaReddit::UserPath(
+void Reddit::UserPath(
     uint64_t window_id,
     const ledger::VisitData& visit_data) {
   const std::string user = GetUserNameFromUrl(visit_data.path);
@@ -64,7 +64,7 @@ void MediaReddit::UserPath(
 
   const std::string media_key = (std::string)REDDIT_MEDIA_TYPE + "_" + user;
   ledger_->GetMediaPublisherInfo(media_key,
-      std::bind(&MediaReddit::OnUserActivity,
+      std::bind(&Reddit::OnUserActivity,
           this,
           window_id,
           visit_data,
@@ -73,7 +73,7 @@ void MediaReddit::UserPath(
           _2));
 }
 
-void MediaReddit::OnUserActivity(
+void Reddit::OnUserActivity(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& media_key,
@@ -83,7 +83,7 @@ void MediaReddit::OnUserActivity(
     const std::string user_name = GetUserNameFromUrl(visit_data.path);
     const std::string url = GetProfileUrl(user_name);
     FetchDataFromUrl(visit_data.url,
-        std::bind(&MediaReddit::OnUserPage,
+        std::bind(&Reddit::OnUserPage,
             this,
             window_id,
             visit_data,
@@ -98,7 +98,7 @@ void MediaReddit::OnUserActivity(
   }
 }
 
-void MediaReddit::FetchDataFromUrl(
+void Reddit::FetchDataFromUrl(
     const std::string& url,
     braveledger_media::FetchDataFromUrlCallback callback) {
   /* if user is on old reddit, sub the url to get the icon
@@ -123,7 +123,7 @@ void MediaReddit::FetchDataFromUrl(
 }
 
 // static
-std::string MediaReddit::GetUserNameFromUrl(const std::string& path) {
+std::string Reddit::GetUserNameFromUrl(const std::string& path) {
   if (path.empty()) {
     return std::string();
   }
@@ -139,7 +139,7 @@ std::string MediaReddit::GetUserNameFromUrl(const std::string& path) {
 }
 
 // static
-std::string MediaReddit::GetProfileUrl(const std::string& screen_name) {
+std::string Reddit::GetProfileUrl(const std::string& screen_name) {
   if (screen_name.empty()) {
     return std::string();
   }
@@ -148,7 +148,7 @@ std::string MediaReddit::GetProfileUrl(const std::string& screen_name) {
   return base::StringPrintf(url_part.c_str(), screen_name.c_str());
 }
 
-void MediaReddit::GetPublisherPanelInfo(
+void Reddit::GetPublisherPanelInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key) {
@@ -160,7 +160,7 @@ void MediaReddit::GetPublisherPanelInfo(
     true,
     false);
   ledger_->GetPanelPublisherInfo(filter,
-    std::bind(&MediaReddit::OnPublisherPanelInfo,
+    std::bind(&Reddit::OnPublisherPanelInfo,
               this,
               window_id,
               visit_data,
@@ -169,7 +169,7 @@ void MediaReddit::GetPublisherPanelInfo(
               _2));
 }
 
-void MediaReddit::OnPublisherPanelInfo(
+void Reddit::OnPublisherPanelInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key,
@@ -177,7 +177,7 @@ void MediaReddit::OnPublisherPanelInfo(
     ledger::PublisherInfoPtr info) {
   if (!info || result == ledger::Result::NOT_FOUND) {
     FetchDataFromUrl(visit_data.url,
-                     std::bind(&MediaReddit::OnUserPage,
+                     std::bind(&Reddit::OnUserPage,
                                this,
                                window_id,
                                visit_data,
@@ -190,7 +190,7 @@ void MediaReddit::OnPublisherPanelInfo(
 }
 
 // static
-std::string MediaReddit::GetUserId(const std::string& response) {
+std::string Reddit::GetUserId(const std::string& response) {
   if (response.empty()) {
     return std::string();
   }
@@ -207,7 +207,7 @@ std::string MediaReddit::GetUserId(const std::string& response) {
 }
 
 // static
-std::string MediaReddit::GetPublisherName(const std::string& response) {
+std::string Reddit::GetPublisherName(const std::string& response) {
   if (response.empty()) {
     return std::string();
   }
@@ -222,7 +222,7 @@ std::string MediaReddit::GetPublisherName(const std::string& response) {
   return user_name;
 }
 
-void MediaReddit::OnUserPage(
+void Reddit::OnUserPage(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     int response_status_code,
@@ -250,7 +250,7 @@ void MediaReddit::OnUserPage(
     new_visit_data,
     0,
     window_id,
-    std::bind(&MediaReddit::OnUserActivity,
+    std::bind(&Reddit::OnUserActivity,
           this,
           window_id,
           visit_data,
@@ -264,7 +264,7 @@ void MediaReddit::OnUserPage(
 }
 
 // static
-std::string MediaReddit::GetPublisherKey(const std::string& key) {
+std::string Reddit::GetPublisherKey(const std::string& key) {
   if (key.empty()) {
     return std::string();
   }
@@ -272,7 +272,7 @@ std::string MediaReddit::GetPublisherKey(const std::string& key) {
 }
 
 // static
-std::string MediaReddit::GetProfileImageUrl(const std::string& response) {
+std::string Reddit::GetProfileImageUrl(const std::string& response) {
   if (response.empty()) {
     return std::string();
   }

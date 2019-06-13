@@ -56,10 +56,10 @@ class Media {
                           uint64_t windowId);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
-  std::unique_ptr<braveledger_media::MediaYouTube> media_youtube_;
-  std::unique_ptr<braveledger_media::MediaTwitch> media_twitch_;
-  std::unique_ptr<braveledger_media::MediaTwitter> media_twitter_;
-  std::unique_ptr<braveledger_media::MediaReddit> media_reddit_;
+  std::unique_ptr<braveledger_media::YouTube> media_youtube_;
+  std::unique_ptr<braveledger_media::Twitch> media_twitch_;
+  std::unique_ptr<braveledger_media::Twitter> media_twitter_;
+  std::unique_ptr<braveledger_media::Reddit> media_reddit_;
 };
 
 }  // namespace braveledger_media

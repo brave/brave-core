@@ -15,21 +15,21 @@ class MediaTwitterTest : public testing::Test {
 
 TEST(MediaTwitterTest, GetProfileURL) {
   // screen_name is empty
-  std::string result = braveledger_media::MediaTwitter::GetProfileURL("");
+  std::string result = braveledger_media::Twitter::GetProfileURL("");
   ASSERT_EQ(result, "");
 
   // all good
-  result = braveledger_media::MediaTwitter::GetProfileURL("emerick");
+  result = braveledger_media::Twitter::GetProfileURL("emerick");
   ASSERT_EQ(result, "https://twitter.com/emerick/");
 }
 
 TEST(MediaTwitterTest, GetProfileImageURL) {
   // screen_name is empty
-  std::string result = braveledger_media::MediaTwitter::GetProfileImageURL("");
+  std::string result = braveledger_media::Twitter::GetProfileImageURL("");
   ASSERT_EQ(result, "");
 
   // all good
-  result = braveledger_media::MediaTwitter::GetProfileImageURL("emerick");
+  result = braveledger_media::Twitter::GetProfileImageURL("emerick");
   ASSERT_EQ(result, "https://twitter.com/emerick/profile_image?size=original");
 }
 
@@ -40,7 +40,7 @@ TEST(MediaTwitterTest, GetShareURLWithoutQuotedTweet) {
       "https://brave.com/tips.";
   args["name"] = "emerick";
   args["hashtag"] = "TipWithBrave";
-  std::string result = braveledger_media::MediaTwitter::GetShareURL(args);
+  std::string result = braveledger_media::Twitter::GetShareURL(args);
   ASSERT_EQ(result,
             "https://twitter.com/intent/tweet?text=I just tipped @emerick "
             "using the Brave browser. Check it out at "
@@ -55,7 +55,7 @@ TEST(MediaTwitterTest, GetShareURLWithQuotedTweet) {
   args["name"] = "emerick";
   args["hashtag"] = "TipWithBrave";
   args["tweet_id"] = "215559040011481088";
-  std::string result = braveledger_media::MediaTwitter::GetShareURL(args);
+  std::string result = braveledger_media::Twitter::GetShareURL(args);
   ASSERT_EQ(result,
             "https://twitter.com/intent/tweet?text=I just tipped @emerick "
             "using the Brave browser. Check it out at "
@@ -65,79 +65,79 @@ TEST(MediaTwitterTest, GetShareURLWithQuotedTweet) {
 
 TEST(MediaTwitterTest, GetPublisherKey) {
   // key is empty
-  std::string result = braveledger_media::MediaTwitter::GetPublisherKey("");
+  std::string result = braveledger_media::Twitter::GetPublisherKey("");
   ASSERT_EQ(result, "");
 
   // all good
-  result = braveledger_media::MediaTwitter::GetPublisherKey("213234");
+  result = braveledger_media::Twitter::GetPublisherKey("213234");
   ASSERT_EQ(result, "twitter#channel:213234");
 }
 
 TEST(MediaTwitterTest, GetMediaKey) {
   // screen_name is empty
-  std::string result = braveledger_media::MediaTwitter::GetMediaKey("");
+  std::string result = braveledger_media::Twitter::GetMediaKey("");
   ASSERT_EQ(result, "");
 
   // all good
-  result = braveledger_media::MediaTwitter::GetMediaKey("emerick");
+  result = braveledger_media::Twitter::GetMediaKey("emerick");
   ASSERT_EQ(result, "twitter_emerick");
 }
 
 TEST(MediaTwitterTest, GetUserNameFromUrl) {
   // screen_name is empty
-  std::string result = braveledger_media::MediaTwitter::GetUserNameFromUrl("");
+  std::string result = braveledger_media::Twitter::GetUserNameFromUrl("");
   ASSERT_EQ(result, "");
 
   // empty path
-  result = braveledger_media::MediaTwitter::
+  result = braveledger_media::Twitter::
       GetUserNameFromUrl("/");
   ASSERT_EQ(result, "");
 
   // simple path
-  result = braveledger_media::MediaTwitter::
+  result = braveledger_media::Twitter::
       GetUserNameFromUrl("/emerick");
   ASSERT_EQ(result, "emerick");
 
   // long path
-  result = braveledger_media::MediaTwitter::
+  result = braveledger_media::Twitter::
       GetUserNameFromUrl("/emerick/news");
   ASSERT_EQ(result, "emerick");
 }
 
 TEST(MediaTwitterTest, IsExcludedPath) {
   // path is empty
-  bool result = braveledger_media::MediaTwitter::IsExcludedPath("");
+  bool result = braveledger_media::Twitter::IsExcludedPath("");
   ASSERT_EQ(result, true);
 
   // path is simple excluded link
   result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/home");
+      braveledger_media::Twitter::IsExcludedPath("/home");
   ASSERT_EQ(result, true);
 
   // path is simple excluded link with trailing /
   result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/home/");
+      braveledger_media::Twitter::IsExcludedPath("/home/");
   ASSERT_EQ(result, true);
   ASSERT_EQ(result, true);
 
   // path is complex excluded link
   result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/i/");
+      braveledger_media::Twitter::IsExcludedPath("/i/");
   ASSERT_EQ(result, true);
 
   // path is complex excluded link two levels
   result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/i/settings");
+      braveledger_media::Twitter::IsExcludedPath("/i/settings");
   ASSERT_EQ(result, true);
 
   // path is random link
   result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/asdfs/asdfasdf/");
+      braveledger_media::Twitter::IsExcludedPath("/asdfs/asdfasdf/");
   ASSERT_EQ(result, false);
 
   // path is not excluded link
   result =
-      braveledger_media::MediaTwitter::IsExcludedPath("/emerick");
+      braveledger_media::Twitter::IsExcludedPath("/emerick");
   ASSERT_EQ(result, false);
 }
 
@@ -152,43 +152,43 @@ TEST(MediaTwitterTest, GetUserId) {
       "</div>";
 
   // response is empty
-  std::string result = braveledger_media::MediaTwitter::GetUserId("");
+  std::string result = braveledger_media::Twitter::GetUserId("");
   ASSERT_EQ(result, "");
 
   // html is not correct
   result =
-      braveledger_media::MediaTwitter::GetUserId("<div>Hi</div>");
+      braveledger_media::Twitter::GetUserId("<div>Hi</div>");
   ASSERT_EQ(result, "");
 
   // support for current Twitter
   result =
-      braveledger_media::MediaTwitter::GetUserId(profile_old);
+      braveledger_media::Twitter::GetUserId(profile_old);
   ASSERT_EQ(result, "123");
 
   // support for new Twitter
   result =
-      braveledger_media::MediaTwitter::GetUserId(profile_new);
+      braveledger_media::Twitter::GetUserId(profile_new);
   ASSERT_EQ(result, "123");
 }
 
 TEST(MediaTwitterTest, GetPublisherName) {
   // response is empty
   std::string result =
-      braveledger_media::MediaTwitter::GetPublisherName("");
+      braveledger_media::Twitter::GetPublisherName("");
   ASSERT_EQ(result, "");
 
   // without twitter
-  result = braveledger_media::MediaTwitter::
+  result = braveledger_media::Twitter::
       GetPublisherName("<title>Hi</title>");
   ASSERT_EQ(result, "Hi");
 
   // current twitter
-  result = braveledger_media::MediaTwitter::
+  result = braveledger_media::Twitter::
       GetPublisherName("<title>Name (@emerick) / Twitter</title>");
   ASSERT_EQ(result, "Name");
 
   // new twitter
-  result = braveledger_media::MediaTwitter::
+  result = braveledger_media::Twitter::
       GetPublisherName("<title>My Name (@emerick) | Twitter</title>");
   ASSERT_EQ(result, "My Name");
 }

@@ -22,11 +22,11 @@ class LedgerImpl;
 
 namespace braveledger_media {
 
-class MediaTwitter : public ledger::LedgerCallbackHandler {
+class Twitter : public ledger::LedgerCallbackHandler {
  public:
-  explicit MediaTwitter(bat_ledger::LedgerImpl* ledger);
+  explicit Twitter(bat_ledger::LedgerImpl* ledger);
 
-  ~MediaTwitter() override;
+  ~Twitter() override;
 
   void SaveMediaInfo(const std::map<std::string, std::string>& data,
                      ledger::PublisherInfoCallback callback);
