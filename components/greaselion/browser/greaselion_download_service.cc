@@ -49,10 +49,12 @@ GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
   return value;
 }
 
-GreaselionRule::GreaselionRule(base::DictionaryValue* preconditions_value,
-                               base::ListValue* urls_value,
-                               base::ListValue* scripts_value,
-                               const base::FilePath& root_dir)
+GreaselionRule::GreaselionRule(
+    base::DictionaryValue* preconditions_value,
+    base::ListValue* urls_value,
+    base::ListValue* scripts_value,
+    const base::FilePath& root_dir,
+    scoped_refptr<base::SequencedTaskRunner> task_runner)
     : weak_factory_(this) {
   std::vector<std::string> patterns;
   preconditions_.rewards_enabled =
@@ -74,10 +76,6 @@ GreaselionRule::GreaselionRule(base::DictionaryValue* preconditions_value,
     }
     urls_.AddPattern(pattern);
   }
-  scoped_refptr<base::SequencedTaskRunner> task_runner =
-      base::CreateSequencedTaskRunnerWithTraits(
-          {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
   for (const auto& scripts_it : scripts_value->GetList()) {
     base::FilePath script_path =
         root_dir.AppendASCII(kGreaselionConfigFileVersion)
@@ -168,7 +166,8 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
     base::ListValue* scripts_value = nullptr;
     rule_dict->GetList(kScripts, &scripts_value);
     std::unique_ptr<GreaselionRule> rule = std::make_unique<GreaselionRule>(
-        preconditions_value, urls_value, scripts_value, install_dir_);
+        preconditions_value, urls_value, scripts_value, install_dir_,
+        GetTaskRunner().get());
     rules_.push_back(std::move(rule));
   }
 }
