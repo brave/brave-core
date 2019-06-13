@@ -29,7 +29,6 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="3218385319396786393">Zablokowano automatyczne odtwarzanie na tej stronie</translation>
 <translation id="4988333904713528597">Zawsze zezwalaj na autoodtwarzanie na <ph name="HOST">$1</ph></translation>
 <translation id="4150684676757176434">Kontynuuj blokowanie automatycznego odtwarzania</translation>
-<translation id="7543906827780734027">Brave nie zbadało jeszcze tego rozszerzenia - może być niebezpieczne. Dodać "<ph name="EXTENSION_NAME">$1</ph>" pomimo tego?</translation>
 <translation id="2044383478723007273">Kolory Brave</translation>
 <translation id="2814998458708016836">Korzystaj z szerokiego paska adresu</translation>
 <translation id="6123134130710658846">Ukryj przycisk nagród Brave</translation>
@@ -50,26 +49,13 @@ Instalując to rozszerzenie, wyrażasz zgodę na warunki świadczenia usług Goo
 <translation id="4472575034687746823">Podstawowe</translation>
 <translation id="3400357268283240774">Dodatkowe ustawienia</translation>
 <translation id="6303294677342628402">Tarcze</translation>
-<translation id="768979911142179781">Ustawienia domyślne</translation>
-<translation id="5989930075012659993">Twoje aktualne ustawienia dla poszczególnych stron zostaną zachowane.</translation>
 <translation id="9185018653595759199">Blokowanie sieci społecznościowych</translation>
-<translation id="6894114137169961038">Kontrola reklam</translation>
-<translation id="1096802265930928584">Kontrola plików cookie</translation>
-<translation id="8919235146866304148">Zabezpieczenie przed zbieraniem odcisków palców</translation>
-<translation id="520895744850022668">Wymuszaj HTTPS</translation>
-<translation id="5259716416204774556">Blokowanie skryptów</translation>
 <translation id="7498695072878479744">Zezwalaj na logowanie za pomocą konta Google na stronach trzecich</translation>
 <translation id="863171915776379000">Zezwalaj na logowanie za pomocą konta Facebook i osadzone posty</translation>
 <translation id="5165042248369837294">Zezwalaj na osadzone Tweety</translation>
 <translation id="958971637207126733">Zezwalaj na osadzone posty LinkedIn</translation>
-<translation id="6067014455220527258">Blokuj reklamy</translation>
-<translation id="6985711843506827936">Zezwól na reklamy i śledzenie</translation>
-<translation id="6132506775968708399">Blokuj pliki cookie stron trzecich</translation>
 <translation id="5657156137487675418">Zezwól na wszystkie pliki cookie</translation>
 <translation id="6883611015375728278">Blokuj wszystkie pliki cookie</translation>
-<translation id="1442559343076146186">Blokuj zbieranie odcisków palców przez strony trzecie</translation>
-<translation id="8034285923190068220">Zezwól na zbieranie odcisków palców</translation>
-<translation id="4540198958192073185">Blokuj zbieranie odcisków palców</translation>
 <translation id="8942080017911802454">Polityka obsługi WebRTC IP</translation>
 <translation id="6165508094623778733">Dowiedz się więcej</translation>
 <translation id="8798099450830957504">Domyślne</translation>

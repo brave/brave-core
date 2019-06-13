@@ -28,7 +28,6 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="3218385319396786393">Autospill var blokkert på denne siden</translation>
 <translation id="4988333904713528597">Tillat alltid automatisk visning av <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Fortsett å blokkere autoavspilling</translation>
-<translation id="7543906827780734027">Brave har ikke undersøkt denne filtypen enda, den kan være ondsinnet. Vil du legge til "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" likevel?</translation>
 <translation id="2044383478723007273">Brave farger</translation>
 <translation id="6123134130710658846">Skjul "Brave rewards"-knapp</translation>
 <translation id="7635711399568194460">Skjuler "Brave Rewards"-knappen i plasseringslinjen når Brave Reward ikke er aktivert</translation>
@@ -48,26 +47,13 @@ Ved å installere denne utvidelsen, aksepterer du Google Widevines betingelser. 
 <translation id="4472575034687746823">Kom i gang</translation>
 <translation id="3400357268283240774">Tilleggsinnstillinger</translation>
 <translation id="6303294677342628402">Skjold</translation>
-<translation id="768979911142179781">Standarder</translation>
-<translation id="5989930075012659993">De gjeldende sideinnstillingene dine vil bli beholdt.</translation>
 <translation id="9185018653595759199">Blokkering i sosiale medier</translation>
-<translation id="6894114137169961038">Annonsekontroll</translation>
-<translation id="1096802265930928584">Informasjonskapselkontroll</translation>
-<translation id="8919235146866304148">Fingeravtrykkbeskyttelse</translation>
-<translation id="520895744850022668">HTTPS Overalt</translation>
-<translation id="5259716416204774556">Script-blokkering</translation>
 <translation id="7498695072878479744">Tillat innloggingsknapper fra Google på tredjepartssider</translation>
 <translation id="863171915776379000">Tillat Facebook-innlogginger og innebygde innlegg</translation>
 <translation id="5165042248369837294">Tillatt innebygde tvitringer fra Twitter</translation>
 <translation id="958971637207126733">Tillat LinkedIn-innebygde innlegg</translation>
-<translation id="6067014455220527258">Blokker annonser</translation>
-<translation id="6985711843506827936">Tillat annonser og sporing</translation>
-<translation id="6132506775968708399">Blokker tredjeparts informasjonskapsler</translation>
 <translation id="5657156137487675418">Tillatt alle informasjonskapsler</translation>
 <translation id="6883611015375728278">Blokker alle informasjonskapsler</translation>
-<translation id="1442559343076146186">Blokker tredjeparts fingeravtrykk</translation>
-<translation id="8034285923190068220">Tillat fingeravtrykk</translation>
-<translation id="4540198958192073185">Blokker alle fingeravtrykk</translation>
 <translation id="8942080017911802454">Håndteringspolitikk for WebRTC IP</translation>
 <translation id="6165508094623778733">Lær mer</translation>
 <translation id="8798099450830957504">Standard</translation>

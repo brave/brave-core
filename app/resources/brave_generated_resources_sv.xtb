@@ -28,7 +28,6 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="3218385319396786393">Autouppspelning blockerades på denna sida</translation>
 <translation id="4988333904713528597">Autospela alltid på <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Fortsätt blockera automatisk uppspelning</translation>
-<translation id="7543906827780734027">Brave har inte granskat det här tillägget ännu - det kan vara skadigt. Lägg till "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ändå?</translation>
 <translation id="2044383478723007273">Bravefärger</translation>
 <translation id="6123134130710658846">Dölj Brave Rewards-knappen</translation>
 <translation id="7635711399568194460">Döljer Brave Rewards-knappen i adressfältet när Brave Rewards inte är aktivt</translation>
@@ -48,26 +47,13 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="4472575034687746823">Kom igång</translation>
 <translation id="3400357268283240774">Ytterligare inställningar</translation>
 <translation id="6303294677342628402">Sköldar</translation>
-<translation id="768979911142179781">Standard</translation>
-<translation id="5989930075012659993">Dina aktuella webbplatsspecifika inställningar kommer att behållas.</translation>
 <translation id="9185018653595759199">Blockering av sociala media</translation>
-<translation id="6894114137169961038">Annonskontroll</translation>
-<translation id="1096802265930928584">Kontroll av kakor</translation>
-<translation id="8919235146866304148">Skydd mot signaturinsamling</translation>
-<translation id="520895744850022668">HTTPS överallt</translation>
-<translation id="5259716416204774556">Scriptblockering</translation>
 <translation id="7498695072878479744">Tillåt Googles inloggningsknappar på sajter från tredje part</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
 <translation id="958971637207126733">Tillåt inbäddningar från LinkedIn</translation>
-<translation id="6067014455220527258">Blockera annonser</translation>
-<translation id="6985711843506827936">Tillåt annonser och spårning</translation>
-<translation id="6132506775968708399">Blockera tredjepartscookies</translation>
 <translation id="5657156137487675418">Tillåt alla cookies</translation>
 <translation id="6883611015375728278">Blockera alla kakor</translation>
-<translation id="1442559343076146186">Blockera signaturinsamling av tredjepart</translation>
-<translation id="8034285923190068220">Tillåt användning av fingertryck</translation>
-<translation id="4540198958192073185">Blockera alla signaturinsamling</translation>
 <translation id="8942080017911802454">WebRTC IP-hanteringspolicy</translation>
 <translation id="6165508094623778733">Läs mer</translation>
 <translation id="8798099450830957504">Standard</translation>

@@ -28,7 +28,6 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="3218385319396786393">Na ovoj je stranici blokirana automatska reprodukcija</translation>
 <translation id="4988333904713528597">Uvijek omogući automatsku reprodukciju na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Nastavi blokirati automatsku reprodukciju</translation>
-<translation id="7543906827780734027">Preglednik Brave još nije pregledao ovu ekstenziju – ekstenzija može biti zlonamjerna. Želite li svejedno dodati "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Boje preglednika Brave</translation>
 <translation id="6123134130710658846">Sakrij gumbe za nagrade Brave</translation>
 <translation id="7635711399568194460">Sakrivaju se gumbi za nagrade Brave u lokacijskoj traci kada značajka Nagrade Brave nije omogućena</translation>
@@ -48,26 +47,13 @@ Instalacijom te ekstenzije pristajete na Uvjete uporabe rješenja Widevine tvrtk
 <translation id="4472575034687746823">Početak korištenja</translation>
 <translation id="3400357268283240774">Dodatne postavke</translation>
 <translation id="6303294677342628402">Štitovi</translation>
-<translation id="768979911142179781">Zadane postavke</translation>
-<translation id="5989930075012659993">Vaše se postavke za mjesto zadržavaju.</translation>
 <translation id="9185018653595759199">Blokiranje društvenih mreža</translation>
-<translation id="6894114137169961038">Upravljanje oglasima</translation>
-<translation id="1096802265930928584">Upravljanje kolačićima</translation>
-<translation id="8919235146866304148">Zaštita od izrade digitalnog otiska</translation>
-<translation id="520895744850022668">HTTPS svugdje</translation>
-<translation id="5259716416204774556">Blokiranje skripti</translation>
 <translation id="7498695072878479744">Dopusti gumbe za prijavu u uslugu Google na mrežnim mjestima trećih strana</translation>
 <translation id="863171915776379000">Dopusti prijave u društvenu mrežu Facebook i ugrađene objave</translation>
 <translation id="5165042248369837294">Dopusti ugrađene objave na društvenoj mreži Twitter</translation>
 <translation id="958971637207126733">Dopusti ugrađene objave na mreži LinkedIn</translation>
-<translation id="6067014455220527258">Blokiraj oglase</translation>
-<translation id="6985711843506827936">Dopusti oglase i praćenje</translation>
-<translation id="6132506775968708399">Blokiraj kolačiće trećih strana</translation>
 <translation id="5657156137487675418">Dopusti sve kolačiće</translation>
 <translation id="6883611015375728278">Blokiraj sve kolačiće</translation>
-<translation id="1442559343076146186">Blokiraj izrade digitalnog otiska koje izvode treće strane</translation>
-<translation id="8034285923190068220">Dopusti izradu digitalnog otiska</translation>
-<translation id="4540198958192073185">Blokiraj sve izrade digitalnog otiska</translation>
 <translation id="8942080017911802454">Pravila obrade IP-a sučelja WebRTC</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
 <translation id="8798099450830957504">Zadano</translation>

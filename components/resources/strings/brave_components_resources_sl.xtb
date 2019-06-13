@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Pridobite žetone z ogledom oglasov v brskalniku Brave. Oglasi so izbrani glede na vaša zanimanja oziroma vaše izbire med brskanjem. Nobeni osebni podatki ali zgodovina brskanja nikoli ne zapustijo vašega brskalnika.</translation>
 <translation id="6112368337882254910">Samodejni prispevek</translation>
 <translation id="1527222983464337010">Samodejni način, s katerim lahko podpirate osebe, ki objavljajo vsebino, in ustvarjalce vsebine. Izberite mesečno plačilo in brskajte kot običajno. Strani, ki jih obiščete, bodo samodejno prejele vaše prispevke na podlagi vaše pozornosti, ki jo izmeri Brave.</translation>
-<translation id="7178655681744815321">Predvideni zaslužek v tem ciklu</translation>
-<translation id="8157096848242649588">Datum plačila</translation>
-<translation id="5208388044986603165">Prejeta oglasna obvestila</translation>
 <translation id="4229016885653790965">Oprostite! Oglasi v vaši regiji še niso na voljo.</translation>
 <translation id="654711254769318398">Ogledane oglasne strani</translation>
 <translation id="2532127066761785857">Največje število prikazanih oglasov</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Preverjene osebe Brave, ki objavljajo vsebino</translation>
 <translation id="7658239707568436148">Prekliči</translation>
 <translation id="7262285991915892790">Ikono BAT povlecite na</translation>
-<translation id="2151535059686617995">To je vaš srečni dan!</translation>
-<translation id="6255773350565723852">Vaše sredstvo v obliki žetonov je na poti.</translation>
 <translation id="7656781188259414093">cilj.</translation>
 <translation id="1555514580945108302">Hmm, ni ravno pravilno. Poskusite znova.</translation>
 <translation id="13853865024308201">Zahtevek</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Ni donacij na čakanju ...</translation>
 <translation id="1963227389609234879">Odstrani vse</translation>
 <translation id="923467487918828349">Pokaži vse</translation>
+<translation id="2151535059686617995">To je vaš srečni dan!</translation>
+<translation id="6255773350565723852">Vaše sredstvo v obliki žetonov je na poti.</translation>
 <translation id="1181037720776840403">Odstrani</translation>
 <translation id="7885157704277298658">Kopirano!</translation>
 <translation id="5379640681913450928">Število besed:</translation>

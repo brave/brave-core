@@ -29,7 +29,6 @@
 <translation id="3218385319396786393">इस पेज पर स्वतः प्ले बाधित था</translation>
 <translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> पर हमेश स्वतः चालू का अनुमति दें</translation>
 <translation id="4150684676757176434">ऑटोप्ले को बाधित करना चालू रखें</translation>
-<translation id="7543906827780734027">ब्रेव ने अभी तक इस एक्सटैन्शन की समीक्षा नहीं की - यह नुकसानदेह होगा। "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" किसी भी तरह से जोड़ें?</translation>
 <translation id="2044383478723007273">Brave रंग</translation>
 <translation id="6123134130710658846">Brave Rewards बटन छिपाएँ</translation>
 <translation id="7635711399568194460">Brave Rewards सक्रिय न हो तो स्थान बार में Brave Rewards बटन छिपाएँ</translation>
@@ -49,26 +48,13 @@
 <translation id="4472575034687746823">आरंभ करें</translation>
 <translation id="3400357268283240774">अतिरिक्त सेटिंग्स</translation>
 <translation id="6303294677342628402">सुरक्षा कवच</translation>
-<translation id="768979911142179781">डिफ़ॉल्ट</translation>
-<translation id="5989930075012659993">आपकी वर्तमान प्रति-साइट सेटिंग्स बनाये रखी जाएंगी।</translation>
 <translation id="9185018653595759199">सोशल मीडिया अवरुद्ध</translation>
-<translation id="6894114137169961038">विज्ञापन नियंत्रण</translation>
-<translation id="1096802265930928584">कुकी नियंत्रण</translation>
-<translation id="8919235146866304148">फिंगरप्रिंटिंग सुरक्षा</translation>
-<translation id="520895744850022668">हर जगह HTTPS</translation>
-<translation id="5259716416204774556">स्क्रिप्ट अवरुद्ध कर रही</translation>
 <translation id="7498695072878479744">अन्य पक्षों की साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
-<translation id="6067014455220527258">विज्ञापन रोकें</translation>
-<translation id="6985711843506827936">विज्ञापन और ट्रैकिंग की अनुमति दें</translation>
-<translation id="6132506775968708399">3rd पार्टी कुकीज़ को अवरुद्ध करें</translation>
 <translation id="5657156137487675418">सभी कूकीज को अनुमति दें</translation>
 <translation id="6883611015375728278">सभी कुकी को रोकें</translation>
-<translation id="1442559343076146186">3 rd पार्टी फिंगरप्रिंटिंग बाधित करें</translation>
-<translation id="8034285923190068220">फिंगरप्रिंटिंग की अनुमति दें</translation>
-<translation id="4540198958192073185">सभी फिंगरप्रिंटिंग को रोकें</translation>
 <translation id="8942080017911802454">वेबआरटीसी आईपी हैंडलिंग नीति</translation>
 <translation id="6165508094623778733">अधिक जानें</translation>
 <translation id="8798099450830957504">सामान्य</translation>

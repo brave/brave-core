@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">በrave ውስጥ ማስተዋቅያ በማየት ቶክን ያግኙ፡፡ ማስተዋቅያዎች በፍላጎት ከማሰሻው ባህርይ ጋር ተይይዘው ይቀርባሉ፡፡ የግል መረጃ ወይ የማሰስ ታሪክ ማሰሻዎን አይተወውም፡፡</translation>
 <translation id="6112368337882254910">የራስ-አስተዋፅዎ</translation>
 <translation id="1527222983464337010">አሳታሚዎችንና የይዘት ፈጣሪዎችን ለማገዝ አውቶማቲክ መንገድ፡፡ ወርሀዊ ክፍያ አዘጋጅተው በተለመደ መልኩ ይጠቀሙ፡፡ የሚሰጡት ትኩረት በብሬቭ ተለክቶ የሚጎበኙት ድህረ ገፅ አውቶማቲካሊ አስተዋፅኦ ያገኛል፡፡</translation>
-<translation id="7178655681744815321">በዚህ ኡደት ውስጥ የሚገኝ የተገመቱ ገቢዎች</translation>
-<translation id="8157096848242649588">የክፍያ ቀን</translation>
-<translation id="5208388044986603165">የማስታወቂያ ማሳወቂያዎች ደርሰዋል</translation>
 <translation id="4229016885653790965">አዝናለሁ! ማስታወቂያዎች በአካባቢዎ ገና የሉም።</translation>
 <translation id="654711254769318398">የታዩ የማስታወቂያ ገፆች</translation>
 <translation id="2532127066761785857">የሚታየው ከፍተኛው የማስታወቂያ ብዛት</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Brave ህትመቶችን ያረጋግጣል</translation>
 <translation id="7658239707568436148">ሰርዝ</translation>
 <translation id="7262285991915892790">የ BAT ምልክቱን ወደ ፋይሉ ይጎትቱ</translation>
-<translation id="2151535059686617995">’ እድለኛ የሆኑበት ቀን ነው!</translation>
-<translation id="6255773350565723852">የቶክን ግራንትዎ እየመጣ ነው።</translation>
 <translation id="7656781188259414093">ኢላማ።</translation>
 <translation id="1555514580945108302">Hmm… አይደለም፤ እንደገና ይሞክሩ።</translation>
 <translation id="13853865024308201">አቤቱታ</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">ምንም በመጠባበቅ ላይ ያለ አስተዋጽዖ የለም…፤</translation>
 <translation id="1963227389609234879">ሁሉንም አስወግድ</translation>
 <translation id="923467487918828349">ሁሉንም አሳይ</translation>
+<translation id="2151535059686617995">’ እድለኛ የሆኑበት ቀን ነው!</translation>
+<translation id="6255773350565723852">የቶክን ግራንትዎ በመንገድ ላይ ነው።</translation>
 <translation id="1181037720776840403">አስወግድ</translation>
 <translation id="7885157704277298658">ተቀድቷል</translation>
 <translation id="5379640681913450928">የቃል ብዛት:</translation>
