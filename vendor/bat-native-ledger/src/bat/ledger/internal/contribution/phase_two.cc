@@ -34,7 +34,7 @@ PhaseTwo::PhaseTwo(bat_ledger::LedgerImpl* ledger,
 PhaseTwo::~PhaseTwo() {
 }
 
-void PhaseTwo::GetReconcileWinners(const std::string& viewing_id) {
+void PhaseTwo::Start(const std::string& viewing_id) {
   unsigned int ballots_count = GetBallotsCount(viewing_id);
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
 

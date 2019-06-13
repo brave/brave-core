@@ -19,7 +19,6 @@ namespace braveledger_contribution {
 
 PhaseOne::PhaseOne(bat_ledger::LedgerImpl* ledger,
     Contribution* contribution) :
-    phase_two_(std::make_unique<PhaseTwo>(ledger, contribution)),
     ledger_(ledger),
     contribution_(contribution) {
   initAnonize();
@@ -614,9 +613,9 @@ void PhaseOne::ViewingCredentialsCallback(
 }
 
 void PhaseOne::Complete(ledger::Result result,
-                                    const std::string& viewing_id,
-                                    int category,
-                                    const std::string& probi) {
+                        const std::string& viewing_id,
+                        int category,
+                        const std::string& probi) {
   // Start the timer again if it wasn't a direct tip
   if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
     contribution_->ResetReconcileStamp();
@@ -636,7 +635,8 @@ void PhaseOne::Complete(ledger::Result result,
 
   ledger_->AddReconcileStep(viewing_id,
                             ledger::ContributionRetry::STEP_WINNERS);
-  phase_two_->GetReconcileWinners(viewing_id);
+
+  contribution_->StartPhaseTwo(viewing_id);
 }
 
 }  // namespace braveledger_contribution
