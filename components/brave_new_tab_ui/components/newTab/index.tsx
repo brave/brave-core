@@ -82,8 +82,8 @@ class NewTabPage extends React.Component<Props, {}> {
     }
 
     return (
-      <DynamicBackground background={newTabData.backgroundImage.source}>
-        <Gradient />
+      <DynamicBackground showBackgroundImage={newTabData.showBackgroundImage} background={newTabData.backgroundImage.source}>
+        {newTabData.showBackgroundImage && <Gradient />}
         <Page>
           <Header>
             <Stats stats={newTabData.stats} />
@@ -118,7 +118,7 @@ class NewTabPage extends React.Component<Props, {}> {
             </Main>
           </Header>
           {
-            newTabData.showSettingsMenu &&
+            newTabData.showSettings &&
             <Settings
               onClickOutside={this.closeSettings}
               toggleShowBackgroundImage={this.toggleShowBackgroundImage}
@@ -129,7 +129,7 @@ class NewTabPage extends React.Component<Props, {}> {
             <FooterInfo
               backgroundImageInfo={newTabData.backgroundImage}
               onClickSettings={this.showSettings}
-              isSettingsMenuOpen={newTabData.showSettingsMenu}
+              isSettingsMenuOpen={newTabData.showSettings}
               showPhotoInfo={newTabData.showBackgroundImage}
             />
           </Footer>
