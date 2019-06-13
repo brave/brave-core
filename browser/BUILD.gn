@@ -134,6 +134,7 @@ source_set("browser_process") {
     "//content/public/common",
     "//extensions/buildflags",
     "//brave/chromium_src:browser",
+    "//services/network/public/cpp",
     "themes",
     "//services/network/public/cpp",
     "//services/service_manager/embedder",
