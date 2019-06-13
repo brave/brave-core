@@ -103,6 +103,11 @@ class BraveProfileSyncService : public syncer::ProfileSyncService,
 
   syncer::ModelTypeSet GetPreferredDataTypes() const override;
 
+  // syncer::SyncEngineHost implementation
+  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override;
+  void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
+                       base::WaitableEvent* wevent) override;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkDeleted);
@@ -124,9 +129,6 @@ class BraveProfileSyncService : public syncer::ProfileSyncService,
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, OnGetExistingObjects);
   friend class ::BraveSyncServiceTest;
 
-  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override;
-  void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
-                       base::WaitableEvent* wevent) override;
   void SignalWaitableEvent();
   void FetchSyncRecords(const bool bookmarks, const bool history,
                         const bool preferences, int max_records);

@@ -1,10 +1,10 @@
 diff --git a/components/sync/driver/glue/sync_engine_impl.h b/components/sync/driver/glue/sync_engine_impl.h
-index 9fce092e22ca630fa3f5efa0bc1e963a86659625..89f7155a590b71cdab381967009384ef2d040c06 100644
+index 9fce092e22ca630fa3f5efa0bc1e963a86659625..6b1c580ca9be2d3bdb3bf30221e13922629cd250 100644
 --- a/components/sync/driver/glue/sync_engine_impl.h
 +++ b/components/sync/driver/glue/sync_engine_impl.h
-@@ -160,6 +160,12 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
- 
-   SyncEngineHost* host() { return host_; }
+@@ -102,6 +102,12 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
+   std::string GetOwnerName() const override;
+   void OnInvalidatorClientIdChange(const std::string& client_id) override;
  
 +  void HandleNudgeSyncCycle(brave_sync::RecordsListPtr records_list);
 +  void HandlePollSyncCycle(GetRecordsCallback cb,
@@ -12,16 +12,6 @@ index 9fce092e22ca630fa3f5efa0bc1e963a86659625..89f7155a590b71cdab381967009384ef
 +  void DispatchGetRecordsCallback(
 +      GetRecordsCallback cb, std::unique_ptr<RecordsList> records) override;
 +
-  private:
-   friend class SyncEngineBackend;
- 
-@@ -215,6 +221,9 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
-   ModelTypeSet last_enabled_types_;
-   bool sessions_invalidation_enabled_ = false;
- 
-+  brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function_;
-+  brave_sync::PollSyncCycleDelegate poll_sync_cycle_delegate_function_;
-+
-   // Checks that we're on the same thread this was constructed on (UI thread).
-   SEQUENCE_CHECKER(sequence_checker_);
- 
+  protected:
+   // The types and functions below are protected so that test
+   // subclasses can use them.

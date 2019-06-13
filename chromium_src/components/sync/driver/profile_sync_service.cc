@@ -32,12 +32,6 @@ void ProfileSyncService::BraveEngineParamsInit(
       syncer::kBraveDefaultPollIntervalSeconds));
 }
 
-void ProfileSyncService::OnNudgeSyncCycle(
-    brave_sync::RecordsListPtr records_list) {}
-
-void ProfileSyncService::OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
-                                         base::WaitableEvent* wevent) {}
-
 bool ProfileSyncService::IsBraveSyncEnabled() const {
   return false;
 }
