@@ -115,18 +115,6 @@ extension PopoverController {
                     $0.origin.y = PopoverUX.arrowSize.height
                 }
             }
-            
-            switch arrowDirection {
-            case .up:
-                popoverMaskView.bodyView.frame = contentView.bounds.with {
-                    $0.origin.y = PopoverUX.arrowSize.height
-                    $0.size.height -= PopoverUX.arrowSize.height
-                }
-            case .down:
-                popoverMaskView.bodyView.frame = contentView.bounds.with {
-                    $0.size.height -= PopoverUX.arrowSize.height
-                }
-            }
             shadowView.frame = popoverMaskView.bodyView.frame
             shadowView.layer.shadowPath = UIBezierPath(roundedRect: shadowView.bounds, cornerRadius: PopoverUX.cornerRadius).cgPath
         }
