@@ -47,14 +47,14 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
   std::string user_id;
   // empty
   std::pair<std::string, std::string> result =
-      MediaTwitch::GetMediaIdFromParts({});
+      Twitch::GetMediaIdFromParts({});
   media_id = result.first;
   user_id = result.second;
   EXPECT_TRUE(user_id.empty());
   ASSERT_TRUE(media_id.empty());
 
   // event is not on the list
-  result = MediaTwitch::GetMediaIdFromParts({
+  result = Twitch::GetMediaIdFromParts({
     {"event", "test"},
     {"properties", ""}
   });
@@ -64,7 +64,7 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
   ASSERT_TRUE(media_id.empty());
 
   // properties are missing
-  result = MediaTwitch::GetMediaIdFromParts({
+  result = Twitch::GetMediaIdFromParts({
     {"event", "minute-watched"}
   });
   media_id = result.first;
@@ -73,7 +73,7 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
   ASSERT_TRUE(media_id.empty());
 
   // channel is missing
-  result = MediaTwitch::GetMediaIdFromParts({
+  result = Twitch::GetMediaIdFromParts({
     {"event", "minute-watched"},
     {"properties", ""}
   });
@@ -83,7 +83,7 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
   ASSERT_TRUE(media_id.empty());
 
   // channel is provided
-  result = MediaTwitch::GetMediaIdFromParts({
+  result = Twitch::GetMediaIdFromParts({
     {"event", "minute-watched"},
     {"properties", ""},
     {"channel", "bravesoftware"}
@@ -94,7 +94,7 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
   ASSERT_EQ(media_id, "bravesoftware");
 
   // vod is missing leading v
-  result = MediaTwitch::GetMediaIdFromParts({
+  result = Twitch::GetMediaIdFromParts({
     {"event", "minute-watched"},
     {"properties", ""},
     {"channel", "bravesoftware"},
@@ -106,7 +106,7 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
   ASSERT_EQ(media_id, "bravesoftware");
 
   // vod is provided
-  result = MediaTwitch::GetMediaIdFromParts({
+  result = Twitch::GetMediaIdFromParts({
     {"event", "minute-watched"},
     {"properties", ""},
     {"channel", "bravesoftware"},
@@ -118,7 +118,7 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
   ASSERT_EQ(media_id, "bravesoftware_vod_123312312");
 
   // live stream username has '_'
-  result = MediaTwitch::GetMediaIdFromParts({
+  result = Twitch::GetMediaIdFromParts({
     {"event", "minute-watched"},
     {"properties", ""},
     {"channel", "anatomyz_2"}
@@ -129,7 +129,7 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
   ASSERT_EQ(media_id, "anatomyz_2");
 
   // vod has '_'
-  result = MediaTwitch::GetMediaIdFromParts({
+  result = Twitch::GetMediaIdFromParts({
     {"event", "minute-watched"},
     {"properties", ""},
     {"channel", "anatomyz_2"},
@@ -143,11 +143,11 @@ TEST(MediaTwitchTest, GetMediaIdFromParts) {
 
 TEST(MediaTwitchTest, GetMediaURL) {
   // empty
-  std::string result = MediaTwitch::GetMediaURL("");
+  std::string result = Twitch::GetMediaURL("");
   ASSERT_EQ(result, "");
 
   // all ok
-  result = MediaTwitch::GetMediaURL("bravesoftware");
+  result = Twitch::GetMediaURL("bravesoftware");
   ASSERT_EQ(result, "https://www.twitch.tv/bravesoftware");
 }
 
@@ -155,52 +155,52 @@ TEST(MediaTwitchTest, GetTwitchStatus) {
   // empty
   ledger::TwitchEventInfo old_event;
   ledger::TwitchEventInfo new_event;
-  std::string result = MediaTwitch::GetTwitchStatus(old_event, new_event);
+  std::string result = Twitch::GetTwitchStatus(old_event, new_event);
   ASSERT_EQ(result, "playing");
 
   // user paused the video
   old_event.event_ = "video_pause";
   old_event.status_ = "playing";
   new_event.event_ = "video_pause";
-  result = MediaTwitch::GetTwitchStatus(old_event, new_event);
+  result = Twitch::GetTwitchStatus(old_event, new_event);
   ASSERT_EQ(result, "paused");
 
   // user seeked while video was paused
   old_event.status_ = "paused";
   new_event.event_ = "player_click_vod_seek";
-  result = MediaTwitch::GetTwitchStatus(old_event, new_event);
+  result = Twitch::GetTwitchStatus(old_event, new_event);
   ASSERT_EQ(result, "paused");
 
   // user skipped the video that was playing
   old_event.status_ = "playing";
   old_event.event_ = "video_pause";
   new_event.event_ = "player_click_vod_seek";
-  result = MediaTwitch::GetTwitchStatus(old_event, new_event);
+  result = Twitch::GetTwitchStatus(old_event, new_event);
   ASSERT_EQ(result, "playing");
 
   // user pauses a video, then seeks it and plays it again
   old_event.status_ = "paused";
   old_event.event_ = "player_click_vod_seek";
   new_event.event_ = "video_pause";
-  result = MediaTwitch::GetTwitchStatus(old_event, new_event);
+  result = Twitch::GetTwitchStatus(old_event, new_event);
   ASSERT_EQ(result, "playing");
 }
 
 TEST(MediaTwitchTest, GetMediaIdFromUrl) {
   // for live stream
-  std::string result = MediaTwitch::GetMediaIdFromUrl(
+  std::string result = Twitch::GetMediaIdFromUrl(
       "https://www.twitch.tv/bravesoftware", profile_html);
 
   ASSERT_EQ(result, "bravesoftware");
 
   // longer url
-  result = MediaTwitch::GetMediaIdFromUrl(
+  result = Twitch::GetMediaIdFromUrl(
       "https://www.twitch.tv/bravesoftware/clips", profile_html);
 
   ASSERT_EQ(result, "bravesoftware");
 
   // video
-  result = MediaTwitch::GetMediaIdFromUrl(
+  result = Twitch::GetMediaIdFromUrl(
       "https://www.twitch.tv/videos/11111", profile_html);
 
   ASSERT_EQ(result, "bravesoftware");
@@ -210,25 +210,25 @@ TEST(MediaTwitchTest, GetLinkType) {
   const std::string url("https://k8923479-sub.cdn.ttvnw.net/v1/segment/");
 
   // url is not correct
-  std::string result = MediaTwitch::GetLinkType("https://brave.com",
+  std::string result = Twitch::GetLinkType("https://brave.com",
                                                 "https://www.twitch.tv",
                                                 "");
   ASSERT_EQ(result, "");
 
   // first party is off
-  result = MediaTwitch::GetLinkType(url, "https://www.brave.com", "");
+  result = Twitch::GetLinkType(url, "https://www.brave.com", "");
   ASSERT_EQ(result, "");
 
   // regular page
-  result = MediaTwitch::GetLinkType(url, "https://www.twitch.tv/", "");
+  result = Twitch::GetLinkType(url, "https://www.twitch.tv/", "");
   ASSERT_EQ(result, "twitch");
 
   // mobile page
-  result = MediaTwitch::GetLinkType(url, "https://m.twitch.tv/", "");
+  result = Twitch::GetLinkType(url, "https://m.twitch.tv/", "");
   ASSERT_EQ(result, "twitch");
 
   // player page
-  result = MediaTwitch::GetLinkType(url,
+  result = Twitch::GetLinkType(url,
                                     "https://brave.com/",
                                     "https://player.twitch.tv/");
   ASSERT_EQ(result, "twitch");
@@ -236,55 +236,55 @@ TEST(MediaTwitchTest, GetLinkType) {
 
 TEST(MediaTwitchTest, GetMediaKeyFromUrl) {
   // id is empty
-  std::string result = MediaTwitch::GetMediaKeyFromUrl("", "");
+  std::string result = Twitch::GetMediaKeyFromUrl("", "");
   ASSERT_EQ(result, "");
 
   // id is twitch
-  result = MediaTwitch::GetMediaKeyFromUrl("twitch", "");
+  result = Twitch::GetMediaKeyFromUrl("twitch", "");
   ASSERT_EQ(result, "");
 
   // get vod id
-  result = MediaTwitch::GetMediaKeyFromUrl(
+  result = Twitch::GetMediaKeyFromUrl(
       "bravesoftware",
       "https://www.twitch.tv/videos/411403500");
   ASSERT_EQ(result, "twitch_bravesoftware_vod_411403500");
 
   // regular id
-  result = MediaTwitch::GetMediaKeyFromUrl("bravesoftware", "");
+  result = Twitch::GetMediaKeyFromUrl("bravesoftware", "");
   ASSERT_EQ(result, "twitch_bravesoftware");
 }
 
 TEST(MediaTwitchTest, GetPublisherKey) {
   // empty
-  std::string result = MediaTwitch::GetPublisherKey("");
+  std::string result = Twitch::GetPublisherKey("");
   ASSERT_EQ(result, "");
 
   // all ok
-  result = MediaTwitch::GetPublisherKey("key");
+  result = Twitch::GetPublisherKey("key");
   ASSERT_EQ(result, "twitch#author:key");
 }
 
 TEST(MediaTwitchTest, GetPublisherName) {
   // blob is not correct
-  std::string result = MediaTwitch::GetPublisherName("dfsfsdfsdfds");
+  std::string result = Twitch::GetPublisherName("dfsfsdfsdfds");
   ASSERT_EQ(result, "");
 
   // all ok
-  result = MediaTwitch::GetPublisherName(profile_html);
+  result = Twitch::GetPublisherName(profile_html);
   ASSERT_EQ(result, "bravesoftware");
 }
 
 TEST(MediaTwitchTest, GetFaviconUrl) {
   // handler is empty
-  std::string result = MediaTwitch::GetFaviconUrl(profile_html, "");
+  std::string result = Twitch::GetFaviconUrl(profile_html, "");
   ASSERT_EQ(result, "");
 
   // blob is not correct
-  result = MediaTwitch::GetFaviconUrl("dfsfsdfsdfds", "bravesoftware");
+  result = Twitch::GetFaviconUrl("dfsfsdfsdfds", "bravesoftware");
   ASSERT_EQ(result, "");
 
   // all ok
-  result = MediaTwitch::GetFaviconUrl(profile_html, "bravesoftware");
+  result = Twitch::GetFaviconUrl(profile_html, "bravesoftware");
   ASSERT_EQ(result,
       "https://static-cdn.jtvnw.net/user-default-pictures/"
       "0ecbb6c3-fecb-4016-8115-aa467b7c36ed-profile_image-70x70.jpg");
@@ -294,7 +294,7 @@ TEST(MediaTwitchTest, UpdatePublisherData) {
   // blob is not correct
   std::string name;
   std::string favicon_url;
-  MediaTwitch::UpdatePublisherData(
+  Twitch::UpdatePublisherData(
       &name,
       &favicon_url,
       "dfsfsdfsdfds");
@@ -303,7 +303,7 @@ TEST(MediaTwitchTest, UpdatePublisherData) {
   ASSERT_EQ(favicon_url, "");
 
   // all ok
-  MediaTwitch::UpdatePublisherData(
+  Twitch::UpdatePublisherData(
       &name,
       &favicon_url,
       profile_html);

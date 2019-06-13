@@ -21,20 +21,20 @@ class MediaRedditTest : public testing::Test {
 TEST(MediaRedditTest, GetProfileUrl) {
   // empty
   std::string result =
-      braveledger_media::MediaReddit::GetProfileUrl(std::string());
+      braveledger_media::Reddit::GetProfileUrl(std::string());
   ASSERT_TRUE(result.empty());
 
-  result = braveledger_media::MediaReddit::GetProfileUrl("jsadler-brave");
+  result = braveledger_media::Reddit::GetProfileUrl("jsadler-brave");
   ASSERT_EQ(result, "https://reddit.com/user/jsadler-brave/");
 }
 
 TEST(MediaRedditTest, GetProfileImageUrl) {
   // empty
   std::string result =
-      braveledger_media::MediaReddit::GetProfileImageUrl(std::string());
+      braveledger_media::Reddit::GetProfileImageUrl(std::string());
   ASSERT_TRUE(result.empty());
 
-  result = braveledger_media::MediaReddit::GetProfileImageUrl(
+  result = braveledger_media::Reddit::GetProfileImageUrl(
       "\"accountIcon\":\"https://www.someredditmediacdn.com/somephoto.png?"
       "somequerystringparams");
   ASSERT_EQ(result, "https://www.someredditmediacdn.com/somephoto.png");
@@ -43,32 +43,32 @@ TEST(MediaRedditTest, GetProfileImageUrl) {
 TEST(MediaRedditTest, GetPublisherKey) {
   // empty
   std::string result =
-      braveledger_media::MediaReddit::GetPublisherKey(std::string());
+      braveledger_media::Reddit::GetPublisherKey(std::string());
   ASSERT_TRUE(result.empty());
 
   result =
-      braveledger_media::MediaReddit::GetPublisherKey("test_publisher_key");
+      braveledger_media::Reddit::GetPublisherKey("test_publisher_key");
   ASSERT_EQ(result, "reddit#channel:test_publisher_key");
 }
 
 TEST(MediaRedditTest, GetUserNameFromUrl) {
   // empty
   std::string result =
-      braveledger_media::MediaReddit::GetUserNameFromUrl(std::string());
+      braveledger_media::Reddit::GetUserNameFromUrl(std::string());
   ASSERT_TRUE(result.empty());
 
   // empty path
-  result = braveledger_media::MediaReddit::
+  result = braveledger_media::Reddit::
       GetUserNameFromUrl("/");
   ASSERT_TRUE(result.empty());
 
   // simple path
-  result = braveledger_media::MediaReddit::
+  result = braveledger_media::Reddit::
       GetUserNameFromUrl("/jsadler-brave");
   ASSERT_TRUE(result.empty());
 
   // long path
-  result = braveledger_media::MediaReddit::
+  result = braveledger_media::Reddit::
       GetUserNameFromUrl("/user/jsadler-brave");
   ASSERT_EQ(result, "jsadler-brave");
 }
@@ -81,22 +81,22 @@ TEST(MediaRedditTest, GetUserId) {
 
   // empty
   std::string result =
-      braveledger_media::MediaReddit::GetUserId(std::string());
+      braveledger_media::Reddit::GetUserId(std::string());
   ASSERT_TRUE(result.empty());
 
   // incorrect scrape
   result =
-      braveledger_media::MediaReddit::GetUserId("Some random text");
+      braveledger_media::Reddit::GetUserId("Some random text");
   ASSERT_TRUE(result.empty());
 
   // support for current Reddit
   result =
-      braveledger_media::MediaReddit::GetUserId(reddit_old);
+      braveledger_media::Reddit::GetUserId(reddit_old);
   ASSERT_EQ(result, "123456");
 
   // support for new Reddit
   result =
-      braveledger_media::MediaReddit::GetUserId(reddit_new);
+      braveledger_media::Reddit::GetUserId(reddit_new);
   ASSERT_EQ(result, "78910");
 }
 
@@ -105,21 +105,21 @@ TEST(MediaRedditTest, GetPublisherName) {
   const char reddit_old[] = "\"target_name\": \"jsadler-brave\"";
   // empty
   std::string result =
-      braveledger_media::MediaReddit::GetPublisherName(std::string());
+      braveledger_media::Reddit::GetPublisherName(std::string());
   ASSERT_TRUE(result.empty());
 
   // incorrect scrape
-  result = braveledger_media::MediaReddit::
+  result = braveledger_media::Reddit::
       GetPublisherName("some random text");
   ASSERT_TRUE(result.empty());
 
   // current reddit
-  result = braveledger_media::MediaReddit::
+  result = braveledger_media::Reddit::
       GetPublisherName(reddit_new);
   ASSERT_EQ(result, "jsadler-brave");
 
   // old reddit
-  result = braveledger_media::MediaReddit::
+  result = braveledger_media::Reddit::
       GetPublisherName(reddit_old);
   ASSERT_EQ(result, "jsadler-brave");
 }

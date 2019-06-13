@@ -31,8 +31,8 @@ namespace braveledger_bat_client {
 class BatClient;
 }
 
-namespace braveledger_bat_get_media {
-class BatGetMedia;
+namespace braveledger_media {
+class Media;
 }
 
 namespace braveledger_bat_publishers {
@@ -578,7 +578,7 @@ class LedgerImpl : public ledger::Ledger,
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
-  std::unique_ptr<braveledger_bat_get_media::BatGetMedia> bat_get_media_;
+  std::unique_ptr<braveledger_media::Media> bat_media_;
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
   std::unique_ptr<braveledger_contribution::Contribution>
   bat_contribution_;

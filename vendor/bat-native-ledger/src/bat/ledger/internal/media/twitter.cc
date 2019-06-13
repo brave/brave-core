@@ -22,15 +22,15 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-MediaTwitter::MediaTwitter(bat_ledger::LedgerImpl* ledger):
+Twitter::Twitter(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger) {
 }
 
-MediaTwitter::~MediaTwitter() {
+Twitter::~Twitter() {
 }
 
 // static
-std::string MediaTwitter::GetProfileURL(const std::string& screen_name) {
+std::string Twitter::GetProfileURL(const std::string& screen_name) {
   if (screen_name.empty()) {
     return std::string();
   }
@@ -39,7 +39,7 @@ std::string MediaTwitter::GetProfileURL(const std::string& screen_name) {
 }
 
 // static
-std::string MediaTwitter::GetProfileImageURL(const std::string& screen_name) {
+std::string Twitter::GetProfileImageURL(const std::string& screen_name) {
   if (screen_name.empty()) {
     return std::string();
   }
@@ -50,7 +50,7 @@ std::string MediaTwitter::GetProfileImageURL(const std::string& screen_name) {
 }
 
 // static
-std::string MediaTwitter::GetPublisherKey(const std::string& key) {
+std::string Twitter::GetPublisherKey(const std::string& key) {
   if (key.empty()) {
     return std::string();
   }
@@ -59,7 +59,7 @@ std::string MediaTwitter::GetPublisherKey(const std::string& key) {
 }
 
 // static
-std::string MediaTwitter::GetMediaKey(const std::string& screen_name) {
+std::string Twitter::GetMediaKey(const std::string& screen_name) {
   if (screen_name.empty()) {
     return std::string();
   }
@@ -68,7 +68,7 @@ std::string MediaTwitter::GetMediaKey(const std::string& screen_name) {
 }
 
 // static
-std::string MediaTwitter::GetUserNameFromUrl(const std::string& path) {
+std::string Twitter::GetUserNameFromUrl(const std::string& path) {
   if (path.empty()) {
     return std::string();
   }
@@ -84,7 +84,7 @@ std::string MediaTwitter::GetUserNameFromUrl(const std::string& path) {
 }
 
 // static
-bool MediaTwitter::IsExcludedPath(const std::string& path) {
+bool Twitter::IsExcludedPath(const std::string& path) {
   if (path.empty()) {
     return true;
   }
@@ -131,7 +131,7 @@ bool MediaTwitter::IsExcludedPath(const std::string& path) {
 }
 
 // static
-std::string MediaTwitter::GetUserId(const std::string& response) {
+std::string Twitter::GetUserId(const std::string& response) {
   if (response.empty()) {
     return std::string();
   }
@@ -150,7 +150,7 @@ std::string MediaTwitter::GetUserId(const std::string& response) {
 }
 
 // static
-std::string MediaTwitter::GetPublisherName(const std::string& response) {
+std::string Twitter::GetPublisherName(const std::string& response) {
   if (response.empty()) {
     return std::string();
   }
@@ -172,7 +172,7 @@ std::string MediaTwitter::GetPublisherName(const std::string& response) {
   return title;
 }
 
-void MediaTwitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
+void Twitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
                                  ledger::PublisherInfoCallback callback) {
   auto user_id = data.find("user_id");
   auto screen_name = data.find("screen_name");
@@ -191,7 +191,7 @@ void MediaTwitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
 
   ledger_->GetMediaPublisherInfo(
           media_key,
-          std::bind(&MediaTwitter::OnMediaPublisherInfo,
+          std::bind(&Twitter::OnMediaPublisherInfo,
                     this,
                     0,
                     user_id->second,
@@ -203,7 +203,7 @@ void MediaTwitter::SaveMediaInfo(const std::map<std::string, std::string>& data,
 }
 
 // static
-std::string MediaTwitter::GetShareURL(
+std::string Twitter::GetShareURL(
     const std::map<std::string, std::string>& args) {
   auto comment = args.find("comment");
   auto name = args.find("name");
@@ -234,7 +234,7 @@ std::string MediaTwitter::GetShareURL(
   return share_url;
 }
 
-void MediaTwitter::OnMediaPublisherInfo(
+void Twitter::OnMediaPublisherInfo(
     uint64_t window_id,
     const std::string& user_id,
     const std::string& screen_name,
@@ -262,7 +262,7 @@ void MediaTwitter::OnMediaPublisherInfo(
   }
 }
 
-void MediaTwitter::SavePublisherInfo(
+void Twitter::SavePublisherInfo(
     const uint64_t duration,
     const std::string& user_id,
     const std::string& screen_name,
@@ -298,12 +298,12 @@ void MediaTwitter::SavePublisherInfo(
   }
 }
 
-void MediaTwitter::OnSaveMediaVisit(
+void Twitter::OnSaveMediaVisit(
     ledger::Result result,
     ledger::PublisherInfoPtr info) {
 }
 
-void MediaTwitter::FetchDataFromUrl(
+void Twitter::FetchDataFromUrl(
     const std::string& url,
     braveledger_media::FetchDataFromUrlCallback callback) {
   ledger_->LoadURL(url,
@@ -314,7 +314,7 @@ void MediaTwitter::FetchDataFromUrl(
                    callback);
 }
 
-void MediaTwitter::OnMediaActivityError(const ledger::VisitData& visit_data,
+void Twitter::OnMediaActivityError(const ledger::VisitData& visit_data,
                                         uint64_t window_id) {
   std::string url = TWITTER_TLD;
   std::string name = TWITTER_MEDIA_TYPE;
@@ -331,7 +331,7 @@ void MediaTwitter::OnMediaActivityError(const ledger::VisitData& visit_data,
       window_id, ledger::VisitData::New(new_visit_data), std::string());
 }
 
-void MediaTwitter::ProcessActivityFromUrl(
+void Twitter::ProcessActivityFromUrl(
     uint64_t window_id,
     const ledger::VisitData& visit_data) {
   // not all url's are publisher specific
@@ -350,7 +350,7 @@ void MediaTwitter::ProcessActivityFromUrl(
 
   ledger_->GetMediaPublisherInfo(
       media_key,
-      std::bind(&MediaTwitter::OnMediaPublisherActivity,
+      std::bind(&Twitter::OnMediaPublisherActivity,
                 this,
                 _1,
                 _2,
@@ -359,7 +359,7 @@ void MediaTwitter::ProcessActivityFromUrl(
                 media_key));
 }
 
-void MediaTwitter::OnMediaPublisherActivity(
+void Twitter::OnMediaPublisherActivity(
     ledger::Result result,
     ledger::PublisherInfoPtr info,
     uint64_t window_id,
@@ -376,7 +376,7 @@ void MediaTwitter::OnMediaPublisherActivity(
     const std::string url = GetProfileURL(user_name);
 
     FetchDataFromUrl(url,
-                     std::bind(&MediaTwitter::OnUserPage,
+                     std::bind(&Twitter::OnUserPage,
                                this,
                                window_id,
                                visit_data,
@@ -391,7 +391,7 @@ void MediaTwitter::OnMediaPublisherActivity(
 }
 
 // Gets publisher panel info where we know that publisher info exists
-void MediaTwitter::GetPublisherPanelInfo(
+void Twitter::GetPublisherPanelInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key) {
@@ -403,7 +403,7 @@ void MediaTwitter::GetPublisherPanelInfo(
     true,
     false);
   ledger_->GetPanelPublisherInfo(filter,
-    std::bind(&MediaTwitter::OnPublisherPanelInfo,
+    std::bind(&Twitter::OnPublisherPanelInfo,
               this,
               window_id,
               visit_data,
@@ -412,7 +412,7 @@ void MediaTwitter::GetPublisherPanelInfo(
               _2));
 }
 
-void MediaTwitter::OnPublisherPanelInfo(
+void Twitter::OnPublisherPanelInfo(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     const std::string& publisher_key,
@@ -420,7 +420,7 @@ void MediaTwitter::OnPublisherPanelInfo(
     ledger::PublisherInfoPtr info) {
   if (!info || result == ledger::Result::NOT_FOUND) {
     FetchDataFromUrl(visit_data.url,
-                     std::bind(&MediaTwitter::OnUserPage,
+                     std::bind(&Twitter::OnUserPage,
                                this,
                                window_id,
                                visit_data,
@@ -432,7 +432,7 @@ void MediaTwitter::OnPublisherPanelInfo(
   }
 }
 
-void MediaTwitter::OnUserPage(
+void Twitter::OnUserPage(
     uint64_t window_id,
     const ledger::VisitData& visit_data,
     int response_status_code,
@@ -451,7 +451,7 @@ void MediaTwitter::OnUserPage(
     publisher_name = user_name;
   }
 
-  auto callback = std::bind(&MediaTwitter::OnSaveMediaVisit,
+  auto callback = std::bind(&Twitter::OnSaveMediaVisit,
                             this,
                             _1,
                             _2);

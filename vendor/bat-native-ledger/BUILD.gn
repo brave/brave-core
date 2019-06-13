@@ -94,8 +94,6 @@ source_set("ledger") {
   sources = [
     "src/bat/ledger/internal/bat_client.cc",
     "src/bat/ledger/internal/bat_client.h",
-    "src/bat/ledger/internal/bat_get_media.cc",
-    "src/bat/ledger/internal/bat_get_media.h",
     "src/bat/ledger/internal/bat_helper.cc",
     "src/bat/ledger/internal/bat_helper.h",
     "src/bat/ledger/internal/bat_publishers.cc",
@@ -116,6 +114,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/ledger_impl.h",
     "src/bat/ledger/internal/media/helper.h",
     "src/bat/ledger/internal/media/helper.cc",
+    "src/bat/ledger/internal/media/media.cc",
+    "src/bat/ledger/internal/media/media.h",
     "src/bat/ledger/internal/media/reddit.h",
     "src/bat/ledger/internal/media/reddit.cc",
     "src/bat/ledger/internal/media/twitch.h",
