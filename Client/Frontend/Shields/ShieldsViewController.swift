@@ -118,7 +118,13 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         }
         shieldsView.stackView.setNeedsLayout()
         shieldsView.stackView.layoutIfNeeded()
-        preferredContentSize = CGSize(width: PopoverController.preferredPopoverWidth, height: shieldsView.stackView.bounds.height)
+        
+        let size = CGSize(width: PopoverController.preferredPopoverWidth, height: UIScreen.main.bounds.height)
+        preferredContentSize = shieldsView.stackView.systemLayoutSizeFitting(
+            size,
+            withHorizontalFittingPriority: .required,
+            verticalFittingPriority: .fittingSizeLevel
+        )
     }
     
     // MARK: -
@@ -155,13 +161,6 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
                 self.shieldsSettingsChanged?(self)
             }
         }
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        shieldsView.stackView.layoutIfNeeded()
-        preferredContentSize = CGSize(width: PopoverController.preferredPopoverWidth, height: shieldsView.stackView.bounds.height)
     }
     
     @available(*, unavailable)
