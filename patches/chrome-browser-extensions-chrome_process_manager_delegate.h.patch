@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/extensions/chrome_process_manager_delegate.h b/chrome/browser/extensions/chrome_process_manager_delegate.h
+index bc670a6d994adcdc47a35217727a705ac53e37b3..ed5f470906a81e4ac32223a6c8bbd59b3cfe2b4f 100644
+--- a/chrome/browser/extensions/chrome_process_manager_delegate.h
++++ b/chrome/browser/extensions/chrome_process_manager_delegate.h
+@@ -42,7 +42,8 @@ class ChromeProcessManagerDelegate : public ProcessManagerDelegate,
+   // Notification handlers.
+   void OnBrowserOpened(Browser* browser);
+   void OnProfileCreated(Profile* profile);
+-  void OnProfileDestroyed(Profile* profile);
++  friend class BraveProcessManagerDelegate;
++  virtual void OnProfileDestroyed(Profile* profile);
+ 
+   content::NotificationRegistrar registrar_;
+ 
