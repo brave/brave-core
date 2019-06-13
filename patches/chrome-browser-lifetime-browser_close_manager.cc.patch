@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/lifetime/browser_close_manager.cc b/chrome/browser/lifetime/browser_close_manager.cc
+index 9adb1cdc86e8257e7c449ecbc3d94235af9553de..c2898735906076b4728e819a3823203d5a415827 100644
+--- a/chrome/browser/lifetime/browser_close_manager.cc
++++ b/chrome/browser/lifetime/browser_close_manager.cc
+@@ -141,6 +141,7 @@ void BrowserCloseManager::OnReportDownloadsCancellable(bool proceed) {
+     ShowInProgressDownloads(profile);
+     if (profile->HasOffTheRecordProfile())
+       ShowInProgressDownloads(profile->GetOffTheRecordProfile());
++    if (profile->HasTorProfile()) ShowInProgressDownloads(profile->GetTorProfile());
+   }
+ }
+ 

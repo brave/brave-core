@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/download/chrome_download_manager_delegate.cc b/chrome/browser/download/chrome_download_manager_delegate.cc
+index e68dd64dfe4b6af5e5928bddfe39490ceffc6f9c..1f6e8918c6d61f86b22458f170631db8d88f6517 100644
+--- a/chrome/browser/download/chrome_download_manager_delegate.cc
++++ b/chrome/browser/download/chrome_download_manager_delegate.cc
+@@ -714,6 +714,7 @@ bool ChromeDownloadManagerDelegate::IsMostRecentDownloadItemAtFilePath(
+   if (profile->HasOffTheRecordProfile()) {
+     profiles_to_check.push_back(profile->GetOffTheRecordProfile());
+   }
++  if (profile->HasTorProfile()) profiles_to_check.push_back(profile->GetTorProfile());
+ 
+   std::vector<DownloadItem*> all_downloads;
+   for (auto* profile : profiles_to_check) {

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/download/download_core_service.cc b/chrome/browser/download/download_core_service.cc
+index 284fee8962af620cd737c174c91a2b20e1131d90..c88ebda5f40f8e9590f160b2ab79a6ae0f254360 100644
+--- a/chrome/browser/download/download_core_service.cc
++++ b/chrome/browser/download/download_core_service.cc
+@@ -26,6 +26,7 @@ int DownloadCoreService::NonMaliciousDownloadCountAllProfiles() {
+       count += DownloadCoreServiceFactory::GetForBrowserContext(
+                    (*it)->GetOffTheRecordProfile())
+                    ->NonMaliciousDownloadCount();
++    count += NonMaliciousDownloadCountTorProfile(*it);
+   }
+ 
+   return count;
