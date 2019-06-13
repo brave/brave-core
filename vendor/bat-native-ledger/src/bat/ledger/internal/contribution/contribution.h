@@ -63,7 +63,7 @@
 // 12. Complete
 
 // PHASE 2 (voting)
-// 1. GetReconcileWinners
+// 1. Start (GetReconcileWinners)
 // 2. VotePublishers
 // 3. VotePublisher
 // 4. PrepareBallots
@@ -175,6 +175,8 @@ class Contribution {
   void StartAutoContribute();
 
   void ContributeUnverifiedPublishers();
+
+  void StartPhaseTwo(const std::string& viewing_id);
 
  private:
   // AUTO CONTRIBUTE: from the list gets only verified publishers and

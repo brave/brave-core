@@ -30,7 +30,7 @@ class PhaseTwo {
 
   ~PhaseTwo();
 
-  void GetReconcileWinners(const std::string& viewing_id);
+  void Start(const std::string& viewing_id);
 
   void PrepareBallots();
 

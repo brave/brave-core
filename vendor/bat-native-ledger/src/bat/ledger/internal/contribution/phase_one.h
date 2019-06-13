@@ -87,7 +87,6 @@ class PhaseOne {
       const std::string& response,
       const std::map<std::string, std::string>& headers);
 
-  std::unique_ptr<PhaseTwo> phase_two_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Contribution* contribution_;   // NOT OWNED
 };

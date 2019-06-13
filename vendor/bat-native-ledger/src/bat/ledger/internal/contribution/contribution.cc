@@ -616,7 +616,7 @@ void Contribution::DoRetry(const std::string& viewing_id) {
       break;
     }
     case ledger::ContributionRetry::STEP_WINNERS: {
-      phase_two_->GetReconcileWinners(viewing_id);
+      phase_two_->Start(viewing_id);
       break;
     }
     case ledger::ContributionRetry::STEP_FINAL:
@@ -627,6 +627,10 @@ void Contribution::DoRetry(const std::string& viewing_id) {
 
 void Contribution::ContributeUnverifiedPublishers() {
   unverified_->Contribute();
+}
+
+void Contribution::StartPhaseTwo(const std::string& viewing_id) {
+  phase_two_->Start(viewing_id);
 }
 
 }  // namespace braveledger_contribution
