@@ -45,11 +45,13 @@
 - (ledger::ActivityInfoFilter)cppObj
 {
   ledger::ActivityInfoFilter obj;
-  obj.id = std::string(self.id.UTF8String);
+  obj.id = self.id != nil ? std::string(self.id.UTF8String) : std::string();
   obj.excluded = (ledger::EXCLUDE_FILTER)self.excluded;
-  obj.order_by = VectorFromNSArray(self.orderBy, ^std::pair<std::string, bool>(BATActivityInfoFilterOrderPair *o){
-    return [o cppObj];
-  });
+  if (self.orderBy) {
+    obj.order_by = VectorFromNSArray(self.orderBy, ^std::pair<std::string, bool>(BATActivityInfoFilterOrderPair *o){
+      return [o cppObj];
+    });
+  }
   obj.min_duration = self.minDuration;
   obj.reconcile_stamp = self.reconcileStamp;
   obj.non_verified = self.nonVerified;
