@@ -27,8 +27,7 @@ const ui::NativeTheme* BraveBrowserFrame::GetNativeTheme() const {
             BraveThemeService::GetActiveBraveThemeType(
                               browser_view_->browser()->profile());
   if (active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
-      browser_view_->browser()->profile()->GetProfileType() ==
-          Profile::INCOGNITO_PROFILE ||
+      browser_view_->browser()->profile()->IsIncognitoProfile() ||
       browser_view_->browser()->profile()->IsTorProfile()) {
     return ui::NativeThemeDarkAura::instance();
   }
