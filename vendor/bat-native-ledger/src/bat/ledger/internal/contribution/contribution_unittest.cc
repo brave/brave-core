@@ -30,6 +30,7 @@ class ContributionTest : public testing::Test {
       publisher_info->id = "example" + std::to_string(ix) + ".com";
       publisher_info->verified = ix < variation;
       publisher_info->percent = (1.0 / iterations) * 100.0;
+      publisher_info->weight = (1.0 / iterations) * 100.0;
       publisher_info_list->push_back(std::move(publisher_info));
     }
   }

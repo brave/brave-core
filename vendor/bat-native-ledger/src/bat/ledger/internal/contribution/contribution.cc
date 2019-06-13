@@ -116,13 +116,13 @@ void Contribution::GetVerifiedAutoAmount(
 double Contribution::GetAmountFromVerifiedAuto(
     const ledger::PublisherInfoList& publisher_list,
     double ac_amount) {
-  double non_verified_bat = 0.0;
+  double verified_bat = 0.0;
   for (const auto& publisher : publisher_list) {
-    if (!publisher->verified) {
-      non_verified_bat += (publisher->percent / 100.0) * ac_amount;
+    if (publisher->verified) {
+      verified_bat += (publisher->weight / 100.0) * ac_amount;
     }
   }
-  return ac_amount - non_verified_bat;
+  return verified_bat;
 }
 
 void Contribution::GetVerifiedRecurringAmount(
@@ -142,7 +142,7 @@ void Contribution::GetVerifiedRecurringAmount(
 // static
 double Contribution::GetAmountFromVerifiedRecurring(
     const ledger::PublisherInfoList& publisher_list) {
-  double total_recurring_amount(0.0);
+  double total_recurring_amount = 0.0;
   for (const auto& publisher : publisher_list) {
     if (publisher->id.empty()) {
       continue;
@@ -158,49 +158,50 @@ double Contribution::GetAmountFromVerifiedRecurring(
 
 ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
     const std::string& viewing_id,
-    const ledger::PublisherInfoList* list,
-    double* budget) {
+    const ledger::PublisherInfoList* list) {
   ledger::PublisherInfoList verified;
-  ledger::PublisherInfoList temp;
+  ledger::PublisherInfoList non_verified_temp;
   ledger::PendingContributionList non_verified;
 
   double verified_total = 0.0;
-  double non_verified_bat = 0.0;
+  double verified_bat = 0.0;
   double ac_amount = ledger_->GetContributionAmount();
 
   for (const auto& publisher : *list) {
+    if (publisher->percent == 0) {
+      continue;
+    }
+
     if (publisher->verified) {
       verified.push_back(publisher->Clone());
-      verified_total += publisher->percent;
+      verified_total += publisher->weight;
     } else {
-      temp.push_back(publisher->Clone());
+      non_verified_temp.push_back(publisher->Clone());
     }
   }
 
   // verified publishers
   for (auto& publisher : verified) {
-    publisher->percent = static_cast<uint32_t>(
-        static_cast<double>(publisher->percent) / verified_total) * 100;
+    publisher->weight = (publisher->weight / verified_total) * 100;
+    publisher->percent = static_cast<uint32_t>(publisher->weight);
+    *budget += publisher->weight;
   }
 
   // non-verified publishers
-  for (const auto& publisher : temp) {
+  for (const auto& publisher : non_verified_temp) {
     auto contribution = ledger::PendingContribution::New();
-    contribution->amount =
-        (static_cast<double>(publisher->percent) / 100) * ac_amount;
+    contribution->amount = (publisher->weight / 100) * ac_amount;
     contribution->publisher_key = publisher->id;
     contribution->viewing_id = viewing_id;
     contribution->category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
 
-    non_verified_bat += contribution->amount;
+
     non_verified.push_back(std::move(contribution));
   }
 
   if (non_verified.size() > 0) {
     ledger_->SaveUnverifiedContribution(std::move(non_verified));
   }
-
-  *budget = ac_amount - non_verified_bat;
 
   return verified;
 }
@@ -213,7 +214,7 @@ ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
   ledger::PendingContributionList non_verified;
 
   for (const auto& publisher : *list) {
-    if (publisher->id.empty()) {
+    if (publisher->id.empty() || publisher->percent == 0) {
       continue;
     }
 
