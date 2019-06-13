@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/events/lazy_event_dispatcher.h b/extensions/browser/events/lazy_event_dispatcher.h
+index 9533cf873709ddb3f6a2e8b4f9700188ab9879e1..f0a05c71543139bdabb8d7f3d527851e3f9503d7 100644
+--- a/extensions/browser/events/lazy_event_dispatcher.h
++++ b/extensions/browser/events/lazy_event_dispatcher.h
+@@ -55,6 +55,7 @@ class LazyEventDispatcher {
+   bool HasAlreadyDispatched(const LazyContextId& dispatch_context) const;
+ 
+  private:
++  friend class BraveLazyEventDispatcher;
+   // Possibly loads given extension's background page or extension Service
+   // Worker in preparation to dispatch an event.  Returns true if the event was
+   // queued for subsequent dispatch, false otherwise.
