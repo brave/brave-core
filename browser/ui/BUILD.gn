@@ -40,6 +40,8 @@ source_set("ui") {
       "content_settings/brave_content_setting_bubble_model.h",
       "content_settings/brave_content_setting_image_models.cc",
       "content_settings/brave_content_setting_image_models.h",
+      "global_error/brave_global_error_service.cc",
+      "global_error/brave_global_error_service.h",
       "omnibox/brave_omnibox_client.cc",
       "omnibox/brave_omnibox_client.h",
       "toolbar/brave_app_menu_model.cc",

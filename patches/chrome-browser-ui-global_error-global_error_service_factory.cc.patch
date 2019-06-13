@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/global_error/global_error_service_factory.cc b/chrome/browser/ui/global_error/global_error_service_factory.cc
+index 819d50e5193cab3265456ae7f0be2b131869a962..9f1d6da7641b617532329a9585cd9d8f91f842b9 100644
+--- a/chrome/browser/ui/global_error/global_error_service_factory.cc
++++ b/chrome/browser/ui/global_error/global_error_service_factory.cc
+@@ -31,7 +31,7 @@ GlobalErrorServiceFactory::~GlobalErrorServiceFactory() {
+ 
+ KeyedService* GlobalErrorServiceFactory::BuildServiceInstanceFor(
+     content::BrowserContext* profile) const {
+-  return new GlobalErrorService(static_cast<Profile*>(profile));
++  return new BraveGlobalErrorService(static_cast<Profile*>(profile));
+ }
+ 
+ content::BrowserContext* GlobalErrorServiceFactory::GetBrowserContextToUse(

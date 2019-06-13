@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/global_error/global_error_service.h b/chrome/browser/ui/global_error/global_error_service.h
+index 37f806cdd7e235b1851dff648991697801cb29e8..aeda7efe8c51ceac4d7c8ced26fa42d207d3b002 100644
+--- a/chrome/browser/ui/global_error/global_error_service.h
++++ b/chrome/browser/ui/global_error/global_error_service.h
+@@ -68,7 +68,7 @@ class GlobalErrorService : public KeyedService {
+   // Post a notification that a global error has changed and that the error UI
+   // should update it self. Pass NULL for the given error to mean all error UIs
+   // should update.
+-  void NotifyErrorsChanged(GlobalError* error);
++  virtual void NotifyErrorsChanged(GlobalError* error);
+ 
+  private:
+   GlobalErrorList all_errors_;
