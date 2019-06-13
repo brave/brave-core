@@ -15,7 +15,7 @@ using std::placeholders::_3;
 
 namespace braveledger_media {
 
-BatGetMedia::BatGetMedia(bat_ledger::LedgerImpl* ledger):
+Media::Media(bat_ledger::LedgerImpl* ledger):
   ledger_(ledger),
   media_youtube_(new braveledger_media::MediaYouTube(ledger)),
   media_twitch_(new braveledger_media::MediaTwitch(ledger)),
@@ -23,9 +23,9 @@ BatGetMedia::BatGetMedia(bat_ledger::LedgerImpl* ledger):
   media_reddit_(new braveledger_media::MediaReddit(ledger)) {
 }
 
-BatGetMedia::~BatGetMedia() {}
+Media::~Media() {}
 
-std::string BatGetMedia::GetLinkType(const std::string& url,
+std::string Media::GetLinkType(const std::string& url,
                                      const std::string& first_party_url,
                                      const std::string& referrer) {
   std::string type;
@@ -40,7 +40,7 @@ std::string BatGetMedia::GetLinkType(const std::string& url,
   return type;
 }
 
-void BatGetMedia::ProcessMedia(const std::map<std::string, std::string>& parts,
+void Media::ProcessMedia(const std::map<std::string, std::string>& parts,
                                const std::string& type,
                                ledger::VisitDataPtr visit_data) {
   if (parts.size() == 0 || !ledger_->GetRewardsMainEnabled() || !visit_data) {
@@ -58,7 +58,7 @@ void BatGetMedia::ProcessMedia(const std::map<std::string, std::string>& parts,
   }
 }
 
-void BatGetMedia::GetMediaActivityFromUrl(
+void Media::GetMediaActivityFromUrl(
     uint64_t window_id,
     ledger::VisitDataPtr visit_data,
     const std::string& type,
@@ -79,7 +79,7 @@ void BatGetMedia::GetMediaActivityFromUrl(
   }
 }
 
-void BatGetMedia::OnMediaActivityError(ledger::VisitDataPtr visit_data,
+void Media::OnMediaActivityError(ledger::VisitDataPtr visit_data,
                                        const std::string& type,
                                        uint64_t window_id) {
   std::string url;
@@ -109,7 +109,7 @@ void BatGetMedia::OnMediaActivityError(ledger::VisitDataPtr visit_data,
   }
 }
 
-void BatGetMedia::SaveMediaInfo(const std::string& type,
+void Media::SaveMediaInfo(const std::string& type,
                                 const std::map<std::string, std::string>& data,
                                 ledger::PublisherInfoCallback callback) {
   if (type == TWITTER_MEDIA_TYPE) {
@@ -119,7 +119,7 @@ void BatGetMedia::SaveMediaInfo(const std::string& type,
 }
 
 // static
-std::string BatGetMedia::GetShareURL(
+std::string Media::GetShareURL(
     const std::string& type,
     const std::map<std::string, std::string>& args) {
   if (type == TWITTER_MEDIA_TYPE)

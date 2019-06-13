@@ -54,7 +54,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     ledger_client_(client),
     bat_client_(new BatClient(this)),
     bat_publishers_(new BatPublishers(this)),
-    bat_get_media_(new BatGetMedia(this)),
+    bat_media_(new Media(this)),
     bat_state_(new BatState(this)),
     bat_contribution_(new Contribution(this)),
     initialized_task_scheduler_(false),
@@ -209,14 +209,14 @@ void LedgerImpl::OnXHRLoad(
     const std::string& first_party_url,
     const std::string& referrer,
     ledger::VisitDataPtr visit_data) {
-  std::string type = bat_get_media_->GetLinkType(url,
+  std::string type = bat_media_->GetLinkType(url,
                                                  first_party_url,
                                                  referrer);
   if (type.empty()) {
     // It is not a media supported type
     return;
   }
-  bat_get_media_->ProcessMedia(parts, type, std::move(visit_data));
+  bat_media_->ProcessMedia(parts, type, std::move(visit_data));
 }
 
 void LedgerImpl::OnPostData(
@@ -225,7 +225,7 @@ void LedgerImpl::OnPostData(
       const std::string& referrer,
       const std::string& post_data,
       ledger::VisitDataPtr visit_data) {
-  std::string type = bat_get_media_->GetLinkType(url,
+  std::string type = bat_media_->GetLinkType(url,
                                                  first_party_url,
                                                  referrer);
   if (type.empty()) {
@@ -237,7 +237,7 @@ void LedgerImpl::OnPostData(
   if (TWITCH_MEDIA_TYPE == type) {
     braveledger_media::GetTwitchParts(post_data, &twitchParts);
     for (size_t i = 0; i < twitchParts.size(); i++) {
-      bat_get_media_->ProcessMedia(twitchParts[i], type, std::move(visit_data));
+      bat_media_->ProcessMedia(twitchParts[i], type, std::move(visit_data));
     }
   }
 }
@@ -1047,7 +1047,7 @@ void LedgerImpl::GetMediaActivityFromUrl(
     ledger::VisitDataPtr visit_data,
     const std::string& providerType,
     const std::string& publisher_blob) {
-  bat_get_media_->GetMediaActivityFromUrl(windowId,
+  bat_media_->GetMediaActivityFromUrl(windowId,
                                           std::move(visit_data),
                                           providerType,
                                           publisher_blob);
@@ -1543,7 +1543,7 @@ scoped_refptr<base::SequencedTaskRunner> LedgerImpl::GetTaskRunner() {
 void LedgerImpl::SaveMediaInfo(const std::string& type,
                                const std::map<std::string, std::string>& data,
                                ledger::PublisherInfoCallback callback) {
-  bat_get_media_->SaveMediaInfo(type, data, callback);
+  bat_media_->SaveMediaInfo(type, data, callback);
 }
 
 void LedgerImpl::SetInlineTipSetting(const std::string& key, bool enabled) {
@@ -1557,7 +1557,7 @@ bool LedgerImpl::GetInlineTipSetting(const std::string& key) {
 std::string LedgerImpl::GetShareURL(
     const std::string& type,
     const std::map<std::string, std::string>& args) {
-  return bat_get_media_->GetShareURL(type, args);
+  return bat_media_->GetShareURL(type, args);
 }
 
 void LedgerImpl::OnGetPendingContributions(

@@ -23,11 +23,11 @@ class LedgerImpl;
 
 namespace braveledger_media {
 
-class BatGetMedia {
+class Media {
  public:
-  explicit BatGetMedia(bat_ledger::LedgerImpl* ledger);
+  explicit Media(bat_ledger::LedgerImpl* ledger);
 
-  ~BatGetMedia();
+  ~Media();
 
   static std::string GetLinkType(const std::string& url,
                                  const std::string& first_party_url,
