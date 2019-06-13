@@ -1,15 +1,12 @@
 diff --git a/net/BUILD.gn b/net/BUILD.gn
-index d76f076bbf1b373238525f756857cc0591c627af..bad8a3b5496bcf24e002e3ae2b5e7d7d60848aee 100644
+index d76f076bbf1b373238525f756857cc0591c627af..137f9eb4e93844efc34aa29e3c2e49d82b6061af 100644
 --- a/net/BUILD.gn
 +++ b/net/BUILD.gn
-@@ -1837,6 +1837,11 @@ component("net") {
+@@ -1837,6 +1837,8 @@ component("net") {
        ]
      }
  
-+    sources += [
-+      "//brave/net/proxy_resolution/proxy_config_service_tor.cc",
-+      "//brave/net/proxy_resolution/proxy_config_service_tor.h",
-+    ]
++    sources += brave_net_sources
 +
      if (!use_kerberos) {
        sources -= [
