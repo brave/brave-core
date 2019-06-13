@@ -1,0 +1,12 @@
+diff --git a/extensions/browser/lazy_background_task_queue.h b/extensions/browser/lazy_background_task_queue.h
+index bf9f15c7393cd8d37fcad1d26fabfc8c2fa552c5..aa1d2a1766c9bb7b6cc2a2bb8ac91692adea94f1 100644
+--- a/extensions/browser/lazy_background_task_queue.h
++++ b/extensions/browser/lazy_background_task_queue.h
+@@ -67,6 +67,7 @@ class LazyBackgroundTaskQueue : public KeyedService,
+                       PendingTask task) override;
+ 
+  private:
++  friend class BraveLazyBackgroundTaskQueue;
+   FRIEND_TEST_ALL_PREFIXES(LazyBackgroundTaskQueueTest, AddPendingTask);
+   FRIEND_TEST_ALL_PREFIXES(LazyBackgroundTaskQueueTest, ProcessPendingTasks);
+   FRIEND_TEST_ALL_PREFIXES(LazyBackgroundTaskQueueTest,
