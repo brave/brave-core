@@ -81,7 +81,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
     />
   ))
   .add('Site Banner', withState({ donationAmounts, currentAmount: '5.0', showBanner: true }, (store) => {
-    const mediaProvider = select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit' }, 'youtube')
+    const mediaProvider = select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit', github: 'github' }, 'youtube')
     const screenName = text('Screen Name', '')
     const commentText = text('Post Text', '')
 
@@ -147,6 +147,10 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
                   {
                     type: 'reddit',
                     url: 'https://www.reddit.com/r/duckduckgo'
+                  },
+                  {
+                    type: 'github',
+                    url: 'https://github.com/duckduckgo'
                   }
                 ]}
                 showUnVerifiedNotice={boolean('Show unverified notice', false)}
@@ -542,6 +546,10 @@ storiesOf('Feature Components/Rewards/Concepts/Mobile', module)
                   {
                     type: 'reddit',
                     url: 'https://www.reddit.com/r/duckduckgo'
+                  },
+                  {
+                    type: 'github',
+                    url: 'https://github.com/duckduckgo'
                   }
                 ]}
               />

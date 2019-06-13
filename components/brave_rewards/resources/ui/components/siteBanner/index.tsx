@@ -45,11 +45,12 @@ import {
   YoutubeColorIcon,
   TwitchColorIcon,
   RedditColorIcon,
+  GitHubColorIcon,
   AlertCircleIcon
 } from '../../../components/icons'
 
 export type Social = { type: SocialType, url: string }
-export type SocialType = 'twitter' | 'youtube' | 'twitch' | 'reddit' | 'vimeo'
+export type SocialType = 'twitter' | 'youtube' | 'twitch' | 'reddit' | 'vimeo' | 'github'
 export type Donation = { tokens: string, converted: string, selected?: boolean }
 
 export interface Props {
@@ -113,6 +114,9 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
       case 'twitch':
         logo = <TwitchColorIcon />
         break
+      case 'github':
+        logo = <GitHubColorIcon />
+        break
       case 'reddit':
         logo = <RedditColorIcon />
         break
@@ -165,6 +169,8 @@ export default class SiteBanner extends React.PureComponent<Props, State> {
         return `${identifier} ${getLocale('on')} Reddit`
       case 'vimeo':
         return `${identifier} ${getLocale('on')} Vimeo`
+      case 'github':
+        return `${identifier} ${getLocale('on')} GitHub`
       default:
         return identifier
     }

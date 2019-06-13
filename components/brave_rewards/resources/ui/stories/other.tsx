@@ -181,7 +181,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
           type={select<any>('Type', { big: 'big', small: 'small' }, 'big')}
           title={'Jonathon Doe'}
           verified={boolean('Verified', false)}
-          provider={select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit', vimeo: 'vimeo' }, 'youtube')}
+          provider={select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit', vimeo: 'vimeo', github: 'github' }, 'youtube')}
           src={favicon}
         />
       </div>
@@ -233,7 +233,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
         id={'toggle-tips'}
         onToggleTips={onToggle}
         tipsEnabled={boolean('Selected', store.state.tipsEnabled)}
-        provider={select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit', vimeo: 'vimeo' }, 'youtube')}
+        provider={select<any>('Provider', { youtube: 'youtube', twitter: 'twitter', twitch: 'twitch', reddit: 'reddit', vimeo: 'vimeo', github: 'github' }, 'youtube')}
       />
     )
   }))
