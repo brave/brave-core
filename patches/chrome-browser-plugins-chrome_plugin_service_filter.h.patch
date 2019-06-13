@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/plugins/chrome_plugin_service_filter.h b/chrome/browser/plugins/chrome_plugin_service_filter.h
+index c707c8773a74ad9b43381487eb6ffd0d80306f91..ae24854ddcf5ef721775e3b607d14446d8d2ebe0 100644
+--- a/chrome/browser/plugins/chrome_plugin_service_filter.h
++++ b/chrome/browser/plugins/chrome_plugin_service_filter.h
+@@ -74,6 +74,7 @@ class ChromePluginServiceFilter : public content::PluginServiceFilter,
+                      const base::FilePath& path) override;
+ 
+  private:
++  friend class BravePluginServiceFilter;
+   friend struct base::DefaultSingletonTraits<ChromePluginServiceFilter>;
+   struct ContextInfo;
+ 

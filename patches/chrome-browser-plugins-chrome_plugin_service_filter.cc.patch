@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/plugins/chrome_plugin_service_filter.cc b/chrome/browser/plugins/chrome_plugin_service_filter.cc
-index 5c2a2d0adf1ca353d4ab8dd23475c9d6e6df3b55..dc8f62521ba5c78fcee7e79d028ee8ddc8964e7f 100644
+index 5c2a2d0adf1ca353d4ab8dd23475c9d6e6df3b55..3984d890781a29849fe0c68e94d99c2e3978fddb 100644
 --- a/chrome/browser/plugins/chrome_plugin_service_filter.cc
 +++ b/chrome/browser/plugins/chrome_plugin_service_filter.cc
 @@ -52,7 +52,7 @@ class ProfileContentSettingObserver : public content_settings::Observer {
@@ -11,3 +11,12 @@ index 5c2a2d0adf1ca353d4ab8dd23475c9d6e6df3b55..dc8f62521ba5c78fcee7e79d028ee8dd
        DCHECK_EQ(ContentSettingsPattern::Relation::IDENTITY,
                  ContentSettingsPattern::Wildcard().Compare(secondary_pattern));
        PluginUtils::RememberFlashChangedForSite(map, primary);
+@@ -115,7 +115,7 @@ ChromePluginServiceFilter::ProcessDetails::~ProcessDetails() {}
+ 
+ // static
+ ChromePluginServiceFilter* ChromePluginServiceFilter::GetInstance() {
+-  return base::Singleton<ChromePluginServiceFilter>::get();
++  return BravePluginServiceFilter::GetInstance();
+ }
+ 
+ void ChromePluginServiceFilter::RegisterResourceContext(Profile* profile,
