@@ -1,6 +1,6 @@
 import cosmeticFilterActions from '../actions/cosmeticFilterActions'
 
-let rule = {
+export let rule = {
   host: '',
   selector: ''
 }
@@ -30,36 +30,10 @@ chrome.contextMenus.create({
   parentId: 'brave',
   contexts: ['all']
 })
+// context menu listener emit event -> query -> tabsCallback -> onSelectorReturned
 
-// contextMenu listener - when triggered, grab latest selector
-chrome.contextMenus.onClicked.addListener(function (info, tab) {
-  switch (info.menuItemId) {
-    case 'addBlockElement': {
-      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs: any) {
-        chrome.tabs.sendMessage(tabs[0].id, { type: 'getTargetSelector' }, function (response: any) {
-          if (response) {
-            rule.selector = window.prompt('CSS selector to block: ', `${response}`) || ''
-            chrome.tabs.insertCSS({
-              code: `${rule.selector} {display: none;}`
-            })
-            cosmeticFilterActions.siteCosmeticFilterAdded(rule.host, rule.selector)
-          }
-        })
-      })
-      break
-    }
-    case 'resetSiteFilterSettings': {
-      cosmeticFilterActions.siteCosmeticFilterRemoved(rule.host)
-      break
-    }
-    case 'resetAllFilterSettings': {
-      cosmeticFilterActions.allCosmeticFiltersRemoved()
-      break
-    }
-    default: {
-      console.warn('[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}')
-    }
-  }
+chrome.contextMenus.onClicked.addListener((info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) => {
+  onContextMenuClicked(info, tab)
 })
 
 // content script listener for right click DOM selection event
@@ -72,3 +46,47 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
   }
 })
+
+export function onContextMenuClicked (info: chrome.contextMenus.OnClickData, tab: chrome.tabs.Tab) {
+  switch (info.menuItemId) {
+    case 'addBlockElement':
+      query()
+      break
+    case 'resetSiteFilterSettings': {
+      cosmeticFilterActions.siteCosmeticFilterRemoved(rule.host)
+      break
+    }
+    case 'resetAllFilterSettings': {
+      cosmeticFilterActions.allCosmeticFiltersRemoved()
+      break
+    }
+    default: {
+      console.warn('[cosmeticFilterEvents] invalid context menu option: ${info.menuItemId}')
+    }
+  }
+}
+
+export function query () {
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs: [chrome.tabs.Tab]) => {
+    tabsCallback(tabs)
+  })
+}
+
+export function tabsCallback (tabs: any) {
+  chrome.tabs.sendMessage(tabs[0].id, { type: 'getTargetSelector' }, onSelectorReturned)
+}
+
+export function onSelectorReturned (response: any) {
+  if (!response) {
+    rule.selector = window.prompt('We were unable to automatically populate a correct CSS selector for you. Please manually enter a CSS selector to block:') || ''
+  } else {
+    rule.selector = window.prompt('CSS selector:', `${response}`) || ''
+  }
+
+  if (rule.selector && rule.selector.length > 0) {
+    chrome.tabs.insertCSS({
+      code: `${rule.selector} {display: none;}`
+    })
+    cosmeticFilterActions.siteCosmeticFilterAdded(rule.host, rule.selector)
+  }
+}

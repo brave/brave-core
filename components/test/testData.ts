@@ -104,8 +104,13 @@ export const blockedResource: BlockDetails = {
   subresource: 'https://www.brave.com/test'
 }
 
+// see: https://developer.chrome.com/extensions/events
+interface OnMessageEvent extends chrome.events.Event<(message: object, options: any, responseCallback: any) => void> {
+  emit: (message: object) => void
+}
+
 export const getMockChrome = () => {
-  return {
+  let mock = {
     send: () => undefined,
     getVariableValue: () => undefined,
     braveRewards: {
@@ -116,7 +121,13 @@ export const getMockChrome = () => {
       onConnect: new ChromeEvent(),
       onStartup: new ChromeEvent(),
       onMessageExternal: new ChromeEvent(),
-      onConnectExternal: new ChromeEvent()
+      onConnectExternal: new ChromeEvent(),
+      // see: https://developer.chrome.com/apps/runtime#method-sendMessage
+      sendMessage: function (message: object, responseCallback: () => void) {
+        const onMessage = chrome.runtime.onMessage as OnMessageEvent
+        onMessage.emit(message)
+        responseCallback()
+      }
     },
     browserAction: {
       setBadgeBackgroundColor: function (properties: object) {
@@ -150,6 +161,12 @@ export const getMockChrome = () => {
       },
       insertCSS: function (details: jest.SpyInstance) {
         return
+      },
+      query: function (queryInfo: chrome.tabs.QueryInfo, callback: (result: chrome.tabs.Tab[]) => void) {
+        return callback
+      },
+      sendMessage: function (tabID: Number, message: any, options: object, responseCallback: any) {
+        return responseCallback
       },
       onActivated: new ChromeEvent(),
       onCreated: new ChromeEvent(),
@@ -222,8 +239,27 @@ export const getMockChrome = () => {
       search: function (query: string, callback: (results: chrome.bookmarks.BookmarkTreeNode[]) => void) {
         return
       }
+    },
+    contextMenus: {
+      create: function (data: any) {
+        return Promise.resolve()
+      },
+      onBlocked: new ChromeEvent(),
+      allowScriptsOnce: function (origins: Array<string>, tabId: number, cb: () => void) {
+        setImmediate(cb)
+      },
+      onClicked: new ChromeEvent()
     }
   }
+  return mock
+}
+export const window = () => {
+  let mock = {
+    prompt: function (text: String) {
+      return text
+    }
+  }
+  return mock
 }
 
 export const initialState = deepFreeze({
