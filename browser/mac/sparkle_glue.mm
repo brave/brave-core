@@ -81,11 +81,6 @@ class PerformBridge : public base::RefCountedThreadSafe<PerformBridge> {
 
 }  // namespace
 
-NSString* const kBraveAutoupdateStatusNotification = @"AutoupdateStatusNotification";
-NSString* const kBraveAutoupdateStatusStatus = @"status";
-NSString* const kBraveAutoupdateStatusVersion = @"version";
-NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
-
 @implementation SparkleGlue
 {
   SUUpdater* su_updater_;
@@ -98,7 +93,7 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
   NSString* new_version_;
 
   std::string channel_;
-  // The most recent kBraveAutoupdateStatusNotification notification posted.
+  // The most recent kAutoupdateStatusNotification notification posted.
   base::scoped_nsobject<NSNotification> recentNotification_;
 }
 
@@ -241,16 +236,16 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
   NSNumber* statusNumber = [NSNumber numberWithInt:status];
   NSMutableDictionary* dictionary =
       [NSMutableDictionary dictionaryWithObject:statusNumber
-                                         forKey:kBraveAutoupdateStatusStatus];
+                                         forKey:kAutoupdateStatusStatus];
   if ([version length]) {
-    [dictionary setObject:version forKey:kBraveAutoupdateStatusVersion];
+    [dictionary setObject:version forKey:kAutoupdateStatusVersion];
   }
   if ([error length]) {
-    [dictionary setObject:error forKey:kBraveAutoupdateStatusErrorMessages];
+    [dictionary setObject:error forKey:kAutoupdateStatusErrorMessages];
   }
 
   NSNotification* notification =
-      [NSNotification notificationWithName:kBraveAutoupdateStatusNotification
+      [NSNotification notificationWithName:kAutoupdateStatusNotification
                                     object:self
                                   userInfo:dictionary];
   recentNotification_.reset([notification retain]);
@@ -301,7 +296,7 @@ NSString* const kBraveAutoupdateStatusErrorMessages = @"errormessages";
 - (AutoupdateStatus)recentStatus {
   NSDictionary* dictionary = [recentNotification_ userInfo];
   NSNumber* status = base::mac::ObjCCastStrict<NSNumber>(
-      [dictionary objectForKey:kBraveAutoupdateStatusStatus]);
+      [dictionary objectForKey:kAutoupdateStatusStatus]);
   return static_cast<AutoupdateStatus>([status intValue]);
 }
 
