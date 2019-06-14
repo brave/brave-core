@@ -116,7 +116,7 @@ class GreaselionServiceTest : public ExtensionBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, RuleParsing) {
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, DISABLED_RuleParsing) {
   ASSERT_TRUE(InstallGreaselionExtension());
   std::vector<std::string> scripts;
 
@@ -184,7 +184,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, RuleParsing) {
 // Ensure the site specific script service properly clears its cache of
 // precompiled URLPatterns if initialized twice. (This can happen if
 // the parent component is updated while Brave is running.)
-IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ClearCache) {
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, DISABLED_ClearCache) {
   ASSERT_TRUE(InstallGreaselionExtension());
   int size = GetRulesSize();
   // clear the cache manually to make sure we're actually
@@ -198,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ClearCache) {
   EXPECT_EQ(size, GetRulesSize());
 }
 
-IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, DISABLED_ScriptInjection) {
   ASSERT_TRUE(InstallGreaselionExtension());
   GURL url = embedded_test_server()->GetURL("www.a.com", "/simple.html");
   ui_test_utils::NavigateToURL(browser(), url);
