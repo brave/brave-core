@@ -116,6 +116,7 @@ class GreaselionServiceTest : public ExtensionBrowserTest {
   }
 };
 
+#if 0
 IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, RuleParsing) {
   ASSERT_TRUE(InstallGreaselionExtension());
   std::vector<std::string> scripts;
@@ -214,3 +215,4 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
                                     &title));
   EXPECT_EQ(title, "Altered");
 }
+#endif
