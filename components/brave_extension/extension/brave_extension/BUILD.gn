@@ -32,8 +32,9 @@ if (is_mac) {
   foreach(locale, locales) {
     bundle_data("brave_extension_framework_bundle_data_${locale}") {
       locale = string_replace(locale, "-", "_")
+      source_locale = string_replace(locale, "nb", "no")
       sources = [
-        "//brave/components/brave_extension/extension/brave_extension/_locales/$locale/messages.json"
+        "//brave/components/brave_extension/extension/brave_extension/_locales/$source_locale/messages.json"
       ]
       outputs = [
         "{{bundle_resources_dir}}/brave_extension/_locales/$locale/{{source_file_part}}"
@@ -50,8 +51,9 @@ if (is_mac) {
   foreach(locale, locales) {
     copy("locales_${locale}") {
       locale = string_replace(locale, "-", "_")
+      source_locale = string_replace(locale, "nb", "no")
       sources = [
-        "//brave/components/brave_extension/extension/brave_extension/_locales/${locale}/messages.json",
+        "//brave/components/brave_extension/extension/brave_extension/_locales/${source_locale}/messages.json",
       ]
       outputs = [
         "$root_out_dir/resources/brave_extension/_locales/${locale}/{{source_file_part}}",
