@@ -28,7 +28,6 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="3218385319396786393">Automatisches Abspielen wurde auf dieser Seite blockiert</translation>
 <translation id="4988333904713528597">Autoplay auf <ph name="HOST">$1<ex>mail.google.com</ex></ph> immer erlauben?</translation>
 <translation id="4150684676757176434">Automatische Wiedergabe weiterhin blockieren</translation>
-<translation id="7543906827780734027">Brave hat diese Erweiterung noch nicht überprüft – sie könnte bösartig sein. "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" trotzdem hinzufügen?</translation>
 <translation id="2044383478723007273">Brave Farben</translation>
 <translation id="6123134130710658846">Brave-Rewards-Button ausblenden</translation>
 <translation id="7635711399568194460">Blendet den Brave-Rewards-Button im Standortbalken aus, wenn Brave Rewards deaktiviert ist</translation>
@@ -48,26 +47,13 @@ Mit der Installation dieser Erweiterung erklären Sie sich mit den Google Widevi
 <translation id="4472575034687746823">Jetzt starten</translation>
 <translation id="3400357268283240774">Zusätzliche Einstellungen</translation>
 <translation id="6303294677342628402">Schilde</translation>
-<translation id="768979911142179781">Standardeinstellungen</translation>
-<translation id="5989930075012659993">Ihre derzeitigen Einstellungen pro Seite werden gespeichert.</translation>
 <translation id="9185018653595759199">Social-Media-Sperrung</translation>
-<translation id="6894114137169961038">Werbesteuerung</translation>
-<translation id="1096802265930928584">Cookie-Kontrolle</translation>
-<translation id="8919235146866304148">Fingerabdruckschutz</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="5259716416204774556">Skriptblockierung</translation>
 <translation id="7498695072878479744">Google-Anmeldebuttons auf Seiten dritter Parteien erlauben</translation>
 <translation id="863171915776379000">Facebook-Anmeldungen und eingebettete Posts erlauben</translation>
 <translation id="5165042248369837294">Eingebettete Twitter-Nachrichten erlauben</translation>
 <translation id="958971637207126733">In LinkedIn eingebettete Beiträge erlauben</translation>
-<translation id="6067014455220527258">Werbung blockieren</translation>
-<translation id="6985711843506827936">Werbung und Tracking erlauben</translation>
-<translation id="6132506775968708399">Cookies von Drittanbietern blockieren</translation>
 <translation id="5657156137487675418">Alle Cookies erlauben</translation>
 <translation id="6883611015375728278">Alle Cookies blockieren</translation>
-<translation id="1442559343076146186">Fingerabdruck von Drittanbietern blockieren</translation>
-<translation id="8034285923190068220">Fingerabdrucknahme erlauben</translation>
-<translation id="4540198958192073185">Alle Fingerabdrucknahmen sperren</translation>
 <translation id="8942080017911802454">WebRTC-IP-Handhabungs-Richtlinie</translation>
 <translation id="6165508094623778733">Mehr erfahren</translation>
 <translation id="8798099450830957504">Standardeinstellung</translation>

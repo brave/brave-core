@@ -28,7 +28,6 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="3218385319396786393">Automaattinen toisto on estetty tällä sivulla</translation>
 <translation id="4988333904713528597">Salli aina automaattinen toisto <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Jatka automaattisen toiston estoa</translation>
-<translation id="7543906827780734027">Brave ei ole tarkastanut tätä laajennusta vielä – se saattaa olla haitallinen. Lisää "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" silti?</translation>
 <translation id="2044383478723007273">Brave -värit</translation>
 <translation id="6123134130710658846">Piilota Brave Rewards -painike</translation>
 <translation id="7635711399568194460">Piilottaa Brave Rewards -painikkeen sijaintipalkissa, kun Brave Rewards ei ole sallittu</translation>
@@ -48,26 +47,13 @@ Asentamalla tämän laajennuksen hyväksyt Google Widevinen käyttöehdot. Hyvä
 <translation id="4472575034687746823">Aloita</translation>
 <translation id="3400357268283240774">Lisäasetukset</translation>
 <translation id="6303294677342628402">Shields</translation>
-<translation id="768979911142179781">Oletusarvot</translation>
-<translation id="5989930075012659993">Nykyiset sivukohtaiset asetuksesi säilytetään.</translation>
 <translation id="9185018653595759199">Sosiaalisen median esto</translation>
-<translation id="6894114137169961038">Mainosten hallinnointi</translation>
-<translation id="1096802265930928584">Evästeiden hallinnointi</translation>
-<translation id="8919235146866304148">Tunnistesuojaus</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="5259716416204774556">Komentosarjojen esto</translation>
 <translation id="7498695072878479744">Salli Googlen sisäänkirjautumispainikkeet kolmannen osapuolen sivuilla</translation>
 <translation id="863171915776379000">Salli Facebookin sisäänkirjautumiset ja upotetut julkaisut</translation>
 <translation id="5165042248369837294">Salli Twitterin upotetut tviitit</translation>
 <translation id="958971637207126733">Salli LinkedIn-upotuksen sisältävät julkaisut</translation>
-<translation id="6067014455220527258">Estä mainokset</translation>
-<translation id="6985711843506827936">Salli mainokset ja seuranta</translation>
-<translation id="6132506775968708399">Estä kolmannen osapuolen evästeet</translation>
 <translation id="5657156137487675418">Salli kaikki evästeet</translation>
 <translation id="6883611015375728278">Estä kaikki evästeet</translation>
-<translation id="1442559343076146186">Estä kolmannen osapuolen tunnisteet</translation>
-<translation id="8034285923190068220">Salli tunnisteet</translation>
-<translation id="4540198958192073185">Estä kaikki tunnisteet</translation>
 <translation id="8942080017911802454">WebRTC IP käsittelykäytäntö</translation>
 <translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="8798099450830957504">Oletus</translation>

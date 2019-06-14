@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Dapatkan token dengan melihat iklan di Brave. Iklan yang dipaparkan adalah berdasarkan minat anda, sebagaimana yang disimpulkan dari tingkah laku anda semasa melayari web. Tiada data peribadi atau sejarah pelayaran web akan meninggalkan pelayar web anda.</translation>
 <translation id="6112368337882254910">Auto-Sumbang</translation>
 <translation id="1527222983464337010">Cara automatik untuk menyokong penerbit dan pencipta kandungan. Tetapkan bayaran bulanan dan layari seperti biasa. Laman yang anda lawati akan menerima sumbangan anda secara automatik, berdasarkan perhatian anda yang diukur oleh Brave.</translation>
-<translation id="7178655681744815321">Pendapatan anggaran bagi kitaran ini</translation>
-<translation id="8157096848242649588">Tarikh pembayaran</translation>
-<translation id="5208388044986603165">Pemberitahuan iklan diterima</translation>
 <translation id="4229016885653790965">Maaf! Iklan belum ada di kawasan anda.</translation>
 <translation id="654711254769318398">Halaman iklan dilihat</translation>
 <translation id="2532127066761785857">Bilangan maksimum iklan dipaparkan</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Penerbit Brave yang Disahkan</translation>
 <translation id="7658239707568436148">Batal</translation>
 <translation id="7262285991915892790">Seret Ikon BAT ke</translation>
-<translation id="2151535059686617995">Ini hari bertuah anda!</translation>
-<translation id="6255773350565723852">Pemberian token anda sedang dilaksanakan.</translation>
 <translation id="7656781188259414093">sasaran.</translation>
 <translation id="1555514580945108302">Hmm...Tidak Tepat. Sila Cuba Lagi.</translation>
 <translation id="13853865024308201">Tuntut</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Tiada sumbangan menunggu…</translation>
 <translation id="1963227389609234879">Buang Semua</translation>
 <translation id="923467487918828349">Paparkan Semua</translation>
+<translation id="2151535059686617995">Ini hari bertuah anda!</translation>
+<translation id="6255773350565723852">Pemberian token anda sedang dilaksanakan.</translation>
 <translation id="1181037720776840403">Alih keluar</translation>
 <translation id="7885157704277298658">Disalin!</translation>
 <translation id="5379640681913450928">Kiraan Perkataan:</translation>

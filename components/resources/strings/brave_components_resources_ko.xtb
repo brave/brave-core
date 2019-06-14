@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Brave에서 광고를 보고 토큰을 받으세요. 광고는 사용자의 검색 행위에서 추론한 관심사를 바탕으로 제공됩니다. 개인 데이터나 검색 기록은 유출되지 않습니다.</translation>
 <translation id="6112368337882254910">자동 기부</translation>
 <translation id="1527222983464337010">출판인과 콘텐츠 제작자를 자동으로 후원하는 방법. 월 지불액을 설정하시고 평소처럼 인터넷을 돌아다니십시오. 방문한 사이트들은 Brave에 의해 측정된 여러분의 관심 정도에 따라 자동으로 기부금액을 받게 됩니다.</translation>
-<translation id="7178655681744815321">이번 주기 추정 수익</translation>
-<translation id="8157096848242649588">결제 날짜</translation>
-<translation id="5208388044986603165">받은 광고 알림</translation>
 <translation id="4229016885653790965">죄송합니다! 귀하의 지역에서는 아직 광고가 제공되지 않습니다.</translation>
 <translation id="654711254769318398">조회한 광고 페이지</translation>
 <translation id="2532127066761785857">최대 표시 광고 수</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Brave 승인 발행처</translation>
 <translation id="7658239707568436148">취소</translation>
 <translation id="7262285991915892790">배트 아이콘을 다음으로 드래그하세요</translation>
-<translation id="2151535059686617995">오늘은’ 당신의 행운의 날입니다!</translation>
-<translation id="6255773350565723852">귀하의 토큰 승인이 진행 중입니다.</translation>
 <translation id="7656781188259414093">타킷.</translation>
 <translation id="1555514580945108302">음… 잘 모르겠네요. 다시 시도하세요.</translation>
 <translation id="13853865024308201">클레임</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">보류 중인 기부금이 없습니다…</translation>
 <translation id="1963227389609234879">모두 삭제</translation>
 <translation id="923467487918828349">모두 표시</translation>
+<translation id="2151535059686617995">오늘은’ 당신의 행운의 날입니다!</translation>
+<translation id="6255773350565723852">귀하의 토큰 승인이 진행 중입니다.</translation>
 <translation id="1181037720776840403">삭제</translation>
 <translation id="7885157704277298658">복사되었습니다!</translation>
 <translation id="5379640681913450928">단어수:</translation>
