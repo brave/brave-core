@@ -96,8 +96,8 @@ class PhaseTwo {
   uint32_t last_vote_batch_timer_id_;
 
   // For testing purposes
-  friend class ContributionTest;
-  FRIEND_TEST_ALL_PREFIXES(ContributionTest, GetStatisticalVotingWinners);
+  friend class PhaseTwoTest;
+  FRIEND_TEST_ALL_PREFIXES(PhaseTwoTest, GetStatisticalVotingWinners);
 };
 
 }  // namespace braveledger_contribution

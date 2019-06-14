@@ -44,7 +44,7 @@ class BatState;
 }
 
 namespace braveledger_contribution {
-class BatContribution;
+class Contribution;
 }
 
 namespace confirmations {
@@ -580,8 +580,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
   std::unique_ptr<braveledger_media::Media> bat_media_;
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
-  std::unique_ptr<braveledger_contribution::Contribution>
-  bat_contribution_;
+  std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;

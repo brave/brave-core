@@ -9,7 +9,6 @@
 
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/contribution/contribution.h"
-#include "bat/ledger/internal/contribution/phase_two.h"
 #include "bat/ledger/internal/logging.h"
 #include "bat/ledger/ledger.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -20,30 +19,6 @@ namespace braveledger_contribution {
 
 class ContributionTest : public testing::Test {
  protected:
-  void PopulatePublisherList(braveledger_bat_helper::PublisherList* list) {
-    braveledger_bat_helper::PUBLISHER_ST publisher;
-
-    publisher.id_ = "publisher1";
-    publisher.weight_ = 2.0;
-    list->push_back(publisher);
-
-    publisher.id_ = "publisher2";
-    publisher.weight_ = 13.0;
-    list->push_back(publisher);
-
-    publisher.id_ = "publisher3";
-    publisher.weight_ = 14.0;
-    list->push_back(publisher);
-
-    publisher.id_ = "publisher4";
-    publisher.weight_ = 23.0;
-    list->push_back(publisher);
-
-    publisher.id_ = "publisher5";
-    publisher.weight_ = 38.0;
-    list->push_back(publisher);
-  }
-
   void GetPublishersForAuto(
       ledger::PublisherInfoList* publisher_info_list,
       uint32_t iterations,  /* total count of publishers */
@@ -196,39 +171,6 @@ TEST_F(ContributionTest, WillTriggerNotification) {
       100, 4, 100, 5, {1, 5, 10, 20, 50}, 5, 89.9));
   EXPECT_FALSE(WillTriggerNotification(
       100, 4, 100, 5, {1, 5, 10, 20, 50}, 5, 90));
-}
-
-TEST_F(ContributionTest, GetStatisticalVotingWinners) {
-  auto phase_two =
-      std::make_unique<braveledger_contribution::PhaseTwo>(nullptr, nullptr);
-
-  braveledger_bat_helper::PublisherList publisher_list;
-  PopulatePublisherList(&publisher_list);
-
-  struct {
-    double dart;
-    const char* publisher;
-  } cases[] = {
-      {0.01, "publisher1"},
-      {0.05, "publisher2"},
-      {0.10, "publisher2"},
-      {0.20, "publisher3"},
-      {0.30, "publisher4"},
-      {0.40, "publisher4"},
-      {0.50, "publisher4"},
-      {0.60, "publisher5"},
-      {0.70, "publisher5"},
-      {0.80, "publisher5"},
-      {0.90, "publisher5"},
-  };
-
-  for (size_t i = 0; i < base::size(cases); i++) {
-    braveledger_bat_helper::WINNERS_ST winner;
-    bool result = phase_two->GetStatisticalVotingWinner(
-        cases[i].dart, publisher_list, &winner);
-    EXPECT_TRUE(result);
-    EXPECT_STREQ(winner.publisher_data_.id_.c_str(), cases[i].publisher);
-  }
 }
 
 }  // namespace braveledger_contribution
