@@ -34,16 +34,6 @@ import Clang
 final class Config {
   /// The Obj-C class prefixes
   static let classPrefix = "BAT"
-  /// Includes which are to be included when parsing the AST (both are needed for some reason as of
-  /// llvm 8.0)
-  static let systemIncludes = [
-    "/usr/local/opt/llvm/include/c++/v1",
-    "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include",
-    // Temporary hack:
-    "/Users/kyle/git/brave/brave-browser/src/",
-    "/Users/kyle/git/brave/brave-browser/src/out/sim-release/gen/brave/vendor/bat-native-ledger/include",
-    "/Users/kyle/git/brave/brave-browser/src/out/sim-release/gen/",
-  ]
 }
 
 func generate(from files: [String], includePaths: [String], outputDirectory: String) {
@@ -75,7 +65,7 @@ func generate(from files: [String], includePaths: [String], outputDirectory: Str
     // Have to define "LEDGER_EXPORT" so we don't get parsing errors.
     // I assume its because we are parsing headers and not source files
     let args: [String] = ["-x", "c++", "-std=c++14", "-DLEDGER_EXPORT= ", "-iframework", "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"] +
-      (Config.systemIncludes.flatMap { ["-isystem", $0] }) +
+//      (Config.systemIncludes.flatMap { ["-isystem", $0] }) +
       (includePaths.flatMap { ["-I", $0] })
     var unit: CXTranslationUnit!
     let errorCode = clang_parseTranslationUnit2(idx, file, args.map { ($0 as NSString).utf8String }, Int32(args.count), nil, 0, 0, &unit)
@@ -120,38 +110,45 @@ func generate(from files: [String], includePaths: [String], outputDirectory: Str
   }
 }
 
-guard let libraryPath = ProcessInfo.processInfo.environment["BATLibraryPath"],
-      let ledgerPath = ProcessInfo.processInfo.environment["BATLedgerPath"],
-      let adsPath = ProcessInfo.processInfo.environment["BATAdsPath"] else {
-  fatalError("Missing `BATLibraryPath` & `BATLedgerPath` from environment variables")
-}
+let ledgerPath = ProcessInfo.processInfo.arguments[1]
+let adsPath = ProcessInfo.processInfo.arguments[2]
+let outputPath = ProcessInfo.processInfo.arguments[3]
 
-guard FileManager.default.fileExists(atPath: "/usr/local/opt/llvm/include/c++/v1") else {
-  fatalError("This tool requires LLVM/Clang be downloaded at `/usr/local/opt/llvm`")
-}
+let argCount = ProcessInfo.processInfo.arguments.count
+let includeDirectories = [String](ProcessInfo.processInfo.arguments[5..<argCount])
 
 // Generate ledger files
 do {
-  let includePath = libraryPath.appending("/bat-native-ledger/include")
+  let includePath = ledgerPath.appending("/include")
   let headersPath = includePath.appending("/bat/ledger")
-  let filePaths = try! FileManager.default.contentsOfDirectory(atPath: headersPath)
-    .filter { $0.hasSuffix(".h") }
-    .map { return "\(headersPath)/\($0)" }
-  let outputPath = ledgerPath.appending("/Generated")
+//  let filePaths = try! FileManager.default.contentsOfDirectory(atPath: headersPath)
+//    .filter { $0.hasSuffix(".h") }
+//    .map { return "\(headersPath)/\($0)" }
   
-  generate(from: filePaths, includePaths: [includePath], outputDirectory: outputPath)
-  createBridge(from: "\(headersPath)/ledger_client.h", className: "LedgerClient", includePaths: [includePath], outputDirectory: outputPath)
+//  generate(from: filePaths, includePaths: [includePath], outputDirectory: outputPath)
+  createBridge(
+    from: "\(headersPath)/ledger_client.h",
+    className: "LedgerClient",
+    systemIncludePaths: includeDirectories,
+    includePaths: [includePath],
+    outputDirectory: outputPath
+  )
 }
 
 // Generate ads bridge
 do {
-  let includePath = libraryPath.appending("/bat-native-ads/include")
+  let includePath = adsPath.appending("/include")
   let headersPath = includePath.appending("/bat/ads")
 //  let filePaths = try! FileManager.default.contentsOfDirectory(atPath: headersPath)
 //    .filter { $0.hasSuffix(".h") }
 //    .map { return "\(headersPath)/\($0)" }
-  let outputPath = adsPath.appending("/Generated")
   
 //  generate(from: filePaths, includePaths: [includePath], outputDirectory: outputPath)
-  createBridge(from: "\(headersPath)/ads_client.h", className: "AdsClient", includePaths: [includePath], outputDirectory: outputPath)
+  createBridge(
+    from: "\(headersPath)/ads_client.h",
+    className: "AdsClient",
+    systemIncludePaths: includeDirectories,
+    includePaths: [includePath],
+    outputDirectory: outputPath
+  )
 }

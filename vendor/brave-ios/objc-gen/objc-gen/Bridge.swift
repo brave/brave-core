@@ -131,13 +131,13 @@ struct Method: Hashable, Comparable {
 ///      redirect all callbacks to said bridge
 ///   - `NativeLedgerClientBridge.h`: An Obj-C++ header defining a protocol with all
 ///      `NativeLedgerClient` callbacks
-func createBridge(from clientFile: String, className: String, includePaths: [String], outputDirectory: String) {
+func createBridge(from clientFile: String, className: String, systemIncludePaths: [String], includePaths: [String], outputDirectory: String) {
   let idx = clang_createIndex(0, 1)
   defer { clang_disposeIndex(idx) }
   // Have to define "LEDGER_EXPORT" so we don't get parsing errors.
   // I assume its because we are parsing headers and not source files
   let args: [String] = ["-x", "c++", "-std=c++14", "-DLEDGER_EXPORT= ", "-iframework", "/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks"] +
-    (Config.systemIncludes.flatMap { ["-isystem", $0] }) +
+    (systemIncludePaths.flatMap { ["-isystem", $0] }) +
     (includePaths.flatMap { ["-I", $0] })
   var unit: CXTranslationUnit!
   let errorCode = clang_parseTranslationUnit2(idx, clientFile, args.map { ($0 as NSString).utf8String }, Int32(args.count), nil, 0, 0, &unit)

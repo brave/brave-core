@@ -57,7 +57,8 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ads",
     ":resources",
-    ":coredata"
+    ":coredata",
+    ":gen-native-bridges",
   ]
 
   bundle_deps_filter = [ "//third_party/icu:icudata" ]
@@ -71,9 +72,6 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ledger/Data/BATLedgerDatabase.mm",
     "Ledger/Data/DataController.h",
     "Ledger/Data/DataController.mm",
-    "Ledger/Generated/NativeLedgerClientBridge.h",
-    "Ledger/Generated/NativeLedgerClient.h",
-    "Ledger/Generated/NativeLedgerClient.mm",
     "Ledger/Generated/Records.h",
     "Ledger/Generated/Records.mm",
     "Ledger/Models/BATActivityInfoFilter.h",
@@ -97,9 +95,6 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ads/BATAdsNotification.mm",
     "Ads/BATBraveAds.h",
     "Ads/BATBraveAds.mm",
-    "Ads/Generated/NativeAdsClientBridge.h",
-    "Ads/Generated/NativeAdsClient.h",
-    "Ads/Generated/NativeAdsClient.mm",
     "Ledger/Data/Model/CoreDataModels.h",
     "Ledger/Data/Model/ActivityInfo.h",
     "Ledger/Data/Model/ActivityInfo.m",
@@ -113,6 +108,12 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ledger/Data/Model/PublisherInfo.m",
     "Ledger/Data/Model/RecurringDonation.h",
     "Ledger/Data/Model/RecurringDonation.m",
+    "$target_gen_dir/NativeLedgerClientBridge.h",
+    "$target_gen_dir/NativeLedgerClient.h",
+    "$target_gen_dir/NativeLedgerClient.mm",
+    "$target_gen_dir/NativeAdsClientBridge.h",
+    "$target_gen_dir/NativeAdsClient.h",
+    "$target_gen_dir/NativeAdsClient.mm",
   ]
 
   public_headers = [
@@ -169,7 +170,7 @@ bundle_data("coredata") {
 }
 
 action("compile_coredata") {
-  script = "lib/compile-model.py"
+  script = "scripts/compile-model.py"
 
   inputs = [
     "Ledger/Data/Model.xcdatamodeld",
@@ -186,5 +187,49 @@ action("compile_coredata") {
   args = [
     "--model=$model",
     "--output=$out_dir",
+  ]
+}
+
+action("gen-native-bridges") {
+  script = "scripts/generate-bridges.py"
+
+  deps = [
+    "//brave/vendor/bat-native-ledger",
+    "//brave/vendor/bat-native-ads",
+  ]
+
+  inputs = [
+    "//brave/vendor/bat-native-ledger/include/bat/ledger/ledger_client.h",
+    "//brave/vendor/bat-native-ads/include/bat/ads/ads_client.h",
+    "$root_gen_dir/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom.h",
+    "objc-gen/objc-gen/main.swift",
+    "objc-gen/objc-gen/Bridge.swift",
+    "objc-gen/objc-gen/BridgeOutput.swift",
+  ]
+
+  outputs = [
+    "$target_gen_dir/NativeLedgerClient.h",
+    "$target_gen_dir/NativeLedgerClient.mm",
+    "$target_gen_dir/NativeLedgerClientBridge.h",
+    "$target_gen_dir/NativeAdsClient.h",
+    "$target_gen_dir/NativeAdsClient.mm",
+    "$target_gen_dir/NativeAdsClientBridge.h",
+  ]
+
+  objc_gen_root = rebase_path("//brave/vendor/brave-ios/objc-gen")
+  ads_dir = rebase_path("//brave/vendor/bat-native-ads")
+  ledger_dir = rebase_path("//brave/vendor/bat-native-ledger")
+  out_dir = rebase_path("$root_gen_dir/brave/vendor/brave-ios/")
+  includes = rebase_path("//") + " " +
+    rebase_path("//native_client/toolchain/mac_x86/pnacl_newlib/x86_64-nacl/include/c++/v1") + " " +
+    rebase_path("$root_gen_dir") + " " +
+    rebase_path("$root_gen_dir/brave/vendor/bat-native-ledger/include")
+
+  args = [
+    "--objc-gen-root=$objc_gen_root",
+    "--ledger=$ledger_dir",
+    "--ads=$ads_dir",
+    "--output=$out_dir",
+    "--include-dirs=$includes",
   ]
 }
