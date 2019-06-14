@@ -111,7 +111,7 @@ interface OnMessageEvent extends chrome.events.Event<(message: object, options: 
 
 export const getMockChrome = () => {
   let mock = {
-    send: () => undefined,
+    send: (methodName: string, ...args: Array<any>) => undefined,
     getVariableValue: () => undefined,
     braveRewards: {
       getPublisherData: (id: number, url: string, favicon: string) => undefined

@@ -37,12 +37,6 @@ describe('welcome_actions', () => {
     })
   })
 
-  it('getSearchEngineProvidersStarted', () => {
-    expect(actions.getSearchEngineProvidersStarted()).toEqual({
-      type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_STARTED
-    })
-  })
-
   it('getSearchEngineProvidersSuccess', () => {
     const mockPayload = []
     expect(actions.getSearchEngineProvidersSuccess(mockPayload)).toEqual({
@@ -50,13 +44,4 @@ describe('welcome_actions', () => {
       payload: mockPayload
     })
   })
-
-  it('getSearchEngineProvidersFailure', () => {
-    expect(actions.getSearchEngineProvidersFailure()).toEqual({
-      type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_FAILURE
-    })
-  })
-
-  // TODO: getSearchEngineProviders can be tested via mocking the entire
-  // store. Would require redux-mock-store as dependency
 })

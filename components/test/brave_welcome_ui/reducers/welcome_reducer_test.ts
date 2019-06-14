@@ -2,7 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as sinon from 'sinon'
 import welcomeReducer from '../../../brave_welcome_ui/reducers/welcome_reducer'
 import * as actions from '../../../brave_welcome_ui/actions/welcome_actions'
 import { types } from '../../../brave_welcome_ui/constants/welcome_types'
@@ -19,14 +18,14 @@ describe('welcomeReducer', () => {
   })
 
   describe('IMPORT_NOW_REQUESTED', () => {
-    let importNowRequestStub
+    let importNowRequestStub: jest.SpyInstance
 
     beforeEach(() => {
-      importNowRequestStub = sinon.stub(chrome, 'send').resolves()
+      importNowRequestStub = jest.spyOn(chrome, 'send')
     })
 
     afterEach(() => {
-      importNowRequestStub.restore()
+      importNowRequestStub.mockRestore()
     })
 
     it('should call chrome.send with the correct arguments', () => {
@@ -34,8 +33,8 @@ describe('welcomeReducer', () => {
         type: types.IMPORT_NOW_REQUESTED
       })
 
-      sinon.assert.calledOnce(importNowRequestStub)
-      sinon.assert.calledWith(importNowRequestStub, 'importNowRequested')
+      expect(importNowRequestStub).toBeCalledTimes(1)
+      expect(importNowRequestStub).toBeCalledWith('importNowRequested', [])
     })
   })
 
@@ -50,14 +49,14 @@ describe('welcomeReducer', () => {
   })
 
   describe('CLOSE_TAB_REQUESTED', () => {
-    let closeTabRequestStub
+    let closeTabRequestStub: jest.SpyInstance
 
     beforeEach(() => {
-      closeTabRequestStub = sinon.stub(window, 'close').resolves()
+      closeTabRequestStub = jest.spyOn(window, 'close')
     })
 
     afterEach(() => {
-      closeTabRequestStub.restore()
+      closeTabRequestStub.mockRestore()
     })
 
     it('calls window.close', () => {
@@ -65,19 +64,19 @@ describe('welcomeReducer', () => {
         type: types.CLOSE_TAB_REQUESTED,
         payload: undefined
       })
-      sinon.assert.calledOnce(closeTabRequestStub)
+      expect(closeTabRequestStub).toBeCalledTimes(1)
     })
   })
 
   describe('CHANGE_DEFAULT_SEARCH_PROVIDER', () => {
-    let changeSearchProviderStub
+    let changeSearchProviderStub: jest.SpyInstance
 
     beforeEach(() => {
-      changeSearchProviderStub = sinon.stub(chrome, 'send').resolves()
+      changeSearchProviderStub = jest.spyOn(chrome, 'send')
     })
 
     afterEach(() => {
-      changeSearchProviderStub.restore()
+      changeSearchProviderStub.mockRestore()
     })
 
     it('should call chrome.send with the correct argument', () => {
@@ -85,8 +84,8 @@ describe('welcomeReducer', () => {
         type: types.CHANGE_DEFAULT_SEARCH_PROVIDER,
         payload: '12345'
       })
-      sinon.assert.calledOnce(changeSearchProviderStub)
-      sinon.assert.calledWith(changeSearchProviderStub, 'setDefaultSearchEngine', [12345])
+      expect(changeSearchProviderStub).toBeCalledTimes(1)
+      expect(changeSearchProviderStub).toBeCalledWith('setDefaultSearchEngine', [12345])
     })
   })
 })

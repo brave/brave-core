@@ -13,6 +13,7 @@ declare global {
     loadTimeData: loadTimeData
     cr: {
       define: (name: string, init: () => void) => void
+      sendWithPromise: (method: string, ...args: any[]) => any
     }
     i18nTemplate: {
       process: (document: Document, translations: loadTimeData) => void

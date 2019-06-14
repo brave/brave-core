@@ -2,7 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import * as sinon from 'sinon'
 import * as React from 'react'
 import { shallow } from 'enzyme'
 import { Content } from 'brave-ui/features/welcome'
@@ -19,7 +18,7 @@ describe('searchBox component tests', () => {
     changeDefaultSearchProvider: () => null,
     searchProviders: mockSearchProviders
   }
-  describe('searchBox method tests', () => {
+  describe('searchBox render tests', () => {
     it('renders the component DOM without crashing', () => {
       const wrapper = shallow(
         <SearchBox
@@ -38,7 +37,7 @@ describe('searchBox component tests', () => {
   describe('searchBox method tests', () => {
     describe('onChangeDefaultSearchEngine', () => {
       it('should not call API action if no provider selected', () => {
-        const mockAction = sinon.spy()
+        const mockAction = jest.fn()
         const mockEvent = {
           target: {
             value: ''
@@ -53,11 +52,11 @@ describe('searchBox component tests', () => {
             searchProviders={mockProps.searchProviders}
           />)
         wrapper.instance().onChangeDefaultSearchEngine(mockEvent)
-        sinon.assert.notCalled(mockAction)
+        expect(mockAction.mock.calls.length).toBe(0)
       })
 
       it('should call API action if search provider selected', () => {
-        const mockAction = sinon.spy()
+        const mockAction = jest.fn()
         const mockEvent = {
           target: {
             value: '1'
@@ -72,7 +71,7 @@ describe('searchBox component tests', () => {
             searchProviders={mockProps.searchProviders}
           />)
         wrapper.instance().onChangeDefaultSearchEngine(mockEvent)
-        sinon.assert.calledOnce(mockAction)
+        expect(mockAction.mock.calls.length).toBe(1)
       })
 
       it('should have searchEngineSelected as true if search provider selected', () => {

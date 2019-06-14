@@ -3,10 +3,12 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { action } from 'typesafe-actions'
-import { Dispatch } from 'redux'
 
 // Constants
 import { types } from '../constants/welcome_types'
+
+// APIs
+import * as welcomeUtils from '../welcomeUtils'
 
 export const importNowRequested = () => action(types.IMPORT_NOW_REQUESTED)
 
@@ -19,23 +21,6 @@ export const closeTabRequested = () => action(types.CLOSE_TAB_REQUESTED)
 
 export const changeDefaultSearchProvider = (searchProvider: string) => action(types.CHANGE_DEFAULT_SEARCH_PROVIDER, searchProvider)
 
-export const getSearchEngineProvidersStarted = () => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_STARTED)
-
 export const getSearchEngineProvidersSuccess = (searchProviders: Array<Welcome.SearchEngineEntry>) => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS, searchProviders)
 
-export const getSearchEngineProvidersFailure = () => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_FAILURE)
-
-export const getSearchEngineProviders = () => {
-  return (dispatch: Dispatch) => {
-    dispatch(getSearchEngineProvidersStarted())
-
-    // @ts-ignore
-    window.cr.sendWithPromise('getSearchEnginesList')
-      .then((response: Welcome.SearchEngineListResponse) => {
-        dispatch(getSearchEngineProvidersSuccess(response.defaults))
-      })
-      .catch(() => {
-        dispatch(getSearchEngineProvidersFailure())
-      })
-  }
-}
+export const getSearchEngineProviders = () => welcomeUtils.getSearchEngineProviders()

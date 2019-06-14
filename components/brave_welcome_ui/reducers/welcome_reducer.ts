@@ -32,12 +32,8 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
       const modelIndex = parseInt(payload, 10)
       chrome.send('setDefaultSearchEngine', [modelIndex])
       break
-    case types.IMPORT_DEFAULT_SEARCH_PROVIDERS_STARTED:
-      break
     case types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS:
       state = { ...state, searchProviders: payload }
-      break
-    case types.IMPORT_DEFAULT_SEARCH_PROVIDERS_FAILURE:
       break
   }
 

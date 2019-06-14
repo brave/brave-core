@@ -46,8 +46,10 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
     this.setState({ searchEngineSelected: true })
   }
 
-  getDefaultSearchProvider = (searchEngineEntries: Array<Welcome.SearchEngineEntry>): Welcome.SearchEngineEntry | undefined => {
-    return searchEngineEntries.find(entry => entry.default)
+  getDefaultSearchProvider = (searchEngineEntries: Array<Welcome.SearchEngineEntry>): Welcome.SearchEngineEntry => {
+    const defaultSearchProvider = searchEngineEntries
+      .filter((searchEngine: Welcome.SearchEngineEntry) => searchEngine.default)
+    return defaultSearchProvider[0]
   }
 
   getProviderDisplayName = (searchProvider: Welcome.SearchEngineEntry, defaultSearchProvider: Welcome.SearchEngineEntry): string =>
@@ -64,7 +66,10 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
     const { index, currentScreen, onClick, searchProviders } = this.props
     const { searchEngineSelected } = this.state
     const defaultProvider = this.getDefaultSearchProvider(searchProviders)
-    const bodyText = this.getBodyText(defaultProvider!.name)
+    const bodyText = defaultProvider
+      ? this.getBodyText(defaultProvider.name) || ''
+      : ''
+
     return (
       <Content
         zIndex={index}
@@ -80,14 +85,18 @@ export default class SearchEngineBox extends React.PureComponent<Props, State> {
               onChange={this.onChangeDefaultSearchEngine}
             >
               <option key={0} value=''>{getLocale('selectSearchEngine')}</option>
-              {searchProviders.map((provider, index) =>
-                <option
-                  key={index + 1}
-                  value={provider.modelIndex.toString()}
-                >
-                  {this.getProviderDisplayName(provider, defaultProvider!)}
-                </option>
-              )}
+              {
+                (searchProviders && Array.isArray(searchProviders) && searchProviders.length > 0)
+                ? searchProviders.map((provider, index) =>
+                  <option
+                    key={index + 1}
+                    value={provider.modelIndex.toString()}
+                  >
+                    {this.getProviderDisplayName(provider, defaultProvider)}
+                  </option>
+                )
+                : null
+              }
             </SelectBox>
             <PrimaryButton
               level='primary'
