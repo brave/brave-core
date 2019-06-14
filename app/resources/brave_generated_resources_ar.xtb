@@ -28,7 +28,6 @@
 <translation id="3218385319396786393">تم حظر التشغيل التلقائي في هذه الصفحة</translation>
 <translation id="4988333904713528597">اسمح دائماً بالتشغيل الأوتوماتيكي على <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">متابعة حظر التشغيل التلقائي</translation>
-<translation id="7543906827780734027">لم تراجع Brave هذا الامتداد بعد - قد يكون ضاراً. إضافة "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" على أي حال؟</translation>
 <translation id="2044383478723007273">ألوان Brave</translation>
 <translation id="6123134130710658846">إخفاء زر Brave Rewards</translation>
 <translation id="7635711399568194460">يخفي زر Brave Rewards في شريط الموقع عند عدم تمكين Brave Rewards</translation>
@@ -48,26 +47,13 @@
 <translation id="4472575034687746823">الخطوات الأولى</translation>
 <translation id="3400357268283240774">إعدادات إضافية</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
-<translation id="768979911142179781">الإعدادات الافتراضية</translation>
-<translation id="5989930075012659993">سيتم الاحتفاظ بالإعدادات الحالية الخاصة بك لكل موقع.</translation>
 <translation id="9185018653595759199">حجب وسائل التواصل الاجتماعي</translation>
-<translation id="6894114137169961038">التحكم في الإعلان</translation>
-<translation id="1096802265930928584">التحكم في ملفات تعريف الارتباط</translation>
-<translation id="8919235146866304148">حماية البصمة</translation>
-<translation id="520895744850022668">HTTPS في كل مكان</translation>
-<translation id="5259716416204774556">حظر البرنامج النصية</translation>
 <translation id="7498695072878479744">السماح بإضافة أزرار تسجيل الدخول إلى جوجل على صفحات أطراف ثالثة</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
 <translation id="958971637207126733">السماح بالمشاركات المدمجة في LinkedIn</translation>
-<translation id="6067014455220527258">حظر الإعلانات</translation>
-<translation id="6985711843506827936">السماح بالإعلانات والتتبع</translation>
-<translation id="6132506775968708399">حظر ملفات تعريف الارتباط الخاصة بالجهات الخارجية</translation>
 <translation id="5657156137487675418">السماح بجميع ملفات تعريف الارتباط</translation>
 <translation id="6883611015375728278">حظر جميع ملفات تعريف الارتباط</translation>
-<translation id="1442559343076146186">حظر بصمة الجهات الخارجية</translation>
-<translation id="8034285923190068220">السماح بالبصمة</translation>
-<translation id="4540198958192073185">حظر كل البصمات</translation>
 <translation id="8942080017911802454">سياسة مناولة WebRTC IP</translation>
 <translation id="6165508094623778733">اكتشف المزيد</translation>
 <translation id="8798099450830957504">التلقائي</translation>

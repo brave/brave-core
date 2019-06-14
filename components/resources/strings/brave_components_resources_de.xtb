@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Verdienen Sie Tokens, indem Sie Werbung auf Brave anschauen. Werbung wird Ihnen auf Grundlage Ihrer Interessen, die sich aus Ihrem Browsing-Verhalten ergeben, vorgeschlagen. Persönliche Daten oder Browserverläufe verlassen niemals Ihren Browser.</translation>
 <translation id="6112368337882254910">Auto-Beitrag</translation>
 <translation id="1527222983464337010">Eine automatische Möglichkeit, um Herausgeber und Content Creators zu unterstützen. Legen Sie eine monatliche Zahlung fest und surfen Sie wie gewohnt. Die von Ihnen besuchten Seiten erhalten Ihre Beiträge automatisch, basierend darauf, wie viel Aufmerksamkeit Sie ihnen Brave zufolge geschenkt haben.</translation>
-<translation id="7178655681744815321">Geschätzte Einnahmen in diesem Zyklus</translation>
-<translation id="8157096848242649588">Zahlungsdatum</translation>
-<translation id="5208388044986603165">Werbebenachrichtigungen erhalten</translation>
 <translation id="4229016885653790965">Sorry! Werbung ist in Ihrer Region noch nicht verfügbar.</translation>
 <translation id="654711254769318398">Angezeigte Werbeseiten</translation>
 <translation id="2532127066761785857">Maximalanzahl der angezeigten Werbeanzeigen</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Verifizierte Brave Herausgeber</translation>
 <translation id="7658239707568436148">Abbrechen</translation>
 <translation id="7262285991915892790">Ziehen Sie das BAT-Icon auf das</translation>
-<translation id="2151535059686617995">Dies ist Ihr Glückstag!</translation>
-<translation id="6255773350565723852">Ihre Token-Zuwendung ist unterwegs.</translation>
 <translation id="7656781188259414093">Ziel.</translation>
 <translation id="1555514580945108302">Hmm … nicht ganz. Versuchen Sie es erneut.</translation>
 <translation id="13853865024308201">Beanspruchen</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Keine ausstehenden Beiträge…</translation>
 <translation id="1963227389609234879">Alle entfernen</translation>
 <translation id="923467487918828349">Alle einblenden</translation>
+<translation id="2151535059686617995">Dies ist Ihr Glückstag!</translation>
+<translation id="6255773350565723852">Ihre Token-Zuwendung ist unterwegs.</translation>
 <translation id="1181037720776840403">Entfernen</translation>
 <translation id="7885157704277298658">Kopiert!</translation>
 <translation id="5379640681913450928">Wortanzahl:</translation>

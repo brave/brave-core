@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">با تماشای آگهی در Brave توکن دریافت کنید. آگهی‌های ارائه‌شده براساس علایق شما (که از رفتار مرورتان به آن‌ها پی می‌بریم) هستند. هیچ داده خصوصی یا سابقه مروری، از مرورگرتان خارج نمی‌شود.</translation>
 <translation id="6112368337882254910">کمک خودکار</translation>
 <translation id="1527222983464337010">روشی خودکار برای حمایت از ناشران و پدیدآورندگان. پرداخت ماهانه‌ای تنظیم کنید و وب را مثل همیشه مرور کنید. سایت‌هایی که بازدید می‌کنید به‌صورت خودکار کمک مالی شما را براساس توجهتان (که توسط Brave سنجیده می‌شود) دریافت می‌کنند.</translation>
-<translation id="7178655681744815321">دستاوردهای تخمینی این دوره</translation>
-<translation id="8157096848242649588">تاریخ پرداخت</translation>
-<translation id="5208388044986603165">اعلان‌های آکهی دریافت شدند</translation>
 <translation id="4229016885653790965">متأسفیم! آگهی ها هنوز در منطقه شما دردسترس نیستند.</translation>
 <translation id="654711254769318398">صفحه‌های آگهی مشاهده‌شده</translation>
 <translation id="2532127066761785857">بیشترین تعداد آگهی مجاز نمایش داده شد</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">ناشران مورد تأیید Brave</translation>
 <translation id="7658239707568436148">لغو</translation>
 <translation id="7262285991915892790">نماد BAT را به اینجا بکشید:</translation>
-<translation id="2151535059686617995">روز شانستان است!</translation>
-<translation id="6255773350565723852">امتیاز توکن شما در راه است.</translation>
 <translation id="7656781188259414093">هدف.</translation>
 <translation id="1555514580945108302">اوووم… نه کاملاً. دوباره امتحان کنید.</translation>
 <translation id="13853865024308201">مطالبه</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">هیچ مشارکت معلقی وجود ندارد…</translation>
 <translation id="1963227389609234879">حذف همه</translation>
 <translation id="923467487918828349">نمایش همه</translation>
+<translation id="2151535059686617995">روز شانستان است!</translation>
+<translation id="6255773350565723852">امتیاز توکن شما در راه است.</translation>
 <translation id="1181037720776840403">حذف</translation>
 <translation id="7885157704277298658">کپی شد!</translation>
 <translation id="5379640681913450928">تعداد کلمه:</translation>

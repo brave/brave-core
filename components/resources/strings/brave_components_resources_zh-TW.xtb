@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">透過在 Brave 中觀看廣告來獲得代幣。所顯示的廣告是您的興趣為基礎，其推測自您的瀏覽行為。您的個人資料或瀏覽歷史記錄從未離開您的瀏覽器。</translation>
 <translation id="6112368337882254910">自動捐獻</translation>
 <translation id="1527222983464337010">支援出版者與內容創作者的自動化方式。設定每月支付額度並照常瀏覽。根據 Brave 測量到您的注意力，您造訪的網站將會自動收到您的捐款。</translation>
-<translation id="7178655681744815321">此週期的預估收益</translation>
-<translation id="8157096848242649588">付款日期</translation>
-<translation id="5208388044986603165">收到的廣告通知</translation>
 <translation id="4229016885653790965">抱歉！廣告在您的所在區域不可用。</translation>
 <translation id="654711254769318398">檢視過的廣告頁面</translation>
 <translation id="2532127066761785857">廣告顯示數量上限</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Brave 驗證出版者</translation>
 <translation id="7658239707568436148">取消</translation>
 <translation id="7262285991915892790">將 BAT 圖示拖曳到</translation>
-<translation id="2151535059686617995">今天’您走運了！</translation>
-<translation id="6255773350565723852">您的代幣經費已經發放。</translation>
 <translation id="7656781188259414093">目標。</translation>
 <translation id="1555514580945108302">嗯… 不太對。再試一次。</translation>
 <translation id="13853865024308201">領取</translation>
@@ -217,7 +212,6 @@
 <translation id="7277134233385925078">設定每月小費</translation>
 <translation id="8003573781961874199">以 PDF 格式下載</translation>
 <translation id="298067735430872465">自廣告而來的收益</translation>
-<translation id="7965014118284846291">您的廣告收入已經可用。</translation>
 <translation id="8764029012618014430">啟用小費功能</translation>
 <translation id="3412655388715513818">排除此網站</translation>
 <translation id="418343137736963579">您排除自動捐助的網站總數：</translation>
@@ -361,6 +355,8 @@
 <translation id="7410549756000115387">沒有預定的捐助……</translation>
 <translation id="1963227389609234879">全部移除</translation>
 <translation id="923467487918828349">全部顯示</translation>
+<translation id="2151535059686617995">今天’您走運了！</translation>
+<translation id="6255773350565723852">您的代幣經費已經發放。</translation>
 <translation id="1181037720776840403">移除</translation>
 <translation id="7885157704277298658">已複製！</translation>
 <translation id="5379640681913450928">字數：</translation>

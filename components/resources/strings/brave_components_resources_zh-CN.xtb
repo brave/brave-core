@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">在 Brave 中通过浏览广告赚取代币。根据您的喜好显示广告，这是根据您的浏览情况判断的。您的浏览器中不会留下私人数据或浏览历史。</translation>
 <translation id="6112368337882254910">自动贡献</translation>
 <translation id="1527222983464337010">这是一种支持发布者和内容创建者的自动方式。设置每月付款并正常浏览。您访问的网站会根据Brave测量的您的注意力自动收到您的贡献。</translation>
-<translation id="7178655681744815321">本周期预期收益</translation>
-<translation id="8157096848242649588">支付日期</translation>
-<translation id="5208388044986603165">广告通知已收到</translation>
 <translation id="4229016885653790965">抱歉! 您所在的地区尚未提供广告。</translation>
 <translation id="654711254769318398">广告页面已查看</translation>
 <translation id="2532127066761785857">已显示最大广告个数</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Brave 经验证的发布者</translation>
 <translation id="7658239707568436148">取消</translation>
 <translation id="7262285991915892790">将 BAT 图标拖到</translation>
-<translation id="2151535059686617995">今天真是福星高照！</translation>
-<translation id="6255773350565723852">您即将收到代币补助。</translation>
 <translation id="7656781188259414093">目标。</translation>
 <translation id="1555514580945108302">呃，还差一点。请重试。</translation>
 <translation id="13853865024308201">领取</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">无待处理的捐款...…</translation>
 <translation id="1963227389609234879">全部删除</translation>
 <translation id="923467487918828349">显示全部</translation>
+<translation id="2151535059686617995">今天真是福星高照！</translation>
+<translation id="6255773350565723852">您即将收到代币补助。</translation>
 <translation id="1181037720776840403">删除</translation>
 <translation id="7885157704277298658">已复制！</translation>
 <translation id="5379640681913450928">字数：</translation>

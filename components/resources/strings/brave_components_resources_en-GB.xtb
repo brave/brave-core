@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Earn tokens by viewing ads in Brave. Ads presented are based on your interests, as inferred from your browsing behaviour. No personal data or browsing history ever leaves your browser.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="1527222983464337010">An automatic way to support publishers and content creators. Set a monthly payment and browse normally. The sites you visit receive your contributions automatically, based on your attention as measured by Brave.</translation>
-<translation id="7178655681744815321">Estimated earnings this cycle</translation>
-<translation id="8157096848242649588">Payment date</translation>
-<translation id="5208388044986603165">Ad notifications received</translation>
 <translation id="4229016885653790965">Sorry! Ads are not yet available in your region.</translation>
 <translation id="654711254769318398">Ad pages viewed</translation>
 <translation id="2532127066761785857">Maximum number of ads displayed</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Brave Verified Publishers</translation>
 <translation id="7658239707568436148">Cancel</translation>
 <translation id="7262285991915892790">Drag the BAT Icon on to the</translation>
-<translation id="2151535059686617995">It’s your lucky day!</translation>
-<translation id="6255773350565723852">Your token grant is on its way.</translation>
 <translation id="7656781188259414093">target.</translation>
 <translation id="1555514580945108302">Hmm… Not Quite. Try Again.</translation>
 <translation id="13853865024308201">Claim</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">No pending contributions…</translation>
 <translation id="1963227389609234879">Remove All</translation>
 <translation id="923467487918828349">Show All</translation>
+<translation id="2151535059686617995">It’s your lucky day!</translation>
+<translation id="6255773350565723852">Your token grant is on its way.</translation>
 <translation id="1181037720776840403">Remove</translation>
 <translation id="7885157704277298658">Copied!</translation>
 <translation id="5379640681913450928">Word Count:</translation>
