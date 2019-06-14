@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Ganhe tokens exibindo anúncios no Brave. Os anúncios apresentados são baseados nos seus interesses, conforme inferidos pelo seu comportamento de navegação. Nenhum dado pessoal ou histórico de navegação sai do seu navegador.</translation>
 <translation id="6112368337882254910">Contribuição Automática</translation>
 <translation id="1527222983464337010">Uma forma automática de apoiar editores e criadores de conteúdo. Defina um pagamento mensal e navegue normalmente. Os sites que você visita recebem suas contribuições automaticamente, com base em sua atenção que é medida pelo Brave.</translation>
-<translation id="7178655681744815321">Ganhos estimados neste ciclo</translation>
-<translation id="8157096848242649588">Data de pagamento</translation>
-<translation id="5208388044986603165">Notificações de anúncios recebidas</translation>
 <translation id="4229016885653790965">Desculpe! Os anúncios ainda não estão disponíveis em sua região.</translation>
 <translation id="654711254769318398">Páginas de anúncios visualizadas</translation>
 <translation id="2532127066761785857">Número máximo de anúncios exibidos</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Editores Verificados Brave</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="7262285991915892790">Arraste o Ícone BAT para o</translation>
-<translation id="2151535059686617995">É’ o seu dia de sorte!</translation>
-<translation id="6255773350565723852">Seu auxílio token está a caminho.</translation>
 <translation id="7656781188259414093">alvo.</translation>
 <translation id="1555514580945108302">Hmm… Ainda Não. Tente Novamente.</translation>
 <translation id="13853865024308201">Reivindicar</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Nenhuma contribuição pendente…</translation>
 <translation id="1963227389609234879">Remover tudo</translation>
 <translation id="923467487918828349">Mostrar todas</translation>
+<translation id="2151535059686617995">É’ o seu dia de sorte!</translation>
+<translation id="6255773350565723852">Seu auxílio token está a caminho.</translation>
 <translation id="1181037720776840403">Remover</translation>
 <translation id="7885157704277298658">Copiado!</translation>
 <translation id="5379640681913450928">Contagem de palavras:</translation>

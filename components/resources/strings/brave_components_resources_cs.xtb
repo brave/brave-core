@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Získávejte známky za prohlížení reklam na Brave. Zobrazované reklamy vycházejí z vašich zájmů zjištěných podle chování při prohlížení stránek. Vaše osobní údaje ani údaje o historii vyhledávání se z vašeho prohlížeče nedostanou ven.</translation>
 <translation id="6112368337882254910">Automatický příspěvek</translation>
 <translation id="1527222983464337010">Automatický způsob podpory vydavatelů a tvůrců obsahu. Nastavte měsíční platbu a procházejte jako obvykle. Stránky, které navštívíte, obdrží vaše příspěvky automaticky, na základě vaší pozornosti, kterou měří Brave.</translation>
-<translation id="7178655681744815321">Odhadovaný výdělek v tomto cyklu</translation>
-<translation id="8157096848242649588">Datum platby</translation>
-<translation id="5208388044986603165">Přijatých oznámení s reklamami</translation>
 <translation id="4229016885653790965">Pardon! Reklamy nejsou ve vašem regionu k dispozici.</translation>
 <translation id="654711254769318398">Zobrazených stránek s reklamami</translation>
 <translation id="2532127066761785857">Maximální počet zobrazených reklam</translation>
@@ -190,8 +187,6 @@ Povolte je návštěvou</translation>
 <translation id="3825698830825612308">Autoři ověření přes Brave</translation>
 <translation id="7658239707568436148">Zrušit</translation>
 <translation id="7262285991915892790">Přetáhnout ikonu BAT na</translation>
-<translation id="2151535059686617995">Dnes máte šťastný den!</translation>
-<translation id="6255773350565723852">Váš grant je na cestě.</translation>
 <translation id="7656781188259414093">cíl.</translation>
 <translation id="1555514580945108302">Hmm… To nesedí. Zkuste to znovu.</translation>
 <translation id="13853865024308201">Nárokovat</translation>
@@ -361,6 +356,8 @@ Povolte je návštěvou</translation>
 <translation id="7410549756000115387">Žádné čekající příspěvky…</translation>
 <translation id="1963227389609234879">Odstranit vše</translation>
 <translation id="923467487918828349">Zobrazit vše</translation>
+<translation id="2151535059686617995">Dnes máte šťastný den!</translation>
+<translation id="6255773350565723852">Váš grant je na cestě.</translation>
 <translation id="1181037720776840403">Odebrat</translation>
 <translation id="7885157704277298658">Zkopírováno!</translation>
 <translation id="5379640681913450928">Počet slov:</translation>

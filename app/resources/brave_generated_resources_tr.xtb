@@ -28,7 +28,6 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="3218385319396786393">Bu sayfada otomatik oynatma engellenmiş</translation>
 <translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> her zaman otomatik oynatmaya izin ver</translation>
 <translation id="4150684676757176434">Oto-Oynatmayı engellemeye devam et</translation>
-<translation id="7543906827780734027">Brave bu uzantıyı henüz incelemedi, kötü amaçlı olabilir. <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" gene de eklensin mi?</translation>
 <translation id="2044383478723007273">Brave renkleri</translation>
 <translation id="6123134130710658846">Brave Ödülleri butonunu gizle</translation>
 <translation id="7635711399568194460">Brave Ödülleri etkin olmadığında konum çubuğundaki Brave Ödülleri butonunu gizler</translation>
@@ -48,26 +47,13 @@ Bu eklentiyi yükleyerek, Google Widevine Kullanım Koşulları'nı kabul etmiş
 <translation id="4472575034687746823">Başlayın</translation>
 <translation id="3400357268283240774">Ek ayarlar</translation>
 <translation id="6303294677342628402">Kalkanlar</translation>
-<translation id="768979911142179781">Varsayılanlar</translation>
-<translation id="5989930075012659993">Şu an site başına olan ayarların korunacak.</translation>
 <translation id="9185018653595759199">Sosyal medya bloke etme</translation>
-<translation id="6894114137169961038">Reklam kontrolü</translation>
-<translation id="1096802265930928584">Tanımlama bilgisi kontrolü</translation>
-<translation id="8919235146866304148">Parmak izi kontrolü koruması</translation>
-<translation id="520895744850022668">Her yerde HTTPS</translation>
-<translation id="5259716416204774556">Script engelleme</translation>
 <translation id="7498695072878479744">Üçüncü taraf sitelerinde Google giriş butonlarına izin ver</translation>
 <translation id="863171915776379000">Facebook ile giriş yapmaya ve gömülü gönderilere izin ver</translation>
 <translation id="5165042248369837294">Gömülü Twitter tweetlerine izin ver</translation>
 <translation id="958971637207126733">LinkedIn gömülü gönderilere izin ver</translation>
-<translation id="6067014455220527258">Reklamları engelle</translation>
-<translation id="6985711843506827936">Reklamlara ve iz sürmeye izin ver</translation>
-<translation id="6132506775968708399">3. Taraf çerezleri engelle</translation>
 <translation id="5657156137487675418">Tüm çerezlere izin ver</translation>
 <translation id="6883611015375728278">Tüm çerezleri engelle</translation>
-<translation id="1442559343076146186">3. Taraf parmak izi kontrolünü engelle</translation>
-<translation id="8034285923190068220">Parmak izine izin ver</translation>
-<translation id="4540198958192073185">Tüm parmak izlerini engelle</translation>
 <translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
 <translation id="6165508094623778733">Daha fazla bilgi edin</translation>
 <translation id="8798099450830957504">Varsayılan</translation>

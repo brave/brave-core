@@ -28,7 +28,6 @@
 <translation id="3218385319396786393">Samodejno predvajanje je blokirano na tej strani</translation>
 <translation id="4988333904713528597">Vedno dovoli samodejno predvajanje na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Nadaljuj z blokiranjem samodejnega predvajanja</translation>
-<translation id="7543906827780734027">Brave še ni pregledal te razširitve – morda je zlonamerna. Želite vseeno dodati "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Barve brskalnika Brave</translation>
 <translation id="6123134130710658846">Skrij gumb Brave Rewards</translation>
 <translation id="7635711399568194460">Skrije gumb Brave Rewards v vrstici z lokacijo, kadar storitev Brave Rewards ni omogočena</translation>
@@ -48,26 +47,13 @@
 <translation id="4472575034687746823">Kako začeti</translation>
 <translation id="3400357268283240774">Dodatne nastavitve</translation>
 <translation id="6303294677342628402">Ščiti</translation>
-<translation id="768979911142179781">Privzeto</translation>
-<translation id="5989930075012659993">Vaše trenutne nastavitve za to mesto bodo ohranjene.</translation>
 <translation id="9185018653595759199">Blokiranje družbenih medijev</translation>
-<translation id="6894114137169961038">Upravljanje oglasov</translation>
-<translation id="1096802265930928584">Upravljanje piškotkov</translation>
-<translation id="8919235146866304148">Zaščita proti ustvarjanju prstnih odtisov</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="5259716416204774556">Blokiranje skripta</translation>
 <translation id="7498695072878479744">Dovoli gumbe za prijavo Google na spletnih mestih drugih ponudnikov</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
 <translation id="958971637207126733">Dovoli vdelane objave z LinkedIna</translation>
-<translation id="6067014455220527258">Blokiraj oglase</translation>
-<translation id="6985711843506827936">Dovoli oglase in sledenje</translation>
-<translation id="6132506775968708399">Blokiraj piškotke tretjih oseb</translation>
 <translation id="5657156137487675418">Dovoli vse piškotke</translation>
 <translation id="6883611015375728278">Blokiraj vse piškotke</translation>
-<translation id="1442559343076146186">Blokiraj ustvarjanje prstnih odtisov 3. oseb</translation>
-<translation id="8034285923190068220">Dovoli ustvarjanje prstnih odtisov</translation>
-<translation id="4540198958192073185">Blokiraj vsa ustvarjanja prstnih odtisov</translation>
 <translation id="8942080017911802454">Pravila za obravnavanje IP-naslova WebRTC</translation>
 <translation id="6165508094623778733">Več o tem</translation>
 <translation id="8798099450830957504">Privzeto</translation>

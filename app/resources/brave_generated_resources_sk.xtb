@@ -28,7 +28,6 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="3218385319396786393">Funkcia autoplay bola na tejto stránke zakázaná</translation>
 <translation id="4988333904713528597">Vždy povoliť automatické prehrávanie na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Pokračovať v blokovaní funkcie autoplay</translation>
-<translation id="7543906827780734027">Brave ešte nepreskúmal toto rozšírenie - môže to byť škodlivé. Aj tak pridať "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Farby Brave</translation>
 <translation id="6123134130710658846">Skryť tlačidlo Brave odmeny</translation>
 <translation id="7635711399568194460">Keď nie sú povolené Brave odmeny, tlačidlo Brave odmeny na paneli lokality sa skryje</translation>
@@ -48,26 +47,13 @@ Inštaláciou tohto rozšírenia súhlasíte so Zmluvnými podmienkami Google Wi
 <translation id="4472575034687746823">Začíname</translation>
 <translation id="3400357268283240774">Ďalšie nastavenia</translation>
 <translation id="6303294677342628402">Ochrana</translation>
-<translation id="768979911142179781">Prednastavenia</translation>
-<translation id="5989930075012659993">Vaše aktuálne nastavenia stránky zostanú zachované.</translation>
 <translation id="9185018653595759199">Blokovanie sociálnych médií</translation>
-<translation id="6894114137169961038">Kontrola reklám</translation>
-<translation id="1096802265930928584">Kontrola cookies</translation>
-<translation id="8919235146866304148">Zabezpečenie pomocou odtlačkov prstov</translation>
-<translation id="520895744850022668">HTTPS všade</translation>
-<translation id="5259716416204774556">Blokovanie skriptov</translation>
 <translation id="7498695072878479744">Povoliť prihlasovacie tlačidlá Google na stránkach tretích strán</translation>
 <translation id="863171915776379000">Povoliť prihlasovanie Facebook a embedované príspevky</translation>
 <translation id="5165042248369837294">Povoliť embedované tweety pre Twitter</translation>
 <translation id="958971637207126733">Povoliť vložené príspevky z LinkedIn</translation>
-<translation id="6067014455220527258">Blokovať reklamy</translation>
-<translation id="6985711843506827936">Povoliť reklamy a sledovanie</translation>
-<translation id="6132506775968708399">Zakázať cookies tretích strán</translation>
 <translation id="5657156137487675418">Povoliť všetky súbory cookies</translation>
 <translation id="6883611015375728278">Zakázať všetky cookies</translation>
-<translation id="1442559343076146186">Blokovať odtlačky prstov tretej strany</translation>
-<translation id="8034285923190068220">Povoliť odtlačky prstov</translation>
-<translation id="4540198958192073185">Blokovať fingerprinting</translation>
 <translation id="8942080017911802454">Zásady manipulácie WebRTC IP</translation>
 <translation id="6165508094623778733">Dozvedieť sa viac</translation>
 <translation id="8798099450830957504">Predvolené</translation>

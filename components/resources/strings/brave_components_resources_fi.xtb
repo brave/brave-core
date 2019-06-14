@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Ansaitse poletteja katsomalla mainoksia Bravessa. Näytetyt mainokset perustuvat mieltymyksiisi, jotka määritellään selainkäyttäytymisesi perusteella. Henkilökohtaisia tietojasi tai selaushistoriaasi ei koskaan lähetetä selaimesi ulkopuolelle.</translation>
 <translation id="6112368337882254910">Osallistu automaattisesti</translation>
 <translation id="1527222983464337010">Automaattinen tapa tukea julkaisijoita ja sisällöntuottajia. Aseta kuukausittainen maksu ja selaile normaalisti. Vierailemasi sivustot saavat lahjoituksesi automaattisesti, perustuen Braven mittaamaan huomioosi.</translation>
-<translation id="7178655681744815321">Tämän syklin ansioarvio</translation>
-<translation id="8157096848242649588">Maksupäivä</translation>
-<translation id="5208388044986603165">Mainosilmoitukset vastaanotettu</translation>
 <translation id="4229016885653790965">Olemme pahoillamme! Alueellesi ei ole vielä saatavilla mainoksia.</translation>
 <translation id="654711254769318398">Mainossivuja tarkasteltu</translation>
 <translation id="2532127066761785857">Näytetty maksimimäärä mainoksia</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Braven hyväksymät julkaisijat</translation>
 <translation id="7658239707568436148">Peruuta</translation>
 <translation id="7262285991915892790">Siirrä BAT-kuvake kohteeseen</translation>
-<translation id="2151535059686617995">On onnenpäiväsi!</translation>
-<translation id="6255773350565723852">Tunnuslahjoituksesi on matkalla.</translation>
 <translation id="7656781188259414093">kohde.</translation>
 <translation id="1555514580945108302">Hmm… ei aivan. Yritä uudelleen.</translation>
 <translation id="13853865024308201">Lunasta</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Ei odottavia lahjoituksia…</translation>
 <translation id="1963227389609234879">Poista kaikki</translation>
 <translation id="923467487918828349">Näytä kaikki</translation>
+<translation id="2151535059686617995">On onnenpäiväsi!</translation>
+<translation id="6255773350565723852">Tunnuslahjoituksesi on matkalla.</translation>
 <translation id="1181037720776840403">Poista</translation>
 <translation id="7885157704277298658">Kopioitu</translation>
 <translation id="5379640681913450928">Sanamäärä</translation>
