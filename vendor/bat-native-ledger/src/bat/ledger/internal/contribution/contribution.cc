@@ -64,9 +64,9 @@ void Contribution::HasSufficientBalance(
 
 void Contribution::OnSufficientBalanceWallet(
     ledger::Result result,
-    std::unique_ptr<ledger::WalletInfo> info,
+    std::unique_ptr<ledger::WalletProperties> properties,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
-  if (result == ledger::Result::LEDGER_OK && info) {
+  if (result == ledger::Result::LEDGER_OK && properties) {
     ledger::ActivityInfoFilter filter = ledger_->CreateActivityFilter(
       std::string(),
       ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED,
@@ -82,7 +82,7 @@ void Contribution::OnSufficientBalanceWallet(
                 this,
                 _1,
                 _2,
-                info->balance_,
+                properties->balance_,
                 callback));
   }
 }
@@ -327,7 +327,7 @@ void Contribution::OnWalletPropertiesForReconcile(
     const braveledger_bat_helper::Directions& directions,
     double budget,
     const ledger::Result result,
-    std::unique_ptr<ledger::WalletInfo> info) {
+    std::unique_ptr<ledger::WalletProperties> info) {
   if (result != ledger::Result::LEDGER_OK || !info) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
          "We couldn't get balance from the server.";

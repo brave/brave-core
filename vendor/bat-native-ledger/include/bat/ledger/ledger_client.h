@@ -22,7 +22,7 @@
 #include "bat/ledger/pending_contribution.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/reconcile_info.h"
-#include "bat/ledger/wallet_info.h"
+#include "bat/ledger/wallet_properties.h"
 
 namespace confirmations {
 class LogStream;
@@ -83,8 +83,9 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void OnWalletInitialized(Result result) = 0;
 
-  virtual void OnWalletProperties(Result result,
-                                  std::unique_ptr<ledger::WalletInfo>) = 0;
+  virtual void OnWalletProperties(
+      Result result,
+      std::unique_ptr<ledger::WalletProperties>) = 0;
 
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id,

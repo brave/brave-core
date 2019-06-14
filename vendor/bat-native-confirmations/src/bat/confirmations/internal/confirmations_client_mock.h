@@ -62,7 +62,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD2(OnWalletProperties, void(
       ledger::Result result,
-      std::unique_ptr<ledger::WalletInfo>));
+      std::unique_ptr<ledger::WalletProperties>));
 
   MOCK_METHOD4(OnReconcileComplete, void(
       Result result,

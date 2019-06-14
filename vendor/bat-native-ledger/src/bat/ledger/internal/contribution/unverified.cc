@@ -31,15 +31,15 @@ void Unverified::Contribute() {
 
 void Unverified::OnContributeUnverifiedWallet(
     ledger::Result result,
-    std::unique_ptr<ledger::WalletInfo> wallet) {
-  if (result != ledger::Result::LEDGER_OK || !wallet) {
+    std::unique_ptr<ledger::WalletProperties> properties) {
+  if (result != ledger::Result::LEDGER_OK || !properties) {
     return;
   }
 
   ledger_->GetPendingContributions(
       std::bind(&Unverified::OnContributeUnverifiedPublishers,
                 this,
-                wallet->balance_,
+                properties->balance_,
                 _1));
 }
 

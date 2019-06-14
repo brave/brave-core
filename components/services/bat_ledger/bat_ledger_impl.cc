@@ -64,8 +64,8 @@ void BatLedgerImpl::CreateWallet() {
 void BatLedgerImpl::OnFetchWalletProperties(
     CallbackHolder<FetchWalletPropertiesCallback>* holder,
     ledger::Result result,
-    std::unique_ptr<ledger::WalletInfo> wallet_info) {
-  std::string json_wallet = wallet_info.get() ? wallet_info->ToJson() : "";
+    std::unique_ptr<ledger::WalletProperties> properties) {
+  std::string json_wallet = properties.get() ? properties->ToJson() : "";
   if (holder->is_valid())
     std::move(holder->get()).Run(result, json_wallet);
   delete holder;

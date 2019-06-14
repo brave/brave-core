@@ -109,7 +109,7 @@ void NativeLedgerClient::OnRestorePublishers(ledger::OnRestoreCallback callback)
 void NativeLedgerClient::OnWalletInitialized(ledger::Result result) {
   [bridge_ onWalletInitialized:result];
 }
-void NativeLedgerClient::OnWalletProperties(ledger::Result result, std::unique_ptr<ledger::WalletInfo> arg1) {
+void NativeLedgerClient::OnWalletProperties(ledger::Result result, std::unique_ptr<ledger::WalletProperties> arg1) {
   [bridge_ onWalletProperties:result arg1:std::move(arg1)];
 }
 void NativeLedgerClient::RemoveAllPendingContributions(const ledger::RemovePendingContributionCallback & callback) {

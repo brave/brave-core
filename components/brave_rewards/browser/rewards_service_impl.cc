@@ -33,7 +33,7 @@
 #include "bat/ledger/auto_contribute_props.h"
 #include "bat/ledger/media_publisher_info.h"
 #include "bat/ledger/publisher_info.h"
-#include "bat/ledger/wallet_info.h"
+#include "bat/ledger/wallet_properties.h"
 #include "bat/ledger/transactions_info.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -821,30 +821,30 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
 
 void RewardsServiceImpl::OnWalletProperties(
     ledger::Result result,
-    std::unique_ptr<ledger::WalletInfo> wallet_info) {
-  if (wallet_info && wallet_info->balance_ > 0) {
+    std::unique_ptr<ledger::WalletProperties> properties) {
+  if (properties && properties->balance_ > 0) {
     profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
   }
 
   std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
   for (auto& observer : observers_) {
-    if (wallet_info) {
+    if (properties) {
       wallet_properties.reset(new brave_rewards::WalletProperties);
-      wallet_properties->probi = wallet_info->probi_;
-      wallet_properties->balance = wallet_info->balance_;
-      wallet_properties->rates = wallet_info->rates_;
-      wallet_properties->parameters_choices = wallet_info->parameters_choices_;
-      wallet_properties->parameters_range = wallet_info->parameters_range_;
-      wallet_properties->parameters_days = wallet_info->parameters_days_;
-      wallet_properties->monthly_amount = wallet_info->fee_amount_;
+      wallet_properties->probi = properties->probi_;
+      wallet_properties->balance = properties->balance_;
+      wallet_properties->rates = properties->rates_;
+      wallet_properties->parameters_choices = properties->parameters_choices_;
+      wallet_properties->parameters_range = properties->parameters_range_;
+      wallet_properties->parameters_days = properties->parameters_days_;
+      wallet_properties->monthly_amount = properties->fee_amount_;
 
-      for (size_t i = 0; i < wallet_info->grants_.size(); i ++) {
+      for (size_t i = 0; i < properties->grants_.size(); i ++) {
         brave_rewards::Grant grant;
 
-        grant.altcurrency = wallet_info->grants_[i].altcurrency;
-        grant.probi = wallet_info->grants_[i].probi;
-        grant.expiryTime = wallet_info->grants_[i].expiryTime;
-        grant.type = wallet_info->grants_[i].type;
+        grant.altcurrency = properties->grants_[i].altcurrency;
+        grant.probi = properties->grants_[i].probi;
+        grant.expiryTime = properties->grants_[i].expiryTime;
+        grant.type = properties->grants_[i].type;
 
         wallet_properties->grants.push_back(grant);
       }
@@ -1365,15 +1365,15 @@ void RewardsServiceImpl::TriggerOnWalletInitialized(ledger::Result result) {
 void RewardsServiceImpl::OnFetchWalletProperties(
     int result,
     const std::string& json_wallet) {
-  std::unique_ptr<ledger::WalletInfo> wallet_info;
+  std::unique_ptr<ledger::WalletProperties> wallet_properties;
 
   if (!json_wallet.empty()) {
-    wallet_info.reset(new ledger::WalletInfo());
-    wallet_info->loadFromJson(json_wallet);
+    wallet_properties.reset(new ledger::WalletProperties());
+    wallet_properties->loadFromJson(json_wallet);
   }
 
   OnWalletProperties(static_cast<ledger::Result>(result),
-                     std::move(wallet_info));
+                     std::move(wallet_properties));
 }
 
 void RewardsServiceImpl::FetchWalletProperties() {

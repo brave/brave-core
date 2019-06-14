@@ -14,10 +14,10 @@
 #include "bat/ledger/grant.h"
 
 namespace ledger {
-LEDGER_EXPORT struct WalletInfo {
-  WalletInfo();
-  ~WalletInfo();
-  WalletInfo(const WalletInfo& info);
+LEDGER_EXPORT struct WalletProperties {
+  WalletProperties();
+  ~WalletProperties();
+  WalletProperties(const WalletProperties& info);
 
   const std::string ToJson() const;
   bool loadFromJson(const std::string& json);

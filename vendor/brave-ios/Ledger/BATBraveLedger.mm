@@ -60,7 +60,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
   ledger::Ledger *ledger;
 }
 @property (nonatomic, copy) NSString *storagePath;
-@property (nonatomic) BATWalletInfo *walletInfo;
+@property (nonatomic) BATWalletProperties *walletInfo;
 @property (nonatomic) dispatch_queue_t fileWriteThread;
 @property (nonatomic) NSMutableDictionary<NSString *, NSString *> *state;
 @property (nonatomic) BATCommonOperations *commonOps;
@@ -206,12 +206,12 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   }
 }
 
-- (void)fetchWalletDetails:(void (^)(BATWalletInfo *))completion
+- (void)fetchWalletDetails:(void (^)(BATWalletProperties *))completion
 {
-  ledger->FetchWalletProperties(^(ledger::Result result, std::unique_ptr<ledger::WalletInfo> info) {
+  ledger->FetchWalletProperties(^(ledger::Result result, std::unique_ptr<ledger::WalletProperties> info) {
     const auto walletInfo = *info.get();
     dispatch_async(dispatch_get_main_queue(), ^{
-      [self onWalletProperties:result arg1:std::make_unique<ledger::WalletInfo>(walletInfo)];
+      [self onWalletProperties:result arg1:std::make_unique<ledger::WalletProperties>(walletInfo)];
       if (completion) {
         completion(self.walletInfo);
       }
@@ -219,12 +219,12 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   });
 }
 
-- (void)onWalletProperties:(ledger::Result)result arg1:(std::unique_ptr<ledger::WalletInfo>)arg1
+- (void)onWalletProperties:(ledger::Result)result arg1:(std::unique_ptr<ledger::WalletProperties>)arg1
 {
   if (result == ledger::LEDGER_OK) {
     const auto* walletInfo = arg1.get();
     if (walletInfo != nullptr) {
-      self.walletInfo = [[BATWalletInfo alloc] initWithWalletInfo:*walletInfo];
+      self.walletInfo = [[BATWalletProperties alloc] initWithWalletInfo:*walletInfo];
     } else {
       self.walletInfo = nil;
     }

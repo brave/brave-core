@@ -81,17 +81,17 @@ void Wallet::GetWalletProperties(
                    load_callback);
 }
 
-ledger::WalletInfo Wallet::WalletPropertiesToWalletInfo(
+ledger::WalletProperties Wallet::WalletPropertiesToWalletInfo(
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
-  ledger::WalletInfo info;
-  info.altcurrency_ = properties.altcurrency_;
-  info.probi_ = properties.probi_;
-  info.balance_ = properties.balance_;
-  info.rates_ = properties.rates_;
-  info.parameters_choices_ = properties.parameters_choices_;
-  info.fee_amount_ = ledger_->GetContributionAmount();
-  info.parameters_range_ = properties.parameters_range_;
-  info.parameters_days_ = properties.parameters_days_;
+  ledger::WalletProperties wallet;
+  wallet.altcurrency_ = properties.altcurrency_;
+  wallet.probi_ = properties.probi_;
+  wallet.balance_ = properties.balance_;
+  wallet.rates_ = properties.rates_;
+  wallet.parameters_choices_ = properties.parameters_choices_;
+  wallet.fee_amount_ = ledger_->GetContributionAmount();
+  wallet.parameters_range_ = properties.parameters_range_;
+  wallet.parameters_days_ = properties.parameters_days_;
 
   for (size_t i = 0; i < properties.grants_.size(); i ++) {
     ledger::Grant grant;
@@ -101,10 +101,10 @@ ledger::WalletInfo Wallet::WalletPropertiesToWalletInfo(
     grant.expiryTime = properties.grants_[i].expiryTime;
     grant.type = properties.grants_[i].type;
 
-    info.grants_.push_back(grant);
+    wallet.grants_.push_back(grant);
   }
 
-  return info;
+  return wallet;
 }
 
 void Wallet::WalletPropertiesCallback(
@@ -119,7 +119,7 @@ void Wallet::WalletPropertiesCallback(
     return;
   }
 
-  std::unique_ptr<ledger::WalletInfo> info;
+  std::unique_ptr<ledger::WalletProperties> info;
 
   bool ok = braveledger_bat_helper::loadFromJson(&properties, response);
 
@@ -130,7 +130,8 @@ void Wallet::WalletPropertiesCallback(
     return;
   }
 
-  info.reset(new ledger::WalletInfo(WalletPropertiesToWalletInfo(properties)));
+  info.reset(
+      new ledger::WalletProperties(WalletPropertiesToWalletInfo(properties)));
   ledger_->SetWalletProperties(&properties);
   callback(ledger::Result::LEDGER_OK, std::move(info));
 }

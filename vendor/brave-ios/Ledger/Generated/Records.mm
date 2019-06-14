@@ -142,8 +142,8 @@
 }
 @end
 
-@implementation BATWalletInfo
-- (instancetype)initWithWalletInfo:(const ledger::WalletInfo&)obj {
+@implementation BATWalletProperties
+- (instancetype)initWithWalletInfo:(const ledger::WalletProperties&)obj {
   if ((self = [super init])) {
     self.altcurrency = [NSString stringWithUTF8String:obj.altcurrency_.c_str()];
     self.probi = [NSString stringWithUTF8String:obj.probi_.c_str()];
