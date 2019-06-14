@@ -7,7 +7,7 @@
 #include "base/mac/foundation_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
-#import "brave/browser/mac/sparkle_glue.h"
+#include "chrome/browser/mac/keystone_glue.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"

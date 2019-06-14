@@ -4,7 +4,9 @@
 
 #include "brave/browser/brave_browser_main_parts_mac.h"
 
+#if defined(ENABLE_SPARKLE)
 #import "brave/browser/mac/sparkle_glue.h"
+#endif
 
 void BraveBrowserMainPartsMac::PreMainMessageLoopStart() {
   ChromeBrowserMainPartsMac::PreMainMessageLoopStart();
