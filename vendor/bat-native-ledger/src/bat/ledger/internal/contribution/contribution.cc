@@ -9,12 +9,15 @@
 #include <cmath>
 #include <memory>
 #include <utility>
+#include <bat/ledger/ledger_callback_handler.h>
 
 #include "base/time/time.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/contribution/phase_one.h"
 #include "bat/ledger/internal/contribution/phase_two.h"
 #include "bat/ledger/internal/contribution/unverified.h"
+#include "bat/ledger/internal/contribution/uphold.h"
+#include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "brave_base/random.h"
 
@@ -29,6 +32,7 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     phase_one_(std::make_unique<PhaseOne>(ledger, this)),
     phase_two_(std::make_unique<PhaseTwo>(ledger, this)),
     unverified_(std::make_unique<Unverified>(ledger, this)),
+    uphold_(std::make_unique<Uphold>(ledger)),
     last_reconcile_timer_id_(0u) {
 }
 
@@ -157,14 +161,13 @@ double Contribution::GetAmountFromVerifiedRecurring(
 
 
 ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
-    const std::string& viewing_id,
-    const ledger::PublisherInfoList* list) {
+    const ledger::PublisherInfoList* list,
+    double* budget) {
   ledger::PublisherInfoList verified;
   ledger::PublisherInfoList non_verified_temp;
   ledger::PendingContributionList non_verified;
 
   double verified_total = 0.0;
-  double verified_bat = 0.0;
   double ac_amount = ledger_->GetContributionAmount();
 
   for (const auto& publisher : *list) {
@@ -180,11 +183,13 @@ ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
     }
   }
 
+  // verified budget
+  *budget += (verified_total / 100) * ac_amount;
+
   // verified publishers
   for (auto& publisher : verified) {
     publisher->weight = (publisher->weight / verified_total) * 100;
     publisher->percent = static_cast<uint32_t>(publisher->weight);
-    *budget += publisher->weight;
   }
 
   // non-verified publishers
@@ -192,7 +197,7 @@ ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
     auto contribution = ledger::PendingContribution::New();
     contribution->amount = (publisher->weight / 100) * ac_amount;
     contribution->publisher_key = publisher->id;
-    contribution->viewing_id = viewing_id;
+    contribution->viewing_id = "";
     contribution->category = ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE;
 
 
@@ -207,7 +212,6 @@ ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
 }
 
 ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
-    const std::string& viewing_id,
     const ledger::PublisherInfoList* list,
     double* budget) {
   ledger::PublisherInfoList verified;
@@ -225,7 +229,7 @@ ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
       auto contribution = ledger::PendingContribution::New();
       contribution->amount = publisher->weight;
       contribution->publisher_key = publisher->id;
-      contribution->viewing_id = viewing_id;
+      contribution->viewing_id = "";
       contribution->category = ledger::REWARDS_CATEGORY::RECURRING_TIP;
 
       non_verified.push_back(std::move(contribution));
@@ -243,16 +247,15 @@ void Contribution::ReconcilePublisherList(
     ledger::REWARDS_CATEGORY category,
     ledger::PublisherInfoList list,
     uint32_t next_record) {
-  std::string viewing_id = ledger_->GenerateGUID();
   ledger::PublisherInfoList verified_list;
   double budget = 0.0;
 
   if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
     ledger::PublisherInfoList normalized_list;
     ledger_->NormalizeContributeWinners(&normalized_list, &list, 0);
-    verified_list = GetVerifiedListAuto(viewing_id, &normalized_list, &budget);
+    verified_list = GetVerifiedListAuto(&normalized_list, &budget);
   } else {
-    verified_list = GetVerifiedListRecurring(viewing_id, &list, &budget);
+    verified_list = GetVerifiedListRecurring(&list, &budget);
   }
 
   braveledger_bat_helper::PublisherList new_list;
@@ -269,7 +272,7 @@ void Contribution::ReconcilePublisherList(
     new_list.push_back(new_publisher);
   }
 
-  InitReconcile(viewing_id, category, new_list, {}, budget);
+  InitReconcile(category, new_list, {}, budget);
 }
 
 void Contribution::ResetReconcileStamp() {
@@ -325,7 +328,6 @@ void Contribution::StartAutoContribute() {
 }
 
 void Contribution::OnBalanceForReconcile(
-    const std::string& viewing_id,
     const ledger::REWARDS_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
     const braveledger_bat_helper::Directions& directions,
@@ -336,21 +338,19 @@ void Contribution::OnBalanceForReconcile(
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
          "We couldn't get balance from the server.";
     phase_one_->Complete(ledger::Result::LEDGER_ERROR,
-                         viewing_id,
+                         "",
                          category);
     return;
   }
 
-  phase_one_->Start(viewing_id,
-                    category,
-                    list,
-                    directions,
-                    budget,
-                    info->total);
+  ProcessReconcile(category,
+                   list,
+                   directions,
+                   budget,
+                   std::move(info));
 }
 
 void Contribution::InitReconcile(
-    const std::string& viewing_id,
     const ledger::REWARDS_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
     const braveledger_bat_helper::Directions& directions,
@@ -358,7 +358,6 @@ void Contribution::InitReconcile(
   ledger_->FetchBalance(
       std::bind(&Contribution::OnBalanceForReconcile,
                 this,
-                viewing_id,
                 category,
                 list,
                 directions,
@@ -588,7 +587,7 @@ void Contribution::DoRetry(const std::string& viewing_id) {
 
   switch (reconcile.retry_step_) {
     case ledger::ContributionRetry::STEP_RECONCILE: {
-      phase_one_->Reconcile(viewing_id);
+      phase_one_->Start(viewing_id);
       break;
     }
     case ledger::ContributionRetry::STEP_CURRENT: {
@@ -635,6 +634,208 @@ void Contribution::ContributeUnverifiedPublishers() {
 
 void Contribution::StartPhaseTwo(const std::string& viewing_id) {
   phase_two_->Start(viewing_id);
+}
+
+bool Contribution::HaveReconcileEnoughFunds(
+    const ledger::REWARDS_CATEGORY category,
+    double* fee,
+    double budget,
+    double balance,
+    const braveledger_bat_helper::Directions& directions) {
+  if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
+    if (budget > balance) {
+      BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
+          "You do not have enough funds for auto contribution";
+       phase_one_->Complete(ledger::Result::NOT_ENOUGH_FUNDS,
+                            "",
+                            category);
+      return false;
+    }
+
+    *fee = budget;
+    return true;
+  }
+
+  if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+    double ac_amount = ledger_->GetContributionAmount();
+
+    // don't use ac amount if ac is disabled
+    if (!ShouldStartAutoContribute()) {
+      ac_amount = 0;
+    }
+
+    if (budget + ac_amount > balance) {
+      BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
+        "You do not have enough funds to do recurring and auto contribution";
+        phase_one_->Complete(ledger::Result::NOT_ENOUGH_FUNDS,
+                             "",
+                             ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE);
+      return false;
+    }
+
+    *fee = budget;
+    return true;
+  }
+
+  if (category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP) {
+    for (const auto& direction : directions) {
+      if (direction.publisher_key_.empty()) {
+        BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+          "Reconcile direction missing publisher";
+        phase_one_->Complete(ledger::Result::TIP_ERROR,
+                             "",
+                             category);
+        return false;
+      }
+
+      if (direction.currency_ != LEDGER_CURRENCY || direction.amount_ == 0) {
+        BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+          "Reconcile direction currency invalid for " <<
+          direction.publisher_key_;
+        phase_one_->Complete(ledger::Result::TIP_ERROR,
+                             "",
+                             category);
+        return false;
+      }
+
+      *fee += direction.amount_;
+    }
+
+    if (*fee > balance) {
+      BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
+        "You do not have enough funds to do a tip";
+        phase_one_->Complete(ledger::Result::NOT_ENOUGH_FUNDS,
+                             "",
+                             category);
+      return false;
+    }
+
+    return true;
+  }
+
+  return false;
+}
+
+void Contribution::ProcessReconcile(
+    const ledger::REWARDS_CATEGORY category,
+    const braveledger_bat_helper::PublisherList& list,
+    const braveledger_bat_helper::Directions& directions,
+    double budget,
+    ledger::BalancePtr info) {
+  double fee = .0;
+  const auto have_enough_balance = HaveReconcileEnoughFunds(category,
+                                                            &fee,
+                                                            budget,
+                                                            info->total,
+                                                            directions);
+  if (!have_enough_balance) {
+    return;
+  }
+
+  if (list.size() == 0 || budget == 0) {
+    if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
+      BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+        "Auto contribution table is empty";
+      phase_one_->Complete(ledger::Result::AC_TABLE_EMPTY,
+                           "",
+                           category);
+      return;
+    }
+
+    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+      phase_one_->Complete(ledger::Result::RECURRING_TABLE_EMPTY,
+                           "",
+                           ledger::REWARDS_CATEGORY::RECURRING_TIP);
+      BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+        "Recurring donation list is empty";
+      return;
+    }
+  }
+
+  auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
+  reconcile.viewingId_ = ledger_->GenerateGUID();
+  reconcile.fee_ = fee;
+  reconcile.directions_ = directions;
+  reconcile.category_ = category;
+  reconcile.list_ = list;
+
+  if (ledger_->ReconcileExists(reconcile.viewingId_)) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
+      "Unable to reconcile with the same viewing id: " << reconcile.viewingId_;
+    return;
+  }
+
+  // Check if we can process contribution with anon wallet only
+  const double anon_balance = braveledger_wallet::Balance::GetPerWalletBalance(
+      ledger::kWalletAnonymous,
+      info->wallets);
+  if (anon_balance >= fee) {
+    ledger_->AddReconcile(reconcile.viewingId_, reconcile);
+    phase_one_->Start(reconcile.viewingId_);
+    return;
+  }
+
+  if (anon_balance > 0) {
+    fee = fee - anon_balance;
+    reconcile.fee_ = anon_balance;
+    ledger_->AddReconcile(reconcile.viewingId_, reconcile);
+    phase_one_->Start(reconcile.viewingId_);
+  }
+
+  auto wallet = braveledger_bat_helper::CURRENT_RECONCILE();
+  wallet.viewingId_ = ledger_->GenerateGUID();
+  wallet.fee_ = fee;
+  wallet.directions_ = directions;
+  wallet.category_ = category;
+  wallet.list_ = list;
+  ledger_->AddReconcile(wallet.viewingId_, wallet);
+
+  auto tokens_callback = std::bind(&Contribution::OnWalletTokens,
+                                   this,
+                                   wallet.viewingId_,
+                                   info->wallets,
+                                   _1);
+
+  // Check if we have token
+  ledger_->GetWalletTokens(tokens_callback);
+}
+
+void Contribution::OnWalletTokens(
+    const std::string& viewing_id,
+    base::flat_map<std::string, double> wallet_balances,
+    std::map<std::string, std::string> tokens) {
+  // In this phase we only support one wallet
+  // so we will just always pick uphold.
+  // In the future we will allow user to pick which wallet to use via UI
+  // and then we will extend this function
+  const double uphold_balance =
+      braveledger_wallet::Balance::GetPerWalletBalance(ledger::kWalletUphold,
+                                                       wallet_balances);
+  const auto reconcile = ledger_->GetReconcileById(viewing_id);
+
+  if (tokens.size() == 0 || uphold_balance < reconcile.fee_) {
+    phase_one_->Complete(ledger::Result::NOT_ENOUGH_FUNDS,
+                         viewing_id,
+                         reconcile.category_);
+    return;
+  }
+
+  std::string uphold_token;
+  for (const auto& token : tokens) {
+    if (token.first == ledger::kWalletUphold) {
+      uphold_token = token.second;
+      break;
+    }
+  }
+
+  if (uphold_token.empty()) {
+    phase_one_->Complete(ledger::Result::LEDGER_ERROR,
+                         viewing_id,
+                         reconcile.category_);
+    return;
+  }
+
+  uphold_->Start(viewing_id, uphold_token);
 }
 
 }  // namespace braveledger_contribution

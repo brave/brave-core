@@ -98,7 +98,26 @@ void Balance::OnWalletProperties(
 
   balance->wallets.insert(std::make_pair(ledger::kWalletAnonymous, total_anon));
 
+  // TODO add uphold balance call
+
   callback(ledger::Result::LEDGER_OK, std::move(balance));
+}
+
+// static
+double Balance::GetPerWalletBalance(
+    const std::string& type,
+    base::flat_map<std::string, double> wallets) {
+  if (type.empty() || wallets.size() == 0) {
+    return 0.0;
+  }
+
+  for (const auto& wallet : wallets) {
+    if (wallet.first == type) {
+      return wallet.second;
+    }
+  }
+
+  return  0.0;
 }
 
 }  // namespace braveledger_wallet

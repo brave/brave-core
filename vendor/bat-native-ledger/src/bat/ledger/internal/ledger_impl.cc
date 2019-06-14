@@ -867,10 +867,9 @@ void LedgerImpl::DoDirectTip(const std::string& publisher_id,
   auto direction_list =
       std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
   braveledger_bat_helper::PublisherList list;
-  bat_contribution_->InitReconcile(GenerateGUID(),
-                         ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
-                         list,
-                         direction_list);
+  bat_contribution_->InitReconcile(ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
+                                   list,
+                                   direction_list);
 }
 
 void LedgerImpl::DownloadPublisherList(
@@ -1651,8 +1650,9 @@ void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
   bat_wallet_->FetchBalance(callback);
 }
 
-std::string LedgerImpl::GetUpholdToken() {
-  return "token";
+void LedgerImpl::GetWalletTokens(ledger::GetWalletTokensCallback callback) {
+  // TODO wire it through rewards service
+  callback({{ledger::kWalletUphold, "some token"}});
 }
 
 }  // namespace bat_ledger

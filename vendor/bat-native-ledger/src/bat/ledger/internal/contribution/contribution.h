@@ -47,10 +47,10 @@
 
 // PHASE 0
 // 1. InitReconcile
+// 2. ProcessReconcile
 
 // PHASE 1 (reconcile)
-// 1. Start
-// 2. Reconcile
+// 1. Start (Reconcile)
 // 3. ReconcileCallback
 // 4. CurrentReconcile
 // 5. CurrentReconcileCallback
@@ -95,6 +95,10 @@ class Unverified;
 }
 
 namespace braveledger_contribution {
+class Uphold;
+}
+
+namespace braveledger_contribution {
 
 static const uint64_t phase_one_timers[] = {
     1 * 60 * 60,  // 1h
@@ -131,7 +135,6 @@ class Contribution {
   // Initial point for contribution
   // In this step we get balance from the server
   void InitReconcile(
-      const std::string &viewing_id,
       const ledger::REWARDS_CATEGORY category,
       const braveledger_bat_helper::PublisherList& list,
       const braveledger_bat_helper::Directions& directions = {},
@@ -182,14 +185,12 @@ class Contribution {
   // AUTO CONTRIBUTE: from the list gets only verified publishers and
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListAuto(
-      const std::string& viewing_id,
       const ledger::PublisherInfoList* all,
       double* budget);
 
   // RECURRING TIPS: from the list gets only verified publishers and
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListRecurring(
-      const std::string& viewing_id,
       const ledger::PublisherInfoList* all,
       double* budget);
 
@@ -199,7 +200,6 @@ class Contribution {
                               uint32_t next_record);
 
   void OnBalanceForReconcile(
-      const std::string& viewing_id,
       const ledger::REWARDS_CATEGORY category,
       const braveledger_bat_helper::PublisherList& list,
       const braveledger_bat_helper::Directions& directions,
@@ -240,10 +240,30 @@ class Contribution {
       ledger::BalancePtr properties,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
+  bool HaveReconcileEnoughFunds(
+      const ledger::REWARDS_CATEGORY category,
+      double* fee,
+      double budget,
+      double balance,
+      const braveledger_bat_helper::Directions& directions);
+
+  void ProcessReconcile(
+    const ledger::REWARDS_CATEGORY category,
+    const braveledger_bat_helper::PublisherList& list,
+    const braveledger_bat_helper::Directions& directions,
+    double budget,
+    ledger::BalancePtr info);
+
+  void OnWalletTokens(
+      const std::string& viewing_id,
+      base::flat_map<std::string, double> wallet_balances,
+      std::map<std::string, std::string> tokens);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PhaseOne> phase_one_;
   std::unique_ptr<PhaseTwo> phase_two_;
   std::unique_ptr<Unverified> unverified_;
+  std::unique_ptr<Uphold> uphold_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
 

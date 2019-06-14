@@ -28,6 +28,10 @@ class Balance {
 
   void Fetch(ledger::FetchBalanceCallback callback);
 
+  static double GetPerWalletBalance(
+      const std::string& type,
+      base::flat_map<std::string, double> wallets);
+
  private:
   void OnWalletProperties(
       int response_status_code,

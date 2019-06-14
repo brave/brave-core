@@ -73,6 +73,8 @@ using RemovePendingContributionCallback = std::function<void(Result)>;
 using PendingContributionsTotalCallback = std::function<void(double)>;
 using GetCountryCodesCallback =
     std::function<void(const std::vector<int32_t>&)>;
+using GetWalletTokensCallback =
+    std::function<void(std::map<std::string, std::string>)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:

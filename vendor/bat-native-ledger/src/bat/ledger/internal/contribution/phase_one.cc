@@ -27,122 +27,7 @@ PhaseOne::PhaseOne(bat_ledger::LedgerImpl* ledger,
 PhaseOne::~PhaseOne() {
 }
 
-void PhaseOne::Start(
-    const std::string& viewing_id,
-    const ledger::REWARDS_CATEGORY category,
-    const braveledger_bat_helper::PublisherList& list,
-    const braveledger_bat_helper::Directions& directions,
-    double budget,
-    double balance) {
-  if (ledger_->ReconcileExists(viewing_id)) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Unable to reconcile with the same viewing id: " << viewing_id;
-    // TODO(nejczdovc) what should we do in this scenario?
-    return;
-  }
-
-  auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
-  double fee = .0;
-
-  if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
-    if (list.size() == 0 || budget > balance || budget == 0) {
-      if (list.size() == 0 || budget == 0) {
-        BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
-          "Auto contribution table is empty";
-        Complete(ledger::Result::AC_TABLE_EMPTY,
-                 viewing_id,
-                 category);
-        return;
-      }
-
-      if (budget > balance) {
-        BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-          "You do not have enough funds for auto contribution";
-       Complete(ledger::Result::NOT_ENOUGH_FUNDS,
-                viewing_id,
-                category);
-        return;
-      }
-    }
-
-    reconcile.list_ = list;
-    fee = budget;
-  }
-
-  if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
-    double ac_amount = ledger_->GetContributionAmount();
-
-    // don't use ac amount if ac is disabled
-    if (!contribution_->ShouldStartAutoContribute()) {
-      ac_amount = 0;
-    }
-
-    if (list.size() == 0 || budget == 0) {
-      Complete(ledger::Result::RECURRING_TABLE_EMPTY,
-               viewing_id,
-               ledger::REWARDS_CATEGORY::RECURRING_TIP);
-      BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
-        "Recurring donation list is empty";
-      return;
-    }
-
-    if (budget + ac_amount > balance) {
-      BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-        "You do not have enough funds to do recurring and auto contribution";
-        Complete(ledger::Result::NOT_ENOUGH_FUNDS,
-                 viewing_id,
-                 ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE);
-      return;
-    }
-
-    reconcile.list_ = list;
-    fee = budget;
-  }
-
-  if (category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP) {
-    for (const auto& direction : directions) {
-      if (direction.publisher_key_.empty()) {
-        BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-          "Reconcile direction missing publisher";
-        Complete(ledger::Result::TIP_ERROR,
-                 viewing_id,
-                 category);
-        return;
-      }
-
-      if (direction.currency_ != LEDGER_CURRENCY || direction.amount_ == 0) {
-        BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-          "Reconcile direction currency invalid for " <<
-          direction.publisher_key_;
-        Complete(ledger::Result::TIP_ERROR,
-                 viewing_id,
-                 category);
-        return;
-      }
-
-      fee += direction.amount_;
-    }
-
-    if (fee > balance) {
-      BLOG(ledger_, ledger::LogLevel::LOG_WARNING) <<
-        "You do not have enough funds to do a tip";
-        Complete(ledger::Result::NOT_ENOUGH_FUNDS,
-                 viewing_id,
-                 category);
-      return;
-    }
-  }
-
-  reconcile.viewingId_ = viewing_id;
-  reconcile.fee_ = fee;
-  reconcile.directions_ = directions;
-  reconcile.category_ = category;
-
-  ledger_->AddReconcile(viewing_id, reconcile);
-  Reconcile(viewing_id);
-}
-
-void PhaseOne::Reconcile(const std::string& viewing_id) {
+void PhaseOne::Start(const std::string& viewing_id) {
   ledger_->AddReconcileStep(viewing_id,
                             ledger::ContributionRetry::STEP_RECONCILE);
   std::string url = braveledger_bat_helper::buildURL(
@@ -629,7 +514,9 @@ void PhaseOne::Complete(ledger::Result result,
   ledger_->OnReconcileComplete(result, viewing_id, probi, category);
 
   if (result != ledger::Result::LEDGER_OK) {
-    ledger_->RemoveReconcileById(viewing_id);
+    if (!viewing_id.empty()) {
+      ledger_->RemoveReconcileById(viewing_id);
+    }
     return;
   }
 

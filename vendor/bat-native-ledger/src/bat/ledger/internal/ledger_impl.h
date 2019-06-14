@@ -489,7 +489,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
-  std::string GetUpholdToken();
+  void GetWalletTokens(ledger::GetWalletTokensCallback callback);
 
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,

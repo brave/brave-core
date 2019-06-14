@@ -29,16 +29,7 @@ class PhaseOne {
 
   ~PhaseOne();
 
-  // We determinate which contribution we want to do and do appropriate actions
-  void Start(
-      const std::string &viewing_id,
-      const ledger::REWARDS_CATEGORY category,
-      const braveledger_bat_helper::PublisherList& list,
-      const braveledger_bat_helper::Directions& directions,
-      double budget,
-      double balance);
-
-  void Reconcile(const std::string &viewing_id);
+  void Start(const std::string &viewing_id);
 
   void CurrentReconcile(const std::string& viewing_id);
 

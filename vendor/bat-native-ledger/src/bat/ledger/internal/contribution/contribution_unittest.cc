@@ -112,7 +112,7 @@ TEST_F(ContributionTest, GetAmountFromVerifiedAuto) {
   GetPublishersForAuto(&publisher_info_list, 100, 80);
   amount =
       Contribution::GetAmountFromVerifiedAuto(publisher_info_list, 1478);
-  EXPECT_EQ(amount, 1182.40);
+  EXPECT_NEAR(amount, 1182.4, 0.001f);
 
   // 100 publishers total with 4 verified and budget of 100 BAT
   publisher_info_list.clear();
