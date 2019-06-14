@@ -1,4 +1,5 @@
 import cosmeticFilterActions from '../actions/cosmeticFilterActions'
+import { getLocale } from '../api/localeAPI'
 
 export let rule = {
   host: '',
@@ -13,19 +14,19 @@ chrome.contextMenus.create({
 })
 // block ad child menu
 chrome.contextMenus.create({
-  title: 'Block element via selector',
+  title: getLocale('addBlockElement'),
   id: 'addBlockElement',
   parentId: 'brave',
   contexts: ['all']
 })
 chrome.contextMenus.create({
-  title: 'Clear CSS rules for this site',
+  title: getLocale('resetSiteFilterSettings'),
   id: 'resetSiteFilterSettings',
   parentId: 'brave',
   contexts: ['all']
 })
 chrome.contextMenus.create({
-  title: 'Clear CSS rules for all sites',
+  title: getLocale('resetAllFilterSettings'),
   id: 'resetAllFilterSettings',
   parentId: 'brave',
   contexts: ['all']
