@@ -3,12 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/internal/contribution/phase_two.h"
+
 #include "anon/anon.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
-#include "bat/ledger/internal/contribution/phase_two.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "brave_base/random.h"
 #include "net/http/http_status_code.h"
 
 using std::placeholders::_1;
@@ -85,46 +87,49 @@ unsigned int PhaseTwo::GetBallotsCount(
   return count;
 }
 
+bool PhaseTwo::GetStatisticalVotingWinner(
+    double dart,
+    const braveledger_bat_helper::PublisherList& list,
+    braveledger_bat_helper::WINNERS_ST* winner) {
+  double upper = 0.0;
+  for (const auto& item : list) {
+    upper += item.weight_ / 100.0;
+    if (upper < dart)
+      continue;
+
+    winner->votes_ = 1;
+    winner->publisher_data_ = item;
+
+    return true;
+  }
+
+  return false;
+}
+
+braveledger_bat_helper::Winners PhaseTwo::GetStatisticalVotingWinners(
+    uint32_t total_votes,
+    const braveledger_bat_helper::PublisherList& list) {
+  braveledger_bat_helper::Winners winners;
+
+  while (total_votes > 0) {
+    double dart = brave_base::random::Uniform_01();
+    braveledger_bat_helper::WINNERS_ST winner;
+    if (GetStatisticalVotingWinner(dart, list, &winner)) {
+      winners.push_back(winner);
+      --total_votes;
+    }
+  }
+
+  return winners;
+}
+
 void PhaseTwo::GetContributeWinners(
     const unsigned int ballots,
     const std::string& viewing_id,
     const braveledger_bat_helper::PublisherList& list) {
-  unsigned int total_votes = 0;
-  std::vector<unsigned int> votes;
-  braveledger_bat_helper::Winners res;
-
-  for (auto &item : list) {
-    if (item.percent_ <= 0) {
-      continue;
-    }
-
-    braveledger_bat_helper::WINNERS_ST winner;
-    winner.votes_ = static_cast<unsigned int>(std::lround(
-        static_cast<double>(item.percent_) *
-        static_cast<double>(ballots) / 100.0));
-
-    total_votes += winner.votes_;
-    winner.publisher_data_.id_ = item.id_;
-    winner.publisher_data_.duration_ = item.duration_;
-    winner.publisher_data_.score_ = item.score_;
-    winner.publisher_data_.visits_ = item.visits_;
-    winner.publisher_data_.percent_ = item.percent_;
-    winner.publisher_data_.weight_ = item.weight_;
-    res.push_back(winner);
-  }
-
-  if (res.size()) {
-    while (total_votes > ballots) {
-      braveledger_bat_helper::Winners::iterator max =
-          std::max_element(res.begin(), res.end(), winners_votes_compare);
-      (max->votes_)--;
-      total_votes--;
-    }
-  } else {
-    // TODO(nejczdovc) what should we do in this case?
-  }
-
-  VotePublishers(res, viewing_id);
+  braveledger_bat_helper::Winners winners =
+      GetStatisticalVotingWinners(ballots, list);
+  VotePublishers(winners, viewing_id);
 }
 
 void PhaseTwo::GetTipsWinners(
