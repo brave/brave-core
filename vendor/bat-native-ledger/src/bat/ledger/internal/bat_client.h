@@ -26,27 +26,6 @@ class BatClient {
   explicit BatClient(bat_ledger::LedgerImpl* ledger);
   ~BatClient();
 
-  void registerPersona();
-
-  void requestCredentialsCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  void registerPersonaCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers);
-
-  std::string getWalletPassphrase() const;
-
-  void WalletPropertiesCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      ledger::OnWalletPropertiesCallback callback);
-
-  void recoverWallet(const std::string& passPhrase);
 
   void getGrants(const std::string& lang, const std::string& forPaymentId);
 
@@ -55,23 +34,6 @@ class BatClient {
 
   void getGrantCaptcha(
       const std::vector<std::string>& headers);
-
-  void GetWalletProperties(ledger::OnWalletPropertiesCallback callback);
-
-  void continueRecover(int result,
-                       size_t* written,
-                       const std::vector<uint8_t>& newSeed);
-
-  void OnNicewareListLoaded(const std::string& pass_phrase,
-                            ledger::Result result,
-                            const std::string& data);
-
-  void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback);
-
-  void CreateWalletIfNecessary();
-
-  ledger::WalletInfo WalletPropertiesToWalletInfo(
-    const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
 
  private:
   void getGrantCaptchaCallback(
@@ -88,29 +50,6 @@ class BatClient {
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers);
-
-  void recoverWalletPublicKeyCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      const std::vector<uint8_t>& new_seed);
-
-  void recoverWalletCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      const std::string& recoveryId,
-      const std::vector<uint8_t>& new_seed);
-
-  std::string getAnonizeProof(const std::string& registrarVK,
-                              const std::string& id,
-                              std::string* preFlight);
-
-  void GetAddressesForPaymentIdCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      ledger::WalletAddressesCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };

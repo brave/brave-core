@@ -34,6 +34,7 @@ using namespace braveledger_bat_publishers; //  NOLINT
 using namespace braveledger_media; //  NOLINT
 using namespace braveledger_bat_state; //  NOLINT
 using namespace braveledger_contribution; //  NOLINT
+using namespace braveledger_wallet; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
@@ -57,6 +58,7 @@ LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     bat_media_(new Media(this)),
     bat_state_(new BatState(this)),
     bat_contribution_(new Contribution(this)),
+    bat_wallet_(new Wallet(this)),
     initialized_task_scheduler_(false),
     initialized_(false),
     initializing_(false),
@@ -97,7 +99,7 @@ bool LedgerImpl::CreateWallet() {
   }
 
   initializing_ = true;
-  bat_client_->CreateWalletIfNecessary();
+  bat_wallet_->CreateWalletIfNecessary();
   return true;
 }
 
@@ -705,7 +707,7 @@ void LedgerImpl::OnWalletProperties(
 
   if (result == ledger::Result::LEDGER_OK) {
     info.reset(new ledger::WalletInfo(
-        bat_client_->WalletPropertiesToWalletInfo(properties)));
+        bat_wallet_->WalletPropertiesToWalletInfo(properties)));
   }
 
   ledger_client_->OnWalletProperties(result, std::move(info));
@@ -713,7 +715,7 @@ void LedgerImpl::OnWalletProperties(
 
 void LedgerImpl::FetchWalletProperties(
     ledger::OnWalletPropertiesCallback callback) const {
-  bat_client_->GetWalletProperties(callback);
+  bat_wallet_->GetWalletProperties(callback);
 }
 
 void LedgerImpl::FetchGrants(const std::string& lang,
@@ -745,11 +747,11 @@ void LedgerImpl::OnGrantCaptcha(const std::string& image,
 }
 
 std::string LedgerImpl::GetWalletPassphrase() const {
-  return bat_client_->getWalletPassphrase();
+  return bat_wallet_->GetWalletPassphrase();
 }
 
 void LedgerImpl::RecoverWallet(const std::string& passPhrase) const {
-  bat_client_->recoverWallet(passPhrase);
+  bat_wallet_->RecoverWallet(passPhrase);
 }
 
 void LedgerImpl::OnRecoverWallet(
@@ -1444,7 +1446,7 @@ void LedgerImpl::SaveNormalizedPublisherList(
 
 void LedgerImpl::GetAddressesForPaymentId(
     ledger::WalletAddressesCallback callback) {
-  bat_client_->GetAddressesForPaymentId(callback);
+  bat_wallet_->GetAddressesForPaymentId(callback);
 }
 
 void LedgerImpl::SetAddresses(std::map<std::string, std::string> addresses) {
