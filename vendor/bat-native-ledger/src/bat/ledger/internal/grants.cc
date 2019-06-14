@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "bat/ledger/internal/grants.h"
+
 #include <algorithm>
-#include <ctime>
 #include <map>
-#include <memory>
 #include <utility>
 
-#include "bat/ledger/internal/bat_client.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
@@ -20,17 +19,17 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-namespace braveledger_bat_client {
+namespace braveledger_grant {
 
-BatClient::BatClient(bat_ledger::LedgerImpl* ledger) :
+Grants::Grants(bat_ledger::LedgerImpl* ledger) :
       ledger_(ledger) {
 }
 
-BatClient::~BatClient() {
+Grants::~Grants() {
 }
 
-void BatClient::getGrants(const std::string& lang,
-                          const std::string& forPaymentId) {
+void Grants::GetGrants(const std::string& lang,
+                       const std::string& forPaymentId) {
   // make sure wallet/client state is sane here as this is the first
   // panel call.
   const std::string& wallet_payment_id = ledger_->GetPaymentId();
@@ -58,13 +57,13 @@ void BatClient::getGrants(const std::string& lang,
     }
   }
 
-  auto callback = std::bind(&BatClient::getGrantsCallback, this, _1, _2, _3);
+  auto callback = std::bind(&Grants::GetGrantsCallback, this, _1, _2, _3);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_SET_PROMOTION + arguments, PREFIX_V4),
       std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, callback);
 }
 
-void BatClient::getGrantsCallback(
+void Grants::GetGrantsCallback(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
@@ -112,8 +111,8 @@ void BatClient::getGrantsCallback(
   ledger_->SetGrants(grants);
 }
 
-void BatClient::setGrant(const std::string& captchaResponse,
-                         const std::string& promotionId) {
+void Grants::SetGrant(const std::string& captchaResponse,
+                      const std::string& promotionId) {
   if (promotionId.empty()) {
     braveledger_bat_helper::GRANT properties;
     ledger_->OnGrantFinish(ledger::Result::LEDGER_ERROR, properties);
@@ -124,7 +123,7 @@ void BatClient::setGrant(const std::string& captchaResponse,
   std::string values[2] = {promotionId, captchaResponse};
   std::string payload = braveledger_bat_helper::stringify(keys, values, 2);
 
-  auto callback = std::bind(&BatClient::setGrantCallback, this, _1, _2, _3);
+  auto callback = std::bind(&Grants::SetGrantCallback, this, _1, _2, _3);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)GET_SET_PROMOTION + "/" + ledger_->GetPaymentId(),
         PREFIX_V2),
@@ -132,7 +131,7 @@ void BatClient::setGrant(const std::string& captchaResponse,
       ledger::URL_METHOD::PUT, callback);
 }
 
-void BatClient::setGrantCallback(
+void Grants::SetGrantCallback(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
@@ -179,9 +178,8 @@ void BatClient::setGrantCallback(
   ledger_->SetGrants(updated_grants);
 }
 
-void BatClient::getGrantCaptcha(
-    const std::vector<std::string>& headers) {
-  auto callback = std::bind(&BatClient::getGrantCaptchaCallback,
+void Grants::GetGrantCaptcha(const std::vector<std::string>& headers) {
+  auto callback = std::bind(&Grants::GetGrantCaptchaCallback,
                             this,
                             _1,
                             _2,
@@ -192,7 +190,7 @@ void BatClient::getGrantCaptcha(
       headers, "", "", ledger::URL_METHOD::GET, callback);
 }
 
-void BatClient::getGrantCaptchaCallback(
+void Grants::GetGrantCaptchaCallback(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
@@ -207,4 +205,4 @@ void BatClient::getGrantCaptchaCallback(
   ledger_->OnGrantCaptcha(response, it->second);
 }
 
-}  // namespace braveledger_bat_client
+}  // namespace braveledger_grant

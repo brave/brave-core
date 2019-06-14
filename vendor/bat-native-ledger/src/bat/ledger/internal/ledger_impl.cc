@@ -18,18 +18,18 @@
 #include "bat/ads/issuers_info.h"
 #include "bat/ads/notification_info.h"
 #include "bat/confirmations/confirmations.h"
-#include "bat/ledger/internal/bat_client.h"
 #include "bat/ledger/internal/media/media.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/bat_publishers.h"
 #include "bat/ledger/internal/bat_state.h"
+#include "bat/ledger/internal/grants.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/media/helper.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/static_values.h"
 #include "net/http/http_status_code.h"
 
-using namespace braveledger_bat_client; //  NOLINT
+using namespace braveledger_grant; //  NOLINT
 using namespace braveledger_bat_publishers; //  NOLINT
 using namespace braveledger_media; //  NOLINT
 using namespace braveledger_bat_state; //  NOLINT
@@ -38,7 +38,6 @@ using namespace braveledger_wallet; //  NOLINT
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
-using std::placeholders::_4;
 
 namespace {
 
@@ -53,7 +52,7 @@ namespace bat_ledger {
 
 LedgerImpl::LedgerImpl(ledger::LedgerClient* client) :
     ledger_client_(client),
-    bat_client_(new BatClient(this)),
+    bat_grants_(new Grants(this)),
     bat_publishers_(new BatPublishers(this)),
     bat_media_(new Media(this)),
     bat_state_(new BatState(this)),
@@ -720,7 +719,7 @@ void LedgerImpl::FetchWalletProperties(
 
 void LedgerImpl::FetchGrants(const std::string& lang,
                              const std::string& payment_id) const {
-  bat_client_->getGrants(lang, payment_id);
+  bat_grants_->GetGrants(lang, payment_id);
 }
 
 void LedgerImpl::OnGrant(ledger::Result result,
@@ -738,7 +737,7 @@ void LedgerImpl::OnGrant(ledger::Result result,
 
 void LedgerImpl::GetGrantCaptcha(
     const std::vector<std::string>& headers) const {
-  bat_client_->getGrantCaptcha(headers);
+  bat_grants_->GetGrantCaptcha(headers);
 }
 
 void LedgerImpl::OnGrantCaptcha(const std::string& image,
@@ -788,7 +787,7 @@ void LedgerImpl::OnRecoverWallet(
 void LedgerImpl::SolveGrantCaptcha(
     const std::string& solution,
     const std::string& promotionId) const {
-  bat_client_->setGrant(solution, promotionId);
+  bat_grants_->SetGrant(solution, promotionId);
 }
 
 void LedgerImpl::OnGrantFinish(ledger::Result result,

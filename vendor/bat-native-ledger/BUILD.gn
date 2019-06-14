@@ -92,8 +92,6 @@ source_set("ledger") {
   output_name = "bat_native_ledger"
 
   sources = [
-    "src/bat/ledger/internal/bat_client.cc",
-    "src/bat/ledger/internal/bat_client.h",
     "src/bat/ledger/internal/bat_helper.cc",
     "src/bat/ledger/internal/bat_helper.h",
     "src/bat/ledger/internal/bat_publishers.cc",
@@ -102,6 +100,8 @@ source_set("ledger") {
     "src/bat/ledger/internal/bat_state.h",
     "src/bat/ledger/internal/bignum.cc",
     "src/bat/ledger/internal/bignum.h",
+    "src/bat/ledger/internal/grants.cc",
+    "src/bat/ledger/internal/grants.h",
     "src/bat/ledger/internal/contribution/contribution.cc",
     "src/bat/ledger/internal/contribution/contribution.h",
     "src/bat/ledger/internal/contribution/phase_one.cc",
