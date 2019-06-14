@@ -1,18 +1,15 @@
-//
-//  ContributionInfo+CoreDataProperties.h
-//  
-//
-//  Created by Kyle Hickinson on 2019-05-24.
-//
-//  This file was automatically generated and should not be edited.
-//
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#import "ContributionInfo+CoreDataClass.h"
+#import <Foundation/Foundation.h>
+#import <CoreData/CoreData.h>
 
+@class PublisherInfo;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface ContributionInfo (CoreDataProperties)
+@interface ContributionInfo : NSManagedObject
 
 + (NSFetchRequest<ContributionInfo *> *)fetchRequest;
 

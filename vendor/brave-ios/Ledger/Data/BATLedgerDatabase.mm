@@ -5,7 +5,7 @@
 #import "BATLedgerDatabase.h"
 
 #import "DataController.h"
-#import "Model+CoreDataModel.h"
+#import "CoreDataModels.h"
 
 @implementation BATLedgerDatabase
 
@@ -321,6 +321,7 @@
   for (ActivityInfo *activity in fetchedObjects) {
     auto info = [[BATPublisherInfo alloc] init];
     info.id = activity.publisherID;
+    info.duration = activity.duration;
     info.score = activity.score;
     info.percent = activity.percent;
     info.weight = activity.weight;
