@@ -5,7 +5,7 @@
 import palette from '../../../theme/colors'
 import styled from 'styled-components'
 
-export const StyledMediaBox = styled<{}, 'div'>('div')`
+export const StyledTweetBox = styled<{}, 'div'>('div')`
   border: 1px solid ${palette.grey400};
   border-radius: 5px;
   margin: 15px 0 0 0;
@@ -15,18 +15,18 @@ export const StyledMediaBox = styled<{}, 'div'>('div')`
   overflow: hidden;
 `
 
-export const StyledMediaTimestamp = styled<{}, 'div'>('div')`
+export const StyledTweetTimestamp = styled<{}, 'div'>('div')`
   color: ${palette.grey500};
   font-size: 12px;
   display: inline;
   vertical-align: middle;
 `
 
-export const StyledMediaText = styled<{}, 'p'>('p')`
+export const StyledTweetText = styled<{}, 'p'>('p')`
   font-size: 14px;
 `
 
-export const StyledMediaIcon = styled<{}, 'span'>('span')`
+export const StyledTwitterIcon = styled<{}, 'span'>('span')`
   width: 22px;
   height: 22px;
   margin-right: 5px;

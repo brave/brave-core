@@ -23,7 +23,7 @@ import {
   ToggleTips,
   Tooltip,
   DonationOverlay,
-  MediaBox,
+  TweetBox,
   Tab
 } from '../../../src/features/rewards'
 import {
@@ -308,13 +308,10 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
     )
   }))
   .add('Tweet Box', () => {
-    const mediaProvider = select<any>('Provider', { twitter: 'twitter', reddit: 'reddit' }, 'twitter')
     return (
-      <MediaBox
-        mediaType={mediaProvider}
-        mediaText={text('Media text', 'This is my text.')}
-        mediaTimetext={mediaProvider === 'reddit' ? text('Reddit Text', '3 months ago') : ''}
-        mediaTimestamp={mediaProvider === 'twitter' ? number('Timestamp in seconds', 46420000) : 0}
+      <TweetBox
+        tweetTimestamp={number('Timestamp in seconds', 46420000)}
+        tweetText={text('Tweet text', 'This is my tweet.')}
       />
     )
   })
