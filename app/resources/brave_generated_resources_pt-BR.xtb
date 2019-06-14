@@ -28,7 +28,6 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="3218385319396786393">A reprodução automática foi bloqueada nesta página</translation>
 <translation id="4988333904713528597">Sempre permitir a reprodução automática em <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Continuar bloqueando a reprodução automática</translation>
-<translation id="7543906827780734027">Brave ainda não avaliou esta extensão - ela pode ser maliciosa. Adicionar "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" mesmo assim?</translation>
 <translation id="2044383478723007273">Cores brave</translation>
 <translation id="6123134130710658846">Ocultar botão Recompensas do Brave</translation>
 <translation id="7635711399568194460">Oculta o botão Recompensas do Brave na barra de localização quando as Recompensas do Brave não estiverem habilitadas</translation>
@@ -48,26 +47,13 @@ Ao instalar esta extensão, você concorda com os Termos de Uso do Google Widevi
 <translation id="4472575034687746823">Primeiros passos</translation>
 <translation id="3400357268283240774">Configurações adicionais</translation>
 <translation id="6303294677342628402">Proteções</translation>
-<translation id="768979911142179781">Padrões</translation>
-<translation id="5989930075012659993">Suas configurações atuais por site serão mantidas.</translation>
 <translation id="9185018653595759199">Bloqueio de mídia social</translation>
-<translation id="6894114137169961038">Controle de anúncios</translation>
-<translation id="1096802265930928584">Controle de cookies</translation>
-<translation id="8919235146866304148">Proteção de impressão digital</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="5259716416204774556">Bloqueio de texto</translation>
 <translation id="7498695072878479744">Permitir os botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins do Facebook e publicações incorporadas</translation>
 <translation id="5165042248369837294">Permitir tuítes incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir postagens incorporadas no LinkedIn</translation>
-<translation id="6067014455220527258">Bloquear anúncios</translation>
-<translation id="6985711843506827936">Permitir anúncios e rastreamento</translation>
-<translation id="6132506775968708399">Bloquear cookies de terceiros</translation>
 <translation id="5657156137487675418">Permitir todos os cookies</translation>
 <translation id="6883611015375728278">Bloquear todos os cookies</translation>
-<translation id="1442559343076146186">Bloquear impressão digital de terceiros</translation>
-<translation id="8034285923190068220">Permitir impressão digital</translation>
-<translation id="4540198958192073185">Bloquear todas as impressões digitais</translation>
 <translation id="8942080017911802454">Política de Tratamento de IP WebRTC</translation>
 <translation id="6165508094623778733">Saber mais</translation>
 <translation id="8798099450830957504">Padrão</translation>

@@ -27,7 +27,6 @@
 <translation id="3218385319396786393">Автопрогравання заблоковано на цій сторінці</translation>
 <translation id="4988333904713528597">Завжди дозволяти автоматичне відтворення на <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Продовжити блокувати автоматичне програвання</translation>
-<translation id="7543906827780734027">Brave ще не переглянув це розширення - воно може бути шкідливим. Додати "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" все одно?</translation>
 <translation id="2044383478723007273">Кольори Brave</translation>
 <translation id="6123134130710658846">Сховати кнопку Brave Rewards</translation>
 <translation id="7635711399568194460">Приховує кнопку Brave Rewards в адресному рядку, коли Brave Rewards вимкнено</translation>
@@ -47,26 +46,13 @@
 <translation id="4472575034687746823">Початок роботи</translation>
 <translation id="3400357268283240774">Додаткові налаштування</translation>
 <translation id="6303294677342628402">Щити</translation>
-<translation id="768979911142179781">Стандартні налаштування</translation>
-<translation id="5989930075012659993">Ваші поточні налаштування за кожним сайтом буде збережено.</translation>
 <translation id="9185018653595759199">Блокування в соціальних медіа</translation>
-<translation id="6894114137169961038">Керування рекламними оголошеннями</translation>
-<translation id="1096802265930928584">Керування файлами cookie</translation>
-<translation id="8919235146866304148">Захист відбитком пальця</translation>
-<translation id="520895744850022668">HTTPS всюди</translation>
-<translation id="5259716416204774556">Блокування скриптів</translation>
 <translation id="7498695072878479744">Дозволити кнопки входу Google на сайтах третьої сторони</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
 <translation id="5165042248369837294">Дозволити вбудовані твіти Twitter</translation>
 <translation id="958971637207126733">Дозволити вбудовані пости LinkedIn</translation>
-<translation id="6067014455220527258">Блокувати рекламу</translation>
-<translation id="6985711843506827936">Дозволити рекламу й відстеження</translation>
-<translation id="6132506775968708399">Блокувати сторонні файли cookie</translation>
 <translation id="5657156137487675418">Дозволити всі файли cookie</translation>
 <translation id="6883611015375728278">Блокувати всі кукіз</translation>
-<translation id="1442559343076146186">Блокувати сторонні цифрові сліди</translation>
-<translation id="8034285923190068220">Дозволити розпізнавання відбитку пальця</translation>
-<translation id="4540198958192073185">Блокувати всі цифрові сліди</translation>
 <translation id="8942080017911802454">Політика поводження з WebRTC IP</translation>
 <translation id="6165508094623778733">Дізнатись більше</translation>
 <translation id="8798099450830957504">За умовчанням</translation>

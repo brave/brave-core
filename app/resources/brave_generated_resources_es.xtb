@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Bloqueador de anuncios Brave</translation>
 <translation id="6406506848690869874">Brave Sync</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="120759863357279975">La extensión <ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") no está permitida en Brave.</translation>
 <translation id="7450557937477381864">Cerrar Chrome</translation>
 <translation id="7008934821596358692">Para finalizar la importación, cierra todas las ventanas de Brave.</translation>
@@ -28,7 +29,6 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="3218385319396786393">La reproducción automática se ha bloqueado en esta página</translation>
 <translation id="4988333904713528597">Permitir siempre la reproducción automática en <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Continuar bloqueando la reproducción automática</translation>
-<translation id="7543906827780734027">Brave aún no ha revisado esta extensión, podría ser maliciosa. ¿Añadir "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" de todas maneras?</translation>
 <translation id="2044383478723007273">Modo Brave</translation>
 <translation id="6123134130710658846">Ocultar botón de Brave Rewards</translation>
 <translation id="7635711399568194460">Oculta el botón de Brave Rewards en la barra de direcciones cuando Brave Rewards está deshabilitado</translation>
@@ -48,26 +48,13 @@ Al instalar esta extensión, aceptas los Términos de uso de Google Widevine. Ac
 <translation id="4472575034687746823">Empezar</translation>
 <translation id="3400357268283240774">Opciones adicionales</translation>
 <translation id="6303294677342628402">Escudos</translation>
-<translation id="768979911142179781">Predeterminados</translation>
-<translation id="5989930075012659993">Tu configuración actual por sitio se mantendrá.</translation>
 <translation id="9185018653595759199">Bloqueo de redes sociales</translation>
-<translation id="6894114137169961038">Control de publicidad</translation>
-<translation id="1096802265930928584">Control de Cookies</translation>
-<translation id="8919235146866304148">Protección huella digital</translation>
-<translation id="520895744850022668">HTTPS en cualquier sitio</translation>
-<translation id="5259716416204774556">Bloqueo de scripts</translation>
 <translation id="7498695072878479744">Permitir los botones de acceso de Google en sitios web de terceros</translation>
 <translation id="863171915776379000">Permitir los inicios de sesión de Facebook y los mensajes incrustados</translation>
 <translation id="5165042248369837294">Permitir tweets incrustados de Twitter</translation>
 <translation id="958971637207126733">Permitir mensajes incrustados de LinkedIn</translation>
-<translation id="6067014455220527258">Bloquear anuncios</translation>
-<translation id="6985711843506827936">Permitir anuncios y seguimiento</translation>
-<translation id="6132506775968708399">Bloquear cookies de terceros</translation>
 <translation id="5657156137487675418">Permitir cookies</translation>
 <translation id="6883611015375728278">Bloquear cookies</translation>
-<translation id="1442559343076146186">Bloquear toma de huella digital a terceros</translation>
-<translation id="8034285923190068220">Permitir huella digital</translation>
-<translation id="4540198958192073185">Bloquear toma de huella digital</translation>
 <translation id="8942080017911802454">Política de gestión de IP de WebRTC</translation>
 <translation id="6165508094623778733">Saber más</translation>
 <translation id="8798099450830957504">Predeterminado</translation>

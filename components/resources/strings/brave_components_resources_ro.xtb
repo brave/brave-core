@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Câștigați token-uri vizualizând reclame pe Brave. Reclamele prezentate sunt în funcție de ceea ce vă interesează, conform comportamentului dumneavoastră de navigare. Niciodată nicio dată personală sau istoric de navigare nu părăsesc browserul.</translation>
 <translation id="6112368337882254910">Contribuție automată</translation>
 <translation id="1527222983464337010">Un mod automat de a sprijini agențiile de publicitate și creatorii de conținut. Setați o plată lunară și navigați normal. Siteurile pe care le vizitați primesc automat contribuțiile dumneavoastră, în funcție de atenția acordată măsurată de Brave.</translation>
-<translation id="7178655681744815321">Câștiguri estimate pentru acest ciclu</translation>
-<translation id="8157096848242649588">Data plății</translation>
-<translation id="5208388044986603165">Notificări de anunțuri primite</translation>
 <translation id="4229016885653790965">Ne pare rău! Anunțurile nu sunt încă disponibile în rtegiunea ta.</translation>
 <translation id="654711254769318398">Pagini cu anunțuri vizualizate</translation>
 <translation id="2532127066761785857">Număr maxim de anunțuri afișate</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Editori verificați Brave</translation>
 <translation id="7658239707568436148">Anulare</translation>
 <translation id="7262285991915892790">Trageți iconița BAT pe</translation>
-<translation id="2151535059686617995">Este’ ziua dumneavoastră norocoasă!</translation>
-<translation id="6255773350565723852">Grantul token-ului dumneavoastră trebuie să sosească.</translation>
 <translation id="7656781188259414093">țintă.</translation>
 <translation id="1555514580945108302">Hmm… Nu Chiar. Încearcă din Nou.</translation>
 <translation id="13853865024308201">Revendică</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Nu aveți contribuții în așteptare…</translation>
 <translation id="1963227389609234879">Elimină tot</translation>
 <translation id="923467487918828349">Afișează-le pe toate</translation>
+<translation id="2151535059686617995">Este’ ziua dumneavoastră norocoasă!</translation>
+<translation id="6255773350565723852">Grantul token-ului dumneavoastră trebuie să sosească.</translation>
 <translation id="1181037720776840403">Eliminare</translation>
 <translation id="7885157704277298658">Copiat!</translation>
 <translation id="5379640681913450928">Număr de cuvinte:</translation>

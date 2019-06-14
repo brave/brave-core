@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Tjäna token genom att visa annonser i Brave. Annonser som visas baseras på dina intressen, taget från ditt surfbeteende. Ingen personlig information eller sökhistorik lämnar någonsin din webbläsare.</translation>
 <translation id="6112368337882254910">Bidra automatiskt</translation>
 <translation id="1527222983464337010">Ett sätt att automatiskt stödja de som skapar och publicerar innehåll. Ställ in ett månatligt bidrag och surfa som vanligt. Dina favoritsajter får automatiskt dina bidrag, baserat på din uppmärksamhet uppmätt av Brave.</translation>
-<translation id="7178655681744815321">Uppskattad förtjänst denna cykel</translation>
-<translation id="8157096848242649588">Betalningsdatum</translation>
-<translation id="5208388044986603165">Annonsaviseringar mottagna</translation>
 <translation id="4229016885653790965">Beklagar! Annonser kan ännu inte väljas i din region.</translation>
 <translation id="654711254769318398">Visade annonssidor</translation>
 <translation id="2532127066761785857">Maximalt antal annonser har visats</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Braveverifierade utgivare</translation>
 <translation id="7658239707568436148">Avbryt</translation>
 <translation id="7262285991915892790">Dra BAT-ikonen till</translation>
-<translation id="2151535059686617995">Det är din lyckodag!</translation>
-<translation id="6255773350565723852">Ditt tillståndsbevis är på väg.</translation>
 <translation id="7656781188259414093">mål.</translation>
 <translation id="1555514580945108302">Hmm… Inte direkt. Försök igen.</translation>
 <translation id="13853865024308201">Hämta</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Inga väntande bidrag…</translation>
 <translation id="1963227389609234879">Ta bort &amp;alla</translation>
 <translation id="923467487918828349">Visa alla</translation>
+<translation id="2151535059686617995">Det är din lyckodag!</translation>
+<translation id="6255773350565723852">Ditt tillståndsbevis är på väg.</translation>
 <translation id="1181037720776840403">Ta bort</translation>
 <translation id="7885157704277298658">Kopierades!</translation>
 <translation id="5379640681913450928">Ordantal:</translation>

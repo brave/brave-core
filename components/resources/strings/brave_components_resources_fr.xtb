@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Gagnez des jetons en regardant des annonces dans Brave. Les annonces sont basées sur vos centres d'intérêts déduits de votre navigation. Aucune donnée personnelle ni aucun historique de navigation ne quittera jamais votre navigateur.</translation>
 <translation id="6112368337882254910">Auto-Contribuer</translation>
 <translation id="1527222983464337010">Un moyen automatique de soutenir des éditeurs et créateurs de contenus. Définissez un paiement mensuel et naviguez comme à votre habitude. Les sites que vous consultez recevront vos contributions automatiquement, sur base de la mesure de votre attention réalisée par Brave.</translation>
-<translation id="7178655681744815321">Gains estimés ce cycle</translation>
-<translation id="8157096848242649588">Date de paiement</translation>
-<translation id="5208388044986603165">Notifications publicitaires reçues</translation>
 <translation id="4229016885653790965">Désolé ! Les publicités ne sont pas encore disponibles dans votre région.</translation>
 <translation id="654711254769318398">Pages de publicité affichées</translation>
 <translation id="2532127066761785857">Nombre maximal de publicités affiché</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Éditeurs Vérifiés par Brave</translation>
 <translation id="7658239707568436148">Annuler</translation>
 <translation id="7262285991915892790">Faites glisser l'icône BAT sur le</translation>
-<translation id="2151535059686617995">C'est votre jour de chance !</translation>
-<translation id="6255773350565723852">Votre subvention symbolique est en route.</translation>
 <translation id="7656781188259414093">objectif.</translation>
 <translation id="1555514580945108302">Hmm... pas tout à fait. Essayez encore.</translation>
 <translation id="13853865024308201">Réclamer</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Aucune contribution en attente…</translation>
 <translation id="1963227389609234879">Tout supprimer</translation>
 <translation id="923467487918828349">Tout afficher</translation>
+<translation id="2151535059686617995">C'est votre jour de chance !</translation>
+<translation id="6255773350565723852">Votre subvention symbolique est en route.</translation>
 <translation id="1181037720776840403">Supprimer</translation>
 <translation id="7885157704277298658">Copié !</translation>
 <translation id="5379640681913450928">Nombre de mots :</translation>

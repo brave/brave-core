@@ -28,7 +28,6 @@
 <translation id="3218385319396786393">Η αυτόματη αναπαραγωγή έχει αποκλειστεί σε αυτή τη σελίδα</translation>
 <translation id="4988333904713528597">Να επιτρέπεται πάντα η αυτόματη αναπαραγωγή στο <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Συνέχιση του αποκλεισμού της αυτόματης εκτέλεσης</translation>
-<translation id="7543906827780734027">Το Brave δεν έχει αξιολογήσει ακόμα αυτή την επέκταση—ίσως είναι κακόβουλη.Προσθήκη «<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>» ούτως ή άλλως;</translation>
 <translation id="2044383478723007273">Χρώματα Brave</translation>
 <translation id="6123134130710658846">Απόκρυψη πλήκτρου Ανταμοιβών Brave</translation>
 <translation id="7635711399568194460">Απόκρυψη του πλήκτρου Ανταμοιβών Brave στη γραμμή τοποθεσίας όταν οι Ανταμοιβές Brave δεν είναι ενεργοποιημένες</translation>
@@ -48,26 +47,13 @@
 <translation id="4472575034687746823">Έναρξη</translation>
 <translation id="3400357268283240774">Πρόσθετες ρυθμίσεις</translation>
 <translation id="6303294677342628402">Ασπίδες</translation>
-<translation id="768979911142179781">Προεπιλογές</translation>
-<translation id="5989930075012659993">Οι τρέχουσες ρυθμίσεις σας για κάθε ιστοσελίδα θα διατηρηθούν.</translation>
 <translation id="9185018653595759199">Αποκλεισμός κοινωνικών μέσων</translation>
-<translation id="6894114137169961038">Έλεγχος διαφημίσεων</translation>
-<translation id="1096802265930928584">Έλεγχος Cookies</translation>
-<translation id="8919235146866304148">Προστασία με αποτύπωμα</translation>
-<translation id="520895744850022668">HTTPS Παντού</translation>
-<translation id="5259716416204774556">Αποκλεισμός script</translation>
 <translation id="7498695072878479744">Επιτρέψτε τα πλήκτρα σύνδεσης Google σε ιστότοπους τρίτων</translation>
 <translation id="863171915776379000">Επιτρέψτε σύνδεση με Facebook και ενσωματωμένες αναρτήσεις</translation>
 <translation id="5165042248369837294">Επιτρέψτε στο Twitter ενσωματωμένα tweet</translation>
 <translation id="958971637207126733">Να επιτρέπονται οι ενσωματωμένες αναρτήσεις LinkedIn</translation>
-<translation id="6067014455220527258">Αποκλεισμός διαφημίσεων</translation>
-<translation id="6985711843506827936">Να επιτρέπονται οι διαφημίσεις και η ιχνηλάτιση</translation>
-<translation id="6132506775968708399">Αποκλεισμός cookies τρίτων</translation>
 <translation id="5657156137487675418">Επιτρέψτε όλα τα cookies</translation>
 <translation id="6883611015375728278">Αποκλεισμός όλων των cookies</translation>
-<translation id="1442559343076146186">Αποκλεισμός αποτυπωμάτων τρίτων</translation>
-<translation id="8034285923190068220">Να επιτρέπονται τα δακτυλικά αποτυπώματα</translation>
-<translation id="4540198958192073185">Αποκλείστε όλα τα δακτυλικά αποτυπώματα</translation>
 <translation id="8942080017911802454">Πολιτική Διαχείρισης IP σε WebRTC</translation>
 <translation id="6165508094623778733">Μάθε περισσότερα</translation>
 <translation id="8798099450830957504">Προεπιλογή</translation>

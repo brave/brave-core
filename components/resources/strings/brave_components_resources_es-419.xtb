@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Obtén tokens mirando publicidades en Brave. Las publicidades presentadas se basan en tus intereses, según lo inferido a partir del comportamiento de tu navegador. Ningún dato personal ni historial de navegación jamás saldrá de tu navegador.</translation>
 <translation id="6112368337882254910">Contribución automática</translation>
 <translation id="1527222983464337010">Una forma automática de apoyar a quienes publican y a los creadores de contenido. Establece un pago mensual y navega normalmente. Los sitios que visitas reciben contribuciones de manera automática en función de tu atención medida por Brave.</translation>
-<translation id="7178655681744815321">Ingresos estimados este ciclo</translation>
-<translation id="8157096848242649588">Fecha de pago</translation>
-<translation id="5208388044986603165">Notificaciones de anuncios recibidas</translation>
 <translation id="4229016885653790965">Lo sentimos. Todavía no hay anuncios disponibles en su región.</translation>
 <translation id="654711254769318398">Páginas de anuncios vistas</translation>
 <translation id="2532127066761785857">Cantidad máxima de anuncios mostrados</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Publicadores verificados de Brave</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="7262285991915892790">Arrastre el ícono de BAT hacia la</translation>
-<translation id="2151535059686617995">¡Es su día de suerte!</translation>
-<translation id="6255773350565723852">Su donación de tokens está en camino.</translation>
 <translation id="7656781188259414093">figura.</translation>
 <translation id="1555514580945108302">Mmmm, no salió del todo bien. Inténtelo de nuevo.</translation>
 <translation id="13853865024308201">Reclamar</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">No hay contribuciones pendientes…</translation>
 <translation id="1963227389609234879">Eliminar todo</translation>
 <translation id="923467487918828349">Mostrar todo</translation>
+<translation id="2151535059686617995">¡Es su día de suerte!</translation>
+<translation id="6255773350565723852">Su donación de tokens está en camino.</translation>
 <translation id="1181037720776840403">Eliminar</translation>
 <translation id="7885157704277298658">Copiado</translation>
 <translation id="5379640681913450928">Recuento de palabras:</translation>

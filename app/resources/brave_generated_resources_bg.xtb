@@ -28,7 +28,6 @@
 <translation id="3218385319396786393">Autoplay беше блокиран на тази страница</translation>
 <translation id="4988333904713528597">Винаги разрешавайте автоматичното възпроизвеждане на <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Продължаване на блокирането на автоматичното възпроизвеждане</translation>
-<translation id="7543906827780734027">Brave все още не е прегледал това разширение - то може да бъде опасно. Да се добави ли все пак"<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Цветове на Brave</translation>
 <translation id="6123134130710658846">Скрий бутона на Brave награди</translation>
 <translation id="7635711399568194460">Скрий бутона за Brave наградите в лентата, ако Brave наградите не са активирани</translation>
@@ -48,26 +47,13 @@
 <translation id="4472575034687746823">Първи стъпки</translation>
 <translation id="3400357268283240774">Допълнителни настройки</translation>
 <translation id="6303294677342628402">Защити</translation>
-<translation id="768979911142179781">По подразбиране</translation>
-<translation id="5989930075012659993">Вашите текущи настройки за всеки сайт ще бъдат запазени.</translation>
 <translation id="9185018653595759199">Блокиране на социални медии</translation>
-<translation id="6894114137169961038">Управление на реклами</translation>
-<translation id="1096802265930928584">Управление на бисквитките</translation>
-<translation id="8919235146866304148">Защита с пръстов отпечатък</translation>
-<translation id="520895744850022668">HTTPS навсякъде</translation>
-<translation id="5259716416204774556">Блокиране на скриптове</translation>
 <translation id="7498695072878479744">Разрешете бутони на Google вход на страници на трети страни</translation>
 <translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
 <translation id="5165042248369837294">Разреши вградени туитове на Twitter</translation>
 <translation id="958971637207126733">Разреши вградени публикации на LinkedIn</translation>
-<translation id="6067014455220527258">Блокиране на реклами</translation>
-<translation id="6985711843506827936">Разреши реклами и проследяване</translation>
-<translation id="6132506775968708399">Блокиране на „бисквитките“ на трети страни</translation>
 <translation id="5657156137487675418">Разрешаване на всички „бисквитки“</translation>
 <translation id="6883611015375728278">Блокиране на всички „бисквитки“</translation>
-<translation id="1442559343076146186">Блокирайте отпечатъците на трети страни</translation>
-<translation id="8034285923190068220">Позволяване на пръстови отпечатъци</translation>
-<translation id="4540198958192073185">Блокиране на цялото вземане на пръстови отпечатъци</translation>
 <translation id="8942080017911802454">WebRTC IP политика за боравене</translation>
 <translation id="6165508094623778733">Научете повече</translation>
 <translation id="8798099450830957504">По подразбиране</translation>
