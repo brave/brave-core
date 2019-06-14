@@ -19,6 +19,7 @@
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/logging.h"
+#include "bat/ledger/internal/wallet/wallet.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
@@ -27,8 +28,8 @@ namespace base {
 class SequencedTaskRunner;
 }
 
-namespace braveledger_bat_client {
-class BatClient;
+namespace braveledger_grant {
+class Grants;
 }
 
 namespace braveledger_media {
@@ -45,6 +46,10 @@ class BatState;
 
 namespace braveledger_contribution {
 class Contribution;
+}
+
+namespace braveledger_wallet {
+class Wallet;
 }
 
 namespace confirmations {
@@ -576,11 +581,12 @@ class LedgerImpl : public ledger::Ledger,
       ledger::GetAddressesCallback callback);
 
   ledger::LedgerClient* ledger_client_;
-  std::unique_ptr<braveledger_bat_client::BatClient> bat_client_;
+  std::unique_ptr<braveledger_grant::Grants> bat_grants_;
   std::unique_ptr<braveledger_bat_publishers::BatPublishers> bat_publishers_;
   std::unique_ptr<braveledger_media::Media> bat_media_;
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
   std::unique_ptr<braveledger_contribution::Contribution> bat_contribution_;
+  std::unique_ptr<braveledger_wallet::Wallet> bat_wallet_;
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
