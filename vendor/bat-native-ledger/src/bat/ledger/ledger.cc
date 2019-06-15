@@ -165,27 +165,30 @@ ledger::Ledger* Ledger::CreateInstance(LedgerClient* client) {
   return new bat_ledger::LedgerImpl(client);
 }
 
-WalletInfo::WalletInfo() : balance_(0), fee_amount_(0), parameters_days_(0) {}
-WalletInfo::~WalletInfo() {}
-WalletInfo::WalletInfo(const ledger::WalletInfo &info) {
-  altcurrency_ = info.altcurrency_;
-  probi_ = info.probi_;
-  balance_ = info.balance_;
-  fee_amount_ = info.fee_amount_;
-  rates_ = info.rates_;
-  parameters_choices_ = info.parameters_choices_;
-  parameters_range_ = info.parameters_range_;
-  parameters_days_ = info.parameters_days_;
-  grants_ = info.grants_;
+WalletProperties::WalletProperties() :
+  balance_(0),
+  fee_amount_(0),
+  parameters_days_(0) {}
+WalletProperties::~WalletProperties() {}
+WalletProperties::WalletProperties(const ledger::WalletProperties &wallet) {
+  altcurrency_ = wallet.altcurrency_;
+  probi_ = wallet.probi_;
+  balance_ = wallet.balance_;
+  fee_amount_ = wallet.fee_amount_;
+  rates_ = wallet.rates_;
+  parameters_choices_ = wallet.parameters_choices_;
+  parameters_range_ = wallet.parameters_range_;
+  parameters_days_ = wallet.parameters_days_;
+  grants_ = wallet.grants_;
 }
 
-const std::string WalletInfo::ToJson() const {
+const std::string WalletProperties::ToJson() const {
   std::string json;
   braveledger_bat_helper::saveToJsonString(*this, &json);
   return json;
 }
 
-bool WalletInfo::loadFromJson(const std::string& json) {
+bool WalletProperties::loadFromJson(const std::string& json) {
   rapidjson::Document d;
   d.Parse(json.c_str());
 

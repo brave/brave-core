@@ -42,7 +42,7 @@
 - (void)onRemoveRecurring:(const std::string &)publisher_key callback:(ledger::RecurringRemoveCallback)callback;
 - (void)onRestorePublishers:(ledger::OnRestoreCallback)callback;
 - (void)onWalletInitialized:(ledger::Result)result;
-- (void)onWalletProperties:(ledger::Result)result arg1:(std::unique_ptr<ledger::WalletInfo>)arg1;
+- (void)onWalletProperties:(ledger::Result)result arg1:(std::unique_ptr<ledger::WalletProperties>)arg1;
 - (void)removeAllPendingContributions:(const ledger::RemovePendingContributionCallback &)callback;
 - (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(const ledger::RemovePendingContributionCallback &)callback;
 - (void)resetState:(const std::string &)name callback:(ledger::OnResetCallback)callback;

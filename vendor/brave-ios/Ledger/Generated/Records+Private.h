@@ -21,7 +21,7 @@
 #include "bat/ledger/rewards_internals_info.h"
 #include "bat/ledger/transaction_info.h"
 #include "bat/ledger/transactions_info.h"
-#include "bat/ledger/wallet_info.h"
+#include "bat/ledger/wallet_properties.h"
 
 @interface BATAutoContributeProps (Private)
 - (instancetype)initWithAutoContributeProps:(const ledger::AutoContributeProps&)obj;
@@ -63,6 +63,6 @@
 - (instancetype)initWithTwitchEventInfo:(const ledger::TwitchEventInfo&)obj;
 @end
 
-@interface BATWalletInfo (Private)
-- (instancetype)initWithWalletInfo:(const ledger::WalletInfo&)obj;
+@interface BATWalletProperties (Private)
+- (instancetype)initWithWalletInfo:(const ledger::WalletProperties&)obj;
 @end

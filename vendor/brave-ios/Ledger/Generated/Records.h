@@ -7,7 +7,7 @@
 #import <Foundation/Foundation.h>
 #import "Enums.h"
 
-@class BATAutoContributeProps, BATBalanceReportInfo, BATContributionInfo, BATGrant, BATPublisherBanner, BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo, BATTwitchEventInfo, BATVisitData, BATWalletInfo;
+@class BATAutoContributeProps, BATBalanceReportInfo, BATContributionInfo, BATGrant, BATPublisherBanner, BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo, BATTwitchEventInfo, BATVisitData, BATWalletProperties;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -102,7 +102,7 @@ NS_SWIFT_NAME(TwitchEventInfo)
 @end
 
 NS_SWIFT_NAME(WalletInfo)
-@interface BATWalletInfo : NSObject
+@interface BATWalletProperties : NSObject
 @property (nonatomic) NSString * altcurrency;
 @property (nonatomic) NSString * probi;
 @property (nonatomic) double balance;

@@ -15,7 +15,7 @@
 
 #include "base/containers/flat_set.h"
 #include "bat/ledger/ledger.h"
-#include "bat/ledger/wallet_info.h"
+#include "bat/ledger/wallet_properties.h"
 #include "base/files/file_path.h"
 #include "base/observer_list.h"
 #include "base/one_shot_event.h"
@@ -331,8 +331,9 @@ class RewardsServiceImpl : public RewardsService,
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
   void OnPublisherListNormalizedSaved(ContentSiteList site_list,
                                       bool success);
-  void OnWalletProperties(ledger::Result result,
-                          std::unique_ptr<ledger::WalletInfo> info) override;
+  void OnWalletProperties(
+      ledger::Result result,
+      std::unique_ptr<ledger::WalletProperties> properties) override;
   void OnTip(const std::string& publisher_key, int amount, bool recurring,
       std::unique_ptr<brave_rewards::ContentSite> site) override;
 

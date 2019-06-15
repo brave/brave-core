@@ -49,10 +49,10 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)createWallet:(nullable void (^)(NSError * _Nullable error))completion;
 
 /// Fetch details about the users wallet (if they have one)
-- (void)fetchWalletDetails:(nullable void (^)(BATWalletInfo *))completion;
+- (void)fetchWalletDetails:(nullable void (^)(BATWalletProperties *))completion;
 
 /// The users wallet info if one has been created
-@property (nonatomic, readonly, nullable) BATWalletInfo *walletInfo;
+@property (nonatomic, readonly, nullable) BATWalletProperties *walletInfo;
 
 /// The wallet's passphrase. nil if the wallet has not been created yet
 @property (nonatomic, readonly, nullable) NSString *walletPassphrase;

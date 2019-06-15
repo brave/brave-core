@@ -39,7 +39,7 @@ class Unverified {
 
   void OnContributeUnverifiedWallet(
     ledger::Result result,
-    std::unique_ptr<ledger::WalletInfo> wallet);
+    std::unique_ptr<ledger::WalletProperties> properties);
 
   void OnContributeUnverifiedPublishers(
     double balance,

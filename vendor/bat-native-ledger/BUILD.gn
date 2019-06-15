@@ -76,9 +76,9 @@ source_set("headers") {
     "include/bat/ledger/pending_contribution.h",
     "include/bat/ledger/publisher_info.h",
     "include/bat/ledger/reconcile_info.h",
-    "include/bat/ledger/wallet_info.h",
     "include/bat/ledger/transaction_info.h",
     "include/bat/ledger/transactions_info.h",
+    "include/bat/ledger/wallet_properties.h",
   ]
 
   public_deps = [

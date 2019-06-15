@@ -2823,24 +2823,25 @@ void saveToJson(JsonWriter* writer,
   writer->EndObject();
 }
 
-void saveToJson(JsonWriter* writer, const ledger::WalletInfo& info) {
+void saveToJson(JsonWriter* writer,
+                const ledger::WalletProperties& properties) {
   writer->StartObject();
 
   writer->String("altcurrency_");
-  writer->String(info.altcurrency_.c_str());
+  writer->String(properties.altcurrency_.c_str());
 
   writer->String("probi_");
-  writer->String(info.probi_.c_str());
+  writer->String(properties.probi_.c_str());
 
   writer->String("balance_");
-  writer->Double(info.balance_);
+  writer->Double(properties.balance_);
 
   writer->String("fee_amount_");
-  writer->Double(info.fee_amount_);
+  writer->Double(properties.fee_amount_);
 
   writer->String("rates_");
   writer->StartObject();
-  for (const auto& rate : info.rates_) {
+  for (const auto& rate : properties.rates_) {
     writer->String(rate.first.c_str());
     writer->Double(rate.second);
   }
@@ -2848,24 +2849,24 @@ void saveToJson(JsonWriter* writer, const ledger::WalletInfo& info) {
 
   writer->String("parameters_choices_");
   writer->StartArray();
-  for (const auto& choice : info.parameters_choices_) {
+  for (const auto& choice : properties.parameters_choices_) {
     writer->Double(choice);
   }
   writer->EndArray();
 
   writer->String("parameters_range_");
   writer->StartArray();
-  for (const auto& range : info.parameters_range_) {
+  for (const auto& range : properties.parameters_range_) {
     writer->Double(range);
   }
   writer->EndArray();
 
   writer->String("parameters_days_");
-  writer->Uint(info.parameters_days_);
+  writer->Uint(properties.parameters_days_);
 
   writer->String("grants_");
   writer->StartArray();
-  for (const auto& grant : info.grants_) {
+  for (const auto& grant : properties.grants_) {
     saveToJson(writer, grant);
   }
   writer->EndArray();

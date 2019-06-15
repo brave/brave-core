@@ -702,14 +702,14 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
 void LedgerImpl::OnWalletProperties(
     ledger::Result result,
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
-  std::unique_ptr<ledger::WalletInfo> info;
+  std::unique_ptr<ledger::WalletProperties> wallet;
 
   if (result == ledger::Result::LEDGER_OK) {
-    info.reset(new ledger::WalletInfo(
+    wallet.reset(new ledger::WalletProperties(
         bat_wallet_->WalletPropertiesToWalletInfo(properties)));
   }
 
-  ledger_client_->OnWalletProperties(result, std::move(info));
+  ledger_client_->OnWalletProperties(result, std::move(wallet));
 }
 
 void LedgerImpl::FetchWalletProperties(

@@ -144,12 +144,12 @@ void BatLedgerClientMojoProxy::OnWalletInitialized(ledger::Result result) {
 }
 
 void BatLedgerClientMojoProxy::OnWalletProperties(ledger::Result result,
-    std::unique_ptr<ledger::WalletInfo> info) {
+    std::unique_ptr<ledger::WalletProperties> properties) {
   if (!Connected())
     return;
 
-  std::string json_info = info ? info->ToJson() : "";
-  bat_ledger_client_->OnWalletProperties(ToMojomResult(result), json_info);
+  std::string json = properties ? properties->ToJson() : "";
+  bat_ledger_client_->OnWalletProperties(ToMojomResult(result), json);
 }
 
 void BatLedgerClientMojoProxy::OnGrant(ledger::Result result,

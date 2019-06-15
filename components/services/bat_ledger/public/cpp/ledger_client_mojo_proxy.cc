@@ -79,9 +79,9 @@ void LedgerClientMojoProxy::OnWalletInitialized(int32_t result) {
 
 void LedgerClientMojoProxy::OnWalletProperties(int32_t result,
     const std::string& info) {
-  std::unique_ptr<ledger::WalletInfo> wallet_info;
+  std::unique_ptr<ledger::WalletProperties> wallet_info;
   if (!info.empty()) {
-    wallet_info.reset(new ledger::WalletInfo());
+    wallet_info.reset(new ledger::WalletProperties());
     wallet_info->loadFromJson(info);
   }
   ledger_client_->OnWalletProperties(ToLedgerResult(result),
