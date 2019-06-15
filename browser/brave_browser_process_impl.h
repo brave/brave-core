@@ -85,6 +85,10 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
 
   BraveComponent::Delegate* brave_component_updater_delegate();
 
+  // local_data_files_service_ should always be first because it needs
+  // to be destroyed last
+  std::unique_ptr<brave_component_updater::LocalDataFilesService>
+      local_data_files_service_;
   std::unique_ptr<BraveComponent::Delegate> brave_component_updater_delegate_;
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
   std::unique_ptr<brave_shields::AdBlockCustomFiltersService>
@@ -103,8 +107,6 @@ class BraveBrowserProcessImpl : public BrowserProcessImpl {
       tracking_protection_service_;
   std::unique_ptr<brave_shields::HTTPSEverywhereService>
       https_everywhere_service_;
-  std::unique_ptr<brave_component_updater::LocalDataFilesService>
-      local_data_files_service_;
   std::unique_ptr<brave::BraveStatsUpdater> brave_stats_updater_;
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
   std::unique_ptr<brave::BraveReferralsService> brave_referrals_service_;
