@@ -62,10 +62,6 @@ export class WelcomePage extends React.Component<Props, State> {
     this.setState({ currentScreen: this.state.currentScreen + 1 })
   }
 
-  onClickConfirmDefaultSearchEngine = () => {
-    this.props.actions.goToTabRequested('chrome://settings/search', '_blank')
-  }
-
   onClickChooseYourTheme = () => {
     this.props.actions.goToTabRequested('chrome://settings/appearance', '_blank')
   }
@@ -91,6 +87,7 @@ export class WelcomePage extends React.Component<Props, State> {
   }
 
   render () {
+    const { welcomeData, actions } = this.props
     const { currentScreen } = this.state
     return (
       <>
@@ -102,7 +99,13 @@ export class WelcomePage extends React.Component<Props, State> {
             <SlideContent>
               <WelcomeBox index={1} currentScreen={this.currentScreen} onClick={this.onClickLetsGo} />
               <ImportBox index={2} currentScreen={this.currentScreen} onClick={this.onClickImport} />
-              <SearchBox index={3} currentScreen={this.currentScreen} onClick={this.onClickConfirmDefaultSearchEngine} />
+              <SearchBox
+                index={3}
+                currentScreen={this.currentScreen}
+                onClick={this.onClickNext}
+                changeDefaultSearchProvider={actions.changeDefaultSearchProvider}
+                searchProviders={welcomeData.searchProviders}
+              />
               <ThemeBox index={4} currentScreen={this.currentScreen} onClick={this.onClickChooseYourTheme} />
               <ShieldsBox index={5} currentScreen={this.currentScreen} />
               <RewardsBox index={6} currentScreen={this.currentScreen} onClick={this.onClickRewardsGetStarted} />

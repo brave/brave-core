@@ -29,4 +29,19 @@ describe('welcome_actions', () => {
       payload: undefined
     })
   })
+
+  it('changeDefaultSearchProvider', () => {
+    expect(actions.changeDefaultSearchProvider(12345)).toEqual({
+      type: types.CHANGE_DEFAULT_SEARCH_PROVIDER,
+      payload: 12345
+    })
+  })
+
+  it('getSearchEngineProvidersSuccess', () => {
+    const mockPayload = []
+    expect(actions.getSearchEngineProvidersSuccess(mockPayload)).toEqual({
+      type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+      payload: mockPayload
+    })
+  })
 })

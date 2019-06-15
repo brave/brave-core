@@ -7,6 +7,9 @@ import { action } from 'typesafe-actions'
 // Constants
 import { types } from '../constants/welcome_types'
 
+// APIs
+import * as welcomeUtils from '../welcomeUtils'
+
 export const importNowRequested = () => action(types.IMPORT_NOW_REQUESTED)
 
 export const goToTabRequested = (url: string, target: string) => action(types.GO_TO_TAB_REQUESTED, {
@@ -15,3 +18,9 @@ export const goToTabRequested = (url: string, target: string) => action(types.GO
 })
 
 export const closeTabRequested = () => action(types.CLOSE_TAB_REQUESTED)
+
+export const changeDefaultSearchProvider = (searchProvider: string) => action(types.CHANGE_DEFAULT_SEARCH_PROVIDER, searchProvider)
+
+export const getSearchEngineProvidersSuccess = (searchProviders: Array<Welcome.SearchEngineEntry>) => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS, searchProviders)
+
+export const getSearchEngineProviders = () => welcomeUtils.getSearchEngineProviders()

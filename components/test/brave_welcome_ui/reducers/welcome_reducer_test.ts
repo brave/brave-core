@@ -12,12 +12,29 @@ window.close = jest.fn()
 describe('welcomeReducer', () => {
   it('should handle initial state', () => {
     const assertion = welcomeReducer(undefined, actions.closeTabRequested())
-    expect(assertion).toEqual({})
+    expect(assertion).toEqual({
+      searchProviders: []
+    })
   })
 
-  describe.skip('IMPORT_NOW_REQUESTED', () => {
-    it('calls importNowRequested', () => {
-      // TODO
+  describe('IMPORT_NOW_REQUESTED', () => {
+    let importNowRequestStub: jest.SpyInstance
+
+    beforeEach(() => {
+      importNowRequestStub = jest.spyOn(chrome, 'send')
+    })
+
+    afterEach(() => {
+      importNowRequestStub.mockRestore()
+    })
+
+    it('should call chrome.send with the correct arguments', () => {
+      welcomeReducer(undefined, {
+        type: types.IMPORT_NOW_REQUESTED
+      })
+
+      expect(importNowRequestStub).toBeCalledTimes(1)
+      expect(importNowRequestStub).toBeCalledWith('importNowRequested', [])
     })
   })
 
@@ -31,13 +48,44 @@ describe('welcomeReducer', () => {
     })
   })
 
-  describe.skip('CLOSE_TAB_REQUESTED', () => {
+  describe('CLOSE_TAB_REQUESTED', () => {
+    let closeTabRequestStub: jest.SpyInstance
+
+    beforeEach(() => {
+      closeTabRequestStub = jest.spyOn(window, 'close')
+    })
+
+    afterEach(() => {
+      closeTabRequestStub.mockRestore()
+    })
+
     it('calls window.close', () => {
       welcomeReducer(undefined, {
         type: types.CLOSE_TAB_REQUESTED,
         payload: undefined
       })
-      expect(window.close).toBeCalled()
+      expect(closeTabRequestStub).toBeCalledTimes(1)
+    })
+  })
+
+  describe('CHANGE_DEFAULT_SEARCH_PROVIDER', () => {
+    let changeSearchProviderStub: jest.SpyInstance
+
+    beforeEach(() => {
+      changeSearchProviderStub = jest.spyOn(chrome, 'send')
+    })
+
+    afterEach(() => {
+      changeSearchProviderStub.mockRestore()
+    })
+
+    it('should call chrome.send with the correct argument', () => {
+      welcomeReducer(undefined, {
+        type: types.CHANGE_DEFAULT_SEARCH_PROVIDER,
+        payload: '12345'
+      })
+      expect(changeSearchProviderStub).toBeCalledTimes(1)
+      expect(changeSearchProviderStub).toBeCalledWith('setDefaultSearchEngine', [12345])
     })
   })
 })

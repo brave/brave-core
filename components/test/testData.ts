@@ -111,7 +111,7 @@ interface OnMessageEvent extends chrome.events.Event<(message: object, options: 
 
 export const getMockChrome = () => {
   let mock = {
-    send: () => undefined,
+    send: (methodName: string, ...args: Array<any>) => undefined,
     getVariableValue: () => undefined,
     braveRewards: {
       getPublisherData: (id: number, url: string, favicon: string) => undefined
@@ -275,3 +275,21 @@ export const initialState = deepFreeze({
     windows: {}
   }
 })
+
+export const mockSearchProviders = [
+  {
+    canBeDefault: true,
+    canBeEdited: true,
+    canBeRemoved: true,
+    default: true,
+    displayName: 'DuckDuckGo',
+    iconURL: 'https://duckduckgo.com/favicon.ico',
+    id: 3,
+    isOmniboxExtension: false,
+    keyword: ':d',
+    modelIndex: 1,
+    name: 'DuckDuckGo',
+    url: 'https://duckduckgo.com/?q=%s&t=brave',
+    urlLocked: true
+  }
+]

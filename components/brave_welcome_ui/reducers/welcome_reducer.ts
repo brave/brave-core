@@ -28,6 +28,13 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
     case types.CLOSE_TAB_REQUESTED:
       window.close()
       break
+    case types.CHANGE_DEFAULT_SEARCH_PROVIDER:
+      const modelIndex = parseInt(payload, 10)
+      chrome.send('setDefaultSearchEngine', [modelIndex])
+      break
+    case types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS:
+      state = { ...state, searchProviders: payload }
+      break
   }
 
   if (state !== startingState) {
