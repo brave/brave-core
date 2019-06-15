@@ -1,4 +1,6 @@
 .banner-ad,
+.content-ad,
+.featured-ad,
 .sidebar-ad {
     display: none !important;
 }
