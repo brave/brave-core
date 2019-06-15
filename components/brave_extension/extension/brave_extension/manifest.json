@@ -66,6 +66,13 @@
       "js": [
         "assets/siteHack-glennbeck.com.js"
       ]
+    }, {
+      "run_at": "document_start",
+      "all_frames": true,
+      "matches": ["https://wccftech.com/*"],
+      "css": [
+	"assets/siteHack-wccftech.com.css"
+     ]
     }
   ],
   "permissions": [ "contentSettings", "management", "tabs", "storage", "webNavigation", "contextMenus", "cookies", "*://*/*", "chrome://favicon/*" ],
