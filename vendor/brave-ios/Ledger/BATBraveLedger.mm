@@ -209,9 +209,8 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 - (void)fetchWalletDetails:(void (^)(BATWalletProperties *))completion
 {
   ledger->FetchWalletProperties(^(ledger::Result result, ledger::WalletPropertiesPtr info) {
-    const auto walletInfo = *info.get();
+    [self onWalletProperties:result arg1:std::move(info)];
     dispatch_async(dispatch_get_main_queue(), ^{
-      [self onWalletProperties:result arg1:std::make_unique<ledger::WalletProperties>(walletInfo)];
       if (completion) {
         completion(self.walletInfo);
       }
@@ -222,9 +221,8 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 - (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1
 {
   if (result == ledger::LEDGER_OK) {
-    const auto* walletInfo = arg1.get();
-    if (walletInfo != nullptr) {
-      self.walletInfo = [[BATWalletProperties alloc] initWithWalletInfo:*walletInfo];
+    if (arg1.get() != nullptr) {
+      self.walletInfo = [[BATWalletProperties alloc] initWithWalletPropertiesPtr:std::move(arg1)];
     } else {
       self.walletInfo = nil;
     }
@@ -482,10 +480,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return grant.type == "ugp";
 }
 
-- (NSString *)notificationIDForGrant:(const ledger::Grant &)grant
+- (NSString *)notificationIDForGrant:(const ledger::GrantPtr)grant
 {
-  const auto prefix = [self isGrantUGP:grant] ? @"rewards_grant_" : @"rewards_grant_ads_";
-  const auto promotionId = [NSString stringWithUTF8String:grant.promotion_id.c_str()];
+  const auto prefix = [self isGrantUGP:*grant] ? @"rewards_grant_" : @"rewards_grant_ads_";
+  const auto promotionId = [NSString stringWithUTF8String:grant->promotion_id.c_str()];
   return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
 }
 
@@ -503,14 +501,14 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 - (void)onGrant:(ledger::Result)result grant:(ledger::GrantPtr)grant
 {
   if (result == ledger::LEDGER_OK) {
-    [self.mPendingGrants addObject:[[BATGrant alloc] initWithGrant:grant]];
+    [self.mPendingGrants addObject:[[BATGrant alloc] initWithGrant:*grant]];
 
-    bool isUGP = [self isGrantUGP:grant];
+    bool isUGP = [self isGrantUGP:*grant];
     auto notificationKind = isUGP ? BATRewardsNotificationKindGrant : BATRewardsNotificationKindGrantAds;
 
     [self addNotificationOfKind:notificationKind
                        userInfo:nil
-                 notificationID:[self notificationIDForGrant:grant]
+                 notificationID:[self notificationIDForGrant:std::move(grant)]
                        onlyOnce:YES];
   }
 }
@@ -560,7 +558,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                                  grant->probi);
   }
 
-  [self clearNotificationWithID:[self notificationIDForGrant:grant]];
+  [self clearNotificationWithID:[self notificationIDForGrant:std::move(grant)]];
 
   // TODO:
   // brave-core notifies that the balance report has been updated here.

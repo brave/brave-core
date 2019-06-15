@@ -64,5 +64,5 @@
 @end
 
 @interface BATWalletProperties (Private)
-- (instancetype)initWithWalletInfo:(const ledger::WalletProperties&)obj;
+- (instancetype)initWithWalletPropertiesPtr:(ledger::WalletPropertiesPtr)obj;
 @end
