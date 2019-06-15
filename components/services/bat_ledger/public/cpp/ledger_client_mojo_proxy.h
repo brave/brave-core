@@ -28,15 +28,17 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void GenerateGUID(GenerateGUIDCallback callback) override;
   void LoadLedgerState(LoadLedgerStateCallback callback) override;
   void OnWalletInitialized(int32_t result) override;
-  void OnWalletProperties(int32_t result, const std::string& info) override;
-  void OnGrant(int32_t result, const std::string& grant) override;
+  void OnWalletProperties(
+      int32_t result,
+      ledger::WalletPropertiesPtr properties) override;
+  void OnGrant(int32_t result, ledger::GrantPtr grant) override;
   void OnGrantCaptcha(const std::string& image,
       const std::string& hint) override;
   void OnRecoverWallet(int32_t result, double balance,
-      const std::vector<std::string>& grants) override;
+      std::vector<ledger::GrantPtr> grants) override;
   void OnReconcileComplete(int32_t result, const std::string& viewing_id,
       int32_t category, const std::string& probi) override;
-  void OnGrantFinish(int32_t result, const std::string& grant) override;
+  void OnGrantFinish(int32_t result, ledger::GrantPtr grant) override;
 
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void LoadPublisherList(LoadPublisherListCallback callback) override;

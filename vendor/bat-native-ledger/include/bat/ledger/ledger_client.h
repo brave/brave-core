@@ -85,7 +85,7 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void OnWalletProperties(
       Result result,
-      std::unique_ptr<ledger::WalletProperties>) = 0;
+      ledger::WalletPropertiesPtr properties) = 0;
 
   virtual void OnReconcileComplete(Result result,
                                    const std::string& viewing_id,
@@ -137,17 +137,17 @@ class LEDGER_EXPORT LedgerClient {
   // TODO(anyone) this can be removed
   virtual void FetchGrants(const std::string& lang,
                            const std::string& paymentId) = 0;
-  virtual void OnGrant(ledger::Result result, const ledger::Grant& grant) = 0;
+  virtual void OnGrant(ledger::Result result, ledger::GrantPtr grant) = 0;
 
   virtual void OnGrantCaptcha(const std::string& image,
                               const std::string& hint) = 0;
 
   virtual void OnRecoverWallet(Result result,
                                double balance,
-                               const std::vector<ledger::Grant>& grants) = 0;
+                               std::vector<ledger::GrantPtr> grants) = 0;
 
   virtual void OnGrantFinish(ledger::Result result,
-                             const ledger::Grant& grant) = 0;
+                             ledger::GrantPtr grant) = 0;
 
   virtual void OnPanelPublisherInfo(Result result,
                                    ledger::PublisherInfoPtr publisher_info,

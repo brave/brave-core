@@ -12,6 +12,7 @@
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "bat/ledger/internal/wallet/create.h"
 #include "bat/ledger/internal/wallet/recover.h"
+#include "mojo/public/cpp/bindings/map.h"
 #include "net/http/http_status_code.h"
 
 #include "wally_bip39.h"  // NOLINT
@@ -81,27 +82,27 @@ void Wallet::GetWalletProperties(
                    load_callback);
 }
 
-ledger::WalletProperties Wallet::WalletPropertiesToWalletInfo(
+ledger::WalletPropertiesPtr Wallet::WalletPropertiesToWalletInfo(
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
-  ledger::WalletProperties wallet;
-  wallet.altcurrency_ = properties.altcurrency_;
-  wallet.probi_ = properties.probi_;
-  wallet.balance_ = properties.balance_;
-  wallet.rates_ = properties.rates_;
-  wallet.parameters_choices_ = properties.parameters_choices_;
-  wallet.fee_amount_ = ledger_->GetContributionAmount();
-  wallet.parameters_range_ = properties.parameters_range_;
-  wallet.parameters_days_ = properties.parameters_days_;
+  ledger::WalletPropertiesPtr wallet = ledger::WalletProperties::New();
+  wallet->alt_currency = properties.altcurrency_;
+  wallet->probi = properties.probi_;
+  wallet->balance = properties.balance_;
+  wallet->rates = mojo::MapToFlatMap(properties.rates_);
+  wallet->parameters_choices = properties.parameters_choices_;
+  wallet->fee_amount = ledger_->GetContributionAmount();
+  wallet->parameters_range = properties.parameters_range_;
+  wallet->parameters_days = properties.parameters_days_;
 
   for (size_t i = 0; i < properties.grants_.size(); i ++) {
-    ledger::Grant grant;
+    ledger::GrantPtr grant = ledger::Grant::New();
 
-    grant.altcurrency = properties.grants_[i].altcurrency;
-    grant.probi = properties.grants_[i].probi;
-    grant.expiryTime = properties.grants_[i].expiryTime;
-    grant.type = properties.grants_[i].type;
+    grant->altcurrency = properties.grants_[i].altcurrency;
+    grant->probi = properties.grants_[i].probi;
+    grant->expiry_time = properties.grants_[i].expiryTime;
+    grant->type = properties.grants_[i].type;
 
-    wallet.grants_.push_back(grant);
+    wallet->grants.push_back(std::move(grant));
   }
 
   return wallet;
@@ -119,21 +120,21 @@ void Wallet::WalletPropertiesCallback(
     return;
   }
 
-  std::unique_ptr<ledger::WalletProperties> info;
+  ledger::WalletPropertiesPtr wallet;
 
   bool ok = braveledger_bat_helper::loadFromJson(&properties, response);
 
   if (!ok) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "Failed to load wallet properties state";
-    callback(ledger::Result::LEDGER_ERROR, std::move(info));
+    callback(ledger::Result::LEDGER_ERROR, std::move(wallet));
     return;
   }
 
-  info.reset(
-      new ledger::WalletProperties(WalletPropertiesToWalletInfo(properties)));
+  wallet = WalletPropertiesToWalletInfo(properties);
+
   ledger_->SetWalletProperties(&properties);
-  callback(ledger::Result::LEDGER_OK, std::move(info));
+  callback(ledger::Result::LEDGER_OK, std::move(wallet));
 }
 
 std::string Wallet::GetWalletPassphrase() const {

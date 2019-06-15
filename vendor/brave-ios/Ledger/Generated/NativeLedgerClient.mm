@@ -82,14 +82,14 @@ std::unique_ptr<ledger::LogStream> NativeLedgerClient::Log(const char * file, in
 void NativeLedgerClient::OnExcludedSitesChanged(const std::string & publisher_id, ledger::PUBLISHER_EXCLUDE exclude) {
   [bridge_ onExcludedSitesChanged:publisher_id exclude:exclude];
 }
-void NativeLedgerClient::OnGrant(ledger::Result result, const ledger::Grant & grant) {
-  [bridge_ onGrant:result grant:grant];
+void NativeLedgerClient::OnGrant(ledger::Result result, ledger::GrantPtr grant) {
+  [bridge_ onGrant:result grant:std::move(grant)];
 }
 void NativeLedgerClient::OnGrantCaptcha(const std::string & image, const std::string & hint) {
   [bridge_ onGrantCaptcha:image hint:hint];
 }
-void NativeLedgerClient::OnGrantFinish(ledger::Result result, const ledger::Grant & grant) {
-  [bridge_ onGrantFinish:result grant:grant];
+void NativeLedgerClient::OnGrantFinish(ledger::Result result, ledger::GrantPtr grant) {
+  [bridge_ onGrantFinish:result grant:std::move(grant)];
 }
 void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::PublisherInfoPtr publisher_info, uint64_t windowId) {
   [bridge_ onPanelPublisherInfo:result publisherInfo:std::move(publisher_info) windowId:windowId];
@@ -97,8 +97,8 @@ void NativeLedgerClient::OnPanelPublisherInfo(ledger::Result result, ledger::Pub
 void NativeLedgerClient::OnReconcileComplete(ledger::Result result, const std::string & viewing_id, ledger::REWARDS_CATEGORY category, const std::string & probi) {
   [bridge_ onReconcileComplete:result viewingId:viewing_id category:category probi:probi];
 }
-void NativeLedgerClient::OnRecoverWallet(ledger::Result result, double balance, const std::vector<ledger::Grant> & grants) {
-  [bridge_ onRecoverWallet:result balance:balance grants:grants];
+void NativeLedgerClient::OnRecoverWallet(ledger::Result result, double balance, std::vector<ledger::GrantPtr> grants) {
+  [bridge_ onRecoverWallet:result balance:balance grants:std::move(grants)];
 }
 void NativeLedgerClient::OnRemoveRecurring(const std::string & publisher_key, ledger::RecurringRemoveCallback callback) {
   [bridge_ onRemoveRecurring:publisher_key callback:callback];
@@ -109,7 +109,7 @@ void NativeLedgerClient::OnRestorePublishers(ledger::OnRestoreCallback callback)
 void NativeLedgerClient::OnWalletInitialized(ledger::Result result) {
   [bridge_ onWalletInitialized:result];
 }
-void NativeLedgerClient::OnWalletProperties(ledger::Result result, std::unique_ptr<ledger::WalletProperties> arg1) {
+void NativeLedgerClient::OnWalletProperties(ledger::Result result, ledger::WalletPropertiesPtr arg1) {
   [bridge_ onWalletProperties:result arg1:std::move(arg1)];
 }
 void NativeLedgerClient::RemoveAllPendingContributions(const ledger::RemovePendingContributionCallback & callback) {

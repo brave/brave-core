@@ -702,11 +702,10 @@ void LedgerImpl::OnReconcileComplete(ledger::Result result,
 void LedgerImpl::OnWalletProperties(
     ledger::Result result,
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
-  std::unique_ptr<ledger::WalletProperties> wallet;
+  ledger::WalletPropertiesPtr wallet;
 
   if (result == ledger::Result::LEDGER_OK) {
-    wallet.reset(new ledger::WalletProperties(
-        bat_wallet_->WalletPropertiesToWalletInfo(properties)));
+    wallet = bat_wallet_->WalletPropertiesToWalletInfo(properties);
   }
 
   ledger_client_->OnWalletProperties(result, std::move(wallet));
@@ -724,15 +723,15 @@ void LedgerImpl::FetchGrants(const std::string& lang,
 
 void LedgerImpl::OnGrant(ledger::Result result,
                          const braveledger_bat_helper::GRANT& properties) {
-  ledger::Grant grant;
+  ledger::GrantPtr grant = ledger::Grant::New();
 
-  grant.type = properties.type;
-  grant.promotionId = properties.promotionId;
+  grant->type = properties.type;
+  grant->promotion_id = properties.promotionId;
   last_grant_check_timer_id_ = 0;
 
   RefreshGrant(result != ledger::Result::LEDGER_OK &&
     result != ledger::Result::GRANT_NOT_FOUND);
-  ledger_client_->OnGrant(result, grant);
+  ledger_client_->OnGrant(result, std::move(grant));
 }
 
 void LedgerImpl::GetGrantCaptcha(
@@ -761,27 +760,28 @@ void LedgerImpl::OnRecoverWallet(
     BLOG(this, ledger::LogLevel::LOG_ERROR) << "Failed to recover wallet";
   }
 
-  std::vector<ledger::Grant> ledgerGrants;
+  std::vector<ledger::GrantPtr> ledgerGrants;
 
   for (size_t i = 0; i < grants.size(); i ++) {
-    ledger::Grant tempGrant;
+    ledger::GrantPtr tempGrant = ledger::Grant::New();
 
-    tempGrant.altcurrency = grants[i].altcurrency;
-    tempGrant.probi = grants[i].probi;
-    tempGrant.expiryTime = grants[i].expiryTime;
-    tempGrant.type = grants[i].type;
+    tempGrant->altcurrency = grants[i].altcurrency;
+    tempGrant->probi = grants[i].probi;
+    tempGrant->expiry_time = grants[i].expiryTime;
+    tempGrant->type = grants[i].type;
 
-    ledgerGrants.push_back(tempGrant);
+    ledgerGrants.push_back(std::move(tempGrant));
   }
 
   if (result == ledger::Result::LEDGER_OK) {
     bat_publishers_->clearAllBalanceReports();
   }
 
-  ledger_client_->OnRecoverWallet(result ? ledger::Result::LEDGER_ERROR :
-                                          ledger::Result::LEDGER_OK,
+  ledger_client_->OnRecoverWallet(result
+                                  ? ledger::Result::LEDGER_ERROR
+                                  : ledger::Result::LEDGER_OK,
                                   balance,
-                                  ledgerGrants);
+                                  std::move(ledgerGrants));
 }
 
 void LedgerImpl::SolveGrantCaptcha(
@@ -792,19 +792,19 @@ void LedgerImpl::SolveGrantCaptcha(
 
 void LedgerImpl::OnGrantFinish(ledger::Result result,
                                const braveledger_bat_helper::GRANT& grant) {
-  ledger::Grant newGrant;
+  ledger::GrantPtr newGrant = ledger::Grant::New();
 
-  newGrant.altcurrency = grant.altcurrency;
-  newGrant.probi = grant.probi;
-  newGrant.expiryTime = grant.expiryTime;
-  newGrant.promotionId = grant.promotionId;
-  newGrant.type = grant.type;
+  newGrant->altcurrency = grant.altcurrency;
+  newGrant->probi = grant.probi;
+  newGrant->expiry_time = grant.expiryTime;
+  newGrant->promotion_id = grant.promotionId;
+  newGrant->type = grant.type;
 
   if (grant.type == "ads") {
     bat_confirmations_->UpdateAdsRewards();
   }
 
-  ledger_client_->OnGrantFinish(result, newGrant);
+  ledger_client_->OnGrantFinish(result, std::move(newGrant));
 }
 
 bool LedgerImpl::GetBalanceReport(

@@ -60,3 +60,23 @@ struct VisitData {
   string provider;
   string favicon_url;
 };
+
+struct Grant {
+  string altcurrency;
+  string probi;
+  string promotion_id;
+  uint64 expiry_time;
+  string type;
+};
+
+struct WalletProperties {
+  string alt_currency;
+  string probi;
+  double balance;
+  double fee_amount;
+  map<string, double> rates;
+  array<double> parameters_choices;
+  array<double> parameters_range;
+  uint32 parameters_days;
+  array<Grant> grants;
+};

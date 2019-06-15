@@ -77,7 +77,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 /// Temporary blocks
 
 @property (nonatomic, copy, nullable) void (^walletInitializedBlock)(const ledger::Result result);
-@property (nonatomic, copy, nullable) void (^walletRecoveredBlock)(const ledger::Result result, const double balance, const std::vector<ledger::Grant> &grants);
+@property (nonatomic, copy, nullable) void (^walletRecoveredBlock)(const ledger::Result result, const double balance, std::vector<ledger::GrantPtr> grants);
 @property (nonatomic, copy, nullable) void (^grantCaptchaBlock)(const std::string& image, const std::string& hint);
 
 @end
@@ -208,7 +208,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 
 - (void)fetchWalletDetails:(void (^)(BATWalletProperties *))completion
 {
-  ledger->FetchWalletProperties(^(ledger::Result result, std::unique_ptr<ledger::WalletProperties> info) {
+  ledger->FetchWalletProperties(^(ledger::Result result, ledger::WalletPropertiesPtr info) {
     const auto walletInfo = *info.get();
     dispatch_async(dispatch_get_main_queue(), ^{
       [self onWalletProperties:result arg1:std::make_unique<ledger::WalletProperties>(walletInfo)];
@@ -219,7 +219,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   });
 }
 
-- (void)onWalletProperties:(ledger::Result)result arg1:(std::unique_ptr<ledger::WalletProperties>)arg1
+- (void)onWalletProperties:(ledger::Result)result arg1:(ledger::WalletPropertiesPtr)arg1
 {
   if (result == ledger::LEDGER_OK) {
     const auto* walletInfo = arg1.get();
@@ -242,7 +242,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 - (void)recoverWalletUsingPassphrase:(NSString *)passphrase completion:(void (^)(NSError *_Nullable))completion
 {
   const auto __weak weakSelf = self;
-  self.walletRecoveredBlock = ^(const ledger::Result result, const double balance, const std::vector<ledger::Grant> &grants) {
+  self.walletRecoveredBlock = ^(const ledger::Result result, const double balance, std::vector<ledger::GrantPtr> grants) {
     const auto strongSelf = weakSelf;
     if (!strongSelf) { return; }
     NSError *error = nil;
@@ -268,10 +268,10 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   ledger->RecoverWallet(std::string(passphrase.UTF8String));
 }
 
-- (void)onRecoverWallet:(ledger::Result)result balance:(double)balance grants:(const std::vector<ledger::Grant> &)grants
+- (void)onRecoverWallet:(ledger::Result)result balance:(double)balance grants:(std::vector<ledger::GrantPtr>)grants
 {
   if (self.walletRecoveredBlock) {
-    self.walletRecoveredBlock(result, balance, grants);
+    self.walletRecoveredBlock(result, balance, std::move(grants));
   }
 }
 
@@ -485,7 +485,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 - (NSString *)notificationIDForGrant:(const ledger::Grant &)grant
 {
   const auto prefix = [self isGrantUGP:grant] ? @"rewards_grant_" : @"rewards_grant_ads_";
-  const auto promotionId = [NSString stringWithUTF8String:grant.promotionId.c_str()];
+  const auto promotionId = [NSString stringWithUTF8String:grant.promotion_id.c_str()];
   return [NSString stringWithFormat:@"%@%@", prefix, promotionId];
 }
 
@@ -500,7 +500,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                       std::string(paymentId.UTF8String));
 }
 
-- (void)onGrant:(ledger::Result)result grant:(const ledger::Grant &)grant
+- (void)onGrant:(ledger::Result)result grant:(ledger::GrantPtr)grant
 {
   if (result == ledger::LEDGER_OK) {
     [self.mPendingGrants addObject:[[BATGrant alloc] initWithGrant:grant]];
@@ -548,16 +548,16 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                             std::string(promotionId.UTF8String));
 }
 
-- (void)onGrantFinish:(ledger::Result)result grant:(const ledger::Grant &)grant
+- (void)onGrantFinish:(ledger::Result)result grant:(ledger::GrantPtr)grant
 {
   ledger::BalanceReportInfo report_info;
   auto now = [NSDate date];
   if (result == ledger::LEDGER_OK) {
-    ledger::ReportType report_type = grant.type == "ads" ? ledger::ADS : ledger::GRANT;
+    ledger::ReportType report_type = grant->type == "ads" ? ledger::ADS : ledger::GRANT;
     ledger->SetBalanceReportItem(BATGetPublisherMonth(now),
                                  BATGetPublisherYear(now),
                                  report_type,
-                                 grant.probi);
+                                 grant->probi);
   }
 
   [self clearNotificationWithID:[self notificationIDForGrant:grant]];
