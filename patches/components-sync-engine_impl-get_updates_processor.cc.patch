@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine_impl/get_updates_processor.cc b/components/sync/engine_impl/get_updates_processor.cc
-index faeff075cf940e8c1db7941f4c3dca27bf63f580..3829f379ca8167982e6a82654e3bb6ed9773b07d 100644
+index faeff075cf940e8c1db7941f4c3dca27bf63f580..98992f1553a4622fe2a3918108fb8a89ac7bc5ff 100644
 --- a/components/sync/engine_impl/get_updates_processor.cc
 +++ b/components/sync/engine_impl/get_updates_processor.cc
 @@ -36,6 +36,7 @@ bool ShouldRequestEncryptionKey(SyncCycleContext* context) {
@@ -10,14 +10,11 @@ index faeff075cf940e8c1db7941f4c3dca27bf63f580..3829f379ca8167982e6a82654e3bb6ed
    bool success = false;
    if (update_response.get_updates().encryption_keys_size() == 0) {
      LOG(ERROR) << "Failed to receive encryption key from server.";
-@@ -223,8 +224,8 @@ SyncerError GetUpdatesProcessor::ExecuteDownloadUpdates(
+@@ -225,6 +226,7 @@ SyncerError GetUpdatesProcessor::ExecuteDownloadUpdates(
  
-   ModelTypeSet partial_failure_data_types;
- 
--  SyncerError result = SyncerProtoUtil::PostClientToServerMessage(
--      *msg, &update_response, cycle, &partial_failure_data_types);
-+  SyncerError result = ApplyBraveRecords(&update_response, request_types,
-+                                         std::move(brave_records_));
+   SyncerError result = SyncerProtoUtil::PostClientToServerMessage(
+       *msg, &update_response, cycle, &partial_failure_data_types);
++  result = ApplyBraveRecords(&update_response, request_types, std::move(brave_records_));
  
    DVLOG(2) << SyncerProtoUtil::ClientToServerResponseDebugString(
        update_response);
