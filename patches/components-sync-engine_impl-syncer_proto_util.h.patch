@@ -1,0 +1,20 @@
+diff --git a/components/sync/engine_impl/syncer_proto_util.h b/components/sync/engine_impl/syncer_proto_util.h
+index c48993057a9e87c0cc5c025fa2e8756e5d2940d9..09dc6b0f3fc6291708b4716c74f132871f4b3d23 100644
+--- a/components/sync/engine_impl/syncer_proto_util.h
++++ b/components/sync/engine_impl/syncer_proto_util.h
+@@ -47,6 +47,7 @@ class SyncerProtoUtil {
+   static void AddRequiredFieldsToClientToServerMessage(
+       const SyncCycle* cycle,
+       sync_pb::ClientToServerMessage* msg);
++  static void AddRequiredFieldsToClientToServerMessage_ChromiumImpl(const SyncCycle*, sync_pb::ClientToServerMessage*);
+ 
+   // Posts the given message and fills the buffer with the returned value.
+   // Returns true on success.  Also handles store birthday verification: will
+@@ -57,6 +58,7 @@ class SyncerProtoUtil {
+       sync_pb::ClientToServerResponse* response,
+       SyncCycle* cycle,
+       ModelTypeSet* partial_failure_data_types);
++  static SyncerError PostClientToServerMessage_ChromiumImpl(const sync_pb::ClientToServerMessage&, sync_pb::ClientToServerResponse*, SyncCycle*, ModelTypeSet*);
+ 
+   // Specifies where entity's position should be updated from the data in
+   // GetUpdates message.
