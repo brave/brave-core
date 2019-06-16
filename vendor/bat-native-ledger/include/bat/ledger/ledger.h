@@ -15,6 +15,7 @@
 
 #include "bat/ledger/export.h"
 #include "bat/ledger/auto_contribute_props.h"
+#include "bat/ledger/balance.h"
 #include "bat/ledger/ledger_client.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/media_publisher_info.h"
@@ -47,6 +48,8 @@ using OnRefreshPublisherCallback =
 using GetAddressesCallback =
     std::function<void(std::map<std::string, std::string>)>;
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
+using FetchBalanceCallback = std::function<void(ledger::Result,
+                                                ledger::BalancePtr)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -289,6 +292,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) = 0;
+
+  virtual void FetchBalance(ledger::FetchBalanceCallback callback) = 0;
 };
 
 }  // namespace ledger

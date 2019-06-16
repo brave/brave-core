@@ -3218,4 +3218,27 @@ void RewardsServiceImpl::OnContributeUnverifiedPublishers(
   }
 }
 
+void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
+                                        int32_t result,
+                                        ledger::BalancePtr balance) {
+  auto new_balance = std::make_unique<brave_rewards::Balance>();
+
+  if (balance) {
+    new_balance->alt_currency = balance->alt_currency;
+    new_balance->probi = balance->probi;
+    new_balance->total = balance->total;
+    new_balance->rates = mojo::FlatMapToMap(balance->rates);
+    new_balance->wallets = mojo::FlatMapToMap(balance->wallets);
+  }
+
+  std::move(callback).Run(result, std::move(new_balance));
+}
+
+void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
+  bat_ledger_->FetchBalance(
+      base::BindOnce(&RewardsServiceImpl::OnFetchBalance,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
 }  // namespace brave_rewards

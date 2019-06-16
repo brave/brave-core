@@ -10,6 +10,7 @@
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
+#include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/wallet/create.h"
 #include "bat/ledger/internal/wallet/recover.h"
 #include "mojo/public/cpp/bindings/map.h"
@@ -26,7 +27,8 @@ namespace braveledger_wallet {
 Wallet::Wallet(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
     create_(std::make_unique<Create>(ledger)),
-    recover_(std::make_unique<Recover>(ledger)) {
+    recover_(std::make_unique<Recover>(ledger)),
+    balance_(std::make_unique<Balance>(ledger)) {
 }
 
 Wallet::~Wallet() {
@@ -202,6 +204,10 @@ void Wallet::GetAddressesForPaymentIdCallback(
 
   callback(addresses);
   ledger_->SetAddresses(addresses);
+}
+
+void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
+  balance_->Fetch(callback);
 }
 
 }  // namespace braveledger_wallet

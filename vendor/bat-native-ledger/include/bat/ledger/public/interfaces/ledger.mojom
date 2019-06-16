@@ -80,3 +80,11 @@ struct WalletProperties {
   uint32 parameters_days;
   array<Grant> grants;
 };
+
+struct Balance {
+  string alt_currency;
+  string probi;
+  double total;
+  map<string, double> rates;
+  map<string, double> wallets;
+};

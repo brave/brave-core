@@ -666,4 +666,26 @@ void BatLedgerImpl::GetPendingContributionsTotal(
                 _1));
 }
 
+// static
+void BatLedgerImpl::OnFetchBalance(
+    CallbackHolder<FetchBalanceCallback>* holder,
+    ledger::Result result,
+    ledger::BalancePtr balance) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, std::move(balance));
+  delete holder;
+}
+
+void BatLedgerImpl::FetchBalance(
+    FetchBalanceCallback callback) {
+  auto* holder = new CallbackHolder<FetchBalanceCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->FetchBalance(
+      std::bind(BatLedgerImpl::OnFetchBalance,
+                holder,
+                _1,
+                _2));
+}
+
 }  // namespace bat_ledger
