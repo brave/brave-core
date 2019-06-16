@@ -59,8 +59,8 @@
   if ((self = [super init])) {
     self.altcurrency = [NSString stringWithUTF8String:obj.altcurrency.c_str()];
     self.probi = [NSString stringWithUTF8String:obj.probi.c_str()];
-    self.promotionId = [NSString stringWithUTF8String:obj.promotionId.c_str()];
-    self.expiryTime = obj.expiryTime;
+    self.promotionId = [NSString stringWithUTF8String:obj.promotion_id.c_str()];
+    self.expiryTime = obj.expiry_time;
     self.type = [NSString stringWithUTF8String:obj.type.c_str()];
   }
   return self;
@@ -143,17 +143,19 @@
 @end
 
 @implementation BATWalletProperties
-- (instancetype)initWithWalletInfo:(const ledger::WalletProperties&)obj {
+- (instancetype)initWithWalletPropertiesPtr:(ledger::WalletPropertiesPtr)obj {
   if ((self = [super init])) {
-    self.altcurrency = [NSString stringWithUTF8String:obj.altcurrency_.c_str()];
-    self.probi = [NSString stringWithUTF8String:obj.probi_.c_str()];
-    self.balance = obj.balance_;
-    self.feeAmount = obj.fee_amount_;
-    self.rates = NSDictionaryFromMap(obj.rates_);
-    self.parametersChoices = NSArrayFromVector(obj.parameters_choices_);
-    self.parametersRange = NSArrayFromVector(obj.parameters_range_);
-    self.parametersDays = obj.parameters_days_;
-    self.grants = NSArrayFromVector(obj.grants_, ^BATGrant *(const ledger::Grant& o){ return [[BATGrant alloc] initWithGrant: o]; });
+    self.altcurrency = [NSString stringWithUTF8String:obj->alt_currency.c_str()];
+    self.probi = [NSString stringWithUTF8String:obj->probi.c_str()];
+    self.balance = obj->balance;
+    self.feeAmount = obj->fee_amount;
+    self.rates = NSDictionaryFromMap(obj->rates);
+    self.parametersChoices = NSArrayFromVector(obj->parameters_choices);
+    self.parametersRange = NSArrayFromVector(obj->parameters_range);
+    self.parametersDays = obj->parameters_days;
+    self.grants = NSArrayFromVector(std::move(obj->grants), ^BATGrant *(const ledger::GrantPtr& o){
+      return [[BATGrant alloc] initWithGrant:*o];
+    });
   }
   return self;
 }

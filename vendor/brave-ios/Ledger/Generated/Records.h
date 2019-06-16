@@ -101,7 +101,7 @@ NS_SWIFT_NAME(TwitchEventInfo)
 @property (nonatomic) NSString * status;
 @end
 
-NS_SWIFT_NAME(WalletInfo)
+NS_SWIFT_NAME(WalletProperties)
 @interface BATWalletProperties : NSObject
 @property (nonatomic) NSString * altcurrency;
 @property (nonatomic) NSString * probi;

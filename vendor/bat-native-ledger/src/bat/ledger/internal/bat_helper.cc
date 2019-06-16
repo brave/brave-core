@@ -2720,27 +2720,6 @@ void saveToJson(JsonWriter* writer, const ledger::BalanceReportInfo& info) {
   writer->EndObject();
 }
 
-void saveToJson(JsonWriter* writer, const ledger::Grant& grant) {
-  writer->StartObject();
-
-  writer->String("altcurrency");
-  writer->String(grant.altcurrency.c_str());
-
-  writer->String("probi");
-  writer->String(grant.probi.c_str());
-
-  writer->String("promotionId");
-  writer->String(grant.promotionId.c_str());
-
-  writer->String("expiryTime");
-  writer->Uint64(grant.expiryTime);
-
-  writer->String("type");
-  writer->String(grant.type.c_str());
-
-  writer->EndObject();
-}
-
 void saveToJson(JsonWriter* writer,
     const ledger::PublisherBanner& banner) {
   writer->StartObject();
@@ -2819,57 +2798,6 @@ void saveToJson(JsonWriter* writer,
 
   writer->String("min_visits");
   writer->Uint(info.min_visits);
-
-  writer->EndObject();
-}
-
-void saveToJson(JsonWriter* writer,
-                const ledger::WalletProperties& properties) {
-  writer->StartObject();
-
-  writer->String("altcurrency_");
-  writer->String(properties.altcurrency_.c_str());
-
-  writer->String("probi_");
-  writer->String(properties.probi_.c_str());
-
-  writer->String("balance_");
-  writer->Double(properties.balance_);
-
-  writer->String("fee_amount_");
-  writer->Double(properties.fee_amount_);
-
-  writer->String("rates_");
-  writer->StartObject();
-  for (const auto& rate : properties.rates_) {
-    writer->String(rate.first.c_str());
-    writer->Double(rate.second);
-  }
-  writer->EndObject();
-
-  writer->String("parameters_choices_");
-  writer->StartArray();
-  for (const auto& choice : properties.parameters_choices_) {
-    writer->Double(choice);
-  }
-  writer->EndArray();
-
-  writer->String("parameters_range_");
-  writer->StartArray();
-  for (const auto& range : properties.parameters_range_) {
-    writer->Double(range);
-  }
-  writer->EndArray();
-
-  writer->String("parameters_days_");
-  writer->Uint(properties.parameters_days_);
-
-  writer->String("grants_");
-  writer->StartArray();
-  for (const auto& grant : properties.grants_) {
-    saveToJson(writer, grant);
-  }
-  writer->EndArray();
 
   writer->EndObject();
 }

@@ -44,7 +44,7 @@ class Wallet {
 
   void GetWalletProperties(ledger::OnWalletPropertiesCallback callback);
 
-  ledger::WalletProperties WalletPropertiesToWalletInfo(
+  ledger::WalletPropertiesPtr WalletPropertiesToWalletInfo(
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
 
   void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback);

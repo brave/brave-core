@@ -205,7 +205,7 @@ class Contribution {
       const braveledger_bat_helper::Directions& directions,
       double budget,
       const ledger::Result result,
-      std::unique_ptr<ledger::WalletProperties> info);
+      ledger::WalletPropertiesPtr info);
 
   uint64_t GetRetryTimer(ledger::ContributionRetry step,
                          const std::string& viewing_id,
@@ -237,7 +237,7 @@ class Contribution {
 
   void OnSufficientBalanceWallet(
       ledger::Result result,
-      std::unique_ptr<ledger::WalletProperties> properties,
+      ledger::WalletPropertiesPtr properties,
       ledger::HasSufficientBalanceToReconcileCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

@@ -821,8 +821,8 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
 
 void RewardsServiceImpl::OnWalletProperties(
     ledger::Result result,
-    std::unique_ptr<ledger::WalletProperties> properties) {
-  if (properties && properties->balance_ > 0) {
+    ledger::WalletPropertiesPtr properties) {
+  if (properties && properties->balance > 0) {
     profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
   }
 
@@ -830,21 +830,21 @@ void RewardsServiceImpl::OnWalletProperties(
   for (auto& observer : observers_) {
     if (properties) {
       wallet_properties.reset(new brave_rewards::WalletProperties);
-      wallet_properties->probi = properties->probi_;
-      wallet_properties->balance = properties->balance_;
-      wallet_properties->rates = properties->rates_;
-      wallet_properties->parameters_choices = properties->parameters_choices_;
-      wallet_properties->parameters_range = properties->parameters_range_;
-      wallet_properties->parameters_days = properties->parameters_days_;
-      wallet_properties->monthly_amount = properties->fee_amount_;
+      wallet_properties->probi = properties->probi;
+      wallet_properties->balance = properties->balance;
+      wallet_properties->rates = mojo::FlatMapToMap(properties->rates);
+      wallet_properties->parameters_choices = properties->parameters_choices;
+      wallet_properties->parameters_range = properties->parameters_range;
+      wallet_properties->parameters_days = properties->parameters_days;
+      wallet_properties->monthly_amount = properties->fee_amount;
 
-      for (size_t i = 0; i < properties->grants_.size(); i ++) {
+      for (size_t i = 0; i < properties->grants.size(); i ++) {
         brave_rewards::Grant grant;
 
-        grant.altcurrency = properties->grants_[i].altcurrency;
-        grant.probi = properties->grants_[i].probi;
-        grant.expiryTime = properties->grants_[i].expiryTime;
-        grant.type = properties->grants_[i].type;
+        grant.altcurrency = properties->grants[i]->altcurrency;
+        grant.probi = properties->grants[i]->probi;
+        grant.expiryTime = properties->grants[i]->expiry_time;
+        grant.type = properties->grants[i]->type;
 
         wallet_properties->grants.push_back(grant);
       }
@@ -913,8 +913,8 @@ void RewardsServiceImpl::GetAutoContributeProps(
 }
 
 void RewardsServiceImpl::OnGrant(ledger::Result result,
-                                 const ledger::Grant& grant) {
-  TriggerOnGrant(result, grant);
+                                 ledger::GrantPtr grant) {
+  TriggerOnGrant(result, std::move(grant));
 }
 
 void RewardsServiceImpl::OnGrantCaptcha(const std::string& image,
@@ -924,29 +924,30 @@ void RewardsServiceImpl::OnGrantCaptcha(const std::string& image,
 
 void RewardsServiceImpl::OnRecoverWallet(ledger::Result result,
                                     double balance,
-                                    const std::vector<ledger::Grant>& grants) {
-  TriggerOnRecoverWallet(result, balance, grants);
+                                    std::vector<ledger::GrantPtr> grants) {
+  TriggerOnRecoverWallet(result, balance, std::move(grants));
 }
 
 void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
-                                       const ledger::Grant& grant) {
+                                       ledger::GrantPtr grant) {
   ledger::BalanceReportInfo report_info;
   auto now = base::Time::Now();
-  if (result == ledger::Result::LEDGER_OK) {
-    if (!Connected())
+  if (grant && result == ledger::Result::LEDGER_OK) {
+    if (!Connected()) {
       return;
+    }
 
-    int report_type = grant.type == "ads"
+    int report_type = grant->type == "ads"
       ? ledger::ReportType::ADS
       : ledger::ReportType::GRANT;
     bat_ledger_->SetBalanceReportItem(GetPublisherMonth(now),
                                       GetPublisherYear(now),
                                       report_type,
-                                      grant.probi);
+                                      grant->probi);
   }
 
   GetCurrentBalanceReport();
-  TriggerOnGrantFinish(result, grant);
+  TriggerOnGrantFinish(result, std::move(grant));
 }
 
 void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
@@ -1364,16 +1365,9 @@ void RewardsServiceImpl::TriggerOnWalletInitialized(ledger::Result result) {
 
 void RewardsServiceImpl::OnFetchWalletProperties(
     int result,
-    const std::string& json_wallet) {
-  std::unique_ptr<ledger::WalletProperties> wallet_properties;
-
-  if (!json_wallet.empty()) {
-    wallet_properties.reset(new ledger::WalletProperties());
-    wallet_properties->loadFromJson(json_wallet);
-  }
-
+    ledger::WalletPropertiesPtr properties) {
   OnWalletProperties(static_cast<ledger::Result>(result),
-                     std::move(wallet_properties));
+                     std::move(properties));
 }
 
 void RewardsServiceImpl::FetchWalletProperties() {
@@ -1402,14 +1396,16 @@ void RewardsServiceImpl::FetchGrants(const std::string& lang,
 }
 
 void RewardsServiceImpl::TriggerOnGrant(ledger::Result result,
-                                        const ledger::Grant& grant) {
+                                        ledger::GrantPtr grant) {
   brave_rewards::Grant properties;
 
-  properties.promotionId = grant.promotionId;
-  properties.altcurrency = grant.altcurrency;
-  properties.probi = grant.probi;
-  properties.expiryTime = grant.expiryTime;
-  properties.type = grant.type;
+  if (grant) {
+    properties.promotionId = grant->promotion_id;
+    properties.altcurrency = grant->altcurrency;
+    properties.probi = grant->probi;
+    properties.expiryTime = grant->expiry_time;
+    properties.type = grant->type;
+  }
 
   for (auto& observer : observers_)
     observer.OnGrant(this, result, properties);
@@ -1451,20 +1447,26 @@ void RewardsServiceImpl::RecoverWallet(const std::string& passPhrase) const {
   bat_ledger_->RecoverWallet(passPhrase);
 }
 
-void RewardsServiceImpl::TriggerOnRecoverWallet(ledger::Result result,
-                                                double balance,
-                                    const std::vector<ledger::Grant>& grants) {
+void RewardsServiceImpl::TriggerOnRecoverWallet(
+    ledger::Result result,
+    double balance,
+    std::vector<ledger::GrantPtr> grants) {
   std::vector<brave_rewards::Grant> newGrants;
   for (size_t i = 0; i < grants.size(); i ++) {
+    if (!grants[i]) {
+      continue;
+    }
+
     brave_rewards::Grant grant;
 
-    grant.altcurrency = grants[i].altcurrency;
-    grant.probi = grants[i].probi;
-    grant.expiryTime = grants[i].expiryTime;
-    grant.type = grants[i].type;
+    grant.altcurrency = grants[i]->altcurrency;
+    grant.probi = grants[i]->probi;
+    grant.expiryTime = grants[i]->expiry_time;
+    grant.type = grants[i]->type;
 
     newGrants.push_back(grant);
   }
+
   for (auto& observer : observers_)
     observer.OnRecoverWallet(this, result, balance, newGrants);
 }
@@ -1479,17 +1481,20 @@ void RewardsServiceImpl::SolveGrantCaptcha(const std::string& solution,
 }
 
 void RewardsServiceImpl::TriggerOnGrantFinish(ledger::Result result,
-                                              const ledger::Grant& grant) {
+                                              ledger::GrantPtr grant) {
   brave_rewards::Grant properties;
 
-  properties.promotionId = grant.promotionId;
-  properties.altcurrency = grant.altcurrency;
-  properties.probi = grant.probi;
-  properties.expiryTime = grant.expiryTime;
-  properties.type = grant.type;
+  if (grant) {
+    properties.promotionId = grant->promotion_id;
+    properties.altcurrency = grant->altcurrency;
+    properties.probi = grant->probi;
+    properties.expiryTime = grant->expiry_time;
+    properties.type = grant->type;
+  }
 
-  for (auto& observer : observers_)
+  for (auto& observer : observers_) {
     observer.OnGrantFinish(this, result, properties);
+  }
 }
 
 void RewardsServiceImpl::GetReconcileStamp(

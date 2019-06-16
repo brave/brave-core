@@ -143,21 +143,22 @@ void BatLedgerClientMojoProxy::OnWalletInitialized(ledger::Result result) {
   bat_ledger_client_->OnWalletInitialized(ToMojomResult(result));
 }
 
-void BatLedgerClientMojoProxy::OnWalletProperties(ledger::Result result,
-    std::unique_ptr<ledger::WalletProperties> properties) {
+void BatLedgerClientMojoProxy::OnWalletProperties(
+    ledger::Result result,
+    ledger::WalletPropertiesPtr properties) {
   if (!Connected())
     return;
 
-  std::string json = properties ? properties->ToJson() : "";
-  bat_ledger_client_->OnWalletProperties(ToMojomResult(result), json);
+  bat_ledger_client_->OnWalletProperties(ToMojomResult(result),
+                                         std::move(properties));
 }
 
 void BatLedgerClientMojoProxy::OnGrant(ledger::Result result,
-    const ledger::Grant& grant) {
+                                       ledger::GrantPtr grant) {
   if (!Connected())
     return;
 
-  bat_ledger_client_->OnGrant(ToMojomResult(result), grant.ToJson());
+  bat_ledger_client_->OnGrant(ToMojomResult(result), std::move(grant));
 }
 
 void BatLedgerClientMojoProxy::OnGrantCaptcha(const std::string& image,
@@ -168,18 +169,17 @@ void BatLedgerClientMojoProxy::OnGrantCaptcha(const std::string& image,
   bat_ledger_client_->OnGrantCaptcha(image, hint);
 }
 
-void BatLedgerClientMojoProxy::OnRecoverWallet(ledger::Result result,
-    double balance, const std::vector<ledger::Grant>& grants) {
-  if (!Connected())
+void BatLedgerClientMojoProxy::OnRecoverWallet(
+    ledger::Result result,
+    double balance,
+    std::vector<ledger::GrantPtr> grants) {
+  if (!Connected()) {
     return;
-
-  std::vector<std::string> grant_jsons;
-  for (auto const& grant : grants) {
-    grant_jsons.push_back(grant.ToJson());
   }
 
-  bat_ledger_client_->OnRecoverWallet(
-      ToMojomResult(result), balance, grant_jsons);
+  bat_ledger_client_->OnRecoverWallet(ToMojomResult(result),
+                                      balance,
+                                      std::move(grants));
 }
 
 void BatLedgerClientMojoProxy::OnReconcileComplete(ledger::Result result,
@@ -206,11 +206,11 @@ std::unique_ptr<ledger::LogStream> BatLedgerClientMojoProxy::VerboseLog(
 }
 
 void BatLedgerClientMojoProxy::OnGrantFinish(ledger::Result result,
-    const ledger::Grant& grant) {
+                                             ledger::GrantPtr grant) {
   if (!Connected())
     return;
 
-  bat_ledger_client_->OnGrantFinish(ToMojomResult(result), grant.ToJson());
+  bat_ledger_client_->OnGrantFinish(ToMojomResult(result), std::move(grant));
 }
 
 void BatLedgerClientMojoProxy::OnLoadLedgerState(

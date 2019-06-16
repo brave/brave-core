@@ -3,36 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_WALLET_INFO_HANDLER_
-#define BAT_LEDGER_WALLET_INFO_HANDLER_
+#ifndef BAT_LEDGER_WALLET_PROPERTIES_HANDLER_
+#define BAT_LEDGER_WALLET_PROPERTIES_HANDLER_
 
-#include <string>
-#include <map>
-#include <vector>
 
-#include "bat/ledger/export.h"
-#include "bat/ledger/grant.h"
+#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace ledger {
-LEDGER_EXPORT struct WalletProperties {
-  WalletProperties();
-  ~WalletProperties();
-  WalletProperties(const WalletProperties& info);
 
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string altcurrency_;
-  std::string probi_;
-  double balance_;
-  double fee_amount_;
-  std::map<std::string, double> rates_;
-  std::vector<double> parameters_choices_;
-  std::vector<double> parameters_range_;
-  unsigned int parameters_days_;
-  std::vector<Grant> grants_;
-};
+using WalletProperties = ledger::mojom::WalletProperties;
+using WalletPropertiesPtr = ledger::mojom::WalletPropertiesPtr;
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_WALLET_INFO_HANDLER_
+#endif  // BAT_LEDGER_WALLET_PROPERTIES_HANDLER_

@@ -7,6 +7,7 @@
 #import <vector>
 #import <string>
 #import <objc/runtime.h>
+#import "base/containers/flat_map.h"
 
 static std::map<const char *, SEL> numberInitMap = {
   { @encode(bool), @selector(numberWithBool:) },
@@ -165,8 +166,35 @@ NS_INLINE NSDictionary<NSString *, NSNumber *> *NSDictionaryFromMap(std::map<std
   return d;
 }
 
+/// Convert a String's to primitives mapping to an NSDictionary<NSString*, NSNumber *>
+template <typename T>
+NS_INLINE NSDictionary<NSString *, NSNumber *> *NSDictionaryFromMap(base::flat_map<std::string, T> m) {
+  const auto d = [NSMutableDictionary new];
+  if (m.empty()) {
+    return @{};
+  }
+  for (auto item : m) {
+    d[[NSString stringWithCString:item.first.c_str() encoding:NSUTF8StringEncoding]] =
+    NumberFromPrimitive(item.second);
+  }
+  return d;
+}
+
 /// Convert a String to String mapping to an NSDictionary
 NS_INLINE NSDictionary<NSString *, NSString *> *NSDictionaryFromMap(std::map<std::string, std::string> m) {
+  const auto d = [NSMutableDictionary new];
+  if (m.empty()) {
+    return @{};
+  }
+  for (auto item : m) {
+    d[[NSString stringWithCString:item.first.c_str() encoding:NSUTF8StringEncoding]] =
+    [NSString stringWithCString:item.second.c_str() encoding:NSUTF8StringEncoding];
+  }
+  return d;
+}
+
+/// Convert a String to String mapping to an NSDictionary
+NS_INLINE NSDictionary<NSString *, NSString *> *NSDictionaryFromMap(base::flat_map<std::string, std::string> m) {
   const auto d = [NSMutableDictionary new];
   if (m.empty()) {
     return @{};
@@ -191,10 +219,37 @@ NS_INLINE NSDictionary<NSString *, ObjCObj> *NSDictionaryFromMap(std::map<std::s
   return d;
 }
 
+/// Convert a String to C++ object mapping to an NSDictionary of String to Obj-C objects
+template <typename V, typename ObjCObj>
+NS_INLINE NSDictionary<NSString *, ObjCObj> *NSDictionaryFromMap(base::flat_map<std::string, V> m, ObjCObj(^transform)(V)) {
+  const auto d = [NSMutableDictionary new];
+  if (m.empty()) {
+    return @{};
+  }
+  for (auto item : m) {
+    d[[NSString stringWithCString:item.first.c_str() encoding:NSUTF8StringEncoding]] = transform(item.second);
+  }
+  return d;
+}
+
 /// Convert any mapping to an NSDictionary of Obj-C objects by transforming both the key and the value types to Obj-C
 /// types
 template <typename K, typename KObjC, typename V, typename VObjC>
 NS_INLINE NSDictionary<KObjC, VObjC> *NSDictionaryFromMap(std::map<K, V> m, KObjC(^transformKey)(K), VObjC(^transformValue)(V)) {
+  const auto d = [NSMutableDictionary new];
+  if (m.empty()) {
+    return @{};
+  }
+  for (auto item : m) {
+    d[transformKey(item.first)] = transformValue(item.second);
+  }
+  return d;
+}
+
+/// Convert any mapping to an NSDictionary of Obj-C objects by transforming both the key and the value types to Obj-C
+/// types
+template <typename K, typename KObjC, typename V, typename VObjC>
+NS_INLINE NSDictionary<KObjC, VObjC> *NSDictionaryFromMap(base::flat_map<K, V> m, KObjC(^transformKey)(K), VObjC(^transformValue)(V)) {
   const auto d = [NSMutableDictionary new];
   if (m.empty()) {
     return @{};

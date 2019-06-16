@@ -28,12 +28,6 @@ ledger::REWARDS_CATEGORY ToLedgerPublisherCategory(int32_t category) {
   return (ledger::REWARDS_CATEGORY)category;
 }
 
-ledger::Grant ToLedgerGrant(const std::string& grant_json) {
-  ledger::Grant grant;
-  grant.loadFromJson(grant_json);
-  return grant;
-}
-
 ledger::URL_METHOD ToLedgerURLMethod(int32_t method) {
   return (ledger::URL_METHOD)method;
 }
@@ -77,15 +71,11 @@ void LedgerClientMojoProxy::OnWalletInitialized(int32_t result) {
   ledger_client_->OnWalletInitialized(ToLedgerResult(result));
 }
 
-void LedgerClientMojoProxy::OnWalletProperties(int32_t result,
-    const std::string& info) {
-  std::unique_ptr<ledger::WalletProperties> wallet_info;
-  if (!info.empty()) {
-    wallet_info.reset(new ledger::WalletProperties());
-    wallet_info->loadFromJson(info);
-  }
+void LedgerClientMojoProxy::OnWalletProperties(
+    int32_t result,
+    ledger::WalletPropertiesPtr properties) {
   ledger_client_->OnWalletProperties(ToLedgerResult(result),
-      std::move(wallet_info));
+                                     std::move(properties));
 }
 
 void LedgerClientMojoProxy::LoadPublisherState(
@@ -198,8 +188,8 @@ void LedgerClientMojoProxy::CallbackHolder<
   delete this;
 }
 
-void LedgerClientMojoProxy::OnGrant(int32_t result, const std::string& grant) {
-  ledger_client_->OnGrant(ToLedgerResult(result), ToLedgerGrant(grant));
+void LedgerClientMojoProxy::OnGrant(int32_t result, ledger::GrantPtr grant) {
+  ledger_client_->OnGrant(ToLedgerResult(result), std::move(grant));
 }
 
 void LedgerClientMojoProxy::OnGrantCaptcha(const std::string& image,
@@ -207,15 +197,13 @@ void LedgerClientMojoProxy::OnGrantCaptcha(const std::string& image,
   ledger_client_->OnGrantCaptcha(image, hint);
 }
 
-void LedgerClientMojoProxy::OnRecoverWallet(int32_t result, double balance,
-    const std::vector<std::string>& grants) {
-  std::vector<ledger::Grant> ledger_grants;
-  for (auto const& grant : grants) {
-    ledger_grants.push_back(ToLedgerGrant(grant));
-  }
-
-  ledger_client_->OnRecoverWallet(
-      ToLedgerResult(result), balance, ledger_grants);
+void LedgerClientMojoProxy::OnRecoverWallet(
+    int32_t result,
+    double balance,
+    std::vector<ledger::GrantPtr> grants) {
+  ledger_client_->OnRecoverWallet(ToLedgerResult(result),
+                                  balance,
+                                  std::move(grants));
 }
 
 void LedgerClientMojoProxy::OnReconcileComplete(int32_t result,
@@ -227,8 +215,8 @@ void LedgerClientMojoProxy::OnReconcileComplete(int32_t result,
 }
 
 void LedgerClientMojoProxy::OnGrantFinish(int32_t result,
-    const std::string& grant) {
-  ledger_client_->OnGrantFinish(ToLedgerResult(result), ToLedgerGrant(grant));
+                                          ledger::GrantPtr grant) {
+  ledger_client_->OnGrantFinish(ToLedgerResult(result), std::move(grant));
 }
 
 // static

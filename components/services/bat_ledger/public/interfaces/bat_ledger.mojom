@@ -25,7 +25,8 @@ interface BatLedgerService {
 interface BatLedger {
   Initialize();
   CreateWallet();
-  FetchWalletProperties() => (int32 result, string wallet_info);
+  FetchWalletProperties() =>
+      (int32 result, ledger.mojom.WalletProperties properties);
 
   GetAutoContributeProps() => (string props);
   GetPublisherMinVisitTime() => (uint64 min_visit_time);
@@ -157,13 +158,15 @@ interface BatLedgerClient {
   SavePublisherState(string publisher_state) => (int32 result);
   SavePublishersList(string publishers_list) => (int32 result);
 
-  OnWalletProperties(int32 result, string info);
-  OnGrant(int32 result, string grant);
+  OnWalletProperties(int32 result, ledger.mojom.WalletProperties? properties);
+  OnGrant(int32 result, ledger.mojom.Grant? grant);
   OnGrantCaptcha(string image, string hint);
-  OnRecoverWallet(int32 result, double balance, array<string> grants);
+  OnRecoverWallet(int32 result,
+                  double balance,
+                  array<ledger.mojom.Grant?> grants);
   OnReconcileComplete(int32 result, string viewing_id, int32 category,
       string probi);
-  OnGrantFinish(int32 result, string grant);
+  OnGrantFinish(int32 result, ledger.mojom.Grant? grant);
 
   SavePublisherInfo(ledger.mojom.PublisherInfo publisher_info) =>
       (int32 result, ledger.mojom.PublisherInfo? publisher_info);

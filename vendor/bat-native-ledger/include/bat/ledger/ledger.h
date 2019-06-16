@@ -41,7 +41,7 @@ using WalletAddressesCallback =
 using GetTransactionHistoryCallback =
     std::function<void(std::unique_ptr<ledger::TransactionsInfo> info)>;
 using OnWalletPropertiesCallback = std::function<void(const ledger::Result,
-                                  std::unique_ptr<ledger::WalletProperties>)>;
+                                  ledger::WalletPropertiesPtr)>;
 using OnRefreshPublisherCallback =
     std::function<void(bool)>;
 using GetAddressesCallback =

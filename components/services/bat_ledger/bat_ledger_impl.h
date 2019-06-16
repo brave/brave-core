@@ -209,7 +209,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnFetchWalletProperties(
       CallbackHolder<FetchWalletPropertiesCallback>* holder,
       ledger::Result result,
-      std::unique_ptr<ledger::WalletProperties> properties);
+      ledger::WalletPropertiesPtr properties);
 
   static void OnGetPublisherBanner(
       CallbackHolder<GetPublisherBannerCallback>* holder,

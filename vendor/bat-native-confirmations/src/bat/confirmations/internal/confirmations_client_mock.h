@@ -62,7 +62,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD2(OnWalletProperties, void(
       ledger::Result result,
-      std::unique_ptr<ledger::WalletProperties>));
+      ledger::WalletPropertiesPtr));
 
   MOCK_METHOD4(OnReconcileComplete, void(
       Result result,
@@ -134,7 +134,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD2(OnGrant, void(
       ledger::Result result,
-      const ledger::Grant& grant));
+      ledger::GrantPtr grant));
 
   MOCK_METHOD2(GetGrantCaptcha, void(
       const std::string& promotion_id,
@@ -147,11 +147,11 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD3(OnRecoverWallet, void(
       ledger::Result result,
       double balance,
-      const std::vector<ledger::Grant>& grants));
+      std::vector<ledger::GrantPtr> grants));
 
   MOCK_METHOD2(OnGrantFinish, void(
       ledger::Result result,
-      const ledger::Grant& grant));
+      ledger::GrantPtr grant));
 
   MOCK_METHOD3(OnPanelPublisherInfo, void(
       ledger::Result result,
