@@ -99,7 +99,10 @@ PageGraph::PageGraph(Document& document) :
     local_storage_node_(new NodeStorageLocalStorage(this)),
     html_root_node_(new NodeHTMLElement(this, kRootNodeId, "(root)")),
     document_(document) {
-  PG_LOG("init");
+  Log("init");
+  Log(" --- ");
+  Log(" - " + URLToString(document_.Url()) + " - ");
+  Log(" --- ");
   AddNode(parser_node_);
   AddNode(shields_node_);
   AddNode(cookie_jar_node_);
