@@ -57,8 +57,9 @@ if (is_mac) {
   foreach(locale, locales) {
     bundle_data("framework_bundle_data_${locale}") {
       locale = string_replace(locale, "-", "_")
+      source_locale = string_replace(locale, "nb", "no")
       sources = [
-        "brave_rewards/_locales/$locale/messages.json"
+        "brave_rewards/_locales/$source_locale/messages.json"
       ]
       outputs = [
         "{{bundle_resources_dir}}/brave_rewards/_locales/$locale/{{source_file_part}}"
@@ -75,8 +76,9 @@ if (is_mac) {
   foreach(locale, locales) {
     copy("locales_${locale}") {
       locale = string_replace(locale, "-", "_")
+      source_locale = string_replace(locale, "nb", "no")
       sources = [
-        "brave_rewards/_locales/${locale}/messages.json",
+        "brave_rewards/_locales/${source_locale}/messages.json",
       ]
       outputs = [
         "$root_out_dir/resources/brave_rewards/_locales/${locale}/{{source_file_part}}",
