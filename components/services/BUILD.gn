@@ -44,6 +44,9 @@ source_set("brave_content_packaged_service_overlay_manifest") {
 
   deps = [
     "//base",
+    "//brave/browser/tor:buildflags",
+    "//brave/components/brave_ads/browser/buildflags",
+    "//brave/components/brave_rewards/browser/buildflags",
     "//services/service_manager/public/cpp",
   ]
 
