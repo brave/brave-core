@@ -13,6 +13,8 @@
 
 #include "base/base64.h"
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
+#include "base/i18n/time_formatting.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
@@ -107,15 +109,16 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnContentSiteUpdated(
       brave_rewards::RewardsService* rewards_service) override;
   void GetAddressesForPaymentId(const base::ListValue* args);
-  void GetTransactionHistoryForThisCycle(const base::ListValue* args);
+  void GetTransactionHistory(const base::ListValue* args);
   void GetRewardsMainEnabled(const base::ListValue* args);
   void OnGetRewardsMainEnabled(bool enabled);
 
   void GetExcludedPublishersNumber(const base::ListValue* args);
 
-  void OnTransactionHistoryForThisCycle(
-      int ads_notifications_received,
-      double estimated_earnings);
+  void OnTransactionHistory(
+      double estimated_pending_rewards,
+      uint64_t next_payment_date_in_seconds,
+      uint64_t ad_notifications_received_this_month);
 
   void OnGetRecurringTips(
     std::unique_ptr<brave_rewards::ContentSiteList> list);
@@ -166,7 +169,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
       brave_rewards::RewardsService* rewards_service,
       const brave_rewards::ContentSiteList& list) override;
 
-  void OnTransactionHistoryForThisCycleChanged(
+  void OnTransactionHistoryChanged(
       brave_rewards::RewardsService* rewards_service) override;
 
   void OnRecurringTipSaved(brave_rewards::RewardsService* rewards_service,
@@ -301,8 +304,8 @@ void RewardsDOMHandler::RegisterMessages() {
       base::BindRepeating(&RewardsDOMHandler::GetAddressesForPaymentId,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
-      "brave_rewards.getTransactionHistoryForThisCycle",
-      base::BindRepeating(&RewardsDOMHandler::GetTransactionHistoryForThisCycle,
+      "brave_rewards.getTransactionHistory",
+      base::BindRepeating(&RewardsDOMHandler::GetTransactionHistory,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getRewardsMainEnabled",
       base::BindRepeating(&RewardsDOMHandler::GetRewardsMainEnabled,
@@ -1036,32 +1039,45 @@ void RewardsDOMHandler::GetAddressesForPaymentId(
   }
 }
 
-void RewardsDOMHandler::GetTransactionHistoryForThisCycle(
+void RewardsDOMHandler::GetTransactionHistory(
     const base::ListValue* args) {
-  rewards_service_->GetTransactionHistoryForThisCycle(base::Bind(
-      &RewardsDOMHandler::OnTransactionHistoryForThisCycle,
+  rewards_service_->GetTransactionHistory(base::Bind(
+      &RewardsDOMHandler::OnTransactionHistory,
       weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnTransactionHistoryForThisCycle(
-    int ads_notifications_received,
-    double estimated_earnings) {
+void RewardsDOMHandler::OnTransactionHistory(
+    double estimated_pending_rewards,
+    uint64_t next_payment_date_in_seconds,
+    uint64_t ad_notifications_received_this_month) {
   if (web_ui()->CanCallJavascript()) {
     base::DictionaryValue history;
 
-    history.SetInteger("adsNotificationsReceived", ads_notifications_received);
-    history.SetDouble("adsEstimatedEarnings", estimated_earnings);
+    history.SetDouble("adsEstimatedPendingRewards",
+        estimated_pending_rewards);
+
+    if (next_payment_date_in_seconds == 0) {
+      history.SetString("adsNextPaymentDate", "");
+    } else {
+      base::Time next_payment_date =
+          base::Time::FromDoubleT(next_payment_date_in_seconds);
+      history.SetString("adsNextPaymentDate",
+          base::TimeFormatWithPattern(next_payment_date, "MMMd"));
+    }
+
+    history.SetInteger("adsAdNotificationsReceivedThisMonth",
+        ad_notifications_received_this_month);
 
     web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards.transactionHistoryForThisCycle", history);
+        "brave_rewards.transactionHistory", history);
   }
 }
 
-void RewardsDOMHandler::OnTransactionHistoryForThisCycleChanged(
+void RewardsDOMHandler::OnTransactionHistoryChanged(
     brave_rewards::RewardsService* rewards_service) {
   if (web_ui()->CanCallJavascript()) {
     web_ui()->CallJavascriptFunctionUnsafe(
-        "brave_rewards.transactionHistoryForThisCycleChanged");
+        "brave_rewards.transactionHistoryChanged");
   }
 }
 

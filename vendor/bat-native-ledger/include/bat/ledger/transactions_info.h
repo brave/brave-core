@@ -6,6 +6,7 @@
 #ifndef BAT_LEDGER_TRANSACTIONS_INFO_
 #define BAT_LEDGER_TRANSACTIONS_INFO_
 
+#include <stdint.h>
 #include <string>
 #include <vector>
 
@@ -22,7 +23,24 @@ LEDGER_EXPORT struct TransactionsInfo {
   const std::string ToJson() const;
   bool FromJson(const std::string& json);
 
+  double estimated_pending_rewards;
+  uint64_t next_payment_date_in_seconds;
+  uint64_t ad_notifications_received_this_month;
   std::vector<TransactionInfo> transactions;
+
+ private:
+  double GetEstimatedPendingRewardsFromJson(
+    base::DictionaryValue* dictionary) const;
+
+  uint64_t GetNextPaymentDateInSecondsFromJson(
+    base::DictionaryValue* dictionary) const;
+
+  uint64_t GetAdNotificationsReceivedThisMonthFromJson(
+    base::DictionaryValue* dictionary) const;
+
+  base::Value GetTransactionsAsList() const;
+  std::vector<TransactionInfo> GetTransactionsFromJson(
+    base::DictionaryValue* dictionary) const;
 };
 
 }  // namespace ledger

@@ -119,9 +119,12 @@ void PayoutTokens::OnPayout(const Result result) {
 
     RetryNextPayout();
   } else {
+    BLOG(INFO) << "Successfully paid out tokens";
+
+    confirmations_->AddUnredeemedTransactionsToPendingRewards();
     unblinded_payment_tokens_->RemoveAllTokens();
 
-    BLOG(INFO) << "Successfully paid out tokens";
+    next_retry_start_timer_in_ = 0;
 
     ScheduleNextPayout();
   }

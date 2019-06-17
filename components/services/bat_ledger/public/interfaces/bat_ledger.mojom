@@ -107,7 +107,7 @@ interface BatLedger {
 
   SetCatalogIssuers(string info);
   ConfirmAd(string info);
-  GetTransactionHistoryForThisCycle() => (string transactions);
+  GetTransactionHistory() => (string transactions);
   GetRewardsInternalsInfo() => (string info);
 
   GetRecurringTips() => (array<ledger.mojom.PublisherInfo> list);
