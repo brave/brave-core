@@ -273,9 +273,6 @@ bool BraveThemeService::SystemThemeModeEnabled() {
   if (is_test_)
     return use_system_theme_mode_in_test_;
 
-  if (!base::FeatureList::IsEnabled(features::kDarkMode))
-    return false;
-
   if (base::CommandLine::ForCurrentProcess()->HasSwitch(
       switches::kForceDarkMode))
     return true;
