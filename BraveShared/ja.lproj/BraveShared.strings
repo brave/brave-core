@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "広告とトラッカー";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "ブロックされている
-広告とトラッカー";
+"AdsAndTrackersrBlocked" = "ブロック済みの\n広告とトラッカー";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "ブロック済みの
-広告";
+"AdsrBlocked" = "ブロック済みの\n広告";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "常に送信";
@@ -52,7 +50,7 @@
 "AuthenticationFaceIDPasscodeSetting" = "Face ID とパスコード";
 
 /* Immediately' interval item for selecting when to require passcode */
-"AuthenticationImmediately" = "即座";
+"AuthenticationImmediately" = "直ちに";
 
 /* Error message displayed when user enters incorrect passcode when trying to enter a protected section of the app with attempts remaining */
 "AuthenticationIncorrectAttemptsRemaining" = "パスコードが正しくありません。やり直してください (残り試行回数: %d)。";
@@ -76,7 +74,7 @@
 "AuthenticationRequirePasscode" = "パスコードを要求";
 
 /* Touch ID prompt subtitle when accessing the require passcode setting */
-"AuthenticationRequirePasscodeTouchReason" = "パスコードの要求間隔を構成するには指紋を使ってください。";
+"AuthenticationRequirePasscodeTouchReason" = "パスコードの要求時間を変更するには指紋を使ってください。";
 
 /* Title of the dialog used to set a passcode */
 "AuthenticationSetPasscode" = "パスコードを設定";
@@ -97,13 +95,13 @@
 "AuthPromptAlertCancelButtonTitle" = "キャンセル";
 
 /* Authentication prompt message with a realm. First parameter is the hostname. Second is the realm string */
-"AuthPromptAlertFormatRealmMessageText" = "%1$@ がユーザー名とパスワードを求めています。サイトのコメント: %2$@";
+"AuthPromptAlertFormatRealmMessageText" = "%1$@ がユーザー名とパスワードを要求しています。サイトのコメント: %2$@";
 
 /* Authentication prompt log in button */
 "AuthPromptAlertLogInButtonTitle" = "ログイン";
 
 /* Authentication prompt message with no realm. Parameter is the hostname of the site */
-"AuthPromptAlertMessageText" = "%@ がユーザー名とパスワードを求めています。";
+"AuthPromptAlertMessageText" = "%@ がユーザー名とパスワードを要求しています。";
 
 /* Password textbox in Authentication prompt */
 "AuthPromptAlertPasswordPlaceholderText" = "パスワード";
@@ -169,7 +167,7 @@
 "BraveSync" = "Brave 同期 (ベータ)";
 
 /* Sync settings welcome */
-"BraveSyncWelcome" = "はじめに、同期するすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全につなげます。";
+"BraveSyncWelcome" = "はじめに、同期させたいすべてのデバイスにBraveをインストールする必要があります。そして、同期チェーンを開始してすべてのデバイスを安全につなげます。";
 
 /* Browser Lock feature callout enable action. */
 "BrowserLockCalloutEnable" = "有効にする";
@@ -227,9 +225,6 @@
 
 /* Cookie settings option title */
 "CookieControl" = "Cookie コントロール";
-
-/* Settings item for clearing cookies */
-"Cookies" = "Cookie";
 
 /* Copied action complete title */
 "Copied" = "コピーしました！";
@@ -331,7 +326,7 @@
 "ErrorPagesAdvancedButton" = "高度";
 
 /* Warning text when clicking the Advanced button on error pages */
-"ErrorPagesAdvancedWarning1" = "警告: このウェブサイトに対する接続の安全性が確認できません。";
+"ErrorPagesAdvancedWarning1" = "警告: このウェブサイトへの接続の安全性が確認できません。";
 
 /* Additional warning text when clicking the Advanced button on error pages */
 "ErrorPagesAdvancedWarning2" = "構成に問題が生じたり攻撃者による改ざんを受ける恐れがあります。潜在的なリスクを許容する場合は続行してください。";
@@ -349,8 +344,7 @@
 "ErrorPagesVisitOnceButton" = "それでもサイトを訪問";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "保存済みの
-推定時間";
+"EstTimerSaved" = "保存済みの\n推定時間";
 
 /* Share action title */
 "FindInPage" = "ページ内で見つける";
@@ -368,8 +362,7 @@
 "FingerprintingMethods" = "フィンガープリント";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "フィンガープリント
-対策";
+"FingerprintingnProtection" = "フィンガープリント\n対策";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "フィンガープリント対策";
@@ -384,8 +377,7 @@
 "HTTPSEverywhere" = "どこでも HTTPS";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS
-アップグレード";
+"HTTPSrUpgrades" = "HTTPS\nアップグレード";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS アップグレード";
@@ -400,8 +392,7 @@
 "LastWeek" = "先週";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "DuckDuckGoによる
-プライベート検索について";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "DuckDuckGoによる\nプライベート検索について";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "最終変更 %@";
@@ -515,13 +506,7 @@
 "PrivateBrowsingOnly" = "プライベートブラウジングのみ";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "プライベートタブを使うと、Braveのデバイス上での動作は変わりますが、その他の行動は変わりません。
-              
-              あなたのIPアドレスは訪問先のサイトにより追跡され、あなたがいるおよその位置 (都市など) が推測されます。この位置情報は、さらに具体的になる場合もあります。また、サイトはあなたが具体的に伝達したあらゆる内容 (検索語句など) を知ることができます。サイトにログインした場合、サイトにはあなたがそのアカウントの所有者であることが伝わります。プライベートタブを閉じると、Braveはログイン状態を維持するCookieを破棄するため、あなたはログアウトします。
-              
-              あなたをインターネットに接続する者 (ISP) は、あなたのネットワークアクティビティをすべて見ることができます。多くの場合、これはご利用の携帯電話会社になります。WiFiネットワークに接続している場合は、そのネットワークの所有者になります。VPNを使用している場合は、そのVPNの管理者になります。ISPは、あなたがどのサイトを訪問したかを知ることができます。サイトがHTTPSを使っている場合、あなたがそのサイトで何をしたかについてISPにより推測される内容には限度がありますが、HTTPのみが使用されている場合は、ISPによりあらゆること (検索語句、読んだページ、ジャンプしたリンク) がサイトに伝わります。
-              
-              雇用主がデバイスを管理している場合、雇用主もあなたがそのデバイスで行った行動を追跡できる可能性があります。プライベートタブを使ったとしても、訪問先のサイトを隠すことは不可能です。また、そのデバイスにアクセスできる他の人があなたのアクティビティをモニタリングするソフトウェアをインストールしている可能性もあります。その場合、プライベートタブを使ってもモニタリングを回避することはできません。";
+"PrivateTabDetails" = "プライベートタブを使うと、Braveのデバイス上での動作は変わりますが、その他の行動は変わりません。\n              \n              あなたのIPアドレスは訪問先のサイトにより追跡され、あなたがいるおよその位置 (都市など) が推測されます。この位置情報の推測は、さらに詳細になる場合もあります。また、サイトはあなたが具体的に伝達したあらゆる内容 (検索語句など) を知ることができます。サイトにログインした場合、サイトにはあなたがそのアカウントの所有者であることが伝わります。プライベートタブを閉じるとことで、Braveはログイン状態を維持するCookieを破棄するため、あなたはログアウトします。\n              \n              あなたをインターネットに接続する者 (ISP) は、あなたのネットワークアクティビティをすべて見ることができます。多くの場合、これはご利用の携帯電話会社になります。WiFiネットワークに接続している場合は、そのネットワークの所有者になります。VPNを使用している場合は、そのVPNの管理者になります。ISPは、あなたがどのサイトを訪問したかを知ることができます。サイトがHTTPSを使っている場合、あなたがそのサイトで何をしたかについてISPの推測能力が限られます。HTTPのみが使用されている場合は、ISPによりあらゆること (検索語句、閲覧したページ、ジャンプしたリンク) がサイトに伝わります。\n              \n              雇用主がデバイスを管理している場合、雇用主もあなたがそのデバイスで行った行動を追跡できる可能性があります。プライベートタブを使ったとしても、訪問先のサイトを隠すことは不可能です。また、そのデバイスにアクセスできる他の人が、あなたのアクティビティをモニタリングするソフトウェアをインストールしている可能性もあります。その場合、プライベートタブを使ってもモニタリングを回避することはできません。";
 
 /* Private tab information link */
 "PrivateTabLink" = "プライベートタブについて。";
@@ -671,7 +656,7 @@
 "SendCrashReportAlertMessage" = "クラッシュレポートを送信して Brave の問題修正をサポートしますか？";
 
 /* Title for prompt displayed to user after the app crashes */
-"SendCrashReportAlertTitle" = "Brave がクラッシュしました";
+"SendCrashReportAlertTitle" = "失礼！ Brave がクラッシュしました";
 
 /* Used as a button label for crash dialog prompt */
 "SendReportButtonTitle" = "レポートを送信";
@@ -917,8 +902,7 @@
 "Today" = "今日";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "ブロック済みの
-トラッカー";
+"TrackersrBlocked" = "ブロック済みの\nトラッカー";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "同期グループに参加できませんでした。入力したワードをチェックして、もう一度やり直してください。";
