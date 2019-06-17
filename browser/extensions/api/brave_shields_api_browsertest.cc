@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -38,74 +39,74 @@ using extension_function_test_utils::RunFunctionAndReturnError;
 using extension_function_test_utils::RunFunctionAndReturnSingleResult;
 
 class BraveShieldsAPIBrowserTest : public InProcessBrowserTest {
-  public:
-    void SetUpOnMainThread() override {
-      InProcessBrowserTest::SetUpOnMainThread();
-      host_resolver()->AddRule("*", "127.0.0.1");
-      content::SetupCrossSiteRedirector(embedded_test_server());
+ public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+    content::SetupCrossSiteRedirector(embedded_test_server());
 
-      brave::RegisterPathProvider();
-      base::FilePath test_data_dir;
-      base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
-      embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
+    brave::RegisterPathProvider();
+    base::FilePath test_data_dir;
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+    embedded_test_server()->ServeFilesFromDirectory(test_data_dir);
 
-      ASSERT_TRUE(embedded_test_server()->Start());
-      extension_ = extensions::ExtensionBuilder("Test").Build();
-      content_settings_ =
-          HostContentSettingsMapFactory::GetForProfile(browser()->profile());
-    }
+    ASSERT_TRUE(embedded_test_server()->Start());
+    extension_ = extensions::ExtensionBuilder("Test").Build();
+    content_settings_ =
+        HostContentSettingsMapFactory::GetForProfile(browser()->profile());
+  }
 
-    content::WebContents* active_contents() {
-      return browser()->tab_strip_model()->GetActiveWebContents();
-    }
+  content::WebContents* active_contents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
 
-    scoped_refptr<const extensions::Extension> extension() {
-      return extension_;
-    }
+  scoped_refptr<const extensions::Extension> extension() {
+    return extension_;
+  }
 
-    HostContentSettingsMap* content_settings() const {
-      return content_settings_;
-    }
+  HostContentSettingsMap* content_settings() const {
+    return content_settings_;
+  }
 
-    void BlockScripts() {
-      content_settings_->SetContentSettingCustomScope(
-          ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-          CONTENT_SETTINGS_TYPE_JAVASCRIPT, "", CONTENT_SETTING_BLOCK);
-    }
+  void BlockScripts() {
+    content_settings_->SetContentSettingCustomScope(
+        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+        CONTENT_SETTINGS_TYPE_JAVASCRIPT, "", CONTENT_SETTING_BLOCK);
+  }
 
-    bool NavigateToURLUntilLoadStop(
-        const std::string& origin, const std::string& path) {
-      ui_test_utils::NavigateToURL(
-          browser(),
-          embedded_test_server()->GetURL(origin, path));
+  bool NavigateToURLUntilLoadStop(
+      const std::string& origin, const std::string& path) {
+    ui_test_utils::NavigateToURL(
+        browser(),
+        embedded_test_server()->GetURL(origin, path));
 
-      return WaitForLoadStop(active_contents());
-    }
+    return WaitForLoadStop(active_contents());
+  }
 
-    void AllowScriptOriginOnce(const std::string& origin) {
-      // run extension function to temporarily allow origin
-      scoped_refptr<BraveShieldsAllowScriptsOnceFunction> function(
-          new BraveShieldsAllowScriptsOnceFunction());
-      function->set_extension(extension().get());
-      function->set_has_callback(true);
+  void AllowScriptOriginOnce(const std::string& origin) {
+    // run extension function to temporarily allow origin
+    scoped_refptr<BraveShieldsAllowScriptsOnceFunction> function(
+        new BraveShieldsAllowScriptsOnceFunction());
+    function->set_extension(extension().get());
+    function->set_has_callback(true);
 
-      const GURL url(embedded_test_server()->GetURL(origin, "/simple.js"));
-      const std::string allow_origin = url.GetOrigin().spec();
-      int tabId = extensions::ExtensionTabUtil::GetTabId(active_contents());
+    const GURL url(embedded_test_server()->GetURL(origin, "/simple.js"));
+    const std::string allow_origin = url.GetOrigin().spec();
+    int tabId = extensions::ExtensionTabUtil::GetTabId(active_contents());
 
-      RunFunctionAndReturnSingleResult(
-          function.get(),
-          "[[\"" + allow_origin + "\"], " + std::to_string(tabId) + "]",
-          browser());
+    RunFunctionAndReturnSingleResult(
+        function.get(),
+        "[[\"" + allow_origin + "\"], " + std::to_string(tabId) + "]",
+        browser());
 
-      // reload page with a.com temporarily allowed
-      active_contents()->GetController().Reload(content::ReloadType::NORMAL,
-          true);
-    }
+    // reload page with a.com temporarily allowed
+    active_contents()->GetController().Reload(content::ReloadType::NORMAL,
+        true);
+  }
 
-  private:
-    HostContentSettingsMap* content_settings_;
-    scoped_refptr<const extensions::Extension> extension_;
+ private:
+  HostContentSettingsMap* content_settings_;
+  scoped_refptr<const extensions::Extension> extension_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
@@ -132,7 +133,8 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, AllowScriptsOnce) {
   // same doc navigation
   ui_test_utils::NavigateToURL(
       browser(),
-      embedded_test_server()->GetURL("a.com", "/load_js_from_origins.html#foo"));
+      embedded_test_server()->GetURL("a.com",
+                                     "/load_js_from_origins.html#foo"));
   EXPECT_TRUE(WaitForLoadStop(active_contents()));
   EXPECT_EQ(active_contents()->GetAllFrames().size(), 2u) <<
     "Scripts from a.com should be temporarily allowed for same doc navigation.";
