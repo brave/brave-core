@@ -6,7 +6,7 @@ index 5082c0011543a08f16fb8e9e630bc5f722c0214c..77c134bcaa430d75b98472c189a97571
    IDLE_DETECTION = 18,
    PERIODIC_BACKGROUND_SYNC = 19,
  
-+  AUTOPLAY = 18,
++  AUTOPLAY = 20,
    // Always keep this at the end.
    NUM,
  };
