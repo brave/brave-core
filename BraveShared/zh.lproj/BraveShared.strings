@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "广告和跟踪器";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "廣告和追蹤器
-封鎖";
+"AdsAndTrackersrBlocked" = "廣告和追蹤器\n封鎖";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "广告 
-已拦截";
+"AdsrBlocked" = "广告 \n已拦截";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "总是发送";
@@ -228,9 +226,6 @@
 /* Cookie settings option title */
 "CookieControl" = "Cookie 控制";
 
-/* Settings item for clearing cookies */
-"Cookies" = "Cookies";
-
 /* Copied action complete title */
 "Copied" = "已复制！";
 
@@ -349,8 +344,7 @@
 "ErrorPagesVisitOnceButton" = "继续访问网站";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Est. 时间 
-已保存";
+"EstTimerSaved" = "Est. 时间 \n已保存";
 
 /* Share action title */
 "FindInPage" = "在页面中查找";
@@ -368,8 +362,7 @@
 "FingerprintingMethods" = "指纹识别方法";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "指纹识别
-保护";
+"FingerprintingnProtection" = "指纹识别\n保护";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "指纹识别保护";
@@ -384,8 +377,7 @@
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "HTTPS 
-升级";
+"HTTPSrUpgrades" = "HTTPS \n升级";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "HTTPS 升级";
@@ -400,8 +392,7 @@
 "LastWeek" = "上周";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "使用 DuckDuckGo 
-了解有关隐私搜索的内容";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "使用 DuckDuckGo \n了解有关隐私搜索的内容";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "上次修改 %@";
@@ -515,13 +506,7 @@
 "PrivateBrowsingOnly" = "仅限私人浏览";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "使用私密 Tabs 只会更改 Brave 对您设备的操作，不会更改其他应用对您设备的操作。
-
-当您访问网站时，网站会随时知晓您的 IP 地址。由此地址，他们通常可以大致猜测您的位置 - 通常是您所在的城市。有时，对于位置的猜测可能更加具体。网站也会知晓您明确告诉他们的所有内容，例如您的搜索条件。如果您登录某个网站，他们就会知晓您是该帐户的所有者。当您关闭私密 Tabs 时，您仍然会被迫退出，因为 Brave 会删除辅助您随时登录的 cookie。
-
-为您连网（您的 ISP）的任何人都可以看到您所有的网络活动。通常是您的移动运营商。如果您连接到 WiFi 网络，则是该网络的所有者，如果您在使用 VPN，则是运行该 VPN 的人。您的 ISP 可以在您访问时查看您访问的网站。如果这些网站使用 HTTPS，它们只能对您在这些网站上所进行的操作进行合理的猜测。但是，如果某个网站仅使用 HTTP，那么您的 ISP 可以查看所有内容：您的搜索条件，您所阅读的页面以及您关注的链接。
-
-如果雇主管理您的设备，他们也可能会跟踪您的设备。使用私密 Tabs 可能不会阻止他们知晓您访问过哪些网站。有权访问您设备的其他人也可能安装了监控您活动的软件，而私密 Tabs 也无法保护您不受此影响。";
+"PrivateTabDetails" = "使用私密 Tabs 只会更改 Brave 对您设备的操作，不会更改其他应用对您设备的操作。\n\n当您访问网站时，网站会随时知晓您的 IP 地址。由此地址，他们通常可以大致猜测您的位置 - 通常是您所在的城市。有时，对于位置的猜测可能更加具体。网站也会知晓您明确告诉他们的所有内容，例如您的搜索条件。如果您登录某个网站，他们就会知晓您是该帐户的所有者。当您关闭私密 Tabs 时，您仍然会被迫退出，因为 Brave 会删除辅助您随时登录的 cookie。\n\n为您连网（您的 ISP）的任何人都可以看到您所有的网络活动。通常是您的移动运营商。如果您连接到 WiFi 网络，则是该网络的所有者，如果您在使用 VPN，则是运行该 VPN 的人。您的 ISP 可以在您访问时查看您访问的网站。如果这些网站使用 HTTPS，它们只能对您在这些网站上所进行的操作进行合理的猜测。但是，如果某个网站仅使用 HTTP，那么您的 ISP 可以查看所有内容：您的搜索条件，您所阅读的页面以及您关注的链接。\n\n如果雇主管理您的设备，他们也可能会跟踪您的设备。使用私密 Tabs 可能不会阻止他们知晓您访问过哪些网站。有权访问您设备的其他人也可能安装了监控您活动的软件，而私密 Tabs 也无法保护您不受此影响。";
 
 /* Private tab information link */
 "PrivateTabLink" = "了解更多有关私人标签的内容。";
@@ -917,8 +902,7 @@
 "Today" = "今天";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "追踪器 
-已拦截";
+"TrackersrBlocked" = "追踪器 \n已拦截";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "无法加入同步组。请检查输入的文字并重试。";

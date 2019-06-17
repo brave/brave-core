@@ -17,12 +17,10 @@
 "AdsAndTrackers" = "Annunci e sistemi di tracciamento";
 
 /* Shields Ads Stat */
-"AdsAndTrackersrBlocked" = "Annunci e cookies 
-bloccati";
+"AdsAndTrackersrBlocked" = "Annunci e cookies \nbloccati";
 
 /* Shields Ads Stat */
-"AdsrBlocked" = "Annunci 
-bloccati";
+"AdsrBlocked" = "Annunci \nbloccati";
 
 /* Used as a button label for crash dialog prompt */
 "AlwaysSendButtonTitle" = "Invia sempre";
@@ -228,9 +226,6 @@ bloccati";
 /* Cookie settings option title */
 "CookieControl" = "Gestione dei cookie";
 
-/* Settings item for clearing cookies */
-"Cookies" = "Cookie";
-
 /* Copied action complete title */
 "Copied" = "Copia effettuata!";
 
@@ -349,8 +344,7 @@ bloccati";
 "ErrorPagesVisitOnceButton" = "Visita comunque il sito";
 
 /* Shields Time Saved Stat */
-"EstTimerSaved" = "Tempo previsto 
-per il salvataggio";
+"EstTimerSaved" = "Tempo previsto \nper il salvataggio";
 
 /* Share action title */
 "FindInPage" = "Trova nella pagina";
@@ -368,8 +362,7 @@ per il salvataggio";
 "FingerprintingMethods" = "Metodi di fingerprinting";
 
 /* blocking stat title */
-"FingerprintingnProtection" = "Protezione
-dal fingerprinting";
+"FingerprintingnProtection" = "Protezione\ndal fingerprinting";
 
 /* No comment provided by engineer. */
 "FingerprintingProtection" = "Protezione dal fingerprinting";
@@ -384,8 +377,7 @@ dal fingerprinting";
 "HTTPSEverywhere" = "HTTPS Everywhere";
 
 /* Shields Https Stat */
-"HTTPSrUpgrades" = "Aggiornamenti 
-HTTPS";
+"HTTPSrUpgrades" = "Aggiornamenti \nHTTPS";
 
 /* individual blocking statistic title */
 "HTTPSUpgrades" = "Aggiornamenti HTTPS";
@@ -400,8 +392,7 @@ HTTPS";
 "LastWeek" = "Ultima settimana";
 
 /* DuckDuckGo promotion label. */
-"LearnAboutPrivateSearchrwithDuckDuckGo" = "Informazioni sulla ricerca privata 
-con DuckDuckGo";
+"LearnAboutPrivateSearchrwithDuckDuckGo" = "Informazioni sulla ricerca privata \ncon DuckDuckGo";
 
 /* Footer label describing when the current login was last modified with the timestamp as the parameter. */
 "LoginDetailLastModifiedCellFormatTitle" = "Ultima modifica: %@";
@@ -515,13 +506,7 @@ con DuckDuckGo";
 "PrivateBrowsingOnly" = "Solo navigazione privata";
 
 /* Private tab detail text */
-"PrivateTabDetails" = "L’uso delle schede private cambia soltanto quello che fa Brave sul tuo dispositivo, e non modifica il comportamento di nessun altro.
-
-I siti che visiti continuano a conoscere il tuo indirizzo IP. Partendo da questa informazione, spesso possono risalire alla tua posizione indicativa, in genere alla città in cui ti trovi; e a volte la conoscenza della posizione può essere molto più particolareggiata. Inoltre i siti sanno tutto quello che dici direttamente a loro, per esempio i termini che usi per le ricerche. Se fai il log‑in per accedere a un sito, questo saprà che sei tu il proprietario dell’account. Chiudendo la scheda privata, si continuerà a rimanere disconnessi perché Brave rimuoverà i cookie che servono a mantenere attivo l’accesso.
-
-Il tuo Internet service provider (ISP), cioè chi ti fornisce il collegamento a internet, chiunque esso sia, può vedere la tua attività di rete. Spesso si tratta del tuo operatore di telefonia mobile. Se ti connetti tramite una rete Wi‑Fi è il proprietario della rete, e se usi una VPN è chiunque gestisca la VPN. Il tuo ISP può vedere quali siti visiti mentre li visiti. Se questi siti usano il protocollo HTTPS, può al massimo ipotizzare quello che stai facendo durante la visita. Se però usano solo l’HTTP, allora il tuo ISP è in grado di vedere tutto: i termini di ricerca, le pagine che leggi e i link che apri.
-
-Se a gestire il tuo dispositivo è un datore di lavoro, potrebbe anche tenere traccia di quello che fai con il dispositivo. Usando le schede private, probabilmente non gli impedirai di sapere quali siti hai visitato. Qualcun altro con accesso al tuo dispositivo potrebbe inoltre avere installato del software che monitora la tua attività, e anche da questo le schede private non ti possono proteggere.";
+"PrivateTabDetails" = "L’uso delle schede private cambia soltanto quello che fa Brave sul tuo dispositivo, e non modifica il comportamento di nessun altro.\n\nI siti che visiti continuano a conoscere il tuo indirizzo IP. Partendo da questa informazione, spesso possono risalire alla tua posizione indicativa, in genere alla città in cui ti trovi; e a volte la conoscenza della posizione può essere molto più particolareggiata. Inoltre i siti sanno tutto quello che dici direttamente a loro, per esempio i termini che usi per le ricerche. Se fai il log‑in per accedere a un sito, questo saprà che sei tu il proprietario dell’account. Chiudendo la scheda privata, si continuerà a rimanere disconnessi perché Brave rimuoverà i cookie che servono a mantenere attivo l’accesso.\n\nIl tuo Internet service provider (ISP), cioè chi ti fornisce il collegamento a internet, chiunque esso sia, può vedere la tua attività di rete. Spesso si tratta del tuo operatore di telefonia mobile. Se ti connetti tramite una rete Wi‑Fi è il proprietario della rete, e se usi una VPN è chiunque gestisca la VPN. Il tuo ISP può vedere quali siti visiti mentre li visiti. Se questi siti usano il protocollo HTTPS, può al massimo ipotizzare quello che stai facendo durante la visita. Se però usano solo l’HTTP, allora il tuo ISP è in grado di vedere tutto: i termini di ricerca, le pagine che leggi e i link che apri.\n\nSe a gestire il tuo dispositivo è un datore di lavoro, potrebbe anche tenere traccia di quello che fai con il dispositivo. Usando le schede private, probabilmente non gli impedirai di sapere quali siti hai visitato. Qualcun altro con accesso al tuo dispositivo potrebbe inoltre avere installato del software che monitora la tua attività, e anche da questo le schede private non ti possono proteggere.";
 
 /* Private tab information link */
 "PrivateTabLink" = "Informazioni sulle schede private.";
@@ -917,8 +902,7 @@ Se a gestire il tuo dispositivo è un datore di lavoro, potrebbe anche tenere tr
 "Today" = "Oggi";
 
 /* Shields Trackers Stat */
-"TrackersrBlocked" = "Tracker 
-bloccati";
+"TrackersrBlocked" = "Tracker \nbloccati";
 
 /* Sync Alert */
 "UnableToConnectDescription" = "Impossibile unirsi al gruppo di sincronizzazione. Controlla le parole inserite e riprova.";
