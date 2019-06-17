@@ -1,7 +1,11 @@
 source_set("profiles") {
   sources = [
+    "brave_profile_impl.cc",
+    "brave_profile_impl.h",
     "brave_profile_manager.cc",
     "brave_profile_manager.h",
+    "tor_profile_impl.cc",
+    "tor_profile_impl.h",
   ]
   deps = [
     "//base",

@@ -1,16 +1,17 @@
 diff --git a/chrome/browser/profiles/profile_impl.cc b/chrome/browser/profiles/profile_impl.cc
-index 86ffb0c6cfc3c67b642d68e7320a0ea65ae1f3e5..68b9c18cb61370e93c1caf36a0e6562fbf15e84b 100644
+index 86ffb0c6cfc3c67b642d68e7320a0ea65ae1f3e5..ab59ab2f8328ad5b4135ac86cfb7a96749a87717 100644
 --- a/chrome/browser/profiles/profile_impl.cc
 +++ b/chrome/browser/profiles/profile_impl.cc
-@@ -34,6 +34,7 @@
- #include "base/threading/scoped_blocking_call.h"
- #include "base/trace_event/trace_event.h"
- #include "base/version.h"
-+#include "brave/browser/brave_profile_prefs.h"
- #include "build/build_config.h"
- #include "chrome/browser/background/background_contents_service_factory.h"
- #include "chrome/browser/background_fetch/background_fetch_delegate_factory.h"
-@@ -554,6 +555,9 @@ ProfileImpl::ProfileImpl(
+@@ -371,7 +371,7 @@ Profile* Profile::CreateProfile(const base::FilePath& path,
+   }
+ 
+   auto profile = base::WrapUnique(
+-      new ProfileImpl(path, delegate, create_mode, io_task_runner));
++      new BraveProfileImpl(path, delegate, create_mode, io_task_runner));
+ #if BUILDFLAG(ENABLE_SUPERVISED_USERS) && !defined(OS_ANDROID) && \
+     !defined(OS_CHROMEOS)
+   if (create_mode == CREATE_MODE_SYNCHRONOUS && profile->IsLegacySupervised())
+@@ -554,6 +554,9 @@ ProfileImpl::ProfileImpl(
    BrowserContextDependencyManager::GetInstance()
        ->RegisterProfilePrefsForServices(pref_registry_.get());
  

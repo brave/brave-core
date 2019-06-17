@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/profiles/profile_impl.h b/chrome/browser/profiles/profile_impl.h
+index f7de7a9a689c523b89ac7fe17068687de2e680d5..f563727e69e9e13a000bb2f12863fd27b0946a84 100644
+--- a/chrome/browser/profiles/profile_impl.h
++++ b/chrome/browser/profiles/profile_impl.h
+@@ -171,6 +171,7 @@ class ProfileImpl : public Profile {
+   friend class chromeos::SupervisedUserTestBase;
+ #endif
+   friend class Profile;
++  friend class BraveProfileImpl;
+   FRIEND_TEST_ALL_PREFIXES(StartupBrowserCreatorTest,
+                            ProfilesLaunchedAfterCrash);
+   FRIEND_TEST_ALL_PREFIXES(ProfileBrowserTest, DISABLED_ProfileReadmeCreated);

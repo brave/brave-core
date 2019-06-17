@@ -1,13 +1,14 @@
 diff --git a/chrome/browser/profiles/profile.h b/chrome/browser/profiles/profile.h
-index 737f5f8b8193b0d51b4e78c6b60604d0c0119246..b38eeccb38407e77e9330f2122d42769b41aa7d1 100644
+index 737f5f8b8193b0d51b4e78c6b60604d0c0119246..a43c9a05c05cd832d7621f6ec83e63236c4fb696 100644
 --- a/chrome/browser/profiles/profile.h
 +++ b/chrome/browser/profiles/profile.h
-@@ -292,6 +292,8 @@ class Profile : public content::BrowserContext {
-   // Returns whether it is a guest session.
-   virtual bool IsGuestSession() const;
+@@ -157,6 +157,9 @@ class Profile : public content::BrowserContext {
+   // True if an incognito profile exists.
+   virtual bool HasOffTheRecordProfile() = 0;
  
-+  bool IsTorProfile() const override;
-+
-   // Returns whether it is a system profile.
-   virtual bool IsSystemProfile() const;
- 
++  virtual bool HasTorProfile();
++  virtual Profile* GetTorProfile();
++  virtual void DestroyTorProfile();
+   // Return the original "recording" profile. This method returns this if the
+   // profile is not incognito.
+   virtual Profile* GetOriginalProfile() = 0;
