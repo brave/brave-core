@@ -21,7 +21,7 @@ void BraveGeolocationPermissionContext::DecidePermission(
   const GURL& requesting_origin,
   const GURL& embedding_origin,
   bool user_gesture,
-  const BrowserPermissionCallback& callback) {
+  BrowserPermissionCallback callback) {
 
   PrefService* prefs = profile()->GetPrefs();
   if (prefs->HasPrefPath(tor::prefs::kProfileUsingTor) &&
@@ -29,5 +29,7 @@ void BraveGeolocationPermissionContext::DecidePermission(
     return;
   }
 
-  return GeolocationPermissionContext::DecidePermission(web_contents, id, requesting_origin, embedding_origin, user_gesture, callback);
+  return GeolocationPermissionContext::DecidePermission(
+      web_contents, id, requesting_origin, embedding_origin, user_gesture,
+      std::move(callback));
 }
