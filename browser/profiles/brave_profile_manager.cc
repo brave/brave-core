@@ -68,7 +68,7 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
 }
 
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
-  if (profile->GetPath() == GetTorProfilePath()) {
+  if (profile->IsTorProfile()) {
     InitTorProfileUserPrefs(profile);
   } else {
     ProfileManager::InitProfileUserPrefs(profile);
@@ -143,4 +143,16 @@ void BraveProfileManager::SetNonPersonalProfilePrefs(Profile* profile) {
   prefs->SetBoolean(prefs::kSigninAllowed, false);
   prefs->SetBoolean(bookmarks::prefs::kEditBookmarksEnabled, false);
   prefs->SetBoolean(bookmarks::prefs::kShowBookmarkBar, false);
+}
+
+bool BraveProfileManager::IsValidProfile(const void* profile) {
+  for (auto iter = profiles_info_.begin(); iter != profiles_info_.end();
+       ++iter) {
+    if (iter->second->created) {
+      Profile* candidate = iter->second->profile.get();
+      if (candidate->HasTorProfile() && candidate->GetTorProfile() == profile)
+        return true;
+    }
+  }
+  return ProfileManager::IsValidProfile(profile);
 }
