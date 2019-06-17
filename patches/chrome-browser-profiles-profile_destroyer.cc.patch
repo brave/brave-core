@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/profiles/profile_destroyer.cc b/chrome/browser/profiles/profile_destroyer.cc
+index df97a1db47be338f3fbf9a5280bec89f9b0fe7ed..91f98f022a0dd7a7903fc525faf5306ffbd893ca 100644
+--- a/chrome/browser/profiles/profile_destroyer.cc
++++ b/chrome/browser/profiles/profile_destroyer.cc
+@@ -66,7 +66,7 @@ void ProfileDestroyer::DestroyProfileWhenAppropriate(Profile* const profile) {
+       // hosts referring to it are properly terminated.
+       new ProfileDestroyer(profile, &profile_hosts);
+     } else {
+-      profile->GetOriginalProfile()->DestroyOffTheRecordProfile();
++      DestroyTorOrOffTheRecordProfile(profile);
+     }
+     return;
+   }
+@@ -118,7 +118,7 @@ void ProfileDestroyer::DestroyOffTheRecordProfileNow(Profile* const profile) {
+     }
+   }
+   DCHECK(profile->GetOriginalProfile());
+-  profile->GetOriginalProfile()->DestroyOffTheRecordProfile();
++  DestroyTorOrOffTheRecordProfile(profile);
+ }
+ 
+ ProfileDestroyer::ProfileDestroyer(Profile* const profile, HostSet* hosts)
+@@ -187,7 +187,7 @@ void ProfileDestroyer::DestroyProfile() {
+ 
+   DCHECK(profile_->IsOffTheRecord());
+   DCHECK(profile_->GetOriginalProfile());
+-  profile_->GetOriginalProfile()->DestroyOffTheRecordProfile();
++  DestroyTorOrOffTheRecordProfile(profile_);
+   profile_ = NULL;
+ 
+   // And stop the timer so we can be released early too.
