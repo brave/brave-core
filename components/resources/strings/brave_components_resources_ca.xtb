@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Guanya tokens veient anuncis a Brave. Els anuncis presentats es basen en els vostres interessos, tal com es dedueix del vostre comportament de navegació. Les dades personals o el historial de navegació mai no surt del navegador.</translation>
 <translation id="6112368337882254910">Auto-Contribució</translation>
 <translation id="1527222983464337010">Una manera automàtica de donar suport a editors i creadors de contingut. Estableix un pagament mensual i navega normalment. Els llocs que visitis rebran les teves aportacions de manera automàtica, segons la teva atenció, tal com ho ha mesurat Brave.</translation>
-<translation id="7178655681744815321">Estimació dels guanys d'aquest mes</translation>
-<translation id="8157096848242649588">Data de pagament</translation>
-<translation id="5208388044986603165">Notificacions d'anunci rebudes</translation>
 <translation id="4229016885653790965">Vaja! Els anuncis encara no estan disponibles a la teva regió.</translation>
 <translation id="654711254769318398">Pàgines d'anunci visualitzades</translation>
 <translation id="2532127066761785857">Nombre màxim d'anuncis mostrats</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Editors verificats per Brave</translation>
 <translation id="7658239707568436148">Cancel·la</translation>
 <translation id="7262285991915892790">Arrossega la icona de BAT al</translation>
-<translation id="2151535059686617995">És’ el teu dia de sort!</translation>
-<translation id="6255773350565723852">La teva donació està de camí.</translation>
 <translation id="7656781188259414093">destinació.</translation>
 <translation id="1555514580945108302">Mmm… Em sembla que no. Torna-ho a provar.</translation>
 <translation id="13853865024308201">Reclamar</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">No hi ha contribucions pendents…</translation>
 <translation id="1963227389609234879">Suprimeix-ho tot</translation>
 <translation id="923467487918828349">Mostra-les totes</translation>
+<translation id="2151535059686617995">És’ el teu dia de sort!</translation>
+<translation id="6255773350565723852">La teva donació està de camí.</translation>
 <translation id="1181037720776840403">Suprimeix</translation>
 <translation id="7885157704277298658">S'ha copiat!</translation>
 <translation id="5379640681913450928">Nombre de paraules:</translation>

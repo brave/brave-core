@@ -28,7 +28,6 @@
 <translation id="3218385319396786393">এই পৃষ্ঠাতে স্বয়ংক্রিয়ভাবে চালানো  ব্লক করা হয়েছে</translation>
 <translation id="4988333904713528597">সর্বদা <ph name="HOST">$1<ex>mail.google.com</ex></ph> এ স্বতঃ চলার অনুমতি দিন</translation>
 <translation id="4150684676757176434">অটোপ্লে ব্লক করা চালিয়ে যান</translation>
-<translation id="7543906827780734027">Brave এখনও পর্যন্ত এটি পর্যালোচনা করেনি - এটি ক্ষতিকারক হতে পারে। যে কোনোভাবে "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" যোগ করবেন?</translation>
 <translation id="2044383478723007273">Brave রঙ</translation>
 <translation id="6123134130710658846">Brave পুরস্কারের বোতাম লুকান</translation>
 <translation id="7635711399568194460">Brave পুরস্কারগুলি সক্রিয় করা না থাকলে লোকেশন বারে Brave পুরস্কারের বোতামটি লুকায়</translation>
@@ -48,26 +47,13 @@
 <translation id="4472575034687746823">শুরু করুন</translation>
 <translation id="3400357268283240774">অতিরিক্ত সেটিংস</translation>
 <translation id="6303294677342628402">শিল্ড</translation>
-<translation id="768979911142179781">ডিফল্ট</translation>
-<translation id="5989930075012659993">আপনার বর্তমান প্রতি-সাইটে সেটিংস বজায় রাখা হবে।</translation>
 <translation id="9185018653595759199">সামাজিক মিডিয়া রোধক</translation>
-<translation id="6894114137169961038">বিজ্ঞাপন নিয়ন্ত্রণ</translation>
-<translation id="1096802265930928584">কুকি নিয়ন্ত্রণ</translation>
-<translation id="8919235146866304148">আঙ্গুলের ছাপের নিরাপত্তা</translation>
-<translation id="520895744850022668">HTTPS সর্বত্র</translation>
-<translation id="5259716416204774556">স্ক্রিপ্ট অবরুদ্ধ করা</translation>
 <translation id="7498695072878479744">তৃতীয় পক্ষের সাইটগুলিতে Google লগইন বোতামগুলির অনুমতি দিন</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
 <translation id="958971637207126733">LinkedIn সংস্থাপনগুলির অনুমতি দিন</translation>
-<translation id="6067014455220527258">বিজ্ঞাপন অবরুদ্ধ করুন</translation>
-<translation id="6985711843506827936">বিজ্ঞাপন এবং ট্র্যাকিং এর অনুমতি দিন</translation>
-<translation id="6132506775968708399">3য় পক্ষের কুকিগুলি অবরুদ্ধ করুন</translation>
 <translation id="5657156137487675418">সমস্ত কুকির জন্য অনুমতি দিন</translation>
 <translation id="6883611015375728278">সমস্ত কুকি অবরুদ্ধ করুন</translation>
-<translation id="1442559343076146186">3য় পক্ষের আঙ্গুলের ছাপ নেওয়া অবরুদ্ধ করুন</translation>
-<translation id="8034285923190068220">আঙ্গুলের ছাপ নেওয়ার অনুমতি দিন</translation>
-<translation id="4540198958192073185">সমস্ত আঙ্গুলের ছাপ নেওয়া অবরুদ্ধ করুন</translation>
 <translation id="8942080017911802454">WebRTC IP পরিচালনার নীতি</translation>
 <translation id="6165508094623778733">আরও জানুন</translation>
 <translation id="8798099450830957504">ডিফল্ট</translation>

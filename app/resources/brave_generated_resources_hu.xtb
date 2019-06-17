@@ -28,7 +28,6 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="3218385319396786393">Ezen az oldalon blokkolták az automatikus lejátszást.</translation>
 <translation id="4988333904713528597">Automatikus lejátszás általános engedélyezése itt: <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Automatikus lejátszás további blokkolása</translation>
-<translation id="7543906827780734027">A Brave még nem vizsgálta meg ezt a kiterjesztést - lehetséges, hogy rosszindulatú. Mindenképp hozzáadod ezt: "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?</translation>
 <translation id="2044383478723007273">Brave színek</translation>
 <translation id="6123134130710658846">Brave jutalmak gomb elrejtése</translation>
 <translation id="7635711399568194460">Elrejti a Brave Jutalmak gombot a helysávban, amikor a Brave Jutalmak nincs engedélyezve.</translation>
@@ -48,26 +47,13 @@ Ennek a bővítménynek a telepítésével elfogadja a Google Widevine felhaszn�
 <translation id="4472575034687746823">Kezdő lépések</translation>
 <translation id="3400357268283240774">További beállítások</translation>
 <translation id="6303294677342628402">Pajzsok</translation>
-<translation id="768979911142179781">Alapértelmezett beállítások</translation>
-<translation id="5989930075012659993">A jelenlegi oldalakat érintő beállításaid megmaradnak.</translation>
 <translation id="9185018653595759199">Közösségi média blokkolása</translation>
-<translation id="6894114137169961038">Reklámok korlátozása</translation>
-<translation id="1096802265930928584">Süti beállítások</translation>
-<translation id="8919235146866304148">Ujjlenyomat-leolvasási védelem</translation>
-<translation id="520895744850022668">HTTPS Everywhere</translation>
-<translation id="5259716416204774556">Script blokkolása</translation>
 <translation id="7498695072878479744">Google bejelentkezési gombok engedélyezése külső felek oldalain</translation>
 <translation id="863171915776379000">Facebook belépés és beágyazott bejegyzések engedélyezése</translation>
 <translation id="5165042248369837294">Twitteren beágyazott tweetek engedélyezése</translation>
 <translation id="958971637207126733">LinkedIn beágyazott posztok engedélyezése</translation>
-<translation id="6067014455220527258">Hirdetések blokkolása</translation>
-<translation id="6985711843506827936">Hirdetések és nyomkövetés engedélyezése</translation>
-<translation id="6132506775968708399">Harmadik fél sütijeinek blokkolása</translation>
 <translation id="5657156137487675418">Összes süti engedélyezése</translation>
 <translation id="6883611015375728278">Összes süti blokkolása</translation>
-<translation id="1442559343076146186">Harmadik fél ujjlenyomat-leolvasásának blokkolása</translation>
-<translation id="8034285923190068220">Ujjlenyomat-leolvasás engedélyezése</translation>
-<translation id="4540198958192073185">Minden ujjlenyomat-leolvasás blokkolása</translation>
 <translation id="8942080017911802454">WebRTC IP kezelési irányelvek</translation>
 <translation id="6165508094623778733">Tudjon meg többet</translation>
 <translation id="8798099450830957504">Alapértelmezett</translation>

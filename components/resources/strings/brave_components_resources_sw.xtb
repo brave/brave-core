@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Pata vianzio kwa kutazama matangazo kwenye Brave. Matangazo yanayowasilishwa ni kulingana na mapendeleo yako, kutokana na uzoeufu wako wa kuperuzi mtandaoni. Hakuna taarifa binafsi au historia za kuvinjari ambazo zinatoka nje ya kisakuzi chako.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="1527222983464337010">Njia ya kiotomati ya kuwasaidia wachapishaji na watengenezaji wa maudhui. Weka malipo ya kila mwezi na peruzi kwa kawaida. Tovuti unayoitembelea hupokea michango yako kiotomati, kulingana na umakini wako kama unavyopimwa na Brave.</translation>
-<translation id="7178655681744815321">Mapato yanayokadiriwa mzunguko huu</translation>
-<translation id="8157096848242649588">Tarehe ya malipo</translation>
-<translation id="5208388044986603165">Viarifu vya tangazo vimepokelewa</translation>
 <translation id="4229016885653790965">Samahani! Matangazo hayapatikani kwenye eneo lako.</translation>
 <translation id="654711254769318398">Kurasa za tangazo zilizotazamwa</translation>
 <translation id="2532127066761785857">Idadi ya juu ya matangazo yaliyoonyeshwa</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Wachapishaji wa Brave Waliothibitishwa</translation>
 <translation id="7658239707568436148">Ghairi</translation>
 <translation id="7262285991915892790">Buruza ikoni ya BAT ili kuiweka kwenye</translation>
-<translation id="2151535059686617995">N’i siku yako ya bahati!</translation>
-<translation id="6255773350565723852">Ruzuku yako ya kianzio ipo njiani.</translation>
 <translation id="7656781188259414093">lengo.</translation>
 <translation id="1555514580945108302">Hmm… Si Sahihi. Jaribu Tena.</translation>
 <translation id="13853865024308201">Dai</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Hakuna michango ambayo bado haijachangwa…</translation>
 <translation id="1963227389609234879">Ondoa Yote</translation>
 <translation id="923467487918828349">Onyesha Yote</translation>
+<translation id="2151535059686617995">N’i siku yako ya bahati!</translation>
+<translation id="6255773350565723852">Ruzuku yako ya kianzio ipo njiani.</translation>
 <translation id="1181037720776840403">Ondoa</translation>
 <translation id="7885157704277298658">Imenakiliwa!</translation>
 <translation id="5379640681913450928">Idadi ya Maneno:</translation>

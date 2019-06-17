@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "3 ನೇ ಪಕ್ಷದ ಟ್ರಾಕರುಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "message": "Cross-site trackers blocked",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "3ನೇ-ವ್ಯಕ್ತಿಯ ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "message": "Cross-site cookies blocked",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -76,15 +76,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "3ನೇ-ವ್ಯಕ್ತಿಯ ಸಾಧನ ಗುರುತಿಸುವಿಕೆ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "message": "Cross-site device recognition blocked",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "ಸಾಧನ ಗುರುತಿಸುವಿಕೆ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ",
+    "message": "Device recognition attempts blocked",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "ಎಲ್ಲಾ ಸಾಧನ ಗುರುತಿಸುವಿಕೆಯನ್ನು ಅನುಮತಿಸಲಾಗಿದೆ",
+    "message": "All device recognition attempts allowed",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
@@ -118,6 +118,18 @@
   "allow": {
     "message": "ಅನುಮತಿಸಿ",
     "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Blocked once",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Allowed once",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Allow scripts once",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
     "message": "ರದ್ದುಗೊಳಿಸಿ",

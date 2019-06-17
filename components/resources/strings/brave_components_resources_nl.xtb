@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Verdien tokens door advertenties te bekijken in Brave. Advertenties worden getoond op basis van je interesses, door analyse van je browsing geschiedenis. Geen persoonlijke data van je browsing geschiedenis zal de browser verlaten.</translation>
 <translation id="6112368337882254910">Auto-Contribute</translation>
 <translation id="1527222983464337010">Een automatische manier om uitgevers en makers van content te steunen. Stel een maandelijkse betaling in en browse zoals gewoonlijk. De websites die je bezoekt ontvangen je bijdragen, op basis van je aandacht gemeten door Brave, automatisch.</translation>
-<translation id="7178655681744815321">Geschatte verdiensten deze periode</translation>
-<translation id="8157096848242649588">Betalingsdatum</translation>
-<translation id="5208388044986603165">Advertentiemeldingen ontvangen</translation>
 <translation id="4229016885653790965">Sorry! Ads are not yet available in your region.</translation>
 <translation id="654711254769318398">Advertentiepagina's bekeken</translation>
 <translation id="2532127066761785857">Maximum aantal advertenties weergegeven</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Uitgevers geverifieerd door Brave</translation>
 <translation id="7658239707568436148">Annuleren</translation>
 <translation id="7262285991915892790">Sleep het BAT-pictogram naar de</translation>
-<translation id="2151535059686617995">Je hebt vandaag geluk!</translation>
-<translation id="6255773350565723852">Je gift komt eraan.</translation>
 <translation id="7656781188259414093">doel.</translation>
 <translation id="1555514580945108302">Hmm… Niet helemaal. Probeer het opnieuw.</translation>
 <translation id="13853865024308201">Claimen</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Geen openstaande bijdragen …</translation>
 <translation id="1963227389609234879">Alles verwijderen</translation>
 <translation id="923467487918828349">Toon alles</translation>
+<translation id="2151535059686617995">Je hebt vandaag geluk!</translation>
+<translation id="6255773350565723852">Je gift komt eraan.</translation>
 <translation id="1181037720776840403">Verwijderen</translation>
 <translation id="7885157704277298658">Gekopieerd.</translation>
 <translation id="5379640681913450928">Aantal woorden:</translation>

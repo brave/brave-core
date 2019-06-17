@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Gana tokens visualizando anuncios en Brave. Los anuncios ofrecidos están basados en tus intereses, tal y como se deduce de tu comportamiento de navegación. Ningún dato personal o historial de navegación sale de tu navegador.</translation>
 <translation id="6112368337882254910">Contribución Automática</translation>
 <translation id="1527222983464337010">Una forma automática de apoyar a los editores y creadores de contenido. Establece un pago mensual y navega de manera habitual. Los sitios web que hayas visitado reciben contribuciones automáticamente, según tu atención medida por Brave.</translation>
-<translation id="7178655681744815321">Ganacias estimadas de este ciclo</translation>
-<translation id="8157096848242649588">Fecha de pago</translation>
-<translation id="5208388044986603165">Notificaciones de anuncios recibidas</translation>
 <translation id="4229016885653790965">¡Lo sentimos! Aún no hay anuncios disponibles en tu región.</translation>
 <translation id="654711254769318398">Páginas de anuncios vistas</translation>
 <translation id="2532127066761785857">Número máximo de anuncios mostrados</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Editores verificados por Brave</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="7262285991915892790">Arrastre el icono BAT en</translation>
-<translation id="2151535059686617995">¡E’s su día de suerte!</translation>
-<translation id="6255773350565723852">El vale de la concesión está de camino.</translation>
 <translation id="7656781188259414093">destino.</translation>
 <translation id="1555514580945108302">¡Mmm!…Parece que no. Inténtelo de nuevo.</translation>
 <translation id="13853865024308201">Reclamar</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">No hay ninguna contribución pendiente…</translation>
 <translation id="1963227389609234879">Eliminar todo</translation>
 <translation id="923467487918828349">Mostrar todas</translation>
+<translation id="2151535059686617995">¡E’s su día de suerte!</translation>
+<translation id="6255773350565723852">El vale de la concesión está de camino.</translation>
 <translation id="1181037720776840403">Eliminar</translation>
 <translation id="7885157704277298658">¡Copiado!</translation>
 <translation id="5379640681913450928">Recuento de palabras:</translation>

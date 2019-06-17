@@ -28,7 +28,6 @@ Ved at installere denne udvidelse accepterer du Google Widevines betingelser for
 <translation id="3218385319396786393">Autoplay er blevet blokeret på denne side</translation>
 <translation id="4988333904713528597">Slå altid autoplay til <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Fortsæt med at blokere autoplay</translation>
-<translation id="7543906827780734027">Brave har ikke gennemset denne udvidelse endnu - den kan være ondsindet. Tilføj "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" alligevel?</translation>
 <translation id="2044383478723007273">Brave farver</translation>
 <translation id="6123134130710658846">Skjul Brave Rewards-knappen</translation>
 <translation id="7635711399568194460">Skjul Brave Rewards-knappen i placeringsbjælken, når Brave Rewards ikke er slået til</translation>
@@ -49,26 +48,13 @@ vindue med Tor</translation>
 <translation id="4472575034687746823">Kom godt i gang</translation>
 <translation id="3400357268283240774">Yderligere indstillinger</translation>
 <translation id="6303294677342628402">Afskærmning</translation>
-<translation id="768979911142179781">Standarder</translation>
-<translation id="5989930075012659993">Dine nuværende sidespecifikke indstillinger beholdes.</translation>
 <translation id="9185018653595759199">Blokering af sociale medier</translation>
-<translation id="6894114137169961038">Reklamestyring</translation>
-<translation id="1096802265930928584">Cookiekontrol</translation>
-<translation id="8919235146866304148">Fingerafryksbeskyttelse</translation>
-<translation id="520895744850022668">HTTPS Overalt</translation>
-<translation id="5259716416204774556">Sript-blokering</translation>
 <translation id="7498695072878479744">Tillad Google-loginknapper på tredjepartshjemmesider</translation>
 <translation id="863171915776379000">Tillad Facebook-logins og indlejrede opslag</translation>
 <translation id="5165042248369837294">Tillad indlejrede tweets fra Twitter</translation>
 <translation id="958971637207126733">Tillad indlejrede LinkedIn-opslag</translation>
-<translation id="6067014455220527258">Bloker annoncer</translation>
-<translation id="6985711843506827936">Tillad annoncer og sporing</translation>
-<translation id="6132506775968708399">Bloker cookies fra tredjeparter</translation>
 <translation id="5657156137487675418">Tillad alle cookies</translation>
 <translation id="6883611015375728278">Blokér alle cookies</translation>
-<translation id="1442559343076146186">Bloker tredjeparts fingeraftryk</translation>
-<translation id="8034285923190068220">Tillad fingeraftryk</translation>
-<translation id="4540198958192073185">Bloker altid for at der kan tages fingeraftryk</translation>
 <translation id="8942080017911802454">WebRTC IP håndteringspolitik</translation>
 <translation id="6165508094623778733">Lær mere</translation>
 <translation id="8798099450830957504">Standard</translation>

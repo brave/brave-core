@@ -28,7 +28,6 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="3218385319396786393">Automātiskā atskaņošana šajā lapā tika bloķēta</translation>
 <translation id="4988333904713528597">Vienmēr atļaut automātisku ieslēgšanu vietnē <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Turpināt bloķēt automātisko atskaņošanu</translation>
-<translation id="7543906827780734027">Brave vēl nav pārskatījis šo paplašinājumu, tas varētu būt ļaunprātīgs. Pievienot Add "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" jebkurā gadījumā?</translation>
 <translation id="2044383478723007273">Brave krāsas</translation>
 <translation id="6123134130710658846">Slēpt Brave balvu pogu</translation>
 <translation id="7635711399568194460">Slēpj Brave balvu pogu atrašanās vietas joslā, kad Brave balvas nav iespējotas</translation>
@@ -48,26 +47,13 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="4472575034687746823">Sākt darbu</translation>
 <translation id="3400357268283240774">Papildu iestatījumi</translation>
 <translation id="6303294677342628402">Aizsargi</translation>
-<translation id="768979911142179781">Noklusējumi</translation>
-<translation id="5989930075012659993">Tiks saglabāti Jūsu pašreizējie izvēlētās tīmekļa vietnes iestatījumi.</translation>
 <translation id="9185018653595759199">Sociālo plašsaziņas līdzekļu bloķēšana</translation>
-<translation id="6894114137169961038">Reklāmu kontrole</translation>
-<translation id="1096802265930928584">Sīkfailu kontrole</translation>
-<translation id="8919235146866304148">Pirkstu nospiedumu aizsardzība</translation>
-<translation id="520895744850022668">HTPPS visur</translation>
-<translation id="5259716416204774556">Skriptu bloķēšana</translation>
 <translation id="7498695072878479744">Atļaut Google pieteikšanās pogas trešo pušu vietnēs</translation>
 <translation id="863171915776379000">Atļaut Facebook pieteikšanos un iegultās ziņas</translation>
 <translation id="5165042248369837294">Atļaut Twitter iegultos tvītus</translation>
 <translation id="958971637207126733">Atļaut LinkedIn iegultās ziņas</translation>
-<translation id="6067014455220527258">Bloķēt reklāmas</translation>
-<translation id="6985711843506827936">Atļaut reklāmas un izsekošanu</translation>
-<translation id="6132506775968708399">Bloķēt trešās puses sīkfailus</translation>
 <translation id="5657156137487675418">Atļaut visus sīkfailus</translation>
 <translation id="6883611015375728278">Bloķēt visus sīkfailus</translation>
-<translation id="1442559343076146186">Bloķēt trešās puses pirkstu nospiedumu ņemšanu</translation>
-<translation id="8034285923190068220">Atļaut pirkstu nospiedumu ņemšanu</translation>
-<translation id="4540198958192073185">Bloķēt visu pirkstu nospiedumu ņemšanu</translation>
 <translation id="8942080017911802454">WebRTC IP apstrādes politika</translation>
 <translation id="6165508094623778733">Uzzināt vairāk</translation>
 <translation id="8798099450830957504">Noklusējums</translation>
