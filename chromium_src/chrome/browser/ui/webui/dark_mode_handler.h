@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_DARK_MODE_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_DARK_MODE_HANDLER_H_
 
-#include "brave/browser/ui/brave_dark_mode_observer.h"
+#include "brave/ui/native_theme/brave_dark_mode_observer.h"
 
 #define DarkModeObserver BraveDarkModeObserver
 #include "../../../../../../chrome/browser/ui/webui/dark_mode_handler.h"  // NOLINT

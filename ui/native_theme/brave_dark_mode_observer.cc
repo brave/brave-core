@@ -3,18 +3,14 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/brave_dark_mode_observer.h"
+#include "brave/ui/native_theme/brave_dark_mode_observer.h"
 
 #include "ui/native_theme/native_theme_dark_aura.h"
 
-namespace {
-
-using ui::NativeTheme;
-
-}  // namespace
+namespace ui {
 
 // static
-ui::NativeTheme* BraveDarkModeObserver::current_native_theme_for_testing_;
+NativeTheme* BraveDarkModeObserver::current_native_theme_for_testing_;
 
 void BraveDarkModeObserver::OnNativeThemeUpdated(NativeTheme* observed_theme) {
   DCHECK(theme_observer_.IsObserving(observed_theme));
@@ -29,8 +25,8 @@ void BraveDarkModeObserver::Start() {
 
 void BraveDarkModeObserver::ResetThemeObserver() {
   auto* current_native_theme = theme_->SystemDarkModeEnabled()
-      ? ui::NativeThemeDarkAura::instance()
-      : ui::NativeTheme::GetInstanceForNativeUi();
+      ? NativeThemeDarkAura::instance()
+      : NativeTheme::GetInstanceForNativeUi();
   current_native_theme_for_testing_ = current_native_theme;
 
   if (!theme_observer_.IsObserving(current_native_theme)) {
@@ -39,3 +35,4 @@ void BraveDarkModeObserver::ResetThemeObserver() {
   }
 }
 
+}  // namespace ui
