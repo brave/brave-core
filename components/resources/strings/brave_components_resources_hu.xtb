@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Szerezzen tokeneket hirdetéseknek a Brave alatti megtekintésével. A bemutatott hirdetések a böngészési viselkedéséből meghatározott érdeklődési körétől függenek. A böngészőt sosem hagyja el semmilyen személyes adat vagy böngészési előzmény.</translation>
 <translation id="6112368337882254910">Automatikus Támogatás</translation>
 <translation id="1527222983464337010">Egy automatikus módszer a kiadók és tartalomkészítők támogatására. Állíts be egy havi fizetést, és böngéssz a megszokott módon. A felkeresett oldalak a Brave mérése alapján automatikusan megkapják a támogatásodat.</translation>
-<translation id="7178655681744815321">Becsült begyűjtött pontok ebben a ciklusban</translation>
-<translation id="8157096848242649588">Kifizetés dátuma</translation>
-<translation id="5208388044986603165">Hirdetésekről kapott értesítések</translation>
 <translation id="4229016885653790965">Sajnáljuk, területén még nem állnak rendelkezésre hirdetések.</translation>
 <translation id="654711254769318398">Megtekintett hirdetési oldalak</translation>
 <translation id="2532127066761785857">Megjelenített hirdetések maximális száma</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Ellenőrzött Brave tartalomszolgáltatók</translation>
 <translation id="7658239707568436148">Mégse</translation>
 <translation id="7262285991915892790">Húzd a BAT ikont a</translation>
-<translation id="2151535059686617995">Szerencséd van!</translation>
-<translation id="6255773350565723852">Zseton adományod úton van.</translation>
 <translation id="7656781188259414093">cél.</translation>
 <translation id="1555514580945108302">Hmm… Nem egészen. Próbáld újra.</translation>
 <translation id="13853865024308201">Igénylés</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Nincsenek függőben lévő hozzájárulások…</translation>
 <translation id="1963227389609234879">Összes eltávolítása</translation>
 <translation id="923467487918828349">Összes megjelenítése</translation>
+<translation id="2151535059686617995">Szerencséd van!</translation>
+<translation id="6255773350565723852">Zseton adományod úton van.</translation>
 <translation id="1181037720776840403">Eltávolítás</translation>
 <translation id="7885157704277298658">Kimásolva!</translation>
 <translation id="5379640681913450928">Szavak száma:</translation>

@@ -28,7 +28,6 @@
 <translation id="3218385319396786393">ಈ ಪುಟದಲ್ಲಿ ಸ್ವಯಂಪ್ಲೇ ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
 <translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> ನಲ್ಲಿ ಯಾವಾಗಲೂ ಸ್ವಯಂಪ್ಲೇ ಅನುಮತಿಸಿ</translation>
 <translation id="4150684676757176434">ಸ್ವಯಂಪ್ಲೇ ನಿರ್ಬಂಧಿಸುವಿಕೆಯನ್ನು ಮುಂದುವರಿಸಿ</translation>
-<translation id="7543906827780734027">Brave ಈ ವಿಸ್ತರಣೆಯನ್ನು ಇನ್ನು ಪರಿಶೀಲಿಸಿಲ್ಲ - ಇದು ದುರುದ್ದೇಶಪೂರಿತವಾಗಿರಬಹುದು. ಹೇಗಾದರೂ "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" ಸೇರಿಸುವುದೇ?</translation>
 <translation id="2044383478723007273">Brave ಬಣ್ಣಗಳು</translation>
 <translation id="6123134130710658846">ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಬಟನ್ ಮರೆ ಮಾಡಿ</translation>
 <translation id="7635711399568194460">ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್‌ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸದಿದ್ದಾಗ ಬ್ರೇವ್ ರಿವಾರ್ಡ್ಸ್ ಬಟನ್‌ ಅನ್ನು ಲೊಕೇಶನ್ ಬಾರ್‌ನಲ್ಲಿ ಮರೆ ಮಾಡಿ</translation>
@@ -48,26 +47,13 @@
 <translation id="4472575034687746823">ಪ್ರಾರಂಭ</translation>
 <translation id="3400357268283240774">ಹೆಚ್ಚುವರಿ ಸೆಟ್ಟಿಂಗ್‌ಗಳು</translation>
 <translation id="6303294677342628402">ಶೀಲ್ಡ್‌ಗಳು</translation>
-<translation id="768979911142179781">ಡಿಫಾಲ್ಟ್</translation>
-<translation id="5989930075012659993">ನಿಮ್ಮ ಪ್ರಸ್ತುತ ಪ್ರತಿ ಸೈಟ್ ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಇರಿಸಿಕೊಳ್ಳಲಾಗುತ್ತದೆ.</translation>
 <translation id="9185018653595759199">ಸಾಮಾಜಿಕ ಮಾಧ್ಯಮವನ್ನು ನಿರ್ಬಂಧಿಸುವಿಕೆ</translation>
-<translation id="6894114137169961038">ಜಾಹೀರಾತು ನಿಯಂತ್ರಣ</translation>
-<translation id="1096802265930928584">ಕುಕೀ ನಿಯಂತ್ರಣ</translation>
-<translation id="8919235146866304148">ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ಸಂರಕ್ಷಣೆ</translation>
-<translation id="520895744850022668">HTTPS ಎಲ್ಲೆಡೆ</translation>
-<translation id="5259716416204774556">ಸ್ಕ್ರಿಪ್ಟ್ ನಿರ್ಬಂಧಿಸುವಿಕೆ</translation>
 <translation id="7498695072878479744">Google ಲಾಗಿನ್ ಬಟನ್‌ಗಳನ್ನು ತೃತೀಯ ಪಕ್ಷದ ಸೈಟ್‌ಗಳಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
 <translation id="863171915776379000">ಫೇಸ್‌ಬುಕ್ ಲಾಗಿನ್‌ಗಳನ್ನು ಮತ್ತು ಎಂಬೆಡ್ ಮಾಡಿದ ಪೋಸ್ಟ್‌ಗಳನ್ಮು ಅನುಮತಿಸಿ</translation>
 <translation id="5165042248369837294">ಎಂಬೆಡ್ ಮಾಡಿದ ಟ್ವೀಟ್‌ಗಳನ್ನು ಟ್ವಿಟರ್‌ಗೆ ಅನುಮತಿಸಿ</translation>
 <translation id="958971637207126733">ಎಂಬೆಡ್ ಮಾಡಲಾದ ಫೋಸ್ಟ್‌ಗಳನ್ನು LinkedIn ನಲ್ಲಿ ಅನುಮತಿಸಿ</translation>
-<translation id="6067014455220527258">ಜಾಹೀರಾತು ನಿರ್ಬಂಧಿಸಿ</translation>
-<translation id="6985711843506827936">ಜಾಹೀರಾತುಗಳು ಮತ್ತು ಟ್ರ್ಯಾಕಿಂಗ್‌ಗೆ ಅನುಮತಿಸಿ</translation>
-<translation id="6132506775968708399">3ನೇ ವ್ಯಕ್ತಿಯ ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="5657156137487675418">ಎಲ್ಲಾ ಕುಕೀಗಳನ್ನು ಅನುಮತಿಸಿ</translation>
 <translation id="6883611015375728278">ಎಲ್ಲಾ ಕುಕೀಗಳನ್ನು ನಿರ್ಬಂಧಿಸಿ</translation>
-<translation id="1442559343076146186">3ನೇ ವ್ಯಕ್ತಿಯ ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ನಿರ್ಬಂಧಿಸಿ</translation>
-<translation id="8034285923190068220">ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ಅನುಮತಿಸಿ</translation>
-<translation id="4540198958192073185">ಎಲ್ಲಾ ಫಿಂಗರ್‌ಪ್ರಿಂಟಿಂಗ್ ನಿರ್ಬಂಧಿಸಿ</translation>
 <translation id="8942080017911802454">WebRTC IP ನಿರ್ವಹಣೆ ನೀತಿ</translation>
 <translation id="6165508094623778733">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
 <translation id="8798099450830957504">ಡಿಫಾಲ್ಟ್</translation>

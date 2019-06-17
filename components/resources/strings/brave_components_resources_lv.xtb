@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Pelniet merķierus, aplūkojot reklāmas Brave. Reklāmas tiek rādītas, balstotiets uz Jūsu interesēm, kas iegūtas no Jūsu pārlūkošanas paradumiem. Personas dati vai pārlūkošanas vēsture nekad nepamet Jūsu pārlūku.</translation>
 <translation id="6112368337882254910">Automātiska ziedošana</translation>
 <translation id="1527222983464337010">Automātisks veids, kā atbalstīt publicētājus un satura veidotājus. Iestatiet ikmēneša maksājumu un pārlūkojiet kā parasti. Jūsu apmeklētās vietnes saņem Jūsu ziedojumus automātiski, balstoties uz Jūsu veltīto uzmanību pēc Brave mērījumiem.</translation>
-<translation id="7178655681744815321">Aprēķinātie šī cikla ienākumi</translation>
-<translation id="8157096848242649588">Maksājuma datums</translation>
-<translation id="5208388044986603165">Saņemtie reklāmu paziņojumi</translation>
 <translation id="4229016885653790965">Diemžēl reklāmas vēl nav pieejamas jūsu reģionā.</translation>
 <translation id="654711254769318398">Skatītās reklāmu lapas</translation>
 <translation id="2532127066761785857">Maksimālais rādīto reklāmu skaits</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Brave apstiprināti publicētāji</translation>
 <translation id="7658239707568436148">Atcelt</translation>
 <translation id="7262285991915892790">Velciet BAT ikonu uz</translation>
-<translation id="2151535059686617995">Jums šodien veicas!</translation>
-<translation id="6255773350565723852">Drīzumā saņemsiet savu marķiera piešķīrumu.</translation>
 <translation id="7656781188259414093">mērķis.</translation>
 <translation id="1555514580945108302">Hmm… Ne gluži. Mēģiniet vēlreiz.</translation>
 <translation id="13853865024308201">Pieprasīt</translation>
@@ -360,6 +355,8 @@
 <translation id="7410549756000115387">Nav neapmaksātu ziedojumu...</translation>
 <translation id="1963227389609234879">Izņemt visu</translation>
 <translation id="923467487918828349">Rādīt visus</translation>
+<translation id="2151535059686617995">Jums šodien veicas!</translation>
+<translation id="6255773350565723852">Drīzumā saņemsiet savu marķiera piešķīrumu.</translation>
 <translation id="1181037720776840403">Noņemt</translation>
 <translation id="7885157704277298658">Nokopēts!</translation>
 <translation id="5379640681913450928">Vārdu skaits:</translation>

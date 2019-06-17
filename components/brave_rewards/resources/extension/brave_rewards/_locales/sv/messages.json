@@ -237,14 +237,6 @@
     "message": "Dra BAT-ikonen till",
     "description": "Directs the user to drag the BAT icon"
   },
-  "captchaLuckyDay": {
-    "message": "Det är din lyckodag!",
-    "description": "Cosmetic text upon captcha success"
-  },
-  "captchaOnTheWay": {
-    "message": "Ditt medgivandebevis är på väg.",
-    "description": "Cosmetic text indicating grant funds are on the way"
-  },
   "captchaProveHuman": {
     "message": "Bevisa att du är en människa!",
     "description": "Cosmetic text for captcha prompt"
@@ -354,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your earnings from ads are available.",
+    "message": "Your rewards from Ads are here!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -420,5 +412,47 @@
   "twitterTipsIconLabel": {
     "message": "Donation",
     "description": "Icon label for Twitter tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "Creator $name$ recently verified",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "You have pending tips due to insufficient funds",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "Pending Contribution",
+    "description": "Notification title for pending contribution type"
+  },
+  "grantFinishTitleUGP": {
+    "message": "Det är din lyckodag!",
+    "description": "Cosmetic text upon captcha success"
+  },
+  "grantFinishTextUGP": {
+    "message": "Ditt tillståndsbevis är på väg.",
+    "description": "Cosmetic text indicating grant funds are on the way"
+  },
+  "grantFinishTokenTitleUGP": {
+    "message": "Gratis tillståndsbevis",
+    "description": "Token title on success screen"
+  },
+  "grantFinishTitleAds": {
+    "message": "Brave Ads Rewards!",
+    "description": "Cosmetic text upon captcha success for ads"
+  },
+  "grantFinishTextAds": {
+    "message": "Your rewards grant from Brave Ads is on its way.",
+    "description": "Cosmetic text indicating ads funds are on the way"
+  },
+  "grantFinishTokenTitleAds": {
+    "message": "Your Brave Ads Token Grant",
+    "description": "Token title on success screen for ads"
   }
 }

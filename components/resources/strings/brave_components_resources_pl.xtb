@@ -70,9 +70,6 @@
 <translation id="5946611334574299206">Zarabiaj tokeny, oglądając reklamy w przeglądarce Brave. Reklamy są prezentowane w oparciu o zainteresowania wywnioskowane z zachowania użytkownika przeglądarki. Żadne dane osobowe czy też historia przeglądania nie opuszczają nigdy przeglądarki.</translation>
 <translation id="6112368337882254910">Wspieraj automatycznie</translation>
 <translation id="1527222983464337010">Automatyczny sposób na wspieranie wydawców i twórców treści. Ustaw comiesięczną płatność i przeglądaj strony tak jak zwykle. Strony, które odwiedzasz otrzymują dotacje automatycznie, w zależności od ilości odsłon i spędzonego na nich czasu, które są mierzone przez Brave.</translation>
-<translation id="7178655681744815321">Szacowane zarobki w tym cyklu</translation>
-<translation id="8157096848242649588">Termin płatności</translation>
-<translation id="5208388044986603165">Otrzymane zgłoszenia reklamowe</translation>
 <translation id="4229016885653790965">Przepraszamy! Reklamy nie są jeszcze dostępne w Twoim regionie.</translation>
 <translation id="654711254769318398">Dodaj obejrzane strony</translation>
 <translation id="2532127066761785857">Maksymalna liczba wyświetlanych reklam</translation>
@@ -191,8 +188,6 @@
 <translation id="3825698830825612308">Zweryfikowani wydawcy Brave</translation>
 <translation id="7658239707568436148">Anuluj</translation>
 <translation id="7262285991915892790">Przeciągnij ikonę BAT na</translation>
-<translation id="2151535059686617995">To Twój szczęśliwy dzień!</translation>
-<translation id="6255773350565723852">Twoje środki są już w drodze.</translation>
 <translation id="7656781188259414093">cel.</translation>
 <translation id="1555514580945108302">Hmm… Niezupełnie. Spróbuj jeszcze raz.</translation>
 <translation id="13853865024308201">Odbierz</translation>
@@ -219,7 +214,6 @@
 <translation id="7277134233385925078">Ustaw miesięczny napiwek</translation>
 <translation id="8003573781961874199">Pobierz jako PDF</translation>
 <translation id="298067735430872465">Zarobki z reklam</translation>
-<translation id="7965014118284846291">Twoje zarobki z reklam są dostępne.</translation>
 <translation id="8764029012618014430">Włącz napiwki</translation>
 <translation id="3412655388715513818">Wyklucz tę stronę</translation>
 <translation id="418343137736963579">Liczba stron wykluczonych z automatycznego wspierania:</translation>
@@ -368,6 +362,8 @@
 <translation id="4862817811647633830">stron ze wspierania automatycznego.</translation>
 <translation id="923467487918828349">Pokaż wszystko</translation>
 <translation id="5471305206221894680">Wspierane strony</translation>
+<translation id="2151535059686617995">To Twój szczęśliwy dzień!</translation>
+<translation id="6255773350565723852">Twoje tokeny są już w drodze.</translation>
 <translation id="1181037720776840403">Usuń</translation>
 <translation id="7885157704277298658">Skopiowano!</translation>
 <translation id="5379640681913450928">Liczba słów:</translation>

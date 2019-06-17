@@ -69,9 +69,6 @@
 <translation id="5946611334574299206">Tjen tokener ved å se annonser i Brave. Annonser som presenteres er basert på dine interesser, som hentet fra dine nettleservaner. Ingen personlige data eller nettleserhistorikk forlater noensinne nettleseren din.</translation>
 <translation id="6112368337882254910">Auto-bidra</translation>
 <translation id="1527222983464337010">En automatisk måte å støtte utgivere og tekstforfattere på. Bestem deg for en månedlig betaling og surf som normalt. Brave måler den interessen du viser, og sidene du besøker mottar automatisk bidrag fra deg.</translation>
-<translation id="7178655681744815321">Estimerte inntekter denne syklusen</translation>
-<translation id="8157096848242649588">Betalingsdato</translation>
-<translation id="5208388044986603165">Annonsevarsler mottatt</translation>
 <translation id="4229016885653790965">Beklager! Annonser er ikke tilgjengelig i regionen din ennå.</translation>
 <translation id="654711254769318398">Annonsesider vist</translation>
 <translation id="2532127066761785857">Maks antall annonser vist</translation>
@@ -113,7 +110,7 @@
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Gi tips på stedet når du finner skatter.</translation>
 <translation id="6135431587052937035">Støtt favorittsidene dine med gjentakende månedlige tips.</translation>
-<translation id="2788596505277705686">{{balanse}} BAT ble gjenopprettet. Lommeboken din har blitt bekreftet og lastet inn vellykket.</translation>
+<translation id="2788596505277705686">{{balance}} BAT ble gjenopprettet. Lommeboken din har blitt bekreftet og lastet inn vellykket.</translation>
 <translation id="1083279119532577005">Lommebok gjenopprettet!</translation>
 <translation id="7841456038054167122">Vennligst tast inn nøkler på nytt, eller prøv andre nøkler.</translation>
 <translation id="2195074481553016770">Nesten der…</translation>
@@ -189,8 +186,6 @@
 <translation id="3825698830825612308">Brave-verifiserte utgivere</translation>
 <translation id="7658239707568436148">Avbryt</translation>
 <translation id="7262285991915892790">Dra BAT-ikonet til</translation>
-<translation id="2151535059686617995">Det er din lykkedag!</translation>
-<translation id="6255773350565723852">Tokenstipendet ditt er på vei.</translation>
 <translation id="7656781188259414093">mål.</translation>
 <translation id="1555514580945108302">Hmm… det stemmer ikke helt. Prøv på nytt.</translation>
 <translation id="13853865024308201">Gjør krav på</translation>
@@ -361,6 +356,8 @@ dag i hver måned.</translation>
 <translation id="7410549756000115387">Ingen ventende bidrag…</translation>
 <translation id="1963227389609234879">Fjern alle</translation>
 <translation id="923467487918828349">Vis alle</translation>
+<translation id="2151535059686617995">Det er din lykkedag!</translation>
+<translation id="6255773350565723852">Tokenstipendet ditt er på vei.</translation>
 <translation id="1181037720776840403">Fjern</translation>
 <translation id="7885157704277298658">Kopiert!</translation>
 <translation id="5379640681913450928">Antall ord:</translation>
