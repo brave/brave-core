@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
+index d4e1c21bc21f1f975c52372f375adaecc402af0b..48dc6601568f4be4083744c874f11aaf2b4a7ded 100644
+--- a/chrome/browser/ui/browser.cc
++++ b/chrome/browser/ui/browser.cc
+@@ -600,7 +600,7 @@ Browser::~Browser() {
+       // its cache and cookies once it gets destroyed at the appropriate time.
+       ProfileDestroyer::DestroyProfileWhenAppropriate(profile_);
+     }
+-  }
++  } else brave::MaybeDestroyTorProfile(profile_);
+ 
+   // There may be pending file dialogs, we need to tell them that we've gone
+   // away so they don't try and call back to us.
