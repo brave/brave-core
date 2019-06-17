@@ -904,7 +904,7 @@ bool AdsServiceImpl::IsNotificationsAvailable() const {
 
 #if defined(OS_ANDROID)
    const NotificationHelper * notification_helper = NotificationHelper::GetInstance();
-   return notification_helper->IsNotificationsAvailable() && notification_helper->IsBraveAdsChannelEnabled();
+   return notification_helper->IsNotificationsAvailable();
 #else
   return true;
 #endif
