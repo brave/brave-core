@@ -84,4 +84,9 @@ NS_SWIFT_NAME(BraveAds)
 
 @end
 
+NS_SWIFT_NAME(BraveLogger)
+@interface BATBraveRewardsLogger : NSObject
++ (void)configure:(void(^)(int, int, NSString *, NSString *))onWrite withFlushCallback:(void(^)())flushCallback;
+@end
+
 NS_ASSUME_NONNULL_END

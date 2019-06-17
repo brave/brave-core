@@ -92,6 +92,7 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Shared/NSURL+Extensions.mm",
     "Shared/RewardsLogStream.h",
     "Shared/RewardsLogStream.mm",
+    "Shared/Logger.mm",
     "objc-gen/CppTransformations.h",
     "Ads/BATAdsNotification.h",
     "Ads/BATAdsNotification.mm",

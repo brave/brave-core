@@ -462,3 +462,23 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 }
 
 @end
+
+#import "RewardsLogStream.h"
+
+@implementation BATBraveRewardsLogger
++ (void)configure:(void(^)(int, int, NSString *, NSString *))onWrite withFlushCallback:(void(^)())flushCallback {
+    
+    UnbufferedLogger::setLoggerCallbacks([onWrite](UnbufferedLoggerData logData) {
+        
+        onWrite(logData.log_level,
+                logData.line,
+                [NSString stringWithUTF8String: logData.file.c_str()],
+                [NSString stringWithUTF8String: logData.data.c_str()]);
+        
+    }, [flushCallback]() {
+        
+        flushCallback();
+        
+    });
+}
+@end

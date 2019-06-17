@@ -9,17 +9,20 @@
 
 #import "bat/ledger/ledger_client.h"
 #import "bat/ads/ads_client.h"
+#import "Logger.h"
 
 class RewardsLogStream : public ledger::LogStream, public ads::LogStream {
 public:
   RewardsLogStream(const char* file, const int line, const ledger::LogLevel log_level);
   RewardsLogStream(const char* file, const int line, const ads::LogLevel log_level);
+  ~RewardsLogStream() override;
 
   std::ostream& stream() override;
 
 private:
   std::string log_message_;
-
+  std::unique_ptr<UnbufferedLogger> log_stream;
+    
   void constructLogMessageWithPrefix(const std::string& prefix, const char* file, const int line);
 
   // Not copyable, not assignable
