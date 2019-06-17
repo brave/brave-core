@@ -24,9 +24,7 @@ export const defaultState: Rewards.State = {
   donationAbilityYT: true,
   donationAbilityTwitter: true,
   walletInfo: {
-    balance: 0,
-    choices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0],
-    probi: '0'
+    choices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0]
   },
   connectedWallet: false,
   recoveryKey: '',
@@ -64,10 +62,21 @@ export const defaultState: Rewards.State = {
     twitter: true
   },
   pendingContributions: [],
-  excludedList: []
+  excludedList: [],
+  balance: {
+    total: 0,
+    rates: {},
+    wallets: {}
+  }
 }
 
-const cleanData = (state: Rewards.State) => state
+const cleanData = (state: Rewards.State) => {
+  if (!state.balance) {
+    state.balance = defaultState.balance
+  }
+
+  return state
+}
 
 export const load = (): Rewards.State => {
   const data = window.localStorage.getItem(keyName)

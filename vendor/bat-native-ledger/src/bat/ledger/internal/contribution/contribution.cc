@@ -57,14 +57,17 @@ void Contribution::OnStartUp() {
 
 void Contribution::HasSufficientBalance(
     ledger::HasSufficientBalanceToReconcileCallback callback) {
-  ledger_->FetchWalletProperties(
+  ledger_->FetchBalance(
       std::bind(&Contribution::OnSufficientBalanceWallet,
-        this, _1, _2, callback));
+                this,
+                _1,
+                _2,
+                callback));
 }
 
 void Contribution::OnSufficientBalanceWallet(
     ledger::Result result,
-    ledger::WalletPropertiesPtr properties,
+    ledger::BalancePtr properties,
     ledger::HasSufficientBalanceToReconcileCallback callback) {
   if (result == ledger::Result::LEDGER_OK && properties) {
     ledger::ActivityInfoFilter filter = ledger_->CreateActivityFilter(
@@ -82,7 +85,7 @@ void Contribution::OnSufficientBalanceWallet(
                 this,
                 _1,
                 _2,
-                properties->balance,
+                properties->total,
                 callback));
   }
 }
@@ -320,14 +323,14 @@ void Contribution::StartAutoContribute() {
                 _2));
 }
 
-void Contribution::OnWalletPropertiesForReconcile(
+void Contribution::OnBalanceForReconcile(
     const std::string& viewing_id,
     const ledger::REWARDS_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
     const braveledger_bat_helper::Directions& directions,
     double budget,
     const ledger::Result result,
-    ledger::WalletPropertiesPtr info) {
+    ledger::BalancePtr info) {
   if (result != ledger::Result::LEDGER_OK || !info) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
          "We couldn't get balance from the server.";
@@ -342,7 +345,7 @@ void Contribution::OnWalletPropertiesForReconcile(
                     list,
                     directions,
                     budget,
-                    info->balance);
+                    info->total);
 }
 
 void Contribution::InitReconcile(
@@ -351,8 +354,8 @@ void Contribution::InitReconcile(
     const braveledger_bat_helper::PublisherList& list,
     const braveledger_bat_helper::Directions& directions,
     double budget) {
-  ledger_->FetchWalletProperties(
-      std::bind(&Contribution::OnWalletPropertiesForReconcile,
+  ledger_->FetchBalance(
+      std::bind(&Contribution::OnBalanceForReconcile,
                 this,
                 viewing_id,
                 category,

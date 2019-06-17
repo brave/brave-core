@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_rewards/browser/balance.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "extensions/browser/extension_function.h"
@@ -277,6 +278,21 @@ class BraveRewardsGetInlineTipSettingFunction :
 
  private:
   void OnInlineTipSetting(bool value);
+};
+
+class BraveRewardsFetchBalanceFunction :
+    public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.fetchBalance", UNKNOWN)
+
+ protected:
+  ~BraveRewardsFetchBalanceFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnBalance(int32_t result,
+                 std::unique_ptr<::brave_rewards::Balance> balance);
 };
 
 }  // namespace api

@@ -178,6 +178,17 @@ window.cr.define('brave_rewards', function () {
     getActions().getContributeList()
   }
 
+  function balance (properties: {status: number, balance: Rewards.Balance}) {
+    getActions().onBalance(properties.status, properties.balance)
+  }
+
+  function reconcileComplete (properties: {category: number, result: number}) {
+    chrome.send('brave_rewards.getReconcileStamp')
+    getActions().getContributeList()
+    getActions().getBalance()
+    getActions().getWalletProperties()
+  }
+
   return {
     initialize,
     walletCreated,
@@ -210,7 +221,9 @@ window.cr.define('brave_rewards', function () {
     recurringTipRemoved,
     onContributionSaved,
     onRemovePendingContribution,
-    excludedSiteChanged
+    excludedSiteChanged,
+    balance,
+    reconcileComplete
   }
 })
 

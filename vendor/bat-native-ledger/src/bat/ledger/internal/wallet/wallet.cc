@@ -87,10 +87,6 @@ void Wallet::GetWalletProperties(
 ledger::WalletPropertiesPtr Wallet::WalletPropertiesToWalletInfo(
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties) {
   ledger::WalletPropertiesPtr wallet = ledger::WalletProperties::New();
-  wallet->alt_currency = properties.altcurrency_;
-  wallet->probi = properties.probi_;
-  wallet->balance = properties.balance_;
-  wallet->rates = mojo::MapToFlatMap(properties.rates_);
   wallet->parameters_choices = properties.parameters_choices_;
   wallet->fee_amount = ledger_->GetContributionAmount();
   wallet->parameters_range = properties.parameters_range_;

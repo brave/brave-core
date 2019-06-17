@@ -610,5 +610,50 @@ void BraveRewardsGetInlineTipSettingFunction::OnInlineTipSetting(bool value) {
   Respond(OneArgument(std::make_unique<base::Value>(value)));
 }
 
+BraveRewardsFetchBalanceFunction::
+~BraveRewardsFetchBalanceFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsFetchBalanceFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    auto balance_value = std::make_unique<base::DictionaryValue>();
+    return RespondNow(OneArgument(std::move(balance_value)));
+  }
+
+  rewards_service->FetchBalance(
+      base::BindOnce(
+          &BraveRewardsFetchBalanceFunction::OnBalance,
+          this));
+  return RespondLater();
+}
+
+void BraveRewardsFetchBalanceFunction::OnBalance(
+    int32_t result,
+    std::unique_ptr<::brave_rewards::Balance> balance) {
+  auto balance_value = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+  if (result == 0 && balance) {
+    balance_value->SetDoubleKey("total", balance->total);
+
+    base::Value rates(base::Value::Type::DICTIONARY);
+    for (auto const& rate : balance->rates) {
+      rates.SetDoubleKey(rate.first, rate.second);
+    }
+    balance_value->SetKey("rates", std::move(rates));
+
+    base::Value wallets(base::Value::Type::DICTIONARY);
+    for (auto const& rate : balance->wallets) {
+      wallets.SetDoubleKey(rate.first, rate.second);
+    }
+    balance_value->SetKey("wallets", std::move(wallets));
+  }
+
+  Respond(OneArgument(std::move(balance_value)));
+}
+
 }  // namespace api
 }  // namespace extensions

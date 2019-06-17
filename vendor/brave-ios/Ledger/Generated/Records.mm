@@ -145,11 +145,7 @@
 @implementation BATWalletProperties
 - (instancetype)initWithWalletPropertiesPtr:(ledger::WalletPropertiesPtr)obj {
   if ((self = [super init])) {
-    self.altcurrency = [NSString stringWithUTF8String:obj->alt_currency.c_str()];
-    self.probi = [NSString stringWithUTF8String:obj->probi.c_str()];
-    self.balance = obj->balance;
     self.feeAmount = obj->fee_amount;
-    self.rates = NSDictionaryFromMap(obj->rates);
     self.parametersChoices = NSArrayFromVector(obj->parameters_choices);
     self.parametersRange = NSArrayFromVector(obj->parameters_range);
     self.parametersDays = obj->parameters_days;

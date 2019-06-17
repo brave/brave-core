@@ -836,16 +836,12 @@ WINNERS_ST::~WINNERS_ST() {}
 
 /////////////////////////////////////////////////////////////////////////////
 WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST() :
-  balance_(0), parameters_days_(0) {}
+  parameters_days_(0) {}
 
 WALLET_PROPERTIES_ST::~WALLET_PROPERTIES_ST() {}
 
 WALLET_PROPERTIES_ST::WALLET_PROPERTIES_ST(
     const WALLET_PROPERTIES_ST &properties) {
-  altcurrency_ = properties.altcurrency_;
-  probi_ = properties.probi_;
-  balance_ = properties.balance_;
-  rates_ = properties.rates_;
   fee_amount_ = properties.fee_amount_;
   parameters_choices_ = properties.parameters_choices_;
   parameters_range_ = properties.parameters_range_;
@@ -860,31 +856,10 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
   // has parser errors or wrong types
   bool error = d.HasParseError();
   if (!error) {
-    error = !(
-      d.HasMember("altcurrency") && d["altcurrency"].IsString() &&
-      d.HasMember("balance") && d["balance"].IsString() &&
-      d.HasMember("probi") && d["probi"].IsString() &&
-      d.HasMember("rates") && d["rates"].IsObject() &&
-      d.HasMember("parameters") && d["parameters"].IsObject());
+    error = !(d.HasMember("parameters") && d["parameters"].IsObject());
   }
 
   if (!error) {
-    altcurrency_ = d["altcurrency"].GetString();
-    balance_ = std::stod(d["balance"].GetString());
-    probi_ = d["probi"].GetString();
-
-    for (auto & i : d["rates"].GetObject()) {
-      double value = 0.0;
-
-      // For some reason BTC is returned as string, where others are double
-      if (i.value.IsDouble()) {
-        value = i.value.GetDouble();
-      } else if (i.value.IsString()) {
-        value = std::stod(i.value.GetString());
-      }
-      rates_.insert(std::make_pair(i.name.GetString(), value));
-    }
-
     for (auto & i : d["parameters"]["adFree"]["choices"]["BAT"].GetArray()) {
       parameters_choices_.push_back(i.GetDouble());
     }
@@ -928,25 +903,8 @@ bool WALLET_PROPERTIES_ST::loadFromJson(const std::string & json) {
 void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
   writer->StartObject();
 
-  writer->String("altcurrency");
-  writer->String(data.altcurrency_.c_str());
-
-  writer->String("probi");
-  writer->String(data.probi_.c_str());
-
-  writer->String("balance");
-  writer->String(std::to_string(data.balance_).c_str());
-
   writer->String("fee_amount");
   writer->Double(data.fee_amount_);
-
-  writer->String("rates");
-  writer->StartObject();
-  for (auto & p : data.rates_) {
-    writer->String(p.first.c_str());
-    writer->Double(p.second);
-  }
-  writer->EndObject();
 
   writer->String("parameters");
   writer->StartObject();
@@ -958,7 +916,6 @@ void saveToJson(JsonWriter* writer, const WALLET_PROPERTIES_ST& data) {
   writer->String("BAT");
   writer->Double(data.fee_amount_);
   writer->EndObject();
-
 
   writer->String("choices");
   writer->StartObject();
@@ -2081,7 +2038,6 @@ bool getJSONWalletInfo(const std::string& json,
 
 bool getJSONRecoverWallet(const std::string& json,
                           double* balance,
-                          std::string* probi,
                           std::vector<GRANT>* grants) {
   rapidjson::Document d;
   d.Parse(json.c_str());
@@ -2089,13 +2045,11 @@ bool getJSONRecoverWallet(const std::string& json,
   // has parser errors or wrong types
   bool error = d.HasParseError();
   if (!error) {
-    error = !(d.HasMember("balance") && d["balance"].IsString() &&
-              d.HasMember("probi") && d["probi"].IsString() );
+    error = !(d.HasMember("balance") && d["balance"].IsString());
   }
 
   if (!error) {
     *balance = std::stod(d["balance"].GetString());
-    *probi = d["probi"].GetString();
 
     if (d.HasMember("grants") && d["grants"].IsArray()) {
       for (auto &i : d["grants"].GetArray()) {

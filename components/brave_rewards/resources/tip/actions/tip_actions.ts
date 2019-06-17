@@ -50,3 +50,10 @@ export const onRecurringTipRemoved = (success: boolean) => action(types.ON_RECUR
 export const onRecurringTipSaved = (success: boolean) => action(types.ON_RECURRING_TIP_SAVED, {
   success
 })
+
+export const getBalance = () => action(types.GET_BALANCE)
+
+export const onBalance = (status: number, balance: RewardsTip.Balance) => action(types.ON_BALANCE, {
+  status,
+  balance
+})

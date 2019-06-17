@@ -37,9 +37,9 @@ class Unverified {
  private:
   void OnRemovePendingContribution(ledger::Result result);
 
-  void OnContributeUnverifiedWallet(
+  void OnContributeUnverifiedBalance(
     ledger::Result result,
-    ledger::WalletPropertiesPtr properties);
+    ledger::BalancePtr properties);
 
   void OnContributeUnverifiedPublishers(
     double balance,

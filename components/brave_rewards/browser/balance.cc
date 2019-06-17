@@ -11,9 +11,7 @@ Balance::Balance() : total(0.0) {}
 
 Balance::~Balance() {}
 
-Balance::Balance(const Balance &properties) {
-  alt_currency = properties.alt_currency;
-  probi = properties.probi;
+Balance::Balance(const Balance& properties) {
   total = properties.total;
   rates = properties.rates;
   wallets = properties.wallets;

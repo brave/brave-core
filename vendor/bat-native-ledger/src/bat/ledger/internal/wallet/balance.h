@@ -8,6 +8,7 @@
 
 #include <stdint.h>
 
+#include <map>
 #include <memory>
 #include <string>
 
@@ -29,8 +30,9 @@ class Balance {
 
  private:
   void OnWalletProperties(
-      const ledger::Result result,
-      ledger::WalletPropertiesPtr properties,
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers,
       ledger::FetchBalanceCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED

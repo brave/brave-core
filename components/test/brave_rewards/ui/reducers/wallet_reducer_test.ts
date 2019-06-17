@@ -123,14 +123,18 @@ describe('wallet reducer', () => {
         ...defaultState,
         grants: [],
         walletInfo: {
-          ...defaultState.walletInfo,
-          balance: 5
+          ...defaultState.walletInfo
         },
         ui: {
           ...defaultState.ui,
           emptyWallet: false,
           modalBackup: false,
           walletCorrupted: false
+        },
+        balance: {
+          total: 5,
+          rates: {},
+          wallets: {}
         }
       }
 

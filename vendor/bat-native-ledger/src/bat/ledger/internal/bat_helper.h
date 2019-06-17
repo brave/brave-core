@@ -185,11 +185,7 @@ struct WALLET_PROPERTIES_ST {
   // load from json string
   bool loadFromJson(const std::string & json);
 
-  std::string altcurrency_;
-  std::string probi_;
-  double balance_;
   double fee_amount_;
-  std::map<std::string, double> rates_;
   std::vector<double> parameters_choices_;
   std::vector<double> parameters_range_;
   unsigned int parameters_days_;
@@ -483,7 +479,6 @@ bool getJSONBatchSurveyors(const std::string& json,
 
 bool getJSONRecoverWallet(const std::string& json,
                           double* balance,
-                          std::string* probi,
                           std::vector<GRANT>* grants);
 
 bool getJSONResponse(const std::string& json,

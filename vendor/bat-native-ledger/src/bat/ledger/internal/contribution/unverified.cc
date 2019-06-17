@@ -22,16 +22,16 @@ Unverified::~Unverified() {
 }
 
 void Unverified::Contribute() {
-  ledger_->FetchWalletProperties(
-      std::bind(&Unverified::OnContributeUnverifiedWallet,
+  ledger_->FetchBalance(
+      std::bind(&Unverified::OnContributeUnverifiedBalance,
                 this,
                 _1,
                 _2));
 }
 
-void Unverified::OnContributeUnverifiedWallet(
+void Unverified::OnContributeUnverifiedBalance(
     ledger::Result result,
-    ledger::WalletPropertiesPtr properties) {
+    ledger::BalancePtr properties) {
   if (result != ledger::Result::LEDGER_OK || !properties) {
     return;
   }
@@ -39,7 +39,7 @@ void Unverified::OnContributeUnverifiedWallet(
   ledger_->GetPendingContributions(
       std::bind(&Unverified::OnContributeUnverifiedPublishers,
                 this,
-                properties->balance,
+                properties->total,
                 _1));
 }
 

@@ -822,17 +822,10 @@ void RewardsServiceImpl::OnWalletInitialized(ledger::Result result) {
 void RewardsServiceImpl::OnWalletProperties(
     ledger::Result result,
     ledger::WalletPropertiesPtr properties) {
-  if (properties && properties->balance > 0) {
-    profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
-  }
-
   std::unique_ptr<brave_rewards::WalletProperties> wallet_properties;
   for (auto& observer : observers_) {
     if (properties) {
       wallet_properties.reset(new brave_rewards::WalletProperties);
-      wallet_properties->probi = properties->probi;
-      wallet_properties->balance = properties->balance;
-      wallet_properties->rates = mojo::FlatMapToMap(properties->rates);
       wallet_properties->parameters_choices = properties->parameters_choices;
       wallet_properties->parameters_range = properties->parameters_range;
       wallet_properties->parameters_days = properties->parameters_days;
@@ -958,8 +951,6 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
     auto now = base::Time::Now();
     if (!Connected())
       return;
-
-    FetchWalletProperties();
 
     if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
       MaybeShowNotificationTipsPaid();
@@ -3224,11 +3215,13 @@ void RewardsServiceImpl::OnFetchBalance(FetchBalanceCallback callback,
   auto new_balance = std::make_unique<brave_rewards::Balance>();
 
   if (balance) {
-    new_balance->alt_currency = balance->alt_currency;
-    new_balance->probi = balance->probi;
     new_balance->total = balance->total;
     new_balance->rates = mojo::FlatMapToMap(balance->rates);
     new_balance->wallets = mojo::FlatMapToMap(balance->wallets);
+
+    if (balance->total > 0) {
+      profile_->GetPrefs()->SetBoolean(prefs::kRewardsUserHasFunded, true);
+    }
   }
 
   std::move(callback).Run(result, std::move(new_balance));

@@ -14,10 +14,7 @@ export const defaultState: RewardsExtension.State = {
   walletCreateFailed: false,
   publishers: {},
   walletProperties: {
-    balance: 0,
-    probi: '0',
-    grants: [],
-    rates: {}
+    grants: []
   },
   report: {
     ads: '0',
@@ -38,12 +35,22 @@ export const defaultState: RewardsExtension.State = {
   grants: [],
   currentGrant: undefined,
   recurringTips: [],
-  tipAmounts: {}
+  tipAmounts: {},
+  balance: {
+    total: 0,
+    rates: {},
+    wallets: {}
+  }
 }
 
 const cleanData = (state: RewardsExtension.State) => {
   state = { ...state }
   state.publishers = {}
+
+  if (!state.balance) {
+    state.balance = defaultState.balance
+  }
+
   return state
 }
 

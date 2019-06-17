@@ -49,6 +49,12 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver,
   void OnPendingContributionRemoved(RewardsService* rewards_service,
                                     int32_t result) override;
 
+  void OnReconcileComplete(RewardsService* rewards_service,
+                           unsigned int result,
+                           const std::string& viewing_id,
+                           int32_t category,
+                           const std::string& probi) override;
+
   // RewardsServicePrivateObserver implementation
   void OnGetCurrentBalanceReport(RewardsService* rewards_service,
                                  const BalanceReport& balance_report) override;

@@ -560,7 +560,6 @@ class BraveRewardsBrowserTest :
     EXPECT_NE(js_result.ExtractString().find("Free Token Grant"),
               std::string::npos);
     EXPECT_NE(js_result.ExtractString().find("30.0 BAT"), std::string::npos);
-    balance_ += 30.0;
 
     // Dismiss the grant notification
     if (use_panel) {
@@ -928,6 +927,7 @@ class BraveRewardsBrowserTest :
     ASSERT_EQ(result, ledger::Result::LEDGER_OK);
     grant_finished_ = true;
     grant_ = grant;
+    balance_ += 30.0;
     if (wait_for_grant_finished_loop_)
       wait_for_grant_finished_loop_->Quit();
   }

@@ -16,8 +16,6 @@ struct Balance {
   ~Balance();
   Balance(const Balance& properties);
 
-  std::string alt_currency;
-  std::string probi;
   double total;
   std::map<std::string, double> rates;
   std::map<std::string, double> wallets;

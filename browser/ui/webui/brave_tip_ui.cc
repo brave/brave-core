@@ -68,6 +68,11 @@ class RewardsTipDOMHandler : public WebUIMessageHandler,
 
   void OnTwitterShareURL(const std::string& url);
 
+  void FetchBalance(const base::ListValue* args);
+  void OnFetchBalance(
+    int32_t result,
+    std::unique_ptr<brave_rewards::Balance> balance);
+
   // RewardsServiceObserver implementation
   void OnWalletProperties(
       brave_rewards::RewardsService* rewards_service,
@@ -127,6 +132,10 @@ void RewardsTipDOMHandler::RegisterMessages() {
       "brave_rewards_tip.tweetTip",
       base::BindRepeating(&RewardsTipDOMHandler::TweetTip,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards_tip.fetchBalance",
+      base::BindRepeating(&RewardsTipDOMHandler::FetchBalance,
+                          base::Unretained(this)));
 }
 
 void RewardsTipDOMHandler::GetPublisherTipData(
@@ -160,15 +169,6 @@ void RewardsTipDOMHandler::OnWalletProperties(
   auto walletInfo = std::make_unique<base::DictionaryValue>();
 
   if (error_code == 0 && wallet_properties) {
-    walletInfo->SetDouble("balance", wallet_properties->balance);
-    walletInfo->SetString("probi", wallet_properties->probi);
-
-    auto rates = std::make_unique<base::DictionaryValue>();
-    for (auto const& rate : wallet_properties->rates) {
-      rates->SetDouble(rate.first, rate.second);
-    }
-    walletInfo->SetDictionary("rates", std::move(rates));
-
     auto choices = std::make_unique<base::ListValue>();
     for (double const& choice : wallet_properties->parameters_choices) {
       choices->AppendDouble(choice);
@@ -388,4 +388,42 @@ void RewardsTipDOMHandler::OnTwitterShareURL(const std::string& url) {
       gurl, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui::PAGE_TRANSITION_AUTO_TOPLEVEL, false);
   browser_displayer.browser()->OpenURL(open_url_params);
+}
+
+void RewardsTipDOMHandler::OnFetchBalance(
+    int32_t result,
+    std::unique_ptr<brave_rewards::Balance> balance) {
+  if (web_ui()->CanCallJavascript()) {
+    base::DictionaryValue data;
+    data.SetInteger("status", result);
+    auto balance_value = std::make_unique<base::DictionaryValue>();
+
+    if (result == 0 && balance) {
+      balance_value->SetDouble("total", balance->total);
+
+      auto rates = std::make_unique<base::DictionaryValue>();
+      for (auto const& rate : balance->rates) {
+        rates->SetDouble(rate.first, rate.second);
+      }
+      balance_value->SetDictionary("rates", std::move(rates));
+
+      auto wallets = std::make_unique<base::DictionaryValue>();
+      for (auto const& wallet : balance->wallets) {
+        wallets->SetDouble(wallet.first, wallet.second);
+      }
+      balance_value->SetDictionary("wallets", std::move(wallets));
+
+      data.SetDictionary("balance", std::move(balance_value));
+    }
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards_tip.balance", data);
+  }
+}
+
+void RewardsTipDOMHandler::FetchBalance(const base::ListValue* args) {
+  if (rewards_service_) {
+    rewards_service_->FetchBalance(base::BindOnce(
+          &RewardsTipDOMHandler::OnFetchBalance,
+          weak_factory_.GetWeakPtr()));
+  }
 }

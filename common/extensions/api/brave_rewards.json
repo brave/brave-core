@@ -341,6 +341,27 @@
             "type": "integer"
           }
         ]
+      },
+      {
+        "name": "onReconcileComplete",
+        "type": "function",
+        "description": "Fired when reconcile is complete",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "integer",
+                "description": "result for this contribution"
+              },
+              "category": {
+                "type": "integer",
+                "description": "category of this contribution"
+              }
+            }
+          }
+        ]
       }
     ],
     "functions": [
@@ -656,7 +677,7 @@
               },
               {
                 "name": "publisherKey",
-                "value": "string"
+                "type": "string"
               }
             ]
           }
@@ -719,6 +740,34 @@
               {
                 "name": "enabled",
                 "type": "boolean"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "fetchBalance",
+        "type": "function",
+        "description": "Fetch balance",
+        "parameters": [
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "balance",
+                "type": "object",
+                "properties": {
+                  "total": {
+                    "type": "any"
+                  },
+                  "rates": {
+                    "type": "any"
+                  },
+                  "wallets": {
+                    "type": "any"
+                  }
+                }
               }
             ]
           }

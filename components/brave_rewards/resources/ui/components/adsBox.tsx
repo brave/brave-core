@@ -124,7 +124,7 @@ class AdsBox extends React.Component<Props, State> {
       adsData,
       enabledMain,
       firstLoad,
-      walletInfo
+      balance
     } = this.props.rewardsData
 
     if (adsData) {
@@ -158,7 +158,7 @@ class AdsBox extends React.Component<Props, State> {
         <List title={getLocale('adsCurrentEarnings')}>
           <Tokens
             value={estimatedPendingRewards}
-            converted={utils.convertBalance(estimatedPendingRewards, walletInfo.rates)}
+            converted={utils.convertBalance(estimatedPendingRewards, balance.rates)}
           />
         </List>
         <List title={getLocale('adsPaymentDate')}>

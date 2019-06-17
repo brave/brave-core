@@ -15,11 +15,14 @@ export const defaultState: RewardsTip.State = {
   currentTipRecurring: false,
   recurringDonations: [],
   walletInfo: {
-    balance: 0,
-    choices: [],
-    probi: '0'
+    choices: []
   },
-  reconcileStamp: 0
+  reconcileStamp: 0,
+  balance: {
+    total: 0,
+    rates: {},
+    wallets: {}
+  }
 }
 
 const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = defaultState, action) => {
@@ -95,6 +98,17 @@ const publishersReducer: Reducer<RewardsTip.State> = (state: RewardsTip.State = 
     case types.ON_RECONCILE_STAMP: {
       state = { ...state }
       state.reconcileStamp = action.payload.stamp
+      break
+    }
+    case types.GET_BALANCE:
+      chrome.send('brave_rewards_tip.fetchBalance')
+      break
+    case types.ON_BALANCE: {
+      state = { ...state }
+      // on ledger::Result::LEDGER_OK
+      if (payload.status !== 1) {
+        state.balance = payload.balance
+      }
       break
     }
   }
