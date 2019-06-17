@@ -44,7 +44,7 @@ class AutoplayPermissionContextTest : public AutoplayPermissionContext {
   void NotifyPermissionSet(const PermissionRequestID& id,
                            const GURL& requesting_origin,
                            const GURL& embedder_origin,
-                           const BrowserPermissionCallback& callback,
+                           const BrowserPermissionCallback callback,
                            bool persist,
                            ContentSetting content_setting) override {
   if (!(persist && content_setting == CONTENT_SETTING_ALLOW))
