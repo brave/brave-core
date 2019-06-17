@@ -9,7 +9,7 @@
 
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "brave/common/tor/pref_names.h"
-#include "brave/common/tor/tor_proxy_string_helper.h"
+#include "brave/common/tor/tor_proxy_uri_helper.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 
@@ -28,8 +28,7 @@ void TorProfileService::RegisterProfilePrefs(
 }
 // static
 void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  registry->RegisterStringPref(tor::prefs::kTorProxyString,
-                               GetTorProxyString());
+  registry->RegisterStringPref(tor::prefs::kTorProxyString, GetTorProxyURI());
 }
 
 void TorProfileService::AddObserver(TorLauncherServiceObserver* observer) {

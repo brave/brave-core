@@ -26,6 +26,10 @@ namespace {
 namespace brave {
 
 void NewTorIdentityCallback(WebContents* current_tab, bool success) {
+  if (!success) {
+    LOG(WARNING) << "Failed to set new tor identity";
+    return;
+  }
   NavigationController& controller = current_tab->GetController();
   controller.Reload(content::ReloadType::BYPASSING_CACHE, true);
 }

@@ -63,6 +63,7 @@ void TorProfileServiceImpl::OnProxyLookupComplete(
 
 void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
                                              NewTorCircuitCallback callback) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto* storage_partition =
     BrowserContext::GetStoragePartitionForSite(profile_, request_url, false);
 
@@ -72,7 +73,6 @@ void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
   GURL url = request_url.ReplaceComponents(replacements);
   tor_circuit_callback_ = std::move(callback);
 
-  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   network::mojom::ProxyLookupClientPtr proxy_lookup_client_ptr;
   binding_.Bind(
       mojo::MakeRequest(&proxy_lookup_client_ptr),

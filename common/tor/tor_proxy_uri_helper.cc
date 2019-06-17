@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/common/tor/tor_proxy_string_helper.h"
+#include "brave/common/tor/tor_proxy_uri_helper.h"
 #include "chrome/common/channel_info.h"
 #include "components/version_info/channel.h"
 
 namespace tor {
 
-std::string GetTorProxyString() {
+std::string GetTorProxyURI() {
   switch (chrome::GetChannel()) {
     case version_info::Channel::STABLE:
       return std::string("socks5://127.0.0.1:9350");

@@ -13,10 +13,11 @@
 
 #include "base/compiler_specific.h"
 #include "base/timer/timer.h"
-#include "net/base/net_errors.h"
 #include "net/base/net_export.h"
-#include "net/proxy_resolution/proxy_config.h"
+#include "net/base/proxy_server.h"
 #include "net/proxy_resolution/proxy_config_service.h"
+
+class GURL;
 
 namespace base {
 class Time;
@@ -46,7 +47,7 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
     DISALLOW_COPY_AND_ASSIGN(TorProxyMap);
   };
 
-  explicit ProxyConfigServiceTor(const std::string& tor_proxy);
+  explicit ProxyConfigServiceTor(const std::string& proxy_uri);
   ~ProxyConfigServiceTor() override;
 
   void SetUsername(const std::string& username, TorProxyMap* map);
@@ -60,11 +61,7 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
       net::ProxyConfigWithAnnotation* config) override;
 
  private:
-  net::ProxyConfig config_;
-
-  std::string scheme_;
-  std::string host_;
-  std::string port_;
+  ProxyServer proxy_server_;
 };
 
 }  // namespace net

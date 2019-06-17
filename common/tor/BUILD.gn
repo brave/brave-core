@@ -12,7 +12,7 @@ source_set("tor") {
 
   deps = [
     ":pref_names",
-    ":proxy_string",
+    ":proxy_uri",
     "//base",
     "//chrome/common:constants",
     "//url:url",
@@ -36,10 +36,10 @@ mojom("tor_mojom_bindings") {
   ]
 }
 
-source_set("proxy_string") {
+source_set("proxy_uri") {
   sources = [
-    "tor_proxy_string_helper.cc",
-    "tor_proxy_string_helper.h",
+    "tor_proxy_uri_helper.cc",
+    "tor_proxy_uri_helper.h",
   ]
 
   deps = [

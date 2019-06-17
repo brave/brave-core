@@ -6,7 +6,6 @@
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 
 #include <algorithm>
-#include <limits>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -19,7 +18,6 @@
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "url/origin.h"
-#include "url/third_party/mozilla/url_parse.h"
 
 namespace net {
 
@@ -27,31 +25,11 @@ const int kTorPasswordLength = 16;
 // Default tor circuit life time is 10 minutes
 constexpr base::TimeDelta kTenMins = base::TimeDelta::FromMinutes(10);
 
-const char kSocksProxy[] = "socks5";
-
-ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& tor_proxy) {
-  config_.proxy_rules().bypass_rules.AddRulesToSubtractImplicit();
-  if (tor_proxy.length()) {
-    url::Parsed url;
-    url::ParseStandardURL(
-        tor_proxy.c_str(),
-        std::min(tor_proxy.size(),
-                 static_cast<size_t>(std::numeric_limits<int>::max())),
-        &url);
-    if (url.scheme.is_valid()) {
-      scheme_ = tor_proxy.substr(url.scheme.begin, url.scheme.len);
-    }
-    if (url.host.is_valid()) {
-      host_ = tor_proxy.substr(url.host.begin, url.host.len);
-    }
-    if (url.port.is_valid()) {
-      port_ = tor_proxy.substr(url.port.begin, url.port.len);
-    }
-    if (scheme_.empty() || host_.empty() || port_.empty())
-      return;
-    std::string proxy_url = std::string(scheme_ + "://" + host_ + ":" + port_);
-    config_.proxy_rules().ParseFromString(proxy_url);
-  }
+ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& proxy_uri) {
+  ProxyServer proxy_server =
+      ProxyServer::FromURI(proxy_uri, ProxyServer::SCHEME_SOCKS5);
+  DCHECK(proxy_server.is_valid());
+  proxy_server_ = proxy_server;
 }
 
 ProxyConfigServiceTor::~ProxyConfigServiceTor() {}
@@ -59,11 +37,12 @@ ProxyConfigServiceTor::~ProxyConfigServiceTor() {}
 void ProxyConfigServiceTor::SetUsername(const std::string& username,
                                         TorProxyMap* map) {
   if (map && !username.empty()) {
-    DCHECK(!scheme_.empty() && !host_.empty() && !port_.empty());
     std::string password = map->Get(username);
-    std::string proxy_url = std::string(scheme_ + "://" + username + ":" +
-                                        password + "@" + host_ + ":" + port_);
-    config_.proxy_rules().ParseFromString(proxy_url);
+    const HostPortPair old_host_port = proxy_server_.host_port_pair();
+    const HostPortPair new_host_port(username, password, old_host_port.host(),
+                                     old_host_port.port());
+    const ProxyServer proxy_server(ProxyServer::SCHEME_SOCKS5, new_host_port);
+    proxy_server_ = proxy_server;
   }
 }
 
@@ -93,9 +72,13 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
 ProxyConfigServiceTor::ConfigAvailability
 ProxyConfigServiceTor::GetLatestProxyConfig(
     net::ProxyConfigWithAnnotation* config) {
-  if (scheme_ != kSocksProxy || host_.empty() || port_.empty())
+  if (!proxy_server_.is_valid())
     return CONFIG_UNSET;
-  *config = net::ProxyConfigWithAnnotation(config_, NO_TRAFFIC_ANNOTATION_YET);
+  ProxyConfig proxy_config;
+  proxy_config.proxy_rules().bypass_rules.AddRulesToSubtractImplicit();
+  proxy_config.proxy_rules().ParseFromString(proxy_server_.ToURI());
+  *config =
+      net::ProxyConfigWithAnnotation(proxy_config, NO_TRAFFIC_ANNOTATION_YET);
   return CONFIG_VALID;
 }
 
