@@ -9,4 +9,4 @@
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "../../../../net/proxy_resolution/proxy_resolution_service.h"
 
-#endif    // BRAVE_CHROMIUM_SRC_NET_PROXY_RESOLUTION_PROXY_RESOLUTION_SERVICE_H_
+#endif  // BRAVE_CHROMIUM_SRC_NET_PROXY_RESOLUTION_PROXY_RESOLUTION_SERVICE_H_

@@ -12,12 +12,13 @@ class ProxyConfig;
 class ProxyInfo;
 namespace {
 bool IsTorProxy(const ProxyConfig& config);
-void SetTorCircuitIsolation(const ProxyConfig& config, const GURL& url,
+void SetTorCircuitIsolation(const ProxyConfig& config,
+                            const GURL& url,
                             ProxyInfo* result,
                             ProxyConfigServiceTor::TorProxyMap* map);
-}   // namespace
-}   // namespace net
-#include "../../../../net/proxy_resolution/proxy_resolution_service.cc"   // NOLINT
+}  // namespace
+}  // namespace net
+#include "../../../../net/proxy_resolution/proxy_resolution_service.cc"  // NOLINT
 
 #include <string>
 
@@ -35,7 +36,8 @@ bool IsTorProxy(const ProxyConfig& config) {
   return false;
 }
 
-void SetTorCircuitIsolation(const ProxyConfig& config, const GURL& url,
+void SetTorCircuitIsolation(const ProxyConfig& config,
+                            const GURL& url,
                             ProxyInfo* result,
                             ProxyConfigServiceTor::TorProxyMap* map) {
   DCHECK(IsTorProxy(config));
@@ -45,10 +47,10 @@ void SetTorCircuitIsolation(const ProxyConfig& config, const GURL& url,
   ProxyConfigWithAnnotation fetched_config;
   tor_proxy_config_service.GetLatestProxyConfig(&fetched_config);
   tor_proxy_config_service.SetUsername(
-    ProxyConfigServiceTor::CircuitIsolationKey(url), map);
+      ProxyConfigServiceTor::CircuitIsolationKey(url), map);
   tor_proxy_config_service.GetLatestProxyConfig(&fetched_config);
   fetched_config.value().proxy_rules().Apply(url, result);
 }
 
-}   // namespace
-}   // namespace net
+}  // namespace
+}  // namespace net

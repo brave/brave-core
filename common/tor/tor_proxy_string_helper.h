@@ -12,5 +12,5 @@ namespace tor {
 
 std::string GetTorProxyString();
 
-}   // namespace tor
+}  // namespace tor
 #endif  // BRAVE_COMMON_TOR_TOR_PROXY_STRING_HELPER_H_

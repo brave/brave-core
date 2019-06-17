@@ -11,17 +11,15 @@
 namespace {
 
 #if BUILDFLAG(ENABLE_TOR)
-std::unique_ptr<net::ProxyConfigService>
-CreateProxyConfigServiceTor() {
+std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor() {
   // No need to track proxy pref for tor profile which has to have persistent
   // tor proxy setting
-  return std::make_unique<net::ProxyConfigServiceTor>(
-    tor::GetTorProxyString());
+  return std::make_unique<net::ProxyConfigServiceTor>(tor::GetTorProxyString());
 }
 #endif
 
-}   // namespace
+}  // namespace
 
 #include "brave/common/tor/pref_names.h"
 #include "components/prefs/pref_service.h"
-#include "../../../../../chrome/browser/net/proxy_config_monitor.cc"    // NOLINT
+#include "../../../../../chrome/browser/net/proxy_config_monitor.cc"  // NOLINT

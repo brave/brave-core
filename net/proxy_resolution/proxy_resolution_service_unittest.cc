@@ -10,12 +10,12 @@
 #include "base/macros.h"
 #include "base/memory/ptr_util.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
-#include "testing/gtest/include/gtest/gtest.h"
 #include "net/base/test_completion_callback.h"
 #include "net/log/test_net_log.h"
 #include "net/proxy_resolution/mock_proxy_resolver.h"
 #include "net/test/gtest_util.h"
 #include "net/test/test_with_scoped_task_environment.h"
+#include "testing/gtest/include/gtest/gtest.h"
 
 using net::test::IsOk;
 
@@ -40,15 +40,14 @@ TEST_F(ProxyResolutionServiceTest, TorProxy) {
 
   GURL site_url("https://check.torproject.org/");
   std::string isolation_key =
-    ProxyConfigServiceTor::CircuitIsolationKey(site_url);
+      ProxyConfigServiceTor::CircuitIsolationKey(site_url);
 
   ProxyInfo info;
   TestCompletionCallback callback;
   BoundTestNetLog log;
   std::unique_ptr<ProxyResolutionService::Request> request;
   int rv = service.ResolveProxy(site_url, std::string(), &info,
-                                callback.callback(),
-                                &request, log.bound());
+                                callback.callback(), &request, log.bound());
   EXPECT_THAT(rv, IsOk());
   EXPECT_TRUE(factory->pending_requests().empty());
 
@@ -74,15 +73,14 @@ TEST_F(ProxyResolutionServiceTest, NewTorCircuit) {
 
   GURL site_url("https://check.torproject.org/");
   std::string isolation_key =
-    ProxyConfigServiceTor::CircuitIsolationKey(site_url);
+      ProxyConfigServiceTor::CircuitIsolationKey(site_url);
 
   ProxyInfo info;
   TestCompletionCallback callback;
   BoundTestNetLog log;
   std::unique_ptr<ProxyResolutionService::Request> request;
   int rv = service.ResolveProxy(site_url, std::string(), &info,
-                                callback.callback(),
-                                &request, log.bound());
+                                callback.callback(), &request, log.bound());
 
   ProxyServer server = info.proxy_list().Get();
   HostPortPair host_port = server.host_port_pair();
@@ -91,8 +89,7 @@ TEST_F(ProxyResolutionServiceTest, NewTorCircuit) {
 
   GURL site_url_ref("https://check.torproject.org/#NewTorCircuit");
   rv = service.ResolveProxy(site_url_ref, std::string(), &info,
-                            callback.callback(),
-                            &request, log.bound());
+                            callback.callback(), &request, log.bound());
 
   server = info.proxy_list().Get();
   host_port = server.host_port_pair();
@@ -103,4 +100,4 @@ TEST_F(ProxyResolutionServiceTest, NewTorCircuit) {
   EXPECT_EQ(host_port.username(), isolation_key);
 }
 
-}   // namespace net
+}  // namespace net

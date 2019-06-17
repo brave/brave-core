@@ -45,8 +45,8 @@ void NewTorIdentity(Browser* browser) {
   if (!current_tab)
     return;
   const GURL current_url = current_tab->GetURL();
-  service->SetNewTorCircuit(current_url, base::BindOnce(&NewTorIdentityCallback,
-                                                        current_tab));
+  service->SetNewTorCircuit(
+      current_url, base::BindOnce(&NewTorIdentityCallback, current_tab));
 }
 
 }  // namespace brave

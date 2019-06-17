@@ -3,9 +3,7 @@ import("buildflags/buildflags.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [
-    "ENABLE_TOR=$enable_tor",
-  ]
+  flags = [ "ENABLE_TOR=$enable_tor" ]
 }
 
 source_set("tor") {
@@ -23,6 +21,7 @@ source_set("tor") {
     "//brave/common/tor:tor_mojom_bindings",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
+
     # for profile.h
     "//content/public/browser",
     "//services/service_manager",

@@ -24,8 +24,8 @@ using content::BrowserThread;
 
 namespace tor {
 
-TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile) :
-    profile_(profile), binding_(this) {
+TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
+    : profile_(profile), binding_(this) {
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
   tor_launcher_factory_->AddObserver(this);
 }
@@ -48,7 +48,7 @@ void TorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
 
 void TorProfileServiceImpl::OnSetNewTorCircuitComplete(bool success) {
   if (tor_circuit_callback_)
-      std::move(tor_circuit_callback_).Run(success);
+    std::move(tor_circuit_callback_).Run(success);
 }
 
 void TorProfileServiceImpl::OnProxyLookupComplete(
@@ -82,8 +82,8 @@ void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
       base::BindOnce(&TorProfileServiceImpl::OnProxyLookupComplete,
                      base::Unretained(this), net::ERR_ABORTED, base::nullopt));
   // Force lookup to erase the old circuit
-  storage_partition->GetNetworkContext()->
-    LookUpProxyForURL(url, std::move(proxy_lookup_client_ptr));
+  storage_partition->GetNetworkContext()->LookUpProxyForURL(
+      url, std::move(proxy_lookup_client_ptr));
 }
 
 const TorConfig& TorProfileServiceImpl::GetTorConfig() {

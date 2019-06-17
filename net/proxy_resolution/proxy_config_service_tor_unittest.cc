@@ -8,9 +8,9 @@
 #include <string>
 
 #include "base/macros.h"
-#include "testing/gtest/include/gtest/gtest.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/test/test_with_scoped_task_environment.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 namespace net {
@@ -23,6 +23,7 @@ class ProxyConfigServiceTorTest : public TestWithScopedTaskEnvironment {
   ProxyConfigServiceTor::TorProxyMap* GetTorProxyMap() {
     return &tor_proxy_map_;
   }
+
  private:
   ProxyConfigServiceTor::TorProxyMap tor_proxy_map_;
   DISALLOW_COPY_AND_ASSIGN(ProxyConfigServiceTorTest);
@@ -33,21 +34,66 @@ TEST_F(ProxyConfigServiceTorTest, CircuitIsolationKey) {
     GURL url;
     std::string key;
   } cases[] = {
-    { GURL("https://1.1.1.1/"), "1.1.1.1", },
-    { GURL("https://1.1.1.1:53/"), "1.1.1.1", },
-    { GURL("https://127.0.0.1/"), "127.0.0.1", },
-    { GURL("https://127.0.0.53/"), "127.0.0.53", },
-    { GURL("https://8.8.8.8/"), "8.8.8.8", },
-    { GURL("https://8.8.8.8:80/"), "8.8.8.8", },
-    { GURL("https://[::1]/"), "[::1]", },
-    { GURL("https://check.torproject.org/"), "torproject.org", },
-    { GURL("https://check.torproject.org/x"), "torproject.org", },
-    { GURL("https://check.torproject.org/x?y"), "torproject.org", },
-    { GURL("https://check.torproject.org/x?y#z"), "torproject.org", },
-    { GURL("https://localhost/"), "localhost", },
-    { GURL("https://localhost:8888/"), "localhost", },
-    { GURL("https://user:pass@localhost:8888/"), "localhost", },
-    { GURL("https://www.bbc.co.uk/"), "bbc.co.uk", },
+      {
+          GURL("https://1.1.1.1/"),
+          "1.1.1.1",
+      },
+      {
+          GURL("https://1.1.1.1:53/"),
+          "1.1.1.1",
+      },
+      {
+          GURL("https://127.0.0.1/"),
+          "127.0.0.1",
+      },
+      {
+          GURL("https://127.0.0.53/"),
+          "127.0.0.53",
+      },
+      {
+          GURL("https://8.8.8.8/"),
+          "8.8.8.8",
+      },
+      {
+          GURL("https://8.8.8.8:80/"),
+          "8.8.8.8",
+      },
+      {
+          GURL("https://[::1]/"),
+          "[::1]",
+      },
+      {
+          GURL("https://check.torproject.org/"),
+          "torproject.org",
+      },
+      {
+          GURL("https://check.torproject.org/x"),
+          "torproject.org",
+      },
+      {
+          GURL("https://check.torproject.org/x?y"),
+          "torproject.org",
+      },
+      {
+          GURL("https://check.torproject.org/x?y#z"),
+          "torproject.org",
+      },
+      {
+          GURL("https://localhost/"),
+          "localhost",
+      },
+      {
+          GURL("https://localhost:8888/"),
+          "localhost",
+      },
+      {
+          GURL("https://user:pass@localhost:8888/"),
+          "localhost",
+      },
+      {
+          GURL("https://www.bbc.co.uk/"),
+          "bbc.co.uk",
+      },
   };
 
   for (auto& c : cases) {
@@ -63,7 +109,7 @@ TEST_F(ProxyConfigServiceTorTest, SetUsername) {
   std::string proxy_uri("socks5://127.0.0.1:5566");
   GURL site_url("https://check.torproject.org/");
   std::string isolation_key =
-    ProxyConfigServiceTor::CircuitIsolationKey(site_url);
+      ProxyConfigServiceTor::CircuitIsolationKey(site_url);
   ProxyConfigServiceTor proxy_config_service(proxy_uri);
   proxy_config_service.SetUsername(isolation_key, GetTorProxyMap());
 
@@ -97,4 +143,4 @@ TEST_F(ProxyConfigServiceTorTest, SetUsername) {
   EXPECT_NE(host_port.password(), password);
 }
 
-}   // namespace net
+}  // namespace net

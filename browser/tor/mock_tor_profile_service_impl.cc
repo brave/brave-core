@@ -26,9 +26,9 @@ void MockTorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
   config_ = config;
 }
 
-
 void MockTorProfileServiceImpl::SetNewTorCircuit(
-    const GURL& request_url, NewTorCircuitCallback callback) {}
+    const GURL& request_url,
+    NewTorCircuitCallback callback) {}
 
 const TorConfig& MockTorProfileServiceImpl::GetTorConfig() {
   return config_;

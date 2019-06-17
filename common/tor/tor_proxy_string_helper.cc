@@ -25,4 +25,4 @@ std::string GetTorProxyString() {
   }
 }
 
-}   // namespace tor
+}  // namespace tor

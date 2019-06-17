@@ -11,15 +11,15 @@
 #include <utility>
 #include <vector>
 
-#include "base/time/time.h"
-#include "base/values.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
+#include "base/time/time.h"
+#include "base/values.h"
 #include "crypto/random.h"
-#include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
-#include "url/third_party/mozilla/url_parse.h"
+#include "net/proxy_resolution/proxy_config_with_annotation.h"
 #include "url/origin.h"
+#include "url/third_party/mozilla/url_parse.h"
 
 namespace net {
 
@@ -30,34 +30,33 @@ constexpr base::TimeDelta kTenMins = base::TimeDelta::FromMinutes(10);
 const char kSocksProxy[] = "socks5";
 
 ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& tor_proxy) {
-    config_.proxy_rules().bypass_rules.AddRulesToSubtractImplicit();
-    if (tor_proxy.length()) {
-      url::Parsed url;
-      url::ParseStandardURL(
+  config_.proxy_rules().bypass_rules.AddRulesToSubtractImplicit();
+  if (tor_proxy.length()) {
+    url::Parsed url;
+    url::ParseStandardURL(
         tor_proxy.c_str(),
         std::min(tor_proxy.size(),
                  static_cast<size_t>(std::numeric_limits<int>::max())),
         &url);
-      if (url.scheme.is_valid()) {
-        scheme_ = tor_proxy.substr(url.scheme.begin, url.scheme.len);
-      }
-      if (url.host.is_valid()) {
-        host_ = tor_proxy.substr(url.host.begin, url.host.len);
-      }
-      if (url.port.is_valid()) {
-        port_ = tor_proxy.substr(url.port.begin, url.port.len);
-      }
-      if (scheme_.empty() || host_.empty() || port_.empty())
-        return;
-      std::string proxy_url =
-        std::string(scheme_ + "://" + host_ + ":" + port_);
-      config_.proxy_rules().ParseFromString(proxy_url);
+    if (url.scheme.is_valid()) {
+      scheme_ = tor_proxy.substr(url.scheme.begin, url.scheme.len);
     }
+    if (url.host.is_valid()) {
+      host_ = tor_proxy.substr(url.host.begin, url.host.len);
+    }
+    if (url.port.is_valid()) {
+      port_ = tor_proxy.substr(url.port.begin, url.port.len);
+    }
+    if (scheme_.empty() || host_.empty() || port_.empty())
+      return;
+    std::string proxy_url = std::string(scheme_ + "://" + host_ + ":" + port_);
+    config_.proxy_rules().ParseFromString(proxy_url);
+  }
 }
 
 ProxyConfigServiceTor::~ProxyConfigServiceTor() {}
 
-void ProxyConfigServiceTor::SetUsername(const std::string &username,
+void ProxyConfigServiceTor::SetUsername(const std::string& username,
                                         TorProxyMap* map) {
   if (map && !username.empty()) {
     DCHECK(!scheme_.empty() && !host_.empty() && !port_.empty());
@@ -92,8 +91,8 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
 }
 
 ProxyConfigServiceTor::ConfigAvailability
-    ProxyConfigServiceTor::GetLatestProxyConfig(
-      net::ProxyConfigWithAnnotation* config) {
+ProxyConfigServiceTor::GetLatestProxyConfig(
+    net::ProxyConfigWithAnnotation* config) {
   if (scheme_ != kSocksProxy || host_.empty() || port_.empty())
     return CONFIG_UNSET;
   *config = net::ProxyConfigWithAnnotation(config_, NO_TRAFFIC_ANNOTATION_YET);
