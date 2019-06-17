@@ -1,0 +1,21 @@
+diff --git a/ui/native_theme/dark_mode_observer.h b/ui/native_theme/dark_mode_observer.h
+index 0f2c79e36e3dfc96621a9d7b01f8a3c9f9e05640..fe0e1c83152e279f9d39b2b5480acaef474a6c6a 100644
+--- a/ui/native_theme/dark_mode_observer.h
++++ b/ui/native_theme/dark_mode_observer.h
+@@ -23,7 +23,7 @@ class NATIVE_THEME_EXPORT DarkModeObserver : public NativeThemeObserver {
+   // Observe |theme| for changes in dark mode. |callback_| may be immediately
+   // run if |theme_->SystemDarkModeEnabled()| has changed since construction or
+   // last time |Stop()| was called.
+-  void Start();
++  virtual void Start();
+ 
+   // Stop observing |theme|. |callback_| will never be called after stopping.
+   void Stop();
+@@ -31,6 +31,7 @@ class NATIVE_THEME_EXPORT DarkModeObserver : public NativeThemeObserver {
+   bool InDarkMode() const { return in_dark_mode_; }
+ 
+  private:
++  friend class BraveDarkModeObserver;
+   // NativeThemeObserver:
+   void OnNativeThemeUpdated(NativeTheme* observed_theme) override;
+ 
