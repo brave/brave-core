@@ -22,6 +22,7 @@ export const getMessage = (message: string, substitutions?: string[]): string =>
 
 export const getUIMessages = (): Record<string, string> => {
   const strings = [
+    'addFunds',
     'and',
     'backupNow',
     'backupWalletNotification',
@@ -79,6 +80,7 @@ export const getUIMessages = (): Record<string, string> => {
     'ok',
     'on',
     'oneTimeDonation',
+    'pendingContributionTitle',
     'privacyPolicy',
     'recurringDonations',
     'reservedAmountText',

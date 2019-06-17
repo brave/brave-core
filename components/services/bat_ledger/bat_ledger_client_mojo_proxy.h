@@ -156,6 +156,11 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
       const std::vector<std::string>& countries,
       ledger::GetCountryCodesCallback callback) override;
 
+  void OnContributeUnverifiedPublishers(
+      ledger::Result result,
+      const std::string& publisher_key,
+      const std::string& publisher_name) override;
+
  private:
   bool Connected() const;
 

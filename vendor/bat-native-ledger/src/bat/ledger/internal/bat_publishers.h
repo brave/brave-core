@@ -128,6 +128,10 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback);
 
+  void SavePublisherProcessed(const std::string& publisher_key);
+
+  bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
+
  private:
   void onPublisherActivitySave(uint64_t windowId,
                                const ledger::VisitData& visit_data,

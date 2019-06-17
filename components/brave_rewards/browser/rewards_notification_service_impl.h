@@ -57,7 +57,7 @@ class RewardsNotificationServiceImpl
   void OnReconcileComplete(RewardsService* rewards_service,
                            unsigned int result,
                            const std::string& viewing_id,
-                           const std::string& category,
+                           int32_t category,
                            const std::string& probi) override;
 
   void TriggerOnNotificationAdded(

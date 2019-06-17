@@ -773,4 +773,13 @@ void LedgerClientMojoProxy::GetCountryCodes(
                 _1));
 }
 
+void LedgerClientMojoProxy::OnContributeUnverifiedPublishers(
+      int32_t result,
+      const std::string& publisher_key,
+      const std::string& publisher_name) {
+  ledger_client_->OnContributeUnverifiedPublishers(ToLedgerResult(result),
+                                                   publisher_key,
+                                                   publisher_name);
+}
+
 }  // namespace bat_ledger

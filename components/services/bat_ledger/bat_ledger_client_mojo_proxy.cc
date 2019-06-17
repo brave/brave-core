@@ -803,4 +803,13 @@ void BatLedgerClientMojoProxy::GetCountryCodes(
       base::BindOnce(&OnGetCountryCodes, std::move(callback)));
 }
 
+void BatLedgerClientMojoProxy::OnContributeUnverifiedPublishers(
+      ledger::Result result,
+      const std::string& publisher_key,
+      const std::string& publisher_name) {
+  bat_ledger_client_->OnContributeUnverifiedPublishers(ToMojomResult(result),
+                                                       publisher_key,
+                                                       publisher_name);
+}
+
 }  // namespace bat_ledger

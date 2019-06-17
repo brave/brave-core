@@ -420,5 +420,23 @@
   "twitterTipsIconLabel": {
     "message": "Tip",
     "description": "Icon label for Twitter tips"
+  },
+  "verifiedPublisherNotification": {
+    "message": "Creator $name$ recently verified",
+    "description": "Notification text that tells user which publisher just verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "brave.com"
+      }
+    }
+  },
+  "pendingNotEnoughFundsNotification": {
+    "message": "You have pending tips due to insufficient funds",
+    "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
+  },
+  "pendingContributionTitle": {
+    "message": "Pending Contribution",
+    "description": "Notification title for pending contribution type"
   }
 }
