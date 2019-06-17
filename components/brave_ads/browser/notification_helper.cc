@@ -15,11 +15,6 @@ bool NotificationHelper::IsNotificationsAvailable() const {
   return true;
 }
 
-bool NotificationHelper::IsBraveAdsChannelEnabled() const {
-  return true;
-}
-
-
 void NotificationHelper::OpenPageFromNative(const std::string & /*url*/) const {
 }
 

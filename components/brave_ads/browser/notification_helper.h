@@ -20,8 +20,6 @@ class NotificationHelper {
   
   virtual bool IsNotificationsAvailable() const;
 
-  virtual bool IsBraveAdsChannelEnabled() const;
-
   virtual void OpenPageFromNative(const std::string & url) const;
 
  protected:

@@ -30,13 +30,12 @@ class NotificationHelperAndroid :
   static NotificationHelperAndroid* GetInstance();
 
   // NotificationHelper impl
-  bool IsNotificationsAvailable() const override;    
-
-  bool IsBraveAdsChannelEnabled() const override;    
+  bool IsNotificationsAvailable() const override;
 
   void OpenPageFromNative(const std::string & url) const override;
 
  private:
+  bool IsBraveAdsChannelEnabled() const;
   std::unique_ptr<NotificationChannelsProviderAndroid> channels_provider_ = std::make_unique<NotificationChannelsProviderAndroid>();
   friend struct base::DefaultSingletonTraits<NotificationHelperAndroid>;
   DISALLOW_COPY_AND_ASSIGN(NotificationHelperAndroid);
