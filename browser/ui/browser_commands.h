@@ -6,11 +6,13 @@
 #define BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
 
 class Browser;
+class Profile;
 
 namespace brave {
 
 void NewOffTheRecordWindowTor(Browser*);
 void NewTorIdentity(Browser*);
+void NewTorWindow(Profile*);
 
 }  // namespace brave
 

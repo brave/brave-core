@@ -136,7 +136,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ShowBraveAdblock(browser_);
       break;
     case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
-      brave::NewOffTheRecordWindowTor(browser_);
+      brave::NewTorWindow(browser_->profile());
       break;
     case IDC_NEW_TOR_IDENTITY:
       brave::NewTorIdentity(browser_);

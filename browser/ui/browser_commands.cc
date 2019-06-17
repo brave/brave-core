@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_commands.h"
 
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
@@ -45,6 +46,10 @@ void NewTorIdentity(Browser* browser) {
   const GURL current_url = current_tab->GetURL();
   service->SetNewTorCircuit(current_url, base::Bind(&NewTorIdentityCallback,
                                                     current_tab));
+}
+
+void NewTorWindow(Profile* profile) {
+  chrome::NewEmptyWindow(profile->GetTorProfile());
 }
 
 }  // namespace brave
