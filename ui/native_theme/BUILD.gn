@@ -1,0 +1,16 @@
+import("//build/config/jumbo.gni")
+import("//build/config/ui.gni")
+import("//testing/test.gni")
+
+source_set("native_theme") {
+  if (!is_android) {
+    sources = [
+      "brave_dark_mode_observer.cc",
+      "brave_dark_mode_observer.h",
+    ]
+
+    deps = [
+      "//ui/native_theme",
+    ]
+  }
+}

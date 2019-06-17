@@ -7,7 +7,9 @@
 #define BRAVE_BROWSER_UI_BRAVE_DARK_MODE_OBSERVER_H_
 
 #include "base/gtest_prod_util.h"
-#include "chrome/browser/ui/dark_mode_observer.h"
+#include "ui/native_theme/dark_mode_observer.h"
+
+namespace ui {
 
 // This class is introduced to handle two different native themes that brave
 // uses for brave theme. DarkModeObserver only observes default NativeTheme.
@@ -26,13 +28,15 @@ class BraveDarkModeObserver : public DarkModeObserver {
                            ObserveProperNativeThemeTest);
 
   // DarkModeObserver overrides:
-  void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
+  void OnNativeThemeUpdated(NativeTheme* observed_theme) override;
 
   void ResetThemeObserver();
 
-  static ui::NativeTheme* current_native_theme_for_testing_;
+  static NativeTheme* current_native_theme_for_testing_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveDarkModeObserver);
 };
+
+}  // namespace ui
 
 #endif  // BRAVE_BROWSER_UI_BRAVE_DARK_MODE_OBSERVER_H_

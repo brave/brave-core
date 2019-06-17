@@ -5,7 +5,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/themes/brave_theme_service.h"
-#include "brave/browser/ui/brave_dark_mode_observer.h"
+#include "brave/ui/native_theme/brave_dark_mode_observer.h"
 #include "brave/common/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -24,28 +24,30 @@ void SetBraveThemeType(Profile* profile, BraveThemeType type) {
 
 }  // namespace
 
-// Test whether DarkModeObserver observes proper NativeTheme.
-IN_PROC_BROWSER_TEST_F(BraveDarkModeObserverTest,
-                       ObserveProperNativeThemeTest) {
-  if (@available(macOS 10.14, *)) {
-    base::test::ScopedFeatureList features;
-    features.InitAndEnableFeature(features::kWebUIDarkMode);
+namespace ui {
+  // Test whether DarkModeObserver observes proper NativeTheme.
+  IN_PROC_BROWSER_TEST_F(BraveDarkModeObserverTest,
+                         ObserveProperNativeThemeTest) {
+    if (@available(macOS 10.14, *)) {
+      base::test::ScopedFeatureList features;
+      features.InitAndEnableFeature(features::kWebUIDarkMode);
 
-    Profile* profile = browser()->profile();
+      Profile* profile = browser()->profile();
 
-    // Load webui to instantiate BraveDarkModeObserver.
-    AddTabAtIndexToBrowser(
-        browser(), 0, GURL("brave://history"), ui::PAGE_TRANSITION_TYPED, true);
+      // Load webui to instantiate BraveDarkModeObserver.
+      AddTabAtIndexToBrowser(
+          browser(), 0, GURL("brave://history"), ui::PAGE_TRANSITION_TYPED, true);
 
-    // Initially set to light.
-    SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
-    EXPECT_EQ(
-        ui::NativeTheme::GetInstanceForNativeUi(),
-        BraveDarkModeObserver::current_native_theme_for_testing_);
+      // Initially set to light.
+      SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
+      EXPECT_EQ(
+          ui::NativeTheme::GetInstanceForNativeUi(),
+          BraveDarkModeObserver::current_native_theme_for_testing_);
 
-    SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
-    EXPECT_EQ(
-        ui::NativeThemeDarkAura::instance(),
-        BraveDarkModeObserver::current_native_theme_for_testing_);
+      SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_DARK);
+      EXPECT_EQ(
+          ui::NativeThemeDarkAura::instance(),
+          BraveDarkModeObserver::current_native_theme_for_testing_);
+    }
   }
 }
