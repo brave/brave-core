@@ -7,9 +7,9 @@
 
 namespace brave_ads {
 
-NotificationHelper::NotificationHelper() {}
+NotificationHelper::NotificationHelper() = default;
 
-NotificationHelper::~NotificationHelper() {}
+NotificationHelper::~NotificationHelper() = default;
 
 bool NotificationHelper::IsNotificationsAvailable() const {
   return true;

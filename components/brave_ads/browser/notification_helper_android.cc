@@ -10,32 +10,32 @@
 
 namespace brave_ads {
 
-NotificationHelperAndroid::NotificationHelperAndroid() {
-}
+NotificationHelperAndroid::NotificationHelperAndroid() = default;
 
 NotificationHelperAndroid::~NotificationHelperAndroid() {
   channels_provider_.reset();
 }
-
 
 bool NotificationHelperAndroid::IsNotificationsAvailable() const {
   const int kAppNotificationStatusUndeterminable = 0;
   const int kAppNotificationsStatusEnabled = 2;
   int status = Java_NotificationSystemStatusUtil_getAppNotificationStatus(
       base::android::AttachCurrentThread());
-   bool notificationsOn = (status == kAppNotificationsStatusEnabled || status == kAppNotificationStatusUndeterminable);
-   bool channelOn = IsBraveAdsChannelEnabled();
-   return (notificationsOn && channelOn);
+  bool notificationsOn = (status == kAppNotificationsStatusEnabled ||
+      status == kAppNotificationStatusUndeterminable);
+  bool channelOn = IsBraveAdsChannelEnabled();
+  return (notificationsOn && channelOn);
 }
 
-
-//Starting in Android 8.0 (API level 26), all notifications must be assigned to a channel.
+//Starting in Android 8.0 (API level 26), all notifications must be
+//assigned to a channel.
 bool NotificationHelperAndroid::IsBraveAdsChannelEnabled() const {
   JNIEnv* env = base::android::AttachCurrentThread();
   auto j_id = Java_BraveAds_getBraveAdsChannelId (env);
-  std::string channel_id = base::android::ConvertJavaStringToUTF8 ( env, j_id);
+  std::string channel_id = base::android::ConvertJavaStringToUTF8(env, j_id);
   auto status = channels_provider_->GetChannelStatus(channel_id);
-  return (NotificationChannelStatus::ENABLED == status || NotificationChannelStatus::UNAVAILABLE == status );
+  return (NotificationChannelStatus::ENABLED == status ||
+      NotificationChannelStatus::UNAVAILABLE == status);
 }
 
 NotificationHelperAndroid* NotificationHelperAndroid::GetInstance() {
@@ -45,6 +45,5 @@ NotificationHelperAndroid* NotificationHelperAndroid::GetInstance() {
 NotificationHelper* NotificationHelper::GetInstance() {
   return NotificationHelperAndroid::GetInstance();
 }
-
 
 }  // namespace brave_ads

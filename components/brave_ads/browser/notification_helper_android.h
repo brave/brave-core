@@ -12,7 +12,6 @@
 #include "brave/components/brave_ads/browser/notification_helper.h"
 #include "chrome/browser/notifications/notification_channels_provider_android.h"
 
-
 namespace brave_ads {
 
 class NotificationHelperAndroid :

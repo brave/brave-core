@@ -905,7 +905,7 @@ void AdsServiceImpl::SetIdleThreshold(const int threshold) {
 
 bool AdsServiceImpl::IsNotificationsAvailable() const {
 #if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
-  const NotificationHelper * notification_helper = NotificationHelper::GetInstance();
+  const NotificationHelper* notification_helper = NotificationHelper::GetInstance();
   return notification_helper->IsNotificationsAvailable();
 #else
   return false;
@@ -1186,16 +1186,18 @@ void AdsServiceImpl::OnClick(Profile* profile,
   }
 
 #if defined(OS_ANDROID)
-  const content::OpenURLParams params (url,  content::Referrer(),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK, true);
-  base::Callback<void(content::WebContents*)> callback = base::Bind([] (content::WebContents*) {});
-  ServiceTabLauncher::GetInstance()->LaunchTab(profile_, params, callback);
+  const content::OpenURLParams params(url,content::Referrer(),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
+      true);
+  base::Callback<void(content::WebContents*)> callback =
+      base::Bind([] (content::WebContents*) {});
+  ServiceTabLauncher::GetInstance()->LaunchTab(profile,params,callback);
 #else
-  Browser* browser = chrome::FindTabbedBrowser(profile, false);
+  Browser* browser = chrome::FindTabbedBrowser(profile,false);
   if (!browser)
-    browser = new Browser(Browser::CreateParams(profile, true));
+    browser = new Browser(Browser::CreateParams(profile,true));
 
-  NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
+  NavigateParams nav_params(browser,url,ui::PAGE_TRANSITION_LINK);
   nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
   Navigate(&nav_params);
