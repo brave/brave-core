@@ -34,6 +34,7 @@ class TorLauncherFactory {
   TorLauncherFactory();
   ~TorLauncherFactory();
 
+  void Init();
   bool SetConfig(const tor::TorConfig& config);
 
   void OnTorLauncherCrashed();

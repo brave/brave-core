@@ -26,7 +26,10 @@ TorLauncherFactory::TorLauncherFactory()
     VLOG(1) << "Skipping the tor process launch in tests.";
     return;
   }
+  Init();
+}
 
+void TorLauncherFactory::Init() {
   content::ServiceManagerConnection::GetForProcess()->GetConnector()
     ->BindInterface(tor::mojom::kTorLauncherServiceName,
                     &tor_launcher_);
@@ -64,6 +67,9 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
     LOG(WARNING) << "config is empty";
     return;
   }
+
+  if (!tor_launcher_)
+    Init();
   tor_launcher_->Launch(config_,
                         base::Bind(&TorLauncherFactory::OnTorLaunched,
                                    base::Unretained(this)));
@@ -92,6 +98,7 @@ void TorLauncherFactory::ReLaunchTorProcess(const tor::TorConfig& config) {
 
 void TorLauncherFactory::KillTorProcess() {
   tor_launcher_.reset();
+  tor_pid_ = -1;
 }
 
 void TorLauncherFactory::AddObserver(tor::TorProfileServiceImpl* service) {
