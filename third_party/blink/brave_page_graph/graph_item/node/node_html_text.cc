@@ -45,8 +45,11 @@ void NodeHTMLText::AddInEdge(const EdgeNodeCreate* const edge) {
 }
 
 void NodeHTMLText::AddInEdge(const EdgeNodeRemove* const edge) {
-  parent_node_->RemoveChildNode(this);
-  parent_node_ = nullptr;
+  // HTML Text nodes can be removed if they were never inserted into the
+  if (parent_node_ != nullptr) {
+    parent_node_->RemoveChildNode(this);
+    parent_node_ = nullptr;
+  }
   Node::AddInEdge(edge);
 }
 
