@@ -17,7 +17,7 @@ bool NotificationHelper::IsNotificationsAvailable() const {
 
 #if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID)
 NotificationHelper* NotificationHelper::GetInstance() {
-  // just return a dummy background helper for all other platforms
+  // just return a dummy notification helper for all other platforms
   return base::Singleton<NotificationHelper>::get();
 }
 #endif

@@ -1192,11 +1192,11 @@ void AdsServiceImpl::OnClick(Profile* profile,
       true);
   base::Callback<void(content::WebContents*)> callback =
       base::Bind([] (content::WebContents*) {});
-  ServiceTabLauncher::GetInstance()->LaunchTab(profile,params,callback);
+  ServiceTabLauncher::GetInstance()->LaunchTab(profile, params, callback);
 #else
-  Browser* browser = chrome::FindTabbedBrowser(profile,false);
+  Browser* browser = chrome::FindTabbedBrowser(profile, false);
   if (!browser)
-    browser = new Browser(Browser::CreateParams(profile,true));
+    browser = new Browser(Browser::CreateParams(profile, true));
 
   NavigateParams nav_params(browser,url,ui::PAGE_TRANSITION_LINK);
   nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
