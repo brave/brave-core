@@ -6,7 +6,7 @@ index fc3a11a5719267d43d8063b4cbad464f7519c0e3..0ac85d36db11692d9defad965e8025eb
      const GURL& url,
      const std::string& brandcode)
      : fetch_callback_(callback) {
-+  base::ResetAndReturn(&fetch_callback_).Run(); // tell caller we're done
++  std::move(fetch_callback_).Run(); // tell caller we're done
 +  return; // but don't actually do anything (this feature is disabled in Brave)
    DCHECK(!brandcode.empty());
    net::NetworkTrafficAnnotationTag traffic_annotation =
