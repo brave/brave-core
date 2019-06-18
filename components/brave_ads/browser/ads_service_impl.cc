@@ -1198,7 +1198,7 @@ void AdsServiceImpl::OnClick(Profile* profile,
   if (!browser)
     browser = new Browser(Browser::CreateParams(profile, true));
 
-  NavigateParams nav_params(browser,url,ui::PAGE_TRANSITION_LINK);
+  NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
   nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
   Navigate(&nav_params);
