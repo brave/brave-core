@@ -123,7 +123,7 @@ TEST_F(ProxyConfigServiceTorTest, SetUsername) {
   EXPECT_EQ(host_port.port(), 5566);
   EXPECT_EQ(host_port.username(), isolation_key);
 
-  // persistent circuit isolation until timeout
+  // Test persistent circuit isolation until timeout.
   std::string password = host_port.password();
   EXPECT_FALSE(host_port.password().empty());
   proxy_config_service.SetUsername(isolation_key, GetTorProxyMap());
@@ -133,7 +133,7 @@ TEST_F(ProxyConfigServiceTorTest, SetUsername) {
   host_port = server.host_port_pair();
   EXPECT_EQ(host_port.password(), password);
 
-  // New identity
+  // Test new identity.
   GetTorProxyMap()->Erase(isolation_key);
   proxy_config_service.SetUsername(isolation_key, GetTorProxyMap());
   proxy_config_service.GetLatestProxyConfig(&config);

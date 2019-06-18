@@ -46,19 +46,13 @@ void TorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
   tor_launcher_factory_->ReLaunchTorProcess(config);
 }
 
-void TorProfileServiceImpl::OnSetNewTorCircuitComplete(bool success) {
-  if (tor_circuit_callback_)
-    std::move(tor_circuit_callback_).Run(success);
-}
-
 void TorProfileServiceImpl::OnProxyLookupComplete(
     int32_t net_error,
     const base::Optional<net::ProxyInfo>& proxy_info) {
   bool success = proxy_info.has_value() && !proxy_info->is_direct();
-  if (tor_circuit_callback_) {
-    std::move(tor_circuit_callback_).Run(success);
-    binding_.Close();
-  }
+  DCHECK(tor_circuit_callback_);
+  std::move(tor_circuit_callback_).Run(success);
+  binding_.Close();
 }
 
 void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,

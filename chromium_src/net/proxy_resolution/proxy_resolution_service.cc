@@ -43,6 +43,12 @@ void SetTorCircuitIsolation(const ProxyConfig& config,
   DCHECK(IsTorProxy(config));
   std::string proxy_uri = config.proxy_rules().single_proxies.Get().ToURI();
 
+  // Adding username & password to global sock://127.0.0.1:[port] config without
+  // actually modifying it when resolving proxy for each url.
+  // username is derived from url and we keep password for 10 minutes, detail
+  // encapsulated in ProxyConfigServiceTor.
+  // TorProxyMap stores username/password mapping and it can only be manipulated
+  // by ProxyConfigServiceTor.
   ProxyConfigServiceTor tor_proxy_config_service(proxy_uri);
   ProxyConfigWithAnnotation fetched_config;
   tor_proxy_config_service.GetLatestProxyConfig(&fetched_config);

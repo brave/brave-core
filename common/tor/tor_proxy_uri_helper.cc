@@ -10,19 +10,27 @@
 namespace tor {
 
 std::string GetTorProxyURI() {
+  const std::string TorProxyScheme("socks5://");
+  const std::string TorProxyAddress("127.0.0.1");
+  std::string port;
   switch (chrome::GetChannel()) {
     case version_info::Channel::STABLE:
-      return std::string("socks5://127.0.0.1:9350");
+      port = std::string("9350");
+      break;
     case version_info::Channel::BETA:
-      return std::string("socks5://127.0.0.1:9360");
+      port = std::string("9360");
+      break;
     case version_info::Channel::DEV:
-      return std::string("socks5://127.0.0.1:9370");
+      port = std::string("9370");
+      break;
     case version_info::Channel::CANARY:
-      return std::string("socks5://127.0.0.1:9380");
+      port = std::string("9380");
+      break;
     case version_info::Channel::UNKNOWN:
     default:
-      return std::string("socks5://127.0.0.1:9390");
+      port = std::string("9390");
   }
+  return std::string(TorProxyScheme + TorProxyAddress + ":" + port);
 }
 
 }  // namespace tor

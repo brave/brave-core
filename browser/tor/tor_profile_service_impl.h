@@ -57,8 +57,6 @@ class TorProfileServiceImpl : public TorProfileService,
       const base::Optional<net::ProxyInfo>& proxy_info) override;
 
  private:
-  void OnSetNewTorCircuitComplete(bool success);
-
   Profile* profile_;  // NOT OWNED
   TorLauncherFactory* tor_launcher_factory_;  // Singleton
   NewTorCircuitCallback tor_circuit_callback_;

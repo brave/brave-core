@@ -23,33 +23,36 @@ namespace net {
 
 class ProxyResolutionServiceTest : public TestWithScopedTaskEnvironment {
  public:
-  ProxyResolutionServiceTest() {}
-  ~ProxyResolutionServiceTest() override {}
+  ProxyResolutionServiceTest() = default;
+  ~ProxyResolutionServiceTest() override = default;
+
+  void SetUp() override {
+    const std::string proxy_uri("socks5://127.0.0.1:5566");
+    service_ = std::make_unique<ProxyResolutionService>(
+        std::make_unique<ProxyConfigServiceTor>(proxy_uri),
+        std::make_unique<MockAsyncProxyResolverFactory>(false), nullptr);
+  }
+
+  ProxyResolutionService* GetProxyResolutionService() { return service_.get(); }
 
  private:
+  std::unique_ptr<ProxyResolutionService> service_;
   DISALLOW_COPY_AND_ASSIGN(ProxyResolutionServiceTest);
 };
 
 TEST_F(ProxyResolutionServiceTest, TorProxy) {
-  MockAsyncProxyResolverFactory* factory =
-      new MockAsyncProxyResolverFactory(false);
-  std::string proxy_uri("socks5://127.0.0.1:5566");
-  ProxyResolutionService service(
-      std::make_unique<ProxyConfigServiceTor>(proxy_uri),
-      base::WrapUnique(factory), nullptr);
-
-  GURL site_url("https://check.torproject.org/");
-  std::string isolation_key =
+  ProxyResolutionService* service = GetProxyResolutionService();
+  const GURL site_url("https://check.torproject.org/");
+  const std::string isolation_key =
       ProxyConfigServiceTor::CircuitIsolationKey(site_url);
 
   ProxyInfo info;
   TestCompletionCallback callback;
   BoundTestNetLog log;
   std::unique_ptr<ProxyResolutionService::Request> request;
-  int rv = service.ResolveProxy(site_url, std::string(), &info,
-                                callback.callback(), &request, log.bound());
+  int rv = service->ResolveProxy(site_url, std::string(), &info,
+                                 callback.callback(), &request, log.bound());
   EXPECT_THAT(rv, IsOk());
-  EXPECT_TRUE(factory->pending_requests().empty());
 
   EXPECT_TRUE(info.is_socks());
   ASSERT_FALSE(info.proxy_list().IsEmpty());
@@ -64,23 +67,17 @@ TEST_F(ProxyResolutionServiceTest, TorProxy) {
 }
 
 TEST_F(ProxyResolutionServiceTest, NewTorCircuit) {
-  MockAsyncProxyResolverFactory* factory =
-      new MockAsyncProxyResolverFactory(false);
-  std::string proxy_uri("socks5://127.0.0.1:5566");
-  ProxyResolutionService service(
-      std::make_unique<ProxyConfigServiceTor>(proxy_uri),
-      base::WrapUnique(factory), nullptr);
-
-  GURL site_url("https://check.torproject.org/");
-  std::string isolation_key =
+  ProxyResolutionService* service = GetProxyResolutionService();
+  const GURL site_url("https://check.torproject.org/");
+  const std::string isolation_key =
       ProxyConfigServiceTor::CircuitIsolationKey(site_url);
 
   ProxyInfo info;
   TestCompletionCallback callback;
   BoundTestNetLog log;
   std::unique_ptr<ProxyResolutionService::Request> request;
-  int rv = service.ResolveProxy(site_url, std::string(), &info,
-                                callback.callback(), &request, log.bound());
+  int rv = service->ResolveProxy(site_url, std::string(), &info,
+                                 callback.callback(), &request, log.bound());
 
   ProxyServer server = info.proxy_list().Get();
   HostPortPair host_port = server.host_port_pair();
@@ -88,8 +85,8 @@ TEST_F(ProxyResolutionServiceTest, NewTorCircuit) {
   std::string password = host_port.password();
 
   GURL site_url_ref("https://check.torproject.org/#NewTorCircuit");
-  rv = service.ResolveProxy(site_url_ref, std::string(), &info,
-                            callback.callback(), &request, log.bound());
+  rv = service->ResolveProxy(site_url_ref, std::string(), &info,
+                             callback.callback(), &request, log.bound());
 
   server = info.proxy_list().Get();
   host_port = server.host_port_pair();
