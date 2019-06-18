@@ -53,8 +53,6 @@
 #include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/requests/tracked_request.h"
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
-#include "brave/third_party/blink/brave_page_graph/scripts/script_in_frame_querier.h"
-#include "brave/third_party/blink/brave_page_graph/scripts/script_in_frame_query_result.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 using ::blink::Document;
@@ -555,52 +553,10 @@ void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {
   }
 
   LOG_ASSERT(script_nodes_.count(script_id) == 1);
-  // First check to see if this is a script compiled in this frame.
-  // If so this is easy.
   if (script_nodes_.count(script_id) == 1) {
     PushActiveScript(script_id);
     return;
   }
-
-  /*
-  // Next see if this could be a script we've already imported from a remote
-  // frame.  If so, also pretty easy...
-  if (remote_script_nodes_.count(script_id) == 1) {
-    PushActiveScript(script_id);
-    return;
-  }
-
-  // Otherwise, this seems to be a script compiled in another frame, but
-  // executing in this frame.  So, query the other frames to
-  // see if we can find it.
-  ScriptInFrameQuerier querier(document_, script_id);
-  ScriptInFrameQueryResult result = querier.Find();
-  LOG_ASSERT(result.IsMatch());
-
-  DOMNodeId frame_node_id = result.GetFrameDOMNodeId();
-  NodeFrame* remote_frame;
-  if (remote_frames_.count(frame_node_id) == 0) {
-    remote_frame = new NodeFrame(this, frame_node_id, result.GetFrameUrl());
-    remote_frames_.emplace(frame_node_id, remote_frame);
-    AddNode(remote_frame);
-  } else {
-    remote_frame = remote_frames_.at(frame_node_id);
-  }
-
-  NodeScriptRemote* remote_script_node = new NodeScriptRemote(this,
-    result.GetScriptNode());
-  AddNode(remote_script_node);
-  remote_script_nodes_.emplace(script_id, remote_script_node);
-
-  const EdgeImport* import_edge = new EdgeImport(this, remote_frame,
-    remote_script_node);
-  AddEdge(import_edge);
-
-  remote_frame->AddOutEdge(import_edge);
-  remote_script_node->AddInEdge(import_edge);
-
-  PushActiveScript(script_id);
-  */
 }
 
 void PageGraph::RegisterScriptExecStop(const ScriptId script_id) {
