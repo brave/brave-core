@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index 0d1221f617040499eeff4955458d6139b6baa1b2..6806bcaaef009be13f8c79d3a045bfdd09d72ca7 100644
+index 0d1221f617040499eeff4955458d6139b6baa1b2..8b60d5c786294f9abe2a940b3856410ce1b5dcb5 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
 @@ -105,6 +105,7 @@ Browser* GetOrCreateBrowser(Profile* profile, bool user_gesture) {
@@ -10,7 +10,17 @@ index 0d1221f617040499eeff4955458d6139b6baa1b2..6806bcaaef009be13f8c79d3a045bfdd
    if (params->contents_to_insert || params->switch_to_singleton_tab ||
        IsURLAllowedInIncognito(params->url, params->initiating_profile) ||
        params->initiating_profile->IsGuestSession()) {
-@@ -724,6 +725,7 @@ void Navigate(NavigateParams* params) {
+@@ -504,7 +505,8 @@ void Navigate(NavigateParams* params) {
+   }
+   int singleton_index;
+   std::tie(params->browser, singleton_index) =
+-      GetBrowserAndTabForDisposition(*params);
++      BraveGetBrowserAndTabForDisposition(*params);
++  if (params->extra_headers == kBraveIsTor) params->extra_headers = "";
+   if (!params->browser)
+     return;
+   if (singleton_index != -1) {
+@@ -724,6 +726,7 @@ void Navigate(NavigateParams* params) {
  bool IsHostAllowedInIncognito(const GURL& url) {
    std::string scheme = url.scheme();
    base::StringPiece host = url.host_piece();

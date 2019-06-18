@@ -27,6 +27,10 @@
 // Make it clear which class we mean here.
 #undef RenderViewContextMenu
 
+namespace {
+constexpr char kBraveIsTor[] = "brave_is_tor";
+}  // namespace
+
 BraveRenderViewContextMenu::BraveRenderViewContextMenu(
     content::RenderFrameHost* render_frame_host,
     const content::ContextMenuParams& params)
@@ -67,11 +71,20 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
-      profiles::SwitchToTorProfile(
-          base::Bind(
-              OnProfileCreated, params_.link_url,
-              content::Referrer(GURL(),
-                                network::mojom::ReferrerPolicy::kStrictOrigin)));
+      // To avoid patching a new disposition type and support it all over the
+      // code base which could introduce more patching, we use the
+      // extra_headers which was supposed to be an empty string to specify that
+      // we're going to open it in Tor profile.
+      // This string will be used in BraveGetBrowserAndTabForDisposition in
+      // browser_navigator.cc to open the new link in Tor profile window and
+      // it will be reset to an empty string right after returning from
+      // BraveGetBrowserAndTabForDisposition.
+      OpenURLWithExtraHeaders(
+          params_.link_url, GURL(),
+          WindowOpenDisposition::OFF_THE_RECORD,
+          ui::PAGE_TRANSITION_LINK,
+          kBraveIsTor /* extra_headers */,
+          true /* started_from_context_menu */);
       break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);

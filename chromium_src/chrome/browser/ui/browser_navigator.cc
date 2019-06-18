@@ -10,6 +10,12 @@
 #include "url/gurl.h"
 
 namespace {
+
+constexpr char kBraveIsTor[] = "brave_is_tor";
+
+std::pair<Browser*, int> BraveGetBrowserAndTabForDisposition(
+    const NavigateParams& params);
+
 void AdjustNavigateParamsForURLBraveImpl(NavigateParams* params) {
   if (params->url.SchemeIs(content::kBraveUIScheme)) {
     GURL::Replacements replacements;
@@ -27,8 +33,28 @@ bool IsHostAllowedInIncognitoBraveImpl(const base::StringPiece& host) {
 
   return true;
 }
+
 }  // namespace
 
 #define ChromeNavigationUIData BraveNavigationUIData
 #include "../../../../chrome/browser/ui/browser_navigator.cc"  // NOLINT
 #undef ChromeNavigationUIData
+
+namespace {
+
+std::pair<Browser*, int> BraveGetBrowserAndTabForDisposition(
+    const NavigateParams& params) {
+  Profile* profile = params.initiating_profile;
+
+  // This temporary extra_headers will be reset to an empty string right after
+  // this function is returned.
+  if (params.extra_headers == kBraveIsTor) {
+    return {GetOrCreateBrowser(profile->GetTorProfile(),
+        params.user_gesture),
+           -1};
+  }
+
+  return GetBrowserAndTabForDisposition(params);
+}
+
+}  // namespace
