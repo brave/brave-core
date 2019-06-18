@@ -905,14 +905,8 @@ void AdsServiceImpl::SetIdleThreshold(const int threshold) {
 
 bool AdsServiceImpl::IsNotificationsAvailable() const {
 #if BUILDFLAG(ENABLE_NATIVE_NOTIFICATIONS)
-
-#if defined(OS_ANDROID)
    const NotificationHelper * notification_helper = NotificationHelper::GetInstance();
    return notification_helper->IsNotificationsAvailable();
-#else
-  return true;
-#endif
-
 #else
   return false;
 #endif
