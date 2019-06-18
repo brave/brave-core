@@ -27,8 +27,8 @@ bool NotificationHelperAndroid::IsNotificationsAvailable() const {
   return (notificationsOn && channelOn);
 }
 
-//Starting in Android 8.0 (API level 26), all notifications must be
-//assigned to a channel.
+// Starting in Android 8.0 (API level 26), all notifications must be
+// assigned to a channel.
 bool NotificationHelperAndroid::IsBraveAdsChannelEnabled() const {
   JNIEnv* env = base::android::AttachCurrentThread();
   auto j_id = Java_BraveAds_getBraveAdsChannelId (env);

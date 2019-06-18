@@ -28,7 +28,8 @@ class NotificationHelperAndroid :
 
  private:
   bool IsBraveAdsChannelEnabled() const;
-  std::unique_ptr<NotificationChannelsProviderAndroid> channels_provider_ = std::make_unique<NotificationChannelsProviderAndroid>();
+  std::unique_ptr<NotificationChannelsProviderAndroid> channels_provider_ =
+      std::make_unique<NotificationChannelsProviderAndroid>();
   friend struct base::DefaultSingletonTraits<NotificationHelperAndroid>;
   DISALLOW_COPY_AND_ASSIGN(NotificationHelperAndroid);
 };
