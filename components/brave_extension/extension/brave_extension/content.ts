@@ -1,9 +1,24 @@
 const unique = require('unique-selector').default
+
 let target: EventTarget | null
 
 function getCurrentURL () {
   return window.location.hostname
 }
+
+/*function applyCosmeticFilterMutationObserver (filterList: any) {
+  let targetNode = document.documentElement
+  let observer = new MutationObserver(function (mutations) {
+    console.log('mutation observed')
+    injectIncrementalStyles(mutations)
+  })
+  let observerConfig = {
+    childList: true,
+    subtree: true
+    // characterData: true
+  }
+  observer.observe(targetNode, observerConfig)
+}*/
 
 document.addEventListener('contextmenu', (event) => {
   // send host and store target

@@ -22,7 +22,7 @@ export const removeSiteFilter = (origin: string) => {
   })
 }
 
-export const applySiteFilters = (tabId: number, hostname: string) => {
+export const applyCSSCosmeticFilters = (tabId: number, hostname: string) => {
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     if (!storeData.cosmeticFilterList) {
       if (process.env.NODE_ENV === 'shields_development') {
