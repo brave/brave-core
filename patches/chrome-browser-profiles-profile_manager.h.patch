@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile_manager.h b/chrome/browser/profiles/profile_manager.h
-index 49a5dc4bca1e063e6db26aef750015adca7ed6b8..7d9323041eb7e97687a8bf2e6c7008ed9dfa77a7 100644
+index 49a5dc4bca1e063e6db26aef750015adca7ed6b8..81b58e010a708529b2338f30b3fce889cd993132 100644
 --- a/chrome/browser/profiles/profile_manager.h
 +++ b/chrome/browser/profiles/profile_manager.h
 @@ -122,7 +122,7 @@ class ProfileManager : public content::NotificationObserver,
@@ -11,15 +11,6 @@ index 49a5dc4bca1e063e6db26aef750015adca7ed6b8..7d9323041eb7e97687a8bf2e6c7008ed
  
    // Returns the directory where the first created profile is stored,
    // relative to the user data directory currently in use.
-@@ -139,7 +139,7 @@ class ProfileManager : public content::NotificationObserver,
- 
-   // Get the name of the last used profile, or if that's undefined, the default
-   // profile.
--  std::string GetLastUsedProfileName();
-+  virtual std::string GetLastUsedProfileName();
- 
-   // Get the Profiles which are currently open, i.e. have open browsers or were
-   // open the last time Chrome was running. Profiles that fail to initialize are
 @@ -220,7 +220,7 @@ class ProfileManager : public content::NotificationObserver,
  
    // Initializes user prefs of |profile|. This includes profile name and

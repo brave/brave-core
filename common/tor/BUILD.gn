@@ -6,8 +6,6 @@ source_set("tor") {
     "switches.h",
     "tor_common.cc",
     "tor_common.h",
-    "tor_constants.cc",
-    "tor_constants.h",
   ]
 
   deps = [

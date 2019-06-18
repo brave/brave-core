@@ -29,10 +29,6 @@ void NewTorIdentityCallback(WebContents* current_tab) {
 
 namespace brave {
 
-void NewOffTheRecordWindowTor(Browser* browser) {
-  profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
-}
-
 void NewTorIdentity(Browser* browser) {
   Profile* profile = browser->profile();
   DCHECK(profile);
