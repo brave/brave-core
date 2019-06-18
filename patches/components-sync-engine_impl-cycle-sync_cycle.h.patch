@@ -1,14 +1,13 @@
 diff --git a/components/sync/engine_impl/cycle/sync_cycle.h b/components/sync/engine_impl/cycle/sync_cycle.h
-index 0971b6014231f8046eca9202840acc6167960057..e7c9f40c1f3294650597dab18d558c998cf8dd95 100644
+index 0971b6014231f8046eca9202840acc6167960057..ccc08280b387952e0df44760672b0dc62d9a3059 100644
 --- a/components/sync/engine_impl/cycle/sync_cycle.h
 +++ b/components/sync/engine_impl/cycle/sync_cycle.h
-@@ -80,6 +80,10 @@ class SyncCycle {
+@@ -80,6 +80,9 @@ class SyncCycle {
      // Called when server requests a migration.
      virtual void OnReceivedMigrationRequest(ModelTypeSet types) = 0;
  
 +    virtual void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) {}
-+    virtual void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
-+                                 base::WaitableEvent* wevent) {}
++    virtual void OnPollSyncCycle(brave_sync::GetRecordsCallback cb, base::WaitableEvent* wevent) {}
 +
     protected:
      virtual ~Delegate() {}

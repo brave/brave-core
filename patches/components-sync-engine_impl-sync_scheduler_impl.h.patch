@@ -1,21 +1,19 @@
 diff --git a/components/sync/engine_impl/sync_scheduler_impl.h b/components/sync/engine_impl/sync_scheduler_impl.h
-index 4bab39098da187109f291f1c0ab03fd0cc34d326..f48cf362f1030fd8b269ad213330255de95ea82c 100644
+index 4bab39098da187109f291f1c0ab03fd0cc34d326..db1bfdfcc4470f1aeb41ae7d37f02dd9271e25f9 100644
 --- a/components/sync/engine_impl/sync_scheduler_impl.h
 +++ b/components/sync/engine_impl/sync_scheduler_impl.h
-@@ -79,6 +79,12 @@ class SyncSchedulerImpl : public SyncScheduler {
+@@ -79,6 +79,10 @@ class SyncSchedulerImpl : public SyncScheduler {
    void OnReceivedGuRetryDelay(const base::TimeDelta& delay) override;
    void OnReceivedMigrationRequest(ModelTypeSet types) override;
  
 +  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override;
-+  void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
-+                       base::WaitableEvent* wevent) override;
-+  void SetNudgeAndPollDelegate(brave_sync::NudgeSyncCycleDelegate,
-+                               brave_sync::PollSyncCycleDelegate) override;
++  void OnPollSyncCycle(brave_sync::GetRecordsCallback cb, base::WaitableEvent* wevent) override;
++  void SetNudgeAndPollDelegate(brave_sync::NudgeSyncCycleDelegate, brave_sync::PollSyncCycleDelegate) override;
 +
    bool IsGlobalThrottle() const;
    bool IsGlobalBackoff() const;
  
-@@ -177,6 +183,7 @@ class SyncSchedulerImpl : public SyncScheduler {
+@@ -177,6 +181,7 @@ class SyncSchedulerImpl : public SyncScheduler {
    // current thread. In the future it will request access token here.
    void TrySyncCycleJob();
    void TrySyncCycleJobImpl();
@@ -23,7 +21,7 @@ index 4bab39098da187109f291f1c0ab03fd0cc34d326..f48cf362f1030fd8b269ad213330255d
  
    // Transitions out of the THROTTLED WaitInterval then calls TryCanaryJob().
    // This function is for global throttling.
-@@ -281,6 +288,9 @@ class SyncSchedulerImpl : public SyncScheduler {
+@@ -281,6 +286,9 @@ class SyncSchedulerImpl : public SyncScheduler {
    // Used to prevent changing nudge delays by the server in integration tests.
    bool force_short_nudge_delay_for_test_ = false;
  
