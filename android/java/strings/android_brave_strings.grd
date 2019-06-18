@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file contains all "about" strings.  It is set to NOT be translated, in translation_expectations.pyl.  en-US only.
+-->
+<grit current_release="1" latest_public_release="0" output_all_resource_defines="false">
+  <outputs>
+    <output filename="values-am/android_brave_strings.xml" lang="am" type="android" />
+    <output filename="values-ar/android_brave_strings.xml" lang="ar" type="android" />
+    <output filename="values-bg/android_brave_strings.xml" lang="bg" type="android" />
+    <output filename="values-bn/android_brave_strings.xml" lang="bn" type="android" />
+    <output filename="values-ca/android_brave_strings.xml" lang="ca" type="android" />
+    <output filename="values-cs/android_brave_strings.xml" lang="cs" type="android" />
+    <output filename="values-da/android_brave_strings.xml" lang="da" type="android" />
+    <output filename="values-de/android_brave_strings.xml" lang="de" type="android" />
+    <output filename="values-el/android_brave_strings.xml" lang="el" type="android" />
+    <output filename="values/android_brave_strings.xml" lang="en" type="android" />
+    <output filename="values-en-rGB/android_brave_strings.xml" lang="en-GB" type="android" />
+    <output filename="values-es/android_brave_strings.xml" lang="es" type="android" />
+    <output filename="values-es-rUS/android_brave_strings.xml" lang="es-419" type="android" />
+    <output filename="values-et/android_brave_strings.xml" lang="et" type="android" />
+    <output filename="values-fa/android_brave_strings.xml" lang="fa" type="android" />
+    <output filename="values-fi/android_brave_strings.xml" lang="fi" type="android" />
+    <output filename="values-tl/android_brave_strings.xml" lang="fil" type="android" />
+    <output filename="values-fr/android_brave_strings.xml" lang="fr" type="android" />
+    <output filename="values-gu/android_brave_strings.xml" lang="gu" type="android" />
+    <output filename="values-hi/android_brave_strings.xml" lang="hi" type="android" />
+    <output filename="values-hr/android_brave_strings.xml" lang="hr" type="android" />
+    <output filename="values-hu/android_brave_strings.xml" lang="hu" type="android" />
+    <output filename="values-in/android_brave_strings.xml" lang="id" type="android" />
+    <output filename="values-it/android_brave_strings.xml" lang="it" type="android" />
+    <output filename="values-iw/android_brave_strings.xml" lang="iw" type="android" />
+    <output filename="values-ja/android_brave_strings.xml" lang="ja" type="android" />
+    <output filename="values-kn/android_brave_strings.xml" lang="kn" type="android" />
+    <output filename="values-ko/android_brave_strings.xml" lang="ko" type="android" />
+    <output filename="values-lt/android_brave_strings.xml" lang="lt" type="android" />
+    <output filename="values-lv/android_brave_strings.xml" lang="lv" type="android" />
+    <output filename="values-ml/android_brave_strings.xml" lang="ml" type="android" />
+    <output filename="values-mr/android_brave_strings.xml" lang="mr" type="android" />
+    <output filename="values-ms/android_brave_strings.xml" lang="ms" type="android" />
+    <output filename="values-nl/android_brave_strings.xml" lang="nl" type="android" />
+    <output filename="values-nb/android_brave_strings.xml" lang="no" type="android" />
+    <output filename="values-pl/android_brave_strings.xml" lang="pl" type="android" />
+    <output filename="values-pt-rBR/android_brave_strings.xml" lang="pt-BR" type="android" />
+    <output filename="values-pt-rPT/android_brave_strings.xml" lang="pt-PT" type="android" />
+    <output filename="values-ro/android_brave_strings.xml" lang="ro" type="android" />
+    <output filename="values-ru/android_brave_strings.xml" lang="ru" type="android" />
+    <output filename="values-sk/android_brave_strings.xml" lang="sk" type="android" />
+    <output filename="values-sl/android_brave_strings.xml" lang="sl" type="android" />
+    <output filename="values-sr/android_brave_strings.xml" lang="sr" type="android" />
+    <output filename="values-sv/android_brave_strings.xml" lang="sv" type="android" />
+    <output filename="values-sw/android_brave_strings.xml" lang="sw" type="android" />
+    <output filename="values-ta/android_brave_strings.xml" lang="ta" type="android" />
+    <output filename="values-te/android_brave_strings.xml" lang="te" type="android" />
+    <output filename="values-th/android_brave_strings.xml" lang="th" type="android" />
+    <output filename="values-tr/android_brave_strings.xml" lang="tr" type="android" />
+    <output filename="values-uk/android_brave_strings.xml" lang="uk" type="android" />
+    <output filename="values-vi/android_brave_strings.xml" lang="vi" type="android" />
+    <output filename="values-zh-rCN/android_brave_strings.xml" lang="zh-CN" type="android" />
+    <output filename="values-zh-rTW/android_brave_strings.xml" lang="zh-TW" type="android" />
+  </outputs>
+  <release seq="1" allow_pseudo="false">
+    <messages fallback_to_english="true">
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_SHIELDS" desc="Content description for the button that is enable, disable Brave Shields.">
+        Enable/Disable Brave Shields
+      </message>
+    </messages>
+  </release>
+</grit>

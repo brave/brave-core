@@ -1,4 +1,5 @@
 import("//brave/build/config.gni")
+import("//build/config/android/rules.gni")
 
 copy("brave") {
   visibility = [ "*" ]
@@ -27,5 +28,64 @@ copy("brave") {
   }
   outputs = [
     "$root_out_dir/apks/Brave$file_name_part$target_cpu.apk",
+  ]
+}
+
+java_strings_grd("android_brave_strings_grd") {
+  grd_file = "//brave/android/java/strings/android_brave_strings.grd"
+  outputs = [
+    "values/android_brave_strings.xml",
+    "values-am/android_brave_strings.xml",
+    "values-ar/android_brave_strings.xml",
+    "values-bg/android_brave_strings.xml",
+    "values-bn/android_brave_strings.xml",
+    "values-ca/android_brave_strings.xml",
+    "values-cs/android_brave_strings.xml",
+    "values-da/android_brave_strings.xml",
+    "values-de/android_brave_strings.xml",
+    "values-el/android_brave_strings.xml",
+    "values-en-rGB/android_brave_strings.xml",
+    "values-es/android_brave_strings.xml",
+    "values-es-rUS/android_brave_strings.xml",
+    "values-et/android_brave_strings.xml",
+    "values-fa/android_brave_strings.xml",
+    "values-fi/android_brave_strings.xml",
+    "values-fr/android_brave_strings.xml",
+    "values-gu/android_brave_strings.xml",
+    "values-hi/android_brave_strings.xml",
+    "values-hr/android_brave_strings.xml",
+    "values-hu/android_brave_strings.xml",
+    "values-in/android_brave_strings.xml",
+    "values-it/android_brave_strings.xml",
+    "values-iw/android_brave_strings.xml",
+    "values-ja/android_brave_strings.xml",
+    "values-kn/android_brave_strings.xml",
+    "values-ko/android_brave_strings.xml",
+    "values-lt/android_brave_strings.xml",
+    "values-lv/android_brave_strings.xml",
+    "values-ml/android_brave_strings.xml",
+    "values-mr/android_brave_strings.xml",
+    "values-ms/android_brave_strings.xml",
+    "values-nb/android_brave_strings.xml",
+    "values-nl/android_brave_strings.xml",
+    "values-pl/android_brave_strings.xml",
+    "values-pt-rBR/android_brave_strings.xml",
+    "values-pt-rPT/android_brave_strings.xml",
+    "values-ro/android_brave_strings.xml",
+    "values-ru/android_brave_strings.xml",
+    "values-sk/android_brave_strings.xml",
+    "values-sl/android_brave_strings.xml",
+    "values-sr/android_brave_strings.xml",
+    "values-sv/android_brave_strings.xml",
+    "values-sw/android_brave_strings.xml",
+    "values-ta/android_brave_strings.xml",
+    "values-te/android_brave_strings.xml",
+    "values-th/android_brave_strings.xml",
+    "values-tl/android_brave_strings.xml",
+    "values-tr/android_brave_strings.xml",
+    "values-uk/android_brave_strings.xml",
+    "values-vi/android_brave_strings.xml",
+    "values-zh-rCN/android_brave_strings.xml",
+    "values-zh-rTW/android_brave_strings.xml",
   ]
 }
