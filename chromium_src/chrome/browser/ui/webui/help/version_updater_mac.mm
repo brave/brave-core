@@ -15,6 +15,10 @@
 #include "net/base/escape.h"
 #include "ui/base/l10n/l10n_util.h"
 
+#if BUILDFLAG(ENABLE_SPARKLE)
+#import "brave/browser/mac/sparkle_glue.h"
+#endif
+
 // KeystoneObserver is a simple notification observer for Keystone status
 // updates. It will be created and managed by VersionUpdaterMac.
 @interface KeystoneObserver : NSObject {
