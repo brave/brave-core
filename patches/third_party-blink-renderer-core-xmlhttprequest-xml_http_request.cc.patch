@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
-index 6166612476ad3d639a27471f9992dfd0b2a1043a..3f7fe59e1ac86f07fd1ef85f9a5d4e27e6bb67ca 100644
+index 6166612476ad3d639a27471f9992dfd0b2a1043a..684238ac26a842fb01134ed0c9a9955d48932b4d 100644
 --- a/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
 +++ b/third_party/blink/renderer/core/xmlhttprequest/xml_http_request.cc
 @@ -93,6 +93,13 @@
@@ -16,19 +16,24 @@ index 6166612476ad3d639a27471f9992dfd0b2a1043a..3f7fe59e1ac86f07fd1ef85f9a5d4e27
  namespace blink {
  
  namespace {
-@@ -1165,6 +1172,21 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
+@@ -1165,6 +1172,26 @@ void XMLHttpRequest::CreateRequest(scoped_refptr<EncodedFormData> http_body,
                                                     resource_loader_options);
    loader_->SetTimeout(timeout_);
    loader_->Start(request);
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
-+    RawResource* const raw_resource = loader_->GetRawResource();
-+    if (raw_resource != nullptr) {
-+      ::brave_page_graph::PageGraph* page_graph = isolate_->GetPageGraph();
-+      if (page_graph != nullptr) {
-+        page_graph->RegisterRequestStartFromCurrentScript(
-+          raw_resource->InspectorId(), url_,
-+          brave_page_graph::RequestType::kRequestTypeAJAX);
++    // Will happen if the frame is destroyed before the request goes out,
++    // as a result of the MakeGarbageCollected wrapped ThreadableLoader
++    // instance.
++    if (loader_ != nullptr) {
++      RawResource* const raw_resource = loader_->GetRawResource();
++      if (raw_resource != nullptr) {
++        ::brave_page_graph::PageGraph* page_graph = isolate_->GetPageGraph();
++        if (page_graph != nullptr) {
++          page_graph->RegisterRequestStartFromCurrentScript(
++            raw_resource->InspectorId(), url_,
++            brave_page_graph::RequestType::kRequestTypeAJAX);
++        }
 +      }
 +    }
 +  }

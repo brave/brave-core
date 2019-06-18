@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script/classic_pending_script.cc b/third_party/blink/renderer/core/script/classic_pending_script.cc
-index 8aba929165932a5472e4642b8805b164980e954e..4932c631238a07b2cefa7424d09f8a834cfe94e9 100644
+index 8aba929165932a5472e4642b8805b164980e954e..3b8535fd9b261ad76e08de2b236b7b8566607569 100644
 --- a/third_party/blink/renderer/core/script/classic_pending_script.cc
 +++ b/third_party/blink/renderer/core/script/classic_pending_script.cc
 @@ -30,6 +30,14 @@
@@ -63,7 +63,7 @@ index 8aba929165932a5472e4642b8805b164980e954e..4932c631238a07b2cefa7424d09f8a83
    AdvanceReadyState(error_occurred ? kErrorOccurred : kReady);
  }
  
-@@ -376,6 +414,17 @@ ClassicScript* ClassicPendingScript::GetSource(const KURL& document_url) const {
+@@ -376,6 +414,20 @@ ClassicScript* ClassicPendingScript::GetSource(const KURL& document_url) const {
  
    ScriptSourceCode source_code(streamer_ready ? streamer : nullptr, resource,
                                 not_streamed_reason);
@@ -73,6 +73,9 @@ index 8aba929165932a5472e4642b8805b164980e954e..4932c631238a07b2cefa7424d09f8a83
 +    ::brave_page_graph::PageGraph* page_graph = GetElement()->GetDocument()
 +      .GetPageGraph();
 +    if (page_graph != nullptr) {
++      // Its possible the requested URL, and the URL for the returned
++      // resource, will change (e.g. HSTS, 301s, etc).  Make sure we
++      // use the originally requested URL to make sure everything lines up.
 +      page_graph->RegisterUrlForScriptSource(resource->Url(), source_code);
 +    }
 +  }

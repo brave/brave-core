@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.h b/third_party/blink/renderer/core/dom/document.h
-index c89f9d712e9a061cb4218c2863e058f5a62173ae..e229da97de0685c659448b72490d2c3a9c8d613f 100644
+index c89f9d712e9a061cb4218c2863e058f5a62173ae..96a546c6c6f8558dda95ec530342f18ad5b98af8 100644
 --- a/third_party/blink/renderer/core/dom/document.h
 +++ b/third_party/blink/renderer/core/dom/document.h
 @@ -73,6 +73,12 @@
@@ -32,7 +32,7 @@ index c89f9d712e9a061cb4218c2863e058f5a62173ae..e229da97de0685c659448b72490d2c3a
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  brave_page_graph::PageGraph* page_graph_;
-+  bool owns_page_graph_ = false;
++  brave_page_graph::PageGraph* page_graph_non_owning_;
 +#endif
 +
   private:
