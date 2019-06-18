@@ -1,4 +1,6 @@
-#if defined(ENABLE_SPARKLE)
+#include "brave/browser/sparkle_buildflags.h"
+
+#if BUILDFLAG(ENABLE_SPARKLE)
 #include "brave/browser/mac/sparkle_glue.h"
 #endif
 
@@ -11,7 +13,7 @@
 namespace keystone_glue {
 
 bool KeystoneEnabled() {
-#if defined(ENABLE_SPARKLE)
+#if BUILDFLAG(ENABLE_SPARKLE)
   return sparkle_glue::SparkleEnabled();
 #else
   return false;
@@ -19,7 +21,7 @@ bool KeystoneEnabled() {
 }
 
 base::string16 CurrentlyInstalledVersion() {
-#if defined(ENABLE_SPARKLE)
+#if BUILDFLAG(ENABLE_SPARKLE)
   return sparkle_glue::CurrentlyInstalledVersion();
 #else
   return base::string16();

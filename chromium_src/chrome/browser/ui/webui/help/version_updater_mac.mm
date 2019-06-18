@@ -7,6 +7,7 @@
 #include "base/mac/foundation_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/sparkle_buildflags.h"
 #include "chrome/browser/mac/keystone_glue.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/grit/chromium_strings.h"
@@ -73,7 +74,7 @@ void VersionUpdaterMac::CheckForUpdate(
     const PromoteCallback& promote_callback) {
   status_callback_ = status_callback;
 
-#if defined(ENABLE_SPARKLE)
+#if BUILDFLAG(ENABLE_SPARKLE)
   if (SparkleGlue* sparkle_glue = [SparkleGlue sharedSparkleGlue]) {
     AutoupdateStatus recent_status = [sparkle_glue recentStatus];
     if ([sparkle_glue asyncOperationPending] ||
@@ -135,7 +136,7 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
     case kAutoupdateRegistered:
       // Go straight into an update check. Return immediately, this routine
       // will be re-entered shortly with kAutoupdateChecking.
-#if defined(ENABLE_SPARKLE)
+#if BUILDFLAG(ENABLE_SPARKLE)
       [[SparkleGlue sharedSparkleGlue] checkForUpdates];
 #endif
       return;

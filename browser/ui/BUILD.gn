@@ -128,6 +128,7 @@ source_set("ui") {
     "//brave/components/brave_sync:static_resources",
     "//brave/components/brave_sync:generated_resources",
     "//brave/components/brave_welcome_ui:generated_resources",
+    "//brave/browser:sparkle_buildflags",
     "//brave/browser/devtools",
     "//brave/browser/tor",
     "//brave/browser/resources/settings:resources",
