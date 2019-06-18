@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!-- saved from url=(0040)http://raymondhill.net/ublock/adbox.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Cosmetic filtering: Test your blocker</title>
+<style>
+    ul li {
+        font-size: larger;
+        background-color: #efe;
+    }
+    ul li.ADBox {
+        background-color: #fee;
+    }
+</style>
+</head>
+<body>
+    <h1>Cosmetic filtering: Test your blocker</h1>
+    <p>Force a refresh of the page to test your blocker.</p>
+    <h2>Testing EasyList's ...</h2>
+    <h3><code>##.ADBox</code></h3>
+    <ul>
+        <li><code>&lt;li&gt;</code>: Should not be hidden
+        </li><li class="ADBox"><code>&lt;li class="ADBox"&gt;</code>: Should be hidden.
+        </li><li class="ADBox" style="display: block !important;"><code>&lt;li class="ADBox"  style="display: block !important;"&gt;</code>: Should be hidden.
+    </li></ul>
+
+
+</body></html>

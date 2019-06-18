@@ -20,7 +20,8 @@ import { reloadTab } from '../api/tabsAPI'
 import {
   removeSiteFilter,
   addSiteCosmeticFilter,
-  applySiteFilters,
+  // applyDOMCosmeticFilters,
+  applyCSSCosmeticFilters,
   removeAllFilters
 } from '../api/cosmeticFilterAPI'
 
@@ -69,8 +70,8 @@ export default function cosmeticFilterReducer (
         state = shieldsPanelState.resetBlockingStats(state, action.tabId)
         state = shieldsPanelState.resetBlockingResources(state, action.tabId)
         state = noScriptState.resetNoScriptInfo(state, action.tabId, getOrigin(action.url))
+        applyCSSCosmeticFilters(action.tabId, getHostname(action.url))
       }
-      applySiteFilters(action.tabId, getHostname(action.url))
       break
     }
     case windowTypes.WINDOW_REMOVED: {
@@ -146,10 +147,20 @@ export default function cosmeticFilterReducer (
       break
     }
     case cosmeticFilterTypes.SITE_COSMETIC_FILTER_ADDED: {
-      addSiteCosmeticFilter(action.origin, action.cssfilter)
-      .catch((e) => {
-        console.error('Could not add filter:', e)
-      })
+      const tabData = shieldsPanelState.getActiveTabData(state)
+      const tabId: number = shieldsPanelState.getActiveTabId(state)
+      if (!tabData) {
+        console.error('Active tab not found')
+        break
+      }
+      addSiteCosmeticFilter(tabData.hostname, action.cssfilter)
+        .then(() => {
+          console.log(`added: ${tabData.hostname} | ${action.cssfilter}`)
+        })
+        .catch(e => {
+          console.error('Could not add filter:', e)
+        })
+      applyCSSCosmeticFilters(tabId, tabData.hostname)
       break
     }
   }

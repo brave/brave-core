@@ -6,9 +6,17 @@ export const addSiteCosmeticFilter = async (origin: string, cssfilter: string) =
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     let storeList = Object.assign({}, storeData.cosmeticFilterList)
     if (storeList[origin] === undefined || storeList[origin].length === 0) { // nothing in filter list for origin
-      storeList[origin] = [cssfilter]
+      storeList[origin] = [{
+        'filter': cssfilter,
+        'isIdempotent': isIdempotent(cssfilter),
+        'applied': false
+      }]
     } else { // add entry
-      storeList[origin].push(cssfilter)
+      storeList[origin].push({
+        'filter': cssfilter,
+        'isIdempotent': isIdempotent(cssfilter),
+        'applied': false
+      })
     }
     chrome.storage.local.set({ 'cosmeticFilterList': storeList })
   })
@@ -22,7 +30,7 @@ export const removeSiteFilter = (origin: string) => {
   })
 }
 
-export const applySiteFilters = (tabId: number, hostname: string) => {
+export const applyCSSCosmeticFilters = (tabId: number, hostname: string) => {
   chrome.storage.local.get('cosmeticFilterList', (storeData = {}) => {
     if (!storeData.cosmeticFilterList) {
       if (process.env.NODE_ENV === 'shields_development') {
@@ -31,12 +39,12 @@ export const applySiteFilters = (tabId: number, hostname: string) => {
       return
     }
     if (storeData.cosmeticFilterList[hostname] !== undefined) {
-      storeData.cosmeticFilterList[hostname].map((rule: string) => {
+      storeData.cosmeticFilterList[hostname].map((rule: any) => { // if the filter hasn't been applied once before, apply it and set the corresponding filter to true
         if (process.env.NODE_ENV === 'shields_development') {
-          console.log('applying rule', rule)
+          console.log('applying filter', rule.filter)
         }
         chrome.tabs.insertCSS(tabId, { // https://github.com/brave/brave-browser/wiki/Cosmetic-Filtering
-          code: `${rule} {display: none !important;}`,
+          code: `${rule.filter} {display:none!important;}`,
           cssOrigin: 'user',
           runAt: 'document_start'
         })
@@ -47,4 +55,38 @@ export const applySiteFilters = (tabId: number, hostname: string) => {
 
 export const removeAllFilters = () => {
   chrome.storage.local.set({ 'cosmeticFilterList': {} })
+}
+
+function isIdempotent (str: String) {
+  // if string contains a non-idempotent string, the selector is not idempotent
+  //   https://www.w3schools.com/cssref/css_selectors.asp
+
+  let nonIdempotentStrings = [
+    ':active',
+    '::after',
+    '::before',
+    ':checked',
+    ':default',
+    ':disabled',
+    ':empty',
+    ':enabled',
+    ':first-child',
+    '::first-letter',
+    '::first-line',
+    ':first-of-type',
+    ':focus',
+    ':hover',
+    ':last-child',
+    ':last-of-type',
+    ':nth-child',
+    ':nth-last-child',
+    ':nth-last-of-type',
+    ':nth-of-type']
+
+  for (let i = 0; i < nonIdempotentStrings.length; i++) {
+    if (str.includes(nonIdempotentStrings[i])) {
+      return true
+    }
+  }
+  return false
 }

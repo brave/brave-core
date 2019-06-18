@@ -379,6 +379,7 @@ test("brave_browser_tests") {
     "//brave/chromium_src/chrome/browser/ui/autofill/payments/brave_save_card_bubble_controller_impl_browsertest.cc",
     "//brave/chromium_src/chrome/browser/ui/views/location_bar/location_bar_view_browsertest.cc",
     "//brave/chromium_src/components/content_settings/core/browser/brave_content_settings_registry_browsertest.cc",
+    "//brave/chromium_src/components/content_settings/core/browser/brave_content_settings_registry_browsertest2.cc",
     "//brave/chromium_src/third_party/blink/renderer/modules/battery/navigator_batterytest.cc",
     "//brave/chromium_src/third_party/blink/renderer/modules/bluetooth/navigator_bluetoothtest.cc",
     "//brave/browser/autoplay/autoplay_permission_context_browsertest.cc",
@@ -433,6 +434,7 @@ test("brave_browser_tests") {
     "//chrome/browser/extensions/extension_function_test_utils.h",
     "//chrome/browser/extensions/updater/extension_cache_fake.cc",
     "//chrome/browser/extensions/updater/extension_cache_fake.h",
+    "//brave/components/brave_extension/brave_extension_browsertest.cc",
   ]
 
   deps = []
