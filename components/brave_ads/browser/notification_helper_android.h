@@ -19,11 +19,6 @@ class NotificationHelperAndroid :
     public NotificationHelper,
     public base::SupportsWeakPtr<NotificationHelperAndroid> {
  public:
-
-  static const int APP_NOTIFICATIONS_STATUS_UNDETERMINABLE = 0;
-  static const int APP_NOTIFICATIONS_STATUS_ENABLED = 2;
-  static const int APP_NOTIFICATIONS_STATUS_DISABLED = 3;
-
   NotificationHelperAndroid();
   ~NotificationHelperAndroid() override;
 
@@ -31,6 +26,7 @@ class NotificationHelperAndroid :
 
   // NotificationHelper impl
   bool IsNotificationsAvailable() const override;
+
  private:
   bool IsBraveAdsChannelEnabled() const;
   std::unique_ptr<NotificationChannelsProviderAndroid> channels_provider_ = std::make_unique<NotificationChannelsProviderAndroid>();

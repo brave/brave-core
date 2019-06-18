@@ -19,9 +19,11 @@ NotificationHelperAndroid::~NotificationHelperAndroid() {
 
 
 bool NotificationHelperAndroid::IsNotificationsAvailable() const {
+  const int kAppNotificationStatusUndeterminable = 0;
+  const int kAppNotificationsStatusEnabled = 2;
   int status = Java_NotificationSystemStatusUtil_getAppNotificationStatus(
       base::android::AttachCurrentThread());
-   bool notificationsOn = (status == APP_NOTIFICATIONS_STATUS_ENABLED || status == APP_NOTIFICATIONS_STATUS_UNDETERMINABLE);
+   bool notificationsOn = (status == kAppNotificationsStatusEnabled || status == kAppNotificationStatusUndeterminable);
    bool channelOn = IsBraveAdsChannelEnabled();
    return (notificationsOn && channelOn);
 }
