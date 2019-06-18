@@ -26,7 +26,11 @@ ScriptTracker::~ScriptTracker() {}
 
 void ScriptTracker::AddScriptUrlForElm(const KURL& url,
     const DOMNodeId node_id) {
-  const UrlHash url_hash(url.GetString().Impl()->GetHash());
+  KURL local_url(url);
+  if (local_url.ProtocolIsInHTTPFamily()) {
+    local_url.SetProtocol("https");
+  }
+  const UrlHash url_hash(local_url.GetString().Impl()->GetHash());
   if (node_id_to_script_url_hashes_.count(node_id) == 0) {
     node_id_to_script_url_hashes_.emplace(node_id, vector<UrlHash>());
   }
@@ -54,8 +58,12 @@ void ScriptTracker::AddScriptSourceForElm(const ScriptSourceCode& code,
 
 void ScriptTracker::AddCodeFetchedFromUrl(
     const ScriptSourceCode& code, const KURL& url) {
+  KURL local_url(url);
+  if (local_url.ProtocolIsInHTTPFamily()) {
+    local_url.SetProtocol("https");
+  }
   const SourceCodeHash code_hash(code.Source().ToString().Impl()->GetHash());
-  const UrlHash url_hash(url.GetString().Impl()->GetHash());
+  const UrlHash url_hash(local_url.GetString().Impl()->GetHash());
 
   // There should be no situations where we're receiving script code
   // from an unknown URL.
@@ -175,7 +183,7 @@ ScriptIdList ScriptTracker::GetScriptIdsForElm(
 
 void ScriptTracker::AddScriptId(const ScriptId script_id,
     const SourceCodeHash hash) {
-  // Make sure we've either never seen this script before, or that it 
+  // Make sure we've either never seen this script before, or that it
   // appears to be the same script.
   LOG_ASSERT(script_id_hashes_.count(script_id) == 0 ||
     script_id_hashes_.at(script_id) == hash);
