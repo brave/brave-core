@@ -21,7 +21,7 @@
 BookmarkButton::BookmarkButton(views::ButtonListener* listener)
     : ToolbarButton(listener),
       widget_observer_(this) {
-        set_id(VIEW_ID_STAR_BUTTON);
+        SetID(VIEW_ID_STAR_BUTTON);
         set_tag(IDC_BOOKMARK_PAGE);
         SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_FORWARD));
       }
