@@ -31,9 +31,6 @@ class NotificationHelperAndroid :
 
   // NotificationHelper impl
   bool IsNotificationsAvailable() const override;
-
-  void OpenPageFromNative(const std::string & url) const override;
-
  private:
   bool IsBraveAdsChannelEnabled() const;
   std::unique_ptr<NotificationChannelsProviderAndroid> channels_provider_ = std::make_unique<NotificationChannelsProviderAndroid>();

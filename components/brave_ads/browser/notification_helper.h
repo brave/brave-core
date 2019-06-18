@@ -15,13 +15,9 @@ namespace brave_ads {
 
 class NotificationHelper {
  public:
-  
   static NotificationHelper* GetInstance();
   
   virtual bool IsNotificationsAvailable() const;
-
-  virtual void OpenPageFromNative(const std::string & url) const;
-
  protected:
   NotificationHelper();
   virtual ~NotificationHelper();

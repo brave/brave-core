@@ -15,9 +15,6 @@ bool NotificationHelper::IsNotificationsAvailable() const {
   return true;
 }
 
-void NotificationHelper::OpenPageFromNative(const std::string & /*url*/) const {
-}
-
 #if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID)
 NotificationHelper* NotificationHelper::GetInstance() {
   // just return a dummy background helper for all other platforms

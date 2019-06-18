@@ -36,15 +36,6 @@ bool NotificationHelperAndroid::IsBraveAdsChannelEnabled() const {
   return (NotificationChannelStatus::ENABLED == status || NotificationChannelStatus::UNAVAILABLE == status );
 }
 
-
-void NotificationHelperAndroid::OpenPageFromNative(const std::string & url) const {
-  JNIEnv* env = base::android::AttachCurrentThread();
-  base::android::ScopedJavaLocalRef<jstring> jurl =
-      base::android::ConvertUTF8ToJavaString(env, url.c_str());
-  Java_BraveAds_openPageFromNative(env, jurl);
-}
-
-
 NotificationHelperAndroid* NotificationHelperAndroid::GetInstance() {
   return base::Singleton<NotificationHelperAndroid>::get();
 }
