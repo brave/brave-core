@@ -1,8 +1,17 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc b/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
-index 4718cdaa3758fd59efeed8bed5c139a59f2b18d2..fa7e91daad50f2b68221cf414a4d55b5062636e9 100644
+index 4718cdaa3758fd59efeed8bed5c139a59f2b18d2..d53997b0ae63007a63ba10c929bf58b8114ebb58 100644
 --- a/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.cc
-@@ -11,6 +11,13 @@
+@@ -4,6 +4,8 @@
+ 
+ #include "third_party/blink/renderer/bindings/core/v8/js_event_handler_for_content_attribute.h"
+ 
++#include <iostream>
++
+ #include "third_party/blink/renderer/bindings/core/v8/source_location.h"
+ #include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
+ #include "third_party/blink/renderer/core/dom/events/event_target.h"
+@@ -11,6 +13,13 @@
  #include "third_party/blink/renderer/core/frame/local_dom_window.h"
  #include "third_party/blink/renderer/core/html/forms/html_form_element.h"
  
@@ -16,20 +25,36 @@ index 4718cdaa3758fd59efeed8bed5c139a59f2b18d2..fa7e91daad50f2b68221cf414a4d55b5
  namespace blink {
  
  v8::Local<v8::Value> JSEventHandlerForContentAttribute::GetListenerObject(
-@@ -189,6 +196,19 @@ v8::Local<v8::Value> JSEventHandlerForContentAttribute::GetCompiledHandler(
+@@ -189,6 +198,35 @@ v8::Local<v8::Value> JSEventHandlerForContentAttribute::GetCompiledHandler(
      if (!maybe_result.ToLocal(&compiled_function))
        return v8::Null(isolate);
    }
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
-+    if (element && element->IsHTMLElement()) {
++    Node* event_recipient = nullptr;
++    if (element) {
++      event_recipient = element;
++    } else if (event_target.ToNode()) {
++      event_recipient = event_target.ToNode();
++    } else if (event_target.ToLocalDOMWindow() && event_target.ToLocalDOMWindow()->document()) {
++      event_recipient = event_target.ToLocalDOMWindow()->document()->body();
++    }
++    // std::cout << "element: " << (void *)element << std::endl;
++    // std::cout << "event_recipient: " << (void *)event_recipient << std::endl;
++    // std::cout << "IsTopLeveLNode(): " << event_target.IsTopLevelNode() << std::endl;
++    // std::cout << "ToLocalDOMWindow(): " << (void *)event_target.ToLocalDOMWindow() << std::endl;
++    if (event_recipient) {
 +      ::brave_page_graph::PageGraph* page_graph = document->GetPageGraph();
 +      if (page_graph != nullptr) {
-+        const DOMNodeId node_id = DOMNodeIds::IdForNode(element);
++        const DOMNodeId node_id = DOMNodeIds::IdForNode(event_recipient);
 +        const auto script_id = compiled_function->ScriptId();
 +        page_graph->RegisterScriptCompilationFromAttr(node_id,
 +            function_name_.GetString(), script_body_, script_id);
++      } else {
++        std::cout << "Skipping 1: " << script_body_ << std::endl;
 +      }
++    } else {
++      std::cout << "Skipping 2: " << script_body_ << std::endl;
 +    }
 +  }
 +#endif

@@ -456,6 +456,7 @@ void PageGraph::RegisterRequestError(const InspectorId request_id) {
 void PageGraph::RegisterElmForLocalScript(const DOMNodeId node_id,
     const ScriptSourceCode& code) {
   PG_LOG("RegisterElmForLocalScript) node_id: " + to_string(node_id));
+  PG_LOG("Script: " + string(code.Source().ToString().Utf8().data()));
   script_tracker_.AddScriptSourceForElm(code, node_id);
 }
 
@@ -486,6 +487,7 @@ void PageGraph::RegisterScriptCompilation(
     const ScriptSourceCode& code, const ScriptId script_id,
     const ScriptType type) {
   PG_LOG("RegisterScriptCompilation) script id: " + to_string(script_id));
+  PG_LOG("source: " + string(code.Source().ToString().Utf8().data()));
   script_tracker_.AddScriptId(script_id,
     code.Source().ToString().Impl()->GetHash());
   script_tracker_.SetScriptIdForCode(script_id, code);
@@ -602,6 +604,7 @@ void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {
 }
 
 void PageGraph::RegisterScriptExecStop(const ScriptId script_id) {
+  PG_LOG("RegisterScriptExecStop) script id: " + to_string(script_id));
   LOG_ASSERT(script_nodes_.count(script_id) == 1);
   ScriptId popped_script_id = PopActiveScript();
   LOG_ASSERT(popped_script_id == script_id);

@@ -1,8 +1,16 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..1666705ca47a1adce429ccb83625e58da4974378 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4573403f3ed1056224ed7b1699ceaddc1afee532 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -310,6 +310,13 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+@@ -29,6 +29,7 @@
+ 
+ #include "third_party/blink/renderer/core/dom/document.h"
+ 
++#include <iostream>
+ #include <memory>
+ 
+ #include "base/auto_reset.h"
+@@ -310,6 +311,13 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
  static WeakDocumentSet& liveDocumentSet();
  #endif
  
@@ -16,60 +24,55 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..1666705ca47a1adce429ccb83625e58d
  namespace blink {
  
  using namespace html_names;
-@@ -768,6 +775,11 @@ Document::Document(const DocumentInit& initializer,
+@@ -768,6 +776,11 @@ Document::Document(const DocumentInit& initializer,
  #ifndef NDEBUG
    liveDocumentSet().insert(this);
  #endif
 +
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  page_graph_ = nullptr;
-+  owns_page_graph_ = false;
++  page_graph_non_owning_ = nullptr;
 +#endif
  }
  
  Document::~Document() {
-@@ -778,8 +790,70 @@ Document::~Document() {
+@@ -778,7 +791,82 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  if (page_graph_ != nullptr &&
-+      owns_page_graph_ == true) {
++  if (page_graph_ != nullptr) {
 +    delete page_graph_;
 +    page_graph_ = nullptr;
-+    owns_page_graph_ = false;
 +  }
++  page_graph_non_owning_ = nullptr;
++  GetIsolate()->SetPageGraph(nullptr);
 +#endif
- }
- 
++}
++
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +brave_page_graph::PageGraph* Document::GetPageGraph() {
++  if (wasDiscarded() == true) {
++    return nullptr;
++  }
++
++  if (page_graph_non_owning_ != nullptr) {
++    return page_graph_non_owning_;
++  }
 +
 +  if (page_graph_ != nullptr) {
 +    return page_graph_;
 +  }
 +
++  // If the current frame is remote / different process than the main frame,
++  // then stop, don't track anything.
++  LocalFrame* frame = GetFrame();
++  if (frame == nullptr) {
++    return nullptr;
++  }
++
 +  Document& top_doc = TopDocument();
-+
-+  // Only instrument HTML documents.  No need to instrument other types
-+  // of "documents" chromium can display, like image documents, or extension
-+  // background pages.
-+  const bool top_doc_is_html = top_doc.IsHTMLDocument();
-+  if (top_doc_is_html == false) {
-+    return nullptr;
-+  }
-+
-+  // Only instrument the top level document, or frames that are local /
-+  // in the same process, for now.
-+  const bool top_doc_is_frame_local = top_doc.GetFrame() != nullptr;
-+  if (top_doc_is_frame_local == false) {
-+    return nullptr;
-+  }
-+
-+  // Only instrument pages that were delivered over HTTP, but not odd things
-+  // like chrome:// pages, or file://, etc.
-+  const bool top_doc_is_http_delivered = top_doc.Url().ProtocolIsInHTTPFamily();
-+  if (top_doc_is_http_delivered == false) {
++  if (frame->LocalFrameRoot() != top_doc.GetFrame()) {
 +    return nullptr;
 +  }
 +
@@ -77,7 +80,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..1666705ca47a1adce429ccb83625e58d
 +  // are, not 100% correct tests for this, but should be good enough to
 +  // infer in all practical cases.  This may need to be revisited in the future
 +  // if we can't accept any incorrectness.
-+  auto supplements = Supplementable<Document>::supplements_;
++  const auto supplements = Supplementable<Document>::supplements_;
 +  const bool current_doc_is_not_service_worker = (
 +    supplements.Contains(ServiceWorkerContainer::kSupplementName) ||
 +    supplements.Contains(DOMWindowStorageController::kSupplementName));
@@ -85,17 +88,34 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..1666705ca47a1adce429ccb83625e58d
 +    return nullptr;
 +  }
 +
-+  if (top_doc == this) {
-+    page_graph_ = new brave_page_graph::PageGraph(*this);
-+    owns_page_graph_ = true;
-+  } else {
-+    page_graph_ = top_doc.GetPageGraph();
++  // If we're a child frame, then we can punt the decision on whether
++  // to instantiate a page graph instance upward.  But we need to
++  // make sure to add the page graph instance to the local isolate
++  // if the top frame has a PageGraph.
++  if (frame->IsMainFrame() == false) {
++    page_graph_non_owning_ = top_doc.GetPageGraph();
++    if (page_graph_non_owning_ != nullptr) {
++      GetIsolate()->SetPageGraph(page_graph_non_owning_);
++    }
++    return page_graph_non_owning_;
 +  }
++
++  // Otherwise, we're the top document, and we need to decide if we should
++  // create a page graph instance.  We do this for documents that look like
++  // there HTML documents fetched over HTTP (so not file://, not extension
++  // content pages, etc.
++  const bool top_doc_is_html = IsHTMLDocument();
++  const bool top_doc_is_http_delivered = Url().ProtocolIsInHTTPFamily();
++  if (top_doc_is_html == false ||
++      top_doc_is_http_delivered == false) {
++    return nullptr;
++  }
++
++  page_graph_ = new ::brave_page_graph::PageGraph(*this);
 +  GetIsolate()->SetPageGraph(page_graph_);
 +  return page_graph_;
-+}
+ }
 +#endif
-+
+ 
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
-   DCHECK(position.IsNotNull());
