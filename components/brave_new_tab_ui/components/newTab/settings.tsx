@@ -10,7 +10,7 @@ import { Toggle } from 'brave-ui/features/newTab/toggle'
 
 import { getLocale } from '../../../common/locale'
 
-interface Props {
+export interface Props {
   onClickOutside: () => void
   toggleShowBackgroundImage: () => void
   showBackgroundImage: boolean

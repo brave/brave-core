@@ -41,6 +41,8 @@ export const syncInitialState: Sync.ApplicationState = { syncData }
 
 export const newTabInitialState: NewTab.ApplicationState = {
   newTabData: {
+    showBackgroundImage: false,
+    showSettings: false,
     topSites: [],
     ignoredTopSites: [],
     pinnedTopSites: [],
