@@ -12,9 +12,7 @@ namespace brave_ads {
 
 NotificationHelperAndroid::NotificationHelperAndroid() = default;
 
-NotificationHelperAndroid::~NotificationHelperAndroid() {
-  channels_provider_.reset();
-}
+NotificationHelperAndroid::~NotificationHelperAndroid() = default;
 
 bool NotificationHelperAndroid::IsNotificationsAvailable() const {
   const int kAppNotificationStatusUndeterminable = 0;
