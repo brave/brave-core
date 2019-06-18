@@ -21,45 +21,6 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/gfx/paint_vector_icon.h"
 
-namespace {
-constexpr int kIconSize = 16;
-}  // namespace
-
-void BraveProfileChooserView::ButtonPressed(views::Button* sender,
-                                            const ui::Event& event) {
-  if (sender == tor_profile_button_) {
-    profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
-  } else if (sender == users_button_ &&
-             browser()->profile()->IsGuestSession()) {
-    if (browser()->profile()->IsTorProfile())
-      profiles::CloseTorProfileWindows();
-    else
-      profiles::CloseGuestProfileWindows();
-  } else {
-    ProfileChooserView::ButtonPressed(sender, event);
-  }
-}
-
-void BraveProfileChooserView::AddTorButton(
-    ProfileMenuViewBase::MenuItems* menu_items) {
-  if (!browser()->profile()->IsTorProfile() &&
-      !g_brave_browser_process->tor_client_updater()
-        ->GetExecutablePath().empty()) {
-    std::unique_ptr<HoverButton> tor_profile_button =
-        std::make_unique<HoverButton>(
-            this,
-            gfx::CreateVectorIcon(kLaunchIcon, kIconSize, gfx::kChromeIconGrey),
-            l10n_util::GetStringUTF16(IDS_PROFILES_OPEN_TOR_PROFILE_BUTTON));
-    tor_profile_button_ = tor_profile_button.get();
-    menu_items->push_back(std::move(tor_profile_button));
-  }
-}
-
-void BraveProfileChooserView::Reset() {
-  ProfileChooserView::Reset();
-  tor_profile_button_ = nullptr;
-}
-
 void BraveProfileChooserView::AddDiceSyncErrorView(
     const AvatarMenu::Item& avatar_item,
     sync_ui_util::AvatarSyncErrorType error,

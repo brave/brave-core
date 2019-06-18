@@ -80,8 +80,6 @@ source_set("ui") {
 
   if (is_win || is_mac || is_desktop_linux) {
     sources += [
-      "views/profiles/brave_incognito_menu_view.cc",
-      "views/profiles/brave_incognito_menu_view.h",
       "views/profiles/brave_profile_chooser_view.cc",
       "views/profiles/brave_profile_chooser_view.h",
       "webui/brave_welcome_ui.cc",

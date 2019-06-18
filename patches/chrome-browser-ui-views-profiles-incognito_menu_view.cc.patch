@@ -1,12 +1,20 @@
 diff --git a/chrome/browser/ui/views/profiles/incognito_menu_view.cc b/chrome/browser/ui/views/profiles/incognito_menu_view.cc
-index fe5c72fdb67d2921612742ef2fdb477048698816..f09a72b12b3d0ef71e2190bf8e3630bf813aa54d 100644
+index fe5c72fdb67d2921612742ef2fdb477048698816..784575153bfaf944a00a039371a504a607cb8fc8 100644
 --- a/chrome/browser/ui/views/profiles/incognito_menu_view.cc
 +++ b/chrome/browser/ui/views/profiles/incognito_menu_view.cc
-@@ -94,6 +94,7 @@ void IncognitoMenuView::AddIncognitoWindowCountView() {
- 
-   ProfileMenuViewBase::MenuItems menu_items;
-   menu_items.push_back(std::move(title_card));
-+  static_cast<BraveIncognitoMenuView*>(this)->AddTorButton(&menu_items);
-   AddMenuItems(menu_items, true);
+@@ -84,6 +84,7 @@ void IncognitoMenuView::AddIncognitoWindowCountView() {
+   // by an alternative list item.
+   std::unique_ptr<HoverButton> title_card = std::make_unique<HoverButton>(
+       nullptr, std::move(incognito_icon),
++      browser()->profile()->IsTorProfile() ? l10n_util::GetStringUTF16(IDS_TOR_PROFILE_NAME) :
+       l10n_util::GetStringUTF16(IDS_INCOGNITO_PROFILE_MENU_TITLE),
+       incognito_window_count > 1
+           ? l10n_util::GetPluralStringFUTF16(IDS_INCOGNITO_WINDOW_COUNT_MESSAGE,
+@@ -98,6 +99,7 @@ void IncognitoMenuView::AddIncognitoWindowCountView() {
  
    std::unique_ptr<HoverButton> close_button = std::make_unique<HoverButton>(
+       this, gfx::CreateVectorIcon(kCloseAllIcon, 16, gfx::kChromeIconGrey),
++      browser()->profile()->IsTorProfile() ? l10n_util::GetStringUTF16(IDS_PROFILES_EXIT_TOR) :
+       l10n_util::GetStringUTF16(IDS_INCOGNITO_PROFILE_MENU_CLOSE_BUTTON));
+   close_button_ = close_button.get();
+ 
