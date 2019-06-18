@@ -8,6 +8,7 @@
 #include <limits>
 #include <utility>
 
+#include "base/callback.h"
 #include "base/command_line.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
@@ -46,8 +47,10 @@
 #include "components/prefs/pref_service.h"
 #include "components/wifi/wifi_service.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/network_service_instance.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/common/service_manager_connection.h"
 #include "net/base/network_change_notifier.h"
 #include "net/url_request/url_fetcher.h"
@@ -64,6 +67,7 @@
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "chrome/browser/android/tab_android.h"
 #include "net/android/network_library.h"
+#include "chrome/browser/android/service_tab_launcher.h"
 #endif
 
 using brave_rewards::RewardsNotificationService;
@@ -1188,19 +1192,18 @@ void AdsServiceImpl::OnClick(Profile* profile,
   }
 
 #if defined(OS_ANDROID)
-  NavigateParams nav_params(profile, url, ui::PAGE_TRANSITION_LINK);
+  const content::OpenURLParams params (url,  content::Referrer(),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK, true);
+  base::Callback<void(content::WebContents*)> callback = base::Bind([] (content::WebContents*) {});
+  ServiceTabLauncher::GetInstance()->LaunchTab(profile_, params, callback);
 #else
   Browser* browser = chrome::FindTabbedBrowser(profile, false);
   if (!browser)
     browser = new Browser(Browser::CreateParams(profile, true));
 
   NavigateParams nav_params(browser, url, ui::PAGE_TRANSITION_LINK);
-#endif
   nav_params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   nav_params.window_action = NavigateParams::SHOW_WINDOW;
-#if defined(OS_ANDROID)
-  NotificationHelper::GetInstance()->OpenPageFromNative(notification_info->url);
-#else
   Navigate(&nav_params);
 #endif
 }
