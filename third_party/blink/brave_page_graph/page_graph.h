@@ -13,7 +13,6 @@
 #include "brave/third_party/blink/brave_page_graph/types.h"
 #include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
-#include "brave/third_party/blink/brave_page_graph/scripts/script_in_frame_query_result.h"
 
 namespace blink {
 class Document;
@@ -49,7 +48,6 @@ class PageGraph {
 friend GraphItem;
 // Needed so that edges between HTML nodes can find their siblings and parents.
 friend EdgeNodeInsert;
-friend ScriptInFrameQuerier;
  public:
   PageGraph(blink::Document& document);
   ~PageGraph();
