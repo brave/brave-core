@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/container_node.cc b/third_party/blink/renderer/core/dom/container_node.cc
-index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..0b9022411fd56b6df364824fc3e57bd2e7005eb0 100644
+index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..b057fee85e15b433eada9e86bf766aec09332852 100644
 --- a/third_party/blink/renderer/core/dom/container_node.cc
 +++ b/third_party/blink/renderer/core/dom/container_node.cc
 @@ -61,6 +61,13 @@
@@ -16,46 +16,46 @@ index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..0b9022411fd56b6df364824fc3e57bd2
  namespace blink {
  
  static void DispatchChildInsertionEvents(Node&);
-@@ -931,6 +938,39 @@ void ContainerNode::NotifyNodeInsertedInternal(
+@@ -930,6 +937,39 @@ void ContainerNode::NotifyNodeInsertedInternal(
+   EventDispatchForbiddenScope assert_no_event_dispatch;
    ScriptForbiddenScope forbid_script;
  
-   for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+    {
-+      ::brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
-+      if (page_graph != nullptr) {
-+        const NodeType node_type = node.getNodeType();
-+        const bool is_html_elm_node = (node_type == kElementNode ||
-+            node_type == kDocumentFragmentNode ||
-+            node_type == kDocumentTypeNode);
-+        const bool is_html_text_node = (is_html_elm_node == false &&
-+            (node_type == kTextNode || node_type == kCommentNode));
++  {
++    ::brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
++    if (page_graph != nullptr) {
++      const NodeType node_type = root.getNodeType();
++      const bool is_html_elm_node = (node_type == kElementNode ||
++          node_type == kDocumentFragmentNode ||
++          node_type == kDocumentTypeNode);
++      const bool is_html_text_node = (is_html_elm_node == false &&
++          (node_type == kTextNode || node_type == kCommentNode));
 +
-+        if (is_html_elm_node || is_html_text_node) {
-+          const DOMNodeId node_id = DOMNodeIds::IdForNode(&node);
-+          Node* const parent = node.parentNode();
-+          const DOMNodeId parent_node_id = (parent && parent->IsElementNode())
-+            ? DOMNodeIds::IdForNode(parent)
-+            : 0;
-+          Node* const sibling = node.previousSibling();
-+          const DOMNodeId sibling_node_id = (sibling)
-+            ? DOMNodeIds::IdForNode(sibling)
-+            : 0;
++      if (is_html_elm_node || is_html_text_node) {
++        const DOMNodeId node_id = DOMNodeIds::IdForNode(&root);
++        Node* const parent = root.parentNode();
++        const DOMNodeId parent_node_id = (parent && parent->IsElementNode())
++          ? DOMNodeIds::IdForNode(parent)
++          : 0;
++        Node* const sibling = root.previousSibling();
++        const DOMNodeId sibling_node_id = (sibling)
++          ? DOMNodeIds::IdForNode(sibling)
++          : 0;
 +
-+          if (is_html_elm_node) {
-+            page_graph->RegisterHTMLElementNodeInserted(
-+              node_id, parent_node_id, sibling_node_id);
-+          } else {
-+            page_graph->RegisterHTMLTextNodeInserted(
-+              node_id, parent_node_id, sibling_node_id);
-+          }
++        if (is_html_elm_node) {
++          page_graph->RegisterHTMLElementNodeInserted(
++            node_id, parent_node_id, sibling_node_id);
++        } else {
++          page_graph->RegisterHTMLTextNodeInserted(
++            node_id, parent_node_id, sibling_node_id);
 +        }
 +      }
 +    }
++  }
 +#endif
+   for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
      // As an optimization we don't notify leaf nodes when when inserting
      // into detached subtrees that are not in a shadow tree.
-     if (!isConnected() && !IsInShadowTree() && !node.IsContainerNode())
 @@ -952,6 +992,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
      // As an optimization we skip notifying Text nodes and other leaf nodes
      // of removal when they're not in the Document tree and not in a shadow root
