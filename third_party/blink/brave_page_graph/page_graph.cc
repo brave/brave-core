@@ -628,7 +628,7 @@ void PageGraph::PossiblyWriteRequestsIntoGraph(
   const RequestType request_type = request->GetRequestType();
   const InspectorId request_id = request->GetRequestId();
 
-  if (was_error) {
+  if (was_error == false) {
     const ResourceType resource_type = request->GetResourceType();
     for (Node* const requester : request->GetRequesters()) {
       const EdgeRequestStart* const start_edge = new EdgeRequestStart(this,
@@ -686,13 +686,6 @@ void PageGraph::AddNode(Node* const node) {
 void PageGraph::AddEdge(const Edge* const edge) {
   edges_.push_back(unique_ptr<const Edge>(edge));
   graph_items_.push_back(edge);
-}
-
-const NodeScript* PageGraph::NodeForScriptInFrame(const ScriptId script_id) const {
-  if (script_nodes_.count(script_id) == 0) {
-    return nullptr;
-  }
-  return script_nodes_.at(script_id);
 }
 
 NodeExtension* PageGraph::GetExtensionNode() {
