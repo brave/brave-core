@@ -21,7 +21,7 @@ class BraveEphemeralProvider : public EphemeralProvider {
                          const ContentSettingsPattern& secondary_pattern,
                          ContentSettingsType content_type,
                          const ResourceIdentifier& resource_identifier,
-                         base::Value* value) override;
+                         std::unique_ptr<base::Value>&& value) override;
 
   DISALLOW_COPY_AND_ASSIGN(BraveEphemeralProvider);
 };
