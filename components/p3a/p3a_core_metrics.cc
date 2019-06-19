@@ -93,35 +93,32 @@ void DoHistogramBravezation(base::StringPiece histogram_name,
 
   if ("Tabs.TabCount" == histogram_name) {
     int answer = 0;
-    if (0 <= sample && sample <= 1)
+    if (0 <= sample && sample <= 1) {
       answer = 0;
-    if (2 <= sample && sample <= 5)
+    } else if (2 <= sample && sample <= 5) {
       answer = 1;
-    if (6 <= sample && sample <= 10)
+    } else if (6 <= sample && sample <= 10) {
       answer = 2;
-    if (11 <= sample && sample <= 30)
+    } else if (11 <= sample && sample <= 50) {
       answer = 3;
-    if (30 <= sample && sample <= 100)
+    } else
       answer = 4;
-    if (101 <= sample)
-      answer = 5;
 
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.TabCount", answer, 5);
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.TabCount", answer, 4);
     return;
   }
 
   if ("Tabs.WindowCount" == histogram_name) {
     int answer = 0;
-    if (0 <= sample && sample <= 1)
+    if (0 <= sample && sample <= 1) {
       answer = 0;
-    if (2 <= sample && sample <= 5)
+    } else if (2 <= sample && sample <= 5) {
       answer = 1;
-    if (6 <= sample && sample <= 10)
+    } else {
       answer = 2;
-    if (11 <= sample)
-      answer = 3;
+    }
 
-    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.WindowCount", answer, 3);
+    UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.WindowCount", answer, 2);
     return;
   }
 }
@@ -227,19 +224,15 @@ void UsagePermanentState::RecordP3A() {
     base::TimeDelta total = GetTotalUsage();
     const int minutes = total.InMinutes();
     DCHECK(minutes >= 0);
-    if (0 <= minutes && minutes < 10) {
+    if (0 <= minutes && minutes < 30) {
       answer = 1;
-    } else if (10 <= minutes && minutes < 30) {
+    } else if (30 <= minutes && minutes < 5 * 60) {
       answer = 2;
-    } else if (30 <= minutes && minutes < 2 * 60) {
-      answer = 3;
-    } else if (2 * 60 <= minutes && minutes < 10 * 60) {
-      answer = 4;
     } else {
-      answer = 5;
+      answer = 3;
     }
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Uptime.BrowserOpenMinutes", answer, 5);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Uptime.BrowserOpenMinutes", answer, 3);
 }
 
 BraveUptimeTracker::BraveUptimeTracker(PrefService* local_state)
@@ -335,6 +328,10 @@ void BraveWindowsTracker::UpdateP3AValues() const {
   UMA_HISTOGRAM_ENUMERATION("Brave.Core.LastTimeIncognitoUsed",
                             get_bucket(kLastTimeIncognitoUsed),
                             WindowUsageStats::kSize);
+
+  // 0 -> Yes; 1 -> No.
+  const int tor_used = local_state_->GetTime(kLastTimeTorUsed).is_null();
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Core.TorEverUsed", tor_used, 1);
 }
 
 void SetupHistogramsBraveization() {

@@ -32,11 +32,11 @@ namespace {
 void RecordP3AHistogram(int screen_number, bool finished) {
   int answer = 0;
   if (finished) {
-    answer = 7;
+    answer = 3;
   } else {
-    answer = screen_number;
+    answer = std::min(screen_number, 2);
   }
-  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Welcome.InteractionStatus", answer, 7);
+  UMA_HISTOGRAM_EXACT_LINEAR("Brave.Welcome.InteractionStatus", answer, 3);
 }
 
 // The handler for Javascript messages for the chrome://welcome page
