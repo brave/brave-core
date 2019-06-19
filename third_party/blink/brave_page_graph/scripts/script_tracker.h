@@ -16,7 +16,7 @@
 // brave_page_graph::PageGraph objects, but is all hoisted here to keep
 // that class from getting out of control in size.
 // ---
-// The following eight maps are all used for keeping track of which
+// The following maps are all used for keeping track of which
 // script unit belongs to which page element.  Because different pieces
 // of information are available at different points in time (and processed
 // away at other points), we need this semi-convoluted system.  At
@@ -29,11 +29,6 @@
 //   3) Associate the compiled JS code with the V8 assigned "script id"
 //      (the identifer v8 uses internally for referring to each script within
 //      a context).
-// 
-// Maps used for step 1.  Maps are from node id to multiple script hashes
-// because its possible that the text of a script tag could change over time,
-// (e.g. changing the src attr of the script element to point to a new
-// URL, changing the innerText of the <script> element).
 
 namespace brave_page_graph {
 
