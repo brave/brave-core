@@ -1,0 +1,106 @@
+diff --git a/src/vm-state-inl.h b/src/vm-state-inl.h
+index d22e1abd69aeaa455836d4530214ca136cb5b63f..0eceeae49b8ad403e7c83fa48398e706ee168cc8 100644
+--- a/src/vm-state-inl.h
++++ b/src/vm-state-inl.h
+@@ -10,9 +10,74 @@
+ #include "src/simulator.h"
+ #include "src/tracing/trace-event.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <string>
++#include "src/string-stream.h"
++#include "src/frames-inl.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace v8 {
+ namespace internal {
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++inline int GetExecutingScriptId(Isolate* isolate) {
++  int script_id = 0;
++
++  ::brave_page_graph::PageGraph* page_graph = isolate->GetPageGraphInternal();
++  if (page_graph == nullptr) {
++    return script_id;
++  }
++  StackTraceFrameIterator it(isolate);
++
++  while (!it.done()) {
++    if (!it.is_javascript() && !it.is_wasm()) {
++      it.Advance();
++      continue;
++    }
++
++    JavaScriptFrame* frame = it.javascript_frame();
++    Handle<JSFunction> function(frame->function(), isolate);
++    if (function->context()->IsEvalContext()) {
++      it.Advance();
++      continue;
++    }
++
++    Object maybe_script = function->shared()->script();
++    if (!maybe_script->IsScript()) {
++      it.Advance();
++      continue;
++    }
++
++    Script script = Script::cast(maybe_script);
++    if (script.has_eval_from_shared()) {
++      it.Advance();
++      continue;
++    }
++
++    Object name_or_url = script.GetNameOrSourceURL();
++    if (name_or_url.IsString()) {
++      static size_t prev_string_len;
++      HeapStringAllocator allocator;
++      StringStream string_builder(&allocator);
++      String str = String::cast(name_or_url);
++      str.StringShortPrint(&string_builder);
++      std::string script_name = std::string(string_builder.ToCString().get());
++      if (script_name.size() != prev_string_len) {
++        prev_string_len = script_name.size();
++        page_graph->Log(script_name);
++        // String src = String::cast(script->source());
++        // page_graph->Log(std::string(src.ToCString().get()));
++      }
++    }
++    script_id = script->id();
++    break;
++  }
++  return script_id;
++}
++#endif
++
+ //
+ // VMState class implementation.  A simple stack of VM states held by the
+ // logger and partially threaded through the call stack.  States are pushed by
+@@ -68,12 +133,26 @@ ExternalCallbackScope::ExternalCallbackScope(Isolate* isolate, Address callback)
+   isolate_->set_external_callback_scope(this);
+   TRACE_EVENT_BEGIN0(TRACE_DISABLED_BY_DEFAULT("v8.runtime"),
+                      "V8.ExternalCallback");
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  const int script_id = GetExecutingScriptId(isolate);
++  if (script_id != 0) {
++    ::brave_page_graph::PageGraph* page_graph = isolate->GetPageGraphInternal();
++    page_graph->RegisterScriptExecStart(script_id);
++  }
++#endif
+ }
+ 
+ ExternalCallbackScope::~ExternalCallbackScope() {
+   isolate_->set_external_callback_scope(previous_scope_);
+   TRACE_EVENT_END0(TRACE_DISABLED_BY_DEFAULT("v8.runtime"),
+                    "V8.ExternalCallback");
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  const int script_id = GetExecutingScriptId(isolate_);
++  if (script_id != 0) {
++    ::brave_page_graph::PageGraph* page_graph = isolate_->GetPageGraphInternal();
++    page_graph->RegisterScriptExecStop(script_id);
++  }
++#endif
+ }
+ 
+ Address ExternalCallbackScope::scope_address() {

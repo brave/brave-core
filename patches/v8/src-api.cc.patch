@@ -1,0 +1,35 @@
+diff --git a/src/api.cc b/src/api.cc
+index a52fadc2eef6bcecf73c81463c3665f6313fea72..453a328353e0748125cd40ffb6369aceba2d02cf 100644
+--- a/src/api.cc
++++ b/src/api.cc
+@@ -125,6 +125,11 @@
+ #endif  // V8_TARGET_ARCH_X64
+ #endif  // V8_OS_WIN
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace v8 {
+ 
+ /*
+@@ -8934,6 +8939,18 @@ void v8::Isolate::LocaleConfigurationChangeNotification() {
+ #endif  // V8_INTL_SUPPORT
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void v8::Isolate::SetPageGraph(::brave_page_graph::PageGraph* page_graph) {
++  i::Isolate* i_isolate = reinterpret_cast<i::Isolate*>(this);
++  i_isolate->SetPageGraphInternal(page_graph);
++}
++
++::brave_page_graph::PageGraph* v8::Isolate::GetPageGraph() const {
++  const i::Isolate* i_isolate = reinterpret_cast<const i::Isolate*>(this);
++  return i_isolate->GetPageGraphInternal();
++}
++#endif
++
+ // static
+ std::unique_ptr<MicrotaskQueue> MicrotaskQueue::New(Isolate* isolate,
+                                                     MicrotasksPolicy policy) {
