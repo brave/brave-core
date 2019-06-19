@@ -64,25 +64,26 @@ bool AdsRewards::SetFromDictionary(base::DictionaryValue* dictionary) {
 
   auto* ads_rewards_value = dictionary->FindKey("ads_rewards");
   if (!ads_rewards_value || !ads_rewards_value->is_dict()) {
+    Update();
     return false;
   }
 
   base::DictionaryValue* ads_rewards_dictionary;
   if (!ads_rewards_value->GetAsDictionary(&ads_rewards_dictionary)) {
+    Update();
     return false;
   }
 
-  if (!ad_grants_->SetFromDictionary(ads_rewards_dictionary)) {
-    return false;
-  }
+  auto success = true;
 
-  if (!payments_->SetFromDictionary(ads_rewards_dictionary)) {
-    return false;
+  if (!ad_grants_->SetFromDictionary(ads_rewards_dictionary) ||
+      !payments_->SetFromDictionary(ads_rewards_dictionary)) {
+    success = false;
   }
 
   Update();
 
-  return true;
+  return success;
 }
 
 bool AdsRewards::OnTimer(const uint32_t timer_id) {
