@@ -16,6 +16,7 @@ SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse*, ModelTypeSet*,
                               std::unique_ptr<brave_sync::RecordsList>);
 }   // namespace
 }   // namespace syncer
+
 #include "../../../../../components/sync/engine_impl/get_updates_processor.cc"    // NOLINT
 #include "base/base64.h"
 #include "base/strings/string_number_conversions.h"

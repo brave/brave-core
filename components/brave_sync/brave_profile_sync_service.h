@@ -97,16 +97,15 @@ class BraveProfileSyncService : public syncer::ProfileSyncService,
   BraveSyncClient* GetBraveSyncClient() override;
 #endif
 
-  bool IsBraveSyncEnabled() const override;
+  bool IsBraveSyncEnabled() const;
   bool IsBraveSyncInitialized() const;
   bool IsBraveSyncConfigured() const;
 
   syncer::ModelTypeSet GetPreferredDataTypes() const override;
 
-  // syncer::SyncEngineHost implementation
-  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override;
+  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list);
   void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
-                       base::WaitableEvent* wevent) override;
+                       base::WaitableEvent* wevent);
 
  private:
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);

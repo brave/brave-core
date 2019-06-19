@@ -1,33 +1,12 @@
 diff --git a/components/sync/engine_impl/sync_scheduler_impl.h b/components/sync/engine_impl/sync_scheduler_impl.h
-index 4bab39098da187109f291f1c0ab03fd0cc34d326..db1bfdfcc4470f1aeb41ae7d37f02dd9271e25f9 100644
+index 4bab39098da187109f291f1c0ab03fd0cc34d326..c29568b405112bab3b74be98a8855d4b5817943c 100644
 --- a/components/sync/engine_impl/sync_scheduler_impl.h
 +++ b/components/sync/engine_impl/sync_scheduler_impl.h
-@@ -79,6 +79,10 @@ class SyncSchedulerImpl : public SyncScheduler {
-   void OnReceivedGuRetryDelay(const base::TimeDelta& delay) override;
-   void OnReceivedMigrationRequest(ModelTypeSet types) override;
- 
-+  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override;
-+  void OnPollSyncCycle(brave_sync::GetRecordsCallback cb, base::WaitableEvent* wevent) override;
-+  void SetNudgeAndPollDelegate(brave_sync::NudgeSyncCycleDelegate, brave_sync::PollSyncCycleDelegate) override;
-+
-   bool IsGlobalThrottle() const;
-   bool IsGlobalBackoff() const;
- 
-@@ -177,6 +181,7 @@ class SyncSchedulerImpl : public SyncScheduler {
-   // current thread. In the future it will request access token here.
-   void TrySyncCycleJob();
-   void TrySyncCycleJobImpl();
-+  void TryBraveSyncCycleJob();
- 
-   // Transitions out of the THROTTLED WaitInterval then calls TryCanaryJob().
-   // This function is for global throttling.
-@@ -281,6 +286,9 @@ class SyncSchedulerImpl : public SyncScheduler {
+@@ -281,6 +281,7 @@ class SyncSchedulerImpl : public SyncScheduler {
    // Used to prevent changing nudge delays by the server in integration tests.
    bool force_short_nudge_delay_for_test_ = false;
  
-+  brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function_;
-+  brave_sync::PollSyncCycleDelegate poll_sync_cycle_delegate_function_;
-+
++  BRAVE_SYNC_SCHEDULER_IMPL_H
    SEQUENCE_CHECKER(sequence_checker_);
  
    base::WeakPtrFactory<SyncSchedulerImpl> weak_ptr_factory_;

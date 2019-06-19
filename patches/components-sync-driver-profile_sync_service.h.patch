@@ -1,24 +1,12 @@
 diff --git a/components/sync/driver/profile_sync_service.h b/components/sync/driver/profile_sync_service.h
-index 3df5ee21f6ec37c5915607ec9196909c62545572..c7daf0437953e1b795f030cb5a3ccf560d9c1ba3 100644
+index 3df5ee21f6ec37c5915607ec9196909c62545572..1688bb856998a4883e71e6ba4a967d6a90a75078 100644
 --- a/components/sync/driver/profile_sync_service.h
 +++ b/components/sync/driver/profile_sync_service.h
-@@ -257,7 +257,10 @@ class ProfileSyncService : public SyncService,
+@@ -500,6 +500,7 @@ class ProfileSyncService : public SyncService,
  
-   SyncClient* GetSyncClientForTest();
+   base::WeakPtrFactory<ProfileSyncService> weak_factory_;
  
-+  virtual bool IsBraveSyncEnabled() const;
-+
-  private:
-+  friend class brave_sync::BraveProfileSyncService;
-   friend class TestProfileSyncService;
++  BRAVE_PROFILE_SYNC_SERVICE_H
+   DISALLOW_COPY_AND_ASSIGN(ProfileSyncService);
+ };
  
-   // Passed as an argument to StopImpl to control whether or not the sync
-@@ -268,6 +271,8 @@ class ProfileSyncService : public SyncService,
-     CLEAR_DATA,
-   };
- 
-+  void BraveEngineParamsInit(syncer::SyncEngine::InitParams*);
-+
-   enum UnrecoverableErrorReason {
-     ERROR_REASON_UNSET,
-     ERROR_REASON_SYNCER,

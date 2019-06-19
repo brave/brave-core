@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "../../../../../components/sync/engine_impl/sync_manager_impl.cc"    // NOLINT
-#include "brave/components/brave_sync/jslib_messages.h"
+#include "components/sync/engine_impl/sync_scheduler_impl.h"
 
-namespace syncer {
+#define BRAVE_SYNC_MANAGER_IMPL_INIT \
+  static_cast<SyncSchedulerImpl*>(scheduler_.get()) \
+      ->nudge_sync_cycle_delegate_function_ = \
+          args->nudge_sync_cycle_delegate_function; \
+  static_cast<SyncSchedulerImpl*>(scheduler_.get()) \
+      ->poll_sync_cycle_delegate_function_ = \
+          args->poll_sync_cycle_delegate_function;
 
-void SyncManagerImpl::BraveInit(InitArgs* args) {
-  DCHECK(args);
-  scheduler_->SetNudgeAndPollDelegate(args->nudge_sync_cycle_delegate_function,
-                                      args->poll_sync_cycle_delegate_function);
-}
-
-}  // namespace syncer
+#include "../../../../../components/sync/engine_impl/sync_manager_impl.cc"  // NOLINT
+#undef BRAVE_SYNC_MANAGER_IMPL_INIT

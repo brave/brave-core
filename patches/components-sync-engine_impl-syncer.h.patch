@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine_impl/syncer.h b/components/sync/engine_impl/syncer.h
-index 23b389eada81c850c3a8856678d046e599a060da..add8bd72373425029cef6cec03d1e5787afbc2c6 100644
+index 23b389eada81c850c3a8856678d046e599a060da..48654f4c09558ea4d0ac246ebe16178019b30a0e 100644
 --- a/components/sync/engine_impl/syncer.h
 +++ b/components/sync/engine_impl/syncer.h
 @@ -32,7 +32,7 @@ class SyncCycle;
@@ -11,23 +11,11 @@ index 23b389eada81c850c3a8856678d046e599a060da..add8bd72373425029cef6cec03d1e578
   public:
    explicit Syncer(CancelationSignal* cancelation_signal);
    virtual ~Syncer();
-@@ -69,6 +69,8 @@ class Syncer {
-   // otherwise.
-   virtual bool PollSyncShare(ModelTypeSet request_types, SyncCycle* cycle);
- 
-+  void DownloadBraveRecords(SyncCycle* cycle);
-+
-  private:
-   bool DownloadAndApplyUpdates(ModelTypeSet* request_types,
-                                SyncCycle* cycle,
-@@ -89,6 +91,10 @@ class Syncer {
-   bool HandleCycleEnd(SyncCycle* cycle,
-                       sync_pb::SyncEnums::GetUpdatesOrigin origin);
- 
-+  void OnGetRecords(std::unique_ptr<brave_sync::RecordsList> records);
-+
-+  std::unique_ptr<brave_sync::RecordsList> brave_records_;
-+
-   CancelationSignal* const cancelation_signal_;
- 
+@@ -94,6 +94,7 @@ class Syncer {
    // Whether the syncer is in the middle of a sync attempt.
+   bool is_syncing_;
+ 
++  BRAVE_SYNCER_H
+   DISALLOW_COPY_AND_ASSIGN(Syncer);
+ };
+ 

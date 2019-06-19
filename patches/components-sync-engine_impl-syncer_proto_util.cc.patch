@@ -1,0 +1,20 @@
+diff --git a/components/sync/engine_impl/syncer_proto_util.cc b/components/sync/engine_impl/syncer_proto_util.cc
+index 6706d0225207d266b1ed74cc712462052b3180a6..0a15430c4ab9ec03b1e3a706de3dd7873da83389 100644
+--- a/components/sync/engine_impl/syncer_proto_util.cc
++++ b/components/sync/engine_impl/syncer_proto_util.cc
+@@ -431,6 +431,7 @@ base::TimeDelta SyncerProtoUtil::GetThrottleDelay(
+ void SyncerProtoUtil::AddRequiredFieldsToClientToServerMessage(
+     const SyncCycle* cycle,
+     sync_pb::ClientToServerMessage* msg) {
++  return;
+   DCHECK(msg);
+   SetProtocolVersion(msg);
+   AddRequestBirthday(cycle->context()->directory(), msg);
+@@ -447,6 +448,7 @@ SyncerError SyncerProtoUtil::PostClientToServerMessage(
+     ClientToServerResponse* response,
+     SyncCycle* cycle,
+     ModelTypeSet* partial_failure_data_types) {
++  return SyncerError(SyncerError::SYNCER_OK);
+   DCHECK(response);
+   DCHECK(msg.has_protocol_version());
+   DCHECK(msg.has_store_birthday() || !IsBirthdayRequired(msg));

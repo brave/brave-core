@@ -20,7 +20,12 @@ SyncerError PostBraveCommit(sync_pb::ClientToServerMessage* message,
 
 }   // namespace syncer
 
+#define BRAVE_COMMIT_POST_AND_PROCESS_RESPONSE \
+PostBraveCommit(&message_, &response, cycle);
+
 #include "../../../../../components/sync/engine_impl/commit.cc"   // NOLINT
+#undef BRAVE_COMMIT_POST_AND_PROCESS_RESPONSE
+
 #include "base/base64.h"
 #include "brave/components/brave_sync/jslib_const.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"

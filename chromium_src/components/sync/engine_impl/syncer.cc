@@ -23,7 +23,7 @@ void Syncer::DownloadBraveRecords(SyncCycle* cycle) {
   // syncer will be alive as long as sync is enabled
   brave_records_.reset();
   brave_sync::GetRecordsCallback on_get_records =
-    base::BindRepeating(&Syncer::OnGetRecords, AsWeakPtr());
+      base::BindRepeating(&Syncer::OnGetRecords, AsWeakPtr());
   base::WaitableEvent wevent;
   cycle->delegate()->OnPollSyncCycle(on_get_records, &wevent);
   // Make sure OnGetRecords will be the next task on sync thread
