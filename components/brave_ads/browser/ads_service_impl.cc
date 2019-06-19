@@ -261,7 +261,7 @@ std::vector<ads::AdInfo> GetAdsForCategoryOnFileTaskRunner(
 
 bool ResetOnFileTaskRunner(
     const base::FilePath& path) {
-  return base::DeleteFile(path, false);
+  return base::DeleteFile(path, base::DirectoryExists(path));
 }
 
 bool SaveBundleStateOnFileTaskRunner(
@@ -1065,6 +1065,21 @@ void AdsServiceImpl::Reset(const std::string& name,
       base::BindOnce(&AdsServiceImpl::OnReset,
                      AsWeakPtr(),
                      std::move(callback)));
+}
+
+void AdsServiceImpl::ResetTheWholeState(const base::Callback<void(bool)>& callback) {
+  SetAdsEnabled(false);
+  base::PostTaskAndReplyWithResult(
+      file_task_runner_.get(), FROM_HERE,
+      base::BindOnce(&ResetOnFileTaskRunner,
+                     base_path_),
+      base::BindOnce(&AdsServiceImpl::OnResetTheWholeState,
+                     AsWeakPtr(), std::move(callback)));
+}
+
+void AdsServiceImpl::OnResetTheWholeState(base::Callback<void(bool)> callback,
+                                 bool success) {
+  callback.Run(success);
 }
 
 void AdsServiceImpl::OnReset(const ads::OnResetCallback& callback,
