@@ -47,6 +47,44 @@ void AdsRewards::Fetch(const WalletInfo& wallet_info) {
   GetPaymentBalance();
 }
 
+base::Value AdsRewards::GetAsDictionary() {
+  base::Value dictionary(base::Value::Type::DICTIONARY);
+
+  auto grants_balance = ad_grants_->GetBalance();
+  dictionary.SetKey("grants_balance", base::Value(grants_balance));
+
+  auto payments = payments_->GetAsList();
+  dictionary.SetKey("payments", base::Value(std::move(payments)));
+
+  return dictionary;
+}
+
+bool AdsRewards::SetFromDictionary(base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  auto* ads_rewards_value = dictionary->FindKey("ads_rewards");
+  if (!ads_rewards_value || !ads_rewards_value->is_dict()) {
+    return false;
+  }
+
+  base::DictionaryValue* ads_rewards_dictionary;
+  if (!ads_rewards_value->GetAsDictionary(&ads_rewards_dictionary)) {
+    return false;
+  }
+
+  if (!ad_grants_->SetFromDictionary(ads_rewards_dictionary)) {
+    return false;
+  }
+
+  if (!payments_->SetFromDictionary(ads_rewards_dictionary)) {
+    return false;
+  }
+
+  Update();
+
+  return true;
+}
+
 bool AdsRewards::OnTimer(const uint32_t timer_id) {
   BLOG(INFO) << "OnTimer: " << std::endl
       << "  timer_id: " << std::to_string(timer_id) << std::endl
@@ -116,7 +154,7 @@ void AdsRewards::OnGetPaymentBalance(
     return;
   }
 
-  if (!payments_->ParseJson(response)) {
+  if (!payments_->SetFromJson(response)) {
     BLOG(ERROR) << "Failed to parse payment balance: " << response;
     OnAdsRewards(FAILED);
     return;
@@ -173,7 +211,7 @@ void AdsRewards::OnGetAdGrants(
     return;
   }
 
-  if (!ad_grants_->ParseJson(response)) {
+  if (!ad_grants_->SetFromJson(response)) {
     BLOG(ERROR) << "Failed to parse ad grants: " << response;
     OnAdsRewards(FAILED);
     return;
@@ -246,7 +284,7 @@ void AdsRewards::Update() {
   uint64_t next_payment_date_in_seconds = next_payment_date.ToDoubleT();
 
   auto ad_notifications_received_this_month =
-      payments_->GetTransactionCountForThisMonth();
+      payments_->GetTransactionCountForMonth(now);
 
   confirmations_->UpdateAdsRewards(estimated_pending_rewards,
       next_payment_date_in_seconds, ad_notifications_received_this_month);

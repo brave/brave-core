@@ -28,7 +28,7 @@ Payments::~Payments() {
   BLOG(INFO) << "Deinitializing payments";
 }
 
-bool Payments::ParseJson(const std::string& json) {
+bool Payments::SetFromJson(const std::string& json) {
   base::Optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_list()) {
     return false;
@@ -42,6 +42,75 @@ bool Payments::ParseJson(const std::string& json) {
   payments_ = GetPaymentsFromList(list);
 
   return true;
+}
+
+bool Payments::SetFromDictionary(base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  auto* value = dictionary->FindKey("payments");
+  if (!value || !value->is_list()) {
+    return false;
+  }
+
+  std::vector<PaymentInfo> payments;
+
+  base::ListValue list_value(value->GetList());
+  for (auto& value : list_value) {
+    base::DictionaryValue* dictionary;
+    if (!value.GetAsDictionary(&dictionary)) {
+      return false;
+    }
+
+    PaymentInfo payment;
+
+    // Balance
+    auto* balance_value = dictionary->FindKey("balance");
+    if (!balance_value || !balance_value->is_double()) {
+      return false;
+    }
+
+    payment.balance = balance_value->GetDouble();
+
+    // Month
+    auto* month_value = dictionary->FindKey("month");
+    if (!month_value || !month_value->is_string()) {
+      return false;
+    }
+
+    payment.month = month_value->GetString();
+
+    // Transaction count
+    auto* transaction_count_value = dictionary->FindKey("transaction_count");
+    if (!transaction_count_value || !transaction_count_value->is_string()) {
+      return false;
+    }
+
+    payment.transaction_count =
+        std::stoull(transaction_count_value->GetString());
+
+    payments.push_back(payment);
+  }
+
+  payments_ = payments;
+
+  return true;
+}
+
+base::Value Payments::GetAsList() {
+  base::Value list(base::Value::Type::LIST);
+
+  for (const auto& payment : payments_) {
+    base::Value dictionary(base::Value::Type::DICTIONARY);
+
+    dictionary.SetKey("balance", base::Value(payment.balance));
+    dictionary.SetKey("month", base::Value(payment.month));
+    dictionary.SetKey("transaction_count",
+        base::Value(std::to_string(payment.transaction_count)));
+
+    list.GetList().push_back(std::move(dictionary));
+  }
+
+  return list;
 }
 
 double Payments::GetBalance() const {
@@ -63,7 +132,8 @@ base::Time Payments::CalculateNextPaymentDate(
   int month = now_exploded.month;
 
   if (now_exploded.day_of_month <= kNextPaymentDay) {
-    if (HasPendingBalanceForLastMonth()) {
+    auto previous_month = GetPreviousTransactionMonth(time);
+    if (HasPendingBalanceForTransactionMonth(previous_month)) {
       // If last month has a pending balance, then the next payment date will
       // occur this month
     } else {
@@ -72,7 +142,8 @@ base::Time Payments::CalculateNextPaymentDate(
       month++;
     }
   } else {
-    if (HasPendingBalanceForThisMonth()) {
+    auto this_month = GetTransactionMonth(time);
+    if (HasPendingBalanceForTransactionMonth(this_month)) {
       // If this month has a pending balance, then the next payment date will
       // occur next month
       month++;
@@ -114,12 +185,9 @@ base::Time Payments::CalculateNextPaymentDate(
   return next_payment_date;
 }
 
-uint64_t Payments::GetTransactionCountForThisMonth() const {
-  if (payments_.empty()) {
-    return 0;
-  }
-
-  PaymentInfo payment(payments_.front());
+uint64_t Payments::GetTransactionCountForMonth(const base::Time& time) const {
+  auto month = GetTransactionMonth(time);
+  auto payment = GetPaymentForTransactionMonth(month);
   return payment.transaction_count;
 }
 
@@ -141,6 +209,11 @@ std::vector<PaymentInfo> Payments::GetPaymentsFromList(
 
     if (!GetBalanceFromDictionary(
         dictionary, &payment.balance)) {
+      continue;
+    }
+
+    if (!GetMonthFromDictionary(
+        dictionary, &payment.month)) {
       continue;
     }
 
@@ -177,6 +250,28 @@ bool Payments::GetBalanceFromDictionary(
   return true;
 }
 
+bool Payments::GetMonthFromDictionary(
+    base::DictionaryValue* dictionary,
+    std::string* month) const {
+  DCHECK(dictionary);
+  DCHECK(month);
+
+  auto* value = dictionary->FindKey("month");
+  if (!value || !value->is_string()) {
+    return false;
+  }
+
+  auto month_value = value->GetString();
+
+  if (!re2::RE2::FullMatch(month_value, "[0-9]{4}-[0-9]{2}")) {
+    return false;
+  }
+
+  *month = month_value;
+
+  return true;
+}
+
 bool Payments::GetTransactionCountFromDictionary(
     base::DictionaryValue* dictionary,
     uint64_t* transaction_count) const {
@@ -199,12 +294,9 @@ bool Payments::GetTransactionCountFromDictionary(
   return true;
 }
 
-bool Payments::HasPendingBalanceForLastMonth() const {
-  if (payments_.size() < 2) {
-    return false;
-  }
-
-  PaymentInfo payment(payments_.at(1));
+bool Payments::HasPendingBalanceForTransactionMonth(
+    const std::string& month) const {
+  auto payment = GetPaymentForTransactionMonth(month);
   if (payment.balance == 0.0) {
     return false;
   }
@@ -212,17 +304,38 @@ bool Payments::HasPendingBalanceForLastMonth() const {
   return true;
 }
 
-bool Payments::HasPendingBalanceForThisMonth() const {
-  if (payments_.empty()) {
-    return false;
+PaymentInfo Payments::GetPaymentForTransactionMonth(
+    const std::string& month) const {
+  for (const auto& payment : payments_) {
+    if (payment.month == month) {
+      return payment;
+    }
   }
 
-  PaymentInfo payment(payments_.front());
-  if (payment.balance == 0.0) {
-    return false;
+  return PaymentInfo();
+}
+
+std::string Payments::GetTransactionMonth(const base::Time& time) const {
+  base::Time::Exploded time_exploded;
+  time.LocalExplode(&time_exploded);
+
+  return base::StringPrintf("%04d-%02d", time_exploded.year,
+      time_exploded.month);
+}
+
+std::string Payments::GetPreviousTransactionMonth(
+    const base::Time& time) const {
+  base::Time::Exploded time_exploded;
+  time.LocalExplode(&time_exploded);
+
+  time_exploded.month--;
+  if (time_exploded.month < 1) {
+    time_exploded.month += 12;
+    time_exploded.year--;
   }
 
-  return true;
+  return base::StringPrintf("%04d-%02d", time_exploded.year,
+      time_exploded.month);
 }
 
 }  // namespace confirmations

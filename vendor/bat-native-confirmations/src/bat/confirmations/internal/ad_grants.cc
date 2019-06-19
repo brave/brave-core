@@ -26,7 +26,7 @@ AdGrants::~AdGrants() {
   BLOG(INFO) << "Deinitializing ad grants";
 }
 
-bool AdGrants::ParseJson(const std::string& json) {
+bool AdGrants::SetFromJson(const std::string& json) {
   base::Optional<base::Value> value = base::JSONReader::Read(json);
   if (!value || !value->is_dict()) {
     return false;
@@ -40,6 +40,19 @@ bool AdGrants::ParseJson(const std::string& json) {
   if (!GetAmountFromDictionary(dictionary, &balance_)) {
     return false;
   }
+
+  return true;
+}
+
+bool AdGrants::SetFromDictionary(base::DictionaryValue* dictionary) {
+  DCHECK(dictionary);
+
+  auto* value = dictionary->FindKey("grants_balance");
+  if (!value || !value->is_double()) {
+    return false;
+  }
+
+  balance_ = value->GetDouble();
 
   return true;
 }
