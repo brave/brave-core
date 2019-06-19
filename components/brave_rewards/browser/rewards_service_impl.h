@@ -248,6 +248,8 @@ class RewardsServiceImpl : public RewardsService,
 
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) const override;
 
+  void FetchBalance(FetchBalanceCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
@@ -394,6 +396,10 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback,
     double amount);
+
+  void OnFetchBalance(FetchBalanceCallback callback,
+                      int32_t result,
+                      ledger::BalancePtr balance);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

@@ -13,6 +13,7 @@
 #include "base/macros.h"
 #include "base/observer_list.h"
 #include "brave/components/brave_rewards/browser/auto_contribution_props.h"
+#include "brave/components/brave_rewards/browser/balance.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
@@ -84,6 +85,9 @@ using GetShareURLCallback = base::OnceCallback<void(const std::string&)>;
 using GetPendingContributionsCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::PendingContributionInfoList>)>;
 using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
+using FetchBalanceCallback = base::OnceCallback<void(
+    int32_t,
+    std::unique_ptr<brave_rewards::Balance>)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -234,6 +238,8 @@ class RewardsService : public KeyedService {
       const std::string& type,
       const std::map<std::string, std::string>& args,
       GetShareURLCallback callback) = 0;
+
+  virtual void FetchBalance(FetchBalanceCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

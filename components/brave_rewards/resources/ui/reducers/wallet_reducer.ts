@@ -85,10 +85,6 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         state.walletInfo = action.payload.properties.wallet
         ui.walletServerProblem = false
         ui.walletCorrupted = false
-
-        if (ui.emptyWallet && state.walletInfo && state.walletInfo.balance > 0) {
-          ui.emptyWallet = false
-        }
       }
 
       state = {
@@ -129,20 +125,20 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     case types.ON_RECOVER_WALLET_DATA: {
       state = { ...state }
       const result = action.payload.properties.result
-      const balance = action.payload.properties.balance
       const grants = action.payload.properties.grants
       let ui = state.ui
       let walletInfo = state.walletInfo
+      let balance = state.balance
 
       // TODO NZ check why enum can't be used inside Rewards namespace
       ui.walletRecoverySuccess = result === 0
       if (result === 0) {
-        walletInfo.balance = balance
+        balance.total = action.payload.properties.balance
         walletInfo.grants = grants || []
         chrome.send('brave_rewards.getWalletPassphrase')
         chrome.send('brave_rewards.getAddresses')
         chrome.send('brave_rewards.getGrants', ['', ''])
-        ui.emptyWallet = balance <= 0
+        ui.emptyWallet = balance.total <= 0
         ui.modalBackup = false
         ui.walletCorrupted = false
       }
@@ -150,7 +146,8 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       state = {
         ...state,
         ui,
-        walletInfo
+        walletInfo,
+        balance
       }
       break
     }
@@ -264,6 +261,31 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     }
     case types.REMOVE_ALL_PENDING_CONTRIBUTION: {
       chrome.send('brave_rewards.removeAllPendingContribution')
+      break
+    }
+    case types.GET_BALANCE: {
+      chrome.send('brave_rewards.fetchBalance')
+      break
+    }
+    case types.ON_BALANCE: {
+      const status = action.payload.status
+      let ui = state.ui
+
+      if (status === 0) { // on ledger::Result::LEDGER_OK
+        state.balance = action.payload.balance
+        ui.walletServerProblem = false
+
+        if (ui.emptyWallet && state.balance && state.balance.total > 0) {
+          ui.emptyWallet = false
+        }
+      } else if (status === 1) { // on ledger::Result::LEDGER_ERROR
+        ui.walletServerProblem = true
+      }
+
+      state = {
+        ...state,
+        ui
+      }
       break
     }
   }

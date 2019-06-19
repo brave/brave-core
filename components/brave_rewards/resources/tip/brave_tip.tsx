@@ -82,6 +82,10 @@ window.cr.define('brave_rewards_tip', function () {
     getActions().onRecurringTipSaved(success)
   }
 
+  function balance (properties: {status: number, balance: RewardsTip.Balance}) {
+    getActions().onBalance(properties.status, properties.balance)
+  }
+
   return {
     initialize,
     publisherBanner,
@@ -89,7 +93,8 @@ window.cr.define('brave_rewards_tip', function () {
     recurringTips,
     reconcileStamp,
     recurringTipRemoved,
-    recurringTipSaved
+    recurringTipSaved,
+    balance
   }
 })
 

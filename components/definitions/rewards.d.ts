@@ -33,6 +33,7 @@ declare namespace Rewards {
     addresses?: Record<AddressesType, Address>
     adsData: AdsData
     autoContributeList: Publisher[]
+    balance: Balance
     connectedWallet: boolean
     contributeLoad: boolean
     contributionMinTime: number
@@ -103,11 +104,8 @@ declare namespace Rewards {
   }
 
   export interface WalletProperties {
-    balance: number
     choices: number[]
-    probi: string
     range?: number[]
-    rates?: Record<string, number>
     grants?: Grant[]
   }
 
@@ -202,5 +200,11 @@ declare namespace Rewards {
     category: RewardsCategory
     viewingId: string
     expirationDate: string
+  }
+
+  export interface Balance {
+    total: number
+    rates: Record<string, number>
+    wallets: Record<string, number>
   }
 }

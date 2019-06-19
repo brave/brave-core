@@ -485,6 +485,8 @@ class LedgerImpl : public ledger::Ledger,
 
   bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
 
+  void FetchBalance(ledger::FetchBalanceCallback callback) override;
+
  private:
   void AddRecurringPayment(const std::string& publisher_id,
                            const double& value) override;

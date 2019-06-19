@@ -219,3 +219,10 @@ export const restorePublisher = (publisherKey: string) => action(types.ON_RESTOR
 })
 
 export const getExcludedSites = () => action(types.GET_EXCLUDED_SITES)
+
+export const getBalance = () => action(types.GET_BALANCE)
+
+export const onBalance = (status: number, balance: Rewards.Balance) => action(types.ON_BALANCE, {
+  status,
+  balance
+})

@@ -64,13 +64,6 @@ void ExtensionRewardsServiceObserver::OnWalletProperties(
   if (event_router && wallet_properties) {
     extensions::api::brave_rewards::OnWalletProperties::Properties properties;
 
-    properties.probi = wallet_properties->probi;
-    properties.balance = wallet_properties->balance;
-    properties.rates.btc = wallet_properties->rates["BTC"];
-    properties.rates.eth = wallet_properties->rates["ETH"];
-    properties.rates.usd = wallet_properties->rates["USD"];
-    properties.rates.eur = wallet_properties->rates["EUR"];
-
     for (size_t i = 0; i < wallet_properties->grants.size(); i ++) {
       properties.grants.push_back(
           extensions::api::brave_rewards::OnWalletProperties::Properties::
@@ -374,6 +367,31 @@ void ExtensionRewardsServiceObserver::OnPendingContributionRemoved(
   std::unique_ptr<extensions::Event> event(new extensions::Event(
       extensions::events::BRAVE_START,
       extensions::api::brave_rewards::OnPendingContributionRemoved::kEventName,
+      std::move(args)));
+  event_router->BroadcastEvent(std::move(event));
+}
+
+void ExtensionRewardsServiceObserver::OnReconcileComplete(
+    RewardsService* rewards_service,
+    unsigned int result,
+    const std::string& viewing_id,
+    int32_t category,
+    const std::string& probi) {
+  auto* event_router = extensions::EventRouter::Get(profile_);
+  if (!event_router) {
+    return;
+  }
+
+  extensions::api::brave_rewards::OnReconcileComplete::Properties properties;
+  properties.result = result;
+  properties.category = category;
+
+  std::unique_ptr<base::ListValue> args(
+      extensions::api::brave_rewards::OnReconcileComplete::Create(properties)
+          .release());
+  std::unique_ptr<extensions::Event> event(new extensions::Event(
+      extensions::events::BRAVE_START,
+      extensions::api::brave_rewards::OnReconcileComplete::kEventName,
       std::move(args)));
   event_router->BroadcastEvent(std::move(event));
 }

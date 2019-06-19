@@ -56,8 +56,7 @@ BraveProfileWriter::BraveProfileWriter(Profile* profile)
     : ProfileWriter(profile),
       task_runner_(base::CreateSequencedTaskRunnerWithTraits({
           base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      consider_for_backup_(false) {
+          base::TaskShutdownBehavior::BLOCK_SHUTDOWN})) {
 }
 
 BraveProfileWriter::~BraveProfileWriter() {
@@ -166,33 +165,6 @@ void BraveProfileWriter::OnWalletProperties(
       << "(error_code=" << error_code << ")";
     CancelWalletImport(msg.str());
     return;
-  }
-
-  // This handler will get fired periodically (until the observer
-  // is removed). A backup only needs to be done if the wallet
-  // already exists and this is the response from our request below
-  // in `BraveProfileWriter::UpdateLedger`.
-  //
-  // A more proper way to do this would be to pass a transaction ID
-  // into the original FetchWalletProperties() that also gets
-  // propagated through to this handler.
-  if (consider_for_backup_) {
-    consider_for_backup_ = false;
-    // Avoid overwriting Brave Rewards wallet if:
-    // - it existed BEFORE import happened
-    // - it has a non-zero balance
-    if (properties->balance > 0) {
-      std::ostringstream msg;
-      msg << "Brave Rewards wallet existed before import and "
-        << "has a balance of " << properties->balance << "; skipping "
-        << "Brave Payments import.";
-      CancelWalletImport(msg.str());
-      return;
-    } else {
-      LOG(INFO) << "Existing wallet does not have a balance";
-    }
-
-    BackupWallet();
   }
 }
 
@@ -315,6 +287,26 @@ void BraveProfileWriter::UpdateLedger(const BraveLedger& ledger) {
       base::Bind(&BraveProfileWriter::OnIsWalletCreated, AsWeakPtr()));
 }
 
+void BraveProfileWriter::OnFetchBalance(
+    int32_t result,
+    std::unique_ptr<brave_rewards::Balance> balance) {
+  // Avoid overwriting Brave Rewards wallet if:
+  // - it existed BEFORE import happened
+  // - it has a non-zero balance
+  if (balance->total > 0) {
+    std::ostringstream msg;
+    msg << "Brave Rewards wallet existed before import and "
+      << "has a balance of " << balance->total << "; skipping "
+      << "Brave Payments import.";
+    CancelWalletImport(msg.str());
+    return;
+  } else {
+    LOG(INFO) << "Existing wallet does not have a balance";
+  }
+
+  BackupWallet();
+}
+
 void BraveProfileWriter::OnIsWalletCreated(bool created) {
   // If a wallet doesn't exist, we need to create one (needed for RecoverWallet)
   if (!created) {
@@ -326,10 +318,12 @@ void BraveProfileWriter::OnIsWalletCreated(bool created) {
 
   // This is the only situation where a wallet may already exist and
   // (after properties are fetched) should be considered for backup.
-  consider_for_backup_ = true;
   LOG(INFO) << "Wallet exists; fetching details...";
   rewards_service_->AddObserver(this);
   rewards_service_->FetchWalletProperties();
+  rewards_service_->FetchBalance(base::BindOnce(
+          &BraveProfileWriter::OnFetchBalance,
+          AsWeakPtr()));
 }
 
 void BraveProfileWriter::UpdateReferral(const BraveReferral& referral) {

@@ -39,6 +39,8 @@ source_set("browser") {
     "recurring_donation.h",
     "rewards_internals_info.cc",
     "rewards_internals_info.h",
+    "balance.cc",
+    "balance.h",
   ]
 
   deps = [

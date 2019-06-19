@@ -148,8 +148,8 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getConversion = () => {
-    const walletInfo = this.props.rewardsData.walletInfo
-    return utils.convertBalance(walletInfo.balance.toString(), walletInfo.rates)
+    const balance = this.props.rewardsData.balance
+    return utils.convertBalance(balance.total.toString(), balance.rates)
   }
 
   getGrants = () => {
@@ -230,7 +230,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   walletAlerts = (): AlertWallet | null => {
-    const { balance } = this.props.rewardsData.walletInfo
+    const { total } = this.props.rewardsData.balance
     const {
       walletRecoverySuccess,
       walletServerProblem,
@@ -246,7 +246,7 @@ class PageWallet extends React.Component<Props, State> {
 
     if (walletRecoverySuccess) {
       return {
-        node: <><b>{getLocale('walletRestored')}</b> {getLocale('walletRecoverySuccess', { balance: balance.toString() })}</>,
+        node: <><b>{getLocale('walletRestored')}</b> {getLocale('walletRecoverySuccess', { balance: total.toString() })}</>,
         type: 'success',
         onAlertClose: () => {
           this.actions.onClearAlert('walletRecoverySuccess')
@@ -271,8 +271,8 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-    const { walletInfo, reports, pendingContributionTotal } = this.props.rewardsData
-    const { rates } = walletInfo
+    const { balance, reports, pendingContributionTotal } = this.props.rewardsData
+    const { rates } = balance
 
     let props = {}
 
@@ -306,7 +306,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   getPendingRows = (): PendingDetailRow[] => {
-    const { walletInfo, pendingContributions } = this.props.rewardsData
+    const { balance, pendingContributions } = this.props.rewardsData
     return pendingContributions.map((item: Rewards.PendingContribution) => {
       let faviconUrl = `chrome://favicon/size/48@1x/${item.url}`
       if (item.favIcon && item.verified) {
@@ -332,7 +332,7 @@ class PageWallet extends React.Component<Props, State> {
         type,
         amount: {
           tokens: item.amount.toFixed(1),
-          converted: utils.convertBalance(item.amount.toString(), walletInfo.rates)
+          converted: utils.convertBalance(item.amount.toString(), balance.rates)
         },
         date: new Date(parseInt(item.expirationDate, 10) * 1000).toLocaleDateString(),
         onRemove: () => {
@@ -352,11 +352,11 @@ class PageWallet extends React.Component<Props, State> {
       recoveryKey,
       enabledMain,
       addresses,
-      walletInfo,
+      balance,
       ui,
       pendingContributionTotal
     } = this.props.rewardsData
-    const { balance } = walletInfo
+    const { total } = balance
     const { walletRecoverySuccess, emptyWallet, modalBackup } = ui
     const addressArray = utils.getAddresses(addresses)
 
@@ -365,7 +365,7 @@ class PageWallet extends React.Component<Props, State> {
     return (
       <>
         <WalletWrapper
-          balance={balance.toFixed(1)}
+          balance={total.toFixed(1)}
           converted={utils.formatConverted(this.getConversion())}
           actions={[
             {

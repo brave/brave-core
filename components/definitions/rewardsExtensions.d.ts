@@ -1,5 +1,6 @@
 declare namespace RewardsExtension {
   interface State {
+    balance: Balance
     currentGrant?: GrantInfo
     currentNotification?: string
     enabledAC: boolean
@@ -99,9 +100,6 @@ declare namespace RewardsExtension {
   }
 
   export interface WalletProperties {
-    balance: number
-    probi: string
-    rates: Record<string, number>
     grants?: Grant[]
   }
 
@@ -150,5 +148,11 @@ declare namespace RewardsExtension {
     provider: string
     social: Record<string, string>
     verified: boolean
+  }
+
+  export interface Balance {
+    total: number
+    rates: Record<string, number>
+    wallets: Record<string, number>
   }
 }

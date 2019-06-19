@@ -70,13 +70,15 @@ struct Grant {
 };
 
 struct WalletProperties {
-  string alt_currency;
-  string probi;
-  double balance;
   double fee_amount;
-  map<string, double> rates;
   array<double> parameters_choices;
   array<double> parameters_range;
   uint32 parameters_days;
   array<Grant> grants;
+};
+
+struct Balance {
+  double total;
+  map<string, double> rates;
+  map<string, double> wallets;
 };

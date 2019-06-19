@@ -33,6 +33,7 @@ class Banner extends React.Component<Props, State> {
 
   componentDidMount () {
     this.actions.getWalletProperties()
+    this.actions.getBalance()
     this.actions.getRecurringTips()
     this.actions.getReconcileStamp()
   }
@@ -46,7 +47,7 @@ class Banner extends React.Component<Props, State> {
   }
 
   generateAmounts = () => {
-    const { walletInfo } = this.props.rewardsDonateData
+    const { balance } = this.props.rewardsDonateData
 
     let amounts = [1, 5, 10]
     const amount = this.props.publisher.amounts
@@ -57,7 +58,7 @@ class Banner extends React.Component<Props, State> {
     return amounts.map((value: number) => {
       return {
         tokens: value.toFixed(1),
-        converted: utils.convertBalance(value.toString(), walletInfo.rates),
+        converted: utils.convertBalance(value.toString(), balance.rates),
         selected: false
       }
     })
@@ -70,11 +71,11 @@ class Banner extends React.Component<Props, State> {
   }
 
   onTip = (amount: string, recurring: boolean) => {
-    const { walletInfo } = this.props.rewardsDonateData
-    const { balance } = walletInfo
+    const { balance } = this.props.rewardsDonateData
+    const { total } = balance
     const publisher = this.props.publisher
 
-    if (publisher.publisherKey && balance >= parseInt(amount, 10)) {
+    if (publisher.publisherKey && total >= parseInt(amount, 10)) {
       this.actions.onTip(publisher.publisherKey, amount, recurring)
     } else {
       // TODO return error
@@ -146,8 +147,8 @@ class Banner extends React.Component<Props, State> {
   }
 
   render () {
-    const { walletInfo } = this.props.rewardsDonateData
-    const { balance } = walletInfo
+    const { balance } = this.props.rewardsDonateData
+    const { total } = balance
 
     const tweetMetaData = this.props.tweetMetaData
     const publisher = this.props.publisher
@@ -171,7 +172,7 @@ class Banner extends React.Component<Props, State> {
         screenName={this.getScreenName(tweetMetaData)}
         provider={publisher.provider as Provider}
         recurringDonation={this.hasRecurringTip(publisher.publisherKey)}
-        balance={balance.toString() || '0'}
+        balance={total.toString() || '0'}
         bgImage={publisher.background}
         logo={logo}
         donationAmounts={this.generateAmounts()}

@@ -19,8 +19,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
         break
       }
 
-      const isEmpty = !ui || ui.emptyWallet
-
       Object.keys(properties).map((property: string) => {
         if (properties[property] !== undefined && properties[property] !== 'ui') {
           state[property] = properties[property]
@@ -28,10 +26,6 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
           ui = Object.assign(ui, properties[property])
         }
       })
-
-      if (!isEmpty) {
-        ui.emptyWallet = false
-      }
 
       state = {
         ...state,

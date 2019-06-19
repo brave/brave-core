@@ -62,6 +62,8 @@ export class Panel extends React.Component<Props, State> {
       })
     }
 
+    this.getBalance()
+    this.actions.getGrants()
     this.actions.getWalletProperties()
     this.actions.getCurrentReport()
 
@@ -85,6 +87,17 @@ export class Panel extends React.Component<Props, State> {
         publisherKey: null
       })
     }
+
+    if (!prevProps.rewardsPanelData.enabledMain && this.props.rewardsPanelData.enabledMain) {
+      this.getBalance()
+      this.actions.getGrants()
+    }
+  }
+
+  getBalance () {
+    chrome.braveRewards.fetchBalance((balance: RewardsExtension.Balance) => {
+      this.actions.onBalance(balance)
+    })
   }
 
   componentWillUnmount () {
@@ -164,8 +177,8 @@ export class Panel extends React.Component<Props, State> {
   }
 
   getWalletSummary = () => {
-    const { walletProperties, report } = this.props.rewardsPanelData
-    const { rates } = walletProperties
+    const { balance, report } = this.props.rewardsPanelData
+    const { rates } = balance
 
     let props = {}
 
@@ -404,7 +417,7 @@ export class Panel extends React.Component<Props, State> {
 
   generateAmounts = (publisher?: RewardsExtension.Publisher) => {
     const { tipAmounts } = this.props.rewardsPanelData
-    const { rates } = this.props.rewardsPanelData.walletProperties
+    const { rates } = this.props.rewardsPanelData.balance
 
     const publisherKey = publisher && publisher.publisher_key
     const initialAmounts = (
@@ -484,9 +497,10 @@ export class Panel extends React.Component<Props, State> {
 
   render () {
     const { pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
-    const { balance, rates, grants } = this.props.rewardsPanelData.walletProperties
+    const { total, rates } = this.props.rewardsPanelData.balance
+    const { grants } = this.props.rewardsPanelData.walletProperties
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
-    const converted = utils.convertBalance(balance.toString(), rates)
+    const converted = utils.convertBalance(total.toString(), rates)
     const notification = this.getNotification()
     const notificationId = this.getNotificationProp('id', notification)
     const notificationType = this.getNotificationProp('type', notification)
@@ -521,7 +535,7 @@ export class Panel extends React.Component<Props, State> {
         compact={true}
         contentPadding={false}
         gradientTop={this.gradientColor}
-        balance={balance.toFixed(1)}
+        balance={total.toFixed(1)}
         converted={utils.formatConverted(converted)}
         actions={[
           {

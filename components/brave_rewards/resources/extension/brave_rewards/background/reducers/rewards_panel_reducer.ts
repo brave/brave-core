@@ -433,6 +433,11 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
 
       break
     }
+    case types.ON_BALANCE: {
+      state = { ...state }
+      state.balance = payload.balance
+      break
+    }
   }
   return state
 }

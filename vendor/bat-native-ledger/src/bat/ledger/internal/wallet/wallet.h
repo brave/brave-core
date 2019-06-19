@@ -29,6 +29,10 @@ class Recover;
 }
 
 namespace braveledger_wallet {
+class Balance;
+}
+
+namespace braveledger_wallet {
 
 class Wallet {
  public:
@@ -49,6 +53,8 @@ class Wallet {
 
   void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback);
 
+  void FetchBalance(ledger::FetchBalanceCallback callback);
+
  private:
   void WalletPropertiesCallback(
       int response_status_code,
@@ -65,6 +71,7 @@ class Wallet {
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Create> create_;
   std::unique_ptr<Recover> recover_;
+  std::unique_ptr<Balance> balance_;
 };
 
 }  // namespace braveledger_wallet

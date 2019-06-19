@@ -131,6 +131,10 @@ class RewardsDOMHandler : public WebUIMessageHandler,
     std::unique_ptr<brave_rewards::PendingContributionInfoList> list);
   void RemovePendingContribution(const base::ListValue* args);
   void RemoveAllPendingContributions(const base::ListValue* args);
+  void FetchBalance(const base::ListValue* args);
+  void OnFetchBalance(
+    int32_t result,
+    std::unique_ptr<brave_rewards::Balance> balance);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -328,6 +332,9 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.getExcludedSites",
       base::BindRepeating(&RewardsDOMHandler::GetExcludedSites,
       base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.fetchBalance",
+      base::BindRepeating(&RewardsDOMHandler::FetchBalance,
+      base::Unretained(this)));
 }
 
 void RewardsDOMHandler::Init() {
@@ -421,23 +428,11 @@ void RewardsDOMHandler::OnGetAutoContributeProps(
     values.SetBoolean("contributionVideos",
         auto_contri_props->contribution_videos);
 
-    auto ui_values = std::make_unique<base::DictionaryValue>();
-
     base::DictionaryValue result;
     result.SetInteger("status", error_code);
     auto walletInfo = std::make_unique<base::DictionaryValue>();
 
     if (error_code == 0 && wallet_properties) {
-      walletInfo->SetDouble("balance", wallet_properties->balance);
-      walletInfo->SetString("probi", wallet_properties->probi);
-      ui_values->SetBoolean("emptyWallet", (wallet_properties->balance == 0));
-
-      auto rates = std::make_unique<base::DictionaryValue>();
-      for (auto const& rate : wallet_properties->rates) {
-        rates->SetDouble(rate.first, rate.second);
-      }
-      walletInfo->SetDictionary("rates", std::move(rates));
-
       auto choices = std::make_unique<base::ListValue>();
       for (double const& choice : wallet_properties->parameters_choices) {
         choices->AppendDouble(choice);
@@ -463,7 +458,6 @@ void RewardsDOMHandler::OnGetAutoContributeProps(
       result.SetDouble("monthlyAmount", wallet_properties->monthly_amount);
     }
 
-    values.SetDictionary("ui", std::move(ui_values));
     // TODO(Nejc Zdovc): this needs to be moved out of this flow, because now we
     // set this values every minute
     web_ui()->CallJavascriptFunctionUnsafe(
@@ -867,9 +861,15 @@ void RewardsDOMHandler::OnReconcileComplete(
     const std::string& viewing_id,
     int32_t category,
     const std::string& probi) {
+  if (web_ui()->CanCallJavascript()) {
+    base::DictionaryValue complete;
+    complete.SetKey("result", base::Value(static_cast<int>(result)));
+    complete.SetKey("category", base::Value(category));
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.reconcileComplete",
+                                           complete);
+  }
   GetAllBalanceReports();
-  OnContentSiteUpdated(rewards_service);
-  GetReconcileStamp(nullptr);
 }
 
 void RewardsDOMHandler::RemoveRecurringTip(const base::ListValue *args) {
@@ -1241,6 +1241,44 @@ void RewardsDOMHandler::OnPendingContributionRemoved(
   if (web_ui()->CanCallJavascript()) {
     web_ui()->CallJavascriptFunctionUnsafe(
         "brave_rewards.onRemovePendingContribution", base::Value(result));
+  }
+}
+
+void RewardsDOMHandler::OnFetchBalance(
+    int32_t result,
+    std::unique_ptr<brave_rewards::Balance> balance) {
+  if (web_ui()->CanCallJavascript()) {
+    base::DictionaryValue data;
+    data.SetIntKey("status", result);
+    base::Value balance_value(base::Value::Type::DICTIONARY);
+
+    if (result == 0 && balance) {
+      balance_value.SetDoubleKey("total", balance->total);
+
+      base::Value rates(base::Value::Type::DICTIONARY);
+      for (auto const& rate : balance->rates) {
+        rates.SetDoubleKey(rate.first, rate.second);
+      }
+      balance_value.SetKey("rates", std::move(rates));
+
+      base::Value wallets(base::Value::Type::DICTIONARY);
+      for (auto const& wallet : balance->wallets) {
+        wallets.SetDoubleKey(wallet.first, wallet.second);
+      }
+      balance_value.SetKey("wallets", std::move(wallets));
+
+      data.SetKey("balance", std::move(balance_value));
+    }
+
+    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.balance", data);
+  }
+}
+
+void RewardsDOMHandler::FetchBalance(const base::ListValue* args) {
+  if (rewards_service_) {
+    rewards_service_->FetchBalance(base::BindOnce(
+          &RewardsDOMHandler::OnFetchBalance,
+          weak_factory_.GetWeakPtr()));
   }
 }
 

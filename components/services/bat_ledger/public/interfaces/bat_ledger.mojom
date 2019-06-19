@@ -145,6 +145,8 @@ interface BatLedger {
   RemoveAllPendingContributions() => (int32 result);
 
   GetPendingContributionsTotal() => (double amount);
+
+  FetchBalance() => (int32 result, ledger.mojom.Balance balance);
 };
 
 interface BatLedgerClient {

@@ -162,6 +162,9 @@ class MockRewardsService : public RewardsService {
 
   MOCK_METHOD1(GetPendingContributionsTotalUI, void(
     const brave_rewards::GetPendingContributionsTotalCallback& callback));
+
+  MOCK_METHOD1(FetchBalance, void(
+      brave_rewards::FetchBalanceCallback callback));
 };
 
 class AdsServiceTest : public testing::Test {

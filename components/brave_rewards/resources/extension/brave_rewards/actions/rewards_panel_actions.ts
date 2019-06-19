@@ -146,3 +146,7 @@ export const onAllNotifications = (list: RewardsExtension.Notification[]) => act
 export const init = (tabs: chrome.tabs.Tab[]) => action(types.ON_INIT, {
   tabs
 })
+
+export const onBalance = (balance: RewardsExtension.Balance) => action(types.ON_BALANCE, {
+  balance
+})

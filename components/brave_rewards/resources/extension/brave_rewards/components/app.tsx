@@ -138,17 +138,12 @@ export class RewardsPanel extends React.Component<Props, State> {
     })
   }
 
-  getGrants () {
-    this.props.actions.getGrants()
-  }
-
   onWindowCallback = (window: chrome.windows.Window) => {
     this.setState({
       windowId: window.id
     })
 
     if (this.props.rewardsPanelData.walletCreated) {
-      this.getGrants()
       this.getTabData()
     }
   }
@@ -196,11 +191,11 @@ export class RewardsPanel extends React.Component<Props, State> {
       walletCreated,
       walletCreating,
       walletProperties,
-      walletCorrupted
+      walletCorrupted,
+      balance
     } = this.props.rewardsPanelData
 
-    const { balance, grants, rates } = walletProperties
-    const converted = utils.convertBalance(balance.toString(), rates)
+    const converted = utils.convertBalance(balance.total.toString(), balance.rates)
 
     if (!walletCreated || walletCorrupted) {
       return (
@@ -227,11 +222,11 @@ export class RewardsPanel extends React.Component<Props, State> {
                 compact={true}
                 contentPadding={false}
                 gradientTop={'249,251,252'}
-                balance={balance.toFixed(1)}
+                balance={balance.total.toFixed(1)}
                 showSecActions={false}
                 connectedWallet={false}
                 showCopy={false}
-                grants={utils.getGrants(grants)}
+                grants={utils.getGrants(walletProperties.grants)}
                 converted={utils.formatConverted(converted)}
                 convertProbiToFixed={utils.convertProbiToFixed}
                 actions={[
