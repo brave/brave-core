@@ -1,23 +1,12 @@
 diff --git a/components/sync/engine/sync_engine.h b/components/sync/engine/sync_engine.h
-index e4d2ab4d38f6fffd2929277be51ec618180e0086..2a74f799277bd6bdb56875daaef1edf107790e32 100644
+index e4d2ab4d38f6fffd2929277be51ec618180e0086..b0bbfcd58c55917c98a9ce0e36a15c68524339d0 100644
 --- a/components/sync/engine/sync_engine.h
 +++ b/components/sync/engine/sync_engine.h
-@@ -87,6 +87,9 @@ class SyncEngine : public ModelTypeConfigurer {
+@@ -86,6 +86,7 @@ class SyncEngine : public ModelTypeConfigurer {
+ 
      // Define the polling interval. Must not be zero.
      base::TimeDelta poll_interval;
++    BRAVE_SYNC_ENGINE_INIT_PARAMS_H
  
-+    brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function;
-+    brave_sync::PollSyncCycleDelegate poll_sync_cycle_delegate_function;
-+
     private:
      DISALLOW_COPY_AND_ASSIGN(InitParams);
-   };
-@@ -199,6 +202,8 @@ class SyncEngine : public ModelTypeConfigurer {
-   virtual std::unique_ptr<ModelTypeControllerDelegate>
-   GetNigoriControllerDelegate() = 0;
- 
-+  virtual void DispatchGetRecordsCallback(brave_sync::GetRecordsCallback cb, std::unique_ptr<brave_sync::RecordsList> records) {}
-+
-  private:
-   DISALLOW_COPY_AND_ASSIGN(SyncEngine);
- };

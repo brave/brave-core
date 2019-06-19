@@ -65,11 +65,12 @@ source_set("prefs") {
   ]
 }
 
-source_set("syncer_export") {
+source_set("export") {
   deps = [
     ":jslib_messages",
     "buildflags",
     "//brave/common:switches",
+    "//brave/components/brave_sync:core",
   ]
 }
 

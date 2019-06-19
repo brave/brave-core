@@ -1,12 +1,12 @@
 diff --git a/components/sync/engine_impl/sync_scheduler_impl.cc b/components/sync/engine_impl/sync_scheduler_impl.cc
-index 217652eec756c9e4ff4bf7bd74a9cd481672ed1b..1f8066050f62b7d4bc882a5af2c24aec7b6999f2 100644
+index 217652eec756c9e4ff4bf7bd74a9cd481672ed1b..7e153a22dd363213f1a0091e295ec9f2d5120cea 100644
 --- a/components/sync/engine_impl/sync_scheduler_impl.cc
 +++ b/components/sync/engine_impl/sync_scheduler_impl.cc
 @@ -660,6 +660,7 @@ void SyncSchedulerImpl::TryCanaryJob() {
  }
  
  void SyncSchedulerImpl::TrySyncCycleJob() {
-+  TryBraveSyncCycleJob();
++  BRAVE_SYNC_SCHEDULER_IMPL_TRY_SYNC_CYCLE_JOB
    // Post call to TrySyncCycleJobImpl on current sequence. Later request for
    // access token will be here.
    base::SequencedTaskRunnerHandle::Get()->PostTask(

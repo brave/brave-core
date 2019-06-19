@@ -5,35 +5,67 @@
 
 #include "brave/chromium_src/components/sync/driver/profile_sync_service.h"
 
-// For use_transport_only_mode
-#define IsSyncFeatureEnabled IsBraveSyncEnabled
-#include "../../../../components/sync/driver/profile_sync_service.cc"   // NOLINT
+#include <utility>
 
 #include "base/bind.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/components/brave_sync/brave_profile_sync_service.h"
 #include "brave/components/brave_sync/jslib_messages.h"
 #include "chrome/browser/sync/chrome_sync_client.h"
 #include "content/public/browser/browser_thread.h"
 
+using brave_sync::BraveProfileSyncService;
+
 namespace syncer {
+
 const int64_t kBraveDefaultPollIntervalSeconds = 60;
 
-void ProfileSyncService::BraveEngineParamsInit(
+bool IsBraveSyncEnabled(ProfileSyncService* profile_sync_service) {
+  return static_cast<BraveProfileSyncService*>(
+      profile_sync_service)->IsBraveSyncEnabled();
+}
+
+void OnNudgeSyncCycle(base::WeakPtr<ProfileSyncService> profile_sync_service,
+                      brave_sync::RecordsListPtr records_list) {
+  if (profile_sync_service.get()) {
+    static_cast<BraveProfileSyncService*>(
+        profile_sync_service.get())->OnNudgeSyncCycle(std::move(records_list));
+  }
+}
+
+void OnPollSyncCycle(base::WeakPtr<ProfileSyncService> profile_sync_service,
+                     brave_sync::GetRecordsCallback cb,
+                     base::WaitableEvent* wevent) {
+  if (profile_sync_service.get()) {
+    static_cast<BraveProfileSyncService*>(
+        profile_sync_service.get())->OnPollSyncCycle(cb, wevent);
+  }
+}
+
+void BraveInit(
+    base::WeakPtr<ProfileSyncService> profile_sync_service,
+    SyncPrefs* sync_prefs,
     syncer::SyncEngine::InitParams* params) {
   DCHECK(params);
   params->nudge_sync_cycle_delegate_function =
-      base::BindRepeating(&ProfileSyncService::OnNudgeSyncCycle,
-                          sync_enabled_weak_factory_.GetWeakPtr());
+      base::BindRepeating(&OnNudgeSyncCycle,
+                          profile_sync_service);
   params->poll_sync_cycle_delegate_function =
-      base::BindRepeating(&ProfileSyncService::OnPollSyncCycle,
-                          sync_enabled_weak_factory_.GetWeakPtr());
+      base::BindRepeating(&OnPollSyncCycle,
+                          profile_sync_service);
 
-  sync_prefs_.SetPollInterval(
-    base::TimeDelta::FromSeconds(
-      syncer::kBraveDefaultPollIntervalSeconds));
-}
-
-bool ProfileSyncService::IsBraveSyncEnabled() const {
-  return false;
+  sync_prefs->SetPollInterval(
+      base::TimeDelta::FromSeconds(
+          syncer::kBraveDefaultPollIntervalSeconds));
 }
 
 }   // namespace syncer
+
+// avoid redefining IsSyncFeatureEnabled in header
+#include "components/sync/driver/sync_service.h"
+// For use_transport_only_mode
+#define IsSyncFeatureEnabled() IsBraveSyncEnabled(this)
+#define BRAVE_PROFILE_SYNC_SERVICE_START_UP_SLOW_ENGINE_COMPONENTS \
+BraveInit(sync_enabled_weak_factory_.GetWeakPtr(), &sync_prefs_, &params);
+
+#include "../../../../components/sync/driver/profile_sync_service.cc"   // NOLINT

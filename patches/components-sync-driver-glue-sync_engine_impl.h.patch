@@ -1,15 +1,12 @@
 diff --git a/components/sync/driver/glue/sync_engine_impl.h b/components/sync/driver/glue/sync_engine_impl.h
-index 9fce092e22ca630fa3f5efa0bc1e963a86659625..8663e3c7adebba9f631e42bd8cc966accab81e02 100644
+index 9fce092e22ca630fa3f5efa0bc1e963a86659625..7ca7b912f21558d76eafa9b392fec616b3f4056a 100644
 --- a/components/sync/driver/glue/sync_engine_impl.h
 +++ b/components/sync/driver/glue/sync_engine_impl.h
-@@ -102,6 +102,10 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
-   std::string GetOwnerName() const override;
-   void OnInvalidatorClientIdChange(const std::string& client_id) override;
+@@ -220,6 +220,7 @@ class SyncEngineImpl : public SyncEngine, public InvalidationHandler {
  
-+  void HandleNudgeSyncCycle(brave_sync::RecordsListPtr records_list);
-+  void HandlePollSyncCycle(GetRecordsCallback cb, base::WaitableEvent* wevent);
-+  void DispatchGetRecordsCallback(GetRecordsCallback cb, std::unique_ptr<RecordsList> records) override;
-+
-  protected:
-   // The types and functions below are protected so that test
-   // subclasses can use them.
+   base::WeakPtrFactory<SyncEngineImpl> weak_ptr_factory_;
+ 
++  BRAVE_SYNC_ENGINE_IMPL_H
+   DISALLOW_COPY_AND_ASSIGN(SyncEngineImpl);
+ };
+ 

@@ -1,14 +1,12 @@
 diff --git a/components/sync/engine/sync_manager.h b/components/sync/engine/sync_manager.h
-index 8dfd2480f2a7483062fe57890fd442c9b420c5a0..ae26dd17fe9cbb12298f87ef81a398b9ac239912 100644
+index 8dfd2480f2a7483062fe57890fd442c9b420c5a0..f1ddf57794fa5ca12fd58b41b693fe3cf55520b3 100644
 --- a/components/sync/engine/sync_manager.h
 +++ b/components/sync/engine/sync_manager.h
-@@ -254,6 +254,9 @@ class SyncManager {
+@@ -254,6 +254,7 @@ class SyncManager {
      std::string cache_guid;
      std::string birthday;
      std::string bag_of_chips;
-+
-+    brave_sync::NudgeSyncCycleDelegate nudge_sync_cycle_delegate_function;
-+    brave_sync::PollSyncCycleDelegate poll_sync_cycle_delegate_function;
++    BRAVE_SYNC_MANAGER_INIT_ARGS_H
    };
  
    // The state of sync the feature. If the user turned on sync explicitly, it

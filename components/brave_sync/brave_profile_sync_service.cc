@@ -176,6 +176,13 @@ void CreateResolveList(
   }
 }
 
+
+void DoDispatchGetRecordsCallback(
+    GetRecordsCallback cb,
+    std::unique_ptr<brave_sync::RecordsList> records) {
+  cb.Run(std::move(records));
+}
+
 }   // namespace
 
 BraveProfileSyncService::BraveProfileSyncService(Profile* profile,
@@ -225,6 +232,9 @@ BraveProfileSyncService::BraveProfileSyncService(Profile* profile,
 
 void BraveProfileSyncService::OnNudgeSyncCycle(
     RecordsListPtr records) {
+  if (!IsBraveSyncEnabled())
+    return;
+
   for (auto& record : *records) {
     record->deviceId = brave_sync_prefs_->GetThisDeviceId();
   }
@@ -532,7 +542,10 @@ void BraveProfileSyncService::OnResolvedSyncRecords(
   } else if (category_name == kBookmarks) {
     // Send records to syncer
     if (get_record_cb_)
-      engine_->DispatchGetRecordsCallback(get_record_cb_, std::move(records));
+      sync_thread_->task_runner()->PostTask(FROM_HERE,
+          base::BindOnce(&DoDispatchGetRecordsCallback,
+                         get_record_cb_,
+                         std::move(records)));
     SignalWaitableEvent();
   } else if (category_name == kHistorySites) {
     NOTIMPLEMENTED();
@@ -772,6 +785,9 @@ bool BraveProfileSyncService::IsBraveSyncConfigured() const {
 
 void BraveProfileSyncService::OnPollSyncCycle(GetRecordsCallback cb,
                                          base::WaitableEvent* wevent) {
+  if (!IsBraveSyncEnabled())
+    return;
+
   if (IsTimeEmpty(brave_sync_prefs_->GetLastFetchTime()))
     SendCreateDevice();
   brave_sync_client_->SendFetchSyncDevices();

@@ -1,5 +1,5 @@
 diff --git a/components/sync/engine_impl/sync_manager_impl.cc b/components/sync/engine_impl/sync_manager_impl.cc
-index 60404b7479d5d5d23b13c2aa969133c927f34ecd..121487690c3279dfad941a8b7b85fbb6099faba3 100644
+index 60404b7479d5d5d23b13c2aa969133c927f34ecd..b0ebd1c63091279c4712dd7c98a1469fd05cfabb 100644
 --- a/components/sync/engine_impl/sync_manager_impl.cc
 +++ b/components/sync/engine_impl/sync_manager_impl.cc
 @@ -359,8 +359,9 @@ void SyncManagerImpl::Init(InitArgs* args) {
@@ -9,7 +9,7 @@ index 60404b7479d5d5d23b13c2aa969133c927f34ecd..121487690c3279dfad941a8b7b85fbb6
 -      args->enable_local_sync_backend);
 +      true);
  
-+  BraveInit(args);
++  BRAVE_SYNC_MANAGER_IMPL_INIT
    scheduler_->Start(SyncScheduler::CONFIGURATION_MODE, base::Time());
  
    initialized_ = true;
