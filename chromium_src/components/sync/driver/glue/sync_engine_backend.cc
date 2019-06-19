@@ -5,18 +5,23 @@
 
 #include <utility>
 
+#include "brave/components/brave_sync/buildflags/buildflags.h"
+#include "components/sync/driver/glue/sync_engine_impl.h"
+#include "components/sync/engine/sync_engine_host.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_profile_sync_service.h"
 #include "brave/components/brave_sync/jslib_messages.h"
-#include "components/sync/driver/glue/sync_engine_impl.h"
-#include "components/sync/engine/sync_engine_host.h"
 
 using brave_sync::BraveProfileSyncService;
 using brave_sync::GetRecordsCallback;
 using brave_sync::RecordsList;
+#endif
 
 namespace syncer {
 
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
 SyncEngineHost* BraveGetSyncEngineHost(SyncEngineImpl* sync_engine) {
   return sync_engine->host_;
 }
@@ -52,9 +57,11 @@ void OnPollSyncCycle(WeakHandle<SyncEngineImpl> sync_engine_impl,
                         cb,
                         wevent);
 }
+#endif
 
 void BraveInit(WeakHandle<SyncEngineImpl> sync_engine_impl,
                SyncManager::InitArgs* args) {
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
   DCHECK(args);
   args->nudge_sync_cycle_delegate_function =
       base::BindRepeating(&OnNudgeSyncCycle,
@@ -62,6 +69,7 @@ void BraveInit(WeakHandle<SyncEngineImpl> sync_engine_impl,
   args->poll_sync_cycle_delegate_function =
       base::BindRepeating(&OnPollSyncCycle,
                           sync_engine_impl);
+#endif
 }
 
 }  // namespace syncer
