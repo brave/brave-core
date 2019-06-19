@@ -43,7 +43,7 @@ bool BravePrefProvider::SetWebsiteSetting(
     const ContentSettingsPattern& secondary_pattern,
     ContentSettingsType content_type,
     const ResourceIdentifier& resource_identifier,
-    base::Value* in_value) {
+    std::unique_ptr<base::Value>&& in_value) {
   // Flash's setting shouldn't be reached here.
   // Its content type is plugin and id is empty string.
   // One excpetion is default setting. It can be persisted.
@@ -53,9 +53,9 @@ bool BravePrefProvider::SetWebsiteSetting(
            secondary_pattern == ContentSettingsPattern::Wildcard());
   }
 
-  return PrefProvider::SetWebsiteSetting(
-      primary_pattern, secondary_pattern,
-      content_type, resource_identifier, in_value);
+  return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
+                                         content_type, resource_identifier,
+                                         std::move(in_value));
 }
 
 }  // namespace content_settings
