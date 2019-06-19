@@ -44,6 +44,8 @@ class AdsService : public KeyedService {
       const std::string& page) = 0;
   virtual void SetConfirmationsIsReady(const bool is_ready) = 0;
 
+  virtual void ResetTheWholeState(const base::Callback<void(bool)>& callback) = 0;
+
  private:
   DISALLOW_COPY_AND_ASSIGN(AdsService);
 };
