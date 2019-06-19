@@ -9,14 +9,13 @@
 #include <cmath>
 #include <memory>
 #include <utility>
-#include <bat/ledger/ledger_callback_handler.h>
 
 #include "base/time/time.h"
 #include "bat/ledger/internal/contribution/contribution.h"
 #include "bat/ledger/internal/contribution/phase_one.h"
 #include "bat/ledger/internal/contribution/phase_two.h"
 #include "bat/ledger/internal/contribution/unverified.h"
-#include "bat/ledger/internal/contribution/uphold.h"
+#include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "brave_base/random.h"
@@ -32,7 +31,6 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     phase_one_(std::make_unique<PhaseOne>(ledger, this)),
     phase_two_(std::make_unique<PhaseTwo>(ledger, this)),
     unverified_(std::make_unique<Unverified>(ledger, this)),
-    uphold_(std::make_unique<Uphold>(ledger)),
     last_reconcile_timer_id_(0u) {
 }
 
@@ -790,20 +788,20 @@ void Contribution::ProcessReconcile(
   wallet.list_ = list;
   ledger_->AddReconcile(wallet.viewingId_, wallet);
 
-  auto tokens_callback = std::bind(&Contribution::OnWalletTokens,
+  auto tokens_callback = std::bind(&Contribution::OnExternalWallets,
                                    this,
                                    wallet.viewingId_,
                                    info->wallets,
                                    _1);
 
   // Check if we have token
-  ledger_->GetWalletTokens(tokens_callback);
+  ledger_->GetExternalWallets(tokens_callback);
 }
 
-void Contribution::OnWalletTokens(
+void Contribution::OnExternalWallets(
     const std::string& viewing_id,
     base::flat_map<std::string, double> wallet_balances,
-    std::map<std::string, std::string> tokens) {
+    std::map<std::string, ledger::ExternalWallet> wallets) {
   // In this phase we only support one wallet
   // so we will just always pick uphold.
   // In the future we will allow user to pick which wallet to use via UI
@@ -813,29 +811,24 @@ void Contribution::OnWalletTokens(
                                                        wallet_balances);
   const auto reconcile = ledger_->GetReconcileById(viewing_id);
 
-  if (tokens.size() == 0 || uphold_balance < reconcile.fee_) {
+  if (wallets.size() == 0 || uphold_balance < reconcile.fee_) {
     phase_one_->Complete(ledger::Result::NOT_ENOUGH_FUNDS,
                          viewing_id,
                          reconcile.category_);
     return;
   }
 
-  std::string uphold_token;
-  for (const auto& token : tokens) {
-    if (token.first == ledger::kWalletUphold) {
-      uphold_token = token.second;
-      break;
-    }
-  }
-
-  if (uphold_token.empty()) {
+  ledger::ExternalWallet wallet =
+      braveledger_uphold::Uphold::GetWallet(wallets);
+  if (wallet.token.empty()) {
     phase_one_->Complete(ledger::Result::LEDGER_ERROR,
                          viewing_id,
                          reconcile.category_);
     return;
   }
 
-  uphold_->Start(viewing_id, uphold_token);
+  auto uphold_ = std::make_unique<braveledger_uphold::Uphold>(ledger_);
+  uphold_->StartContribution(viewing_id, wallet);
 }
 
 }  // namespace braveledger_contribution

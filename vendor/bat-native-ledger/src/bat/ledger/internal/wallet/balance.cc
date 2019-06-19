@@ -13,6 +13,7 @@
 #include "base/json/json_reader.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
+#include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
 #include "net/http/http_status_code.h"
 
@@ -22,7 +23,9 @@ using std::placeholders::_3;
 
 namespace braveledger_wallet {
 
-Balance::Balance(bat_ledger::LedgerImpl* ledger) : ledger_(ledger) {
+Balance::Balance(bat_ledger::LedgerImpl* ledger) :
+    uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
+    ledger_(ledger) {
 }
 
 Balance::~Balance() {
@@ -98,9 +101,50 @@ void Balance::OnWalletProperties(
 
   balance->wallets.insert(std::make_pair(ledger::kWalletAnonymous, total_anon));
 
-  // TODO add uphold balance call
+  // Fetch other wallets
+  auto tokens_callback = std::bind(&Balance::OnExternalWallets,
+                                   this,
+                                   *balance,
+                                   callback,
+                                   _1);
 
-  callback(ledger::Result::LEDGER_OK, std::move(balance));
+  ledger_->GetExternalWallets(tokens_callback);
+}
+
+void Balance::OnExternalWallets(
+    ledger::Balance info,
+    ledger::FetchBalanceCallback callback,
+    std::map<std::string, ledger::ExternalWallet> wallets) {
+  if (wallets.size() == 0) {
+    ledger::BalancePtr info_ptr = ledger::Balance::New(info);
+    callback(ledger::Result::LEDGER_OK, std::move(info_ptr));
+    return;
+  }
+
+  auto uphold_callback = std::bind(&Balance::OnUpholdFetchBalance,
+                                   this,
+                                   info,
+                                   callback,
+                                   _1,
+                                   _2);
+
+  uphold_->FetchBalance(wallets, uphold_callback);
+}
+
+void Balance::OnUpholdFetchBalance(ledger::Balance info,
+                                   ledger::FetchBalanceCallback callback,
+                                   ledger::Result result,
+                                   double balance) {
+  ledger::BalancePtr info_ptr = ledger::Balance::New(info);
+
+  if (result == ledger::Result::LEDGER_ERROR) {
+    callback(ledger::Result::LEDGER_ERROR, std::move(info_ptr));
+    return;
+  }
+
+  info_ptr->wallets.insert(std::make_pair(ledger::kWalletUphold, balance));
+  info_ptr->total += balance;
+  callback(ledger::Result::LEDGER_OK, std::move(info_ptr));
 }
 
 // static

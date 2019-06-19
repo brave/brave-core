@@ -14,6 +14,10 @@ namespace ledger {
 using WalletProperties = ledger::mojom::WalletProperties;
 using WalletPropertiesPtr = ledger::mojom::WalletPropertiesPtr;
 
+using ExternalWallet = ledger::mojom::ExternalWallet;
+using ExternalWalletPtr = ledger::mojom::ExternalWalletPtr;
+
+
 }  // namespace ledger
 
 #endif  // BAT_LEDGER_WALLET_PROPERTIES_HANDLER_

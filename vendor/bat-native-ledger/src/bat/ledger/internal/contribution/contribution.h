@@ -95,10 +95,6 @@ class Unverified;
 }
 
 namespace braveledger_contribution {
-class Uphold;
-}
-
-namespace braveledger_contribution {
 
 static const uint64_t phase_one_timers[] = {
     1 * 60 * 60,  // 1h
@@ -254,16 +250,15 @@ class Contribution {
     double budget,
     ledger::BalancePtr info);
 
-  void OnWalletTokens(
+  void OnExternalWallets(
       const std::string& viewing_id,
       base::flat_map<std::string, double> wallet_balances,
-      std::map<std::string, std::string> tokens);
+      std::map<std::string, ledger::ExternalWallet> wallets);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PhaseOne> phase_one_;
   std::unique_ptr<PhaseTwo> phase_two_;
   std::unique_ptr<Unverified> unverified_;
-  std::unique_ptr<Uphold> uphold_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
 

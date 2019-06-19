@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_CONTRIBUTION_UPHOLD_H_
-#define BRAVELEDGER_CONTRIBUTION_UPHOLD_H_
+#ifndef BRAVELEDGER_UPHOLD_UPHOLD_CONTRIBUTION_H_
+#define BRAVELEDGER_UPHOLD_UPHOLD_CONTRIBUTION_H_
 
 #include <string>
 
@@ -14,19 +14,19 @@ namespace bat_ledger {
 class LedgerImpl;
 }
 
-namespace braveledger_contribution {
+namespace braveledger_uphold {
 
-class Uphold {
+class UpholdContribution {
  public:
-  explicit Uphold(bat_ledger::LedgerImpl* ledger);
+  explicit UpholdContribution(bat_ledger::LedgerImpl* ledger);
 
-  ~Uphold();
-  void Start(const std::string &viewing_id, const std::string& token);
+  ~UpholdContribution();
+  void Start(const std::string &viewing_id, ledger::ExternalWallet wallet);
 
  private:
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 
-}  // namespace braveledger_contribution
-#endif  // BRAVELEDGER_CONTRIBUTION_UPHOLD_H_
+}  // namespace braveledger_uphold
+#endif  // BRAVELEDGER_UPHOLD_UPHOLD_CONTRIBUTION_H_

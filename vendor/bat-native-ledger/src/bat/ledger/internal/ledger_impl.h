@@ -489,7 +489,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
-  void GetWalletTokens(ledger::GetWalletTokensCallback callback);
+  void GetExternalWallets(ledger::GetExternalWalletsCallback callback);
 
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,

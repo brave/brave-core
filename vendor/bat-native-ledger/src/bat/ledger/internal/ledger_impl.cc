@@ -1650,9 +1650,16 @@ void LedgerImpl::FetchBalance(ledger::FetchBalanceCallback callback) {
   bat_wallet_->FetchBalance(callback);
 }
 
-void LedgerImpl::GetWalletTokens(ledger::GetWalletTokensCallback callback) {
+void LedgerImpl::GetExternalWallets(ledger::GetExternalWalletsCallback callback) {
   // TODO wire it through rewards service
-  callback({{ledger::kWalletUphold, "some token"}});
+  // need to define how it will be save
+  std::map<std::string, ledger::ExternalWallet> wallets;
+  ledger::ExternalWallet uphold;
+  uphold.token = "some token";
+  uphold.address = "a4493d06-5f4f-45d5-9557-c5916800d7b0";
+  wallets.insert(std::make_pair(ledger::kWalletUphold, uphold));
+
+  callback(wallets);
 }
 
 }  // namespace bat_ledger
