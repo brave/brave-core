@@ -31,7 +31,7 @@ class BravePrefProvider : public PrefProvider {
       const ContentSettingsPattern& secondary_pattern,
       ContentSettingsType content_type,
       const ResourceIdentifier& resource_identifier,
-      base::Value* value) override;
+      std::unique_ptr<base::Value>&& value) override;
 
   // PrefProvider::pref_change_registrar_ alreay has plugin type.
   PrefChangeRegistrar brave_pref_change_registrar_;
