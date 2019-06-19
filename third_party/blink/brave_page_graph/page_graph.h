@@ -136,10 +136,6 @@ friend EdgeNodeInsert;
   void PossiblyWriteRequestsIntoGraph(
     const std::shared_ptr<const TrackedRequestRecord> record);
 
-  // Returns the NodeScript object representing this V8 script unit if
-  // the script was compiled in this frame, or nullptr otherwise.
-  const NodeScript* NodeForScriptInFrame(const ScriptId script_id) const;
-
   // Monotonically increasing counter, used so that we can replay the
   // the graph's construction if needed.
   PageGraphId id_counter_ = 0;
@@ -199,6 +195,8 @@ friend EdgeNodeInsert;
   // have been made, but have not completed.
   RequestTracker request_tracker_;
 
+  // Reference to the document that owns page-graph, which if it exists,
+  // will always be the document of the top level frame.
   blink::Document& document_;
 };
 
