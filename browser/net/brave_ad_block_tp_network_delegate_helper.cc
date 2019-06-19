@@ -30,6 +30,19 @@ using content::ResourceType;
 
 namespace brave {
 
+std::string GetGoogleAnalyticsPolyfillJS() {
+  static std::string base64_output;
+  if (base64_output.length() != 0)  {
+    return base64_output;
+  }
+  std::string str = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
+      IDR_BRAVE_GOOGLE_ANALYTICS_POLYFILL).as_string();
+  Base64UrlEncode(str, base::Base64UrlEncodePolicy::OMIT_PADDING,
+      &base64_output);
+  base64_output = std::string(kJSDataURLPrefix) + base64_output;
+  return base64_output;
+}
+
 std::string GetGoogleTagManagerPolyfillJS() {
   static std::string base64_output;
   if (base64_output.length() != 0)  {
@@ -37,7 +50,6 @@ std::string GetGoogleTagManagerPolyfillJS() {
   }
   std::string str = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
       IDR_BRAVE_TAG_MANAGER_POLYFILL).as_string();
-  base64_output.reserve(180);
   Base64UrlEncode(str, base::Base64UrlEncodePolicy::OMIT_PADDING,
       &base64_output);
   base64_output = std::string(kJSDataURLPrefix) + base64_output;
@@ -51,7 +63,6 @@ std::string GetGoogleTagServicesPolyfillJS() {
   }
   std::string str = ui::ResourceBundle::GetSharedInstance().GetRawDataResource(
     IDR_BRAVE_TAG_SERVICES_POLYFILL).as_string();
-  base64_output.reserve(4668);
   Base64UrlEncode(str, base::Base64UrlEncodePolicy::OMIT_PADDING,
       &base64_output);
   base64_output = std::string(kJSDataURLPrefix) + base64_output;
@@ -66,10 +77,18 @@ bool GetPolyfillForAdBlock(bool allow_brave_shields, bool allow_ads,
     return false;
   }
 
+  static URLPattern analytics(URLPattern::SCHEME_ALL,
+      kGoogleAnalyticsPattern);
   static URLPattern tag_manager(URLPattern::SCHEME_ALL,
       kGoogleTagManagerPattern);
   static URLPattern tag_services(URLPattern::SCHEME_ALL,
       kGoogleTagServicesPattern);
+  if (analytics.MatchesURL(gurl)) {
+    std::string&& data_url = GetGoogleAnalyticsPolyfillJS();
+    *new_url_spec = data_url;
+    return true;
+  }
+
   if (tag_manager.MatchesURL(gurl)) {
     std::string&& data_url = GetGoogleTagManagerPolyfillJS();
     *new_url_spec = data_url;
