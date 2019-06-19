@@ -1,0 +1,30 @@
+diff --git a/include/v8.h b/include/v8.h
+index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..2b6288622e5481ebf1476c7eb85f8e65f82f9365 100644
+--- a/include/v8.h
++++ b/include/v8.h
+@@ -26,6 +26,13 @@
+ #include "v8-version.h"   // NOLINT(build/include)
+ #include "v8config.h"     // NOLINT(build/include)
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++namespace brave_page_graph {
++class PageGraph;
++}
++#endif
++
+ // We reserve the V8_* prefix for macros defined in V8 public API and
+ // assume there are no name conflicts with the embedder's code.
+ 
+@@ -8599,6 +8606,11 @@ class V8_EXPORT Isolate {
+   void operator delete(void*, size_t) = delete;
+   void operator delete[](void*, size_t) = delete;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void SetPageGraph(::brave_page_graph::PageGraph* page_graph);
++  ::brave_page_graph::PageGraph* GetPageGraph() const;
++#endif
++
+  private:
+   template <class K, class V, class Traits>
+   friend class PersistentValueMapBase;

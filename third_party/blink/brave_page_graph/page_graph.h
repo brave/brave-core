@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_PAGE_GRAPH_H_
 #define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_PAGE_GRAPH_H_
 
-#include <atomic>
 #include <map>
 #include <memory>
 #include <string>
@@ -111,7 +110,6 @@ friend EdgeNodeInsert;
   void RegisterScriptExecStop(const ScriptId script_id);
 
   GraphMLXML ToGraphML() const;
-  ChildFrameId GetNewChildFrameId();
 
   void PushActiveScript(const ScriptId script_id);
   ScriptId PopActiveScript();
@@ -175,8 +173,6 @@ friend EdgeNodeInsert;
   std::map<ScriptId, NodeScriptRemote* const> remote_script_nodes_;
   std::map<blink::DOMNodeId, NodeFrame* const> remote_frames_;
   std::map<std::string, NodeScript* const> urls_for_extension_scripts_;
-
-  std::atomic<ChildFrameId> current_max_child_frame_id_;
 
   // Keeps track of which scripts are running, and conceptually mirrors the
   // JS stack.

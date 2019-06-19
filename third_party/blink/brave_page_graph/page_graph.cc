@@ -122,7 +122,7 @@ NodeHTML* PageGraph::GetHTMLNode(const DOMNodeId node_id) const {
 }
 
 NodeHTMLElement* PageGraph::GetHTMLElementNode(const DOMNodeId node_id) const {
-  PG_LOG("GetHTMLElementNode) node id: " + to_string(node_id));
+  Log("GetHTMLElementNode) node id: " + to_string(node_id));
   if (node_id == kRootNodeId) {
     return html_root_node_;
   }
@@ -138,7 +138,7 @@ NodeHTMLText* PageGraph::GetHTMLTextNode(const DOMNodeId node_id) const {
 void PageGraph::RegisterHTMLElementNodeCreated(const DOMNodeId node_id,
     const String& tag_name) {
   string local_tag_name(tag_name.Utf8().data());
-  PG_LOG("RegisterHTMLElementNodeCreated) node id: " + to_string(node_id)
+  Log("RegisterHTMLElementNodeCreated) node id: " + to_string(node_id)
     + " (" + local_tag_name + ")");
 
   LOG_ASSERT(element_nodes_.count(node_id) == 0);
@@ -161,7 +161,7 @@ void PageGraph::RegisterHTMLElementNodeCreated(const DOMNodeId node_id,
 void PageGraph::RegisterHTMLTextNodeCreated(const DOMNodeId node_id,
     const String& text) {
   string local_text(text.Utf8().data());
-  PG_LOG("RegisterHTMLTextNodeCreated) node id: " + to_string(node_id)
+  Log("RegisterHTMLTextNodeCreated) node id: " + to_string(node_id)
     + ", text: '" + local_text + "'");
   LOG_ASSERT(text_nodes_.count(node_id) == 0);
   NodeHTMLText* const new_node = new NodeHTMLText(this, node_id, local_text);
@@ -185,7 +185,7 @@ void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
     ? parent_node_id
     : kRootNodeId;
 
-  PG_LOG("RegisterHTMLElementNodeInserted) node id: " + to_string(node_id)
+  Log("RegisterHTMLElementNodeInserted) node id: " + to_string(node_id)
     + ", parent id: " + to_string(inserted_parent_node_id)
     + ", prev sibling id: " + to_string(before_sibling_id));
 
@@ -209,7 +209,7 @@ void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
     ? parent_node_id
     : kRootNodeId;
 
-  PG_LOG("RegisterHTMLTextNodeInserted) node id: " + to_string(node_id)
+  Log("RegisterHTMLTextNodeInserted) node id: " + to_string(node_id)
     + ", parent id: " + to_string(inserted_parent_node_id)
     + ", prev sibling id: " + to_string(before_sibling_id));
 
@@ -227,13 +227,13 @@ void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
 }
 
 void PageGraph::RegisterHTMLElementNodeRemoved(const DOMNodeId node_id) {
-  PG_LOG("RegisterHTMLElementNodeRemoved) node id: " + to_string(node_id));
+  Log("RegisterHTMLElementNodeRemoved) node id: " + to_string(node_id));
 
   if (element_nodes_.count(node_id) == 0) {
     string local_node_name(blink::DOMNodeIds::NodeForId(node_id)->nodeName().Utf8().data());
-    PG_LOG("looks like we're missing: " + local_node_name);
+    Log("looks like we're missing: " + local_node_name);
     string local_url(blink::DOMNodeIds::NodeForId(node_id)->GetDocument().Url().GetString().Utf8().data());
-    PG_LOG("We're in frame: " + local_url);
+    Log("We're in frame: " + local_url);
     return;
   }
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
@@ -250,7 +250,7 @@ void PageGraph::RegisterHTMLElementNodeRemoved(const DOMNodeId node_id) {
 }
 
 void PageGraph::RegisterHTMLTextNodeRemoved(const DOMNodeId node_id) {
-  PG_LOG("RegisterHTMLTextNodeRemoved) node id: " + to_string(node_id));
+  Log("RegisterHTMLTextNodeRemoved) node id: " + to_string(node_id));
 
   LOG_ASSERT(text_nodes_.count(node_id) == 1);
   NodeHTMLText* const removed_node = text_nodes_.at(node_id);
@@ -270,7 +270,7 @@ void PageGraph::RegisterInlineStyleSet(const DOMNodeId node_id,
   string local_attr_name(attr_name.Utf8().data());
   string local_attr_value(attr_value.Utf8().data());
 
-  PG_LOG("RegisterInlineStyleSet) node id: " + to_string(node_id)
+  Log("RegisterInlineStyleSet) node id: " + to_string(node_id)
     + ", attr: " + local_attr_name
     + ", value: " + local_attr_value);
 
@@ -291,7 +291,7 @@ void PageGraph::RegisterInlineStyleDelete(const DOMNodeId node_id,
     const String& attr_name) {
   string local_attr_name(attr_name.Utf8().data());
 
-  PG_LOG("RegisterInlineStyleDelete) node id: " + to_string(node_id)
+  Log("RegisterInlineStyleDelete) node id: " + to_string(node_id)
     + ", attr: " + local_attr_name);
 
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
@@ -312,7 +312,7 @@ void PageGraph::RegisterAttributeSet(const DOMNodeId node_id,
   string local_attr_name(attr_name.Utf8().data());
   string local_attr_value(attr_value.Utf8().data());
 
-  PG_LOG("RegisterAttributeSet) node id: " + to_string(node_id)
+  Log("RegisterAttributeSet) node id: " + to_string(node_id)
     + ", attr: " + local_attr_name
     + ", value: " + local_attr_value);
 
@@ -333,7 +333,7 @@ void PageGraph::RegisterAttributeDelete(const DOMNodeId node_id,
     const String& attr_name) {
   string local_attr_name(attr_name.Utf8().data());
 
-  PG_LOG("RegisterAttributeDelete) node id: " + to_string(node_id)
+  Log("RegisterAttributeDelete) node id: " + to_string(node_id)
     + ", attr: " + local_attr_name);
 
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
@@ -351,7 +351,7 @@ void PageGraph::RegisterAttributeDelete(const DOMNodeId node_id,
 
 void PageGraph::RegisterTextNodeChange(const blink::DOMNodeId node_id,
     const WTF::String& new_text) {
-  PG_LOG("RegisterNewTextNodeText) node id: " + to_string(node_id));
+  Log("RegisterNewTextNodeText) node id: " + to_string(node_id));
   LOG_ASSERT(text_nodes_.count(node_id) == 1);
 
   NodeHTMLText* const text_node = text_nodes_.at(node_id);
@@ -374,7 +374,7 @@ void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
 
   // For now, explode if we're getting duplicate requests for the same
   // URL in the same document.  This might need to be changed.
-  PG_LOG("RegisterRequestStartFromElm) node id: " + to_string(node_id)
+  Log("RegisterRequestStartFromElm) node id: " + to_string(node_id)
     + ", request id: " + to_string(request_id) +
     + ", url: " + local_url
     + ", type: " + to_string(type));
@@ -404,13 +404,13 @@ void PageGraph::RegisterRequestStartFromCurrentScript(
   NodeActor* const acting_node = GetCurrentActingNode();
   const string local_url(url.GetString().Utf8().data());
 
-  PG_LOG("RegisterRequestStartFromCurrentScript) script id: "
+  Log("RegisterRequestStartFromCurrentScript) script id: "
     + to_string((static_cast<NodeScript*>(acting_node))->GetScriptId())
     + ", request id: " + to_string(request_id) +
     + ", url: " + local_url
     + ", type: " + to_string(type));
   if (!acting_node->IsScript()) {
-    PG_LOG("Skipping, i hope this is pre-fetch...");
+    Log("Skipping, i hope this is pre-fetch...");
     return;
   }
   LOG_ASSERT(acting_node->IsScript());
@@ -433,7 +433,7 @@ void PageGraph::RegisterRequestStartFromCurrentScript(
 
 void PageGraph::RegisterRequestComplete(const InspectorId request_id,
     const ResourceType type) {
-  PG_LOG("RegisterRequestComplete) request id: " + to_string(request_id)
+  Log("RegisterRequestComplete) request id: " + to_string(request_id)
     + ", resource type: " + ResourceTypeToString(type));
 
   const shared_ptr<const TrackedRequestRecord> request_record =
@@ -443,7 +443,7 @@ void PageGraph::RegisterRequestComplete(const InspectorId request_id,
 }
 
 void PageGraph::RegisterRequestError(const InspectorId request_id) {
-  PG_LOG("RegisterRequestError) request id: " + to_string(request_id));
+  Log("RegisterRequestError) request id: " + to_string(request_id));
 
   const shared_ptr<const TrackedRequestRecord> request_record =
     request_tracker_ .RegisterRequestError(request_id);
@@ -453,21 +453,21 @@ void PageGraph::RegisterRequestError(const InspectorId request_id) {
 
 void PageGraph::RegisterElmForLocalScript(const DOMNodeId node_id,
     const ScriptSourceCode& code) {
-  PG_LOG("RegisterElmForLocalScript) node_id: " + to_string(node_id));
-  PG_LOG("Script: " + string(code.Source().ToString().Utf8().data()));
+  Log("RegisterElmForLocalScript) node_id: " + to_string(node_id));
+  Log("Script: " + string(code.Source().ToString().Utf8().data()));
   script_tracker_.AddScriptSourceForElm(code, node_id);
 }
 
 void PageGraph::RegisterElmForRemoteScript(const DOMNodeId node_id,
     const KURL& url) {
-  PG_LOG("RegisterElmForRemoteScript) node_id: " + to_string(node_id)
+  Log("RegisterElmForRemoteScript) node_id: " + to_string(node_id)
     + ", url: " + URLToString(url));
   script_tracker_.AddScriptUrlForElm(url, node_id);
 }
 
 void PageGraph::RegisterUrlForScriptSource(const KURL& url,
     const ScriptSourceCode& code) {
-  PG_LOG("RegisterUrlForScriptSource) url: " + URLToString(url));
+  Log("RegisterUrlForScriptSource) url: " + URLToString(url));
   script_tracker_.AddCodeFetchedFromUrl(code, url);
 }
 
@@ -475,7 +475,7 @@ void PageGraph::RegisterUrlForExtensionScriptSource(const blink::WebString& url,
     const blink::WebString& code) {
   const WTF::String url_string(url.Latin1().c_str(), url.length());
   const WTF::String code_string(code.Latin1().c_str(), code.length());
-  PG_LOG("RegisterUrlForExtensionScriptSource: url: "
+  Log("RegisterUrlForExtensionScriptSource: url: "
     + string(url_string.Utf8().data()));
   script_tracker_.AddExtensionCodeFetchedFromUrl(code_string.Impl()->GetHash(),
     url_string.Impl()->GetHash());
@@ -484,8 +484,8 @@ void PageGraph::RegisterUrlForExtensionScriptSource(const blink::WebString& url,
 void PageGraph::RegisterScriptCompilation(
     const ScriptSourceCode& code, const ScriptId script_id,
     const ScriptType type) {
-  PG_LOG("RegisterScriptCompilation) script id: " + to_string(script_id));
-  PG_LOG("source: " + string(code.Source().ToString().Utf8().data()));
+  Log("RegisterScriptCompilation) script id: " + to_string(script_id));
+  Log("source: " + string(code.Source().ToString().Utf8().data()));
   script_tracker_.AddScriptId(script_id,
     code.Source().ToString().Impl()->GetHash());
   script_tracker_.SetScriptIdForCode(script_id, code);
@@ -525,7 +525,7 @@ void PageGraph::RegisterScriptCompilationFromAttr(
     const WTF::String& attr_value, const ScriptId script_id) {
   string local_attr_name(attr_name.Utf8().data());
   string local_attr_value(attr_value.Utf8().data());
-  PG_LOG("RegisterScriptCompilationFromAttr) script id: "
+  Log("RegisterScriptCompilationFromAttr) script id: "
     + to_string(script_id)
     + ", node id: " + to_string(node_id)
     + ", attr name: " );
@@ -548,7 +548,7 @@ void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {
   static ScriptId prev_script_id = 0;
   // Just keep the logs a little quieter...
   if (script_id != prev_script_id) {
-    PG_LOG("RegisterScriptExecStart) script id: " + to_string(script_id));
+    Log("RegisterScriptExecStart) script id: " + to_string(script_id));
     prev_script_id = script_id;
   }
 
@@ -560,7 +560,7 @@ void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {
 }
 
 void PageGraph::RegisterScriptExecStop(const ScriptId script_id) {
-  PG_LOG("RegisterScriptExecStop) script id: " + to_string(script_id));
+  Log("RegisterScriptExecStop) script id: " + to_string(script_id));
   LOG_ASSERT(script_nodes_.count(script_id) == 1);
   ScriptId popped_script_id = PopActiveScript();
   LOG_ASSERT(popped_script_id == script_id);
@@ -594,9 +594,9 @@ GraphMLXML PageGraph::ToGraphML() const {
 
 NodeActor* PageGraph::GetCurrentActingNode() const {
   const ScriptId current_script_id = PeekActiveScript();
-  PG_LOG("GetCurrentActingNode) script id: " + to_string(current_script_id));
+  Log("GetCurrentActingNode) script id: " + to_string(current_script_id));
   if (current_script_id == 0) {
-    PG_LOG("GetCurrentActingNode) NodeParser");
+    Log("GetCurrentActingNode) NodeParser");
     return parser_node_;
   }
 
@@ -672,10 +672,6 @@ const EdgeUniquePtrList& PageGraph::Edges() const {
 
 const GraphItemList& PageGraph::GraphItems() const {
   return graph_items_;
-}
-
-ChildFrameId PageGraph::GetNewChildFrameId() {
-  return ++current_max_child_frame_id_;
 }
 
 void PageGraph::AddNode(Node* const node) {
