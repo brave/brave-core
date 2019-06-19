@@ -432,7 +432,6 @@ void Twitch::OnMediaPublisherInfo(
       return;
     }
 
-    std::string media_url = GetMediaURL(user_id);
     std::string oembed_url =
         (std::string)TWITCH_VOD_URL + media_props[media_props.size() - 1];
 
@@ -440,7 +439,6 @@ void Twitch::OnMediaPublisherInfo(
                               this,
                               real_duration,
                               media_key,
-                              media_url,
                               visit_data,
                               window_id,
                               user_id,
@@ -458,7 +456,7 @@ void Twitch::OnMediaPublisherInfo(
   // Live stream
   SavePublisherInfo(real_duration,
                     media_key,
-                    GetMediaURL(media_id),
+                    "",
                     media_id,
                     visit_data,
                     window_id,
@@ -480,7 +478,6 @@ void Twitch::FetchDataFromUrl(
 void Twitch::OnEmbedResponse(
     const uint64_t duration,
     const std::string& media_key,
-    const std::string& media_url,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     const std::string& user_id,
@@ -503,7 +500,7 @@ void Twitch::OnEmbedResponse(
 
   SavePublisherInfo(duration,
                     media_key,
-                    media_url,
+                    "",
                     author_name,
                     visit_data,
                     window_id,
@@ -550,7 +547,7 @@ void Twitch::OnMediaPublisherActivity(
       if (!publisher_favicon_url.empty()) {
         SavePublisherInfo(0,
                           media_key,
-                          GetMediaURL(media_id),
+                          "",
                           publisher_name,
                           visit_data,
                           window_id,
@@ -592,7 +589,7 @@ void Twitch::OnPublisherInfo(
 
     SavePublisherInfo(0,
                       media_key,
-                      GetMediaURL(media_id),
+                      "",
                       publisher_name,
                       visit_data,
                       window_id,
@@ -606,14 +603,14 @@ void Twitch::OnPublisherInfo(
 }
 
 void Twitch::SavePublisherInfo(const uint64_t duration,
-                                    const std::string& media_key,
-                                    const std::string& publisher_url,
-                                    const std::string& publisher_name,
-                                    const ledger::VisitData& visit_data,
-                                    const uint64_t window_id,
-                                    const std::string& fav_icon,
-                                    const std::string& channel_id,
-                                    const std::string& publisher_key) {
+                               const std::string& media_key,
+                               const std::string& publisher_url,
+                               const std::string& publisher_name,
+                               const ledger::VisitData& visit_data,
+                               const uint64_t window_id,
+                               const std::string& fav_icon,
+                               const std::string& channel_id,
+                               const std::string& publisher_key) {
   if (channel_id.empty() && publisher_key.empty()) {
     BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
       "author id is missing for: " << media_key;
@@ -630,14 +627,20 @@ void Twitch::SavePublisherInfo(const uint64_t duration,
       "Publisher id is missing for: " << media_key;
     return;
   }
+
   ledger::VisitData new_visit_data;
   if (fav_icon.length() > 0) {
     new_visit_data.favicon_url = fav_icon;
   }
 
+  std::string url = publisher_url;
+  if (url.empty()) {
+    url = GetMediaURL(channel_id) + "/videos";
+  }
+
   new_visit_data.provider = TWITCH_MEDIA_TYPE;
   new_visit_data.name = publisher_name;
-  new_visit_data.url = publisher_url + "/videos";
+  new_visit_data.url = url;
 
   auto callback = std::bind(&Twitch::OnSaveMediaVisit,
                            this,
