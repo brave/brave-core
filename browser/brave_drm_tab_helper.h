@@ -6,17 +6,17 @@
 #ifndef BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_DRM_TAB_HELPER_H_
 
+#include "brave/components/brave_drm/brave_drm.mojom.h"
 #include "content/public/browser/web_contents_binding_set.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "brave/third_party/blink/public/platform/brave_drm.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 // Reacts to DRM content detected on the renderer side.
 class BraveDrmTabHelper final
     : public content::WebContentsObserver,
       public content::WebContentsUserData<BraveDrmTabHelper>,
-      public blink::mojom::BraveDRM {
+      public brave_drm::mojom::BraveDRM {
  public:
   explicit BraveDrmTabHelper(content::WebContents* contents);
   ~BraveDrmTabHelper() override;
@@ -33,7 +33,7 @@ class BraveDrmTabHelper final
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 
  private:
-  content::WebContentsFrameBindingSet<blink::mojom::BraveDRM> bindings_;
+  content::WebContentsFrameBindingSet<brave_drm::mojom::BraveDRM> bindings_;
 
 #if BUILDFLAG(ENABLE_WIDEVINE_CDM_COMPONENT) || BUILDFLAG(BUNDLE_WIDEVINE_CDM)
   // Permission request is done only once during the navigation. If user
