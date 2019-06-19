@@ -7,6 +7,8 @@ source_set("extensions") {
   sources = [
     "api/rewards_notifications_api.cc",
     "api/rewards_notifications_api.h",
+    "api/brave_extensions_api_client.cc",
+    "api/brave_extensions_api_client.h",
     "api/brave_rewards_api.cc",
     "api/brave_rewards_api.h",
     "api/brave_shields_api.cc",
@@ -59,6 +61,7 @@ source_set("extensions") {
     "//brave/components/brave_sync",
     "//brave/components/brave_sync:generated_resources",
     "//brave/components/brave_sync:static_resources",
+    "//brave/extensions/common",
     "//components/prefs",
     "//components/update_client:patch_impl",
     "//components/update_client:unzip_impl",
