@@ -12,34 +12,18 @@ import shutil
 from rust_deps_config import RUST_DEPS_PACKAGE_VERSION
 
 
-def main():
-    build(parse_args())
-
-
-def parse_args():
-    parser = argparse.ArgumentParser(description='Cargo')
-
-    parser.add_argument('--rustup_home', required=True)
-    parser.add_argument('--cargo_home', required=True)
-    parser.add_argument('--manifest_path', required=True)
-    parser.add_argument('--build_path', required=True)
-    parser.add_argument('--target', required=True)
-    parser.add_argument('--is_debug', required=True)
-    parser.add_argument('--mac_deployment_target')
-    parser.add_argument('--rust_flags')
-
-    args = parser.parse_args()
-
-    if (args.is_debug != "false" and args.is_debug != "true"):
-        raise Exception("is_debug argument was not specified correctly")
-
-    # args are valid
-    return args
+def get_target_arch(target):
+    return {
+        'arm-linux-androideabi': 'arm',
+        'aarch64-linux-android': 'arm64',
+        'i686-linux-android': 'x86',
+        'x86_64-linux-android': 'x86_64',
+    }[target]
 
 
 def build(args):
-    rustup_home = args.rustup_home
-    cargo_home = args.cargo_home
+    rustup_path = args.rustup_path
+    cargo_path = args.cargo_path
     manifest_path = args.manifest_path
     build_path = args.build_path
     target = args.target
@@ -48,15 +32,26 @@ def build(args):
     # Set environment variables for rustup
     env = os.environ.copy()
 
-    rustup_home = os.path.join(rustup_home, RUST_DEPS_PACKAGE_VERSION)
+    rustup_home = os.path.join(rustup_path, RUST_DEPS_PACKAGE_VERSION)
     env['RUSTUP_HOME'] = rustup_home
 
-    cargo_home = os.path.join(cargo_home, RUST_DEPS_PACKAGE_VERSION)
+    cargo_home = os.path.join(cargo_path, RUST_DEPS_PACKAGE_VERSION)
     env['CARGO_HOME'] = cargo_home
 
     rustup_bin = os.path.abspath(os.path.join(rustup_home, 'bin'))
     rustup_bin_exe = os.path.join(rustup_bin, 'cargo.exe')
     env['PATH'] = rustup_bin + os.pathsep + env['PATH']
+
+    if (target == 'arm-linux-androideabi' or
+        target == 'aarch64-linux-android' or
+        target == 'i686-linux-android' or
+            target == 'x86_64-linux-android'):
+        target_arch = get_target_arch(target)
+
+        toolchains_path = os.path.abspath(
+            os.path.join(rustup_path, 'toolchains', target_arch, "bin"))
+
+        env['PATH'] = toolchains_path + os.pathsep + env['PATH']
 
     if args.mac_deployment_target is not None:
         env['MACOSX_DEPLOYMENT_TARGET'] = args.mac_deployment_target
@@ -68,8 +63,8 @@ def build(args):
     if args.rust_flags is not None:
         env['RUSTFLAGS'] = args.rust_flags
 
-    # clean first because we want gn to decide when to rebuild and
-    # cargo doesn't rebuild when env changes
+    # Clean first because we want GN to decide when to rebuild and cargo doesn't
+    # rebuild when env changes
     cargo_args = []
     cargo_args.append("cargo" if sys.platform != "win32" else rustup_bin_exe)
     cargo_args.append("clean")
@@ -80,10 +75,10 @@ def build(args):
     try:
         subprocess.check_call(cargo_args, env=env)
     except subprocess.CalledProcessError as e:
-        print e.output
+        print(e.output)
         raise e
 
-    # Build targets
+    # Build target
     cargo_args = []
     cargo_args.append("cargo" if sys.platform != "win32" else rustup_bin_exe)
     cargo_args.append("build")
@@ -96,8 +91,34 @@ def build(args):
     try:
         subprocess.check_call(cargo_args, env=env)
     except subprocess.CalledProcessError as e:
-        print e.output
+        print(e.output)
         raise e
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Cargo')
+
+    parser.add_argument('--rustup_path', required=True)
+    parser.add_argument('--cargo_path', required=True)
+    parser.add_argument('--manifest_path', required=True)
+    parser.add_argument('--build_path', required=True)
+    parser.add_argument('--target', required=True)
+    parser.add_argument('--is_debug', required=True)
+    parser.add_argument('--mac_deployment_target')
+    parser.add_argument('--rust_flags')
+
+    args = parser.parse_args()
+
+    if (args.is_debug != "false" and args.is_debug != "true"):
+        raise Exception("is_debug argument was not specified correctly")
+
+    return args
+
+
+def main():
+    build(parse_args())
+
+    return 0
 
 
 if __name__ == '__main__':
