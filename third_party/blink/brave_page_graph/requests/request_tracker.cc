@@ -92,7 +92,7 @@ shared_ptr<const TrackedRequestRecord> RequestTracker::ReturnTrackingRecord(
   record->is_first_reply = (record->num_complete_replies == 0);
   record->num_complete_replies += 1;
 
-  // If this is the last requester we need to reply about, then
+  // If this is the last requester we need to reply, then
   // we want to set things up so that we loose our handle on the unique_ptr
   // on return.  Otherwise, we can just leave it in place.
   if (record->num_complete_replies < num_requestors) {
