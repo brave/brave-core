@@ -1,0 +1,21 @@
+diff --git a/extensions/browser/api/web_request/web_request_permissions.cc b/extensions/browser/api/web_request/web_request_permissions.cc
+index bf321bd13711feaf4f7889f71d876ed6d71ebd7c..d6d66bd52170db2e7d4f11c8f8e59af40abe1936 100644
+--- a/extensions/browser/api/web_request/web_request_permissions.cc
++++ b/extensions/browser/api/web_request/web_request_permissions.cc
+@@ -9,6 +9,7 @@
+ #include "base/strings/string_piece.h"
+ #include "base/strings/string_util.h"
+ #include "base/strings/stringprintf.h"
++#include "brave/extensions/common/brave_extension_urls.h"
+ #include "content/public/browser/child_process_security_policy.h"
+ #include "content/public/browser/resource_request_info.h"
+ #include "extensions/browser/api/extensions_api_client.h"
+@@ -320,6 +321,8 @@ bool WebRequestPermissions::HideRequest(
+   // for requests from common renderers.
+   if (extension_urls::IsWebstoreUpdateUrl(url) ||
+       extension_urls::IsBlacklistUpdateUrl(url) ||
++      extension_urls::IsBraveProtectedUrl(url::Origin::Create(url),
++                                          url.path_piece()) ||
+       extension_urls::IsSafeBrowsingUrl(url::Origin::Create(url),
+                                         url.path_piece()) ||
+       (url.DomainIs("chrome.google.com") &&

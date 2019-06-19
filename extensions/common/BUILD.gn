@@ -1,0 +1,11 @@
+source_set("common") {
+  sources = [
+    "brave_extension_urls.cc",
+    "brave_extension_urls.h",
+  ]
+
+  deps = [
+    "//base",
+    "//extensions/common",
+  ]
+}
