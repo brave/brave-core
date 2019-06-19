@@ -2,6 +2,7 @@ import("//brave/build/config.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
+import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
@@ -61,9 +62,6 @@ source_set("browser_process") {
     "content_settings/brave_cookie_settings_factory.h",
     "geolocation/brave_geolocation_permission_context.cc",
     "geolocation/brave_geolocation_permission_context.h",
-    "mac/sparkle_glue.mm",
-    "mac/sparkle_glue.h",
-    "mac/su_updater.h",
     "metrics/metrics_reporting_util.cc",
     "metrics/metrics_reporting_util.h",
     "search_engines/guest_window_search_engine_provider_service.cc",
@@ -82,7 +80,16 @@ source_set("browser_process") {
     "update_util.h",
   ]
 
+  if (enable_sparkle) {
+    sources += [
+      "mac/sparkle_glue.mm",
+      "mac/sparkle_glue.h",
+      "mac/su_updater.h",
+    ]
+  }
+
   deps = [
+    ":sparkle_buildflags",
     ":version_info",
     "autoplay",
     "download",
@@ -184,6 +191,13 @@ source_set("browser_process") {
   }
 }
 
+buildflag_header("sparkle_buildflags") {
+  header = "sparkle_buildflags.h"
+  flags = [
+    "ENABLE_SPARKLE=$enable_sparkle",
+  ]
+}
+
 source_set("version_info") {
   # these are only for version_info.cc and should not be exposed as public configs
   configs += [ "//brave/build:version" ]
@@ -208,7 +222,7 @@ source_set("browser") {
   deps = [
     "//chrome/browser",
   ]
-  if (is_mac) {
+  if (enable_sparkle) {
     deps += [
       "//brave/vendor/sparkle:sparkle_framework_bundle_data"
     ]

@@ -50,11 +50,16 @@ source_set("ui") {
       "webui/navigation_bar_data_provider.h",
       "webui/settings/brave_privacy_handler.cc",
       "webui/settings/brave_privacy_handler.h",
-      "webui/settings/brave_relaunch_handler_mac.mm",
-      "webui/settings/brave_relaunch_handler_mac.h",
       "webui/settings/default_brave_shields_handler.cc",
       "webui/settings/default_brave_shields_handler.h",
     ]
+
+    if (enable_sparkle) {
+      sources += [
+        "webui/settings/brave_relaunch_handler_mac.mm",
+        "webui/settings/brave_relaunch_handler_mac.h",
+      ]
+    }
   }
 
   if (toolkit_views) {
@@ -71,9 +76,14 @@ source_set("ui") {
       "views/rounded_separator.h",
       "views/toolbar/bookmark_button.cc",
       "views/toolbar/bookmark_button.h",
-      "views/update_recommended_message_box_mac.mm",
-      "views/update_recommended_message_box_mac.h",
     ]
+
+    if (enable_sparkle) {
+      sources += [
+        "views/update_recommended_message_box_mac.mm",
+        "views/update_recommended_message_box_mac.h",
+      ]
+    }
   }
 
   if (is_win || is_mac || is_desktop_linux) {
@@ -118,6 +128,7 @@ source_set("ui") {
     "//brave/components/brave_sync:static_resources",
     "//brave/components/brave_sync:generated_resources",
     "//brave/components/brave_welcome_ui:generated_resources",
+    "//brave/browser:sparkle_buildflags",
     "//brave/browser/devtools",
     "//brave/browser/tor",
     "//brave/browser/resources/settings:resources",

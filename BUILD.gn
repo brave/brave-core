@@ -519,15 +519,14 @@ if (is_mac) {
     extra_configs = [ "//build/config/compiler:wexit_time_destructors" ]
 
     deps = [
-      "//brave/vendor/sparkle:sparkle_resources_bundle_data",
       "//chrome:chrome_app_strings_bundle_data",
       "//chrome:chrome_resources",
       "//chrome:chrome_versioned_bundle_data",
       "//chrome/common:version_header",
     ]
 
-    if (is_chrome_branded) {
-      deps += [ "chrome:chrome_helpers" ]
+    if (enable_sparkle) {
+      deps += [ "//brave/vendor/sparkle:sparkle_resources_bundle_data" ]
     }
 
     if (enable_stripping) {

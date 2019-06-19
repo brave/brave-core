@@ -7,12 +7,17 @@
 #include "base/mac/foundation_util.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/strings/utf_string_conversions.h"
-#import "brave/browser/mac/sparkle_glue.h"
+#include "brave/browser/sparkle_buildflags.h"
+#include "chrome/browser/mac/keystone_glue.h"
 #include "chrome/browser/obsolete_system/obsolete_system.h"
 #include "chrome/grit/chromium_strings.h"
 #include "chrome/grit/generated_resources.h"
 #include "net/base/escape.h"
 #include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_SPARKLE)
+#import "brave/browser/mac/sparkle_glue.h"
+#endif
 
 // KeystoneObserver is a simple notification observer for Keystone status
 // updates. It will be created and managed by VersionUpdaterMac.
@@ -37,7 +42,7 @@
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(handleStatusNotification:)
-                   name:kBraveAutoupdateStatusNotification
+                   name:kAutoupdateStatusNotification
                  object:nil];
   }
   return self;
@@ -73,6 +78,7 @@ void VersionUpdaterMac::CheckForUpdate(
     const PromoteCallback& promote_callback) {
   status_callback_ = status_callback;
 
+#if BUILDFLAG(ENABLE_SPARKLE)
   if (SparkleGlue* sparkle_glue = [SparkleGlue sharedSparkleGlue]) {
     AutoupdateStatus recent_status = [sparkle_glue recentStatus];
     if ([sparkle_glue asyncOperationPending] ||
@@ -104,6 +110,10 @@ void VersionUpdaterMac::CheckForUpdate(
     status_callback.Run(DISABLED, 0, false, std::string(), 0,
                         base::string16());
   }
+#else
+  status_callback.Run(DISABLED, 0, false, std::string(), 0,
+                        base::string16());
+#endif
 }
 
 void VersionUpdaterMac::PromoteUpdater() const {
@@ -113,10 +123,10 @@ void VersionUpdaterMac::PromoteUpdater() const {
 void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
   AutoupdateStatus sparkle_status = static_cast<AutoupdateStatus>(
       [base::mac::ObjCCastStrict<NSNumber>(
-          [dictionary objectForKey:kBraveAutoupdateStatusStatus]) intValue]);
+          [dictionary objectForKey:kAutoupdateStatusStatus]) intValue]);
   std::string error_messages = base::SysNSStringToUTF8(
       base::mac::ObjCCastStrict<NSString>(
-          [dictionary objectForKey:kBraveAutoupdateStatusErrorMessages]));
+          [dictionary objectForKey:kAutoupdateStatusErrorMessages]));
 
   base::string16 message;
 
@@ -130,7 +140,9 @@ void VersionUpdaterMac::UpdateStatus(NSDictionary* dictionary) {
     case kAutoupdateRegistered:
       // Go straight into an update check. Return immediately, this routine
       // will be re-entered shortly with kAutoupdateChecking.
+#if BUILDFLAG(ENABLE_SPARKLE)
       [[SparkleGlue sharedSparkleGlue] checkForUpdates];
+#endif
       return;
 
     case kAutoupdateCurrent:

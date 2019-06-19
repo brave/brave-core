@@ -4,11 +4,17 @@
 
 #include "brave/browser/brave_browser_main_parts_mac.h"
 
+#include "brave/browser/sparkle_buildflags.h"
+
+#if BUILDFLAG(ENABLE_SPARKLE)
 #import "brave/browser/mac/sparkle_glue.h"
+#endif
 
 void BraveBrowserMainPartsMac::PreMainMessageLoopStart() {
   ChromeBrowserMainPartsMac::PreMainMessageLoopStart();
 
+#if BUILDFLAG(ENABLE_SPARKLE)
   // It would be no-op if udpate is disabled.
   [[SparkleGlue sharedSparkleGlue] registerWithSparkle];
+#endif
 }
