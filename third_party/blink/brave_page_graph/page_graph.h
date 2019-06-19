@@ -171,8 +171,6 @@ friend EdgeNodeInsert;
   // This map does not own the references.
   std::map<ScriptId, NodeScript* const> script_nodes_;
   std::map<ScriptId, NodeScriptRemote* const> remote_script_nodes_;
-  std::map<blink::DOMNodeId, NodeFrame* const> remote_frames_;
-  std::map<std::string, NodeScript* const> urls_for_extension_scripts_;
 
   // Keeps track of which scripts are running, and conceptually mirrors the
   // JS stack.
