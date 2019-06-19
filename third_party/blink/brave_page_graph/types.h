@@ -118,14 +118,10 @@ std::string RequestStatusToString(const RequestStatus status) noexcept;
 typedef unsigned SourceCodeHash;
 typedef unsigned UrlHash;
 typedef int ScriptId;
-
 typedef uint64_t PageGraphId;
 typedef std::string MethodName;
-
 typedef std::string RequestUrl;
-
 typedef uint64_t InspectorId;
-typedef uint64_t ChildFrameId;
 
 const blink::DOMNodeId kRootNodeId = INT_MAX;
 

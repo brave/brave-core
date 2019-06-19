@@ -1,0 +1,18 @@
+diff --git a/src/compiler.cc b/src/compiler.cc
+index d3cebfd58e679b9a2219e9595c1e8a279668710e..85b103cce5958d0bb13473c7d669f2ea61d227cc 100644
+--- a/src/compiler.cc
++++ b/src/compiler.cc
+@@ -42,6 +42,13 @@
+ #include "src/vm-state-inl.h"
+ #include "src/zone/zone-list-inl.h"  // crbug.com/v8/8816
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <string>
++#include "src/string-stream.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace v8 {
+ namespace internal {
+ 

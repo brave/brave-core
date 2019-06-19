@@ -1,0 +1,39 @@
+diff --git a/src/isolate.h b/src/isolate.h
+index 2b1612a957237d280d8d2bf88b47cdcf28f71c88..e86a6db33147c619e75778c927ab862bd18ab2a0 100644
+--- a/src/isolate.h
++++ b/src/isolate.h
+@@ -41,6 +41,13 @@ class UObject;
+ }  // namespace U_ICU_NAMESPACE
+ #endif  // V8_INTL_SUPPORT
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++namespace brave_page_graph {
++class PageGraph;
++}
++#endif
++
+ namespace v8 {
+ 
+ namespace base {
+@@ -1502,6 +1509,10 @@ class Isolate final : private HiddenFactory {
+   }
+ 
+   V8_EXPORT_PRIVATE void SetIdle(bool is_idle);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  void SetPageGraphInternal(::brave_page_graph::PageGraph* page_graph);
++  ::brave_page_graph::PageGraph* GetPageGraphInternal() const;
++#endif
+ 
+  private:
+   explicit Isolate(std::unique_ptr<IsolateAllocator> isolate_allocator);
+@@ -1834,6 +1845,9 @@ class Isolate final : private HiddenFactory {
+   friend class TestSerializer;
+ 
+   DISALLOW_COPY_AND_ASSIGN(Isolate);
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  ::brave_page_graph::PageGraph* page_graph_ = nullptr;
++#endif
+ };
+ 
+ #undef FIELD_ACCESSOR
