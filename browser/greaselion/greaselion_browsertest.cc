@@ -19,6 +19,7 @@
 #include "net/dns/mock_host_resolver.h"
 
 using extensions::ExtensionBrowserTest;
+using greaselion::GreaselionDownloadService;
 using greaselion::GreaselionService;
 using greaselion::GreaselionServiceFactory;
 
@@ -33,6 +34,34 @@ const char kLocalDataFilesComponentTestBase64PublicKey[] =
     "qRLB7PumyhR625txxolkGC6aC8rrxtT3oymdMfDYhB4BZBrzqdriyvu1NdygoEiF"
     "WhIYw/5zv1NyIsfUiG8wIs5+OwS419z7dlMKsg1FuB2aQcDyjoXx1habFfHQfQwL"
     "qwIDAQAB";
+
+class GreaselionDownloadServiceWaiter
+    : public GreaselionDownloadService::Observer {
+ public:
+  explicit GreaselionDownloadServiceWaiter(
+      GreaselionDownloadService* download_service)
+      : download_service_(download_service), scoped_observer_(this) {
+    scoped_observer_.Add(download_service_);
+  }
+  ~GreaselionDownloadServiceWaiter() override = default;
+
+  void Wait() { run_loop_.Run(); }
+
+ private:
+  // GreaselionDownloadService::Observer:
+  void OnAllScriptsLoaded(GreaselionDownloadService* download_service,
+                          bool success) override {
+    ASSERT_TRUE(success);
+    run_loop_.QuitWhenIdle();
+  }
+
+  GreaselionDownloadService* const download_service_;
+  base::RunLoop run_loop_;
+  ScopedObserver<GreaselionDownloadService, GreaselionDownloadService::Observer>
+      scoped_observer_;
+
+  DISALLOW_COPY_AND_ASSIGN(GreaselionDownloadServiceWaiter);
+};
 
 class GreaselionServiceTest : public ExtensionBrowserTest {
  public:
@@ -51,7 +80,6 @@ class GreaselionServiceTest : public ExtensionBrowserTest {
 
   void PreRunTestOnMainThread() override {
     ExtensionBrowserTest::PreRunTestOnMainThread();
-    WaitForGreaselionServiceThread();
     ASSERT_TRUE(
         g_brave_browser_process->local_data_files_service()->IsInitialized());
   }
@@ -84,19 +112,13 @@ class GreaselionServiceTest : public ExtensionBrowserTest {
     if (!mock_extension)
       return false;
 
-    g_brave_browser_process->greaselion_download_service()->OnComponentReady(
-        mock_extension->id(), mock_extension->path(), "");
-    WaitForGreaselionServiceThread();
+    greaselion::GreaselionDownloadService* download_service =
+        g_brave_browser_process->greaselion_download_service();
+    download_service->OnComponentReady(mock_extension->id(),
+                                       mock_extension->path(), "");
+    GreaselionDownloadServiceWaiter(download_service).Wait();
 
     return true;
-  }
-
-  void WaitForGreaselionServiceThread() {
-    scoped_refptr<base::ThreadTestHelper> io_helper(new base::ThreadTestHelper(
-        g_brave_browser_process->greaselion_download_service()
-            ->GetTaskRunner()));
-    ASSERT_TRUE(io_helper->Run());
-    base::RunLoop().RunUntilIdle();
   }
 
   bool ScriptsFor(const GURL& url, std::vector<std::string>* scripts) {
@@ -116,7 +138,7 @@ class GreaselionServiceTest : public ExtensionBrowserTest {
   }
 };
 
-IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, DISABLED_RuleParsing) {
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, RuleParsing) {
   ASSERT_TRUE(InstallGreaselionExtension());
   std::vector<std::string> scripts;
 
@@ -184,7 +206,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, DISABLED_RuleParsing) {
 // Ensure the site specific script service properly clears its cache of
 // precompiled URLPatterns if initialized twice. (This can happen if
 // the parent component is updated while Brave is running.)
-IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, DISABLED_ClearCache) {
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ClearCache) {
   ASSERT_TRUE(InstallGreaselionExtension());
   int size = GetRulesSize();
   // clear the cache manually to make sure we're actually
@@ -198,7 +220,7 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, DISABLED_ClearCache) {
   EXPECT_EQ(size, GetRulesSize());
 }
 
-IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, DISABLED_ScriptInjection) {
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
   ASSERT_TRUE(InstallGreaselionExtension());
   GURL url = embedded_test_server()->GetURL("www.a.com", "/simple.html");
   ui_test_utils::NavigateToURL(browser(), url);
