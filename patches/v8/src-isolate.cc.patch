@@ -1,0 +1,33 @@
+diff --git a/src/isolate.cc b/src/isolate.cc
+index 8e15e781091d14f0032034e2ac98d0b1c5b0339d..361b9d21cd6687aa5f5d047c0e378548ed493f70 100644
+--- a/src/isolate.cc
++++ b/src/isolate.cc
+@@ -89,6 +89,11 @@
+ #include "src/unwinding-info-win64.h"
+ #endif
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ extern "C" const uint8_t* v8_Default_embedded_blob_;
+ extern "C" uint32_t v8_Default_embedded_blob_size_;
+ 
+@@ -4597,6 +4602,16 @@ void Isolate::SetIdle(bool is_idle) {
+   }
+ }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++void Isolate::SetPageGraphInternal(::brave_page_graph::PageGraph* page_graph) {
++  page_graph_ = page_graph;
++}
++
++::brave_page_graph::PageGraph* Isolate::GetPageGraphInternal() const {
++  return page_graph_;
++}
++#endif
++
+ #ifdef V8_INTL_SUPPORT
+ icu::UObject* Isolate::get_cached_icu_object(ICUObjectCacheType cache_type) {
+   return icu_object_cache_[cache_type].get();
