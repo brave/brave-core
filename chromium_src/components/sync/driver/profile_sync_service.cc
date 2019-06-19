@@ -7,6 +7,9 @@
 
 #include <utility>
 
+#include "brave/components/brave_sync/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "base/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_profile_sync_service.h"
@@ -15,9 +18,11 @@
 #include "content/public/browser/browser_thread.h"
 
 using brave_sync::BraveProfileSyncService;
+#endif
 
 namespace syncer {
 
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
 const int64_t kBraveDefaultPollIntervalSeconds = 60;
 
 bool IsBraveSyncEnabled(ProfileSyncService* profile_sync_service) {
@@ -41,11 +46,13 @@ void OnPollSyncCycle(base::WeakPtr<ProfileSyncService> profile_sync_service,
         profile_sync_service.get())->OnPollSyncCycle(cb, wevent);
   }
 }
+#endif
 
 void BraveInit(
     base::WeakPtr<ProfileSyncService> profile_sync_service,
     SyncPrefs* sync_prefs,
     syncer::SyncEngine::InitParams* params) {
+#if BUILDFLAG(ENABLE_BRAVE_SYNC)
   DCHECK(params);
   params->nudge_sync_cycle_delegate_function =
       base::BindRepeating(&OnNudgeSyncCycle,
@@ -57,6 +64,7 @@ void BraveInit(
   sync_prefs->SetPollInterval(
       base::TimeDelta::FromSeconds(
           syncer::kBraveDefaultPollIntervalSeconds));
+#endif
 }
 
 }   // namespace syncer
