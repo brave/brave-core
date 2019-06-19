@@ -1,0 +1,16 @@
+diff --git a/chrome/android/java/res/layout/toolbar_phone.xml b/chrome/android/java/res/layout/toolbar_phone.xml
+index 62a3a3f3dc36d6417519832e987466ff26a18ea2..fb35cf7bb8ec0ba6fc1cd66a4851e50e913fc3e8 100644
+--- a/chrome/android/java/res/layout/toolbar_phone.xml
++++ b/chrome/android/java/res/layout/toolbar_phone.xml
+@@ -41,6 +41,11 @@
+             android:paddingStart="8dp"
+             android:visibility="gone" />
+ 
++        <include
++            layout="@layout/brave_toolbar_phone"
++            android:layout_height="wrap_content"
++            android:layout_width="match_parent" />
++
+         <org.chromium.chrome.browser.toolbar.top.ToggleTabStackButton
+             android:id="@+id/tab_switcher_button"
+             style="@style/ToolbarButton"

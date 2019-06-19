@@ -1,0 +1,16 @@
+diff --git a/chrome/android/java/res/layout/toolbar_tablet.xml b/chrome/android/java/res/layout/toolbar_tablet.xml
+index 733aee3c8aa45c8a42a46a8045eac2397f1ebc8f..151ec6697014ee6b530e8b9608ea474e230a87a2 100644
+--- a/chrome/android/java/res/layout/toolbar_tablet.xml
++++ b/chrome/android/java/res/layout/toolbar_tablet.xml
+@@ -68,6 +68,11 @@
+             android:contentDescription="@string/accessibility_toolbar_btn_tabswitcher_toggle_default"
+             android:visibility="gone" />
+ 
++        <include
++            layout="@layout/brave_toolbar_tablet"
++            android:layout_height="wrap_content"
++            android:layout_width="match_parent" />
++
+         <org.chromium.chrome.browser.toolbar.MenuButton
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
