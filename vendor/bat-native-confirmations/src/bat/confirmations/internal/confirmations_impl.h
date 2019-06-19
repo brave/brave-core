@@ -185,15 +185,6 @@ class ConfirmationsImpl : public Confirmations {
       base::DictionaryValue* dictionary,
       std::vector<ConfirmationInfo>* confirmations);
 
-  bool ParseEstimatedPendingRewardsFromJSON(
-      base::DictionaryValue* dictionary);
-
-  bool ParseNextPaymentDateInSecondsFromJSON(
-      base::DictionaryValue* dictionary);
-
-  bool ParseAdNotificationsReceivedThisMonthFromJSON(
-      base::DictionaryValue* dictionary);
-
   bool ParseTransactionHistoryFromJSON(
       base::DictionaryValue* dictionary);
   bool GetTransactionHistoryFromDictionary(
