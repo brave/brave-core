@@ -26,6 +26,8 @@ ScriptTracker::~ScriptTracker() {}
 
 void ScriptTracker::AddScriptUrlForElm(const KURL& url,
     const DOMNodeId node_id) {
+  // Ugly but effective hack for cases where URLs are upgrade to HTTPS
+  // b/c of HSTS.
   KURL local_url(url);
   if (local_url.ProtocolIsInHTTPFamily()) {
     local_url.SetProtocol("https");
@@ -58,6 +60,8 @@ void ScriptTracker::AddScriptSourceForElm(const ScriptSourceCode& code,
 
 void ScriptTracker::AddCodeFetchedFromUrl(
     const ScriptSourceCode& code, const KURL& url) {
+  // Ugly but effective hack for cases where URLs are upgrade to HTTPS
+  // b/c of HSTS.
   KURL local_url(url);
   if (local_url.ProtocolIsInHTTPFamily()) {
     local_url.SetProtocol("https");
