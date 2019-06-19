@@ -138,6 +138,8 @@
       <message name="IDS_BRAVE_NEW_TAB_PREFERENCES_PAGE_TITLE" desc="Title for preferences page">Edit Preferences</message>
       <message name="IDS_BRAVE_NEW_TAB_BOOKMARKS_PAGE_TITLE" desc="Title for bookmarks page">View and Manage Bookmarks</message>
       <message name="IDS_BRAVE_NEW_TAB_HISTORY_PAGE_TITLE" desc="Title for history page">View your browsing history</message>
+      <message name="IDS_BRAVE_NEW_TAB_DASHBOARD_SETTINGS_TITLE" desc="Title for dashboard settings">Dashboard Settings</message>
+      <message name="IDS_BRAVE_NEW_TAB_SHOW_BACKGROUND_IMAGE" desc="Text for settings option">Show background image</message>
 
       <!-- WebUI private tab resources -->
       <message name="IDS_BRAVE_PRIVATE_NEW_TAB_LEARN_MORE" desc="">Learn more</message>

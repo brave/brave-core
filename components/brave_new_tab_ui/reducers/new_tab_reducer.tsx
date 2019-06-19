@@ -26,6 +26,18 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
   const startingState = state
   const payload = action.payload
   switch (action.type) {
+    case types.NEW_TAB_SHOW_SETTINGS_MENU:
+      state = { ...state, showSettings: true }
+      break
+
+    case types.NEW_TAB_CLOSE_SETTINGS_MENU:
+      state = { ...state, showSettings: false }
+      break
+
+    case types.NEW_TAB_TOGGLE_SHOW_BACKGROUND_IMAGE:
+      state = { ...state, showBackgroundImage: !state.showBackgroundImage }
+      break
+
     case types.BOOKMARK_ADDED:
       const topSite: NewTab.Site | undefined = state.topSites.find((site) => site.url === payload.url)
       if (topSite) {
