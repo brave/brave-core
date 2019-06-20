@@ -99,6 +99,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void SetUserChangedContribution() override;
   void SetContributionAmount(double amount) override;
   void SetAutoContribute(bool enabled) override;
+  void UpdateAdsRewards() override;
 
   void OnTimer(uint32_t timer_id) override;
 

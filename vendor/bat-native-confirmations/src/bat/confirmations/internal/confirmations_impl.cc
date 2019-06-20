@@ -753,7 +753,7 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
 
   NotifyAdsIfConfirmationsIsReady();
 
-  UpdateAdsRewards();
+  UpdateAdsRewards(true);
 
   MaybeStart();
 }
@@ -824,14 +824,20 @@ void ConfirmationsImpl::RemoveConfirmationFromQueue(
   SaveState();
 }
 
-void ConfirmationsImpl::UpdateAdsRewards() {
-  ads_rewards_->Fetch(wallet_info_);
+void ConfirmationsImpl::UpdateAdsRewards(const bool should_refresh) {
+  ads_rewards_->Update(wallet_info_, should_refresh);
 }
 
 void ConfirmationsImpl::UpdateAdsRewards(
     const double estimated_pending_rewards,
     const uint64_t next_payment_date_in_seconds,
     const uint64_t ad_notifications_received_this_month) {
+  if (!state_has_loaded_) {
+    // We should not update ads rewards until state has successfully loaded
+    // otherwise our values will be overwritten
+    return;
+  }
+
   estimated_pending_rewards_ = estimated_pending_rewards;
   next_payment_date_in_seconds_ = next_payment_date_in_seconds;
   ad_notifications_received_this_month_ = ad_notifications_received_this_month;

@@ -155,6 +155,7 @@ class RewardsService : public KeyedService {
   virtual void GetAutoContribute(
       GetAutoContributeCallback callback) = 0;
   virtual void SetAutoContribute(bool enabled) const = 0;
+  virtual void UpdateAdsRewards() const = 0;
   virtual void SetTimer(uint64_t time_offset, uint32_t* timer_id) = 0;
   virtual void GetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback) = 0;

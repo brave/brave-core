@@ -2409,6 +2409,14 @@ void RewardsServiceImpl::TriggerOnGetCurrentBalanceReport(
   }
 }
 
+void RewardsServiceImpl::UpdateAdsRewards() const {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->UpdateAdsRewards();
+}
+
 void RewardsServiceImpl::SetContributionAutoInclude(
     const std::string& publisher_key,
     bool exclude) {

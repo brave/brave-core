@@ -38,14 +38,21 @@ AdsRewards::~AdsRewards() {
   CancelRetry();
 }
 
-void AdsRewards::Fetch(const WalletInfo& wallet_info) {
+void AdsRewards::Update(
+    const WalletInfo& wallet_info,
+    const bool should_refresh) {
   DCHECK(!wallet_info.payment_id.empty());
   DCHECK(!wallet_info.private_key.empty());
 
-  BLOG(INFO) << "Fetch ads rewards";
-
   wallet_info_ = WalletInfo(wallet_info);
 
+  Update();
+
+  if (!should_refresh) {
+    return;
+  }
+
+  BLOG(INFO) << "Fetch ads rewards";
   GetPaymentBalance();
 }
 
