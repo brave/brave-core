@@ -7,9 +7,10 @@ import { StatsContainer, StatsItem } from './stats'
 import { Page, DynamicBackground, Gradient, Link, Navigation, IconLink, PhotoName } from './page'
 import { Header, Main, Footer } from './grid'
 import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper } from './settings'
-import { List, Tile, TileActionsContainer, TileAction, TileFavicon } from './topSites'
+import { List, ListWidget, Tile, TileActionsContainer, TileAction, TileFavicon } from './topSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
 import { ClockWidget } from './clock'
+import createWidget from './widget'
 
 export {
   StatsContainer,
@@ -25,6 +26,7 @@ export {
   Main,
   Footer,
   List,
+  ListWidget,
   Tile,
   TileActionsContainer,
   TileAction,
@@ -37,5 +39,6 @@ export {
   SettingsRow,
   SettingsText,
   SettingsTitle,
-  SettingsWrapper
+  SettingsWrapper,
+  createWidget
 }

@@ -3,6 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from '../../../../theme'
+import createWidget from '../widget'
 
 export const List = styled<{}, 'div'>('div')`
   margin: 0 70px;
@@ -100,3 +101,5 @@ export const TileFavicon = styled<{}, 'img'>('img')`
   height: 72px;
   padding: 16px;
 `
+
+export const ListWidget = createWidget(List)
