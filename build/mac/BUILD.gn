@@ -81,11 +81,7 @@ action("create_pkg") {
     "unsigned/$brave_pkg",
   ]
 
-  if (enable_widevine_cdm_host_verification) {
-    deps = [ ":sign_chrome_framework_for_widevine" ]
-  } else {
-    deps = [":sign_app"]
-  }
+  deps = [":sign_app"]
 }
 
 action("sign_pkg") {
@@ -129,11 +125,7 @@ action("create_dmg") {
     "--symlink", "/Applications",
   ]
 
-  if (enable_widevine_cdm_host_verification) {
-    deps = [ ":sign_chrome_framework_for_widevine" ]
-  } else {
-    deps = [":sign_app"]
-  }
+  deps = [":sign_app"]
 }
 
 action("create_unsigned_dmg") {

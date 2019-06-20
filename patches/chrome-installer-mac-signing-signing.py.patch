@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
-index b56853e5e2649328a81a2de20228de5abda08f11..b0e4a28355f410efb2105273f423d4f38d1425c5 100644
+index b56853e5e2649328a81a2de20228de5abda08f11..4ab7212746a03f88b7000654fcbfebd65f0735de 100644
 --- a/chrome/installer/mac/signing/signing.py
 +++ b/chrome/installer/mac/signing/signing.py
 @@ -42,7 +42,6 @@ def get_parts(config):
@@ -27,3 +27,22 @@ index b56853e5e2649328a81a2de20228de5abda08f11..b0e4a28355f410efb2105273f423d4f3
          'libEGL.dylib',
          'libGLESv2.dylib',
          'libswiftshader_libEGL.dylib',
+@@ -143,7 +149,7 @@ def sign_part(paths, config, part):
+         part: The |model.CodeSignedProduct| to sign. The product's |path| must
+             be in |paths.work|.
+     """
+-    command = ['codesign', '--sign', config.identity]
++    command = ['codesign', '--force', '--sign', config.identity]
+     if part.sign_with_identifier:
+         command.extend(['--identifier', part.identifier])
+     reqs = part.requirements_string(config)
+@@ -233,6 +239,9 @@ def sign_chrome(paths, config):
+ 
+     # Sign the framework bundle.
+     sign_part(paths, config, parts['framework'])
++    from signing_helper import GenerateWidevineSigFile
++    GenerateWidevineSigFile(paths, config, parts['framework'])
++    sign_part(paths, config, parts['framework'])
+ 
+     provisioning_profile_basename = config.provisioning_profile_basename
+     if provisioning_profile_basename:
