@@ -1,18 +1,17 @@
 diff --git a/third_party/blink/renderer/core/dom/comment.cc b/third_party/blink/renderer/core/dom/comment.cc
-index d7476d197b825f1a13d92a708b84db849f7aacec..6740097ab8ac21e36974e4a9c8964bd792ce735f 100644
+index d7476d197b825f1a13d92a708b84db849f7aacec..80f0e03a27fa14d328153dddf39fc240dcdd96c0 100644
 --- a/third_party/blink/renderer/core/dom/comment.cc
 +++ b/third_party/blink/renderer/core/dom/comment.cc
-@@ -21,15 +21,30 @@
+@@ -23,13 +23,30 @@
  
- #include "third_party/blink/renderer/core/dom/comment.h"
+ #include "third_party/blink/renderer/core/dom/document.h"
  
--#include "third_party/blink/renderer/core/dom/document.h"
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
- 
++
  namespace blink {
  
  inline Comment::Comment(Document& document, const String& text)

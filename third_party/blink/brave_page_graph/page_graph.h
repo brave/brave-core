@@ -51,6 +51,9 @@ friend EdgeNodeInsert;
   PageGraph(blink::Document& document);
   ~PageGraph();
 
+  void RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
+    const blink::DOMNodeId parent_node_id);
+
   void RegisterHTMLElementNodeCreated(const blink::DOMNodeId node_id,
     const WTF::String& tag_name);
   void RegisterHTMLTextNodeCreated(const blink::DOMNodeId node_id,
