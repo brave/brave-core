@@ -92,7 +92,10 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Shared/NSURL+Extensions.mm",
     "Shared/RewardsLogStream.h",
     "Shared/RewardsLogStream.mm",
+    "Shared/Logger.h",
     "Shared/Logger.mm",
+    "Shared/RewardsLogger.h",
+    "Shared/RewardsLogger.mm",
     "objc-gen/CppTransformations.h",
     "Ads/BATAdsNotification.h",
     "Ads/BATAdsNotification.mm",
@@ -126,7 +129,8 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ledger/Models/BATActivityInfoFilter.h",
     "Ledger/Models/BATRewardsNotification.h",
     "Ads/BATBraveAds.h",
-    "Ads/BATAdsNotification.h"
+    "Ads/BATAdsNotification.h",
+    "Shared/RewardsLogger.h"
   ]
 
   libs = [
