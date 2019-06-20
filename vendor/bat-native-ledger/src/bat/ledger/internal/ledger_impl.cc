@@ -879,7 +879,7 @@ void LedgerImpl::DownloadPublisherList(
 
   // download the list
   std::string url = braveledger_bat_helper::buildURL(
-      GET_PUBLISHERS_LIST_V1,
+      GET_PUBLISHERS_LIST,
       std::string(), braveledger_bat_helper::SERVER_TYPES::PUBLISHER_DISTRO);
   LoadURL(
       url,
@@ -933,6 +933,7 @@ void LedgerImpl::LoadPublishersListCallback(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
+  LogResponse(__func__, response_status_code, "Publisher list", headers);
   if (response_status_code == net::HTTP_OK && !response.empty()) {
     bat_publishers_->RefreshPublishersList(response);
   } else {

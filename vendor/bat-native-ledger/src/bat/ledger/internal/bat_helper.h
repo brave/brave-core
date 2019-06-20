@@ -442,6 +442,7 @@ struct SERVER_LIST_BANNER {
 struct SERVER_LIST {
   bool verified;
   bool excluded;
+  std::string address;
   SERVER_LIST_BANNER banner;
 };
 

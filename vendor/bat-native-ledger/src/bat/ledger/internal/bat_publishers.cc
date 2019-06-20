@@ -686,6 +686,7 @@ void BatPublishers::OnPublishersListSaved(ledger::Result result) {
 
 bool BatPublishers::loadPublisherList(const std::string& data) {
   std::map<std::string, braveledger_bat_helper::SERVER_LIST> list;
+
   bool success = braveledger_bat_helper::getJSONServerList(data, &list);
 
   if (success) {

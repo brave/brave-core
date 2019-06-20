@@ -259,21 +259,21 @@ class BraveRewardsBrowserTest :
         *response = brave_test_resp::surveyor_voting_credential_;
       else
         *response = brave_test_resp::surveyor_voting_;
-    } else if (URLMatches(url, GET_PUBLISHERS_LIST_V1, "",
+    } else if (URLMatches(url, GET_PUBLISHERS_LIST, "",
                           SERVER_TYPES::PUBLISHER_DISTRO)) {
       if (alter_publisher_list_) {
         *response =
             "["
-            "[\"bumpsmack.com\",true,false],"
-            "[\"duckduckgo.com\",true,false],"
-            "[\"3zsistemi.si\",false,false]"
+            "[\"bumpsmack.com\",true,false,\"\",{}],"
+            "[\"duckduckgo.com\",true,false,\"\",{}],"
+            "[\"3zsistemi.si\",false,false,\"\",{}]"
             "]";
       } else {
         *response =
             "["
-            "[\"bumpsmack.com\",true,false],"
-            "[\"duckduckgo.com\",true,false],"
-            "[\"3zsistemi.si\",true,false]"
+            "[\"bumpsmack.com\",true,false,\"\",{}],"
+            "[\"duckduckgo.com\",true,false,\"\",{}],"
+            "[\"3zsistemi.si\",true,false,\"\",{}]"
             "]";
       }
     }
