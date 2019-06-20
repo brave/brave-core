@@ -8,9 +8,9 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import {
   Page,
   Header,
-  Clock,
+  ClockWidget as Clock,
   Main,
-  List,
+  ListWidget as List,
   Footer,
   DynamicBackground,
   Gradient
@@ -69,6 +69,18 @@ class NewTabPage extends React.Component<Props, {}> {
     )
   }
 
+  toggleShowClock = () => {
+    this.props.actions.toggleShowClock()
+  }
+
+  toggleShowStats = () => {
+    this.props.actions.toggleShowStats()
+  }
+
+  toggleShowTopSites = () => {
+    this.props.actions.toggleShowTopSites()
+  }
+
   showSettings = () => {
     this.props.actions.showSettingsMenu()
   }
@@ -89,10 +101,10 @@ class NewTabPage extends React.Component<Props, {}> {
         {newTabData.showBackgroundImage && <Gradient />}
         <Page>
           <Header>
-            <Stats stats={newTabData.stats} />
-            <Clock />
+            <Stats stats={newTabData.stats} showWidget={newTabData.showStats}/>
+            <Clock showWidget={newTabData.showClock} />
             <Main>
-              <List>
+              <List showWidget={newTabData.showTopSites}>
                 {
                   this.props.newTabData.gridSites.map((site: NewTab.Site) =>
                     <Block
@@ -125,7 +137,13 @@ class NewTabPage extends React.Component<Props, {}> {
             <Settings
               onClickOutside={this.closeSettings}
               toggleShowBackgroundImage={this.toggleShowBackgroundImage}
+              toggleShowClock={this.toggleShowClock}
+              toggleShowStats={this.toggleShowStats}
+              toggleShowTopSites={this.toggleShowTopSites}
               showBackgroundImage={newTabData.showBackgroundImage}
+              showClock={newTabData.showClock}
+              showStats={newTabData.showStats}
+              showTopSites={newTabData.showTopSites}
             />
           }
           <Footer>
