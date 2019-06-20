@@ -16,7 +16,7 @@ index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b5
  namespace blink {
  
  static void DispatchChildInsertionEvents(Node&);
-@@ -930,6 +937,39 @@ void ContainerNode::NotifyNodeInsertedInternal(
+@@ -930,6 +937,41 @@ void ContainerNode::NotifyNodeInsertedInternal(
    EventDispatchForbiddenScope assert_no_event_dispatch;
    ScriptForbiddenScope forbid_script;
  
@@ -34,9 +34,11 @@ index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b5
 +      if (is_html_elm_node || is_html_text_node) {
 +        const DOMNodeId node_id = DOMNodeIds::IdForNode(&root);
 +        Node* const parent = root.parentNode();
-+        const DOMNodeId parent_node_id = (parent && parent->IsElementNode())
-+          ? DOMNodeIds::IdForNode(parent)
-+          : 0;
++        DOMNodeId parent_node_id =
++            (parent && (parent->IsElementNode() || parent->IsDocumentNode()))
++            //(parent && (parent->IsElementNode()))
++            ? DOMNodeIds::IdForNode(parent)
++            : 0;
 +        Node* const sibling = root.previousSibling();
 +        const DOMNodeId sibling_node_id = (sibling)
 +          ? DOMNodeIds::IdForNode(sibling)
@@ -56,7 +58,7 @@ index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b5
    for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
      // As an optimization we don't notify leaf nodes when when inserting
      // into detached subtrees that are not in a shadow tree.
-@@ -952,6 +992,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
+@@ -952,6 +994,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
      // As an optimization we skip notifying Text nodes and other leaf nodes
      // of removal when they're not in the Document tree and not in a shadow root
      // since the virtual call to removedFrom is not needed.
