@@ -10,6 +10,7 @@ import { reorder, getItems } from '../helpers'
 
 // Feature-specific components
 import { List } from '../../../../../src/features/newTab/default'
+import createWidget from '../../../components/default/widget'
 
 // Component group
 import TopSite from './topSite'
@@ -20,7 +21,7 @@ interface State {
   items: Array<any>
 }
 
-export default class TopSitesList extends React.PureComponent<Props, State> {
+class TopSitesList extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = { items: getItems() }
@@ -53,3 +54,5 @@ export default class TopSitesList extends React.PureComponent<Props, State> {
     )
   }
 }
+
+export default createWidget(TopSitesList)

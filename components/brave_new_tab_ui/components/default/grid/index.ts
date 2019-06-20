@@ -10,7 +10,7 @@ export const Header = styled<{}, 'header'>('header')`
   height: 100%;
   margin: 70px 0 0;
   grid-template-columns: 1fr auto auto;
-  grid-template-rows: 1fr;
+  grid-template-rows: 100px;
   grid-gap: 30px 0;
   grid-template-areas:
     "stats clock"
@@ -31,6 +31,7 @@ export const Header = styled<{}, 'header'>('header')`
   }
 
   @media screen and (max-width: 1150px) {
+    grid-template-rows: 1fr;
     grid-template-areas:
     "clock"
     "stats"

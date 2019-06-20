@@ -5,7 +5,7 @@
 import styled from '../../../../theme'
 
 export const List = styled<{}, 'div'>('div')`
-  padding: 0 70px;
+  margin: 0 70px;
   height: 100%;
   display: grid;
   grid-template-columns: repeat(6, 92px);

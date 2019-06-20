@@ -4,6 +4,8 @@
 
 import * as React from 'react'
 
+import createWidget from '../widget/index'
+
 import { StyledClock, StyledTime } from './style'
 
 interface TimeComponent {
@@ -16,7 +18,7 @@ export interface ClockState {
   date: Date
 }
 
-export class Clock extends React.PureComponent<{}, ClockState> {
+class Clock extends React.PureComponent<{}, ClockState> {
   constructor (props: {}) {
     super(props)
     this.state = this.getClockState(new Date())
@@ -66,3 +68,5 @@ export class Clock extends React.PureComponent<{}, ClockState> {
     )
   }
 }
+
+export const ClockWidget = createWidget(Clock)

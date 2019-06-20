@@ -9,7 +9,7 @@ import { Header, Main, Footer } from './grid'
 import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper } from './settings'
 import { List, Tile, TileActionsContainer, TileAction, TileFavicon } from './topSites'
 import { SiteRemovalNotification, SiteRemovalText, SiteRemovalAction } from './notification'
-import { Clock } from './clock'
+import { ClockWidget } from './clock'
 
 export {
   StatsContainer,
@@ -32,7 +32,7 @@ export {
   SiteRemovalNotification,
   SiteRemovalText,
   SiteRemovalAction,
-  Clock,
+  ClockWidget,
   SettingsMenu,
   SettingsRow,
   SettingsText,

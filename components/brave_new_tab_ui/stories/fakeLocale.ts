@@ -18,7 +18,10 @@ const locale: any = {
   close: 'Close',
   // settings
   dashboardSettings: 'Dashboard Settings',
-  showBackgroundImg: 'Show background image'
+  showBackgroundImg: 'Show background image',
+  showBraveStats: 'Show Brave Stats',
+  showClock: 'Show Clock',
+  showTopSites: 'Show Top Sites'
 }
 
 export default locale

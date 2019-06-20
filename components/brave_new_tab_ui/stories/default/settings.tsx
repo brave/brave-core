@@ -13,7 +13,13 @@ import { getLocale } from '../fakeLocale'
 interface Props {
   onClickOutside: () => void
   toggleShowBackgroundImage: () => void
+  toggleShowClock: () => void
+  toggleShowStats: () => void
+  toggleShowTopSites: () => void
   showBackgroundImage: boolean
+  showStats: boolean
+  showClock: boolean
+  showTopSites: boolean
 }
 
 export default class Settings extends React.PureComponent<Props, {}> {
@@ -38,7 +44,16 @@ export default class Settings extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { toggleShowBackgroundImage, showBackgroundImage } = this.props
+    const {
+      toggleShowBackgroundImage,
+      toggleShowClock,
+      toggleShowStats,
+      toggleShowTopSites,
+      showBackgroundImage,
+      showStats,
+      showClock,
+      showTopSites
+    } = this.props
     return (
       <SettingsWrapper>
         <SettingsMenu innerRef={this.settingsMenuRef}>
@@ -48,6 +63,30 @@ export default class Settings extends React.PureComponent<Props, {}> {
             <Toggle
               onChange={toggleShowBackgroundImage}
               checked={showBackgroundImage}
+              size='small'
+            />
+          </SettingsRow>
+          <SettingsRow>
+            <SettingsText>{getLocale('showBraveStats')}</SettingsText>
+            <Toggle
+              onChange={toggleShowStats}
+              checked={showStats}
+              size='small'
+            />
+          </SettingsRow>
+          <SettingsRow>
+            <SettingsText>{getLocale('showClock')}</SettingsText>
+            <Toggle
+              onChange={toggleShowClock}
+              checked={showClock}
+              size='small'
+            />
+          </SettingsRow>
+          <SettingsRow>
+            <SettingsText>{getLocale('showTopSites')}</SettingsText>
+            <Toggle
+              onChange={toggleShowTopSites}
+              checked={showTopSites}
               size='small'
             />
           </SettingsRow>

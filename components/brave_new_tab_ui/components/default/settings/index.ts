@@ -8,7 +8,7 @@ export const SettingsMenu = styled<{}, 'div'>('div')`
   background-color: ${p => p.theme.color.contextMenuBackground};
   color:  ${p => p.theme.color.contextMenuForeground};
   border-radius: 8px;
-  padding: 24px;
+  padding: 24px 24px 17px 24px;
   box-shadow: 0px 4px 24px 0px rgba(0, 0, 0, 0.24);
   font-family: ${p => p.theme.fontFamily.body};
 `
@@ -18,13 +18,14 @@ export const SettingsTitle = styled<{}, 'div'>('div')`
   font-size: 18px;
   font-weight: bold;
   letter-spacing: 0px;
-  margin-bottom: 16px;
+  margin-bottom: 17px;
 `
 
 export const SettingsRow = styled<{}, 'div'>('div')`
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 36px;
+  margin-top: 10px;
   height: 30px;
   width: 320px;
 `

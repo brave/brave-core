@@ -8,8 +8,9 @@ import { StatsContainer, StatsItem } from '../../../../src/features/newTab/defau
 
 // Helpers
 import { getLocale } from '../fakeLocale'
+import createWidget from '../../components/default/widget'
 
-export default class Stats extends React.PureComponent<{}, {}> {
+class Stats extends React.PureComponent<{}, {}> {
   render () {
     return (
       <StatsContainer>
@@ -21,3 +22,5 @@ export default class Stats extends React.PureComponent<{}, {}> {
     )
   }
 }
+
+export default createWidget(Stats)

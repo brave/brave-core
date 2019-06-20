@@ -5,8 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Clock } from '../../../../src/features/newTab/default/clock'
-import { Page, Header, Main, Footer, DynamicBackground, Gradient } from '../../../../src/features/newTab/default'
+import { Page, Header, Main, Footer, DynamicBackground, Gradient, ClockWidget as Clock } from '../../../../src/features/newTab/default'
 
 import Settings from './settings'
 import TopSitesList from './topSites/topSitesList'
@@ -25,19 +24,37 @@ const generateRandomBackgroundData = getRandomBackgroundData(images)
 interface State {
   showSettings: boolean
   showBackgroundImage: boolean
+  showStats: boolean
+  showClock: boolean
+  showTopSites: boolean
 }
 
 export default class NewTabPage extends React.PureComponent<{}, State> {
   constructor (props: {}) {
     super(props)
     this.state = {
+      showSettings: false,
       showBackgroundImage: true,
-      showSettings: false
+      showStats: true,
+      showClock: true,
+      showTopSites: true
     }
   }
 
   toggleShowBackgroundImage = () => {
     this.setState({ showBackgroundImage: !this.state.showBackgroundImage })
+  }
+
+  toggleShowClock = () => {
+    this.setState({ showClock: !this.state.showClock })
+  }
+
+  toggleShowStats = () => {
+    this.setState({ showStats: !this.state.showStats })
+  }
+
+  toggleShowTopSites = () => {
+    this.setState({ showTopSites: !this.state.showTopSites })
   }
 
   showSettings = () => {
@@ -49,16 +66,22 @@ export default class NewTabPage extends React.PureComponent<{}, State> {
   }
 
   render () {
-    const { showSettings, showBackgroundImage } = this.state
+    const { showSettings, showBackgroundImage, showClock, showStats, showTopSites } = this.state
     return (
       <DynamicBackground showBackgroundImage={showBackgroundImage} background={generateRandomBackgroundData.source}>
         {showBackgroundImage && <Gradient />}
         <Page>
           <Header>
-            <Stats />
-            <Clock />
+            <Stats
+              showWidget={showStats}
+            />
+            <Clock
+              showWidget={showClock}
+            />
             <Main>
-              <TopSitesList />
+              <TopSitesList
+                showWidget={showTopSites}
+              />
               <SiteRemovalNotification />
             </Main>
           </Header>
@@ -68,6 +91,12 @@ export default class NewTabPage extends React.PureComponent<{}, State> {
               onClickOutside={this.closeSettings}
               toggleShowBackgroundImage={this.toggleShowBackgroundImage}
               showBackgroundImage={showBackgroundImage}
+              toggleShowClock={this.toggleShowClock}
+              toggleShowStats={this.toggleShowStats}
+              toggleShowTopSites={this.toggleShowTopSites}
+              showClock={showClock}
+              showStats={showStats}
+              showTopSites={showTopSites}
             />
           }
           <Footer>
