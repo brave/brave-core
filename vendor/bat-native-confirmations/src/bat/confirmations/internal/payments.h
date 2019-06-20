@@ -28,7 +28,9 @@ class Payments {
 
   ~Payments();
 
-  bool ParseJson(const std::string& json);
+  bool SetFromJson(const std::string& json);
+  bool SetFromDictionary(base::DictionaryValue* dictionary);
+  base::Value GetAsList();
 
   double GetBalance() const;
 
@@ -36,7 +38,7 @@ class Payments {
       const base::Time& time,
       const uint64_t token_redemption_date_in_seconds) const;
 
-  uint64_t GetTransactionCountForThisMonth() const;
+  uint64_t GetTransactionCountForMonth(const base::Time& time) const;
 
  private:
   std::vector<PaymentInfo> payments_;
@@ -44,12 +46,23 @@ class Payments {
   bool GetBalanceFromDictionary(
       base::DictionaryValue* dictionary,
       double* balance) const;
+  bool GetMonthFromDictionary(
+      base::DictionaryValue* dictionary,
+      std::string* month) const;
   bool GetTransactionCountFromDictionary(
       base::DictionaryValue* dictionary,
       uint64_t* transaction_count) const;
 
-  bool HasPendingBalanceForLastMonth() const;
-  bool HasPendingBalanceForThisMonth() const;
+  bool HasPendingBalanceForTransactionMonth(const std::string& month) const;
+
+  PaymentInfo GetPaymentForTransactionMonth(const std::string& month) const;
+
+  std::string GetTransactionMonth(const base::Time& time) const;
+  std::string GetPreviousTransactionMonth(const base::Time& time) const;
+
+  std::string GetFormattedTransactionMonth(
+      const int year,
+      const int month) const;
 
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED

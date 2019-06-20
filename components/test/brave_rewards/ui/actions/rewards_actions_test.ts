@@ -40,4 +40,12 @@ describe('rewards_actions', () => {
       }
     })
   })
+
+  it('updateAdsRewards', () => {
+    expect(actions.updateAdsRewards()).toEqual({
+      type: types.UPDATE_ADS_REWARDS,
+      meta: undefined,
+      payload: undefined
+    })
+  })
 })

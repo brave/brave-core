@@ -50,7 +50,7 @@ class ConfirmationsImpl : public Confirmations {
   void StartRetryingFailedConfirmations(const uint64_t start_timer_in);
 
   // Ads rewards
-  void UpdateAdsRewards() override;
+  void UpdateAdsRewards(const bool should_refresh) override;
 
   void UpdateAdsRewards(
       const double estimated_pending_rewards,
@@ -184,15 +184,6 @@ class ConfirmationsImpl : public Confirmations {
   bool GetConfirmationsFromDictionary(
       base::DictionaryValue* dictionary,
       std::vector<ConfirmationInfo>* confirmations);
-
-  bool ParseEstimatedPendingRewardsFromJSON(
-      base::DictionaryValue* dictionary);
-
-  bool ParseNextPaymentDateInSecondsFromJSON(
-      base::DictionaryValue* dictionary);
-
-  bool ParseAdNotificationsReceivedThisMonthFromJSON(
-      base::DictionaryValue* dictionary);
 
   bool ParseTransactionHistoryFromJSON(
       base::DictionaryValue* dictionary);
