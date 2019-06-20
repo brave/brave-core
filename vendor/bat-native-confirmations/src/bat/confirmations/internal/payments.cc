@@ -324,8 +324,7 @@ std::string Payments::GetTransactionMonth(const base::Time& time) const {
   base::Time::Exploded time_exploded;
   time.LocalExplode(&time_exploded);
 
-  return base::StringPrintf("%04d-%02d", time_exploded.year,
-      time_exploded.month);
+  return GetFormattedTransactionMonth(time_exploded.year, time_exploded.month);
 }
 
 std::string Payments::GetPreviousTransactionMonth(
@@ -339,8 +338,13 @@ std::string Payments::GetPreviousTransactionMonth(
     time_exploded.year--;
   }
 
-  return base::StringPrintf("%04d-%02d", time_exploded.year,
-      time_exploded.month);
+  return GetFormattedTransactionMonth(time_exploded.year, time_exploded.month);
+}
+
+std::string Payments::GetFormattedTransactionMonth(
+    const int year,
+    const int month) const {
+  return base::StringPrintf("%04d-%02d", year, month);
 }
 
 }  // namespace confirmations
