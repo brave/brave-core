@@ -781,7 +781,7 @@ void LedgerImpl::OnGrantFinish(ledger::Result result,
   newGrant.type = grant.type;
 
   if (grant.type == "ads") {
-    bat_confirmations_->UpdateAdsRewards();
+    bat_confirmations_->UpdateAdsRewards(true);
   }
 
   ledger_client_->OnGrantFinish(result, newGrant);
@@ -1157,6 +1157,10 @@ void LedgerImpl::LogResponse(
     << "> response: " << response_data << std::endl
     << formatted_headers
     << "[ END RESPONSE ]";
+}
+
+void LedgerImpl::UpdateAdsRewards() {
+  bat_confirmations_->UpdateAdsRewards(false);
 }
 
 void LedgerImpl::ResetReconcileStamp() {

@@ -51,7 +51,7 @@ class ConfirmationsImpl : public Confirmations {
   bool IsRetryingFailedConfirmations() const;
 
   // Ads rewards
-  void UpdateAdsRewards() override;
+  void UpdateAdsRewards(const bool should_refresh) override;
 
   void UpdateAdsRewards(
       const double estimated_pending_rewards,

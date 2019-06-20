@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "bat/confirmations/internal/payments.h"
 #include "bat/confirmations/internal/static_values.h"
 #include "bat/confirmations/internal/logging.h"
@@ -241,6 +243,7 @@ bool Payments::GetBalanceFromDictionary(
 
   auto balance_value = value->GetString();
 
+  // Match a double, i.e. 1.23
   if (!re2::RE2::FullMatch(balance_value, "[+]?([0-9]*[.])?[0-9]+")) {
     return false;
   }
@@ -263,6 +266,7 @@ bool Payments::GetMonthFromDictionary(
 
   auto month_value = value->GetString();
 
+  // Match YYYY-MM, i.e. 2019-06
   if (!re2::RE2::FullMatch(month_value, "[0-9]{4}-[0-9]{2}")) {
     return false;
   }
@@ -285,6 +289,7 @@ bool Payments::GetTransactionCountFromDictionary(
 
   auto transaction_count_value = value->GetString();
 
+  // Match a whole number, i.e. 42
   if (!re2::RE2::FullMatch(transaction_count_value, "[+]?[0-9]*")) {
     return false;
   }
@@ -319,8 +324,7 @@ std::string Payments::GetTransactionMonth(const base::Time& time) const {
   base::Time::Exploded time_exploded;
   time.LocalExplode(&time_exploded);
 
-  return base::StringPrintf("%04d-%02d", time_exploded.year,
-      time_exploded.month);
+  return GetFormattedTransactionMonth(time_exploded.year, time_exploded.month);
 }
 
 std::string Payments::GetPreviousTransactionMonth(
@@ -330,12 +334,17 @@ std::string Payments::GetPreviousTransactionMonth(
 
   time_exploded.month--;
   if (time_exploded.month < 1) {
-    time_exploded.month += 12;
+    time_exploded.month = 12;
     time_exploded.year--;
   }
 
-  return base::StringPrintf("%04d-%02d", time_exploded.year,
-      time_exploded.month);
+  return GetFormattedTransactionMonth(time_exploded.year, time_exploded.month);
+}
+
+std::string Payments::GetFormattedTransactionMonth(
+    const int year,
+    const int month) const {
+  return base::StringPrintf("%04d-%02d", year, month);
 }
 
 }  // namespace confirmations

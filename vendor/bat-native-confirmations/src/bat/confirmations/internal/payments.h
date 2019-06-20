@@ -60,6 +60,10 @@ class Payments {
   std::string GetTransactionMonth(const base::Time& time) const;
   std::string GetPreviousTransactionMonth(const base::Time& time) const;
 
+  std::string GetFormattedTransactionMonth(
+      const int year,
+      const int month) const;
+
   ConfirmationsImpl* confirmations_;  // NOT OWNED
   ConfirmationsClient* confirmations_client_;  // NOT OWNED
 };

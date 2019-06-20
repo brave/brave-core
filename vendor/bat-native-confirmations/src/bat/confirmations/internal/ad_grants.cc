@@ -76,6 +76,7 @@ bool AdGrants::GetAmountFromDictionary(
 
   auto amount_value = value->GetString();
 
+  // Match a double, i.e. 1.23
   if (!re2::RE2::FullMatch(amount_value, "[+]?([0-9]*[.])?[0-9]+")) {
     return false;
   }
