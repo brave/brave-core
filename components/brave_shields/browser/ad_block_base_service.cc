@@ -180,8 +180,14 @@ void AdBlockBaseService::EnableTagOnIOThread(
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   if (enabled) {
     ad_block_client_->addTag(tag);
+    tags_.push_back(tag);
   } else {
     ad_block_client_->removeTag(tag);
+    std::vector<std::string>::iterator it =
+        std::find(tags_.begin(), tags_.end(), tag);
+    if (it != tags_.end()) {
+      tags_.erase(it);
+    }
   }
 }
 
@@ -220,6 +226,9 @@ void AdBlockBaseService::UpdateAdBlockClient(
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
   ad_block_client_ = std::move(ad_block_client);
   buffer_ = std::move(buffer);
+  std::for_each(tags_.begin(), tags_.end(), [&](const std::string tag) {
+    ad_block_client_->addTag(tag);
+  });
 }
 
 
