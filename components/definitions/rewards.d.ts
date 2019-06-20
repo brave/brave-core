@@ -34,7 +34,6 @@ declare namespace Rewards {
     adsData: AdsData
     autoContributeList: Publisher[]
     balance: Balance
-    connectedWallet: boolean
     contributeLoad: boolean
     contributionMinTime: number
     contributionMinVisits: number

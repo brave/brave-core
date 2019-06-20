@@ -348,7 +348,6 @@ class PageWallet extends React.Component<Props, State> {
 
   render () {
     const {
-      connectedWallet,
       recoveryKey,
       enabledMain,
       addresses,
@@ -380,7 +379,6 @@ class PageWallet extends React.Component<Props, State> {
           showCopy={true}
           showSecActions={true}
           grants={this.getGrants()}
-          connectedWallet={connectedWallet}
           alert={this.walletAlerts()}
         >
           {

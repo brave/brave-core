@@ -551,7 +551,6 @@ export class Panel extends React.Component<Props, State> {
         ]}
         showCopy={false}
         showSecActions={false}
-        connectedWallet={false}
         grant={currentGrant}
         onGrantHide={this.onGrantHide}
         onNotificationClick={notificationClick}
