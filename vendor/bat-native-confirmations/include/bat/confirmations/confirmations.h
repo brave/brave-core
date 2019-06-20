@@ -57,7 +57,7 @@ class CONFIRMATIONS_EXPORT Confirmations {
   virtual void ConfirmAd(std::unique_ptr<NotificationInfo> info) = 0;
 
   // Should be called to update ads rewards, i.e. after a grant is claimed
-  virtual void UpdateAdsRewards() = 0;
+  virtual void UpdateAdsRewards(const bool should_refresh) = 0;
 
   // Should be called when a timer is triggered
   virtual bool OnTimer(const uint32_t timer_id) = 0;

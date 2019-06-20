@@ -276,6 +276,10 @@ void BatLedgerImpl::SetAutoContribute(bool enabled) {
   ledger_->SetAutoContribute(enabled);
 }
 
+void BatLedgerImpl::UpdateAdsRewards() {
+  ledger_->UpdateAdsRewards();
+}
+
 void BatLedgerImpl::OnTimer(uint32_t timer_id) {
   ledger_->OnTimer(timer_id);
 }

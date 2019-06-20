@@ -151,6 +151,8 @@ class LEDGER_EXPORT Ledger {
 
   virtual void SetAutoContribute(bool enabled) = 0;
 
+  virtual void UpdateAdsRewards() = 0;
+
   virtual void SetBalanceReport(ACTIVITY_MONTH month,
                               int year,
                               const ledger::BalanceReportInfo& report_info) = 0;

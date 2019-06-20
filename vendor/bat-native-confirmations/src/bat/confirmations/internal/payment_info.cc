@@ -9,10 +9,12 @@ namespace confirmations {
 
 PaymentInfo::PaymentInfo() :
     balance(0.0),
+    month(""),
     transaction_count(0) {}
 
 PaymentInfo::PaymentInfo(const PaymentInfo& info) :
     balance(info.balance),
+    month(info.month),
     transaction_count(info.transaction_count) {}
 
 PaymentInfo::~PaymentInfo() {}

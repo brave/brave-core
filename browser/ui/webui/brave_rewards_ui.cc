@@ -67,6 +67,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetReconcileStamp(const base::ListValue* args);
   void GetAddresses(const base::ListValue* args);
   void SaveSetting(const base::ListValue* args);
+  void UpdateAdsRewards(const base::ListValue* args);
   void OnContentSiteList(
       std::unique_ptr<brave_rewards::ContentSiteList>,
       uint32_t record);
@@ -258,6 +259,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.saveSetting",
       base::BindRepeating(&RewardsDOMHandler::SaveSetting,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.updateAdsRewards",
+      base::BindRepeating(&RewardsDOMHandler::UpdateAdsRewards,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getBalanceReports",
       base::BindRepeating(&RewardsDOMHandler::GetBalanceReports,
@@ -751,6 +755,15 @@ void RewardsDOMHandler::SaveSetting(const base::ListValue* args) {
     }
   }
 }
+
+void RewardsDOMHandler::UpdateAdsRewards(const base::ListValue* args) {
+  if (!rewards_service_) {
+    return;
+  }
+
+  rewards_service_->UpdateAdsRewards();
+}
+
 void RewardsDOMHandler::ExcludePublisher(const base::ListValue *args) {
   CHECK_EQ(1U, args->GetSize());
   if (!rewards_service_) {
