@@ -9,6 +9,7 @@
 #include <memory>
 #include <string>
 
+#include "brave/components/brave_sync/brave_profile_sync_service_exports.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
@@ -40,7 +41,8 @@ namespace prefs {
 class Prefs;
 }   // namespace prefs
 
-class BraveProfileSyncService : public syncer::ProfileSyncService,
+class BraveProfileSyncService : public BraveProfileSyncServiceExports,
+                                public syncer::ProfileSyncService,
                                 public BraveSyncService,
                                 public SyncMessageHandler {
  public:
@@ -97,15 +99,15 @@ class BraveProfileSyncService : public syncer::ProfileSyncService,
   BraveSyncClient* GetBraveSyncClient() override;
 #endif
 
-  bool IsBraveSyncEnabled() const;
+  bool IsBraveSyncEnabled() const override;
   bool IsBraveSyncInitialized() const;
   bool IsBraveSyncConfigured() const;
 
   syncer::ModelTypeSet GetPreferredDataTypes() const override;
 
-  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list);
+  void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override;
   void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
-                       base::WaitableEvent* wevent);
+                       base::WaitableEvent* wevent) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);
