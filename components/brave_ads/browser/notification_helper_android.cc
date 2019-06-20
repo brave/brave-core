@@ -15,14 +15,14 @@ NotificationHelperAndroid::NotificationHelperAndroid() = default;
 NotificationHelperAndroid::~NotificationHelperAndroid() = default;
 
 bool NotificationHelperAndroid::IsNotificationsAvailable() const {
-  const int kAppNotificationStatusUndeterminable = 0;
-  const int kAppNotificationsStatusEnabled = 2;
-  int status = Java_NotificationSystemStatusUtil_getAppNotificationStatus(
-      base::android::AttachCurrentThread());
-  bool notificationsOn = (status == kAppNotificationsStatusEnabled ||
-      status == kAppNotificationStatusUndeterminable);
+  bool notificationsOn = IsBraveNotificationsEnabled();
   bool channelOn = IsBraveAdsChannelEnabled();
   return (notificationsOn && channelOn);
+}
+
+void NotificationHelperAndroid::OpenNotificationsSettings() const {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveAds_openSystemNotifPrefs(env);
 }
 
 // Starting in Android 8.0 (API level 26), all notifications must be
@@ -34,6 +34,15 @@ bool NotificationHelperAndroid::IsBraveAdsChannelEnabled() const {
   auto status = channels_provider_->GetChannelStatus(channel_id);
   return (NotificationChannelStatus::ENABLED == status ||
       NotificationChannelStatus::UNAVAILABLE == status);
+}
+
+bool NotificationHelperAndroid::IsBraveNotificationsEnabled() const {
+  const int kAppNotificationStatusUndeterminable = 0;
+  const int kAppNotificationsStatusEnabled = 2;
+  int status = Java_NotificationSystemStatusUtil_getAppNotificationStatus(
+      base::android::AttachCurrentThread());
+  return (status == kAppNotificationsStatusEnabled ||
+      status == kAppNotificationStatusUndeterminable);
 }
 
 NotificationHelperAndroid* NotificationHelperAndroid::GetInstance() {

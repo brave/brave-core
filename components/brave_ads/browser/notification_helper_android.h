@@ -25,9 +25,11 @@ class NotificationHelperAndroid :
 
   // NotificationHelper impl
   bool IsNotificationsAvailable() const override;
+  void OpenNotificationsSettings() const override;
 
  private:
   bool IsBraveAdsChannelEnabled() const;
+  bool IsBraveNotificationsEnabled() const;
   std::unique_ptr<NotificationChannelsProviderAndroid> channels_provider_ =
       std::make_unique<NotificationChannelsProviderAndroid>();
   friend struct base::DefaultSingletonTraits<NotificationHelperAndroid>;

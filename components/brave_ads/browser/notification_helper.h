@@ -18,6 +18,7 @@ class NotificationHelper {
   static NotificationHelper* GetInstance();
   
   virtual bool IsNotificationsAvailable() const;
+  virtual void OpenNotificationsSettings() const;
 
  protected:
   NotificationHelper();
