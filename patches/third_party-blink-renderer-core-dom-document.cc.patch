@@ -36,7 +36,7 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
  }
  
  Document::~Document() {
-@@ -778,8 +791,83 @@ Document::~Document() {
+@@ -778,7 +791,82 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -48,8 +48,8 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
 +  page_graph_non_owning_ = nullptr;
 +  GetIsolate()->SetPageGraph(nullptr);
 +#endif
- }
- 
++}
++
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +brave_page_graph::PageGraph* Document::GetPageGraph() {
 +  if (wasDiscarded() == true) {
@@ -114,37 +114,8 @@ index 02e6831f00c14a9aab6ba6d4218a94ec133c6076..091eb1776f2ae37992024de1e641ed64
 +  page_graph_ = new ::brave_page_graph::PageGraph(*this);
 +  GetIsolate()->SetPageGraph(page_graph_);
 +  return page_graph_;
-+}
+ }
 +#endif
-+
+ 
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
-   DCHECK(position.IsNotNull());
-@@ -2663,6 +2751,27 @@ StyleResolver& Document::EnsureStyleResolver() const {
- }
- 
- void Document::Initialize() {
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  if (this != &(TopDocument())) {
-+    brave_page_graph::PageGraph* page_graph = GetPageGraph();
-+    if (page_graph != nullptr) {
-+      const DOMNodeId node_id = DOMNodeIds::IdForNode(this);
-+
-+      // This document must has a local iframe owner.
-+      HTMLFrameOwnerElement* owner = LocalOwner();
-+      DCHECK(owner != nullptr);
-+      const DOMNodeId parent_node_id = DOMNodeIds::IdForNode(owner);
-+
-+      // Use negative number to indicate that a cross-DOM edge is needed.
-+      page_graph->RegisterDocumentRootCreated(node_id, parent_node_id);
-+    } else {
-+      std::cout << "PG is null for child docuemnt ID: "
-+          << DOMNodeIds::IdForNode(this)
-+          << " GetFrame: " << (void*)GetFrame() << "\n";
-+    }
-+  }
-+#endif
-+
-   DCHECK_EQ(lifecycle_.GetState(), DocumentLifecycle::kInactive);
-   DCHECK(!ax_object_cache_ || this != &AXObjectCacheOwner());
- 
