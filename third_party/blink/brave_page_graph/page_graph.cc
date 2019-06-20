@@ -25,6 +25,7 @@
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_set.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_attribute_delete.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_cross_dom.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_execute_attr.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_import.h"
@@ -38,6 +39,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_error.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_complete.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_actor.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_dom_root.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_extension.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_frame.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_html.h"
@@ -97,7 +99,6 @@ PageGraph::PageGraph(Document& document) :
     shields_node_(new NodeShields(this)),
     cookie_jar_node_(new NodeStorageCookieJar(this)),
     local_storage_node_(new NodeStorageLocalStorage(this)),
-    html_root_node_(new NodeHTMLElement(this, kRootNodeId, "(root)")),
     document_(document) {
   Log("init");
   Log(" --- ");
@@ -107,8 +108,13 @@ PageGraph::PageGraph(Document& document) :
   AddNode(shields_node_);
   AddNode(cookie_jar_node_);
   AddNode(local_storage_node_);
+
+  const blink::DOMNodeId root_id = blink::DOMNodeIds::IdForNode(&document);
+  html_root_node_ = new NodeDOMRoot(this, root_id);
   AddNode(html_root_node_);
-  element_nodes_.emplace(kRootNodeId, html_root_node_);
+  element_nodes_.emplace(root_id, html_root_node_);
+  Log("Root document ID: " + to_string(root_id));
+
   yuck = this;
   signal(30, &write_to_disk);
 }
@@ -135,6 +141,36 @@ NodeHTMLElement* PageGraph::GetHTMLElementNode(const DOMNodeId node_id) const {
 NodeHTMLText* PageGraph::GetHTMLTextNode(const DOMNodeId node_id) const {
   LOG_ASSERT(text_nodes_.count(node_id) == 1);
   return text_nodes_.at(node_id);
+}
+
+void PageGraph::RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
+    const blink::DOMNodeId parent_node_id) {
+  Log("RegisterDocumentRootCreated) node id: " + to_string(node_id)
+    + " parent node id: " + to_string(parent_node_id));
+
+  LOG_ASSERT(element_nodes_.count(node_id) == 0);
+  LOG_ASSERT(element_nodes_.count(parent_node_id) == 1);
+
+  // Create the new DOM root node.
+  NodeDOMRoot* const dom_root = new NodeDOMRoot(this, node_id);
+  AddNode(dom_root);
+  element_nodes_.emplace(node_id, dom_root);
+  Log("Child document ID: " + to_string(node_id));
+
+  // Add the node creation edge.
+  NodeActor* const acting_node = GetCurrentActingNode();
+  const EdgeNodeCreate* const creation_edge = new EdgeNodeCreate(this,
+      acting_node, dom_root);
+  AddEdge(creation_edge);
+  dom_root->AddInEdge(creation_edge);
+  acting_node->AddOutEdge(creation_edge);
+
+  // Add the edge from parent iframe.
+  const EdgeCrossDOM* const structure_edge = new EdgeCrossDOM(this,
+      acting_node, dom_root, parent_node_id);
+  AddEdge(structure_edge);
+  dom_root->AddInEdge(structure_edge);
+  acting_node->AddOutEdge(structure_edge);
 }
 
 void PageGraph::RegisterHTMLElementNodeCreated(const DOMNodeId node_id,
