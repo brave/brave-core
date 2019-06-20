@@ -14,6 +14,9 @@ const char kAutomaticSettingsResetLearnMoreURL[] =
     "https://support.brave.com/hc/en-us/articles/"
     "360017903152-How-do-I-reset-Brave-settings-to-default-";
 
+const char kAdvancedProtectionDownloadLearnMoreURL[] =
+    "https://support.brave.com";
+
 const char kBluetoothAdapterOffHelpURL[] =
 #if defined(OS_CHROMEOS)
     "https://support.brave.com/";
