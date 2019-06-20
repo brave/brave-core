@@ -6,11 +6,11 @@
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
 #include <map>
 #include <vector>
-#include "brave/third_party/blink/brave_page_graph/logging.h"
-#include "brave/third_party/blink/brave_page_graph/types.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_source_code.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
+#include "brave/third_party/blink/brave_page_graph/logging.h"
+#include "brave/third_party/blink/brave_page_graph/types.h"
 
 using ::blink::DOMNodeId;
 using ::blink::KURL;
@@ -26,13 +26,7 @@ ScriptTracker::~ScriptTracker() {}
 
 void ScriptTracker::AddScriptUrlForElm(const KURL& url,
     const DOMNodeId node_id) {
-  // Ugly but effective hack for cases where URLs are upgrade to HTTPS
-  // b/c of HSTS.
-  KURL local_url(url);
-  if (local_url.ProtocolIsInHTTPFamily()) {
-    local_url.SetProtocol("https");
-  }
-  const UrlHash url_hash(local_url.GetString().Impl()->GetHash());
+  const UrlHash url_hash(url.GetString().Impl()->GetHash());
   if (node_id_to_script_url_hashes_.count(node_id) == 0) {
     node_id_to_script_url_hashes_.emplace(node_id, vector<UrlHash>());
   }
@@ -60,14 +54,8 @@ void ScriptTracker::AddScriptSourceForElm(const ScriptSourceCode& code,
 
 void ScriptTracker::AddCodeFetchedFromUrl(
     const ScriptSourceCode& code, const KURL& url) {
-  // Ugly but effective hack for cases where URLs are upgrade to HTTPS
-  // b/c of HSTS.
-  KURL local_url(url);
-  if (local_url.ProtocolIsInHTTPFamily()) {
-    local_url.SetProtocol("https");
-  }
   const SourceCodeHash code_hash(code.Source().ToString().Impl()->GetHash());
-  const UrlHash url_hash(local_url.GetString().Impl()->GetHash());
+  const UrlHash url_hash(url.GetString().Impl()->GetHash());
 
   // There should be no situations where we're receiving script code
   // from an unknown URL.

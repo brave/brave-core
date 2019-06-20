@@ -54,6 +54,8 @@
 #include "brave/third_party/blink/brave_page_graph/requests/tracked_request.h"
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/utilities/urls.h"
+
 
 using ::blink::Document;
 using ::blink::DOMNodeId;
@@ -370,7 +372,8 @@ void PageGraph::RegisterTextNodeChange(const blink::DOMNodeId node_id,
 void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
     const InspectorId request_id, const KURL& url,
     const RequestType type) {
-  const string local_url(url.GetString().Utf8().data());
+  const KURL normalized_url = NormalizeUrl(url);
+  const string local_url(normalized_url.GetString().Utf8().data());
 
   // For now, explode if we're getting duplicate requests for the same
   // URL in the same document.  This might need to be changed.
@@ -402,7 +405,8 @@ void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
 void PageGraph::RegisterRequestStartFromCurrentScript(
     const InspectorId request_id, const KURL& url, const RequestType type) {
   NodeActor* const acting_node = GetCurrentActingNode();
-  const string local_url(url.GetString().Utf8().data());
+  const KURL normalized_url = NormalizeUrl(url);
+  const string local_url(normalized_url.GetString().Utf8().data());
 
   Log("RegisterRequestStartFromCurrentScript) script id: "
     + to_string((static_cast<NodeScript*>(acting_node))->GetScriptId())
@@ -460,15 +464,17 @@ void PageGraph::RegisterElmForLocalScript(const DOMNodeId node_id,
 
 void PageGraph::RegisterElmForRemoteScript(const DOMNodeId node_id,
     const KURL& url) {
+  const KURL normalized_url = NormalizeUrl(url);
   Log("RegisterElmForRemoteScript) node_id: " + to_string(node_id)
-    + ", url: " + URLToString(url));
-  script_tracker_.AddScriptUrlForElm(url, node_id);
+    + ", url: " + URLToString(normalized_url));
+  script_tracker_.AddScriptUrlForElm(normalized_url, node_id);
 }
 
 void PageGraph::RegisterUrlForScriptSource(const KURL& url,
     const ScriptSourceCode& code) {
-  Log("RegisterUrlForScriptSource) url: " + URLToString(url));
-  script_tracker_.AddCodeFetchedFromUrl(code, url);
+  const KURL normalized_url = NormalizeUrl(url);
+  Log("RegisterUrlForScriptSource) url: " + URLToString(normalized_url));
+  script_tracker_.AddCodeFetchedFromUrl(code, normalized_url);
 }
 
 void PageGraph::RegisterUrlForExtensionScriptSource(const blink::WebString& url,
@@ -563,6 +569,9 @@ void PageGraph::RegisterScriptExecStop(const ScriptId script_id) {
   Log("RegisterScriptExecStop) script id: " + to_string(script_id));
   LOG_ASSERT(script_nodes_.count(script_id) == 1);
   ScriptId popped_script_id = PopActiveScript();
+  if (popped_script_id != script_id) {
+    Log("* Expected " + to_string(script_id) + " but got " + to_string(popped_script_id));
+  }
   LOG_ASSERT(popped_script_id == script_id);
 }
 
@@ -593,10 +602,19 @@ GraphMLXML PageGraph::ToGraphML() const {
 }
 
 NodeActor* PageGraph::GetCurrentActingNode() const {
+  static ScriptId last_reported_script_id = 0;
   const ScriptId current_script_id = PeekActiveScript();
-  Log("GetCurrentActingNode) script id: " + to_string(current_script_id));
+  const bool should_log = last_reported_script_id != current_script_id;
+  last_reported_script_id = current_script_id;
+
+  if (should_log) {
+    Log("GetCurrentActingNode) script id: " + to_string(current_script_id));
+  }
+
   if (current_script_id == 0) {
-    Log("GetCurrentActingNode) NodeParser");
+    if (should_log) {
+      Log("GetCurrentActingNode) NodeParser");
+    }
     return parser_node_;
   }
 
@@ -697,11 +715,9 @@ void PageGraph::PushActiveScript(const ScriptId script_id) {
 }
 
 ScriptId PageGraph::PopActiveScript() {
-  ScriptId top_script_id = 0;
-  if (active_script_stack_.empty() == false) {
-    top_script_id = active_script_stack_.back();
-    active_script_stack_.pop_back();
-  }
+  LOG_ASSERT(active_script_stack_.size() > 0);
+  ScriptId top_script_id = active_script_stack_.back();
+  active_script_stack_.pop_back();
   return top_script_id;
 }
 
