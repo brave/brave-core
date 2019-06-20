@@ -363,4 +363,34 @@ describe('newTabReducer', () => {
       expect(assertion).toEqual(expected)
     })
   })
+  describe('NEW_TAB_TOGGLE_SHOW_STATS', () => {
+    it('should toggle showStats status to be true', () => {
+      const mockState = { ...fakeState, showStats: false }
+      const expected = { ...mockState, showStats: true }
+      const assertion = newTabReducer(mockState, {
+        type: types.NEW_TAB_TOGGLE_SHOW_STATS
+      })
+      expect(assertion).toEqual(expected)
+    })
+  })
+  describe('NEW_TAB_TOGGLE_SHOW_CLOCK', () => {
+    it('should toggle showClock status to be true', () => {
+      const mockState = { ...fakeState, showClock: false }
+      const expected = { ...mockState, showClock: true }
+      const assertion = newTabReducer(mockState, {
+        type: types.NEW_TAB_TOGGLE_SHOW_CLOCK
+      })
+      expect(assertion).toEqual(expected)
+    })
+  })
+  describe('NEW_TAB_TOGGLE_SHOW_TOP_SITES', () => {
+    it('should toggle showTopSites status to be true', () => {
+      const mockState = { ...fakeState, showTopSites: false }
+      const expected = { ...mockState, showTopSites: true }
+      const assertion = newTabReducer(mockState, {
+        type: types.NEW_TAB_TOGGLE_SHOW_TOP_SITES
+      })
+      expect(assertion).toEqual(expected)
+    })
+  })
 })
