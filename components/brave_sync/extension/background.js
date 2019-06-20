@@ -131,7 +131,7 @@ function removeLocalMeta(record) {
   }
 }
 
-function fixupBookmarkParentFolderObjectId(category_name, records) {
+function fixupBookmarkFields(category_name, records) {
   // records[0].bookmark.parentFolderObjectId can be either Uint8Array or Array[]
   // Uint8Array is expanded to "binary",
   // Array[] is expanded to "array" of "integer" in schema
@@ -139,6 +139,9 @@ function fixupBookmarkParentFolderObjectId(category_name, records) {
   if (category_name == "BOOKMARKS") {
     for(var i = 0; i < records.length; ++i) {
       fixupSyncRecordExtToBrowser(records[i]);
+      // Until brave-sync cannot deal with metaInfo field, this field causes
+      // "Error at property 'bookmark': Unexpected property: 'metaInfo'"
+      delete records[i].bookmark.metaInfo;
     }
   }
 }
@@ -258,7 +261,7 @@ class InjectedObject {
         chrome.braveSync.syncReady();
         break;
       case "get-existing-objects":
-        fixupBookmarkParentFolderObjectId(arg1, arg2);
+        fixupBookmarkFields(arg1, arg2);
         console.log(`"get-existing-objects" category_name=${JSON.stringify(arg1)} records=${JSON.stringify(arg2)} lastRecordTimeStamp=${arg3 ? arg3 : 0} isTruncated=${arg4 != undefined ? arg4 : false} `);
         chrome.braveSync.getExistingObjects(arg1/*category_name*/,
           arg2/*records*/, arg3 ? arg3 : 0/*lastRecordTimeStamp*/, arg4 != undefined ? arg4 : false/*isTruncated*/);
