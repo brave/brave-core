@@ -35,9 +35,6 @@ class AdsRewards {
   base::Value GetAsDictionary();
   bool SetFromDictionary(base::DictionaryValue* dictionary);
 
-  base::Value GetAsDictionary();
-  bool SetFromDictionary(base::DictionaryValue* dictionary);
-
   bool OnTimer(const uint32_t timer_id);
 
  private:
