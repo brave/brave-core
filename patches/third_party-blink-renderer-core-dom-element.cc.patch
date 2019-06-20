@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/element.cc b/third_party/blink/renderer/core/dom/element.cc
-index d86329b115ae842fac8218a9d7f175b888576ae5..fa2cb1fe1395229f6cc8a2e54de7cd9f65670588 100644
+index d86329b115ae842fac8218a9d7f175b888576ae5..052d4b42fd6484d49e88e4dbe774c966459760e0 100644
 --- a/third_party/blink/renderer/core/dom/element.cc
 +++ b/third_party/blink/renderer/core/dom/element.cc
 @@ -162,6 +162,15 @@
@@ -11,7 +11,7 @@ index d86329b115ae842fac8218a9d7f175b888576ae5..fa2cb1fe1395229f6cc8a2e54de7cd9f
 +#include <iostream>
 +#include "third_party/blink/renderer/core/dom/document.h"
 +#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
-+#include "brave/third_party/blink/brave_page_graph/dispatchers.h"
++#include "brave/third_party/blink/brave_page_graph/utilities/dispatchers.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
 +

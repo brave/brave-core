@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/script_controller.cc b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
-index 5987273c80d97900860b893d561d8466098d23c3..3a186ff24db9276a5c89fa330809449002dc04da 100644
+index 5987273c80d97900860b893d561d8466098d23c3..78e87a4df515119709970d951440b90f9547dad4 100644
 --- a/third_party/blink/renderer/bindings/core/v8/script_controller.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
 @@ -71,6 +71,13 @@
@@ -16,15 +16,23 @@ index 5987273c80d97900860b893d561d8466098d23c3..3a186ff24db9276a5c89fa3308094490
  namespace blink {
  
  void ScriptController::Trace(blink::Visitor* visitor) {
-@@ -130,9 +137,32 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
+@@ -130,9 +137,40 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
               .ToLocal(&script))
        return result;
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++    bool is_puppeteer_script = false;
++    if (source.SourceLocationType() == ScriptSourceLocationType::kUnknown) {
++      if (source.Source().ToString() ==
++          "//# sourceURL=__puppeteer_evaluation_script__") {
++        is_puppeteer_script = true;
++      }
++    }
++
 +    {
 +      ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
 +        ->GetPageGraph();
-+      if (page_graph != nullptr) {
++      if (!is_puppeteer_script && page_graph != nullptr) {
 +        page_graph->RegisterScriptCompilation(
 +          source, script->GetUnboundScript()->GetId(),
 +          ::brave_page_graph::ScriptType::kScriptTypeUnknown);
@@ -40,7 +48,7 @@ index 5987273c80d97900860b893d561d8466098d23c3..3a186ff24db9276a5c89fa3308094490
 +    {
 +      ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
 +        ->GetPageGraph();
-+      if (page_graph != nullptr) {
++      if (!is_puppeteer_script && page_graph != nullptr) {
 +        page_graph->RegisterScriptExecStop(script->GetUnboundScript()->GetId());
 +      }
 +    }
