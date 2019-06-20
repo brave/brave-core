@@ -74,3 +74,4 @@ export const closeSettingsMenu = () => action(types.NEW_TAB_CLOSE_SETTINGS_MENU)
 export const preferencesUpdated = (prefs: any) => action(types.NEW_TAB_PREFERENCES_UPDATED, {
   prefs
 })
+
