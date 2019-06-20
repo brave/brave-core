@@ -11,12 +11,20 @@
 #import "bat/ads/ads_client.h"
 #import "Logger.h"
 
+/// A generic unbuffered logger logs messages via iostream
 class RewardsLogStream : public ledger::LogStream, public ads::LogStream {
 public:
+  /// Creates a stream for logging ledger information
   RewardsLogStream(const char* file, const int line, const ledger::LogLevel log_level);
+    
+  /// Creates a stream for logging ads information
   RewardsLogStream(const char* file, const int line, const ads::LogLevel log_level);
+    
+  /// Flushes logs immediately upon destruction
   ~RewardsLogStream() override;
 
+  /// A stream used to insert logging data
+  /// IE: stream() << "Some information that needs logging"
   std::ostream& stream() override;
 
 private:

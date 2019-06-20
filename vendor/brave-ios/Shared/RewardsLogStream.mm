@@ -8,41 +8,28 @@ RewardsLogStream::RewardsLogStream(const char* file,
                                    const int line,
                                    const ledger::LogLevel log_level) {
     
-  this->log_stream = std::make_unique<UnbufferedLogger>([this, file, line, log_level](std::string data){
-    this->log_stream->write({this->log_stream.get(), log_level, file, line, data});
+  std::string file_info = file;
+
+  /// Initialize an unbuffered logger with a lambda capturing the constructor parameters and writing it to the iOS callback functions
+  this->log_stream = std::make_unique<UnbufferedLogger>([this, file_info, line, log_level](std::string data){
+    this->log_stream->write({this->log_stream.get(), log_level, file_info, line, data});
   }, [this]{
     this->log_stream->flush();
   });
-    
-
-//  std::map<ledger::LogLevel, std::string> map {
-//    {ledger::LOG_ERROR, "ERROR"},
-//    {ledger::LOG_WARNING, "WARNING"},
-//    {ledger::LOG_INFO, "INFO"},
-//    {ledger::LOG_DEBUG, "DEBUG"},
-//    {ledger::LOG_RESPONSE, "RESPONSE"}
-//  };
-//
-//  log_message_ = map[log_level] + ": ";
 }
 
 RewardsLogStream::RewardsLogStream(const char* file,
                                    const int line,
                                    const ads::LogLevel log_level) {
     
-  this->log_stream = std::make_unique<UnbufferedLogger>([this, file, line, log_level](std::string data){
-    this->log_stream->write({this->log_stream.get(), log_level, file, line, data});
+  std::string file_info = file;
+
+  /// Initialize an unbuffered logger with a lambda capturing the constructor parameters and writing it to the iOS callback functions
+  this->log_stream = std::make_unique<UnbufferedLogger>([this, file_info, line, log_level](std::string data){
+    this->log_stream->write({this->log_stream.get(), log_level, file_info, line, data});
   }, [this]{
     this->log_stream->flush();
   });
-    
-//  std::map<ads::LogLevel, std::string> map {
-//    {ads::LOG_ERROR, "ERROR"},
-//    {ads::LOG_WARNING, "WARNING"},
-//    {ads::LOG_INFO, "INFO"}
-//  };
-//    
-//  log_message_ = map[log_level] + ": ";
 }
 
 RewardsLogStream::~RewardsLogStream() {

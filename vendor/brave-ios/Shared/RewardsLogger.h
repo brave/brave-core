@@ -6,9 +6,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/// A logger that bridges the C++ logging platform to iOS
 NS_SWIFT_NAME(RewardsLogger)
 @interface BATBraveRewardsLogger : NSObject
-+ (void)configure:(void(^)(BATLogLevel logLevel, int line, NSString *file, NSString *data))onWrite withFlushCallback:(void(^)())flushCallback;
+
+/// Configures the logger by setting a callback function which will be called when the ads and rewards needs to log data.
+/// onWrite is called when data needs to be logged
+/// onFlush is called when data should be flushed from memory to a file (if needed)
++ (void)configureWithLogCallback:(void(^)(BATLogLevel logLevel, int line, NSString *file, NSString *data))onWrite withFlush:(void(^)())onFlush;
 @end
 
 NS_ASSUME_NONNULL_END
