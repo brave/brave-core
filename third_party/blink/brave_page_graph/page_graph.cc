@@ -145,10 +145,12 @@ NodeHTMLText* PageGraph::GetHTMLTextNode(const DOMNodeId node_id) const {
 
 void PageGraph::RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
     const blink::DOMNodeId parent_node_id) {
+  if (element_nodes_.count(node_id) != 0)
+    return;  // Already registered.
+
   Log("RegisterDocumentRootCreated) node id: " + to_string(node_id)
     + " parent node id: " + to_string(parent_node_id));
 
-  LOG_ASSERT(element_nodes_.count(node_id) == 0);
   LOG_ASSERT(element_nodes_.count(parent_node_id) == 1);
 
   // Create the new DOM root node.
