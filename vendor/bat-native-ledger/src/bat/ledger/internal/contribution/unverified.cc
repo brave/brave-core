@@ -103,12 +103,11 @@ void Unverified::OnContributeUnverifiedPublishers(
         current->amount,
         "BAT");
 
-    braveledger_bat_helper::PublisherList list;
     auto direction_list = std::vector
         <braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
     contribution_->InitReconcile(
         ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
-        list,
+        {},
         direction_list);
 
     ledger_->RemovePendingContribution(

@@ -491,6 +491,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void GetExternalWallets(ledger::GetExternalWalletsCallback callback);
 
+  std::string GetPublisherAddress(const std::string& publisher_key) const;
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

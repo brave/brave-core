@@ -9,6 +9,7 @@
 #include <string>
 #include <map>
 #include <memory>
+#include <vector>
 
 #include "bat/ledger/ledger.h"
 
@@ -37,6 +38,9 @@ class Uphold {
   explicit Uphold(bat_ledger::LedgerImpl* ledger);
 
   ~Uphold();
+  static std::vector<std::string> RequestAuthorization(
+      const std::string& token);
+
   void StartContribution(const std::string &viewing_id,
                          ledger::ExternalWallet wallet);
 

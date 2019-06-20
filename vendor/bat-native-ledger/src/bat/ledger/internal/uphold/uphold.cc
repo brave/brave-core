@@ -19,11 +19,19 @@ using std::placeholders::_3;
 namespace braveledger_uphold {
 
 Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
-    contribution_(std::make_unique<UpholdContribution>(ledger)),
+    contribution_(std::make_unique<UpholdContribution>(ledger, this)),
     ledger_(ledger) {
 }
 
 Uphold::~Uphold() {
+}
+
+std::vector<std::string> Uphold::RequestAuthorization(
+    const std::string& token) {
+  std::vector<std::string> headers;
+  headers.push_back("Authorization: Bearer " + token);
+
+  return headers;
 }
 
 void Uphold::StartContribution(const std::string &viewing_id,
@@ -41,8 +49,7 @@ void Uphold::FetchBalance(
     return;
   }
 
-  std::vector<std::string> headers;
-  headers.push_back("Authorization: Bearer " + wallet.token);
+  auto headers = RequestAuthorization(wallet.token);
   const std::string url = GetAPIUrl("/v0/me/cards/" + wallet.address);
 
   auto balance_callback = std::bind(&Uphold::OnFetchBalance,

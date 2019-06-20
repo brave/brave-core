@@ -31,6 +31,7 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     phase_one_(std::make_unique<PhaseOne>(ledger, this)),
     phase_two_(std::make_unique<PhaseTwo>(ledger, this)),
     unverified_(std::make_unique<Unverified>(ledger, this)),
+    uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
     last_reconcile_timer_id_(0u) {
 }
 
@@ -714,6 +715,33 @@ bool Contribution::HaveReconcileEnoughFunds(
   return false;
 }
 
+bool Contribution::IsListEmpty(
+    const ledger::REWARDS_CATEGORY category,
+    const braveledger_bat_helper::PublisherList& list,
+    double budget) {
+  if (list.size() == 0 || budget == 0) {
+    if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
+      BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+        "Auto contribution table is empty";
+      phase_one_->Complete(ledger::Result::AC_TABLE_EMPTY,
+                           "",
+                           category);
+      return true;
+    }
+
+    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+      phase_one_->Complete(ledger::Result::RECURRING_TABLE_EMPTY,
+                           "",
+                           ledger::REWARDS_CATEGORY::RECURRING_TIP);
+      BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
+        "Recurring donation list is empty";
+      return true;
+    }
+  }
+
+  return false;
+}
+
 void Contribution::ProcessReconcile(
     const ledger::REWARDS_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
@@ -730,36 +758,21 @@ void Contribution::ProcessReconcile(
     return;
   }
 
-  if (list.size() == 0 || budget == 0) {
-    if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
-      BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
-        "Auto contribution table is empty";
-      phase_one_->Complete(ledger::Result::AC_TABLE_EMPTY,
-                           "",
-                           category);
-      return;
-    }
-
-    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
-      phase_one_->Complete(ledger::Result::RECURRING_TABLE_EMPTY,
-                           "",
-                           ledger::REWARDS_CATEGORY::RECURRING_TIP);
-      BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
-        "Recurring donation list is empty";
-      return;
-    }
+  if (IsListEmpty(category, list, budget)) {
+    return;
   }
 
-  auto reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
-  reconcile.viewingId_ = ledger_->GenerateGUID();
-  reconcile.fee_ = fee;
-  reconcile.directions_ = directions;
-  reconcile.category_ = category;
-  reconcile.list_ = list;
+  auto anon_reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
+  anon_reconcile.viewingId_ = ledger_->GenerateGUID();
+  anon_reconcile.fee_ = fee;
+  anon_reconcile.directions_ = directions;
+  anon_reconcile.category_ = category;
+  anon_reconcile.list_ = list;
 
-  if (ledger_->ReconcileExists(reconcile.viewingId_)) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-      "Unable to reconcile with the same viewing id: " << reconcile.viewingId_;
+  if (ledger_->ReconcileExists(anon_reconcile.viewingId_)) {
+    BLOG(ledger_, ledger::LogLevel::LOG_ERROR)
+      << "Unable to reconcile with the same viewing id: "
+      << anon_reconcile.viewingId_;
     return;
   }
 
@@ -768,34 +781,123 @@ void Contribution::ProcessReconcile(
       ledger::kWalletAnonymous,
       info->wallets);
   if (anon_balance >= fee) {
-    ledger_->AddReconcile(reconcile.viewingId_, reconcile);
-    phase_one_->Start(reconcile.viewingId_);
+    ledger_->AddReconcile(anon_reconcile.viewingId_, anon_reconcile);
+    phase_one_->Start(anon_reconcile.viewingId_);
     return;
   }
 
+  // We need to first use all anon balance and what is left should
+  // go through connected wallet
+  braveledger_bat_helper::Directions wallet_directions;
+  braveledger_bat_helper::PublisherList wallet_list;
   if (anon_balance > 0) {
     fee = fee - anon_balance;
-    reconcile.fee_ = anon_balance;
-    ledger_->AddReconcile(reconcile.viewingId_, reconcile);
-    phase_one_->Start(reconcile.viewingId_);
+    anon_reconcile.fee_ = anon_balance;
+
+    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+      braveledger_bat_helper::PublisherList anon_list;
+      AdjustRecurringTipsAmounts(list,
+                                 &wallet_list,
+                                 &anon_list,
+                                 anon_balance);
+      anon_reconcile.list_ = anon_list;
+    } else if (category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP) {
+      braveledger_bat_helper::Directions anon_directions;
+      AdjustOneTimeTipAmount(directions,
+                             &wallet_directions,
+                             &anon_directions,
+                             anon_balance);
+      anon_reconcile.directions_ = anon_directions;
+    }
+
+    ledger_->AddReconcile(anon_reconcile.viewingId_, anon_reconcile);
+    phase_one_->Start(anon_reconcile.viewingId_);
+  } else {
+    wallet_directions = directions;
+    wallet_list = list;
   }
 
-  auto wallet = braveledger_bat_helper::CURRENT_RECONCILE();
-  wallet.viewingId_ = ledger_->GenerateGUID();
-  wallet.fee_ = fee;
-  wallet.directions_ = directions;
-  wallet.category_ = category;
-  wallet.list_ = list;
-  ledger_->AddReconcile(wallet.viewingId_, wallet);
+  auto wallet_reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
+  wallet_reconcile.viewingId_ = ledger_->GenerateGUID();
+  wallet_reconcile.fee_ = fee;
+  wallet_reconcile.directions_ = wallet_directions;
+  wallet_reconcile.category_ = category;
+  wallet_reconcile.list_ = wallet_list;
+  ledger_->AddReconcile(wallet_reconcile.viewingId_, wallet_reconcile);
 
   auto tokens_callback = std::bind(&Contribution::OnExternalWallets,
                                    this,
-                                   wallet.viewingId_,
+                                   wallet_reconcile.viewingId_,
                                    info->wallets,
                                    _1);
 
   // Check if we have token
   ledger_->GetExternalWallets(tokens_callback);
+}
+
+// TODO(nejczdovc): add tests
+void Contribution::AdjustRecurringTipsAmounts(
+    braveledger_bat_helper::PublisherList list,
+    braveledger_bat_helper::PublisherList* wallet_list,
+    braveledger_bat_helper::PublisherList* anon_list,
+    double reduce_fee_for) {
+  for (auto item : list) {
+    if (reduce_fee_for == 0) {
+      wallet_list->push_back(item);
+      continue;
+    }
+
+    if (item.weight_ <= reduce_fee_for) {
+      anon_list->push_back(item);
+      reduce_fee_for -= item.weight_;
+      continue;
+    }
+
+    if (item.weight_ > reduce_fee_for) {
+      // anon wallet
+      const auto original_weight = item.weight_;
+      item.weight_ = reduce_fee_for;
+      anon_list->push_back(item);
+
+      // rest to normal wallet
+      item.weight_ = original_weight - reduce_fee_for;
+      wallet_list->push_back(item);
+
+      reduce_fee_for = 0;
+    }
+  }
+}
+
+void Contribution::AdjustOneTimeTipAmount(
+    braveledger_bat_helper::Directions directions,
+    braveledger_bat_helper::Directions* wallet_directions,
+    braveledger_bat_helper::Directions* anon_directions,
+    double reduce_fee_for) {
+  for (auto item : directions) {
+    if (reduce_fee_for == 0) {
+      wallet_directions->push_back(item);
+      continue;
+    }
+
+    if (item.amount_ <= reduce_fee_for) {
+      anon_directions->push_back(item);
+      reduce_fee_for -= item.amount_;
+      continue;
+    }
+
+    if (item.amount_ > reduce_fee_for) {
+      // anon wallet
+      const auto original_weight = item.amount_;
+      item.amount_ = reduce_fee_for;
+      anon_directions->push_back(item);
+
+      // rest to normal wallet
+      item.amount_ = original_weight - reduce_fee_for;
+      wallet_directions->push_back(item);
+
+      reduce_fee_for = 0;
+    }
+  }
 }
 
 void Contribution::OnExternalWallets(
@@ -827,7 +929,6 @@ void Contribution::OnExternalWallets(
     return;
   }
 
-  auto uphold_ = std::make_unique<braveledger_uphold::Uphold>(ledger_);
   uphold_->StartContribution(viewing_id, wallet);
 }
 

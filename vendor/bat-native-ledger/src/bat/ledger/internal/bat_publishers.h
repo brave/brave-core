@@ -129,6 +129,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   bool WasPublisherAlreadyProcessed(const std::string& publisher_key) const;
 
+  std::string GetPublisherAddress(const std::string& publisher_key) const;
+
  private:
   void onPublisherActivitySave(uint64_t windowId,
                                const ledger::VisitData& visit_data,

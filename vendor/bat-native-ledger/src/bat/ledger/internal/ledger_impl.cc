@@ -866,9 +866,8 @@ void LedgerImpl::DoDirectTip(const std::string& publisher_id,
                                                                currency);
   auto direction_list =
       std::vector<braveledger_bat_helper::RECONCILE_DIRECTION> { direction };
-  braveledger_bat_helper::PublisherList list;
   bat_contribution_->InitReconcile(ledger::REWARDS_CATEGORY::ONE_TIME_TIP,
-                                   list,
+                                   {},
                                    direction_list);
 }
 
@@ -1656,11 +1655,16 @@ void LedgerImpl::GetExternalWallets(ledger::GetExternalWalletsCallback callback)
   // need to define how it will be save
   std::map<std::string, ledger::ExternalWallet> wallets;
   ledger::ExternalWallet uphold;
-  uphold.token = "some token";
-  uphold.address = "a4493d06-5f4f-45d5-9557-c5916800d7b0";
+  uphold.token = "token";
+  uphold.address = "c5fd7219-6586-4fe1-b947-0cbd25040ca8";
   wallets.insert(std::make_pair(ledger::kWalletUphold, uphold));
 
   callback(wallets);
+}
+
+std::string LedgerImpl::GetPublisherAddress(
+    const std::string& publisher_key) const {
+  return bat_publishers_->GetPublisherAddress(publisher_key);
 }
 
 }  // namespace bat_ledger

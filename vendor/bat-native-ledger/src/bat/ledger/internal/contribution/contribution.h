@@ -94,6 +94,10 @@ namespace braveledger_contribution {
 class Unverified;
 }
 
+namespace braveledger_uphold {
+class Uphold;
+}
+
 namespace braveledger_contribution {
 
 static const uint64_t phase_one_timers[] = {
@@ -243,12 +247,29 @@ class Contribution {
       double balance,
       const braveledger_bat_helper::Directions& directions);
 
+  bool IsListEmpty(
+    const ledger::REWARDS_CATEGORY category,
+    const braveledger_bat_helper::PublisherList& list,
+    double budget);
+
   void ProcessReconcile(
     const ledger::REWARDS_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
     const braveledger_bat_helper::Directions& directions,
     double budget,
     ledger::BalancePtr info);
+
+  void AdjustRecurringTipsAmounts(
+    braveledger_bat_helper::PublisherList list,
+    braveledger_bat_helper::PublisherList* wallet_list,
+    braveledger_bat_helper::PublisherList* anon_list,
+    double reduce_fee_for);
+
+  void AdjustOneTimeTipAmount(
+    braveledger_bat_helper::Directions directions,
+    braveledger_bat_helper::Directions* wallet_directions,
+    braveledger_bat_helper::Directions* anon_directions,
+    double reduce_fee_for);
 
   void OnExternalWallets(
       const std::string& viewing_id,
@@ -259,6 +280,7 @@ class Contribution {
   std::unique_ptr<PhaseOne> phase_one_;
   std::unique_ptr<PhaseTwo> phase_two_;
   std::unique_ptr<Unverified> unverified_;
+  std::unique_ptr<braveledger_uphold::Uphold> uphold_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
 
