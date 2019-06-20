@@ -116,6 +116,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetAutoContribute(bool enabled) override;
 
+  void UpdateAdsRewards() override;
+
   void SetBalanceReport(ledger::ACTIVITY_MONTH month,
                         int year,
                         const ledger::BalanceReportInfo& report_info) override;

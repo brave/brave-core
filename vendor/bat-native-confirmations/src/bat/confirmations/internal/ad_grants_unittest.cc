@@ -56,7 +56,7 @@ TEST_F(ConfirmationsAdGrantsTest, InvalidJson_AsDictionary) {
   std::string json = "{FOOBAR}";
 
   // Act
-  auto is_valid = ad_grants_->ParseJson(json);
+  auto is_valid = ad_grants_->SetFromJson(json);
 
   // Assert
   EXPECT_FALSE(is_valid);
@@ -65,7 +65,7 @@ TEST_F(ConfirmationsAdGrantsTest, InvalidJson_AsDictionary) {
 TEST_F(ConfirmationsAdGrantsTest, InvalidJson_DefaultBalance) {
   // Arrange
   std::string json = "{\"type\":\"ads\",\"amount\":\"INVALID\",\"lastClaim\":\"2019-06-13T12:14:46.150Z\"}";  // NOLINT
-  ad_grants_->ParseJson(json);
+  ad_grants_->SetFromJson(json);
 
   // Act
   auto balance = ad_grants_->GetBalance();
@@ -77,7 +77,7 @@ TEST_F(ConfirmationsAdGrantsTest, InvalidJson_DefaultBalance) {
 TEST_F(ConfirmationsAdGrantsTest, InvalidJsonWrongType_DefaultBalance) {
   // Arrange
   std::string json = "{\"type\":\"ads\",\"amount\":1,\"lastClaim\":\"2019-06-13T12:14:46.150Z\"}";  // NOLINT
-  ad_grants_->ParseJson(json);
+  ad_grants_->SetFromJson(json);
 
   // Act
   auto balance = ad_grants_->GetBalance();
@@ -89,7 +89,7 @@ TEST_F(ConfirmationsAdGrantsTest, InvalidJsonWrongType_DefaultBalance) {
 TEST_F(ConfirmationsAdGrantsTest, Balance) {
   // Arrange
   std::string json = "{\"type\":\"ads\",\"amount\":\"5\",\"lastClaim\":\"2019-06-13T12:14:46.150Z\"}";  // NOLINT
-  ad_grants_->ParseJson(json);
+  ad_grants_->SetFromJson(json);
 
   // Act
   auto balance = ad_grants_->GetBalance();

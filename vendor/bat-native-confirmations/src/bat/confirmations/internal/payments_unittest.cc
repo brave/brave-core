@@ -55,21 +55,13 @@ class ConfirmationsPaymentsTest : public ::testing::Test {
   base::Time GetNextPaymentDate(
       const std::string& date,
       const std::string& next_token_redemption_date) {
-    base::Time time;
-    if (!base::Time::FromString(date.c_str(), &time)) {
-      return time;
-    }
+    auto current_date = DateFromString(date);
 
-    base::Time token_redemption_date;
-    if (!base::Time::FromString(next_token_redemption_date.c_str(),
-        &token_redemption_date)) {
-      return time;
-    }
-
+    auto token_redemption_date = DateFromString(next_token_redemption_date);
     uint64_t token_redemption_date_in_seconds =
         token_redemption_date.ToDoubleT();
 
-    return payments_->CalculateNextPaymentDate(time,
+    return payments_->CalculateNextPaymentDate(current_date,
         token_redemption_date_in_seconds);
   }
 
@@ -88,7 +80,7 @@ TEST_F(ConfirmationsPaymentsTest, InvalidJson_AsList) {
   std::string json = "[{FOOBAR}]";
 
   // Act
-  auto is_valid = payments_->ParseJson(json);
+  auto is_valid = payments_->SetFromJson(json);
 
   // Assert
   EXPECT_FALSE(is_valid);
@@ -99,7 +91,7 @@ TEST_F(ConfirmationsPaymentsTest, InvalidJson_AsDictionary) {
   std::string json = "{FOOBAR}";
 
   // Act
-  auto is_valid = payments_->ParseJson(json);
+  auto is_valid = payments_->SetFromJson(json);
 
   // Assert
   EXPECT_FALSE(is_valid);
@@ -107,8 +99,8 @@ TEST_F(ConfirmationsPaymentsTest, InvalidJson_AsDictionary) {
 
 TEST_F(ConfirmationsPaymentsTest, InvalidJson_DefaultBalance) {
   // Arrange
-  std::string json = "[{\"balance\":\"INVALID\",\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"INVALID\",\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";  // NOLINT
+  payments_->SetFromJson(json);
 
   // Act
   auto balance = payments_->GetBalance();
@@ -119,8 +111,8 @@ TEST_F(ConfirmationsPaymentsTest, InvalidJson_DefaultBalance) {
 
 TEST_F(ConfirmationsPaymentsTest, InvalidJsonWrongType_DefaultBalance) {
   // Arrange
-  std::string json = "[{\"balance\":5,\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":5,\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";  // NOLINT
+  payments_->SetFromJson(json);
 
   // Act
   auto balance = payments_->GetBalance();
@@ -131,11 +123,13 @@ TEST_F(ConfirmationsPaymentsTest, InvalidJsonWrongType_DefaultBalance) {
 
 TEST_F(ConfirmationsPaymentsTest, InvalidJson_DefaultTransactionCount) {
   // Arrange
-  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"INVALID\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"INVALID\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  auto date = DateFromString("6 July 2019");
 
   // Act
-  auto transaction_count = payments_->GetTransactionCountForThisMonth();
+  auto transaction_count = payments_->GetTransactionCountForMonth(date);
 
   // Assert
   EXPECT_EQ(0ULL, transaction_count);
@@ -143,11 +137,13 @@ TEST_F(ConfirmationsPaymentsTest, InvalidJson_DefaultTransactionCount) {
 
 TEST_F(ConfirmationsPaymentsTest, InvalidJsonWrongType_DefaultTransactionCount) {  // NOLINT
   // Arrange
-  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":5}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":5}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  auto date = DateFromString("6 July 2019");
 
   // Act
-  auto transaction_count = payments_->GetTransactionCountForThisMonth();
+  auto transaction_count = payments_->GetTransactionCountForMonth(date);
 
   // Assert
   EXPECT_EQ(0ULL, transaction_count);
@@ -155,8 +151,8 @@ TEST_F(ConfirmationsPaymentsTest, InvalidJsonWrongType_DefaultTransactionCount) 
 
 TEST_F(ConfirmationsPaymentsTest, Balance_ForSinglePayment) {
   // Arrange
-  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";  // NOLINT
+  payments_->SetFromJson(json);
 
   // Act
   auto balance = payments_->GetBalance();
@@ -167,8 +163,20 @@ TEST_F(ConfirmationsPaymentsTest, Balance_ForSinglePayment) {
 
 TEST_F(ConfirmationsPaymentsTest, Balance_ForMultiplePayments) {
   // Arrange
-  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"},{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"},{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  // Act
+  auto balance = payments_->GetBalance();
+
+  // Assert
+  EXPECT_EQ(0.75, balance);
+}
+
+TEST_F(ConfirmationsPaymentsTest, Balance_ForMultiplePayments_AscendingMonthOrder) {  // NOLINT
+  // Arrange
+  std::string json = "[{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"},{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";  // NOLINT
+  payments_->SetFromJson(json);
 
   // Act
   auto balance = payments_->GetBalance();
@@ -179,11 +187,13 @@ TEST_F(ConfirmationsPaymentsTest, Balance_ForMultiplePayments) {
 
 TEST_F(ConfirmationsPaymentsTest, TransactionCount_ForThisMonth) {
   // Arrange
-  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  auto date = DateFromString("6 June 2019");
 
   // Act
-  auto transaction_count = payments_->GetTransactionCountForThisMonth();
+  auto transaction_count = payments_->GetTransactionCountForMonth(date);
 
   // Assert
   EXPECT_EQ(10ULL, transaction_count);
@@ -191,11 +201,27 @@ TEST_F(ConfirmationsPaymentsTest, TransactionCount_ForThisMonth) {
 
 TEST_F(ConfirmationsPaymentsTest, TransactionCount_ForThisMonthWithMultiplePayments) {  // NOLINT
   // Arrange
-  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"},{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"},{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  auto date = DateFromString("6 June 2019");
 
   // Act
-  auto transaction_count = payments_->GetTransactionCountForThisMonth();
+  auto transaction_count = payments_->GetTransactionCountForMonth(date);
+
+  // Assert
+  EXPECT_EQ(10ULL, transaction_count);
+}
+
+TEST_F(ConfirmationsPaymentsTest, TransactionCount_ForThisMonthWithMultiplePayments_AscendingMonthOrder) {  // NOLINT
+  // Arrange
+  std::string json = "[{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"},{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  auto date = DateFromString("6 June 2019");
+
+  // Act
+  auto transaction_count = payments_->GetTransactionCountForMonth(date);
 
   // Assert
   EXPECT_EQ(10ULL, transaction_count);
@@ -203,8 +229,8 @@ TEST_F(ConfirmationsPaymentsTest, TransactionCount_ForThisMonthWithMultiplePayme
 
 TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate_RedeemTokensThisMonth_BalanceLastMonth) {  // NOLINT
   // Arrange
-  std::string json = "[{\"balance\":\"0\",\"month\":\"2019-06\",\"transactionCount\":\"0\"},{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"0\",\"month\":\"2019-07\",\"transactionCount\":\"0\"},{\"balance\":\"0.25\",\"month\":\"2019-06\",\"transactionCount\":\"5\"}]";  // NOLINT
+  payments_->SetFromJson(json);
 
   std::string date = "3 July 2019";
   std::string next_token_redemption_date = "21 July 2019";
@@ -217,10 +243,58 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
+TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate_RedeemTokensThisMonth_BalanceLastMonth_AscendingMonthOrder) {  // NOLINT
+  // Arrange
+  std::string json = "[{\"balance\":\"0.25\",\"month\":\"2019-06\",\"transactionCount\":\"5\"},{\"balance\":\"0\",\"month\":\"2019-07\",\"transactionCount\":\"0\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  std::string date = "3 July 2019";
+  std::string next_token_redemption_date = "21 July 2019";
+
+  // Act
+  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+
+  // Assert
+  auto expected_next_payment_date = DateFromString("5 July 2019");
+  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+}
+
+TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate_RedeemTokensThisMonth_DefaultBalanceLastMonth) {  // NOLINT
+  // Arrange
+  std::string json = "[{\"balance\":\"1.5\",\"month\":\"2019-07\",\"transactionCount\":\"30\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  std::string date = "3 July 2019";
+  std::string next_token_redemption_date = "21 July 2019";
+
+  // Act
+  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+
+  // Assert
+  auto expected_next_payment_date = DateFromString("5 August 2019");
+  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+}
+
 TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate_RedeemTokensThisMonth_NoBalanceLastMonth) {  // NOLINT
   // Arrange
-  std::string json = "[{\"balance\":\"0\",\"month\":\"2019-06\",\"transactionCount\":\"0\"},{\"balance\":\"0\",\"month\":\"2019-05\",\"transactionCount\":\"0\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"0\",\"month\":\"2019-06\",\"transactionCount\":\"0\"},{\"balance\":\"0\",\"month\":\"2019-05\",\"transactionCount\":\"0\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  std::string date = "3 July 2019";
+  std::string next_token_redemption_date = "21 July 2019";
+
+  // Act
+  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+
+  // Assert
+  auto expected_next_payment_date = DateFromString("5 August 2019");
+  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+}
+
+TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate_RedeemTokensThisMonth_NoBalanceLastMonth_AscendingMonthOrder) {  // NOLINT
+  // Arrange
+  std::string json = "[{\"balance\":\"0\",\"month\":\"2019-05\",\"transactionCount\":\"0\"},{\"balance\":\"0\",\"month\":\"2019-06\",\"transactionCount\":\"0\"}]";  // NOLINT
+  payments_->SetFromJson(json);
 
   std::string date = "3 July 2019";
   std::string next_token_redemption_date = "21 July 2019";
@@ -235,8 +309,8 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_BeforeNextPaymentDate
 
 TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_RedeemTokensThisMonth_BalanceThisMonth) {  // NOLINT
   // Arrange
-  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-06\",\"transactionCount\":\"10\"},{\"balance\":\"0\",\"month\":\"2019-05\",\"transactionCount\":\"0\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"0.5\",\"month\":\"2019-07\",\"transactionCount\":\"10\"},{\"balance\":\"0\",\"month\":\"2019-06\",\"transactionCount\":\"0\"}]";  // NOLINT
+  payments_->SetFromJson(json);
 
   std::string date = "15 July 2019";
   std::string next_token_redemption_date = "28 July 2019";
@@ -249,10 +323,58 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_
   EXPECT_EQ(expected_next_payment_date, next_payment_date);
 }
 
+TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_RedeemTokensThisMonth_BalanceThisMonth_AscendingMonthOrder) {  // NOLINT
+  // Arrange
+  std::string json = "[{\"balance\":\"0\",\"month\":\"2019-06\",\"transactionCount\":\"0\"},{\"balance\":\"0.5\",\"month\":\"2019-07\",\"transactionCount\":\"10\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  std::string date = "15 July 2019";
+  std::string next_token_redemption_date = "28 July 2019";
+
+  // Act
+  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+
+  // Assert
+  auto expected_next_payment_date = DateFromString("5 August 2019");
+  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+}
+
+TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_RedeemTokensThisMonth_DefaultBalanceThisMonth) {  // NOLINT
+  // Arrange
+  std::string json = "[{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  std::string date = "6 July 2019";
+  std::string next_token_redemption_date = "15 July 2019";
+
+  // Act
+  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+
+  // Assert
+  auto expected_next_payment_date = DateFromString("5 August 2019");
+  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+}
+
 TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_RedeemTokensThisMonth_NoBalanceThisMonth) {  // NOLINT
   // Arrange
-  std::string json = "[{\"balance\":\"0\",\"month\":\"2019-06\",\"transactionCount\":\"0\"},{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"0.0\",\"month\":\"2019-07\",\"transactionCount\":\"0\"},{\"balance\":\"1.75\",\"month\":\"2019-06\",\"transactionCount\":\"35\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  std::string date = "6 July 2019";
+  std::string next_token_redemption_date = "15 July 2019";
+
+  // Act
+  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+
+  // Assert
+  auto expected_next_payment_date = DateFromString("5 August 2019");
+  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+}
+
+TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_RedeemTokensThisMonth_NoBalanceThisMonth_AscendingMonthOrder) {  // NOLINT
+  // Arrange
+  std::string json = "[{\"balance\":\"1.75\",\"month\":\"2019-06\",\"transactionCount\":\"35\"},{\"balance\":\"0.0\",\"month\":\"2019-07\",\"transactionCount\":\"0\"}]";  // NOLINT
+  payments_->SetFromJson(json);
 
   std::string date = "6 July 2019";
   std::string next_token_redemption_date = "15 July 2019";
@@ -267,8 +389,24 @@ TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_
 
 TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_RedeemTokensNextMonth_NoBalanceThisMonth) {  // NOLINT
   // Arrange
-  std::string json = "[{\"balance\":\"0\",\"month\":\"2019-06\",\"transactionCount\":\"0\"},{\"balance\":\"0.25\",\"month\":\"2019-05\",\"transactionCount\":\"5\"}]";   // NOLINT
-  payments_->ParseJson(json);
+  std::string json = "[{\"balance\":\"0\",\"month\":\"2019-07\",\"transactionCount\":\"0\"},{\"balance\":\"0.25\",\"month\":\"2019-06\",\"transactionCount\":\"5\"}]";  // NOLINT
+  payments_->SetFromJson(json);
+
+  std::string date = "6 July 2019";
+  std::string next_token_redemption_date = "15 August 2019";
+
+  // Act
+  auto next_payment_date = GetNextPaymentDate(date, next_token_redemption_date);
+
+  // Assert
+  auto expected_next_payment_date = DateFromString("5 September 2019");
+  EXPECT_EQ(expected_next_payment_date, next_payment_date);
+}
+
+TEST_F(ConfirmationsPaymentsTest, CalculateNextPaymentDate_AfterNextPaymentDate_RedeemTokensNextMonth_NoBalanceThisMonth_AscendingMonthOrder) {  // NOLINT
+  // Arrange
+  std::string json = "[{\"balance\":\"0.25\",\"month\":\"2019-06\",\"transactionCount\":\"5\"},{\"balance\":\"0\",\"month\":\"2019-07\",\"transactionCount\":\"0\"}]";  // NOLINT
+  payments_->SetFromJson(json);
 
   std::string date = "6 July 2019";
   std::string next_token_redemption_date = "15 August 2019";

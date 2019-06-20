@@ -24,7 +24,8 @@ class AdGrants {
 
   ~AdGrants();
 
-  bool ParseJson(const std::string& json);
+  bool SetFromJson(const std::string& json);
+  bool SetFromDictionary(base::DictionaryValue* dictionary);
 
   double GetBalance() const;
 
