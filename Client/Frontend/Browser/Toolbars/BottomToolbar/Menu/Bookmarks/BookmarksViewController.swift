@@ -185,16 +185,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
     return true
   }
-    
-  override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return bookmarksFRC?.fetchedObjects?.count ?? 0
-  }
-  
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = super.tableView(tableView, cellForRowAt: indexPath)
-    configureCell(cell, atIndexPath: indexPath)
-    return cell
-  }
   
   fileprivate func configureCell(_ cell: UITableViewCell, atIndexPath indexPath: IndexPath) {
     

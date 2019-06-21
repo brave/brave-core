@@ -83,20 +83,9 @@ class AdBlockStats: LocalAdblockResourceProtocol {
         adblockStatsResources[currentLocaleCode] = ABPFilterLibWrapper()
     }
     
-    func shouldBlock(_ request: URLRequest) -> Bool {
-        // synchronize code from this point on.
-        objc_sync_enter(self)
-        defer { objc_sync_exit(self) }
-        
+    func shouldBlock(_ request: URLRequest, currentTabUrl: URL?) -> Bool {
         guard let url = request.url else {
             return false
-        }
-        
-        var currentTabUrl: URL?
-        
-        DispatchQueue.main.async {
-            guard let delegate = UIApplication.shared.delegate as? AppDelegate else { return }
-            currentTabUrl = delegate.browserViewController.tabManager.selectedTab?.url
         }
         
         // Do not block main frame urls
