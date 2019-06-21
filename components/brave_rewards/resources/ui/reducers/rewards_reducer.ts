@@ -185,7 +185,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
     case types.ON_INLINE_TIP_SETTINGS_CHANGE: {
       if (!state.inlineTip) {
         state.inlineTip = {
-          twitter: true
+          twitter: true,
+          reddit: true
         }
       }
 

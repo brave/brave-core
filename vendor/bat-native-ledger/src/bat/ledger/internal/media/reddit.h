@@ -30,6 +30,10 @@ class Reddit : public ledger::LedgerCallbackHandler {
       uint64_t window_id,
       const ledger::VisitData& visit_data);
 
+  void SaveMediaInfo(
+      const std::map<std::string, std::string>& data,
+      ledger::PublisherInfoCallback callback);
+
  private:
   void OnMediaActivityError(
       const ledger::VisitData& visit_data,
@@ -42,7 +46,6 @@ class Reddit : public ledger::LedgerCallbackHandler {
   void OnUserActivity(
       uint64_t window_id,
       const ledger::VisitData& visit_data,
-      const std::string& media_key,
       ledger::Result result,
       ledger::PublisherInfoPtr publisher_info);
 
@@ -69,6 +72,22 @@ class Reddit : public ledger::LedgerCallbackHandler {
       ledger::Result result,
       ledger::PublisherInfoPtr info);
 
+  void OnMediaPublisherInfo(
+      const std::string& user_name,
+      ledger::PublisherInfoCallback callback,
+      ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
+
+  void SavePublisherInfo(
+      uint64_t window_id,
+      const std::string& user_name,
+      ledger::PublisherInfoCallback callback,
+      const std::string& data);
+
+  void OnRedditSaved(
+      ledger::Result result,
+      ledger::PublisherInfoPtr publisher_info);
+
   static std::string GetUserNameFromUrl(const std::string& path);
 
   static std::string GetProfileUrl(const std::string& screen_name);
@@ -80,6 +99,13 @@ class Reddit : public ledger::LedgerCallbackHandler {
   static std::string GetPublisherKey(const std::string& key);
 
   static std::string GetProfileImageUrl(const std::string& response);
+
+  void OnPageDataFetched(
+      const std::string& user_name,
+      ledger::PublisherInfoCallback callback,
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 

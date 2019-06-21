@@ -59,7 +59,8 @@ export const defaultState: Rewards.State = {
   grants: [],
   currentGrant: undefined,
   inlineTip: {
-    twitter: true
+    twitter: true,
+    reddit: true
   },
   pendingContributions: [],
   excludedList: [],

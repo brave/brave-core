@@ -77,10 +77,10 @@
         "type": "function",
         "description": "Fired when we get publisher data from the DB",
         "parameters": [
-           {
-             "name": "windowId",
-             "type": "integer"
-           },
+          {
+            "name": "windowId",
+            "type": "integer"
+          },
           {
             "name": "publisher",
             "type": "object",
@@ -422,6 +422,35 @@
               "tweetText": {
                 "type": "string",
                 "description": "Textual contents of tweet"
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "tipRedditUser",
+        "type": "function",
+        "description": "Allow the user to perform a donation to a Reddit user",
+        "parameters": [
+          {
+            "name": "tabID",
+            "type": "integer"
+          },
+          {
+            "name": "redditMetaData",
+            "type": "object",
+            "properties": {
+              "userName": {
+                "type": "string",
+                "description": "User name of the Reddit post/comment author"
+              },
+              "postText": {
+                "type": "string",
+                "description": "Textual contents of comment/post"
+              },
+              "postRelDate": {
+                "type": "string",
+                "description": "Date of post relative to current date"
               }
             }
           }

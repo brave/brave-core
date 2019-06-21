@@ -182,7 +182,8 @@ describe('rewards reducer', () => {
 
       const expectedState: Rewards.State = {
         inlineTip: {
-          twitter: true
+          twitter: true,
+          reddit: true
         }
       }
 
@@ -205,7 +206,8 @@ describe('rewards reducer', () => {
 
       const expectedState: Rewards.State = { ...defaultState }
       expectedState.inlineTip = {
-        twitter: true
+        twitter: true,
+        reddit: true
       }
 
       const assertion = reducers({
@@ -227,7 +229,8 @@ describe('rewards reducer', () => {
 
       const expectedState: Rewards.State = { ...defaultState }
       expectedState.inlineTip = {
-        twitter: true
+        twitter: true,
+        reddit: true
       }
 
       const assertion = reducers({
@@ -244,12 +247,13 @@ describe('rewards reducer', () => {
       })
     })
 
-    it('all ok', () => {
+    it('all ok for twitter', () => {
       const initState: Rewards.State = { ...defaultState }
 
       const expectedState: Rewards.State = { ...defaultState }
       expectedState.inlineTip = {
-        twitter: false
+        twitter: false,
+        reddit: true
       }
 
       const assertion = reducers({
@@ -258,6 +262,29 @@ describe('rewards reducer', () => {
         type: types.ON_INLINE_TIP_SETTINGS_CHANGE,
         payload: {
           key: 'twitter',
+          value: false
+        }
+      })
+      expect(assertion).toEqual({
+        rewardsData: expectedState
+      })
+    })
+
+    it('all ok for reddit', () => {
+      const initState: Rewards.State = { ...defaultState }
+
+      const expectedState: Rewards.State = { ...defaultState }
+      expectedState.inlineTip = {
+        twitter: false,
+        reddit: false
+      }
+
+      const assertion = reducers({
+        rewardsData: initState
+      }, {
+        type: types.ON_INLINE_TIP_SETTINGS_CHANGE,
+        payload: {
+          key: 'reddit',
           value: false
         }
       })

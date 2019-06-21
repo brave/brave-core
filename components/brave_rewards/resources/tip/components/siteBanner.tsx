@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 
 // Components
 import { Provider } from 'brave-ui/features/rewards/profile'
-import { SiteBanner, TweetBox } from 'brave-ui/features/rewards'
+import { SiteBanner, MediaBox } from 'brave-ui/features/rewards'
 
 // Utils
 import * as tipActions from '../actions/tip_actions'
@@ -17,6 +17,7 @@ import * as utils from '../utils'
 interface Props extends RewardsTip.ComponentProps {
   publisher: RewardsTip.Publisher
   tweetMetaData?: RewardsTip.TweetMetaData
+  redditMetaData?: RewardsTip.RedditMetaData
 }
 
 interface State {
@@ -120,12 +121,16 @@ class Banner extends React.Component<Props, State> {
     return !!recurringDonation
   }
 
-  getScreenName = (tweetMetaData?: RewardsTip.TweetMetaData) => {
-    if (!tweetMetaData) {
+  getScreenName = (tweetMetaData?: RewardsTip.TweetMetaData, redditMetaData?: RewardsTip.RedditMetaData) => {
+    if (!tweetMetaData && !redditMetaData) {
       return ''
     }
-
-    return `@${tweetMetaData.screenName}`
+    if (tweetMetaData) {
+      return `@${tweetMetaData.screenName}`
+    } else if (redditMetaData) {
+      return `u/${redditMetaData.userName}`
+    }
+    return ''
   }
 
   get addFundsLink () {
@@ -140,9 +145,26 @@ class Banner extends React.Component<Props, State> {
     }
 
     return (
-      <TweetBox
-        tweetText={this.props.tweetMetaData.tweetText}
-        tweetTimestamp={this.props.tweetMetaData.tweetTimestamp}
+      <MediaBox
+        mediaType={'twitter'}
+        mediaText={this.props.tweetMetaData.tweetText}
+        mediaTimestamp={this.props.tweetMetaData.tweetTimestamp}
+      />)
+  }
+
+  getRedditText () {
+    if (!this.props.redditMetaData ||
+      !this.props.redditMetaData.postText ||
+      this.props.redditMetaData.postText.length === 0) {
+      return null
+    }
+
+    return (
+      <MediaBox
+        mediaType={'reddit'}
+        mediaText={this.props.redditMetaData.postText}
+        mediaTimestamp={0}
+        mediaTimetext={this.props.redditMetaData.postRelDate}
       />)
   }
 
@@ -151,6 +173,7 @@ class Banner extends React.Component<Props, State> {
     const { total } = balance
 
     const tweetMetaData = this.props.tweetMetaData
+    const redditMetaData = this.props.redditMetaData
     const publisher = this.props.publisher
     const verified = publisher.verified
     let logo = publisher.logo
@@ -169,7 +192,7 @@ class Banner extends React.Component<Props, State> {
         domain={publisher.publisherKey}
         title={publisher.title}
         name={publisher.name}
-        screenName={this.getScreenName(tweetMetaData)}
+        screenName={this.getScreenName(tweetMetaData, redditMetaData)}
         provider={publisher.provider as Provider}
         recurringDonation={this.hasRecurringTip(publisher.publisherKey)}
         balance={total.toString() || '0'}
@@ -188,8 +211,10 @@ class Banner extends React.Component<Props, State> {
       >
       {
         this.props.tweetMetaData
-        ? this.getTweetText()
-        : publisher.description
+          ? this.getTweetText()
+          : this.props.redditMetaData
+            ? this.getRedditText()
+            : publisher.description
       }
       </SiteBanner>
     )

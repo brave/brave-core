@@ -228,6 +228,9 @@ class RewardsService : public KeyedService {
   virtual void SaveTwitterPublisherInfo(
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) = 0;
+  virtual void SaveRedditPublisherInfo(
+      const std::map<std::string, std::string>& args,
+      SaveMediaInfoCallback callback) = 0;
 
   virtual void SetInlineTipSetting(const std::string& key, bool enabled) = 0;
 
