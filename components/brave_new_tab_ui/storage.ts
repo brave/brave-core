@@ -10,7 +10,7 @@ import { debounce } from '../common/debounce'
 const keyName = 'new-tab-data'
 
 const defaultState: NewTab.State = {
-  showBackgroundImage: false,
+  showBackgroundImage: true,
   showSettings: false,
   topSites: [],
   ignoredTopSites: [],
