@@ -63,16 +63,16 @@ gfx::Insets CalcLocationBarMargin(int toolbar_width,
   // or in the case of moving-right, 25% of the space since we want to avoid
   // touching browser actions where possible
   location_bar_center_offset = (location_bar_center_offset > 0)
-      ? std::min(location_bar_margin_h, location_bar_center_offset)
-      : std::max(static_cast<int>(-location_bar_margin_h * .25),
-                 location_bar_center_offset);
+          ? std::min(location_bar_margin_h, location_bar_center_offset)
+          : std::max(static_cast<int>(-location_bar_margin_h * .25),
+                     location_bar_center_offset);
 
   // // Apply offset to margin
   const int location_bar_margin_l =
       location_bar_margin_h - location_bar_center_offset;
   const int location_bar_margin_r =
       location_bar_margin_h + location_bar_center_offset;
-  return { 0, location_bar_margin_l, 0, location_bar_margin_r };
+  return {0, location_bar_margin_l, 0, location_bar_margin_r};
 }
 
 }  // namespace
@@ -108,6 +108,8 @@ void BraveToolbarView::Init() {
 
   DCHECK(location_bar_);
   AddChildViewAt(bookmark_, GetIndexOf(location_bar_));
+  bookmark_->UpdateImage();
+  brave_initialized_ = true;
 }
 
 void BraveToolbarView::OnEditBookmarksEnabledChanged() {
@@ -120,6 +122,22 @@ void BraveToolbarView::OnLocationBarIsWideChanged() {
 
   Layout();
   SchedulePaint();
+}
+
+void BraveToolbarView::OnThemeChanged() {
+  ToolbarView::OnThemeChanged();
+
+  if (!brave_initialized_)
+    return;
+
+  if (display_mode_ == DisplayMode::NORMAL && bookmark_)
+    bookmark_->UpdateImage();
+}
+
+void BraveToolbarView::LoadImages() {
+  ToolbarView::LoadImages();
+  if (bookmark_)
+    bookmark_->UpdateImage();
 }
 
 void BraveToolbarView::Update(content::WebContents* tab) {
@@ -156,7 +174,7 @@ void BraveToolbarView::ShowBookmarkBubble(
 void BraveToolbarView::Layout() {
   ToolbarView::Layout();
 
-  if (!initialized_)
+  if (!brave_initialized_)
     return;
 
   // ToolbarView::Layout() handles below modes. So just return.
@@ -179,7 +197,7 @@ void BraveToolbarView::ResetLocationBarBounds() {
       CalcLocationBarMargin(width(),
                             location_bar_->width(),
                             location_bar_->GetMinimumSize().width(),
-                            location_bar_->x());
+      location_bar_->x());
 
   location_bar_->SetBounds(location_bar_->x() + margin.left(),
                            location_bar_->y(),
