@@ -243,7 +243,7 @@ class ContributeBox extends React.Component<Props, State> {
         </List>
         <List title={getLocale('contributionNextDate')}>
           <NextContribution>
-            {new Intl.DateTimeFormat('default', {month: 'short', day: 'numeric'}).format(reconcileStamp * 1000)}
+            {new Intl.DateTimeFormat('default', { month: 'short', day: 'numeric' }).format(reconcileStamp * 1000)}
           </NextContribution>
         </List>
         <List title={getLocale('contributionSites')}>
