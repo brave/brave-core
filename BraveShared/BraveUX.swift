@@ -88,7 +88,7 @@ public struct BraveUX {
     // Setting this to clearColor() and setting LocationContainerBackgroundColor to a definitive color
     //  with transparency (e.g. allwhile 0.3 alpha) is how to make a non-opaque URL bar (e.g. for blurring).
     // Not currently needed since top bar is entirely opaque
-    public static let LocationBarBackgroundColor = GreyB
+    public static let LocationBarBackgroundColor = #colorLiteral(red: 0.8431372549, green: 0.8431372549, blue: 0.8784313725, alpha: 1)
     public static let LocationContainerBackgroundColor = LocationBarBackgroundColor
     
     // Editing colors same as standard coloring

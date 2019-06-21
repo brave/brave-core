@@ -10,6 +10,8 @@ class BraveWebView: WKWebView {
     init(frame: CGRect, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), privacyProtection: PrivacyProtectionProtocol = PrivacyProtection()) {
         if privacyProtection.nonPersistent {
             configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
+        } else {
+            configuration.websiteDataStore = WKWebsiteDataStore.default()
         }
         
         super.init(frame: frame, configuration: configuration)

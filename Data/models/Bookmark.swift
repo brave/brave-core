@@ -105,6 +105,29 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
                                           sectionNameKeyPath: nil, cacheName: nil)
     }
     
+    public class func foldersFrc(excludedFolder: Bookmark? = nil) -> NSFetchedResultsController<Bookmark> {
+        let context = DataController.viewContext
+        let fetchRequest = NSFetchRequest<Bookmark>()
+        
+        fetchRequest.entity = entity(context: context)
+        fetchRequest.fetchBatchSize = 20
+        
+        let createdSort = NSSortDescriptor(key: "created", ascending: false)
+        fetchRequest.sortDescriptors = [createdSort]
+        
+        var predicate: NSPredicate?
+        if let excludedFolder = excludedFolder {
+            predicate = NSPredicate(format: "isFolder == true AND SELF != %@", excludedFolder)
+        } else {
+            predicate = NSPredicate(format: "isFolder == true")
+        }
+        
+        fetchRequest.predicate = predicate
+        
+        return NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: context,
+                                          sectionNameKeyPath: nil, cacheName: nil)
+    }
+    
     public class func contains(url: URL, getFavorites: Bool = false) -> Bool {
         guard let count = count(forUrl: url, getFavorites: getFavorites) else { return false }
         return count > 0
@@ -121,10 +144,24 @@ public final class Bookmark: NSManagedObject, WebsitePresentable, Syncable, CRUD
     // MARK: Update
     
     public func update(customTitle: String?, url: String?) {
-        // Title can't be empty, except when coming from Sync
-        let isTitleEmpty = customTitle?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == true
-        if customTitle == nil || isTitleEmpty { return }
+        if !hasTitle(customTitle) { return }
         updateInternal(customTitle: customTitle, url: url)
+    }
+    
+    enum SaveLocation {
+        case keep
+        case new(location: Bookmark?)
+    }
+    
+    public func updateWithNewLocation(customTitle: String?, url: String?, location: Bookmark?) {
+        if !hasTitle(customTitle) { return }
+        
+        updateInternal(customTitle: customTitle, url: url, location: .new(location: location))
+    }
+    
+    // Title can't be empty, except when coming from Sync
+    private func hasTitle(_ title: String?) -> Bool {
+        return title?.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty == false
     }
     
     public class func migrateBookmarkOrders() {
@@ -306,13 +343,14 @@ extension Bookmark {
     
     private func updateInternal(customTitle: String?, url: String?, newSyncOrder: String? = nil,
                                 save: Bool = true, sendToSync: Bool = true,
+                                location: SaveLocation = .keep,
                                 context: WriteContext = .new) {
         
         DataController.perform(context: context) { context in
             guard let bookmarkToUpdate = context.object(with: self.objectID) as? Bookmark else { return }
             
             // See if there has been any change
-            if bookmarkToUpdate.customTitle == customTitle && bookmarkToUpdate.url == url && bookmarkToUpdate.syncOrder == newSyncOrder {
+            if bookmarkToUpdate.customTitle == customTitle && bookmarkToUpdate.url == url && bookmarkToUpdate.syncOrder == newSyncOrder, case .keep = location {
                 return
             }
             
@@ -328,14 +366,31 @@ extension Bookmark {
                 }
             }
             
-            // Checking if syncOrder has changed is imporant here for performance reasons.
-            // Currently to do bookmark sorting right, we have to grab all bookmarks in a given directory
-            // and update their order which is a costly operation.
-            if newSyncOrder != nil && bookmarkToUpdate.syncOrder != newSyncOrder {
-                bookmarkToUpdate.syncOrder = newSyncOrder
-                Bookmark.setOrderForAllBookmarksOnGivenLevel(parent: bookmarkToUpdate.parentFolder, forFavorites: bookmarkToUpdate.isFavorite, context: context)
+            switch location {
+            case .keep:
+                // Checking if syncOrder has changed is imporant here for performance reasons.
+                // Currently to do bookmark sorting right, we have to grab all bookmarks in a given directory
+                // and update their order which is a costly operation.
+                if newSyncOrder != nil && bookmarkToUpdate.syncOrder != newSyncOrder {
+                    bookmarkToUpdate.syncOrder = newSyncOrder
+                    Bookmark.setOrderForAllBookmarksOnGivenLevel(parent: bookmarkToUpdate.parentFolder, forFavorites: bookmarkToUpdate.isFavorite, context: context)
+                }
+            case .new(let newParent):
+                var parentOnCorrectContext: Bookmark?
+                if let newParent = newParent {
+                    parentOnCorrectContext = context.object(with: newParent.objectID) as? Bookmark
+                }
+                
+                if parentOnCorrectContext === bookmarkToUpdate.parentFolder { return }
+                
+                bookmarkToUpdate.parentFolder = parentOnCorrectContext
+                bookmarkToUpdate.syncParentUUID = parentOnCorrectContext?.syncUUID
+                bookmarkToUpdate.newSyncOrder(forFavorites: bookmarkToUpdate.isFavorite, context: context)
+                Bookmark.setOrderForAllBookmarksOnGivenLevel(parent: bookmarkToUpdate.parentFolder,
+                                                             forFavorites: bookmarkToUpdate.isFavorite,
+                                                             context: context)
             }
-            
+             
             if !bookmarkToUpdate.isFavorite && sendToSync {
                 Sync.shared.sendSyncRecords(action: .update, records: [bookmarkToUpdate], context: context)
             }
@@ -459,7 +514,9 @@ extension Bookmark {
             if isFolder {
                 removeFolderAndSendSyncRecords(uuid: syncUUID)
             } else {
-                Sync.shared.sendSyncRecords(action: .delete, records: [self])
+                DataController.perform(context: context) { context in
+                    Sync.shared.sendSyncRecords(action: .delete, records: [self], context: context)
+                }
             }
         }
         
@@ -483,7 +540,7 @@ extension Bookmark {
                 allBookmarks.append(contentsOf: allNestedBookmarks)
             }
             
-            Sync.shared.sendSyncRecords(action: .delete, records: allBookmarks)
+            Sync.shared.sendSyncRecords(action: .delete, records: allBookmarks, context: context)
             
             bookmarkOnCorrectContext.deleteInternal(context: .existing(context))
         }

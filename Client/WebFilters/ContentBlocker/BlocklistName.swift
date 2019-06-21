@@ -102,7 +102,7 @@ class BlocklistName: CustomStringConvertible, ContentBlocker {
     }
     
     func compile(data: Data?,
-                 ruleStore: WKContentRuleListStore = WKContentRuleListStore.default()) -> Deferred<()> {
+                 ruleStore: WKContentRuleListStore = ContentBlockerHelper.ruleStore) -> Deferred<()> {
         let completion = Deferred<()>()
         guard let data = data, let dataString = String(data: data, encoding: .utf8) else {
             log.error("Could not read data for content blocker compilation.")

@@ -23,7 +23,7 @@ class FavoritesViewController: UIViewController, Themeable {
         static let statsBottomMargin: CGFloat = 5
         static let searchEngineCalloutPadding: CGFloat = 30.0
     }
-    weak var linkNavigationDelegate: LinkNavigationDelegate?
+    
     weak var delegate: TopSitesDelegate?
     
     // MARK: - Favorites collection view properties

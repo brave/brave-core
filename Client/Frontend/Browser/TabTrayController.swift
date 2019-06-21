@@ -527,7 +527,7 @@ class TabTrayController: UIViewController, Themeable {
                 let appDelegate = UIApplication.shared.delegate as? AppDelegate,
                 let bvc = appDelegate.browserViewController {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
-                    bvc.urlBar.tabLocationViewDidTapLocation(bvc.urlBar.locationView)
+                    bvc.topToolbar.tabLocationViewDidTapLocation(bvc.topToolbar.locationView)
                 }
             }
 
@@ -985,6 +985,7 @@ fileprivate class EmptyPrivateTabsView: UIView {
         $0.setTitle(Strings.Private_Tab_Link, for: [])
         $0.setTitleColor(UIConstants.PrivateModeTextHighlightColor, for: [])
         $0.titleLabel?.font = EmptyPrivateTabsViewUX.LearnMoreFont
+        $0.titleLabel?.numberOfLines = 0
     }
 
     let iconImageView = UIImageView(image: #imageLiteral(resourceName: "private_glasses")).then {

@@ -46,8 +46,7 @@ class AdblockDebugMenuTableViewController: TableViewController {
             """
         
         var section = Section(header: .title("Available lists"), footer: .title(footerNote))
-        guard let store = WKContentRuleListStore.default() else { return completion }
-        
+        let store = ContentBlockerHelper.ruleStore
         var rows = [Row]()
         
         func bundleOrDocumentsData(for name: String) -> Data? {
