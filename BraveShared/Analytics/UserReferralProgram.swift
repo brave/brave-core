@@ -18,7 +18,7 @@ public class UserReferralProgram {
     private static let apiKeyPlistKey = "API_KEY"
     
     struct HostUrl {
-        static let staging = "https://laptop-updates-staging.herokuapp.com"
+        static let staging = "https://brave-laptop-updates-staging.herokuapp.com"
         static let prod = "https://laptop-updates.brave.com"
     }
     
