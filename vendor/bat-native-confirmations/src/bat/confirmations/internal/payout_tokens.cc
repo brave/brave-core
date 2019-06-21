@@ -127,6 +127,8 @@ void PayoutTokens::OnPayout(const Result result) {
   confirmations_->AddUnredeemedTransactionsToPendingRewards();
   unblinded_payment_tokens_->RemoveAllTokens();
 
+  confirmations_->UpdateAdsRewards(true);
+
   next_retry_backoff_count_ = 0;
 
   ScheduleNextPayout();
