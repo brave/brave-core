@@ -15,6 +15,7 @@
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_io_data.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/resource_request_info.h"
 
@@ -79,5 +80,62 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
 
   ctx->request = request;
 }
+
+// static
+void BraveRequestInfo::FillCTX(
+    const network::ResourceRequest& request,
+    int render_process_id,
+    uint64_t request_identifier,
+    content::ResourceContext* resource_context,
+    std::shared_ptr<brave::BraveRequestInfo> ctx) {
+  ctx->request_identifier = request_identifier;
+  ctx->request_url = request.url;
+  // TODO(iefremov): Replace GURL with Origin
+  ctx->initiator_url =
+      request.request_initiator.value_or(url::Origin()).GetURL();
+
+  ctx->referrer = request.referrer;
+  ctx->referrer_policy = request.referrer_policy;
+
+  ctx->resource_type =
+      static_cast<content::ResourceType>(request.resource_type);
+
+  ctx->render_frame_id = request.render_frame_id;
+  ctx->render_process_id = render_process_id;
+  // TODO(iefremov):
+  // ctx->frame_tree_node_id = request.
+
+  // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
+  // ctx->tab_url = request.top_frame_origin;
+  ctx->tab_origin = request.top_frame_origin.value_or(url::Origin()).GetURL();
+
+  ProfileIOData* io_data =
+      ProfileIOData::FromResourceContext(resource_context);
+
+  ctx->allow_brave_shields = brave_shields::IsAllowContentSettingWithIOData(
+      io_data, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kBraveShields) &&
+    !ctx->tab_origin.SchemeIs(kChromeExtensionScheme);
+  ctx->allow_ads = brave_shields::IsAllowContentSettingWithIOData(
+      io_data, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kAds);
+  ctx->allow_http_upgradable_resource =
+      brave_shields::IsAllowContentSettingWithIOData(io_data, ctx->tab_origin,
+          ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kHTTPUpgradableResources);
+  ctx->allow_1p_cookies = brave_shields::IsAllowContentSettingWithIOData(
+      io_data, ctx->tab_origin, GURL("https://firstParty/"),
+      CONTENT_SETTINGS_TYPE_PLUGINS, brave_shields::kCookies);
+  ctx->allow_3p_cookies = brave_shields::IsAllowContentSettingWithIOData(
+      io_data, ctx->tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kCookies);
+  ctx->allow_referrers = brave_shields::IsAllowContentSettingWithIOData(
+      io_data, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kReferrers);
+
+  // TODO(iefremov): Erase this from the struct.
+  ctx->request = nullptr;
+}
+
 
 }  // namespace brave

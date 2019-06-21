@@ -22,6 +22,7 @@
 #include "net/base/upload_bytes_element_reader.h"
 #include "net/base/upload_data_stream.h"
 #include "net/url_request/url_request.h"
+#include "services/network/public/cpp/features.h"
 #include "url/gurl.h"
 
 namespace brave_rewards {
@@ -30,6 +31,12 @@ namespace {
 
 bool GetPostData(const net::URLRequest* request, std::string* post_data) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  if (base::FeatureList::IsEnabled(network::features::kNetworkService)) {
+    // TODO(iefremov): Make it work by copying post data from request to
+    // BraveRequestInfo in advance.
+    DCHECK(!request);
+    return false;
+  }
   if (!request->has_upload())
     return false;
 
