@@ -33,7 +33,7 @@ extension BrowserViewController {
 
     @objc private func selectLocationBarKeyCommand() {
         scrollController.showToolbars(animated: true)
-        urlBar.tabLocationViewDidTapLocation(urlBar.locationView)
+        topToolbar.tabLocationViewDidTapLocation(topToolbar.locationView)
     }
 
     @objc private func newTabKeyCommand() {
@@ -125,7 +125,7 @@ extension BrowserViewController {
 
         let isEditingText = tabManager.selectedTab?.isEditing ?? false
 
-        if urlBar.inOverlayMode {
+        if topToolbar.inOverlayMode {
             return tabNavigation + searchLocationCommands
         } else if !isEditingText {
             return tabNavigation + overidesTextEditing

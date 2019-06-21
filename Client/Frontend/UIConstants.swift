@@ -62,7 +62,8 @@ extension UIColor {
         static let ReaderModeButtonUnselected = BrowserColor(normal: Photon.Grey50, pbm: Photon.Grey40)
         static let PageOptionsSelected = ReaderModeButtonSelected
         static let PageOptionsUnselected = UIColor.Browser.Tint
-        static let Separator = BrowserColor(normal: Photon.Grey30, pbm: Photon.Grey70)
+        static let Separator = BrowserColor(normal: #colorLiteral(red: 0.7333333333, green: 0.7333333333, blue: 0.8039215686, alpha: 1), pbm: Photon.Grey70)
+        
     }
 
     // The back/forward/refresh/menu button (bottom toolbar)

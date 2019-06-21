@@ -46,6 +46,7 @@ struct UrpService {
     func referralCodeLookup(completion: @escaping (ReferralData?, UrpError?) -> Void) {
         guard var endPoint = try? host.asURL() else {
             completion(nil, .endpointError)
+            UrpLog.log("Host not a url: \(host)")
             return
         }
         endPoint.appendPathComponent("promo/initialize/ua")
@@ -54,6 +55,7 @@ struct UrpService {
 
         sessionManager.urpApiRequest(endPoint: endPoint, params: params) { response in
             log.debug("Referral code lookup response: \(response)")
+            UrpLog.log("Referral code lookup response: \(response)")
             let json = JSON(response.data as Any)
 
             let referral = ReferralData(json: json)
