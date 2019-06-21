@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index 64db11a9851ca99205789c3657617e1a0635f075..d1e3b5159021e814bdaf5944531e1145e5fd0964 100644
+index 64db11a9851ca99205789c3657617e1a0635f075..f2083569a89ea08a0902ae87da581b4d0cd7dc06 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
 @@ -90,12 +90,14 @@ class ToolbarView : public views::AccessiblePaneView,
@@ -33,3 +33,11 @@ index 64db11a9851ca99205789c3657617e1a0635f075..d1e3b5159021e814bdaf5944531e1145
    // AccessiblePaneView:
    bool SetPaneFocusAndFocusDefault() override;
  
+@@ -238,6 +242,7 @@ class ToolbarView : public views::AccessiblePaneView,
+   views::View* GetViewForDrop() override;
+ 
+   // Loads the images for all the child views.
++  virtual
+   void LoadImages();
+ 
+   // Shows the critical notification bubble against the app menu.
