@@ -912,9 +912,20 @@ uint64_t ConfirmationsImpl::GetAdNotificationsReceivedThisMonthForTransactions(
     const std::vector<TransactionInfo>& transactions) const {
   double ad_notifications_received_this_month = 0.0;
 
+  auto now = base::Time::Now();
+  base::Time::Exploded now_exploded;
+  now.LocalExplode(&now_exploded);
+
   for (const auto& transaction : transactions) {
-    auto estimated_redemption_value = transaction.estimated_redemption_value;
-    if (estimated_redemption_value > 0.0) {
+    auto transaction_timestamp =
+        base::Time::FromDoubleT(transaction.timestamp_in_seconds);
+
+    base::Time::Exploded transaction_timestamp_exploded;
+    transaction_timestamp.LocalExplode(&transaction_timestamp_exploded);
+
+    if (transaction_timestamp_exploded.year == now_exploded.year &&
+        transaction_timestamp_exploded.month == now_exploded.month &&
+        transaction.estimated_redemption_value > 0.0) {
       ad_notifications_received_this_month++;
     }
   }
