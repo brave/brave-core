@@ -14,6 +14,13 @@
 #include "net/url_request/url_request.h"
 #include "url/gurl.h"
 
+namespace content {
+class ResourceContext;
+}
+
+namespace network {
+struct ResourceRequest;
+}
 class BraveNetworkDelegateBase;
 
 namespace brave {
@@ -88,6 +95,13 @@ struct BraveRequestInfo {
 
   static void FillCTXFromRequest(const net::URLRequest* request,
                                  std::shared_ptr<brave::BraveRequestInfo> ctx);
+
+  static void FillCTX(
+      const network::ResourceRequest& request,
+      int render_process_id,
+      uint64_t request_identifier,
+      content::ResourceContext* resource_context,
+      std::shared_ptr<brave::BraveRequestInfo> ctx);
 
  private:
   // Please don't add any more friends here if it can be avoided.

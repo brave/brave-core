@@ -36,8 +36,9 @@ class Profile;
 
 // Cargoculted from WebRequestProxyingURLLoaderFactory and
 // signin::ProxyingURLLoaderFactory
-class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory,
-                    public network::mojom::TrustedURLLoaderHeaderClient {
+class BraveProxyingURLLoaderFactory :
+    public network::mojom::URLLoaderFactory,
+    public network::mojom::TrustedURLLoaderHeaderClient {
  public:
   using DisconnectCallback =
       base::OnceCallback<void(BraveProxyingURLLoaderFactory*)>;
