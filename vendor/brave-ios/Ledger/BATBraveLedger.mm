@@ -143,8 +143,10 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
 - (void)savePrefs
 {
+  NSDictionary *prefs = self.prefs;
+  NSString *path = [self prefsPath];
   dispatch_async(self.fileWriteThread, ^{
-    [self.prefs writeToFile:[self prefsPath] atomically:YES];
+    [prefs writeToFile:path atomically:YES];
   });
 }
 
@@ -210,9 +212,10 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 {
   ledger->FetchWalletProperties(^(ledger::Result result, ledger::WalletPropertiesPtr info) {
     [self onWalletProperties:result arg1:std::move(info)];
+    const auto __weak weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
       if (completion) {
-        completion(self.walletInfo);
+        completion(weakSelf.walletInfo);
       }
     });
   });
@@ -1103,8 +1106,10 @@ BATLedgerBridge(BOOL,
   self.state[key] = nil;
   callback(ledger::LEDGER_OK);
   // In brave-core, failed callback returns `LEDGER_ERROR`
+  NSDictionary *state = self.state;
+  NSString *path = self.randomStatePath;
   dispatch_async(self.fileWriteThread, ^{
-    [self.state writeToFile:self.randomStatePath atomically:YES];
+    [state writeToFile:path atomically:YES];
   });
 }
 
@@ -1114,8 +1119,10 @@ BATLedgerBridge(BOOL,
   self.state[key] = [NSString stringWithUTF8String:value.c_str()];
   callback(ledger::LEDGER_OK);
   // In brave-core, failed callback returns `LEDGER_ERROR`
+  NSDictionary *state = self.state;
+  NSString *path = self.randomStatePath;
   dispatch_async(self.fileWriteThread, ^{
-    [self.state writeToFile:self.randomStatePath atomically:YES];
+    [state writeToFile:path atomically:YES];
   });
 }
 
