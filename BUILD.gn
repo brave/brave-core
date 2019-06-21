@@ -165,11 +165,12 @@ group("create_dist") {
   }
   if (is_mac) {
     if (skip_signing) {
-      deps += [ "build/mac:create_unsigned_dmg" ]
+      deps += [
+        "build/mac:unsigned_dmg"
+      ]
     } else {
       deps += [
-        "build/mac:create_dist_mac",
-        "build/mac:create_pkg",
+        "build/mac:sign_dmg",
         "build/mac:sign_pkg"
       ]
     }
@@ -501,16 +502,18 @@ if (is_mac) {
     ]
   }
 
+  # This copies //chrome:chrome_app target to avoid patching.
+  # So, need to sync with it.
   mac_app_bundle("chrome_app") {
     output_name = chrome_product_full_name
 
     info_plist_target = ":brave_app_plist"
 
     extra_substitutions = [
+      "CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id",
       "CHROMIUM_SHORT_NAME=$chrome_product_short_name",
       "CHROMIUM_CREATOR=$chrome_mac_creator_code",
     ]
-    extra_substitutions += ["CHROMIUM_BUNDLE_ID=$chrome_mac_bundle_id"]
 
     sources = [
       "//chrome/app/chrome_exe_main_mac.cc",
@@ -522,6 +525,7 @@ if (is_mac) {
       "//chrome:chrome_app_strings_bundle_data",
       "//chrome:chrome_resources",
       "//chrome:chrome_versioned_bundle_data",
+      "//chrome/common:buildflags",
       "//chrome/common:version_header",
     ]
 
