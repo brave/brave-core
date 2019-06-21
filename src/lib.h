@@ -20,7 +20,25 @@ typedef struct {
   const char *base64_public_key;
 } C_FList;
 
+/**
+ * Destroy a `*c_char` once you are done with it.
+ */
+void c_char_destroy(char *s);
+
 void engine_add_filter(C_Engine *engine, const char *filter);
+
+/**
+ * Adds a resource to the engine by name
+ */
+void engine_add_resource(C_Engine *engine,
+                         const char *key,
+                         const char *content_type,
+                         const char *data);
+
+/**
+ * Adds a list of resources in uBlock resources format
+ */
+void engine_add_resources(C_Engine *engine, const char *resources);
 
 /**
  * Adds a tag to the engine for consideration
@@ -52,7 +70,8 @@ bool engine_match(C_Engine *engine,
                   bool third_party,
                   const char *resource_type,
                   bool *explicit_cancel,
-                  bool *saved_from_exception);
+                  bool *saved_from_exception,
+                  char **redirect);
 
 /**
  * Removes a tag to the engine for consideration

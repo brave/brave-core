@@ -2,6 +2,7 @@ extern crate adblock;
 
 use adblock::engine::Engine;
 use adblock::filter_lists;
+use core::ptr;
 use libc::size_t;
 use std::ffi::CStr;
 use std::ffi::CString;
@@ -41,6 +42,7 @@ pub unsafe extern "C" fn engine_match(
     resource_type: *const c_char,
     explicit_cancel: *mut bool,
     saved_from_exception: *mut bool,
+    redirect: *mut *mut c_char,
 ) -> bool {
     let url = CStr::from_ptr(url).to_str().unwrap();
     let host = CStr::from_ptr(host).to_str().unwrap();
@@ -57,6 +59,13 @@ pub unsafe extern "C" fn engine_match(
     );
     *explicit_cancel = blocker_result.explicit_cancel;
     *saved_from_exception = blocker_result.filter != None && blocker_result.exception != None;
+    *redirect = match blocker_result.redirect {
+        Some(x) => match CString::new(x) {
+            Ok(y) => y.into_raw(),
+            _ => ptr::null_mut(),
+        },
+        None => ptr::null_mut(),
+    };
     blocker_result.matched
 }
 
@@ -71,12 +80,36 @@ pub unsafe extern "C" fn engine_add_tag(engine: *mut Engine, tag: *const c_char)
 
 /// Checks if a tag exists in the engine
 #[no_mangle]
-pub unsafe extern "C" fn engine_tag_exists(engine: *mut Engine, tag: *const c_char
-) -> bool {
+pub unsafe extern "C" fn engine_tag_exists(engine: *mut Engine, tag: *const c_char) -> bool {
     let tag = CStr::from_ptr(tag).to_str().unwrap();
     assert!(!engine.is_null());
     let engine = Box::leak(Box::from_raw(engine));
     engine.tag_exists(tag)
+}
+
+/// Adds a resource to the engine by name
+#[no_mangle]
+pub unsafe extern "C" fn engine_add_resource(
+    engine: *mut Engine,
+    key: *const c_char,
+    content_type: *const c_char,
+    data: *const c_char,
+) {
+    let key = CStr::from_ptr(key).to_str().unwrap();
+    let content_type = CStr::from_ptr(content_type).to_str().unwrap();
+    let data = CStr::from_ptr(data).to_str().unwrap();
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    engine.resource_add(key, content_type, data);
+}
+
+/// Adds a list of resources in uBlock resources format
+#[no_mangle]
+pub unsafe extern "C" fn engine_add_resources(engine: *mut Engine, resources: *const c_char) {
+    let resources = CStr::from_ptr(resources).to_str().unwrap();
+    assert!(!engine.is_null());
+    let engine = Box::leak(Box::from_raw(engine));
+    engine.with_resources(resources);
 }
 
 // Adds a filter rule to the engine
@@ -115,6 +148,14 @@ pub unsafe extern "C" fn engine_deserialize(
 pub unsafe extern "C" fn engine_destroy(engine: *mut Engine) {
     if !engine.is_null() {
         drop(Box::from_raw(engine));
+    }
+}
+
+/// Destroy a `*c_char` once you are done with it.
+#[no_mangle]
+pub unsafe extern "C" fn c_char_destroy(s: *mut c_char) {
+    if !s.is_null() {
+        drop(CString::from_raw(s));
     }
 }
 

@@ -1,4 +1,6 @@
 #include "wrapper.hpp"
+#include <iostream>
+using namespace std;
 
 extern "C" {
 #include "lib.h"
@@ -76,10 +78,18 @@ Engine::Engine(const std::string& rules) : raw(engine_create(rules.c_str())) {
 bool Engine::matches(const std::string& url, const std::string& host,
     const std::string& tab_host, bool is_third_party,
     const std::string& resource_type, bool* explicit_cancel,
-    bool* saved_from_exception) {
-  return engine_match(raw, url.c_str(), host.c_str(),tab_host.c_str(),
+    bool* saved_from_exception, std::string* redirect) {
+  char* redirect_char_ptr = nullptr;
+  bool result = engine_match(raw, url.c_str(), host.c_str(),tab_host.c_str(),
       is_third_party, resource_type.c_str(), explicit_cancel,
-      saved_from_exception);
+      saved_from_exception, &redirect_char_ptr);
+  if (redirect_char_ptr) {
+    if (redirect) {
+      *redirect = redirect_char_ptr;
+    }
+    c_char_destroy(redirect_char_ptr);
+  }
+  return result;
 }
 
 bool Engine::deserialize(const char* data, size_t data_size) {
@@ -100,6 +110,16 @@ bool Engine::tagExists(const std::string& tag) {
 
 void Engine::addFilter(const std::string& filter) {
   engine_add_filter(raw, filter.c_str());
+}
+
+void Engine::addResource(const std::string& key,
+    const std::string& content_type,
+    const std::string &data) {
+  engine_add_resource(raw, key.c_str(), content_type.c_str(), data.c_str());
+}
+
+void Engine::addResources(const std::string& resources) {
+  engine_add_resources(raw, resources.c_str());
 }
 
 Engine::~Engine() {

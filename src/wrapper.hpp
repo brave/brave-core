@@ -46,10 +46,15 @@ class Engine {
   bool matches(const std::string& url, const std::string& host,
       const std::string& tab_host, bool is_third_party,
       const std::string& resource_type, bool* explicit_cancel,
-      bool* saved_from_exception);
+      bool* saved_from_exception,
+      std::string *redirect);
   bool deserialize(const char* data, size_t data_size);
   void addFilter(const std::string& filter);
   void addTag(const std::string& tag);
+  void addResource(const std::string& key,
+      const std::string& content_type,
+      const std::string& data);
+  void addResources(const std::string& resources);
   void removeTag(const std::string& tag);
   bool tagExists(const std::string& tag);
   ~Engine();

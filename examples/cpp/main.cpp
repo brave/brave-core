@@ -9,32 +9,56 @@ size_t num_passed = 0;
 size_t num_failed = 0;
 
 const unsigned char ad_banner_dat_buffer[] = {
-  0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0xff, 0x8d, 0x8c, 0xb1, 0x0d, 0x00, 0x11,
-  0x18, 0x85, 0xc9, 0x55, 0x57, 0xdc, 0x0c, 0xd7,
-  0x5c, 0x77, 0xd1, 0x5b, 0xc0, 0x20, 0xbf, 0xd0,
-  0x2a, 0x58, 0xc2, 0x26, 0x12, 0x95, 0x9a, 0x0d,
-  0x6c, 0xa0, 0xb5, 0x08, 0x89, 0x50, 0xe8, 0xbc,
-  0xe6, 0xe5, 0xcb, 0xcb, 0xfb, 0x10, 0x3a, 0x0b,
-  0x9e, 0x1d, 0x80, 0xfe, 0xe5, 0x73, 0x79, 0x71,
-  0x7b, 0xaf, 0xb1, 0xdd, 0x93, 0x41, 0x10, 0x0e,
-  0x4a, 0x49, 0xbd, 0x8e, 0xd5, 0x27, 0xf3, 0x30,
-  0x1b, 0x77, 0x19, 0xee, 0x40, 0x9a, 0xd0, 0x4c,
-  0x78, 0x00, 0x00, 0x00
+  31, 139, 8, 0, 0, 0, 0, 0,
+  0, 255, 1, 68, 0, 187, 255, 155,
+  145, 128, 145, 128, 145, 128, 145, 128,
+  145, 128, 145, 129, 207, 202, 167, 36,
+  217, 43, 56, 97, 176, 145, 158, 145,
+  206, 0, 3, 31, 255, 146, 1, 145,
+  169, 97, 100, 45, 98, 97, 110, 110,
+  101, 114, 192, 192, 192, 192, 192, 192,
+  192, 192, 207, 186, 136, 69, 13, 115,
+  187, 170, 226, 192, 192, 192, 144, 194,
+  195, 194, 195, 207, 77, 26, 78, 68,
+  0, 0, 0
+};
+
+const unsigned char ad_banner_with_tag_abc_dat_buffer[] = {
+  31, 139, 8, 0, 0, 0, 0, 0,
+  0, 255, 149, 139, 49, 14, 64, 48,
+  24, 70, 137, 131, 88, 108, 98, 148,
+  184, 135, 19, 252, 197, 218, 132, 3,
+  8, 139, 85, 126, 171, 132, 193, 32,
+  54, 71, 104, 218, 205, 160, 139, 197,
+  105, 218, 166, 233, 5, 250, 125, 219,
+  203, 123, 43, 14, 238, 163, 124, 206,
+  228, 79, 11, 184, 113, 195, 55, 136,
+  98, 181, 132, 120, 65, 157, 17, 160,
+  180, 233, 152, 221, 1, 164, 98, 178,
+  255, 242, 178, 221, 231, 201, 0, 19,
+  122, 216, 92, 112, 161, 1, 58, 213,
+  199, 143, 114, 0, 0, 0
 };
 
 
-const unsigned char ad_banner_with_tag_abc_dat_buffer[] = {
-  0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00,
-  0x00, 0xff, 0x95, 0x8b, 0xbd, 0x0d, 0x00, 0x10,
-  0x10, 0x85, 0x4f, 0x54, 0xa6, 0x30, 0x81, 0xd2,
-  0x24, 0x26, 0x70, 0x68, 0x2f, 0x61, 0x00, 0xa5,
-  0xd6, 0x08, 0x96, 0xb2, 0x0f, 0x09, 0x67, 0x00,
-  0xaf, 0x79, 0x3f, 0x79, 0x1f, 0xc0, 0x9f, 0x04,
-  0xfb, 0xd2, 0xf2, 0x64, 0xc5, 0xdd, 0x47, 0x83,
-  0x9e, 0x28, 0x15, 0xbe, 0xc9, 0xb7, 0x63, 0x80,
-  0xd6, 0x47, 0x76, 0x76, 0xd6, 0xcb, 0x8b, 0x0d,
-  0xc7, 0xc1, 0xc2, 0x31, 0x73, 0x00, 0x00, 0x00
+const unsigned char ad_banner_with_resources_abc_dat_buffer[] = {
+  31, 139, 8, 0, 0, 0, 0, 0,
+  0, 255, 61, 139, 189, 10, 64, 80,
+  28, 197, 201, 46, 229, 1, 44, 54,
+  201, 234, 117, 174, 143, 65, 233, 18,
+  6, 35, 118, 229, 127, 103, 201, 230,
+  99, 146, 39, 184, 177, 25, 152, 61,
+  13, 238, 29, 156, 83, 167, 211, 175,
+  115, 90, 40, 184, 203, 235, 24, 244,
+  219, 176, 209, 2, 29, 156, 130, 164,
+  61, 68, 132, 9, 121, 166, 131, 48,
+  246, 19, 74, 71, 28, 69, 113, 230,
+  231, 25, 101, 186, 42, 121, 86, 73,
+  189, 42, 95, 103, 255, 102, 219, 183,
+  29, 170, 127, 68, 102, 150, 86, 28,
+  162, 0, 247, 3, 163, 110, 154, 146,
+  145, 195, 175, 245, 47, 101, 250, 113,
+  201, 119, 0, 0, 0
 };
 
 void Assert(bool value, const std::string& message) {
@@ -46,15 +70,18 @@ void Assert(bool value, const std::string& message) {
 }
 
 void Check(bool expected_result,
-    bool expected_cancel, bool expected_saved_from_exception,
+    bool expected_cancel,
+    bool expected_saved_from_exception,
+    std::string expected_redirect,
     const std::string& test_description,
     Engine& engine, const std::string& url, const std::string& host,
     const std::string& tab_host, bool third_party,
     const std::string& resource_type) {
   bool cancel;
   bool saved_from_exception;
+  std::string redirect;
   bool match = engine.matches(url, host, tab_host, third_party,
-      resource_type, &cancel, &saved_from_exception);
+      resource_type, &cancel, &saved_from_exception, &redirect);
   cout << test_description << "... ";
   if (expected_result != match) {
     cout << "Failed!" << endl;
@@ -72,9 +99,10 @@ void Check(bool expected_result,
     cout << "Passed!" << endl;
     num_passed++;
   }
-  assert(expected_result == match &&
-      cancel == expected_cancel &&
-      saved_from_exception == expected_saved_from_exception);
+  assert(expected_result == match);
+  assert(cancel == expected_cancel);
+  assert(saved_from_exception == expected_saved_from_exception);
+  assert(redirect == expected_redirect);
 }
 
 void TestBasics() {
@@ -84,11 +112,11 @@ void TestBasics() {
                 "-advertisement/script.\n"
                 "@@good-advertisement\n"
                 );
-  Check(true, false, false, "Basic match", engine, "http://example.com/-advertisement-icon.",
+  Check(true, false, false, "", "Basic match", engine, "http://example.com/-advertisement-icon.",
       "example.com", "example.com", false , "image");
-  Check(false, false, false, "Basic not match", engine, "https://brianbondy.com",
+  Check(false, false, false, "", "Basic not match", engine, "https://brianbondy.com",
       "brianbondy.com", "example.com", true, "image");
-  Check(false, false, true, "Basic saved from exception", engine, "http://example.com/good-advertisement-icon.",
+  Check(false, false, true, "", "Basic saved from exception", engine, "http://example.com/good-advertisement-icon.",
       "example.com", "example.com", false, "image");
 }
 
@@ -99,11 +127,11 @@ void TestAddingFilters() {
   engine.addFilter("-advertisement.");
   engine.addFilter("-advertisement/script.");
   engine.addFilter("@@good-advertisement");
-  Check(true, false, false, "Basic match", engine, "http://example.com/-advertisement-icon.",
+  Check(true, false, false, "", "Basic match", engine, "http://example.com/-advertisement-icon.",
       "example.com", "example.com", false , "image");
-  Check(false, false, false, "Basic not match", engine, "https://brianbondy.com",
+  Check(false, false, false, "", "Basic not match", engine, "https://brianbondy.com",
       "brianbondy.com", "example.com", true, "image");
-  Check(false, false, true, "Basic saved from exception", engine, "http://example.com/good-advertisement-icon.",
+  Check(false, false, true, "", "Basic saved from exception", engine, "http://example.com/good-advertisement-icon.",
       "example.com", "example.com", false, "image");
 }
 
@@ -111,16 +139,16 @@ void TestDeserialization() {
   Engine engine("");
   engine.deserialize(reinterpret_cast<const char*>(ad_banner_dat_buffer),
       sizeof(ad_banner_dat_buffer)/sizeof(ad_banner_dat_buffer[0]));
-  Check(true, false, false, "Basic match after deserialization", engine, "http://example.com/ad-banner.gif",
+  Check(true, false, false, "", "Basic match after deserialization", engine, "http://example.com/ad-banner.gif",
       "example.com", "example.com", false , "image");
 
   Engine engine2("");
   engine2.deserialize(reinterpret_cast<const char*>(ad_banner_with_tag_abc_dat_buffer),
       sizeof(ad_banner_with_tag_abc_dat_buffer)/sizeof(ad_banner_with_tag_abc_dat_buffer[0]));
-  Check(false, false, false, "Basic match after deserialization", engine2, "http://example.com/ad-banner.gif",
+  Check(false, false, false, "", "Basic match after deserialization for a buffer with tags and no tag match", engine2, "http://example.com/ad-banner.gif",
       "example.com", "example.com", false , "image");
   engine2.addTag("abc");
-  Check(true, false, false, "Basic match after deserialization", engine2, "http://example.com/ad-banner.gif",
+  Check(true, false, false, "", "Basic match after deserialization for a buffer with tags and a tag match", engine2, "http://example.com/ad-banner.gif",
       "example.com", "example.com", false , "image");
 
   // Deserialize after adding tag still works
@@ -128,7 +156,13 @@ void TestDeserialization() {
   engine3.addTag("abc");
   engine3.deserialize(reinterpret_cast<const char*>(ad_banner_with_tag_abc_dat_buffer),
       sizeof(ad_banner_with_tag_abc_dat_buffer)/sizeof(ad_banner_with_tag_abc_dat_buffer[0]));
-  Check(true, false, false, "Basic match after deserialization", engine3, "http://example.com/ad-banner.gif",
+  Check(true, false, false, "", "Basic match after deserialization with resources with a tag on the engine before", engine3, "http://example.com/ad-banner.gif",
+      "example.com", "example.com", false , "image");
+
+  Engine engine4("");
+  engine4.deserialize(reinterpret_cast<const char*>(ad_banner_with_resources_abc_dat_buffer),
+      sizeof(ad_banner_with_resources_abc_dat_buffer)/sizeof(ad_banner_with_resources_abc_dat_buffer[0]));
+  Check(true, false, false, "data:text/plain;base64,", "Basic match after deserialization with resources", engine4, "http://example.com/ad-banner.gif",
       "example.com", "example.com", false , "image");
 }
 
@@ -137,43 +171,61 @@ void TestTags() {
                 "-advertisement-management$tag=abc\n"
                 "-advertisement.$tag=abc\n"
                 "-advertisement/script.$tag=abc\n");
-  Check(false, false, false, "Without needed tags", engine,
+  Check(false, false, false, "", "Without needed tags", engine,
       "http://example.com/-advertisement-icon.", "example.com", "example.com",
       false, "image");
   engine.addTag("abc");
   Assert(engine.tagExists("abc"), "abc tag should exist");
   Assert(!engine.tagExists("abcd"), "abcd should not exist");
-  Check(true, false, false, "With needed tags",
+  Check(true, false, false, "", "With needed tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
       "example.com", false, "image");
   // Adding a second tag doesn't clear the first.
   engine.addTag("hello");
-  Check(true, false, false, "With extra unneeded tags",
+  Check(true, false, false, "", "With extra unneeded tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
       "example.com", false, "image");
   engine.removeTag("abc");
-  Check(false, false, false, "With removed tags",
+  Check(false, false, false, "", "With removed tags",
       engine, "http://example.com/-advertisement-icon.", "example.com",
       "example.com", false, "image");
+}
+
+void TestRedirects() {
+  Engine engine("-advertisement-$redirect=1x1-transparent.gif\n");
+  engine.addResources("# test\n"
+                      "1x1-transparent.gif image/gif;base64\n"
+                      "R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==\n");
+  Check(true, false, false, "data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==", "Testing redirects match", engine,
+      "http://example.com/-advertisement-icon.", "example.com", "example.com",
+      false, "image");
+}
+
+void TestRedirect() {
+  Engine engine("-advertisement-$redirect=test\n");
+  engine.addResource("test", "application/javascript", "alert(1)");
+  Check(true, false, false, "data:application/javascript;base64,YWxlcnQoMSk=", "Testing single redirect match", engine,
+      "http://example.com/-advertisement-icon.", "example.com", "example.com",
+      false, "image");
 }
 
 void TestExplicitCancel() {
   Engine engine("-advertisement-icon$explicitcancel\n"
                 "@@-advertisement-icon-good\n");
-  Check(true, true, false, "Without needed tags", engine,
+  Check(true, true, false, "", "Without needed tags", engine,
       "http://example.com/-advertisement-icon", "example.com", "example.com",
       false, "image");
-  Check(false, false, true, "Without needed tags", engine,
+  Check(false, false, true, "", "Without needed tags", engine,
       "http://example.com/-advertisement-icon-good", "example.com", "example.com",
       false, "image");
 }
 
 void TestThirdParty() {
   Engine engine("-advertisement-icon$third-party");
-  Check(true, false, false, "Without needed tags", engine,
+  Check(true, false, false, "", "Without needed tags", engine,
       "http://example.com/-advertisement-icon", "example.com", "brianbondy.com",
       true, "image");
-  Check(false, false, false, "Without needed tags", engine,
+  Check(false, false, false, "", "Without needed tags", engine,
       "http://example.com/-advertisement-icon", "example.com", "example.com",
       false, "image");
 }
@@ -214,6 +266,8 @@ int main() {
   TestAddingFilters();
   TestDeserialization();
   TestTags();
+  TestRedirects();
+  TestRedirect();
   TestExplicitCancel();
   TestThirdParty();
   TestDefaultLists();
