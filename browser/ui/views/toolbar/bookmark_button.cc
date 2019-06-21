@@ -53,14 +53,17 @@ void BookmarkButton::SetHighlighted(bool bubble_visible) {
 
 void BookmarkButton::SetToggled(bool on) {
   active_ = on;
+  UpdateImage();
+}
+
+void BookmarkButton::UpdateImage() {
   const ui::ThemeProvider* tp = GetThemeProvider();
 
   SkColor icon_color = tp->GetColor(ThemeProperties::COLOR_TOOLBAR_BUTTON_ICON);
-  const gfx::VectorIcon& icon = on
-    ? omnibox::kStarActiveIcon
-    : omnibox::kStarIcon;
-  SetImage(views::Button::STATE_NORMAL, gfx::CreateVectorIcon(
-      icon, icon_color));
+  const gfx::VectorIcon& icon =
+      active_ ? omnibox::kStarActiveIcon : omnibox::kStarIcon;
+  SetImage(views::Button::STATE_NORMAL,
+           gfx::CreateVectorIcon(icon, icon_color));
 }
 
 void BookmarkButton::OnBubbleWidgetCreated(views::Widget* bubble_widget) {
@@ -68,10 +71,6 @@ void BookmarkButton::OnBubbleWidgetCreated(views::Widget* bubble_widget) {
 
   if (bubble_widget->IsVisible())
     SetHighlighted(true);
-}
-
-void BookmarkButton::OnThemeChanged() {
-  SetToggled(active_);
 }
 
 BookmarkButton::WidgetObserver::WidgetObserver(BookmarkButton* parent)
