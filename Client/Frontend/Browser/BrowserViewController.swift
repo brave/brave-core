@@ -1420,10 +1420,16 @@ extension BrowserViewController {
 
 extension BrowserViewController: TopToolbarDelegate {
     func showTabTray() {
+        if tabManager.tabsForCurrentMode.isEmpty {
+            return
+        }
         updateFindInPageVisibility(visible: false)
         
         let tabTrayController = TabTrayController(tabManager: tabManager, profile: profile, tabTrayDelegate: self)
         
+        if tabManager.selectedTab == nil {
+            tabManager.selectTab(tabManager.tabsForCurrentMode.first)
+        }
         if let tab = tabManager.selectedTab {
             screenshotHelper.takeScreenshot(tab)
         }

@@ -21,14 +21,12 @@ class TrayToBrowserAnimator: NSObject, UIViewControllerAnimatedTransitioning {
 private extension TrayToBrowserAnimator {
     func transitionFromTray(_ tabTray: TabTrayController, toBrowser bvc: BrowserViewController, usingContext transitionContext: UIViewControllerContextTransitioning) {
         let container = transitionContext.containerView
-        guard let selectedTab = bvc.tabManager.selectedTab else { return }
 
         let tabManager = bvc.tabManager
         let displayedTabs = tabManager.tabsForCurrentMode
-        guard let expandFromIndex = displayedTabs.index(of: selectedTab) else { return }
-        guard displayedTabs.index(of: selectedTab) != nil else {
-            transitionContext.completeTransition(false)
-            return
+        
+        guard let selectedTab = bvc.tabManager.selectedTab, let expandFromIndex = displayedTabs.index(of: selectedTab) else {
+            fatalError("No tab selected for transition.")
         }
         bvc.view.frame = transitionContext.finalFrame(for: bvc)
 
@@ -117,13 +115,10 @@ private extension BrowserToTrayAnimator {
     func transitionFromBrowser(_ bvc: BrowserViewController, toTabTray tabTray: TabTrayController, usingContext transitionContext: UIViewControllerContextTransitioning) {
 
         let container = transitionContext.containerView
-        guard let selectedTab = bvc.tabManager.selectedTab else { return }
-
         let tabManager = bvc.tabManager
         let displayedTabs = tabManager.tabsForCurrentMode
-        guard let scrollToIndex = displayedTabs.index(of: selectedTab) else {
-            transitionContext.completeTransition(false)
-            return
+        guard let selectedTab = bvc.tabManager.selectedTab, let scrollToIndex = displayedTabs.index(of: selectedTab) else {
+            fatalError("No tab selected for transition.")
         }
 
         tabTray.view.frame = transitionContext.finalFrame(for: tabTray)
