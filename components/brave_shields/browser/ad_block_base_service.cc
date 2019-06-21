@@ -133,9 +133,11 @@ bool AdBlockBaseService::ShouldStartRequest(const GURL& url,
       INCLUDE_PRIVATE_REGISTRIES);
   bool explicit_cancel;
   bool saved_from_exception;
+  // TODO(bbondy): Use redirect if it is provided.
+  std::string redirect;
   if (ad_block_client_->matches(url.spec(), url.host(),
         tab_host, is_third_party, ResourceTypeToString(resource_type),
-        &explicit_cancel, &saved_from_exception)) {
+        &explicit_cancel, &saved_from_exception, &redirect)) {
     if (cancel_request_explicitly) {
       *cancel_request_explicitly = explicit_cancel;
     }
