@@ -19,9 +19,21 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   
   var bookmarksFRC: NSFetchedResultsController<Bookmark>?
   
-  var editBookmarksToolbar: UIToolbar!
-  var editBookmarksButton: UIBarButtonItem!
-  var addFolderButton: UIBarButtonItem?
+    lazy var editBookmarksButton = UIBarButtonItem().then {
+        $0.image = #imageLiteral(resourceName: "edit").template
+        $0.style = .plain
+        $0.tintColor = BraveUX.LightBlue
+        $0.target = self
+        $0.action = #selector(onEditBookmarksButton)
+    }
+    
+    lazy var addFolderButton =  UIBarButtonItem().then {
+        $0.image = #imageLiteral(resourceName: "bookmarks_newfolder_icon").template
+        $0.style = .plain
+        $0.tintColor = BraveUX.LightBlue
+        $0.target = self
+        $0.action = #selector(onAddBookmarksFolderButton)
+    }
   weak var addBookmarksFolderOkAction: UIAlertAction?
   
   var isEditingIndividualBookmark: Bool = false
@@ -51,31 +63,23 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     super.viewDidLoad()
     
     self.view.backgroundColor = BraveUX.BackgroundColorForSideToolbars
-    
     tableView.allowsSelectionDuringEditing = true
     
-    let width = self.view.bounds.size.width
-    let toolbarHeight = CGFloat(44)
-    
-    editBookmarksToolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: width, height: toolbarHeight))
-    createEditBookmarksToolbar()
-    editBookmarksToolbar.barTintColor = BraveUX.BackgroundColorForSideToolbars
-    editBookmarksToolbar.isTranslucent = false
-    
-    self.view.addSubview(editBookmarksToolbar)
-    
-    editBookmarksToolbar.snp.makeConstraints { make in
-      make.height.equalTo(toolbarHeight)
-      make.left.equalTo(self.view)
-      make.right.equalTo(self.view)
-      make.bottom.equalTo(self.view.safeAreaLayoutGuide)
-    }
-    
-    tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: toolbarHeight, right: 0)
-    tableView.scrollIndicatorInsets = tableView.contentInset
-    
-    reloadData()
+    setUpToolbar()
   }
+    
+    private func setUpToolbar() {
+        var padding: UIBarButtonItem { return UIBarButtonItem.fixedSpace(5) }
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
+        
+        let items = [padding, addFolderButton, flexibleSpace, editBookmarksButton, padding]
+        setToolbarItems(items, animated: true)
+        
+        navigationController?.toolbar.do {
+            $0.barTintColor = BraveUX.BackgroundColorForSideToolbars
+            $0.isTranslucent = false
+        }
+    }
   
   override func reloadData() {
     
@@ -96,6 +100,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
+    navigationController?.setToolbarHidden(false, animated: true)
     switchTableEditingMode(true)
     reloadData()
   }
@@ -119,7 +124,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
     updateEditBookmarksButton(editMode)
     resetCellLongpressGesture(tableView.isEditing)
     
-    addFolderButton?.isEnabled = !editMode
+    addFolderButton.isEnabled = !editMode
   }
   
   func updateEditBookmarksButton(_ tableIsEditing: Bool) {
@@ -134,28 +139,6 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         cell.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressedCell(_:))))
       }
     }
-  }
-  
-  func createEditBookmarksToolbar() {
-    var items = [UIBarButtonItem]()
-    
-    items.append(UIBarButtonItem.fixedSpace(5))
-    
-    addFolderButton = UIBarButtonItem(image: #imageLiteral(resourceName: "bookmarks_newfolder_icon").template, style: .plain, target: self, action: #selector(onAddBookmarksFolderButton))
-    items.append(addFolderButton!)
-    
-    items.append(UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil))
-    
-    editBookmarksButton = UIBarButtonItem(image: #imageLiteral(resourceName: "edit").template, style: .plain, target: self, action: #selector(onEditBookmarksButton))
-    items.append(editBookmarksButton)
-    items.append(UIBarButtonItem.fixedSpace(5))
-    
-    items.forEach { $0.tintColor = BraveUX.LightBlue }
-    
-    editBookmarksToolbar.items = items
-    
-    // This removes the small top border from the toolbar
-    editBookmarksToolbar.clipsToBounds = true
   }
   
   @objc private func onAddBookmarksFolderButton() {
