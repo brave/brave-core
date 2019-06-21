@@ -42,7 +42,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisableHyperlinkAuditing) {
 
 IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
   const base::Feature* disabled_features[] = {
-      &autofill::features::kAutofillSaveCardSignInAfterLocalSave,
       &autofill::features::kAutofillServerCommunication,
       &features::kAudioServiceOutOfProcess,
       &features::kDefaultEnableOopRasterization,
