@@ -5,6 +5,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+typedef void (^DataControllerCompletion)(NSError * _Nullable error);
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DataController : NSObject
@@ -25,7 +27,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)save:(NSManagedObjectContext *)context;
 
 - (void)performOnContext:(nullable NSManagedObjectContext *)context task:(void (^)(NSManagedObjectContext *))task;
-- (void)performOnContext:(nullable NSManagedObjectContext *)context save:(BOOL)save task:(void (^)(NSManagedObjectContext *))task;
+- (void)performOnContext:(nullable NSManagedObjectContext *)context task:(void (^)(NSManagedObjectContext *))task completion:(nullable DataControllerCompletion)completion;
+- (void)performOnContext:(nullable NSManagedObjectContext *)context save:(BOOL)save task:(void (^)(NSManagedObjectContext *))task completion:(nullable DataControllerCompletion)completion;
 
 @end
 

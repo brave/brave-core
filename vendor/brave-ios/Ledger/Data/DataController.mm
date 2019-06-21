@@ -102,16 +102,22 @@ static DataController *_dataController = nil;
 
 - (void)performOnContext:(NSManagedObjectContext *)context task:(void (^)(NSManagedObjectContext * _Nonnull))task
 {
-  [self performOnContext:context save:YES task:task];
+  [self performOnContext:context save:YES task:task completion:nil];
 }
 
-- (void)performOnContext:(NSManagedObjectContext *)context save:(BOOL)save task:(void (^)(NSManagedObjectContext * _Nonnull))task
+- (void)performOnContext:(NSManagedObjectContext *)context task:(void (^)(NSManagedObjectContext * _Nonnull))task completion:(nullable DataControllerCompletion)completion
+{
+  [self performOnContext:context save:YES task:task completion:completion];
+}
+
+- (void)performOnContext:(NSManagedObjectContext *)context save:(BOOL)save task:(void (^)(NSManagedObjectContext * _Nonnull))task completion:(nullable DataControllerCompletion)completion
 {
   // If existing context is provided, we only call the code closure.
   // Queue operation and saving is done in `performTask()` called at higher level when a nil context
   // is passed
   if (context) {
     task(context);
+    if (completion) { completion(nil); }
     return;
   }
 
@@ -127,6 +133,9 @@ static DataController *_dataController = nil;
         if (![backgroundContext save:&error]) {
           NSLog(@"performTask save error: %@", error);
         }
+        if (completion) { completion(error); }
+      } else {
+        if (completion) { completion(nil); }
       }
     }];
   }];
