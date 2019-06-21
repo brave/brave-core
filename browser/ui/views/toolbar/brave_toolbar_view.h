@@ -20,12 +20,14 @@ class BraveToolbarView : public ToolbarView {
   void Init() override;
   void Layout() override;
   void Update(content::WebContents* tab) override;
+  void OnThemeChanged() override;
   void OnEditBookmarksEnabledChanged();
   void OnLocationBarIsWideChanged();
   void ShowBookmarkBubble(const GURL& url,
                           bool already_bookmarked,
                           bookmarks::BookmarkBubbleObserver* observer) override;
  private:
+  void LoadImages() override;
   void ResetLocationBarBounds();
   void ResetBookmarkButtonBounds();
 
@@ -33,6 +35,8 @@ class BraveToolbarView : public ToolbarView {
   // Tracks the preference to determine whether bookmark editing is allowed.
   BooleanPrefMember edit_bookmarks_enabled_;
   BooleanPrefMember location_bar_is_wide_;
+  // Whether this toolbar has been initialized.
+  bool brave_initialized_ = false;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_
