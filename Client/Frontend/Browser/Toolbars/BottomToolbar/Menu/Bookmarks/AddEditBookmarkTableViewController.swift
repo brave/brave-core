@@ -153,6 +153,7 @@ class AddEditBookmarkTableViewController: UITableViewController {
         // Data needs to be reloaded here because when going back from creating a folder.
         // The currently selected folder might have been deleted, and UI needs to be updated.
         reloadData()
+        navigationController?.setToolbarHidden(true, animated: true)
     }
     
     override func viewWillLayoutSubviews() {
