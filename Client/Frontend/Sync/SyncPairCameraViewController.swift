@@ -20,7 +20,7 @@ class SyncPairCameraViewController: SyncViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = Strings.ScanSyncCode
+        title = Strings.Scan
 
         let stackView = UIStackView()
         stackView.axis = .vertical

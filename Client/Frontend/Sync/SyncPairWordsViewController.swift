@@ -42,7 +42,7 @@ class SyncPairWordsViewController: SyncViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        title = Strings.SyncAddDeviceWords
+        title = Strings.SyncAddDeviceWordsTitle
         
         scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
