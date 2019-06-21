@@ -145,7 +145,7 @@ class MenuViewController: UITableViewController {
         let nav = SettingsNavigationController(rootViewController: viewController)
         nav.modalPresentationStyle = .formSheet
         
-        let button = UIBarButtonItem(barButtonSystemItem: doneButton.style, target: nav, action: #selector(SettingsNavigationController.done))
+        let button = UIBarButtonItem(barButtonSystemItem: doneButton.style, target: nav, action: #selector(nav.done))
         
         switch doneButton.position {
         case .left: nav.navigationBar.topItem?.leftBarButtonItem = button
