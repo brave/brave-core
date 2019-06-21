@@ -31,7 +31,7 @@ class URLRequest;
 base::flat_set<base::StringPiece>* TrackableSecurityHeaders();
 
 void RemoveTrackableSecurityHeadersForThirdParty(
-    net::URLRequest* request,
+    const GURL& request_url, const url::Origin& top_frame_origin,
     const net::HttpResponseHeaders* original_response_headers,
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers);
 
