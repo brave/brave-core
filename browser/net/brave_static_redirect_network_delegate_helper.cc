@@ -118,8 +118,6 @@ int OnBeforeURLRequest_StaticRedirectWork(
       // hardcoding the server name here
       URLPattern(URLPattern::SCHEME_HTTPS,
           "https://laptop-updates.brave.com/*"),
-      URLPattern(URLPattern::SCHEME_HTTPS,
-          "https://laptop-updates-staging.herokuapp.com/*"),
       // CRX file download
       URLPattern(URLPattern::SCHEME_HTTPS,
           "https://brave-core-ext.s3.brave.com/release/*"),
