@@ -304,6 +304,9 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
         nextController.bookmarksDidChange = bookmarksDidChange
         nextController.toolbarUrlActionsDelegate = toolbarUrlActionsDelegate
         
+        // Show `Done` button on nested folder levels.
+        nextController.navigationItem.setRightBarButton(navigationItem.rightBarButtonItem, animated: true)
+        
         self.navigationController?.pushViewController(nextController, animated: true)
       }
     }
