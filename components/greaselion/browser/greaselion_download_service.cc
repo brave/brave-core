@@ -49,13 +49,17 @@ GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
   return value;
 }
 
-GreaselionRule::GreaselionRule(
+GreaselionRule::GreaselionRule()
+    : pending_scripts_(0),
+      all_scripts_loaded_successfully_(true),
+      weak_factory_(this) {}
+
+void GreaselionRule::Parse(
     base::DictionaryValue* preconditions_value,
     base::ListValue* urls_value,
     base::ListValue* scripts_value,
     const base::FilePath& root_dir,
-    scoped_refptr<base::SequencedTaskRunner> task_runner)
-    : weak_factory_(this) {
+    scoped_refptr<base::SequencedTaskRunner> task_runner) {
   std::vector<std::string> patterns;
   preconditions_.rewards_enabled =
       ParsePrecondition(preconditions_value, kRewards);
@@ -76,11 +80,13 @@ GreaselionRule::GreaselionRule(
     }
     urls_.AddPattern(pattern);
   }
+  pending_scripts_ = scripts_value->GetList().size();
   for (const auto& scripts_it : scripts_value->GetList()) {
     base::FilePath script_path =
         root_dir.AppendASCII(kGreaselionConfigFileVersion)
             .AppendASCII(scripts_it.GetString());
     if (script_path.ReferencesParent()) {
+      pending_scripts_ -= 1;
       LOG(ERROR) << "Malformed filename in Greaselion configuration";
     } else {
       // Read script file on task runner to avoid file I/O on main thread.
@@ -100,11 +106,16 @@ GreaselionRule::~GreaselionRule() = default;
 
 void GreaselionRule::AddScriptAfterLoad(std::unique_ptr<std::string> contents,
                                         bool did_load) {
-  if (!did_load || !contents) {
+  if (did_load && contents)
+    scripts_.push_back(*contents);
+  else {
+    all_scripts_loaded_successfully_ = false;
     LOG(ERROR) << "Could not load Greaselion script";
-    return;
   }
-  scripts_.push_back(*contents);
+  pending_scripts_ -= 1;
+  if (!pending_scripts_)
+    for (Observer& observer : observers_)
+      observer.OnRuleReady(this, all_scripts_loaded_successfully_);
 }
 
 bool GreaselionRule::PreconditionFulfilled(
@@ -136,7 +147,10 @@ void GreaselionRule::Populate(std::vector<std::string>* scripts) const {
 
 GreaselionDownloadService::GreaselionDownloadService(
     LocalDataFilesService* local_data_files_service)
-    : LocalDataFilesObserver(local_data_files_service), weak_factory_(this) {
+    : LocalDataFilesObserver(local_data_files_service),
+      pending_rules_(0),
+      all_scripts_loaded_successfully_(true),
+      weak_factory_(this) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
@@ -156,6 +170,7 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
   }
   base::ListValue* root_list = nullptr;
   root->GetAsList(&root_list);
+  pending_rules_ = root_list->GetList().size();
   for (base::Value& rule_it : root_list->GetList()) {
     base::DictionaryValue* rule_dict = nullptr;
     rule_it.GetAsDictionary(&rule_dict);
@@ -165,11 +180,23 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
     rule_dict->GetList(kURLs, &urls_value);
     base::ListValue* scripts_value = nullptr;
     rule_dict->GetList(kScripts, &scripts_value);
-    std::unique_ptr<GreaselionRule> rule = std::make_unique<GreaselionRule>(
-        preconditions_value, urls_value, scripts_value, install_dir_,
-        GetTaskRunner().get());
+    std::unique_ptr<GreaselionRule> rule = std::make_unique<GreaselionRule>();
+    rule->AddObserver(this);
+    rule->Parse(preconditions_value, urls_value, scripts_value, install_dir_,
+                GetTaskRunner().get());
     rules_.push_back(std::move(rule));
   }
+}
+
+void GreaselionDownloadService::OnRuleReady(
+    GreaselionRule* rule,
+    bool all_scripts_loaded_successfully) {
+  if (!all_scripts_loaded_successfully)
+    all_scripts_loaded_successfully_ = false;
+  pending_rules_ -= 1;
+  if (!pending_rules_)
+    for (Observer& observer : observers_)
+      observer.OnAllScriptsLoaded(this, all_scripts_loaded_successfully_);
 }
 
 void GreaselionDownloadService::OnComponentReady(
