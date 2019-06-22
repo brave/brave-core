@@ -123,7 +123,7 @@ IN_PROC_BROWSER_TEST_F(WidevinePermissionRequestBrowserTest, BubbleTest) {
   // Original PermissionsBubbleDialogDelegateView has one child.
   // It's label that includes icon and fragment test.
   // For widevine permission requests, one more label is added.
-  EXPECT_EQ(2, delegate_view->child_count());
+  EXPECT_EQ(2ull, delegate_view->children().size());
 }
 
 // OptedInPref of bundling tests are done by
