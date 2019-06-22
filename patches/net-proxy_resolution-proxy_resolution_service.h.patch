@@ -1,0 +1,13 @@
+diff --git a/net/proxy_resolution/proxy_resolution_service.h b/net/proxy_resolution/proxy_resolution_service.h
+index d2f1edcd65878d73fc56d375296936ee35b68d8d..9a364ffcdaa807e260eaba4a0c2d28ecf190d929 100644
+--- a/net/proxy_resolution/proxy_resolution_service.h
++++ b/net/proxy_resolution/proxy_resolution_service.h
+@@ -280,6 +280,8 @@ class NET_EXPORT ProxyResolutionService
+   }
+   bool quick_check_enabled_for_testing() const { return quick_check_enabled_; }
+ 
++  BRAVE_PROXY_RESOLUTION_SERVICE_METHODS
++
+  private:
+   FRIEND_TEST_ALL_PREFIXES(ProxyResolutionServiceTest,
+                            UpdateConfigAfterFailedAutodetect);
