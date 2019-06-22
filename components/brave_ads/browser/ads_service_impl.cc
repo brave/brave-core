@@ -64,6 +64,7 @@
 #include "ui/message_center/public/cpp/notification.h"
 
 #if defined(OS_ANDROID)
+#include "jni/BraveAdsSignupDialog_jni.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "chrome/browser/android/tab_android.h"
 #include "net/android/network_library.h"
@@ -830,6 +831,10 @@ void AdsServiceImpl::SetAdsEnabled(const bool is_enabled) {
 
     RemoveFirstLaunchNotification();
   }
+#if defined(OS_ANDROID)
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveAdsSignupDialog_enqueueOobeNotificationNative(env);
+#endif
 
   profile_->GetPrefs()->SetBoolean(prefs::kBraveAdsEnabled, is_enabled);
 }
