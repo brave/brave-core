@@ -161,7 +161,7 @@ double Contribution::GetAmountFromVerifiedRecurring(
 
 
 ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
-    const ledger::PublisherInfoList* list,
+    const ledger::PublisherInfoList& list,
     double* budget) {
   ledger::PublisherInfoList verified;
   ledger::PublisherInfoList non_verified_temp;
@@ -170,7 +170,7 @@ ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
   double verified_total = 0.0;
   double ac_amount = ledger_->GetContributionAmount();
 
-  for (const auto& publisher : *list) {
+  for (const auto& publisher : list) {
     if (publisher->percent == 0) {
       continue;
     }
@@ -212,12 +212,12 @@ ledger::PublisherInfoList Contribution::GetVerifiedListAuto(
 }
 
 ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
-    const ledger::PublisherInfoList* list,
+    const ledger::PublisherInfoList& list,
     double* budget) {
   ledger::PublisherInfoList verified;
   ledger::PendingContributionList non_verified;
 
-  for (const auto& publisher : *list) {
+  for (const auto& publisher : list) {
     if (publisher->id.empty() || publisher->weight == 0.0) {
       continue;
     }
@@ -243,22 +243,15 @@ ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
   return verified;
 }
 
-void Contribution::ReconcilePublisherList(
-    ledger::REWARDS_CATEGORY category,
+void Contribution::PrepareACList(
     ledger::PublisherInfoList list,
     uint32_t next_record) {
-  ledger::PublisherInfoList verified_list;
   double budget = 0.0;
-
-  if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
-    ledger::PublisherInfoList normalized_list;
-    ledger_->NormalizeContributeWinners(&normalized_list, &list, 0);
-    verified_list = GetVerifiedListAuto(&normalized_list, &budget);
-  } else {
-    verified_list = GetVerifiedListRecurring(&list, &budget);
-  }
-
+  ledger::PublisherInfoList normalized_list;
   braveledger_bat_helper::PublisherList new_list;
+
+  ledger_->NormalizeContributeWinners(&normalized_list, &list, 0);
+  auto verified_list = GetVerifiedListAuto(normalized_list, &budget);
 
   for (const auto &publisher : verified_list) {
     braveledger_bat_helper::PUBLISHER_ST new_publisher;
@@ -272,7 +265,32 @@ void Contribution::ReconcilePublisherList(
     new_list.push_back(new_publisher);
   }
 
-  InitReconcile(category, new_list, {}, budget);
+  InitReconcile(ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE,
+                new_list,
+                {},
+                budget);
+}
+
+void Contribution::PrepareRecurringList(
+    ledger::PublisherInfoList list,
+    uint32_t next_record) {
+  double budget = 0.0;
+
+  auto verified_list = GetVerifiedListRecurring(list, &budget);
+  braveledger_bat_helper::Directions directions;
+
+  for (const auto &publisher : verified_list) {
+    braveledger_bat_helper::RECONCILE_DIRECTION direction;
+    direction.publisher_key_ = publisher->id;
+    direction.amount_ = publisher->weight;
+    direction.currency_ = "BAT";
+    directions.push_back(direction);
+  }
+
+  InitReconcile(ledger::REWARDS_CATEGORY::RECURRING_TIP,
+                {},
+                directions,
+                budget);
 }
 
 void Contribution::ResetReconcileStamp() {
@@ -288,9 +306,8 @@ void Contribution::StartMonthlyContribution() {
   }
 
   ledger_->GetRecurringTips(
-      std::bind(&Contribution::ReconcilePublisherList,
+      std::bind(&Contribution::PrepareRecurringList,
                 this,
-                ledger::REWARDS_CATEGORY::RECURRING_TIP,
                 _1,
                 _2));
 
@@ -323,9 +340,8 @@ void Contribution::StartAutoContribute() {
       0,
       0,
       filter,
-      std::bind(&Contribution::ReconcilePublisherList,
+      std::bind(&Contribution::PrepareACList,
                 this,
-                ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE,
                 _1,
                 _2));
 }
@@ -728,9 +744,10 @@ bool Contribution::HaveReconcileEnoughFunds(
 bool Contribution::IsListEmpty(
     const ledger::REWARDS_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
+    const braveledger_bat_helper::Directions& directions,
     double budget) {
-  if (list.size() == 0 || budget == 0) {
-    if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
+  if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
+    if (list.size() == 0 || budget == 0) {
       BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
         "Auto contribution table is empty";
       phase_one_->Complete(ledger::Result::AC_TABLE_EMPTY,
@@ -738,8 +755,10 @@ bool Contribution::IsListEmpty(
                            category);
       return true;
     }
+  }
 
-    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+  if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
+    if (directions.size() == 0 || budget == 0) {
       phase_one_->Complete(ledger::Result::RECURRING_TABLE_EMPTY,
                            "",
                            ledger::REWARDS_CATEGORY::RECURRING_TIP);
@@ -768,7 +787,7 @@ void Contribution::ProcessReconcile(
     return;
   }
 
-  if (IsListEmpty(category, list, budget)) {
+  if (IsListEmpty(category, list, directions, budget)) {
     return;
   }
 
@@ -799,24 +818,17 @@ void Contribution::ProcessReconcile(
   // We need to first use all anon balance and what is left should
   // go through connected wallet
   braveledger_bat_helper::Directions wallet_directions;
-  braveledger_bat_helper::PublisherList wallet_list;
   if (anon_balance > 0) {
     fee = fee - anon_balance;
     anon_reconcile.fee_ = anon_balance;
 
-    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
-      braveledger_bat_helper::PublisherList anon_list;
-      AdjustRecurringTipsAmounts(list,
-                                 &wallet_list,
-                                 &anon_list,
-                                 anon_balance);
-      anon_reconcile.list_ = anon_list;
-    } else if (category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP) {
+    if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP ||
+        category == ledger::REWARDS_CATEGORY::ONE_TIME_TIP) {
       braveledger_bat_helper::Directions anon_directions;
-      AdjustOneTimeTipAmount(directions,
-                             &wallet_directions,
-                             &anon_directions,
-                             anon_balance);
+      AdjustTipsAmounts(directions,
+                        &wallet_directions,
+                        &anon_directions,
+                        anon_balance);
       anon_reconcile.directions_ = anon_directions;
     }
 
@@ -824,7 +836,6 @@ void Contribution::ProcessReconcile(
     phase_one_->Start(anon_reconcile.viewingId_);
   } else {
     wallet_directions = directions;
-    wallet_list = list;
   }
 
   auto wallet_reconcile = braveledger_bat_helper::CURRENT_RECONCILE();
@@ -832,7 +843,7 @@ void Contribution::ProcessReconcile(
   wallet_reconcile.fee_ = fee;
   wallet_reconcile.directions_ = wallet_directions;
   wallet_reconcile.category_ = category;
-  wallet_reconcile.list_ = wallet_list;
+  wallet_reconcile.list_ = list;
   ledger_->AddReconcile(wallet_reconcile.viewingId_, wallet_reconcile);
 
   auto tokens_callback = std::bind(&Contribution::OnExternalWallets,
@@ -845,40 +856,7 @@ void Contribution::ProcessReconcile(
   ledger_->GetExternalWallets(tokens_callback);
 }
 
-// TODO(nejczdovc): add tests
-void Contribution::AdjustRecurringTipsAmounts(
-    braveledger_bat_helper::PublisherList list,
-    braveledger_bat_helper::PublisherList* wallet_list,
-    braveledger_bat_helper::PublisherList* anon_list,
-    double reduce_fee_for) {
-  for (auto item : list) {
-    if (reduce_fee_for == 0) {
-      wallet_list->push_back(item);
-      continue;
-    }
-
-    if (item.weight_ <= reduce_fee_for) {
-      anon_list->push_back(item);
-      reduce_fee_for -= item.weight_;
-      continue;
-    }
-
-    if (item.weight_ > reduce_fee_for) {
-      // anon wallet
-      const auto original_weight = item.weight_;
-      item.weight_ = reduce_fee_for;
-      anon_list->push_back(item);
-
-      // rest to normal wallet
-      item.weight_ = original_weight - reduce_fee_for;
-      wallet_list->push_back(item);
-
-      reduce_fee_for = 0;
-    }
-  }
-}
-
-void Contribution::AdjustOneTimeTipAmount(
+void Contribution::AdjustTipsAmounts(
     braveledger_bat_helper::Directions directions,
     braveledger_bat_helper::Directions* wallet_directions,
     braveledger_bat_helper::Directions* anon_directions,

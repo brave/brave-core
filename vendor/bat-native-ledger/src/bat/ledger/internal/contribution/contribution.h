@@ -185,19 +185,20 @@ class Contribution {
   // AUTO CONTRIBUTE: from the list gets only verified publishers and
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListAuto(
-      const ledger::PublisherInfoList* all,
+      const ledger::PublisherInfoList& all,
       double* budget);
 
   // RECURRING TIPS: from the list gets only verified publishers and
   // save unverified to the db
   ledger::PublisherInfoList GetVerifiedListRecurring(
-      const ledger::PublisherInfoList* all,
+      const ledger::PublisherInfoList& all,
       double* budget);
 
-  // Entry point for contribution where we have publisher info list
-  void ReconcilePublisherList(ledger::REWARDS_CATEGORY category,
-                              ledger::PublisherInfoList list,
-                              uint32_t next_record);
+  void PrepareACList(ledger::PublisherInfoList list,
+                     uint32_t next_record);
+
+  void PrepareRecurringList(ledger::PublisherInfoList list,
+                            uint32_t next_record);
 
   void OnBalanceForReconcile(
       const ledger::REWARDS_CATEGORY category,
@@ -250,6 +251,7 @@ class Contribution {
   bool IsListEmpty(
     const ledger::REWARDS_CATEGORY category,
     const braveledger_bat_helper::PublisherList& list,
+    const braveledger_bat_helper::Directions& directions,
     double budget);
 
   void ProcessReconcile(
@@ -259,13 +261,7 @@ class Contribution {
     double budget,
     ledger::BalancePtr info);
 
-  void AdjustRecurringTipsAmounts(
-    braveledger_bat_helper::PublisherList list,
-    braveledger_bat_helper::PublisherList* wallet_list,
-    braveledger_bat_helper::PublisherList* anon_list,
-    double reduce_fee_for);
-
-  void AdjustOneTimeTipAmount(
+  void AdjustTipsAmounts(
     braveledger_bat_helper::Directions directions,
     braveledger_bat_helper::Directions* wallet_directions,
     braveledger_bat_helper::Directions* anon_directions,
