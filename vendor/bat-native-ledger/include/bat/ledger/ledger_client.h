@@ -74,7 +74,7 @@ using PendingContributionsTotalCallback = std::function<void(double)>;
 using GetCountryCodesCallback =
     std::function<void(const std::vector<int32_t>&)>;
 using GetExternalWalletsCallback =
-    std::function<void(std::map<std::string, ledger::ExternalWallet>)>;
+    std::function<void(std::map<std::string, ledger::ExternalWalletPtr>)>;
 
 class LEDGER_EXPORT LedgerClient {
  public:
@@ -263,6 +263,9 @@ class LEDGER_EXPORT LedgerClient {
       ledger::Result result,
       const std::string& publisher_key,
       const std::string& publisher_name) = 0;
+
+  virtual void GetExternalWallets(
+      GetExternalWalletsCallback callback) = 0;
 };
 
 }  // namespace ledger

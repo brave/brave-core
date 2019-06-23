@@ -312,6 +312,9 @@ class MockConfirmationsClient : public ConfirmationsClient {
 
   MOCK_METHOD1(ClearState, void(
       const std::string& name));
+
+  MOCK_METHOD1(GetExternalWallets, void(
+      GetExternalWalletsCallback callback));
 };
 
 }  // namespace confirmations

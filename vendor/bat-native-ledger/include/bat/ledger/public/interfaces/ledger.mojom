@@ -114,4 +114,5 @@ struct MediaEventInfo {
 struct ExternalWallet {
   string token;
   string address;
+  uint32 status;
 };

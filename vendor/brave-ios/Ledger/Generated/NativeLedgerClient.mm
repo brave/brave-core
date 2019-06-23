@@ -203,3 +203,6 @@ uint64_t NativeLedgerClient::GetUint64State(const std::string& name) const {
 void NativeLedgerClient::ClearState(const std::string& name) {
   [bridge_ clearState:name];
 }
+void NativeLedgerClient::GetExternalWallets(ledger::GetExternalWalletsCallback callback) {
+  return [bridge_ getExternalWallets:callback];
+}

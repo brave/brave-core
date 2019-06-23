@@ -35,22 +35,22 @@ std::vector<std::string> Uphold::RequestAuthorization(
 }
 
 void Uphold::StartContribution(const std::string &viewing_id,
-                               ledger::ExternalWallet wallet) {
-  contribution_->Start(viewing_id, wallet);
+                               ledger::ExternalWalletPtr wallet) {
+  contribution_->Start(viewing_id, std::move(wallet));
 }
 
 void Uphold::FetchBalance(
-    std::map<std::string, ledger::ExternalWallet> wallets,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets,
     FetchBalanceCallback callback) {
-  const ledger::ExternalWallet wallet = GetWallet(wallets);
+  const auto wallet = GetWallet(std::move(wallets));
 
-  if (wallet.token.empty()) {
+  if (!wallet || wallet->token.empty()) {
     callback(ledger::Result::LEDGER_ERROR, 0.0);
     return;
   }
 
-  auto headers = RequestAuthorization(wallet.token);
-  const std::string url = GetAPIUrl("/v0/me/cards/" + wallet.address);
+  auto headers = RequestAuthorization(wallet->token);
+  const std::string url = GetAPIUrl("/v0/me/cards/" + wallet->address);
 
   auto balance_callback = std::bind(&Uphold::OnFetchBalance,
                                     this,
@@ -106,16 +106,15 @@ void Uphold::OnFetchBalance(
   callback(ledger::Result::LEDGER_ERROR, 0.0);
 }
 
-ledger::ExternalWallet Uphold::GetWallet(
-    std::map<std::string, ledger::ExternalWallet> wallets) {
-  for (const auto& wallet : wallets) {
+ledger::ExternalWalletPtr Uphold::GetWallet(
+    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
+  for (auto& wallet : wallets) {
     if (wallet.first == ledger::kWalletUphold) {
-      return wallet.second;
+      return std::move(wallet.second);
     }
   }
 
-  ledger::ExternalWallet empty;
-  return empty;
+  return nullptr;
 }
 
 std::string Uphold::GetAPIUrl(const std::string& path) {

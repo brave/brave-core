@@ -79,4 +79,5 @@ private:
   void SetUint64State(const std::string& name, uint64_t value) override;
   uint64_t GetUint64State(const std::string& name) const override;
   void ClearState(const std::string& name) override;
+  void GetExternalWallets(ledger::GetExternalWalletsCallback callback) override;
 };

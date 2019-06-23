@@ -17,6 +17,12 @@ using WalletPropertiesPtr = ledger::mojom::WalletPropertiesPtr;
 using ExternalWallet = ledger::mojom::ExternalWallet;
 using ExternalWalletPtr = ledger::mojom::ExternalWalletPtr;
 
+LEDGER_EXPORT enum WALLET_STATUS {
+  NOT_CONNECTED = 0,
+  CONNECTED = 1,
+  EXPIRED = 2
+};
+
 
 }  // namespace ledger
 

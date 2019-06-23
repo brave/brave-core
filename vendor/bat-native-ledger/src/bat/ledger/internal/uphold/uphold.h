@@ -42,13 +42,13 @@ class Uphold {
       const std::string& token);
 
   void StartContribution(const std::string &viewing_id,
-                         ledger::ExternalWallet wallet);
+                         ledger::ExternalWalletPtr wallet);
 
-  void FetchBalance(std::map<std::string, ledger::ExternalWallet> wallets,
+  void FetchBalance(std::map<std::string, ledger::ExternalWalletPtr> wallets,
                     FetchBalanceCallback callback);
 
-  static ledger::ExternalWallet GetWallet(
-      std::map<std::string, ledger::ExternalWallet> wallets);
+  static ledger::ExternalWalletPtr GetWallet(
+      std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
   static std::string GetAPIUrl(const std::string& path);
 

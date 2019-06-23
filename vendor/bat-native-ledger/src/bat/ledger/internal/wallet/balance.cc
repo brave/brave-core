@@ -90,11 +90,8 @@ void Balance::OnWalletProperties(
   if (local_rates) {
     base::DictionaryValue* dict_value = nullptr;
     if (local_rates->GetAsDictionary(&dict_value)) {
-      base::DictionaryValue::Iterator iter(*dict_value);
-      while (!iter.IsAtEnd()) {
-        balance->rates.insert(
-            std::make_pair(iter.key(), iter.value().GetDouble()));
-        iter.Advance();
+      for (const auto& it : dict_value->DictItems()) {
+        balance->rates.insert(std::make_pair(it.first, it.second.GetDouble()));
       }
     }
   }
@@ -114,7 +111,7 @@ void Balance::OnWalletProperties(
 void Balance::OnExternalWallets(
     ledger::Balance info,
     ledger::FetchBalanceCallback callback,
-    std::map<std::string, ledger::ExternalWallet> wallets) {
+    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
   if (wallets.size() == 0) {
     ledger::BalancePtr info_ptr = ledger::Balance::New(info);
     callback(ledger::Result::LEDGER_OK, std::move(info_ptr));
@@ -128,7 +125,7 @@ void Balance::OnExternalWallets(
                                    _1,
                                    _2);
 
-  uphold_->FetchBalance(wallets, uphold_callback);
+  uphold_->FetchBalance(std::move(wallets), uphold_callback);
 }
 
 void Balance::OnUpholdFetchBalance(ledger::Balance info,

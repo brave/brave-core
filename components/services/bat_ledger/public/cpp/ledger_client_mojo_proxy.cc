@@ -850,4 +850,23 @@ void LedgerClientMojoProxy::OnContributeUnverifiedPublishers(
                                                    publisher_name);
 }
 
+// static
+void LedgerClientMojoProxy::OnGetExternalWallets(
+    CallbackHolder<GetExternalWalletsCallback>* holder,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(mojo::MapToFlatMap(std::move(wallets)));
+  delete holder;
+}
+
+void LedgerClientMojoProxy::GetExternalWallets(
+    GetExternalWalletsCallback callback) {
+  auto* holder = new CallbackHolder<GetExternalWalletsCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->GetExternalWallets(
+      std::bind(LedgerClientMojoProxy::OnGetExternalWallets,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger

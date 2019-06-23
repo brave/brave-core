@@ -266,4 +266,6 @@ interface BatLedgerClient {
 
   OnContributeUnverifiedPublishers(int32 result, string publisher_key,
       string publisher_name);
+
+  GetExternalWallets() => (map<string, ledger.mojom.ExternalWallet?> wallets);
 };

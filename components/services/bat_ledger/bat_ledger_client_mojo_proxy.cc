@@ -96,6 +96,11 @@ void OnGetCountryCodes(
   callback(countries);
 }
 
+void OnGetExternalWallets(
+    ledger::GetExternalWalletsCallback callback,
+    base::flat_map<std::string, ledger::ExternalWalletPtr> wallets) {
+  callback(mojo::FlatMapToMap(std::move(wallets)));
+}
 
 }  // namespace
 
@@ -873,6 +878,18 @@ void BatLedgerClientMojoProxy::OnContributeUnverifiedPublishers(
   bat_ledger_client_->OnContributeUnverifiedPublishers(ToMojomResult(result),
                                                        publisher_key,
                                                        publisher_name);
+}
+
+void BatLedgerClientMojoProxy::GetExternalWallets(
+    ledger::GetExternalWalletsCallback callback) {
+  if (!Connected()) {
+    std::map<std::string, ledger::ExternalWalletPtr> wallets;
+    callback(std::move(wallets));
+    return;
+  }
+
+  bat_ledger_client_->GetExternalWallets(
+      base::BindOnce(&OnGetExternalWallets, std::move(callback)));
 }
 
 }  // namespace bat_ledger

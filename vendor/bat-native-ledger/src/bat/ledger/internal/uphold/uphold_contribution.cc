@@ -29,9 +29,15 @@ UpholdContribution::~UpholdContribution() {
 }
 
 void UpholdContribution::Start(const std::string &viewing_id,
-                               ledger::ExternalWallet wallet) {
+                               ledger::ExternalWalletPtr wallet) {
   viewing_id_ = viewing_id;
-  wallet_ = wallet;
+
+  if (!wallet) {
+    Complete(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  wallet_ = std::move(wallet);
   const auto reconcile = ledger_->GetReconcileById(viewing_id_);
 
   for (const auto& item : reconcile.directions_) {
@@ -50,11 +56,11 @@ void UpholdContribution::Start(const std::string &viewing_id,
 
 void UpholdContribution::CreateTransaction(double amount,
                                            const std::string& address) {
-  auto headers = uphold_->RequestAuthorization(wallet_.token);
+  auto headers = uphold_->RequestAuthorization(wallet_->token);
 
   const std::string path = base::StringPrintf(
       "/v0/me/cards/%s/transactions",
-      wallet_.address.c_str());
+      wallet_->address.c_str());
 
   const std::string payload = base::StringPrintf(
       "{ "
@@ -113,11 +119,11 @@ void UpholdContribution::OnCreateTransaction(
 }
 
 void UpholdContribution::CommitTransaction(const std::string& transaction_id) {
-  auto headers = uphold_->RequestAuthorization(wallet_.token);
+  auto headers = uphold_->RequestAuthorization(wallet_->token);
 
   const std::string path = base::StringPrintf(
       "/v0/me/cards/%s/transactions/%s/commit",
-      wallet_.address.c_str(),
+      wallet_->address.c_str(),
       transaction_id.c_str());
 
   auto callback = std::bind(&UpholdContribution::OnCommitTransaction,

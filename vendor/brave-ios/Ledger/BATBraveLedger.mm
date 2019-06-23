@@ -1686,4 +1686,10 @@ BATLedgerBridge(BOOL,
   }
 }
 
+- (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback
+{
+  std::map<std::string, ledger::ExternalWalletPtr> wallets;
+  callback(std::move(wallets));
+}
+
 @end

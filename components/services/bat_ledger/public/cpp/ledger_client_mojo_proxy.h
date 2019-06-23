@@ -167,6 +167,8 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       const std::string& publisher_key,
       const std::string& publisher_name) override;
 
+  void GetExternalWallets(GetExternalWalletsCallback callback) override;
+
  private:
   // workaround to pass base::OnceCallback into std::bind
   // also serves as a wrapper for passing ledger::LedgerCallbackHandler*
@@ -305,6 +307,10 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnGetCountryCodes(
       CallbackHolder<GetCountryCodesCallback>* holder,
       const std::vector<int32_t>& countries);
+
+  static void OnGetExternalWallets(
+    CallbackHolder<GetExternalWalletsCallback>* holder,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
   ledger::LedgerClient* ledger_client_;
 

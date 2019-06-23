@@ -23,7 +23,7 @@ class UpholdContribution {
   explicit UpholdContribution(bat_ledger::LedgerImpl* ledger, Uphold* uphold);
 
   ~UpholdContribution();
-  void Start(const std::string &viewing_id, ledger::ExternalWallet wallet);
+  void Start(const std::string &viewing_id, ledger::ExternalWalletPtr wallet);
 
  private:
   void CreateTransaction(double amount,
@@ -48,7 +48,7 @@ class UpholdContribution {
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;   // NOT OWNED
   std::string viewing_id_;
-  ledger::ExternalWallet wallet_;
+  ledger::ExternalWalletPtr wallet_;
 };
 
 }  // namespace braveledger_uphold

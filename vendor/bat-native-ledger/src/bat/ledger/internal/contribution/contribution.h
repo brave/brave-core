@@ -274,7 +274,7 @@ class Contribution {
   void OnExternalWallets(
       const std::string& viewing_id,
       base::flat_map<std::string, double> wallet_balances,
-      std::map<std::string, ledger::ExternalWallet> wallets);
+      std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PhaseOne> phase_one_;

@@ -2653,6 +2653,17 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
         SetCurrentCountry(current_country_);
       }
     }
+
+    if (name == "uphold-token") {
+      std::string token = base::ToLowerASCII(value);
+
+      ledger::ExternalWallet uphold;
+      uphold.token = token;
+      uphold.address = "c5fd7219-6586-4fe1-b947-0cbd25040ca8";
+      uphold.status = 1;
+      SetExternalWallet(ledger::kWalletUphold, uphold);
+      continue;
+    }
   }
 }
 
@@ -3276,6 +3287,54 @@ void RewardsServiceImpl::FetchBalance(FetchBalanceCallback callback) {
       base::BindOnce(&RewardsServiceImpl::OnFetchBalance,
                      AsWeakPtr(),
                      std::move(callback)));
+}
+
+void RewardsServiceImpl::SetExternalWallet(const std::string& key,
+                                           ledger::ExternalWallet wallet) {
+  auto* perfs =
+      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+
+  base::Value new_perfs(perfs->Clone());
+
+  base::Value dict(base::Value::Type::DICTIONARY);
+  dict.SetStringKey("token", wallet.token);
+  dict.SetStringKey("address", wallet.address);
+  dict.SetIntKey("status", static_cast<int>(wallet.status));
+
+  new_perfs.SetKey(key, std::move(dict));
+
+  profile_->GetPrefs()->Set(prefs::kRewardsExternalWallets, new_perfs);
+}
+
+void RewardsServiceImpl::GetExternalWallets(
+    ledger::GetExternalWalletsCallback callback) {
+  std::map<std::string, ledger::ExternalWalletPtr> wallets;
+
+  auto* dict =
+      profile_->GetPrefs()->GetDictionary(prefs::kRewardsExternalWallets);
+
+  for (const auto& it : dict->DictItems()) {
+    ledger::ExternalWalletPtr wallet = ledger::ExternalWallet::New();
+
+    auto* token = it.second.FindKey("token");
+    if (token) {
+      wallet->token = token->GetString();
+    }
+
+    auto* address = it.second.FindKey("address");
+    if (address) {
+      wallet->address = address->GetString();
+    }
+
+    auto* status = it.second.FindKey("status");
+    if (status) {
+      wallet->status = static_cast<ledger::WALLET_STATUS>(status->GetInt());
+    }
+
+    wallets.insert(std::make_pair(it.first, std::move(wallet)));
+  }
+
+  callback(std::move(wallets));
 }
 
 }  // namespace brave_rewards

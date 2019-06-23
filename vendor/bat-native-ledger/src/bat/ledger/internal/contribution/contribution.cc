@@ -903,7 +903,7 @@ void Contribution::AdjustOneTimeTipAmount(
 void Contribution::OnExternalWallets(
     const std::string& viewing_id,
     base::flat_map<std::string, double> wallet_balances,
-    std::map<std::string, ledger::ExternalWallet> wallets) {
+    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
   // In this phase we only support one wallet
   // so we will just always pick uphold.
   // In the future we will allow user to pick which wallet to use via UI
@@ -920,16 +920,16 @@ void Contribution::OnExternalWallets(
     return;
   }
 
-  ledger::ExternalWallet wallet =
-      braveledger_uphold::Uphold::GetWallet(wallets);
-  if (wallet.token.empty()) {
+  ledger::ExternalWalletPtr wallet =
+      braveledger_uphold::Uphold::GetWallet(std::move(wallets));
+  if (!wallet || wallet->token.empty()) {
     phase_one_->Complete(ledger::Result::LEDGER_ERROR,
                          viewing_id,
                          reconcile.category_);
     return;
   }
 
-  uphold_->StartContribution(viewing_id, wallet);
+  uphold_->StartContribution(viewing_id, std::move(wallet));
 }
 
 }  // namespace braveledger_contribution
