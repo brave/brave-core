@@ -3328,13 +3328,40 @@ void RewardsServiceImpl::GetExternalWallets(
 
     auto* status = it.second.FindKey("status");
     if (status) {
-      wallet->status = static_cast<ledger::WALLET_STATUS>(status->GetInt());
+      wallet->status = static_cast<ledger::WalletStatus>(status->GetInt());
     }
 
     wallets.insert(std::make_pair(it.first, std::move(wallet)));
   }
 
   callback(std::move(wallets));
+}
+
+void RewardsServiceImpl::OnGetExternalWallet(
+    const std::string& wallet_type,
+    GetExternalWalletCallback callback,
+    ledger::ExternalWalletPtr wallet) {
+  auto external =
+      std::make_unique<brave_rewards::ExternalWallet>();
+
+  if (wallet) {
+    external->token = wallet->token;
+    external->address = wallet->address;
+    external->status = wallet->status;
+    external->type = wallet_type;
+    external->verify_url = wallet->verify_url;
+  }
+
+  std::move(callback).Run(std::move(external));
+}
+
+void RewardsServiceImpl::GetExternalWallet(const std::string& wallet_type,
+                                           GetExternalWalletCallback callback) {
+  bat_ledger_->GetExternalWallet(wallet_type,
+      base::BindOnce(&RewardsServiceImpl::OnGetExternalWallet,
+                     AsWeakPtr(),
+                     wallet_type,
+                     std::move(callback)));
 }
 
 }  // namespace brave_rewards

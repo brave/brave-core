@@ -462,5 +462,69 @@
   "grantFinishTokenTitleAds": {
     "message": "Your Brave Ads Token Grant",
     "description": "Token title on success screen for ads"
+  },
+  "rewardsPanelTextVerify":  {
+    "message": "verify",
+    "description": "CTA in the footer to verify"
+  },
+  "walletButtonDisconnected":  {
+    "message": "Disconnected",
+    "description": "CTA status button"
+  },
+  "walletButtonUnverified":  {
+    "message": "Verify Wallet",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletButtonVerified":  {
+    "message": "Verified",
+    "description": "Displayed in wallet that tells users that he is verified"
+  },
+  "walletGoToUphold":  {
+    "message": "Go to my Uphold account",
+    "description": "CTA to open uphold account"
+  },
+  "walletReconnect":  {
+    "message": "Connect to a different wallet",
+    "description": ""
+  },
+  "walletVerificationButton":  {
+    "message": "Verify wallet",
+    "description": "CTA to verify wallet in the wallet "
+  },
+  "walletVerificationFooter":  {
+    "message": "Our wallet service is provided by",
+    "description": "Notice about who is our partner for user wallet"
+  },
+  "walletVerificationID":  {
+    "message": "Please have your government issued ID available.",
+    "description": "Notice that alerts users that they need to prepare some ID to do KYC."
+  },
+  "walletVerificationListCompact1":  {
+    "message": "Keep your Ad Rewards tokens",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact2":  {
+    "message": "Add tokens using credit card",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListCompact3":  {
+    "message": "Withdraw tokens",
+    "description": "Bullet point why connecting wallet is good"
+  },
+  "walletVerificationListHeader":  {
+    "message": "A verified wallet allows you to:",
+    "description": "Header for bullet list of user wallet features"
+  },
+  "walletVerificationTitle1":  {
+    "message": "Verify Your Wallet",
+    "description": "First part of the title in verify panel"
+  },
+  "walletVerificationTitle2":  {
+    "message": "And manage your funds easily!",
+    "description": "Second part of the title in verify panel"
+  },
+  "walletVerified":  {
+    "message": "Verified",
+    "description": "Status button that tells user that he is verified"
   }
 }

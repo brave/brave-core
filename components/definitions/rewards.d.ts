@@ -34,7 +34,6 @@ declare namespace Rewards {
     adsData: AdsData
     autoContributeList: Publisher[]
     balance: Balance
-    connectedWallet: boolean
     contributeLoad: boolean
     contributionMinTime: number
     contributionMinVisits: number
@@ -49,6 +48,7 @@ declare namespace Rewards {
     enabledAdsMigrated: boolean
     enabledContribute: boolean
     enabledMain: boolean
+    externalWallet?: ExternalWallet
     inlineTip: {
       twitter: boolean
       reddit: boolean
@@ -74,6 +74,7 @@ declare namespace Rewards {
       walletServerProblem: boolean
       walletCorrupted: boolean
       walletImported: boolean
+      onBoardingDisplayed?: boolean
     }
     walletCreated: boolean
     walletCreateFailed: boolean
@@ -207,5 +208,21 @@ declare namespace Rewards {
     total: number
     rates: Record<string, number>
     wallets: Record<string, number>
+  }
+
+  export type WalletType = 'anonymous' | 'uphold'
+
+  export enum WalletStatus {
+    NOT_CONNECTED = 0,
+    CONNECTED = 1,
+    EXPIRED = 2
+  }
+
+  export interface ExternalWallet {
+    token: string
+    address: string
+    status: WalletStatus
+    type: WalletType
+    verifyUrl: string
   }
 }

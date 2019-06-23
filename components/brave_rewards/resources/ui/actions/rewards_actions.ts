@@ -228,3 +228,13 @@ export const onBalance = (status: number, balance: Rewards.Balance) => action(ty
   status,
   balance
 })
+
+export const getExternalWallet = (type: Rewards.WalletType) => action(types.GET_EXTERNAL_WALLET, {
+  type
+})
+
+export const onExternalWallet = (wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
+  wallet
+})
+
+export const onOnBoardingDisplayed = () => action(types.ON_ON_BOARDING_DISPLAYED)

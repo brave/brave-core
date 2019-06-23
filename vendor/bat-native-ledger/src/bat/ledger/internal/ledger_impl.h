@@ -495,6 +495,9 @@ class LedgerImpl : public ledger::Ledger,
 
   std::string GetCardIdAddress() const;
 
+  void GetExternalWallet(const std::string& type,
+                         ledger::ExternalWalletCallback callback) override;
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

@@ -16,6 +16,7 @@
 #include "brave/components/brave_rewards/browser/balance.h"
 #include "brave/components/brave_rewards/browser/balance_report.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/external_wallet.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/pending_contribution.h"
 #include "brave/components/brave_rewards/browser/rewards_internals_info.h"
@@ -88,6 +89,8 @@ using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
 using FetchBalanceCallback = base::OnceCallback<void(
     int32_t,
     std::unique_ptr<brave_rewards::Balance>)>;
+using GetExternalWalletCallback = base::OnceCallback<void(
+    std::unique_ptr<brave_rewards::ExternalWallet> wallet)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -240,6 +243,9 @@ class RewardsService : public KeyedService {
       GetShareURLCallback callback) = 0;
 
   virtual void FetchBalance(FetchBalanceCallback callback) = 0;
+
+  virtual void GetExternalWallet(const std::string& wallet_type,
+                                 GetExternalWalletCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

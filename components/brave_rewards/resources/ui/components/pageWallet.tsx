@@ -12,10 +12,11 @@ import {
   ModalPending,
   WalletEmpty,
   WalletSummary,
-  WalletWrapper
+  WalletWrapper,
+  PanelVerify
 } from 'brave-ui/features/rewards'
 import { WalletAddIcon } from 'brave-ui/components/icons'
-import { AlertWallet } from 'brave-ui/features/rewards/walletWrapper'
+import { AlertWallet, WalletState } from 'brave-ui/features/rewards/walletWrapper'
 import { Provider } from 'brave-ui/features/rewards/profile'
 import { DetailRow as PendingDetailRow, PendingType } from 'brave-ui/features/rewards/tablePending'
 // Utils
@@ -33,6 +34,7 @@ interface State {
   modalActivity: boolean
   modalAddFunds: boolean
   modalPendingContribution: boolean
+  showVerifyOnBoarding: boolean
 }
 
 interface Props extends Rewards.ComponentProps {
@@ -46,7 +48,8 @@ class PageWallet extends React.Component<Props, State> {
       modalBackup: false,
       modalActivity: false,
       modalAddFunds: false,
-      modalPendingContribution: false
+      modalPendingContribution: false,
+      showVerifyOnBoarding: false
     }
   }
 
@@ -346,9 +349,62 @@ class PageWallet extends React.Component<Props, State> {
     this.actions.removeAllPendingContribution()
   }
 
+  handleUpholdLink = (link: string) => {
+    const { ui } = this.props.rewardsData
+    if (!this.state.showVerifyOnBoarding && !ui.onBoardingDisplayed) {
+      this.setState({
+        showVerifyOnBoarding: true
+      })
+      return
+    }
+
+    this.setState({
+      showVerifyOnBoarding: false
+    })
+
+    this.actions.onOnBoardingDisplayed()
+
+    window.open(link, '_blank')
+  }
+
+  onVerifyClick = () => {
+    const { externalWallet } = this.props.rewardsData
+
+    if (!externalWallet || !externalWallet.verifyUrl) {
+      this.actions.getExternalWallet('uphold')
+      return
+    }
+
+    this.handleUpholdLink(externalWallet.verifyUrl)
+  }
+
+  toggleVerifyPanel = () => {
+    this.setState({
+      showVerifyOnBoarding: !this.state.showVerifyOnBoarding
+    })
+  }
+
+  getWalletStatus = (): WalletState => {
+    const { externalWallet } = this.props.rewardsData
+
+    if (!externalWallet) {
+      return 'unverified'
+    }
+
+    switch (externalWallet.status) {
+      case 0:
+        return 'unverified'
+      case 1:
+        return 'verified'
+      case 2:
+        return 'disconnected'
+      default:
+        return 'unverified'
+    }
+  }
+
   render () {
     const {
-      connectedWallet,
       recoveryKey,
       enabledMain,
       addresses,
@@ -380,9 +436,18 @@ class PageWallet extends React.Component<Props, State> {
           showCopy={true}
           showSecActions={true}
           grants={this.getGrants()}
-          connectedWallet={connectedWallet}
           alert={this.walletAlerts()}
+          walletState={this.getWalletStatus()}
+          onVerifyClick={this.onVerifyClick}
         >
+          {
+            this.state.showVerifyOnBoarding
+            ? <PanelVerify
+              onVerifyClick={this.onVerifyClick}
+              onClose={this.toggleVerifyPanel}
+            />
+            : null
+          }
           {
             enabledMain
             ? emptyWallet

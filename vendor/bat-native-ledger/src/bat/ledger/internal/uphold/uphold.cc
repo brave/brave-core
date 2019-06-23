@@ -6,8 +6,9 @@
 #include <utility>
 #include <vector>
 
-#include "base/strings/string_split.h"
 #include "base/json/json_reader.h"
+#include "base/strings/stringprintf.h"
+#include "base/strings/string_split.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/ledger_impl.h"
@@ -217,6 +218,19 @@ void Uphold::TransferFunds(double amount,
                            ledger::ExternalWalletPtr wallet,
                            TransactionCallback callback) {
   transfer_->Start(amount, address, std::move(wallet), callback);
+}
+
+std::string Uphold::GetVerifyUrl() {
+  const std::string id =  ledger::is_production
+      ? kClientIdProduction : kClientIdStaging;
+
+  auto base_url = base::StringPrintf(
+      "https://sandbox.uphold.com/authorize/%s", id.c_str());
+
+  return base_url +
+      "?scope=cards:read%20cards:write%20transactions:read%20"
+      "transactions:transfer:application%20"
+      "transactions:transfer:others&intention=kyc";
 }
 
 }  // namespace braveledger_uphold

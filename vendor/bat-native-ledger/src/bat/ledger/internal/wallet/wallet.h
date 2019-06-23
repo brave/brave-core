@@ -32,6 +32,10 @@ namespace braveledger_wallet {
 class Balance;
 }
 
+namespace braveledger_uphold {
+class Uphold;
+}
+
 namespace braveledger_wallet {
 
 class Wallet {
@@ -55,6 +59,9 @@ class Wallet {
 
   void FetchBalance(ledger::FetchBalanceCallback callback);
 
+  void GetExternalWallet(const std::string& type,
+                         ledger::ExternalWalletCallback callback);
+
  private:
   void WalletPropertiesCallback(
       int response_status_code,
@@ -68,10 +75,16 @@ class Wallet {
       const std::map<std::string, std::string>& headers,
       ledger::WalletAddressesCallback callback);
 
+  void OnGetExternalWallet(
+    const std::string& type,
+    ledger::ExternalWalletCallback callback,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Create> create_;
   std::unique_ptr<Recover> recover_;
   std::unique_ptr<Balance> balance_;
+  std::unique_ptr<braveledger_uphold::Uphold> uphold_;
 };
 
 }  // namespace braveledger_wallet

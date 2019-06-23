@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/wallet/create.h"
 #include "bat/ledger/internal/wallet/recover.h"
+#include "bat/ledger/internal/uphold/uphold.h"
 #include "mojo/public/cpp/bindings/map.h"
 #include "net/http/http_status_code.h"
 
@@ -28,7 +29,8 @@ Wallet::Wallet(bat_ledger::LedgerImpl* ledger) :
     ledger_(ledger),
     create_(std::make_unique<Create>(ledger)),
     recover_(std::make_unique<Recover>(ledger)),
-    balance_(std::make_unique<Balance>(ledger)) {
+    balance_(std::make_unique<Balance>(ledger)),
+    uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)) {
 }
 
 Wallet::~Wallet() {
@@ -204,6 +206,38 @@ void Wallet::GetAddressesForPaymentIdCallback(
 
 void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
   balance_->Fetch(callback);
+}
+
+void Wallet::OnGetExternalWallet(
+    const std::string& type,
+    ledger::ExternalWalletCallback callback,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
+  if (type == ledger::kWalletUphold) {
+    ledger::ExternalWalletPtr wallet;
+    if (wallets.size() == 0) {
+      wallet = ledger::ExternalWallet::New();
+      wallet->status = ledger::WalletStatus::NOT_CONNECTED;
+    } else {
+      wallet = uphold_->GetWallet(std::move(wallets));
+    }
+
+    wallet->verify_url = uphold_->GetVerifyUrl();
+    callback(std::move(wallet));
+    return;
+  }
+
+  callback(nullptr);
+}
+
+void Wallet::GetExternalWallet(const std::string& type,
+                               ledger::ExternalWalletCallback callback) {
+  auto wallet_callback = std::bind(&Wallet::OnGetExternalWallet,
+                                   this,
+                                   type,
+                                   callback,
+                                   _1);
+
+  ledger_->GetExternalWallets(wallet_callback);
 }
 
 }  // namespace braveledger_wallet

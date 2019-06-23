@@ -17,6 +17,10 @@ declare namespace RewardsExtension {
     walletProperties: WalletProperties
     recurringTips: Record<string, number>[]
     tipAmounts: Record<string, number[]>
+    externalWallet?: ExternalWallet
+    ui: {
+      onBoardingDisplayed?: boolean
+    }
   }
 
   interface ApplicationState {
@@ -154,5 +158,21 @@ declare namespace RewardsExtension {
     total: number
     rates: Record<string, number>
     wallets: Record<string, number>
+  }
+
+  export type WalletType = 'anonymous' | 'uphold'
+
+  export enum WalletStatus {
+    NOT_CONNECTED = 0,
+    CONNECTED = 1,
+    EXPIRED = 2
+  }
+
+  export interface ExternalWallet {
+    token: string
+    address: string
+    status: WalletStatus
+    type: WalletType
+    verifyUrl: string
   }
 }

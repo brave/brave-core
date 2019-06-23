@@ -59,6 +59,8 @@ class Uphold {
                      ledger::ExternalWalletPtr wallet,
                      TransactionCallback callback);
 
+  std::string GetVerifyUrl();
+
  private:
   static std::string GetFeeAddress();
 

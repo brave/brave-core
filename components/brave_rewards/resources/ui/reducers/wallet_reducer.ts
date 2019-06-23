@@ -288,6 +288,14 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
       }
       break
     }
+    case types.GET_EXTERNAL_WALLET: {
+      chrome.send('brave_rewards.getExternalWallet', [action.payload.type])
+      break
+    }
+    case types.ON_EXTERNAL_WALLET: {
+      state = { ...state }
+      state.externalWallet = action.payload.wallet
+    }
   }
 
   return state

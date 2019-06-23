@@ -6,9 +6,9 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 import { WalletAddIcon, BatColorIcon } from 'brave-ui/components/icons'
-import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel } from 'brave-ui/features/rewards'
+import { WalletWrapper, WalletSummary, WalletSummarySlider, WalletPanel, PanelVerify } from 'brave-ui/features/rewards'
 import { Provider } from 'brave-ui/features/rewards/profile'
-import { NotificationType } from 'brave-ui/features/rewards/walletWrapper'
+import { NotificationType, WalletState } from 'brave-ui/features/rewards/walletWrapper'
 import { RewardsNotificationType } from '../constants/rewards_panel_types'
 import { Type as AlertType } from 'brave-ui/features/rewards/alert'
 
@@ -28,6 +28,7 @@ interface State {
   refreshingPublisher: boolean
   publisherRefreshed: boolean
   timerPassed: boolean
+  showVerifyOnBoarding: boolean
 }
 
 export class Panel extends React.Component<Props, State> {
@@ -40,7 +41,8 @@ export class Panel extends React.Component<Props, State> {
       publisherKey: null,
       refreshingPublisher: false,
       publisherRefreshed: false,
-      timerPassed: false
+      timerPassed: false,
+      showVerifyOnBoarding: false
     }
     this.defaultTipAmounts = [1, 5, 10]
   }
@@ -70,6 +72,8 @@ export class Panel extends React.Component<Props, State> {
     chrome.braveRewards.getPendingContributionsTotal(((amount: number) => {
       this.actions.OnPendingContributionsTotal(amount)
     }))
+
+    this.getExternalWallet()
   }
 
   componentDidUpdate (prevProps: Props, prevState: State) {
@@ -495,6 +499,72 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
+  getExternalWallet = (open: boolean = false) => {
+    chrome.braveRewards.getExternalWallet('uphold', (wallet: RewardsExtension.ExternalWallet) => {
+      this.actions.onExternalWallet(wallet)
+
+      if (open && wallet.verifyUrl) {
+        this.handleUpholdLink(wallet.verifyUrl)
+      }
+    })
+  }
+
+  handleUpholdLink = (link: string) => {
+    const { ui } = this.props.rewardsPanelData
+    if (!this.state.showVerifyOnBoarding && (!ui || !ui.onBoardingDisplayed)) {
+      this.setState({
+        showVerifyOnBoarding: true
+      })
+      return
+    }
+
+    this.setState({
+      showVerifyOnBoarding: false
+    })
+
+    this.actions.onOnBoardingDisplayed()
+
+    chrome.tabs.create({
+      url: link
+    })
+  }
+
+  onVerifyClick = () => {
+    const { externalWallet } = this.props.rewardsPanelData
+
+    if (!externalWallet || externalWallet.verifyUrl) {
+      this.getExternalWallet(true)
+      return
+    }
+
+    this.handleUpholdLink(externalWallet.verifyUrl)
+  }
+
+  toggleVerifyPanel = () => {
+    this.setState({
+      showVerifyOnBoarding: !this.state.showVerifyOnBoarding
+    })
+  }
+
+  getWalletStatus = (): WalletState => {
+    const { externalWallet } = this.props.rewardsPanelData
+
+    if (!externalWallet) {
+      return 'unverified'
+    }
+
+    switch (externalWallet.status) {
+      case 0:
+        return 'unverified'
+      case 1:
+        return 'verified'
+      case 2:
+        return 'disconnected'
+      default:
+        return 'unverified'
+    }
+  }
+
   render () {
     const { pendingContributionTotal, enabledAC } = this.props.rewardsPanelData
     const { total, rates } = this.props.rewardsPanelData.balance
@@ -551,7 +621,6 @@ export class Panel extends React.Component<Props, State> {
         ]}
         showCopy={false}
         showSecActions={false}
-        connectedWallet={false}
         grant={currentGrant}
         onGrantHide={this.onGrantHide}
         onNotificationClick={notificationClick}
@@ -559,8 +628,19 @@ export class Panel extends React.Component<Props, State> {
         onFinish={this.onFinish}
         convertProbiToFixed={utils.convertProbiToFixed}
         grants={utils.getGrants(grants)}
+        walletState={this.getWalletStatus()}
+        onVerifyClick={this.onVerifyClick}
         {...notification}
       >
+        {
+          this.state.showVerifyOnBoarding
+          ? <PanelVerify
+            compact={true}
+            onVerifyClick={this.onVerifyClick}
+            onClose={this.toggleVerifyPanel}
+          />
+          : null
+        }
         <WalletSummarySlider
           id={'panel-slider'}
           onToggle={this.onSliderToggle}

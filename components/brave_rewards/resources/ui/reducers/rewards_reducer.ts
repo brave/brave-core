@@ -209,6 +209,16 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
 
       break
     }
+    case types.ON_ON_BOARDING_DISPLAYED: {
+      let ui = state.ui
+
+      ui.onBoardingDisplayed = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
   }
 
   return state

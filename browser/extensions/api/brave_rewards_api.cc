@@ -740,5 +740,47 @@ void BraveRewardsFetchBalanceFunction::OnBalance(
   Respond(OneArgument(std::move(balance_value)));
 }
 
+BraveRewardsGetExternalWalletFunction::
+~BraveRewardsGetExternalWalletFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsGetExternalWalletFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+  auto data = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+    return RespondNow(OneArgument(std::move(data)));
+  }
+
+  std::unique_ptr<brave_rewards::GetExternalWallet::Params> params(
+    brave_rewards::GetExternalWallet::Params::Create(*args_));
+
+  rewards_service->GetExternalWallet(
+      params->type,
+      base::BindOnce(
+          &BraveRewardsGetExternalWalletFunction::OnExternalWalet,
+          this));
+  return RespondLater();
+}
+
+void BraveRewardsGetExternalWalletFunction::OnExternalWalet(
+    std::unique_ptr<::brave_rewards::ExternalWallet> wallet) {
+  auto data = std::make_unique<base::Value>(
+      base::Value::Type::DICTIONARY);
+
+  if (wallet) {
+    data->SetStringKey("token", wallet->token);
+    data->SetStringKey("address", wallet->address);
+    data->SetIntKey("status", static_cast<int>(wallet->status));
+    data->SetStringKey("type", wallet->type);
+    data->SetStringKey("verifyUrl", wallet->verify_url);
+  }
+
+  Respond(OneArgument(std::move(data)));
+}
+
 }  // namespace api
 }  // namespace extensions

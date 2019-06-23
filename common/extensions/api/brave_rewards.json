@@ -768,7 +768,7 @@
         "parameters": [
           {
             "name": "key",
-            "value": "string"
+            "type": "string"
           },
           {
             "type": "function",
@@ -802,6 +802,44 @@
                     "type": "any"
                   },
                   "wallets": {
+                    "type": "any"
+                  }
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "getExternalWallet",
+        "type": "function",
+        "description": "Get external wallet for provided wallet type",
+        "parameters": [
+          {
+            "name": "type",
+            "type": "string"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "parameters": [
+              {
+                "name": "wallet",
+                "type": "object",
+                "properties": {
+                  "token": {
+                    "type": "any"
+                  },
+                  "address": {
+                    "type": "any"
+                  },
+                  "status": {
+                    "type": "any"
+                  },
+                  "type": {
+                    "type": "any"
+                  },
+                  "verifyUrl": {
                     "type": "any"
                   }
                 }

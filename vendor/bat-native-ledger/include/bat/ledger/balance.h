@@ -14,9 +14,6 @@ namespace ledger {
 using Balance = ledger::mojom::Balance;
 using BalancePtr = ledger::mojom::BalancePtr;
 
-const char kWalletAnonymous[] = "anonymous";
-const char kWalletUphold[] = "uphold";
-
 }  // namespace ledger
 
 #endif  // BAT_LEDGER_BALANCE_HANDLER_

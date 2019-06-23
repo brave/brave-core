@@ -255,6 +255,9 @@ class RewardsServiceImpl : public RewardsService,
   void GetExternalWallets(
       ledger::GetExternalWalletsCallback callback) override;
 
+  void GetExternalWallet(const std::string& wallet_type,
+                         GetExternalWalletCallback callback) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
@@ -405,6 +408,11 @@ class RewardsServiceImpl : public RewardsService,
   void OnFetchBalance(FetchBalanceCallback callback,
                       int32_t result,
                       ledger::BalancePtr balance);
+
+  void OnGetExternalWallet(
+    const std::string& wallet_type,
+    GetExternalWalletCallback callback,
+    ledger::ExternalWalletPtr wallet);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

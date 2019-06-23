@@ -438,6 +438,24 @@ export const rewardsPanelReducer = (state: RewardsExtension.State | undefined, a
       state.balance = payload.balance
       break
     }
+    case types.ON_EXTERNAL_WALLET: {
+      state = { ...state }
+      state.externalWallet = payload.wallet
+      break
+    }
+    case types.ON_ON_BOARDING_DISPLAYED: {
+      let ui = state.ui
+      if (!ui) {
+        ui = {}
+      }
+
+      ui.onBoardingDisplayed = true
+      state = {
+        ...state,
+        ui
+      }
+      break
+    }
   }
   return state
 }

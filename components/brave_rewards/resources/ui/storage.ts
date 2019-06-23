@@ -26,7 +26,6 @@ export const defaultState: Rewards.State = {
   walletInfo: {
     choices: [5.0, 7.5, 10.0, 17.5, 25.0, 50.0, 75.0, 100.0]
   },
-  connectedWallet: false,
   recoveryKey: '',
   reconcileStamp: 0,
   ui: {
@@ -37,7 +36,8 @@ export const defaultState: Rewards.State = {
     walletCorrupted: false,
     walletImported: false,
     walletRecoverySuccess: null,
-    walletServerProblem: false
+    walletServerProblem: false,
+    onBoardingDisplayed: false
   },
   autoContributeList: [],
   reports: {},

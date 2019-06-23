@@ -12,6 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/browser/balance.h"
 #include "brave/components/brave_rewards/browser/content_site.h"
+#include "brave/components/brave_rewards/browser/external_wallet.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "extensions/browser/extension_function.h"
 
@@ -309,6 +310,20 @@ class BraveRewardsFetchBalanceFunction :
  private:
   void OnBalance(int32_t result,
                  std::unique_ptr<::brave_rewards::Balance> balance);
+};
+
+class BraveRewardsGetExternalWalletFunction :
+    public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.getExternalWallet", UNKNOWN)
+
+ protected:
+  ~BraveRewardsGetExternalWalletFunction() override;
+
+  ResponseAction Run() override;
+
+ private:
+  void OnExternalWalet(std::unique_ptr<::brave_rewards::ExternalWallet> wallet);
 };
 
 }  // namespace api

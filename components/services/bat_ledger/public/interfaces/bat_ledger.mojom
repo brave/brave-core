@@ -147,6 +147,8 @@ interface BatLedger {
   GetPendingContributionsTotal() => (double amount);
 
   FetchBalance() => (int32 result, ledger.mojom.Balance balance);
+
+  GetExternalWallet(string wallet_type) => (ledger.mojom.ExternalWallet? wallet);
 };
 
 interface BatLedgerClient {

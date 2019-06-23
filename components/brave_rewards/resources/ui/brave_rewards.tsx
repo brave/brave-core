@@ -189,6 +189,10 @@ window.cr.define('brave_rewards', function () {
     getActions().getWalletProperties()
   }
 
+  function externalWallet (wallet: Rewards.ExternalWallet) {
+    getActions().onExternalWallet(wallet)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -223,7 +227,8 @@ window.cr.define('brave_rewards', function () {
     onRemovePendingContribution,
     excludedSiteChanged,
     balance,
-    reconcileComplete
+    reconcileComplete,
+    externalWallet
   }
 })
 
