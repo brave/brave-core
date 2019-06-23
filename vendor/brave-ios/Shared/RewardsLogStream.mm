@@ -33,15 +33,14 @@ RewardsLogStream::RewardsLogStream(const char* file,
 }
 
 RewardsLogStream::~RewardsLogStream() {
-  //Auto flush the stream no matter what when this class is destroyed.
-  //This will guarantee that iOS receives all the logs that were buffered in the stream.
-  //This is done because we don't know when the logger causes a flush.
-  //However, we know the logger creates "temporary instances" always and discards them after logging.
-  //Therefore, it is safe to assume that logging is finished when the destructor is called.
+  /// Auto flush the stream no matter what when this class is destroyed.
+  /// This will guarantee that iOS receives all the logs that were buffered in the stream.
+  /// This is done because we don't know when the logger causes a flush.
+  /// However, we know the logger creates "temporary instances" always and discards them after logging.
+  /// Therefore, it is safe to assume that logging is finished when the destructor is called.
   this->log_stream->stream().flush();
 }
 
 std::ostream& RewardsLogStream::stream() {
-  //std::cerr << std::endl << log_message_;
   return log_stream->stream();
 }
