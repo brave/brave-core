@@ -23,7 +23,7 @@ typedef struct {
 /**
  * Destroy a `*c_char` once you are done with it.
  */
-void c_char_destroy(char *s);
+void c_char_buffer_destroy(char *s);
 
 void engine_add_filter(C_Engine *engine, const char *filter);
 

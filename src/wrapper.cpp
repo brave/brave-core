@@ -87,7 +87,7 @@ bool Engine::matches(const std::string& url, const std::string& host,
     if (redirect) {
       *redirect = redirect_char_ptr;
     }
-    c_char_destroy(redirect_char_ptr);
+    c_char_buffer_destroy(redirect_char_ptr);
   }
   return result;
 }

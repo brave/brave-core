@@ -153,7 +153,7 @@ pub unsafe extern "C" fn engine_destroy(engine: *mut Engine) {
 
 /// Destroy a `*c_char` once you are done with it.
 #[no_mangle]
-pub unsafe extern "C" fn c_char_destroy(s: *mut c_char) {
+pub unsafe extern "C" fn c_char_buffer_destroy(s: *mut c_char) {
     if !s.is_null() {
         drop(CString::from_raw(s));
     }
