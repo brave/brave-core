@@ -501,14 +501,9 @@ void PhaseOne::Complete(ledger::Result result,
                         const std::string& viewing_id,
                         int category,
                         const std::string& probi) {
-  // Start the timer again if it wasn't a direct tip
+  // Set timer to the next month when AC is complete
   if (category == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
     contribution_->ResetReconcileStamp();
-  }
-
-  // Trigger auto contribute after recurring tip
-  if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
-    contribution_->StartAutoContribute();
   }
 
   ledger_->OnReconcileComplete(result, viewing_id, probi, category);

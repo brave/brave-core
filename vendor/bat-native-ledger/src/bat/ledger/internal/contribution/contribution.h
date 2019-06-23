@@ -283,6 +283,7 @@ class Contribution {
   std::unique_ptr<braveledger_uphold::Uphold> uphold_;
   uint32_t last_reconcile_timer_id_;
   std::map<std::string, uint32_t> retry_timers_;
+  uint32_t delay_ac_timer_id;
 
   // For testing purposes
   friend class ContributionTest;

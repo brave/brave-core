@@ -32,7 +32,8 @@ Contribution::Contribution(bat_ledger::LedgerImpl* ledger) :
     phase_two_(std::make_unique<PhaseTwo>(ledger, this)),
     unverified_(std::make_unique<Unverified>(ledger, this)),
     uphold_(std::make_unique<braveledger_uphold::Uphold>(ledger)),
-    last_reconcile_timer_id_(0u) {
+    last_reconcile_timer_id_(0u),
+    delay_ac_timer_id(0u) {
 }
 
 Contribution::~Contribution() {
@@ -217,7 +218,7 @@ ledger::PublisherInfoList Contribution::GetVerifiedListRecurring(
   ledger::PendingContributionList non_verified;
 
   for (const auto& publisher : *list) {
-    if (publisher->id.empty() || publisher->percent == 0) {
+    if (publisher->id.empty() || publisher->weight == 0.0) {
       continue;
     }
 
@@ -280,6 +281,7 @@ void Contribution::ResetReconcileStamp() {
 }
 
 void Contribution::StartMonthlyContribution() {
+    BLOG(ledger_, ledger::LogLevel::LOG_INFO) << "Staring monthly contribution";
   if (!ledger_->GetRewardsMainEnabled()) {
     ResetReconcileStamp();
     return;
@@ -291,6 +293,8 @@ void Contribution::StartMonthlyContribution() {
                 ledger::REWARDS_CATEGORY::RECURRING_TIP,
                 _1,
                 _2));
+
+  SetTimer(&delay_ac_timer_id, 10);
 }
 
 bool Contribution::ShouldStartAutoContribute() {
@@ -372,6 +376,12 @@ void Contribution::OnTimer(uint32_t timer_id) {
   if (timer_id == last_reconcile_timer_id_) {
     last_reconcile_timer_id_ = 0;
     StartMonthlyContribution();
+    return;
+  }
+
+  if (timer_id == delay_ac_timer_id) {
+    delay_ac_timer_id = 0;
+    StartAutoContribute();
     return;
   }
 
@@ -734,7 +744,7 @@ bool Contribution::IsListEmpty(
                            "",
                            ledger::REWARDS_CATEGORY::RECURRING_TIP);
       BLOG(ledger_, ledger::LogLevel::LOG_INFO) <<
-        "Recurring donation list is empty";
+        "Recurring tips list is empty";
       return true;
     }
   }
