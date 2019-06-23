@@ -64,6 +64,8 @@ class BatState {
 
   const std::string& GetLTCAddress() const;
 
+  const std::string& GetCardIdAddress() const;
+
   uint64_t GetReconcileStamp() const;
 
   void ResetReconcileStamp();

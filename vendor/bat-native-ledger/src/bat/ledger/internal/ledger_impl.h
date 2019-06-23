@@ -493,6 +493,8 @@ class LedgerImpl : public ledger::Ledger,
 
   std::string GetPublisherAddress(const std::string& publisher_key) const;
 
+  std::string GetCardIdAddress() const;
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

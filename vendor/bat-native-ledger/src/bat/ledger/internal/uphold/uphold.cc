@@ -128,4 +128,11 @@ std::string Uphold::GetAPIUrl(const std::string& path) {
   return url + path;
 }
 
+void Uphold::TransferFunds(double amount,
+                           const std::string& address,
+                           ledger::ExternalWalletPtr wallet,
+                           TransactionCallback callback) {
+  contribution_->TransferFunds(amount, address, std::move(wallet), callback);
+}
+
 }  // namespace braveledger_uphold

@@ -1660,4 +1660,8 @@ std::string LedgerImpl::GetPublisherAddress(
   return bat_publishers_->GetPublisherAddress(publisher_key);
 }
 
+std::string LedgerImpl::GetCardIdAddress() const {
+  return bat_state_->GetCardIdAddress();
+}
+
 }  // namespace bat_ledger

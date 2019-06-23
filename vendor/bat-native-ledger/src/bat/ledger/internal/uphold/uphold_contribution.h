@@ -25,25 +25,34 @@ class UpholdContribution {
   ~UpholdContribution();
   void Start(const std::string &viewing_id, ledger::ExternalWalletPtr wallet);
 
+  void TransferFunds(double amount,
+                     const std::string& address,
+                     ledger::ExternalWalletPtr wallet,
+                     TransactionCallback callback);
+
  private:
   void CreateTransaction(double amount,
-                         const std::string& address);
+                         const std::string& address,
+                         TransactionCallback callback);
 
   void OnCreateTransaction(
     int response_status_code,
     const std::string& response,
-    const std::map<std::string, std::string>& headers);
+    const std::map<std::string, std::string>& headers,
+    TransactionCallback callback);
 
-  void CommitTransaction(const std::string& transaction_id);
+  void CommitTransaction(const std::string& transaction_id,
+                         TransactionCallback callback);
 
   void OnCommitTransaction(
     int response_status_code,
     const std::string& response,
-    const std::map<std::string, std::string>& headers);
+    const std::map<std::string, std::string>& headers,
+    TransactionCallback callback);
 
   std::string ConvertToProbi(const std::string& amount);
 
-  void Complete(ledger::Result result);
+  void Complete(ledger::Result result, bool created);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;   // NOT OWNED

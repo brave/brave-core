@@ -272,6 +272,10 @@ class Contribution {
       base::flat_map<std::string, double> wallet_balances,
       std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
+  void OnUpholdAC(ledger::Result result,
+                  bool created,
+                  const std::string& viewing_id);
+
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<PhaseOne> phase_one_;
   std::unique_ptr<PhaseTwo> phase_two_;

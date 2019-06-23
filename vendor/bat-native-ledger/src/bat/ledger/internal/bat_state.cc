@@ -165,6 +165,10 @@ const std::string& BatState::GetLTCAddress() const {
   return state_->walletInfo_.addressLTC_;
 }
 
+const std::string& BatState::GetCardIdAddress() const {
+  return state_->walletInfo_.addressCARD_ID_;
+}
+
 uint64_t BatState::GetReconcileStamp() const {
   return state_->reconcileStamp_;
 }

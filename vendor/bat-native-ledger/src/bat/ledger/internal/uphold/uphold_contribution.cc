@@ -33,7 +33,7 @@ void UpholdContribution::Start(const std::string &viewing_id,
   viewing_id_ = viewing_id;
 
   if (!wallet) {
-    Complete(ledger::Result::LEDGER_ERROR);
+    Complete(ledger::Result::LEDGER_ERROR, false);
     return;
   }
 
@@ -44,18 +44,40 @@ void UpholdContribution::Start(const std::string &viewing_id,
     const std::string address =
         ledger_->GetPublisherAddress(item.publisher_key_);
     if (address.empty()) {
-      Complete(ledger::Result::LEDGER_ERROR);
+      Complete(ledger::Result::LEDGER_ERROR, false);
       return;
     }
 
     // TODO add 5% fee
 
-    CreateTransaction(static_cast<double>(item.amount_), address);
+    auto callback = std::bind(&UpholdContribution::Complete, this, _1, _2);
+
+    CreateTransaction(static_cast<double>(item.amount_), address, callback);
   }
 }
 
+void UpholdContribution::TransferFunds(double amount,
+                                       const std::string& address,
+                                       ledger::ExternalWalletPtr wallet,
+                                       TransactionCallback callback) {
+  if (!wallet) {
+    callback(ledger::Result::LEDGER_ERROR, false);
+    return;
+  }
+
+  wallet_ = std::move(wallet);
+
+  CreateTransaction(amount, address, callback);
+}
+
 void UpholdContribution::CreateTransaction(double amount,
-                                           const std::string& address) {
+                                           const std::string& address,
+                                           TransactionCallback callback) {
+  if (!wallet_) {
+    callback(ledger::Result::LEDGER_ERROR, false);
+    return;
+  }
+
   auto headers = uphold_->RequestAuthorization(wallet_->token);
 
   const std::string path = base::StringPrintf(
@@ -70,55 +92,58 @@ void UpholdContribution::CreateTransaction(double amount,
       amount,
       address.c_str());
 
-  auto callback = std::bind(&UpholdContribution::OnCreateTransaction,
+  auto create_callbakc = std::bind(&UpholdContribution::OnCreateTransaction,
                             this,
                             _1,
                             _2,
-                            _3);
+                            _3,
+                            callback);
   ledger_->LoadURL(
       uphold_->GetAPIUrl(path),
       headers,
       payload,
       "application/json",
       ledger::URL_METHOD::POST,
-      callback);
+      create_callbakc);
 }
 
 void UpholdContribution::OnCreateTransaction(
     int response_status_code,
     const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const std::map<std::string, std::string>& headers,
+    TransactionCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != net::HTTP_ACCEPTED) {
     // TODO(nejczdovc): add retry logic to all errors in this function
-    Complete(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::LEDGER_ERROR, false);
     return;
   }
 
   base::Optional<base::Value> value = base::JSONReader::Read(response);
   if (!value || !value->is_dict()) {
-    Complete(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::LEDGER_ERROR, false);
     return;
   }
 
   base::DictionaryValue* dictionary = nullptr;
   if (!value->GetAsDictionary(&dictionary)) {
-    Complete(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::LEDGER_ERROR, false);
     return;
   }
 
   auto* id = dictionary->FindKey("id");
   std::string transaction_id;
   if (!id && !id->is_string()) {
-    Complete(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::LEDGER_ERROR, false);
     return;
   }
 
   transaction_id = id->GetString();
-  CommitTransaction(transaction_id);
+  CommitTransaction(transaction_id, callback);
 }
 
-void UpholdContribution::CommitTransaction(const std::string& transaction_id) {
+void UpholdContribution::CommitTransaction(const std::string& transaction_id,
+                                           TransactionCallback callback) {
   auto headers = uphold_->RequestAuthorization(wallet_->token);
 
   const std::string path = base::StringPrintf(
@@ -126,32 +151,34 @@ void UpholdContribution::CommitTransaction(const std::string& transaction_id) {
       wallet_->address.c_str(),
       transaction_id.c_str());
 
-  auto callback = std::bind(&UpholdContribution::OnCommitTransaction,
+  auto commit_callback = std::bind(&UpholdContribution::OnCommitTransaction,
                             this,
                             _1,
                             _2,
-                            _3);
+                            _3,
+                            callback);
   ledger_->LoadURL(
       uphold_->GetAPIUrl(path),
       headers,
       "",
       "application/json",
       ledger::URL_METHOD::POST,
-      callback);
+      commit_callback);
 }
 
 void UpholdContribution::OnCommitTransaction(
     int response_status_code,
     const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const std::map<std::string, std::string>& headers,
+    TransactionCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != net::HTTP_OK) {
     // TODO(nejczdovc): add retry logic to all errors in this function
-    Complete(ledger::Result::LEDGER_ERROR);
+    callback(ledger::Result::LEDGER_ERROR, true);
     return;
   }
 
-  Complete(ledger::Result::LEDGER_OK);
+  callback(ledger::Result::LEDGER_OK, true);
 }
 
 // TODO add test
@@ -172,7 +199,7 @@ std::string UpholdContribution::ConvertToProbi(const std::string& amount) {
   return before_dot + after_dot + rest_probi;
 }
 
-void UpholdContribution::Complete(ledger::Result result) {
+void UpholdContribution::Complete(ledger::Result result, bool created) {
   const auto reconcile = ledger_->GetReconcileById(viewing_id_);
   const auto amount = ConvertToProbi(std::to_string(reconcile.fee_));
 

@@ -917,7 +917,31 @@ void Contribution::OnExternalWallets(
     return;
   }
 
+  if (reconcile.category_ == ledger::REWARDS_CATEGORY::AUTO_CONTRIBUTE) {
+    auto callback = std::bind(&Contribution::OnUpholdAC,
+                              this,
+                              _1,
+                              _2,
+                              viewing_id);
+    uphold_->TransferFunds(reconcile.fee_,
+                           ledger_->GetCardIdAddress(),
+                           std::move(wallet),
+                           callback);
+    return;
+  }
+
   uphold_->StartContribution(viewing_id, std::move(wallet));
+}
+
+void Contribution::OnUpholdAC(ledger::Result result,
+                              bool created,
+                              const std::string& viewing_id) {
+  if (result != ledger::Result::LEDGER_OK) {
+    // TODO(nejczdovc): add retries
+    return;
+  }
+
+  phase_one_->Start(viewing_id);
 }
 
 }  // namespace braveledger_contribution
