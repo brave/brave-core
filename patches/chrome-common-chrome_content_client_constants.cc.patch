@@ -1,16 +1,13 @@
 diff --git a/chrome/common/chrome_content_client_constants.cc b/chrome/common/chrome_content_client_constants.cc
-index a8365688d3ea165e26bc6a9e1b1851cbacaf59b2..a4f7083b44b8c6d9614bc5f1d72ddd78ff602900 100644
+index a8365688d3ea165e26bc6a9e1b1851cbacaf59b2..17ef13b5c02ee59769509e00b6d40945092baed8 100644
 --- a/chrome/common/chrome_content_client_constants.cc
 +++ b/chrome/common/chrome_content_client_constants.cc
-@@ -19,9 +19,9 @@ const char ChromeContentClient::kPDFExtensionPluginName[] = "Chrome PDF Viewer";
- const char ChromeContentClient::kPDFInternalPluginName[] = "Chrome PDF Plugin";
- #else
- const char ChromeContentClient::kPDFExtensionPluginName[] =
--    "Chromium PDF Viewer";
-+    "Chrome PDF Viewer";
- const char ChromeContentClient::kPDFInternalPluginName[] =
--    "Chromium PDF Plugin";
-+    "Chrome PDF Plugin";
+@@ -14,7 +14,7 @@ const base::FilePath::CharType ChromeContentClient::kNaClPluginFileName[] =
+     FILE_PATH_LITERAL("internal-nacl-plugin");
  #endif
  
- const base::FilePath::CharType ChromeContentClient::kPDFPluginPath[] =
+-#if defined(GOOGLE_CHROME_BUILD)
++#if defined(GOOGLE_CHROME_BUILD) || defined(BRAVE_CHROMIUM_BUILD)
+ const char ChromeContentClient::kPDFExtensionPluginName[] = "Chrome PDF Viewer";
+ const char ChromeContentClient::kPDFInternalPluginName[] = "Chrome PDF Plugin";
+ #else
