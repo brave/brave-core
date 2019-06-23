@@ -6,9 +6,10 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_split.h"
 #include "base/json/json_reader.h"
 #include "bat/ledger/internal/uphold/uphold.h"
-#include "bat/ledger/internal/uphold/uphold_contribution.h"
+#include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -19,7 +20,7 @@ using std::placeholders::_3;
 namespace braveledger_uphold {
 
 Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
-    contribution_(std::make_unique<UpholdContribution>(ledger, this)),
+    transfer_(std::make_unique<UpholdTransfer>(ledger, this)),
     ledger_(ledger) {
 }
 
@@ -34,9 +35,90 @@ std::vector<std::string> Uphold::RequestAuthorization(
   return headers;
 }
 
+ledger::ExternalWalletPtr Uphold::GetWallet(
+    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
+  for (auto& wallet : wallets) {
+    if (wallet.first == ledger::kWalletUphold) {
+      return std::move(wallet.second);
+    }
+  }
+
+  return nullptr;
+}
+
+std::string Uphold::GetAPIUrl(const std::string& path) {
+  std::string url;
+  if (ledger::is_production) {
+    url = kUrlProduction;
+  } else {
+    url = kUrlStaging;
+  }
+
+  return url + path;
+}
+
+// TODO add test
+std::string Uphold::ConvertToProbi(const std::string& amount) {
+  auto vec = base::SplitString(
+      amount, ".", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+
+  const std::string probi = "000000000000000000";
+
+  if (vec.size() == 1) {
+    return vec.at(0) + probi;
+  }
+
+  const auto before_dot = vec.at(0);
+  const auto after_dot = vec.at(1);
+  const auto rest_probi = probi.substr(after_dot.size());
+
+  return before_dot + after_dot + rest_probi;
+}
+
 void Uphold::StartContribution(const std::string &viewing_id,
                                ledger::ExternalWalletPtr wallet) {
-  contribution_->Start(viewing_id, std::move(wallet));
+  const auto reconcile = ledger_->GetReconcileById(viewing_id);
+
+  for (const auto& item : reconcile.directions_) {
+    const std::string address =
+        ledger_->GetPublisherAddress(item.publisher_key_);
+    if (address.empty()) {
+      ContributionCompleted(ledger::Result::LEDGER_ERROR, false, viewing_id);
+      return;
+    }
+
+    // TODO 5% fee
+
+    auto contribution_callback = std::bind(&Uphold::ContributionCompleted,
+                              this,
+                              _1,
+                              _2,
+                              viewing_id);
+
+    transfer_->Start(static_cast<double>(item.amount_),
+                     address,
+                     std::move(wallet),
+                     contribution_callback);
+  }
+}
+
+void Uphold::ContributionCompleted(ledger::Result result,
+                                   bool created,
+                                   const std::string &viewing_id) {
+  const auto reconcile = ledger_->GetReconcileById(viewing_id);
+  const auto amount = ConvertToProbi(std::to_string(reconcile.fee_));
+
+  ledger_->OnReconcileComplete(result,
+                               viewing_id,
+                               amount,
+                               reconcile.category_);
+
+  if (result != ledger::Result::LEDGER_OK) {
+    if (!viewing_id.empty()) {
+      ledger_->RemoveReconcileById(viewing_id);
+    }
+    return;
+  }
 }
 
 void Uphold::FetchBalance(
@@ -106,33 +188,11 @@ void Uphold::OnFetchBalance(
   callback(ledger::Result::LEDGER_ERROR, 0.0);
 }
 
-ledger::ExternalWalletPtr Uphold::GetWallet(
-    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
-  for (auto& wallet : wallets) {
-    if (wallet.first == ledger::kWalletUphold) {
-      return std::move(wallet.second);
-    }
-  }
-
-  return nullptr;
-}
-
-std::string Uphold::GetAPIUrl(const std::string& path) {
-  std::string url;
-  if (ledger::is_production) {
-    url = kUrlProduction;
-  } else {
-    url = kUrlStaging;
-  }
-
-  return url + path;
-}
-
 void Uphold::TransferFunds(double amount,
                            const std::string& address,
                            ledger::ExternalWalletPtr wallet,
                            TransactionCallback callback) {
-  contribution_->TransferFunds(amount, address, std::move(wallet), callback);
+  transfer_->Start(amount, address, std::move(wallet), callback);
 }
 
 }  // namespace braveledger_uphold

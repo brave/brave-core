@@ -3,12 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <vector>
-
-#include "base/strings/string_split.h"
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
-#include "bat/ledger/internal/uphold/uphold_contribution.h"
+#include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -19,58 +16,29 @@ using std::placeholders::_3;
 
 namespace braveledger_uphold {
 
-UpholdContribution::UpholdContribution(bat_ledger::LedgerImpl* ledger,
+UpholdTransfer::UpholdTransfer(bat_ledger::LedgerImpl* ledger,
                                        Uphold* uphold) :
     ledger_(ledger),
     uphold_(uphold) {
 }
 
-UpholdContribution::~UpholdContribution() {
+UpholdTransfer::~UpholdTransfer() {
 }
 
-void UpholdContribution::Start(const std::string &viewing_id,
-                               ledger::ExternalWalletPtr wallet) {
-  viewing_id_ = viewing_id;
-
-  if (!wallet) {
-    Complete(ledger::Result::LEDGER_ERROR, false);
-    return;
-  }
-
-  wallet_ = std::move(wallet);
-  const auto reconcile = ledger_->GetReconcileById(viewing_id_);
-
-  for (const auto& item : reconcile.directions_) {
-    const std::string address =
-        ledger_->GetPublisherAddress(item.publisher_key_);
-    if (address.empty()) {
-      Complete(ledger::Result::LEDGER_ERROR, false);
-      return;
-    }
-
-    // TODO add 5% fee
-
-    auto callback = std::bind(&UpholdContribution::Complete, this, _1, _2);
-
-    CreateTransaction(static_cast<double>(item.amount_), address, callback);
-  }
-}
-
-void UpholdContribution::TransferFunds(double amount,
-                                       const std::string& address,
-                                       ledger::ExternalWalletPtr wallet,
-                                       TransactionCallback callback) {
+void UpholdTransfer::Start(double amount,
+                               const std::string& address,
+                               ledger::ExternalWalletPtr wallet,
+                               TransactionCallback callback) {
   if (!wallet) {
     callback(ledger::Result::LEDGER_ERROR, false);
     return;
   }
 
   wallet_ = std::move(wallet);
-
   CreateTransaction(amount, address, callback);
 }
 
-void UpholdContribution::CreateTransaction(double amount,
+void UpholdTransfer::CreateTransaction(double amount,
                                            const std::string& address,
                                            TransactionCallback callback) {
   if (!wallet_) {
@@ -92,7 +60,7 @@ void UpholdContribution::CreateTransaction(double amount,
       amount,
       address.c_str());
 
-  auto create_callbakc = std::bind(&UpholdContribution::OnCreateTransaction,
+  auto create_callbakc = std::bind(&UpholdTransfer::OnCreateTransaction,
                             this,
                             _1,
                             _2,
@@ -107,7 +75,7 @@ void UpholdContribution::CreateTransaction(double amount,
       create_callbakc);
 }
 
-void UpholdContribution::OnCreateTransaction(
+void UpholdTransfer::OnCreateTransaction(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
@@ -142,7 +110,7 @@ void UpholdContribution::OnCreateTransaction(
   CommitTransaction(transaction_id, callback);
 }
 
-void UpholdContribution::CommitTransaction(const std::string& transaction_id,
+void UpholdTransfer::CommitTransaction(const std::string& transaction_id,
                                            TransactionCallback callback) {
   auto headers = uphold_->RequestAuthorization(wallet_->token);
 
@@ -151,7 +119,7 @@ void UpholdContribution::CommitTransaction(const std::string& transaction_id,
       wallet_->address.c_str(),
       transaction_id.c_str());
 
-  auto commit_callback = std::bind(&UpholdContribution::OnCommitTransaction,
+  auto commit_callback = std::bind(&UpholdTransfer::OnCommitTransaction,
                             this,
                             _1,
                             _2,
@@ -166,7 +134,7 @@ void UpholdContribution::CommitTransaction(const std::string& transaction_id,
       commit_callback);
 }
 
-void UpholdContribution::OnCommitTransaction(
+void UpholdTransfer::OnCommitTransaction(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
@@ -179,41 +147,6 @@ void UpholdContribution::OnCommitTransaction(
   }
 
   callback(ledger::Result::LEDGER_OK, true);
-}
-
-// TODO add test
-std::string UpholdContribution::ConvertToProbi(const std::string& amount) {
-  auto vec = base::SplitString(
-      amount, ".", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  const std::string probi = "000000000000000000";
-
-  if (vec.size() == 1) {
-    return vec.at(0) + probi;
-  }
-
-  const auto before_dot = vec.at(0);
-  const auto after_dot = vec.at(1);
-  const auto rest_probi = probi.substr(after_dot.size());
-
-  return before_dot + after_dot + rest_probi;
-}
-
-void UpholdContribution::Complete(ledger::Result result, bool created) {
-  const auto reconcile = ledger_->GetReconcileById(viewing_id_);
-  const auto amount = ConvertToProbi(std::to_string(reconcile.fee_));
-
-  ledger_->OnReconcileComplete(result,
-                               viewing_id_,
-                               amount,
-                               reconcile.category_);
-
-  if (result != ledger::Result::LEDGER_OK) {
-    if (!viewing_id_.empty()) {
-      ledger_->RemoveReconcileById(viewing_id_);
-    }
-    return;
-  }
 }
 
 }  // namespace braveledger_uphold

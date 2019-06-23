@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVELEDGER_UPHOLD_UPHOLD_CONTRIBUTION_H_
-#define BRAVELEDGER_UPHOLD_UPHOLD_CONTRIBUTION_H_
+#ifndef BRAVELEDGER_UPHOLD_UPHOLD_TRANSFER_H_
+#define BRAVELEDGER_UPHOLD_UPHOLD_TRANSFER_H_
 
 #include <map>
 #include <string>
@@ -18,17 +18,16 @@ class LedgerImpl;
 
 namespace braveledger_uphold {
 
-class UpholdContribution {
+class UpholdTransfer {
  public:
-  explicit UpholdContribution(bat_ledger::LedgerImpl* ledger, Uphold* uphold);
+  explicit UpholdTransfer(bat_ledger::LedgerImpl* ledger, Uphold* uphold);
 
-  ~UpholdContribution();
-  void Start(const std::string &viewing_id, ledger::ExternalWalletPtr wallet);
+  ~UpholdTransfer();
 
-  void TransferFunds(double amount,
-                     const std::string& address,
-                     ledger::ExternalWalletPtr wallet,
-                     TransactionCallback callback);
+  void Start(double amount,
+             const std::string& address,
+             ledger::ExternalWalletPtr wallet,
+             TransactionCallback callback);
 
  private:
   void CreateTransaction(double amount,
@@ -50,15 +49,10 @@ class UpholdContribution {
     const std::map<std::string, std::string>& headers,
     TransactionCallback callback);
 
-  std::string ConvertToProbi(const std::string& amount);
-
-  void Complete(ledger::Result result, bool created);
-
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;   // NOT OWNED
-  std::string viewing_id_;
   ledger::ExternalWalletPtr wallet_;
 };
 
 }  // namespace braveledger_uphold
-#endif  // BRAVELEDGER_UPHOLD_UPHOLD_CONTRIBUTION_H_
+#endif  // BRAVELEDGER_UPHOLD_UPHOLD_TRANSFER_H_

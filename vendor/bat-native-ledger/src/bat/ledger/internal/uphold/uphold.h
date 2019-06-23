@@ -18,7 +18,7 @@ class LedgerImpl;
 }
 
 namespace braveledger_uphold {
-class UpholdContribution;
+class UpholdTransfer;
 }
 
 namespace braveledger_uphold {
@@ -58,13 +58,19 @@ class Uphold {
                      TransactionCallback callback);
 
  private:
+  static std::string ConvertToProbi(const std::string& amount);
+
+  void ContributionCompleted(ledger::Result result,
+                             bool created,
+                             const std::string &viewing_id);
+
   void OnFetchBalance(
     FetchBalanceCallback callback,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);
 
-  std::unique_ptr<UpholdContribution> contribution_;
+  std::unique_ptr<UpholdTransfer> transfer_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 
