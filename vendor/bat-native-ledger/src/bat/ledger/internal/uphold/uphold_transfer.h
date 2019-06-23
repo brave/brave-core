@@ -32,15 +32,18 @@ class UpholdTransfer {
  private:
   void CreateTransaction(double amount,
                          const std::string& address,
+                         ledger::ExternalWalletPtr wallet,
                          TransactionCallback callback);
 
   void OnCreateTransaction(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
+    const ledger::ExternalWallet& wallet,
     TransactionCallback callback);
 
   void CommitTransaction(const std::string& transaction_id,
+                         const ledger::ExternalWallet& wallet,
                          TransactionCallback callback);
 
   void OnCommitTransaction(
@@ -51,7 +54,6 @@ class UpholdTransfer {
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   Uphold* uphold_;   // NOT OWNED
-  ledger::ExternalWalletPtr wallet_;
 };
 
 }  // namespace braveledger_uphold

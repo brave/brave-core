@@ -314,7 +314,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
       const std::string& name));
 
   MOCK_METHOD1(GetExternalWallets, void(
-      GetExternalWalletsCallback callback));
+      ledger::GetExternalWalletsCallback callback));
 };
 
 }  // namespace confirmations

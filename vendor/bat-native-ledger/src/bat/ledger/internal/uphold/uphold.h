@@ -29,6 +29,8 @@ const char kClientIdStaging[] = "4c2b665ca060d912fec5c735c734859a06118cc8";
 const char kClientIdProduction[] = "";
 const char kClientSecretStaging[] = "67bf87da096748c5bc1e195cfbdd59db006618a0";
 const char kClientSecretProduction[] = "";
+const char kFeeAddressStaging[] = "7ab330ae-b7a6-4845-8f07-baab68848e4e";
+const char kFeeAddressProduction[] = "";
 
 using TransactionCallback = std::function<void(ledger::Result, bool created)>;
 using FetchBalanceCallback = std::function<void(ledger::Result, double)>;
@@ -41,16 +43,16 @@ class Uphold {
   static std::vector<std::string> RequestAuthorization(
       const std::string& token);
 
+  static ledger::ExternalWalletPtr GetWallet(
+      std::map<std::string, ledger::ExternalWalletPtr> wallets);
+
+  static std::string GetAPIUrl(const std::string& path);
+
   void StartContribution(const std::string &viewing_id,
                          ledger::ExternalWalletPtr wallet);
 
   void FetchBalance(std::map<std::string, ledger::ExternalWalletPtr> wallets,
                     FetchBalanceCallback callback);
-
-  static ledger::ExternalWalletPtr GetWallet(
-      std::map<std::string, ledger::ExternalWalletPtr> wallets);
-
-  static std::string GetAPIUrl(const std::string& path);
 
   void TransferFunds(double amount,
                      const std::string& address,
@@ -58,11 +60,17 @@ class Uphold {
                      TransactionCallback callback);
 
  private:
+  static std::string GetFeeAddress();
+
   static std::string ConvertToProbi(const std::string& amount);
 
   void ContributionCompleted(ledger::Result result,
                              bool created,
                              const std::string &viewing_id);
+
+  void FeeCompleted(ledger::Result result,
+                    bool created,
+                    const std::string &viewing_id);
 
   void OnFetchBalance(
     FetchBalanceCallback callback,

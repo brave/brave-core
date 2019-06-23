@@ -57,6 +57,10 @@ std::string Uphold::GetAPIUrl(const std::string& path) {
   return url + path;
 }
 
+std::string Uphold::GetFeeAddress() {
+  return ledger::is_production ? kFeeAddressProduction : kFeeAddressStaging;
+}
+
 // TODO add test
 std::string Uphold::ConvertToProbi(const std::string& amount) {
   auto vec = base::SplitString(
@@ -87,15 +91,30 @@ void Uphold::StartContribution(const std::string &viewing_id,
       return;
     }
 
-    // TODO 5% fee
+    const double amount = static_cast<double>(item.amount_);
+    const double fee = (amount * 1.05) - amount;
+    const double reconcile_amount = amount - fee;
 
+    // 5% fee
+    auto fee_callback = std::bind(&Uphold::FeeCompleted,
+                              this,
+                              _1,
+                              _2,
+                              viewing_id);
+
+    transfer_->Start(fee,
+                     GetFeeAddress(),
+                     wallet->Clone(),
+                     fee_callback);
+
+    // rest of the reconcile
     auto contribution_callback = std::bind(&Uphold::ContributionCompleted,
                               this,
                               _1,
                               _2,
                               viewing_id);
 
-    transfer_->Start(static_cast<double>(item.amount_),
+    transfer_->Start(reconcile_amount,
                      address,
                      std::move(wallet),
                      contribution_callback);
@@ -119,6 +138,11 @@ void Uphold::ContributionCompleted(ledger::Result result,
     }
     return;
   }
+}
+
+void Uphold::FeeCompleted(ledger::Result result,
+                          bool created,
+                          const std::string &viewing_id) {
 }
 
 void Uphold::FetchBalance(

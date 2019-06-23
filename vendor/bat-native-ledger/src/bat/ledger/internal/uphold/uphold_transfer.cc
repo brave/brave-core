@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
@@ -12,7 +14,6 @@
 using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
-
 
 namespace braveledger_uphold {
 
@@ -26,31 +27,26 @@ UpholdTransfer::~UpholdTransfer() {
 }
 
 void UpholdTransfer::Start(double amount,
-                               const std::string& address,
-                               ledger::ExternalWalletPtr wallet,
-                               TransactionCallback callback) {
+                           const std::string& address,
+                           ledger::ExternalWalletPtr wallet,
+                           TransactionCallback callback) {
   if (!wallet) {
     callback(ledger::Result::LEDGER_ERROR, false);
     return;
   }
 
-  wallet_ = std::move(wallet);
-  CreateTransaction(amount, address, callback);
+  CreateTransaction(amount, address, std::move(wallet), callback);
 }
 
 void UpholdTransfer::CreateTransaction(double amount,
-                                           const std::string& address,
-                                           TransactionCallback callback) {
-  if (!wallet_) {
-    callback(ledger::Result::LEDGER_ERROR, false);
-    return;
-  }
-
-  auto headers = uphold_->RequestAuthorization(wallet_->token);
+                                       const std::string& address,
+                                       ledger::ExternalWalletPtr wallet,
+                                       TransactionCallback callback) {
+  auto headers = uphold_->RequestAuthorization(wallet->token);
 
   const std::string path = base::StringPrintf(
       "/v0/me/cards/%s/transactions",
-      wallet_->address.c_str());
+      wallet->address.c_str());
 
   const std::string payload = base::StringPrintf(
       "{ "
@@ -60,11 +56,12 @@ void UpholdTransfer::CreateTransaction(double amount,
       amount,
       address.c_str());
 
-  auto create_callbakc = std::bind(&UpholdTransfer::OnCreateTransaction,
+  auto create_callback = std::bind(&UpholdTransfer::OnCreateTransaction,
                             this,
                             _1,
                             _2,
                             _3,
+                            *wallet,
                             callback);
   ledger_->LoadURL(
       uphold_->GetAPIUrl(path),
@@ -72,13 +69,14 @@ void UpholdTransfer::CreateTransaction(double amount,
       payload,
       "application/json",
       ledger::URL_METHOD::POST,
-      create_callbakc);
+      create_callback);
 }
 
 void UpholdTransfer::OnCreateTransaction(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
+    const ledger::ExternalWallet& wallet,
     TransactionCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != net::HTTP_ACCEPTED) {
@@ -107,16 +105,17 @@ void UpholdTransfer::OnCreateTransaction(
   }
 
   transaction_id = id->GetString();
-  CommitTransaction(transaction_id, callback);
+  CommitTransaction(transaction_id, wallet, callback);
 }
 
 void UpholdTransfer::CommitTransaction(const std::string& transaction_id,
-                                           TransactionCallback callback) {
-  auto headers = uphold_->RequestAuthorization(wallet_->token);
+                                       const ledger::ExternalWallet& wallet,
+                                       TransactionCallback callback) {
+  auto headers = uphold_->RequestAuthorization(wallet.token);
 
   const std::string path = base::StringPrintf(
       "/v0/me/cards/%s/transactions/%s/commit",
-      wallet_->address.c_str(),
+      wallet.address.c_str(),
       transaction_id.c_str());
 
   auto commit_callback = std::bind(&UpholdTransfer::OnCommitTransaction,
