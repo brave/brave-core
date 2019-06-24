@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/no_destructor.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/time/time.h"
@@ -17,13 +18,47 @@
 #include "crypto/random.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
+#include "net/proxy_resolution/proxy_resolution_service.h"
 #include "url/origin.h"
 
 namespace net {
 
+namespace {
+
+static base::NoDestructor<std::map<
+    ProxyResolutionService*, void*>> proxy_profile_map_;
+
+static base::NoDestructor<std::map<
+    void*, ProxyConfigServiceTor::TorProxyMap>> profile_tor_map_;
+}  // namespace
+
 const int kTorPasswordLength = 16;
 // Default tor circuit life time is 10 minutes
 constexpr base::TimeDelta kTenMins = base::TimeDelta::FromMinutes(10);
+
+// static
+ProxyConfigServiceTor::TorProxyMap*
+ProxyConfigServiceTor::GetTorProxyMap(ProxyResolutionService* service) {
+  void* profile = (*proxy_profile_map_)[service];
+  if (profile) {
+    return &((*profile_tor_map_)[profile]);
+  } else {
+    return nullptr;
+  }
+}
+
+// static
+void ProxyConfigServiceTor::SetTorProxyMap(ProxyResolutionService* service,
+                                           void* profile) {
+  (*proxy_profile_map_)[service] = profile;
+}
+
+// static
+void ProxyConfigServiceTor::UnsetTorProxyMap(ProxyResolutionService* service,
+                                             void* profile) {
+  proxy_profile_map_.get()->erase(service);
+  profile_tor_map_.get()->erase(profile);
+}
 
 ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& proxy_uri) {
   ProxyServer proxy_server =

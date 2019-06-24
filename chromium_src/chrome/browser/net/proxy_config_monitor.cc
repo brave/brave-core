@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/tor/buildflags.h"
+#include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_proxy_uri_helper.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "net/proxy_resolution/proxy_config_service.h"
@@ -20,6 +21,13 @@ std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor() {
 
 }  // namespace
 
-#include "brave/common/tor/pref_names.h"
-#include "components/prefs/pref_service.h"
+#if BUILDFLAG(ENABLE_TOR)
+#define BRAVE_PROXY_CONFIG_MONITOR \
+  if (profile && profile->IsTorProfile()) \
+    proxy_config_service_ = CreateProxyConfigServiceTor(); \
+  else
+#else
+#define BRAVE_PROXY_CONFIG_MONITOR
+#endif
+
 #include "../../../../../chrome/browser/net/proxy_config_monitor.cc"  // NOLINT

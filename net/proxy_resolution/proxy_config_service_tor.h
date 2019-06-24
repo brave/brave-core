@@ -25,6 +25,8 @@ class Time;
 
 namespace net {
 
+class ProxyResolutionService;
+
 // Implementation of ProxyConfigService that returns a tor specific result.
 class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
  public:
@@ -53,6 +55,10 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
   void SetUsername(const std::string& username, TorProxyMap* map);
 
   static std::string CircuitIsolationKey(const GURL& request_url);
+  static ProxyConfigServiceTor::TorProxyMap* GetTorProxyMap(
+      ProxyResolutionService* service);
+  static void SetTorProxyMap(ProxyResolutionService* service, void* profile);
+  static void UnsetTorProxyMap(ProxyResolutionService* service, void* profile);
 
   // ProxyConfigService methods:
   void AddObserver(Observer* observer) override {}

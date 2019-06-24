@@ -3,44 +3,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/chromium_src/net/proxy_resolution/proxy_resolution_service.h"
-
-class GURL;
-
-namespace net {
-class ProxyConfig;
-class ProxyInfo;
-namespace {
-bool IsTorProxy(const ProxyConfig& config);
-void SetTorCircuitIsolation(const ProxyConfig& config,
-                            const GURL& url,
-                            ProxyInfo* result,
-                            ProxyConfigServiceTor::TorProxyMap* map);
-}  // namespace
-}  // namespace net
-#include "../../../../net/proxy_resolution/proxy_resolution_service.cc"  // NOLINT
+#include "net/proxy_resolution/proxy_resolution_service.h"
 
 #include <string>
 
+#include "brave/net/proxy_resolution/proxy_config_service_tor.h"
+
 namespace net {
 namespace {
 
-bool IsTorProxy(const ProxyConfig& config) {
-  if (config.proxy_rules().single_proxies.IsEmpty())
-    return false;
-  ProxyServer server = config.proxy_rules().single_proxies.Get();
-  HostPortPair host_port = server.host_port_pair();
-  if (host_port.host() == "127.0.0.1" &&
-      server.scheme() == ProxyServer::SCHEME_SOCKS5)
-    return true;
-  return false;
+bool IsTorProxy(ProxyResolutionService* service) {
+  return ProxyConfigServiceTor::GetTorProxyMap(service) != nullptr;
 }
 
 void SetTorCircuitIsolation(const ProxyConfig& config,
                             const GURL& url,
                             ProxyInfo* result,
                             ProxyConfigServiceTor::TorProxyMap* map) {
-  DCHECK(IsTorProxy(config));
   std::string proxy_uri = config.proxy_rules().single_proxies.Get().ToURI();
 
   // Adding username & password to global sock://127.0.0.1:[port] config without
@@ -60,3 +39,22 @@ void SetTorCircuitIsolation(const ProxyConfig& config,
 
 }  // namespace
 }  // namespace net
+
+#define BRAVE_RESOLVE_PROXY \
+  if (IsTorProxy(this) && raw_url.ref() == "NewTorCircuit") \
+    ProxyConfigServiceTor::GetTorProxyMap(this)->Erase( \
+        ProxyConfigServiceTor::CircuitIsolationKey(raw_url));
+
+#define BRAVE_TRY_TO_COMPLETE_SYNCHRONOUSLY \
+  if (IsTorProxy(this)) \
+    SetTorCircuitIsolation(config_->value(), \
+                           url, \
+                           result, \
+                           ProxyConfigServiceTor::GetTorProxyMap( \
+                                this)); \
+  else
+
+#include "../../../../net/proxy_resolution/proxy_resolution_service.cc"  // NOLINT
+
+#undef BRAVE_RESOLVE_PROXY
+#undef BRAVE_TRY_TO_COMPLETE_SYNCHRONOUSLY

@@ -11,12 +11,15 @@
 #include "base/bind.h"
 #include "base/task/post_task.h"
 #include "brave/browser/tor/tor_launcher_service_observer.h"
+#include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
+#include "net/proxy_resolution/proxy_resolution_service.h"
+#include "net/url_request/url_request_context.h"
 #include "services/network/public/mojom/network_context.mojom.h"
 
 using content::BrowserContext;
@@ -28,9 +31,17 @@ TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
     : profile_(profile), binding_(this) {
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
   tor_launcher_factory_->AddObserver(this);
+
+  auto* request_context = profile->GetRequestContext()->GetURLRequestContext();
+  auto* service = request_context->proxy_resolution_service();
+  net::ProxyConfigServiceTor::SetTorProxyMap(service, profile);
 }
 
 TorProfileServiceImpl::~TorProfileServiceImpl() {
+  auto* request_context = profile_->GetRequestContext()->GetURLRequestContext();
+  auto* service = request_context->proxy_resolution_service();
+  net::ProxyConfigServiceTor::UnsetTorProxyMap(service, profile_);
+
   tor_launcher_factory_->RemoveObserver(this);
 }
 
