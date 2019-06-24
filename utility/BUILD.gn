@@ -33,10 +33,6 @@ source_set("utility") {
       "importer/firefox_importer.cc",
       "importer/firefox_importer.h",
     ]
-
-    deps += [
-      "//components/password_manager/core/browser",
-    ]
   }
 
   if (enable_tor) {
@@ -55,5 +51,19 @@ source_set("utility") {
   if (use_glib) {
     defines += [ "USE_LIBSECRET" ]
     deps += [ "//third_party/libsecret" ]
+  }
+}
+
+# This dependency is needed by the importer but cannot be included directly
+# because it would make chrome:child_dependencies depend on 
+# //content/browser:browser which is not allowed.
+# See: https://bugs.chromium.org/p/chromium/issues/detail?id=958456
+# (commit 7da02d88483860698c6167d064f74036f5a610a1).
+# Instead, we'll make brave:child_dependencies depend on this.
+source_set("importer_dependencies") {
+  if (!is_android) {
+    deps = [
+      "//components/password_manager/core/browser",
+    ]
   }
 }
