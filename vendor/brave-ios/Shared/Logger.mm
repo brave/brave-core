@@ -20,12 +20,16 @@ UnbufferedLogger::~UnbufferedLogger()
 
 void UnbufferedLogger::write(UnbufferedLoggerData data)
 {
+  if (onWrite) {
     onWrite(data);
+  }
 }
 
 void UnbufferedLogger::flush()
 {
+  if (onFlush) {
     onFlush();
+  }
 }
 
 void UnbufferedLogger::setLoggerCallbacks(std::function<void(UnbufferedLoggerData)> onWrite, std::function<void()> onFlush)
