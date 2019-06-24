@@ -6,7 +6,7 @@ index b69d42b700c0c7f57f37814e733cfd41369820db..870e362020b7d8a256cd1ffe1b343d1d
      # http://crbug.com/448386
      "-Wl,--exclude-libs=libvpx_assembly_arm.a",
    ]
-+  ladflags += ["-Wl,--allow-multiple-definition"] # Resolve conflict between libgcc++ and rustup symbols (e.g. __divdi3)
++  ldflags += ["-Wl,--allow-multiple-definition"] # Resolve conflict between libgcc++ and rustup symbols (e.g. __divdi3)
  
    # $compile_api_level corresponds to the API level used for the sysroot path
    # calculation in //build/config/android/config.gni
