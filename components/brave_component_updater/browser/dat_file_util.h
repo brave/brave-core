@@ -33,7 +33,8 @@ LoadDATFileDataResult<T> LoadDATFileData(
   std::unique_ptr<T> client;
   client = std::make_unique<T>();
   if (buffer.empty() ||
-      !client->deserialize(reinterpret_cast<char*>(&buffer.front())))
+      !client->deserialize(reinterpret_cast<char*>(&buffer.front()),
+          buffer.size()))
     client.reset();
 
   return LoadDATFileDataResult<T>(

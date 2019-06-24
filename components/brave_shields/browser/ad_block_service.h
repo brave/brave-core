@@ -52,7 +52,6 @@ class AdBlockService : public AdBlockBaseService {
   static void SetComponentIdAndBase64PublicKeyForTest(
       const std::string& component_id,
       const std::string& component_base64_public_key);
-  static void SetDATFileVersionForTest(const std::string& dat_file_version);
 
   DISALLOW_COPY_AND_ASSIGN(AdBlockService);
 };

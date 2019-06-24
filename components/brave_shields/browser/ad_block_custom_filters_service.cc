@@ -9,7 +9,7 @@
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/vendor/ad-block/ad_block_client.h"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 
@@ -56,9 +56,7 @@ bool AdBlockCustomFiltersService::UpdateCustomFilters(
 void AdBlockCustomFiltersService::UpdateCustomFiltersOnFileTaskRunner(
     const std::string& custom_filters) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  ad_block_client_->clear();
-  if (!custom_filters.empty())
-    ad_block_client_->parse(custom_filters.c_str());
+  ad_block_client_.reset(new adblock::Engine(custom_filters.c_str()));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

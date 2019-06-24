@@ -16,7 +16,7 @@
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/vendor/ad-block/ad_block_client.h"
+#include "brave/vendor/adblock_rust_ffi/src/wrapper.hpp"
 #include "chrome/browser/extensions/extension_browsertest.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -86,23 +86,21 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
     ASSERT_TRUE(g_brave_browser_process->ad_block_service()->IsInitialized());
   }
 
-  void AddRulesToAdBlock(const char* rules) {
+  void UpdateAdBlockInstanceWithRules(const char* rules) {
     g_brave_browser_process->ad_block_service()
-        ->GetAdBlockClientForTest()
-        ->parse(rules);
+        ->ResetForTest(rules);
   }
 
   void AssertTagExists(const std::string& tag, bool expected_exists) const {
     bool exists_default = g_brave_browser_process->ad_block_service()
-                              ->GetAdBlockClientForTest()
-                              ->tagExists(tag);
+                              ->TagExists(tag);
     ASSERT_EQ(exists_default, expected_exists);
 
     for (const auto& regional_service :
          g_brave_browser_process->ad_block_regional_service_manager()
              ->regional_services_) {
       bool exists_regional =
-          regional_service.second->GetAdBlockClientForTest()->tagExists(tag);
+          regional_service.second->TagExists(tag);
       ASSERT_EQ(exists_regional, expected_exists);
     }
   }
@@ -141,10 +139,6 @@ class AdBlockServiceTest : public ExtensionBrowserTest {
     brave_shields::AdBlockRegionalService::
         SetComponentIdAndBase64PublicKeyForTest(component_id,
                                                 component_base64_public_key);
-  }
-
-  void SetDATFileVersionForTest(const std::string& dat_file_version) {
-    brave_shields::AdBlockService::SetDATFileVersionForTest(dat_file_version);
   }
 
   bool InstallDefaultAdBlockExtension(
@@ -385,12 +379,10 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
   // Install AdBlock extension with a version 3 format data file and
   // expect a new install
-  SetDATFileVersionForTest("3");
   ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v3", 1));
 
   // Install AdBlock extension with a version 4 format data file and
   // expect an upgrade install
-  SetDATFileVersionForTest("4");
   ASSERT_TRUE(InstallDefaultAdBlockExtension("adblock-v4", 0));
 
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
@@ -530,7 +522,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubFrame) {
 // the start it adds an exception rule to the non regional adblocker.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
     ExceptionAdsAreAllowedAcrossClients) {
-  AddRulesToAdBlock("*ad_fr*\n@@*ad_fr.png*");
+  UpdateAdBlockInstanceWithRules("*ad_fr*\n@@*ad_fr.png*");
   g_browser_process->SetApplicationLocale("fr");
   ASSERT_STREQ(g_browser_process->GetApplicationLocale().c_str(), "fr");
 
@@ -588,7 +580,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
     TrackerReferencedFromUntrustedDomainWithException) {
   InitTrackingProtectionService();
-  AddRulesToAdBlock("||365dm.com\n@@logo.png");
+  UpdateAdBlockInstanceWithRules("||365dm.com\n@@logo.png");
   ASSERT_TRUE(InstallTrackingProtectionExtension());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kTrackersBlocked),
       0ULL);
@@ -611,7 +603,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
 // Make sure the third-party flag is passed into the ad-block library properly
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdBlockThirdPartyWorksByETLDP1) {
-  AddRulesToAdBlock("||a.com$third-party");
+  UpdateAdBlockInstanceWithRules("||a.com$third-party");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 
   GURL tab_url = embedded_test_server()->GetURL("test.a.com",
@@ -635,7 +627,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, AdBlockThirdPartyWorksByETLDP1) {
 // Make sure the third-party flag is passed into the ad-block library properly
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
     AdBlockThirdPartyWorksForThirdPartyHost) {
-  AddRulesToAdBlock("||a.com$third-party");
+  UpdateAdBlockInstanceWithRules("||a.com$third-party");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("b.com",
       kAdBlockTestPage);
@@ -657,7 +649,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
 
 // Load an image from a specific subdomain, and make sure it is blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
-  AddRulesToAdBlock("||sp1.nypost.com$third-party");
+  UpdateAdBlockInstanceWithRules("||sp1.nypost.com$third-party");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("b.com",
                                                 kAdBlockTestPage);
@@ -679,7 +671,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, BlockNYP) {
 
 // Tags for social buttons work
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBLockTagTest) {
-  AddRulesToAdBlock(base::StringPrintf("||example.com^$tag=%s",
+  UpdateAdBlockInstanceWithRules(base::StringPrintf("||example.com^$tag=%s",
                     brave_shields::kFacebookEmbeds).c_str());
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("b.com",
@@ -705,7 +697,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBLockTagTest) {
 
 // Lack of tags for social buttons work
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
-  AddRulesToAdBlock("||example.com^$tag=sup");
+  UpdateAdBlockInstanceWithRules("||example.com^$tag=sup");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("b.com",
                                                 kAdBlockTestPage);
@@ -726,6 +718,14 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SocialButttonAdBlockDiffTagTest) {
                                           &as_expected));
   EXPECT_TRUE(as_expected);
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
+// Tags are preserved after resetting
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ResetPreservesTags) {
+  g_brave_browser_process->ad_block_service()->EnableTag(
+      brave_shields::kFacebookEmbeds, true);
+  UpdateAdBlockInstanceWithRules("");
+  AssertTagExists(brave_shields::kFacebookEmbeds, true);
 }
 
 // Setting prefs sets the right tags
@@ -778,7 +778,7 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, TagPrefsControlTags) {
 
 // Make sure that cancelrequest actually blocks
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CancelRequestOptionTest) {
-  AddRulesToAdBlock("logo.png$explicitcancel");
+  UpdateAdBlockInstanceWithRules("logo.png$explicitcancel");
   EXPECT_EQ(browser()->profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
   GURL tab_url = embedded_test_server()->GetURL("b.com",
                                                 kAdBlockTestPage);

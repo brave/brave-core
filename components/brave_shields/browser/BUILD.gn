@@ -1,9 +1,11 @@
 import("//brave/components/brave_shields/browser/buildflags/buildflags.gni")
 import("//extensions/buildflags/buildflags.gni")
+import("//brave/vendor/adblock_rust_ffi/config.gni")
 
 source_set("brave_shields") {
   public_deps = [
     "buildflags",
+    ":adblock_libs"
   ]
 
   sources = [
@@ -48,7 +50,7 @@ source_set("brave_shields") {
   deps = [
     "//brave/components/brave_component_updater/browser",
     "//brave/content:common",
-    "//brave/vendor/ad-block/brave:ad-block",
+    "//brave/vendor/adblock_rust_ffi:adblock_ffi",
     "//brave/vendor/tracking-protection/brave:tracking-protection",
     "//brave/vendor/autoplay-whitelist/brave:autoplay-whitelist",
     "//chrome/common",
@@ -68,4 +70,20 @@ source_set("brave_shields") {
       "//brave/vendor/extension-whitelist/brave:extension-whitelist",
     ]
   }
+}
+
+if (is_mac) {
+  bundle_data("adblock_libs") {
+    sources = [
+      adblock_lib_path,
+    ]
+    outputs = [
+      "{{bundle_contents_dir}}/Libraries/{{source_file_part}}",
+    ]
+    public_deps = [
+      "//brave/vendor/adblock_rust_ffi:adblock",
+    ]
+  }
+} else {
+  group("adblock_libs") {}
 }
