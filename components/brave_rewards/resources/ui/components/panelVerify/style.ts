@@ -69,6 +69,8 @@ export const StyledListTitle = styled(Heading)`
   font-weight: 600;
   font-size: 14px;
   text-align: left;
+  line-height: 25px;
+  padding-bottom: 4px;
   color: #fff;
 `
 
@@ -100,9 +102,9 @@ export const StyledIDNotice = styled<{}, 'div'>('div')`
   line-height: 20px;
   font-weight: 600;
   color: #fff;
-  padding: 20px 24px;
+  padding: 30px 24px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.5433);
-  margin: 30px 0 0;
+  margin: 44px 0 0;
 `
 
 export const StyledButton = styled(Button as ComponentType<ButtonProps>)`
@@ -113,7 +115,7 @@ export const StyledFooter = styled<{}, 'div'>('div')`
   font-family: Muli, sans-serif;
   font-size: 12px;
   color: #fff;
-  margin-top: 25px;
+  margin-top: 32px;
 `
 
 export const StyledFooterIcon = styled<{}, 'div'>('div')`
