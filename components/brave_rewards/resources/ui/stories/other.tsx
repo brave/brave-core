@@ -233,7 +233,7 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
       console.log('onClose')
 
     return (
-      <div style={{ width: '373px', minHeight: '580px' }}>
+      <div style={{ width: '373px', minHeight: '580px', position: 'relative', borderRadius: '5px', overflow: 'hidden' }}>
         <PanelVerify
           onVerifyClick={onVerifyClick}
           onClose={onClose}

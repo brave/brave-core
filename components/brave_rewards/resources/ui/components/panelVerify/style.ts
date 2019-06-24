@@ -8,11 +8,17 @@ import Button, { Props as ButtonProps } from '../../../components/buttonsIndicat
 import { ComponentType } from 'react'
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
-  position: relative;
+  position: absolute;
   text-align: center;
   font-family: Poppins, sans-serif;
   background-image: linear-gradient(180deg, #4C54D2 0%, #563195 100%);
   padding: 42px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  height: 100%;
+  overflow-y: auto;
 `
 
 export const StyledClose = styled<{}, 'div'>('div')`

@@ -45,11 +45,13 @@ export const StyledWrapper = styled<StyledProps, 'div'>('div')`
   flex-direction: column;
   max-width: 415px;
   margin: 0 auto;
+  position: relative;
 `
 
 export const StyledHeader = styled<{}, 'div'>('div')`
   padding: 16px 21px 0 19px;
   position: relative;
+  z-index: 2;
 `
 
 export const StyledTitle = styled<{}, 'div'>('div')`
@@ -80,7 +82,6 @@ export const StyledBalanceTokens = styled<{}, 'div'>('div')`
 
 export const StyledContent = styled<StyledProps, 'div'>('div')`
   padding: ${p => p.contentPadding ? '11px 25px 19px' : '0px'};
-  position: relative;
   background: #fff;
   flex: 1;
 `
