@@ -7,7 +7,7 @@ import * as React from 'react'
 
 // Feature-specific components
 import { Content, Title, Paragraph, SelectGrid, PrimaryButton } from '../../../../../src/features/welcome/'
-import { SelectBox } from '../../../../../src/features/shields'
+import { SelectBox } from '../../../../../src/features/welcome'
 
 // Utils
 import locale from '../fakeLocale'

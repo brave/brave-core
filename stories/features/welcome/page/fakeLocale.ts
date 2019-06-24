@@ -9,8 +9,11 @@ const locale = {
   letsGo: 'Let\'s go',
   // second screen
   importFromAnotherBrowser: 'Import bookmarks & settings',
-  setupImport: 'Brave makes it easy to set up your usual environment by importing bookmarks and settings from other browsers installed on your computer.',
+  setupImport: 'Set up your usual browsing environment by importing bookmarks and settings from your old browser. Advanced import options can be found in Settings.',
   import: 'Import',
+  importFrom: 'Import from...',
+  fakeBrowser1: 'Chrome',
+  fakeBrowser2: 'Firefox',
   imported: 'Imported',
   // third screen
   setDefault: 'Set default',

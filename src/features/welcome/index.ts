@@ -4,6 +4,7 @@
 
 import { SkipButton, FooterButton, Bullet, PrimaryButton } from './button'
 import { Title, Paragraph } from './text'
+import { SelectBox } from './select'
 import {
   Footer,
   FooterLeftColumn,
@@ -31,5 +32,6 @@ export {
   Page,
   Panel,
   SelectGrid,
-  SlideContent
+  SlideContent,
+  SelectBox
 }

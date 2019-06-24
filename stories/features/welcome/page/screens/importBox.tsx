@@ -5,7 +5,8 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from '../../../../../src/features/welcome/'
+import { Content, Title, Paragraph, PrimaryButton, SelectGrid } from '../../../../../src/features/welcome/'
+import { SelectBox } from '../../../../../src/features/welcome'
 
 // Utils
 import locale from '../fakeLocale'
@@ -20,22 +21,28 @@ interface Props {
 }
 
 interface State {
-  onClickFired: boolean
+  importSelected: boolean
 }
 
 export default class ImportBox extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { onClickFired: false }
+    this.state = {
+      importSelected: false
+    }
   }
 
   onClickImport = () => {
-    this.setState({ onClickFired: !this.state.onClickFired })
     this.props.onClick()
+  }
+
+  onChangeImportOption = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    this.setState({ importSelected: event.target.value !== '' })
   }
 
   render () {
     const { index, currentScreen } = this.props
+    const { importSelected } = this.state
     return (
       <Content
         zIndex={index}
@@ -46,13 +53,21 @@ export default class ImportBox extends React.PureComponent<Props, State> {
         <WelcomeImportImage />
         <Title>{locale.importFromAnotherBrowser}</Title>
         <Paragraph>{locale.setupImport}</Paragraph>
-          <PrimaryButton
-            level='primary'
-            type='accent'
-            size='large'
-            text={this.state.onClickFired ? locale.import : locale.import}
-            onClick={this.onClickImport}
-          />
+          <SelectGrid>
+              <SelectBox onChange={this.onChangeImportOption}>
+                <option value=''>{locale.importFrom}</option>
+                <option value='Chrome'>{locale.fakeBrowser1}</option>
+                <option value='Firefox'>{locale.fakeBrowser2}</option>
+              </SelectBox>
+              <PrimaryButton
+                level='primary'
+                type='accent'
+                size='large'
+                text={locale.import}
+                disabled={!importSelected}
+                onClick={this.onClickImport}
+              />
+            </SelectGrid>
       </Content>
     )
   }
