@@ -1,0 +1,12 @@
+diff --git a/extensions/common/BUILD.gn b/extensions/common/BUILD.gn
+index 1404c71edabe40b328345edb76541464d2239b51..a73d6532a65616608c3ca27ea929fbbed5e2bf84 100644
+--- a/extensions/common/BUILD.gn
++++ b/extensions/common/BUILD.gn
+@@ -319,6 +319,7 @@ if (enable_extensions) {
+ 
+     deps = [
+       "//base",
++      "//brave/extensions/common",
+       "//components/crx_file",
+       "//components/nacl/common:buildflags",
+       "//components/url_formatter",
