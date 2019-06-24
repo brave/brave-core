@@ -35,7 +35,7 @@ index 31cefbe41edbc71b71ae20b8b808dd728c638e3f..222c6826b1648a3225b3aacdfcf823b5
 +        const DOMNodeId node_id = DOMNodeIds::IdForNode(&root);
 +        Node* const parent = root.parentNode();
 +
-+        if (parent->IsDocumentNode()) {
++        if (parent != nullptr && parent->IsDocumentNode()) {
 +          Document* dom_root_node = DynamicTo<Document>(parent);
 +          if (dom_root_node != &(dom_root_node->TopDocument())) {
 +            // Child documents must have a local iframe owner.
