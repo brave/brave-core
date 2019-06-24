@@ -150,7 +150,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   const auto fetchRequest = PublisherInfo.fetchRequest;
   fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(PublisherInfo.class)
                                     inManagedObjectContext:context];
-  fetchRequest.predicate = [NSPredicate predicateWithFormat:@"excluded = 1"];
+  fetchRequest.predicate = [NSPredicate predicateWithFormat:@"excluded == %d", BATExcludeFilterFilterExcluded];
   
   NSError *error;
   const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
