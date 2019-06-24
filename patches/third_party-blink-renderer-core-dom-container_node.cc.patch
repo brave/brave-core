@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/container_node.cc b/third_party/blink/renderer/core/dom/container_node.cc
-index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..8bffb49547b7b2d35b7de5bb96b84edbcf235a47 100644
+index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..74d957b1de6ce430b87504c5840209384c17e18f 100644
 --- a/third_party/blink/renderer/core/dom/container_node.cc
 +++ b/third_party/blink/renderer/core/dom/container_node.cc
 @@ -61,6 +61,13 @@
@@ -35,7 +35,7 @@ index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..8bffb49547b7b2d35b7de5bb96b84edb
 +        const DOMNodeId node_id = DOMNodeIds::IdForNode(&root);
 +        Node* const parent = root.parentNode();
 +
-+        if (parent->IsDocumentNode()) {
++        if (parent != nullptr && parent->IsDocumentNode()) {
 +          Document* dom_root_node = DynamicTo<Document>(parent);
 +          if (dom_root_node != &(dom_root_node->TopDocument())) {
 +            // Child documents must have a local iframe owner.
