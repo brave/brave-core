@@ -1339,7 +1339,7 @@ BATLedgerBridge(BOOL,
 - (void)onRestorePublishers:(ledger::OnRestoreCallback)callback
 {
   [BATLedgerDatabase restoreExcludedPublishers:^(BOOL success) {
-    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+    callback(success);
   }];
 }
 
