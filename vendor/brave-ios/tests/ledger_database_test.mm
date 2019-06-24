@@ -63,7 +63,7 @@
   info.id = publisherID;
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info];
+    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
   }];
 
   const auto queriedInfo = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
@@ -79,7 +79,7 @@
   info.duration = 5;
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info];
+    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
   }];
 
   auto queriedInfo = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
@@ -90,7 +90,7 @@
   info.duration = 10;
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info];
+    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
   }];
 
   // Make sure second call to `insertOrUpdatePublisherInfo` did not add another record;
@@ -109,18 +109,18 @@
     info.id = [NSUUID.UUID UUIDString];
     info.excluded = BATPublisherExcludeExcluded;
     [self backgroundSaveAndWaitForExpectation:^{
-      [BATLedgerDatabase insertOrUpdatePublisherInfo:info];
+      [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
     }];
   }
 
   const auto defaultPublisher = [[BATPublisherInfo alloc] init];
   defaultPublisher.id = [NSUUID.UUID UUIDString];
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:defaultPublisher];
+    [BATLedgerDatabase insertOrUpdatePublisherInfo:defaultPublisher completion:nil];
   }];
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase restoreExcludedPublishers];
+    [BATLedgerDatabase restoreExcludedPublishers:nil];
   }];
 
   XCTAssertEqual([BATLedgerDatabase excludedPublishersCount], 0);
@@ -134,14 +134,14 @@
     info.id = [NSUUID.UUID UUIDString];
     info.excluded = BATPublisherExcludeExcluded;
     [self backgroundSaveAndWaitForExpectation:^{
-      [BATLedgerDatabase insertOrUpdatePublisherInfo:info];
+      [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
     }];
   }
 
   const auto defaultPublisher = [[BATPublisherInfo alloc] init];
   defaultPublisher.id = [NSUUID.UUID UUIDString];
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:defaultPublisher];
+    [BATLedgerDatabase insertOrUpdatePublisherInfo:defaultPublisher completion:nil];
   }];
 
   XCTAssertEqual([BATLedgerDatabase excludedPublishersCount], excludedPublishersCount);
@@ -189,7 +189,7 @@
   info.reconcileStamp = newReconcileStamp;
   info.percent = updatedPercent;
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info];
+    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
   }];
 
   const auto filter = [[BATActivityInfoFilter alloc] init];
@@ -212,12 +212,12 @@
   info.percent = percent;
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info];
+    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
   }];
 
   if (createActivityInfo) {
     [self backgroundSaveAndWaitForExpectation:^{
-      [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info];
+      [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
     }];
   }
 
@@ -242,12 +242,12 @@
   info.excluded = excluded;
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info];
+    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
   }];
 
   if (createActivityInfo) {
     [self backgroundSaveAndWaitForExpectation:^{
-      [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info];
+      [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
     }];
   }
 
@@ -260,7 +260,7 @@
   info.id = @"";
 
   [self waitForFailedSaveAttempt:^{
-    [BATLedgerDatabase insertOrUpdatePublisherInfo:info];
+    [BATLedgerDatabase insertOrUpdatePublisherInfo:info completion:nil];
   }];
 
   XCTAssert([self countMustBeEqualTo:0 forEntityName:@"PublisherInfo"]);
@@ -354,7 +354,7 @@
 
   [self backgroundSaveAndWaitForExpectation:^{
     [BATLedgerDatabase insertContributionInfo:probi month:month year:year date:now
-                                 publisherKey:publisherId category:category];
+                                 publisherKey:publisherId category:category completion:nil];
   }];
 }
 
@@ -367,7 +367,7 @@
 
   info.id = @"";
   [self waitForFailedSaveAttempt:^{
-    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info];
+    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
   }];
   XCTAssert([self countMustBeEqualTo:0 forEntityName:@"ActivityInfo"]);
 }
@@ -378,7 +378,7 @@
   const auto info = [self createBATPublisherInfo:@"111" reconcileStamp:stamp percent:11 createActivityInfo:NO];
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info];
+    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
   }];
 
   const auto filter = [[BATActivityInfoFilter alloc] init];
@@ -390,7 +390,7 @@
   // Try to add new activity but with the same reconcile stamp.
   info.reconcileStamp = stamp;
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info];
+    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
   }];
 
   result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
@@ -399,7 +399,7 @@
   // New activity, new reconcile stamp.
   info.reconcileStamp = 300;
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info];
+    [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:info completion:nil];
   }];
 
   result = [BATLedgerDatabase publishersWithActivityFromOffset:0 limit:0 filter:filter];
@@ -419,7 +419,7 @@
   XCTAssert([self countMustBeEqualTo:0 forEntityName:@"ActivityInfo"]);
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateActivitiesInfoFromPublishers:publishers];
+    [BATLedgerDatabase insertOrUpdateActivitiesInfoFromPublishers:publishers completion:nil];
   }];
 
   XCTAssert([self countMustBeEqualTo:3 forEntityName:@"ActivityInfo"]);
@@ -435,7 +435,7 @@
   XCTAssert([self countMustBeEqualTo:2 forEntityName:@"ActivityInfo"]);
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase deleteActivityInfoWithPublisherID:pubId reconcileStamp:10];
+    [BATLedgerDatabase deleteActivityInfoWithPublisherID:pubId reconcileStamp:10 completion:nil];
   }];
   XCTAssert([self countMustBeEqualTo:1 forEntityName:@"ActivityInfo"]);
 
@@ -679,6 +679,25 @@
   XCTAssertEqual(result.count, 1);
 }
 
+- (void)testListingAllExcludedPublishers
+{
+  [self createBATPublisherInfo:@"2" reconcileStamp:30 percent:1 createActivityInfo:YES duration:350
+                        visits:1 excluded:BATPublisherExcludeDefault];
+  
+  [self createBATPublisherInfo:@"3" reconcileStamp:30 percent:1 createActivityInfo:YES duration:29
+                        visits:1 excluded:BATPublisherExcludeDefault];
+  
+  [self createBATPublisherInfo:@"4" reconcileStamp:30 percent:1 createActivityInfo:YES duration:10
+                        visits:1 excluded:BATPublisherExcludeIncluded];
+  
+  [self createBATPublisherInfo:@"5" reconcileStamp:30 percent:1 createActivityInfo:YES duration:10
+                        visits:1 excluded:BATPublisherExcludeExcluded];
+  
+  const auto excludedPublishers = [BATLedgerDatabase excludedPublishers];
+  XCTAssertTrue([excludedPublishers.firstObject.id isEqualToString:@"5"]);
+  XCTAssertEqual(excludedPublishers.count, 1);
+}
+
 - (void)testPublishersWithFiltersPercent
 {
   const auto percent = 30;
@@ -736,18 +755,18 @@
   XCTAssert([self countMustBeEqualTo:0 forEntityName:@"MediaPublisherInfo"]);
 
   [self waitForFailedSaveAttempt:^{
-    [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:@"" publisherID:@"1"];
+    [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:@"" publisherID:@"1" completion:nil];
   }];
   XCTAssert([self countMustBeEqualTo:0 forEntityName:@"MediaPublisherInfo"]);
 
   // Empty publishser
   [self waitForFailedSaveAttempt:^{
-      [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:@"key" publisherID:@""];
+      [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:@"key" publisherID:@"" completion:nil];
   }];
   XCTAssert([self countMustBeEqualTo:0 forEntityName:@"MediaPublisherInfo"]);
 
   [self backgroundSaveAndWaitForExpectation:^{
-      [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:@"key" publisherID:@"1"];
+      [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:@"key" publisherID:@"1" completion:nil];
   }];
 
   XCTAssert([self countMustBeEqualTo:1 forEntityName:@"MediaPublisherInfo"]);
@@ -763,7 +782,7 @@
   [self createBATPublisherInfo:@"1" reconcileStamp:40 percent:0 createActivityInfo:YES];
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:key publisherID:publisherId];
+    [BATLedgerDatabase insertOrUpdateMediaPublisherInfoWithMediaKey:key publisherID:publisherId completion:nil];
   }];
 
   const auto result = [BATLedgerDatabase mediaPublisherInfoWithMediaKey:key];
@@ -787,7 +806,7 @@
 
   // Empty publisher id
   [self waitForFailedSaveAttempt:^{
-    [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:@"" amount:amount dateAdded:now];
+    [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:@"" amount:amount dateAdded:now completion:nil];
   }];
 
   [self createRecurringTip:publisherId amount:amount date:now];
@@ -829,12 +848,12 @@
   // Non existing donation
   [self createBATPublisherInfo:@"3" reconcileStamp:10 percent:10 createActivityInfo:YES];
   [self waitForFailedSaveAttempt:^{
-    [BATLedgerDatabase removeRecurringTipWithPublisherID:@"3"];
+    [BATLedgerDatabase removeRecurringTipWithPublisherID:@"3" completion:nil];
   }];
   XCTAssert([self countMustBeEqualTo:2 forEntityName:@"RecurringDonation"]);
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase removeRecurringTipWithPublisherID:@"1"];
+    [BATLedgerDatabase removeRecurringTipWithPublisherID:@"1" completion:nil];
   }];
 
   XCTAssert([self countMustBeEqualTo:1 forEntityName:@"RecurringDonation"]);
@@ -848,7 +867,8 @@
   [self backgroundSaveAndWaitForExpectation:^{
     [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:publisherId
                                                           amount:amount
-                                                       dateAdded:date];
+                                                       dateAdded:date
+                                                      completion:nil];
   }];
 }
 
@@ -875,7 +895,7 @@
   const auto list = @[one, two];
 
   [self backgroundSaveAndWaitForExpectation:^{
-    [BATLedgerDatabase insertPendingContributions:list];
+    [BATLedgerDatabase insertPendingContributions:list completion:nil];
   }];
 
   const auto amount = [BATLedgerDatabase reservedAmountForPendingContributions];

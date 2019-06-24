@@ -44,7 +44,7 @@
 @end
 
 @implementation BATContributionInfo
-- (instancetype)initWithContributionInfo:(const ledger::ContributionInfo&)obj {
+- (instancetype)initWithContributionInfo:(const ledger::mojom::ContributionInfo&)obj {
   if ((self = [super init])) {
     self.publisher = [NSString stringWithUTF8String:obj.publisher.c_str()];
     self.value = obj.value;

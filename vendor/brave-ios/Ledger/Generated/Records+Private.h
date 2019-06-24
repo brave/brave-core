@@ -32,7 +32,7 @@
 @end
 
 @interface BATContributionInfo (Private)
-- (instancetype)initWithContributionInfo:(const ledger::ContributionInfo&)obj;
+- (instancetype)initWithContributionInfo:(const ledger::mojom::ContributionInfo&)obj;
 @end
 
 @interface BATGrant (Private)

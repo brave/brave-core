@@ -7,6 +7,18 @@
 #import "DataController.h"
 #import "CoreDataModels.h"
 
+NS_INLINE DataControllerCompletion _Nullable 
+WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable completion) {
+  if (!completion) {
+    return nil;
+  }
+  return ^(NSError * _Nullable error) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      completion(error == nil);
+    });
+  };
+}
+
 @implementation BATLedgerDatabase
 
 + (nullable __kindof NSManagedObject *)firstOfClass:(Class)clazz
@@ -106,14 +118,15 @@
   return info;
 }
 
-+ (void)insertOrUpdatePublisherInfo:(BATPublisherInfo *)info
++ (void)insertOrUpdatePublisherInfo:(BATPublisherInfo *)info completion:( BATLedgerDatabaseWriteCompletion)completion
 {
-  return [self insertOrUpdatePublisherInfo:info context:nil];
+  return [self insertOrUpdatePublisherInfo:info context:nil completion:completion];
 }
 
-+ (void)insertOrUpdatePublisherInfo:(BATPublisherInfo *)info context:(nullable NSManagedObjectContext *)context
++ (void)insertOrUpdatePublisherInfo:(BATPublisherInfo *)info context:(nullable NSManagedObjectContext *)context completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   if (info.id.length == 0) {
+    if (completion) { completion(NO); }
     return;
   }
 
@@ -128,10 +141,38 @@
     pi.url = [NSURL URLWithString:info.url];
     pi.provider = info.provider;
     pi.faviconURL = [NSURL URLWithString:info.faviconUrl];
-  }];
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
-+ (void)restoreExcludedPublishers
++ (NSArray<BATPublisherInfo *> *)excludedPublishers
+{
+  const auto context = DataController.viewContext;
+  const auto fetchRequest = PublisherInfo.fetchRequest;
+  fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(PublisherInfo.class)
+                                    inManagedObjectContext:context];
+  fetchRequest.predicate = [NSPredicate predicateWithFormat:@"excluded == %d", BATExcludeFilterFilterExcluded];
+  
+  NSError *error;
+  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    NSLog(@"%@", error);
+  }
+  
+  const auto publishers = [[NSMutableArray<BATPublisherInfo *> alloc] init];
+  for (PublisherInfo *publisher in fetchedObjects) {
+    auto info = [[BATPublisherInfo alloc] init];
+    info.id = publisher.publisherID;
+    info.excluded = static_cast<BATPublisherExclude>(publisher.excluded);
+    info.name = publisher.name;
+    info.url = publisher.url.absoluteString;
+    info.provider = publisher.provider;
+    info.faviconUrl = publisher.faviconURL.absoluteString;
+    [publishers addObject:info];
+  }
+  return publishers;
+}
+
++ (void)restoreExcludedPublishers:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
     const auto fetchRequest = PublisherInfo.fetchRequest;
@@ -149,7 +190,7 @@
     for (PublisherInfo *info in fetchedObjects) {
       info.excluded = BATPublisherExcludeDefault;
     }
-  }];
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
 + (NSUInteger)excludedPublishersCount
@@ -170,7 +211,7 @@
 
 #pragma mark - Contribution Info
 
-+ (void)insertContributionInfo:(NSString *)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(NSString *)publisherKey category:(BATRewardsCategory)category
++ (void)insertContributionInfo:(NSString *)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(NSString *)publisherKey category:(BATRewardsCategory)category completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
     auto ci = [[ContributionInfo alloc] initWithEntity:ContributionInfo.entity
@@ -182,7 +223,7 @@
     ci.publisherID = publisherKey;
     ci.category = category;
     ci.publisher = [self getPublisherInfoWithID:publisherKey context:context];
-  }];
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
 + (NSArray<BATPublisherInfo *> *)oneTimeTipsPublishersForMonth:(BATActivityMonth)month year:(int)year
@@ -218,19 +259,20 @@
 
 #pragma mark - Activity Info
 
-+ (void)insertOrUpdateActivityInfoFromPublisher:(BATPublisherInfo *)info
++ (void)insertOrUpdateActivityInfoFromPublisher:(BATPublisherInfo *)info completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
-  [self insertOrUpdateActivityInfoFromPublisher:info context:nil];
+  [self insertOrUpdateActivityInfoFromPublisher:info context:nil completion:completion];
 }
 
-+ (void)insertOrUpdateActivityInfoFromPublisher:(BATPublisherInfo *)info  context:(nullable NSManagedObjectContext *)context
++ (void)insertOrUpdateActivityInfoFromPublisher:(BATPublisherInfo *)info context:(nullable NSManagedObjectContext *)context completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   if (info.id.length == 0) {
+    if (completion) { completion(NO); }
     return;
   }
 
   [DataController.shared performOnContext:context task:^(NSManagedObjectContext * _Nonnull context) {
-    [self insertOrUpdatePublisherInfo:info context:context];
+    [self insertOrUpdatePublisherInfo:info context:context completion:nil];
 
     const auto publisherFromInfo = [self getActivityInfoWithPublisherID:info.id
                                                          reconcileStamp:info.reconcileStamp context:context];
@@ -246,16 +288,16 @@
     ai.weight = info.weight;
     ai.reconcileStamp = info.reconcileStamp;
     ai.visits = info.visits;
-  }];
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
-+ (void)insertOrUpdateActivitiesInfoFromPublishers:(NSArray<BATPublisherInfo *> *)publishers
++ (void)insertOrUpdateActivitiesInfoFromPublishers:(NSArray<BATPublisherInfo *> *)publishers  completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
     for (BATPublisherInfo *info in publishers) {
-      [self insertOrUpdateActivityInfoFromPublisher:info context:context];
+      [self insertOrUpdateActivityInfoFromPublisher:info context:context completion:nil];
     }
-  }];
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
 + (NSArray<BATPublisherInfo *> *)publishersWithActivityFromOffset:(uint32_t)start limit:(uint32_t)limit filter:(BATActivityInfoFilter *)filter
@@ -338,7 +380,7 @@
   return publishers;
 }
 
-+ (void)deleteActivityInfoWithPublisherID:(NSString *)publisherID reconcileStamp:(uint64_t)reconcileStamp
++ (void)deleteActivityInfoWithPublisherID:(NSString *)publisherID reconcileStamp:(uint64_t)reconcileStamp completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
     const auto request = ActivityInfo.fetchRequest;
@@ -355,7 +397,7 @@
     for (ActivityInfo *info in fetchedObjects) {
       [context deleteObject:info];
     }
-  }];
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
 #pragma mark - Media Publisher Info
@@ -371,9 +413,10 @@
   return [self publisherInfoWithPublisherID:mi.publisherID];
 }
 
-+ (void)insertOrUpdateMediaPublisherInfoWithMediaKey:(NSString *)mediaKey publisherID:(NSString *)publisherID
++ (void)insertOrUpdateMediaPublisherInfoWithMediaKey:(NSString *)mediaKey publisherID:(NSString *)publisherID completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   if (mediaKey.length == 0 || publisherID.length == 0) {
+    if (completion) { completion(NO); }
     return;
   }
 
@@ -382,7 +425,7 @@
                           insertIntoManagedObjectContext:context];
     mi.mediaKey = mediaKey;
     mi.publisherID = publisherID;
-  }];
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
 #pragma mark - Recurring Tips
@@ -419,8 +462,10 @@
 + (void)insertOrUpdateRecurringTipWithPublisherID:(NSString *)publisherID
                                            amount:(double)amount
                                         dateAdded:(uint32_t)dateAdded
+                                       completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   if (publisherID.length == 0) {
+    if (completion) { completion(NO); }
     return;
   }
 
@@ -431,29 +476,29 @@
     rd.amount = amount;
     rd.addedDate = dateAdded;
     rd.publisher = [self getPublisherInfoWithID:publisherID context:context];
-  }];
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
-+ (BOOL)removeRecurringTipWithPublisherID:(NSString *)publisherID
++ (void)removeRecurringTipWithPublisherID:(NSString *)publisherID completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   // Early guard to check if object exists.
   // The check happens on main thread, while the deletion is done in background.
   const auto donationExists = [self getRecurringDonationWithPublisherID:publisherID
                                                                 context:DataController.viewContext];
   if (!donationExists) {
-    return NO;
+    if (completion) { completion(NO); }
+    return;
   }
 
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
     const auto donation = [self getRecurringDonationWithPublisherID:publisherID context:context];
     [context deleteObject:donation];
-  }];
-  return YES;
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
 #pragma mark - Pending Contributions
 
-+ (void)insertPendingContributions:(NSArray<BATPendingContribution *> *)contributions
++ (void)insertPendingContributions:(NSArray<BATPendingContribution *> *)contributions completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   const auto now = [[NSDate date] timeIntervalSince1970];
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
@@ -466,7 +511,7 @@
       pc.viewingID = contribution.viewingId;
       pc.category = contribution.category;
     }
-  }];
+  } completion:WriteToDataControllerCompletion(completion)];
 }
 
 + (double)reservedAmountForPendingContributions

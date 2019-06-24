@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
+
 /// An interface into the ledger database
 ///
 /// This class mirrors brave-core's `publisher_info_database.h/cc` file. This file will actually
@@ -25,10 +27,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (BATPublisherInfo *)panelPublisherWithFilter:(BATActivityInfoFilter *)filter;
 
 /// Insert or update publisher info in the database given a BATPublisherInfo object
-+ (void)insertOrUpdatePublisherInfo:(BATPublisherInfo *)info;
++ (void)insertOrUpdatePublisherInfo:(BATPublisherInfo *)info
+                         completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
+
+/// Get a list of all excluded publishers
++ (NSArray<BATPublisherInfo *> *)excludedPublishers;
 
 /// Restores all of the publishers to default excluded state
-+ (void)restoreExcludedPublishers;
++ (void)restoreExcludedPublishers:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 /// Get the number of publishers the user has excluded from Auto-Contribute
 + (NSUInteger)excludedPublishersCount;
@@ -41,7 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
                           year:(const int)year
                           date:(const uint32_t)date
                   publisherKey:(NSString *)publisherKey
-                      category:(BATRewardsCategory)category;
+                      category:(BATRewardsCategory)category
+                    completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 /// Get a list of publishers you have supported with one time tips given some month and year
 + (NSArray<BATPublisherInfo *> *)oneTimeTipsPublishersForMonth:(BATActivityMonth)month
@@ -50,10 +57,12 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Activity Info
 
 /// Insert or update activity info from a publisher
-+ (void)insertOrUpdateActivityInfoFromPublisher:(BATPublisherInfo *)info;
++ (void)insertOrUpdateActivityInfoFromPublisher:(BATPublisherInfo *)info
+                                     completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 /// Insert or update a set of activity info based on a set of publishers
-+ (void)insertOrUpdateActivitiesInfoFromPublishers:(NSArray<BATPublisherInfo *> *)publishers;
++ (void)insertOrUpdateActivitiesInfoFromPublishers:(NSArray<BATPublisherInfo *> *)publishers
+                                        completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 /// Get a list of publishers with activity info given some start, limit and
 /// filter
@@ -63,7 +72,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Delete activity info for a publisher with a given ID and reconcile stamp
 + (void)deleteActivityInfoWithPublisherID:(NSString *)publisherID
-                           reconcileStamp:(uint64_t)reconcileStamp;
+                           reconcileStamp:(uint64_t)reconcileStamp
+                               completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 #pragma mark - Media Publisher Info
 
@@ -72,7 +82,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Insert or update some media info given some media key and publisher ID that it is linked to
 + (void)insertOrUpdateMediaPublisherInfoWithMediaKey:(NSString *)mediaKey
-                                         publisherID:(NSString *)publisherID;
+                                         publisherID:(NSString *)publisherID
+                                          completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 #pragma mark - Recurring Tips
 
@@ -82,15 +93,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Insert a recurring tip linked to a given publisher ID for some amount
 + (void)insertOrUpdateRecurringTipWithPublisherID:(NSString *)publisherID
                                            amount:(double)amount
-                                        dateAdded:(uint32_t)dateAdded;
+                                        dateAdded:(uint32_t)dateAdded
+                                       completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 /// Remove a recurring tip linked to a given publisher ID
-+ (BOOL)removeRecurringTipWithPublisherID:(NSString *)publisherID;
++ (void)removeRecurringTipWithPublisherID:(NSString *)publisherID completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 #pragma mark - Pending Contributions
 
 /// Inserts a set of pending contributions from a contribution list
-+ (void)insertPendingContributions:(NSArray<BATPendingContribution *> *)contributions;
++ (void)insertPendingContributions:(NSArray<BATPendingContribution *> *)contributions
+                        completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 /// Get the amount of BAT allocated for pending contributions
 + (double)reservedAmountForPendingContributions;

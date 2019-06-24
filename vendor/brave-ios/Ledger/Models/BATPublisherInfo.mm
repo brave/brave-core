@@ -24,9 +24,13 @@
     self.url = [NSString stringWithUTF8String:obj.url.c_str()];
     self.provider = [NSString stringWithUTF8String:obj.provider.c_str()];
     self.faviconUrl = [NSString stringWithUTF8String:obj.favicon_url.c_str()];
-//    self.contributions = NSArrayFromVector(obj.contributions, ^BATContributionInfo *(const ledger::mojom::ContributionInfoPtr& o){
-//      return [[BATContributionInfo alloc] initWithContributionInfo:*o];
-//    });
+    self.contributions = ^{
+      NSMutableArray *a = [[NSMutableArray alloc] init];
+      for (auto const& o : obj.contributions) {
+        [a addObject:[[BATContributionInfo alloc] initWithContributionInfo:*o]];
+      }
+      return a;
+    }();
   }
   return self;
 }
