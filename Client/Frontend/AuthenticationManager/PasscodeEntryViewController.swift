@@ -18,6 +18,8 @@ class PasscodeEntryViewController: BasePasscodeViewController {
     weak var delegate: PasscodeEntryDelegate?
     fileprivate var passcodePane: PasscodePane
     
+    private var passcodeCheckTimer: Timer?
+    
     override init() {
         let authInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo()
         passcodePane = PasscodePane(title: nil, passcodeSize: authInfo?.passcode?.count ?? 6)
@@ -42,25 +44,26 @@ class PasscodeEntryViewController: BasePasscodeViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         passcodePane.codeInputView.delegate = self
-
-        // Don't show the keyboard or allow typing if we're locked out. Also display the error.
-        if authenticationInfo?.isLocked() ?? false {
-            displayLockoutError()
-            passcodePane.codeInputView.isUserInteractionEnabled = false
+        
+        passcodeCheckSetup()
+    }
+    
+    @objc func passcodeCheckSetup() {
+        
+        if authenticationInfo?.isLocked() == true {
+            disableUserInteraction()
+            setUpTimer()
         } else {
+            errorToast?.removeFromSuperview()
             passcodePane.codeInputView.becomeFirstResponder()
         }
     }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        if authenticationInfo?.isLocked() ?? false {
-            passcodePane.codeInputView.isUserInteractionEnabled = false
-            passcodePane.codeInputView.resignFirstResponder()
-        } else {
-             passcodePane.codeInputView.becomeFirstResponder()
-        }
+    
+    private func disableUserInteraction() {
+        displayLockoutError()
+        // Don't show the keyboard or allow typing if we're locked out.
+        passcodePane.codeInputView.isUserInteractionEnabled = false
+        passcodePane.codeInputView.resignFirstResponder()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -71,6 +74,22 @@ class PasscodeEntryViewController: BasePasscodeViewController {
     override func dismissAnimated() {
         delegate?.userDidCancelValidation?()
         super.dismissAnimated()
+    }
+    
+    private func setUpTimer() {
+        passcodeCheckTimer?.invalidate()
+        passcodeCheckTimer = nil
+        
+        guard let authInfo = authenticationInfo, let timeLeft = authInfo.lockoutTimeLeft else {
+                return
+        }
+        
+        passcodeCheckTimer = Timer.scheduledTimer(timeInterval: timeLeft,
+                                                  target: self,
+                                                  selector: #selector(passcodeCheckSetup),
+                                                  userInfo: nil, repeats: false)
+        
+        disableUserInteraction()
     }
 }
 
@@ -84,6 +103,8 @@ extension PasscodeEntryViewController: PasscodeInputViewDelegate {
             passcodePane.shakePasscode()
             failIncorrectPasscode(inputView)
             passcodePane.codeInputView.resetCode()
+            
+            setUpTimer()
 
             // Store mutations on authentication info object
             KeychainWrapper.sharedAppContainerKeychain.setAuthenticationInfo(authenticationInfo)

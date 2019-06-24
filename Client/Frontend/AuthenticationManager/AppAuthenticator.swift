@@ -35,6 +35,10 @@ class AppAuthenticator {
     
     private let blurController = BlurController()
     
+    private lazy var passcodeVC: PasscodeEntryViewController = {
+        return PasscodeEntryViewController()
+    }()
+    
     /// Create an authenticator which protects a specific window
     init(protectedWindow: UIWindow, promptImmediately: Bool, isPasscodeEntryCancellable: Bool = true) {
         self.protectedWindow = protectedWindow
@@ -81,8 +85,13 @@ class AppAuthenticator {
         }
     }
     
+    func willEnterForeground() {
+        passcodeVC.passcodeCheckSetup()
+        promptUserForAuthentication()
+    }
+    
     /// Prompt the user for authentication based on settings
-    func promptUserForAuthentication() {
+    private func promptUserForAuthentication() {
         guard let authInfo = KeychainWrapper.sharedAppContainerKeychain.authenticationInfo(), !isPrompting else { return }
         
         showBackgroundBlur()
@@ -97,11 +106,11 @@ class AppAuthenticator {
                     self.dismissPrompt()
                     self.didCancelPasscodeEntry?()
                 } else {
-                    AppAuthenticator.presentPasscodeAuthentication(self.blurController, delegate: self, isCancellable: self.isPasscodeEntryCancellable)
+                    self.presentPasscodeAuthentication(self.blurController, delegate: self, isCancellable: self.isPasscodeEntryCancellable)
                 }
             },
             fallback: {
-                AppAuthenticator.presentPasscodeAuthentication(self.blurController, delegate: self, isCancellable: self.isPasscodeEntryCancellable)
+                self.presentPasscodeAuthentication(self.blurController, delegate: self, isCancellable: self.isPasscodeEntryCancellable)
             }
         )
         isPrompting = true
@@ -160,8 +169,8 @@ extension AppAuthenticator {
         }
     }
     
-    private static func presentPasscodeAuthentication(_ controller: UIViewController, delegate: PasscodeEntryDelegate?, isCancellable: Bool) {
-        let passcodeVC = PasscodeEntryViewController()
+    private func presentPasscodeAuthentication(_ controller: UIViewController, delegate: PasscodeEntryDelegate?, isCancellable: Bool) {
+        
         passcodeVC.isCancellable = isCancellable
         passcodeVC.delegate = delegate
         let navController = UINavigationController(rootViewController: passcodeVC)
