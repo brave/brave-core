@@ -115,6 +115,10 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)publisherBannerForId:(NSString *)publisherId
                   completion:(void (^)(BATPublisherBanner * _Nullable banner))completion;
 
+/// Refresh a publishers verification status
+- (void)refreshPublisherWithId:(NSString *)publisherId
+                    completion:(void (^)(BOOL verified))completion;
+
 #pragma mark - Tips
 
 - (void)listRecurringTips:(void (^)(NSArray<BATPublisherInfo *> *))completion;
