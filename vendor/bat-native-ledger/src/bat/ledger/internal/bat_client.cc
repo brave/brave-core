@@ -390,11 +390,6 @@ void BatClient::continueRecover(int result,
     return;
   }
 
-
-  braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
-  wallet_info.keyInfoSeed_ = newSeed;
-  ledger_->SetWalletInfo(wallet_info);
-
   std::vector<uint8_t> secretKey = braveledger_bat_helper::getHKDF(newSeed);
   std::vector<uint8_t> publicKey;
   std::vector<uint8_t> newSecretKey;
@@ -407,7 +402,8 @@ void BatClient::continueRecover(int result,
                             this,
                             _1,
                             _2,
-                            _3);
+                            _3,
+                            newSeed);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)RECOVER_WALLET_PUBLIC_KEY + publicKeyHex, PREFIX_V2),
     std::vector<std::string>(), "", "",
@@ -417,7 +413,8 @@ void BatClient::continueRecover(int result,
 void BatClient::recoverWalletPublicKeyCallback(
     int response_status_code,
     const std::string& response,
-    const std::map<std::string, std::string>& headers) {
+    const std::map<std::string, std::string>& headers,
+    const std::vector<uint8_t>& new_seed) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
 
   if (response_status_code != 200) {
@@ -433,7 +430,8 @@ void BatClient::recoverWalletPublicKeyCallback(
                             _1,
                             _2,
                             _3,
-                            recoveryId);
+                            recoveryId,
+                            new_seed);
   ledger_->LoadURL(braveledger_bat_helper::buildURL(
         (std::string)WALLET_PROPERTIES + recoveryId, PREFIX_V2),
       std::vector<std::string>(), "", "", ledger::URL_METHOD::GET, callback);
@@ -443,8 +441,9 @@ void BatClient::recoverWalletCallback(
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers,
-    const std::string& recoveryId) {
-ledger_->LogResponse(__func__, response_status_code, response, headers);
+    const std::string& recoveryId,
+    const std::vector<uint8_t>& new_seed) {
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
   if (response_status_code != 200) {
     std::vector<braveledger_bat_helper::GRANT> empty;
     ledger_->OnRecoverWallet(ledger::Result::LEDGER_ERROR, 0, empty);
@@ -466,14 +465,17 @@ ledger_->LogResponse(__func__, response_status_code, response, headers);
                                                &properties.balance_,
                                                &properties.probi_,
                                                &properties.grants_);
-  ledger_->SetWalletInfo(wallet_info);
   ledger_->SetCurrency(currency);
   if (!ledger_->GetUserChangedContribution()) {
     ledger_->SetContributionAmount(fee_amount);
   }
   ledger_->SetDays(days);
   ledger_->SetWalletProperties(&properties);
-  ledger_->SetPaymentId(recoveryId);
+
+  wallet_info.paymentId_ = recoveryId;
+  wallet_info.keyInfoSeed_ = new_seed;
+  ledger_->SetWalletInfo(wallet_info);
+
   ledger_->OnRecoverWallet(ledger::Result::LEDGER_OK,
                            properties.balance_,
                            properties.grants_);
