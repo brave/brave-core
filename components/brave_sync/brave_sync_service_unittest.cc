@@ -18,6 +18,7 @@
 #include "brave/components/brave_sync/settings.h"
 #include "brave/components/brave_sync/sync_devices.h"
 #include "brave/components/brave_sync/test_util.h"
+#include "brave/components/brave_sync/tools.h"
 #include "brave/components/brave_sync/values_conv.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -657,7 +658,8 @@ TEST_F(BraveSyncServiceTest, StartSyncNonDeviceRecords) {
       "2", "device2"));
   EXPECT_CALL(*observer(), OnSyncStateChanged(sync_service())).Times(1);
   sync_service()->OnResolvedPreferences(records);
-  EXPECT_TRUE(profile()->GetPrefs()->GetBoolean(syncer::prefs::kSyncBookmarks));
+  EXPECT_TRUE(!brave_sync::tools::IsTimeEmpty(
+        sync_service()->chain_created_time_));
 }
 
 TEST_F(BraveSyncServiceTest, OnSyncReadyNewToSync) {
@@ -670,7 +672,10 @@ TEST_F(BraveSyncServiceTest, OnSyncReadyNewToSync) {
                            brave_sync::prefs::kSyncBookmarksBaseOrder, "1.1.");
   sync_service()->OnSyncReady();
   EXPECT_TRUE(sync_prefs()->IsSyncRequested());
-  EXPECT_FALSE(profile()->GetPrefs()
+
+  // We want to have Chromium syncer bookmarks be enabled from begin to avoid
+  // reaching BookmarkModelAssociator::AssociateModels
+  EXPECT_TRUE(profile()->GetPrefs()
                ->GetBoolean(syncer::prefs::kSyncBookmarks));
 }
 
