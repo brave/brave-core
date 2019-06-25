@@ -100,6 +100,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void SetUserChangedContribution() override;
   void SetContributionAmount(double amount) override;
   void SetAutoContribute(bool enabled) override;
+  void UpdateAdsRewards() override;
 
   void OnTimer(uint32_t timer_id) override;
 
@@ -132,8 +133,8 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   void GetAddressesForPaymentId(
       GetAddressesForPaymentIdCallback callback) override;
-  void GetTransactionHistoryForThisCycle(
-      GetTransactionHistoryForThisCycleCallback callback) override;
+  void GetTransactionHistory(
+      GetTransactionHistoryCallback callback) override;
   void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) override;
   void RefreshPublisher(
@@ -220,8 +221,8 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<GetAddressesForPaymentIdCallback>* holder,
       std::map<std::string, std::string> addresses);
 
-  static void OnGetTransactionHistoryForThisCycle(
-      CallbackHolder<GetTransactionHistoryForThisCycleCallback>* holder,
+  static void OnGetTransactionHistory(
+      CallbackHolder<GetTransactionHistoryCallback>* holder,
       std::unique_ptr<ledger::TransactionsInfo> history);
 
   static void OnGetRecurringTips(

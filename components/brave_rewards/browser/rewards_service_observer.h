@@ -70,7 +70,7 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnPublisherListNormalized(
       RewardsService* rewards_service,
       const brave_rewards::ContentSiteList& list) {}
-  virtual void OnTransactionHistoryForThisCycleChanged(
+  virtual void OnTransactionHistoryChanged(
       brave_rewards::RewardsService* rewards_service) {}
   virtual void OnRecurringTipSaved(
       brave_rewards::RewardsService* rewards_service,

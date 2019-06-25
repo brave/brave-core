@@ -47,7 +47,7 @@ void RefillTokens::Refill(
     const WalletInfo& wallet_info,
     const std::string& public_key) {
   DCHECK(!wallet_info.payment_id.empty());
-  DCHECK(!wallet_info.public_key.empty());
+  DCHECK(!wallet_info.private_key.empty());
   DCHECK(!public_key.empty());
 
   BLOG(INFO) << "Refill";
@@ -192,7 +192,8 @@ void RefillTokens::OnGetSignedTokens(
   if (response_status_code != 200) {
     BLOG(ERROR) << "Failed to get signed tokens";
 
-    if (response_status_code == 202) {  // Tokens are not ready yet
+    if (response_status_code == 202) {
+      // Tokens are not ready yet
       confirmations_->StartRetryingToGetRefillSignedTokens(
           kRetryGettingRefillSignedTokensAfterSeconds);
     }

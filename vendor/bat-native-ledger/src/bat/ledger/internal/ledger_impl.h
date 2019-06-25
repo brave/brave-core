@@ -116,6 +116,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetAutoContribute(bool enabled) override;
 
+  void UpdateAdsRewards() override;
+
   void SetBalanceReport(ledger::ACTIVITY_MONTH month,
                         int year,
                         const ledger::BalanceReportInfo& report_info) override;
@@ -426,8 +428,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
-  void GetTransactionHistoryForThisCycle(
-      ledger::GetTransactionHistoryForThisCycleCallback callback) override;
+  void GetTransactionHistory(
+      ledger::GetTransactionHistoryCallback callback) override;
 
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,

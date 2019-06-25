@@ -4,12 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <string>
-#include <vector>
 #include <memory>
 
 #include "bat/confirmations/internal/confirmations_client_mock.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
-#include "bat/confirmations/internal/string_helper.h"
+#include "bat/confirmations/internal/ad_grants.h"
 
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -17,19 +16,22 @@
 
 namespace confirmations {
 
-class ConfirmationsStringHelperTest : public ::testing::Test {
+class ConfirmationsAdGrantsTest : public ::testing::Test {
  protected:
   std::unique_ptr<MockConfirmationsClient> mock_confirmations_client_;
   std::unique_ptr<ConfirmationsImpl> confirmations_;
+  std::unique_ptr<AdGrants> ad_grants_;
 
-  ConfirmationsStringHelperTest() :
+  ConfirmationsAdGrantsTest() :
       mock_confirmations_client_(std::make_unique<MockConfirmationsClient>()),
       confirmations_(std::make_unique<ConfirmationsImpl>(
+          mock_confirmations_client_.get())),
+      ad_grants_(std::make_unique<AdGrants>(confirmations_.get(),
           mock_confirmations_client_.get())) {
     // You can do set-up work for each test here
   }
 
-  ~ConfirmationsStringHelperTest() override {
+  ~ConfirmationsAdGrantsTest() override {
     // You can do clean-up work that doesn't throw exceptions here
   }
 
@@ -39,7 +41,6 @@ class ConfirmationsStringHelperTest : public ::testing::Test {
   void SetUp() override {
     // Code here will be called immediately after the constructor (right before
     // each test)
-    confirmations_->Initialize();
   }
 
   void TearDown() override {
@@ -50,34 +51,51 @@ class ConfirmationsStringHelperTest : public ::testing::Test {
   // Objects declared here can be used by all tests in the test case
 };
 
-TEST_F(ConfirmationsStringHelperTest, DecodeHex) {
+TEST_F(ConfirmationsAdGrantsTest, InvalidJson_AsDictionary) {
   // Arrange
-  std::string hexadecimal = "e9b1ab4f44d39eb04323411eed0b5a2ceedff01264474f86e29c707a5661565033cea0085cfd551faa170c1dd7f6daaa903cdd3138d61ed5ab2845e224d58144";  // NOLINT
-
-  std::vector<uint8_t> private_key = {
-      0xe9, 0xb1, 0xab, 0x4f, 0x44, 0xd3, 0x9e, 0xb0, 0x43, 0x23, 0x41, 0x1e,
-      0xed, 0x0b, 0x5a, 0x2c, 0xee, 0xdf, 0xf0, 0x12, 0x64, 0x47, 0x4f, 0x86,
-      0xe2, 0x9c, 0x70, 0x7a, 0x56, 0x61, 0x56, 0x50, 0x33, 0xce, 0xa0, 0x08,
-      0x5c, 0xfd, 0x55, 0x1f, 0xaa, 0x17, 0x0c, 0x1d, 0xd7, 0xf6, 0xda, 0xaa,
-      0x90, 0x3c, 0xdd, 0x31, 0x38, 0xd6, 0x1e, 0xd5, 0xab, 0x28, 0x45, 0xe2,
-      0x24, 0xd5, 0x81, 0x44
-  };
+  std::string json = "{FOOBAR}";
 
   // Act
-  auto bytes = helper::String::decode_hex(hexadecimal);
+  auto is_valid = ad_grants_->SetFromJson(json);
 
   // Assert
-  unsigned int index = 0;
-  for (const auto& byte : bytes) {
-    auto valid_byte = private_key.at(index);
-    if (byte != valid_byte) {
-      FAIL();
-    }
+  EXPECT_FALSE(is_valid);
+}
 
-    index++;
-  }
+TEST_F(ConfirmationsAdGrantsTest, InvalidJson_DefaultBalance) {
+  // Arrange
+  std::string json = "{\"type\":\"ads\",\"amount\":\"INVALID\",\"lastClaim\":\"2019-06-13T12:14:46.150Z\"}";  // NOLINT
+  ad_grants_->SetFromJson(json);
 
-  SUCCEED();
+  // Act
+  auto balance = ad_grants_->GetBalance();
+
+  // Assert
+  EXPECT_EQ(0.0, balance);
+}
+
+TEST_F(ConfirmationsAdGrantsTest, InvalidJsonWrongType_DefaultBalance) {
+  // Arrange
+  std::string json = "{\"type\":\"ads\",\"amount\":1,\"lastClaim\":\"2019-06-13T12:14:46.150Z\"}";  // NOLINT
+  ad_grants_->SetFromJson(json);
+
+  // Act
+  auto balance = ad_grants_->GetBalance();
+
+  // Assert
+  EXPECT_EQ(0.0, balance);
+}
+
+TEST_F(ConfirmationsAdGrantsTest, Balance) {
+  // Arrange
+  std::string json = "{\"type\":\"ads\",\"amount\":\"5\",\"lastClaim\":\"2019-06-13T12:14:46.150Z\"}";  // NOLINT
+  ad_grants_->SetFromJson(json);
+
+  // Act
+  auto balance = ad_grants_->GetBalance();
+
+  // Assert
+  EXPECT_EQ(5ULL, balance);
 }
 
 }  // namespace confirmations

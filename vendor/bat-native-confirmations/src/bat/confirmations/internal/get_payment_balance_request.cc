@@ -3,9 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include <utility>
-
-#include "bat/confirmations/internal/request_signed_tokens_request.h"
+#include "bat/confirmations/internal/get_payment_balance_request.h"
 #include "bat/confirmations/internal/ads_serve_helper.h"
 #include "bat/confirmations/internal/string_helper.h"
 #include "bat/confirmations/internal/security_helper.h"
@@ -16,39 +14,28 @@
 
 namespace confirmations {
 
-RequestSignedTokensRequest::RequestSignedTokensRequest() = default;
+GetPaymentBalanceRequest::GetPaymentBalanceRequest() = default;
 
-RequestSignedTokensRequest::~RequestSignedTokensRequest() = default;
+GetPaymentBalanceRequest::~GetPaymentBalanceRequest() = default;
 
-// POST /v1/confirmation/token/{payment_id}
+// GET /v1/confirmation/payment/{payment_id}
 
-std::string RequestSignedTokensRequest::BuildUrl(
+std::string GetPaymentBalanceRequest::BuildUrl(
     const WalletInfo& wallet_info) const {
   DCHECK(!wallet_info.payment_id.empty());
 
-  std::string endpoint = "/v1/confirmation/token/";
+  std::string endpoint = "/v1/confirmation/payment/";
   endpoint += wallet_info.payment_id;
 
   return helper::AdsServe::GetURL().append(endpoint);
 }
 
-URLRequestMethod RequestSignedTokensRequest::GetMethod() const {
-  return URLRequestMethod::POST;
+URLRequestMethod GetPaymentBalanceRequest::GetMethod() const {
+  return URLRequestMethod::GET;
 }
 
-std::string RequestSignedTokensRequest::BuildBody(
-    const std::vector<BlindedToken>& tokens) const {
-  DCHECK_NE(tokens.size(), 0UL);
-
-  base::Value list(base::Value::Type::LIST);
-  for (const auto& token : tokens) {
-    auto token_base64 = token.encode_base64();
-    auto token_value = base::Value(token_base64);
-    list.GetList().push_back(std::move(token_value));
-  }
-
+std::string GetPaymentBalanceRequest::BuildBody() const {
   base::Value dictionary(base::Value::Type::DICTIONARY);
-  dictionary.SetKey("blindedTokens", base::Value(std::move(list)));
 
   std::string json;
   base::JSONWriter::Write(dictionary, &json);
@@ -56,7 +43,7 @@ std::string RequestSignedTokensRequest::BuildBody(
   return json;
 }
 
-std::vector<std::string> RequestSignedTokensRequest::BuildHeaders(
+std::vector<std::string> GetPaymentBalanceRequest::BuildHeaders(
     const std::string& body,
     const WalletInfo& wallet_info) const {
   std::string digest_header = "digest: ";
@@ -75,19 +62,16 @@ std::vector<std::string> RequestSignedTokensRequest::BuildHeaders(
   };
 }
 
-std::string RequestSignedTokensRequest::BuildDigestHeaderValue(
+std::string GetPaymentBalanceRequest::BuildDigestHeaderValue(
     const std::string& body) const {
-  DCHECK(!body.empty());
-
   auto body_sha256 = helper::Security::GetSHA256(body);
   auto body_sha256_base64 = helper::Security::GetBase64(body_sha256);
   return "SHA-256=" + body_sha256_base64;
 }
 
-std::string RequestSignedTokensRequest::BuildSignatureHeaderValue(
+std::string GetPaymentBalanceRequest::BuildSignatureHeaderValue(
     const std::string& body,
     const WalletInfo& wallet_info) const {
-  DCHECK(!body.empty());
   DCHECK(!wallet_info.private_key.empty());
 
   auto digest_header_value = BuildDigestHeaderValue(body);
@@ -98,11 +82,11 @@ std::string RequestSignedTokensRequest::BuildSignatureHeaderValue(
       private_key);
 }
 
-std::string RequestSignedTokensRequest::GetAcceptHeaderValue() const {
+std::string GetPaymentBalanceRequest::GetAcceptHeaderValue() const {
   return "application/json";
 }
 
-std::string RequestSignedTokensRequest::GetContentType() const {
+std::string GetPaymentBalanceRequest::GetContentType() const {
   return "application/json";
 }
 

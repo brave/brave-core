@@ -35,7 +35,7 @@ PayoutTokens::~PayoutTokens() {
 
 void PayoutTokens::Payout(const WalletInfo& wallet_info) {
   DCHECK(!wallet_info.payment_id.empty());
-  DCHECK(!wallet_info.public_key.empty());
+  DCHECK(!wallet_info.private_key.empty());
 
   BLOG(INFO) << "Payout";
 
@@ -118,13 +118,17 @@ void PayoutTokens::OnPayout(const Result result) {
     BLOG(ERROR) << "Failed to payout tokens";
 
     RetryNextPayout();
-  } else {
-    unblinded_payment_tokens_->RemoveAllTokens();
-
-    BLOG(INFO) << "Successfully paid out tokens";
-
-    ScheduleNextPayout();
+    return;
   }
+
+  BLOG(INFO) << "Successfully paid out tokens";
+
+  confirmations_->AddUnredeemedTransactionsToPendingRewards();
+  unblinded_payment_tokens_->RemoveAllTokens();
+
+  next_retry_start_timer_in_ = 0;
+
+  ScheduleNextPayout();
 }
 
 void PayoutTokens::ScheduleNextPayout() const {
@@ -146,7 +150,7 @@ void PayoutTokens::RetryNextPayout() {
   auto rand_delay = base::RandInt(0, next_retry_start_timer_in_ / 10);
   next_retry_start_timer_in_ += rand_delay;
 
-  confirmations_->StartPayingOutRedeemedTokens(next_retry_start_timer_in_);
+  confirmations_->StartPayingOutRedeemedTokens(rand_delay);
 }
 
 }  // namespace confirmations

@@ -76,6 +76,7 @@ interface BatLedger {
   SetUserChangedContribution();
   SetContributionAmount(double amount);
   SetAutoContribute(bool enabled);
+  UpdateAdsRewards();
 
   OnTimer(uint32 timer_id);
 
@@ -103,7 +104,7 @@ interface BatLedger {
 
   SetCatalogIssuers(string info);
   ConfirmAd(string info);
-  GetTransactionHistoryForThisCycle() => (string transactions);
+  GetTransactionHistory() => (string transactions);
   GetRewardsInternalsInfo() => (string info);
 
   GetRecurringTips() => (array<ledger.mojom.PublisherInfo> list);

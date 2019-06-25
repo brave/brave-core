@@ -773,6 +773,7 @@ void LedgerImpl::OnRecoverWallet(
 
     ledgerGrants.push_back(tempGrant);
   }
+
   if (result == ledger::Result::LEDGER_OK) {
     bat_publishers_->clearAllBalanceReports();
   }
@@ -798,6 +799,10 @@ void LedgerImpl::OnGrantFinish(ledger::Result result,
   newGrant.expiryTime = grant.expiryTime;
   newGrant.promotionId = grant.promotionId;
   newGrant.type = grant.type;
+
+  if (grant.type == "ads") {
+    bat_confirmations_->UpdateAdsRewards(true);
+  }
 
   ledger_client_->OnGrantFinish(result, newGrant);
 }
@@ -1169,6 +1174,10 @@ void LedgerImpl::LogResponse(
     << "[ END RESPONSE ]";
 }
 
+void LedgerImpl::UpdateAdsRewards() {
+  bat_confirmations_->UpdateAdsRewards(false);
+}
+
 void LedgerImpl::ResetReconcileStamp() {
   bat_state_->ResetReconcileStamp();
 }
@@ -1259,7 +1268,7 @@ const confirmations::WalletInfo LedgerImpl::GetConfirmationsWalletInfo(
   std::vector<uint8_t> secretKey = {};
   braveledger_bat_helper::getPublicKeyFromSeed(seed, &publicKey, &secretKey);
 
-  wallet_info.public_key = braveledger_bat_helper::uint8ToHex(secretKey);
+  wallet_info.private_key = braveledger_bat_helper::uint8ToHex(secretKey);
 
   return wallet_info;
 }
@@ -1511,9 +1520,9 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
   bat_confirmations_->ConfirmAd(std::move(notification_info));
 }
 
-void LedgerImpl::GetTransactionHistoryForThisCycle(
-    ledger::GetTransactionHistoryForThisCycleCallback callback) {
-  bat_confirmations_->GetTransactionHistoryForThisCycle(callback);
+void LedgerImpl::GetTransactionHistory(
+    ledger::GetTransactionHistoryCallback callback) {
+  bat_confirmations_->GetTransactionHistory(callback);
 }
 
 void LedgerImpl::RefreshPublisher(
