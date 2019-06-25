@@ -1,0 +1,12 @@
+diff --git a/components/sync_bookmarks/bookmark_change_processor.h b/components/sync_bookmarks/bookmark_change_processor.h
+index e11a2ddf641edc7098c06433fd22d86467e2aabf..86629fa7182a9cf893ff9442ec5667924c59f335 100644
+--- a/components/sync_bookmarks/bookmark_change_processor.h
++++ b/components/sync_bookmarks/bookmark_change_processor.h
+@@ -238,6 +238,7 @@ class BookmarkChangeProcessor : public bookmarks::BookmarkModelObserver,
+   // Returns false if |node| should not be synced.
+   bool CanSyncNode(const bookmarks::BookmarkNode* node);
+ 
++  BRAVE_SYNC_REPOSITION_METHODS
+   SEQUENCE_CHECKER(sequence_checker_);
+ 
+   // The bookmark model we are processing changes from.  Non-null when

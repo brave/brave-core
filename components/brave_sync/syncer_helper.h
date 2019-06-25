@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_SYNC_SYNCER_HELPER_H_
 
 #include <string>
+#include <map>
 
 namespace bookmarks {
 class BookmarkModel;
@@ -23,6 +24,9 @@ void AddBraveMetaInfo(const bookmarks::BookmarkNode* node,
 // |src| is the node which is about to be inserted into |parent|
 uint64_t GetIndex(const bookmarks::BookmarkNode* parent,
                   const bookmarks::BookmarkNode* src);
+void RepositionOnApplyChangesFromSyncModel(
+  bookmarks::BookmarkModel* bookmark_model,
+  const std::multimap<int, const bookmarks::BookmarkNode*>& to_reposition);
 
 }   // namespace brave_sync
 
