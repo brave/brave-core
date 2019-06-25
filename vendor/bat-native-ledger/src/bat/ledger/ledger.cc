@@ -150,14 +150,14 @@ bool PublisherBanner::loadFromJson(const std::string& json) {
   return !error;
 }
 
-TwitchEventInfo::TwitchEventInfo() {}
+MediaEventInfo::MediaEventInfo() {}
 
-TwitchEventInfo::TwitchEventInfo(const TwitchEventInfo& info):
+MediaEventInfo::MediaEventInfo(const MediaEventInfo& info):
   event_(info.event_),
   time_(info.time_),
   status_(info.status_) {}
 
-TwitchEventInfo::~TwitchEventInfo() {}
+MediaEventInfo::~MediaEventInfo() {}
 
 
 // static
@@ -384,7 +384,7 @@ bool Ledger::IsMediaLink(const std::string& url,
       first_party_url,
       referrer);
 
-  return type == TWITCH_MEDIA_TYPE;
+  return type == TWITCH_MEDIA_TYPE || type == VIMEO_MEDIA_TYPE;
 }
 
 }  // namespace ledger

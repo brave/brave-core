@@ -31,7 +31,7 @@
 #include "base/threading/sequenced_task_runner_handle.h"
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/auto_contribute_props.h"
-#include "bat/ledger/media_publisher_info.h"
+#include "bat/ledger/media_event_info.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/wallet_properties.h"
 #include "bat/ledger/transactions_info.h"

@@ -131,8 +131,8 @@
 }
 @end
 
-@implementation BATTwitchEventInfo
-- (instancetype)initWithTwitchEventInfo:(const ledger::TwitchEventInfo&)obj {
+@implementation BATMediaEventInfo
+- (instancetype)initWithMediaEventInfo:(const ledger::MediaEventInfo&)obj {
   if ((self = [super init])) {
     self.event = [NSString stringWithUTF8String:obj.event_.c_str()];
     self.time = [NSString stringWithUTF8String:obj.time_.c_str()];
