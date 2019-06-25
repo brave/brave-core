@@ -161,7 +161,12 @@ void CreateResolveList(
     SyncRecordAndExistingList* records_and_existing_objects,
     bookmarks::BookmarkModel* model,
     prefs::Prefs* brave_sync_prefs) {
+  const auto& this_device_id = brave_sync_prefs->GetThisDeviceId();
   for (const auto& record : records) {
+    // Ignore records from ourselves to avoid mess on merge
+    if (record->deviceId == this_device_id) {
+      continue;
+    }
     auto resolved_record = std::make_unique<SyncRecordAndExisting>();
     resolved_record->first = SyncRecord::Clone(*record);
     auto* node = FindByObjectId(model, record->objectId);
