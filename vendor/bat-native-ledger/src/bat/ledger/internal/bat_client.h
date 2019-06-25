@@ -93,13 +93,15 @@ class BatClient {
   void recoverWalletPublicKeyCallback(
       int response_status_code,
       const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const std::map<std::string, std::string>& headers,
+      const std::vector<uint8_t>& new_seed);
 
   void recoverWalletCallback(
       int response_status_code,
       const std::string& response,
       const std::map<std::string, std::string>& headers,
-      const std::string& paymentId);
+      const std::string& recoveryId,
+      const std::vector<uint8_t>& new_seed);
 
   std::string getAnonizeProof(const std::string& registrarVK,
                               const std::string& id,
