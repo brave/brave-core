@@ -201,11 +201,6 @@ const std::string& BatState::GetPaymentId() const {
   return state_->walletInfo_.paymentId_;
 }
 
-void BatState::SetPaymentId(const std::string& payment_id) {
-  state_->walletInfo_.paymentId_ = payment_id;
-  SaveState();
-}
-
 const braveledger_bat_helper::Grants& BatState::GetGrants() const {
   return state_->grants_;
 }

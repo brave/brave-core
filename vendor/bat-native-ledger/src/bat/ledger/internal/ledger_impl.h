@@ -328,8 +328,6 @@ class LedgerImpl : public ledger::Ledger,
 
   const std::string& GetPaymentId() const;
 
-  void SetPaymentId(const std::string& payment_id);
-
   const braveledger_bat_helper::Grants& GetGrants() const;
 
   void SetGrants(braveledger_bat_helper::Grants grants);
