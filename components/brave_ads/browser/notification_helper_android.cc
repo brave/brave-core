@@ -7,9 +7,11 @@
 #include "jni/NotificationSystemStatusUtil_jni.h"
 #include "jni/BraveAds_jni.h"
 #include "base/android/jni_string.h"
-#include <sys/system_properties.h>
+#include "base/system/sys_info.h"
 
 namespace brave_ads {
+
+const int kMaxAndroidChannelVersion = 5;
 
 NotificationHelperAndroid::NotificationHelperAndroid() = default;
 
@@ -29,9 +31,7 @@ bool NotificationHelperAndroid::IsNotificationsAvailable() const {
 // Starting in Android 8.0 (API level 26), all notifications must be
 // assigned to a channel.
 bool NotificationHelperAndroid::IsBraveAdsChannelEnabled() const {
-  char osVersion[PROP_VALUE_MAX+1];
-  int os_version = __system_property_get("ro.build.version.release", osVersion);
-  if (os_version <= 22) {
+  if (NotificationHelperAndroid::GetOsVersion() <= kMaxAndroidChannelVersion) {
     return true;
   }
   JNIEnv* env = base::android::AttachCurrentThread();
@@ -40,6 +40,15 @@ bool NotificationHelperAndroid::IsBraveAdsChannelEnabled() const {
   auto status = channels_provider_->GetChannelStatus(channel_id);
   return (NotificationChannelStatus::ENABLED == status ||
       NotificationChannelStatus::UNAVAILABLE == status);
+}
+
+int NotificationHelperAndroid::GetOsVersion() const {
+  int32_t os_major_version = 0;
+  int32_t os_minor_version = 0;
+  int32_t os_bugfix_version = 0;
+  base::SysInfo::OperatingSystemVersionNumbers(
+      &os_major_version, &os_minor_version, &os_bugfix_version);
+  return os_major_version;
 }
 
 NotificationHelperAndroid* NotificationHelperAndroid::GetInstance() {
