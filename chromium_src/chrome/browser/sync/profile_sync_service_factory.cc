@@ -18,8 +18,8 @@ std::unique_ptr<syncer::ProfileSyncService> BraveBuildServiceInstanceFor(
 #include "brave/components/brave_sync/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-#include "brave/components/brave_sync/brave_profile_sync_service.h"
-using brave_sync::BraveProfileSyncService;
+#include "brave/components/brave_sync/brave_profile_sync_service_impl.h"
+using brave_sync::BraveProfileSyncServiceImpl;
 #endif
 
 namespace {
@@ -28,7 +28,7 @@ std::unique_ptr<syncer::ProfileSyncService> BraveBuildServiceInstanceFor(
     Profile* profile,
     syncer::ProfileSyncService::InitParams init_params) {
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
-  return std::make_unique<BraveProfileSyncService>(profile,
+  return std::make_unique<BraveProfileSyncServiceImpl>(profile,
                                                    std::move(init_params));
 #else
   return std::make_unique<syncer::ProfileSyncService>(std::move(init_params));

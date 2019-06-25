@@ -11,7 +11,7 @@
 #include "base/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/common/webui_url_constants.h"
-#include "brave/components/brave_sync/brave_profile_sync_service.h"
+#include "brave/components/brave_sync/public/brave_profile_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
 #include "brave/components/brave_sync/grit/brave_sync_resources.h"
@@ -124,10 +124,12 @@ void SyncUIDOMHandler::RegisterMessages() {
 
 void SyncUIDOMHandler::Init() {
   Profile* profile = Profile::FromWebUI(web_ui());
-  sync_service_ =
+  auto* profile_sync_service =
     static_cast<brave_sync::BraveProfileSyncService*>(
       ProfileSyncServiceFactory::GetAsProfileSyncServiceForProfile(
         profile));
+
+  sync_service_ = profile_sync_service->GetSyncService();
   if (sync_service_)
     sync_service_->AddObserver(this);
 }

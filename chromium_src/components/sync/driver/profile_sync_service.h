@@ -7,11 +7,11 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_DRIVER_PROFILE_SYNC_SERVICE_H_
 
 namespace brave_sync {
-class BraveProfileSyncService;
+class BraveProfileSyncServiceImpl;
 }   // namesapce brave_sync
 
 #define BRAVE_PROFILE_SYNC_SERVICE_H \
-friend class brave_sync::BraveProfileSyncService;
+friend class brave_sync::BraveProfileSyncServiceImpl;
 
 #include "../../../../../components/sync/driver/profile_sync_service.h"
 #undef BRAVE_PROFILE_SYNC_SERVICE_H

@@ -9,7 +9,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_sync/client/brave_sync_client_impl.h"
 #include "brave/components/brave_sync/client/client_ext_impl_data.h"
-#include "brave/components/brave_sync/brave_profile_sync_service.h"
+#include "brave/components/brave_sync/brave_profile_sync_service_impl.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/brave_sync_service_observer.h"
@@ -93,7 +93,7 @@
 
 using bookmarks::BookmarkModel;
 using brave_sync::BraveSyncService;
-using brave_sync::BraveProfileSyncService;
+using brave_sync::BraveProfileSyncServiceImpl;
 using brave_sync::BraveSyncServiceObserver;
 using brave_sync::jslib::SyncRecord;
 using brave_sync::MockBraveSyncClient;
@@ -165,7 +165,7 @@ class BraveSyncServiceTest : public testing::Test {
     sync_client_ = new MockBraveSyncClient();
     brave_sync::BraveSyncClientImpl::set_for_testing(sync_client_);
 
-    sync_service_ = static_cast<BraveProfileSyncService*>(
+    sync_service_ = static_cast<BraveProfileSyncServiceImpl*>(
       ProfileSyncServiceFactory::GetAsProfileSyncServiceForProfile(
         profile()));
 
@@ -185,7 +185,7 @@ class BraveSyncServiceTest : public testing::Test {
   }
 
   Profile* profile() { return profile_.get(); }
-  BraveProfileSyncService* sync_service() { return sync_service_; }
+  BraveProfileSyncServiceImpl* sync_service() { return sync_service_; }
   MockBraveSyncClient* sync_client() { return sync_client_; }
   BookmarkModel* model() { return model_; }
   MockBraveSyncServiceObserver* observer() { return observer_.get(); }
@@ -203,7 +203,7 @@ class BraveSyncServiceTest : public testing::Test {
   content::TestBrowserThreadBundle thread_bundle_;
 
   std::unique_ptr<Profile> profile_;
-  BraveProfileSyncService* sync_service_;
+  BraveProfileSyncServiceImpl* sync_service_;
   MockBraveSyncClient* sync_client_;
   BookmarkModel* model_;  // Not owns
   std::unique_ptr<syncer::SyncPrefs> sync_prefs_;

@@ -7,9 +7,8 @@ import("//tools/grit/repack.gni")
 if (enable_brave_sync) {
   source_set("js_sync_lib_impl") {
     sources = [
-      "brave_profile_sync_service_exports.h",
-      "brave_profile_sync_service.cc",
-      "brave_profile_sync_service.h",
+      "brave_profile_sync_service_impl.cc",
+      "brave_profile_sync_service_impl.h",
       "client/brave_sync_client.h",
       "client/brave_sync_client_impl.cc",
       "client/brave_sync_client_impl.h",
@@ -20,6 +19,7 @@ if (enable_brave_sync) {
     ]
 
     deps = [
+      ":public",
       "//base",
       "//components/prefs",
       "//components/bookmarks/browser",
@@ -66,7 +66,11 @@ source_set("prefs") {
   ]
 }
 
-source_set("export") {
+source_set("public") {
+  sources = [
+    "public/brave_profile_sync_service.h",
+  ]
+
   deps = [
     ":jslib_messages",
     "buildflags",
