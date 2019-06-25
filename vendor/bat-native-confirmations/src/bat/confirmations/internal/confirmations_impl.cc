@@ -114,17 +114,9 @@ std::string ConfirmationsImpl::ToJSON() const {
   auto confirmations = GetConfirmationsAsDictionary(confirmations_);
   dictionary.SetKey("confirmations", base::Value(std::move(confirmations)));
 
-  // Estimated pending rewards
-  dictionary.SetKey("estimated_pending_rewards", base::Value(
-      estimated_pending_rewards_));
-
-  // Next payment date in seconds
-  dictionary.SetKey("next_payment_date_in_seconds", base::Value(
-      std::to_string(next_payment_date_in_seconds_)));
-
-  // Ad notifications received this month
-  dictionary.SetKey("ad_notifications_received_this_month", base::Value(
-      std::to_string(ad_notifications_received_this_month_)));
+  // Ads rewards
+  auto ads_rewards = ads_rewards_->GetAsDictionary();
+  dictionary.SetKey("ads_rewards", base::Value(std::move(ads_rewards)));
 
   // Transaction history
   auto transaction_history =
@@ -268,20 +260,8 @@ bool ConfirmationsImpl::FromJSON(const std::string& json) {
     BLOG(WARNING) << "Failed to get confirmations from JSON: " << json;
   }
 
-  if (!ParseEstimatedPendingRewardsFromJSON(dictionary)) {
-    BLOG(WARNING)
-        << "Failed to get estimasted pending rewards from JSON: " << json;
-  }
-
-  if (!ParseNextPaymentDateInSecondsFromJSON(dictionary)) {
-    BLOG(WARNING)
-        << "Failed to get next payment date in seconds from JSON: " << json;
-  }
-
-  if (!ParseAdNotificationsReceivedThisMonthFromJSON(dictionary)) {
-    BLOG(WARNING)
-        << "Failed to get ad notifications received this month from JSON: "
-        << json;
+  if (!ads_rewards_->SetFromDictionary(dictionary)) {
+    BLOG(WARNING) << "Failed to get ads rewards from JSON: " << json;
   }
 
   if (!ParseTransactionHistoryFromJSON(dictionary)) {
@@ -558,48 +538,6 @@ bool ConfirmationsImpl::GetConfirmationsFromDictionary(
   return true;
 }
 
-bool ConfirmationsImpl::ParseEstimatedPendingRewardsFromJSON(
-    base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  auto* value = dictionary->FindKey("estimated_pending_rewards");
-  if (!value) {
-    return false;
-  }
-
-  estimated_pending_rewards_ = value->GetDouble();
-
-  return true;
-}
-
-bool ConfirmationsImpl::ParseNextPaymentDateInSecondsFromJSON(
-    base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  auto* value = dictionary->FindKey("next_payment_date_in_seconds");
-  if (!value) {
-    return false;
-  }
-
-  next_payment_date_in_seconds_ = std::stoull(value->GetString());
-
-  return true;
-}
-
-bool ConfirmationsImpl::ParseAdNotificationsReceivedThisMonthFromJSON(
-    base::DictionaryValue* dictionary) {
-  DCHECK(dictionary);
-
-  auto* value = dictionary->FindKey("ad_notifications_received_this_month");
-  if (!value) {
-    return false;
-  }
-
-  ad_notifications_received_this_month_ = std::stoull(value->GetString());
-
-  return true;
-}
-
 bool ConfirmationsImpl::ParseTransactionHistoryFromJSON(
     base::DictionaryValue* dictionary) {
   DCHECK(dictionary);
@@ -818,7 +756,7 @@ void ConfirmationsImpl::SetWalletInfo(std::unique_ptr<WalletInfo> info) {
 
   NotifyAdsIfConfirmationsIsReady();
 
-  UpdateAdsRewards();
+  UpdateAdsRewards(true);
 
   CheckReady();
 }
@@ -887,14 +825,20 @@ void ConfirmationsImpl::RemoveConfirmationFromQueue(
   SaveState();
 }
 
-void ConfirmationsImpl::UpdateAdsRewards() {
-  ads_rewards_->Fetch(wallet_info_);
+void ConfirmationsImpl::UpdateAdsRewards(const bool should_refresh) {
+  ads_rewards_->Update(wallet_info_, should_refresh);
 }
 
 void ConfirmationsImpl::UpdateAdsRewards(
     const double estimated_pending_rewards,
     const uint64_t next_payment_date_in_seconds,
     const uint64_t ad_notifications_received_this_month) {
+  if (!state_has_loaded_) {
+    // We should not update ads rewards until state has successfully loaded
+    // otherwise our values will be overwritten
+    return;
+  }
+
   estimated_pending_rewards_ = estimated_pending_rewards;
   next_payment_date_in_seconds_ = next_payment_date_in_seconds;
   ad_notifications_received_this_month_ = ad_notifications_received_this_month;
@@ -968,9 +912,20 @@ uint64_t ConfirmationsImpl::GetAdNotificationsReceivedThisMonthForTransactions(
     const std::vector<TransactionInfo>& transactions) const {
   double ad_notifications_received_this_month = 0.0;
 
+  auto now = base::Time::Now();
+  base::Time::Exploded now_exploded;
+  now.LocalExplode(&now_exploded);
+
   for (const auto& transaction : transactions) {
-    auto estimated_redemption_value = transaction.estimated_redemption_value;
-    if (estimated_redemption_value > 0.0) {
+    auto transaction_timestamp =
+        base::Time::FromDoubleT(transaction.timestamp_in_seconds);
+
+    base::Time::Exploded transaction_timestamp_exploded;
+    transaction_timestamp.LocalExplode(&transaction_timestamp_exploded);
+
+    if (transaction_timestamp_exploded.year == now_exploded.year &&
+        transaction_timestamp_exploded.month == now_exploded.month &&
+        transaction.estimated_redemption_value > 0.0) {
       ad_notifications_received_this_month++;
     }
   }

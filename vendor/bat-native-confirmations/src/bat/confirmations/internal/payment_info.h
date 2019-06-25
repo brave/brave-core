@@ -13,10 +13,11 @@ namespace confirmations {
 
 struct PaymentInfo {
   PaymentInfo();
-  explicit PaymentInfo(const PaymentInfo& info);
+  PaymentInfo(const PaymentInfo& info);
   ~PaymentInfo();
 
   double balance;
+  std::string month;
   uint64_t transaction_count;
 };
 
