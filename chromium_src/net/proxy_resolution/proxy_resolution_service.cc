@@ -40,11 +40,6 @@ void SetTorCircuitIsolation(const ProxyConfig& config,
 }  // namespace
 }  // namespace net
 
-#define BRAVE_RESOLVE_PROXY \
-  if (IsTorProxy(this) && raw_url.ref() == "NewTorCircuit") \
-    ProxyConfigServiceTor::GetTorProxyMap(this)->Erase( \
-        ProxyConfigServiceTor::CircuitIsolationKey(raw_url));
-
 #define BRAVE_TRY_TO_COMPLETE_SYNCHRONOUSLY \
   if (IsTorProxy(this)) \
     SetTorCircuitIsolation(config_->value(), \

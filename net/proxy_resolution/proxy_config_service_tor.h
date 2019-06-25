@@ -59,6 +59,7 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
       ProxyResolutionService* service);
   static void SetTorProxyMap(ProxyResolutionService* service, void* profile);
   static void UnsetTorProxyMap(ProxyResolutionService* service, void* profile);
+  static void ResetTorProxyMap(void* profile, GURL url);
 
   // ProxyConfigService methods:
   void AddObserver(Observer* observer) override {}

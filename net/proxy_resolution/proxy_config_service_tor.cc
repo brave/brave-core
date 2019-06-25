@@ -60,6 +60,12 @@ void ProxyConfigServiceTor::UnsetTorProxyMap(ProxyResolutionService* service,
   profile_tor_map_.get()->erase(profile);
 }
 
+void ProxyConfigServiceTor::ResetTorProxyMap(void* profile, GURL url) {
+  const auto& map = profile_tor_map_.get()->find(profile);
+  if (map != profile_tor_map_.get()->end())
+    map->second.Erase(ProxyConfigServiceTor::CircuitIsolationKey(url));
+}
+
 ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& proxy_uri) {
   ProxyServer proxy_server =
       ProxyServer::FromURI(proxy_uri, ProxyServer::SCHEME_SOCKS5);

@@ -23,10 +23,12 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
+#include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 #include "net/url_request/url_request_context.h"
 #include "services/network/public/mojom/network_context.mojom.h"
+#include "services/network/public/mojom/proxy_lookup_client.mojom.h"
 
 using content::BrowserContext;
 using content::BrowserThread;
@@ -34,6 +36,52 @@ using content::BrowserThread;
 namespace tor {
 
 namespace {
+
+class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
+ public:
+  static network::mojom::ProxyLookupClientPtr CreateTorProxyLookupClient(
+      NewTorCircuitCallback callback) {
+    auto* lookup_client = new TorProxyLookupClient(std::move(callback));
+    return lookup_client->GetProxyLookupClientPtr();
+  }
+
+ private:
+  TorProxyLookupClient(NewTorCircuitCallback callback)
+      : callback_(std::move(callback)),
+        binding_(this) {}
+
+  ~TorProxyLookupClient() override {
+    binding_.Close();
+  }
+
+  network::mojom::ProxyLookupClientPtr GetProxyLookupClientPtr() {
+    network::mojom::ProxyLookupClientPtr proxy_lookup_client_ptr;
+    binding_.Bind(
+        mojo::MakeRequest(&proxy_lookup_client_ptr),
+        base::CreateSingleThreadTaskRunnerWithTraits(
+            {content::BrowserThread::UI, content::BrowserTaskType::kPreconnect}));
+    binding_.set_connection_error_handler(
+        base::BindOnce(&TorProxyLookupClient::OnProxyLookupComplete,
+                       base::Unretained(this),
+                       net::ERR_ABORTED,
+                       base::nullopt));
+    return proxy_lookup_client_ptr;
+  }
+
+  // network::mojom::ProxyLookupClient:
+  void OnProxyLookupComplete(
+        int32_t net_error,
+        const base::Optional<net::ProxyInfo>& proxy_info) override {
+    bool success = proxy_info.has_value() && !proxy_info->is_direct();
+    std::move(callback_).Run(success);
+    delete this;
+  }
+
+  NewTorCircuitCallback callback_;
+  mojo::Binding<network::mojom::ProxyLookupClient> binding_;
+
+  DISALLOW_COPY_AND_ASSIGN(TorProxyLookupClient);
+};
 
 void OnProfileCreatedOnIOThread(Profile* profile, scoped_refptr<net::URLRequestContextGetter> request_context) {
   auto* url_request_context = request_context->GetURLRequestContext();
@@ -49,10 +97,16 @@ void OnProfileDestroyedOnIOThread(
   net::ProxyConfigServiceTor::UnsetTorProxyMap(service, profile);
 }
 
+void SetNewTorCircuitOnIOThread(Profile* profile,
+                                GURL request_url) {
+  net::ProxyConfigServiceTor::ResetTorProxyMap(profile, request_url);
+}
+
 }  // namespace
 
 TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
-    : profile_(profile), binding_(this) {
+    : profile_(profile),
+      weak_ptr_factory_(this) {
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
   tor_launcher_factory_->AddObserver(this);
 
@@ -93,35 +147,32 @@ void TorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
   tor_launcher_factory_->ReLaunchTorProcess(config);
 }
 
-void TorProfileServiceImpl::OnProxyLookupComplete(
-    int32_t net_error,
-    const base::Optional<net::ProxyInfo>& proxy_info) {
-  bool success = proxy_info.has_value() && !proxy_info->is_direct();
-  DCHECK(tor_circuit_callback_);
-  std::move(tor_circuit_callback_).Run(success);
-  binding_.Close();
-}
-
 void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
                                              NewTorCircuitCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  scoped_refptr<net::URLRequestContextGetter> getter(
+      profile_->GetRequestContext());
+  getter->GetNetworkTaskRunner()->PostTaskAndReply(
+      FROM_HERE,
+      base::BindOnce(&SetNewTorCircuitOnIOThread,
+                     profile_,
+                     request_url),
+      base::BindOnce(&TorProfileServiceImpl::SetNewTorCircuitOnUIThread,
+          weak_ptr_factory_.GetWeakPtr(),
+          std::move(callback),
+          request_url));
+}
+
+void TorProfileServiceImpl::SetNewTorCircuitOnUIThread(
+    NewTorCircuitCallback callback, const GURL& url) {
   auto* storage_partition =
-    BrowserContext::GetStoragePartitionForSite(profile_, request_url, false);
+      BrowserContext::GetStoragePartitionForSite(profile_, url, false);
 
-  GURL::Replacements replacements;
-  replacements.SetRef("NewTorCircuit",
-                      url::Component(0, strlen("NewTorCircuit")));
-  GURL url = request_url.ReplaceComponents(replacements);
-  tor_circuit_callback_ = std::move(callback);
+  // TorProxyLookupClient self deletes on proxy lookup completion
+  auto proxy_lookup_client_ptr =
+      TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));
 
-  network::mojom::ProxyLookupClientPtr proxy_lookup_client_ptr;
-  binding_.Bind(
-      mojo::MakeRequest(&proxy_lookup_client_ptr),
-      base::CreateSingleThreadTaskRunnerWithTraits(
-          {content::BrowserThread::UI, content::BrowserTaskType::kPreconnect}));
-  binding_.set_connection_error_handler(
-      base::BindOnce(&TorProfileServiceImpl::OnProxyLookupComplete,
-                     base::Unretained(this), net::ERR_ABORTED, base::nullopt));
   // Force lookup to erase the old circuit
   storage_partition->GetNetworkContext()->LookUpProxyForURL(
       url, std::move(proxy_lookup_client_ptr));
