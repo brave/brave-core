@@ -10,9 +10,15 @@
 
 #include "base/bind.h"
 #include "base/task/post_task.h"
+#include "brave/browser/brave_browser_process_impl.h"
+// TODO(bridiver) - move this out of extensions
+#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/tor/tor_launcher_service_observer.h"
+#include "brave/common/tor/pref_names.h"
+#include "brave/common/tor/tor_constants.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/site_instance.h"
@@ -27,26 +33,56 @@ using content::BrowserThread;
 
 namespace tor {
 
+namespace {
+
+void OnProfileCreatedOnIOThread(Profile* profile, scoped_refptr<net::URLRequestContextGetter> request_context) {
+  auto* url_request_context = request_context->GetURLRequestContext();
+  auto* service = url_request_context->proxy_resolution_service();
+  net::ProxyConfigServiceTor::SetTorProxyMap(service, profile);
+}
+
+void OnProfileDestroyedOnIOThread(
+    Profile* profile,
+    scoped_refptr<net::URLRequestContextGetter> getter) {
+  auto* context = getter->GetURLRequestContext();
+  auto* service = context->proxy_resolution_service();
+  net::ProxyConfigServiceTor::UnsetTorProxyMap(service, profile);
+}
+
+}  // namespace
+
 TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
     : profile_(profile), binding_(this) {
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
   tor_launcher_factory_->AddObserver(this);
 
-  auto* request_context = profile->GetRequestContext()->GetURLRequestContext();
-  auto* service = request_context->proxy_resolution_service();
-  net::ProxyConfigServiceTor::SetTorProxyMap(service, profile);
+  if (GetTorPid() < 0) {
+    base::FilePath path =
+        g_brave_browser_process->tor_client_updater()->GetExecutablePath();
+    std::string proxy = g_browser_process->local_state()->GetString(
+        tor::prefs::kTorProxyString);
+    tor::TorConfig config(path, proxy);
+    LaunchTor(config);
+  }
+
+  scoped_refptr<net::URLRequestContextGetter> getter(
+      profile->GetRequestContext());
+  getter->GetNetworkTaskRunner()->PostTask(
+      FROM_HERE, base::BindOnce(&OnProfileCreatedOnIOThread, profile, getter));
 }
 
 TorProfileServiceImpl::~TorProfileServiceImpl() {
-  auto* request_context = profile_->GetRequestContext()->GetURLRequestContext();
-  auto* service = request_context->proxy_resolution_service();
-  net::ProxyConfigServiceTor::UnsetTorProxyMap(service, profile_);
-
   tor_launcher_factory_->RemoveObserver(this);
 }
 
 void TorProfileServiceImpl::Shutdown() {
   TorProfileService::Shutdown();
+
+  scoped_refptr<net::URLRequestContextGetter> getter(
+      profile_->GetRequestContext());
+  getter->GetNetworkTaskRunner()->PostTask(
+      FROM_HERE,
+      base::BindOnce(&OnProfileDestroyedOnIOThread, profile_, getter));
 }
 
 void TorProfileServiceImpl::LaunchTor(const TorConfig& config) {

@@ -20,16 +20,14 @@ class BraveProfileManager : public ProfileManager {
    std::string GetLastUsedProfileName() override;
    void SetNonPersonalProfilePrefs(Profile* profile) override;
 
+   void OnProfileCreated(Profile* profile,
+                        bool success,
+                        bool is_new_profile) override;
+
  protected:
-   // ProfileManager implementation.
-   Profile* CreateProfileHelper(const base::FilePath& path) override;
-   Profile* CreateProfileAsyncHelper(const base::FilePath& path,
-                                     Delegate* delegate) override;
    void DoFinalInitForServices(Profile* profile,
                                bool go_off_the_record) override;
  private:
-   void LaunchTorProcess(Profile* profile);
-
    DISALLOW_COPY_AND_ASSIGN(BraveProfileManager);
 };
 #endif  // BRAVE_BROWSER_PROFILES_BRAVE_PROFILE_MANAGER_H_
