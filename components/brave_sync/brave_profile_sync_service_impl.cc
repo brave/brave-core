@@ -243,9 +243,18 @@ void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(
   for (auto& record : *records) {
     record->deviceId = brave_sync_prefs_->GetThisDeviceId();
   }
-  if (!records->empty())
+  if (!records->empty()) {
+    if (((!brave_sync::tools::IsTimeEmpty(chain_created_time_) &&
+        (base::Time::Now() - chain_created_time_).InSeconds() < 30u) ||
+        brave_sync_prefs_->GetSyncDevices()->size() < 2)) {
+      // Store records for now
+      pending_send_records_.push_back(std::move(records));
+      return;
+    }
+    SendAndPurgePendingRecords();
     brave_sync_client_->SendSyncRecords(
       jslib_const::SyncRecordType_BOOKMARKS, *records);
+  }
 }
 
 BraveProfileSyncServiceImpl::~BraveProfileSyncServiceImpl() {}
@@ -501,7 +510,9 @@ void BraveProfileSyncServiceImpl::OnSyncReady() {
     ProfileSyncService::GetUserSettings()
       ->SetSelectedTypes(false, syncer::UserSelectableTypeSet());
     // default enable bookmark
-    brave_sync_prefs_->SetSyncBookmarksEnabled(true);
+    // this is important, don't change
+    // to brave_sync_prefs_->SetSyncBookmarksEnabled(true);
+    OnSetSyncBookmarks(true);
     ProfileSyncService::GetUserSettings()->SetSyncRequested(true);
   }
 }
@@ -743,9 +754,12 @@ void BraveProfileSyncServiceImpl::OnResolvedPreferences(
   brave_sync_prefs_->SetSyncDevices(*sync_devices);
 
   if (old_devices_size < 2 && sync_devices->size() >= 2) {
-    // Re-enable sync of bookmarks
-    bool sync_bookmarks = brave_sync_prefs_->GetSyncBookmarksEnabled();
-    OnSetSyncBookmarks(sync_bookmarks);
+    // Save chain creation time to send bookmarks 30 sec after
+    chain_created_time_ = base::Time::Now();
+  }
+  if (!tools::IsTimeEmpty(chain_created_time_) &&
+      (base::Time::Now() - chain_created_time_).InSeconds() > 30u) {
+    SendAndPurgePendingRecords();
   }
 
   if (this_device_deleted) {
@@ -821,6 +835,14 @@ void BraveProfileSyncServiceImpl::SignalWaitableEvent() {
 BraveSyncService* BraveProfileSyncServiceImpl::GetSyncService() const {
   return static_cast<BraveSyncService*>(
       const_cast<BraveProfileSyncServiceImpl*>(this));
+}
+
+void BraveProfileSyncServiceImpl::SendAndPurgePendingRecords() {
+  for (const auto& records_to_send : pending_send_records_) {
+    brave_sync_client_->SendSyncRecords(
+        jslib_const::SyncRecordType_BOOKMARKS, *records_to_send);
+  }
+  pending_send_records_.clear();
 }
 
 }   // namespace brave_sync
