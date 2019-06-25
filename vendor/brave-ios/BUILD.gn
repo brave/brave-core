@@ -215,10 +215,12 @@ action("mojo_gen_wrappers") {
     "$target_gen_dir/ledger.mojom.objc.h",
     "$target_gen_dir/ledger.mojom.objc+private.h",
     "$target_gen_dir/ledger.mojom.objc.mm",
+    "$target_gen_dir/objc_templates_bytecode/objc_templates.zip",
   ]
   output_dir = rebase_path(target_gen_dir)
   args = [
     "--pickled-ast=$pickled_ast",
+    "--module-include-path=bat/ledger/public/interfaces",
     "--mojom-file=$mojom_idl",
     "--output-dir=$output_dir",
   ]

@@ -43,6 +43,7 @@ def _GenerateModule(tree, module_path):
 def parse_args():
   parser = argparse.ArgumentParser(description='Generate Obj-C files from mojo definitions')
   parser.add_argument('--pickled-ast', nargs=1)
+  parser.add_argument('--module-include-path', nargs=1)
   parser.add_argument('--mojom-file', nargs=1)
   parser.add_argument('--output-dir', nargs=1)
   return parser.parse_args()
@@ -52,6 +53,7 @@ def main():
 
   args = parse_args()
   pickled_ast = args.pickled_ast[0]
+  module_include_path = args.module_include_path[0]
   mojom_file = args.mojom_file[0]
   output_dir = args.output_dir[0]
 
@@ -65,6 +67,7 @@ def main():
                                         bytecode_path)
   generator = generator_module.Generator(None)
   generator.bytecode_path = bytecode_path
+  generator.module_include_path = module_include_path
   generator.module = _GenerateModule(tree, mojom_file)
   generator.GenerateFiles(output_dir)
 

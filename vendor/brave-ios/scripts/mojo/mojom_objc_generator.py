@@ -158,6 +158,7 @@ class Generator(generator.Generator):
       "interfaces": self.module.interfaces,
       "kinds": self.module.kinds,
       "module": self.module,
+      "module_include_path": self.module_include_path,
       "cpp_namespace": cpp_namespace,
       "class_prefix": self.class_prefix,
       # "namespaces_as_array": NamespaceToArray(self.module.namespace),
