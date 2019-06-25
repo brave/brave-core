@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_PROFILE_SYNC_SERVICE_H_
-#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_PROFILE_SYNC_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_PROFILE_SYNC_SERVICE_IMPL_H_
+#define BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_PROFILE_SYNC_SERVICE_IMPL_H_
 
 #include <memory>
 #include <string>
 
-#include "brave/components/brave_sync/brave_profile_sync_service_exports.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "brave/components/brave_sync/client/brave_sync_client.h"
 #include "brave/components/brave_sync/jslib_messages_fwd.h"
+#include "brave/components/brave_sync/public/brave_profile_sync_service.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/sync/driver/profile_sync_service.h"
 
@@ -41,14 +41,14 @@ namespace prefs {
 class Prefs;
 }   // namespace prefs
 
-class BraveProfileSyncService : public BraveProfileSyncServiceExports,
-                                public syncer::ProfileSyncService,
+class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
+                                //public syncer::ProfileSyncService,
                                 public BraveSyncService,
                                 public SyncMessageHandler {
  public:
-  explicit BraveProfileSyncService(Profile* profile, InitParams init_params);
+  explicit BraveProfileSyncServiceImpl(Profile* profile, InitParams init_params);
 
-  ~BraveProfileSyncService() override;
+  ~BraveProfileSyncServiceImpl() override;
 
   // BraveSyncService implementation
   void OnSetupSyncHaveCode(const std::string& sync_words,
@@ -108,6 +108,8 @@ class BraveProfileSyncService : public BraveProfileSyncServiceExports,
   void OnNudgeSyncCycle(brave_sync::RecordsListPtr records_list) override;
   void OnPollSyncCycle(brave_sync::GetRecordsCallback cb,
                        base::WaitableEvent* wevent) override;
+
+  BraveSyncService* GetSyncService() const override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(::BraveSyncServiceTest, BookmarkAdded);
@@ -175,8 +177,8 @@ class BraveProfileSyncService : public BraveProfileSyncServiceExports,
   // this object was created on.
   SEQUENCE_CHECKER(sequence_checker_);
 
-  DISALLOW_COPY_AND_ASSIGN(BraveProfileSyncService);
+  DISALLOW_COPY_AND_ASSIGN(BraveProfileSyncServiceImpl);
 };
 }   // namespace brave_sync
 
-#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_PROFILE_SYNC_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_SYNC_BRAVE_PROFILE_SYNC_SERVICE_IMPL_H_

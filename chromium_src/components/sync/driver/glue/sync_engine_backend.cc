@@ -11,8 +11,8 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_SYNC)
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_sync/brave_profile_sync_service.h"
 #include "brave/components/brave_sync/jslib_messages.h"
+#include "brave/components/brave_sync/public/brave_profile_sync_service.h"
 
 using brave_sync::BraveProfileSyncService;
 using brave_sync::GetRecordsCallback;

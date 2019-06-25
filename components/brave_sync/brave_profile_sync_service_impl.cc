@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_sync/brave_profile_sync_service.h"
+#include "brave/components/brave_sync/brave_profile_sync_service_impl.h"
 
 #include <utility>
 #include <vector>
@@ -185,9 +185,9 @@ void DoDispatchGetRecordsCallback(
 
 }   // namespace
 
-BraveProfileSyncService::BraveProfileSyncService(Profile* profile,
+BraveProfileSyncServiceImpl::BraveProfileSyncServiceImpl(Profile* profile,
                                                  InitParams init_params) :
-    syncer::ProfileSyncService(std::move(init_params)),
+    BraveProfileSyncService(std::move(init_params)),
     brave_sync_client_(BraveSyncClient::Create(this, profile)) {
   brave_sync_words_ = std::string();
   brave_sync_prefs_ =
@@ -197,27 +197,27 @@ BraveProfileSyncService::BraveProfileSyncService(Profile* profile,
   brave_pref_change_registrar_.Init(sync_client_->GetPrefService());
   brave_pref_change_registrar_.Add(
       prefs::kSyncEnabled,
-      base::Bind(&BraveProfileSyncService::OnBraveSyncPrefsChanged,
+      base::Bind(&BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged,
                  base::Unretained(this)));
   brave_pref_change_registrar_.Add(
       prefs::kSyncDeviceName,
-      base::Bind(&BraveProfileSyncService::OnBraveSyncPrefsChanged,
+      base::Bind(&BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged,
                  base::Unretained(this)));
   brave_pref_change_registrar_.Add(
       prefs::kSyncDeviceList,
-      base::Bind(&BraveProfileSyncService::OnBraveSyncPrefsChanged,
+      base::Bind(&BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged,
                  base::Unretained(this)));
   brave_pref_change_registrar_.Add(
       prefs::kSyncBookmarksEnabled,
-      base::Bind(&BraveProfileSyncService::OnBraveSyncPrefsChanged,
+      base::Bind(&BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged,
                  base::Unretained(this)));
   brave_pref_change_registrar_.Add(
       prefs::kSyncSiteSettingsEnabled,
-      base::Bind(&BraveProfileSyncService::OnBraveSyncPrefsChanged,
+      base::Bind(&BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged,
                  base::Unretained(this)));
   brave_pref_change_registrar_.Add(
       prefs::kSyncHistoryEnabled,
-      base::Bind(&BraveProfileSyncService::OnBraveSyncPrefsChanged,
+      base::Bind(&BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged,
                  base::Unretained(this)));
   // TODO(darkdh): find another way to obtain bookmark model
   // change introduced in 83b9663e3814ef7e53af5009d10033b89955db44
@@ -230,7 +230,7 @@ BraveProfileSyncService::BraveProfileSyncService(Profile* profile,
   }
 }
 
-void BraveProfileSyncService::OnNudgeSyncCycle(
+void BraveProfileSyncServiceImpl::OnNudgeSyncCycle(
     RecordsListPtr records) {
   if (!IsBraveSyncEnabled())
     return;
@@ -243,9 +243,9 @@ void BraveProfileSyncService::OnNudgeSyncCycle(
       jslib_const::SyncRecordType_BOOKMARKS, *records);
 }
 
-BraveProfileSyncService::~BraveProfileSyncService() {}
+BraveProfileSyncServiceImpl::~BraveProfileSyncServiceImpl() {}
 
-void BraveProfileSyncService::OnSetupSyncHaveCode(const std::string& sync_words,
+void BraveProfileSyncServiceImpl::OnSetupSyncHaveCode(const std::string& sync_words,
     const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   if (sync_words.empty()) {
@@ -273,7 +273,7 @@ void BraveProfileSyncService::OnSetupSyncHaveCode(const std::string& sync_words,
   brave_sync_words_ = sync_words;
 }
 
-void BraveProfileSyncService::OnSetupSyncNewToSync(
+void BraveProfileSyncServiceImpl::OnSetupSyncNewToSync(
     const std::string& device_name) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
@@ -301,7 +301,7 @@ void BraveProfileSyncService::OnSetupSyncNewToSync(
   brave_sync_prefs_->SetSyncEnabled(true);
 }
 
-void BraveProfileSyncService::OnDeleteDevice(const std::string& device_id) {
+void BraveProfileSyncServiceImpl::OnDeleteDevice(const std::string& device_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto sync_devices = brave_sync_prefs_->GetSyncDevices();
 
@@ -314,7 +314,7 @@ void BraveProfileSyncService::OnDeleteDevice(const std::string& device_id) {
   }
 }
 
-void BraveProfileSyncService::OnResetSync() {
+void BraveProfileSyncServiceImpl::OnResetSync() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto sync_devices = brave_sync_prefs_->GetSyncDevices();
 
@@ -330,7 +330,7 @@ void BraveProfileSyncService::OnResetSync() {
   }
 }
 
-void BraveProfileSyncService::GetSettingsAndDevices(
+void BraveProfileSyncServiceImpl::GetSettingsAndDevices(
     const GetSettingsAndDevicesCallback& callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   auto settings = brave_sync_prefs_->GetBraveSyncSettings();
@@ -338,23 +338,23 @@ void BraveProfileSyncService::GetSettingsAndDevices(
   callback.Run(std::move(settings), std::move(devices));
 }
 
-void BraveProfileSyncService::GetSyncWords() {
+void BraveProfileSyncServiceImpl::GetSyncWords() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   // Ask sync client
   std::string seed = brave_sync_prefs_->GetSeed();
   brave_sync_client_->NeedSyncWords(seed);
 }
 
-std::string BraveProfileSyncService::GetSeed() {
+std::string BraveProfileSyncServiceImpl::GetSeed() {
   return brave_sync_prefs_->GetSeed();
 }
 
-void BraveProfileSyncService::OnSetSyncEnabled(const bool sync_this_device) {
+void BraveProfileSyncServiceImpl::OnSetSyncEnabled(const bool sync_this_device) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   brave_sync_prefs_->SetSyncEnabled(sync_this_device);
 }
 
-void BraveProfileSyncService::OnSetSyncBookmarks(const bool sync_bookmarks) {
+void BraveProfileSyncServiceImpl::OnSetSyncBookmarks(const bool sync_bookmarks) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   syncer::UserSelectableTypeSet type_set =
     ProfileSyncService::GetUserSettings()->GetSelectedTypes();
@@ -367,27 +367,27 @@ void BraveProfileSyncService::OnSetSyncBookmarks(const bool sync_bookmarks) {
     brave_sync_prefs_->SetSyncBookmarksEnabled(sync_bookmarks);
 }
 
-void BraveProfileSyncService::OnSetSyncBrowsingHistory(
+void BraveProfileSyncServiceImpl::OnSetSyncBrowsingHistory(
     const bool sync_browsing_history) {
   brave_sync_prefs_->SetSyncHistoryEnabled(sync_browsing_history);
 }
 
-void BraveProfileSyncService::OnSetSyncSavedSiteSettings(
+void BraveProfileSyncServiceImpl::OnSetSyncSavedSiteSettings(
     const bool sync_saved_site_settings) {
   brave_sync_prefs_->SetSyncSiteSettingsEnabled(sync_saved_site_settings);
 }
 
-void BraveProfileSyncService::BackgroundSyncStarted(bool startup) {
+void BraveProfileSyncServiceImpl::BackgroundSyncStarted(bool startup) {
 }
 
-void BraveProfileSyncService::BackgroundSyncStopped(bool shutdown) {
+void BraveProfileSyncServiceImpl::BackgroundSyncStopped(bool shutdown) {
 }
 
-void BraveProfileSyncService::OnSyncDebug(const std::string& message) {
+void BraveProfileSyncServiceImpl::OnSyncDebug(const std::string& message) {
   NotifyLogMessage(message);
 }
 
-void BraveProfileSyncService::OnSyncSetupError(const std::string& error) {
+void BraveProfileSyncServiceImpl::OnSyncSetupError(const std::string& error) {
   if (brave_sync_initializing_) {
     brave_sync_prefs_->Clear();
     brave_sync_initializing_ = false;
@@ -395,7 +395,7 @@ void BraveProfileSyncService::OnSyncSetupError(const std::string& error) {
   NotifySyncSetupError(error);
 }
 
-void BraveProfileSyncService::OnGetInitData(const std::string& sync_version) {
+void BraveProfileSyncServiceImpl::OnGetInitData(const std::string& sync_version) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   Uint8Array seed;
@@ -431,7 +431,7 @@ void BraveProfileSyncService::OnGetInitData(const std::string& sync_version) {
                                         brave_sync_words_);
 }
 
-void BraveProfileSyncService::OnSaveInitData(const Uint8Array& seed,
+void BraveProfileSyncServiceImpl::OnSaveInitData(const Uint8Array& seed,
                                         const Uint8Array& device_id) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!brave_sync_initialized_);
@@ -470,7 +470,7 @@ void BraveProfileSyncService::OnSaveInitData(const Uint8Array& seed,
   brave_sync_initializing_ = false;
 }
 
-void BraveProfileSyncService::OnSyncReady() {
+void BraveProfileSyncServiceImpl::OnSyncReady() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   const std::string bookmarks_base_order =
     brave_sync_prefs_->GetBookmarksBaseOrder();
@@ -501,7 +501,7 @@ void BraveProfileSyncService::OnSyncReady() {
   }
 }
 
-syncer::ModelTypeSet BraveProfileSyncService::GetPreferredDataTypes() const {
+syncer::ModelTypeSet BraveProfileSyncServiceImpl::GetPreferredDataTypes() const {
   // Force DEVICE_INFO type to have nudge cycle each time to fetch
   // Brave sync devices.
   // Will be picked up by ProfileSyncService::ConfigureDataTypeManager
@@ -509,7 +509,7 @@ syncer::ModelTypeSet BraveProfileSyncService::GetPreferredDataTypes() const {
       { syncer::DEVICE_INFO });
 }
 
-void BraveProfileSyncService::OnGetExistingObjects(
+void BraveProfileSyncServiceImpl::OnGetExistingObjects(
     const std::string& category_name,
     std::unique_ptr<RecordsList> records,
     const base::Time &last_record_time_stamp,
@@ -533,7 +533,7 @@ void BraveProfileSyncService::OnGetExistingObjects(
   }
 }
 
-void BraveProfileSyncService::OnResolvedSyncRecords(
+void BraveProfileSyncServiceImpl::OnResolvedSyncRecords(
     const std::string& category_name,
     std::unique_ptr<RecordsList> records) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -552,15 +552,15 @@ void BraveProfileSyncService::OnResolvedSyncRecords(
   }
 }
 
-void BraveProfileSyncService::OnDeletedSyncUser() {
+void BraveProfileSyncServiceImpl::OnDeletedSyncUser() {
   NOTIMPLEMENTED();
 }
 
-void BraveProfileSyncService::OnDeleteSyncSiteSettings()  {
+void BraveProfileSyncServiceImpl::OnDeleteSyncSiteSettings()  {
   NOTIMPLEMENTED();
 }
 
-void BraveProfileSyncService::OnSaveBookmarksBaseOrder(
+void BraveProfileSyncServiceImpl::OnSaveBookmarksBaseOrder(
     const std::string& order) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK(!order.empty());
@@ -568,11 +568,11 @@ void BraveProfileSyncService::OnSaveBookmarksBaseOrder(
   OnSyncReady();
 }
 
-void BraveProfileSyncService::OnSyncWordsPrepared(const std::string& words) {
+void BraveProfileSyncServiceImpl::OnSyncWordsPrepared(const std::string& words) {
   NotifyHaveSyncWords(words);
 }
 
-int BraveProfileSyncService::GetDisableReasons() const {
+int BraveProfileSyncServiceImpl::GetDisableReasons() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // legacy sync only support bookmark sync so we have to wait for migration
@@ -584,39 +584,39 @@ int BraveProfileSyncService::GetDisableReasons() const {
   return ProfileSyncService::GetDisableReasons();
 }
 
-CoreAccountInfo BraveProfileSyncService::GetAuthenticatedAccountInfo() const {
+CoreAccountInfo BraveProfileSyncServiceImpl::GetAuthenticatedAccountInfo() const {
   return GetDummyAccountInfo();
 }
 
-bool BraveProfileSyncService::IsAuthenticatedAccountPrimary() const {
+bool BraveProfileSyncServiceImpl::IsAuthenticatedAccountPrimary() const {
   return true;
 }
 
-void BraveProfileSyncService::Shutdown() {
+void BraveProfileSyncServiceImpl::Shutdown() {
   SignalWaitableEvent();
   syncer::ProfileSyncService::Shutdown();
 }
 
-void BraveProfileSyncService::NotifySyncSetupError(const std::string& error) {
+void BraveProfileSyncServiceImpl::NotifySyncSetupError(const std::string& error) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : BraveSyncService::observers_)
     observer.OnSyncSetupError(this, error);
 }
 
-void BraveProfileSyncService::NotifySyncStateChanged() {
+void BraveProfileSyncServiceImpl::NotifySyncStateChanged() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : BraveSyncService::observers_)
     observer.OnSyncStateChanged(this);
 }
 
-void BraveProfileSyncService::NotifyHaveSyncWords(
+void BraveProfileSyncServiceImpl::NotifyHaveSyncWords(
     const std::string& sync_words) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   for (auto& observer : BraveSyncService::observers_)
     observer.OnHaveSyncWords(this, sync_words);
 }
 
-void BraveProfileSyncService::ResetSyncInternal() {
+void BraveProfileSyncServiceImpl::ResetSyncInternal() {
   brave_sync_prefs_->SetPrevSeed(brave_sync_prefs_->GetSeed());
 
   brave_sync_prefs_->Clear();
@@ -627,7 +627,7 @@ void BraveProfileSyncService::ResetSyncInternal() {
   brave_sync_prefs_->SetSyncEnabled(false);
 }
 
-void BraveProfileSyncService::SetPermanentNodesOrder(
+void BraveProfileSyncServiceImpl::SetPermanentNodesOrder(
     const std::string& base_order) {
   DCHECK(model_);
   DCHECK(!base_order.empty());
@@ -646,7 +646,7 @@ void BraveProfileSyncService::SetPermanentNodesOrder(
 }
 
 
-void BraveProfileSyncService::FetchSyncRecords(const bool bookmarks,
+void BraveProfileSyncServiceImpl::FetchSyncRecords(const bool bookmarks,
                                           const bool history,
                                           const bool preferences,
                                           int max_records) {
@@ -676,7 +676,7 @@ void BraveProfileSyncService::FetchSyncRecords(const bool bookmarks,
     max_records);
 }
 
-void BraveProfileSyncService::SendCreateDevice() {
+void BraveProfileSyncServiceImpl::SendCreateDevice() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   std::string device_name = brave_sync_prefs_->GetThisDeviceName();
@@ -691,7 +691,7 @@ void BraveProfileSyncService::SendCreateDevice() {
       object_id);
 }
 
-void BraveProfileSyncService::SendDeviceSyncRecord(
+void BraveProfileSyncServiceImpl::SendDeviceSyncRecord(
     const int action,
     const std::string& device_name,
     const std::string& device_id,
@@ -706,7 +706,7 @@ void BraveProfileSyncService::SendDeviceSyncRecord(
       SyncRecordType_PREFERENCES, *records);
 }
 
-void BraveProfileSyncService::OnResolvedPreferences(
+void BraveProfileSyncServiceImpl::OnResolvedPreferences(
     const RecordsList& records) {
   const std::string this_device_id = brave_sync_prefs_->GetThisDeviceId();
   bool this_device_deleted = false;
@@ -753,7 +753,7 @@ void BraveProfileSyncService::OnResolvedPreferences(
   }
 }
 
-void BraveProfileSyncService::OnBraveSyncPrefsChanged(const std::string& pref) {
+void BraveProfileSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& pref) {
   if (pref == prefs::kSyncEnabled) {
     brave_sync_client_->OnSyncEnabledChanged();
     if (!brave_sync_prefs_->GetSyncEnabled()) {
@@ -765,25 +765,25 @@ void BraveProfileSyncService::OnBraveSyncPrefsChanged(const std::string& pref) {
 }
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
-BraveSyncClient* BraveProfileSyncService::GetBraveSyncClient() {
+BraveSyncClient* BraveProfileSyncServiceImpl::GetBraveSyncClient() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return brave_sync_client_.get();
 }
 #endif
 
-bool BraveProfileSyncService::IsBraveSyncEnabled() const {
+bool BraveProfileSyncServiceImpl::IsBraveSyncEnabled() const {
   return brave_sync_prefs_->GetSyncEnabled();
 }
 
-bool BraveProfileSyncService::IsBraveSyncInitialized() const {
+bool BraveProfileSyncServiceImpl::IsBraveSyncInitialized() const {
   return brave_sync_initialized_;
 }
 
-bool BraveProfileSyncService::IsBraveSyncConfigured() const {
+bool BraveProfileSyncServiceImpl::IsBraveSyncConfigured() const {
   return brave_sync_configured_;
 }
 
-void BraveProfileSyncService::OnPollSyncCycle(GetRecordsCallback cb,
+void BraveProfileSyncServiceImpl::OnPollSyncCycle(GetRecordsCallback cb,
                                          base::WaitableEvent* wevent) {
   if (!IsBraveSyncEnabled())
     return;
@@ -806,11 +806,16 @@ void BraveProfileSyncService::OnPollSyncCycle(GetRecordsCallback cb,
   FetchSyncRecords(bookmarks, history, preferences, 1000);
 }
 
-void BraveProfileSyncService::SignalWaitableEvent() {
+void BraveProfileSyncServiceImpl::SignalWaitableEvent() {
   if (wevent_) {
     wevent_->Signal();
     wevent_ = nullptr;
   }
+}
+
+BraveSyncService* BraveProfileSyncServiceImpl::GetSyncService() const {
+  return static_cast<BraveSyncService*>(
+      const_cast<BraveProfileSyncServiceImpl*>(this));
 }
 
 }   // namespace brave_sync
