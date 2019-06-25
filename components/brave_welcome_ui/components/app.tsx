@@ -88,11 +88,10 @@ export class WelcomePage extends React.Component<Props, State> {
 
   render () {
     const { welcomeData, actions } = this.props
-    const { currentScreen } = this.state
     return (
       <>
         <BackgroundContainer>
-          <Background position={`-${currentScreen}0%`} style={{ backfaceVisibility: 'hidden' }} />
+          <Background />
         </BackgroundContainer>
         <Page id='welcomePage'>
           <Panel>
