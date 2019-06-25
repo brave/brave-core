@@ -14,12 +14,24 @@ declare_args() {
 
 group("brave") {}
 
+ds_store_file_name = "DS_Store"
+dmg_icon_file_name = "dmg"
+
+if (brave_channel != "") {
+  ds_store_file_name = "DS_Store.$brave_channel"
+  dmg_icon_file_name = "dmg-$brave_channel"
+}
+dmg_background_image = rebase_path("//brave/build/mac/dmg-background.png")
+ds_store = rebase_path("//brave/build/mac/$ds_store_file_name")
+dmg_icon = rebase_path("//brave/build/mac/$dmg_icon_file_name.icns")
+
 if (skip_signing) {
   action("unsigned_dmg") {
     brave_app = "$root_build_dir/$brave_exe"
     output = "$root_out_dir/unsigned_dmg/$brave_dmg"
     script = "//build/gn_run_binary.py"
     shell_script = "//chrome/installer/mac/pkg-dmg"
+
     inputs = [
       script,
       shell_script,
@@ -34,6 +46,10 @@ if (skip_signing) {
       "--volname", "$chrome_product_full_name",
       "--copy", rebase_path(brave_app, root_build_dir),
       "--tempdir", "/tmp",
+      "--mkdir", ".background",
+      "--copy", "$dmg_background_image:/.background/dmg-background.png",
+      "--copy", "$ds_store:/.DS_Store",
+      "--icon", "$dmg_icon",
       "--symlink", "/Applications",
     ]
 
@@ -201,6 +217,10 @@ if (skip_signing) {
       "--volname", "$chrome_product_full_name",
       "--copy", rebase_path(target_sign_app_path, root_build_dir),
       "--tempdir", "/tmp",
+      "--mkdir", ".background",
+      "--copy", "$dmg_background_image:/.background/dmg-background.png",
+      "--copy", "$ds_store:/.DS_Store",
+      "--icon", "$dmg_icon",
       "--symlink", "/Applications",
     ]
 
