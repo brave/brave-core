@@ -1,8 +1,16 @@
 diff --git a/chrome/installer/mac/signing/signing.py b/chrome/installer/mac/signing/signing.py
-index b56853e5e2649328a81a2de20228de5abda08f11..f468b98a93ad85ed72be8ad82a4ee93c90a38d22 100644
+index b56853e5e2649328a81a2de20228de5abda08f11..6874c074dcb51da34d726d895b064800f519136a 100644
 --- a/chrome/installer/mac/signing/signing.py
 +++ b/chrome/installer/mac/signing/signing.py
-@@ -42,7 +42,6 @@ def get_parts(config):
+@@ -12,6 +12,7 @@ import os.path
+ from . import commands
+ from .model import CodeSignOptions, CodeSignedProduct, VerifyOptions
+ 
++from signing_helper import GenerateWidevineSigFile, GetBraveLibraries
+ _PROVISIONPROFILE_EXT = '.provisionprofile'
+ _PROVISIONPROFILE_DEST = 'embedded.provisionprofile'
+ 
+@@ -42,7 +43,6 @@ def get_parts(config):
                  options=CodeSignOptions.RESTRICT,
                  requirements=config.codesign_requirements_outer_app,
                  identifier_requirement=False,
@@ -10,7 +18,7 @@ index b56853e5e2649328a81a2de20228de5abda08f11..f468b98a93ad85ed72be8ad82a4ee93c
                  entitlements='app-entitlements.plist',
                  verify_options=VerifyOptions.DEEP + VerifyOptions.NO_STRICT),
          'framework':
-@@ -84,9 +83,17 @@ def get_parts(config):
+@@ -84,6 +84,12 @@ def get_parts(config):
                  options=CodeSignOptions.RESTRICT +
                  CodeSignOptions.LIBRARY_VALIDATION,
                  verify_options=VerifyOptions.IGNORE_RESOURCES),
@@ -23,11 +31,14 @@ index b56853e5e2649328a81a2de20228de5abda08f11..f468b98a93ad85ed72be8ad82a4ee93c
      }
  
      dylibs = (
-+        'libchallenge_bypass_ristretto.dylib',
-+        'libadblock.dylib',
-         'libEGL.dylib',
-         'libGLESv2.dylib',
-         'libswiftshader_libEGL.dylib',
+@@ -93,6 +99,7 @@ def get_parts(config):
+         'libswiftshader_libGLESv2.dylib',
+         'WidevineCdm/_platform_specific/mac_x64/libwidevinecdm.dylib',
+     )
++    dylibs += GetBraveLibraries()
+     for library in dylibs:
+         library_basename = os.path.basename(library)
+         parts[library_basename] = CodeSignedProduct(
 @@ -143,7 +150,7 @@ def sign_part(paths, config, part):
          part: The |model.CodeSignedProduct| to sign. The product's |path| must
              be in |paths.work|.
@@ -37,13 +48,12 @@ index b56853e5e2649328a81a2de20228de5abda08f11..f468b98a93ad85ed72be8ad82a4ee93c
      if part.sign_with_identifier:
          command.extend(['--identifier', part.identifier])
      reqs = part.requirements_string(config)
-@@ -233,6 +240,9 @@ def sign_chrome(paths, config):
- 
+@@ -234,6 +241,8 @@ def sign_chrome(paths, config):
      # Sign the framework bundle.
      sign_part(paths, config, parts['framework'])
-+    from signing_helper import GenerateWidevineSigFile
+ 
 +    GenerateWidevineSigFile(paths, config, parts['framework'])
 +    sign_part(paths, config, parts['framework'])
- 
      provisioning_profile_basename = config.provisioning_profile_basename
      if provisioning_profile_basename:
+         commands.copy_files(

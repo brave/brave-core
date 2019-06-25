@@ -43,3 +43,7 @@ def GenerateWidevineSigFile(paths, config, part):
 
         run_command(command)
         assert file_exists(sig_target_file), 'No sig file'
+
+
+def GetBraveLibraries():
+    return ('libchallenge_bypass_ristretto.dylib', 'libadblock.dylib',)
