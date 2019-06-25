@@ -1,0 +1,13 @@
+diff --git a/components/sync/syncable/write_transaction.h b/components/sync/syncable/write_transaction.h
+index 3d0a353ac09b1dcbfab0d5afc3345d78eb4ee8bd..77e5c7acf90a52ccd59ab8ef500dda2673818e99 100644
+--- a/components/sync/syncable/write_transaction.h
++++ b/components/sync/syncable/write_transaction.h
+@@ -62,7 +62,7 @@ class WriteTransaction : public BaseTransaction {
+   void SetTransaction(syncable::WriteTransaction* trans) {
+     transaction_ = trans;
+   }
+-
++  BRAVE_SYNC_ATTACHABLE_WRITE_TRANSACTION_H
+  private:
+   void* operator new(size_t size);  // Transaction is meant for stack use only.
+ 
