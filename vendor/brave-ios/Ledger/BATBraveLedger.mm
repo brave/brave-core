@@ -438,6 +438,13 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return [[BATLedgerDatabase publishersWithActivityFromOffset:0 limit:1 filter:filter] firstObject];
 }
 
+- (void)refreshPublisherWithId:(NSString *)publisherId completion:(void (^)(BOOL verified))completion
+{
+  ledger->RefreshPublisher(std::string(publisherId.UTF8String), ^(bool verified) {
+    completion(verified);
+  });
+}
+
 #pragma mark - Tips
 
 - (void)listRecurringTips:(void (^)(NSArray<BATPublisherInfo *> *))completion
