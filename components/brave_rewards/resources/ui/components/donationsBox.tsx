@@ -199,7 +199,7 @@ class DonationBox extends React.Component<Props, State> {
           recurringList && recurringList.length > 0
           ? <List title={getLocale('donationNextDate')}>
             <NextContribution>
-              {new Date(reconcileStamp * 1000).toLocaleDateString()}
+              {new Intl.DateTimeFormat('default', { month: 'short', day: 'numeric' }).format(reconcileStamp * 1000)}
             </NextContribution>
           </List>
           : null
