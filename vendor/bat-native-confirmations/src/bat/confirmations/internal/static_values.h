@@ -15,6 +15,11 @@ namespace confirmations {
 #define BAT_ADS_STAGING_SERVER "https://ads-serve.bravesoftware.com"
 #define BAT_ADS_PRODUCTION_SERVER "https://ads-serve.brave.com"
 
+#define BAT_LEDGER_STAGING_SERVER "https://ledger-staging.mercury.basicattentiontoken.org"  // NOLINT
+#define BAT_LEDGER_PRODUCTION_SERVER "https://ledger.mercury.basicattentiontoken.org"  // NOLINT
+
+static const int kNextPaymentDay = 5;
+
 static const int kMinimumUnblindedTokens = 20;
 static const int kMaximumUnblindedTokens = 50;
 

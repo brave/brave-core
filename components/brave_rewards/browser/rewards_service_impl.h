@@ -367,8 +367,8 @@ class RewardsServiceImpl : public RewardsService,
   void SetCatalogIssuers(const std::string& json) override;
   void ConfirmAd(const std::string& json) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
-  void GetTransactionHistoryForThisCycle(
-      GetTransactionHistoryForThisCycleCallback callback) override;
+  void GetTransactionHistory(
+      GetTransactionHistoryCallback callback) override;
   void ConfirmationsTransactionHistoryDidChange() override;
 
   void OnExcludedSitesChanged(const std::string& publisher_id,
@@ -451,8 +451,8 @@ class RewardsServiceImpl : public RewardsService,
   void ShowNotificationTipsPaid(bool ac_enabled);
 
   // Mojo Proxy methods
-  void OnGetTransactionHistoryForThisCycle(
-      GetTransactionHistoryForThisCycleCallback callback,
+  void OnGetTransactionHistory(
+      GetTransactionHistoryCallback callback,
       const std::string& transactions);
   void OnGetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback,

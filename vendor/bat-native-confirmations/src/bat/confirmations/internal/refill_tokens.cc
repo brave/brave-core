@@ -192,7 +192,8 @@ void RefillTokens::OnGetSignedTokens(
   if (response_status_code != 200) {
     BLOG(ERROR) << "Failed to get signed tokens";
 
-    if (response_status_code == 202) {  // Tokens are not ready yet
+    if (response_status_code == 202) {
+      // Tokens are not ready yet
       confirmations_->StartRetryingToGetRefillSignedTokens(
           kRetryGettingRefillSignedTokensAfterSeconds);
     }
