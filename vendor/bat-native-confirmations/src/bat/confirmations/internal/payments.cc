@@ -9,6 +9,7 @@
 #include "bat/confirmations/internal/static_values.h"
 #include "bat/confirmations/internal/logging.h"
 #include "bat/confirmations/internal/confirmations_impl.h"
+#include "bat/confirmations/internal/time.h"
 
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
@@ -151,7 +152,7 @@ base::Time Payments::CalculateNextPaymentDate(
       month++;
     } else {
       auto next_token_redemption_date =
-          base::Time::FromDoubleT(next_token_redemption_date_in_seconds);
+          Time::FromDoubleT(next_token_redemption_date_in_seconds);
 
       base::Time::Exploded next_token_redemption_date_exploded;
       next_token_redemption_date.LocalExplode(
