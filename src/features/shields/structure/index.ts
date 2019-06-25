@@ -71,10 +71,14 @@ export const SiteOverview = styled<SiteOverviewProps, 'div'>('div')`
   padding: 32px 0;
 `
 
-export const TotalBlockedStats = styled<{}, 'section'>('section')`
+interface TotalBlockedStatsProps {
+  size?: 'large'
+}
+
+export const TotalBlockedStats = styled<TotalBlockedStatsProps, 'section'>('section')`
   box-sizing: border-box;
   display: grid;
-  grid-template-columns: 80px 140px;
+  grid-template-columns: ${p => p.size === 'large' ? '80px 210px' : '80px 140px'};
   align-items: center;
   margin: 0px auto 5px;
   grid-gap: 10px;
@@ -85,7 +89,7 @@ export const SiteInfo = styled<{}, 'div'>('div')`
   display: grid;
   grid-template-columns: auto 1fr;
   align-items: center;
-  margin: 0px auto 5px;
+  margin: 0px auto 7px;
   gap: 8px;
 `
 
@@ -122,8 +126,30 @@ export const BlockedInfoRow = styled<BlockedInfoRowProps, 'div'>('div')`
   }
 `
 
+export const BlockedInfoRowDetails = styled<BlockedInfoRowProps, 'details'>('details')`
+  box-sizing: border-box;
+`
+
+export const BlockedInfoRowSummary = styled(BlockedInfoRow.withComponent('summary'))`
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:focus {
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-offset: -3px;
+    outline-width: 2px;
+  }
+`
+
 export const BlockedInfoRowSingle = styled(BlockedInfoRow)`
   padding: 8px 24px 8px 74px;
+  cursor: default;
+  grid-template-columns: 1fr;
+`
+
+export const BlockedInfoRowSingleText = styled(BlockedInfoRow)`
+  padding: 14px 24px 14px 84px;
   cursor: default;
   grid-template-columns: 1fr;
 `
@@ -133,8 +159,22 @@ export const BlockedInfoRowForSelect = styled(BlockedInfoRow)`
   padding-right: 24px;
 `
 
+export const BlockedInfoRowForSelectSummary = styled(BlockedInfoRowForSelect.withComponent('summary'))`
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  &:focus {
+    outline-color: ${p => p.theme.color.brandBrave};
+    outline-offset: -3px;
+    outline-width: 2px;
+  }
+
+  box-sizing: border-box;
+`
+
 interface BlockedInfoRowDataProps {
-  disabled: boolean
+  disabled?: boolean
 }
 
 export const BlockedInfoRowData = styled<BlockedInfoRowDataProps, 'div'>('div')`
@@ -194,6 +234,9 @@ export const BlockedInfoRowDataForSelect = styled(BlockedInfoRowData)`
  */
 export const MainFooter = styled<{}, 'div'>('div')`
   box-sizing: border-box;
+  position: relative;
+  display: grid;
+  grid-gap: 16px;
   padding: 24px;
 `
 
@@ -246,10 +289,14 @@ export const BlockedListSummary = styled<BlockedListSummaryProps, 'summary'>('su
   }
 `
 
-export const BlockedListStatic = styled<{}, 'ul'>('ul')`
+interface BlockedListStaticProps {
+  fixedHeight?: boolean
+}
+
+export const BlockedListStatic = styled<BlockedListStaticProps, 'ul'>('ul')`
   box-sizing: border-box;
   list-style-type: none;
-  height: 328px;
+  height: ${p => p.fixedHeight && '358px'};
   overflow: auto;
   padding: 0 0 0 24px;
   margin: 0;
@@ -386,4 +433,57 @@ export const DisabledContentView = styled<{}, 'section'>('section')`
   align-items: center;
   max-width: 80%;
   margin: 5px auto 8px;
+`
+
+/**
+ * Static panel (learn more overlay)
+ */
+export const StaticHeader = styled<{}, 'header'>('header')`
+  padding: 0 20px 10px 24px;
+  line-height: 18px;
+`
+
+export const StaticResourcesControls = styled<{}, 'div'>('div')`
+  box-sizing: border-box;
+  position: relative;
+  height: 216px;
+  overflow: auto;
+`
+
+export const StaticResourcesContainer = styled<{}, 'div'>('div')`
+  box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+`
+
+/**
+ * Modals and overlays
+ */
+export const Overlay = styled<{}, 'div'>('div')`
+  box-sizing: border-box;
+  position: absolute;
+  z-index: 5;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 44px;
+  background-color: ${p => p.theme.color.modalOverlayBackground}
+`
+export const WarningText = styled<{}, 'p'>('p')`
+  margin: 0 0 24px;
+  line-height: 18px;
+`
+
+export const WarningModal = styled<{}, 'div'>('div')`
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  min-height: 100px;
 `

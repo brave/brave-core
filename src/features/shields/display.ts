@@ -136,13 +136,14 @@ export const Link = styled<{}, 'button'>('button')`
   font-size: 13px;
   font-weight: 500;
   display: inline-block;
+  text-align: left;
+  width: fit-content;
 
   &:hover {
     text-decoration: underline;
   }
 
   &:focus {
-    outline-offset: 6px;
     outline-color: ${p => p.theme.color.brandBrave};
     outline-width: 2px;
   }

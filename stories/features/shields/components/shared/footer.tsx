@@ -4,20 +4,25 @@
 
 import * as React from 'react'
 
-import { MainFooter, Link } from '../../../../src/features/shields'
+import { MainFooter, Link } from '../../../../../src/features/shields'
 
 // Fake data
-import { getLocale } from '../fakeLocale'
+import { getLocale } from '../../fakeLocale'
 
 interface Props {
   isBlockedListOpen: boolean
+  advancedView: boolean
+  fakeOnChangeAdvancedView: () => void
 }
 
 export default class Footer extends React.PureComponent<Props, {}> {
   render () {
-    const { isBlockedListOpen } = this.props
+    const { isBlockedListOpen, advancedView, fakeOnChangeAdvancedView } = this.props
     return (
       <MainFooter>
+        <Link disabled={isBlockedListOpen} onClick={fakeOnChangeAdvancedView}>
+          {advancedView ? getLocale('simpleView') : getLocale('advancedView')}
+        </Link>
         <Link
           disabled={isBlockedListOpen}
         >

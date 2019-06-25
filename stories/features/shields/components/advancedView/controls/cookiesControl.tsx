@@ -5,10 +5,10 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { BlockedInfoRowSingle, SelectBox } from '../../../../../src/features/shields'
+import { BlockedInfoRowSingle, SelectBox } from '../../../../../../src/features/shields'
 
 // Fake data
-import { getLocale } from '../../fakeLocale'
+import { getLocale } from '../../../fakeLocale'
 
 interface Props {
   isBlockedListOpen: boolean

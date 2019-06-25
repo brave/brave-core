@@ -11,17 +11,17 @@ import {
   ArrowDownIcon,
   BlockedInfoRowStats,
   SelectBox
-} from '../../../../../src/features/shields'
+} from '../../../../../../src/features/shields'
 
 // Group Components
-import StaticList from '../list/static'
+import StaticList from '../overlays/staticOverlay'
 
 // Fake data
-import { getLocale } from '../../fakeLocale'
-import data from '../../fakeData'
+import { getLocale } from '../../../fakeLocale'
+import data from '../../../fakeData'
 
 // Helpers
-import { getTabIndexValueBasedOnProps } from '../../helpers'
+import { getTabIndexValueBasedOnProps } from '../../../helpers'
 
 interface Props {
   favicon: string

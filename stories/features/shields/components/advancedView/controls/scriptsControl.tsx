@@ -13,17 +13,17 @@ import {
   BlockedInfoRowText,
   Toggle,
   LinkAction
-} from '../../../../../src/features/shields'
+} from '../../../../../../src/features/shields'
 
 // Group Components
-import NoScriptDetails from '../list/noScriptDetails'
+import NoScriptOverlay from '../overlays/noScriptOverlay'
 
 // Fake data
-import { getLocale } from '../../fakeLocale'
-import data from '../../fakeData'
+import { getLocale } from '../../../fakeLocale'
+import data from '../../../fakeData'
 
 // Helpers
-import { getTabIndexValueBasedOnProps } from '../../helpers'
+import { getTabIndexValueBasedOnProps } from '../../../helpers'
 
 interface Props {
   favicon: string
@@ -108,7 +108,7 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
         </BlockedInfoRow>
         {
           scriptsBlockedOpen &&
-            <NoScriptDetails
+            <NoScriptOverlay
               favicon={favicon}
               hostname={hostname}
               name={getLocale('scriptsOnThisSite')}

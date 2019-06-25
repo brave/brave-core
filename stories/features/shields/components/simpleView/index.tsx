@@ -4,13 +4,15 @@
 
 import * as React from 'react'
 
+// Feature-specific components
+import { ShieldsPanel } from '../../../../../src/features/shields'
+
 // Components group
-import SimpleView from './components/simpleView'
-import AdvancedView from './components/advancedView'
+import Header from './header'
+import Footer from '../shared/footer'
 
 interface Props {
   enabled: boolean
-  firstAccess: boolean
   hostname: string
   advancedView: boolean
   favicon: string
@@ -21,69 +23,54 @@ interface Props {
   fakeOnChangeShieldsEnabled: () => void
   fakeOnChangeAdvancedView: () => void
   fakeOnChangeReadOnlyView: () => void
-  fakeToggleFirstAccess: () => void
 }
 
 interface State {
   isBlockedListOpen: boolean
 }
 
-export default class Shields extends React.PureComponent<Props, State> {
+export default class ShieldsSimpleView extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
     this.state = { isBlockedListOpen: false }
   }
-
   setBlockedListOpen = () => {
     this.setState({ isBlockedListOpen: !this.state.isBlockedListOpen })
   }
-
   render () {
     const {
       enabled,
-      firstAccess,
-      hostname,
       favicon,
+      hostname,
       adsTrackersBlocked,
       httpsUpgrades,
       scriptsBlocked,
       fingerprintingBlocked,
       fakeOnChangeShieldsEnabled,
-      fakeOnChangeAdvancedView,
       fakeOnChangeReadOnlyView,
-      fakeToggleFirstAccess
+      fakeOnChangeAdvancedView
     } = this.props
-    const { advancedView } = this.props
-    return advancedView
-      ? (
-        <AdvancedView
+    const { isBlockedListOpen } = this.state
+    return (
+      <ShieldsPanel style={{ width: '370px' }}>
+        <Header
           enabled={enabled}
-          firstAccess={firstAccess}
-          hostname={hostname}
-          advancedView={advancedView}
           favicon={favicon}
+          hostname={hostname}
+          isBlockedListOpen={isBlockedListOpen}
           adsTrackersBlocked={adsTrackersBlocked}
           httpsUpgrades={httpsUpgrades}
           scriptsBlocked={scriptsBlocked}
           fingerprintingBlocked={fingerprintingBlocked}
           fakeOnChangeShieldsEnabled={fakeOnChangeShieldsEnabled}
-          fakeOnChangeAdvancedView={fakeOnChangeAdvancedView}
-          fakeToggleFirstAccess={fakeToggleFirstAccess}
-        />
-      ) : (
-        <SimpleView
-          enabled={enabled}
-          hostname={hostname}
-          advancedView={advancedView}
-          favicon={favicon}
-          adsTrackersBlocked={adsTrackersBlocked}
-          httpsUpgrades={httpsUpgrades}
-          scriptsBlocked={scriptsBlocked}
-          fingerprintingBlocked={fingerprintingBlocked}
-          fakeOnChangeShieldsEnabled={fakeOnChangeShieldsEnabled}
-          fakeOnChangeAdvancedView={fakeOnChangeAdvancedView}
           fakeOnChangeReadOnlyView={fakeOnChangeReadOnlyView}
         />
-      )
+        <Footer
+          advancedView={false}
+          isBlockedListOpen={isBlockedListOpen}
+          fakeOnChangeAdvancedView={fakeOnChangeAdvancedView}
+        />
+      </ShieldsPanel>
+    )
   }
 }

@@ -6,17 +6,17 @@
 import * as React from 'react'
 
 // Components
-import NoScriptList from './noScriptList'
+import NoScriptList from '../../shared/resourcesBlockedList/scriptResourcesList'
 
 // Types
-import { NoScriptInfoInterface } from '../../types'
+import { NoScriptInfoInterface } from '../../../types'
 
 // Helpers
 import {
   generateNoScriptInfoDataStructure,
   filterNoScriptInfoByBlockedState,
   getBlockAllText
-} from '../../helpers'
+} from '../../../helpers'
 
 import {
   BlockedListHeader,
@@ -33,10 +33,10 @@ import {
   BlockedListItemHeaderStats,
   BlockedListItemHeaderText,
   ShieldsButton
-} from '../../../../../src/features/shields'
+} from '../../../../../../src/features/shields'
 
 // Helpers
-import { getLocale } from '../../fakeLocale'
+import { getLocale } from '../../../fakeLocale'
 
 interface Props {
   favicon: string
@@ -88,7 +88,7 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
             <ArrowUpIcon />
             <BlockedListSummaryText>{getLocale('scriptsOnThisSite')}</BlockedListSummaryText>
           </BlockedListSummary>
-          <BlockedListDynamic>
+          <BlockedListDynamic fixedHeight={true}>
           {
             this.blockedScriptsLength > 0 && (
               <>

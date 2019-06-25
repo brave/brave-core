@@ -13,6 +13,7 @@ import {
   SiteInfo,
   MainToggleHeading,
   MainToggleText,
+  Link,
   ToggleStateText,
   Favicon,
   SiteInfoText,
@@ -22,10 +23,10 @@ import {
   ShieldIcon,
   DisabledContentText,
   Toggle
-} from '../../../../src/features/shields'
+ } from '../../../../../src/features/shields'
 
 // Fake data
-import { getLocale } from '../fakeLocale'
+import { getLocale } from '../../fakeLocale'
 
 interface Props {
   enabled: boolean
@@ -36,7 +37,8 @@ interface Props {
   scriptsBlocked: number
   httpsUpgrades: number
   fingerprintingBlocked: number
-  fakeOnChange: () => void
+  fakeOnChangeShieldsEnabled: () => void
+  fakeOnChangeReadOnlyView: () => void
 }
 
 export default class Header extends React.PureComponent<Props, {}> {
@@ -49,27 +51,15 @@ export default class Header extends React.PureComponent<Props, {}> {
     return total > 99 ? '99+' : total
   }
 
-  get totalBlockedString () {
-    const { adsTrackersBlocked, scriptsBlocked, fingerprintingBlocked, httpsUpgrades } = this.props
-    const blockedItems = adsTrackersBlocked + scriptsBlocked + fingerprintingBlocked
-
-    if (blockedItems === 0 && httpsUpgrades === 0) {
-      return `${getLocale('itemsBlocked')} ${getLocale('and')} ${getLocale('connectionsUpgraded')}`
-    } else if (blockedItems === 1 && httpsUpgrades === 0) {
-      return getLocale('itemBlocked')
-    } else if (blockedItems === 0 && httpsUpgrades === 1) {
-      return getLocale('connectionUpgradedHTTPSCapital')
-    } else if (blockedItems > 1 && httpsUpgrades === 0) {
-      return getLocale('itemsBlocked')
-    } else if (blockedItems === 0 && httpsUpgrades > 1) {
-      return getLocale('connectionsUpgradedHTTPSCapital')
-    } else {
-      return `${getLocale('itemsBlocked')} ${getLocale('and')} ${getLocale('connectionsUpgraded')}`
-    }
-  }
-
   render () {
-    const { fakeOnChange, enabled, favicon, hostname, isBlockedListOpen } = this.props
+    const {
+      enabled,
+      favicon,
+      hostname,
+      isBlockedListOpen,
+      fakeOnChangeReadOnlyView,
+      fakeOnChangeShieldsEnabled
+    } = this.props
     return (
       <ShieldsHeader status={enabled ? 'enabled' : 'disabled'}>
         <MainToggle status={enabled ? 'enabled' : 'disabled'}>
@@ -83,7 +73,7 @@ export default class Header extends React.PureComponent<Props, {}> {
             </MainToggleHeading>
             {enabled ? <MainToggleText>{getLocale('enabledMessage')}</MainToggleText> : null}
           </div>
-          <Toggle size='large' checked={enabled} onChange={fakeOnChange} disabled={isBlockedListOpen} />
+          <Toggle size='large' checked={enabled} onChange={fakeOnChangeShieldsEnabled} disabled={isBlockedListOpen} />
         </MainToggle>
         <SiteOverview status={enabled ? 'enabled' : 'disabled'}>
           <SiteInfo>
@@ -93,10 +83,11 @@ export default class Header extends React.PureComponent<Props, {}> {
           {
             enabled
             ? (
-              <TotalBlockedStats>
+              <TotalBlockedStats size='large'>
                 <TotalBlockedStatsNumber>{this.totalBlocked}</TotalBlockedStatsNumber>
                 <TotalBlockedStatsText>
-                  {this.totalBlockedString}
+                  {`${getLocale('blockedResoucesExplanation')} `}
+                  <Link onClick={fakeOnChangeReadOnlyView}>{getLocale('learnMore')}</Link>
                 </TotalBlockedStatsText>
               </TotalBlockedStats>
             )

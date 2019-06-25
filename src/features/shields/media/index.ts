@@ -4,7 +4,7 @@
 
 import styled from '../../../theme'
 import { StyledComponentClass } from 'styled-components'
-import { CaratStrongDownIcon, ShieldAlertIcon } from '../../../components/icons'
+import { CaratStrongDownIcon, ShieldAlertIcon, AlertMessageIcon } from '../../../components/icons'
 
 import { ComponentType } from 'react'
 
@@ -26,11 +26,21 @@ export const ShieldIcon = styled(ShieldAlertIcon as ComponentType)`
   color: ${p => p.theme.color.lionLogo};
 `
 
+export const WarningIcon = styled(AlertMessageIcon as ComponentType)`
+  box-sizing: border-box;
+  display: block;
+  width: 48px;
+  height: auto;
+  margin: 0 auto 12px;
+  color: ${p => p.theme.color.lionLogo};
+`
+
 export const ArrowDownIcon = styled(CaratStrongDownIcon as ComponentType)`
   width: 24px;
   height: 24px;
   padding: 4px;
   color: ${p => p.theme.color.text};
+  pointer-events: none;
 
   &:focus {
     outline-width: 2px;

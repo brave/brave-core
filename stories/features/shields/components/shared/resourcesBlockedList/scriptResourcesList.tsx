@@ -11,10 +11,10 @@ import {
   BlockedListItemSummary,
   BlockedListItemWithOptions,
   LinkAction
-} from '../../../../../src/features/shields'
+} from '../../../../../../src/features/shields'
 
 // Types
-import { NoScriptInfoInterface } from '../../types'
+import { NoScriptInfoInterface } from '../../../types'
 
 // Helpers
 import {
@@ -23,7 +23,7 @@ import {
   getHostname,
   checkEveryItemIsBlockedOrAllowed,
   stripProtocolFromUrl
-} from '../../helpers'
+} from '../../../helpers'
 
 interface Props {
   noScriptInfo: Array<any>

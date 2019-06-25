@@ -11,6 +11,7 @@ export interface SelectBoxProps {
   multiple?: boolean
   autoFocus?: boolean
   disabled?: boolean
+  readOnly?: boolean
   value?: string
   onChange?: (e: any) => void
   children: React.ReactNode
@@ -32,6 +33,7 @@ export const SelectBox = styled<SelectBoxProps, 'select'>('select')`
   line-height: 18px;
   font-family: ${p => p.theme.fontFamily.heading};
   border: 1px solid ${p => p.theme.color.inputBorder};
+  pointer-events: ${p => p.readOnly && 'none'};
   background: url(${caratUrl}) 97% / 16px no-repeat transparent;
   /* avoid text overflow w/ carat */
   -webkit-padding-start: 10px;

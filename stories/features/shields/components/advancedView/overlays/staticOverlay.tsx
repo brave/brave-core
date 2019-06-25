@@ -7,9 +7,8 @@ import * as React from 'react'
 import {
   BlockedListHeader,
   BlockedListSummary,
-  BlockedListContent,
   BlockedListStatic,
-  BlockedListItem,
+  BlockedListContent,
   BlockedListFooter,
   ArrowUpIcon,
   Favicon,
@@ -17,13 +16,13 @@ import {
   BlockedInfoRowStats,
   BlockedListSummaryText,
   ShieldsButton
-} from '../../../../../src/features/shields'
+} from '../../../../../../src/features/shields'
 
-// Helpers
-import { stripProtocolFromUrl } from '../../helpers'
+// Group components
+import StaticResourcesList from '../../shared/resourcesBlockedList/staticResourcesList'
 
 // Fake data
-import { getLocale } from '../../fakeLocale'
+import { getLocale } from '../../../fakeLocale'
 
 interface Props {
   favicon: string
@@ -46,12 +45,12 @@ export default class StaticList extends React.PureComponent<Props, {}> {
         <details open={true}>
           <BlockedListSummary onClick={onClose}>
           <ArrowUpIcon />
-          <BlockedInfoRowStats>{stats > 99 ? '99+' : stats}</BlockedInfoRowStats>
-          <BlockedListSummaryText>{name}</BlockedListSummaryText>
-          </BlockedListSummary>
-          <BlockedListStatic>
-            {list.map((item, index) => <BlockedListItem key={index}>{stripProtocolFromUrl(item)}</BlockedListItem>)}
-          </BlockedListStatic>
+            <BlockedInfoRowStats>{stats > 99 ? '99+' : stats}</BlockedInfoRowStats>
+            <BlockedListSummaryText>{name}</BlockedListSummaryText>
+            </BlockedListSummary>
+            <BlockedListStatic fixedHeight={true}>
+              <StaticResourcesList list={list} />
+            </BlockedListStatic>
         </details>
         <BlockedListFooter>
           <ShieldsButton level='primary' type='accent' onClick={onClose} text={getLocale('goBack')} />

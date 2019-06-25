@@ -44,7 +44,17 @@ const locale: { [key: string]: string } = {
   cancel: 'Cancel',
   goBack: 'Go back',
   applyOnce: 'Apply once',
-  changeDefaults: 'Change global shield defaults'
+  learnMore: 'Learn more',
+  changeDefaults: 'Change global shield defaults',
+  advancedView: 'Advanced View',
+  simpleView: 'Simple View',
+  // Read only view
+  shieldsExplanation: 'Sites often include cookies and scripts which try to identify you and your deviec (often embedded into ads). They want to work out who you are and follow you accross the web — tracking what you do on every site. Brave blocks these things so that you can browse without being followed around.',
+  // Simple view
+  blockedResoucesExplanation: 'Cross-site trackers and other creepy things blocked',
+  // Web Compat Overlay
+  webCompatWarning: 'Changing Shield settings in this view will affect web compatibility on this site.',
+  gotIt: 'Got it'
 }
 
 export default locale

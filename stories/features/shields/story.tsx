@@ -14,6 +14,7 @@ const favicon = require('../../assets/img/fake_favicon.png')
 
 // Components
 import Shields from './index'
+import ShieldsReadOnlyView from './components/readOnlyView'
 
 // Themes
 const themes = [shieldsLightTheme, shieldsDarkTheme]
@@ -21,22 +22,47 @@ const themes = [shieldsLightTheme, shieldsDarkTheme]
 storiesOf('Feature Components/Shields', module)
   .addDecorator(withThemesProvider(themes))
   .addDecorator(withKnobs)
-  .add('Enabled', withState({ enabled: true }, (store) => {
-    const fakeOnChange = () => {
+  .add('Panel', withState({ enabled: true, advancedView: false, readOnlyView: false, firstAccess: true }, (store) => {
+    const fakeOnChangeShieldsEnabled = () => {
       store.set({ enabled: !store.state.enabled })
+    }
+    const fakeOnChangeAdvancedView = () => {
+      store.set({ advancedView: !store.state.advancedView })
+    }
+    const fakeOnChangeReadOnlyView = () => {
+      store.set({ readOnlyView: !store.state.readOnlyView })
+    }
+    const fakeToggleFirstAccess = () => {
+      store.set({ firstAccess: !store.state.firstAccess })
     }
     return (
       <div style={{ margin: '120px' }}>
-        <Shields
-          favicon={favicon}
-          hostname={'buzzfeed.com'}
-          enabled={boolean('Enabled?', store.state.enabled)}
-          adsTrackersBlocked={number('3rd-party trackers blocked', 80) || 0}
-          httpsUpgrades={number('Connections upgraded to HTTPS', 0) || 0}
-          scriptsBlocked={number('Scripts blocked', 11) || 0}
-          fingerprintingBlocked={number('3rd-party device recognition blocked', 0) || 0}
-          fakeOnChange={fakeOnChange}
-        />
-      </div>
+        {
+          store.state.readOnlyView
+          ? (
+            <ShieldsReadOnlyView
+              favicon={favicon}
+              hostname={'buzzfeed.com'}
+              onClose={fakeOnChangeReadOnlyView}
+            />
+          ) : (
+            <Shields
+              enabled={boolean('Enabled?', store.state.enabled)}
+              firstAccess={boolean('First Access?', store.state.firstAccess)}
+              favicon={favicon}
+              hostname={'buzzfeed.com'}
+              advancedView={boolean('Show advanced view?', store.state.advancedView)}
+              adsTrackersBlocked={number('3rd-party trackers blocked', 80) || 0}
+              httpsUpgrades={number('Connections upgraded to HTTPS', 0) || 0}
+              scriptsBlocked={number('Scripts blocked', 11) || 0}
+              fingerprintingBlocked={number('3rd-party device recognition blocked', 0) || 0}
+              fakeOnChangeShieldsEnabled={fakeOnChangeShieldsEnabled}
+              fakeOnChangeAdvancedView={fakeOnChangeAdvancedView}
+              fakeOnChangeReadOnlyView={fakeOnChangeReadOnlyView}
+              fakeToggleFirstAccess={fakeToggleFirstAccess}
+            />
+          )
+        }
+    </div>
     )
   }))
