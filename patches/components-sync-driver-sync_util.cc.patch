@@ -1,0 +1,17 @@
+diff --git a/components/sync/driver/sync_util.cc b/components/sync/driver/sync_util.cc
+index 68d590252d156836a416d781cfda025f3660ddb2..ee4a803fdc46d6372cd27234e2928debc35d9955 100644
+--- a/components/sync/driver/sync_util.cc
++++ b/components/sync/driver/sync_util.cc
+@@ -50,10 +50,10 @@ std::string GetSystemString() {
+ namespace syncer {
+ namespace internal {
+ 
+-const char* const kSyncServerUrl = "https://clients4.google.com/chrome-sync";
++const char* const kSyncServerUrl = "https://no-thanks.invalid";
+ 
+ const char* const kSyncDevServerUrl =
+-    "https://clients4.google.com/chrome-sync/dev";
++    "https://no-thanks.invalid";
+ 
+ std::string FormatUserAgentForSync(const std::string& system,
+                                    version_info::Channel channel) {
