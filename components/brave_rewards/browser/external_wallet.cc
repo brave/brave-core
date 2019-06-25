@@ -19,6 +19,8 @@ namespace brave_rewards {
     status = properties.status;
     type = properties.type;
     verify_url = properties.verify_url;
+    add_url = properties.add_url;
+    withdraw_url = properties.withdraw_url;
   }
 
 }  // namespace brave_rewards

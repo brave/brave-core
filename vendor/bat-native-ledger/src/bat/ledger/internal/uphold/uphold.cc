@@ -50,9 +50,9 @@ ledger::ExternalWalletPtr Uphold::GetWallet(
 std::string Uphold::GetAPIUrl(const std::string& path) {
   std::string url;
   if (ledger::is_production) {
-    url = kUrlProduction;
+    url = kAPIUrlProduction;
   } else {
-    url = kUrlStaging;
+    url = kAPIUrlStaging;
   }
 
   return url + path;
@@ -222,15 +222,38 @@ void Uphold::TransferFunds(double amount,
 
 std::string Uphold::GetVerifyUrl() {
   const std::string id =  ledger::is_production
-      ? kClientIdProduction : kClientIdStaging;
+      ? kClientIdProduction
+      : kClientIdStaging;
+
+  const std::string url =  ledger::is_production
+      ? kUrlProduction
+      : kUrlStaging;
 
   auto base_url = base::StringPrintf(
-      "https://sandbox.uphold.com/authorize/%s", id.c_str());
+      "%s/authorize/%s", url.c_str(), id.c_str());
 
   return base_url +
       "?scope=cards:read%20cards:write%20transactions:read%20"
       "transactions:transfer:application%20"
       "transactions:transfer:others&intention=kyc";
+}
+
+std::string Uphold::GetAddUrl(const std::string& address) {
+  const std::string url =  ledger::is_production
+      ? kUrlProduction
+      : kUrlStaging;
+
+  return base::StringPrintf(
+      "%s/dashboard/cards/%s/add", url.c_str(), address.c_str());
+}
+
+std::string Uphold::GetWithdrawUrl(const std::string& address) {
+  const std::string url =  ledger::is_production
+      ? kUrlProduction
+      : kUrlStaging;
+
+  return base::StringPrintf(
+      "%s/dashboard/cards/%s/use", url.c_str(), address.c_str());
 }
 
 }  // namespace braveledger_uphold

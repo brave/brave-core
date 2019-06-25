@@ -15,7 +15,7 @@ import {
   WalletWrapper,
   PanelVerify
 } from 'brave-ui/features/rewards'
-import { WalletAddIcon } from 'brave-ui/components/icons'
+import { WalletAddIcon, WalletWithdrawIcon } from 'brave-ui/components/icons'
 import { AlertWallet, WalletState } from 'brave-ui/features/rewards/walletWrapper'
 import { Provider } from 'brave-ui/features/rewards/profile'
 import { DetailRow as PendingDetailRow, PendingType } from 'brave-ui/features/rewards/tablePending'
@@ -24,7 +24,6 @@ import { getLocale } from '../../../../common/locale'
 import * as rewardsActions from '../actions/rewards_actions'
 import * as utils from '../utils'
 import WalletOff from 'brave-ui/features/rewards/walletOff'
-import ModalAddFunds from 'brave-ui/features/rewards/modalAddFunds'
 
 const clipboardCopy = require('clipboard-copy')
 
@@ -32,7 +31,6 @@ interface State {
   activeTabId: number
   modalBackup: boolean
   modalActivity: boolean
-  modalAddFunds: boolean
   modalPendingContribution: boolean
   showVerifyOnBoarding: boolean
 }
@@ -47,7 +45,6 @@ class PageWallet extends React.Component<Props, State> {
       activeTabId: 0,
       modalBackup: false,
       modalActivity: false,
-      modalAddFunds: false,
       modalPendingContribution: false,
       showVerifyOnBoarding: false
     }
@@ -58,7 +55,6 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   componentDidMount () {
-    this.isAddFundsUrl()
     this.isBackupUrl()
   }
 
@@ -176,12 +172,6 @@ class PageWallet extends React.Component<Props, State> {
     })
   }
 
-  onModalAddFundsToggle = () => {
-    this.setState({
-      modalAddFunds: !this.state.modalAddFunds
-    })
-  }
-
   urlHashIs = (hash: string) => {
     return (
       window &&
@@ -197,29 +187,10 @@ class PageWallet extends React.Component<Props, State> {
     })
   }
 
-  isAddFundsUrl = () => {
-    if (this.urlHashIs('#add-funds')) {
-      this.setState({
-        modalAddFunds: true
-      })
-    } else {
-      this.setState({
-        modalAddFunds: false
-      })
-    }
-  }
-
   isBackupUrl = () => {
     if (this.urlHashIs('#backup-restore')) {
       this.onModalBackupOpen()
     }
-  }
-
-  closeModalAddFunds = () => {
-    if (this.urlHashIs('#add-funds')) {
-      window.location.hash = ''
-    }
-    this.onModalAddFundsToggle()
   }
 
   onModalActivityAction (action: string) {
@@ -403,18 +374,48 @@ class PageWallet extends React.Component<Props, State> {
     }
   }
 
+  onFundsAction = (action: string) => {
+    const status = this.getWalletStatus()
+    const { externalWallet } = this.props.rewardsData
+
+    if (!externalWallet) {
+      return
+    }
+
+    if (status === 'verified') {
+      switch (action) {
+        case 'add': {
+          if (externalWallet.addUrl) {
+            window.open(externalWallet.addUrl, '_blank')
+          }
+          break
+        }
+        case 'withdraw': {
+          if (externalWallet.withdrawUrl) {
+            window.open(externalWallet.withdrawUrl, '_blank')
+          }
+          break
+        }
+      }
+      return
+    }
+
+    if (externalWallet.verifyUrl) {
+      this.handleUpholdLink(externalWallet.verifyUrl)
+      return
+    }
+  }
+
   render () {
     const {
       recoveryKey,
       enabledMain,
-      addresses,
       balance,
       ui,
       pendingContributionTotal
     } = this.props.rewardsData
     const { total } = balance
     const { walletRecoverySuccess, emptyWallet, modalBackup } = ui
-    const addressArray = utils.getAddresses(addresses)
 
     const pendingTotal = parseFloat((pendingContributionTotal || 0).toFixed(1))
 
@@ -426,9 +427,15 @@ class PageWallet extends React.Component<Props, State> {
           actions={[
             {
               name: getLocale('panelAddFunds'),
-              action: this.onModalAddFundsToggle,
+              action: this.onFundsAction.bind(this, 'add'),
               icon: <WalletAddIcon />,
               testId: 'panel-add-funds'
+            },
+            {
+              name: getLocale('panelWithdrawFunds'),
+              action: this.onFundsAction.bind(this, 'withdraw'),
+              icon: <WalletWithdrawIcon />,
+              testId: 'panel-withdraw-funds'
             }
           ]}
           onSettingsClick={this.onModalBackupOpen}
@@ -472,14 +479,6 @@ class PageWallet extends React.Component<Props, State> {
               onSaveFile={this.onModalBackupOnSaveFile}
               onRestore={this.onModalBackupOnRestore}
               error={walletRecoverySuccess === false ? getLocale('walletRecoveryFail') : ''}
-            />
-            : null
-        }
-        {
-          this.state.modalAddFunds
-            ? <ModalAddFunds
-              onClose={this.closeModalAddFunds}
-              addresses={addressArray}
             />
             : null
         }

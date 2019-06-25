@@ -23,8 +23,10 @@ class UpholdTransfer;
 
 namespace braveledger_uphold {
 
-const char kUrlStaging[] = "https://api-sandbox.uphold.com";
-const char kUrlProduction[] = "https://api.uphold.com";
+const char kUrlStaging[] = "https://sandbox.uphold.com";
+const char kUrlProduction[] = "https://uphold.com";
+const char kAPIUrlStaging[] = "https://api-sandbox.uphold.com";
+const char kAPIUrlProduction[] = "https://api.uphold.com";
 const char kClientIdStaging[] = "4c2b665ca060d912fec5c735c734859a06118cc8";
 const char kClientIdProduction[] = "";
 const char kClientSecretStaging[] = "67bf87da096748c5bc1e195cfbdd59db006618a0";
@@ -60,6 +62,10 @@ class Uphold {
                      TransactionCallback callback);
 
   std::string GetVerifyUrl();
+
+  std::string GetAddUrl(const std::string& address);
+
+  std::string GetWithdrawUrl(const std::string& address);
 
  private:
   static std::string GetFeeAddress();

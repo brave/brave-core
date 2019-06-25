@@ -777,6 +777,8 @@ void BraveRewardsGetExternalWalletFunction::OnExternalWalet(
     data->SetIntKey("status", static_cast<int>(wallet->status));
     data->SetStringKey("type", wallet->type);
     data->SetStringKey("verifyUrl", wallet->verify_url);
+    data->SetStringKey("addUrl", wallet->add_url);
+    data->SetStringKey("withdrawUrl", wallet->withdraw_url);
   }
 
   Respond(OneArgument(std::move(data)));

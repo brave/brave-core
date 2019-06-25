@@ -20,6 +20,8 @@ struct ExternalWallet {
   uint32_t status;
   std::string type;
   std::string verify_url;
+  std::string add_url;
+  std::string withdraw_url;
 };
 
 }  // namespace brave_rewards

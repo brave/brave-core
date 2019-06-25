@@ -1324,6 +1324,8 @@ void RewardsDOMHandler::OnGetExternalWallet(
       data.SetIntKey("status", static_cast<int>(wallet->status));
       data.SetStringKey("type", wallet->type);
       data.SetStringKey("verifyUrl", wallet->verify_url);
+      data.SetStringKey("addUrl", wallet->add_url);
+      data.SetStringKey("withdrawUrl", wallet->withdraw_url);
     }
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.externalWallet",

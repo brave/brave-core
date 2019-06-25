@@ -215,7 +215,7 @@ declare namespace Rewards {
   export enum WalletStatus {
     NOT_CONNECTED = 0,
     CONNECTED = 1,
-    EXPIRED = 2
+    DISCONNECTED = 2
   }
 
   export interface ExternalWallet {
@@ -224,5 +224,7 @@ declare namespace Rewards {
     status: WalletStatus
     type: WalletType
     verifyUrl: string
+    addUrl: string
+    withdrawUrl: string
   }
 }

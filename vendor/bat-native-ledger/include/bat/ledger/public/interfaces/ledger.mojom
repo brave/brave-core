@@ -116,4 +116,6 @@ struct ExternalWallet {
   string address;
   uint32 status;
   string verify_url;
+  string add_url;
+  string withdraw_url;
 };

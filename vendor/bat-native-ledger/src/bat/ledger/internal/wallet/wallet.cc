@@ -219,6 +219,8 @@ void Wallet::OnGetExternalWallet(
       wallet->status = ledger::WalletStatus::NOT_CONNECTED;
     } else {
       wallet = uphold_->GetWallet(std::move(wallets));
+      wallet->add_url = uphold_->GetAddUrl(wallet->address);
+      wallet->withdraw_url = uphold_->GetWithdrawUrl(wallet->address);
     }
 
     wallet->verify_url = uphold_->GetVerifyUrl();
