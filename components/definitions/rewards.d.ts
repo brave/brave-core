@@ -26,11 +26,7 @@ declare namespace Rewards {
     RECURRING_TIP = 16
   }
 
-  export type AddressesType = 'BTC' | 'ETH' | 'BAT' | 'LTC'
-  export type Address = { address: string, qr: string | null }
-
   export interface State {
-    addresses?: Record<AddressesType, Address>
     adsData: AdsData
     autoContributeList: Publisher[]
     balance: Balance
@@ -66,7 +62,6 @@ declare namespace Rewards {
     tipsList: Publisher[]
     tipsLoad: boolean
     ui: {
-      addressCheck: boolean
       emptyWallet: boolean
       modalBackup: boolean
       paymentIdCheck: boolean

@@ -72,15 +72,7 @@ class SettingsPage extends React.Component<Props, {}> {
     this.actions.getExternalWallet('uphold')
 
     // one time check (legacy fix)
-    // more info here https://github.com/brave/brave-browser/issues/2172
-    if (!this.props.rewardsData.ui.addressCheck) {
-      this.actions.getAddresses()
-    }
-
-    // one time check (legacy fix)
     if (!this.props.rewardsData.ui.paymentIdCheck) {
-      // https://github.com/brave/brave-browser/issues/3060
-      this.actions.getAddressesForPaymentId()
       // https://github.com/brave/brave-browser/issues/3061
       this.actions.getWalletPassphrase()
     }

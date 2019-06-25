@@ -1839,67 +1839,6 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
   rewards_service_->RemoveObserver(this);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AddFunds) {
-  rewards_service_->SetCurrentCountry("US");  // any region except JP
-  rewards_service_->AddObserver(this);
-  EnableRewards();
-  content::EvalJsResult js_result = EvalJs(
-    contents(),
-    "document.querySelector(\"[data-test-id='panel-add-funds']\").click();"
-    "new Promise((resolve) => {"
-    "var count = 10;"
-    "var interval = setInterval(function() {"
-    "  if (count === 0) {"
-    "    clearInterval(interval);"
-    "    resolve(false);"
-    "  } else {"
-    "    count -= 1;"
-    "  }"
-    "  const addresses = document.querySelector("
-    "      \"[data-test-id='addresses']\");"
-    "  if (addresses) {"
-    "    clearInterval(interval);"
-    "    resolve(document.querySelectorAll(\"[data-test-id='single-address']\")"
-    "        .length === 4);"
-    "  }"
-    "}, 500);});",
-    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-    content::ISOLATED_WORLD_ID_CONTENT_END);
-  ASSERT_TRUE(js_result.ExtractBool());
-}
-
-IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, AddFundsCountryLimited) {
-  rewards_service_->SetCurrentCountry("JP");
-  rewards_service_->AddObserver(this);
-  EnableRewards();
-  content::EvalJsResult js_result = EvalJs(
-    contents(),
-    "document.querySelector(\"[data-test-id='panel-add-funds']\").click();"
-    "new Promise((resolve) => {"
-    "var count = 10;"
-    "var interval = setInterval(function() {"
-    "  if (count === 0) {"
-    "    clearInterval(interval);"
-    "    resolve(false);"
-    "  } else {"
-    "    count -= 1;"
-    "  }"
-    "  const addresses = document.querySelector("
-    "      \"[data-test-id='addresses']\");"
-    "  if (addresses) {"
-    "    clearInterval(interval);"
-    "    resolve(document.querySelectorAll(\"[data-test-id='single-address']\")"
-    "        .length === 1);"
-    "  }"
-    "}, 500);});",
-    content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-    content::ISOLATED_WORLD_ID_CONTENT_END);
-  ASSERT_TRUE(js_result.ExtractBool());
-
-  // Stop observing the Rewards service
-  rewards_service_->RemoveObserver(this);
-}
-
 IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
     InsufficientNotificationForVerifiedsZeroAmountZeroPublishers) {
   rewards_service_->GetNotificationService()->AddObserver(this);

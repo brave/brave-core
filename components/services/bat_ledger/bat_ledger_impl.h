@@ -81,14 +81,6 @@ class BatLedgerImpl : public mojom::BatLedger,
       const std::string& solution,
       const std::string& promotionId) override;
 
-  void GetAddresses(
-      int32_t current_country_code,
-      GetAddressesCallback callback) override;
-  void GetBATAddress(GetBATAddressCallback callback) override;
-  void GetBTCAddress(GetBTCAddressCallback callback) override;
-  void GetETHAddress(GetETHAddressCallback callback) override;
-  void GetLTCAddress(GetLTCAddressCallback callback) override;
-
   void SetRewardsMainEnabled(bool enabled) override;
   void SetPublisherMinVisitTime(uint64_t duration_in_seconds) override;
   void SetPublisherMinVisits(uint32_t visits) override;
@@ -127,9 +119,6 @@ class BatLedgerImpl : public mojom::BatLedger,
       GetRewardsMainEnabledCallback callback) override;
   void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) override;
-
-  void GetAddressesForPaymentId(
-      GetAddressesForPaymentIdCallback callback) override;
   void GetTransactionHistory(
       GetTransactionHistoryCallback callback) override;
   void GetRewardsInternalsInfo(
@@ -219,10 +208,6 @@ class BatLedgerImpl : public mojom::BatLedger,
       CallbackHolder<GetPublisherBannerCallback>* holder,
       ledger::PublisherBannerPtr banner);
 
-  static void OnAddressesForPaymentId(
-      CallbackHolder<GetAddressesForPaymentIdCallback>* holder,
-      std::map<std::string, std::string> addresses);
-
   static void OnGetTransactionHistory(
       CallbackHolder<GetTransactionHistoryCallback>* holder,
       std::unique_ptr<ledger::TransactionsInfo> history);
@@ -270,10 +255,6 @@ class BatLedgerImpl : public mojom::BatLedger,
   static void OnGetPendingContributionsTotal(
     CallbackHolder<GetPendingContributionsTotalCallback>* holder,
     double amount);
-
-  static void OnGetAddresses(
-    CallbackHolder<GetAddressesCallback>* holder,
-    std::map<std::string, std::string> addresses);
 
   static void OnHasSufficientBalanceToReconcile(
     CallbackHolder<HasSufficientBalanceToReconcileCallback>* holder,

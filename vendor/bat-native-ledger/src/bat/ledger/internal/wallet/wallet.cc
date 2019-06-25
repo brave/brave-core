@@ -164,46 +164,6 @@ void Wallet::RecoverWallet(const std::string& pass_phrase) {
   recover_->Start(pass_phrase);
 }
 
-void Wallet::GetAddressesForPaymentId(
-    ledger::WalletAddressesCallback callback) {
-  std::string currency = ledger_->GetCurrency();
-  std::string path = (std::string)WALLET_PROPERTIES +
-                      ledger_->GetPaymentId() +
-                      "?refresh=true";
-  ledger_->LoadURL(
-      braveledger_bat_helper::buildURL(path, PREFIX_V2),
-      std::vector<std::string>(),
-      "",
-      "",
-      ledger::URL_METHOD::GET,
-      std::bind(&Wallet::GetAddressesForPaymentIdCallback,
-                this,
-                _1,
-                _2,
-                _3,
-                callback));
-}
-
-void Wallet::GetAddressesForPaymentIdCallback(
-    int response_status_code,
-    const std::string& response,
-    const std::map<std::string, std::string>& headers,
-    ledger::WalletAddressesCallback callback) {
-  ledger_->LogResponse(__func__, response_status_code, response, headers);
-
-  std::map<std::string, std::string> addresses;
-  bool ok = braveledger_bat_helper::getJSONAddresses(response, &addresses);
-
-  if (!ok) {
-    BLOG(ledger_, ledger::LogLevel::LOG_ERROR) <<
-       "Failed to get addresses from payment ID";
-    return;
-  }
-
-  callback(addresses);
-  ledger_->SetAddresses(addresses);
-}
-
 void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
   balance_->Fetch(callback);
 }

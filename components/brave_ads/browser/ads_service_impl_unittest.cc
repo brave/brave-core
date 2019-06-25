@@ -69,8 +69,6 @@ class MockRewardsService : public RewardsService {
                                const std::string&));
   MOCK_METHOD1(GetReconcileStamp,
       void(const brave_rewards::GetReconcileStampCallback&));
-  MOCK_METHOD1(GetAddresses,
-      void(const brave_rewards::GetAddressesCallback&));
   MOCK_METHOD1(SetRewardsMainEnabled, void(bool));
   MOCK_METHOD1(GetPublisherMinVisitTime,
       void(const brave_rewards::GetPublisherMinVisitTimeCallback&));
@@ -131,8 +129,6 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(ConfirmAd, void(const std::string&));
   MOCK_METHOD1(GetRewardsInternalsInfo,
       void(brave_rewards::GetRewardsInternalsInfoCallback));
-  MOCK_METHOD1(GetAddressesForPaymentId,
-      void(const brave_rewards::GetAddressesCallback&));
   MOCK_METHOD1(GetTransactionHistory,
       void(brave_rewards::GetTransactionHistoryCallback));
   MOCK_METHOD2(SaveRecurringTip, void(const std::string&, const int));

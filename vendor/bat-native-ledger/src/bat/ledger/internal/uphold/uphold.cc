@@ -152,7 +152,7 @@ void Uphold::FetchBalance(
   const auto wallet = GetWallet(std::move(wallets));
 
   if (!wallet || wallet->token.empty()) {
-    callback(ledger::Result::LEDGER_ERROR, 0.0);
+    callback(ledger::Result::LEDGER_OK, 0.0);
     return;
   }
 

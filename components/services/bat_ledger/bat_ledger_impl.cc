@@ -201,40 +201,6 @@ void BatLedgerImpl::SolveGrantCaptcha(const std::string& solution,
   ledger_->SolveGrantCaptcha(solution, promotion_id);
 }
 
-void BatLedgerImpl::OnGetAddresses(
-    CallbackHolder<GetAddressesCallback>* holder,
-    std::map<std::string, std::string> addresses) {
-  if (holder->is_valid()) {
-    std::move(holder->get()).Run(mojo::MapToFlatMap(addresses));
-  }
-  delete holder;
-}
-
-void BatLedgerImpl::GetAddresses(
-    int32_t current_country_code,
-    GetAddressesCallback callback) {
-  auto* holder = new CallbackHolder<GetAddressesCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->GetAddresses(current_country_code,
-      std::bind(BatLedgerImpl::OnGetAddresses, holder, _1));
-}
-
-void BatLedgerImpl::GetBATAddress(GetBATAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetBATAddress());
-}
-
-void BatLedgerImpl::GetBTCAddress(GetBTCAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetBTCAddress());
-}
-
-void BatLedgerImpl::GetETHAddress(GetETHAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetETHAddress());
-}
-
-void BatLedgerImpl::GetLTCAddress(GetLTCAddressCallback callback) {
-  std::move(callback).Run(ledger_->GetLTCAddress());
-}
-
 void BatLedgerImpl::SetRewardsMainEnabled(bool enabled) {
   ledger_->SetRewardsMainEnabled(enabled);
 }
@@ -363,24 +329,6 @@ void BatLedgerImpl::HasSufficientBalanceToReconcile(
       AsWeakPtr(), std::move(callback));
   ledger_->HasSufficientBalanceToReconcile(
       std::bind(BatLedgerImpl::OnHasSufficientBalanceToReconcile, holder, _1));
-}
-
-// static
-void BatLedgerImpl::OnAddressesForPaymentId(
-    CallbackHolder<GetAddressesForPaymentIdCallback>* holder,
-    std::map<std::string, std::string> addresses) {
-  if (holder->is_valid())
-    std::move(holder->get()).Run(mojo::MapToFlatMap(addresses));
-  delete holder;
-}
-
-void BatLedgerImpl::GetAddressesForPaymentId(
-    GetAddressesForPaymentIdCallback callback) {
-  // delete in OnAddressesForPaymentId
-  auto* holder = new CallbackHolder<GetAddressesForPaymentIdCallback>(
-      AsWeakPtr(), std::move(callback));
-  ledger_->GetAddressesForPaymentId(
-      std::bind(BatLedgerImpl::OnAddressesForPaymentId, holder, _1));
 }
 
 void BatLedgerImpl::SetCatalogIssuers(const std::string& info) {

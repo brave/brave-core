@@ -37,16 +37,12 @@ extern bool short_retries;
 
 using PublisherBannerCallback =
     std::function<void(ledger::PublisherBannerPtr banner)>;
-using WalletAddressesCallback =
-    std::function<void(std::map<std::string, std::string> addresses)>;
 using GetTransactionHistoryCallback =
     std::function<void(std::unique_ptr<ledger::TransactionsInfo> info)>;
 using OnWalletPropertiesCallback = std::function<void(const ledger::Result,
                                   ledger::WalletPropertiesPtr)>;
 using OnRefreshPublisherCallback =
     std::function<void(bool)>;
-using GetAddressesCallback =
-    std::function<void(std::map<std::string, std::string>)>;
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 using FetchBalanceCallback = std::function<void(ledger::Result,
                                                 ledger::BalancePtr)>;
@@ -134,18 +130,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void UpdateAdsRewards() = 0;
 
-  virtual void GetAddresses(
-      int32_t current_country_code,
-      ledger::GetAddressesCallback callback) = 0;
-
-  virtual const std::string& GetBATAddress() const = 0;
-
-  virtual const std::string& GetBTCAddress() const = 0;
-
-  virtual const std::string& GetETHAddress() const = 0;
-
-  virtual const std::string& GetLTCAddress() const = 0;
-
   virtual uint64_t GetReconcileStamp() const = 0;
 
   virtual bool GetRewardsMainEnabled() const = 0;
@@ -225,9 +209,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void HasSufficientBalanceToReconcile(
       HasSufficientBalanceToReconcileCallback callback) = 0;
-
-  virtual void GetAddressesForPaymentId(
-      ledger::WalletAddressesCallback callback) = 0;
 
   virtual void SetCatalogIssuers(const std::string& info) = 0;
 

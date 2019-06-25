@@ -149,22 +149,6 @@ bool BatState::GetAutoContribute() const {
   return state_->auto_contribute_;
 }
 
-const std::string& BatState::GetBATAddress() const {
-  return state_->walletInfo_.addressBAT_;
-}
-
-const std::string& BatState::GetBTCAddress() const {
-  return state_->walletInfo_.addressBTC_;
-}
-
-const std::string& BatState::GetETHAddress() const {
-  return state_->walletInfo_.addressETH_;
-}
-
-const std::string& BatState::GetLTCAddress() const {
-  return state_->walletInfo_.addressLTC_;
-}
-
 const std::string& BatState::GetCardIdAddress() const {
   return state_->walletInfo_.addressCARD_ID_;
 }
@@ -380,31 +364,6 @@ BatState::GetCurrentReconciles() const {
 
 double BatState::GetDefaultContributionAmount() {
   return state_->walletProperties_.fee_amount_;
-}
-
-void BatState::SetAddress(std::map<std::string, std::string> addresses) {
-  for (auto& address : addresses) {
-    if (address.first == "BAT") {
-      state_->walletInfo_.addressBAT_ = address.second;
-    }
-
-    if (address.first == "BTC") {
-      state_->walletInfo_.addressBTC_ = address.second;
-    }
-
-    if (address.first == "CARD_ID") {
-      state_->walletInfo_.addressCARD_ID_ = address.second;
-    }
-
-    if (address.first == "ETH") {
-      state_->walletInfo_.addressETH_ = address.second;
-    }
-
-    if (address.first == "LTC") {
-      state_->walletInfo_.addressLTC_ = address.second;
-    }
-  }
-  SaveState();
 }
 
 void BatState::SetInlineTipSetting(const std::string& key, bool enabled) {

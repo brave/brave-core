@@ -68,12 +68,6 @@ interface BatLedger {
   RecoverWallet(string passPhrase);
   SolveGrantCaptcha(string solution, string promotionId);
 
-  GetAddresses(int32 current_country_code) => (map<string, string> addresses);
-  GetBATAddress() => (string address);
-  GetBTCAddress() => (string address);
-  GetETHAddress() => (string address);
-  GetLTCAddress() => (string address);
-
   SetRewardsMainEnabled(bool enabled);
   SetPublisherMinVisitTime(uint64 duration_in_seconds);
   SetPublisherMinVisits(uint32 visits);
@@ -107,8 +101,6 @@ interface BatLedger {
   GetRewardsMainEnabled() => (bool main_enabled);
 
   HasSufficientBalanceToReconcile() => (bool sufficient);
-
-  GetAddressesForPaymentId() => (map<string, string> addresses);
 
   SetCatalogIssuers(string info);
   ConfirmAd(string info);
@@ -262,9 +254,6 @@ interface BatLedgerClient {
   RemoveAllPendingContributions() => (int32 result);
 
   GetPendingContributionsTotal() => (double amount);
-
-  GetCountryCodes(array<string> countries) =>
-        (array<int32> limited_country_codes);
 
   OnContributeUnverifiedPublishers(int32 result, string publisher_key,
       string publisher_name);

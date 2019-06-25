@@ -82,15 +82,6 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)recoverWalletUsingPassphrase:(NSString *)passphrase
                           completion:(nullable void (^)(NSError * _Nullable))completion;
 
-/// The wallet's addresses. nil if the wallet has not been created yet
-@property (nonatomic, readonly, nullable) NSString *BATAddress;
-@property (nonatomic, readonly, nullable) NSString *BTCAddress;
-@property (nonatomic, readonly, nullable) NSString *ETHAddress;
-@property (nonatomic, readonly, nullable) NSString *LTCAddress;
-
-/// ?? Unavailable until we understand whats its for
-- (void)addressesForPaymentId:(void (^)(NSDictionary<NSString *, NSString *> *))completion NS_UNAVAILABLE;
-
 @property (nonatomic, readonly) double defaultContributionAmount;
 
 /// Retrieves the users most up to date balance to determin whether or not the

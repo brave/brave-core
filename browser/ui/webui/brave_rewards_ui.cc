@@ -65,7 +65,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void RecoverWallet(const base::ListValue* args);
   void SolveGrantCaptcha(const base::ListValue* args);
   void GetReconcileStamp(const base::ListValue* args);
-  void GetAddresses(const base::ListValue* args);
   void SaveSetting(const base::ListValue* args);
   void UpdateAdsRewards(const base::ListValue* args);
   void OnContentSiteList(
@@ -92,8 +91,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void SetBackupCompleted(const base::ListValue* args);
   void OnGetWalletPassphrase(const std::string& pass);
   void OnGetContributionAmount(double amount);
-  void OnGetAddresses(const std::string func_name,
-                      const std::map<std::string, std::string>& addresses);
   void OnGetAutoContributeProps(
       int error_code,
       std::unique_ptr<brave_rewards::WalletProperties> wallet_properties,
@@ -106,7 +103,6 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnGetPendingContributionsTotal(double amount);
   void OnContentSiteUpdated(
       brave_rewards::RewardsService* rewards_service) override;
-  void GetAddressesForPaymentId(const base::ListValue* args);
   void GetTransactionHistory(const base::ListValue* args);
   void GetRewardsMainEnabled(const base::ListValue* args);
   void OnGetRewardsMainEnabled(bool enabled);
@@ -258,9 +254,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback("brave_rewards.getReconcileStamp",
       base::BindRepeating(&RewardsDOMHandler::GetReconcileStamp,
       base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getAddresses",
-      base::BindRepeating(&RewardsDOMHandler::GetAddresses,
-      base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.saveSetting",
       base::BindRepeating(&RewardsDOMHandler::SaveSetting,
       base::Unretained(this)));
@@ -313,9 +306,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getPendingContributionsTotal",
       base::BindRepeating(&RewardsDOMHandler::GetPendingContributionsTotal,
-      base::Unretained(this)));
-  web_ui()->RegisterMessageCallback("brave_rewards.getAddressesForPaymentId",
-      base::BindRepeating(&RewardsDOMHandler::GetAddressesForPaymentId,
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getTransactionHistory",
@@ -627,27 +617,6 @@ void RewardsDOMHandler::GetReconcileStamp(const base::ListValue* args) {
     rewards_service_->GetReconcileStamp(base::Bind(
           &RewardsDOMHandler::OnGetReconcileStamp,
           weak_factory_.GetWeakPtr()));
-}
-
-void RewardsDOMHandler::OnGetAddresses(
-    const std::string func_name,
-    const std::map<std::string, std::string>& addresses) {
-  if (web_ui()->CanCallJavascript() && (
-      func_name == "addresses" || func_name == "addressesForPaymentId")) {
-    base::Value data(base::Value::Type::DICTIONARY);
-    for (auto& address : addresses) {
-      data.SetKey(address.first, base::Value(address.second));
-    }
-    web_ui()->CallJavascriptFunctionUnsafe("brave_rewards." + func_name, data);
-  }
-}
-
-void RewardsDOMHandler::GetAddresses(const base::ListValue* args) {
-  if (rewards_service_)
-    rewards_service_->GetAddresses(base::Bind(
-          &RewardsDOMHandler::OnGetAddresses,
-          weak_factory_.GetWeakPtr(),
-          "addresses"));
 }
 
 void RewardsDOMHandler::OnAutoContributePropsReady(
@@ -1075,16 +1044,6 @@ void RewardsDOMHandler::OnPublisherListNormalized(
     brave_rewards::RewardsService* rewards_service,
     const brave_rewards::ContentSiteList& list) {
   OnContentSiteList(std::make_unique<brave_rewards::ContentSiteList>(list), 0);
-}
-
-void RewardsDOMHandler::GetAddressesForPaymentId(
-    const base::ListValue* args) {
-  if (rewards_service_) {
-    rewards_service_->GetAddressesForPaymentId(base::Bind(
-          &RewardsDOMHandler::OnGetAddresses,
-          weak_factory_.GetWeakPtr(),
-          "addressesForPaymentId"));
-  }
 }
 
 void RewardsDOMHandler::GetTransactionHistory(

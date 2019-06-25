@@ -158,10 +158,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void GetPendingContributionsTotal(
       GetPendingContributionsTotalCallback callback) override;
 
-  void GetCountryCodes(
-      const std::vector<std::string>& countries,
-      GetCountryCodesCallback callback) override;
-
   void OnContributeUnverifiedPublishers(
       int32_t result,
       const std::string& publisher_key,
@@ -303,10 +299,6 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   static void OnGetPendingContributionsTotal(
       CallbackHolder<GetPendingContributionsTotalCallback>* holder,
       double amount);
-
-  static void OnGetCountryCodes(
-      CallbackHolder<GetCountryCodesCallback>* holder,
-      const std::vector<int32_t>& countries);
 
   static void OnGetExternalWallets(
     CallbackHolder<GetExternalWalletsCallback>* holder,

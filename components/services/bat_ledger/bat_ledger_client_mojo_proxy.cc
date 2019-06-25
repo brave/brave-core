@@ -90,12 +90,6 @@ void OnResetState(const ledger::OnSaveCallback& callback,
   callback(ToLedgerResult(result));
 }
 
-void OnGetCountryCodes(
-    const ledger::GetCountryCodesCallback& callback,
-    const std::vector<int32_t>& countries) {
-  callback(countries);
-}
-
 void OnGetExternalWallets(
     ledger::GetExternalWalletsCallback callback,
     base::flat_map<std::string, ledger::ExternalWalletPtr> wallets) {
@@ -858,17 +852,6 @@ void BatLedgerClientMojoProxy::GetPendingContributionsTotal(
 
   bat_ledger_client_->GetPendingContributionsTotal(
       base::BindOnce(&OnGetPendingContributionsTotal, std::move(callback)));
-}
-
-void BatLedgerClientMojoProxy::GetCountryCodes(
-    const std::vector<std::string>& countries,
-    ledger::GetCountryCodesCallback callback) {
-  if (!Connected()) {
-    return;
-  }
-
-  bat_ledger_client_->GetCountryCodes(countries,
-      base::BindOnce(&OnGetCountryCodes, std::move(callback)));
 }
 
 void BatLedgerClientMojoProxy::OnContributeUnverifiedPublishers(

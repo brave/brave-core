@@ -637,49 +637,6 @@ bool LedgerImpl::GetAutoContribute() const {
   return bat_state_->GetAutoContribute();
 }
 
-void LedgerImpl::GetAddresses(
-    int32_t current_country_code,
-    ledger::GetAddressesCallback callback) {
-  ledger_client_->GetCountryCodes(
-      braveledger_ledger::_add_funds_limited_countries,
-      std::bind(&LedgerImpl::GetAddressesInternal,
-                             this,
-                             _1,
-                             current_country_code,
-                             callback));
-}
-
-void LedgerImpl::GetAddressesInternal(
-    const std::vector<int32_t>& country_codes,
-    int32_t current_country_code,
-    ledger::GetAddressesCallback callback) {
-  std::map<std::string, std::string> addresses;
-  addresses.emplace("BAT", GetBATAddress());
-  if (std::find(country_codes.begin(), country_codes.end(),
-      current_country_code) == country_codes.end()) {
-    addresses.emplace("BTC", GetBTCAddress());
-    addresses.emplace("ETH", GetETHAddress());
-    addresses.emplace("LTC", GetLTCAddress());
-  }
-  callback(addresses);
-}
-
-const std::string& LedgerImpl::GetBATAddress() const {
-  return bat_state_->GetBATAddress();
-}
-
-const std::string& LedgerImpl::GetBTCAddress() const {
-  return bat_state_->GetBTCAddress();
-}
-
-const std::string& LedgerImpl::GetETHAddress() const {
-  return bat_state_->GetETHAddress();
-}
-
-const std::string& LedgerImpl::GetLTCAddress() const {
-  return bat_state_->GetLTCAddress();
-}
-
 uint64_t LedgerImpl::GetReconcileStamp() const {
   return bat_state_->GetReconcileStamp();
 }
@@ -1446,15 +1403,6 @@ void LedgerImpl::HasSufficientBalanceToReconcile(
 void LedgerImpl::SaveNormalizedPublisherList(
     ledger::PublisherInfoList list) {
   ledger_client_->SaveNormalizedPublisherList(std::move(list));
-}
-
-void LedgerImpl::GetAddressesForPaymentId(
-    ledger::WalletAddressesCallback callback) {
-  bat_wallet_->GetAddressesForPaymentId(callback);
-}
-
-void LedgerImpl::SetAddresses(std::map<std::string, std::string> addresses) {
-  bat_state_->SetAddress(addresses);
 }
 
 void LedgerImpl::SetCatalogIssuers(const std::string& info) {

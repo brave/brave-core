@@ -55,8 +55,6 @@ class Wallet {
   ledger::WalletPropertiesPtr WalletPropertiesToWalletInfo(
     const braveledger_bat_helper::WALLET_PROPERTIES_ST& properties);
 
-  void GetAddressesForPaymentId(ledger::WalletAddressesCallback callback);
-
   void FetchBalance(ledger::FetchBalanceCallback callback);
 
   void GetExternalWallet(const std::string& type,
@@ -68,12 +66,6 @@ class Wallet {
       const std::string& response,
       const std::map<std::string, std::string>& headers,
       ledger::OnWalletPropertiesCallback callback);
-
-  void GetAddressesForPaymentIdCallback(
-      int response_status_code,
-      const std::string& response,
-      const std::map<std::string, std::string>& headers,
-      ledger::WalletAddressesCallback callback);
 
   void OnGetExternalWallet(
     const std::string& type,

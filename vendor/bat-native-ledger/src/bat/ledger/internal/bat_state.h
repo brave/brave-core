@@ -56,14 +56,6 @@ class BatState {
 
   bool GetAutoContribute() const;
 
-  const std::string& GetBATAddress() const;
-
-  const std::string& GetBTCAddress() const;
-
-  const std::string& GetETHAddress() const;
-
-  const std::string& GetLTCAddress() const;
-
   const std::string& GetCardIdAddress() const;
 
   uint64_t GetReconcileStamp() const;
@@ -144,8 +136,6 @@ class BatState {
   const braveledger_bat_helper::CurrentReconciles& GetCurrentReconciles() const;
 
   double GetDefaultContributionAmount();
-
-  void SetAddress(std::map<std::string, std::string> addresses);
 
   void SetInlineTipSetting(const std::string& key, bool enabled);
 

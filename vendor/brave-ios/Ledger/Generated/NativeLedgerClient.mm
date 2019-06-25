@@ -26,9 +26,6 @@ std::string NativeLedgerClient::GenerateGUID() const {
 void NativeLedgerClient::GetActivityInfoList(uint32_t start, uint32_t limit, ledger::ActivityInfoFilter filter, ledger::PublisherInfoListCallback callback) {
   [bridge_ getActivityInfoList:start limit:limit filter:filter callback:callback];
 }
-void NativeLedgerClient::GetCountryCodes(const std::vector<std::string> & countries, ledger::GetCountryCodesCallback callback) {
-  [bridge_ getCountryCodes:countries callback:callback];
-}
 void NativeLedgerClient::GetOneTimeTips(ledger::PublisherInfoListCallback callback) {
   [bridge_ getOneTimeTips:callback];
 }

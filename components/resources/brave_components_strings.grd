@@ -309,11 +309,6 @@
       <message name="IDS_BRAVE_UI_ADD_FUNDS" desc="">add funds</message>
       <message name="IDS_BRAVE_UI_AUTO_TIP_TEXT" desc="">You are automatically sending a tip to:</message>
       <message name="IDS_BRAVE_UI_BAT_TEXT" desc="">BAT</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS_FAQ" desc="">the FAQ</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS_NOTE" desc="">Reminder: The Brave Wallet is unidirectional and BAT flows to publisher sites. For more information about Brave Rewards, please visit</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS_QR" desc="">Show QR Code</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS_TEXT" desc="">Be sure to use the address below that matches the type of crypto you own. It will be converted automatically to BAT by Uphold and appear as an increased balance in your Brave Rewards wallet. Please allow up to one hour for your wallet balance to update.</message>
-      <message name="IDS_BRAVE_UI_ADD_FUNDS_TITLE" desc="">Send cryptocurrency from your external account to your Brave Rewards wallet.</message>
       <message name="IDS_BRAVE_UI_ALLOW_TIP" desc="">Allow tips on</message>
       <message name="IDS_BRAVE_UI_AMOUNT" desc="">Amount</message>
       <message name="IDS_BRAVE_UI_BACKUP" desc="">Backup</message>

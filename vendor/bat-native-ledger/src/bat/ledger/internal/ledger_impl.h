@@ -131,18 +131,6 @@ class LedgerImpl : public ledger::Ledger,
 
   void SaveUnverifiedContribution(ledger::PendingContributionList list);
 
-  void GetAddresses(
-      int32_t current_country_code,
-      ledger::GetAddressesCallback callback) override;
-
-  const std::string& GetBATAddress() const override;
-
-  const std::string& GetBTCAddress() const override;
-
-  const std::string& GetETHAddress() const override;
-
-  const std::string& GetLTCAddress() const override;
-
   uint64_t GetReconcileStamp() const override;
 
   bool GetRewardsMainEnabled() const override;
@@ -425,11 +413,6 @@ class LedgerImpl : public ledger::Ledger,
   void SaveNormalizedPublisherList(
       ledger::PublisherInfoList normalized_list);
 
-  void
-  GetAddressesForPaymentId(ledger::WalletAddressesCallback callback) override;
-
-  void SetAddresses(std::map<std::string, std::string> addresses);
-
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
   void GetTransactionHistory(
@@ -580,11 +563,6 @@ class LedgerImpl : public ledger::Ledger,
       const std::map<std::string, std::string>& headers,
       const std::string& publisher_key,
       ledger::OnRefreshPublisherCallback callback);
-
-  void GetAddressesInternal(
-      const std::vector<int32_t>& country_codes,
-      int32_t current_country_code,
-      ledger::GetAddressesCallback callback);
 
   ledger::LedgerClient* ledger_client_;
   std::unique_ptr<braveledger_grant::Grants> bat_grants_;

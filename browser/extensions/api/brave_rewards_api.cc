@@ -735,6 +735,12 @@ void BraveRewardsFetchBalanceFunction::OnBalance(
       wallets.SetDoubleKey(rate.first, rate.second);
     }
     balance_value->SetKey("wallets", std::move(wallets));
+  } else {
+    balance_value->SetDoubleKey("total", 0.0);
+    base::Value rates(base::Value::Type::DICTIONARY);
+    balance_value->SetKey("rates", std::move(rates));
+    base::Value wallets(base::Value::Type::DICTIONARY);
+    balance_value->SetKey("wallets", std::move(wallets));
   }
 
   Respond(OneArgument(std::move(balance_value)));

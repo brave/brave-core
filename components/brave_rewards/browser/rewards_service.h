@@ -54,8 +54,6 @@ using GetAllBalanceReportsCallback = base::Callback<void(
     const std::map<std::string, brave_rewards::BalanceReport>&)>;
 using GetWalletPassphraseCallback = base::Callback<void(const std::string&)>;
 using GetContributionAmountCallback = base::Callback<void(double)>;
-using GetAddressesCallback = base::Callback<void(
-    const std::map<std::string, std::string>&)>;
 using GetAutoContributePropsCallback = base::Callback<void(
     std::unique_ptr<brave_rewards::AutoContributeProps>)>;
 using GetPublisherMinVisitTimeCallback = base::Callback<void(uint64_t)>;
@@ -137,7 +135,6 @@ class RewardsService : public KeyedService {
 
   virtual void GetReconcileStamp(
       const GetReconcileStampCallback& callback) = 0;
-  virtual void GetAddresses(const GetAddressesCallback& callback) = 0;
   virtual void SetRewardsMainEnabled(bool enabled) = 0;
   virtual void GetPublisherMinVisitTime(
       const GetPublisherMinVisitTimeCallback& callback) = 0;
@@ -197,9 +194,6 @@ class RewardsService : public KeyedService {
   virtual void ConfirmAd(const std::string& json) = 0;
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
-
-  virtual void GetAddressesForPaymentId(
-      const GetAddressesCallback& callback) = 0;
   virtual void GetTransactionHistory(
       GetTransactionHistoryCallback callback) = 0;
 

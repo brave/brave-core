@@ -80,15 +80,6 @@ export const onReconcileStamp = (stamp: number) => action(types.ON_RECONCILE_STA
   stamp
 })
 
-export const onAddresses = (addresses: Record<Rewards.AddressesType, string>) => action(types.ON_ADDRESSES, {
-  addresses
-})
-
-export const onQRGenerated = (type: Rewards.AddressesType, image: string) => action(types.ON_QR_GENERATED, {
-  type,
-  image
-})
-
 export const onContributeList = (list: Rewards.Publisher[]) => action(types.ON_CONTRIBUTE_LIST, {
   list
 })
@@ -156,8 +147,6 @@ export const onAdsSettingSave = (key: string, value: any) => action(types.ON_ADS
   value
 })
 
-export const getAddresses = () => action(types.GET_ADDRESSES)
-
 export const getReconcileStamp = () => action(types.GET_RECONCILE_STAMP)
 
 export const getPendingContributions = () => action(types.GET_PENDING_CONTRIBUTIONS)
@@ -170,13 +159,6 @@ export const onPendingContributions = (list: Rewards.PendingContribution[]) =>
 export const onRewardsEnabled = (enabled: boolean) => action(types.ON_REWARDS_ENABLED, {
   enabled
 })
-
-export const getAddressesForPaymentId = () => action(types.GET_ADDRESSES_FOR_PAYMENT_ID)
-
-export const onAddressesForPaymentId = (addresses: Record<Rewards.AddressesType, string>) =>
-  action(types.ON_ADDRESSES_FOR_PAYMENT_ID, {
-    addresses
-  })
 
 export const onTransactionHistory = (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) =>
   action(types.ON_TRANSACTION_HISTORY, {

@@ -85,10 +85,6 @@ window.cr.define('brave_rewards', function () {
     getActions().onReconcileStamp(stamp)
   }
 
-  function addresses (addresses: Record<Rewards.AddressesType, string>) {
-    getActions().onAddresses(addresses)
-  }
-
   function contributeList (list: Rewards.Publisher[]) {
     getActions().onContributeList(list)
   }
@@ -137,10 +133,6 @@ window.cr.define('brave_rewards', function () {
 
   function rewardsEnabled (enabled: boolean) {
     getActions().onRewardsEnabled(enabled)
-  }
-
-  function addressesForPaymentId (addresses: Record<Rewards.AddressesType, string>) {
-    getActions().onAddressesForPaymentId(addresses)
   }
 
   function transactionHistory (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) {
@@ -204,7 +196,6 @@ window.cr.define('brave_rewards', function () {
     recoverWalletData,
     grantFinish,
     reconcileStamp,
-    addresses,
     contributeList,
     excludedList,
     balanceReports,
@@ -218,7 +209,6 @@ window.cr.define('brave_rewards', function () {
     pendingContributions,
     onPendingContributionSaved,
     rewardsEnabled,
-    addressesForPaymentId,
     transactionHistory,
     transactionHistoryChanged,
     recurringTipSaved,
