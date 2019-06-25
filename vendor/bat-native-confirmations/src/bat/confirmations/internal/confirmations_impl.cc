@@ -366,8 +366,11 @@ bool ConfirmationsImpl::ParseNextTokenRedemptionDateInSecondsFromJSON(
     return false;
   }
 
-  next_token_redemption_date_in_seconds_ =
+  auto next_token_redemption_date_in_seconds =
       std::stoull(next_token_redemption_date_in_seconds_value->GetString());
+
+  next_token_redemption_date_in_seconds_ =
+      Time::MigrateTimestampToDoubleT(next_token_redemption_date_in_seconds);
 
   return true;
 }
@@ -592,8 +595,11 @@ bool ConfirmationsImpl::GetTransactionHistoryFromDictionary(
     auto* timestamp_in_seconds_value =
         transaction_dictionary->FindKey("timestamp_in_seconds");
     if (timestamp_in_seconds_value) {
-      info.timestamp_in_seconds =
+      auto timestamp_in_seconds =
           std::stoull(timestamp_in_seconds_value->GetString());
+
+      info.timestamp_in_seconds =
+          Time::MigrateTimestampToDoubleT(timestamp_in_seconds);
     } else {
       // timestamp missing, fallback to default
       info.timestamp_in_seconds = Time::NowInSeconds();
@@ -826,6 +832,12 @@ void ConfirmationsImpl::RemoveConfirmationFromQueue(
 }
 
 void ConfirmationsImpl::UpdateAdsRewards(const bool should_refresh) {
+  if (!state_has_loaded_) {
+    // We should not update ads rewards until state has successfully loaded
+    // otherwise our values will be overwritten
+    return;
+  }
+
   ads_rewards_->Update(wallet_info_, should_refresh);
 }
 
@@ -918,7 +930,7 @@ uint64_t ConfirmationsImpl::GetAdNotificationsReceivedThisMonthForTransactions(
 
   for (const auto& transaction : transactions) {
     auto transaction_timestamp =
-        base::Time::FromDoubleT(transaction.timestamp_in_seconds);
+        Time::FromDoubleT(transaction.timestamp_in_seconds);
 
     base::Time::Exploded transaction_timestamp_exploded;
     transaction_timestamp.LocalExplode(&transaction_timestamp_exploded);
