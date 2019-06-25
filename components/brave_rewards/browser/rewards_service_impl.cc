@@ -433,6 +433,7 @@ void RewardsServiceImpl::ConnectionClosed() {
 
 void RewardsServiceImpl::Init() {
   AddObserver(notification_service_.get());
+  notification_service_->AddObserver(this);
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   AddObserver(extension_rewards_service_observer_.get());
   private_observers_.AddObserver(private_observer_.get());
@@ -520,6 +521,36 @@ void RewardsServiceImpl::MaybeShowAddFundsNotification(
     if (ShouldShowNotificationAddFunds()) {
       MaybeShowNotificationAddFunds();
     }
+  }
+}
+
+const char kOldBTCID[] = "rewards_old_btc";
+
+void RewardsServiceImpl::MaybeShowMigrateBTCNotification() {
+  PrefService* pref_service = profile_->GetPrefs();
+  if (pref_service->GetBoolean(prefs::kRewardsShowOldBTCNotification)) {
+    pref_service->SetBoolean(prefs::kRewardsShowOldBTCNotification, false);
+    RewardsNotificationService::RewardsNotificationArgs args;
+    notification_service_->AddNotification(
+      RewardsNotificationService::REWARDS_NOTIFICATION_OLD_BTC, args,
+      kOldBTCID);
+  } else {
+    // OnGetNotification handler will delete the notification if it's too old.
+    notification_service_->GetNotification(kOldBTCID);
+  }
+}
+
+void RewardsServiceImpl::OnGetNotification(
+    RewardsNotificationService* notification_service,
+    const RewardsNotificationService::RewardsNotification& notification) {
+  if (notification.id_ != kOldBTCID) {
+    return;
+  }
+
+  base::TimeDelta delta = base::Time::NowFromSystemTime() -
+      base::Time::FromTimeT(notification.timestamp_);
+  if (delta > base::TimeDelta::FromDays(14)) {
+    notification_service->DeleteNotification(notification.id_);
   }
 }
 
@@ -2504,6 +2535,7 @@ void RewardsServiceImpl::OnNotificationTimerFired() {
   GetReconcileStamp(
       base::Bind(&RewardsServiceImpl::MaybeShowAddFundsNotification,
         AsWeakPtr()));
+  MaybeShowMigrateBTCNotification();
   FetchGrants(std::string(), std::string());
 }
 

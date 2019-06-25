@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/importer/external_process_importer_client.h b/chrome/browser/importer/external_process_importer_client.h
-index 9451b0917536e73b42c596527112d3119b2c4cc5..1a0df4dc87bbf81ac73745feaeb009a93eb708bb 100644
+index 9451b0917536e73b42c596527112d3119b2c4cc5..f4774d737d6ccafe235df83a4df63aded037e7c8 100644
 --- a/chrome/browser/importer/external_process_importer_client.h
 +++ b/chrome/browser/importer/external_process_importer_client.h
-@@ -85,6 +85,14 @@ class ExternalProcessImporterClient
+@@ -85,6 +85,15 @@ class ExternalProcessImporterClient
    void OnAutofillFormDataImportGroup(
        const std::vector<ImporterAutofillFormDataEntry>&
            autofill_form_data_entry_group) override;
@@ -14,6 +14,7 @@ index 9451b0917536e73b42c596527112d3119b2c4cc5..1a0df4dc87bbf81ac73745feaeb009a9
 +  void OnWindowsImportReady(const ImportedWindowState& window_state) override {}
 +  void OnSettingsImportReady(
 +      const SessionStoreSettings& settings) override {}
++  void OnNoticeBTCWalletReady() override {}
  
   protected:
    ~ExternalProcessImporterClient() override;

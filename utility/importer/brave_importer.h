@@ -40,6 +40,7 @@ class BraveImporter : public ChromeImporter {
   void ImportReferral();
   void ImportRequiredItems();
   void ImportSettings();
+  void NoticeBTCWallet();
 
   base::Optional<base::Value> ParseBraveStateFile(
     const std::string& filename);

@@ -126,6 +126,7 @@ void BraveImporter::StartImport(const importer::SourceProfile& source_profile,
 void BraveImporter::ImportRequiredItems() {
   ImportReferral();
   ImportSettings();
+  NoticeBTCWallet();
 }
 
 void BraveImporter::ImportHistory() {
@@ -915,4 +916,21 @@ void BraveImporter::ImportSettings() {
   }
 
   bridge_->UpdateSettings(user_settings);
+}
+
+void BraveImporter::NoticeBTCWallet() {
+  base::Optional<base::Value> session_store_json = ParseBraveStateFile(
+      "session-store-1");
+  if (!session_store_json) {
+    return;
+  }
+
+  const base::Value* satoshis = session_store_json->FindPathOfType(
+      {"ledgerInfo", "satoshis"}, base::Value::Type::INTEGER);
+  if (satoshis) {
+    int num_satoshis = satoshis->GetInt();
+    if (num_satoshis > 0) {
+      bridge_->AlertBTCWallet();
+    }
+  }
 }

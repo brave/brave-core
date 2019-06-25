@@ -86,4 +86,11 @@ void BraveExternalProcessImporterClient::OnSettingsImportReady(
   bridge_->UpdateSettings(settings);
 }
 
+void BraveExternalProcessImporterClient::OnNoticeBTCWalletReady() {
+  if (cancelled_)
+    return;
+
+  bridge_->AlertBTCWallet();
+}
+
 BraveExternalProcessImporterClient::~BraveExternalProcessImporterClient() {}

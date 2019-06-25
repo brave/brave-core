@@ -23,6 +23,9 @@ const char kRewardsAddFundsNotification[] =
     "brave.rewards.add_funds_notification";
 const char kRewardsNotificationStartupDelay[] =
     "brave.rewards.notification_startup_delay";
+const char kRewardsShowOldBTCNotification[] =
+    "brave.rewards.show_old_btc_notification";
+const char kRewardsOldBTCChecked[] = "brave.rewards.old_btc_checked";
 
 }  // namespace prefs
 }  // namespace brave_rewards

@@ -61,11 +61,15 @@ void BraveExternalProcessImporterBridge::UpdateWindows(
   (*observer_)->OnWindowsImportReady(windowState);
 }
 
-
 void BraveExternalProcessImporterBridge::UpdateSettings(
       const SessionStoreSettings& settings) {
   (*observer_)->OnSettingsImportReady(settings);
 }
+
+void BraveExternalProcessImporterBridge::AlertBTCWallet() {
+  (*observer_)->OnNoticeBTCWalletReady();
+}
+
 
 
 BraveExternalProcessImporterBridge::BraveExternalProcessImporterBridge(

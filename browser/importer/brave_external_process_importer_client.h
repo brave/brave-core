@@ -41,6 +41,7 @@ class BraveExternalProcessImporterClient :
   void OnWindowsImportReady(
        const ImportedWindowState& windowState) override;
   void OnSettingsImportReady(const SessionStoreSettings& settings) override;
+  void OnNoticeBTCWalletReady() override;
 
  private:
   ~BraveExternalProcessImporterClient() override;

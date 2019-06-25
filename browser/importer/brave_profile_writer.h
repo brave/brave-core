@@ -35,6 +35,7 @@ class BraveProfileWriter : public ProfileWriter,
   virtual void UpdateReferral(const BraveReferral& referral);
   virtual void UpdateWindows(const ImportedWindowState& windowState);
   virtual void UpdateSettings(const SessionStoreSettings& settings);
+  virtual void AlertBTCWallet();
 
   void SetBridge(BraveInProcessImporterBridge* bridge);
 

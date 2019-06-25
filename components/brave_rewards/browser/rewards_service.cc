@@ -56,6 +56,8 @@ void RewardsService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(prefs::kRewardsAddFundsNotification, base::Time());
   registry->RegisterBooleanPref(prefs::kBraveRewardsEnabled, false);
   registry->RegisterBooleanPref(prefs::kBraveRewardsEnabledMigrated, false);
+  registry->RegisterBooleanPref(prefs::kRewardsShowOldBTCNotification, false);
+  registry->RegisterBooleanPref(prefs::kRewardsOldBTCChecked, false);
 }
 
 }  // namespace brave_rewards

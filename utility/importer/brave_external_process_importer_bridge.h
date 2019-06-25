@@ -27,6 +27,7 @@ class BraveExternalProcessImporterBridge :
   void UpdateReferral(const BraveReferral& referral) override;
   void UpdateWindows(const ImportedWindowState& windowState) override;
   void UpdateSettings(const SessionStoreSettings& settings) override;
+  void AlertBTCWallet() override;
 
 
  private:

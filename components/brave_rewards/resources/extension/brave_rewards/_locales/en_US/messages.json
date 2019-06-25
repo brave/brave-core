@@ -462,5 +462,21 @@
   "grantFinishTokenTitleAds": {
     "message": "Your Brave Ads Token Grant",
     "description": "Token title on success screen for ads"
+  },
+  "btcEmailSubject": {
+    "message": "Old Bitcoin wallet found",
+    "description": "Subject line for support emails about old BTC wallets"
+  },
+  "btcEmailSupport": {
+    "message": "Email Support",
+    "description": "Button text to send a support email"
+  },
+  "btcNotificationText": {
+    "message": "You may still have money stored in an old Bitcoin wallet.",
+    "description": "Notification text on finding old BTC wallet"
+  },
+  "btcNotificationTitle": {
+    "message": "Bitcoin Wallet Found",
+    "description": "Notification title for finding old BTC wallet"
   }
 }

@@ -277,7 +277,7 @@
     "@types/react-redux": "6.0.4",
     "@types/redux-logger": "^3.0.7",
     "awesome-typescript-loader": "^5.2.1",
-    "brave-ui": "github:brave/brave-ui#57ed2ffe53706146005a9aea707a0a53eaddd7ba",
+    "brave-ui": "github:brave/brave-ui#9b9189c438989f5f372f0832705788c7a1a27613",
     "css-loader": "^2.1.1",
     "csstype": "^2.5.5",
     "deep-freeze-node": "^1.1.3",

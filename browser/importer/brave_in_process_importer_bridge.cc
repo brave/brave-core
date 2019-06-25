@@ -54,4 +54,8 @@ void BraveInProcessImporterBridge::UpdateSettings(
   writer_->UpdateSettings(settings);
 }
 
+void BraveInProcessImporterBridge::AlertBTCWallet() {
+  writer_->AlertBTCWallet();
+}
+
 BraveInProcessImporterBridge::~BraveInProcessImporterBridge() {}

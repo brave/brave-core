@@ -33,6 +33,7 @@
 #include "ui/gfx/image/image.h"
 #include "brave/components/brave_rewards/browser/publisher_banner.h"
 #include "brave/components/brave_rewards/browser/rewards_service_private_observer.h"
+#include "brave/components/brave_rewards/browser/rewards_notification_service_observer.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/components/brave_rewards/browser/extension_rewards_service_observer.h"
@@ -79,6 +80,7 @@ using GetTestResponseCallback =
                         std::map<std::string, std::string>* headers)>;
 
 class RewardsServiceImpl : public RewardsService,
+                           public RewardsNotificationServiceObserver,
                            public ledger::LedgerClient,
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
  public:
@@ -254,6 +256,11 @@ class RewardsServiceImpl : public RewardsService,
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
+  void OnGetNotification(
+      RewardsNotificationService* rewards_notification_service,
+      const RewardsNotificationService::RewardsNotification& notification)
+      override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
@@ -335,6 +342,7 @@ class RewardsServiceImpl : public RewardsService,
       const ledger::BalanceReportInfo& report);
   void MaybeShowBackupNotification(uint64_t boot_stamp);
   void MaybeShowAddFundsNotification(uint64_t reconcile_stamp);
+  void MaybeShowMigrateBTCNotification();
   void OnPublisherListNormalizedSaved(ContentSiteList site_list,
                                       bool success);
   void OnWalletProperties(

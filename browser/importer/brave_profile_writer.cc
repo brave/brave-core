@@ -19,6 +19,7 @@
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/wallet_properties.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "brave/utility/importer/brave_importer.h"
 #include "brave/browser/importer/brave_in_process_importer_bridge.h"
@@ -511,5 +512,13 @@ void BraveProfileWriter::UpdateSettings(const SessionStoreSettings& settings) {
       prefs->SetInteger(kAlternativeSearchEngineProviderInTor,
           default_search_engine_id);
     }
+  }
+}
+
+void BraveProfileWriter::AlertBTCWallet() {
+  PrefService* prefs = profile_->GetPrefs();
+  if (prefs) {
+    prefs->SetBoolean(brave_rewards::prefs::kRewardsShowOldBTCNotification,
+        true);
   }
 }

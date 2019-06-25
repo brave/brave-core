@@ -221,6 +221,18 @@ export class Panel extends React.Component<Props, State> {
     }
   }
 
+  emailSupport (subject?: string, notificationId?: string) {
+    let mailto = 'mailto:support@brave.com'
+    if (subject) {
+      mailto += `?subject=${subject}`
+    }
+    chrome.tabs.create({ url: mailto })
+
+    if (notificationId) {
+      this.actions.deleteNotification(notificationId)
+    }
+  }
+
   showTipSiteDetail = () => {
     const publisher: RewardsExtension.Publisher | undefined = this.getPublisher()
     // TODO: why do we store windowId instead of active tab id in state?
@@ -274,6 +286,9 @@ export class Panel extends React.Component<Props, State> {
         break
       case 'insufficientFunds':
         clickEvent = this.openRewardsAddFundsPage.bind(this, id)
+        break
+      case 'oldBTC':
+        clickEvent = this.emailSupport.bind(this, getMessage('btcEmailSubject'), id)
         break
       default:
         clickEvent = undefined
@@ -371,6 +386,10 @@ export class Panel extends React.Component<Props, State> {
       case RewardsNotificationType.REWARDS_NOTIFICATION_PENDING_NOT_ENOUGH_FUNDS:
         type = 'insufficientFunds'
         text = getMessage('pendingNotEnoughFundsNotification')
+        break
+      case RewardsNotificationType.REWARDS_NOTIFICATION_OLD_BTC:
+        type = 'oldBTC'
+        text = getMessage('btcNotificationText')
         break
       default:
         type = ''
