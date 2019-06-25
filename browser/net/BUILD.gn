@@ -18,6 +18,8 @@ source_set("net") {
     "brave_profile_network_delegate.h",
     "brave_proxying_url_loader_factory.cc",
     "brave_proxying_url_loader_factory.h",
+    "brave_shields_core.cc",
+    "brave_shields_core.h",
     "brave_site_hacks_network_delegate_helper.cc",
     "brave_site_hacks_network_delegate_helper.h",
     "brave_static_redirect_network_delegate_helper.cc",

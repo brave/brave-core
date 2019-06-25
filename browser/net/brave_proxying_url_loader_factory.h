@@ -50,11 +50,12 @@ class BraveProxyingURLLoaderFactory :
     InProgressRequest(
         BraveProxyingURLLoaderFactory* factory,
         uint64_t request_id,
-        int32_t routing_id,
         int32_t network_service_request_id,
+        int32_t routing_id,
         uint32_t options,
         const network::ResourceRequest& request,
         bool is_download,
+        content::ResourceContext* resource_context,
         const net::MutableNetworkTrafficAnnotationTag& traffic_annotation,
         network::mojom::URLLoaderRequest loader_request,
         network::mojom::URLLoaderClientPtr client);
@@ -118,10 +119,12 @@ class BraveProxyingURLLoaderFactory :
     const base::Optional<url::Origin> original_initiator_;
     // TODO(iefremov): Restore?
     // const bool is_download_;
-    // const uint64_t request_id_;
+    const uint64_t request_id_;
     const int32_t network_service_request_id_;
     const int32_t routing_id_;
     const uint32_t options_;
+
+    content::ResourceContext* resource_context_;
     const net::MutableNetworkTrafficAnnotationTag traffic_annotation_;
     mojo::Binding<network::mojom::URLLoader> proxied_loader_binding_;
     network::mojom::URLLoaderClientPtr target_client_;
@@ -185,7 +188,7 @@ class BraveProxyingURLLoaderFactory :
   // Constructor public for testing purposes. New instances should be created
   // by calling MaybeProxyRequest().
   BraveProxyingURLLoaderFactory(
-      Profile* browser_context,
+      content::ResourceContext* resource_context,
       int render_process_id,
       bool is_download,
       network::mojom::URLLoaderFactoryRequest request,
@@ -196,6 +199,7 @@ class BraveProxyingURLLoaderFactory :
   ~BraveProxyingURLLoaderFactory() override;
 
   static bool MaybeProxyRequest(
+      content::BrowserContext* browser_context,
       content::RenderFrameHost* render_frame_host,
       int render_process_id,
       bool is_download,
@@ -231,7 +235,7 @@ class BraveProxyingURLLoaderFactory :
 
   void MaybeRemoveProxy();
 
-  Profile* profile_;
+  content::ResourceContext* resource_context_;
   const int render_process_id_;
   const bool is_download_;
 

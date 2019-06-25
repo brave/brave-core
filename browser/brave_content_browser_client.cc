@@ -291,6 +291,7 @@ bool BraveContentBrowserClient::WillCreateURLLoaderFactory(
     *bypass_redirect_checks = true;
 
   use_proxy |= BraveProxyingURLLoaderFactory::MaybeProxyRequest(
+      browser_context,
       frame, is_navigation, is_navigation ? -1 : render_process_id,
       request_initiator, factory_request,
       header_client);
