@@ -15,7 +15,7 @@ class MenuViewController: UITableViewController {
     }
     
     private enum MenuButtons: Int, CaseIterable {
-        case bookmarks, history, settings, add, share
+        case settings, history, bookmarks, add, share
         
         var title: String {
             switch self {
