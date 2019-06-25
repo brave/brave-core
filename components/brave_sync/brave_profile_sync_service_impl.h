@@ -150,6 +150,8 @@ class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
 
   void SetPermanentNodesOrder(const std::string& base_order);
 
+  void SendAndPurgePendingRecords();
+
   std::unique_ptr<brave_sync::prefs::Prefs> brave_sync_prefs_;
   // True when is in active sync chain
   bool brave_sync_configured_ = false;
@@ -172,6 +174,9 @@ class BraveProfileSyncServiceImpl : public BraveProfileSyncService,
   bookmarks::BookmarkModel* model_ = nullptr;
 
   std::unique_ptr<BraveSyncClient> brave_sync_client_;
+
+  base::Time chain_created_time_;
+  std::vector<RecordsListPtr> pending_send_records_;
 
   // Used to ensure that certain operations are performed on the sequence that
   // this object was created on.
