@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BAT_LEDGER_MEDIA_PUBLISHER_INFO_HANDLER_
-#define BAT_LEDGER_MEDIA_PUBLISHER_INFO_HANDLER_
+#ifndef BAT_LEDGER_MEDIA_EVENT_INFO_H_
+#define BAT_LEDGER_MEDIA_EVENT_INFO_H_
 
 #include <string>
 
@@ -13,10 +13,10 @@
 
 namespace ledger {
 
-LEDGER_EXPORT struct TwitchEventInfo {
-  TwitchEventInfo();
-  TwitchEventInfo(const TwitchEventInfo&);
-  ~TwitchEventInfo();
+LEDGER_EXPORT struct MediaEventInfo {
+  MediaEventInfo();
+  MediaEventInfo(const MediaEventInfo&);
+  ~MediaEventInfo();
 
   std::string event_;
   std::string time_;
@@ -25,4 +25,4 @@ LEDGER_EXPORT struct TwitchEventInfo {
 
 }  // namespace ledger
 
-#endif  // BAT_LEDGER_MEDIA_PUBLISHER_INFO_HANDLER_
+#endif  // BAT_LEDGER_MEDIA_EVENT_INFO_H_

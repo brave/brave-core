@@ -71,7 +71,10 @@ std::string getProviderName(const std::string& publisher_id) {
     return TWITCH_MEDIA_TYPE;
   } else if (publisher_id.find(TWITTER_MEDIA_TYPE) != std::string::npos) {
     return TWITTER_MEDIA_TYPE;
+  } else if (publisher_id.find(VIMEO_MEDIA_TYPE) != std::string::npos) {
+    return VIMEO_MEDIA_TYPE;
   }
+
   return "";
 }
 
@@ -708,7 +711,8 @@ void BatPublishers::getPublisherActivityFromUrl(
   const bool is_media = visit_data.domain == YOUTUBE_TLD ||
                         visit_data.domain == TWITCH_TLD ||
                         visit_data.domain == TWITTER_TLD ||
-                        visit_data.domain == REDDIT_TLD;
+                        visit_data.domain == REDDIT_TLD ||
+                        visit_data.domain == VIMEO_TLD;
 
   if (is_media &&
       visit_data.path != "" && visit_data.path != "/") {
@@ -719,6 +723,8 @@ void BatPublishers::getPublisherActivityFromUrl(
       type = TWITTER_MEDIA_TYPE;
     } else if (visit_data.domain == REDDIT_TLD) {
       type = REDDIT_MEDIA_TYPE;
+    } else if (visit_data.domain == VIMEO_TLD) {
+      type = VIMEO_MEDIA_TYPE;
     }
 
     ledger::VisitDataPtr new_visit_data = ledger::VisitData::New(visit_data);
