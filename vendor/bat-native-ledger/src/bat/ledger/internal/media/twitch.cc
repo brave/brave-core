@@ -424,7 +424,6 @@ void MediaTwitch::OnMediaPublisherInfo(
       return;
     }
 
-    std::string media_url = GetMediaURL(user_id);
     std::string oembed_url =
         (std::string)TWITCH_VOD_URL + media_props[media_props.size() - 1];
 
@@ -432,7 +431,6 @@ void MediaTwitch::OnMediaPublisherInfo(
                               this,
                               real_duration,
                               media_key,
-                              media_url,
                               visit_data,
                               window_id,
                               user_id,
@@ -450,7 +448,7 @@ void MediaTwitch::OnMediaPublisherInfo(
   // Live stream
   SavePublisherInfo(real_duration,
                     media_key,
-                    GetMediaURL(media_id),
+                    "",
                     media_id,
                     visit_data,
                     window_id,
@@ -472,7 +470,6 @@ void MediaTwitch::FetchDataFromUrl(
 void MediaTwitch::OnEmbedResponse(
     const uint64_t duration,
     const std::string& media_key,
-    const std::string& media_url,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     const std::string& user_id,
@@ -495,7 +492,7 @@ void MediaTwitch::OnEmbedResponse(
 
   SavePublisherInfo(duration,
                     media_key,
-                    media_url,
+                    "",
                     author_name,
                     visit_data,
                     window_id,
@@ -542,7 +539,7 @@ void MediaTwitch::OnMediaPublisherActivity(
       if (!publisher_favicon_url.empty()) {
         SavePublisherInfo(0,
                           media_key,
-                          GetMediaURL(media_id),
+                          "",
                           publisher_name,
                           visit_data,
                           window_id,
@@ -584,7 +581,7 @@ void MediaTwitch::OnPublisherInfo(
 
     SavePublisherInfo(0,
                       media_key,
-                      GetMediaURL(media_id),
+                      "",
                       publisher_name,
                       visit_data,
                       window_id,
@@ -623,18 +620,22 @@ void MediaTwitch::SavePublisherInfo(const uint64_t duration,
     return;
   }
 
-  ledger::VisitData updated_visit_data(visit_data);
-
+  ledger::VisitData new_visit_data;
   if (fav_icon.length() > 0) {
-    updated_visit_data.favicon_url = fav_icon;
+    new_visit_data.favicon_url = fav_icon;
   }
 
-  updated_visit_data.provider = TWITCH_MEDIA_TYPE;
-  updated_visit_data.name = publisher_name;
-  updated_visit_data.url = publisher_url + "/videos";
+  std::string url = publisher_url;
+  if (url.empty()) {
+    url = GetMediaURL(channel_id) + "/videos";
+  }
+
+  new_visit_data.provider = TWITCH_MEDIA_TYPE;
+  new_visit_data.name = publisher_name;
+  new_visit_data.url = url;
 
   ledger_->SaveMediaVisit(key,
-                          updated_visit_data,
+                          new_visit_data,
                           duration,
                           window_id);
   if (!media_key.empty()) {
