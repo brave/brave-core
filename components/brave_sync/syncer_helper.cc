@@ -55,6 +55,34 @@ uint64_t GetIndexByOrder(const std::string& record_order) {
   return index;
 }
 
+uint64_t GetIndexByCompareOrderStartFrom(
+    const bookmarks::BookmarkNode* parent,
+    const bookmarks::BookmarkNode* src,
+    int index) {
+  std::string src_order;
+  src->GetMetaInfo("order", &src_order);
+  DCHECK(!src_order.empty());
+  DCHECK(index >= 0);
+  while (index < parent->child_count()) {
+    const bookmarks::BookmarkNode* node = parent->GetChild(index);
+    std::string node_order;
+    node->GetMetaInfo("order", &node_order);
+    if (!node_order.empty() &&
+        brave_sync::CompareOrder(src_order, node_order)) {
+      return index;
+    }
+    ++index;
+  }
+  return index;
+}
+// |node| is near the end in parent
+void RepositionRespectOrder(
+    bookmarks::BookmarkModel* bookmark_model,
+    const bookmarks::BookmarkNode* node) {
+  const bookmarks::BookmarkNode* parent = node->parent();
+  int index = GetIndexByCompareOrderStartFrom(parent, node, 0);
+  bookmark_model->Move(node, parent, index);
+}
 }   // namespace
 
 void AddBraveMetaInfo(
@@ -112,6 +140,13 @@ uint64_t GetIndex(const bookmarks::BookmarkNode* parent,
     }
   }
   return index;
+}
+void RepositionOnApplyChangesFromSyncModel(
+    bookmarks::BookmarkModel* bookmark_model,
+    const std::multimap<int, const bookmarks::BookmarkNode*>& to_reposition) {
+  for (auto it = to_reposition.begin(); it != to_reposition.end(); ++it) {
+    RepositionRespectOrder(bookmark_model, it->second);
+  }
 }
 
 }   // namespace brave_sync

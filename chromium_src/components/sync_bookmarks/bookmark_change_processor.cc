@@ -7,6 +7,11 @@
 
 #include "brave/components/brave_sync/syncer_helper.h"
 #include "components/bookmarks/browser/bookmark_model.h"
+#include "components/sync/syncable/base_transaction.h"
+#include "components/sync/syncable/syncable_base_transaction.h"
+#include "components/sync/syncable/syncable_write_transaction.h"
+#include "components/sync/syncable/write_node.h"
+#include "components/sync/syncable/write_transaction.h"
 
 using bookmarks::BookmarkModel;
 using bookmarks::BookmarkModelObserver;
@@ -57,6 +62,58 @@ bool IsFirstLoadedFavicon(BookmarkChangeProcessor* bookmark_change_processor,
 
 }   // namespace
 
+namespace sync_bookmarks {
+syncer::SyncError BookmarkChangeProcessor::UpdateChildrenPositions(
+    const bookmarks::BookmarkNode* parent_node,
+    syncer::WriteTransaction* trans) {
+  for (int i = 0; i < parent_node->child_count(); ++i) {
+    const bookmarks::BookmarkNode* node = parent_node->GetChild(i);
+    syncer::WriteNode sync_node(trans);
+    if (!model_associator_->InitSyncNodeFromChromeId(node->id(), &sync_node)) {
+      syncer::SyncError error(FROM_HERE,
+                              syncer::SyncError::DATATYPE_ERROR,
+                              "Failed to init sync node from chrome node",
+                              syncer::BOOKMARKS);
+      //  TODO(AlexeyBarabash): pull unrecoverable_error_handler_
+      //  from BookmarkModelAssociator
+      //  unrecoverable_error_handler_->OnUnrecoverableError(error);
+      DCHECK(false) << "[BraveSync] " << __func__ <<
+          " Failed to init sync node from chrome node";
+      return error;
+    }
+    if (!PlaceSyncNode(MOVE, parent_node, i, trans, &sync_node,
+                       model_associator_)) {
+      syncer::SyncError error(FROM_HERE,
+                              syncer::SyncError::DATATYPE_ERROR,
+                              "Failed to place sync node",
+                              syncer::BOOKMARKS);
+      //  unrecoverable_error_handler_->OnUnrecoverableError(error);
+      DCHECK(false) << "[BraveSync] " << __func__ <<
+          "Failed to place sync node";
+      return error;
+    }
+  }
+  return syncer::SyncError();
+}
+void BookmarkChangeProcessor::MakeRepositionAndUpdateSyncNodes(
+    const std::multimap<int, const bookmarks::BookmarkNode*>& to_reposition,
+    const syncer::BaseTransaction* trans) {
+  brave_sync::RepositionOnApplyChangesFromSyncModel(
+      bookmark_model_, to_reposition);
+  // Attach to the transaction as a write transaction.
+  // Could be broken in next chromium updates, but now it is possible, see calls
+  //   WriteTransaction::NotifyTransactionChangingAndEnding =>
+  //   SyncManagerImpl::HandleTransactionEndingChangeEvent
+  syncer::WriteTransaction write_trans(FROM_HERE, trans->GetUserShare(),
+      static_cast<syncer::syncable::WriteTransaction*>(
+          trans->GetWrappedTrans()));
+  for (auto it = to_reposition.begin(); it != to_reposition.end(); ++it) {
+    const BookmarkNode* parent = it->second->parent();
+    UpdateChildrenPositions(parent, &write_trans);
+  }
+}
+}   // namespace sync_bookmarks
+
 #define BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_FAVICON_CHANGED \
   if (IsFirstLoadedFavicon(this, bookmark_model_, node)) return;
 
@@ -75,8 +132,12 @@ bool IsFirstLoadedFavicon(BookmarkChangeProcessor* bookmark_change_processor,
       brave_sync::AddBraveMetaInfo(child, model, false); \
       SetSyncNodeMetaInfo(child, &sync_child);
 
+#define BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL \
+      MakeRepositionAndUpdateSyncNodes(to_reposition, trans);
+
 #include "../../../../components/sync_bookmarks/bookmark_change_processor.cc"   // NOLINT
 #undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_FAVICON_CHANGED
 #undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_MOVED_1
 #undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_BOOKMARK_NODE_MOVED_2
 #undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_CHILDREN_REORDERED
+#undef BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL

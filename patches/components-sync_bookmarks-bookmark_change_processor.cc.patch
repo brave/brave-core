@@ -1,5 +1,5 @@
 diff --git a/components/sync_bookmarks/bookmark_change_processor.cc b/components/sync_bookmarks/bookmark_change_processor.cc
-index acb064faac3ee975ec07be4977fc0970309dfb15..a4ad75b23dd3537867ef4f7df2bf38a417c6054f 100644
+index acb064faac3ee975ec07be4977fc0970309dfb15..d9a74bda83d56c38e98e3952696519339033de1a 100644
 --- a/components/sync_bookmarks/bookmark_change_processor.cc
 +++ b/components/sync_bookmarks/bookmark_change_processor.cc
 @@ -87,6 +87,7 @@ void BookmarkChangeProcessor::UpdateSyncNodeProperties(
@@ -61,7 +61,7 @@ index acb064faac3ee975ec07be4977fc0970309dfb15..a4ad75b23dd3537867ef4f7df2bf38a4
        if (!PlaceSyncNode(MOVE, node, i, &trans, &sync_child,
                           model_associator_)) {
          syncer::SyncError error(FROM_HERE,
-@@ -718,10 +726,12 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
+@@ -718,6 +726,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
                     << src.GetBookmarkSpecifics().url();
          continue;
        }
@@ -69,9 +69,20 @@ index acb064faac3ee975ec07be4977fc0970309dfb15..a4ad75b23dd3537867ef4f7df2bf38a4
        model_associator_->Associate(dst, src);
      }
  
--    to_reposition.insert(std::make_pair(src.GetPositionIndex(), dst));
-+    uint64_t index = brave_sync::GetIndex(dst->parent(), dst);
-+    to_reposition.insert(std::make_pair(index, dst));
+@@ -725,6 +734,7 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
      bookmark_model_->SetNodeSyncTransactionVersion(dst, model_version);
    }
  
++#if !defined(BRAVE_CHROMIUM_BUILD)
+   // When we added or updated bookmarks in the previous loop, we placed them to
+   // the far right position.  Now we iterate over all these modified items in
+   // sync order, left to right, moving them into their proper positions.
+@@ -732,6 +742,8 @@ void BookmarkChangeProcessor::ApplyChangesFromSyncModel(
+     const BookmarkNode* parent = it->second->parent();
+     model->Move(it->second, parent, it->first);
+   }
++#endif
++  BRAVE_BOOKMARK_CHANGE_PROCESSOR_APPLY_CHANGES_FROM_SYNC_MODEL
+ 
+   // Clean up the temporary node.
+   if (foster_parent) {
