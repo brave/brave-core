@@ -7,6 +7,7 @@
 #include "jni/NotificationSystemStatusUtil_jni.h"
 #include "jni/BraveAds_jni.h"
 #include "base/android/jni_string.h"
+#include <sys/system_properties.h>
 
 namespace brave_ads {
 
@@ -28,6 +29,11 @@ bool NotificationHelperAndroid::IsNotificationsAvailable() const {
 // Starting in Android 8.0 (API level 26), all notifications must be
 // assigned to a channel.
 bool NotificationHelperAndroid::IsBraveAdsChannelEnabled() const {
+  char osVersion[PROP_VALUE_MAX+1];
+  int os_version = __system_property_get("ro.build.version.release", osVersion);
+  if (os_version <= 22) {
+    return true;
+  }
   JNIEnv* env = base::android::AttachCurrentThread();
   auto j_id = Java_BraveAds_getBraveAdsChannelId (env);
   std::string channel_id = base::android::ConvertJavaStringToUTF8(env, j_id);
