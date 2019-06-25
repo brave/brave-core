@@ -14,6 +14,7 @@
 #include "bat/ledger/internal/media/reddit.h"
 #include "bat/ledger/internal/media/twitch.h"
 #include "bat/ledger/internal/media/twitter.h"
+#include "bat/ledger/internal/media/vimeo.h"
 #include "bat/ledger/internal/media/youtube.h"
 #include "bat/ledger/ledger.h"
 
@@ -60,6 +61,7 @@ class Media {
   std::unique_ptr<braveledger_media::Twitch> media_twitch_;
   std::unique_ptr<braveledger_media::Twitter> media_twitter_;
   std::unique_ptr<braveledger_media::Reddit> media_reddit_;
+  std::unique_ptr<braveledger_media::Vimeo> media_vimeo_;
 };
 
 }  // namespace braveledger_media

@@ -14,7 +14,7 @@
 #include "bat/ledger/ledger.h"
 #include "bat/ledger/ledger_callback_handler.h"
 #include "bat/ledger/ledger_client.h"
-#include "bat/ledger/media_publisher_info.h"
+#include "bat/ledger/media_event_info.h"
 #include "bat/ledger/pending_contribution.h"
 #include "bat/ledger/publisher_info.h"
 #include "bat/ledger/reconcile_info.h"
@@ -59,8 +59,8 @@
 - (instancetype)initWithTransactionsInfo:(const ledger::TransactionsInfo&)obj;
 @end
 
-@interface BATTwitchEventInfo (Private)
-- (instancetype)initWithTwitchEventInfo:(const ledger::TwitchEventInfo&)obj;
+@interface BATMediaEventInfo (Private)
+- (instancetype)initWithMediaEventInfo:(const ledger::MediaEventInfo&)obj;
 @end
 
 @interface BATWalletProperties (Private)

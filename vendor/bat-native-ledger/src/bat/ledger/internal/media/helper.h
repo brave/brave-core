@@ -27,6 +27,9 @@ std::string ExtractData(const std::string& data,
                         const std::string& match_after,
                         const std::string& match_until);
 
+void GetVimeoParts(const std::string& query,
+                   std::vector<std::map<std::string, std::string>>* parts);
+
 }  // namespace braveledger_media
 
 #endif  // BRAVELEDGER_MEDIA_HELPER_H_

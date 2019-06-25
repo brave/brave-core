@@ -234,12 +234,23 @@ void LedgerImpl::OnPostData(
     return;
   }
 
-  std::vector<std::map<std::string, std::string>> twitchParts;
-  if (TWITCH_MEDIA_TYPE == type) {
+  if (type == TWITCH_MEDIA_TYPE) {
+    std::vector<std::map<std::string, std::string>> twitchParts;
     braveledger_media::GetTwitchParts(post_data, &twitchParts);
     for (size_t i = 0; i < twitchParts.size(); i++) {
       bat_media_->ProcessMedia(twitchParts[i], type, std::move(visit_data));
     }
+    return;
+  }
+
+  if (type == VIMEO_MEDIA_TYPE) {
+    std::vector<std::map<std::string, std::string>> parts;
+    braveledger_media::GetVimeoParts(post_data, &parts);
+
+    for (auto part = parts.begin(); part != parts.end(); part++) {
+      bat_media_->ProcessMedia(*part, type, std::move(visit_data));
+    }
+    return;
   }
 }
 
