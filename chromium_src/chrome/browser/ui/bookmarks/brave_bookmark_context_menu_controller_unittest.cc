@@ -13,6 +13,7 @@
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/bookmarks/bookmark_stats.h"
 #include "chrome/browser/ui/bookmarks/bookmark_utils.h"
 #include "chrome/browser/ui/bookmarks/bookmark_utils_desktop.h"
 #include "chrome/test/base/testing_profile.h"
@@ -49,9 +50,10 @@ class BraveBookmarkContextMenuControllerTest : public testing::Test {
 
 TEST_F(BraveBookmarkContextMenuControllerTest,
        DontShowAppsShortcutContextMenuInBookmarksBar) {
-  BookmarkContextMenuController controller(NULL, NULL, NULL, profile_.get(),
-                                           NULL, model_->bookmark_bar_node(),
-                                           std::vector<const BookmarkNode*>());
+  BookmarkContextMenuController controller(
+      NULL, NULL, NULL, profile_.get(), NULL,
+      BOOKMARK_LAUNCH_LOCATION_CONTEXT_MENU, model_->bookmark_bar_node(),
+      std::vector<const BookmarkNode*>());
 
   // Show apps command is not present by default.
   sync_preferences::TestingPrefServiceSyncable* prefs =
