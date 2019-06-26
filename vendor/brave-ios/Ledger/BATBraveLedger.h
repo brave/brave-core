@@ -4,9 +4,9 @@
 
 #import <Foundation/Foundation.h>
 #import "Records.h"
+#import "ledger.mojom.objc.h"
 #import "BATActivityInfoFilter.h"
 #import "BATRewardsNotification.h"
-#import "BATPublisherInfo.h"
 
 @class BATBraveAds;
 

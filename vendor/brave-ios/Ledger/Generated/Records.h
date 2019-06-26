@@ -7,7 +7,7 @@
 #import <Foundation/Foundation.h>
 #import "Enums.h"
 
-@class BATAutoContributeProps, BATBalanceReportInfo, BATContributionInfo, BATGrant, BATPublisherBanner, BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo, BATMediaEventInfo, BATVisitData, BATWalletProperties;
+@class BATAutoContributeProps, BATBalanceReportInfo, BATPublisherBanner, BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo, BATMediaEventInfo;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,22 +32,6 @@ NS_SWIFT_NAME(BalanceReportInfo)
 @property (nonatomic) NSString * recurringDonation;
 @property (nonatomic) NSString * oneTimeDonation;
 @property (nonatomic) NSString * total;
-@end
-
-NS_SWIFT_NAME(ContributionInfo)
-@interface BATContributionInfo : NSObject
-@property (nonatomic) NSString * publisher;
-@property (nonatomic) double value;
-@property (nonatomic) unsigned long long date;
-@end
-
-NS_SWIFT_NAME(Grant)
-@interface BATGrant : NSObject
-@property (nonatomic) NSString * altcurrency;
-@property (nonatomic) NSString * probi;
-@property (nonatomic) NSString * promotionId;
-@property (nonatomic) unsigned long long expiryTime;
-@property (nonatomic) NSString * type;
 @end
 
 NS_SWIFT_NAME(PublisherBanner)
@@ -99,19 +83,6 @@ NS_SWIFT_NAME(MediaEventInfo)
 @property (nonatomic) NSString * event;
 @property (nonatomic) NSString * time;
 @property (nonatomic) NSString * status;
-@end
-
-NS_SWIFT_NAME(WalletProperties)
-@interface BATWalletProperties : NSObject
-@property (nonatomic) NSString * altcurrency;
-@property (nonatomic) NSString * probi;
-@property (nonatomic) double balance;
-@property (nonatomic) double feeAmount;
-@property (nonatomic) NSDictionary<NSString *, NSNumber *> * rates;
-@property (nonatomic) NSArray<NSNumber *> * parametersChoices;
-@property (nonatomic) NSArray<NSNumber *> * parametersRange;
-@property (nonatomic) unsigned int parametersDays;
-@property (nonatomic) NSArray<BATGrant *> * grants;
 @end
 
 NS_ASSUME_NONNULL_END

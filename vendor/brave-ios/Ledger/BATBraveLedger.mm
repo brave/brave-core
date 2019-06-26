@@ -6,8 +6,8 @@
 #import "bat/ledger/ledger.h"
 
 #import "Records+Private.h"
+#import "ledger.mojom.objc+private.h"
 #import "BATPublisherInfo+Private.h"
-#import "BATPendingContribution+Private.h"
 #import "BATActivityInfoFilter+Private.h"
 
 #import "BATBraveLedger.h"
