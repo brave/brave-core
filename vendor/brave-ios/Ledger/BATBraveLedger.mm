@@ -376,12 +376,20 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 }
 
 - (void)publisherActivityFromURL:(NSURL *)URL
-                      faviconURL:(NSURL *)faviconURL
-                   publisherBlob:(NSString *)publisherBlob
+                      faviconURL:(nullable NSURL *)faviconURL
+                   publisherBlob:(nullable NSString *)publisherBlob
 {
   auto visitData = [self visitDataForURL:URL tabId:0];
-  visitData.favicon_url = std::string(faviconURL.absoluteString.UTF8String);
-  ledger->GetPublisherActivityFromUrl(1, visitData.Clone(), std::string(publisherBlob.UTF8String));
+  if (faviconURL) {
+    visitData.favicon_url = std::string(faviconURL.absoluteString.UTF8String);
+  }
+  
+  std::string blob = std::string();
+  if (publisherBlob) {
+    blob = std::string(publisherBlob.UTF8String);
+  }
+
+  ledger->GetPublisherActivityFromUrl(1, visitData.Clone(), blob);
 }
 
 - (void)mediaPublisherInfoForMediaKey:(NSString *)mediaKey completion:(void (^)(BATPublisherInfo * _Nullable))completion

@@ -92,8 +92,8 @@ NS_SWIFT_NAME(BraveLedger)
                     completion:(void (^)(BATPublisherInfo * _Nullable info))completion;
 
 - (void)publisherActivityFromURL:(NSURL *)URL
-                      faviconURL:(NSURL *)faviconURL
-                   publisherBlob:(NSString *)publisherBlob;
+                      faviconURL:(nullable NSURL *)faviconURL
+                   publisherBlob:(nullable NSString *)publisherBlob;
 
 - (void)mediaPublisherInfoForMediaKey:(NSString *)mediaKey
                            completion:(void (^)(BATPublisherInfo * _Nullable info))completion;
