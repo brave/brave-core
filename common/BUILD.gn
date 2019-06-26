@@ -109,6 +109,12 @@ source_set("brave_cookie_blocking") {
     "brave_cookie_blocking.cc",
     "brave_cookie_blocking.h",
   ]
+
+  if (is_mac) {
+    deps = [
+      "//base:logging_buildflags",
+    ]
+  }
 }
 
 source_set("shield_exceptions") {
