@@ -12,7 +12,7 @@ typedef testing::Test FieldTrialsTest;
 TEST_F(FieldTrialsTest, FieldTrialsTestingEnabled) {
   bool enabled = false;
 #if BUILDFLAG(FIELDTRIAL_TESTING_ENABLED)
-  enabled = true
+  enabled = true;
 #endif  // BUILDFLAG(FIELDTRIAL_TESTING_ENABLED)
   EXPECT_FALSE(enabled);
 }
