@@ -878,7 +878,7 @@ bool AdsImpl::HistoryRespectsRollingTimeConstraint(
     }
   }
 
-  if (recent_count < allowable_ad_count) {
+  if (recent_count <= allowable_ad_count) {
     return true;
   }
 
