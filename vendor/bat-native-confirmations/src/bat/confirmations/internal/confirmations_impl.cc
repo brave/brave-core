@@ -831,12 +831,6 @@ void ConfirmationsImpl::RemoveConfirmationFromQueue(
 }
 
 void ConfirmationsImpl::UpdateAdsRewards(const bool should_refresh) {
-  if (!state_has_loaded_) {
-    // We should not update ads rewards until state has successfully loaded
-    // otherwise our values will be overwritten
-    return;
-  }
-
   ads_rewards_->Update(wallet_info_, should_refresh);
 }
 
