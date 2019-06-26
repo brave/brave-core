@@ -314,6 +314,10 @@ static_library("browser_tests_runner") {
     ":browser_test_support",
   ]
 
+  if (is_win) {
+    deps += [ "//chrome/installer/util:strings" ]
+  }
+
   sources = [
     "base/browser_tests_main.cc",
   ]
