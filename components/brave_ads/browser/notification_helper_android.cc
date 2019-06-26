@@ -11,7 +11,7 @@
 
 namespace brave_ads {
 
-const int kMaxAndroidChannelVersion = 5;
+const int kMaxAndroidChannelVersion = 7;
 
 NotificationHelperAndroid::NotificationHelperAndroid() = default;
 
