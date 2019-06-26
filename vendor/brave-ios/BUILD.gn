@@ -29,6 +29,7 @@ config("internal_config") {
     "Ledger/Models",
     "Shared",
     "objc-gen",
+    "$target_gen_dir",
   ]
 }
 
@@ -57,7 +58,8 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "//brave/vendor/bat-native-ledger",
     "//brave/vendor/bat-native-ads",
     ":resources",
-    ":coredata"
+    ":coredata",
+    ":mojo_gen_wrappers",
   ]
 
   bundle_deps_filter = [ "//third_party/icu:icudata" ]
@@ -80,10 +82,6 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ledger/Models/BATActivityInfoFilter.mm",
     "Ledger/Models/BATPublisherInfo+Private.h",
     "Ledger/Models/BATPublisherInfo+Private.mm",
-    "Ledger/Models/BATPublisherInfo.h",
-    "Ledger/Models/BATPublisherInfo.mm",
-    "Ledger/Models/BATPendingContribution.h",
-    "Ledger/Models/BATPendingContribution.mm",
     "Ledger/Models/BATRewardsNotification.h",
     "Ledger/Models/BATRewardsNotification.m",
     "Shared/BATCommonOperations.h",
@@ -117,6 +115,9 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ledger/Data/Model/PublisherInfo.m",
     "Ledger/Data/Model/RecurringDonation.h",
     "Ledger/Data/Model/RecurringDonation.m",
+    "$target_gen_dir/ledger.mojom.objc.h",
+    "$target_gen_dir/ledger.mojom.objc+private.h",
+    "$target_gen_dir/ledger.mojom.objc.mm",
   ]
 
   public_headers = [
@@ -125,12 +126,12 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ledger/BATBraveLedger.h",
     "Ledger/Generated/Records.h",
     "Ledger/Generated/Enums.h",
-    "Ledger/Models/BATPublisherInfo.h",
     "Ledger/Models/BATActivityInfoFilter.h",
     "Ledger/Models/BATRewardsNotification.h",
     "Ads/BATBraveAds.h",
     "Ads/BATAdsNotification.h",
-    "Shared/RewardsLogger.h"
+    "Shared/RewardsLogger.h",
+    "$target_gen_dir/ledger.mojom.objc.h",
   ]
 
   libs = [
@@ -174,7 +175,7 @@ bundle_data("coredata") {
 }
 
 action("compile_coredata") {
-  script = "lib/compile-model.py"
+  script = "scripts/compile-model.py"
 
   inputs = [
     "Ledger/Data/Model.xcdatamodeld",
@@ -191,5 +192,37 @@ action("compile_coredata") {
   args = [
     "--model=$model",
     "--output=$out_dir",
+  ]
+}
+
+action("mojo_gen_wrappers") {
+  script = "scripts/mojo/gen_model_wrappers.py"
+  pickled_ast = rebase_path("$root_gen_dir/brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.p")
+  mojom_idl = rebase_path("//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces/ledger.mojom")
+  inputs = [
+    pickled_ast,
+    mojom_idl,
+    "scripts/mojo/mojom_objc_generator.py",
+    "scripts/mojo/objc_templates/enum.tmpl",
+    "scripts/mojo/objc_templates/module.h.tmpl",
+    "scripts/mojo/objc_templates/module+private.h.tmpl",
+    "scripts/mojo/objc_templates/module.mm.tmpl",
+    "scripts/mojo/objc_templates/interface_declaration.tmpl",
+    "scripts/mojo/objc_templates/private_interface_declaration.tmpl",
+    "scripts/mojo/objc_templates/private_interface_implementation.tmpl",
+  ]
+  outputs = [
+    "$target_gen_dir/ledger.mojom.objc.h",
+    "$target_gen_dir/ledger.mojom.objc+private.h",
+    "$target_gen_dir/ledger.mojom.objc.mm",
+  ]
+  output_dir = rebase_path(target_gen_dir)
+  args = [
+    "--pickled-ast=$pickled_ast",
+    "--mojom-file=$mojom_idl",
+    "--output-dir=$output_dir",
+  ]
+  deps = [
+    "//brave/vendor/bat-native-ledger/include/bat/ledger/public/interfaces:interfaces__parser"
   ]
 }

@@ -43,30 +43,6 @@
 }
 @end
 
-@implementation BATContributionInfo
-- (instancetype)initWithContributionInfo:(const ledger::mojom::ContributionInfo&)obj {
-  if ((self = [super init])) {
-    self.publisher = [NSString stringWithUTF8String:obj.publisher.c_str()];
-    self.value = obj.value;
-    self.date = obj.date;
-  }
-  return self;
-}
-@end
-
-@implementation BATGrant
-- (instancetype)initWithGrant:(const ledger::Grant&)obj {
-  if ((self = [super init])) {
-    self.altcurrency = [NSString stringWithUTF8String:obj.altcurrency.c_str()];
-    self.probi = [NSString stringWithUTF8String:obj.probi.c_str()];
-    self.promotionId = [NSString stringWithUTF8String:obj.promotion_id.c_str()];
-    self.expiryTime = obj.expiry_time;
-    self.type = [NSString stringWithUTF8String:obj.type.c_str()];
-  }
-  return self;
-}
-@end
-
 @implementation BATPublisherBanner
 - (instancetype)initWithPublisherBanner:(const ledger::PublisherBanner&)obj {
   if ((self = [super init])) {
@@ -137,21 +113,6 @@
     self.event = [NSString stringWithUTF8String:obj.event_.c_str()];
     self.time = [NSString stringWithUTF8String:obj.time_.c_str()];
     self.status = [NSString stringWithUTF8String:obj.status_.c_str()];
-  }
-  return self;
-}
-@end
-
-@implementation BATWalletProperties
-- (instancetype)initWithWalletPropertiesPtr:(ledger::WalletPropertiesPtr)obj {
-  if ((self = [super init])) {
-    self.feeAmount = obj->fee_amount;
-    self.parametersChoices = NSArrayFromVector(obj->parameters_choices);
-    self.parametersRange = NSArrayFromVector(obj->parameters_range);
-    self.parametersDays = obj->parameters_days;
-    self.grants = NSArrayFromVector(std::move(obj->grants), ^BATGrant *(const ledger::GrantPtr& o){
-      return [[BATGrant alloc] initWithGrant:*o];
-    });
   }
   return self;
 }

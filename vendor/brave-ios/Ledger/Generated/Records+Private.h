@@ -31,14 +31,6 @@
 - (instancetype)initWithBalanceReportInfo:(const ledger::BalanceReportInfo&)obj;
 @end
 
-@interface BATContributionInfo (Private)
-- (instancetype)initWithContributionInfo:(const ledger::mojom::ContributionInfo&)obj;
-@end
-
-@interface BATGrant (Private)
-- (instancetype)initWithGrant:(const ledger::Grant&)obj;
-@end
-
 @interface BATPublisherBanner (Private)
 - (instancetype)initWithPublisherBanner:(const ledger::PublisherBanner&)obj;
 @end
@@ -61,8 +53,4 @@
 
 @interface BATMediaEventInfo (Private)
 - (instancetype)initWithMediaEventInfo:(const ledger::MediaEventInfo&)obj;
-@end
-
-@interface BATWalletProperties (Private)
-- (instancetype)initWithWalletPropertiesPtr:(ledger::WalletPropertiesPtr)obj;
 @end

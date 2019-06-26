@@ -1,0 +1,29 @@
+
+{% set objc_class_name = "%s%s"|format(class_prefix, struct.name) -%}
+@implementation {{objc_class_name}}
+- (id)copyWithZone:(nullable NSZone *)zone
+{
+  auto copy = [[{{objc_class_name}} alloc] init];
+{%- for field in struct.fields %}
+{%-   set name = field.name|objc_property_formatter %}
+  copy.{{name}} = self.{{name}};
+{%- endfor %}
+  return copy;
+}
+@end
+
+@implementation {{objc_class_name}} (Private)
+- (instancetype)initWith{{struct.name}}:(const {{cpp_namespace}}::{{struct.name}} &)obj
+{
+  if ((self = [super init])) {
+{%- for field in struct.fields %}
+    self.{{field.name|objc_property_formatter}} = {{field|cpp_to_objc_assign('obj')}};
+{%- endfor %}
+  }
+  return self;
+}
+- (instancetype)initWith{{struct.name}}Ptr:({{cpp_namespace}}::{{struct.name}}Ptr)obj
+{
+  return [self initWith{{struct.name}}:*obj];
+}
+@end

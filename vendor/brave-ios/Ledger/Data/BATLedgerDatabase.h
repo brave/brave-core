@@ -4,8 +4,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Records.h"
-#import "BATPublisherInfo.h"
-#import "BATPendingContribution.h"
+#import "ledger.mojom.objc.h"
 #import "BATActivityInfoFilter.h"
 
 NS_ASSUME_NONNULL_BEGIN
