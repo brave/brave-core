@@ -65,9 +65,16 @@ NS_SWIFT_NAME(BraveRewards)
 @interface BATBraveRewards (Reporting)
 
 /// Report that a tab with a given id was updated
-- (void)reportTabUpdated:(NSInteger)tabId url:(NSURL *)url isSelected:(BOOL)isSelected isPrivate:(BOOL)isPrivate;
+- (void)reportTabUpdated:(NSInteger)tabId
+                     url:(NSURL *)url
+              isSelected:(BOOL)isSelected
+               isPrivate:(BOOL)isPrivate
+              completion:(void (^)(BOOL verifiedPublisher))completion;
 /// Report that a page has loaded in the current browser tab, and the HTML is available for analysis
-- (void)reportLoadedPageWithURL:(NSURL *)url tabId:(UInt32)tabId html:(NSString *)html NS_SWIFT_NAME(reportLoadedPage(url:tabId:html:));
+- (void)reportLoadedPageWithURL:(NSURL *)url
+                          tabId:(UInt32)tabId html:(NSString *)html
+                     completion:(void (^)(BOOL verifiedPublisher))completion
+              NS_SWIFT_NAME(reportLoadedPage(url:tabId:html:completion:));
 /// Report any XHR load happening in the page
 - (void)reportXHRLoad:(NSURL *)url
                 tabId:(UInt32)tabId
