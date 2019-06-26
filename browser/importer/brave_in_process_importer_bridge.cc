@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -27,22 +28,24 @@ void BraveInProcessImporterBridge::UpdateLedger(
   writer_->UpdateLedger(ledger);
 }
 
-void BraveInProcessImporterBridge::FinishLedgerImport () {
+void BraveInProcessImporterBridge::FinishLedgerImport() {
   NotifyItemEnded(importer::LEDGER);
   NotifyEnded();
 }
 
-void BraveInProcessImporterBridge::Cancel () {
+void BraveInProcessImporterBridge::Cancel() {
   host_->Cancel();
 }
 
-void BraveInProcessImporterBridge::UpdateReferral(const BraveReferral& referral) {
+void BraveInProcessImporterBridge::UpdateReferral(
+    const BraveReferral& referral) {
   writer_->UpdateReferral(referral);
 }
 
 void BraveInProcessImporterBridge::UpdateWindows(
     const ImportedWindowState& windowState) {
-  // TODO: Can we just restore windows/tabs here? Do we even need to do anything with the ProfileWriter?
+  // TODO(grobinson): Can we just restore windows/tabs here?
+  // Do we even need to do anything with the ProfileWriter?
   writer_->UpdateWindows(windowState);
 }
 
