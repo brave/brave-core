@@ -92,7 +92,6 @@ class MediaTwitch : public ledger::LedgerCallbackHandler {
   void OnEmbedResponse(
     const uint64_t duration,
     const std::string& media_key,
-    const std::string& media_url,
     const ledger::VisitData& visit_data,
     const uint64_t window_id,
     const std::string& user_id,
