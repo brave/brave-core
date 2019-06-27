@@ -16,7 +16,7 @@ class NodeHTML;
 class NodeHTMLElement;
 class PageGraph;
 
-class EdgeNodeInsert : public EdgeNode {
+class EdgeNodeInsert final : public EdgeNode {
 friend class PageGraph;
  public:
   EdgeNodeInsert() = delete;

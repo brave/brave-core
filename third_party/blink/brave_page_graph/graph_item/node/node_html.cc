@@ -27,9 +27,9 @@ void NodeHTML::MarkNodeDeleted() {
 }
 
 GraphMLXMLList NodeHTML::GraphMLAttributes() const {
+  LOG_ASSERT(node_id_ != kRootNodeId);
   return {
-    GraphMLAttrDefForType(kGraphMLAttrDefNodeId)
-      ->ToValue(node_id_ == kRootNodeId ? 0 : node_id_)
+    GraphMLAttrDefForType(kGraphMLAttrDefNodeId)->ToValue(node_id_)
   };
 }
 

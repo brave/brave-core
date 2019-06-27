@@ -67,6 +67,9 @@ friend EdgeNodeInsert;
   void RegisterHTMLElementNodeRemoved(const blink::DOMNodeId node_id);
   void RegisterHTMLTextNodeRemoved(const blink::DOMNodeId node_id);
 
+  void RegisterContentFrameSet(const blink::DOMNodeId node_id,
+    const WTF::String& url);
+
   void RegisterInlineStyleSet(const blink::DOMNodeId node_id,
     const WTF::String& attr_name, const WTF::String& attr_value);
   void RegisterInlineStyleDelete(const blink::DOMNodeId node_id,

@@ -8,30 +8,36 @@
 
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_resource.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
 
-class EdgeImport;
+class EdgeRequestFrame;
+class EdgeCrossDOM;
 class PageGraph;
 
-class NodeFrame : public Node {
+class NodeFrame final : public NodeResource {
 friend class PageGraph;
  public:
   NodeFrame() = delete;
   ~NodeFrame() override;
   ItemName GetItemName() const override;
 
-  void AddInEdge(const Edge* const edge) = delete;
-  void AddOutEdge(const EdgeImport* const edge);
+  void AddInEdge(const EdgeRequestStart* const in_edge) = delete;
+  void AddOutEdge(const EdgeRequestResponse* const out_edge) = delete;
+
+  void AddInEdge(const EdgeRequestFrame* const edge);
+  void AddOutEdge(const EdgeCrossDOM* const edge);
+
+  void SetIsLocalFrame();
+  void ClearIsLocalFrame();
 
  protected:
-  NodeFrame(PageGraph* const graph, const blink::DOMNodeId node_id,
-    const std::string& frame_url);
+  NodeFrame(PageGraph* const graph, const RequestUrl url);
   GraphMLXMLList GraphMLAttributes() const override;
 
-  const blink::DOMNodeId node_id_;
-  const std::string frame_url_;
+  bool is_local_frame_;
 };
 
 }  // namespace brave_page_graph

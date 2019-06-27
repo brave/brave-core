@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4573403f3ed1056224ed7b1699ceaddc1afee532 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..69104d4e4facdc2914e5b2f83ce1d12e1c2900cb 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -29,6 +29,7 @@
@@ -36,7 +36,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4573403f3ed1056224ed7b1699ceaddc
  }
  
  Document::~Document() {
-@@ -778,7 +791,82 @@ Document::~Document() {
+@@ -778,7 +791,81 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -71,8 +71,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4573403f3ed1056224ed7b1699ceaddc
 +    return nullptr;
 +  }
 +
-+  Document& top_doc = TopDocument();
-+  if (frame->LocalFrameRoot() != top_doc.GetFrame()) {
++  if (frame->LocalFrameRoot().IsMainFrame() == false) {
 +    return nullptr;
 +  }
 +
@@ -93,7 +92,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4573403f3ed1056224ed7b1699ceaddc
 +  // make sure to add the page graph instance to the local isolate
 +  // if the top frame has a PageGraph.
 +  if (frame->IsMainFrame() == false) {
-+    page_graph_non_owning_ = top_doc.GetPageGraph();
++    page_graph_non_owning_ = TopDocument().GetPageGraph();
 +    if (page_graph_non_owning_ != nullptr) {
 +      GetIsolate()->SetPageGraph(page_graph_non_owning_);
 +    }
