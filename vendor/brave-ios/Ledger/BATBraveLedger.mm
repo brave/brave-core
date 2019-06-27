@@ -61,6 +61,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 }
 @property (nonatomic, copy) NSString *storagePath;
 @property (nonatomic) BATWalletProperties *walletInfo;
+@property (nonatomic) BATBalance *balance;
 @property (nonatomic) dispatch_queue_t fileWriteThread;
 @property (nonatomic) NSMutableDictionary<NSString *, NSString *> *state;
 @property (nonatomic) BATCommonOperations *commonOps;
@@ -115,6 +116,7 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
     if (self.walletCreated) {
       [self fetchWalletDetails:nil];
+      [self fetchBalance:nil];
     }
 
     [self readNotificationsFromDisk];
@@ -208,7 +210,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   }
 }
 
-- (void)fetchWalletDetails:(void (^)(BATWalletProperties *))completion
+- (void)fetchWalletDetails:(void (^)(BATWalletProperties * _Nullable))completion
 {
   ledger->FetchWalletProperties(^(ledger::Result result, ledger::WalletPropertiesPtr info) {
     [self onWalletProperties:result arg1:std::move(info)];
@@ -230,6 +232,22 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
       self.walletInfo = nil;
     }
   }
+}
+
+- (void)fetchBalance:(void (^)(BATBalance * _Nullable))completion
+{
+  const auto __weak weakSelf = self;
+  ledger->FetchBalance(^(ledger::Result result, ledger::BalancePtr balance) {
+    const auto strongSelf = weakSelf;
+    if (result == ledger::Result::LEDGER_OK) {
+      strongSelf.balance = [[BATBalance alloc] initWithBalancePtr:std::move(balance)];
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (completion) {
+        completion(strongSelf.balance);
+      }
+    });
+  });
 }
 
 - (NSString *)walletPassphrase
@@ -320,6 +338,11 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
 }
 
 BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributionAmount)
+
+- (void)hasSufficientBalanceToReconcile:(void (^)(BOOL))completion
+{
+  ledger->HasSufficientBalanceToReconcile(completion);
+}
 
 #pragma mark - Publishers
 
@@ -618,8 +641,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   if (result == ledger::Result::LEDGER_OK) {
     const auto now = [NSDate date];
     const auto nowTimestamp = [now timeIntervalSince1970];
-
-    [self fetchWalletDetails:nil];
 
     if (category == ledger::REWARDS_CATEGORY::RECURRING_TIP) {
       [self showTipsProcessedNotificationIfNeccessary];
@@ -950,19 +971,24 @@ BATLedgerBridge(BOOL,
       now < upcomingAddFundsNotificationTime) {
     return;
   }
+  
+  const auto __weak weakSelf = self;
   // Make sure they don't have a sufficient balance
-  if (self.hasSufficientBalanceToReconcile) {
-    return;
-  }
-
-  // Set next add funds notification in 3 days
-  const auto nextTime = [[NSDate date] timeIntervalSince1970] + (kOneDay * 3);
-  self.prefs[kNextAddFundsDateNotificationKey] = @(nextTime);
-  [self savePrefs];
-
-  [self addNotificationOfKind:BATRewardsNotificationKindInsufficientFunds
-                     userInfo:nil
-               notificationID:@"rewards_notification_insufficient_funds"];
+  [self hasSufficientBalanceToReconcile:^(BOOL sufficient) {
+    if (sufficient) {
+      return;
+    }
+    const auto strongSelf = weakSelf;
+    
+    // Set next add funds notification in 3 days
+    const auto nextTime = [[NSDate date] timeIntervalSince1970] + (kOneDay * 3);
+    strongSelf.prefs[kNextAddFundsDateNotificationKey] = @(nextTime);
+    [strongSelf savePrefs];
+    
+    [strongSelf addNotificationOfKind:BATRewardsNotificationKindInsufficientFunds
+                             userInfo:nil
+                       notificationID:@"rewards_notification_insufficient_funds"];
+  }];
 }
 
 - (void)showTipsProcessedNotificationIfNeccessary
