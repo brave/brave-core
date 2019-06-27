@@ -115,6 +115,13 @@ typedef enum {
 } RequestStatus;
 std::string RequestStatusToString(const RequestStatus status) noexcept;
 
+typedef enum {
+  kStorageLocationCookie = 0,
+  kStorageLocationLocalStorage,
+  kStorageLocationSessionStorage
+} StorageLocation;
+std::string StorageLocationToString(const StorageLocation location) noexcept;
+
 typedef unsigned SourceCodeHash;
 typedef unsigned UrlHash;
 typedef int ScriptId;
