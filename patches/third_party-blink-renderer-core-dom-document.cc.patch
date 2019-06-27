@@ -79,11 +79,27 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..69104d4e4facdc2914e5b2f83ce1d12e
 +  // are, not 100% correct tests for this, but should be good enough to
 +  // infer in all practical cases.  This may need to be revisited in the future
 +  // if we can't accept any incorrectness.
-+  const auto supplements = Supplementable<Document>::supplements_;
-+  const bool current_doc_is_not_service_worker = (
-+    supplements.Contains(ServiceWorkerContainer::kSupplementName) ||
-+    supplements.Contains(DOMWindowStorageController::kSupplementName));
-+  if (current_doc_is_not_service_worker == false) {
++
++  bool current_doc_is_not_service_worker = false;
++
++  static const char* const serviceWorkerContainerSupplementName = "ServiceWorkerContainer";
++  // from blink::ServiceWorkerContainer::kSupplementName
++  static const char* const domWindowStorageControllerSupplementName = "DOMWindowStorageController";
++  // from blink::DOMWindowStorageController::kSupplementName
++
++  const auto& supplements = Supplementable<Document>::supplements_.Keys();
++  for (auto it = supplements.begin(); it != supplements.end(); ++it) {
++    const char* const supplement = *it;
++    if (strcmp(supplement, serviceWorkerContainerSupplementName) == 0 ||
++        strcmp(supplement, domWindowStorageControllerSupplementName) == 0) {
++      current_doc_is_not_service_worker = true;
++      break;
++    }
++  }
++
++  if (!current_doc_is_not_service_worker) {
++    std::cout << "(skipping PageGraph instrumentation on document " << Url().GetString() << ")"
++              << std::endl;
 +    return nullptr;
 +  }
 +
