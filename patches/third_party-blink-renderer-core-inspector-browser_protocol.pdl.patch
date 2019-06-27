@@ -1,0 +1,23 @@
+diff --git a/third_party/blink/renderer/core/inspector/browser_protocol.pdl b/third_party/blink/renderer/core/inspector/browser_protocol.pdl
+index 42e6c66369cd2fae575ad7db753638943e91e99e..29f9a87a94834c3a06277e4fbb272fef1e360e07 100644
+--- a/third_party/blink/renderer/core/inspector/browser_protocol.pdl
++++ b/third_party/blink/renderer/core/inspector/browser_protocol.pdl
+@@ -5165,6 +5165,11 @@ domain Page
+   # Enables page domain notifications.
+   command enable
+ 
++  command generatePageGraph
++    returns
++      # Generated page graph GraphML.
++      string data
++
+   command getAppManifest
+     returns
+       # Manifest location.
+@@ -6765,4 +6770,4 @@ experimental domain WebAudio
+   # Notifies that existing BaseAudioContext has changed some properties (id stays the same)..
+   event contextChanged
+     parameters
+-      BaseAudioContext context
+\ No newline at end of file
++      BaseAudioContext context

@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/core/inspector/inspector_page_agent.h b/third_party/blink/renderer/core/inspector/inspector_page_agent.h
+index cbb6824fa9412a5ea47fc1f5c0f77908edf8be3b..f58a1b3ca458a9a34746c1fd8ccc874b0ec8e22d 100644
+--- a/third_party/blink/renderer/core/inspector/inspector_page_agent.h
++++ b/third_party/blink/renderer/core/inspector/inspector_page_agent.h
+@@ -169,6 +169,8 @@ class CORE_EXPORT InspectorPageAgent final
+   protocol::Response clearCompilationCache() override;
+   protocol::Response waitForDebugger() override;
+ 
++  protocol::Response generatePageGraph(String* data) override;
++
+   // InspectorInstrumentation API
+   void DidClearDocumentOfWindowObject(LocalFrame*);
+   void DidNavigateWithinDocument(LocalFrame*);
