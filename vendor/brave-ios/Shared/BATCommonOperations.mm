@@ -57,11 +57,16 @@
   const auto timerID = self.currentTimerID;
 
   auto const __weak weakSelf = self;
-  self.timers[[NSNumber numberWithUnsignedInt:timerID]] =
-  [NSTimer scheduledTimerWithTimeInterval:offset repeats:false block:^(NSTimer * _Nonnull timer) {
-    if (!weakSelf) { return; }
-    timerFired(timerID);
-  }];
+    
+  dispatch_async(dispatch_get_main_queue(), ^{
+      self.timers[[NSNumber numberWithUnsignedInt:timerID]] =
+      [NSTimer scheduledTimerWithTimeInterval:offset repeats:false block:^(NSTimer * _Nonnull timer) {
+          if (!weakSelf) { return; }
+          timerFired(timerID);
+      }];
+  });
+    
+  
   return timerID;
 }
 
