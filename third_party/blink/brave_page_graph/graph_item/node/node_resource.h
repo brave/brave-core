@@ -15,7 +15,7 @@ class EdgeRequestStart;
 class EdgeRequestResponse;
 class PageGraph;
 
-class NodeResource final : public Node {
+class NodeResource : public Node {
 friend class PageGraph;
  public:
   NodeResource() = delete;

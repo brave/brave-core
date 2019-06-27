@@ -3,29 +3,35 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_CROSS_DOM_H_
-#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_CROSS_DOM_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_FRAME_H_
+#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_FRAME_H_
 
+#include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
 namespace brave_page_graph {
 
-class NodeDOMRoot;
+class Node;
 class PageGraph;
 
-class EdgeCrossDOM final : public Edge {
+class EdgeRequestFrame final : public Edge {
 friend class PageGraph;
  public:
-  EdgeCrossDOM() = delete;
+  EdgeRequestFrame() = delete;
+  ~EdgeRequestFrame() override;
+
   ItemName GetItemName() const override;
 
+  RequestUrl GetRequestUrl() const;
+
  protected:
-  EdgeCrossDOM(PageGraph* const graph, Node* const out_node,
-      NodeDOMRoot* const in_node);
+  EdgeRequestFrame(PageGraph* const graph,
+      Node* const out_node, Node* const in_node);
   GraphMLXMLList GraphMLAttributes() const override;
 };
 
 }  // namespace brave_page_graph
 
-#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_CROSS_DOM_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_REQUEST_EDGE_REQUEST_FRAME_H_

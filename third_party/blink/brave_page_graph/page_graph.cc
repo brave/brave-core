@@ -35,6 +35,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_remove.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_text_change.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_frame.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_start.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_error.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_complete.h"
@@ -131,9 +132,7 @@ NodeHTML* PageGraph::GetHTMLNode(const DOMNodeId node_id) const {
 
 NodeHTMLElement* PageGraph::GetHTMLElementNode(const DOMNodeId node_id) const {
   Log("GetHTMLElementNode) node id: " + to_string(node_id));
-  if (node_id == kRootNodeId) {
-    return html_root_node_;
-  }
+  LOG_ASSERT(node_id != kRootNodeId);
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   return element_nodes_.at(node_id);
 }
@@ -167,12 +166,24 @@ void PageGraph::RegisterDocumentRootCreated(const blink::DOMNodeId node_id,
   dom_root->AddInEdge(creation_edge);
   acting_node->AddOutEdge(creation_edge);
 
-  // Add the edge from parent iframe.
-  const EdgeCrossDOM* const structure_edge = new EdgeCrossDOM(this,
-      acting_node, dom_root, parent_node_id);
-  AddEdge(structure_edge);
-  dom_root->AddInEdge(structure_edge);
-  acting_node->AddOutEdge(structure_edge);
+  NodeHTMLElement* const frame_element_node =
+      element_nodes_.at(parent_node_id);
+  if (!frame_element_node->out_edges_.empty()) {
+    // Add the edge from the (most recently added) frame node of the
+    // parent frame element. The |out_edges_| list could be empty if
+    // the frame element doesn't have an src attribute at first (in case,
+    // blink seems to have an empty document with a URL of "about:blank"
+    // created for the frame).
+    const Edge* const last_edge = frame_element_node->out_edges_.back();
+    Node* const last_node = last_edge->in_node_;
+    const EdgeCrossDOM* const structure_edge =
+        new EdgeCrossDOM(this, last_node, dom_root);
+    AddEdge(structure_edge);
+    dom_root->AddInEdge(structure_edge);
+    last_node->AddOutEdge(structure_edge);
+    // Also mark the frame node from above as representing a local frame.
+    reinterpret_cast<NodeFrame*>(last_node)->SetIsLocalFrame();
+  }
 }
 
 void PageGraph::RegisterHTMLElementNodeCreated(const DOMNodeId node_id,
@@ -221,15 +232,15 @@ void PageGraph::RegisterHTMLTextNodeCreated(const DOMNodeId node_id,
 void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
     const DOMNodeId parent_node_id, const DOMNodeId before_sibling_id) {
 
-  const DOMNodeId inserted_parent_node_id = (parent_node_id)
-    ? parent_node_id
-    : kRootNodeId;
+  LOG_ASSERT(parent_node_id != kRootNodeId);
+  const DOMNodeId inserted_parent_node_id = parent_node_id;
 
   Log("RegisterHTMLElementNodeInserted) node id: " + to_string(node_id)
     + ", parent id: " + to_string(inserted_parent_node_id)
     + ", prev sibling id: " + to_string(before_sibling_id));
 
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
+  LOG_ASSERT(element_nodes_.count(parent_node_id) == 1);
   NodeHTMLElement* const inserted_node = element_nodes_.at(node_id);
 
   NodeActor* const acting_node = GetCurrentActingNode();
@@ -245,9 +256,8 @@ void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
 void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
     const DOMNodeId parent_node_id, const DOMNodeId before_sibling_id) {
 
-  const DOMNodeId inserted_parent_node_id = (parent_node_id)
-    ? parent_node_id
-    : kRootNodeId;
+  LOG_ASSERT(parent_node_id != kRootNodeId);
+  const DOMNodeId inserted_parent_node_id = parent_node_id;
 
   Log("RegisterHTMLTextNodeInserted) node id: " + to_string(node_id)
     + ", parent id: " + to_string(inserted_parent_node_id)
@@ -303,6 +313,29 @@ void PageGraph::RegisterHTMLTextNodeRemoved(const DOMNodeId node_id) {
 
   acting_node->AddOutEdge(edge);
   removed_node->AddInEdge(edge);
+}
+
+void PageGraph::RegisterContentFrameSet(const blink::DOMNodeId node_id,
+    const WTF::String& url) {
+  string local_url(url.Utf8().data());
+
+  LOG_ASSERT(element_nodes_.count(node_id) == 1);
+
+  NodeHTMLElement* const frame_element_node = element_nodes_.at(node_id);
+
+  // Create the new frame node.
+  NodeFrame* const frame_node = new NodeFrame(this, local_url);
+  AddNode(frame_node);
+  Log("NodeFrame url: " + local_url +
+      ", parent element node id:" + to_string(node_id));
+
+  // Create the new EdgeRequestFrame linking the frame element node
+  // and the frame node.
+  EdgeRequestFrame* const request_edge = new EdgeRequestFrame(this,
+      frame_element_node, frame_node);
+  AddEdge(request_edge);
+  frame_node->AddInEdge(request_edge);
+  frame_element_node->AddOutEdge(request_edge);
 }
 
 void PageGraph::RegisterInlineStyleSet(const DOMNodeId node_id,
