@@ -1,0 +1,30 @@
+diff --git a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
+index 97e0828889ab3073958088ef1f0517c8abc50a69..b1bee4f935435db995129d3a125e7789c70277cf 100644
+--- a/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
++++ b/third_party/blink/renderer/core/inspector/inspector_page_agent.cc
+@@ -833,7 +833,7 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
+     const String world_name = worlds_to_evaluate_on_load_.Get(key);
+     if (world_name.IsEmpty()) {
+       frame->GetScriptController().ExecuteScriptInMainWorld(
+-          source, ScriptSourceLocationType::kUnknown,
++          source, ScriptSourceLocationType::kInspector,
+           ScriptController::kExecuteScriptWhenScriptsDisabled);
+       continue;
+     }
+@@ -862,12 +862,14 @@ void InspectorPageAgent::DidClearDocumentOfWindowObject(LocalFrame* frame) {
+     // a foreign world.
+     v8::HandleScope handle_scope(V8PerIsolateData::MainThreadIsolate());
+     frame->GetScriptController().ExecuteScriptInIsolatedWorld(
+-        world_id, source, KURL(), SanitizeScriptErrors::kSanitize);
++        world_id,
++        ScriptSourceCode(source, ScriptSourceLocationType::kInspector), KURL(),
++        SanitizeScriptErrors::kSanitize);
+   }
+ 
+   if (!script_to_evaluate_on_load_once_.IsEmpty()) {
+     frame->GetScriptController().ExecuteScriptInMainWorld(
+-        script_to_evaluate_on_load_once_, ScriptSourceLocationType::kUnknown,
++        script_to_evaluate_on_load_once_, ScriptSourceLocationType::kInspector,
+         ScriptController::kExecuteScriptWhenScriptsDisabled);
+   }
+ }
