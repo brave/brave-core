@@ -8,7 +8,7 @@
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_actor.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
@@ -19,9 +19,10 @@ using ::std::to_string;
 namespace brave_page_graph {
 
 EdgeStorageRead::EdgeStorageRead(PageGraph* const graph,
-    NodeActor* const out_node, NodeStorage* const in_node,
-    const string& key) :
-      EdgeStorage(graph, out_node, in_node, key) {}
+    NodeScript* const out_node, NodeStorage* const in_node,
+    const string& key, const string& value) :
+      EdgeStorage(graph, out_node, in_node, key),
+      value_(value) {}
 
 EdgeStorageRead::~EdgeStorageRead() {}
 
@@ -29,10 +30,16 @@ ItemName EdgeStorageRead::GetItemName() const {
   return "EdgeStorageRead#" + to_string(id_);
 }
 
+ItemDesc EdgeStorageRead::GetDescBody() const {
+  return GetItemName() + " [key:" + key_ + ", value:" + value_ + "]";
+}
+
 GraphMLXMLList EdgeStorageRead::GraphMLAttributes() const {
   GraphMLXMLList items = EdgeStorage::GraphMLAttributes();
   items.push_back(
-    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)->ToValue("read"));
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)->ToValue("storage read"));
+  items.push_back(
+    GraphMLAttrDefForType(kGraphMLAttrDefValue)->ToValue(value_));
   return items;
 }
 

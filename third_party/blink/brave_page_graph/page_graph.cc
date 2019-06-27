@@ -33,6 +33,10 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_delete.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_insert.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_node_remove.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_clear.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_delete.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_read.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_set.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_text_change.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_start.h"
@@ -52,6 +56,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_shields.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_cookiejar.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_localstorage.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_sessionstorage.h"
 #include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/requests/tracked_request.h"
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
@@ -99,6 +104,7 @@ PageGraph::PageGraph(Document& document) :
     shields_node_(new NodeShields(this)),
     cookie_jar_node_(new NodeStorageCookieJar(this)),
     local_storage_node_(new NodeStorageLocalStorage(this)),
+    session_storage_node_(new NodeStorageSessionStorage(this)),
     document_(document) {
   Log("init");
   Log(" --- ");
@@ -108,6 +114,7 @@ PageGraph::PageGraph(Document& document) :
   AddNode(shields_node_);
   AddNode(cookie_jar_node_);
   AddNode(local_storage_node_);
+  AddNode(session_storage_node_);
 
   const blink::DOMNodeId root_id = blink::DOMNodeIds::IdForNode(&document);
   html_root_node_ = new NodeDOMRoot(this, root_id);
@@ -390,7 +397,7 @@ void PageGraph::RegisterAttributeDelete(const DOMNodeId node_id,
 }
 
 void PageGraph::RegisterTextNodeChange(const blink::DOMNodeId node_id,
-    const WTF::String& new_text) {
+    const String& new_text) {
   Log("RegisterNewTextNodeText) node id: " + to_string(node_id));
   LOG_ASSERT(text_nodes_.count(node_id) == 1);
 
@@ -517,8 +524,8 @@ void PageGraph::RegisterUrlForScriptSource(const KURL& url,
 
 void PageGraph::RegisterUrlForExtensionScriptSource(const blink::WebString& url,
     const blink::WebString& code) {
-  const WTF::String url_string(url.Latin1().c_str(), url.length());
-  const WTF::String code_string(code.Latin1().c_str(), code.length());
+  const String url_string(url.Latin1().c_str(), url.length());
+  const String code_string(code.Latin1().c_str(), code.length());
   Log("RegisterUrlForExtensionScriptSource: url: "
     + string(url_string.Utf8().data()));
   script_tracker_.AddExtensionCodeFetchedFromUrl(code_string.Impl()->GetHash(),
@@ -565,8 +572,8 @@ void PageGraph::RegisterScriptCompilation(
 }
 
 void PageGraph::RegisterScriptCompilationFromAttr(
-    const blink::DOMNodeId node_id, const WTF::String& attr_name,
-    const WTF::String& attr_value, const ScriptId script_id) {
+    const blink::DOMNodeId node_id, const String& attr_name,
+    const String& attr_value, const ScriptId script_id) {
   string local_attr_name(attr_name.Utf8().data());
   string local_attr_value(attr_value.Utf8().data());
   Log("RegisterScriptCompilationFromAttr) script id: "
@@ -612,6 +619,123 @@ void PageGraph::RegisterScriptExecStop(const ScriptId script_id) {
   }
   LOG_ASSERT(popped_script_id == script_id);
 }
+
+// Functions for handling storage read, write, and deletion
+void PageGraph::RegisterStorageRead(const String& key, const String& value,
+    const StorageLocation location) {
+  string local_key(key.Utf8().data());
+  string local_value(value.Utf8().data());
+  Log("RegisterStorageRead) key: " + local_key + ", value: " + local_value
+    + ", location: " + StorageLocationToString(location));
+
+  NodeActor* const acting_node = GetCurrentActingNode();
+  LOG_ASSERT(acting_node->IsScript());
+
+  NodeStorage* storage_node = nullptr;
+  switch (location) {
+    case kStorageLocationCookie:
+      storage_node = cookie_jar_node_;
+      break;
+    case kStorageLocationLocalStorage:
+      storage_node = local_storage_node_;
+      break;
+    case kStorageLocationSessionStorage:
+      storage_node = session_storage_node_;
+      break;
+  }
+
+  const EdgeStorageRead* const edge_storage = new EdgeStorageRead(this,
+    static_cast<NodeScript*>(acting_node), storage_node, local_key,
+    local_value);
+  AddEdge(edge_storage);
+  acting_node->AddOutEdge(edge_storage);
+  storage_node->AddInEdge(edge_storage);
+}
+
+void PageGraph::RegisterStorageWrite(const String& key, const String& value,
+    const StorageLocation location) {
+  string local_key(key.Utf8().data());
+  string local_value(value.Utf8().data());
+  Log("RegisterStorageWrite) key: " + local_key + ", value: " + local_value
+    + ", location: " + StorageLocationToString(location));
+
+  NodeActor* const acting_node = GetCurrentActingNode();
+  LOG_ASSERT(acting_node->IsScript());
+
+  NodeStorage* storage_node = nullptr;
+  switch (location) {
+    case kStorageLocationCookie:
+      storage_node = cookie_jar_node_;
+      break;
+    case kStorageLocationLocalStorage:
+      storage_node = local_storage_node_;
+      break;
+    case kStorageLocationSessionStorage:
+      storage_node = session_storage_node_;
+      break;
+  }
+
+  const EdgeStorageSet* const edge_storage = new EdgeStorageSet(this,
+    static_cast<NodeScript*>(acting_node), storage_node, local_key,
+    local_value);
+  AddEdge(edge_storage);
+  acting_node->AddOutEdge(edge_storage);
+  storage_node->AddInEdge(edge_storage);
+}
+
+void PageGraph::RegisterStorageDelete(const String& key,
+    const StorageLocation location) {
+  string local_key(key.Utf8().data());
+  Log("RegisterStorageDelete) key: " + local_key + ", location: " 
+    + StorageLocationToString(location));
+
+  NodeActor* const acting_node = GetCurrentActingNode();
+  LOG_ASSERT(acting_node->IsScript());
+
+  NodeStorage* storage_node = nullptr;
+  switch (location) {
+    case kStorageLocationLocalStorage:
+      storage_node = local_storage_node_;
+      break;
+    case kStorageLocationSessionStorage:
+      storage_node = session_storage_node_;
+      break;
+    case kStorageLocationCookie:
+      LOG_ASSERT(location != kStorageLocationCookie);
+  }
+
+  const EdgeStorageDelete* const edge_storage = new EdgeStorageDelete(this,
+    static_cast<NodeScript*>(acting_node), storage_node, local_key);
+  AddEdge(edge_storage);
+  acting_node->AddOutEdge(edge_storage);
+  storage_node->AddInEdge(edge_storage);
+}
+
+void PageGraph::RegisterStorageClear(const StorageLocation location) {
+  Log("RegisterStorageClear) location: " + StorageLocationToString(location));
+
+  NodeActor* const acting_node = GetCurrentActingNode();
+  LOG_ASSERT(acting_node->IsScript());
+
+  NodeStorage* storage_node = nullptr;
+  switch (location) {
+    case kStorageLocationLocalStorage:
+      storage_node = local_storage_node_;
+      break;
+    case kStorageLocationSessionStorage:
+      storage_node = session_storage_node_;
+      break;
+    case kStorageLocationCookie:
+      LOG_ASSERT(location != kStorageLocationCookie);
+  }
+
+  const EdgeStorageClear* const edge_storage = new EdgeStorageClear(this,
+    static_cast<NodeScript*>(acting_node), storage_node);
+  AddEdge(edge_storage);
+  acting_node->AddOutEdge(edge_storage);
+  storage_node->AddInEdge(edge_storage);
+}
+
 
 GraphMLXML PageGraph::ToGraphML() const {
   stringstream builder;

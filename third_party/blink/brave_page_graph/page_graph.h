@@ -37,6 +37,7 @@ class NodeScriptRemote;
 class NodeShields;
 class NodeStorageCookieJar;
 class NodeStorageLocalStorage;
+class NodeStorageSessionStorage;
 class NodeWebAPI;
 class RequestTracker;
 class ScriptTracker;
@@ -87,6 +88,14 @@ friend EdgeNodeInsert;
   void RegisterRequestComplete(const InspectorId request_id,
     const blink::ResourceType type);
   void RegisterRequestError(const InspectorId request_id);
+
+  void RegisterStorageRead(const WTF::String& key, const WTF::String& value,
+    const StorageLocation location);
+  void RegisterStorageWrite(const WTF::String& key, const WTF::String& value,
+    const StorageLocation location);
+  void RegisterStorageDelete(const WTF::String& key,
+    const StorageLocation location);
+  void RegisterStorageClear(const StorageLocation location);
 
   // Methods for handling the registration of script units in the document,
   // and v8 script executing.
@@ -156,6 +165,7 @@ friend EdgeNodeInsert;
   NodeShields* const shields_node_;
   NodeStorageCookieJar* const cookie_jar_node_;
   NodeStorageLocalStorage* const local_storage_node_;
+  NodeStorageSessionStorage* const session_storage_node_;
   NodeExtension* extension_node_ = nullptr;
 
   // Non-owning reference to the HTML root of the document (i.e. <html>).

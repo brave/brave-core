@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..3556813fa84026264986a6011468fc6e2653c047 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..c78745ac1f8811c7e77aa5ab26fa670f1ea6b558 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -29,6 +29,7 @@
@@ -144,3 +144,53 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..3556813fa84026264986a6011468fc6e
  
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
+@@ -5281,6 +5394,25 @@ String Document::cookie(ExceptionState& exception_state) const {
+   if (cookie_url.IsEmpty())
+     return String();
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    String cookies;
++    if (!cookie_url.IsEmpty()) {
++      cookies = Cookies(this, cookie_url);
++    }
++
++    brave_page_graph::PageGraph* page_graph = page_graph_;
++    if (page_graph == nullptr) {
++      page_graph = page_graph_non_owning_;
++    }
++
++    page_graph->RegisterStorageRead(cookie_url.GetString(), cookies,
++      brave_page_graph::kStorageLocationCookie);
++
++    return cookies;
++  }
++#endif
++
+   return Cookies(this, cookie_url);
+ }
+ 
+@@ -5312,6 +5444,23 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+   if (cookie_url.IsEmpty())
+     return;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Vector<String> cookie_structure;
++    value.Split("=", cookie_structure);
++    String key = *(cookie_structure.begin());
++    String cookie_value = value.Substring(key.length() + 1, value.length());
++
++    brave_page_graph::PageGraph* page_graph = page_graph_;
++    if (page_graph == nullptr) {
++      page_graph = page_graph_non_owning_;
++    }
++
++    page_graph->RegisterStorageWrite(key, cookie_value,
++      brave_page_graph::kStorageLocationCookie);
++  }
++#endif
++
+   SetCookies(this, cookie_url, value);
+ }
+ 
