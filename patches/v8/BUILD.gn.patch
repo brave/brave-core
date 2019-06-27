@@ -1,5 +1,5 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index 10fee264203ae01c7b672c41fdde549cf4206f8d..47cc0faf92045d9ead58a85e707e623632dc9386 100644
+index 10fee264203ae01c7b672c41fdde549cf4206f8d..85c90b330a6cadb4d76d18a37f45c3dc3204e454 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
 @@ -1917,6 +1917,7 @@ v8_source_set("v8_compiler") {
@@ -10,7 +10,7 @@ index 10fee264203ae01c7b672c41fdde549cf4206f8d..47cc0faf92045d9ead58a85e707e6236
      ":generate_bytecode_builtins_list",
      ":run_torque",
      ":v8_maybe_icu",
-@@ -3197,6 +3196,7 @@ v8_source_set("v8_base_without_compiler") {
+@@ -3197,6 +3198,7 @@ v8_source_set("v8_base_without_compiler") {
    ]
  
    public_deps = [
