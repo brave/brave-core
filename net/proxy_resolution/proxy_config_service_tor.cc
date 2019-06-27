@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <memory>
 #include <utility>
+#include <sstream>
 #include <vector>
 
 #include "base/no_destructor.h"
@@ -25,45 +26,39 @@ namespace net {
 
 namespace {
 
-static base::NoDestructor<std::map<
-    ProxyResolutionService*, void*>> proxy_profile_map_;
+constexpr NetworkTrafficAnnotationTag kTorProxyTrafficAnnotation =
+    DefineNetworkTrafficAnnotation("proxy_config_tor", R"(
+      semantics {
+        sender: "Proxy Config Tor"
+        description:
+          "Establishing a connection through the tor proxy server"
+        trigger:
+          "Whenever a network request is made from a tor profile."
+        data:
+          "Proxy configuration."
+        destination: OTHER
+        destination_other:
+          "The proxy server specified in the configuration."
+      }
+      policy {
+        cookies_allowed: NO
+        setting: "This feature cannot be disabled by settings."
+        policy_exception_justification: "Not implemented."
+      })");
 
 static base::NoDestructor<std::map<
-    void*, ProxyConfigServiceTor::TorProxyMap>> profile_tor_map_;
+    ProxyResolutionService*,
+    ProxyConfigServiceTor::TorProxyMap>> tor_proxy_map_;
+
 }  // namespace
 
 const int kTorPasswordLength = 16;
 // Default tor circuit life time is 10 minutes
 constexpr base::TimeDelta kTenMins = base::TimeDelta::FromMinutes(10);
 
-// static
-ProxyConfigServiceTor::TorProxyMap*
-ProxyConfigServiceTor::GetTorProxyMap(ProxyResolutionService* service) {
-  void* profile = (*proxy_profile_map_)[service];
-  if (profile) {
-    return &((*profile_tor_map_)[profile]);
-  } else {
-    return nullptr;
-  }
-}
-
-// static
-void ProxyConfigServiceTor::SetTorProxyMap(ProxyResolutionService* service,
-                                           void* profile) {
-  (*proxy_profile_map_)[service] = profile;
-}
-
-// static
-void ProxyConfigServiceTor::UnsetTorProxyMap(ProxyResolutionService* service,
-                                             void* profile) {
-  proxy_profile_map_.get()->erase(service);
-  profile_tor_map_.get()->erase(profile);
-}
-
-void ProxyConfigServiceTor::ResetTorProxyMap(void* profile, GURL url) {
-  const auto& map = profile_tor_map_.get()->find(profile);
-  if (map != profile_tor_map_.get()->end())
-    map->second.Erase(ProxyConfigServiceTor::CircuitIsolationKey(url));
+ProxyConfigServiceTor::TorProxyMap* GetTorProxyMap(
+    ProxyResolutionService* service) {
+  return &(tor_proxy_map_.get()->operator[](service));
 }
 
 ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& proxy_uri) {
@@ -75,16 +70,21 @@ ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& proxy_uri) {
 
 ProxyConfigServiceTor::~ProxyConfigServiceTor() {}
 
-void ProxyConfigServiceTor::SetUsername(const std::string& username,
-                                        TorProxyMap* map) {
-  if (map && !username.empty()) {
-    std::string password = map->Get(username);
-    const HostPortPair old_host_port = proxy_server_.host_port_pair();
-    const HostPortPair new_host_port(username, password, old_host_port.host(),
-                                     old_host_port.port());
-    const ProxyServer proxy_server(ProxyServer::SCHEME_SOCKS5, new_host_port);
-    proxy_server_ = proxy_server;
-  }
+void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {
+  const HostPortPair old_host_port = proxy_server_.host_port_pair();
+  const HostPortPair new_host_port(
+      ProxyConfigServiceTor::CircuitIsolationKey(url),
+      std::to_string(base::Time::Now().ToTimeT()),
+      old_host_port.host(),
+      old_host_port.port());
+  proxy_server_ = ProxyServer(ProxyServer::SCHEME_SOCKS5, new_host_port);
+
+  net::ProxyConfigWithAnnotation proxy_config;
+  auto config_valid = GetLatestProxyConfig(&proxy_config);
+
+  for (auto& observer : observers_)
+    observer.OnProxyConfigChanged(proxy_config,
+                                  config_valid);
 }
 
 // static
@@ -110,16 +110,73 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
   return domain;
 }
 
+// static
+bool ProxyConfigServiceTor::IsTorProxy(
+    const net::NetworkTrafficAnnotationTag tag) {
+  return tag.unique_id_hash_code ==
+         kTorProxyTrafficAnnotation.unique_id_hash_code;
+}
+
+// static
+void ProxyConfigServiceTor::SetProxyAuthorization(
+    const ProxyConfigWithAnnotation& config,
+    const GURL& url,
+    ProxyResolutionService* service,
+    ProxyInfo* result) {
+  if (!IsTorProxy(config.traffic_annotation()))
+    return;
+
+  // Adding username & password to global sock://127.0.0.1:[port] config
+  // without actually modifying it when resolving proxy for each url.
+  const std::string username = ProxyConfigServiceTor::CircuitIsolationKey(url);
+  const std::string& proxy_uri =
+      config.value().proxy_rules().single_proxies.Get().ToURI();
+  HostPortPair host_port_pair = HostPortPair::FromString(proxy_uri);
+
+  if (!username.empty()) {
+    auto* map = GetTorProxyMap(service);
+    if (!host_port_pair.username().empty()) {
+      // password is a time_t -> std::string
+      std::istringstream stream(host_port_pair.password());
+      time_t time;
+      stream >> time;
+      map->MaybeExpire(host_port_pair.username(), base::Time::FromTimeT(time));
+    }
+    host_port_pair.set_username(username);
+    host_port_pair.set_password(map->Get(username));
+
+    ProxyConfigServiceTor tor_proxy_config_service(proxy_uri);
+    tor_proxy_config_service.proxy_server_ =
+        ProxyServer(ProxyServer::SCHEME_SOCKS5, host_port_pair);
+
+    ProxyConfigWithAnnotation fetched_config;
+    tor_proxy_config_service.GetLatestProxyConfig(&fetched_config);
+    fetched_config.value().proxy_rules().Apply(url, result);
+  }
+  // TODO(bridiver) - iterate through tor_proxy_map_ and remove any entries with
+  // empty TorProxyMap meaning all entries have expired
+}
+
+void ProxyConfigServiceTor::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void ProxyConfigServiceTor::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
 ProxyConfigServiceTor::ConfigAvailability
 ProxyConfigServiceTor::GetLatestProxyConfig(
     net::ProxyConfigWithAnnotation* config) {
   if (!proxy_server_.is_valid())
     return CONFIG_UNSET;
+
   ProxyConfig proxy_config;
   proxy_config.proxy_rules().bypass_rules.AddRulesToSubtractImplicit();
   proxy_config.proxy_rules().ParseFromString(proxy_server_.ToURI());
   *config =
-      net::ProxyConfigWithAnnotation(proxy_config, NO_TRAFFIC_ANNOTATION_YET);
+      net::ProxyConfigWithAnnotation(proxy_config, kTorProxyTrafficAnnotation);
+
   return CONFIG_VALID;
 }
 
@@ -154,6 +211,7 @@ std::string ProxyConfigServiceTor::TorProxyMap::Get(
   // Reschedule the timer for ten minutes from now so that this entry
   // won't last more than about ten minutes even if the user stops
   // using Tor for a while.
+  // TODO(bridiver) - the timer should be in the ProxyConfigServiceTor class
   timer_.Stop();
   timer_.Start(FROM_HERE, kTenMins, this,
                &ProxyConfigServiceTor::TorProxyMap::ClearExpiredEntries);
@@ -168,6 +226,16 @@ void ProxyConfigServiceTor::TorProxyMap::Erase(const std::string& username) {
   // the timestamps won't match, and they will simultaneously create a
   // new entry in the queue.
   map_.erase(username);
+}
+
+void ProxyConfigServiceTor::TorProxyMap::MaybeExpire(
+    const std::string& username,
+    const base::Time& timestamp) {
+  auto found = map_.find(username);
+  if (found != map_.end() &&
+      timestamp > found->second.second) {
+    Erase(username);
+  }
 }
 
 void ProxyConfigServiceTor::TorProxyMap::ClearExpiredEntries() {

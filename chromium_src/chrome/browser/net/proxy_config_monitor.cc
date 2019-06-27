@@ -4,18 +4,20 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/tor/buildflags.h"
-#include "brave/common/tor/pref_names.h"
-#include "brave/common/tor/tor_proxy_uri_helper.h"
-#include "brave/net/proxy_resolution/proxy_config_service_tor.h"
+
+#if BUILDFLAG(ENABLE_TOR)
 #include "net/proxy_resolution/proxy_config_service.h"
+#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
+#endif
 
 namespace {
 
 #if BUILDFLAG(ENABLE_TOR)
-std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor() {
-  // No need to track proxy pref for tor profile which has to have persistent
-  // tor proxy setting
-  return std::make_unique<net::ProxyConfigServiceTor>(tor::GetTorProxyURI());
+std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor(
+    Profile* profile) {
+  auto* tor_service = TorProfileServiceFactory::GetForProfile(profile);
+  return tor_service->CreateProxyConfigService();
 }
 #endif  // BUILDFLAG(ENABLE_TOR)
 
@@ -24,7 +26,7 @@ std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor() {
 #if BUILDFLAG(ENABLE_TOR)
 #define BRAVE_PROXY_CONFIG_MONITOR \
   if (profile && profile->IsTorProfile()) \
-    proxy_config_service_ = CreateProxyConfigServiceTor(); \
+    proxy_config_service_ = CreateProxyConfigServiceTor(profile); \
   else
 #else
 #define BRAVE_PROXY_CONFIG_MONITOR

@@ -13,26 +13,14 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "content/public/browser/browser_thread.h"
-#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
 
-using content::BrowserThread;
-using content::NavigationController;
 using content::WebContents;
 
 namespace {
 }  // namespace
 
 namespace brave {
-
-void NewTorIdentityCallback(WebContents* current_tab, bool success) {
-  if (!success) {
-    LOG(WARNING) << "Failed to set new tor identity";
-    return;
-  }
-  NavigationController& controller = current_tab->GetController();
-  controller.Reload(content::ReloadType::BYPASSING_CACHE, true);
-}
 
 void NewOffTheRecordWindowTor(Browser* browser) {
   profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
@@ -48,9 +36,7 @@ void NewTorIdentity(Browser* browser) {
     browser->tab_strip_model()->GetActiveWebContents();
   if (!current_tab)
     return;
-  const GURL current_url = current_tab->GetURL();
-  service->SetNewTorCircuit(
-      current_url, base::BindOnce(&NewTorIdentityCallback, current_tab));
+  service->SetNewTorCircuit(current_tab);
 }
 
 }  // namespace brave

@@ -16,13 +16,17 @@
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
+#include "brave/common/tor/tor_proxy_uri_helper.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "mojo/public/cpp/bindings/binding.h"
 #include "mojo/public/cpp/bindings/interface_request.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
@@ -32,10 +36,36 @@
 
 using content::BrowserContext;
 using content::BrowserThread;
+using content::NavigationController;
+using content::WebContents;
+using content::WebContentsObserver;
 
 namespace tor {
 
 namespace {
+
+class NewTorIdentityTracker : public WebContentsObserver {
+ public:
+  NewTorIdentityTracker(content::WebContents* web_contents)
+      : WebContentsObserver(web_contents) {}
+  ~NewTorIdentityTracker() override {}
+
+  void NewIdentityLoaded(bool success) {
+    if (web_contents()) {
+      if (success) {
+        NavigationController& controller = web_contents()->GetController();
+        controller.Reload(content::ReloadType::BYPASSING_CACHE, true);
+      } else {
+        LOG(WARNING) << "Failed to set new tor identity";
+        // TODO(bridiver) - the webcontents still exists so we need to notify
+        // the user, not just log and return;
+      }
+    }
+  }
+
+ private:
+  DISALLOW_COPY_AND_ASSIGN(NewTorIdentityTracker);
+};
 
 class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
  public:
@@ -72,8 +102,7 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
   void OnProxyLookupComplete(
         int32_t net_error,
         const base::Optional<net::ProxyInfo>& proxy_info) override {
-    bool success = proxy_info.has_value() && !proxy_info->is_direct();
-    std::move(callback_).Run(success);
+    std::move(callback_).Run(proxy_info);
     delete this;
   }
 
@@ -83,23 +112,10 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
   DISALLOW_COPY_AND_ASSIGN(TorProxyLookupClient);
 };
 
-void OnProfileCreatedOnIOThread(Profile* profile, scoped_refptr<net::URLRequestContextGetter> request_context) {
-  auto* url_request_context = request_context->GetURLRequestContext();
-  auto* service = url_request_context->proxy_resolution_service();
-  net::ProxyConfigServiceTor::SetTorProxyMap(service, profile);
-}
-
-void OnProfileDestroyedOnIOThread(
-    Profile* profile,
-    scoped_refptr<net::URLRequestContextGetter> getter) {
-  auto* context = getter->GetURLRequestContext();
-  auto* service = context->proxy_resolution_service();
-  net::ProxyConfigServiceTor::UnsetTorProxyMap(service, profile);
-}
-
-void SetNewTorCircuitOnIOThread(Profile* profile,
-                                GURL request_url) {
-  net::ProxyConfigServiceTor::ResetTorProxyMap(profile, request_url);
+void NewTorIdentityCallback(std::unique_ptr<NewTorIdentityTracker> tracker,
+                            const base::Optional<net::ProxyInfo>& proxy_info) {
+  tracker->NewIdentityLoaded(
+      proxy_info.has_value() && !proxy_info->is_direct());
 }
 
 }  // namespace
@@ -118,25 +134,10 @@ TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
     tor::TorConfig config(path, proxy);
     LaunchTor(config);
   }
-
-  scoped_refptr<net::URLRequestContextGetter> getter(
-      profile->GetRequestContext());
-  getter->GetNetworkTaskRunner()->PostTask(
-      FROM_HERE, base::BindOnce(&OnProfileCreatedOnIOThread, profile, getter));
 }
 
 TorProfileServiceImpl::~TorProfileServiceImpl() {
   tor_launcher_factory_->RemoveObserver(this);
-}
-
-void TorProfileServiceImpl::Shutdown() {
-  TorProfileService::Shutdown();
-
-  scoped_refptr<net::URLRequestContextGetter> getter(
-      profile_->GetRequestContext());
-  getter->GetNetworkTaskRunner()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&OnProfileDestroyedOnIOThread, profile_, getter));
 }
 
 void TorProfileServiceImpl::LaunchTor(const TorConfig& config) {
@@ -147,33 +148,27 @@ void TorProfileServiceImpl::ReLaunchTor(const TorConfig& config) {
   tor_launcher_factory_->ReLaunchTorProcess(config);
 }
 
-void TorProfileServiceImpl::SetNewTorCircuit(const GURL& request_url,
-                                             NewTorCircuitCallback callback) {
+void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  // track the webcontents lifetime so we don't reload if it has already
+  // been destroyed
+  auto tracker = std::make_unique<NewTorIdentityTracker>(tab);
+  auto callback = base::BindOnce(&NewTorIdentityCallback, std::move(tracker));
 
-  scoped_refptr<net::URLRequestContextGetter> getter(
-      profile_->GetRequestContext());
-  getter->GetNetworkTaskRunner()->PostTaskAndReply(
-      FROM_HERE,
-      base::BindOnce(&SetNewTorCircuitOnIOThread,
-                     profile_,
-                     request_url),
-      base::BindOnce(&TorProfileServiceImpl::SetNewTorCircuitOnUIThread,
-          weak_ptr_factory_.GetWeakPtr(),
-          std::move(callback),
-          request_url));
-}
+  const GURL& url = tab->GetURL();
 
-void TorProfileServiceImpl::SetNewTorCircuitOnUIThread(
-    NewTorCircuitCallback callback, const GURL& url) {
+  proxy_config_service_->SetNewTorCircuit(url);
+
+  // Force lookup to erase the old circuit and also get a callback
+  // so we know when it is safe to reload the tab
   auto* storage_partition =
       BrowserContext::GetStoragePartitionForSite(profile_, url, false);
-
-  // TorProxyLookupClient self deletes on proxy lookup completion
+  if (!storage_partition) {
+    storage_partition =
+        content::BrowserContext::GetDefaultStoragePartition(profile_);
+  }
   auto proxy_lookup_client_ptr =
       TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));
-
-  // Force lookup to erase the old circuit
   storage_partition->GetNetworkContext()->LookUpProxyForURL(
       url, std::move(proxy_lookup_client_ptr));
 }
@@ -205,5 +200,10 @@ void TorProfileServiceImpl::NotifyTorLaunched(bool result, int64_t pid) {
     observer.OnTorLaunched(result, pid);
 }
 
+std::unique_ptr<net::ProxyConfigService>
+TorProfileServiceImpl::CreateProxyConfigService() {
+  proxy_config_service_ = new net::ProxyConfigServiceTor(tor::GetTorProxyURI());
+  return std::unique_ptr<net::ProxyConfigServiceTor>(proxy_config_service_);
+}
 
 }  // namespace tor

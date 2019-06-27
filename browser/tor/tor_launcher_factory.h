@@ -40,6 +40,8 @@ class TorLauncherFactory {
   void OnTorCrashed(int64_t pid);
   void OnTorLaunched(bool result, int64_t pid);
 
+  bool is_starting_;
+
   tor::mojom::TorLauncherPtr tor_launcher_;
 
   int64_t tor_pid_;

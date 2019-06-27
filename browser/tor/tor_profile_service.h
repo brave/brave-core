@@ -14,8 +14,12 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
 
+namespace content {
+class WebContents;
+}
+
 namespace net {
-class ProxyResolutionService;
+class ProxyConfigService;
 }
 
 namespace user_prefs {
@@ -25,8 +29,6 @@ class PrefRegistrySyncable;
 class PrefRegistrySimple;
 
 namespace tor {
-
-using NewTorCircuitCallback = base::OnceCallback<void(bool success)>;
 
 class TorLauncherServiceObserver;
 
@@ -40,11 +42,11 @@ class TorProfileService : public KeyedService {
 
   virtual void LaunchTor(const TorConfig&) = 0;
   virtual void ReLaunchTor(const TorConfig&) = 0;
-  virtual void SetNewTorCircuit(const GURL& request_url,
-                                NewTorCircuitCallback) = 0;
+  virtual void SetNewTorCircuit(content::WebContents* web_contents) = 0;
   virtual const TorConfig& GetTorConfig() = 0;
   virtual int64_t GetTorPid() = 0;
-
+  virtual std::unique_ptr<net::ProxyConfigService>
+      CreateProxyConfigService() = 0;
   void AddObserver(TorLauncherServiceObserver* observer);
   void RemoveObserver(TorLauncherServiceObserver* observer);
 

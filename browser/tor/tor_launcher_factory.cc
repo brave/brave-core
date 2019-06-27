@@ -21,7 +21,8 @@ TorLauncherFactory* TorLauncherFactory::GetInstance() {
 }
 
 TorLauncherFactory::TorLauncherFactory()
-    : tor_pid_(-1) {
+    : is_starting_(false),
+      tor_pid_(-1) {
   if (g_prevent_tor_launch_for_tests) {
     VLOG(1) << "Skipping the tor process launch in tests.";
     return;
@@ -56,6 +57,13 @@ void TorLauncherFactory::LaunchTorProcess(const tor::TorConfig& config) {
     return;
   }
 
+  if (is_starting_) {
+    LOG(WARNING) << "tor process is already starting";
+    return;
+  } else {
+    is_starting_ = true;
+  }
+
   if (tor_pid_ >= 0) {
     LOG(WARNING) << "tor process(" << tor_pid_ << ") is running";
     return;
@@ -76,9 +84,13 @@ void TorLauncherFactory::ReLaunchTorProcess(const tor::TorConfig& config) {
          "replace this logging with a condition if you want to prevent "
          "relaunch as well";
 
+  if (is_starting_) {
+    LOG(WARNING) << "tor process is already starting";
+    return;
+  }
+
   if (tor_pid_ < 0) {
-    LOG(WARNING) << "No currently running tor process. \
-      Did you call LaunchTorProcess?";
+    LaunchTorProcess(config);
     return;
   }
   if (!SetConfig(config)) {
@@ -104,19 +116,23 @@ void TorLauncherFactory::RemoveObserver(tor::TorProfileServiceImpl* service) {
 
 void TorLauncherFactory::OnTorLauncherCrashed() {
   LOG(ERROR) << "Tor Launcher Crashed";
+  is_starting_ = false;
   for (auto& observer : observers_)
     observer.NotifyTorLauncherCrashed();
 }
 
 void TorLauncherFactory::OnTorCrashed(int64_t pid) {
   LOG(ERROR) << "Tor Process(" << pid << ") Crashed";
+  is_starting_ = false;
   for (auto& observer : observers_)
     observer.NotifyTorCrashed(pid);
 }
 
 void TorLauncherFactory::OnTorLaunched(bool result, int64_t pid) {
-  if (result)
+  if (result) {
+    is_starting_ = false;
     tor_pid_ = pid;
+  }
   else
     LOG(ERROR) << "Tor Launching Failed(" << pid <<")";
   for (auto& observer : observers_)

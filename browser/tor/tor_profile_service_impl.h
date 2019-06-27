@@ -7,12 +7,22 @@
 #define BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_IMPL_H_
 
 #include "base/memory/weak_ptr.h"
+#include "base/optional.h"
 #include "brave/browser/tor/tor_launcher_factory.h"
 #include "brave/browser/tor/tor_profile_service.h"
+#include "net/proxy_resolution/proxy_info.h"
 
 class Profile;
 
+namespace net {
+class ProxyConfigService;
+class ProxyConfigServiceTor;
+}
+
 namespace tor {
+
+using NewTorCircuitCallback = base::OnceCallback<void(
+    const base::Optional<net::ProxyInfo>& proxy_info)>;
 
 class TorProfileServiceImpl : public TorProfileService,
                               public base::CheckedObserver {
@@ -20,16 +30,13 @@ class TorProfileServiceImpl : public TorProfileService,
   explicit TorProfileServiceImpl(Profile* profile);
   ~TorProfileServiceImpl() override;
 
-  // KeyedService:
-  void Shutdown() override;
-
   // TorProfileService:
   void LaunchTor(const TorConfig&) override;
   void ReLaunchTor(const TorConfig&) override;
-  void SetNewTorCircuit(const GURL& request_url,
-                        NewTorCircuitCallback) override;
+  void SetNewTorCircuit(content::WebContents* web_contents) override;
   const TorConfig& GetTorConfig() override;
   int64_t GetTorPid() override;
+  std::unique_ptr<net::ProxyConfigService> CreateProxyConfigService() override;
 
   void KillTor();
 
@@ -39,11 +46,9 @@ class TorProfileServiceImpl : public TorProfileService,
   void NotifyTorLaunched(bool result, int64_t pid);
 
  private:
-  void SetNewTorCircuitOnUIThread(NewTorCircuitCallback callback,
-                                  const GURL& url);
-
   Profile* profile_;  // NOT OWNED
   TorLauncherFactory* tor_launcher_factory_;  // Singleton
+  net::ProxyConfigServiceTor* proxy_config_service_;  // NOT OWNED
   base::WeakPtrFactory<TorProfileServiceImpl> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(TorProfileServiceImpl);
