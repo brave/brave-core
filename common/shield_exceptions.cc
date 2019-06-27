@@ -72,4 +72,25 @@ bool IsWhitelistedCookieException(const GURL& firstPartyOrigin,
       });
 }
 
+bool IsWhitelistedFingerprintingException(const GURL& firstPartyOrigin,
+    const GURL& subresourceUrl) {
+  static std::map<GURL, std::vector<URLPattern> > whitelist_patterns = {
+    {
+      GURL("https://uphold.com/"),
+      std::vector<URLPattern>({URLPattern(URLPattern::SCHEME_ALL,
+            "https://uphold.netverify.com/*")})
+    }
+  };
+  std::map<GURL, std::vector<URLPattern> >::iterator i =
+      whitelist_patterns.find(firstPartyOrigin);
+  if (i == whitelist_patterns.end()) {
+    return false;
+  }
+  std::vector<URLPattern> &exceptions = i->second;
+  return std::any_of(exceptions.begin(), exceptions.end(),
+      [&subresourceUrl](const URLPattern& pattern) {
+        return pattern.MatchesURL(subresourceUrl);
+      });
+}
+
 }  // namespace brave
