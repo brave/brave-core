@@ -16,27 +16,22 @@ index 63d3684c66dd2ca6112637f846421f840e67ee2f..ed2935644496d6b167f5714b5d36c992
  namespace blink {
  
  void ScriptController::Trace(blink::Visitor* visitor) {
-@@ -129,9 +136,40 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
+@@ -129,9 +136,38 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
               .ToLocal(&script))
        return result;
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+    bool is_puppeteer_script = false;
-+    if (source.SourceLocationType() == ScriptSourceLocationType::kUnknown) {
-+      if (source.Source().ToString() ==
-+          "//# sourceURL=__puppeteer_evaluation_script__") {
-+        is_puppeteer_script = true;
-+      }
-+    }
-+
 +    {
-+      ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
-+        ->GetPageGraph();
-+      if (!is_puppeteer_script && page_graph != nullptr) {
-+        page_graph->RegisterScriptCompilation(
-+          source, script->GetUnboundScript()->GetId(),
-+          ::brave_page_graph::ScriptType::kScriptTypeUnknown);
-+        page_graph->RegisterScriptExecStart(script->GetUnboundScript()->GetId());
++      if (source.SourceLocationType() != ScriptSourceLocationType::kInspector) {
++        ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
++          ->GetPageGraph();
++        if (page_graph != nullptr) {
++          const int script_id = script->GetUnboundScript()->GetId();
++          page_graph->RegisterScriptCompilation(
++            source, script_id,
++            ::brave_page_graph::ScriptType::kScriptTypeUnknown);
++          page_graph->RegisterScriptExecStart(script_id);
++        }
 +      }
 +    }
 +#endif
@@ -46,10 +41,13 @@ index 63d3684c66dd2ca6112637f846421f840e67ee2f..ed2935644496d6b167f5714b5d36c992
                                                       GetFrame()->GetDocument());
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +    {
-+      ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
-+        ->GetPageGraph();
-+      if (!is_puppeteer_script && page_graph != nullptr) {
-+        page_graph->RegisterScriptExecStop(script->GetUnboundScript()->GetId());
++      if (source.SourceLocationType() != ScriptSourceLocationType::kInspector) {
++        ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
++          ->GetPageGraph();
++        if (page_graph != nullptr) {
++          const int script_id = script->GetUnboundScript()->GetId();
++          page_graph->RegisterScriptExecStop(script_id);
++        }
 +      }
 +    }
 +#endif
