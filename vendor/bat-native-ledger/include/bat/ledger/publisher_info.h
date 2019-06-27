@@ -19,6 +19,8 @@ namespace ledger {
 using PublisherInfo = mojom::PublisherInfo;
 using PublisherInfoPtr = mojom::PublisherInfoPtr;
 using PublisherInfoList = std::vector<PublisherInfoPtr>;
+using PublisherBanner = mojom::PublisherBanner;
+using PublisherBannerPtr = mojom::PublisherBannerPtr;
 
 const char kClearFavicon[] = "clear";
 const char kIgnorePublisherBlob[] = "ignore";
@@ -91,26 +93,6 @@ LEDGER_EXPORT struct ContributionInfo {
   std::string publisher;  // Filled only for recurrent tips
   double value;
   uint64_t date;
-};
-
-LEDGER_EXPORT struct PublisherBanner {
-  PublisherBanner();
-  PublisherBanner(const PublisherBanner& info);
-  ~PublisherBanner();
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string publisher_key;
-  std::string title;
-  std::string name;
-  std::string description;
-  std::string background;
-  std::string logo;
-  std::vector<int> amounts;
-  std::string provider;
-  std::map<std::string, std::string> social;
-  bool verified;
 };
 
 }  // namespace ledger

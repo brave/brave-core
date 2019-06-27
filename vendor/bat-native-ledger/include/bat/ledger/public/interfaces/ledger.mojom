@@ -28,6 +28,19 @@ struct PublisherInfo {
   array<ContributionInfo> contributions;
 };
 
+struct PublisherBanner {
+  string publisher_key;
+  string title;
+  string name;
+  string description;
+  string background;
+  string logo;
+  array<int32> amounts;
+  string provider;
+  map<string, string> social;
+  bool verified;
+};
+
 struct PendingContribution {
   string publisher_key;
   double amount;

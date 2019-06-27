@@ -36,7 +36,7 @@ extern int reconcile_time;  // minutes
 extern bool short_retries;
 
 using PublisherBannerCallback =
-    std::function<void(std::unique_ptr<ledger::PublisherBanner> banner)>;
+    std::function<void(ledger::PublisherBannerPtr banner)>;
 using WalletAddressesCallback =
     std::function<void(std::map<std::string, std::string> addresses)>;
 using GetTransactionHistoryCallback =

@@ -202,8 +202,8 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
   void OnExcludedSitesChanged(const std::string& publisher_id,
                               ledger::PUBLISHER_EXCLUDE exclude);
 
-  void onPublisherBanner(ledger::PublisherBannerCallback callback,
-                         ledger::PublisherBanner banner,
+  void OnPublisherBanner(ledger::PublisherBannerCallback callback,
+                         const ledger::PublisherBanner& banner,
                          ledger::Result result,
                          ledger::PublisherInfoPtr publisher_info);
 

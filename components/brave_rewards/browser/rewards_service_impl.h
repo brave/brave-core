@@ -166,7 +166,7 @@ class RewardsServiceImpl : public RewardsService,
   void GetPublisherBanner(const std::string& publisher_id,
                           GetPublisherBannerCallback callback) override;
   void OnPublisherBanner(GetPublisherBannerCallback callback,
-                         const std::string& banner);
+                         ledger::PublisherBannerPtr banner);
   void RemoveRecurringTip(const std::string& publisher_key) override;
   void OnGetRecurringTipsUI(
       GetRecurringTipsCallback callback,
