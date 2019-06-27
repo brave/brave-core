@@ -44,7 +44,7 @@ export const SettingsWrapper = styled<{}, 'div'>('div')`
   width: 100%;
   justify-content: flex-end;
 
-  @media screen and (max-width: 904px) {
+  @media screen and (max-width: 1150px) {
     padding: 0 192px;
   }
 `

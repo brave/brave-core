@@ -10,7 +10,7 @@ export const List = styled<{}, 'div'>('div')`
   display: grid;
   grid-template-columns: repeat(6, 92px);
 
-  @media screen and (max-width: 904px) {
+  @media screen and (max-width: 1150px) {
     justify-content: center;
     padding: 40px;
   }

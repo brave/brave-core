@@ -30,7 +30,7 @@ export const Header = styled<{}, 'header'>('header')`
     grid-area: topsites;
   }
 
-  @media screen and (max-width: 904px) {
+  @media screen and (max-width: 1150px) {
     grid-template-areas:
     "clock"
     "stats"
@@ -75,7 +75,7 @@ export const Footer = styled<{}, 'footer'>('footer')`
       grid-area: actions;
     }
 
-  @media screen and (max-width: 904px) {
+  @media screen and (max-width: 1150px) {
     margin: 70px 40px;
 
     grid-template-areas:
