@@ -29,10 +29,19 @@ class UserScriptManager {
         }
     }
     
-    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool) {
+    // Whether or not the U2F APIs should be exposed
+    var isU2FEnabled: Bool {
+        didSet {
+            if oldValue == isU2FEnabled { return }
+            reloadUserScripts()
+        }
+    }
+    
+    init(tab: Tab, isFingerprintingProtectionEnabled: Bool, isCookieBlockingEnabled: Bool, isU2FEnabled: Bool) {
         self.tab = tab
         self.isFingerprintingProtectionEnabled = isFingerprintingProtectionEnabled
         self.isCookieBlockingEnabled = isCookieBlockingEnabled
+        self.isU2FEnabled = isU2FEnabled
         reloadUserScripts()
     }
     
@@ -76,6 +85,41 @@ class UserScriptManager {
         return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
     }()
     
+    // U2FUserScript is injected at document start to avoid overriding the low-level
+    // FIDO legacy sign and register APIs that have different arguments
+    private let U2FUserScript: WKUserScript? = {
+        guard let path = Bundle.main.path(forResource: "U2F", ofType: "js"), let source = try? String(contentsOfFile: path) else {
+            log.error("Failed to load U2F.js")
+            return nil
+        }
+        
+        var alteredSource = source
+        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<webauthn>", with: "W\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<u2f>", with: "U\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<pkc>", with: "pkp\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<assert>", with: "assert\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<attest>", with: "attest\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<u2fregister>", with: "u2fregister\(token)", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<u2fsign>", with: "u2fsign\(token)", options: .literal)
+        
+        return WKUserScript(source: alteredSource, injectionTime: .atDocumentStart, forMainFrameOnly: false)
+    }()
+    
+    // U2FLowLevelUserScript is injected at documentEnd to override the message channels
+    // with hooks that plug into the Yubico API
+    private let U2FLowLevelUserScript: WKUserScript? = {
+        guard let path = Bundle.main.path(forResource: "U2F-low-level", ofType: "js"), let source = try? String(contentsOfFile: path) else {
+            log.error("Failed to load U2F-low-level.js")
+            return nil
+        }
+        var alteredSource = source
+        let token = UserScriptManager.securityToken.uuidString.replacingOccurrences(of: "-", with: "", options: .literal)
+        alteredSource = alteredSource.replacingOccurrences(of: "$<u2f>", with: "U\(token)", options: .literal)
+
+        return WKUserScript(source: alteredSource, injectionTime: .atDocumentEnd, forMainFrameOnly: false)
+    }()
+
     private func reloadUserScripts() {
         tab?.webView?.configuration.userContentController.do {
             $0.removeAllUserScripts()
@@ -85,6 +129,14 @@ class UserScriptManager {
                 $0.addUserScript(script)
             }
             if isCookieBlockingEnabled, let script = cookieControlUserScript {
+                $0.addUserScript(script)
+            }
+            
+            if isU2FEnabled, let script = U2FUserScript {
+                $0.addUserScript(script)
+            }
+
+            if isU2FEnabled, let script = U2FLowLevelUserScript {
                 $0.addUserScript(script)
             }
         }

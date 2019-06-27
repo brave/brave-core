@@ -62,6 +62,7 @@ python-env/
 Carthage/
 
 ThirdParty/google-breakpad
+ThirdParty/YubiKit
 
 # Saved Sync credentials for tests.
 signedInUser.json
@@ -86,3 +87,4 @@ BuildId.xcconfig
 Client/Configuration/Local/
 
 adblock-regions.txt
+yubikit.log

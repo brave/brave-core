@@ -20,4 +20,7 @@
 #import "NSData+GZIP.h"
 #import "NSFileManager+Tar.h"
 
+#import <YubiKit/YubiKit.h>
+#import <CommonCrypto/CommonCrypto.h>
+
 #endif

@@ -953,7 +953,7 @@ class BrowserViewController: UIViewController {
             guard let tab = tabManager[webView] else {
                 break
             }
-            
+            tab.userScriptManager?.isU2FEnabled = webView.hasOnlySecureContent
             if tab.contentIsSecure && !webView.hasOnlySecureContent {
                 tab.contentIsSecure = false
             }
@@ -1874,6 +1874,8 @@ extension BrowserViewController: TabDelegate {
         tab.addContentScript(FocusHelper(tab: tab), name: FocusHelper.name())
         
         tab.addContentScript(FingerprintingProtection(tab: tab), name: FingerprintingProtection.name())
+        
+        tab.addContentScript(U2FExtensions(tab: tab), name: U2FExtensions.name())
     }
 
     func tab(_ tab: Tab, willDeleteWebView webView: WKWebView) {
