@@ -4,6 +4,7 @@
 
 #import "ledger.mojom.objc.h"
 #import "bat/ledger/publisher_info.h"
+#import "bat/ledger/pending_contribution.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -11,6 +12,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (ledger::PublisherInfoPtr)cppObj;
 
+@end
+
+@interface BATPendingContributionInfo (PrivateCpp)
+- (ledger::PendingContributionInfoPtr)cppObj;
 @end
 
 NS_ASSUME_NONNULL_END

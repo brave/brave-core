@@ -874,6 +874,106 @@
 
 #pragma mark - Pending Contributions
 
+- (void)testPendingContributions
+{
+  const auto now = [[NSDate date] timeIntervalSince1970];
+  const auto one = [[BATPendingContribution alloc] init];
+  one.publisherKey = @"brave.com";
+  one.amount = 20.0;
+  one.category = BATRewardsCategoryAutoContribute;
+  one.addedDate = now;
+  one.viewingId = @"";
+  
+  const auto two = [[BATPendingContribution alloc] init];
+  two.publisherKey = @"duckduckgo.com";
+  two.amount = 10.0;
+  two.category = BATRewardsCategoryAutoContribute;
+  two.addedDate = now;
+  two.viewingId = @"";
+  
+  const auto list = @[one, two];
+  
+  [self backgroundSaveAndWaitForExpectation:^{
+    [BATLedgerDatabase insertPendingContributions:list completion:nil];
+  }];
+  
+  const auto contributions = [BATLedgerDatabase pendingContributions];
+  XCTAssertEqual(contributions.count, 2);
+}
+
+- (void)testRemovePendingContribution
+{
+  const auto removedPublisherKey = @"brave.com";
+  const auto removedViewingId = @"viewing-id";
+  const auto keptPublisherKey = @"duckduckgo.com";
+  
+  const auto now = [[NSDate date] timeIntervalSince1970];
+  const auto one = [[BATPendingContribution alloc] init];
+  one.publisherKey = removedPublisherKey;
+  one.amount = 20.0;
+  one.category = BATRewardsCategoryAutoContribute;
+  one.addedDate = now;
+  one.viewingId = removedViewingId;
+  
+  const auto two = [[BATPendingContribution alloc] init];
+  two.publisherKey = keptPublisherKey;
+  two.amount = 10.0;
+  two.category = BATRewardsCategoryAutoContribute;
+  two.addedDate = now;
+  two.viewingId = @"";
+  
+  const auto list = @[one, two];
+  
+  [self backgroundSaveAndWaitForExpectation:^{
+    [BATLedgerDatabase insertPendingContributions:list completion:nil];
+  }];
+  
+  [self backgroundSaveAndWaitForExpectation:^{
+    [BATLedgerDatabase removePendingContributionForPublisherID:removedPublisherKey
+                                                     viewingID:removedViewingId
+                                                     addedDate:now
+                                                    completion:^(BOOL success) {
+                                                      XCTAssertTrue(success);
+                                                    }];
+  }];
+  
+  const auto contributions = [BATLedgerDatabase pendingContributions];
+  
+  XCTAssertEqual(contributions.count, 1);
+  XCTAssertTrue([contributions[0].publisherKey isEqualToString:keptPublisherKey]);
+}
+
+- (void)testRemoveAllPendingContributions
+{
+  const auto now = [[NSDate date] timeIntervalSince1970];
+  const auto one = [[BATPendingContribution alloc] init];
+  one.publisherKey = @"brave.com";
+  one.amount = 20.0;
+  one.category = BATRewardsCategoryAutoContribute;
+  one.addedDate = now;
+  one.viewingId = @"";
+  
+  const auto two = [[BATPendingContribution alloc] init];
+  two.publisherKey = @"duckduckgo.com";
+  two.amount = 10.0;
+  two.category = BATRewardsCategoryAutoContribute;
+  two.addedDate = now;
+  two.viewingId = @"";
+  
+  const auto list = @[one, two];
+  
+  [self backgroundSaveAndWaitForExpectation:^{
+    [BATLedgerDatabase insertPendingContributions:list completion:nil];
+  }];
+  
+  [self backgroundSaveAndWaitForExpectation:^{
+    [BATLedgerDatabase removeAllPendingContributions:nil];
+  }];
+  
+  const auto contributions = [BATLedgerDatabase pendingContributions];
+  XCTAssertEqual(contributions.count, 0);
+}
+
 - (void)testReservedAmount
 {
   const auto now = [[NSDate date] timeIntervalSince1970];

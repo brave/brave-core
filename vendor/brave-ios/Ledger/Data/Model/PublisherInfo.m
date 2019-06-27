@@ -20,5 +20,6 @@
 @dynamic activities;
 @dynamic contributions;
 @dynamic recurringDonations;
+@dynamic pendingContributions;
 
 @end

@@ -96,13 +96,26 @@ typedef void (^BATLedgerDatabaseWriteCompletion)(BOOL success);
                                        completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 /// Remove a recurring tip linked to a given publisher ID
-+ (void)removeRecurringTipWithPublisherID:(NSString *)publisherID completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
++ (void)removeRecurringTipWithPublisherID:(NSString *)publisherID
+                               completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 #pragma mark - Pending Contributions
+
+/// Get a list of pending contributions
++ (NSArray<BATPendingContributionInfo *> *)pendingContributions;
 
 /// Inserts a set of pending contributions from a contribution list
 + (void)insertPendingContributions:(NSArray<BATPendingContribution *> *)contributions
                         completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
+
+/// Remove a pending contribution for a given publisher, viewing ID and added date
++ (void)removePendingContributionForPublisherID:(NSString *)publisherID
+                                      viewingID:(NSString *)viewingID
+                                      addedDate:(UInt64)addedDate
+                                     completion:(nullable BATLedgerDatabaseWriteCompletion)completion;
+
+/// Removes all the users pending contributions
++ (void)removeAllPendingContributions:(nullable BATLedgerDatabaseWriteCompletion)completion;
 
 /// Get the amount of BAT allocated for pending contributions
 + (double)reservedAmountForPendingContributions;

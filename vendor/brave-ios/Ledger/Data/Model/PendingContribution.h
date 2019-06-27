@@ -5,6 +5,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
+@class PublisherInfo;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface PendingContribution : NSManagedObject
@@ -16,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic) int32_t category;
 @property (nullable, nonatomic, copy) NSString *publisherID;
 @property (nullable, nonatomic, copy) NSString *viewingID;
+@property (nullable, nonatomic, retain) PublisherInfo *publisher;
 
 @end
 

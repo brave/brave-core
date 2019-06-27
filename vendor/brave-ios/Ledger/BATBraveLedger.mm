@@ -1430,41 +1430,79 @@ BATLedgerBridge(BOOL,
 
 - (void)getCountryCodes:(const std::vector<std::string> &)countries callback:(ledger::GetCountryCodesCallback)callback
 {
-
+  std::vector<std::int32_t> country_codes;
+  for (const auto& country : countries) {
+    // Takes in each of the two characters of a ISO 3166-1 country code, and
+    // converts it into an int value to be used as a reference to that country.
+    country_codes.push_back(country.at(0) << 8 | country.at(1));
+  }
+  callback(country_codes);
 }
 
 - (void)getPendingContributions:(const ledger::PendingContributionInfoListCallback &)callback
 {
-
+  const auto pendingContributions = [BATLedgerDatabase pendingContributions];
+  callback(VectorFromNSArray(pendingContributions, ^ledger::PendingContributionInfoPtr(BATPendingContributionInfo *info){
+    return info.cppObj.Clone();
+  }));
 }
 
 - (void)getPendingContributionsTotal:(const ledger::PendingContributionsTotalCallback &)callback
 {
-
+  callback([BATLedgerDatabase reservedAmountForPendingContributions]);
 }
 
 - (void)onPanelPublisherInfo:(ledger::Result)result publisherInfo:(ledger::PublisherInfoPtr)publisher_info windowId:(uint64_t)windowId
 {
-
+  // TODO: Observer callbacks
 }
 
 - (void)removeAllPendingContributions:(const ledger::RemovePendingContributionCallback &)callback
 {
-
+  [BATLedgerDatabase removeAllPendingContributions:^(BOOL success) {
+    callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
+  }];
 }
 
 - (void)removePendingContribution:(const std::string &)publisher_key viewingId:(const std::string &)viewing_id addedDate:(uint64_t)added_date callback:(const ledger::RemovePendingContributionCallback &)callback
 {
-
+  const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
+  const auto viewingID = [NSString stringWithUTF8String:viewing_id.c_str()];
+  [BATLedgerDatabase removePendingContributionForPublisherID:publisherID
+                                                   viewingID:viewingID
+                                                   addedDate:added_date
+                                                  completion:^(BOOL success) {
+                                                    callback(success ? ledger::Result::LEDGER_OK :
+                                                             ledger::Result::LEDGER_ERROR);
+                                                  }];
 }
 
-// TODO: look at this PR https://github.com/brave/brave-core/pull/2512
-// This method is called in unverified publishers retry flow
-// With this call we notify client that this publisher now becamed verified
-// and we should notify user about it
 - (void)onContributeUnverifiedPublishers:(ledger::Result)result publisherKey:(const std::string &)publisher_key publisherName:(const std::string &)publisher_name
 {
-
+  switch (result) {
+    case ledger::Result::PENDING_NOT_ENOUGH_FUNDS:
+      [self addNotificationOfKind:BATRewardsNotificationKindPendingNotEnoughFunds
+                         userInfo:nil
+                   notificationID:@"not_enough_funds_for_pending"];
+      break;
+    case ledger::Result::PENDING_PUBLISHER_REMOVED:
+      // TODO: Call observers
+//      for (auto& observer : observers_) {
+//        observer.OnPendingContributionRemoved(this, ledger::Result::LEDGER_OK);
+//      }
+      break;
+    case ledger::Result::VERIFIED_PUBLISHER: {
+      const auto notificationID = [NSString stringWithFormat:@"verified_publisher_%@",
+                                   [NSString stringWithUTF8String:publisher_key.c_str()]];
+      const auto name = [NSString stringWithUTF8String:publisher_name.c_str()];
+      [self addNotificationOfKind:BATRewardsNotificationKindVerifiedPublisher
+                         userInfo:@{ @"publisher_name": name }
+                   notificationID:notificationID];
+      break;
+    }
+    default:
+      break;
+  }
 }
 
 @end

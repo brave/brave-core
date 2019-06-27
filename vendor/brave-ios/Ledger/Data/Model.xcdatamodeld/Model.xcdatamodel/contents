@@ -35,6 +35,7 @@
         <attribute name="category" attributeType="Integer 32" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="publisherID" attributeType="String" syncable="YES"/>
         <attribute name="viewingID" attributeType="String" syncable="YES"/>
+        <relationship name="publisher" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="PublisherInfo" inverseName="pendingContributions" inverseEntity="PublisherInfo" syncable="YES"/>
         <fetchIndex name="byPublisherIDIndex">
             <fetchIndexElement property="publisherID" type="Binary" order="ascending"/>
         </fetchIndex>
@@ -49,6 +50,7 @@
         <attribute name="verified" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES" syncable="YES"/>
         <relationship name="activities" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ActivityInfo" inverseName="publisher" inverseEntity="ActivityInfo" syncable="YES"/>
         <relationship name="contributions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="ContributionInfo" inverseName="publisher" inverseEntity="ContributionInfo" syncable="YES"/>
+        <relationship name="pendingContributions" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="PendingContribution" inverseName="publisher" inverseEntity="PendingContribution" syncable="YES"/>
         <relationship name="recurringDonations" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="RecurringDonation" inverseName="publisher" inverseEntity="RecurringDonation" syncable="YES"/>
     </entity>
     <entity name="RecurringDonation" representedClassName="RecurringDonation" syncable="YES">
@@ -64,8 +66,8 @@
         <element name="ActivityInfo" positionX="-54" positionY="45" width="128" height="165"/>
         <element name="ContributionInfo" positionX="-63" positionY="99" width="128" height="150"/>
         <element name="MediaPublisherInfo" positionX="-54" positionY="108" width="128" height="75"/>
-        <element name="PendingContribution" positionX="-45" positionY="117" width="128" height="120"/>
-        <element name="PublisherInfo" positionX="-63" positionY="-18" width="128" height="195"/>
+        <element name="PendingContribution" positionX="-45" positionY="117" width="128" height="135"/>
+        <element name="PublisherInfo" positionX="-63" positionY="-18" width="128" height="210"/>
         <element name="RecurringDonation" positionX="-36" positionY="126" width="128" height="105"/>
     </elements>
 </model>
