@@ -63,6 +63,42 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_SHIELDS" desc="Content description for the button that is enable, disable Brave Shields.">
         Enable/Disable Brave Shields
       </message>
+      <message name="IDS_BRAVE_SHIELDS" desc="Brave Shields title.">
+        Shields
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_BLOCK_3RD_PARTY_COOKIES_SWITCH" desc="Switch for Block Scripts.">
+        Block 3rd party cookies
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_ADS_TRACKING_SWITCH" desc="Switch for Block Ads and Tracking.">
+        Block Ads and Tracking
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_HTTPS_EVERYWHERE_SWITCH" desc="Switch for HTTPS Everywhere.">
+        HTTPS Everywhere
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_BLOCKS_SCRIPTS_SWITCH" desc="Switch for Block Scripts.">
+        Block Scripts
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_BLOCK_FINGERPRINTS_SWITCH" desc="Switch for Block Fingerprints.">
+        Fingerprinting Protection
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_ADS_AND_TRACKERS" desc="Ads and Trackers blocked.">
+        Ads and Trackers
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_FINGERPRINT_METHODS" desc="Fingerprint methods blocked.">
+        Fingerprint Methods
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_HTTPS_UPGRADES" desc="HTTPS Upgrades.">
+        HTTPS Upgrades
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SCRIPTS_BLOCKED" desc="Scripts Blocked.">
+        Scripts Blocked
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_FIRST_GROUP_TITLE" desc="Title for the first group of Brave's shields panel.">
+        Blocking Monitor
+      </message>
+      <message name="IDS_BRAVE_SHIELDS_SECOND_GROUP_TITLE" desc="Title for the second group of Brave's shields panel.">
+        Individual Controls
+      </message>
     </messages>
   </release>
 </grit>

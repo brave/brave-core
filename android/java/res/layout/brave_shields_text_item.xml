@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="15dp"
+    android:paddingTop="5dp" >
+    <TextView
+        android:id="@+id/brave_shields_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="14sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+        android:textColor="#6b6b6b" />
+</RelativeLayout>

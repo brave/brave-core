@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:paddingStart="15dp" >
+    <TextView
+        android:id="@+id/brave_shields_number"
+        android:layout_width="56dp"
+        android:layout_height="match_parent"
+        android:text=""
+        android:textSize="26sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:textColor="#ff5100"
+        android:gravity="center|center_vertical"
+        android:layout_gravity="center_vertical" />
+    <TextView
+        android:id="@+id/brave_shields_text"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text=""
+        android:textSize="16sp"
+        android:fontFamily="sans-serif"
+        android:textStyle="normal"
+        android:textColor="#696969"
+        android:gravity="start|center_vertical"
+        android:layout_gravity="center_vertical"
+        android:paddingStart="10dp" />
+</LinearLayout>
