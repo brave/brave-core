@@ -67,26 +67,27 @@ index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..9a92c6fc87cff9e35ff78ed5b578562d
 +    }
 +  }
 +#endif
++
    for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
      // As an optimization we don't notify leaf nodes when when inserting
      // into detached subtrees that are not in a shadow tree.
-@@ -952,6 +1006,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
-     // As an optimization we skip notifying Text nodes and other leaf nodes
-     // of removal when they're not in the Document tree and not in a shadow root
-     // since the virtual call to removedFrom is not needed.
+@@ -948,6 +989,19 @@ void ContainerNode::NotifyNodeRemoved(Node& root) {
+   ScriptForbiddenScope forbid_script;
+   EventDispatchForbiddenScope assert_no_event_dispatch;
+ 
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+    if (GetDocument().GetPageGraph() != nullptr) {
-+      const NodeType node_type = node.getNodeType();
-+      if (node_type == kElementNode || node_type == kDocumentFragmentNode) {
-+        GetDocument().GetPageGraph()->RegisterHTMLElementNodeRemoved(
-+          DOMNodeIds::IdForNode(&node));
-+      } else {
-+        GetDocument().GetPageGraph()->RegisterHTMLTextNodeRemoved(
-+          DOMNodeIds::IdForNode(&node));
-+      }
++  if (GetDocument().GetPageGraph() != nullptr) {
++    const NodeType node_type = root.getNodeType();
++    if (node_type == kElementNode || node_type == kDocumentFragmentNode) {
++      GetDocument().GetPageGraph()->RegisterHTMLElementNodeRemoved(
++        DOMNodeIds::IdForNode(&root));
++    } else {
++      GetDocument().GetPageGraph()->RegisterHTMLTextNodeRemoved(
++        DOMNodeIds::IdForNode(&root));
 +    }
++  }
 +#endif
 +
-     if (!node.IsContainerNode() && !node.IsInTreeScope())
-       continue;
-     node.RemovedFrom(*this);
+   for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
+     // As an optimization we skip notifying Text nodes and other leaf nodes
+     // of removal when they're not in the Document tree and not in a shadow root
