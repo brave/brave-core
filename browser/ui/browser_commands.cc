@@ -26,14 +26,6 @@ void NewOffTheRecordWindowTor(Browser* browser) {
   profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
 }
 
-void NewTorIdentity(Browser* browser) {
-  Profile* profile = browser->profile();
-  DCHECK(profile);
-  tor::TorProfileService* service =
-    TorProfileServiceFactory::GetForProfile(profile);
-  service->SetNewTorIdentity();
-}
-
 void NewTorConnectionForSite(Browser* browser) {
   Profile* profile = browser->profile();
   DCHECK(profile);

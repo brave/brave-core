@@ -19,9 +19,6 @@
 #include "brave/common/tor/tor_proxy_uri_helper.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
-#include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/ui/browser_list.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -59,7 +56,7 @@ class NewTorCircuitTracker : public WebContentsObserver {
         NavigationController& controller = web_contents()->GetController();
         controller.Reload(content::ReloadType::BYPASSING_CACHE, true);
       } else {
-        LOG(WARNING) << "Failed to set new tor identity";
+        LOG(WARNING) << "Failed to set new tor circuit";
         // TODO(bridiver) - the webcontents still exists so we need to notify
         // the user, not just log and return;
       }
@@ -114,16 +111,6 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
 
   DISALLOW_COPY_AND_ASSIGN(TorProxyLookupClient);
 };
-
-void RestartTor(const base::FilePath& profile_path) {
-  Profile* profile =
-      g_browser_process->profile_manager()->GetProfile(profile_path);
-  if (profile) {
-    // TODO(bridiver) - create a class with a notification for profile deletion
-  } else {
-    profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
-  }
-}
 
 void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
                             const base::Optional<net::ProxyInfo>& proxy_info) {
@@ -184,12 +171,6 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
       TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));
   storage_partition->GetNetworkContext()->LookUpProxyForURL(
       url, std::move(proxy_lookup_client_ptr));
-}
-
-void TorProfileServiceImpl::SetNewTorIdentity() {
-  BrowserList::CloseAllBrowsersWithProfile(
-      profile_, base::Bind(&RestartTor),
-      BrowserList::CloseCallback(), false);
 }
 
 const TorConfig& TorProfileServiceImpl::GetTorConfig() {

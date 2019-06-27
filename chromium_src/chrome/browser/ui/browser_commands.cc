@@ -9,9 +9,9 @@ namespace chrome {
 void ReloadBypassingCache(Browser* browser, WindowOpenDisposition disposition) {
   Profile* profile = browser->profile();
   DCHECK(profile);
-  // NewTorIdentity will do hard reload after obtaining new identity
+  // NewTorConnectionForSite will do hard reload after obtaining new identity
   if (profile->IsTorProfile())
-    brave::NewTorIdentity(browser);
+    brave::NewTorConnectionForSite(browser);
   else
     ReloadBypassingCache_ChromiumImpl(browser, disposition);
 }
