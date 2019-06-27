@@ -64,3 +64,19 @@ do
     && cp -n Local.templates/$CONFIG_FILE Local/$CONFIG_FILE \
   )
 done
+
+# Build Yubikit
+YUBIKIT_DIR=Carthage/Checkouts/yubikit-ios
+YUBIKIT_OUT=ThirdParty/YubiKit
+SRCDIR=$PWD
+
+rm -rf $YUBIKIT_DIR
+rm -rf $YUBIKIT_OUT
+
+git clone -b simulator_release --single-branch --depth 1 https://github.com/jumde/yubikit-ios/ $YUBIKIT_DIR
+
+mkdir -p $SRCDIR/$YUBIKIT_OUT/include
+pushd $YUBIKIT_DIR/YubiKit
+sh build.sh > yubikit.log 2>&1
+cp -r build/release_universal/  $SRCDIR/$YUBIKIT_OUT/
+popd

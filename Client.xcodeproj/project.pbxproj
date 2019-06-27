@@ -830,6 +830,15 @@
 		F84B21DA1A090F8100AAB793 /* ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B21D91A090F8100AAB793 /* ClientTests.swift */; };
 		F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F84B21E51A0910F600AAB793 /* AppDelegate.swift */; };
 		F84B220B1A0910F600AAB793 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F84B21EF1A0910F600AAB793 /* Images.xcassets */; };
+		F930CDAC227000F200A23FE1 /* U2F.js in Resources */ = {isa = PBXBuildFile; fileRef = F930CDAB227000F200A23FE1 /* U2F.js */; };
+		F930CDAE2270015C00A23FE1 /* U2FExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDAD2270015C00A23FE1 /* U2FExtensions.swift */; };
+		F930CDB82270040D00A23FE1 /* WebAuthnClientData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDB72270040D00A23FE1 /* WebAuthnClientData.swift */; };
+		F930CDC9227006D600A23FE1 /* WebAuthnRegisterRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDC8227006D600A23FE1 /* WebAuthnRegisterRequest.swift */; };
+		F930CDD12270F09000A23FE1 /* WebAuthnAuthenticateRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDD02270F09000A23FE1 /* WebAuthnAuthenticateRequest.swift */; };
+		F930CDD72270F14300A23FE1 /* WebAuthnUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F930CDD62270F14300A23FE1 /* WebAuthnUtils.swift */; };
+		F939FBFE22A596B900D9CD3F /* U2FTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F939FBFD22A596B900D9CD3F /* U2FTests.swift */; };
+		F98E1EA122B6D70E0018AF29 /* libYubiKit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */; };
+		F99505FF22937E3900CC6543 /* U2F-low-level.js in Resources */ = {isa = PBXBuildFile; fileRef = F99505FE22937E3900CC6543 /* U2F-low-level.js */; };
 		FA6B2AC21D41F02D00429414 /* Punycode.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6B2AC11D41F02D00429414 /* Punycode.swift */; };
 		FA9293D41D6580E100AC8D33 /* QRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9293D31D6580E100AC8D33 /* QRCodeViewController.swift */; };
 		FA9294011D6584A200AC8D33 /* QRCode.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA9294001D6584A200AC8D33 /* QRCode.xcassets */; };
@@ -1210,6 +1219,7 @@
 		0AADC4D120D2A6A200FDE368 /* PreloadedFavorites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreloadedFavorites.swift; sourceTree = "<group>"; };
 		0AADC4D620D2B03900FDE368 /* BraveShieldStatsView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BraveShieldStatsView.swift; sourceTree = "<group>"; };
 		0AB2442B22AA789B00B4D9DD /* ReaderModeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderModeButton.swift; sourceTree = "<group>"; };
+		0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libYubiKit.a; path = ThirdParty/YubiKit/libYubiKit.a; sourceTree = "<group>"; };
 		0AD4FEE9223A9A5500E00C05 /* BundledJSProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundledJSProtocol.swift; sourceTree = "<group>"; };
 		0AD4FEEB223A9C1300E00C05 /* BrowserifiedJS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserifiedJS.swift; sourceTree = "<group>"; };
 		0AD4FEED223AA09D00E00C05 /* BrowserifyExposable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowserifyExposable.swift; sourceTree = "<group>"; };
@@ -2203,6 +2213,14 @@
 		F84B21E51A0910F600AAB793 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = AppDelegate.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		F84B21EF1A0910F600AAB793 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F84B22431A09165600AAB793 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F930CDAB227000F200A23FE1 /* U2F.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = U2F.js; sourceTree = "<group>"; };
+		F930CDAD2270015C00A23FE1 /* U2FExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U2FExtensions.swift; sourceTree = "<group>"; };
+		F930CDB72270040D00A23FE1 /* WebAuthnClientData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthnClientData.swift; sourceTree = "<group>"; };
+		F930CDC8227006D600A23FE1 /* WebAuthnRegisterRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthnRegisterRequest.swift; sourceTree = "<group>"; };
+		F930CDD02270F09000A23FE1 /* WebAuthnAuthenticateRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthnAuthenticateRequest.swift; sourceTree = "<group>"; };
+		F930CDD62270F14300A23FE1 /* WebAuthnUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebAuthnUtils.swift; sourceTree = "<group>"; };
+		F939FBFD22A596B900D9CD3F /* U2FTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = U2FTests.swift; sourceTree = "<group>"; };
+		F99505FE22937E3900CC6543 /* U2F-low-level.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = "U2F-low-level.js"; sourceTree = "<group>"; };
 		FA6B2AC11D41F02D00429414 /* Punycode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Punycode.swift; sourceTree = "<group>"; };
 		FA9293D31D6580E100AC8D33 /* QRCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QRCodeViewController.swift; sourceTree = "<group>"; };
 		FA9294001D6584A200AC8D33 /* QRCode.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = QRCode.xcassets; sourceTree = "<group>"; };
@@ -2237,6 +2255,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F98E1EA122B6D70E0018AF29 /* libYubiKit.a in Frameworks */,
 				A1AD4BD120BF3F4D007A6EA1 /* Eureka.framework in Frameworks */,
 				E6231C051B90A472005ABB0D /* libxml2.2.tbd in Frameworks */,
 				E6231C011B90A44F005ABB0D /* libz.tbd in Frameworks */,
@@ -2703,6 +2722,7 @@
 		28EADE5C1AFC3A6D007FB2FB /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				F930CDB02270029B00A23FE1 /* WebAuthN */,
 				A1CDF22A20BDD6B8005C6E58 /* POPExtensions.swift */,
 				E650754D1E37F6AE006961AC /* GeometryExtensions.swift */,
 				D83821FF1FC7961D00303C12 /* DispatchQueueExtensions.swift */,
@@ -2718,6 +2738,7 @@
 				A1AD4BE220C0861D007A6EA1 /* UIBarButtonItemExtensions.swift */,
 				595E0EE021CAEF5B00813D49 /* FileManagerExtension.swift */,
 				592F521D2217327B0078395E /* HttpCookieExtension.swift */,
+				F930CDAD2270015C00A23FE1 /* U2FExtensions.swift */,
 			);
 			indentWidth = 4;
 			name = Extensions;
@@ -3433,6 +3454,7 @@
 		7B604FC11C496005006EEEC3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */,
 				A1F66A7F20DD87CA00303328 /* Static.framework */,
 				A1AD4BD520BF476E007A6EA1 /* FastImageCache.framework */,
 				A1AD4BD020BF3F4D007A6EA1 /* Eureka.framework */,
@@ -3553,6 +3575,8 @@
 				D0FCF7E81FE44D8F004A7995 /* AllFrames */,
 				D0FCF7E91FE44DA2004A7995 /* MainFrame */,
 				595E0EDA21CAD97C00813D49 /* CookieControl.js */,
+				F930CDAB227000F200A23FE1 /* U2F.js */,
+				F99505FE22937E3900CC6543 /* U2F-low-level.js */,
 			);
 			path = UserScripts;
 			sourceTree = "<group>";
@@ -4155,6 +4179,7 @@
 				2795274921A890EB00921AA1 /* FingerprintingProtectionTests.swift */,
 				0A4214E821A6EBCF006B8E39 /* SafeBrowsingTests.swift */,
 				5953AAEE2226E9D800A92DE1 /* HttpCookieExtensionTest.swift */,
+				F939FBFD22A596B900D9CD3F /* U2FTests.swift */,
 			);
 			path = ClientTests;
 			sourceTree = "<group>";
@@ -4278,6 +4303,17 @@
 				E40A18F61EDC73D5006B7F28 /* Entitlements */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		F930CDB02270029B00A23FE1 /* WebAuthN */ = {
+			isa = PBXGroup;
+			children = (
+				F930CDC8227006D600A23FE1 /* WebAuthnRegisterRequest.swift */,
+				F930CDD02270F09000A23FE1 /* WebAuthnAuthenticateRequest.swift */,
+				F930CDD62270F14300A23FE1 /* WebAuthnUtils.swift */,
+				F930CDB72270040D00A23FE1 /* WebAuthnClientData.swift */,
+			);
+			path = WebAuthN;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -5117,6 +5153,7 @@
 				E4B7B7631A793CF20022C5E0 /* CharisSILI.ttf in Resources */,
 				E4CD9F541A71506400318571 /* Reader.html in Resources */,
 				C6345ECB2113B3A000CFB983 /* SearchPlugins in Resources */,
+				F930CDAC227000F200A23FE1 /* U2F.js in Resources */,
 				5D7001C222249F7B00E576FB /* ShortNameToFileMapping.json in Resources */,
 				4422D55921BFFB7F00BF1855 /* unicode.py in Resources */,
 				7B2142FE1E5E055000CDD3FC /* InfoPlist.strings in Resources */,
@@ -5134,6 +5171,7 @@
 				E4B7B77D1A793CF20022C5E0 /* FiraSans-Regular.ttf in Resources */,
 				4422D55221BFFB7E00BF1855 /* make_unicode_casefold.py in Resources */,
 				E4B7B7791A793CF20022C5E0 /* FiraSans-Light.ttf in Resources */,
+				F99505FF22937E3900CC6543 /* U2F-low-level.js in Resources */,
 				D0FCF8081FE4772D004A7995 /* MainFrameAtDocumentStart.js in Resources */,
 				0A0D3D5021A5609600BEE65B /* SafeBrowsingError.html in Resources */,
 				74821FFE1DB6D3AC00EEEA72 /* MailSchemes.plist in Resources */,
@@ -5747,6 +5785,7 @@
 				4422D55821BFFB7F00BF1855 /* unicode_casefold.cc in Sources */,
 				C6620BBB213BCEC6009FE75A /* TabType.swift in Sources */,
 				0A4325AE21B1C5D70041625B /* no_fingerprint_domain.cc in Sources */,
+				F930CDB82270040D00A23FE1 /* WebAuthnClientData.swift in Sources */,
 				4422D50721BFFB7600BF1855 /* port_posix.cc in Sources */,
 				E64ED8FA1BC55AE300DAF864 /* UIAlertControllerExtensions.swift in Sources */,
 				A16DC67F20E585D90069C8E1 /* PasscodeSettingsViewController.swift in Sources */,
@@ -5772,6 +5811,7 @@
 				4422D4E821BFFB7600BF1855 /* log_writer.cc in Sources */,
 				F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */,
 				0A7B5D6722689C5D00AADF22 /* AddEditHeaderView.swift in Sources */,
+				F930CDD12270F09000A23FE1 /* WebAuthnAuthenticateRequest.swift in Sources */,
 				C6B81B81212D6C1100996084 /* NoPrivacyProtection.swift in Sources */,
 				D8C75DF3207584C400BB8AD0 /* UIImageViewAligned.m in Sources */,
 				E653422D1C5944F90039DD9E /* BrowserPrompts.swift in Sources */,
@@ -5845,6 +5885,7 @@
 				C4E3984C1D21F2FD004E89BA /* TabTrayButtonExtensions.swift in Sources */,
 				5D24AF8221BA459000F9506A /* BlocklistName.swift in Sources */,
 				D3FEC38D1AC4B42F00494F45 /* AutocompleteTextField.swift in Sources */,
+				F930CDC9227006D600A23FE1 /* WebAuthnRegisterRequest.swift in Sources */,
 				0BD19A671A25309B0084FBA7 /* NSUserDefaultsPrefs.swift in Sources */,
 				4422D4F021BFFB7600BF1855 /* write_batch.cc in Sources */,
 				E68AEDB01B18F81A00133D99 /* SwipeAnimator.swift in Sources */,
@@ -5867,6 +5908,7 @@
 				0A1E84412190A57F0042F782 /* SyncViewController.swift in Sources */,
 				0AADC4C820D2A55A00FDE368 /* FavoritesViewController.swift in Sources */,
 				0A43293021B1C7F50041625B /* AdBlockStats.swift in Sources */,
+				F930CDAE2270015C00A23FE1 /* U2FExtensions.swift in Sources */,
 				E65075571E37F714006961AC /* FaviconFetcher.swift in Sources */,
 				0AEFB88722299E6A007AF600 /* AdblockerType.swift in Sources */,
 				D863C8F21F68BFC20058D95F /* GradientProgressBar.swift in Sources */,
@@ -5909,6 +5951,7 @@
 				44331DBB22521013007E3E93 /* MenuViewController.swift in Sources */,
 				4422D4BC21BFFB7600BF1855 /* testharness.cc in Sources */,
 				3BE7275D1CCFE8B60099189F /* CustomSearchHandler.swift in Sources */,
+				F930CDD72270F14300A23FE1 /* WebAuthnUtils.swift in Sources */,
 				A1FEEE2020BF28D900298DA2 /* Then.swift in Sources */,
 				0A1E84442190A57F0042F782 /* SyncCameraView.swift in Sources */,
 				A1CA29C420E1746A00CB9126 /* OptionSelectionViewController.swift in Sources */,
@@ -5961,6 +6004,7 @@
 				2F13E79B1AC0C02700D75081 /* StringExtensionsTests.swift in Sources */,
 				2FDB10931A9FBEC5006CF312 /* PrefsTests.swift in Sources */,
 				D8EFFA261FF702A8001D3A09 /* NavigationRouterTests.swift in Sources */,
+				F939FBFE22A596B900D9CD3F /* U2FTests.swift in Sources */,
 				0A4BEFD6221E13830005551A /* ContentBlockerTests.swift in Sources */,
 				A83E5B1D1C1DA8D80026D912 /* UIPasteboardExtensionsTests.swift in Sources */,
 				D82ED2641FEB3C420059570B /* DefaultSearchPrefsTests.swift in Sources */,
@@ -8370,16 +8414,20 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/ThirdParty/sqlcipher",
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/include",
 					"$(SRCROOT)",
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/include/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/leveldb/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/re2",
+					"$(SRCROOT)/ThirdParty/YubiKit/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(SRCROOT)/ThirdParty/YubiKit",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -8760,16 +8808,20 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/ThirdParty/sqlcipher",
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/include",
 					"$(SRCROOT)",
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/include/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/leveldb/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/re2",
+					"$(SRCROOT)/ThirdParty/YubiKit/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(SRCROOT)/ThirdParty/YubiKit",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
@@ -9153,16 +9205,20 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/ThirdParty/sqlcipher",
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/include",
 					"$(SRCROOT)",
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/include/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/leveldb/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/re2",
+					"$(SRCROOT)/ThirdParty/YubiKit/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(SRCROOT)/ThirdParty/YubiKit",
+				);
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -9369,16 +9425,20 @@
 				HEADER_SEARCH_PATHS = (
 					"$(SRCROOT)/ThirdParty/sqlcipher",
 					"$(inherited)",
-					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(DEVELOPER_DIR)/Toolchains/XcodeDefault.xctoolchain/usr/include",
 					"$(SRCROOT)",
 					"$(SDKROOT)/usr/include/libxml2",
 					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)/include/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/leveldb/**",
 					"$(SRCROOT)/Client/WebFilters/ShieldStats/Httpse/ThirdParty/re2",
+					"$(SRCROOT)/ThirdParty/YubiKit/include",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
+				LIBRARY_SEARCH_PATHS = (
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(SRCROOT)/ThirdParty/YubiKit",
+				);
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
