@@ -9,11 +9,7 @@ chrome_framework_name = chrome_product_full_name + " Framework"
 chrome_helper_name = chrome_product_full_name + " Helper"
 
 # This must be same value in //chrome/BUILD.gn.
-if (new_mac_bundle_structure) {
-  chrome_framework_version = chrome_version_full
-} else {
-  chrome_framework_version = "A"
-}
+chrome_framework_version = chrome_version_full
 
 # This list must be updated with the two targets' deps list below, and
 # the list of _dsyms in :brave_dsym_archive.
