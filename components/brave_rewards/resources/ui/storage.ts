@@ -60,7 +60,8 @@ export const defaultState: Rewards.State = {
   currentGrant: undefined,
   inlineTip: {
     twitter: true,
-    reddit: true
+    reddit: true,
+    github: true
   },
   pendingContributions: [],
   excludedList: [],

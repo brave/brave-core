@@ -172,7 +172,8 @@ class TipBox extends React.Component<Props, State> {
     if (!value) {
       value = {
         twitter: true,
-        reddit: true
+        reddit: true,
+        github: true
       }
     }
 
@@ -194,6 +195,14 @@ class TipBox extends React.Component<Props, State> {
                 onChange={this.onInlineTipSettingChange}
               >
                 <div data-key='twitter'>{getLocale('donationAbilityTwitter')}</div>
+              </Checkbox>
+
+              <Checkbox
+                value={value}
+                multiple={true}
+                onChange={this.onInlineTipSettingChange}
+              >
+                <div data-key='github'>{getLocale('donationAbilityGitHub')}</div>
               </Checkbox>
             </ControlWrapper>
           </Column>

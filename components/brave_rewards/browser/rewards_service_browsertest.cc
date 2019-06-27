@@ -85,6 +85,17 @@ std::unique_ptr<net::test_server::HttpResponse> HandleRequest(
         "    </div>"
         "  </body>"
         "</html>");
+  } else if (request.relative_url == "/github") {
+    http_response->set_content(
+      "<html>"
+        "  <head></head>"
+        "  <body>"
+        "   <div class='timeline-comment-actions'>"
+        "     <div>GitHubCommentReactsButton</div>"
+        "     <div>GitHubCommentElipsesButton</div>"
+        "   </div>"
+        " </body>"
+        "</html>");
   } else {
     http_response->set_content(
         "<html>"
@@ -1915,6 +1926,51 @@ IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
 
   // Navigate to Reddit in a new tab
   GURL url = https_server()->GetURL("brave.com", "/reddit");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  // Ensure that Media Tips injection is not active
+  EXPECT_FALSE(IsMediaTipsInjected());
+}
+
+// Brave tip icon is injected when visiting GitHub
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest, GitHubTipsInjectedOnGitHub) {
+  // Enable Rewards
+  EnableRewards();
+
+  // Navigate to GitHub in a new tab
+  GURL url = https_server()->GetURL("github.com", "/github");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  // Ensure that Media Tips injection is active
+  EXPECT_TRUE(IsMediaTipsInjected());
+}
+
+// Brave tip icon is not injected when visiting GitHub while Brave
+// Rewards is disabled
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       GitHubTipsNotInjectedWhenRewardsDisabled) {
+  // Navigate to GitHub in a new tab
+  GURL url = https_server()->GetURL("github.com", "/github");
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);
+
+  // Ensure that Media Tips injection is not active
+  EXPECT_FALSE(IsMediaTipsInjected());
+}
+
+// Brave tip icon is not injected when not visiting GitHub
+IN_PROC_BROWSER_TEST_F(BraveRewardsBrowserTest,
+                       GitHubTipsNotInjectedOnNonGitHub) {
+  // Enable Rewards
+  EnableRewards();
+
+  // Navigate to GitHub in a new tab
+  GURL url = https_server()->GetURL("brave.com", "/github");
   ui_test_utils::NavigateToURLWithDisposition(
       browser(), url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_NAVIGATION);

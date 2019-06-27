@@ -92,6 +92,13 @@ std::string GitHub::GetUserNameFromURL(const std::string& path) {
 }
 
 // static
+std::string GitHub::GetUserName(const std::string& json_string) {
+  std::string publisher_name;
+  bool success = GetJSONStringValue("login", json_string, &publisher_name);
+  return success ? publisher_name : "";
+}
+
+// static
 std::string GitHub::GetMediaKey(const std::string& screen_name) {
   if (screen_name.empty()) {
     return "";
@@ -109,9 +116,12 @@ std::string GitHub::GetUserId(const std::string& json_string) {
 
 // static
 std::string GitHub::GetPublisherName(const std::string& json_string) {
-  std::string publisher_name;
-  const bool success = GetJSONStringValue("name", json_string, &publisher_name);
-  return success ? publisher_name : "";
+  std::string publisher_name = "";
+  bool success = GetJSONStringValue("name", json_string, &publisher_name);
+  if (success) {
+    return publisher_name.empty() ? GetUserName(json_string) : publisher_name;
+  }
+  return GetUserName(json_string);
 }
 
 // static
@@ -377,4 +387,80 @@ void GitHub::SavePublisherInfo(
   }
 }
 
+void GitHub::OnMediaPublisherInfo(
+    uint64_t window_id,
+    const std::string& user_id,
+    const std::string& screen_name,
+    const std::string& publisher_name,
+    const std::string& profile_picture,
+    ledger::PublisherInfoCallback callback,
+    ledger::Result result,
+    ledger::PublisherInfoPtr publisher_info) {
+  if (result != ledger::Result::LEDGER_OK  &&
+    result != ledger::Result::NOT_FOUND) {
+    callback(ledger::Result::LEDGER_ERROR, nullptr);
+    return;
+  }
+
+  if (!publisher_info || result == ledger::Result::NOT_FOUND) {
+    SavePublisherInfo(user_id,
+                      screen_name,
+                      publisher_name,
+                      profile_picture,
+                      window_id,
+                      callback);
+  } else {
+    // TODO(nejczdovc): we need to check if user is verified,
+    //  but his image was not saved yet, so that we can fix it
+    callback(result, std::move(publisher_info));
+  }
+}
+
+void GitHub::OnMetaDataGet(
+      ledger::PublisherInfoCallback callback,
+      int response_status_code,
+      const std::string& response,
+      const std::map<std::string, std::string>& headers) {
+  if (response_status_code != net::HTTP_OK) {
+    callback(ledger::Result::TIP_ERROR, nullptr);
+    return;
+  }
+
+  const std::string user_id = GetUserId(response);
+  const std::string user_name = GetUserName(response);
+  const std::string media_key = GetMediaKey(user_name);
+  const std::string publisher_name = GetPublisherName(response);
+  const std::string profile_picture = GetProfileImageURL(response);
+
+  ledger_->GetMediaPublisherInfo(
+          media_key,
+          std::bind(&GitHub::OnMediaPublisherInfo,
+                    this,
+                    0,
+                    user_id,
+                    user_name,
+                    publisher_name,
+                    profile_picture,
+                    callback,
+                    _1,
+                    _2));
+}
+
+void GitHub::SaveMediaInfo(
+    const std::map<std::string, std::string>& data,
+    ledger::PublisherInfoCallback callback) {
+  auto user_name = data.find("user_name");
+  std::string url = GetProfileAPIURL(user_name->second);
+  ledger_->LoadURL(url,
+                   std::vector<std::string>(),
+                   "",
+                   "",
+                   ledger::URL_METHOD::GET,
+                   std::bind(&GitHub::OnMetaDataGet,
+                              this,
+                              std::move(callback),
+                              _1,
+                              _2,
+                              _3));
+}
 }  // namespace braveledger_media

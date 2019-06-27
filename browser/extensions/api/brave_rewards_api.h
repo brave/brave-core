@@ -56,6 +56,22 @@ class BraveRewardsTipTwitterUserFunction
       std::unique_ptr<brave_rewards::ContentSite> publisher_info);
 };
 
+class BraveRewardsTipGitHubUserFunction
+    : public UIThreadExtensionFunction {
+ public:
+  BraveRewardsTipGitHubUserFunction();
+  DECLARE_EXTENSION_FUNCTION("braveRewards.tipGitHubUser", UNKNOWN)
+
+ protected:
+  ~BraveRewardsTipGitHubUserFunction() override;
+
+  ResponseAction Run() override;
+ private:
+  base::WeakPtrFactory<BraveRewardsTipGitHubUserFunction> weak_factory_;
+  void OnGitHubPublisherInfoSaved(
+      std::unique_ptr<brave_rewards::ContentSite> publisher_info);
+};
+
 class BraveRewardsTipRedditUserFunction : public UIThreadExtensionFunction {
  public:
   BraveRewardsTipRedditUserFunction();
@@ -65,7 +81,6 @@ class BraveRewardsTipRedditUserFunction : public UIThreadExtensionFunction {
   ~BraveRewardsTipRedditUserFunction() override;
 
   ResponseAction Run() override;
-
  private:
   base::WeakPtrFactory<BraveRewardsTipRedditUserFunction> weak_factory_;
   void OnRedditPublisherInfoSaved(

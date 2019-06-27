@@ -46,6 +46,13 @@ declare namespace RewardsTip {
     userName: string
     postText: string
     postRelDate: string
+  } | {
+    mediaType: 'github'
+    userName: string
+  }
+
+  interface GitHubMetaData {
+    userName: string
   }
 
   interface RedditMetaData {
