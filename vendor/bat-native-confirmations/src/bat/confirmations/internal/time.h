@@ -8,11 +8,17 @@
 
 #include <stdint.h>
 
+#include "base/time/time.h"
+
 namespace confirmations {
 
 class Time {
  public:
   static uint64_t NowInSeconds();
+  static uint64_t MigrateTimestampToDoubleT(
+      const uint64_t timestamp_in_seconds);
+  static base::Time FromDoubleT(
+      const uint64_t timestamp_in_seconds);
 };
 
 }  // namespace confirmations
