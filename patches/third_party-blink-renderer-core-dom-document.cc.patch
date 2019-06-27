@@ -1,16 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..3556813fa84026264986a6011468fc6e2653c047 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..a428b3378fb6923cbcce8d90d27af107bef20966 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -29,6 +29,7 @@
- 
- #include "third_party/blink/renderer/core/dom/document.h"
- 
-+#include <iostream>
- #include <memory>
- 
- #include "base/auto_reset.h"
-@@ -310,6 +311,13 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+@@ -310,6 +310,13 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
  static WeakDocumentSet& liveDocumentSet();
  #endif
  
@@ -24,7 +16,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..3556813fa84026264986a6011468fc6e
  namespace blink {
  
  using namespace html_names;
-@@ -768,6 +776,11 @@ Document::Document(const DocumentInit& initializer,
+@@ -768,6 +775,11 @@ Document::Document(const DocumentInit& initializer,
  #ifndef NDEBUG
    liveDocumentSet().insert(this);
  #endif
@@ -36,7 +28,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..3556813fa84026264986a6011468fc6e
  }
  
  Document::~Document() {
-@@ -778,7 +791,107 @@ Document::~Document() {
+@@ -778,6 +790,105 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -138,8 +130,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..3556813fa84026264986a6011468fc6e
 +  page_graph_ = new ::brave_page_graph::PageGraph(*this);
 +  GetIsolate()->SetPageGraph(page_graph_);
 +  return page_graph_;
- }
 +#endif
+ }
  
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
-                                                 const Position& position) {
