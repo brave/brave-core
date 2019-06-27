@@ -19,6 +19,9 @@
 #include "brave/common/tor/tor_proxy_uri_helper.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_window.h"
+#include "chrome/browser/ui/browser_list.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -44,11 +47,11 @@ namespace tor {
 
 namespace {
 
-class NewTorIdentityTracker : public WebContentsObserver {
+class NewTorCircuitTracker : public WebContentsObserver {
  public:
-  NewTorIdentityTracker(content::WebContents* web_contents)
+  NewTorCircuitTracker(content::WebContents* web_contents)
       : WebContentsObserver(web_contents) {}
-  ~NewTorIdentityTracker() override {}
+  ~NewTorCircuitTracker() override {}
 
   void NewIdentityLoaded(bool success) {
     if (web_contents()) {
@@ -64,7 +67,7 @@ class NewTorIdentityTracker : public WebContentsObserver {
   }
 
  private:
-  DISALLOW_COPY_AND_ASSIGN(NewTorIdentityTracker);
+  DISALLOW_COPY_AND_ASSIGN(NewTorCircuitTracker);
 };
 
 class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
@@ -112,7 +115,17 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
   DISALLOW_COPY_AND_ASSIGN(TorProxyLookupClient);
 };
 
-void NewTorIdentityCallback(std::unique_ptr<NewTorIdentityTracker> tracker,
+void RestartTor(const base::FilePath& profile_path) {
+  Profile* profile =
+      g_browser_process->profile_manager()->GetProfile(profile_path);
+  if (profile) {
+    // TODO(bridiver) - create a class with a notification for profile deletion
+  } else {
+    profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
+  }
+}
+
+void OnNewTorCircuit(std::unique_ptr<NewTorCircuitTracker> tracker,
                             const base::Optional<net::ProxyInfo>& proxy_info) {
   tracker->NewIdentityLoaded(
       proxy_info.has_value() && !proxy_info->is_direct());
@@ -152,8 +165,8 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   // track the webcontents lifetime so we don't reload if it has already
   // been destroyed
-  auto tracker = std::make_unique<NewTorIdentityTracker>(tab);
-  auto callback = base::BindOnce(&NewTorIdentityCallback, std::move(tracker));
+  auto tracker = std::make_unique<NewTorCircuitTracker>(tab);
+  auto callback = base::BindOnce(&OnNewTorCircuit, std::move(tracker));
 
   const GURL& url = tab->GetURL();
 
@@ -171,6 +184,12 @@ void TorProfileServiceImpl::SetNewTorCircuit(WebContents* tab) {
       TorProxyLookupClient::CreateTorProxyLookupClient(std::move(callback));
   storage_partition->GetNetworkContext()->LookUpProxyForURL(
       url, std::move(proxy_lookup_client_ptr));
+}
+
+void TorProfileServiceImpl::SetNewTorIdentity() {
+  BrowserList::CloseAllBrowsersWithProfile(
+      profile_, base::Bind(&RestartTor),
+      BrowserList::CloseCallback(), false);
 }
 
 const TorConfig& TorProfileServiceImpl::GetTorConfig() {

@@ -62,6 +62,10 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
         GetIndexOfCommandId(IDC_NEW_WINDOW),
         IDC_NEW_TOR_IDENTITY,
         IDS_NEW_TOR_IDENTITY);
+    InsertItemWithStringIdAt(
+        GetIndexOfCommandId(IDC_NEW_WINDOW),
+        IDC_NEW_TOR_CONNECTION_FOR_SITE,
+        IDS_NEW_TOR_CONNECTION_FOR_SITE);
   } else {
     InsertItemWithStringIdAt(
         GetIndexOfCommandId(IDC_NEW_INCOGNITO_WINDOW) + 1,
