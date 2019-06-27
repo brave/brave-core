@@ -224,6 +224,10 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Ads & Confirmations
 
+/// Uupdate ad totals on month roll over without fetching latest balances from
+/// server
+- (void)updateAdsRewards;
+
 /// Get the number of ads received and the estimated earnings of viewing said ads for this cycle
 - (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings))completion NS_SWIFT_NAME(adsDetailsForCurrentCycle(_:));
 

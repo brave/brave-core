@@ -844,6 +844,11 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - Ads & Confirmations
 
+- (void)updateAdsRewards
+{
+  ledger->UpdateAdsRewards();
+}
+
 - (void)adsDetailsForCurrentCycle:(void (^)(NSInteger adsReceived, double estimatedEarnings))completion
 {
   ledger->GetTransactionHistory(^(std::unique_ptr<ledger::TransactionsInfo> list) {
