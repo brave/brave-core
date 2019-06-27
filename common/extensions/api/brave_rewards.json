@@ -457,6 +457,27 @@
         ]
       },
       {
+        "name": "tipGitHubUser",
+        "type": "function",
+        "description": "Allow the user to perform a donation to a Twitter user",
+        "parameters": [
+          {
+            "name": "tabID",
+            "type": "integer"
+          },
+          {
+            "name": "githubMetaData",
+            "type": "object",
+            "properties": {
+              "userName": {
+                "type": "string",
+                "description": "Username of the GitHub author"
+              }
+            }
+          }
+        ]
+      },
+      {
         "name": "getPublisherData",
         "type": "function",
         "description": "Get publisher data",

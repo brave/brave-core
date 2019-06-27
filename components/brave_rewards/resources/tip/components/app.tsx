@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import TipSite from './tipSite'
 import TipTwitterUser from './tipTwitterUser'
 import TipRedditUser from './tipRedditUser'
+import TipGitHubUser from './tipGitHubUser'
 
 // Utils
 import * as rewardsActions from '../actions/tip_actions'
@@ -19,6 +20,7 @@ interface TipDialogArgs {
   publisherKey: string
   tweetMetaData?: RewardsTip.TweetMetaData
   redditMetaData?: RewardsTip.RedditMetaData
+  githubMetaData?: RewardsTip.GitHubMetaData
 }
 
 interface Props extends RewardsTip.ComponentProps {
@@ -30,7 +32,8 @@ export class App extends React.Component<Props, {}> {
     return this.props.actions
   }
 
-  getTipBanner = (url: string, publisher: RewardsTip.Publisher, tweetMetaData?: RewardsTip.TweetMetaData, redditMetaData?: RewardsTip.RedditMetaData) => {
+  getTipBanner = (url: string, publisher: RewardsTip.Publisher, tweetMetaData?: RewardsTip.TweetMetaData,
+                  redditMetaData?: RewardsTip.RedditMetaData, githubMetaData?: RewardsTip.GitHubMetaData) => {
     if (tweetMetaData) {
       return (
         <TipTwitterUser
@@ -45,6 +48,14 @@ export class App extends React.Component<Props, {}> {
           url={url}
           publisher={publisher}
           redditMetaData={redditMetaData}
+        />
+      )
+    } else if (githubMetaData) {
+      return(
+        <TipGitHubUser
+          url={url}
+          publisher={publisher}
+          githubMetaData={githubMetaData}
         />
       )
     } else {
@@ -67,6 +78,7 @@ export class App extends React.Component<Props, {}> {
     const url = this.props.dialogArgs.url
     const tweetMetaData = this.props.dialogArgs.tweetMetaData
     const redditMetaData = this.props.dialogArgs.redditMetaData
+    const githubMetaData = this.props.dialogArgs.githubMetaData
     const publisherKey = this.props.dialogArgs.publisherKey
     const publisher = publishers[publisherKey]
 
@@ -76,7 +88,7 @@ export class App extends React.Component<Props, {}> {
 
     return (
       <div>
-        {this.getTipBanner(url, publisher, tweetMetaData, redditMetaData)}
+        {this.getTipBanner(url, publisher, tweetMetaData, redditMetaData, githubMetaData)}
       </div>
     )
   }

@@ -170,6 +170,9 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD2(SaveRedditPublisherInfo,
              void(const std::map<std::string, std::string>&,
                   brave_rewards::SaveMediaInfoCallback));
+  MOCK_METHOD2(SaveGitHubPublisherInfo,
+             void(const std::map<std::string, std::string>&,
+                  brave_rewards::SaveMediaInfoCallback));
 };
 
 class AdsServiceTest : public testing::Test {

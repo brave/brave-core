@@ -18,6 +18,7 @@ interface Props extends RewardsTip.ComponentProps {
   publisher: RewardsTip.Publisher
   tweetMetaData?: RewardsTip.TweetMetaData
   redditMetaData?: RewardsTip.RedditMetaData
+  githubMetaData?: RewardsTip.GitHubMetaData
 }
 
 interface State {
@@ -121,14 +122,14 @@ class Banner extends React.Component<Props, State> {
     return !!recurringDonation
   }
 
-  getScreenName = (tweetMetaData?: RewardsTip.TweetMetaData, redditMetaData?: RewardsTip.RedditMetaData) => {
-    if (!tweetMetaData && !redditMetaData) {
-      return ''
-    }
+  getScreenName = (tweetMetaData?: RewardsTip.TweetMetaData, redditMetaData?: RewardsTip.RedditMetaData,
+                   githubMetaData?: RewardsTip.GitHubMetaData) => {
     if (tweetMetaData) {
       return `@${tweetMetaData.screenName}`
     } else if (redditMetaData) {
       return `u/${redditMetaData.userName}`
+    } else if (githubMetaData) {
+      return `@${githubMetaData.userName}`
     }
     return ''
   }
@@ -174,6 +175,7 @@ class Banner extends React.Component<Props, State> {
 
     const tweetMetaData = this.props.tweetMetaData
     const redditMetaData = this.props.redditMetaData
+    const githubMetaData = this.props.githubMetaData
     const publisher = this.props.publisher
     const verified = publisher.verified
     let logo = publisher.logo
@@ -186,13 +188,12 @@ class Banner extends React.Component<Props, State> {
     if (!verified) {
       logo = ''
     }
-
     return (
       <SiteBanner
         domain={publisher.publisherKey}
         title={publisher.title}
         name={publisher.name}
-        screenName={this.getScreenName(tweetMetaData, redditMetaData)}
+        screenName={this.getScreenName(tweetMetaData, redditMetaData, githubMetaData)}
         provider={publisher.provider as Provider}
         recurringDonation={this.hasRecurringTip(publisher.publisherKey)}
         balance={total.toString() || '0'}

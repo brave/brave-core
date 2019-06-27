@@ -42,6 +42,10 @@ declare namespace RewardsTip {
     tweetText: string
   }
 
+  interface GitHubMetaData {
+    userName: string
+  }
+
   interface RedditMetaData {
     userName: string
     postText: string

@@ -95,6 +95,22 @@ const tipTwitterUser = (tweetMetaData: RewardsTip.TweetMetaData) => {
   })
 }
 
+const tipGitHubUser = (githubMetaData: RewardsTip.GitHubMetaData) => {
+  chrome.tabs.query({
+    active: true,
+    windowId: chrome.windows.WINDOW_ID_CURRENT
+  }, (tabs) => {
+    if (!tabs || tabs.length === 0) {
+      return
+    }
+    const tabId = tabs[0].id
+    if (tabId === undefined) {
+      return
+    }
+    chrome.braveRewards.tipGitHubUser(tabId, githubMetaData)
+  })
+}
+
 const tipRedditUser = (redditMetaData: RewardsTip.RedditMetaData) => {
   chrome.tabs.query({
     active: true,
@@ -120,6 +136,10 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
     }
     case 'tipRedditUser': {
       tipRedditUser(msg.redditMetaData)
+      return false
+    }
+    case 'tipGitHubUser': {
+      tipGitHubUser(msg.githubMetaData)
       return false
     }
     case 'rewardsEnabled': {

@@ -232,6 +232,10 @@ class RewardsService : public KeyedService {
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) = 0;
 
+  virtual void SaveGitHubPublisherInfo(
+      const std::map<std::string, std::string>& args,
+      SaveMediaInfoCallback callback) = 0;
+
   virtual void SetInlineTipSetting(const std::string& key, bool enabled) = 0;
 
   virtual void GetInlineTipSetting(

@@ -2246,6 +2246,38 @@ void RewardsServiceImpl::SaveTwitterPublisherInfo(
                      std::move(callback)));
 }
 
+void RewardsServiceImpl::OnGitHubPublisherInfoSaved(
+    SaveMediaInfoCallback callback,
+    int32_t result,
+    ledger::PublisherInfoPtr publisher) {
+  if (!Connected()) {
+    std::move(callback).Run(nullptr);
+    return;
+  }
+  if (Connected()) {
+    ledger::Result result_converted = static_cast<ledger::Result>(result);
+    std::unique_ptr<brave_rewards::ContentSite> site;
+
+    if (result_converted == ledger::Result::LEDGER_OK) {
+      site = std::make_unique<brave_rewards::ContentSite>(
+          PublisherInfoToContentSite(*publisher));
+    }
+
+    std::move(callback).Run(std::move(site));
+  }
+}
+
+void RewardsServiceImpl::SaveGitHubPublisherInfo(
+      const std::map<std::string, std::string>& args,
+    SaveMediaInfoCallback callback) {
+  bat_ledger_->SaveMediaInfo(
+      "github",
+      mojo::MapToFlatMap(args),
+      base::BindOnce(&RewardsServiceImpl::OnGitHubPublisherInfoSaved,
+                     AsWeakPtr(),
+                     std::move(callback)));
+}
+
 void RewardsServiceImpl::OnRedditPublisherInfoSaved(
     SaveMediaInfoCallback callback,
     int32_t result,

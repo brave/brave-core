@@ -96,9 +96,22 @@ TEST(MediaGitHubTest, GetUserNameFromURL) {
   ASSERT_EQ(result, "jdkuki");
 }
 
+TEST(MediaGitHubTest, GetUserName) {
+  std::string test_response = MediaGitHubTest::CreateTestJSONString();
+
+  // empty response
+  std::string result =
+      braveledger_media::GitHub::GetUserName("");
+  ASSERT_TRUE(result.empty());
+
+  // valid response
+  result = braveledger_media::GitHub::
+      GetUserName(test_response);
+  ASSERT_EQ(result, "jdkuki");
+}
+
 TEST(MediaGitHubTest, GetUserId) {
   std::string test_response = MediaGitHubTest::CreateTestJSONString();
-  LOG(INFO) << test_response;
 
   // empty
   std::string result =

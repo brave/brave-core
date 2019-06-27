@@ -222,6 +222,10 @@ class RewardsServiceImpl : public RewardsService,
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) override;
 
+  void SaveGitHubPublisherInfo(
+      const std::map<std::string, std::string>& args,
+      SaveMediaInfoCallback callback) override;
+
   void SaveRedditPublisherInfo(
       const std::map<std::string, std::string>& args,
       SaveMediaInfoCallback callback) override;
@@ -569,6 +573,9 @@ class RewardsServiceImpl : public RewardsService,
       SaveMediaInfoCallback callback,
       int32_t result,
       ledger::PublisherInfoPtr publisher);
+  void OnGitHubPublisherInfoSaved(SaveMediaInfoCallback callback,
+                                   int32_t result,
+                                   ledger::PublisherInfoPtr publisher);
   void GetCountryCodes(
       const std::vector<std::string>& countries,
       ledger::GetCountryCodesCallback callback) override;

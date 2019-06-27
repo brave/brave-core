@@ -186,7 +186,8 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       if (!state.inlineTip) {
         state.inlineTip = {
           twitter: true,
-          reddit: true
+          reddit: true,
+          github: true
         }
       }
 
