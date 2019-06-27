@@ -70,15 +70,9 @@ if (skip_signing) {
       chrome_framework_name = chrome_product_full_name + " Framework"
       target_app_path = "$root_out_dir/$chrome_product_full_name.app"
 
-      if (new_mac_bundle_structure) {
-        brave_version_path = "$target_app_path/Contents/Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full"
-        framework_file = "$brave_version_path/$chrome_framework_name"
-        signature_file = "$brave_version_path/Resources/$chrome_framework_name.sig"
-      } else {
-        brave_version_path = "$target_app_path/Contents/Versions/$chrome_version_full"
-        framework_file = "$brave_version_path/$chrome_framework_name.framework/Versions/Current/$chrome_framework_name"
-        signature_file = "$brave_version_path/Widevine Resources.bundle/Contents/Resources/$chrome_framework_name.sig"
-      }
+      brave_version_path = "$target_app_path/Contents/Frameworks/$chrome_framework_name.framework/Versions/$chrome_version_full"
+      framework_file = "$brave_version_path/$chrome_framework_name"
+      signature_file = "$brave_version_path/Resources/$chrome_framework_name.sig"
 
       flags = 1  # blessed binary
 
