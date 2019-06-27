@@ -5,7 +5,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
 
-@class ActivityInfo, ContributionInfo, RecurringDonation;
+@class ActivityInfo, ContributionInfo, RecurringDonation, PendingContribution;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,6 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, retain) NSSet<ActivityInfo *> *activities;
 @property (nullable, nonatomic, retain) NSSet<ContributionInfo *> *contributions;
 @property (nullable, nonatomic, retain) NSSet<RecurringDonation *> *recurringDonations;
+@property (nullable, nonatomic, retain) NSSet<PendingContribution *> *pendingContributions;
 
 @end
 
@@ -42,6 +43,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)removeRecurringDonationsObject:(RecurringDonation *)value;
 - (void)addRecurringDonations:(NSSet<RecurringDonation *> *)values;
 - (void)removeRecurringDonations:(NSSet<RecurringDonation *> *)values;
+
+- (void)addPendingContributionsObject:(PendingContribution *)value;
+- (void)removePendingContributionsObject:(PendingContribution *)value;
+- (void)addPendingContributions:(NSSet<PendingContribution *> *)values;
+- (void)removePendingContributions:(NSSet<PendingContribution *> *)values;
 
 @end
 

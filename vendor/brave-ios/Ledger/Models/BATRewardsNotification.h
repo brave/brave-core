@@ -15,7 +15,9 @@ typedef NS_ENUM(NSInteger, BATRewardsNotificationKind) {
   BATRewardsNotificationKindInsufficientFunds,
   BATRewardsNotificationKindBackupWallet,
   BATRewardsNotificationKindTipsProcessed,
-  BATRewardsNotificationKindAdsLaunch // Unused
+  BATRewardsNotificationKindAdsLaunch, // Unused
+  BATRewardsNotificationKindVerifiedPublisher,
+  BATRewardsNotificationKindPendingNotEnoughFunds,
 } NS_SWIFT_NAME(RewardsNotification.Kind);
 
 NS_SWIFT_NAME(RewardsNotification)

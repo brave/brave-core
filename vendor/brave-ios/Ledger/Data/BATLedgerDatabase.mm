@@ -70,6 +70,16 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
             additionalPredicate:nil context:context];
 }
 
++ (nullable PendingContribution *)getPendingContributonWithPublisherID:(NSString *)publisherID
+                                                           viewingID:(NSString *)viewingID
+                                                           addedDate:(UInt64)addedDate
+                                                             context:(NSManagedObjectContext *)context
+{
+  const auto otherPedicate = [NSPredicate predicateWithFormat:@"viewingID == %@ && addedDate = %d", viewingID, addedDate];
+  return [self firstOfClass:PendingContribution.class withPublisherID:publisherID
+        additionalPredicate:otherPedicate context:context];
+}
+
 + (nullable MediaPublisherInfo *)getMediaPublisherInfoWithMediaKey:(NSString *)mediaKey context:(NSManagedObjectContext *)context
 {
   const auto fetchRequest = MediaPublisherInfo.fetchRequest;
@@ -392,6 +402,10 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     const auto fetchedObjects = [context executeFetchRequest:request error:&error];
     if (error) {
       NSLog(@"%@", error);
+      dispatch_async(dispatch_get_main_queue(), ^{
+        completion(NO);
+      });
+      return;
     }
 
     for (ActivityInfo *info in fetchedObjects) {
@@ -498,6 +512,37 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 
 #pragma mark - Pending Contributions
 
++ (NSArray<BATPendingContributionInfo *> *)pendingContributions
+{
+  const auto context = DataController.viewContext;
+  const auto fetchRequest = PendingContribution.fetchRequest;
+  fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(PendingContribution.class)
+                                    inManagedObjectContext:context];
+  
+  NSError *error;
+  const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+  if (error) {
+    NSLog(@"%@", error);
+  }
+  
+  const auto publishers = [[NSMutableArray<BATPendingContributionInfo *> alloc] init];
+  for (PendingContribution *pc in fetchedObjects) {
+    auto info = [[BATPendingContributionInfo alloc] init];
+    info.publisherKey = pc.publisherID;
+    info.name = pc.publisher.name;
+    info.url = pc.publisher.url.absoluteString;
+    info.faviconUrl = pc.publisher.faviconURL.absoluteString;
+    info.verified = pc.publisher.verified;
+    info.provider = pc.publisher.provider;
+    info.amount = pc.amount;
+    info.addedDate = pc.addedDate;
+    info.viewingId = pc.viewingID;
+    info.category = pc.category;
+    [publishers addObject:info];
+  }
+  return publishers;
+}
+
 + (void)insertPendingContributions:(NSArray<BATPendingContribution *> *)contributions completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   const auto now = [[NSDate date] timeIntervalSince1970];
@@ -505,11 +550,55 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     for (BATPendingContribution *contribution in contributions) {
       auto pc = [[PendingContribution alloc] initWithEntity:PendingContribution.entity
                              insertIntoManagedObjectContext:context];
+      pc.publisher = [self getPublisherInfoWithID:contribution.publisherKey context:context];
       pc.publisherID = contribution.publisherKey;
       pc.amount = contribution.amount;
       pc.addedDate = now;
       pc.viewingID = contribution.viewingId;
       pc.category = contribution.category;
+    }
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
++ (void)removePendingContributionForPublisherID:(NSString *)publisherID viewingID:(NSString *)viewingID addedDate:(UInt64)addedDate completion:(BATLedgerDatabaseWriteCompletion)completion
+{
+  // Early guard to check if object exists.
+  // The check happens on main thread, while the deletion is done in background.
+  const auto pendingContribution = [self getPendingContributonWithPublisherID:publisherID
+                                                                    viewingID:viewingID
+                                                                    addedDate:addedDate
+                                                                      context:DataController.viewContext];
+  if (!pendingContribution) {
+    if (completion) { completion(NO); }
+    return;
+  }
+  
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    const auto pendingContribution = [self getPendingContributonWithPublisherID:publisherID
+                                                                      viewingID:viewingID
+                                                                      addedDate:addedDate
+                                                                        context:context];
+    [context deleteObject:pendingContribution];
+  } completion:WriteToDataControllerCompletion(completion)];
+}
+
++ (void)removeAllPendingContributions:(BATLedgerDatabaseWriteCompletion)completion
+{
+  [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
+    const auto fetchRequest = PendingContribution.fetchRequest;
+    fetchRequest.entity = [NSEntityDescription entityForName:NSStringFromClass(PendingContribution.class)
+                                      inManagedObjectContext:context];
+    
+    NSError *error;
+    const auto fetchedObjects = [context executeFetchRequest:fetchRequest error:&error];
+    if (error) {
+      NSLog(@"%@", error);
+      completion(NO);
+      return;
+    }
+    
+    for (PendingContribution *pc in fetchedObjects) {
+      [context deleteObject:pc];
     }
   } completion:WriteToDataControllerCompletion(completion)];
 }

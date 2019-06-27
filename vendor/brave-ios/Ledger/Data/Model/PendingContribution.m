@@ -15,5 +15,6 @@
 @dynamic category;
 @dynamic publisherID;
 @dynamic viewingID;
+@dynamic publisher;
 
 @end
