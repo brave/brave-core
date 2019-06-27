@@ -48,17 +48,24 @@ NS_SWIFT_NAME(BraveLedger)
 /// Creates a cryptocurrency wallet
 - (void)createWallet:(nullable void (^)(NSError * _Nullable error))completion;
 
-/// Fetch details about the users wallet (if they have one)
-- (void)fetchWalletDetails:(nullable void (^)(BATWalletProperties *))completion;
+/// Fetch details about the users wallet (if they have one) and assigns it to `walletInfo`
+- (void)fetchWalletDetails:(nullable void (^)(BATWalletProperties * _Nullable))completion;
 
 /// The users wallet info if one has been created
 @property (nonatomic, readonly, nullable) BATWalletProperties *walletInfo;
+
+/// Fetch details about the users wallet (if they have one) and assigns it to `balance`
+- (void)fetchBalance:(nullable void (^)(BATBalance * _Nullable))completion;
+
+/// The users current wallet balance and related info
+@property (nonatomic, readonly, nullable) BATBalance *balance;
 
 /// The wallet's passphrase. nil if the wallet has not been created yet
 @property (nonatomic, readonly, nullable) NSString *walletPassphrase;
 
 /// Recover the users wallet using their passphrase
-- (void)recoverWalletUsingPassphrase:(NSString *)passphrase completion:(nullable void (^)(NSError *_Nullable))completion;
+- (void)recoverWalletUsingPassphrase:(NSString *)passphrase
+                          completion:(nullable void (^)(NSError *_Nullable))completion;
 
 /// The wallet's addresses. nil if the wallet has not been created yet
 @property (nonatomic, readonly, nullable) NSString *BATAddress;
@@ -69,11 +76,11 @@ NS_SWIFT_NAME(BraveLedger)
 /// ?? Unavailable until we understand whats its for
 - (void)addressesForPaymentId:(void (^)(NSDictionary<NSString *, NSString *> *))completion NS_UNAVAILABLE;
 
-@property (nonatomic, readonly) double balance;
-
 @property (nonatomic, readonly) double defaultContributionAmount;
 
-@property (nonatomic, readonly) BOOL hasSufficientBalanceToReconcile;
+/// Retrieves the users most up to date balance to determin whether or not the
+/// wallet has a sufficient balance to complete a reconcile
+- (void)hasSufficientBalanceToReconcile:(void (^)(BOOL sufficient))completion;
 
 /// Returns reserved amount of pending contributions to publishers.
 @property (nonatomic, readonly) double reservedAmount;
@@ -98,13 +105,15 @@ NS_SWIFT_NAME(BraveLedger)
 - (void)mediaPublisherInfoForMediaKey:(NSString *)mediaKey
                            completion:(void (^)(BATPublisherInfo * _Nullable info))completion;
 
-- (void)updateMediaPublisherInfo:(NSString *)publisherId mediaKey:(NSString *)mediaKey;
+- (void)updateMediaPublisherInfo:(NSString *)publisherId
+                        mediaKey:(NSString *)mediaKey;
 
 /// Returns activity info for current reconcile stamp.
 - (nullable BATPublisherInfo *)currentActivityInfoWithPublisherId:(NSString *)publisherId;
 
 /// Update a publishers exclusion state
-- (void)updatePublisherExclusionState:(NSString *)publisherId state:(BATPublisherExclude)state
+- (void)updatePublisherExclusionState:(NSString *)publisherId
+                                state:(BATPublisherExclude)state
       NS_SWIFT_NAME(updatePublisherExclusionState(withId:state:));
 
 /// Restore all sites which had been previously excluded
