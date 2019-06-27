@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4573403f3ed1056224ed7b1699ceaddc1afee532 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..3556813fa84026264986a6011468fc6e2653c047 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
 @@ -29,6 +29,7 @@
@@ -36,17 +36,26 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4573403f3ed1056224ed7b1699ceaddc
  }
  
  Document::~Document() {
-@@ -778,7 +791,82 @@ Document::~Document() {
+@@ -778,7 +791,107 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  page_graph_non_owning_ = nullptr;
++
 +  if (page_graph_ != nullptr) {
++    // The page graph should be owned by the top document.
++    LOG_ASSERT(GetFrame()->IsMainFrame());
++
++    // Same-process child documents share an isolate with the top document, so
++    // we should only clear our isolate's page graph pointer when the top
++    // document is the one being destoryed.  Otherwise, we'll break page graph
++    // tracking for other documents still using the isolate.
++    GetIsolate()->SetPageGraph(nullptr);
++
 +    delete page_graph_;
 +    page_graph_ = nullptr;
 +  }
-+  page_graph_non_owning_ = nullptr;
-+  GetIsolate()->SetPageGraph(nullptr);
 +#endif
 +}
 +
@@ -80,11 +89,27 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..4573403f3ed1056224ed7b1699ceaddc
 +  // are, not 100% correct tests for this, but should be good enough to
 +  // infer in all practical cases.  This may need to be revisited in the future
 +  // if we can't accept any incorrectness.
-+  const auto supplements = Supplementable<Document>::supplements_;
-+  const bool current_doc_is_not_service_worker = (
-+    supplements.Contains(ServiceWorkerContainer::kSupplementName) ||
-+    supplements.Contains(DOMWindowStorageController::kSupplementName));
-+  if (current_doc_is_not_service_worker == false) {
++
++  bool current_doc_is_not_service_worker = false;
++
++  static const char* const serviceWorkerContainerSupplementName = "ServiceWorkerContainer";
++  // from blink::ServiceWorkerContainer::kSupplementName
++  static const char* const domWindowStorageControllerSupplementName = "DOMWindowStorageController";
++  // from blink::DOMWindowStorageController::kSupplementName
++
++  const auto& supplements = Supplementable<Document>::supplements_.Keys();
++  for (auto it = supplements.begin(); it != supplements.end(); ++it) {
++    const char* const supplement = *it;
++    if (strcmp(supplement, serviceWorkerContainerSupplementName) == 0 ||
++        strcmp(supplement, domWindowStorageControllerSupplementName) == 0) {
++      current_doc_is_not_service_worker = true;
++      break;
++    }
++  }
++
++  if (!current_doc_is_not_service_worker) {
++    std::cout << "(skipping PageGraph instrumentation on document " << Url().GetString() << ")"
++              << std::endl;
 +    return nullptr;
 +  }
 +

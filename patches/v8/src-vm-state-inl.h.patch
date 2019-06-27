@@ -1,8 +1,8 @@
 diff --git a/src/vm-state-inl.h b/src/vm-state-inl.h
-index d22e1abd69aeaa455836d4530214ca136cb5b63f..0eceeae49b8ad403e7c83fa48398e706ee168cc8 100644
+index d22e1abd69aeaa455836d4530214ca136cb5b63f..80d90828dbe81212c93dcaed06a27bbb81b1a26c 100644
 --- a/src/vm-state-inl.h
 +++ b/src/vm-state-inl.h
-@@ -10,9 +10,74 @@
+@@ -10,9 +10,76 @@
  #include "src/simulator.h"
  #include "src/tracing/trace-event.h"
  
@@ -19,14 +19,12 @@ index d22e1abd69aeaa455836d4530214ca136cb5b63f..0eceeae49b8ad403e7c83fa48398e706
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +inline int GetExecutingScriptId(Isolate* isolate) {
-+  int script_id = 0;
-+
 +  ::brave_page_graph::PageGraph* page_graph = isolate->GetPageGraphInternal();
 +  if (page_graph == nullptr) {
-+    return script_id;
++    return 0;
 +  }
-+  StackTraceFrameIterator it(isolate);
 +
++  StackTraceFrameIterator it(isolate);
 +  while (!it.done()) {
 +    if (!it.is_javascript() && !it.is_wasm()) {
 +      it.Advance();
@@ -67,25 +65,34 @@ index d22e1abd69aeaa455836d4530214ca136cb5b63f..0eceeae49b8ad403e7c83fa48398e706
 +        // page_graph->Log(std::string(src.ToCString().get()));
 +      }
 +    }
-+    script_id = script->id();
-+    break;
++
++    if (script->id() > 0) {
++      return script->id();
++    }
 +  }
-+  return script_id;
++
++  page_graph->Log("couldn't figure out script ID for a script ZAR");
++  return 0;
 +}
 +#endif
 +
  //
  // VMState class implementation.  A simple stack of VM states held by the
  // logger and partially threaded through the call stack.  States are pushed by
-@@ -68,12 +133,26 @@ ExternalCallbackScope::ExternalCallbackScope(Isolate* isolate, Address callback)
+@@ -68,12 +135,36 @@ ExternalCallbackScope::ExternalCallbackScope(Isolate* isolate, Address callback)
    isolate_->set_external_callback_scope(this);
    TRACE_EVENT_BEGIN0(TRACE_DISABLED_BY_DEFAULT("v8.runtime"),
                       "V8.ExternalCallback");
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  const int script_id = GetExecutingScriptId(isolate);
-+  if (script_id != 0) {
++  {
 +    ::brave_page_graph::PageGraph* page_graph = isolate->GetPageGraphInternal();
-+    page_graph->RegisterScriptExecStart(script_id);
++    if (page_graph != nullptr) {
++      const int script_id = GetExecutingScriptId(isolate);
++      if (script_id != 0) {
++        page_graph->RegisterScriptExecStart(script_id);
++      }
++      found_script_id_ = script_id;
++    }
 +  }
 +#endif
  }
@@ -95,10 +102,15 @@ index d22e1abd69aeaa455836d4530214ca136cb5b63f..0eceeae49b8ad403e7c83fa48398e706
    TRACE_EVENT_END0(TRACE_DISABLED_BY_DEFAULT("v8.runtime"),
                     "V8.ExternalCallback");
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  const int script_id = GetExecutingScriptId(isolate_);
-+  if (script_id != 0) {
-+    ::brave_page_graph::PageGraph* page_graph = isolate_->GetPageGraphInternal();
-+    page_graph->RegisterScriptExecStop(script_id);
++  {
++    ::brave_page_graph::PageGraph* page_graph = isolate_
++      ->GetPageGraphInternal();
++    if (page_graph != nullptr) {
++      const int script_id = GetExecutingScriptId(isolate_);
++      if (script_id != 0) {
++        page_graph->RegisterScriptExecStop(script_id);
++      }
++    }
 +  }
 +#endif
  }
