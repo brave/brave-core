@@ -4,26 +4,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_frame.h"
-#include <string>
-#include "base/logging.h"
-#include "third_party/blink/renderer/core/dom/dom_node_ids.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_import.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_frame.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_cross_dom.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
-using ::blink::DOMNodeId;
-using ::std::string;
 using ::std::to_string;
 
 namespace brave_page_graph {
 
-NodeFrame::NodeFrame(PageGraph* const graph, const DOMNodeId node_id,
-  const string& frame_url) :
-      Node(graph),
-      node_id_(node_id),
-      frame_url_(frame_url) {}
+NodeFrame::NodeFrame(PageGraph* const graph, const RequestUrl url)
+    : NodeResource(graph, url),
+      is_local_frame_(false) {}
 
 NodeFrame::~NodeFrame() {}
 
@@ -31,18 +25,32 @@ ItemName NodeFrame::GetItemName() const {
   return "NodeFrame#" + to_string(id_);
 }
 
-void NodeFrame::AddOutEdge(const EdgeImport* const edge) {
+void NodeFrame::AddInEdge(const EdgeRequestFrame* const edge) {
+  Node::AddInEdge(edge);
+}
+
+void NodeFrame::AddOutEdge(const EdgeCrossDOM* const edge) {
   Node::AddOutEdge(edge);
 }
 
+void NodeFrame::SetIsLocalFrame() {
+  is_local_frame_ = true;
+}
+
+void NodeFrame::ClearIsLocalFrame() {
+  is_local_frame_ = false;
+}
+
 GraphMLXMLList NodeFrame::GraphMLAttributes() const {
+  const GraphMLXML& node_type_attr = is_local_frame_ ?
+      GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
+        ->ToValue("local frame") :
+      GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
+        ->ToValue("remote frame");
   return {
-    GraphMLAttrDefForType(kGraphMLAttrDefNodeType)
-      ->ToValue("local frame"),
-    GraphMLAttrDefForType(kGraphMLAttrDefNodeId)
-      ->ToValue(node_id_),
+    node_type_attr,
     GraphMLAttrDefForType(kGraphMLAttrDefUrl)
-      ->ToValue(frame_url_)
+      ->ToValue(url_)
   };
 }
 

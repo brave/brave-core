@@ -90,6 +90,8 @@ source_set("brave_page_graph") {
       "graph_item/edge/request/edge_request_complete.h",
       "graph_item/edge/request/edge_request_error.cc",
       "graph_item/edge/request/edge_request_error.h",
+      "graph_item/edge/request/edge_request_frame.cc",
+      "graph_item/edge/request/edge_request_frame.h",
       "graph_item/edge/request/edge_request_response.cc",
       "graph_item/edge/request/edge_request_response.h",
       "graph_item/edge/request/edge_request_start.cc",
