@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/element.cc b/third_party/blink/renderer/core/dom/element.cc
-index d86329b115ae842fac8218a9d7f175b888576ae5..052d4b42fd6484d49e88e4dbe774c966459760e0 100644
+index d86329b115ae842fac8218a9d7f175b888576ae5..c478eb94717d05ffc47a0209570e29d4235a5308 100644
 --- a/third_party/blink/renderer/core/dom/element.cc
 +++ b/third_party/blink/renderer/core/dom/element.cc
 @@ -162,6 +162,15 @@
@@ -34,13 +34,14 @@ index d86329b115ae842fac8218a9d7f175b888576ae5..052d4b42fd6484d49e88e4dbe774c966
  
  inline ElementRareData* Element::GetElementRareData() const {
    DCHECK(HasRareData());
-@@ -1729,6 +1745,13 @@ static inline AtomicString MakeIdForStyleResolution(const AtomicString& value,
+@@ -1729,6 +1745,14 @@ static inline AtomicString MakeIdForStyleResolution(const AtomicString& value,
  
  DISABLE_CFI_PERF
  void Element::AttributeChanged(const AttributeModificationParams& params) {
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  if (GetDocument().GetPageGraph() != nullptr) {
-+    brave_page_graph::DispatchAttributeChanged(GetDocument().GetPageGraph(),
++  ::brave_page_graph::PageGraph* page_graph = GetDocument().GetPageGraph();
++  if (page_graph != nullptr) {
++    brave_page_graph::DispatchAttributeChanged(page_graph,
 +        DOMNodeIds::IdForNode(this), params.name.ToString(),
 +        params.old_value, params.new_value);
 +  }
