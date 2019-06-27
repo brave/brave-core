@@ -28,3 +28,26 @@ index 97e0828889ab3073958088ef1f0517c8abc50a69..b1bee4f935435db995129d3a125e7789
          ScriptController::kExecuteScriptWhenScriptsDisabled);
    }
  }
+@@ -1350,6 +1352,22 @@ Response InspectorPageAgent::waitForDebugger() {
+   return Response::OK();
+ }
+ 
++Response InspectorPageAgent::generatePageGraph(String* data) {
++  LocalFrame* main_frame = inspected_frames_->Root();
++  if (!main_frame) {
++    return Response::Error("No main frame found");
++  }
++
++  Document* document = main_frame->GetDocument();
++  if (!document) {
++    return Response::Error("No Document instance to generate page graph for");
++  }
++
++  std::string page_graph(document->GetPageGraph()->ToGraphML());
++  *data = String::FromUTF8(page_graph.c_str());
++  return Response::OK();
++}
++
+ protocol::Response InspectorPageAgent::generateTestReport(const String& message,
+                                                           Maybe<String> group) {
+   Document* document = inspected_frames_->Root()->GetDocument();
