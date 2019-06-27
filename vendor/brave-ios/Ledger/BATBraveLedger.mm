@@ -890,13 +890,16 @@ BATLedgerBridge(BOOL,
     return;
   }
 
-  // Startup timer, begins after 30-second delay.
-  self.notificationStartupTimer =
-  [NSTimer scheduledTimerWithTimeInterval:30
-                                   target:self
-                                 selector:@selector(checkForNotificationsAndFetchGrants)
-                                 userInfo:nil
-                                  repeats:NO];
+  dispatch_async(dispatch_get_main_queue(), ^{
+    // Startup timer, begins after 30-second delay.
+    self.notificationStartupTimer =
+    [NSTimer scheduledTimerWithTimeInterval:30
+                                     target:self
+                                   selector:@selector(checkForNotificationsAndFetchGrants)
+                                   userInfo:nil
+                                    repeats:NO];
+  });
+  
 }
 
 - (void)checkForNotificationsAndFetchGrants
