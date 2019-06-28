@@ -169,7 +169,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
                        NotAllowedToBraveFromChrome) {
   NavigateToURLBlockUntilNavigationsComplete(active_contents(),
-                                             GURL("chrome://version"), 1);
+                                             GURL("chrome://newtab/"), 1);
 
   content::ConsoleObserverDelegate console_delegate(
       active_contents(), "Not allowed to load local resource:*");
