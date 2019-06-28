@@ -2,19 +2,22 @@ diff --git a/BUILD.gn b/BUILD.gn
 index 10fee264203ae01c7b672c41fdde549cf4206f8d..47cc0faf92045d9ead58a85e707e623632dc9386 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -1917,6 +1917,7 @@ v8_source_set("v8_compiler") {
+@@ -1916,6 +1916,10 @@ v8_source_set("v8_compiler") {
+ 
    sources = v8_compiler_sources
  
-   public_deps = [
++  deps = [
 +    "//brave/third_party/blink/brave_page_graph",
++  ]
++
+   public_deps = [
      ":generate_bytecode_builtins_list",
      ":run_torque",
-     ":v8_maybe_icu",
 @@ -3197,6 +3196,7 @@ v8_source_set("v8_base_without_compiler") {
+     ":v8_shared_internal_headers",
+     ":v8_version",
+     "src/inspector:inspector",
++    "//brave/third_party/blink/brave_page_graph",
    ]
  
    public_deps = [
-+    "//brave/third_party/blink/brave_page_graph",
-     ":generate_bytecode_builtins_list",
-     ":run_torque",
-     ":v8_maybe_icu",
