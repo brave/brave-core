@@ -57,7 +57,7 @@
 - (void)reset
 {
   [[NSFileManager defaultManager] removeItemAtPath:self.configuration.stateStoragePath error:nil];
-  [[NSFileManager defaultManager] removeItemAtURL:DataController.shared.storeURL error:nil];
+  [[NSFileManager defaultManager] removeItemAtURL:DataController.shared.storeDirectoryURL error:nil];
   DataController.shared = [[DataController alloc] init];
 
   [self setupLedgerAndAds];

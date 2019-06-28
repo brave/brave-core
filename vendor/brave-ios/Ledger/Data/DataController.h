@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, class) DataController *shared;
 
+/// File URL to the folder containing all data files
+@property (nonatomic, readonly) NSURL *storeDirectoryURL;
+/// File URL to the SQLite store
 @property (nonatomic, readonly) NSURL *storeURL;
 
 - (void)addPersistentStoreForContainer:(NSPersistentContainer *)container;

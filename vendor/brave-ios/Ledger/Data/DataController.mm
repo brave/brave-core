@@ -26,14 +26,19 @@ static DataController *_dataController = nil;
   _dataController = shared;
 }
 
-- (NSURL *)storeURL
+- (NSURL *)storeDirectoryURL
 {
   const auto urls = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
   const auto documentURL = urls.lastObject;
   if (!documentURL) {
     return nil;
   }
-  return [NSURL fileURLWithPath:[documentURL stringByAppendingPathComponent:@"BraveRewards.sqlite"]];
+  return [NSURL fileURLWithPath:[documentURL stringByAppendingPathComponent:@"rewards"]];
+}
+
+- (NSURL *)storeURL
+{
+  return [[self storeDirectoryURL] URLByAppendingPathComponent:@"BraveRewards.sqlite"];
 }
 
 - (instancetype)init
@@ -41,6 +46,11 @@ static DataController *_dataController = nil;
   if ((self = [super init])) {
     self.operationQueue = [[NSOperationQueue alloc] init];
     self.operationQueue.maxConcurrentOperationCount = 1;
+    
+    [[NSFileManager defaultManager] createDirectoryAtURL:[self storeDirectoryURL]
+                             withIntermediateDirectories:YES
+                                              attributes:nil
+                                                   error:nil];
 
     // Setup container
     const auto bundle = [NSBundle bundleForClass:DataController.class];
