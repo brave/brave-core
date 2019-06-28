@@ -18,6 +18,8 @@ export const onSettingSave = (key: string, value: any) => action(types.ON_SETTIN
   value
 })
 
+export const updateAdsRewards = () => action(types.UPDATE_ADS_REWARDS)
+
 export const getWalletProperties = () => action(types.GET_WALLET_PROPERTIES)
 
 export const onWalletProperties = (properties: {status: number, wallet: Rewards.WalletProperties, monthlyAmount: number}) =>
@@ -175,14 +177,14 @@ export const onAddressesForPaymentId = (addresses: Record<Rewards.AddressesType,
     addresses
   })
 
-export const onTransactionHistoryForThisCycle = (data: {adsNotificationsReceived: number, adsEstimatedEarnings: number}) =>
-  action(types.ON_TRANSACTION_HISTORY_FOR_THIS_CYCLE, {
+export const onTransactionHistory = (data: {adsEstimatedPendingRewards: number, adsNextPaymentDate: string, adsNotificationsReceivedThisMonth: number}) =>
+  action(types.ON_TRANSACTION_HISTORY, {
     data
   })
 
-export const getTransactionHistoryForThisCycle = () => action(types.GET_TRANSACTION_HISTORY_FOR_THIS_CYCLE)
+export const getTransactionHistory = () => action(types.GET_TRANSACTION_HISTORY)
 
-export const onTransactionHistoryForThisCycleChanged = () => action(types.ON_TRANSACTION_HISTORY_FOR_THIS_CYCLE_CHANGED)
+export const onTransactionHistoryChanged = () => action(types.ON_TRANSACTION_HISTORY_CHANGED)
 
 export const getExcludedPublishersNumber = () => action(types.GET_EXCLUDED_PUBLISHERS_NUMBER)
 

@@ -36,18 +36,15 @@ RefillTokens::RefillTokens(
     confirmations_(confirmations),
     confirmations_client_(confirmations_client),
     unblinded_tokens_(unblinded_tokens) {
-  BLOG(INFO) << "Initializing refill tokens";
 }
 
-RefillTokens::~RefillTokens() {
-  BLOG(INFO) << "Deinitializing refill tokens";
-}
+RefillTokens::~RefillTokens() = default;
 
 void RefillTokens::Refill(
     const WalletInfo& wallet_info,
     const std::string& public_key) {
   DCHECK(!wallet_info.payment_id.empty());
-  DCHECK(!wallet_info.public_key.empty());
+  DCHECK(!wallet_info.private_key.empty());
   DCHECK(!public_key.empty());
 
   BLOG(INFO) << "Refill";

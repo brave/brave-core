@@ -636,8 +636,8 @@ void OnGetActivityInfoList(const ledger::PublisherInfoListCallback& callback,
   callback(std::move(publisher_info_list), next_record);
 }
 
-void BatLedgerClientMojoProxy::OnGrantViaSafetynetCheck(const std::string& nonce) {
-  bat_ledger_client_->OnGrantViaSafetynetCheck(nonce);
+void BatLedgerClientMojoProxy::OnGrantViaSafetynetCheck(const std::string& promotionId, const std::string& nonce) {
+  bat_ledger_client_->OnGrantViaSafetynetCheck(promotionId, nonce);
 }
 
 void BatLedgerClientMojoProxy::GetActivityInfoList(uint32_t start,

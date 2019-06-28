@@ -196,12 +196,12 @@ void BatLedgerImpl::FetchGrants(const std::string& lang,
   ledger_->FetchGrants(lang, payment_id, result_string);
 }
 
-void BatLedgerImpl::GetGrantViaSafetynetCheck() {
-  ledger_->GetGrantViaSafetynetCheck();
+void BatLedgerImpl::GetGrantViaSafetynetCheck(const std::string& promotionId) {
+  ledger_->GetGrantViaSafetynetCheck(promotionId);
 }
 
-void BatLedgerImpl::ApplySafetynetToken(const std::string& result_string) {
-  ledger_->ApplySafetynetToken(result_string);
+void BatLedgerImpl::ApplySafetynetToken(const std::string& promotionId, const std::string& result_string) {
+  ledger_->ApplySafetynetToken(promotionId, result_string);
 }
 
 void BatLedgerImpl::GetGrantCaptcha(
@@ -291,6 +291,10 @@ void BatLedgerImpl::SetContributionAmount(double amount) {
 
 void BatLedgerImpl::SetAutoContribute(bool enabled) {
   ledger_->SetAutoContribute(enabled);
+}
+
+void BatLedgerImpl::UpdateAdsRewards() {
+  ledger_->UpdateAdsRewards();
 }
 
 void BatLedgerImpl::OnTimer(uint32_t timer_id) {
@@ -404,8 +408,8 @@ void BatLedgerImpl::ConfirmAd(const std::string& info) {
 }
 
 // static
-void BatLedgerImpl::OnGetTransactionHistoryForThisCycle(
-    CallbackHolder<GetTransactionHistoryForThisCycleCallback>* holder,
+void BatLedgerImpl::OnGetTransactionHistory(
+    CallbackHolder<GetTransactionHistoryCallback>* holder,
     std::unique_ptr<ledger::TransactionsInfo> history) {
   std::string json_transactions = history.get() ? history->ToJson() : "";
   if (holder->is_valid())
@@ -413,13 +417,13 @@ void BatLedgerImpl::OnGetTransactionHistoryForThisCycle(
   delete holder;
 }
 
-void BatLedgerImpl::GetTransactionHistoryForThisCycle(
-    GetTransactionHistoryForThisCycleCallback callback) {
-  auto* holder = new CallbackHolder<GetTransactionHistoryForThisCycleCallback>(
+void BatLedgerImpl::GetTransactionHistory(
+    GetTransactionHistoryCallback callback) {
+  auto* holder = new CallbackHolder<GetTransactionHistoryCallback>(
       AsWeakPtr(), std::move(callback));
 
-  ledger_->GetTransactionHistoryForThisCycle(
-      std::bind(BatLedgerImpl::OnGetTransactionHistoryForThisCycle,
+  ledger_->GetTransactionHistory(
+      std::bind(BatLedgerImpl::OnGetTransactionHistory,
           holder, _1));
 }
 

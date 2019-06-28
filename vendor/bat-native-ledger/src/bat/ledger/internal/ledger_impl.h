@@ -13,9 +13,7 @@
 #include <vector>
 
 #include "base/memory/scoped_refptr.h"
-#if !defined(OS_ANDROID)
 #include "bat/confirmations/confirmations_client.h"
-#endif
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/logging.h"
 
@@ -47,11 +45,9 @@ namespace braveledger_bat_contribution {
 class BatContribution;
 }
 
-#if !defined(OS_ANDROID)
 namespace confirmations {
 class Confirmations;
 }
-#endif
 
 namespace bat_ledger {
 
@@ -119,6 +115,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetAutoContribute(bool enabled) override;
 
+  void UpdateAdsRewards() override;
+
   void SetBalanceReport(ledger::ACTIVITY_MONTH month,
                         int year,
                         const ledger::BalanceReportInfo& report_info) override;
@@ -172,10 +170,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void LoadNicewareList(ledger::GetNicewareListCallback callback);
 
-#if !defined(OS_ANDROID)
   void SetConfirmationsWalletInfo(
       const braveledger_bat_helper::WALLET_INFO_ST& wallet_info);
-#endif
 
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler);
 
@@ -207,13 +203,13 @@ class LedgerImpl : public ledger::Ledger,
   void SolveGrantCaptcha(const std::string& solution,
                          const std::string& promotionId) const override;
 
-  void ApplySafetynetToken(const std::string& token) const override;
+  void ApplySafetynetToken(const std::string& promotionId, const std::string& token) const override;
 
   void OnGrantFinish(ledger::Result result,
                      const braveledger_bat_helper::GRANT& grant);
 
-  void GetGrantViaSafetynetCheck() const override;
-  void OnGrantViaSafetynetCheck(const std::string& nonce);
+  void GetGrantViaSafetynetCheck(const std::string & promotionId) const override;
+  void OnGrantViaSafetynetCheck(const std::string& promotionId, const std::string& nonce);
 
   std::string GetWalletPassphrase() const override;
 
@@ -360,10 +356,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetWalletInfo(const braveledger_bat_helper::WALLET_INFO_ST& info);
 
-#if !defined(OS_ANDROID)
   const confirmations::WalletInfo GetConfirmationsWalletInfo(
       const braveledger_bat_helper::WALLET_INFO_ST& info) const;
-#endif
 
   const braveledger_bat_helper::WALLET_PROPERTIES_ST&
   GetWalletProperties() const;
@@ -440,8 +434,8 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
-  void GetTransactionHistoryForThisCycle(
-      ledger::GetTransactionHistoryForThisCycleCallback callback) override;
+  void GetTransactionHistory(
+      ledger::GetTransactionHistoryCallback callback) override;
 
   std::unique_ptr<ledger::LogStream> Log(
       const char* file,
@@ -561,9 +555,7 @@ class LedgerImpl : public ledger::Ledger,
   std::unique_ptr<braveledger_bat_state::BatState> bat_state_;
   std::unique_ptr<braveledger_bat_contribution::BatContribution>
   bat_contribution_;
-#if !defined(OS_ANDROID)
   std::unique_ptr<confirmations::Confirmations> bat_confirmations_;
-#endif
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
   bool initialized_task_scheduler_;
 

@@ -15,9 +15,9 @@ std::string LocaleHelper::GetLocale() const {
   return kDefaultLocale;
 }
 
-#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX)
+#if !defined(OS_MACOSX) && !defined(OS_WIN) && !defined(OS_LINUX) && !defined(OS_ANDROID)
 LocaleHelper* LocaleHelper::GetInstance() {
-  // just return a dummy locale helper for all other platforms
+  // just return a dummy background helper for all other platforms
   return base::Singleton<LocaleHelper>::get();
 }
 #endif

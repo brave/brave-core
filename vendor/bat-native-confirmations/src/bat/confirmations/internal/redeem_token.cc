@@ -40,12 +40,9 @@ RedeemToken::RedeemToken(
     confirmations_client_(confirmations_client),
     unblinded_tokens_(unblinded_tokens),
     unblinded_payment_tokens_(unblinded_payment_tokens) {
-  BLOG(INFO) << "Initializing redeem token";
 }
 
-RedeemToken::~RedeemToken() {
-  BLOG(INFO) << "Deinitializing redeem token";
-}
+RedeemToken::~RedeemToken() = default;
 
 void RedeemToken::Redeem(
     const std::string& creative_instance_id,
@@ -432,7 +429,9 @@ void RedeemToken::OnRedeem(
         << " unblinded token";
   }
 
-  ScheduleNextRetryForFailedConfirmations();
+  if (!confirmations_->IsRetryingFailedConfirmations()) {
+    ScheduleNextRetryForFailedConfirmations();
+  }
 
   confirmations_->RefillTokensIfNecessary();
 }

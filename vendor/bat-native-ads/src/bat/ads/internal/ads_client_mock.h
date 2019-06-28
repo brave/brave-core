@@ -62,14 +62,15 @@ class MockAdsClient : public AdsClient {
       const std::string& locale,
       OnLoadCallback callback));
 
-  MOCK_CONST_METHOD0(GenerateUUID, const std::string());
-
   MOCK_CONST_METHOD0(IsForeground, bool());
 
   MOCK_CONST_METHOD0(IsNotificationsAvailable, bool());
 
   MOCK_METHOD1(ShowNotification, void(
       std::unique_ptr<NotificationInfo> info));
+
+  MOCK_METHOD1(CloseNotification, void(
+      const std::string& id));
 
   MOCK_METHOD1(SetCatalogIssuers, void(
       std::unique_ptr<IssuersInfo> info));

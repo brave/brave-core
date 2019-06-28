@@ -19,6 +19,8 @@ extern const char kBraveAdShouldShowFirstLaunchNotification[];
 extern const char kBraveAdsLaunchNotificationTimestamp[];
 extern const char kBraveAdsHasRemovedFirstLaunchNotification[];
 
+extern const char kShouldShowMyFirstAdNotification[];
+
 extern const int kBraveAdsPrefsDefaultVersion;
 extern const int kBraveAdsPrefsCurrentVersion;
 extern const char kBraveAdsPrefsVersion[];
