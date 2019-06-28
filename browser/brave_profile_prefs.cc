@@ -120,6 +120,12 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // IPFS companion extension
   registry->RegisterBooleanPref(kIPFSCompanionEnabled, false);
+
+  // New Tab Page
+  registry->RegisterBooleanPref(kNewTabPageShowBackgroundImage, true);
+  registry->RegisterBooleanPref(kNewTabPageShowClock, true);
+  registry->RegisterBooleanPref(kNewTabPageShowTopSites, true);
+  registry->RegisterBooleanPref(kNewTabPageShowStats, true);
 }
 
 }  // namespace brave

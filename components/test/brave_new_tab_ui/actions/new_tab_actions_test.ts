@@ -154,24 +154,4 @@ describe('newTabActions', () => {
       type: types.NEW_TAB_SHOW_SETTINGS_MENU
     })
   })
-  it('toggleShowBackgroundImage', () => {
-    expect(actions.toggleShowBackgroundImage()).toEqual({
-      type: types.NEW_TAB_TOGGLE_SHOW_BACKGROUND_IMAGE
-    })
-  })
-  it('toggleShowStats', () => {
-    expect(actions.toggleShowStats()).toEqual({
-      type: types.NEW_TAB_TOGGLE_SHOW_STATS
-    })
-  })
-  it('toggleShowClock', () => {
-    expect(actions.toggleShowClock()).toEqual({
-      type: types.NEW_TAB_TOGGLE_SHOW_CLOCK
-    })
-  })
-  it('toggleShowTopSites', () => {
-    expect(actions.toggleShowTopSites()).toEqual({
-      type: types.NEW_TAB_TOGGLE_SHOW_TOP_SITES
-    })
-  })
 })

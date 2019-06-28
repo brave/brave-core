@@ -71,10 +71,6 @@ export const showSettingsMenu = () => action(types.NEW_TAB_SHOW_SETTINGS_MENU)
 
 export const closeSettingsMenu = () => action(types.NEW_TAB_CLOSE_SETTINGS_MENU)
 
-export const toggleShowBackgroundImage = () => action(types.NEW_TAB_TOGGLE_SHOW_BACKGROUND_IMAGE)
-
-export const toggleShowStats = () => action(types.NEW_TAB_TOGGLE_SHOW_STATS)
-
-export const toggleShowClock = () => action(types.NEW_TAB_TOGGLE_SHOW_CLOCK)
-
-export const toggleShowTopSites = () => action(types.NEW_TAB_TOGGLE_SHOW_TOP_SITES)
+export const preferencesUpdated = (prefs: any) => action(types.NEW_TAB_PREFERENCES_UPDATED, {
+  prefs
+})

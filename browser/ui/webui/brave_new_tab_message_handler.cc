@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/webui/brave_new_tab_message_handler.h"
 
+#include <string>
+
 #include "base/bind.h"
 #include "base/values.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
@@ -40,6 +42,19 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kAlternativeSearchEngineProviderInTor,
     base::Bind(&BraveNewTabMessageHandler::OnPrivatePropertiesChanged,
     base::Unretained(this)));
+  // New Tab Page preferences
+  pref_change_registrar_.Add(kNewTabPageShowBackgroundImage,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowClock,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowStats,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowTopSites,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
@@ -57,6 +72,11 @@ void BraveNewTabMessageHandler::RegisterMessages() {
     base::BindRepeating(
       &BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider,
       base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+    "saveNewTabPagePref",
+    base::BindRepeating(
+      &BraveNewTabMessageHandler::HandleSaveNewTabPagePref,
+      base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::HandleInitialized(const base::ListValue* args) {
@@ -69,6 +89,39 @@ void BraveNewTabMessageHandler::HandleToggleAlternativeSearchEngineProvider(
       Profile::FromWebUI(web_ui()));
 }
 
+void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
+    const base::ListValue* args) {
+  if (args->GetSize() != 2) {
+    LOG(ERROR) << "Invalid input";
+    return;
+  }
+  PrefService* prefs = Profile::FromWebUI(web_ui())->GetPrefs();
+  std::string settingsKeyInput = args->GetList()[0].GetString();
+  auto settingsValue = args->GetList()[1].Clone();
+  // Check valid value type
+  // Note: if we introduce any non-bool settings values
+  // then perform this type check within the appropriate key conditionals.
+  if (!settingsValue.is_bool()) {
+    LOG(ERROR) << "Invalid value type";
+    return;
+  }
+  const auto settingsValueBool = settingsValue.GetBool();
+  std::string settingsKey;
+  if (settingsKeyInput == "showBackgroundImage") {
+    settingsKey = kNewTabPageShowBackgroundImage;
+  } else if (settingsKeyInput == "showClock") {
+    settingsKey = kNewTabPageShowClock;
+  } else if (settingsKeyInput == "showTopSites") {
+    settingsKey = kNewTabPageShowTopSites;
+  } else if (settingsKeyInput == "showStats") {
+    settingsKey = kNewTabPageShowStats;
+  } else {
+    LOG(ERROR) << "Invalid setting key";
+    return;
+  }
+  prefs->SetBoolean(settingsKey, settingsValueBool);
+}
+
 void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {
   new_tab_web_ui_->OnPrivatePropertiesChanged();
 }
@@ -76,4 +129,9 @@ void BraveNewTabMessageHandler::OnPrivatePropertiesChanged() {
 void BraveNewTabMessageHandler::OnStatsChanged() {
   new_tab_web_ui_->OnStatsChanged();
   FireWebUIListener("stats-updated");
+}
+
+void BraveNewTabMessageHandler::OnPreferencesChanged() {
+  new_tab_web_ui_->OnPreferencesChanged();
+  FireWebUIListener("preferences-changed");
 }

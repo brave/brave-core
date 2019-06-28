@@ -18,6 +18,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler {
   explicit BraveNewTabMessageHandler(BraveNewTabUI* web_ui);
   ~BraveNewTabMessageHandler() override;
   void OnStatsChanged();
+  void OnPreferencesChanged();
   void OnPrivatePropertiesChanged();
 
  private:
@@ -27,6 +28,7 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler {
   void OnJavascriptDisallowed() override;
 
   void HandleInitialized(const base::ListValue* args);
+  void HandleSaveNewTabPagePref(const base::ListValue* args);
   void HandleToggleAlternativeSearchEngineProvider(
       const base::ListValue* args);
 
