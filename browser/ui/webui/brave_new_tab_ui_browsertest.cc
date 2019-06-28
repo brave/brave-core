@@ -79,7 +79,7 @@ IN_PROC_BROWSER_TEST_F(BraveNewTabUIBrowserTest, BraveNewTabIsDefault) {
   bool is_brave_new_tab = false;
   ASSERT_TRUE(content::ExecuteScriptAndExtractBool(
       contents,
-      "window.domAutomationController.send(!!window.brave_new_tab)",
+      "window.domAutomationController.send(!!document.querySelector(`html[data-test-id='brave-new-tab-page']`))",
       &is_brave_new_tab));
   ASSERT_TRUE(is_brave_new_tab);
 }
