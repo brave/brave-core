@@ -2,7 +2,24 @@ diff --git a/BUILD.gn b/BUILD.gn
 index 10fee264203ae01c7b672c41fdde549cf4206f8d..47cc0faf92045d9ead58a85e707e623632dc9386 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -1916,6 +1916,10 @@ v8_source_set("v8_compiler") {
+@@ -645,12 +645,10 @@ config("toolchain") {
+   }
+ 
+   if (is_clang) {
+-    cflags += [ "-Wmissing-field-initializers" ]
+-
+-    if (v8_current_cpu != "mips" && v8_current_cpu != "mipsel") {
+-      # We exclude MIPS because the IsMipsArchVariant macro causes trouble.
+-      cflags += [ "-Wunreachable-code" ]
+-    }
++    cflags += [
++      "-Wmissing-field-initializers",
++      "-Wno-tautological-compare",
++    ]
+ 
+     if (v8_current_cpu == "x64" || v8_current_cpu == "arm64" ||
+         v8_current_cpu == "mips64el") {
+@@ -1916,6 +1914,10 @@ v8_source_set("v8_compiler") {
  
    sources = v8_compiler_sources
  

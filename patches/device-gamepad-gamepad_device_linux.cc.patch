@@ -1,0 +1,13 @@
+diff --git a/device/gamepad/gamepad_device_linux.cc b/device/gamepad/gamepad_device_linux.cc
+index 9c6027516d9db61c01687aa0ab4dbd777e25419d..61857d6feb913352ea7d861be5e87a139c6f4e0e 100644
+--- a/device/gamepad/gamepad_device_linux.cc
++++ b/device/gamepad/gamepad_device_linux.cc
+@@ -156,7 +156,7 @@ int StoreRumbleEffect(const base::ScopedFD& fd,
+ }
+ 
+ void DestroyEffect(const base::ScopedFD& fd, int effect_id) {
+-  HANDLE_EINTR(ioctl(fd.get(), EVIOCRMFF, effect_id));
++  ANALYZER_ALLOW_UNUSED(HANDLE_EINTR(ioctl(fd.get(), EVIOCRMFF, effect_id)));
+ }
+ 
+ bool StartOrStopEffect(const base::ScopedFD& fd, int effect_id, bool do_start) {

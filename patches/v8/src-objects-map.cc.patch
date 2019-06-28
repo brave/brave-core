@@ -1,0 +1,13 @@
+diff --git a/src/objects/map.cc b/src/objects/map.cc
+index 80ea74a17658911f0da433d62264aa6af8d35a1f..47c0bf7a92a17d21b745cd5ea47e5223ce2066fe 100644
+--- a/src/objects/map.cc
++++ b/src/objects/map.cc
+@@ -302,7 +302,7 @@ VisitorId Map::GetVisitorId(Map map) {
+     case JS_BOUND_FUNCTION_TYPE: {
+       const bool has_raw_data_fields =
+           (FLAG_unbox_double_fields && !map->HasFastPointerLayout()) ||
+-          (COMPRESS_POINTERS_BOOL && JSObject::GetEmbedderFieldCount(map) > 0);
++          ((COMPRESS_POINTERS_BOOL) && JSObject::GetEmbedderFieldCount(map) > 0);
+       return has_raw_data_fields ? kVisitJSObject : kVisitJSObjectFast;
+     }
+     case JS_API_OBJECT_TYPE:
