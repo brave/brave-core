@@ -142,8 +142,8 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 
   [DataController.shared performOnContext:context task:^(NSManagedObjectContext * _Nonnull context) {
     const auto pi = [self getPublisherInfoWithID:info.id context:context] ?:
-      [[PublisherInfo alloc] initWithEntity:PublisherInfo.entity
-             insertIntoManagedObjectContext:context];;
+      [[PublisherInfo alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(PublisherInfo.class) inManagedObjectContext:context]
+             insertIntoManagedObjectContext:context];
     pi.publisherID = info.id;
     pi.verified = info.verified;
     pi.excluded = info.excluded;
@@ -224,7 +224,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
 + (void)insertContributionInfo:(NSString *)probi month:(const int)month year:(const int)year date:(const uint32_t)date publisherKey:(NSString *)publisherKey category:(BATRewardsCategory)category completion:(nullable BATLedgerDatabaseWriteCompletion)completion
 {
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
-    auto ci = [[ContributionInfo alloc] initWithEntity:ContributionInfo.entity
+    auto ci = [[ContributionInfo alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ContributionInfo.class) inManagedObjectContext:context]
                         insertIntoManagedObjectContext:context];
     ci.probi = probi;
     ci.month = month;
@@ -288,7 +288,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
                                                          reconcileStamp:info.reconcileStamp context:context];
 
     const auto ai = publisherFromInfo ?:
-      [[ActivityInfo alloc] initWithEntity:ActivityInfo.entity insertIntoManagedObjectContext:context];
+      [[ActivityInfo alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(ActivityInfo.class) inManagedObjectContext:context] insertIntoManagedObjectContext:context];
 
     ai.publisher = [self getPublisherInfoWithID:info.id context:context];
     ai.publisherID = info.id;
@@ -435,7 +435,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   }
 
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
-    auto mi = [self getMediaPublisherInfoWithMediaKey:mediaKey context:context] ?: [[MediaPublisherInfo alloc] initWithEntity:MediaPublisherInfo.entity
+    auto mi = [self getMediaPublisherInfoWithMediaKey:mediaKey context:context] ?: [[MediaPublisherInfo alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(MediaPublisherInfo.class) inManagedObjectContext:context]
                           insertIntoManagedObjectContext:context];
     mi.mediaKey = mediaKey;
     mi.publisherID = publisherID;
@@ -484,7 +484,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   }
 
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
-    auto rd = [self getRecurringDonationWithPublisherID:publisherID context:context] ?: [[RecurringDonation alloc] initWithEntity:RecurringDonation.entity
+    auto rd = [self getRecurringDonationWithPublisherID:publisherID context:context] ?: [[RecurringDonation alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(RecurringDonation.class) inManagedObjectContext:context]
                          insertIntoManagedObjectContext:context];
     rd.publisherID = publisherID;
     rd.amount = amount;
@@ -548,7 +548,7 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   const auto now = [[NSDate date] timeIntervalSince1970];
   [DataController.shared performOnContext:nil task:^(NSManagedObjectContext * _Nonnull context) {
     for (BATPendingContribution *contribution in contributions) {
-      auto pc = [[PendingContribution alloc] initWithEntity:PendingContribution.entity
+      auto pc = [[PendingContribution alloc] initWithEntity:[NSEntityDescription entityForName:NSStringFromClass(PendingContribution.class) inManagedObjectContext:context]
                              insertIntoManagedObjectContext:context];
       pc.publisher = [self getPublisherInfoWithID:contribution.publisherKey context:context];
       pc.publisherID = contribution.publisherKey;
