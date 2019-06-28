@@ -1,0 +1,13 @@
+diff --git a/base/logging.h b/base/logging.h
+index 19dd904bf94362bcf81aab70e4daaa73bc38849a..33f69e97b770f8fd17878e2dcc246d26ef5904c6 100644
+--- a/base/logging.h
++++ b/base/logging.h
+@@ -349,7 +349,7 @@ inline constexpr bool AnalyzerAssumeTrue(bool arg) {
+ 
+ #else  // !defined(__clang_analyzer__)
+ 
+-#define ANALYZER_ASSUME_TRUE(arg) (arg)
++#define ANALYZER_ASSUME_TRUE(arg) (!!(arg))
+ #define ANALYZER_SKIP_THIS_PATH()
+ #define ANALYZER_ALLOW_UNUSED(var) static_cast<void>(var);
+ 

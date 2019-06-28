@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/BUILD.gn b/third_party/blink/renderer/BUILD.gn
+index b8718cabbd1a850f1a07ab1f080b8f9f5aa72850..21b4bcb635a45d0fb8e62308b066ad22df45cc7e 100644
+--- a/third_party/blink/renderer/BUILD.gn
++++ b/third_party/blink/renderer/BUILD.gn
+@@ -47,6 +47,7 @@ config("inside_blink") {
+       "-Wno-sign-conversion",
+       "-Wno-implicit-float-conversion",
+       "-Wno-implicit-int-conversion",
++      "-Wno-undefined-bool-conversion",
+     ]
+   }
+ }
