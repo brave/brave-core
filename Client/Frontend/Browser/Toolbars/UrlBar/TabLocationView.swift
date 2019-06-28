@@ -182,8 +182,7 @@ class TabLocationView: UIView {
         }
         
         // Make tappable area bigger than the icon.
-        // This also adds right inset, which when tapped, will open the shields panel.
-        shieldsButton.contentEdgeInsets = UIEdgeInsets(top: 2, left: 4, bottom: 2, right: 13)
+        shieldsButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
         
         urlTextField.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
@@ -198,7 +197,8 @@ class TabLocationView: UIView {
         addSubview(contentView)
 
         contentView.snp.makeConstraints { make in
-            make.edges.equalTo(self)
+            make.leading.top.bottom.equalTo(self)
+            make.trailing.equalTo(self).offset(-6)
         }
         
         lockImageView.snp.makeConstraints { make in
