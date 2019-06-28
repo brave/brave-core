@@ -224,7 +224,7 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Ads & Confirmations
 
-/// Uupdate ad totals on month roll over without fetching latest balances from
+/// Update ad totals on month roll over without fetching latest balances from
 /// server
 - (void)updateAdsRewards;
 

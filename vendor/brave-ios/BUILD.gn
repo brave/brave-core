@@ -20,6 +20,7 @@ config("internal_config") {
     "-Wno-sign-compare",
   ]
   include_dirs = [
+    ".",
     "Ads",
     "Ads/Generated",
     "Ledger",

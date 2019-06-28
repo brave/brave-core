@@ -100,9 +100,8 @@
   const auto __weak weakSelf = self;
   NSURLSessionDataTask *task = nil;
   task = [session dataTaskWithRequest:request completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable urlResponse, NSError * _Nullable error) {
+    if (!weakSelf) { return; };
     const auto strongSelf = weakSelf;
-    if (!strongSelf) { return; };
-    [strongSelf.runningTasks removeObject:task];
 
     const auto response = (NSHTTPURLResponse *)urlResponse;
     std::string json;
@@ -119,7 +118,13 @@
       std::string stringValue(obj.UTF8String);
       responseHeaders->insert(std::make_pair(stringKey, stringValue));
     }];
-    callback((int)response.statusCode, json, *responseHeaders);
+    auto copiedHeaders = std::map<std::string, std::string>(*responseHeaders);
+    const auto __weak weakSelf2 = strongSelf;
+    dispatch_async(dispatch_get_main_queue(), ^{
+      if (!weakSelf2) { return; }
+      [weakSelf2.runningTasks removeObject:task];
+      callback((int)response.statusCode, json, copiedHeaders);
+    });
     delete responseHeaders;
   }];
   // dataTaskWithRequest returns _Nonnull, so no need to worry about initialized variable being nil
@@ -142,7 +147,7 @@
   const auto path = [self dataPathForFilename:filename];
   const auto result = [nscontents writeToFile:path atomically:YES encoding:NSUTF8StringEncoding error:&error];
   if (error) {
-    NSLog(@"Failed to save ads data for %@: %@", filename, error.localizedDescription);
+    NSLog(@"Failed to save data for %@: %@", filename, error.localizedDescription);
   }
   return result;
 }
@@ -155,7 +160,7 @@
   NSLog(@"Loading contents from file: %@", path);
   const auto contents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&error];
   if (error) {
-    NSLog(@"Failed to load ads data for %@: %@", filename, error.localizedDescription);
+    NSLog(@"Failed to load data for %@: %@", filename, error.localizedDescription);
     return "";
   }
   return std::string(contents.UTF8String);
@@ -168,7 +173,7 @@
   const auto path = [self dataPathForFilename:filename];
   const auto result = [NSFileManager.defaultManager removeItemAtPath:path error:&error];
   if (error) {
-    NSLog(@"Failed to remove ads data for filename: %@", filename);
+    NSLog(@"Failed to remove data for filename: %@", filename);
     return false;
   }
   return result;

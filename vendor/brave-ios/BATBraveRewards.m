@@ -75,8 +75,6 @@
     self.ledgerClass = ledgerClass ?: BATBraveLedger.class;
     self.adsClass = adsClass ?: BATBraveAds.class;
 
-    [self setupLedgerAndAds];
-
     BATBraveAds.debug = !configuration.production;
     BATBraveAds.production = configuration.production;
     BATBraveAds.testing = configuration.testing;
@@ -86,6 +84,8 @@
     BATBraveLedger.testing = configuration.testing;
     BATBraveLedger.useShortRetries = configuration.useShortRetries;
     BATBraveLedger.reconcileTime = configuration.overridenNumberOfSecondsBetweenReconcile;
+    
+    [self setupLedgerAndAds];
   }
   return self;
 }
