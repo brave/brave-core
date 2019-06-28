@@ -26,6 +26,7 @@ class BraveNewTabUI : public BasicUI {
  private:
   // BasicUI overrides
   void UpdateWebUIProperties() override;
+  void SetPreferencesWebUIProperties(content::RenderViewHost* render_view_host);
   void SetStatsWebUIProperties(content::RenderViewHost* render_view_host);
   void SetPrivateWebUIProperties(content::RenderViewHost* render_view_host);
 

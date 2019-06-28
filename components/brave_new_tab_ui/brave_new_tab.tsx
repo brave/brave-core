@@ -9,6 +9,8 @@ import { Provider } from 'react-redux'
 import Theme from 'brave-ui/theme/brave-default'
 import { ThemeProvider } from 'brave-ui/theme'
 import * as dataFetchAPI from './api/dataFetch'
+import * as preferencesAPI from './api/preferences'
+
 // Components
 import App from './components/app'
 
@@ -20,7 +22,7 @@ import 'emptykit.css'
 import '../fonts/poppins.css'
 import '../fonts/muli.css'
 
-function initialize () {
+async function initialize () {
   render(
     <Provider store={store}>
       <ThemeProvider theme={Theme}>
@@ -31,6 +33,13 @@ function initialize () {
   )
   window.i18nTemplate.process(window.document, window.loadTimeData)
   handleAPIEvents()
+  await updatePreferences()
+}
+
+async function updatePreferences () {
+  const preferences = await preferencesAPI.getPreferences()
+  const actions = dataFetchAPI.getActions()
+  actions.preferencesUpdated(preferences)
 }
 
 function updateStats () {
@@ -41,6 +50,7 @@ function updateStats () {
 function handleAPIEvents () {
   chrome.send('newTabPageInitialized', [])
   window.cr.addWebUIListener('stats-updated', updateStats)
+  preferencesAPI.addChangeListener(updatePreferences)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

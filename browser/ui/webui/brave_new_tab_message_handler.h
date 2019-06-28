@@ -25,10 +25,12 @@ class BraveNewTabMessageHandler : public content::WebUIMessageHandler {
   void OnJavascriptDisallowed() override;
 
   void HandleInitialized(const base::ListValue* args);
+  void HandleSaveNewTabPagePref(const base::ListValue* args);
   void HandleToggleAlternativeSearchEngineProvider(
       const base::ListValue* args);
 
   void OnStatsChanged();
+  void OnPreferencesChanged();
   void OnPrivatePropertiesChanged();
 
   PrefChangeRegistrar pref_change_registrar_;

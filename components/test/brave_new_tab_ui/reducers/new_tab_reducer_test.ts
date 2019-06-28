@@ -352,15 +352,4 @@ describe('newTabReducer', () => {
       expect(assertion).toEqual(expected)
     })
   })
-
-  describe('NEW_TAB_TOGGLE_SHOW_BACKGROUND_IMAGE', () => {
-    it('should toggle showBackgroundimage status to be true', () => {
-      const mockState = { ...fakeState, showBackgroundImage: false }
-      const expected = { ...mockState, showBackgroundImage: true }
-      const assertion = newTabReducer(mockState, {
-        type: types.NEW_TAB_TOGGLE_SHOW_BACKGROUND_IMAGE
-      })
-      expect(assertion).toEqual(expected)
-    })
-  })
 })

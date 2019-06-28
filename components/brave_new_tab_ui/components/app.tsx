@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
@@ -12,6 +13,7 @@ import NewTabPage from './newTab'
 
 // Utils
 import * as newTabActions from '../actions/new_tab_actions'
+import * as PreferencesAPI from '../api/preferences'
 
 interface Props {
   actions: any
@@ -29,7 +31,13 @@ class DefaultPage extends React.Component<Props, {}> {
 
     return this.props.newTabData.isIncognito
       ? <NewPrivateTabPage newTabData={newTabData} actions={actions} />
-      : <NewTabPage newTabData={newTabData} actions={actions} />
+      : (
+          <NewTabPage
+            newTabData={newTabData}
+            actions={actions}
+            saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
+          />
+        )
   }
 }
 
