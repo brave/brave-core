@@ -16,6 +16,7 @@
 #include "brave/components/brave_extension/grit/brave_extension.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/components_ui.h"
@@ -106,6 +107,11 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
       brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
     Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
   }
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  AddExtension(ethereum_remote_client_extension_id, ethereum_remote_client_extension_name,
+               ethereum_remote_client_extension_public_key);
+#endif
 }
 
 }  // namespace extensions
