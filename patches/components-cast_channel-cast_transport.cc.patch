@@ -1,0 +1,13 @@
+diff --git a/components/cast_channel/cast_transport.cc b/components/cast_channel/cast_transport.cc
+index a85fa98985024019b8adedcacb6e813a0fc3d8a0..159e18c0f09ece6efe5abc5f23e299aa8714767a 100644
+--- a/components/cast_channel/cast_transport.cc
++++ b/components/cast_channel/cast_transport.cc
+@@ -40,7 +40,7 @@ CastTransportImpl::CastTransportImpl(Channel* channel,
+       channel_id_(channel_id),
+       ip_endpoint_(ip_endpoint),
+       logger_(logger) {
+-  DCHECK(socket);
++  DCHECK(channel);
+ 
+   // Buffer is reused across messages to minimize unnecessary buffer
+   // [re]allocations.
