@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+index 10146c9edf03c4d52e76b08b84e323b8260a549f..6ddd0f03b522e9de3fedab48b1b5fb5f5f679a01 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/ChromeTabbedActivity.java
+@@ -180,7 +180,7 @@ import java.util.Locale;
+  * are accessible via a chrome specific tab switching UI.
+  */
+ public class ChromeTabbedActivity
+-        extends ChromeActivity implements OverviewModeObserver, ScreenshotMonitorDelegate {
++        extends BraveActivity implements OverviewModeObserver, ScreenshotMonitorDelegate {
+     @IntDef({BackPressedResult.NOTHING_HAPPENED, BackPressedResult.HELP_URL_CLOSED,
+             BackPressedResult.MINIMIZED_NO_TAB_CLOSED, BackPressedResult.MINIMIZED_TAB_CLOSED,
+             BackPressedResult.TAB_CLOSED, BackPressedResult.TAB_IS_NULL,

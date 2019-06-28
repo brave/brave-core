@@ -1,0 +1,13 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java b/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java
+index b795617bbf9700a06c8db6065321349e853d06ee..245f06cdfb0bb7a3c90ece2f04cf9931e67535ac 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/document/ChromeLauncherActivity.java
+@@ -17,7 +17,7 @@ import org.chromium.chrome.browser.vr.VrModuleProvider;
+  * Dispatches incoming intents to the appropriate activity based on the current configuration and
+  * Intent fired.
+  */
+-public class ChromeLauncherActivity extends Activity {
++public class ChromeLauncherActivity extends BraveLauncherActivity {
+     @Override
+     public void onCreate(Bundle savedInstanceState) {
+         // Third-party code adds disk access to Activity.onCreate. http://crbug.com/619824
