@@ -1,0 +1,18 @@
+diff --git a/third_party/blink/renderer/core/layout/ng/ng_out_of_flow_layout_part.cc b/third_party/blink/renderer/core/layout/ng/ng_out_of_flow_layout_part.cc
+index 2da019993517a8bdfa5a252a30342830eaaf29f6..5962bb826dece90a705790eaa56613ad05df146e 100644
+--- a/third_party/blink/renderer/core/layout/ng/ng_out_of_flow_layout_part.cc
++++ b/third_party/blink/renderer/core/layout/ng/ng_out_of_flow_layout_part.cc
+@@ -637,10 +637,10 @@ bool NGOutOfFlowLayoutPart::IsContainingBlockForDescendant(
+   // inside closest parent block flow.
+   if (descendant.inline_container) {
+     DCHECK(
+-        descendant.node.Style().GetPosition() == EPosition::kAbsolute &&
+-            descendant.inline_container->CanContainAbsolutePositionObjects() ||
++        (descendant.node.Style().GetPosition() == EPosition::kAbsolute &&
++            descendant.inline_container->CanContainAbsolutePositionObjects()) ||
+         (descendant.node.Style().GetPosition() == EPosition::kFixed &&
+-         descendant.inline_container->CanContainFixedPositionObjects()));
++            descendant.inline_container->CanContainFixedPositionObjects()));
+     return container_builder_->GetLayoutObject() ==
+            descendant.node.GetLayoutBox()->ContainingBlock();
+   }
