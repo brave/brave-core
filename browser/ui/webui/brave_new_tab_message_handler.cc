@@ -46,6 +46,15 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
   pref_change_registrar_.Add(kNewTabPageShowBackgroundImage,
     base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
     base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowClock,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowStats,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
+  pref_change_registrar_.Add(kNewTabPageShowTopSites,
+    base::Bind(&BraveNewTabMessageHandler::OnPreferencesChanged,
+    base::Unretained(this)));
 }
 
 void BraveNewTabMessageHandler::OnJavascriptDisallowed() {
@@ -101,6 +110,12 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   std::string settingsKey;
   if (settingsKeyInput == "showBackgroundImage") {
     settingsKey = kNewTabPageShowBackgroundImage;
+  } else if (settingsKeyInput == "showClock") {
+    settingsKey = kNewTabPageShowClock;
+  } else if (settingsKeyInput == "showTopSites") {
+    settingsKey = kNewTabPageShowTopSites;
+  } else if (settingsKeyInput == "showStats") {
+    settingsKey = kNewTabPageShowStats;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;
