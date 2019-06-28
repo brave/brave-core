@@ -27,6 +27,9 @@ interface Props {
   newTabData: NewTab.State
   actions: any
   saveShowBackgroundImage: (value: boolean) => void
+  saveShowClock: (value: boolean) => void
+  saveShowTopSites: (value: boolean) => void
+  saveShowStats: (value: boolean) => void
 }
 
 class NewTabPage extends React.Component<Props, {}> {
@@ -70,15 +73,21 @@ class NewTabPage extends React.Component<Props, {}> {
   }
 
   toggleShowClock = () => {
-    this.props.actions.toggleShowClock()
+    this.props.saveShowClock(
+      !this.props.newTabData.showClock
+    )
   }
 
   toggleShowStats = () => {
-    this.props.actions.toggleShowStats()
+    this.props.saveShowStats(
+      !this.props.newTabData.showStats
+    )
   }
 
   toggleShowTopSites = () => {
-    this.props.actions.toggleShowTopSites()
+    this.props.saveShowTopSites(
+      !this.props.newTabData.showTopSites
+    )
   }
 
   showSettings = () => {

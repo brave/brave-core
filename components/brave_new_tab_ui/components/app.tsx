@@ -35,6 +35,9 @@ class DefaultPage extends React.Component<Props, {}> {
           newTabData={newTabData}
           actions={actions}
           saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
+          saveShowClock={PreferencesAPI.saveShowClock}
+          saveShowStats={PreferencesAPI.saveShowStats}
+          saveShowTopSites={PreferencesAPI.saveShowTopSites}
         />
   }
 }

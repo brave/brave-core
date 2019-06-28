@@ -34,18 +34,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state = { ...state, showSettings: false }
       break
 
-    case types.NEW_TAB_TOGGLE_SHOW_STATS:
-      state = { ...state, showStats: !state.showStats }
-      break
-
-    case types.NEW_TAB_TOGGLE_SHOW_CLOCK:
-      state = { ...state, showClock: !state.showClock }
-      break
-
-    case types.NEW_TAB_TOGGLE_SHOW_TOP_SITES:
-      state = { ...state, showTopSites: !state.showTopSites }
-      break
-
     case types.BOOKMARK_ADDED:
       const topSite: NewTab.Site | undefined = state.topSites.find((site) => site.url === payload.url)
       if (topSite) {
