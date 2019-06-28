@@ -113,6 +113,19 @@ std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
 // static
 bool ProxyConfigServiceTor::IsTorProxy(
     const net::NetworkTrafficAnnotationTag tag) {
+  // iterate through tor_proxy_map_ and remove any entries with
+  // empty TorProxyMap (all entries have expired)
+  // we do this here because the other methods are only called when
+  // IsTorProxy is true so the last entry will never be deleted
+  for (auto it = tor_proxy_map_.get()->cbegin();
+       it != tor_proxy_map_.get()->cend(); ) {
+    if (it->second.size() == 0) {
+      tor_proxy_map_->erase(it++);
+    } else {
+      ++it;
+    }
+  }
+
   return tag.unique_id_hash_code ==
          kTorProxyTrafficAnnotation.unique_id_hash_code;
 }
@@ -153,8 +166,6 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
     tor_proxy_config_service.GetLatestProxyConfig(&fetched_config);
     fetched_config.value().proxy_rules().Apply(url, result);
   }
-  // TODO(bridiver) - iterate through tor_proxy_map_ and remove any entries with
-  // empty TorProxyMap meaning all entries have expired
 }
 
 void ProxyConfigServiceTor::AddObserver(Observer* observer) {
@@ -217,6 +228,10 @@ std::string ProxyConfigServiceTor::TorProxyMap::Get(
                &ProxyConfigServiceTor::TorProxyMap::ClearExpiredEntries);
 
   return password;
+}
+
+size_t ProxyConfigServiceTor::TorProxyMap::size() const {
+  return map_.size();
 }
 
 void ProxyConfigServiceTor::TorProxyMap::Erase(const std::string& username) {

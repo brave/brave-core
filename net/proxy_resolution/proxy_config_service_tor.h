@@ -42,6 +42,7 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
     std::string Get(const std::string& key);
     void Erase(const std::string& key);
     void MaybeExpire(const std::string& key, const base::Time& timestamp);
+    size_t size() const;
 
    private:
     // Generate a new base 64-encoded 128 bit random tag
