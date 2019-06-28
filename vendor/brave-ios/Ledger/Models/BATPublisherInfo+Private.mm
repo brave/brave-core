@@ -9,20 +9,20 @@
 - (ledger::PublisherInfoPtr)cppObj
 {
   auto info = ledger::PublisherInfo::New();
-  info->id = std::string(self.id.UTF8String);
+  info->id = self.id.UTF8String;
   info->duration = self.duration;
   info->score = self.score;
   info->visits = self.visits;
   info->percent = self.percent;
   info->weight = self.weight;
-  info->excluded = (ledger::PUBLISHER_EXCLUDE)self.excluded;
-  info->category = (ledger::REWARDS_CATEGORY)self.category;
+  info->excluded = self.excluded;
+  info->category = self.category;
   info->reconcile_stamp = self.reconcileStamp;
   info->verified = self.verified;
-  info->name = std::string(self.name.UTF8String);
-  info->url = std::string(self.url.UTF8String);
-  info->provider = std::string(self.provider.UTF8String);
-  info->favicon_url = std::string(self.faviconUrl.UTF8String);
+  info->name = self.name.UTF8String;
+  info->url = self.url.UTF8String;
+  info->provider = self.provider.UTF8String;
+  info->favicon_url = self.faviconUrl.UTF8String;
   return info;
 }
 
@@ -33,14 +33,14 @@
 - (ledger::PendingContributionInfoPtr)cppObj
 {
   auto info = ledger::PendingContributionInfo::New();
-  info->publisher_key = std::string(self.publisherKey.UTF8String);
-  info->viewing_id = std::string(self.viewingId.UTF8String);
+  info->publisher_key = self.publisherKey.UTF8String;
+  info->viewing_id = self.viewingId.UTF8String;
   info->category = self.category;
-  info->name = std::string(self.name.UTF8String);
-  info->url = std::string(self.url.UTF8String);
-  info->favicon_url = std::string(self.faviconUrl.UTF8String);
+  info->name = self.name.UTF8String;
+  info->url = self.url.UTF8String;
+  info->favicon_url = self.faviconUrl.UTF8String;
   info->amount = self.amount;
-  info->provider = std::string(self.provider.UTF8String);
+  info->provider = self.provider.UTF8String;
   info->verified = self.verified;
   info->added_date = self.addedDate;
   info->expiration_date = self.expirationDate;
