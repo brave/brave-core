@@ -24,8 +24,9 @@ import FooterInfo from './footerInfo'
 import SiteRemovalNotification from './notification'
 
 interface Props {
-  actions: any
   newTabData: NewTab.State
+  actions: any
+  saveShowBackgroundImage: (value: boolean) => void
 }
 
 class NewTabPage extends React.Component<Props, {}> {
@@ -63,7 +64,9 @@ class NewTabPage extends React.Component<Props, {}> {
   }
 
   toggleShowBackgroundImage = () => {
-    this.props.actions.toggleShowBackgroundImage()
+    this.props.saveShowBackgroundImage(
+      !this.props.newTabData.showBackgroundImage
+    )
   }
 
   showSettings = () => {

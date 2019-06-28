@@ -34,10 +34,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
       state = { ...state, showSettings: false }
       break
 
-    case types.NEW_TAB_TOGGLE_SHOW_BACKGROUND_IMAGE:
-      state = { ...state, showBackgroundImage: !state.showBackgroundImage }
-      break
-
     case types.BOOKMARK_ADDED:
       const topSite: NewTab.Site | undefined = state.topSites.find((site) => site.url === payload.url)
       if (topSite) {
@@ -155,6 +151,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     case types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE:
       chrome.send('toggleAlternativePrivateSearchEngine', [])
       state = { ...state, useAlternativePrivateSearchEngine: payload.shouldUse }
+      break
+
+    case types.NEW_TAB_PREFERENCES_UPDATED:
+      const { prefs } = payload
+      state = {
+        ...state,
+        ...prefs
+      }
       break
 
     default:

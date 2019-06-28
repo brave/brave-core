@@ -9,6 +9,8 @@ import { Provider } from 'react-redux'
 import Theme from 'brave-ui/theme/brave-default'
 import { ThemeProvider } from 'brave-ui/theme'
 import * as dataFetchAPI from './api/dataFetch'
+import * as preferencesAPI from './api/preferences'
+
 
 // Components
 import App from './components/app'
@@ -32,6 +34,13 @@ function initialize () {
   )
   window.i18nTemplate.process(window.document, window.loadTimeData)
   handleAPIEvents()
+  updatePrefs()
+}
+
+async function updatePrefs() {
+  const prefs = await preferencesAPI.getPreferences()
+  const actions = dataFetchAPI.getActions()
+  actions.preferencesUpdated(prefs)
 }
 
 function updateStats() {
@@ -42,6 +51,7 @@ function updateStats() {
 function handleAPIEvents () {
   chrome.send('newTabPageInitialized', [])
   window.cr.addWebUIListener('stats-updated', updateStats)
+  preferencesAPI.addChangeListener(updatePrefs)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

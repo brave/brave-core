@@ -35,6 +35,7 @@ void BraveNewTabUI::UpdateWebUIProperties() {
   auto* render_view_host = GetRenderViewHost();
   SetStatsWebUIProperties(render_view_host);
   SetPrivateWebUIProperties(render_view_host);
+  SetPreferencesWebUIProperties(render_view_host);
 }
 
 void BraveNewTabUI::SetStatsWebUIProperties(
@@ -83,6 +84,26 @@ void BraveNewTabUI::SetPrivateWebUIProperties(
         "isTor", profile->IsTorProfile() ? "true" : "false");
     render_view_host->SetWebUIProperty(
         "isQwant", brave::IsRegionForQwant(profile) ? "true" : "false");
+  }
+}
+
+void BraveNewTabUI::SetPreferencesWebUIProperties(
+  content::RenderViewHost* render_view_host) {
+  DCHECK(IsSafeToSetWebUIProperties());
+  Profile* profile = Profile::FromWebUI(web_ui());
+  PrefService* prefs = profile->GetPrefs();
+  if (render_view_host) {
+    render_view_host->SetWebUIProperty(
+        "showBackgroundImage",
+        prefs->GetBoolean(kNewTabPageShowBackgroundImage) ? "true"
+                                                          : "false");
+  }
+}
+
+
+void BraveNewTabUI::OnPreferencesChanged() {
+  if (IsSafeToSetWebUIProperties()) {
+    SetPreferencesWebUIProperties(GetRenderViewHost());
   }
 }
 
