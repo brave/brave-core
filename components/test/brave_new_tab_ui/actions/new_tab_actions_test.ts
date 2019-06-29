@@ -154,9 +154,4 @@ describe('newTabActions', () => {
       type: types.NEW_TAB_SHOW_SETTINGS_MENU
     })
   })
-  it('toggleShowBackgroundImage', () => {
-    expect(actions.toggleShowBackgroundImage()).toEqual({
-      type: types.NEW_TAB_TOGGLE_SHOW_BACKGROUND_IMAGE
-    })
-  })
 })

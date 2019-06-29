@@ -1,10 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at http://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
 
+#include <string>
+
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/browser/ui/webui/brave_new_tab_message_handler.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_new_tab/resources/grit/brave_new_tab_generated_map.h"
@@ -15,60 +19,27 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "content/public/browser/web_ui_message_handler.h"
-
-namespace {
-class NewTabDOMHandler : public content::WebUIMessageHandler {
- public:
-  NewTabDOMHandler() = default;
-  ~NewTabDOMHandler() override = default;
-
- private:
-  // WebUIMessageHandler implementation.
-  void RegisterMessages() override {
-    web_ui()->RegisterMessageCallback(
-        "toggleAlternativePrivateSearchEngine",
-        base::BindRepeating(
-            &NewTabDOMHandler::HandleToggleAlternativeSearchEngineProvider,
-            base::Unretained(this)));
-  }
-
-  void HandleToggleAlternativeSearchEngineProvider(
-      const base::ListValue* args) {
-    brave::ToggleUseAlternativeSearchEngineProvider(
-        Profile::FromWebUI(web_ui()));
-  }
-
-  DISALLOW_COPY_AND_ASSIGN(NewTabDOMHandler);
-};
-
-}  // namespace
 
 BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
     : BasicUI(web_ui, name, kBraveNewTabGenerated,
         kBraveNewTabGeneratedSize, IDR_BRAVE_NEW_TAB_HTML) {
-  Profile* profile = Profile::FromWebUI(web_ui);
-  PrefService* prefs = profile->GetPrefs();
-  pref_change_registrar_ = std::make_unique<PrefChangeRegistrar>();
-  pref_change_registrar_->Init(prefs);
-  pref_change_registrar_->Add(kAdsBlocked,
-    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
-  pref_change_registrar_->Add(kTrackersBlocked,
-    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
-  pref_change_registrar_->Add(kHttpsUpgrades,
-    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
-  pref_change_registrar_->Add(kUseAlternativeSearchEngineProvider,
-    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
-  pref_change_registrar_->Add(kAlternativeSearchEngineProviderInTor,
-    base::Bind(&BraveNewTabUI::OnPreferenceChanged, base::Unretained(this)));
-
-  web_ui->AddMessageHandler(std::make_unique<NewTabDOMHandler>());
+  web_ui->AddMessageHandler(std::make_unique<BraveNewTabMessageHandler>(this));
 }
 
 BraveNewTabUI::~BraveNewTabUI() {
 }
 
-void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* render_view_host) {
+void BraveNewTabUI::UpdateWebUIProperties() {
+  // TODO(petemill): move all this data to set on loadTimeData
+  // on the DataSource via the MessageHandler
+  auto* render_view_host = GetRenderViewHost();
+  SetStatsWebUIProperties(render_view_host);
+  SetPrivateWebUIProperties(render_view_host);
+  SetPreferencesWebUIProperties(render_view_host);
+}
+
+void BraveNewTabUI::SetStatsWebUIProperties(
+  content::RenderViewHost* render_view_host) {
   DCHECK(IsSafeToSetWebUIProperties());
   Profile* profile = Profile::FromWebUI(web_ui());
   PrefService* prefs = profile->GetPrefs();
@@ -99,13 +70,51 @@ void BraveNewTabUI::CustomizeNewTabWebUIProperties(content::RenderViewHost* rend
   }
 }
 
-void BraveNewTabUI::UpdateWebUIProperties() {
-  if (IsSafeToSetWebUIProperties()) {
-    CustomizeNewTabWebUIProperties(GetRenderViewHost());
-    web_ui()->CallJavascriptFunctionUnsafe("brave_new_tab.statsUpdated");
+void BraveNewTabUI::SetPrivateWebUIProperties(
+  content::RenderViewHost* render_view_host) {
+  DCHECK(IsSafeToSetWebUIProperties());
+  Profile* profile = Profile::FromWebUI(web_ui());
+  PrefService* prefs = profile->GetPrefs();
+  if (render_view_host) {
+    render_view_host->SetWebUIProperty(
+        "useAlternativePrivateSearchEngine",
+        prefs->GetBoolean(kUseAlternativeSearchEngineProvider) ? "true"
+                                                               : "false");
+    render_view_host->SetWebUIProperty(
+        "isTor", profile->IsTorProfile() ? "true" : "false");
+    render_view_host->SetWebUIProperty(
+        "isQwant", brave::IsRegionForQwant(profile) ? "true" : "false");
   }
 }
 
-void BraveNewTabUI::OnPreferenceChanged() {
-  UpdateWebUIProperties();
+void BraveNewTabUI::SetPreferencesWebUIProperties(
+  content::RenderViewHost* render_view_host) {
+  DCHECK(IsSafeToSetWebUIProperties());
+  Profile* profile = Profile::FromWebUI(web_ui());
+  PrefService* prefs = profile->GetPrefs();
+  if (render_view_host) {
+    render_view_host->SetWebUIProperty(
+        "showBackgroundImage",
+        prefs->GetBoolean(kNewTabPageShowBackgroundImage) ? "true"
+                                                          : "false");
+  }
+}
+
+
+void BraveNewTabUI::OnPreferencesChanged() {
+  if (IsSafeToSetWebUIProperties()) {
+    SetPreferencesWebUIProperties(GetRenderViewHost());
+  }
+}
+
+void BraveNewTabUI::OnPrivatePropertiesChanged() {
+  if (IsSafeToSetWebUIProperties()) {
+    SetPrivateWebUIProperties(GetRenderViewHost());
+  }
+}
+
+void BraveNewTabUI::OnStatsChanged() {
+  if (IsSafeToSetWebUIProperties()) {
+    SetStatsWebUIProperties(GetRenderViewHost());
+  }
 }

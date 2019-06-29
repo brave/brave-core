@@ -6,6 +6,7 @@ import { Reducer } from 'redux'
 
 // Constants
 import { types } from '../constants/new_tab_types'
+import { Preferences } from '../api/preferences'
 
 // API
 import * as gridAPI from '../api/topSites/grid'
@@ -32,10 +33,6 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
 
     case types.NEW_TAB_CLOSE_SETTINGS_MENU:
       state = { ...state, showSettings: false }
-      break
-
-    case types.NEW_TAB_TOGGLE_SHOW_BACKGROUND_IMAGE:
-      state = { ...state, showBackgroundImage: !state.showBackgroundImage }
       break
 
     case types.BOOKMARK_ADDED:
@@ -155,6 +152,14 @@ export const newTabReducer: Reducer<NewTab.State | undefined> = (state: NewTab.S
     case types.NEW_TAB_USE_ALTERNATIVE_PRIVATE_SEARCH_ENGINE:
       chrome.send('toggleAlternativePrivateSearchEngine', [])
       state = { ...state, useAlternativePrivateSearchEngine: payload.shouldUse }
+      break
+
+    case types.NEW_TAB_PREFERENCES_UPDATED:
+      const preferences: Preferences = payload.preferences
+      state = {
+        ...state,
+        ...preferences
+      }
       break
 
     default:

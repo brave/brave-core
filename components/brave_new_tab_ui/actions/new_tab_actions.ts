@@ -6,6 +6,7 @@ import { action } from 'typesafe-actions'
 
 // Constants
 import { types } from '../constants/new_tab_types'
+import { Preferences } from '../api/preferences'
 
 export const topSitesDataUpdated = (topSites: NewTab.Site[]) => action(types.NEW_TAB_TOP_SITES_DATA_UPDATED, {
   topSites
@@ -71,4 +72,6 @@ export const showSettingsMenu = () => action(types.NEW_TAB_SHOW_SETTINGS_MENU)
 
 export const closeSettingsMenu = () => action(types.NEW_TAB_CLOSE_SETTINGS_MENU)
 
-export const toggleShowBackgroundImage = () => action(types.NEW_TAB_TOGGLE_SHOW_BACKGROUND_IMAGE)
+export const preferencesUpdated = (preferences: Preferences) => action(types.NEW_TAB_PREFERENCES_UPDATED, {
+  preferences
+})
