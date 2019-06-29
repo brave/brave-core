@@ -269,11 +269,12 @@ test("brave_unit_tests") {
   deps += [
     "//brave/browser/safebrowsing",
   ]
+}
+}
 
-  include_dirs = []
-
-  if (is_win) {
-    sources += [
+if (is_win) {
+  test("brave_install_static_unittests") {
+    sources = [
       "//brave/chromium_src/chrome/install_static/brave_install_details_unittest.cc",
       "//brave/chromium_src/chrome/install_static/brave_install_modes_unittest.cc",
       "//brave/chromium_src/chrome/install_static/brave_install_util_unittest.cc",
@@ -281,8 +282,8 @@ test("brave_unit_tests") {
       "//brave/chromium_src/chrome/install_static/brave_user_data_dir_win_unittest.cc",
       "//brave/chromium_src/chrome/installer/mini_installer/brave_mini_installer_unittest.cc",
     ]
-    include_dirs += [ "$target_gen_dir" ]
-    deps += [
+    include_dirs = [ "$target_gen_dir" ]
+    deps = [
       "//base",
       "//base/test:run_all_unittests",
       "//base/test:test_support",
@@ -293,7 +294,6 @@ test("brave_unit_tests") {
       "//testing/gtest",
     ]
   }
-}
 }
 
 group("brave_browser_tests_deps") {
