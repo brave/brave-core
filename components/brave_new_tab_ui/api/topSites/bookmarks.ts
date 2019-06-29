@@ -9,7 +9,7 @@ import { getActions } from '../dataFetch'
  */
 export const fetchBookmarkInfo = (url: string) => {
   chrome.bookmarks.search(url.replace(/^https?:\/\//, ''),
-    (bookmarkTreeNodes) => getActions().bookmarkInfoAvailable(url, bookmarkTreeNodes[0])
+    (bookmarkTreeNodes) => getActions().bookmarkInfoAvailable(url, bookmarkTreeNodes[0] as NewTab.Bookmark)
   )
 }
 

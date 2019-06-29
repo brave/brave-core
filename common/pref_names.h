@@ -46,5 +46,6 @@ extern const char kWebTorrentEnabled[];
 extern const char kHangoutsEnabled[];
 extern const char kHideBraveRewardsButton[];
 extern const char kIPFSCompanionEnabled[];
+extern const char kNewTabPageShowBackgroundImage[];
 
 #endif  // BRAVE_COMMON_PREF_NAMES_H_
