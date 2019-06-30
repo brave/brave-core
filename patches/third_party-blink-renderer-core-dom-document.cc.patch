@@ -1,13 +1,14 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..b973f69a79d21fd6cb2b5dd0d30ccba51b0a6d1b 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..e9cfb7606ad5cb9317afcba2f2439faffd11bd77 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -310,6 +310,13 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+@@ -310,6 +310,14 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
  static WeakDocumentSet& liveDocumentSet();
  #endif
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <iostream>
 +#include "third_party/blink/renderer/modules/service_worker/service_worker_container.h"
 +#include "third_party/blink/renderer/modules/storage/dom_window_storage_controller.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
@@ -16,19 +17,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..b973f69a79d21fd6cb2b5dd0d30ccba5
  namespace blink {
  
  using namespace html_names;
-@@ -768,6 +775,11 @@ Document::Document(const DocumentInit& initializer,
- #ifndef NDEBUG
-   liveDocumentSet().insert(this);
- #endif
-+
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  page_graph_ = nullptr;
-+  page_graph_non_owning_ = nullptr;
-+#endif
- }
- 
- Document::~Document() {
-@@ -778,8 +790,108 @@ Document::~Document() {
+@@ -778,8 +786,97 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -39,13 +28,6 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..b973f69a79d21fd6cb2b5dd0d30ccba5
 +  if (page_graph_ != nullptr) {
 +    // The page graph should be owned by the top document.
 +    LOG_ASSERT(GetFrame()->IsMainFrame());
-+
-+    // Same-process child documents share an isolate with the top document, so
-+    // we should only clear our isolate's page graph pointer when the top
-+    // document is the one being destoryed.  Otherwise, we'll break page graph
-+    // tracking for other documents still using the isolate.
-+    GetIsolate()->SetPageGraph(nullptr);
-+
 +    delete page_graph_;
 +    page_graph_ = nullptr;
 +  }
@@ -111,9 +93,6 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..b973f69a79d21fd6cb2b5dd0d30ccba5
 +  // if the top frame has a PageGraph.
 +  if (frame->IsMainFrame() == false) {
 +    page_graph_non_owning_ = TopDocument().GetPageGraph();
-+    if (page_graph_non_owning_ != nullptr) {
-+      GetIsolate()->SetPageGraph(page_graph_non_owning_);
-+    }
 +    return page_graph_non_owning_;
 +  }
 +
@@ -129,7 +108,6 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..b973f69a79d21fd6cb2b5dd0d30ccba5
 +  }
 +
 +  page_graph_ = new ::brave_page_graph::PageGraph(*this);
-+  GetIsolate()->SetPageGraph(page_graph_);
 +  return page_graph_;
 +}
 +#endif
@@ -137,7 +115,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..b973f69a79d21fd6cb2b5dd0d30ccba5
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
    DCHECK(position.IsNotNull());
-@@ -5281,6 +5393,25 @@ String Document::cookie(ExceptionState& exception_state) const {
+@@ -5281,6 +5378,27 @@ String Document::cookie(ExceptionState& exception_state) const {
    if (cookie_url.IsEmpty())
      return String();
  
@@ -148,13 +126,15 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..b973f69a79d21fd6cb2b5dd0d30ccba5
 +      cookies = Cookies(this, cookie_url);
 +    }
 +
-+    brave_page_graph::PageGraph* page_graph = page_graph_;
-+    if (page_graph == nullptr) {
-+      page_graph = page_graph_non_owning_;
++    brave_page_graph::PageGraph* local_page_graph = page_graph_;
++    if (local_page_graph == nullptr) {
++      local_page_graph = page_graph_non_owning_;
 +    }
 +
-+    page_graph->RegisterStorageRead(cookie_url.GetString(), cookies,
-+      brave_page_graph::kStorageLocationCookie);
++    if (local_page_graph != nullptr) {
++      local_page_graph->RegisterStorageRead(cookie_url.GetString(), cookies,
++        brave_page_graph::kStorageLocationCookie);
++    }
 +
 +    return cookies;
 +  }
@@ -163,7 +143,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..b973f69a79d21fd6cb2b5dd0d30ccba5
    return Cookies(this, cookie_url);
  }
  
-@@ -5312,6 +5443,23 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+@@ -5312,6 +5430,23 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
    if (cookie_url.IsEmpty())
      return;
  
