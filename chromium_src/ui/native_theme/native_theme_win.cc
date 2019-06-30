@@ -11,16 +11,6 @@ namespace {
 bool system_dark_mode_overridden = false;
 bool dark_mode_enabled = false;
 
-// TODO(simonhong): Move this function to ui namespace to share with
-// native_theme_mac.mm.
-void NotifyProperThemeObserver() {
-  // When theme is changed from light to dark, we notify to light theme observer
-  // because NativeThemeObserver observes light native theme
-  ui::NativeTheme::GetInstanceForNativeUi()->SystemDarkModeEnabled()
-      ? ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers()
-      : ui::NativeThemeDarkAura::instance()->NotifyObservers();
-}
-
 bool OverrideSystemDarkMode() {
   return system_dark_mode_overridden;
 }
