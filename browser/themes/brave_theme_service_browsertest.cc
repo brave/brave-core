@@ -101,19 +101,13 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NativeThemeObserverTest) {
   // Initially set to light.
   SetBraveThemeType(profile, BraveThemeType::BRAVE_THEME_TYPE_LIGHT);
 
-  // Check native theme and dark theme oberver is called once by changing theme
-  // to dark and light.
+  // Check theme oberver is called twice by changing theme.
+  // One for changing to dark and the other for changing to light.
   TestNativeThemeObserver native_theme_observer;
   EXPECT_CALL(
       native_theme_observer,
-      OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi())).Times(1);
-  TestNativeThemeObserver native_dark_theme_observer;
-  EXPECT_CALL(
-      native_dark_theme_observer,
-      OnNativeThemeUpdated(ui::NativeThemeDarkAura::instance())).Times(1);
+      OnNativeThemeUpdated(ui::NativeTheme::GetInstanceForNativeUi())).Times(2);
 
-  ui::NativeThemeDarkAura::instance()->AddObserver(
-      &native_dark_theme_observer);
   ui::NativeTheme::GetInstanceForNativeUi()->AddObserver(
       &native_theme_observer);
 

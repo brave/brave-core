@@ -13,7 +13,7 @@
 #include "brave/common/extensions/api/brave_theme.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/event_router.h"
-#include "ui/native_theme/native_theme_dark_aura.h"
+#include "ui/native_theme/native_theme.h"
 
 namespace extensions {
 
@@ -21,7 +21,7 @@ BraveThemeEventRouter::BraveThemeEventRouter(Profile* profile)
     : profile_(profile),
       using_dark_(IsDarkModeEnabled()),
       observer_(this) {
-  ResetThemeObserver();
+  observer_.Add(ui::NativeTheme::GetInstanceForNativeUi());
 }
 
 BraveThemeEventRouter::~BraveThemeEventRouter() {}
@@ -29,7 +29,6 @@ BraveThemeEventRouter::~BraveThemeEventRouter() {}
 void BraveThemeEventRouter::OnNativeThemeUpdated(
     ui::NativeTheme* observed_theme) {
   DCHECK(observer_.IsObserving(observed_theme));
-  ResetThemeObserver();
 
   bool use_dark = IsDarkModeEnabled();
   if (use_dark == using_dark_)
@@ -57,17 +56,6 @@ void BraveThemeEventRouter::Notify() {
 bool BraveThemeEventRouter::IsDarkModeEnabled() const {
   return BraveThemeService::GetActiveBraveThemeType(profile_) ==
       BRAVE_THEME_TYPE_DARK;
-}
-
-void BraveThemeEventRouter::ResetThemeObserver() {
-  auto* current_native_theme =
-      IsDarkModeEnabled() ? ui::NativeThemeDarkAura::instance()
-                          : ui::NativeTheme::GetInstanceForNativeUi();
-  if (!observer_.IsObserving(current_native_theme)) {
-    observer_.RemoveAll();
-    observer_.Add(current_native_theme);
-    current_native_theme_for_testing_ = current_native_theme;
-  }
 }
 
 }  // namespace extensions
