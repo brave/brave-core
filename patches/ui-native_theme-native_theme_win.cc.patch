@@ -1,5 +1,5 @@
 diff --git a/ui/native_theme/native_theme_win.cc b/ui/native_theme/native_theme_win.cc
-index 4cc71daea3f337afaf510e86cdc2f776d377a23c..3541445c5bcaeccdab60784a8b0a47669ae56c31 100644
+index 4cc71daea3f337afaf510e86cdc2f776d377a23c..d9fe7aab59eda7ae0d746cb87ccda3f12686a3b5 100644
 --- a/ui/native_theme/native_theme_win.cc
 +++ b/ui/native_theme/native_theme_win.cc
 @@ -590,6 +590,7 @@ bool NativeThemeWin::SystemDarkModeEnabled() const {
@@ -10,15 +10,3 @@ index 4cc71daea3f337afaf510e86cdc2f776d377a23c..3541445c5bcaeccdab60784a8b0a4766
    return NativeTheme::SystemDarkModeEnabled();
  }
  
-@@ -1925,7 +1926,11 @@ void NativeThemeWin::RegisterThemeRegkeyObserver() {
-   DCHECK(hkcu_themes_regkey_.Valid());
-   hkcu_themes_regkey_.StartWatching(base::BindOnce(
-       [](NativeThemeWin* native_theme) {
-+#if defined(BRAVE_CHROMIUM_BUILD)
-+        NotifyProperThemeObserver();
-+#else
-         native_theme->UpdateDarkModeStatus();
-+#endif
-         // RegKey::StartWatching only provides one notification. Reregistration
-         // is required to get future notifications.
-         native_theme->RegisterThemeRegkeyObserver();

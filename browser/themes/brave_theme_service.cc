@@ -25,7 +25,6 @@
 #include "ui/base/ui_base_features.h"
 #include "ui/base/ui_base_switches.h"
 #include "ui/native_theme/native_theme.h"
-#include "ui/native_theme/native_theme_dark_aura.h"
 
 #if defined(OS_WIN)
 #include "ui/native_theme/native_theme_win.h"
@@ -204,8 +203,8 @@ void BraveThemeService::OnPreferenceChanged(const std::string& pref_name) {
   if (SystemThemeModeEnabled()) {
     // When system theme is changed, system theme changing observer notifies
     // proper native theme observers.
-    // So, we don't need to notify again. See NotifyProperThemeObserver()
-    // in chromium_src/ui/native_theme/native_theme_mac.mm.
+    // So, we don't need to notify again. See |appearance_observer_| in
+    // in ui/native_theme/native_theme_mac.mm.
     notify_theme_observer_here = false;
     SetSystemTheme(static_cast<BraveThemeType>(
         profile()->GetPrefs()->GetInteger(kBraveThemeType)));
@@ -214,14 +213,8 @@ void BraveThemeService::OnPreferenceChanged(const std::string& pref_name) {
   OverrideSystemDarkModeIfNeeded(profile());
 #endif
 
-  if (notify_theme_observer_here) {
-    // Notify dark (cross-platform) and light (platform-specific) variants
-    // When theme is changed from light to dark, we notify to light theme
-    // observer because NativeThemeObserver observes light native theme.
-    GetActiveBraveThemeType(profile()) == BraveThemeType::BRAVE_THEME_TYPE_LIGHT
-        ? ui::NativeThemeDarkAura::instance()->NotifyObservers()
-        : ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();
-  }
+  if (notify_theme_observer_here)
+    ui::NativeTheme::GetInstanceForNativeUi()->NotifyObservers();
 }
 
 void BraveThemeService::RecoverPrefStates(Profile* profile) {

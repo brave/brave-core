@@ -26,7 +26,6 @@ class BraveThemeEventRouter : public ui::NativeThemeObserver {
   void OnNativeThemeUpdated(ui::NativeTheme* observed_theme) override;
 
   bool IsDarkModeEnabled() const;
-  void ResetThemeObserver();
 
   // Make virtual for testing.
   virtual void Notify();

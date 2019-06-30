@@ -99,13 +99,6 @@ source_set("ui") {
     ]
   }
 
-  if (is_mac || is_win || is_chromeos) {
-    sources += [
-      "views/frame/brave_browser_frame.cc",
-      "views/frame/brave_browser_frame.h",
-    ]
-  }
-
   if (is_linux) {
     sources += [
       "views/brave_browser_main_extra_parts_views_linux.cc",
@@ -134,7 +127,6 @@ source_set("ui") {
     "//brave/browser/devtools",
     "//brave/browser/tor",
     "//brave/browser/resources/settings:resources",
-    "//brave/ui/native_theme",
     "//chrome/app:command_ids",
     "//chrome/common",
     "//components/prefs",
