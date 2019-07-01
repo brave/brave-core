@@ -17,7 +17,7 @@ namespace bat_ads {
 BatAdsServiceImpl::BatAdsServiceImpl(
     std::unique_ptr<service_manager::ServiceContextRef> service_ref)
     : service_ref_(std::move(service_ref)),
-      has_initialized_(false) {}
+      is_initialized_(false) {}
 
 BatAdsServiceImpl::~BatAdsServiceImpl() {}
 
@@ -27,14 +27,14 @@ void BatAdsServiceImpl::Create(
     CreateCallback callback) {
   mojo::MakeStrongAssociatedBinding(
       std::make_unique<BatAdsImpl>(std::move(client_info)), std::move(bat_ads));
-  has_initialized_ = true;
+  is_initialized_ = true;
   std::move(callback).Run();
 }
 
 void BatAdsServiceImpl::SetProduction(
     const bool is_production,
     SetProductionCallback callback) {
-  DCHECK(!has_initialized_ || ads::_is_production == is_production);
+  DCHECK(!is_initialized_ || ads::_is_production == is_production);
   ads::_is_production = is_production;
   std::move(callback).Run();
 }
@@ -42,7 +42,7 @@ void BatAdsServiceImpl::SetProduction(
 void BatAdsServiceImpl::SetTesting(
     const bool is_testing,
     SetTestingCallback callback) {
-  DCHECK(!has_initialized_ || ads::_is_testing == is_testing);
+  DCHECK(!is_initialized_ || ads::_is_testing == is_testing);
   ads::_is_testing = is_testing;
   std::move(callback).Run();
 }
@@ -50,16 +50,9 @@ void BatAdsServiceImpl::SetTesting(
 void BatAdsServiceImpl::SetDebug(
     const bool is_debug,
     SetDebugCallback callback) {
-  DCHECK(!has_initialized_ || ads::_is_debug == is_debug);
+  DCHECK(!is_initialized_ || ads::_is_debug == is_debug);
   ads::_is_debug = is_debug;
   std::move(callback).Run();
-}
-
-void BatAdsServiceImpl::IsSupportedRegion(
-    const std::string& locale,
-    IsSupportedRegionCallback callback) {
-  DCHECK(!has_initialized_);
-  std::move(callback).Run(ads::Ads::IsSupportedRegion(locale));
 }
 
 }  // namespace bat_ads

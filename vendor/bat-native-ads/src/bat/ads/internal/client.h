@@ -14,7 +14,6 @@
 #include <memory>
 
 #include "bat/ads/ads_client.h"
-
 #include "bat/ads/internal/ads_impl.h"
 #include "bat/ads/internal/client_state.h"
 
@@ -27,8 +26,7 @@ class Client {
   Client(AdsImpl* ads, AdsClient* ads_client);
   ~Client();
 
-  void SaveState();
-  void LoadState();
+  void Initialize(InitializeCallback callback);
 
   void AppendCurrentTimeToAdsShownHistory();
   const std::deque<uint64_t> GetAdsShownHistory();
@@ -71,9 +69,12 @@ class Client {
  private:
   bool is_initialized_;
 
+  InitializeCallback callback_;
+
+  void SaveState();
   void OnStateSaved(const Result result);
 
-  bool state_has_loaded_;
+  void LoadState();
   void OnStateLoaded(const Result result, const std::string& json);
 
   bool FromJson(const std::string& json);

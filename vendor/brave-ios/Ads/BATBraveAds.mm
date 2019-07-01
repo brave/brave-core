@@ -218,12 +218,12 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 - (void)reportTabUpdated:(NSInteger)tabId url:(NSURL *)url isSelected:(BOOL)isSelected isPrivate:(BOOL)isPrivate
 {
   const auto urlString = std::string(url.absoluteString.UTF8String);
-  ads->TabUpdated((int32_t)tabId, urlString, isSelected, isPrivate);
+  ads->OnTabUpdated((int32_t)tabId, urlString, isSelected, isPrivate);
 }
 
 - (void)reportTabClosedWithTabId:(NSInteger)tabId
 {
-  ads->TabClosed((int32_t)tabId);
+  ads->OnTabClosed((int32_t)tabId);
 }
 
 #pragma mark - Ads Bridge
@@ -233,8 +233,6 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
   if (info.get() != nullptr) {
     const auto notification = [[BATAdsNotification alloc] initWithNotificationInfo:*info.get()];
     [self.delegate braveAds:self showNotification:notification];
-
-    ads->GenerateAdReportingNotificationShownEvent(*info.get());
   }
 }
 
@@ -452,13 +450,6 @@ BATClassAdsBridge(BOOL, isProduction, setProduction, _is_production)
 - (std::unique_ptr<ads::LogStream>)log:(const char *)file line:(const int)line logLevel:(const ads::LogLevel)log_level
 {
   return std::make_unique<RewardsLogStream>(file, line, log_level);
-}
-
-#pragma mark - Misc
-
-- (const std::string)generateUUID
-{
-  return [self.commonOps generateUUID];
 }
 
 @end

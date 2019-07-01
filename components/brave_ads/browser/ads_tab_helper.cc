@@ -144,7 +144,7 @@ void AdsTabHelper::TabUpdated() {
   if (!ads_service_)
     return;
 
-  ads_service_->TabUpdated(
+  ads_service_->OnTabUpdated(
       tab_id_,
       web_contents()->GetURL(),
       is_active_ && is_browser_active_);
@@ -181,7 +181,7 @@ void AdsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
 
 void AdsTabHelper::WebContentsDestroyed() {
   if (ads_service_) {
-    ads_service_->TabClosed(tab_id_);
+    ads_service_->OnTabClosed(tab_id_);
     ads_service_ = nullptr;
   }
 }

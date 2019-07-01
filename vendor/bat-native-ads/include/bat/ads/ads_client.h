@@ -55,7 +55,7 @@ using OnLoadSampleBundleCallback = std::function<void(const Result,
     const std::string&)>;
 
 using URLRequestCallback = std::function<void(const int, const std::string&,
-    const std::map<std::string, std::string>& headers)>;
+    const std::map<std::string, std::string>&)>;
 
 class ADS_EXPORT AdsClient {
  public:
@@ -93,9 +93,6 @@ class ADS_EXPORT AdsClient {
       const std::string& locale,
       OnLoadCallback callback) const = 0;
 
-  // Should generate return a v4 UUID
-  virtual const std::string GenerateUUID() const = 0;
-
   // Should return true if the browser is in the foreground otherwise returns
   // false
   virtual bool IsForeground() const = 0;
@@ -106,6 +103,9 @@ class ADS_EXPORT AdsClient {
 
   // Should show a notification
   virtual void ShowNotification(std::unique_ptr<NotificationInfo> info) = 0;
+
+  // Should close a notification
+  virtual void CloseNotification(const std::string& id) = 0;
 
   // Should notify that the catalog issuers have changed
   virtual void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) = 0;

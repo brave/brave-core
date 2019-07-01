@@ -12,7 +12,6 @@
 
 - (void)confirmAd:(std::unique_ptr<ads::NotificationInfo>)info;
 - (void)eventLog:(const std::string &)json;
-- (const std::string)generateUUID;
 - (void)getAds:(const std::string &)category callback:(ads::OnGetAdsCallback)callback;
 - (const std::string)getAdsLocale;
 - (uint64_t)getAdsPerDay;
@@ -36,6 +35,7 @@
 - (void)setIdleThreshold:(const int)threshold;
 - (uint32_t)setTimer:(const uint64_t)time_offset;
 - (void)showNotification:(std::unique_ptr<ads::NotificationInfo>)info;
+- (void)closeNotification:(const std::string &)id;
 - (void)URLRequest:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)content_type method:(const ads::URLRequestMethod)method callback:(ads::URLRequestCallback)callback;
 
 @end

@@ -13,6 +13,7 @@
 namespace ads {
 
 NotificationInfo::NotificationInfo() :
+    id(""),
     creative_set_id(""),
     category(""),
     advertiser(""),
@@ -22,6 +23,7 @@ NotificationInfo::NotificationInfo() :
     type(ConfirmationType::UNKNOWN) {}
 
 NotificationInfo::NotificationInfo(const NotificationInfo& info) :
+    id(info.id),
     creative_set_id(info.creative_set_id),
     category(info.category),
     advertiser(info.advertiser),
@@ -50,6 +52,10 @@ Result NotificationInfo::FromJson(
     }
 
     return FAILED;
+  }
+
+  if (document.HasMember("id")) {
+    id = document["id"].GetString();
   }
 
   if (document.HasMember("creative_set_id")) {
@@ -86,6 +92,9 @@ Result NotificationInfo::FromJson(
 
 void SaveToJson(JsonWriter* writer, const NotificationInfo& info) {
   writer->StartObject();
+
+  writer->String("id");
+  writer->String(info.id.c_str());
 
   writer->String("creative_set_id");
   writer->String(info.creative_set_id.c_str());

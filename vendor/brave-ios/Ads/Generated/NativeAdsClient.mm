@@ -19,9 +19,6 @@ void NativeAdsClient::ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) {
 void NativeAdsClient::EventLog(const std::string & json) {
   [bridge_ eventLog:json];
 }
-const std::string NativeAdsClient::GenerateUUID() const {
-  return [bridge_ generateUUID];
-}
 void NativeAdsClient::GetAds(const std::string & category, ads::OnGetAdsCallback callback) {
   [bridge_ getAds:category callback:callback];
 }
