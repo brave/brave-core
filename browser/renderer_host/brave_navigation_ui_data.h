@@ -29,11 +29,11 @@ class BraveNavigationUIData : public ChromeNavigationUIData {
 
   std::unique_ptr<content::NavigationUIData> Clone() const override;
 
-  void SetTorProfileService(TorProfileService*);
-  TorProfileService* GetTorProfileService() const;
+  void SetTor(bool is_tor);
+  bool IsTor() const;
 
  private:
-  TorProfileService* tor_profile_service_;
+  bool is_tor_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveNavigationUIData);
 };

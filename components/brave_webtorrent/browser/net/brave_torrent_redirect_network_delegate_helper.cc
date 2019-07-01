@@ -85,7 +85,7 @@ bool IsTorProfile(net::URLRequest* request) {
     return false;
   }
 
-  return ui_data->GetTorProfileService() ? true : false;
+  return ui_data->IsTor();
 }
 
 bool IsWebTorrentDisabled(net::URLRequest* request) {

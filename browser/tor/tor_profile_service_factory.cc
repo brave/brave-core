@@ -41,9 +41,8 @@ TorProfileServiceFactory::TorProfileServiceFactory()
 //static
 void TorProfileServiceFactory::SetTorNavigationUIData(
     Profile* profile, BraveNavigationUIData* data) {
-  if (!profile->IsTorProfile())
-    return;
-  data->SetTorProfileService(GetForProfile(profile));
+  if (profile->IsTorProfile())
+    data->SetTor(true);
 }
 
 TorProfileServiceFactory::~TorProfileServiceFactory() {}

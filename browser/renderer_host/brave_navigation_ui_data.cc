@@ -13,12 +13,12 @@
 #include "content/public/browser/web_contents.h"
 
 BraveNavigationUIData::BraveNavigationUIData()
-    : ChromeNavigationUIData(), tor_profile_service_(nullptr) {}
+    : ChromeNavigationUIData(), is_tor_(false) {}
 
 BraveNavigationUIData::BraveNavigationUIData(
     NavigationHandle* navigation_handle)
     : ChromeNavigationUIData(navigation_handle),
-      tor_profile_service_(nullptr) {}
+      is_tor_(false) {}
 
 BraveNavigationUIData::~BraveNavigationUIData() {}
 
@@ -36,7 +36,8 @@ BraveNavigationUIData::CreateForMainFrameNavigation(
 
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
-  TorProfileServiceFactory::SetTorNavigationUIData(profile, ui_data);
+  if (profile && profile->IsTorProfile())
+    ui_data->SetTor(true);
 
   return navigation_ui_data;
 }
@@ -48,16 +49,15 @@ std::unique_ptr<content::NavigationUIData> BraveNavigationUIData::Clone()
   BraveNavigationUIData* copy =
       static_cast<BraveNavigationUIData*>(chrome_copy);
 
-  copy->tor_profile_service_ = tor_profile_service_;
+  copy->is_tor_ = is_tor_;
 
   return base::WrapUnique(copy);
 }
 
-void BraveNavigationUIData::SetTorProfileService(
-    TorProfileService* tor_profile_service) {
-  tor_profile_service_ = tor_profile_service;
+void BraveNavigationUIData::SetTor(bool is_tor) {
+  is_tor_ = is_tor;
 }
 
-TorProfileService* BraveNavigationUIData::GetTorProfileService() const {
-  return tor_profile_service_;
+bool BraveNavigationUIData::IsTor() const {
+  return is_tor_;
 }
