@@ -289,7 +289,7 @@
     "@types/storybook__react": "^4.0.2",
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.6",
-    "brave-ui": "github:brave/brave-ui#a833be9c5a54922b32da40104451bfd6c5b76cb3",
+    "brave-ui": "github:brave/brave-ui#ff478da4994365d9a289518994352fe2a0c4be06",
     "css-loader": "^2.1.1",
     "csstype": "^2.5.5",
     "deep-freeze-node": "^1.1.3",
