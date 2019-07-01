@@ -37,15 +37,11 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
   explicit ProxyConfigServiceTor(const std::string& proxy_uri);
   ~ProxyConfigServiceTor() override;
 
-  static std::string CircuitIsolationKey(const GURL& request_url);
-  static bool IsTorProxy(const net::NetworkTrafficAnnotationTag tag);
+  void SetNewTorCircuit(const GURL& url);
   static void SetProxyAuthorization(const ProxyConfigWithAnnotation& config,
                                     const GURL& url,
                                     ProxyResolutionService* service,
                                     ProxyInfo* result);
-
-
-  void SetNewTorCircuit(const GURL& url);
 
   // ProxyConfigService methods:
   void AddObserver(Observer* observer) override;

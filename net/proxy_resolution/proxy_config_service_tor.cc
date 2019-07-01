@@ -70,6 +70,47 @@ constexpr NetworkTrafficAnnotationTag kTorProxyTrafficAnnotation =
 static base::NoDestructor<std::map<
     ProxyResolutionService*, TorProxyMap>> tor_proxy_map_;
 
+bool IsTorProxyConfig(const ProxyConfigWithAnnotation& config) {
+  auto tag = config.traffic_annotation();
+  // iterate through tor_proxy_map_ and remove any entries with
+  // empty TorProxyMap (all entries have expired)
+  // we do this here because the other methods are only called when
+  // IsTorProxy is true so the last entry will never be deleted
+  for (auto it = tor_proxy_map_.get()->cbegin();
+       it != tor_proxy_map_.get()->cend(); ) {
+    if (it->second.size() == 0) {
+      tor_proxy_map_->erase(it++);
+    } else {
+      ++it;
+    }
+  }
+
+  return tag.unique_id_hash_code ==
+         kTorProxyTrafficAnnotation.unique_id_hash_code;
+}
+
+std::string CircuitIsolationKey(const GURL& url) {
+  // https://2019.www.torproject.org/projects/torbrowser/design/#privacy
+  //
+  //    For the purposes of the unlinkability requirements of this
+  //    section as well as the descriptions in the implementation
+  //    section, a URL bar origin means at least the second-level DNS
+  //    name.  For example, for mail.google.com, the origin would be
+  //    google.com.  Implementations MAY, at their option, restrict
+  //    the URL bar origin to be the entire fully qualified domain
+  //    name.
+  //
+  // In particular, we need not isolate by the scheme,
+  // username/password, port, path, or query part of the URL.
+  url::Origin origin = url::Origin::Create(url);
+  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
+      origin.host(),
+      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
+  if (domain.size() == 0)
+    domain = origin.host();
+  return domain;
+}
+
 }  // namespace
 
 const int kTorPasswordLength = 16;
@@ -93,7 +134,7 @@ ProxyConfigServiceTor::~ProxyConfigServiceTor() {}
 void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {
   const HostPortPair old_host_port = proxy_server_.host_port_pair();
   const HostPortPair new_host_port(
-      ProxyConfigServiceTor::CircuitIsolationKey(url),
+      CircuitIsolationKey(url),
       std::to_string(base::Time::Now().ToTimeT()),
       old_host_port.host(),
       old_host_port.port());
@@ -108,60 +149,17 @@ void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {
 }
 
 // static
-std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
-  // https://2019.www.torproject.org/projects/torbrowser/design/#privacy
-  //
-  //    For the purposes of the unlinkability requirements of this
-  //    section as well as the descriptions in the implementation
-  //    section, a URL bar origin means at least the second-level DNS
-  //    name.  For example, for mail.google.com, the origin would be
-  //    google.com.  Implementations MAY, at their option, restrict
-  //    the URL bar origin to be the entire fully qualified domain
-  //    name.
-  //
-  // In particular, we need not isolate by the scheme,
-  // username/password, port, path, or query part of the URL.
-  url::Origin origin = url::Origin::Create(url);
-  std::string domain = net::registry_controlled_domains::GetDomainAndRegistry(
-      origin.host(),
-      net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
-  if (domain.size() == 0)
-    domain = origin.host();
-  return domain;
-}
-
-// static
-bool ProxyConfigServiceTor::IsTorProxy(
-    const net::NetworkTrafficAnnotationTag tag) {
-  // iterate through tor_proxy_map_ and remove any entries with
-  // empty TorProxyMap (all entries have expired)
-  // we do this here because the other methods are only called when
-  // IsTorProxy is true so the last entry will never be deleted
-  for (auto it = tor_proxy_map_.get()->cbegin();
-       it != tor_proxy_map_.get()->cend(); ) {
-    if (it->second.size() == 0) {
-      tor_proxy_map_->erase(it++);
-    } else {
-      ++it;
-    }
-  }
-
-  return tag.unique_id_hash_code ==
-         kTorProxyTrafficAnnotation.unique_id_hash_code;
-}
-
-// static
 void ProxyConfigServiceTor::SetProxyAuthorization(
     const ProxyConfigWithAnnotation& config,
     const GURL& url,
     ProxyResolutionService* service,
     ProxyInfo* result) {
-  if (!IsTorProxy(config.traffic_annotation()))
+  if (!IsTorProxyConfig(config))
     return;
 
   // Adding username & password to global sock://127.0.0.1:[port] config
   // without actually modifying it when resolving proxy for each url.
-  const std::string username = ProxyConfigServiceTor::CircuitIsolationKey(url);
+  const std::string username = CircuitIsolationKey(url);
   const std::string& proxy_uri =
       config.value().proxy_rules().single_proxies.Get().ToURI();
   HostPortPair host_port_pair = HostPortPair::FromString(proxy_uri);
