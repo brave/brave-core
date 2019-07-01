@@ -30,6 +30,8 @@ class DefaultBraveShieldsHandler : public settings::SettingsPageUIHandler {
   void GetHTTPSEverywhereControlType(const base::ListValue* args);
   void SetNoScriptControlType(const base::ListValue* args);
   void GetNoScriptControlType(const base::ListValue* args);
+  void SetSpeedreaderEverywhereControlType(const base::ListValue* args);
+  void GetSpeedreaderEverywhereControlType(const base::ListValue* args);
 
   Profile* profile_ = nullptr;
 

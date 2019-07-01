@@ -20,6 +20,7 @@ const char kCookies[] = "cookies";
 const char kFacebookEmbeds[] = "fb-embeds";
 const char kTwitterEmbeds[] = "twitter-embeds";
 const char kLinkedInEmbeds[] = "linked-in-embeds";
+const char kSpeedreader[] = "speedreader";
 
 }  // namespace brave_shields
 

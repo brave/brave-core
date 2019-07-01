@@ -41,6 +41,11 @@ cr.define('settings', function() {
      * @param {string} value name.
      */
     setNoScriptControlType(value) {}
+
+    /**
+     * @param {string} value name.
+     */
+    setSpeedreaderEverywhereControlType(value) {}
   }
 
   /**
@@ -85,6 +90,11 @@ cr.define('settings', function() {
     /** @override */
     setNoScriptControlType(value) {
       chrome.send('setNoScriptControlType', [value]);
+    }
+
+    /** @override */
+    setSpeedreaderEverywhereControlType(value) {
+      chrome.send('setSpeedreaderEverywhereControlType', [value]);
     }
   }
 

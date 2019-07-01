@@ -65,6 +65,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kFBEmbedControlType, true);
   registry->RegisterBooleanPref(kTwitterEmbedControlType, true);
   registry->RegisterBooleanPref(kLinkedInEmbedControlType, false);
+  registry->RegisterBooleanPref(kSpeedreaderEverywhereControlType, false);
 
   // WebTorrent
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)

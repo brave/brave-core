@@ -49,6 +49,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
   (*s_brave_whitelist)[kLinkedInEmbedControlType] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  (*s_brave_whitelist)[kSpeedreaderEverywhereControlType] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
 
   // appearance prefs
   (*s_brave_whitelist)[kLocationBarIsWide] =

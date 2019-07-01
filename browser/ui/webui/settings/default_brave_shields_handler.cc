@@ -54,6 +54,11 @@ void DefaultBraveShieldsHandler::RegisterMessages() {
       "setNoScriptControlType",
       base::BindRepeating(&DefaultBraveShieldsHandler::SetNoScriptControlType,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setSpeedreaderEverywhereControlType",
+      base::BindRepeating(
+          &DefaultBraveShieldsHandler::SetSpeedreaderEverywhereControlType,
+          base::Unretained(this)));
 }
 
 void DefaultBraveShieldsHandler::GetAdControlType(const base::ListValue* args) {
@@ -228,5 +233,21 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
         ContentSettingsPattern::Wildcard(),
         CONTENT_SETTINGS_TYPE_JAVASCRIPT,
         "",
+        value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
+}
+
+void DefaultBraveShieldsHandler::SetSpeedreaderEverywhereControlType(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  bool value;
+  args->GetBoolean(0, &value);
+
+  HostContentSettingsMapFactory::GetForProfile(profile_)->
+      SetContentSettingCustomScope(
+        ContentSettingsPattern::Wildcard(),
+        ContentSettingsPattern::Wildcard(),
+        CONTENT_SETTINGS_TYPE_PLUGINS,
+        brave_shields::kSpeedreader,
         value ? CONTENT_SETTING_BLOCK : CONTENT_SETTING_ALLOW);
 }

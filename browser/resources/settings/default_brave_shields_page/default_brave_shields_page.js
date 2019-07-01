@@ -56,6 +56,7 @@ Polymer({
     this.onFingerprintingControlChange_ = this.onFingerprintingControlChange_.bind(this)
     this.onHTTPSEverywhereControlChange_ = this.onHTTPSEverywhereControlChange_.bind(this)
     this.onNoScriptControlChange_ = this.onNoScriptControlChange_.bind(this)
+    this.onSpeedreaderEverywhereControlChange_ = this.onSpeedreaderEverywhereControlChange_.bind(this)
 
     this.browserProxy_.getCookieControlType().then(value => {
       this.cookieControlType_ = value;
@@ -89,6 +90,9 @@ Polymer({
   },
   onNoScriptControlChange_: function() {
     this.browserProxy_.setNoScriptControlType(this.$.noScriptControlType.checked);
-  }
+  },
+  onSpeedreaderEverywhereControlChange_: function() {
+    this.browserProxy_.setSpeedreaderEverywhereControlType(this.$.speedreaderEverywhereControlType.checked);
+  },
 });
 })();

@@ -16,6 +16,7 @@ bool IsShieldsResourceID(
       resource_identifier == brave_shields::kJavaScript ||
       resource_identifier == brave_shields::kFingerprinting ||
       resource_identifier == brave_shields::kBraveShields ||
+      resource_identifier == brave_shields::kSpeedreader ||
       resource_identifier == brave_shields::kReferrers ||
       resource_identifier == brave_shields::kCookies) {
     return true;

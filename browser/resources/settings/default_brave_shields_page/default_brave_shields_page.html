@@ -67,6 +67,11 @@
         </template>
       </select>
     </div>
+    <settings-toggle-button id="speedreaderEverywhereControlType"
+        pref="{{prefs.brave.speedreader_everywhere_default}}"
+        label="$i18n{speedreaderEverywhereControlLabel}"
+        on-settings-boolean-control-change="onSpeedreaderEverywhereControlChange_">
+    </settings-toggle-button>
   </template>
   <script src="default_brave_shields_page.js"></script>
 </dom-module>

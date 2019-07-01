@@ -123,7 +123,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
     {"ipfsCompanionEnabledDesc",
       IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC},
     {"manageExtensionsLabel",
-      IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL}
+      IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL},
+    {"speedreaderEverywhereControlLabel",
+      IDS_SETTINGS_BRAVE_SHIELDS_SPEEDREADER_EVERYWHERE_CONTROL_LABEL},
   };
   AddLocalizedStringsBulk(html_source, localized_strings,
                           base::size(localized_strings));

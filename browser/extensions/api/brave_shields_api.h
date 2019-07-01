@@ -20,6 +20,16 @@ class BraveShieldsAllowScriptsOnceFunction : public UIThreadExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveShieldsDisableSpeedreaderOnceFunction : public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveShields.disableSpeedreaderOnce", UNKNOWN)
+
+ protected:
+  ~BraveShieldsDisableSpeedreaderOnceFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveShieldsContentSettingGetFunction
     : public UIThreadExtensionFunction {
  public:
