@@ -7,6 +7,10 @@ set -exu
 # dates below. These keys will be used for signing the packages
 # that we ship. We will update this table as keys are changed.
 #
+# THESE ARE THE MASTER KEY FINGERPRINTS, NOT THE SIGNING SUBKEY
+# FINGERPRINTS. THIS IS FOR CONSISTENCY BECAUSE THE NIGHTLY KEY
+# DOESN'T HAVE A SIGNING SUBKEY.
+#
 # Date          Channel       Fingerprint           Full Key
 #
 # 06/26/2019    Release       0x0BB75829C2D4E821    D8BAD4DE7EE17AF52A834B2D0BB75829C2D4E821
