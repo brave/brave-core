@@ -24,6 +24,27 @@
 
 namespace net {
 
+// Used to cache <username, password> of proxies
+class TorProxyMap {
+ public:
+  TorProxyMap();
+  ~TorProxyMap();
+  std::string Get(const std::string& key);
+  void Erase(const std::string& key);
+  void MaybeExpire(const std::string& key, const base::Time& timestamp);
+  size_t size() const;
+
+ private:
+  // Generate a new base 64-encoded 128 bit random tag
+  static std::string GenerateNewPassword();
+  // Clear expired entries in the queue from the map.
+  void ClearExpiredEntries();
+  std::map<std::string, std::pair<std::string, base::Time>> map_;
+  std::priority_queue<std::pair<base::Time, std::string>> queue_;
+  base::OneShotTimer timer_;
+  DISALLOW_COPY_AND_ASSIGN(TorProxyMap);
+};
+
 namespace {
 
 constexpr NetworkTrafficAnnotationTag kTorProxyTrafficAnnotation =
@@ -47,8 +68,7 @@ constexpr NetworkTrafficAnnotationTag kTorProxyTrafficAnnotation =
       })");
 
 static base::NoDestructor<std::map<
-    ProxyResolutionService*,
-    ProxyConfigServiceTor::TorProxyMap>> tor_proxy_map_;
+    ProxyResolutionService*, TorProxyMap>> tor_proxy_map_;
 
 }  // namespace
 
@@ -56,7 +76,7 @@ const int kTorPasswordLength = 16;
 // Default tor circuit life time is 10 minutes
 constexpr base::TimeDelta kTenMins = base::TimeDelta::FromMinutes(10);
 
-ProxyConfigServiceTor::TorProxyMap* GetTorProxyMap(
+TorProxyMap* GetTorProxyMap(
     ProxyResolutionService* service) {
   return &(tor_proxy_map_.get()->operator[](service));
 }
@@ -191,19 +211,19 @@ ProxyConfigServiceTor::GetLatestProxyConfig(
   return CONFIG_VALID;
 }
 
-ProxyConfigServiceTor::TorProxyMap::TorProxyMap() = default;
-ProxyConfigServiceTor::TorProxyMap::~TorProxyMap() {
+TorProxyMap::TorProxyMap() = default;
+TorProxyMap::~TorProxyMap() {
   timer_.Stop();
 }
 
 // static
-std::string ProxyConfigServiceTor::TorProxyMap::GenerateNewPassword() {
+std::string TorProxyMap::GenerateNewPassword() {
   std::vector<uint8_t> password(kTorPasswordLength);
   crypto::RandBytes(password.data(), password.size());
   return base::HexEncode(password.data(), password.size());
 }
 
-std::string ProxyConfigServiceTor::TorProxyMap::Get(
+std::string TorProxyMap::Get(
     const std::string& username) {
   // Clear any expired entries, in case this one has expired.
   ClearExpiredEntries();
@@ -225,16 +245,16 @@ std::string ProxyConfigServiceTor::TorProxyMap::Get(
   // TODO(bridiver) - the timer should be in the ProxyConfigServiceTor class
   timer_.Stop();
   timer_.Start(FROM_HERE, kTenMins, this,
-               &ProxyConfigServiceTor::TorProxyMap::ClearExpiredEntries);
+               &TorProxyMap::ClearExpiredEntries);
 
   return password;
 }
 
-size_t ProxyConfigServiceTor::TorProxyMap::size() const {
+size_t TorProxyMap::size() const {
   return map_.size();
 }
 
-void ProxyConfigServiceTor::TorProxyMap::Erase(const std::string& username) {
+void TorProxyMap::Erase(const std::string& username) {
   // Just erase it from the map.  There will remain an entry in the
   // queue, but it is harmless.  If anyone creates a new entry in the
   // map, the old entry in the queue will cease to affect it because
@@ -243,7 +263,7 @@ void ProxyConfigServiceTor::TorProxyMap::Erase(const std::string& username) {
   map_.erase(username);
 }
 
-void ProxyConfigServiceTor::TorProxyMap::MaybeExpire(
+void TorProxyMap::MaybeExpire(
     const std::string& username,
     const base::Time& timestamp) {
   auto found = map_.find(username);
@@ -253,7 +273,7 @@ void ProxyConfigServiceTor::TorProxyMap::MaybeExpire(
   }
 }
 
-void ProxyConfigServiceTor::TorProxyMap::ClearExpiredEntries() {
+void TorProxyMap::ClearExpiredEntries() {
   const base::Time cutoff = base::Time::Now() - kTenMins;
   for (; !queue_.empty(); queue_.pop()) {
     // Check the timestamp.  If it's not older than the cutoff, stop.

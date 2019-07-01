@@ -12,9 +12,10 @@ source_set("tor") {
 
   deps = [
     ":pref_names",
-    ":proxy_uri",
     "//base",
+    "//chrome/common:channel_info",
     "//chrome/common:constants",
+    "//components/version_info",
     "//url:url",
   ]
 }
@@ -33,17 +34,5 @@ mojom("tor_mojom_bindings") {
   ]
   public_deps = [
     "//mojo/public/mojom/base",
-  ]
-}
-
-source_set("proxy_uri") {
-  sources = [
-    "tor_proxy_uri_helper.cc",
-    "tor_proxy_uri_helper.h",
-  ]
-
-  deps = [
-    "//chrome/common:channel_info",
-    "//components/version_info",
   ]
 }

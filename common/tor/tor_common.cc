@@ -15,7 +15,8 @@ namespace tor {
 
 TorConfig::TorConfig() {}
 
-TorConfig::TorConfig(base::FilePath& binary_path, std::string& proxy_string)
+TorConfig::TorConfig(const base::FilePath& binary_path,
+                     const std::string& proxy_string)
   : binary_path_(binary_path),
     proxy_string_(proxy_string) {
   if (proxy_string.length()) {

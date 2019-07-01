@@ -34,27 +34,6 @@ class ProxyResolutionService;
 // Implementation of ProxyConfigService that returns a tor specific result.
 class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
  public:
-  // Used to cache <username, password> of proxies
-  class TorProxyMap {
-   public:
-    TorProxyMap();
-    ~TorProxyMap();
-    std::string Get(const std::string& key);
-    void Erase(const std::string& key);
-    void MaybeExpire(const std::string& key, const base::Time& timestamp);
-    size_t size() const;
-
-   private:
-    // Generate a new base 64-encoded 128 bit random tag
-    static std::string GenerateNewPassword();
-    // Clear expired entries in the queue from the map.
-    void ClearExpiredEntries();
-    std::map<std::string, std::pair<std::string, base::Time>> map_;
-    std::priority_queue<std::pair<base::Time, std::string>> queue_;
-    base::OneShotTimer timer_;
-    DISALLOW_COPY_AND_ASSIGN(TorProxyMap);
-  };
-
   explicit ProxyConfigServiceTor(const std::string& proxy_uri);
   ~ProxyConfigServiceTor() override;
 
@@ -75,11 +54,6 @@ class NET_EXPORT ProxyConfigServiceTor : public net::ProxyConfigService {
       net::ProxyConfigWithAnnotation* config) override;
 
  private:
-  // void OnProxyConfigChanged(net::ProxyConfigWithAnnotation* config);
-  // void SetUsername(const std::string& username);
-
-  // base::RepeatingTimer timer_;
-  ProxyConfigServiceTor::TorProxyMap map_;
   base::ObserverList<Observer>::Unchecked observers_;
   ProxyServer proxy_server_;
 };

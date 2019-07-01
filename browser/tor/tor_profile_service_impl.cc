@@ -10,16 +10,11 @@
 
 #include "base/bind.h"
 #include "base/task/post_task.h"
-#include "brave/browser/brave_browser_process_impl.h"
-// TODO(bridiver) - move this out of extensions
-#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
-#include "brave/common/tor/tor_proxy_uri_helper.h"
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 #include "chrome/browser/profiles/profile.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
@@ -127,11 +122,7 @@ TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
   tor_launcher_factory_->AddObserver(this);
 
   if (GetTorPid() < 0) {
-    base::FilePath path =
-        g_brave_browser_process->tor_client_updater()->GetExecutablePath();
-    std::string proxy = g_browser_process->local_state()->GetString(
-        tor::prefs::kTorProxyString);
-    tor::TorConfig config(path, proxy);
+    tor::TorConfig config(GetTorExecutablePath(), GetTorProxyURI());
     LaunchTor(config);
   }
 }
@@ -202,7 +193,7 @@ void TorProfileServiceImpl::NotifyTorLaunched(bool result, int64_t pid) {
 
 std::unique_ptr<net::ProxyConfigService>
 TorProfileServiceImpl::CreateProxyConfigService() {
-  proxy_config_service_ = new net::ProxyConfigServiceTor(tor::GetTorProxyURI());
+  proxy_config_service_ = new net::ProxyConfigServiceTor(GetTorProxyURI());
   return std::unique_ptr<net::ProxyConfigServiceTor>(proxy_config_service_);
 }
 

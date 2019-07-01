@@ -21,8 +21,8 @@ class BraveProfileManager : public ProfileManager {
    void SetNonPersonalProfilePrefs(Profile* profile) override;
 
    void OnProfileCreated(Profile* profile,
-                        bool success,
-                        bool is_new_profile) override;
+                         bool success,
+                         bool is_new_profile) override;
 
  protected:
    void DoFinalInitForServices(Profile* profile,

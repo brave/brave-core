@@ -12,7 +12,8 @@ namespace tor {
 class TorConfig {
  public:
   TorConfig();
-  explicit TorConfig(base::FilePath& binary_path, std::string& proxy_config);
+  explicit TorConfig(const base::FilePath& binary_path,
+                     const std::string& proxy_config);
   TorConfig(const TorConfig& that);
   ~TorConfig();
 
