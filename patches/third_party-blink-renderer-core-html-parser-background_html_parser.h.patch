@@ -1,0 +1,32 @@
+diff --git a/third_party/blink/renderer/core/html/parser/background_html_parser.h b/third_party/blink/renderer/core/html/parser/background_html_parser.h
+index 474f5717c339c272f79a20e65b465f0849f1e28e..431390388588312bcf03ef6fc2ac42dc2fbae038 100644
+--- a/third_party/blink/renderer/core/html/parser/background_html_parser.h
++++ b/third_party/blink/renderer/core/html/parser/background_html_parser.h
+@@ -31,6 +31,7 @@
+ #include "base/macros.h"
+ #include "base/memory/weak_ptr.h"
+ #include "base/single_thread_task_runner.h"
++#include "brave/vendor/speedreader_rust_ffi/src/wrapper.hpp"
+ #include "third_party/blink/renderer/core/dom/document_encoding_data.h"
+ #include "third_party/blink/renderer/core/html/parser/background_html_input_stream.h"
+ #include "third_party/blink/renderer/core/html/parser/compact_html_token.h"
+@@ -69,7 +70,8 @@ class BackgroundHTMLParser {
+   void Init(const KURL& document_url,
+             std::unique_ptr<CachedDocumentParameters>,
+             const MediaValuesCached::MediaValuesCachedData&,
+-            bool priority_hints_origin_trial_enabled);
++            bool priority_hints_origin_trial_enabled,
++            bool speedreader_enabled);
+ 
+   struct Checkpoint {
+     USING_FAST_MALLOC(Checkpoint);
+@@ -131,6 +133,9 @@ class BackgroundHTMLParser {
+ 
+   bool starting_script_;
+ 
++  bool speedreader_enabled_;
++  speedreader::SpeedReader speedreader_;
++
+   base::WeakPtrFactory<BackgroundHTMLParser> weak_factory_;
+ 
+   DISALLOW_COPY_AND_ASSIGN(BackgroundHTMLParser);

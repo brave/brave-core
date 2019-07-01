@@ -1,0 +1,41 @@
+diff --git a/third_party/blink/renderer/core/html/parser/html_document_parser.cc b/third_party/blink/renderer/core/html/parser/html_document_parser.cc
+index e7d0fa65929c5a4d65c1417377bd73863e531cc7..39a386cc1a4dc0b50ab808122346370d2ed852ce 100644
+--- a/third_party/blink/renderer/core/html/parser/html_document_parser.cc
++++ b/third_party/blink/renderer/core/html/parser/html_document_parser.cc
+@@ -33,6 +33,7 @@
+ #include "third_party/blink/public/platform/platform.h"
+ #include "third_party/blink/public/platform/task_type.h"
+ #include "third_party/blink/public/platform/web_loading_behavior_flag.h"
++#include "third_party/blink/public/platform/web_content_settings_client.h"
+ #include "third_party/blink/renderer/core/css/media_values_cached.h"
+ #include "third_party/blink/renderer/core/css/resolver/style_resolver.h"
+ #include "third_party/blink/renderer/core/dom/document_fragment.h"
+@@ -805,11 +806,27 @@ void HTMLDocumentParser::StartBackgroundParser() {
+   bool priority_hints_origin_trial_enabled =
+       RuntimeEnabledFeatures::PriorityHintsEnabled(GetDocument());
+ 
++  bool speedreader_enabled = false;
++  if (auto* document = GetDocument()) {
++    if (auto* frame = document->GetFrame()) {
++      if (auto* settings_client = frame->GetContentSettingsClient()) {
++        // LOG(ERROR) << "Content settings client acquired";
++        if (settings_client->RunSpeedreader(GetDocument()->GetFrame())) {
++          LOG(ERROR) << "Run Speedreader";
++          speedreader_enabled = true;
++        } else {
++          LOG(ERROR) << "NOT Run Speedreader";
++        }
++      }
++    }
++  }
++
+   background_parser_->Init(
+       GetDocument()->Url(),
+       std::make_unique<CachedDocumentParameters>(GetDocument()),
+       MediaValuesCached::MediaValuesCachedData(*GetDocument()),
+-      priority_hints_origin_trial_enabled);
++      priority_hints_origin_trial_enabled,
++      speedreader_enabled);
+ }
+ 
+ void HTMLDocumentParser::StopBackgroundParser() {

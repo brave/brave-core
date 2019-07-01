@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/browser/content_settings_utils.cc b/components/content_settings/core/browser/content_settings_utils.cc
-index cb34da5261318ce6c64eb3863713d00be1dd6ea5..dba64156cd6fbb4d3ce699830ecb9996b4cd7419 100644
+index cb34da5261318ce6c64eb3863713d00be1dd6ea5..ab057632c4a601eaa84b4a5a940f61b75df8a40b 100644
 --- a/components/content_settings/core/browser/content_settings_utils.cc
 +++ b/components/content_settings/core/browser/content_settings_utils.cc
-@@ -146,6 +146,14 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
+@@ -146,6 +146,18 @@ void GetRendererContentSettingRules(const HostContentSettingsMap* map,
                               &(rules->client_hints_rules));
    map->GetSettingsForOneType(CONTENT_SETTINGS_TYPE_POPUPS, ResourceIdentifier(),
                               &(rules->popup_redirect_rules));
@@ -14,6 +14,10 @@ index cb34da5261318ce6c64eb3863713d00be1dd6ea5..dba64156cd6fbb4d3ce699830ecb9996
 +      CONTENT_SETTINGS_TYPE_PLUGINS,
 +      "braveShields",
 +      &(rules->brave_shields_rules));
++  map->GetSettingsForOneType(
++      CONTENT_SETTINGS_TYPE_PLUGINS,
++      "speedreader",
++      &(rules->speedreader_rules));
  }
  
  bool IsMorePermissive(ContentSetting a, ContentSetting b) {

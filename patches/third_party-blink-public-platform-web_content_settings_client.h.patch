@@ -1,13 +1,18 @@
 diff --git a/third_party/blink/public/platform/web_content_settings_client.h b/third_party/blink/public/platform/web_content_settings_client.h
-index 39d76ac9336ae713171291f45960e0bf23bb881b..318b902754d4524c91c94e6c4a90714b450526be 100644
+index 39d76ac9336ae713171291f45960e0bf23bb881b..d65aa9c34e104e629853be4ee38e6eb0d16f9ce1 100644
 --- a/third_party/blink/public/platform/web_content_settings_client.h
 +++ b/third_party/blink/public/platform/web_content_settings_client.h
-@@ -60,6 +60,11 @@ class WebContentSettingsClient {
+@@ -60,6 +60,16 @@ class WebContentSettingsClient {
      return enabled_per_settings;
    }
  
 +  // Controls whether fingerprinting is allowed for this frame.
 +  virtual bool AllowFingerprinting(bool enabled_per_settings) {
++    return enabled_per_settings;
++  }
++
++  // Controls whether SpeedReader is allowed for this frame.
++  virtual bool RunSpeedreader(bool enabled_per_settings) {
 +    return enabled_per_settings;
 +  }
 +

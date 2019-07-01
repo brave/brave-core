@@ -1,0 +1,10 @@
+diff --git a/tools/v8_context_snapshot/v8_context_snapshot.gni b/tools/v8_context_snapshot/v8_context_snapshot.gni
+index 6a6f477ad3f543680cd6485bdf6b0e82d567012c..18e83d56e7e40d3071128a05d35ac41864f898f2 100644
+--- a/tools/v8_context_snapshot/v8_context_snapshot.gni
++++ b/tools/v8_context_snapshot/v8_context_snapshot.gni
+@@ -24,3 +24,5 @@ declare_args() {
+ if (use_v8_context_snapshot && !v8_use_external_startup_data) {
+   use_v8_context_snapshot = false
+ }
++
++use_v8_context_snapshot = false

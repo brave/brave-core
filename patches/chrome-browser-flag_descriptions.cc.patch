@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/flag_descriptions.cc b/chrome/browser/flag_descriptions.cc
+index 91e5c085a04b50088974fc3ed7bc225f7ef6abf0..096d00b0974cb2266cccc81c3dddeadca502ec88 100644
+--- a/chrome/browser/flag_descriptions.cc
++++ b/chrome/browser/flag_descriptions.cc
+@@ -1860,6 +1860,10 @@ const char kSSLCommittedInterstitialsDescription[] =
+     "Use committed error pages instead of transient navigation entries "
+     "for SSL interstitial error pages (i.e. certificate errors).";
+ 
++const char kSpeedReaderName[] = "Enable SpeedReader";
++const char kSpeedReaderDescription[] =
++    "Enable SpeedReader by default for all pages deemed to be reader-able.";
++
+ const char kStopInBackgroundName[] = "Stop in background";
+ const char kStopInBackgroundDescription[] =
+     "Stop scheduler task queues, in the background, "

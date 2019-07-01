@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 1f0fc06e15e9223d6004fe1837e90b447e035b07..948e1a43a5999c91d882a8c40b88fe668eb3e3dc 100644
+index 1f0fc06e15e9223d6004fe1837e90b447e035b07..15d225192ab361e520816ab23a4b2ea68d599639 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -266,14 +266,14 @@ const FeatureEntry::Choice kTouchTextSelectionStrategyChoices[] = {
@@ -21,3 +21,14 @@ index 1f0fc06e15e9223d6004fe1837e90b447e035b07..948e1a43a5999c91d882a8c40b88fe66
  
  const FeatureEntry::Choice kPassiveListenersChoices[] = {
      {flags_ui::kGenericExperimentChoiceDefault, "", ""},
+@@ -4025,6 +4025,10 @@ const FeatureEntry kFeatureEntries[] = {
+      flag_descriptions::kAllowPopupsDuringPageUnloadDescription, kOsAll,
+      SINGLE_VALUE_TYPE(switches::kAllowPopupsDuringPageUnload)},
+ 
++    {"enable-speedreader", flag_descriptions::kSpeedReaderName,
++     flag_descriptions::kSpeedReaderDescription, kOsAll,
++     FEATURE_VALUE_TYPE(blink::features::kSpeedReader)},
++
+     // NOTE: Adding a new flag requires adding a corresponding entry to enum
+     // "LoginCustomFlags" in tools/metrics/histograms/enums.xml. See "Flag
+     // Histograms" in tools/metrics/histograms/README.md (run the

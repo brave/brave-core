@@ -131,6 +131,7 @@ declare namespace chrome.braveShields {
   }
 
   const allowScriptsOnce: any
+  const disableSpeedreaderOnce: any
   const javascript: any
   const plugins: any
 }

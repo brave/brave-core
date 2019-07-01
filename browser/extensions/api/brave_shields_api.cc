@@ -82,6 +82,33 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
   return RespondNow(NoArguments());
 }
 
+BraveShieldsDisableSpeedreaderOnceFunction::~BraveShieldsDisableSpeedreaderOnceFunction() {
+}
+
+ExtensionFunction::ResponseAction BraveShieldsDisableSpeedreaderOnceFunction::Run() {
+  std::unique_ptr<brave_shields::DisableSpeedreaderOnce::Params> params(
+      brave_shields::DisableSpeedreaderOnce::Params::Create(*args_));
+  EXTENSION_FUNCTION_VALIDATE(params.get());
+
+  // Get web contents for this tab
+  content::WebContents* contents = nullptr;
+  if (!ExtensionTabUtil::GetTabById(
+        params->tab_id,
+        Profile::FromBrowserContext(browser_context()),
+        include_incognito_information(),
+        nullptr,
+        nullptr,
+        &contents,
+        nullptr)) {
+    return RespondNow(Error(tabs_constants::kTabNotFoundError,
+                            base::NumberToString(params->tab_id)));
+  }
+
+  BraveShieldsWebContentsObserver::FromWebContents(
+      contents)->DisableSpeedreaderOnce(params->origins, contents);
+  return RespondNow(NoArguments());
+}
+
 ExtensionFunction::ResponseAction
 BraveShieldsContentSettingGetFunction::Run() {
   ContentSettingsType content_type;

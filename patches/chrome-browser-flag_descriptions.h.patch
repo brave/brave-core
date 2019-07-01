@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/flag_descriptions.h b/chrome/browser/flag_descriptions.h
+index c8e596e473bc87923d20e3fc95ceecce12c9a8ac..8becce2fb65cba5610d443b60e0c1e8fed4fb8ae 100644
+--- a/chrome/browser/flag_descriptions.h
++++ b/chrome/browser/flag_descriptions.h
+@@ -1109,6 +1109,9 @@ extern const char kSpeculativeServiceWorkerStartOnQueryInputDescription[];
+ extern const char kSSLCommittedInterstitialsName[];
+ extern const char kSSLCommittedInterstitialsDescription[];
+ 
++extern const char kSpeedReaderName[];
++extern const char kSpeedReaderDescription[];
++
+ extern const char kStopInBackgroundName[];
+ extern const char kStopInBackgroundDescription[];
+ 

@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/html/parser/background_html_input_stream.h b/third_party/blink/renderer/core/html/parser/background_html_input_stream.h
+index a32e032d386ba99af28535d32938a663b6f724ac..e3d4f53d1c84bad756e233e6e7df43312c782694 100644
+--- a/third_party/blink/renderer/core/html/parser/background_html_input_stream.h
++++ b/third_party/blink/renderer/core/html/parser/background_html_input_stream.h
+@@ -53,6 +53,7 @@ class BackgroundHTMLInputStream {
+       wtf_size_t tokens_extracted_since_previous_checkpoint);
+   void RewindTo(HTMLInputCheckpoint, const String& unparsed_input);
+   void InvalidateCheckpointsBefore(HTMLInputCheckpoint);
++  void ResetTo(const String& unparsed_input);
+ 
+   wtf_size_t TotalCheckpointTokenCount() const {
+     return total_checkpoint_token_count_;

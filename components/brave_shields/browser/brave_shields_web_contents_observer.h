@@ -46,6 +46,8 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
                                            int render_frame_tree_node_id);
   void AllowScriptsOnce(const std::vector<std::string>& origins,
                         content::WebContents* web_contents);
+  void DisableSpeedreaderOnce(const std::vector<std::string>& origins,
+                        content::WebContents* web_contents);
   bool IsBlockedSubresource(const std::string& subresource);
   void AddBlockedSubresource(const std::string& subresource);
 
@@ -95,6 +97,7 @@ class BraveShieldsWebContentsObserver : public content::WebContentsObserver,
  private:
   friend class content::WebContentsUserData<BraveShieldsWebContentsObserver>;
   std::vector<std::string> allowed_script_origins_;
+  std::vector<std::string> disabled_speedreader_origins_;
   // We keep a set of the current page's blocked URLs in case the page
   // continually tries to load the same blocked URLs.
   std::set<std::string> blocked_url_paths_;

@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/common/features.cc b/third_party/blink/common/features.cc
+index 6db2247d62097ec684884cd55d3f1be5ad9b0184..6b25e940897f9f686cf0e8197a15b30fcfa60958 100644
+--- a/third_party/blink/common/features.cc
++++ b/third_party/blink/common/features.cc
+@@ -181,6 +181,10 @@ const base::Feature kServiceWorkerAggressiveCodeCache{
+ const base::Feature kServiceWorkerUpdateDelay{
+     "ServiceWorkerUpdateDelay", base::FEATURE_DISABLED_BY_DEFAULT};
+ 
++// Experiment of enabling SpeedReader by default for all pages deemed to be reader-able
++const base::Feature kSpeedReader{
++    "SpeedReader", base::FEATURE_DISABLED_BY_DEFAULT};
++
+ // Freeze scheduler task queues in background after allowed grace time.
+ // "stop" is a legacy name.
+ const base::Feature kStopInBackground {

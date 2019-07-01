@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/renderer_updater.cc b/chrome/browser/profiles/renderer_updater.cc
-index 9dd42523f9704f57279abec23efb8bd07c4e8cfa..b6df2558a703c4c461910ee811a3177d79899115 100644
+index 9dd42523f9704f57279abec23efb8bd07c4e8cfa..a3ab90bc7fc5c1698e96061928d14fa1445f6d3d 100644
 --- a/chrome/browser/profiles/renderer_updater.cc
 +++ b/chrome/browser/profiles/renderer_updater.cc
-@@ -53,6 +53,16 @@ void GetGuestViewDefaultContentSettingRules(
+@@ -53,6 +53,21 @@ void GetGuestViewDefaultContentSettingRules(
        base::Value::FromUniquePtrValue(
            content_settings::ContentSettingToValue(CONTENT_SETTING_BLOCK)),
        std::string(), incognito));
@@ -12,6 +12,11 @@ index 9dd42523f9704f57279abec23efb8bd07c4e8cfa..b6df2558a703c4c461910ee811a3177d
 +        content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
 +      std::string(), incognito));
 +  rules->brave_shields_rules.push_back(ContentSettingPatternSource(
++      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
++      base::Value::FromUniquePtrValue(
++        content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),
++      std::string(), incognito));
++  rules->speedreader_rules.push_back(ContentSettingPatternSource(
 +      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
 +      base::Value::FromUniquePtrValue(
 +        content_settings::ContentSettingToValue(CONTENT_SETTING_ALLOW)),

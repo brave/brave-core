@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings_struct_traits.h b/components/content_settings/core/common/content_settings_struct_traits.h
-index 55d50d612b0308ce6a877b7430a6d0eb86603d53..aa35e5146fa4b43437223e1175b0504b7f617e85 100644
+index 55d50d612b0308ce6a877b7430a6d0eb86603d53..4df950827821665e3264d5fee3081e56d7267076 100644
 --- a/components/content_settings/core/common/content_settings_struct_traits.h
 +++ b/components/content_settings/core/common/content_settings_struct_traits.h
-@@ -145,6 +145,16 @@ struct StructTraits<
+@@ -145,6 +145,21 @@ struct StructTraits<
      return r.popup_redirect_rules;
    }
  
@@ -14,6 +14,11 @@ index 55d50d612b0308ce6a877b7430a6d0eb86603d53..aa35e5146fa4b43437223e1175b0504b
 +  static const std::vector<ContentSettingPatternSource>& brave_shields_rules(
 +      const RendererContentSettingRules& r) {
 +    return r.brave_shields_rules;
++  }
++
++  static const std::vector<ContentSettingPatternSource>& speedreader_rules(
++      const RendererContentSettingRules& r) {
++    return r.speedreader_rules;
 +  }
 +
    static bool Read(

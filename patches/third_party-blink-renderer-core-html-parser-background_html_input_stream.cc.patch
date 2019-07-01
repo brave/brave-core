@@ -1,0 +1,34 @@
+diff --git a/third_party/blink/renderer/core/html/parser/background_html_input_stream.cc b/third_party/blink/renderer/core/html/parser/background_html_input_stream.cc
+index 216195f7717737dcdfcccbf35501307f95588626..76ac3e93153b2d69f1f29b82111b7bbbdf004ffc 100644
+--- a/third_party/blink/renderer/core/html/parser/background_html_input_stream.cc
++++ b/third_party/blink/renderer/core/html/parser/background_html_input_stream.cc
+@@ -116,6 +116,29 @@ void BackgroundHTMLInputStream::RewindTo(HTMLInputCheckpoint checkpoint_index,
+   UpdateTotalCheckpointTokenCount();
+ }
+ 
++void BackgroundHTMLInputStream::ResetTo(const String& unparsed_input) {
++  bool is_closed = current_.IsClosed();
++
++  current_.Clear();
++
++  if (!unparsed_input.IsEmpty()) {
++    current_.Prepend(SegmentedString(unparsed_input),
++                     SegmentedString::PrependType::kNewInput);
++  }
++
++  if (is_closed && !current_.IsClosed())
++    current_.Close();
++
++  DCHECK_EQ(current_.IsClosed(), is_closed);
++
++  segments_.clear();
++  checkpoints_.clear();
++  first_valid_checkpoint_index_ = 0;
++  first_valid_segment_index_ = 0;
++
++  UpdateTotalCheckpointTokenCount();
++}
++
+ void BackgroundHTMLInputStream::UpdateTotalCheckpointTokenCount() {
+   total_checkpoint_token_count_ = 0;
+   for (const auto& checkpoint : checkpoints_) {

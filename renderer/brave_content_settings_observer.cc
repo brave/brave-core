@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/logging.h"
 #include "base/bind_helpers.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/common/render_messages.h"
@@ -40,6 +41,7 @@ bool BraveContentSettingsObserver::OnMessageReceived(
   bool handled = true;
   IPC_BEGIN_MESSAGE_MAP(BraveContentSettingsObserver, message)
     IPC_MESSAGE_HANDLER(BraveFrameMsg_AllowScriptsOnce, OnAllowScriptsOnce)
+    IPC_MESSAGE_HANDLER(BraveFrameMsg_DisableSpeedreaderOnce, OnDisableSpeedreaderOnce)
     IPC_MESSAGE_UNHANDLED(handled = false)
   IPC_END_MESSAGE_MAP()
 
@@ -52,11 +54,18 @@ void BraveContentSettingsObserver::OnAllowScriptsOnce(
   preloaded_temporarily_allowed_scripts_ = std::move(origins);
 }
 
+void BraveContentSettingsObserver::OnDisableSpeedreaderOnce(
+    const std::vector<std::string>& origins) {
+  preloaded_temporarily_disabled_speedreader_ = std::move(origins);
+}
+
 void BraveContentSettingsObserver::DidCommitProvisionalLoad(
     bool is_same_document_navigation, ui::PageTransition transition) {
   if (!is_same_document_navigation) {
     temporarily_allowed_scripts_ =
       std::move(preloaded_temporarily_allowed_scripts_);
+    temporarily_disabled_speedreader_ =
+      std::move(preloaded_temporarily_disabled_speedreader_);
   }
 
   ContentSettingsObserver::DidCommitProvisionalLoad(
@@ -68,6 +77,13 @@ bool BraveContentSettingsObserver::IsScriptTemporilyAllowed(
   // check if scripts from this origin are temporily allowed or not
   return base::ContainsKey(temporarily_allowed_scripts_,
       script_url.GetOrigin().spec());
+}
+
+bool BraveContentSettingsObserver::IsSpeedreaderTemporarilyDisabled(
+    const GURL& page_url) {
+  // check if SpeedReader for this page is temporily disabled or not
+  return base::ContainsKey(temporarily_disabled_speedreader_,
+      page_url.GetOrigin().spec());
 }
 
 void BraveContentSettingsObserver::BraveSpecificDidBlockJavaScript(
@@ -193,6 +209,60 @@ bool BraveContentSettingsObserver::IsBraveShieldsDown(
   }
 
   return setting == CONTENT_SETTING_BLOCK;
+}
+
+bool BraveContentSettingsObserver::RunSpeedreader(
+    bool enabled_per_settings) {
+
+  if (!enabled_per_settings)
+    return false;
+
+  blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
+  const GURL secondary_url(
+      url::Origin(frame->GetDocument().GetSecurityOrigin()).GetURL());
+
+  if (IsBraveShieldsDown(frame, secondary_url)) {
+    LOG(ERROR) << "Run Speedreader: Shields Down";
+    return false;
+  }
+
+  const GURL& primary_url = GetOriginOrURL(frame);
+  if (IsWhitelistedForContentSettings()) {
+    LOG(ERROR) << "Run Speedreader: whitelisted";
+    return false;
+    
+  }
+
+  if (IsSpeedreaderTemporarilyDisabled(primary_url)) {
+    LOG(ERROR) << "Run Speedreader: temporarily disabled";
+    return false;
+  }
+
+  ContentSetting setting = CONTENT_SETTING_DEFAULT;
+  if (content_setting_rules_) {
+    for (const auto& rule : content_setting_rules_->speedreader_rules) {
+      // If encountered matching wildcard rule, will fallback to default setting, unless
+      // a more specific pattern says otherwise
+      if (rule.primary_pattern == ContentSettingsPattern::Wildcard()) {
+        if (setting == CONTENT_SETTING_DEFAULT) {
+          setting = rule.GetContentSetting();
+        }
+        continue;
+      }
+
+      if (rule.primary_pattern.Matches(secondary_url) &&
+          (rule.secondary_pattern == ContentSettingsPattern::Wildcard() || 
+          rule.secondary_pattern.Matches(secondary_url))) {
+
+        setting = rule.GetContentSetting();
+        break;
+      }
+    }
+  }
+
+  LOG(ERROR) << "Run Speedreader: content setting " << (setting == CONTENT_SETTING_BLOCK);
+
+  return setting == CONTENT_SETTING_BLOCK;  
 }
 
 bool BraveContentSettingsObserver::AllowFingerprinting(

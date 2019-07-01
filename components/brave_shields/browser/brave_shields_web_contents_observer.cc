@@ -144,6 +144,11 @@ void BraveShieldsWebContentsObserver::RenderFrameCreated(
           rfh->GetRoutingID(), allowed_script_origins_));
   }
 
+  if (rfh && disabled_speedreader_origins_.size()) {
+    rfh->Send(new BraveFrameMsg_DisableSpeedreaderOnce(
+          rfh->GetRoutingID(), disabled_speedreader_origins_));
+  }
+
   WebContents* web_contents = WebContents::FromRenderFrameHost(rfh);
   if (web_contents) {
     UpdateContentSettingsToRendererFrames(web_contents);
@@ -344,17 +349,27 @@ void BraveShieldsWebContentsObserver::ReadyToCommitNavigation(
       !navigation_handle->IsSameDocument() &&
       navigation_handle->GetReloadType() == content::ReloadType::NONE) {
     allowed_script_origins_.clear();
+    disabled_speedreader_origins_.clear();
     blocked_url_paths_.clear();
   }
 
   navigation_handle->GetWebContents()->SendToAllFrames(
       new BraveFrameMsg_AllowScriptsOnce(
         MSG_ROUTING_NONE, allowed_script_origins_));
+
+  navigation_handle->GetWebContents()->SendToAllFrames(
+      new BraveFrameMsg_DisableSpeedreaderOnce(
+        MSG_ROUTING_NONE, disabled_speedreader_origins_));
 }
 
 void BraveShieldsWebContentsObserver::AllowScriptsOnce(
     const std::vector<std::string>& origins, WebContents* contents) {
   allowed_script_origins_ = std::move(origins);
+}
+
+void BraveShieldsWebContentsObserver::DisableSpeedreaderOnce(
+    const std::vector<std::string>& origins, WebContents* contents) {
+  disabled_speedreader_origins_ = std::move(origins);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveShieldsWebContentsObserver)
