@@ -174,14 +174,20 @@ void BraveP3AService::Init() {
 std::string BraveP3AService::Serialize(base::StringPiece histogram_name,
                                        uint64_t value) const {
   TRACE_EVENT0("brave_p3a", "SerializeMessage");
-  brave_pyxis::PyxisMessage message;
   // TODO(iefremov): Maybe we should store it in logs and pass here?
   // We cannot directly query |base::StatisticsRecorder::FindHistogram| because
   // the serialized value can be obtained from persisted log storage at the
   // point when the actual histogram is not ready yet.
   const uint64_t histogram_name_hash = base::HashMetricName(histogram_name);
-  prochlo::GenerateProchloMessage(histogram_name_hash, value, pyxis_meta_,
-                                  &message);
+
+  // TODO(iefremov): Restore when PROCHLO/PYXIS is ready.
+  //  brave_pyxis::PyxisMessage message;
+  //  prochlo::GenerateProchloMessage(histogram_name_hash, value, pyxis_meta_,
+  //                                  &message);
+
+  brave_pyxis::RawP3AValue message;
+  prochlo::GenerateP3AMessage(histogram_name_hash, value, pyxis_meta_,
+                              &message);
   return message.SerializeAsString();
 }
 

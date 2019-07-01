@@ -12,6 +12,7 @@
 
 namespace brave_pyxis {
 class PyxisMessage;
+class RawP3AValue;
 }
 
 // TODO(iefremov): prochlo -> pyxis everywhere.
@@ -36,6 +37,11 @@ void GenerateProchloMessage(uint64_t metric_hash,
                             uint64_t metric_value,
                             const MessageMetainfo& meta,
                             brave_pyxis::PyxisMessage* prochlo_message);
+
+void GenerateP3AMessage(uint64_t metric_hash,
+                        uint64_t metric_value,
+                        const MessageMetainfo& meta,
+                        brave_pyxis::RawP3AValue* p3a_message);
 
 // Ensures that country/refcode represent the big enough cohort that will not
 // let anybody identify the sender.

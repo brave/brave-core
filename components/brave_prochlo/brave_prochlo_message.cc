@@ -153,6 +153,51 @@ void GenerateProchloMessage(uint64_t metric_hash,
   InitProchloMessage(metric_hash, item, pyxis_message);
 }
 
+void GenerateP3AMessage(uint64_t metric_hash,
+                        uint64_t metric_value,
+                        const MessageMetainfo& meta,
+                        brave_pyxis::RawP3AValue* p3a_message) {
+  TRACE_EVENT0("brave_p3a", "GenerateP3AMessage");
+  uint8_t data[kProchlomationDataLength] = {0};
+
+  // First byte contains the 4 booleans.
+  const char daily = 1;
+  const char weekly = 0;
+  const char monthly = 2;
+  const char first = 0;
+  data[0] = daily | weekly | monthly | first;
+  uint8_t* ptr = data;
+  ptr++;
+
+  // Find out years of install and survey.
+  base::Time::Exploded exploded;
+  meta.date_of_survey.LocalExplode(&exploded);
+  DCHECK_GE(exploded.year, 999);
+  const std::string yos = base::NumberToString(exploded.year).substr(2, 4);
+  meta.date_of_install.LocalExplode(&exploded);
+  DCHECK_GE(exploded.year, 999);
+  const std::string yoi = base::NumberToString(exploded.year).substr(2, 4);
+
+  const std::string metastring =
+      "," + meta.country_code + "," + meta.platform + "," + meta.version + "," +
+      meta.channel + "," + yoi + base::NumberToString(meta.woi) + "," + yos +
+      base::NumberToString(meta.wos) + "," + meta.refcode + ",";
+
+  const std::string metric_value_str = base::NumberToString(metric_value);
+
+  // TODO(iefremov): replace with 'if'?
+  CHECK_LE(metastring.size() + metric_value_str.size(),
+           kProchlomationDataLength - 1);
+
+  memcpy(ptr, metastring.data(), metastring.size());
+  ptr += metastring.size();
+  memcpy(ptr, metric_value_str.data(), metric_value_str.size());
+
+  // Init the message.
+  p3a_message->set_metric_id(metric_hash);
+  p3a_message->set_p3a_info(data, kProchlomationLength);
+}
+
 void MaybeStripRefcodeAndCountry(prochlo::MessageMetainfo* meta) {
   const std::string& refcode = meta->refcode;
   const std::string& country = meta->country_code;

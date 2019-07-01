@@ -18,6 +18,11 @@ message PyxisValue {
   bytes client_public_key = 5;
 }
 
+message RawP3AValue {
+  fixed64 metric_id = 1;
+  bytes p3a_info = 2;
+}
+
 message PyxisMessage {
   repeated PyxisValue pyxis_values = 1;
 }
