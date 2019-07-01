@@ -8,6 +8,10 @@ source_set("channel_info") {
       "brave_channel_info_posix.h",
     ]
 
+    deps = [
+      "//base:logging_buildflags",
+    ]
+
     configs += [
       "//brave/build/linux:linux_channel_names",
     ]
