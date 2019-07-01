@@ -16,7 +16,7 @@
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "brave/browser/renderer_host/brave_navigation_ui_data.h"
-#include "brave/browser/tor/mock_tor_profile_service_factory.h"
+#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/network_constants.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -381,7 +381,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, NoRedirectTorProfile) {
       /*is_main_frame=*/true, content::ResourceInterceptPolicy::kAllowNone,
       /*is_async=*/true, content::PREVIEWS_OFF, std::move(navigation_ui_data));
 
-  MockTorProfileServiceFactory::SetTorNavigationUIData(profile,
+  TorProfileServiceFactory::SetTorNavigationUIData(profile,
                                                    navigation_ui_data_ptr);
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
