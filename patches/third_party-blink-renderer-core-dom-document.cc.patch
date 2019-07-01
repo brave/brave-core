@@ -1,22 +1,25 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..a428b3378fb6923cbcce8d90d27af107bef20966 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..69824d378406b5e4e36628dfa8c1637d8d978b90 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -310,6 +310,13 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+@@ -310,6 +310,16 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
  static WeakDocumentSet& liveDocumentSet();
  #endif
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include <iostream>
++
 +#include "third_party/blink/renderer/modules/service_worker/service_worker_container.h"
 +#include "third_party/blink/renderer/modules/storage/dom_window_storage_controller.h"
++
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
 +
  namespace blink {
  
  using namespace html_names;
-@@ -768,6 +775,11 @@ Document::Document(const DocumentInit& initializer,
+@@ -768,6 +778,11 @@ Document::Document(const DocumentInit& initializer,
  #ifndef NDEBUG
    liveDocumentSet().insert(this);
  #endif
@@ -28,10 +31,11 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..a428b3378fb6923cbcce8d90d27af107
  }
  
  Document::~Document() {
-@@ -778,6 +790,105 @@ Document::~Document() {
+@@ -778,8 +793,108 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
++
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  page_graph_non_owning_ = nullptr;
 +
@@ -49,8 +53,8 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..a428b3378fb6923cbcce8d90d27af107
 +    page_graph_ = nullptr;
 +  }
 +#endif
-+}
-+
+ }
+ 
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +brave_page_graph::PageGraph* Document::GetPageGraph() {
 +  if (wasDiscarded() == true) {
@@ -130,7 +134,59 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..a428b3378fb6923cbcce8d90d27af107
 +  page_graph_ = new ::brave_page_graph::PageGraph(*this);
 +  GetIsolate()->SetPageGraph(page_graph_);
 +  return page_graph_;
++}
 +#endif
++
+ Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
+                                                 const Position& position) {
+   DCHECK(position.IsNotNull());
+@@ -5281,6 +5396,25 @@ String Document::cookie(ExceptionState& exception_state) const {
+   if (cookie_url.IsEmpty())
+     return String();
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    String cookies;
++    if (!cookie_url.IsEmpty()) {
++      cookies = Cookies(this, cookie_url);
++    }
++
++    brave_page_graph::PageGraph* page_graph = page_graph_;
++    if (page_graph == nullptr) {
++      page_graph = page_graph_non_owning_;
++    }
++
++    page_graph->RegisterStorageRead(cookie_url.GetString(), cookies,
++      brave_page_graph::kStorageLocationCookie);
++
++    return cookies;
++  }
++#endif
++
+   return Cookies(this, cookie_url);
  }
  
- Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
+@@ -5312,6 +5446,23 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+   if (cookie_url.IsEmpty())
+     return;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Vector<String> cookie_structure;
++    value.Split("=", cookie_structure);
++    String key = *(cookie_structure.begin());
++    String cookie_value = value.Substring(key.length() + 1, value.length());
++
++    brave_page_graph::PageGraph* page_graph = page_graph_;
++    if (page_graph == nullptr) {
++      page_graph = page_graph_non_owning_;
++    }
++
++    page_graph->RegisterStorageWrite(key, cookie_value,
++      brave_page_graph::kStorageLocationCookie);
++  }
++#endif
++
+   SetCookies(this, cookie_url, value);
+ }
+ 

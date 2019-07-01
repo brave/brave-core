@@ -1,0 +1,43 @@
+diff --git a/cc/BUILD.gn b/cc/BUILD.gn
+index 0878b2fdfea07a647a85f37e73d5d97401570328..30d5714f875049af0dbe6c13c7c4e4ddcdf271bd 100644
+--- a/cc/BUILD.gn
++++ b/cc/BUILD.gn
+@@ -5,7 +5,24 @@ import("//gpu/vulkan/features.gni")
+ 
+ import("//cc/cc.gni")
+ 
++config("cc_cflags") {
++  cflags = []
++
++  if (is_clang) {
++    cflags += [ "-Wno-undefined-bool-conversion" ]
++  }
++
++  if (is_win) {
++    # TODO(vmpstr): Some SoftwareImageDecodeCacheTests use virtual inheritance,
++    # which MSVC doesn't like. Suppress "Foo inherits Bar via dominance"
++    # warnings for now.
++    cflags += [ "/wd4250" ]
++  }
++}
++
+ cc_component("cc") {
++  configs = [ ":cc_cflags" ]
++
+   sources = [
+     "benchmarks/benchmark_instrumentation.cc",
+     "benchmarks/benchmark_instrumentation.h",
+@@ -725,13 +742,6 @@ cc_test("cc_unittests") {
+     ]
+   }
+ 
+-  if (is_win) {
+-    # TODO(vmpstr): Some SoftwareImageDecodeCacheTests use virtual inheritance,
+-    # which MSVC doesn't like. Suppress "Foo inherits Bar via dominance"
+-    # warnings for now.
+-    cflags = [ "/wd4250" ]
+-  }
+-
+   deps = [
+     ":cc",
+     ":test_support",

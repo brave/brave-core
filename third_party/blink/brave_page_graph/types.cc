@@ -130,4 +130,15 @@ string RequestStatusToString(const RequestStatus status) noexcept {
   }
 }
 
+string StorageLocationToString(const StorageLocation location) noexcept {
+  switch (location) {
+    case kStorageLocationCookie:
+      return "cookie";
+    case kStorageLocationLocalStorage:
+      return "localStorage";
+    case kStorageLocationSessionStorage:
+      return "sessionStorage";
+  }
+}
+
 }  // namespace brave_page_graph

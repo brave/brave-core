@@ -1,0 +1,132 @@
+diff --git a/third_party/blink/renderer/modules/storage/storage_area.cc b/third_party/blink/renderer/modules/storage/storage_area.cc
+index 338c586dbacfa96c8a343f67c7c407ee243583df..06e69ee21ff1eb47d003c549e84201be1a832b33 100644
+--- a/third_party/blink/renderer/modules/storage/storage_area.cc
++++ b/third_party/blink/renderer/modules/storage/storage_area.cc
+@@ -42,6 +42,12 @@
+ #include "third_party/blink/renderer/platform/weborigin/security_origin.h"
+ #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/core/dom/document.h"
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include <iostream>
++#endif
++
+ namespace blink {
+ 
+ StorageArea* StorageArea::Create(LocalFrame* frame,
+@@ -126,6 +132,34 @@ String StorageArea::getItem(const String& key,
+     exception_state.ThrowSecurityError("access is denied for this document.");
+     return String();
+   }
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    String value;
++    if (cached_area_) {
++      value = cached_area_->GetItem(key);
++    } else {
++      value = storage_area_->GetItem(key);
++    }
++
++    brave_page_graph::PageGraph* page_graph = GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      switch (storage_type_) {
++        case StorageType::kLocalStorage:
++          page_graph->RegisterStorageRead(key, value,
++            brave_page_graph::kStorageLocationLocalStorage);
++          break;
++        case StorageType::kSessionStorage:
++          page_graph->RegisterStorageRead(key, value,
++            brave_page_graph::kStorageLocationSessionStorage);
++          break;
++      }
++    }
++
++    return value;
++  }
++#endif
++
+   if (cached_area_)
+     return cached_area_->GetItem(key);
+   return storage_area_->GetItem(key);
+@@ -150,6 +184,27 @@ bool StorageArea::setItem(const String& key,
+         DOMExceptionCode::kQuotaExceededError,
+         "Setting the value of '" + key + "' exceeded the quota.");
+   }
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    if (result == WebStorageArea::kResultOK) {
++      brave_page_graph::PageGraph* page_graph = GetDocument()->GetPageGraph();
++      if (page_graph != nullptr) {
++        switch (storage_type_) {
++          case StorageType::kLocalStorage:
++            page_graph->RegisterStorageWrite(key, value,
++              brave_page_graph::kStorageLocationLocalStorage);
++            break;
++          case StorageType::kSessionStorage:
++            page_graph->RegisterStorageWrite(key, value,
++              brave_page_graph::kStorageLocationSessionStorage);
++            break;
++        }
++      }
++    }
++  }
++#endif
++
+   return true;
+ }
+ 
+@@ -159,6 +214,25 @@ DeleteResult StorageArea::removeItem(const String& key,
+     exception_state.ThrowSecurityError("access is denied for this document.");
+     return kDeleteSuccess;
+   }
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    brave_page_graph::PageGraph* page_graph = GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      switch (storage_type_) {
++        case StorageType::kLocalStorage:
++          page_graph->RegisterStorageDelete(key,
++            brave_page_graph::kStorageLocationLocalStorage);
++          break;
++        case StorageType::kSessionStorage:
++          page_graph->RegisterStorageDelete(key,
++            brave_page_graph::kStorageLocationSessionStorage);
++          break;
++      }
++    }
++  }
++#endif
++
+   if (cached_area_)
+     cached_area_->RemoveItem(key, this);
+   else
+@@ -171,6 +245,25 @@ void StorageArea::clear(ExceptionState& exception_state) {
+     exception_state.ThrowSecurityError("access is denied for this document.");
+     return;
+   }
++
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    brave_page_graph::PageGraph* page_graph = GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      switch (storage_type_) {
++        case StorageType::kLocalStorage:
++          page_graph->RegisterStorageClear(
++            brave_page_graph::kStorageLocationLocalStorage);
++          break;
++        case StorageType::kSessionStorage:
++          page_graph->RegisterStorageClear(
++            brave_page_graph::kStorageLocationSessionStorage);
++          break;
++      }
++    }
++  }
++#endif
++
+   if (cached_area_)
+     cached_area_->Clear(this);
+   else
