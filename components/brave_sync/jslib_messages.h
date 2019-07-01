@@ -34,6 +34,8 @@ class Site {
   ~Site();
   static std::unique_ptr<Site> Clone(const Site& site);
 
+  std::string TryGetNonEmptyTitle() const;
+
   std::string location;
   std::string title;
   std::string customTitle;

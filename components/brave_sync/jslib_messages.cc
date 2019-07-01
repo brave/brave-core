@@ -31,6 +31,10 @@ std::unique_ptr<Site> Site::Clone(const Site& site) {
   return std::make_unique<Site>(site);
 }
 
+std::string Site::TryGetNonEmptyTitle() const {
+  return !title.empty() ? title : customTitle;
+}
+
 MetaInfo::MetaInfo() = default;
 
 MetaInfo::MetaInfo(const MetaInfo& metaInfo) {

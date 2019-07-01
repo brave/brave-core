@@ -51,7 +51,8 @@ void AddBookmarkSpecifics(sync_pb::EntitySpecifics* specifics,
   auto bookmark = record->GetBookmark();
   sync_pb::BookmarkSpecifics* bm_specifics = specifics->mutable_bookmark();
   bm_specifics->set_url(bookmark.site.location);
-  bm_specifics->set_title(bookmark.site.title);
+
+  bm_specifics->set_title(bookmark.site.TryGetNonEmptyTitle());
   bm_specifics->set_creation_time_us(
     TimeToProtoTime(bookmark.site.creationTime));
   bm_specifics->set_icon_url(bookmark.site.favicon);
@@ -171,7 +172,7 @@ void AddBookmarkNode(sync_pb::SyncEntity* entity, const SyncRecord* record) {
     entity->set_parent_id_string(std::string(kBookmarkBarFolderServerTag));
   else
     entity->set_parent_id_string(std::string(kOtherBookmarksFolderServerTag));
-  entity->set_non_unique_name(bookmark_record.site.title);
+  entity->set_non_unique_name(bookmark_record.site.TryGetNonEmptyTitle());
   entity->set_folder(bookmark_record.isFolder);
 
   ExtractBookmarkMeta(entity, &specifics, bookmark_record);
