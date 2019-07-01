@@ -121,7 +121,7 @@ describe('cosmeticFilterReducer', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: windowTypes.WINDOW_REMOVED,
         windowId
-      })
+      })  
       expect(spy).toBeCalledTimes(1)
       expect(spy.mock.calls[0][1]).toBe(windowId)
     })
@@ -272,6 +272,7 @@ describe('cosmeticFilterReducer', () => {
   })
   const origin = 'https://brave.com'
   const state: State = deepFreeze({
+    persistentData: {},
     tabs: {
       2: {
         origin,
@@ -322,6 +323,9 @@ describe('cosmeticFilterReducer', () => {
             details
           })).toEqual({
             currentWindowId: -1,
+            persistentData: {
+              isFirstAccess: true
+            },
             tabs: {
               [tabId]: {
                 adsBlocked: 0,

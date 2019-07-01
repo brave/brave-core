@@ -38,7 +38,12 @@ export interface Windows {
   [key: number]: number
 }
 
+export interface PersistentData {
+  isFirstAccess: boolean
+}
+
 export interface State {
+  persistentData: PersistentData
   currentWindowId: number
   tabs: Tabs
   windows: Windows
@@ -50,6 +55,14 @@ export interface GetActiveTabId {
 
 export interface GetActiveTabData {
   (state: State): Tab | undefined
+}
+
+export interface GetPersistentData {
+  (state: State): PersistentData
+}
+
+export interface UpdatePersistentData {
+  (state: State, persistentData: PersistentData): State
 }
 
 export interface UpdateActiveTab {

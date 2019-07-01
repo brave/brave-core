@@ -138,4 +138,10 @@ describe('shieldsPanelActions', () => {
       type: types.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE
     })
   })
+
+  it('setAdvancedViewFirstAccess', () => {
+    expect(actions.setAdvancedViewFirstAccess()).toEqual({
+      type: types.SET_ADVANCED_VIEW_FIRST_ACCESS
+    })
+  })
 })

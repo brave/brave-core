@@ -2,12 +2,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// Background
+import * as storageAPI from '../api/storageAPI'
+
 // Types
 import * as shieldsPanelTypes from '../../constants/shieldsPanelTypes'
 import * as windowTypes from '../../constants/windowTypes'
 import * as tabTypes from '../../constants/tabTypes'
 import * as webNavigationTypes from '../../constants/webNavigationTypes'
-import { State } from '../../types/state/shieldsPannelState'
+import { State, PersistentData } from '../../types/state/shieldsPannelState'
 import { Actions } from '../../types/actions/index'
 
 // State helpers
@@ -31,8 +34,19 @@ import { reloadTab } from '../api/tabsAPI'
 
 // Helpers
 import { getAllowedScriptsOrigins } from '../../helpers/noScriptUtils'
+import { areObjectsEqual } from '../../helpers/objectUtils'
 
-export default function shieldsPanelReducer (state: State = { tabs: {}, windows: {}, currentWindowId: -1 }, action: Actions) {
+export default function shieldsPanelReducer (
+  state: State = {
+    persistentData: storageAPI.loadPersistentData(),
+    tabs: {},
+    windows: {},
+    currentWindowId: -1
+  },
+  action: Actions
+) {
+  const initialPersistentData: PersistentData = state.persistentData
+
   switch (action.type) {
     case webNavigationTypes.ON_COMMITTED: {
       if (action.isMainFrame) {
@@ -300,7 +314,17 @@ export default function shieldsPanelReducer (state: State = { tabs: {}, windows:
     }
     case shieldsPanelTypes.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE: {
       state = noScriptState.setFinalScriptsBlockedState(state)
+      break
+    }
+    case shieldsPanelTypes.SET_ADVANCED_VIEW_FIRST_ACCESS: {
+      state = shieldsPanelState.updatePersistentData(state, { isFirstAccess: false })
+      break
     }
   }
+
+  if (!areObjectsEqual(state.persistentData, initialPersistentData)) {
+    storageAPI.savePersistentDataDebounced(state.persistentData)
+  }
+
   return state
 }

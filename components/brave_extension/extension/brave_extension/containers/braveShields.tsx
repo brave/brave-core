@@ -10,7 +10,8 @@ import BraveShields from '../components/braveShields'
 import { State } from '../types/state/mainState'
 
 const mapStateToProps = (state: State) => ({
-  shieldsPanelTabData: shieldsPanelState.getActiveTabData(state.shieldsPanel)
+  shieldsPanelTabData: shieldsPanelState.getActiveTabData(state.shieldsPanel),
+  persistentData: shieldsPanelState.getPersistentData(state.shieldsPanel)
 })
 
 const mapDispatchToProps = (dispatch: any) => ({

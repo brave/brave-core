@@ -119,3 +119,9 @@ export const setFinalScriptsBlockedState: actions.SetFinalScriptsBlockedState = 
     type: types.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE
   }
 }
+
+export const setAdvancedViewFirstAccess: actions.SetAdvancedViewFirstAccess = () => {
+  return {
+    type: types.SET_ADVANCED_VIEW_FIRST_ACCESS
+  }
+}

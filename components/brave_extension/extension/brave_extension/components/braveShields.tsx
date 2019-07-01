@@ -17,7 +17,7 @@ import PrivacyControls from './privacyControls'
 import Footer from './footer'
 
 // Types
-import { Tab } from '../types/state/shieldsPannelState'
+import { Tab, PersistentData } from '../types/state/shieldsPannelState'
 import { isShieldsEnabled, getFavicon } from '../helpers/shieldsUtils'
 import {
   ShieldsToggled,
@@ -30,7 +30,8 @@ import {
   SetScriptBlockedCurrentState,
   SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
-  SetFinalScriptsBlockedState
+  SetFinalScriptsBlockedState,
+  SetAdvancedViewFirstAccess
 } from '../types/actions/shieldsPanelActions'
 
 interface Props {
@@ -46,8 +47,10 @@ interface Props {
     setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
     setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
     setFinalScriptsBlockedState: SetFinalScriptsBlockedState
+    setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
   }
   shieldsPanelTabData: Tab
+  persistentData: PersistentData
 }
 
 interface State {
@@ -75,7 +78,7 @@ export default class Shields extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { shieldsPanelTabData, actions } = this.props
+    const { shieldsPanelTabData, persistentData, actions } = this.props
     const { isBlockedListOpen } = this.state
 
     if (!shieldsPanelTabData) {
@@ -84,6 +87,9 @@ export default class Shields extends React.PureComponent<Props, State> {
 
     return (
       <ShieldsPanel data-test-id='brave-shields-panel' style={{ width: '370px' }}>
+        <button onClick={actions.setAdvancedViewFirstAccess.bind(this, false)}>
+          hello state is: {persistentData.isFirstAccess.toString()}
+        </button>
         <Header
           enabled={this.isShieldsEnabled}
           favicon={this.favicon}
