@@ -20,7 +20,7 @@
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
 #endif
 
-#include "../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"
+#include "../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"  // NOLINT
 
 #if !defined(OS_MACOSX)
 #undef SpellingOptionsSubMenuObserver

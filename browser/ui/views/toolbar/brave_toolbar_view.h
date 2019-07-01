@@ -26,6 +26,7 @@ class BraveToolbarView : public ToolbarView {
   void ShowBookmarkBubble(const GURL& url,
                           bool already_bookmarked,
                           bookmarks::BookmarkBubbleObserver* observer) override;
+
  private:
   void LoadImages() override;
   void ResetLocationBarBounds();
