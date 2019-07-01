@@ -30,12 +30,14 @@ BraveNewTabUI::~BraveNewTabUI() {
 }
 
 void BraveNewTabUI::UpdateWebUIProperties() {
-  // TODO(petemill): move all this data to set on loadTimeData
-  // on the DataSource via the MessageHandler
-  auto* render_view_host = GetRenderViewHost();
-  SetStatsWebUIProperties(render_view_host);
-  SetPrivateWebUIProperties(render_view_host);
-  SetPreferencesWebUIProperties(render_view_host);
+  if (IsSafeToSetWebUIProperties()) {
+    // TODO(petemill): move all this data to set on loadTimeData
+    // on the DataSource via the MessageHandler
+    auto* render_view_host = GetRenderViewHost();
+    SetStatsWebUIProperties(render_view_host);
+    SetPrivateWebUIProperties(render_view_host);
+    SetPreferencesWebUIProperties(render_view_host);
+  }
 }
 
 void BraveNewTabUI::SetStatsWebUIProperties(
