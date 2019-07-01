@@ -18,8 +18,14 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
-
 namespace tor {
+
+namespace {
+
+constexpr char kTorProxyScheme[] = "socks5://";
+constexpr char kTorProxyAddress[] = "127.0.0.1";
+
+}  // namespace
 
 TorProfileService::TorProfileService() {
 }
@@ -30,13 +36,11 @@ TorProfileService::~TorProfileService() {
 // static
 void TorProfileService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(tor::prefs::kProfileUsingTor, false);
+  registry->RegisterBooleanPref(prefs::kProfileUsingTor, false);
 }
 
 // static
 void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
-  const std::string TorProxyScheme("socks5://");
-  const std::string TorProxyAddress("127.0.0.1");
   std::string port;
   switch (chrome::GetChannel()) {
     case version_info::Channel::STABLE:
@@ -56,13 +60,12 @@ void TorProfileService::RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
       port = std::string("9390");
   }
   const std::string tor_proxy_uri =
-      std::string(TorProxyScheme + TorProxyAddress + ":" + port);
-  registry->RegisterStringPref(tor::prefs::kTorProxyString, tor_proxy_uri);
+      std::string(kTorProxyScheme) + std::string(kTorProxyAddress) + ":" + port;
+  registry->RegisterStringPref(prefs::kTorProxyString, tor_proxy_uri);
 }
 
 std::string TorProfileService::GetTorProxyURI() {
-  return g_browser_process->local_state()->GetString(
-      tor::prefs::kTorProxyString);
+  return g_browser_process->local_state()->GetString(prefs::kTorProxyString);
 }
 
 base::FilePath TorProfileService::GetTorExecutablePath() {
