@@ -23,9 +23,10 @@ const char kWalletUphold[] = "uphold";
 LEDGER_EXPORT enum WalletStatus {
   NOT_CONNECTED = 0,
   CONNECTED = 1,
-  DISCONECTED = 2
+  VERIFIED = 2,
+  DISCONNECTED_NOT_VERIFIED = 3,
+  DISCONNECTED_VERIFIED = 4
 };
-
 
 }  // namespace ledger
 

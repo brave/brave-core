@@ -57,8 +57,13 @@ class Wallet {
 
   void FetchBalance(ledger::FetchBalanceCallback callback);
 
-  void GetExternalWallet(const std::string& type,
+  void GetExternalWallet(const std::string& wallet_type,
                          ledger::ExternalWalletCallback callback);
+
+  void ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback);
 
  private:
   void WalletPropertiesCallback(
@@ -68,9 +73,17 @@ class Wallet {
       ledger::OnWalletPropertiesCallback callback);
 
   void OnGetExternalWallet(
-    const std::string& type,
+    const std::string& wallet_type,
     ledger::ExternalWalletCallback callback,
     std::map<std::string, ledger::ExternalWalletPtr> wallets);
+
+  void OnExternalWalletAuthorization(
+    const std::string& wallet_type,
+    const std::map<std::string, std::string>& args,
+    ledger::ExternalWalletAuthorizationCallback callback,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets);
+
+  std::string GenerateRandomString(const size_t length);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Create> create_;

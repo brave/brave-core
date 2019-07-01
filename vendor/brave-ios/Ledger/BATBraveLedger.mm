@@ -1642,4 +1642,9 @@ BATLedgerBridge(BOOL,
   callback(std::move(wallets));
 }
 
+- (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet
+{
+
+}
+
 @end

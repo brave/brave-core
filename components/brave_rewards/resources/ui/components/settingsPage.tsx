@@ -8,7 +8,7 @@ import { connect } from 'react-redux'
 
 // Components
 import { Column, Grid } from 'brave-ui/components'
-import { DisabledBox, MainToggle, SettingsPage as Page } from 'brave-ui/features/rewards'
+import { DisabledBox, MainToggle, SettingsPage as Page, ModalRedirect } from 'brave-ui/features/rewards'
 import PageWallet from './pageWallet'
 import AdsBox from './adsBox'
 import ContributeBox from './contributeBox'
@@ -17,12 +17,24 @@ import TipBox from './tipsBox'
 // Utils
 import * as rewardsActions from '../actions/rewards_actions'
 import Grant from './grant'
+import { getLocale } from '../../../../common/locale'
 
 interface Props extends Rewards.ComponentProps {
 }
 
-class SettingsPage extends React.Component<Props, {}> {
+interface State {
+  redirectModalDisplayed: 'hide' | 'show'
+}
+
+class SettingsPage extends React.Component<Props, State> {
   private balanceTimerId: number
+
+  constructor (props: Props) {
+    super(props)
+    this.state = {
+      redirectModalDisplayed: 'hide'
+    }
+  }
 
   onToggle = () => {
     this.actions.onSettingSave('enabledMain', !this.props.rewardsData.enabledMain)
@@ -76,9 +88,16 @@ class SettingsPage extends React.Component<Props, {}> {
       // https://github.com/brave/brave-browser/issues/3061
       this.actions.getWalletPassphrase()
     }
+
+    if (window.location.pathname.length > 1) {
+      const pathElements = window.location.pathname.split('/')
+      if (pathElements.length > 2) {
+        this.actions.processRewardsPageUrl(window.location.pathname, window.location.search)
+      }
+    }
   }
 
-  componentDidUpdate (prevProps: Props) {
+  componentDidUpdate (prevProps: Props, prevState: State) {
     if (
       !prevProps.rewardsData.enabledMain &&
       this.props.rewardsData.enabledMain &&
@@ -93,6 +112,23 @@ class SettingsPage extends React.Component<Props, {}> {
     ) {
       this.actions.getContributeList()
       this.actions.getReconcileStamp()
+    }
+
+    if (
+      prevState.redirectModalDisplayed !== 'hide' &&
+      this.props.rewardsData.ui.modalRedirect === 'hide'
+    ) {
+      this.setState({
+        redirectModalDisplayed: 'hide'
+      })
+      window.history.replaceState({}, 'Rewards', '/')
+    } else if (
+      prevState.redirectModalDisplayed === 'hide' &&
+      this.props.rewardsData.ui.modalRedirect !== 'hide'
+    ) {
+      this.setState({
+        redirectModalDisplayed: 'show'
+      })
     }
   }
 
@@ -132,6 +168,35 @@ class SettingsPage extends React.Component<Props, {}> {
     clearInterval(this.balanceTimerId)
   }
 
+  onRedirectError = () => {
+    this.actions.hideRedirectModal()
+
+    const { externalWallet } = this.props.rewardsData
+
+    if (externalWallet && externalWallet.verifyUrl) {
+      window.open(externalWallet.verifyUrl, '_self')
+    }
+  }
+
+  getRedirectModal = () => {
+    const { ui } = this.props.rewardsData
+
+    if (ui.modalRedirect === 'show') {
+      return <ModalRedirect />
+    }
+
+    if (ui.modalRedirect === 'error') {
+      return (
+        <ModalRedirect
+          errorText={getLocale('redirectModalError')}
+          onClick={this.onRedirectError}
+        />
+      )
+    }
+
+    return null
+  }
+
   render () {
     const { enabledMain } = this.props.rewardsData
 
@@ -139,6 +204,11 @@ class SettingsPage extends React.Component<Props, {}> {
       <Page>
         <Grid columns={3} customStyle={{ gridGap: '32px' }}>
           <Column size={2} customStyle={{ justifyContent: 'center', flexWrap: 'wrap' }}>
+            {
+              enabledMain
+              ? this.getRedirectModal()
+              : null
+            }
             <MainToggle
               onToggle={this.onToggle}
               enabled={enabledMain}

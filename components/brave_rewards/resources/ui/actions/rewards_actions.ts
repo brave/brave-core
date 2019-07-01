@@ -220,3 +220,14 @@ export const onExternalWallet = (wallet: Rewards.ExternalWallet) => action(types
 })
 
 export const onOnBoardingDisplayed = () => action(types.ON_ON_BOARDING_DISPLAYED)
+
+export const processRewardsPageUrl = (path: string, query: string) => action(types.PROCESS_REWARDS_PAGE_URL, {
+  path,
+  query
+})
+
+export const onProcessRewardsPageUrl = (data: Rewards.ProcessRewardsPageUrl) => action(types.ON_PROCESS_REWARDS_PAGE_URL, {
+  data
+})
+
+export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)

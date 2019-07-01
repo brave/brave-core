@@ -169,6 +169,11 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD2(GetExternalWallet,
                void(const std::string& wallet_type,
                     brave_rewards::GetExternalWalletCallback callback));
+
+  MOCK_METHOD3(ProcessRewardsPageUrl,
+      void(const std::string& path,
+           const std::string& query,
+           brave_rewards::ProcessRewardsPageUrlCallback callback));
 };
 
 class AdsServiceTest : public testing::Test {

@@ -185,6 +185,10 @@ window.cr.define('brave_rewards', function () {
     getActions().onExternalWallet(wallet)
   }
 
+  function processRewardsPageUrl (data: Rewards.ProcessRewardsPageUrl) {
+    getActions().onProcessRewardsPageUrl(data)
+  }
+
   return {
     initialize,
     walletCreated,
@@ -218,7 +222,8 @@ window.cr.define('brave_rewards', function () {
     excludedSiteChanged,
     balance,
     reconcileComplete,
-    externalWallet
+    externalWallet,
+    processRewardsPageUrl
   }
 })
 

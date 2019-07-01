@@ -1612,9 +1612,24 @@ std::string LedgerImpl::GetCardIdAddress() const {
   return bat_state_->GetCardIdAddress();
 }
 
-void LedgerImpl::GetExternalWallet(const std::string& type,
+void LedgerImpl::GetExternalWallet(const std::string& wallet_type,
                                    ledger::ExternalWalletCallback callback) {
-  return bat_wallet_->GetExternalWallet(type, callback);
+  bat_wallet_->GetExternalWallet(wallet_type, callback);
+}
+
+void LedgerImpl::SaveExternalWallet(const std::string& wallet_type,
+                                    ledger::ExternalWalletPtr wallet) {
+  ledger_client_->SaveExternalWallet(wallet_type, std::move(wallet));
+}
+
+void LedgerImpl::ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback) {
+  bat_wallet_->ExternalWalletAuthorization(
+      wallet_type,
+      args,
+      callback);
 }
 
 }  // namespace bat_ledger

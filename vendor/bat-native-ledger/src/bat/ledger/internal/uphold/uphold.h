@@ -43,7 +43,7 @@ class Uphold {
 
   ~Uphold();
   static std::vector<std::string> RequestAuthorization(
-      const std::string& token);
+      const std::string& token = "");
 
   static ledger::ExternalWalletPtr GetWallet(
       std::map<std::string, ledger::ExternalWalletPtr> wallets);
@@ -61,13 +61,24 @@ class Uphold {
                      ledger::ExternalWalletPtr wallet,
                      TransactionCallback callback);
 
-  std::string GetVerifyUrl();
+  std::string GetVerifyUrl(const std::string& state);
 
   std::string GetAddUrl(const std::string& address);
 
   std::string GetWithdrawUrl(const std::string& address);
 
+  void WalletAuthorization(
+    const std::map<std::string, std::string>& args,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets,
+    ledger::ExternalWalletAuthorizationCallback callback);
+
  private:
+  static std::string GetClientId();
+
+  static std::string GetClientSecret();
+
+  static std::string GetUrl();
+
   static std::string GetFeeAddress();
 
   static std::string ConvertToProbi(const std::string& amount);
@@ -82,6 +93,15 @@ class Uphold {
 
   void OnFetchBalance(
     FetchBalanceCallback callback,
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers);
+
+  std::string GetSecondStepVerify();
+
+  void OnWalletAuthorization(
+    ledger::ExternalWalletAuthorizationCallback callback,
+    ledger::ExternalWallet wallet,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);

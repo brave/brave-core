@@ -260,6 +260,9 @@ class LEDGER_EXPORT LedgerClient {
 
   virtual void GetExternalWallets(
       GetExternalWalletsCallback callback) = 0;
+
+  virtual void SaveExternalWallet(const std::string& wallet_type,
+                                  ledger::ExternalWalletPtr wallet) = 0;
 };
 
 }  // namespace ledger

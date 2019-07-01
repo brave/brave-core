@@ -849,4 +849,10 @@ void LedgerClientMojoProxy::GetExternalWallets(
                 _1));
 }
 
+void LedgerClientMojoProxy::SaveExternalWallet(
+    const std::string& wallet_type,
+    ledger::ExternalWalletPtr wallet) {
+  ledger_client_->SaveExternalWallet(wallet_type, std::move(wallet));
+}
+
 }  // namespace bat_ledger

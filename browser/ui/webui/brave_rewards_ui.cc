@@ -136,6 +136,13 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetExternalWallet(const base::ListValue* args);
   void OnGetExternalWallet(
       std::unique_ptr<brave_rewards::ExternalWallet> wallet);
+  void ProcessRewardsPageUrl(const base::ListValue* args);
+
+  void OnProcessRewardsPageUrl(
+    int32_t result,
+    const std::string& wallet_type,
+    const std::string& action,
+    const std::map<std::string, std::string>& args);
 
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
@@ -335,6 +342,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.getExternalWallet",
       base::BindRepeating(&RewardsDOMHandler::GetExternalWallet,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.processRewardsPageUrl",
+      base::BindRepeating(&RewardsDOMHandler::ProcessRewardsPageUrl,
       base::Unretained(this)));
 }
 
@@ -1265,9 +1275,9 @@ void RewardsDOMHandler::GetExternalWallet(const base::ListValue* args) {
     return;
   }
 
-  const std::string type = args->GetList()[0].GetString();
+  const std::string wallet_type = args->GetList()[0].GetString();
   rewards_service_->GetExternalWallet(
-      type,
+      wallet_type,
       base::BindOnce(&RewardsDOMHandler::OnGetExternalWallet,
                      weak_factory_.GetWeakPtr()));
 }
@@ -1290,6 +1300,46 @@ void RewardsDOMHandler::OnGetExternalWallet(
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.externalWallet",
                                            data);
   }
+}
+
+void RewardsDOMHandler::OnProcessRewardsPageUrl(
+    int32_t result,
+    const std::string& wallet_type,
+    const std::string& action,
+    const std::map<std::string, std::string>& args) {
+  if (!web_ui()->CanCallJavascript()) {
+    return;
+  }
+
+  base::Value data(base::Value::Type::DICTIONARY);
+
+  data.SetIntKey("result", result);
+  data.SetStringKey("walletType", wallet_type);
+  data.SetStringKey("action", action);
+
+  base::Value new_args(base::Value::Type::DICTIONARY);
+  for (auto const& arg : args) {
+    new_args.SetStringKey(arg.first, arg.second);
+  }
+  data.SetKey("args", std::move(new_args));
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.processRewardsPageUrl",
+                                         data);
+}
+
+void RewardsDOMHandler::ProcessRewardsPageUrl(const base::ListValue* args) {
+  CHECK_EQ(2U, args->GetSize());
+  if (!rewards_service_) {
+    return;
+  }
+
+  const std::string path = args->GetList()[0].GetString();
+  const std::string query = args->GetList()[1].GetString();
+  rewards_service_->ProcessRewardsPageUrl(
+      path,
+      query,
+      base::BindOnce(&RewardsDOMHandler::OnProcessRewardsPageUrl,
+                     weak_factory_.GetWeakPtr()));
 }
 
 }  // namespace

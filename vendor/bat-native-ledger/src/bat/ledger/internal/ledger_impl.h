@@ -478,8 +478,16 @@ class LedgerImpl : public ledger::Ledger,
 
   std::string GetCardIdAddress() const;
 
-  void GetExternalWallet(const std::string& type,
+  void GetExternalWallet(const std::string& wallet_type,
                          ledger::ExternalWalletCallback callback) override;
+
+  void SaveExternalWallet(const std::string& wallet_type,
+                          ledger::ExternalWalletPtr wallet);
+
+  void ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback) override;
 
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,

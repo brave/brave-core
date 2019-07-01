@@ -43,6 +43,8 @@ source_set("browser") {
     "balance.h",
     "external_wallet.cc",
     "external_wallet.h",
+    "rewards_protocol_handler.h",
+    "rewards_protocol_handler.cc",
   ]
 
   deps = [

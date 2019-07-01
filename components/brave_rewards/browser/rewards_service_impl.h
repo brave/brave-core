@@ -78,6 +78,11 @@ using GetTestResponseCallback =
                         std::string* response,
                         std::map<std::string, std::string>* headers)>;
 
+using ExternalWalletAuthorizationCallback =
+    base::OnceCallback<void(
+        int32_t,
+        const std::map<std::string, std::string>&)>;
+
 class RewardsServiceImpl : public RewardsService,
                            public ledger::LedgerClient,
                            public base::SupportsWeakPtr<RewardsServiceImpl> {
@@ -245,14 +250,21 @@ class RewardsServiceImpl : public RewardsService,
 
   void FetchBalance(FetchBalanceCallback callback) override;
 
-  void SetExternalWallet(const std::string& key,
-                         ledger::ExternalWallet wallet);
-
   void GetExternalWallets(
       ledger::GetExternalWalletsCallback callback) override;
 
   void GetExternalWallet(const std::string& wallet_type,
                          GetExternalWalletCallback callback) override;
+
+  void ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ExternalWalletAuthorizationCallback callback);
+
+  void ProcessRewardsPageUrl(
+      const std::string& path,
+      const std::string& query,
+      ProcessRewardsPageUrlCallback callback) override;
 
   // Testing methods
   void SetLedgerEnvForTesting();
@@ -410,6 +422,19 @@ class RewardsServiceImpl : public RewardsService,
     GetExternalWalletCallback callback,
     ledger::ExternalWalletPtr wallet);
 
+  void OnExternalWalletAuthorization(
+    const std::string& wallet_type,
+    ExternalWalletAuthorizationCallback callback,
+    int32_t result,
+    const base::flat_map<std::string, std::string>& args);
+
+  void OnProcessExternalWalletAuthorization(
+    const std::string& wallet_type,
+    const std::string& action,
+    ProcessRewardsPageUrlCallback callback,
+    int32_t result,
+    const std::map<std::string, std::string>& args);
+
   // ledger::LedgerClient
   std::string GenerateGUID() const override;
   void OnWalletInitialized(ledger::Result result) override;
@@ -557,6 +582,9 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetPendingContributionsTotal(
     const ledger::PendingContributionsTotalCallback& callback) override;
+
+  void SaveExternalWallet(const std::string& wallet_type,
+                        ledger::ExternalWalletPtr wallet) override;
 
   // end ledger::LedgerClient
 

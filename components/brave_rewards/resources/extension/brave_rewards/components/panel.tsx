@@ -227,7 +227,8 @@ export class Panel extends React.Component<Props, State> {
       return
     }
 
-    if (status === 'verified') {
+    // WalletStatus::CONNECTED
+    if (status === 'verified' || externalWallet.status === 1) {
       if (externalWallet.addUrl) {
         chrome.tabs.create({
           url: externalWallet.addUrl
@@ -571,11 +572,13 @@ export class Panel extends React.Component<Props, State> {
     }
 
     switch (externalWallet.status) {
-      case 0:
-        return 'unverified'
-      case 1:
-        return 'verified'
+      // ledger::WalletStatus::VERIFIED
       case 2:
+        return 'verified'
+      // ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED
+      case 3:
+      // ledger::WalletStatus::DISCONNECTED_VERIFIED
+      case 4:
         return 'disconnected'
       default:
         return 'unverified'

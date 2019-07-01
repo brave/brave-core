@@ -651,4 +651,30 @@ void BatLedgerImpl::GetExternalWallet(const std::string& wallet_type,
                 _1));
 }
 
+// static
+void BatLedgerImpl::OnExternalWalletAuthorization(
+    CallbackHolder<ExternalWalletAuthorizationCallback>* holder,
+    ledger::Result result,
+    const std::map<std::string, std::string>& args) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result, mojo::MapToFlatMap(args));
+  delete holder;
+}
+
+void BatLedgerImpl::ExternalWalletAuthorization(
+    const std::string& wallet_type,
+    const base::flat_map<std::string, std::string>& args,
+    ExternalWalletAuthorizationCallback callback) {
+  auto* holder = new CallbackHolder<ExternalWalletAuthorizationCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->ExternalWalletAuthorization(
+      wallet_type,
+      mojo::FlatMapToMap(args),
+      std::bind(BatLedgerImpl::OnExternalWalletAuthorization,
+                holder,
+                _1,
+                _2));
+}
+
 }  // namespace bat_ledger

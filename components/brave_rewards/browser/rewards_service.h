@@ -89,6 +89,11 @@ using FetchBalanceCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::Balance>)>;
 using GetExternalWalletCallback = base::OnceCallback<void(
     std::unique_ptr<brave_rewards::ExternalWallet> wallet)>;
+using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
+    int32_t result,
+    const std::string&,
+    const std::string&,
+    const std::map<std::string, std::string>&)>;
 
 class RewardsService : public KeyedService {
  public:
@@ -240,6 +245,11 @@ class RewardsService : public KeyedService {
 
   virtual void GetExternalWallet(const std::string& wallet_type,
                                  GetExternalWalletCallback callback) = 0;
+
+  virtual void ProcessRewardsPageUrl(
+      const std::string& path,
+      const std::string& query,
+      ProcessRewardsPageUrlCallback callback) = 0;
 
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;

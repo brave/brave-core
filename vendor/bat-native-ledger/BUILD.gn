@@ -148,6 +148,7 @@ source_set("ledger") {
 
   deps = [
     "//base",
+    "//crypto",
     "//third_party/boringssl",
     "//third_party/re2",
     "//url",

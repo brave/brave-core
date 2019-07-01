@@ -203,3 +203,6 @@ void NativeLedgerClient::ClearState(const std::string& name) {
 void NativeLedgerClient::GetExternalWallets(ledger::GetExternalWalletsCallback callback) {
   return [bridge_ getExternalWallets:callback];
 }
+void NativeLedgerClient::SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) {
+  return [bridge_ saveExternalWallet:wallet_type wallet:std::move(wallet)];
+}

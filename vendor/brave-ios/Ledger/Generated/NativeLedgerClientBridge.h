@@ -72,5 +72,6 @@
 - (uint64_t)getUint64State:(const std::string&)name;
 - (void)clearState:(const std::string&)name;
 - (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback;
+- (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet;
 
 @end

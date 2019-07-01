@@ -363,11 +363,13 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     switch (externalWallet.status) {
-      case 0:
-        return 'unverified'
-      case 1:
-        return 'verified'
+      // WalletStatus::VERIFIED
       case 2:
+        return 'verified'
+      // WalletStatus::DISCONNECTED_NOT_VERIFIED
+      case 3:
+      // WalletStatus::DISCONNECTED_VERIFIED
+      case 4:
         return 'disconnected'
       default:
         return 'unverified'
@@ -396,6 +398,14 @@ class PageWallet extends React.Component<Props, State> {
           }
           break
         }
+      }
+      return
+    }
+
+    // WalletStatus::CONNECTED
+    if (externalWallet.status === 1 && action === 'add') {
+      if (externalWallet.addUrl) {
+        window.open(externalWallet.addUrl, '_blank')
       }
       return
     }

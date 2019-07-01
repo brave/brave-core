@@ -141,6 +141,8 @@ interface BatLedger {
   FetchBalance() => (int32 result, ledger.mojom.Balance balance);
 
   GetExternalWallet(string wallet_type) => (ledger.mojom.ExternalWallet? wallet);
+
+  ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (int32 result, map<string, string> args);
 };
 
 interface BatLedgerClient {
@@ -259,4 +261,6 @@ interface BatLedgerClient {
       string publisher_name);
 
   GetExternalWallets() => (map<string, ledger.mojom.ExternalWallet?> wallets);
+
+  SaveExternalWallet(string wallet_type, ledger.mojom.ExternalWallet wallet);
 };

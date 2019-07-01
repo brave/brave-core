@@ -31,6 +31,7 @@ export const defaultState: Rewards.State = {
   ui: {
     emptyWallet: true,
     modalBackup: false,
+    modalRedirect: 'hide',
     paymentIdCheck: true,
     walletCorrupted: false,
     walletImported: false,
@@ -74,6 +75,8 @@ const cleanData = (state: Rewards.State) => {
   if (!state.balance) {
     state.balance = defaultState.balance
   }
+
+  state.ui.modalRedirect = 'hide'
 
   return state
 }

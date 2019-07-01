@@ -276,6 +276,7 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "walletCorrupted",  IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED },
         { "walletCorruptedNow",  IDS_BRAVE_REWARDS_LOCAL_WALLET_CORRUPTED_NOW },
         { "grantAlreadyClaimedText", IDS_BRAVE_REWARDS_LOCAL_GRANT_ALREADY_CLAIMED_TEXT },       // NOLINT
+        { "redirectModalError", IDS_BRAVE_REWARDS_LOCAL_REDIRECT_MODAL_ERROR },       // NOLINT
 
         { "about", IDS_BRAVE_UI_ABOUT },
         { "accept", IDS_BRAVE_UI_ACCEPT },
@@ -393,6 +394,8 @@ void CustomizeWebUIHTMLSource(const std::string &name,
         { "pinnedSitesFour", IDS_BRAVE_UI_PAYMENT_PINNED_SITES_FOUR },
         { "pleaseNote", IDS_BRAVE_UI_PLEASE_NOTE },
         { "print", IDS_BRAVE_UI_PRINT },
+        { "processingRequest", IDS_BRAVE_UI_PROCESSING_REQUEST },
+        { "processingRequestButton", IDS_BRAVE_UI_PROCESSING_REQUEST_BUTTON },
         { "readyToTakePart", IDS_BRAVE_UI_READY_TO_TAKE_PART },
         { "readyToTakePartOptInText", IDS_BRAVE_UI_READY_TO_TAKE_PART_OPT_IN_TEXT },             // NOLINT
         { "readyToTakePartStart", IDS_BRAVE_UI_READY_TO_TAKE_PART_START },

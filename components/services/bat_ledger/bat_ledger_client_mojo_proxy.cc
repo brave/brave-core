@@ -875,4 +875,14 @@ void BatLedgerClientMojoProxy::GetExternalWallets(
       base::BindOnce(&OnGetExternalWallets, std::move(callback)));
 }
 
+void BatLedgerClientMojoProxy::SaveExternalWallet(
+    const std::string& wallet_type,
+    ledger::ExternalWalletPtr wallet) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_client_->SaveExternalWallet(wallet_type, std::move(wallet));
+}
+
 }  // namespace bat_ledger

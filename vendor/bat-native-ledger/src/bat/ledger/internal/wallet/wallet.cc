@@ -7,6 +7,8 @@
 
 #include <utility>
 
+#include "crypto/random.h"
+#include "base/strings/string_number_conversions.h"
 #include "bat/ledger/internal/bat_helper.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "bat/ledger/internal/rapidjson_bat_helper.h"
@@ -169,10 +171,10 @@ void Wallet::FetchBalance(ledger::FetchBalanceCallback callback) {
 }
 
 void Wallet::OnGetExternalWallet(
-    const std::string& type,
+    const std::string& wallet_type,
     ledger::ExternalWalletCallback callback,
     std::map<std::string, ledger::ExternalWalletPtr> wallets) {
-  if (type == ledger::kWalletUphold) {
+  if (wallet_type == ledger::kWalletUphold) {
     ledger::ExternalWalletPtr wallet;
     if (wallets.size() == 0) {
       wallet = ledger::ExternalWallet::New();
@@ -183,7 +185,11 @@ void Wallet::OnGetExternalWallet(
       wallet->withdraw_url = uphold_->GetWithdrawUrl(wallet->address);
     }
 
-    wallet->verify_url = uphold_->GetVerifyUrl();
+    const std::string random_string = GenerateRandomString(30);
+
+    wallet->verify_url = uphold_->GetVerifyUrl(random_string);
+    wallet->one_time_string = random_string;
+    ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet->Clone());
     callback(std::move(wallet));
     return;
   }
@@ -191,15 +197,52 @@ void Wallet::OnGetExternalWallet(
   callback(nullptr);
 }
 
-void Wallet::GetExternalWallet(const std::string& type,
+void Wallet::GetExternalWallet(const std::string& wallet_type,
                                ledger::ExternalWalletCallback callback) {
   auto wallet_callback = std::bind(&Wallet::OnGetExternalWallet,
                                    this,
-                                   type,
+                                   wallet_type,
                                    callback,
                                    _1);
 
   ledger_->GetExternalWallets(wallet_callback);
+}
+
+void Wallet::OnExternalWalletAuthorization(
+    const std::string& wallet_type,
+    const std::map<std::string, std::string>& args,
+    ledger::ExternalWalletAuthorizationCallback callback,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
+  if (wallets.size() == 0) {
+    callback(ledger::Result::LEDGER_ERROR, {});
+    return;
+  }
+
+  if (wallet_type == ledger::kWalletUphold) {
+    uphold_->WalletAuthorization(args,
+                                 std::move(wallets),
+                                 callback);
+  }
+}
+
+void Wallet::ExternalWalletAuthorization(
+    const std::string& wallet_type,
+    const std::map<std::string, std::string>& args,
+    ledger::ExternalWalletAuthorizationCallback callback) {
+  auto wallet_callback = std::bind(&Wallet::OnExternalWalletAuthorization,
+                                   this,
+                                   wallet_type,
+                                   args,
+                                   callback,
+                                   _1);
+
+  ledger_->GetExternalWallets(wallet_callback);
+}
+
+std::string Wallet::GenerateRandomString(const size_t length) {
+  uint8_t bytes[length];
+  crypto::RandBytes(bytes, sizeof(bytes));
+  return base::HexEncode(bytes, sizeof(bytes));
 }
 
 }  // namespace braveledger_wallet

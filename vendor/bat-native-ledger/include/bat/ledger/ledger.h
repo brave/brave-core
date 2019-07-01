@@ -47,6 +47,8 @@ using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 using FetchBalanceCallback = std::function<void(ledger::Result,
                                                 ledger::BalancePtr)>;
 using ExternalWalletCallback = std::function<void(ledger::ExternalWalletPtr)>;
+using ExternalWalletAuthorizationCallback =
+    std::function<void(ledger::Result, std::map<std::string, std::string>)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -255,8 +257,13 @@ class LEDGER_EXPORT Ledger {
 
   virtual void FetchBalance(ledger::FetchBalanceCallback callback) = 0;
 
-  virtual void GetExternalWallet(const std::string& type,
+  virtual void GetExternalWallet(const std::string& wallet_type,
                                  ledger::ExternalWalletCallback callback) = 0;
+
+  virtual void ExternalWalletAuthorization(
+      const std::string& wallet_type,
+      const std::map<std::string, std::string>& args,
+      ledger::ExternalWalletAuthorizationCallback callback) = 0;
 };
 
 }  // namespace ledger
