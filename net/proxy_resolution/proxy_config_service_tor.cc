@@ -7,8 +7,8 @@
 
 #include <algorithm>
 #include <memory>
+#include <stdlib.h>
 #include <utility>
-#include <sstream>
 #include <vector>
 
 #include "base/no_destructor.h"
@@ -135,7 +135,8 @@ void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {
   const HostPortPair old_host_port = proxy_server_.host_port_pair();
   const HostPortPair new_host_port(
       CircuitIsolationKey(url),
-      std::to_string(base::Time::Now().ToTimeT()),
+      std::to_string(
+          base::Time::Now().ToDeltaSinceWindowsEpoch().InMilliseconds()),
       old_host_port.host(),
       old_host_port.port());
   proxy_server_ = ProxyServer(ProxyServer::SCHEME_SOCKS5, new_host_port);
@@ -167,11 +168,11 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
   if (!username.empty()) {
     auto* map = GetTorProxyMap(service);
     if (!host_port_pair.username().empty()) {
-      // password is a time_t -> std::string
-      std::istringstream stream(host_port_pair.password());
-      time_t time;
-      stream >> time;
-      map->MaybeExpire(host_port_pair.username(), base::Time::FromTimeT(time));
+      // password is a int64_t -> std::to_string in milliseconds
+      int64_t time = strtoll(host_port_pair.password().c_str(), nullptr, 10);
+      map->MaybeExpire(host_port_pair.username(),
+          base::Time::FromDeltaSinceWindowsEpoch(
+              base::TimeDelta::FromMilliseconds(time)));
     }
     host_port_pair.set_username(username);
     host_port_pair.set_password(map->Get(username));
