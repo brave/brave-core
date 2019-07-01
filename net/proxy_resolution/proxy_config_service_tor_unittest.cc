@@ -20,12 +20,7 @@ class ProxyConfigServiceTorTest : public TestWithScopedTaskEnvironment {
   ProxyConfigServiceTorTest() {}
   ~ProxyConfigServiceTorTest() override {}
 
-  ProxyConfigServiceTor::TorProxyMap* GetTorProxyMap() {
-    return &tor_proxy_map_;
-  }
-
  private:
-  ProxyConfigServiceTor::TorProxyMap tor_proxy_map_;
   DISALLOW_COPY_AND_ASSIGN(ProxyConfigServiceTorTest);
 };
 
