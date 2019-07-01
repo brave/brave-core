@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_IMPL_H_
 #define BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_IMPL_H_
 
+#include <memory>
+
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
 #include "brave/browser/tor/tor_launcher_factory.h"

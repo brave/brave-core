@@ -5,9 +5,10 @@
 
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 
+#include <stdlib.h>
+
 #include <algorithm>
 #include <memory>
-#include <stdlib.h>
 #include <utility>
 #include <vector>
 

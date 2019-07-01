@@ -5,6 +5,7 @@
 
 #include "brave/browser/tor/tor_profile_service_impl.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -41,7 +42,7 @@ namespace {
 
 class NewTorCircuitTracker : public WebContentsObserver {
  public:
-  NewTorCircuitTracker(content::WebContents* web_contents)
+  explicit NewTorCircuitTracker(content::WebContents* web_contents)
       : WebContentsObserver(web_contents) {}
   ~NewTorCircuitTracker() override {}
 
@@ -71,7 +72,7 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
   }
 
  private:
-  TorProxyLookupClient(NewTorCircuitCallback callback)
+  explicit TorProxyLookupClient(NewTorCircuitCallback callback)
       : callback_(std::move(callback)),
         binding_(this) {}
 
@@ -84,7 +85,8 @@ class TorProxyLookupClient : public network::mojom::ProxyLookupClient {
     binding_.Bind(
         mojo::MakeRequest(&proxy_lookup_client_ptr),
         base::CreateSingleThreadTaskRunnerWithTraits(
-            {content::BrowserThread::UI, content::BrowserTaskType::kPreconnect}));
+            {content::BrowserThread::UI,
+             content::BrowserTaskType::kPreconnect}));
     binding_.set_connection_error_handler(
         base::BindOnce(&TorProxyLookupClient::OnProxyLookupComplete,
                        base::Unretained(this),

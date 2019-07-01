@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_H_
 #define BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_H_
 
+#include <memory>
 #include <string>
 
 #include "base/macros.h"
