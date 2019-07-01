@@ -5,6 +5,7 @@
 
 #include "brave/browser/brave_rewards/tip_dialog.h"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
@@ -33,6 +34,8 @@ namespace {
 constexpr int kDialogMargin = 25;
 constexpr int kDialogMinHeight = 400;
 constexpr int kDialogMaxHeight = 700;
+// max width = 1920 - margin
+constexpr int kDialogMaxWidth = 1895;
 
 // A ui::WebDialogDelegate that specifies the tip dialog appearance.
 class TipDialogDelegate : public ui::WebDialogDelegate {
@@ -107,7 +110,8 @@ void TipDialogDelegate::GetDialogSize(gfx::Size* size) const {
   // initial size in between min and max
   const int max_height =
       kDialogMinHeight + (kDialogMaxHeight - kDialogMinHeight);
-  size->SetSize(target_size.width() - kDialogMargin, max_height);
+  int width = std::min(target_size.width() - kDialogMargin, kDialogMaxWidth);
+  size->SetSize(width, max_height);
 }
 
 std::string TipDialogDelegate::GetDialogArgs() const {
@@ -138,7 +142,7 @@ void OpenTipDialog(WebContents* initiator,
   content::WebContents* outermost_web_contents =
     guest_view::GuestViewBase::GetTopLevelWebContents(initiator);
   gfx::Size host_size = outermost_web_contents->GetContainerBounds().size();
-  const int width = host_size.width() - kDialogMargin;
+  int width = std::min(host_size.width() - kDialogMargin, kDialogMaxWidth);
   gfx::Size min_size(width, kDialogMinHeight);
   gfx::Size max_size(width, kDialogMaxHeight);
   // TODO(petemill): adjust min and max when host size changes (e.g. window
