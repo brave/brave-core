@@ -1,9 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_AUTOCOMPLETE_BRAVE_GEOLOCATION_PERMISSION_CONTEXT_H_
-#define BRAVE_BROWSER_AUTOCOMPLETE_BRAVE_GEOLOCATION_PERMISSION_CONTEXT_H_
+#ifndef BRAVE_BROWSER_GEOLOCATION_BRAVE_GEOLOCATION_PERMISSION_CONTEXT_H_
+#define BRAVE_BROWSER_GEOLOCATION_BRAVE_GEOLOCATION_PERMISSION_CONTEXT_H_
 
 #include "chrome/browser/geolocation/geolocation_permission_context.h"
 
@@ -23,4 +24,4 @@ class BraveGeolocationPermissionContext : public GeolocationPermissionContext {
   DISALLOW_COPY_AND_ASSIGN(BraveGeolocationPermissionContext);
 };
 
-#endif  // BRAVE_BROWSER_AUTOCOMPLETE_BRAVE_GEOLOCATION_PERMISSION_CONTEXT_H_
+#endif  // BRAVE_BROWSER_GEOLOCATION_BRAVE_GEOLOCATION_PERMISSION_CONTEXT_H_

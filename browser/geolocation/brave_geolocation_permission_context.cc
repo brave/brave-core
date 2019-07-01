@@ -5,6 +5,8 @@
 
 #include "brave/browser/geolocation/brave_geolocation_permission_context.h"
 
+#include <utility>
+
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/prefs/pref_service.h"

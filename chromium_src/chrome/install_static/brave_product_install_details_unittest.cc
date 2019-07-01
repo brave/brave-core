@@ -102,12 +102,16 @@ constexpr TestData kTestData[] = {
     {
         L"C:\\Program Files (x86)\\BraveSoftware\\Brave-Browser-Development"
         L"\\Application\\brave.exe",
-        DEVELOPER_INDEX, true, L"",
+        DEVELOPER_INDEX,
+        true,
+        L"",
     },
     {
-        L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Browser-Development"
-        L"Application\\brave.exe",
-        DEVELOPER_INDEX, false, L"",
+        L"C:\\Users\\user\\AppData\\Local\\BraveSoftware\\Brave-Browser-"
+        L"Development\\Application\\brave.exe",
+        DEVELOPER_INDEX,
+        false,
+        L"",
     },
 };
 #endif  // !OFFICIAL_BUILD

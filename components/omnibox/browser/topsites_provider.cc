@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -7,6 +8,7 @@
 #include <stddef.h>
 
 #include <algorithm>
+#include <string>
 
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -36,11 +38,11 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
   for (std::vector<std::string>::const_iterator i = top_sites_.begin();
        (i != top_sites_.end()) && (matches_.size() < provider_max_matches());
        ++i) {
-
     const std::string &current_site = *i;
     size_t foundPos = current_site.find(input_text);
     if (std::string::npos != foundPos) {
-      ACMatchClassifications styles = StylesForSingleMatch(input_text, current_site, foundPos);
+      ACMatchClassifications styles =
+          StylesForSingleMatch(input_text, current_site, foundPos);
       AddMatch(base::ASCIIToUTF16(current_site), styles);
     }
   }
@@ -59,22 +61,26 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
 
 TopSitesProvider::~TopSitesProvider() {}
 
-//static
+// static
 ACMatchClassifications TopSitesProvider::StylesForSingleMatch(
     const std::string &input_text,
     const std::string &site,
     const size_t &foundPos) {
   ACMatchClassifications styles;
   if (foundPos == 0) {
-    styles.push_back(ACMatchClassification(0, ACMatchClassification::URL|ACMatchClassification::MATCH));
+    styles.push_back(ACMatchClassification(
+        0, ACMatchClassification::URL | ACMatchClassification::MATCH));
     if (site.length() > input_text.length()) {
-      styles.push_back(ACMatchClassification(input_text.length(), ACMatchClassification::URL));
+      styles.push_back(ACMatchClassification(input_text.length(),
+                                             ACMatchClassification::URL));
     }
   } else {
     styles.push_back(ACMatchClassification(0, ACMatchClassification::URL));
-    styles.push_back(ACMatchClassification(foundPos, ACMatchClassification::URL|ACMatchClassification::MATCH));
+    styles.push_back(ACMatchClassification(
+        foundPos, ACMatchClassification::URL | ACMatchClassification::MATCH));
     if (site.length() > foundPos + input_text.length()) {
-      styles.push_back(ACMatchClassification(foundPos + input_text.length(), 0));
+      styles.push_back(
+          ACMatchClassification(foundPos + input_text.length(), 0));
     }
   }
   return styles;

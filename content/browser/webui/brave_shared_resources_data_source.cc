@@ -6,6 +6,11 @@
 
 #include <stddef.h>
 
+#include <map>
+#include <string>
+#include <unordered_map>
+#include <utility>
+
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
@@ -110,11 +115,10 @@ void BraveSharedResourcesDataSource::StartDataRequest(
   DCHECK_NE(-1, idr) << " path: " << path;
   scoped_refptr<base::RefCountedMemory> bytes;
 
-  // Cannot access GetContentClient() from here as that is //content/public only.
-  // Therefore cannot access ContentClient::GetDataResourceBytes,
-  // so go to the bundle directly.
-  // This will work for all content clients apart from in a test environment,
-  // where this shoudl be mocked.
+  // Cannot access GetContentClient() from here as that is //content/public
+  // only. Therefore, cannot access ContentClient::GetDataResourceBytes,
+  // so go to the bundle directly. This will work for all content clients apart
+  // from in a test environment, where this shoudl be mocked.
   bytes = ui::ResourceBundle::GetSharedInstance().LoadDataResourceBytes(idr);
   callback.Run(bytes.get());
 }
@@ -166,7 +170,8 @@ std::string BraveSharedResourcesDataSource::GetMimeType(
   return "text/plain";
 }
 
-bool BraveSharedResourcesDataSource::ShouldServeMimeTypeAsContentTypeHeader() const {
+bool BraveSharedResourcesDataSource::ShouldServeMimeTypeAsContentTypeHeader()
+    const {
   return true;
 }
 
