@@ -5,6 +5,8 @@
 
 #include "brave/browser/autoplay/autoplay_permission_context.h"
 
+#include <utility>
+
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/components/brave_shields/browser/autoplay_whitelist_service.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"

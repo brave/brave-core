@@ -18,7 +18,7 @@
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
 #endif
 
-#include "../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"
+#include "../../../../chrome/browser/renderer_context_menu/render_view_context_menu.cc"  // NOLINT
 
 #if !defined(OS_MACOSX)
 #undef SpellingOptionsSubMenuObserver
@@ -62,11 +62,10 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
-      profiles::SwitchToTorProfile(
-          base::Bind(
-              OnProfileCreated, params_.link_url,
-              content::Referrer(GURL(),
-                                network::mojom::ReferrerPolicy::kStrictOrigin)));
+      profiles::SwitchToTorProfile(base::Bind(
+          OnProfileCreated, params_.link_url,
+          content::Referrer(GURL(),
+                            network::mojom::ReferrerPolicy::kStrictOrigin)));
       break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);

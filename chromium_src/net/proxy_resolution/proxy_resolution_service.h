@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_NET_PROXY_RESOLUTION_PROXY_RESOLUTION_SERVICE_H_
 #define BRAVE_CHROMIUM_SRC_NET_PROXY_RESOLUTION_PROXY_RESOLUTION_SERVICE_H_
 
+#include <memory>
+
 // ResetConfigService was removed in c76 in commit
 // d44ca309d337c37c778002c13b6ecf5ff6036fdd, but we still need it.
 #define BRAVE_PROXY_RESOLUTION_SERVICE_METHODS \

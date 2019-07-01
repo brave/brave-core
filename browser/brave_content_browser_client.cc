@@ -7,6 +7,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 
 #include "base/bind.h"
 #include "base/json/json_reader.h"
@@ -78,7 +79,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/common/tor/tor_launcher.mojom.h"
 #include "brave/utility/tor/tor_launcher_service.h"
 #endif
 

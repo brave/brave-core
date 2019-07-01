@@ -13,7 +13,7 @@ void MaybeOnWidevineRequest(MediaKeySystemAccessInitializer* initializer,
 }  // namespace
 }  // namespace blink
 
-#include "../../../../../../../third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc"
+#include "../../../../../../../third_party/blink/renderer/modules/encryptedmedia/navigator_request_media_key_system_access.cc"  // NOLINT
 
 #include "brave/components/brave_drm/brave_drm.mojom.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"

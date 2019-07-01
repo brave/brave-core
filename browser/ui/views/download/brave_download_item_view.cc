@@ -1,8 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/views/download/brave_download_item_view.h"
+
+#include <algorithm>
+#include <utility>
 
 #include "base/auto_reset.h"
 #include "base/strings/string16.h"
@@ -37,7 +41,7 @@ constexpr SkColor kDownloadUnlockIconColor = SkColorSetRGB(0xC6, 0x36, 0x26);
 // Decrement of lock icon height from font baseline
 constexpr int kDownloadUnlockIconHeightDecr = 1;
 
-} // namespace
+}  // namespace
 
 BraveDownloadItemView::BraveDownloadItemView(
     DownloadUIModel::DownloadUIModelPtr download,
@@ -69,8 +73,8 @@ gfx::Size BraveDownloadItemView::CalculatePreferredSize() const {
   gfx::Size size = DownloadItemView::CalculatePreferredSize();
   // Calculate the height accounting for the extra line.
   int child_height = font_list_.GetHeight() + kBraveVerticalTextPadding +
-                     origin_url_font_list_.GetHeight() + kBraveVerticalTextPadding +
-                     status_font_list_.GetHeight();
+                     origin_url_font_list_.GetHeight() +
+                     kBraveVerticalTextPadding + status_font_list_.GetHeight();
   if (IsShowingWarningDialog()) {
     child_height =
         std::max({child_height, GetButtonSize().height(), kWarningIconSize});
@@ -105,7 +109,8 @@ void BraveDownloadItemView::OnDownloadUpdated() {
     // as well.
     bool needs_repaint = false;
     bool new_is_secure = false;
-    base::string16 new_origin_url = brave_model_.GetOriginURLText(new_is_secure);
+    base::string16 new_origin_url =
+        brave_model_.GetOriginURLText(new_is_secure);
     if (new_origin_url != origin_url_text_ ||
       new_is_secure != is_origin_url_secure_) {
       origin_url_text_ = new_origin_url;
@@ -122,7 +127,8 @@ void BraveDownloadItemView::OnDownloadUpdated() {
   }
 
   // Update tooltip.
-  base::string16 new_tip = brave_model_.GetTooltipText(font_list_, kTooltipMaxWidth);
+  base::string16 new_tip =
+      brave_model_.GetTooltipText(font_list_, kTooltipMaxWidth);
   if (new_tip != tooltip_text_) {
     tooltip_text_ = new_tip;
     TooltipTextChanged();
@@ -163,7 +169,7 @@ void BraveDownloadItemView::DrawOriginURL(gfx::Canvas* canvas) {
   int x = kStartPadding + DownloadShelf::kProgressIndicatorSize +
           kProgressTextPadding;
   int text_width = kTextWidth;
- 
+
   if (!is_origin_url_secure_) {
     DrawLockIcon(canvas);
     int dx = origin_url_font_list_.GetBaseline() + kOriginURLIconRightPadding;
