@@ -6,6 +6,43 @@ import UIKit
 import Storage
 import Shared
 
+private class MenuCell: UITableViewCell {
+    let iconView = UIImageView()
+    let labelView = UILabel()
+    let iconLength: CGFloat = 50.0
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        contentView.addSubview(iconView)
+        contentView.addSubview(labelView)
+        
+        iconView.contentMode = .center
+        iconView.snp.makeConstraints {
+            $0.leading.top.bottom.equalTo(self)
+            $0.width.equalTo(iconLength)
+        }
+        labelView.snp.makeConstraints {
+            $0.centerY.equalTo(self)
+            $0.trailing.equalTo(self).inset(12)
+            $0.leading.equalTo(iconView.snp.trailing)
+        }
+        labelView.textColor = .black
+        separatorInset = UIEdgeInsets(top: 0, left: iconLength, bottom: 0, right: 0)
+    }
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+        fatalError()
+    }
+    @available(*, unavailable)
+    override var textLabel: UILabel? {
+        return nil
+    }
+    @available(*, unavailable)
+    override var imageView: UIImageView? {
+        return nil
+    }
+}
+
 class MenuViewController: UITableViewController {
     
     private struct UX {
@@ -126,10 +163,10 @@ class MenuViewController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let button = visibleButtons[indexPath.row]
-        let cell = UITableViewCell()
+        let cell = MenuCell()
         
-        cell.textLabel?.text = button.title
-        cell.imageView?.image = button.icon
+        cell.labelView.text = button.title
+        cell.iconView.image = button.icon
         cell.tag = button.rawValue
         cell.backgroundColor = .clear
         
