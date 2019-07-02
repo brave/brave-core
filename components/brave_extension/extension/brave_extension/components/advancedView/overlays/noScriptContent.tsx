@@ -6,14 +6,14 @@
 import * as React from 'react'
 
 // Types
-import { NoScriptEntry } from '../../types/other/noScriptInfo'
+import { NoScriptEntry } from '../../../types/other/noScriptInfo'
 import {
   AllowScriptOriginsOnce,
   SetScriptBlockedCurrentState,
   SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState
-} from '../../types/actions/shieldsPanelActions'
+} from '../../../types/actions/shieldsPanelActions'
 
 // Components
 import {
@@ -24,12 +24,12 @@ import {
 } from 'brave-ui/features/shields'
 
 // Helpers
-import { getHostname, stripProtocolFromUrl } from '../../helpers/urlUtils'
+import { getHostname, stripProtocolFromUrl } from '../../../helpers/urlUtils'
 import {
   getBlockScriptText,
   filterNoScriptInfoByWillBlockState,
   checkEveryItemIsBlockedOrAllowedByUser
-} from '../../helpers/noScriptUtils'
+} from '../../../helpers/noScriptUtils'
 
 interface Props {
   noScriptInfo: Array<any>

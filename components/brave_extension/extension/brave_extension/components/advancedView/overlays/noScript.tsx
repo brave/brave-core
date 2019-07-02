@@ -6,14 +6,14 @@
 import * as React from 'react'
 
 // Types
-import { NoScriptInfo } from '../../types/other/noScriptInfo'
+import { NoScriptInfo } from '../../../types/other/noScriptInfo'
 import {
   AllowScriptOriginsOnce,
   SetScriptBlockedCurrentState,
   SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState
-} from '../../types/actions/shieldsPanelActions'
+} from '../../../types/actions/shieldsPanelActions'
 
 // Components
 import NoScriptContent from './noScriptContent'
@@ -24,7 +24,7 @@ import {
   checkEveryItemIsBlockedOrAllowedByUser,
   generateNoScriptInfoDataStructure,
   getBlockAllText
-} from '../../helpers/noScriptUtils'
+} from '../../../helpers/noScriptUtils'
 
 // Feature-specific components
 import {
@@ -45,13 +45,13 @@ import {
 } from 'brave-ui/features/shields'
 
 // Helpers
-import { getLocale } from '../../background/api/localeAPI'
+import { getLocale } from '../../../background/api/localeAPI'
 
 interface Props {
   favicon: string
   hostname: string
   noScriptInfo: NoScriptInfo
-  onClose: (event?: React.MouseEvent<any>) => void
+  onClose: (event?: React.MouseEvent) => void
   allowScriptOriginsOnce: AllowScriptOriginsOnce
   setScriptBlockedCurrentState: SetScriptBlockedCurrentState
   setGroupedScriptsBlockedCurrentState: SetGroupedScriptsBlockedCurrentState
@@ -88,12 +88,12 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
     this.props.allowScriptOriginsOnce()
   }
 
-  setFinalScriptsBlockedState = (event?: any) => {
+  setFinalScriptsBlockedState = (event?: React.MouseEvent) => {
     // indicate local state that those scripts are going to be blocked
     this.props.setFinalScriptsBlockedState()
     // close the scripts modal layer
     if (event) {
-      this.props.onClose(event)
+      this.props.onClose()
     }
   }
 
@@ -114,7 +114,7 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
             <ArrowUpIcon />
             <BlockedListSummaryText>{getLocale('scriptsOnThisSite')}</BlockedListSummaryText>
           </BlockedListSummary>
-          <BlockedListDynamic>
+          <BlockedListDynamic fixedHeight={true}>
           {
             this.getBlockedScriptsLength(true) > 0 && (
               <>

@@ -19,9 +19,9 @@ import {
   SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState
-} from '../types/actions/shieldsPanelActions'
-import { BlockCookiesOptions, BlockJSOptions, BlockFPOptions } from '../types/other/blockTypes'
-import { NoScriptInfo } from '../types/other/noScriptInfo'
+} from '../../types/actions/shieldsPanelActions'
+import { BlockCookiesOptions, BlockJSOptions, BlockFPOptions } from '../../types/other/blockTypes'
+import { NoScriptInfo } from '../../types/other/noScriptInfo'
 
 interface CommonProps {
   isBlockedListOpen: boolean

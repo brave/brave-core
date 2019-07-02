@@ -25,16 +25,16 @@ import {
 } from 'brave-ui/features/shields'
 
 // Locale
-import { getLocale } from '../background/api/localeAPI'
+import { getLocale } from '../../background/api/localeAPI'
 import {
   blockedResourcesSize,
   getTotalBlockedSizeStrings,
   getToggleStateViaEventTarget
-} from '../helpers/shieldsUtils'
+} from '../../helpers/shieldsUtils'
 
 // Types
-import { BlockOptions } from '../types/other/blockTypes'
-import { ShieldsToggled } from '../types/actions/shieldsPanelActions'
+import { BlockOptions } from '../../types/other/blockTypes'
+import { ShieldsToggled } from '../../types/actions/shieldsPanelActions'
 
 interface CommonProps {
   enabled: boolean

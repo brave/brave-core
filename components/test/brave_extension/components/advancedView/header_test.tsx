@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import ShieldsHeader, { Props } from '../../../../brave_extension/extension/brave_extension/components/header'
+import ShieldsHeader, { Props } from '../../../../brave_extension/extension/brave_extension/components/advancedView/header'
 import { BlockOptions } from '../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
 import * as actionTypes from '../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import { shallow } from 'enzyme'
@@ -22,7 +22,7 @@ const fakeProps: Props = {
   fingerprintingBlocked: 0
 }
 
-describe('ShieldsHeader component', () => {
+describe('AdvancedView Header component', () => {
   const baseComponent = (props: Props) =>
     <ShieldsHeader {...props} />
 

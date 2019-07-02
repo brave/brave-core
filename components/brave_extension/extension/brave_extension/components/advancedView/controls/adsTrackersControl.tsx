@@ -15,10 +15,10 @@ import {
 } from 'brave-ui/features/shields'
 
 // Group Components
-import StaticList from '../list/static'
+import StaticList from '../overlays/static'
 
 // Locale
-import { getLocale } from '../../background/api/localeAPI'
+import { getLocale } from '../../../background/api/localeAPI'
 
 // Helpers
 import {
@@ -29,11 +29,11 @@ import {
   getTabIndexValueBasedOnProps,
   blockedResourcesSize,
   maybeDisableResourcesRow
-} from '../../helpers/shieldsUtils'
+} from '../../../helpers/shieldsUtils'
 
 // Types
-import { BlockAdsTrackers } from '../../types/actions/shieldsPanelActions'
-import { BlockOptions } from '../../types/other/blockTypes'
+import { BlockAdsTrackers } from '../../../types/actions/shieldsPanelActions'
+import { BlockOptions } from '../../../types/other/blockTypes'
 
 interface CommonProps {
   isBlockedListOpen: boolean

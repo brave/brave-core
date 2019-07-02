@@ -16,10 +16,10 @@ import {
 } from 'brave-ui/features/shields'
 
 // Group Components
-import NoScript from '../list/noScript'
+import NoScript from '../overlays/noScript'
 
 // Locale
-import { getLocale } from '../../background/api/localeAPI'
+import { getLocale } from '../../../background/api/localeAPI'
 
 // Helpers
 import {
@@ -28,11 +28,11 @@ import {
   maybeBlockResource,
   getTabIndexValueBasedOnProps,
   getToggleStateViaEventTarget
-} from '../../helpers/shieldsUtils'
+} from '../../../helpers/shieldsUtils'
 
 // Types
-import { BlockJSOptions } from '../../types/other/blockTypes'
-import { NoScriptInfo } from '../../types/other/noScriptInfo'
+import { BlockJSOptions } from '../../../types/other/blockTypes'
+import { NoScriptInfo } from '../../../types/other/noScriptInfo'
 import {
   BlockJavaScript,
   AllowScriptOriginsOnce,
@@ -40,7 +40,7 @@ import {
   SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState
-} from '../../types/actions/shieldsPanelActions'
+} from '../../../types/actions/shieldsPanelActions'
 
 interface CommonProps {
   // Global props

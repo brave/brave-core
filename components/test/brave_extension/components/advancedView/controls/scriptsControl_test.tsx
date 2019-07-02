@@ -4,9 +4,9 @@
 
 import * as React from 'react'
 import { shallow } from 'enzyme'
-import ScriptsControl, { Props } from '../../../../brave_extension/extension/brave_extension/components/controls/scriptsControl'
-import * as actionTypes from '../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
-import { BlockJSOptions } from '../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
+import ScriptsControl, { Props } from '../../../../../brave_extension/extension/brave_extension/components/advancedView/controls/scriptsControl'
+import * as actionTypes from '../../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
+import { BlockJSOptions } from '../../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
 
 const fakeProps: Props = {
   isBlockedListOpen: true,
@@ -24,7 +24,7 @@ const fakeProps: Props = {
   setFinalScriptsBlockedState: () => ({ type: actionTypes.SET_FINAL_SCRIPTS_BLOCKED_ONCE_STATE })
 }
 
-describe('ScriptsControl component', () => {
+describe('AdvancedView ScriptsControl component', () => {
   const baseComponent = (props: Props) =>
     <ScriptsControl {...props} />
 

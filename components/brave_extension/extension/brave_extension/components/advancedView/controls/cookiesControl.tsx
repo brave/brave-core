@@ -8,20 +8,19 @@ import * as React from 'react'
 import { BlockedInfoRowSingle, SelectBox } from 'brave-ui/features/shields'
 
 // Locale
-import { getLocale } from '../../background/api/localeAPI'
+import { getLocale } from '../../../background/api/localeAPI'
 
 // Types
-import { BlockCookies } from '../../types/actions/shieldsPanelActions'
-import { BlockCookiesOptions } from '../../types/other/blockTypes'
+import { BlockCookiesOptions } from '../../../types/other/blockTypes'
 
 export interface Props {
   isBlockedListOpen: boolean
   cookies: BlockCookiesOptions
-  blockCookies: BlockCookies
+  blockCookies: (event: string) => void
 }
 
 export default class CookiesControl extends React.PureComponent<Props, {}> {
-  onChangeBlockCookies = (event: React.ChangeEvent<any>) => {
+  onChangeBlockCookies = (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.props.blockCookies(event.target.value)
   }
 

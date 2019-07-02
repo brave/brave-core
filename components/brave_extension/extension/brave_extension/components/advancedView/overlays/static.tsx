@@ -20,10 +20,10 @@ import {
 } from 'brave-ui/features/shields'
 
 // Helpers
-import { blockedResourcesSize } from '../../helpers/shieldsUtils'
+import { blockedResourcesSize } from '../../../helpers/shieldsUtils'
 
 // Locale
-import { getLocale } from '../../background/api/localeAPI'
+import { getLocale } from '../../../background/api/localeAPI'
 
 interface Props {
   favicon: string
@@ -31,7 +31,7 @@ interface Props {
   stats: number
   name: string
   list: Array<string>
-  onClose?: (event?: React.MouseEvent<any>) => void
+  onClose: (event?: React.MouseEvent) => void
 }
 
 export default class StaticList extends React.PureComponent<Props, {}> {
@@ -54,7 +54,7 @@ export default class StaticList extends React.PureComponent<Props, {}> {
           <BlockedInfoRowStats>{this.statsDisplay}</BlockedInfoRowStats>
           <BlockedListSummaryText>{name}</BlockedListSummaryText>
           </BlockedListSummary>
-          <BlockedListStatic>
+          <BlockedListStatic fixedHeight={true}>
             {list.map((item, index) => <BlockedListItem key={index}>{item}</BlockedListItem>)}
           </BlockedListStatic>
         </details>

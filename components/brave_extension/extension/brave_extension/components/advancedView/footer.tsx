@@ -8,10 +8,10 @@ import * as React from 'react'
 import { MainFooter, Link } from 'brave-ui/features/shields'
 
 // API
-import * as tabsAPI from '../background/api/tabsAPI'
+import * as tabsAPI from '../../background/api/tabsAPI'
 
 // Locale
-import { getLocale } from '../background/api/localeAPI'
+import { getLocale } from '../../background/api/localeAPI'
 
 export interface Props {
   isBlockedListOpen: boolean

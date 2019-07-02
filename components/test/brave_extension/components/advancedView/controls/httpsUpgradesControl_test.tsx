@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import HttpsUpgradesControl, { Props } from '../../../../brave_extension/extension/brave_extension/components/controls/httpsUpgradesControl'
-import { BlockOptions } from '../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
-import * as actionTypes from '../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
+import HttpsUpgradesControl, { Props } from '../../../../../brave_extension/extension/brave_extension/components/advancedView/controls/httpsUpgradesControl'
+import { BlockOptions } from '../../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
+import * as actionTypes from '../../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import { shallow } from 'enzyme'
 
 const fakeProps: Props = {
@@ -19,7 +19,7 @@ const fakeProps: Props = {
   httpsEverywhereToggled: (setting: BlockOptions) => ({ type: actionTypes.HTTPS_EVERYWHERE_TOGGLED, setting })
 }
 
-describe('HttpsUpgradesControl component', () => {
+describe('AdvancedView HttpsUpgradesControl component', () => {
   const baseComponent = (props: Props) =>
     <HttpsUpgradesControl {...props} />
 

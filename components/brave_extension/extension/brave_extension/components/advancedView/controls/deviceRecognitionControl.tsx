@@ -14,21 +14,20 @@ import {
 } from 'brave-ui/features/shields'
 
 // Group Components
-import StaticList from '../list/static'
+import StaticList from '../overlays/static'
 
 // Locale
-import { getLocale } from '../../background/api/localeAPI'
+import { getLocale } from '../../../background/api/localeAPI'
 
 // Helpers
 import {
   maybeDisableResourcesRow,
   getTabIndexValueBasedOnProps,
   blockedResourcesSize
-} from '../../helpers/shieldsUtils'
+} from '../../../helpers/shieldsUtils'
 
 // Types
-import { BlockFingerprinting } from '../../types/actions/shieldsPanelActions'
-import { BlockFPOptions } from '../../types/other/blockTypes'
+import { BlockFPOptions } from '../../../types/other/blockTypes'
 
 interface CommonProps {
   favicon: string
@@ -41,7 +40,7 @@ interface HTTPSUpgradesProps {
   fingerprinting: BlockFPOptions
   fingerprintingBlocked: number
   fingerprintingBlockedResources: Array<string>
-  blockFingerprinting: BlockFingerprinting
+  blockFingerprinting: (event: string) => void
 }
 
 export type Props = CommonProps & HTTPSUpgradesProps
@@ -91,7 +90,7 @@ export default class DeviceRecognitionControl extends React.PureComponent<Props,
     }
   }
 
-  onChangeBlockDeviceRecognition = (event: React.ChangeEvent<any>) => {
+  onChangeBlockDeviceRecognition = (event: React.ChangeEvent<HTMLSelectElement>) => {
     this.props.blockFingerprinting(event.target.value)
   }
 

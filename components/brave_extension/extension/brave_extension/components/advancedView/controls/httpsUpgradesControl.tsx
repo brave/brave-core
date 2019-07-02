@@ -15,10 +15,10 @@ import {
 } from 'brave-ui/features/shields'
 
 // Group Components
-import HTTPSUpgrades from '../list/httpsUpgrades'
+import HTTPSUpgrades from '../overlays/httpsUpgrades'
 
 // Locale
-import { getLocale } from '../../background/api/localeAPI'
+import { getLocale } from '../../../background/api/localeAPI'
 
 // Helpers
 import {
@@ -27,11 +27,11 @@ import {
   getTabIndexValueBasedOnProps,
   blockedResourcesSize,
   getToggleStateViaEventTarget
-} from '../../helpers/shieldsUtils'
+} from '../../../helpers/shieldsUtils'
 
 // Types
-import { HttpsEverywhereToggled } from '../../types/actions/shieldsPanelActions'
-import { BlockOptions } from '../../types/other/blockTypes'
+import { HttpsEverywhereToggled } from '../../../types/actions/shieldsPanelActions'
+import { BlockOptions } from '../../../types/other/blockTypes'
 
 interface CommonProps {
   isBlockedListOpen: boolean

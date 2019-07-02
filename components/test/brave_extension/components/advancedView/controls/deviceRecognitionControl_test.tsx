@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import DeviceRecognitionControl, { Props } from '../../../../brave_extension/extension/brave_extension/components/controls/deviceRecognitionControl'
-import { BlockOptions } from '../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
-import * as actionTypes from '../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
+import DeviceRecognitionControl, { Props } from '../../../../../brave_extension/extension/brave_extension/components/advancedView/controls/deviceRecognitionControl'
+import { BlockOptions } from '../../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
+import * as actionTypes from '../../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import { shallow } from 'enzyme'
 
 const fakeProps: Props = {
@@ -19,7 +19,7 @@ const fakeProps: Props = {
   blockFingerprinting: (setting: BlockOptions) => ({ type: actionTypes.BLOCK_FINGERPRINTING, setting })
 }
 
-describe('DeviceRecognitionControl component', () => {
+describe('AdvancedView DeviceRecognitionControl component', () => {
   const baseComponent = (props: Props) =>
     <DeviceRecognitionControl {...props} />
 

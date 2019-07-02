@@ -3,9 +3,9 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import AdsTrackersControl, { Props } from '../../../../brave_extension/extension/brave_extension/components/controls/adsTrackersControl'
-import { BlockOptions } from '../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
-import * as actionTypes from '../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
+import AdsTrackersControl, { Props } from '../../../../../brave_extension/extension/brave_extension/components/advancedView/controls/adsTrackersControl'
+import { BlockOptions } from '../../../../../brave_extension/extension/brave_extension/types/other/blockTypes'
+import * as actionTypes from '../../../../../brave_extension/extension/brave_extension/constants/shieldsPanelTypes'
 import { shallow } from 'enzyme'
 
 const fakeProps: Props = {
@@ -22,7 +22,7 @@ const fakeProps: Props = {
   blockAdsTrackers: (setting: BlockOptions) => ({ type: actionTypes.BLOCK_ADS_TRACKERS, setting })
 }
 
-describe('AdsTrackersControl component', () => {
+describe('AdvancedView AdsTrackersControl component', () => {
   const baseComponent = (props: Props) =>
     <AdsTrackersControl {...props} />
 

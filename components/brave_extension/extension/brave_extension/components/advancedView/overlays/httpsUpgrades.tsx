@@ -20,17 +20,17 @@ import {
 } from 'brave-ui/features/shields'
 
 // Helpers
-import { blockedResourcesSize } from '../../helpers/shieldsUtils'
+import { blockedResourcesSize } from '../../../helpers/shieldsUtils'
 
 // Locale
-import { getLocale } from '../../background/api/localeAPI'
+import { getLocale } from '../../../background/api/localeAPI'
 
 interface Props {
   favicon: string
   hostname: string
   stats: number
   list: Array<string>
-  onClose?: (event?: React.MouseEvent<any>) => void
+  onClose: (event?: React.MouseEvent) => void
 }
 
 export default class HTTPSUpgrades extends React.PureComponent<Props, {}> {
@@ -57,7 +57,7 @@ export default class HTTPSUpgrades extends React.PureComponent<Props, {}> {
           <BlockedInfoRowStats>{this.statsDisplay}</BlockedInfoRowStats>
           <BlockedListSummaryText>{getLocale('connectionsUpgradedHTTPS')}</BlockedListSummaryText>
           </BlockedListSummary>
-          <BlockedListStatic>
+          <BlockedListStatic fixedHeight={true}>
             {list.map((item, index) => <BlockedListItem key={index}>{this.getHostname(item)}</BlockedListItem>)}
           </BlockedListStatic>
         </details>

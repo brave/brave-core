@@ -9,8 +9,8 @@ import AdsTrackersControl from './controls/adsTrackersControl'
 import HTTPSUpgradesControl from './controls/httpsUpgradesControl'
 
 // Types
-import { BlockAdsTrackers, HttpsEverywhereToggled } from '../types/actions/shieldsPanelActions'
-import { BlockOptions } from '../types/other/blockTypes'
+import { BlockAdsTrackers, HttpsEverywhereToggled } from '../../types/actions/shieldsPanelActions'
+import { BlockOptions } from '../../types/other/blockTypes'
 
 interface CommonProps {
   isBlockedListOpen: boolean
