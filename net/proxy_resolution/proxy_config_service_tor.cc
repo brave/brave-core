@@ -164,7 +164,8 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
   const std::string username = CircuitIsolationKey(url);
   const std::string& proxy_uri =
       config.value().proxy_rules().single_proxies.Get().ToURI();
-  HostPortPair host_port_pair = HostPortPair::FromString(proxy_uri);
+  HostPortPair host_port_pair =
+      config.value().proxy_rules().single_proxies.Get().host_port_pair();
 
   if (!username.empty()) {
     auto* map = GetTorProxyMap(service);
