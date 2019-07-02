@@ -4,6 +4,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/utilities/scripts.h"
+#include "gin/public/context_holder.h"
+#include "gin/public/gin_embedders.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "v8/include/v8.h"
@@ -18,10 +20,18 @@ using ::v8::Isolate;
 
 namespace brave_page_graph {
 
+static constexpr int kV8ContextPerContextDataIndex = static_cast<int>(
+    gin::kPerContextDataStartIndex + gin::kEmbedderBlink);
+
 PageGraph* GetPageGraphFromIsolate(Isolate& isolate) {
   Local<Context> context = isolate.GetCurrentContext();
   if (context.IsEmpty() == true) {
     return nullptr;
+  }
+
+  if (kV8ContextPerContextDataIndex >=
+      context->GetNumberOfEmbedderDataFields()) {
+    return nullptr;  // This is not a blink::ExecutionContext.
   }
 
   ExecutionContext* exec_context = ToExecutionContext(context);
