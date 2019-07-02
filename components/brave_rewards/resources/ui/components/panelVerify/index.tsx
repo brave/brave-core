@@ -33,12 +33,13 @@ import {
 export interface Props {
   onVerifyClick: () => void
   onClose: () => void
+  short?: boolean
   id?: string
 }
 
 export default class PanelWelcome extends React.PureComponent<Props, {}> {
-  getListItem = (text: string) => (
-    <StyledListItem>
+  getListItem = (text: string, short?: boolean) => (
+    <StyledListItem short={short}>
       <StyledListIcon>
         <RewardsCheckIcon />
       </StyledListIcon>
@@ -48,12 +49,12 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
     </StyledListItem>
   )
 
-  getHeader = (onClose: () => void) => (
+  getHeader = (onClose: () => void, short?: boolean) => (
     <>
       <StyledClose onClick={onClose}>
         <CloseStrokeIcon />
       </StyledClose>
-      <StyledHeader>
+      <StyledHeader short={short}>
         <StyledBatIcon>
           <RewardsWalletCheck />
         </StyledBatIcon>
@@ -69,8 +70,8 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
     </>
   )
 
-  getFooter = () => (
-    <StyledFooter>
+  getFooter = (short?: boolean) => (
+    <StyledFooter short={short}>
       {getLocale('walletVerificationFooter')} <b>Uphold</b>
       <StyledFooterIcon>
         <UpholdColorIcon />
@@ -82,19 +83,20 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
     const {
       onVerifyClick,
       onClose,
+      short,
       id
     } = this.props
 
     return (
       <StyledWrapper id={id}>
-        {this.getHeader(onClose)}
+        {this.getHeader(onClose, short)}
         <StyledListTitle>
           {getLocale('walletVerificationListHeader')}
         </StyledListTitle>
-        {this.getListItem(getLocale('walletVerificationList1'))}
-        {this.getListItem(getLocale('walletVerificationList2'))}
-        {this.getListItem(getLocale('walletVerificationList3'))}
-        <StyledIDNotice>
+        {this.getListItem(getLocale(short ? 'walletVerificationListShort1' : 'walletVerificationList1'), short)}
+        {this.getListItem(getLocale(short ? 'walletVerificationListShort2' : 'walletVerificationList2'), short)}
+        {this.getListItem(getLocale(short ? 'walletVerificationListShort3' : 'walletVerificationList3'), short)}
+        <StyledIDNotice short={short}>
           {getLocale('walletVerificationID')}
         </StyledIDNotice>
         <StyledButton
@@ -103,7 +105,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
           type={'accent'}
           onClick={onVerifyClick}
         />
-        {this.getFooter()}
+        {this.getFooter(short)}
       </StyledWrapper>
     )
   }

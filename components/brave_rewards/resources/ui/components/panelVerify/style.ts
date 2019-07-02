@@ -7,6 +7,10 @@ import Heading from '../../../components/text/heading'
 import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
 import { ComponentType } from 'react'
 
+interface StyleProps {
+  short?: boolean
+}
+
 export const StyledWrapper = styled<{}, 'div'>('div')`
   position: absolute;
   text-align: center;
@@ -31,8 +35,8 @@ export const StyledClose = styled<{}, 'div'>('div')`
   color: #fff;
 `
 
-export const StyledHeader = styled<{}, 'div'>('div')`
-  margin-bottom: 42px;
+export const StyledHeader = styled<StyleProps, 'div'>('div')`
+  margin-bottom: ${p => p.short ? '15px' : '42px'};
 `
 
 export const StyledBatIcon = styled<{}, 'div'>('div')`
@@ -74,9 +78,9 @@ export const StyledListTitle = styled(Heading)`
   color: #fff;
 `
 
-export const StyledListItem = styled<{}, 'div'>('div')`
+export const StyledListItem = styled<StyleProps, 'div'>('div')`
   color: #fff;
-  margin: 15px 0;
+  margin: ${p => p.short ? '10px' : '15px'} 0;
 `
 
 export const StyledListIcon = styled<{}, 'div'>('div')`
@@ -97,25 +101,25 @@ export const StyledListItemText = styled<{}, 'div'>('div')`
   padding-left: 12px;
 `
 
-export const StyledIDNotice = styled<{}, 'div'>('div')`
+export const StyledIDNotice = styled<StyleProps, 'div'>('div')`
   font-size: 14px;
   line-height: 20px;
   font-weight: 600;
   color: #fff;
-  padding: 30px 24px 20px;
+  padding: ${p => p.short ? '20px' : '30px'} 24px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.5433);
-  margin: 44px 0 0;
+  margin: ${p => p.short ? '25px' : '44px'} 0 0;
 `
 
 export const StyledButton = styled(Button as ComponentType<ButtonProps>)`
   padding: 11px 15px;
 `
 
-export const StyledFooter = styled<{}, 'div'>('div')`
+export const StyledFooter = styled<StyleProps, 'div'>('div')`
   font-family: Muli, sans-serif;
   font-size: 12px;
   color: #fff;
-  margin-top: 32px;
+  margin-top: ${p => p.short ? '28px' : '32px'};
 `
 
 export const StyledFooterIcon = styled<{}, 'div'>('div')`
