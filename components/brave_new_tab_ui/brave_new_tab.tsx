@@ -12,7 +12,7 @@ import * as dataFetchAPI from './api/dataFetch'
 import * as preferencesAPI from './api/preferences'
 
 // Components
-import App from './components/app'
+import App from './containers/app'
 
 // Utils
 import store from './store'
