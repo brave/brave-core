@@ -5,17 +5,13 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Page, PageWrapper } from '../../../../src/features/newTab/private'
+import { Page, PageWrapper } from '../../components/private'
 
 // Components group
 import PrivateWindow from './privateWindow'
 import QwantWindow from './qwantWindow'
 import TorWindow from './torWindow'
 import QwantTor from './qwantWindowWithTor'
-
-// Assets
-import '../../../assets/fonts/muli.css'
-import '../../../assets/fonts/poppins.css'
 
 interface Props {
   isTor: boolean

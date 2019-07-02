@@ -2,9 +2,9 @@
  * License. v. 2.0. If a copy of the MPL was not distributed with this file.
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import styled, { css } from '../../../theme'
+import styled, { css } from 'brave-ui/theme'
 import { Props } from './index'
-import palette from '../../../theme/colors'
+import palette from 'brave-ui/theme/colors'
 
 export const StyledCheckbox = styled<{}, 'input'>('input')`
   -webkit-appearance: none;

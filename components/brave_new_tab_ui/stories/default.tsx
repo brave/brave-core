@@ -8,7 +8,7 @@ import { storiesOf } from '@storybook/react'
 // Components
 import NewTabPage from './default/index'
 
-storiesOf('Feature Components/New Tab/Default', module)
+storiesOf('New Tab/Default', module)
   .add('Page', () => {
     return (
       <NewTabPage />

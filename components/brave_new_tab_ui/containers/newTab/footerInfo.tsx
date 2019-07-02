@@ -5,7 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Link, Navigation, IconLink, PhotoName } from 'brave-ui/features/newTab/default'
+import { Link, Navigation, IconLink, PhotoName } from '../../components/default'
 
 // Icons
 import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon, SettingsIcon } from 'brave-ui/components/icons'

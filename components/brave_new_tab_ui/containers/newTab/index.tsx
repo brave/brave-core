@@ -14,7 +14,7 @@ import {
   Footer,
   DynamicBackground,
   Gradient
-} from 'brave-ui/features/newTab/default'
+} from '../../components/default'
 
 // Components
 import Settings from './settings'

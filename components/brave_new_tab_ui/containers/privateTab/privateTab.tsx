@@ -20,7 +20,7 @@ import {
   Separator,
   FakeButton,
   Link
-} from 'brave-ui/features/newTab/private'
+} from '../../components/private'
 
 // Components
 import { Toggle } from 'brave-ui/features/shields'

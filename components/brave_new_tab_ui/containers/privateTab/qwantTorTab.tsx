@@ -17,7 +17,7 @@ import {
   TorLockImage,
   Separator,
   FakeButton
-} from 'brave-ui/features/newTab/private'
+} from '../../components/private'
 
 // Helpers
 import { getLocale } from '../../../common/locale'

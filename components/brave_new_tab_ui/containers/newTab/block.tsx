@@ -17,7 +17,7 @@ import {
 } from 'react-dnd'
 
 // Feature-specific components
-import { Tile, TileActionsContainer, TileAction, TileFavicon } from 'brave-ui/features/newTab/default'
+import { Tile, TileActionsContainer, TileAction, TileFavicon } from '../../components/default'
 
 // Icons
 import { PinIcon, PinOIcon, BookmarkOIcon, BookmarkIcon, CloseStrokeIcon } from 'brave-ui/components/icons'

@@ -15,10 +15,10 @@ import {
   TorLockImage,
   Separator,
   FakeButton
-} from '../../../../src/features/newTab/private'
+} from '../../components/private'
 
 import locale from './fakeLocale'
-const privateWindowImg = require('../../../assets/img/private-window.svg')
+const privateWindowImg = require('../../../img/newtab/private-window.svg')
 
 export default class QwantTab extends React.PureComponent<{}, {}> {
   render () {

@@ -19,11 +19,11 @@ import {
   FakeButton,
   Link
 
-} from '../../../../src/features/newTab/private'
-import { Toggle } from '../../../../src/features/shields'
+} from '../../components/private'
+import { Toggle } from 'brave-ui/features/shields'
 
 import locale from './fakeLocale'
-const privateWindowImg = require('../../../assets/img/private-window.svg')
+const privateWindowImg = require('../../../img/newtab/private-window.svg')
 
 export default class PrivateTab extends React.PureComponent<{}, {}> {
   render () {

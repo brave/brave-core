@@ -2,22 +2,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Image1 from '../../../../assets/img/newTab/backgrounds/ntp-1.jpg'
-import Image2 from '../../../../assets/img/newTab/backgrounds/ntp-2.jpg'
-import Image3 from '../../../../assets/img/newTab/backgrounds/ntp-3.jpg'
-import Image4 from '../../../../assets/img/newTab/backgrounds/ntp-4.jpg'
-import Image5 from '../../../../assets/img/newTab/backgrounds/ntp-5.jpg'
-import Image6 from '../../../../assets/img/newTab/backgrounds/ntp-6.jpg'
-import Image7 from '../../../../assets/img/newTab/backgrounds/ntp-7.jpg'
-import Image8 from '../../../../assets/img/newTab/backgrounds/ntp-8.jpg'
-import Image9 from '../../../../assets/img/newTab/backgrounds/ntp-9.jpg'
-import Image10 from '../../../../assets/img/newTab/backgrounds/ntp-10.jpg'
-import Image11 from '../../../../assets/img/newTab/backgrounds/ntp-11.jpg'
-import Image12 from '../../../../assets/img/newTab/backgrounds/ntp-12.jpg'
-import Image13 from '../../../../assets/img/newTab/backgrounds/ntp-13.jpg'
-import Image14 from '../../../../assets/img/newTab/backgrounds/ntp-14.jpg'
-import Image15 from '../../../../assets/img/newTab/backgrounds/ntp-15.jpg'
-import Image16 from '../../../../assets/img/newTab/backgrounds/ntp-16.jpg'
+import Image1 from '../../../../img/newtab/ntp-1.webp'
+import Image2 from '../../../../img/newtab/ntp-2.webp'
+import Image3 from '../../../../img/newtab/ntp-3.webp'
+import Image4 from '../../../../img/newtab/ntp-4.webp'
+import Image5 from '../../../../img/newtab/ntp-5.webp'
+import Image6 from '../../../../img/newtab/ntp-6.webp'
+import Image7 from '../../../../img/newtab/ntp-7.webp'
+import Image8 from '../../../../img/newtab/ntp-8.webp'
+import Image9 from '../../../../img/newtab/ntp-9.webp'
+import Image10 from '../../../../img/newtab/ntp-10.webp'
+import Image11 from '../../../../img/newtab/ntp-11.webp'
+import Image12 from '../../../../img/newtab/ntp-12.webp'
+import Image13 from '../../../../img/newtab/ntp-13.webp'
+import Image14 from '../../../../img/newtab/ntp-14.webp'
+import Image15 from '../../../../img/newtab/ntp-15.webp'
+import Image16 from '../../../../img/newtab/ntp-16.webp'
 
 export const images = [
   {

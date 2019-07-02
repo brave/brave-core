@@ -5,10 +5,10 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Link, Navigation, IconLink, PhotoName } from '../../../../src/features/newTab/default'
+import { Link, Navigation, IconLink, PhotoName } from '../../components/default'
 
 // Icons
-import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon, SettingsIcon } from '../../../../src/components/icons'
+import { SettingsAdvancedIcon, BookmarkBook, HistoryIcon, SettingsIcon } from 'brave-ui/components/icons'
 
 // Helpers
 import { getLocale } from '../fakeLocale'

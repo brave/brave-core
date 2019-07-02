@@ -4,7 +4,7 @@
 
 import * as React from 'react'
 
-import { StatsContainer, StatsItem } from '../../../../src/features/newTab/default'
+import { StatsContainer, StatsItem } from '../../components/default'
 
 // Helpers
 import { getLocale } from '../fakeLocale'

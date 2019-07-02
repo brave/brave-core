@@ -4,9 +4,9 @@
 
 import * as React from 'react'
 
-import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper } from '../../../../src/features/newTab/default'
+import { SettingsMenu, SettingsRow, SettingsText, SettingsTitle, SettingsWrapper } from '../../components/default'
 
-import { Toggle } from '../../../../src/features/newTab/toggle'
+import { Toggle } from '../../components/toggle'
 
 import { getLocale } from '../fakeLocale'
 

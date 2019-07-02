@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { StatsContainer, StatsItem, createWidget } from 'brave-ui/features/newTab/default'
+import { StatsContainer, StatsItem, createWidget } from '../../components/default'
 
 // Utils
 import { getLocale } from '../../../common/locale'

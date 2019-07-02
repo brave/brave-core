@@ -9,7 +9,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd'
 import { reorder, getItems } from '../helpers'
 
 // Feature-specific components
-import { List } from '../../../../../src/features/newTab/default'
+import { List } from '../../../components/default'
 import createWidget from '../../../components/default/widget'
 
 // Component group

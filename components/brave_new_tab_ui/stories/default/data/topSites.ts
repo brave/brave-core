@@ -2,12 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import AppStoreFavicon from '../../../../assets/img/newTab/topSites/appstore.png'
-import BraveFavicon from '../../../../assets/img/newTab/topSites/brave.png'
-import FacebookFavicon from '../../../../assets/img/newTab/topSites/facebook.png'
-import PlayStoreFavicon from '../../../../assets/img/newTab/topSites/playstore.png'
-import TwitterFavicon from '../../../../assets/img/newTab/topSites/twitter.png'
-import YouTubeFavicon from '../../../../assets/img/newTab/topSites/youtube.png'
+import AppStoreFavicon from './siteIcons/appstore.png'
+import BraveFavicon from './siteIcons/brave.png'
+import FacebookFavicon from './siteIcons/facebook.png'
+import PlayStoreFavicon from './siteIcons/playstore.png'
+import TwitterFavicon from './siteIcons/twitter.png'
+import YouTubeFavicon from './siteIcons/youtube.png'
 
 export const defaultTopSitesData = [
   {

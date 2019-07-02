@@ -9,10 +9,10 @@ import {
   SiteRemovalNotification,
   SiteRemovalAction,
   SiteRemovalText
-} from '../../../../src/features/newTab/default'
+} from '../../components/default'
 
 // Icons
-import { CloseStrokeIcon } from '../../../../src/components/icons'
+import { CloseStrokeIcon } from 'brave-ui/components/icons'
 
 // Helpers
 import { getLocale } from '../fakeLocale'

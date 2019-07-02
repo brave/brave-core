@@ -8,10 +8,10 @@ import * as React from 'react'
 import { Draggable } from 'react-beautiful-dnd'
 
 // Feature-specific components
-import { Tile, TileActionsContainer, TileAction, TileFavicon } from '../../../../../src/features/newTab/default'
+import { Tile, TileActionsContainer, TileAction, TileFavicon } from '../../../components/default'
 
 // Icons
-import { PinIcon, BookmarkOIcon, CloseStrokeIcon } from '../../../../../src/components/icons'
+import { PinIcon, BookmarkOIcon, CloseStrokeIcon } from 'brave-ui/components/icons'
 
 interface Props {
   item: {

@@ -3,10 +3,10 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { ComponentType } from 'react'
-import styled from '../../../../theme'
-import Heading from '../../../../components/text/heading'
-import Button, { Props as ButtonProps } from '../../../../components/buttonsIndicators/button'
-import { DuckDuckGoIcon, TorLockIcon } from '../../../../components/icons'
+import styled from 'brave-ui/theme'
+import Heading from 'brave-ui/components/text/heading'
+import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
+import { DuckDuckGoIcon, TorLockIcon } from 'brave-ui/components/icons'
 
 export const Box = styled<{}, 'section'>('section')`
   box-sizing: border-box;

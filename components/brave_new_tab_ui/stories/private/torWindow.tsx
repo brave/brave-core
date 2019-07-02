@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { OpenNewIcon } from '../../../../src/components/icons'
+import { OpenNewIcon } from 'brave-ui/components/icons'
 import {
   Grid,
   HeaderGrid,
@@ -20,10 +20,10 @@ import {
   Separator,
   FakeButton
   // Link
-} from '../../../../src/features/newTab/private'
+} from '../../components/private'
 
 import locale from './fakeLocale'
-const privateWindowImg = require('../../../assets/img/private-window-tor.svg')
+const privateWindowImg = require('../../../img/newtab/private-window-tor.svg')
 
 interface State {
   learnMoreAboutPrivateWindowsWithTor: boolean
