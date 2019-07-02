@@ -83,8 +83,6 @@ class Wallet {
     ledger::ExternalWalletAuthorizationCallback callback,
     std::map<std::string, ledger::ExternalWalletPtr> wallets);
 
-  std::string GenerateRandomString(const size_t length);
-
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Create> create_;
   std::unique_ptr<Recover> recover_;

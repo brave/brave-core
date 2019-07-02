@@ -4,13 +4,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <utility>
-#include <vector>
 
 #include "base/json/json_reader.h"
-#include "base/base64.h"
 #include "base/strings/stringprintf.h"
-#include "base/strings/string_split.h"
 #include "bat/ledger/internal/uphold/uphold.h"
+#include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
@@ -22,96 +20,11 @@ using std::placeholders::_3;
 namespace braveledger_uphold {
 
 Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
-    transfer_(std::make_unique<UpholdTransfer>(ledger, this)),
+    transfer_(std::make_unique<UpholdTransfer>(ledger)),
     ledger_(ledger) {
 }
 
 Uphold::~Uphold() {
-}
-
-std::vector<std::string> Uphold::RequestAuthorization(
-    const std::string& token) {
-  std::vector<std::string> headers;
-
-  if (!token.empty()) {
-    headers.push_back("Authorization: Bearer " + token);
-    return headers;
-  }
-
-  const std::string id = GetClientId();
-  const std::string secret = GetClientSecret();
-
-  std::string user;
-  base::Base64Encode(base::StringPrintf("%s:%s", id.c_str(), secret.c_str()),
-                     &user);
-
-  headers.push_back("Authorization: Basic " + user);
-
-  return headers;
-}
-
-ledger::ExternalWalletPtr Uphold::GetWallet(
-    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
-  for (auto& wallet : wallets) {
-    if (wallet.first == ledger::kWalletUphold) {
-      return std::move(wallet.second);
-    }
-  }
-
-  return nullptr;
-}
-
-std::string Uphold::GetClientId() {
-  return ledger::is_production
-      ? kClientIdProduction
-      : kClientIdStaging;
-}
-
-std::string Uphold::GetClientSecret() {
-  return ledger::is_production
-      ? kClientSecretProduction
-      : kClientSecretStaging;
-}
-
-std::string Uphold::GetUrl() {
-  return ledger::is_production
-      ? kUrlProduction
-      : kUrlStaging;
-}
-
-std::string Uphold::GetAPIUrl(const std::string& path) {
-  std::string url;
-  if (ledger::is_production) {
-    url = kAPIUrlProduction;
-  } else {
-    url = kAPIUrlStaging;
-  }
-
-  return url + path;
-}
-
-std::string Uphold::GetFeeAddress() {
-  return ledger::is_production
-      ? kFeeAddressProduction
-      : kFeeAddressStaging;
-}
-
-// TODO add test
-std::string Uphold::ConvertToProbi(const std::string& amount) {
-  auto vec = base::SplitString(
-      amount, ".", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-
-  const std::string probi = "000000000000000000";
-
-  if (vec.size() == 1) {
-    return vec.at(0) + probi;
-  }
-
-  const auto before_dot = vec.at(0);
-  const auto after_dot = vec.at(1);
-  const auto rest_probi = probi.substr(after_dot.size());
-
-  return before_dot + after_dot + rest_probi;
 }
 
 void Uphold::StartContribution(const std::string &viewing_id,
@@ -131,7 +44,7 @@ void Uphold::StartContribution(const std::string &viewing_id,
     const double reconcile_amount = amount - fee;
 
     // 5% fee
-    auto fee_callback = std::bind(&Uphold::FeeCompleted,
+    auto fee_callback = std::bind(&Uphold::OnFeeCompleted,
                               this,
                               _1,
                               _2,
@@ -175,7 +88,7 @@ void Uphold::ContributionCompleted(ledger::Result result,
   }
 }
 
-void Uphold::FeeCompleted(ledger::Result result,
+void Uphold::OnFeeCompleted(ledger::Result result,
                           bool created,
                           const std::string &viewing_id) {
 }
@@ -252,44 +165,6 @@ void Uphold::TransferFunds(double amount,
                            ledger::ExternalWalletPtr wallet,
                            TransactionCallback callback) {
   transfer_->Start(amount, address, std::move(wallet), callback);
-}
-
-std::string Uphold::GetVerifyUrl(const std::string& state) {
-  const std::string id = GetClientId();
-
-  const std::string url = GetUrl();
-
-  return base::StringPrintf(
-      "%s/authorize/%s"
-      "?scope=cards:read&cards:write&transactions:read&"
-      "transactions:transfer:application&"
-      "transactions:transfer:others&intention=kyc&"
-      "state=%s"
-      , url.c_str(), id.c_str(), state.c_str());
-}
-
-std::string Uphold::GetAddUrl(const std::string& address) {
-  const std::string url = GetUrl();
-
-  return base::StringPrintf(
-      "%s/dashboard/cards/%s/add", url.c_str(), address.c_str());
-}
-
-std::string Uphold::GetWithdrawUrl(const std::string& address) {
-  const std::string url = GetUrl();
-
-  return base::StringPrintf(
-      "%s/dashboard/cards/%s/use", url.c_str(), address.c_str());
-}
-
-std::string Uphold::GetSecondStepVerify() {
-  const std::string url = GetUrl();
-  const std::string id = GetClientId();
-
-  return base::StringPrintf(
-      "%s/signup/step2?application_id=%s&intention=kyc",
-      url.c_str(),
-      id.c_str());
 }
 
 void Uphold::OnWalletAuthorization(
@@ -374,7 +249,7 @@ void Uphold::WalletAuthorization(
 
   const auto current_one_time = wallet->one_time_string;
 
-  wallet->one_time_string = GenerateRandomString(30);
+  wallet->one_time_string = GenerateRandomString();
   ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet->Clone());
 
   if (args.empty()) {
@@ -428,6 +303,39 @@ void Uphold::WalletAuthorization(
       "application/x-www-form-urlencoded",
       ledger::URL_METHOD::POST,
       auth_callback);
+}
+
+void Uphold::GenerateExternalWallet(
+    std::map<std::string, ledger::ExternalWalletPtr> wallets,
+    ledger::ExternalWalletCallback callback) {
+  ledger::ExternalWalletPtr wallet;
+  if (wallets.size() == 0) {
+    wallet = ledger::ExternalWallet::New();
+    wallet->status = ledger::WalletStatus::NOT_CONNECTED;
+  } else {
+    wallet = GetWallet(std::move(wallets));
+
+    if (!wallet) {
+      wallet = ledger::ExternalWallet::New();
+      wallet->status = ledger::WalletStatus::NOT_CONNECTED;
+    } else {
+      wallet->add_url = GetAddUrl(wallet->address);
+      wallet->withdraw_url = GetWithdrawUrl(wallet->address);
+    }
+  }
+
+  if (wallet->one_time_string.empty()) {
+    wallet->one_time_string = GenerateRandomString();
+  }
+
+  if (wallet->status == ledger::WalletStatus::CONNECTED) {
+    wallet->verify_url = GetSecondStepVerify();
+  } else {
+    wallet->verify_url = GetVerifyUrl(wallet->one_time_string);
+  }
+
+  ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet->Clone());
+  callback(std::move(wallet));
 }
 
 }  // namespace braveledger_uphold

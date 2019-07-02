@@ -9,7 +9,6 @@
 #include <string>
 #include <map>
 #include <memory>
-#include <vector>
 
 #include "bat/ledger/ledger.h"
 
@@ -23,17 +22,6 @@ class UpholdTransfer;
 
 namespace braveledger_uphold {
 
-const char kUrlStaging[] = "https://sandbox.uphold.com";
-const char kUrlProduction[] = "https://uphold.com";
-const char kAPIUrlStaging[] = "https://api-sandbox.uphold.com";
-const char kAPIUrlProduction[] = "https://api.uphold.com";
-const char kClientIdStaging[] = "4c2b665ca060d912fec5c735c734859a06118cc8";
-const char kClientIdProduction[] = "";
-const char kClientSecretStaging[] = "67bf87da096748c5bc1e195cfbdd59db006618a0";
-const char kClientSecretProduction[] = "";
-const char kFeeAddressStaging[] = "7ab330ae-b7a6-4845-8f07-baab68848e4e";
-const char kFeeAddressProduction[] = "";
-
 using TransactionCallback = std::function<void(ledger::Result, bool created)>;
 using FetchBalanceCallback = std::function<void(ledger::Result, double)>;
 
@@ -42,13 +30,6 @@ class Uphold {
   explicit Uphold(bat_ledger::LedgerImpl* ledger);
 
   ~Uphold();
-  static std::vector<std::string> RequestAuthorization(
-      const std::string& token = "");
-
-  static ledger::ExternalWalletPtr GetWallet(
-      std::map<std::string, ledger::ExternalWalletPtr> wallets);
-
-  static std::string GetAPIUrl(const std::string& path);
 
   void StartContribution(const std::string &viewing_id,
                          ledger::ExternalWalletPtr wallet);
@@ -61,33 +42,21 @@ class Uphold {
                      ledger::ExternalWalletPtr wallet,
                      TransactionCallback callback);
 
-  std::string GetVerifyUrl(const std::string& state);
-
-  std::string GetAddUrl(const std::string& address);
-
-  std::string GetWithdrawUrl(const std::string& address);
-
   void WalletAuthorization(
     const std::map<std::string, std::string>& args,
     std::map<std::string, ledger::ExternalWalletPtr> wallets,
     ledger::ExternalWalletAuthorizationCallback callback);
 
+  void GenerateExternalWallet(
+    std::map<std::string, ledger::ExternalWalletPtr> wallets,
+    ledger::ExternalWalletCallback callback);
+
  private:
-  static std::string GetClientId();
-
-  static std::string GetClientSecret();
-
-  static std::string GetUrl();
-
-  static std::string GetFeeAddress();
-
-  static std::string ConvertToProbi(const std::string& amount);
-
   void ContributionCompleted(ledger::Result result,
                              bool created,
                              const std::string &viewing_id);
 
-  void FeeCompleted(ledger::Result result,
+  void OnFeeCompleted(ledger::Result result,
                     bool created,
                     const std::string &viewing_id);
 
@@ -96,8 +65,6 @@ class Uphold {
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);
-
-  std::string GetSecondStepVerify();
 
   void OnWalletAuthorization(
     ledger::ExternalWalletAuthorizationCallback callback,

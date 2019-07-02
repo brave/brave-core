@@ -8,6 +8,7 @@
 #include "base/json/json_reader.h"
 #include "base/strings/stringprintf.h"
 #include "bat/ledger/internal/uphold/uphold_transfer.h"
+#include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "net/http/http_status_code.h"
 
@@ -17,10 +18,8 @@ using std::placeholders::_3;
 
 namespace braveledger_uphold {
 
-UpholdTransfer::UpholdTransfer(bat_ledger::LedgerImpl* ledger,
-                                       Uphold* uphold) :
-    ledger_(ledger),
-    uphold_(uphold) {
+UpholdTransfer::UpholdTransfer(bat_ledger::LedgerImpl* ledger) :
+    ledger_(ledger) {
 }
 
 UpholdTransfer::~UpholdTransfer() {
@@ -42,7 +41,7 @@ void UpholdTransfer::CreateTransaction(double amount,
                                        const std::string& address,
                                        ledger::ExternalWalletPtr wallet,
                                        TransactionCallback callback) {
-  auto headers = uphold_->RequestAuthorization(wallet->token);
+  auto headers = RequestAuthorization(wallet->token);
 
   const std::string path = base::StringPrintf(
       "/v0/me/cards/%s/transactions",
@@ -64,7 +63,7 @@ void UpholdTransfer::CreateTransaction(double amount,
                             *wallet,
                             callback);
   ledger_->LoadURL(
-      uphold_->GetAPIUrl(path),
+      GetAPIUrl(path),
       headers,
       payload,
       "application/json",
@@ -111,7 +110,7 @@ void UpholdTransfer::OnCreateTransaction(
 void UpholdTransfer::CommitTransaction(const std::string& transaction_id,
                                        const ledger::ExternalWallet& wallet,
                                        TransactionCallback callback) {
-  auto headers = uphold_->RequestAuthorization(wallet.token);
+  auto headers = RequestAuthorization(wallet.token);
 
   const std::string path = base::StringPrintf(
       "/v0/me/cards/%s/transactions/%s/commit",
@@ -125,7 +124,7 @@ void UpholdTransfer::CommitTransaction(const std::string& transaction_id,
                             _3,
                             callback);
   ledger_->LoadURL(
-      uphold_->GetAPIUrl(path),
+      GetAPIUrl(path),
       headers,
       "",
       "application/json",

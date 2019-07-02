@@ -16,6 +16,7 @@
 #include "bat/ledger/internal/contribution/phase_two.h"
 #include "bat/ledger/internal/contribution/unverified.h"
 #include "bat/ledger/internal/uphold/uphold.h"
+#include "bat/ledger/internal/uphold/uphold_util.h"
 #include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/ledger_impl.h"
 #include "brave_base/random.h"
@@ -909,7 +910,7 @@ void Contribution::OnExternalWallets(
   }
 
   ledger::ExternalWalletPtr wallet =
-      braveledger_uphold::Uphold::GetWallet(std::move(wallets));
+      braveledger_uphold::GetWallet(std::move(wallets));
   if (!wallet || wallet->token.empty()) {
     phase_one_->Complete(ledger::Result::LEDGER_ERROR,
                          viewing_id,
