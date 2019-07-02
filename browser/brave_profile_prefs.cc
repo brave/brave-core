@@ -10,6 +10,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
@@ -56,7 +57,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kLinkedInEmbedControlType, false);
 
   // WebTorrent
-  registry->RegisterBooleanPref(kWebTorrentEnabled, true);
+  webtorrent::RegisterProfilePrefs(registry);
 
   // Hangouts
   registry->RegisterBooleanPref(kHangoutsEnabled, true);

@@ -8,6 +8,7 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service.h"
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_profile.h"
@@ -57,6 +58,7 @@ Profile* TorUnittestProfileManager::CreateTorProfile(
       factory.CreateSyncable(registry.get()));
   RegisterUserProfilePrefs(registry.get());
   tor::TorProfileService::RegisterProfilePrefs(registry.get());
+  webtorrent::RegisterProfilePrefs(registry.get());
   profile_builder.SetPrefService(std::move(prefs));
   profile_builder.SetPath(path);
   profile_builder.SetDelegate(delegate);

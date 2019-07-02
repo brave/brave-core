@@ -370,18 +370,12 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, NoRedirectTorProfile) {
       brave_request_info(new brave::BraveRequestInfo());
   brave::ResponseCallback callback;
 
-  std::unique_ptr<ChromeNavigationUIData> navigation_ui_data =
-    std::make_unique<ChromeNavigationUIData>();
-  BraveNavigationUIData* navigation_ui_data_ptr = navigation_ui_data.get();
-
   content::ResourceRequestInfo::AllocateForTesting(
       request.get(), content::ResourceType::kMainFrame, resource_context(),
       kRenderProcessId, /*render_view_id=*/-1, kRenderFrameId,
       /*is_main_frame=*/true, content::ResourceInterceptPolicy::kAllowNone,
-      /*is_async=*/true, content::PREVIEWS_OFF, std::move(navigation_ui_data));
-
-  TorProfileServiceFactory::SetTorNavigationUIData(profile,
-                                                   navigation_ui_data_ptr);
+      /*is_async=*/true, content::PREVIEWS_OFF,
+      std::make_unique<ChromeNavigationUIData>());
 
   int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
       orig_response_headers.get(), &overwrite_response_headers,

@@ -9,9 +9,14 @@ namespace content {
 class BrowserContext;
 }
 
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
 namespace webtorrent {
 
 bool IsWebtorrentEnabled(content::BrowserContext* browser_context);
+void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
 }  // webtorrent
 
