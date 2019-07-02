@@ -17,6 +17,7 @@ export const StyledWrapper = styled<{}, 'div'>('div')`
   font-family: Poppins, sans-serif;
   background-image: linear-gradient(180deg, #4C54D2 0%, #563195 100%);
   padding: 42px;
+  padding-bottom: 30px;
   top: 0;
   left: 0;
   width: 100%;
