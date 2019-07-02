@@ -1,9 +1,10 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sv">
-<translation id="3333887201479867589">Bravebelöningar</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave annonsblockerare</translation>
 <translation id="6406506848690869874">Synka</translation>
+<translation id="8488282162676695335">Brave-plånbok</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") är inte tillåtet i Brave.</translation>
 <translation id="7450557937477381864">Stäng Brave</translation>
 <translation id="7008934821596358692">Stäng alla Brave fönster för att göra klart importen.</translation>
@@ -29,8 +30,9 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="4988333904713528597">Autospela alltid på <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Fortsätt blockera automatisk uppspelning</translation>
 <translation id="2044383478723007273">Bravefärger</translation>
+<translation id="2814998458708016836">Använd brett adressfält</translation>
 <translation id="6123134130710658846">Dölj Brave Rewards-knappen</translation>
-<translation id="7635711399568194460">Döljer Brave Rewards-knappen i adressfältet när Brave Rewards inte är aktivt</translation>
+<translation id="7635711399568194460">Döljer knappen Brave Rewards i adressfältet när Brave Rewards inte är aktiverat</translation>
 <translation id="7965178729203412357">Ny Tor-identitet</translation>
 <translation id="8784924142044142231">Lämna Tor</translation>
 <translation id="5410152065859052603">Tor</translation>
@@ -47,7 +49,11 @@ Genom att installera tilläggsprogrammet, godkänner du användarvillkoren för 
 <translation id="4472575034687746823">Kom igång</translation>
 <translation id="3400357268283240774">Ytterligare inställningar</translation>
 <translation id="6303294677342628402">Sköldar</translation>
+<translation id="7133511168130368997">Blockera spårare och annonser som följer dig på nätet.</translation>
+<translation id="6388201778088078932">inställningar.</translation>
 <translation id="9185018653595759199">Blockering av sociala media</translation>
+<translation id="3570081523466826008">Uppgradera anslutningar till HTTPS</translation>
+<translation id="4824468494729001999">Blockera skript</translation>
 <translation id="7498695072878479744">Tillåt Googles inloggningsknappar på sajter från tredje part</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>

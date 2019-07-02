@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">I-import</translation>
 <translation id="5540323067375019678">Pamahalaan ang iyong mga shield</translation>
 <translation id="3366308997091824722">Mga Setting ng Shield</translation>
-<translation id="3884404068544758153">Palitan ang iyong search engine</translation>
 <translation id="438216590634144114">Piliin ang search engine na gusto mong default na gamitin kapag naghahanap sa web mula sa address bar.</translation>
-<translation id="8428213095426709021">Mga Setting</translation>
 <translation id="513635702954746724">Piliin ang iyong tema ng kulay</translation>
 <translation id="6842850080200126305">Itakda ang kulay ng iyong toolbar sa pamamagitan ng pagpili sa opsyong maliwanag o madilim mula sa panel ng mga setting.</translation>
 <translation id="2801098717523961746">Piliin ang iyong tema</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Tingnan ang lahat ng {{numItems}} (na) item</translation>
 <translation id="7857284676033058221">Tingnan ang lahat ng {{numSites}} (na) site</translation>
 <translation id="3536298624341433814">Ipadala ang aking Tip</translation>
+<translation id="8428213095426709021">Mga Setting</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">mga site</translation>
 <translation id="1834493631938747505">Sabihin sa iba ang tungkol sa iyong tip.</translation>

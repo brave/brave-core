@@ -146,5 +146,17 @@
   "changeDefaults": {
     "message": "שנה את ברירות המחדל הגלובליות של המגן",
     "description": "Message for the button action linking to the settings page"
+  },
+  "addBlockElement": {
+    "message": "Block element via selector",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "resetSiteFilterSettings": {
+    "message": "Clear CSS rules for this site",
+    "description": "Message for context menu that resets the site filters for cosmetic filtering"
+  },
+  "resetAllFilterSettings": {
+    "message": "Clear CSS rules for all sites",
+    "description": "Message for context menu that resets all cosmetic filters"
   }
 }

@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">আমদানি করুন</translation>
 <translation id="5540323067375019678">আপনার শিল্ডগুলি নিয়ন্ত্রণ করুন</translation>
 <translation id="3366308997091824722">শিল্ড সেটিংস</translation>
-<translation id="3884404068544758153">আপনার সার্চ ইঞ্জিন পরিবর্তন করুন</translation>
 <translation id="438216590634144114">আপনি ঠিকানা বার থেকে ওয়েব অনুসন্ধান করার সময় ডিফল্ট হিসাবে যে অনুসন্ধান ইঞ্জিনটি ব্যবহার করতে চান সেটি বেছে নিন।</translation>
-<translation id="8428213095426709021">সেটিংস</translation>
 <translation id="513635702954746724">আপনার রঙের থীম পছন্দ করুন</translation>
 <translation id="6842850080200126305">সেটিং প্যানেল থেকে হাল্কা বা গাঢ় বিকল্প বেছে নেওয়ার মাধ্যমে আপনার টুলবারের রঙ নিযুক্ত করুন</translation>
 <translation id="2801098717523961746">আপনার থীম পছন্দ</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">সমস্ত {{numItems}} দেখুন</translation>
 <translation id="7857284676033058221">সমস্ত {{numSites}} দেখুন</translation>
 <translation id="3536298624341433814">আমার পরামর্শ পাঠান</translation>
+<translation id="8428213095426709021">সেটিংস</translation>
 <translation id="1792148354504719133">সাইট</translation>
 <translation id="5944430251223015324">সাইটসমূহ</translation>
 <translation id="1834493631938747505">আপনার পরামর্শ সম্পর্কে অন্যদের বলুন।</translation>

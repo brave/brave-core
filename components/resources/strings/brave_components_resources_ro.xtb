@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importă</translation>
 <translation id="5540323067375019678">Administrați scuturile</translation>
 <translation id="3366308997091824722">Setări scut</translation>
-<translation id="3884404068544758153">Modificați motorul de căutare</translation>
 <translation id="438216590634144114">Alegeți motorul de căutare pe care doriți să-l utilizați implicit la căutarea pe web din bara de adrese.</translation>
-<translation id="8428213095426709021">Setări</translation>
 <translation id="513635702954746724">Alegeți tema cromatică</translation>
 <translation id="6842850080200126305">Setați culoarea barei de instrumente selectând opțiunea de culori deschise sau închise din panoul de setări.</translation>
 <translation id="2801098717523961746">Alegeți tema dvs.</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Vedeți toate {{numItems}} articolele</translation>
 <translation id="7857284676033058221">Vezi toate {{numSites}} siteurile</translation>
 <translation id="3536298624341433814">Trimite Plata mea</translation>
+<translation id="8428213095426709021">Setări</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">site-uri</translation>
 <translation id="1834493631938747505">Spune-le altora despre bacșișul tău.</translation>

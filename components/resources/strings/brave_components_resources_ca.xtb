@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importa</translation>
 <translation id="5540323067375019678">Gestiona els escuts</translation>
 <translation id="3366308997091824722">Configuració d'Escut</translation>
-<translation id="3884404068544758153">Canvia el motor de cerca</translation>
 <translation id="438216590634144114">Tria el motor de cerca que vulguis fer servir per defecte quan facis cerques a la web des de la barra d'adreces.</translation>
-<translation id="8428213095426709021">Configuració</translation>
 <translation id="513635702954746724">Tria el tema de color</translation>
 <translation id="6842850080200126305">Defineix el color de la barra d'eines seleccionant l'opció clara o fosca al tauler de configuració.</translation>
 <translation id="2801098717523961746">Tria el tema de color</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Veure tots els {{numItems}} elements</translation>
 <translation id="7857284676033058221">Veure tots els {{numSites}} llocs</translation>
 <translation id="3536298624341433814">Envia la meva propina</translation>
+<translation id="8428213095426709021">Configuració</translation>
 <translation id="1792148354504719133">lloc</translation>
 <translation id="5944430251223015324">llocs</translation>
 <translation id="1834493631938747505">Informa els altres sobre la teva propina.</translation>

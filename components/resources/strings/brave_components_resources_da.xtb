@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importér</translation>
 <translation id="5540323067375019678">Administrér dine beskyttelser</translation>
 <translation id="3366308997091824722">Beskyttelsesindstillinger</translation>
-<translation id="3884404068544758153">Skift søgemaskine</translation>
 <translation id="438216590634144114">Vælg den søgemaskine du ønsker at bruge som standard, når du søger på nettet fra adressebjælken.</translation>
-<translation id="8428213095426709021">Indstillinger</translation>
 <translation id="513635702954746724">Vælg dit farvetema</translation>
 <translation id="6842850080200126305">Vælg farven til din værktøjslinje ved at vælge den lyse eller mørke valgmulighed i indstillingspanelet.</translation>
 <translation id="2801098717523961746">Vælg dit tema</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Se alle {{numItems}} artikler</translation>
 <translation id="7857284676033058221">Se alle {{numSites}} sider</translation>
 <translation id="3536298624341433814">Send mine Drikkepenge</translation>
+<translation id="8428213095426709021">Indstillinger</translation>
 <translation id="1792148354504719133">side</translation>
 <translation id="5944430251223015324">sider</translation>
 <translation id="1834493631938747505">Fortæl os om dine drikkepenge.</translation>

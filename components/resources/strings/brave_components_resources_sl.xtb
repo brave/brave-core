@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Uvozi</translation>
 <translation id="5540323067375019678">Upravljajte svoje nastavitve ščita</translation>
 <translation id="3366308997091824722">Nastavitve ščita</translation>
-<translation id="3884404068544758153">Spremenite svoj iskalnik</translation>
 <translation id="438216590634144114">Izberite iskalnik, ki ga želite privzeto uporabiti pri spletnem iskanju iz naslovne vrstice.</translation>
-<translation id="8428213095426709021">Nastavitve</translation>
 <translation id="513635702954746724">Izberite svojo barvno temo</translation>
 <translation id="6842850080200126305">Barvo v orodni vrstici izberete tako, da se odločite za svetlo ali temno možnost v plošči za nastavitve.</translation>
 <translation id="2801098717523961746">Izberite temo</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Ogled vseh {{numItems}} elementov</translation>
 <translation id="7857284676033058221">Ogled vseh {{numSites}} spletnih mest</translation>
 <translation id="3536298624341433814">Pošlji moj prispevek</translation>
+<translation id="8428213095426709021">Nastavitve</translation>
 <translation id="1792148354504719133">spletno mesto</translation>
 <translation id="5944430251223015324">spletna mesta</translation>
 <translation id="1834493631938747505">Druge obvestite o svoji donaciji.</translation>

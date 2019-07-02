@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Import</translation>
 <translation id="5540323067375019678">Urus perisai anda</translation>
 <translation id="3366308997091824722">Tetapan Perisai</translation>
-<translation id="3884404068544758153">Ubah enjin carian anda</translation>
 <translation id="438216590634144114">Pilih enjin carian yang anda ingin gunakan secara lalai ketika mencari web dari bar alamat.</translation>
-<translation id="8428213095426709021">Tetapan</translation>
 <translation id="513635702954746724">Pilih tema warna anda</translation>
 <translation id="6842850080200126305">Tetapkan warna bar alat anda dengan memilih pilihan terang atau gelap dari panel tetapan.</translation>
 <translation id="2801098717523961746">Pilih tema anda</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Lihat semua {{numItems}} item</translation>
 <translation id="7857284676033058221">Lihat semua {{numSites}} laman</translation>
 <translation id="3536298624341433814">Hantar Tip saya</translation>
+<translation id="8428213095426709021">Tetapan</translation>
 <translation id="1792148354504719133">laman</translation>
 <translation id="5944430251223015324">laman</translation>
 <translation id="1834493631938747505">Beritahu yang lain tentang tip anda.</translation>

@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importēt</translation>
 <translation id="5540323067375019678">Pārvaldiet savus aizsargus</translation>
 <translation id="3366308997091824722">Aizsarga iestatījumi</translation>
-<translation id="3884404068544758153">Nomainiet savu meklētājprogrammu</translation>
 <translation id="438216590634144114">Izvēlieties meklētājprogrammu, kuru vēlaties izmantot pēc noklusējuma, kad veicat meklēšanu tīmeklī, izmantojot adreses joslu.</translation>
-<translation id="8428213095426709021">Iestatījumi</translation>
 <translation id="513635702954746724">Izvēlieties krāsu dizainu</translation>
 <translation id="6842850080200126305">Iestatiet rīkjoslas krāsu, iestatījumu panelī atlasot gaišo vai tumšo iespēju.</translation>
 <translation id="2801098717523961746">Izvēlieties dizainu</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Skatīt visus {{numItems}} vienumus</translation>
 <translation id="7857284676033058221">Skatīt visas {{numSites}} vietnes</translation>
 <translation id="3536298624341433814">Sūtīt dzeramnaudu</translation>
+<translation id="8428213095426709021">Iestatījumi</translation>
 <translation id="1792148354504719133">vietne</translation>
 <translation id="5944430251223015324">vietnes</translation>
 <translation id="1834493631938747505">Pastāstīt citiem par Jūsu dzeramnaudu.</translation>

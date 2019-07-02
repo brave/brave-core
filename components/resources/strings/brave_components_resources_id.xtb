@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Impor</translation>
 <translation id="5540323067375019678">Kelola perisai</translation>
 <translation id="3366308997091824722">Setelan Perisai</translation>
-<translation id="3884404068544758153">Ubah mesin pencari</translation>
 <translation id="438216590634144114">Pilih mesin pencari yang ingin Anda gunakan secara baku saat mencari web dari bilah alamat.</translation>
-<translation id="8428213095426709021">Setelan</translation>
 <translation id="513635702954746724">Pilih warna tema</translation>
 <translation id="6842850080200126305">Atur warna bilah alat dengan menentukan pilihan terang atau gelap dari panel setelan.</translation>
 <translation id="2801098717523961746">Pilih tema</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Lihat semua {{numItems}} item</translation>
 <translation id="7857284676033058221">Lihat semua {{numSites}} situs</translation>
 <translation id="3536298624341433814">Kirim Tip saya</translation>
+<translation id="8428213095426709021">Setelan</translation>
 <translation id="1792148354504719133">situs</translation>
 <translation id="5944430251223015324">situs</translation>
 <translation id="1834493631938747505">Infokan orang lain tentang tip Anda.</translation>

@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">استيراد</translation>
 <translation id="5540323067375019678">إدارة إعدادات الدرع الخاص بك</translation>
 <translation id="3366308997091824722">إعدادات الدرع</translation>
-<translation id="3884404068544758153">تغيير محرّك البحث</translation>
 <translation id="438216590634144114">اختر محرك البحث الذي ترغب في استخدامه كمحرك افتراضي عند البحث في الويب من شريط العنوان.</translation>
-<translation id="8428213095426709021">الإعدادات</translation>
 <translation id="513635702954746724">اختيار مظهر اللون</translation>
 <translation id="6842850080200126305">يمكنك ضبط لون شريط الأدوات من خلال اختيار الخيار الفاتح أو الغامق في لوحة الإعدادات.</translation>
 <translation id="2801098717523961746">اختيار المظهر</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">اطلع على جميع {{numItems}} بنود</translation>
 <translation id="7857284676033058221">الاطلاع على كل الـ{{numSites}} موقع</translation>
 <translation id="3536298624341433814">أرسل مكافأتي</translation>
+<translation id="8428213095426709021">الإعدادات</translation>
 <translation id="1792148354504719133">الموقع</translation>
 <translation id="5944430251223015324">المواقع</translation>
 <translation id="1834493631938747505">أخبر الآخرين عن إكراميتك.</translation>

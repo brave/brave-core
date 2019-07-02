@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">יבוא</translation>
 <translation id="5540323067375019678">נהלו את המגן שלכם</translation>
 <translation id="3366308997091824722">הגדרות מגן:</translation>
-<translation id="3884404068544758153">שנו את מנוע החיפוש שלכם</translation>
 <translation id="438216590634144114">בחרו את מנוע החיפוש שבו תרצו להשתמש כברירת מחדל בעת חיפוש באינטרנט מסרגל הכתובות.</translation>
-<translation id="8428213095426709021">הגדרות</translation>
 <translation id="513635702954746724">בחרו את ערכת הצבע שלכם</translation>
 <translation id="6842850080200126305">הגדירו את הצבע של סרגל הכלים שלכם על-ידי בחירה באפשרות בהיר או כהה בפאנל ההגדרות.</translation>
 <translation id="2801098717523961746">בחרו את העיצוב שלכם</translation>
@@ -307,6 +305,7 @@ Brave היא סימן מסחרי רשום של Brave Software. שמות אתרי
 <translation id="259138486959961679">הציגו את כל {{numItems}} הפריטים</translation>
 <translation id="7857284676033058221">ראו את כל {{numSites}} האתרים</translation>
 <translation id="3536298624341433814">שלח את הטיפ שלי</translation>
+<translation id="8428213095426709021">הגדרות</translation>
 <translation id="1792148354504719133">אתר</translation>
 <translation id="5944430251223015324">אתרים</translation>
 <translation id="1834493631938747505">ספר/י לאחרים על הטיפ שלך.</translation>

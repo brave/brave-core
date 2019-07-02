@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importovať</translation>
 <translation id="5540323067375019678">Spravujte svoje štíty</translation>
 <translation id="3366308997091824722">Nastavenia ochrany</translation>
-<translation id="3884404068544758153">Zmeňte svoj vyhľadávač</translation>
 <translation id="438216590634144114">Ak prehľadávate web z adresného riadku, vyberte vyhľadávací nástroj, ktorý by ste chceli používať predvolene.</translation>
-<translation id="8428213095426709021">Nastavenia</translation>
 <translation id="513635702954746724">Vyberte si svoj farebný motív</translation>
 <translation id="6842850080200126305">Nastavte farbu panela s nástrojmi výberom svetlej alebo tmavej možnosti z panela nastavení.</translation>
 <translation id="2801098717523961746">Vyberte si svoj motív</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Pozrieť všetkých {{numItems}} položiek</translation>
 <translation id="7857284676033058221">Pozrieť všetkých {{numSites}} stránok</translation>
 <translation id="3536298624341433814">Poslať príspevok</translation>
+<translation id="8428213095426709021">Nastavenia</translation>
 <translation id="1792148354504719133">stránka</translation>
 <translation id="5944430251223015324">stránky</translation>
 <translation id="1834493631938747505">Povedzte ostatným o svojom príspevku.</translation>

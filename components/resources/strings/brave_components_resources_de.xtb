@@ -56,10 +56,9 @@
 <translation id="5633840519079139680">Brave macht es Ihnen einfach, Ihre gewohnte Browser-Umgebung einzurichten, indem Sie Ihre Lesezeichen und Einstellungen von anderen installierten Browsern importieren.</translation>
 <translation id="8275038454117074363">Importieren</translation>
 <translation id="5540323067375019678">Verwalten Sie Ihre Shields</translation>
+<translation id="3278033011827237847">Brave Shields schützt Sie beim Browsen vor unerwünschter Werbung und störenden Trackern. Wenn Sie beim Browsen auf einer bestimmten Seite auf ein Problem stoßen, passen Sie einfach Ihr Schutzniveau im Shields-Panel in der Toolbar an.</translation>
 <translation id="3366308997091824722">Brave Shields anpassen</translation>
-<translation id="3884404068544758153">Ändern Sie Ihre Suchmaschine</translation>
 <translation id="438216590634144114">Wählen Sie, welche Suchmaschine Sie standardmäßig verwenden wollen, wenn Sie von der Adresszeile aus das Web durchsuchen.</translation>
-<translation id="8428213095426709021">Einstellungen</translation>
 <translation id="513635702954746724">Wählen Sie Ihr Farbschema</translation>
 <translation id="6842850080200126305">Legen Sie die Farbe Ihrer Toolbar fest, indem Sie die Option „Hell“ oder „Dunkel“ aus dem Einstellungspanel auswählen.</translation>
 <translation id="2801098717523961746">Wählen Sie Ihr Schema</translation>
@@ -305,6 +304,7 @@
 <translation id="259138486959961679">Alle {{numItems}} Artikel ansehen</translation>
 <translation id="7857284676033058221">Alle  {{numSites}} Seiten anschauen</translation>
 <translation id="3536298624341433814">Mein Trinkgeld überweisen</translation>
+<translation id="8428213095426709021">Einstellungen</translation>
 <translation id="1792148354504719133">Seite</translation>
 <translation id="5944430251223015324">Seiten</translation>
 <translation id="1834493631938747505">Erzählen Sie anderen von Ihrem Trinkgeld.</translation>

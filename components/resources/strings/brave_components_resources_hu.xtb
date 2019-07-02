@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importálás</translation>
 <translation id="5540323067375019678">Adatvédelmi pajzsok kezelése</translation>
 <translation id="3366308997091824722">Pajzs beállítások</translation>
-<translation id="3884404068544758153">Keresőmotor megváltoztatása</translation>
 <translation id="438216590634144114">Válaszd ki a címsorból végzett webes keresésekhez használandó alapértelmezett keresőmotort.</translation>
-<translation id="8428213095426709021">Beállítások</translation>
 <translation id="513635702954746724">Színséma kiválasztása</translation>
 <translation id="6842850080200126305">A beállítások panelen a világos vagy sötét opció kiválasztásával beállíthatja eszköztárának színét.</translation>
 <translation id="2801098717523961746">Téma kiválasztása</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Mind a {{numItems}} elem megtekintése</translation>
 <translation id="7857284676033058221">Összes {{numSites}} honlap megtekintése</translation>
 <translation id="3536298624341433814">Adományom küldése</translation>
+<translation id="8428213095426709021">Beállítások</translation>
 <translation id="1792148354504719133">honlap</translation>
 <translation id="5944430251223015324">honlapok</translation>
 <translation id="1834493631938747505">Beszélj másoknak is a támogatásodról!</translation>

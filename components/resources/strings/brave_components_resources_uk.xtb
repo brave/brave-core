@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Імпортувати</translation>
 <translation id="5540323067375019678">Керування налаштуваннями безпеки</translation>
 <translation id="3366308997091824722">Налаштування щита</translation>
-<translation id="3884404068544758153">Почніть користуватися новою пошуковою системою</translation>
 <translation id="438216590634144114">Оберіть пошукову систему, якою б ви хотіли користуватись за замовчуванням, здійснюючи пошук в інтернеті з адресного рядка.</translation>
-<translation id="8428213095426709021">Налаштування</translation>
 <translation id="513635702954746724">Виберіть колір теми</translation>
 <translation id="6842850080200126305">Виберіть колір панелі інструментів, вибравши на панелі налаштувань темну або світлу кольорову схему.</translation>
 <translation id="2801098717523961746">Вибрати тему</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Бачити всі {{numItems}} одиниць</translation>
 <translation id="7857284676033058221">Дивитись всі {{numSites}} сайти</translation>
 <translation id="3536298624341433814">Надіслати моє відрахування</translation>
+<translation id="8428213095426709021">Налаштування</translation>
 <translation id="1792148354504719133">сайт</translation>
 <translation id="5944430251223015324">сайти</translation>
 <translation id="1834493631938747505">Розкажіть іншим про вашу винагороду.</translation>

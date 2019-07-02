@@ -1,6 +1,6 @@
 {
   "braveRewards": {
-    "message": "Brave belöningar",
+    "message": "Brave Rewards",
     "description": "Title in welcome screen for the panel"
   },
   "welcomeButtonTextOne": {
@@ -12,11 +12,11 @@
     "description": "CTA on welcome screen in the panel, new users"
   },
   "welcomeDescOne": {
-    "message": "Tjäna polletter genom att titta på annonser och betala vidare till dina favorit-innehållskreatörer.",
+    "message": "Få betalt för att titta på annonser och betala vidareför att stödja dina favorit-innehållskreatörer.",
     "description": "Entry text for welcome screen in the panel, existing user"
   },
   "welcomeDescTwo": {
-    "message": "Du kan nu tjäna polletter genom att titta på reklam som respekterar din integritet.",
+    "message": "Nu kan du tjäna token genom att titta på annonser som respekterar din integritet.",
     "description": "Entry text for welcome screen in the panel, new user"
   },
   "welcomeFooterTextOne": {
@@ -32,7 +32,7 @@
     "description": "Main header title for welcome screen in the panel, existing user"
   },
   "welcomeHeaderTwo": {
-    "message": "Förbered dig på att uppleva det nya internetet.",
+    "message": "Förbered dig på att uppleva det nya Internet.",
     "description": "Main header title for welcome screen in the panel, new user"
   },
   "yourWallet": {
@@ -40,7 +40,7 @@
     "description": "Title of wallet section where we display data about wallet"
   },
   "grants": {
-    "message": "Utgivningar",
+    "message": "Tilldelningar",
     "description": "Title for grant section in wallet summary"
   },
   "on": {
@@ -48,7 +48,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Creator",
+    "message": "Skapare som verifierats av Brave",
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
@@ -56,7 +56,7 @@
     "description": "Label for auto contribute table attention for the publisher"
   },
   "donateMonthly": {
-    "message": "Donera till denna webbplats månadsvis",
+    "message": "Ge dricks till denna webbplats varje månad",
     "description": "Label for drop down menu where user select amount for monthly contribution for particular publisher"
   },
   "includeInAuto": {
@@ -64,11 +64,11 @@
     "description": "Label for checkbox that allows user to exclude publishers from auto contribute"
   },
   "donateNow": {
-    "message": "Skicka en donation...",
+    "message": "Skicka dricks...",
     "description": "CTA for sending tip form site banner"
   },
   "enableTips": {
-    "message": "Sätt på dricks",
+    "message": "Aktivera dricks",
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "for": {
@@ -76,7 +76,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "rewardsSummary": {
-    "message": "Belöningssammanfattning",
+    "message": "Sammanfattning av Rewards  ",
     "description": "Section title in wallet panel, which contains monthly rewards summary"
   },
   "monthApr": {
@@ -136,7 +136,7 @@
     "description": "Title for grant section in wallet summary"
   },
   "earningsAds": {
-    "message": "Förtjänst från annonser",
+    "message": "Intäkter från annonser",
     "description": "Title for ads section in wallet summary"
   },
   "rewardsContribute": {
@@ -144,15 +144,15 @@
     "description": "Title for auto contribute section in wallet summary"
   },
   "oneTimeDonation": {
-    "message": "Engångsdonationer",
+    "message": "Engångsdricks",
     "description": "Title for one time tips section in wallet summary"
   },
   "expiresOn": {
-    "message": "Går ut den",
+    "message": "går ut den",
     "description": "Used for grant representation. Whole string is '30.0 BAT expires on 08/05/2022'"
   },
   "recurringDonations": {
-    "message": "Månatliga donationer",
+    "message": "Månatliga dricks",
     "description": "Title for monthly tips section in wallet summary"
   },
   "off": {
@@ -214,7 +214,7 @@
     "description": "Title for insufficient funds notification"
   },
   "braveRewardsCreatingText": {
-    "message": "Skapar plånbok.",
+    "message": "Skapar plånbok",
     "description": "Used in a button displaying wallet creation process"
   },
   "contributeNotificationError": {
@@ -222,11 +222,11 @@
     "description": "We show this string in notification when contribution fails"
   },
   "contributeNotificationNotEnoughFunds": {
-    "message": "Din schemalagda månadsbetalning för automatbidrag och månatliga tips kunde inte genomföras på grund av otillräckliga medel. Vi försöker igen om 30 dagar.",
+    "message": "Din schemalagda månadsbetalning för automatbidrag och månatliga dricks kunde inte genomföras på grund av otillräckliga medel. Vi försöker igen om 30 dagar.",
     "description": "We show this string in the notification when you don't have enough funds for contribution"
   },
   "contributeNotificationTipError": {
-    "message": "Det gick inte att skicka dricksen. Försök igen senare, tack. ",
+    "message": "Det gick inte att skicka dricks. Försök igen senare. ",
     "description": "We show this string in notification when tip fails"
   },
   "noActivity": {
@@ -270,7 +270,7 @@
     "description": "Button text for clearing the error."
   },
   "grantGeneralErrorText": {
-    "message": "Brave belöningar har problem. Försök igen senare.",
+    "message": "Brave Rewards har problem. Försök igen senare.",
     "description": "Error text when user is having problems claiming a grant."
   },
   "grantGeneralErrorTitle": {
@@ -290,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Refresh Status",
+    "message": "Uppdatera status",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -298,7 +298,7 @@
     "description": "Status of the publisher shown in the panel"
   },
   "unVerifiedText": {
-    "message": "Denna skapare har ännu in registrerat sig för att ta emot stöd från Brave-användare. Alla bidrag du skickar kommer att finnas kvar i din plånbok tills skaparen verifierar sig.",
+    "message": "Denna skapare har ännu in registrerat sig för att ta emot bidrag från Brave-användare. All dricks du skickar kommer att finnas kvar i din plånbok tills skaparen verifierar sig.",
     "description": "Notice about unverified publisher."
   },
   "unVerifiedTextMore": {
@@ -306,7 +306,7 @@
     "description": "Text for the link that explains more about reserved amount"
   },
   "reservedAmountText": {
-    "message": "Du har avsatt {{reservedAmount}} BAT till skapare som ännu inte har registrerat sig för att ta emot stöd. Din webbläsare fortsätter att försöka ge stöd tills de verifierar sig eller tills 90 dagar har gått.",
+    "message": "Du har avsatt {{reservedAmount}} BAT till skapare som ännu inte har registrerat sig för att ta emot bidrag. Din webbläsare fortsätter att försöka ge bidrag tills de verifierar sig eller tills 90 dagar har gått.",
     "description": "Notification about how much BAT do you have reserved"
   },
   "reservedMoreLink": {
@@ -322,15 +322,15 @@
     "description": "Settings Link for Panel's disabled state"
   },
   "disabledPanelText": {
-    "message": "För närvarande ökar du inga belöningsfördelar medan du surfar. Sätt på belöningar igen",
+    "message": "Just nu samlar du inte några Rewards medan du surfar. Aktivera Rewards igen om",
     "description": "Text for Panel's disabled state"
   },
   "disabledPanelTitle": {
-    "message": "Brave-belöningarna är",
+    "message": "Brave Rewards är",
     "description": "Title for Panel's disabled state"
   },
   "walletFailedTitle": {
-    "message": "Skapandet av din plånbok misslyckades",
+    "message": "Det gick inte att skapa plånboken",
     "description": "Failure title for wallet creation"
   },
   "walletFailedButton": {
@@ -342,11 +342,11 @@
     "description": "Button for adding funds"
   },
   "rewardsSettings": {
-    "message": "Rewards-inställningar",
+    "message": "Inställningar för Rewards",
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your rewards from Ads are here!",
+    "message": "Dina belöningar från annonser har kommit!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -358,11 +358,11 @@
     "description": "Subtitle for wallet disabled panel"
   },
   "disabledPanelTextTwo": {
-    "message": "Tjäna pengar på att se annonser som värnar integriteten, och betala för att stödja innehållsskapare du älskar. ",
+    "message": "Tjäna pengar på att se annonser som värnar integriteten, och betala vidare för att stödja innehållsskapare du älskar. ",
     "description": "Text block for wallet disabled panel"
   },
   "enableRewards": {
-    "message": "Sätt på Brave Belöningar",
+    "message": "Aktivera Brave Rewards",
     "description": "Subtitle for wallet disabled panel"
   },
   "privacyPolicy": {
@@ -386,11 +386,11 @@
     "description": "Message for monthly tips processed notification"
   },
   "contributionTips": {
-    "message": "Bidrag & tips",
+    "message": "Bidrag & dricks",
     "description": "Title for monthly tips processed notification"
   },
   "serviceTextPanelWelcome": {
-    "message": "Genom att klicka på 'Gå med i Rewards', intygar du att du har läst och godkänner ",
+    "message": "Genom att klicka på 'Gå med i Rewards', visar du att du har läst och godkänner ",
     "description": "Terms of service panel opt-in text"
   },
   "bat": {
@@ -410,11 +410,19 @@
     "description": "Hover text for Twitter tips action"
   },
   "twitterTipsIconLabel": {
-    "message": "Donation",
+    "message": "Dricks",
     "description": "Icon label for Twitter tips"
   },
+  "redditTipsHoverText": {
+    "message": "Tip this post",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Dricks",
+    "description": "Icon label for Reddit tips"
+  },
   "verifiedPublisherNotification": {
-    "message": "Creator $name$ recently verified",
+    "message": "Skaparen $name$ verifierades nyligen",
     "description": "Notification text that tells user which publisher just verified",
     "placeholders": {
       "name": {
@@ -424,11 +432,11 @@
     }
   },
   "pendingNotEnoughFundsNotification": {
-    "message": "You have pending tips due to insufficient funds",
+    "message": "Du har dricks som väntar eftersom det inte finns tillräckliga medel",
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Pending Contribution",
+    "message": "Väntande bidrag",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -444,15 +452,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "Belöningar för Brave-annonser!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Your rewards grant from Brave Ads is on its way.",
+    "message": "Din belöning från Brave Annonser är på väg.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Your Brave Ads Token Grant",
+    "message": "Din tilldelning av token för Brave-annonser",
     "description": "Token title on success screen for ads"
   }
 }

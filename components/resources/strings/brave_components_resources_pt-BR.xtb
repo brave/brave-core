@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importar</translation>
 <translation id="5540323067375019678">Gerenciar suas proteções</translation>
 <translation id="3366308997091824722">Configurações de Escudo</translation>
-<translation id="3884404068544758153">Alterar seu mecanismo de pesquisa</translation>
 <translation id="438216590634144114">Escolha o mecanismo de pesquisa que você deseja usar como padrão ao pesquisar na internet pela barra de endereço.</translation>
-<translation id="8428213095426709021">Configurações</translation>
 <translation id="513635702954746724">Escolha seu tema de cores</translation>
 <translation id="6842850080200126305">Para definir a cor da sua barra de ferramentas, selecione a opção clara ou escura no painel de configurações.</translation>
 <translation id="2801098717523961746">Escolha seu tema</translation>
@@ -69,6 +67,8 @@
 <translation id="5946611334574299206">Ganhe tokens exibindo anúncios no Brave. Os anúncios apresentados são baseados nos seus interesses, conforme inferidos pelo seu comportamento de navegação. Nenhum dado pessoal ou histórico de navegação sai do seu navegador.</translation>
 <translation id="6112368337882254910">Contribuição Automática</translation>
 <translation id="1527222983464337010">Uma forma automática de apoiar editores e criadores de conteúdo. Defina um pagamento mensal e navegue normalmente. Os sites que você visita recebem suas contribuições automaticamente, com base em sua atenção que é medida pelo Brave.</translation>
+<translation id="8593551638387217772">Próxima data de pagamento</translation>
+<translation id="319209088187794725">Notificações de anúncios recebidas este mês</translation>
 <translation id="4229016885653790965">Desculpe! Os anúncios ainda não estão disponíveis em sua região.</translation>
 <translation id="654711254769318398">Páginas de anúncios visualizadas</translation>
 <translation id="2532127066761785857">Número máximo de anúncios exibidos</translation>
@@ -305,6 +305,7 @@
 <translation id="259138486959961679">Veja todos os {{numItems}} itens</translation>
 <translation id="7857284676033058221">Veja todos os {{numSites}} sites</translation>
 <translation id="3536298624341433814">Enviar minha Doação</translation>
+<translation id="8428213095426709021">Configurações</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">sites</translation>
 <translation id="1834493631938747505">Conte aos outros sobre sua gorjeta.</translation>
@@ -354,6 +355,10 @@
 <translation id="4346944508027912677">Pendente até</translation>
 <translation id="7410549756000115387">Nenhuma contribuição pendente…</translation>
 <translation id="1963227389609234879">Remover tudo</translation>
+<translation id="1170315781901539495">Sites Excluídos</translation>
+<translation id="5119190679543565400">Restaurar este site</translation>
+<translation id="9075700728717335924">Você excluiu</translation>
+<translation id="4862817811647633830">sites de Auto-Contribuição.</translation>
 <translation id="923467487918828349">Mostrar todas</translation>
 <translation id="2151535059686617995">É’ o seu dia de sorte!</translation>
 <translation id="6255773350565723852">Seu auxílio token está a caminho.</translation>

@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Вознаграждение Brave</translation>
 <translation id="7942180974165298215">Блокировка рекламы Brave</translation>
 <translation id="6406506848690869874">Синхронизация</translation>
+<translation id="8488282162676695335">Кошелёк Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID расширения "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") не разрешено в Brave.</translation>
 <translation id="7450557937477381864">Закрыть Chrome</translation>
 <translation id="7008934821596358692">Чтобы завершить импорт, закройте все окна Chrome.</translation>
@@ -28,7 +29,9 @@
 <translation id="3218385319396786393">На этой странице заблокирован автозапуск</translation>
 <translation id="4988333904713528597">Всегда разрешать автоматическое воспроизведение на <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Продолжить блокирование автоматического воспроизведения</translation>
+<translation id="5883458389055721080">Brave не проверяет, безопасны ли расширения. Устанавливайте расширения только в том случае, если полностью доверяете их разработчикам.</translation>
 <translation id="2044383478723007273">Цвета Brave</translation>
+<translation id="2814998458708016836">Использовать широкую адресную строку</translation>
 <translation id="6123134130710658846">Кнопка «Скрыть награды Brave»</translation>
 <translation id="7635711399568194460">Скрывает кнопку «Награды Brave» в адресной строке, когда «Награды Brave» не включены</translation>
 <translation id="7965178729203412357">Новый Tor-идентификатор</translation>
@@ -47,7 +50,9 @@
 <translation id="4472575034687746823">Начало работы</translation>
 <translation id="3400357268283240774">Дополнительные настройки</translation>
 <translation id="6303294677342628402">Защита</translation>
+<translation id="7133511168130368997">Блокировать рекламу и скрытые трекеры.</translation>
 <translation id="9185018653595759199">Блокировка социальных сетей</translation>
+<translation id="5709627087332022422">Блокировать скрытые трекеры</translation>
 <translation id="7498695072878479744">Разрешить кнопки входа в Google на сторонних сайтах</translation>
 <translation id="863171915776379000">Разрешить вход в Facebook и встроенные посты</translation>
 <translation id="5165042248369837294">Разрешить встроенные твиты Twitter</translation>
@@ -71,8 +76,8 @@
 <translation id="6554397389149987360">С помощью компонента Hangouts можно прямо в браузере демонстрировать свой экран и пользоваться другими возможностями.</translation>
 <translation id="4154389611571860454">Использует расширение IPFS для поддержки IPFS в браузере.</translation>
 <translation id="8137559199583651773">Управление расширениями</translation>
-<translation id="4928988318462976765">Расширение из веб-магазина</translation>
-<translation id="9181207987584064303">Открыть в веб-магазине</translation>
+<translation id="4928988318462976765">Магазин расширений</translation>
+<translation id="9181207987584064303">Открыть в магазине расширений</translation>
 <translation id="4846154056248462491">На выходе</translation>
 <translation id="5057399635433117814">Перевести эту страницу? Весь ее текст будет отправлен в Microsoft для перевода.</translation>
 </translationbundle>

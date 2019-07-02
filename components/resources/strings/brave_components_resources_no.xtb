@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importer</translation>
 <translation id="5540323067375019678">Administrer dine skjold</translation>
 <translation id="3366308997091824722">Shield-instillinger</translation>
-<translation id="3884404068544758153">Bytt søkemotor</translation>
 <translation id="438216590634144114">Velg søkemotoren du vil bruke som standard når du bruker adressefeltet til å søke på nettet.</translation>
-<translation id="8428213095426709021">Innstillinger</translation>
 <translation id="513635702954746724">Bytt fargetema</translation>
 <translation id="6842850080200126305">Bytt farge på verktøylinjen ved å velge innstillingen for lyst eller mørkt i innstillinger-vinduet.</translation>
 <translation id="2801098717523961746">Velg tema</translation>
@@ -306,6 +304,7 @@ dag i hver måned.</translation>
 <translation id="259138486959961679">Se alle {{numItems}} gjenstander</translation>
 <translation id="7857284676033058221">Se alle {{numSites}} nettsteder</translation>
 <translation id="3536298624341433814">Send mitt tips</translation>
+<translation id="8428213095426709021">Innstillinger</translation>
 <translation id="1792148354504719133">nettsteder</translation>
 <translation id="5944430251223015324">nettsteder</translation>
 <translation id="1834493631938747505">Fortell andre om tipset ditt.</translation>

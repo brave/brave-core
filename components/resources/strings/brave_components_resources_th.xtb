@@ -58,9 +58,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="8275038454117074363">นำเข้า</translation>
 <translation id="5540323067375019678">จัดการการป้องกันของคุณ</translation>
 <translation id="3366308997091824722">การตั้งค่า Shield</translation>
-<translation id="3884404068544758153">เปลี่ยนเครื่องมือค้นหาของคุณ</translation>
 <translation id="438216590634144114">เลือกเสิร์ชเอนจินที่คุณต้องการใช้เป็นค่าเริ่มต้นเมื่อค้นหาเว็บจากแถบที่อยู่</translation>
-<translation id="8428213095426709021">การตั้งค่า</translation>
 <translation id="513635702954746724">เลือกธีมสีของคุณ</translation>
 <translation id="6842850080200126305">ตั้งค่าสีสำหรับแถบเครื่องมือของคุณโดยการเลือกตัวเลือกสว่างหรือมืดจากแผงการตั้งค่า</translation>
 <translation id="2801098717523961746">เลือกธีมของคุณ</translation>
@@ -306,6 +304,7 @@ DuckDuckGo ไม่บันทึกประวัติการค้นห
 <translation id="259138486959961679">ดูสิ่งของทั้งหมด {{numItems}} ชิ้น</translation>
 <translation id="7857284676033058221">ดูทั้งหมด {{numSites}} เว็บ</translation>
 <translation id="3536298624341433814">ส่งทิปของฉัน</translation>
+<translation id="8428213095426709021">การตั้งค่า</translation>
 <translation id="1792148354504719133">เว็บ</translation>
 <translation id="5944430251223015324">เว็บไซต์</translation>
 <translation id="1834493631938747505">เล่าเรื่องทิปให้คนอื่นๆ ฟัง</translation>

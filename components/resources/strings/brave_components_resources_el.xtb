@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Εισαγωγή</translation>
 <translation id="5540323067375019678">Διαχειριστείτε τις ασπίδες σας</translation>
 <translation id="3366308997091824722">Ρυθμίσεις Ασπίδας</translation>
-<translation id="3884404068544758153">Αλλάξτε τη μηχανή αναζήτησής σας</translation>
 <translation id="438216590634144114">Επιλέξτε τη μηχανή αναζήτησης που θέλετε να χρησιμοποιήσετε ως προκαθορισμένη κατά την αναζήτηση στον ιστό από τη γραμμή διευθύνσεων.</translation>
-<translation id="8428213095426709021">Ρυθμίσεις</translation>
 <translation id="513635702954746724">Επιλέξτε χρώμα θέματος</translation>
 <translation id="6842850080200126305">Καθορίστε το χρώμα της γραμμής εργαλείων σας επιλέγοντας φωτεινό ή σκοτεινό από το πλαίσιο στις ρυθμίσεις.</translation>
 <translation id="2801098717523961746">Επιλέξτε το θέμα σας</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Εμφάνιση όλων των {{numItems}} αντικειμένων</translation>
 <translation id="7857284676033058221">Δείτε και τις {{numSites}} ιστοσελίδες</translation>
 <translation id="3536298624341433814">Στείλτε τη Συμβουλή μου</translation>
+<translation id="8428213095426709021">Ρυθμίσεις</translation>
 <translation id="1792148354504719133">ιστοσελίδα</translation>
 <translation id="5944430251223015324">σελίδες</translation>
 <translation id="1834493631938747505">Πείτε και σε άλλους για το φιλοδώρημα.</translation>

@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Ingiza</translation>
 <translation id="5540323067375019678">Dhibiti ngao zako</translation>
 <translation id="3366308997091824722">Mipangilio ya Ngao</translation>
-<translation id="3884404068544758153">Badilisha kisakuzi chako</translation>
 <translation id="438216590634144114">Chagua kisakuzi ambacho ungependa kutumia kama chaguo msingi wakati ukivinjari kwenye tovuti kutoka kwenye upao wa anwani.</translation>
-<translation id="8428213095426709021">Mipangilio</translation>
 <translation id="513635702954746724">Chagua rangi ya thimu yako</translation>
 <translation id="6842850080200126305">Pangilia rangi ya upaozana wako kwa kuchagua chaguo la nyeupe au nyeusi kutoka kwenye paneli la mipangilio.</translation>
 <translation id="2801098717523961746">Chagua thimu yako</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Tazama vitu {{numItems}} vyote</translation>
 <translation id="7857284676033058221">Tazama tovuti {{numSites}} zote</translation>
 <translation id="3536298624341433814">Tuma Mchango wangu</translation>
+<translation id="8428213095426709021">Mipangilio</translation>
 <translation id="1792148354504719133">tovuti</translation>
 <translation id="5944430251223015324">tovuti</translation>
 <translation id="1834493631938747505">Waambie wengine kuhusu zawadi yako.</translation>

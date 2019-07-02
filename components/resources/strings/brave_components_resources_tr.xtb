@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">İçe aktar</translation>
 <translation id="5540323067375019678">Kalkanlarınızı yönetin</translation>
 <translation id="3366308997091824722">Kalkan Ayarları</translation>
-<translation id="3884404068544758153">Arama motorunuzu değiştirin</translation>
 <translation id="438216590634144114">Web’de adres çubuğundan arama yaparken varsayılan olarak kullanmak istediğiniz arama motorunu seçin.</translation>
-<translation id="8428213095426709021">Ayarlar</translation>
 <translation id="513635702954746724">Renk temanızı seçin</translation>
 <translation id="6842850080200126305">Ayarlar panelinden açık veya koyu renk seçeneğini seçerek araç çubuğunuzun rengini ayarlayın.</translation>
 <translation id="2801098717523961746">Temanızı seçin</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">{{numItems}} birimin hepsini göster</translation>
 <translation id="7857284676033058221">{{numSites}} sitenin hepsini gör</translation>
 <translation id="3536298624341433814">Bahşişimi Gönder</translation>
+<translation id="8428213095426709021">Ayarlar</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">siteler</translation>
 <translation id="1834493631938747505">Bahşişinden başkalarına bahset.</translation>

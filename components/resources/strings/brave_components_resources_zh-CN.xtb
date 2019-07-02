@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">导入</translation>
 <translation id="5540323067375019678">管理 Shield</translation>
 <translation id="3366308997091824722">Shield 设置</translation>
-<translation id="3884404068544758153">修改搜索引擎</translation>
 <translation id="438216590634144114">选择您在通过地址栏搜索时所使用的默认搜索引擎。</translation>
-<translation id="8428213095426709021">设置</translation>
 <translation id="513635702954746724">选择颜色主题</translation>
 <translation id="6842850080200126305">通过在设置面板上选择亮或暗选项设置工具栏的颜色。</translation>
 <translation id="2801098717523961746">选择主题</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">查看所有 {{numItems}} 项目</translation>
 <translation id="7857284676033058221">查看所有 {{numSites}} 站点</translation>
 <translation id="3536298624341433814">发送我的赏金</translation>
+<translation id="8428213095426709021">设置</translation>
 <translation id="1792148354504719133">站点</translation>
 <translation id="5944430251223015324">站点</translation>
 <translation id="1834493631938747505">告知他人你的赏金。</translation>

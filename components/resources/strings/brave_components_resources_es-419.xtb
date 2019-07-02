@@ -2,7 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="es-419">
 <translation id="689261804992965033">Publicidades Bloqueadas</translation>
-<translation id="1663506596135222606">Rastreadores Bloquedaos</translation>
+<translation id="1663506596135222606">Rastreadores Bloqueados</translation>
 <translation id="2313532038420432247">Actualizaciones de HTTPS</translation>
 <translation id="7679428712334662192">Tiempo Ahorrado Estimado</translation>
 <translation id="5206618227023752085">Sitio principal eliminado</translation>
@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importar</translation>
 <translation id="5540323067375019678">Administre sus escudos</translation>
 <translation id="3366308997091824722">Configuración de Escudo</translation>
-<translation id="3884404068544758153">Cambie su motor de búsqueda</translation>
 <translation id="438216590634144114">Elija el motor de búsqueda que quiere usar de forma predeterminada cuando navegue por Internet desde la barra de direcciones.</translation>
-<translation id="8428213095426709021">Configuración</translation>
 <translation id="513635702954746724">Elija una paleta de colores</translation>
 <translation id="6842850080200126305">Ajuste el color de su barra de herramientas seleccionando la opción clara u oscura desde el panel de Configuración.</translation>
 <translation id="2801098717523961746">Elija su tema</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Ver los {{numItems}} elementos</translation>
 <translation id="7857284676033058221">Ver los {{numSites}} sitios</translation>
 <translation id="3536298624341433814">Enviar mi propina</translation>
+<translation id="8428213095426709021">Configuración</translation>
 <translation id="1792148354504719133">sitio</translation>
 <translation id="5944430251223015324">sitios</translation>
 <translation id="1834493631938747505">Cuente a los demás sobre su propina.</translation>

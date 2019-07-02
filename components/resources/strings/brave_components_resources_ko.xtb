@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">가져오기</translation>
 <translation id="5540323067375019678">차단 관리</translation>
 <translation id="3366308997091824722">차단 설정</translation>
-<translation id="3884404068544758153">검색엔진 변경</translation>
 <translation id="438216590634144114">주소창에서 웹을 검색할 때 기본으로 사용하실 검색 엔진을 골라 주세요.</translation>
-<translation id="8428213095426709021">설정</translation>
 <translation id="513635702954746724">색상 테마를 선택하세요</translation>
 <translation id="6842850080200126305">설정 패널에서 '밝게' 또는 '어둡게' 옵션을 선택하여 툴바의 색상을 설정하세요.</translation>
 <translation id="2801098717523961746">테마 선택</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">{{numItems}}개 아이템 모두 보기</translation>
 <translation id="7857284676033058221">{{numSites}} 사이트 모두 보기</translation>
 <translation id="3536298624341433814">내 팁 보내기</translation>
+<translation id="8428213095426709021">설정</translation>
 <translation id="1792148354504719133">사이트</translation>
 <translation id="5944430251223015324">사이트</translation>
 <translation id="1834493631938747505">본인 팁에 대해 남들에게 알리세요.</translation>

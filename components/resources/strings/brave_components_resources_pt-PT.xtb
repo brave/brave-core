@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importar</translation>
 <translation id="5540323067375019678">Gerir as definições de proteção</translation>
 <translation id="3366308997091824722">Proteção de definições</translation>
-<translation id="3884404068544758153">Altere o motor de busca</translation>
 <translation id="438216590634144114">Escolha o motor de busca que gostaria de utilizar por defeito ao pesquisar na Web desde a barra de endereços.</translation>
-<translation id="8428213095426709021">Definições</translation>
 <translation id="513635702954746724">Selecione a cor do seu tema</translation>
 <translation id="6842850080200126305">Defina a cor da barra de ferramentas, selecionando a opção de claro ou escuro no painel das definições.</translation>
 <translation id="2801098717523961746">Selecionar tema</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Veja todos os {{numItems}} items</translation>
 <translation id="7857284676033058221">Veja todos {{numSites}} páginas</translation>
 <translation id="3536298624341433814">Enviar a minha Gratificação</translation>
+<translation id="8428213095426709021">Definições</translation>
 <translation id="1792148354504719133">sitio</translation>
 <translation id="5944430251223015324">páginas</translation>
 <translation id="1834493631938747505">Informe outras pessoas da sua gorjeta.</translation>

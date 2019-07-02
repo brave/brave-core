@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Import</translation>
 <translation id="5540323067375019678">Manage your shields</translation>
 <translation id="3366308997091824722">Shield Settings</translation>
-<translation id="3884404068544758153">Change your search engine</translation>
 <translation id="438216590634144114">Choose the search engine you would like to use by default when searching the web from the address bar.</translation>
-<translation id="8428213095426709021">Settings</translation>
 <translation id="513635702954746724">Choose your color theme</translation>
 <translation id="6842850080200126305">Set the colour of your toolbar by selecting the light or dark option from the settings panel.</translation>
 <translation id="2801098717523961746">Choose your theme</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">See all {{numItems}} items</translation>
 <translation id="7857284676033058221">See all {{numSites}} sites</translation>
 <translation id="3536298624341433814">Send my Tip</translation>
+<translation id="8428213095426709021">Settings</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">sites</translation>
 <translation id="1834493631938747505">Tell others about your tip.</translation>

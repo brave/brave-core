@@ -413,6 +413,14 @@
     "message": "טיפ",
     "description": "Icon label for Twitter tips"
   },
+  "redditTipsHoverText": {
+    "message": "Tip this post",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "טיפ",
+    "description": "Icon label for Reddit tips"
+  },
   "verifiedPublisherNotification": {
     "message": "Creator $name$ recently verified",
     "description": "Notification text that tells user which publisher just verified",

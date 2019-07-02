@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">आयात करें</translation>
 <translation id="5540323067375019678">अपने शील्ड प्रबंधित करें</translation>
 <translation id="3366308997091824722">शील्ड सेटिंग्स</translation>
-<translation id="3884404068544758153">अपना सर्च इंजन बदलें</translation>
 <translation id="438216590634144114">एड्रेस बार द्वारा वेब पर सर्च करने के लिए, आपके द्वारा उपयोग किये जाने वाले डिफ़ॉल्ट सर्च इंजन का चयन करें।</translation>
-<translation id="8428213095426709021">सेटिंग</translation>
 <translation id="513635702954746724">अपने रंग की थीम चुनें</translation>
 <translation id="6842850080200126305">सेटिंग्स पैनल से हल्का या गहरा का विकल्प चुनकर अपने टूलबार का रंग सेट करें।</translation>
 <translation id="2801098717523961746">अपना थीम चुनें</translation>
@@ -306,6 +304,7 @@
 <translation id="259138486959961679">देखें सारे {{numItems}} आइटम्स</translation>
 <translation id="7857284676033058221">देखें सारी {{numSites}} साइट्स</translation>
 <translation id="3536298624341433814">मेरी टिप भेजें</translation>
+<translation id="8428213095426709021">सेटिंग</translation>
 <translation id="1792148354504719133">साइट</translation>
 <translation id="5944430251223015324">साइटों</translation>
 <translation id="1834493631938747505">अपनी बख्शीश के बारे में दूसरों को बताएं।</translation>

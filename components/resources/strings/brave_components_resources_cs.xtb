@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importovat</translation>
 <translation id="5540323067375019678">Nastavení vašich štítů</translation>
 <translation id="3366308997091824722">Nastavení štítu</translation>
-<translation id="3884404068544758153">Vyberte si vyhledávač</translation>
 <translation id="438216590634144114">Zvolte vyhledávač, který chcete používat jako výchozí při prohledávání webu pomocí adresního řádku.</translation>
-<translation id="8428213095426709021">Nastavení</translation>
 <translation id="513635702954746724">Vyberte si barvu motivu</translation>
 <translation id="6842850080200126305">Nastavte barvu lišty nástrojů výběrem světlé nebo tmavé z panelu nastavení.</translation>
 <translation id="2801098717523961746">Vyberte si motiv</translation>
@@ -306,6 +304,7 @@ Povolte je návštěvou</translation>
 <translation id="259138486959961679">Zobrazit všech {{numItems}} položek</translation>
 <translation id="7857284676033058221">Vidět všech {{numSites}} stránek</translation>
 <translation id="3536298624341433814">Odeslat můj příspěvek</translation>
+<translation id="8428213095426709021">Nastavení</translation>
 <translation id="1792148354504719133">stránka</translation>
 <translation id="5944430251223015324">stránky</translation>
 <translation id="1834493631938747505">Řekněte o svém daru ostatním.</translation>

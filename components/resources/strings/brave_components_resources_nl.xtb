@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importeren</translation>
 <translation id="5540323067375019678">Je schilden beheren</translation>
 <translation id="3366308997091824722">Shield instellingen</translation>
-<translation id="3884404068544758153">De zoekmachine wijzigen</translation>
 <translation id="438216590634144114">Kies de zoekmachine die je standaard wilt gebruiken bij het zoeken op het web in de adresbalk.</translation>
-<translation id="8428213095426709021">Instellingen</translation>
 <translation id="513635702954746724">Kies een kleurthema</translation>
 <translation id="6842850080200126305">Stel de kleur van de werkbalk in door de optie voor licht of donker te kiezen in het deelvenster met instellingen.</translation>
 <translation id="2801098717523961746">Kies een thema</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Bekijk alle {{numItems}} artikels</translation>
 <translation id="7857284676033058221">Bekijk alle {{numSites}} websites</translation>
 <translation id="3536298624341433814">Verzend mijn Tip.</translation>
+<translation id="8428213095426709021">Instellingen</translation>
 <translation id="1792148354504719133">website</translation>
 <translation id="5944430251223015324">websites</translation>
 <translation id="1834493631938747505">Vertel anderen over uw fooi.</translation>

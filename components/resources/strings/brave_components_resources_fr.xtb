@@ -57,9 +57,7 @@
 <translation id="8275038454117074363">Importer</translation>
 <translation id="5540323067375019678">Gérez vos protections</translation>
 <translation id="3366308997091824722">Réglages du bouclier</translation>
-<translation id="3884404068544758153">Changez de moteur de recherche</translation>
 <translation id="438216590634144114">Choisissez le moteur de recherche que vous souhaitez utiliser par défaut lors de vos recherches sur le Web dans la barre d'adresse.</translation>
-<translation id="8428213095426709021">Paramètres</translation>
 <translation id="513635702954746724">Choisissez votre thème coloré</translation>
 <translation id="6842850080200126305">Définissez la couleur de votre barre d'outils en sélectionnant l'option clair ou sombre dans le panneau des paramètres.</translation>
 <translation id="2801098717523961746">Choisir votre thème</translation>
@@ -305,6 +303,7 @@
 <translation id="259138486959961679">Voir tous les éléments {{numItems}}</translation>
 <translation id="7857284676033058221">Voir tous les {{numSites}} sites</translation>
 <translation id="3536298624341433814">Envoyer mon Pourboire</translation>
+<translation id="8428213095426709021">Paramètres</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">sites</translation>
 <translation id="1834493631938747505">Parlez de votre don aux autres.</translation>
