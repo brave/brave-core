@@ -14,6 +14,7 @@
 #include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_avatar_icon_util.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -193,3 +194,11 @@ TEST_F(BraveProfileManagerTest, CreateProfilesAsync) {
   content::RunAllTasksUntilIdle();
 }
 
+TEST_F(BraveProfileManagerTest, NoWebtorrentInTorProfile) {
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  base::FilePath tor_path = BraveProfileManager::GetTorProfilePath();
+  Profile* profile = profile_manager->GetProfile(tor_path);
+  ASSERT_TRUE(profile);
+
+  EXPECT_FALSE(webtorrent::IsWebtorrentEnabled(profile));
+}
