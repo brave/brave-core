@@ -190,19 +190,27 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
   }
 
   DCHECK(last_tab_active_time_);
+  std::string type = bat_media_->GetLinkType(iter->second.tld, "", "");
+  auto duration = current_time - last_tab_active_time_;
+  // TODO(jdkuki) add support for other media types
+  if (type == GITHUB_MEDIA_TYPE) {
+      std::map<std::string, std::string> parts;
+      parts["duration"] = std::to_string(duration);
+      bat_media_->ProcessMedia(parts, type, iter->second.Clone());
+  } else {
+    auto callback = std::bind(&LedgerImpl::OnSaveVisit,
+                              this,
+                              _1,
+                              _2);
 
-  auto callback = std::bind(&LedgerImpl::OnSaveVisit,
-                            this,
-                            _1,
-                            _2);
-
-  bat_publisher_->SaveVisit(
-    iter->second.tld,
-    iter->second,
-    current_time - last_tab_active_time_,
-    0,
-    callback);
-  last_tab_active_time_ = 0;
+    bat_publisher_->SaveVisit(
+      iter->second.tld,
+      iter->second,
+      duration,
+      0,
+      callback);
+    last_tab_active_time_ = 0;
+  }
 }
 
 void LedgerImpl::OnForeground(uint32_t tab_id, const uint64_t& current_time) {

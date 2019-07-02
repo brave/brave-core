@@ -31,6 +31,29 @@ std::string MediaGitHubTest::CreateTestJSONString() {
   })";
 }
 
+TEST(MediaGitHubTest, GetLinkType) {
+  // empty
+  std::string result =
+      braveledger_media::GitHub::GetLinkType("");
+  ASSERT_TRUE(result.empty());
+
+  // wrong website
+  result = braveledger_media::GitHub::GetLinkType("https://twitter.com");
+  ASSERT_TRUE(result.empty());
+
+  // correct site
+  result = braveledger_media::GitHub::GetLinkType("https://github.com");
+  ASSERT_EQ(result, GITHUB_MEDIA_TYPE);
+
+  // sub domain
+  result = braveledger_media::GitHub::GetLinkType("https://gist.github.com");
+  ASSERT_EQ(result, GITHUB_MEDIA_TYPE);
+
+  // profile page
+  result = braveledger_media::GitHub::GetLinkType("https://github.com/jdkuki");
+  ASSERT_EQ(result, GITHUB_MEDIA_TYPE);
+}
+
 TEST(MediaGitHubTest, GetProfileURL) {
   // empty
   std::string result =

@@ -121,6 +121,8 @@ std::string getProviderName(const std::string& publisher_id) {
     return TWITTER_MEDIA_TYPE;
   } else if (publisher_id.find(VIMEO_MEDIA_TYPE) != std::string::npos) {
     return VIMEO_MEDIA_TYPE;
+  } else if (publisher_id.find(GITHUB_MEDIA_TYPE) != std::string::npos) {
+    return GITHUB_MEDIA_TYPE;
   }
 
   return "";
