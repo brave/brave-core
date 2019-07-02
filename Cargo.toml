@@ -5,7 +5,7 @@ authors = ["Brian R. Bondy <netzen@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-adblock="0.1.24"
+adblock="0.1.25"
 libc = "0.2"
 rand_os = "0.2.0"
 
