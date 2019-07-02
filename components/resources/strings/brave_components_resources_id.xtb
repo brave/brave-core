@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Edit Setelan</translation>
 <translation id="7606029853066610626">Lihat dan Kelola Markah</translation>
 <translation id="5550994254534676787">Lihat riwayat penjelajahan Anda</translation>
+<translation id="1742484101357469636">Pengaturan Dasbor</translation>
+<translation id="8320281346741574991">Tampilkan gambar latar belakang</translation>
 <translation id="6165508094623778733">Pelajari lebih lanjut</translation>
 <translation id="8730621377337864115">Selesai</translation>
 <translation id="6248988683584659830">Setelan pencarian</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave memudahkan Anda menyiapkan lingkungan yang biasa digunakan dengan mengimpor markah dan setelan dari peramban yang terpasang di komputer Anda.</translation>
 <translation id="8275038454117074363">Impor</translation>
 <translation id="5540323067375019678">Kelola perisai</translation>
+<translation id="3278033011827237847">Berlindung dari iklan dan pelacak perusak privasi saat meramban dengan Perisai Brave. Atur Perisai ke "turun" jika sebuah situs tampaknya tidak berfungsi dengan baik.</translation>
 <translation id="3366308997091824722">Setelan Perisai</translation>
-<translation id="3884404068544758153">Ubah mesin pencari</translation>
+<translation id="4764692524839457597">default</translation>
+<translation id="3108122610701115301">Atur default</translation>
+<translation id="2469440407442116729">Pilih mesin pencarian</translation>
 <translation id="438216590634144114">Pilih mesin pencari yang ingin Anda gunakan secara baku saat mencari web dari bilah alamat.</translation>
-<translation id="8428213095426709021">Setelan</translation>
+<translation id="5804484488647369316">Atur mesin pencarian default</translation>
+<translation id="4428458837269935199">Untuk pencarian yang lebih privat, cobalah DuckDuckGo.</translation>
 <translation id="513635702954746724">Pilih warna tema</translation>
 <translation id="6842850080200126305">Atur warna bilah alat dengan menentukan pilihan terang atau gelap dari panel setelan.</translation>
 <translation id="2801098717523961746">Pilih tema</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Dapatkan token dengan melihat iklan di Brave. Iklan disajikan berdasarkan minat Anda, yang disimpulkan dari perilaku penjelajahan Anda. Tak ada data pribadi atau riwayat penjelajahan yang meninggalkan peramban Anda.</translation>
 <translation id="6112368337882254910">Kontribusi Otomatis</translation>
 <translation id="1527222983464337010">Cara otomatis untuk mendukung penerbit dan pembuat konten. Atur pembayaran bulanan dan menjelajah seperti biasa. Situs yang Anda kunjungi otomatis menerima kontribusi, berdasarkan atensi Anda yang diukur oleh Brave.</translation>
+<translation id="20281847067919078">Estimasi reward tertunda</translation>
+<translation id="8593551638387217772">Tanggal pembayaran berikutnya</translation>
+<translation id="319209088187794725">Pemberitahuan iklan yang diterima bulan ini</translation>
 <translation id="4229016885653790965">Maaf! Iklan belum tersedia di wilayah Anda.</translation>
 <translation id="654711254769318398">Laman iklan yang dilihat</translation>
 <translation id="2532127066761785857">Jumlah maksimum iklan yang ditampilkan</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 menit</translation>
 <translation id="9031738692126722094">Aktifkan tips tingkat konten di situs-situs ini</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Beri tip secara langsung saat Anda menemukan permata.</translation>
 <translation id="6135431587052937035">Dukung situs favorit Anda dengan tip bulanan berulang.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Maaf, tampaknya hibah ini sudah diklaim.</translation>
 <translation id="282693359045252357">Tanggal tip bulanan berikutnya</translation>
 <translation id="6231182869178328516">Saya baru saja memberi tip untuk <ph name="NAME">$1<ex>user</ex></ph> melalui Brave Browser. Simak di https://brave.com/tips.</translation>
+<translation id="8404935570206006581">TipDenganBrave</translation>
 <translation id="7422678632904904341">Jumlah:</translation>
 <translation id="5923611424721173182">Rekonsiliasi Saat Ini</translation>
 <translation id="5457113250005438886">Tidak valid</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Atur tip bulanan</translation>
 <translation id="8003573781961874199">Unduh sebagai PDF</translation>
 <translation id="298067735430872465">Pendapatan dari Iklan</translation>
+<translation id="2266556115441975588">Reward Anda dari Iklan ditampilkan di sini!</translation>
 <translation id="8764029012618014430">Aktifkan Tip</translation>
 <translation id="3412655388715513818">Kecualikan situs ini</translation>
 <translation id="418343137736963579">Total jumlah situs yang Anda kecualikan dari Kontribusi Otomatis:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Kunci Pemulihan</translation>
 <translation id="6354568176665589146">Berulang</translation>
 <translation id="7577100371127227294">Tip Bulanan</translation>
+<translation id="2391095793008133394">Beri {{ user }} tip untuk posnya:</translation>
+<translation id="7557413530932469222">Beri {{ user }} tip untuk posnya!</translation>
 <translation id="1110535155349301542">hapus</translation>
 <translation id="8942997470474842562">Anda telah menetapkan {{reservedAmount}} BAT untuk pembuat yang belum mendaftar untuk menerima kontribusi. Peramban Anda akan terus berusaha memberi kontribusi sampai mereka memverifikasi, atau sampai 90 hari telah berlalu.</translation>
 <translation id="8759753423332885148">Pelajari lebih lanjut.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Lihat semua {{numItems}} item</translation>
 <translation id="7857284676033058221">Lihat semua {{numSites}} situs</translation>
 <translation id="3536298624341433814">Kirim Tip saya</translation>
+<translation id="8428213095426709021">Setelan</translation>
 <translation id="1792148354504719133">situs</translation>
 <translation id="5944430251223015324">situs</translation>
 <translation id="1834493631938747505">Infokan orang lain tentang tip Anda.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Tertunda sampai</translation>
 <translation id="7410549756000115387">Tidak ada kontribusi tertunda…</translation>
 <translation id="1963227389609234879">Hapus Semua</translation>
+<translation id="1170315781901539495">Situs yang Dikecualikan</translation>
+<translation id="5119190679543565400">Pulihkan situs ini</translation>
+<translation id="9075700728717335924">Anda mengecualikan</translation>
+<translation id="4862817811647633830">situs-situs dari Kontribusi Otomatis.</translation>
 <translation id="923467487918828349">Tampilkan Semua</translation>
+<translation id="5471305206221894680">Situs yang Didukung</translation>
+<translation id="2306169361186864012">Reward Iklan Brave!</translation>
+<translation id="3757873395477273033">Hibah reward Anda dari Iklan Brave sedang diproses.</translation>
+<translation id="8101881066646819737">Hibah Token Iklan Brave Anda</translation>
 <translation id="2151535059686617995">Ini hari keberuntungan Anda!</translation>
 <translation id="6255773350565723852">Imbalan token Anda sedang dikirim.</translation>
 <translation id="1181037720776840403">Hapus</translation>

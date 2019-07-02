@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Modifier les préférences</translation>
 <translation id="7606029853066610626">Afficher et gérer les favoris</translation>
 <translation id="5550994254534676787">Voir l'historique de navigation</translation>
+<translation id="1742484101357469636">Paramètres du tableau de bord</translation>
+<translation id="8320281346741574991">Afficher l'image d'arrière-plan</translation>
 <translation id="6165508094623778733">En savoir plus</translation>
 <translation id="8730621377337864115">Terminé</translation>
 <translation id="6248988683584659830">Rechercher</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave vous permet de configurer facilement votre environnement habituel en important vos signets et réglages depuis les autres navigateurs installés sur votre ordinateur.</translation>
 <translation id="8275038454117074363">Importer</translation>
 <translation id="5540323067375019678">Gérez vos protections</translation>
+<translation id="3278033011827237847">Protégez-vous contre les publicités et les trackers portant atteinte à la vie privée lorsque vous naviguez avec Brave Shields. Réglez Shields sur « faible » si un site ne semble pas fonctionner correctement.</translation>
 <translation id="3366308997091824722">Réglages du bouclier</translation>
-<translation id="3884404068544758153">Changez de moteur de recherche</translation>
+<translation id="4764692524839457597">par défaut</translation>
+<translation id="3108122610701115301">Définir le réglage par défaut</translation>
+<translation id="2469440407442116729">Sélectionner un moteur de recherche</translation>
 <translation id="438216590634144114">Choisissez le moteur de recherche que vous souhaitez utiliser par défaut lors de vos recherches sur le Web dans la barre d'adresse.</translation>
-<translation id="8428213095426709021">Paramètres</translation>
+<translation id="5804484488647369316">Définir le moteur de recherche par défaut</translation>
+<translation id="4428458837269935199">Pour une expérience de recherche plus privée, essayez DuckDuckGo.</translation>
 <translation id="513635702954746724">Choisissez votre thème coloré</translation>
 <translation id="6842850080200126305">Définissez la couleur de votre barre d'outils en sélectionnant l'option clair ou sombre dans le panneau des paramètres.</translation>
 <translation id="2801098717523961746">Choisir votre thème</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Gagnez des jetons en regardant des annonces dans Brave. Les annonces sont basées sur vos centres d'intérêts déduits de votre navigation. Aucune donnée personnelle ni aucun historique de navigation ne quittera jamais votre navigateur.</translation>
 <translation id="6112368337882254910">Auto-Contribuer</translation>
 <translation id="1527222983464337010">Un moyen automatique de soutenir des éditeurs et créateurs de contenus. Définissez un paiement mensuel et naviguez comme à votre habitude. Les sites que vous consultez recevront vos contributions automatiquement, sur base de la mesure de votre attention réalisée par Brave.</translation>
+<translation id="20281847067919078">Estimation des récompenses en attente</translation>
+<translation id="8593551638387217772">Prochaine date de paiement</translation>
+<translation id="319209088187794725">Notifications de publicités reçues ce mois-ci</translation>
 <translation id="4229016885653790965">Désolé ! Les publicités ne sont pas encore disponibles dans votre région.</translation>
 <translation id="654711254769318398">Pages de publicité affichées</translation>
 <translation id="2532127066761785857">Nombre maximal de publicités affiché</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 minute</translation>
 <translation id="9031738692126722094">Activer les dons relatifs au contenu sur ces sites</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Donnez à la volée quand vous tombez sur des joyaux</translation>
 <translation id="6135431587052937035">Soutenez vos sites favoris en leur versant un pourboire mensuel récurrent.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Désolé, il semble que cette allocation ait déjà été réclamée.</translation>
 <translation id="282693359045252357">Date de la prochaine contribution mensuelle</translation>
 <translation id="6231182869178328516">Je viens de faire un don à <ph name="NAME">$1<ex>user</ex></ph> avec le navigateur Brave. Pour le voir, rendez-vous sur https://brave.com/tips.</translation>
+<translation id="8404935570206006581">PourboireAvecBrave</translation>
 <translation id="7422678632904904341">Montant :</translation>
 <translation id="5923611424721173182">Rapprochement actuel</translation>
 <translation id="5457113250005438886">Invalide</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Définir le don mensuel</translation>
 <translation id="8003573781961874199">Télécharger au format PDF</translation>
 <translation id="298067735430872465">Gains issus des Annonces</translation>
+<translation id="2266556115441975588">Vos récompenses Ads sont ici !</translation>
 <translation id="8764029012618014430">Activer les Dons</translation>
 <translation id="3412655388715513818">Exclure ce site</translation>
 <translation id="418343137736963579">Nombre total de sites que vous avez exclus de la Contribution Automatique :</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Clé de Récupération</translation>
 <translation id="6354568176665589146">Récurrent</translation>
 <translation id="7577100371127227294">Dons Mensuels</translation>
+<translation id="2391095793008133394">Donner un pourboire à {{ user }} pour sa publication :</translation>
+<translation id="7557413530932469222">Donner un pourboire à {{ user }} pour sa publication !</translation>
 <translation id="1110535155349301542">effacer</translation>
 <translation id="8942997470474842562">Vous avez désigné {{reservedAmount}} BAT pour les créateurs qui ne se sont pas encore inscrits pour recevoir des contributions. Votre navigateur continuera d'essayer de contribuer jusqu'à la vérification, ou jusqu'à ce que 90 jours se soient écoulés.</translation>
 <translation id="8759753423332885148">En savoir plus.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Voir tous les éléments {{numItems}}</translation>
 <translation id="7857284676033058221">Voir tous les {{numSites}} sites</translation>
 <translation id="3536298624341433814">Envoyer mon Pourboire</translation>
+<translation id="8428213095426709021">Paramètres</translation>
 <translation id="1792148354504719133">site</translation>
 <translation id="5944430251223015324">sites</translation>
 <translation id="1834493631938747505">Parlez de votre don aux autres.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">En attente jusqu'au</translation>
 <translation id="7410549756000115387">Aucune contribution en attente…</translation>
 <translation id="1963227389609234879">Tout supprimer</translation>
+<translation id="1170315781901539495">Sites exclus</translation>
+<translation id="5119190679543565400">Restaurer ce site</translation>
+<translation id="9075700728717335924">Vous avez exclus</translation>
+<translation id="4862817811647633830">sites provenant de la contribution automatique.</translation>
 <translation id="923467487918828349">Tout afficher</translation>
+<translation id="5471305206221894680">Sites pris en charge</translation>
+<translation id="2306169361186864012">Récompenses Brave Ads !</translation>
+<translation id="3757873395477273033">Vos récompenses de la part de Brave Ads sont en route.</translation>
+<translation id="8101881066646819737">Votre allocation de jetons Brave Ads</translation>
 <translation id="2151535059686617995">C'est votre jour de chance !</translation>
 <translation id="6255773350565723852">Votre subvention symbolique est en route.</translation>
 <translation id="1181037720776840403">Supprimer</translation>

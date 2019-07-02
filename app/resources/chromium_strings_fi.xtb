@@ -74,13 +74,9 @@ Brave ei voi palauttaa asetuksiasi.</translation>
 <translation id="5874882355102994015">Brave ei voi näyttää tulostusesikatselua, koska PDF-katseluohjelma puuttuu.</translation>
 <translation id="8880183781256147665">Lisätään Braveiin...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> voi olla vaarallinen, joten Brave on estänyt sen.</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/> voi olla vaarallinen, joten Brave on estänyt sen. Lisäsuojaus pitää puoliasi.</translation>
 <translation id="9067428552314418522">Tämä tiedosto on vaarallinen, joten Brave on estänyt sen.</translation>
-<translation id="2938460345748897177">Tämä tiedosto on vaarallinen, joten Brave on estänyt sen. Lisäsuojaus pitää puoliasi.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> on vaarallinen, joten Brave on estänyt sen.</translation>
-<translation id="8858456697111532356"><ph name="FILE_NAME"/> on vaarallinen, joten Brave on estänyt sen. Lisäsuojaus pitää puoliasi.</translation>
 <translation id="89367911614620585">Tämä tiedosto voi olla vaarallinen, joten Brave on estänyt sen.</translation>
-<translation id="8943391224520748272">Tämä tiedosto voi olla vaarallinen, joten Brave on estänyt sen. Lisäsuojaus pitää puoliasi.</translation>
 <translation id="9183662282810237335">Suljetaanko Brave silti?</translation>
 <translation id="3834935463915107022">Suljetaanko Brave silti?</translation>
 <translation id="8797356639448065696">Brave on käynnissä taustalla</translation>
@@ -143,8 +139,6 @@ Jos kirjaudut silti sisään, Brave-tiedot, kuten kirjanmerkit, historia ja aset
 <translation id="6746636977031158624">Brave-käyttöjärjestelmä ei voi synkronoida tietoja, sillä tilin kirjautumistiedot ovat vanhentuneet.</translation>
 <translation id="2999152167963026588">Brave-käyttöjärjestelmä ei voi synkronoida tietoja, koska synkronointi ei ole käytettävissä verkkotunnuksessasi.</translation>
 <translation id="1459786048951724030">Brave-käyttöjärjestelmä ei voi synkronoida tietoja kirjautumisvirheen vuoksi.</translation>
-<translation id="2887570477425111999">Tallenna tiedot Braveiin</translation>
-<translation id="193559141530782783">Brave tallentaa tietosi turvalliseen paikkaan, jottei sinun tarvitse kirjoittaa tietoja uudelleen.</translation>
 <translation id="663059986967017181">Kopioitiin Braveiin.</translation>
 <translation id="1457432835062259213">Brave-sovellusten käynnistysohjelma</translation>
 <translation id="82609232232243542">Kirjaudu Braveen</translation>
@@ -182,7 +176,7 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="1912973375560256099">Bravein saapuvien yhteyksien sääntö, joka sallii mDNS-liikenteen.</translation>
 <translation id="8207657266087451193">Jos kuvalla ei ole hyödyllistä kuvausta, Brave yrittää luoda sellaisen. Kuvat lähetetään Brave Softwarelle kuvausten luomista varten. Voit milloin tahansa poistaa tämän käytöstä asetuksissa.</translation>
 <translation id="5499063270485366718">Jos kuvalla ei ole hyödyllistä kuvausta, Brave yrittää luoda sellaisen. Kuvat lähetetään Brave Softwarelle kuvausten luomista varten.</translation>
-<translation id="3870835867536344658">Tämä käyttää samaa oikeinkirjoituksen tarkistusta kuin Brave Software Haku. Selaimeen kirjoittamasi teksti lähetetään Brave Softwarelle. Voit muuttaa tätä milloin tahansa asetuksista.</translation>
+<translation id="215320507915280336">Tämä käyttää samaa oikeinkirjoituksen tarkistusta kuin Brave Software Haku. Selaimeen kirjoittamasi teksti lähetetään Brave Softwarelle. Voit muuttaa tätä milloin tahansa asetuksista.</translation>
 <translation id="1807774211756215222">Avaa linkki uudella Bravein välilehdellä</translation>
 <translation id="4624945300945265642">Avaa linkki Bravein inco&amp;gnito-ikkunassa</translation>
 <translation id="7863882214613921971">Avaa linkki uudella Bravein välilehdellä</translation>
@@ -239,23 +233,17 @@ Lähetimme lisäohjeita sähköpostiisi osoitteeseen <ph name="ACCOUNT_EMAIL"/>.
 <translation id="8933981935877469796">Valitse <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/>.</translation>
 <translation id="1585657529869845941">Klikkaa <ph name="BEGIN_BOLD"/>Vaihda joka tapauksessa<ph name="END_BOLD"/> ‑painiketta, jos se tulee näkyviin.</translation>
 <translation id="3507835409099344374">Siirry Bravein ilmoitusasetuksiin</translation>
-<translation id="9118654140804842635">{0,plural, =0{Brave-päivitys on saatavilla}=1{Brave-päivitys on saatavilla}other{Brave-päivitys on ollut saatavilla # vuorokauden ajan}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Brave-päivitys on saatavilla}=1{Brave-päivitys on saatavilla}other{Brave-päivitys on ollut saatavilla # vuorokauden ajan}}</translation>
 <translation id="720532315408041257">Ylläpitäjä pyytää Bravein uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön.</translation>
-<translation id="6639482638305253477">{0,plural, =1{Käynnistä Brave uudelleen vuorokauden kuluessa}other{Käynnistä Brave uudelleen # vuorokauden kuluessa}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave käynnistetään uudelleen tunnin kuluttua}other{Brave käynnistetään uudelleen # tunnin kuluttua}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave käynnistetään uudelleen 1 minuutin kuluttua}other{Brave käynnistetään uudelleen # minuutin kuluttua}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave käynnistetään uudelleen nyt}=1{Brave käynnistetään uudelleen 1 sekunnin kuluttua}other{Brave käynnistetään uudelleen # sekunnin kuluttua}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Käynnistä Brave uudelleen vuorokauden kuluessa}other{Käynnistä Brave uudelleen # vuorokauden kuluessa}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave käynnistetään uudelleen tunnin kuluttua}other{Brave käynnistetään uudelleen # tunnin kuluttua}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave käynnistetään uudelleen 1 minuutin kuluttua}other{Brave käynnistetään uudelleen # minuutin kuluttua}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave käynnistetään uudelleen nyt}=1{Brave käynnistetään uudelleen 1 sekunnin kuluttua}other{Brave käynnistetään uudelleen # sekunnin kuluttua}}</translation>
 <translation id="7595187113648413294">Ylläpitäjä vaatii Bravein uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön.</translation>
-<translation id="56801943271475640">{0,plural, =0{Brave OS ‑päivitys on saatavilla}=1{Brave OS ‑päivitys on saatavilla}other{Brave OS ‑päivitys on ollut saatavilla # vuorokauden ajan}}</translation>
-<translation id="5715362474140341294">Järjestelmänvalvoja pyytää Brave OS:n uudelleenkäynnistystä, jotta tämä päivitys voidaan ottaa käyttöön.</translation>
-<translation id="8094834892392729950">{0,plural, =1{Käynnistä Brave OS uudelleen vuorokauden kuluessa}other{Käynnistä Brave uudelleen # vuorokauden kuluessa}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS käynnistetään uudelleen tunnin kuluttua}other{Brave OS käynnistetään uudelleen # tunnin kuluttua}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS käynnistetään uudelleen 1 sekunnin kuluttua}other{Brave OS käynnistetään uudelleen # sekunnin kuluttua}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS käynnistetään uudelleen nyt}=1{Brave OS käynnistetään uudelleen 1 sekunnin kuluttua}other{Brave OS käynnistetään uudelleen # sekunnin kuluttua}}</translation>
-<translation id="8559452515617838628">Järjestelmänvalvoja edellyttää Brave OS:n uudelleenkäynnistystä, jotta päivitys voidaan ottaa käyttöön.</translation>
 <translation id="3052349005266761501">Käynnistetään Braveia…</translation>
 <translation id="1197672524850678392">Bravein käynnistäminen epäonnistui. Yritä uudelleen.</translation>
 <translation id="6040143037577758943">Sulje</translation>
+<translation id="5147525139567260139">Jaa Brave-välilehti</translation>
 <translation id="8541922081612557424">Tietoja Braveista</translation>
 <translation id="3262506503470845422">Ohjeita Bravein käyttöön</translation>
 <translation id="1864557848095568223">Päivitetään Braveia.</translation>

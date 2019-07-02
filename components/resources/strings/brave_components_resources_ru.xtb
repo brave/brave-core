@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Редактировать Параметры</translation>
 <translation id="7606029853066610626">Просмотр и управление закладками</translation>
 <translation id="5550994254534676787">Показать историю просмотров</translation>
+<translation id="1742484101357469636">Настройки панели управления</translation>
+<translation id="8320281346741574991">Показать фоновое изображение</translation>
 <translation id="6165508094623778733">Узнать больше</translation>
 <translation id="8730621377337864115">Готово</translation>
 <translation id="6248988683584659830">Искать настройки</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Вы можете без труда импортировать в Brave закладки и настройки из других браузеров, установленных на вашем компьютере.</translation>
 <translation id="8275038454117074363">Импортировать</translation>
 <translation id="5540323067375019678">Настройте щиты безопасности</translation>
+<translation id="3278033011827237847">Защищайтесь от рекламы и трекеров во время просмотра сайтов благодаря щитам Brave. Если сайт не работает должным образом, то установите для щитов значение «Опущены».</translation>
 <translation id="3366308997091824722">Настройки щита</translation>
-<translation id="3884404068544758153">Измените поисковую систему</translation>
+<translation id="4764692524839457597">по умолчанию</translation>
+<translation id="3108122610701115301">Установить по умолчанию</translation>
+<translation id="2469440407442116729">Выберите поисковую систему</translation>
 <translation id="438216590634144114">Выберите поисковую систему по умолчанию при отправке запроса из адресной строки</translation>
-<translation id="8428213095426709021">Настройки</translation>
+<translation id="5804484488647369316">Установить поисковую систему по умолчанию</translation>
+<translation id="4428458837269935199">Для более конфиденциального поиска попробуйте DuckDuckGo.</translation>
 <translation id="513635702954746724">Выберите цветовую тему</translation>
 <translation id="6842850080200126305">Чтобы изменить цвет панели инструментов, выберите в настройках светлую или темную тему.</translation>
 <translation id="2801098717523961746">Выбрать тему</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Зарабатывайте токены, просматривая рекламу в Brave. Вам показывается реклама в соответствии с вашими интересами, которые отслеживаются на основании ваших действий в браузере. Личные данные и история просмотра никогда не выходят за пределы вашего браузера.</translation>
 <translation id="6112368337882254910">Автоматический Взнос</translation>
 <translation id="1527222983464337010">Автоматический способ поддержать издателей и создателей контента. Установите ежемесячный платеж и продолжайте просмотр в обычном режиме. Посещаемые вами сайты получат ваши взносы автоматически, в зависимости от того, сколько внимания вы им уделяете согласно данным Brave.</translation>
+<translation id="20281847067919078">Награда к оплате</translation>
+<translation id="8593551638387217772">Дата следующего платежа</translation>
+<translation id="319209088187794725">Уведомления о рекламе за этот месяц</translation>
 <translation id="4229016885653790965">Извините! В вашем регионе объявления пока еще не доступны.</translation>
 <translation id="654711254769318398">Просмотрено рекламных страниц</translation>
 <translation id="2532127066761785857">Максимальное количество рекламных объявлений</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 минута</translation>
 <translation id="9031738692126722094">Включить поддержку за контент на этих сайтах</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Рекомендуйте сразу же, как только увидели интересное.</translation>
 <translation id="6135431587052937035">Поддержите свои любимые сайты регулярным ежемесячным вознаграждением.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Данный токен-грант был получен ранее.</translation>
 <translation id="282693359045252357">Следующая дата отправки ежемесячных чаевых</translation>
 <translation id="6231182869178328516">Я только что поддержал(а) <ph name="NAME">$1<ex>user</ex></ph> через браузер Brave. Узнать больше можно на https://brave.com/tips.</translation>
+<translation id="8404935570206006581">ЧаевыеСBrave</translation>
 <translation id="7422678632904904341">Сумма:</translation>
 <translation id="5923611424721173182">Текущее согласование</translation>
 <translation id="5457113250005438886">Неверно</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Установить ежемесячные рекомендации</translation>
 <translation id="8003573781961874199">Сохранить как PDF</translation>
 <translation id="298067735430872465">Заработано на рекламе</translation>
+<translation id="2266556115441975588">Ваше вознаграждение за просмотр рекламы здесь!</translation>
 <translation id="8764029012618014430">Включить советы</translation>
 <translation id="3412655388715513818">Исключить этот сайт</translation>
 <translation id="418343137736963579">Всего сайтов, которые вы исключили из автоматического взноса:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Ключ восстановления</translation>
 <translation id="6354568176665589146">Периодический</translation>
 <translation id="7577100371127227294">Ежемесячные рекомендации</translation>
+<translation id="2391095793008133394">Дать чаевые за пост {{user}}:</translation>
+<translation id="7557413530932469222">Дать чаевые за пост {{user}}!</translation>
 <translation id="1110535155349301542">удалить</translation>
 <translation id="8942997470474842562">Не удалось отправить грант в размере BAT {{reservedAmount}}, поскольку его получатель еще не участвует в программе дарения. Браузер будет повторять попытку до успешного результата, но не более 90 дней.</translation>
 <translation id="8759753423332885148">Узнать больше.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Просмотреть все элементы {{numItems}}</translation>
 <translation id="7857284676033058221">Смотреть все {{numSites}} сайтов</translation>
 <translation id="3536298624341433814">Отправить рекомендацию</translation>
+<translation id="8428213095426709021">Настройки</translation>
 <translation id="1792148354504719133">сайт</translation>
 <translation id="5944430251223015324">сайты</translation>
 <translation id="1834493631938747505">Расскажите другим о вашей поддержке.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Отложено до</translation>
 <translation id="7410549756000115387">Нет отложенных пожертвований…</translation>
 <translation id="1963227389609234879">Удалить все</translation>
+<translation id="1170315781901539495">Исключенные сайты</translation>
+<translation id="5119190679543565400">Восстановить этот сайт</translation>
+<translation id="9075700728717335924">Вы исключили</translation>
+<translation id="4862817811647633830">сайты из автовклада.</translation>
 <translation id="923467487918828349">Показать все</translation>
+<translation id="5471305206221894680">Поддерживаемые сайты</translation>
+<translation id="2306169361186864012">Награда за рекламу Brave!</translation>
+<translation id="3757873395477273033">Ваша награда от рекламы Brave уже отправлена.</translation>
+<translation id="8101881066646819737">Ваши токены рекламы Brave</translation>
 <translation id="2151535059686617995">Сегодня ваш счастливый день!</translation>
 <translation id="6255773350565723852">Ваш токен-грант скоро будет получен.</translation>
 <translation id="1181037720776840403">Удалить</translation>

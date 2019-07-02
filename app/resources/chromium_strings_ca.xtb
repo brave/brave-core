@@ -74,13 +74,9 @@ Brave no pot recuperar la configuració.</translation>
 <translation id="5874882355102994015">Brave no pot mostrar la previsualització d'impressió perquè falta el lector de PDF integrat.</translation>
 <translation id="8880183781256147665">S'està afegint a Brave...</translation>
 <translation id="3561569806301739367">Brave ha bloquejat <ph name="FILE_NAME"/> perquè pot ser perillós.</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/> pot ser perillós i, per tant, Brave l'ha bloquejat. La Protecció avançada et protegeix.</translation>
 <translation id="9067428552314418522">Brave ha bloquejat aquest fitxer perquè és perillós.</translation>
-<translation id="2938460345748897177">Brave ha bloquejat aquest fitxer perquè és perillós. La Protecció avançada et protegeix.</translation>
 <translation id="4168372721886011198">Brave ha bloquejat <ph name="FILE_NAME"/> perquè és perillós.</translation>
-<translation id="8858456697111532356">Brave ha bloquejat <ph name="FILE_NAME"/> perquè és perillós. La Protecció avançada et protegeix.</translation>
 <translation id="89367911614620585">Brave ha bloquejat aquest fitxer perquè pot ser perillós.</translation>
-<translation id="8943391224520748272">Brave ha bloquejat aquest fitxer perquè pot ser perillós. La Protecció avançada et protegeix.</translation>
 <translation id="9183662282810237335">Vols sortir de Brave igualment?</translation>
 <translation id="3834935463915107022">Vols sortir de Brave igualment?</translation>
 <translation id="8797356639448065696">Brave està en mode de segon pla.</translation>
@@ -143,8 +139,6 @@ En iniciar la sessió, sigui amb l'usuari que sigui, es combinarà amb <ph name=
 <translation id="6746636977031158624">Brave OS no ha pogut sincronitzar les vostres dades perquè la informació d'inici de sessió del vostre compte no està actualitzada.</translation>
 <translation id="2999152167963026588">Brave OS no ha pogut sincronitzar les vostres dades perquè la sincronització no està disponible per al vostre domini.</translation>
 <translation id="1459786048951724030">Brave OS no ha pogut sincronitzar les vostres dades a causa d'un error amb l'inici de sessió.</translation>
-<translation id="2887570477425111999">Desa els detalls a Brave</translation>
-<translation id="193559141530782783">Brave emmagatzemarà de manera segura les vostres dades personals perquè no les hàgiu de tornar a escriure</translation>
 <translation id="663059986967017181">Copiada a Brave</translation>
 <translation id="1457432835062259213">Menú d'aplicacions de Brave</translation>
 <translation id="82609232232243542">Inicia la sessió a Brave</translation>
@@ -182,7 +176,7 @@ Per obtenir més instruccions, consulteu el correu electrònic a <ph name="ACCOU
 <translation id="1912973375560256099">Regla d'entrada de Brave per permetre el trànsit de mDNS.</translation>
 <translation id="8207657266087451193">Si una imatge no té una descripció útil, Brave provarà d'oferir-te'n una. Per crear les descripcions, les imatges s'envien a Brave Software. Pots desactivar aquesta funció en qualsevol moment a la configuració.</translation>
 <translation id="5499063270485366718">Si una imatge no té una descripció útil, Brave provarà d'oferir-te'n una. Per crear les descripcions, les imatges s'envien a Brave Software.</translation>
-<translation id="3870835867536344658">Fa servir el mateix corrector ortogràfic que s'utilitza a la Cerca de Brave Software. El text que escrius al navegador s'envia a Brave Software. Pots canviar aquest comportament sempre que vulguis a la configuració.</translation>
+<translation id="215320507915280336">Fa servir el mateix corrector ortogràfic que s'utilitza a la Cerca de Brave Software. El text que escrius al navegador s'envia a Brave Software. Pots canviar aquest comportament sempre que vulguis a la configuració.</translation>
 <translation id="1807774211756215222">Obre l'enllaç en una pes&amp;tanya nova a Brave</translation>
 <translation id="4624945300945265642">Obre l'enllaç en una finestra d'incò&amp;gnit a Brave</translation>
 <translation id="7863882214613921971">Obre l'enllaç en una pes&amp;tanya nova a Brave</translation>
@@ -239,23 +233,17 @@ Per obtenir més instruccions, consulteu el correu electrònic a <ph name="ACCOU
 <translation id="8933981935877469796">Selecciona <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Si es mostra l'opció <ph name="BEGIN_BOLD"/>Canvia igualment<ph name="END_BOLD"/>, fes-hi clic</translation>
 <translation id="3507835409099344374">Ves a la configuració de notificacions de Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{Hi ha una actualització de Brave disponible}=1{Hi ha una actualització de Brave disponible}other{Fa # dies que hi ha una actualització de Brave disponible}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Hi ha una actualització de Brave disponible}=1{Hi ha una actualització de Brave disponible}other{Fa # dies que hi ha una actualització de Brave disponible}}</translation>
 <translation id="720532315408041257">L'administrador et demana que reiniciïs Brave per aplicar aquesta actualització</translation>
-<translation id="6639482638305253477">{0,plural, =1{Reinicia Brave d'aquí a 1 dia}other{Reinicia Brave d'aquí a # dies}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave es reiniciarà d'aquí a 1 hora}other{Brave es reiniciarà d'aquí a # hores}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave es reiniciarà d'aquí a 1 minut}other{Brave es reiniciarà d'aquí a # minuts}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave es reiniciarà ara}=1{Brave es reiniciarà d'aquí a 1 segon}other{Brave es reiniciarà d'aquí a # segons}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Reinicia Brave en 1 dia}other{Reinicia Brave en # dies}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave es reiniciarà d'aquí a 1 hora}other{Brave es reiniciarà d'aquí a # hores}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave es reiniciarà d'aquí a 1 minut}other{Brave es reiniciarà d'aquí a # minuts}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave es reiniciarà ara}=1{Brave es reiniciarà d'aquí a 1 segon}other{Brave es reiniciarà d'aquí a # segons}}</translation>
 <translation id="7595187113648413294">L'administrador necessita que reiniciïs Brave per aplicar una actualització</translation>
-<translation id="56801943271475640">{0,plural, =0{Hi ha una actualització de Brave OS disponible}=1{Hi ha una actualització de Brave OS disponible}other{Fa # dies que hi ha una actualització de Brave OS disponible}}</translation>
-<translation id="5715362474140341294">L'administrador demana que reiniciïs Brave OS per aplicar aquesta actualització</translation>
-<translation id="8094834892392729950">{0,plural, =1{Reinicia Brave OS d'aquí a 1 dia}other{Reinicia Brave OS d'aquí a # dies}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS es reiniciarà d'aquí a 1 hora}other{Brave OS es reiniciarà d'aquí a # hores}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS es reiniciarà d'aquí a 1 minut}other{Brave OS es reiniciarà d'aquí a # minuts}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS es reiniciarà ara}=1{Brave OS es reiniciarà d'aquí a 1 segon}other{Brave OS es reiniciarà d'aquí a # segons}}</translation>
-<translation id="8559452515617838628">L'administrador necessita que reiniciïs Brave OS per aplicar una actualització</translation>
 <translation id="3052349005266761501">S'està iniciant Brave...</translation>
 <translation id="1197672524850678392">No s'ha pogut iniciar Brave. Torna-ho a provar.</translation>
 <translation id="6040143037577758943">Tanca</translation>
+<translation id="5147525139567260139">Comparteix una pestanya de Brave</translation>
 <translation id="8541922081612557424">Quant a Brave</translation>
 <translation id="3262506503470845422">Obtén ajuda per a Brave</translation>
 <translation id="1864557848095568223">S'està actualitzant Brave</translation>

@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave रिवार्ड्स</translation>
 <translation id="7942180974165298215">Brave विज्ञापन बाधा</translation>
 <translation id="6406506848690869874">सिंक</translation>
+<translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") की Brave में अनुमति नहीं है।</translation>
 <translation id="7450557937477381864">क्रोम को बंद करें</translation>
 <translation id="7008934821596358692">आयात समाप्त करने के लिए, सभी क्रोम विंडोज़ बंद करें।</translation>
@@ -29,7 +30,9 @@
 <translation id="3218385319396786393">इस पेज पर स्वतः प्ले बाधित था</translation>
 <translation id="4988333904713528597"><ph name="HOST">$1<ex>mail.google.com</ex></ph> पर हमेश स्वतः चालू का अनुमति दें</translation>
 <translation id="4150684676757176434">ऑटोप्ले को बाधित करना चालू रखें</translation>
+<translation id="5883458389055721080">Brave ने बचाव और सुरक्षा के लिए इस एक्सटेंशन की समीक्षा नही की है। यदि आप डेवलपर पर भरोसा करते हैं तो ही इस एक्सटेंशन को इंस्टॉल करें।</translation>
 <translation id="2044383478723007273">Brave रंग</translation>
+<translation id="2814998458708016836">विस्तृत एड्रेस बार का उपयोग करें</translation>
 <translation id="6123134130710658846">Brave Rewards बटन छिपाएँ</translation>
 <translation id="7635711399568194460">Brave Rewards सक्रिय न हो तो स्थान बार में Brave Rewards बटन छिपाएँ</translation>
 <translation id="7965178729203412357">नई टोर पहचान</translation>
@@ -48,13 +51,25 @@
 <translation id="4472575034687746823">आरंभ करें</translation>
 <translation id="3400357268283240774">अतिरिक्त सेटिंग्स</translation>
 <translation id="6303294677342628402">सुरक्षा कवच</translation>
+<translation id="7133511168130368997">पूरे वेब पर आपके साथ रहने वाले ट्रैकर्स और विज्ञापनों को ब्लॉक करें।</translation>
+<translation id="2761825942249694703">ये डिफ़ॉल्ट शील्ड्स सेटिंग हैं। वे सभी वेबसाइटों पर लागू होते हैं जब तक आप किसी विशेष साइट के शील्ड्स पैनल मे कुछ बदलाव नही करते। इन्हें बदलने से आपकी मौजूदा प्रति-साइट सेटिंग प्रभावित नही होगी।</translation>
+<translation id="8754605759692119662">यह वेबसाइटों के अधिकांश विज्ञापनों को ब्लॉक करेगा, Brave के निजी विज्ञापनों — को नही; जिन्हे नियंत्रित किया जाता है</translation>
+<translation id="6388201778088078932">सेटिंग।</translation>
 <translation id="9185018653595759199">सोशल मीडिया अवरुद्ध</translation>
+<translation id="5709627087332022422">क्रॉस-साइट ट्रैकर्स को ब्लॉक करें</translation>
+<translation id="9075744464571452108">उपकरण की पहचान</translation>
+<translation id="3570081523466826008">कनेक्शन को HTTPS पर अपग्रेड करें</translation>
+<translation id="4824468494729001999">स्क्रिप्ट ब्लॉक करें</translation>
 <translation id="7498695072878479744">अन्य पक्षों की साइटों पर Google लॉगिन बटन की अनुमति दें</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
 <translation id="958971637207126733">LinkedIn एम्बेडेड पोस्ट की अनुमति दें</translation>
+<translation id="4699812599455071925">केवल क्रॉस-साइट कुकीज़ को ब्लॉक करें</translation>
 <translation id="5657156137487675418">सभी कूकीज को अनुमति दें</translation>
 <translation id="6883611015375728278">सभी कुकी को रोकें</translation>
+<translation id="3084022390368021391">केवल क्रॉस-साइट उपकरण की पहचान के प्रयासों को ब्लॉक करें</translation>
+<translation id="1847422622180531843">उपकरण की पहचान के सभी प्रयासों की अनुमति दें</translation>
+<translation id="8375051111011093523">उपकरण की पहचान के सभी प्रयासों को ब्लॉक करें</translation>
 <translation id="8942080017911802454">वेबआरटीसी आईपी हैंडलिंग नीति</translation>
 <translation id="6165508094623778733">अधिक जानें</translation>
 <translation id="8798099450830957504">सामान्य</translation>
@@ -76,4 +91,9 @@
 <translation id="9181207987584064303">वेब एक्सटेंशन स्टोर में देखें</translation>
 <translation id="4846154056248462491">बाहर निकलने पर</translation>
 <translation id="5057399635433117814">इस पेज का अनुवाद करें? इससे यह इस पेज के सभी टेक्स्ट को अनुवाद के लिए Microsoft भेजेगा।</translation>
+<translation id="3371343170427636147">Brave ब्राउज़र Nightly ऐप्स</translation>
+<translation id="4097979995947147464">Brave ब्राउज़र बीटा ऐप</translation>
+<translation id="8303432794159193481">Brave ब्राउज़र डेवलपमेंट ऐप</translation>
+<translation id="8292967014767479012">Brave  ब्राउज़र ऐप</translation>
+<translation id="4743468424889072281">Brave ब्राउज़र डेवलपमेंट ऐप</translation>
 </translationbundle>
