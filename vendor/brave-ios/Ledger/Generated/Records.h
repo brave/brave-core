@@ -7,7 +7,7 @@
 #import <Foundation/Foundation.h>
 #import "Enums.h"
 
-@class BATAutoContributeProps, BATBalanceReportInfo, BATPublisherBanner, BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo, BATMediaEventInfo;
+@class BATAutoContributeProps, BATBalanceReportInfo, BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo, BATMediaEventInfo;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,20 +32,6 @@ NS_SWIFT_NAME(BalanceReportInfo)
 @property (nonatomic) NSString * recurringDonation;
 @property (nonatomic) NSString * oneTimeDonation;
 @property (nonatomic) NSString * total;
-@end
-
-NS_SWIFT_NAME(PublisherBanner)
-@interface BATPublisherBanner : NSObject
-@property (nonatomic) NSString * publisherKey;
-@property (nonatomic) NSString * title;
-@property (nonatomic) NSString * name;
-@property (nonatomic) NSString * desc;
-@property (nonatomic) NSString * background;
-@property (nonatomic) NSString * logo;
-@property (nonatomic) NSArray<NSNumber *> * amounts;
-@property (nonatomic) NSString * provider;
-@property (nonatomic) NSDictionary<NSString *, NSString *> * social;
-@property (nonatomic) bool verified;
 @end
 
 NS_SWIFT_NAME(ReconcileInfo)

@@ -43,24 +43,6 @@
 }
 @end
 
-@implementation BATPublisherBanner
-- (instancetype)initWithPublisherBanner:(const ledger::PublisherBanner&)obj {
-  if ((self = [super init])) {
-    self.publisherKey = [NSString stringWithUTF8String:obj.publisher_key.c_str()];
-    self.title = [NSString stringWithUTF8String:obj.title.c_str()];
-    self.name = [NSString stringWithUTF8String:obj.name.c_str()];
-    self.desc = [NSString stringWithUTF8String:obj.description.c_str()];
-    self.background = [NSString stringWithUTF8String:obj.background.c_str()];
-    self.logo = [NSString stringWithUTF8String:obj.logo.c_str()];
-    self.amounts = NSArrayFromVector(obj.amounts);
-    self.provider = [NSString stringWithUTF8String:obj.provider.c_str()];
-    self.social = NSDictionaryFromMap(obj.social);
-    self.verified = obj.verified;
-  }
-  return self;
-}
-@end
-
 @implementation BATReconcileInfo
 - (instancetype)initWithReconcileInfo:(const ledger::ReconcileInfo&)obj {
   if ((self = [super init])) {

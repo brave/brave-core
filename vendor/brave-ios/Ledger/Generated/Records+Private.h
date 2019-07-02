@@ -31,10 +31,6 @@
 - (instancetype)initWithBalanceReportInfo:(const ledger::BalanceReportInfo&)obj;
 @end
 
-@interface BATPublisherBanner (Private)
-- (instancetype)initWithPublisherBanner:(const ledger::PublisherBanner&)obj;
-@end
-
 @interface BATReconcileInfo (Private)
 - (instancetype)initWithReconcileInfo:(const ledger::ReconcileInfo&)obj;
 @end

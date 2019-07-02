@@ -417,7 +417,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)publisherBannerForId:(NSString *)publisherId completion:(void (^)(BATPublisherBanner * _Nullable banner))completion
 {
-  ledger->GetPublisherBanner(std::string(publisherId.UTF8String), ^(std::unique_ptr<ledger::PublisherBanner> banner) {
+  ledger->GetPublisherBanner(std::string(publisherId.UTF8String), ^(ledger::PublisherBannerPtr banner) {
     auto bridgedBanner = banner.get() != nullptr ? [[BATPublisherBanner alloc] initWithPublisherBanner:*banner.get()] : nil;
     dispatch_async(dispatch_get_main_queue(), ^{
       completion(bridgedBanner);
