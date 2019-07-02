@@ -121,6 +121,10 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
   if (request->initiator().has_value()) {
     ctx->initiator_url = request->initiator()->GetURL();
   }
+
+  ctx->referrer = GURL(request->referrer());
+  ctx->referrer_policy = request->referrer_policy();
+
   auto* request_info = content::ResourceRequestInfo::ForRequest(request);
   if (request_info) {
     ctx->resource_type = request_info->GetResourceType();
@@ -157,6 +161,10 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
   ctx->allow_3p_cookies = brave_shields::IsAllowContentSettingFromIO(
       request, ctx->tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kCookies);
+  ctx->allow_referrers = brave_shields::IsAllowContentSettingFromIO(
+      request, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
+      brave_shields::kReferrers);
+
   ctx->request = request;
 }
 

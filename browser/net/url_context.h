@@ -61,12 +61,18 @@ struct BraveRequestInfo {
   GURL tab_origin;
   GURL tab_url;
   GURL initiator_url;
+
+  GURL referrer;
+  net::URLRequest::ReferrerPolicy referrer_policy;
+  GURL new_referrer;
+
   std::string new_url_spec;
   bool allow_brave_shields = true;
   bool allow_ads = false;
   bool allow_http_upgradable_resource = false;
   bool allow_1p_cookies = true;
   bool allow_3p_cookies = false;
+  bool allow_referrers = false;
   bool allow_google_auth = true;
   int render_process_id = 0;
   int render_frame_id = 0;

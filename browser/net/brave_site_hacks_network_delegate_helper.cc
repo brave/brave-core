@@ -29,27 +29,22 @@ namespace brave {
 
 namespace {
 
-bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx,
-                                 net::URLRequest* request) {
+bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx) {
   DCHECK_CURRENTLY_ON(BrowserThread::IO);
-  GURL target_origin = request->url().GetOrigin();
+  GURL target_origin = ctx->request_url.GetOrigin();
   GURL tab_origin = ctx->tab_origin;
   if (tab_origin.SchemeIs(kChromeExtensionScheme)) {
     return false;
   }
-  bool allow_referrers = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kReferrers);
-  bool shields_up = brave_shields::IsAllowContentSettingFromIO(
-      request, tab_origin, GURL(), CONTENT_SETTINGS_TYPE_PLUGINS,
-      brave_shields::kBraveShields);
-  const std::string original_referrer = request->referrer();
+
+  const std::string original_referrer = ctx->referrer.spec();
   Referrer new_referrer;
-  if (brave_shields::ShouldSetReferrer(allow_referrers, shields_up,
-          GURL(original_referrer), tab_origin, request->url(), target_origin,
+  if (brave_shields::ShouldSetReferrer(
+          ctx->allow_referrers, ctx->allow_brave_shields,
+          GURL(original_referrer), tab_origin, ctx->request_url, target_origin,
           Referrer::NetReferrerPolicyToBlinkReferrerPolicy(
-              request->referrer_policy()), &new_referrer)) {
-    request->SetReferrer(new_referrer.url.spec());
+              ctx->referrer_policy), &new_referrer)) {
+    ctx->new_referrer = new_referrer.url;
     return true;
   }
   return false;
@@ -60,7 +55,7 @@ bool ApplyPotentialReferrerBlock(std::shared_ptr<BraveRequestInfo> ctx,
 int OnBeforeURLRequest_SiteHacksWork(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
-  ApplyPotentialReferrerBlock(ctx, const_cast<net::URLRequest*>(ctx->request));
+  ApplyPotentialReferrerBlock(ctx);
   return net::OK;
 }
 
@@ -81,10 +76,10 @@ int OnBeforeStartTransaction_SiteHacksWork(net::URLRequest* request,
         const ResponseCallback& next_callback,
         std::shared_ptr<BraveRequestInfo> ctx) {
   // TODO(bridiver): Fix the Forbes cookie override with enabled NetworkService.
-  CheckForCookieOverride(request->url(),
+  CheckForCookieOverride(ctx->request_url,
       URLPattern(URLPattern::SCHEME_ALL, kForbesPattern), headers,
       kForbesExtraCookies);
-  if (IsUAWhitelisted(request->url())) {
+  if (IsUAWhitelisted(ctx->request_url)) {
     std::string user_agent;
     if (headers->GetHeader(kUserAgentHeader, &user_agent)) {
       base::ReplaceFirstSubstringAfterOffset(&user_agent, 0,

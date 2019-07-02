@@ -231,7 +231,7 @@ TEST_F(BraveSiteHacksNetworkDelegateHelperTest, ReferrerCleared) {
     EXPECT_EQ(ret, net::OK);
     // new_url should not be set
     EXPECT_TRUE(brave_request_info->new_url_spec.empty());
-    EXPECT_STREQ(request->referrer().c_str(), url.GetOrigin().spec().c_str());
+    EXPECT_EQ(brave_request_info->new_referrer, url.GetOrigin().spec());
   });
 }
 

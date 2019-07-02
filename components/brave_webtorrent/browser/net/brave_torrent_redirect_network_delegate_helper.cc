@@ -103,7 +103,6 @@ int OnHeadersReceived_TorrentRedirectWork(
     GURL* allowed_unsafe_redirect_url,
     const brave::ResponseCallback& next_callback,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
-
   if (!request || !original_response_headers ||
       IsWebTorrentDisabled(request) ||
       IsWebtorrentInitiated(request) ||  // download .torrent, do not redirect
