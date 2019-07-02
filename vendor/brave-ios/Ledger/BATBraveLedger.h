@@ -123,7 +123,8 @@ NS_SWIFT_NAME(BraveLedger)
 /// Update a publishers exclusion state
 - (void)updatePublisherExclusionState:(NSString *)publisherId
                                 state:(BATPublisherExclude)state
-      NS_SWIFT_NAME(updatePublisherExclusionState(withId:state:));
+                           completion:(nullable void (^)(NSString *publisherId, BATPublisherExclude state))completion
+      NS_SWIFT_NAME(updatePublisherExclusionState(withId:state:_:));
 
 /// Restore all sites which had been previously excluded
 - (void)restoreAllExcludedPublishers;

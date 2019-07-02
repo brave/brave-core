@@ -222,7 +222,7 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   if (self.walletInitializedBlock) {
     self.walletInitializedBlock(result);
   }
-  
+
   for (BATBraveLedgerObserver *observer in self.observers) {
     if (observer.walletInitalized) {
       observer.walletInitalized(static_cast<BATResult>(result));
@@ -373,9 +373,15 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   ledger->GetPublisherActivityFromUrl(1, visitData.Clone(), blob);
 }
 
-- (void)updatePublisherExclusionState:(NSString *)publisherId state:(BATPublisherExclude)state
+- (void)updatePublisherExclusionState:(NSString *)publisherId state:(BATPublisherExclude)state completion:(void (^)(NSString *, BATPublisherExclude))completion
 {
-  ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PUBLISHER_EXCLUDE)state);
+  ledger->SetPublisherExclude(std::string(publisherId.UTF8String), (ledger::PUBLISHER_EXCLUDE)state, ^(const std::string &key, ledger::PUBLISHER_EXCLUDE newState) {
+    if (completion) {
+      dispatch_async(dispatch_get_main_queue(), ^{
+        completion([NSString stringWithUTF8String:key.c_str()], static_cast<BATPublisherExclude>(newState));
+      });
+    }
+  });
 }
 
 - (void)restoreAllExcludedPublishers
@@ -515,7 +521,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                        userInfo:nil
                  notificationID:[self notificationIDForGrant:std::move(grant)]
                        onlyOnce:YES];
-    
+
     for (BATBraveLedgerObserver *observer in self.observers) {
       if (observer.grantAdded) {
         observer.grantAdded(bridgedGrant);
@@ -784,7 +790,7 @@ BATLedgerReadonlyBridge(BOOL, isEnabled, GetRewardsMainEnabled)
 - (void)setEnabled:(BOOL)enabled
 {
   ledger->SetRewardsMainEnabled(enabled);
-  
+
   for (BATBraveLedgerObserver *observer in self.observers) {
     if (observer.rewardsEnabledStateUpdated) {
       observer.rewardsEnabledStateUpdated(enabled);
@@ -1578,7 +1584,7 @@ BATLedgerBridge(BOOL,
   for (BATPendingContributionInfo *info in pendingContributions) {
     [keys addObject:info.publisherKey];
   }
-  
+
   [BATLedgerDatabase removeAllPendingContributions:^(BOOL success) {
     callback(success ? ledger::Result::LEDGER_OK : ledger::Result::LEDGER_ERROR);
     if (success) {
