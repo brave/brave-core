@@ -266,6 +266,8 @@ class RewardsServiceImpl : public RewardsService,
       const std::string& query,
       ProcessRewardsPageUrlCallback callback) override;
 
+  void DisconnectWallet(const std::string& wallet_type) override;
+
   // Testing methods
   void SetLedgerEnvForTesting();
   void StartMonthlyContributionForTest();
@@ -434,6 +436,10 @@ class RewardsServiceImpl : public RewardsService,
     ProcessRewardsPageUrlCallback callback,
     int32_t result,
     const std::map<std::string, std::string>& args);
+
+  void OnDisconnectWallet(
+    const std::string& wallet_type,
+    int32_t result);
 
   // ledger::LedgerClient
   std::string GenerateGUID() const override;

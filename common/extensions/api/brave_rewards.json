@@ -362,6 +362,28 @@
             }
           }
         ]
+      },
+      {
+        "name": "onDisconnectWallet",
+        "type": "function",
+        "description": "Fired when we disconnect wallet",
+        "parameters": [
+          {
+            "name": "properties",
+            "type": "object",
+            "properties": {
+              "result": {
+                "type": "integer",
+                "description": "result for disconnection"
+              },
+              "walletType": {
+                "type": "string",
+                "description": "wallet that was disconnected"
+              }
+
+            }
+          }
+        ]
       }
     ],
     "functions": [
@@ -847,10 +869,27 @@
                   },
                   "withdrawUrl": {
                     "type": "any"
+                  },
+                  "userName": {
+                    "type": "any"
+                  },
+                  "accountUrl": {
+                    "type": "any"
                   }
                 }
               }
             ]
+          }
+        ]
+      },
+      {
+        "name": "disconnectWallet",
+        "type": "function",
+        "description": "Disconnect wallet",
+        "parameters": [
+          {
+            "name": "type",
+            "type": "string"
           }
         ]
       }

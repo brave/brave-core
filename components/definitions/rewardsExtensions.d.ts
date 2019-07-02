@@ -178,5 +178,7 @@ declare namespace RewardsExtension {
     verifyUrl: string
     addUrl: string
     withdrawUrl: string
+    userName: string
+    accountUrl: string
   }
 }

@@ -483,8 +483,8 @@
     "message": "Go to my Uphold account",
     "description": "CTA to open uphold account"
   },
-  "walletReconnect":  {
-    "message": "Connect to a different wallet",
+  "walletDisconnect":  {
+    "message": "Disconnect from Brave Rewards",
     "description": ""
   },
   "walletVerificationButton":  {
@@ -526,5 +526,13 @@
   "walletVerified":  {
     "message": "Verified",
     "description": "Status button that tells user that he is verified"
+  },
+  "balanceUnavailable":  {
+    "message": "Unavailable",
+    "description": "Shown when wallet is disconnected and balance is not available"
+  },
+  "reconnectWallet":  {
+    "message": "Reconnect wallet",
+    "description": "CTA text to connect wallet again"
   }
 }

@@ -231,3 +231,7 @@ export const onProcessRewardsPageUrl = (data: Rewards.ProcessRewardsPageUrl) => 
 })
 
 export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)
+
+export const disconnectWallet = (walletType: string) => action(types.DISCONNECT_WALLET, {
+  walletType
+})

@@ -21,9 +21,17 @@ class UpholdTransfer;
 }
 
 namespace braveledger_uphold {
+class UpholdCard;
+}
+
+namespace braveledger_uphold {
 
 using TransactionCallback = std::function<void(ledger::Result, bool created)>;
 using FetchBalanceCallback = std::function<void(ledger::Result, double)>;
+using CreateCardCallback =
+    std::function<void(ledger::Result, const std::string&)>;
+using GetUserCallback =
+    std::function<void(ledger::Result, ledger::ExternalWalletPtr)>;
 
 class Uphold {
  public:
@@ -51,6 +59,10 @@ class Uphold {
     std::map<std::string, ledger::ExternalWalletPtr> wallets,
     ledger::ExternalWalletCallback callback);
 
+  void CreateCard(
+      ledger::ExternalWalletPtr wallet,
+      CreateCardCallback callback);
+
  private:
   void ContributionCompleted(ledger::Result result,
                              bool created,
@@ -66,14 +78,37 @@ class Uphold {
     const std::string& response,
     const std::map<std::string, std::string>& headers);
 
+  void OnWalletAuthorizationCreate(
+    ledger::Result result,
+    const std::string& address,
+    ledger::ExternalWalletAuthorizationCallback callback,
+    const ledger::ExternalWallet& wallet);
+
   void OnWalletAuthorization(
     ledger::ExternalWalletAuthorizationCallback callback,
-    ledger::ExternalWallet wallet,
+    const ledger::ExternalWallet& wallet,
     int response_status_code,
     const std::string& response,
     const std::map<std::string, std::string>& headers);
 
+  void OnGenerateExternalWallet(
+    ledger::Result result,
+    ledger::ExternalWalletPtr wallet,
+    ledger::ExternalWalletCallback callback);
+
+  void OnGetUser(
+    GetUserCallback callback,
+    const ledger::ExternalWallet& wallet,
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers);
+
+  void GetUser(
+    ledger::ExternalWalletPtr wallet,
+    GetUserCallback callback);
+
   std::unique_ptr<UpholdTransfer> transfer_;
+  std::unique_ptr<UpholdCard> card_;
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
 };
 

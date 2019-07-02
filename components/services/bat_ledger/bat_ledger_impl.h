@@ -183,6 +183,10 @@ class BatLedgerImpl : public mojom::BatLedger,
     const base::flat_map<std::string, std::string>& args,
     ExternalWalletAuthorizationCallback callback) override;
 
+  void DisconnectWallet(
+    const std::string& wallet_type,
+    DisconnectWalletCallback callback) override;
+
  private:
   void SetCatalogIssuers(const std::string& info) override;
   void ConfirmAd(const std::string& info) override;
@@ -278,6 +282,10 @@ class BatLedgerImpl : public mojom::BatLedger,
     CallbackHolder<ExternalWalletAuthorizationCallback>* holder,
     ledger::Result result,
     const std::map<std::string, std::string>& args);
+
+  static void OnDisconnectWallet(
+    CallbackHolder<DisconnectWalletCallback>* holder,
+    ledger::Result result);
 
   std::unique_ptr<BatLedgerClientMojoProxy> bat_ledger_client_mojo_proxy_;
   std::unique_ptr<ledger::Ledger> ledger_;

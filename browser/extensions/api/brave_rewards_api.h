@@ -326,6 +326,17 @@ class BraveRewardsGetExternalWalletFunction :
   void OnExternalWalet(std::unique_ptr<::brave_rewards::ExternalWallet> wallet);
 };
 
+class BraveRewardsDisconnectWalletFunction :
+    public UIThreadExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.disconnectWallet", UNKNOWN)
+
+ protected:
+  ~BraveRewardsDisconnectWalletFunction() override;
+
+  ResponseAction Run() override;
+};
+
 }  // namespace api
 }  // namespace extensions
 

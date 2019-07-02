@@ -143,6 +143,8 @@ interface BatLedger {
   GetExternalWallet(string wallet_type) => (ledger.mojom.ExternalWallet? wallet);
 
   ExternalWalletAuthorization(string wallet_type, map<string, string> args) => (int32 result, map<string, string> args);
+
+  DisconnectWallet(string wallet_type) => (int32 result);
 };
 
 interface BatLedgerClient {

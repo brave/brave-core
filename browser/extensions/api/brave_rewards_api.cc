@@ -785,9 +785,31 @@ void BraveRewardsGetExternalWalletFunction::OnExternalWalet(
     data->SetStringKey("verifyUrl", wallet->verify_url);
     data->SetStringKey("addUrl", wallet->add_url);
     data->SetStringKey("withdrawUrl", wallet->withdraw_url);
+    data->SetStringKey("userName", wallet->user_name);
+    data->SetStringKey("accountUrl", wallet->account_url);
   }
 
   Respond(OneArgument(std::move(data)));
+}
+
+BraveRewardsDisconnectWalletFunction::
+~BraveRewardsDisconnectWalletFunction() {
+}
+
+ExtensionFunction::ResponseAction
+BraveRewardsDisconnectWalletFunction::Run() {
+  Profile* profile = Profile::FromBrowserContext(browser_context());
+  RewardsService* rewards_service =
+    RewardsServiceFactory::GetForProfile(profile);
+  if (!rewards_service) {
+    return RespondNow(NoArguments());
+  }
+
+  std::unique_ptr<brave_rewards::DisconnectWallet::Params> params(
+    brave_rewards::DisconnectWallet::Params::Create(*args_));
+
+  rewards_service->DisconnectWallet(params->type);
+  return RespondNow(NoArguments());
 }
 
 }  // namespace api

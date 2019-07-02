@@ -189,6 +189,12 @@ window.cr.define('brave_rewards', function () {
     getActions().onProcessRewardsPageUrl(data)
   }
 
+  function disconnectWallet (properties: {walletType: string, result: number}) {
+    if (properties.result === 0) {
+      getActions().getExternalWallet(properties.walletType)
+    }
+  }
+
   return {
     initialize,
     walletCreated,
@@ -223,7 +229,8 @@ window.cr.define('brave_rewards', function () {
     balance,
     reconcileComplete,
     externalWallet,
-    processRewardsPageUrl
+    processRewardsPageUrl,
+    disconnectWallet
   }
 })
 

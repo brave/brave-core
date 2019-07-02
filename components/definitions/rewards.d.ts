@@ -224,6 +224,8 @@ declare namespace Rewards {
     verifyUrl: string
     addUrl: string
     withdrawUrl: string
+    userName?: string
+    accountUrl: string
   }
 
   export interface ProcessRewardsPageUrl {

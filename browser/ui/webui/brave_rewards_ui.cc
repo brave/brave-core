@@ -144,6 +144,8 @@ class RewardsDOMHandler : public WebUIMessageHandler,
     const std::string& action,
     const std::map<std::string, std::string>& args);
 
+  void DisconnectWallet(const base::ListValue* args);
+
   // RewardsServiceObserver implementation
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
                        uint32_t result) override;
@@ -201,6 +203,11 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
       int32_t result) override;
+
+  void OnDisconnectWallet(
+      brave_rewards::RewardsService* rewards_service,
+      int32_t result,
+      const std::string& wallet_type) override;
 
   // RewardsNotificationsServiceObserver implementation
   void OnNotificationAdded(
@@ -345,6 +352,9 @@ void RewardsDOMHandler::RegisterMessages() {
       base::Unretained(this)));
   web_ui()->RegisterMessageCallback("brave_rewards.processRewardsPageUrl",
       base::BindRepeating(&RewardsDOMHandler::ProcessRewardsPageUrl,
+      base::Unretained(this)));
+  web_ui()->RegisterMessageCallback("brave_rewards.disconnectWallet",
+      base::BindRepeating(&RewardsDOMHandler::DisconnectWallet,
       base::Unretained(this)));
 }
 
@@ -1295,6 +1305,8 @@ void RewardsDOMHandler::OnGetExternalWallet(
       data.SetStringKey("verifyUrl", wallet->verify_url);
       data.SetStringKey("addUrl", wallet->add_url);
       data.SetStringKey("withdrawUrl", wallet->withdraw_url);
+      data.SetStringKey("userName", wallet->user_name);
+      data.SetStringKey("accountUrl", wallet->account_url);
     }
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.externalWallet",
@@ -1340,6 +1352,29 @@ void RewardsDOMHandler::ProcessRewardsPageUrl(const base::ListValue* args) {
       query,
       base::BindOnce(&RewardsDOMHandler::OnProcessRewardsPageUrl,
                      weak_factory_.GetWeakPtr()));
+}
+
+void RewardsDOMHandler::DisconnectWallet(const base::ListValue* args) {
+  CHECK_EQ(1U, args->GetSize());
+  if (!rewards_service_) {
+    return;
+  }
+
+  const std::string wallet_type = args->GetList()[0].GetString();
+  rewards_service_->DisconnectWallet(wallet_type);
+}
+
+void RewardsDOMHandler::OnDisconnectWallet(
+      brave_rewards::RewardsService* rewards_service,
+      int32_t result,
+      const std::string& wallet_type) {
+  base::Value data(base::Value::Type::DICTIONARY);
+
+  data.SetIntKey("result", result);
+  data.SetStringKey("walletType", wallet_type);
+
+  web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.disconnectWallet",
+                                         data);
 }
 
 }  // namespace

@@ -85,6 +85,10 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnPendingContributionRemoved(
       brave_rewards::RewardsService* rewards_service,
       int32_t result) {}
+  virtual void OnDisconnectWallet(
+      brave_rewards::RewardsService* rewards_service,
+      int32_t result,
+      const std::string& wallet_type) {}
   // DO NOT ADD ANY MORE METHODS HERE UNLESS IT IS A BROADCAST NOTIFICATION
   // RewardsServiceObserver should not be used to return responses to the
   // caller. Method calls on RewardsService should use callbacks to return

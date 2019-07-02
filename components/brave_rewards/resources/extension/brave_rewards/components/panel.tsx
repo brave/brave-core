@@ -577,12 +577,37 @@ export class Panel extends React.Component<Props, State> {
         return 'verified'
       // ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED
       case 3:
+        return 'disconnected_unverified'
       // ledger::WalletStatus::DISCONNECTED_VERIFIED
       case 4:
-        return 'disconnected'
+        return 'disconnected_verified'
       default:
         return 'unverified'
     }
+  }
+
+  goToUphold = () => {
+    const { externalWallet } = this.props.rewardsPanelData
+
+    if (!externalWallet || !externalWallet.accountUrl) {
+      this.actions.getExternalWallet('uphold')
+      return
+    }
+
+    window.open(externalWallet.accountUrl, '_blank')
+  }
+
+  getUserName = () => {
+    const { externalWallet } = this.props.rewardsPanelData
+    if (!externalWallet) {
+      return ''
+    }
+
+    return externalWallet.userName
+  }
+
+  onDisconnectClick = () => {
+    chrome.braveRewards.disconnectWallet('uphold')
   }
 
   render () {
@@ -650,6 +675,9 @@ export class Panel extends React.Component<Props, State> {
         grants={utils.getGrants(grants)}
         walletState={this.getWalletStatus()}
         onVerifyClick={this.onVerifyClick}
+        onDisconnectClick={this.onDisconnectClick}
+        goToUphold={this.goToUphold}
+        userName={this.getUserName()}
         {...notification}
       >
         {

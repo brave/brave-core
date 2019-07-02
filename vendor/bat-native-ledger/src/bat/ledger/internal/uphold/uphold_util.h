@@ -54,6 +54,8 @@ std::vector<std::string> RequestAuthorization(
 
 std::string GenerateRandomString();
 
+std::string GetAccountUrl();
+
 }  // namespace braveledger_uphold
 
 #endif  // BRAVELEDGER_UPHOLD_UPHOLD_UTIL_H_

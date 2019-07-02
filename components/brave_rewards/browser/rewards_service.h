@@ -251,6 +251,8 @@ class RewardsService : public KeyedService {
       const std::string& query,
       ProcessRewardsPageUrlCallback callback) = 0;
 
+  virtual void DisconnectWallet(const std::string& wallet_type) = 0;
+
  protected:
   base::ObserverList<RewardsServiceObserver> observers_;
 

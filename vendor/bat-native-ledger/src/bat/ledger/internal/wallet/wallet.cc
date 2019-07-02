@@ -13,6 +13,7 @@
 #include "bat/ledger/internal/wallet/balance.h"
 #include "bat/ledger/internal/wallet/create.h"
 #include "bat/ledger/internal/wallet/recover.h"
+#include "bat/ledger/internal/wallet/wallet_util.h"
 #include "bat/ledger/internal/uphold/uphold.h"
 #include "mojo/public/cpp/bindings/map.h"
 #include "net/http/http_status_code.h"
@@ -216,6 +217,40 @@ void Wallet::ExternalWalletAuthorization(
                                    this,
                                    wallet_type,
                                    args,
+                                   callback,
+                                   _1);
+
+  ledger_->GetExternalWallets(wallet_callback);
+}
+
+void Wallet::OnDisconnectWallet(
+    const std::string& wallet_type,
+    ledger::DisconnectWalletCallback callback,
+    std::map<std::string, ledger::ExternalWalletPtr> wallets) {
+  if (wallets.size() == 0) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  auto wallet_ptr = GetWallet(wallet_type, std::move(wallets));
+
+  if (!wallet_ptr) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  wallet_ptr = ResetWallet(std::move(wallet_ptr));
+
+  ledger_->SaveExternalWallet(wallet_type, std::move(wallet_ptr));
+  callback(ledger::Result::LEDGER_OK);
+}
+
+void Wallet::DisconnectWallet(
+      const std::string& wallet_type,
+      ledger::DisconnectWalletCallback callback) {
+  auto wallet_callback = std::bind(&Wallet::OnDisconnectWallet,
+                                   this,
+                                   wallet_type,
                                    callback,
                                    _1);
 

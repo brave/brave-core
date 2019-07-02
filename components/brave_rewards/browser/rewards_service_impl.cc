@@ -2631,8 +2631,9 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       auto uphold = ledger::ExternalWallet::New();
       uphold->token = token;
       uphold->address = "c5fd7219-6586-4fe1-b947-0cbd25040ca8";
-      uphold->status = 1;
+      uphold->status = ledger::WalletStatus::VERIFIED;
       uphold->one_time_string = "";
+      uphold->user_name = "Brave Test";
       SaveExternalWallet(ledger::kWalletUphold, std::move(uphold));
       continue;
     }
@@ -3245,6 +3246,7 @@ void RewardsServiceImpl::SaveExternalWallet(const std::string& wallet_type,
   dict.SetStringKey("address", wallet->address);
   dict.SetIntKey("status", static_cast<int>(wallet->status));
   dict.SetStringKey("one_time_string", wallet->one_time_string);
+  dict.SetStringKey("user_name", wallet->user_name);
 
   new_perfs.SetKey(wallet_type, std::move(dict));
 
@@ -3262,23 +3264,28 @@ void RewardsServiceImpl::GetExternalWallets(
     ledger::ExternalWalletPtr wallet = ledger::ExternalWallet::New();
 
     auto* token = it.second.FindKey("token");
-    if (token) {
+    if (token && token->is_string()) {
       wallet->token = token->GetString();
     }
 
     auto* address = it.second.FindKey("address");
-    if (address) {
+    if (address && address->is_string()) {
       wallet->address = address->GetString();
     }
 
     auto* one_time_string = it.second.FindKey("one_time_string");
-    if (one_time_string) {
+    if (one_time_string && one_time_string->is_string()) {
       wallet->one_time_string = one_time_string->GetString();
     }
 
     auto* status = it.second.FindKey("status");
-    if (status) {
+    if (status && status->is_int()) {
       wallet->status = static_cast<ledger::WalletStatus>(status->GetInt());
+    }
+
+    auto* user_name = it.second.FindKey("user_name");
+    if (user_name && user_name->is_string()) {
+      wallet->user_name = user_name->GetString();
     }
 
     wallets.insert(std::make_pair(it.first, std::move(wallet)));
@@ -3302,6 +3309,8 @@ void RewardsServiceImpl::OnGetExternalWallet(
     external->verify_url = wallet->verify_url;
     external->add_url = wallet->add_url;
     external->withdraw_url = wallet->withdraw_url;
+    external->user_name = wallet->user_name;
+    external->account_url = wallet->account_url;
   }
 
   std::move(callback).Run(std::move(external));
@@ -3371,8 +3380,6 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
     query_map[it.GetKey()] = it.GetUnescapedValue();
   }
 
-  LOG(ERROR) << "NEJC " << query_map.size();
-
   if (action == "authorization") {
     if (wallet_type == ledger::kWalletUphold) {
       ExternalWalletAuthorization(
@@ -3393,6 +3400,22 @@ void RewardsServiceImpl::ProcessRewardsPageUrl(
       wallet_type,
       action,
       {});
+}
+
+void RewardsServiceImpl::OnDisconnectWallet(
+    const std::string& wallet_type,
+    int32_t result) {
+  for (auto& observer : observers_) {
+    observer.OnDisconnectWallet(this, result, wallet_type);
+  }
+}
+
+void RewardsServiceImpl::DisconnectWallet(const std::string& wallet_type) {
+  bat_ledger_->DisconnectWallet(
+      wallet_type,
+      base::BindOnce(&RewardsServiceImpl::OnDisconnectWallet,
+                     AsWeakPtr(),
+                     wallet_type));
 }
 
 }  // namespace brave_rewards

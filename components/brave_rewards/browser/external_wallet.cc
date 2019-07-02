@@ -21,6 +21,8 @@ namespace brave_rewards {
     verify_url = properties.verify_url;
     add_url = properties.add_url;
     withdraw_url = properties.withdraw_url;
+    user_name = properties.user_name;
+    account_url = properties.account_url;
   }
 
 }  // namespace brave_rewards

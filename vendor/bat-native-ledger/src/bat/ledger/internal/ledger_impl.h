@@ -489,6 +489,10 @@ class LedgerImpl : public ledger::Ledger,
       const std::map<std::string, std::string>& args,
       ledger::ExternalWalletAuthorizationCallback callback) override;
 
+  void DisconnectWallet(
+      const std::string& wallet_type,
+      ledger::DisconnectWalletCallback callback) override;
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

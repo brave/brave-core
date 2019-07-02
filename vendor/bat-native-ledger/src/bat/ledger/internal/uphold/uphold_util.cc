@@ -73,7 +73,7 @@ std::string GetVerifyUrl(const std::string& state) {
 
   return base::StringPrintf(
       "%s/authorize/%s"
-      "?scope=cards:read cards:write transactions:read "
+      "?scope=cards:read cards:write user:read transactions:read "
       "transactions:transfer:application "
       "transactions:transfer:others&intention=kyc&"
       "state=%s",
@@ -147,6 +147,14 @@ std::string GenerateRandomString() {
   uint8_t bytes[kLength];
   crypto::RandBytes(bytes, sizeof(bytes));
   return base::HexEncode(bytes, sizeof(bytes));
+}
+
+std::string GetAccountUrl() {
+  const std::string url = GetUrl();
+
+  return base::StringPrintf(
+      "%s/dashboard",
+      url.c_str());
 }
 
 }  // namespace braveledger_uphold

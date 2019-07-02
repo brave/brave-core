@@ -368,9 +368,10 @@ class PageWallet extends React.Component<Props, State> {
         return 'verified'
       // WalletStatus::DISCONNECTED_NOT_VERIFIED
       case 3:
+        return 'disconnected_unverified'
       // WalletStatus::DISCONNECTED_VERIFIED
       case 4:
-        return 'disconnected'
+        return 'disconnected_verified'
       default:
         return 'unverified'
     }
@@ -416,6 +417,30 @@ class PageWallet extends React.Component<Props, State> {
     }
   }
 
+  goToUphold = () => {
+    const { externalWallet } = this.props.rewardsData
+
+    if (!externalWallet || !externalWallet.accountUrl) {
+      this.actions.getExternalWallet('uphold')
+      return
+    }
+
+    window.open(externalWallet.accountUrl, '_blank')
+  }
+
+  getUserName = () => {
+    const { externalWallet } = this.props.rewardsData
+    if (!externalWallet) {
+      return ''
+    }
+
+    return externalWallet.userName
+  }
+
+  onDisconnectClick = () => {
+    this.actions.disconnectWallet('uphold')
+  }
+
   render () {
     const {
       recoveryKey,
@@ -456,6 +481,9 @@ class PageWallet extends React.Component<Props, State> {
           alert={this.walletAlerts()}
           walletState={this.getWalletStatus()}
           onVerifyClick={this.onVerifyClick}
+          onDisconnectClick={this.onDisconnectClick}
+          goToUphold={this.goToUphold}
+          userName={this.getUserName()}
         >
           {
             this.state.showVerifyOnBoarding

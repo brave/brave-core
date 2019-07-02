@@ -677,4 +677,27 @@ void BatLedgerImpl::ExternalWalletAuthorization(
                 _2));
 }
 
+// static
+void BatLedgerImpl::OnDisconnectWallet(
+    CallbackHolder<DisconnectWalletCallback>* holder,
+    ledger::Result result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void BatLedgerImpl::DisconnectWallet(
+    const std::string& wallet_type,
+    DisconnectWalletCallback callback) {
+  auto* holder = new CallbackHolder<DisconnectWalletCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->DisconnectWallet(
+      wallet_type,
+      std::bind(BatLedgerImpl::OnDisconnectWallet,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger
