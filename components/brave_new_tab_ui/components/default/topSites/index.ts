@@ -6,7 +6,7 @@ import styled from '../../../../theme'
 import createWidget from '../widget'
 
 export const List = styled<{}, 'div'>('div')`
-  margin: 0 70px;
+  padding: 0 70px;
   height: 100%;
   display: grid;
   grid-template-columns: repeat(6, 92px);
