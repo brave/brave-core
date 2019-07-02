@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Editar Preferências</translation>
 <translation id="7606029853066610626">Ver e Gerir Marcadores</translation>
 <translation id="5550994254534676787">Visualize o seu histórico de navegação</translation>
+<translation id="1742484101357469636">Configurações do Painel</translation>
+<translation id="8320281346741574991">Mostrar imagem de fundo</translation>
 <translation id="6165508094623778733">Aprenda mais</translation>
 <translation id="8730621377337864115">Concluído</translation>
 <translation id="6248988683584659830">Configurações de pesquisa</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">O Brave permite configurar facilmente o seu ambiente habitual ao importar os marcadores e as definições de outros navegadores no seu computador.</translation>
 <translation id="8275038454117074363">Importar</translation>
 <translation id="5540323067375019678">Gerir as definições de proteção</translation>
+<translation id="3278033011827237847">Protege contra rastreadores e anúncios invasores da privacidade enquanto navega com Brave Shields. Configura a Shields para "cair", caso um site pareça não estar a funcionar corretamente.</translation>
 <translation id="3366308997091824722">Proteção de definições</translation>
-<translation id="3884404068544758153">Altere o motor de busca</translation>
+<translation id="4764692524839457597">padrão</translation>
+<translation id="3108122610701115301">Configuração padrão</translation>
+<translation id="2469440407442116729">Selecionar um motor de busca</translation>
 <translation id="438216590634144114">Escolha o motor de busca que gostaria de utilizar por defeito ao pesquisar na Web desde a barra de endereços.</translation>
-<translation id="8428213095426709021">Definições</translation>
+<translation id="5804484488647369316">Definir motor de busca padrão</translation>
+<translation id="4428458837269935199">Para uma pesquisa mais privada, experimente o DuckDuckGo.</translation>
 <translation id="513635702954746724">Selecione a cor do seu tema</translation>
 <translation id="6842850080200126305">Defina a cor da barra de ferramentas, selecionando a opção de claro ou escuro no painel das definições.</translation>
 <translation id="2801098717523961746">Selecionar tema</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Ganhe tokens por ver anúncios em Brave Os anúncios apresentados são baseados nos seus interesses, inferido dos seus hábitos de navegação. Nenhuma informação pessoal ou histórico de navegação sairá do seu navegador</translation>
 <translation id="6112368337882254910">Contribuição Automática</translation>
 <translation id="1527222983464337010">Uma forma automática de apoiar editores e criadores de conteúdo. Defina um pagamento mensal e navegue normalmente. Os sites que visita recebem as suas contribuições automaticamente, baseadas na sua atenção, medida pelo Brave.</translation>
+<translation id="20281847067919078">Recompensas pendentes estimadas</translation>
+<translation id="8593551638387217772">Próxima data de pagamento</translation>
+<translation id="319209088187794725">Notificações de anúncios recebidos este mês</translation>
 <translation id="4229016885653790965">Desculpe! Ainda não estão disponíveis anúncios na sua região.</translation>
 <translation id="654711254769318398">Páginas de anúncios visualizadas</translation>
 <translation id="2532127066761785857">Número máximo de anúncios apresentados</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 minuto</translation>
 <translation id="9031738692126722094">Ativar gorjetas de nível de conteúdo nestes sites</translation>
 <translation id="995782501881226248">Youtube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Gratifique no momento ao encontrar gemas.</translation>
 <translation id="6135431587052937035">Apoie os seus sítios preferidos com gorjetas mensais recorrentes.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Lamentamos, mas esta doação já foi reivindicada.</translation>
 <translation id="282693359045252357">Data da próxima doação mensal</translation>
 <translation id="6231182869178328516">Acabei de enviar uma gorjeta a <ph name="NAME">$1<ex>user</ex></ph> utilizando o Navegador Brave. Verifique em https://brave.com/tips.</translation>
+<translation id="8404935570206006581">SugiraComBrave</translation>
 <translation id="7422678632904904341">Quantia</translation>
 <translation id="5923611424721173182">Reconciliação atual:</translation>
 <translation id="5457113250005438886">Inválido</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Definir gratificação mensal</translation>
 <translation id="8003573781961874199">Descarregue como PDF</translation>
 <translation id="298067735430872465">Ganhos de Anúncios</translation>
+<translation id="2266556115441975588">Eis as suas recompensas decorrentes de Anúncios!</translation>
 <translation id="8764029012618014430">Habilitar dicas</translation>
 <translation id="3412655388715513818">Exclua esta página</translation>
 <translation id="418343137736963579">Número total de páginas que excluiu da contribuição automática.</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Chave de recuperação</translation>
 <translation id="6354568176665589146">Recorrente</translation>
 <translation id="7577100371127227294">Gratificações Mensais</translation>
+<translation id="2391095793008133394">Sugerir {{ user }} para o seu post:</translation>
+<translation id="7557413530932469222">Sugerir {{ user }} para o seu post!</translation>
 <translation id="1110535155349301542">Remover</translation>
 <translation id="8942997470474842562">Atribuiu {{reservedAmount}} BAT para criadores que ainda não se registaram para poderem receber contribuições. O seu navegador continuará a tentar contribuir até que seja verificado ou até que tenham decorrido 90 dias.</translation>
 <translation id="8759753423332885148">Obter mais informações</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Veja todos os {{numItems}} items</translation>
 <translation id="7857284676033058221">Veja todos {{numSites}} páginas</translation>
 <translation id="3536298624341433814">Enviar a minha Gratificação</translation>
+<translation id="8428213095426709021">Definições</translation>
 <translation id="1792148354504719133">sitio</translation>
 <translation id="5944430251223015324">páginas</translation>
 <translation id="1834493631938747505">Informe outras pessoas da sua gorjeta.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Pendente até</translation>
 <translation id="7410549756000115387">Sem contribuições pendentes</translation>
 <translation id="1963227389609234879">Remover tudo</translation>
+<translation id="1170315781901539495">Sites Excluídos</translation>
+<translation id="5119190679543565400">Restaurar este site</translation>
+<translation id="9075700728717335924">Excluiu</translation>
+<translation id="4862817811647633830">sites de Auto-Contributo.</translation>
 <translation id="923467487918828349">Mostrar todas</translation>
+<translation id="5471305206221894680">Sites Suportados</translation>
+<translation id="2306169361186864012">Recompensas de Anúncios Brave!</translation>
+<translation id="3757873395477273033">As suas recompensas decorrentes de Anúncios Brave estão a caminho.</translation>
+<translation id="8101881066646819737">Concessão do Seu Token de Anúncios Brave</translation>
 <translation id="2151535059686617995">Hoje é o seu dia de sorte!</translation>
 <translation id="6255773350565723852">A doação do token está a caminho.</translation>
 <translation id="1181037720776840403">Remover</translation>

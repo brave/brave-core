@@ -74,13 +74,9 @@ Brave kan ikke gendanne dine præferencer.</translation>
 <translation id="5874882355102994015">Brave kan ikke vise udskrifter, når den indbyggede PDF-fremviser mangler.</translation>
 <translation id="8880183781256147665">Føjer til Brave...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> kan være skadelig, så Brave har blokeret den.</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/> kan være skadelig, så Brave har blokeret den. Du beskyttes af Avanceret beskyttelse.</translation>
 <translation id="9067428552314418522">Denne fil er farlig, så Brave har blokeret den.</translation>
-<translation id="2938460345748897177">Denne fil er skadelig, så Brave har blokeret den. Du beskyttes af Avanceret beskyttelse.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> er skadelig, så Brave har blokeret den.</translation>
-<translation id="8858456697111532356"><ph name="FILE_NAME"/> er skadelig, så Brave har blokeret den. Du beskyttes af Avanceret beskyttelse.</translation>
 <translation id="89367911614620585">Denne fil kan være farlig, så Brave har blokeret den.</translation>
-<translation id="8943391224520748272">Denne fil kan være skadelig, så Brave har blokeret den. Du beskyttes af Avanceret beskyttelse.</translation>
 <translation id="9183662282810237335">Vil du afslutte Brave alligevel?</translation>
 <translation id="3834935463915107022">Vil du slutte Brave alligevel?</translation>
 <translation id="8797356639448065696">Brave kører i baggrunden.</translation>
@@ -143,8 +139,6 @@ Hvis du logger ind alligevel, flettes Brave-oplysninger, som f.eks. bogmærker, 
 <translation id="6746636977031158624">Brave OS kunne ikke synkronisere dine data, fordi loginoplysningerne til din konto er forældede.</translation>
 <translation id="2999152167963026588">Brave OS kunne ikke synkronisere dine data, fordi synkronisering ikke er tilgængeligt på dit domæne.</translation>
 <translation id="1459786048951724030">Brave OS kunne ikke synkronisere dine data på grund af en loginfejl.</translation>
-<translation id="2887570477425111999">Gem oplysninger i Brave</translation>
-<translation id="193559141530782783">Brave gemmer dine personlige oplysninger på sikker vis, så du ikke behøver at angive dem igen.</translation>
 <translation id="663059986967017181">Kopieret til Brave</translation>
 <translation id="1457432835062259213">Brave-applisten</translation>
 <translation id="82609232232243542">Log ind i Brave</translation>
@@ -182,7 +176,7 @@ Gå til din mail på <ph name="ACCOUNT_EMAIL"/> for at få yderligere vejledning
 <translation id="1912973375560256099">Indgående regel for Brave om at tillade mDNS-trafik.</translation>
 <translation id="8207657266087451193">Hvis et billede ikke har en brugbar beskrivelse, forsøger Brave at angive en for dig. Billederne sendes til Brave Software, så der kan oprettes beskrivelser. Du kan til enhver tid deaktivere denne funktion i indstillingerne.</translation>
 <translation id="5499063270485366718">Hvis et billede ikke har en brugbar beskrivelse, forsøger Brave at angive en for dig. Billederne sendes til Brave Software, så der kan oprettes beskrivelser.</translation>
-<translation id="3870835867536344658">Dette anvender den samme stavekontrol, som anvendes i Brave Software Søgning. Tekst, som du angiver i browseren, sendes til Brave Software. Du kan altid ændre dette i indstillingerne.</translation>
+<translation id="215320507915280336">Dette anvender den samme stavekontrol, som anvendes i Brave Software Søgning. Tekst, som du angiver i browseren, sendes til Brave Software. Du kan altid ændre denne adfærd i indstillingerne.</translation>
 <translation id="1807774211756215222">Åbn linket på en ny Brave-&amp;fane</translation>
 <translation id="4624945300945265642">Åbn linket i et Brave-inko&amp;gnitovindue</translation>
 <translation id="7863882214613921971">Åbn linket på en ny Brave-&amp;fane</translation>
@@ -239,23 +233,17 @@ Gå til din mail på <ph name="ACCOUNT_EMAIL"/> for at få yderligere vejledning
 <translation id="8933981935877469796">Vælg <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Klik på <ph name="BEGIN_BOLD"/>Skift alligevel<ph name="END_BOLD"/>, hvis denne mulighed vises</translation>
 <translation id="3507835409099344374">Gå til indstillinger for Brave-notifikationer</translation>
-<translation id="9118654140804842635">{0,plural, =0{Der er en tilgængelig Brave-opdatering}=1{Der er en tilgængelig Brave-opdatering}one{En Brave-opdatering har været tilgængelig i # dag}other{En Brave-opdatering har været tilgængelig i # dage}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Der er en tilgængelig Brave-opdatering}=1{Der er en tilgængelig Brave-opdatering}one{En Brave-opdatering har været tilgængelig i # dag}other{En Brave-opdatering har været tilgængelig i # dage}}</translation>
 <translation id="720532315408041257">Din administrator anmoder om, at du genstarter Brave for at anvende denne opdatering</translation>
-<translation id="6639482638305253477">{0,plural, =1{Genstart Brave inden for en dag}one{Genstart Brave inden for # dag}other{Genstart Brave inden for # dage}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave genstarter om en time}one{Brave genstarter om # time}other{Brave genstarter om # timer}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave genstarter om 1 minut}one{Brave genstarter om # minut}other{Brave genstarter om # minutter}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave genstarter nu}=1{Brave genstarter om 1 sekund}one{Brave genstarter om # sekund}other{Brave genstarter om # sekunder}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Genstart Brave inden for en dag}one{Genstart Brave inden for # dag}other{Genstart Brave inden for # dag}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave genstarter om en time}one{Brave genstarter om # time}other{Brave genstarter om # timer}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave genstarter om 1 minut}one{Brave genstarter om # minut}other{Brave genstarter om # minutter}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave genstarter nu}=1{Brave genstarter om 1 sekund}one{Brave genstarter om # sekund}other{Brave genstarter om # sekunder}}</translation>
 <translation id="7595187113648413294">Din administrator kræver, at du genstarter Brave for at anvende en opdatering</translation>
-<translation id="56801943271475640">{0,plural, =0{Der er en tilgængelig Brave OS-opdatering}=1{Der er en tilgængelig Brave OS-opdatering}one{En Brave OS-opdatering har været tilgængelig i # dag}other{En Brave OS-opdatering har været tilgængelig i # dage}}</translation>
-<translation id="5715362474140341294">Din administrator anmoder om, at du genstarter Brave OS for at anvende denne opdatering</translation>
-<translation id="8094834892392729950">{0,plural, =1{Genstart Brave OS inden for en dag}one{Genstart Brave OS inden for # dag}other{Genstart Brave OS inden for # dage}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS genstarter om en time}one{Brave OS genstarter om # time}other{Brave OS genstarter om # timer}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS genstarter om 1 minut}one{Brave OS genstarter om # minut}other{Brave OS genstarter om # minutter}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS genstarter nu}=1{Brave OS genstarter om 1 sekund}one{Brave OS genstarter om # sekund}other{Brave OS genstarter om # sekunder}}</translation>
-<translation id="8559452515617838628">Din administrator kræver, at du genstarter Brave OS for at anvende en opdatering</translation>
 <translation id="3052349005266761501">Starter Brave...</translation>
 <translation id="1197672524850678392">Brave kunne ikke startes. Prøv igen.</translation>
 <translation id="6040143037577758943">Luk</translation>
+<translation id="5147525139567260139">Del en Brave-fane</translation>
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="3262506503470845422">Få hjælp til Brave</translation>
 <translation id="1864557848095568223">Brave opdateres</translation>

@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Redaguoti pageidaujamas nuostatas</translation>
 <translation id="7606029853066610626">Peržiūrėti ir tvarkyti žymes</translation>
 <translation id="5550994254534676787">Rodyti naršymo istoriją</translation>
+<translation id="1742484101357469636">Informacijos suvestinės nuostatos</translation>
+<translation id="8320281346741574991">Rodyti foninį vaizdą</translation>
 <translation id="6165508094623778733">Sužinokite daugiau</translation>
 <translation id="8730621377337864115">Atlikta</translation>
 <translation id="6248988683584659830">Paieškos nuostatos</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Naudojantis „Brave“ paprasta nustatyti įprastą aplinką importuojant žymes ir nustatymus iš kitų kompiuteryje įdiegtų naršyklių.</translation>
 <translation id="8275038454117074363">Importuoti</translation>
 <translation id="5540323067375019678">Valdyti skydus</translation>
+<translation id="3278033011827237847">Apsisaugokite nuo privatumą pažeidžiančių reklamų ir sekiklių naršydami su „Brave“ skydais. Jei naršoma svetainė neveikia tinkamai, sumažinkite skydų apsaugą.</translation>
 <translation id="3366308997091824722">Skydo nuostatos</translation>
-<translation id="3884404068544758153">Keisti paieškos sistemą</translation>
+<translation id="4764692524839457597">numatyt.</translation>
+<translation id="3108122610701115301">Nustatyti numatytąją</translation>
+<translation id="2469440407442116729">Pasirinkti paieškos sistemą</translation>
 <translation id="438216590634144114">Pasirink paieškos variklį, kuriuo nori ieškoti iš naršyklės adresu eilutės.</translation>
-<translation id="8428213095426709021">Nustatymai</translation>
+<translation id="5804484488647369316">Nustatyti numatytąją paieškos sistemą</translation>
+<translation id="4428458837269935199">Norėdami privatesnės paieškos sistemos, išmėginkite „DuckDuckGo“.</translation>
 <translation id="513635702954746724">Rinktis spalvinę temą</translation>
 <translation id="6842850080200126305">Nustatykite įrankių juostos spalvą pasirinkdami nustatymų skydelyje šviesų arba tamsų variantą.</translation>
 <translation id="2801098717523961746">Rinktis temą</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Pelnykite žetonų už reklamos peržiūrą „Brave“. Pateikiamos reklamos paremtos jūsų interesais ir susijusios su jūsų naršymo elgesiu. Iš jūsų naršyklės neperduodami jokie asmens duomenys ar naršymo istorija.</translation>
 <translation id="6112368337882254910">Automatinis indėlis</translation>
 <translation id="1527222983464337010">Automatinis būdas, kaip galite paremti leidėjus ir turinio kūrėjus. Nustatykite mėnesinį mokėjimą ir naršykite įprastai. Jūsų lankomoms svetainėms jūsų indėlis bus išmokamas automatiškai pagal „Brave“ išmatuotą jūsų dėmesį.</translation>
+<translation id="20281847067919078">Numatomi laukiantys atlygiai</translation>
+<translation id="8593551638387217772">Kita mokėjimo data</translation>
+<translation id="319209088187794725">Šį mėnesį gauti pranešimai apie reklamas</translation>
 <translation id="4229016885653790965">Apgailestaujame, tačiau jūsų regione reklamų kol kas nėra.</translation>
 <translation id="654711254769318398">Peržiūrėti reklamų puslapiai</translation>
 <translation id="2532127066761785857">Didžiausias rodomų reklamų skaičius</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 min.</translation>
 <translation id="9031738692126722094">Aktyvinti turiniui skirtus arbatpinigius šiose svetainėse</translation>
 <translation id="995782501881226248">„YouTube“</translation>
+<translation id="3905400818082450708">„Reddit“</translation>
 <translation id="2635094637295383009">„Twitter“</translation>
 <translation id="3920963435109110161">Radę brangenybių, iškart vietoje duokite arbatpinigių.</translation>
 <translation id="6135431587052937035">Paremk mėgstamas svetaines reguliariais mėnesiniais arbatpinigiais.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Deja, atrodo, kad ši išmoka jau atsiimta.</translation>
 <translation id="282693359045252357">Kita mėnesinių arbatpinigių data</translation>
 <translation id="6231182869178328516">Naudodamasis „Brave“ naršykle ką tik daviau arbatpinigių <ph name="NAME">$1<ex>user</ex></ph>. Daugiau apie tai galite sužinoti adresu https://brave.com/tips.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">Suma:</translation>
 <translation id="5923611424721173182">Dabartinis suderintas likutis</translation>
 <translation id="5457113250005438886">Negalioja</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Nustatyti mėnesinius arbatpinigius</translation>
 <translation id="8003573781961874199">Atsisiųsti PDF formatu</translation>
 <translation id="298067735430872465">Uždarbis iš reklamos</translation>
+<translation id="2266556115441975588">Savo atlygius už reklamą rasite čia!</translation>
 <translation id="8764029012618014430">Aktyvinti arbatpinigius</translation>
 <translation id="3412655388715513818">Neįtraukti šios svetainės</translation>
 <translation id="418343137736963579">Bendras svetainių skaičius, kurių neįtraukėte į automatinį indėlį:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Atkūrimo kodas</translation>
 <translation id="6354568176665589146">Pasikartojantys</translation>
 <translation id="7577100371127227294">Mėnesiniai arbatpinigiai</translation>
+<translation id="2391095793008133394">Sumokėti naudotojui {{ user }} arbatpinigių už įrašą:</translation>
+<translation id="7557413530932469222">Sumokėti naudotojui {{ user }} arbatpinigių už įrašą!</translation>
 <translation id="1110535155349301542">pašalinti</translation>
 <translation id="8942997470474842562">Tu paskyrei {{reservedAmount}} BAT kūrėjams, kurie dar neužsisakė gauti įmokų. Tavo naršyklė mėgins paskirti lėšas, kol jie užsisakys, arba 90 dienų.</translation>
 <translation id="8759753423332885148">Sužinokite daugiau.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Rodyti visus {{skaičius}} elem.</translation>
 <translation id="7857284676033058221">Rodyti visas {{skaičius}} svetain.</translation>
 <translation id="3536298624341433814">Siųsti mano arbatpinigius</translation>
+<translation id="8428213095426709021">Nustatymai</translation>
 <translation id="1792148354504719133">svetainė</translation>
 <translation id="5944430251223015324">svetainės</translation>
 <translation id="1834493631938747505">Papasakokite apie savo arbatpinigius kitiems.</translation>
@@ -355,7 +370,15 @@
 <translation id="4346944508027912677">Laukiama iki</translation>
 <translation id="7410549756000115387">Nėra laukiančių indėlių…</translation>
 <translation id="1963227389609234879">Pašalinti viską</translation>
+<translation id="1170315781901539495">Neįtrauktos svetainės</translation>
+<translation id="5119190679543565400">Atkurti šią svetainę</translation>
+<translation id="9075700728717335924">Neįtraukėte</translation>
+<translation id="4862817811647633830">automatinio indėlio svetainės.</translation>
 <translation id="923467487918828349">Rodyti viską</translation>
+<translation id="5471305206221894680">Remiamos svetainės</translation>
+<translation id="2306169361186864012">Atlygiai už „Brave“ reklamą!</translation>
+<translation id="3757873395477273033">Jūsų atlygių už „Brave“ reklamą išmoka jau pakeliui.</translation>
+<translation id="8101881066646819737">Jūsų „Brave“ reklamos žetonų išmoka</translation>
 <translation id="2151535059686617995">Tau pasisekė!</translation>
 <translation id="6255773350565723852">Jūsų žetonų išmoka pakeliui.</translation>
 <translation id="1181037720776840403">Pašalinti</translation>

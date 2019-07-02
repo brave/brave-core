@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">تعديل التفضيلات</translation>
 <translation id="7606029853066610626">عرض وإدارة الإشارات المرجعية</translation>
 <translation id="5550994254534676787">اعرض سجل التصفح الخاص بك</translation>
+<translation id="1742484101357469636">إعدادات لوحة التحكم</translation>
+<translation id="8320281346741574991">عرض صورة الخلفية</translation>
 <translation id="6165508094623778733">اكتشف المزيد</translation>
 <translation id="8730621377337864115">تم</translation>
 <translation id="6248988683584659830">إعدادات البحث</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">يسهّل Brave إعداد بيئتك المعتادة عن طريق استيراد الإشارات المرجعية والإعدادات من المتصفحات الأخرى المثبتة على جهاز الكمبيوتر الخاص بك.</translation>
 <translation id="8275038454117074363">استيراد</translation>
 <translation id="5540323067375019678">إدارة إعدادات الدرع الخاص بك</translation>
+<translation id="3278033011827237847">قم بحماية نفسك من الإعلانات وأجهزة التتبع التي تخترق الخصوصية أثناء التصفح باستخدام Brave Shields. قم بتعيين Shields على "إنزال" إذا كان الموقع لا يبدو أنه يعمل بشكل صحيح.</translation>
 <translation id="3366308997091824722">إعدادات الدرع</translation>
-<translation id="3884404068544758153">تغيير محرّك البحث</translation>
+<translation id="4764692524839457597">الافتراضي</translation>
+<translation id="3108122610701115301">تعيين الوضع الافتراضي</translation>
+<translation id="2469440407442116729">اختر محرك بحث</translation>
 <translation id="438216590634144114">اختر محرك البحث الذي ترغب في استخدامه كمحرك افتراضي عند البحث في الويب من شريط العنوان.</translation>
-<translation id="8428213095426709021">الإعدادات</translation>
+<translation id="5804484488647369316">تعيين محرك البحث الافتراضي</translation>
+<translation id="4428458837269935199">للحصول على تجربة بحث أكثر خصوصية، جرّب DuckDuckGo.</translation>
 <translation id="513635702954746724">اختيار مظهر اللون</translation>
 <translation id="6842850080200126305">يمكنك ضبط لون شريط الأدوات من خلال اختيار الخيار الفاتح أو الغامق في لوحة الإعدادات.</translation>
 <translation id="2801098717523961746">اختيار المظهر</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">اربح الرموز المميزة عن طريق عرض الإعلانات في Brave. تعتمد الإعلانات المقدمة على اهتماماتك، كما هو مستخلص من سلوك التصفح الخاص بك. لا تخرج أي بيانات شخصية أو محفوظات تصفح على الإطلاق من المتصفح الخاص بك.</translation>
 <translation id="6112368337882254910">مساهمة تلقائية</translation>
 <translation id="1527222983464337010">طريقة أوتوماتيكية لدعم الناشرين ومبدعي المحتوى. قم بتعيين دفعة شهرية وتصفح كالمعتاد. تتلقى المواقع التي تزورها مساهماتك تلقائيًا، استنادًا إلى رعايتك وفقًا لقياس Brave.</translation>
+<translation id="20281847067919078">تقدير المكافآت المعلقة</translation>
+<translation id="8593551638387217772">تاريخ الدفع التالي</translation>
+<translation id="319209088187794725">إشعارات الإعلانات التي وردت هذا الشهر</translation>
 <translation id="4229016885653790965">عذرًا! لم تتم إتاحة الإعلانات في منطقتك بعد.</translation>
 <translation id="654711254769318398">صفحات الإعلانات التي تمت مشاهدتها</translation>
 <translation id="2532127066761785857">الحد الأقصى لعدد الإعلانات المعروضة</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 دقيقة</translation>
 <translation id="9031738692126722094">تمكين الإكراميات على مستوى المحتوى على هذه المواقع</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">ريديت</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">قدم المكافأة على الفور بينما تجد الأحجار الكريمة.</translation>
 <translation id="6135431587052937035">ادعم المواقع المفضلة لديك من خلال منحة شهرية دورية.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">عذرًا، يبدو أن هذه الجائزة قد أخذت مسبقًا.</translation>
 <translation id="282693359045252357">تاريخ الإكرامية الشهرية التالية</translation>
 <translation id="6231182869178328516">لقد أعطيت إكرامية لـ <ph name="NAME"/> باستخدام متصفح Brave. يمكنك التحقق من ذلك في https://brave.com/tips.</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">المقدار:</translation>
 <translation id="5923611424721173182">التسوية الحالية</translation>
 <translation id="5457113250005438886">غير صالح</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">قم بتعيين مكافأة شهرية</translation>
 <translation id="8003573781961874199">التنزيل بتنسيق PDF</translation>
 <translation id="298067735430872465">أرباح من الإعلانات</translation>
+<translation id="2266556115441975588">إن مكافآتك من الإعلانات هنا!</translation>
 <translation id="8764029012618014430">تمكين النصائح</translation>
 <translation id="3412655388715513818">استبعاد هذا الموقع</translation>
 <translation id="418343137736963579">إجمالي عدد المواقع التي استبعدتها من المساهمة التلقائية:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">مفتاح الاسترداد</translation>
 <translation id="6354568176665589146">متكرر</translation>
 <translation id="7577100371127227294">المكافآت الشهرية</translation>
+<translation id="2391095793008133394">قم بإرشاد {{ user }} بشأن منشورهم:</translation>
+<translation id="7557413530932469222">قم بإرشاد {{ user }} بشأن منشورهم!</translation>
 <translation id="1110535155349301542">إزالة</translation>
 <translation id="8942997470474842562">قمت بتخصيص {{reservedAmount}} BAT للمؤلفين الذين لم يسجلوا بعد لتلقي المساهمات. سيستمر متصفحك في المحاولة حتى يقوموا بتأكيد حساباتهم، أو حتى مرور 90 يومًا.</translation>
 <translation id="8759753423332885148">اعرف المزيد.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">اطلع على جميع {{numItems}} بنود</translation>
 <translation id="7857284676033058221">الاطلاع على كل الـ{{numSites}} موقع</translation>
 <translation id="3536298624341433814">أرسل مكافأتي</translation>
+<translation id="8428213095426709021">الإعدادات</translation>
 <translation id="1792148354504719133">الموقع</translation>
 <translation id="5944430251223015324">المواقع</translation>
 <translation id="1834493631938747505">أخبر الآخرين عن إكراميتك.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">معلقة حتى</translation>
 <translation id="7410549756000115387">ليست هناك مساهمات معلقة…</translation>
 <translation id="1963227389609234879">إزالة كلمات المرور كلّها</translation>
+<translation id="1170315781901539495">المواقع المستبعدة</translation>
+<translation id="5119190679543565400">استعادة هذا الموقع</translation>
+<translation id="9075700728717335924">لقد قمت باستبعاد</translation>
+<translation id="4862817811647633830">مواقع من Auto-Contribute.</translation>
 <translation id="923467487918828349">إظهار الكل</translation>
+<translation id="5471305206221894680">المواقع المدعومة</translation>
+<translation id="2306169361186864012">مكافآت إعلانات Brave!</translation>
+<translation id="3757873395477273033">إن مكافآتك الممنوحة من إعلانات Brave في طريقها إليك.</translation>
+<translation id="8101881066646819737">المنحة الرمزية الخاصة بك من إعلانات Brave</translation>
 <translation id="2151535059686617995">إنه يوم سعدك!</translation>
 <translation id="6255773350565723852">هديتك المالية في طريقها إليك.</translation>
 <translation id="1181037720776840403">إزالة</translation>

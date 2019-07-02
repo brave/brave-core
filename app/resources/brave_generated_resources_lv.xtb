@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave balvas</translation>
 <translation id="7942180974165298215">Brave reklāmu bloķētājs</translation>
 <translation id="6406506848690869874">Sinhronizācija</translation>
+<translation id="8488282162676695335">Brave maks</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nav atļauts Brave.</translation>
 <translation id="7450557937477381864">Aizvērt Chrome</translation>
 <translation id="7008934821596358692">Lai pabeigtu importēšanu, aizveriet visus Chrome logus.</translation>
@@ -28,7 +29,9 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="3218385319396786393">Automātiskā atskaņošana šajā lapā tika bloķēta</translation>
 <translation id="4988333904713528597">Vienmēr atļaut automātisku ieslēgšanu vietnē <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Turpināt bloķēt automātisko atskaņošanu</translation>
+<translation id="5883458389055721080">Brave vēl nav pārskatījis šo paplašinājumu attiecībā uz tā aizsardzību un drošumu. Instalējiet šo paplašinājumu tikai tad, ja uzticaties izstrādātājam.</translation>
 <translation id="2044383478723007273">Brave krāsas</translation>
+<translation id="2814998458708016836">Izmantot platu adreses joslu</translation>
 <translation id="6123134130710658846">Slēpt Brave balvu pogu</translation>
 <translation id="7635711399568194460">Slēpj Brave balvu pogu atrašanās vietas joslā, kad Brave balvas nav iespējotas</translation>
 <translation id="7965178729203412357">Jauna Tor identitāte</translation>
@@ -47,13 +50,25 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="4472575034687746823">Sākt darbu</translation>
 <translation id="3400357268283240774">Papildu iestatījumi</translation>
 <translation id="6303294677342628402">Aizsargi</translation>
+<translation id="7133511168130368997">Bloķēt izsekotājus un reklāmas, kas seko jums tīmeklī.</translation>
+<translation id="2761825942249694703">Šie ir noklusējuma aizsargu iestatījumi. Tie ir attiecināmi uz visām tīmekļa vietnēm, ja vien jūs konkrētai vietnei aizsargu panelī kaut ko neizmainīsiet. Šīs izmaiņas neietekmēs jūsu esošo vietņu iestatījumus.</translation>
+<translation id="8754605759692119662">Šī funkcija bloķēs lielāko daļu tīmekļa vietņu reklāmas — neieskaitot Brave privātās reklāmas; tās kontrolē</translation>
+<translation id="6388201778088078932">iestatījumi.</translation>
 <translation id="9185018653595759199">Sociālo plašsaziņas līdzekļu bloķēšana</translation>
+<translation id="5709627087332022422">Bloķēt starpvietņu izsekotājus</translation>
+<translation id="9075744464571452108">Ierīces atpazīšana</translation>
+<translation id="3570081523466826008">Jaunināt savienojumus uz HTTPS</translation>
+<translation id="4824468494729001999">Bloķēt skriptus</translation>
 <translation id="7498695072878479744">Atļaut Google pieteikšanās pogas trešo pušu vietnēs</translation>
 <translation id="863171915776379000">Atļaut Facebook pieteikšanos un iegultās ziņas</translation>
 <translation id="5165042248369837294">Atļaut Twitter iegultos tvītus</translation>
 <translation id="958971637207126733">Atļaut LinkedIn iegultās ziņas</translation>
+<translation id="4699812599455071925">Bloķēt tikai starpvietņu sīkfailus</translation>
 <translation id="5657156137487675418">Atļaut visus sīkfailus</translation>
 <translation id="6883611015375728278">Bloķēt visus sīkfailus</translation>
+<translation id="3084022390368021391">Bloķēt tikai starpvietņu ierīces atpazīšanas mēģinājumus</translation>
+<translation id="1847422622180531843">Atļaut visus ierīces atpazīšanas mēģinājumus</translation>
+<translation id="8375051111011093523">Bloķēt visus ierīces atpazīšanas mēģinājumus</translation>
 <translation id="8942080017911802454">WebRTC IP apstrādes politika</translation>
 <translation id="6165508094623778733">Uzzināt vairāk</translation>
 <translation id="8798099450830957504">Noklusējums</translation>
@@ -75,4 +90,9 @@ Instalējot šo paplašinājumu, Jūs piekrītat Google Widevine Lietošanas not
 <translation id="9181207987584064303">Skatīt paplašinājumu interneta veikalā</translation>
 <translation id="4846154056248462491">Izejot</translation>
 <translation id="5057399635433117814">Vai tulkot šo lapu? Šī funkcija nosūtīs visu šīs lapas tekstu "Microsoft", lai veiktu tulkošanu.</translation>
+<translation id="3371343170427636147">Brave Nightly pārlūka lietotnes</translation>
+<translation id="4097979995947147464">Brave Beta pārlūka lietotnes</translation>
+<translation id="8303432794159193481">Brave Dev pārlūka lietotnes</translation>
+<translation id="8292967014767479012">Brave pārlūka vietnes</translation>
+<translation id="4743468424889072281">Brave pārlūka izstrādes lietotnes</translation>
 </translationbundle>

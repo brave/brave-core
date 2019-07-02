@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Cross-site trackers blocked",
+    "message": "עוקבים מרובי-אתרים (cross-site) נחסמו",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site cookies blocked",
+    "message": "קבצי cookie מרובי-אתרים (cross-site) נחסמו",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -76,15 +76,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Cross-site device recognition blocked",
+    "message": "זיהוי מכשיר מרובה-אתרים (cross-site) נחסם",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Device recognition attempts blocked",
+    "message": "ניסיונות לזיהוי המכשיר נחסמו",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "All device recognition attempts allowed",
+    "message": "כל הניסיונות לזיהוי המכשיר הותרו",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
@@ -120,15 +120,15 @@
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blocked once",
+    "message": "נחסם פעם אחת",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Allowed once",
+    "message": "הותר פעם אחת",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Allow scripts once",
+    "message": "התר סקריפטים פעם אחת",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
@@ -146,5 +146,17 @@
   "changeDefaults": {
     "message": "שנה את ברירות המחדל הגלובליות של המגן",
     "description": "Message for the button action linking to the settings page"
+  },
+  "addBlockElement": {
+    "message": "חסום אלמנט באאמצעות סלקטור",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "resetSiteFilterSettings": {
+    "message": "נקה כללי CSS עבור אתר זה",
+    "description": "Message for context menu that resets the site filters for cosmetic filtering"
+  },
+  "resetAllFilterSettings": {
+    "message": "נקה כללי CSS עבור כל האתרים",
+    "description": "Message for context menu that resets all cosmetic filters"
   }
 }

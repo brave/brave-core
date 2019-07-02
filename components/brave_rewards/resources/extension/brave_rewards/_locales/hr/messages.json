@@ -48,7 +48,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Creator",
+    "message": "Provjereni stvaratelj Brave",
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
@@ -290,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Refresh Status",
+    "message": "Osvježi stanje",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -346,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your rewards from Ads are here!",
+    "message": "Ovdje su vaše nagrade od oglasa!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -413,8 +413,16 @@
     "message": "Napojnica",
     "description": "Icon label for Twitter tips"
   },
+  "redditTipsHoverText": {
+    "message": "Nagradi ovu objavu",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Napojnica",
+    "description": "Icon label for Reddit tips"
+  },
   "verifiedPublisherNotification": {
-    "message": "Creator $name$ recently verified",
+    "message": "Stvaratelj je $name$ nedavno provjeren",
     "description": "Notification text that tells user which publisher just verified",
     "placeholders": {
       "name": {
@@ -424,11 +432,11 @@
     }
   },
   "pendingNotEnoughFundsNotification": {
-    "message": "You have pending tips due to insufficient funds",
+    "message": "Imate napojnice na čekanju zbog nedovoljnog raspoloživog iznosa",
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Pending Contribution",
+    "message": "Doprinos na čekanju",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -444,15 +452,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "Nagrade Brave za oglase!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Your rewards grant from Brave Ads is on its way.",
+    "message": "Vaše su nagrade od usluge Brave za oglase na putu.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Your Brave Ads Token Grant",
+    "message": "Odobrenje za token Brave za oglase",
     "description": "Token title on success screen for ads"
   }
 }

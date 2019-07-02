@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">編輯偏好設定</translation>
 <translation id="7606029853066610626">檢視並管理書籤</translation>
 <translation id="5550994254534676787">檢視您的瀏覽歷史</translation>
+<translation id="1742484101357469636">儀表板設定</translation>
+<translation id="8320281346741574991">顯示背景影像</translation>
 <translation id="6165508094623778733">更多資訊</translation>
 <translation id="8730621377337864115">完成</translation>
 <translation id="6248988683584659830">搜尋設定</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">透過從電腦上其他瀏覽器匯入書籤及設定，Brave 讓您可方便快速地設定您的慣用環境。</translation>
 <translation id="8275038454117074363">匯入</translation>
 <translation id="5540323067375019678">管理您的防護</translation>
+<translation id="3278033011827237847">當開啟 Brave 防護進行瀏覽時，可以阻止侵犯隱私的廣告與追蹤器。如果網頁看起來沒辦法正常運作的話才將其關閉。</translation>
 <translation id="3366308997091824722">防護設定</translation>
-<translation id="3884404068544758153">變更您的搜尋引擎</translation>
+<translation id="4764692524839457597">預設</translation>
+<translation id="3108122610701115301">設為預設值</translation>
+<translation id="2469440407442116729">選擇一個搜索引擎</translation>
 <translation id="438216590634144114">選擇從網址列搜尋網頁時想使用的預設搜尋引擎。</translation>
-<translation id="8428213095426709021">設定</translation>
+<translation id="5804484488647369316">設定預設搜尋引擎</translation>
+<translation id="4428458837269935199">想要有更私密的搜尋體驗，試試 DuckDuckGo。</translation>
 <translation id="513635702954746724">選擇您的色彩主題</translation>
 <translation id="6842850080200126305">從設定面板選取淺色或深色調，即可設定您的工具列顏色。</translation>
 <translation id="2801098717523961746">選擇您的主題</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">透過在 Brave 中觀看廣告來獲得代幣。所顯示的廣告是您的興趣為基礎，其推測自您的瀏覽行為。您的個人資料或瀏覽歷史記錄從未離開您的瀏覽器。</translation>
 <translation id="6112368337882254910">自動捐獻</translation>
 <translation id="1527222983464337010">支援出版者與內容創作者的自動化方式。設定每月支付額度並照常瀏覽。根據 Brave 測量到您的注意力，您造訪的網站將會自動收到您的捐款。</translation>
+<translation id="20281847067919078">預估擱置中的獎勵</translation>
+<translation id="8593551638387217772">下一個支付日期</translation>
+<translation id="319209088187794725">本月收到的廣告通知</translation>
 <translation id="4229016885653790965">抱歉！廣告在您的所在區域不可用。</translation>
 <translation id="654711254769318398">檢視過的廣告頁面</translation>
 <translation id="2532127066761785857">廣告顯示數量上限</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 分鐘</translation>
 <translation id="9031738692126722094">啟用在這些網站打賞內文</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">當您找到寶石時馬上給小費。</translation>
 <translation id="6135431587052937035">經常性每月給予小費支持您喜歡的網站</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">抱歉，看來這筆經費已經被領了。</translation>
 <translation id="282693359045252357">下個每月小費日期</translation>
 <translation id="6231182869178328516">我剛剛使用 Brave Browser 打賞 <ph name="NAME">$1 給<ex>使用者</ex></ph>。到https://brave.com/tips 看看吧。</translation>
+<translation id="8404935570206006581">Brave 小費</translation>
 <translation id="7422678632904904341">金額：</translation>
 <translation id="5923611424721173182">目前調和</translation>
 <translation id="5457113250005438886">無效</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">設定每月小費</translation>
 <translation id="8003573781961874199">以 PDF 格式下載</translation>
 <translation id="298067735430872465">自廣告而來的收益</translation>
+<translation id="2266556115441975588">您從廣告獲得的獎勵就在這裡！</translation>
 <translation id="8764029012618014430">啟用小費功能</translation>
 <translation id="3412655388715513818">排除此網站</translation>
 <translation id="418343137736963579">您排除自動捐助的網站總數：</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">還原金鑰</translation>
 <translation id="6354568176665589146">週期性</translation>
 <translation id="7577100371127227294">每月小費</translation>
+<translation id="2391095793008133394">給文章的作者 {{ user }} 小費：</translation>
+<translation id="7557413530932469222">給文章的作者 {{ user }} 小費！</translation>
 <translation id="1110535155349301542">移除</translation>
 <translation id="8942997470474842562">您已指定 {{reservedAmount}} BAT 給尚未登記接受提撥金的建立者。您的瀏覽器會不斷嘗試提撥，直到他們驗證或 90 天過後為止。</translation>
 <translation id="8759753423332885148">深入瞭解。</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">查看全部 {{numItems}} 個項目</translation>
 <translation id="7857284676033058221">查看全部 {{numSites}} 個網站</translation>
 <translation id="3536298624341433814">傳送我的小費</translation>
+<translation id="8428213095426709021">設定</translation>
 <translation id="1792148354504719133">網站</translation>
 <translation id="5944430251223015324">網站</translation>
 <translation id="1834493631938747505">告訴其他人關於你的打賞。</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">預定直到</translation>
 <translation id="7410549756000115387">沒有預定的捐助……</translation>
 <translation id="1963227389609234879">全部移除</translation>
+<translation id="1170315781901539495">排除的網頁</translation>
+<translation id="5119190679543565400">復原此網頁</translation>
+<translation id="9075700728717335924">您已排除</translation>
+<translation id="4862817811647633830">網頁從自動捐款。</translation>
 <translation id="923467487918828349">全部顯示</translation>
+<translation id="5471305206221894680">支援的網頁</translation>
+<translation id="2306169361186864012">Brave 廣告獎勵</translation>
+<translation id="3757873395477273033">您即將獲得從 Brave 廣告而來的獎勵。</translation>
+<translation id="8101881066646819737">您的 Brave 廣告代幣</translation>
 <translation id="2151535059686617995">今天’您走運了！</translation>
 <translation id="6255773350565723852">您的代幣經費已經發放。</translation>
 <translation id="1181037720776840403">移除</translation>

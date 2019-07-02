@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7942180974165298215">Brave Advertentieblokkeerder</translation>
 <translation id="6406506848690869874">Sync</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") is in Brave niet toegestaan.</translation>
 <translation id="7450557937477381864">Chrome Sluiten</translation>
 <translation id="7008934821596358692">Om de importering te voltooien, moet je alle Chrome vensters sluiten.</translation>
@@ -28,7 +29,9 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="3218385319396786393">Automatisch afspelen is op deze pagina geblokkeerd</translation>
 <translation id="4988333904713528597">Automatisch afspelen altijd toestaan in <ph name="HOST">$1<ex> mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Blijf automatisch afspelen blokkeren</translation>
+<translation id="5883458389055721080">Brave heeft de beveiliging en veiligheid van deze extensie nog niet beoordeeld. Installeer deze extensie alleen als u de ontwikkelaar vertrouwt.</translation>
 <translation id="2044383478723007273">Brave-kleuren</translation>
+<translation id="2814998458708016836">Gebruik brede adresbalk</translation>
 <translation id="6123134130710658846">Verberg Brave Rewards-knop</translation>
 <translation id="7635711399568194460">Verbergt de Brave Rewards-knop in de locatiebalk wanneer Brave Rewards niet is ingeschakeld</translation>
 <translation id="7965178729203412357">Nieuwe Tor-identiteit</translation>
@@ -47,13 +50,25 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="4472575034687746823">Aan de slag</translation>
 <translation id="3400357268283240774">Aanvullende instellingen</translation>
 <translation id="6303294677342628402">Schilden</translation>
+<translation id="7133511168130368997">Blokkeer trackers en advertenties die u op het internet volgen.</translation>
+<translation id="2761825942249694703">Dit zijn de standaard Shields-instellingen. Ze zijn van toepassing op alle websites, tenzij u iets verandert via het Shields-configuratiescherm op een specifieke website. Deze veranderingen hebben geen invloed op uw bestaande instellingen per website.</translation>
+<translation id="8754605759692119662">Dit zal de meeste advertenties op websites blokkeren, met uitzondering van de Brave-privéadvertenties: deze worden beheerd via de</translation>
+<translation id="6388201778088078932">instellingen.</translation>
 <translation id="9185018653595759199">Social media blokkeren</translation>
+<translation id="5709627087332022422">Blokkeer cross-site trackers</translation>
+<translation id="9075744464571452108">Apparaatherkenning</translation>
+<translation id="3570081523466826008">Upgrade verbindingen naar HTTPS</translation>
+<translation id="4824468494729001999">Blokkeer scripts</translation>
 <translation id="7498695072878479744">Google-aanmeldingsknoppen toestaan op sites van derden</translation>
 <translation id="863171915776379000">Sta Facebook-aanmeldingen en embedded berichten toe</translation>
 <translation id="5165042248369837294">Embedded tweets van Twitter toestaan</translation>
 <translation id="958971637207126733">Sta ingesloten berichten van LinkedIn toe</translation>
+<translation id="4699812599455071925">Blokkeer alleen cross-site cookies</translation>
 <translation id="5657156137487675418">Sta alle cookies toe</translation>
 <translation id="6883611015375728278">Blokkeer alle cookies</translation>
+<translation id="3084022390368021391">Blokkeer alleen cross-site pogingen tot apparaatherkenning</translation>
+<translation id="1847422622180531843">Alle pogingen tot apparaatherkenning toestaan</translation>
+<translation id="8375051111011093523">Blokkeer alle pogingen tot apparaatherkenning</translation>
 <translation id="8942080017911802454">WebRTC IP Handling Policy</translation>
 <translation id="6165508094623778733">Meer informatie</translation>
 <translation id="8798099450830957504">Standaard</translation>
@@ -75,4 +90,9 @@ Door deze extensie te installeren, ga je akkoord met de Google Widevine gebruike
 <translation id="9181207987584064303">Bekijken in Web Extensions Store</translation>
 <translation id="4846154056248462491">Bij het verlaten</translation>
 <translation id="5057399635433117814">Deze pagina vertalen? Hiervoor wordt alle tekst op deze pagina naar Microsoft verstuurd om te vertalen.</translation>
+<translation id="3371343170427636147">Brave Browser Nightly-apps</translation>
+<translation id="4097979995947147464">Brave Browser-bèta-apps</translation>
+<translation id="8303432794159193481">Brave Browser Dev-apps</translation>
+<translation id="8292967014767479012">Brave Browser-apps</translation>
+<translation id="4743468424889072281">Brave Browser-ontwikkelingsapps</translation>
 </translationbundle>

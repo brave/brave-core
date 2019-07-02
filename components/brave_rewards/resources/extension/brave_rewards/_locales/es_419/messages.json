@@ -48,7 +48,7 @@
     "description": "The whole string is 'Enable tips on YouTube for like.'"
   },
   "verifiedPublisher": {
-    "message": "Brave Verified Creator",
+    "message": "Creador verificado de Brave",
     "description": "Tells user that this particular publisher is a Brave Verified Creator"
   },
   "rewardsContributeAttentionScore": {
@@ -290,7 +290,7 @@
     "description": "Error title when user missed a grant."
   },
   "unVerifiedCheck": {
-    "message": "Refresh Status",
+    "message": "Actualizar estado",
     "description": "Text of link that allows to check verified status of unverified publisher"
   },
   "unVerifiedPublisher": {
@@ -346,7 +346,7 @@
     "description": "Button for opening settings page"
   },
   "earningsClaimDefault": {
-    "message": "Your rewards from Ads are here!",
+    "message": "¡Sus recompensas por las publicidades están aquí!",
     "description": "Panel notification text for Ads grant"
   },
   "and": {
@@ -413,8 +413,16 @@
     "message": "Propina",
     "description": "Icon label for Twitter tips"
   },
+  "redditTipsHoverText": {
+    "message": "Dejar una propina a esta publicación",
+    "description": "Hover text for Reddit tips action"
+  },
+  "redditTipsIconLabel": {
+    "message": "Propina",
+    "description": "Icon label for Reddit tips"
+  },
   "verifiedPublisherNotification": {
-    "message": "Creator $name$ recently verified",
+    "message": "El creador $name$ se verificó recientemente",
     "description": "Notification text that tells user which publisher just verified",
     "placeholders": {
       "name": {
@@ -424,11 +432,11 @@
     }
   },
   "pendingNotEnoughFundsNotification": {
-    "message": "You have pending tips due to insufficient funds",
+    "message": "Tiene propinas pendientes debido a fondos insuficientes",
     "description": "Notification text that tells user his wallet is under funded for pending contribution to complete"
   },
   "pendingContributionTitle": {
-    "message": "Pending Contribution",
+    "message": "Contribución pendiente",
     "description": "Notification title for pending contribution type"
   },
   "grantFinishTitleUGP": {
@@ -444,15 +452,15 @@
     "description": "Token title on success screen"
   },
   "grantFinishTitleAds": {
-    "message": "Brave Ads Rewards!",
+    "message": "¡Recompensas de anuncios de Brave!",
     "description": "Cosmetic text upon captcha success for ads"
   },
   "grantFinishTextAds": {
-    "message": "Your rewards grant from Brave Ads is on its way.",
+    "message": "Su donación de recompensas de los anuncios de Brave están en camino.",
     "description": "Cosmetic text indicating ads funds are on the way"
   },
   "grantFinishTokenTitleAds": {
-    "message": "Your Brave Ads Token Grant",
+    "message": "Su donación de tokens de anuncios de Brave",
     "description": "Token title on success screen for ads"
   }
 }

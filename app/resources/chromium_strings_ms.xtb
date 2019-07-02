@@ -74,13 +74,9 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="5874882355102994015">Brave tidak dapat memaparkan pratonton cetakan apabila alat lihat PDF terbina dalam tiada.</translation>
 <translation id="8880183781256147665">Menambah ke Brave...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> mungkin berbahaya, jadi Brave telah menyekat fail itu.</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/> mungkin berbahaya, maka Brave telah menyekat fail itu. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="9067428552314418522">Fail ini berbahaya, maka Brave telah menyekatnya.</translation>
-<translation id="2938460345748897177">Fail ini berbahaya, maka Brave telah menyekatnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> berbahaya, jadi Brave telah menyekat fail itu.</translation>
-<translation id="8858456697111532356"><ph name="FILE_NAME"/> berbahaya, maka Brave telah menyekat fail itu. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="89367911614620585">Fail ini mungkin berbahaya, maka Brave telah menyekatnya.</translation>
-<translation id="8943391224520748272">Fail ini mungkin berbahaya, maka Brave telah menyekatnya. Anda dilindungi oleh Perlindungan Lanjutan.</translation>
 <translation id="9183662282810237335">Keluar daripada Brave juga?</translation>
 <translation id="3834935463915107022">Keluar daripada Brave juga?</translation>
 <translation id="8797356639448065696">Brave dalam mod latar belakang.</translation>
@@ -143,8 +139,6 @@ Meneruskan juga log masuk akan menggabungkan maklumat Brave seperti penanda hala
 <translation id="6746636977031158624">OS Brave tidak dapat menyegerakkan data anda kerana butiran log masuk akaun anda sudah lapuk.</translation>
 <translation id="2999152167963026588">OS Brave tidak dapat menyegerakkan data anda kerana Segerak tidak tersedia untuk domain anda.</translation>
 <translation id="1459786048951724030">OS Brave tidak dapat menyegerakkan data anda disebabkan oleh ralat melog masuk.</translation>
-<translation id="2887570477425111999">Simpan butiran di Brave</translation>
-<translation id="193559141530782783">Brave akan menyimpan butiran peribadi anda dengan selamat supaya anda tidak perlu menaipnya semula.</translation>
 <translation id="663059986967017181">Disalin ke Brave</translation>
 <translation id="1457432835062259213">Pelancar Apl Brave</translation>
 <translation id="82609232232243542">Log masuk ke Brave</translation>
@@ -182,7 +176,7 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="1912973375560256099">Peraturan masuk bagi Brave untuk membolehkan trafik mDNS.</translation>
 <translation id="8207657266087451193">Jika imej tiada perihalan yang berguna, Brave akan cuba memberikan perihalan untuk anda. Untuk membuat perihalan, imej dihantar kepada Brave Software. Anda boleh mematikan pilihan ini dalam tetapan pada bila-bila masa.</translation>
 <translation id="5499063270485366718">Jika imej tiada perihalan yang berguna, Brave akan cuba memberikan perihalan untuk anda. Untuk membuat perihalan, imej dihantar kepada Brave Software.</translation>
-<translation id="3870835867536344658">Ini menggunakan penyemak ejaan yang sama seperti yang digunakan dalam carian Brave Software. Teks yang anda taip dalam penyemak imbas akan dihantar kepada Brave Software. Anda boleh menukar gelagat ini dalam tetapan pada bila-bila masa.</translation>
+<translation id="215320507915280336">Ini menggunakan penyemak ejaan yang sama seperti yang digunakan dalam carian Brave Software. Teks yang anda taip dalam penyemak imbas akan dihantar kepada Brave Software. Anda boleh menukar gelagat ini dalam tetapan pada bila-bila masa.</translation>
 <translation id="1807774211756215222">Buka pautan dalam &amp;tab Brave baharu</translation>
 <translation id="4624945300945265642">Buka pautan dalam tetingkap inko&amp;gnito Brave</translation>
 <translation id="7863882214613921971">Buka Pautan dalam &amp;tab Brave Baharu</translation>
@@ -239,23 +233,17 @@ Sila semak e-mel anda di <ph name="ACCOUNT_EMAIL"/> untuk arahan lanjut.</transl
 <translation id="8933981935877469796">Pilih <ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/></translation>
 <translation id="1585657529869845941">Klik <ph name="BEGIN_BOLD"/>Tukar juga<ph name="END_BOLD"/>, jika dipaparkan</translation>
 <translation id="3507835409099344374">Pergi ke tetapan pemberitahuan Brave</translation>
-<translation id="9118654140804842635">{0,plural, =0{Kemas kini Brave tersedia}=1{Kemas kini Brave tersedia}other{Kemas kini Brave telah tersedia selama # hari}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{Kemas kini Brave tersedia}=1{Kemas kini Brave tersedia}other{Kemas kini Brave telah tersedia selama # hari}}</translation>
 <translation id="720532315408041257">Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini</translation>
-<translation id="6639482638305253477">{0,plural, =1{Lancarkan semula Brave dalam masa sehari}other{Lancarkan semula Brave dalam masa # hari}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave akan dilancarkan semula dalam masa sejam}other{Brave akan dilancarkan semula dalam masa # jam}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave akan dilancarkan semula dalam masa seminit}other{Brave akan dilancarkan semula dalam masa # minit}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave akan dilancarkan semula sekarang}=1{Brave akan dilancarkan semula dalam masa sesaat}other{Brave akan dilancarkan semula dalam masa # saat}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{Lancarkan semula Brave dalam masa sehari}other{Lancarkan semula Brave dalam masa # hari}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave akan dilancarkan semula dalam masa sejam}other{Brave akan dilancarkan semula dalam masa # jam}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave akan dilancarkan semula dalam masa seminit}other{Brave akan dilancarkan semula dalam masa # minit}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave akan dilancarkan semula sekarang}=1{Brave akan dilancarkan semula dalam masa sesaat}other{Brave akan dilancarkan semula dalam masa # saat}}</translation>
 <translation id="7595187113648413294">Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini</translation>
-<translation id="56801943271475640">{0,plural, =0{Kemas kini OS Brave tersedia}=1{Kemas kini OS Brave tersedia}other{Kemas kini OS Brave telah tersedia selama # hari}}</translation>
-<translation id="5715362474140341294">Pentadbir anda meminta anda memulakan semula OS Brave untuk menerapkan kemas kini ini</translation>
-<translation id="8094834892392729950">{0,plural, =1{Mulakan semula OS Brave dalam masa sehari}other{Mulakan semula OS Brave dalam masa # hari}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{OS Brave akan dimulakan semula dalam masa sejam}other{OS Brave akan dimulakan semula dalam masa # jam}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{OS Brave akan dimulakan semula dalam masa seminit}other{OS Brave akan dimulakan semula dalam masa # minit}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{OS Brave akan dimulakan semula sekarang}=1{OS Brave akan dimulakan semula dalam masa sesaat}other{OS Brave akan dimulakan semula dalam masa # saat}}</translation>
-<translation id="8559452515617838628">Pentadbir anda menghendaki anda memulakan semula OS Brave untuk menerapkan kemas kini</translation>
 <translation id="3052349005266761501">Melancarkan Brave...</translation>
 <translation id="1197672524850678392">Tidak dapat melancarkan Brave. Cuba lagi.</translation>
 <translation id="6040143037577758943">Tutup</translation>
+<translation id="5147525139567260139">Kongsi tab Brave</translation>
 <translation id="8541922081612557424">Mengenai Brave</translation>
 <translation id="3262506503470845422">Dapatkan bantuan berkenaan Brave</translation>
 <translation id="1864557848095568223">Mengemas kini Brave</translation>
