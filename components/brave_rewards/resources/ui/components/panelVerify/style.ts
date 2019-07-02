@@ -8,7 +8,7 @@ import Button, { Props as ButtonProps } from '../../../components/buttonsIndicat
 import { ComponentType } from 'react'
 
 interface StyleProps {
-  short?: boolean
+  compact?: boolean
 }
 
 export const StyledWrapper = styled<{}, 'div'>('div')`
@@ -36,7 +36,7 @@ export const StyledClose = styled<{}, 'div'>('div')`
 `
 
 export const StyledHeader = styled<StyleProps, 'div'>('div')`
-  margin-bottom: ${p => p.short ? '15px' : '42px'};
+  margin-bottom: ${p => p.compact ? '15px' : '42px'};
 `
 
 export const StyledBatIcon = styled<{}, 'div'>('div')`
@@ -80,7 +80,7 @@ export const StyledListTitle = styled(Heading)`
 
 export const StyledListItem = styled<StyleProps, 'div'>('div')`
   color: #fff;
-  margin: ${p => p.short ? '10px' : '15px'} 0;
+  margin: ${p => p.compact ? '10px' : '15px'} 0;
 `
 
 export const StyledListIcon = styled<{}, 'div'>('div')`
@@ -106,9 +106,9 @@ export const StyledIDNotice = styled<StyleProps, 'div'>('div')`
   line-height: 20px;
   font-weight: 600;
   color: #fff;
-  padding: ${p => p.short ? '20px' : '30px'} 24px 20px;
+  padding: ${p => p.compact ? '20px' : '30px'} 24px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.5433);
-  margin: ${p => p.short ? '25px' : '44px'} 0 0;
+  margin: ${p => p.compact ? '25px' : '44px'} 0 0;
 `
 
 export const StyledButton = styled(Button as ComponentType<ButtonProps>)`
@@ -119,7 +119,7 @@ export const StyledFooter = styled<StyleProps, 'div'>('div')`
   font-family: Muli, sans-serif;
   font-size: 12px;
   color: #fff;
-  margin-top: ${p => p.short ? '28px' : '32px'};
+  margin-top: ${p => p.compact ? '28px' : '32px'};
 `
 
 export const StyledFooterIcon = styled<{}, 'div'>('div')`

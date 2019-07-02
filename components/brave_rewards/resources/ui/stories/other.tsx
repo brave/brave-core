@@ -232,14 +232,14 @@ storiesOf('Feature Components/Rewards/Other/Desktop', module)
     const onClose = () =>
       console.log('onClose')
 
-    const short = boolean('short panel', false)
+    const compact = boolean('compact panel', false)
 
     return (
-      <div style={{ width: '373px', minHeight: short ? '475px' : '580px', position: 'relative', borderRadius: '5px', overflow: 'hidden' }}>
+      <div style={{ width: '373px', minHeight: compact ? '475px' : '580px', position: 'relative', borderRadius: '5px', overflow: 'hidden' }}>
         <PanelVerify
           onVerifyClick={onVerifyClick}
           onClose={onClose}
-          short={short}
+          compact={compact}
         />
       </div>
     )

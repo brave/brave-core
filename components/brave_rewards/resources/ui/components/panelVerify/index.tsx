@@ -33,13 +33,13 @@ import {
 export interface Props {
   onVerifyClick: () => void
   onClose: () => void
-  short?: boolean
+  compact?: boolean
   id?: string
 }
 
 export default class PanelWelcome extends React.PureComponent<Props, {}> {
-  getListItem = (text: string, short?: boolean) => (
-    <StyledListItem short={short}>
+  getListItem = (text: string, compact?: boolean) => (
+    <StyledListItem compact={compact}>
       <StyledListIcon>
         <RewardsCheckIcon />
       </StyledListIcon>
@@ -49,12 +49,12 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
     </StyledListItem>
   )
 
-  getHeader = (onClose: () => void, short?: boolean) => (
+  getHeader = (onClose: () => void, compact?: boolean) => (
     <>
       <StyledClose onClick={onClose}>
         <CloseStrokeIcon />
       </StyledClose>
-      <StyledHeader short={short}>
+      <StyledHeader compact={compact}>
         <StyledBatIcon>
           <RewardsWalletCheck />
         </StyledBatIcon>
@@ -70,8 +70,8 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
     </>
   )
 
-  getFooter = (short?: boolean) => (
-    <StyledFooter short={short}>
+  getFooter = (compact?: boolean) => (
+    <StyledFooter compact={compact}>
       {getLocale('walletVerificationFooter')} <b>Uphold</b>
       <StyledFooterIcon>
         <UpholdColorIcon />
@@ -83,20 +83,20 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
     const {
       onVerifyClick,
       onClose,
-      short,
+      compact,
       id
     } = this.props
 
     return (
       <StyledWrapper id={id}>
-        {this.getHeader(onClose, short)}
+        {this.getHeader(onClose, compact)}
         <StyledListTitle>
           {getLocale('walletVerificationListHeader')}
         </StyledListTitle>
-        {this.getListItem(getLocale(short ? 'walletVerificationListShort1' : 'walletVerificationList1'), short)}
-        {this.getListItem(getLocale(short ? 'walletVerificationListShort2' : 'walletVerificationList2'), short)}
-        {this.getListItem(getLocale(short ? 'walletVerificationListShort3' : 'walletVerificationList3'), short)}
-        <StyledIDNotice short={short}>
+        {this.getListItem(getLocale(compact ? 'walletVerificationListCompact1' : 'walletVerificationList1'), compact)}
+        {this.getListItem(getLocale(compact ? 'walletVerificationListCompact2' : 'walletVerificationList2'), compact)}
+        {this.getListItem(getLocale(compact ? 'walletVerificationListCompact3' : 'walletVerificationList3'), compact)}
+        <StyledIDNotice compact={compact}>
           {getLocale('walletVerificationID')}
         </StyledIDNotice>
         <StyledButton
@@ -105,7 +105,7 @@ export default class PanelWelcome extends React.PureComponent<Props, {}> {
           type={'accent'}
           onClick={onVerifyClick}
         />
-        {this.getFooter(short)}
+        {this.getFooter(compact)}
       </StyledWrapper>
     )
   }
