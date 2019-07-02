@@ -8,7 +8,6 @@
 #include "base/memory/singleton.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
 
-class BraveNavigationUIData;
 class Profile;
 
 namespace tor {
@@ -20,11 +19,7 @@ class TorProfileService;
 class TorProfileServiceFactory : public BrowserContextKeyedServiceFactory {
  public:
   static tor::TorProfileService* GetForProfile(Profile* profile);
-
   static TorProfileServiceFactory* GetInstance();
-
-  static void SetTorNavigationUIData(Profile* profile,
-                                     BraveNavigationUIData* data);
 
  private:
   friend struct base::DefaultSingletonTraits<TorProfileServiceFactory>;

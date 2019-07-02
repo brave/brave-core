@@ -15,9 +15,8 @@
 #include "brave/browser/net/url_context.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/profiles/tor_unittest_profile_manager.h"
-#include "brave/browser/renderer_host/brave_navigation_ui_data.h"
-#include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/common/network_constants.h"
+#include "chrome/browser/renderer_host/chrome_navigation_ui_data.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "content/public/browser/resource_request_info.h"
@@ -371,8 +370,8 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, NoRedirectTorProfile) {
       brave_request_info(new brave::BraveRequestInfo());
   brave::ResponseCallback callback;
 
-  std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
-    std::make_unique<BraveNavigationUIData>();
+  std::unique_ptr<ChromeNavigationUIData> navigation_ui_data =
+    std::make_unique<ChromeNavigationUIData>();
   BraveNavigationUIData* navigation_ui_data_ptr = navigation_ui_data.get();
 
   content::ResourceRequestInfo::AllocateForTesting(
