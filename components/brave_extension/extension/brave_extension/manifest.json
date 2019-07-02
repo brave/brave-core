@@ -33,6 +33,15 @@
       "run_at": "document_start",
       "all_frames": true
     }, {
+      "matches": [
+        "https://chrome.google.com/webstore/detail/*"
+      ],
+      "js": [
+        "out/webstore.bundle.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }, {
       "run_at": "document_start",
       "all_frames": true,
       "matches": [
