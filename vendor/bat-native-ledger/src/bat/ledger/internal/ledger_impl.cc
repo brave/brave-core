@@ -167,19 +167,32 @@ void LedgerImpl::OnHide(uint32_t tab_id, const uint64_t& current_time) {
   }
 
   DCHECK(last_tab_active_time_);
+  std::string type = bat_media_->GetLinkType(iter->second.tld, "", "");
+  auto duration = current_time - last_tab_active_time_;
+  // TODO(jdkuki) add support for other media types
+  if (type == GITHUB_MEDIA_TYPE) {
+      ledger::MediaParts parts;
+      parts["duration"] = std::to_string(duration);
+      ledger::VisitDataPtr copy_data = ledger::VisitData::New();
+      copy_data->url = iter->second.url;
+      copy_data->path = iter->second.path;
+      copy_data->domain = iter->second.domain;
+      copy_data->name = iter->second.name;
+      bat_media_->ProcessMedia(parts, type, std::move(copy_data));
+  } else {
+    auto callback = std::bind(&LedgerImpl::OnSaveVisit,
+                              this,
+                              _1,
+                              _2);
 
-  auto callback = std::bind(&LedgerImpl::OnSaveVisit,
-                            this,
-                            _1,
-                            _2);
-
-  bat_publishers_->saveVisit(
-    iter->second.tld,
-    iter->second,
-    current_time - last_tab_active_time_,
-    0,
-    callback);
-  last_tab_active_time_ = 0;
+    bat_publishers_->saveVisit(
+      iter->second.tld,
+      iter->second,
+      duration,
+      0,
+      callback);
+    last_tab_active_time_ = 0;
+  }
 }
 
 void LedgerImpl::OnForeground(uint32_t tab_id, const uint64_t& current_time) {
@@ -459,7 +472,6 @@ void LedgerImpl::SaveMediaVisit(const std::string& publisher_id,
   if (!bat_publishers_->getPublisherAllowVideos()) {
     new_duration = 0;
   }
-
   bat_publishers_->saveVisit(publisher_id,
                              visit_data,
                              new_duration,

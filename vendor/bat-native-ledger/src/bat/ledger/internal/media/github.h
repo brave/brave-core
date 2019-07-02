@@ -26,12 +26,16 @@ class GitHub : public ledger::LedgerCallbackHandler {
  public:
   explicit GitHub(bat_ledger::LedgerImpl* ledger);
 
+  static std::string GetLinkType(const std::string& url);
+
   void SaveMediaInfo(
       const std::map<std::string, std::string>& data,
       ledger::PublisherInfoCallback callback);
 
   void ProcessActivityFromUrl(uint64_t window_id,
                               const ledger::VisitData& visit_data);
+  void ProcessMedia(const ledger::MediaParts parts,
+      const ledger::VisitData& vist_data);
   ~GitHub() override;
 
  private:
@@ -47,6 +51,7 @@ class GitHub : public ledger::LedgerCallbackHandler {
       braveledger_media::FetchDataFromUrlCallback callback);
 
   void OnUserPage(
+      const uint64_t duration,
       uint64_t window_id,
       const ledger::VisitData& visit_data,
       int response_status_code,
@@ -58,6 +63,7 @@ class GitHub : public ledger::LedgerCallbackHandler {
       ledger::PublisherInfoPtr info);
 
   void SavePublisherInfo(
+      const uint64_t duration,
       const std::string& user_id,
       const std::string& user_name,
       const std::string& publisher_name,

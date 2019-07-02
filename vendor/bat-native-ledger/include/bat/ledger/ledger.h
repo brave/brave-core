@@ -28,6 +28,7 @@ namespace ledger {
 
 using VisitData = ledger::mojom::VisitData;
 using VisitDataPtr = ledger::mojom::VisitDataPtr;
+using MediaParts = std::map<std::string, std::string>;
 
 extern bool is_production;
 extern bool is_debug;
