@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/dom/document.h b/third_party/blink/renderer/core/dom/document.h
-index c89f9d712e9a061cb4218c2863e058f5a62173ae..4418c1f0c96dd83c8d4337879df1030c3d47f1af 100644
+index c89f9d712e9a061cb4218c2863e058f5a62173ae..e62f6d8665b66fc9b6d34298c5519aed7d1195b5 100644
 --- a/third_party/blink/renderer/core/dom/document.h
 +++ b/third_party/blink/renderer/core/dom/document.h
 @@ -73,6 +73,11 @@
@@ -19,9 +19,21 @@ index c89f9d712e9a061cb4218c2863e058f5a62173ae..4418c1f0c96dd83c8d4337879df1030c
    void SetShowBeforeUnloadDialog(bool show_dialog);
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  brave_page_graph::PageGraph* GetPageGraph() override;
++  brave_page_graph::PageGraph* GetPageGraph();
 +#endif
 +
   protected:
    void DidUpdateSecurityOrigin() final;
  
+@@ -1552,6 +1561,11 @@ class CORE_EXPORT Document : public ContainerNode,
+     return parser_sync_policy_;
+   }
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  brave_page_graph::PageGraph* page_graph_;
++  brave_page_graph::PageGraph* page_graph_non_owning_;
++#endif
++
+  private:
+   friend class IgnoreDestructiveWriteCountIncrementer;
+   friend class ThrowOnDynamicMarkupInsertionCountIncrementer;

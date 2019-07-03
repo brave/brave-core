@@ -4,14 +4,21 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/utilities/scripts.h"
+
 #include "gin/public/context_holder.h"
 #include "gin/public/gin_embedders.h"
+
 #include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
+#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
+
 #include "v8/include/v8.h"
+
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 
+using ::blink::Document;
 using ::blink::ExecutionContext;
+using ::blink::To;
 using ::blink::ToExecutionContext;
 using ::WTF::String;
 using ::v8::Context;
@@ -39,7 +46,12 @@ PageGraph* GetPageGraphFromIsolate(Isolate& isolate) {
     return nullptr;
   }
 
-  return exec_context->GetPageGraph();
+  if (!exec_context->IsDocument()) {
+    return nullptr;
+  }
+  Document* document = To<Document>(exec_context);
+
+  return document->GetPageGraph();
 }
 
 void RegisterScriptStart(Isolate& isolate, const ScriptId script_id) {
