@@ -12,6 +12,9 @@
 
 export type Preferences = {
   showBackgroundImage: boolean
+  showStats: boolean
+  showClock: boolean
+  showTopSites: boolean
 }
 
 function getWebUIBooleanVal (key: string): boolean {
@@ -24,7 +27,10 @@ export function getPreferences (): Promise<Preferences> {
   // Enforces practice of not setting directly
   // in a redux reducer.
   return Promise.resolve({
-    showBackgroundImage: getWebUIBooleanVal('showBackgroundImage')
+    showBackgroundImage: getWebUIBooleanVal('showBackgroundImage'),
+    showStats: getWebUIBooleanVal('showStats'),
+    showClock: getWebUIBooleanVal('showClock'),
+    showTopSites: getWebUIBooleanVal('showTopSites')
   })
 }
 
@@ -34,6 +40,18 @@ function sendSavePref (key: string, value: any) {
 
 export function saveShowBackgroundImage (value: boolean): void {
   sendSavePref('showBackgroundImage', value)
+}
+
+export function saveShowClock (value: boolean): void {
+  sendSavePref('showClock', value)
+}
+
+export function saveShowTopSites (value: boolean): void {
+  sendSavePref('showTopSites', value)
+}
+
+export function saveShowStats (value: boolean): void {
+  sendSavePref('showStats', value)
 }
 
 export function addChangeListener (listener: () => void): void {

@@ -11,6 +11,9 @@ const keyName = 'new-tab-data'
 
 const defaultState: NewTab.State = {
   showBackgroundImage: false,
+  showStats: false,
+  showClock: false,
+  showTopSites: false,
   showSettings: false,
   topSites: [],
   ignoredTopSites: [],

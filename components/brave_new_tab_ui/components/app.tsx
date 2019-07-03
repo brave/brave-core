@@ -32,12 +32,15 @@ class DefaultPage extends React.Component<Props, {}> {
     return this.props.newTabData.isIncognito
       ? <NewPrivateTabPage newTabData={newTabData} actions={actions} />
       : (
-          <NewTabPage
-            newTabData={newTabData}
-            actions={actions}
-            saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
-          />
-        )
+        <NewTabPage
+          newTabData={newTabData}
+          actions={actions}
+          saveShowBackgroundImage={PreferencesAPI.saveShowBackgroundImage}
+          saveShowClock={PreferencesAPI.saveShowClock}
+          saveShowStats={PreferencesAPI.saveShowStats}
+          saveShowTopSites={PreferencesAPI.saveShowTopSites}
+        />
+      )
   }
 }
 

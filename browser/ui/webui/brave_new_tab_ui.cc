@@ -99,6 +99,18 @@ void BraveNewTabUI::SetPreferencesWebUIProperties(
         "showBackgroundImage",
         prefs->GetBoolean(kNewTabPageShowBackgroundImage) ? "true"
                                                           : "false");
+    render_view_host->SetWebUIProperty(
+        "showClock",
+        prefs->GetBoolean(kNewTabPageShowClock) ? "true"
+                                                : "false");
+    render_view_host->SetWebUIProperty(
+        "showTopSites",
+        prefs->GetBoolean(kNewTabPageShowTopSites) ? "true"
+                                                  : "false");
+    render_view_host->SetWebUIProperty(
+        "showStats",
+        prefs->GetBoolean(kNewTabPageShowStats) ? "true"
+                                                : "false");
   }
 }
 
