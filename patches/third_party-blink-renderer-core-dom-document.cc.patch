@@ -11,6 +11,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..44716e32f3221e76ddc1dd4da0cbc7ac
 +#include <iostream>
 +#include "third_party/blink/renderer/modules/service_worker/service_worker_container.h"
 +#include "third_party/blink/renderer/modules/storage/dom_window_storage_controller.h"
++
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
 +
