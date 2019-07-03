@@ -19,7 +19,9 @@ const char kBraveReferralsActivityPath[] = "/promo/activity";
 const char kBraveSafeBrowsingFileCheckProxy[] = "sb-ssl.brave.com";
 const char kBraveGoogleAPIProxy[] = "apis.brave.com";
 const char kBraveRedirectorProxy[] = "redirector.brave.com";
+const char kBraveClients4Proxy[] = "clients4.brave.com";
 
+const char kClients4Prefix[] = "*://clients4.google.com/";
 const char kCRXDownloadPrefix[] =
     "*://clients2.googleusercontent.com/crx/blobs/*crx*";
 const char kEmptyDataURI[] = "data:text/plain,";

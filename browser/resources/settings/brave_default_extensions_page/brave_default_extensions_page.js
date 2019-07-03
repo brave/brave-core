@@ -40,6 +40,10 @@ Polymer({
     this.browserProxy_.setIPFSCompanionEnabled(this.$.ipfsCompanionEnabled.checked);
   },
 
+  onMediaRouterEnabledChange_: function() {
+    this.browserProxy_.setMediaRouterEnabled(this.$.mediaRouterEnabled.checked);
+  },
+
   openExtensionsPage_: function() {
     window.open("chrome://extensions", "_self");
   },

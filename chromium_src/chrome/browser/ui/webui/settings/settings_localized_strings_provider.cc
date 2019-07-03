@@ -122,6 +122,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_HANGOUTS_ENABLED_DESC},
     {"ipfsCompanionEnabledDesc",
       IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC},
+    {"mediaRouterEnabledDesc",
+      IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC},
     {"manageExtensionsLabel",
       IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL}
   };
