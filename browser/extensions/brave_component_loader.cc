@@ -18,11 +18,13 @@
 #include "brave/components/brave_rewards/resources/extension/grit/brave_rewards_extension_resources.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/components_ui.h"
 #include "chrome/common/pref_names.h"
 #include "components/grit/brave_components_resources.h"
 #include "extensions/browser/extension_prefs.h"
+#include "extensions/browser/extension_system.h"
 
 namespace extensions {
 
@@ -48,7 +50,12 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
     bool allow_file_access,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  Add(manifest, install_dir);
+  if (extension_id == ethereum_remote_client_extension_id) {
+    ethereum_remote_client_manifest_ = manifest;
+    ethereum_remote_client_install_dir_ = install_dir;
+  } else {
+    Add(manifest, install_dir);
+  }
   if (allow_file_access) {
     ExtensionPrefs::Get((content::BrowserContext *)profile_)->
         SetAllowFileAccess(extension_id, true);
@@ -112,6 +119,15 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   AddExtension(ethereum_remote_client_extension_id, ethereum_remote_client_extension_name,
                ethereum_remote_client_extension_public_key);
 #endif
+}
+
+void BraveComponentLoader::AddEthereumRemoteClientExtension() {
+  Add(ethereum_remote_client_manifest_, ethereum_remote_client_install_dir_);
+}
+
+// TODO(bbondy): Expose this as a setting so you can turn it off after it has been turned on.
+void BraveComponentLoader::RemovEthereumRemoteClientExtension() {
+  Remove(ethereum_remote_client_extension_id);
 }
 
 }  // namespace extensions

@@ -29,6 +29,8 @@ class BraveComponentLoader : public ComponentLoader {
   // platforms this |skip_session_components| is expected to be unset.
   void AddDefaultComponentExtensions(bool skip_session_components) override;
   void OnComponentRegistered(std::string extension_id);
+  void AddEthereumRemoteClientExtension();
+  void RemovEthereumRemoteClientExtension();
   void OnComponentReady(std::string extension_id,
     bool allow_file_access,
     const base::FilePath& install_dir,
@@ -47,6 +49,8 @@ class BraveComponentLoader : public ComponentLoader {
   Profile* profile_;
   PrefService* profile_prefs_;
   PrefChangeRegistrar registrar_;
+  std::string ethereum_remote_client_manifest_;
+  base::FilePath ethereum_remote_client_install_dir_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveComponentLoader);
 };

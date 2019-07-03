@@ -77,6 +77,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/extensions/brave_component_loader.h"
+#include "chrome/browser/extensions/extension_service.h"
+#include "extensions/browser/extension_system.h"
+#endif
+
 namespace {
 
 bool HandleURLOverrideRewrite(GURL* url,
@@ -99,6 +105,13 @@ bool HandleURLOverrideRewrite(GURL* url,
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (url->SchemeIs(content::kChromeUIScheme) && url->host() == "wallet") {
+    extensions::ExtensionService* service =
+      extensions::ExtensionSystem::Get(browser_context)->extension_service();
+    extensions::ComponentLoader* loader = service->component_loader();
+    if (!loader->Exists(ethereum_remote_client_extension_id)) {
+      static_cast<extensions::BraveComponentLoader*>(loader)->
+          AddEthereumRemoteClientExtension();
+    }
     *url = GURL(ethereum_remote_client_base_url);
     return true;
   }
