@@ -19,17 +19,12 @@ BraveLocationBarModelDelegate::BraveLocationBarModelDelegate(
 
 BraveLocationBarModelDelegate::~BraveLocationBarModelDelegate() {}
 
-base::string16
-BraveLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
-    const GURL& url,
-    const base::string16& formatted_url) const {
-  base::string16 new_formatted_url =
-      BrowserLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
-          url, formatted_url);
-
+// static
+void BraveLocationBarModelDelegate::FormattedStringFromURL(const GURL& url,
+    base::string16* new_formatted_url) {
   if (url.SchemeIs("chrome")) {
     base::ReplaceFirstSubstringAfterOffset(
-        &new_formatted_url,
+        new_formatted_url,
         0,
         base::UTF8ToUTF16("chrome://"),
         base::UTF8ToUTF16("brave://"));
@@ -39,12 +34,22 @@ BraveLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
   if (url.SchemeIs(kChromeExtensionScheme) &&
       url.host() == ethereum_remote_client_extension_id) {
     base::ReplaceFirstSubstringAfterOffset(
-        &new_formatted_url,
+        new_formatted_url,
         0,
         base::UTF8ToUTF16(ethereum_remote_client_base_url),
         base::UTF8ToUTF16("brave://wallet"));
   }
 #endif
+}
 
+base::string16
+BraveLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
+    const GURL& url,
+    const base::string16& formatted_url) const {
+  base::string16 new_formatted_url =
+      BrowserLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
+          url, formatted_url);
+  BraveLocationBarModelDelegate::FormattedStringFromURL(url,
+      &new_formatted_url);
   return new_formatted_url;
 }
