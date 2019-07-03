@@ -39,7 +39,7 @@ NS_SWIFT_NAME(PublisherBanner)
 @property (nonatomic) NSString * publisherKey;
 @property (nonatomic) NSString * title;
 @property (nonatomic) NSString * name;
-@property (nonatomic) NSString * description;
+@property (nonatomic) NSString * desc;
 @property (nonatomic) NSString * background;
 @property (nonatomic) NSString * logo;
 @property (nonatomic) NSArray<NSNumber *> * amounts;
