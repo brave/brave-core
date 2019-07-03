@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/preferences/website/SiteSettingsPreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/preferences/website/SiteSettingsPreferences.java
+index ff9df9a330877249e90283b593f27dd96a3b527f..6350919df7da79551238d81e60c7d91eba932c83 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/preferences/website/SiteSettingsPreferences.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/preferences/website/SiteSettingsPreferences.java
+@@ -13,6 +13,7 @@ import android.widget.ListView;
+ 
+ import org.chromium.chrome.R;
+ import org.chromium.chrome.browser.ChromeFeatureList;
++import org.chromium.chrome.browser.preferences.BravePreferenceFragment;
+ import org.chromium.chrome.browser.preferences.LocationSettings;
+ import org.chromium.chrome.browser.preferences.PrefServiceBridge;
+ import org.chromium.chrome.browser.preferences.PreferenceUtils;
+@@ -33,7 +34,7 @@ import java.util.List;
+  * one sub-item, when either Autoplay or Protected Content should not be visible the other is shown
+  * in the main setting instead (as opposed to under Media).
+  */
+-public class SiteSettingsPreferences extends PreferenceFragment
++public class SiteSettingsPreferences extends BravePreferenceFragment
+         implements OnPreferenceClickListener {
+     // The keys for each category shown on the Site Settings page
+     // are defined in the SiteSettingsCategory, additional keys

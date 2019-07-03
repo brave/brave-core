@@ -1,0 +1,21 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/preferences/privacy/PrivacyPreferences.java b/chrome/android/java/src/org/chromium/chrome/browser/preferences/privacy/PrivacyPreferences.java
+index 91b55c5b9ea937dfe33ef8295bb6863a84354f40..3f1a3fe2b9d7a270b56bcf2d6b877ac7fa140765 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/preferences/privacy/PrivacyPreferences.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/preferences/privacy/PrivacyPreferences.java
+@@ -21,6 +21,7 @@ import org.chromium.chrome.R;
+ import org.chromium.chrome.browser.ChromeFeatureList;
+ import org.chromium.chrome.browser.contextualsearch.ContextualSearchFieldTrial;
+ import org.chromium.chrome.browser.help.HelpAndFeedback;
++import org.chromium.chrome.browser.preferences.BravePreferenceFragment;
+ import org.chromium.chrome.browser.preferences.ChromeBaseCheckBoxPreference;
+ import org.chromium.chrome.browser.preferences.ManagedPreferenceDelegate;
+ import org.chromium.chrome.browser.preferences.Pref;
+@@ -36,7 +37,7 @@ import org.chromium.ui.text.SpanApplier;
+ /**
+  * Fragment to keep track of the all the privacy related preferences.
+  */
+-public class PrivacyPreferences extends PreferenceFragment
++public class PrivacyPreferences extends BravePreferenceFragment
+         implements OnPreferenceChangeListener {
+     private static final String PREF_NAVIGATION_ERROR = "navigation_error";
+     private static final String PREF_SEARCH_SUGGESTIONS = "search_suggestions";
