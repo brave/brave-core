@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { Dispatch } from 'redux'
-import { getSearchEngineProvidersSuccess } from './actions/welcome_actions'
+import { getSearchEngineProvidersSuccess, getBrowserProfilesSuccess } from './actions/welcome_actions'
 
 export const getSearchEngineProviders = () => {
   return (dispatch: Dispatch) => {
@@ -13,6 +13,15 @@ export const getSearchEngineProviders = () => {
       })
       .catch((error: any) => {
         console.error('Could not load search providers', error)
+      })
+  }
+}
+
+export const getBrowserProfiles = () => {
+  return (dispatch: Dispatch) => {
+    window.cr.sendWithPromise('initializeImportDialog')
+      .then((response: Array<Welcome.BrowserProfile>) => {
+        dispatch(getBrowserProfilesSuccess(response))
       })
   }
 }

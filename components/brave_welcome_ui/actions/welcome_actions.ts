@@ -10,7 +10,7 @@ import { types } from '../constants/welcome_types'
 // APIs
 import * as welcomeUtils from '../welcomeUtils'
 
-export const importNowRequested = () => action(types.IMPORT_NOW_REQUESTED)
+export const importBrowserProfileRequested = (sourceBrowserProfileIndex: number) => action(types.IMPORT_BROWSER_PROFILE_REQUESTED, sourceBrowserProfileIndex)
 
 export const goToTabRequested = (url: string, target: string) => action(types.GO_TO_TAB_REQUESTED, {
   url,
@@ -23,4 +23,8 @@ export const changeDefaultSearchProvider = (searchProvider: string) => action(ty
 
 export const getSearchEngineProvidersSuccess = (searchProviders: Array<Welcome.SearchEngineEntry>) => action(types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS, searchProviders)
 
+export const getBrowserProfilesSuccess = (browserProfiles: Array<Welcome.BrowserProfile>) => action(types.IMPORT_BROWSER_PROFILES_SUCCESS, browserProfiles)
+
 export const getSearchEngineProviders = () => welcomeUtils.getSearchEngineProviders()
+
+export const getBrowserProfiles = () => welcomeUtils.getBrowserProfiles()
