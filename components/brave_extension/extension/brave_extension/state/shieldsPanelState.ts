@@ -26,7 +26,7 @@ export const isShieldsActive = (state: shieldState.State, tabId: number): boolea
 export const getPersistentData: shieldState.GetPersistentData = (state) => state.persistentData
 
 export const updatePersistentData: shieldState.UpdatePersistentData = (state, persistentData) => {
-  return { ...state, persistentData: { ...persistentData } }
+  return { ...state, persistentData: { ...state.persistentData, ...persistentData } }
 }
 
 export const updateActiveTab: shieldState.UpdateActiveTab = (state, windowId, tabId) => {

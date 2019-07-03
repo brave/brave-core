@@ -156,6 +156,14 @@ export interface SetAdvancedViewFirstAccess {
   (): SetAdvancedViewFirstAccessReturn
 }
 
+interface ToggleAdvancedViewReturn {
+  type: types.TOGGLE_ADVANCED_VIEW
+}
+
+export interface ToggleAdvancedView {
+  (): ToggleAdvancedViewReturn
+}
+
 export type shieldPanelActions =
   ShieldsPanelDataUpdatedReturn |
   ShieldsToggledReturn |
@@ -171,4 +179,5 @@ export type shieldPanelActions =
   SetGroupedScriptsBlockedCurrentStateReturn |
   SetAllScriptsBlockedCurrentStateReturn |
   SetFinalScriptsBlockedStateReturn |
-  SetAdvancedViewFirstAccessReturn
+  SetAdvancedViewFirstAccessReturn |
+  ToggleAdvancedViewReturn

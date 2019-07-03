@@ -13,6 +13,7 @@ import {
   SiteInfo,
   MainToggleHeading,
   MainToggleText,
+  // Link,
   ToggleStateText,
   Favicon,
   SiteInfoText,
@@ -22,13 +23,12 @@ import {
   ShieldIcon,
   DisabledContentText,
   Toggle
-} from 'brave-ui/features/shields'
+ } from 'brave-ui/features/shields'
 
 // Helpers
 import { getLocale } from '../../background/api/localeAPI'
 import {
   blockedResourcesSize,
-  getTotalBlockedSizeStrings,
   getToggleStateViaEventTarget
 } from '../../helpers/shieldsUtils'
 
@@ -40,7 +40,6 @@ interface CommonProps {
   enabled: boolean
   favicon: string
   hostname: string
-  isBlockedListOpen: boolean
   shieldsToggled: ShieldsToggled
 }
 
@@ -66,20 +65,20 @@ export default class Header extends React.PureComponent<Props, {}> {
     return blockedResourcesSize(total)
   }
 
-  get totalBlockedStrings (): string {
-    const { httpsUpgrades } = this.props
-    return getTotalBlockedSizeStrings(this.blockedItemsSize, httpsUpgrades)
-  }
-
   onToggleShields = (event: React.ChangeEvent<HTMLInputElement>) => {
     const shieldsOption: BlockOptions = getToggleStateViaEventTarget(event)
     this.props.shieldsToggled(shieldsOption)
   }
 
   render () {
-    const { enabled, favicon, hostname, isBlockedListOpen } = this.props
+    const {
+      enabled,
+      favicon,
+      hostname
+      // onChangeReadOnlyView,
+    } = this.props
     return (
-      <ShieldsHeader id='braveShieldsHeader' status={enabled ? 'enabled' : 'disabled'}>
+      <ShieldsHeader status={enabled ? 'enabled' : 'disabled'}>
         <MainToggle status={enabled ? 'enabled' : 'disabled'}>
           <div>
             <MainToggleHeading>
@@ -91,20 +90,21 @@ export default class Header extends React.PureComponent<Props, {}> {
             </MainToggleHeading>
             {enabled ? <MainToggleText>{getLocale('enabledMessage')}</MainToggleText> : null}
           </div>
-          <Toggle id='mainToggle' size='large' checked={enabled} onChange={this.onToggleShields} disabled={isBlockedListOpen} />
+          <Toggle id='mainToggle' size='large' checked={enabled} onChange={this.onToggleShields} />
         </MainToggle>
         <SiteOverview status={enabled ? 'enabled' : 'disabled'}>
           <SiteInfo>
             <Favicon src={favicon} />
-            <SiteInfoText id='hostname' title={hostname}>{hostname}</SiteInfoText>
+            <SiteInfoText>{hostname}</SiteInfoText>
           </SiteInfo>
           {
             enabled
             ? (
-              <TotalBlockedStats>
+              <TotalBlockedStats size='large'>
                 <TotalBlockedStatsNumber>{this.totalBlockedSize}</TotalBlockedStatsNumber>
                 <TotalBlockedStatsText>
-                  {this.totalBlockedStrings}
+                  {`${getLocale('blockedResoucesExplanation')} `}
+                  {/* <Link onClick={onChangeReadOnlyView}>{getLocale('learnMore')}</Link> */}
                 </TotalBlockedStatsText>
               </TotalBlockedStats>
             )

@@ -326,7 +326,8 @@ describe('braveShieldsPanelReducer', () => {
         })).toEqual({
           currentWindowId: -1,
           persistentData: {
-            isFirstAccess: true
+            isFirstAccess: true,
+            advancedView: false
           },
           tabs: {
             [tabId]: {

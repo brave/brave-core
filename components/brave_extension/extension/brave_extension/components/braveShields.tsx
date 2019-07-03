@@ -9,6 +9,7 @@ import 'emptykit.css'
 
 // Components group
 import AdvancedView from './advancedView'
+import SimpleView from './simpleView'
 
 // Types
 import { Tab, PersistentData } from '../types/state/shieldsPannelState'
@@ -24,7 +25,8 @@ import {
   SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState,
-  SetAdvancedViewFirstAccess
+  SetAdvancedViewFirstAccess,
+  ToggleAdvancedView
 } from '../types/actions/shieldsPanelActions'
 
 interface Props {
@@ -41,6 +43,7 @@ interface Props {
     setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
     setFinalScriptsBlockedState: SetFinalScriptsBlockedState
     setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
+    toggleAdvancedView: ToggleAdvancedView
   }
   shieldsPanelTabData: Tab
   persistentData: PersistentData
@@ -53,8 +56,15 @@ export default class Shields extends React.PureComponent<Props, {}> {
       return null
     }
 
-    return (
+    return persistentData.advancedView
+    ? (
       <AdvancedView
+        shieldsPanelTabData={shieldsPanelTabData}
+        persistentData={persistentData}
+        actions={actions}
+      />
+    ) : (
+      <SimpleView
         shieldsPanelTabData={shieldsPanelTabData}
         persistentData={persistentData}
         actions={actions}

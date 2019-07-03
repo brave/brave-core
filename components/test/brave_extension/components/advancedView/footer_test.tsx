@@ -8,6 +8,7 @@ import * as tabsAPI from '../../../../brave_extension/extension/brave_extension/
 import { shallow } from 'enzyme'
 
 const fakeProps: Props = {
+  toggleAdvancedView: () => undefined,
   isBlockedListOpen: false
 }
 

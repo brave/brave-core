@@ -40,6 +40,7 @@ export interface Windows {
 
 export interface PersistentData {
   isFirstAccess: boolean
+  advancedView: boolean
 }
 
 export interface State {
@@ -62,7 +63,7 @@ export interface GetPersistentData {
 }
 
 export interface UpdatePersistentData {
-  (state: State, persistentData: PersistentData): State
+  (state: State, persistentData: Partial<PersistentData>): State
 }
 
 export interface UpdateActiveTab {

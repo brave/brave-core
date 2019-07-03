@@ -269,14 +269,14 @@ export const initialState = deepFreeze({
     currentWindowId: -1,
     tabs: {},
     windows: {},
-    persistentData: { isFirstAccess: true }
+    persistentData: { isFirstAccess: true, advancedView: false }
   },
   runtime: {},
   shieldsPanel: {
     currentWindowId: -1,
     tabs: {},
     windows: {},
-    persistentData: { isFirstAccess: true }
+    persistentData: { isFirstAccess: true, advancedView: false }
   }
 })
 

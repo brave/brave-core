@@ -316,8 +316,15 @@ export default function shieldsPanelReducer (
       state = noScriptState.setFinalScriptsBlockedState(state)
       break
     }
+    // Advanced/simple view functionality
     case shieldsPanelTypes.SET_ADVANCED_VIEW_FIRST_ACCESS: {
       state = shieldsPanelState.updatePersistentData(state, { isFirstAccess: false })
+      break
+    }
+    case shieldsPanelTypes.TOGGLE_ADVANCED_VIEW: {
+      state = shieldsPanelState.updatePersistentData(state, {
+        advancedView: !state.persistentData.advancedView
+      })
       break
     }
   }

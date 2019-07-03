@@ -4,10 +4,6 @@
 
 import * as React from 'react'
 
-// Types
-
-import { ToggleAdvancedView } from '../../types/actions/shieldsPanelActions'
-
 // Feature-specific components
 import { MainFooter, Link } from 'brave-ui/features/shields'
 
@@ -16,9 +12,9 @@ import * as tabsAPI from '../../background/api/tabsAPI'
 
 // Locale
 import { getLocale } from '../../background/api/localeAPI'
+import { ToggleAdvancedView } from '../../types/actions/shieldsPanelActions'
 
 export interface Props {
-  isBlockedListOpen: boolean
   toggleAdvancedView: ToggleAdvancedView
 }
 
@@ -29,17 +25,13 @@ export default class Footer extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { isBlockedListOpen, toggleAdvancedView } = this.props
+    const { toggleAdvancedView } = this.props
     return (
       <MainFooter>
-        <Link disabled={isBlockedListOpen} onClick={toggleAdvancedView}>
-          {getLocale('simpleView')}
+        <Link onClick={toggleAdvancedView}>
+          {getLocale('advancedView')}
         </Link>
-        <Link
-          id='braveShieldsFooter'
-          onClick={this.openSettings}
-          disabled={isBlockedListOpen}
-        >
+        <Link id='braveShieldsFooter' onClick={this.openSettings}>
           {getLocale('changeDefaults')}
         </Link>
       </MainFooter>

@@ -8,7 +8,8 @@ import * as Shields from '../../types/state/shieldsPannelState'
 const keyName = 'shields-persistent-data'
 
 export const defaultPersistentData: Shields.PersistentData = {
-  isFirstAccess: true
+  isFirstAccess: true,
+  advancedView: false
 }
 
 export const loadPersistentData = (): Shields.PersistentData => {

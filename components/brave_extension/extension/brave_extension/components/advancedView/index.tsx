@@ -15,6 +15,7 @@ import Header from './header'
 import InterfaceControls from './interfaceControls'
 import PrivacyControls from './privacyControls'
 import Footer from './footer'
+import WebCompatWarning from './overlays/webCompatWarningOverlay'
 
 // Types
 import { Tab, PersistentData } from '../../types/state/shieldsPannelState'
@@ -31,7 +32,8 @@ import {
   SetGroupedScriptsBlockedCurrentState,
   SetAllScriptsBlockedCurrentState,
   SetFinalScriptsBlockedState,
-  SetAdvancedViewFirstAccess
+  SetAdvancedViewFirstAccess,
+  ToggleAdvancedView
 } from '../../types/actions/shieldsPanelActions'
 
 interface Props {
@@ -48,6 +50,7 @@ interface Props {
     setAllScriptsBlockedCurrentState: SetAllScriptsBlockedCurrentState
     setFinalScriptsBlockedState: SetFinalScriptsBlockedState
     setAdvancedViewFirstAccess: SetAdvancedViewFirstAccess
+    toggleAdvancedView: ToggleAdvancedView
   }
   shieldsPanelTabData: Tab
   persistentData: PersistentData
@@ -78,7 +81,7 @@ export default class Shields extends React.PureComponent<Props, State> {
   }
 
   render () {
-    const { shieldsPanelTabData, actions } = this.props
+    const { shieldsPanelTabData, persistentData, actions } = this.props
     const { isBlockedListOpen } = this.state
 
     if (!shieldsPanelTabData) {
@@ -87,10 +90,13 @@ export default class Shields extends React.PureComponent<Props, State> {
 
     return (
       <ShieldsPanel data-test-id='brave-shields-panel' style={{ width: '370px' }}>
+        {
+          persistentData.isFirstAccess
+            && <WebCompatWarning setAdvancedViewFirstAccess={actions.setAdvancedViewFirstAccess} />
+        }
         <Header
           enabled={this.isShieldsEnabled}
           favicon={this.favicon}
-          origin={origin}
           hostname={shieldsPanelTabData.hostname}
           isBlockedListOpen={isBlockedListOpen}
           adsBlocked={shieldsPanelTabData.adsBlocked}
@@ -151,7 +157,10 @@ export default class Shields extends React.PureComponent<Props, State> {
             </>
           )
         }
-        <Footer isBlockedListOpen={isBlockedListOpen} />
+        <Footer
+          isBlockedListOpen={isBlockedListOpen}
+          toggleAdvancedView={actions.toggleAdvancedView}
+        />
       </ShieldsPanel>
     )
   }

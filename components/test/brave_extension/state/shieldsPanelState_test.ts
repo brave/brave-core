@@ -11,7 +11,8 @@ import * as shieldsAPI from '../../../brave_extension/extension/brave_extension/
 const state: State = deepFreeze({
   currentWindowId: 1,
   persistentData: {
-    isFirstAccess: true
+    isFirstAccess: true,
+    advancedView: false
   },
   tabs: {
     2: {
@@ -97,11 +98,14 @@ describe('shieldsPanelState test', () => {
   })
   describe('updatePersistentData', () => {
     it('is able to update persistent data', () => {
-      const newPersistentData: PersistentData = {
+      const newPersistentData: Partial<PersistentData> = {
         isFirstAccess: false
       }
       const assertion = shieldsPanelState.updatePersistentData(state, newPersistentData)
-      expect(assertion).toEqual({ ...state, persistentData: newPersistentData })
+      expect(assertion).toEqual({
+        ...state,
+        persistentData: { ...state.persistentData, ...newPersistentData }
+      })
     })
   })
   describe('updateActiveTab', () => {
@@ -109,7 +113,8 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.updateActiveTab(state, 1, 4)).toEqual({
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -138,7 +143,8 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.updateActiveTab(state, 2, 4)).toEqual({
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -169,7 +175,8 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.removeWindowInfo(state, 1)).toEqual({
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -197,7 +204,8 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.removeWindowInfo(state, 2)).toEqual({
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -227,7 +235,8 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.updateFocusedWindow(state, 2)).toEqual({
         currentWindowId: 2,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -266,7 +275,8 @@ describe('shieldsPanelState test', () => {
       })).toEqual({
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -310,7 +320,8 @@ describe('shieldsPanelState test', () => {
       const stateWithStats: State = {
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -400,7 +411,8 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId)).toEqual({
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -487,7 +499,8 @@ describe('shieldsPanelState test', () => {
       const stateWithStats: State = {
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -572,7 +585,8 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId)).toEqual({
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -661,7 +675,8 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads', 'https://test.brave.com')).toEqual({
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -701,7 +716,8 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'trackers', 'https://test.brave.com')).toEqual({
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -741,7 +757,8 @@ describe('shieldsPanelState test', () => {
       expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'javascript', 'https://test.brave.com')).toEqual({
         currentWindowId: 1,
         persistentData: {
-          isFirstAccess: true
+          isFirstAccess: true,
+          advancedView: false
         },
         tabs: {
           2: {
@@ -783,7 +800,8 @@ describe('shieldsPanelState test', () => {
     const stateWithAllowedScriptOrigins: State = {
       currentWindowId: 1,
       persistentData: {
-        isFirstAccess: true
+        isFirstAccess: true,
+        advancedView: false
       },
       tabs: {
         2: {
@@ -852,7 +870,8 @@ describe('shieldsPanelState test', () => {
         stateWithAllowedScriptOrigins, this.tabId, 'https://brave.com')).toEqual({
           currentWindowId: 1,
           persistentData: {
-            isFirstAccess: true
+            isFirstAccess: true,
+            advancedView: false
           },
           tabs: {
             2: {
@@ -932,7 +951,8 @@ describe('shieldsPanelState test', () => {
         stateWithAllowedScriptOrigins, this.tabId, 'https://test.brave.com')).toEqual({
           currentWindowId: 1,
           persistentData: {
-            isFirstAccess: true
+            isFirstAccess: true,
+            advancedView: false
           },
           tabs: {
             2: {
@@ -1012,7 +1032,10 @@ describe('shieldsPanelState test', () => {
     it('does not call setBadgeText if tab does not exist', () => {
       const newState: State = deepFreeze({
         currentWindowId: 1,
-        persistentData: { isFirstAccess: true },
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {},
         windows: { 1: 2 }
       })
@@ -1043,7 +1066,10 @@ describe('shieldsPanelState test', () => {
     it('does not call setIcon if tab does not exist', () => {
       const newState: State = deepFreeze({
         currentWindowId: 1,
-        persistentData: { isFirstAccess: true },
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {},
         windows: { 1: 2 }
       })
