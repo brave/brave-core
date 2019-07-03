@@ -13,7 +13,8 @@ const char widevine_extension_id[] = "oimompecagnajdejgnnjijobebaeigek";
 const char brave_sync_extension_id[] = "nomlkjnggnifocmealianaaiobmebgil";
 const char crl_set_extension_id[] = "hfnkpimlhhgieaddgfemjhofmfblmnib";
 
-const char ethereum_remote_client_extension_id[] = "odbfpeeihdkbihmopkbjmoonfanlbfcl";
+const char ethereum_remote_client_extension_id[] =
+    "odbfpeeihdkbihmopkbjmoonfanlbfcl";
 const char ethereum_remote_client_extension_name[] = "IPFS Companion";
 const char ethereum_remote_client_extension_public_key[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl7ZLkqbq8pHRcYANANXmhGKZKHsru"
@@ -24,6 +25,7 @@ const char ethereum_remote_client_extension_public_key[] =
     "EGySVmv6czOI5eJYezWXwIDAQAB";
 const char ethereum_remote_client_base_url[] =
     "chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/home.html";
+const char ethereum_remote_client_host[] = "wallet";
 
 const char ipfs_companion_extension_id[] = "nibjojkomfdiaoajekhjakgkdhaomnch";
 const char ipfs_companion_extension_name[] = "IPFS Companion";

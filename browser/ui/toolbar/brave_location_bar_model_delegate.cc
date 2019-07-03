@@ -36,7 +36,8 @@ BraveLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
   }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  if (url.SchemeIs(kChromeExtensionScheme) && url.host() == ethereum_remote_client_extension_id) {
+  if (url.SchemeIs(kChromeExtensionScheme) &&
+      url.host() == ethereum_remote_client_extension_id) {
     base::ReplaceFirstSubstringAfterOffset(
         &new_formatted_url,
         0,

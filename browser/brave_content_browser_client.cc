@@ -85,51 +85,16 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 namespace {
 
-bool HandleURLOverrideRewrite(GURL* url,
-                              content::BrowserContext* browser_context) {
-  // redirect sync-internals
-  if (url->host() == chrome::kChromeUISyncInternalsHost ||
-      url->host() == chrome::kChromeUISyncHost) {
-    GURL::Replacements replacements;
-    replacements.SetHostStr(chrome::kChromeUISyncHost);
-    *url = url->ReplaceComponents(replacements);
-    return true;
-  }
-
-  // no special win10 welcome page
-  if (url->host() == chrome::kChromeUIWelcomeWin10Host ||
-      url->host() == chrome::kChromeUIWelcomeHost) {
-    *url = GURL(chrome::kChromeUIWelcomeURL);
-    return true;
-  }
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  if (url->SchemeIs(content::kChromeUIScheme) && url->host() == "wallet") {
-    extensions::ExtensionService* service =
-      extensions::ExtensionSystem::Get(browser_context)->extension_service();
-    extensions::ComponentLoader* loader = service->component_loader();
-    if (!loader->Exists(ethereum_remote_client_extension_id)) {
-      static_cast<extensions::BraveComponentLoader*>(loader)->
-          AddEthereumRemoteClientExtension();
-    }
-    *url = GURL(ethereum_remote_client_base_url);
-    return true;
-  }
-#endif
-
-  return false;
-}
-
 bool HandleURLReverseOverrideRewrite(GURL* url,
                                      content::BrowserContext* browser_context) {
-  if (HandleURLOverrideRewrite(url, browser_context))
+  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url, browser_context))
     return true;
 
   return false;
 }
 
 bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
-  if (HandleURLOverrideRewrite(url, browser_context))
+  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url, browser_context))
     return true;
 
   return false;
@@ -367,4 +332,43 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
 #else
   return url;
 #endif
+}
+
+// [static]
+bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
+    content::BrowserContext* browser_context) {
+  // redirect sync-internals
+  if (url->host() == chrome::kChromeUISyncInternalsHost ||
+      url->host() == chrome::kChromeUISyncHost) {
+    GURL::Replacements replacements;
+    replacements.SetHostStr(chrome::kChromeUISyncHost);
+    *url = url->ReplaceComponents(replacements);
+    return true;
+  }
+
+  // no special win10 welcome page
+  if (url->host() == chrome::kChromeUIWelcomeWin10Host ||
+      url->host() == chrome::kChromeUIWelcomeHost) {
+    *url = GURL(chrome::kChromeUIWelcomeURL);
+    return true;
+  }
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  if (url->SchemeIs(content::kChromeUIScheme) &&
+      url->host() == ethereum_remote_client_host) {
+    if (browser_context) {
+      extensions::ExtensionService* service =
+        extensions::ExtensionSystem::Get(browser_context)->extension_service();
+      extensions::ComponentLoader* loader = service->component_loader();
+      if (!loader->Exists(ethereum_remote_client_extension_id)) {
+        static_cast<extensions::BraveComponentLoader*>(loader)->
+          AddEthereumRemoteClientExtension();
+      }
+    }
+    *url = GURL(ethereum_remote_client_base_url);
+    return true;
+  }
+#endif
+
+  return false;
 }

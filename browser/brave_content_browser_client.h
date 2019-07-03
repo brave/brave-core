@@ -79,6 +79,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
                        const GURL& url) override;
+  static bool HandleURLOverrideRewrite(GURL* url,
+      content::BrowserContext* browser_context);
 
  private:
   bool AllowAccessCookie(const GURL& url, const GURL& first_party,

@@ -116,8 +116,9 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
   }
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  AddExtension(ethereum_remote_client_extension_id, ethereum_remote_client_extension_name,
-               ethereum_remote_client_extension_public_key);
+  AddExtension(ethereum_remote_client_extension_id,
+      ethereum_remote_client_extension_name,
+      ethereum_remote_client_extension_public_key);
 #endif
 }
 
@@ -125,7 +126,8 @@ void BraveComponentLoader::AddEthereumRemoteClientExtension() {
   Add(ethereum_remote_client_manifest_, ethereum_remote_client_install_dir_);
 }
 
-// TODO(bbondy): Expose this as a setting so you can turn it off after it has been turned on.
+// TODO(bbondy): Expose this as a setting so you can turn it off after it has
+// been turned on.
 void BraveComponentLoader::RemovEthereumRemoteClientExtension() {
   Remove(ethereum_remote_client_extension_id);
 }
