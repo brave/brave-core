@@ -6,6 +6,13 @@
 #include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/common/url_constants.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/common/extensions/extension_constants.h"
+#endif
+
 
 BraveLocationBarModelDelegate::BraveLocationBarModelDelegate(
     Browser* browser) : BrowserLocationBarModelDelegate(browser) {}
@@ -27,6 +34,16 @@ BraveLocationBarModelDelegate::FormattedStringWithEquivalentMeaning(
         base::UTF8ToUTF16("chrome://"),
         base::UTF8ToUTF16("brave://"));
   }
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  if (url.SchemeIs(kChromeExtensionScheme) && url.host() == ethereum_remote_client_extension_id) {
+    base::ReplaceFirstSubstringAfterOffset(
+        &new_formatted_url,
+        0,
+        base::UTF8ToUTF16(ethereum_remote_client_base_url),
+        base::UTF8ToUTF16("brave://wallet"));
+  }
+#endif
 
   return new_formatted_url;
 }

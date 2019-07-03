@@ -27,6 +27,7 @@
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
@@ -95,6 +96,13 @@ bool HandleURLOverrideRewrite(GURL* url,
     *url = GURL(chrome::kChromeUIWelcomeURL);
     return true;
   }
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  if (url->SchemeIs(content::kChromeUIScheme) && url->host() == "wallet") {
+    *url = GURL(ethereum_remote_client_base_url);
+    return true;
+  }
+#endif
 
   return false;
 }

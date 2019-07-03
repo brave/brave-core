@@ -22,6 +22,8 @@ const char ethereum_remote_client_extension_public_key[] =
     "JedlkoS4SKC0U3j8/mjAYR0+lpmBtPitObnYnM5qmtrlg2hgm+sqAon9WKj9nDIjPpXJaCs7k"
     "pVl7oQOoYpv47ZT1tnu0o03AL3RZbxPU1N04X3JN6nC+g4gaCgiLkZ+dD79yIt7Il0+vSKuJ+"
     "EGySVmv6czOI5eJYezWXwIDAQAB";
+const char ethereum_remote_client_base_url[] =
+    "chrome-extension://odbfpeeihdkbihmopkbjmoonfanlbfcl/home.html";
 
 const char ipfs_companion_extension_id[] = "nibjojkomfdiaoajekhjakgkdhaomnch";
 const char ipfs_companion_extension_name[] = "IPFS Companion";
