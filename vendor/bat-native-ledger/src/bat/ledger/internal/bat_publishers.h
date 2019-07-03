@@ -68,7 +68,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                         int year,
                         ledger::BalanceReportInfo* report_info);
 
-  std::map<std::string, ledger::BalanceReportInfo> getAllBalanceReports();
+  std::map<std::string, ledger::BalanceReportInfoPtr> GetAllBalanceReports();
 
   uint64_t getPublisherMinVisitTime() const;  // In milliseconds
 

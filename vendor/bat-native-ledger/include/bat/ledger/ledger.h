@@ -171,7 +171,7 @@ class LEDGER_EXPORT Ledger {
                               int year,
                               ledger::BalanceReportInfo* report_info) const = 0;
 
-  virtual std::map<std::string, ledger::BalanceReportInfo>
+  virtual std::map<std::string, ledger::BalanceReportInfoPtr>
   GetAllBalanceReports() const = 0;
 
   virtual ledger::AutoContributePropsPtr GetAutoContributeProps() = 0;

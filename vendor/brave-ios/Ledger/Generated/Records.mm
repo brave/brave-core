@@ -10,23 +10,6 @@
 #import <map>
 #import <string>
 
-@implementation BATBalanceReportInfo
-- (instancetype)initWithBalanceReportInfo:(const ledger::BalanceReportInfo&)obj {
-  if ((self = [super init])) {
-    self.openingBalance = [NSString stringWithUTF8String:obj.opening_balance_.c_str()];
-    self.closingBalance = [NSString stringWithUTF8String:obj.closing_balance_.c_str()];
-    self.deposits = [NSString stringWithUTF8String:obj.deposits_.c_str()];
-    self.grants = [NSString stringWithUTF8String:obj.grants_.c_str()];
-    self.earningFromAds = [NSString stringWithUTF8String:obj.earning_from_ads_.c_str()];
-    self.autoContribute = [NSString stringWithUTF8String:obj.auto_contribute_.c_str()];
-    self.recurringDonation = [NSString stringWithUTF8String:obj.recurring_donation_.c_str()];
-    self.oneTimeDonation = [NSString stringWithUTF8String:obj.one_time_donation_.c_str()];
-    self.total = [NSString stringWithUTF8String:obj.total_.c_str()];
-  }
-  return self;
-}
-@end
-
 @implementation BATReconcileInfo
 - (instancetype)initWithReconcileInfo:(const ledger::ReconcileInfo&)obj {
   if ((self = [super init])) {

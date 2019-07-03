@@ -20,10 +20,6 @@
 #include "bat/ledger/transactions_info.h"
 #include "bat/ledger/wallet_properties.h"
 
-@interface BATBalanceReportInfo (Private)
-- (instancetype)initWithBalanceReportInfo:(const ledger::BalanceReportInfo&)obj;
-@end
-
 @interface BATReconcileInfo (Private)
 - (instancetype)initWithReconcileInfo:(const ledger::ReconcileInfo&)obj;
 @end

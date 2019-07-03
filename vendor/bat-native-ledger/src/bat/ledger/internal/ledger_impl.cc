@@ -773,9 +773,9 @@ bool LedgerImpl::GetBalanceReport(
   return bat_publishers_->getBalanceReport(month, year, report_info);
 }
 
-std::map<std::string, ledger::BalanceReportInfo>
+std::map<std::string, ledger::BalanceReportInfoPtr>
 LedgerImpl::GetAllBalanceReports() const {
-  return bat_publishers_->getAllBalanceReports();
+  return bat_publishers_->GetAllBalanceReports();
 }
 
 void LedgerImpl::SetBalanceReport(

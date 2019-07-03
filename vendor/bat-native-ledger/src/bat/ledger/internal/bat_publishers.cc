@@ -569,14 +569,14 @@ void BatPublishers::setBalanceReport(ledger::ACTIVITY_MONTH month,
                                 int year,
                                 const ledger::BalanceReportInfo& report_info) {
   braveledger_bat_helper::REPORT_BALANCE_ST report_balance;
-  report_balance.opening_balance_ = report_info.opening_balance_;
-  report_balance.closing_balance_ = report_info.closing_balance_;
-  report_balance.grants_ = report_info.grants_;
-  report_balance.deposits_ = report_info.deposits_;
-  report_balance.earning_from_ads_ = report_info.earning_from_ads_;
-  report_balance.recurring_donation_ = report_info.recurring_donation_;
-  report_balance.one_time_donation_ = report_info.one_time_donation_;
-  report_balance.auto_contribute_ = report_info.auto_contribute_;
+  report_balance.opening_balance_ = report_info.opening_balance;
+  report_balance.closing_balance_ = report_info.closing_balance;
+  report_balance.grants_ = report_info.grants;
+  report_balance.deposits_ = report_info.deposits;
+  report_balance.earning_from_ads_ = report_info.earning_from_ads;
+  report_balance.recurring_donation_ = report_info.recurring_donation;
+  report_balance.one_time_donation_ = report_info.one_time_donation;
+  report_balance.auto_contribute_ = report_info.auto_contribute;
 
   std::string total = "0";
   total = braveledger_bat_bignum::sum(total, report_balance.grants_);
@@ -603,6 +603,15 @@ bool BatPublishers::getBalanceReport(ledger::ACTIVITY_MONTH month,
 
   if (iter == state_->monthly_balances_.end()) {
     ledger::BalanceReportInfo new_report_info;
+    new_report_info.opening_balance = "0";
+    new_report_info.closing_balance = "0";
+    new_report_info.grants = "0";
+    new_report_info.earning_from_ads = "0";
+    new_report_info.auto_contribute = "0";
+    new_report_info.recurring_donation = "0";
+    new_report_info.one_time_donation = "0";
+    new_report_info.total = "0";
+
     setBalanceReport(month, year, new_report_info);
     bool successGet = getBalanceReport(month, year, report_info);
     if (successGet) {
@@ -612,32 +621,32 @@ bool BatPublishers::getBalanceReport(ledger::ACTIVITY_MONTH month,
     }
   }
 
-  report_info->opening_balance_ = iter->second.opening_balance_;
-  report_info->closing_balance_ = iter->second.closing_balance_;
-  report_info->grants_ = iter->second.grants_;
-  report_info->earning_from_ads_ = iter->second.earning_from_ads_;
-  report_info->auto_contribute_ = iter->second.auto_contribute_;
-  report_info->recurring_donation_ = iter->second.recurring_donation_;
-  report_info->one_time_donation_ = iter->second.one_time_donation_;
+  report_info->opening_balance = iter->second.opening_balance_;
+  report_info->closing_balance = iter->second.closing_balance_;
+  report_info->grants = iter->second.grants_;
+  report_info->earning_from_ads = iter->second.earning_from_ads_;
+  report_info->auto_contribute = iter->second.auto_contribute_;
+  report_info->recurring_donation = iter->second.recurring_donation_;
+  report_info->one_time_donation = iter->second.one_time_donation_;
 
   return true;
 }
 
-std::map<std::string, ledger::BalanceReportInfo>
-BatPublishers::getAllBalanceReports() {
-  std::map<std::string, ledger::BalanceReportInfo> newReports;
+std::map<std::string, ledger::BalanceReportInfoPtr>
+BatPublishers::GetAllBalanceReports() {
+  std::map<std::string, ledger::BalanceReportInfoPtr> newReports;
   for (auto const& report : state_->monthly_balances_) {
-    ledger::BalanceReportInfo newReport;
+    ledger::BalanceReportInfoPtr newReport = ledger::BalanceReportInfo::New();
     const braveledger_bat_helper::REPORT_BALANCE_ST oldReport = report.second;
-    newReport.opening_balance_ = oldReport.opening_balance_;
-    newReport.closing_balance_ = oldReport.closing_balance_;
-    newReport.grants_ = oldReport.grants_;
-    newReport.earning_from_ads_ = oldReport.earning_from_ads_;
-    newReport.auto_contribute_ = oldReport.auto_contribute_;
-    newReport.recurring_donation_ = oldReport.recurring_donation_;
-    newReport.one_time_donation_ = oldReport.one_time_donation_;
+    newReport->opening_balance = oldReport.opening_balance_;
+    newReport->closing_balance = oldReport.closing_balance_;
+    newReport->grants = oldReport.grants_;
+    newReport->earning_from_ads = oldReport.earning_from_ads_;
+    newReport->auto_contribute = oldReport.auto_contribute_;
+    newReport->recurring_donation = oldReport.recurring_donation_;
+    newReport->one_time_donation = oldReport.one_time_donation_;
 
-    newReports[report.first] = newReport;
+    newReports[report.first] = std::move(newReport);
   }
 
   return newReports;
@@ -809,24 +818,24 @@ void BatPublishers::setBalanceReportItem(ledger::ACTIVITY_MONTH month,
 
   switch (type) {
     case ledger::ReportType::GRANT:
-      report_info.grants_ =
-          braveledger_bat_bignum::sum(report_info.grants_, probi);
+      report_info.grants =
+          braveledger_bat_bignum::sum(report_info.grants, probi);
       break;
     case ledger::ReportType::ADS:
-      report_info.earning_from_ads_ =
-          braveledger_bat_bignum::sum(report_info.earning_from_ads_, probi);
+      report_info.earning_from_ads =
+          braveledger_bat_bignum::sum(report_info.earning_from_ads, probi);
       break;
     case ledger::ReportType::AUTO_CONTRIBUTION:
-      report_info.auto_contribute_ =
-          braveledger_bat_bignum::sum(report_info.auto_contribute_, probi);
+      report_info.auto_contribute =
+          braveledger_bat_bignum::sum(report_info.auto_contribute, probi);
       break;
     case ledger::ReportType::TIP:
-      report_info.one_time_donation_ =
-          braveledger_bat_bignum::sum(report_info.one_time_donation_, probi);
+      report_info.one_time_donation =
+          braveledger_bat_bignum::sum(report_info.one_time_donation, probi);
       break;
     case ledger::ReportType::TIP_RECURRING:
-      report_info.recurring_donation_ =
-          braveledger_bat_bignum::sum(report_info.recurring_donation_, probi);
+      report_info.recurring_donation =
+          braveledger_bat_bignum::sum(report_info.recurring_donation, probi);
       break;
     default:
       break;

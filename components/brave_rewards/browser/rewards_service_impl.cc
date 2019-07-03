@@ -912,7 +912,6 @@ void RewardsServiceImpl::OnRecoverWallet(ledger::Result result,
 
 void RewardsServiceImpl::OnGrantFinish(ledger::Result result,
                                        ledger::GrantPtr grant) {
-  ledger::BalanceReportInfo report_info;
   auto now = base::Time::Now();
   if (grant && result == ledger::Result::LEDGER_OK) {
     if (!Connected()) {
@@ -1878,25 +1877,17 @@ void RewardsServiceImpl::OnPublisherListLoaded(
 
 void RewardsServiceImpl::OnGetAllBalanceReports(
     const GetAllBalanceReportsCallback& callback,
-    const base::flat_map<std::string, std::string>& json_reports) {
-  std::map<std::string, ledger::BalanceReportInfo> reports;
-  for (auto const& report : json_reports) {
-    ledger::BalanceReportInfo info;
-    info.loadFromJson(report.second);
-    reports[report.first] = info;
-  }
-
+    const base::flat_map<std::string, ledger::BalanceReportInfoPtr> reports) {
   std::map<std::string, brave_rewards::BalanceReport> newReports;
   for (auto const& report : reports) {
     brave_rewards::BalanceReport newReport;
-    const ledger::BalanceReportInfo oldReport = report.second;
-    newReport.opening_balance = oldReport.opening_balance_;
-    newReport.closing_balance = oldReport.closing_balance_;
-    newReport.grants = oldReport.grants_;
-    newReport.earning_from_ads = oldReport.earning_from_ads_;
-    newReport.auto_contribute = oldReport.auto_contribute_;
-    newReport.recurring_donation = oldReport.recurring_donation_;
-    newReport.one_time_donation = oldReport.one_time_donation_;
+    newReport.opening_balance = report.second->opening_balance;
+    newReport.closing_balance = report.second->closing_balance;
+    newReport.grants = report.second->grants;
+    newReport.earning_from_ads = report.second->earning_from_ads;
+    newReport.auto_contribute = report.second->auto_contribute;
+    newReport.recurring_donation = report.second->recurring_donation;
+    newReport.one_time_donation = report.second->one_time_donation;
 
     newReports[report.first] = newReport;
   }
@@ -1916,12 +1907,9 @@ void RewardsServiceImpl::GetAllBalanceReports(
 }
 
 void RewardsServiceImpl::OnGetCurrentBalanceReport(
-    bool success, const std::string& json_report) {
-  ledger::BalanceReportInfo report;
-  report.loadFromJson(json_report);
-
+    bool success, ledger::BalanceReportInfoPtr report) {
   if (success) {
-    TriggerOnGetCurrentBalanceReport(report);
+    TriggerOnGetCurrentBalanceReport(std::move(report));
   }
 }
 
@@ -2410,16 +2398,16 @@ void RewardsServiceImpl::OnRemoveRecurring(const std::string& publisher_key,
 }
 
 void RewardsServiceImpl::TriggerOnGetCurrentBalanceReport(
-    const ledger::BalanceReportInfo& report) {
+    ledger::BalanceReportInfoPtr report) {
   for (auto& observer : private_observers_) {
     brave_rewards::BalanceReport balance_report;
-    balance_report.opening_balance = report.opening_balance_;
-    balance_report.closing_balance = report.closing_balance_;
-    balance_report.grants = report.grants_;
-    balance_report.earning_from_ads = report.earning_from_ads_;
-    balance_report.auto_contribute = report.auto_contribute_;
-    balance_report.recurring_donation = report.recurring_donation_;
-    balance_report.one_time_donation = report.one_time_donation_;
+    balance_report.opening_balance = report->opening_balance;
+    balance_report.closing_balance = report->closing_balance;
+    balance_report.grants = report->grants;
+    balance_report.earning_from_ads = report->earning_from_ads;
+    balance_report.auto_contribute = report->auto_contribute;
+    balance_report.recurring_donation = report->recurring_donation;
+    balance_report.one_time_donation = report->one_time_donation;
     observer.OnGetCurrentBalanceReport(this, balance_report);
   }
 }
