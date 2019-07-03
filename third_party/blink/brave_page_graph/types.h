@@ -19,6 +19,10 @@ class ScriptSourceCode;
 class WebString;
 }  // namespace blink
 
+namespace v8 {
+class Isolate;
+}
+
 namespace WTF {
 class String;
 }  // namespace WTF
@@ -130,8 +134,6 @@ typedef std::string MethodName;
 typedef std::string RequestUrl;
 typedef uint64_t InspectorId;
 
-const blink::DOMNodeId kRootNodeId = INT_MAX;
-
 typedef std::vector<const Edge*> EdgeList;
 typedef std::vector<Node*> NodeList;
 typedef std::vector<std::unique_ptr<const Edge> > EdgeUniquePtrList;
@@ -146,6 +148,9 @@ typedef std::map<SourceCodeHash, ScriptId> HashToScriptIdMap;
 typedef std::map<ScriptId, SourceCodeHash> ScriptIdToHashMap;
 typedef std::map<SourceCodeHash, UrlHash> SourceToUrlMap;
 typedef std::map<UrlHash, SourceCodeHash> UrlToSourceMap;
+
+typedef void (*ScriptStartFunc)(v8::Isolate& isolate, const ScriptId script_id);
+typedef void (*ScriptEndFunc)(v8::Isolate& isolate, const ScriptId script_id);
 
 }  // namespace brave_page_graph
 

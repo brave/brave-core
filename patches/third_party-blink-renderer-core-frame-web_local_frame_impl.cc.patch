@@ -1,31 +1,35 @@
 diff --git a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
-index 481c9b9bdebef21fa7a78698a95be7fa6901673b..a803d6246d92d2ecc402442843a1d2af3d6502a3 100644
+index 481c9b9bdebef21fa7a78698a95be7fa6901673b..071041adf3d6e5b70fc2d9befd7d45c8177748e4 100644
 --- a/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
 +++ b/third_party/blink/renderer/core/frame/web_local_frame_impl.cc
-@@ -263,6 +263,11 @@
+@@ -263,6 +263,12 @@
  #include "third_party/blink/renderer/platform/wtf/hash_map.h"
  #include "third_party/blink/renderer/platform/wtf/time.h"
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
 +#include "brave/third_party/blink/brave_page_graph/page_graph.h"
 +#endif
 +
  namespace blink {
  
  static int g_frame_count = 0;
-@@ -828,6 +833,19 @@ void WebLocalFrameImpl::RequestExecuteScriptInIsolatedWorld(
+@@ -828,6 +834,22 @@ void WebLocalFrameImpl::RequestExecuteScriptInIsolatedWorld(
    CHECK_GT(world_id, DOMWrapperWorld::kMainWorldId);
    CHECK_LT(world_id, DOMWrapperWorld::kDOMWrapperWorldEmbedderWorldIdLimit);
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +  {
-+    ::brave_page_graph::PageGraph* page_graph = ToIsolate(GetFrame())->GetPageGraph();
-+    if (page_graph != nullptr) {
-+      for (unsigned i = 0; i < num_sources; i += 1) {
-+        const WebScriptSource source = sources_in[i];
-+        page_graph->RegisterUrlForExtensionScriptSource(source.url.GetString(),
-+          source.code);
++    Document* document = GetFrame()->GetDocument();
++    if (document != nullptr) {
++      ::brave_page_graph::PageGraph* page_graph = document->GetPageGraph();
++      if (page_graph != nullptr) {
++        for (unsigned i = 0; i < num_sources; i += 1) {
++          const WebScriptSource source = sources_in[i];
++          page_graph->RegisterUrlForExtensionScriptSource(source.url.GetString(),
++            source.code);
++        }
 +      }
 +    }
 +  }

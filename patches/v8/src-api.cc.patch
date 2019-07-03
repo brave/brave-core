@@ -1,35 +1,32 @@
 diff --git a/src/api.cc b/src/api.cc
-index a52fadc2eef6bcecf73c81463c3665f6313fea72..453a328353e0748125cd40ffb6369aceba2d02cf 100644
+index a52fadc2eef6bcecf73c81463c3665f6313fea72..a06d1bec5fcc54b865dc8083e3e65c8c7c52320b 100644
 --- a/src/api.cc
 +++ b/src/api.cc
-@@ -125,6 +125,11 @@
+@@ -125,6 +125,8 @@
  #endif  // V8_TARGET_ARCH_X64
  #endif  // V8_OS_WIN
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+#include "brave/third_party/blink/brave_page_graph/page_graph.h"
-+#endif
 +
  namespace v8 {
  
  /*
-@@ -8934,6 +8939,18 @@ void v8::Isolate::LocaleConfigurationChangeNotification() {
- #endif  // V8_INTL_SUPPORT
+@@ -7973,6 +7975,18 @@ void Isolate::CheckMemoryPressure() {
+   heap->CheckMemoryPressure();
  }
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+void v8::Isolate::SetPageGraph(::brave_page_graph::PageGraph* page_graph) {
-+  i::Isolate* i_isolate = reinterpret_cast<i::Isolate*>(this);
-+  i_isolate->SetPageGraphInternal(page_graph);
++void Isolate::RegisterScriptStartFunc(const ScriptStartFunc func) {
++  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
++  internal_isolate->SetRegisterScriptStartFunc(func);
 +}
 +
-+::brave_page_graph::PageGraph* v8::Isolate::GetPageGraph() const {
-+  const i::Isolate* i_isolate = reinterpret_cast<const i::Isolate*>(this);
-+  return i_isolate->GetPageGraphInternal();
++void Isolate::RegisterScriptEndFunc(const ScriptStartFunc func) {
++  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
++  internal_isolate->SetRegisterScriptEndFunc(func);
 +}
 +#endif
 +
- // static
- std::unique_ptr<MicrotaskQueue> MicrotaskQueue::New(Isolate* isolate,
-                                                     MicrotasksPolicy policy) {
+ HeapProfiler* Isolate::GetHeapProfiler() {
+   i::HeapProfiler* heap_profiler =
+       reinterpret_cast<i::Isolate*>(this)->heap_profiler();

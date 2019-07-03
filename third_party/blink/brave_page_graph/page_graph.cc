@@ -20,6 +20,7 @@
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+#include "v8/include/v8.h"
 
 #include "brave/third_party/blink/brave_page_graph/logging.h"
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
@@ -62,8 +63,9 @@
 #include "brave/third_party/blink/brave_page_graph/requests/tracked_request.h"
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
+#include "brave/third_party/blink/brave_page_graph/utilities/dispatchers.h"
+#include "brave/third_party/blink/brave_page_graph/utilities/scripts.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/urls.h"
-
 
 using ::blink::Document;
 using ::blink::DOMNodeId;
@@ -80,6 +82,7 @@ using ::std::string;
 using ::std::stringstream;
 using ::std::to_string;
 using ::std::unique_ptr;
+using ::v8::Isolate;
 
 namespace brave_page_graph {
 
@@ -87,12 +90,7 @@ namespace {
   PageGraph* yuck = nullptr;
 }
 
-const string URLToString(const KURL& url) {
-  return string(url.GetString().Utf8().data());
-}
-
 void write_to_disk(int signal) {
-  std::cout << "GOT THAT SIG" << endl;
   std::ofstream outfile("/tmp/pagegraph.log");
   string output = yuck->ToGraphML();
   std::cout << output;
@@ -123,6 +121,12 @@ PageGraph::PageGraph(Document& document) :
   element_nodes_.emplace(root_id, html_root_node_);
   Log("Root document ID: " + to_string(root_id));
 
+  Isolate* isolate = document.GetIsolate();
+  if (isolate != nullptr) {
+    isolate->RegisterScriptStartFunc(&RegisterScriptStart);
+    isolate->RegisterScriptEndFunc(&RegisterScriptEnd);
+  }
+
   yuck = this;
   signal(30, &write_to_disk);
 }
@@ -139,7 +143,6 @@ NodeHTML* PageGraph::GetHTMLNode(const DOMNodeId node_id) const {
 
 NodeHTMLElement* PageGraph::GetHTMLElementNode(const DOMNodeId node_id) const {
   Log("GetHTMLElementNode) node id: " + to_string(node_id));
-  LOG_ASSERT(node_id != kRootNodeId);
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   return element_nodes_.at(node_id);
 }
@@ -238,8 +241,6 @@ void PageGraph::RegisterHTMLTextNodeCreated(const DOMNodeId node_id,
 
 void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
     const DOMNodeId parent_node_id, const DOMNodeId before_sibling_id) {
-
-  LOG_ASSERT(parent_node_id != kRootNodeId);
   const DOMNodeId inserted_parent_node_id = parent_node_id;
 
   Log("RegisterHTMLElementNodeInserted) node id: " + to_string(node_id)
@@ -262,8 +263,6 @@ void PageGraph::RegisterHTMLElementNodeInserted(const DOMNodeId node_id,
 
 void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
     const DOMNodeId parent_node_id, const DOMNodeId before_sibling_id) {
-
-  LOG_ASSERT(parent_node_id != kRootNodeId);
   const DOMNodeId inserted_parent_node_id = parent_node_id;
 
   Log("RegisterHTMLTextNodeInserted) node id: " + to_string(node_id)
@@ -285,14 +284,6 @@ void PageGraph::RegisterHTMLTextNodeInserted(const DOMNodeId node_id,
 
 void PageGraph::RegisterHTMLElementNodeRemoved(const DOMNodeId node_id) {
   Log("RegisterHTMLElementNodeRemoved) node id: " + to_string(node_id));
-
-  if (element_nodes_.count(node_id) == 0) {
-    string local_node_name(blink::DOMNodeIds::NodeForId(node_id)->nodeName().Utf8().data());
-    Log("looks like we're missing: " + local_node_name);
-    string local_url(blink::DOMNodeIds::NodeForId(node_id)->GetDocument().Url().GetString().Utf8().data());
-    Log("We're in frame: " + local_url);
-    return;
-  }
   LOG_ASSERT(element_nodes_.count(node_id) == 1);
   NodeHTMLElement* const removed_node = element_nodes_.at(node_id);
 
@@ -644,7 +635,11 @@ void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {
 }
 
 void PageGraph::RegisterScriptExecStop(const ScriptId script_id) {
-  Log("RegisterScriptExecStop) script id: " + to_string(script_id));
+  static ScriptId prev_script_id = 0;
+  if (script_id != prev_script_id) {
+    Log("RegisterScriptExecStop) script id: " + to_string(script_id));
+    prev_script_id = script_id;
+  }
   LOG_ASSERT(script_nodes_.count(script_id) == 1);
   ScriptId popped_script_id = PopActiveScript();
   if (popped_script_id != script_id) {
@@ -662,6 +657,9 @@ void PageGraph::RegisterStorageRead(const String& key, const String& value,
     + ", location: " + StorageLocationToString(location));
 
   NodeActor* const acting_node = GetCurrentActingNode();
+  if (acting_node->IsScript() == false) {
+    Log("Something is wrong");
+  }
   LOG_ASSERT(acting_node->IsScript());
 
   NodeStorage* storage_node = nullptr;
@@ -719,7 +717,7 @@ void PageGraph::RegisterStorageWrite(const String& key, const String& value,
 void PageGraph::RegisterStorageDelete(const String& key,
     const StorageLocation location) {
   string local_key(key.Utf8().data());
-  Log("RegisterStorageDelete) key: " + local_key + ", location: " 
+  Log("RegisterStorageDelete) key: " + local_key + ", location: "
     + StorageLocationToString(location));
 
   NodeActor* const acting_node = GetCurrentActingNode();
