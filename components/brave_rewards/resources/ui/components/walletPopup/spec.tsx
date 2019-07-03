@@ -7,7 +7,7 @@ import { TestThemeProvider } from '../../../theme'
 
 const props = {
   onClose: () => null,
-  username: 'tester',
+  userName: 'tester',
 }
 
 describe('WalletSummary tests', () => {

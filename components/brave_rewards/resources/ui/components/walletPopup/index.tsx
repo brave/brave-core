@@ -23,7 +23,7 @@ import {
 export interface Props {
   children: React.ReactNode
   onClose: () => void
-  username: string
+  userName: string
   id?: string
 }
 
@@ -37,7 +37,7 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
     const {
       children,
       onClose,
-      username,
+      userName,
       id
     } = this.props
     return (
@@ -48,7 +48,7 @@ export default class WalletPopup extends React.PureComponent<Props, {}> {
               <StyledIcon>
                 <UpholdColorIcon />
               </StyledIcon>
-              {'@' + username}
+              {userName}
               <StyledStatus>
                 {getLocale('walletVerified')}
               </StyledStatus>

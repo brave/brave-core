@@ -19,6 +19,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
   border-radius: 6px;
   overflow: hidden;
   position: relative;
+  box-shadow: 0px 0px 12px 0px rgba(12,13,33,0.44);
 }
 
 .c2 {
@@ -39,7 +40,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
 }
 
 .c4 {
-  vertical-align: top;
+  vertical-align: middle;
   display: inline-block;
   width: 24px;
   height: 24px;
@@ -151,7 +152,7 @@ exports[`WalletSummary tests basic tests matches the snapshot 1`] = `
             />
           </svg>
         </span>
-        @tester
+        tester
         <div
           className="c6"
         >

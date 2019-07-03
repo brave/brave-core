@@ -22,6 +22,7 @@ export const StyledDialog = styled<{}, 'div'>('div')`
   border-radius: 6px;
   overflow: hidden;
   position: relative;
+  box-shadow: 0px 0px 12px 0px rgba(12, 13, 33, 0.44);
 `
 
 export const StyledContent = styled<{}, 'div'>('div')`
@@ -42,7 +43,7 @@ export const StyledStatus = styled<{}, 'div'>('div')`
 `
 
 export const StyledIcon = styled<{}, 'span'>('span')`
-  vertical-align: top;
+  vertical-align: middle;
   display: inline-block;
   width: 24px;
   height: 24px;

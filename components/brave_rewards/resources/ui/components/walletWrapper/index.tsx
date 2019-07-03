@@ -144,7 +144,7 @@ export interface Props {
   convertProbiToFixed?: (probi: string, place: number) => string
   onVerifyClick?: () => void
   goToUphold?: () => void
-  username?: string
+  userName?: string
 }
 
 export type Step = '' | 'captcha' | 'complete'
@@ -398,7 +398,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
   }
 
   getVerificationDetails = (
-    username: string,
+    userName: string,
     onVerifyClick: () => void,
     goToUphold?: () => void
   ) => {
@@ -406,7 +406,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     return (
       <WalletPopup
         onClose={this.toggleVerificationDetails}
-        {...{ username }}
+        {...{ userName }}
       >
         {
           <StyledDialogList>
@@ -534,7 +534,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       notification,
       isMobile,
       convertProbiToFixed,
-      username,
+      userName,
       onVerifyClick,
       goToUphold
     } = this.props
@@ -583,8 +583,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               !notification
                 ? <>
                   {
-                    this.state.verificationDetails && username && onVerifyClick
-                      ? this.getVerificationDetails(username, onVerifyClick, goToUphold)
+                    this.state.verificationDetails && userName && onVerifyClick
+                      ? this.getVerificationDetails(userName, onVerifyClick, goToUphold)
                       : null
                   }
                   {

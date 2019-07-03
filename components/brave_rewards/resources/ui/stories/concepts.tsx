@@ -482,7 +482,7 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
             disconnected: 'disconnected'
           }, 'unverified') as WalletState}
           onVerifyClick={onVerifyClick}
-          username={text('uphold username', 'jennrhim')}
+          userName={text('user name', 'jennrhim')}
         >
           <WalletSummarySlider
             id={'panel-slider'}
