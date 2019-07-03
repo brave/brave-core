@@ -2354,8 +2354,10 @@ std::string stringifyReconcilePayloadSt(
   JsonWriter writer(buffer);
   writer.StartObject();  // root
 
-  writer.String("requestType");
-  writer.String(reconcile_payload.requestType_.c_str());
+  if (!reconcile_payload.requestType_.empty()) {
+    writer.String("requestType");
+    writer.String(reconcile_payload.requestType_.c_str());
+  }
 
   writer.String("signedTx");
   writer.StartObject();  // signedTx
@@ -2373,7 +2375,6 @@ std::string stringifyReconcilePayloadSt(
 
   writer.String("body");
   writer.StartObject();  // body
-
 
   writer.String("denomination");
   writer.StartObject();  // denomination
@@ -2396,11 +2397,15 @@ std::string stringifyReconcilePayloadSt(
 
   writer.EndObject();  // signedTx
 
-  writer.String("surveyorId");
-  writer.String(reconcile_payload.request_surveyorId_.c_str());
+  if (!reconcile_payload.request_surveyorId_.empty()) {
+    writer.String("surveyorId");
+    writer.String(reconcile_payload.request_surveyorId_.c_str());
+  }
 
-  writer.String("viewingId");
-  writer.String(reconcile_payload.request_viewingId_.c_str());
+  if (!reconcile_payload.request_viewingId_.empty()) {
+    writer.String("viewingId");
+    writer.String(reconcile_payload.request_viewingId_.c_str());
+  }
 
   writer.EndObject();  // root
   return buffer.GetString();

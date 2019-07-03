@@ -50,6 +50,8 @@ using ExternalWalletCallback = std::function<void(ledger::ExternalWalletPtr)>;
 using ExternalWalletAuthorizationCallback =
     std::function<void(ledger::Result, std::map<std::string, std::string>)>;
 using DisconnectWalletCallback = std::function<void(ledger::Result)>;
+using TransferAnonToExternalWalletCallback =
+    std::function<void(ledger::Result)>;
 
 class LEDGER_EXPORT Ledger {
  public:

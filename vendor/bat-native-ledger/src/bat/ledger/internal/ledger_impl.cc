@@ -1638,4 +1638,10 @@ void LedgerImpl::DisconnectWallet(
   bat_wallet_->DisconnectWallet(wallet_type, callback);
 }
 
+void LedgerImpl::TransferAnonToExternalWallet(
+      const std::string& new_address,
+      ledger::TransferAnonToExternalWalletCallback callback) {
+  bat_wallet_->TransferAnonToExternalWallet(new_address, callback);
+}
+
 }  // namespace bat_ledger

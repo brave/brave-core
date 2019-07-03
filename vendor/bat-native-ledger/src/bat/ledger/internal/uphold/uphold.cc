@@ -399,6 +399,19 @@ void Uphold::CreateCard(
   card_->Create(std::move(wallet), callback);
 }
 
+void Uphold::OnTransferAnonToExternalWalletCallback(
+    GetUserCallback callback,
+    const ledger::ExternalWallet& wallet,
+    ledger::Result result) {
+
+  auto new_wallet = ledger::ExternalWallet::New(wallet);
+  if (result == ledger::Result::LEDGER_OK) {
+    new_wallet->transferred = true;
+  }
+
+  callback(ledger::Result::LEDGER_OK, std::move(new_wallet));
+}
+
 void Uphold::OnGetUser(
     GetUserCallback callback,
     const ledger::ExternalWallet& wallet,
@@ -438,8 +451,22 @@ void Uphold::OnGetUser(
 
   if (new_wallet->status == ledger::WalletStatus::CONNECTED && verified) {
     new_wallet->status = ledger::WalletStatus::VERIFIED;
-  } else if (
-      new_wallet->status == ledger::WalletStatus::VERIFIED && !verified) {
+
+    auto transfer_callback = std::bind(
+        &Uphold::OnTransferAnonToExternalWalletCallback,
+        this,
+        callback,
+        *new_wallet,
+        _1);
+
+    // transfer funds from anon wallet to uphold
+    ledger_->TransferAnonToExternalWallet(
+        new_wallet->address,
+        transfer_callback);
+    return;
+  }
+
+  if (new_wallet->status == ledger::WalletStatus::VERIFIED && !verified) {
     new_wallet->status = ledger::WalletStatus::CONNECTED;
   }
 

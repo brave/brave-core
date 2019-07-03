@@ -493,6 +493,10 @@ class LedgerImpl : public ledger::Ledger,
       const std::string& wallet_type,
       ledger::DisconnectWalletCallback callback) override;
 
+  void TransferAnonToExternalWallet(
+      const std::string& new_address,
+      ledger::TransferAnonToExternalWalletCallback callback);
+
  private:
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;

@@ -2634,6 +2634,7 @@ void RewardsServiceImpl::HandleFlags(const std::string& options) {
       uphold->status = ledger::WalletStatus::VERIFIED;
       uphold->one_time_string = "";
       uphold->user_name = "Brave Test";
+      uphold->transferred = true;
       SaveExternalWallet(ledger::kWalletUphold, std::move(uphold));
       continue;
     }
@@ -3247,6 +3248,7 @@ void RewardsServiceImpl::SaveExternalWallet(const std::string& wallet_type,
   dict.SetIntKey("status", static_cast<int>(wallet->status));
   dict.SetStringKey("one_time_string", wallet->one_time_string);
   dict.SetStringKey("user_name", wallet->user_name);
+  dict.SetBoolKey("transferred", wallet->transferred);
 
   new_perfs.SetKey(wallet_type, std::move(dict));
 
@@ -3286,6 +3288,11 @@ void RewardsServiceImpl::GetExternalWallets(
     auto* user_name = it.second.FindKey("user_name");
     if (user_name && user_name->is_string()) {
       wallet->user_name = user_name->GetString();
+    }
+
+    auto* transferred = it.second.FindKey("transferred");
+    if (transferred && transferred->is_bool()) {
+      wallet->transferred = transferred->GetBool();
     }
 
     wallets.insert(std::make_pair(it.first, std::move(wallet)));

@@ -69,6 +69,10 @@ class Wallet {
       const std::string& wallet_type,
       ledger::DisconnectWalletCallback callback);
 
+  void TransferAnonToExternalWallet(
+      const std::string& new_address,
+      ledger::TransferAnonToExternalWalletCallback callback);
+
  private:
   void WalletPropertiesCallback(
       int response_status_code,
@@ -91,6 +95,18 @@ class Wallet {
     const std::string& wallet_type,
     ledger::DisconnectWalletCallback callback,
     std::map<std::string, ledger::ExternalWalletPtr> wallets);
+
+  void OnTransferAnonToExternalWallet(
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    ledger::TransferAnonToExternalWalletCallback callback);
+
+  void OnTransferAnonToExternalWalletBalance(
+    ledger::Result result,
+    ledger::BalancePtr properties,
+    const std::string& new_address,
+    ledger::TransferAnonToExternalWalletCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
   std::unique_ptr<Create> create_;

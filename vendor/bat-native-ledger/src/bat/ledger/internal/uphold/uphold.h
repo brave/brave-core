@@ -96,6 +96,11 @@ class Uphold {
     ledger::ExternalWalletPtr wallet,
     ledger::ExternalWalletCallback callback);
 
+  void OnTransferAnonToExternalWalletCallback(
+    GetUserCallback callback,
+    const ledger::ExternalWallet& wallet,
+    ledger::Result result);
+
   void OnGetUser(
     GetUserCallback callback,
     const ledger::ExternalWallet& wallet,

@@ -257,4 +257,109 @@ void Wallet::DisconnectWallet(
   ledger_->GetExternalWallets(wallet_callback);
 }
 
+void Wallet::OnTransferAnonToExternalWallet(
+    int response_status_code,
+    const std::string& response,
+    const std::map<std::string, std::string>& headers,
+    ledger::TransferAnonToExternalWalletCallback callback) {
+  ledger_->LogResponse(__func__, response_status_code, response, headers);
+  if (response_status_code != net::HTTP_OK) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  callback(ledger::Result::LEDGER_OK);
+}
+
+void Wallet::TransferAnonToExternalWallet(
+      const std::string& new_address,
+      ledger::TransferAnonToExternalWalletCallback callback) {
+  ledger_->FetchBalance(
+      std::bind(&Wallet::OnTransferAnonToExternalWalletBalance,
+                this,
+                _1,
+                _2,
+                new_address,
+                callback));
+}
+
+void Wallet::OnTransferAnonToExternalWalletBalance(
+    ledger::Result result,
+    ledger::BalancePtr properties,
+    const std::string& new_address,
+    ledger::TransferAnonToExternalWalletCallback callback) {
+  if (result != ledger::Result::LEDGER_OK || !properties) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  const std::string path = (std::string)WALLET_PROPERTIES
+      + ledger_->GetPaymentId()
+      + "/claim";
+
+  const std::string url = braveledger_bat_helper::buildURL(
+      path,
+      PREFIX_V2,
+      braveledger_bat_helper::SERVER_TYPES::LEDGER);
+  auto transfer_callback = std::bind(&Wallet::OnTransferAnonToExternalWallet,
+                            this,
+                            _1,
+                            _2,
+                            _3,
+                            callback);
+
+  braveledger_bat_helper::WALLET_INFO_ST wallet_info = ledger_->GetWalletInfo();
+
+  braveledger_bat_helper::UNSIGNED_TX unsigned_tx;
+  unsigned_tx.amount_ = properties->total;
+  unsigned_tx.currency_ = "BAT";
+  unsigned_tx.destination_ = new_address;
+  std::string octets = braveledger_bat_helper::stringifyUnsignedTx(unsigned_tx);
+
+  std::string header_digest = "SHA-256=" +
+      braveledger_bat_helper::getBase64(
+          braveledger_bat_helper::getSHA256(octets));
+
+  std::string header_keys[1] = {"digest"};
+  std::string header_values[1] = {header_digest};
+
+  std::vector<uint8_t> secret_key = braveledger_bat_helper::getHKDF(
+      wallet_info.keyInfoSeed_);
+  std::vector<uint8_t> public_key;
+  std::vector<uint8_t> new_secret_key;
+  bool success = braveledger_bat_helper::getPublicKeyFromSeed(
+      secret_key,
+      &public_key,
+      &new_secret_key);
+  if (!success) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  std::string headerSignature = braveledger_bat_helper::sign(header_keys,
+                                                             header_values,
+                                                             1,
+                                                             "primary",
+                                                             new_secret_key);
+
+  braveledger_bat_helper::RECONCILE_PAYLOAD_ST reconcile_payload;
+  reconcile_payload.request_signedtx_headers_digest_ = header_digest;
+  reconcile_payload.request_signedtx_headers_signature_ = headerSignature;
+  reconcile_payload.request_signedtx_body_ = unsigned_tx;
+  reconcile_payload.request_signedtx_octets_ = octets;
+  std::string payload_stringify =
+      braveledger_bat_helper::stringifyReconcilePayloadSt(reconcile_payload);
+
+  std::vector<std::string> wallet_header;
+  wallet_header.push_back("Content-Type: application/json; charset=UTF-8");
+
+  ledger_->LoadURL(
+      url,
+      wallet_header,
+      payload_stringify,
+      "application/json; charset=utf-8",
+      ledger::URL_METHOD::POST,
+      transfer_callback);
+}
+
 }  // namespace braveledger_wallet
