@@ -71,6 +71,11 @@ constexpr NetworkTrafficAnnotationTag kTorProxyTrafficAnnotation =
 static base::NoDestructor<std::map<
     ProxyResolutionService*, TorProxyMap>> tor_proxy_map_;
 
+TorProxyMap* GetTorProxyMap(
+    ProxyResolutionService* service) {
+  return &(tor_proxy_map_.get()->operator[](service));
+}
+
 bool IsTorProxyConfig(const ProxyConfigWithAnnotation& config) {
   auto tag = config.traffic_annotation();
   // iterate through tor_proxy_map_ and remove any entries with
@@ -90,7 +95,23 @@ bool IsTorProxyConfig(const ProxyConfigWithAnnotation& config) {
          kTorProxyTrafficAnnotation.unique_id_hash_code;
 }
 
-std::string CircuitIsolationKey(const GURL& url) {
+}  // namespace
+
+const int kTorPasswordLength = 16;
+// Default tor circuit life time is 10 minutes
+constexpr base::TimeDelta kTenMins = base::TimeDelta::FromMinutes(10);
+
+ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& proxy_uri) {
+  ProxyServer proxy_server =
+      ProxyServer::FromURI(proxy_uri, ProxyServer::SCHEME_SOCKS5);
+  DCHECK(proxy_server.is_valid());
+  proxy_server_ = proxy_server;
+}
+
+ProxyConfigServiceTor::~ProxyConfigServiceTor() {}
+
+// static
+std::string ProxyConfigServiceTor::CircuitIsolationKey(const GURL& url) {
   // https://2019.www.torproject.org/projects/torbrowser/design/#privacy
   //
   //    For the purposes of the unlinkability requirements of this
@@ -112,32 +133,12 @@ std::string CircuitIsolationKey(const GURL& url) {
   return domain;
 }
 
-}  // namespace
-
-const int kTorPasswordLength = 16;
-// Default tor circuit life time is 10 minutes
-constexpr base::TimeDelta kTenMins = base::TimeDelta::FromMinutes(10);
-
-TorProxyMap* GetTorProxyMap(
-    ProxyResolutionService* service) {
-  return &(tor_proxy_map_.get()->operator[](service));
-}
-
-ProxyConfigServiceTor::ProxyConfigServiceTor(const std::string& proxy_uri) {
-  ProxyServer proxy_server =
-      ProxyServer::FromURI(proxy_uri, ProxyServer::SCHEME_SOCKS5);
-  DCHECK(proxy_server.is_valid());
-  proxy_server_ = proxy_server;
-}
-
-ProxyConfigServiceTor::~ProxyConfigServiceTor() {}
-
 void ProxyConfigServiceTor::SetNewTorCircuit(const GURL& url) {
   const HostPortPair old_host_port = proxy_server_.host_port_pair();
   const HostPortPair new_host_port(
       CircuitIsolationKey(url),
       std::to_string(
-          base::Time::Now().ToDeltaSinceWindowsEpoch().InMilliseconds()),
+          base::Time::Now().ToDeltaSinceWindowsEpoch().InMicroseconds()),
       old_host_port.host(),
       old_host_port.port());
   proxy_server_ = ProxyServer(ProxyServer::SCHEME_SOCKS5, new_host_port);
@@ -174,7 +175,7 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
       int64_t time = strtoll(host_port_pair.password().c_str(), nullptr, 10);
       map->MaybeExpire(host_port_pair.username(),
           base::Time::FromDeltaSinceWindowsEpoch(
-              base::TimeDelta::FromMilliseconds(time)));
+              base::TimeDelta::FromMicroseconds(time)));
     }
     host_port_pair.set_username(username);
     host_port_pair.set_password(map->Get(username));
@@ -186,6 +187,8 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
     ProxyConfigWithAnnotation fetched_config;
     tor_proxy_config_service.GetLatestProxyConfig(&fetched_config);
     fetched_config.value().proxy_rules().Apply(url, result);
+    result->set_traffic_annotation(MutableNetworkTrafficAnnotationTag(
+        fetched_config.traffic_annotation()));
   }
 }
 
@@ -269,7 +272,7 @@ void TorProxyMap::MaybeExpire(
     const base::Time& timestamp) {
   auto found = map_.find(username);
   if (found != map_.end() &&
-      timestamp > found->second.second) {
+      timestamp >= found->second.second) {
     Erase(username);
   }
 }

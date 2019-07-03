@@ -8,7 +8,11 @@
 #include <string>
 
 #include "base/macros.h"
+#include "base/threading/thread_task_runner_handle.h"
+#include "net/base/proxy_server.h"
+#include "net/proxy_resolution/mock_proxy_resolver.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
+#include "net/proxy_resolution/proxy_resolution_service.h"
 #include "net/test/test_with_scoped_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -100,42 +104,97 @@ TEST_F(ProxyConfigServiceTorTest, CircuitIsolationKey) {
   }
 }
 
-TEST_F(ProxyConfigServiceTorTest, SetUsername) {
+// TODO(bridiver) - test that it uses the proxy config service tor
+// new ProxyConfigMonitor(tor_profile);
+
+TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit) {
   std::string proxy_uri("socks5://127.0.0.1:5566");
   GURL site_url("https://check.torproject.org/");
   std::string isolation_key =
       ProxyConfigServiceTor::CircuitIsolationKey(site_url);
-  ProxyConfigServiceTor proxy_config_service(proxy_uri);
-  proxy_config_service.SetUsername(isolation_key, GetTorProxyMap());
 
+  ProxyConfigServiceTor proxy_config_service(proxy_uri);
+  ProxyConfigWithAnnotation config;
+
+  proxy_config_service.SetNewTorCircuit(site_url);
+  proxy_config_service.GetLatestProxyConfig(&config);
+  auto single_proxy = config.value().proxy_rules().single_proxies.Get();
+  EXPECT_TRUE(!single_proxy.host_port_pair().password().empty());
+  EXPECT_TRUE(single_proxy.scheme() == ProxyServer::SCHEME_SOCKS5);
+  EXPECT_EQ(single_proxy.host_port_pair().username(), isolation_key);
+  EXPECT_EQ(single_proxy.host_port_pair().host(), "127.0.0.1");
+  EXPECT_EQ(single_proxy.host_port_pair().port(), 5566);
+}
+
+TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
+  std::string proxy_uri("socks5://127.0.0.1:5566");
+  GURL site_url("https://check.torproject.org/");
+  std::string isolation_key =
+      ProxyConfigServiceTor::CircuitIsolationKey(site_url);
+
+  auto config_service = ProxyResolutionService::CreateSystemProxyConfigService(
+      base::ThreadTaskRunnerHandle::Get());
+
+  auto* service = new ProxyResolutionService(
+        std::move(config_service),
+        std::make_unique<MockAsyncProxyResolverFactory>(false),
+        nullptr);
+
+  ProxyConfigServiceTor proxy_config_service(proxy_uri);
   ProxyConfigWithAnnotation config;
   proxy_config_service.GetLatestProxyConfig(&config);
-  ASSERT_FALSE(config.value().proxy_rules().single_proxies.IsEmpty());
-  ProxyServer server = config.value().proxy_rules().single_proxies.Get();
-  HostPortPair host_port = server.host_port_pair();
-  EXPECT_TRUE(server.scheme() == ProxyServer::SCHEME_SOCKS5);
-  EXPECT_EQ(host_port.host(), "127.0.0.1");
-  EXPECT_EQ(host_port.port(), 5566);
-  EXPECT_EQ(host_port.username(), isolation_key);
 
-  // Test persistent circuit isolation until timeout.
-  std::string password = host_port.password();
-  EXPECT_FALSE(host_port.password().empty());
-  proxy_config_service.SetUsername(isolation_key, GetTorProxyMap());
-  proxy_config_service.GetLatestProxyConfig(&config);
-  ASSERT_FALSE(config.value().proxy_rules().single_proxies.IsEmpty());
-  server = config.value().proxy_rules().single_proxies.Get();
-  host_port = server.host_port_pair();
-  EXPECT_EQ(host_port.password(), password);
+  ProxyInfo info;
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, service, &info);
+  auto host_port_pair = info.proxy_server().host_port_pair();
+
+  EXPECT_EQ(host_port_pair.username(), isolation_key);
+  EXPECT_TRUE(info.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
+  EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
+  EXPECT_EQ(host_port_pair.port(), 5566);
+
+  // everything should still be the same on subsequent calls
+  std::string password = host_port_pair.password();
+  ProxyInfo info2;
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, service, &info2);
+  host_port_pair = info2.proxy_server().host_port_pair();
+
+  EXPECT_EQ(host_port_pair.username(), isolation_key);
+  EXPECT_EQ(host_port_pair.password(), password);
+  EXPECT_TRUE(info2.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
+  EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
+  EXPECT_EQ(host_port_pair.port(), 5566);
+
+  // TODO Test persistent circuit isolation until timeout.
 
   // Test new identity.
-  GetTorProxyMap()->Erase(isolation_key);
-  proxy_config_service.SetUsername(isolation_key, GetTorProxyMap());
+  proxy_config_service.SetNewTorCircuit(site_url);
   proxy_config_service.GetLatestProxyConfig(&config);
-  ASSERT_FALSE(config.value().proxy_rules().single_proxies.IsEmpty());
-  server = config.value().proxy_rules().single_proxies.Get();
-  host_port = server.host_port_pair();
-  EXPECT_NE(host_port.password(), password);
+  ProxyInfo info3;
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, service, &info3);
+  host_port_pair = info3.proxy_server().host_port_pair();
+
+  EXPECT_EQ(host_port_pair.username(), isolation_key);
+  EXPECT_NE(host_port_pair.password(), password);
+  EXPECT_TRUE(info3.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
+  EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
+  EXPECT_EQ(host_port_pair.port(), 5566);
+
+  // everything should still be the same on subsequent calls
+  password = host_port_pair.password();
+  ProxyInfo info4;
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url, service, &info4);
+  host_port_pair = info4.proxy_server().host_port_pair();
+
+  EXPECT_EQ(host_port_pair.username(), isolation_key);
+  EXPECT_EQ(host_port_pair.password(), password);
+  EXPECT_TRUE(info4.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
+  EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
+  EXPECT_EQ(host_port_pair.port(), 5566);
 }
 
 }  // namespace net
