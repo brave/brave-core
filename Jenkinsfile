@@ -7,12 +7,13 @@ pipeline {
         timestamps()
     }
     parameters {
-        choice(name: "CHANNEL", choices: ["nightly", "dev", "beta", "release"], description: "")
         choice(name: "BUILD_TYPE", choices: ["Release", "Debug"], description: "")
+        choice(name: "CHANNEL", choices: ["nightly", "dev", "beta", "release"], description: "")
+        booleanParam(name: "OFFICIAL_BUILD", defaultValue: true, description: "")
+        booleanParam(name: "SKIP_SIGNING", defaultValue: false, description: "")
         booleanParam(name: "WIPE_WORKSPACE", defaultValue: false, description: "")
         booleanParam(name: "SKIP_INIT", defaultValue: false, description: "")
         booleanParam(name: "DISABLE_SCCACHE", defaultValue: false, description: "")
-        booleanParam(name: "SKIP_SIGNING", defaultValue: false, description: "")
         booleanParam(name: "DEBUG", defaultValue: false, description: "")
     }
     environment {
@@ -25,12 +26,13 @@ pipeline {
         stage("env") {
             steps {
                 script {
-                    CHANNEL = params.CHANNEL
                     BUILD_TYPE = params.BUILD_TYPE
+                    CHANNEL = params.CHANNEL
+                    OFFICIAL_BUILD = params.OFFICIAL_BUILD
+                    SKIP_SIGNING = params.SKIP_SIGNING
                     WIPE_WORKSPACE = params.WIPE_WORKSPACE
                     SKIP_INIT = params.SKIP_INIT
                     DISABLE_SCCACHE = params.DISABLE_SCCACHE
-                    SKIP_SIGNING = params.SKIP_SIGNING
                     DEBUG = params.DEBUG
                     SKIP = false
                     BRANCH = env.BRANCH_NAME
@@ -184,12 +186,13 @@ def startBraveBrowserBuild() {
     def prNumber = prDetails ? prDetails.number : ""
     def refToBuild = prNumber ? "PR-" + prNumber : URLEncoder.encode(BRANCH, "UTF-8")
     params = [
-        string(name: "CHANNEL", value: CHANNEL),
         string(name: "BUILD_TYPE", value: BUILD_TYPE),
+        string(name: "CHANNEL", value: CHANNEL),
+        booleanParam(name: "OFFICIAL_BUILD", defaultValue: OFFICIAL_BUILD),
+        booleanParam(name: "SKIP_SIGNING", value: SKIP_SIGNING),
         booleanParam(name: "WIPE_WORKSPACE", value: WIPE_WORKSPACE),
         booleanParam(name: "SKIP_INIT", value: SKIP_INIT),
         booleanParam(name: "DISABLE_SCCACHE", value: DISABLE_SCCACHE),
-        booleanParam(name: "SKIP_SIGNING", value: SKIP_SIGNING),
         booleanParam(name: "DEBUG", value: DEBUG)
     ]
     currentBuild.result = build(job: "brave-browser-build-pr/" + refToBuild, parameters: params, propagate: false).result
