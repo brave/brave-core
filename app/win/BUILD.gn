@@ -41,5 +41,3 @@ copy("dist_resources") {
     "//third_party/angle:copy_compiler_dll",
   ]
 }
-
-group("chromedriver_dist_resources") {}
