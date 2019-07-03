@@ -242,7 +242,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UIViewControllerRestorati
             UrpLog.log("Failed to initialize user referral program")
         }
         
-        AdblockResourceDownloader.shared.regionalAdblockResourcesSetup()
+        AdblockResourceDownloader.shared.startLoading()
 
         UINavigationBar.appearance().tintColor = BraveUX.BraveOrange
       

@@ -7,37 +7,24 @@ import Deferred
 
 private let log = Logger.browserLogger
 
-fileprivate struct AdblockStatsResource: Hashable {
-    let abpWrapper: ABPFilterLibWrapper
-    let id: String
-    
-    init(abpWrapper: ABPFilterLibWrapper = ABPFilterLibWrapper(), id: String) {
-        self.abpWrapper = abpWrapper
-        self.id = id
-    }
-    
-    static func == (lhs: AdblockStatsResource, rhs: AdblockStatsResource) -> Bool {
-        return lhs.id == rhs.id
-    }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
-
 class AdBlockStats: LocalAdblockResourceProtocol {
     static let shared = AdBlockStats()
     
     typealias LocaleCode = String
     static let defaultLocale = "en"
     
-    private let blockListFileName = "ABPFilterParserData"
+    /// File name of bundled general blocklist.
+    private let bundledGeneralBlocklist = "ABPFilterParserData"
     
     fileprivate var fifoCacheOfUrlsChecked = FifoDict()
     
     fileprivate lazy var adblockStatsResources: [String: ABPFilterLibWrapper] = {
-        let generalAdblocker = [AdblockerType.general.identifier: ABPFilterLibWrapper()]
-        return generalAdblocker
+        // Two general blocklists are provided:
+        // 1. bundled with small amount of general blocklist rules.
+        // 2. A bigger list, downloaded from the server.
+        let generalAdblockers = [bundledGeneralBlocklist: ABPFilterLibWrapper(),
+                                AdblockerType.general.identifier: ABPFilterLibWrapper()]
+        return generalAdblockers
     }()
     
     let currentLocaleCode: LocaleCode
@@ -49,9 +36,13 @@ class AdBlockStats: LocalAdblockResourceProtocol {
         updateRegionalAdblockEnabledState()
     }
     
+    private func isGeneralAdblocker(id: String) -> Bool {
+        return id == AdblockerType.general.identifier || id == bundledGeneralBlocklist
+    }
+    
     func startLoading() {
-        loadLocalData(name: blockListFileName, type: "dat") { data in
-            self.setDataFile(data: data, id: AdblockerType.general.identifier)
+        loadLocalData(name: bundledGeneralBlocklist, type: "dat") { data in
+            self.setDataFile(data: data, id: bundledGeneralBlocklist)
         }
         
         loadDatFilesFromDocumentsDirectory()
@@ -114,7 +105,7 @@ class AdBlockStats: LocalAdblockResourceProtocol {
         let header = "*/*"
         
         for (id, adblocker) in adblockStatsResources where adblocker.hasDataFile() {
-            if id != AdblockerType.general.identifier && !isRegionalAdblockEnabled { continue }
+            if !isGeneralAdblocker(id: id) && !isRegionalAdblockEnabled { continue }
             
             isBlocked = adblocker.isBlockedConsideringType(url.absoluteString,
                                                                       mainDocumentUrl: mainDocDomain,
