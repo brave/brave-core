@@ -52,3 +52,5 @@ const char kWebTorrentEnabled[] = "brave.webtorrent_enabled";
 const char kHangoutsEnabled[] = "brave.hangouts_enabled";
 const char kHideBraveRewardsButton[] = "brave.hide_brave_rewards_button";
 const char kIPFSCompanionEnabled[] = "brave.ipfs_companion_enabled";
+const char kNewTabPageShowBackgroundImage[] =
+    "brave.new_tab_page.show_background_image";

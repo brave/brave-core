@@ -9,7 +9,7 @@ import store from '../store'
 /**
  * Get actions from the C++ back-end down to front-end components
  */
-let actions: any = null
+let actions: typeof newTabActions
 export const getActions = () => {
   if (actions) {
     return actions

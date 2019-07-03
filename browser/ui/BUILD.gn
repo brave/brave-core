@@ -9,6 +9,8 @@ source_set("ui") {
     "webui/basic_ui.h",
     "webui/brave_adblock_ui.cc",
     "webui/brave_adblock_ui.h",
+    "webui/brave_new_tab_message_handler.cc",
+    "webui/brave_new_tab_message_handler.h",
     "webui/brave_new_tab_ui.cc",
     "webui/brave_new_tab_ui.h",
     "webui/brave_web_ui_controller_factory.cc",
