@@ -69,9 +69,24 @@ class Generator(generator.Generator):
     raise Exception("Unrecognized kind %s" % kind.spec)
 
   def _ObjCPropertyFormatter(self, str):
-    """ snake case to camel case """
+    """ snake case to camel case, and replaces reserved names """
     parts = str.split('_')
-    return parts[0].lower() + ''.join(map(lambda p: p.capitalize(), parts[1:]))
+    name = parts[0].lower() + ''.join(map(lambda p: p.capitalize(), parts[1:]))
+    # A set of reserved names by Obj-C which shouldn't be used as property names
+    reserved = {
+      'description': 'desc',
+      'debugDescription': 'debugDesc',
+      'hash': 'hash_',
+      'isProxy': 'proxy',
+      'zone': 'zone_',
+      'class': 'class_',
+      'dealloc': 'dealloc_',
+      'finalize': 'finalize_',
+      'copy': 'copy_'
+    }
+    if name in reserved:
+      return reserved[name]
+    return name
 
   def _ObjCEnumFormatter(self, str):
     """ uppercased & snake case to upper camel case """
