@@ -1,42 +1,5 @@
 import("//brave/build/config.gni")
 
-group("chromedriver_dist_resources") {
-  deps = [
-    ":strip_and_dump_chromedriver_symbols"
-  ]
-}
-
-action("strip_and_dump_chromedriver_symbols") {
-  script = "//build/linux/dump_app_syms.py"
-  dump_syms_label = "//third_party/breakpad:dump_syms($host_toolchain)"
-  dump_syms_binary =
-          get_label_info(dump_syms_label, "root_out_dir") + "/" + "dump_syms"
-
-  chromedriver_binary = "$brave_dist_dir/chromedriver"
-  if (current_cpu == "x86") {
-  # Use "ia32" instead of "x86" for GYP compat.
-    chromedriver_symbol_file = "$root_out_dir/chromedriver.breakpad.ia32"
-  } else {
-    chromedriver_symbol_file = "$root_out_dir/chromedriver.breakpad.$current_cpu"
-  }
-
-  inputs = [ chromedriver_binary, dump_syms_binary ]
-  outputs = [ chromedriver_symbol_file ]
-
-  args = [
-    "./" + rebase_path(dump_syms_binary, root_build_dir),
-    "1",  # strip_binary = true
-    rebase_path(chromedriver_binary, root_build_dir),
-    rebase_path(chromedriver_symbol_file, root_build_dir),
-  ]
-
-  deps = [
-    dump_syms_label,
-    "//brave:brave_chromedriver_dist_resources",
-  ]
-}
-
-
 action("generate_breakpad_symbols") {
   symbols_dir = "$brave_dist_dir/$brave_project_name.breakpad.syms"
   outputs = [
