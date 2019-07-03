@@ -55,8 +55,7 @@ class ConfirmationsImpl : public Confirmations {
 
   void UpdateAdsRewards(
       const double estimated_pending_rewards,
-      const uint64_t next_payment_date_in_seconds,
-      const uint64_t ad_notifications_received_this_month);
+      const uint64_t next_payment_date_in_seconds);
 
   // Transaction history
   void GetTransactionHistory(
@@ -71,6 +70,7 @@ class ConfirmationsImpl : public Confirmations {
   std::vector<TransactionInfo> GetTransactionHistory(
       const uint64_t from_timestamp_in_seconds,
       const uint64_t to_timestamp_in_seconds);
+  std::vector<TransactionInfo> GetTransactions() const;
   std::vector<TransactionInfo> GetUnredeemedTransactions();
   void AppendTransactionToHistory(
       const double estimated_redemption_value,
@@ -124,7 +124,6 @@ class ConfirmationsImpl : public Confirmations {
   // Ads rewards
   double estimated_pending_rewards_;
   uint64_t next_payment_date_in_seconds_;
-  uint64_t ad_notifications_received_this_month_;
   std::unique_ptr<AdsRewards> ads_rewards_;
 
   // Refill tokens

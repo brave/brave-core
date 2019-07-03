@@ -290,11 +290,8 @@ void AdsRewards::Update() {
       confirmations_->GetNextTokenRedemptionDateInSeconds());
   uint64_t next_payment_date_in_seconds = next_payment_date.ToDoubleT();
 
-  auto ad_notifications_received_this_month =
-      payments_->GetTransactionCountForMonth(now);
-
   confirmations_->UpdateAdsRewards(estimated_pending_rewards,
-      next_payment_date_in_seconds, ad_notifications_received_this_month);
+      next_payment_date_in_seconds);
 }
 
 double AdsRewards::CalculateEstimatedPendingRewards() const {

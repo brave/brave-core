@@ -36,7 +36,6 @@ ConfirmationsImpl::ConfirmationsImpl(
     unblinded_payment_tokens_(std::make_unique<UnblindedTokens>(this)),
     estimated_pending_rewards_(0.0),
     next_payment_date_in_seconds_(0),
-    ad_notifications_received_this_month_(0),
     ads_rewards_(std::make_unique<AdsRewards>(this, confirmations_client)),
     retry_getting_signed_tokens_timer_id_(0),
     refill_tokens_(std::make_unique<RefillTokens>(
@@ -836,8 +835,7 @@ void ConfirmationsImpl::UpdateAdsRewards(const bool should_refresh) {
 
 void ConfirmationsImpl::UpdateAdsRewards(
     const double estimated_pending_rewards,
-    const uint64_t next_payment_date_in_seconds,
-    const uint64_t ad_notifications_received_this_month) {
+    const uint64_t next_payment_date_in_seconds) {
   if (!state_has_loaded_) {
     // We should not update ads rewards until state has successfully loaded
     // otherwise our values will be overwritten
@@ -846,7 +844,6 @@ void ConfirmationsImpl::UpdateAdsRewards(
 
   estimated_pending_rewards_ = estimated_pending_rewards;
   next_payment_date_in_seconds_ = next_payment_date_in_seconds;
-  ad_notifications_received_this_month_ = ad_notifications_received_this_month;
 
   SaveState();
 
@@ -856,13 +853,12 @@ void ConfirmationsImpl::UpdateAdsRewards(
 void ConfirmationsImpl::GetTransactionHistory(
     OnGetTransactionHistory callback) {
   auto unredeemed_transactions = GetUnredeemedTransactions();
-
   double unredeemed_estimated_pending_rewards =
       GetEstimatedPendingRewardsForTransactions(unredeemed_transactions);
 
-  uint64_t unredeemed_ad_notifications_received_this_month =
-      GetAdNotificationsReceivedThisMonthForTransactions(
-          unredeemed_transactions);
+  auto all_transactions = GetTransactions();
+  uint64_t ad_notifications_received_this_month =
+      GetAdNotificationsReceivedThisMonthForTransactions(all_transactions);
 
   auto transactions_info = std::make_unique<TransactionsInfo>();
 
@@ -873,8 +869,7 @@ void ConfirmationsImpl::GetTransactionHistory(
       next_payment_date_in_seconds_;
 
   transactions_info->ad_notifications_received_this_month =
-      ad_notifications_received_this_month_ +
-          unredeemed_ad_notifications_received_this_month;
+      ad_notifications_received_this_month;
 
   auto to_timestamp_in_seconds = Time::NowInSeconds();
   auto transactions = GetTransactionHistory(0, to_timestamp_in_seconds);
@@ -892,9 +887,6 @@ void ConfirmationsImpl::AddTransactionsToPendingRewards(
     const std::vector<TransactionInfo>& transactions) {
   estimated_pending_rewards_ +=
       GetEstimatedPendingRewardsForTransactions(transactions);
-
-  ad_notifications_received_this_month_ +=
-      GetAdNotificationsReceivedThisMonthForTransactions(transactions);
 
   confirmations_client_->ConfirmationsTransactionHistoryDidChange();
 }
@@ -915,7 +907,7 @@ double ConfirmationsImpl::GetEstimatedPendingRewardsForTransactions(
 
 uint64_t ConfirmationsImpl::GetAdNotificationsReceivedThisMonthForTransactions(
     const std::vector<TransactionInfo>& transactions) const {
-  double ad_notifications_received_this_month = 0.0;
+  uint64_t ad_notifications_received_this_month = 0;
 
   auto now = base::Time::Now();
   base::Time::Exploded now_exploded;
@@ -953,6 +945,10 @@ std::vector<TransactionInfo> ConfirmationsImpl::GetTransactionHistory(
   transactions.resize(std::distance(transactions.begin(), it));
 
   return transactions;
+}
+
+std::vector<TransactionInfo> ConfirmationsImpl::GetTransactions() const {
+  return transaction_history_;
 }
 
 std::vector<TransactionInfo> ConfirmationsImpl::GetUnredeemedTransactions() {
