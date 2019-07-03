@@ -140,21 +140,15 @@ class AdsBox extends React.Component<Props, State> {
     return (
       window &&
       window.location &&
-      window.location.hash &&
+      window.location.hash !== '' &&
       window.location.hash === hash
     )
   }
 
   isShowAdsHistoryUrl = () => {
-    if (this.urlHashIs('#ads-history')) {
-      this.setState({
-        modalShowAdsHistory: true
-      })
-    } else {
-      this.setState({
-        modalShowAdsHistory: false
-      })
-    }
+    this.setState({
+      modalShowAdsHistory: this.urlHashIs('#ads-history')
+    })
   }
 
   onThumbUpPress = (uuid: string, creativeSetId: string, action: number) => {
@@ -185,14 +179,18 @@ class AdsBox extends React.Component<Props, State> {
     return adHistoryData.map((item: Rewards.AdsHistoryData) => {
       return {
         id: item.id,
-        date: item.date,
+        date: new Date(item.timestampInMilliseconds).toLocaleDateString(),
         adDetailRows: (
           item.adDetailRows.map((itemDetail: Rewards.AdHistoryDetail) => {
+            let brandInfo = itemDetail.adContent.brandInfo
+            if (brandInfo.length > 50) {
+              brandInfo = brandInfo.substring(0, 50) + '...'
+            }
             const adContent: Rewards.AdContent = {
               uuid: itemDetail.adContent.uuid,
               creativeSetId: itemDetail.adContent.creativeSetId,
               brand: itemDetail.adContent.brand,
-              brandInfo: itemDetail.adContent.brandInfo,
+              brandInfo: brandInfo,
               brandLogo: itemDetail.adContent.brandLogo,
               brandDisplayUrl: itemDetail.adContent.brandDisplayUrl,
               brandUrl: itemDetail.adContent.brandUrl,
@@ -250,10 +248,10 @@ class AdsBox extends React.Component<Props, State> {
   }
 
   render () {
-    const adsPerHour = 2
-    const savedOnly: boolean = false
+    const savedOnly = false
 
     let adsEnabled = false
+    let adsPerHour = 0
     let adsUIEnabled = false
     let adsIsSupported = false
     let estimatedPendingRewards = '0'
@@ -270,6 +268,7 @@ class AdsBox extends React.Component<Props, State> {
 
     if (adsData) {
       adsEnabled = adsData.adsEnabled
+      adsPerHour = adsData.adsPerHour
       adsUIEnabled = adsData.adsUIEnabled
       adsIsSupported = adsData.adsIsSupported
       estimatedPendingRewards = (adsData.adsEstimatedPendingRewards || 0).toFixed(2)
@@ -286,6 +285,7 @@ class AdsBox extends React.Component<Props, State> {
     }
 
     const rows = this.getAdHistoryData(adsHistory, savedOnly)
+    const notEmpty = rows && rows.length !== 0
 
     return (
       <>
@@ -320,15 +320,23 @@ class AdsBox extends React.Component<Props, State> {
               hideText={true}
             />
           </List>
-          <ShowAdsHistory onAdsHistoryOpen={this.onAdsHistoryToggle} notEmpty={rows && rows.length !== 0}/>
+          {
+            notEmpty
+            ? <ShowAdsHistory
+                onAdsHistoryOpen={this.onAdsHistoryToggle}
+                notEmpty={notEmpty}
+            />
+            : null
+          }
         </Box>
         {
           this.state.modalShowAdsHistory
           ? <ModalShowAdsHistory
-            onClose={this.closeShowAdsHistory}
-            adsPerHour={adsPerHour}
-            rows={rows}
-            hasSavedEntries={this.hasSavedEntries(rows)}
+              onClose={this.closeShowAdsHistory}
+              adsPerHour={adsPerHour}
+              rows={rows}
+              hasSavedEntries={this.hasSavedEntries(rows)}
+              totalDays={7}
           />
           : null
         }

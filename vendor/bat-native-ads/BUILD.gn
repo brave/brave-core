@@ -120,6 +120,8 @@ source_set("ads") {
     "src/bat/ads/internal/catalog_type_info.h",
     "src/bat/ads/internal/catalog.cc",
     "src/bat/ads/internal/catalog.h",
+    "src/bat/ads/internal/classification_helper.cc",
+    "src/bat/ads/internal/classification_helper.h",
     "src/bat/ads/internal/client_state.cc",
     "src/bat/ads/internal/client_state.h",
     "src/bat/ads/internal/client.cc",

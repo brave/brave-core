@@ -37,7 +37,7 @@ struct ADS_EXPORT AdContent {
   std::string brand_logo;
   std::string brand_display_url;
   std::string brand_url;
-  int like_action;
+  LikeAction like_action;
   ConfirmationType ad_action;
   bool saved_ad;
   bool flagged_ad;

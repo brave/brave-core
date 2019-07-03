@@ -6,6 +6,7 @@
 #ifndef BAT_ADS_ADS_H_
 #define BAT_ADS_ADS_H_
 
+#include <stdint.h>
 #include <map>
 #include <string>
 #include <memory>
@@ -17,7 +18,6 @@
 #include "bat/ads/export.h"
 #include "bat/ads/notification_event_type.h"
 #include "bat/ads/notification_info.h"
-#include "bat/ads/notification_result_type.h"
 
 namespace ads {
 
@@ -131,7 +131,7 @@ class ADS_EXPORT Ads {
   virtual void RemoveAllHistory(RemoveAllHistoryCallback callback) = 0;
 
   // Should be called to retrieve ads history
-  virtual std::map<std::string, std::vector<AdsHistory>> GetAdsHistory() = 0;
+  virtual std::map<uint64_t, std::vector<AdsHistory>> GetAdsHistory() = 0;
 
   // Should be called to indicate interest in the given ad. This is a
   // toggle, so calling it again returns the setting to the neutral

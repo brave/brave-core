@@ -20,10 +20,14 @@ namespace ads {
 struct AdsHistory;
 }
 
+namespace base {
+class ListValue;
+}
+
 namespace brave_ads {
 
-using OnGetAdsHistoryCallback = base::OnceCallback<void(
-    const std::map<std::string, std::vector<ads::AdsHistory>>&)>;
+using OnGetAdsHistoryCallback =
+    base::OnceCallback<void(const base::ListValue&)>;
 
 using OnToggleAdThumbUpCallback =
     base::OnceCallback<void(const std::string&, int)>;

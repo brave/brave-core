@@ -48,6 +48,10 @@ Result AdPreferences::FromJson(
   }
 
   for (const auto& ad : document["filtered_ads"].GetArray()) {
+    if (!ad["uuid"].IsString() || !ad["creative_set_id"].IsString()) {
+      return FAILED;
+    }
+
     FilteredAd filtered_ad;
     filtered_ad.uuid = ad["uuid"].GetString();
     filtered_ad.creative_set_id = ad["creative_set_id"].GetString();
@@ -55,12 +59,20 @@ Result AdPreferences::FromJson(
   }
 
   for (const auto& ad : document["filtered_categories"].GetArray()) {
+    if (!ad["name"].IsString()) {
+      return FAILED;
+    }
+
     FilteredCategory filtered_category;
     filtered_category.name = ad["name"].GetString();
     filtered_categories.push_back(filtered_category);
   }
 
   for (const auto& ad : document["saved_ads"].GetArray()) {
+    if (!ad["uuid"].IsString() || !ad["creative_set_id"].IsString()) {
+      return FAILED;
+    }
+
     SavedAd saved_ad;
     saved_ad.uuid = ad["uuid"].GetString();
     saved_ad.creative_set_id = ad["creative_set_id"].GetString();
@@ -68,6 +80,10 @@ Result AdPreferences::FromJson(
   }
 
   for (const auto& ad : document["flagged_ads"].GetArray()) {
+    if (!ad["uuid"].IsString() || !ad["creative_set_id"].IsString()) {
+      return FAILED;
+    }
+
     FlaggedAd flagged_ad;
     flagged_ad.uuid = ad["uuid"].GetString();
     flagged_ad.creative_set_id = ad["creative_set_id"].GetString();

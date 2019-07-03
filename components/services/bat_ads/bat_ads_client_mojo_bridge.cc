@@ -169,6 +169,15 @@ void BatAdsClientMojoBridge::ConfirmAd(
   bat_ads_client_->ConfirmAd(info->ToJson());
 }
 
+void BatAdsClientMojoBridge::ConfirmAction(const std::string& uuid,
+    const std::string& creative_set_id,
+    const ads::ConfirmationType& type) {
+  if (!connected())
+    return;
+
+  bat_ads_client_->ConfirmAction(uuid, creative_set_id, type);
+}
+
 uint32_t BatAdsClientMojoBridge::SetTimer(const uint64_t time_offset) {
   if (!connected())
     return 0;

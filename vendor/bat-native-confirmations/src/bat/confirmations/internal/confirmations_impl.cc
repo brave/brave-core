@@ -1047,6 +1047,18 @@ void ConfirmationsImpl::ConfirmAd(std::unique_ptr<NotificationInfo> info) {
   redeem_token_->Redeem(info->uuid, info->type);
 }
 
+void ConfirmationsImpl::ConfirmAction(
+    const std::string& uuid,
+    const std::string& creative_set_id,
+    const ConfirmationType& type) {
+  BLOG(INFO) << "Confirm action:"
+      << std::endl << "  creative_set_id: " << creative_set_id
+      << std::endl << "  uuid: " << uuid
+      << std::endl << "  type: " << std::string(type);
+
+  redeem_token_->Redeem(uuid, type);
+}
+
 bool ConfirmationsImpl::OnTimer(const uint32_t timer_id) {
   BLOG(INFO) << "OnTimer:" << std::endl
       << "  timer_id: "

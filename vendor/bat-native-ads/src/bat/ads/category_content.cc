@@ -13,7 +13,7 @@ namespace ads {
 
 CategoryContent::CategoryContent() :
     category(""),
-    opt_action(0) {}
+    opt_action(CategoryContent::OPT_ACTION_NONE) {}
 
 CategoryContent::CategoryContent(const CategoryContent& content) :
     category(content.category),
@@ -46,7 +46,7 @@ Result CategoryContent::FromJson(
   }
 
   if (document.HasMember("opt_action")) {
-    opt_action = document["opt_action"].GetInt();
+    opt_action = static_cast<OptAction>(document["opt_action"].GetInt());
   }
 
   return SUCCESS;

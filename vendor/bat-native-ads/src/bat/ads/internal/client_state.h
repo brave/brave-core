@@ -12,13 +12,12 @@
 #include <map>
 #include <deque>
 
+#include "bat/ads/ad_history_detail.h"
 #include "bat/ads/result.h"
 
 #include "bat/ads/internal/ad_preferences.h"
 
 namespace ads {
-
-struct AdHistoryDetail;
 
 struct ClientState {
   ClientState();

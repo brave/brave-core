@@ -30,7 +30,7 @@ struct ADS_EXPORT CategoryContent {
   };
 
   std::string category;
-  int opt_action;
+  OptAction opt_action;
 };
 
 }  // namespace ads

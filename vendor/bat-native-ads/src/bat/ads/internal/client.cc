@@ -6,6 +6,7 @@
 #include "bat/ads/internal/client.h"
 
 #include "bat/ads/ad_history_detail.h"
+#include "bat/ads/internal/classification_helper.h"
 #include "bat/ads/internal/filtered_ad.h"
 #include "bat/ads/internal/filtered_category.h"
 #include "bat/ads/internal/flagged_ad.h"
@@ -48,6 +49,7 @@ Client::Client(AdsImpl* ads, AdsClient* ads_client) :
     ads_(ads),
     ads_client_(ads_client),
     client_state_(new ClientState()) {
+  (void)ads_;
 }
 
 Client::~Client() = default;
@@ -278,9 +280,32 @@ bool Client::ToggleFlagAd(const std::string& id,
 }
 
 bool Client::IsFilteredCategory(const std::string& category) const {
-  auto it = FindFilteredCategoryByName(
-      &client_state_->ad_prefs.filtered_categories, category);
-  return it != client_state_->ad_prefs.filtered_categories.end();
+  // If passed in category has a subcategory and the current filter
+  // does not, check if it's a child of the filter. Conversely, if the
+  // passed in category has no subcategory but the current filter
+  // does, it can't be a match at all so move on to the next
+  // filter. Otherwise, perform an exact match to determine whether or
+  // not to filter the category.
+  std::vector<std::string> category_classifications =
+      helper::Classification::GetClassifications(category);
+  for (const auto& filtered_category :
+       client_state_->ad_prefs.filtered_categories) {
+    std::vector<std::string> filtered_classifications =
+        helper::Classification::GetClassifications(filtered_category.name);
+    if (category_classifications.size() > 1 &&
+        filtered_classifications.size() == 1) {
+      if (category_classifications[0] == filtered_classifications[0]) {
+        return true;
+      }
+    } else if (category_classifications.size() == 1 &&
+               filtered_classifications.size() > 1) {
+      continue;
+    } else if (filtered_category.name == category) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 bool Client::IsFilteredAd(const std::string& creative_set_id) const {

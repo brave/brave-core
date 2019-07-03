@@ -1146,21 +1146,80 @@ void AdsServiceImpl::GetAdsHistory(OnGetAdsHistoryCallback callback) {
 
 void AdsServiceImpl::OnGetAdsHistory(
     OnGetAdsHistoryCallback callback,
-    const base::flat_map<std::string, std::vector<std::string>>&
+    const base::flat_map<uint64_t, std::vector<std::string>>&
         json_ads_history) {
-  std::map<std::string, std::vector<ads::AdsHistory>> ads_history_map;
+  // Reconstitute the map of AdsHistory items from JSON
+  std::map<uint64_t, std::vector<ads::AdsHistory>> ads_history_map;
   for (const auto& entry : json_ads_history) {
-    std::vector<ads::AdsHistory> ads_history_list;
+    std::vector<ads::AdsHistory> ads_history_vector;
     for (const auto& ads_history_entry : entry.second) {
       ads::AdsHistory ads_history;
       ads_history.FromJson(ads_history_entry);
-      ads_history_list.push_back(ads_history);
+      ads_history_vector.push_back(ads_history);
     }
-    const std::string date = entry.first;
-    ads_history_map[date] = ads_history_list;
+    const uint64_t timestamp_in_seconds = entry.first;
+    ads_history_map[timestamp_in_seconds] = ads_history_vector;
   }
 
-  std::move(callback).Run(ads_history_map);
+  // Build the list structure required by the WebUI
+  base::ListValue ads_history_list;
+  int id = 0;
+
+  for (const auto& entry : ads_history_map) {
+    base::DictionaryValue ads_history_dict;
+    ads_history_dict.SetKey("id", base::Value(std::to_string(id++)));
+    double timestamp_in_milliseconds =
+        base::Time::FromDeltaSinceWindowsEpoch(
+            base::TimeDelta::FromSeconds(entry.first))
+            .ToJsTime();
+    ads_history_dict.SetKey("timestampInMilliseconds",
+                            base::Value(timestamp_in_milliseconds));
+
+    base::ListValue ad_history_details;
+
+    for (const auto& ads_history_entry : entry.second) {
+      for (const auto& detail : ads_history_entry.details) {
+        base::DictionaryValue ad_content;
+        ad_content.SetKey("uuid", base::Value(detail.ad_content.uuid));
+        ad_content.SetKey("creativeSetId",
+                          base::Value(detail.ad_content.creative_set_id));
+        ad_content.SetKey("brand", base::Value(detail.ad_content.brand));
+        ad_content.SetKey("brandInfo",
+                          base::Value(detail.ad_content.brand_info));
+        ad_content.SetKey("brandLogo",
+                          base::Value(detail.ad_content.brand_logo));
+        ad_content.SetKey("brandDisplayUrl",
+                          base::Value(detail.ad_content.brand_display_url));
+        ad_content.SetKey("brandUrl", base::Value(detail.ad_content.brand_url));
+        ad_content.SetKey("likeAction",
+                          base::Value(detail.ad_content.like_action));
+        ad_content.SetKey(
+            "adAction", base::Value(std::string(detail.ad_content.ad_action)));
+        ad_content.SetKey("savedAd", base::Value(detail.ad_content.saved_ad));
+        ad_content.SetKey("flaggedAd",
+                          base::Value(detail.ad_content.flagged_ad));
+
+        base::DictionaryValue category_content;
+        category_content.SetKey("category",
+                                base::Value(detail.category_content.category));
+        category_content.SetKey(
+            "optAction", base::Value(detail.category_content.opt_action));
+
+        base::DictionaryValue ad_history_detail;
+        ad_history_detail.SetKey("id", base::Value(detail.uuid));
+        ad_history_detail.SetPath("adContent", std::move(ad_content));
+        ad_history_detail.SetPath("categoryContent",
+                                  std::move(category_content));
+
+        ad_history_details.GetList().emplace_back(std::move(ad_history_detail));
+      }
+    }
+
+    ads_history_dict.SetPath("adDetailRows", std::move(ad_history_details));
+    ads_history_list.GetList().emplace_back(std::move(ads_history_dict));
+  }
+
+  std::move(callback).Run(ads_history_list);
 }
 
 void AdsServiceImpl::ToggleAdThumbUp(const std::string& id,
@@ -1399,6 +1458,12 @@ void AdsServiceImpl::SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) {
 
 void AdsServiceImpl::ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) {
   rewards_service_->ConfirmAd(info->ToJson());
+}
+
+void AdsServiceImpl::ConfirmAction(const std::string& uuid,
+    const std::string& creative_set_id,
+    const ads::ConfirmationType& type) {
+  rewards_service_->ConfirmAction(uuid, creative_set_id, type);
 }
 
 void AdsServiceImpl::NotificationTimedOut(

@@ -89,7 +89,7 @@ Result AdContent::FromJson(
   }
 
   if (document.HasMember("like_action")) {
-    like_action = document["like_action"].GetInt();
+    like_action = static_cast<LikeAction>(document["like_action"].GetInt());
   }
 
   if (document.HasMember("ad_action")) {

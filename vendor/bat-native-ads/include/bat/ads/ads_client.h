@@ -113,6 +113,11 @@ class ADS_EXPORT AdsClient {
   // Should be called to inform Confirmations that an ad was sustained
   virtual void ConfirmAd(std::unique_ptr<NotificationInfo> info) = 0;
 
+  // Should be called to inform Confirmations that an ad was sustained
+  virtual void ConfirmAction(const std::string& uuid,
+                             const std::string& creative_set_id,
+                             const ads::ConfirmationType& type) = 0;
+
   // Should create a timer to trigger after the time offset specified in
   // seconds. If the timer was created successfully a unique identifier should
   // be returned, otherwise returns 0

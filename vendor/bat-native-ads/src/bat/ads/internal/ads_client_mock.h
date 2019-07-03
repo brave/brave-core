@@ -78,6 +78,11 @@ class MockAdsClient : public AdsClient {
   MOCK_METHOD1(ConfirmAd, void(
       std::unique_ptr<NotificationInfo> info));
 
+  MOCK_METHOD3(ConfirmAction, void(
+      const std::string& uuid,
+      const std::string& creative_set_id,
+      const ConfirmationType& type));
+
   MOCK_METHOD1(SetTimer, uint32_t(
       const uint64_t time_offset));
 

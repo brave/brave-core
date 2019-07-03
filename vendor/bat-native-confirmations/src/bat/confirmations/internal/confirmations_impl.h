@@ -83,6 +83,9 @@ class ConfirmationsImpl : public Confirmations {
 
   // Redeem unblinded tokens
   void ConfirmAd(std::unique_ptr<NotificationInfo> info) override;
+  void ConfirmAction(const std::string& uuid,
+                     const std::string& creative_set_id,
+                     const ConfirmationType& type) override;
 
   // Payout redeemed tokens
   void UpdateNextTokenRedemptionDate();

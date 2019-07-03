@@ -15,6 +15,7 @@
 namespace ads {
 
 ClientState::ClientState() :
+    ad_prefs({}),
     ads_shown_history({}),
     ad_uuid(""),
     ads_uuid_seen({}),
@@ -37,6 +38,7 @@ ClientState::ClientState() :
     shop_url("") {}
 
 ClientState::ClientState(const ClientState& state) :
+  ad_prefs(state.ad_prefs),
   ads_shown_history(state.ads_shown_history),
   ad_uuid(state.ad_uuid),
   ads_uuid_seen(state.ads_uuid_seen),

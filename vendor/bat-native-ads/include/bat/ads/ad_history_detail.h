@@ -6,6 +6,7 @@
 #ifndef BAT_ADS_AD_HISTORY_DETAIL_H_
 #define BAT_ADS_AD_HISTORY_DETAIL_H_
 
+#include <stdint.h>
 #include <string>
 
 #include "bat/ads/ad_content.h"

@@ -9,6 +9,7 @@
 #include "bat/ads/category_content.h"
 
 #include "bat/ads/internal/json_helper.h"
+#include "bat/ads/internal/time.h"
 
 #include "base/logging.h"
 
@@ -49,7 +50,9 @@ Result AdHistoryDetail::FromJson(
   }
 
   if (document.HasMember("timestamp_in_seconds")) {
-    timestamp_in_seconds = document["timestamp_in_seconds"].GetUint64();
+    auto migrated_timestamp_in_seconds = Time::MigrateTimestampToDoubleT(
+        document["timestamp_in_seconds"].GetUint64());
+    timestamp_in_seconds = migrated_timestamp_in_seconds;
   }
 
   if (document.HasMember("uuid")) {

@@ -152,6 +152,9 @@ class AdsServiceImpl : public AdsService,
   void CloseNotification(const std::string& id) override;
   void SetCatalogIssuers(std::unique_ptr<ads::IssuersInfo> info) override;
   void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
+  void ConfirmAction(const std::string& uuid,
+                     const std::string& creative_set_id,
+                     const ads::ConfirmationType& type) override;
   uint32_t SetTimer(const uint64_t time_offset) override;
   void KillTimer(uint32_t timer_id) override;
   void URLRequest(
@@ -211,7 +214,7 @@ class AdsServiceImpl : public AdsService,
 
   void OnGetAdsHistory(
       OnGetAdsHistoryCallback callback,
-      const base::flat_map<std::string, std::vector<std::string>>&
+      const base::flat_map<uint64_t, std::vector<std::string>>&
           json_ads_history);
 
   void OnToggleAdThumbUp(OnToggleAdThumbUpCallback callback,

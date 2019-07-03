@@ -234,6 +234,9 @@ class LEDGER_EXPORT Ledger {
   virtual void SetCatalogIssuers(const std::string& info) = 0;
 
   virtual void ConfirmAd(const std::string& info) = 0;
+  virtual void ConfirmAction(const std::string& uuid,
+                             const std::string& creative_set_id,
+                             const std::string& type) = 0;
   virtual void GetTransactionHistory(
       GetTransactionHistoryCallback callback) = 0;
 

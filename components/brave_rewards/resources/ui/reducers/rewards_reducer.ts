@@ -153,14 +153,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_TOGGLE_AD_THUMB_UP: {
-      state = { ...state }
-      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
-        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
-          if (detail.adContent.uuid === action.payload.result.uuid) {
-            detail.adContent.likeAction = action.payload.result.action
-          }
-        })
-      })
+      chrome.send('brave_rewards.getAdsHistory')
       break
     }
     case types.TOGGLE_AD_THUMB_DOWN: {
@@ -169,14 +162,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_TOGGLE_AD_THUMB_DOWN: {
-      state = { ...state }
-      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
-        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
-          if (detail.adContent.uuid === action.payload.result.uuid) {
-            detail.adContent.likeAction = action.payload.result.action
-          }
-        })
-      })
+      chrome.send('brave_rewards.getAdsHistory')
       break
     }
     case types.TOGGLE_AD_OPT_IN_ACTION: {
@@ -185,14 +171,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_TOGGLE_AD_OPT_IN_ACTION: {
-      state = { ...state }
-      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
-        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
-          if (detail.categoryContent.category === action.payload.result.category) {
-            detail.categoryContent.optAction = action.payload.result.action
-          }
-        })
-      })
+      chrome.send('brave_rewards.getAdsHistory')
       break
     }
     case types.TOGGLE_AD_OPT_OUT_ACTION: {
@@ -201,15 +180,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_TOGGLE_AD_OPT_OUT_ACTION: {
-      state = { ...state }
-      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
-        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
-          if (detail.categoryContent.category === action.payload.result.category) {
-            detail.categoryContent.optAction = action.payload.result.action
-            console.log(action.payload)
-          }
-        })
-      })
+      chrome.send('brave_rewards.getAdsHistory')
       break
     }
     case types.TOGGLE_SAVE_AD: {
@@ -218,14 +189,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_TOGGLE_SAVE_AD: {
-      state = { ...state }
-      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
-        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
-          if (detail.adContent.uuid === action.payload.result.uuid) {
-            detail.adContent.savedAd = action.payload.result.saved
-          }
-        })
-      })
+      chrome.send('brave_rewards.getAdsHistory')
       break
     }
     case types.TOGGLE_FLAG_AD: {
@@ -234,14 +198,7 @@ const rewardsReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State
       break
     }
     case types.ON_TOGGLE_FLAG_AD: {
-      state = { ...state }
-      state.adsHistory.forEach((history: Rewards.AdsHistoryData) => {
-        history.adDetailRows.filter((detail: Rewards.AdHistoryDetail) => {
-          if (detail.adContent.uuid === action.payload.result.uuid) {
-            detail.adContent.flaggedAd = action.payload.result.flagged
-          }
-        })
-      })
+      chrome.send('brave_rewards.getAdsHistory')
       break
     }
     case types.ON_ADS_SETTING_SAVE: {

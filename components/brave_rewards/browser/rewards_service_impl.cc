@@ -1570,6 +1570,16 @@ void RewardsServiceImpl::ConfirmAd(const std::string& json) {
   bat_ledger_->ConfirmAd(json);
 }
 
+void RewardsServiceImpl::ConfirmAction(const std::string& uuid,
+    const std::string& creative_set_id,
+    const std::string& type) {
+  if (!Connected()) {
+    return;
+  }
+
+  bat_ledger_->ConfirmAction(uuid, creative_set_id, type);
+}
+
 void RewardsServiceImpl::SetConfirmationsIsReady(const bool is_ready) {
   auto* ads_service = brave_ads::AdsServiceFactory::GetForProfile(profile_);
   if (ads_service)

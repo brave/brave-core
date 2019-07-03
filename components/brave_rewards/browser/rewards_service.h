@@ -199,6 +199,9 @@ class RewardsService : public KeyedService {
   // as ledger
   virtual void SetCatalogIssuers(const std::string& json) = 0;
   virtual void ConfirmAd(const std::string& json) = 0;
+  virtual void ConfirmAction(const std::string& uuid,
+                             const std::string& creative_set_id,
+                             const std::string& type) = 0;
   virtual void GetRewardsInternalsInfo(
       GetRewardsInternalsInfoCallback callback) = 0;
   virtual void GetTransactionHistory(

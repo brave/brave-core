@@ -1499,9 +1499,33 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
       notification_info->type = confirmations::ConfirmationType::LANDED;
       break;
     }
+
+    case ads::ConfirmationType::FLAG: {
+      notification_info->type = confirmations::ConfirmationType::FLAG;
+      break;
+    }
+
+    case ads::ConfirmationType::UPVOTE: {
+      notification_info->type = confirmations::ConfirmationType::UPVOTE;
+      break;
+    }
+
+    case ads::ConfirmationType::DOWNVOTE: {
+      notification_info->type = confirmations::ConfirmationType::DOWNVOTE;
+      break;
+    }
   }
 
   bat_confirmations_->ConfirmAd(std::move(notification_info));
+}
+
+void LedgerImpl::ConfirmAction(
+    const std::string& uuid,
+    const std::string& creative_set_id,
+    const std::string& type) {
+  bat_confirmations_->ConfirmAction(uuid,
+                                    creative_set_id,
+                                    confirmations::ConfirmationType(type));
 }
 
 void LedgerImpl::GetTransactionHistory(

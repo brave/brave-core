@@ -15,12 +15,13 @@
 #include "bat/ads/notification_info.h"
 
 #include "bat/ads/internal/ads_impl.h"
+#include "bat/ads/internal/classification_helper.h"
+#include "bat/ads/internal/locale_helper.h"
 #include "bat/ads/internal/logging.h"
 #include "bat/ads/internal/search_providers.h"
-#include "bat/ads/internal/locale_helper.h"
-#include "bat/ads/internal/uri_helper.h"
-#include "bat/ads/internal/time.h"
 #include "bat/ads/internal/static_values.h"
+#include "bat/ads/internal/time.h"
+#include "bat/ads/internal/uri_helper.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/error/en.h"
@@ -28,14 +29,11 @@
 #include "rapidjson/writer.h"
 
 #include "base/guid.h"
-#include "base/i18n/time_formatting.h"
 #include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
-#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
-#include "base/guid.h"
 
 #include "url/gurl.h"
 
@@ -349,7 +347,7 @@ void AdsImpl::NotificationEventViewed(
   GenerateAdReportingNotificationShownEvent(notification);
 
   ConfirmAd(notification, ConfirmationType::VIEW);
-  GenerateAdsHistoryEntry(info, ConfirmationType::VIEW);
+  GenerateAdsHistoryEntry(notification, ConfirmationType::VIEW);
 }
 
 void AdsImpl::NotificationEventClicked(
@@ -361,7 +359,7 @@ void AdsImpl::NotificationEventClicked(
       NotificationResultInfoResultType::CLICKED);
 
   ConfirmAd(notification, ConfirmationType::CLICK);
-  GenerateAdsHistoryEntry(info, ConfirmationType::CLICK);
+  GenerateAdsHistoryEntry(notification, ConfirmationType::CLICK);
 }
 
 void AdsImpl::NotificationEventDismissed(
@@ -373,7 +371,7 @@ void AdsImpl::NotificationEventDismissed(
       NotificationResultInfoResultType::DISMISSED);
 
   ConfirmAd(notification, ConfirmationType::DISMISS);
-  GenerateAdsHistoryEntry(info, ConfirmationType::DISMISS);
+  GenerateAdsHistoryEntry(notification, ConfirmationType::DISMISS);
 }
 
 void AdsImpl::NotificationEventTimedOut(
@@ -440,32 +438,25 @@ void AdsImpl::SetConfirmationsIsReady(const bool is_ready) {
   is_confirmations_ready_ = is_ready;
 }
 
-std::map<std::string, std::vector<AdsHistory>> AdsImpl::GetAdsHistory() {
-  std::map<std::string, std::vector<AdsHistory>> ads_history;
+std::map<uint64_t, std::vector<AdsHistory>> AdsImpl::GetAdsHistory() {
+  std::map<uint64_t, std::vector<AdsHistory>> ads_history;
   base::Time now = base::Time::Now().LocalMidnight();
 
   auto ad_history_details = client_->GetAdsShownHistory();
   for (auto& detail_item : ad_history_details) {
-    // FIXME(erogul): This should probably be done in the JavaScript
-    // WebUI
-    if (detail_item.ad_content.brand_info.size() > 50) {
-      detail_item.ad_content.brand_info.resize(50);
-      detail_item.ad_content.brand_info += "...";
-    }
-
     auto history_item = std::make_unique<AdsHistory>();
     history_item->details.push_back(detail_item);
 
-    base::Time timestamp = base::Time::FromDeltaSinceWindowsEpoch(
-        base::TimeDelta::FromSeconds(detail_item.timestamp_in_seconds));
-    base::TimeDelta time_delta = now - timestamp.LocalMidnight();
+    base::Time timestamp =
+        Time::FromDoubleT(detail_item.timestamp_in_seconds).LocalMidnight();
+    base::TimeDelta time_delta = now - timestamp;
     if (time_delta.InDays() >= kDaysOfAdsHistory) {
       break;
     }
 
-    std::string timestamp_numeric =
-        base::UTF16ToUTF8(base::TimeFormatShortDateNumeric(timestamp));
-    ads_history[timestamp_numeric].push_back(*history_item);
+    const uint64_t timestamp_in_seconds =
+        static_cast<uint64_t>((timestamp - base::Time()).InSeconds());
+    ads_history[timestamp_in_seconds].push_back(*history_item);
   }
 
   return ads_history;
@@ -479,11 +470,7 @@ AdContent::LikeAction AdsImpl::ToggleAdThumbUp(
       client_->ToggleAdThumbUp(id, creative_set_id, action);
 
   if (like_action == AdContent::LIKE_ACTION_THUMBS_UP) {
-    ads::NotificationInfo notification_info;
-    notification_info.uuid = id;
-    notification_info.creative_set_id = creative_set_id;
-    notification_info.type = ConfirmationType::UPVOTE;
-    ConfirmAd(notification_info, ConfirmationType::UPVOTE);
+    ConfirmAction(id, creative_set_id, ConfirmationType::UPVOTE);
   }
 
   return like_action;
@@ -497,11 +484,7 @@ AdContent::LikeAction AdsImpl::ToggleAdThumbDown(
       client_->ToggleAdThumbDown(id, creative_set_id, action);
 
   if (like_action == AdContent::LIKE_ACTION_THUMBS_DOWN) {
-    ads::NotificationInfo notification_info;
-    notification_info.uuid = id;
-    notification_info.creative_set_id = creative_set_id;
-    notification_info.type = ConfirmationType::DOWNVOTE;
-    ConfirmAd(notification_info, ConfirmationType::DOWNVOTE);
+    ConfirmAction(id, creative_set_id, ConfirmationType::DOWNVOTE);
   }
 
   return like_action;
@@ -531,11 +514,7 @@ bool AdsImpl::ToggleFlagAd(const std::string& id,
   bool flag_ad = client_->ToggleFlagAd(id, creative_set_id, flagged);
 
   if (flag_ad) {
-    ads::NotificationInfo notification_info;
-    notification_info.uuid = id;
-    notification_info.creative_set_id = creative_set_id;
-    notification_info.type = ConfirmationType::FLAG;
-    ConfirmAd(notification_info, ConfirmationType::FLAG);
+    ConfirmAction(id, creative_set_id, ConfirmationType::FLAG);
   }
 
   return flag_ad;
@@ -870,8 +849,8 @@ void AdsImpl::ServeAdFromCategory(const std::string& category) {
   }
 
   if (client_->IsFilteredCategory(category)) {
-    BLOG(INFO) << "Notification not made: category appears in filtered "
-                  "categories list";
+    BLOG(INFO) << "Notification not made: category \"" << category
+               << "\" appears in filtered categories list";
 
     return;
   }
@@ -1110,7 +1089,7 @@ bool AdsImpl::HistoryRespectsRollingTimeConstraint(
     const uint64_t allowable_ad_count) const {
   uint64_t recent_count = 0;
 
-  auto now_in_seconds = helper::Time::NowInSeconds();
+  auto now_in_seconds = Time::NowInSeconds();
 
   for (const auto& detail : history) {
     if (now_in_seconds - detail.timestamp_in_seconds < seconds_window) {
@@ -1415,7 +1394,7 @@ bool AdsImpl::IsStillViewingAd() const {
 
 void AdsImpl::ConfirmAd(
     const NotificationInfo& info,
-    const ConfirmationType type) {
+    const ConfirmationType& type) {
   if (IsNotificationFromSampleCatalog(info)) {
     BLOG(INFO) << "Confirmation not made: Sample Ad";
 
@@ -1429,6 +1408,21 @@ void AdsImpl::ConfirmAd(
   GenerateAdReportingConfirmationEvent(*notification_info);
 
   ads_client_->ConfirmAd(std::move(notification_info));
+}
+
+void AdsImpl::ConfirmAction(
+    const std::string& uuid,
+    const std::string& creative_set_id,
+    const ConfirmationType& type) {
+  if (IsCreativeSetFromSampleCatalog(creative_set_id)) {
+    BLOG(INFO) << "Confirmation not made: Sample Ad";
+
+    return;
+  }
+
+  GenerateAdReportingConfirmationEvent(uuid, type);
+
+  ads_client_->ConfirmAction(uuid, creative_set_id, type);
 }
 
 void AdsImpl::OnTimer(const uint32_t timer_id) {
@@ -1479,8 +1473,8 @@ void AdsImpl::GenerateAdReportingNotificationShownEvent(
 
   writer.String("notificationClassification");
   writer.StartArray();
-  std::vector<std::string> classifications = base::SplitString(
-      info.category, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  auto classifications =
+      helper::Classification::GetClassifications(info.category);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
@@ -1555,8 +1549,8 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
   writer.String("notificationClassification");
   writer.StartArray();
-  std::vector<std::string> classifications = base::SplitString(
-      info.category, "-", base::KEEP_WHITESPACE, base::SPLIT_WANT_ALL);
+  auto classifications =
+      helper::Classification::GetClassifications(info.category);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
@@ -1582,6 +1576,12 @@ void AdsImpl::GenerateAdReportingNotificationResultEvent(
 
 void AdsImpl::GenerateAdReportingConfirmationEvent(
     const NotificationInfo& info) {
+  GenerateAdReportingConfirmationEvent(info.uuid, info.type);
+}
+
+void AdsImpl::GenerateAdReportingConfirmationEvent(
+  const std::string& uuid,
+  const ConfirmationType& type) {
   rapidjson::StringBuffer buffer;
   rapidjson::Writer<rapidjson::StringBuffer> writer(buffer);
 
@@ -1598,11 +1598,11 @@ void AdsImpl::GenerateAdReportingConfirmationEvent(
   writer.String(time_stamp.c_str());
 
   writer.String("notificationId");
-  writer.String(info.uuid.c_str());
+  writer.String(uuid.c_str());
 
   writer.String("notificationType");
-  auto type = std::string(info.type);
-  writer.String(type.c_str());
+  auto confirmation_type = std::string(type);
+  writer.String(confirmation_type.c_str());
 
   writer.EndObject();
 
@@ -1648,9 +1648,8 @@ void AdsImpl::GenerateAdReportingLoadEvent(
 
   writer.String("tabClassification");
   writer.StartArray();
-  std::vector<std::string> classifications = base::SplitString(
-      info.tab_classification, "-", base::KEEP_WHITESPACE,
-      base::SPLIT_WANT_ALL);
+  auto classifications =
+      helper::Classification::GetClassifications(info.tab_classification);
   for (const auto& classification : classifications) {
     writer.String(classification.c_str());
   }
@@ -1884,23 +1883,18 @@ void AdsImpl::GenerateAdsHistoryEntry(
     const NotificationInfo& notification_info,
     const ConfirmationType& confirmation_type) {
   auto ad_history_detail = std::make_unique<AdHistoryDetail>();
-  ad_history_detail->timestamp_in_seconds = helper::Time::NowInSeconds();
+  ad_history_detail->timestamp_in_seconds = Time::NowInSeconds();
   ad_history_detail->uuid = base::GenerateGUID();
   ad_history_detail->ad_content.uuid = notification_info.uuid;
   ad_history_detail->ad_content.creative_set_id =
       notification_info.creative_set_id;
   ad_history_detail->ad_content.brand = notification_info.advertiser;
   ad_history_detail->ad_content.brand_info = notification_info.text;
-  ad_history_detail->ad_content.brand_logo = "";
   ad_history_detail->ad_content.brand_display_url =
       GetDisplayUrl(notification_info.url);
   ad_history_detail->ad_content.brand_url = notification_info.url;
-  ad_history_detail->ad_content.like_action = AdContent::LIKE_ACTION_NONE;
   ad_history_detail->ad_content.ad_action = confirmation_type;
-  ad_history_detail->ad_content.saved_ad = false;
-  ad_history_detail->ad_content.flagged_ad = false;
   ad_history_detail->category_content.category = notification_info.category;
-  ad_history_detail->category_content.opt_action = 0;
 
   client_->AppendAdToAdsShownHistory(*ad_history_detail);
 }
@@ -1908,6 +1902,11 @@ void AdsImpl::GenerateAdsHistoryEntry(
 bool AdsImpl::IsNotificationFromSampleCatalog(
     const NotificationInfo& info) const {
   return info.creative_set_id.empty();
+}
+
+bool AdsImpl::IsCreativeSetFromSampleCatalog(
+  const std::string& creative_set_id) const {
+  return creative_set_id.empty();
 }
 
 bool AdsImpl::IsSupportedUrl(const std::string& url) const {

@@ -17,8 +17,6 @@
 #include "base/i18n/time_formatting.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
-#include "bat/ads/ad_history_detail.h"
-#include "bat/ads/ads_history.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/ads_service.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -89,8 +87,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void CheckImported(const base::ListValue* args);
   void GetAdsData(const base::ListValue* args);
   void GetAdsHistory(const base::ListValue* args);
-  void OnGetAdsHistory(
-      const std::map<std::string, std::vector<ads::AdsHistory>>& ads_history);
+  void OnGetAdsHistory(const base::ListValue& ads_history);
   void ToggleAdThumbUp(const base::ListValue* args);
   void OnToggleAdThumbUp(const std::string& id, int action);
   void ToggleAdThumbDown(const base::ListValue* args);
@@ -1047,66 +1044,13 @@ void RewardsDOMHandler::GetAdsHistory(const base::ListValue* args) {
                                          weak_factory_.GetWeakPtr()));
 }
 
-void RewardsDOMHandler::OnGetAdsHistory(
-    const std::map<std::string, std::vector<ads::AdsHistory>>& ads_history) {
+void RewardsDOMHandler::OnGetAdsHistory(const base::ListValue& ads_history) {
   if (!web_ui()->CanCallJavascript()) {
     return;
   }
 
-  base::Value ads_history_list(base::Value::Type::LIST);
-  int id = 0;
-
-  for (const auto& entry : ads_history) {
-    base::Value ads_history_dict(base::Value::Type::DICTIONARY);
-    ads_history_dict.SetKey("id", base::Value(std::to_string(id++)));
-    ads_history_dict.SetKey("date", base::Value(entry.first));
-
-    base::Value ad_history_details(base::Value::Type::LIST);
-
-    for (const auto& ads_history_entry : entry.second) {
-      for (const auto& detail : ads_history_entry.details) {
-        base::Value ad_content(base::Value::Type::DICTIONARY);
-        ad_content.SetKey("uuid", base::Value(detail.ad_content.uuid));
-        ad_content.SetKey("creativeSetId",
-                          base::Value(detail.ad_content.creative_set_id));
-        ad_content.SetKey("brand", base::Value(detail.ad_content.brand));
-        ad_content.SetKey("brandInfo",
-                          base::Value(detail.ad_content.brand_info));
-        ad_content.SetKey("brandLogo",
-                          base::Value(detail.ad_content.brand_logo));
-        ad_content.SetKey("brandDisplayUrl",
-                          base::Value(detail.ad_content.brand_display_url));
-        ad_content.SetKey("brandUrl", base::Value(detail.ad_content.brand_url));
-        ad_content.SetKey("likeAction",
-                          base::Value(detail.ad_content.like_action));
-        ad_content.SetKey(
-            "adAction", base::Value(std::string(detail.ad_content.ad_action)));
-        ad_content.SetKey("savedAd", base::Value(detail.ad_content.saved_ad));
-        ad_content.SetKey("flaggedAd",
-                          base::Value(detail.ad_content.flagged_ad));
-
-        base::Value category_content(base::Value::Type::DICTIONARY);
-        category_content.SetKey("category",
-                                base::Value(detail.category_content.category));
-        category_content.SetKey(
-            "optAction", base::Value(detail.category_content.opt_action));
-
-        base::Value ad_history_detail(base::Value::Type::DICTIONARY);
-        ad_history_detail.SetKey("id", base::Value(detail.uuid));
-        ad_history_detail.SetPath("adContent", std::move(ad_content));
-        ad_history_detail.SetPath("categoryContent",
-                                  std::move(category_content));
-
-        ad_history_details.GetList().emplace_back(std::move(ad_history_detail));
-      }
-    }
-
-    ads_history_dict.SetPath("adDetailRows", std::move(ad_history_details));
-    ads_history_list.GetList().emplace_back(std::move(ads_history_dict));
-  }
-
   web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.adsHistory",
-                                         ads_history_list);
+                                         ads_history);
 }
 
 void RewardsDOMHandler::ToggleAdThumbUp(const base::ListValue* args) {
