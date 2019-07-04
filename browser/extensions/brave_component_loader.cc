@@ -50,12 +50,7 @@ void BraveComponentLoader::OnComponentReady(std::string extension_id,
     bool allow_file_access,
     const base::FilePath& install_dir,
     const std::string& manifest) {
-  if (extension_id == ethereum_remote_client_extension_id) {
-    ethereum_remote_client_manifest_ = manifest;
-    ethereum_remote_client_install_dir_ = install_dir;
-  } else {
-    Add(manifest, install_dir);
-  }
+  Add(manifest, install_dir);
   if (allow_file_access) {
     ExtensionPrefs::Get((content::BrowserContext *)profile_)->
         SetAllowFileAccess(extension_id, true);
@@ -114,22 +109,14 @@ void BraveComponentLoader::AddDefaultComponentExtensions(
       brave_webtorrent_path.Append(FILE_PATH_LITERAL("brave_webtorrent"));
     Add(IDR_BRAVE_WEBTORRENT, brave_webtorrent_path);
   }
+}
 
+void BraveComponentLoader::AddEthereumRemoteClientExtension() {
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   AddExtension(ethereum_remote_client_extension_id,
       ethereum_remote_client_extension_name,
       ethereum_remote_client_extension_public_key);
 #endif
-}
-
-void BraveComponentLoader::AddEthereumRemoteClientExtension() {
-  Add(ethereum_remote_client_manifest_, ethereum_remote_client_install_dir_);
-}
-
-// TODO(bbondy): Expose this as a setting so you can turn it off after it has
-// been turned on.
-void BraveComponentLoader::RemovEthereumRemoteClientExtension() {
-  Remove(ethereum_remote_client_extension_id);
 }
 
 }  // namespace extensions

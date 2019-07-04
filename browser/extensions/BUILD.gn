@@ -36,6 +36,8 @@ source_set("extensions") {
     "brave_theme_event_router.h",
     "brave_tor_client_updater.cc",
     "brave_tor_client_updater.h",
+    "brave_wallet_navigation_throttle.cc",
+    "brave_wallet_navigation_throttle.h",
     "updater/brave_update_client_config.cc",
     "updater/brave_update_client_config.h"
   ]

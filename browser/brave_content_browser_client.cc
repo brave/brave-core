@@ -33,6 +33,7 @@
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 #include "brave/components/services/brave_content_packaged_service_overlay_manifest.h"
 #include "brave/grit/brave_generated_resources.h"
+#include "brave/browser/extensions/brave_wallet_navigation_throttle.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
@@ -360,15 +361,27 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
       extensions::ExtensionService* service =
         extensions::ExtensionSystem::Get(browser_context)->extension_service();
       extensions::ComponentLoader* loader = service->component_loader();
-      if (!loader->Exists(ethereum_remote_client_extension_id)) {
-        static_cast<extensions::BraveComponentLoader*>(loader)->
-          AddEthereumRemoteClientExtension();
+      if (loader->Exists(ethereum_remote_client_extension_id)) {
+        *url = GURL(ethereum_remote_client_base_url);
+        return true;
       }
     }
-    *url = GURL(ethereum_remote_client_base_url);
-    return true;
   }
 #endif
 
   return false;
+}
+
+std::vector<std::unique_ptr<content::NavigationThrottle>>
+BraveContentBrowserClient::CreateThrottlesForNavigation(
+    content::NavigationHandle* handle) {
+  std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
+      ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  throttles.push_back(
+      std::make_unique<extensions::BraveWalletNavigationThrottle>(handle));
+#endif
+
+  return throttles;
 }
