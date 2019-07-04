@@ -111,20 +111,7 @@ class LEDGER_EXPORT Ledger {
 
   virtual std::string URIEncode(const std::string& value) = 0;
 
-  virtual void SetPublisherInfo(PublisherInfoPtr publisher_info) = 0;
-
-  virtual void SetActivityInfo(PublisherInfoPtr publisher_info) = 0;
-
   virtual void GetPublisherInfo(const std::string& publisher_key,
-                                PublisherInfoCallback callback) = 0;
-
-  virtual void GetActivityInfo(const ledger::ActivityInfoFilter& filter,
-                                PublisherInfoCallback callback) = 0;
-
-  virtual void SetMediaPublisherInfo(const std::string& media_key,
-                                const std::string& publisher_id) = 0;
-
-  virtual void GetMediaPublisherInfo(const std::string& media_key,
                                 PublisherInfoCallback callback) = 0;
 
   virtual void GetActivityInfoList(uint32_t start, uint32_t limit,
@@ -148,10 +135,6 @@ class LEDGER_EXPORT Ledger {
   virtual void SetAutoContribute(bool enabled) = 0;
 
   virtual void UpdateAdsRewards() = 0;
-
-  virtual void SetBalanceReport(ACTIVITY_MONTH month,
-                              int year,
-                              const ledger::BalanceReportInfo& report_info) = 0;
 
   virtual void GetAddresses(
       int32_t current_country_code,

@@ -95,18 +95,9 @@ NS_SWIFT_NAME(BraveLedger)
                            filter:(BATActivityInfoFilter *)filter
                        completion:(void (^)(NSArray<BATPublisherInfo *> *))completion;
 
-- (void)activityInfoWithFilter:(nullable BATActivityInfoFilter *)filter
-                    completion:(void (^)(BATPublisherInfo * _Nullable info))completion;
-
 - (void)publisherActivityFromURL:(NSURL *)URL
                       faviconURL:(nullable NSURL *)faviconURL
                    publisherBlob:(nullable NSString *)publisherBlob;
-
-- (void)mediaPublisherInfoForMediaKey:(NSString *)mediaKey
-                           completion:(void (^)(BATPublisherInfo * _Nullable info))completion;
-
-- (void)updateMediaPublisherInfo:(NSString *)publisherId
-                        mediaKey:(NSString *)mediaKey;
 
 /// Returns activity info for current reconcile stamp.
 - (nullable BATPublisherInfo *)currentActivityInfoWithPublisherId:(NSString *)publisherId;
