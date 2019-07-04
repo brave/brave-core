@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_read.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_read_result.h"
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage.h"
@@ -18,26 +18,26 @@ using ::std::to_string;
 
 namespace brave_page_graph {
 
-EdgeStorageRead::EdgeStorageRead(PageGraph* const graph,
-    NodeScript* const out_node, NodeStorage* const in_node,
+EdgeStorageReadResult::EdgeStorageReadResult(PageGraph* const graph,
+    NodeStorage* const out_node, NodeScript* const in_node,
     const string& key, const string& value) :
       EdgeStorage(graph, out_node, in_node, key),
       value_(value) {}
 
-EdgeStorageRead::~EdgeStorageRead() {}
+EdgeStorageReadResult::~EdgeStorageReadResult() {}
 
-ItemName EdgeStorageRead::GetItemName() const {
-  return "EdgeStorageRead#" + to_string(id_);
+ItemName EdgeStorageReadResult::GetItemName() const {
+  return "EdgeStorageReadResult#" + to_string(id_);
 }
 
-ItemDesc EdgeStorageRead::GetDescBody() const {
+ItemDesc EdgeStorageReadResult::GetDescBody() const {
   return GetItemName() + " [key:" + key_ + ", value:" + value_ + "]";
 }
 
-GraphMLXMLList EdgeStorageRead::GraphMLAttributes() const {
+GraphMLXMLList EdgeStorageReadResult::GraphMLAttributes() const {
   GraphMLXMLList items = EdgeStorage::GraphMLAttributes();
   items.push_back(
-    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)->ToValue("storage read"));
+    GraphMLAttrDefForType(kGraphMLAttrDefEdgeType)->ToValue("storage read result"));
   items.push_back(
     GraphMLAttrDefForType(kGraphMLAttrDefValue)->ToValue(value_));
   return items;

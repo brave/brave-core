@@ -1,0 +1,64 @@
+diff --git a/third_party/blink/renderer/modules/plugins/navigator_plugins.cc b/third_party/blink/renderer/modules/plugins/navigator_plugins.cc
+index 6cb12a8577e151345a33c3de8f1dc9039aea452e..19f79a19dab18b95858e58c336be6460910245da 100644
+--- a/third_party/blink/renderer/modules/plugins/navigator_plugins.cc
++++ b/third_party/blink/renderer/modules/plugins/navigator_plugins.cc
+@@ -10,6 +10,14 @@
+ #include "third_party/blink/renderer/modules/plugins/dom_mime_type_array.h"
+ #include "third_party/blink/renderer/modules/plugins/dom_plugin_array.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#include "third_party/blink/renderer/core/dom/document.h"
++#include <string>
++#include <sstream>
++#endif
++
+ namespace blink {
+ 
+ NavigatorPlugins::NavigatorPlugins(Navigator& navigator)
+@@ -35,6 +43,44 @@ const char NavigatorPlugins::kSupplementName[] = "NavigatorPlugins";
+ 
+ // static
+ DOMPluginArray* NavigatorPlugins::plugins(Navigator& navigator) {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    brave_page_graph::PageGraph* page_graph =
++      navigator.GetFrame()->GetDocument()->GetPageGraph();
++    DOMPluginArray* plugins =
++      NavigatorPlugins::From(navigator).plugins(navigator.GetFrame());
++
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("NavigatorPlugins.plugins",
++        std::vector<const String>());
++
++      std::stringstream result_builder;
++      for (unsigned i = 0; i < plugins->length(); i++) {
++        result_builder << std::to_string(i) << ": ";
++        result_builder << "plugin name: "
++          << plugins->item(i)->name().Utf8().data() << ", ";
++        result_builder << "plugin filename: "
++          << plugins->item(i)->filename().Utf8().data() << ", ";
++        result_builder << "plugin description: "
++          << plugins->item(i)->description().Utf8().data() << ", ";
++        DOMMimeType* mime_type = plugins->item(i)->item(i);
++        result_builder << "mimetype type: " << mime_type->type() << ", ";
++        result_builder << "mimetype suffixes: " << mime_type->suffixes()
++          << ", ";
++        result_builder << "mimetype description: " << mime_type->description()
++          << ";";
++      }
++
++      const std::string str_result = result_builder.str();
++      const size_t length = str_result.length();
++      String result(str_result.c_str(), length);
++
++      page_graph->RegisterWebAPIResult("NavigatorPlugins.plugins", result);
++    }
++
++    return plugins;
++  }
++#endif
+   return NavigatorPlugins::From(navigator).plugins(navigator.GetFrame());
+ }
+ 

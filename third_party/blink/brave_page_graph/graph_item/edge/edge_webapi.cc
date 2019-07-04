@@ -3,11 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_webapi.h"
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graphml.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/node/node.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_script.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_webapi.h"
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 
@@ -15,20 +16,19 @@ using ::std::string;
 
 namespace brave_page_graph {
 
-EdgeStorage::EdgeStorage(PageGraph* const graph,
-    Node* const out_node, Node* const in_node,
-    const string& key) :
+EdgeWebAPI::EdgeWebAPI(PageGraph* const graph, Node* const out_node,
+    Node* const in_node, const string& method) :
       Edge(graph, out_node, in_node),
-      key_(key) {}
+      method_(method) {}
 
-ItemName EdgeStorage::GetDescBody() const {
-  return GetItemName() + " [key:" + key_ + "]";
+ItemName EdgeWebAPI::GetDescBody() const {
+  return GetItemName() + " [method:" + method_ + "]";
 }
 
-GraphMLXMLList EdgeStorage::GraphMLAttributes() const {
+GraphMLXMLList EdgeWebAPI::GraphMLAttributes() const {
   return {
     GraphMLAttrDefForType(kGraphMLAttrDefKey)
-      ->ToValue(key_)
+      ->ToValue(method_)
   };
 }
 

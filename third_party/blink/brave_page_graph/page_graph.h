@@ -130,6 +130,11 @@ friend NodeHTMLElement;
     const StorageLocation location);
   void RegisterStorageClear(const StorageLocation location);
 
+  void RegisterWebAPICall(const MethodName& method,
+    const std::vector<const WTF::String>& arguments);
+  void RegisterWebAPIResult(const MethodName& method,
+    const WTF::String& result);
+
   // Methods for handling the registration of script units in the document,
   // and v8 script executing.
 

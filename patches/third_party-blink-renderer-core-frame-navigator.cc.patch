@@ -1,0 +1,93 @@
+diff --git a/third_party/blink/renderer/core/frame/navigator.cc b/third_party/blink/renderer/core/frame/navigator.cc
+index 71b32975210d5873d66ff9b20906c55ae4062d0e..f8b414aed60f2bd65d81287709977091c6aa0349 100644
+--- a/third_party/blink/renderer/core/frame/navigator.cc
++++ b/third_party/blink/renderer/core/frame/navigator.cc
+@@ -36,6 +36,11 @@
+ #include "third_party/blink/renderer/platform/language.h"
+ #include "third_party/blink/renderer/platform/memory_pressure_listener.h"
+ 
++#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++#include "brave/third_party/blink/brave_page_graph/page_graph.h"
++#endif
++
+ namespace blink {
+ 
+ Navigator::Navigator(LocalFrame* frame)
+@@ -58,6 +63,25 @@ String Navigator::vendorSub() const {
+ }
+ 
+ String Navigator::platform() const {
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    String result = NavigatorID::platform();
++    if (GetFrame() &&
++        !GetFrame()->GetSettings()->GetNavigatorPlatformOverride().IsEmpty()) {
++      result = GetFrame()->GetSettings()->GetNavigatorPlatformOverride();
++    }
++
++    brave_page_graph::PageGraph* page_graph =
++      GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("NavigatorID.platform",
++        std::vector<const String>());
++      page_graph->RegisterWebAPIResult("NavigatorID.platform", result);
++    }
++
++    return result;
++  }
++#endif
+   if (GetFrame() &&
+       !GetFrame()->GetSettings()->GetNavigatorPlatformOverride().IsEmpty()) {
+     return GetFrame()->GetSettings()->GetNavigatorPlatformOverride();
+@@ -70,6 +94,20 @@ String Navigator::userAgent() const {
+   if (!GetFrame() || !GetFrame()->GetPage())
+     return String();
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    brave_page_graph::PageGraph* page_graph =
++      GetFrame()->GetDocument()->GetPageGraph();
++    
++    if (page_graph != nullptr) {
++      String result = GetFrame()->Loader().UserAgent();
++      page_graph->RegisterWebAPICall("NavigatorID.userAgent",
++        std::vector<const String>());
++      page_graph->RegisterWebAPIResult("NavigatorID.userAgent", result);
++    }
++  }
++#endif
++
+   return GetFrame()->Loader().UserAgent();
+ }
+ 
+@@ -85,6 +123,29 @@ bool Navigator::cookieEnabled() const {
+   if (!GetFrame())
+     return false;
+ 
++#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
++  {
++    Settings* settings = GetFrame()->GetSettings();
++    bool result = CookiesEnabled(GetFrame()->GetDocument());
++    if (!settings || !settings->GetCookieEnabled()) {
++      result = false;
++    }
++
++    brave_page_graph::PageGraph* page_graph =
++      GetFrame()->GetDocument()->GetPageGraph();
++    if (page_graph != nullptr) {
++      page_graph->RegisterWebAPICall("Navigator.cookieEnabled",
++        std::vector<const String>());
++
++      const String page_graph_result(result ? "true" : "false");
++      page_graph->RegisterWebAPIResult("Navigator.cookieEnabled",
++        page_graph_result);
++    }
++
++    return result;
++  }
++#endif
++
+   Settings* settings = GetFrame()->GetSettings();
+   if (!settings || !settings->GetCookieEnabled())
+     return false;

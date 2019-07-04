@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_H_
-#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_WEBAPI_H_
+#define BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_WEBAPI_H_
 
 #include <string>
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge.h"
@@ -14,22 +14,24 @@
 namespace brave_page_graph {
 
 class Node;
+class NodeActor;
+class NodeWebAPI;
 class PageGraph;
 
-class EdgeStorage : public Edge {
+class EdgeWebAPI : public Edge {
 friend class PageGraph;
  public:
-  EdgeStorage() = delete;
+  EdgeWebAPI() = delete;
   
  protected:
-  EdgeStorage(PageGraph* const graph, Node* const out_node,
-    Node* const in_node, const std::string& key);
-  ItemName GetDescBody() const override;
+  EdgeWebAPI(PageGraph* const graph, Node* const out_node,
+    Node* const in_node, const std::string& method);
   GraphMLXMLList GraphMLAttributes() const override;
+  ItemDesc GetDescBody() const override;
 
-  const std::string key_;
+  const std::string method_;
 };
 
 }  // namespace brave_page_graph
 
-#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_STORAGE_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_PAGE_GRAPH_GRAPH_ITEM_EDGE_EDGE_WEBAPI_H_

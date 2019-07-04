@@ -49,9 +49,12 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_resource_block.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_clear.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_delete.h"
-#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_read.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_read_call.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_read_result.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_storage_set.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_text_change.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_webapi_call.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/edge/edge_webapi_result.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_frame.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/edge/request/edge_request_start.h"
@@ -72,6 +75,7 @@
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_cookiejar.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_localstorage.h"
 #include "brave/third_party/blink/brave_page_graph/graph_item/node/node_storage_sessionstorage.h"
+#include "brave/third_party/blink/brave_page_graph/graph_item/node/node_webapi.h"
 #include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/requests/tracked_request.h"
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
@@ -810,9 +814,6 @@ void PageGraph::RegisterStorageRead(const String& key, const String& value,
     + ", location: " + StorageLocationToString(location));
 
   NodeActor* const acting_node = GetCurrentActingNode();
-  if (acting_node->IsScript() == false) {
-    Log("Something is wrong");
-  }
   LOG_ASSERT(acting_node->IsScript());
 
   NodeStorage* storage_node = nullptr;
@@ -828,12 +829,18 @@ void PageGraph::RegisterStorageRead(const String& key, const String& value,
       break;
   }
 
-  const EdgeStorageRead* const edge_storage = new EdgeStorageRead(this,
-    static_cast<NodeScript*>(acting_node), storage_node, local_key,
+  const EdgeStorageReadCall* const edge_call = new EdgeStorageReadCall(this,
+    static_cast<NodeScript*>(acting_node), storage_node, local_key);
+  AddEdge(edge_call);
+  acting_node->AddOutEdge(edge_call);
+  storage_node->AddInEdge(edge_call);
+
+  const EdgeStorageReadResult* const edge_result = new EdgeStorageReadResult(
+    this, storage_node, static_cast<NodeScript*>(acting_node), local_key,
     local_value);
-  AddEdge(edge_storage);
-  acting_node->AddOutEdge(edge_storage);
-  storage_node->AddInEdge(edge_storage);
+  AddEdge(edge_result);
+  storage_node->AddOutEdge(edge_result);
+  acting_node->AddInEdge(edge_result);
 }
 
 void PageGraph::RegisterStorageWrite(const String& key, const String& value,
@@ -943,6 +950,60 @@ void PageGraph::GenerateReportForNode(const blink::DOMNodeId node_id) {
       std::cout << "\n";
     }
   }
+}
+
+void PageGraph::RegisterWebAPICall(const MethodName& method,
+    const std::vector<const String>& arguments) {
+  std::vector<const string> local_args;
+  stringstream buffer;
+  size_t args_length = arguments.size();
+  for (size_t i = 0; i < args_length; ++i) {
+    local_args.push_back(arguments[i].Utf8().data());
+    if (i != args_length - 1) {
+      buffer << local_args.at(i) << ", ";
+    } else {
+      buffer << local_args.at(i);
+    }
+  }
+  Log("RegisterWebAPICall) method: " + method + ", arguments: "
+    + buffer.str());
+
+  NodeActor* const acting_node = GetCurrentActingNode();
+  LOG_ASSERT(acting_node->IsScript());
+
+  NodeWebAPI* webapi_node;
+  if (webapi_nodes_.count(method) == 0) {
+    webapi_node = new NodeWebAPI(this, method);
+    AddNode(webapi_node);
+    webapi_nodes_.emplace(method, webapi_node);
+  } else {
+    webapi_node = webapi_nodes_.at(method);
+  }
+
+  const EdgeWebAPICall* const edge_call = new EdgeWebAPICall(this,
+    static_cast<NodeScript*>(acting_node), webapi_node, method, local_args);
+  AddEdge(edge_call);
+  acting_node->AddOutEdge(edge_call);
+  webapi_node->AddInEdge(edge_call);
+}
+
+void PageGraph::RegisterWebAPIResult(const MethodName& method,
+    const String& result) {
+  const string local_result = result.Utf8().data();
+  Log("RegisterWebAPIResult) method: " + method + ", result: " + local_result);
+
+  NodeActor* const caller_node = GetCurrentActingNode();
+  LOG_ASSERT(caller_node->IsScript());
+
+  LOG_ASSERT(webapi_nodes_.count(method) != 0);
+  NodeWebAPI* webapi_node = webapi_nodes_.at(method);
+
+  const EdgeWebAPIResult* const edge_result = new EdgeWebAPIResult(this,
+    webapi_node, static_cast<NodeScript*>(caller_node), method, local_result);
+
+  AddEdge(edge_result);
+  webapi_node->AddOutEdge(edge_result);
+  caller_node->AddInEdge(edge_result);
 }
 
 GraphMLXML PageGraph::ToGraphML() const {
