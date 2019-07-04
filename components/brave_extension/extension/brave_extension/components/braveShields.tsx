@@ -10,6 +10,7 @@ import 'emptykit.css'
 // Components group
 import AdvancedView from './advancedView'
 import SimpleView from './simpleView'
+import ReadOnlyView from './readOnlyView'
 
 // Types
 import { Tab, PersistentData } from '../types/state/shieldsPannelState'
@@ -49,26 +50,46 @@ interface Props {
   persistentData: PersistentData
 }
 
-export default class Shields extends React.PureComponent<Props, {}> {
+interface State {
+  showReadOnlyView: boolean
+}
+
+export default class Shields extends React.PureComponent<Props, State> {
+  constructor (props: Props) {
+    super(props)
+    this.state = { showReadOnlyView: false }
+  }
+
+  toggleReadOnlyView = () => {
+    this.setState({ showReadOnlyView: !this.state.showReadOnlyView })
+  }
+
   render () {
     const { shieldsPanelTabData, persistentData, actions } = this.props
+    const { showReadOnlyView } = this.state
     if (!shieldsPanelTabData) {
       return null
     }
-
     return persistentData.advancedView
-    ? (
-      <AdvancedView
-        shieldsPanelTabData={shieldsPanelTabData}
-        persistentData={persistentData}
-        actions={actions}
-      />
-    ) : (
-      <SimpleView
-        shieldsPanelTabData={shieldsPanelTabData}
-        persistentData={persistentData}
-        actions={actions}
-      />
-    )
+      ? (
+        <AdvancedView
+          shieldsPanelTabData={shieldsPanelTabData}
+          persistentData={persistentData}
+          actions={actions}
+        />
+      ) : showReadOnlyView
+      ? (
+        <ReadOnlyView
+          shieldsPanelTabData={shieldsPanelTabData}
+          toggleReadOnlyView={this.toggleReadOnlyView}
+        />
+      ) : (
+        <SimpleView
+          shieldsPanelTabData={shieldsPanelTabData}
+          persistentData={persistentData}
+          actions={actions}
+          toggleReadOnlyView={this.toggleReadOnlyView}
+        />
+      )
   }
 }

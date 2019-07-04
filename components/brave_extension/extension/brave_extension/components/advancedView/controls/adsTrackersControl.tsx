@@ -15,7 +15,7 @@ import {
 } from 'brave-ui/features/shields'
 
 // Group Components
-import StaticList from '../overlays/static'
+import StaticList from '../overlays/staticOverlay'
 
 // Locale
 import { getLocale } from '../../../background/api/localeAPI'

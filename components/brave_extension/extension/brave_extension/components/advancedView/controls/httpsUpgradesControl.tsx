@@ -15,7 +15,7 @@ import {
 } from 'brave-ui/features/shields'
 
 // Group Components
-import HTTPSUpgrades from '../overlays/httpsUpgrades'
+import HTTPSUpgrades from '../overlays/httpsUpgradesOverlay'
 
 // Locale
 import { getLocale } from '../../../background/api/localeAPI'

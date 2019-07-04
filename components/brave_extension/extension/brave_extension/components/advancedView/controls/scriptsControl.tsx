@@ -16,7 +16,7 @@ import {
 } from 'brave-ui/features/shields'
 
 // Group Components
-import NoScript from '../overlays/noScript'
+import NoScript from '../overlays/noScriptOverlay'
 
 // Locale
 import { getLocale } from '../../../background/api/localeAPI'

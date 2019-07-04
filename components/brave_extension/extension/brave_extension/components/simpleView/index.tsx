@@ -49,6 +49,7 @@ interface Props {
   }
   shieldsPanelTabData: Tab
   persistentData: PersistentData
+  toggleReadOnlyView: () => void
 }
 
 export default class ShieldsSimpleView extends React.PureComponent<Props, {}> {
@@ -63,7 +64,7 @@ export default class ShieldsSimpleView extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const { shieldsPanelTabData, actions } = this.props
+    const { shieldsPanelTabData, actions, toggleReadOnlyView } = this.props
     return (
       <ShieldsPanel style={{ width: '370px' }}>
         <Header
@@ -76,6 +77,7 @@ export default class ShieldsSimpleView extends React.PureComponent<Props, {}> {
           scriptsBlocked={shieldsPanelTabData.javascriptBlocked}
           fingerprintingBlocked={shieldsPanelTabData.fingerprintingBlocked}
           shieldsToggled={actions.shieldsToggled}
+          toggleReadOnlyView={toggleReadOnlyView}
         />
         <Footer
           toggleAdvancedView={actions.toggleAdvancedView}

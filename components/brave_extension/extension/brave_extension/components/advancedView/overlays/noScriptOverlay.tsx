@@ -16,7 +16,7 @@ import {
 } from '../../../types/actions/shieldsPanelActions'
 
 // Components
-import NoScriptContent from './noScriptContent'
+import NoScriptResourcesList from '../../shared/resourcesBlockedList/noScriptResourcesList'
 
 // Helpers
 import {
@@ -132,7 +132,7 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
                     {this.getBlockAllText(true)}
                   </LinkAction>
                 </BlockedListItemHeader>
-                <NoScriptContent
+                <NoScriptResourcesList
                   maybeBlock={true}
                   noScriptInfo={this.generatedNoScriptData}
                   allowScriptOriginsOnce={this.props.allowScriptOriginsOnce}
@@ -161,7 +161,7 @@ export default class CoreFeature extends React.PureComponent<Props, {}> {
                     {this.getBlockAllText(false)}
                   </LinkAction>
                 </BlockedListItemHeader>
-                <NoScriptContent
+                <NoScriptResourcesList
                   maybeBlock={false}
                   noScriptInfo={this.generatedNoScriptData}
                   allowScriptOriginsOnce={this.props.allowScriptOriginsOnce}

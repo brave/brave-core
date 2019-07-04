@@ -121,7 +121,7 @@ describe('cosmeticFilterReducer', () => {
       shieldsPanelReducer(initialState.shieldsPanel, {
         type: windowTypes.WINDOW_REMOVED,
         windowId
-      })  
+      })
       expect(spy).toBeCalledTimes(1)
       expect(spy.mock.calls[0][1]).toBe(windowId)
     })

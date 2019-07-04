@@ -182,5 +182,9 @@
   "gotIt": {
     "message": "Got it",
     "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Learn more",
+    "description": "Message inviting the user to learn more about Shields"
   }
 }

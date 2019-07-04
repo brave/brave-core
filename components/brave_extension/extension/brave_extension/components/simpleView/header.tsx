@@ -13,7 +13,7 @@ import {
   SiteInfo,
   MainToggleHeading,
   MainToggleText,
-  // Link,
+  Link,
   ToggleStateText,
   Favicon,
   SiteInfoText,
@@ -41,6 +41,7 @@ interface CommonProps {
   favicon: string
   hostname: string
   shieldsToggled: ShieldsToggled
+  toggleReadOnlyView: () => void
 }
 
 interface BlockedItemsProps {
@@ -71,12 +72,7 @@ export default class Header extends React.PureComponent<Props, {}> {
   }
 
   render () {
-    const {
-      enabled,
-      favicon,
-      hostname
-      // onChangeReadOnlyView,
-    } = this.props
+    const { enabled, favicon, hostname, toggleReadOnlyView } = this.props
     return (
       <ShieldsHeader status={enabled ? 'enabled' : 'disabled'}>
         <MainToggle status={enabled ? 'enabled' : 'disabled'}>
@@ -104,7 +100,7 @@ export default class Header extends React.PureComponent<Props, {}> {
                 <TotalBlockedStatsNumber>{this.totalBlockedSize}</TotalBlockedStatsNumber>
                 <TotalBlockedStatsText>
                   {`${getLocale('blockedResoucesExplanation')} `}
-                  {/* <Link onClick={onChangeReadOnlyView}>{getLocale('learnMore')}</Link> */}
+                  <Link onClick={toggleReadOnlyView}>{getLocale('learnMore')}</Link>
                 </TotalBlockedStatsText>
               </TotalBlockedStats>
             )
