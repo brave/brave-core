@@ -490,7 +490,10 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 - (void)addRecurringTipToPublisherWithId:(NSString *)publisherId amount:(double)amount
 {
-  ledger->AddRecurringPayment(std::string(publisherId.UTF8String), amount);
+  [BATLedgerDatabase insertOrUpdateRecurringTipWithPublisherID:publisherId
+                                                        amount:amount
+                                                     dateAdded:[[NSDate date] timeIntervalSince1970]
+                                                    completion:nil];
 }
 
 - (void)removeRecurringTipForPublisherWithId:(NSString *)publisherId

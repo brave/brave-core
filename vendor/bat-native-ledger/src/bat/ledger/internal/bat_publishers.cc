@@ -82,12 +82,6 @@ bool ignoreMinTime(const std::string& publisher_id) {
   return !getProviderName(publisher_id).empty();
 }
 
-void BatPublishers::AddRecurringPayment(const std::string& publisher_id,
-                                        const double& value) {
-  state_->recurring_donation_[publisher_id] = value;
-  saveState();
-}
-
 void BatPublishers::saveVisit(const std::string& publisher_id,
                               const ledger::VisitData& visit_data,
                               const uint64_t& duration,

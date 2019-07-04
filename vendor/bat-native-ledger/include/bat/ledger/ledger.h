@@ -71,9 +71,6 @@ class LEDGER_EXPORT Ledger {
   // returns false if wallet initialization is already in progress
   virtual bool CreateWallet() = 0;
 
-  virtual void AddRecurringPayment(const std::string& publisher_id,
-                                   const double& value) = 0;
-
   virtual void DoDirectTip(const std::string& publisher_id,
                            int amount,
                            const std::string& currency) = 0;

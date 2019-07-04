@@ -617,7 +617,6 @@ PUBLISHER_STATE_ST::PUBLISHER_STATE_ST(const PUBLISHER_STATE_ST& state) {
   pubs_load_timestamp_ = state.pubs_load_timestamp_;
   allow_videos_ = state.allow_videos_;
   monthly_balances_ = state.monthly_balances_;
-  recurring_donation_ = state.recurring_donation_;
   migrate_score_2 = state.migrate_score_2;
   processed_pending_publishers = state.processed_pending_publishers;
 }
@@ -668,21 +667,6 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
       }
     }
 
-    for (const auto & i : d["recurring_donation"].GetArray()) {
-      rapidjson::StringBuffer sb;
-      rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
-      i.Accept(writer);
-
-      rapidjson::Document d1;
-      d1.Parse(sb.GetString());
-
-      rapidjson::Value::ConstMemberIterator itr = d1.MemberBegin();
-      if (itr != d1.MemberEnd()) {
-        recurring_donation_.insert(
-            std::make_pair(itr->name.GetString(), itr->value.GetDouble()));
-      }
-    }
-
     if (d.HasMember("migrate_score_2") && d["migrate_score_2"].IsBool()) {
       migrate_score_2 = d["migrate_score_2"].GetBool();
     } else {
@@ -726,17 +710,6 @@ void saveToJson(JsonWriter* writer, const PUBLISHER_STATE_ST& data) {
     saveToJson(writer, p.second);
     writer->EndObject();
   }
-  writer->EndArray();
-
-  writer->String("recurring_donation");
-  writer->StartArray();
-  for (auto & p : data.recurring_donation_) {
-    writer->StartObject();
-    writer->String(p.first.c_str());
-    writer->Double(p.second);
-    writer->EndObject();
-  }
-
   writer->EndArray();
 
   writer->String("migrate_score_2");
