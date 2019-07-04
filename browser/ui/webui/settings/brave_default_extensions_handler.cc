@@ -110,7 +110,9 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   bool enabled;
   args->GetBoolean(0, &enabled);
-  FeatureSwitch::load_media_router_component_extension()->SetOverrideValue(enabled ? FeatureSwitch::OVERRIDE_ENABLED : FeatureSwitch::OVERRIDE_DISABLED);
+  FeatureSwitch::load_media_router_component_extension()->SetOverrideValue(
+      enabled ? FeatureSwitch::OVERRIDE_ENABLED :
+                FeatureSwitch::OVERRIDE_DISABLED);
   media_router::MediaRouterEnabled(profile_);
 #endif
 }
