@@ -4,37 +4,52 @@
 
 import welcomeReducer from '../../../brave_welcome_ui/reducers/welcome_reducer'
 import * as actions from '../../../brave_welcome_ui/actions/welcome_actions'
+import * as storage from '../../../brave_welcome_ui/storage'
 import { types } from '../../../brave_welcome_ui/constants/welcome_types'
+import { mockSearchProviders, mockImportSources } from '../../testData'
 
 window.open = jest.fn()
 window.close = jest.fn()
 
 describe('welcomeReducer', () => {
-  it('should handle initial state', () => {
-    const assertion = welcomeReducer(undefined, actions.closeTabRequested())
-    expect(assertion).toEqual({
-      searchProviders: []
+  describe('Handlle initial state', () => {
+    let spy: jest.SpyInstance
+    beforeEach(() => {
+      spy = jest.spyOn(storage, 'load')
+    })
+    afterEach(() => {
+      spy.mockRestore()
+    })
+    it('calls storage.load() when initial state is undefined', () => {
+      const assertion = welcomeReducer(undefined, actions.closeTabRequested())
+      expect(assertion).toEqual({
+        searchProviders: [],
+        browserProfiles: []
+      })
+      expect(spy).toBeCalled()
+      expect(spy.mock.calls[0][1]).toBe(undefined)
     })
   })
 
-  describe('IMPORT_NOW_REQUESTED', () => {
-    let importNowRequestStub: jest.SpyInstance
+  describe('IMPORT_BROWSER_DATA_REQUESTED', () => {
+    let importBrowserProfileRequestStub: jest.SpyInstance
 
     beforeEach(() => {
-      importNowRequestStub = jest.spyOn(chrome, 'send')
+      importBrowserProfileRequestStub = jest.spyOn(chrome, 'send')
     })
 
     afterEach(() => {
-      importNowRequestStub.mockRestore()
+      importBrowserProfileRequestStub.mockRestore()
     })
 
     it('should call chrome.send with the correct arguments', () => {
       welcomeReducer(undefined, {
-        type: types.IMPORT_NOW_REQUESTED
+        type: types.IMPORT_BROWSER_DATA_REQUESTED,
+        payload: 0
       })
 
-      expect(importNowRequestStub).toBeCalledTimes(1)
-      expect(importNowRequestStub).toBeCalledWith('importNowRequested', [])
+      expect(importBrowserProfileRequestStub).toBeCalledTimes(1)
+      expect(importBrowserProfileRequestStub).toBeCalledWith('importData', [0])
     })
   })
 
@@ -86,6 +101,42 @@ describe('welcomeReducer', () => {
       })
       expect(changeSearchProviderStub).toBeCalledTimes(1)
       expect(changeSearchProviderStub).toBeCalledWith('setDefaultSearchEngine', [12345])
+    })
+  })
+
+  describe('IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS', () => {
+    it('should set default search provider data', () => {
+      const mockState = {
+        searchProviders: [],
+        browserProfiles: []
+      }
+      const result = welcomeReducer(mockState, {
+        type: types.IMPORT_DEFAULT_SEARCH_PROVIDERS_SUCCESS,
+        payload: mockSearchProviders
+      })
+      const expected = {
+        ...mockState,
+        searchProviders: mockSearchProviders
+      }
+      expect(result).toEqual(expected)
+    })
+  })
+
+  describe('IMPORT_BROWSER_PROFILES_SUCCESS', () => {
+    it('should set import browser profile data', () => {
+      const mockState = {
+        searchProviders: [],
+        browserProfiles: []
+      }
+      const result = welcomeReducer(mockState, {
+        type: types.IMPORT_BROWSER_PROFILES_SUCCESS,
+        payload: mockImportSources
+      })
+      const expected = {
+        ...mockState,
+        browserProfiles: mockImportSources
+      }
+      expect(result).toEqual(expected)
     })
   })
 })

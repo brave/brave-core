@@ -295,3 +295,45 @@ export const mockSearchProviders = [
     urlLocked: true
   }
 ]
+
+export const mockImportSources = [
+  {
+    autofillFormData : false,
+    cookies : true,
+    favorites : true,
+    history : true,
+    index : 1,
+    ledger : false,
+    name :  `Chrome Person 1`,
+    passwords : true,
+    search : false,
+    stats : false,
+    windows : false
+  },
+  {
+    autofillFormData : false,
+    cookies : true,
+    favorites : true,
+    history : true,
+    index : 0,
+    ledger : false,
+    name :  `Safari`,
+    passwords : true,
+    search : false,
+    stats : false,
+    windows : false
+  },
+  {
+    autofillFormData : false,
+    cookies : true,
+    favorites : true,
+    history : true,
+    index : 2,
+    ledger : false,
+    name :  `Bookmarks HTML File`,
+    passwords : true,
+    search : false,
+    stats : false,
+    windows : false
+  }
+]

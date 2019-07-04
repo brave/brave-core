@@ -17,11 +17,21 @@ export const getSearchEngineProviders = () => {
   }
 }
 
+export const getValidBrowserProfiles = (browserProfiles: Array<Welcome.BrowserProfile>): Array<Welcome.BrowserProfile> => {
+  const result = browserProfiles.reduce((filteredProfiles, profile) =>
+    (profile.name === 'Safari' || profile.name === 'Bookmarks HTML File')
+      ? filteredProfiles
+      : [...filteredProfiles, profile]
+  , [])
+  return result
+}
+
 export const getBrowserProfiles = () => {
   return (dispatch: Dispatch) => {
     window.cr.sendWithPromise('initializeImportDialog')
       .then((response: Array<Welcome.BrowserProfile>) => {
-        dispatch(getBrowserProfilesSuccess(response))
+        const filteredProfiles = getValidBrowserProfiles(response)
+        dispatch(getBrowserProfilesSuccess(filteredProfiles))
       })
   }
 }

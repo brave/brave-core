@@ -10,7 +10,7 @@ import { types } from '../constants/welcome_types'
 // APIs
 import * as welcomeUtils from '../welcomeUtils'
 
-export const importBrowserProfileRequested = (sourceBrowserProfileIndex: number) => action(types.IMPORT_BROWSER_PROFILE_REQUESTED, sourceBrowserProfileIndex)
+export const importBrowserProfileRequested = (sourceBrowserProfileIndex: number) => action(types.IMPORT_BROWSER_DATA_REQUESTED, sourceBrowserProfileIndex)
 
 export const goToTabRequested = (url: string, target: string) => action(types.GO_TO_TAB_REQUESTED, {
   url,

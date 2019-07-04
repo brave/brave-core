@@ -19,7 +19,7 @@ const welcomeReducer: Reducer<Welcome.State | undefined> = (state: Welcome.State
   const payload = action.payload
   const startingState = state
   switch (action.type) {
-    case types.IMPORT_BROWSER_PROFILE_REQUESTED:
+    case types.IMPORT_BROWSER_DATA_REQUESTED:
       chrome.send('importData', [payload])
       break
     case types.GO_TO_TAB_REQUESTED:

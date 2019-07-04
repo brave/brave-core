@@ -13,7 +13,7 @@ import { WelcomeImportImage } from 'brave-ui/features/welcome/images'
 // Utils
 import { getLocale } from '../../../common/locale'
 
-interface Props {
+export interface Props {
   index: number
   currentScreen: number
   browserProfiles: Array<Welcome.BrowserProfile>
@@ -47,26 +47,8 @@ export default class ImportBox extends React.PureComponent<Props, State> {
     }
   }
 
-// class ImportDataBrowserProxyImpl {
-//     /** @override */
-//     initializeImportDialog() {
-//       return cr.sendWithPromise('initializeImportDialog');
-//     }
-
-//     /** @override */
-//     importData(sourceBrowserProfileIndex) {
-//       chrome.send('importData', [sourceBrowserProfileIndex]);
-//     }
-
-//     /** @override */
-//     importFromBookmarksFile() {
-//       chrome.send('importFromBookmarksFile');
-//     }
-//   }
-
   onHandleImport = () => {
     const { onClick } = this.props
-
     let sourceBrowserProfileIndex: number
     sourceBrowserProfileIndex = this.state && this.state.selectedBrowserProfile && this.state.selectedBrowserProfile.index || 0
     onClick(sourceBrowserProfileIndex)
