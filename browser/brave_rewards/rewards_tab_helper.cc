@@ -90,20 +90,6 @@ void RewardsTabHelper::DidAttachInterstitialPage() {
     rewards_service_->OnUnload(tab_id_);
 }
 
-void RewardsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
-                                           const content::MediaPlayerId& id) {
-  if (rewards_service_)
-    rewards_service_->OnMediaStart(tab_id_);
-}
-
-void RewardsTabHelper::MediaStoppedPlaying(
-    const MediaPlayerInfo& video_type,
-    const content::MediaPlayerId& id,
-    WebContentsObserver::MediaStoppedReason reason) {
-  if (rewards_service_)
-    rewards_service_->OnMediaStop(tab_id_);
-}
-
 void RewardsTabHelper::OnVisibilityChanged(content::Visibility visibility) {
   if (!rewards_service_)
     return;

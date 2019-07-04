@@ -121,8 +121,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnHide(SessionID tab_id) override;
   void OnForeground(SessionID tab_id) override;
   void OnBackground(SessionID tab_id) override;
-  void OnMediaStart(SessionID tab_id) override;
-  void OnMediaStop(SessionID tab_id) override;
   void OnXHRLoad(SessionID tab_id,
                  const GURL& url,
                  const GURL& first_party_url,

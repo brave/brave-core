@@ -58,8 +58,6 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(OnHide, void(SessionID));
   MOCK_METHOD1(OnForeground, void(SessionID));
   MOCK_METHOD1(OnBackground, void(SessionID));
-  MOCK_METHOD1(OnMediaStart, void(SessionID));
-  MOCK_METHOD1(OnMediaStop, void(SessionID));
   MOCK_METHOD4(OnXHRLoad, void(SessionID,
                                const GURL&,
                                const GURL&,

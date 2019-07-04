@@ -793,16 +793,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
                      visit.Clone());
 }
 
-- (void)reportMediaStartedWithTabId:(UInt32)tabId
-{
-  ledger->OnMediaStart(tabId, [[NSDate date] timeIntervalSince1970]);
-}
-
-- (void)reportMediaStoppedWithTabId:(UInt32)tabId
-{
-  ledger->OnMediaStop(tabId, [[NSDate date] timeIntervalSince1970]);
-}
-
 - (void)reportTabClosedWithTabId:(UInt32)tabId
 {
   ledger->OnUnload(tabId, [[NSDate date] timeIntervalSince1970]);

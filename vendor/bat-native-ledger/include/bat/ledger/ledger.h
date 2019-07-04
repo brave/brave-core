@@ -91,10 +91,6 @@ class LEDGER_EXPORT Ledger {
 
   virtual void OnBackground(uint32_t tab_id, const uint64_t& current_time) = 0;
 
-  virtual void OnMediaStart(uint32_t tab_id, const uint64_t& current_time) = 0;
-
-  virtual void OnMediaStop(uint32_t tab_id, const uint64_t& current_time) = 0;
-
   virtual void OnXHRLoad(
       uint32_t tab_id,
       const std::string& url,

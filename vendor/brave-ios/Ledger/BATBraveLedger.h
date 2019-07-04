@@ -196,12 +196,6 @@ NS_SWIFT_NAME(BraveLedger)
          firstPartyURL:(NSURL *)firstPartyURL
            referrerURL:(nullable NSURL *)referrerURL;
 
-/// Report that media has started on a tab with a given id
-- (void)reportMediaStartedWithTabId:(UInt32)tabId NS_SWIFT_NAME(reportMediaStarted(tabId:));
-
-/// Report that media has stopped on a tab with a given id
-- (void)reportMediaStoppedWithTabId:(UInt32)tabId NS_SWIFT_NAME(reportMediaStopped(tabId:));
-
 /// Report that a tab with a given id was closed by the user
 - (void)reportTabClosedWithTabId:(UInt32)tabId NS_SWIFT_NAME(reportTabClosed(tabId:));
 

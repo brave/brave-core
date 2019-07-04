@@ -122,8 +122,6 @@ class RewardsService : public KeyedService {
   virtual void OnHide(SessionID tab_id) = 0;
   virtual void OnForeground(SessionID tab_id) = 0;
   virtual void OnBackground(SessionID tab_id) = 0;
-  virtual void OnMediaStart(SessionID tab_id) = 0;
-  virtual void OnMediaStop(SessionID tab_id) = 0;
   virtual void OnXHRLoad(SessionID tab_id,
                          const GURL& url,
                          const GURL& first_party_url,
