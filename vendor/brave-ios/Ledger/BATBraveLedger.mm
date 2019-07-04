@@ -383,21 +383,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   }
 }
 
-- (void)activityInfoWithFilter:(nullable BATActivityInfoFilter *)filter completion:(void (^)(BATPublisherInfo * _Nullable info))completion
-{
-  const auto cppFilter = filter ? filter.cppObj : ledger::ActivityInfoFilter();
-  ledger->GetActivityInfo(cppFilter, ^(ledger::Result result, ledger::PublisherInfoPtr info) {
-    if (result == ledger::LEDGER_OK) {
-      const auto* publisherInfo = info.get();
-      if (publisherInfo != nullptr) {
-        completion([[BATPublisherInfo alloc] initWithPublisherInfo:*publisherInfo]);
-      }
-    } else {
-      completion(nil);
-    }
-  });
-}
-
 - (void)publisherActivityFromURL:(NSURL *)URL
                       faviconURL:(nullable NSURL *)faviconURL
                    publisherBlob:(nullable NSString *)publisherBlob
@@ -413,25 +398,6 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   }
 
   ledger->GetPublisherActivityFromUrl(1, visitData.Clone(), blob);
-}
-
-- (void)mediaPublisherInfoForMediaKey:(NSString *)mediaKey completion:(void (^)(BATPublisherInfo * _Nullable))completion
-{
-  ledger->GetMediaPublisherInfo(std::string(mediaKey.UTF8String), ^(ledger::Result result, ledger::PublisherInfoPtr info) {
-    if (result == ledger::LEDGER_OK) {
-      const auto* publisherInfo = info.get();
-      if (publisherInfo != nullptr) {
-        completion([[BATPublisherInfo alloc] initWithPublisherInfo:*publisherInfo]);
-      }
-    } else {
-      completion(nil);
-    }
-  });
-}
-
-- (void)updateMediaPublisherInfo:(NSString *)publisherId mediaKey:(NSString *)mediaKey
-{
-  ledger->SetMediaPublisherInfo(std::string(publisherId.UTF8String), std::string(mediaKey.UTF8String));
 }
 
 - (void)updatePublisherExclusionState:(NSString *)publisherId state:(BATPublisherExclude)state

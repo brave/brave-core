@@ -76,25 +76,25 @@ class LedgerImpl : public ledger::Ledger,
   bool CreateWallet() override;
 
   void SetPublisherInfo(
-      ledger::PublisherInfoPtr publisher_info) override;
+      ledger::PublisherInfoPtr publisher_info);
 
   void SetActivityInfo(
-      ledger::PublisherInfoPtr publisher_info) override;
+      ledger::PublisherInfoPtr publisher_info);
 
   void GetPublisherInfo(const std::string& publisher_key,
                         ledger::PublisherInfoCallback callback) override;
 
   void GetActivityInfo(const ledger::ActivityInfoFilter& filter,
-                       ledger::PublisherInfoCallback callback) override;
+                       ledger::PublisherInfoCallback callback);
 
   void GetPanelPublisherInfo(const ledger::ActivityInfoFilter& filter,
                              ledger::PublisherInfoCallback callback);
 
   void GetMediaPublisherInfo(const std::string& media_key,
-                             ledger::PublisherInfoCallback callback) override;
+                             ledger::PublisherInfoCallback callback);
 
   void SetMediaPublisherInfo(const std::string& media_key,
-                             const std::string& publisher_id) override;
+                             const std::string& publisher_id);
 
   void GetActivityInfoList(uint32_t start,
                            uint32_t limit,
@@ -127,7 +127,7 @@ class LedgerImpl : public ledger::Ledger,
 
   void SetBalanceReport(ledger::ACTIVITY_MONTH month,
                         int year,
-                        const ledger::BalanceReportInfo& report_info) override;
+                        const ledger::BalanceReportInfo& report_info);
 
   void SaveUnverifiedContribution(ledger::PendingContributionList list);
 
