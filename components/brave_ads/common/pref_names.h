@@ -10,20 +10,19 @@ namespace brave_ads {
 
 namespace prefs {
 
-extern const char kBraveAdsEnabled[];
-extern const char kBraveAdsPerHour[];
-extern const char kBraveAdsPerDay[];
-extern const char kBraveAdsIdleThreshold[];
+extern const char kEnabled[];
 
-extern const char kBraveAdShouldShowFirstLaunchNotification[];
-extern const char kBraveAdsLaunchNotificationTimestamp[];
-extern const char kBraveAdsHasRemovedFirstLaunchNotification[];
+extern const char kAdsPerHour[];
+extern const char kAdsPerDay[];
 
-extern const int kBraveAdsPrefsDefaultVersion;
-extern const int kBraveAdsPrefsCurrentVersion;
-extern const char kBraveAdsPrefsVersion[];
-extern const char kBraveAdsPrefsMigratedFrom62[];
-extern const char kBraveAdsEnabledMigrated[];
+extern const char kIdleThreshold[];
+
+extern const char kShouldShowFirstLaunchNotification[];
+extern const char kHasRemovedFirstLaunchNotification[];
+extern const char kLastShownFirstLaunchNotificationTimestamp[];
+
+extern const int kCurrentVersionNumber;
+extern const char kVersion[];
 
 }  // namespace prefs
 
