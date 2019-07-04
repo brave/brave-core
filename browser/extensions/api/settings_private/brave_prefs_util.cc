@@ -83,6 +83,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetWhitelistedKeys() {
   // IPFS Companion pref
   (*s_brave_whitelist)[kIPFSCompanionEnabled] =
       settings_api::PrefType::PREF_TYPE_BOOLEAN;
+  // Media Router Pref
+  (*s_brave_whitelist)[::prefs::kEnableMediaRouter] =
+      settings_api::PrefType::PREF_TYPE_BOOLEAN;
   return *s_brave_whitelist;
 }
 
