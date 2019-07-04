@@ -27,7 +27,7 @@
 }
 @end
 
-@interface AdsWrapperTest : XCTestCase
+@interface AdsWrapperTest : XCTestCase <BATBraveRewardsDelegate>
 @property (nonatomic) BATBraveRewards *rewards;
 @end
 
@@ -36,7 +36,8 @@
 - (void)setUp
 {
   self.rewards = [[BATBraveRewards alloc] initWithConfiguration:
-                  BATBraveRewardsConfiguration.testingConfiguration];
+                  BATBraveRewardsConfiguration.testingConfiguration
+                                                       delegate:self];
   [self.rewards reset];
 }
 
@@ -61,7 +62,8 @@
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     BATBraveAds *secondAds = [[BATBraveRewards alloc] initWithConfiguration:
-                              BATBraveRewardsConfiguration.testingConfiguration].ads;
+                              BATBraveRewardsConfiguration.testingConfiguration
+                                                                   delegate:self].ads;
     XCTAssertEqual(ads.enabled, secondAds.enabled);
     XCTAssertEqual(ads.numberOfAllowableAdsPerDay, secondAds.numberOfAllowableAdsPerDay);
     XCTAssertEqual(ads.numberOfAllowableAdsPerHour, secondAds.numberOfAllowableAdsPerHour);
@@ -82,6 +84,13 @@
   [self.rewards.ads serveSampleAd];
   
   [self waitForExpectations:@[expect] timeout: 4.0];
+}
+
+#pragma mark - BATBraveRewardsDelegate
+
+- (void)faviconURLFromPageURL:(NSURL *)pageURL completion:(void (^)(NSURL * _Nullable))completion
+{
+  completion(nil);
 }
 
 @end

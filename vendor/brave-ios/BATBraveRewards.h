@@ -41,6 +41,20 @@ NS_SWIFT_NAME(BraveRewardsConfiguration)
 
 @end
 
+NS_SWIFT_NAME(BraveRewardsDelegate)
+@protocol BATBraveRewardsDelegate <NSObject>
+@required
+
+/// Obtain the favicon URL given some page's URL. The client can then choose
+/// to download said favicon and cache it for later when `retrieveFavicon` is
+/// called.
+///
+/// If the favicon URL cannot be obtained, call completion with `nil`
+- (void)faviconURLFromPageURL:(NSURL *)pageURL
+                   completion:(void (^)(NSURL * _Nullable faviconURL))completion;
+
+@end
+
 /// A container for handling Brave Rewards. Use `ads` to handle how many ads the users see,
 /// when to display them. Use `ledger` to manage interactions between the users wallet & publishers
 NS_SWIFT_NAME(BraveRewards)
@@ -48,14 +62,17 @@ NS_SWIFT_NAME(BraveRewards)
 
 @property (nonatomic, readonly) BATBraveAds *ads;
 @property (nonatomic, readonly) BATBraveLedger *ledger;
+@property (nonatomic, weak) id<BATBraveRewardsDelegate> delegate;
 
 /// Resets the ads & ledger (by purging its data). This should likely never be used in production.
 - (void)reset;
 
 /// Create a BraveRewards instance with a given configuration
-- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration;
+- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration
+                             delegate:(id<BATBraveRewardsDelegate>)delegate;
 /// Create a BraveRewards instance with a given configuration and custom ledger classes for mocking
 - (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration
+                             delegate:(id<BATBraveRewardsDelegate>)delegate
                           ledgerClass:(nullable Class)ledgerClass
                              adsClass:(nullable Class)adsClass NS_DESIGNATED_INITIALIZER;
 - (instancetype)init NS_UNAVAILABLE;
