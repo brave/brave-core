@@ -140,14 +140,6 @@ void BatLedgerImpl::OnBackground(uint32_t tab_id, uint64_t current_time) {
   ledger_->OnBackground(tab_id, current_time);
 }
 
-void BatLedgerImpl::OnMediaStart(uint32_t tab_id, uint64_t current_time) {
-  ledger_->OnMediaStart(tab_id, current_time);
-}
-
-void BatLedgerImpl::OnMediaStop(uint32_t tab_id, uint64_t current_time) {
-  ledger_->OnMediaStop(tab_id, current_time);
-}
-
 void BatLedgerImpl::OnPostData(const std::string& url,
     const std::string& first_party_url, const std::string& referrer,
     const std::string& post_data, ledger::VisitDataPtr visit_data) {

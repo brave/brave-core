@@ -172,13 +172,11 @@
 - (void)reportMediaStartedWithTabId:(UInt32)tabId
 {
   [self.ads reportMediaStartedWithTabId:tabId];
-  [self.ledger reportMediaStartedWithTabId:tabId];
 }
 
 - (void)reportMediaStoppedWithTabId:(UInt32)tabId
 {
   [self.ads reportMediaStoppedWithTabId:tabId];
-  [self.ledger reportMediaStoppedWithTabId:tabId];
 }
 
 @end

@@ -195,14 +195,6 @@ void LedgerImpl::OnBackground(uint32_t tab_id, const uint64_t& current_time) {
   OnHide(tab_id, current_time);
 }
 
-void LedgerImpl::OnMediaStart(uint32_t tab_id, const uint64_t& current_time) {
-  // TODO(anyone)
-}
-
-void LedgerImpl::OnMediaStop(uint32_t tab_id, const uint64_t& current_time) {
-  // TODO(anyone)
-}
-
 void LedgerImpl::OnXHRLoad(
     uint32_t tab_id,
     const std::string& url,

@@ -509,10 +509,6 @@ class LedgerImpl : public ledger::Ledger,
 
   void OnBackground(uint32_t tab_id, const uint64_t& current_time) override;
 
-  void OnMediaStart(uint32_t tab_id, const uint64_t& current_time) override;
-
-  void OnMediaStop(uint32_t tab_id, const uint64_t& current_time) override;
-
   void OnXHRLoad(
       uint32_t tab_id,
       const std::string& url,

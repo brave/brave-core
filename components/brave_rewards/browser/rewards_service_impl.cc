@@ -633,20 +633,6 @@ void RewardsServiceImpl::OnBackground(SessionID tab_id) {
   bat_ledger_->OnBackground(tab_id.id(), GetCurrentTimestamp());
 }
 
-void RewardsServiceImpl::OnMediaStart(SessionID tab_id) {
-  if (!Connected())
-    return;
-
-  bat_ledger_->OnMediaStart(tab_id.id(), GetCurrentTimestamp());
-}
-
-void RewardsServiceImpl::OnMediaStop(SessionID tab_id) {
-  if (!Connected())
-    return;
-
-  bat_ledger_->OnMediaStop(tab_id.id(), GetCurrentTimestamp());
-}
-
 void RewardsServiceImpl::OnPostData(SessionID tab_id,
                                     const GURL& url,
                                     const GURL& first_party_url,
