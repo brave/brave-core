@@ -9,26 +9,22 @@ namespace brave_ads {
 
 namespace prefs {
 
-const char kBraveAdsEnabled[] = "brave.brave_ads.enabled";
+const char kEnabled[] = "brave.brave_ads.enabled";
 
-const char kBraveAdsPerHour[] = "brave.brave_ads.ads_per_hour";
-const char kBraveAdsPerDay[] = "brave.brave_ads.ads_per_day";
-const char kBraveAdsIdleThreshold[] = "brave.brave_ads.idle_threshold";
+const char kAdsPerHour[] = "brave.brave_ads.ads_per_hour";
+const char kAdsPerDay[] = "brave.brave_ads.ads_per_day";
 
-const char kBraveAdShouldShowFirstLaunchNotification[] =
+const char kIdleThreshold[] = "brave.brave_ads.idle_threshold";
+
+const char kShouldShowFirstLaunchNotification[] =
     "brave.brave_ads.should_show_first_launch_notification";
-const char kBraveAdsLaunchNotificationTimestamp[] =
-    "brave.brave_ads.launch_notification_timestamp";
-const char kBraveAdsHasRemovedFirstLaunchNotification[] =
+const char kHasRemovedFirstLaunchNotification[] =
     "brave.brave_ads.has_removed_first_launch_notification";
+const char kLastShownFirstLaunchNotificationTimestamp[] =
+    "brave.brave_ads.launch_notification_timestamp";
 
-const int kBraveAdsPrefsDefaultVersion = 1;
-const int kBraveAdsPrefsCurrentVersion = 2;
-const char kBraveAdsPrefsVersion[] = "brave.brave_ads.prefs.version";
-const char kBraveAdsPrefsMigratedFrom62[] =
-    "brave.brave_ads.prefs.migrated.from_0_62.x";
-const char kBraveAdsEnabledMigrated[] =
-    "brave.brave_ads.prefs.enabled_migrated";
+const int kCurrentVersionNumber = 3;
+const char kVersion[] = "brave.brave_ads.prefs.version";
 
 }  // namespace prefs
 

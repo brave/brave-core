@@ -49,7 +49,7 @@ class AdsImpl : public Ads {
 
   void LoadUserModel();
   void OnUserModelLoaded(const Result result, const std::string& json);
-  void InitializeUserModel(const std::string& json);
+  void InitializeUserModel(const std::string& json, const std::string& region);
 
   bool IsMobile() const;
 
