@@ -30,6 +30,12 @@ static bool IsSupportedRegion(
     const std::string& locale)
 ```
 
+`GetRegion` should be called to get the region for the specified locale
+```
+static std::string GetRegion(
+    const std::string& locale)
+```
+
 Initialize ads by calling `Initialize`
 ```
 void Initialize(

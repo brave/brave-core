@@ -66,7 +66,6 @@ class AdsServiceImpl : public AdsService,
   bool IsSupportedRegion() const override;
 
   void SetAdsEnabled(const bool is_enabled) override;
-  void MigrateAdsEnabled(const bool is_enabled) override;
 
   void SetAdsPerHour(const uint64_t ads_per_hour) override;
 
@@ -191,14 +190,24 @@ class AdsServiceImpl : public AdsService,
   void OnResetTheWholeState(base::Callback<void(bool)> callback,
                                  bool success);
   void OnTimer(uint32_t timer_id);
+
   void MigratePrefs() const;
   bool MigratePrefs(
       const int source_version,
       const int dest_version,
       const bool is_dry_run = false) const;
   void MigratePrefsVersion1To2() const;
+  void MigratePrefsVersion2To3() const;
   int GetPrefsVersion() const;
   void OnPrefsChanged(const std::string& pref);
+
+  void DisableAdsForUnsupportedRegion(
+    const std::string& region,
+    const std::vector<std::string>& regions) const;
+  void MayBeShowFirstLaunchNotificationForSupportedRegion(
+    const std::string& region,
+    const std::vector<std::string>& regions) const;
+
   void OnCreate();
   void OnInitialize(const int32_t result);
   void ShutdownBatAds();
@@ -217,14 +226,14 @@ class AdsServiceImpl : public AdsService,
   void MaybeShowMyFirstAdNotification();
   void MaybeShowFirstLaunchNotification();
   bool ShouldShowFirstLaunchNotification();
-  void RemoveFirstLaunchNotification();
   void ShowFirstLaunchNotification();
-  void MaybeStartFirstLaunchNotificationTimer();
-  void StartFirstLaunchNotificationTimer();
-  uint64_t GetFirstLaunchNotificationTimeout();
-  uint64_t GetFirstLaunchNotificationTimerOffset();
-  bool HasFirstLaunchNotificationExpired();
+  void MaybeStartFirstLaunchNotificationTimeoutTimer();
+  void StartFirstLaunchNotificationTimeoutTimer();
   void OnFirstLaunchNotificationTimedOut(uint32_t timer_id);
+  uint64_t GetFirstLaunchNotificationTimeoutTimerOffset();
+  bool HasFirstLaunchNotificationExpired();
+  uint64_t GetFirstLaunchNotificationTimeout();
+  void RemoveFirstLaunchNotification();
 
   uint32_t next_timer_id();
 
