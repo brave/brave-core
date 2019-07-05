@@ -9,7 +9,7 @@
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
-typedef testing::Test BraveContentBrowserClientTest;
+using BraveContentBrowserClientTest = testing::Test;
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 TEST_F(BraveContentBrowserClientTest, ResolvesEthereumRemoteClient) {

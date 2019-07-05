@@ -39,16 +39,20 @@ BraveWalletNavigationThrottle::WillStartRequest() {
   const GURL& url = navigation_handle()->GetURL();
   if (url.SchemeIs(content::kChromeUIScheme) &&
       url.host() == ethereum_remote_client_host) {
+    auto* registry = ExtensionRegistry::Get(web_contents->GetBrowserContext());
+    if (!registry->enabled_extensions().GetByID(
+          ethereum_remote_client_extension_id)) {
+      resume_pending = true;
       extensions::ExtensionService* service =
          extensions::ExtensionSystem::Get(
              web_contents->GetBrowserContext())->extension_service();
-       extensions::ComponentLoader* loader = service->component_loader();
-      if (!loader->Exists(ethereum_remote_client_extension_id)) {
+      if (service) {
+        extensions::ComponentLoader* loader = service->component_loader();
         static_cast<extensions::BraveComponentLoader*>(loader)->
             AddEthereumRemoteClientExtension();
-        resume_pending = true;
-        return content::NavigationThrottle::DEFER;
       }
+      return content::NavigationThrottle::DEFER;
+    }
   }
   return content::NavigationThrottle::PROCEED;
 }

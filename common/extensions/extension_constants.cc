@@ -15,7 +15,7 @@ const char crl_set_extension_id[] = "hfnkpimlhhgieaddgfemjhofmfblmnib";
 
 const char ethereum_remote_client_extension_id[] =
     "odbfpeeihdkbihmopkbjmoonfanlbfcl";
-const char ethereum_remote_client_extension_name[] = "IPFS Companion";
+const char ethereum_remote_client_extension_name[] = "Crypto Wallets";
 const char ethereum_remote_client_extension_public_key[] =
     "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAl7ZLkqbq8pHRcYANANXmhGKZKHsru"
     "BqS0ssf8aI5R5E5FBaWui73FPWMj0g4eggrJeSfF/x/nIIq3Z24Joq1ULuWtheQjbOwqj0yL2"
