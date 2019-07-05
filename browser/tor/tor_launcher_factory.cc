@@ -25,6 +25,7 @@ TorLauncherFactory::TorLauncherFactory()
     : is_starting_(false),
       tor_pid_(-1) {
   if (g_prevent_tor_launch_for_tests) {
+    tor_pid_ = 1234;
     VLOG(1) << "Skipping the tor process launch in tests.";
     return;
   }

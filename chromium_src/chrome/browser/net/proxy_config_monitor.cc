@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "brave/browser/tor/buildflags.h"
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -33,3 +35,6 @@ std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor(
 #endif
 
 #include "../../../../../chrome/browser/net/proxy_config_monitor.cc"  // NOLINT
+
+// Required by lint
+#include "brave/chromium_src/chrome/browser/net/proxy_config_monitor.h"

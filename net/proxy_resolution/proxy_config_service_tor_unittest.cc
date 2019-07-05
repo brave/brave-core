@@ -6,6 +6,7 @@
 #include "brave/net/proxy_resolution/proxy_config_service_tor.h"
 
 #include <string>
+#include <memory>
 
 #include "base/macros.h"
 #include "base/threading/thread_task_runner_handle.h"
@@ -104,13 +105,10 @@ TEST_F(ProxyConfigServiceTorTest, CircuitIsolationKey) {
   }
 }
 
-// TODO(bridiver) - test that it uses the proxy config service tor
-// new ProxyConfigMonitor(tor_profile);
-
 TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit) {
-  std::string proxy_uri("socks5://127.0.0.1:5566");
-  GURL site_url("https://check.torproject.org/");
-  std::string isolation_key =
+  const std::string proxy_uri("socks5://127.0.0.1:5566");
+  const GURL site_url("https://check.torproject.org/");
+  const std::string isolation_key =
       ProxyConfigServiceTor::CircuitIsolationKey(site_url);
 
   ProxyConfigServiceTor proxy_config_service(proxy_uri);
@@ -127,10 +125,13 @@ TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit) {
 }
 
 TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
-  std::string proxy_uri("socks5://127.0.0.1:5566");
-  GURL site_url("https://check.torproject.org/");
-  std::string isolation_key =
+  const std::string proxy_uri("socks5://127.0.0.1:5566");
+  const GURL site_url("https://check.torproject.org/");
+  const GURL site_url2("https://brave.com/");
+  const std::string isolation_key =
       ProxyConfigServiceTor::CircuitIsolationKey(site_url);
+  const std::string isolation_key2 =
+      ProxyConfigServiceTor::CircuitIsolationKey(site_url2);
 
   auto config_service = ProxyResolutionService::CreateSystemProxyConfigService(
       base::ThreadTaskRunnerHandle::Get());
@@ -167,9 +168,9 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
   EXPECT_EQ(host_port_pair.port(), 5566);
 
-  // TODO Test persistent circuit isolation until timeout.
+  // TODO(darkdh): Test persistent circuit isolation until timeout.
 
-  // Test new identity.
+  // Test new tor circuit.
   proxy_config_service.SetNewTorCircuit(site_url);
   proxy_config_service.GetLatestProxyConfig(&config);
   ProxyInfo info3;
@@ -193,6 +194,18 @@ TEST_F(ProxyConfigServiceTorTest, SetProxyAuthorization) {
   EXPECT_EQ(host_port_pair.username(), isolation_key);
   EXPECT_EQ(host_port_pair.password(), password);
   EXPECT_TRUE(info4.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
+  EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
+  EXPECT_EQ(host_port_pair.port(), 5566);
+
+  // SetNewTorCircuit should not affect other urls
+  proxy_config_service.GetLatestProxyConfig(&config);
+  ProxyInfo info5;
+  ProxyConfigServiceTor::SetProxyAuthorization(
+      config, site_url2, service, &info5);
+  host_port_pair = info5.proxy_server().host_port_pair();
+  EXPECT_EQ(host_port_pair.username(), isolation_key2);
+  EXPECT_NE(host_port_pair.password(), password);
+  EXPECT_TRUE(info5.proxy_server().scheme() == ProxyServer::SCHEME_SOCKS5);
   EXPECT_EQ(host_port_pair.host(), "127.0.0.1");
   EXPECT_EQ(host_port_pair.port(), 5566);
 }

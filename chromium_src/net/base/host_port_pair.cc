@@ -42,8 +42,7 @@ HostPortPair FromStringWithAuthentication(const std::string& str) {
 std::string MaybeAddUsernameAndPassword(const HostPortPair* host_port_pair,
                                         const std::string& str) {
   std::string ret;
-  if (!host_port_pair->username().empty() ||
-      !host_port_pair->password().empty()) {
+  if (!host_port_pair->username().empty()) {
     ret += host_port_pair->username();
     if (!host_port_pair->password().empty()) {
       ret += ':';

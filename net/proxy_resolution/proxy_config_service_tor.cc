@@ -170,7 +170,7 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
 
   if (!username.empty()) {
     auto* map = GetTorProxyMap(service);
-    if (!host_port_pair.username().empty()) {
+    if (host_port_pair.username() == username) {
       // password is a int64_t -> std::to_string in milliseconds
       int64_t time = strtoll(host_port_pair.password().c_str(), nullptr, 10);
       map->MaybeExpire(host_port_pair.username(),
