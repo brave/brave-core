@@ -144,26 +144,26 @@ uint64_t Vimeo::GetDuration(
     const ledger::MediaEventInfo& old_event,
     const ledger::MediaEventInfo& new_event) {
   // Remove duplicated events
-  if (old_event.event_ == new_event.event_ &&
-      old_event.time_ == new_event.time_) {
+  if (old_event.event == new_event.event &&
+      old_event.time == new_event.time) {
     return 0u;
   }
 
   double time = 0.0;
-  std::stringstream tempNew(new_event.time_);
+  std::stringstream tempNew(new_event.time);
   double newTime = 0.0;
   tempNew >> newTime;
 
   // Video started
-  if (new_event.event_ == "video-start-time") {
+  if (new_event.event == "video-start-time") {
     time = newTime;
   } else {
-    std::stringstream tempOld(old_event.time_);
+    std::stringstream tempOld(old_event.time);
     double oldTime = 0;
     tempOld >> oldTime;
 
-    if (new_event.event_ == "video-minute-watched" ||
-        new_event.event_ == "video-paused") {
+    if (new_event.event == "video-minute-watched" ||
+        new_event.event == "video-paused") {
       time = newTime - oldTime;
     }
   }
@@ -312,17 +312,17 @@ void Vimeo::ProcessMedia(const std::map<std::string, std::string>& parts) {
   ledger::MediaEventInfo event_info;
   iter = parts.find("event");
   if (iter != parts.end()) {
-    event_info.event_ = iter->second;
+    event_info.event = iter->second;
   }
 
   // We should only record events that are relevant to us
-  if (!AllowedEvent(event_info.event_)) {
+  if (!AllowedEvent(event_info.event)) {
     return;
   }
 
   iter = parts.find("time");
   if (iter != parts.end()) {
-    event_info.time_ = iter->second;
+    event_info.time = iter->second;
   }
 
   ledger_->GetMediaPublisherInfo(media_key,

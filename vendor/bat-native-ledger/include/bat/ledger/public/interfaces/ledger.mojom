@@ -104,3 +104,9 @@ struct AutoContributeProps {
   bool contribution_videos;
   uint64 reconcile_stamp;
 };
+
+struct MediaEventInfo {
+  string event;
+  string time;
+  string status;
+};

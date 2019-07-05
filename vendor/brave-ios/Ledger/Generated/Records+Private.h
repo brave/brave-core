@@ -39,7 +39,3 @@
 @interface BATTransactionsInfo (Private)
 - (instancetype)initWithTransactionsInfo:(const ledger::TransactionsInfo&)obj;
 @end
-
-@interface BATMediaEventInfo (Private)
-- (instancetype)initWithMediaEventInfo:(const ledger::MediaEventInfo&)obj;
-@end

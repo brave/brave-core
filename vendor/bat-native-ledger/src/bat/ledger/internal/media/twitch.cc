@@ -85,26 +85,26 @@ std::string Twitch::GetTwitchStatus(
 
   if (
     (
-      new_event.event_ == "video_pause" &&
-      old_event.event_ != "video_pause") ||
+      new_event.event == "video_pause" &&
+      old_event.event != "video_pause") ||
       // User clicked pause (we need to exclude seeking while paused)
     (
-      new_event.event_ == "video_pause" &&
-      old_event.event_ == "video_pause" &&
-      old_event.status_ == "playing") ||
+      new_event.event == "video_pause" &&
+      old_event.event == "video_pause" &&
+      old_event.status == "playing") ||
       // User clicked pause as soon as he clicked play
     (
-      new_event.event_ == "player_click_vod_seek" &&
-      old_event.status_ == "paused")
+      new_event.event == "player_click_vod_seek" &&
+      old_event.status == "paused")
       // Seeking a video while it is paused
   ) {
     status = "paused";
   }
 
   // User pauses a video, then seeks it and plays it again
-  if (new_event.event_ == "video_pause" &&
-      old_event.event_ == "player_click_vod_seek" &&
-      old_event.status_ == "paused") {
+  if (new_event.event == "video_pause" &&
+      old_event.event == "player_click_vod_seek" &&
+      old_event.status == "paused") {
     status = "playing";
   }
 
@@ -116,39 +116,39 @@ uint64_t Twitch::GetTwitchDuration(
     const ledger::MediaEventInfo& old_event,
     const ledger::MediaEventInfo& new_event) {
   // Remove duplicated events
-  if (old_event.event_ == new_event.event_ &&
-      old_event.time_ == new_event.time_) {
+  if (old_event.event == new_event.event &&
+      old_event.time == new_event.time) {
     return 0;
   }
 
   // Start event
-  if (new_event.event_ == "video-play") {
+  if (new_event.event == "video-play") {
     return TWITCH_MINIMUM_SECONDS;
   }
 
   double time = 0;
-  std::stringstream tempTime(new_event.time_);
+  std::stringstream tempTime(new_event.time);
   double currentTime = 0;
   tempTime >> currentTime;
-  std::stringstream tempOld(old_event.time_);
+  std::stringstream tempOld(old_event.time);
   double oldTime = 0;
   tempOld >> oldTime;
 
-  if (old_event.event_ == "video-play") {
+  if (old_event.event == "video-play") {
     time = currentTime - oldTime - TWITCH_MINIMUM_SECONDS;
-  } else if (new_event.event_ == "minute-watched" ||  // Minute watched
-      new_event.event_ == "buffer-empty" ||  // Run out of buffer
-      new_event.event_ == "video_error" ||  // Video has some problems
-      new_event.event_ == "video_end" ||  // Video ended
-      (new_event.event_ == "player_click_vod_seek" &&
-       old_event.status_ == "paused") ||  // Vod seek
+  } else if (new_event.event == "minute-watched" ||  // Minute watched
+      new_event.event == "buffer-empty" ||  // Run out of buffer
+      new_event.event == "video_error" ||  // Video has some problems
+      new_event.event == "video_end" ||  // Video ended
+      (new_event.event == "player_click_vod_seek" &&
+       old_event.status == "paused") ||  // Vod seek
       (
-        new_event.event_ == "video_pause" &&
+        new_event.event == "video_pause" &&
         (
           (
-            old_event.event_ != "video_pause" &&
-            old_event.event_ != "player_click_vod_seek") ||
-          old_event.status_ == "playing")
+            old_event.event != "video_pause" &&
+            old_event.event != "player_click_vod_seek") ||
+          old_event.status == "playing")
       )  // User paused video
     ) {
     time = currentTime - oldTime;
@@ -159,7 +159,7 @@ uint64_t Twitch::GetTwitchDuration(
   }
 
   // if autoplay is off and play is pressed
-  if (old_event.status_.empty()) {
+  if (old_event.status.empty()) {
     return 0;
   }
 
@@ -302,12 +302,12 @@ void Twitch::ProcessMedia(const std::map<std::string, std::string>& parts,
   ledger::MediaEventInfo twitch_info;
   std::map<std::string, std::string>::const_iterator iter = parts.find("event");
   if (iter != parts.end()) {
-    twitch_info.event_ = iter->second;
+    twitch_info.event = iter->second;
   }
 
   iter = parts.find("time");
   if (iter != parts.end()) {
-    twitch_info.time_ = iter->second;
+    twitch_info.time = iter->second;
   }
 
   ledger_->GetMediaPublisherInfo(media_key,
@@ -387,7 +387,7 @@ void Twitch::OnMediaPublisherInfo(
     }
 
     ledger::MediaEventInfo new_event(twitch_info);
-    new_event.status_ = GetTwitchStatus(old_event, new_event);
+    new_event.status = GetTwitchStatus(old_event, new_event);
 
     const uint64_t real_duration = GetTwitchDuration(old_event, new_event);
     twitch_events[media_key] = new_event;
@@ -415,7 +415,7 @@ void Twitch::OnMediaPublisherInfo(
   }
 
   ledger::MediaEventInfo new_event(twitch_info);
-  new_event.status_ = GetTwitchStatus(old_event, new_event);
+  new_event.status = GetTwitchStatus(old_event, new_event);
 
   const uint64_t real_duration = GetTwitchDuration(old_event, new_event);
   twitch_events[media_key] = new_event;

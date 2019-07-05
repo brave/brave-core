@@ -84,16 +84,6 @@ bool ActivityInfoFilter::loadFromJson(const std::string& json) {
   return !error;
 }
 
-MediaEventInfo::MediaEventInfo() {}
-
-MediaEventInfo::MediaEventInfo(const MediaEventInfo& info):
-  event_(info.event_),
-  time_(info.time_),
-  status_(info.status_) {}
-
-MediaEventInfo::~MediaEventInfo() {}
-
-
 // static
 ledger::Ledger* Ledger::CreateInstance(LedgerClient* client) {
   return new bat_ledger::LedgerImpl(client);

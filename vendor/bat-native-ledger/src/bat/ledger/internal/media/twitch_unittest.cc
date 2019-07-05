@@ -159,29 +159,29 @@ TEST(MediaTwitchTest, GetTwitchStatus) {
   ASSERT_EQ(result, "playing");
 
   // user paused the video
-  old_event.event_ = "video_pause";
-  old_event.status_ = "playing";
-  new_event.event_ = "video_pause";
+  old_event.event = "video_pause";
+  old_event.status = "playing";
+  new_event.event = "video_pause";
   result = Twitch::GetTwitchStatus(old_event, new_event);
   ASSERT_EQ(result, "paused");
 
   // user seeked while video was paused
-  old_event.status_ = "paused";
-  new_event.event_ = "player_click_vod_seek";
+  old_event.status = "paused";
+  new_event.event = "player_click_vod_seek";
   result = Twitch::GetTwitchStatus(old_event, new_event);
   ASSERT_EQ(result, "paused");
 
   // user skipped the video that was playing
-  old_event.status_ = "playing";
-  old_event.event_ = "video_pause";
-  new_event.event_ = "player_click_vod_seek";
+  old_event.status = "playing";
+  old_event.event = "video_pause";
+  new_event.event = "player_click_vod_seek";
   result = Twitch::GetTwitchStatus(old_event, new_event);
   ASSERT_EQ(result, "playing");
 
   // user pauses a video, then seeks it and plays it again
-  old_event.status_ = "paused";
-  old_event.event_ = "player_click_vod_seek";
-  new_event.event_ = "video_pause";
+  old_event.status = "paused";
+  old_event.event = "player_click_vod_seek";
+  new_event.event = "video_pause";
   result = Twitch::GetTwitchStatus(old_event, new_event);
   ASSERT_EQ(result, "playing");
 }
