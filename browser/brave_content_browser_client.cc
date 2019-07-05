@@ -16,8 +16,6 @@
 #include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/brave_cookie_blocking.h"
-#include "brave/common/tor/switches.h"
-#include "brave/common/tor/tor_launcher.mojom.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_ads/browser/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
@@ -29,11 +27,8 @@
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
-#include "brave/components/services/bat_ads/public/cpp/manifest.h"
-#include "brave/components/services/bat_ledger/public/cpp/manifest.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "brave/utility/tor/public/cpp/manifest.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
@@ -58,12 +53,12 @@ using content::RenderFrameHost;
 using content::WebContents;
 
 #if BUILDFLAG(BRAVE_ADS_ENABLED)
-#include "brave/components/services/bat_ads/bat_ads_app.h"
+#include "brave/components/services/bat_ads/public/cpp/manifest.h"
 #include "brave/components/services/bat_ads/public/interfaces/bat_ads.mojom.h"
 #endif
 
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-#include "brave/components/services/bat_ledger/bat_ledger_app.h"
+#include "brave/components/services/bat_ledger/public/cpp/manifest.h"
 #include "brave/components/services/bat_ledger/public/interfaces/bat_ledger.mojom.h"
 #endif
 
@@ -79,8 +74,10 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/browser/tor/tor_profile_service_factory.h"
-#include "brave/common/tor/tor_launcher.mojom.h"
-#include "brave/utility/tor/tor_launcher_service.h"
+#include "brave/common/tor/switches.h"
+#include "brave/components/services/tor/public/cpp/manifest.h"
+#include "brave/components/services/tor/public/interfaces/tor.mojom.h"
+#include "brave/components/services/tor/tor_launcher_service.h"
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
@@ -233,37 +230,6 @@ bool BraveContentBrowserClient::HandleExternalProtocol(
       page_transition, has_user_gesture, factory_request, out_factory);
 }
 
-void BraveContentBrowserClient::RunServiceInstance(
-    const service_manager::Identity& identity,
-    mojo::PendingReceiver<service_manager::mojom::Service>* receiver) {
-  ChromeContentBrowserClient::RunServiceInstance(identity, receiver);
-#if BUILDFLAG(ENABLE_TOR) || BUILDFLAG(BRAVE_ADS_ENABLED) || \
-    BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  const std::string& service_name = identity.name();
-#endif
-#if BUILDFLAG(ENABLE_TOR)
-  if (service_name == tor::mojom::kTorLauncherServiceName) {
-    service_manager::Service::RunAsyncUntilTermination(
-        std::make_unique<tor::TorLauncherService>(std::move(*receiver)));
-    return;
-  }
-#endif
-#if BUILDFLAG(BRAVE_ADS_ENABLED)
-  if (service_name == bat_ads::mojom::kServiceName) {
-    service_manager::Service::RunAsyncUntilTermination(
-        std::make_unique<bat_ads::BatAdsApp>(std::move(*receiver)));
-    return;
-  }
-#endif
-#if BUILDFLAG(BRAVE_REWARDS_ENABLED)
-  if (service_name == bat_ledger::mojom::kServiceName) {
-    service_manager::Service::RunAsyncUntilTermination(
-        std::make_unique<bat_ledger::BatLedgerApp>(std::move(*receiver)));
-    return;
-  }
-#endif
-}
-
 base::Optional<service_manager::Manifest>
 BraveContentBrowserClient::GetServiceManifestOverlay(base::StringPiece name) {
   auto manifest = ChromeContentBrowserClient::GetServiceManifestOverlay(name);
@@ -297,7 +263,7 @@ void BraveContentBrowserClient::AdjustUtilityServiceProcessCommandLine(
       identity, command_line);
 
 #if BUILDFLAG(ENABLE_TOR)
-  if (identity.name() == tor::mojom::kTorLauncherServiceName) {
+  if (identity.name() == tor::mojom::kServiceName) {
     base::FilePath path =
         g_brave_browser_process->tor_client_updater()->GetExecutablePath();
     DCHECK(!path.empty());

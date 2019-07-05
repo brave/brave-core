@@ -1,0 +1,10 @@
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("interfaces") {
+  sources = [
+    "tor.mojom",
+  ]
+  public_deps = [
+    "//mojo/public/mojom/base",
+  ]
+}

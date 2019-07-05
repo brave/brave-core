@@ -6,7 +6,7 @@
 #define BRAVE_CONFIG_STRUCT_TRAITS_TOR_TOR_CONFIG_STRUCT_TRAITS_H_
 
 #include "brave/common/tor/tor_common.h"
-#include "brave/common/tor/tor_config.mojom.h"
+#include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 #include "ipc/ipc_message_utils.h"
 
 namespace mojo {
