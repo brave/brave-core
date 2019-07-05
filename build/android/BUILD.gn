@@ -89,3 +89,11 @@ java_strings_grd("android_brave_strings_grd") {
     "values-zh-rTW/android_brave_strings.xml",
   ]
 }
+
+generate_jni("jni_headers") {
+  sources = [
+    "//brave/android/java/org/chromium/chrome/browser/preferences/website/BraveShieldsContentSettings.java",
+  ]
+
+  jni_package = "brave"
+}

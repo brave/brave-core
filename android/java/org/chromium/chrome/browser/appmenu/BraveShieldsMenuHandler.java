@@ -1,6 +1,7 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.appmenu;
 
@@ -71,18 +72,14 @@ public class BraveShieldsMenuHandler {
         mMenuObserver = menuObserver;
     }
 
-    public void show(View anchorView, boolean incognitoTab, String host, int adsAndTrackers
+    public void show(View anchorView, boolean incognitoTab, String host, String title, int adsAndTrackers
             , int httpsUpgrades, int scriptsBlocked, int fingerprintsBlocked) {
-
-        Log.i("TAG", "!!!show host == " + host);
         int rotation = mActivity.getWindowManager().getDefaultDisplay().getRotation();
         // This fixes the bug where the bottom of the menu starts at the top of
         // the keyboard, instead of overlapping the keyboard as it should.
         int displayHeight = mActivity.getResources().getDisplayMetrics().heightPixels;
         int widthHeight = mActivity.getResources().getDisplayMetrics().widthPixels;
         int currentDisplayWidth = widthHeight;
-        Log.i("TAG", "!!!displayHeight == " + displayHeight);
-        Log.i("TAG", "!!!widthHeight == " + widthHeight);
 
         // In appcompat 23.2.1, DisplayMetrics are not updated after rotation change. This is a
         // workaround for it. See crbug.com/599048.
@@ -96,8 +93,6 @@ public class BraveShieldsMenuHandler {
         } else {
             assert false : "Rotation unexpected";
         }
-        Log.i("TAG", "!!!displayHeight == " + displayHeight);
-        Log.i("TAG", "!!!currentDisplayWidth == " + currentDisplayWidth);
         if (anchorView == null) {
             Rect rect = new Rect();
             mActivity.getWindow().getDecorView().getWindowVisibleDisplayFrame(rect);
@@ -148,16 +143,14 @@ public class BraveShieldsMenuHandler {
 
         int popupWidth = wrapper.getResources().getDimensionPixelSize(R.dimen.menu_width)
                 + bgPadding.left + bgPadding.right;
-        Log.i("TAG", "!!!popupWidth == " + popupWidth);
 
         // Extract visible items from the Menu.
         int numItems = mMenu.size();
         List<MenuItem> menuItems = new ArrayList<MenuItem>();
-        Log.i("TAG", "!!!numItems == " + numItems);
         for (int i = 0; i < numItems; ++i) {
             MenuItem item = mMenu.getItem(i);
             if (1 == i) {
-                item.setTitle(host);
+                item.setTitle(title);
             } else if (3 == i) {
                 item.setTitle(String.valueOf(adsAndTrackers));
             } else if (4 == i) {
@@ -172,19 +165,16 @@ public class BraveShieldsMenuHandler {
 
         mPopup.setWidth(popupWidth);
 
-        mAdapter = new BraveShieldsMenuAdapter(menuItems,
+        mAdapter = new BraveShieldsMenuAdapter(host, title, menuItems,
             LayoutInflater.from(wrapper), mMenuObserver, mPopup,
             currentDisplayWidth);
         mAdapter.setIncognitoTab(incognitoTab);
         mPopup.setAdapter(mAdapter);
 
-        Log.i("TAG", "!!!showing == " + host);
         mPopup.show();
-        Log.i("TAG", "!!!showing1 == " + host);
         mPopup.getListView().setItemsCanFocus(true);
 
         // Don't animate the menu items for low end devices.
-        Log.i("TAG", "!!!showing2 == " + host);
         if (!SysUtils.isLowEndDevice()) {
             mPopup.getListView().addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
                 @Override
@@ -195,7 +185,6 @@ public class BraveShieldsMenuHandler {
                 }
             });
         }
-        Log.i("TAG", "!!!mPopup.isShowing() ==  ", mPopup.isShowing());
     }
 
     private void runMenuItemEnterAnimations() {

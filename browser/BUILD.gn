@@ -152,6 +152,14 @@ source_set("browser_process") {
       "importer",
       "//brave/app:brave_generated_resources_grit",
     ]
+  } else {
+    sources += [
+      "android/brave_shields_content_settings.cc",
+    ]
+
+    deps += [
+      "//chrome/android:jni_headers",
+    ]
   }
 
   if (brave_wallet_enabled) {

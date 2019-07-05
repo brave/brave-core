@@ -78,10 +78,13 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           }
           try {
               URL url = new URL(currentTab.getUrl());
+              URL protocolHost = new URL(url.getProtocol(), url.getHost(), "");
 
+              Log.i("TAG", "!!!file == " + url.getProtocol());
               setBraveShieldsColor(currentTab.isIncognito(), url.getHost());
-              mBraveShieldsMenuHandler.show((View)findViewById(R.id.brave_shields_button)
+              mBraveShieldsMenuHandler.show(mBraveShieldsButton
                 , currentTab.isIncognito()
+                , protocolHost.toString()
                 , url.getHost()
                 // TODO
                 , 0, 0, 0, 0);
@@ -91,8 +94,14 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
                 //, currentTab.getFingerprintsBlocked());
           } catch (Exception e) {
               // TODO
-              //setBraveShieldsBlackAndWhite();
+              setBraveShieldsBlackAndWhite();
           }
+      }
+  }
+
+  private void setBraveShieldsBlackAndWhite() {
+      if (null != mBraveShieldsButton) {
+          mBraveShieldsButton.setImageResource(R.drawable.btn_brave_off);
       }
   }
 
@@ -168,5 +177,14 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
 
   private void setBraveShieldsColor(boolean incognitoTab, String url) {
       // TODO
+      // ChromeApplication app = (ChromeApplication)ContextUtils.getBaseApplicationContext();
+      //   if (null != app) {
+      //       if (app.getShieldsConfig().isTopShieldsEnabled(incognitoTab, url)) {
+      //           // Set Brave Shields button in color if we have a valid URL
+      //           setBraveShieldsColored();
+      //       } else {
+      //           setBraveShieldsBlackAndWhite();
+      //       }
+      //   }
   }
 }
