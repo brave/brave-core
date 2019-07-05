@@ -108,7 +108,8 @@ export type NotificationType =
 export type WalletState =
   'unverified' |
   'verified' |
-  'disconnected'
+  'disconnected_unverified' |
+  'disconnected_verified'
 
 export interface Notification {
   id: string
@@ -378,7 +379,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           </StyledVerifiedButton>
         )
 
-      case 'disconnected':
+      case 'disconnected_unverified':
+      case 'disconnected_verified':
         return (
           <Button
             text={getLocale('walletButtonDisconnected')}
@@ -551,7 +553,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       date = new Date(grant.expiryTime).toLocaleDateString()
     }
 
-    const walletVerified = walletState && walletState !== 'unverified'
+    const walletVerified = walletState === 'verified' || walletState === 'disconnected_verified'
 
     return (
       <>

@@ -98,7 +98,8 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
       walletState: select('wallet status', {
         unverified: 'unverified',
         verified: 'verified',
-        disconnected: 'disconnected'
+        'disconnected unverified': 'disconnected_unverified',
+        'disconnected verified': 'disconnected_verified'
       }, 'unverified') as WalletState
     }
     return (<Settings {...{ walletProps }}/>)
@@ -479,7 +480,8 @@ storiesOf('Feature Components/Rewards/Concepts/Desktop', module)
           walletState={select('wallet status', {
             unverified: 'unverified',
             verified: 'verified',
-            disconnected: 'disconnected'
+            'disconnected unverified': 'disconnected_unverified',
+            'disconnected verified': 'disconnected_verified'
           }, 'unverified') as WalletState}
           onVerifyClick={onVerifyClick}
           userName={text('user name', 'jennrhim')}

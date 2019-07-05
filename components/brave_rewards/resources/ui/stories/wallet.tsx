@@ -83,7 +83,8 @@ storiesOf('Feature Components/Rewards/Wallet/Desktop', module)
         walletState={select('wallet status', {
           unverified: 'unverified',
           verified: 'verified',
-          disconnected: 'disconnected'
+          'disconnected unverified': 'disconnected_unverified',
+          'disconnected verified': 'disconnected_verified'
         }, 'unverified') as WalletState}
       >
         Some content
