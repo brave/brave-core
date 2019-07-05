@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/dom/document.cc b/third_party/blink/renderer/core/dom/document.cc
-index 1b73cb405b753fd8ab999100f53ba184f62f3b23..73322860569708e6bab660acf5a6541dd9c86cb2 100644
+index 1b73cb405b753fd8ab999100f53ba184f62f3b23..2b2b8729c94affe1a29317b7a9bf70ee18af46f8 100644
 --- a/third_party/blink/renderer/core/dom/document.cc
 +++ b/third_party/blink/renderer/core/dom/document.cc
-@@ -310,6 +310,14 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
+@@ -310,6 +310,15 @@ using WeakDocumentSet = blink::HeapHashSet<blink::WeakMember<blink::Document>>;
  static WeakDocumentSet& liveDocumentSet();
  #endif
  
@@ -18,7 +18,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..73322860569708e6bab660acf5a6541d
  namespace blink {
  
  using namespace html_names;
-@@ -612,6 +620,10 @@ Document::Document(const DocumentInit& initializer,
+@@ -612,6 +621,10 @@ Document::Document(const DocumentInit& initializer,
      : ContainerNode(nullptr, kCreateDocument),
        TreeScope(*this),
        ExecutionContext(V8PerIsolateData::MainThreadIsolate()),
@@ -29,7 +29,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..73322860569708e6bab660acf5a6541d
        evaluate_media_queries_on_style_recalc_(false),
        pending_sheet_layout_(kNoLayoutWithPendingSheets),
        frame_(initializer.GetFrame()),
-@@ -778,8 +790,131 @@ Document::~Document() {
+@@ -778,7 +791,130 @@ Document::~Document() {
    DCHECK(!ax_object_cache_);
  
    InstanceCounters::DecrementCounter(InstanceCounters::kDocumentCounter);
@@ -44,8 +44,8 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..73322860569708e6bab660acf5a6541d
 +    page_graph_ = nullptr;
 +  }
 +#endif
- }
- 
++}
++
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
 +static bool IsDocumentLocal(const blink::Document* document) {
 +  // If the current document is in a different security origin than the
@@ -155,13 +155,12 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..73322860569708e6bab660acf5a6541d
 +
 +  page_graph_ = new ::brave_page_graph::PageGraph(*this);
 +  return page_graph_;
-+}
+ }
 +#endif
-+
+ 
  Range* Document::CreateRangeAdjustedToTreeScope(const TreeScope& tree_scope,
                                                  const Position& position) {
-   DCHECK(position.IsNotNull());
-@@ -5281,6 +5416,27 @@ String Document::cookie(ExceptionState& exception_state) const {
+@@ -5281,6 +5417,27 @@ String Document::cookie(ExceptionState& exception_state) const {
    if (cookie_url.IsEmpty())
      return String();
  
@@ -189,7 +188,7 @@ index 1b73cb405b753fd8ab999100f53ba184f62f3b23..73322860569708e6bab660acf5a6541d
    return Cookies(this, cookie_url);
  }
  
-@@ -5312,6 +5468,23 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
+@@ -5312,6 +5469,23 @@ void Document::setCookie(const String& value, ExceptionState& exception_state) {
    if (cookie_url.IsEmpty())
      return;
  

@@ -67,6 +67,7 @@ index 696c6d0f8db1cdbeac35d4597eea9f1cbb63e30b..e05c66de967b5bf14e691a2a5454a18c
 +    }
 +  }
 +#endif
++
    for (Node& node : NodeTraversal::InclusiveDescendantsOf(root)) {
      // As an optimization we don't notify leaf nodes when when inserting
      // into detached subtrees that are not in a shadow tree.
