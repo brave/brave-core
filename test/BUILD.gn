@@ -442,9 +442,8 @@ test("brave_browser_tests") {
     "//chrome/browser/extensions/extension_apitest.h",
   ]
 
-  if (is_linux && is_official_build) {
+  if (is_linux) {
     sources += [
-      # BraveViewsDelegateLinuxBrowserTest only works in release(official) build.
       "//brave/browser/ui/views/brave_views_delegate_linux_browsertest.cc",
     ]
     configs += [
