@@ -50,7 +50,7 @@ class PublisherInfoDatabase {
      const std::string& media_key);
 
   ledger::PublisherInfoPtr GetPanelPublisher(
-     const ledger::ActivityInfoFilter& filter);
+     const ledger::ActivityInfoFilterPtr filter);
 
   bool RestorePublishers();
 
@@ -60,7 +60,7 @@ class PublisherInfoDatabase {
 
   bool GetActivityList(int start,
                        int limit,
-                       const ledger::ActivityInfoFilter& filter,
+                       ledger::ActivityInfoFilterPtr filter,
                        ledger::PublisherInfoList* list);
 
   bool GetExcludedList(ledger::PublisherInfoList* list);

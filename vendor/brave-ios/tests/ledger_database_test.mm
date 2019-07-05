@@ -683,16 +683,16 @@
 {
   [self createBATPublisherInfo:@"2" reconcileStamp:30 percent:1 createActivityInfo:YES duration:350
                         visits:1 excluded:BATPublisherExcludeDefault];
-  
+
   [self createBATPublisherInfo:@"3" reconcileStamp:30 percent:1 createActivityInfo:YES duration:29
                         visits:1 excluded:BATPublisherExcludeDefault];
-  
+
   [self createBATPublisherInfo:@"4" reconcileStamp:30 percent:1 createActivityInfo:YES duration:10
                         visits:1 excluded:BATPublisherExcludeIncluded];
-  
+
   [self createBATPublisherInfo:@"5" reconcileStamp:30 percent:1 createActivityInfo:YES duration:10
                         visits:1 excluded:BATPublisherExcludeExcluded];
-  
+
   const auto excludedPublishers = [BATLedgerDatabase excludedPublishers];
   XCTAssertTrue([excludedPublishers.firstObject.id isEqualToString:@"5"]);
   XCTAssertEqual(excludedPublishers.count, 1);
@@ -840,7 +840,7 @@
 - (void)testRemoveRecurringTipWithPublisherID
 {
   const auto now = [[[NSDate alloc] init] timeIntervalSince1970];
-  
+
   [self createBATPublisherInfo:@"1" reconcileStamp:40 percent:0 createActivityInfo:YES];
   [self createBATPublisherInfo:@"2" reconcileStamp:40 percent:0 createActivityInfo:YES];
 
@@ -882,7 +882,7 @@
 {
   [self createBATPublisherInfo:@"brave.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
   [self createBATPublisherInfo:@"duckduckgo.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
-  
+
   const auto now = [[NSDate date] timeIntervalSince1970];
   const auto one = [[BATPendingContribution alloc] init];
   one.publisherKey = @"brave.com";
@@ -890,20 +890,20 @@
   one.category = BATRewardsCategoryAutoContribute;
   one.addedDate = now;
   one.viewingId = @"";
-  
+
   const auto two = [[BATPendingContribution alloc] init];
   two.publisherKey = @"duckduckgo.com";
   two.amount = 10.0;
   two.category = BATRewardsCategoryAutoContribute;
   two.addedDate = now;
   two.viewingId = @"";
-  
+
   const auto list = @[one, two];
-  
+
   [self backgroundSaveAndWaitForExpectation:^{
     [BATLedgerDatabase insertPendingContributions:list completion:nil];
   }];
-  
+
   const auto contributions = [BATLedgerDatabase pendingContributions];
   XCTAssertEqual(contributions.count, 2);
 }
@@ -913,10 +913,10 @@
   const auto removedPublisherKey = @"brave.com";
   const auto removedViewingId = @"viewing-id";
   const auto keptPublisherKey = @"duckduckgo.com";
-  
+
   [self createBATPublisherInfo:removedPublisherKey reconcileStamp:40 percent:0 createActivityInfo:YES];
   [self createBATPublisherInfo:keptPublisherKey reconcileStamp:40 percent:0 createActivityInfo:YES];
-  
+
   const auto now = [[NSDate date] timeIntervalSince1970];
   const auto one = [[BATPendingContribution alloc] init];
   one.publisherKey = removedPublisherKey;
@@ -924,20 +924,20 @@
   one.category = BATRewardsCategoryAutoContribute;
   one.addedDate = now;
   one.viewingId = removedViewingId;
-  
+
   const auto two = [[BATPendingContribution alloc] init];
   two.publisherKey = keptPublisherKey;
   two.amount = 10.0;
   two.category = BATRewardsCategoryAutoContribute;
   two.addedDate = now;
   two.viewingId = @"";
-  
+
   const auto list = @[one, two];
-  
+
   [self backgroundSaveAndWaitForExpectation:^{
     [BATLedgerDatabase insertPendingContributions:list completion:nil];
   }];
-  
+
   [self backgroundSaveAndWaitForExpectation:^{
     [BATLedgerDatabase removePendingContributionForPublisherID:removedPublisherKey
                                                      viewingID:removedViewingId
@@ -946,9 +946,9 @@
                                                       XCTAssertTrue(success);
                                                     }];
   }];
-  
+
   const auto contributions = [BATLedgerDatabase pendingContributions];
-  
+
   XCTAssertEqual(contributions.count, 1);
   XCTAssertTrue([contributions[0].publisherKey isEqualToString:keptPublisherKey]);
 }
@@ -957,7 +957,7 @@
 {
   [self createBATPublisherInfo:@"brave.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
   [self createBATPublisherInfo:@"duckduckgo.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
-  
+
   const auto now = [[NSDate date] timeIntervalSince1970];
   const auto one = [[BATPendingContribution alloc] init];
   one.publisherKey = @"brave.com";
@@ -965,24 +965,24 @@
   one.category = BATRewardsCategoryAutoContribute;
   one.addedDate = now;
   one.viewingId = @"";
-  
+
   const auto two = [[BATPendingContribution alloc] init];
   two.publisherKey = @"duckduckgo.com";
   two.amount = 10.0;
   two.category = BATRewardsCategoryAutoContribute;
   two.addedDate = now;
   two.viewingId = @"";
-  
+
   const auto list = @[one, two];
-  
+
   [self backgroundSaveAndWaitForExpectation:^{
     [BATLedgerDatabase insertPendingContributions:list completion:nil];
   }];
-  
+
   [self backgroundSaveAndWaitForExpectation:^{
     [BATLedgerDatabase removeAllPendingContributions:nil];
   }];
-  
+
   const auto contributions = [BATLedgerDatabase pendingContributions];
   XCTAssertEqual(contributions.count, 0);
 }
@@ -991,7 +991,7 @@
 {
   [self createBATPublisherInfo:@"brave.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
   [self createBATPublisherInfo:@"duckduckgo.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
-  
+
   const auto now = [[NSDate date] timeIntervalSince1970];
   const auto one = [[BATPendingContribution alloc] init];
   one.publisherKey = @"brave.com";

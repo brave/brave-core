@@ -55,31 +55,11 @@ LEDGER_EXPORT enum PUBLISHER_EXCLUDE {
   INCLUDED = 2  // user manually changed it to include and is overriding server
 };
 
-LEDGER_EXPORT enum EXCLUDE_FILTER {
-  FILTER_ALL = -1,
-  FILTER_DEFAULT = 0,
-  FILTER_EXCLUDED = 1,
-  FILTER_INCLUDED = 2,
-  FILTER_ALL_EXCEPT_EXCLUDED = 3
-};
-
-LEDGER_EXPORT struct ActivityInfoFilter {
-  ActivityInfoFilter();
-  ActivityInfoFilter(const ActivityInfoFilter& filter);
-  ~ActivityInfoFilter();
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string id;
-  EXCLUDE_FILTER excluded;
-  uint32_t percent;
-  std::vector<std::pair<std::string, bool>> order_by;
-  uint64_t min_duration;
-  uint64_t reconcile_stamp;
-  bool non_verified;
-  uint32_t min_visits;
-};
+using ExcludeFilter = mojom::ExcludeFilter;
+using ActivityInfoFilter = mojom::ActivityInfoFilter;
+using ActivityInfoFilterPtr = mojom::ActivityInfoFilterPtr;
+using ActivityInfoFilterOrderPair = mojom::ActivityInfoFilterOrderPair;
+using ActivityInfoFilterOrderPairPtr = mojom::ActivityInfoFilterOrderPairPtr;
 
 using ContributionInfo = mojom::ContributionInfo;
 using ContributionInfoPtr = mojom::ContributionInfoPtr;

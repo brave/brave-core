@@ -68,7 +68,7 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
 
   uint64_t getPublisherMinVisitTime() const;  // In milliseconds
 
-  unsigned int getPublisherMinVisits() const;
+  unsigned int GetPublisherMinVisits() const;
 
   bool getPublisherAllowNonVerified() const;
 
@@ -101,11 +101,11 @@ class BatPublishers : public ledger::LedgerCallbackHandler {
                             ledger::ReportType type,
                             const std::string& probi);
 
-  ledger::ActivityInfoFilter CreateActivityFilter(
+  ledger::ActivityInfoFilterPtr CreateActivityFilter(
       const std::string& publisher_id,
-      ledger::EXCLUDE_FILTER excluded,
+      ledger::ExcludeFilter excluded,
       bool min_duration,
-      const uint64_t& currentReconcileStamp,
+      const uint64_t& current_reconcile_stamp,
       bool non_verified,
       bool min_visits);
 

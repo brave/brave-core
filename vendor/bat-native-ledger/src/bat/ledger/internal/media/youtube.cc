@@ -646,12 +646,12 @@ void YouTube::GetPublisherPanleInfo(
     bool is_custom_path) {
   auto filter = ledger_->CreateActivityFilter(
     publisher_key,
-    ledger::EXCLUDE_FILTER::FILTER_ALL,
+    ledger::ExcludeFilter::FILTER_ALL,
     false,
     ledger_->GetReconcileStamp(),
     true,
     false);
-  ledger_->GetPanelPublisherInfo(filter,
+  ledger_->GetPanelPublisherInfo(std::move(filter),
     std::bind(&YouTube::OnPublisherPanleInfo,
               this,
               window_id,

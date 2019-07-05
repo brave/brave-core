@@ -136,3 +136,27 @@ struct BalanceReportInfo {
   string one_time_donation;
   string total;
 };
+
+enum ExcludeFilter {
+  FILTER_ALL = -1,
+  FILTER_DEFAULT = 0,
+  FILTER_EXCLUDED = 1,
+  FILTER_INCLUDED = 2,
+  FILTER_ALL_EXCEPT_EXCLUDED = 3
+};
+
+struct ActivityInfoFilterOrderPair {
+  string property_name;
+  bool ascending;
+};
+
+struct ActivityInfoFilter {
+  string id;
+  ExcludeFilter excluded = ExcludeFilter.FILTER_DEFAULT;
+  uint32 percent = 0;
+  array<ActivityInfoFilterOrderPair> order_by;
+  uint64 min_duration = 0;
+  uint64 reconcile_stamp = 0;
+  bool non_verified = true;
+  uint32 min_visits = 0;
+};

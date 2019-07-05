@@ -107,11 +107,11 @@ class MockConfirmationsClient : public ConfirmationsClient {
       ledger::PublisherInfoCallback callback));
 
   MOCK_METHOD2(LoadActivityInfo, void(
-      ledger::ActivityInfoFilter filter,
+      ledger::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoCallback callback));
 
   MOCK_METHOD2(LoadPanelPublisherInfo, void(
-      ledger::ActivityInfoFilter filter,
+      ledger::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoCallback callback));
 
   MOCK_METHOD2(LoadMediaPublisherInfo, void(
@@ -125,7 +125,7 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD4(GetActivityInfoList, void(
       uint32_t start,
       uint32_t limit,
-      ledger::ActivityInfoFilter filter,
+      ledger::ActivityInfoFilterPtr filter,
       ledger::PublisherInfoListCallback callback));
 
   MOCK_METHOD2(FetchGrants, void(

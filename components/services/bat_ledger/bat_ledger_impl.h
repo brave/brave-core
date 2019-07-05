@@ -143,7 +143,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   void GetActivityInfoList(
     uint32_t start,
     uint32_t limit,
-    const std::string& json_filter,
+    ledger::ActivityInfoFilterPtr filter,
     GetActivityInfoListCallback callback) override;
 
   void LoadPublisherInfo(

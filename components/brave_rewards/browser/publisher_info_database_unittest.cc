@@ -358,9 +358,10 @@ TEST_F(PublisherInfoDatabaseTest, GetExcludedList) {
   /**
    * Check Included List is correct
    */
-  ledger::ActivityInfoFilter filter;
-  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_INCLUDED;
-  success = publisher_info_database_->GetActivityList(0, 0, filter, &pub_list);
+  auto filter = ledger::ActivityInfoFilter::New();
+  filter->excluded = ledger::ExcludeFilter::FILTER_INCLUDED;
+  success = publisher_info_database_->GetActivityList(0, 0,
+      std::move(filter), &pub_list);
   EXPECT_TRUE(success);
   EXPECT_EQ(1UL, pub_list.size());
 
@@ -617,16 +618,16 @@ TEST_F(PublisherInfoDatabaseTest, GetPanelPublisher) {
   /**
    * Publisher ID is missing
    */
-  ledger::ActivityInfoFilter filter_1;
-  EXPECT_EQ(publisher_info_database_->GetPanelPublisher(filter_1),
+  auto filter_1 = ledger::ActivityInfoFilter::New();
+  EXPECT_EQ(publisher_info_database_->GetPanelPublisher(std::move(filter_1)),
             static_cast<ledger::PublisherInfoPtr>(nullptr));
 
   /**
    * Empty table
    */
-  ledger::ActivityInfoFilter filter_2;
-  filter_2.id = "test";
-  EXPECT_EQ(publisher_info_database_->GetPanelPublisher(filter_2),
+  auto filter_2 = ledger::ActivityInfoFilter::New();
+  filter_2->id = "test";
+  EXPECT_EQ(publisher_info_database_->GetPanelPublisher(std::move(filter_2)),
             static_cast<ledger::PublisherInfoPtr>(nullptr));
 
   /**
@@ -641,11 +642,11 @@ TEST_F(PublisherInfoDatabaseTest, GetPanelPublisher) {
   bool success = publisher_info_database_->InsertOrUpdateActivityInfo(*info_1);
   EXPECT_TRUE(success);
 
-  ledger::ActivityInfoFilter filter_4;
-  filter_4.id = "page.com";
-  filter_4.reconcile_stamp = 10;
+  auto filter_4 = ledger::ActivityInfoFilter::New();
+  filter_4->id = "page.com";
+  filter_4->reconcile_stamp = 10;
   ledger::PublisherInfoPtr result =
-      publisher_info_database_->GetPanelPublisher(filter_4);
+      publisher_info_database_->GetPanelPublisher(std::move(filter_4));
   EXPECT_TRUE(result);
   EXPECT_EQ(result->id, "page.com");
   EXPECT_EQ(result->percent, 0u);
@@ -830,12 +831,12 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
    * Get publisher with min_duration
   */
   ledger::PublisherInfoList list_1;
-  ledger::ActivityInfoFilter filter_1;
-  filter_1.min_duration = 50;
-  filter_1.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
+  auto filter_1 = ledger::ActivityInfoFilter::New();
+  filter_1->min_duration = 50;
+  filter_1->excluded = ledger::ExcludeFilter::FILTER_ALL;
   EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
                                                         0,
-                                                        filter_1,
+                                                        std::move(filter_1),
                                                         &list_1));
   EXPECT_EQ(static_cast<int>(list_1.size()), 2);
 
@@ -846,12 +847,12 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
    * Get verified publishers
   */
   ledger::PublisherInfoList list_2;
-  ledger::ActivityInfoFilter filter_2;
-  filter_2.non_verified = false;
-  filter_2.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
+  auto filter_2 = ledger::ActivityInfoFilter::New();
+  filter_2->non_verified = false;
+  filter_2->excluded = ledger::ExcludeFilter::FILTER_ALL;
   EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
                                                         0,
-                                                        filter_2,
+                                                        std::move(filter_2),
                                                         &list_2));
   EXPECT_EQ(static_cast<int>(list_2.size()), 2);
 
@@ -862,11 +863,11 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
    * Get all publishers that are not excluded
   */
   ledger::PublisherInfoList list_3;
-  ledger::ActivityInfoFilter filter_3;
-  filter_3.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL_EXCEPT_EXCLUDED;
+  auto filter_3 = ledger::ActivityInfoFilter::New();
+  filter_3->excluded = ledger::ExcludeFilter::FILTER_ALL_EXCEPT_EXCLUDED;
   EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
                                                         0,
-                                                        filter_3,
+                                                        std::move(filter_3),
                                                         &list_3));
   EXPECT_EQ(static_cast<int>(list_3.size()), 5);
 
@@ -880,12 +881,12 @@ TEST_F(PublisherInfoDatabaseTest, GetActivityList) {
    * Get publisher with min_visits
   */
   ledger::PublisherInfoList list_4;
-  ledger::ActivityInfoFilter filter_4;
-  filter_4.min_visits = 5;
-  filter_4.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
+  auto filter_4 = ledger::ActivityInfoFilter::New();
+  filter_4->min_visits = 5;
+  filter_4->excluded = ledger::ExcludeFilter::FILTER_ALL;
   EXPECT_TRUE(publisher_info_database_->GetActivityList(0,
                                                         0,
-                                                        filter_4,
+                                                        std::move(filter_4),
                                                         &list_4));
   EXPECT_EQ(static_cast<int>(list_4.size()), 2);
 
@@ -900,9 +901,10 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv3tov4) {
   CreateMigrationDatabase(&temp_dir, &db_file, 3, 4);
 
   ledger::PublisherInfoList list;
-  ledger::ActivityInfoFilter filter;
-  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter, &list));
+  auto filter = ledger::ActivityInfoFilter::New();
+  filter->excluded = ledger::ExcludeFilter::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0,
+      std::move(filter), &list));
   EXPECT_EQ(static_cast<int>(list.size()), 2);
 
   EXPECT_EQ(list.at(0)->id, "slo-tech.com");
@@ -921,9 +923,10 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv4tov5) {
   CreateMigrationDatabase(&temp_dir, &db_file, 4, 5);
 
   ledger::PublisherInfoList list;
-  ledger::ActivityInfoFilter filter;
-  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter, &list));
+  auto filter = ledger::ActivityInfoFilter::New();
+  filter->excluded = ledger::ExcludeFilter::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0,
+      std::move(filter), &list));
   EXPECT_EQ(static_cast<int>(list.size()), 3);
 
   EXPECT_EQ(list.at(0)->id, "brave.com");
@@ -944,9 +947,10 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv5tov6) {
   CreateMigrationDatabase(&temp_dir, &db_file, 5, 6);
 
   ledger::PublisherInfoList list;
-  ledger::ActivityInfoFilter filter;
-  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter, &list));
+  auto filter = ledger::ActivityInfoFilter::New();
+  filter->excluded = ledger::ExcludeFilter::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0,
+      std::move(filter), &list));
   EXPECT_EQ(static_cast<int>(list.size()), 3);
 
   EXPECT_EQ(list.at(0)->id, "basicattentiontoken.org");
@@ -985,9 +989,10 @@ TEST_F(PublisherInfoDatabaseTest, Migrationv4tov6) {
   CreateMigrationDatabase(&temp_dir, &db_file, 4, 6);
 
   ledger::PublisherInfoList list;
-  ledger::ActivityInfoFilter filter;
-  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter, &list));
+  auto filter = ledger::ActivityInfoFilter::New();
+  filter->excluded = ledger::ExcludeFilter::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0,
+      std::move(filter), &list));
   EXPECT_EQ(static_cast<int>(list.size()), 3);
 
   EXPECT_EQ(list.at(0)->id, "basicattentiontoken.org");
@@ -1046,9 +1051,10 @@ TEST_F(PublisherInfoDatabaseTest, DeleteActivityInfo) {
   // publisher is deleted
   EXPECT_TRUE(publisher_info_database_->DeleteActivityInfo("publisher_1", 2));
   ledger::PublisherInfoList list;
-  ledger::ActivityInfoFilter filter;
-  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_ALL;
-  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0, filter, &list));
+  auto filter = ledger::ActivityInfoFilter::New();
+  filter->excluded = ledger::ExcludeFilter::FILTER_ALL;
+  EXPECT_TRUE(publisher_info_database_->GetActivityList(0, 0,
+      std::move(filter), &list));
   EXPECT_EQ(static_cast<int>(list.size()), 2);
 
   EXPECT_EQ(list.at(0)->id, "publisher_1");

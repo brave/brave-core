@@ -113,7 +113,7 @@ interface BatLedger {
   GetRecurringTips() => (array<ledger.mojom.PublisherInfo> list);
   GetOneTimeTips() => (array<ledger.mojom.PublisherInfo> list);
 
-  GetActivityInfoList(uint32 start, uint32 limit, string json_filter) =>
+  GetActivityInfoList(uint32 start, uint32 limit, ledger.mojom.ActivityInfoFilter? filter) =>
       (array<ledger.mojom.PublisherInfo> list, uint32 number);
 
   LoadPublisherInfo(string publisher_key) =>
@@ -173,7 +173,7 @@ interface BatLedgerClient {
       (int32 result, ledger.mojom.PublisherInfo? publisher_info);
   LoadPublisherInfo(string publisher_key) =>
       (int32 result, ledger.mojom.PublisherInfo? publisher_info);
-  LoadPanelPublisherInfo(string filter) =>
+  LoadPanelPublisherInfo(ledger.mojom.ActivityInfoFilter? filter) =>
       (int32 result, ledger.mojom.PublisherInfo? publisher_info);
   LoadMediaPublisherInfo(string media_key) =>
       (int32 result, ledger.mojom.PublisherInfo? publisher_info);
@@ -209,7 +209,7 @@ interface BatLedgerClient {
 
   SavePendingContribution(array<ledger.mojom.PendingContribution> list) => (int32 result);
 
-  LoadActivityInfo(string filter) =>
+  LoadActivityInfo(ledger.mojom.ActivityInfoFilter? filter) =>
       (int32 result, ledger.mojom.PublisherInfo? publisher_info);
 
   SaveActivityInfo(ledger.mojom.PublisherInfo publisher_info) =>
@@ -217,7 +217,7 @@ interface BatLedgerClient {
 
   RestorePublishers() => (int32 result);
 
-  GetActivityInfoList(uint32 start, uint32 limit, string filter) =>
+  GetActivityInfoList(uint32 start, uint32 limit, ledger.mojom.ActivityInfoFilter? filter) =>
       (array<ledger.mojom.PublisherInfo> publisher_info_list, uint32 next_record);
 
   SaveNormalizedPublisherList(array<ledger.mojom.PublisherInfo> list);

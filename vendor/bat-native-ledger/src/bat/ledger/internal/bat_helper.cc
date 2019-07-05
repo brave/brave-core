@@ -2624,42 +2624,6 @@ void saveToJson(JsonWriter* writer, const ledger::VisitData& visitData) {
   writer->EndObject();
 }
 
-void saveToJson(JsonWriter* writer,
-    const ledger::ActivityInfoFilter& info) {
-  writer->StartObject();
-
-  writer->String("id");
-  writer->String(info.id.c_str());
-
-  writer->String("excluded");
-  writer->Int(info.excluded);
-
-  writer->String("percent");
-  writer->Uint(info.percent);
-
-  writer->String("min_duration");
-  writer->Uint64(info.min_duration);
-
-  writer->String("reconcile_stamp");
-  writer->Uint64(info.reconcile_stamp);
-
-  writer->String("order_by");
-  writer->StartObject();
-  for (auto & i : info.order_by) {
-    writer->String(i.first.c_str());
-    writer->Bool(i.second);
-  }
-  writer->EndObject();
-
-  writer->String("non_verified");
-  writer->Bool(info.non_verified);
-
-  writer->String("min_visits");
-  writer->Uint(info.min_visits);
-
-  writer->EndObject();
-}
-
 void saveToJson(JsonWriter* writer, const ledger::ReconcileInfo& data) {
   writer->StartObject();
 
