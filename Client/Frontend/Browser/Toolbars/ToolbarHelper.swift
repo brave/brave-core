@@ -40,22 +40,11 @@ class ToolbarHelper: NSObject {
         toolbar.menuButton.accessibilityLabel = Strings.TabToolbarMenuButtonAccessibilityLabel
         toolbar.menuButton.addTarget(self, action: #selector(didClickMenu), for: UIControl.Event.touchUpInside)
         
-        if let forwardButton = toolbar.forwardButton {
-            forwardButton.setImage(#imageLiteral(resourceName: "nav-forward").template, for: .normal)
-            forwardButton.accessibilityLabel = Strings.TabToolbarForwardButtonAccessibilityLabel
-            let longPressGestureForwardButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressForward))
-            forwardButton.addGestureRecognizer(longPressGestureForwardButton)
-            forwardButton.addTarget(self, action: #selector(didClickForward), for: .touchUpInside)
-        }
-        
-        toolbar.reloadButton.accessibilityIdentifier = "TabToolbar.stopReloadButton"
-        toolbar.reloadButton.accessibilityLabel = Strings.TabToolbarReloadButtonAccessibilityLabel
-        toolbar.reloadButton.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
-        toolbar.reloadButton.tintColor = UIColor.Photon.Grey30
-        
-        let longPressGestureStopReloadButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressStopReload(_:)))
-        toolbar.reloadButton.addGestureRecognizer(longPressGestureStopReloadButton)
-        toolbar.reloadButton.addTarget(self, action: #selector(didClickStopReload), for: .touchUpInside)
+        toolbar.forwardButton.setImage(#imageLiteral(resourceName: "nav-forward").template, for: .normal)
+        toolbar.forwardButton.accessibilityLabel = Strings.TabToolbarForwardButtonAccessibilityLabel
+        let longPressGestureForwardButton = UILongPressGestureRecognizer(target: self, action: #selector(didLongPressForward))
+        toolbar.forwardButton.addGestureRecognizer(longPressGestureForwardButton)
+        toolbar.forwardButton.addTarget(self, action: #selector(didClickForward), for: .touchUpInside)
         
         setTheme(theme: .regular, forButtons: toolbar.actionButtons)
     }
@@ -83,16 +72,12 @@ class ToolbarHelper: NSObject {
     }
     
     func didClickForward() {
-        guard let forwardButton = toolbar.forwardButton else { return }
-        
-        toolbar.tabToolbarDelegate?.tabToolbarDidPressForward(toolbar, button: forwardButton)
+        toolbar.tabToolbarDelegate?.tabToolbarDidPressForward(toolbar, button: toolbar.forwardButton)
     }
     
     func didLongPressForward(_ recognizer: UILongPressGestureRecognizer) {
-        guard let forwardButton = toolbar.forwardButton else { return }
-        
         if recognizer.state == .began {
-            toolbar.tabToolbarDelegate?.tabToolbarDidLongPressForward(toolbar, button: forwardButton)
+            toolbar.tabToolbarDelegate?.tabToolbarDidLongPressForward(toolbar, button: toolbar.forwardButton)
         }
     }
     
@@ -107,20 +92,6 @@ class ToolbarHelper: NSObject {
     func didLongPressAddTab(_ longPress: UILongPressGestureRecognizer) {
         if longPress.state == .began {
             toolbar.tabToolbarDelegate?.tabToolbarDidLongPressAddTab(toolbar, button: toolbar.shareButton)
-        }
-    }
-    
-    func didClickStopReload() {
-        if toolbar.loading {
-            toolbar.tabToolbarDelegate?.tabToolbarDidPressStop(toolbar, button: toolbar.reloadButton)
-        } else {
-            toolbar.tabToolbarDelegate?.tabToolbarDidPressReload(toolbar, button: toolbar.reloadButton)
-        }
-    }
-    
-    func didLongPressStopReload(_ longPress: UILongPressGestureRecognizer) {
-        if longPress.state == .began && !toolbar.loading {
-            toolbar.tabToolbarDelegate?.tabToolbarDidLongPressReload(toolbar, button: toolbar.reloadButton)
         }
     }
 }

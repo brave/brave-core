@@ -241,7 +241,7 @@ class BrowserViewController: UIViewController {
             updateURLBar()
             navigationToolbar.updateBackStatus(webView.canGoBack)
             navigationToolbar.updateForwardStatus(webView.canGoForward)
-            navigationToolbar.loading = tab.loading
+            topToolbar.locationView.loading = tab.loading
         }
         
         updateTabsBarVisibility()
@@ -904,7 +904,7 @@ class BrowserViewController: UIViewController {
             guard let loading = change?[.newKey] as? Bool else { break }
             
             if tab === tabManager.selectedTab {
-                navigationToolbar.loading = tab.loading
+                topToolbar.locationView.loading = tab.loading
                 if !(webView.url?.isLocalUtility ?? false) {
                     if loading && topToolbar.currentProgress() < TopToolbarView.psuedoProgressValue {
                         topToolbar.updateProgressBar(TopToolbarView.psuedoProgressValue)
@@ -1437,6 +1437,34 @@ extension BrowserViewController: TopToolbarDelegate {
         navigationController?.pushViewController(tabTrayController, animated: true)
         self.tabTrayController = tabTrayController
     }
+    
+    func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
+        tabManager.selectedTab?.reload()
+    }
+    
+    func topToolbarDidPressStop(_ topToolbar: TopToolbarView) {
+        tabManager.selectedTab?.stop()
+    }
+    
+    func topToolbarDidLongPressReloadButton(_ topToolbar: TopToolbarView, from button: UIButton) {
+        guard let tab = tabManager.selectedTab else { return }
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
+        
+        let toggleActionTitle = tab.desktopSite ? Strings.AppMenuViewMobileSiteTitleString : Strings.AppMenuViewDesktopSiteTitleString
+        alert.addAction(UIAlertAction(title: toggleActionTitle, style: .default, handler: { _ in
+            tab.toggleDesktopSite()
+        }))
+        
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            alert.popoverPresentationController?.sourceView = self.view
+            alert.popoverPresentationController?.sourceRect = self.view.convert(button.frame, from: button.superview)
+            alert.popoverPresentationController?.permittedArrowDirections = [.up]
+        }
+        present(alert, animated: true)
+    }
 
     func topToolbarDidPressTabs(_ topToolbar: TopToolbarView) {
         showTabTray()
@@ -1767,34 +1795,6 @@ extension BrowserViewController: ToolbarDelegate {
             tabManager.selectTab(tabs[newTabIndex])
         }
     }
-    
-    func tabToolbarDidPressReload(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-        tabManager.selectedTab?.reload()
-    }
-    
-    func tabToolbarDidPressStop(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-        tabManager.selectedTab?.stop()
-    }
-    
-    func tabToolbarDidLongPressReload(_ tabToolbar: ToolbarProtocol, button: UIButton) {
-        guard let tab = tabManager.selectedTab else { return }
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        alert.addAction(UIAlertAction(title: Strings.CancelButtonTitle, style: .cancel, handler: nil))
-        
-        let toggleActionTitle = tab.desktopSite ? Strings.AppMenuViewMobileSiteTitleString : Strings.AppMenuViewDesktopSiteTitleString
-        alert.addAction(UIAlertAction(title: toggleActionTitle, style: .default, handler: { _ in
-            tab.toggleDesktopSite()
-        }))
-        
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            alert.popoverPresentationController?.sourceView = self.view
-            alert.popoverPresentationController?.sourceRect = self.view.convert(button.frame, from: button.superview)
-            alert.popoverPresentationController?.permittedArrowDirections = [.up]
-        }
-        present(alert, animated: true)
-    }
 }
 
 extension BrowserViewController: TabsBarViewControllerDelegate {
@@ -2019,7 +2019,7 @@ extension BrowserViewController: TabManagerDelegate {
         updateFindInPageVisibility(visible: false, tab: previous)
         updateTabsBarVisibility()
 
-        navigationToolbar.loading = selected?.loading ?? false
+        topToolbar.locationView.loading = selected?.loading ?? false
         navigationToolbar.updateBackStatus(selected?.canGoBack ?? false)
         navigationToolbar.updateForwardStatus(selected?.canGoForward ?? false)
         
