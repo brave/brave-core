@@ -11,7 +11,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     weak var tabToolbarDelegate: ToolbarDelegate?
 
     let tabsButton = TabsButton()
-    let reloadButton = ToolbarButton()
+    let forwardButton = ToolbarButton()
     let backButton = ToolbarButton()
     let shareButton = ToolbarButton()
     let addTabButton = ToolbarButton()
@@ -20,21 +20,9 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 
     var helper: ToolbarHelper?
     private let contentView = UIStackView()
-    
-    var loading: Bool = false {
-        didSet {
-            if loading {
-                reloadButton.setImage(#imageLiteral(resourceName: "nav-stop").template, for: .normal)
-                reloadButton.accessibilityLabel = Strings.TabToolbarStopButtonAccessibilityLabel
-            } else {
-                reloadButton.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
-                reloadButton.accessibilityLabel = Strings.TabToolbarReloadButtonAccessibilityLabel
-            }
-        }
-    }
 
     fileprivate override init(frame: CGRect) {
-        actionButtons = [backButton, reloadButton, addTabButton, tabsButton, menuButton]
+        actionButtons = [backButton, forwardButton, addTabButton, tabsButton, menuButton]
         super.init(frame: frame)
         setupAccessibility()
 
@@ -57,7 +45,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
 
     private func setupAccessibility() {
         backButton.accessibilityIdentifier = "TabToolbar.backButton"
-        reloadButton.accessibilityIdentifier = "TabToolbar.reloadButton"
+        forwardButton.accessibilityIdentifier = "TabToolbar.forwardButton"
         tabsButton.accessibilityIdentifier = "TabToolbar.tabsButton"
         shareButton.accessibilityIdentifier = "TabToolbar.shareButton"
         addTabButton.accessibilityIdentifier = "TabToolbar.addTabButton"

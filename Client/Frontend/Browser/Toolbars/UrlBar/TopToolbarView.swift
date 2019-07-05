@@ -38,6 +38,10 @@ protocol TopToolbarDelegate: class {
     func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView)
     func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView)
     func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView)
+    
+    func topToolbarDidLongPressReloadButton(_ urlBar: TopToolbarView, from button: UIButton)
+    func topToolbarDidPressStop(_ urlBar: TopToolbarView)
+    func topToolbarDidPressReload(_ urlBar: TopToolbarView)
 }
 
 class TopToolbarView: UIView, ToolbarProtocol {
@@ -47,18 +51,6 @@ class TopToolbarView: UIView, ToolbarProtocol {
     // MARK: - ToolbarProtocol properties
     
     weak var tabToolbarDelegate: ToolbarDelegate?
-    
-    var loading: Bool = false {
-        didSet {
-            if loading {
-                reloadButton.setImage(#imageLiteral(resourceName: "nav-stop").template, for: .normal)
-                reloadButton.accessibilityLabel = Strings.TabToolbarStopButtonAccessibilityLabel
-            } else {
-                reloadButton.setImage(#imageLiteral(resourceName: "nav-refresh").template, for: .normal)
-                reloadButton.accessibilityLabel = Strings.TabToolbarReloadButtonAccessibilityLabel
-            }
-        }
-    }
     
     // MARK: - State
     
@@ -146,8 +138,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }()
 
     var bookmarkButton = ToolbarButton()
-    var forwardButton: ToolbarButton? = ToolbarButton()
-    var reloadButton = ToolbarButton()
+    var forwardButton = ToolbarButton()
     var shareButton = ToolbarButton()
     var addTabButton = ToolbarButton()
     lazy var menuButton = ToolbarButton().then {
@@ -165,7 +156,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }()
 
     lazy var actionButtons: [Themeable & UIButton] =
-        [self.shareButton, self.reloadButton, self.tabsButton,
+        [self.shareButton, self.tabsButton,
          self.forwardButton, self.backButton, self.menuButton].compactMap { $0 }
     
     /// Update the shields icon based on whether or not shields are enabled for this site
@@ -232,11 +223,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
         }
         
         navigationStackView.addArrangedSubview(backButton)
-        if let forwardButton = forwardButton {
-            // Forward button should be only visible in iPad/landscape mode.
-            navigationStackView.addArrangedSubview(forwardButton)
-        }
-        navigationStackView.addArrangedSubview(reloadButton)
+        navigationStackView.addArrangedSubview(forwardButton)
         
         [navigationStackView, locationContainer, tabsButton, menuButton, cancelButton].forEach {
             mainStackView.addArrangedSubview($0)
@@ -479,6 +466,19 @@ extension TopToolbarView: TabLocationViewDelegate {
     }
     
     func tabLocationViewDidLongPressLocation(_ tabLocationView: TabLocationView) {
+        delegate?.topToolbarDidLongPressLocation(self)
+    }
+    
+    func tabLocationViewDidTapReload(_ tabLocationView: TabLocationView) {
+        delegate?.topToolbarDidPressReload(self)
+    }
+    
+    func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView) {
+        delegate?.topToolbarDidPressStop(self)
+    }
+    
+    func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton) {
+        delegate?.topToolbarDidLongPressReloadButton(self, from: button)
         delegate?.topToolbarDidLongPressLocation(self)
     }
 
