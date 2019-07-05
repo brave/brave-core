@@ -57,7 +57,7 @@ const char* BraveWalletNavigationThrottle::GetNameForLogging() {
   return "BraveWalletNavigationThrottle";
 }
 
-void BraveWalletNavigationThrottle::OnExtensionLoaded(
+void BraveWalletNavigationThrottle::OnExtensionReady(
     content::BrowserContext* browser_context,
     const Extension* extension) {
   if (resume_pending &&

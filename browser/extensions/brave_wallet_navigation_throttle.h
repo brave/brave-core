@@ -31,8 +31,8 @@ class BraveWalletNavigationThrottle : public content::NavigationThrottle,
 
  private:
   // ExtensionRegistryObserver:
-  void OnExtensionLoaded(content::BrowserContext* browser_context,
-                         const extensions::Extension* extension) override;
+  void OnExtensionReady(content::BrowserContext* browser_context,
+                        const extensions::Extension* extension) override;
   ScopedObserver<ExtensionRegistry, ExtensionRegistryObserver>
     extension_registry_observer_;
   bool resume_pending;

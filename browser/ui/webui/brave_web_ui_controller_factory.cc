@@ -10,9 +10,11 @@
 #include "base/memory/ptr_util.h"
 #include "brave/browser/ui/webui/brave_adblock_ui.h"
 #include "brave/browser/ui/webui/brave_new_tab_ui.h"
+#include "brave/browser/ui/webui/brave_wallet_ui.h"
 #include "brave/browser/ui/webui/sync/sync_ui.h"
 #include "brave/common/webui_url_constants.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
 #include "chrome/common/url_constants.h"
 #include "url/gurl.h"
@@ -51,6 +53,10 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
     return new SyncUI(web_ui, url.host());
   } else if (host == kAdblockHost) {
     return new BraveAdblockUI(web_ui, url.host());
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  } else if (host == kWalletHost) {
+    return new BraveWalletUI(web_ui, url.host());
+#endif
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
   } else if (host == kRewardsHost) {
     return new BraveRewardsUI(web_ui, url.host());
@@ -79,6 +85,9 @@ WebUIController* NewWebUI<BasicUI>(WebUI* web_ui, const GURL& url) {
 WebUIFactoryFunction GetWebUIFactoryFunction(WebUI* web_ui,
                                              const GURL& url) {
   if (url.host_piece() == kAdblockHost ||
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+      url.host_piece() == kWalletHost ||
+#endif
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
       url.host_piece() == kRewardsHost ||
       url.host_piece() == kRewardsInternalsHost ||
