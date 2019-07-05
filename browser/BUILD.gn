@@ -155,8 +155,8 @@ source_set("browser_process") {
 
   if (enable_tor) {
     deps += [
-      "//brave/utility/tor",
-      "tor", 
+      "//brave/components/services/tor/public/cpp:manifest",
+      "tor",
     ]
   }
 
@@ -166,14 +166,14 @@ source_set("browser_process") {
 
   if (brave_ads_enabled) {
     deps += [
-      "//brave/components/services/bat_ads:lib",
+      "//brave/components/services/bat_ads/public/cpp:manifest",
       "//components/dom_distiller/core",
     ]
   }
 
   if (brave_rewards_enabled) {
     deps += [
-      "//brave/components/services/bat_ledger:lib",
+      "//brave/components/services/bat_ledger/public/cpp:manifest",
     ]
   }
 
