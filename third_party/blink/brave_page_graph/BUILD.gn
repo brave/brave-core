@@ -124,8 +124,6 @@ source_set("brave_page_graph") {
       "types.h",
       "utilities/dispatchers.cc",
       "utilities/dispatchers.h",
-      "utilities/scripts.cc",
-      "utilities/scripts.h",
       "utilities/urls.cc",
       "utilities/urls.h",
     ]

@@ -1,5 +1,5 @@
 diff --git a/src/api.cc b/src/api.cc
-index a52fadc2eef6bcecf73c81463c3665f6313fea72..a06d1bec5fcc54b865dc8083e3e65c8c7c52320b 100644
+index a52fadc2eef6bcecf73c81463c3665f6313fea72..1eaff80f646c65e5b0bdd04607c42b7cb1f27491 100644
 --- a/src/api.cc
 +++ b/src/api.cc
 @@ -125,6 +125,8 @@
@@ -11,19 +11,46 @@ index a52fadc2eef6bcecf73c81463c3665f6313fea72..a06d1bec5fcc54b865dc8083e3e65c8c
  namespace v8 {
  
  /*
-@@ -7973,6 +7975,18 @@ void Isolate::CheckMemoryPressure() {
+@@ -7973,6 +7975,45 @@ void Isolate::CheckMemoryPressure() {
    heap->CheckMemoryPressure();
  }
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+void Isolate::RegisterScriptStartFunc(const ScriptStartFunc func) {
++int Isolate::GetExecutingScriptId() {
 +  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
-+  internal_isolate->SetRegisterScriptStartFunc(func);
-+}
 +
-+void Isolate::RegisterScriptEndFunc(const ScriptStartFunc func) {
-+  i::Isolate* internal_isolate = reinterpret_cast<i::Isolate*>(this);
-+  internal_isolate->SetRegisterScriptEndFunc(func);
++  i::StackTraceFrameIterator it(internal_isolate);
++  while (!it.done()) {
++    if (!it.is_javascript() && !it.is_wasm()) {
++      it.Advance();
++      continue;
++    }
++
++    i::JavaScriptFrame* frame = it.javascript_frame();
++    i::Handle<i::JSFunction> function(frame->function(), internal_isolate);
++    if (function->context()->IsEvalContext()) {
++      it.Advance();
++      continue;
++    }
++
++    i::Object maybe_script = function->shared()->script();
++    if (!maybe_script->IsScript()) {
++      it.Advance();
++      continue;
++    }
++
++    i::Script script = i::Script::cast(maybe_script);
++    if (script.has_eval_from_shared()) {
++      it.Advance();
++      continue;
++    }
++
++    if (script->id() > 0) {
++      return script->id();
++    }
++  }
++
++  return 0;
 +}
 +#endif
 +

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/bindings/core/v8/script_controller.cc b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
-index 5987273c80d97900860b893d561d8466098d23c3..81ece7e959cfe893e30c7da0db0fa1474b78a307 100644
+index 5987273c80d97900860b893d561d8466098d23c3..285a4548faf4a74054ed4a69cda72eb9ae3fefef 100644
 --- a/third_party/blink/renderer/bindings/core/v8/script_controller.cc
 +++ b/third_party/blink/renderer/bindings/core/v8/script_controller.cc
 @@ -71,6 +71,13 @@
@@ -16,7 +16,7 @@ index 5987273c80d97900860b893d561d8466098d23c3..81ece7e959cfe893e30c7da0db0fa147
  namespace blink {
  
  void ScriptController::Trace(blink::Visitor* visitor) {
-@@ -130,9 +137,38 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
+@@ -130,6 +137,21 @@ v8::Local<v8::Value> ScriptController::ExecuteScriptAndReturnValue(
               .ToLocal(&script))
        return result;
  
@@ -30,7 +30,6 @@ index 5987273c80d97900860b893d561d8466098d23c3..81ece7e959cfe893e30c7da0db0fa147
 +          page_graph->RegisterScriptCompilation(
 +            source, script_id,
 +            ::brave_page_graph::ScriptType::kScriptTypeUnknown);
-+          page_graph->RegisterScriptExecStart(script_id);
 +        }
 +      }
 +    }
@@ -39,19 +38,3 @@ index 5987273c80d97900860b893d561d8466098d23c3..81ece7e959cfe893e30c7da0db0fa147
      v8::MaybeLocal<v8::Value> maybe_result;
      maybe_result = V8ScriptRunner::RunCompiledScript(GetIsolate(), script,
                                                       GetFrame()->GetDocument());
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+    {
-+      if (source.SourceLocationType() != ScriptSourceLocationType::kInspector) {
-+        ::brave_page_graph::PageGraph* page_graph = GetFrame()->GetDocument()
-+          ->GetPageGraph();
-+        if (page_graph != nullptr) {
-+          const int script_id = script->GetUnboundScript()->GetId();
-+          page_graph->RegisterScriptExecStop(script_id);
-+        }
-+      }
-+    }
-+#endif
-+
-     probe::ProduceCompilationCache(frame_, source, script);
-     V8CodeCache::ProduceCache(GetIsolate(), script, source,
-                               produce_cache_options);

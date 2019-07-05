@@ -4,22 +4,29 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/third_party/blink/brave_page_graph/page_graph.h"
-#include <signal.h>
+
 #include <climits>
 #include <iostream>
 #include <fstream>
 #include <map>
 #include <memory>
+#include <signal.h>
 #include <sstream>
 #include <string>
 
+#include "gin/public/context_holder.h"
+#include "gin/public/gin_embedders.h"
+
 #include "third_party/blink/public/platform/web_string.h"
 #include "third_party/blink/renderer/bindings/core/v8/script_source_code.h"
+#include "third_party/blink/renderer/bindings/core/v8/v8_binding_for_core.h"
 #include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/dom_node_ids.h"
+#include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/platform/loader/fetch/resource.h"
 #include "third_party/blink/renderer/platform/weborigin/kurl.h"
 #include "third_party/blink/renderer/platform/wtf/text/wtf_string.h"
+
 #include "v8/include/v8.h"
 
 #include "brave/third_party/blink/brave_page_graph/logging.h"
@@ -64,14 +71,16 @@
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/types.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/dispatchers.h"
-#include "brave/third_party/blink/brave_page_graph/utilities/scripts.h"
 #include "brave/third_party/blink/brave_page_graph/utilities/urls.h"
 
 using ::blink::Document;
+using ::blink::ExecutionContext;
 using ::blink::DOMNodeId;
 using ::blink::KURL;
-using ::blink::ScriptSourceCode;
 using ::blink::ResourceType;
+using ::blink::ScriptSourceCode;
+using ::blink::To;
+using ::blink::ToExecutionContext;
 using ::WTF::String;
 using ::std::endl;
 using ::std::make_unique;
@@ -82,6 +91,8 @@ using ::std::string;
 using ::std::stringstream;
 using ::std::to_string;
 using ::std::unique_ptr;
+using ::v8::Context;
+using ::v8::Local;
 using ::v8::Isolate;
 
 namespace brave_page_graph {
@@ -96,6 +107,34 @@ void write_to_disk(int signal) {
   std::cout << output;
   outfile.write(output.c_str(), output.size());
   outfile.close();
+}
+
+static constexpr int kV8ContextPerContextDataIndex = static_cast<int>(
+    gin::kPerContextDataStartIndex + gin::kEmbedderBlink);
+
+/* static */
+PageGraph* PageGraph::GetFromIsolate(Isolate& isolate) {
+  Local<Context> context = isolate.GetCurrentContext();
+  if (context.IsEmpty() == true) {
+    return nullptr;
+  }
+
+  if (kV8ContextPerContextDataIndex >=
+      context->GetNumberOfEmbedderDataFields()) {
+    return nullptr;  // This is not a blink::ExecutionContext.
+  }
+
+  ExecutionContext* exec_context = ToExecutionContext(context);
+  if (exec_context == nullptr) {
+    return nullptr;
+  }
+
+  if (!exec_context->IsDocument()) {
+    return nullptr;
+  }
+  Document* document = To<Document>(exec_context);
+
+  return document->GetPageGraph();
 }
 
 PageGraph::PageGraph(Document& document) :
@@ -120,12 +159,6 @@ PageGraph::PageGraph(Document& document) :
   AddNode(html_root_node_);
   element_nodes_.emplace(root_id, html_root_node_);
   Log("Root document ID: " + to_string(root_id));
-
-  Isolate* isolate = document.GetIsolate();
-  if (isolate != nullptr) {
-    isolate->RegisterScriptStartFunc(&RegisterScriptStart);
-    isolate->RegisterScriptEndFunc(&RegisterScriptEnd);
-  }
 
   yuck = this;
   signal(30, &write_to_disk);
@@ -619,35 +652,6 @@ void PageGraph::RegisterScriptCompilationFromAttr(
   code_node->AddInEdge(execute_edge);
 }
 
-void PageGraph::RegisterScriptExecStart(const ScriptId script_id) {
-  static ScriptId prev_script_id = 0;
-  // Just keep the logs a little quieter...
-  if (script_id != prev_script_id) {
-    Log("RegisterScriptExecStart) script id: " + to_string(script_id));
-    prev_script_id = script_id;
-  }
-
-  LOG_ASSERT(script_nodes_.count(script_id) == 1);
-  if (script_nodes_.count(script_id) == 1) {
-    PushActiveScript(script_id);
-    return;
-  }
-}
-
-void PageGraph::RegisterScriptExecStop(const ScriptId script_id) {
-  static ScriptId prev_script_id = 0;
-  if (script_id != prev_script_id) {
-    Log("RegisterScriptExecStop) script id: " + to_string(script_id));
-    prev_script_id = script_id;
-  }
-  LOG_ASSERT(script_nodes_.count(script_id) == 1);
-  ScriptId popped_script_id = PopActiveScript();
-  if (popped_script_id != script_id) {
-    Log("* Expected " + to_string(script_id) + " but got " + to_string(popped_script_id));
-  }
-  LOG_ASSERT(popped_script_id == script_id);
-}
-
 // Functions for handling storage read, write, and deletion
 void PageGraph::RegisterStorageRead(const String& key, const String& value,
     const StorageLocation location) {
@@ -796,7 +800,7 @@ GraphMLXML PageGraph::ToGraphML() const {
 
 NodeActor* PageGraph::GetCurrentActingNode() const {
   static ScriptId last_reported_script_id = 0;
-  const ScriptId current_script_id = PeekActiveScript();
+  const ScriptId current_script_id = document_.GetIsolate()->GetExecutingScriptId();
   const bool should_log = last_reported_script_id != current_script_id;
   last_reported_script_id = current_script_id;
 
@@ -901,24 +905,6 @@ NodeExtension* PageGraph::GetExtensionNode() {
     AddNode(extension_node_);
   }
   return extension_node_;
-}
-
-void PageGraph::PushActiveScript(const ScriptId script_id) {
-  active_script_stack_.push_back(script_id);
-}
-
-ScriptId PageGraph::PopActiveScript() {
-  LOG_ASSERT(active_script_stack_.size() > 0);
-  ScriptId top_script_id = active_script_stack_.back();
-  active_script_stack_.pop_back();
-  return top_script_id;
-}
-
-ScriptId PageGraph::PeekActiveScript() const {
-  if (active_script_stack_.empty() == true) {
-    return 0;
-  }
-  return active_script_stack_.back();
 }
 
 void PageGraph::Log(const string& str) const {

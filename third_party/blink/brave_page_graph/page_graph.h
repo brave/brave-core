@@ -9,12 +9,17 @@
 #include <map>
 #include <memory>
 #include <string>
+
 #include "brave/third_party/blink/brave_page_graph/types.h"
 #include "brave/third_party/blink/brave_page_graph/requests/request_tracker.h"
 #include "brave/third_party/blink/brave_page_graph/scripts/script_tracker.h"
 
 namespace blink {
 class Document;
+}
+
+namespace v8 {
+class Isolate;
 }
 
 namespace brave_page_graph {
@@ -49,6 +54,8 @@ friend GraphItem;
 // Needed so that edges between HTML nodes can find their siblings and parents.
 friend EdgeNodeInsert;
  public:
+  static PageGraph* GetFromIsolate(v8::Isolate& isolate);
+
   PageGraph(blink::Document& document);
   ~PageGraph();
 
@@ -119,16 +126,7 @@ friend EdgeNodeInsert;
     const WTF::String& attr_name, const WTF::String& attr_value,
     const ScriptId script_id);
 
-  void RegisterScriptExecStart(const ScriptId script_id);
-  // The Script ID is only used here as a sanity check to make sure we're
-  // correctly tracking script execution.
-  void RegisterScriptExecStop(const ScriptId script_id);
-
   GraphMLXML ToGraphML() const;
-
-  void PushActiveScript(const ScriptId script_id);
-  ScriptId PopActiveScript();
-  ScriptId PeekActiveScript() const;
 
   void Log(const std::string& str) const;
 
@@ -187,10 +185,6 @@ friend EdgeNodeInsert;
   // This map does not own the references.
   std::map<ScriptId, NodeScript* const> script_nodes_;
   std::map<ScriptId, NodeScriptRemote* const> remote_script_nodes_;
-
-  // Keeps track of which scripts are running, and conceptually mirrors the
-  // JS stack.
-  ScriptIdList active_script_stack_;
 
   // Data structure used for mapping HTML script elements (and other
   // sources of script in a document) to v8 script units.

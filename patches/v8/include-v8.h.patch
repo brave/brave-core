@@ -1,36 +1,22 @@
 diff --git a/include/v8.h b/include/v8.h
-index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..b8bcc4f43b0f4792cfde81964900d9c7afa86545 100644
+index b4b920555b2cdde1aacb8d3cd2548c1d9145effa..ac7bf1c7e104d9580292c7d05fcc87383258a784 100644
 --- a/include/v8.h
 +++ b/include/v8.h
-@@ -26,6 +26,9 @@
+@@ -26,6 +26,8 @@
  #include "v8-version.h"   // NOLINT(build/include)
  #include "v8config.h"     // NOLINT(build/include)
  
 +#include "brave/third_party/blink/brave_page_graph/buildflags/buildflags.h"
 +
-+
  // We reserve the V8_* prefix for macros defined in V8 public API and
  // assume there are no name conflicts with the embedder's code.
  
-@@ -34,6 +37,11 @@
-  */
- namespace v8 {
- 
-+#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+typedef void (*ScriptStartFunc)(Isolate& isolate, const int script_id);
-+typedef void (*ScriptEndFunc)(Isolate& isolate, const int script_id);
-+#endif
-+
- class AccessorSignature;
- class Array;
- class ArrayBuffer;
-@@ -8599,6 +8607,11 @@ class V8_EXPORT Isolate {
+@@ -8599,6 +8601,10 @@ class V8_EXPORT Isolate {
    void operator delete(void*, size_t) = delete;
    void operator delete[](void*, size_t) = delete;
  
 +#if BUILDFLAG(BRAVE_PAGE_GRAPH_ENABLED)
-+  void RegisterScriptStartFunc(const ScriptStartFunc func);
-+  void RegisterScriptEndFunc(const ScriptStartFunc func);
++  int GetExecutingScriptId();
 +#endif
 +
   private:
