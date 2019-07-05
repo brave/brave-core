@@ -54,13 +54,23 @@ GURL TranslateUrl(const GURL& url) {
       }));
 }
 
-void LoadOrLaunchRewardsURL(
+void LoadRewardsURL(
     const GURL& url,
     const content::ResourceRequestInfo::WebContentsGetter& web_contents_getter,
     ui::PageTransition page_transition,
     bool has_user_gesture) {
   content::WebContents* web_contents = web_contents_getter.Run();
   if (!web_contents) {
+    return;
+  }
+
+  const auto ref_url = web_contents->GetURL();
+  if (!ref_url.is_valid()) {
+    return;
+  }
+
+  // we should only allow rewards schema to be used from uphold.com domains
+  if (!web_contents->GetURL().DomainIs("uphold.com")) {
     return;
   }
 
@@ -82,7 +92,7 @@ bool HandleRewardsProtocol(
     bool has_user_gesture) {
   if (url.SchemeIs(kRewardsScheme)) {
     base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::UI},
-        base::BindOnce(&LoadOrLaunchRewardsURL, url, web_contents_getter,
+        base::BindOnce(&LoadRewardsURL, url, web_contents_getter,
         page_transition, has_user_gesture));
     return true;
   }
