@@ -10,7 +10,7 @@
 #include "base/memory/singleton.h"
 #include "base/observer_list.h"
 #include "brave/common/tor/tor_common.h"
-#include "brave/common/tor/tor_launcher.mojom.h"
+#include "brave/components/services/tor/public/interfaces/tor.mojom.h"
 
 namespace tor {
 class TorProfileServiceImpl;

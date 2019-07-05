@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/utility/tor/tor_launcher_service.h"
+#include "brave/components/services/tor/tor_launcher_service.h"
 
 #include <utility>
 
 #include "build/build_config.h"
-#include "brave/utility/tor/tor_launcher_impl.h"
+#include "brave/components/services/tor/tor_launcher_impl.h"
 #include "mojo/public/cpp/bindings/strong_binding.h"
 
 namespace tor {

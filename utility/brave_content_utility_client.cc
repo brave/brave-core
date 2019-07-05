@@ -25,8 +25,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/common/tor/tor_launcher.mojom.h"
-#include "brave/utility/tor/tor_launcher_service.h"
+#include "brave/components/services/tor/public/interfaces/tor.mojom.h"
+#include "brave/components/services/tor/tor_launcher_service.h"
 #endif
 
 BraveContentUtilityClient::BraveContentUtilityClient()
@@ -36,16 +36,12 @@ BraveContentUtilityClient::~BraveContentUtilityClient() = default;
 
 namespace {
 
-#if BUILDFLAG(ENABLE_TOR) || \
-    BUILDFLAG(BRAVE_ADS_ENABLED) || \
-    BUILDFLAG(BRAVE_REWARDS_ENABLED)
 void RunServiceAsyncThenTerminateProcess(
     std::unique_ptr<service_manager::Service> service) {
   service_manager::Service::RunAsyncUntilTermination(
       std::move(service),
       base::BindOnce([] { content::UtilityThread::Get()->ReleaseProcess(); }));
 }
-#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 std::unique_ptr<service_manager::Service> CreateTorLauncherService(
@@ -78,7 +74,7 @@ bool BraveContentUtilityClient::HandleServiceRequest(
     service_manager::mojom::ServiceRequest request) {
 
 #if BUILDFLAG(ENABLE_TOR)
-  if (service_name == tor::mojom::kTorLauncherServiceName) {
+  if (service_name == tor::mojom::kServiceName) {
     RunServiceAsyncThenTerminateProcess(
         CreateTorLauncherService(std::move(request)));
     return true;

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_UTILITY_TOR_TOR_LAUNCHER_SERVICE_H_
-#define BRAVE_UTILITY_TOR_TOR_LAUNCHER_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_SERVICES_TOR_TOR_LAUNCHER_SERVICE_H_
+#define BRAVE_COMPONENTS_SERVICES_TOR_TOR_LAUNCHER_SERVICE_H_
 
 #include <memory>
 #include <string>
@@ -38,4 +38,4 @@ class TorLauncherService : public service_manager::Service {
 
 }  // namespace tor
 
-#endif  // BRAVE_UTILITY_TOR_TOR_LAUNCHER_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_SERVICES_TOR_TOR_LAUNCHER_SERVICE_H_
