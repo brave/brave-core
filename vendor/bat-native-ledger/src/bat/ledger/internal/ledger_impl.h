@@ -490,9 +490,6 @@ class LedgerImpl : public ledger::Ledger,
   void FetchBalance(ledger::FetchBalanceCallback callback) override;
 
  private:
-  void AddRecurringPayment(const std::string& publisher_id,
-                           const double& value) override;
-
   void OnLoad(ledger::VisitDataPtr visit_data,
               const uint64_t& current_time) override;
 

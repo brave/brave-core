@@ -102,11 +102,6 @@ bool LedgerImpl::CreateWallet() {
   return true;
 }
 
-void LedgerImpl::AddRecurringPayment(const std::string& publisher_id,
-                                     const double& value) {
-  bat_publishers_->AddRecurringPayment(publisher_id, value);
-}
-
 braveledger_bat_helper::CURRENT_RECONCILE LedgerImpl::GetReconcileById(
     const std::string& viewingId) {
   return bat_state_->GetReconcileById(viewingId);

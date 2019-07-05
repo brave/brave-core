@@ -226,7 +226,6 @@ struct PUBLISHER_STATE_ST {
   uint64_t pubs_load_timestamp_ = 0ull;
   bool allow_videos_ = true;
   std::map<std::string, REPORT_BALANCE_ST> monthly_balances_;
-  std::map<std::string, double> recurring_donation_;
   bool migrate_score_2 = false;
   std::vector<std::string> processed_pending_publishers;
 };
