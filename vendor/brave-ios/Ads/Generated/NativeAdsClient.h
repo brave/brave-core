@@ -15,7 +15,7 @@ public:
   ~NativeAdsClient() override;
 
 private:
-  __strong id<NativeAdsClientBridge> bridge_;
+  __unsafe_unretained id<NativeAdsClientBridge> bridge_;
 
   void ConfirmAd(std::unique_ptr<ads::NotificationInfo> info) override;
   void EventLog(const std::string & json) override;
