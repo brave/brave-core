@@ -17,7 +17,8 @@ import {
   ModalBackupRestore,
   ModalActivity,
   ModalDonation,
-  ModalPending
+  ModalPending,
+  ModalRedirect
 } from '../../../src/features/rewards'
 import ModalAddFunds, { Address } from '../../../src/features/rewards/modalAddFunds'
 
@@ -526,6 +527,14 @@ storiesOf('Feature Components/Rewards/Modal', module)
         rows={rows}
         onClose={doNothing}
         onRemoveAll={doNothing}
+      />
+    )
+  })
+  .add('Redirect',() => {
+    return (
+      <ModalRedirect
+        errorText={text('Error text', 'Sorry there was problem processing your request, please try again.')}
+        onClick={doNothing}
       />
     )
   })

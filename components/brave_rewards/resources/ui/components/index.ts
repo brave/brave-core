@@ -27,6 +27,7 @@ import ModalBackupRestore from './modalBackupRestore'
 import ModalContribute from './modalContribute'
 import ModalDonation from './modalDonation'
 import ModalPending from './modalPending'
+import ModalRedirect from './modalRedirect'
 import NextContribution from './nextContribution'
 import PanelWelcome from './panelWelcome'
 import PanelVerify from './panelVerify'
@@ -80,6 +81,7 @@ export {
   ModalContribute,
   ModalDonation,
   ModalPending,
+  ModalRedirect,
   NextContribution,
   PanelWelcome,
   PanelVerify,
