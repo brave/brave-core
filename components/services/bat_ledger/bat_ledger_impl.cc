@@ -633,9 +633,10 @@ void BatLedgerImpl::FetchBalance(
 // static
 void BatLedgerImpl::OnGetExternalWallet(
     CallbackHolder<GetExternalWalletCallback>* holder,
+    ledger::Result result,
     ledger::ExternalWalletPtr wallet) {
   if (holder->is_valid())
-    std::move(holder->get()).Run(std::move(wallet));
+    std::move(holder->get()).Run(result, std::move(wallet));
   delete holder;
 }
 
@@ -648,7 +649,8 @@ void BatLedgerImpl::GetExternalWallet(const std::string& wallet_type,
       wallet_type,
       std::bind(BatLedgerImpl::OnGetExternalWallet,
                 holder,
-                _1));
+                _1,
+                _2));
 }
 
 // static

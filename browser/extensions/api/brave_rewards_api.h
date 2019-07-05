@@ -323,7 +323,9 @@ class BraveRewardsGetExternalWalletFunction :
   ResponseAction Run() override;
 
  private:
-  void OnExternalWalet(std::unique_ptr<::brave_rewards::ExternalWallet> wallet);
+  void OnExternalWalet(
+      int32_t result,
+      std::unique_ptr<::brave_rewards::ExternalWallet> wallet);
 };
 
 class BraveRewardsDisconnectWalletFunction :

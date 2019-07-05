@@ -215,7 +215,8 @@ export const getExternalWallet = (type: Rewards.WalletType) => action(types.GET_
   type
 })
 
-export const onExternalWallet = (wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
+export const onExternalWallet = (result: number, wallet: Rewards.ExternalWallet) => action(types.ON_EXTERNAL_WALLET, {
+  result,
   wallet
 })
 

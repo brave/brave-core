@@ -18,8 +18,9 @@ using std::placeholders::_3;
 
 namespace braveledger_uphold {
 
-UpholdTransfer::UpholdTransfer(bat_ledger::LedgerImpl* ledger) :
-    ledger_(ledger) {
+UpholdTransfer::UpholdTransfer(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
+    ledger_(ledger),
+    uphold_(uphold) {
 }
 
 UpholdTransfer::~UpholdTransfer() {
@@ -78,6 +79,13 @@ void UpholdTransfer::OnCreateTransaction(
     const ledger::ExternalWallet& wallet,
     TransactionCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
+
+  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+    callback(ledger::Result::EXPIRED_TOKEN, false);
+    uphold_->DisconectWallet();
+    return;
+  }
+
   if (response_status_code != net::HTTP_ACCEPTED) {
     // TODO(nejczdovc): add retry logic to all errors in this function
     callback(ledger::Result::LEDGER_ERROR, false);
@@ -138,6 +146,13 @@ void UpholdTransfer::OnCommitTransaction(
     const std::map<std::string, std::string>& headers,
     TransactionCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
+
+  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+    callback(ledger::Result::EXPIRED_TOKEN, true);
+    uphold_->DisconectWallet();
+    return;
+  }
+
   if (response_status_code != net::HTTP_OK) {
     // TODO(nejczdovc): add retry logic to all errors in this function
     callback(ledger::Result::LEDGER_ERROR, true);

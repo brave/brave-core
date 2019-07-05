@@ -80,7 +80,8 @@ declare namespace chrome.braveRewards {
   const onReconcileComplete: {
     addListener: (callback: (result: number, category: number) => void) => void
   }
-  const getExternalWallet: (type: string, callback: (wallet: RewardsExtension.ExternalWallet) => void) => {}
+
+  const getExternalWallet: (type: string, callback: (result: number, wallet: RewardsExtension.ExternalWallet) => void) => {}
 
   const disconnectWallet: (type: string) => {}
 

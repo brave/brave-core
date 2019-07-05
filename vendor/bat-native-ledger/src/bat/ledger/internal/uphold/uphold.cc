@@ -21,8 +21,8 @@ using std::placeholders::_3;
 namespace braveledger_uphold {
 
 Uphold::Uphold(bat_ledger::LedgerImpl* ledger) :
-    transfer_(std::make_unique<UpholdTransfer>(ledger)),
-    card_(std::make_unique<UpholdCard>(ledger)),
+    transfer_(std::make_unique<UpholdTransfer>(ledger, this)),
+    card_(std::make_unique<UpholdCard>(ledger, this)),
     ledger_(ledger) {
 }
 
@@ -130,9 +130,15 @@ void Uphold::OnFetchBalance(
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
-  if (response_status_code == net::HTTP_UNAUTHORIZED ||
-      response_status_code == net::HTTP_NOT_FOUND) {
-    // TODO add token expiration flow
+
+  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+    callback(ledger::Result::EXPIRED_TOKEN, 0.0);
+    DisconectWallet();
+    return;
+  }
+
+  if (response_status_code == net::HTTP_NOT_FOUND) {
+    callback(ledger::Result::LEDGER_ERROR, 0.0);
     return;
   }
 
@@ -200,6 +206,13 @@ void Uphold::OnWalletAuthorization(
     const std::string& response,
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
+
+  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+    callback(ledger::Result::EXPIRED_TOKEN, {});
+    DisconectWallet();
+    return;
+  }
+
   if (response_status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, {});
     return;
@@ -344,7 +357,7 @@ void Uphold::OnGenerateExternalWallet(
     ledger::ExternalWalletPtr wallet,
     ledger::ExternalWalletCallback callback) {
   ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet->Clone());
-  callback(std::move(wallet));
+  callback(result, std::move(wallet));
 }
 
 void Uphold::GenerateExternalWallet(
@@ -390,7 +403,7 @@ void Uphold::GenerateExternalWallet(
   }
 
   ledger_->SaveExternalWallet(ledger::kWalletUphold, wallet->Clone());
-  callback(std::move(wallet));
+  callback(ledger::Result::LEDGER_OK, std::move(wallet));
 }
 
 void Uphold::CreateCard(
@@ -420,6 +433,13 @@ void Uphold::OnGetUser(
     const std::map<std::string, std::string>& headers) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
   auto new_wallet = ledger::ExternalWallet::New(wallet);
+
+  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+    DisconectWallet();
+    callback(ledger::Result::EXPIRED_TOKEN, std::move(new_wallet));
+    return;
+  }
+
   if (response_status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, std::move(new_wallet));
     return;
@@ -493,6 +513,34 @@ void Uphold::GetUser(
       "",
       ledger::URL_METHOD::GET,
       user_callback);
+}
+
+void Uphold::OnDisconectWallet(
+    ledger::Result,
+    ledger::ExternalWalletPtr wallet) {
+  if (!wallet) {
+    return;
+  }
+
+  if (wallet->status == ledger::WalletStatus::VERIFIED) {
+    wallet->status = ledger::WalletStatus::DISCONNECTED_VERIFIED;
+  } else if (wallet->status == ledger::WalletStatus::CONNECTED ||
+            wallet->status == ledger::WalletStatus::NOT_CONNECTED) {
+    wallet->status = ledger::WalletStatus::DISCONNECTED_NOT_VERIFIED;
+  }
+
+  wallet->token = "";
+
+  ledger_->SaveExternalWallet(ledger::kWalletUphold, std::move(wallet));
+}
+
+void Uphold::DisconectWallet() {
+  auto callback = std::bind(&Uphold::OnDisconectWallet,
+                                 this,
+                                 _1,
+                                 _2);
+
+  ledger_->GetExternalWallet(ledger::kWalletUphold, callback);
 }
 
 }  // namespace braveledger_uphold

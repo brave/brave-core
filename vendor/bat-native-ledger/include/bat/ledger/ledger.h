@@ -46,7 +46,9 @@ using OnRefreshPublisherCallback =
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 using FetchBalanceCallback = std::function<void(ledger::Result,
                                                 ledger::BalancePtr)>;
-using ExternalWalletCallback = std::function<void(ledger::ExternalWalletPtr)>;
+using ExternalWalletCallback = std::function<void(
+    ledger::Result,
+    ledger::ExternalWalletPtr)>;
 using ExternalWalletAuthorizationCallback =
     std::function<void(ledger::Result, std::map<std::string, std::string>)>;
 using DisconnectWalletCallback = std::function<void(ledger::Result)>;

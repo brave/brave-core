@@ -20,7 +20,7 @@ namespace braveledger_uphold {
 
 class UpholdTransfer {
  public:
-  explicit UpholdTransfer(bat_ledger::LedgerImpl* ledger);
+  explicit UpholdTransfer(bat_ledger::LedgerImpl* ledger, Uphold* uphold);
 
   ~UpholdTransfer();
 
@@ -53,6 +53,7 @@ class UpholdTransfer {
     TransactionCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  Uphold* uphold_;  // NOT OWNED
 };
 
 }  // namespace braveledger_uphold

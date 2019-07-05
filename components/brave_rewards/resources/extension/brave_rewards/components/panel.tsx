@@ -518,7 +518,13 @@ export class Panel extends React.Component<Props, State> {
   }
 
   getExternalWallet = (open: boolean = false) => {
-    chrome.braveRewards.getExternalWallet('uphold', (wallet: RewardsExtension.ExternalWallet) => {
+    chrome.braveRewards.getExternalWallet('uphold', (result: number, wallet: RewardsExtension.ExternalWallet) => {
+      // EXPIRED TOKEN
+      if (result === 24) {
+        this.getExternalWallet(open)
+        return
+      }
+
       this.actions.onExternalWallet(wallet)
 
       if (open && wallet.verifyUrl) {

@@ -63,6 +63,8 @@ class Uphold {
       ledger::ExternalWalletPtr wallet,
       CreateCardCallback callback);
 
+  void DisconectWallet();
+
  private:
   void ContributionCompleted(ledger::Result result,
                              bool created,
@@ -111,6 +113,10 @@ class Uphold {
   void GetUser(
     ledger::ExternalWalletPtr wallet,
     GetUserCallback callback);
+
+  void OnDisconectWallet(
+    ledger::Result result,
+    ledger::ExternalWalletPtr wallet);
 
   std::unique_ptr<UpholdTransfer> transfer_;
   std::unique_ptr<UpholdCard> card_;

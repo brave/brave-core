@@ -846,6 +846,10 @@
             "name": "callback",
             "parameters": [
               {
+                "name": "result",
+                "type": "integer"
+              },
+              {
                 "name": "wallet",
                 "type": "object",
                 "properties": {

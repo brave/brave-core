@@ -422,6 +422,7 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetExternalWallet(
     const std::string& wallet_type,
     GetExternalWalletCallback callback,
+    int32_t result,
     ledger::ExternalWalletPtr wallet);
 
   void OnExternalWalletAuthorization(

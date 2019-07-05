@@ -773,6 +773,7 @@ BraveRewardsGetExternalWalletFunction::Run() {
 }
 
 void BraveRewardsGetExternalWalletFunction::OnExternalWalet(
+    int32_t result,
     std::unique_ptr<::brave_rewards::ExternalWallet> wallet) {
   auto data = std::make_unique<base::Value>(
       base::Value::Type::DICTIONARY);
@@ -789,7 +790,9 @@ void BraveRewardsGetExternalWalletFunction::OnExternalWalet(
     data->SetStringKey("accountUrl", wallet->account_url);
   }
 
-  Respond(OneArgument(std::move(data)));
+  Respond(TwoArguments(
+        std::make_unique<base::Value>(result),
+        std::move(data)));
 }
 
 BraveRewardsDisconnectWalletFunction::

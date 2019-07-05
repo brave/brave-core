@@ -178,7 +178,7 @@ void Wallet::OnGetExternalWallet(
     return;
   }
 
-  callback(nullptr);
+  callback(ledger::Result::LEDGER_ERROR, nullptr);
 }
 
 void Wallet::GetExternalWallet(const std::string& wallet_type,

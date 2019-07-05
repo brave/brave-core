@@ -276,6 +276,7 @@ class BatLedgerImpl : public mojom::BatLedger,
 
   static void OnGetExternalWallet(
     CallbackHolder<GetExternalWalletCallback>* holder,
+    ledger::Result result,
     ledger::ExternalWalletPtr wallet);
 
   static void OnExternalWalletAuthorization(

@@ -88,6 +88,7 @@ using FetchBalanceCallback = base::OnceCallback<void(
     int32_t,
     std::unique_ptr<brave_rewards::Balance>)>;
 using GetExternalWalletCallback = base::OnceCallback<void(
+    int32_t result,
     std::unique_ptr<brave_rewards::ExternalWallet> wallet)>;
 using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
     int32_t result,

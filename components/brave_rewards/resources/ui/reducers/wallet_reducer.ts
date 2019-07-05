@@ -199,6 +199,8 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
         }
       } else if (status === 1) { // on ledger::Result::LEDGER_ERROR
         ui.walletServerProblem = true
+      } else if (status === 24) { // on ledger::Result::EXPIRED_TOKEN
+        chrome.send('brave_rewards.getExternalWallet', ['uphold'])
       }
 
       state = {
@@ -213,6 +215,12 @@ const walletReducer: Reducer<Rewards.State | undefined> = (state: Rewards.State,
     }
     case types.ON_EXTERNAL_WALLET: {
       state = { ...state }
+
+      if (action.payload.result === 24) { // on ledger::Result::EXPIRED_TOKEN
+        chrome.send('brave_rewards.getExternalWallet', ['uphold'])
+        break
+      }
+
       state.externalWallet = action.payload.wallet
     }
   }

@@ -13,11 +13,11 @@ using std::placeholders::_1;
 using std::placeholders::_2;
 using std::placeholders::_3;
 
-
 namespace braveledger_uphold {
 
-UpholdCard::UpholdCard(bat_ledger::LedgerImpl* ledger) :
-    ledger_(ledger) {
+UpholdCard::UpholdCard(bat_ledger::LedgerImpl* ledger, Uphold* uphold) :
+    ledger_(ledger),
+    uphold_(uphold) {
 }
 
 UpholdCard::~UpholdCard() {
@@ -54,6 +54,13 @@ void UpholdCard::OnCreate(
     const std::map<std::string, std::string>& headers,
     CreateCardCallback callback) {
   ledger_->LogResponse(__func__, response_status_code, response, headers);
+
+  if (response_status_code == net::HTTP_UNAUTHORIZED) {
+    callback(ledger::Result::EXPIRED_TOKEN, "");
+    uphold_->DisconectWallet();
+    return;
+  }
+
   if (response_status_code != net::HTTP_OK) {
     callback(ledger::Result::LEDGER_ERROR, "");
     return;

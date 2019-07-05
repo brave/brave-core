@@ -179,10 +179,15 @@ window.cr.define('brave_rewards', function () {
     getActions().getContributeList()
     getActions().getBalance()
     getActions().getWalletProperties()
+
+    // EXPIRED TOKEN
+    if (properties.result === 24) {
+      getActions().getExternalWallet('uphold')
+    }
   }
 
-  function externalWallet (wallet: Rewards.ExternalWallet) {
-    getActions().onExternalWallet(wallet)
+  function externalWallet (properties: {result: number, wallet: Rewards.ExternalWallet}) {
+    getActions().onExternalWallet(properties.result, properties.wallet)
   }
 
   function processRewardsPageUrl (data: Rewards.ProcessRewardsPageUrl) {

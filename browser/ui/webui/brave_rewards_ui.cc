@@ -135,6 +135,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
 
   void GetExternalWallet(const base::ListValue* args);
   void OnGetExternalWallet(
+      int32_t result,
       std::unique_ptr<brave_rewards::ExternalWallet> wallet);
   void ProcessRewardsPageUrl(const base::ListValue* args);
 
@@ -1293,21 +1294,27 @@ void RewardsDOMHandler::GetExternalWallet(const base::ListValue* args) {
 }
 
 void RewardsDOMHandler::OnGetExternalWallet(
+    int32_t result,
     std::unique_ptr<brave_rewards::ExternalWallet> wallet) {
   if (web_ui()->CanCallJavascript()) {
     base::Value data(base::Value::Type::DICTIONARY);
 
+    data.SetIntKey("result", result);
+    base::Value wallet_dict(base::Value::Type::DICTIONARY);
+
     if (wallet) {
-      data.SetStringKey("token", wallet->token);
-      data.SetStringKey("address", wallet->address);
-      data.SetIntKey("status", static_cast<int>(wallet->status));
-      data.SetStringKey("type", wallet->type);
-      data.SetStringKey("verifyUrl", wallet->verify_url);
-      data.SetStringKey("addUrl", wallet->add_url);
-      data.SetStringKey("withdrawUrl", wallet->withdraw_url);
-      data.SetStringKey("userName", wallet->user_name);
-      data.SetStringKey("accountUrl", wallet->account_url);
+      wallet_dict.SetStringKey("token", wallet->token);
+      wallet_dict.SetStringKey("address", wallet->address);
+      wallet_dict.SetIntKey("status", static_cast<int>(wallet->status));
+      wallet_dict.SetStringKey("type", wallet->type);
+      wallet_dict.SetStringKey("verifyUrl", wallet->verify_url);
+      wallet_dict.SetStringKey("addUrl", wallet->add_url);
+      wallet_dict.SetStringKey("withdrawUrl", wallet->withdraw_url);
+      wallet_dict.SetStringKey("userName", wallet->user_name);
+      wallet_dict.SetStringKey("accountUrl", wallet->account_url);
     }
+
+    data.SetKey("wallet", std::move(wallet_dict));
 
     web_ui()->CallJavascriptFunctionUnsafe("brave_rewards.externalWallet",
                                            data);

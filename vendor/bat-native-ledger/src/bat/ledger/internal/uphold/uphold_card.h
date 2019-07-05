@@ -20,7 +20,7 @@ namespace braveledger_uphold {
 
 class UpholdCard {
  public:
-  explicit UpholdCard(bat_ledger::LedgerImpl* ledger);
+  explicit UpholdCard(bat_ledger::LedgerImpl* ledger, Uphold* uphold);
 
   ~UpholdCard();
 
@@ -36,6 +36,7 @@ class UpholdCard {
       CreateCardCallback callback);
 
   bat_ledger::LedgerImpl* ledger_;  // NOT OWNED
+  Uphold* uphold_;  // NOT OWNED
 };
 
 }  // namespace braveledger_uphold
