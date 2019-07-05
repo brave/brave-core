@@ -188,7 +188,7 @@ def startBraveBrowserBuild() {
     params = [
         string(name: "BUILD_TYPE", value: BUILD_TYPE),
         string(name: "CHANNEL", value: CHANNEL),
-        booleanParam(name: "OFFICIAL_BUILD", defaultValue: OFFICIAL_BUILD),
+        booleanParam(name: "OFFICIAL_BUILD", value: OFFICIAL_BUILD),
         booleanParam(name: "SKIP_SIGNING", value: SKIP_SIGNING),
         booleanParam(name: "WIPE_WORKSPACE", value: WIPE_WORKSPACE),
         booleanParam(name: "SKIP_INIT", value: SKIP_INIT),
