@@ -7,5 +7,6 @@ source_set("common") {
   deps = [
     "//base",
     "//extensions/common",
+    "//url",
   ]
 }
