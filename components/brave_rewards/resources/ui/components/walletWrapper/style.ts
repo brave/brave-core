@@ -80,6 +80,14 @@ export const StyledBalanceTokens = styled<{}, 'div'>('div')`
   font-weight: 300;
 `
 
+export const StyledBalanceUnavailable = styled<{}, 'div'>('div')`
+  font-size: 24px;
+  opacity: 0.66;
+  color: #fff;
+  margin: 10px 0;
+  font-weight: 300;
+`
+
 export const StyledContent = styled<StyledProps, 'div'>('div')`
   padding: ${p => p.contentPadding ? '11px 25px 19px' : '0px'};
   background: #fff;
