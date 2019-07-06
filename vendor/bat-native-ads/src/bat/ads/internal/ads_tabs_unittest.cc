@@ -140,7 +140,7 @@ class AdsTabsTest : public ::testing::Test {
 
 TEST_F(AdsTabsTest, Media_IsPlaying) {
   // Arrange
-  ads_->TabUpdated(1, "https://brave.com", true, false);
+  ads_->OnTabUpdated(1, "https://brave.com", true, false);
   ads_->OnMediaPlaying(1);
 
   // Act
@@ -152,7 +152,7 @@ TEST_F(AdsTabsTest, Media_IsPlaying) {
 
 TEST_F(AdsTabsTest, Media_NotPlaying) {
   // Arrange
-  ads_->TabUpdated(1, "https://brave.com", true, false);
+  ads_->OnTabUpdated(1, "https://brave.com", true, false);
 
   ads_->OnMediaPlaying(1);
   ads_->OnMediaPlaying(2);
@@ -178,7 +178,7 @@ TEST_F(AdsTabsTest, TabUpdated_Incognito) {
       .Times(0);
 
   // Act
-  ads_->TabUpdated(1, "https://brave.com", true, true);
+  ads_->OnTabUpdated(1, "https://brave.com", true, true);
 
   // Assert
   auto last_user_activity = ads_->client_->GetLastUserActivity();
@@ -196,7 +196,7 @@ TEST_F(AdsTabsTest, TabUpdated_InactiveIncognito) {
       .Times(0);
 
   // Act
-  ads_->TabUpdated(1, "https://brave.com", false, true);
+  ads_->OnTabUpdated(1, "https://brave.com", false, true);
 
   // Assert
   auto last_user_activity = ads_->client_->GetLastUserActivity();
@@ -214,7 +214,7 @@ TEST_F(AdsTabsTest, TabUpdated_Active) {
       .Times(1);
 
   // Act
-  ads_->TabUpdated(1, "https://brave.com", true, false);
+  ads_->OnTabUpdated(1, "https://brave.com", true, false);
 
   // Assert
   auto updated_last_user_activity = ads_->client_->GetLastUserActivity();
@@ -232,7 +232,7 @@ TEST_F(AdsTabsTest, TabUpdated_Inactive) {
       .Times(1);
 
   // Act
-  ads_->TabUpdated(1, "https://brave.com", false, false);
+  ads_->OnTabUpdated(1, "https://brave.com", false, false);
 
   // Assert
   auto updated_last_user_activity = ads_->client_->GetLastUserActivity();
@@ -247,7 +247,7 @@ TEST_F(AdsTabsTest, TabClosed_WhileMediaIsPlaying) {
       .Times(1);
 
   // Act
-  ads_->TabClosed(1);
+  ads_->OnTabClosed(1);
 
   // Assert
   EXPECT_FALSE(ads_->IsMediaPlaying());

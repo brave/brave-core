@@ -29,12 +29,9 @@ AdsRewards::AdsRewards(
     ad_grants_(std::make_unique<AdGrants>(confirmations, confirmations_client)),
     confirmations_(confirmations),
     confirmations_client_(confirmations_client) {
-  BLOG(INFO) << "Initializing ads rewards";
 }
 
 AdsRewards::~AdsRewards() {
-  BLOG(INFO) << "Deinitializing ads rewards";
-
   CancelRetry();
 }
 

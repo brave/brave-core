@@ -103,6 +103,8 @@ void AdsServiceFactory::RegisterProfilePrefs(
 
   registry->RegisterIntegerPref(prefs::kIdleThreshold, 15);
 
+  registry->RegisterBooleanPref(prefs::kShouldShowMyFirstAdNotification, true);
+
   registry->RegisterBooleanPref(
       prefs::kShouldShowFirstLaunchNotification, true);
   registry->RegisterBooleanPref(

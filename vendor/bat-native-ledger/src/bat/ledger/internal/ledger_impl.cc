@@ -1468,7 +1468,9 @@ void LedgerImpl::SetCatalogIssuers(const std::string& info) {
     issuers_info->issuers.push_back(issuer_info);
   }
 
-  bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
+  if (bat_confirmations_) {
+    bat_confirmations_->SetCatalogIssuers(std::move(issuers_info));
+  }
 }
 
 void LedgerImpl::ConfirmAd(const std::string& info) {
@@ -1477,6 +1479,7 @@ void LedgerImpl::ConfirmAd(const std::string& info) {
     return;
 
   auto notification_info = std::make_unique<confirmations::NotificationInfo>();
+  notification_info->id = notification_info_ads.id;
   notification_info->creative_set_id = notification_info_ads.creative_set_id;
   notification_info->category = notification_info_ads.category;
   notification_info->advertiser = notification_info_ads.advertiser;

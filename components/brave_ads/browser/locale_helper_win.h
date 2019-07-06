@@ -21,11 +21,10 @@ class LocaleHelperWin : public LocaleHelper {
   static LocaleHelperWin* GetInstance();
 
  private:
-  friend struct base::DefaultSingletonTraits<LocaleHelperWin>;
-
   // LocaleHelper impl
   std::string GetLocale() const override;
 
+  friend struct base::DefaultSingletonTraits<LocaleHelperWin>;
   DISALLOW_COPY_AND_ASSIGN(LocaleHelperWin);
 };
 

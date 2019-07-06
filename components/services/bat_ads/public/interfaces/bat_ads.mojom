@@ -1,6 +1,8 @@
+// Copyright (c) 2019 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at http://mozilla.org/MPL/2.0/.
+
 module bat_ads.mojom;
 
 const string kServiceName = "bat_ads";
@@ -8,11 +10,10 @@ const string kServiceName = "bat_ads";
 // Service which hands out bat ads.
 interface BatAdsService {
   Create(associated BatAdsClient bat_ads_client,
-         associated BatAds& database) => ();
+      associated BatAds& database) => ();
   SetProduction(bool is_production) => ();
   SetTesting(bool is_testing) => ();
   SetDebug(bool is_debug) => ();
-  IsSupportedRegion(string locale) => (bool is_supported);
 };
 
 interface BatAdsClient {
@@ -26,8 +27,6 @@ interface BatAdsClient {
   GetAdsPerDay() => (uint64 ads_per_day);
   [Sync]
   IsNetworkConnectionAvailable() => (bool available);
-  [Sync]
-  GenerateUUID() => (string uuid);
   [Sync]
   IsNotificationsAvailable() => (bool available);
   [Sync]
@@ -50,9 +49,10 @@ interface BatAdsClient {
   LoadUserModelForLocale(string locale) => (int32 result, string value);
   LoadSampleBundle() => (int32 result, string value);
   URLRequest(string url, array<string> headers, string content,
-             string content_type, int32 method) =>
-      (int32 status_code, string content, map<string, string> headers);
+      string content_type, int32 method) =>
+          (int32 status_code, string content, map<string, string> headers);
   ShowNotification(string notification_info);
+  CloseNotification(string id);
   SetCatalogIssuers(string issuers_info);
   ConfirmAd(string notification_info);
   SaveBundleState(string bundle_state) => (int32 result);
@@ -61,9 +61,12 @@ interface BatAdsClient {
 };
 
 interface BatAds {
-  Initialize() => ();
+  Initialize() => (int32 result);
+  Shutdown() => (int32 result);
+  SetConfirmationsIsReady(bool is_ready);
+  ChangeLocale(string locale);
   ClassifyPage(string url, string page);
-  TabClosed(int32 tab_id);
+  ServeSampleAd();
   OnTimer(uint32 timer_id);
   OnUnIdle();
   OnIdle();
@@ -71,11 +74,9 @@ interface BatAds {
   OnBackground();
   OnMediaPlaying(int32 tab_id);
   OnMediaStopped(int32 tab_id);
-  TabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito);
-  RemoveAllHistory() => ();
-  SetConfirmationsIsReady(bool is_ready);
-  ServeSampleAd();
-  GenerateAdReportingNotificationShownEvent(string notification_info);
-  GenerateAdReportingNotificationResultEvent(
-      string notification_info, int32 result_type);
+  OnTabUpdated(int32 tab_id, string url, bool is_active, bool is_incognito);
+  OnTabClosed(int32 tab_id);
+  GetNotificationForId(string id) => (string notification_info);
+  OnNotificationEvent(string id, int32 type);
+  RemoveAllHistory() => (int32 result);
 };
