@@ -11,6 +11,7 @@
 
 #include "base/macros.h"
 #include "base/observer_list.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/common/tor/tor_common.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
@@ -53,7 +54,9 @@ class TorProfileService : public KeyedService {
 
  protected:
   std::string GetTorProxyURI();
+#if BUILDFLAG(ENABLE_TOR)
   base::FilePath GetTorExecutablePath();
+#endif
   base::ObserverList<TorLauncherServiceObserver> observers_;
 
  private:

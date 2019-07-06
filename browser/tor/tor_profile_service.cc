@@ -8,8 +8,6 @@
 #include <string>
 
 #include "brave/browser/brave_browser_process_impl.h"
-// TODO(bridiver) - move this out of extensions
-#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "brave/common/tor/pref_names.h"
 #include "chrome/common/channel_info.h"
@@ -17,6 +15,11 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+// TODO(bridiver) - move this out of extensions
+#include "brave/browser/extensions/brave_tor_client_updater.h"
+#endif
 
 namespace tor {
 
@@ -68,9 +71,11 @@ std::string TorProfileService::GetTorProxyURI() {
   return g_browser_process->local_state()->GetString(prefs::kTorProxyString);
 }
 
+#if BUILDFLAG(ENABLE_TOR)
 base::FilePath TorProfileService::GetTorExecutablePath() {
   return g_brave_browser_process->tor_client_updater()->GetExecutablePath();
 }
+#endif
 
 void TorProfileService::AddObserver(TorLauncherServiceObserver* observer) {
   observers_.AddObserver(observer);

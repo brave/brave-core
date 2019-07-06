@@ -12,12 +12,16 @@
 #include "base/threading/thread_task_runner_handle.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/tor/tor_profile_service.h"
-#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/prefs/browser_prefs.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/sync_preferences/pref_service_mock_factory.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#endif
 
 Profile* TorUnittestProfileManager::CreateProfileHelper(
     const base::FilePath& path) {
@@ -62,7 +66,9 @@ Profile* TorUnittestProfileManager::CreateTorProfile(
       factory.CreateSyncable(registry.get()));
   RegisterUserProfilePrefs(registry.get());
   tor::TorProfileService::RegisterProfilePrefs(registry.get());
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   webtorrent::RegisterProfilePrefs(registry.get());
+#endif
   profile_builder.SetPrefService(std::move(prefs));
   profile_builder.SetPath(path);
   profile_builder.SetDelegate(delegate);
