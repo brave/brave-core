@@ -35,6 +35,3 @@ std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor(
 #endif
 
 #include "../../../../../chrome/browser/net/proxy_config_monitor.cc"  // NOLINT
-
-// Required by lint
-#include "brave/chromium_src/chrome/browser/net/proxy_config_monitor.h"
