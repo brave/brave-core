@@ -109,8 +109,8 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
   auto info = [[BATPublisherInfo alloc] init];
   info.id = databaseInfo.publisherID;
   info.name = databaseInfo.name;
-  info.url = databaseInfo.url.absoluteString;
-  info.faviconUrl = databaseInfo.faviconURL.absoluteString;
+  info.url = databaseInfo.url;
+  info.faviconUrl = databaseInfo.faviconURL;
   info.provider = databaseInfo.provider;
   info.verified = databaseInfo.verified;
   info.excluded = (BATPublisherExclude)databaseInfo.excluded;
@@ -149,12 +149,12 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     pi.verified = info.verified;
     pi.excluded = info.excluded;
     pi.name = info.name;
-    pi.url = [NSURL URLWithString:info.url];
+    pi.url = info.url;
     pi.provider = info.provider;
     if ([info.faviconUrl isEqualToString:[NSString stringWithUTF8String:ledger::kClearFavicon]]) {
-      pi.faviconURL = nil;
+      pi.faviconURL = @"";
     } else {
-      pi.faviconURL = [NSURL URLWithString:info.faviconUrl];
+      pi.faviconURL = info.faviconUrl;
     }
   } completion:WriteToDataControllerCompletion(completion)];
 }
@@ -179,9 +179,9 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     info.id = publisher.publisherID;
     info.excluded = static_cast<BATPublisherExclude>(publisher.excluded);
     info.name = publisher.name;
-    info.url = publisher.url.absoluteString;
+    info.url = publisher.url;
     info.provider = publisher.provider;
-    info.faviconUrl = publisher.faviconURL.absoluteString;
+    info.faviconUrl = publisher.faviconURL;
     [publishers addObject:info];
   }
   return publishers;
@@ -261,8 +261,8 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     auto info = [[BATPublisherInfo alloc] init];
     info.id = ci.publisherID;
     info.name = ci.publisher.name;
-    info.url = ci.publisher.url.absoluteString;
-    info.faviconUrl = ci.publisher.faviconURL.absoluteString;
+    info.url = ci.publisher.url;
+    info.faviconUrl = ci.publisher.faviconURL;
     info.weight = [ci.probi doubleValue];
     info.reconcileStamp = ci.date;
     info.verified = ci.publisher.verified;
@@ -385,9 +385,9 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     info.verified = activity.publisher.verified;
     info.excluded = (BATPublisherExclude)activity.publisher.excluded;
     info.name = activity.publisher.name;
-    info.url = activity.publisher.url.absoluteString;
+    info.url = activity.publisher.url;
     info.provider = activity.publisher.provider;
-    info.faviconUrl = activity.publisher.faviconURL.absoluteString;
+    info.faviconUrl = activity.publisher.faviconURL;
     info.reconcileStamp = activity.reconcileStamp;
     info.visits = activity.visits;
     [publishers addObject:info];
@@ -467,8 +467,8 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     auto info = [[BATPublisherInfo alloc] init];
     info.id = rd.publisherID;
     info.name = rd.publisher.name;
-    info.url = rd.publisher.url.absoluteString;
-    info.faviconUrl = rd.publisher.faviconURL.absoluteString;
+    info.url = rd.publisher.url;
+    info.faviconUrl = rd.publisher.faviconURL;
     info.weight = rd.amount;
     info.reconcileStamp = rd.addedDate;
     info.verified = rd.publisher.verified;
@@ -535,8 +535,8 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     auto info = [[BATPendingContributionInfo alloc] init];
     info.publisherKey = pc.publisherID;
     info.name = pc.publisher.name;
-    info.url = pc.publisher.url.absoluteString;
-    info.faviconUrl = pc.publisher.faviconURL.absoluteString;
+    info.url = pc.publisher.url;
+    info.faviconUrl = pc.publisher.faviconURL;
     info.verified = pc.publisher.verified;
     info.provider = pc.publisher.provider;
     info.amount = pc.amount;

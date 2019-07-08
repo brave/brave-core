@@ -828,6 +828,7 @@
   const auto date2 = [[dateFormatter dateFromString:@"2020-11-17"] timeIntervalSince1970];
 
   [self createBATPublisherInfo:@"1" reconcileStamp:40 percent:0 createActivityInfo:YES];
+  [self createBATPublisherInfo:@"2" reconcileStamp:40 percent:0 createActivityInfo:YES];
 
   [self createRecurringTip:publisherId amount:15.0 date:date];
   [self createRecurringTip:@"2" amount:100.0 date:date2];
@@ -839,6 +840,9 @@
 - (void)testRemoveRecurringTipWithPublisherID
 {
   const auto now = [[[NSDate alloc] init] timeIntervalSince1970];
+  
+  [self createBATPublisherInfo:@"1" reconcileStamp:40 percent:0 createActivityInfo:YES];
+  [self createBATPublisherInfo:@"2" reconcileStamp:40 percent:0 createActivityInfo:YES];
 
   [self createRecurringTip:@"1" amount:15.0 date:now];
   [self createRecurringTip:@"2" amount:100.0 date:now];
@@ -876,6 +880,9 @@
 
 - (void)testPendingContributions
 {
+  [self createBATPublisherInfo:@"brave.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
+  [self createBATPublisherInfo:@"duckduckgo.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
+  
   const auto now = [[NSDate date] timeIntervalSince1970];
   const auto one = [[BATPendingContribution alloc] init];
   one.publisherKey = @"brave.com";
@@ -906,6 +913,9 @@
   const auto removedPublisherKey = @"brave.com";
   const auto removedViewingId = @"viewing-id";
   const auto keptPublisherKey = @"duckduckgo.com";
+  
+  [self createBATPublisherInfo:removedPublisherKey reconcileStamp:40 percent:0 createActivityInfo:YES];
+  [self createBATPublisherInfo:keptPublisherKey reconcileStamp:40 percent:0 createActivityInfo:YES];
   
   const auto now = [[NSDate date] timeIntervalSince1970];
   const auto one = [[BATPendingContribution alloc] init];
@@ -945,6 +955,9 @@
 
 - (void)testRemoveAllPendingContributions
 {
+  [self createBATPublisherInfo:@"brave.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
+  [self createBATPublisherInfo:@"duckduckgo.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
+  
   const auto now = [[NSDate date] timeIntervalSince1970];
   const auto one = [[BATPendingContribution alloc] init];
   one.publisherKey = @"brave.com";
@@ -976,6 +989,9 @@
 
 - (void)testReservedAmount
 {
+  [self createBATPublisherInfo:@"brave.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
+  [self createBATPublisherInfo:@"duckduckgo.com" reconcileStamp:40 percent:0 createActivityInfo:YES];
+  
   const auto now = [[NSDate date] timeIntervalSince1970];
   const auto one = [[BATPendingContribution alloc] init];
   one.publisherKey = @"brave.com";
@@ -990,7 +1006,6 @@
   two.category = BATRewardsCategoryAutoContribute;
   two.addedDate = now;
   two.viewingId = @"";
-
 
   const auto list = @[one, two];
 
