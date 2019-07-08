@@ -11,8 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<MediaPublisherInfo *> *)fetchRequest;
 
-@property (nullable, nonatomic, copy) NSString *mediaKey;
-@property (nullable, nonatomic, copy) NSString *publisherID;
+@property (nonatomic, copy) NSString *mediaKey;
+@property (nonatomic, copy) NSString *publisherID;
 
 @end
 

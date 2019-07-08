@@ -15,12 +15,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) int64_t duration;
 @property (nonatomic) int32_t percent;
-@property (nullable, nonatomic, copy) NSString *publisherID;
+@property (nonatomic, copy) NSString *publisherID;
 @property (nonatomic) int64_t reconcileStamp;
 @property (nonatomic) double score;
 @property (nonatomic) int32_t visits;
 @property (nonatomic) double weight;
-@property (nullable, nonatomic, retain) PublisherInfo *publisher;
+@property (nonatomic, retain) PublisherInfo *publisher;
 
 @end
 

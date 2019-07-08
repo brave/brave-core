@@ -30,6 +30,8 @@ class Generator(generator.Generator):
   def GetFilters(self):
     objc_filters = {
       "objc_property_modifiers": self._GetObjCPropertyModifiers,
+      "objc_property_default": self._GetObjCPropertyDefaultValue,
+      "objc_property_needs_default_assignment": self._ObjcPropertyNeedsDefaultValueAssignment,
       "objc_wrapper_type": self._GetObjCWrapperType,
       "objc_property_formatter": self._ObjCPropertyFormatter,
       "objc_enum_formatter": self._ObjCEnumFormatter,
@@ -46,6 +48,39 @@ class Generator(generator.Generator):
       modifiers.append('nullable')
     return ', '.join(modifiers)
 
+  def _ObjcPropertyNeedsDefaultValueAssignment(self, field):
+    kind = field.kind
+    if not field.default:
+      # If there's no specified default, only make defaults for required types
+      return (not mojom.IsNullableKind(kind) and
+             (mojom.IsStringKind(kind) or mojom.IsArrayKind(kind) or
+              mojom.IsMapKind(kind) or kind in self.module.structs))
+
+    if self._IsObjCNumberKind(kind) and field.default == 0:
+      # 0 by default anyways
+      return False
+
+    return True
+
+  def _GetObjCPropertyDefaultValue(self, field):
+    kind = field.kind
+    if mojom.IsNullableKind(kind) and not field.default:
+      return 'nil'
+    if self._IsObjCNumberKind(kind):
+      return '0' if not field.default else field.default
+    if mojom.IsEnumKind(kind):
+      value = '0' if not field.default else field.default.field.value
+      return 'static_cast<%s%s>(%s)' % (self.class_prefix, kind.name, value)
+    if mojom.IsStringKind(kind):
+      return '@""' if not field.default else '@%s' % field.default
+    if mojom.IsArrayKind(kind):
+      return '@[]'
+    if mojom.IsMapKind(kind):
+      return '@{}'
+    if kind in self.module.structs:
+      return "[[%s%s alloc] init]" % (self.class_prefix, kind.name)
+    raise Exception("Unrecognized kind %s" % kind.spec)
+
   def _GetObjCWrapperType(self, kind, objectType = False):
     if kind in self.module.structs:
       return "%s%s *" % (self.class_prefix, kind.name)
@@ -54,7 +89,7 @@ class Generator(generator.Generator):
     if mojom.IsInterfaceKind(kind):
       return "id<%s%s>" % (self.class_prefix, kind.name)
     if mojom.IsStringKind(kind):
-      return "NSString *";
+      return "NSString *"
     if mojom.IsArrayKind(kind):
       return "NSArray<%s> *" % self._GetObjCWrapperType(kind.kind, True)
     if mojom.IsMapKind(kind):

@@ -14,11 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSFetchRequest<PublisherInfo *> *)fetchRequest;
 
 @property (nonatomic) int32_t excluded;
-@property (nullable, nonatomic, copy) NSURL *faviconURL;
-@property (nullable, nonatomic, copy) NSString *name;
-@property (nullable, nonatomic, copy) NSString *provider;
-@property (nullable, nonatomic, copy) NSString *publisherID;
-@property (nullable, nonatomic, copy) NSURL *url;
+@property (nonatomic, copy) NSString *faviconURL;
+@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy) NSString *provider;
+@property (nonatomic, copy) NSString *publisherID;
+@property (nonatomic, copy) NSString *url;
 @property (nonatomic) BOOL verified;
 @property (nullable, nonatomic, retain) NSSet<ActivityInfo *> *activities;
 @property (nullable, nonatomic, retain) NSSet<ContributionInfo *> *contributions;
