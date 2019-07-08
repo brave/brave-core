@@ -5,19 +5,9 @@
 #import <Foundation/Foundation.h>
 #import "Enums.h"
 
-@class BATAutoContributeProps, BATBalanceReportInfo, BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo, BATMediaEventInfo;
+@class BATBalanceReportInfo, BATReconcileInfo, BATRewardsInternalsInfo, BATTransactionInfo, BATTransactionsInfo, BATMediaEventInfo;
 
 NS_ASSUME_NONNULL_BEGIN
-
-NS_SWIFT_NAME(AutoContributeProps)
-@interface BATAutoContributeProps : NSObject
-@property (nonatomic) bool enabledContribute;
-@property (nonatomic) unsigned long long contributionMinTime;
-@property (nonatomic) int contributionMinVisits;
-@property (nonatomic) bool contributionNonVerified;
-@property (nonatomic) bool contributionVideos;
-@property (nonatomic) unsigned long long reconcileStamp;
-@end
 
 NS_SWIFT_NAME(BalanceReportInfo)
 @interface BATBalanceReportInfo : NSObject

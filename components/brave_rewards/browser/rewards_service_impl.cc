@@ -838,19 +838,20 @@ void RewardsServiceImpl::OnWalletProperties(
 
 void RewardsServiceImpl::OnGetAutoContributeProps(
     const GetAutoContributePropsCallback& callback,
-    const std::string& json_props) {
-  ledger::AutoContributeProps props;
-  props.loadFromJson(json_props);
+    ledger::AutoContributePropsPtr props) {
+  if (!props) {
+    callback.Run(nullptr);
+  }
 
   auto auto_contri_props =
     std::make_unique<brave_rewards::AutoContributeProps>();
-  auto_contri_props->enabled_contribute = props.enabled_contribute;
-  auto_contri_props->contribution_min_time = props.contribution_min_time;
-  auto_contri_props->contribution_min_visits = props.contribution_min_visits;
+  auto_contri_props->enabled_contribute = props->enabled_contribute;
+  auto_contri_props->contribution_min_time = props->contribution_min_time;
+  auto_contri_props->contribution_min_visits = props->contribution_min_visits;
   auto_contri_props->contribution_non_verified =
-    props.contribution_non_verified;
-  auto_contri_props->contribution_videos = props.contribution_videos;
-  auto_contri_props->reconcile_stamp = props.reconcile_stamp;
+    props->contribution_non_verified;
+  auto_contri_props->contribution_videos = props->contribution_videos;
+  auto_contri_props->reconcile_stamp = props->reconcile_stamp;
 
   callback.Run(std::move(auto_contri_props));
 }

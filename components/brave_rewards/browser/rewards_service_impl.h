@@ -551,7 +551,7 @@ class RewardsServiceImpl : public RewardsService,
       const base::flat_map<std::string, std::string>& addresses);
   void OnGetAutoContributeProps(
       const GetAutoContributePropsCallback& callback,
-      const std::string& json_props);
+      ledger::AutoContributePropsPtr props);
   void OnGetRewardsInternalsInfo(GetRewardsInternalsInfoCallback callback,
                                  const std::string& json_props);
   void SetRewardsMainEnabledPref(bool enabled);

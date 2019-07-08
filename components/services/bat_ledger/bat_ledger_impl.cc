@@ -83,7 +83,7 @@ void BatLedgerImpl::GetAutoContributeProps(
     GetAutoContributePropsCallback callback) {
   ledger::AutoContributeProps props;
   ledger_->GetAutoContributeProps(&props);
-  std::move(callback).Run(props.ToJson());
+  std::move(callback).Run(ledger::AutoContributeProps::New(props));
 }
 
 void BatLedgerImpl::GetPublisherMinVisitTime(

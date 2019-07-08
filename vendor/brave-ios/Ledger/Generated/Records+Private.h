@@ -6,7 +6,6 @@
 #import "Records.h"
 
 #include "bat/ledger/export.h"
-#include "bat/ledger/auto_contribute_props.h"
 #include "bat/ledger/balance_report_info.h"
 #include "bat/ledger/grant.h"
 #include "bat/ledger/ledger.h"
@@ -20,10 +19,6 @@
 #include "bat/ledger/transaction_info.h"
 #include "bat/ledger/transactions_info.h"
 #include "bat/ledger/wallet_properties.h"
-
-@interface BATAutoContributeProps (Private)
-- (instancetype)initWithAutoContributeProps:(const ledger::AutoContributeProps&)obj;
-@end
 
 @interface BATBalanceReportInfo (Private)
 - (instancetype)initWithBalanceReportInfo:(const ledger::BalanceReportInfo&)obj;
