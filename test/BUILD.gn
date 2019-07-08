@@ -287,6 +287,7 @@ if (is_win) {
       "//base",
       "//base/test:run_all_unittests",
       "//base/test:test_support",
+      "//chrome/chrome_elf:nt_registry",
       "//chrome/install_static:install_static_util",
       "//chrome/install_static/test:test_support",
       "//chrome/installer/mini_installer:lib",
