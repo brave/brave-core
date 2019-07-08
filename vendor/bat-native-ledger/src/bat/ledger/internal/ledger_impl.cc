@@ -86,10 +86,11 @@ LedgerImpl::~LedgerImpl() {
   }
 }
 
-void LedgerImpl::Initialize() {
+void LedgerImpl::Initialize(ledger::InitializeCallback callback) {
   DCHECK(!initializing_);
   initializing_ = true;
   LoadLedgerState(this);
+  callback();
 }
 
 bool LedgerImpl::CreateWallet() {

@@ -481,7 +481,12 @@ void RewardsServiceImpl::StartLedger() {
   bat_ledger_service_->Create(std::move(client_ptr_info),
       MakeRequest(&bat_ledger_));
 
-  bat_ledger_->Initialize();
+  auto callback = base::BindOnce(&RewardsServiceImpl::OnInitialize,
+      AsWeakPtr());
+  bat_ledger_->Initialize(std::move(callback));
+}
+
+void RewardsServiceImpl::OnInitialize() {
 }
 
 void RewardsServiceImpl::MaybeShowBackupNotification(uint64_t boot_stamp) {

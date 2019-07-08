@@ -51,6 +51,8 @@ using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 using FetchBalanceCallback = std::function<void(ledger::Result,
                                                 ledger::BalancePtr)>;
 
+using InitializeCallback = std::function<void()>;
+
 class LEDGER_EXPORT Ledger {
  public:
   static bool IsMediaLink(const std::string& url,
@@ -66,7 +68,7 @@ class LEDGER_EXPORT Ledger {
 
   static Ledger* CreateInstance(LedgerClient* client);
 
-  virtual void Initialize() = 0;
+  virtual void Initialize(InitializeCallback) = 0;
 
   // returns false if wallet initialization is already in progress
   virtual bool CreateWallet() = 0;

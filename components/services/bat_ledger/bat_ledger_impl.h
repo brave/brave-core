@@ -29,7 +29,7 @@ class BatLedgerImpl : public mojom::BatLedger,
   ~BatLedgerImpl() override;
 
   // bat_ledger::mojom::BatLedger
-  void Initialize() override;
+  void Initialize(InitializeCallback callback) override;
   void CreateWallet() override;
   void FetchWalletProperties(FetchWalletPropertiesCallback callback) override;
 
@@ -206,6 +206,9 @@ class BatLedgerImpl : public mojom::BatLedger,
       base::WeakPtr<BatLedgerImpl> client_;
       Callback callback_;
     };
+
+  static void OnInitialize(
+      CallbackHolder<InitializeCallback>* holder);
 
   static void OnFetchWalletProperties(
       CallbackHolder<FetchWalletPropertiesCallback>* holder,

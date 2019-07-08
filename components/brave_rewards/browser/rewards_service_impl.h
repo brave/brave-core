@@ -111,6 +111,7 @@ class RewardsServiceImpl : public RewardsService,
       uint32_t min_visits,
       bool fetch_excluded,
       const GetContentSiteListCallback& callback) override;
+  void OnInitialize();
   void OnGetContentSiteList(
       const GetContentSiteListCallback& callback,
       ledger::PublisherInfoList list,

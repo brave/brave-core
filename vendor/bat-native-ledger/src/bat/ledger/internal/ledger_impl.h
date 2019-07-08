@@ -72,7 +72,7 @@ class LedgerImpl : public ledger::Ledger,
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
   std::string GenerateGUID() const;
-  void Initialize() override;
+  void Initialize(ledger::InitializeCallback callback) override;
   bool CreateWallet() override;
 
   void SetPublisherInfo(

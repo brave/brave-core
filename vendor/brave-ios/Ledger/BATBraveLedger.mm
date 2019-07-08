@@ -107,7 +107,9 @@ NS_INLINE int BATGetPublisherYear(NSDate *date) {
 
     ledgerClient = new NativeLedgerClient(self);
     ledger = ledger::Ledger::CreateInstance(ledgerClient);
-    ledger->Initialize();
+    ledger->Initialize(^(){
+      // TODO(jkuki) handle if needed
+    });
 
     // Add notifications for standard app foreground/background
     [NSNotificationCenter.defaultCenter addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
@@ -390,7 +392,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   if (faviconURL) {
     visitData.favicon_url = std::string(faviconURL.absoluteString.UTF8String);
   }
-  
+
   std::string blob = std::string();
   if (publisherBlob) {
     blob = std::string(publisherBlob.UTF8String);
@@ -883,7 +885,7 @@ BATLedgerBridge(BOOL,
                                    userInfo:nil
                                     repeats:NO];
   });
-  
+
 }
 
 - (void)checkForNotificationsAndFetchGrants
@@ -934,7 +936,7 @@ BATLedgerBridge(BOOL,
       now < upcomingAddFundsNotificationTime) {
     return;
   }
-  
+
   const auto __weak weakSelf = self;
   // Make sure they don't have a sufficient balance
   [self hasSufficientBalanceToReconcile:^(BOOL sufficient) {
@@ -942,12 +944,12 @@ BATLedgerBridge(BOOL,
       return;
     }
     const auto strongSelf = weakSelf;
-    
+
     // Set next add funds notification in 3 days
     const auto nextTime = [[NSDate date] timeIntervalSince1970] + (kOneDay * 3);
     strongSelf.prefs[kNextAddFundsDateNotificationKey] = @(nextTime);
     [strongSelf savePrefs];
-    
+
     [strongSelf addNotificationOfKind:BATRewardsNotificationKindInsufficientFunds
                              userInfo:nil
                        notificationID:@"rewards_notification_insufficient_funds"];

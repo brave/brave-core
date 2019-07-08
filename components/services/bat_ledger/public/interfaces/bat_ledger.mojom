@@ -23,7 +23,7 @@ interface BatLedgerService {
 };
 
 interface BatLedger {
-  Initialize();
+  Initialize() => ();
   CreateWallet();
   FetchWalletProperties() =>
       (int32 result, ledger.mojom.WalletProperties properties);
