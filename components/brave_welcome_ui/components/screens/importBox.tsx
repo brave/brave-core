@@ -71,7 +71,7 @@ export default class ImportBox extends React.PureComponent<Props, State> {
             <SelectBox
               onChange={this.onChangeImportSource}
             >
-              <option key={0} value=''>Import from...</option>
+              <option key={0} value=''>{getLocale('importFrom')}</option>
               {
                 (browserProfiles && Array.isArray(browserProfiles) && browserProfiles.length > 0)
                 ? browserProfiles.map((browserProfile, index) =>
