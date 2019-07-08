@@ -393,14 +393,17 @@ void Vimeo::OnEmbedResponse(
     return;
   }
 
-  DCHECK(data->FindStringKey("author_name"));
-  const std::string publisher_name = *data->FindStringKey("author_name");
-  DCHECK(data->FindStringKey("author_url"));
-  const std::string publisher_url = *data->FindStringKey("author_url");
-  DCHECK(data->FindIntKey("video_id"));
-  const int video_id = *data->FindIntKey("video_id");
+  std::string publisher_url;
+  if (data->FindStringKey("author_url")) {
+    publisher_url = *data->FindStringKey("author_url");
+  }
 
-  if (publisher_url.empty()) {
+  int32_t video_id = 0;
+  if (data->FindIntKey("video_id")) {
+    video_id = *data->FindIntKey("video_id");
+  }
+
+  if (publisher_url.empty() || video_id == 0) {
     auto callback = std::bind(&Vimeo::OnUnknownPage,
                               this,
                               visit_data,
@@ -411,6 +414,11 @@ void Vimeo::OnEmbedResponse(
 
     FetchDataFromUrl(visit_data.url, callback);
     return;
+  }
+
+  std::string publisher_name;
+  if (data->FindStringKey("author_name")) {
+    publisher_name = *data->FindStringKey("author_name");
   }
 
   const std::string media_key = GetMediaKey(std::to_string(video_id),
