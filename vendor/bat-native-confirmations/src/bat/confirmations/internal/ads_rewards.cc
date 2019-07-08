@@ -50,7 +50,6 @@ void AdsRewards::Update(
   }
 
   CancelRetry();
-  next_retry_start_timer_in_ = 0;
 
   BLOG(INFO) << "Fetch ads rewards";
   GetPaymentBalance();
@@ -239,14 +238,13 @@ void AdsRewards::OnAdsRewards(const Result result) {
 
   BLOG(INFO) << "Successfully retrieved ads rewards";
 
+  retry_timer_id_ = 0;
   next_retry_start_timer_in_ = 0;
 
   Update();
 }
 
 void AdsRewards::Retry() {
-  CancelRetry();
-
   if (next_retry_start_timer_in_ == 0) {
     next_retry_start_timer_in_ = 1 * base::Time::kSecondsPerMinute;
   } else {
@@ -275,6 +273,8 @@ void AdsRewards::CancelRetry() {
 
   confirmations_client_->KillTimer(retry_timer_id_);
   retry_timer_id_ = 0;
+
+  next_retry_start_timer_in_ = 0;
 }
 
 bool AdsRewards::IsRetrying() const {
