@@ -17,6 +17,8 @@
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/lifetime/application_lifetime.h"
+#include "components/flags_ui/flags_ui_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "extensions/browser/extension_registry.h"
@@ -44,6 +46,14 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       base::BindRepeating(
         &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
         base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      flags_ui::kRestartBrowser,
+      base::BindRepeating(&BraveDefaultExtensionsHandler::HandleRestartBrowser,
+                          base::Unretained(this)));
+}
+
+void BraveDefaultExtensionsHandler::HandleRestartBrowser(const base::ListValue* args) {
+  chrome::AttemptRestart();
 }
 
 void BraveDefaultExtensionsHandler::SetWebTorrentEnabled(

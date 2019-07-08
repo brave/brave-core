@@ -24,6 +24,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
+  void HandleRestartBrowser(const base::ListValue* args);
   void SetWebTorrentEnabled(const base::ListValue* args);
   void SetHangoutsEnabled(const base::ListValue* args);
   void SetIPFSCompanionEnabled(const base::ListValue* args);

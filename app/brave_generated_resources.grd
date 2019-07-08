@@ -406,6 +406,9 @@ By installing this extension, you are agreeing to the Google Widevine Terms of U
      <message name="IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC" desc="The description for Media Router switch in settings">
         Uses Media Router component to enable Chromecast in the browser.
       </message>
+     <message name="IDS_SETTINGS_RESTART_NOTICE" desc="Notifies the user that they need to relaunch Brave">
+        Your changes will take effect the next time you relaunch Brave.
+      </message>
      <message name="IDS_SETTINGS_IPFS_COMPANION_ENABLED_DESC" desc="The description for IPFS companion switch in settings">
         Uses IPFS companion extension to support IPFS in the browser.
       </message>
