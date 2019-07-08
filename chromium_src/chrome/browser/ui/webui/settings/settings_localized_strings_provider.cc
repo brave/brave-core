@@ -126,6 +126,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       IDS_SETTINGS_MEDIA_ROUTER_ENABLED_DESC},
     {"restartNotice",
       IDS_SETTINGS_RESTART_NOTICE},
+    {"relaunchButtonLabel",
+      IDS_SETTINGS_RELAUNCH_BUTTON_LABEL},
     {"manageExtensionsLabel",
       IDS_SETTINGS_MANAGE_EXTENSIONS_LABEL}
   };

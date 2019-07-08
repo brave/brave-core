@@ -14,6 +14,49 @@
       .settings-row:not(:first-child) {
         border-top: var(--cr-separator-line);
       }
+
+      #needsRestart {
+        background: var(--toolbar-color);
+        bottom: 0;
+        box-shadow: 0 -2px 2px 0 var(--shadow-color);
+        box-sizing: border-box;
+        left: 0;
+        opacity: 1;
+        padding: 16px;
+        position: fixed;
+        transform: translate(0);
+        transition: all 225ms var(--ease-in-out);
+        width: 100%;
+        z-index: 10;
+      }
+
+      #needsRestart .flex:last-child {
+        text-align: right; /* csschecker-disable-line left-right */
+      }
+
+      .flex {
+        align-self: center;
+        flex: 1 1 auto;
+      }
+
+      .flex-container {
+        display: flex;
+        padding: 8px 1em;
+      }
+
+      .restart-notice {
+        font-size: .9375rem;
+        line-height: 1.4;
+      }
+
+      button.primary {
+        background: var(--interactive-color);
+        border: 0;
+        border-radius: 3px;
+        color: white;
+        font-size: .875rem;
+        padding: 14px 38px;
+      }
     </style>
     <settings-toggle-button id="webTorrentEnabled"
         class="first"
@@ -45,15 +88,17 @@
         label="$i18n{manageExtensionsLabel}" on-click="openExtensionsPage_">
       </cr-link-row>
     </div>
-    <div class="settings-row" id="needsRestart">
-      <cr-link-row
-        icon-class="icon-external"
-        label="Relaunch Now"
-        on-click="restartBrowser_"
-        sub-label="$i18n{restartNotice}"
-      >
-      </cr-link-row>
+  <div id="needsRestart">
+      <div class="flex-container">
+        <div class="flex restart-notice" jstcache="0">$i18n{restartNotice}</div>
+        <div class="flex">
+          <button id="restartButton" class="primary" tabindex="9">
+          $i18n{relaunchButtonLabel}
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
   </template>
   <script src="brave_default_extensions_page.js"></script>
 </dom-module>

@@ -46,6 +46,7 @@ Polymer({
   },
 
   onMediaRouterEnabledChange_: function() {
+    this.$.restartButton.onclick = this.browserProxy_.restartBrowser
     this.$.needsRestart.hidden = false;
   },
 
