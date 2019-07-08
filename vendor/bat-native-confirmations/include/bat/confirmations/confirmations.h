@@ -31,8 +31,7 @@ extern const char _confirmations_name[];
 using TransactionInfo = ::ledger::TransactionInfo;
 using TransactionsInfo = ::ledger::TransactionsInfo;
 
-using OnGetTransactionHistoryForThisCycle =
-    ::ledger::GetTransactionHistoryForThisCycleCallback;
+using OnGetTransactionHistory = ::ledger::GetTransactionHistoryCallback;
 
 class CONFIRMATIONS_EXPORT Confirmations {
  public:
@@ -51,12 +50,14 @@ class CONFIRMATIONS_EXPORT Confirmations {
   // Should be called when a new catalog has been downloaded in Ads
   virtual void SetCatalogIssuers(std::unique_ptr<IssuersInfo> info) = 0;
 
-  // Should be called to get transaction history for this cycle
-  virtual void GetTransactionHistoryForThisCycle(
-      OnGetTransactionHistoryForThisCycle callback) = 0;
+  // Should be called to get transaction history
+  virtual void GetTransactionHistory(OnGetTransactionHistory callback) = 0;
 
   // Should be called when an ad is sustained in Ads
   virtual void ConfirmAd(std::unique_ptr<NotificationInfo> info) = 0;
+
+  // Should be called to update ads rewards, i.e. after a grant is claimed
+  virtual void UpdateAdsRewards(const bool should_refresh) = 0;
 
   // Should be called when a timer is triggered
   virtual bool OnTimer(const uint32_t timer_id) = 0;

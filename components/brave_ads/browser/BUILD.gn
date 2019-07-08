@@ -48,6 +48,8 @@ source_set("browser") {
       "background_helper_mac.h",
       "background_helper_win.cc",
       "background_helper_win.h",
+      "background_helper_android.cc",
+      "background_helper_android.h",
       "locale_helper.cc",
       "locale_helper.h",
       "locale_helper_linux.cc",
@@ -56,8 +58,14 @@ source_set("browser") {
       "locale_helper_mac.h",
       "locale_helper_win.cc",
       "locale_helper_win.h",
+      "locale_helper_android.cc",
+      "locale_helper_android.h",
       "bundle_state_database.cc",
       "bundle_state_database.h",
+      "notification_helper.h",
+      "notification_helper.cc",
+      "notification_helper_android.h",
+      "notification_helper_android.cc",
     ]
 
     deps += [
@@ -78,6 +86,12 @@ source_set("browser") {
       deps += [
         "//ui/views",
         "//ui/gfx",
+      ]
+    }
+
+    if (is_android) {
+      deps += [
+        "//chrome/android:jni_headers",
       ]
     }
   }
@@ -118,4 +132,8 @@ source_set("testutil") {
     "test_util.cc",
     "test_util.h",
   ]
+
+  if (is_android) {
+    deps += [ "//chrome/android:test_support_jni_headers" ]
+  }
 }

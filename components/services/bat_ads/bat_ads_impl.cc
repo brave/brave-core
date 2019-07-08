@@ -10,40 +10,84 @@
 #include "bat/ads/ads.h"
 #include "brave/components/services/bat_ads/bat_ads_client_mojo_bridge.h"
 
+using std::placeholders::_1;
+
 namespace bat_ads {
 
 namespace {
 
-ads::NotificationResultInfoResultType ToNotificationResultInfoResultType(
-    int32_t result_type) {
-  return (ads::NotificationResultInfoResultType)result_type;
+ads::Result ToMojomResult(int32_t result) {
+  return (ads::Result)result;
 }
 
+ads::NotificationEventType ToMojomNotificationEventType(int32_t event_type) {
+  return (ads::NotificationEventType)event_type;
 }
 
-BatAdsImpl::BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info)
-    : bat_ads_client_mojo_proxy_(
-          new BatAdsClientMojoBridge(std::move(client_info))),
-      ads_(ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {}
+}  // namespace
+
+BatAdsImpl::BatAdsImpl(mojom::BatAdsClientAssociatedPtrInfo client_info) :
+    bat_ads_client_mojo_proxy_(
+        new BatAdsClientMojoBridge(std::move(client_info))),
+    ads_(ads::Ads::CreateInstance(bat_ads_client_mojo_proxy_.get())) {}
 
 BatAdsImpl::~BatAdsImpl() {}
 
 void BatAdsImpl::Initialize(InitializeCallback callback) {
-  // TODO(Terry Mancey): Initialize needs a real callback
-  ads_->Initialize();
-  std::move(callback).Run();
+  auto* holder = new CallbackHolder<InitializeCallback>(AsWeakPtr(),
+      std::move(callback));
+
+  auto initialize_callback = std::bind(BatAdsImpl::OnInitialize, holder, _1);
+  ads_->Initialize(initialize_callback);
 }
 
-void BatAdsImpl::ClassifyPage(const std::string& url,
-                              const std::string& page) {
+void BatAdsImpl::OnInitialize(
+    CallbackHolder<InitializeCallback>* holder,
+    const int32_t result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ToMojomResult(result));
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::Shutdown(ShutdownCallback callback) {
+  auto* holder = new CallbackHolder<ShutdownCallback>(AsWeakPtr(),
+      std::move(callback));
+
+  auto shutdown_callback = std::bind(BatAdsImpl::OnShutdown, holder, _1);
+  ads_->Shutdown(shutdown_callback);
+}
+
+void BatAdsImpl::OnShutdown(
+    CallbackHolder<ShutdownCallback>* holder,
+    const int32_t result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ToMojomResult(result));
+  }
+
+  delete holder;
+}
+
+void BatAdsImpl::SetConfirmationsIsReady(const bool is_ready) {
+  ads_->SetConfirmationsIsReady(is_ready);
+}
+
+void BatAdsImpl::ChangeLocale(const std::string& locale) {
+  ads_->ChangeLocale(locale);
+}
+
+void BatAdsImpl::ClassifyPage(
+    const std::string& url,
+    const std::string& page) {
   ads_->ClassifyPage(url, page);
 }
 
-void BatAdsImpl::TabClosed(int32_t tab_id) {
-  ads_->TabClosed(tab_id);
+void BatAdsImpl::ServeSampleAd() {
+  ads_->ServeSampleAd();
 }
 
-void BatAdsImpl::OnTimer(uint32_t timer_id) {
+void BatAdsImpl::OnTimer(const uint32_t timer_id) {
   ads_->OnTimer(timer_id);
 }
 
@@ -63,52 +107,57 @@ void BatAdsImpl::OnBackground() {
   ads_->OnBackground();
 }
 
-void BatAdsImpl::OnMediaPlaying(int32_t tab_id) {
+void BatAdsImpl::OnMediaPlaying(const int32_t tab_id) {
   ads_->OnMediaPlaying(tab_id);
 }
 
-void BatAdsImpl::OnMediaStopped(int32_t tab_id) {
+void BatAdsImpl::OnMediaStopped(const int32_t tab_id) {
   ads_->OnMediaStopped(tab_id);
 }
 
-void BatAdsImpl::TabUpdated(int32_t tab_id,
-                const std::string& url,
-                bool is_active,
-                bool is_incognito) {
-  ads_->TabUpdated(tab_id, url, is_active, is_incognito);
+void BatAdsImpl::OnTabUpdated(
+    const int32_t tab_id,
+    const std::string& url,
+    const bool is_active,
+    const bool is_incognito) {
+  ads_->OnTabUpdated(tab_id, url, is_active, is_incognito);
+}
+
+void BatAdsImpl::OnTabClosed(const int32_t tab_id) {
+  ads_->OnTabClosed(tab_id);
+}
+
+void BatAdsImpl::GetNotificationForId(
+    const std::string& id,
+    GetNotificationForIdCallback callback) {
+  ads::NotificationInfo notification;
+  ads_->GetNotificationForId(id, &notification);
+  std::move(callback).Run(notification.ToJson());
+}
+
+void BatAdsImpl::OnNotificationEvent(
+    const std::string& id,
+    const int32_t type) {
+  ads_->OnNotificationEvent(id, ToMojomNotificationEventType(type));
 }
 
 void BatAdsImpl::RemoveAllHistory(RemoveAllHistoryCallback callback) {
-  // TODO(Terry Mancey): RemoveAllHistory needs a real callback
-  ads_->RemoveAllHistory();
-  std::move(callback).Run();
+  auto* holder = new CallbackHolder<RemoveAllHistoryCallback>(AsWeakPtr(),
+      std::move(callback));
+
+  auto remove_all_history_callback =
+      std::bind(BatAdsImpl::OnRemoveAllHistory, holder, _1);
+  ads_->RemoveAllHistory(remove_all_history_callback);
 }
 
-void BatAdsImpl::SetConfirmationsIsReady(const bool is_ready) {
-  ads_->SetConfirmationsIsReady(is_ready);
-}
-
-void BatAdsImpl::ServeSampleAd() {
-  ads_->ServeSampleAd();
-}
-
-void BatAdsImpl::GenerateAdReportingNotificationShownEvent(
-      const std::string& notification_info) {
-  auto info = std::make_unique<ads::NotificationInfo>();
-  if (info->FromJson(notification_info) == ads::Result::SUCCESS) {
-    ads_->GenerateAdReportingNotificationShownEvent(*info);
+void BatAdsImpl::OnRemoveAllHistory(
+    CallbackHolder<RemoveAllHistoryCallback>* holder,
+    const int32_t result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(ToMojomResult(result));
   }
-}
 
-void BatAdsImpl::GenerateAdReportingNotificationResultEvent(
-      const std::string& notification_info,
-      int32_t result_type) {
-  auto info = std::make_unique<ads::NotificationInfo>();
-  if (info->FromJson(notification_info) == ads::Result::SUCCESS) {
-    ads_->GenerateAdReportingNotificationResultEvent(
-        *info,
-        ToNotificationResultInfoResultType(result_type));
-  }
+  delete holder;
 }
 
 }  // namespace bat_ads

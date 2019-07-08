@@ -22,6 +22,9 @@ const char kBraveAdsLaunchNotificationTimestamp[] =
 const char kBraveAdsHasRemovedFirstLaunchNotification[] =
     "brave.brave_ads.has_removed_first_launch_notification";
 
+const char kShouldShowMyFirstAdNotification[] =
+    "brave.brave_ads.should_show_my_first_ad_notification";
+
 const int kBraveAdsPrefsDefaultVersion = 1;
 const int kBraveAdsPrefsCurrentVersion = 2;
 const char kBraveAdsPrefsVersion[] = "brave.brave_ads.prefs.version";

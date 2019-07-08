@@ -107,6 +107,9 @@ void AdsServiceFactory::RegisterProfilePrefs(
   #endif
 
   registry->RegisterIntegerPref(prefs::kBraveAdsIdleThreshold, 15);
+
+  registry->RegisterBooleanPref(prefs::kShouldShowMyFirstAdNotification, true);
+
   registry->RegisterBooleanPref(
       prefs::kBraveAdShouldShowFirstLaunchNotification,
       true);

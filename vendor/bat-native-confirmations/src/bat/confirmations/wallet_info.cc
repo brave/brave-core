@@ -9,16 +9,20 @@ namespace confirmations {
 
 WalletInfo::WalletInfo() :
     payment_id(""),
-    public_key("") {}
+    private_key("") {}
 
 WalletInfo::WalletInfo(const WalletInfo& info) :
     payment_id(info.payment_id),
-    public_key(info.public_key) {}
+    private_key(info.private_key) {}
 
 WalletInfo::~WalletInfo() = default;
 
 bool WalletInfo::IsValid() {
-  return !payment_id.empty() && !public_key.empty();
+  return !payment_id.empty() && !private_key.empty();
+}
+
+bool WalletInfo::operator==(const WalletInfo& info) const {
+  return (payment_id == info.payment_id && private_key == info.private_key);
 }
 
 }  // namespace confirmations

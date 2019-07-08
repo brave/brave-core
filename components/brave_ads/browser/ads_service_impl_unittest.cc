@@ -93,6 +93,7 @@ class MockRewardsService : public RewardsService {
   MOCK_METHOD1(GetAutoContribute,
       void(brave_rewards::GetAutoContributeCallback));
   MOCK_CONST_METHOD1(SetAutoContribute, void(bool));
+  MOCK_CONST_METHOD0(UpdateAdsRewards, void());
   MOCK_METHOD2(SetTimer, void(uint64_t, uint32_t*));
   MOCK_METHOD1(GetAllBalanceReports,
       void(const brave_rewards::GetAllBalanceReportsCallback&));
@@ -136,8 +137,8 @@ class MockRewardsService : public RewardsService {
       void(brave_rewards::GetRewardsInternalsInfoCallback));
   MOCK_METHOD1(GetAddressesForPaymentId,
       void(const brave_rewards::GetAddressesCallback&));
-  MOCK_METHOD1(GetTransactionHistoryForThisCycle,
-      void(brave_rewards::GetTransactionHistoryForThisCycleCallback));
+  MOCK_METHOD1(GetTransactionHistory,
+      void(brave_rewards::GetTransactionHistoryCallback));
   MOCK_METHOD2(SaveRecurringTip, void(const std::string&, const int));
   MOCK_METHOD2(RefreshPublisher, void(const std::string&,
                                       brave_rewards::RefreshPublisherCallback));

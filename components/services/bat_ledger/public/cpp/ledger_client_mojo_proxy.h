@@ -123,7 +123,7 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
   void SetConfirmationsIsReady(const bool is_ready) override;
 
   void ConfirmationsTransactionHistoryDidChange() override;
-  void OnGrantViaSafetynetCheck(const std::string& nonce) override;
+  void OnGrantViaSafetynetCheck(const std::string& promotionId, const std::string& nonce) override;
 
   void GetExcludedPublishersNumberDB(
       GetExcludedPublishersNumberDBCallback callback) override;

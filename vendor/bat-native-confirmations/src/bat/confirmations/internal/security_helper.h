@@ -22,7 +22,7 @@ class Security {
   static std::string Sign(
       const std::map<std::string, std::string>& headers,
       const std::string& key_id,
-      const std::vector<uint8_t>& public_key);
+      const std::vector<uint8_t>& private_key);
 
   static std::vector<Token> GenerateTokens(const int count);
 

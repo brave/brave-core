@@ -106,7 +106,7 @@ class RewardsServiceImpl : public RewardsService,
       const GetWalletPassphraseCallback& callback) override;
   void GetExcludedPublishersNumber(
       const GetExcludedPublishersNumberCallback& callback) override;
-  void GetGrantViaSafetynetCheck() const override;
+  void GetGrantViaSafetynetCheck(const std::string & promotionId) const override;
   void RecoverWallet(const std::string passPhrase) const override;
   void GetContentSiteList(
       uint32_t start,
@@ -364,7 +364,7 @@ class RewardsServiceImpl : public RewardsService,
                            const std::string& probi) override;
   void OnGrantFinish(ledger::Result result,
                      const ledger::Grant& grant) override;
-  void OnGrantViaSafetynetCheck(const std::string& nonce) override;
+  void OnGrantViaSafetynetCheck(const std::string& promotionId, const std::string& nonce) override;
   void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
   void LoadPublisherState(ledger::LedgerCallbackHandler* handler) override;
   void SaveLedgerState(const std::string& ledger_state,
@@ -401,11 +401,12 @@ class RewardsServiceImpl : public RewardsService,
   void SetPublisherAllowVideos(bool allow) const override;
   void SetUserChangedContribution() const override;
   void SetAutoContribute(bool enabled) const override;
+  void UpdateAdsRewards() const override;
   void SetCatalogIssuers(const std::string& json) override;
   void ConfirmAd(const std::string& json) override;
   void SetConfirmationsIsReady(const bool is_ready) override;
-  void GetTransactionHistoryForThisCycle(
-      GetTransactionHistoryForThisCycleCallback callback) override;
+  void GetTransactionHistory(
+      GetTransactionHistoryCallback callback) override;
   void ConfirmationsTransactionHistoryDidChange() override;
 
   void OnExcludedSitesChanged(const std::string& publisher_id,
@@ -489,8 +490,8 @@ class RewardsServiceImpl : public RewardsService,
   void ShowNotificationTipsPaid(bool ac_enabled);
 
   // Mojo Proxy methods
-  void OnGetTransactionHistoryForThisCycle(
-      GetTransactionHistoryForThisCycleCallback callback,
+  void OnGetTransactionHistory(
+      GetTransactionHistoryCallback callback,
       const std::string& transactions);
   void OnGetAllBalanceReports(
       const GetAllBalanceReportsCallback& callback,
@@ -528,7 +529,7 @@ class RewardsServiceImpl : public RewardsService,
   void FetchGrantAttestationResult(const std::string& lang,
                                 const std::string& payment_id,
                                 bool result, const std::string& result_string);
-  void GrantAttestationResult(bool result, const std::string& result_string);
+  void GrantAttestationResult(const std::string& promotionId, bool result, const std::string& result_string);
   safetynet_check::SafetyNetCheckRunner safetynet_check_runner_;
 #endif
 
