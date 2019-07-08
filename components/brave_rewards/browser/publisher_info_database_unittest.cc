@@ -287,6 +287,92 @@ TEST_F(PublisherInfoDatabaseTest, InsertOrUpdatePublisherInfo) {
   EXPECT_FALSE(info_sql_4.Step());
 }
 
+TEST_F(PublisherInfoDatabaseTest, GetExcludedList) {
+  /**
+   * Good path
+   */
+  base::ScopedTempDir temp_dir;
+  base::FilePath db_file;
+  CreateTempDatabase(&temp_dir, &db_file);
+
+  std::string excluded_id = "ABCD";
+  bool excluded_verified = false;
+  ledger::PUBLISHER_EXCLUDE excluded  = ledger::PUBLISHER_EXCLUDE::EXCLUDED;
+  std::string excluded_name  = "excluded_publisher";
+  std::string excluded_url  = "https://iamexcluded.com";
+  std::string excluded_provider  = "exclusion";
+  std::string excluded_favicon  = "0";
+
+  std::string included_id = "EFGH";
+  bool included_verified = false;
+  ledger::PUBLISHER_EXCLUDE included  = ledger::PUBLISHER_EXCLUDE::INCLUDED;
+  std::string included_name  = "included_publisher";
+  std::string included_url  = "https://iamincluded.com";
+  std::string included_provider  = "inclusion";
+  std::string included_favicon  = "1";
+
+  /**
+   * Insert Excluded Publisher
+   */
+  ledger::PublisherInfo info;
+  info.id = excluded_id;
+  info.verified = excluded_verified;
+  info.excluded = excluded;
+  info.name = excluded_name;
+  info.url = excluded_url;
+  info.provider = excluded_provider;
+  info.favicon_url = excluded_favicon;
+
+  bool success = publisher_info_database_->InsertOrUpdateActivityInfo(info);
+  EXPECT_TRUE(success);
+
+  /**
+   * Insert Included Publisher
+   */
+  info.id = included_id;
+  info.verified = included_verified;
+  info.excluded = included;
+  info.name = included_name;
+  info.url = included_url;
+  info.provider = included_provider;
+  info.favicon_url = included_favicon;
+
+  success = publisher_info_database_->InsertOrUpdateActivityInfo(info);
+  EXPECT_TRUE(success);
+  /**
+   * Check Excluded List is correct
+   */
+  ledger::PublisherInfoList pub_list;
+  success = publisher_info_database_->GetExcludedList(&pub_list);
+  EXPECT_TRUE(success);
+  EXPECT_EQ(1UL, pub_list.size());
+
+  ASSERT_EQ(pub_list.at(0)->id, excluded_id);
+  ASSERT_EQ(pub_list.at(0)->verified, excluded_verified);
+  ASSERT_EQ(pub_list.at(0)->name, excluded_name);
+  ASSERT_EQ(pub_list.at(0)->url, excluded_url);
+  ASSERT_EQ(pub_list.at(0)->provider, excluded_provider);
+  ASSERT_EQ(pub_list.at(0)->favicon_url, excluded_favicon);
+  pub_list.clear();
+
+  /**
+   * Check Included List is correct
+   */
+  ledger::ActivityInfoFilter filter;
+  filter.excluded = ledger::EXCLUDE_FILTER::FILTER_INCLUDED;
+  success = publisher_info_database_->GetActivityList(0, 0, filter, &pub_list);
+  EXPECT_TRUE(success);
+  EXPECT_EQ(1UL, pub_list.size());
+
+
+  ASSERT_EQ(pub_list.at(0)->id, included_id);
+  ASSERT_EQ(pub_list.at(0)->verified, included_verified);
+  ASSERT_EQ(pub_list.at(0)->name, included_name);
+  ASSERT_EQ(pub_list.at(0)->url, included_url);
+  ASSERT_EQ(pub_list.at(0)->provider, included_provider);
+  ASSERT_EQ(pub_list.at(0)->favicon_url, included_favicon);
+}
+
 TEST_F(PublisherInfoDatabaseTest, InsertOrUpdateActivityInfo) {
   /**
    * Good path
