@@ -40,4 +40,12 @@
 {
   return [self initWith{{struct.name}}:*obj];
 }
+- ({{cpp_namespace}}::{{struct.name}}Ptr)cppObjPtr
+{
+  auto obj = {{cpp_namespace}}::{{struct.name}}::New();
+{%- for field in struct.fields %}
+  obj->{{field.name}} = {{field|objc_to_cpp_assign('self')}};
+{%- endfor %}
+  return obj;
+}
 @end

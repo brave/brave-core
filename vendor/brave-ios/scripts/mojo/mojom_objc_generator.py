@@ -18,6 +18,20 @@ _kind_to_objc_type = {
   mojom.DOUBLE: "double",
 }
 
+_kind_to_nsnumber_getter = {
+  mojom.BOOL:   "boolValue",
+  mojom.INT8:   "charValue",
+  mojom.UINT8:  "unsignedCharValue",
+  mojom.INT16:  "shortValue",
+  mojom.UINT16: "unsignedShortValue",
+  mojom.INT32:  "intValue",
+  mojom.UINT32: "unsignedIntValue",
+  mojom.FLOAT:  "floatValue",
+  mojom.INT64:  "longLongValue",
+  mojom.UINT64: "unsignedLongLongValue",
+  mojom.DOUBLE: "doubleValue",
+};
+
 class Generator(generator.Generator):
   def __init__(self, *args, **kwargs):
     super(Generator, self).__init__(*args, **kwargs)
@@ -36,6 +50,7 @@ class Generator(generator.Generator):
       "objc_property_formatter": self._ObjCPropertyFormatter,
       "objc_enum_formatter": self._ObjCEnumFormatter,
       "cpp_to_objc_assign": self._CppToObjCAssign,
+      "objc_to_cpp_assign": self._ObjCToCppAssign,
     }
     return objc_filters
 
@@ -128,12 +143,90 @@ class Generator(generator.Generator):
     return ''.join(map(lambda p: p.capitalize(), str.split('_')))
 
   def _IsObjCNumberKind(self, kind):
-    return (mojom.IsIntegralKind(kind) or mojom.IsDoubleKind(kind) or
-            mojom.IsFloatKind(kind))
+    return kind in _kind_to_nsnumber_getter
 
   def _CppPtrToObjCTransform(self, kind, obj):
     args = (self.class_prefix, kind.name, kind.name, obj)
     return "[[%s%s alloc] initWith%s:*%s]" % args
+
+  def _ObjCToCppAssign(self, field, obj):
+    kind = field.kind
+    accessor = "%s.%s" % (obj, self._ObjCPropertyFormatter(field.name))
+
+    if self._IsObjCNumberKind(kind):
+      return accessor
+    if kind in self.module.structs:
+      return "%s.cppObjPtr" % accessor
+    if mojom.IsEnumKind(kind):
+      return "static_cast<%s::%s>(%s)" % (self._CppNamespace(), kind.name, accessor)
+    if mojom.IsStringKind(kind):
+      return "%s.UTF8String" % accessor
+    if mojom.IsArrayKind(kind):
+      # Only currently supporting: `[string]`, `[number]`, and `[struct]`
+      array_kind = kind.kind
+      if mojom.IsStringKind(array_kind):
+        return "VectorFromNSArray(%s)" % accessor
+      if self._IsObjCNumberKind(array_kind):
+        return """^{
+          std::vector<%s> array;
+          for (NSNumber *number in %s) {
+            array.push_back(number.%s);
+          }
+          return array;
+        }()""" % (_kind_to_objc_type[array_kind], accessor, _kind_to_nsnumber_getter[array_kind])
+      elif mojom.IsStringKind(array_kind):
+        return """^{
+          std::vector<std::string> array;
+          for (NSString *string in %s) {
+            array.push_back(string.UTF8String);
+          }
+          return array;
+        }()""" % accessor
+      elif array_kind in self.module.structs:
+        return """^{
+            std::vector<%s::%sPtr> array;
+            for (%s%s *obj in %s) {
+              array.push_back(obj.cppObjPtr);
+            }
+            return array;
+          }()""" % (self._CppNamespace(), array_kind.name, self.class_prefix, array_kind.name, accessor)
+      else:
+        raise Exception("Unsupported array kind %s" % array_kind.spec)
+    if mojom.IsMapKind(kind):
+      # Only currently supporting: `{string: string}`, `{string: number}`, and
+      # `{string: struct}`
+      key_kind = kind.key_kind
+      val_kind = kind.value_kind
+      if mojom.IsStringKind(key_kind):
+        if self._IsObjCNumberKind(val_kind):
+          return """^{
+            base::flat_map<std::string, %s> map;
+            for (NSString *key in %s) {
+              map[key.UTF8String] = %s[key].%s;
+            }
+            return map;
+          }()""" % (_kind_to_objc_type[val_kind], accessor, accessor, _kind_to_nsnumber_getter[val_kind])
+        elif mojom.IsStringKind(val_kind):
+          return """^{
+            base::flat_map<std::string, std::string> map;
+            for (NSString *key in %s) {
+              map[key.UTF8String] = %s[key].UTF8String;
+            }
+            return map;
+          }()""" % (accessor, accessor)
+        elif val_kind in self.module.structs:
+          return """^{
+            base::flat_map<std::string, %s::%sPtr> map;
+            for (NSString *key in %s) {
+              map[key.UTF8String] = %s[key].cppObjPtr;
+            }
+            return map;
+          }()""" % (self._CppNamespace(), val_kind.name, accessor, accessor)
+        else:
+          raise Exception("Unsupported dictionary value kind %s" % val_kind.spec)
+      else:
+        raise Exception("Unsupported dictionary key kind %s" % key_kind.spec)
+    return "%s" % accessor
 
   def _CppToObjCAssign(self, field, obj):
     kind = field.kind
@@ -194,13 +287,15 @@ class Generator(generator.Generator):
 
     return "%s" % accessor
 
+  def _CppNamespace(self):
+    return str(self.module.namespace).replace(".", "::")
+
   def _GetJinjaExports(self):
     all_enums = list(self.module.enums)
     for struct in self.module.structs:
       all_enums.extend(struct.enums)
     for interface in self.module.interfaces:
       all_enums.extend(interface.enums)
-    cpp_namespace = str(self.module.namespace).replace(".", "::")
     return {
       "all_enums": all_enums,
       "enums": self.module.enums,
@@ -209,7 +304,7 @@ class Generator(generator.Generator):
       "kinds": self.module.kinds,
       "module": self.module,
       "module_include_path": self.module_include_path,
-      "cpp_namespace": cpp_namespace,
+      "cpp_namespace": self._CppNamespace(),
       "class_prefix": self.class_prefix,
       # "namespaces_as_array": NamespaceToArray(self.module.namespace),
       "structs": self.module.structs,
