@@ -319,6 +319,16 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
     return .delete
   }
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return bookmarksFRC?.fetchedObjects?.count ?? 0
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = super.tableView(tableView, cellForRowAt: indexPath)
+        configureCell(cell, atIndexPath: indexPath)
+        return cell
+    }
   
   func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
     guard let item = bookmarksFRC?.object(at: indexPath) else { return nil }
