@@ -145,6 +145,7 @@ export interface Props {
   onSolution?: (x: number, y: number) => void
   convertProbiToFixed?: (probi: string, place: number) => string
   onVerifyClick?: () => void
+  onDisconnectClick?: () => void
   goToUphold?: () => void
   userName?: string
 }
@@ -400,27 +401,31 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     this.setState({ verificationDetails: !this.state.verificationDetails })
   }
 
-  getVerificationDetails = (
-    userName: string,
-    onVerifyClick: () => void,
-    goToUphold?: () => void
-  ) => {
+  onDetailsLinkClicked = (action?: () => void) => {
+    if (action) {
+      action()
+    }
+    this.toggleVerificationDetails()
+  }
+
+  getVerificationDetails = () => {
+    const { goToUphold, userName, onDisconnectClick } = this.props
 
     return (
       <WalletPopup
         onClose={this.toggleVerificationDetails}
-        {...{ userName }}
+        userName={userName || ''}
       >
         {
           <StyledDialogList>
             <li>
-              <StyledLink onClick={goToUphold} target={'_blank'}>
+              <StyledLink onClick={this.onDetailsLinkClicked.bind(this, goToUphold)} target={'_blank'}>
                 {getLocale('walletGoToUphold')}
               </StyledLink>
             </li>
             <li>
-              <StyledLink onClick={onVerifyClick}>
-                {getLocale('walletReconnect')}
+              <StyledLink onClick={this.onDetailsLinkClicked.bind(this, onDisconnectClick)}>
+                {getLocale('walletDisconnect')}
               </StyledLink>
             </li>
           </StyledDialogList>
@@ -537,9 +542,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       notification,
       isMobile,
       convertProbiToFixed,
-      userName,
       onVerifyClick,
-      goToUphold
+      onDisconnectClick
     } = this.props
 
     const hasGrants = this.hasGrants(grants)
@@ -555,6 +559,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
     }
 
     const walletVerified = walletState === 'verified' || walletState === 'disconnected_verified'
+    const connectedVerified = walletState === 'verified'
 
     return (
       <>
@@ -586,8 +591,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
               !notification
                 ? <>
                   {
-                    this.state.verificationDetails && userName && onVerifyClick
-                      ? this.getVerificationDetails(userName, onVerifyClick, goToUphold)
+                    this.state.verificationDetails && connectedVerified && onDisconnectClick
+                      ? this.getVerificationDetails()
                       : null
                   }
                   {
@@ -624,7 +629,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
                         <StyledBalanceUnavailable>{getLocale('balanceUnavailable')}</StyledBalanceUnavailable>
                         <StyleGrantButton>
                           <Button
-                            text={getLocale('upholdReconnect')}
+                            text={getLocale('reconnectWallet')}
                             size={'small'}
                             type={'subtle'}
                             level={'secondary'}
@@ -690,7 +695,7 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
           </StyledContent>
           {
             showCopy
-              ? <StyledCopy connected={walletVerified}>
+              ? <StyledCopy connected={connectedVerified}>
                 {
                   walletVerified
                     ? <>
