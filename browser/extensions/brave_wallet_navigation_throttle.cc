@@ -40,7 +40,7 @@ BraveWalletNavigationThrottle::WillStartRequest() {
   if (url.SchemeIs(content::kChromeUIScheme) &&
       url.host() == ethereum_remote_client_host) {
     auto* registry = ExtensionRegistry::Get(web_contents->GetBrowserContext());
-    if (!registry->enabled_extensions().GetByID(
+    if (!registry->ready_extensions().GetByID(
           ethereum_remote_client_extension_id)) {
       resume_pending = true;
       extensions::ExtensionService* service =

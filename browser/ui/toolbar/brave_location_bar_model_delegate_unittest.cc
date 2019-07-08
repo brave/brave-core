@@ -6,9 +6,13 @@
 #include "brave/browser/ui/toolbar/brave_location_bar_model_delegate.h"
 
 #include "base/strings/utf_string_conversions.h"
-#include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
+#include "extensions/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "brave/common/extensions/extension_constants.h"
+#endif
 
 using BraveLocationBarModelDelegateTest = testing::Test;
 

@@ -33,7 +33,6 @@
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
 #include "brave/components/services/brave_content_packaged_service_overlay_manifest.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "brave/browser/extensions/brave_wallet_navigation_throttle.h"
 #include "chrome/browser/content_settings/tab_specific_content_settings.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_io_data.h"
@@ -67,6 +66,7 @@ using content::WebContents;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
+#include "extensions/browser/extension_registry.h"
 using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
@@ -79,9 +79,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/browser/extensions/brave_component_loader.h"
-#include "chrome/browser/extensions/extension_service.h"
-#include "extensions/browser/extension_system.h"
+#include "brave/browser/extensions/brave_wallet_navigation_throttle.h"
 #endif
 
 namespace {
@@ -357,14 +355,11 @@ bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   if (url->SchemeIs(content::kChromeUIScheme) &&
       url->host() == ethereum_remote_client_host) {
-    if (browser_context) {
-      extensions::ExtensionService* service =
-        extensions::ExtensionSystem::Get(browser_context)->extension_service();
-      extensions::ComponentLoader* loader = service->component_loader();
-      if (loader->Exists(ethereum_remote_client_extension_id)) {
-        *url = GURL(ethereum_remote_client_base_url);
-        return true;
-      }
+    auto* registry = extensions::ExtensionRegistry::Get(browser_context);
+    if (registry->ready_extensions().GetByID(
+        ethereum_remote_client_extension_id)) {
+      *url = GURL(ethereum_remote_client_base_url);
+      return true;
     }
   }
 #endif

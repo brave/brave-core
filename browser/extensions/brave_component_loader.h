@@ -9,6 +9,7 @@
 #include <string>
 
 #include "base/files/file_path.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -29,8 +30,10 @@ class BraveComponentLoader : public ComponentLoader {
   // platforms this |skip_session_components| is expected to be unset.
   void AddDefaultComponentExtensions(bool skip_session_components) override;
   void OnComponentRegistered(std::string extension_id);
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
   void AddEthereumRemoteClientExtension();
-  void RemovEthereumRemoteClientExtension();
+#endif
   void OnComponentReady(std::string extension_id,
     bool allow_file_access,
     const base::FilePath& install_dir,

@@ -1,4 +1,5 @@
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//build/config/locales.gni")
 import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/grit_rule.gni")
@@ -46,7 +47,6 @@ repack("resources") {
     ":static_resources",
     "//brave/components/brave_adblock_ui:generated_resources",
     "//brave/components/brave_new_tab_ui:generated_resources",
-    "//brave/components/brave_wallet_ui:generated_resources",
     "//brave/components/brave_welcome_ui:generated_resources",
   ]
 
@@ -55,8 +55,16 @@ repack("resources") {
     "$root_gen_dir/brave/components/brave_adblock/resources/brave_adblock_generated.pak",
     "$root_gen_dir/brave/components/brave_new_tab/resources/brave_new_tab_generated.pak",
     "$root_gen_dir/brave/components/brave_welcome/resources/brave_welcome_generated.pak",
-    "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_generated.pak",
   ]
+
+  if (brave_wallet_enabled) {
+    deps += [
+      "//brave/components/brave_wallet_ui:generated_resources",
+    ]
+    sources += [
+      "$root_gen_dir/brave/components/brave_wallet/resources/brave_wallet_generated.pak",
+    ]
+  }
 
   output = "$root_gen_dir/components/brave_components_resources.pak"
 }

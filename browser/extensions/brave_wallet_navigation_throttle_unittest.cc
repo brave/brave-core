@@ -79,7 +79,7 @@ class BraveWalletNavigationThrottleUnitTest
                      .SetID(ethereum_remote_client_extension_id)
                      .Build();
     ASSERT_TRUE(extension_);
-    ExtensionRegistry::Get(browser_context())->AddEnabled(extension_.get());
+    ExtensionRegistry::Get(browser_context())->AddReady(extension_.get());
   }
 
  private:
