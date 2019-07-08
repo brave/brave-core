@@ -12,6 +12,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void (^BATFaviconFetcher)(NSURL *pageURL, void (^completion)(NSURL * _Nullable faviconURL));
+
 /// The error domain for ledger related errors
 extern NSString * const BATBraveLedgerErrorDomain NS_SWIFT_NAME(BraveLedgerErrorDomain);
 
@@ -21,6 +23,8 @@ NS_SWIFT_NAME(BraveLedger)
 @interface BATBraveLedger : NSObject
 
 @property (nonatomic, weak) BATBraveAds *ads;
+
+@property (nonatomic, copy, nullable) BATFaviconFetcher faviconFetcher;
 
 /// Create a brave ledger that will read and write its state to the given path
 - (instancetype)initWithStateStoragePath:(NSString *)path;
@@ -65,7 +69,7 @@ NS_SWIFT_NAME(BraveLedger)
 
 /// Recover the users wallet using their passphrase
 - (void)recoverWalletUsingPassphrase:(NSString *)passphrase
-                          completion:(nullable void (^)(NSError *_Nullable))completion;
+                          completion:(nullable void (^)(NSError * _Nullable))completion;
 
 /// The wallet's addresses. nil if the wallet has not been created yet
 @property (nonatomic, readonly, nullable) NSString *BATAddress;

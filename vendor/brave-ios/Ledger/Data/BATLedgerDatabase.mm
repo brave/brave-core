@@ -6,6 +6,7 @@
 
 #import "DataController.h"
 #import "CoreDataModels.h"
+#import "bat/ledger/publisher_info.h"
 
 NS_INLINE DataControllerCompletion _Nullable 
 WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable completion) {
@@ -150,7 +151,11 @@ WriteToDataControllerCompletion(BATLedgerDatabaseWriteCompletion _Nullable compl
     pi.name = info.name;
     pi.url = [NSURL URLWithString:info.url];
     pi.provider = info.provider;
-    pi.faviconURL = [NSURL URLWithString:info.faviconUrl];
+    if ([info.faviconUrl isEqualToString:[NSString stringWithUTF8String:ledger::kClearFavicon]]) {
+      pi.faviconURL = nil;
+    } else {
+      pi.faviconURL = [NSURL URLWithString:info.faviconUrl];
+    }
   } completion:WriteToDataControllerCompletion(completion)];
 }
 

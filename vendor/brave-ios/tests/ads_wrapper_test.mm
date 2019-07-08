@@ -28,43 +28,47 @@
 @end
 
 @interface AdsWrapperTest : XCTestCase
-@property (nonatomic) BATBraveRewards *rewards;
+@property (nonatomic) BATBraveAds *ads;
 @end
 
 @implementation AdsWrapperTest
 
+- (NSString *)stateStoragePath
+{
+  return [NSTemporaryDirectory() stringByAppendingPathComponent:@"ads"];
+}
+
 - (void)setUp
 {
-  self.rewards = [[BATBraveRewards alloc] initWithConfiguration:
-                  BATBraveRewardsConfiguration.testingConfiguration];
-  [self.rewards reset];
+  [BATBraveAds setDebug:YES];
+  [BATBraveAds setTesting:YES];
+  const auto path = [self stateStoragePath];
+  [[NSFileManager defaultManager] removeItemAtPath:path error:nil];
+  self.ads = [[BATBraveAds alloc] initWithStateStoragePath:path];
 }
 
 - (void)tearDown
 {
-  self.rewards = nil;
+  self.ads = nil;
 }
 
 - (void)testEnabledByDefault
 {
-  const auto ads = self.rewards.ads;
-  XCTAssertTrue(ads.isEnabled, "Brave Ads should be enabled by default on iOS");
+  XCTAssertTrue(self.ads.isEnabled, "Brave Ads should be enabled by default on iOS");
 }
 
 - (void)testPreferencePersistance
 {
   const auto expect = [self expectationWithDescription:@"File IO"];
-  BATBraveAds *ads = self.rewards.ads;
-  ads.enabled = NO;
-  ads.numberOfAllowableAdsPerDay = 10;
-  ads.numberOfAllowableAdsPerHour = 6;
+  self.ads.enabled = NO;
+  self.ads.numberOfAllowableAdsPerDay = 10;
+  self.ads.numberOfAllowableAdsPerHour = 6;
   
   dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-    BATBraveAds *secondAds = [[BATBraveRewards alloc] initWithConfiguration:
-                              BATBraveRewardsConfiguration.testingConfiguration].ads;
-    XCTAssertEqual(ads.enabled, secondAds.enabled);
-    XCTAssertEqual(ads.numberOfAllowableAdsPerDay, secondAds.numberOfAllowableAdsPerDay);
-    XCTAssertEqual(ads.numberOfAllowableAdsPerHour, secondAds.numberOfAllowableAdsPerHour);
+    BATBraveAds *secondAds = [[BATBraveAds alloc] initWithStateStoragePath:[self stateStoragePath]];
+    XCTAssertEqual(self.ads.enabled, secondAds.enabled);
+    XCTAssertEqual(self.ads.numberOfAllowableAdsPerDay, secondAds.numberOfAllowableAdsPerDay);
+    XCTAssertEqual(self.ads.numberOfAllowableAdsPerHour, secondAds.numberOfAllowableAdsPerHour);
     
     [expect fulfill];
   });
@@ -78,8 +82,8 @@
   const auto mockDelegate = [[_MockAdsDelegate alloc] initWithShowNotification:^(BATAdsNotification *) {
     [expect fulfill];
   }];
-  self.rewards.ads.delegate = mockDelegate;
-  [self.rewards.ads serveSampleAd];
+  self.ads.delegate = mockDelegate;
+  [self.ads serveSampleAd];
   
   [self waitForExpectations:@[expect] timeout: 4.0];
 }

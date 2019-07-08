@@ -1183,7 +1183,17 @@ BATLedgerBridge(BOOL,
 
 - (void)fetchFavIcon:(const std::string &)url faviconKey:(const std::string &)favicon_key callback:(ledger::FetchIconCallback)callback
 {
-  // TODO: Should probably call to client to get this
+  if (!self.faviconFetcher) {
+    callback(NO, std::string());
+    return;
+  }
+  const auto pageURL = [NSURL URLWithString:[NSString stringWithUTF8String:url.c_str()]];
+  self.faviconFetcher(pageURL, ^(NSURL * _Nullable faviconURL) {
+    dispatch_async(dispatch_get_main_queue(), ^{
+      callback(faviconURL != nil,
+               faviconURL.absoluteString.UTF8String);
+    });
+  });
 }
 
 #pragma mark - Logging

@@ -63,15 +63,16 @@
   [self setupLedgerAndAds];
 }
 
-- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration
+- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration delegate:(id<BATBraveRewardsDelegate>)delegate
 {
-  return [self initWithConfiguration:configuration ledgerClass:nil adsClass:nil];
+  return [self initWithConfiguration:configuration delegate:delegate ledgerClass:nil adsClass:nil];
 }
 
-- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration ledgerClass:(nullable Class)ledgerClass adsClass:(nullable Class)adsClass
+- (instancetype)initWithConfiguration:(BATBraveRewardsConfiguration *)configuration delegate:(id<BATBraveRewardsDelegate>)delegate ledgerClass:(nullable Class)ledgerClass adsClass:(nullable Class)adsClass
 {
   if ((self = [super init])) {
     self.configuration = configuration;
+    self.delegate = delegate;
     self.ledgerClass = ledgerClass ?: BATBraveLedger.class;
     self.adsClass = adsClass ?: BATBraveAds.class;
 
@@ -100,6 +101,10 @@
   NSString *ledgerStorage = [self.configuration.stateStoragePath stringByAppendingPathComponent:@"ledger"];
   self.ledger = [[self.ledgerClass alloc] initWithStateStoragePath:ledgerStorage];
   self.ledger.ads = self.ads;
+  __auto_type __weak weakSelf = self;
+  self.ledger.faviconFetcher = ^(NSURL *pageURL, void (^completion)(NSURL * _Nullable)) {
+    [weakSelf.delegate faviconURLFromPageURL:pageURL completion:completion];
+  };
 }
 
 #pragma clang diagnostic push
