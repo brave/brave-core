@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { shallow } from 'enzyme'
-import { SettingsMenu, SettingsWrapper } from 'brave-ui/features/newTab/default'
-import Settings, { Props } from '../../../../components/brave_new_tab_ui/components/newTab/settings'
+import { SettingsMenu, SettingsWrapper } from '../../../../components/brave_new_tab_ui/components/default'
+import Settings, { Props } from '../../../../components/brave_new_tab_ui/containers/newTab/settings'
 
 describe('settings component tests', () => {
   const mockProps: Props = {
