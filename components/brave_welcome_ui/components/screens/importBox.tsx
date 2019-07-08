@@ -12,6 +12,7 @@ import { WelcomeImportImage } from 'brave-ui/features/welcome/images'
 
 // Utils
 import { getLocale } from '../../../common/locale'
+import { getSelectedBrowserProfile, getSourceBrowserProfileIndex, isValidBrowserProfiles } from '../../welcomeUtils'
 
 export interface Props {
   index: number
@@ -20,7 +21,7 @@ export interface Props {
   onClick: (sourceBrowserProfileIndex: number) => void
 }
 
-interface State {
+export interface State {
   selectedBrowserProfile: Welcome.BrowserProfile | null
 }
 
@@ -38,20 +39,14 @@ export default class ImportBox extends React.PureComponent<Props, State> {
       return
     }
 
-    let selectedEntry = this.props.browserProfiles.find((entry: Welcome.BrowserProfile) => {
-      return entry.index.toString() === event.target.value
-    })
+    const selectedProfile = getSelectedBrowserProfile(event.target.value, this.props.browserProfiles)
+    selectedProfile && this.setState({ selectedBrowserProfile: selectedProfile })
 
-    if (selectedEntry) {
-      this.setState({ selectedBrowserProfile: selectedEntry })
-    }
   }
 
   onHandleImport = () => {
     const { onClick } = this.props
-    let sourceBrowserProfileIndex: number
-    sourceBrowserProfileIndex = this.state && this.state.selectedBrowserProfile && this.state.selectedBrowserProfile.index || 0
-    onClick(sourceBrowserProfileIndex)
+    onClick(getSourceBrowserProfileIndex(this.state))
   }
 
   render () {
@@ -73,7 +68,7 @@ export default class ImportBox extends React.PureComponent<Props, State> {
             >
               <option key={0} value=''>{getLocale('importFrom')}</option>
               {
-                (browserProfiles && Array.isArray(browserProfiles) && browserProfiles.length > 0)
+                isValidBrowserProfiles
                 ? browserProfiles.map((browserProfile, index) =>
                   <option
                     key={index + 1}

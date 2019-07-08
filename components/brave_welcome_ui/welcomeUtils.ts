@@ -4,6 +4,9 @@
 
 import { Dispatch } from 'redux'
 import { getSearchEngineProvidersSuccess, getBrowserProfilesSuccess } from './actions/welcome_actions'
+import { State as ImportBoxState } from '../brave_welcome_ui/components/screens/importBox'
+
+// Search box
 
 export const getSearchEngineProviders = () => {
   return (dispatch: Dispatch) => {
@@ -16,6 +19,8 @@ export const getSearchEngineProviders = () => {
       })
   }
 }
+
+// Import Box
 
 export const getValidBrowserProfiles = (browserProfiles: Array<Welcome.BrowserProfile>): Array<Welcome.BrowserProfile> => {
   const result = browserProfiles.reduce((filteredProfiles, profile) =>
@@ -35,3 +40,16 @@ export const getBrowserProfiles = () => {
       })
   }
 }
+
+export const getSelectedBrowserProfile = (profileIndex: string, browserProfiles: Array<Welcome.BrowserProfile>) => {
+  return browserProfiles.find((profile: Welcome.BrowserProfile) =>
+    profile.index.toString() === profileIndex
+  )
+}
+
+export const getSourceBrowserProfileIndex = (state: ImportBoxState): number => {
+  return state && state.selectedBrowserProfile && state.selectedBrowserProfile.index || 0
+}
+
+export const isValidBrowserProfiles = (browserProfiles: Array<Welcome.BrowserProfile>) =>
+  browserProfiles && Array.isArray(browserProfiles) && browserProfiles.length > 0
