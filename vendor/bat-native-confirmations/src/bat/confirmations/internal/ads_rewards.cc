@@ -52,6 +52,8 @@ void AdsRewards::Update(
     return;
   }
 
+  CancelRetry();
+
   BLOG(INFO) << "Fetch ads rewards";
   GetPaymentBalance();
 }
@@ -101,7 +103,7 @@ bool AdsRewards::OnTimer(const uint32_t timer_id) {
       << "  retry_timer_id_: " << std::to_string(retry_timer_id_) << std::endl;
 
   if (timer_id == retry_timer_id_) {
-    Retry();
+    GetPaymentBalance();
 
     return true;
   }
@@ -239,14 +241,13 @@ void AdsRewards::OnAdsRewards(const Result result) {
 
   BLOG(INFO) << "Successfully retrieved ads rewards";
 
+  retry_timer_id_ = 0;
   next_retry_backoff_count_ = 0;
 
   Update();
 }
 
 void AdsRewards::Retry() {
-  CancelRetry();
-
   // Overflow happens only if we have already backed off so many times our
   // expected waiting time is longer than the lifetime of the universe
   auto start_timer_in = 1 * base::Time::kSecondsPerMinute;
@@ -272,6 +273,8 @@ void AdsRewards::CancelRetry() {
 
   confirmations_client_->KillTimer(retry_timer_id_);
   retry_timer_id_ = 0;
+
+  next_retry_backoff_count_ = 0;
 }
 
 bool AdsRewards::IsRetrying() const {
