@@ -6,7 +6,7 @@
 #include "brave/browser/brave_profile_prefs.h"
 
 #include "brave/browser/themes/brave_theme_service.h"
-#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
@@ -30,6 +30,10 @@
 #include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
 #endif
 
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service.h"
+#endif
+
 namespace brave {
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -44,7 +48,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
   registry->RegisterBooleanPref(kHideBraveRewardsButton, false);
 
+#if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterProfilePrefs(registry);
+#endif
 
   registry->RegisterBooleanPref(kWidevineOptedIn, false);
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)

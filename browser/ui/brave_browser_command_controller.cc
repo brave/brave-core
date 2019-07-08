@@ -6,6 +6,7 @@
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
@@ -93,7 +94,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
       UpdateCommandForBraveSync();
   }
   UpdateCommandForBraveAdblock();
+#if BUILDFLAG(ENABLE_TOR)
   UpdateCommandForTor();
+#endif
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {

@@ -11,7 +11,6 @@
 
 #include "base/bind.h"
 #include "base/task/post_task.h"
-#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/tor/tor_launcher_service_observer.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
@@ -124,12 +123,10 @@ TorProfileServiceImpl::TorProfileServiceImpl(Profile* profile)
   tor_launcher_factory_ = TorLauncherFactory::GetInstance();
   tor_launcher_factory_->AddObserver(this);
 
-#if BUILDFLAG(ENABLE_TOR)
   if (GetTorPid() < 0) {
     tor::TorConfig config(GetTorExecutablePath(), GetTorProxyURI());
     LaunchTor(config);
   }
-#endif
 }
 
 TorProfileServiceImpl::~TorProfileServiceImpl() {
