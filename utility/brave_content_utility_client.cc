@@ -36,12 +36,15 @@ BraveContentUtilityClient::~BraveContentUtilityClient() = default;
 
 namespace {
 
+#if BUILDFLAG(BRAVE_ADS_ENABLED) || BUILDFLAG(BRAVE_REWARDS_ENABLED) || \
+    BUILDFLAG(ENABLE_TOR)
 void RunServiceAsyncThenTerminateProcess(
     std::unique_ptr<service_manager::Service> service) {
   service_manager::Service::RunAsyncUntilTermination(
       std::move(service),
       base::BindOnce([] { content::UtilityThread::Get()->ReleaseProcess(); }));
 }
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
 std::unique_ptr<service_manager::Service> CreateTorLauncherService(
