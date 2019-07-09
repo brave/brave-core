@@ -46,6 +46,7 @@ Polymer({
   },
 
   onMediaRouterEnabledChange_: function() {
+    this.browserProxy_.setMediaRouterEnabled(this.$.mediaRouterEnabled.checked);
     this.$.restartButton.onclick = this.browserProxy_.restartBrowser
     this.$.needsRestart.hidden = false;
   },

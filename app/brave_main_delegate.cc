@@ -139,10 +139,6 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
   command_line.AppendSwitch(switches::kNoPings);
   command_line.AppendSwitchASCII(switches::kExtensionsInstallVerification,
       switches::kExtensionContentVerificationEnforceStrict);
-  // This only enables media router feature. But, media router will work when
-  // media router prefs are true.
-  command_line.AppendSwitchASCII(switches::kLoadMediaRouterComponentExtension,
-                                 "1");
 
   // Enabled features.
   const std::unordered_set<const char*> enabled_features = {

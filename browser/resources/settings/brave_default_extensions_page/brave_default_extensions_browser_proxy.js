@@ -28,6 +28,9 @@ cr.define('settings', function() {
     setIPFSCompanionEnabled(value) {
       chrome.send('setIPFSCompanionEnabled', [value]);
     }
+    setMediaRouterEnabled(value) {
+      chrome.send('setMediaRouterEnabled', [value]);
+    }
     restartBrowser() {
       chrome.send('restartBrowser');
     }

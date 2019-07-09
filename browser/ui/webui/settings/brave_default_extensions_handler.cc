@@ -16,13 +16,18 @@
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
+#include "chrome/browser/media/router/media_router_feature.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
+#include "chrome/common/chrome_switches.h"
 #include "components/flags_ui/flags_ui_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
+#include "extensions/common/feature_switch.h"
+
+using extensions::FeatureSwitch;
 
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
   : weak_ptr_factory_(this) {
@@ -45,6 +50,11 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       "setIPFSCompanionEnabled",
       base::BindRepeating(
         &BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled,
+        base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "setMediaRouterEnabled",
+      base::BindRepeating(
+        &BraveDefaultExtensionsHandler::SetMediaRouterEnabled,
         base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       flags_ui::kRestartBrowser,
@@ -120,6 +130,17 @@ void BraveDefaultExtensionsHandler::OnInstallResult(
       result != extensions::webstore_install::Result::LAUNCH_IN_PROGRESS) {
     profile_->GetPrefs()->SetBoolean(pref_name, false);
   }
+}
+
+void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
+    const base::ListValue* args) {
+  CHECK_EQ(args->GetSize(), 1U);
+  CHECK(profile_);
+  bool enabled;
+  args->GetBoolean(0, &enabled);
+
+  auto* current_command_line = base::CommandLine::ForCurrentProcess();
+  current_command_line->AppendSwitchASCII(switches::kLoadMediaRouterComponentExtension, enabled ? "1": "0");
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
