@@ -117,6 +117,8 @@ export default class ScriptsControls extends React.PureComponent<Props, State> {
   onChangeScriptsBlockedEnabled = (event: React.ChangeEvent<HTMLInputElement>) => {
     const shouldBlockJavaScript = getToggleStateViaEventTarget(event)
     this.props.blockJavaScript(shouldBlockJavaScript)
+
+    console.log("shouldBlockJavaScript:: "+shouldBlockJavaScript)
   }
 
   onClickAllowScriptsOnce = () => {

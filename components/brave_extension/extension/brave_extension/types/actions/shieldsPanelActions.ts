@@ -95,6 +95,17 @@ export interface HttpsEverywhereToggled {
   (setting: BlockOptions): HttpsEverywhereToggledReturn
 }
 
+// speedreader
+interface SpeedReaderToggledReturn {
+  type: types.SPEEDREADER_TOGGLED,
+  setting: BlockOptions
+}
+
+ export interface SpeedReaderToggled {
+   (setting: BlockOptions): SpeedReaderToggledReturn
+ }
+//
+
 interface BlockJavaScriptReturn {
   type: types.JAVASCRIPT_TOGGLED,
   setting: BlockJSOptions
@@ -180,4 +191,5 @@ export type shieldPanelActions =
   SetAllScriptsBlockedCurrentStateReturn |
   SetFinalScriptsBlockedStateReturn |
   SetAdvancedViewFirstAccessReturn |
-  ToggleAdvancedViewReturn
+  ToggleAdvancedViewReturn |
+  SpeedReaderToggledReturn

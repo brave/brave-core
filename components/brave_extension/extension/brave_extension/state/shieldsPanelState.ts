@@ -64,7 +64,8 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
     adsBlockedResources: [],
     trackersBlockedResources: [],
     httpsRedirectedResources: [],
-    fingerprintingBlockedResources: []
+    fingerprintingBlockedResources: [],
+    speedreader: 'allow',
   },
     ...tabs[tabId],
     ...details
@@ -73,6 +74,7 @@ export const updateTabShieldsData: shieldState.UpdateTabShieldsData = (state, ta
   return state
 }
 
+//TODO add speedreader resource blocked info
 export const updateResourceBlocked: shieldState.UpdateResourceBlocked = (state, tabId, blockType, subresource) => {
   const tabs: shieldState.Tabs = { ...state.tabs }
   tabs[tabId] = {

@@ -7,9 +7,11 @@ import * as React from 'react'
 // Group Components
 import AdsTrackersControl from './controls/adsTrackersControl'
 import HTTPSUpgradesControl from './controls/httpsUpgradesControl'
+import SpeedReaderControl from './controls/SpeedReaderControl'
+
 
 // Types
-import { BlockAdsTrackers, HttpsEverywhereToggled } from '../../types/actions/shieldsPanelActions'
+import { BlockAdsTrackers, HttpsEverywhereToggled, SpeedReaderToggled } from '../../types/actions/shieldsPanelActions'
 import { BlockOptions } from '../../types/other/blockTypes'
 
 interface CommonProps {
@@ -36,7 +38,12 @@ interface HTTPSUpgradesProps {
   httpsEverywhereToggled: HttpsEverywhereToggled
 }
 
-export type Props = CommonProps & AdsTrackersProps & HTTPSUpgradesProps
+interface SpeedReaderProps {
+  speedreader: BlockOptions,
+  speedReaderToggled: SpeedReaderToggled
+}
+
+export type Props = CommonProps & AdsTrackersProps & HTTPSUpgradesProps & SpeedReaderProps
 
 export default class InterfaceControls extends React.PureComponent<Props, {}> {
   get commonProps (): CommonProps {
@@ -47,6 +54,11 @@ export default class InterfaceControls extends React.PureComponent<Props, {}> {
   render () {
     return (
       <>
+        <SpeedReaderControl
+          {...this.commonProps}
+          speedreader={this.props.speedreader}
+          speedReaderToggled={this.props.speedReaderToggled}
+        />
         <AdsTrackersControl
           {...this.commonProps}
           ads={this.props.ads}

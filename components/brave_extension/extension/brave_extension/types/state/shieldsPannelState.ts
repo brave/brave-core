@@ -28,6 +28,7 @@ export interface Tab {
   trackersBlockedResources: Array<string>
   httpsRedirectedResources: Array<string>
   fingerprintingBlockedResources: Array<string>
+  speedreader: BlockOptions
 }
 
 export interface Tabs {
@@ -69,6 +70,10 @@ export interface UpdatePersistentData {
 export interface UpdateActiveTab {
   (state: State, windowId: number, tabId: number): State
 }
+
+// export interface toggleSpeedReader {
+//   (state: State, tabId: number): State
+// }
 
 export interface RemoveWindowInfo {
   (state: State, windowId: number): State

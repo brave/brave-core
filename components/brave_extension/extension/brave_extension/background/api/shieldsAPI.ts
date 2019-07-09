@@ -31,11 +31,13 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
     chrome.braveShields.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING } }),
     chrome.braveShields.plugins.getAsync({ primaryUrl: origin, secondaryUrl: 'https://firstParty/*', resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_FINGERPRINTING } }),
     chrome.braveShields.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES } }),
-    chrome.braveShields.plugins.getAsync({ primaryUrl: origin, secondaryUrl: 'https://firstParty/', resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES } })
+    chrome.braveShields.plugins.getAsync({ primaryUrl: origin, secondaryUrl: 'https://firstParty/', resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_COOKIES } }),
+    chrome.braveShields.plugins.getAsync({ primaryUrl: origin, resourceIdentifier: { id: resourceIdentifiers.RESOURCE_IDENTIFIER_SPEEDREADER } }),
   ]).then((details) => {
     const fingerprinting = details[5].setting !== details[6].setting ? 'block_third_party' : details[5].setting
     const cookies = details[7].setting !== details[8].setting ? 'block_third_party' : details[7].setting
     const braveShields = isHttpOrHttps(origin) ? details[0].setting : 'block'
+    const speedreader = isHttpOrHttps(origin) ? details[9].setting : 'allow'
     return {
       url: url.href,
       origin,
@@ -47,7 +49,8 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       httpUpgradableResources: details[3].setting,
       javascript: details[4].setting,
       fingerprinting,
-      cookies
+      cookies,
+      speedreader: speedreader
     }
   }).catch(() => {
     return {
@@ -60,7 +63,8 @@ export const getShieldSettingsForTabData = (tabData?: chrome.tabs.Tab) => {
       trackers: 0,
       httpUpgradableResources: 0,
       javascript: 0,
-      fingerprinting: 0
+      fingerprinting: 0,
+      speedreader: 'allow'
     }
   })
 }
@@ -84,6 +88,7 @@ export const requestShieldPanelData = (tabId: number) =>
   getTabData(tabId)
     .then(getShieldSettingsForTabData)
     .then((details: ShieldDetails) => {
+      // alert("Shield details:" + JSON.stringify(details));
       actions.shieldsPanelDataUpdated(details)
     })
 
@@ -156,6 +161,20 @@ export const setAllowHTTPUpgradableResources = (origin: string, setting: BlockOp
   })
 }
 
+/** 
+SpeedReader
+**/
+export const setEnableSpeedReader = (origin: string, setting: BlockOptions) => {
+    const primaryPattern = getPrimaryPatternForOrigin(origin);
+    return chrome.braveShields.plugins.setAsync({
+      primaryPattern: primaryPattern, 
+      resourceIdentifier: {id: resourceIdentifiers.RESOURCE_IDENTIFIER_SPEEDREADER }, 
+      setting,
+      scope: getScope()
+    })
+  }
+
+
 /**
  * Changes the Javascript to be on (allow) or off (block)
  * @param {string} origin the origin of the site to change the setting for
@@ -168,6 +187,7 @@ export const setAllowJavaScript = (origin: string, setting: string) =>
     setting,
     scope: getScope()
   })
+
 
 /**
  * Changes the fingerprinting at origin to be allowed or blocked.

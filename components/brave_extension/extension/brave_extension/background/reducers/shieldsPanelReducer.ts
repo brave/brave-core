@@ -28,7 +28,8 @@ import {
   setAllowCookies,
   toggleShieldsValue,
   requestShieldPanelData,
-  setAllowScriptOriginsOnce
+  setAllowScriptOriginsOnce,
+  setEnableSpeedReader
 } from '../api/shieldsAPI'
 import { reloadTab } from '../api/tabsAPI'
 
@@ -123,7 +124,11 @@ export default function shieldsPanelReducer (
         .updateTabShieldsData(state, tabId, { braveShields: action.setting })
       break
     }
+
+
     case shieldsPanelTypes.HTTPS_EVERYWHERE_TOGGLED: {
+      console.log("reducer:: shieldsPanelTypes.HTTPS_EVERYWHERE_TOGGLED")
+
       const tabData = shieldsPanelState.getActiveTabData(state)
       if (!tabData) {
         console.error('Active tab not found')
@@ -142,6 +147,34 @@ export default function shieldsPanelReducer (
         })
       break
     }
+
+    case shieldsPanelTypes.SPEEDREADER_TOGGLED: {
+      console.log("reducer:: shieldsPanelTypes.SPEEDREADER_TOGGLE")
+
+      const tabData = shieldsPanelState.getActiveTabData(state)
+      if (!tabData) {
+        console.error('Active tab not found')
+        break
+      }
+
+      setEnableSpeedReader(tabData.origin, toggleShieldsValue(action.setting))
+        .then(() => {
+          requestShieldPanelData(shieldsPanelState.getActiveTabId(state))
+          reloadTab(tabData.id, true).catch(() => {
+            console.error('Tab reload was not successful')
+        })
+       })
+       .catch(() => {
+         console.error('Could not enable Speedreader setting')
+       })
+       break
+
+       //const tabId: number = shieldsPanelState.getActiveTabId(state)
+      //state = shieldsPanelState.toggleSpeedReader(state, tabId)
+      //state = shieldsPanelState
+      //  .updateTabShieldsData(state, tabId, { speedReaderToggled: false })
+    }
+
     case shieldsPanelTypes.JAVASCRIPT_TOGGLED: {
       const tabData = shieldsPanelState.getActiveTabData(state)
       if (!tabData) {

@@ -47,6 +47,14 @@ export const httpsEverywhereToggled: actions.HttpsEverywhereToggled = (setting) 
   }
 }
 
+export const speedReaderToggled: actions.SpeedReaderToggled = (setting) => {
+  console.log("shieldPannelActions:: SPEEDREADER TOGGLED_ACTION", setting)
+  return {
+    type: types.SPEEDREADER_TOGGLED,
+    setting
+  }
+}
+
 export const blockJavaScript: actions.BlockJavaScript = (setting) => {
   return {
     type: types.JAVASCRIPT_TOGGLED,
