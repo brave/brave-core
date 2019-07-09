@@ -395,12 +395,11 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS, isChecked);
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS, isChecked);
-                    // TODO the observer to reload a page
-                    // if (null != mMenuObserver) {
-                    //     mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
-                    // }
+                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_ADS, isChecked, false);
+                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS, isChecked, false);
+                    if (null != mMenuObserver) {
+                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+                    }
                 }
             }
         };
@@ -445,11 +444,10 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, isChecked);
-                    // TODO
-                    // if (null != mMenuObserver) {
-                    //     mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
-                    // }
+                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, isChecked, false);
+                    if (null != mMenuObserver) {
+                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+                    }
                 }
             }
         };
@@ -494,11 +492,10 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES, isChecked);
-                    // TODO
-                    // if (null != mMenuObserver) {
-                    //     mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
-                    // }
+                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES, isChecked, false);
+                    if (null != mMenuObserver) {
+                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+                    }
                 }
             }
         };
@@ -543,11 +540,10 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, isChecked);
-                    // TODO
-                    // if (null != mMenuObserver) {
-                    //     mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
-                    // }
+                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, isChecked, false);
+                    if (null != mMenuObserver) {
+                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+                    }
                 }
             }
         };
@@ -592,11 +588,10 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES, isChecked);
-                    // TODO
-                    // if (null != mMenuObserver) {
-                    //     mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
-                    // }
+                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTP_UPGRADABLE_RESOURCES, isChecked, false);
+                    if (null != mMenuObserver) {
+                        mMenuObserver.onMenuTopShieldsChanged(isChecked, false);
+                    }
                 }
             }
         };
@@ -620,17 +615,16 @@ class BraveShieldsMenuAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
               boolean isChecked) {
                 if (0 != mHost.length()) {
-                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS, isChecked);
-                    //app.getShieldsConfig().setJavaScriptBlock(mIncognitoTab, mHost, isChecked, true);
+                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS, isChecked, false);
+                    BraveShieldsContentSettings.setShields(mIncognitoTab, mHost, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, isChecked, true);
                     setupAdsTrackingSwitch(mBraveShieldsAdsTrackingSwitch, true);
                     setupHTTPSEverywhereSwitch(mBraveShieldsHTTPSEverywhereSwitch, true);
                     setupBlockingScriptsSwitch(mBraveShieldsBlockingScriptsSwitch, true);
                     setupBlocking3rdPartyCookiesSwitch(mBraveShieldsBlocking3rdPartyCookiesSwitch, true);
                     setupBlockingFingerprintsSwitch(mBraveShieldsFingerprintsSwitch, true);
-                    // TODO
-                    // if (null != mMenuObserver) {
-                    //     mMenuObserver.onMenuTopShieldsChanged(isChecked, true);
-                    // }
+                    if (null != mMenuObserver) {
+                        mMenuObserver.onMenuTopShieldsChanged(isChecked, true);
+                    }
                 }
             }
         });

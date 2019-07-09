@@ -23,7 +23,11 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeActivity;
 import org.chromium.chrome.browser.appmenu.BraveShieldsMenuHandler;
+import org.chromium.chrome.browser.appmenu.BraveShieldsMenuObserver;
+import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tabmodel.TabModelSelectorTabObserver;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.util.AccessibilityUtil;
 import org.chromium.chrome.browser.util.MathUtils;
@@ -38,6 +42,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   private FrameLayout mShieldsLayout;
   private ChromeActivity mMainActivity;
   private BraveShieldsMenuHandler mBraveShieldsMenuHandler;
+  private TabModelSelectorTabObserver mTabModelSelectorTabObserver;
 
   public BraveToolbarLayout(Context context, AttributeSet attrs) {
       super(context, attrs);
@@ -58,6 +63,119 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           mMainActivity = (ChromeActivity)ref;
       }
       mBraveShieldsMenuHandler = new BraveShieldsMenuHandler(mMainActivity, R.menu.brave_shields_menu);
+      mBraveShieldsMenuHandler.addObserver(new BraveShieldsMenuObserver() {
+          @Override
+          public void onMenuTopShieldsChanged(boolean isOn, boolean isTopShield) {
+              Tab currentTab = mMainActivity.getActivityTab();
+              if (currentTab == null) {
+                  return;
+              }
+              if (isTopShield) {
+                  if (isOn) {
+                      setBraveShieldsColored();
+                  } else {
+                      setBraveShieldsBlackAndWhite();
+                  }
+              }
+              if (currentTab.isLoading()) {
+                  currentTab.stopLoading();
+              }
+              currentTab.reloadIgnoringCache();
+              if (null != mBraveShieldsMenuHandler) {
+                  // Clean the Bravery Panel
+                  mBraveShieldsMenuHandler.updateValues(0, 0, 0, 0);
+              }
+          }
+      });
+  }
+
+  @Override
+  public void setTabModelSelector(TabModelSelector selector) {
+      mTabModelSelectorTabObserver = new TabModelSelectorTabObserver(selector) {
+            @Override
+            public void onPageLoadStarted(Tab tab, String url) {
+                // TODO
+                // ChromeApplication app = (ChromeApplication)ContextUtils.getBaseApplicationContext();
+                // if ((null != app) && (null != app.getShieldsConfig())) {
+                //     app.getShieldsConfig().setTabModelSelectorTabObserver(mTabModelSelectorTabObserver);
+                // }
+                if (mMainActivity.getActivityTab() == tab) {
+                    try {
+                        URL urlCheck = new URL(url);
+                        setBraveShieldsColor(tab.isIncognito(), urlCheck.getHost());
+                    } catch (Exception e) {
+                        setBraveShieldsBlackAndWhite();
+                    }
+                }
+                // TODO
+                // tab.clearBraveShieldsCount();
+            }
+
+            @Override
+            public void onPageLoadFinished(final Tab tab, String url) {
+                // TODO
+                // mAppIndexingUtil.extractCopylessPasteMetadata(tab);
+                if (mMainActivity.getActivityTab() == tab) {
+                    try {
+                        URL urlCheck = new URL(url);
+                        setBraveShieldsColor(tab.isIncognito(), urlCheck.getHost());
+                    } catch (Exception e) {
+                        setBraveShieldsBlackAndWhite();
+                    }
+                }
+            }
+
+            // TODO
+            // @Override
+            // public void onBraveShieldsCountUpdate(String url, int adsAndTrackers, int httpsUpgrades,
+            //         int scriptsBlocked, int fingerprintsBlocked) {
+            //     List<Tab> tabsList = new ArrayList<>();
+            //     for (int i = 0; i < getCurrentTabModel().getCount(); i++) {
+            //         Tab tab = getCurrentTabModel().getTabAt(i);
+            //         if (null != tab) {
+            //             String tabUrl = tab.getUrl();
+            //             if (tabUrl.equals(url)) {
+            //                 tabsList.add(tab);
+            //             }
+            //         }
+            //     }
+            //     if (0 == tabsList.size()) {
+            //         return;
+            //     }
+
+            //     Tab tabToUpdate = null;
+            //     for (Tab currentTab : tabsList) {
+            //         if (null == tabToUpdate) {
+            //             tabToUpdate = currentTab;
+            //             continue;
+            //         }
+            //         if (0 != adsAndTrackers) {
+            //             if (tabToUpdate.getAdsAndTrackers() > currentTab.getAdsAndTrackers()) {
+            //                 tabToUpdate = currentTab;
+            //             }
+            //         } else if (0 != httpsUpgrades) {
+            //             if (tabToUpdate.getHttpsUpgrades() > currentTab.getHttpsUpgrades()) {
+            //                 tabToUpdate = currentTab;
+            //             }
+            //         } else if (0 != scriptsBlocked) {
+            //           if (tabToUpdate.getScriptsBlocked() > currentTab.getScriptsBlocked()) {
+            //               tabToUpdate = currentTab;
+            //           }
+            //         } else if (0 != fingerprintsBlocked) {
+            //           if (tabToUpdate.getFingerprintsBlocked() > currentTab.getFingerprintsBlocked()) {
+            //               tabToUpdate = currentTab;
+            //           }
+            //         }
+            //     }
+            //     if (null != tabToUpdate) {
+            //         tabToUpdate.braveShieldsCountUpdate(adsAndTrackers, httpsUpgrades, scriptsBlocked, fingerprintsBlocked);
+            //         if (getActivityTab() == tabToUpdate) {
+            //             updateBraveryPanelCounts(tabToUpdate.getAdsAndTrackers(), tabToUpdate.getHttpsUpgrades(),
+            //                     tabToUpdate.getScriptsBlocked(), tabToUpdate.getFingerprintsBlocked());
+            //         }
+            //     }
+            // }
+        };
   }
 
   @Override
@@ -80,8 +198,7 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
               URL url = new URL(currentTab.getUrl());
               URL protocolHost = new URL(url.getProtocol(), url.getHost(), "");
 
-              Log.i("TAG", "!!!file == " + url.getProtocol());
-              setBraveShieldsColor(currentTab.isIncognito(), url.getHost());
+              setBraveShieldsColor(currentTab.isIncognito(), protocolHost.toString());
               mBraveShieldsMenuHandler.show(mBraveShieldsButton
                 , currentTab.isIncognito()
                 , protocolHost.toString()
@@ -104,6 +221,12 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
           mBraveShieldsButton.setImageResource(R.drawable.btn_brave_off);
       }
   }
+
+  protected void setBraveShieldsColored() {
+      if (null != mBraveShieldsButton) {
+          mBraveShieldsButton.setImageResource(R.drawable.btn_brave);
+      }
+    }
 
   @Override
   public boolean onLongClick(View v) {
@@ -176,15 +299,11 @@ public abstract class BraveToolbarLayout extends ToolbarLayout implements OnClic
   }
 
   private void setBraveShieldsColor(boolean incognitoTab, String url) {
-      // TODO
-      // ChromeApplication app = (ChromeApplication)ContextUtils.getBaseApplicationContext();
-      //   if (null != app) {
-      //       if (app.getShieldsConfig().isTopShieldsEnabled(incognitoTab, url)) {
-      //           // Set Brave Shields button in color if we have a valid URL
-      //           setBraveShieldsColored();
-      //       } else {
-      //           setBraveShieldsBlackAndWhite();
-      //       }
-      //   }
+      if (BraveShieldsContentSettings.getShields(incognitoTab, url, BraveShieldsContentSettings.RESOURCE_IDENTIFIER_BRAVE_SHIELDS)) {
+          // Set Brave Shields button in color if we have a valid URL
+          setBraveShieldsColored();
+      } else {
+          setBraveShieldsBlackAndWhite();
+      }
   }
 }
