@@ -637,8 +637,7 @@ bool PUBLISHER_STATE_ST::loadFromJson(const std::string& json) {
         d.HasMember("pubs_load_timestamp") &&
         d["pubs_load_timestamp"].IsUint64() &&
         d.HasMember("allow_videos") && d["allow_videos"].IsBool() &&
-        d.HasMember("monthly_balances") && d["monthly_balances"].IsArray() &&
-        d.HasMember("recurring_donation") && d["recurring_donation"].IsArray());
+        d.HasMember("monthly_balances") && d["monthly_balances"].IsArray());
   }
 
   if (!error) {
