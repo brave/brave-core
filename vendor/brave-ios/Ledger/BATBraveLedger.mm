@@ -7,7 +7,6 @@
 
 #import "Records+Private.h"
 #import "ledger.mojom.objc+private.h"
-#import "BATPublisherInfo+Private.h"
 #import "BATActivityInfoFilter+Private.h"
 
 #import "BATBraveLedger.h"
@@ -1220,7 +1219,7 @@ BATLedgerBridge(BOOL,
   }
 
   callback(VectorFromNSArray(publishers, ^ledger::PublisherInfoPtr(BATPublisherInfo *info){
-    return info.cppObj.Clone();
+    return info.cppObjPtr.Clone();
   }), next_record);
 }
 
@@ -1263,7 +1262,7 @@ BATLedgerBridge(BOOL,
       const auto publisherID = [NSString stringWithUTF8String:filter.id.c_str()];
       const auto info = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
       if (info) {
-        callback(ledger::Result::LEDGER_OK, info.cppObj.Clone());
+        callback(ledger::Result::LEDGER_OK, info.cppObjPtr.Clone());
       } else {
         // This part diverges from brave-core. brave-core actually goes into an infinite loop here?
         // Hope im missing something on their side where they don't even call this method unless
@@ -1284,7 +1283,7 @@ BATLedgerBridge(BOOL,
   const auto mediaKey = [NSString stringWithUTF8String:media_key.c_str()];
   const auto publisher = [BATLedgerDatabase mediaPublisherInfoWithMediaKey:mediaKey];
   if (publisher) {
-    callback(ledger::Result::LEDGER_OK, publisher.cppObj.Clone());
+    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr.Clone());
   } else {
     callback(ledger::Result::NOT_FOUND, nullptr);
   }
@@ -1295,7 +1294,7 @@ BATLedgerBridge(BOOL,
   const auto filter_ = [[BATActivityInfoFilter alloc] initWithActivityInfoFilter:filter];
   const auto publisher = [BATLedgerDatabase panelPublisherWithFilter:filter_];
   if (publisher) {
-    callback(ledger::Result::LEDGER_OK, publisher.cppObj.Clone());
+    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr.Clone());
   } else {
     callback(ledger::Result::NOT_FOUND, nullptr);
   }
@@ -1306,7 +1305,7 @@ BATLedgerBridge(BOOL,
   const auto publisherID = [NSString stringWithUTF8String:publisher_key.c_str()];
   const auto publisher = [BATLedgerDatabase publisherInfoWithPublisherID:publisherID];
   if (publisher) {
-    callback(ledger::Result::LEDGER_OK, publisher.cppObj.Clone());
+    callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr.Clone());
   } else {
     callback(ledger::Result::NOT_FOUND, nullptr);
   }
@@ -1368,7 +1367,7 @@ BATLedgerBridge(BOOL,
     const auto publisher = [[BATPublisherInfo alloc] initWithPublisherInfo:*info];
     [BATLedgerDatabase insertOrUpdateActivityInfoFromPublisher:publisher completion:^(BOOL success) {
       if (success) {
-        callback(ledger::Result::LEDGER_OK, publisher.cppObj.Clone());
+        callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr.Clone());
       } else {
         callback(ledger::Result::LEDGER_ERROR, nullptr);
       }
@@ -1421,7 +1420,7 @@ BATLedgerBridge(BOOL,
   if (publisher_info.get() != nullptr) {
     const auto publisher = [[BATPublisherInfo alloc] initWithPublisherInfo:*publisher_info];
     [BATLedgerDatabase insertOrUpdatePublisherInfo:publisher completion:^(BOOL success) {
-      callback(ledger::Result::LEDGER_OK, publisher.cppObj.Clone());
+      callback(ledger::Result::LEDGER_OK, publisher.cppObjPtr.Clone());
     }];
   } else {
     callback(ledger::Result::LEDGER_ERROR, nullptr);
@@ -1443,7 +1442,7 @@ BATLedgerBridge(BOOL,
 {
   const auto pendingContributions = [BATLedgerDatabase pendingContributions];
   callback(VectorFromNSArray(pendingContributions, ^ledger::PendingContributionInfoPtr(BATPendingContributionInfo *info){
-    return info.cppObj.Clone();
+    return info.cppObjPtr.Clone();
   }));
 }
 

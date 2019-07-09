@@ -81,8 +81,6 @@ ios_framework_bundle("brave_rewards_ios_framework") {
     "Ledger/Generated/Records.mm",
     "Ledger/Models/BATActivityInfoFilter.h",
     "Ledger/Models/BATActivityInfoFilter.mm",
-    "Ledger/Models/BATPublisherInfo+Private.h",
-    "Ledger/Models/BATPublisherInfo+Private.mm",
     "Ledger/Models/BATRewardsNotification.h",
     "Ledger/Models/BATRewardsNotification.m",
     "Shared/BATCommonOperations.h",
