@@ -1,4 +1,5 @@
 import("//brave/build/config.gni")
+import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_rewards/browser/buildflags/buildflags.gni")
@@ -62,9 +63,6 @@ test("brave_unit_tests") {
     "//brave/browser/net/brave_referrals_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_site_hacks_network_delegate_helper_unittest.cc",
     "//brave/browser/net/brave_static_redirect_network_delegate_helper_unittest.cc",
-    "//brave/browser/profiles/tor_unittest_profile_manager.cc",
-    "//brave/browser/profiles/tor_unittest_profile_manager.h",
-    "//brave/browser/profiles/brave_profile_manager_unittest.cc",
     "//brave/browser/resources/settings/reset_report_uploader_unittest.cc",
     "//brave/browser/resources/settings/brandcode_config_fetcher_unittest.cc",
     "//brave/browser/themes/brave_theme_service_unittest.cc",
@@ -85,8 +83,6 @@ test("brave_unit_tests") {
     "//brave/common/importer/brave_mock_importer_bridge.cc",
     "//brave/common/importer/brave_mock_importer_bridge.h",
     "//brave/common/shield_exceptions_unittest.cc",
-    "//brave/common/tor/tor_test_constants.cc",
-    "//brave/common/tor/tor_test_constants.h",
     "//brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc",
     "//brave/components/brave_shields/browser/ad_block_regional_service_unittest.cc",
     "//brave/components/brave_shields/browser/https_everywhere_recently_used_cache_unittest.cpp",
@@ -99,8 +95,6 @@ test("brave_unit_tests") {
     "//brave/components/invalidation/push_client_channel_unittest.cc",
     "//brave/components/omnibox/browser/topsites_provider_unittest.cc",
     "//brave/components/rappor/log_uploader_unittest.cc",
-    "//brave/net/proxy_resolution/proxy_config_service_tor_unittest.cc",
-    "//brave/net/proxy_resolution/proxy_resolution_service_unittest.cc",
     "//brave/third_party/libaddressinput/chromium/chrome_metadata_source_unittest.cc",
     "//brave/vendor/brave_base/random_unittest.cc",
     "//chrome/common/importer/mock_importer_bridge.cc",
@@ -158,6 +152,19 @@ test("brave_unit_tests") {
   if (enable_brave_translate) {
     sources += [
       "//brave/browser/net/brave_translate_redirect_network_delegate_helper_unittest.cc",
+    ]
+  }
+
+  if (enable_tor) {
+    sources += [
+      "//brave/browser/profiles/tor_unittest_profile_manager.cc",
+      "//brave/browser/profiles/tor_unittest_profile_manager.h",
+      "//brave/common/tor/tor_test_constants.cc",
+      "//brave/common/tor/tor_test_constants.h",
+      "//brave/net/proxy_resolution/proxy_config_service_tor_unittest.cc",
+      # TODO(darkdh): move these out and use buildflag guard once it contains non tor specifics
+      "//brave/browser/profiles/brave_profile_manager_unittest.cc",
+      "//brave/net/proxy_resolution/proxy_resolution_service_unittest.cc",
     ]
   }
 
@@ -334,7 +341,6 @@ test("brave_browser_tests") {
     "//brave/browser/brave_stats_updater_browsertest.cc",
     "//brave/browser/browsing_data/brave_clear_browsing_data_browsertest.cc",
     "//brave/browser/devtools/brave_devtools_ui_bindings_browsertest.cc",
-    "//brave/browser/extensions/brave_tor_client_updater_browsertest.cc",
     "//brave/browser/extensions/brave_extension_functional_test.cc",
     "//brave/browser/extensions/brave_extension_functional_test.h",
     "//brave/browser/extensions/api/brave_shields_api_browsertest.cc",
@@ -398,6 +404,12 @@ test("brave_browser_tests") {
     configs += [ "//brave/vendor/bat-native-ledger:internal_config" ]
     configs += [ "//brave/vendor/bat-native-ads:internal_config" ]
     configs += [ "//brave/vendor/bat-native-confirmations:internal_config" ]
+  }
+
+  if (enable_tor) {
+    sources += [
+      "//brave/browser/extensions/brave_tor_client_updater_browsertest.cc",
+    ]
   }
 
   if (is_win || is_linux) {

@@ -13,10 +13,7 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/strcat.h"
 #include "brave/browser/net/url_context.h"
-#include "brave/browser/profiles/brave_profile_manager.h"
-#include "brave/browser/profiles/tor_unittest_profile_manager.h"
 #include "brave/common/network_constants.h"
-#include "chrome/browser/renderer_host/chrome_navigation_ui_data.h"
 #include "chrome/test/base/scoped_testing_local_state.h"
 #include "chrome/test/base/testing_browser_process.h"
 #include "content/public/browser/resource_request_info.h"
@@ -37,10 +34,6 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
   ~BraveTorrentRedirectNetworkDelegateHelperTest() override {}
 
   void SetUp() override {
-    // Create a new temporary directory, and store the path
-    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    TestingBrowserProcess::GetGlobal()->SetProfileManager(
-        new TorUnittestProfileManager(temp_dir_.GetPath()));
     context_->Init();
 
     torrent_url_ = GURL("https://webtorrent.io/torrents/sintel.torrent");
@@ -80,8 +73,6 @@ class BraveTorrentRedirectNetworkDelegateHelperTest: public testing::Test {
   }
 
  protected:
-  // The path to temporary directory used to contain the test operations.
-  base::ScopedTempDir temp_dir_;
   ScopedTestingLocalState local_state_;
 
  private:
