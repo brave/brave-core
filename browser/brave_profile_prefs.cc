@@ -85,7 +85,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // We do not want to enable the MediaRouter pref directly
   // using a proxy pref to handle Media Router setting
-  registry->RegisterBooleanPref(kBraveEnabledMediaRouter, extensions::FeatureSwitch::load_media_router_component_extension()
+  registry->RegisterBooleanPref(
+      kBraveEnabledMediaRouter,
+      extensions::FeatureSwitch::load_media_router_component_extension()
           ->IsEnabled());
 
   // No sign into Brave functionality

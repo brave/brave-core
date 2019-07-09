@@ -62,7 +62,8 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
                           base::Unretained(this)));
 }
 
-void BraveDefaultExtensionsHandler::HandleRestartBrowser(const base::ListValue* args) {
+void BraveDefaultExtensionsHandler::HandleRestartBrowser(
+    const base::ListValue* args) {
   chrome::AttemptRestart();
 }
 
@@ -140,7 +141,9 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
   args->GetBoolean(0, &enabled);
 
   auto* current_command_line = base::CommandLine::ForCurrentProcess();
-  current_command_line->AppendSwitchASCII(switches::kLoadMediaRouterComponentExtension, enabled ? "1": "0");
+  current_command_line->AppendSwitchASCII(
+      switches::kLoadMediaRouterComponentExtension,
+      enabled ? "1": "0");
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
