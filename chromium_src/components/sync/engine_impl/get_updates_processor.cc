@@ -19,6 +19,7 @@ SyncerError ApplyBraveRecords(sync_pb::ClientToServerResponse*, ModelTypeSet*,
 
 #include "../../../../../components/sync/engine_impl/get_updates_processor.cc"    // NOLINT
 #include "base/base64.h"
+#include "base/guid.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
@@ -115,7 +116,7 @@ void MigrateFromLegacySync(sync_pb::SyncEntity* entity) {
     entity->set_originator_cache_guid("legacy_originator_cache_guid");
   }
   if (!entity->has_originator_client_item_id()) {
-    entity->set_originator_client_item_id("legacy_originator_client_item_id");
+    entity->set_originator_client_item_id(base::GenerateGUID());
   }
   if (!entity->has_version()) {
     entity->set_version(1);
