@@ -1,1 +1,1 @@
-window.location.href = 'chrome://wallet';
+window.location.href = 'chrome://wallet'
