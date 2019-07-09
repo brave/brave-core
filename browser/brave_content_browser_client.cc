@@ -27,6 +27,7 @@
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_cookie_settings.h"
 #include "brave/components/services/brave_content_browser_overlay_manifest.h"
@@ -65,6 +66,7 @@ using content::WebContents;
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/chrome_content_browser_client_extensions_part.h"
+#include "extensions/browser/extension_registry.h"
 using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
@@ -76,39 +78,22 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #endif
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/extensions/brave_wallet_navigation_throttle.h"
+#endif
+
 namespace {
-
-bool HandleURLOverrideRewrite(GURL* url,
-                              content::BrowserContext* browser_context) {
-  // redirect sync-internals
-  if (url->host() == chrome::kChromeUISyncInternalsHost ||
-      url->host() == chrome::kChromeUISyncHost) {
-    GURL::Replacements replacements;
-    replacements.SetHostStr(chrome::kChromeUISyncHost);
-    *url = url->ReplaceComponents(replacements);
-    return true;
-  }
-
-  // no special win10 welcome page
-  if (url->host() == chrome::kChromeUIWelcomeWin10Host ||
-      url->host() == chrome::kChromeUIWelcomeHost) {
-    *url = GURL(chrome::kChromeUIWelcomeURL);
-    return true;
-  }
-
-  return false;
-}
 
 bool HandleURLReverseOverrideRewrite(GURL* url,
                                      content::BrowserContext* browser_context) {
-  if (HandleURLOverrideRewrite(url, browser_context))
+  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url, browser_context))
     return true;
 
   return false;
 }
 
 bool HandleURLRewrite(GURL* url, content::BrowserContext* browser_context) {
-  if (HandleURLOverrideRewrite(url, browser_context))
+  if (BraveContentBrowserClient::HandleURLOverrideRewrite(url, browser_context))
     return true;
 
   return false;
@@ -346,4 +331,52 @@ GURL BraveContentBrowserClient::GetEffectiveURL(
 #else
   return url;
 #endif
+}
+
+// [static]
+bool BraveContentBrowserClient::HandleURLOverrideRewrite(GURL* url,
+    content::BrowserContext* browser_context) {
+  // redirect sync-internals
+  if (url->host() == chrome::kChromeUISyncInternalsHost ||
+      url->host() == chrome::kChromeUISyncHost) {
+    GURL::Replacements replacements;
+    replacements.SetHostStr(chrome::kChromeUISyncHost);
+    *url = url->ReplaceComponents(replacements);
+    return true;
+  }
+
+  // no special win10 welcome page
+  if (url->host() == chrome::kChromeUIWelcomeWin10Host ||
+      url->host() == chrome::kChromeUIWelcomeHost) {
+    *url = GURL(chrome::kChromeUIWelcomeURL);
+    return true;
+  }
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  if (url->SchemeIs(content::kChromeUIScheme) &&
+      url->host() == ethereum_remote_client_host) {
+    auto* registry = extensions::ExtensionRegistry::Get(browser_context);
+    if (registry->ready_extensions().GetByID(
+        ethereum_remote_client_extension_id)) {
+      *url = GURL(ethereum_remote_client_base_url);
+      return true;
+    }
+  }
+#endif
+
+  return false;
+}
+
+std::vector<std::unique_ptr<content::NavigationThrottle>>
+BraveContentBrowserClient::CreateThrottlesForNavigation(
+    content::NavigationHandle* handle) {
+  std::vector<std::unique_ptr<content::NavigationThrottle>> throttles =
+      ChromeContentBrowserClient::CreateThrottlesForNavigation(handle);
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+  throttles.push_back(
+      std::make_unique<extensions::BraveWalletNavigationThrottle>(handle));
+#endif
+
+  return throttles;
 }

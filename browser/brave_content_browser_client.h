@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "chrome/browser/chrome_content_browser_client.h"
 #include "content/public/browser/browser_thread.h"
@@ -79,6 +80,10 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   GURL GetEffectiveURL(content::BrowserContext* browser_context,
                        const GURL& url) override;
+  static bool HandleURLOverrideRewrite(GURL* url,
+      content::BrowserContext* browser_context);
+  std::vector<std::unique_ptr<content::NavigationThrottle>>
+      CreateThrottlesForNavigation(content::NavigationHandle* handle) override;
 
  private:
   bool AllowAccessCookie(const GURL& url, const GURL& first_party,

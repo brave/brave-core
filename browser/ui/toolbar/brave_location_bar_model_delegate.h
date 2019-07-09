@@ -16,7 +16,8 @@ class BraveLocationBarModelDelegate : public BrowserLocationBarModelDelegate {
  public:
   explicit BraveLocationBarModelDelegate(Browser* browser);
   ~BraveLocationBarModelDelegate() override;
-
+  static void FormattedStringFromURL(const GURL& url,
+      base::string16* new_formatted_url);
  private:
   base::string16 FormattedStringWithEquivalentMeaning(
       const GURL& url,
