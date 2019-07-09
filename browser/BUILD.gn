@@ -1,6 +1,7 @@
 import("//brave/build/config.gni")
 import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/components/brave_ads/browser/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
@@ -146,15 +147,20 @@ source_set("browser_process") {
       "brave_rewards/rewards_tab_helper.h",
       "brave_rewards/tip_dialog.cc",
       "brave_rewards/tip_dialog.h",
-      "dapp/dapp_utils.cc",
-      "dapp/dapp_utils.h",
-      "dapp/wallet_installation_permission_request.cc",
-      "dapp/wallet_installation_permission_request.h",
     ]
 
     deps += [
       "importer",
       "//brave/app:brave_generated_resources_grit",
+    ]
+  }
+
+  if (brave_wallet_enabled) {
+    sources += [
+      "dapp/dapp_utils.cc",
+      "dapp/dapp_utils.h",
+      "dapp/wallet_installation_permission_request.cc",
+      "dapp/wallet_installation_permission_request.h",
     ]
   }
 

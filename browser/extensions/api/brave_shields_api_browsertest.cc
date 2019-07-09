@@ -4,11 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/path_service.h"
-#include "brave/browser/dapp/dapp_utils.h"
 #include "brave/browser/extensions/api/brave_shields_api.h"
 #include "brave/common/brave_paths.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_api.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_api_constants.h"
@@ -29,6 +29,10 @@
 #include "components/prefs/pref_service.h"
 #include "extensions/common/extension_builder.h"
 #include "net/dns/mock_host_resolver.h"
+
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
+#include "brave/browser/dapp/dapp_utils.h"
+#endif
 
 namespace extensions {
 
@@ -326,6 +330,7 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
   EXPECT_EQ(setting, CONTENT_SETTING_BLOCK);
 }
 
+#if BUILDFLAG(BRAVE_WALLET_ENABLED)
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, DappDetectionTest) {
   browser()->profile()->GetPrefs()->SetBoolean(kDappDetectionEnabled, true);
   EXPECT_TRUE(
@@ -335,5 +340,6 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, DappDetectionTest) {
   SetQuitClosureForDappDetectionTest(loop.QuitClosure());
   loop.Run();
 }
+#endif
 
 }  // namespace extensions
