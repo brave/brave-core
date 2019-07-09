@@ -5,8 +5,10 @@
 
 #include "brave/browser/dapp/wallet_installation_permission_request.h"
 
+#include "brave/browser/ui/brave_pages.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
@@ -35,8 +37,8 @@ GURL WalletInstallationPermissionRequest::GetOrigin() const {
 }
 
 void WalletInstallationPermissionRequest::PermissionGranted() {
-  // TODO(shong): Install wallet.
-  NOTIMPLEMENTED();
+  Browser* browser = chrome::FindBrowserWithWebContents(web_contents_);
+  brave::ShowBraveWallet(browser);
 }
 
 void WalletInstallationPermissionRequest::PermissionDenied() {
