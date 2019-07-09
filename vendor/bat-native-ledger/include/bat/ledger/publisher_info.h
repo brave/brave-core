@@ -81,19 +81,8 @@ LEDGER_EXPORT struct ActivityInfoFilter {
   uint32_t min_visits;
 };
 
-LEDGER_EXPORT struct ContributionInfo {
-  ContributionInfo() {}
-  ContributionInfo(const double &value_, const uint64_t& date_):
-    value(value_),
-    date(date_) {}
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string publisher;  // Filled only for recurrent tips
-  double value;
-  uint64_t date;
-};
+using ContributionInfo = mojom::ContributionInfo;
+using ContributionInfoPtr = mojom::ContributionInfoPtr;
 
 }  // namespace ledger
 
