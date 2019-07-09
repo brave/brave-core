@@ -876,25 +876,26 @@ void RewardsServiceImpl::OnGetAutoContributeProps(
 
 void RewardsServiceImpl::OnGetRewardsInternalsInfo(
     GetRewardsInternalsInfoCallback callback,
-    const std::string& json_info) {
-  ledger::RewardsInternalsInfo info;
-  info.loadFromJson(json_info);
+    ledger::RewardsInternalsInfoPtr info) {
+  if (!info) {
+    std::move(callback).Run(nullptr);
+  }
 
   auto rewards_internals_info =
       std::make_unique<brave_rewards::RewardsInternalsInfo>();
-  rewards_internals_info->payment_id = info.payment_id;
-  rewards_internals_info->is_key_info_seed_valid = info.is_key_info_seed_valid;
-  rewards_internals_info->persona_id = info.persona_id;
-  rewards_internals_info->user_id = info.user_id;
-  rewards_internals_info->boot_stamp = info.boot_stamp;
+  rewards_internals_info->payment_id = info->payment_id;
+  rewards_internals_info->is_key_info_seed_valid = info->is_key_info_seed_valid;
+  rewards_internals_info->persona_id = info->persona_id;
+  rewards_internals_info->user_id = info->user_id;
+  rewards_internals_info->boot_stamp = info->boot_stamp;
 
-  for (const auto& item : info.current_reconciles) {
+  for (const auto& item : info->current_reconciles) {
     ReconcileInfo reconcile_info;
-    reconcile_info.viewing_id_ = item.second.viewingId_;
-    reconcile_info.amount_ = item.second.amount_;
+    reconcile_info.viewing_id_ = item.second->viewing_id;
+    reconcile_info.amount_ = item.second->amount;
     reconcile_info.retry_step_ =
-        static_cast<ContributionRetry>(item.second.retry_step_);
-    reconcile_info.retry_level_ = item.second.retry_level_;
+        static_cast<ContributionRetry>(item.second->retry_step);
+    reconcile_info.retry_level_ = item.second->retry_level;
     rewards_internals_info->current_reconciles[item.first] = reconcile_info;
   }
 

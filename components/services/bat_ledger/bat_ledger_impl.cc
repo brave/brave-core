@@ -454,11 +454,21 @@ void BatLedgerImpl::GetTransactionHistory(
           holder, _1));
 }
 
+void BatLedgerImpl::OnGetRewardsInternalsInfo(
+    CallbackHolder<GetRewardsInternalsInfoCallback>* holder,
+    ledger::RewardsInternalsInfoPtr info) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(std::move(info));
+  delete holder;
+}
+
 void BatLedgerImpl::GetRewardsInternalsInfo(
     GetRewardsInternalsInfoCallback callback) {
-  ledger::RewardsInternalsInfo info;
-  ledger_->GetRewardsInternalsInfo(&info);
-  std::move(callback).Run(info.ToJson());
+  auto* holder = new CallbackHolder<GetRewardsInternalsInfoCallback>(
+      AsWeakPtr(), std::move(callback));
+
+  ledger_->GetRewardsInternalsInfo(
+    std::bind(BatLedgerImpl::OnGetRewardsInternalsInfo, holder, _1));
 }
 
 // static

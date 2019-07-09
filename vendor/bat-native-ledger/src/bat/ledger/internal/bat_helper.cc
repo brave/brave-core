@@ -1401,7 +1401,7 @@ void saveToJson(JsonWriter* writer, const CURRENT_RECONCILE& data) {
   writer->EndArray();
 
   writer->String("retry_step");
-  writer->Int(data.retry_step_);
+  writer->Int(static_cast<int32_t>(data.retry_step_));
 
   writer->String("retry_level");
   writer->Int(data.retry_level_);
@@ -2620,51 +2620,6 @@ void saveToJson(JsonWriter* writer, const ledger::VisitData& visitData) {
 
   writer->String("favicon_url");
   writer->String(visitData.favicon_url.c_str());
-
-  writer->EndObject();
-}
-
-void saveToJson(JsonWriter* writer, const ledger::ReconcileInfo& data) {
-  writer->StartObject();
-
-  writer->String("viewingId");
-  writer->String(data.viewingId_.c_str());
-
-  writer->String("amount");
-  writer->String(data.amount_.c_str());
-
-  writer->String("retry_step");
-  writer->Int(data.retry_step_);
-
-  writer->String("retry_level");
-  writer->Int(data.retry_level_);
-
-  writer->EndObject();
-}
-
-void saveToJson(JsonWriter* writer, const ledger::RewardsInternalsInfo& info) {
-  writer->StartObject();
-
-  writer->String("payment_id");
-  writer->String(info.payment_id.c_str());
-
-  writer->String("is_key_info_seed_valid");
-  writer->Bool(info.is_key_info_seed_valid);
-
-  writer->String("current_reconciles");
-  writer->StartArray();
-  for (const auto& reconcile : info.current_reconciles)
-    saveToJson(writer, reconcile.second);
-  writer->EndArray();
-
-  writer->String("persona_id");
-  writer->String(info.persona_id.c_str());
-
-  writer->String("user_id");
-  writer->String(info.user_id.c_str());
-
-  writer->String("boot_stamp");
-  writer->Uint64(info.boot_stamp);
 
   writer->EndObject();
 }

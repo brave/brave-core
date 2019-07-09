@@ -13,13 +13,6 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 
-namespace ledger {
-
-struct ReconcileInfo;
-struct RewardsInternalsInfo;
-
-}  // namespace ledger
-
 namespace braveledger_bat_helper {
 
 struct BALLOT_ST;

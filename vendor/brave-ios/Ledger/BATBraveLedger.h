@@ -201,7 +201,7 @@ NS_SWIFT_NAME(BraveLedger)
 /// Get an encoded URL that can be placed in another URL
 - (NSString *)encodedURI:(NSString *)uri;
 
-@property (nonatomic, readonly) BATRewardsInternalsInfo *rewardsInternalInfo;
+- (void)rewardsInternalInfo:(void (NS_NOESCAPE ^)(BATRewardsInternalsInfo * _Nullable info))completion;
 
 #pragma mark - Reporting
 

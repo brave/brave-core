@@ -9,37 +9,14 @@
 #include <map>
 #include <string>
 
-#include "bat/ledger/export.h"
+#include "bat/ledger/public/interfaces/ledger.mojom.h"
 
 namespace ledger {
 
-LEDGER_EXPORT enum ContributionRetry {
-  STEP_NO = 0,
-  STEP_RECONCILE = 1,  // Phase 1
-  STEP_CURRENT = 2,    // Phase 1
-  STEP_PAYLOAD = 3,    // Phase 1
-  STEP_REGISTER = 4,   // Phase 1
-  STEP_VIEWING = 5,    // Phase 1
-  STEP_WINNERS = 6,    // Phase 1
-  STEP_PREPARE = 7,    // Phase 2
-  STEP_PROOF = 8,      // Phase 2
-  STEP_VOTE = 9,       // Phase 2
-  STEP_FINAL = 10      // Phase 2
-};
+using ContributionRetry = mojom::ContributionRetry;
 
-LEDGER_EXPORT struct ReconcileInfo {
-  ReconcileInfo();
-  ~ReconcileInfo();
-  ReconcileInfo(const ReconcileInfo& info);
-
-  const std::string ToJson() const;
-  bool loadFromJson(const std::string& json);
-
-  std::string viewingId_;
-  std::string amount_;
-  ContributionRetry retry_step_;
-  int retry_level_;
-};
+using ReconcileInfo = mojom::ReconcileInfo;
+using ReconcileInfoPtr = mojom::ReconcileInfoPtr;
 
 }  // namespace ledger
 
