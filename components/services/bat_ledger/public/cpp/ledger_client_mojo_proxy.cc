@@ -36,17 +36,10 @@ LedgerClientMojoProxy::~LedgerClientMojoProxy() {
 
 template <typename Callback>
 void LedgerClientMojoProxy::CallbackHolder<Callback>::OnLedgerStateLoaded(
-    ledger::Result result, const std::string& data) {
+    ledger::Result result,
+    const std::string& data,
+    ledger::InitializeCallback callback) {
   NOTREACHED();
-}
-
-template <>
-void LedgerClientMojoProxy::CallbackHolder<
-  LedgerClientMojoProxy::LoadLedgerStateCallback>::OnLedgerStateLoaded(
-    ledger::Result result, const std::string& data) {
-  if (is_valid())
-    std::move(callback_).Run(result, data);
-  delete this;
 }
 
 // static
@@ -61,6 +54,7 @@ void LedgerClientMojoProxy::OnLoadLedgerState(
 }
 
 void LedgerClientMojoProxy::LoadLedgerState(LoadLedgerStateCallback callback) {
+  // deleted in OnLoadLedgerState
   auto* holder = new CallbackHolder<LoadLedgerStateCallback>(AsWeakPtr(),
       std::move(callback));
   ledger_client_->LoadLedgerState(
@@ -104,17 +98,10 @@ void LedgerClientMojoProxy::LoadPublisherState(
 
 template <typename Callback>
 void LedgerClientMojoProxy::CallbackHolder<Callback>::OnPublisherStateLoaded(
-    ledger::Result result, const std::string& data) {
+    ledger::Result result,
+    const std::string& data,
+    ledger::InitializeCallback callback) {
   NOTREACHED();
-}
-
-template <>
-void LedgerClientMojoProxy::CallbackHolder<
-  LedgerClientMojoProxy::LoadPublisherStateCallback>::OnPublisherStateLoaded(
-    ledger::Result result, const std::string& data) {
-  if (is_valid())
-    std::move(callback_).Run(result, data);
-  delete this;
 }
 
 void LedgerClientMojoProxy::LoadPublisherList(
@@ -647,7 +634,7 @@ void LedgerClientMojoProxy::LoadState(
 
   ledger_client_->LoadState(
       name, std::bind(LedgerClientMojoProxy::OnLoadState, holder,
-                      _1, _2));
+                    _1, _2));
 }
 
 // static

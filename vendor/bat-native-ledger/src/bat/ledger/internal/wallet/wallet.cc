@@ -37,13 +37,13 @@ Wallet::Wallet(bat_ledger::LedgerImpl* ledger) :
 Wallet::~Wallet() {
 }
 
-void Wallet::CreateWalletIfNecessary() {
+void Wallet::CreateWalletIfNecessary(ledger::CreateWalletCallback callback) {
   const auto payment_id = ledger_->GetPaymentId();
   const auto stamp = ledger_->GetBootStamp();
   const auto persona_id = ledger_->GetPersonaId();
 
   if (!payment_id.empty() && stamp != 0 && !persona_id.empty()) {
-    ledger_->OnWalletInitialized(ledger::Result::WALLET_CREATED);
+    callback(ledger::Result::WALLET_CREATED);
     return;
   }
 
@@ -52,7 +52,7 @@ void Wallet::CreateWalletIfNecessary() {
      "We need to clear persona Id and start again";
   ledger_->SetPersonaId("");
 
-  create_->Start();
+  create_->Start(std::move(callback));
 }
 
 void Wallet::GetWalletProperties(

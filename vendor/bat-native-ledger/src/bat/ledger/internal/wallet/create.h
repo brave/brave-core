@@ -28,18 +28,20 @@ class Create {
 
   ~Create();
 
-  void Start();
+  void Start(ledger::CreateWalletCallback callback);
 
  private:
   void RequestCredentialsCallback(
       int response_status_code,
       const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const std::map<std::string, std::string>& headers,
+      ledger::CreateWalletCallback callback);
 
   void RegisterPersonaCallback(
       int response_status_code,
       const std::string& response,
-      const std::map<std::string, std::string>& headers);
+      const std::map<std::string, std::string>& headers,
+      ledger::CreateWalletCallback callback);
 
   std::string GetAnonizeProof(const std::string& registrarVK,
                               const std::string& id,

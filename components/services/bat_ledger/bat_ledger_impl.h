@@ -29,8 +29,8 @@ class BatLedgerImpl : public mojom::BatLedger,
   ~BatLedgerImpl() override;
 
   // bat_ledger::mojom::BatLedger
-  void Initialize() override;
-  void CreateWallet() override;
+  void Initialize(InitializeCallback callback) override;
+  void CreateWallet(CreateWalletCallback callback) override;
   void FetchWalletProperties(FetchWalletPropertiesCallback callback) override;
 
   void GetAutoContributeProps(
@@ -223,9 +223,17 @@ class BatLedgerImpl : public mojom::BatLedger,
     };
 
   static void OnGetGrantCaptcha(
-    CallbackHolder<GetGrantCaptchaCallback>* holder,
-    const std::string& image,
-    const std::string& hint);
+      CallbackHolder<GetGrantCaptchaCallback>* holder,
+      const std::string& image,
+      const std::string& hint);
+
+  static void OnCreateWallet(
+      CallbackHolder<CreateWalletCallback>* holder,
+      ledger::Result result);
+
+  static void OnInitialize(
+      CallbackHolder<InitializeCallback>* holder,
+      ledger::Result result);
 
   static void OnFetchWalletProperties(
       CallbackHolder<FetchWalletPropertiesCallback>* holder,

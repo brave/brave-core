@@ -205,7 +205,6 @@ void BatLedgerClientMojoProxy::LoadLedgerState(
     callback(ledger::Result::LEDGER_ERROR, "");
     return;
   }
-
   bat_ledger_client_->LoadLedgerState(
       base::BindOnce(&BatLedgerClientMojoProxy::OnLoadLedgerState, AsWeakPtr(),
         std::move(callback)));

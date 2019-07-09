@@ -96,13 +96,14 @@ using ProcessRewardsPageUrlCallback = base::OnceCallback<void(
     const std::string&,
     const std::string&,
     const std::map<std::string, std::string>&)>;
+using CreateWalletCallback = base::OnceCallback<void(int32_t)>;
 
 class RewardsService : public KeyedService {
  public:
   RewardsService();
   ~RewardsService() override;
 
-  virtual void CreateWallet() = 0;
+  virtual void CreateWallet(CreateWalletCallback callback) = 0;
   virtual void FetchWalletProperties() = 0;
   virtual void GetContentSiteList(
       uint32_t start,

@@ -1030,7 +1030,7 @@ class BraveRewardsBrowserTest :
   }
 
   void OnWalletInitialized(brave_rewards::RewardsService* rewards_service,
-                           uint32_t result) {
+                           int32_t result) {
     const auto converted_result = static_cast<ledger::Result>(result);
     ASSERT_TRUE(converted_result == ledger::Result::WALLET_CREATED ||
                 converted_result == ledger::Result::NO_LEDGER_STATE);

@@ -72,8 +72,10 @@ class LedgerImpl : public ledger::Ledger,
   LedgerImpl& operator=(const LedgerImpl&) = delete;
 
   std::string GenerateGUID() const;
-  void Initialize() override;
-  bool CreateWallet() override;
+
+  void Initialize(ledger::InitializeCallback callback) override;
+
+  bool CreateWallet(ledger::CreateWalletCallback callback) override;
 
   void SetPublisherInfo(
       ledger::PublisherInfoPtr publisher_info);
@@ -180,6 +182,9 @@ class LedgerImpl : public ledger::Ledger,
   void LoadPublisherState(ledger::OnLoadCallback callback);
 
   void LoadPublisherList(ledger::LedgerCallbackHandler* handler);
+
+  void OnWalletInitializedInternal(ledger::Result result,
+                                   ledger::InitializeCallback callback);
 
   void OnWalletInitialized(ledger::Result result);
 
@@ -582,10 +587,12 @@ class LedgerImpl : public ledger::Ledger,
 
   // ledger::LedgerCallbacHandler implementation
   void OnPublisherStateLoaded(ledger::Result result,
-                              const std::string& data) override;
+                              const std::string& data,
+                              ledger::InitializeCallback callback) override;
 
   void OnLedgerStateLoaded(ledger::Result result,
-                           const std::string& data) override;
+                           const std::string& data,
+                           ledger::InitializeCallback callback) override;
 
   void RefreshPublishersList(bool retryAfterError, bool immediately = false);
 

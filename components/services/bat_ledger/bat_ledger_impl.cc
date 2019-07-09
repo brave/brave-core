@@ -52,12 +52,37 @@ BatLedgerImpl::BatLedgerImpl(
 BatLedgerImpl::~BatLedgerImpl() {
 }
 
-void BatLedgerImpl::Initialize() {
-  ledger_->Initialize();
+
+void BatLedgerImpl::OnInitialize(
+    CallbackHolder<InitializeCallback>* holder,
+    ledger::Result result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+void BatLedgerImpl::Initialize(InitializeCallback callback) {
+  auto* holder = new CallbackHolder<InitializeCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->Initialize(
+      std::bind(BatLedgerImpl::OnInitialize, holder, _1));
 }
 
-void BatLedgerImpl::CreateWallet() {
-  ledger_->CreateWallet();
+// static
+void BatLedgerImpl::OnCreateWallet(
+    CallbackHolder<CreateWalletCallback>* holder,
+    ledger::Result result) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(result);
+  delete holder;
+}
+
+void BatLedgerImpl::CreateWallet(CreateWalletCallback callback) {
+  // deleted in OnCreateWallet
+  auto* holder = new CallbackHolder<CreateWalletCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_->CreateWallet(
+      std::bind(BatLedgerImpl::OnCreateWallet, holder, _1));
 }
 
 // static
@@ -245,7 +270,6 @@ void BatLedgerImpl::OnGetGrantCaptcha(
     std::move(holder->get()).Run(image, hint);
   delete holder;
 }
-
 void BatLedgerImpl::GetGrantCaptcha(
     const std::vector<std::string>& headers,
     GetGrantCaptchaCallback callback) {

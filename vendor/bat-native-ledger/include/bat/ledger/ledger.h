@@ -61,6 +61,8 @@ using GetGrantCaptchaCallback = std::function<void(const std::string&,
                                                    const std::string&)>;
 using RewardsInternalsInfoCallback =
     std::function<void(ledger::RewardsInternalsInfoPtr)>;
+using CreateWalletCallback = std::function<void(ledger::Result)>;
+using InitializeCallback = std::function<void(ledger::Result)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -77,10 +79,10 @@ class LEDGER_EXPORT Ledger {
 
   static Ledger* CreateInstance(LedgerClient* client);
 
-  virtual void Initialize() = 0;
+  virtual void Initialize(InitializeCallback) = 0;
 
   // returns false if wallet initialization is already in progress
-  virtual bool CreateWallet() = 0;
+  virtual bool CreateWallet(CreateWalletCallback callback) = 0;
 
   virtual void DoDirectTip(const std::string& publisher_id,
                            int amount,
