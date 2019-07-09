@@ -13,7 +13,6 @@ class BrowserContext;
 class WebContents;
 }  // content
 
-bool DappDetectionEnabled(content::BrowserContext* browser_context);
 void RequestWalletInstallationPermission(content::WebContents* web_contents);
 
 void SetQuitClosureForDappDetectionTest(const base::Closure& quit_closure);

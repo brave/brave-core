@@ -332,7 +332,6 @@ IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest,
 
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
 IN_PROC_BROWSER_TEST_F(BraveShieldsAPIBrowserTest, DappDetectionTest) {
-  browser()->profile()->GetPrefs()->SetBoolean(kDappDetectionEnabled, true);
   EXPECT_TRUE(
       NavigateToURLUntilLoadStop("a.com", "/dapp.html"));
 

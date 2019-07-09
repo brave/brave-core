@@ -16,11 +16,6 @@ namespace {
 base::Closure g_quit_closure_for_test;
 }  // namespace
 
-bool DappDetectionEnabled(content::BrowserContext* browser_context) {
-  Profile* profile = Profile::FromBrowserContext(browser_context);
-  return profile->GetPrefs()->GetBoolean(kDappDetectionEnabled);
-}
-
 void RequestWalletInstallationPermission(content::WebContents* web_contents) {
   DCHECK(web_contents);
 

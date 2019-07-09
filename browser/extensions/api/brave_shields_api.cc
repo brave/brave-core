@@ -93,9 +93,6 @@ BraveShieldsDappAvailableFunction::Run() {
       brave_shields::DappAvailable::Params::Create(*args_));
   EXTENSION_FUNCTION_VALIDATE(params.get());
 
-  if (!DappDetectionEnabled(browser_context()))
-    return RespondNow(NoArguments());
-
 #if BUILDFLAG(BRAVE_WALLET_ENABLED)
   // Get web contents for this tab
   content::WebContents* contents = nullptr;
