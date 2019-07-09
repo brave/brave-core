@@ -95,7 +95,8 @@ interface BatLedger {
       ledger.mojom.VisitData visit_data,
       string publisher_blob);
   GetContributionAmount() => (double contribution_amount);
-  GetPublisherBanner(string publisher_id) => (string banner);
+  GetPublisherBanner(string publisher_id) =>
+      (ledger.mojom.PublisherBanner? banner);
 
   DoDirectTip(string publisher_id,
               int32 amount,

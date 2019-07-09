@@ -1,6 +1,4 @@
-/* WARNING: THIS FILE IS GENERATED. ANY CHANGES TO THIS FILE WILL BE OVERWRITTEN
- *
- * This Source Code Form is subject to the terms of the Mozilla Public
+/* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -38,24 +36,6 @@
     self.recurringDonation = [NSString stringWithUTF8String:obj.recurring_donation_.c_str()];
     self.oneTimeDonation = [NSString stringWithUTF8String:obj.one_time_donation_.c_str()];
     self.total = [NSString stringWithUTF8String:obj.total_.c_str()];
-  }
-  return self;
-}
-@end
-
-@implementation BATPublisherBanner
-- (instancetype)initWithPublisherBanner:(const ledger::PublisherBanner&)obj {
-  if ((self = [super init])) {
-    self.publisherKey = [NSString stringWithUTF8String:obj.publisher_key.c_str()];
-    self.title = [NSString stringWithUTF8String:obj.title.c_str()];
-    self.name = [NSString stringWithUTF8String:obj.name.c_str()];
-    self.desc = [NSString stringWithUTF8String:obj.description.c_str()];
-    self.background = [NSString stringWithUTF8String:obj.background.c_str()];
-    self.logo = [NSString stringWithUTF8String:obj.logo.c_str()];
-    self.amounts = NSArrayFromVector(obj.amounts);
-    self.provider = [NSString stringWithUTF8String:obj.provider.c_str()];
-    self.social = NSDictionaryFromMap(obj.social);
-    self.verified = obj.verified;
   }
   return self;
 }

@@ -2648,52 +2648,6 @@ void saveToJson(JsonWriter* writer, const ledger::BalanceReportInfo& info) {
 }
 
 void saveToJson(JsonWriter* writer,
-    const ledger::PublisherBanner& banner) {
-  writer->StartObject();
-
-  writer->String("publisher_key");
-  writer->String(banner.publisher_key.c_str());
-
-  writer->String("title");
-  writer->String(banner.title.c_str());
-
-  writer->String("name");
-  writer->String(banner.name.c_str());
-
-  writer->String("description");
-  writer->String(banner.description.c_str());
-
-  writer->String("background");
-  writer->String(banner.background.c_str());
-
-  writer->String("logo");
-  writer->String(banner.logo.c_str());
-
-  writer->String("amounts");
-  writer->StartArray();
-  for (auto & amount : banner.amounts) {
-    writer->Int(amount);
-  }
-  writer->EndArray();
-
-  writer->String("social");
-  writer->StartObject();
-  for (auto & i : banner.social) {
-    writer->String(i.first.c_str());
-    writer->String(i.second.c_str());
-  }
-  writer->EndObject();
-
-  writer->String("verified");
-  writer->Bool(banner.verified);
-
-  writer->String("provider");
-  writer->String(banner.provider.c_str());
-
-  writer->EndObject();
-}
-
-void saveToJson(JsonWriter* writer,
     const ledger::ActivityInfoFilter& info) {
   writer->StartObject();
 

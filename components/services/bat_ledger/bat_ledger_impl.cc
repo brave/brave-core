@@ -309,10 +309,9 @@ void BatLedgerImpl::GetPublisherActivityFromUrl(
 // static
 void BatLedgerImpl::OnGetPublisherBanner(
     CallbackHolder<GetPublisherBannerCallback>* holder,
-    std::unique_ptr<ledger::PublisherBanner> banner) {
-  std::string json_banner = banner.get() ? banner->ToJson() : "";
+    ledger::PublisherBannerPtr banner) {
   if (holder->is_valid())
-    std::move(holder->get()).Run(json_banner);
+    std::move(holder->get()).Run(std::move(banner));
   delete holder;
 }
 
