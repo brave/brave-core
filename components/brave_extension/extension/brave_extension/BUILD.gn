@@ -8,6 +8,7 @@ transpile_web_ui("brave_extension") {
     ["brave_extension", rebase_path("braveShieldsPanel.tsx")],
     ["brave_extension_background", rebase_path("background.ts")],
     ["content", rebase_path("content.ts")],
+    ["content_dapps", rebase_path("content_dapps.ts")],
     ["webstore", rebase_path("webstore.ts")],
   ]
 
