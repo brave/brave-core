@@ -73,7 +73,7 @@ class LedgerImpl : public ledger::Ledger,
 
   std::string GenerateGUID() const;
   void Initialize() override;
-  bool CreateWallet() override;
+  bool CreateWallet(ledger::CreateWalletCallback callback) override;
 
   void SetPublisherInfo(
       ledger::PublisherInfoPtr publisher_info);

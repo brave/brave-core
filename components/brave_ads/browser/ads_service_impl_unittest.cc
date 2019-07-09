@@ -33,7 +33,7 @@ class MockRewardsService : public RewardsService {
   MockRewardsService() {}
   ~MockRewardsService() {}
 
-  MOCK_METHOD0(CreateWallet, void());
+  MOCK_METHOD1(CreateWallet, void(brave_rewards::CreateWalletCallback));
   MOCK_METHOD0(FetchWalletProperties, void());
   MOCK_METHOD8(GetContentSiteList,
       void(uint32_t,

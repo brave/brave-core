@@ -38,6 +38,7 @@ class BraveProfileWriter : public ProfileWriter,
 
   void SetBridge(BraveInProcessImporterBridge* bridge);
 
+  void OnCreateWallet(bool initializing);
   void OnIsWalletCreated(bool created);
 
   // brave_rewards::RewardsServiceObserver:

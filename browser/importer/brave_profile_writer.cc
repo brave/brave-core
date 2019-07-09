@@ -307,12 +307,16 @@ void BraveProfileWriter::OnFetchBalance(
   BackupWallet();
 }
 
+void BraveProfileWriter::OnCreateWallet(bool initializing) {
+}
+
 void BraveProfileWriter::OnIsWalletCreated(bool created) {
   // If a wallet doesn't exist, we need to create one (needed for RecoverWallet)
   if (!created) {
     rewards_service_->AddObserver(this);
     LOG(INFO) << "Creating wallet to use for import...";
-    rewards_service_->CreateWallet();
+    rewards_service_->CreateWallet(base::BindOnce(
+       &BraveProfileWriter::OnCreateWallet, AsWeakPtr()));
     return;
   }
 

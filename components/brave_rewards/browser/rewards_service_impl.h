@@ -90,7 +90,7 @@ class RewardsServiceImpl : public RewardsService,
 
   void Init();
   void StartLedger();
-  void CreateWallet() override;
+  void CreateWallet(CreateWalletCallback callback) override;
   void FetchWalletProperties() override;
   void FetchGrants(const std::string& lang,
                    const std::string& paymentId) override;

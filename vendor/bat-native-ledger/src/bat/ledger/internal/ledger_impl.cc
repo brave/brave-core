@@ -92,14 +92,13 @@ void LedgerImpl::Initialize() {
   LoadLedgerState(this);
 }
 
-bool LedgerImpl::CreateWallet() {
-  if (initializing_) {
-    return false;
+bool LedgerImpl::CreateWallet(ledger::CreateWalletCallback callback) {
+  if (!initializing_) {
+    initializing_ = true;
+    bat_wallet_->CreateWalletIfNecessary();
   }
-
-  initializing_ = true;
-  bat_wallet_->CreateWalletIfNecessary();
-  return true;
+  callback(initializing_);
+  return initializing_;
 }
 
 braveledger_bat_helper::CURRENT_RECONCILE LedgerImpl::GetReconcileById(

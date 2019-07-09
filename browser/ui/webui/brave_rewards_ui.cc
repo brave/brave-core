@@ -68,6 +68,7 @@ class RewardsDOMHandler : public WebUIMessageHandler,
   void GetAddresses(const base::ListValue* args);
   void SaveSetting(const base::ListValue* args);
   void UpdateAdsRewards(const base::ListValue* args);
+  void OnCreateWallet(bool initializing);
   void OnContentSiteList(
       std::unique_ptr<brave_rewards::ContentSiteList>,
       uint32_t record);
@@ -385,12 +386,17 @@ void RewardsDOMHandler::GetAllBalanceReports() {
           weak_factory_.GetWeakPtr()));
 }
 
+void RewardsDOMHandler::OnCreateWallet(bool initializing) {
+}
+
 void RewardsDOMHandler::HandleCreateWalletRequested(
     const base::ListValue* args) {
   if (!rewards_service_)
     return;
 
-  rewards_service_->CreateWallet();
+  rewards_service_->CreateWallet(
+      base::BindOnce(&RewardsDOMHandler::OnCreateWallet,
+          weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::GetWalletProperties(const base::ListValue* args) {

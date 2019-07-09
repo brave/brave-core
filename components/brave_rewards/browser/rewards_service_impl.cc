@@ -523,14 +523,14 @@ void RewardsServiceImpl::MaybeShowAddFundsNotification(
   }
 }
 
-void RewardsServiceImpl::CreateWallet() {
+void RewardsServiceImpl::CreateWallet(CreateWalletCallback callback) {
   if (ready().is_signaled()) {
     if (Connected())
-      bat_ledger_->CreateWallet();
+      bat_ledger_->CreateWallet(std::move(callback));
   } else {
     ready().Post(FROM_HERE,
-        base::Bind(&brave_rewards::RewardsService::CreateWallet,
-            base::Unretained(this)));
+        base::BindOnce(&brave_rewards::RewardsService::CreateWallet,
+            base::Unretained(this), std::move(callback)));
   }
 }
 

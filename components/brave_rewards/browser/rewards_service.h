@@ -88,13 +88,14 @@ using GetCurrentCountryCallback = base::OnceCallback<void(const std::string&)>;
 using FetchBalanceCallback = base::OnceCallback<void(
     int32_t,
     std::unique_ptr<brave_rewards::Balance>)>;
+using CreateWalletCallback = base::OnceCallback<void(bool)>;
 
 class RewardsService : public KeyedService {
  public:
   RewardsService();
   ~RewardsService() override;
 
-  virtual void CreateWallet() = 0;
+  virtual void CreateWallet(CreateWalletCallback callback) = 0;
   virtual void FetchWalletProperties() = 0;
   virtual void GetContentSiteList(
       uint32_t start,

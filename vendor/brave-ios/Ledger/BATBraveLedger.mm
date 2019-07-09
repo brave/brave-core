@@ -200,7 +200,8 @@ BATLedgerReadonlyBridge(BOOL, isWalletCreated, IsWalletCreated)
   //   - LEDGER_ERROR: Already initialized
   //   - BAD_REGISTRATION_RESPONSE: Request credentials call failure or malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
-  ledger->CreateWallet();
+  ledger->CreateWallet(^void(bool initializing){
+  });
 }
 
 - (void)onWalletInitialized:(ledger::Result)result
@@ -391,7 +392,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   if (faviconURL) {
     visitData.favicon_url = std::string(faviconURL.absoluteString.UTF8String);
   }
-  
+
   std::string blob = std::string();
   if (publisherBlob) {
     blob = std::string(publisherBlob.UTF8String);
@@ -884,7 +885,7 @@ BATLedgerBridge(BOOL,
                                    userInfo:nil
                                     repeats:NO];
   });
-  
+
 }
 
 - (void)checkForNotificationsAndFetchGrants
@@ -935,7 +936,7 @@ BATLedgerBridge(BOOL,
       now < upcomingAddFundsNotificationTime) {
     return;
   }
-  
+
   const auto __weak weakSelf = self;
   // Make sure they don't have a sufficient balance
   [self hasSufficientBalanceToReconcile:^(BOOL sufficient) {
@@ -943,12 +944,12 @@ BATLedgerBridge(BOOL,
       return;
     }
     const auto strongSelf = weakSelf;
-    
+
     // Set next add funds notification in 3 days
     const auto nextTime = [[NSDate date] timeIntervalSince1970] + (kOneDay * 3);
     strongSelf.prefs[kNextAddFundsDateNotificationKey] = @(nextTime);
     [strongSelf savePrefs];
-    
+
     [strongSelf addNotificationOfKind:BATRewardsNotificationKindInsufficientFunds
                              userInfo:nil
                        notificationID:@"rewards_notification_insufficient_funds"];
