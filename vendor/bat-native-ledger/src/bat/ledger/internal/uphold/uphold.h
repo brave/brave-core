@@ -103,6 +103,8 @@ class Uphold {
     const ledger::ExternalWallet& wallet,
     ledger::Result result);
 
+  void OnShowNotification(ledger::Result result);
+
   void OnGetUser(
     GetUserCallback callback,
     const ledger::ExternalWallet& wallet,

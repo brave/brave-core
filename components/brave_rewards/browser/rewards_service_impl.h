@@ -593,6 +593,11 @@ class RewardsServiceImpl : public RewardsService,
   void SaveExternalWallet(const std::string& wallet_type,
                         ledger::ExternalWalletPtr wallet) override;
 
+  void ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      const ledger::ShowNotificationCallback& callback) override;
+
   // end ledger::LedgerClient
 
   // Mojo Proxy methods

@@ -485,7 +485,7 @@
   },
   "walletDisconnect":  {
     "message": "Disconnect from Brave Rewards",
-    "description": ""
+    "description": "CTA to disconnect user wallet from rewards"
   },
   "walletVerificationButton":  {
     "message": "Verify wallet",
@@ -534,5 +534,27 @@
   "reconnectWallet":  {
     "message": "Reconnect wallet",
     "description": "CTA text to connect wallet again"
+  },
+  "walletVerifiedNotification":  {
+    "message": "Your wallet is verified!",
+    "description": "Title for notification when wallet becomes verified"
+  },
+  "walletVerifiedTextNotification":  {
+    "message": "Congrats! Your $name$ wallet was successfully verified and ready to add and withdraw funds.",
+    "description": "Title for notification when wallet becomes verified",
+    "placeholders": {
+      "name": {
+        "content": "$1",
+        "example": "Uphold"
+      }
+    }
+  },
+  "walletDisconnectedNotification":  {
+    "message": "Uh oh. Your wallet is unreachable.",
+    "description": "Title for notification when wallet is disconnected."
+  },
+  "walletDisconnectedTextNotification":  {
+    "message": "No worries. This can happen from a variety of security reasons. Simply reconnect to it will solve this issue.s",
+    "description": "Title for notification when wallet is disconnected"
   }
 }

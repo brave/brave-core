@@ -175,6 +175,11 @@ class BatLedgerClientMojoProxy : public ledger::LedgerClient,
   void SaveExternalWallet(const std::string& wallet_type,
                            ledger::ExternalWalletPtr wallet) override;
 
+  void ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      const ledger::ShowNotificationCallback& callback) override;
+
  private:
   bool Connected() const;
 

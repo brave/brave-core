@@ -3426,4 +3426,23 @@ void RewardsServiceImpl::DisconnectWallet(const std::string& wallet_type) {
                      wallet_type));
 }
 
+void RewardsServiceImpl::ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      const ledger::ShowNotificationCallback& callback) {
+  if (type.empty()) {
+    callback(ledger::Result::LEDGER_ERROR);
+    return;
+  }
+
+  RewardsNotificationService::RewardsNotificationArgs notification_args;
+  notification_args.push_back(type);
+  notification_args.insert(notification_args.end(), args.begin(), args.end());
+  notification_service_->AddNotification(
+      RewardsNotificationService::REWARDS_NOTIFICATION_GENERAL_LEDGER,
+      notification_args,
+      "rewards_notification_general_ledger_" + type);
+    callback(ledger::Result::LEDGER_OK);
+}
+
 }  // namespace brave_rewards

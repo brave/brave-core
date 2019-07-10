@@ -265,4 +265,6 @@ interface BatLedgerClient {
   GetExternalWallets() => (map<string, ledger.mojom.ExternalWallet?> wallets);
 
   SaveExternalWallet(string wallet_type, ledger.mojom.ExternalWallet wallet);
+
+  ShowNotification(string type, array<string> args) => (int32 result);
 };

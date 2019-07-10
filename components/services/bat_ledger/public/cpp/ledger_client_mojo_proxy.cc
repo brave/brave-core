@@ -855,4 +855,28 @@ void LedgerClientMojoProxy::SaveExternalWallet(
   ledger_client_->SaveExternalWallet(wallet_type, std::move(wallet));
 }
 
+// static
+void LedgerClientMojoProxy::OnShowNotification(
+    CallbackHolder<ShowNotificationCallback>* holder,
+    int32_t result) {
+  if (holder->is_valid()) {
+    std::move(holder->get()).Run(result);
+  }
+  delete holder;
+}
+
+void LedgerClientMojoProxy::ShowNotification(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      ShowNotificationCallback callback) {
+  auto* holder = new CallbackHolder<ShowNotificationCallback>(
+      AsWeakPtr(), std::move(callback));
+  ledger_client_->ShowNotification(
+      type,
+      args,
+      std::bind(LedgerClientMojoProxy::OnShowNotification,
+                holder,
+                _1));
+}
+
 }  // namespace bat_ledger

@@ -1647,4 +1647,9 @@ BATLedgerBridge(BOOL,
 
 }
 
+- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(const ledger::ShowNotificationCallback&)callback
+{
+
+}
+
 @end

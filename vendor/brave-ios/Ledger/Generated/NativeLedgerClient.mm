@@ -206,3 +206,6 @@ void NativeLedgerClient::GetExternalWallets(ledger::GetExternalWalletsCallback c
 void NativeLedgerClient::SaveExternalWallet(const std::string& wallet_type, ledger::ExternalWalletPtr wallet) {
   return [bridge_ saveExternalWallet:wallet_type wallet:std::move(wallet)];
 }
+void NativeLedgerClient::ShowNotification(const std::string& type, const std::vector<std::string>& args, const ledger::ShowNotificationCallback& callback) {
+  return [bridge_ showNotification:type args:args callback:callback];
+}

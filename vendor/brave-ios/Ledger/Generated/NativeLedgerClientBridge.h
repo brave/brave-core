@@ -73,5 +73,6 @@
 - (void)clearState:(const std::string&)name;
 - (void)getExternalWallets:(ledger::GetExternalWalletsCallback)callback;
 - (void)saveExternalWallet:(const std::string &)wallet_type wallet:(ledger::ExternalWalletPtr)wallet;
+- (void)showNotification:(const std::string &)type args:(const std::vector<std::string>&)args callback:(const ledger::ShowNotificationCallback&)callback;
 
 @end

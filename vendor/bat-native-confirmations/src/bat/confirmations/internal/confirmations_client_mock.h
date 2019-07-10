@@ -315,6 +315,11 @@ class MockConfirmationsClient : public ConfirmationsClient {
   MOCK_METHOD2(SaveExternalWallet, void(
       const std::string& wallet_type,
       ledger::ExternalWalletPtr wallet));
+
+  MOCK_METHOD3(ShowNotification, void(
+      const std::string& type,
+      const std::vector<std::string>& args,
+      const ledger::ShowNotificationCallback& callback));
 };
 
 }  // namespace confirmations

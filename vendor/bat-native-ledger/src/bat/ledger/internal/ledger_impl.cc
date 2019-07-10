@@ -1644,4 +1644,11 @@ void LedgerImpl::TransferAnonToExternalWallet(
   bat_wallet_->TransferAnonToExternalWallet(new_address, callback);
 }
 
+void LedgerImpl::ShowNotification(
+      const std::string& type,
+      const ledger::ShowNotificationCallback& callback,
+      const std::vector<std::string>& args) {
+  ledger_client_->ShowNotification(type, args, callback);
+}
+
 }  // namespace bat_ledger

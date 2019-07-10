@@ -319,7 +319,7 @@ export class Panel extends React.Component<Props, State> {
     const notification: RewardsExtension.Notification = notifications[currentNotification]
 
     let type: NotificationType = ''
-    let text = ''
+    let text
     let isAlert = ''
 
     switch (notification.type) {
@@ -394,6 +394,43 @@ export class Panel extends React.Component<Props, State> {
         type = 'insufficientFunds'
         text = getMessage('pendingNotEnoughFundsNotification')
         break
+      case RewardsNotificationType.REWARDS_NOTIFICATION_GENERAL_LEDGER: {
+        const args = notification.args
+        if (!args ||
+          !Array.isArray(args) ||
+          args.length === 0) {
+          break
+        }
+
+        const type = args[0]
+
+        switch (type) {
+          case 'wallet_verified': {
+            text = (
+              <>
+                <div><b>{getMessage('walletVerifiedNotification')}</b></div>
+                {getMessage('walletVerifiedTextNotification', [args[1]])}
+              </>
+            )
+            isAlert = 'success'
+            break
+          }
+          case 'wallet_disconnected': {
+            text = (
+              <>
+                <div><b>{getMessage('walletDisconnectedNotification')}</b></div>
+                {getMessage('walletDisconnectedTextNotification')}
+              </>
+            )
+            isAlert = 'error'
+            break
+          }
+          default:
+            break
+        }
+
+        break
+      }
       default:
         type = ''
         break

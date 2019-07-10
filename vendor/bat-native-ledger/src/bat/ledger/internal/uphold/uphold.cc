@@ -425,6 +425,9 @@ void Uphold::OnTransferAnonToExternalWalletCallback(
   callback(ledger::Result::LEDGER_OK, std::move(new_wallet));
 }
 
+void Uphold::OnShowNotification(ledger::Result result) {
+}
+
 void Uphold::OnGetUser(
     GetUserCallback callback,
     const ledger::ExternalWallet& wallet,
@@ -471,6 +474,10 @@ void Uphold::OnGetUser(
 
   if (new_wallet->status == ledger::WalletStatus::CONNECTED && verified) {
     new_wallet->status = ledger::WalletStatus::VERIFIED;
+
+    ledger_->ShowNotification(
+        "wallet_verified",
+        std::bind(&Uphold::OnShowNotification, this, _1), {"Uphold"});
 
     auto transfer_callback = std::bind(
         &Uphold::OnTransferAnonToExternalWalletCallback,
@@ -530,6 +537,10 @@ void Uphold::OnDisconectWallet(
   }
 
   wallet->token = "";
+
+  ledger_->ShowNotification(
+    "wallet_disconnected",
+    std::bind(&Uphold::OnShowNotification, this, _1));
 
   ledger_->SaveExternalWallet(ledger::kWalletUphold, std::move(wallet));
 }
