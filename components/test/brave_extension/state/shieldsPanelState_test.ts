@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import { State } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
+import { State, PersistentData } from '../../../brave_extension/extension/brave_extension/types/state/shieldsPannelState'
 import * as deepFreeze from 'deep-freeze-node'
 import * as shieldsPanelState from '../../../brave_extension/extension/brave_extension/state/shieldsPanelState'
 import * as noScriptState from '../../../brave_extension/extension/brave_extension/state/noScriptState'
@@ -10,6 +10,10 @@ import * as shieldsAPI from '../../../brave_extension/extension/brave_extension/
 
 const state: State = deepFreeze({
   currentWindowId: 1,
+  persistentData: {
+    isFirstAccess: true,
+    advancedView: false
+  },
   tabs: {
     2: {
       id: 2,
@@ -86,10 +90,32 @@ describe('shieldsPanelState test', () => {
       expect(assertion).toBe(true)
     })
   })
+  describe('getPersistentData', () => {
+    it('is able get persistent data', () => {
+      const assertion = shieldsPanelState.getPersistentData(state)
+      expect(assertion).toEqual(state.persistentData)
+    })
+  })
+  describe('updatePersistentData', () => {
+    it('is able to update persistent data', () => {
+      const newPersistentData: Partial<PersistentData> = {
+        isFirstAccess: false
+      }
+      const assertion = shieldsPanelState.updatePersistentData(state, newPersistentData)
+      expect(assertion).toEqual({
+        ...state,
+        persistentData: { ...state.persistentData, ...newPersistentData }
+      })
+    })
+  })
   describe('updateActiveTab', () => {
     it('can update focused window', () => {
       expect(shieldsPanelState.updateActiveTab(state, 1, 4)).toEqual({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             id: 2,
@@ -116,6 +142,10 @@ describe('shieldsPanelState test', () => {
     it('can update a window which is not focused', () => {
       expect(shieldsPanelState.updateActiveTab(state, 2, 4)).toEqual({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             id: 2,
@@ -144,6 +174,10 @@ describe('shieldsPanelState test', () => {
     it('can remove the focused window', () => {
       expect(shieldsPanelState.removeWindowInfo(state, 1)).toEqual({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             id: 2,
@@ -169,6 +203,10 @@ describe('shieldsPanelState test', () => {
     it('can remove a window which is not focused', () => {
       expect(shieldsPanelState.removeWindowInfo(state, 2)).toEqual({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             id: 2,
@@ -196,6 +234,10 @@ describe('shieldsPanelState test', () => {
     it('updates the currentWindowId', () => {
       expect(shieldsPanelState.updateFocusedWindow(state, 2)).toEqual({
         currentWindowId: 2,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             id: 2,
@@ -232,6 +274,10 @@ describe('shieldsPanelState test', () => {
         cookies: 'allow'
       })).toEqual({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             id: 2,
@@ -273,6 +319,10 @@ describe('shieldsPanelState test', () => {
       this.tabId = 2
       const stateWithStats: State = {
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             id: 2,
@@ -360,6 +410,10 @@ describe('shieldsPanelState test', () => {
       stateWithStats.tabs[this.tabId].fingerprintingBlocked = 7
       expect(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId)).toEqual({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             id: 2,
@@ -444,6 +498,10 @@ describe('shieldsPanelState test', () => {
       this.tabId = 4
       const stateWithStats: State = {
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             ads: 'block',
@@ -526,6 +584,10 @@ describe('shieldsPanelState test', () => {
 
       expect(shieldsPanelState.resetBlockingStats(stateWithStats, this.tabId)).toEqual({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             ads: 'block',
@@ -612,6 +674,10 @@ describe('shieldsPanelState test', () => {
       this.tabId = 2
       expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'ads', 'https://test.brave.com')).toEqual({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             id: 2,
@@ -649,6 +715,10 @@ describe('shieldsPanelState test', () => {
       this.tabId = 2
       expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'trackers', 'https://test.brave.com')).toEqual({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             id: 2,
@@ -686,6 +756,10 @@ describe('shieldsPanelState test', () => {
       this.tabId = 2
       expect(shieldsPanelState.updateResourceBlocked(state, this.tabId, 'javascript', 'https://test.brave.com')).toEqual({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {
           2: {
             id: 2,
@@ -725,6 +799,10 @@ describe('shieldsPanelState test', () => {
   describe('resetNoScriptInfo', () => {
     const stateWithAllowedScriptOrigins: State = {
       currentWindowId: 1,
+      persistentData: {
+        isFirstAccess: true,
+        advancedView: false
+      },
       tabs: {
         2: {
           id: 2,
@@ -791,6 +869,10 @@ describe('shieldsPanelState test', () => {
       expect(noScriptState.resetNoScriptInfo(
         stateWithAllowedScriptOrigins, this.tabId, 'https://brave.com')).toEqual({
           currentWindowId: 1,
+          persistentData: {
+            isFirstAccess: true,
+            advancedView: false
+          },
           tabs: {
             2: {
               id: 2,
@@ -868,6 +950,10 @@ describe('shieldsPanelState test', () => {
       expect(noScriptState.resetNoScriptInfo(
         stateWithAllowedScriptOrigins, this.tabId, 'https://test.brave.com')).toEqual({
           currentWindowId: 1,
+          persistentData: {
+            isFirstAccess: true,
+            advancedView: false
+          },
           tabs: {
             2: {
               id: 2,
@@ -946,6 +1032,10 @@ describe('shieldsPanelState test', () => {
     it('does not call setBadgeText if tab does not exist', () => {
       const newState: State = deepFreeze({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {},
         windows: { 1: 2 }
       })
@@ -976,6 +1066,10 @@ describe('shieldsPanelState test', () => {
     it('does not call setIcon if tab does not exist', () => {
       const newState: State = deepFreeze({
         currentWindowId: 1,
+        persistentData: {
+          isFirstAccess: true,
+          advancedView: false
+        },
         tabs: {},
         windows: { 1: 2 }
       })

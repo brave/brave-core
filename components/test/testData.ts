@@ -215,10 +215,10 @@ export const getMockChrome = () => {
     },
     storage: {
       local: {
-        get: function (url: string) {
+        get: function (callback: (items: { [key: string]: any }) => void): void {
           return
         },
-        set: function (url: string, cssfilter: string) {
+        set: function (items: Object, callback?: () => void): void {
           return
         }
       }
@@ -268,13 +268,15 @@ export const initialState = deepFreeze({
   cosmeticFilter: {
     currentWindowId: -1,
     tabs: {},
-    windows: {}
+    windows: {},
+    persistentData: { isFirstAccess: true, advancedView: false }
   },
   runtime: {},
   shieldsPanel: {
     currentWindowId: -1,
     tabs: {},
-    windows: {}
+    windows: {},
+    persistentData: { isFirstAccess: true, advancedView: false }
   }
 })
 

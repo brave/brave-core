@@ -272,6 +272,7 @@ describe('cosmeticFilterReducer', () => {
   })
   const origin = 'https://brave.com'
   const state: State = deepFreeze({
+    persistentData: {},
     tabs: {
       2: {
         origin,
@@ -322,6 +323,10 @@ describe('cosmeticFilterReducer', () => {
             details
           })).toEqual({
             currentWindowId: -1,
+            persistentData: {
+              isFirstAccess: true,
+              advancedView: false
+            },
             tabs: {
               [tabId]: {
                 adsBlocked: 0,

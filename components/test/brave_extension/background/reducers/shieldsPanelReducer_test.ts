@@ -274,6 +274,7 @@ describe('braveShieldsPanelReducer', () => {
 
   const origin = 'https://brave.com'
   const state: State = deepFreeze({
+    persistentData: {},
     tabs: {
       2: {
         origin,
@@ -324,6 +325,10 @@ describe('braveShieldsPanelReducer', () => {
           details
         })).toEqual({
           currentWindowId: -1,
+          persistentData: {
+            isFirstAccess: true,
+            advancedView: false
+          },
           tabs: {
             [tabId]: {
               adsBlocked: 0,
@@ -469,6 +474,7 @@ describe('braveShieldsPanelReducer', () => {
     })
     it('badge text update should include all resource types', () => {
       const stateWithBlockStats: State = {
+        persistentData: {},
         tabs: {
           2: {
             origin,
@@ -523,6 +529,7 @@ describe('braveShieldsPanelReducer', () => {
 
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -567,6 +574,7 @@ describe('braveShieldsPanelReducer', () => {
       })
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -609,6 +617,7 @@ describe('braveShieldsPanelReducer', () => {
       })
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -652,6 +661,7 @@ describe('braveShieldsPanelReducer', () => {
       })
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -697,6 +707,7 @@ describe('braveShieldsPanelReducer', () => {
       })
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -739,6 +750,7 @@ describe('braveShieldsPanelReducer', () => {
       })
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -779,6 +791,7 @@ describe('braveShieldsPanelReducer', () => {
       })
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -868,6 +881,7 @@ describe('braveShieldsPanelReducer', () => {
       }))
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             adsBlocked: 1,
@@ -911,6 +925,7 @@ describe('braveShieldsPanelReducer', () => {
 
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -964,6 +979,7 @@ describe('braveShieldsPanelReducer', () => {
       }))
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -1005,6 +1021,7 @@ describe('braveShieldsPanelReducer', () => {
 
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -1045,6 +1062,7 @@ describe('braveShieldsPanelReducer', () => {
       })
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -1084,6 +1102,7 @@ describe('braveShieldsPanelReducer', () => {
       })
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -1125,6 +1144,7 @@ describe('braveShieldsPanelReducer', () => {
       })
       expect(nextState).toEqual({
         currentWindowId: 1,
+        persistentData: {},
         tabs: {
           2: {
             origin: 'https://brave.com',
@@ -1202,6 +1222,25 @@ describe('braveShieldsPanelReducer', () => {
           type: types.ALLOW_SCRIPT_ORIGINS_ONCE
         })).toEqual(state)
       expect(setAllowScriptOriginsOnceSpy).toBeCalledWith([], tabId)
+    })
+  })
+
+  describe('SET_ADVANCED_VIEW_FIRST_ACCESS', () => {
+    let updatePersistentDataSpy: jest.SpyInstance
+    beforeEach(() => {
+      updatePersistentDataSpy = jest.spyOn(shieldsPanelState, 'updatePersistentData')
+    })
+    afterEach(() => {
+      updatePersistentDataSpy.mockRestore()
+    })
+    it('should call updatePersistentData', () => {
+      const isFirstAccess: boolean = false
+      const persistentData = { isFirstAccess }
+      expect(
+        shieldsPanelReducer(state, {
+          type: types.SET_ADVANCED_VIEW_FIRST_ACCESS
+        })).toEqual({ ...state, persistentData })
+      expect(updatePersistentDataSpy).toBeCalledWith(state, persistentData)
     })
   })
 })

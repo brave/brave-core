@@ -23,6 +23,12 @@ export const isShieldsActive = (state: shieldState.State, tabId: number): boolea
   return state.tabs[tabId].braveShields !== 'block'
 }
 
+export const getPersistentData: shieldState.GetPersistentData = (state) => state.persistentData
+
+export const updatePersistentData: shieldState.UpdatePersistentData = (state, persistentData) => {
+  return { ...state, persistentData: { ...state.persistentData, ...persistentData } }
+}
+
 export const updateActiveTab: shieldState.UpdateActiveTab = (state, windowId, tabId) => {
   let windows: shieldState.Windows = { ...state.windows } || {}
   windows[windowId] = tabId
