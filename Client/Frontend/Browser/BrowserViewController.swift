@@ -2856,6 +2856,7 @@ extension BrowserViewController: ToolbarUrlActionsDelegate {
     }
     
     func openInNewTab(_ url: URL, isPrivate: Bool) {
+        topToolbar.leaveOverlayMode()
         select(url, visitType: .unknown, action: .openInNewTab(isPrivate: isPrivate))
     }
     
