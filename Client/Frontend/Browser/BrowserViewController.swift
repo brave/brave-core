@@ -1948,6 +1948,17 @@ extension BrowserViewController: SearchViewControllerDelegate {
     func searchViewController(_ searchViewController: SearchViewController, didHighlightText text: String, search: Bool) {
         self.topToolbar.setLocation(text, search: search)
     }
+    
+    func searchViewController(_ searchViewController: SearchViewController, shouldFindInPage query: String) {
+        topToolbar.leaveOverlayMode()
+        updateFindInPageVisibility(visible: true)
+        findInPageBar?.text = query
+        
+    }
+    
+    func searchViewControllerAllowFindInPage() -> Bool {
+        return tabManager.selectedTab?.webView?.url?.isAboutHomeURL == false
+    }
 }
 
 extension BrowserViewController: TabManagerDelegate {
