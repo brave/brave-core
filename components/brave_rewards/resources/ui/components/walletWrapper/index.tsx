@@ -104,6 +104,7 @@ export type NotificationType =
   'tipsProcessed' |
   'error' |
   'pendingContribution' |
+  'verifyWallet' |
   ''
 
 export type WalletState =
@@ -301,6 +302,10 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         buttonText = getLocale('addFunds')
         buttonAction = this.onNotificationClick
         break
+      case 'verifyWallet':
+        buttonText = getLocale('whyHow').toUpperCase()
+        buttonAction = this.onNotificationClick
+        break
       default:
         buttonText = getLocale('ok').toUpperCase()
         break
@@ -449,6 +454,8 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
       case 'ads':
       case 'ads-launch':
       case 'backupWallet':
+      case 'insufficientFunds':
+      case 'verifyWallet':
         icon = megaphoneIconUrl
         break
       case 'contribute':
@@ -458,9 +465,6 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         break
       case 'grant':
         icon = giftIconUrl
-        break
-      case 'insufficientFunds':
-        icon = megaphoneIconUrl
         break
       default:
         icon = ''
@@ -503,6 +507,9 @@ export default class WalletWrapper extends React.PureComponent<Props, State> {
         break
       case 'pendingContribution':
         typeText = getLocale('pendingContributionTitle')
+        break
+      case 'verifyWallet':
+        typeText = getLocale('verifyWalletTitle')
         break
       default:
         typeText = ''
