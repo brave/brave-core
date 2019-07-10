@@ -79,11 +79,21 @@ void BatLedgerImpl::FetchWalletProperties(
       std::bind(BatLedgerImpl::OnFetchWalletProperties, holder, _1, _2));
 }
 
+void BatLedgerImpl::OnGetAutoContributeProps(
+    CallbackHolder<GetAutoContributePropsCallback>* holder,
+    ledger::AutoContributePropsPtr props) {
+  if (holder->is_valid())
+    std::move(holder->get()).Run(std::move(props));
+  delete holder;
+}
+
 void BatLedgerImpl::GetAutoContributeProps(
     GetAutoContributePropsCallback callback) {
-  ledger::AutoContributeProps props;
-  ledger_->GetAutoContributeProps(&props);
-  std::move(callback).Run(ledger::AutoContributeProps::New(props));
+  // deleted in OnGetAutoContributeProps
+  auto* holder = new CallbackHolder<GetAutoContributePropsCallback>(
+    AsWeakPtr(), std::move(callback));
+  ledger_->GetAutoContributeProps(
+    std::bind(BatLedgerImpl::OnGetAutoContributeProps, holder, _1));
 }
 
 void BatLedgerImpl::GetPublisherMinVisitTime(

@@ -184,7 +184,7 @@ NS_SWIFT_NAME(BraveLedger)
 - (BATBalanceReportInfo *)balanceReportForMonth:(BATActivityMonth)month
                                            year:(int)year;
 
-@property (nonatomic, readonly) BATAutoContributeProps *autoContributeProps;
+- (void)autoContributeProps:(void (NS_NOESCAPE ^)(BATAutoContributeProps * _Nullable props))completion;
 
 #pragma mark - Misc
 

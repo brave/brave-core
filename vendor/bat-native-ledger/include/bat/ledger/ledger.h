@@ -50,6 +50,8 @@ using GetAddressesCallback =
 using HasSufficientBalanceToReconcileCallback = std::function<void(bool)>;
 using FetchBalanceCallback = std::function<void(ledger::Result,
                                                 ledger::BalancePtr)>;
+using GetAutoContributePropsCallback =
+    std::function<void(ledger::AutoContributePropsPtr props)>;
 
 class LEDGER_EXPORT Ledger {
  public:
@@ -182,7 +184,8 @@ class LEDGER_EXPORT Ledger {
   virtual std::map<std::string, ledger::BalanceReportInfo>
   GetAllBalanceReports() const = 0;
 
-  virtual void GetAutoContributeProps(ledger::AutoContributeProps* props) = 0;
+  virtual void GetAutoContributeProps(
+      GetAutoContributePropsCallback callback) = 0;
 
   virtual void RecoverWallet(const std::string& passPhrase) const = 0;
 

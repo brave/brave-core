@@ -585,11 +585,12 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return [[BATBalanceReportInfo alloc] initWithBalanceReportInfo:info];
 }
 
-- (BATAutoContributeProps *)autoContributeProps
+- (void)autoContributeProps:(void (NS_NOESCAPE ^)(BATAutoContributeProps * _Nullable props))completion
 {
-  ledger::AutoContributeProps props;
-  ledger->GetAutoContributeProps(&props);
-  return [[BATAutoContributeProps alloc] initWithAutoContributeProps:props];
+  ledger->GetAutoContributeProps(^(ledger::AutoContributePropsPtr props){
+    auto bridgedProps = props.get() != nullptr ? [[BATAutoContributeProps alloc] initWithAutoContributeProps:*props.get()] : nil;
+    completion(bridgedProps);
+  });
 }
 
 #pragma mark - Reconcile

@@ -212,6 +212,10 @@ class BatLedgerImpl : public mojom::BatLedger,
       ledger::Result result,
       ledger::WalletPropertiesPtr properties);
 
+  static void OnGetAutoContributeProps(
+      CallbackHolder<GetAutoContributePropsCallback>* holder,
+      ledger::AutoContributePropsPtr props);
+
   static void OnGetPublisherBanner(
       CallbackHolder<GetPublisherBannerCallback>* holder,
       ledger::PublisherBannerPtr banner);
