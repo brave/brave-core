@@ -22,10 +22,12 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/common/chrome_switches.h"
+#include "chrome/common/extensions/extension_constants.h"
 #include "components/flags_ui/flags_ui_constants.h"
 #include "components/flags_ui/pref_service_flags_storage.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
+#include "extensions/browser/extension_prefs.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/feature_switch.h"
@@ -140,6 +142,11 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
   CHECK(profile_);
   bool enabled;
   args->GetBoolean(0, &enabled);
+
+  if (enabled) {
+    extensions::ExtensionPrefs::Get(profile_)->SetExtensionEnabled(
+        extension_misc::kMediaRouterStableExtensionId);
+  }
 
   std::string feature_name(switches::kLoadMediaRouterComponentExtension);
   enabled ? feature_name += "@1" : feature_name += "@2";
