@@ -20,6 +20,18 @@ constexpr char kLogValueKey[] = "value";
 constexpr char kLogSentKey[] = "sent";
 constexpr char kLogTimestampKey[] = "timestamp";
 
+void RecordP3A(uint64_t answers_count) {
+  int answer = 0;
+  if (1 <= answers_count && answers_count < 5) {
+    answer = 1;
+  } else if (5 <- answers_count && answers_count < 10) {
+    answer = 2;
+  } else {
+    answer = 3;
+  }
+  UMA_HISTOGRAM_COUNTS_100("Brave.P3A.SentAnswersCount", answer);
+}
+
 }  // namespace
 
 BraveP3ALogStore::BraveP3ALogStore(LogSerializer* serializer,
@@ -68,8 +80,7 @@ void BraveP3ALogStore::ResetUploadStamps() {
     }
   }
 
-  UMA_HISTOGRAM_COUNTS_100("Brave.P3A.SentAnswersCount",
-                           log_.size() - unsent_entries_.size());
+  RecordP3A(log_.size() - unsent_entries_.size());
 
   // Rebuild the unsent set.
   unsent_entries_.clear();
