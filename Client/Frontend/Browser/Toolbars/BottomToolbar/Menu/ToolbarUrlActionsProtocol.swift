@@ -51,7 +51,7 @@ extension ToolbarUrlActionsProtocol {
         
         let newPrivateTabAction = currentTabIsPrivate ? nil :
             Action(title: Strings.OpenNewPrivateTabButtonTitle, action: {
-                delegate.openInNewTab(url, isPrivate: currentTabIsPrivate)
+                delegate.openInNewTab(url, isPrivate: true)
             })
         
         let copyAction = Action(title: Strings.CopyLinkActionTitle,
