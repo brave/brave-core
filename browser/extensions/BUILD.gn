@@ -43,6 +43,8 @@ source_set("extensions") {
 
   if (brave_wallet_enabled) {
     sources += [
+      "api/brave_wallet_api.cc",
+      "api/brave_wallet_api.h",
       "brave_wallet_navigation_throttle.cc",
       "brave_wallet_navigation_throttle.h",
     ]

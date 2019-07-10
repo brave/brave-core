@@ -13,7 +13,6 @@
 #include "brave/common/extensions/api/brave_shields.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
-#include "brave/components/brave_wallet/browser/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_api_constants.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_helpers.h"
@@ -28,10 +27,6 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/web_contents.h"
 #include "extensions/browser/extension_util.h"
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-#include "brave/browser/dapp/dapp_utils.h"
-#endif
 
 using brave_shields::BraveShieldsWebContentsObserver;
 
@@ -84,33 +79,6 @@ ExtensionFunction::ResponseAction BraveShieldsAllowScriptsOnceFunction::Run() {
 
   BraveShieldsWebContentsObserver::FromWebContents(
       contents)->AllowScriptsOnce(params->origins, contents);
-  return RespondNow(NoArguments());
-}
-
-ExtensionFunction::ResponseAction
-BraveShieldsDappAvailableFunction::Run() {
-  std::unique_ptr<brave_shields::DappAvailable::Params> params(
-      brave_shields::DappAvailable::Params::Create(*args_));
-  EXTENSION_FUNCTION_VALIDATE(params.get());
-
-#if BUILDFLAG(BRAVE_WALLET_ENABLED)
-  // Get web contents for this tab
-  content::WebContents* contents = nullptr;
-  if (!ExtensionTabUtil::GetTabById(
-        params->tab_id,
-        Profile::FromBrowserContext(browser_context()),
-        include_incognito_information(),
-        nullptr,
-        nullptr,
-        &contents,
-        nullptr)) {
-    return RespondNow(Error(tabs_constants::kTabNotFoundError,
-                            base::NumberToString(params->tab_id)));
-  }
-
-  RequestWalletInstallationPermission(contents);
-#endif
-
   return RespondNow(NoArguments());
 }
 

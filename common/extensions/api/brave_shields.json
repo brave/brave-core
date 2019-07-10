@@ -49,24 +49,6 @@
             "parameters": []
           }
         ]
-      },
-      {
-        "name": "dappAvailable",
-        "type": "function",
-        "description": "Called when website is dapp",
-        "parameters": [
-          {
-            "name": "tabID",
-            "type": "integer"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "optional": true,
-            "parameters": [
-            ]
-          }
-        ]
       }
     ],
     "types": [

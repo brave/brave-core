@@ -1,3 +1,4 @@
+import("//brave/components/brave_wallet/browser/buildflags/buildflags.gni")
 import("//tools/json_schema_compiler/json_features.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 import("//tools/grit/grit_rule.gni")
@@ -45,6 +46,13 @@ brave_extensions_api_schema_sources = [
   "rewards_notifications.json",
   "brave_sync.json",
 ]
+
+if (brave_wallet_enabled) {
+  brave_extensions_api_schema_sources += [
+    "brave_wallet.json"
+  ]
+}
+
 brave_extensions_api_uncompiled_sources = []
 brave_extensions_api_root_namespace = "extensions::api::%(namespace)s"
 brave_extensions_api_schema_include_rules =

@@ -1,0 +1,39 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+[
+  {
+    "namespace": "braveWallet",
+    "description": "Use the <code>chrome.braveWallet</code> API to receive notifications about Dapp detection.",
+    "compiler_options": {
+      "implemented_in": "brave/browser/extensions/api/brave_wallet_api.h"
+    },
+    "events": [
+    ],
+    "functions": [
+      {
+        "name": "dappAvailable",
+        "type": "function",
+        "description": "Called when website is dapp",
+        "parameters": [
+          {
+            "name": "tabID",
+            "type": "integer"
+          },
+          {
+            "type": "function",
+            "name": "callback",
+            "optional": true,
+            "parameters": [
+            ]
+          }
+        ]
+      }
+    ],
+    "types": [
+    ],
+    "properties": {
+    }
+  }
+]
