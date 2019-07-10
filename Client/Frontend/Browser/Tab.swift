@@ -191,7 +191,7 @@ class Tab: NSObject {
             configuration!.allowsInlineMediaPlayback = true
             // Enables Zoom in website by ignoring their javascript based viewport Scale limits.
             configuration!.ignoresViewportScaleLimits = true
-            let webView = TabWebView(frame: .zero, configuration: configuration!)
+            let webView = TabWebView(frame: .zero, configuration: configuration!, isPrivate: isPrivate)
             webView.delegate = self
             configuration = nil
 

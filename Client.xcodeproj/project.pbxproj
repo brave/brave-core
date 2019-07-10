@@ -587,14 +587,11 @@
 		C4F3B29A1CFCF93A00966259 /* ButtonToast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4F3B2991CFCF93A00966259 /* ButtonToast.swift */; };
 		C615FACF2129FBD000A8168C /* ImageCacheProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C615FACE2129FBD000A8168C /* ImageCacheProtocol.swift */; };
 		C615FAD9212A1E2600A8168C /* WebImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = C615FAD8212A1E2600A8168C /* WebImageCache.swift */; };
-		C615FADF212A319C00A8168C /* PrivacyProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C615FADE212A319C00A8168C /* PrivacyProtection.swift */; };
-		C615FAE5212AC5E000A8168C /* PrivacyProtectionProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C615FAE4212AC5E000A8168C /* PrivacyProtectionProtocol.swift */; };
 		C615FAED212ACAD200A8168C /* BraveWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C615FAEC212ACAD200A8168C /* BraveWebView.swift */; };
 		C6345ECB2113B3A000CFB983 /* SearchPlugins in Resources */ = {isa = PBXBuildFile; fileRef = C6345ECA2113B3A000CFB983 /* SearchPlugins */; };
 		C6620BBB213BCEC6009FE75A /* TabType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6620BB3213BCEC6009FE75A /* TabType.swift */; };
 		C690C208212FF35100E6EEE9 /* WebImageCacheWithNoPrivacyProtectionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C690C207212FF35100E6EEE9 /* WebImageCacheWithNoPrivacyProtectionManager.swift */; };
 		C690C2142130121E00E6EEE9 /* WebImageCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C690C2132130121E00E6EEE9 /* WebImageCacheManager.swift */; };
-		C6B81B81212D6C1100996084 /* NoPrivacyProtection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B81B80212D6C1100996084 /* NoPrivacyProtection.swift */; };
 		C6B81B8A212D84BD00996084 /* ImageCacheType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B81B89212D84BD00996084 /* ImageCacheType.swift */; };
 		C6B81B8C212D989200996084 /* ImageCacheOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6B81B8B212D989200996084 /* ImageCacheOptions.swift */; };
 		C6D267522136800100465DFA /* PrivateBrowsingManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6D267512136800100465DFA /* PrivateBrowsingManager.swift */; };
@@ -1931,14 +1928,11 @@
 		C4F3B2991CFCF93A00966259 /* ButtonToast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonToast.swift; sourceTree = "<group>"; };
 		C615FACE2129FBD000A8168C /* ImageCacheProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheProtocol.swift; sourceTree = "<group>"; };
 		C615FAD8212A1E2600A8168C /* WebImageCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageCache.swift; sourceTree = "<group>"; };
-		C615FADE212A319C00A8168C /* PrivacyProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyProtection.swift; sourceTree = "<group>"; };
-		C615FAE4212AC5E000A8168C /* PrivacyProtectionProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyProtectionProtocol.swift; sourceTree = "<group>"; };
 		C615FAEC212ACAD200A8168C /* BraveWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BraveWebView.swift; sourceTree = "<group>"; };
 		C6345ECA2113B3A000CFB983 /* SearchPlugins */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SearchPlugins; sourceTree = "<group>"; };
 		C6620BB3213BCEC6009FE75A /* TabType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabType.swift; sourceTree = "<group>"; };
 		C690C207212FF35100E6EEE9 /* WebImageCacheWithNoPrivacyProtectionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageCacheWithNoPrivacyProtectionManager.swift; sourceTree = "<group>"; };
 		C690C2132130121E00E6EEE9 /* WebImageCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebImageCacheManager.swift; sourceTree = "<group>"; };
-		C6B81B80212D6C1100996084 /* NoPrivacyProtection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoPrivacyProtection.swift; sourceTree = "<group>"; };
 		C6B81B89212D84BD00996084 /* ImageCacheType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheType.swift; sourceTree = "<group>"; };
 		C6B81B8B212D989200996084 /* ImageCacheOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCacheOptions.swift; sourceTree = "<group>"; };
 		C6D267512136800100465DFA /* PrivateBrowsingManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateBrowsingManager.swift; sourceTree = "<group>"; };
@@ -3545,9 +3539,6 @@
 		C6D267612137E45D00465DFA /* PrivacyProtection */ = {
 			isa = PBXGroup;
 			children = (
-				C615FAE4212AC5E000A8168C /* PrivacyProtectionProtocol.swift */,
-				C615FADE212A319C00A8168C /* PrivacyProtection.swift */,
-				C6B81B80212D6C1100996084 /* NoPrivacyProtection.swift */,
 				C6D267512136800100465DFA /* PrivateBrowsingManager.swift */,
 			);
 			path = PrivacyProtection;
@@ -5739,7 +5730,6 @@
 				4422D4E121BFFB7600BF1855 /* filter_block.cc in Sources */,
 				0A8C69BE225E350300988715 /* IndentedImageTableViewCell.swift in Sources */,
 				0A1E843D2190A57F0042F782 /* SyncSettingsTableViewController.swift in Sources */,
-				C615FAE5212AC5E000A8168C /* PrivacyProtectionProtocol.swift in Sources */,
 				4422D56C21BFFB7F00BF1855 /* bitstate.cc in Sources */,
 				E68E7ADE1CAC208A00FDCA76 /* RemovePasscodeViewController.swift in Sources */,
 				D314E7F71A37B98700426A76 /* BottomToolbarView.swift in Sources */,
@@ -5747,7 +5737,6 @@
 				4422D4F421BFFB7600BF1855 /* version_edit.cc in Sources */,
 				EB11A1062044A90E0018F749 /* ContentBlockerHelper+TabContentScript.swift in Sources */,
 				3B0943811D6CC4FC004F24E1 /* FilledPageControl.swift in Sources */,
-				C615FADF212A319C00A8168C /* PrivacyProtection.swift in Sources */,
 				FA9293D41D6580E100AC8D33 /* QRCodeViewController.swift in Sources */,
 				E6108FF91C84E91C005D25E8 /* BasePasscodeViewController.swift in Sources */,
 				39F4C10A2045DB2E00746155 /* FocusHelper.swift in Sources */,
@@ -5817,7 +5806,6 @@
 				F84B22041A0910F600AAB793 /* AppDelegate.swift in Sources */,
 				0A7B5D6722689C5D00AADF22 /* AddEditHeaderView.swift in Sources */,
 				F930CDD12270F09000A23FE1 /* WebAuthnAuthenticateRequest.swift in Sources */,
-				C6B81B81212D6C1100996084 /* NoPrivacyProtection.swift in Sources */,
 				D8C75DF3207584C400BB8AD0 /* UIImageViewAligned.m in Sources */,
 				E653422D1C5944F90039DD9E /* BrowserPrompts.swift in Sources */,
 				4422D43621BFD29E00BF1855 /* NSFileManager+Tar.m in Sources */,

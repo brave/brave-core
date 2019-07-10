@@ -7,8 +7,8 @@ import WebKit
 
 class BraveWebView: WKWebView {
     
-    init(frame: CGRect, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), privacyProtection: PrivacyProtectionProtocol = PrivacyProtection()) {
-        if privacyProtection.nonPersistent {
+    init(frame: CGRect, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), isPrivate: Bool = true) {
+        if isPrivate {
             configuration.websiteDataStore = WKWebsiteDataStore.nonPersistent()
         } else {
             configuration.websiteDataStore = WKWebsiteDataStore.default()

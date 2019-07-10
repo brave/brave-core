@@ -33,9 +33,9 @@ protocol ImageCacheProtocol {
     
     /// Initialize an image cache with privacy protection.
     ///
-    /// - parameter privacyProtection: An object representing privacy protection for this cache store.
+    /// - parameter isPrivate: Bool representing privacy protection for this cache store.
     /// - parameter sandbox: The sandbox for this cache store.
-    init(withPrivacyProtection privacyProtection: PrivacyProtectionProtocol, sandbox: String?)
+    init(isPrivate: Bool, sandbox: String?)
     
     /// Downloads the image at the given URL if not present in the cache otherwise returns the cached version.
     ///
