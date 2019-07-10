@@ -15,6 +15,7 @@
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/weak_ptr.h"
 #include "base/optional.h"
+#include "brave/browser/net/url_context.h"
 #include "extensions/browser/api/web_request/web_request_api.h"
 #include "extensions/browser/api/web_request/web_request_info.h"
 #include "mojo/public/cpp/bindings/binding.h"
@@ -51,6 +52,8 @@ class BraveProxyingURLLoaderFactory :
         BraveProxyingURLLoaderFactory* factory,
         uint64_t request_id,
         int32_t network_service_request_id,
+        int render_process_id_,
+        int frame_tree_node_id_,
         int32_t routing_id,
         uint32_t options,
         const network::ResourceRequest& request,
@@ -114,6 +117,7 @@ class BraveProxyingURLLoaderFactory :
     bool IsRedirectSafe(const GURL& from_url, const GURL& to_url);
     void HandleBeforeRequestRedirect();
 
+    std::shared_ptr<brave::BraveRequestInfo> ctx_;
     BraveProxyingURLLoaderFactory* const factory_;
     network::ResourceRequest request_;
     const base::Optional<url::Origin> original_initiator_;
@@ -121,6 +125,9 @@ class BraveProxyingURLLoaderFactory :
     // const bool is_download_;
     const uint64_t request_id_;
     const int32_t network_service_request_id_;
+
+    const int render_process_id_;
+    const int frame_tree_node_id_;
     const int32_t routing_id_;
     const uint32_t options_;
 
@@ -190,6 +197,7 @@ class BraveProxyingURLLoaderFactory :
   BraveProxyingURLLoaderFactory(
       content::ResourceContext* resource_context,
       int render_process_id,
+      int frame_tree_node_id,
       bool is_download,
       network::mojom::URLLoaderFactoryRequest request,
       network::mojom::URLLoaderFactoryPtrInfo target_factory,
@@ -237,6 +245,7 @@ class BraveProxyingURLLoaderFactory :
 
   content::ResourceContext* resource_context_;
   const int render_process_id_;
+  const int frame_tree_node_id_;
   const bool is_download_;
 
   mojo::BindingSet<network::mojom::URLLoaderFactory> proxy_bindings_;

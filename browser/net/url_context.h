@@ -100,6 +100,7 @@ struct BraveRequestInfo {
   static void FillCTX(
       const network::ResourceRequest& request,
       int render_process_id,
+      int frame_tree_node_id,
       uint64_t request_identifier,
       content::ResourceContext* resource_context,
       std::shared_ptr<brave::BraveRequestInfo> ctx);
