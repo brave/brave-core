@@ -10,6 +10,7 @@
 
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/net/brave_stp_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -26,7 +27,6 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/url_request/url_request.h"
 
 using content::BrowserThread;
@@ -62,36 +62,6 @@ std::string GetTagFromPrefName(const std::string& pref_name) {
 
 }  // namespace
 
-base::flat_set<base::StringPiece>* TrackableSecurityHeaders() {
-  static base::NoDestructor<base::flat_set<base::StringPiece>>
-      kTrackableSecurityHeaders(base::flat_set<base::StringPiece>{
-          "Strict-Transport-Security", "Expect-CT", "Public-Key-Pins",
-          "Public-Key-Pins-Report-Only"});
-  return kTrackableSecurityHeaders.get();
-}
-
-void RemoveTrackableSecurityHeadersForThirdParty(
-    const GURL& request_url, const url::Origin& top_frame_origin,
-    const net::HttpResponseHeaders* original_response_headers,
-    scoped_refptr<net::HttpResponseHeaders>* override_response_headers) {
-  if (!original_response_headers && !override_response_headers->get()) {
-    return;
-  }
-
-  if (net::registry_controlled_domains::SameDomainOrHost(
-          request_url, top_frame_origin,
-          net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
-    return;
-  }
-
-  if (!override_response_headers->get()) {
-    *override_response_headers =
-        new net::HttpResponseHeaders(original_response_headers->raw_headers());
-  }
-  for (auto header : *TrackableSecurityHeaders()) {
-    (*override_response_headers)->RemoveHeader(header.as_string());
-  }
-}
 
 BraveNetworkDelegateBase::BraveNetworkDelegateBase(
     extensions::EventRouterForwarder* event_router)
@@ -204,7 +174,7 @@ int BraveNetworkDelegateBase::OnHeadersReceived(
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url) {
   if (request->top_frame_origin().has_value()) {
-    RemoveTrackableSecurityHeadersForThirdParty(
+    brave::RemoveTrackableSecurityHeadersForThirdParty(
         request->url(), request->top_frame_origin().value(),
         original_response_headers, override_response_headers);
   }

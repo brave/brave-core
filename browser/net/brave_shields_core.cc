@@ -10,6 +10,7 @@
 
 #include "base/task/post_task.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/net/brave_stp_util.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_shields/browser/ad_block_custom_filters_service.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service_manager.h"
@@ -26,7 +27,6 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 
 
 #include "brave/browser/net/brave_ad_block_tp_network_delegate_helper.h"
@@ -169,9 +169,9 @@ int BraveShieldsCore::OnHeadersReceived(
     scoped_refptr<net::HttpResponseHeaders>* override_response_headers,
     GURL* allowed_unsafe_redirect_url) {
   if (!ctx->tab_origin.is_empty()) {
-//    RemoveTrackableSecurityHeadersForThirdParty(
-//        ctx->request_url, ctx->tab_origin.GetOrigin(),
-//        original_response_headers, override_response_headers);
+    brave::RemoveTrackableSecurityHeadersForThirdParty(
+        ctx->request_url, url::Origin::Create(ctx->tab_origin),
+        original_response_headers, override_response_headers);
   }
 
   if (headers_received_callbacks_.empty()) {
