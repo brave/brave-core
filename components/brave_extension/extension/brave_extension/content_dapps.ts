@@ -52,8 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isDapp = document.querySelector('meta[name="dapp-detected"]')
     if (isDapp) {
       chrome.runtime.sendMessage({
-        type: 'dappAvailable',
-        location: window.location.href
+        type: 'dappAvailable'
       })
     }
   }, 2000)

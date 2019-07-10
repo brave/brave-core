@@ -7,12 +7,9 @@
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   switch (msg.type) {
     case 'dappAvailable': {
-      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs: chrome.tabs.Tab[]) {
-        // Only notify when this message is comes from active tab.
-        if (msg.location === tabs[0].url) {
-          chrome.braveShields.dappAvailable(tabs[0].id)
-        }
-      })
+      if (sender.frameId === 0 && sender.tab) {
+        chrome.braveShields.dappAvailable(sender.tab.id)
+      }
       break
     }
   }
