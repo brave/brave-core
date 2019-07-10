@@ -56,9 +56,8 @@ export class WelcomePage extends React.Component<Props, State> {
     this.setState({ currentScreen: this.state.currentScreen + 1 })
   }
 
-  onClickImport = () => {
-    // clicking this button executes functionality and then auto proceed to next screen
-    this.props.actions.importNowRequested()
+  onClickImport = (sourceBrowserProfileIndex: number) => {
+    this.props.actions.importBrowserProfileRequested(sourceBrowserProfileIndex)
     this.setState({ currentScreen: this.state.currentScreen + 1 })
   }
 
@@ -98,7 +97,12 @@ export class WelcomePage extends React.Component<Props, State> {
           <Panel>
             <SlideContent>
               <WelcomeBox index={1} currentScreen={this.currentScreen} onClick={this.onClickLetsGo} />
-              <ImportBox index={2} currentScreen={this.currentScreen} onClick={this.onClickImport} />
+              <ImportBox
+                index={2}
+                currentScreen={this.currentScreen}
+                onClick={this.onClickImport}
+                browserProfiles={welcomeData.browserProfiles}
+              />
               <SearchBox
                 index={3}
                 currentScreen={this.currentScreen}
