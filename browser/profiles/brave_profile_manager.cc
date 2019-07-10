@@ -16,6 +16,7 @@
 #include "brave/common/pref_names.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/brave_shields/browser/ad_block_regional_service.h"
@@ -63,7 +64,9 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
                           content::kWebRTCIPHandlingDisableNonProxiedUdp);
   pref_service->SetBoolean(prefs::kSafeBrowsingEnabled, false);
   // https://blog.torproject.org/bittorrent-over-tor-isnt-good-idea
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
   pref_service->SetBoolean(kWebTorrentEnabled, false);
+#endif
 }
 
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
