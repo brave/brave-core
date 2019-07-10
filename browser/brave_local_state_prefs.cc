@@ -8,7 +8,7 @@
 #include "base/values.h"
 #include "brave/browser/brave_stats_updater.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
-#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/components/brave_referrals/buildflags/buildflags.h"
 #include "brave/components/brave_shields/browser/ad_block_service.h"
 #include "chrome/browser/first_run/first_run.h"
@@ -18,6 +18,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_REFERRALS)
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service.h"
 #endif
 
 namespace brave {
@@ -33,7 +37,9 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->SetDefaultPrefValue(prefs::kConfirmToQuitEnabled,
       base::Value(false));
 #endif
+#if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterLocalStatePrefs(registry);
+#endif
 #if !defined(OS_ANDROID)
   RegisterPrefsForMuonMigration(registry);
 #endif

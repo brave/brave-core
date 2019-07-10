@@ -6,6 +6,7 @@
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/brave_pages.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
 #include "brave/components/brave_sync/brave_sync_service.h"
@@ -89,7 +90,9 @@ void BraveBrowserCommandController::InitBraveCommandState() {
       UpdateCommandForBraveSync();
   }
   UpdateCommandForBraveAdblock();
+#if BUILDFLAG(ENABLE_TOR)
   UpdateCommandForTor();
+#endif
 }
 
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
@@ -101,7 +104,7 @@ void BraveBrowserCommandController::UpdateCommandForBraveAdblock() {
 }
 
 void BraveBrowserCommandController::UpdateCommandForTor() {
-  UpdateCommandEnabled(IDC_NEW_TOR_IDENTITY, true);
+  UpdateCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE, true);
   UpdateCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR, true);
 }
 
@@ -130,8 +133,8 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_NEW_OFFTHERECORD_WINDOW_TOR:
       brave::NewOffTheRecordWindowTor(browser_);
       break;
-    case IDC_NEW_TOR_IDENTITY:
-      brave::NewTorIdentity(browser_);
+    case IDC_NEW_TOR_CONNECTION_FOR_SITE:
+      brave::NewTorConnectionForSite(browser_);
       break;
     case IDC_SHOW_BRAVE_SYNC:
       brave::ShowBraveSync(browser_);

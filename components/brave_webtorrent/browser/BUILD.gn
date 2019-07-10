@@ -8,6 +8,7 @@ source_set("browser") {
   deps = [
     "//base",
     "//brave/common",
+    "//components/pref_registry",
     "//content/public/browser",
     "//extensions/browser",
     "//extensions/common",
