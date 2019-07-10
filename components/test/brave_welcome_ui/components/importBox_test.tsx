@@ -4,9 +4,9 @@
 
 import * as React from 'react'
 import { shallow } from 'enzyme'
-import { Content, PrimaryButton } from 'brave-ui/features/welcome'
-import { WelcomeImportImage } from 'brave-ui/features/welcome/images'
-import ImportBox, { Props } from '../../../../components/brave_welcome_ui/components/screens/importBox'
+import { Content, PrimaryButton } from '../../../../components/brave_welcome_ui/components'
+import { WelcomeImportImage } from '../../../../components/brave_welcome_ui/components/images'
+import ImportBox, { Props } from '../../../../components/brave_welcome_ui/containers/screens/importBox'
 import { mockImportSources } from '../../testData'
 
 describe('ImportBox component tests', () => {

@@ -3,8 +3,8 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import { ComponentType } from 'react'
-import styled, { css } from '../../../theme'
-import Button, { Props as ButtonProps } from '../../../components/buttonsIndicators/button'
+import styled, { css } from 'brave-ui/theme'
+import Button, { Props as ButtonProps } from 'brave-ui/components/buttonsIndicators/button'
 
 interface BaseButtonProps {
   active?: boolean

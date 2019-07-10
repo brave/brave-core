@@ -5,13 +5,13 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from 'brave-ui/features/welcome'
+import { Content, Title, Paragraph, PrimaryButton } from '../../components'
 
 // Shared components
 import { ArrowRightIcon } from 'brave-ui/components/icons'
 
 // Images
-import { WelcomeLionImage } from 'brave-ui/features/welcome/images'
+import { WelcomeLionImage } from '../../components/images'
 
 // Utils
 import { getLocale } from '../../../common/locale'

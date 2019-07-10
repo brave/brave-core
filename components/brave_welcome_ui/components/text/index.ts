@@ -3,7 +3,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import styled from 'styled-components'
-import { Heading } from '../../../index'
+import Heading from 'brave-ui/components/text/heading'
 
 export const Title = styled(Heading)`
   font-size: 28px;

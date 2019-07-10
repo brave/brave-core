@@ -5,14 +5,18 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton, SelectGrid, SelectBox } from 'brave-ui/features/welcome'
+import { Content, Title, Paragraph, PrimaryButton, SelectGrid, SelectBox } from '../../components'
 
 // Images
-import { WelcomeImportImage } from 'brave-ui/features/welcome/images'
+import { WelcomeImportImage } from '../../components/images'
 
 // Utils
 import { getLocale } from '../../../common/locale'
-import { getSelectedBrowserProfile, getSourceBrowserProfileIndex, isValidBrowserProfiles } from '../../welcomeUtils'
+import {
+  getSelectedBrowserProfile,
+  getSourceBrowserProfileIndex,
+  isValidBrowserProfiles
+} from '../../welcomeUtils'
 
 export interface Props {
   index: number

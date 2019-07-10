@@ -5,13 +5,13 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from '../../../../../src/features/welcome/'
+import { Content, Title, Paragraph, PrimaryButton } from '../../../components'
 
 // Utils
 import locale from '../fakeLocale'
 
 // Images
-import { WelcomeRewardsImage } from '../../../../../src/features/welcome/images'
+import { WelcomeThemeImage } from '../../../components/images'
 
 interface Props {
   index: number
@@ -19,7 +19,7 @@ interface Props {
   onClick: () => void
 }
 
-export default class PaymentsBox extends React.PureComponent<Props, {}> {
+export default class ThemingBox extends React.PureComponent<Props, {}> {
   render () {
     const { index, currentScreen, onClick } = this.props
     return (
@@ -29,16 +29,16 @@ export default class PaymentsBox extends React.PureComponent<Props, {}> {
         screenPosition={'1' + (index + 1) + '0%'}
         isPrevious={index <= currentScreen}
       >
-        <WelcomeRewardsImage />
-        <Title>{locale.enableBraveRewards}</Title>
-        <Paragraph>{locale.setupBraveRewards}</Paragraph>
-        <PrimaryButton
-          level='primary'
-          type='accent'
-          size='large'
-          text={locale.getStarted}
-          onClick={onClick}
-        />
+        <WelcomeThemeImage />
+        <Title>{locale.chooseYourTheme}</Title>
+        <Paragraph>{locale.findToolbarTheme}</Paragraph>
+          <PrimaryButton
+            level='primary'
+            type='accent'
+            size='large'
+            text={locale.theme}
+            onClick={onClick}
+          />
       </Content>
     )
   }

@@ -13,10 +13,10 @@ import {
   SkipButton,
   FooterButton,
   Bullet
-} from '../../../../../src/features/welcome/'
+} from '../../../components'
 
 // Shared components
-import { ArrowRightIcon } from '../../../../../src/components/icons'
+import { ArrowRightIcon } from 'brave-ui/components/icons'
 
 // Utils
 import locale from '../fakeLocale'

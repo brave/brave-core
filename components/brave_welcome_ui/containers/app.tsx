@@ -7,7 +7,7 @@ import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 
 // Feature-specific components
-import { Page, Panel, SlideContent } from 'brave-ui/features/welcome'
+import { Page, Panel, SlideContent } from '../components'
 
 // Component groups
 import WelcomeBox from './screens/welcomeBox'
@@ -19,7 +19,7 @@ import ThemeBox from './screens/themeBox'
 import FooterBox from './screens/footerBox'
 
 // Images
-import { Background, BackgroundContainer } from 'brave-ui/features/welcome/images'
+import { Background, BackgroundContainer } from '../components/images'
 
 // Utils
 import * as welcomeActions from '../actions/welcome_actions'

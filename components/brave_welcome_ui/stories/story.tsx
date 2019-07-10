@@ -5,12 +5,10 @@
 import * as React from 'react'
 import { storiesOf } from '@storybook/react'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
-import { FullPageStory } from '../../storyUtils'
 // Components
 import WelcomePage from './page/index'
 
-storiesOf('Feature Components/Welcome', module)
-  .addDecorator(FullPageStory)
+storiesOf('Welcome', module)
   .addDecorator(withKnobs)
   .add('Page', () => {
     return (

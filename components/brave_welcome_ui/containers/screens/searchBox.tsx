@@ -6,10 +6,10 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton, SelectGrid, SelectBox } from 'brave-ui/features/welcome'
+import { Content, Title, Paragraph, PrimaryButton, SelectGrid, SelectBox } from '../../components'
 
 // Images
-import { WelcomeSearchImage } from 'brave-ui/features/welcome/images'
+import { WelcomeSearchImage } from '../../components/images'
 
 // Utils
 import { getLocale } from '../../../common/locale'

@@ -5,16 +5,16 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from '../../../../../src/features/welcome/'
+import { Content, Title, Paragraph, PrimaryButton } from '../../../components'
 
 // Shared components
-import { ArrowRightIcon } from '../../../../../src/components/icons'
+import { ArrowRightIcon } from 'brave-ui/components/icons'
 
 // Utils
 import locale from '../fakeLocale'
 
 // Images
-import { WelcomeLionImage } from '../../../../../src/features/welcome/images'
+import { WelcomeLionImage } from '../../../components/images'
 
 interface Props {
   index: number

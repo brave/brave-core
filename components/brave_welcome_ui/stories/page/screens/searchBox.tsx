@@ -6,14 +6,20 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, SelectGrid, PrimaryButton } from '../../../../../src/features/welcome/'
-import { SelectBox } from '../../../../../src/features/welcome'
+import {
+  Content,
+  Title,
+  Paragraph,
+  SelectGrid,
+  PrimaryButton,
+  SelectBox
+} from '../../../components'
 
 // Utils
 import locale from '../fakeLocale'
 
 // Images
-import { WelcomeSearchImage } from '../../../../../src/features/welcome/images'
+import { WelcomeSearchImage } from '../../../components/images'
 
 interface Props {
   index: number

@@ -5,10 +5,10 @@
 import * as React from 'react'
 
 // Feature-specific components
-import { Content, Title, Paragraph, PrimaryButton } from 'brave-ui/features/welcome'
+import { Content, Title, Paragraph, PrimaryButton } from '../../components'
 
 // Images
-import { WelcomeRewardsImage } from 'brave-ui/features/welcome/images'
+import { WelcomeRewardsImage } from '../../components/images'
 
 // Utils
 import { getLocale } from '../../../common/locale'

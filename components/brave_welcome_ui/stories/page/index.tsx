@@ -5,11 +5,7 @@
 import * as React from 'react'
 
 // Feature-specific components
-import {
-  Page,
-  Panel,
-  SlideContent
-} from '../../../../src/features/welcome/'
+import { Page, Panel, SlideContent } from '../../components'
 
 // Component groups
 import WelcomeBox from './screens/welcomeBox'
@@ -21,11 +17,7 @@ import ThemeBox from './screens/themeBox'
 import FooterBox from './screens/footerBox'
 
 // Images
-import { Background, BackgroundContainer } from '../../../../src/features/welcome/images'
-
-// Fonts
-import '../../../assets/fonts/muli.css'
-import '../../../assets/fonts/poppins.css'
+import { Background, BackgroundContainer } from '../../components/images'
 
 export interface State {
   currentScreen: number
