@@ -20,13 +20,6 @@
           {
             "name": "tabID",
             "type": "integer"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "optional": true,
-            "parameters": [
-            ]
           }
         ]
       }
