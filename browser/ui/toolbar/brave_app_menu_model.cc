@@ -60,8 +60,8 @@ void BraveAppMenuModel::InsertBraveMenuItems() {
   if (browser_->profile()->IsTorProfile()) {
     InsertItemWithStringIdAt(
         GetIndexOfCommandId(IDC_NEW_WINDOW),
-        IDC_NEW_TOR_IDENTITY,
-        IDS_NEW_TOR_IDENTITY);
+        IDC_NEW_TOR_CONNECTION_FOR_SITE,
+        IDS_NEW_TOR_CONNECTION_FOR_SITE);
   } else {
     InsertItemWithStringIdAt(
         GetIndexOfCommandId(IDC_NEW_INCOGNITO_WINDOW) + 1,

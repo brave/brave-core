@@ -9,17 +9,21 @@
 
 #include "base/command_line.h"
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/common/brave_switches.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/browser/extensions/brave_extension_provider.h"
-#include "brave/browser/extensions/brave_tor_client_updater.h"
 #include "chrome/browser/extensions/external_policy_loader.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_urls.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/extensions/brave_tor_client_updater.h"
+#endif
 
 namespace extensions {
 
@@ -37,10 +41,12 @@ BraveExtensionManagement::~BraveExtensionManagement() {
 }
 
 void BraveExtensionManagement::RegisterBraveExtensions() {
+#if BUILDFLAG(ENABLE_TOR)
   const base::CommandLine& command_line =
       *base::CommandLine::ForCurrentProcess();
   if (!command_line.HasSwitch(switches::kDisableTorClientUpdaterExtension))
     g_brave_browser_process->tor_client_updater()->Register();
+#endif
 }
 
 void BraveExtensionManagement::OnExtensionLoaded(

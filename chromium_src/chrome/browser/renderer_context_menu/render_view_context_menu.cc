@@ -3,6 +3,8 @@
 // found in the LICENSE file.
 
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
+
+#include "brave/browser/tor/buildflags.h"
 #include "components/spellcheck/spellcheck_buildflags.h"
 #if !BUILDFLAG(USE_BROWSER_SPELLCHECKER)
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
@@ -56,9 +58,13 @@ void BraveRenderViewContextMenu::AppendBraveLinkItems() {
 bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
   switch (id) {
     case IDC_CONTENT_CONTEXT_OPENLINKTOR:
+#if BUILDFLAG(ENABLE_TOR)
       return params_.link_url.is_valid() &&
              IsURLAllowedInIncognito(params_.link_url, browser_context_) &&
              !browser_context_->IsTorProfile();
+#else
+      return false;
+#endif
     default:
       return RenderViewContextMenu_Chromium::IsCommandIdEnabled(id);
   }
@@ -70,8 +76,8 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       profiles::SwitchToTorProfile(
           base::Bind(
               OnProfileCreated, params_.link_url,
-              content::Referrer(GURL(),
-                                network::mojom::ReferrerPolicy::kStrictOrigin)));
+              content::Referrer(
+                GURL(), network::mojom::ReferrerPolicy::kStrictOrigin)));
       break;
     default:
       RenderViewContextMenu_Chromium::ExecuteCommand(id, event_flags);

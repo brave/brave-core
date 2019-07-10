@@ -14,7 +14,6 @@
 #include "brave/browser/brave_browser_main_extra_parts.h"
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_tor_client_updater.h"
-#include "brave/browser/renderer_host/brave_navigation_ui_data.h"
 #include "brave/browser/tor/buildflags.h"
 #include "brave/common/brave_cookie_blocking.h"
 #include "brave/common/tor/switches.h"
@@ -243,20 +242,6 @@ void BraveContentBrowserClient::RegisterOutOfProcessServices(
   (*services)[bat_ledger::mojom::kServiceName] = base::BindRepeating(
       l10n_util::GetStringUTF16, IDS_UTILITY_PROCESS_LEDGER_NAME);
 #endif
-}
-
-std::unique_ptr<content::NavigationUIData>
-BraveContentBrowserClient::GetNavigationUIData(
-    content::NavigationHandle* navigation_handle) {
-  std::unique_ptr<BraveNavigationUIData> navigation_ui_data =
-      std::make_unique<BraveNavigationUIData>(navigation_handle);
-#if BUILDFLAG(ENABLE_TOR)
-  Profile* profile = Profile::FromBrowserContext(
-      navigation_handle->GetWebContents()->GetBrowserContext());
-  TorProfileServiceFactory::SetTorNavigationUIData(profile,
-                                                   navigation_ui_data.get());
-#endif
-  return std::move(navigation_ui_data);
 }
 
 base::Optional<service_manager::Manifest>

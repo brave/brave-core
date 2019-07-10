@@ -6,10 +6,11 @@
 #include "brave/browser/brave_profile_prefs.h"
 
 #include "brave/browser/themes/brave_theme_service.h"
-#include "brave/browser/tor/tor_profile_service.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_rewards/browser/rewards_service.h"
 #include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#include "brave/components/brave_webtorrent/browser/buildflags/buildflags.h"
 #include "chrome/browser/net/prediction_options.h"
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/common/pref_names.h"
@@ -23,6 +24,14 @@
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
 #include "brave/browser/widevine/brave_widevine_bundle_manager.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+#include "brave/components/brave_webtorrent/browser/webtorrent_util.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_service.h"
 #endif
 
 namespace brave {
@@ -39,7 +48,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
   registry->RegisterBooleanPref(kHideBraveRewardsButton, false);
 
+#if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterProfilePrefs(registry);
+#endif
 
   registry->RegisterBooleanPref(kWidevineOptedIn, false);
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
@@ -56,7 +67,9 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kLinkedInEmbedControlType, false);
 
   // WebTorrent
-  registry->RegisterBooleanPref(kWebTorrentEnabled, true);
+#if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
+  webtorrent::RegisterProfilePrefs(registry);
+#endif
 
   // Hangouts
   registry->RegisterBooleanPref(kHangoutsEnabled, true);

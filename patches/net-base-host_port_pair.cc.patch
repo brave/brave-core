@@ -1,19 +1,28 @@
 diff --git a/net/base/host_port_pair.cc b/net/base/host_port_pair.cc
-index 68c2d5a0c745bec1acb16d827d0e5214bf1f5dda..ab189df004b2d3d314235213f03d338b981c8e10 100644
+index 68c2d5a0c745bec1acb16d827d0e5214bf1f5dda..f10a642ca83f6b46f15b3d6735ba2d2b9e5391b8 100644
 --- a/net/base/host_port_pair.cc
 +++ b/net/base/host_port_pair.cc
-@@ -50,12 +50,14 @@ HostPortPair HostPortPair::FromString(const std::string& str) {
-   return host_port_pair;
- }
+@@ -24,6 +24,7 @@ HostPortPair::HostPortPair(const std::string& in_host, uint16_t in_port)
  
-+#if !defined(BRAVE_CHROMIUM_BUILD)
- std::string HostPortPair::ToString() const {
+ // static
+ HostPortPair HostPortPair::FromURL(const GURL& url) {
++  BRAVE_HOST_PORT_PAIR_FROM_URL_
+   return HostPortPair(url.HostNoBrackets(),
+                       static_cast<uint16_t>(url.EffectiveIntPort()));
+ }
+@@ -35,6 +36,7 @@ HostPortPair HostPortPair::FromIPEndPoint(const IPEndPoint& ipe) {
+ 
+ // static
+ HostPortPair HostPortPair::FromString(const std::string& str) {
++  BRAVE_HOST_PORT_PAIR_FROM_STRING_
+   std::vector<base::StringPiece> key_port = base::SplitStringPiece(
+       str, ":", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL);
+   if (key_port.size() != 2)
+@@ -54,6 +56,7 @@ std::string HostPortPair::ToString() const {
    std::string ret(HostForURL());
    ret += ':';
    ret += base::NumberToString(port_);
++  BRAVE_HOST_PORT_PAIR_TO_STRING_
    return ret;
  }
-+#endif
  
- std::string HostPortPair::HostForURL() const {
-   // TODO(rtenneti): Add support for |host| to have '\0'.

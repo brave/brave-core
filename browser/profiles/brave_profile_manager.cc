@@ -13,6 +13,7 @@
 #include "brave/browser/tor/buildflags.h"
 #include "brave/browser/tor/tor_profile_service.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
+#include "brave/common/pref_names.h"
 #include "brave/common/tor/pref_names.h"
 #include "brave/common/tor/tor_constants.h"
 #include "brave/components/brave_ads/browser/ads_service_factory.h"
@@ -33,10 +34,6 @@
 #include "content/public/browser/url_data_source.h"
 #include "content/public/common/webrtc_ip_handling_policy.h"
 #include "ui/base/l10n/l10n_util.h"
-
-#if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/extensions/brave_tor_client_updater.h"
-#endif
 
 using content::BrowserThread;
 
@@ -65,6 +62,8 @@ void BraveProfileManager::InitTorProfileUserPrefs(Profile* profile) {
   pref_service->SetString(prefs::kWebRTCIPHandlingPolicy,
                           content::kWebRTCIPHandlingDisableNonProxiedUdp);
   pref_service->SetBoolean(prefs::kSafeBrowsingEnabled, false);
+  // https://blog.torproject.org/bittorrent-over-tor-isnt-good-idea
+  pref_service->SetBoolean(kWebTorrentEnabled, false);
 }
 
 void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
@@ -86,26 +85,6 @@ std::string BraveProfileManager::GetLastUsedProfileName() {
   return ProfileManager::GetLastUsedProfileName();
 }
 
-Profile* BraveProfileManager::CreateProfileHelper(const base::FilePath& path) {
-  TRACE_EVENT0("browser", "ProfileManager::CreateProfileHelper");
-  SCOPED_UMA_HISTOGRAM_TIMER("Profile.CreateProfileHelperTime");
-  Profile* profile = ProfileManager::CreateProfileHelper(path);
-  if (path == GetTorProfilePath()) {
-     LaunchTorProcess(profile);
-  }
-  return profile;
-}
-
-Profile*
-BraveProfileManager::CreateProfileAsyncHelper(const base::FilePath& path,
-                                              Delegate* delegate) {
-  Profile* profile = ProfileManager::CreateProfileAsyncHelper(path, delegate);
-  if (path == GetTorProfilePath()) {
-     LaunchTorProcess(profile);
-  }
-  return profile;
-}
-
 void BraveProfileManager::DoFinalInitForServices(Profile* profile,
                                                  bool go_off_the_record) {
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
@@ -118,20 +97,16 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
       std::make_unique<brave_content::BraveSharedResourcesDataSource>());
 }
 
-void BraveProfileManager::LaunchTorProcess(Profile* profile) {
-  // TODO(bridiver) - this should all go inside the Tor Service and just
-  // call LaunchTor()
+void BraveProfileManager::OnProfileCreated(Profile* profile,
+                                           bool success,
+                                           bool is_new_profile) {
+  ProfileManager::OnProfileCreated(profile, success, is_new_profile);
+
 #if BUILDFLAG(ENABLE_TOR)
-  tor::TorProfileService* tor_profile_service =
+  // we need to wait until OnProfileCreated to
+  // ensure that the request context is available
+  if (profile->GetPath() == GetTorProfilePath())
     TorProfileServiceFactory::GetForProfile(profile);
-  if (tor_profile_service->GetTorPid() < 0) {
-    base::FilePath path =
-      g_brave_browser_process->tor_client_updater()->GetExecutablePath();
-    std::string proxy =
-      g_browser_process->local_state()->GetString(tor::prefs::kTorProxyString);
-    tor::TorConfig config(path, proxy);
-    tor_profile_service->LaunchTor(config);
-  }
 #endif
 }
 
