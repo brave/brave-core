@@ -67,7 +67,6 @@
 		0A8C69B5225DE99700988715 /* BookmarkDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8C69B4225DE99700988715 /* BookmarkDetailsView.swift */; };
 		0A8C69BE225E350300988715 /* IndentedImageTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A8C69BD225E350300988715 /* IndentedImageTableViewCell.swift */; };
 		0A91598622B803E100CCC119 /* BraveRewards.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0A91597E22B803E000CCC119 /* BraveRewards.framework */; settings = {ATTRIBUTES = (Required, ); }; };
-		0A91598722B803E100CCC119 /* BraveRewards.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 0A91597E22B803E000CCC119 /* BraveRewards.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0A91598922B834CE00CCC119 /* BVC+Rewards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A91598822B834CE00CCC119 /* BVC+Rewards.swift */; };
 		0A93F1802264C2D200A3571B /* FolderDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A93F17F2264C2D200A3571B /* FolderDetailsView.swift */; };
 		0A93F1892264C72000A3571B /* BookmarkFormFieldsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A93F1882264C72000A3571B /* BookmarkFormFieldsProtocol.swift */; };
@@ -1110,7 +1109,6 @@
 				E60138661C89EB7D00DF9756 /* Storage.framework in Copy Frameworks */,
 				5DE7689A20B3456E00FF5533 /* BraveShared.framework in Copy Frameworks */,
 				E60138651C89EB7600DF9756 /* Shared.framework in Copy Frameworks */,
-				0A91598722B803E100CCC119 /* BraveRewards.framework in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5271,6 +5269,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Static.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/OnePasswordExtension.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/BraveRewardsUI.framework",
+				"$(SRCROOT)/Carthage/Checkouts/brave-rewards-ios/lib/BraveRewards.framework",
 			);
 			name = "Copy Carthage Dependencies";
 			outputPaths = (
