@@ -9,7 +9,7 @@ final class WebImageCache: ImageCacheProtocol {
     
     private let webImageManager: SDWebImageManager
     
-    private let privacyProtection: PrivacyProtectionProtocol
+    private let isPrivate: Bool
     
     typealias ReturnAssociatedType = SDWebImageOperation
     
@@ -18,8 +18,8 @@ final class WebImageCache: ImageCacheProtocol {
         clearDiskCache()
     }
     
-    init(withPrivacyProtection privacyProtection: PrivacyProtectionProtocol, sandbox: String? = nil) {
-        self.privacyProtection = privacyProtection
+    init(isPrivate: Bool, sandbox: String? = nil) {
+        self.isPrivate = isPrivate
         
         var imageCache: SDImageCache
         
@@ -52,7 +52,7 @@ final class WebImageCache: ImageCacheProtocol {
         }
 
         let imageOperation = webImageManager.loadImage(with: url, options: SDWebImageOptions(webImageOptions), progress: progressBlock) { image, data, error, webImageCacheType, _, imageURL in
-            if let image = image, !self.privacyProtection.nonPersistent {
+            if let image = image, !self.isPrivate {
                 self.webImageManager.saveImage(toCache: image, for: url)
             }
             
@@ -83,11 +83,9 @@ final class WebImageCache: ImageCacheProtocol {
     }
     
     func clearDiskCache() {
-        if privacyProtection.nonPersistent {
-            return
+        if !isPrivate {
+            webImageManager.imageCache?.clearDisk()
         }
-        
-        webImageManager.imageCache?.clearDisk()
     }
     
 }
@@ -97,7 +95,7 @@ extension WebImageCache {
     private var webImageOptions: [SDWebImageOptions] {
         var options: [SDWebImageOptions] = [.retryFailed, .continueInBackground]
         
-        if privacyProtection.nonPersistent {
+        if isPrivate {
             options.append(.cacheMemoryOnly)
         }
         

@@ -9,14 +9,12 @@ final class WebImageCacheManager {
     private let webImageCache: WebImageCache
 
     static let shared: WebImageCache = {
-        let privacyProtection = PrivacyProtection()
-
-        let webImageCacheManager = WebImageCacheManager(withPrivacyProtection: privacyProtection)
+        let webImageCacheManager = WebImageCacheManager(isPrivate: true)
         return webImageCacheManager.webImageCache
     }()
 
-    private init(withPrivacyProtection privacyProtection: PrivacyProtectionProtocol) {
-        let webImageCache = WebImageCache(withPrivacyProtection: privacyProtection)
+    private init(isPrivate: Bool) {
+        let webImageCache = WebImageCache(isPrivate: isPrivate)
         self.webImageCache = webImageCache
     }
     
