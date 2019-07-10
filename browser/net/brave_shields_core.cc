@@ -129,6 +129,7 @@ BraveShieldsCore::~BraveShieldsCore() {
 }
 
 bool BraveShieldsCore::IsRequestIdentifierValid(uint64_t request_identifier) {
+  // TODO(iefremov)
   return true;
 }
 
@@ -205,10 +206,10 @@ void BraveShieldsCore::RunCallbackForRequestIdentifier(
     int rv) {
   std::map<uint64_t, net::CompletionOnceCallback>::iterator it =
       callbacks_.find(request_identifier);
-  // TODO: ???
+  // TODO(iefremov): Double check this.
+  //std::move(it->second).Run(rv);
   base::PostTaskWithTraits(FROM_HERE, {content::BrowserThread::IO},
                            base::BindOnce(std::move(it->second), rv));
-  //std::move(it->second).Run(rv);
 }
 
 void BraveShieldsCore::RunNextCallback(
@@ -219,11 +220,6 @@ void BraveShieldsCore::RunNextCallback(
     LOG(ERROR) << "Exiting " << ctx->request_identifier;
     return;
   }
-
-  // TODO: ???
-//  if (request->status().status() == net::URLRequestStatus::CANCELED) {
-//    return;
-//  }
 
   // Continue processing callbacks until we hit one that returns PENDING
   int rv = net::OK;
@@ -296,24 +292,12 @@ void BraveShieldsCore::RunNextCallback(
     }
     if (ctx->blocked_by == brave::kAdBlocked ||
         ctx->blocked_by == brave::kTrackerBlocked) {
-      // We are going to intercept this request and block it later in the
-      // network stack.
-      // TODO(iefremov):
-      if (ctx->cancel_request_explicitly || true) {
+      if (ctx->cancel_request_explicitly) {
         RunCallbackForRequestIdentifier(ctx->request_identifier,
             net::ERR_ABORTED);
         return;
       }
-//      if (ctx->request) {
-//        ctx->request->SetExtraRequestHeaderByName("X-Brave-Block", "", true);
-//      }
     }
-    // TODO:
-//    if (!ctx->new_referrer.is_empty()) {
-//      if (ctx->request) {
-//        ctx->request->SetReferrer(ctx->new_referrer.spec());
-//      }
-//    }
   }
   // ChromeNetworkDelegate returns net::ERR_IO_PENDING if an extension is
   // intercepting the request and OK if the request should proceed normally.

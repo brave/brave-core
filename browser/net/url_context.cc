@@ -144,6 +144,7 @@ void BraveRequestInfo::FillCTXFromRequest(const net::URLRequest* request,
 void BraveRequestInfo::FillCTX(
     const network::ResourceRequest& request,
     int render_process_id,
+    int frame_tree_node_id,
     uint64_t request_identifier,
     content::ResourceContext* resource_context,
     std::shared_ptr<brave::BraveRequestInfo> ctx) {
@@ -161,8 +162,7 @@ void BraveRequestInfo::FillCTX(
 
   ctx->render_frame_id = request.render_frame_id;
   ctx->render_process_id = render_process_id;
-  // TODO(iefremov):
-  // ctx->frame_tree_node_id = request.
+  ctx->frame_tree_node_id = frame_tree_node_id;
 
   // TODO(iefremov): remove tab_url. Change tab_origin from GURL to Origin.
   // ctx->tab_url = request.top_frame_origin;

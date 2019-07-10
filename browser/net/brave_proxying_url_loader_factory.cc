@@ -8,30 +8,30 @@
 #include <memory>
 #include <utility>
 
+// TODO(iefremov): cleanup headers.
 #include "base/bind.h"
 #include "base/debug/alias.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/feature_list.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/post_task.h"
+#include "brave/browser/net/brave_shields_core.h"
+#include "brave/components/brave_shields/browser/adblock_stub_response.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/global_request_id.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/resource_context.h"
-// TODO(iefremov): Get rid of web contents?
-#include "content/public/browser/web_contents.h"
 #include "content/public/common/url_utils.h"
-// TODO(iefremov): Get rid of profile? Use BrowserContext?
-#include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/extension_navigation_ui_data.h"
 #include "extensions/common/manifest_handlers/web_accessible_resources_info.h"
+#include "mojo/public/cpp/system/string_data_pipe_producer.h"
 #include "net/base/completion_repeating_callback.h"
 #include "net/http/http_util.h"
 #include "services/network/public/cpp/features.h"
 #include "third_party/blink/public/platform/resource_request_blocked_reason.h"
 #include "url/origin.h"
-
-#include "brave/browser/net/brave_shields_core.h"
 
 namespace {
 
@@ -45,6 +45,7 @@ class ResourceContextData : public base::SupportsUserData::Data {
   static void StartProxying(
       content::ResourceContext* resource_context,
       int render_process_id,
+      int frame_tree_node_id,
       bool is_download,
       network::mojom::URLLoaderFactoryRequest request,
       network::mojom::URLLoaderFactoryPtrInfo target_factory,
@@ -62,6 +63,7 @@ class ResourceContextData : public base::SupportsUserData::Data {
     auto proxy = std::make_unique<BraveProxyingURLLoaderFactory>(
         resource_context,
         render_process_id,
+        frame_tree_node_id,
         is_download,
         std::move(request),
         std::move(target_factory),
@@ -89,6 +91,28 @@ class ResourceContextData : public base::SupportsUserData::Data {
   DISALLOW_COPY_AND_ASSIGN(ResourceContextData);
 };
 
+// Helper struct for crafting responses.
+struct WriteData {
+  // Wek ref. |client| destroys itself in |OnComplete()|.
+  network::mojom::URLLoaderClient* client;
+  std::string data;
+  std::unique_ptr<mojo::StringDataPipeProducer> producer;
+};
+
+void OnWrite(std::unique_ptr<WriteData> write_data, MojoResult result) {
+  if (result != MOJO_RESULT_OK) {
+    network::URLLoaderCompletionStatus status(net::ERR_FAILED);
+    write_data->client->OnComplete(status);
+    return;
+  }
+
+  network::URLLoaderCompletionStatus status(net::OK);
+  status.encoded_data_length = write_data->data.size();
+  status.encoded_body_length = write_data->data.size();
+  status.decoded_body_length = write_data->data.size();
+  write_data->client->OnComplete(status);
+}
+
 }  // namespace
 
 BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirectParams::
@@ -101,6 +125,8 @@ BraveProxyingURLLoaderFactory::InProgressRequest::InProgressRequest(
     uint64_t request_id,
     int32_t network_service_request_id,
     int32_t routing_id,
+    int render_process_id,
+    int frame_tree_node_id,
     uint32_t options,
     const network::ResourceRequest& request,
     bool is_download,
@@ -114,6 +140,8 @@ BraveProxyingURLLoaderFactory::InProgressRequest::InProgressRequest(
       // is_download_(is_download),
       request_id_(request_id),
       network_service_request_id_(network_service_request_id),
+      render_process_id_(render_process_id),
+      frame_tree_node_id_(frame_tree_node_id),
       routing_id_(routing_id),
       options_(options),
       resource_context_(resource_context),
@@ -206,14 +234,16 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::RestartInternal() {
   }
   redirect_url_ = GURL();
   bool should_collapse_initiator = false;  // TODO(iefremov): Check this
-  auto ctx = std::make_shared<brave::BraveRequestInfo>();
-  brave::BraveRequestInfo::FillCTX(request_, 0, request_id_,
-                                   resource_context_, ctx);
+  ctx_ = std::make_shared<brave::BraveRequestInfo>();
+  brave::BraveRequestInfo::FillCTX(request_, render_process_id_,
+                                   frame_tree_node_id_, request_id_,
+                                   resource_context_, ctx_);
   int result = BraveShieldsCore::GetInstance()->OnBeforeURLRequest(
-      ctx,
+      ctx_,
       continuation,
       &redirect_url_);
 
+  // TODO(iefremov): DCHECK?
   if (result == net::ERR_BLOCKED_BY_CLIENT) {
     // The request was cancelled synchronously. Dispatch an error notification
     // and terminate the request.
@@ -511,9 +541,51 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     HandleBeforeRequestRedirect();
     return;
   }
+  DCHECK(ctx_);
+  if (!ctx_->new_referrer.is_empty()) {
+    request_.referrer = ctx_->new_referrer;
+  }
 
   if (proxied_client_binding_.is_bound())
     proxied_client_binding_.ResumeIncomingMethodCallProcessing();
+
+  if (ctx_->blocked_by != brave::kNotBlocked) {
+    if (ctx_->cancel_request_explicitly) {
+      OnRequestError(network::URLLoaderCompletionStatus(net::ERR_ABORTED));
+      return;
+    }
+    network::ResourceResponseHead response;
+    std::string response_data;
+    brave_shields::MakeStubResponse(request_, &response,
+                                    &response_data);
+
+    target_client_->OnReceiveResponse(response);
+
+    // Create a data pipe for transmitting the response.
+    mojo::ScopedDataPipeProducerHandle producer;
+    mojo::ScopedDataPipeConsumerHandle consumer;
+    if (CreateDataPipe(nullptr, &producer, &consumer) != MOJO_RESULT_OK) {
+      OnRequestError(
+          network::URLLoaderCompletionStatus(net::ERR_INSUFFICIENT_RESOURCES));
+      return;
+    }
+
+    // Craft the response.
+    target_client_->OnStartLoadingResponseBody(std::move(consumer));
+
+    auto write_data = std::make_unique<WriteData>();
+    write_data->client = this;
+    write_data->data = response_data;
+    write_data->producer =
+        std::make_unique<mojo::StringDataPipeProducer>(std::move(producer));
+
+    base::StringPiece string_piece(write_data->data);
+    write_data->producer->Write(string_piece,
+                                mojo::StringDataPipeProducer::AsyncWritingMode::
+                                    STRING_STAYS_VALID_UNTIL_COMPLETION,
+                                base::BindOnce(OnWrite, std::move(write_data)));
+    return;
+  }
 
   if (request_.url.SchemeIsHTTPOrHTTPS()) {
     // NOTE: While it does not appear to be documented (and in fact it may be
@@ -522,18 +594,18 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     // TODO(iefremov): ^^^ Is it relevant for us?
     // TODO(iefremov): Probably we will need real headers?
 
-//    int result = net::OK;
     auto continuation = base::BindRepeating(
         &InProgressRequest::ContinueToSendHeaders,
         weak_factory_.GetWeakPtr(),
         std::set<std::string>(),
         std::set<std::string>());
 
-    auto ctx = std::make_shared<brave::BraveRequestInfo>();
-    brave::BraveRequestInfo::FillCTX(request_, 0,
-                                     request_id_, resource_context_, ctx);
+    ctx_ = std::make_shared<brave::BraveRequestInfo>();
+    brave::BraveRequestInfo::FillCTX(request_, render_process_id_,
+                                     frame_tree_node_id_,
+                                     request_id_, resource_context_, ctx_);
     int result = BraveShieldsCore::GetInstance()->OnBeforeStartTransaction(
-          ctx, continuation, &request_.headers);
+          ctx_, continuation, &request_.headers);
 
     if (result == net::ERR_BLOCKED_BY_CLIENT) {
       // The request was cancelled synchronously. Dispatch an error notification
@@ -561,7 +633,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 
 void BraveProxyingURLLoaderFactory::InProgressRequest::
     ContinueToStartRequest(int error_code) {
-  LOG(ERROR) << "ContinueToStartRequest";
   if (error_code != net::OK) {
     OnRequestError(network::URLLoaderCompletionStatus(error_code));
     return;
@@ -604,7 +675,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
     ContinueToSendHeaders(const std::set<std::string>& removed_headers,
                           const std::set<std::string>& set_headers,
                           int error_code) {
-  LOG(ERROR) << "ContinueToSendHeaders";
   if (error_code != net::OK) {
     OnRequestError(network::URLLoaderCompletionStatus(error_code));
     return;
@@ -725,9 +795,6 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
 //  info_->AddResponseInfoFromResourceResponse(current_response_);
 
   proxied_client_binding_.ResumeIncomingMethodCallProcessing();
-  // TODO(iefremov):
-//  ExtensionWebRequestEventRouter::GetInstance()->OnResponseStarted(
-//      factory_->browser_context_, factory_->info_map_, &info_.value(), net::OK);
   on_receive_response_sent_ = true;
   target_client_->OnReceiveResponse(current_response_);
 }
@@ -773,11 +840,12 @@ void BraveProxyingURLLoaderFactory::InProgressRequest::
   net::CompletionRepeatingCallback copyable_callback =
       base::AdaptCallbackForRepeating(std::move(continuation));
   if (request_.url.SchemeIsHTTPOrHTTPS()) {
-    auto ctx = std::make_shared<brave::BraveRequestInfo>();
-    brave::BraveRequestInfo::FillCTX(request_, 0, request_id_,
-                                     resource_context_, ctx);
+    ctx_ = std::make_shared<brave::BraveRequestInfo>();
+    brave::BraveRequestInfo::FillCTX(request_, render_process_id_,
+                                     frame_tree_node_id_, request_id_,
+                                     resource_context_, ctx_);
     int result = BraveShieldsCore::GetInstance()->OnHeadersReceived(
-        ctx,
+        ctx_,
         copyable_callback,
         current_response_.headers.get(),
         &override_headers_, &redirect_url_);
@@ -822,6 +890,7 @@ bool BraveProxyingURLLoaderFactory::InProgressRequest::IsRedirectSafe(
 BraveProxyingURLLoaderFactory::BraveProxyingURLLoaderFactory(
     content::ResourceContext* resource_context,
     int render_process_id,
+    int frame_tree_node_id,
     bool is_download,
     network::mojom::URLLoaderFactoryRequest loader_request,
     network::mojom::URLLoaderFactoryPtrInfo target_factory,
@@ -829,6 +898,7 @@ BraveProxyingURLLoaderFactory::BraveProxyingURLLoaderFactory(
     DisconnectCallback on_disconnect) :
     resource_context_(resource_context),
     render_process_id_(render_process_id),
+    frame_tree_node_id_(frame_tree_node_id),
     is_download_(is_download),
     url_loader_header_client_binding_(this),
     disconnect_callback_(std::move(on_disconnect)),
@@ -872,7 +942,10 @@ bool BraveProxyingURLLoaderFactory::MaybeProxyRequest(
       FROM_HERE, {content::BrowserThread::IO},
       base::BindOnce(&ResourceContextData::StartProxying,
                      browser_context->GetResourceContext(),
-                     render_process_id, is_download,
+                     render_process_id,
+                     render_frame_host ?
+                        render_frame_host->GetFrameTreeNodeId() : 0,
+                     is_download,
                      std::move(proxied_request),
                      std::move(target_factory_info),
                      std::move(header_client_request)));
@@ -915,8 +988,10 @@ void BraveProxyingURLLoaderFactory::CreateLoaderAndStart(
   }
 
   auto result = requests_.emplace(
-      /*web_request_id, */std::make_unique<InProgressRequest>(
-                          this, web_request_id, request_id, routing_id, options,
+                          std::make_unique<InProgressRequest>(
+                          this, web_request_id, request_id,
+                          routing_id, render_process_id_, frame_tree_node_id_,
+                          options,
                           request, is_download_, resource_context_,
                           traffic_annotation,
                           std::move(loader_request), std::move(client)));
