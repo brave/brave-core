@@ -332,6 +332,8 @@ extension BrowserViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         if let tab = tabManager[webView] {
             navigateInTab(tab: tab, to: navigation)
+            tab.reportPageLoad()
+            
             if tab === tabManager.selectedTab {
                 topToolbar.updateProgressBar(1.0)
             }

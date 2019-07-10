@@ -37,6 +37,7 @@ protocol TopToolbarDelegate: class {
     func topToolbarDisplayTextForURL(_ url: URL?) -> (String?, Bool)
     func topToolbarDidBeginDragInteraction(_ topToolbar: TopToolbarView)
     func topToolbarDidTapBraveShieldsButton(_ topToolbar: TopToolbarView)
+    func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView)
     func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView)
     
     func topToolbarDidLongPressReloadButton(_ urlBar: TopToolbarView, from button: UIButton)
@@ -448,6 +449,10 @@ class TopToolbarView: UIView, ToolbarProtocol {
 extension TopToolbarView: TabLocationViewDelegate {
     func tabLocationViewDidTapShieldsButton(_ urlBar: TabLocationView) {
         delegate?.topToolbarDidTapBraveShieldsButton(self)
+    }
+    
+    func tabLocationViewDidTapRewardsButton(_ urlBar: TabLocationView) {
+        delegate?.topToolbarDidTapBraveRewardsButton(self)
     }
     
     func tabLocationViewDidLongPressReaderMode(_ tabLocationView: TabLocationView) -> Bool {
