@@ -24,6 +24,8 @@ source_set("net") {
     "brave_site_hacks_network_delegate_helper.h",
     "brave_static_redirect_network_delegate_helper.cc",
     "brave_static_redirect_network_delegate_helper.h",
+    "brave_stp_util.cc",
+    "brave_stp_util.h",
     "brave_system_network_delegate.cc",
     "brave_system_network_delegate.h",
     "brave_system_request_handler.cc",

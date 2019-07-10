@@ -11,20 +11,11 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_set.h"
-#include "base/strings/string_piece.h"
 #include "brave/browser/net/url_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/completion_once_callback.h"
 
 class PrefChangeRegistrar;
-
-base::flat_set<base::StringPiece>* TrackableSecurityHeaders();
-
-void RemoveTrackableSecurityHeadersForThirdParty(
-    const GURL& request_url, const url::Origin& top_frame_origin,
-    const net::HttpResponseHeaders* original_response_headers,
-    scoped_refptr<net::HttpResponseHeaders>* _response_headers);
 
 // BraveShieldsCore is the central point from within the Brave code to
 // add hooks into the network stack.
