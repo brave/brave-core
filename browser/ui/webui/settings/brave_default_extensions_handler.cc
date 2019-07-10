@@ -9,10 +9,12 @@
 
 #include "base/bind.h"
 #include "base/values.h"
+#include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/extensions/brave_component_loader.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_webtorrent/grit/brave_webtorrent_resources.h"
+#include "chrome/browser/about_flags.h"
 #include "chrome/browser/extensions/component_loader.h"
 #include "chrome/browser/extensions/extension_service.h"
 #include "chrome/browser/extensions/webstore_install_with_prompt.h"
@@ -21,13 +23,12 @@
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/common/chrome_switches.h"
 #include "components/flags_ui/flags_ui_constants.h"
+#include "components/flags_ui/pref_service_flags_storage.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "extensions/browser/extension_registry.h"
 #include "extensions/browser/extension_system.h"
 #include "extensions/common/feature_switch.h"
-
-using extensions::FeatureSwitch;
 
 BraveDefaultExtensionsHandler::BraveDefaultExtensionsHandler()
   : weak_ptr_factory_(this) {
@@ -140,10 +141,11 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
   bool enabled;
   args->GetBoolean(0, &enabled);
 
-  auto* current_command_line = base::CommandLine::ForCurrentProcess();
-  current_command_line->AppendSwitchASCII(
-      switches::kLoadMediaRouterComponentExtension,
-      enabled ? "1": "0");
+  std::string feature_name(switches::kLoadMediaRouterComponentExtension);
+  enabled ? feature_name += "@1" : feature_name += "@2";
+  flags_ui::PrefServiceFlagsStorage flags_storage(
+      g_brave_browser_process->local_state());
+  about_flags::SetFeatureEntryEnabled(&flags_storage, feature_name, true);
 }
 
 void BraveDefaultExtensionsHandler::SetIPFSCompanionEnabled(
