@@ -17,6 +17,8 @@ import Deferred
 import Data
 import BraveShared
 import SwiftKeychainWrapper
+import BraveRewardsUI
+import BraveRewards
 
 private let log = Logger.browserLogger
 
@@ -132,6 +134,8 @@ class BrowserViewController: UIViewController {
     // Web filters
     
     let safeBrowsing: SafeBrowsing?
+    
+    let rewards: BraveRewards?
 
     init(profile: Profile, tabManager: TabManager, crashedLastSession: Bool,
          safeBrowsingManager: SafeBrowsing? = SafeBrowsing()) {
@@ -140,6 +144,13 @@ class BrowserViewController: UIViewController {
         self.readerModeCache = ReaderMode.cache(for: tabManager.selectedTab)
         self.crashedLastSession = crashedLastSession
         self.safeBrowsing = safeBrowsingManager
+        
+        #if NO_REWARDS
+        rewards = nil
+        #else
+        rewards = BraveRewards(configuration: .default)
+        #endif
+
         super.init(nibName: nil, bundle: nil)
         didInit()
     }
@@ -1646,6 +1657,10 @@ extension BrowserViewController: TopToolbarDelegate {
         popover.present(from: topToolbar.locationView.shieldsButton, on: self)
     }
     
+    func topToolbarDidTapBraveRewardsButton(_ topToolbar: TopToolbarView) {
+        showBraveRewardsPanel()
+    }
+    
     func topToolbarDidTapMenuButton(_ topToolbar: TopToolbarView) {
         let homePanel = MenuViewController(bvc: self, tab: tabManager.selectedTab)
         let popover = PopoverController(contentController: homePanel, contentSizeBehavior: .preferredContentSize)
@@ -1925,6 +1940,10 @@ extension BrowserViewController: TabDelegate {
         updateFindInPageVisibility(visible: true)
         findInPageBar?.text = selection
     }
+    
+    func tab(_ tab: Tab, isVerifiedPublisher verified: Bool) {
+        topToolbar.locationView.rewardsButton.isVerified = verified
+    }
 }
 
 extension BrowserViewController: SearchViewControllerDelegate {
@@ -2110,6 +2129,10 @@ extension BrowserViewController: TabManagerDelegate {
         let count = tabManager.tabsForCurrentMode.count
         toolbar?.updateTabCount(count)
         topToolbar.updateTabCount(count)
+    }
+    
+    func tabManager(_ tabManager: TabManager, isVerifiedPublisher verified: Bool) {
+        topToolbar.locationView.rewardsButton.isVerified = verified
     }
 }
 

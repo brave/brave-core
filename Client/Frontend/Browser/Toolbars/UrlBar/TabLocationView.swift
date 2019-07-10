@@ -19,6 +19,7 @@ protocol TabLocationViewDelegate {
     func tabLocationViewDidLongPressReload(_ tabLocationView: TabLocationView, from button: UIButton)
     func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView)
     func tabLocationViewDidTapShieldsButton(_ urlBar: TabLocationView)
+    func tabLocationViewDidTapRewardsButton(_ urlBar: TabLocationView)
     
     /// - returns: whether the long-press was handled by the delegate; i.e. return `false` when the conditions for even starting handling long-press were not satisfied
     @discardableResult func tabLocationViewDidLongPressReaderMode(_ tabLocationView: TabLocationView) -> Bool
@@ -82,6 +83,7 @@ class TabLocationView: UIView {
     }
 
     deinit {
+        NotificationCenter.default.removeObserver(self)
         unregister(tabObservers)
     }
 
@@ -179,6 +181,13 @@ class TabLocationView: UIView {
         return button
     }()
     
+    lazy var rewardsButton: RewardsButton = {
+        let button = RewardsButton()
+        button.addTarget(self, action: #selector(didClickBraveRewardsButton), for: .touchUpInside)
+        button.isDisabled = PrivateBrowsingManager.shared.isPrivateBrowsing
+        return button
+    }()
+    
     lazy var separatorLine: UIView = {
         let line = UIView()
         line.layer.cornerRadius = 2
@@ -199,17 +208,33 @@ class TabLocationView: UIView {
         addGestureRecognizer(longPressRecognizer)
         addGestureRecognizer(tapRecognizer)
         
+        let buttonContentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        
+        #if NO_REWARDS
         [readerModeButton, reloadButton, separatorLine, shieldsButton].forEach {
             $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
             $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         }
         
-        // Make tappable area bigger than the icon.
-        shieldsButton.contentEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+        let buttonsStackview = UIStackView(arrangedSubviews: [shieldsButton])
+        
+        shieldsButton.contentEdgeInsets = buttonContentEdgeInsets
+        #else
+        [readerModeButton, reloadButton, separatorLine, shieldsButton, rewardsButton].forEach {
+            $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+            $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        }
+        
+        let buttonsStackview = UIStackView(arrangedSubviews: [shieldsButton, rewardsButton])
+        
+        shieldsButton.contentEdgeInsets = buttonContentEdgeInsets
+        rewardsButton.contentEdgeInsets = buttonContentEdgeInsets
+        
+        #endif
         
         urlTextField.setContentHuggingPriority(.defaultLow, for: .horizontal)
 
-        let subviews = [lockImageView, urlTextField, readerModeButton, reloadButton, separatorLine, shieldsButton]
+        let subviews = [lockImageView, urlTextField, readerModeButton, reloadButton, separatorLine, buttonsStackview]
         contentView = UIStackView(arrangedSubviews: subviews)
         contentView.distribution = .fill
         contentView.alignment = .center
@@ -219,11 +244,12 @@ class TabLocationView: UIView {
         contentView.spacing = 10
         addSubview(contentView)
         
+        // Reduce spacing after separator to make space for shields button tappable area.
         contentView.setCustomSpacing(2, after: separatorLine)
 
         contentView.snp.makeConstraints { make in
             make.leading.top.bottom.equalTo(self)
-            make.trailing.equalTo(self).offset(-6)
+            make.trailing.equalTo(self).inset(6)
         }
         
         lockImageView.snp.makeConstraints { make in
@@ -245,6 +271,14 @@ class TabLocationView: UIView {
         let dragInteraction = UIDragInteraction(delegate: self)
         dragInteraction.allowsSimultaneousRecognitionDuringLift = true
         self.addInteraction(dragInteraction)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(privateBrowsingModeChanged), name: Notification.Name.PrivacyModeChanged, object: nil)
+    }
+    
+    @objc private func privateBrowsingModeChanged() {
+        #if !NO_REWARDS
+        rewardsButton.isDisabled = PrivateBrowsingManager.shared.isPrivateBrowsing
+        #endif
     }
 
     required init(coder: NSCoder) {
@@ -300,6 +334,10 @@ class TabLocationView: UIView {
     
     @objc func didClickBraveShieldsButton() {
         delegate?.tabLocationViewDidTapShieldsButton(self)
+    }
+    
+    @objc func didClickBraveRewardsButton() {
+        delegate?.tabLocationViewDidTapRewardsButton(self)
     }
 
     fileprivate func updateTextWithURL() {
