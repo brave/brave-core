@@ -278,6 +278,11 @@ test("brave_installer_unittests") {
     "//base/test:test_support",
   ]
 
+  if (is_mac) {
+    # See chromium_src/base/mac/foundation_util.mm for why this is needed.
+    deps += [ "//chrome/common" ]
+  }
+
   if (is_win) {
     sources = [
       "//brave/chromium_src/chrome/install_static/brave_install_details_unittest.cc",
