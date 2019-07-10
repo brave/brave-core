@@ -20,7 +20,6 @@
 #include "components/signin/core/browser/signin_pref_names.h"
 #include "components/spellcheck/browser/pref_names.h"
 #include "components/sync/base/pref_names.h"
-#include "extensions/common/feature_switch.h"
 #include "third_party/widevine/cdm/buildflags.h"
 
 #if BUILDFLAG(BUNDLE_WIDEVINE_CDM)
@@ -85,10 +84,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   // We do not want to enable the MediaRouter pref directly
   // using a proxy pref to handle Media Router setting
-  registry->RegisterBooleanPref(
-      kBraveEnabledMediaRouter,
-      extensions::FeatureSwitch::load_media_router_component_extension()
-          ->IsEnabled());
+  registry->RegisterBooleanPref(kBraveEnabledMediaRouter, false);
 
   // No sign into Brave functionality
   registry->SetDefaultPrefValue(prefs::kSigninAllowed, base::Value(false));
