@@ -1,55 +1,33 @@
 diff --git a/net/base/host_port_pair.h b/net/base/host_port_pair.h
-index 1efb721e103ad43bb8799ceed2ce3fc199ccd9e6..9818f8be199a7c378721bf4b90222c25f556b738 100644
+index 1efb721e103ad43bb8799ceed2ce3fc199ccd9e6..99a13040ccc8cafbcc6d24079283ca6740b20a09 100644
 --- a/net/base/host_port_pair.h
 +++ b/net/base/host_port_pair.h
-@@ -24,6 +24,13 @@ class NET_EXPORT HostPortPair {
-   // If |in_host| represents an IPv6 address, it should not bracket the address.
-   HostPortPair(const std::string& in_host, uint16_t in_port);
+@@ -36,16 +36,20 @@ class NET_EXPORT HostPortPair {
  
-+  // Brave addition.  Nudges HostPortPair past Chromium's style
-+  // threshold for in-line constructors and destructors.
-+  HostPortPair(const std::string& username, const std::string& password,
-+               const std::string& in_host, uint16_t in_port);
-+  ~HostPortPair();
-+  HostPortPair(const HostPortPair&);
-+
-   // Creates a HostPortPair for the origin of |url|.
-   static HostPortPair FromURL(const GURL& url);
- 
-@@ -37,20 +44,25 @@ class NET_EXPORT HostPortPair {
    // TODO(willchan): Define a functor instead.
    // Comparator function so this can be placed in a std::map.
++#if !defined(BRAVE_CHROMIUM_BUILD)
    bool operator<(const HostPortPair& other) const {
--    return std::tie(port_, host_) < std::tie(other.port_, other.host_);
-+    return std::tie(port_, host_, username_, password_) <
-+      std::tie(other.port_, other.host_, other.username_, other.password_);
+     return std::tie(port_, host_) < std::tie(other.port_, other.host_);
    }
++#endif
  
    bool operator==(const HostPortPair& other) const { return Equals(other); }
  
    // Equality test of contents. (Probably another violation of style guide).
++#if !defined(BRAVE_CHROMIUM_BUILD)
    bool Equals(const HostPortPair& other) const {
--    return host_ == other.host_ && port_ == other.port_;
-+    return username_ == other.username_ && password_ == other.password_ &&
-+      host_ == other.host_ && port_ == other.port_;
+     return host_ == other.host_ && port_ == other.port_;
    }
++#endif
  
    bool IsEmpty() const {
      return host_.empty() && port_ == 0;
-   }
+@@ -72,6 +76,7 @@ class NET_EXPORT HostPortPair {
  
-+  const std::string& username() const { return username_; }
-+  const std::string& password() const { return password_; }
-+
-   const std::string& host() const {
-     return host_;
-   }
-@@ -74,6 +86,8 @@ class NET_EXPORT HostPortPair {
+   // Returns the estimate of dynamically allocated memory in bytes.
    size_t EstimateMemoryUsage() const;
++  BRAVE_HOST_PORT_PAIR_H_
  
   private:
-+  std::string username_;
-+  std::string password_;
    // If |host_| represents an IPv6 address, this string will not contain
-   // brackets around the address.
-   std::string host_;

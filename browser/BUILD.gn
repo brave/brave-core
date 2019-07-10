@@ -120,6 +120,7 @@ source_set("browser_process") {
     "//components/autofill/core/common",
     "//components/browsing_data/core",
     "//components/component_updater",
+    "//components/content_settings/core/common",
     "//components/password_manager/core/common",
     "//components/prefs",
     "//components/safe_browsing/common:safe_browsing_prefs",

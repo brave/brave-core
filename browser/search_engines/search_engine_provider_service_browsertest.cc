@@ -1,11 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
-#include "brave/browser/tor/tor_launcher_factory.h"
+#include "brave/browser/tor/buildflags.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
@@ -19,6 +20,10 @@
 #include "components/search_engines/template_url_service.h"
 #include "components/search_engines/template_url_service_observer.h"
 #include "content/public/test/test_utils.h"
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_launcher_factory.h"
+#endif
 
 using SearchEngineProviderServiceTest = InProcessBrowserTest;
 
@@ -126,6 +131,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   brave::ToggleUseAlternativeSearchEngineProvider(private_window_2->profile());
 }
 
+#if BUILDFLAG(ENABLE_TOR)
 // Checks the default search engine of the tor profile.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
                        PRE_CheckDefaultTorProfileSearchProviderTest) {
@@ -143,7 +149,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT :
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
 
-  //Check tor profile's search provider is set to ddg.
+  // Check tor profile's search provider is set to ddg.
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
             default_provider_id);
 
@@ -172,6 +178,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
             expected_provider_id);
 }
+#endif
 
 // Check ddg toggle button state is changed by user's settings change.
 IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
@@ -197,7 +204,7 @@ IN_PROC_BROWSER_TEST_F(SearchEngineProviderServiceTest,
   int provider_id =
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_DUCKDUCKGO;
 
-  //Check guest profile's search provider is set to ddg.
+  // Check guest profile's search provider is set to ddg.
   EXPECT_EQ(service->GetDefaultSearchProvider()->data().prepopulate_id,
             provider_id);
 

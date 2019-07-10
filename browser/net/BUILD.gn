@@ -1,4 +1,3 @@
-import("//brave/browser/tor/buildflags/buildflags.gni")
 import("//brave/browser/translate/buildflags/buildflags.gni")
 import("//brave/components/brave_referrals/buildflags/buildflags.gni")
 import("//brave/components/brave_webtorrent/browser/buildflags/buildflags.gni")
@@ -57,13 +56,6 @@ source_set("net") {
 
     deps += [
       "//brave/components/brave_referrals/browser",
-    ]
-  }
-
-  if (enable_tor) {
-    sources += [
-      "brave_tor_network_delegate_helper.cc",
-      "brave_tor_network_delegate_helper.h",
     ]
   }
 

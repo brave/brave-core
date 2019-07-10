@@ -65,8 +65,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   base::Optional<service_manager::Manifest> GetServiceManifestOverlay(
       base::StringPiece name) override;
 
-  std::unique_ptr<content::NavigationUIData> GetNavigationUIData(
-      content::NavigationHandle* navigation_handle) override;
   void AdjustUtilityServiceProcessCommandLine(
       const service_manager::Identity& identity,
       base::CommandLine* command_line) override;

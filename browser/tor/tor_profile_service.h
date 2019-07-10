@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_H_
 #define BRAVE_BROWSER_TOR_TOR_PROFILE_SERVICE_H_
 
+#include <memory>
 #include <string>
 
 #include "base/macros.h"
@@ -14,8 +15,12 @@
 #include "components/keyed_service/core/keyed_service.h"
 #include "url/gurl.h"
 
+namespace content {
+class WebContents;
+}
+
 namespace net {
-class ProxyResolutionService;
+class ProxyConfigService;
 }
 
 namespace user_prefs {
@@ -38,21 +43,17 @@ class TorProfileService : public KeyedService {
 
   virtual void LaunchTor(const TorConfig&) = 0;
   virtual void ReLaunchTor(const TorConfig&) = 0;
-  virtual void SetNewTorCircuit(const GURL& request_url,
-                                const base::Closure&) = 0;
+  virtual void SetNewTorCircuit(content::WebContents* web_contents) = 0;
   virtual const TorConfig& GetTorConfig() = 0;
   virtual int64_t GetTorPid() = 0;
-
-  virtual int SetProxy(net::ProxyResolutionService*,
-                       const GURL& request_url,
-                       bool new_circuit) = 0;
-
+  virtual std::unique_ptr<net::ProxyConfigService>
+      CreateProxyConfigService() = 0;
   void AddObserver(TorLauncherServiceObserver* observer);
   void RemoveObserver(TorLauncherServiceObserver* observer);
 
-  static std::string CircuitIsolationKey(const GURL& request_url);
-
  protected:
+  std::string GetTorProxyURI();
+  base::FilePath GetTorExecutablePath();
   base::ObserverList<TorLauncherServiceObserver> observers_;
 
  private:
