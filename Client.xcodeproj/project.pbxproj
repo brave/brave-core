@@ -131,6 +131,7 @@
 		0BF8F8DA1AEFF1C900E90BC2 /* noTitle.html in Resources */ = {isa = PBXBuildFile; fileRef = 0BF8F8D91AEFF1C900E90BC2 /* noTitle.html */; };
 		27187808216526090006036E /* AlertPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187807216526090006036E /* AlertPopupView.swift */; };
 		2718780A216526240006036E /* PopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27187809216526240006036E /* PopupView.swift */; };
+		272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */; };
 		2760D2BF215ACCE20068E131 /* BundleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2760D2BE215ACCE20068E131 /* BundleExtensions.swift */; };
 		2765825D2171263A00754B2F /* UserReferralProgram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2765825C2171263A00754B2F /* UserReferralProgram.swift */; };
 		276582692171266900754B2F /* ReferralData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276582652171266900754B2F /* ReferralData.swift */; };
@@ -1272,6 +1273,7 @@
 		0BF8F8D91AEFF1C900E90BC2 /* noTitle.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = noTitle.html; sourceTree = "<group>"; };
 		27187807216526090006036E /* AlertPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertPopupView.swift; sourceTree = "<group>"; };
 		27187809216526240006036E /* PopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupView.swift; sourceTree = "<group>"; };
+		272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OnePasswordExtension.framework; path = Carthage/Build/iOS/OnePasswordExtension.framework; sourceTree = "<group>"; };
 		2760D2BE215ACCE20068E131 /* BundleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BundleExtensions.swift; sourceTree = "<group>"; };
 		2765825C2171263A00754B2F /* UserReferralProgram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserReferralProgram.swift; sourceTree = "<group>"; };
 		276582652171266900754B2F /* ReferralData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralData.swift; sourceTree = "<group>"; };
@@ -2272,6 +2274,7 @@
 				E4B334881BBF23F3004E2BFF /* iAd.framework in Frameworks */,
 				0B8E0FF41A932BD500161DC3 /* ImageIO.framework in Frameworks */,
 				A1AD4BD720BF4772007A6EA1 /* FastImageCache.framework in Frameworks */,
+				272FCAA0225CF8F00091E645 /* OnePasswordExtension.framework in Frameworks */,
 				7B8A47F61D01D3B400C07734 /* PassKit.framework in Frameworks */,
 				7B604F9B1C4950F2006EEEC3 /* SDWebImage.framework in Frameworks */,
 				7B604FA21C495268006EEEC3 /* SnapKit.framework in Frameworks */,
@@ -3455,6 +3458,7 @@
 			isa = PBXGroup;
 			children = (
 				0AC8E23A22A6C56D0064F3FA /* libYubiKit.a */,
+				272FCA98225CF8F00091E645 /* OnePasswordExtension.framework */,
 				A1F66A7F20DD87CA00303328 /* Static.framework */,
 				A1AD4BD520BF476E007A6EA1 /* FastImageCache.framework */,
 				A1AD4BD020BF3F4D007A6EA1 /* Eureka.framework */,
@@ -5262,6 +5266,7 @@
 				"$(SRCROOT)/Carthage/Build/iOS/Eureka.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/FastImageCache.framework",
 				"$(SRCROOT)/Carthage/Build/iOS/Static.framework",
+				"$(SRCROOT)/Carthage/Build/iOS/OnePasswordExtension.framework",
 			);
 			name = "Copy Carthage Dependencies";
 			outputPaths = (
