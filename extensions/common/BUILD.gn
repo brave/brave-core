@@ -2,6 +2,8 @@ source_set("common") {
   sources = [
     "brave_extension_urls.cc",
     "brave_extension_urls.h",
+    "permissions/brave_permissions_data.cc",
+    "permissions/brave_permissions_data.h",
   ]
 
   deps = [

@@ -1,0 +1,39 @@
+diff --git a/extensions/common/permissions/permissions_data.h b/extensions/common/permissions/permissions_data.h
+index 8131675d4f160a026629b1d48939a16d1b514e7d..a1a899136a6b140c30133fb5a788f617ca6feda5 100644
+--- a/extensions/common/permissions/permissions_data.h
++++ b/extensions/common/permissions/permissions_data.h
+@@ -290,23 +290,23 @@ class PermissionsData {
+   }
+ #endif
+ 
++ protected:
++  // Returns whether or not the extension is permitted to run on the given page,
++  // checking against |permitted_url_patterns| and |tab_url_patterns| in
++  // addition to blocking special sites (like the webstore or chrome:// urls).
++  // Must be called with |runtime_lock_| acquired.
++  virtual PageAccess CanRunOnPage(const GURL& document_url,
++                                  int tab_id,
++                                  const URLPatternSet& permitted_url_patterns,
++                                  const URLPatternSet& withheld_url_patterns,
++                                  const URLPatternSet* tab_url_patterns,
++                                  std::string* error) const;
+  private:
+   // Gets the tab-specific host permissions of |tab_id|, or NULL if there
+   // aren't any.
+   // Must be called with |runtime_lock_| acquired.
+   const PermissionSet* GetTabSpecificPermissions(int tab_id) const;
+ 
+-  // Returns whether or not the extension is permitted to run on the given page,
+-  // checking against |permitted_url_patterns| and |tab_url_patterns| in
+-  // addition to blocking special sites (like the webstore or chrome:// urls).
+-  // Must be called with |runtime_lock_| acquired.
+-  PageAccess CanRunOnPage(const GURL& document_url,
+-                          int tab_id,
+-                          const URLPatternSet& permitted_url_patterns,
+-                          const URLPatternSet& withheld_url_patterns,
+-                          const URLPatternSet* tab_url_patterns,
+-                          std::string* error) const;
+-
+   // Check if a specific URL is blocked by policy from extension use at runtime.
+   // You must acquire the runtime_lock_ before calling.
+   bool IsPolicyBlockedHostUnsafe(const GURL& url) const;
