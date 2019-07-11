@@ -201,6 +201,16 @@ class LedgerClientMojoProxy : public mojom::BatLedgerClient,
       ledger::Result result,
       ledger::PublisherInfoPtr info);
 
+  static void OnLoadLedgerState(
+    CallbackHolder<LoadLedgerStateCallback>* holder,
+    ledger::Result result,
+    const std::string& data);
+
+  static void OnLoadPublisherState(
+    CallbackHolder<LoadLedgerStateCallback>* holder,
+    ledger::Result result,
+    const std::string& data);
+
   static void OnLoadPublisherInfo(
       CallbackHolder<LoadPublisherInfoCallback>* holder,
       ledger::Result result,

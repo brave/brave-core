@@ -963,23 +963,23 @@ void RewardsServiceImpl::OnReconcileComplete(ledger::Result result,
 }
 
 void RewardsServiceImpl::LoadLedgerState(
-    ledger::LedgerCallbackHandler* handler) {
+    ledger::OnLoadCallback callback) {
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&LoadStateOnFileTaskRunner, ledger_state_path_),
-      base::Bind(&RewardsServiceImpl::OnLedgerStateLoaded,
+      base::BindOnce(&LoadStateOnFileTaskRunner, ledger_state_path_),
+      base::BindOnce(&RewardsServiceImpl::OnLedgerStateLoaded,
                      AsWeakPtr(),
-                     base::Unretained(handler)));
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::OnLedgerStateLoaded(
-    ledger::LedgerCallbackHandler* handler,
+    ledger::OnLoadCallback callback,
     const std::string& data) {
   if (!Connected())
     return;
 
-  handler->OnLedgerStateLoaded(data.empty() ? ledger::Result::NO_LEDGER_STATE
-                                            : ledger::Result::LEDGER_OK,
-                               data);
+  callback(data.empty() ? ledger::Result::NO_LEDGER_STATE
+                        : ledger::Result::LEDGER_OK,
+                        data);
 
   bat_ledger_->GetRewardsMainEnabled(
       base::BindOnce(&RewardsServiceImpl::StartNotificationTimers,
@@ -987,26 +987,26 @@ void RewardsServiceImpl::OnLedgerStateLoaded(
 }
 
 void RewardsServiceImpl::LoadPublisherState(
-    ledger::LedgerCallbackHandler* handler) {
+    ledger::OnLoadCallback callback) {
   if (!profile_->GetPrefs()->GetBoolean(prefs::kBraveRewardsEnabledMigrated)) {
     bat_ledger_->GetRewardsMainEnabled(
         base::BindOnce(&RewardsServiceImpl::SetRewardsMainEnabledPref,
           AsWeakPtr()));
   }
   base::PostTaskAndReplyWithResult(file_task_runner_.get(), FROM_HERE,
-      base::Bind(&LoadStateOnFileTaskRunner, publisher_state_path_),
-      base::Bind(&RewardsServiceImpl::OnPublisherStateLoaded,
+      base::BindOnce(&LoadStateOnFileTaskRunner, publisher_state_path_),
+      base::BindOnce(&RewardsServiceImpl::OnPublisherStateLoaded,
                      AsWeakPtr(),
-                     base::Unretained(handler)));
+                     std::move(callback)));
 }
 
 void RewardsServiceImpl::OnPublisherStateLoaded(
-    ledger::LedgerCallbackHandler* handler,
+    ledger::OnLoadCallback callback,
     const std::string& data) {
   if (!Connected())
     return;
 
-  handler->OnPublisherStateLoaded(
+  callback(
       data.empty() ? ledger::Result::NO_PUBLISHER_STATE
                    : ledger::Result::LEDGER_OK,
       data);

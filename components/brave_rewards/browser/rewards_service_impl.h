@@ -266,12 +266,12 @@ class RewardsServiceImpl : public RewardsService,
   const base::OneShotEvent& ready() const { return ready_; }
   void OnLedgerStateSaved(ledger::LedgerCallbackHandler* handler,
                           bool success);
-  void OnLedgerStateLoaded(ledger::LedgerCallbackHandler* handler,
+  void OnLedgerStateLoaded(ledger::OnLoadCallback callback,
                               const std::string& data);
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void OnPublisherStateSaved(ledger::LedgerCallbackHandler* handler,
                              bool success);
-  void OnPublisherStateLoaded(ledger::LedgerCallbackHandler* handler,
+  void OnPublisherStateLoaded(ledger::OnLoadCallback callback,
                               const std::string& data);
   void TriggerOnWalletInitialized(ledger::Result result);
   void OnFetchWalletProperties(int result,
@@ -419,8 +419,8 @@ class RewardsServiceImpl : public RewardsService,
                            const std::string& probi) override;
   void OnGrantFinish(ledger::Result result,
                      ledger::GrantPtr grant) override;
-  void LoadLedgerState(ledger::LedgerCallbackHandler* handler) override;
-  void LoadPublisherState(ledger::LedgerCallbackHandler* handler) override;
+  void LoadLedgerState(ledger::OnLoadCallback callback) override;
+  void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void SaveLedgerState(const std::string& ledger_state,
                        ledger::LedgerCallbackHandler* handler) override;
   void SavePublisherState(const std::string& publisher_state,

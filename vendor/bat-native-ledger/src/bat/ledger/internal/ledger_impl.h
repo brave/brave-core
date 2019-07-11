@@ -180,9 +180,9 @@ class LedgerImpl : public ledger::Ledger,
   void SetConfirmationsWalletInfo(
       const braveledger_bat_helper::WALLET_INFO_ST& wallet_info);
 
-  void LoadLedgerState(ledger::LedgerCallbackHandler* handler);
+  void LoadLedgerState(ledger::OnLoadCallback callback);
 
-  void LoadPublisherState(ledger::LedgerCallbackHandler* handler);
+  void LoadPublisherState(ledger::OnLoadCallback callback);
 
   void LoadPublisherList(ledger::LedgerCallbackHandler* handler);
 

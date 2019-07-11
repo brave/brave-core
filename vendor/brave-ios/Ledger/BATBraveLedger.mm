@@ -403,7 +403,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   if (faviconURL) {
     visitData.favicon_url = std::string(faviconURL.absoluteString.UTF8String);
   }
-  
+
   std::string blob = std::string();
   if (publisherBlob) {
     blob = std::string(publisherBlob.UTF8String);
@@ -1022,7 +1022,7 @@ BATLedgerBridge(BOOL,
                                    userInfo:nil
                                     repeats:NO];
   });
-  
+
 }
 
 - (void)checkForNotificationsAndFetchGrants
@@ -1073,7 +1073,7 @@ BATLedgerBridge(BOOL,
       now < upcomingAddFundsNotificationTime) {
     return;
   }
-  
+
   const auto __weak weakSelf = self;
   // Make sure they don't have a sufficient balance
   [self hasSufficientBalanceToReconcile:^(BOOL sufficient) {
@@ -1081,12 +1081,12 @@ BATLedgerBridge(BOOL,
       return;
     }
     const auto strongSelf = weakSelf;
-    
+
     // Set next add funds notification in 3 days
     const auto nextTime = [[NSDate date] timeIntervalSince1970] + (kOneDay * 3);
     strongSelf.prefs[kNextAddFundsDateNotificationKey] = @(nextTime);
     [strongSelf savePrefs];
-    
+
     [strongSelf addNotificationOfKind:BATRewardsNotificationKindInsufficientFunds
                              userInfo:nil
                        notificationID:@"rewards_notification_insufficient_funds"];
@@ -1193,13 +1193,13 @@ BATLedgerBridge(BOOL,
 
 #pragma mark - State
 
-- (void)loadLedgerState:(ledger::LedgerCallbackHandler *)handler
+- (void)loadLedgerState:(ledger::OnLoadCallback)callback
 {
   const auto contents = [self.commonOps loadContentsFromFileWithName:"ledger_state.json"];
   if (contents.length() > 0) {
-    handler->OnLedgerStateLoaded(ledger::LEDGER_OK, contents);
+    callback(ledger::LEDGER_OK, contents);
   } else {
-    handler->OnLedgerStateLoaded(ledger::NO_LEDGER_STATE, contents);
+    callback(ledger::NO_LEDGER_STATE, contents);
   }
   [self startNotificationTimers];
 }
@@ -1210,13 +1210,13 @@ BATLedgerBridge(BOOL,
   handler->OnLedgerStateSaved(result ? ledger::LEDGER_OK : ledger::NO_LEDGER_STATE);
 }
 
-- (void)loadPublisherState:(ledger::LedgerCallbackHandler *)handler
+- (void)loadPublisherState:(ledger::OnLoadCallback)callback
 {
   const auto contents = [self.commonOps loadContentsFromFileWithName:"publisher_state.json"];
   if (contents.length() > 0) {
-    handler->OnPublisherStateLoaded(ledger::LEDGER_OK, contents);
+    callback(ledger::LEDGER_OK, contents);
   } else {
-    handler->OnPublisherStateLoaded(ledger::NO_PUBLISHER_STATE, contents);
+    callback(ledger::NO_PUBLISHER_STATE, contents);
   }
 }
 

@@ -92,12 +92,12 @@ class LEDGER_EXPORT LedgerClient {
                                    ledger::REWARDS_CATEGORY category,
                                    const std::string& probi) = 0;
 
-  virtual void LoadLedgerState(LedgerCallbackHandler* handler) = 0;
+  virtual void LoadLedgerState(OnLoadCallback callback) = 0;
 
   virtual void SaveLedgerState(const std::string& ledger_state,
                                LedgerCallbackHandler* handler) = 0;
 
-  virtual void LoadPublisherState(LedgerCallbackHandler* handler) = 0;
+  virtual void LoadPublisherState(OnLoadCallback callback) = 0;
 
   virtual void SavePublisherState(const std::string& publisher_state,
                                   LedgerCallbackHandler* handler) = 0;

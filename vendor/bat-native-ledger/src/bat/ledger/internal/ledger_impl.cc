@@ -89,7 +89,8 @@ LedgerImpl::~LedgerImpl() {
 void LedgerImpl::Initialize() {
   DCHECK(!initializing_);
   initializing_ = true;
-  LoadLedgerState(this);
+  auto callback = std::bind(&LedgerImpl::OnLedgerStateLoaded, this, _1, _2);
+  LoadLedgerState(std::move(callback));
 }
 
 bool LedgerImpl::CreateWallet() {
@@ -241,8 +242,8 @@ void LedgerImpl::OnPostData(
   }
 }
 
-void LedgerImpl::LoadLedgerState(ledger::LedgerCallbackHandler* handler) {
-  ledger_client_->LoadLedgerState(handler);
+void LedgerImpl::LoadLedgerState(ledger::OnLoadCallback callback) {
+  ledger_client_->LoadLedgerState(std::move(callback));
 }
 
 void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
@@ -258,8 +259,9 @@ void LedgerImpl::OnLedgerStateLoaded(ledger::Result result,
     } else {
       auto wallet_info = bat_state_->GetWalletInfo();
       SetConfirmationsWalletInfo(wallet_info);
-
-      LoadPublisherState(this);
+      auto callback = std::bind(
+          &LedgerImpl::OnPublisherStateLoaded, this, _1, _2);
+      LoadPublisherState(std::move(callback));
       bat_contribution_->OnStartUp();
     }
   } else {
@@ -290,8 +292,8 @@ void LedgerImpl::SetConfirmationsWalletInfo(
       std::make_unique<confirmations::WalletInfo>(confirmations_wallet_info));
 }
 
-void LedgerImpl::LoadPublisherState(ledger::LedgerCallbackHandler* handler) {
-  ledger_client_->LoadPublisherState(handler);
+void LedgerImpl::LoadPublisherState(ledger::OnLoadCallback callback) {
+  ledger_client_->LoadPublisherState(std::move(callback));
 }
 
 void LedgerImpl::OnPublisherStateLoaded(ledger::Result result,

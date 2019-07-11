@@ -20,13 +20,13 @@
 - (void)getRecurringTips:(ledger::PublisherInfoListCallback)callback;
 - (void)killTimer:(const uint32_t)timer_id;
 - (void)loadActivityInfo:(ledger::ActivityInfoFilter)filter callback:(ledger::PublisherInfoCallback)callback;
-- (void)loadLedgerState:(ledger::LedgerCallbackHandler *)handler;
+- (void)loadLedgerState:(ledger::OnLoadCallback)callback;
 - (void)loadMediaPublisherInfo:(const std::string &)media_key callback:(ledger::PublisherInfoCallback)callback;
 - (void)loadNicewareList:(ledger::GetNicewareListCallback)callback;
 - (void)loadPanelPublisherInfo:(ledger::ActivityInfoFilter)filter callback:(ledger::PublisherInfoCallback)callback;
 - (void)loadPublisherInfo:(const std::string &)publisher_key callback:(ledger::PublisherInfoCallback)callback;
 - (void)loadPublisherList:(ledger::LedgerCallbackHandler *)handler;
-- (void)loadPublisherState:(ledger::LedgerCallbackHandler *)handler;
+- (void)loadPublisherState:(ledger::OnLoadCallback)callback;
 - (void)loadState:(const std::string &)name callback:(ledger::OnLoadCallback)callback;
 - (void)loadURL:(const std::string &)url headers:(const std::vector<std::string> &)headers content:(const std::string &)content contentType:(const std::string &)contentType method:(const ledger::URL_METHOD)method callback:(ledger::LoadURLCallback)callback;
 - (std::unique_ptr<ledger::LogStream>)log:(const char *)file line:(int)line logLevel:(const ledger::LogLevel)log_level;

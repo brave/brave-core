@@ -27,13 +27,13 @@ private:
   void GetRecurringTips(ledger::PublisherInfoListCallback callback) override;
   void KillTimer(const uint32_t timer_id) override;
   void LoadActivityInfo(ledger::ActivityInfoFilter filter, ledger::PublisherInfoCallback callback) override;
-  void LoadLedgerState(ledger::LedgerCallbackHandler * handler) override;
+  void LoadLedgerState(ledger::OnLoadCallback callback) override;
   void LoadMediaPublisherInfo(const std::string & media_key, ledger::PublisherInfoCallback callback) override;
   void LoadNicewareList(ledger::GetNicewareListCallback callback) override;
   void LoadPanelPublisherInfo(ledger::ActivityInfoFilter filter, ledger::PublisherInfoCallback callback) override;
   void LoadPublisherInfo(const std::string & publisher_key, ledger::PublisherInfoCallback callback) override;
   void LoadPublisherList(ledger::LedgerCallbackHandler * handler) override;
-  void LoadPublisherState(ledger::LedgerCallbackHandler * handler) override;
+  void LoadPublisherState(ledger::OnLoadCallback callback) override;
   void LoadState(const std::string & name, ledger::OnLoadCallback callback) override;
   void LoadURL(const std::string & url, const std::vector<std::string> & headers, const std::string & content, const std::string & contentType, const ledger::URL_METHOD method, ledger::LoadURLCallback callback) override;
   std::unique_ptr<ledger::LogStream> Log(const char * file, int line, const ledger::LogLevel log_level) const override;
