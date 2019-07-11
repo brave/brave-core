@@ -10,10 +10,15 @@
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/brave_ads/browser/ads_tab_helper.h"
 #include "brave/components/brave_rewards/browser/buildflags/buildflags.h"
+#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/browser/buildflags/buildflags.h"  // For STP
+#include "brave/components/greaselion/browser/buildflags/buildflags.h"
 #include "content/public/browser/web_contents.h"
 
-#include "brave/components/brave_shields/browser/brave_shields_web_contents_observer.h"
+#if BUILDFLAG(ENABLE_GREASELION)
+#include "brave/browser/greaselion/greaselion_tab_helper.h"
+#endif
+
 #if !defined(OS_ANDROID)
 #if BUILDFLAG(BRAVE_REWARDS_ENABLED)
 #include "brave/browser/brave_rewards/rewards_tab_helper.h"
@@ -29,6 +34,9 @@
 namespace brave {
 
 void AttachTabHelpers(content::WebContents* web_contents) {
+#if BUILDFLAG(ENABLE_GREASELION)
+  greaselion::GreaselionTabHelper::CreateForWebContents(web_contents);
+#endif
   brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
       web_contents);
 #if !defined(OS_ANDROID)
@@ -47,7 +55,6 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #endif
 
   brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
-  greaselion::GreaselionTabHelper::CreateForWebContents(web_contents);
 }
 
 }  // namespace brave

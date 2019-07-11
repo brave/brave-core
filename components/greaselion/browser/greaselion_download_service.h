@@ -41,41 +41,28 @@ struct GreaselionPreconditions {
 
 class GreaselionRule {
  public:
-  GreaselionRule();
+  explicit GreaselionRule(const std::string& name);
   void Parse(base::DictionaryValue* preconditions_value,
              base::ListValue* urls_value,
              base::ListValue* scripts_value,
-             const base::FilePath& root_dir,
-             scoped_refptr<base::SequencedTaskRunner> task_runner);
+             const base::FilePath& root_dir);
   ~GreaselionRule();
 
-  bool Matches(const GURL& url, GreaselionFeatures state) const;
-  void Populate(std::vector<std::string>* scripts) const;
-
-  // implementation of observers
-  class Observer : public base::CheckedObserver {
-   public:
-    virtual void OnRuleReady(GreaselionRule* rule,
-                             bool all_scripts_loaded_successfully) = 0;
-  };
-  void AddObserver(Observer* observer) { observers_.AddObserver(observer); }
-  void RemoveObserver(Observer* observer) {
-    observers_.RemoveObserver(observer);
-  }
+  bool Matches(GreaselionFeatures state) const;
+  std::string name() const { return name_; }
+  std::vector<std::string> url_patterns() const { return url_patterns_; }
+  std::vector<base::FilePath> scripts() const { return scripts_; }
 
  private:
   scoped_refptr<base::SequencedTaskRunner> GetTaskRunner();
-  void AddScriptAfterLoad(std::unique_ptr<std::string> contents, bool did_load);
   GreaselionPreconditionValue ParsePrecondition(base::DictionaryValue* root,
                                                 const char* key);
   bool PreconditionFulfilled(GreaselionPreconditionValue precondition,
                              bool value) const;
 
-  base::ObserverList<Observer> observers_;
-  int pending_scripts_;
-  bool all_scripts_loaded_successfully_;
-  extensions::URLPatternSet urls_;
-  std::vector<std::string> scripts_;
+  std::string name_;
+  std::vector<std::string> url_patterns_;
+  std::vector<base::FilePath> scripts_;
   GreaselionPreconditions preconditions_;
   base::WeakPtrFactory<GreaselionRule> weak_factory_;
   DISALLOW_COPY_AND_ASSIGN(GreaselionRule);
@@ -84,8 +71,7 @@ class GreaselionRule {
 // The Greaselion download service is in charge
 // of loading and parsing the Greaselion configuration file
 // and the scripts that the configuration file references
-class GreaselionDownloadService : public LocalDataFilesObserver,
-                                  GreaselionRule::Observer {
+class GreaselionDownloadService : public LocalDataFilesObserver {
  public:
   explicit GreaselionDownloadService(
       LocalDataFilesService* local_data_files_service);
@@ -99,15 +85,10 @@ class GreaselionDownloadService : public LocalDataFilesObserver,
                         const base::FilePath& install_dir,
                         const std::string& manifest) override;
 
-  // implementation of GreaselionRule::Observer
-  void OnRuleReady(GreaselionRule* rule,
-                   bool all_scripts_loaded_successfully) override;
-
   // implementation of our own observers
   class Observer : public base::CheckedObserver {
    public:
-    virtual void OnAllScriptsLoaded(GreaselionDownloadService* download_service,
-                                    bool success) = 0;
+    virtual void OnRulesReady(GreaselionDownloadService* download_service) = 0;
   };
   void AddObserver(Observer* observer) { observers_.AddObserver(observer); }
   void RemoveObserver(Observer* observer) {
@@ -121,8 +102,6 @@ class GreaselionDownloadService : public LocalDataFilesObserver,
   void LoadOnTaskRunner();
 
   base::ObserverList<Observer> observers_;
-  int pending_rules_;
-  bool all_scripts_loaded_successfully_;
   std::vector<std::unique_ptr<GreaselionRule>> rules_;
   base::FilePath install_dir_;
 

@@ -24,7 +24,6 @@
 #include "brave/components/brave_shields/browser/https_everywhere_service.h"
 #include "brave/components/brave_shields/browser/referrer_whitelist_service.h"
 #include "brave/components/brave_shields/browser/tracking_protection_service.h"
-#include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "chrome/browser/io_thread.h"
 #include "chrome/common/chrome_paths.h"
 #include "components/component_updater/component_updater_service.h"
@@ -42,6 +41,10 @@
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "brave/common/extensions/whitelist.h"
 #include "brave/components/brave_component_updater/browser/extension_whitelist_service.h"
+#endif
+
+#if BUILDFLAG(ENABLE_GREASELION)
+#include "brave/components/greaselion/browser/greaselion_download_service.h"
 #endif
 
 #if defined(OS_ANDROID)
@@ -102,6 +105,9 @@ void BraveBrowserProcessImpl::ResourceDispatcherHostCreated() {
 #endif
   referrer_whitelist_service();
   tracking_protection_service();
+#if BUILDFLAG(ENABLE_GREASELION)
+  greaselion_download_service();
+#endif
   // Now start the local data files service, which calls all observers.
   local_data_files_service()->Start();
 }
@@ -172,6 +178,7 @@ BraveBrowserProcessImpl::referrer_whitelist_service() {
   return referrer_whitelist_service_.get();
 }
 
+#if BUILDFLAG(ENABLE_GREASELION)
 greaselion::GreaselionDownloadService*
 BraveBrowserProcessImpl::greaselion_download_service() {
   if (!greaselion_download_service_) {
@@ -180,6 +187,7 @@ BraveBrowserProcessImpl::greaselion_download_service() {
   }
   return greaselion_download_service_.get();
 }
+#endif
 
 brave_shields::TrackingProtectionService*
 BraveBrowserProcessImpl::tracking_protection_service() {

@@ -14,6 +14,7 @@
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/macros.h"
+#include "base/strings/stringprintf.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/post_task.h"
 #include "base/task_runner_util.h"
@@ -28,6 +29,7 @@ namespace greaselion {
 
 const char kGreaselionConfigFile[] = "Greaselion.json";
 const char kGreaselionConfigFileVersion[] = "1";
+const char kRuleNameFormat[] = "greaselion-%zu";
 // Greaselion.json keys
 const char kPreconditions[] = "preconditions";
 const char kURLs[] = "urls";
@@ -49,74 +51,43 @@ GreaselionPreconditionValue GreaselionRule::ParsePrecondition(
   return value;
 }
 
-GreaselionRule::GreaselionRule()
-    : pending_scripts_(0),
-      all_scripts_loaded_successfully_(true),
-      weak_factory_(this) {}
+GreaselionRule::GreaselionRule(const std::string& name)
+    : name_(name), weak_factory_(this) {}
 
-void GreaselionRule::Parse(
-    base::DictionaryValue* preconditions_value,
-    base::ListValue* urls_value,
-    base::ListValue* scripts_value,
-    const base::FilePath& root_dir,
-    scoped_refptr<base::SequencedTaskRunner> task_runner) {
-  std::vector<std::string> patterns;
+void GreaselionRule::Parse(base::DictionaryValue* preconditions_value,
+                           base::ListValue* urls_value,
+                           base::ListValue* scripts_value,
+                           const base::FilePath& root_dir) {
   preconditions_.rewards_enabled =
       ParsePrecondition(preconditions_value, kRewards);
   preconditions_.twitter_tips_enabled =
       ParsePrecondition(preconditions_value, kTwitterTips);
-  // Can't use URLPatternSet::Populate here because it does not expose
-  // any way to set the ParseOptions, which we need to do to support
-  // eTLD wildcarding.
   for (const auto& urls_it : urls_value->GetList()) {
+    std::string pattern_string = urls_it.GetString();
     URLPattern pattern;
     pattern.SetValidSchemes(URLPattern::SCHEME_HTTP | URLPattern::SCHEME_HTTPS);
-    if (pattern.Parse(urls_it.GetString(),
+    if (pattern.Parse(pattern_string,
                       URLPattern::ALLOW_WILDCARD_FOR_EFFECTIVE_TLD) !=
         URLPattern::ParseResult::kSuccess) {
       LOG(ERROR) << "Malformed pattern in Greaselion configuration";
-      urls_.ClearPatterns();
+      url_patterns_.clear();
       return;
     }
-    urls_.AddPattern(pattern);
+    url_patterns_.push_back(pattern_string);
   }
-  pending_scripts_ = scripts_value->GetList().size();
   for (const auto& scripts_it : scripts_value->GetList()) {
     base::FilePath script_path =
         root_dir.AppendASCII(kGreaselionConfigFileVersion)
             .AppendASCII(scripts_it.GetString());
     if (script_path.ReferencesParent()) {
-      pending_scripts_ -= 1;
       LOG(ERROR) << "Malformed filename in Greaselion configuration";
     } else {
-      // Read script file on task runner to avoid file I/O on main thread.
-      auto script_contents = std::make_unique<std::string>();
-      std::string* buffer = script_contents.get();
-      base::PostTaskAndReplyWithResult(
-          task_runner.get(), FROM_HERE,
-          base::BindOnce(&base::ReadFileToString, script_path, buffer),
-          base::BindOnce(&GreaselionRule::AddScriptAfterLoad,
-                         weak_factory_.GetWeakPtr(),
-                         std::move(script_contents)));
+      scripts_.push_back(script_path);
     }
   }
 }
 
 GreaselionRule::~GreaselionRule() = default;
-
-void GreaselionRule::AddScriptAfterLoad(std::unique_ptr<std::string> contents,
-                                        bool did_load) {
-  if (did_load && contents)
-    scripts_.push_back(*contents);
-  else {
-    all_scripts_loaded_successfully_ = false;
-    LOG(ERROR) << "Could not load Greaselion script";
-  }
-  pending_scripts_ -= 1;
-  if (!pending_scripts_)
-    for (Observer& observer : observers_)
-      observer.OnRuleReady(this, all_scripts_loaded_successfully_);
-}
 
 bool GreaselionRule::PreconditionFulfilled(
     GreaselionPreconditionValue precondition,
@@ -131,26 +102,19 @@ bool GreaselionRule::PreconditionFulfilled(
   }
 }
 
-bool GreaselionRule::Matches(const GURL& url, GreaselionFeatures state) const {
+bool GreaselionRule::Matches(GreaselionFeatures state) const {
   if (!PreconditionFulfilled(preconditions_.rewards_enabled,
                              state[greaselion::REWARDS]))
     return false;
   if (!PreconditionFulfilled(preconditions_.twitter_tips_enabled,
                              state[greaselion::TWITTER_TIPS]))
     return false;
-  return urls_.MatchesURL(url);
-}
-
-void GreaselionRule::Populate(std::vector<std::string>* scripts) const {
-  scripts->insert(scripts->end(), scripts_.begin(), scripts_.end());
+  return true;
 }
 
 GreaselionDownloadService::GreaselionDownloadService(
     LocalDataFilesService* local_data_files_service)
-    : LocalDataFilesObserver(local_data_files_service),
-      pending_rules_(0),
-      all_scripts_loaded_successfully_(true),
-      weak_factory_(this) {
+    : LocalDataFilesObserver(local_data_files_service), weak_factory_(this) {
   DETACH_FROM_SEQUENCE(sequence_checker_);
 }
 
@@ -170,7 +134,6 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
   }
   base::ListValue* root_list = nullptr;
   root->GetAsList(&root_list);
-  pending_rules_ = root_list->GetList().size();
   for (base::Value& rule_it : root_list->GetList()) {
     base::DictionaryValue* rule_dict = nullptr;
     rule_it.GetAsDictionary(&rule_dict);
@@ -180,23 +143,13 @@ void GreaselionDownloadService::OnDATFileDataReady(std::string contents) {
     rule_dict->GetList(kURLs, &urls_value);
     base::ListValue* scripts_value = nullptr;
     rule_dict->GetList(kScripts, &scripts_value);
-    std::unique_ptr<GreaselionRule> rule = std::make_unique<GreaselionRule>();
-    rule->AddObserver(this);
-    rule->Parse(preconditions_value, urls_value, scripts_value, install_dir_,
-                GetTaskRunner().get());
+    std::unique_ptr<GreaselionRule> rule = std::make_unique<GreaselionRule>(
+        base::StringPrintf(kRuleNameFormat, rules_.size()));
+    rule->Parse(preconditions_value, urls_value, scripts_value, install_dir_);
     rules_.push_back(std::move(rule));
   }
-}
-
-void GreaselionDownloadService::OnRuleReady(
-    GreaselionRule* rule,
-    bool all_scripts_loaded_successfully) {
-  if (!all_scripts_loaded_successfully)
-    all_scripts_loaded_successfully_ = false;
-  pending_rules_ -= 1;
-  if (!pending_rules_)
-    for (Observer& observer : observers_)
-      observer.OnAllScriptsLoaded(this, all_scripts_loaded_successfully_);
+  for (Observer& observer : observers_)
+    observer.OnRulesReady(this);
 }
 
 void GreaselionDownloadService::OnComponentReady(

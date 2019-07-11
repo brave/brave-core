@@ -1,3 +1,5 @@
+import("//brave/build/config.gni")
+
 source_set("browser") {
   sources = [
     "greaselion_download_service.cc",
@@ -13,6 +15,10 @@ source_set("browser") {
     "//content/public/browser",
     "//content/public/common",
     "//url",
+  ]
+
+  public_deps = [
+    "buildflags"
   ]
 
 }

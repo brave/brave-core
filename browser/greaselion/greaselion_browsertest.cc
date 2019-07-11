@@ -11,6 +11,7 @@
 #include "brave/browser/greaselion/greaselion_service_factory.h"
 #include "brave/common/brave_paths.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_rewards/browser/rewards_service_factory.h"
 #include "brave/components/greaselion/browser/greaselion_download_service.h"
 #include "brave/components/greaselion/browser/greaselion_service.h"
 #include "chrome/browser/extensions/extension_browsertest.h"
@@ -18,6 +19,8 @@
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
 
+using brave_rewards::RewardsService;
+using brave_rewards::RewardsServiceFactory;
 using extensions::ExtensionBrowserTest;
 using greaselion::GreaselionDownloadService;
 using greaselion::GreaselionService;
@@ -49,9 +52,7 @@ class GreaselionDownloadServiceWaiter
 
  private:
   // GreaselionDownloadService::Observer:
-  void OnAllScriptsLoaded(GreaselionDownloadService* download_service,
-                          bool success) override {
-    ASSERT_TRUE(success);
+  void OnRulesReady(GreaselionDownloadService* download_service) override {
     run_loop_.QuitWhenIdle();
   }
 
@@ -61,6 +62,35 @@ class GreaselionDownloadServiceWaiter
       scoped_observer_;
 
   DISALLOW_COPY_AND_ASSIGN(GreaselionDownloadServiceWaiter);
+};
+
+class GreaselionServiceWaiter : public GreaselionService::Observer {
+ public:
+  explicit GreaselionServiceWaiter(GreaselionService* greaselion_service)
+      : greaselion_service_(greaselion_service), scoped_observer_(this) {
+    scoped_observer_.Add(greaselion_service_);
+  }
+  ~GreaselionServiceWaiter() override = default;
+
+  void Wait() {
+    if (!greaselion_service_->ready())
+      run_loop_.Run();
+  }
+
+ private:
+  // GreaselionService::Observer:
+  void OnExtensionsReady(GreaselionService* greaselion_service,
+                         bool success) override {
+    ASSERT_TRUE(success);
+    run_loop_.QuitWhenIdle();
+  }
+
+  GreaselionService* const greaselion_service_;
+  base::RunLoop run_loop_;
+  ScopedObserver<GreaselionService, GreaselionService::Observer>
+      scoped_observer_;
+
+  DISALLOW_COPY_AND_ASSIGN(GreaselionServiceWaiter);
 };
 
 class GreaselionServiceTest : public ExtensionBrowserTest {
@@ -116,15 +146,14 @@ class GreaselionServiceTest : public ExtensionBrowserTest {
         g_brave_browser_process->greaselion_download_service();
     download_service->OnComponentReady(mock_extension->id(),
                                        mock_extension->path(), "");
+    // wait for Greaselion download service to load and parse its configuration
+    // file
     GreaselionDownloadServiceWaiter(download_service).Wait();
-
-    return true;
-  }
-
-  bool ScriptsFor(const GURL& url, std::vector<std::string>* scripts) {
     GreaselionService* greaselion_service =
         GreaselionServiceFactory::GetForBrowserContext(profile());
-    return greaselion_service->ScriptsFor(url, scripts);
+    // wait for the Greaselion service to install all the extensions it creates
+    GreaselionServiceWaiter(greaselion_service).Wait();
+    return true;
   }
 
   int GetRulesSize() {
@@ -136,72 +165,18 @@ class GreaselionServiceTest : public ExtensionBrowserTest {
   void ClearRules() {
     g_brave_browser_process->greaselion_download_service()->rules()->clear();
   }
+
+  void SetRewardsEnabled(bool enabled) {
+    RewardsService* rewards_service =
+        RewardsServiceFactory::GetForProfile(profile());
+    rewards_service->SetRewardsMainEnabled(enabled);
+    GreaselionService* greaselion_service =
+        GreaselionServiceFactory::GetForBrowserContext(profile());
+    // wait for the Greaselion service to install all the extensions it creates
+    // after the rewards service is turned off or on
+    GreaselionServiceWaiter(greaselion_service).Wait();
+  }
 };
-
-IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, RuleParsing) {
-  ASSERT_TRUE(InstallGreaselionExtension());
-  std::vector<std::string> scripts;
-
-  // URL should match two rules, each with a different script
-  // (first rule is an exact match, second rule is a TLD match)
-  ASSERT_TRUE(ScriptsFor(GURL("https://www.example.com/"), &scripts));
-  ASSERT_EQ(scripts.size(), 2UL);
-  EXPECT_EQ(scripts[0].find("example.com"), 7UL);
-  EXPECT_EQ(scripts[1].find("example.*"), 7UL);
-
-  // URL should match two rules, each with a different script
-  // (first rule is still an exact match because 80 is the default port,
-  // second rule is a TLD match)
-  ASSERT_TRUE(ScriptsFor(GURL("https://www.example.com:80/"), &scripts));
-  ASSERT_EQ(scripts.size(), 2UL);
-  EXPECT_EQ(scripts[0].find("example.com"), 7UL);
-  EXPECT_EQ(scripts[1].find("example.*"), 7UL);
-
-  // URL should match one rule with one script (because of TLD matching)
-  ASSERT_TRUE(ScriptsFor(GURL("https://www.example.org/"), &scripts));
-  ASSERT_EQ(scripts.size(), 1UL);
-  EXPECT_EQ(scripts[0].find("example.*"), 7UL);
-
-  // URL should match one rule with one script (because 80 is the default port)
-  ASSERT_TRUE(ScriptsFor(GURL("https://www.example.org:80/"), &scripts));
-  ASSERT_EQ(scripts.size(), 1UL);
-  EXPECT_EQ(scripts[0].find("example.*"), 7UL);
-
-  // URL should match one rule with one script (because TLD matching works on
-  // multi-dotted TLDs)
-  ASSERT_TRUE(ScriptsFor(GURL("https://www.example.co.uk/"), &scripts));
-  ASSERT_EQ(scripts.size(), 1UL);
-  EXPECT_EQ(scripts[0].find("example.*"), 7UL);
-
-  // URL should not match any rules (because of scheme)
-  ASSERT_FALSE(ScriptsFor(GURL("http://www.example.com/"), &scripts));
-  EXPECT_EQ(scripts.size(), 0UL);
-
-  // URL should not match any rules (because of non-default port)
-  ASSERT_FALSE(ScriptsFor(GURL("http://www.example.com:8000/"), &scripts));
-  EXPECT_EQ(scripts.size(), 0UL);
-
-  // URL should not match any rules (because wildcard at end of pattern only
-  // matches TLDs, not arbitrary domains)
-  ASSERT_FALSE(ScriptsFor(GURL("https://www.example.evil.com/"), &scripts));
-  EXPECT_EQ(scripts.size(), 0UL);
-
-  // URL should match one rule with one script (because of wildcard port
-  // and wildcard path)
-  ASSERT_TRUE(ScriptsFor(GURL("http://www.a.com:9876/simple.html"), &scripts));
-  ASSERT_EQ(scripts.size(), 1UL);
-  EXPECT_EQ(scripts[0].find("Altered"), 18UL);
-
-  // URL should not match because rewards are disabled
-  greaselion::GreaselionServiceFactory::GetForBrowserContext(profile())
-      ->SetFeatureEnabled(greaselion::REWARDS, false);
-  ASSERT_FALSE(ScriptsFor(GURL("https://pre1.example.com/"), &scripts));
-  greaselion::GreaselionServiceFactory::GetForBrowserContext(profile())
-      ->SetFeatureEnabled(greaselion::REWARDS, true);
-  // URL should match one rule because rewards are enabled
-  ASSERT_TRUE(ScriptsFor(GURL("https://pre1.example.com/"), &scripts));
-  ASSERT_EQ(scripts.size(), 1UL);
-}
 
 // Ensure the site specific script service properly clears its cache of
 // precompiled URLPatterns if initialized twice. (This can happen if
@@ -234,5 +209,39 @@ IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjection) {
                                     "window.domAutomationController.send("
                                     "document.title)",
                                     &title));
+  EXPECT_EQ(title, "Altered");
+}
+
+IN_PROC_BROWSER_TEST_F(GreaselionServiceTest, ScriptInjectionWithPrecondition) {
+  ASSERT_TRUE(InstallGreaselionExtension());
+
+  GURL url = embedded_test_server()->GetURL("pre1.example.com", "/simple.html");
+  ui_test_utils::NavigateToURL(browser(), url);
+  content::WebContents* contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  std::string title;
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  // should be unaltered because precondition did not match, so no Greaselion
+  // rules are active
+  EXPECT_EQ(title, "OK");
+
+  SetRewardsEnabled(true);
+  ui_test_utils::NavigateToURL(browser(), url);
+  contents = browser()->tab_strip_model()->GetActiveWebContents();
+  ASSERT_TRUE(content::WaitForLoadStop(contents));
+  EXPECT_EQ(url, contents->GetURL());
+  ASSERT_TRUE(
+      ExecuteScriptAndExtractString(contents,
+                                    "window.domAutomationController.send("
+                                    "document.title)",
+                                    &title));
+  // should be altered because rewards precondition matched, so the relevant
+  // Greaselion rule is active
   EXPECT_EQ(title, "Altered");
 }
