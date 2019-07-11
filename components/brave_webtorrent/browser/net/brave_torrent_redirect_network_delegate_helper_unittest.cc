@@ -103,7 +103,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                                               brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -139,7 +139,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                                               brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -177,7 +177,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                                               brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -220,7 +220,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                                               brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -259,7 +259,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                                               brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -293,7 +293,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest, MimeTypeNoRedirect) {
                                               brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
@@ -330,7 +330,7 @@ TEST_F(BraveTorrentRedirectNetworkDelegateHelperTest,
                                               brave_request_info);
   brave::ResponseCallback callback;
 
-  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(request.get(),
+  int ret = webtorrent::OnHeadersReceived_TorrentRedirectWork(
       orig_response_headers.get(), &overwrite_response_headers,
       &allowed_unsafe_redirect_url, callback, brave_request_info);
 
