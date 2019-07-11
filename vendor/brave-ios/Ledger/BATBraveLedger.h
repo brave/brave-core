@@ -91,13 +91,25 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Publishers
 
+/// Get publisher info based on its publisher key.
+///
+/// This key is _not_ always the URL's host. Use `publisherActivityFromURL`
+/// instead when obtaining a publisher given a URL
+///
+/// @note `completion` callback is called synchronously
 - (void)publisherInfoForId:(NSString *)publisherId
-                completion:(void (^)(BATPublisherInfo * _Nullable info))completion;
+                completion:(void (NS_NOESCAPE ^)(BATPublisherInfo * _Nullable info))completion;
 
+/// Get publisher info & its activity based on its publisher key
+///
+/// This key is _not_ always the URL's host. Use `publisherActivityFromURL`
+/// instead when obtaining a publisher given a URL
+///
+/// @note `completion` callback is called synchronously
 - (void)listActivityInfoFromStart:(unsigned int)start
                             limit:(unsigned int)limit
                            filter:(BATActivityInfoFilter *)filter
-                       completion:(void (^)(NSArray<BATPublisherInfo *> *))completion;
+                       completion:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
 
 - (void)publisherActivityFromURL:(NSURL *)URL
                       faviconURL:(nullable NSURL *)faviconURL
@@ -116,8 +128,14 @@ NS_SWIFT_NAME(BraveLedger)
 
 @property (nonatomic, readonly) NSUInteger numberOfExcludedPublishers;
 
+/// Get the publisher banner given some publisher key
+///
+/// This key is _not_ always the URL's host. Use `publisherActivityFromURL`
+/// instead when obtaining a publisher given a URL
+///
+/// @note `completion` callback is called synchronously
 - (void)publisherBannerForId:(NSString *)publisherId
-                  completion:(void (^)(BATPublisherBanner * _Nullable banner))completion;
+                  completion:(void (NS_NOESCAPE ^)(BATPublisherBanner * _Nullable banner))completion;
 
 /// Refresh a publishers verification status
 - (void)refreshPublisherWithId:(NSString *)publisherId
@@ -125,14 +143,20 @@ NS_SWIFT_NAME(BraveLedger)
 
 #pragma mark - Tips
 
-- (void)listRecurringTips:(void (^)(NSArray<BATPublisherInfo *> *))completion;
+/// Get a list of publishers who the user has recurring tips on
+///
+/// @note `completion` callback is called synchronously
+- (void)listRecurringTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
 
 - (void)addRecurringTipToPublisherWithId:(NSString *)publisherId
                                   amount:(double)amount NS_SWIFT_NAME(addRecurringTip(publisherId:amount:));
 
 - (void)removeRecurringTipForPublisherWithId:(NSString *)publisherId NS_SWIFT_NAME(removeRecurringTip(publisherId:));
 
-- (void)listOneTimeTips:(void (^)(NSArray<BATPublisherInfo *> *))completion;
+/// Get a list of publishers who the user has made direct tips too
+///
+/// @note `completion` callback is called synchronously
+- (void)listOneTimeTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion;
 
 - (void)tipPublisherDirectly:(BATPublisherInfo *)publisher
                       amount:(int)amount

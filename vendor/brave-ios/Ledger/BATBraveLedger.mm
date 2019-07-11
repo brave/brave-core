@@ -345,21 +345,13 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - Publishers
 
-- (void)publisherInfoForId:(NSString *)publisherId completion:(void (^)(BATPublisherInfo * _Nullable))completion
+- (void)publisherInfoForId:(NSString *)publisherId completion:(void (NS_NOESCAPE ^)(BATPublisherInfo * _Nullable))completion
 {
   ledger->GetPublisherInfo(std::string(publisherId.UTF8String), ^(ledger::Result result, ledger::PublisherInfoPtr info) {
-    if (result == ledger::LEDGER_OK) {
-      const auto* publisherInfo = info.get();
-      if (publisherInfo != nullptr) {
-        const auto info = [[BATPublisherInfo alloc] initWithPublisherInfo:*publisherInfo];
-        dispatch_async(dispatch_get_main_queue(), ^{
-          completion(info);
-        });
-      }
+    if (result == ledger::LEDGER_OK && info.get() != nullptr) {
+      completion([[BATPublisherInfo alloc] initWithPublisherInfo:*info]);
     } else {
-      dispatch_async(dispatch_get_main_queue(), ^{
-        completion(nil);
-      });
+      completion(nil);
     }
   });
 }
@@ -367,7 +359,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 - (void)listActivityInfoFromStart:(unsigned int)start
                             limit:(unsigned int)limit
                            filter:(BATActivityInfoFilter *)filter
-                       completion:(void (^)(NSArray<BATPublisherInfo *> *))completion
+                       completion:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion
 {
   const auto cppFilter = filter ? filter.cppObj : ledger::ActivityInfoFilter();
   if (filter.excluded == BATExcludeFilterFilterExcluded) {
@@ -414,13 +406,11 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   return [BATLedgerDatabase excludedPublishersCount];
 }
 
-- (void)publisherBannerForId:(NSString *)publisherId completion:(void (^)(BATPublisherBanner * _Nullable banner))completion
+- (void)publisherBannerForId:(NSString *)publisherId completion:(void (NS_NOESCAPE ^)(BATPublisherBanner * _Nullable banner))completion
 {
   ledger->GetPublisherBanner(std::string(publisherId.UTF8String), ^(ledger::PublisherBannerPtr banner) {
-    auto bridgedBanner = banner.get() != nullptr ? [[BATPublisherBanner alloc] initWithPublisherBanner:*banner.get()] : nil;
-    dispatch_async(dispatch_get_main_queue(), ^{
-      completion(bridgedBanner);
-    });
+    auto bridgedBanner = banner.get() != nullptr ? [[BATPublisherBanner alloc] initWithPublisherBanner:*banner] : nil;
+    completion(bridgedBanner);
   });
 }
 
@@ -443,7 +433,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
 
 #pragma mark - Tips
 
-- (void)listRecurringTips:(void (^)(NSArray<BATPublisherInfo *> *))completion
+- (void)listRecurringTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion
 {
   ledger->GetRecurringTips(^(const ledger::PublisherInfoList& list, uint32_t){
     const auto publishers = NSArrayFromVector(&list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info){
@@ -466,7 +456,7 @@ BATLedgerReadonlyBridge(double, defaultContributionAmount, GetDefaultContributio
   ledger->RemoveRecurringTip(std::string(publisherId.UTF8String));
 }
 
-- (void)listOneTimeTips:(void (^)(NSArray<BATPublisherInfo *> *))completion
+- (void)listOneTimeTips:(void (NS_NOESCAPE ^)(NSArray<BATPublisherInfo *> *))completion
 {
   ledger->GetOneTimeTips(^(const ledger::PublisherInfoList& list, uint32_t){
     const auto publishers = NSArrayFromVector(&list, ^BATPublisherInfo *(const ledger::PublisherInfoPtr& info){
