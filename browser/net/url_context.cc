@@ -79,6 +79,46 @@ std::string GetUploadDataFromURLRequest(const net::URLRequest* request) {
   return upload_data;
 }
 
+std::string GetUploadDataFromURLRequest(const net::URLRequest* request) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::IO);
+  if (!request->has_upload())
+    return {};
+
+  const net::UploadDataStream* stream = request->get_upload();
+  if (!stream->GetElementReaders())
+    return {};
+
+  const auto* element_readers = stream->GetElementReaders();
+  if (element_readers->empty())
+    return {};
+
+  std::string upload_data;
+  for (const auto& element_reader : *element_readers) {
+    const net::UploadBytesElementReader* reader =
+        element_reader->AsBytesReader();
+    if (!reader) {
+      return {};
+    }
+    upload_data.append(reader->bytes(), reader->length());
+  }
+  return upload_data;
+}
+
+std::string GetUploadData(const network::ResourceRequest& request) {
+  std::string upload_data;
+  if (!request.request_body) {
+    return {};
+  }
+  const auto* elements = request.request_body->elements();
+  for (const network::DataElement& element : *elements) {
+    if (element.type() == network::mojom::DataElementType::kBytes) {
+      upload_data.append(element.bytes(), element.length());
+    }
+  }
+
+  return upload_data;
+}
+
 }  // namespace
 
 BraveRequestInfo::BraveRequestInfo() = default;
@@ -160,6 +200,8 @@ void BraveRequestInfo::FillCTX(
   ctx->resource_type =
       static_cast<content::ResourceType>(request.resource_type);
 
+  ctx->is_webtorrent_disabled = IsWebTorrentDisabled(resource_context);
+
   ctx->render_frame_id = request.render_frame_id;
   ctx->render_process_id = render_process_id;
   ctx->frame_tree_node_id = frame_tree_node_id;
@@ -192,8 +234,7 @@ void BraveRequestInfo::FillCTX(
       io_data, ctx->tab_origin, ctx->tab_origin, CONTENT_SETTINGS_TYPE_PLUGINS,
       brave_shields::kReferrers);
 
-  // TODO(iefremov): Erase this from the struct.
-  ctx->request = nullptr;
+  ctx->upload_data = GetUploadData(request);
 }
 
 

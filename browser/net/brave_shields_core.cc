@@ -244,7 +244,7 @@ void BraveShieldsCore::RunNextCallback(
       brave::ResponseCallback next_callback =
           base::Bind(&BraveShieldsCore::RunNextCallback,
                      base::Unretained(this), ctx);
-      rv = callback.Run(nullptr, ctx->headers, next_callback, ctx);
+      rv = callback.Run(ctx->headers, next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {
         return;
       }
@@ -259,7 +259,7 @@ void BraveShieldsCore::RunNextCallback(
       brave::ResponseCallback next_callback =
           base::Bind(&BraveShieldsCore::RunNextCallback,
                      base::Unretained(this), ctx);
-      rv = callback.Run(nullptr, ctx->original_response_headers,
+      rv = callback.Run(ctx->original_response_headers,
                         ctx->override_response_headers,
                         ctx->allowed_unsafe_redirect_url, next_callback, ctx);
       if (rv == net::ERR_IO_PENDING) {

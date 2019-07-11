@@ -117,6 +117,7 @@ class BraveProxyingURLLoaderFactory :
     bool IsRedirectSafe(const GURL& from_url, const GURL& to_url);
     void HandleBeforeRequestRedirect();
 
+    // TODO(iefremov): Get rid of shared_ptr, we should clearly own the pointer.
     std::shared_ptr<brave::BraveRequestInfo> ctx_;
     BraveProxyingURLLoaderFactory* const factory_;
     network::ResourceRequest request_;
