@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Uredi prednostne nastavitve</translation>
 <translation id="7606029853066610626">Prikaz in upravljanje zaznamkov</translation>
 <translation id="5550994254534676787">Ogled zgodovine brskanja</translation>
+<translation id="1742484101357469636">Nastavitve nadzorne plošče</translation>
+<translation id="8320281346741574991">Prikaži sliko ozadja</translation>
 <translation id="6165508094623778733">Več o tem</translation>
 <translation id="8730621377337864115">Končano</translation>
 <translation id="6248988683584659830">Nastavitve iskanja</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave omogoča enostavno nastavitev običajnega okolja, saj lahko uvozite zaznamke in nastavitve iz drugih brskalnikov, nameščenih na vašem računalniku.</translation>
 <translation id="8275038454117074363">Uvozi</translation>
 <translation id="5540323067375019678">Upravljajte svoje nastavitve ščita</translation>
+<translation id="3278033011827237847">Pri brskanju zaščitite svojo zasebnost pred oglasi in sledilci s ščitom Brave. Ščit nastavite na »navzdol«, če se vam zdi, da spletno mesto ne deluje pravilno.</translation>
 <translation id="3366308997091824722">Nastavitve ščita</translation>
-<translation id="3884404068544758153">Spremenite svoj iskalnik</translation>
+<translation id="4764692524839457597">privzeto</translation>
+<translation id="3108122610701115301">Nastavi za privzeto</translation>
+<translation id="2469440407442116729">Izberite iskalnik</translation>
 <translation id="438216590634144114">Izberite iskalnik, ki ga želite privzeto uporabiti pri spletnem iskanju iz naslovne vrstice.</translation>
-<translation id="8428213095426709021">Nastavitve</translation>
+<translation id="5804484488647369316">Nastavi privzeti iskalnik</translation>
+<translation id="4428458837269935199">Za bolj zasebno iskanje, poskusite storitev DuckDuckGo.</translation>
 <translation id="513635702954746724">Izberite svojo barvno temo</translation>
 <translation id="6842850080200126305">Barvo v orodni vrstici izberete tako, da se odločite za svetlo ali temno možnost v plošči za nastavitve.</translation>
 <translation id="2801098717523961746">Izberite temo</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Pridobite žetone z ogledom oglasov v brskalniku Brave. Oglasi so izbrani glede na vaša zanimanja oziroma vaše izbire med brskanjem. Nobeni osebni podatki ali zgodovina brskanja nikoli ne zapustijo vašega brskalnika.</translation>
 <translation id="6112368337882254910">Samodejni prispevek</translation>
 <translation id="1527222983464337010">Samodejni način, s katerim lahko podpirate osebe, ki objavljajo vsebino, in ustvarjalce vsebine. Izberite mesečno plačilo in brskajte kot običajno. Strani, ki jih obiščete, bodo samodejno prejele vaše prispevke na podlagi vaše pozornosti, ki jo izmeri Brave.</translation>
+<translation id="20281847067919078">Ocenjene čakajoče nagrade</translation>
+<translation id="8593551638387217772">Datum naslednjega plačila</translation>
+<translation id="319209088187794725">Prejeta oglasna obvestila ta mesec</translation>
 <translation id="4229016885653790965">Oprostite! Oglasi v vaši regiji še niso na voljo.</translation>
 <translation id="654711254769318398">Ogledane oglasne strani</translation>
 <translation id="2532127066761785857">Največje število prikazanih oglasov</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 minuta</translation>
 <translation id="9031738692126722094">Omogoči donacije na ravni vsebine na teh straneh</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Donirajte takoj, ko najdete stran, ki vas navduši.</translation>
 <translation id="6135431587052937035">Podprite priljubljena spletna mesta s ponavljajočimi se mesečnimi nasveti.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Žal je videti, da je bilo to sredstvo že uveljavljeno.</translation>
 <translation id="282693359045252357">Datum naslednje mesečne donacije</translation>
 <translation id="6231182869178328516">Ravnokar sem opravil donacijo <ph name="NAME">$1<ex>user</ex></ph> prek brskalnika Brave. Oglej si ga na spletnem mestu https://brave.com/tips.</translation>
+<translation id="8404935570206006581">DonirajSBrave</translation>
 <translation id="7422678632904904341">Znesek:</translation>
 <translation id="5923611424721173182">Uskladi trenutno</translation>
 <translation id="5457113250005438886">Neveljaven</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Nastavi mesečno donacijo</translation>
 <translation id="8003573781961874199">Prenesi v obliki PDF</translation>
 <translation id="298067735430872465">Zaslužek z ogledom oglasov</translation>
+<translation id="2266556115441975588">Vaše nagrade iz oglasov so tu!</translation>
 <translation id="8764029012618014430">Omogoči donacije</translation>
 <translation id="3412655388715513818">Izključi to spletno stran</translation>
 <translation id="418343137736963579">Skupno število spletnih mest, ki ste jih izključili iz samodejnih donacij:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Obnovitveni ključ</translation>
 <translation id="6354568176665589146">Ponavljajoče</translation>
 <translation id="7577100371127227294">Mesečne donacije</translation>
+<translation id="2391095793008133394">Donacija uporabniku {{ user }} za objavo:</translation>
+<translation id="7557413530932469222">Donacija uporabniku {{ user }} za objavo!</translation>
 <translation id="1110535155349301542">odstrani</translation>
 <translation id="8942997470474842562">Določili ste {{reservedAmount}} BAT za ustvarjalce, ki se še niso prijavili za prejem prispevkov. Vaš brskalnik bo nadaljeval s poskušanjem dodelitve prispevkov, dokler se ne potrdijo ali preteče 90 dni.</translation>
 <translation id="8759753423332885148">Izvedite več.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Ogled vseh {{numItems}} elementov</translation>
 <translation id="7857284676033058221">Ogled vseh {{numSites}} spletnih mest</translation>
 <translation id="3536298624341433814">Pošlji moj prispevek</translation>
+<translation id="8428213095426709021">Nastavitve</translation>
 <translation id="1792148354504719133">spletno mesto</translation>
 <translation id="5944430251223015324">spletna mesta</translation>
 <translation id="1834493631938747505">Druge obvestite o svoji donaciji.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Na čakanju do</translation>
 <translation id="7410549756000115387">Ni donacij na čakanju ...</translation>
 <translation id="1963227389609234879">Odstrani vse</translation>
+<translation id="1170315781901539495">Izključena spletna mesta</translation>
+<translation id="5119190679543565400">Obnovi to mesto</translation>
+<translation id="9075700728717335924">Vi ste izključili</translation>
+<translation id="4862817811647633830">mesta iz samodejnih prispevkov.</translation>
 <translation id="923467487918828349">Pokaži vse</translation>
+<translation id="5471305206221894680">Podprta spletna mesta</translation>
+<translation id="2306169361186864012">Nagrade za oglase Brave!</translation>
+<translation id="3757873395477273033">Vaša nagrada za oglase Brave je na poti.</translation>
+<translation id="8101881066646819737">Vaš nagradni žeton za oglase Brave</translation>
 <translation id="2151535059686617995">To je vaš srečni dan!</translation>
 <translation id="6255773350565723852">Vaše sredstvo v obliki žetonov je na poti.</translation>
 <translation id="1181037720776840403">Odstrani</translation>

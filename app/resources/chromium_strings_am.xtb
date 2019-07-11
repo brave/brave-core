@@ -79,13 +79,9 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="5874882355102994015">አብሮገነቡ የፒዲኤፍ መመልከቻው ከጎደለ Brave የህትመት ቅድመ-እይታውን ማሳየት አይችልም።</translation>
 <translation id="8880183781256147665">ወደ Brave በማከል ላይ...</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> አደገኛ ሊሆን ስለሚችል Brave አግዶታል።</translation>
-<translation id="6205431412329939367"><ph name="FILE_NAME"/> አደገኛ ሊሆን ስለሚችል Brave አግዶታል። በላቀ ጥበቃ አማካይነት ጥበቃ ተደርጎሎታል።</translation>
 <translation id="9067428552314418522">ይህ ፋይል አደገኛ ስለሆነ Brave አግዶታል።</translation>
-<translation id="2938460345748897177">ይህ ፋይል አደገኛ ስለሆነ Brave አግዶታል። በላቀ ጥበቃ አማካይነት ጥበቃ ተደርጎሎታል።</translation>
 <translation id="4168372721886011198"><ph name="FILE_NAME"/> አደገኛ ነው፣ ስለዚህ Brave አግዶታል።</translation>
-<translation id="8858456697111532356"><ph name="FILE_NAME"/> አደገኛ ነው፣ ስለዚህ Brave አግዶታል። በላቀ ጥበቃ አማካይነት ጥበቃ ተደርጎሎታል።</translation>
 <translation id="89367911614620585">ይህ ፋይል አደገኛ ሊሆን ስለሚችል Brave አግዶታል።</translation>
-<translation id="8943391224520748272">ይህ ፋይል አደገኛ ሊሆን ስለሚችል Brave አግዶታል። በላቀ ጥበቃ አማካይነት ጥበቃ ተደርጎሎታል።</translation>
 <translation id="9183662282810237335">የሆነው ሆኖ ከBrave ይወጣ?</translation>
 <translation id="3834935463915107022">የሆነው ሆኖ Brave ይቁም?</translation>
 <translation id="8797356639448065696">Brave በጀርባ ሁነታ ላይ ነው።</translation>
@@ -148,8 +144,6 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="6746636977031158624">የመለያ መግቢያ ዝርዝሮችዎ ጊዜ ያለፈባቸው ስለሆኑ Brave OS ውሂብዎን ማመሳሰል አልቻለም።</translation>
 <translation id="2999152167963026588">ማመሳሰል ለጎራዎ ስለማይገኝ Brave OS ውሂብዎን ማመሳሰል አይችልም።</translation>
 <translation id="1459786048951724030">በመለያ ሲገባ በነበረ ስህተት ምክንያት Brave OS ውሂብዎን ማመሳሰል አልቻለም።</translation>
-<translation id="2887570477425111999">ዝርዝሮችን Brave ውስጥ አስቀምጥ</translation>
-<translation id="193559141530782783">Brave የግል መረጃዎችዎን ዳግም መተየብ እንዳይኖርብዎት በጥንቃቄ ያከማቻቸዋል።</translation>
 <translation id="663059986967017181">ወደ Brave ተቀድቷል</translation>
 <translation id="1457432835062259213">Brave የመተግበሪያ አስጀማሪ</translation>
 <translation id="82609232232243542">Brave ውስጥ ይግቡ</translation>
@@ -193,7 +187,7 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="3856641371299712128">Brave OS ዝማኔውን ለመተግበር ዳግም መጀመር አለበት።</translation>
 <translation id="8207657266087451193">አንድ ምስል ጠቃሚ መግለጫ ከሌለው Brave ለእርስዎ አንድ ለማቅረብ ይሞክራል። ዝርዝር መግለጫዎችን ለመፍጠር፣ ምስሎች ወደ Brave Software ይላካሉ። ይህን በማንኛውም ጊዜ በቅንብሮች ውስጥ ሊያጠፉት ይችላሉ።</translation>
 <translation id="5499063270485366718">አንድ ምስል ጠቃሚ መግለጫ ከሌለው Brave ለእርስዎ አንድ ለማቅረብ ይሞክራል። ዝርዝር መግለጫዎችን ለመፍጠር፣ ምስሎች ወደ Brave Software ይላካሉ።</translation>
-<translation id="3870835867536344658">ይህ በ Brave Software ፍለጋ ውስጥ ጥቅም ላይ ጋር ተመሳሳይ የፊደል አራሚ ይጠቀማል። በአሳሽ ውስጥ የሚተይቡት ጽሑፍ ወደ Brave Software ይላካል። ይህን ባህሪ ሁልጊዜ በቅንብሮች ውስጥ መለወጥ ይችላሉ።</translation>
+<translation id="215320507915280336">ይህ በ Brave Software ፍለጋ ውስጥ ጥቅም ላይ ጋር ተመሳሳይ የፊደል አራሚ ይጠቀማል። በአሳሽ ውስጥ የሚተይቡት ጽሑፍ ወደ Brave Software ይላካል። ይህን ባህሪ ሁልጊዜ በቅንብሮች ውስጥ መለወጥ ይችላሉ።</translation>
 <translation id="1807774211756215222">አገናኙን በBrave አዲስ &amp;ትር ውስጥ ክፈት</translation>
 <translation id="4624945300945265642">አገናኙን በBrave ማን&amp;ነትን በማያሳውቅ መስኮት ውስጥ ክፈት</translation>
 <translation id="7863882214613921971">አገናኙን በBrave አዲስ &amp;ትር ውስጥ ክፈት</translation>
@@ -250,23 +244,17 @@ Brave ቅንብሮችዎን ማስመለስ አልቻለም።</translation>
 <translation id="8933981935877469796"><ph name="SMALL_PRODUCT_LOGO"/> <ph name="BEGIN_BOLD"/>Brave<ph name="END_BOLD"/>ን ይምረጡ</translation>
 <translation id="1585657529869845941"><ph name="BEGIN_BOLD"/>ለማንኛውም ቀይር<ph name="END_BOLD"/> ከመጣ ጠቅ ያድርጉት</translation>
 <translation id="3507835409099344374">ወደ የBrave ማሳወቂያ ቅንብሮች ይሂዱ</translation>
-<translation id="9118654140804842635">{0,plural, =0{የBrave ዝማኔ ይገኛል}=1{የBrave ዝማኔ ይገኛል}one{የBrave ዝማኔ ለ# ቀኖች ያህል ይገኝ ነበር}other{የBrave ዝማኔ ለ# ቀኖች ያህል ይገኝ ነበር}}</translation>
+<translation id="1026406809507858026">{0,plural, =0{የBrave ዝማኔ ይገኛል}=1{የBrave ዝማኔ ይገኛል}one{አንድ የBrave ዝማኔ ለ# ቀኖች ነበር}other{አንድ የBrave ዝማኔ ለ# ቀኖች ነበር}}</translation>
 <translation id="720532315408041257">ይህን ዝማኔ ለመተግበር አስተዳዳሪዎ Braveን ዳግም እንዲያስጀምሩ ይጠይቀዎታል</translation>
-<translation id="6639482638305253477">{0,plural, =1{በአንድ ቀን ውስጥ Braveን ዳግም አስጀምር}one{በ# ቀናት ውስጥ Braveን ዳግም አስጀምር}other{በ# ቀናት ውስጥ Braveን ዳግም አስጀምር}}</translation>
-<translation id="656910845148850955">{0,plural, =1{Brave በአንድ ሰዓት ውስጥ እንደገና ይጀምራል}one{በ# ሰዓቶች ውስጥ Brave እንደገና ይጀምራል}other{በ# ሰዓቶች ውስጥ Brave እንደገና ይጀምራል}}</translation>
-<translation id="2927768292099217319">{0,plural, =1{Brave በ1 ደቂቃ ውስጥ ዳግም ይጀመራል}one{Brave በ# ደቂቃዎች ውስጥ ዳግም ይጀመራል}other{Brave በ# ደቂቃዎች ውስጥ ዳግም ይጀመራል}}</translation>
-<translation id="2124855793980950516">{0,plural, =0{Brave አሁን ዳግም ይጀመራል}=1{Brave በ1 ሰከንድ ውስጥ ዳግም ይጀመራል}one{Brave በ# ሰከንዶች ውስጥ ዳግም ይጀመራል}other{Brave በ# ሰከንዶች ውስጥ ዳግም ይጀመራል}}</translation>
+<translation id="5337999052834672687">{0,plural, =1{በአንድ ቀን ውስጥ Braveን ዳግም አስጀምር}one{በ# ቀኖች ውስጥ Braveን ዳግም አስጀምር}other{በ# ቀኖች ውስጥ Braveን ዳግም አስጀምር}}</translation>
+<translation id="310518206836658214">{0,plural, =1{Brave በአንድ ሰዓት ውስጥ ዳግም ይጀምራል}one{Brave በ# ሰዓቶች ውስጥ ዳግም ይጀምራል}other{Brave በ# ሰዓቶች ውስጥ ዳግም ይጀምራል}}</translation>
+<translation id="3186363903915641692">{0,plural, =1{Brave በ1 ደቂቃ ውስጥ ዳግም ይጀመራል}one{Brave በ# ደቂቃዎች ውስጥ ዳግም ይጀመራል}other{Brave በ# ደቂቃዎች ውስጥ ዳግም ይጀመራል}}</translation>
+<translation id="3574823187131579180">{0,plural, =0{Brave አሁን ዳግም ይጀመራል}=1{Brave በ1 ሰከንድ ውስጥ ዳግም ይጀመራል}one{Brave በ# ሰከንዶች ውስጥ ዳግም ይጀመራል}other{Brave በ# ሰከንዶች ውስጥ ዳግም ይጀመራል}}</translation>
 <translation id="7595187113648413294">አንድ ዝማኔ ለመተግበር አስተዳዳሪዎ Braveን ዳግም እንዲያስጀምሩት ይፈልግብዎታል</translation>
-<translation id="56801943271475640">{0,plural, =0{የBrave OS ዝማኔ ይገኛል}=1{የBrave OS ዝማኔ ይገኛል}one{የBrave OS ዝማኔ ለ# ቀኖች ያህል ይገኝ ነበር}other{የBrave OS ዝማኔ ለ# ቀኖች ያህል ይገኝ ነበር}}</translation>
-<translation id="5715362474140341294">ይህን ዝማኔ ለመተግበር አስተዳዳሪዎ Brave OSን ዳግም እንዲያስጀምሩ ይጠይቀዎታል</translation>
-<translation id="8094834892392729950">{0,plural, =1{RBrave OS within a day}one{Brave OSን በ# ቀኖች ውስጥ ዳግም አስጀምር}other{Brave OSን በ# ቀኖች ውስጥ ዳግም አስጀምር}}</translation>
-<translation id="1265795866000813420">{0,plural, =1{Brave OS በ1 ሰዓት ውስጥ ዳግም ይጀምራል}one{Brave OS በ# ሰዓቶች ውስጥ ዳግም ይጀምራል}other{Brave OS በ# ሰዓቶች ውስጥ ዳግም ይጀምራል}}</translation>
-<translation id="2031312345409605311">{0,plural, =1{Brave OS በ1 ደቂቃ ውስጥ ዳግም ይጀምራል}one{Brave OS በ# ደቂቃዎች ውስጥ ዳግም ይጀምራል}other{Brave OS በ# ደቂቃዎች ውስጥ ዳግም ይጀምራል}}</translation>
-<translation id="8624602604153953835">{0,plural, =0{Brave OS አሁን ዳግም ይጀምራል}=1{Brave OS በ1 ሰከንድ ውስጥ ዳግም ይጀምራል}one{Brave OS በ# ሰከንዶች ውስጥ ዳግም ይጀምራል}other{Brave OS በ# ሰከንዶች ውስጥ ዳግም ይጀምራል}}</translation>
-<translation id="8559452515617838628">አንድ ዝማኔ ለመተግበር አስተዳዳሪዎ Brave OSን ዳግም እንዲያስጀምሩት ይጠይቅዎታል</translation>
 <translation id="3052349005266761501">Braveን በማስጀመር ላይ...</translation>
 <translation id="1197672524850678392">Braveን ማስጀመር አልተቻለም። እንደገና ይሞክሩ።</translation>
 <translation id="6040143037577758943">ዝጋ</translation>
+<translation id="5147525139567260139">የBrave ትር ያጋሩ</translation>
 <translation id="8541922081612557424">ስለBrave</translation>
 <translation id="3262506503470845422">Brave ላይ እገዛ ያግኙ</translation>
 <translation id="1864557848095568223">Braveን በማዘመን ላይ...</translation>

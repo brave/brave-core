@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_info/page_info.cc b/chrome/browser/ui/page_info/page_info.cc
-index c5113556ea223b605cc0e1a310d1b24076fcf363..eaa23e08122322cb84634e5c4fbadb52e42c944f 100644
+index b6aee18892fbcc9fb13eab006c57cea8aec2a89d..51435b95a148b60cef341e41e7138b8f131c74ee 100644
 --- a/chrome/browser/ui/page_info/page_info.cc
 +++ b/chrome/browser/ui/page_info/page_info.cc
-@@ -155,6 +155,7 @@ bool ShouldShowPermission(
+@@ -161,6 +161,7 @@ bool ShouldShowPermission(
      HostContentSettingsMap* content_settings,
      content::WebContents* web_contents,
      TabSpecificContentSettings* tab_specific_content_settings) {
@@ -10,7 +10,7 @@ index c5113556ea223b605cc0e1a310d1b24076fcf363..eaa23e08122322cb84634e5c4fbadb52
    // Note |CONTENT_SETTINGS_TYPE_ADS| will show up regardless of its default
    // value when it has been activated on the current origin.
    if (info.type == CONTENT_SETTINGS_TYPE_ADS) {
-@@ -192,7 +193,7 @@ bool ShouldShowPermission(
+@@ -198,7 +199,7 @@ bool ShouldShowPermission(
    }
  #endif
  
@@ -19,7 +19,7 @@ index c5113556ea223b605cc0e1a310d1b24076fcf363..eaa23e08122322cb84634e5c4fbadb52
    // Autoplay is Android-only at the moment.
    if (info.type == CONTENT_SETTINGS_TYPE_AUTOPLAY)
      return false;
-@@ -985,7 +986,7 @@ void PageInfo::PresentPageFeatureInfo() {
+@@ -1011,7 +1012,7 @@ void PageInfo::RecordPasswordReuseEvent() {
  std::vector<ContentSettingsType> PageInfo::GetAllPermissionsForTesting() {
    std::vector<ContentSettingsType> permission_list;
    for (size_t i = 0; i < base::size(kPermissionType); ++i) {

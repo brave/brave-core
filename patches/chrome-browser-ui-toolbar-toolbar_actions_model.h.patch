@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/toolbar/toolbar_actions_model.h b/chrome/browser/ui/toolbar/toolbar_actions_model.h
-index 04369c662721c568aa4f291391fbe583a5bc2ccb..f7eb34857562590418c3401a30675fb9280f59e6 100644
+index 5a3d7c2fd487b3762abb6d64257332a1420e6a08..15358c30e0e5a13ceed124179b57b91f263c3c4d 100644
 --- a/chrome/browser/ui/toolbar/toolbar_actions_model.h
 +++ b/chrome/browser/ui/toolbar/toolbar_actions_model.h
 @@ -26,6 +26,7 @@ class PrefService;
  class Profile;
- class ToolbarActionsBar;
+ class ExtensionsContainer;
  class ToolbarActionViewController;
 +class BraveToolbarActionsModel;
  

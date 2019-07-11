@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Recompensas Brave</translation>
 <translation id="7942180974165298215">Bloqueador de Anúncios Brave</translation>
 <translation id="6406506848690869874">Sincronização</translation>
+<translation id="8488282162676695335">Carteira Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") não é permitida no Brave.</translation>
 <translation id="7450557937477381864">Fechar Chrome</translation>
 <translation id="7008934821596358692">Para terminar a importação, fechar todas as janelas do windows Chrome.</translation>
@@ -28,7 +29,9 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="3218385319396786393">A reprodução automática foi bloqueada nesta página</translation>
 <translation id="4988333904713528597">Permitir sempre reprodução automática e <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Continuar a bloquear a reprodução automática</translation>
+<translation id="5883458389055721080">A Brave não avaliou a segurança e proteção desta extensão. Apenas instale a extensão caso confie no desenvolvedor da mesma.</translation>
 <translation id="2044383478723007273">Cores Brave</translation>
+<translation id="2814998458708016836">Usar a barra de endereços grande</translation>
 <translation id="6123134130710658846">Ocultar o botão Brave Rewards</translation>
 <translation id="7635711399568194460">Esconde o botão Brave Rewards na barra de localização quando o Brave Rewards não está habilitado</translation>
 <translation id="7965178729203412357">Nova Identidade Tor</translation>
@@ -47,13 +50,25 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="4472575034687746823">Começar</translation>
 <translation id="3400357268283240774">Configurações adicionais</translation>
 <translation id="6303294677342628402">Proteções</translation>
+<translation id="7133511168130368997">Bloquear rastreadores e anúncios que o acompanham pela web.</translation>
+<translation id="2761825942249694703">Estas são as configurações padrão da Shields. Aplicam-se a todos os sites, exceto se alterar algo no painel Shields para um determinado site. Alterá-las não afectará as configurações pré-existentes para o site.</translation>
+<translation id="8754605759692119662">Isto bloqueará a maioria dos anúncios em sites, mas não os anúncios Brave particulares; estes são controláveis na</translation>
+<translation id="6388201778088078932">configurações.</translation>
 <translation id="9185018653595759199">Bloqueio de redes sociais</translation>
+<translation id="5709627087332022422">Bloquear rastreadores cross-site</translation>
+<translation id="9075744464571452108">Reconhecimento de dispositivo</translation>
+<translation id="3570081523466826008">Atualizar ligações para HTTPS</translation>
+<translation id="4824468494729001999">Bloquear scripts</translation>
 <translation id="7498695072878479744">Permitir botões de login do Google em sites de terceiros</translation>
 <translation id="863171915776379000">Permitir logins e posts incorporados do Facebook</translation>
 <translation id="5165042248369837294">Permitir tweets incorporados do Twitter</translation>
 <translation id="958971637207126733">Permitir publicações integradas LinkedIn</translation>
+<translation id="4699812599455071925">Bloquear apenas cookies de cross-site</translation>
 <translation id="5657156137487675418">Permitir todas as cookies</translation>
 <translation id="6883611015375728278">Bloquear todas as cookies</translation>
+<translation id="3084022390368021391">Bloquear apenas tentativas de reconhecimento de dispositivos  cross-site</translation>
+<translation id="1847422622180531843">Permitir todas as tentativas de reconhecimento de dispositivos</translation>
+<translation id="8375051111011093523">Bloquear todas as tentativas de reconhecimento de dispositivos</translation>
 <translation id="8942080017911802454">Tratamento de reclamações do WebRTC IP</translation>
 <translation id="6165508094623778733">Aprenda mais</translation>
 <translation id="8798099450830957504">Predefinição</translation>
@@ -75,4 +90,9 @@ Ao instalar esta extensão, está a concordar com os Termos de Utilização do G
 <translation id="9181207987584064303">Ver na Loja de Extensões Web</translation>
 <translation id="4846154056248462491">Ao sair</translation>
 <translation id="5057399635433117814">Traduzir esta página? Isto enviará todo o texto desta página à Microsoft para tradução.</translation>
+<translation id="3371343170427636147">Aplicações Noturnas do Browser Brave</translation>
+<translation id="4097979995947147464">Aplicações Beta do Browser Brave</translation>
+<translation id="8303432794159193481">Aplicações de Dispositivos do Browser Brave</translation>
+<translation id="8292967014767479012">Aplicações do Browser Brave</translation>
+<translation id="4743468424889072281">Aplicações de Desenvolvimento do Browser Brave</translation>
 </translationbundle>

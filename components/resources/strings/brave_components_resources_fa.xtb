@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">ویرایش اولویت‌ها</translation>
 <translation id="7606029853066610626">مشاهده و مدیریت نشانک‌ها</translation>
 <translation id="5550994254534676787">مشاهده سابقه مرورتان</translation>
+<translation id="1742484101357469636">تنظیمات داشبورد</translation>
+<translation id="8320281346741574991">نمایش تصویر پس‌زمینه</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="8730621377337864115">تمام</translation>
 <translation id="6248988683584659830">تنظیمات جستجو</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave راه‌اندازی محیط معمول شما را با وارد کردن نشانک‌ها و تنظیمات از سایر مرورگرهای نصب‌شده در رایانه‌تان تسهیل می‌بخشد.</translation>
 <translation id="8275038454117074363">وارد کردن</translation>
 <translation id="5540323067375019678">مدیریت سپر ایمنی</translation>
+<translation id="3278033011827237847">«سپر ایمنی Brave» درحین مرور کردن، از شما دربرابر آگهی‌ها و ردیاب‌های متهاجم حریم خصوصی محافظت می‌کند. اگر به نظر می‌رسد سایتی به‌درستی کار نمی‌کند، «سپر ایمنی» را روی «پایین» تنظیم کنید.</translation>
 <translation id="3366308997091824722">تنظیمات سپر ایمنی</translation>
-<translation id="3884404068544758153">تغییر موتور جستجو</translation>
+<translation id="4764692524839457597">پیش‌فرض</translation>
+<translation id="3108122610701115301">تنظیم پیش‌فرض</translation>
+<translation id="2469440407442116729">انتخاب موتور جستجو</translation>
 <translation id="438216590634144114">موتور جستجویی را که می‌خواهید به‌طور پیش‌فرض هنگام جستجوی وب از نوار نشانی استفاده شود انتخاب کنید.</translation>
-<translation id="8428213095426709021">تنظیمات</translation>
+<translation id="5804484488647369316">موتور جستجوی پیش‌فرض را تنظیم کنید</translation>
+<translation id="4428458837269935199">برای تجربه جستجوی خصوصی‌تر، DuckDuckGo را امتحان کنید.</translation>
 <translation id="513635702954746724">انتخاب طرح زمینه رنگ</translation>
 <translation id="6842850080200126305">با انتخاب گزینه روشن یا تیره از پانل تنظیمات، رنگ نوار ابزار را تنظیم کنید.</translation>
 <translation id="2801098717523961746">انتخاب طرح زمینه</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">با تماشای آگهی در Brave توکن دریافت کنید. آگهی‌های ارائه‌شده براساس علایق شما (که از رفتار مرورتان به آن‌ها پی می‌بریم) هستند. هیچ داده خصوصی یا سابقه مروری، از مرورگرتان خارج نمی‌شود.</translation>
 <translation id="6112368337882254910">کمک خودکار</translation>
 <translation id="1527222983464337010">روشی خودکار برای حمایت از ناشران و پدیدآورندگان. پرداخت ماهانه‌ای تنظیم کنید و وب را مثل همیشه مرور کنید. سایت‌هایی که بازدید می‌کنید به‌صورت خودکار کمک مالی شما را براساس توجهتان (که توسط Brave سنجیده می‌شود) دریافت می‌کنند.</translation>
+<translation id="20281847067919078">پاداش‌های تخمینی معلق</translation>
+<translation id="8593551638387217772">تاریخ پرداخت بعدی</translation>
+<translation id="319209088187794725">اعلان‌های آگهی که این ماه دریافت شدند</translation>
 <translation id="4229016885653790965">متأسفیم! آگهی ها هنوز در منطقه شما دردسترس نیستند.</translation>
 <translation id="654711254769318398">صفحه‌های آگهی مشاهده‌شده</translation>
 <translation id="2532127066761785857">بیشترین تعداد آگهی مجاز نمایش داده شد</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">۱ دقیقه</translation>
 <translation id="9031738692126722094">فعال کردن نکات در سطح محتوا در این سایت‌ها</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">وقتی جواهر پیدا می‌کنید، انعام بدهید.</translation>
 <translation id="6135431587052937035">با انعام‌های ماهانه تکرارشونده، از سایت‌های دلخواهتان پشتیبانی کنید.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">متأسفیم، به‌نظر می‌رسد این امتیاز قبلاً مطالبه شده است.</translation>
 <translation id="282693359045252357">تاریخ انعام ماهانه بعدی</translation>
 <translation id="6231182869178328516">به‌تازگی با استفاده از مرورگر Brave، به <ph name="NAME">$1<ex>user</ex></ph> انعام دادم. این مورد را در https://brave.com/tips بررسی کنید.</translation>
+<translation id="8404935570206006581">انعام با Brave</translation>
 <translation id="7422678632904904341">مقدار:</translation>
 <translation id="5923611424721173182">تطبیق فعلی</translation>
 <translation id="5457113250005438886">نامعتبر</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">تنظیم انعام ماهانه</translation>
 <translation id="8003573781961874199">بارگیری به‌عنوان PDF</translation>
 <translation id="298067735430872465">درآمد از آگهی‌ها</translation>
+<translation id="2266556115441975588">پاداش‌های شما از «آگهی‌ها» اینجا است!</translation>
 <translation id="8764029012618014430">فعال کردن انعام</translation>
 <translation id="3412655388715513818">این سایت مستنثی شود</translation>
 <translation id="418343137736963579">مجموع سایت‌هایی که از «کمک خودکار» مستثنی کرده‌اید:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">کلید بازیابی</translation>
 <translation id="6354568176665589146">تکرارشونده</translation>
 <translation id="7577100371127227294">انعام ماهانه</translation>
+<translation id="2391095793008133394">برای پست {{ user }}، به او انعام دهید:</translation>
+<translation id="7557413530932469222">برای پست {{ user }}، به او انعام دهید!</translation>
 <translation id="1110535155349301542">حذف</translation>
 <translation id="8942997470474842562">{{reservedAmount}}‏ BAT برای پدیدآورندگانی که هنوز برای دریافت کمک ثبت‌نام نکرده‌اند در نظر گرفته‌اید. مرورگرتان تا زمانی که آنها کمک را تأیید کنند، یا حداکثر 90 روز تلاش می‌کند کمک را انجام دهد.</translation>
 <translation id="8759753423332885148">بیشتر بدانید.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">دیدن همه {{numItems}} مورد</translation>
 <translation id="7857284676033058221">دیدن همه {{numSites}} سایت</translation>
 <translation id="3536298624341433814">انعامم ارسال شود</translation>
+<translation id="8428213095426709021">تنظیمات</translation>
 <translation id="1792148354504719133">سایت</translation>
 <translation id="5944430251223015324">سایت‌ها</translation>
 <translation id="1834493631938747505">درباره انعام خود به دیگران اطلاع دهید.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">درحالت تعلیق تا</translation>
 <translation id="7410549756000115387">هیچ مشارکت معلقی وجود ندارد…</translation>
 <translation id="1963227389609234879">حذف همه</translation>
+<translation id="1170315781901539495">سایت‌های مستثنی‌شده</translation>
+<translation id="5119190679543565400">بازنشانی این سایت</translation>
+<translation id="9075700728717335924">مستثنی کردید</translation>
+<translation id="4862817811647633830">سایت‌های کمک خودکار.</translation>
 <translation id="923467487918828349">نمایش همه</translation>
+<translation id="5471305206221894680">سایت‌های پشتیبانی‌شده</translation>
+<translation id="2306169361186864012">پاداش‌های آگهی‌های Brave!</translation>
+<translation id="3757873395477273033">پاداش‌های اعطایی از «آگهی‌های Brave»‌ در راه است.</translation>
+<translation id="8101881066646819737">امتیاز توکن آگهی‌های Brave شما</translation>
 <translation id="2151535059686617995">روز شانستان است!</translation>
 <translation id="6255773350565723852">امتیاز توکن شما در راه است.</translation>
 <translation id="1181037720776840403">حذف</translation>

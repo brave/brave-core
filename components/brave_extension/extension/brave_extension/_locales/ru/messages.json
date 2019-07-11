@@ -8,19 +8,19 @@
     "description": "The Shields feature name"
   },
   "up": {
-    "message": "Активирован",
+    "message": "ВКЛ",
     "description": "Message for when shields is enabled"
   },
   "down": {
-    "message": "Дезактивирована",
+    "message": "ВЫКЛ",
     "description": "Message for when shields is disabled"
   },
   "forThisSite": {
-    "message": "для этого сайта",
+    "message": "для данного сайта",
     "description": "Partial string for the phrase `shields is up *for this site*`"
   },
   "enabledMessage": {
-    "message": "Если сайт кажется неисправным, попробуйте выключить защиту",
+    "message": "Если сайт работает неправильно, попробуйте отключить защиту",
     "description": "Message telling the user to disable shields if a site appears broken"
   },
   "disabledMessage": {
@@ -28,11 +28,11 @@
     "description": "Message telling the user that shields are disabled"
   },
   "itemsBlocked": {
-    "message": "Пунктов заблокировано",
+    "message": "объектов заблокировано",
     "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
   },
   "itemBlocked": {
-    "message": "Пункт заблокирован",
+    "message": "объект заблокирован",
     "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
   },
   "and": {
@@ -48,7 +48,7 @@
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
-    "message": "Cross-site trackers blocked",
+    "message": "Заблокированные трекеры",
     "description": "Message for the scripts blocked row label"
   },
   "connectionsUpgradedHTTPS": {
@@ -64,7 +64,7 @@
     "description": "Message for the scripts blocked row label"
   },
   "thirdPartyCookiesBlocked": {
-    "message": "Cross-site cookies blocked",
+    "message": "Сторонние трекеры заблокированы",
     "description": "Message for the option in the cookies select field to block all 3rd party cookies"
   },
   "allCookiesBlocked": {
@@ -76,15 +76,15 @@
     "description": "Message for the option in the cookies select field to allow all cookies"
   },
   "thirdPartyFingerprintingBlocked": {
-    "message": "Cross-site device recognition blocked",
+    "message": "Сторонние отпечатки заблокированы",
     "description": "Message for the option in the device recognition select field to block all 3rd party recognition attempts"
   },
   "allFingerprintingBlocked": {
-    "message": "Device recognition attempts blocked",
+    "message": "Цифровые отпечатки заблокированы",
     "description": "Message for the option in the device recognition select field to block all device recognition attempts"
   },
   "allFingerprintingAllowed": {
-    "message": "All device recognition attempts allowed",
+    "message": "Цифровые отпечатки разрешены",
     "description": "Message for the option in the device recognition select field to allow all device recognition attempts"
   },
   "deviceRecognitionAttempts": {
@@ -92,7 +92,7 @@
     "description": "Message for the device recognition attempts blocked panel"
   },
   "scriptsOnThisSite": {
-    "message": "Скриптов на этом сайте",
+    "message": "Скриптов на данном сайте",
     "description": "Message for the script resources blocked panel"
   },
   "blockedScripts": {
@@ -120,15 +120,15 @@
     "description": "Message for the resources blocked *allow* option"
   },
   "blockedOnce": {
-    "message": "Blocked once",
+    "message": "Заблокированы один раз",
     "description": "Message for the resources blocked *blocked once* option"
   },
   "allowedOnce": {
-    "message": "Allowed once",
+    "message": "Разрешены один раз",
     "description": "Message for the resources blocked *allowed once* option"
   },
   "allowScriptsOnce": {
-    "message": "Allow scripts once",
+    "message": "Разрешить скрипты один раз",
     "description": "Message for the shortcut in the main interface to allow all scripts once"
   },
   "cancel": {
@@ -144,7 +144,19 @@
     "description": "Message for action in dynamic list of resources blocked to *apply once*"
   },
   "changeDefaults": {
-    "message": "Изменить глобальные настройки щита",
+    "message": "Изменить общие настройки защиты",
     "description": "Message for the button action linking to the settings page"
+  },
+  "addBlockElement": {
+    "message": "Блокировать элемент с помощью селектора",
+    "description": "Message for context menu that adds a filter for the cosmetic filtering"
+  },
+  "resetSiteFilterSettings": {
+    "message": "Очистить правила CSS для этого сайта",
+    "description": "Message for context menu that resets the site filters for cosmetic filtering"
+  },
+  "resetAllFilterSettings": {
+    "message": "Очистить правила CSS для всех сайтов",
+    "description": "Message for context menu that resets all cosmetic filters"
   }
 }

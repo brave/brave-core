@@ -34,7 +34,7 @@ class BraveLocationBarView : public LocationBarView {
   friend class ::BraveActionsContainerTest;
   friend class ::BraveRewardsBrowserTest;
   void UpdateBookmarkStarVisibility() override;
-  OmniboxTint GetTint() override;
+  OmniboxTint CalculateTint() const override;
   BraveActionsContainer* brave_actions_ = nullptr;
 
   DISALLOW_COPY_AND_ASSIGN(BraveLocationBarView);

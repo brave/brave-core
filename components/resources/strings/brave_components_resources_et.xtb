@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">Muuda eelistusi</translation>
 <translation id="7606029853066610626">Vaata ja halda järjehoidjaid</translation>
 <translation id="5550994254534676787">Vaata oma sirvimisajalugu</translation>
+<translation id="1742484101357469636">Juhtpaneeli seaded</translation>
+<translation id="8320281346741574991">Kuva taustpilt</translation>
 <translation id="6165508094623778733">Lisateave</translation>
 <translation id="8730621377337864115">Valmis</translation>
 <translation id="6248988683584659830">Otsinguseaded</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave annab võimaluse taasluua oma tavalist keskkonda, importides teistes lehitsejates olevad järjehoidjad ja seadistused.</translation>
 <translation id="8275038454117074363">Impordi</translation>
 <translation id="5540323067375019678">Hallake oma kaitset</translation>
+<translation id="3278033011827237847">Kaitske ennast privaatsust rikkuvate reklaamide ja jälitajate eest, sirvides Brave’i kaitsega. Kui tundub, et veebisait ei tööta õigesti, võtke kaitse maha.</translation>
 <translation id="3366308997091824722">Kaitse seaded</translation>
-<translation id="3884404068544758153">Muutke oma otsingumootorit</translation>
+<translation id="4764692524839457597">vaikimisi</translation>
+<translation id="3108122610701115301">Määra vaikeväärtuseks</translation>
+<translation id="2469440407442116729">Vali otsingumootor</translation>
 <translation id="438216590634144114">Valige otsingumootor, mida soovite vaikimisi kasutada, kui sisestate otsitava fraasi brauseri aadressiribale.</translation>
-<translation id="8428213095426709021">Seaded</translation>
+<translation id="5804484488647369316">Määra vaikeotsingumootoriks</translation>
+<translation id="4428458837269935199">Privaatsema otsinguelamuse saamiseks proovige otsingumootorit DuckDuckGo.</translation>
 <translation id="513635702954746724">Valige oma värvilahendus</translation>
 <translation id="6842850080200126305">Määrake oma tööriistariba värv, valides seadete paneelist heleda või tumeda lahenduse.</translation>
 <translation id="2801098717523961746">Valige oma lahendus</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Teenige tokeneid, vaadates Brave'i ilmuvaid reklaame. Reklaamid põhinevad teie eelistustel ja sirvimise ajalool. Teie isikuandmed ega sirvimise ajalugu ei jõua kunagi brauserist väljapoole.</translation>
 <translation id="6112368337882254910">Automaatne panustamine</translation>
 <translation id="1527222983464337010">Automaatne viis toetada väljaandjaid ja sisuloojaid. Määrake igakuine panus ja jätkake oma tavapärast sirvimist. Külastatavad veebisaidid saavad teie panused automaatselt ja see põhineb teie aktiivsusel, mida mõõdab Brave.</translation>
+<translation id="20281847067919078">Eeldatavad ootel preemiad</translation>
+<translation id="8593551638387217772">Järgmine maksekuupäev</translation>
+<translation id="319209088187794725">Sellel kuul saadud reklaamteated</translation>
 <translation id="4229016885653790965">Vabandame! Ads ei ole veel teie piirkonnas saadaval.</translation>
 <translation id="654711254769318398">Vaadatud reklaamlehed</translation>
 <translation id="2532127066761785857">Suurim näidatavate reklaamide arv</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1 minut</translation>
 <translation id="9031738692126722094">Luba nendel lehtedel sisu tasemel nõuanded</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">Andke preemiat selle sisu eest, mis teile meeldib.</translation>
 <translation id="6135431587052937035">Toetage oma lemmiksaite igakuiste preemiatega.</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">Kahjuks tundub, et see toetus on juba välja võetud.</translation>
 <translation id="282693359045252357">Järgmise igakuise preemia kuupäev</translation>
 <translation id="6231182869178328516">Premeerisin Brave Browseriga just kasutajat <ph name="NAME">$1<ex>user</ex></ph>. Uuri selle kohta lehelt https://brave.com/tips.</translation>
+<translation id="8404935570206006581">Premeeri Brave’iga</translation>
 <translation id="7422678632904904341">Summa:</translation>
 <translation id="5923611424721173182">Praegune ühitamine</translation>
 <translation id="5457113250005438886">Kehtetu</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">Seadista igakuine premeerimine</translation>
 <translation id="8003573781961874199">Laadi alla PDFna</translation>
 <translation id="298067735430872465">Reklaamidest saadud tulu</translation>
+<translation id="2266556115441975588">Teie reklaamide eest saadud preemiad on siin!</translation>
 <translation id="8764029012618014430">Luba premeerimine</translation>
 <translation id="3412655388715513818">Jäta see veebisait välja</translation>
 <translation id="418343137736963579">Automaatsest panustamisest väljajäetud veebisaitide arv:</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">Taastusvõti</translation>
 <translation id="6354568176665589146">Korduv</translation>
 <translation id="7577100371127227294">Igakuised preemiad</translation>
+<translation id="2391095793008133394">Premeeri kasutajat {{ user }} tema postituse eest:</translation>
+<translation id="7557413530932469222">Premeeri kasutajat {{ user }} tema postituse eest!</translation>
 <translation id="1110535155349301542">eemalda</translation>
 <translation id="8942997470474842562">Olete määranud {{reservedAmount}} BAT-i autorile, kes pole tasu vastuvõtmiseks veel registreerunud. Teie arvuti üritab tasu maksta kuni kinnituse saamiseni või kuni möödub 90 päeva.</translation>
 <translation id="8759753423332885148">Lisateave.</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">Vaata kõiki objekte ({{numItems}})</translation>
 <translation id="7857284676033058221">Vaata kõiki veebisaite ({{numItems}})</translation>
 <translation id="3536298624341433814">Saada minu preemia:</translation>
+<translation id="8428213095426709021">Seaded</translation>
 <translation id="1792148354504719133">sait</translation>
 <translation id="5944430251223015324">saidid</translation>
 <translation id="1834493631938747505">Räägi teistele oma reisist.</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">Ootel kuni</translation>
 <translation id="7410549756000115387">Ootel annetusi pole…</translation>
 <translation id="1963227389609234879">Eemalda kõik</translation>
+<translation id="1170315781901539495">Välja jäetud veebisaidid</translation>
+<translation id="5119190679543565400">Taasta see veebisait</translation>
+<translation id="9075700728717335924">Jätsite välja</translation>
+<translation id="4862817811647633830">veebisaiti automaatsest panustamisest.</translation>
 <translation id="923467487918828349">Kuva kõik</translation>
+<translation id="5471305206221894680">Toetatud veebisaidid</translation>
+<translation id="2306169361186864012">Brave’i reklaamide preemiad!</translation>
+<translation id="3757873395477273033">Teie preemiavõimalus Brave’i rakendustest on teel.</translation>
+<translation id="8101881066646819737">Teie Brave’i rakenduste tokenivõimalus</translation>
 <translation id="2151535059686617995">Täna on teie õnnepäev!</translation>
 <translation id="6255773350565723852">Sinu tokenitoetus on teel.</translation>
 <translation id="1181037720776840403">Eemaldage</translation>

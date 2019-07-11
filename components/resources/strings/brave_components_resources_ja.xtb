@@ -21,6 +21,8 @@
 <translation id="7115515527894388910">設定を変更する</translation>
 <translation id="7606029853066610626">ブックマークの表示と管理</translation>
 <translation id="5550994254534676787">あなたの閲覧履歴を確認する</translation>
+<translation id="1742484101357469636">ダッシュボードの設定</translation>
+<translation id="8320281346741574991">背景画像を表示する</translation>
 <translation id="6165508094623778733">詳細情報</translation>
 <translation id="8730621377337864115">完了</translation>
 <translation id="6248988683584659830">検索の設定</translation>
@@ -56,10 +58,14 @@
 <translation id="5633840519079139680">Brave では、インストール済みの他のブラウザからブックマークや設定をインポートできるため、使い慣れた使用環境が簡単に再現できます。</translation>
 <translation id="8275038454117074363">インポート</translation>
 <translation id="5540323067375019678">シールドを管理</translation>
+<translation id="3278033011827237847">ウェブ閲覧時はBraveシールドを使って、プライバシーを侵害する広告やトラッカーから身を守りましょう。サイトが正しく動作していないように見える場合は、シールドを「下げる」ように設定してください。</translation>
 <translation id="3366308997091824722">シールド設定</translation>
-<translation id="3884404068544758153">検索エンジンを変更</translation>
+<translation id="4764692524839457597">デフォルト</translation>
+<translation id="3108122610701115301">デフォルトに設定する</translation>
+<translation id="2469440407442116729">検索エンジンを選択する</translation>
 <translation id="438216590634144114">アドレスバーからのウェブ検索で、デフォルトで使用したい検索エンジンを選択してください。</translation>
-<translation id="8428213095426709021">設定</translation>
+<translation id="5804484488647369316">デフォルトの検索エンジンを設定する</translation>
+<translation id="4428458837269935199">よりプライベートに検索を行うには、DuckDuckGoをお試しください。</translation>
 <translation id="513635702954746724">カラーテーマを選択</translation>
 <translation id="6842850080200126305">設定パネルから明暗オプションを選択して、ツールバーの色を設定します。</translation>
 <translation id="2801098717523961746">テーマを選択</translation>
@@ -69,6 +75,9 @@
 <translation id="5946611334574299206">Braveで広告を視聴してトークンを獲得しましょう。ご自身の閲覧状況から推測される関心に基づいて、広告が表示されます。個人データや閲覧履歴は一切ブラウザの外へ出ることはありません。</translation>
 <translation id="6112368337882254910">オートコントリビュート</translation>
 <translation id="1527222983464337010">パブリッシャーやコンテンツ制作者を自動で支援する方法です。毎月の支払いを設定し、いつも通りにウェブ閲覧しましょう。あなたが訪問するサイトはBraveによって計測されたあなたの関心に基づき、あなたからの寄付を自動的に受けとります。</translation>
+<translation id="20281847067919078">保留中の推定報酬額</translation>
+<translation id="8593551638387217772">次の支払日</translation>
+<translation id="319209088187794725">今月受け取った広告通知</translation>
 <translation id="4229016885653790965">申し訳ありません！広告はお住まいの地域ではまだご利用いただけません。</translation>
 <translation id="654711254769318398">表示された広告ページ</translation>
 <translation id="2532127066761785857">表示される広告の最大数</translation>
@@ -107,6 +116,7 @@
 <translation id="8610523985422563960">1分</translation>
 <translation id="9031738692126722094">コンテンツレベルのチップをこれらのサイトに対して有効にする</translation>
 <translation id="995782501881226248">YouTube</translation>
+<translation id="3905400818082450708">Reddit</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="3920963435109110161">宝石を見つけたその場でチップを払いましょう。</translation>
 <translation id="6135431587052937035">毎月紹介されるコツを活用してあなたのお気に入りのサイトをサポートしましょう。</translation>
@@ -128,6 +138,7 @@
 <translation id="1184075897575325927">申し訳ありません、この助成金はすでに取得されているようです。</translation>
 <translation id="282693359045252357">次の毎月のチップ日</translation>
 <translation id="6231182869178328516">Brave Browser を使用してチップを払いました。 <ph name="NAME">$1<ex>user</ex></ph> ここで確認してください。https://brave.com/tips</translation>
+<translation id="8404935570206006581">TipWithBrave</translation>
 <translation id="7422678632904904341">：</translation>
 <translation id="5923611424721173182">現在のリコンサイル</translation>
 <translation id="5457113250005438886">無効</translation>
@@ -212,6 +223,7 @@
 <translation id="7277134233385925078">毎月のチップを設定</translation>
 <translation id="8003573781961874199">PDFをダウンロード</translation>
 <translation id="298067735430872465">広告収益</translation>
+<translation id="2266556115441975588">Adsから得た報酬はこちらです！</translation>
 <translation id="8764029012618014430">チップを有効にする</translation>
 <translation id="3412655388715513818">このサイトを除外</translation>
 <translation id="418343137736963579">自動寄付から除外したサイトの総数：</translation>
@@ -269,6 +281,8 @@
 <translation id="194625454574835815">回復キー</translation>
 <translation id="6354568176665589146">繰り返し</translation>
 <translation id="7577100371127227294">毎月のチップ</translation>
+<translation id="2391095793008133394">{{ user }}の次の投稿にチップを払う：</translation>
+<translation id="7557413530932469222">{{ user }}の投稿にチップを払いましょう！</translation>
 <translation id="1110535155349301542">削除する</translation>
 <translation id="8942997470474842562">{{reservedAmount}} BAT を贈る相手に、寄付を受け取る登録を行っていないクリエイターを指名しました。あなたのブラウザは、クリエイターからの認証を受けるか、90日が経過するまで試し続けます。</translation>
 <translation id="8759753423332885148">詳細を見る</translation>
@@ -305,6 +319,7 @@
 <translation id="259138486959961679">{{numItems}}件の項目すべてを見る</translation>
 <translation id="7857284676033058221">すべてのサイト{{numSites}} を閲覧</translation>
 <translation id="3536298624341433814">チップを送る</translation>
+<translation id="8428213095426709021">設定</translation>
 <translation id="1792148354504719133">サイト</translation>
 <translation id="5944430251223015324">サイト</translation>
 <translation id="1834493631938747505">あなたのチップを他の人に知らせる。</translation>
@@ -354,7 +369,15 @@
 <translation id="4346944508027912677">未処理案件と期限</translation>
 <translation id="7410549756000115387">未承認の支払いはありません...</translation>
 <translation id="1963227389609234879">すべて削除</translation>
+<translation id="1170315781901539495">除外されたサイト</translation>
+<translation id="5119190679543565400">このサイトを元に戻す</translation>
+<translation id="9075700728717335924">あなたは除外されました</translation>
+<translation id="4862817811647633830">自動コントリビュートのサイトで管理できます。</translation>
 <translation id="923467487918828349">すべてを表示</translation>
+<translation id="5471305206221894680">サポートされているサイト</translation>
+<translation id="2306169361186864012">Brave Adsの報酬！</translation>
+<translation id="3757873395477273033">Brave Adsから付与された報酬はもうすぐ届きます。</translation>
+<translation id="8101881066646819737">付与されたBrave Ads Token</translation>
 <translation id="2151535059686617995">今日はあなたのラッキーデー!</translation>
 <translation id="6255773350565723852">あなたのトークン助成金は送金中です。</translation>
 <translation id="1181037720776840403">削除</translation>

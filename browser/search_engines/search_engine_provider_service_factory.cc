@@ -1,4 +1,5 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
@@ -25,14 +26,13 @@ KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
   // This controller monitor's normal profile's service and apply it's change to
   // otr profile to use same provider.
   // Private profile's setting is shared with normal profile's setting.
-  if (profile->GetProfileType() == Profile::INCOGNITO_PROFILE) {
+  if (profile->IsIncognitoProfile()) {
     return new PrivateWindowSearchEngineProviderService(profile);
   }
 
   // Regardless of qwant region, tor profile needs controller to store
   // previously set search engine provider.
-  if (profile->IsTorProfile() &&
-      profile->GetProfileType() == Profile::GUEST_PROFILE) {
+  if (profile->IsTorProfile() && IsGuestProfile(profile)) {
     return new TorWindowSearchEngineProviderService(profile);
   }
 
@@ -41,7 +41,7 @@ KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
   if (brave::IsRegionForQwant(profile))
     return nullptr;
 
-  if (profile->GetProfileType() == Profile::GUEST_PROFILE) {
+  if (IsGuestProfile(profile)) {
     return new GuestWindowSearchEngineProviderService(profile);
   }
 

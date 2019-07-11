@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Odměny Brave</translation>
 <translation id="7942180974165298215">Blokování reklam Brave</translation>
 <translation id="6406506848690869874">Synchronizace</translation>
+<translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID rozšíření "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") není v Brave povoleno.</translation>
 <translation id="7450557937477381864">Zavřít Chrome</translation>
 <translation id="7008934821596358692">Pro dokončení importu zavřete všechna okna prohlížeče Chrome.</translation>
@@ -28,7 +29,9 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="3218385319396786393">Automatické přehrávání bylo na této stránce zablokováno</translation>
 <translation id="4988333904713528597">Vždy povolit automatické přehrávání na <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Pokračovat v blokování automatického přehrávání</translation>
+<translation id="5883458389055721080">Brave nepřezkoumal bezpečnost tohoto rozšíření. Toto rozšíření nainstalujte pouze tehdy, pokud důvěřujete vývojáři.</translation>
 <translation id="2044383478723007273">Barvy Brave</translation>
+<translation id="2814998458708016836">Použít široký adresní řádek</translation>
 <translation id="6123134130710658846">Skrýt tlačítko Brave Rewards</translation>
 <translation id="7635711399568194460">Skryje tlačítko Brave Rewards v adresním řádku, když nejsou Brave Rewards povoleny</translation>
 <translation id="7965178729203412357">Nová identita Tor</translation>
@@ -47,13 +50,25 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="4472575034687746823">Začít</translation>
 <translation id="3400357268283240774">Další nastavení</translation>
 <translation id="6303294677342628402">Štíty</translation>
+<translation id="7133511168130368997">Blokujte trackery a reklamy, které vás následují na internetu.</translation>
+<translation id="2761825942249694703">Toto jsou výchozí nastavení Štítů. Fungují na všech webových stránkách, pokud něco nezměníte na panelu Štítů na určité stránce. Jejich změna neovlivní vaše existující nastavení u konkrétních stránek.</translation>
+<translation id="8754605759692119662">Toto zablokuje většinu reklam na webových stránkách, nikoli soukromé reklamy Brave — ty jsou řízeny v</translation>
+<translation id="6388201778088078932">nastavení.</translation>
 <translation id="9185018653595759199">Blokování sociálních médií</translation>
+<translation id="5709627087332022422">Blokovat trackery mezi weby</translation>
+<translation id="9075744464571452108">Rozpoznání zařízení</translation>
+<translation id="3570081523466826008">Upgradovat spojení k HTTPS</translation>
+<translation id="4824468494729001999">Blokovat skripty</translation>
 <translation id="7498695072878479744">Povolit přihlašovací tlačítka Google na stránkách třetí strany</translation>
 <translation id="863171915776379000">Povolit přihlašování na Facebook a sdílení příspěvků</translation>
 <translation id="5165042248369837294">Povolit sdílení tweetů z Twitteru</translation>
 <translation id="958971637207126733">Povolit příspěvky vložené na LinkedIn</translation>
+<translation id="4699812599455071925">Blokovat pouze soubory cookies třetích stran</translation>
 <translation id="5657156137487675418">Povolit všechny soubory cookies</translation>
 <translation id="6883611015375728278">Blokovat všechny soubory cookie</translation>
+<translation id="3084022390368021391">Blokovat pouze pokusy o rozpoznání zařízení třetích stran</translation>
+<translation id="1847422622180531843">Povolit všechny pokusy o rozpoznání zařízení</translation>
+<translation id="8375051111011093523">Blokovat všechny pokusy o rozpoznání zařízení</translation>
 <translation id="8942080017911802454">Pravidla pro zacházení s webovým protokolem WebRTC</translation>
 <translation id="6165508094623778733">Zjistit více</translation>
 <translation id="8798099450830957504">Výchozí</translation>
@@ -75,4 +90,9 @@ Instalací tohoto rozšíření souhlasíte s podmínkami použití služby Goog
 <translation id="9181207987584064303">Zobrazit v Obchodu webových rozšíření</translation>
 <translation id="4846154056248462491">Na výstupu</translation>
 <translation id="5057399635433117814">Chcete tuto stránku přeložit? Tím odešlete veškerý text na této stránce společnosti Microsoft, která provede překlad.</translation>
+<translation id="3371343170427636147">Noční aplikace prohlížeče Brave</translation>
+<translation id="4097979995947147464">Beta aplikace prohlížeče Brave</translation>
+<translation id="8303432794159193481">Vývojové aplikace prohlížeče Brave</translation>
+<translation id="8292967014767479012">Aplikace prohlížeče Brave</translation>
+<translation id="4743468424889072281">Vývojové aplikace prohlížeče Brave</translation>
 </translationbundle>

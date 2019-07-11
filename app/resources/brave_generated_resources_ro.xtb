@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Recompense Brave</translation>
 <translation id="7942180974165298215">Blocare reclame Brave</translation>
 <translation id="6406506848690869874">Sincronizare</translation>
+<translation id="8488282162676695335">Portofel Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID extensie "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") nu este permis în Brave.</translation>
 <translation id="7450557937477381864">Închide Chrome</translation>
 <translation id="7008934821596358692">Pentru finalizarea importului, închideți toate ferestrele Chrome.</translation>
@@ -28,7 +29,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="3218385319396786393">Redarea automată a fost blocată pe această pagină</translation>
 <translation id="4988333904713528597">Redare automată întotdeauna pe <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Continuă blocarea autoredării</translation>
+<translation id="5883458389055721080">Brave nu a analizat securitatea și siguranța acestei extensii. Instalați această extensie numai dacă aveți încredere în dezvoltator.</translation>
 <translation id="2044383478723007273">Culori Brave</translation>
+<translation id="2814998458708016836">Utilizați bara de adrese lată</translation>
 <translation id="6123134130710658846">Ascunde butonul Brave Rewards</translation>
 <translation id="7635711399568194460">Ascunde butonul Brave Rewards în bara locației când Brave Rewards nu este activat</translation>
 <translation id="7965178729203412357">Identitate nouă Tor</translation>
@@ -47,13 +50,25 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="4472575034687746823">Începeți</translation>
 <translation id="3400357268283240774">Setări suplimentare</translation>
 <translation id="6303294677342628402">Scuturi</translation>
+<translation id="7133511168130368997">Blocați trackerele și reclamele care vă urmăresc pe întregul web.</translation>
+<translation id="2761825942249694703">Acestea sunt setările implicite pentru scuturi. Ele se aplică tuturor site-urilor în afară de cazul în care modificați ceva în panoul Scuturi de pe un anumit site. Modificarea acestora nu va afecta setările existente per site.</translation>
+<translation id="8754605759692119662">Aceasta va bloca majoritatea reclamelor pe site-uri, nu și reclamele private Brave — acelea sunt controlate în</translation>
+<translation id="6388201778088078932">setări.</translation>
 <translation id="9185018653595759199">Blocare pe rețelele de socializare</translation>
+<translation id="5709627087332022422">Blocați trackerele inter-site-uri</translation>
+<translation id="9075744464571452108">Recunoașterea dispozitivului</translation>
+<translation id="3570081523466826008">Upgrade conexiuni la HTTPS</translation>
+<translation id="4824468494729001999">Blocare scripturi</translation>
 <translation id="7498695072878479744">Permite butoanele de conectare Google pe siteurile terțe</translation>
 <translation id="863171915776379000">Permite conectările Facebook și postările încorporate</translation>
 <translation id="5165042248369837294">Permite tweet-uri încorporate Twitter</translation>
 <translation id="958971637207126733">Permite postări LinkedIn încorporate</translation>
+<translation id="4699812599455071925">Blocați doar cookie-urile inter-site-uri</translation>
 <translation id="5657156137487675418">Permite toate cookie-urile</translation>
 <translation id="6883611015375728278">Blochează toate cookie-urile</translation>
+<translation id="3084022390368021391">Blocați numai încercările de recunoaștere a dispozitivului inter-site-uri</translation>
+<translation id="1847422622180531843">Permiteți toate încercările de recunoaștere a dispozitivului</translation>
+<translation id="8375051111011093523">Blocați toate încercările de recunoaștere a dispozitivului</translation>
 <translation id="8942080017911802454">Politica de manevrare a WebRTC IP</translation>
 <translation id="6165508094623778733">Aflați mai multe</translation>
 <translation id="8798099450830957504">Prestabilit</translation>
@@ -75,4 +90,9 @@ Instalând această extensie, sunteți de acord cu termenii de utilizare ai Goog
 <translation id="9181207987584064303">Vizualizare în Magazinul Extensii Web</translation>
 <translation id="4846154056248462491">La ieșire</translation>
 <translation id="5057399635433117814">Doriți ca această pagină să fie tradusă? Această comandă va trimite tot textul de pe pagină către Microsoft pentru traducere.</translation>
+<translation id="3371343170427636147">Aplicații de noapte browser Brave</translation>
+<translation id="4097979995947147464">Aplicații beta browser Brave</translation>
+<translation id="8303432794159193481">Aplicații dezv browser Brave</translation>
+<translation id="8292967014767479012">Aplicații browser Brave</translation>
+<translation id="4743468424889072281">Aplicații dezvoltare browser Brave</translation>
 </translationbundle>

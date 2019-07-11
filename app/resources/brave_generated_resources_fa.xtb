@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">پاداش‌های Brave</translation>
 <translation id="7942180974165298215">مسدود کردن آگهی با Brave</translation>
 <translation id="6406506848690869874">همگام‌سازی</translation>
+<translation id="8488282162676695335">کیف پول Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (شناسه افزونه "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") در Brave مجاز نیست.</translation>
 <translation id="7450557937477381864">بستن Chrome</translation>
 <translation id="7008934821596358692">برای تکمیل وارد کردن، همه پنجره‌های Chrome را ببندید.</translation>
@@ -28,7 +29,9 @@
 <translation id="3218385319396786393">پخش خودکار در این صفحه مسدود شد</translation>
 <translation id="4988333904713528597">همیشه در <ph name="HOST">$1<ex>mail.google.com</ex></ph> به پخش خودکار اجازه داده شود</translation>
 <translation id="4150684676757176434">پخش خودکار همچنان مسدود شود</translation>
+<translation id="5883458389055721080">Brave ایمنی و امنیت این افزونه را بررسی نکرده است. فقط درصورتی که به برنامه‌نویس اعتماد دارید، این افزونه را نصب کنید.</translation>
 <translation id="2044383478723007273">رنگ‌های Brave</translation>
+<translation id="2814998458708016836">استفاده از نوار نشانی عریض</translation>
 <translation id="6123134130710658846">پنهان کردن دکمه «پاداش‌های Brave»</translation>
 <translation id="7635711399568194460">وقتی «پاداش‌های Brave» فعال نباشد، دکمه «پاداش‌های Brave» را در نوار مکان پنهان می‌کند</translation>
 <translation id="7965178729203412357">هویت تور جدید</translation>
@@ -47,13 +50,25 @@
 <translation id="4472575034687746823">شروع به کار</translation>
 <translation id="3400357268283240774">تنظیمات بیشتر</translation>
 <translation id="6303294677342628402">سپر ایمنی</translation>
+<translation id="7133511168130368997">ردیاب‌ها و آگهی‌هایی که شما را در سراسر وب دنبال می‌کنند، مسدود کنید.</translation>
+<translation id="2761825942249694703">این‌ها تنظیمات پیش‌فرض «سپر ایمنی» هستند. برای همه وب‌سایت‌ها اعمال می‌شوند مگراینکه موردی را در پانل «سپرایمنی» در سایت خاصی تغییر دهید. تغییر این موارد، تأثیری بر تنظیمات موجود هر سایت نمی‌گذارد.</translation>
+<translation id="8754605759692119662">این کار اکثر آگهی‌ها را در وب‌سایت‌ها مسدود می‌کند، به‌جز آگهی‌های خصوصی Brave ‏— این موارد در اینجا کنترل می‌شوند:</translation>
+<translation id="6388201778088078932">تنظیمات.</translation>
 <translation id="9185018653595759199">مسدود کردن رسانه اجتماعی</translation>
+<translation id="5709627087332022422">مسدود کردن ردیاب‌های بین سایتی</translation>
+<translation id="9075744464571452108">تشخیص دستگاه</translation>
+<translation id="3570081523466826008">ارتقاء اتصال‌ها به HTTPS</translation>
+<translation id="4824468494729001999">مسدود کردن اسکریپت‌ها</translation>
 <translation id="7498695072878479744">مجاز کردن دکمه‌های ورود به سیستم Google در سایت‌های شخص ثالث</translation>
 <translation id="863171915776379000">مجاز کردن ورود به سیستم‌ها و پست‌های جاسازی‌شده</translation>
 <translation id="5165042248369837294">مجاز کردن توییت‌های جاسازی‌شده Twitter</translation>
 <translation id="958971637207126733">مجاز کردن پست‌های جاسازی‌شده LinkedIn</translation>
+<translation id="4699812599455071925">فقط کوکی‌های بین سایتی مسدود شوند</translation>
 <translation id="5657156137487675418">مجاز کردن همه کوکی‌ها</translation>
 <translation id="6883611015375728278">مسدود کردن همه کوکی‌ها</translation>
+<translation id="3084022390368021391">فقط تلاش‌های تشخیص دستگاه بین سایتی مسدود می‌شود</translation>
+<translation id="1847422622180531843">همه تلاش‌های تشخیص دستگاه مجاز شوند</translation>
+<translation id="8375051111011093523">همه تلاش‌های تشخیص دستگاه مسدود می‌شوند</translation>
 <translation id="8942080017911802454">خط‌مشی مدیریت WebRTC IP</translation>
 <translation id="6165508094623778733">بیشتر بدانید</translation>
 <translation id="8798099450830957504">پیش‌فرض</translation>
@@ -75,4 +90,9 @@
 <translation id="9181207987584064303">مشاهده در «فروشگاه افزونه‌های وب»</translation>
 <translation id="4846154056248462491">در برگه خروج</translation>
 <translation id="5057399635433117814">این صفحه ترجمه شود؟ با این کار کل نوشتار موجود در این صفحه برای ترجمه به Microsoft ارسال خواهد شد.</translation>
+<translation id="3371343170427636147">برنامه‌های Nightly مرورگر Brave</translation>
+<translation id="4097979995947147464">برنامه‌های Beta مرورگر Brave</translation>
+<translation id="8303432794159193481">برنامه‌های Dev مرورگر Brave</translation>
+<translation id="8292967014767479012">برنامه‌های مرورگر Brave</translation>
+<translation id="4743468424889072281">برنامه‌های Development مرورگر Brave</translation>
 </translationbundle>

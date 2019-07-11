@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Récompenses Brave</translation>
 <translation id="7942180974165298215">Bloqueur de publicité Brave</translation>
 <translation id="6406506848690869874">Synchroniser</translation>
+<translation id="8488282162676695335">Porte-monnaie Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (extension ID "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") n'est pas autorisé dans Brave.</translation>
 <translation id="7450557937477381864">Fermez Chrome</translation>
 <translation id="7008934821596358692">Pour terminer l'importation, fermez toutes les fenêtres Chrome.</translation>
@@ -28,7 +29,9 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="3218385319396786393">La lecture automatique a été bloquée sur cette page</translation>
 <translation id="4988333904713528597">Toujours autoriser la lecture automatique sur <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Continuer le blocage de la lecture automatique</translation>
+<translation id="5883458389055721080">La sécurité et la sûreté de cette extension n'ont pas été examinées par Brave. Installez cette extension seulement si vous faites confiance au développeur.</translation>
 <translation id="2044383478723007273">Les couleurs de Brave</translation>
+<translation id="2814998458708016836">Utiliser une barre d'adresse large</translation>
 <translation id="6123134130710658846">Masquer le bouton Brave Rewards</translation>
 <translation id="7635711399568194460">Masque le bouton Brave Rewards dans la barre d’emplacement lorsque Brave Rewards n’est pas activé.</translation>
 <translation id="7965178729203412357">Nouvelle identité Tor</translation>
@@ -47,13 +50,25 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="4472575034687746823">Premiers pas</translation>
 <translation id="3400357268283240774">Paramètres supplémentaires</translation>
 <translation id="6303294677342628402">Protections</translation>
+<translation id="7133511168130368997">Bloquez les trackers et les publicités qui vous suivent sur le Web.</translation>
+<translation id="2761825942249694703">Il s'agit des réglages par défaut de Shields. Ils s'appliquent à tous les sites Web, sauf si vous changez quelque chose dans le panneau Shields d'un site en particulier. La modification de ces paramètres n'affectera pas vos paramètres par site existants.</translation>
+<translation id="8754605759692119662">Ceci bloquera la plupart des publicités sur les sites Web, pas les publicités privées de Brave — ces dernières sont contrôlées dans les</translation>
+<translation id="6388201778088078932">paramètres.</translation>
 <translation id="9185018653595759199">Blocage des réseaux sociaux</translation>
+<translation id="5709627087332022422">Bloquer les trackers intersites</translation>
+<translation id="9075744464571452108">Reconnaissance de périphérique</translation>
+<translation id="3570081523466826008">Mettre à niveau les connexions vers HTTPS</translation>
+<translation id="4824468494729001999">Bloquer les scripts</translation>
 <translation id="7498695072878479744">Autoriser les boutons de connexion Google sur les sites tiers</translation>
 <translation id="863171915776379000">Autoriser les connexions Facebook et les publications intégrées</translation>
 <translation id="5165042248369837294">Autoriser les tweets intégrés de Twitter</translation>
 <translation id="958971637207126733">Autoriser les publications LinkedIn intégrées</translation>
+<translation id="4699812599455071925">Seulement bloquer les cookies intersites</translation>
 <translation id="5657156137487675418">Autoriser tous les cookies</translation>
 <translation id="6883611015375728278">Bloquer tous les cookies</translation>
+<translation id="3084022390368021391">Seulement bloquer les tentatives intersites de reconnaissance du périphérique</translation>
+<translation id="1847422622180531843">Autoriser toutes les tentatives de reconnaissance du périphérique</translation>
+<translation id="8375051111011093523">Bloquer toutes les tentatives de reconnaissance du périphérique</translation>
 <translation id="8942080017911802454">Politique de gestion des adresses IP WebRTC</translation>
 <translation id="6165508094623778733">En savoir plus</translation>
 <translation id="8798099450830957504">Par défaut</translation>
@@ -75,4 +90,9 @@ En installant cette extension, vous acceptez les conditions d'utilisation de Goo
 <translation id="9181207987584064303">Afficher dans le magasin d'extensions Web</translation>
 <translation id="4846154056248462491">À la sortie</translation>
 <translation id="5057399635433117814">Traduire cette page ? Ceci enverra tout le texte de cette page à Microsoft pour qu'il soit traduit.</translation>
+<translation id="3371343170427636147">Applications de nuit du navigateur Brave</translation>
+<translation id="4097979995947147464">Applications bêta du navigateur Brave</translation>
+<translation id="8303432794159193481">Applications de développement du navigateur Brave</translation>
+<translation id="8292967014767479012">Applications du navigateur Brave</translation>
+<translation id="4743468424889072281">Applications de développement du navigateur Brave</translation>
 </translationbundle>

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index c5909031e62360b74de940c3e1fdc4d2ed51ad96..30aa96ebaa3a0b94b8e30a70d2e86cb8592441cf 100644
+index 4fab5d0fd6bc6b6c47f4174dc1f611ba79610589..22524e99629354fb698e081d7d66d45b438b03d7 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -437,7 +437,7 @@ void LocationBarView::OnKeywordFaviconFetched(const gfx::Image& icon) {
+@@ -443,7 +443,7 @@ void LocationBarView::OnKeywordFaviconFetched(const gfx::Image& icon) {
    selected_keyword_view_->SetImage(icon.AsImageSkia());
  }
  
@@ -11,11 +11,11 @@ index c5909031e62360b74de940c3e1fdc4d2ed51ad96..30aa96ebaa3a0b94b8e30a70d2e86cb8
    if (!IsInitialized())
      return;
  
-@@ -544,6 +544,11 @@ void LocationBarView::Layout() {
+@@ -550,6 +550,11 @@ void LocationBarView::Layout() {
      }
    };
  
-+  if (right_most && right_most->visible())
++  if (right_most && right_most->GetVisible())
 +    trailing_decorations.AddDecoration(0,
 +                              height(),
 +                              false, 0, 0, right_most);

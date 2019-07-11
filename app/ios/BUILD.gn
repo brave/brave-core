@@ -1,3 +1,2 @@
-group("chromedriver_dist_resources") {}
 group("symbol_dist_resources") {}
 group("dist_resources") {}

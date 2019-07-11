@@ -141,13 +141,11 @@ bool BraveMainDelegate::BasicStartupComplete(int* exit_code) {
 #if BUILDFLAG(ENABLE_EXTENSIONS)
       extensions_features::kNewExtensionUpdaterService.name,
 #endif
-      features::kDesktopPWAWindowing.name,
       omnibox::kSimplifyHttpsIndicator.name,
   };
 
   // Disabled features.
   const std::unordered_set<const char*> disabled_features = {
-      autofill::features::kAutofillSaveCardSignInAfterLocalSave.name,
       autofill::features::kAutofillServerCommunication.name,
       network::features::kNetworkService.name,
       unified_consent::kUnifiedConsent.name,

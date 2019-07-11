@@ -4,6 +4,7 @@
 <translation id="3333887201479867589">Phần thưởng của Brave</translation>
 <translation id="7942180974165298215">Chặn Quảng cáo Brave</translation>
 <translation id="6406506848690869874">Đồng bộ</translation>
+<translation id="8488282162676695335">Ví tiền Brave</translation>
 <translation id="120759863357279975"><ph name="EXTENSION_NAME">$1</ph> (ID phần mở rộng "<ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>") không được phép trong Brave.</translation>
 <translation id="7450557937477381864">Đóng Chrome</translation>
 <translation id="7008934821596358692">Để hoàn tất nhập, hãy đóng mọi cửa sổ Chrome.</translation>
@@ -28,7 +29,9 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="3218385319396786393">Tự động phát bị chặn trên trang này</translation>
 <translation id="4988333904713528597">Luôn cho phép tự động phát trên <ph name="HOST">$1<ex>mail.google.com</ex></ph></translation>
 <translation id="4150684676757176434">Tiếp tục chặn tự động phát</translation>
+<translation id="5883458389055721080">Brave chưa rà soát tính bảo mật và an toàn của phần mở rộng này. Hãy chỉ cài đặt phần mở rộng này nếu bạn tin tưởng nhà phát triển đó.</translation>
 <translation id="2044383478723007273">Màu sắc của brave</translation>
+<translation id="2814998458708016836">Dùng thanh địa chỉ rộng</translation>
 <translation id="6123134130710658846">Ẩn nút Tiền thưởng Brave</translation>
 <translation id="7635711399568194460">Ẩn nút Tiền thưởng Brave trên thanh địa chỉ khi Tiền thưởng Brave không được bật</translation>
 <translation id="7965178729203412357">Danh tính Tor mới</translation>
@@ -47,13 +50,25 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="4472575034687746823">Bắt đầu</translation>
 <translation id="3400357268283240774">Cài đặt thêm</translation>
 <translation id="6303294677342628402">Lá chắn</translation>
+<translation id="7133511168130368997">Chặn các bộ theo dõi và quảng cáo bám theo bạn trên toàn mạng.</translation>
+<translation id="2761825942249694703">Đây là các cài đặt mặc định cho Lá chắn. Chúng áp dụng với mọi website trừ khi bạn thay đổi điều gì đó trong bảng điều khiển Lá chắn trên một website cụ thể. Việc thay đổi các cài đặt này sẽ không ảnh hưởng tới cài đặt mỗi trang hiện có của bạn.</translation>
+<translation id="8754605759692119662">Công cụ này sẽ chặn hầu hết quảng cáo trên các website chứ không phải các quảng cáo riêng của Brave, chúng được kiểm soát trong</translation>
+<translation id="6388201778088078932">cài đặt.</translation>
 <translation id="9185018653595759199">Chặn truyền thông xã hội</translation>
+<translation id="5709627087332022422">Chặn các bộ theo dõi trên mọi website</translation>
+<translation id="9075744464571452108">Nhận diện thiết bị</translation>
+<translation id="3570081523466826008">Nâng cấp các kết nối thành HTTPS</translation>
+<translation id="4824468494729001999">Chặn các tập lệnh script</translation>
 <translation id="7498695072878479744">Cho phép nút đăng nhập Google trên các trang web của bên thứ ba</translation>
 <translation id="863171915776379000">Cho phép đăng nhập và nhúng bài viết Facebook</translation>
 <translation id="5165042248369837294">Cho phép nhúng bài viết Twitter</translation>
 <translation id="958971637207126733">Cho phép các bài viết nhúng trên LinkedIn</translation>
+<translation id="4699812599455071925">Chỉ chặn cookie trên các website khác nhau</translation>
 <translation id="5657156137487675418">Cho phép mọi cookie.</translation>
 <translation id="6883611015375728278">Chặn tất cả cookie</translation>
+<translation id="3084022390368021391">Chỉ chặn các nỗ lực nhận diện thiết bị trên mọi website</translation>
+<translation id="1847422622180531843">Cho phép mọi nỗ lực nhận diện thiết bị</translation>
+<translation id="8375051111011093523">Chặn mọi nỗ lực nhận diện thiết bị</translation>
 <translation id="8942080017911802454">Cơ chế Xử lý IP WebRTC</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
 <translation id="8798099450830957504">Mặc định</translation>
@@ -75,4 +90,9 @@ Bằng cách cài đặt tiện ích mở rộng này, bạn đồng ý với c�
 <translation id="9181207987584064303">Xem trong Cửa hàng Tiện ích mở rộng Web</translation>
 <translation id="4846154056248462491">Khi thoát</translation>
 <translation id="5057399635433117814">Dịch trang này? Lệnh này sẽ gửi tất cả văn bản trên trang này đến Microsoft để dịch.</translation>
+<translation id="3371343170427636147">Các Ứng dụng Ban đêm của Trình duyệt Brave</translation>
+<translation id="4097979995947147464">Các Ứng dụng của Trình duyệt Brave Beta</translation>
+<translation id="8303432794159193481">Các Ứng dụng của Trình duyệt Brave Dev</translation>
+<translation id="8292967014767479012">Các Ứng dụng của Trình duyệt Brave</translation>
+<translation id="4743468424889072281">Các Ứng dụng của Trình duyệt Brave Development</translation>
 </translationbundle>

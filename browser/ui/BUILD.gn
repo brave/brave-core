@@ -27,8 +27,6 @@ source_set("ui") {
       "brave_browser_command_controller.h",
       "brave_browser_content_setting_bubble_model_delegate.cc",
       "brave_browser_content_setting_bubble_model_delegate.h",
-      "brave_dark_mode_observer.cc",
-      "brave_dark_mode_observer.h",
       "brave_layout_constants.cc",
       "brave_layout_constants.h",
       "brave_pages.cc",
@@ -97,13 +95,6 @@ source_set("ui") {
       "views/profiles/brave_profile_chooser_view.h",
       "webui/brave_welcome_ui.cc",
       "webui/brave_welcome_ui.h",
-    ]
-  }
-
-  if (is_mac || is_win || is_chromeos) {
-    sources += [
-      "views/frame/brave_browser_frame.cc",
-      "views/frame/brave_browser_frame.h",
     ]
   }
 

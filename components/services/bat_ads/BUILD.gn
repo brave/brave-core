@@ -1,5 +1,8 @@
 static_library("lib") {
-  visibility = [ "//brave/utility", "//chrome/utility" ]
+  visibility = [
+    "//brave/utility:*",
+    "//brave/test:*"
+  ]
 
   sources = [
     "bat_ads_app.cc",
@@ -13,7 +16,7 @@ static_library("lib") {
   ]
 
   public_deps = [
-    "//brave/components/services/bat_ads/public/interfaces",
+    "public/interfaces",
   ]
 
   deps = [
