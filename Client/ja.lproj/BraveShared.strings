@@ -1,0 +1,9 @@
+/* Suffix for error strings */
+"tryAgain" = "もう一度試してください。";
+
+/* Error handling U2F authentication. */
+"U2FAuthenticationError" = "セキュリティキーの認証エラー";
+
+/* Error handling U2F registration. */
+"U2FRegistrationError" = "セキュリティキーの登録エラー";
+

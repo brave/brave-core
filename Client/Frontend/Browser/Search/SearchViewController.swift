@@ -461,7 +461,7 @@ class SearchViewController: SiteTableViewController, KeyboardHelperDelegate, Loa
             
         case .findInPage:
             let cell = TwoLineTableViewCell()
-            cell.textLabel?.text = String(format: Strings.FindInPage, searchQuery)
+            cell.textLabel?.text = String(format: Strings.FindInPageFormat, searchQuery)
             cell.imageView?.image = #imageLiteral(resourceName: "search_bar_find_in_page_icon")
             cell.imageView?.contentMode = .center
             

@@ -163,9 +163,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Standardinställningar för Braves sköldar";
 
-/* Brave sync page title */
-"BraveSync" = "Brave Synkronisering (beta)";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Till att börja med måste du ha installerat Brave på alla enheter du vill synkronisera. För att sammanlänka dem kan du starta en synkroniseringskedja som du använder för att koppla ihop alla dina enheter säkert.";
 
@@ -213,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Stäng alla %i flikar";
-
-/* Code words input help */
-"CodeWordInputHelp" = "Ange det medföljande kodordet för din synkroniseringskedja.";
 
 /* Code words section title */
 "CodeWords" = "Kodord";
@@ -420,9 +414,6 @@
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Kopiera";
-
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "Sök på sidan";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Dölj";
@@ -715,9 +706,6 @@
 /* Support section title */
 "Support" = "Support";
 
-/* Sync settings section title */
-"Sync" = "Synkronisering (beta)";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Lägg till fler enheter";
 
@@ -732,9 +720,6 @@
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Ange synkroniseringskoden";
-
-/* Sync add device description */
-"SyncAddMobileWordsDescription" = "På din enhet går du till Brave Synkronisering i inställningspanelen och trycket på knappen \"%@\". Ange kodorden som visas nedan.";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Lägg till en surfplatta eller telefon";
@@ -813,9 +798,6 @@
 
 /* Sync to existing device */
 "SyncToDevice" = "Synkronisera med enhet";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Använd en redan synkroniserad enhet för att öppna inställningarna i Brave, gå till \"Enheter och inställningar\", tryck på + för att lägga till en ny enhet och visa synkroniseringskoden.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Det gick inte att skapa en ny synkroniseringsgrupp.";

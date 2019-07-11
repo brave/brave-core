@@ -163,9 +163,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shield 기본값";
 
-/* Brave sync page title */
-"BraveSync" = "Brave 동기화(베타)";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "시작하려면 동기화하려는 모든 기기에 Brave가 설치되어 있어야 합니다. 모든 기기를 연결하려면 모든 기기를 안전하게 연결하는 데 사용할 동기화 체인을 시작하십시오.";
 
@@ -213,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "모든 %i 탭 닫기";
-
-/* Code words input help */
-"CodeWordInputHelp" = "제공된 동기화 체인 코드 단어를 입력하십시오.";
 
 /* Code words section title */
 "CodeWords" = "코드 단어";
@@ -420,9 +414,6 @@
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "복사";
-
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "페이지에서 찾기";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "숨기기";
@@ -715,9 +706,6 @@
 /* Support section title */
 "Support" = "지원";
 
-/* Sync settings section title */
-"Sync" = "동기화(베타)";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "다른 기기 추가";
 
@@ -732,9 +720,6 @@
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "동기화 코드 입력";
-
-/* Sync add device description */
-"SyncAddMobileWordsDescription" = "기기에서 설정 패널의 Brave 동기화로 이동한 후 \"%@\" 버튼을 탭하십시오. 아래에 표시된 동기화 체인 코드 단어를 입력하십시오.";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "태블릿 또는 전화 추가";
@@ -813,9 +798,6 @@
 
 /* Sync to existing device */
 "SyncToDevice" = "기기에 동기화";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "동기화된 기존 기기를 사용하여 Brave 설정을 열고 “기기 및 설정”으로 이동한 다음 ‘+’를 탭하여 새 기기를 추가하고 동기화 코드를 표시하십시오.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "새 동기화 그룹을 만들 수 없습니다.";

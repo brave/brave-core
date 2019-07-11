@@ -163,9 +163,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Настройки Brave Shield по умолчанию";
 
-/* Brave sync page title */
-"BraveSync" = "Синхронизация Brave (бета-версия)";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Установите Brave на всех устройствах, которые хотите синхронизировать. Чтобы безопасно связать их между собой, создайте цепочку синхронизации.";
 
@@ -213,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Закрыть все вкладки (%i)";
-
-/* Code words input help */
-"CodeWordInputHelp" = "Введите кодовые слова для создания цепочки синхронизации.";
 
 /* Code words section title */
 "CodeWords" = "Кодовые слова";
@@ -420,9 +414,6 @@
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Копировать";
-
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "Найти на странице";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Скрыть";
@@ -715,9 +706,6 @@
 /* Support section title */
 "Support" = "Поддержка";
 
-/* Sync settings section title */
-"Sync" = "Синхронизация (бета-версия)";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Добавить другое устройство";
 
@@ -732,9 +720,6 @@
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Введите код синхронизации";
-
-/* Sync add device description */
-"SyncAddMobileWordsDescription" = "Откройте Brave на устройстве, перейдите в раздел «Синхронизация Brave» в настройках и нажмите кнопку «%@». Введите кодовые слова для цепочки синхронизации (см. ниже).";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Добавьте планшет или телефон";
@@ -813,9 +798,6 @@
 
 /* Sync to existing device */
 "SyncToDevice" = "Синхронизация с устройством";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Откройте настройки Brave на синхронизированном устройстве, перейдите в раздел «Устройства и настройки» и нажмите на значок «+», чтобы добавить устройство и посмотреть код синхронизации.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Не удалось создать группу синхронизации.";

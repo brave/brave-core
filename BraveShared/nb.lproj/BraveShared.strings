@@ -163,9 +163,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Brave Shield standardinnstillinger";
 
-/* Brave sync page title */
-"BraveSync" = "Brave-synkronisering (beta)";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Brave må være installert på alle enhetene du vil synkronisere. Start en synkkjede for å knytte alle enhetene dine sikkert sammen.";
 
@@ -213,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Lukk alle %i fanene";
-
-/* Code words input help */
-"CodeWordInputHelp" = "Skriv kodeordene du har mottatt for synkkjeden.";
 
 /* Code words section title */
 "CodeWords" = "Kodeord";
@@ -420,9 +414,6 @@
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Kopier";
-
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "Finn på side";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Skjul";
@@ -715,9 +706,6 @@
 /* Support section title */
 "Support" = "Støtte";
 
-/* Sync settings section title */
-"Sync" = "Synkronisering (beta)";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Legg til en ny enhet";
 
@@ -732,9 +720,6 @@
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Angi synkkoden";
-
-/* Sync add device description */
-"SyncAddMobileWordsDescription" = "På enheten går du til Brave-synkronisering i Innstillinger og trykker på «%@». Skriv inn synkkjedeordene du ser under.";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Legg til et nettbrett eller en telefon";
@@ -813,9 +798,6 @@
 
 /* Sync to existing device */
 "SyncToDevice" = "Synkroniser til enhet";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Ved å bruke en enhet som allerede er synkronisert, kan du gå til Innstillinger for Brave > fanen «Enheter og innstillinger» og trykke på «+» for å legge til en ny enhet og få fram synkkoden.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "Kunne ikke opprette ny synkgruppe.";

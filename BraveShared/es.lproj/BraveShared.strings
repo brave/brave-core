@@ -163,9 +163,6 @@
 /* Section title for adbblock, tracking protection, HTTPS-E, and cookies */
 "BraveShieldDefaults" = "Opciones por defecto de Brave Shield";
 
-/* Brave sync page title */
-"BraveSync" = "Sincronización Brave (beta)";
-
 /* Sync settings welcome */
 "BraveSyncWelcome" = "Lo primero que tendrás que hacer es instalar Brave en todos los dispositivos que quieras sincronizar. Para conectarlos entre sí, inicia una cadena de sincronización con la que vincular todos tus dispositivos de forma segura.";
 
@@ -213,9 +210,6 @@
 
 /* No comment provided by engineer. */
 "CloseAllTabsTitle" = "Cerrar las %i pestañas";
-
-/* Code words input help */
-"CodeWordInputHelp" = "Escribe las palabras clave de la cadena de sincronización proporcionada.";
 
 /* Code words section title */
 "CodeWords" = "Palabras clave";
@@ -420,9 +414,6 @@
 
 /* Copy password text selection menu item */
 "MenuItemCopyTitle" = "Copiar";
-
-/* Text selection menu item */
-"MenuItemFindInPageTitle" = "Encontrar en la página";
 
 /* Hide password text selection menu item */
 "MenuItemHidePasswordTitle" = "Ocultar";
@@ -715,9 +706,6 @@
 /* Support section title */
 "Support" = "Asistencia";
 
-/* Sync settings section title */
-"Sync" = "Sincronización (beta)";
-
 /* Add another device cell button. */
 "SyncAddAnotherDevice" = "Añadir otro dispositivo";
 
@@ -732,9 +720,6 @@
 
 /* Add device to sync with code words */
 "SyncAddDeviceWords" = "Ingresar el código de sincronización";
-
-/* Sync add device description */
-"SyncAddMobileWordsDescription" = "Con tu dispositivo, dirígete a Sincronización Brave, en el panel Ajustes, y pulsa el botón \"%@\". Luego, introduce las palabras clave de la cadena de sincronización que aparecen a continuación.";
 
 /* Add Tablet or phone title */
 "SyncAddTabletOrPhoneTitle" = "Añadir una tableta o teléfono";
@@ -813,9 +798,6 @@
 
 /* Sync to existing device */
 "SyncToDevice" = "Sincronizar con dispositivo";
-
-/* Sync to existing device description */
-"SyncToDeviceDescription" = "Con un dispositivo ya sincronizado, abre Ajustes de Brave y dirígete a \"Dispositivos y ajustes\". A continuación, pulsa sobre \"+\" para añadir un nuevo dispositivo y obtén el código de sincronización.";
 
 /* Description on popup when setting up a sync group fails */
 "SyncUnableCreateGroup" = "No se ha podido crear un nuevo grupo de sincronización.";
