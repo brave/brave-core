@@ -24,6 +24,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
   void OnJavascriptAllowed() override {}
   void OnJavascriptDisallowed() override {}
 
+  void ShowRelaunchToast(const base::ListValue* args);
   void HandleRestartBrowser(const base::ListValue* args);
   void SetWebTorrentEnabled(const base::ListValue* args);
   void SetHangoutsEnabled(const base::ListValue* args);
@@ -36,6 +37,7 @@ class BraveDefaultExtensionsHandler : public settings::SettingsPageUIHandler {
       extensions::webstore_install::Result result);
 
   Profile* profile_ = nullptr;
+  bool restartNeeded = false;
   base::WeakPtrFactory<BraveDefaultExtensionsHandler> weak_ptr_factory_;
 
   DISALLOW_COPY_AND_ASSIGN(BraveDefaultExtensionsHandler);

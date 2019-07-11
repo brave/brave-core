@@ -11,7 +11,8 @@ cr.define('settings', function() {
     setWebTorrentEnabled(value) {}
     setHangoutsEnabled(value) {}
     setIPFSCompanionEnabled(value) {}
-    restartBrowser(){}
+    restartBrowser() {}
+    showRelaunchToast() {}
   }
 
   /**
@@ -33,6 +34,9 @@ cr.define('settings', function() {
     }
     restartBrowser() {
       chrome.send('restartBrowser');
+    }
+    showRelaunchToast() {
+      return cr.sendWithPromise('showRelaunchToast');
     }
   }
 

@@ -16,7 +16,7 @@
       }
 
       #needsRestart {
-        background: var(--toolbar-color);
+        background-color: #fff;
         bottom: 0;
         box-shadow: 0 -2px 2px 0 var(--shadow-color);
         box-sizing: border-box;
@@ -28,6 +28,10 @@
         transition: all 225ms var(--ease-in-out);
         width: 100%;
         z-index: 10;
+      }
+
+      :host-context([dark]) #needsRestart {
+        background-color: #161719;
       }
 
       #needsRestart .flex:last-child {

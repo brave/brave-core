@@ -23,6 +23,7 @@
 #include "chrome/browser/lifetime/application_lifetime.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/extensions/extension_constants.h"
+#include "chrome/common/pref_names.h"
 #include "components/flags_ui/flags_ui_constants.h"
 #include "components/flags_ui/pref_service_flags_storage.h"
 #include "components/prefs/pref_service.h"
@@ -63,10 +64,29 @@ void BraveDefaultExtensionsHandler::RegisterMessages() {
       flags_ui::kRestartBrowser,
       base::BindRepeating(&BraveDefaultExtensionsHandler::HandleRestartBrowser,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "showRelaunchToast",
+      base::BindRepeating(
+        &BraveDefaultExtensionsHandler::ShowRelaunchToast,
+        base::Unretained(this)));
+}
+
+void BraveDefaultExtensionsHandler::ShowRelaunchToast(
+    const base::ListValue* args) {
+  bool enabledCurrentPref = profile_->GetPrefs()->GetBoolean(
+      prefs::kEnableMediaRouter);
+  bool enabledUpdatedPref = profile_->GetPrefs()->GetBoolean(
+      kBraveEnabledMediaRouter);
+
+  restartNeeded = (enabledCurrentPref != enabledUpdatedPref);
+
+  AllowJavascript();
+  ResolveJavascriptCallback(args->GetList()[0].Clone(), base::Value(restartNeeded));
 }
 
 void BraveDefaultExtensionsHandler::HandleRestartBrowser(
     const base::ListValue* args) {
+  restartNeeded = false;
   chrome::AttemptRestart();
 }
 
@@ -143,6 +163,7 @@ void BraveDefaultExtensionsHandler::SetMediaRouterEnabled(
   bool enabled;
   args->GetBoolean(0, &enabled);
 
+  restartNeeded = !restartNeeded;
   if (enabled) {
     extensions::ExtensionPrefs::Get(profile_)->SetExtensionEnabled(
         extension_misc::kMediaRouterStableExtensionId);
