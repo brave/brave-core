@@ -34,4 +34,11 @@ bool IsRegionForQwant(Profile* profile) {
       TemplateURLPrepopulateData::PREPOPULATED_ENGINE_ID_QWANT;
 }
 
+bool IsOTRGuestProfile(Profile* profile) {
+  DCHECK(profile);
+  return (profile->HasOffTheRecordProfile() &&
+    profile->GetOffTheRecordProfile() == profile &&
+    profile->GetOriginalProfile()->IsGuestSession());
+}
+
 }  // namespace brave

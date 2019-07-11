@@ -6,6 +6,7 @@
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
 
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/browser/tor/tor_profile.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/profile.h"
@@ -15,8 +16,8 @@
 TorWindowSearchEngineProviderService::
 TorWindowSearchEngineProviderService(Profile* otr_profile)
     : SearchEngineProviderService(otr_profile) {
-  DCHECK(otr_profile->IsTorProfile());
-  DCHECK(IsGuestProfile(otr_profile));
+  DCHECK(tor::IsTorProfile(otr_profile));
+  DCHECK(brave::IsOTRGuestProfile(otr_profile));
 
   alternative_search_engine_provider_in_tor_.Init(
       kAlternativeSearchEngineProviderInTor,

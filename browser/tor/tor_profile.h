@@ -3,5 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/tor/tor_profile.h"
-#include "../../../../../../chrome/browser/profiles/profile.cc"  // NOLINT
+#ifndef BRAVE_BROWSER_TOR_TOR_PROFILE_H_
+#define BRAVE_BROWSER_TOR_TOR_PROFILE_H_
+
+class Profile;
+
+namespace tor {
+
+bool IsTorProfile(const Profile* profile);
+
+}   // namespace tor
+
+#endif  // BRAVE_BROWSER_TOR_TOR_PROFILE_H_

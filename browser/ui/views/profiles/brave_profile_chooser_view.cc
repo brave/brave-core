@@ -10,6 +10,7 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/tor/buildflags.h"
+#include "brave/browser/tor/tor_profile.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -35,7 +36,7 @@ void BraveProfileChooserView::ButtonPressed(views::Button* sender,
     profiles::SwitchToTorProfile(ProfileManager::CreateCallback());
   } else if (sender == users_button_ &&
              browser()->profile()->IsGuestSession()) {
-    if (browser()->profile()->IsTorProfile())
+    if (tor::IsTorProfile(browser()->profile()))
       profiles::CloseTorProfileWindows();
     else
       profiles::CloseGuestProfileWindows();
@@ -46,7 +47,7 @@ void BraveProfileChooserView::ButtonPressed(views::Button* sender,
 
 void BraveProfileChooserView::AddTorButton() {
 #if BUILDFLAG(ENABLE_TOR)
-  if (!browser()->profile()->IsTorProfile() &&
+  if (!tor::IsTorProfile(browser()->profile()) &&
       !g_brave_browser_process->tor_client_updater()
            ->GetExecutablePath()
            .empty()) {

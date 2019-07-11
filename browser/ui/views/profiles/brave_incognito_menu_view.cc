@@ -10,6 +10,7 @@
 
 #include "brave/browser/brave_browser_process_impl.h"
 #include "brave/browser/tor/buildflags.h"
+#include "brave/browser/tor/tor_profile.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -40,7 +41,7 @@ void BraveIncognitoMenuView::ButtonPressed(views::Button* sender,
 
 void BraveIncognitoMenuView::AddTorButton() {
 #if BUILDFLAG(ENABLE_TOR)
-  if (!browser()->profile()->IsTorProfile() &&
+  if (!tor::IsTorProfile(browser()->profile()) &&
       !g_brave_browser_process->tor_client_updater()
            ->GetExecutablePath()
            .empty()) {

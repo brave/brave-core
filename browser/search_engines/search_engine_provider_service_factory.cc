@@ -9,6 +9,7 @@
 #include "brave/browser/search_engines/private_window_search_engine_provider_service.h"
 #include "brave/browser/search_engines/search_engine_provider_util.h"
 #include "brave/browser/search_engines/tor_window_search_engine_provider_service.h"
+#include "brave/browser/tor/tor_profile.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
@@ -18,6 +19,7 @@
 #include "components/pref_registry/pref_registry_syncable.h"
 
 namespace {
+
 // Factory owns service object.
 KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
   // In non qwant region, controller is also needed for private profile.
@@ -32,7 +34,7 @@ KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
 
   // Regardless of qwant region, tor profile needs controller to store
   // previously set search engine provider.
-  if (profile->IsTorProfile() && IsGuestProfile(profile)) {
+  if (tor::IsTorProfile(profile) && brave::IsOTRGuestProfile(profile)) {
     return new TorWindowSearchEngineProviderService(profile);
   }
 
@@ -41,7 +43,7 @@ KeyedService* InitializeSearchEngineProviderServiceIfNeeded(Profile* profile) {
   if (brave::IsRegionForQwant(profile))
     return nullptr;
 
-  if (IsGuestProfile(profile)) {
+  if (brave::IsOTRGuestProfile(profile)) {
     return new GuestWindowSearchEngineProviderService(profile);
   }
 

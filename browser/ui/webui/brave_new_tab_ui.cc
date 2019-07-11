@@ -8,6 +8,7 @@
 #include <string>
 
 #include "brave/browser/search_engines/search_engine_provider_util.h"
+#include "brave/browser/tor/tor_profile.h"
 #include "brave/browser/ui/webui/brave_new_tab_message_handler.h"
 #include "brave/common/pref_names.h"
 #include "brave/common/webui_url_constants.h"
@@ -66,7 +67,7 @@ void BraveNewTabUI::SetStatsWebUIProperties(
         prefs->GetBoolean(kUseAlternativeSearchEngineProvider) ? "true"
                                                                : "false");
     render_view_host->SetWebUIProperty(
-        "isTor", profile->IsTorProfile() ? "true" : "false");
+        "isTor", tor::IsTorProfile(profile) ? "true" : "false");
     render_view_host->SetWebUIProperty(
         "isQwant", brave::IsRegionForQwant(profile) ? "true" : "false");
   }
@@ -83,7 +84,7 @@ void BraveNewTabUI::SetPrivateWebUIProperties(
         prefs->GetBoolean(kUseAlternativeSearchEngineProvider) ? "true"
                                                                : "false");
     render_view_host->SetWebUIProperty(
-        "isTor", profile->IsTorProfile() ? "true" : "false");
+        "isTor", tor::IsTorProfile(profile) ? "true" : "false");
     render_view_host->SetWebUIProperty(
         "isQwant", brave::IsRegionForQwant(profile) ? "true" : "false");
   }

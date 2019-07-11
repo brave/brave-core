@@ -5,6 +5,7 @@
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 
 #include "brave/browser/tor/buildflags.h"
+#include "brave/browser/tor/tor_profile.h"
 #include "components/spellcheck/spellcheck_buildflags.h"
 #if !BUILDFLAG(USE_BROWSER_SPELLCHECKER)
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
@@ -56,7 +57,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
 #if BUILDFLAG(ENABLE_TOR)
       return params_.link_url.is_valid() &&
              IsURLAllowedInIncognito(params_.link_url, browser_context_) &&
-             !browser_context_->IsTorProfile();
+             !tor::IsTorProfile(GetProfile());
 #else
       return false;
 #endif

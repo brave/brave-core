@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/one_shot_event.h"
+#include "brave/browser/tor/tor_profile.h"
 #include "brave/common/extensions/extension_constants.h"
 #include "chrome/browser/extensions/api/content_settings/content_settings_service.h"
 #include "chrome/browser/extensions/extension_action.h"
@@ -42,7 +43,7 @@ void BraveExtensionService::AddComponentExtension(const Extension* extension) {
   // the extension when BraveActionViewController is queried about the
   // visibility of the action.
   if ((extension->id() == brave_rewards_extension_id) &&
-      (profile_->IsGuestSession() || profile_->IsTorProfile())) {
+      (profile_->IsGuestSession() || tor::IsTorProfile(profile_))) {
     extensions::ExtensionActionManager* extension_action_manager =
         ExtensionActionManager::Get(profile_);
     ExtensionAction* action =

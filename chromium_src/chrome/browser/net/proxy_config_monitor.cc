@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "brave/browser/tor/buildflags.h"
+#include "brave/browser/tor/tor_profile.h"
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "net/proxy_resolution/proxy_config_service.h"
@@ -27,7 +28,7 @@ std::unique_ptr<net::ProxyConfigService> CreateProxyConfigServiceTor(
 
 #if BUILDFLAG(ENABLE_TOR)
 #define BRAVE_PROXY_CONFIG_MONITOR \
-  if (profile && profile->IsTorProfile()) \
+  if (profile && tor::IsTorProfile(profile)) \
     proxy_config_service_ = CreateProxyConfigServiceTor(profile); \
   else
 #else

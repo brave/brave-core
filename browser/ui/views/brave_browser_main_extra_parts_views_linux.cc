@@ -7,6 +7,7 @@
 
 #include "base/bind.h"
 #include "brave/browser/themes/brave_theme_service.h"
+#include "brave/browser/tor/tor_profile.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/libgtkui/gtk_ui.h"
@@ -34,7 +35,7 @@ ui::NativeTheme* GetNativeThemeForWindow(aura::Window* window) {
                             BraveThemeService::GetActiveBraveThemeType(profile);
   const bool dark_mode =
       (active_builtin_theme == BraveThemeType::BRAVE_THEME_TYPE_DARK ||
-       profile->IsIncognitoProfile() || profile->IsTorProfile());
+       profile->IsIncognitoProfile() || tor::IsTorProfile(profile));
   if (dark_mode && BrowserView::GetBrowserViewForNativeWindow(window)) {
     return ui::NativeThemeDarkAura::instance();
   }
